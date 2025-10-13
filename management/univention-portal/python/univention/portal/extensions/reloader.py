@@ -28,8 +28,8 @@ class Reloader(metaclass=Plugin):
     for caches.
 
     `refresh`: In fact the only method. Gets a "reason" so that it can
-            decide that a refresh is not necessary. If it was necessary, it
-            should return True
+        decide that a refresh is not necessary. If it was necessary, it
+        should return True
 
     A reason "force" should be treated as very important.
     If the reloader refreshed the content, the overlying cache will reload
@@ -48,7 +48,7 @@ class MtimeBasedLazyFileReloader(Reloader):
     the content and writes it into the file.
 
     cache_file:
-            Filename this object is responsible for
+        Filename this object is responsible for
     """
 
     def __init__(self, cache_file):
@@ -304,21 +304,23 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
     Specialized class that reloads a cache file with the content of group object
     in LDAP. Reacts on the reason "ldap:group".
 
-    .. warnings:: As of 4.0.7-8 we use univention-group-membership-cache to
-    obtain groups user belongs to; but we cannot change the constructor kwargs
-    because customers may have added entries to
-    /usr/share/univention-portal/portals.json that still uses them.
+    .. warning::
+
+        As of 4.0.7-8 we use univention-group-membership-cache to
+        obtain groups user belongs to; but we cannot change the constructor kwargs
+        because customers may have added entries to
+        /usr/share/univention-portal/portals.json that still uses them.
 
     ldap_uri:
-            URI for the LDAP connection, e.g. "ldap://ucs:7369"
+        URI for the LDAP connection, e.g. "ldap://ucs:7369"
     binddn:
-            The bind dn for the connection, e.g. "cn=ucs,cn=computers,..."
+        The bind dn for the connection, e.g. "cn=ucs,cn=computers,..."
     password_file:
-            Filename that holds the password for the binddn, e.g. "/etc/machine.secret"
+        Filename that holds the password for the binddn, e.g. "/etc/machine.secret"
     ldap_base:
-            Base in which the groups are searched in. E.g., "dc=base,dc=com" or "cn=groups,ou=OU1,dc=base,dc=com"
+        Base in which the groups are searched in. E.g., "dc=base,dc=com" or "cn=groups,ou=OU1,dc=base,dc=com"
     cache_file:
-            Filename this object is responsible for
+        Filename this object is responsible for
     """
 
     def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):

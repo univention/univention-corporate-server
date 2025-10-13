@@ -38,6 +38,7 @@ http.client._MAXHEADERS = 1000
 
 
 class HTTPError(Exception):
+    """Generic HTTP Error."""
 
     def __init__(self, code: int, message: str, response: requests.Response | None, error_details: dict | None = None) -> None:
         self.code = code
@@ -47,43 +48,43 @@ class HTTPError(Exception):
 
 
 class BadRequest(HTTPError):
-    pass
+    """A 400 Bad Request error."""
 
 
 class Unauthorized(HTTPError):
-    pass
+    """A 401 Unauthorized error."""
 
 
 class Forbidden(HTTPError):
-    pass
+    """A 403 Forbidden error."""
 
 
 class NotFound(HTTPError):
-    pass
+    """A 404 Not Found error."""
 
 
 class PreconditionFailed(HTTPError):
-    pass
+    """A 412 Precondition Failed error."""
 
 
 class UnprocessableEntity(HTTPError):
-    pass
+    """A 422 Unprocessable Entity error."""
 
 
 class ServerError(HTTPError):
-    pass
+    """A 500 Internal Server error."""
 
 
 class ServiceUnavailable(HTTPError):
-    pass
+    """A 503 Service Unavailable error."""
 
 
 class ConnectionError(Exception):
-    pass
+    """A HTTP Connection error."""
 
 
 class UnexpectedResponse(ConnectionError):
-    pass
+    """A unexpected response payload error (e.g. not JSON)."""
 
 
 class _NoRelation(Exception):
@@ -91,6 +92,7 @@ class _NoRelation(Exception):
 
 
 class Response:  # noqa: B903
+    """Response wrapper."""
 
     def __init__(self, response: requests.Response, data: Any, uri: str) -> None:
         self.response = response
@@ -99,6 +101,7 @@ class Response:  # noqa: B903
 
 
 class Session:
+    """A session holding credentials and language settings for a client."""
 
     def __init__(self, credentials: UDM, language: str = 'en-US', reconnect: bool = True, user_agent: str = 'univention.lib/1.0', enable_caching: bool = False) -> None:
         self.language = language
@@ -263,12 +266,14 @@ class Session:
 
 
 class Client:  # noqa: B903
+    """Abstract client base class."""
 
     def __init__(self, client: Session) -> None:
         self.client = client
 
 
 class UDM(Client):
+    """Univention Directory Manager client."""
 
     @classmethod
     def http(cls, uri: str, username: str, password: str) -> Self:
@@ -334,6 +339,7 @@ class UDM(Client):
 
 
 class Module(Client):
+    """A UDM module representation."""
 
     def __init__(self, udm: UDM, uri: str, name: str, title: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
@@ -445,6 +451,7 @@ class Module(Client):
 
 
 class ShallowObject(Client):
+    """A reference to an UDM object, which is not recevied from server yet."""
 
     def __init__(self, udm: UDM, dn: str | None, uri: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
@@ -460,6 +467,7 @@ class ShallowObject(Client):
 
 
 class References:
+    # """Descriptor that provides access to related UDM objects."""
 
     def __init__(self, obj: Object | None = None) -> None:
         self.obj = obj
@@ -480,12 +488,15 @@ class References:
             return self[key]
 
     def __get__(self, obj: Any, cls: type | None = None) -> References:
+        """Return a new References bound to the given object."""
         return type(self)(obj)
 
 
 class Object(Client):
+    """A UDM object with related references."""
 
     objects = References()
+    """Descriptor that provides access to related UDM objects."""
 
     @property
     def module(self):

@@ -801,7 +801,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
         and adds a flag to the UCS user management that should
         then be used to identify a user as "activated for the
         App". If set to True, the name of the attribute is
-        *id*Activated. If set to anything else, the value is
+        ``id`` Activated. If set to anything else, the value is
         used for the name of the attribute. If a schema file is
         shipped along with the App, this file is used instead
         of the auto generated one.

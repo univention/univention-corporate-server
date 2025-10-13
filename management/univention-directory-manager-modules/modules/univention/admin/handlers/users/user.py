@@ -823,10 +823,9 @@ def unmapPasswordExpiry(oldattr: dict[str, list[bytes]]) -> str:
     The shadowLastChange attribute is the amount of days between 1/1/1970 up to the day that password was modified,
     (shadowMax + 1) is the number of days a password is valid. So the password will be expired on 1/1/1970 + shadowLastChange + shadowMax + 1.
     Bug 57681:
-    * setting shadowMax to (pwhistoryPolicy.expiryInterval - 1) makes password expiry checking between pam_unix and pam_krb5 consistent
-    * pam_krb5 sees the password as expired at 00:01 on the day of password expiry
-    * pam_unix (and related code we have that checks userPassword expiry like the LDAP overlay `shadowbind`) sees
-      the password as still valid on the day shadowLastChange + shadowMax, as it calculates: `expired := (now - shadowLastChange > shadowMax)`
+    * setting ``shadowMax`` to (``pwhistoryPolicy.expiryInterval - 1``) makes password expiry checking between ``pam_unix`` and ``pam_krb5`` consistent
+    * ``pam_krb5`` sees the password as expired at 00:01 on the day of password expiry
+    * ``pam_unix`` (and related code we have that checks userPassword expiry like the LDAP overlay ``shadowbind``) sees the password as still valid on the day ``shadowLastChange + shadowMax``, as it calculates: ``expired := (now - shadowLastChange > shadowMax)``
     * We want uniform handling for this. The password should be invalid at 00:01 at the day of password expiry.
     """
     if oldattr.get('shadowLastChange') and oldattr.get('shadowMax'):

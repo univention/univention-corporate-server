@@ -152,20 +152,18 @@ def getLogger(name: str, **kwargs: Any) -> 'Logger':
     """
     Return a logger with the specified name, creating it if necessary.
 
-    .. param name:
+    :param name:
         The name of a :py:mod:`univention.debug` category
         (if not existant `ud.MAIN` will be used)
+    :param extend:
+        Whether a non univention-debug logger should be extended to be one.
+    :param univention_debug_category:
+        If the logger name should differ from the univention-debug category this param can be used
+        as initialization call to create the logger once.
 
     .. warning::
         If a logger with that name already exists and is not a :py:class:`univention.logging.Logger`
         no univention-debug logger is initialized and returned.
-
-    .. param extend:
-        Whether a non univention-debug logger should be extended to be one.
-
-    .. param univention_debug_category:
-        If the logger name should differ from the univention-debug category this param can be used
-        as initialization call to create the logger once.
 
     >>> logger = getLogger('ADMIN')  # .getChild(__name__)
     >>> logger.init('stdout', ud.FLUSH, ud.NO_FUNCTION)
@@ -189,11 +187,9 @@ def extendLogger(name: str, **kwargs: Any) -> None:
     """
     Ensure that the logger with the specified name is a univention-debug logger otherwise transform it.
 
-    .. param name:
-        The name of the logger.
-
-    .. param univention_debug_category:
-        A :py:mod:`univention.debug` category (if not given :param:`name` will be used).
+    :param name: The name of the logger.
+    :param univention_debug_category:
+        A :py:mod:`univention.debug` category (if not given `name` will be used).
         If the logger name should differ from the univention-debug category this param can be used
         as initialization call to create the logger once.
 
@@ -304,11 +300,12 @@ class SyslogPrefix(logging.Filter):
 
 
 class StructuredFormatter(logging.Formatter):
-    """
+    r"""
     A formatter combining prefixed content and structured data from logfmt.
 
     Producing log lines like:
-    2025-01-01T00:00:00.000000+00:00 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
+
+       2025-01-01T00:00:00.000000+00:00 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
     """
 
     def __init__(
@@ -386,7 +383,7 @@ class Logger(logging.Logger):
     """
     A logger which automatically adds :py:mod:`univention.debug` as logging handler.
 
-    Can be set as global default logger via `logging.setLoggerClass(univention.logging.Logger)`.
+    Can be set as global default logger via ``logging.setLoggerClass(univention.logging.Logger)``.
     """
 
     def __init__(self, name, level=logging.NOTSET, log_pid=False, **kwargs):
@@ -543,6 +540,7 @@ class LevelDependentFormatter(logging.Formatter):
     A formatter which logs different formats depending on the log level.
 
     .. deprecated:: 5.2-3
+
        unstructured logging with different formats will be removed in UCS 5.2-5.
     """
 

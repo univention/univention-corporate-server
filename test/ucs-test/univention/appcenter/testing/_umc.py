@@ -1,17 +1,20 @@
 #!/usr/bin/python3
 # SPDX-FileCopyrightText: 2017-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
+
 """
-Univention common Python library to manage connections to remote |UMC| servers.
+Univention common Python library to manage
+connections to remote |UMC| servers.
 
 >>> umc = Client()
 >>> umc.authenticate_with_machine_account()
 >>> response = umc.umc_get('session-info')
 >>> response.status
-2000
->>> umc.umc_logout()
+200
+>>> response = umc.umc_logout()
+>>> response.status
+303
 """
-
 
 import base64
 import http.client
@@ -71,7 +74,7 @@ class ConnectionError(Exception):
         self.reason = reason
 
 
-class HTTPError(Exception):
+class HTTPError(Exception, metaclass=_HTTPType):
     """
     Base class for |HTTP| errors.
     A specialized sub-class if automatically instantiated based on the |HTTP| return code.
@@ -81,7 +84,6 @@ class HTTPError(Exception):
     :param str hostname: The host name of the failed server.
     """
 
-    __metaclass__ = _HTTPType
     codes: dict[int, type[Self]] = {}
     """Specialized sub-classes for individual |HTTP| error codes."""
 
@@ -124,7 +126,7 @@ class HTTPError(Exception):
         self.hostname = hostname
         self.response = response
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<HTTPError {self}>'
 
     def __str__(self) -> str:
@@ -236,13 +238,13 @@ class Request:
     :param dict headers: a mapping of HTTP headers
     """
 
-    def __init__(self, method: str, path: str, data: str | None = None, headers: dict[str, str] | None = None) -> None:
+    def __init__(self, method: str, path: str, data: bytes | None = None, headers: dict[str, str] | None = None) -> None:
         self.method = method
         self.path = path
         self.data = data
         self.headers = headers or {}
 
-    def get_body(self) -> bytes | str | None:
+    def get_body(self) -> bytes | None:
         """
         Return the request data.
 
@@ -433,7 +435,7 @@ class Client:
         :param str flavor: Optional name of the |UMC| module flavor, e.g. `users/user` for |UDM| modules.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(options, flavor)
         return self.request('POST', f'command/{path}', data, headers)
@@ -445,10 +447,23 @@ class Client:
         :param dict options: The argument for the |UMC| `set` command.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(options)
         return self.request('POST', 'set', data, headers)
+        # TODO: return self.request('POST', 'set/%s' % options.keys()[0], data, headers)
+
+    def umc_set_password(self, options: dict | None, headers: dict | None = None) -> Response:
+        """
+        Perform |UMC| `set/password` command. Target UMC version need to be >= UCS 5.0-4.
+
+        :param dict options: The argument for the |UMC| `set` command.
+        :param dict headers: Optional |HTTP| headers.
+        :returns: The |UMC| response.
+        :rtype: :class:`univention.lib.umc.Response`
+        """
+        data = self.__build_data(options)
+        return self.request('POST', 'set/password', data, headers)
 
     def umc_get(self, path: str, options: dict | None = None, headers: dict | None = None) -> Response:
         """
@@ -458,7 +473,7 @@ class Client:
         :param dict options: The argument for the |UMC| `get` command.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         return self.request('POST', 'get/%s' % path, self.__build_data(options), headers)
 
@@ -467,7 +482,7 @@ class Client:
         Perform |UMC| upload action.
 
         .. warning::
-                not implemented.
+            not implemented.
         """
         raise NotImplementedError('File uploads currently need to be done manually.')
 
@@ -479,7 +494,7 @@ class Client:
         :param str password: The password of the user.
         :param data: Additional argument for the |UMC| `auth` command.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(dict({'username': username, 'password': password}, **data))
         return self.request('POST', 'auth', data)
@@ -489,7 +504,7 @@ class Client:
         Perform |UMC| logout action.
 
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         try:
             return self.request('GET', 'logout')
@@ -504,9 +519,12 @@ class Client:
         :param str path: The |URL| of the request.
         :param data: The message body.
         :param dict headers: Optional |HTTP| headers.
+
+        :raises :class:`univention.lib.umc.Unauthorized`: if the session expired and re-authentication was disabled.
+
         :returns: The |UMC| response.
-        :rtype: Response
-        :raises Unauthorized: if the session expired and re-authentication was disabled.
+        :rtype: :class:`univention.lib.umc.Response`
+
         """
         request = Request(method, path, data, headers)
         try:
@@ -523,7 +541,7 @@ class Client:
 
         :param Request request: A |UMC| request.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         :raises ConnectionError: if the request cannot be send.
         :raises HTTPError: if an |UMC| error occurs.
         """
@@ -533,13 +551,13 @@ class Client:
             request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']
         try:
             http_response = self.__request(request)
-        except (HTTPException, OSError, ssl.CertificateError) as exc:
+        except (OSError, HTTPException, ssl.CertificateError) as exc:
             raise ConnectionError('Could not send request.', reason=exc)
         self._handle_cookies(http_response)
-        response = Response._from_httplib_response(http_response)
-        if self._raise_errors and response.status > 299:
-            raise HTTPError(request, response, self.hostname)
-        return response
+        umc_response = Response._from_httplib_response(http_response)
+        if self._raise_errors and umc_response.status > 299:
+            raise HTTPError(request, umc_response, self.hostname)
+        return umc_response
 
     def _handle_cookies(self, response: http.client.HTTPResponse) -> None:
         """
@@ -548,7 +566,7 @@ class Client:
         :param http.client.HTTPResponse response: The |HTTP| response.
         """
         # FIXME: this cookie handling doesn't respect path, domain and expiry
-        cookies: SimpleCookie = SimpleCookie()
+        cookies: SimpleCookie[Any] = SimpleCookie()
         cookies.load(response.getheader('set-cookie', ''))
         self.cookies.update({cookie.key: cookie.value for cookie in cookies.values()})
 

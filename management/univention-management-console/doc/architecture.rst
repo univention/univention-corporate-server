@@ -14,7 +14,7 @@ architecture and the communication channels.
 
 .. figure:: umc-architecture.svg
 
-	Architecture of UMC
+    Architecture of UMC
 
 * The *UMC server* is a HTTP server based on Tornado. It provides access to the
   modules, manages the connection and verifies that only authorized

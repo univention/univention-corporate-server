@@ -212,13 +212,15 @@ class LicenseInsufficient(TakeoverError):
     default_error_message = _('Insufficient License.')
 
 
-def count_domain_objects_on_server(hostname_or_ip, username, password, progress):  # type: (str, str, str, Progress) -> dict
+def count_domain_objects_on_server(hostname_or_ip: str, username: str, password: str, progress: Progress) -> dict:
     '''
     Connects to the hostname_or_ip with username/password credentials.
 
     Expects to find a Windows Domain Controller.
 
-    :return: ``{
+    Example return value::
+
+        {
             'ad_hostname' : hostname,
             'ad_ip' : hostname_or_ip,
             'ad_os' : version_of_the_ad, # "Windows 2008 R2"
@@ -227,7 +229,9 @@ def count_domain_objects_on_server(hostname_or_ip, username, password, progress)
             'groups' : number_of_groups_in_domain,
             'computers' : number_of_computers_in_domain,
             'license_error' : error_message_from_validating_license,
-    }``
+        }
+
+    :return: dict like above
     :raises ComputerUnreachable:
     :raises AuthenticationFailed:
     '''

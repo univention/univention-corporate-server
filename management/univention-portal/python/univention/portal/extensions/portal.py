@@ -24,47 +24,45 @@ class Portal(metaclass=Plugin):
     It is the only interface exposed to the portal tools, so you could
     replace it entirely. But these methods need to be implemented:
 
-    `get_user`: Get the user for the current request
-    `login_user`: New login for a user
-    `login_request`: An anonymous user wants to login
-    `get_visible_content`:
-            The content that the frontend shall present.
-            Should be filtered by the "user". Also gets "admin_mode", a
-            boolean indicating whether the user requested all the content
-            (and is authorized to do so)
-    `get_user_links`:
-            Get the user links in the portal, filtered by "user"
-            and "admin_mode"
-    `get_menu_links`:
-            Get the menu links in the portal, filtered by "user"
-            and "admin_mode"
-    `get_entries`:
-            Get all entries of "content", which in turn was the
-            return value of `get_visible_content`
-    `get_folders`:
-            Get all folders of "content", which in turn was the
-            return value of `get_visible_content`
-    `get_categories`:
-            Get all categories of "content", which in turn was the
-            return value of `get_visible_content`
-    `auth_mode`: Mode for auth based on given "request"
-    `may_be_edited`: Whether a "user" may edit this portal
-    `get_meta`:
-            Get some information about the portal itself, given
-            "content" and "categories". Those were return values of
-            `get_visible_content` and `get_categories`.
-    `refresh`:
-            Refresh the portal data if needed ("reason" acts as a hint).
-            Thereby allows the object to cache its content.
-    `score`: If multiple portals are configured, use the one with the
-            highest score for a given "request".
+    :param get_user: Get the user for the current request
+    :param login_user: New login for a user
+    :param login_request: An anonymous user wants to login
+    :param get_visible_content:
+        The content that the frontend shall present.
+        Should be filtered by the "user". Also gets "admin_mode", a
+        boolean indicating whether the user requested all the content
+        (and is authorized to do so)
+    :param get_user_links:
+        Get the user links in the portal, filtered by "user"
+        and "admin_mode"
+    :param get_menu_links:
+        Get the menu links in the portal, filtered by "user"
+        and "admin_mode"
+    :param get_entries:
+        Get all entries of "content", which in turn was the
+        return value of ``get_visible_content``
+    :param get_folders:
+        Get all folders of "content", which in turn was the
+        return value of ``get_visible_content``
+    :param get_categories:
+        Get all categories of "content", which in turn was the
+        return value of ``get_visible_content``
+    :param auth_mode: Mode for auth based on given "request"
+    :param may_be_edited: Whether a "user" may edit this portal
+    :param get_meta:
+        Get some information about the portal itself, given
+        "content" and "categories". Those were return values of
+        ``get_visible_content`` and ``get_categories``.
+    :param refresh:
+        Refresh the portal data if needed ("reason" acts as a hint).
+        Thereby allows the object to cache its content.
+    :param score:
+        If multiple portals are configured, use the one with the
+        highest score for a given "request".
 
-    scorer:
-            Object that does the actual scoring. Meant to get a `Scorer` object
-    portal_cache:
-            Object that holds the cache. Meant to get a `Cache` object
-    authenticator:
-            Object that does the whole auth thing. Meant to the a `Authenticator` object
+    :ivar scorer: Object that does the actual scoring. Meant to get a ``Scorer`` object
+    :ivar portal_cache: Object that holds the cache. Meant to get a ``Cache`` object
+    :ivar authenticator: Object that does the whole auth thing. Meant to the a ``Authenticator`` object
     """
 
     def __init__(self, scorer, portal_cache, authenticator):

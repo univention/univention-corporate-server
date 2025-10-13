@@ -6,32 +6,37 @@ UMC modules
 ===========
 
 .. automodule:: univention.management.console.base
-	:members:
-	:undoc-members:
-	:show-inheritance:
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:
 
 .. automodule:: univention.management.console.modules
-	:members:
-	:undoc-members:
-	:show-inheritance:
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:
 
 .. automodule:: univention.management.console.modules.decorators
-	:members:
-	:undoc-members:
-	:show-inheritance:
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:
 
 .. automodule:: univention.management.console.modules.sanitizers
-	:members:
-	:undoc-members:
-	:show-inheritance:
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:
 
 .. automodule:: univention.management.console.modules.mixins
-	:members:
-	:undoc-members:
-	:show-inheritance:
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:
 
 .. automodule:: univention.management.console.error
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:

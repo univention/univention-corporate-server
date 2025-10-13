@@ -8,27 +8,25 @@
 """
 Sample asynchronous client for the UDM REST API.
 
-```python
-import asyncio
-from univention.admin.rest.async_client import UDM
-uri = 'http://localhost/univention/udm/'
-
-async def main():
-    async with UDM.http(uri, 'Administrator', 'univention') as udm:
-        module = await udm.get('users/user')
-        print(f'Found {module}')
-        objs = module.search()
-        async for obj in objs:
-            if not obj:
-                continue
-            obj = await obj.open()
-            print(f'Object {obj}')
-            for group in obj.objects.groups:
-                grp = await group.open()
-                print(f'Group {grp}')
-
-asyncio.run(main())
-```
+>>> import asyncio
+>>> from univention.admin.rest.async_client import UDM
+>>>
+>>> uri = 'http://localhost/univention/udm/'
+>>> async def main():
+>>>     async with UDM.http(uri, 'Administrator', 'univention') as udm:
+>>>         module = await udm.get('users/user')
+>>>         print(f'Found {module}')
+>>>         objs = module.search()
+>>>         async for obj in objs:
+>>>             if not obj:
+>>>                 continue
+>>>             obj = await obj.open()
+>>>             print(f'Object {obj}')
+>>>             for group in obj.objects.groups:
+>>>                 grp = await group.open()
+>>>                 print(f'Group {grp}')
+>>>
+>>> asyncio.run(main())
 """
 
 from __future__ import annotations

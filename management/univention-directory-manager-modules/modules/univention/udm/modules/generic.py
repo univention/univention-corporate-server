@@ -74,25 +74,22 @@ class GenericObject(BaseObject):
     r"""
     Generic object class that can be used with all UDM module types.
 
-    Usage:
+    Creation of instances :py:class:`GenericObject` is always done through :py:meth:`GenericModul.new`, :py:meth:`GenericModul.get` or :py:meth:`GenericModul.search`.
 
-    *   Creation of instances :py:class:`GenericObject` is always done through
-        :py:meth:`GenericModul.new`, :py:meth:`GenericModul.get` or :py:meth:`GenericModul.search`.
+    Modify an object::
 
-    *   Modify an object::
+        user.props.firstname = 'Peter'
+        user.props.lastname = 'Pan'
+        user.save()
 
-            user.props.firstname = 'Peter'
-            user.props.lastname = 'Pan'
-            user.save()
+    Move an object::
 
-    *   Move an object::
+        user.position = 'cn=users,ou=Company,dc=example,dc=com'
+        user.save()
 
-           user.position = 'cn=users,ou=Company,dc=example,dc=com'
-           user.save()
+    Delete an object::
 
-    *   Delete an object::
-
-           obj.delete()
+        obj.delete()
 
     After saving a :py:class:`GenericObject`, it is :py:meth:`reload`\ ed
     automatically because UDM hooks and listener modules often add, modify or
@@ -429,13 +426,13 @@ class GenericModuleMetadata(BaseModuleMetadata):
 
         This can be used in two ways:
 
-        *   get the filter to find all objects::
+        * get the filter to find all objects::
 
-                myfilter_s = obj.meta.lookup_filter()
+            myfilter_s = obj.meta.lookup_filter()
 
-        *   get the filter to find a subset of the corresponding LDAP objects (`filter_s` will be combined with `&` to the filter for all objects)::
+        * get the filter to find a subset of the corresponding LDAP objects (``filter_s`` will be combined with ``&`` to the filter for all objects)::
 
-                myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')
+            myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')
 
         :param str filter_s: optional LDAP filter expression
         :return: an LDAP filter string
@@ -465,25 +462,23 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
     """
     Simple API to use UDM modules. Basically a GenericObject factory.
 
-    Usage:
+    Get module using::
 
-    0.  Get module using::
+        user_mod = UDM.admin/machine/credentials().version(2).get('users/user')
 
-            user_mod = UDM.admin/machine/credentials().version(2).get('users/user')
+    Create fresh, not yet saved GenericObject::
 
-    1.  Create fresh, not yet saved GenericObject::
+        new_user = user_mod.new()
 
-            new_user = user_mod.new()
+    Load an existing object::
 
-    2.  Load an existing object::
+        group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
+        group = group_mod.get_by_id('Domain Users')
 
-            group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
-            group = group_mod.get_by_id('Domain Users')
+    Search and load existing objects::
 
-    3.  Search and load existing objects::
-
-            dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
-            campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
+        dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
+        campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
     """
 
     _udm_object_class: type[GenericObject] = GenericObject

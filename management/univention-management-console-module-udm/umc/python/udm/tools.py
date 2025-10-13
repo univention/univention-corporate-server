@@ -29,6 +29,8 @@ class LicenseError(Exception):
 
 
 class LicenseImport(ldif.LDIFParser):
+    """Import license from LDIF."""
+
     dn = None
     mod_list = []
     dncount = 0
@@ -36,6 +38,7 @@ class LicenseImport(ldif.LDIFParser):
     entry = None
 
     def check(self, base):
+        """Validate given license."""
         # call parse from ldif.LDIFParser
         try:
             self.parse()
@@ -62,10 +65,7 @@ class LicenseImport(ldif.LDIFParser):
             raise LicenseError(_("The license can not be applied. The LDAP base does not match (expected %(expected)s, found: %(found)s).") % {'expected': base, 'found': self.base})
 
     def handle(self, dn, entry):
-        """
-        This method is invoked by LDIFParser.parse for each object
-        in the ldif file
-        """
+        """This method is invoked by LDIFParser.parse for each object in the LDIF file."""
         if dn is None or dn == "":
             return
 
@@ -85,6 +85,7 @@ class LicenseImport(ldif.LDIFParser):
         #     self.mod_list.insert(0, (ldap.MOD_REPLACE, atr, entry[atr]))
 
     def write(self, ldap_connection):
+        """Add the license object."""
         if ldap_connection.authz.enabled:
             obj = univention.admin.modules.get('settings/license').object(None, ldap_connection, None, None, None, self.entry)
             obj.position.setDn(ldap_connection.parendDn(self.dn))

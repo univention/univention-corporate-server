@@ -119,7 +119,7 @@ class Sanitizer:
             passed along with the actual argument in order to return something
             reasonable. Default: *None*
     :param bool required: if the argument is required. Default: *False*
-    :param object default: if argument is not given and not
+    :param Any default: if argument is not given and not
             :attr:`~Sanitizer.required`, default is returned - even when not
             :attr:`~Sanitizer.may_change_value`. Note that this value is not
             passing the sanitizing procedure, so make sure to be able to handle
@@ -177,7 +177,7 @@ class Sanitizer:
         The standard method just returns *value* so be sure to
         override this method in your Sanitize class.
 
-        :param object value: the value as found in *request.options*.
+        :param Any value: the value as found in *request.options*.
         :param str name: the name of the argument currently
                 sanitized.
         :param further_arguments: dictionary
@@ -186,7 +186,7 @@ class Sanitizer:
                 the arguments come straight from the not altered
                 options dict (i.e. before potentially changing
                 sanitizing happened).
-        :type further_arguments: dict[str, object]
+        :type further_arguments: dict[str, Any]
         """
         return value
 
@@ -211,7 +211,7 @@ class Sanitizer:
 
         :param str msg: error message
         :param str name: name of the argument
-        :param object value: the argument which caused the error
+        :param Any value: the argument which caused the error
         :param dict \**kwargs: additional arguments for formatting
         """
         format_dict = {'value': value, 'name': name}
@@ -616,7 +616,7 @@ class ChoicesSanitizer(Sanitizer):
     ChoicesSanitizer makes sure that the input is in a given set of
     choices.
 
-    :param object choices: the allowed choices used.
+    :param Any choices: the allowed choices used.
     """
 
     def __init__(self, choices: Iterable[str], **kwargs: Any) -> None:

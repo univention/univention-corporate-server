@@ -4,7 +4,7 @@
 
 """
 Univention common Python library to manage
-connections to remote |UMC| servers
+connections to remote |UMC| servers.
 
 >>> umc = Client()
 >>> umc.authenticate_with_machine_account()
@@ -73,7 +73,7 @@ class HTTPError(Exception, metaclass=_HTTPType):
     :param str hostname: The host name of the failed server.
     """
 
-    codes: dict[int, type['HTTPError']] = {}
+    codes: dict[int, type[Self]] = {}
     """Specialized sub-classes for individual |HTTP| error codes."""
 
     @property
@@ -116,15 +116,15 @@ class HTTPError(Exception, metaclass=_HTTPType):
         self.response = response
 
     def __repr__(self) -> str:
-        return '<HTTPError %s>' % (self,)
+        return f'<HTTPError {self}>'
 
     def __str__(self) -> str:
         traceback = ''
         data = self.response.data
         if self.status >= 500 and isinstance(self.response.data, dict) and isinstance(self.response.data.get('traceback'), str) and 'Traceback (most recent call last)' in self.response.data['traceback']:
             data = data.copy()
-            traceback = '\n%s' % (data.pop('traceback'),)
-        return '%s on %s (%s): %s%s' % (self.status, self.hostname, self.request.path, data, traceback)
+            traceback = '\n{}'.format(data.pop('traceback'))
+        return f'{self.status} on {self.hostname} ({self.request.path}): {data}{traceback}'
 
 
 class HTTPRedirect(HTTPError):
@@ -251,7 +251,7 @@ class Response:
 
     :param int status: |HTTP| status code between 200 and 599.
     :param str reason: string with the reason phrase e.g. 'OK'
-    :param str body: the raw response body
+    :param bytes body: the raw response body
     :param list headers: the response headers as list of tuples
     :param http.client.HTTPResponse _response: The original |HTTP| response.
     """
@@ -286,11 +286,11 @@ class Response:
 
     @overload
     def get_header(self, name: str) -> str | None:
-        pass
+        ...
 
     @overload
     def get_header(self, name: str, default: _T = None) -> _T:
-        pass
+        ...
 
     def get_header(self, name: str, default: _T = None) -> str | _T | None:
         """
@@ -315,7 +315,7 @@ class Response:
             try:
                 data = json.loads(data.decode('UTF-8'))
             except ValueError as exc:
-                raise ConnectionError('Malformed response data: %r' % (data,), reason=exc)
+                raise ConnectionError(f'Malformed response data: {data!r}', reason=exc)
         return data
 
     @classmethod
@@ -424,10 +424,10 @@ class Client:
         :param str flavor: Optional name of the |UMC| module flavor, e.g. `users/user` for |UDM| modules.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(options, flavor)
-        return self.request('POST', 'command/%s' % (path,), data, headers)
+        return self.request('POST', f'command/{path}', data, headers)
 
     def umc_set(self, options: dict | None, headers: dict | None = None) -> Response:
         """
@@ -436,7 +436,7 @@ class Client:
         :param dict options: The argument for the |UMC| `set` command.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(options)
         return self.request('POST', 'set', data, headers)
@@ -449,7 +449,7 @@ class Client:
         :param dict options: The argument for the |UMC| `set` command.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(options)
         return self.request('POST', 'set/password', data, headers)
@@ -462,7 +462,7 @@ class Client:
         :param dict options: The argument for the |UMC| `get` command.
         :param dict headers: Optional |HTTP| headers.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         return self.request('POST', 'get/%s' % path, self.__build_data(options), headers)
 
@@ -471,7 +471,7 @@ class Client:
         Perform |UMC| upload action.
 
         .. warning::
-                not implemented.
+            not implemented.
         """
         raise NotImplementedError('File uploads currently need to be done manually.')
 
@@ -483,7 +483,7 @@ class Client:
         :param str password: The password of the user.
         :param data: Additional argument for the |UMC| `auth` command.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         data = self.__build_data(dict({'username': username, 'password': password}, **data))
         return self.request('POST', 'auth', data)
@@ -493,7 +493,7 @@ class Client:
         Perform |UMC| logout action.
 
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         """
         try:
             return self.request('GET', 'logout')
@@ -508,9 +508,12 @@ class Client:
         :param str path: The |URL| of the request.
         :param data: The message body.
         :param dict headers: Optional |HTTP| headers.
+
+        :raises :class:`univention.lib.umc.Unauthorized`: if the session expired and re-authentication was disabled.
+
         :returns: The |UMC| response.
-        :rtype: Response
-        :raises Unauthorized: if the session expired and re-authentication was disabled.
+        :rtype: :class:`univention.lib.umc.Response`
+
         """
         request = Request(method, path, data, headers)
         try:
@@ -527,7 +530,7 @@ class Client:
 
         :param Request request: A |UMC| request.
         :returns: The |UMC| response.
-        :rtype: Response
+        :rtype: :class:`univention.lib.umc.Response`
         :raises ConnectionError: if the request cannot be send.
         :raises HTTPError: if an |UMC| error occurs.
         """
@@ -549,7 +552,7 @@ class Client:
         """
         Parse cookies from |HTTP| response and store for next request.
 
-        :param http.client.HTTPResponse: The |HTTP| response.
+        :param http.client.HTTPResponse response: The |HTTP| response.
         """
         # FIXME: this cookie handling doesn't respect path, domain and expiry
         cookies: SimpleCookie[Any] = SimpleCookie()
@@ -564,7 +567,7 @@ class Client:
         :returns: The |HTTP| response.
         :rtype: http.client.HTTPResponse
         """
-        uri = '%s%s' % (self._base_uri, request.path)
+        uri = f'{self._base_uri}{request.path}'
         con = self._get_connection()
         con.request(request.method, uri, request.get_body(), headers=request.headers)
         response = con.getresponse()

@@ -9,6 +9,7 @@
 Univention debugging and logging library.
 
 example:
+
 >>> f = init('stdout', NO_FLUSH, FUNCTION) #doctest: +ELLIPSIS
 ... ...  DEBUG_INIT
 >>> set_level(LISTENER, ERROR)

@@ -293,44 +293,34 @@ class attribute:
     """
     A mapping attribute description
 
-    :param ucs_attribute:
-    The property name of the object in UDM
+    :param ucs_attribute: The property name of the object in UDM
     :type ucs_attribute: str
 
-    :param ldap_attribute:
-    The LDAP attribute name of the object in UCS LDAP
+    :param ldap_attribute: The LDAP attribute name of the object in UCS LDAP
     :type ldap_attribute: str
 
-    :param con_attribute:
-    The LDAP attribute name of the object in AD LDAP
+    :param con_attribute: The LDAP attribute name of the object in AD LDAP
     :type con_attribute: str
 
-    :param con_other_attribute:
-    Further LDAP attribute name of the object in AD LDAP.
+    :param con_other_attribute: Further LDAP attribute name of the object in AD LDAP.
     :type con_other_attribute: str
 
-    :param required:
-    unused
+    :param required: unused
     :type required: bool
 
-    :param single_value:
-    Whether the attribute is single_value in the AD LDAP.
+    :param single_value: Whether the attribute is single_value in the AD LDAP.
     :type single_value: bool
 
-    :param compare_function:
-    A comparison function which compares raw ldap attribute values.
+    :param compare_function: A comparison function which compares raw ldap attribute values.
     :type compare_function: callable
 
-    :param mapping:
-    Mapping functions for (sync_to_ad, sync_to_ucs)
+    :param mapping: Mapping functions for (sync_to_ad, sync_to_ucs)
     :ptype mapping: tuple
 
-    :param reverse_attribute_check:
-    Make a reverse check of this mapping, if the mapping is not 1:1.
+    :param reverse_attribute_check: Make a reverse check of this mapping, if the mapping is not 1:1.
     :ptype reverse_attribute_check: bool
 
-    :param sync_mode:
-    The syncronization direction (read, write, sync)
+    :param sync_mode: The syncronization direction (read, write, sync)
     :ptype sync_mode: str
     """
 
@@ -375,31 +365,32 @@ class attribute:
 class property:
 
     def __init__(
-            self,
-            ucs_default_dn='',
-            con_default_dn='',
-            ucs_module='',
-            ucs_module_others=[],
-            sync_mode='',
-            scope='',
-            con_search_filter='',
-            ignore_filter=None,
-            match_filter=None,
-            allow_subtree=[],
-            allow_filter=None,
-            ignore_subtree=[],
-            con_create_objectclass=[],
-            con_create_attributes=[],
-            dn_mapping_function=[],
-            attributes=None,
-            ucs_create_functions=[],
-            post_con_create_functions=[],
-            post_con_modify_functions=[],
-            post_ucs_modify_functions=[],
-            post_attributes=None,
-            mapping_table=None,
-            position_mapping=[],
-            con_subtree_delete_objects=[]):
+        self,
+        ucs_default_dn='',
+        con_default_dn='',
+        ucs_module='',
+        ucs_module_others=[],
+        sync_mode='',
+        scope='',
+        con_search_filter='',
+        ignore_filter=None,
+        match_filter=None,
+        allow_subtree=[],
+        allow_filter=None,
+        ignore_subtree=[],
+        con_create_objectclass=[],
+        con_create_attributes=[],
+        dn_mapping_function=[],
+        attributes=None,
+        ucs_create_functions=[],
+        post_con_create_functions=[],
+        post_con_modify_functions=[],
+        post_ucs_modify_functions=[],
+        post_attributes=None,
+        mapping_table=None,
+        position_mapping=[],
+        con_subtree_delete_objects=[],
+    ):
 
         self.ucs_default_dn = ucs_default_dn
 

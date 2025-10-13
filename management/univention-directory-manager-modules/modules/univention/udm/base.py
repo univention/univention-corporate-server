@@ -47,23 +47,22 @@ class BaseObject:
 
     Usage:
 
-    *   Creation of instances is always done through
-        :py:meth:`BaseModule.new`, :py:meth:`BaseModule.get` or :py:meth:`BaseModule.search`.
+    Creation of instances is always done through :py:meth:`BaseModule.new`, :py:meth:`BaseModule.get` or :py:meth:`BaseModule.search`.
 
-    *   Modify an object::
+    Modify an object::
 
-          user.props.firstname = 'Peter'
-          user.props.lastname = 'Pan'
-          user.save()
+        user.props.firstname = 'Peter'
+        user.props.lastname = 'Pan'
+        user.save()
 
-    *   Move an object::
+    Move an object::
 
-          user.position = 'cn=users,ou=Company,dc=example,dc=com'
-          user.save()
+        user.position = 'cn=users,ou=Company,dc=example,dc=com'
+        user.save()
 
-    *   Delete an object::
+    Delete an object::
 
-          obj.delete()
+        obj.delete()
 
     After saving a :py:class:`BaseObject`, it is :py:meth:`.reload`\ ed
     automatically because UDM hooks and listener modules often add, modify or
@@ -166,12 +165,11 @@ class BaseModuleMetadata:
 
         * get the filter to find all objects::
 
-              myfilter_s = obj.meta.lookup_filter()
+            myfilter_s = obj.meta.lookup_filter()
 
-        * get the filter to find a subset of the corresponding LDAP objects
-          (`filter_s` will be combined with `&` to the filter for all objects)::
+        * get the filter to find a subset of the corresponding LDAP objects (``filter_s`` will be combined with ``&`` to the filter for all objects)::
 
-              `myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')`
+            myfilter = obj.meta.lookup_filter('(|(givenName=A*)(givenName=B*))')
 
         :param str filter_s: optional LDAP filter expression
         :return: an LDAP filter string
@@ -183,8 +181,7 @@ class BaseModuleMetadata:
         """
         UDM properties to LDAP attributes mapping and vice versa.
 
-        :return: a namedtuple containing two mappings: a) from UDM property to
-                LDAP attribute and b) from LDAP attribute to UDM property
+        :return: a namedtuple containing two mappings: a) from UDM property to LDAP attribute and b) from LDAP attribute to UDM property
         """
         raise NotImplementedError()
 
@@ -208,31 +205,29 @@ class BaseModule(metaclass=ModuleMeta):
     Base class for UDM module classes. UDM modules are basically UDM object
     factories.
 
-    Usage:
+    Get module using::
 
-    0.  Get module using::
+        user_mod = UDM.admin/machine/credentials().version(2).get('users/user')
 
-            user_mod = UDM.admin/machine/credentials().version(2).get('users/user')
+    Create fresh, not yet saved BaseObject::
 
-    1.  Create fresh, not yet saved BaseObject::
+        new_user = user_mod.new()
 
-            new_user = user_mod.new()
+    Load an existing object::
 
-    2.  Load an existing object::
+        group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
+        group = group_mod.get_by_id('Domain Users')
 
-            group = group_mod.get('cn=test,cn=groups,dc=example,dc=com')
-            group = group_mod.get_by_id('Domain Users')
+    Search and load existing objects::
 
-    3.  Search and load existing objects::
+        dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
+        campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 
-            dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
-            campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
+    Load existing object(s) without ``open()``\ ing them::
 
-    4.  Load existing object(s) without ``open()``\ ing them::
-
-            user_mod.meta.auto_open = False
-            user = user_mod.get(dn)
-            user.props.groups == []
+        user_mod.meta.auto_open = False
+        user = user_mod.get(dn)
+        user.props.groups == []
     """
 
     _udm_object_class = BaseObject

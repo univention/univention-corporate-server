@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""|UDM| module for all |blocklist| objects"""
+"""|UDM| module for all blocklist objects"""
 
 from __future__ import annotations
 

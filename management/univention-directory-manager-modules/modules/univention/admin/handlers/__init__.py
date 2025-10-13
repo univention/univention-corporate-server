@@ -11,6 +11,7 @@ A UDM handler represents an abstraction of an LDAP object.
 .. seealso:: :mod:`univention.admin.mapping`
 .. seealso:: :mod:`univention.admin.syntax`
 .. seealso:: :mod:`univention.admin.uexceptions`
+
 """
 
 import copy
@@ -104,52 +105,43 @@ class simpleLdap:
     """
     The base class for all UDM handler modules.
 
-    :param co:
-    *deprecated* parameter for a config. Please pass `None`.
+    :param co: *deprecated* parameter for a config. Please pass `None`.
 
     :param lo:
-    A required LDAP connection object which is used for all LDAP operations (search, create, modify).
-    It should be bound to a user which has the LDAP permissions to do the required operations.
+        A required LDAP connection object which is used for all LDAP operations (search, create, modify).
+        It should be bound to a user which has the LDAP permissions to do the required operations.
 
     :param position:
-    The LDAP container where a new object should be created in, or `None` for existing objects.
+        The LDAP container where a new object should be created in, or `None` for existing objects.
 
     :param dn:
-    The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
+        The DN of an existing LDAP object. If a object should be created the DN must not be passed here!
 
     :param superordinate:
-    The superordinate object of this object. Can be omitted. It is automatically searched by the given DN or position.
+        The superordinate object of this object. Can be omitted. It is automatically searched by the given DN or position.
 
     :param attributes:
-    The LDAP attributes of the LDAP object as dict. This should by default be omitted. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
-    If given make sure the dict contains all attributes which are required by :meth:`_ldap_attributes`.
+        The LDAP attributes of the LDAP object as dict. This should by default be omitted. To save performance when an LDAP search is done this can be used, e.g. by the lookup() method.
+        If given make sure the dict contains all attributes which are required by :meth:`_ldap_attributes`.
 
     The following attributes hold information about the state of this object:
 
-    :ivar str dn:
-    A LDAP distinguished name (DN) of this object (if exists, otherwise None)
+    :ivar str dn: A LDAP distinguished name (DN) of this object (if exists, otherwise None)
     :ivar str module: the UDM handlers name (e.g. users/user)
-    :ivar dict oldattr:
-    The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
-    :ivar dict info:
-    A internal dictionary which holds the values for every property.
-    :ivar list options:
-    A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
-    :ivar list policies:
-    A list of DNs containing references to assigned policies.
+    :ivar dict oldattr: The LDAP attributes of this object as dict. If the object does not exists the dict is empty.
+    :ivar dict info: A internal dictionary which holds the values for every property.
+    :ivar list options: A list of UDM options which are enabled on this object. Enabling options causes specific object classes and attributes to be added to the object.
+    :ivar list policies: A list of DNs containing references to assigned policies.
     :ivar dict properties: a dict which maps all UDM properties to :class:`univention.admin.property` instances.
-    :ivar univention.admin.mapping.mapping mapping:
-    A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names.
-    :ivar dict oldinfo:
-    A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-    :ivar list old_options:
-    A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
-    :ivar list oldpolicies:
-    A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+    :ivar univention.admin.mapping.mapping mapping: A :class:`univention.admin.mapping.mapping` instance containing a mapping of UDM property names to LDAP attribute names.
+    :ivar dict oldinfo: A private copy of :attr:`info` containing the original properties which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+    :ivar list old_options: A private copy of :attr:`options` containing the original options which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
+    :ivar list oldpolicies: A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
 
     .. caution::
-    Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
-    Properties should be assigned in the following way: obj['name'] = 'value'
+        Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
+        Properties should be assigned in the following way: obj['name'] = 'value'
+
     """
 
     module = ''  # the name of the module
@@ -511,7 +503,9 @@ class simpleLdap:
         :param str key: The name of a property.
         :returns: The currently set value.  If the value is not set the default value is returned.
 
-        .. warning:: this method changes the set value to the default if it is unset. For a side effect free retrieval of the value use :func:`univention.admin.handlers.simpleLdap.get`.
+        .. warning::
+
+            this method changes the set value to the default if it is unset. For a side effect free retrieval of the value use :func:`univention.admin.handlers.simpleLdap.get`.
         """
         if not key:
             return None
@@ -547,7 +541,9 @@ class simpleLdap:
         :param key: The name of a property.
         :returns: True if the property exists, False otherwise.
 
-        .. warning:: This does not check if the property is also enabled by the UDM options. Use :func:`univention.admin.handlers.simpleLdap.has_property` instead.
+        .. warning::
+
+            This does not check if the property is also enabled by the UDM options. Use :func:`univention.admin.handlers.simpleLdap.has_property` instead.
         """
         return key in self.descriptions
 
@@ -565,7 +561,9 @@ class simpleLdap:
 
         :returns: a list of 2-tuples (udm-property-name, property-value).
 
-        .. warning:: In certain circumstances this sets the default value for every property (e.g. when having a new object).
+        .. warning::
+
+            In certain circumstances this sets the default value for every property (e.g. when having a new object).
         """
         return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
@@ -1172,11 +1170,13 @@ class simpleLdap:
         This method can be subclassed.
 
         .. warning::
-        If this method changes anything in self.info it *must* call :py:meth:`save` afterwards.
+
+            If this method changes anything in self.info it *must* call :py:meth:`save` afterwards.
 
         .. warning::
-        If your are going to do any modifications (such as creating, modifying, moving, removing this object)
-        this method must be called directly after the constructor and before modifying any property.
+
+            If your are going to do any modifications (such as creating, modifying, moving, removing this object)
+            this method must be called directly after the constructor and before modifying any property.
         """
         self._open = True
         self.call_udm_property_hook('hook_open', self)

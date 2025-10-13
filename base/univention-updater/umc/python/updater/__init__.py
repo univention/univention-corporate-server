@@ -555,19 +555,19 @@ class HookManager:
 
     Simple hook file example::
 
-            def test_hook(*args, **kwargs):
-                    print('1ST_TEST_HOOK:', args, kwargs)
-                    return ('Result', 1)
+        def test_hook(*args, **kwargs):
+            print('1ST_TEST_HOOK:', args, kwargs)
+            return ('Result', 1)
 
-            def other_hook(*args, **kwargs):
-                    print('OTHER_HOOK:', args, kwargs)
-                    return 'Other result'
+        def other_hook(*args, **kwargs):
+            print('OTHER_HOOK:', args, kwargs)
+            return 'Other result'
 
-            def register_hooks():
-                    return [
-                            ('test_hook', test_hook),
-                            ('pre_hook', other_hook),
-                    ]
+        def register_hooks():
+            return [
+                    ('test_hook', test_hook),
+                    ('pre_hook', other_hook),
+            ]
 
     The method `call_hook(hookname, *args, **kwargs)` calls all registered methods for specified
     hookname and passes `*args` and `**kwargs` to them. The return value of each method will be
@@ -578,9 +578,9 @@ class HookManager:
     discarded silently. If a hook raises an exception, it will be caught and returned in
     result list of `call_hooks()` instead of corresponding return value. E.g.::
 
-            [['Mein', 'Result', 123], <exceptions.ValueError instance at 0x7f80496f6638>]
+        [['Mein', 'Result', 123], <exceptions.ValueError instance at 0x7f80496f6638>]
 
-    How to use HookManager::
+    How to use HookManager:
 
     >>> hm = HookManager(TESTDIR)
     >>> list(hm.get_hook_list())
