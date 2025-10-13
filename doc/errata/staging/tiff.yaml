@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: tiff
+fix: 4.5.0-6+deb12u3
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-9900)
+bug: [58711]
+cve:
+- CVE-2025-9900
