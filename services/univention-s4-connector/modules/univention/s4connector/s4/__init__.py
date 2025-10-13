@@ -478,7 +478,7 @@ class s4(univention.s4connector.ucs):
             ad_ldap_host = _ucr[f'{configbasename}/s4/ldap/host']
             ad_ldap_port = _ucr[f'{configbasename}/s4/ldap/port']
             ad_ldap_base = _ucr[f'{configbasename}/s4/ldap/base']
-            ad_ldap_binddn = _ucr.get(f'{configbasename}/s4/ldap/binddn', None)
+            ad_ldap_binddn = _ucr.get(f'{configbasename}/s4/ldap/binddn')
             ad_ldap_certificate = _ucr.get(f'{configbasename}/s4/ldap/certificate')
             if not ad_ldap_certificate and ucr.is_true(f'{configbasename}/s4/ldap/ssl'):
                 raise KeyError(f'{configbasename}/s4/ldap/certificate')
