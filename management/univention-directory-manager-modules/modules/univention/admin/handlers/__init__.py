@@ -11,6 +11,7 @@ A UDM handler represents an abstraction of an LDAP object.
 .. seealso:: :mod:`univention.admin.mapping`
 .. seealso:: :mod:`univention.admin.syntax`
 .. seealso:: :mod:`univention.admin.uexceptions`
+
 """
 
 import copy
@@ -148,8 +149,9 @@ class simpleLdap:
     A private copy of :attr:`policies` containing the original policies which were set during object loading. This is only set by :func:`univention.admin.handlers.simpleLdap.save`.
 
     .. caution::
-    Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
-    Properties should be assigned in the following way: obj['name'] = 'value'
+        Do not operate on :attr:`info` directly because this would bypass syntax validations. This object should be used like a dict.
+        Properties should be assigned in the following way: obj['name'] = 'value'
+
     """
 
     module = ''  # the name of the module
@@ -511,7 +513,9 @@ class simpleLdap:
         :param str key: The name of a property.
         :returns: The currently set value.  If the value is not set the default value is returned.
 
-        .. warning:: this method changes the set value to the default if it is unset. For a side effect free retrieval of the value use :func:`univention.admin.handlers.simpleLdap.get`.
+        .. warning::
+
+            this method changes the set value to the default if it is unset. For a side effect free retrieval of the value use :func:`univention.admin.handlers.simpleLdap.get`.
         """
         if not key:
             return None
@@ -547,7 +551,9 @@ class simpleLdap:
         :param key: The name of a property.
         :returns: True if the property exists, False otherwise.
 
-        .. warning:: This does not check if the property is also enabled by the UDM options. Use :func:`univention.admin.handlers.simpleLdap.has_property` instead.
+        .. warning::
+
+            This does not check if the property is also enabled by the UDM options. Use :func:`univention.admin.handlers.simpleLdap.has_property` instead.
         """
         return key in self.descriptions
 
@@ -565,7 +571,9 @@ class simpleLdap:
 
         :returns: a list of 2-tuples (udm-property-name, property-value).
 
-        .. warning:: In certain circumstances this sets the default value for every property (e.g. when having a new object).
+        .. warning::
+
+            In certain circumstances this sets the default value for every property (e.g. when having a new object).
         """
         return [(key, self[key]) for key in self.keys() if self.has_property(key)]
 
@@ -1172,11 +1180,13 @@ class simpleLdap:
         This method can be subclassed.
 
         .. warning::
-        If this method changes anything in self.info it *must* call :py:meth:`save` afterwards.
+
+            If this method changes anything in self.info it *must* call :py:meth:`save` afterwards.
 
         .. warning::
-        If your are going to do any modifications (such as creating, modifying, moving, removing this object)
-        this method must be called directly after the constructor and before modifying any property.
+
+            If your are going to do any modifications (such as creating, modifying, moving, removing this object)
+            this method must be called directly after the constructor and before modifying any property.
         """
         self._open = True
         self.call_udm_property_hook('hook_open', self)
