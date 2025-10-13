@@ -73,15 +73,15 @@ printf '  image:\n    repository: bitnamilegacy/redis-sentinel' >> values.bitnam
 sed -i 's/doveadm_api_key:.*$/doveadm_api_key: "secret"/g' values.dovecot-ce.secret.yaml
 sed -i 's/    com.openexchange.filestore.s3client.s3.accessKey: /    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n    com.openexchange.filestore.s3client.s3.accessKey: /g' values.secret.yaml
 
-./install.sh || true
+/root/ox-operations-guide-mirror/rendered/values/install.sh || true
 # FIXME: for unknown reasons sometimes the first deployment fails
-./install.sh
+/root/ox-operations-guide-mirror/rendered/values/install.sh
 
 cluster_ip="$(kubectl get nodes -o wide | awk '/kind-control-plane/ {print $6}')"
 ucr set "hosts/static/$cluster_ip=as8.lab.test"
 
 # certs
-cp operation-guides/rendered/values/cacert.pem /usr/share/ca-certificates/clustercert.crt && update-ca-certificates
+cp ox-operations-guide-mirror/rendered/values/cacert.pem /usr/share/ca-certificates/clustercert.crt && update-ca-certificates
 univention-certificate new -name as8.lab.test -days 500
 ucr set apache2/vhosts/as8.lab.test/443/aliases=as8.lab.test apache2/vhosts/as8.lab.test/443/enabled=1 apache2/vhosts/as8.lab.test/443/ssl/certificate=/etc/univention/ssl/as8.lab.test/cert.pem apache2/vhosts/as8.lab.test/443/ssl/key=/etc/univention/ssl/as8.lab.test/private.key apache2/vhosts/as8.lab.test/443/ssl/certificatechain=/etc/univention/ssl/ucsCA/CAcert.pem
 systemctl restart apache2
