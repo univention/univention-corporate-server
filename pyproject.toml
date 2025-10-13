@@ -14,8 +14,9 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.13.0
+# ruff 0.14.0
 target-version = "py311"
+output-format = "concise"
 
 line-length = 180
 extend-exclude = [
