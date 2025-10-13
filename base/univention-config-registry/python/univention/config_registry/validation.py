@@ -13,7 +13,7 @@ import ipaddress
 import json
 import re
 from re import Pattern
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 from urllib.parse import urlsplit
 
 import univention.config_registry_info as cri
@@ -43,11 +43,11 @@ class BaseValidator:
         except Exception:
             return False
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> Any:
         """
         Check is value is valid.
 
-        :returns: somethings that can be evaulated with ``bool()``.
+        :returns: something that can be evaulated with ``bool()``.
         :raises Exception: on errors.
         """
         raise NotImplementedError()
@@ -91,7 +91,7 @@ class String(BaseValidator):
                 raise ValueError('error compiling regex: %s' % regex)
         self._rxc = rxc
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> Any:
         if self._rxc:
             return self._rxc.match(value)
         else:
@@ -106,7 +106,7 @@ class URLHttp(BaseValidator):
 
     NAME = "url_http"
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> bool:
         o = urlsplit(value)
         o.port  # may raise ValueError  # noqa: B018
         return o.scheme in {"http", "https"}
@@ -117,7 +117,7 @@ class URLProxy(BaseValidator):
 
     NAME = "url_proxy"
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> bool:
         o = urlsplit(value)
         o.port  # may raise ValueError  # noqa: B018
         return o.scheme in {"http", "https"} and not o.path and not o.query and not o.fragment
@@ -128,8 +128,8 @@ class IPv4Address(BaseValidator):
 
     NAME = "ipv4address"
 
-    def validate(self, value: str) -> object:
-        return ipaddress.IPv4Address("%s" % value)  # FIXME: remove Python 2.7 unicoding
+    def validate(self, value: str) -> Any:
+        return ipaddress.IPv4Address(value)
 
 
 class IPv6Address(BaseValidator):
@@ -137,8 +137,8 @@ class IPv6Address(BaseValidator):
 
     NAME = "ipv6address"
 
-    def validate(self, value: str) -> object:
-        return ipaddress.IPv6Address("%s" % value)  # FIXME: remove Python 2.7 unicoding
+    def validate(self, value: str) -> Any:
+        return ipaddress.IPv6Address(value)
 
 
 class IPAddress(BaseValidator):
@@ -146,8 +146,8 @@ class IPAddress(BaseValidator):
 
     NAME = "ipaddress"
 
-    def validate(self, value: str) -> object:
-        return ipaddress.ip_address("%s" % value)  # FIXME: remove Python 2.7 unicoding
+    def validate(self, value: str) -> Any:
+        return ipaddress.ip_address(value)
 
 
 class Integer(BaseValidator):
@@ -200,7 +200,7 @@ class Integer(BaseValidator):
 
         self._max = val
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> bool:
         val = int(value)
         if self._min is not None and val < self._min:
             return False
@@ -247,7 +247,7 @@ class Bool(BaseValidator):
     NAME = "bool"
     _BCR = BooleanConfigRegistry()
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> bool:
         return self._BCR.is_true(value=value) or self._BCR.is_false(value=value)
 
 
@@ -256,7 +256,7 @@ class Json(BaseValidator):
 
     NAME = "json"
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> Any:
         return json.loads(value) or True
 
 
@@ -276,7 +276,7 @@ class List(BaseValidator):
         typ = Type.TYPE_CLASSES.get(self.element_type, String)
         self.checker = typ(attrs)
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> bool:
         if self.element_type is None:
             return False
         vinfo = cri.Variable()
@@ -296,7 +296,7 @@ class Cron(BaseValidator):
     MONTHS = frozenset(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])
     DAYS = frozenset(["sun", "mon", "tue", "wed", "thu", "fri", "sat"])
 
-    def validate(self, value: str) -> object:
+    def validate(self, value: str) -> bool:
         if value.startswith("#"):
             pass
         elif value in self.PREDEFINED:

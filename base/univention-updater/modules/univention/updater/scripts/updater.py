@@ -14,7 +14,7 @@ from datetime import datetime
 from errno import ENOENT
 from subprocess import DEVNULL, call
 from textwrap import dedent, wrap
-from typing import IO, TYPE_CHECKING, Literal, NoReturn
+from typing import IO, TYPE_CHECKING, Any, Literal, NoReturn
 
 
 try:
@@ -88,7 +88,7 @@ def log(str: str) -> None:
     fd_log.flush()
 
 
-def dprint(str: object) -> None:
+def dprint(str: Any) -> None:
     """Print message to stdout and LOGNAME."""
     for fd in (stdout_orig, fd_log)[nostdout:]:
         print(str, file=fd)
