@@ -146,40 +146,40 @@ class Base(Translation):
     @property
     def username(self):
         """
-        .. deprecated::
-                use request.username instead!
+        .. deprecated:: 5.0-4
+            use request.username instead!
         """
         return self._current_request.username
 
     @property
     def _username(self):
         """
-        .. deprecated::
-                use request.username instead!
+        .. deprecated:: 5.0-4
+            use request.username instead!
         """
         return self._current_request.username
 
     @property
     def user_dn(self):
         """
-        .. deprecated::
-                use request.user_dn instead!
+        .. deprecated:: 5.0-4
+            use request.user_dn instead!
         """
         return self._current_request.user_dn
 
     @property
     def _user_dn(self):
         """
-        .. deprecated::
-                use request.user_dn instead!
+        .. deprecated:: 5.0-4
+            use request.user_dn instead!
         """
         return self._current_request.user_dn
 
     @property
     def password(self):
         """
-        .. deprecated::
-                use request.password instead!
+        .. deprecated:: 5.0-4
+            use request.password instead!
         """
         return self._current_request.password
 
@@ -190,8 +190,8 @@ class Base(Translation):
     @property
     def auth_type(self):
         """
-        .. deprecated::
-                use request.auth_type instead!
+        .. deprecated:: 5.0-4
+            use request.auth_type instead!
         """
         return self._current_request.auth_type
 
@@ -371,22 +371,22 @@ class Base(Translation):
 
     def get_user_ldap_connection(self, no_cache=False, **kwargs):
         """
-        .. deprecated::
+        .. deprecated:: 5.0-4
                 use request.get_user_ldap_connection() instead!
         """
         return self._current_request.get_user_ldap_connection(no_cache=False, **kwargs)
 
     def bind_user_connection(self, lo):
         """
-        .. deprecated::
-                use request.bind_user_connection() instead!
+        .. deprecated:: 5.0-4
+            use request.bind_user_connection() instead!
         """
         return self._current_request.bind_user_connection(lo)
 
     def require_password(self):
         """
-        .. deprecated::
-                use request.require_password() instead!
+        .. deprecated:: 5.0-4
+            use request.require_password() instead!
         """
         return self._current_request.require_password()
 

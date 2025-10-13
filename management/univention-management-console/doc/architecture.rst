@@ -5,6 +5,9 @@
 Architecture
 ============
 
+.. warning::
+   The content is outdated. See https://docs.software-univention.de/architecture/latest/en/services/umc.html for a recent architecture documentation.
+
 The Univention Management Console service consists of three
 components. The communication between these components is done
 using UNIX sockets. The figure :ref:`figure-umc-archiecture` shows the

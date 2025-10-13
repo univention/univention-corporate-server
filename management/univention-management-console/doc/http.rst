@@ -1,9 +1,9 @@
 .. SPDX-FileCopyrightText: 2025 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-==========
-UMC server
-==========
+==============
+HTTP Interface
+==============
 
 With the new generation of UMC there is also an HTTP server available.
 

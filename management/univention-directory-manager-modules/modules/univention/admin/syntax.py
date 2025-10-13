@@ -350,7 +350,7 @@ class simple(ISyntax):
         :raises Exception: on errors.
 
         .. deprecated :: 5.0-2
-                Univention internal use only!
+            Univention internal use only!
         """
 
 
@@ -3627,7 +3627,7 @@ class ldapDn(simple):
     valueError:
 
     .. deprecated:: 3.1-0
-            Use :py:class:`UDM_Objects`.
+        Use :py:class:`UDM_Objects`.
     """
 
     error_message = _('Not a valid LDAP DN')
@@ -3695,7 +3695,7 @@ class LDAP_Server(UDM_Objects):
     Syntax to select a |LDAP| server.
 
     .. deprecated:: 4.4-0
-            Use :py:class:`DomainController`.
+        Use :py:class:`DomainController`.
     """
 
     udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
@@ -3803,7 +3803,7 @@ class ldapDnOrNone(simple):
     valueError:
 
     .. deprecated:: 3.1-0
-            Use :py:class:`UDM_Objects`.
+        Use :py:class:`UDM_Objects`.
     """
 
     @classmethod
@@ -4521,7 +4521,7 @@ class primaryGroup(ldapDn):
     Syntax to select a group from |LDAP|.
 
     .. deprecated:: 3.1-0
-            Use :py:class:`GroupDN`.
+        Use :py:class:`GroupDN`.
     """
 
     searchFilter = 'objectClass=posixGroup'
@@ -4533,7 +4533,7 @@ class primaryGroup2(ldapDn):
     Syntax to select a group from |LDAP|.
 
     .. deprecated:: 3.1-0
-            Use :py:class:`GroupDN`.
+        Use :py:class:`GroupDN`.
     """
 
     searchFilter = 'objectClass=posixGroup'
@@ -5795,9 +5795,9 @@ class listAttributes(string):
     """
     Syntax to enter |UDM| property name.
 
-    .. deprecated::
-            Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
-            Should be removed after migrating to :py:class:`UDM_PropertySelect`.
+    .. deprecated:: 5.0
+        Old syntax required by :py:class:`univention.admin.handler.settings.syntax`.
+        Should be removed after migrating to :py:class:`UDM_PropertySelect`.
 
     >>> listAttributes.parse("a value")
     'a value'
@@ -6575,7 +6575,7 @@ class mailHomeServer(LDAP_Search):
     Syntax to select UCS servers providing the |IMAP| service.
 
     .. deprecated:: 3.2-1
-            Use :py:class:`MailHomeServer`.
+        Use :py:class:`MailHomeServer`.
     """
 
     def __init__(self):

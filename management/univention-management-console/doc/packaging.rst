@@ -86,29 +86,29 @@ If such a package has been created a few things need to be adjusted
 
     .. code-block:: make
 
-        %:
-            dh $@ --with umc
+    %:
+        dh $@ --with umc
 
 * debian/control
 
     .. code-block:: debcontrol
 
-        Source: univention-management-console-module-ucr
-        Section: univention
-        Priority: optional
-        Maintainer: Univention GmbH <packages@univention.de>
-        Build-Depends:
-          debhelper,
-          dh-python,
-          python3-all,
-          univention-management-console-dev (>= 12.0.2),
-        Standards-Version: 3.5.2
+    Source: univention-management-console-module-ucr
+    Section: univention
+    Priority: optional
+    Maintainer: Univention GmbH <packages@univention.de>
+    Build-Depends:
+      debhelper,
+      dh-python,
+      python3-all,
+      univention-management-console-dev (>= 12.0.2),
+    Standards-Version: 3.5.2
 
-        Package: univention-management-console-module-ucr
-        Architecture: all
-        Depends:
-          univention-management-console-server,
-          ${python3:Depends},
-        Provides: ${python3:Provides}
-        Description: UMC module for UCR
-          This package contains the UMC module for Univention Configuration Registry
+    Package: univention-management-console-module-ucr
+    Architecture: all
+    Depends:
+      univention-management-console-server,
+      ${python3:Depends},
+    Provides: ${python3:Provides}
+    Description: UMC module for UCR
+      This package contains the UMC module for Univention Configuration Registry

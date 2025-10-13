@@ -71,6 +71,12 @@ Security
     :show-inheritance:
     :no-index:
 
+.. automodule:: univention.management.console.oidc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :no-index:
+
 .. automodule:: univention.management.console.acl
     :members:
     :undoc-members:

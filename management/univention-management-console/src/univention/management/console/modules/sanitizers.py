@@ -116,19 +116,19 @@ class Sanitizer:
     parameters are \**kwargs. But only the following are meaningful:
 
     :param list further_arguments: names of arguments that should be
-            passed along with the actual argument in order to return something
-            reasonable. Default: *None*
+        passed along with the actual argument in order to return something
+        reasonable. Default: *None*
     :param bool required: if the argument is required. Default: *False*
     :param Any default: if argument is not given and not
-            :attr:`~Sanitizer.required`, default is returned - even when not
-            :attr:`~Sanitizer.may_change_value`. Note that this value is not
-            passing the sanitizing procedure, so make sure to be able to handle
-            it. Default: *None*
+        :attr:`~Sanitizer.required`, default is returned - even when not
+        :attr:`~Sanitizer.may_change_value`. Note that this value is not
+        passing the sanitizing procedure, so make sure to be able to handle
+        it. Default: *None*
     :param bool may_change_value: if the process of sanitizing is allowed
-            to alter *request.options*. If not, the sanitizer can still be used
-            for validation. Default: *True*
+        to alter *request.options*. If not, the sanitizer can still be used
+        for validation. Default: *True*
     :param bool allow_none: if None is allowed and not further validated.
-            Default: *False*
+        Default: *False*
     """
 
     def __init__(self, **kwargs):
@@ -179,13 +179,13 @@ class Sanitizer:
 
         :param Any value: the value as found in *request.options*.
         :param str name: the name of the argument currently
-                sanitized.
+            sanitized.
         :param further_arguments: dictionary
-                holding the values of those additional arguments
-                in *request.options* that are needed for sanitizing.
-                the arguments come straight from the not altered
-                options dict (i.e. before potentially changing
-                sanitizing happened).
+            holding the values of those additional arguments
+            in *request.options* that are needed for sanitizing.
+            the arguments come straight from the not altered
+            options dict (i.e. before potentially changing
+            sanitizing happened).
         :type further_arguments: dict[str, Any]
         """
         return value
@@ -230,7 +230,7 @@ class DictSanitizer(Sanitizer):
 
     :param sanitizers: will be applied to the content of the sanitized dict
     :param bool allow_other_keys: if other keys than those in
-            :attr:`~DictSanitizer.sanitizers` are allowed.
+        :attr:`~DictSanitizer.sanitizers` are allowed.
     :param default_sanitizer: will be applied to the content if no sanitizer is defined
     :type sanitizers: dict[str, Sanitizer]
     :type default_sanitizer: Sanitizer
@@ -280,7 +280,7 @@ class ListSanitizer(Sanitizer):
     Plus:
 
     :param sanitizer: sanitizes each of the sanitized list's elements.
-            If *None*, no sanitizing of elements takes place.
+        If *None*, no sanitizing of elements takes place.
     :param int min_elements: must have at least this number of elements
     :param int max_elements: must have at most this number of elements
     :type sanitizer: Sanitizer
@@ -342,11 +342,9 @@ class IntegerSanitizer(Sanitizer):
     Plus:
 
     :param int minimum: minimal value allowed
-    :param bool minimum_strict: if the value must be > minimum
-            (>= otherwise)
+    :param bool minimum_strict: if the value must be > minimum (>= otherwise)
     :param int maximum: maximal value allowed
-    :param bool maximum_strict: if the value must be < maximum
-            (<= otherwise)
+    :param bool maximum_strict: if the value must be < maximum (<= otherwise)
     """
 
     def __init__(self, minimum: int | None = None, maximum: int | None = None, minimum_strict: bool | None = None, maximum_strict: bool | None = None, **kwargs: Any) -> None:
@@ -401,27 +399,27 @@ class SearchSanitizer(Sanitizer):
     plus:
 
     :param bool add_asterisks: add asterisks at the beginning and the end
-            of the value if needed. Examples:
+        of the value if needed. Examples:
 
-            * "string" -> "\*string*"
-            * "" -> "*"
-            * "string*" -> "string*"
+        * "string" -> "\*string*"
+        * "" -> "*"
+        * "string*" -> "string*"
 
-            Default: True
+        Default: True
     :param int max_number_of_asterisks: An error will be raised if
-            the number of * in the string exceeds this limit. Useful because
-            searching with too many of these patterns in a search query
-            can be very expensive. Note that * from
-            :attr:`~SearchSanitizer.add_asterisks` do count. *None* means an
-            arbitrary number is allowed. Default: 5
+        the number of * in the string exceeds this limit. Useful because
+        searching with too many of these patterns in a search query
+        can be very expensive. Note that * from
+        :attr:`~SearchSanitizer.add_asterisks` do count. *None* means an
+        arbitrary number is allowed. Default: 5
     :param bool use_asterisks: treat asterisks special, i.e. as a
-            substring of arbitrary length. If *False*, it will be escaped as
-            any other character. If *False* the defaults change:
+        substring of arbitrary length. If *False*, it will be escaped as
+        any other character. If *False* the defaults change:
 
-            * :attr:`~SearchSanitizer.add_asterisks` to *False*
-            * :attr:`~SearchSanitizer.max_number_of_asterisks` to *None*.
+        * :attr:`~SearchSanitizer.add_asterisks` to *False*
+        * :attr:`~SearchSanitizer.max_number_of_asterisks` to *None*.
 
-            Default: True
+        Default: True
     '''
 
     def __init__(self, **kwargs):
@@ -538,11 +536,11 @@ class StringSanitizer(Sanitizer):
     The input can be validated by a regular expression and by string length
 
     :param regex_pattern: a regex pattern or a string which will be
-            compiled into a regex pattern
+        compiled into a regex pattern
     :type regex_pattern: re.Pattern or str
     :param int re_flags: additional regex flags for the regex_pattern
-            which will be compiled if :attr:`~StringSanitizer.regex_pattern`
-            is a string
+        which will be compiled if :attr:`~StringSanitizer.regex_pattern`
+        is a string
     :param int minimum: the minimum length of the string
     :param int maximum: the maximum length of the string
     :type regex_pattern: str or re._pattern_type
