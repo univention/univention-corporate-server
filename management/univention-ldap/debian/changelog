@@ -1,3 +1,9 @@
+univention-ldap (18.3.1) unstable; urgency=medium
+
+  * Bug #56796: Deny access of managed nodes to password hashes
+
+ -- Johannes Königer <koeniger@univention.de>  Tue, 14 Oct 2025 09:25:08 +0200
+
 univention-ldap (18.3.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
