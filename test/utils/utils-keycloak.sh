@@ -22,9 +22,7 @@ install_upgrade_keycloak () {
 		# update local cache files for app
 		./update-appcenter-test.sh -l
 		# change image in local cache
-		nubus_prefix="$(git describe --tags --abbrev=0)-post"  # only works if you only have chore() commits
-		nubus_prefix="v0.2.9-pre"  # i know this breaks, but at least it works today. we need another solution
-		image_name="${nubus_prefix:1}-$(slugify "${KEYCLOAK_BRANCH::63}")"
+		image_name="$(slugify "${KEYCLOAK_BRANCH::63}")"
 		location="$(curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags/$image_name" | jq -r '.location')"
 		if [ -n "$location" ] && [ ! "$location" = "null" ]; then
 			python3 /root/appcenter-change-compose-image.py -a keycloak -i "$location"
