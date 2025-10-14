@@ -22,7 +22,8 @@ helm repo update
 helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
 apt install --yes python3-venv
-# Use operations-guide mirrored by Nautilus team instead of upstream (breaks a lot)
+# Use operations-guide mirrored by Nautilus team instead of upstream
+# Parametrize this clone can be a future improvement
 git clone https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
 cd ox-operations-guide-mirror
 python3 -mvenv v
@@ -58,7 +59,9 @@ sed -i 's|AVERAGE_CONTEXT_SIZE: "200"|AVERAGE_CONTEXT_SIZE: "200"\n    /opt/open
 
 # activate deputy permission provisioning
 sed -i 's|open-xchange-drive-client-windows: disabled|open-xchange-drive-client-windows: disabled\n      open-xchange-deputy: enabled\n|g' values.yaml
-sed -i 's|com.openexchange.hostname: "as8.lab.test"|com.openexchange.hostname: "as8.lab.test"\n    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"\n    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"\n    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"\n    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"\n    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"\n    com.openexchange.dovecot.doveadm.enabled: "true"\n    com.openexchange.deputy.enabled: "true"\n    com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "inbox/"\n    com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"\n    com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"\n    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n|g' values.yaml
+# the content in this line can be done using another way to configure the core-mw files. check https://git.knut.univention.de/univention/dev/projects/open-xchange/connector/-/merge_requests/238/diffs#e7889d94c1408d69cc80d018fca34b82edc0d3c4_102_107
+# It will require some testing.
+sed -i 's|com.openexchange.hostname: "as8.lab.test"|com.openexchange.hostname: "as8.lab.test"\n    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"\n    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"\n    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"\n    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"\n    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"\n    com.openexchange.dovecot.doveadm.enabled: "true"\n    com.openexchange.deputy.enabled: "true"\n    com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "/"\n    com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"\n    com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"\n    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n|g' values.yaml
 
 # workaround for bitnami moving their images, this may break easily.
 sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-mw-cache.yaml
@@ -73,8 +76,6 @@ printf '  image:\n    repository: bitnamilegacy/redis-sentinel' >> values.bitnam
 sed -i 's/doveadm_api_key:.*$/doveadm_api_key: "secret"/g' values.dovecot-ce.secret.yaml
 sed -i 's/    com.openexchange.filestore.s3client.s3.accessKey: /    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n    com.openexchange.filestore.s3client.s3.accessKey: /g' values.secret.yaml
 
-/root/ox-operations-guide-mirror/rendered/values/install.sh || true
-# FIXME: for unknown reasons sometimes the first deployment fails
 /root/ox-operations-guide-mirror/rendered/values/install.sh
 
 cluster_ip="$(kubectl get nodes -o wide | awk '/kind-control-plane/ {print $6}')"
