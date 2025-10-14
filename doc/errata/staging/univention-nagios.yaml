@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issues:
  * This update enhances the check `check_univention_slapd_mdb_maxsize`
    by ignoring the (possibly) fragmented freelist pages in the
-   caclulation of available pages.
+   calculation of available pages.
 bug: [58668]
