@@ -9,3 +9,6 @@ desc: |
  * The argument `--bindpwd` has been deprecated in UDM commandline,
    it should be replaced with `--bindpwdfile`.
 bug: [20610]
+erratum: 260
+announced: 2025-10-15
+support: core
