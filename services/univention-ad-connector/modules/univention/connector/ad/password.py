@@ -25,6 +25,8 @@ from samba.dcerpc import drsblobs, drsuapi, lsa, misc, security
 from samba.ndr import ndr_unpack
 
 import univention.connector.ad
+from univention.admin import uexceptions
+from univention.connector import ucs
 from univention.logging import Structured
 
 
@@ -635,3 +637,88 @@ def password_sync(connector, key, ucs_object):
 
     if len(modlist) > 0:
         connector.lo.lo.modify(ucs_object['dn'], modlist)
+
+
+def sync_bad_password_to_ucs(connector: ucs, key: str, ucs_object: dict):
+    if (
+        'badPasswordTime' not in ucs_object['changed_attributes']
+        and 'badPwdCount' not in ucs_object['changed_attributes']
+    ) or ucs_object['modtype'] not in ('modify', 'add'):
+        return
+
+    try:
+        ucs_ldap_object = connector.lo.get(
+            dn=ucs_object['dn'],
+            required=True,
+            attr=['pwdFailureTime', 'sambaBadPasswordTime', 'sambaBadPasswordCount'],
+        )
+    except ldap.NO_SUCH_OBJECT:
+        log.warning('The UCS object (%s) was not found. The object was removed.', ucs_object['dn'])
+        return
+
+    bad_password_time = ucs_object['attributes'].get('badPasswordTime', [b'0'])[0]
+    bad_pwd_count = ucs_object['attributes'].get('badPwdCount', [b'0'])[0]
+
+    samba_bad_password_time = ucs_ldap_object.get('sambaBadPasswordTime', [b'0'])[0]
+    samba_bad_password_count = ucs_ldap_object.get('sambaBadPasswordCount', [b'0'])[0]
+    pwd_failure_time = ucs_ldap_object.get('pwdFailureTime', [])
+
+    if bad_pwd_count != b'0' and bad_password_time != b'0':
+        new_pwd_failure_time = [
+            str(
+                univention.connector.ad.ad2generalized_time(
+                    int(samba_bad_password_time.decode('ascii')),
+                ),
+            ).encode(),
+        ]
+        new_pwd_failure_time.extend(pwd_failure_time)
+    else:
+        if bad_pwd_count == b'0':
+            new_pwd_failure_time = []
+        else:
+            new_pwd_failure_time = pwd_failure_time
+
+    log.debug(
+        'Bad password states. (DN: %s)', ucs_object['dn'],
+        bad_password_time=bad_password_time,
+        bad_pwd_count=bad_pwd_count,
+        samba_bad_password_time=samba_bad_password_time,
+        samba_bad_password_count=samba_bad_password_count,
+        pwd_failure_time=pwd_failure_time,
+        new_pwd_failure_time=new_pwd_failure_time,
+    )
+
+    modlist = []
+    if bad_password_time != samba_bad_password_time:
+        modlist.append(('sambaBadPasswordTime', samba_bad_password_time, bad_password_time))
+
+    if bad_pwd_count != samba_bad_password_count:
+        modlist.append(('sambaBadPasswordCount', samba_bad_password_count, bad_pwd_count))
+
+    if new_pwd_failure_time != pwd_failure_time:
+        modlist.append(('pwdFailureTime', pwd_failure_time, new_pwd_failure_time))
+
+    if modlist:
+        log.process(
+            'Modify bad password attributes (DN: %s).', ucs_object['dn'],
+            bad_password_time=bad_password_time,
+            bad_pwd_count=bad_pwd_count,
+            pwd_failure_time=new_pwd_failure_time,
+        )
+        try:
+            connector.lo.modify(
+                dn=ucs_object['dn'],
+                changes=modlist,
+                serverctrls=[ldap.controls.simple.RelaxRulesControl()],
+            )
+        except uexceptions.ldapError as e:
+            log.error(e)
+
+
+def sync_bad_password_from_ucs(connector: ucs, key: str, ucs_object: dict):
+    """
+    The syncronization of the LDAP attribute badPasswordTime and badPwdCount
+    to AD is not possible! The attribute is set by system!
+    https://learn.microsoft.com/en-us/windows/win32/adschema/a-badpasswordtime
+    https://learn.microsoft.com/en-us/windows/win32/adschema/a-badpwdcount
+    """

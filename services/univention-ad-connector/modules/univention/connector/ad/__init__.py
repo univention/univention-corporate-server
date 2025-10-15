@@ -15,6 +15,7 @@ import string
 import subprocess
 import sys
 import time
+from datetime import datetime
 from logging import getLogger
 from tempfile import NamedTemporaryFile
 
@@ -22,6 +23,7 @@ import ldap
 import samba.dcerpc.samr
 from ldap.controls import LDAPControl, SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
+from pyasn1.type.useful import GeneralizedTime
 from samba import drs_utils
 from samba.credentials import DONT_USE_KERBEROS, Credentials
 from samba.dcerpc import drsuapi, lsa, nbt, security
@@ -136,6 +138,18 @@ def ad2samba_time(ltime):
         return ltime
     d = 116444736000000000  # difference between 1601 and 1970
     return int((ltime - d) / 10000000)
+
+
+def ad2generalized_time(ltime: int) -> GeneralizedTime:
+    """
+    Convert a Windows Filetime into GeneralizedTime
+    https://en.wikipedia.org/wiki/GeneralizedTime
+    """
+    unix_ts = ltime / 10000000 - 11644473600
+    date_time = datetime.fromtimestamp(unix_ts)
+    generalized_time = GeneralizedTime().fromDateTime(date_time)
+
+    return generalized_time
 
 
 def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobject, propertyname, propertyattrib, ocucs, ucsattrib, ocad, dn_attr=None):

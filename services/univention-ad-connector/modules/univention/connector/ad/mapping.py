@@ -183,6 +183,7 @@ def create_mapping(configbasename='connector'):
             post_ucs_modify_functions=list(filter(None, [
                 univention.connector.ad.password.password_sync_kinit if configRegistry.is_false(connector('%s/ad/mapping/user/password/disabled'), True) and configRegistry.is_true(connector('%s/ad/mapping/user/password/kinit'), False) else None,
                 univention.connector.ad.password.password_sync if configRegistry.is_false(connector('%s/ad/mapping/user/password/disabled'), True) and not configRegistry.is_true(connector('%s/ad/mapping/user/password/kinit'), False) else None,
+                univention.connector.ad.password.sync_bad_password_to_ucs,
                 univention.connector.ad.set_univentionObjectFlag_to_synced,
                 univention.connector.ad.primary_group_sync_to_ucs,
                 univention.connector.ad.object_memberships_sync_to_ucs,
