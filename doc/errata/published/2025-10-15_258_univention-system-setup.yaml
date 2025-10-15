@@ -11,3 +11,6 @@ desc: |
    package have been adapted accordingly.
 
 bug: [20610]
+erratum: 258
+announced: 2025-10-15
+support: core
