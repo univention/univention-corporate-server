@@ -96,9 +96,9 @@ repos:
         alias: check-jsonschema-releases
         name: "Check errata file"
         files: ^doc/errata/staging/[^0].*[.]yaml$
-        args: ["--schemafile", "https://git.knut.univention.de/univention/dist/repo-ng/-/raw/master/doc/erratum.schema.json?ref_type=heads"]
+        args: ["--schemafile", "doc/errata/erratum.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.3.2'
+    rev: 'v0.11.2'
     hooks:
       - id: ruff
         exclude: "^oidc/python-keycloak/\
