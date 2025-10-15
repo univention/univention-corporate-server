@@ -9,3 +9,6 @@ desc: |
  * An error where the DN of a synced object multiple times leading to
    a DN with mixed base was created leading to rejects was fixed
 bug: [58547]
+erratum: 1327
+announced: 2025-10-15
+support: core
