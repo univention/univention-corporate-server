@@ -13,3 +13,6 @@ desc: |
    The PAM login configuration for dovecot has been adjusted
    to circumvent this behaviour.
 bug: [57976]
+erratum: 262
+announced: 2025-10-15
+support: core
