@@ -1,3 +1,10 @@
+univention-updater (16.0.42) unstable; urgency=medium
+
+  * Bug #58620: Check LMDB usage metric and warn if above
+    warning or critical limit
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 15 Oct 2025 15:12:10 +0200
+
 univention-updater (16.0.41) unstable; urgency=medium
 
   * Issue univention/dev/internal/dev-issues/dev-incidents#140:
