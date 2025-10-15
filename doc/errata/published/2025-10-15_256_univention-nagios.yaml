@@ -10,3 +10,6 @@ desc: |
    by ignoring the (possibly) fragmented freelist pages in the
    calculation of available pages.
 bug: [58668]
+erratum: 256
+announced: 2025-10-15
+support: core
