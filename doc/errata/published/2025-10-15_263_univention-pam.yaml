@@ -10,3 +10,6 @@ desc: |
    allow logins using the mailPrimaryAddress
    of a user during PAM login.
 bug: [57976]
+erratum: 263
+announced: 2025-10-15
+support: core
