@@ -1,3 +1,10 @@
+ucs-test (12.3.24) unstable; urgency=medium
+
+  * Bug #56796: Add test which checks that managed nodes cannot read password
+    hashes
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 15 Oct 2025 09:25:07 +0200
+
 ucs-test (12.3.23) unstable; urgency=medium
 
   * Bug #57976: Create test for dovecot additional mail directories
