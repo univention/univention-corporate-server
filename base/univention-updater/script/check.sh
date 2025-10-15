@@ -721,6 +721,69 @@ update_check_auth_faillog() {
 	return 1
 }
 
+update_check_mdb_max_size () {
+	local var="update$VERSION/ignore_mdb_maxsize_checks"
+	ignore_check "$var" && return 100
+
+	case "$(dpkg-query -W -f '${Status}' univention-monitoring-client 2>/dev/null)" in
+	    install*)
+            ;;
+        *)
+            echo ""
+            echo "  The package univention-monitoring-client is not installed."
+            echo "  This check verifies that any LMDB database usage is not above a warning limit."
+            echo "  A full database may lead to failure during upgrade."
+            echo ""
+            echo "  The package univention-monitoring-client is installed by default "
+            echo "  but may have been removed by an administrator in the past."
+            echo "  Either install the package or verify LMDB database usage manually."
+            echo "  See help article https://help.univention.com/t/how-to-properly-configure-lmdb-maxsize-in-ldap/24558 and"
+            echo "  https://help.univention.com/t/how-to-clean-up-the-translog-from-a-certain-point-in-time/18872"
+            echo ""
+            echo "  If you want to ignore this check, you may set $var to yes."
+            return 1
+            ;;
+	esac
+
+    /usr/share/univention-monitoring-client/scripts/check_univention_mdb_maxsize
+	IGNORE_VAR=$var /usr/bin/python3 -c '
+# -*- coding: utf-8 -*-
+import re
+import os
+from pathlib import Path
+ignore_variable = os.environ["IGNORE_VAR"]
+prometheus_data_path = "/var/lib/prometheus/node-exporter/check_univention_mdb_maxsize.prom"
+if not os.path.exists(prometheus_data_path):
+    print(f"\tUnable to parse {prometheus_data_path}, file does not exist. Is the package univention-monitoring-client installed?")
+    print(f"\tThis check verifies that any LMDB database usage is not above a warning limit.")
+    print(f"\tA full database may lead to failure during upgrade.")
+    print(f"\tIf you want to ignore this check, you may set {ignore_variable} to yes.")
+    exit(1)
+with open(prometheus_data_path, "r") as f:
+    warned = False
+    print("")
+    for line in f:
+        m = re.match(r"(?P<metric_name>.*)\{.*\} (?P<metric>\d.\d{1,4})", line)
+        if m:
+            metric_name = m.group("metric_name")
+            metric = float(m.group("metric"))*100
+            warn_limit = 75
+            critical_limit = 90
+            if warn_limit <= metric < critical_limit:
+                print(f"\tMetric {metric_name} has value {metric:.2f}% and is above the warning limit ({warn_limit}%).")
+                warned = True
+            elif critical_limit <= metric:
+                print(f"\tMetric {metric_name} has value {metric:.2f}% and is above the critical limit ({critical_limit}%).")
+                warned = True
+if warned:
+    print("\n\tProceeding without raising the maxsize limit may lead to a failure during the upgrade.")
+    print("\tSee https://help.univention.com/t/how-to-properly-configure-lmdb-maxsize-in-ldap/24558 and")
+    print("\thttps://help.univention.com/t/how-to-clean-up-the-translog-from-a-certain-point-in-time/18872")
+    print(f"\tIf you are sure this warning can be ignored, you may set {ignore_variable} to yes.")
+    exit(1)'
+
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
