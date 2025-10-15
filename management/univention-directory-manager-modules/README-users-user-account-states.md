@@ -199,11 +199,11 @@ If Samba is installed, these settings must be made in sync manually with the Sam
 
 ### Enabling password policies for UMC and SSH
 To enable this behavior for logins via UMC, SSH and other services using PAM (like the mailstack), the `pam_faillock` can be added to the corresponding PAM stacks via UCR:
-* `auth/faillog`=`true`
-* `auth/faillog/lock_global`
-* `auth/faillog/unlock_time`
-* `auth/faillog/limit`
-* `auth/faillog/root`
+* `auth/faillog`=`true`: Enabled automatic locking of users after failed login attempts in the PAM stack.
+* `auth/faillog/lock_global`: Configure on Primary Directory Node and Backup Directory Node to create a failed login account lockout globally and store it in the LDAP directory.
+* `auth/faillog/unlock_time`: Configure a time interval to unlock an account lockout. The value is defined in seconds. The value 0 resets the lock immediately.
+* `auth/faillog/limit`: Configures the upper limit of failed login attempts for a user account lockout.
+* `auth/faillog/root`: Make the local user account `root` subject of the PAM stack account lockout.
 
 ## Domain settings for Samba and AD
 
@@ -308,7 +308,7 @@ A `pwdPolicy` policy object may provide the following settings:
 * `pwdCheckQuality`: Integer: Controls how strictly new password is checked: e.g. `0` = no check, `1` = check against policy, `2` = reject if client sends pre-hashed or not meeting requirements.
 * `pwdInHistory`: Integer (count): Number of past passwords to keep in history to disallow reuse.
 
-**Note**: UDM does not provide a UDM module to set these settings.
+**Note**: UDM does not provide a UDM module to set these settings. It must be set manually via LDAP utilities.
 
 # Inconsistency in handling of password expiry semantics (Shadow vs Kerberos) ([Bug #57681](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681))
 
