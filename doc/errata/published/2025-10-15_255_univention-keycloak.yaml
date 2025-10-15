@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Add ``--import-users`` flag to ``univention-keycloak init``
 bug: [58698]
+erratum: 255
+announced: 2025-10-15
+support: core
