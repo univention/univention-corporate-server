@@ -84,12 +84,12 @@ def xserver() -> Iterator[str]:
             yield xvfb.new_display
 
 
-def ffmpg_start(capture_video: str, display: str) -> int:
+def ffmpeg_start(capture_video: str, display: str) -> int:
     process = subprocess.Popen(['ffmpeg', '-y', '-video_size', '1920x1080', '-framerate', '30', '-f', 'x11grab', '-i', f':{display}', '-c:v', 'libx264', '-crf', '0', capture_video], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return process.pid
 
 
-def ffmpg_stop(pid: int) -> None:
+def ffmpeg_stop(pid: int) -> None:
     os.kill(pid, signal.SIGTERM)
 
 
@@ -128,11 +128,11 @@ class Session:
     @contextmanager
     def capture(self, name: str) -> Iterator[None]:
         filename = self._new_filename(name, 'mkv')
-        pid = ffmpg_start(filename, self.display_num)
+        pid = ffmpeg_start(filename, self.display_num)
         try:
             yield
         finally:
-            ffmpg_stop(pid)
+            ffmpeg_stop(pid)
             self.save_screenshot(name)
 
     def wait_until_clickable(self, css: str) -> None:
