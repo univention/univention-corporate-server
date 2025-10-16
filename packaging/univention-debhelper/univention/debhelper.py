@@ -6,11 +6,11 @@ from __future__ import annotations
 
 import os
 import subprocess
+from argparse import ArgumentParser, Namespace  # noqa: TC003
 from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from argparse import ArgumentParser, Namespace
     from collections.abc import Sequence
 
 
@@ -18,7 +18,7 @@ def doIt(*argv: str) -> int:
     """
     Execute argv and wait.
 
-    :param args: List of command and arguments.
+    :param argv: List of command and arguments.
 
     >>> doIt('true')
     0
