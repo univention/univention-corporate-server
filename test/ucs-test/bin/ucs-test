@@ -8,6 +8,7 @@
 import argparse
 import logging
 import operator
+import subprocess
 import sys
 from collections.abc import Iterable, Mapping
 from time import time
@@ -53,6 +54,9 @@ def parse_options(sections: Iterable[str]) -> tuple[argparse.Namespace, list[str
         "-t", "--timeout",
         default=3600, type=int,
         help="Abort single test after [%(default)s]s")
+    parser.add_argument(
+        "--before-test-hook",
+        help="Run this script before each test (subprocess.call)")
 
     selection_group = parser.add_argument_group('Test selection')
     selection_group.add_argument(
@@ -114,12 +118,13 @@ def parse_options(sections: Iterable[str]) -> tuple[argparse.Namespace, list[str
 class TestSet:
     """Container for tests."""
 
-    def __init__(self, tests: Mapping[str, Iterable[str]]) -> None:
+    def __init__(self, tests: Mapping[str, Iterable[str]], options: argparse.Namespace) -> None:
         self.tests = tests
         self.max_count = sum(1 for tests in tests.values() for test in tests)
         self.test_environment: TestEnvironment | None = None
         self.format: TestFormatInterface | None = None
         self.prefix = ''
+        self.options = options
 
     def set_environment(self, test_environment: TestEnvironment) -> None:
         """Set environment for running tests."""
@@ -170,6 +175,10 @@ class TestSet:
                             from univention.testing.utils import wait_for_s4_connector_to_be_inactive
                             wait_for_s4_connector_to_be_inactive()
 
+                        if self.options.before_test_hook:
+                            print('running ', self.options.before_test_hook)
+                            subprocess.check_call([self.options.before_test_hook])
+
                         if self.prefix:
                             self.format.begin_test(test_case, self.prefix % (count, self.max_count))
                         else:
@@ -211,7 +220,7 @@ def main() -> int | None:
     coverage = Coverage(options)
     coverage.start()
     PytestRunner.set_arguments(options)
-    test_set = TestSet(tests)
+    test_set = TestSet(tests, options)
 
     if options.dry:
         test_environment = TestEnvironment(interactive=options.interactive)

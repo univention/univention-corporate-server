@@ -793,7 +793,7 @@ run_umc_performance_tests () {
 }
 
 run_udm_performance_tests () {
-	_run_tests -s udm-rest-performance "$@"
+	_run_tests -s udm-rest-performance --before-test-hook /usr/share/ucs-test/92_udm-rest-performance/restart_udm_rest_primary.sh "$@"
 }
 
 run_admember_tests () {
