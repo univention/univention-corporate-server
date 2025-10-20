@@ -1,0 +1,25 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: firefox-esr
+fix: 140.4.0esr-1~deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-11710, CVE-2025-11709, CVE-2025-11708)
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-11715, CVE-2025-11714)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N).
+   (CVE-2025-11711)
+ * CVSS score 6.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N).
+   (CVE-2025-11712)
+bug: [58723]
+cve:
+- CVE-2025-11708
+- CVE-2025-11709
+- CVE-2025-11710
+- CVE-2025-11711
+- CVE-2025-11712
+- CVE-2025-11714
+- CVE-2025-11715
