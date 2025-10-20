@@ -736,11 +736,7 @@ def lockout_sync_from_ucs(connector, key, obj):
     ucs_object = connector._object_mapping(key, obj, 'con')
 
     try:
-        attr = connector.lo.lo.get(
-            ucs_object['dn'],
-            ['sambaAcctFlags', 'sambaBadPasswordTime'],
-            required=True,
-        )
+        ucs_object_attributes = connector.lo.lo.get(ucs_object['dn'], ['sambaAcctFlags', 'sambaBadPasswordTime'], required=True)
     except ldap.NO_SUCH_OBJECT:
         log.process('The UCS object (%s) was not found. The object was removed.', ucs_object['dn'])
         return
@@ -751,15 +747,16 @@ def lockout_sync_from_ucs(connector, key, obj):
         log.process('The AD object (%s) was not found. The object was removed.', obj['dn'])
         return
 
-    samba_acct_flags = attr.get('sambaAcctFlags', [b''])[0]
-    samba_bad_passwordTime = attr.get('sambaBadPasswordTime', [b'0'])[0]
-    lockout_time = ad_attr.get('lockoutTime', [b'0'])[0]
+    samba_acct_flags = ucs_object_attributes.get('sambaAcctFlags', [b''])[0]
     is_locked = b'L' in samba_acct_flags
+
+    samba_bad_password_time = ucs_object_attributes.get('sambaBadPasswordTime', [b'0'])[0]
+    lockout_time = ad_attr.get('lockoutTime', [b'0'])[0]
 
     log.debug(
         'Variable states.',
         samba_acct_flags=samba_acct_flags,
-        samba_bad_passwordTime=samba_bad_passwordTime,
+        samba_bad_password_time=samba_bad_password_time,
         lockout_time=lockout_time,
         is_locked=is_locked,
         ucs_object_dn=ucs_object['dn'],
@@ -771,38 +768,28 @@ def lockout_sync_from_ucs(connector, key, obj):
         if lockout_time == b'0':
             return
 
-        if samba_bad_passwordTime and samba_bad_passwordTime != b'0':
-            log.error(
-                'The UCS object (%s) is unlocked, but sambaBadPasswordTime is set.',
-                ucs_object['dn'],
-            )
+        if samba_bad_password_time and samba_bad_password_time != b'0':
+            log.error('The UCS object (%s) is unlocked, but sambaBadPasswordTime is set.', ucs_object['dn'])
             return
 
         # Ok here we have:
-        # 1. Account currently not locked in OpenLDAP but in Samba/AD
+        # 1. Account currently not locked in OpenLDAP but in AD
         # 2. Lockout state has changed to unlocked at some pickled point in the past
         modlist.append((ldap.MOD_REPLACE, 'lockoutTime', b'0'))
-        # The field "badPasswordTime" is not writeable in AD!
-        # modlist.append((ldap.MOD_REPLACE, "badPasswordTime", b"0"))
+        # The field 'badPasswordTime' is not writeable in AD!
+        # modlist.append((ldap.MOD_REPLACE, 'badPasswordTime', b'0'))
         log.process('Unlock user in AD.', dn=obj['dn'])
     else:
         log.process('Lock user in AD - not possible because of restrictions in the AD!', dn=obj['dn'])
         return
-        # Let the code here for documentation and for a
-        # smaller diff to the S4 connector
-        if not samba_bad_passwordTime:
-            log.error(
-                'The UCS object (%s) is locked, but sambaBadPasswordTime is missing.',
-                ucs_object['dn'],
-            )
+
+        if not samba_bad_password_time:
+            log.error('The UCS object (%s) is locked, but sambaBadPasswordTime is missing.', ucs_object['dn'])
             return
-        if samba_bad_passwordTime == b'0':
-            log.error(
-                'The UCS object (%s) is locked, but sambaBadPasswordTime is 0.',
-                ucs_object['dn'],
-            )
+        if samba_bad_password_time == b'0':
+            log.error('The UCS object (%s) is locked, but sambaBadPasswordTime is 0.', ucs_object['dn'])
             return
-        if samba_bad_passwordTime == lockout_time:
+        if samba_bad_password_time == lockout_time:
             # already locked
             return
 
@@ -813,11 +800,11 @@ def lockout_sync_from_ucs(connector, key, obj):
         # Locking an account in AD is not possible via LDAP!
         # See: https://learn.microsoft.com/en-us/answers/questions/1129755/active-directory-not-able-to-update-lockouttime-at
         #      https://learn.microsoft.com/en-us/windows/win32/adsi/winnt-account-lockout#resetting-the-account-lockout-status
-        # modlist.append((ldap.MOD_REPLACE, "lockoutTime", samba_bad_passwordTime))
-        # modlist.append((ldap.MOD_REPLACE, "badPasswordTime", samba_bad_passwordTime))
-        # log.process("%s: Marking account as locked in AD", function_name)
-        # log.debug("%s: Setting lockoutTime to the value of sambaBadPasswordTime: %s", function_name, samba_bad_passwordTime)
+        modlist.append((ldap.MOD_REPLACE, 'lockoutTime', samba_bad_password_time))
+        modlist.append((ldap.MOD_REPLACE, 'badPasswordTime', samba_bad_password_time))
+        log.process('Lock user in AD.', dn=obj['dn'])
+        log.debug('Setting lockoutTime to the value of sambaBadPasswordTime: %s', samba_bad_password_time)
 
     if modlist:
-        log.trace('Modlist: %s', modlist)
+        log.trace('modlist: %s', modlist)
         connector.lo_ad.lo.modify_s(obj['dn'], modlist)
