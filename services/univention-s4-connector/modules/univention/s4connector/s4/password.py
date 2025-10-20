@@ -875,20 +875,20 @@ def password_sync_s4_to_ucs_no_userpassword(s4connector, key, ucs_object):
     password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=False)
 
 
-def lockout_sync_s4_to_ucs(connector, key, object):
+def lockout_sync_to_ucs(connector, key, obj):
     """
     Sync account locking *state* from Samba/AD to UCS:
-            sync AD (lockoutTime != 0)      ->  UCS locked = 1 and lockedTime = lockoutTime
-                    (lockoutTime == 0)      ->  UCS locked = 0 and lockedTime = 0 (lockedTime would be set automaticly by UCS)
+        sync AD (lockoutTime != 0)      ->  UCS locked = 1 and lockedTime = lockoutTime
+                (lockoutTime == 0)      ->  UCS locked = 0 and lockedTime = 0 (lockedTime would be set automaticly by UCS)
     """
-    if object['modtype'] not in ('modify', 'add'):
+    if obj['modtype'] not in ('modify', 'add'):
         return
 
-    if 'lockoutTime' not in object['changed_attributes']:
+    if 'lockoutTime' not in obj['changed_attributes']:
         log.trace(
             'No lockout attribute in changed attributes.',
-            changed_attributes=object['changed_attributes'],
-            object_dn=object['dn'],
+            changed_attributes=obj['changed_attributes'],
+            dn=obj['dn'],
         )
         return
 
@@ -898,16 +898,16 @@ def lockout_sync_s4_to_ucs(connector, key, object):
             co=None,
             lo=connector.lo,
             position='',
-            dn=object['dn'],
+            dn=obj['dn'],
         )
     except uexceptions.noObject:
-        log.warning('Object with DN %s not found!', object['dn'])
+        log.warning('Object with DN %s not found!', obj['dn'])
         return
 
     ucs_admin_object.open()
 
     is_locked = ucs_admin_object['locked'] == '1'
-    lockout_time = object['attributes'].get('lockoutTime', [b'0'])[0]
+    lockout_time = obj['attributes'].get('lockoutTime', [b'0'])[0]
 
     # Calculate UCS locked_time (GeneralizedTime) from AD lockout_time (Windows Filetime)
     lockout_time_unix_ts = int(lockout_time.decode('ascii')) / 10000000 - 11644473600
@@ -920,7 +920,7 @@ def lockout_sync_s4_to_ucs(connector, key, object):
         lockout_time=lockout_time,
         is_locked=is_locked,
         should_be_locked=should_be_locked,
-        object_dn=object['dn'],
+        dn=obj['dn'],
     )
 
     if should_be_locked == is_locked:
@@ -939,15 +939,15 @@ def lockout_sync_s4_to_ucs(connector, key, object):
         ucs_admin_object.descriptions['lockedTime'].may_change,
     ) = (True, True, True, True)
 
-    if should_be_locked:
-        log.process('Lock user in UCS.', object_dn=object['dn'])
-        ucs_admin_object['locked'] = '1'
-        ucs_admin_object['lockedTime'] = locked_time
-    else:
-        log.process('Unlock user in UCS.', object_dn=object['dn'])
-        ucs_admin_object['locked'] = '0'
-
     try:
+        if should_be_locked:
+            log.process('Lock user in UCS.', dn=obj['dn'])
+            ucs_admin_object['locked'] = '1'
+            ucs_admin_object['lockedTime'] = locked_time
+        else:
+            log.process('Unlock user in UCS.', dn=obj['dn'])
+            ucs_admin_object['locked'] = '0'
+
         ucs_admin_object.modify()
     finally:
         (
@@ -958,23 +958,23 @@ def lockout_sync_s4_to_ucs(connector, key, object):
         ) = old_states
 
 
-def lockout_sync_ucs_to_s4(s4connector, key, object):
+def lockout_sync_from_ucs(connector, key, obj):
     """
     Sync unlock *modification* from OpenLDAP to Samba/AD:
-            sync OpenLDAP ("L" not in sambaAcctFlags) ->  Samba/AD lockoutTime = 0
+        sync OpenLDAP ("L" not in sambaAcctFlags) ->  Samba/AD lockoutTime = 0
 
-            sync OpenLDAP ("L" in sambaAcctFlags) ->  Samba/AD lockoutTime = sambaBadPasswordTime
-            and  OpenLDAP sambaBadPasswordTime    ->  Samba/AD badPasswordTime
+        sync OpenLDAP ("L" in sambaAcctFlags) ->  Samba/AD lockoutTime = sambaBadPasswordTime
+        and  OpenLDAP sambaBadPasswordTime    ->  Samba/AD badPasswordTime
     """
-    if object['modtype'] not in ('modify', 'add'):
+    if obj['modtype'] not in ('modify', 'add'):
         return
 
-    new_ucs_object = object.get('new_ucs_object', {})
+    new_ucs_object = obj.get('new_ucs_object', {})
     if not new_ucs_object:
         # only set by sync_from_ucs in MODIFY case
         return
 
-    old_ucs_object = object.get('old_ucs_object', {})
+    old_ucs_object = obj.get('old_ucs_object', {})
     if not old_ucs_object:
         # only set by sync_from_ucs in MODIFY case
         return
@@ -991,7 +991,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
     modlist = []
     if not is_locked:
-        s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['lockoutTime', 'badPasswordTime'])
+        s4_object_attributes = connector.lo_s4.get(obj['dn'], ['lockoutTime', 'badPasswordTime'])
         if 'lockoutTime' not in s4_object_attributes:
             return
 
@@ -1001,11 +1001,11 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
         # Now object.get('new_ucs_object') may be a stale pickled state, so let's lookup the current OpenLDAP object state
         # Unfortunately "object" doesn't hold the current OpenLDAP DN, so we need to map back first
-        ucs_object = s4connector._object_mapping(key, object)
+        obj = connector._object_mapping(key, obj)
         try:
-            ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaAcctFlags', 'sambaBadPasswordTime'], required=True)
+            ucs_object_attributes = connector.lo.get(obj['dn'], ['sambaAcctFlags', 'sambaBadPasswordTime'], required=True)
         except ldap.NO_SUCH_OBJECT:
-            log.warning("The UCS object (%s) was not found. The object was removed.", ucs_object['dn'])
+            log.warning("The UCS object (%s) was not found. The object was removed.", obj['dn'])
             return
         sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [b''])[0]
 
@@ -1015,7 +1015,7 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
         sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [b''])[0]
         if sambaBadPasswordTime and sambaBadPasswordTime != b"0":
-            log.error("The UCS object (%s) is unlocked, but sambaBadPasswordTime is set.", ucs_object['dn'])
+            log.error("The UCS object (%s) is unlocked, but sambaBadPasswordTime is set.", obj['dn'])
             return
 
         # Ok here we have:
@@ -1023,18 +1023,18 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
         # 2. Lockout state has changed to unlocked at some pickled point in the past
         modlist.append((ldap.MOD_REPLACE, "lockoutTime", b"0"))
         modlist.append((ldap.MOD_REPLACE, "badPasswordTime", b"0"))
-        log.process('Unlock user in Samba.', dn=object['dn'])
+        log.process('Unlock user in Samba.', dn=obj['dn'])
     else:
-        s4_object_attributes = s4connector.lo_s4.get(object['dn'], ['lockoutTime', 'badPasswordTime'])
+        s4_object_attributes = connector.lo_s4.get(obj['dn'], ['lockoutTime', 'badPasswordTime'])
         lockoutTime = s4_object_attributes.get('lockoutTime', [b'0'])[0]
 
         # Now object.get('new_ucs_object') may be a stale pickled state, so let's lookup the current OpenLDAP object state
         # Unfortunately "object" doesn't hold the current OpenLDAP DN, so we need to map back first
-        ucs_object = s4connector._object_mapping(key, object)
+        obj = connector._object_mapping(key, obj)
         try:
-            ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaAcctFlags', 'sambaBadPasswordTime'], required=True)
+            ucs_object_attributes = connector.lo.get(obj['dn'], ['sambaAcctFlags', 'sambaBadPasswordTime'], required=True)
         except ldap.NO_SUCH_OBJECT:
-            log.warning("The UCS object (%s) was not found. The object was removed.", ucs_object['dn'])
+            log.warning("The UCS object (%s) was not found. The object was removed.", obj['dn'])
             return
         sambaAcctFlags = ucs_object_attributes.get('sambaAcctFlags', [b''])[0]
         if b"L" not in sambaAcctFlags:
@@ -1043,10 +1043,10 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
 
         sambaBadPasswordTime = ucs_object_attributes.get('sambaBadPasswordTime', [b''])[0]
         if not sambaBadPasswordTime:
-            log.error("The UCS object (%s) is locked, but sambaBadPasswordTime is missing.", ucs_object['dn'])
+            log.error("The UCS object (%s) is locked, but sambaBadPasswordTime is missing.", obj['dn'])
             return
         if sambaBadPasswordTime == b"0":
-            log.error("The UCS object (%s) is locked, but sambaBadPasswordTime is 0.", ucs_object['dn'])
+            log.error("The UCS object (%s) is locked, but sambaBadPasswordTime is 0.", obj['dn'])
             return
         if sambaBadPasswordTime == lockoutTime:
             # already locked
@@ -1057,9 +1057,9 @@ def lockout_sync_ucs_to_s4(s4connector, key, object):
         # 2. Lockout state has changed to locked at some pickled point in the past
         modlist.append((ldap.MOD_REPLACE, "lockoutTime", sambaBadPasswordTime))
         modlist.append((ldap.MOD_REPLACE, "badPasswordTime", sambaBadPasswordTime))
-        log.process('Lock user in Samba.', dn=object['dn'])
+        log.process('Lock user in Samba.', dn=obj['dn'])
         log.debug("Setting lockoutTime to the value of sambaBadPasswordTime: %s", sambaBadPasswordTime)
 
     if modlist:
         log.trace("modlist: %s", modlist)
-        s4connector.lo_s4.lo.modify_ext_s(object['dn'], modlist)
+        connector.lo_s4.lo.modify_ext_s(obj['dn'], modlist)
