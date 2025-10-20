@@ -116,7 +116,7 @@ class RecycleBinListener(ListenerModuleHandler):
         delete_at = now + datetime.timedelta(days=retention_days)
         delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
 
-        mod = univention.admin.modules.get('recyclebin/deletedobject')
+        mod = univention.admin.modules.get('recyclebin/removedobject')
         position = univention.admin.uldap.position(RECYCLEBIN_BASE)
         obj = mod.object(None, self.admin_lo, position)
         obj.open()

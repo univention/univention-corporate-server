@@ -25,7 +25,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-module = 'recyclebin/deletedobject'
+module = 'recyclebin/removedobject'
 operations = ['read', 'remove', 'search', 'restore']
 childs = False
 short_description = _('Recyclebin: Deleted Object')
