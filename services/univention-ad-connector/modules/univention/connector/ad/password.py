@@ -27,7 +27,6 @@ from samba.ndr import ndr_unpack
 
 import univention.connector.ad
 from univention.admin import uexceptions
-from univention.connector import ucs
 from univention.logging import Structured
 
 
@@ -640,20 +639,20 @@ def password_sync(connector, key, ucs_object):
         connector.lo.lo.modify(ucs_object['dn'], modlist)
 
 
-def lockout_sync_ad_to_ucs(connector: ucs, key: str, object: dict):
+def lockout_sync_to_ucs(connector, key, obj):
     """
     Sync account locking *state* from AD to UCS:
         sync AD (lockoutTime != 0)      ->  UCS locked = 1 and lockedTime = lockoutTime
                 (lockoutTime == 0)      ->  UCS locked = 0 and lockedTime = 0 (lockedTime would be set automaticly by UCS)
     """
-    if object['modtype'] not in ('modify', 'add'):
+    if obj['modtype'] not in ('modify', 'add'):
         return
 
-    if 'lockoutTime' not in object['changed_attributes']:
+    if 'lockoutTime' not in obj['changed_attributes']:
         log.trace(
             'No lockout attribute in changed attributes.',
-            changed_attributes=object['changed_attributes'],
-            dn=object['dn'],
+            changed_attributes=obj['changed_attributes'],
+            dn=obj['dn'],
         )
         return
 
@@ -663,16 +662,16 @@ def lockout_sync_ad_to_ucs(connector: ucs, key: str, object: dict):
             co=None,
             lo=connector.lo,
             position='',
-            dn=object['dn'],
+            dn=obj['dn'],
         )
     except uexceptions.noObject:
-        log.warning('Object with DN %s not found!', object['dn'])
+        log.warning('Object with DN %s not found!', obj['dn'])
         return
 
     ucs_admin_object.open()
 
     is_locked = ucs_admin_object['locked'] == '1'
-    lockout_time = object['attributes'].get('lockoutTime', [b'0'])[0]
+    lockout_time = obj['attributes'].get('lockoutTime', [b'0'])[0]
 
     # Calculate UCS locked_time (GeneralizedTime) from AD lockout_time (Windows Filetime)
     lockout_time_unix_ts = int(lockout_time.decode('ascii')) / 10000000 - 11644473600
@@ -685,7 +684,7 @@ def lockout_sync_ad_to_ucs(connector: ucs, key: str, object: dict):
         lockout_time=lockout_time,
         is_locked=is_locked,
         should_be_locked=should_be_locked,
-        dn=object['dn'],
+        dn=obj['dn'],
     )
 
     if should_be_locked == is_locked:
@@ -706,11 +705,11 @@ def lockout_sync_ad_to_ucs(connector: ucs, key: str, object: dict):
 
     try:
         if should_be_locked:
-            log.process('Lock user in UCS.', dn=object['dn'])
+            log.process('Lock user in UCS.', dn=obj['dn'])
             ucs_admin_object['locked'] = '1'
             ucs_admin_object['lockedTime'] = locked_time
         else:
-            log.process('Unlock user in UCS.', dn=object['dn'])
+            log.process('Unlock user in UCS.', dn=obj['dn'])
             ucs_admin_object['locked'] = '0'
 
         ucs_admin_object.modify()
@@ -723,7 +722,7 @@ def lockout_sync_ad_to_ucs(connector: ucs, key: str, object: dict):
         ) = old_states
 
 
-def lockout_sync_ucs_to_ad(connector, key, ad_object):
+def lockout_sync_from_ucs(connector, key, obj):
     """
     Sync unlock *modification* from OpenLDAP to AD:
         sync OpenLDAP ("L" not in sambaAcctFlags) ->  AD lockoutTime = 0
@@ -731,10 +730,10 @@ def lockout_sync_ucs_to_ad(connector, key, ad_object):
         sync OpenLDAP ("L" in sambaAcctFlags) ->  AD lockoutTime = sambaBadPasswordTime
         and  OpenLDAP sambaBadPasswordTime    ->  AD badPasswordTime
     """
-    if ad_object['modtype'] not in ('modify', 'add'):
+    if obj['modtype'] not in ('modify', 'add'):
         return
 
-    ucs_object = connector._object_mapping(key, ad_object, 'con')
+    ucs_object = connector._object_mapping(key, obj, 'con')
 
     try:
         attr = connector.lo.lo.get(
@@ -747,9 +746,9 @@ def lockout_sync_ucs_to_ad(connector, key, ad_object):
         return
 
     try:
-        ad_attr = connector.lo_ad.get(ad_object['dn'], ['lockoutTime'], required=True)
+        ad_attr = connector.lo_ad.get(obj['dn'], ['lockoutTime'], required=True)
     except ldap.NO_SUCH_OBJECT:
-        log.process('The AD object (%s) was not found. The object was removed.', ad_object['dn'])
+        log.process('The AD object (%s) was not found. The object was removed.', obj['dn'])
         return
 
     samba_acct_flags = attr.get('sambaAcctFlags', [b''])[0]
@@ -764,7 +763,7 @@ def lockout_sync_ucs_to_ad(connector, key, ad_object):
         lockout_time=lockout_time,
         is_locked=is_locked,
         ucs_object_dn=ucs_object['dn'],
-        ad_object_dn=ad_object['dn'],
+        ad_object_dn=obj['dn'],
     )
 
     modlist = []
@@ -785,9 +784,9 @@ def lockout_sync_ucs_to_ad(connector, key, ad_object):
         modlist.append((ldap.MOD_REPLACE, 'lockoutTime', b'0'))
         # The field "badPasswordTime" is not writeable in AD!
         # modlist.append((ldap.MOD_REPLACE, "badPasswordTime", b"0"))
-        log.process('Unlock user in AD.', dn=ad_object['dn'])
+        log.process('Unlock user in AD.', dn=obj['dn'])
     else:
-        log.process('Lock user in AD - not possible because of restrictions in the AD!', dn=ad_object['dn'])
+        log.process('Lock user in AD - not possible because of restrictions in the AD!', dn=obj['dn'])
         return
         # Let the code here for documentation and for a
         # smaller diff to the S4 connector
@@ -820,5 +819,5 @@ def lockout_sync_ucs_to_ad(connector, key, ad_object):
         # log.debug("%s: Setting lockoutTime to the value of sambaBadPasswordTime: %s", function_name, samba_bad_passwordTime)
 
     if modlist:
-        log.debug('Modlist: %s', modlist)
-        connector.lo_ad.lo.modify_s(ad_object['dn'], modlist)
+        log.trace('Modlist: %s', modlist)
+        connector.lo_ad.lo.modify_s(obj['dn'], modlist)
