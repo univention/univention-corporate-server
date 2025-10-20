@@ -5691,7 +5691,7 @@ class RecycleBinSupportedModules(select):
         for choice in self.choices:
             if choice[0] == text:
                 return text
-        raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not supported for recyclebin/deletedobject.') % text)
+        raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not supported for recyclebin/removedobject.') % text)
 
     @classmethod
     def update_choices(cls):

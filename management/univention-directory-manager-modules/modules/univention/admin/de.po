@@ -19,7 +19,7 @@ msgstr "\"%s\" ist kein Univention Admin Modul"
 
 #: modules/univention/admin/syntax.py:5694
 #, python-format
-msgid "\"%s\" is not supported for recyclebin/deletedobject."
+msgid "\"%s\" is not supported for recyclebin/removedobject."
 msgstr ""
 
 #: modules/univention/admin/syntax.py:4768
