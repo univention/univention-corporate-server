@@ -225,6 +225,7 @@ create_school_users_classes () {
     python3 -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
+        --append users "uid=parent1,cn=sorgeberechtigte,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" SchoolClass
     python3 -m ucsschool.lib.models create SchoolClass \
