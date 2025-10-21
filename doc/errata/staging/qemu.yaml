@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: qemu
+fix: 1:3.1+dfsg-8+deb10u13
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.0 (CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2024-3447, CVE-2023-3019)
+bug: [58728]
+cve:
+- CVE-2024-3447
+- CVE-2023-3019
