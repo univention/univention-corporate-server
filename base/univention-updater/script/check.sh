@@ -722,6 +722,9 @@ update_check_auth_faillog() {
 }
 
 update_check_mdb_max_size () {
+	if [ "${version_version}" != "5.0" ]; then
+		return 100  # this check should only run in univention-update-checks/pre-update-checks-5.2-0, not during preup from 5.1-0 to 5.2-0
+	fi
 	local var="update$VERSION/ignore_mdb_maxsize_checks"
 	ignore_check "$var" && return 100
 
