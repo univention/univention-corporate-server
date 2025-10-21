@@ -33,7 +33,7 @@ from ldap.schema import AttributeType, ObjectClass
 import univention.admin.modules
 import univention.admin.types
 import univention.admin.uexceptions
-from univention.admin import configRegistry, localization
+from univention.admin import configRegistry, dn_reference, localization
 from univention.admin.log import log
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_description, get_mime_type, image_mime_type_of_buffer
@@ -4300,6 +4300,12 @@ class GroupDN(UDM_Objects):
         opts.update(super().get_widget_choices_options(udm_property))
         return opts
 
+    def get_references(self) -> list:
+        """Return reference objects for group DN references."""
+        return [
+            dn_reference(['groups/group'], 'nestedGroup'),
+        ]
+
 
 class GroupDNOrEmpty(GroupDN):
     """
@@ -4324,6 +4330,13 @@ class UserDN(UDM_Objects):
     udm_modules = ('users/user',)
     use_objects = False
 
+    def get_references(self) -> list:
+        """Return reference objects for user DN references."""
+        return [
+            dn_reference(['groups/group'], 'uniqueMember'),
+            dn_reference(['groups/group'], 'member'),
+        ]
+
 
 class HostDN(UDM_Objects):
     """
@@ -4335,6 +4348,12 @@ class HostDN(UDM_Objects):
 
     udm_modules = ('computers/computer',)
     udm_filter = '!(univentionObjectFlag=docker)'
+
+    def get_references(self) -> list:
+        """Return reference objects for host DN references."""
+        return [
+            dn_reference(['groups/group'], 'hosts'),
+        ]
 
 
 class UserID(UDM_Objects):

@@ -16,6 +16,7 @@ A UDM handler represents an abstraction of an LDAP object.
 
 import copy
 import inspect
+import json
 import re
 import sys
 import time
@@ -1631,6 +1632,90 @@ class simpleLdap:
 
     def _write_admin_diary_move(self, position: str) -> None:
         self._write_admin_diary_event('MOVED', {'position': position})
+
+    def _find_references_to_object(self, target_dn: str) -> list[str]:
+        referenced_by = []
+        log.debug("Searching for references to %s using property-based reference detection", target_dn)
+
+        try:
+            for module_name in univention.admin.modules.modules.keys():
+                module = univention.admin.modules.get(module_name)
+                if not module or not hasattr(module, 'property_descriptions'):
+                    continue
+
+                for key, prop in module.property_descriptions.items():
+                    prop_references = prop.get_references(target_dn, self.lo.authz_connection)
+                    for dn in prop_references:
+                        existing_dns = []
+                        for ref in referenced_by:
+                            try:
+                                ref_data = json.loads(ref)
+                                existing_dns.append(ref_data['dn'])
+                            except (json.JSONDecodeError, KeyError):
+                                continue
+
+                        if dn not in existing_dns:
+                            ldap_attribute = getattr(prop, 'ldap_name', key)
+                            reference_info = json.dumps({
+                                'dn': dn,
+                                'module': module_name,
+                                'property': key,
+                                'ldap_attribute': ldap_attribute,
+                            })
+                            referenced_by.append(reference_info)
+                            log.debug("Found reference: %s -> %s (via %s.%s)", dn, target_dn, module_name, key)
+
+        except (ldap.LDAPError, univention.admin.uexceptions.base, AttributeError) as e:
+            log.warning("Error in property-based reference detection: %s", e)
+            # Fallback to basic search for critical reference types
+            return self._find_references_fallback(target_dn)
+
+        log.debug("Found %d references to %s using property-based reference detection", len(referenced_by), target_dn)
+        return referenced_by
+
+    def _find_references_fallback(self, target_dn: str) -> list[str]:
+        referenced_by = []
+        critical_attributes = ['member', 'uniqueMember', 'memberOf', 'manager']
+
+        log.debug("Using fallback reference detection for %s", target_dn)
+
+        for attr in critical_attributes:
+            try:
+                search_filter = f"({attr}={ldap.filter.escape_filter_chars(target_dn)})"
+                results = self.lo.authz_connection.search(
+                    base=self.lo.base,
+                    scope='subtree',
+                    filter=search_filter,
+                    attr=[],
+                    unique=False,
+                    required=False,
+                )
+
+                for dn, attrs in results:
+                    existing_dns = []
+                    for ref in referenced_by:
+                        try:
+                            ref_data = json.loads(ref)
+                            existing_dns.append(ref_data['dn'])
+                        except (json.JSONDecodeError, KeyError):
+                            continue
+
+                    if dn != target_dn and dn not in existing_dns:
+                        reference_info = json.dumps({
+                            'dn': dn,
+                            'module': 'unknown',
+                            'property': 'unknown',
+                            'ldap_attribute': attr,
+                        })
+                        referenced_by.append(reference_info)
+                        log.debug("Found reference (fallback): %s -> %s (via %s)", dn, target_dn, attr)
+
+            except ldap.LDAPError as e:
+                log.debug("LDAP error in fallback reference search with %s: %s", attr, e)
+                continue
+
+        log.debug("Found %d references to %s using fallback", len(referenced_by), target_dn)
+        return referenced_by
 
     def _remove(self, remove_childs: bool = False) -> None:
         """Removes this object. Should only be called by :func:`univention.admin.handlers.simpleLdap.remove`."""
