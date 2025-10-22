@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Added internal cache to increase performance on searches.
 bug: [58697]
+erratum: 266
+announced: 2025-10-22
+support: core
