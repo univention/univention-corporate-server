@@ -370,6 +370,7 @@ class SessionInfo(Resource):
         if not session.user.authenticated:
             raise Unauthorized()
         info['username'] = session.user.username
+        info['user_dn'] = session.user.user_dn
         info['auth_type'] = session.get_umc_auth_type()
         info['remaining'] = int(session.session_end_time - monotonic())
         self.content_negotiation(info)

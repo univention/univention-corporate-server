@@ -1,3 +1,9 @@
+univention-management-console (14.3.4) unstable; urgency=medium
+
+  * Bug #58743: return DN of user in session-info endpoint
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 22 Oct 2025 14:56:36 +0200
+
 univention-management-console (14.3.3) unstable; urgency=medium
 
   * Bug #58652: federated account for OIDC auth
