@@ -99,7 +99,7 @@ desc: |
    (CVE-2021-47070)
  * CVSS score 4.7 (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N).
    (CVE-2025-4598)
-bug: [58724]
+bug: [58731]
 cve:
 - CVE-2025-37930
 - CVE-2025-37990
@@ -431,3 +431,4 @@ cve:
 - CVE-2023-52935
 - CVE-2025-37968
 - CVE-2025-40300
+note: This is the 2nd of two parts.
