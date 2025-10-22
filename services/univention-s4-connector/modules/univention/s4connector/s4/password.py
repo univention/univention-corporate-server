@@ -969,6 +969,12 @@ def lockout_sync_from_ucs(connector, key, obj):
     if obj['modtype'] not in ('modify', 'add'):
         return
 
+    if obj.get('new_ucs_object') and obj.get('old_ucs_object'):
+        is_locked = b'L' in obj['new_ucs_object'].get('sambaAcctFlags', [b''])[0]
+        was_locked = b'L' in obj['old_ucs_object'].get('sambaAcctFlags', [b''])[0]
+        if is_locked == was_locked:
+            return
+
     ucs_object = connector._object_mapping(key, obj, 'con')
 
     try:
