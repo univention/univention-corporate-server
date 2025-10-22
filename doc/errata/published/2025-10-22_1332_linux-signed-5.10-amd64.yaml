@@ -432,3 +432,6 @@ cve:
 - CVE-2025-37968
 - CVE-2025-40300
 note: This is the 2nd of two parts.
+erratum: 1332
+announced: 2025-10-22
+support: core
