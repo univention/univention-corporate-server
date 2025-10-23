@@ -243,3 +243,35 @@ sonarqube:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true"
     - if: "$CI_COMMIT_MESSAGE =~ /force-sonarqube/ || $pipeline =~ /force-sonarqube/"
+
+validate_commit_messages:
+  stage: test
+  variables:
+    GIT_STRATEGY: fetch
+  before_script:
+    - apt-get update && apt-get install -y git
+  script:
+    - |
+      YEAR='(2[0-9]{3})'
+      MONTH='(0[1-9]|1[0-2])'
+      DAY='(0[1-9]|[12][0-9]|3[01])'
+
+      BUG='((Bug|Issue) (univention(/[0-9A-Z_a-z][-.0-9A-Z_a-z]*)*)?#[1-9][0-9]{0,4})'
+      OTRS1="(Ticket(#: |:? #)${YEAR}${MONTH}${DAY}1[0-9]{7})"
+      OTRS2="(Ticket(#: |:? #)${YEAR}${MONTH}${DAY}21[0-9]{6})"
+      OX_URL='(https://bugs\.open-xchange\.com/show_bug\.cgi\?id=[0-9]{1,7})'
+      OX_BUG='(OX-US[0-9]{1,5})'
+      CVE="(CVE-${YEAR}-[0-9]{4,})"
+
+      REGEXP="($BUG|$OTRS1|$OTRS2|$OX_URL|$OX_BUG|$CVE)([^0-9]|\$)"
+
+      git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+      COMMITS=$(git log --perl-regexp --grep="$REGEXP" --invert-grep --oneline "$CI_MERGE_REQUEST_DIFF_BASE_SHA..$CI_COMMIT_SHA" | wc -l)
+
+      if [ "$COMMITS" -ne 0 ]; then
+          echo "One or more commit messages are invalid (not matching: $REGEXP)"
+          git log --perl-regexp --grep="$REGEXP" --invert-grep "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME..HEAD"
+          exit 1
+      fi
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
