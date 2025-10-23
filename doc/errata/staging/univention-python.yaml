@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-python
+fix: 13.0.9-2
+desc: |
+ This update addresses the following issues:
+ * Backport of `univention.dn`, for use in AD-Connector
+bug: [58735]
