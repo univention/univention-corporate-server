@@ -131,7 +131,7 @@ print('   by set="user/objectClass & [univentionMemberServer]" none')
 print('   by * +0 break')
 
 print('access to attrs=krb5KDCFlags,sambaPwdLastSet,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange,sambaBadPasswordTime')
-print('   by set="user/objectClass & [univentionMemberServer]" read' % (ldap_base))
+print('   by set="user/objectClass & [univentionMemberServer]" read')
 print('   by * +0 break')
 
 print('access to attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory,sambaClearTextPassword,sambaPreviousClearTextPassword,sambaBadPasswordTime')
