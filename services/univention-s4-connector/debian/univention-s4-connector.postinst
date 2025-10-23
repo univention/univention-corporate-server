@@ -10,14 +10,17 @@
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-samba4/lib/all.sh
 
+if [ "$1" = "configure" ]; then
 create_logfile /var/log/univention/connector-s4.log "root:adm" 640
 create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
 create_logfile /var/log/univention/connector-s4-mapping.log "root:adm" 640
+fi
 
 #DEBHELPER#
 
 eval "$(ucr shell)"
 
+if [ "$1" = "configure" ]; then
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
 							   connector/s4/poll/sleep?5 \
 							   connector/s4/retryrejected?10 \
@@ -43,6 +46,7 @@ fi
 touch /etc/univention/connector/s4internal.sqlite
 touch /etc/univention/connector/s4cache.sqlite
 chmod 640 /etc/univention/connector/*.sqlite
+fi
 
 systemctl try-restart univention-directory-listener || true
 
@@ -101,6 +105,14 @@ EOF
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
+fi
+
+if [ "$1" = "triggered" ]; then
+	for trigger in $2; do
+		if [ "$trigger" = "univention-directory-manager-change" ]; then
+			systemctl restart univention-s4-connector
+		fi
+	done
 fi
 
 exit 0

@@ -9,6 +9,7 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
+if [ "$1" = "configure" ]; then
 dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector/apache2.conf" 11.0.6-4~ -- "$@"
 
 create_logfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
@@ -46,6 +47,7 @@ touch /etc/univention/connector/adcache.sqlite
 chmod 640 /etc/univention/connector/*.sqlite
 
 sqlite3 "/etc/univention/connector/internal.sqlite" "ALTER TABLE 'AD rejected' ADD retry_count NUMBER DEFAULT 0;" 2>/dev/null || true
+fi
 
 # Bug #54587
 if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.13-5; then
@@ -79,5 +81,13 @@ fi
 systemctl try-restart univention-directory-listener || true
 
 #DEBHELPER#
+
+if [ "$1" = "triggered" ]; then
+	for trigger in $2; do
+		if [ "$trigger" = "univention-directory-manager-change" ]; then
+			systemctl restart univention-ad-connector
+		fi
+	done
+fi
 
 exit 0

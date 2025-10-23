@@ -13,6 +13,13 @@ eval "$(univention-config-registry shell)"
 
 #DEBHELPER#
 
+# trigger on each incompatible change of UDM code, e.g. new syntax classes, new python modules
+# which require a restart of services which use univention.admin.modules.update() to reload modules in long running processes
+# increase version each time such a change is performed!
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.3.5"; then
+    dpkg-trigger --no-await "univention-directory-manager-change"
+fi
+
 if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then
 		# only set this for new installations

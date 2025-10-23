@@ -9,6 +9,7 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
+if [ "$1" = "configure" ]; then
 univention-config-registry set listener/autostart?yes
 
 adduser --quiet --system --home /var/lib/univention-directory-listener listener
@@ -23,11 +24,14 @@ if [ ! -e /var/lib/univention-ldap/listener/listener ]; then
 	chown listener /var/lib/univention-ldap/listener/listener*
 fi
 
+fi
+
 #DEBHELPER#
 
+if [ "$1" = "configure" ]; then
 univention-config-registry set listener/debug/level?2 \
 	listener/freespace?10 \
-								listener/network/protocol=all
+	listener/network/protocol=all
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=17998
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=18692
@@ -42,5 +46,14 @@ chown listener:root /var/lib/univention-ldap/schema/id/id
 call_joinscript 03univention-directory-listener.inst
 
 systemctl try-restart univention-directory-listener
+fi
+
+if [ "$1" = "triggered" ]; then
+	for trigger in $2; do
+		if [ "$trigger" = "univention-directory-manager-change" ]; then
+			systemctl restart univention-directory-listener
+		fi
+	done
+fi
 
 exit 0
