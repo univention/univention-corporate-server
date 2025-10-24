@@ -29,6 +29,7 @@ def normalize_logformat(log):
         re.compile(r'Traceback \(most recent call last\):(.|\n)*?NameError: name .+ is not defined'): '<TRACEBACK>',
         re.compile(r'Stack \(most recent call last\):(.|\n)*?, i, stack_info=True\)'): '<STACK>',
         re.compile(r'test_logging\.[a-z_]+:\d+'): 'test_module.test_function:1',
+        re.compile(r'duration=\d.\d{6}'): 'duration=0.000111',
         # legacy
         re.compile(r'^\d{2}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\.\d{3}', re.M): '01.01.25 00:00:00.000',
         re.compile(f': {os.getpid()}:'): ': 12345:',
@@ -80,8 +81,11 @@ def test_log_structured_with_time(tmp_path):
     logger.trace('message')
     logger.log(6, 'message')
     logger.getChild('blah').error('message')
+    with logger.timing('message'):
+        pass
     try:
-        foobar()
+        with logger.timing('message'):
+            foobar()
     except NameError:
         logger.exception('message')
     assert logger.root
@@ -98,6 +102,8 @@ NoneType: None
 <7>2025-01-01T00:00:00.000000+00:00    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
 <7>2025-01-01T00:00:00.000000+00:00  Level 6 [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
 <3>2025-01-01T00:00:00.000000+00:00    ERROR [         -] message\t| pid=12345 logname=bar.blah func=test_module.test_function:1 foo=bar
+<7>2025-01-01T00:00:00.000000+00:00    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar duration=0.000111
+<7>2025-01-01T00:00:00.000000+00:00    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar duration=0.000111
 <3>2025-01-01T00:00:00.000000+00:00    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar exc_info="<TRACEBACK>"
 <TRACEBACK>
 """.strip()
