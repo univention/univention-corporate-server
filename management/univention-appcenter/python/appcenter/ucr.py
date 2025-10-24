@@ -26,6 +26,10 @@ def ucr_get(key, default=None):
     return _UCR.get(key, default)
 
 
+def ucr_get_int(key, default=None):
+    return _UCR.get_int(key, default)
+
+
 def ucr_save(values):
     changed_values = {}
     _UCR.load()

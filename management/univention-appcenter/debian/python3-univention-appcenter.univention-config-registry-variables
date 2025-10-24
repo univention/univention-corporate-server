@@ -10,3 +10,10 @@ Description[en]=When this variable is set to "true", zsync will be skipped durin
 Type=bool
 Categories=management-umc
 Default=no
+
+[appcenter/update/zsync-timeout]
+Description[de]=Legt ein Timeout in Sekunden für zsync-Operationen fest. Wenn zsync innerhalb dieser Zeit nicht abgeschlossen wird, schlägt der Vorgang fehl und es wird auf den direkten Download zurückgegriffen. Dies verhindert lange Wartezeiten in problematischen Proxy-Umgebungen. Standardwert ist 10 Sekunden. Kann auf 0 gesetzt werden, um das Timeout zu deaktivieren. Empfohlener Bereich: 5-300 Sekunden.
+Description[en]=Sets a timeout in seconds for zsync operations. If zsync does not complete within this time, the operation fails and falls back to direct download. This prevents long wait times in problematic proxy environments. Default is 10 seconds. Can be set to 0 to disable the timeout. Recommended range: 5-300 seconds.
+Type=int
+Default=10
+Categories=management-umc

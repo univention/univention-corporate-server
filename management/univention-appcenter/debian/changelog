@@ -1,3 +1,10 @@
+univention-appcenter (11.3.3) unstable; urgency=medium
+
+  * Bug #52308: Add UCR variable to skip downloading app metadata using zsync
+    and download with an HTTP request directly
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 22 Oct 2025 15:53:12 +0200
+
 univention-appcenter (11.3.2) unstable; urgency=medium
 
   * Bug #58644: make logging compatible to structured logging
