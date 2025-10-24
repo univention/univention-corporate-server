@@ -563,6 +563,8 @@ class Resource(ResourceBase, RequestHandler):
             self.raise_sanitization_error(('properties', 'mailPrimaryAddress'), str(exc))
         except (udm_errors.adGroupTypeChangeLocalToAny, udm_errors.adGroupTypeChangeDomainLocalToUniversal, udm_errors.adGroupTypeChangeToLocal, udm_errors.adGroupTypeChangeUniversalToGlobal, udm_errors.adGroupTypeChangeGlobalToUniversal, udm_errors.adGroupTypeChangeDomainLocalToGlobal, udm_errors.adGroupTypeChangeGlobalToDomainLocal) as exc:
             self.raise_sanitization_error(('properties', 'adGroupType'), str(exc))
+        except udm_errors.restoreFailed as exc:
+            self.raise_sanitization_error('dn', str(exc))
         except udm_errors.permissionDenied as exc:
             raise HTTPError(403, str(exc))
         except udm_errors.base as exc:
@@ -1838,6 +1840,9 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         if obj.has_property('jpegPhoto'):
             self.add_link(props, 'udm:user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
+        if module.name == 'recyclebin/removedobject':
+            self.add_link(props, 'udm:restore', self.urljoin(quote_dn(obj.dn), 'restore'), title=_('Restore object'))
+
         if module.name == 'users/user':
             self.add_link(props, 'udm:service-specific-password', self.urljoin(quote_dn(obj.dn), 'service-specific-password'), title=_('Generate a new service specific password'))
         self.add_link(props, 'udm:layout', self.urljoin(quote_dn(obj.dn), 'layout'), title=_('Module layout'))
@@ -2372,6 +2377,40 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         raise Finish()
 
 
+class ObjectRestore(Resource):
+    """Restore an object from the recyclebin"""
+
+    async def post(self, object_type, dn):
+        """Restore a {module.object_name_plural} object from the recyclebin"""
+        dn = unquote_dn(dn)
+        module = get_module(object_type, dn, self.ldap_write_connection)
+        if module is None:
+            raise NotFound(object_type, dn)
+
+        obj = await self.pool_submit(module.get, dn)
+        if not obj:
+            raise NotFound(object_type, dn)
+
+        original_object_type = obj['originalObjectType']
+
+        def restore():
+            log.info('Restoring LDAP object', dn=dn, original_type=original_object_type)
+            return obj.restore()
+
+        restored_dn = await self.pool_submit(self.handle_udm_errors, restore)
+        # Build URI with the correct object type (not recyclebin/removedobject)
+        # ../../../ goes up from /restore, /$dn, /$object_type
+        uri = self.urljoin('../../../', original_object_type, quote_dn(restored_dn))
+        self.add_header('Location', uri)
+        result = {
+            'dn': restored_dn,
+        }
+        self.add_link(result, 'self', uri)
+        self.set_status(201)
+        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+        self.content_negotiation(result)
+
+
 class UserPhoto(ConditionalResource, Resource):
     """Get a (cacheable) user profile picture in JPEG format"""
 
@@ -2570,7 +2609,7 @@ class ObjectEdit(FormBase, Resource):
         if module is None:
             raise NotFound(object_type, dn)
 
-        if not set(module.operations) & {'remove', 'move', 'subtree_move', 'edit'}:
+        if not set(module.operations) & {'remove', 'move', 'subtree_move', 'edit', 'restore'}:
             # modification of this object type is not possible
             raise NotFound(object_type, dn)
 
@@ -2590,6 +2629,12 @@ class ObjectEdit(FormBase, Resource):
         self.add_link(result, 'type', self.urljoin('../'), title=module.object_name)
         self.add_link(result, 'up', self.urljoin('..', quote_dn(obj.dn)), title=obj.dn)
         self.add_link(result, 'self', self.urljoin(''), title=_('Modify'))
+
+        if 'restore' in module.operations:
+            form = self.add_form(result, id='restore', name='restore', action=self.urljoin('.').rstrip('/'), method='POST', layout='restore', **{'hx-confirm': _('Please confirm the restoration of the selected %s') % (module.object_name,)})
+            restore_layout = [{'label': _('Restore'), 'description': _("Restore the object from the recyclebin"), 'layout': ['']}]
+            self.add_layout(result, restore_layout, 'restore')
+            self.add_form_element(form, '', _('Restore'), type='submit')
 
         if 'remove' in module.operations:
             # TODO: add list of referring objects
@@ -3177,6 +3222,7 @@ class Application(tornado.web.Application):
             (f"/udm/{object_type}/layout", Layout),
             (f"/udm/{object_type}/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
             (f"/udm/{object_type}/{dn}", Object),
+            (f"/udm/{object_type}/{dn}/restore", ObjectRestore),
             (f"/udm/{object_type}/{dn}/edit", ObjectEdit),
             (f"/udm/{object_type}/{dn}/children-types", SubObjectTypes),
             (f"/udm/{object_type}/report/([^/]+)", Report),

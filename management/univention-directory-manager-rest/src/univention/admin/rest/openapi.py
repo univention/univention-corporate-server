@@ -445,6 +445,15 @@ class _OpenAPIBase:
             'object.get.response.notfound': {
                 '$ref': '#/components/responses/ObjectNotFound',
             },
+            'object.restore.response.created': {
+                '$ref': '#/components/responses/ObjectRestored',
+            },
+            'object.restore.response.notfound': {
+                '$ref': '#/components/responses/ObjectNotFound',
+            },
+            'object.restore.response.notallowed': {
+                '$ref': '#/components/responses/RestoreNotAllowed',
+            },
             'object.delete.response.nocontent': {
                 '$ref': '#/components/responses/ObjectDeleted',
             },
@@ -514,6 +523,23 @@ class _OpenAPIBase:
                     'Etag': {'$ref': '#/components/headers/Etag'},
                     'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
                 }),
+            },
+            'ObjectRestored': {  # 201
+                "description": "Object restored from recyclebin",
+                "content": content_schema({
+                    "type": "object",
+                    "properties": {
+                        "dn": {'$ref': '#/components/schemas/dn'},
+                        "uri": {'type': 'string'},
+                    },
+                }),
+                "headers": global_response_headers({
+                    'Location': {'$ref': '#/components/headers/Location'},
+                }),
+            },
+            'RestoreNotAllowed': {  # 405
+                "description": "Restore operation not supported for this object type",
+                "headers": global_response_headers(),
             },
             'ObjectDeleted': {  # 204
                 "description": "Object deleted",
@@ -793,6 +819,30 @@ class _OpenAPIBase:
                     # Caching
                 }),
             }
+            if 'restore' in module.operations:
+                restore_path = f'/{name}/{{dn}}/restore'
+                openapi_paths[restore_path] = {
+                    "parameters": [{"$ref": '#/components/parameters/dn-path'}],
+                    "post": {
+                        "operationId": f"udm:{name}/object/restore",
+                        "summary": f"Restore a {module.object_name} object from the recyclebin",
+                        "parameters": [
+                            *global_parameters,
+                        ],
+                        "responses": global_responses({
+                            "201": {
+                                '$ref': '#/components/responses/object.restore.response.created',
+                            },
+                            "404": {
+                                '$ref': '#/components/responses/object.restore.response.notfound',
+                            },
+                            "405": {
+                                '$ref': '#/components/responses/object.restore.response.notallowed',
+                            },
+                        }),
+                        "tags": [tag],
+                    },
+                }
             if 'remove' in module.operations:
                 openapi_paths[object_path]["delete"] = {
                     "operationId": f"udm:{name}/object/remove",
