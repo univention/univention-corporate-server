@@ -1,3 +1,12 @@
+univention-ad-connector (16.4.4) unstable; urgency=medium
+
+  * Bug #58738: Update object['dn'] in modify_in_ucs because udm
+    may have done a modrdn (in case the sAMAccountName changed),
+    and we need this new dn for the post_ucs_modify_functions and
+    for the cache `DN Mapping CON`.
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 Oct 2025 13:52:12 +0200
+
 univention-ad-connector (16.4.3) unstable; urgency=medium
 
   *  Bug #58556: Fix obect_mapping_ucs for overlapping position_mapping
