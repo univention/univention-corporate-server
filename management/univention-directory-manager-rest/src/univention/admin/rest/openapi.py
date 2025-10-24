@@ -188,11 +188,25 @@ class _OpenAPIBase:
             400: {'$ref': '#/components/responses/BadRequest'},
             401: {'$ref': '#/components/responses/Unauthorized'},
             403: {'$ref': '#/components/responses/Forbidden'},
+            405: {'$ref': '#/components/responses/MethodNotAllowed'},
+            406: {'$ref': '#/components/responses/NotAcceptable'},
+            409: {'$ref': '#/components/responses/Conflict'},
+            414: {'$ref': '#/components/responses/URITooLong'},
+            416: {'$ref': '#/components/responses/RangeNotSatisfiable'},
+            429: {'$ref': '#/components/responses/TooManyRequests'},
             422: {'$ref': '#/components/responses/UnprocessableEntity'},
             500: {'$ref': '#/components/responses/ServerError'},
-            503: {'$ref': '#/components/responses/ServiceUnavailable'},
             502: {'$ref': '#/components/responses/ServiceUnavailable'},
+            503: {'$ref': '#/components/responses/ServiceUnavailable'},
             504: {'$ref': '#/components/responses/ServiceUnavailable'},
+        }
+        _global_responses_safe = {
+            412: {'$ref': '#/components/responses/PreconditionFailed'},  # GET
+        }
+        _global_responses_unsafe = {
+            411: {'$ref': '#/components/responses/LengthRequired'},  # POST,PUT
+            413: {'$ref': '#/components/responses/PayloadTooLarge'},  # POST,PUT
+            415: {'$ref': '#/components/responses/UnsupportedMediaType'},  # POST,PUT
         }
         _global_response_headers = {
             'Cache-Control': {'$ref': '#/components/headers/Cache-Control'},
@@ -206,8 +220,11 @@ class _OpenAPIBase:
         def global_response_headers(responses={}):
             return dict(_global_response_headers, **{str(k): v for k, v in responses.items()})
 
-        def global_responses(responses):
-            return dict(_global_responses, **{str(k): v for k, v in responses.items()})
+        def global_responses(responses, safe=True):
+            resp = dict(_global_responses)
+            resp.update(_global_responses_safe if safe else _global_responses_unsafe)
+            resp.update(responses)
+            return resp
 
         def content_schema(schema_definition):
             return {
@@ -445,6 +462,12 @@ class _OpenAPIBase:
             'object.get.response.notfound': {
                 '$ref': '#/components/responses/ObjectNotFound',
             },
+            'object.restore.response.created': {
+                '$ref': '#/components/responses/ObjectRestored',
+            },
+            'object.restore.response.notfound': {
+                '$ref': '#/components/responses/ObjectNotFound',
+            },
             'object.delete.response.nocontent': {
                 '$ref': '#/components/responses/ObjectDeleted',
             },
@@ -515,6 +538,18 @@ class _OpenAPIBase:
                     'Last-Modified': {'$ref': '#/components/headers/Last-Modified'},
                 }),
             },
+            'ObjectRestored': {  # 201
+                "description": "Object restored from recyclebin",
+                "content": content_schema({
+                    "type": "object",
+                    "properties": {
+                        "dn": {'$ref': '#/components/schemas/dn'},
+                    },
+                }),
+                "headers": global_response_headers({
+                    'Location': {'$ref': '#/components/headers/Location'},
+                }),
+            },
             'ObjectDeleted': {  # 204
                 "description": "Object deleted",
                 "headers": global_response_headers(),
@@ -546,6 +581,14 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
+            "Unauthorized": {  # 401
+                'description': 'Unauthorized. No Authorization provided or wrong credentials.',
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
             "Forbidden": {  # 403, e.g. unsupported operation, or GET users/self/$wrong_dn
                 "description": 'Forbidden (e.g. unsupported operation)',
                 'headers': global_response_headers({}),
@@ -562,7 +605,31 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
-            "ObjectGone": {  # 410
+            "MethodNotAllowed": {  # 405, e.g. method not allowed
+                "description": 'Method not allowed',
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "NotAcceptable": {  # 406, e.g. unknown wanted Content-Language or Content-Type
+                "description": 'Not Acceptable (e.g. Content-Type or Content-Language not available, check Accept and Accept-Language header)',
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "Conflict": {  # 409
+                "description": 'Conflict',  # TODO: should be used for uid number alread in use
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "ObjectGone": {  # 410, e.g. moved to recyclebin
                 "description": "Object has recently been removed.",
                 'headers': global_response_headers({}),
                 "content": content_schema({
@@ -570,8 +637,48 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
-            "Unauthorized": {  # 401
-                'description': 'Unauthorized. No Authorization provided or wrong credentials.',
+            "LengthRequired": {  # 411
+                "description": "Length required (e.g. no Content-Length header given).",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "PreconditionFailed": {  # 412
+                "description": "Precondition failed (If-* conditional GET request failed).",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "PayloadTooLarge": {  # 413
+                "description": "Payload too large.",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "URITooLong": {  # 414
+                "description": "URI too long (DN length).",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "UnsupportedMediaType": {  # 415
+                "description": "Unsupported request Content-Type.",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "RangeNotSatisfiable": {  # 416
+                "description": "Range not satisfiable.",
                 'headers': global_response_headers({}),
                 "content": content_schema({
                     "type": "object",
@@ -583,13 +690,21 @@ class _OpenAPIBase:
                 'headers': global_response_headers({}),
                 "content": content_schema_ref('#/components/schemas/embedded-error'),
             },
+            "TooManyRequests": {  # 429
+                "description": "Too many requests.",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
             "ServerError": {  # 500
-                'description': 'Internal server errror.',
+                'description': 'Internal server error.',
                 'headers': global_response_headers({}),
                 "content": content_schema_ref('#/components/schemas/embedded-error'),
             },
             "ServiceUnavailable": {  # 503 (+502 +504 +599)
-                'description': '(LDAP) Server not available.',
+                'description': '(LDAP, Gateway) Server not available. Retry after the given Retry-After time.',
                 'headers': global_response_headers({
                     'Retry-After': {'$ref': '#/components/headers/Retry-After'},
                 }),
@@ -763,7 +878,7 @@ class _OpenAPIBase:
                         201: {
                             '$ref': '#/components/responses/objects.post.response.created',
                         },
-                    }),
+                    }, safe=False),
                     "tags": [tag],
                 }
             openapi_paths[object_path]["get"] = {
@@ -781,6 +896,9 @@ class _OpenAPIBase:
                     "404": {
                         '$ref': '#/components/responses/object.get.response.notfound',
                     },
+                    410: {
+                        '$ref': '#/components/responses/ObjectGone',
+                    },
                 }),
                 "tags": [tag],
             }
@@ -793,6 +911,27 @@ class _OpenAPIBase:
                     # Caching
                 }),
             }
+            if 'restore' in module.operations:
+                restore_path = f'/{name}/{{dn}}/restore'
+                openapi_paths[restore_path] = {
+                    "parameters": [{"$ref": '#/components/parameters/dn-path'}],
+                    "post": {
+                        "operationId": f"udm:{name}/object/restore",
+                        "summary": f"Restore a {module.object_name} object from the recyclebin",
+                        "parameters": [
+                            *global_parameters,
+                        ],
+                        "responses": global_responses({
+                            "201": {
+                                '$ref': '#/components/responses/object.restore.response.created',
+                            },
+                            "404": {
+                                '$ref': '#/components/responses/object.restore.response.notfound',
+                            },
+                        }, safe=False),
+                        "tags": [tag],
+                    },
+                }
             if 'remove' in module.operations:
                 openapi_paths[object_path]["delete"] = {
                     "operationId": f"udm:{name}/object/remove",
@@ -811,7 +950,7 @@ class _OpenAPIBase:
                         "404": {
                             '$ref': '#/components/responses/object.delete.response.notfound',
                         },
-                    }),
+                    }, safe=False),
                     "tags": [tag],
                 }
             if set(module.operations) & {'edit', 'move', 'move_subtree'}:
@@ -844,7 +983,7 @@ class _OpenAPIBase:
                         "404": {
                             '$ref': '#/components/responses/object.put.response.notfound',
                         },
-                    }),
+                    }, safe=False),
                     "tags": [tag],
                 }
                 openapi_paths[object_path]["patch"] = {
@@ -865,7 +1004,7 @@ class _OpenAPIBase:
                         "404": {
                             '$ref': '#/components/responses/object.patch.response.notfound',
                         },
-                    }),
+                    }, safe=False),
                     "tags": [tag],
                 }
 
