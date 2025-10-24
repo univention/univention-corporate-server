@@ -6,29 +6,24 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Authorization for UDM access."""
 
-from logging import getLogger
-
 import univention.admin.modules
 import univention.admin.types
 from univention.admin import configRegistry
+from univention.admin.log import log
 from univention.admin.uexceptions import permissionDenied
 from univention.authorization.authorization import LocalGuardianAuthorizationClient
 
 
 __all__ = ('Authorization',)
 
-log = getLogger('ADMIN').getChild(__name__)
+log = log.getChild(__name__)
 
 LDAP_BASE = configRegistry['ldap/base']
 ROLE_CACHE_SIZE = 1000
 
 
 def auth_log(action, actor, target, **kwargs):
-    msg = f'{action} by {actor["id"]} to {target.get("id")} not allowed'
-    if kwargs:
-        extra = '; '.join(f'{k}={v!r}' for k, v in kwargs.items())
-        msg = f'{msg}: {extra}'
-    log.debug('%s', msg % kwargs)
+    log.debug('%s by %s to %s not allowed', action, actor["id"], target.get("id"), **kwargs)
 
 
 def get_user(lo, user_dn: str):
@@ -346,7 +341,8 @@ class Authorization:
         return True
 
     def _get_and_check_permissions(self, *args, **kwargs):
-        result = self.engine.get_and_check_permissions(*args, **kwargs)
+        with log.timing('Authorization operation', operation='get_and_check', checking=kwargs.get('targeted_permissions_to_check', []) + kwargs.get('general_permissions_to_check', [])):
+            result = self.engine.get_and_check_permissions(*args, **kwargs)
         if not kwargs.get('general_permissions_to_check'):
             result['actor_has_all_general_permissions'] = True
         if not kwargs.get('targeted_permissions_to_check'):
@@ -354,7 +350,8 @@ class Authorization:
         return result['actor_has_all_general_permissions'] and result['actor_has_all_targeted_permissions'], result
 
     def _check_permissions(self, *args, **kwargs):
-        result = self.engine.check_permissions(*args, **kwargs)
+        with log.timing('Authorization operation', operation='check', checking=kwargs.get('targeted_permissions_to_check', []) + kwargs.get('general_permissions_to_check', [])):
+            result = self.engine.check_permissions(*args, **kwargs)
         if not kwargs.get('general_permissions_to_check'):
             result['actor_has_all_general_permissions'] = True
         if not kwargs.get('targeted_permissions_to_check'):
