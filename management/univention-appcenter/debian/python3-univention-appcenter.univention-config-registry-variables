@@ -3,3 +3,10 @@ Description[de]=Mit dieser Variable lässt sich die Signaturprüfung für den Ap
 Description[en]=This variable allows deactivation of the signature verification for the Appcenter index. Default value is "true".
 Type=str
 Categories=management-umc
+
+[appcenter/update/skip-zsync]
+Description[de]=Wenn diese Variable auf "true" gesetzt wird, wird zsync beim App Center Update übersprungen und die App-Metadaten werden direkt per HTTPS heruntergeladen. Dies ist nützlich in Umgebungen mit restriktiven Proxies, die nur HTTPS erlauben oder keine HTTP-Range-Requests unterstützen.
+Description[en]=When this variable is set to "true", zsync will be skipped during App Center updates and app metadata will be downloaded directly via HTTPS. This is useful in environments with restrictive proxies that only allow HTTPS or do not support HTTP Range requests.
+Type=bool
+Categories=management-umc
+Default=no

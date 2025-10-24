@@ -48,12 +48,15 @@ from six.moves.urllib_request import Request
 
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
 from univention.appcenter.app import LOCAL_ARCHIVE_DIR
-from univention.appcenter.app_cache import AppCenterCache, Apps
+from univention.appcenter.app_cache import AppCache, AppCenterCache, Apps
 from univention.appcenter.exceptions import UpdateSignatureVerificationFailed, UpdateUnpackArchiveFailed
 from univention.appcenter.log import catch_stdout
-from univention.appcenter.ucr import ucr_is_false, ucr_save
+from univention.appcenter.ucr import ucr_is_false, ucr_is_true, ucr_save
 from univention.appcenter.utils import gpg_verify, mkdir, urlopen
 from univention.config_registry import handler_commit
+
+
+ZSYNC_BINARY_PATH = 'zsync'
 
 
 class Update(UniventionAppAction):
@@ -175,8 +178,8 @@ class Update(UniventionAppAction):
         if ucr_is_false('appcenter/index/verify'):
             return
 
-        fname = os.path.join(cache_dir, ".tmp.tar")
-        sname = os.path.join(cache_dir, ".all.tar.gpg")
+        fname = os.path.join(cache_dir, '.tmp.tar')
+        sname = os.path.join(cache_dir, '.all.tar.gpg')
 
         # there have been Signature Verification failures we want to investigate
         # one theory is, that the signature file and the file to verify do not match,
@@ -198,12 +201,17 @@ class Update(UniventionAppAction):
 
         raise UpdateSignatureVerificationFailed(fname, gpg_error, time_diff)
 
-    def _download_apps(self, app_cache):
-        # type: (AppCenterCache) -> bool
-        filenames = [] if ucr_is_false('appcenter/index/verify') else ['all.tar.gpg']
-        if filenames and not self._download_files(app_cache, filenames):
-            return False
+    def _download_apps_zsync(self, app_cache: AppCache):
+        """
+        Download app metadata archive using zsync for efficient delta synchronization.
 
+        This method attempts to download the app metadata using zsync, which only
+        transfers the differences between the local and remote versions. If zsync
+        fails or times out, it automatically falls back to direct HTTPS download.
+
+        :param app_cache: The app cache instance containing server and version info
+        :raises: NetworkError if both zsync and direct download fail
+        """
         appcenter_host = app_cache.get_server()
         if appcenter_host.startswith('https'):
             appcenter_host = 'http://%s' % appcenter_host[8:]
@@ -212,19 +220,49 @@ class Update(UniventionAppAction):
         tmp_file = os.path.join(cache_dir, '.tmp.tar')
         all_tar_file = os.path.join(cache_dir, '.all.tar')
         all_tar_url = '%s/meta-inf/%s/all.tar.zsync' % (appcenter_host, app_cache.get_ucs_version())
+
         self.log('Downloading "%s"...' % all_tar_url)
-        if self._subprocess(['zsync', all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file], cwd=cache_dir).returncode:
+
+        zsync_args = [ZSYNC_BINARY_PATH, all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file]
+
+        result = self._subprocess(zsync_args, cwd=cache_dir)
+        if result.returncode:
             # fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
             #   * Range requests are not supported
             #   * HTTP requests are altered
             self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
             self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
-            self._download_files(app_cache, ['all.tar.gz'])
-            # files are always downloaded with their filename prepended by '.'
-            tgz_file = os.path.join(cache_dir, '.all.tar.gz')
-            self._uncompress_archive(app_cache, tgz_file)
+            self._download_apps_directly(app_cache)
 
-        self._verify_file(cache_dir)
+    def _download_apps_directly(self, app_cache: AppCache):
+        """
+        Download app metadata archive directly via HTTPS without using zsync.
+
+        This method downloads the complete all.tar.gz file via HTTPS. It is used
+        as a fallback when zsync fails or when explicitly enabled via UCR variable
+        appcenter/update/skip-zsync.
+
+        :param app_cache: The app cache instance containing server and version info
+        :raises: NetworkError if the download fails
+        """
+        cache_dir = app_cache.get_cache_dir()
+        self._download_files(app_cache, ['all.tar.gz'])
+        # files are always downloaded with their filename prepended by '.'
+        tgz_file = os.path.join(cache_dir, '.all.tar.gz')
+        self._uncompress_archive(app_cache, tgz_file)
+
+    def _download_apps(self, app_cache):
+        # type: (AppCenterCache) -> bool
+        filenames = [] if ucr_is_false('appcenter/index/verify') else ['all.tar.gpg']
+        if filenames and not self._download_files(app_cache, filenames):
+            return False
+
+        if ucr_is_true('appcenter/update/skip-zsync'):
+            self._download_apps_directly(app_cache)
+        else:
+            self._download_apps_zsync(app_cache)
+
+        self._verify_file(app_cache.get_cache_dir())
 
         self._extract_archive(app_cache)
         return True
