@@ -11,9 +11,11 @@ A python-logging interface compatible wrapper for logging with :py:mod:`univenti
 >>> logger.info('test')
 """
 
+import contextlib
 import copy
 import datetime
 import logging
+import time
 import traceback
 from typing import Any
 
@@ -488,6 +490,13 @@ class Structured:
     def exception(_self, _message, *_args, **_kwargs):
         _kwargs.setdefault('exc_info', True)
         _self._log(_self.__log.exception, _message, *_args, **_kwargs)
+
+    @contextlib.contextmanager
+    def timing(_self, _message, *_args, level=logging.TRACE, **_kwargs):
+        start = time.perf_counter()
+        yield
+        end = time.perf_counter()
+        _self.log(level, _message, *_args, **_kwargs, duration=f"{end - start:.6f}")
 
     def _log(_self, _func, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
         return _func(

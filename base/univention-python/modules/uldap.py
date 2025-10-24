@@ -266,7 +266,8 @@ class access:
         self.binddn = binddn
         self.bindpw = bindpw
         log.debug('bind', binddn=self.binddn)
-        self.lo.simple_bind_s(self.binddn, self.bindpw)
+        with log.timing('LDAP operation', operation='bind'):
+            self.lo.simple_bind_s(self.binddn, self.bindpw)
 
     @_fix_reconnect_handling
     def bind_saml(self, bindpw: str) -> None:
@@ -281,7 +282,8 @@ class access:
             ldap.sasl.CB_AUTHNAME: None,
             ldap.sasl.CB_PASS: bindpw,
         }, 'SAML')
-        self.lo.sasl_interactive_bind_s('', saml)
+        with log.timing('LDAP operation', operation='SASL SAML bind'):
+            self.lo.sasl_interactive_bind_s('', saml)
         self.binddn = self.whoami()
         log.debug('SAML bind', binddn=self.binddn)
 
@@ -303,13 +305,15 @@ class access:
             ldap.sasl.CB_AUTHNAME: authzid,
             ldap.sasl.CB_PASS: bindpw,
         }, 'OAUTHBEARER')
-        self.lo.sasl_interactive_bind_s('', oauth)
+        with log.timing('LDAP operation', operation='SASL OAUTHBEARER bind'):
+            self.lo.sasl_interactive_bind_s('', oauth)
         self.binddn = self.whoami()
         log.debug('OAUTHBEARER bind', binddn=self.binddn)
 
     def unbind(self) -> None:
         """Unauthenticate."""
-        self.lo.unbind_s()
+        with log.timing('LDAP operation', operation='unbind'):
+            self.lo.unbind_s()
 
     def whoami(self) -> str:
         """
@@ -318,12 +322,14 @@ class access:
         :returns: The distinguished name.
         :rtype: str
         """
-        dn = self.lo.whoami_s()
+        with log.timing('LDAP operation', operation='whoami'):
+            dn = self.lo.whoami_s()
         return re.sub('^dn:', '', dn)
 
     def _reconnect(self) -> None:
         """Reconnect."""
-        self.lo.reconnect(self.lo._uri, retry_max=self.lo._retry_max, retry_delay=self.lo._retry_delay)
+        with log.timing('LDAP operation', operation='reconnect'):
+            self.lo.reconnect(self.lo._uri, retry_max=self.lo._retry_max, retry_delay=self.lo._retry_delay)
 
     def __open(self, ca_certfile: str | None) -> None:
 
@@ -359,7 +365,8 @@ class access:
 
     @_fix_reconnect_handling
     def __starttls(self):
-        self.lo.start_tls_s()
+        with log.timing('LDAP operation', operation='starttls'):
+            self.lo.start_tls_s()
 
     @_fix_reconnect_handling
     def get(self, dn: str, attr: list[str] = [], required: bool = False) -> dict[str, list[bytes]]:
@@ -376,7 +383,8 @@ class access:
         """
         if dn:
             try:
-                result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
+                with log.timing('LDAP operation', operation='get'):
+                    result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
                 return result[0][1]
             except (ldap.NO_SUCH_OBJECT, LookupError):
                 pass
@@ -402,7 +410,8 @@ class access:
         """
         if dn:
             try:
-                result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
+                with log.timing('LDAP operation', operation='getAttr'):
+                    result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
                 return result[0][1][attr]
             except (ldap.NO_SUCH_OBJECT, LookupError):
                 pass
@@ -438,8 +447,10 @@ class access:
             base = self.base
 
         if scope == 'base+one':
-            res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
-                self.__search(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
+            with log.timing('LDAP operation', operation='search', scope='base', base=base, filter=filter, attr=attr):
+                res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
+            with log.timing('LDAP operation', operation='search', scope='one', base=base, filter=filter, attr=attr):
+                res += self.__search(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
         else:
             if scope in {'sub', 'domain'}:
                 ldap_scope = ldap.SCOPE_SUBTREE
@@ -447,7 +458,8 @@ class access:
                 ldap_scope = ldap.SCOPE_ONELEVEL
             else:
                 ldap_scope = ldap.SCOPE_BASE
-            res = self.__search(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
+            with log.timing('LDAP operation', operation='search', scope=scope or 'base', base=base, filter=filter, attr=attr):
+                res = self.__search(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit, response=response)
 
         if unique and len(res) > 1:
             raise ldap.INAPPROPRIATE_MATCHING({'desc': 'more than one object'})
@@ -458,10 +470,12 @@ class access:
     def __search(self, *args, **kwargs):
         response = kwargs.pop('response', None)
         if isinstance(response, dict) and kwargs.get('serverctrls'):
-            _rtype, res, _rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
+            with log.timing('LDAP operation', operation='search'):
+                _rtype, res, _rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
             response['ctrls'] = resp_ctrls
             return res
         else:
+            # done upstream: with log.timing('LDAP operation', operation='search'):
             return self.lo.search_ext_s(*args, **kwargs)
 
     def searchDn(self, filter: str = '(objectClass=*)', base: str = '', scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0, serverctrls: list[ldap.controls.LDAPControl] | None = None, response: dict[str, ldap.controls.LDAPControl] | None = None) -> list[str]:
@@ -592,7 +606,8 @@ class access:
             self.__schema = None
             self.__reconnects_done = self.lo._reconnects_done
         if not self.__schema:
-            self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
+            with log.timing('LDAP operation', operation='search_subschema'):
+                self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
         return self.__schema
 
     @_fix_reconnect_handling
@@ -632,12 +647,14 @@ class access:
         nal = [(k, list(v)) for k, v in nal.items()]
 
         try:
-            _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
+            with log.timing('LDAP operation', operation='add', dn=dn):
+                _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.add_ext_s(dn, nal, serverctrls=serverctrls)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
             lo_ref = self._handle_referral(exc)
-            _rtype, _rdata, _rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
+            with log.timing('LDAP operation', operation='add-referral', dn=dn):
+                _rtype, _rdata, _rmsgid, resp_ctrls = lo_ref.add_ext_s(dn, nal, serverctrls=serverctrls)
 
         if serverctrls and isinstance(response, dict):
             response['ctrls'] = resp_ctrls
@@ -735,7 +752,8 @@ class access:
         :param ml: The modify-list of 3-tuples (attribute-name, old-values, new-values).
         """
         try:
-            self.lo.modify_ext_s(dn, ml)
+            with log.timing('LDAP operation', operation='modify', dn=dn):
+                self.lo.modify_ext_s(dn, ml)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
@@ -757,7 +775,8 @@ class access:
             serverctrls = []
 
         try:
-            _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
+            with log.timing('LDAP operation', operation='modify', dn=dn):
+                _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.modify_ext_s(dn, ml, serverctrls=serverctrls)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
@@ -817,7 +836,8 @@ class access:
             serverctrls = []
 
         try:
-            _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
+            with log.timing('LDAP operation', operation='rename', dn=dn):
+                _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.rename_s(dn, newrdn, newsuperior, serverctrls=serverctrls)
         except ldap.REFERRAL as exc:
             if not self.follow_referral:
                 raise
@@ -852,7 +872,8 @@ class access:
 
         if dn:
             try:
-                _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.delete_ext_s(dn, serverctrls=serverctrls)
+                with log.timing('LDAP operation', operation='delete', dn=dn):
+                    _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.delete_ext_s(dn, serverctrls=serverctrls)
             except ldap.REFERRAL as exc:
                 if not self.follow_referral:
                     raise
