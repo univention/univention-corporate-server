@@ -48,15 +48,16 @@ from six.moves.urllib_request import Request
 
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
 from univention.appcenter.app import LOCAL_ARCHIVE_DIR
-from univention.appcenter.app_cache import AppCache, AppCenterCache, Apps
+from univention.appcenter.app_cache import AppCenterCache, Apps
 from univention.appcenter.exceptions import UpdateSignatureVerificationFailed, UpdateUnpackArchiveFailed
 from univention.appcenter.log import catch_stdout
-from univention.appcenter.ucr import ucr_is_false, ucr_is_true, ucr_save
+from univention.appcenter.ucr import ucr_get_int, ucr_is_false, ucr_is_true, ucr_save
 from univention.appcenter.utils import gpg_verify, mkdir, urlopen
 from univention.config_registry import handler_commit
 
 
 ZSYNC_BINARY_PATH = 'zsync'
+TIMEOUT_EXIT_CODE = 124
 
 
 class Update(UniventionAppAction):
@@ -201,7 +202,8 @@ class Update(UniventionAppAction):
 
         raise UpdateSignatureVerificationFailed(fname, gpg_error, time_diff)
 
-    def _download_apps_zsync(self, app_cache: AppCache):
+    def _download_apps_zsync(self, app_cache):
+        # type: (AppCache) -> None
         """
         Download app metadata archive using zsync for efficient delta synchronization.
 
@@ -224,9 +226,17 @@ class Update(UniventionAppAction):
         self.log('Downloading "%s"...' % all_tar_url)
 
         zsync_args = [ZSYNC_BINARY_PATH, all_tar_url, '-q', '-o', tmp_file, '-i', all_tar_file]
+        zsync_timeout = ucr_get_int('appcenter/update/zsync-timeout')
+        if zsync_timeout:
+            timeout_args = ['timeout', '--kill-after', '2', '-v', str(zsync_timeout)]
+            timeout_args.extend(zsync_args)
+            zsync_args = timeout_args
 
         result = self._subprocess(zsync_args, cwd=cache_dir)
-        if result.returncode:
+        if result.returncode == TIMEOUT_EXIT_CODE:
+            self.warn('Downloading the App archive via zsync timed out. Falling back to downloading it directly.')
+            self._download_apps_directly(app_cache)
+        elif result.returncode:
             # fallback: download all.tar.gz without zsync. some proxys have difficulties with it, including:
             #   * Range requests are not supported
             #   * HTTP requests are altered
@@ -234,7 +244,8 @@ class Update(UniventionAppAction):
             self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
             self._download_apps_directly(app_cache)
 
-    def _download_apps_directly(self, app_cache: AppCache):
+    def _download_apps_directly(self, app_cache):
+        # type: (AppCache) -> None
         """
         Download app metadata archive directly via HTTPS without using zsync.
 
@@ -252,7 +263,7 @@ class Update(UniventionAppAction):
         self._uncompress_archive(app_cache, tgz_file)
 
     def _download_apps(self, app_cache):
-        # type: (AppCenterCache) -> bool
+        # type: (AppCache) -> bool
         filenames = [] if ucr_is_false('appcenter/index/verify') else ['all.tar.gpg']
         if filenames and not self._download_files(app_cache, filenames):
             return False

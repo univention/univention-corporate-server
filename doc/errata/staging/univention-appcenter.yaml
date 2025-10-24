@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-appcenter
+fix: 9.0.14-3
+desc: |
+ This update addresses the following issues:
+ * The Univention App Center update process can now be configured for
+   restrictive HTTP proxy environments. The UCR variable
+   `appcenter/update/skip-zsync` allows skipping zsync and downloading
+   metadata directly via HTTPS. The UCR variable
+   `appcenter/update/zsync-timeout` defines a timeout for zsync operations
+   before falling back to direct download.
+bug: [58798]

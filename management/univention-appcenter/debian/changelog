@@ -1,3 +1,10 @@
+univention-appcenter (9.0.14-3) unstable; urgency=medium
+
+  * Bug #52308: Add UCR variable to skip downloading app metadata using zsync
+    and download with an HTTP request directly
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 22 Oct 2025 15:53:12 +0200
+
 univention-appcenter (9.0.14-2) unstable; urgency=medium
 
   * Bug #57779: Don't support adjusting the password-encryption to scram-sha-256
