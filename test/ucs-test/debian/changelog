@@ -1,3 +1,9 @@
+ucs-test (12.3.24) unstable; urgency=medium
+
+  * Bug #58738: AD-Connector cache 'DN Mapping CON' update on uid change
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 Oct 2025 19:50:28 +0200
+
 ucs-test (12.3.23) unstable; urgency=medium
 
   * Bug #57976: Create test for dovecot additional mail directories

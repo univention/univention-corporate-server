@@ -355,8 +355,9 @@ def delete_udm_user(udm, con, udm_user_dn, con_user_dn, wait_for_sync):
     con.verify_object(con_user_dn, None)
 
 
-def create_con_user(con, udm_user, wait_for_sync):
-    basic_con_user = map_udm_user_to_con(udm_user.basic)
+def create_con_user(con, udm_user, wait_for_sync, basic_con_user=None):
+    if not basic_con_user:
+        basic_con_user = map_udm_user_to_con(udm_user.basic)
 
     print(f"\nCreating CON user {basic_con_user}\n")
     username = udm_user.basic.get("username")
