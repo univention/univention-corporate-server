@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-ad-connector
+fix: 14.0.24
+desc: |
+ This update addresses the following issues:
+ * Changing the `sAMAccountName` of a user in AD
+   led to a Python traceback in the AD-Connector
+   because the post modify functions would still
+   use the re-rename DN. This could also cause
+   additional issues when later changing the `CN`
+   of the object. This update fixes these issues.
+bug: [58737]

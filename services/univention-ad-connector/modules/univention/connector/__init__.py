@@ -1222,6 +1222,7 @@ class ucs(object):
         serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
         res = ucs_object.modify(serverctrls=serverctrls, response=response)
         if res:
+            object['dn'] = res
             for c in response.get('ctrls', []):
                 if c.controlType == PostReadControl.controlType:  # If the modify actually did something
                     entryUUID = c.entry['entryUUID'][0]
