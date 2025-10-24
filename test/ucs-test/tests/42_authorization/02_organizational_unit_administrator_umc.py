@@ -28,7 +28,7 @@ def restart_umc():
 def test_can_not_restore(deleted_user_object, ouadmin_umc_client, lo):
     _, deleted_dn = deleted_user_object
     options = [{'object': deleted_dn}]
-    res = ouadmin_umc_client.umc_command('udm/restore', options, 'recyclebin/deletedobject').result
+    res = ouadmin_umc_client.umc_command('udm/restore', options, 'recyclebin/removedobject').result
     assert res[0]['success'] is False
     assert res[0]['details'] == translate('Permission denied.')
 
