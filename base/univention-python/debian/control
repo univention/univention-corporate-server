@@ -25,7 +25,7 @@ Depends:
  python3-ldap,
  python3-samba,
  python3-univention-config-registry (>= 15.0.7-16),
- python3-univention-debug (>= 14.3.0),
+ python3-univention-debug (>= 14.3.1),
  ${misc:Depends},
  ${python3:Depends},
 Provides:
