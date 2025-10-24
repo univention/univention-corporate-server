@@ -91,11 +91,11 @@ def test_create_container_udm_cli_internal(udm, lo):
 def test_create_not_allowed(udm, deleted_object_user_properties):
     del deleted_object_user_properties.__dict__['ldap_attrs']
     with pytest.raises(UCSTestUDM_CreateUDMObjectFailed):
-        udm.create_object('recyclebin/deletedobject', **deleted_object_user_properties.__dict__)
+        udm.create_object('recyclebin/removedobject', **deleted_object_user_properties.__dict__)
 
 
 def test_create_and_restore(deleted_object_user_properties, lo):
-    mod = udm_modules.get('recyclebin/deletedobject')
+    mod = udm_modules.get('recyclebin/removedobject')
     users = udm_modules.get('users/user')
     obj = mod.object(None, lo, position(RECYCLEBIN_DN))
     obj.open()
@@ -180,40 +180,40 @@ def test_user_restore_umc(udm, recyclebin_policy_session, lo, Client):
     # search
     search_options = {
         'hidden': False,
-        'objectType': 'recyclebin/deletedobject',
+        'objectType': 'recyclebin/removedobject',
         'objectProperty': 'None',
         'objectPropertyValue': '',
         'fields': ['name', 'path'],
     }
-    res = con.umc_command('udm/query', search_options, 'recyclebin/deletedobject').result
+    res = con.umc_command('udm/query', search_options, 'recyclebin/removedobject').result
     dn = [v['$dn$'] for v in res if v['name'] == username]
     assert dn and len(dn) == 1
     # simulate detail page, we had a problem that search no longer works after detail page
     options = [deleted_dn]
-    res = con.umc_command('udm/get', options, 'recyclebin/deletedobject').result[0]
+    res = con.umc_command('udm/get', options, 'recyclebin/removedobject').result[0]
     assert res['username'] == username
     assert res['groups']
     assert res['originalDN'] == user_dn
-    options = [{'objectType': 'recyclebin/deletedobject', 'objectDN': deleted_dn}]
-    res = con.umc_command('udm/properties', options, 'recyclebin/deletedobject').result[0]
+    options = [{'objectType': 'recyclebin/removedobject', 'objectDN': deleted_dn}]
+    res = con.umc_command('udm/properties', options, 'recyclebin/removedobject').result[0]
     assert 'username' in [v['id'] for v in res]
-    res = con.umc_command('udm/layout', options, 'recyclebin/deletedobject').result[0]
+    res = con.umc_command('udm/layout', options, 'recyclebin/removedobject').result[0]
     assert 'Account' in [v['label'] for v in res]
     # search again
-    res = con.umc_command('udm/query', search_options, 'recyclebin/deletedobject').result
+    res = con.umc_command('udm/query', search_options, 'recyclebin/removedobject').result
     assert res
     dn = [v['$dn$'] for v in res if v['name'] == username]
     assert dn and len(dn) == 1
     # restore
     options = [{'object': deleted_dn}]
-    con.umc_command('udm/restore', options, 'recyclebin/deletedobject')
+    con.umc_command('udm/restore', options, 'recyclebin/removedobject')
     assert lo.get(user_dn)
 
 
 def test_user_search_filter_umc(udm, recyclebin_policy_session, lo, Client):
 
     def _check_search(con, username, options):
-        res = con.umc_command('udm/query', options, 'recyclebin/deletedobject').result
+        res = con.umc_command('udm/query', options, 'recyclebin/removedobject').result
         dn = [v['$dn$'] for v in res if v['name'] == username]
         assert dn and len(dn) == 1
 
@@ -226,7 +226,7 @@ def test_user_search_filter_umc(udm, recyclebin_policy_session, lo, Client):
     con = Client.get_test_connection()
     options = {
         'hidden': False,
-        'objectType': 'recyclebin/deletedobject',
+        'objectType': 'recyclebin/removedobject',
         'objectProperty': 'None',
         'objectPropertyValue': '',
         'fields': ['name', 'path'],
@@ -264,17 +264,17 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
         start_listener()
     wait_for_listener_replication()
     # some search test, als with wildcard
-    assert udm.list_objects('recyclebin/deletedobject', filter=f'originalUniventionObjectIdentifier={uoi}')
-    assert udm.list_objects('recyclebin/deletedobject', filter=f'univentionRecycleBinOriginalUniventionObjectIdentifier={uoi}')
-    assert udm.list_objects('recyclebin/deletedobject', filter=f'originalName={username}')
-    assert udm.list_objects('recyclebin/deletedobject', filter=f'originalName={username[:-1]}*')
-    assert udm.list_objects('recyclebin/deletedobject', filter=f'originalName=*{username[1:]}')
-    assert udm.list_objects('recyclebin/deletedobject', filter=f'originalUniventionObjectIdentifier={uoi[:-1]}*')
+    assert udm.list_objects('recyclebin/removedobject', filter=f'originalUniventionObjectIdentifier={uoi}')
+    assert udm.list_objects('recyclebin/removedobject', filter=f'univentionRecycleBinOriginalUniventionObjectIdentifier={uoi}')
+    assert udm.list_objects('recyclebin/removedobject', filter=f'originalName={username}')
+    assert udm.list_objects('recyclebin/removedobject', filter=f'originalName={username[:-1]}*')
+    assert udm.list_objects('recyclebin/removedobject', filter=f'originalName=*{username[1:]}')
+    assert udm.list_objects('recyclebin/removedobject', filter=f'originalUniventionObjectIdentifier={uoi[:-1]}*')
     # check ttl and purgeAt
-    del_obj_dn, _ = udm.list_objects('recyclebin/deletedobject', filter=f'originalDN={user_dn}')[0]
+    del_obj_dn, _ = udm.list_objects('recyclebin/removedobject', filter=f'originalDN={user_dn}')[0]
     verify_entryttl_deleteat(retention_time, del_obj_dn, lo)
     # restore
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=del_obj_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=del_obj_dn)
     restored_props = udm.get_object('users/user', restored_dn)
     assert restored_dn == user_dn
     access(binddn=restored_dn, bindpw=password, base=ldap_base)
@@ -295,10 +295,10 @@ def test_group_restore(udm, recyclebin_policy_session, ldap_base, lo):
     # delete
     udm.remove_object('groups/group', dn=group_dn)
     # check ttl and purgeAt
-    del_obj_dn, _ = udm.list_objects('recyclebin/deletedobject', filter=f'originalDN={group_dn}')[0]
+    del_obj_dn, _ = udm.list_objects('recyclebin/removedobject', filter=f'originalDN={group_dn}')[0]
     verify_entryttl_deleteat(retention_time, del_obj_dn, lo)
     # restore
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=del_obj_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=del_obj_dn)
     restored_props = udm.get_object('groups/group', restored_dn)
     assert restored_dn == group_dn
     for key in original_props.keys():
@@ -430,7 +430,7 @@ def test_restore_deleted_object(udm, lo, recyclebin_policy_session):
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_dn = _deleted_object_dn(user_dn)
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=deleted_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_dn)
     assert user_dn == restored_dn
     verify_ldap_object(user_dn, should_exist=True)
     source_attrs = lo.get(user_dn)
@@ -449,7 +449,7 @@ def test_restore_with_name_conflict(udm, lo, recyclebin_policy_session):
     conflicting_user_dn, _ = udm.create_user(position=container_recyclebin_policy, username=username, wait_for_replication=False)
     # restore
     deleted_dn = _deleted_object_dn(user_dn)
-    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     pos = position(RECYCLEBIN_DN)
     deleted_udm_obj = recyclebin_module.object(None, lo, pos, dn=deleted_dn)
     deleted_udm_obj.open()
@@ -476,7 +476,7 @@ def test_entryuuid_univention_object_identifier_preservation_across_delete_resto
     stored_id = deleted_attrs.get('univentionRecycleBinOriginalUniventionObjectIdentifier')
     assert stored_uuid[0] == original_uuid
     assert stored_id[0] == original_id
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=deleted_obj_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_obj_dn)
     assert restored_dn == user_dn
     source_attrs = lo.get(user_dn, attr=['*', '+'])
     restored_uuid = source_attrs.get('entryUUID', [None])[0]
@@ -513,9 +513,9 @@ def test_user_group_restoration_comprehensive(udm, lo, recyclebin_policy_session
     verify_ldap_object(group_dn, should_exist=False)
     group_deleted_dn = _deleted_object_dn(group_dn)
     # restore
-    udm.restore_object('recyclebin/deletedobject', dn=group_deleted_dn)
+    udm.restore_object('recyclebin/removedobject', dn=group_deleted_dn)
     verify_ldap_object(group_dn, should_exist=True)
-    udm.restore_object('recyclebin/deletedobject', dn=user_deleted_dn)
+    udm.restore_object('recyclebin/removedobject', dn=user_deleted_dn)
     verify_ldap_object(user_dn, should_exist=True)
     # check
     group_attrs = lo.get(group_dn)
@@ -547,7 +547,7 @@ def test_user_multiple_groups_deletion_restoration(udm, lo, recyclebin_policy_se
         assert user_dn.encode('utf-8') not in attrs.get('uniqueMember', [])
     # restore user
     user_deleted_dn = _deleted_object_dn(user_dn)
-    udm.restore_object('recyclebin/deletedobject', dn=user_deleted_dn)
+    udm.restore_object('recyclebin/removedobject', dn=user_deleted_dn)
     verify_ldap_object(user_dn, should_exist=True)
     # check
     for dn in [group1_dn, group2_dn, group3_dn]:
@@ -571,7 +571,7 @@ def test_policy_references_restoration(udm, lo, recyclebin_policy_session, ldap_
     deleted_attrs = lo.get(user_deleted_dn)
     assert policy_dn.encode('utf-8') in deleted_attrs.get('univentionPolicyReference', [])
     # restore
-    udm.restore_object('recyclebin/deletedobject', dn=user_deleted_dn)
+    udm.restore_object('recyclebin/removedobject', dn=user_deleted_dn)
     verify_ldap_object(user_dn, should_exist=True)
     restored_user_attrs = lo.get(user_dn)
     assert policy_dn.encode('utf-8') in restored_user_attrs.get('univentionPolicyReference', [])
@@ -639,7 +639,7 @@ def test_original_name_extraction_and_storage(udm, lo, recyclebin_policy_session
     verify_ldap_object(group_dn, should_exist=False)
     deleted_user_dn = _deleted_object_dn(user_dn)
     deleted_group_dn = _deleted_object_dn(group_dn)
-    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     pos = position(RECYCLEBIN_DN)
     deleted_user_obj = recyclebin_module.object(None, lo, pos, dn=deleted_user_dn)
     deleted_user_obj.open()
@@ -648,9 +648,9 @@ def test_original_name_extraction_and_storage(udm, lo, recyclebin_policy_session
     assert deleted_user_obj.info['originalName'] == username
     assert deleted_group_obj.info['originalName'] == groupname
     # search originalName
-    res = udm.list_objects('recyclebin/deletedobject', filter=f'originalName={username}')
+    res = udm.list_objects('recyclebin/removedobject', filter=f'originalName={username}')
     assert len(res) == 1 and username in res[0][1]['originalName']
-    res = udm.list_objects('recyclebin/deletedobject', filter=f'originalName={groupname}')
+    res = udm.list_objects('recyclebin/removedobject', filter=f'originalName={groupname}')
     assert len(res) == 1 and groupname in res[0][1]['originalName']
     # cleanup
     _cleanup_deleted_object(lo, deleted_user_dn)
@@ -707,7 +707,7 @@ def test_reference_based_restoration(udm, lo, recyclebin_policy_session):
     stored_references = [ref.decode('utf-8') for ref in references]
     assert any(group_uuid in ref for ref in stored_references)
     # restore
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=deleted_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_dn)
     assert restored_dn == user_dn
     verify_ldap_object(user_dn, should_exist=True)
     source_attrs = lo.get(user_dn, attr=['memberOf'])
@@ -744,7 +744,7 @@ def test_reference_restoration_with_colon_in_username(udm, lo, recyclebin_policy
     for ref in stored_references:
         parsed = Reference.parse(ref)
         assert parsed is not None
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=deleted_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_dn)
     assert restored_dn == user_dn
     verify_ldap_object(user_dn, should_exist=True)
     source_attrs = lo.get(user_dn, attr=['memberOf'])
@@ -764,7 +764,7 @@ def test_structured_logging_for_recyclebin_operations(udm, lo, recyclebin_policy
         user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
         udm.remove_object('users/user', dn=user_dn)
         deleted_dn = _deleted_object_dn(user_dn)
-        recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+        recyclebin_module = udm_modules.modules['recyclebin/removedobject']
         deleted_user_obj = recyclebin_module.object(None, lo, position(RECYCLEBIN_DN), dn=deleted_dn)
         deleted_user_obj.open()
         restored_dn = deleted_user_obj.restore()
@@ -804,7 +804,7 @@ def test_blocklist_same_id_not_blocked(udm, lo, recyclebin_policy_session, block
     udm.remove_object('users/user', dn=user_dn)
     assert get_blocklist_entry(lo, username, blocklist_username.dn), 'blocklist entry for username is missing'
     deleted_dn = _deleted_object_dn(user_dn)
-    restored_dn = udm.restore_object('recyclebin/deletedobject', dn=deleted_dn)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_dn)
     assert restored_dn == user_dn
     assert lo.get(user_dn)
 
@@ -820,7 +820,7 @@ def test_blocklist_different_id_blocked(udm, lo, recyclebin_policy_session, bloc
     lo.modify(blocklistentry_dn(username, blocklist_username.dn), changes)
     # now restore, should fail, restore with UDM to get the proper exception
     deleted_dn = _deleted_object_dn(user_dn)
-    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     obj = recyclebin_module.object(None, lo, position(RECYCLEBIN_DN), dn=deleted_dn)
     obj.open()
     # mock blocklist_enabled as it does not see the temp UCR changes (directory/manager/blocklist/enabled=true)
@@ -967,7 +967,7 @@ def test_deleted_user_with_complex_attributes_display(udm, lo, recyclebin_policy
     deleted_user_dn = _deleted_object_dn(user_dn)
     deleted_group_dn = _deleted_object_dn(group_dn)
 
-    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     pos = position(RECYCLEBIN_DN)
     deleted_user_obj = recyclebin_module.object(None, lo, pos, dn=deleted_user_dn)
     deleted_user_obj.open()
@@ -990,7 +990,7 @@ def test_deleted_user_with_complex_attributes_display(udm, lo, recyclebin_policy
         deleted_share_path = deleted_ldap_attrs.get('univentionSharePath', [])
         assert deleted_share_path == original_share_path, "Share path should be preserved"
 
-    res = udm.list_objects('recyclebin/deletedobject', filter=f'originalName={username}')
+    res = udm.list_objects('recyclebin/removedobject', filter=f'originalName={username}')
     assert len(res) == 1 and username in res[0][1]['originalName']
 
     _cleanup_deleted_object(lo, deleted_user_dn)

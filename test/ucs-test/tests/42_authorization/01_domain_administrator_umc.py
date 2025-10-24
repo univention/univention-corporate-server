@@ -27,7 +27,7 @@ def restart_umc():
 def test_can_restore(deleted_user_object, admin_umc_client, lo):
     user_dn, deleted_dn = deleted_user_object
     options = [{'object': deleted_dn}]
-    admin_umc_client.umc_command('udm/restore', options, 'recyclebin/deletedobject')
+    admin_umc_client.umc_command('udm/restore', options, 'recyclebin/removedobject')
     assert lo.get(user_dn)
 
 
