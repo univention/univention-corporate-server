@@ -1,3 +1,10 @@
+ucs-test (10.0.24-35) unstable; urgency=medium
+
+  * Bug #52308: Add test for new UCR variables `appcenter/update/skip-zsync` and
+    `appcenter/update/zsync-timeout`.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 12 Nov 2025 14:04:28 +0100
+
 ucs-test (10.0.24-34) unstable; urgency=medium
 
   * Bug #58787: 504test_group_cache_after_move.py
