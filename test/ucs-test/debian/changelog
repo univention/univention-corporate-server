@@ -1,3 +1,17 @@
+ucs-test (12.3.34) unstable; urgency=medium
+
+  * Bug #52308: Add test for new UCR variables `appcenter/update/skip-zsync` and
+    `appcenter/update/zsync-timeout`.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 12 Nov 2025 14:04:28 +0100
+
+ucs-test (12.3.33) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#245: Adjust test
+    to Keycloak 26.4.2
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 04 Nov 2025 11:08:39 +0100
+
 ucs-test (12.3.32) unstable; urgency=medium
 
   * Issue univention/dev/projects/provisioning#99: e2e test need a nats connection that
