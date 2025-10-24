@@ -1,3 +1,9 @@
+ucs-test (10.0.24-26) unstable; urgency=medium
+
+  * Bug #58737: AD-Connector cache 'DN Mapping CON' update on uid change
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 Oct 2025 19:50:28 +0200
+
 ucs-test (10.0.24-25) unstable; urgency=medium
 
   * Bug #58515: Fix expected_executions for older versions of keycloak
