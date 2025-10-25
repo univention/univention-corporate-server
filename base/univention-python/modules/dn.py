@@ -2,10 +2,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """A convenient wrapper to easily work with LDAP Distinguished Names (DNs)"""
 
-from __future__ import annotations
-
-from typing import Any, Self
-
 import ldap.dn
 
 
@@ -16,7 +12,7 @@ class DN:
 
     __slots__ = ('_dn', '_hash', '_str', 'dn')
 
-    def __init__(self, dn: str) -> None:
+    def __init__(self, dn):
         self.dn = dn
         self._hash = None
         self._str = None
@@ -26,7 +22,7 @@ class DN:
             raise ValueError('Malformed DN syntax: %r' % (self.dn,))
 
     @property
-    def rdn(self) -> Self:
+    def rdn(self):
         """
         >>> DN('foo=1,bar=2').rdn
         ('foo', '1')
@@ -34,7 +30,7 @@ class DN:
         return tuple(self._dn[0][0][:2])
 
     @property
-    def parent(self) -> Self | None:
+    def parent(self):
         """
         >>> DN('foo=1,bar=2').parent == DN('bar=2')
         True
@@ -42,7 +38,7 @@ class DN:
         if len(self._dn) > 1:
             return self[1:]
 
-    def endswith(self, other: str | Self):
+    def endswith(self, other):
         """
         >>> DN('foo=1,bar=2').endswith('bar=2')
         True
@@ -53,7 +49,7 @@ class DN:
             other = self.__class__(other)
         return self[-len(other):] == other
 
-    def startswith(self, other: str | Self):
+    def startswith(self, other):
         """
         >>> DN('foo=1,bar=2').startswith('foo=1')
         True
@@ -76,7 +72,7 @@ class DN:
         for i in reversed(range(len(self) - len(base) + 1)):
             yield self[i:]
 
-    def __str__(self) -> str:
+    def __str__(self):
         """
         >>> str(DN('foo = 1 , bar = 2')) == "foo=1,bar=2"
         True
@@ -86,23 +82,23 @@ class DN:
             self._str = ldap.dn.dn2str(self._dn)
         return self._str
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         """
         >>> repr(DN('foo=1,bar=2')) == "<DN 'foo=1,bar=2'>"
         True
         """
         return '<%s %r>' % (type(self).__name__, str(self))
 
-    def __len__(self) -> int:
+    def __len__(self):
         """Return length of DN components"""
         return len(self._dn)
 
-    def __getitem__(self, key: str | slice) -> Any:
+    def __getitem__(self, key):
         if isinstance(key, slice):
             return self.__class__(ldap.dn.dn2str(self._dn[key]))
         return self.__class__(ldap.dn.dn2str([self._dn[key]]))
 
-    def __eq__(self, other: Self) -> bool:
+    def __eq__(self, other):
         """
         >>> DN('foo=1') == DN('foo=1')
         True
@@ -131,10 +127,10 @@ class DN:
         """
         return hash(self) == hash(other)
 
-    def __ne__(self, other: Self) -> bool:
+    def __ne__(self, other):
         return not self == other
 
-    def __hash__(self) -> str:
+    def __hash__(self):
         # compute hash only once - object is static
         if self._hash is None:
             self._hash = hash(tuple(
@@ -146,7 +142,7 @@ class DN:
         return self._hash
 
     @classmethod
-    def set(cls, values: list[str]) -> set[Self]:
+    def set(cls, values):
         """
         Returns a unique set of DNs.
 
@@ -156,7 +152,7 @@ class DN:
         return set(map(cls, values))
 
     @classmethod
-    def values(cls, dns: list[Self]) -> set[str]:
+    def values(cls, dns):
         """
         Return a unique set of DN strings from DNs.
 
