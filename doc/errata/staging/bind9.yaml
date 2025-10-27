@@ -1,0 +1,17 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: bind9
+fix: 1:9.18.41-1~deb12u1A~5.2.3.202510271207
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.6 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N).
+   (CVE-2025-40780, CVE-2025-40778)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-8677)
+bug: [58742]
+cve:
+- CVE-2025-8677
+- CVE-2025-40778
+- CVE-2025-40780
