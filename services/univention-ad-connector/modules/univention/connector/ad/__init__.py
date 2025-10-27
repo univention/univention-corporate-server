@@ -2213,7 +2213,7 @@ class ad(univention.connector.ucs):
             self.group_member_mapping_cache_ucs[new_ucs_dn.lower()] = new_con_dn
             self.group_member_mapping_cache_con[new_con_dn.lower()] = new_ucs_dn
 
-    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
+    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None, restored=False):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
         # welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -2279,6 +2279,19 @@ class ad(univention.connector.ucs):
         ad_object = self.get_object(object['dn'])
 
         #
+        # RESTORE
+        #
+        if restored:
+            if self.restore_in_ad(object, property_type):
+                return self.sync_from_ucs(
+                    property_type,
+                    object,
+                    pre_mapped_ucs_dn,
+                    old_dn,
+                    object_old,
+                )
+
+        #
         # ADD
         #
         if not ad_object and object['modtype'] in ('add', 'modify', 'move'):
@@ -2317,6 +2330,7 @@ class ad(univention.connector.ucs):
 
             log.debug("to add: %s", object['dn'])
             log.trace("sync_from_ucs: addlist: %s", addlist)
+
             try:
                 self.lo_ad.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
             except Exception:
@@ -2360,7 +2374,10 @@ class ad(univention.connector.ucs):
             attribute_list = set(list(object_old['attributes'].keys()) + list(object['attributes'].keys()))
 
             # Iterate over attributes and post_attributes
-            for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes), ('post_attributes', self.property[property_type].post_attributes)]:
+            for attribute_type_name, attribute_type in [
+                ('attributes', self.property[property_type].attributes),
+                ('post_attributes', self.property[property_type].post_attributes),
+            ]:
                 if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
                     for attr in attribute_list:
                         if not self.__has_attribute_value_changed(attr, object_old, object):
@@ -2521,7 +2538,7 @@ class ad(univention.connector.ucs):
 
     def _get_objectGUID(self, dn):
         try:
-            ad_object = self.get_object(dn)
+            ad_object = self.get_object(dn, ['objectGUID'])
             return univention.connector.decode_guid(ad_object['objectGUID'][0])
         except (KeyError, Exception):  # FIXME: catch only necessary exceptions
             log.warning("Failed to search objectGUID for %s", dn)
@@ -2547,6 +2564,75 @@ class ad(univention.connector.ucs):
             self.update_deleted_cache_after_removal(entryUUID, objectGUID)
         else:
             log.debug("delete_in_ad: Object without entryUUID: %s", object['dn'])
+
+    def restore_in_ad(self, con_object: dict, property_type: str) -> str | None:
+        """
+        Restores an object in AD.
+
+        :param property_type:
+            the type of the object to be synced.
+        :param con_object:
+            A dictionary describing the AD object.
+
+        :returns:
+            The DN of the restored object or None.
+        """
+        def search_deleted_object(filter_s: str) -> str | None:
+            return self.ad_search_ext_s(
+                self.lo_ad.base,
+                ldap.SCOPE_SUBTREE,
+                filter_s,
+                ['1.1'],  # OID of Distinguished Name (DN)
+                serverctrls=[
+                    LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=True),
+                    LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=False),
+                ],
+            )
+
+        context_obj = {'modtype': 'restore', 'dn': con_object['dn']}
+        log.process(self.context_log(property_type, context_obj, to_ucs=False))
+
+        try:
+            dn_parts = ldap.dn.str2dn(con_object['dn'])
+            username = dn_parts[0][0][1]
+            parent_dn = ldap.dn.dn2str(dn_parts[1:])
+        except Exception:
+            log.warning('DN could not be parsed! (%s)', con_object['dn'])
+            return
+        if not username or not parent_dn:
+            log.warning('DN could not be parsed! (%s)', con_object['dn'])
+            return
+
+        try:
+            entry_uuid = con_object['attributes']['entryUUID'][0].decode('ASCII')
+        except KeyError:
+            entry_uuid = None
+
+        filter_ad = ldap.filter.filter_format('(&(cn=%s\nDEL:*)(lastKnownParent=%s))', [username, parent_dn])
+        result = search_deleted_object(filter_ad)
+        if not result or len(result) > 1:
+            log.warning(
+                ('No deleted object found (%s)', con_object['dn'])
+                if not result else ('More then one object found! (%s)', con_object['dn']),
+            )
+            return
+        restore_dn = result[0][0]
+
+        restore_modlist = [
+            (ldap.MOD_DELETE, 'isDeleted', None),
+            (ldap.MOD_REPLACE, 'distinguishedName', con_object['dn'].encode('UTF-8')),
+        ]
+        self.lo_ad.lo.modify_ext_s(
+            restore_dn,
+            restore_modlist,
+            serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=True)],
+        )
+        if entry_uuid:
+            self.update_deleted_cache_after_restore(entry_uuid)
+
+        log.debug('Object %s successfully restored to %s', restore_dn, con_object['dn'])
+
+        return con_object['dn']
 
     def _remove_subtree_in_ad(self, parent_ad_object, property_type):
         if self.property[property_type].con_subtree_delete_objects:
