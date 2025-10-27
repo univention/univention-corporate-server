@@ -31,6 +31,7 @@ import univention.admin.objects
 import univention.admin.uldap
 import univention.debug as ud
 import univention.logging
+from univention.admin.recyclebin import RECYCLEBIN_BASE
 from univention.connector.adcache import ADCache
 from univention.dn import DN
 from univention.logging import Structured
@@ -682,6 +683,7 @@ class ucs:
         old = recode_attribs(old)
 
         key = None
+        restored = False
 
         # if the object was moved into a ignored tree
         # we should delete this object
@@ -702,6 +704,11 @@ class ucs:
                 if self.was_entryUUID_deleted(entryUUID):
                     if self._get_entryUUID(dn) == entryUUID:
                         log.process("__sync_file_from_ucs: Object with entryUUID %s has been removed before but became visible again.", entryUUID)
+                        guid = self.config.get('UCS deleted', entryUUID)
+                        if guid:
+                            # an object we have seen in UCS (entryUUID) and in samba (guid)
+                            # that was deleted in UCS (was_entryUUID_deleted) indicates a restore
+                            restored = True
                     else:
                         log.process("__sync_file_from_ucs: Object with entryUUID %s has been removed before. Don't re-create.", entryUUID)
                         return True
@@ -800,7 +807,7 @@ class ucs:
                         object_old = {'dn': object['dn'], 'modtype': change_type, 'attributes': {}}  # Dummy
 
                     try:
-                        if not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, object_old):
+                        if not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, object_old, restored=restored):
                             self._save_rejected_ucs(filename, dn)
                             return False
                         else:
@@ -1203,6 +1210,34 @@ class ucs:
         ucs_object.move(object['dn'])
         return True
 
+    def restore_in_ucs(self, ad_object: dict, object_type: str) -> str | None:
+        SUPPORTED_TYPES = [
+            name
+            for name, mod in univention.admin.modules.modules.items()
+            if getattr(mod, 'supports_recyclebin', False)
+        ]
+        if object_type not in SUPPORTED_TYPES:
+            return
+
+        if not ad_object.get('dn'):
+            return
+        original_dn = ad_object['dn']
+        deleted_object_dn = f'univentionRecycleBinOriginalDN={ldap.dn.escape_dn_chars(original_dn)},{RECYCLEBIN_BASE}'
+        deleted_object_attr = self.lo.get(deleted_object_dn)
+        if not deleted_object_attr:
+            return
+        try:
+            recyclebin_module = univention.admin.modules.get('recyclebin/deletedobject')
+            position = univention.admin.uldap.position(RECYCLEBIN_BASE)
+            recyclebin_object = recyclebin_module.object(None, self.lo, position=position, dn=deleted_object_dn)
+            recyclebin_object.open()
+            restored_dn = recyclebin_object.restore()
+        except Exception as e:
+            log.exception(e)
+            return
+
+        return restored_dn
+
     def _get_entryUUID(self, dn):
         try:
             result = self.search_ucs(base=dn, scope='base', attr=['entryUUID'], unique=True)
@@ -1369,6 +1404,8 @@ class ucs:
 
             old_object = self.get_ucs_object(property_type, object.get('olddn', object['dn']))
 
+            if 'cn=deleted objects' in object['olddn'].lower():
+                object['modtype'] = 'restore'
             if old_object and object['modtype'] == 'add':
                 object['modtype'] = 'modify'
             if not old_object and object['modtype'] == 'modify':
@@ -1412,6 +1449,9 @@ class ucs:
                 result = self.modify_in_ucs(property_type, object, module, position)
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
+
+            if object['modtype'] == 'restore':
+                result = self.restore_in_ucs(object, property_type)
 
             if not result:
                 log.warning("Failed to get Result for DN (%r)", object['dn'])

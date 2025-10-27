@@ -2039,7 +2039,7 @@ class ad(univention.connector.ucs):
                 log.debug("_update_group_member_cache: add %s to ucs cache for group %s", add_ucs_dn, group)
                 self.group_members_cache_ucs[group].add(add_ucs_dn)
 
-    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
+    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None, restored=False):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
         # welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -2106,6 +2106,20 @@ class ad(univention.connector.ucs):
 
         addlist = []
         modlist = []
+
+        #
+        # RESTORE
+        #
+        if restored:
+            if dn := self.restore_in_ad(dn=object['dn']):
+                log.process('Object restored in AD', dn=dn)
+                return self.sync_from_ucs(
+                    property_type,
+                    object,
+                    pre_mapped_ucs_dn,
+                    old_dn,
+                    object_old,
+                )
 
         # get current object
         ad_object = self.get_object(object['dn'])
@@ -2379,6 +2393,31 @@ class ad(univention.connector.ucs):
             self.update_deleted_cache_after_removal(entryUUID, objectGUID)
         else:
             log.debug("delete_in_ad: Object without entryUUID: %s", object['dn'])
+
+    def restore_in_ad(self, dn: str) -> str | None:
+        cn, *parent_dn = ldap.dn.str2dn(dn)
+        if not (cn and parent_dn):
+            return
+        parent_dn_string = ldap.dn.dn2str(parent_dn)
+        filter_ad = ldap.filter.filter_format('(&(cn=%s\nDEL:*)(lastKnownParent=%s))', [cn[0][1], parent_dn_string])
+        result = self.ad_search_ext_s(
+            self.lo_ad.base,
+            ldap.SCOPE_SUBTREE,
+            filter_ad,
+            ['dn'],
+            serverctrls=[
+                LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=True),
+                LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=False),
+            ],
+        )
+        if not result or len(result) > 1:
+            return
+        restore_dn = result[0][0]
+        self.lo_ad.lo.modify_ext_s(
+            restore_dn,
+            [(ldap.MOD_DELETE, 'isDeleted', None), (ldap.MOD_REPLACE, 'distinguishedName', dn.encode('UTF-8'))],
+            serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)],
+        )
 
     def _remove_subtree_in_ad(self, parent_ad_object, property_type):
         if self.property[property_type].con_subtree_delete_objects:
