@@ -251,6 +251,36 @@ class configdb:
                     self._dbcon.close()
                 self._dbcon = lite.connect(self.filename)
 
+    def get_rows_with_key_ending_in_dn(self, section, dn):
+        ending = '%%,%s' % dn
+        for _i in [1, 2]:
+            try:
+                cur = self._dbcon.cursor()
+                cur.execute("SELECT * FROM '%s' WHERE key LIKE ?" % section, (ending,))  # noqa: S608
+                rows = cur.fetchall()
+                cur.close()
+                return rows or []
+            except lite.Error as e:
+                ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+                if self._dbcon:
+                    self._dbcon.close()
+                self._dbcon = lite.connect(self.filename)
+
+    def get_rows_with_value_ending_in_dn(self, section, dn):
+        ending = '%%,%s' % dn
+        for _i in [1, 2]:
+            try:
+                cur = self._dbcon.cursor()
+                cur.execute("SELECT * FROM '%s' WHERE value LIKE ?" % section, (ending,))  # noqa: S608
+                rows = cur.fetchall()
+                cur.close()
+                return rows or []
+            except lite.Error as e:
+                ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+                if self._dbcon:
+                    self._dbcon.close()
+                self._dbcon = lite.connect(self.filename)
+
 
 class RFC4514_dn:
     special_dn_chars = '"+,;<=>'
@@ -639,6 +669,39 @@ class ucs:
     def get_dn_by_con(self, dn_con):
         dn = self._get_dn_by_con(dn_con)
         return self.dn_mapped_to_base(dn, self.lo.base)
+
+    # def _update_subtree_dns_in_mappings_by_ucs(self, old_ucs_dn, old_con_dn, new_ucs_dn, new_con_dn):
+    #     """Maybe not required, maybe _update_subtree_dns_in_mappings_by_con (below) is enough"""
+    #     old_ucs_dn_lower = old_ucs_dn.lower()
+    #     old_con_dn_lower = old_con_dn.lower()
+    #     new_ucs_dn_lower = new_ucs_dn.lower()
+    #     new_con_dn_lower = new_con_dn.lower()
+    #     for row in self.config.get_rows_with_key_ending_in_dn('DN Mapping UCS', old_ucs_dn_lower):
+    #         _new_key = self._subtree_replace(row[0], old_ucs_dn_lower, new_ucs_dn_lower)
+    #         _new_val = self._subtree_replace(row[1], old_con_dn_lower, new_con_dn_lower)
+    #         self._remove_config_option('DN Mapping UCS', row[0])
+    #         self._set_config_option('DN Mapping UCS', _new_key, _new_val)
+    #     for row in self.config.get_rows_with_value_ending_in_dn('DN Mapping CON', old_ucs_dn_lower):
+    #         _new_key = self._subtree_replace(row[0], old_con_dn_lower, new_con_dn_lower)
+    #         _new_val = self._subtree_replace(row[1], old_ucs_dn_lower, new_ucs_dn_lower)
+    #         self._remove_config_option('DN Mapping CON', row[0])
+    #         self._set_config_option('DN Mapping CON', _new_key, _new_val)
+
+    def _update_subtree_dns_in_mappings_by_con(self, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
+        old_con_dn_lower = old_con_dn.lower()
+        old_ucs_dn_lower = old_ucs_dn.lower()
+        new_con_dn_lower = new_con_dn.lower()
+        new_ucs_dn_lower = new_ucs_dn.lower()
+        for row in self.config.get_rows_with_key_ending_in_dn('DN Mapping CON', old_con_dn_lower):
+            _new_key = self._subtree_replace(row[0], old_con_dn_lower, new_con_dn_lower)
+            _new_val = self._subtree_replace(row[1], old_ucs_dn_lower, new_ucs_dn_lower)
+            self._remove_config_option('DN Mapping CON', row[0])
+            self._set_config_option('DN Mapping CON', _new_key, _new_val)
+        for row in self.config.get_rows_with_value_ending_in_dn('DN Mapping UCS', old_con_dn_lower):
+            _new_key = self._subtree_replace(row[0], old_ucs_dn_lower, new_ucs_dn_lower)
+            _new_val = self._subtree_replace(row[1], old_con_dn_lower, new_con_dn_lower)
+            self._remove_config_option('DN Mapping UCS', row[0])
+            self._set_config_option('DN Mapping UCS', _new_key, _new_val)
 
     def _check_dn_mapping(self, dn_ucs, dn_con):
         dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
@@ -1292,15 +1355,15 @@ class ucs:
         :param property_type:
             the type of the object to be synced, must be part of the mapping. (e.g. "user", "group", "dc", "windowscomputer", etc.)
         :param object:
-            A dictionary describing the AD object.
+            A dictionary describing the AD object as returned by _object_mapping()
             modtype: A modification type ("add", "modify", "move", "delete")
             dn: The DN of the object in the UCS-LDAP
             olddn: The olddn of the object object in UCS-LDAP (e.g. on "move" operation)
         :ptype object: dict
         :param pre_mapped_ad_dn:
-            pass
+            same as original_object['dn']
         :param original_object:
-            pass
+            as returned by __object_from_element()
         """
         # NOTE: pre_mapped_ad_dn means: original ad_dn (i.e. before _object_mapping)
         # this function gets an object from the ad class, which should be converted into a ucs module
@@ -1412,6 +1475,16 @@ class ucs:
                     if object['dn'].lower() != res.lower():  # This "modify" resulted in a modrdn in UDM even though the DN didn't change in AD
                         self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
                         object['dn'] = res
+                    old_con_dn = original_object.get('olddn')
+                    if old_con_dn and pre_mapped_ad_dn != old_con_dn:
+                        self._remove_dn_mapping(object['olddn'], old_con_dn)
+                        if property_type in ("ou", "container"):
+                            self._update_subtree_dns_in_mappings_by_con(
+                                old_con_dn=old_con_dn,
+                                old_ucs_dn=object['olddn'],
+                                new_con_dn=pre_mapped_ad_dn,
+                                new_ucs_dn=object['dn']
+                            )
                 # Finally commit the current DNs to the DN mapping cache
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
@@ -1448,14 +1521,14 @@ class ucs:
         return ldap.dn.str2dn(dn.lower())[-len(x):] == x
 
     @staticmethod
-    def _subtree_replace(dn, subtree, subtreereplace):
+    def _subtree_replace(dn, subtree, subtreereplace, case_folding=True):
         extra = ''
         if subtree.startswith(',') and subtreereplace.startswith(','):
             subtreereplace = subtreereplace[1:]
             subtree = subtree[1:]
             extra = ','
-        _dn = ldap.dn.str2dn(dn.lower())
-        _subtree = ldap.dn.str2dn(subtree.lower())
+        _dn = ldap.dn.str2dn(dn.lower()) if case_folding else ldap.dn.str2dn(dn)
+        _subtree = ldap.dn.str2dn(subtree.lower()) if case_folding else ldap.dn.str2dn(subtree)
         if _dn[-len(_subtree):] != _subtree or (extra and _dn == _subtree):
             return dn
         return ldap.dn.dn2str(ldap.dn.str2dn(dn)[:-len(_subtree)] + ldap.dn.str2dn(subtreereplace))

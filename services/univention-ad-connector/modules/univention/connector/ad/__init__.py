@@ -742,6 +742,11 @@ class ad(univention.connector.ucs):
     def _remove_GUID(self, GUID):
         self._remove_config_option('AD GUID', self.__encode_GUID(GUID))
 
+    def _update_subtree_in_ad_guids(self, old_dn, new_dn):
+        for row in self.config.get_rows_with_value_ending_in_dn('AD GUID', old_dn):
+            _new_val = self._subtree_replace(row[1], old_dn, new_dn, case_folding=False)
+            self._set_config_option('AD GUID', row[0], _new_val)
+
     # handle rejected Objects
     def _save_rejected(self, id, dn):
         self._set_config_option('AD rejected', str(id), dn)
@@ -1865,6 +1870,11 @@ class ad(univention.connector.ucs):
                         self._remove_rejected(change_usn)
                         self.__update_lastUSN(ad_object)
                         self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
+                        if property_key in ("ou", "container"):
+                            if 'olddn' in ad_object:
+                                self._update_subtree_in_ad_guids(ad_object['olddn'], elements[0][0])
+                            else:
+                                ud.debug(ud.LDAP, ud.WARN, "Could not run _update_subtree_in_ad_guids because ad_object doesn't have olddn")
                     else:
                         self.save_rejected(ad_object)
             except ldap.SERVER_DOWN:
@@ -1980,6 +1990,11 @@ class ad(univention.connector.ucs):
                 try:
                     GUID = old_element[1]['objectGUID'][0]
                     self._set_DN_for_GUID(GUID, old_element[0])
+                    if property_key in ("ou", "container"):
+                        if 'olddn' in ad_object:
+                            self._update_subtree_in_ad_guids(ad_object['olddn'], old_element[0])
+                        else:
+                            ud.debug(ud.LDAP, ud.WARN, "Could not run _update_subtree_in_ad_guids because ad_object doesn't have olddn")
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
