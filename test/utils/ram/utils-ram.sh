@@ -501,6 +501,21 @@ performance_test_setup () {
 	sysctl -p
 }
 
+performance_test_checkout_build_install () {
+	local branch="$1"
+	local gitlab="git.knut.univention.de"
+	[ -z "$branch" ] && echo "ERROR: performance_test_checkout_build_install: specified branch name is empty string" && exit 1
+	univention-install git build-essential debhelper dh-python ucslint python3-all
+	git clone -b "$branch" "https://$gitlab/univention/dev/education/ucsschool-kelvin-rest-api.git" /var/tmp/kelvin
+	cd /var/tmp/kelvin/ucs-test-ucsschool-kelvin
+	DEBIAN_FRONTEND=noninteractive apt-get build-dep --yes . && \
+		dpkg-buildpackage -b && \
+		apt-get install --yes -f ../ucs-test-ucsschool-kelvin-performance_*.deb || \
+			echo "ERROR: BUILD OF ucs-test-ucsschool-kelvin-performance FAILED" && exit 1
+	echo "INFO: ucs-test-ucsschool-kelvin-performance built and installed"
+	dpkg -l ucs-test-ucsschool-kelvin-performance
+}
+
 create_mail_domains_dwh_ShortName () {
 	DOM="$(jq -r .maildomain /var/lib/ucs-school-import/configs/kelvin.json)"
 	for dwh_ShortName in $(udm container/ou list | grep dwh_ShortName: | cut -d ' ' -f 4); do
