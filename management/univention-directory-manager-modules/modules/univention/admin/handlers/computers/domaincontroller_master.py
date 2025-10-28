@@ -94,6 +94,7 @@ property_descriptions = dict({
         short_description=_('Network'),
         long_description='',
         syntax=univention.admin.syntax.network,
+        # forward_reference('networks/network', 'dn')
     ),
     'ip': univention.admin.property(
         short_description=_('IP address'),
@@ -114,6 +115,7 @@ property_descriptions = dict({
         long_description='',
         syntax=univention.admin.syntax.Service,
         multivalue=True,
+        # forward_reference('settings/service', 'name', ldap_attribute='cn')
     ),
     'dnsEntryZoneForward': univention.admin.property(
         short_description=_('Forward zone for DNS entry'),
@@ -121,6 +123,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.dnsEntry,
         multivalue=True,
         dontsearch=True,
+        # back_reference('dns/forward_zone', '%(forward_zone)s %(ip)s', 'ip')
     ),
     'dnsEntryZoneReverse': univention.admin.property(
         short_description=_('Reverse zone for DNS entry'),
@@ -128,6 +131,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.dnsEntryReverse,
         multivalue=True,
         dontsearch=True,
+        # back_reference('dns/reverse_zone', '%(reverse_zone)s %(ip)s', 'ip')
     ),
     'dnsEntryZoneAlias': univention.admin.property(
         short_description=_('Zone for DNS alias'),
@@ -135,12 +139,14 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.dnsEntryAlias,
         multivalue=True,
         dontsearch=True,
+        # back_reference('dns/', '%(zone)s %(forward_zone)s $(alias)s')
     ),
     'dnsAlias': univention.admin.property(
         short_description=_('DNS alias'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        # back_reference('dns/alias', 'name', 'name' | '%(name)s.%(zone)s', ldap_attribute='relativeDomainName')
     ),
     'dhcpEntryZone': univention.admin.property(
         short_description=_('DHCP service'),
@@ -148,6 +154,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.dhcpEntry,
         multivalue=True,
         dontsearch=True,
+        # back_reference('dhcp/service', '%(service)s $(ip)s %(mac)s')
     ),
     'password': univention.admin.property(
         short_description=_('Password'),
@@ -178,6 +185,7 @@ property_descriptions = dict({
         options=['posix'],
         required=True,
         dontsearch=True,
+        # back_reference('groups/group', 'users', 'dn', ldap_attribute='uniqueMember')
     ),
     'reinstall': univention.admin.property(
         short_description=_('(Re-)install on next boot'),
@@ -206,6 +214,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
         dontsearch=True,
+        # back_reference('groups/group', 'users', 'dn', ldap_attribute='uniqueMember')
     ),
     'sambaRID': univention.admin.property(
         short_description=_('Relative ID'),

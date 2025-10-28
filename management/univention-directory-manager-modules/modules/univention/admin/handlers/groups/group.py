@@ -119,6 +119,7 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
+        # forward_reference('users/user', 'dn')
     ),
     'hosts': univention.admin.property(
         short_description=_('Hosts'),
@@ -130,6 +131,7 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
+        # forward_reference('computers/computer', 'dn')
     ),
     'mailAddress': univention.admin.property(
         short_description=_('Mail address'),
@@ -148,6 +150,7 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
+        # back_reference('groups/group', 'nestedGroup', 'dn')
     ),
     'nestedGroup': univention.admin.property(
         short_description=_('Groups'),
@@ -158,6 +161,7 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
+        # forward_reference('groups/group', 'dn')
     ),
     'allowedEmailUsers': univention.admin.property(
         short_description=_('Users that are allowed to send e-mails to the group'),

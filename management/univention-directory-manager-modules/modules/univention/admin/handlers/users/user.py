@@ -327,6 +327,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
         copyable=True,
+        # forward_reference('users/user', 'dn')
     ),
     'departmentNumber': univention.admin.property(
         short_description=_('Department number'),
@@ -435,6 +436,7 @@ property_descriptions = dict({
         multivalue=True,
         readonly_when_synced=True,
         copyable=True,
+        # back_reference('groups/group', 'users', 'dn', ldap_attribute='uniqueMember')
     ),
     'primaryGroup': univention.admin.property(
         short_description=_('Primary group'),
@@ -444,6 +446,7 @@ property_descriptions = dict({
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
+        # back_reference('groups/group', 'users', 'dn', ldap_attribute='uniqueMember')
     ),
     'mailHomeServer': univention.admin.property(
         short_description=_('Mail home server'),
@@ -451,6 +454,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.MailHomeServer,
         nonempty_is_default=True,
         copyable=True,
+        # forward_reference('computers/computer', '%(name)s.%(domain)s')  # service=IMAP
     ),
     'mailPrimaryAddress': univention.admin.property(
         short_description=_('Primary e-mail address (mailbox)'),
@@ -504,6 +508,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.WritableShare,
         dontsearch=True,
         copyable=True,
+        # forward_reference('shares/share')  # writeable=1
     ),
     'homeSharePath': univention.admin.property(
         short_description=_('Home share path'),
