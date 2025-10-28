@@ -1305,8 +1305,8 @@ class ucs(object):
         ud.debug(ud.LDAP, ud.INFO, "move_in_ucs: move object from %r to %r" % (object['olddn'], object['dn']))
         ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
         ucs_object.open()
-        ucs_object.move(object['dn'])
-        return True
+        res = ucs_object.move(object['dn'])
+        return res
 
     def _get_entryUUID(self, dn):
         try:
@@ -1507,9 +1507,16 @@ class ucs(object):
                 self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.remove_entry(guid)
             if object['modtype'] == 'move':
-                result = self.move_in_ucs(property_type, object, module, position)
-                self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
-                self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
+                res = self.move_in_ucs(property_type, object, module, position)
+                if isinstance(res, str):
+                    old_con_dn = original_object.get('olddn')
+                    if old_con_dn and pre_mapped_ad_dn != old_con_dn:
+                        self._remove_dn_mapping(object['olddn'], old_con_dn)
+                        if property_type in ('ou', 'container'):
+                            self._update_subtree_dns_in_mappings_by_con(old_con_dn, pre_mapped_ad_dn, object['olddn'], object['dn'])
+                    # self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
+                    self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
+                    result = True
 
             if object['modtype'] == 'modify':
                 res = self.modify_in_ucs(property_type, object, module, position)
