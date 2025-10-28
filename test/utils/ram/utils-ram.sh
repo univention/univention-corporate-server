@@ -505,7 +505,7 @@ performance_test_checkout_build_install () {
 	local branch="$1"
 	local gitlab="git.knut.univention.de"
 	[ -z "$branch" ] && echo "ERROR: performance_test_checkout_build_install: specified branch name is empty string" && exit 1
-	univention-install git build-essential debhelper dh-python ucslint python3-all
+	univention-install -y git
 	git clone -b "$branch" "https://$gitlab/univention/dev/education/ucsschool-kelvin-rest-api.git" /var/tmp/kelvin
 	cd /var/tmp/kelvin/ucs-test-ucsschool-kelvin
 	DEBIAN_FRONTEND=noninteractive apt-get build-dep --yes . && \
