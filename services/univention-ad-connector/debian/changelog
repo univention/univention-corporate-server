@@ -1,3 +1,10 @@
+univention-ad-connector (16.4.5) unstable; urgency=medium
+
+  * Bug #58680: synchronize account lockout states (except: AD does not support
+    setting locked=True).
+
+ -- Florian Best <best@univention.de>  Tue, 28 Oct 2025 13:39:27 +0100
+
 univention-ad-connector (16.4.4) unstable; urgency=medium
 
   * Bug #58738: Update object['dn'] in modify_in_ucs because udm
