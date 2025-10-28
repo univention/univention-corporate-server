@@ -1183,13 +1183,11 @@ class ucs:
         serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
         res = ucs_object.modify(serverctrls=serverctrls, response=response)
         if res:
-            object['dn'] = res
             for c in response.get('ctrls', []):
                 if c.controlType == PostReadControl.controlType:  # If the modify actually did something
                     entryUUID = c.entry['entryUUID'][0].decode('ASCII')
                     entryCSN = c.entry['entryCSN'][0].decode('ASCII')
                     self._remember_entryCSN_commited_by_connector(entryUUID, entryCSN)
-            res = True
         return res
 
     def move_in_ucs(self, property_type, object, module, position):
@@ -1409,9 +1407,15 @@ class ucs:
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
 
             if object['modtype'] == 'modify':
-                result = self.modify_in_ucs(property_type, object, module, position)
+                res = self.modify_in_ucs(property_type, object, module, position)
+                if res:
+                    if object['dn'].lower() != res.lower():  # This "modify" resulted in a modrdn in UDM even though the DN didn't change in AD
+                        self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
+                        object['dn'] = res
+                # Finally commit the current DNs to the DN mapping cache
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
+                result = True if res else res
 
             if not result:
                 log.warning("Failed to get Result for DN (%r)", object['dn'])
