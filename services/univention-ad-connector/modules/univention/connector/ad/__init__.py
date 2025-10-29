@@ -2032,6 +2032,49 @@ class ad(univention.connector.ucs):
                 ud.debug(ud.LDAP, ud.INFO, "_update_group_member_cache: add %s to ucs cache for group %s" % (add_ucs_dn, group))
                 self.group_members_cache_ucs[group].add(add_ucs_dn)
 
+    def _update_group_members_cache_for_subtree(self, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
+        ud.debug(ud.LDAP, ud.PROCESS, "_update_group_members_cache_for_subtree: update cache")
+        old_con_dn_lower = old_con_dn.lower()
+        old_ucs_dn_lower = old_ucs_dn.lower()
+        new_con_dn_lower = new_con_dn.lower()
+        new_ucs_dn_lower = new_ucs_dn.lower()
+        for group in self.group_members_cache_con:
+            # self.group_members_cache_con[group] = {self._subtree_replace(x, old_con_dn_lower, new_con_dn_lower) for x in self.group_members_cache_con[group]}
+            members_in_subtree = {x for x in self.group_members_cache_con[group] if x.endswith(old_con_dn_lower)}  # filter for efficiency
+            if members_in_subtree:
+                ud.debug(ud.LDAP, ud.INFO, "_update_group_members_cache_for_subtree: update con member cache for group %s: %s" % (group, members_in_subtree))
+                self.group_members_cache_con[group] -= members_in_subtree
+                self.group_members_cache_con[group] |= {self._subtree_replace(x, old_con_dn_lower, new_con_dn_lower) for x in members_in_subtree}
+        for group in self.group_members_cache_ucs:
+            # self.group_members_cache_ucs[group] = {self._subtree_replace(x, old_ucs_dn_lower, new_ucs_dn_lower) for x in self.group_members_cache_ucs[group]}
+            members_in_subtree = {x for x in self.group_members_cache_ucs[group] if x.endswith(old_ucs_dn_lower)}  # filter for efficiency
+            if members_in_subtree:
+                ud.debug(ud.LDAP, ud.INFO, "_update_group_members_cache_for_subtree: update ucs member cache for group %s: %s" % (group, members_in_subtree))
+                self.group_members_cache_ucs[group] -= members_in_subtree
+                self.group_members_cache_ucs[group] |= {self._subtree_replace(x, old_ucs_dn_lower, new_ucs_dn_lower) for x in members_in_subtree}
+
+    def _update_group_member_mapping_cache_for_subtree(self, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
+        ud.debug(ud.LDAP, ud.PROCESS, "_update_group_member_mapping_cache_for_subtree: update cache")
+        old_con_dn_lower = old_con_dn.lower()
+        members_in_subtree = [x for x in self.group_member_mapping_cache_con if x.endswith(old_con_dn_lower)]
+        for x in members_in_subtree:
+            self.group_member_mapping_cache_con[self._subtree_replace(x, old_con_dn, new_con_dn)] = self._subtree_replace(
+                self.group_member_mapping_cache_con[x],
+                old_ucs_dn,
+                new_ucs_dn,
+                case_folding=False)
+            del self.group_member_mapping_cache_con[x]
+
+        old_ucs_dn_lower = old_ucs_dn.lower()
+        members_in_subtree = [x for x in self.group_member_mapping_cache_ucs if x.endswith(old_ucs_dn_lower)]
+        for x in members_in_subtree:
+            self.group_member_mapping_cache_ucs[self._subtree_replace(x, old_ucs_dn, new_ucs_dn)] = self._subtree_replace(
+                self.group_member_mapping_cache_ucs[x],
+                old_con_dn,
+                new_con_dn,
+                case_folding=False)
+            del self.group_member_mapping_cache_ucs[x]
+
     def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
@@ -2077,14 +2120,43 @@ class ad(univention.connector.ucs):
                         raise
                 # need to actualise the GUID, group cache and DN-Mapping
                 object['modtype'] = 'move'
-                self._remove_dn_from_group_cache(con_dn=old_dn, ucs_dn=pre_mapped_ucs_old_dn)
                 self._update_group_member_cache(
                     remove_con_dn=old_dn.lower(),
                     remove_ucs_dn=pre_mapped_ucs_old_dn.lower(),
                     add_con_dn=object['dn'].lower(),
-                    add_ucs_dn=pre_mapped_ucs_dn.lower())
+                    add_ucs_dn=pre_mapped_ucs_dn.lower(),
+                )
                 self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
                 self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
+                if property_type in ('ou', 'container'):
+                    self._update_subtree_dns_in_mappings_by_con(
+                        old_con_dn=old_dn,
+                        old_ucs_dn=pre_mapped_ucs_old_dn,
+                        new_con_dn=object['dn'],
+                        new_ucs_dn=pre_mapped_ucs_dn,
+                    )
+                    self._update_group_members_cache_for_subtree(
+                        old_con_dn=old_dn,
+                        old_ucs_dn=pre_mapped_ucs_old_dn,
+                        new_con_dn=object['dn'],
+                        new_ucs_dn=pre_mapped_ucs_dn,
+                    )
+                    self._update_group_member_mapping_cache_for_subtree(
+                        old_con_dn=old_dn,
+                        old_ucs_dn=pre_mapped_ucs_old_dn,
+                        new_con_dn=object['dn'],
+                        new_ucs_dn=pre_mapped_ucs_dn,
+                    )
+                else:
+                    # The next lines fix the cache for the object itself
+                    # they look like only useful for objects that can be member
+                    # but we already excluded OUs and containers in this branch
+                    self._remove_dn_from_group_member_mapping_caches(
+                        con_dn=old_dn,
+                        ucs_dn=pre_mapped_ucs_old_dn
+                    )
+                    self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
+                    self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
                 self._set_DN_for_GUID(self.ad_search_ext_s(object['dn'], ldap.SCOPE_BASE, 'objectClass=*')[0][1]['objectGUID'][0], object['dn'])
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and AD group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
