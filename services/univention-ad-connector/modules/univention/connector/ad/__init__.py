@@ -2043,16 +2043,16 @@ class ad(univention.connector.ucs):
             if remove_con_dn and remove_con_dn in self.group_members_cache_con[group]:
                 log.debug("_update_group_member_cache: remove %s from con cache for group %s", remove_con_dn, group)
                 self.group_members_cache_con[group].remove(remove_con_dn)
-            if add_con_dn and add_con_dn not in self.group_members_cache_con[group]:
-                log.debug("_update_group_member_cache: add %s to con cache for group %s", add_con_dn, group)
-                self.group_members_cache_con[group].add(add_con_dn)
+                if add_con_dn and add_con_dn not in self.group_members_cache_con[group]:
+                    log.debug("_update_group_member_cache: add %s to con cache for group %s", add_con_dn, group)
+                    self.group_members_cache_con[group].add(add_con_dn)
         for group in self.group_members_cache_ucs:
             if remove_ucs_dn and remove_ucs_dn in self.group_members_cache_ucs[group]:
                 log.debug("_update_group_member_cache: remove %s from ucs cache for group %s", remove_ucs_dn, group)
                 self.group_members_cache_ucs[group].remove(remove_ucs_dn)
-            if add_ucs_dn and add_ucs_dn not in self.group_members_cache_ucs[group]:
-                log.debug("_update_group_member_cache: add %s to ucs cache for group %s", add_ucs_dn, group)
-                self.group_members_cache_ucs[group].add(add_ucs_dn)
+                if add_ucs_dn and add_ucs_dn not in self.group_members_cache_ucs[group]:
+                    log.debug("_update_group_member_cache: add %s to ucs cache for group %s", add_ucs_dn, group)
+                    self.group_members_cache_ucs[group].add(add_ucs_dn)
 
     def _update_group_members_cache_for_subtree(self, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
         log.process("_update_group_members_cache_for_subtree: update cache")
