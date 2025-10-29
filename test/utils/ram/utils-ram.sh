@@ -14,6 +14,12 @@ kelvin_setup () {
 	univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 --set ucsschool/kelvin/log_level=DEBUG && univention-app restart ucsschool-kelvin-rest-api
 }
 
+register_cpu_count () {
+    # Register the CPU-Count so the system that does the performance test can check
+    # that the right amount of CPUs is set.
+    ucr set test/kelvin-performance/cpu-count="$(lscpu --online --parse | grep -v ^# | wc -l)"
+}
+
 set_udm_properties_for_kelvin () {
 	cat <<EOT > /etc/ucsschool/kelvin/mapped_udm_properties.json
 {
