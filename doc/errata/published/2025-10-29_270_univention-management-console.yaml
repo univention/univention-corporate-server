@@ -9,3 +9,6 @@ desc: |
  * The `session-info` endpoint for the UMC now
    also returns the DN of the authenticated user.
 bug: [58743]
+erratum: 270
+announced: 2025-10-29
+support: core
