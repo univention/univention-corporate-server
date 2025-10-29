@@ -1,3 +1,9 @@
+univention-debug-python (14.3.2) unstable; urgency=medium
+
+  * Bug #58756: add log method to log duration of operations
+
+ -- Florian Best <best@univention.de>  Wed, 29 Oct 2025 16:40:17 +0100
+
 univention-debug-python (14.3.1) unstable; urgency=medium
 
   * Bug #58754: fix encoding of control sequence chars
