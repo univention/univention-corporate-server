@@ -21,4 +21,4 @@ desc: |
    variable is enabled, a resynchronization with one of the
    `resync_object_from_*` scripts will handle the resynchronization of
    ancestors automatically if necessary.
-bug: [58737,57979]
+bug: [58737,58735]
