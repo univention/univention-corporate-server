@@ -1,3 +1,9 @@
+univention-ldap-overlay-memberof (14.3.1) unstable; urgency=medium
+
+  * Bug #47464: add eq index for memberOf attribute
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 29 Nov 2025 10:30:18 +0200
+
 univention-ldap-overlay-memberof (14.3.0) UNRELEASED; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump

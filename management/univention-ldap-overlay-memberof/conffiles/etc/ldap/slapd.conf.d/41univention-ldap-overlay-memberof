@@ -16,4 +16,5 @@ if dangling_error:
 if modifiersname:
     print('memberof-dn			 %s' % modifiersname)
 print('memberof-refint		 %s' % ('true' if refint else 'false',))
+print('index				memberOf	eq')
 @!@

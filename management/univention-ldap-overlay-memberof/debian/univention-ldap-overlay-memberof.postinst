@@ -12,13 +12,34 @@ univention-config-registry set ldap/overlay/memberof?true
 
 test -x /etc/init.d/slapd && invoke-rc.d slapd crestart
 
-# new installations
-if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	# update groups if slapd is running, memberOf is activated and system is joined
-	if pidof slapd >/dev/null; then
-		# shellcheck source=/dev/null
-		. /usr/share/univention-lib/ucr.sh
-		test -e /var/univention-join/joined && /usr/share/univention-ldap-overlay-memberof/univention-update-memberof
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh
+
+if [ "$1" = "configure" ]; then
+	# new installations
+	if [ -z "$2" ]; then
+		# update groups if slapd is running, memberOf is activated and system is joined
+		if pidof slapd >/dev/null; then
+			test -e /var/univention-join/joined && /usr/share/univention-ldap-overlay-memberof/univention-update-memberof
+		fi
+	fi
+
+	if dpkg --compare-versions "$2" lt 14.3.1; then
+		if is_ucr_true ldap/index/autorebuild; then
+			echo "Indexing memberOf attribute"
+			systemctl stop slapd
+			output=$(/usr/sbin/slapindex -f /etc/ldap/slapd.conf memberOf 2>&1) || {
+				echo "Failed to index memberOf attribute" >&2
+				echo "$output" >&2
+			}
+			systemctl start slapd
+		else
+			cat >&2 <<-EOF
+			UCR variable 'ldap/index/autorebuild' is set to false.
+			Not automaticlly building index for memberOf.
+			Please manually run 'slapindex -f /etc/ldap/slapd.conf memberOf' manually.
+			EOF
+		fi
 	fi
 fi
 
