@@ -511,7 +511,7 @@ performance_test_checkout_build_install () {
 	DEBIAN_FRONTEND=noninteractive apt-get build-dep --yes . && \
 		dpkg-buildpackage -b && \
 		DEBIAN_FRONTEND=noninteractive apt-get install --yes -f ../ucs-test-ucsschool-kelvin-performance_*.deb || \
-			echo "ERROR: BUILD OF ucs-test-ucsschool-kelvin-performance FAILED" && exit 1
+			{ echo "ERROR: BUILD OF ucs-test-ucsschool-kelvin-performance FAILED" ; return 1; }
 	echo "INFO: ucs-test-ucsschool-kelvin-performance built and installed"
 	dpkg -l ucs-test-ucsschool-kelvin-performance
 }
