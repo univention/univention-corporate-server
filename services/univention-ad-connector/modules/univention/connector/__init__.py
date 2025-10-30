@@ -747,6 +747,44 @@ class ucs(object):
             self._remove_config_option('DN Mapping UCS', row[0])
             self._set_config_option('DN Mapping UCS', _new_key, _new_val)
 
+    def _update_group_related_caches(self, property_type, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
+        self._update_group_member_cache(
+            remove_con_dn=old_con_dn.lower(),
+            remove_ucs_dn=old_ucs_dn.lower(),
+            add_con_dn=new_con_dn.lower(),
+            add_ucs_dn=new_ucs_dn.lower(),
+        )
+        if property_type in ('ou', 'container'):
+            self._update_subtree_dns_in_mappings_by_con(
+                old_con_dn=old_con_dn,
+                old_ucs_dn=old_ucs_dn,
+                new_con_dn=new_con_dn,
+                new_ucs_dn=new_ucs_dn,
+            )
+            self._update_group_members_cache_for_subtree(
+                old_con_dn=old_con_dn,
+                old_ucs_dn=old_ucs_dn,
+                new_con_dn=new_con_dn,
+                new_ucs_dn=new_ucs_dn,
+            )
+            # The next call also fixes the cache for the object itself
+            self._update_group_member_mapping_cache_for_subtree(
+                old_con_dn=old_con_dn,
+                old_ucs_dn=old_ucs_dn,
+                new_con_dn=new_con_dn,
+                new_ucs_dn=new_ucs_dn,
+            )
+        else:
+            # The next lines fix the cache for the object itself
+            # they look like only useful for objects that can be member
+            # but we already excluded OUs and containers in this branch
+            self._remove_dn_from_group_member_mapping_caches(
+                con_dn=old_con_dn,
+                ucs_dn=old_ucs_dn,
+            )
+            self.group_member_mapping_cache_ucs[new_ucs_dn.lower()] = new_con_dn
+            self.group_member_mapping_cache_con[new_con_dn.lower()] = new_ucs_dn
+
     def _check_dn_mapping(self, dn_ucs, dn_con):
         dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
         dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
@@ -1513,42 +1551,13 @@ class ucs(object):
                     old_con_dn = original_object.get('olddn')
                     if old_con_dn and pre_mapped_ad_dn != old_con_dn:
                         self._remove_dn_mapping(object['olddn'], old_con_dn)
-                        # update group member caches
-                        self._update_group_member_cache(
-                            remove_con_dn=old_con_dn.lower(),
-                            remove_ucs_dn=object['olddn'].lower(),
-                            add_con_dn=pre_mapped_ad_dn.lower(),
-                            add_ucs_dn=object['dn'].lower(),
+                        self._update_group_related_caches(
+                            property_type,
+                            old_con_dn=old_con_dn,
+                            old_ucs_dn=object['olddn'],
+                            new_con_dn=pre_mapped_ad_dn,
+                            new_ucs_dn=object['dn'],
                         )
-                        if property_type in ('ou', 'container'):
-                            self._update_subtree_dns_in_mappings_by_con(
-                                old_con_dn=old_con_dn,
-                                old_ucs_dn=object['olddn'],
-                                new_con_dn=pre_mapped_ad_dn,
-                                new_ucs_dn=object['dn'],
-                            )
-                            self._update_group_members_cache_for_subtree(
-                                old_con_dn=old_con_dn,
-                                old_ucs_dn=object['olddn'],
-                                new_con_dn=pre_mapped_ad_dn,
-                                new_ucs_dn=object['dn'],
-                            )
-                            # The next call also fixes the cache for the object itself
-                            self._update_group_member_mapping_cache_for_subtree(
-                                old_con_dn=old_con_dn,
-                                old_ucs_dn=object['olddn'],
-                                new_con_dn=pre_mapped_ad_dn,
-                                new_ucs_dn=object['dn'],
-                            )
-                        else:
-                            # The next lines look like only useful for objects that can be member
-                            # but we already excluded OUs and containers in this branch
-                            self._remove_dn_from_group_member_mapping_caches(
-                                con_dn=old_con_dn,
-                                ucs_dn=object['olddn'],
-                            )
-                            self.group_member_mapping_cache_ucs[object['dn'].lower()] = pre_mapped_ad_dn
-                            self.group_member_mapping_cache_con[pre_mapped_ad_dn.lower()] = object['dn']
                     # self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
                     self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                     result = True
@@ -1562,41 +1571,13 @@ class ucs(object):
                     old_con_dn = original_object.get('olddn')
                     if old_con_dn and pre_mapped_ad_dn != old_con_dn:
                         self._remove_dn_mapping(object['olddn'], old_con_dn)
-                        # update group member caches
-                        self._update_group_member_cache(
-                            remove_con_dn=old_con_dn.lower(),
-                            remove_ucs_dn=object['olddn'].lower(),
-                            add_con_dn=pre_mapped_ad_dn.lower(),
-                            add_ucs_dn=object['dn'].lower(),
+                        self._update_group_related_caches(
+                            property_type,
+                            old_con_dn=old_con_dn,
+                            old_ucs_dn=object['olddn'],
+                            new_con_dn=pre_mapped_ad_dn,
+                            new_ucs_dn=object['dn'],
                         )
-                        if property_type in ("ou", "container"):
-                            self._update_subtree_dns_in_mappings_by_con(
-                                old_con_dn=old_con_dn,
-                                old_ucs_dn=object['olddn'],
-                                new_con_dn=pre_mapped_ad_dn,
-                                new_ucs_dn=object['dn'],
-                            )
-                            self._update_group_members_cache_for_subtree(
-                                old_con_dn=old_con_dn,
-                                old_ucs_dn=object['olddn'],
-                                new_con_dn=pre_mapped_ad_dn,
-                                new_ucs_dn=object['dn'],
-                            )
-                            self._update_group_member_mapping_cache_for_subtree(
-                                old_con_dn=old_con_dn,
-                                old_ucs_dn=object['olddn'],
-                                new_con_dn=pre_mapped_ad_dn,
-                                new_ucs_dn=object['dn'],
-                            )
-                        else:
-                            # The next lines look like only useful for objects that can be member
-                            # but we already excluded OUs and containers in this branch
-                            self._remove_dn_from_group_member_mapping_caches(
-                                con_dn=old_con_dn,
-                                ucs_dn=object['olddn'],
-                            )
-                            self.group_member_mapping_cache_ucs[object['dn'].lower()] = pre_mapped_ad_dn
-                            self.group_member_mapping_cache_con[pre_mapped_ad_dn.lower()] = object['dn']
                 # Finally commit the current DNs to the DN mapping cache
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
