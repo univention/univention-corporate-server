@@ -4,6 +4,7 @@
 """Common functions used by tests."""
 
 
+import contextlib
 import functools
 import os
 import socket
@@ -318,6 +319,27 @@ def start_listener() -> None:
 
 def restart_listener() -> None:
     subprocess.call(('systemctl', 'restart', 'univention-directory-listener'))
+
+
+def stop_adconnector() -> None:
+    subprocess.check_call(['systemctl', 'stop', 'univention-ad-connector'])
+
+
+def start_adconnector() -> None:
+    subprocess.check_call(['systemctl', 'start', 'univention-ad-connector'])
+
+
+def restart_adconnector() -> None:
+    subprocess.check_call(['systemctl', 'restart', 'univention-ad-connector'])
+
+
+@contextlib.contextmanager
+def adconnector_stopped():
+    try:
+        stop_adconnector()
+        yield
+    finally:
+        start_adconnector()
 
 
 def restart_firewall() -> None:
