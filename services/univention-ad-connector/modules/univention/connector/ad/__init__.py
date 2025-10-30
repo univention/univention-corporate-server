@@ -2075,6 +2075,44 @@ class ad(univention.connector.ucs):
                 case_folding=False)
             del self.group_member_mapping_cache_ucs[x]
 
+    def _update_group_related_caches(self, property_type, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
+        self._update_group_member_cache(
+            remove_con_dn=old_con_dn.lower(),
+            remove_ucs_dn=old_ucs_dn.lower(),
+            add_con_dn=new_con_dn.lower(),
+            add_ucs_dn=new_ucs_dn.lower(),
+        )
+        if property_type in ('ou', 'container'):
+            self._update_subtree_dns_in_mappings_by_con(
+                old_con_dn=old_con_dn,
+                old_ucs_dn=old_ucs_dn,
+                new_con_dn=new_con_dn,
+                new_ucs_dn=new_ucs_dn,
+            )
+            self._update_group_members_cache_for_subtree(
+                old_con_dn=old_con_dn,
+                old_ucs_dn=old_ucs_dn,
+                new_con_dn=new_con_dn,
+                new_ucs_dn=new_ucs_dn,
+            )
+            # The next call also fixes the cache for the object itself
+            self._update_group_member_mapping_cache_for_subtree(
+                old_con_dn=old_con_dn,
+                old_ucs_dn=old_ucs_dn,
+                new_con_dn=new_con_dn,
+                new_ucs_dn=new_ucs_dn,
+            )
+        else:
+            # The next lines fix the cache for the object itself
+            # they look like only useful for objects that can be member
+            # but we already excluded OUs and containers in this branch
+            self._remove_dn_from_group_member_mapping_caches(
+                con_dn=old_con_dn,
+                ucs_dn=old_ucs_dn,
+            )
+            self.group_member_mapping_cache_ucs[new_ucs_dn.lower()] = new_con_dn
+            self.group_member_mapping_cache_con[new_con_dn.lower()] = new_ucs_dn
+
     def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, object_old=None):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
@@ -2120,42 +2158,13 @@ class ad(univention.connector.ucs):
                         raise
                 # need to actualise the GUID, group cache and DN-Mapping
                 object['modtype'] = 'move'
-                self._update_group_member_cache(
-                    remove_con_dn=old_dn.lower(),
-                    remove_ucs_dn=pre_mapped_ucs_old_dn.lower(),
-                    add_con_dn=object['dn'].lower(),
-                    add_ucs_dn=pre_mapped_ucs_dn.lower(),
+                self._update_group_related_caches(
+                    property_type,
+                    old_con_dn=old_dn,
+                    old_ucs_dn=pre_mapped_ucs_old_dn,
+                    new_con_dn=object['dn'],
+                    new_ucs_dn=pre_mapped_ucs_dn,
                 )
-                if property_type in ('ou', 'container'):
-                    self._update_subtree_dns_in_mappings_by_con(
-                        old_con_dn=old_dn,
-                        old_ucs_dn=pre_mapped_ucs_old_dn,
-                        new_con_dn=object['dn'],
-                        new_ucs_dn=pre_mapped_ucs_dn,
-                    )
-                    self._update_group_members_cache_for_subtree(
-                        old_con_dn=old_dn,
-                        old_ucs_dn=pre_mapped_ucs_old_dn,
-                        new_con_dn=object['dn'],
-                        new_ucs_dn=pre_mapped_ucs_dn,
-                    )
-                    # The next call also fixes the cache for the object itself
-                    self._update_group_member_mapping_cache_for_subtree(
-                        old_con_dn=old_dn,
-                        old_ucs_dn=pre_mapped_ucs_old_dn,
-                        new_con_dn=object['dn'],
-                        new_ucs_dn=pre_mapped_ucs_dn,
-                    )
-                else:
-                    # The next lines fix the cache for the object itself
-                    # they look like only useful for objects that can be member
-                    # but we already excluded OUs and containers in this branch
-                    self._remove_dn_from_group_member_mapping_caches(
-                        con_dn=old_dn,
-                        ucs_dn=pre_mapped_ucs_old_dn
-                    )
-                    self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
-                    self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
                 self._set_DN_for_GUID(self.ad_search_ext_s(object['dn'], ldap.SCOPE_BASE, 'objectClass=*')[0][1]['objectGUID'][0], object['dn'])
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and AD group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
