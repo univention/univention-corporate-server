@@ -2002,7 +2002,7 @@ class ad(univention.connector.ucs):
     def __has_attribute_value_changed(self, attribute, object_old, new_object):
         return object_old["attributes"].get(attribute) != new_object["attributes"].get(attribute)
 
-    def _remove_dn_from_group_cache(self, con_dn=None, ucs_dn=None):
+    def _remove_dn_from_group_member_mapping_caches(self, con_dn=None, ucs_dn=None):
         if con_dn:
             try:
                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Removing %s from AD group member mapping cache" % con_dn)
@@ -2126,8 +2126,6 @@ class ad(univention.connector.ucs):
                     add_con_dn=object['dn'].lower(),
                     add_ucs_dn=pre_mapped_ucs_dn.lower(),
                 )
-                self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
-                self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
                 if property_type in ('ou', 'container'):
                     self._update_subtree_dns_in_mappings_by_con(
                         old_con_dn=old_dn,
@@ -2141,6 +2139,7 @@ class ad(univention.connector.ucs):
                         new_con_dn=object['dn'],
                         new_ucs_dn=pre_mapped_ucs_dn,
                     )
+                    # The next call also fixes the cache for the object itself
                     self._update_group_member_mapping_cache_for_subtree(
                         old_con_dn=old_dn,
                         old_ucs_dn=pre_mapped_ucs_old_dn,
@@ -2404,7 +2403,7 @@ class ad(univention.connector.ucs):
         elif object['modtype'] == 'delete':
             self.delete_in_ad(object, property_type)
             # update group cache
-            self._remove_dn_from_group_cache(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
+            self._remove_dn_from_group_member_mapping_caches(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
             self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
         else:
             ud.debug(ud.LDAP, ud.WARN, "unknown modtype (%s : %s)" % (object['dn'], object['modtype']))
