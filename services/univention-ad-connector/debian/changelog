@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.26) unstable; urgency=medium
+
+  * Bug #58739: Imrpoved cache update when renaming or moving OUs
+
+ -- Arvid Requate <requate@univention.de>  Thu, 30 Oct 2025 15:47:43 +0100
+
 univention-ad-connector (14.0.25) unstable; urgency=medium
 
   * Bug #58735: Allow synchronization of parents of allowed subtrees
