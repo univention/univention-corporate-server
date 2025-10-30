@@ -94,13 +94,6 @@ def udm() -> Iterator[_udm.UCSTestUDM]:
         yield udm
 
 
-@pytest.fixture(scope='module')
-def udm_module() -> Iterator[_udm.UCSTestUDM]:
-    """Auto-reverting UDM wrapper."""
-    with _udm.UCSTestUDM() as udm:
-        yield udm
-
-
 @pytest.fixture(scope='session')
 def udm_session() -> Iterator[_udm.UCSTestUDM]:
     """Auto-reverting UDM wrapper."""

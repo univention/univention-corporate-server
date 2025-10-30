@@ -4,48 +4,79 @@
 """Common functions/fixtures for recyclebin tests."""
 
 import random
+from collections.abc import Iterator
 from types import SimpleNamespace
+from typing import Any
 
 import pytest
 from ldap.dn import escape_dn_chars
 
 from univention.config_registry import ucr as _ucr
 from univention.testing.strings import random_username
-from univention.testing.utils import verify_ldap_object
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import restart_listener, verify_ldap_object
 
 
 RECYCLEBIN_DN = "cn=recyclebin,cn=internal"
 
 
-def _deleted_object_dn(u_obj_id):
+def _deleted_object_dn(univention_object_identifier: str) -> str:
     """Get the DN of the deleted object in the recyclebin"""
-    return f'univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(u_obj_id)},{RECYCLEBIN_DN}'
+    return f'univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(univention_object_identifier)},{RECYCLEBIN_DN}'
 
 
-def __recyclebin_policy(udm, ldap_base):
-    name = random_username()
+def _restore_in_ucs(univention_object_identifier: str, udm: UCSTestUDM) -> str:
+    deleted_dn = _deleted_object_dn(univention_object_identifier)
+    restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_dn, wait_for_replication=True)
+    return restored_dn
+
+
+def __recyclebin_policy(udm: UCSTestUDM, ldap_base: str, request: Any) -> tuple[str, int]:
+    policy_name = random_username()
+    if hasattr(request, 'param'):
+        container_name = request.param
+    else:
+        container_name = random_username()
     retention_days = random.randint(100, 300)  # days
     pol_dn = udm.create_object(
         'policies/recyclebin',
         position=f'cn=policies,{ldap_base}',
-        name=name,
+        name=policy_name,
         udm_modules=['users/user', 'groups/group'],
         ignored_object_classes=['pkiUser'],
         retention_days=retention_days,
         wait_for_replication=False,
     )
-    con_dn = udm.create_object('container/cn', position=f'{ldap_base}', name=f'recyclebin_{name}', policy_reference=pol_dn, wait_for_replication=False)
+    con_dn = udm.create_object('container/cn', position=f'{ldap_base}', name=f'recyclebin_{container_name}', policy_reference=pol_dn, wait_for_replication=False)
     return con_dn, retention_days
 
 
+@pytest.fixture(scope='session', autouse=True)
+def enable_recylebin(ucr_session) -> Iterator[bool]:
+    ucr_session.load()
+    if ucr_session.is_true('listener/module/recyclebin/deactivate', False):
+        print('Enable recyclebin')
+        ucr_session.handler_set(['listener/module/recyclebin/deactivate=false'])
+        restart_listener()
+
+        yield True
+
+        print('Disable recyclebin')
+        restart_listener()
+
+    else:
+        print('Recyclebin is enabled')
+        yield True
+
+
 @pytest.fixture(scope='module')
-def recyclebin_policy_session(udm_session, ldap_base):
-    return __recyclebin_policy(udm_session, ldap_base)
+def recyclebin_policy_session(udm_session, ldap_base, request):
+    return __recyclebin_policy(udm_session, ldap_base, request)
 
 
 @pytest.fixture
-def recyclebin_policy(udm, ldap_base):
-    return __recyclebin_policy(udm, ldap_base)
+def recyclebin_policy(udm, ldap_base, request):
+    return __recyclebin_policy(udm, ldap_base, request)
 
 
 @pytest.fixture

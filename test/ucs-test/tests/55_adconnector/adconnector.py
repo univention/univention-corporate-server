@@ -8,18 +8,25 @@ from time import sleep
 from types import SimpleNamespace
 
 import ldap
+from ldap import MOD_DELETE, MOD_REPLACE, SCOPE_SUBTREE
+from ldap.controls import LDAPControl
+from ldap.dn import dn2str, str2dn
+from ldap.filter import filter_format
 
 import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
-from univention.connector import ad, configdb
+from univention.connector import ad, configdb, decode_guid
 from univention.testing import ldap_glue
 from univention.testing.strings import random_username
 
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
+LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
+LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 
 
 class ADConnection(ldap_glue.ADConnection):
@@ -28,6 +35,18 @@ class ADConnection(ldap_glue.ADConnection):
     @classmethod
     def decode_sid(cls, sid):
         return ad.decode_sid(sid)
+
+    @classmethod
+    def decode_guid(cls, guid):
+        return decode_guid(guid)
+
+
+def ucs_winrm(cmd: list[str]) -> list[str]:
+    image = 'docker.software-univention.de/ucs-winrm'
+    winrm = ['docker', 'run', '--rm', '-v', '/etc/localtime:/etc/localtime:ro', '-v', '/root/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro', image, *cmd]
+    print(f'running {winrm}')
+    out = subprocess.check_output(winrm)
+    return out.decode('UTF-8')
 
 
 def connector_running_on_this_host():
@@ -190,6 +209,9 @@ class _Connector:
             return tracebacks[-1]
         return None
 
+    def get_uoid2guid_mapping(self, uoid):
+        return self.cache_internal.get('uoid2guid', uoid)
+
     def wait_for_sync(self):
         return wait_for_sync()
 
@@ -312,6 +334,37 @@ class _Connector:
         elif object_type == "container/ou":
             obj = tcommon.map_udm_ou_to_con(obj)
         self._ad.verify_object(ad_dn, obj)
+
+    def restore_object(self, dn: str, position=None):
+        cn, *parent_dn = str2dn(dn)
+        if not (cn and parent_dn):
+            return
+        parent_dn_string = dn2str(parent_dn)
+        filter_ad = filter_format('(&(cn=%s\nDEL:*)(lastKnownParent=%s))', [cn[0][1], parent_dn_string])
+        result = self._ad.lo.search_ext_s(
+            self._ad.adldapbase,
+            SCOPE_SUBTREE,
+            filter_ad,
+            ['1.1'],
+            serverctrls=[
+                LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=True),
+                LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=False),
+            ],
+        )
+        if not result or len(result) > 1:
+            return
+        restore_dn = result[0][0]
+        if position:
+            position_dn = str2dn(position)
+            dn = dn2str([cn, *position_dn])
+        self._ad.lo.modify_ext_s(
+            restore_dn,
+            [(MOD_DELETE, 'isDeleted', None), (MOD_REPLACE, 'distinguishedName', dn.encode('UTF-8'))],
+            serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)],
+        )
+
+    def get_dn(self, cn: str) -> str:
+        return self._ad.search(filter_format('(cn=%s)', [cn]))[0][0]
 
 
 @contextlib.contextmanager

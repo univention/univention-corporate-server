@@ -840,6 +840,12 @@ class UCSTestUDM:
         for line in stdout.splitlines():  # :pylint: disable-msg=E1103
             if line.startswith('Object restored: '):
                 restored_dn = line.split('Object restored: ', 1)[-1]
+                try:
+                    restored_modulename = self._lo.get(restored_dn, ['univentionObjectType']).get('univentionObjectType')[0].decode('UTF-8')
+                    print(f'Restored module: {restored_modulename}')
+                    self._cleanup.setdefault(restored_modulename, []).append(restored_dn)
+                except Exception:
+                    print(f'WARNING: New module couldn\'t be found after restore! Object is not editable via UDMTestUDM! ({restored_dn})')
                 break
         else:
             raise UCSTestUDM_RestoreUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})

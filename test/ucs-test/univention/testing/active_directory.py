@@ -366,6 +366,12 @@ class User(SambaTool):
     def unlock(self, username: str):
         self.execute(['user', 'unlock', username])
 
+    def enable(self, username: str):
+        self.execute(['user', 'enable', username])
+
+    def disable(self, username: str):
+        self.execute(['user', 'disable', username])
+
     def get(self, username: str) -> UserData:
         res = self.execute(['user', 'show', username])
 

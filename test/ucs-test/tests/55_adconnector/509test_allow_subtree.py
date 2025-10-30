@@ -131,11 +131,11 @@ def allow_subtree_setup(
                         ],
                     )
                     restart_adconnector()
-                udm.create_object('container/cn', name=allowed1.name, position=allowed1.udm_position)
-                udm.create_object('container/ou', name=not_allowed1.name)
-                udm.create_object('container/ou', name=allowed2.name, position=allowed2.udm_position)
+                udm.create_object('container/cn', name=allowed1.name, position=allowed1.udm_position, wait_for_replication=False)
+                udm.create_object('container/ou', name=not_allowed1.name, wait_for_replication=False)
+                udm.create_object('container/ou', name=allowed2.name, position=allowed2.udm_position, wait_for_replication=False)
                 # udm.create_object('container/cn', name=not_allowed2.name)   # not necessary to provision/remove, that's cn=users
-                udm.create_object('container/ou', name=not_allowed3.name, position=not_allowed3.udm_position)
+                udm.create_object('container/ou', name=not_allowed3.name, position=not_allowed3.udm_position, wait_for_replication=False)
                 if pre_create_objects:
                     not_allowed1.objects = create_objects_in_ucs(udm, not_allowed1, wait=False)
                     not_allowed2.objects = create_objects_in_ucs(udm, not_allowed2, wait=False)
@@ -161,7 +161,7 @@ def allow_subtree_setup(
                     ],
                 )
                 restart_adconnector()
-            yield ([allowed1, allowed2], [not_allowed1, not_allowed2, not_allowed3], udm)
+                yield ([allowed1, allowed2], [not_allowed1, not_allowed2, not_allowed3], udm)
         finally:
             restart_adconnector()
     wait_for_sync()
@@ -235,7 +235,7 @@ def test_create(sync_mode: str, allow_subtree_ancestors: bool) -> None:
                 for obj in create_objects_in_ucs(udm, tree):
                     with pytest.raises(AssertionError):
                         AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    udm.verify_ldap_object(obj.udm_dn)
+                    udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
                 # check objects created in AD are not synced to UCS
                 for obj in create_objects_in_ad(AD, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
@@ -246,11 +246,11 @@ def test_create(sync_mode: str, allow_subtree_ancestors: bool) -> None:
             if sync_mode in ('sync', 'write'):
                 for obj in create_objects_in_ucs(udm, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    udm.verify_ldap_object(obj.udm_dn)
+                    udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
             if sync_mode in ('sync', 'read'):
                 for obj in create_objects_in_ad(AD, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    udm.verify_ldap_object(obj.udm_dn)
+                    udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync"])

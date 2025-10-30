@@ -480,8 +480,11 @@ class ADConnection(LDAPConnection):
                 expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, list | tuple) else (tcommon.to_unicode(value).lower(),))
                 if not expected.issubset(ad_value):
                     try:
-                        ad_value = {tcommon.normalize_dn(dn) for dn in ad_value}
-                        expected = {tcommon.normalize_dn(dn) for dn in expected}
+                        ad_value_dn = {tcommon.normalize_dn(dn) for dn in ad_value}
+                        expected_dn = {tcommon.normalize_dn(dn) for dn in expected}
+                        if expected.issubset(ad_value):
+                            ad_value = ad_value_dn
+                            expected = expected_dn
                     except ldap.DECODING_ERROR:
                         pass
                 error_msg = f'{key}: {expected} not in {ad_value}, object {ad_object}'

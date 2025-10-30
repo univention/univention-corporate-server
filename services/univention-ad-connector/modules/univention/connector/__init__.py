@@ -1575,11 +1575,10 @@ class ucs:
             # deleted_object_attr = del_res[0][1]
         else:
             if len(search_result) == 0:
-                log.warning('Restore chancelled, deleted object not found with original DN: %s', deleted_object_dn)
+                log.warning('Restore chancelled, deleted object not found with original DN: %s', original_dn)
             else:
                 log.warning(
-                    'Restore chancelled, more than one deleted object found with original DN: %s',
-                    original_dn,
+                    'Restore chancelled, more than one deleted object found with original DN: %s', original_dn,
                 )
             return
 
