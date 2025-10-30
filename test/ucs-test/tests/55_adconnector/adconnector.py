@@ -2,6 +2,8 @@ import contextlib
 import subprocess
 from time import sleep
 
+import ldap
+
 import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
@@ -12,6 +14,9 @@ from univention.testing import ldap_glue
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
+LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
+LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 
 
 class ADConnection(ldap_glue.ADConnection):
@@ -113,6 +118,23 @@ class _Connector:
         elif object_type == "container/ou":
             obj = tcommon.map_udm_ou_to_con(obj)
         self._ad.verify_object(ad_dn, obj)
+
+    def restore_object(self, ad_dn):
+        cn, *parent_dn = ldap.dn.str2dn(ad_dn)
+        if not (cn and parent_dn):
+            return
+        parent_dn_string = ldap.dn.dn2str(parent_dn)
+        filter_ad = ldap.filter.filter_format('(&(cn=%s\nDEL:*)(lastKnownParent=%s))', [cn[0][1], parent_dn_string])
+        restore_dn = self._ad.search(filter_ad)[0][0][0]
+        self._ad.lo.modify_ext_s(
+            restore_dn,
+            [(ldap.MOD_REPLACE, 'distinguishedName', restore_dn.encode('UTF-8'))],
+            serverctrls=[ldap.controls.LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)],
+        )
+
+    def get_dn(self, cn):
+        filter = f'(cn={cn})'
+        return self._ad.search(filter)[0][0]
 
 
 @contextlib.contextmanager
