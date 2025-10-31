@@ -1,3 +1,9 @@
+ucs-test (10.0.24-29) unstable; urgency=medium
+
+  * Bug #58739: group membership tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 04 Nov 2025 16:33:38 +0100
+
 ucs-test (10.0.24-28) unstable; urgency=medium
 
   * Bug #58735: fix copy paste error s4 -> ad
