@@ -935,7 +935,7 @@ class ucs(object):
 
     def get_ucs_ldap_object_dn(self, dn):
         try:
-            return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
+            return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('1.1',))[0][0]
         except ldap.NO_SUCH_OBJECT:
             return
         except ldap.INVALID_DN_SYNTAX:
@@ -1473,12 +1473,16 @@ class ucs(object):
 
             old_object = self.get_ucs_object(property_type, object.get('olddn', object['dn']))
 
+            # Corrections in case the target situation is unexpected:
             if old_object and object['modtype'] == 'add':
                 object['modtype'] = 'modify'
             if not old_object and object['modtype'] == 'modify':
                 object['modtype'] = 'add'
             if not old_object and object['modtype'] == 'move':
-                object['modtype'] = 'add'
+                if self.get_ucs_ldap_object_dn(object['dn']):
+                    object['modtype'] = 'modify'
+                else:
+                    object['modtype'] = 'add'
 
             if self.group_member_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
                 self.group_member_mapping_cache_ucs[object['dn'].lower()] = None
