@@ -1412,12 +1412,16 @@ class ucs(object):
 
             old_object = self.get_ucs_object(property_type, object.get('olddn', object['dn']))
 
+            # Corrections in case the target situation is unexpected:
             if old_object and object['modtype'] == 'add':
                 object['modtype'] = 'modify'
             if not old_object and object['modtype'] == 'modify':
                 object['modtype'] = 'add'
             if not old_object and object['modtype'] == 'move':
-                object['modtype'] = 'add'
+                if self.get_ucs_object(property_type, object['dn']):
+                    object['modtype'] = 'modify'
+                else:
+                    object['modtype'] = 'add'
 
             if self.group_member_mapping_cache_ucs.get(object['dn'].lower()) and object['modtype'] != 'delete':
                 self.group_member_mapping_cache_ucs[object['dn'].lower()] = None
