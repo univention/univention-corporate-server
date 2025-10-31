@@ -1210,31 +1210,56 @@ class ucs:
         ucs_object.move(object['dn'])
         return True
 
-    def restore_in_ucs(self, ad_object: dict, object_type: str) -> str | None:
-        SUPPORTED_TYPES = [
-            name
-            for name, mod in univention.admin.modules.modules.items()
-            if getattr(mod, 'supports_recyclebin', False)
-        ]
-        if object_type not in SUPPORTED_TYPES:
+    def restore_in_ucs(self, ad_object: dict, property_type: str) -> str | None:
+        # SUPPORTED_TYPES = [
+        #     name
+        #     for name, mod in univention.admin.modules.modules.items()
+        #     if getattr(mod, 'supports_recyclebin', False)
+        # ]
+        # if self.property.get(property_type).ucs_module not in SUPPORTED_TYPES:
+        #     log.warning(
+        #         'Restore chancelled, property type is not in supported types! (%s)',
+        #         property_type,
+        #         supported_types=SUPPORTED_TYPES,
+        #     )
+        #     return
+
+        # TODO: Check if this can really happen!
+        if not ad_object.get('dn'):
+            log.warning('Restore chancelled, object has no DN!')
             return
 
-        if not ad_object.get('dn'):
-            return
+        # Get the attributes of the deleted object from the UCS LDAP.
         original_dn = ad_object['dn']
         deleted_object_dn = f'univentionRecycleBinOriginalDN={ldap.dn.escape_dn_chars(original_dn)},{RECYCLEBIN_BASE}'
         deleted_object_attr = self.lo.get(deleted_object_dn)
         if not deleted_object_attr:
+            log.warning('Restore chancelled, deleted object not found! (%s)', deleted_object_dn)
             return
-        try:
-            recyclebin_module = univention.admin.modules.get('recyclebin/deletedobject')
-            position = univention.admin.uldap.position(RECYCLEBIN_BASE)
-            recyclebin_object = recyclebin_module.object(None, self.lo, position=position, dn=deleted_object_dn)
-            recyclebin_object.open()
-            restored_dn = recyclebin_object.restore()
-        except Exception as e:
-            log.exception(e)
-            return
+
+        # Check if the deleted object that was found matches to the requested object.
+        #
+        # TODO: Use guid instead of objectSid,because the guid can be used for all object types!
+        # TODO: Check if this is really necassary
+        # if property_type in ('user', 'group'):
+        #     restored_sid = deleted_object_attr.get('sambaSID', [None])[0]
+        #     sid = self.decode_sid(ad_object['attributes']['objectSid'][0]).encode('UTF-8')
+        #     if (not restored_sid or restored_sid != sid):
+        #         # TODO: Check if an exception should be raised.
+        #         log.warning(
+        #             'Restore chancelled, because of SID missmatching! (%s)', ad_object['dn'],
+        #             restored_sid=restored_sid, sid=sid,
+        #         )
+        #         return
+
+        # Restore object in UCS with UDM.
+        recyclebin_module = univention.admin.modules.get('recyclebin/deletedobject')
+        position = univention.admin.uldap.position(RECYCLEBIN_BASE)
+        recyclebin_object = recyclebin_module.object(None, self.lo, position=position, dn=deleted_object_dn)
+        recyclebin_object.open()
+        restored_dn = recyclebin_object.restore()
+
+        log.process('Object %s successfully restored to %s', original_dn, restored_dn)
 
         return restored_dn
 
@@ -1404,7 +1429,7 @@ class ucs:
 
             old_object = self.get_ucs_object(property_type, object.get('olddn', object['dn']))
 
-            if 'cn=deleted objects' in object['olddn'].lower():
+            if (univention.dn.DN('CN=Deleted Objects') in univention.dn.DN(object.get('olddn'))):
                 object['modtype'] = 'restore'
             if old_object and object['modtype'] == 'add':
                 object['modtype'] = 'modify'
@@ -1451,13 +1476,19 @@ class ucs:
                 self.adcache.add_entry(guid, original_object.get('attributes'))
 
             if object['modtype'] == 'restore':
-                result = self.restore_in_ucs(object, property_type)
+                restored_dn = self.restore_in_ucs(object, property_type)
+                if restored_dn:
+                    object['dn'] = restored_dn
+                    object['olddn'] = restored_dn
+                    self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
+                    self.adcache.add_entry(guid, original_object.get('attributes'))
+                    result = True
 
             if not result:
                 log.warning("Failed to get Result for DN (%r)", object['dn'])
                 return False
 
-            if object['modtype'] in ['add', 'modify']:
+            if object['modtype'] in ['add', 'modify', 'restore']:
                 for post_ucs_modify_function in self.property[property_type].post_ucs_modify_functions:
                     log.debug("Call post_ucs_modify_functions: %s", post_ucs_modify_function)
                     post_ucs_modify_function(self, property_type, object)
