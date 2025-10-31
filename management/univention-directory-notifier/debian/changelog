@@ -1,3 +1,9 @@
+univention-directory-notifier (16.3.1) unstable; urgency=medium
+
+  * Bug #58653: Enable structured logging by default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2025 13:48:30 +0100
+
 univention-directory-notifier (16.3.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]

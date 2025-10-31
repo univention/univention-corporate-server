@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.3.6) unstable; urgency=medium
+
+  * Bug #58653: Enable structured logging by default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2025 13:46:17 +0100
+
 univention-directory-manager-modules (17.3.5) unstable; urgency=medium
 
   * Bug #58756: add logging of authorization operation durations

@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.3.2) unstable; urgency=medium
+
+  * Bug #58653: Enable structured logging by default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2025 13:48:04 +0100
+
 univention-directory-manager-rest (12.3.1) unstable; urgency=medium
 
   * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile

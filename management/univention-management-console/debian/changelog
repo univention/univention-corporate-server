@@ -1,3 +1,9 @@
+univention-management-console (14.3.5) unstable; urgency=medium
+
+  * Bug #58653: Enable structured logging by default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2025 13:48:45 +0100
+
 univention-management-console (14.3.4) unstable; urgency=medium
 
   * Bug #58743: return DN of user in session-info endpoint

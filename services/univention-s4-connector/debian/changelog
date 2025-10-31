@@ -1,3 +1,9 @@
+univention-s4-connector (16.3.2) unstable; urgency=medium
+
+  * Bug #58653: Enable structured logging by default
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 31 Oct 2025 13:49:54 +0100
+
 univention-s4-connector (16.3.1) unstable; urgency=medium
 
   * Bug #58680: unify account locked status synchronization with AD-Connector

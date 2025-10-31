@@ -7,10 +7,10 @@ Max=5
 Categories=management-udm
 
 [directory/manager/cmd/debug/structured-logging]
-Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden. Dieser Wert ist ab UCS 5.2-4 standardmäßig 'true'.
-Description[en]=Defines whether to output structured log messages. This value will default to 'true' with UCS 5.2-4.
+Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden.
+Description[en]=Defines whether to output structured log messages.
 Type=bool
-Default=false
+Default=true
 Categories=management-udm
 
 [directory/manager/cmd/timeout]
