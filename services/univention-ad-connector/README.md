@@ -156,6 +156,13 @@ UCS 5.0 Bug #52044 required an adjustment for Python 3:
   and the way we iterate over them. That's the point to clean up first, otherwise it's
   just messing around.
 
+Change tracking
+===============
+* The AD-Connector uses `Polling for Changes Using USNChanged` see https://learn.microsoft.com/en-us/windows/win32/ad/overview-of-change-tracking-techniques
+  for reading from Active Directory and the classic "Listener/Notifier" replication for changes in OpenLDAP.
+* See [Handling-Conflicts-in-S4C-MMR.odt](https://filestore.knut.univention.de/owncloud/f/2524822) for an overview of
+  handling change tracking for multi-master-replication (i.e. concurrent changes in UDM and Active Directory)
+
 Improvement Suggestions:
 ========================
 * Rename "object" and seprate object["attributes"] into "ldap_obj_ol" and "ldap_obj_ad"
