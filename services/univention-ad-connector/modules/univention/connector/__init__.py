@@ -872,7 +872,7 @@ class ucs(object):
 
     def get_ucs_ldap_object_dn(self, dn):
         try:
-            return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
+            return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('1.1',))[0][0]
         except ldap.NO_SUCH_OBJECT:
             return
         except ldap.INVALID_DN_SYNTAX:
@@ -1418,7 +1418,7 @@ class ucs(object):
             if not old_object and object['modtype'] == 'modify':
                 object['modtype'] = 'add'
             if not old_object and object['modtype'] == 'move':
-                if self.get_ucs_object(property_type, object['dn']):
+                if self.get_ucs_ldap_object_dn(object['dn']):
                     object['modtype'] = 'modify'
                 else:
                     object['modtype'] = 'add'
