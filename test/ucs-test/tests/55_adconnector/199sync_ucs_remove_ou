@@ -28,7 +28,7 @@ test -n "$connector_ad_ldap_host" || exit 137
 
 # Base
 
-RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+RETRYREJECTED="$(ucr get connector/ad/retryrejected)"
 ad_set_retry_rejected 2
 
 OU1="$(random_chars)1"
