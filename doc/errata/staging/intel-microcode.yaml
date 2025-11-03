@@ -1,0 +1,31 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: intel-microcode
+fix: 3.20250812.1~deb9u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.9 (CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:C/C:H/I:H/A:N).
+   (CVE-2025-22889)
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H).
+   (CVE-2025-20109)
+ * CVSS score 7.5 (CVSS:3.1/AV:A/AC:H/PR:H/UI:N/S:C/C:H/I:H/A:L).
+   (CVE-2025-22839)
+ * CVSS score 7.4 (CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:L).
+   (CVE-2025-22840)
+ * CVSS score 7.2 (CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:C/C:H/I:H/A:N).
+   (CVE-2025-32086, CVE-2025-26403, CVE-2025-24305, CVE-2025-20053)
+ * CVSS score 6.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2025-21090)
+bug: [58768]
+cve:
+- CVE-2025-20109
+- CVE-2025-22840
+- CVE-2025-22839
+- CVE-2025-22889
+- CVE-2025-20053
+- CVE-2025-21090
+- CVE-2025-24305
+- CVE-2025-26403
+- CVE-2025-32086
