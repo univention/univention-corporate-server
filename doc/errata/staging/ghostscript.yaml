@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: ghostscript
+fix: 9.27~dfsg-2+deb10u12
+desc: |
+ This update addresses the following issues:
+ * CVSS score 4.3 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:N).
+   (CVE-2025-59799, CVE-2025-59798)
+bug: [58764]
+cve:
+- CVE-2025-59798
+- CVE-2025-59799
