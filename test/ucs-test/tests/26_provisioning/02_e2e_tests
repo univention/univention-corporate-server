@@ -1,0 +1,51 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Run e2e tests on UCS with Provisioning Service app installed
+## tags: [provisioning]
+## exposure: dangerous
+
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+
+
+provisioning_admin_password=$(sudo cat /etc/provisioning-secrets.json | jq -r '.PROVISIONING_API_ADMIN_PASSWORD')
+provisioning_events_password=$(sudo cat /etc/provisioning-secrets.json | jq -r '.EVENTS_PASSWORD_UDM')
+nats_password=$(sudo cat /etc/provisioning-secrets.json | jq -r '.NATS_PASSWORD')
+host=$(ucr get ldap/server/name)
+master_host=$(ucr get ldap/master)
+
+cat <<EOF > /root/e2e_settings_ucs.json
+{
+  "local": {
+    "provisioning_api_base_url_primary": "https://${master_host}/univention/provisioning",
+    "provisioning_api_base_url": "https://${host}/univention/provisioning",
+    "provisioning_admin_username": "admin",
+    "provisioning_admin_password": "$provisioning_admin_password",
+    "provisioning_events_username": "udm",
+    "provisioning_events_password": "$provisioning_events_password",
+    "nats_url": "nats://nats:4222",
+    "nats_user": "api",
+    "nats_password": "$nats_password",
+    "ldap_server_uri": "ldap://${host}:389",
+    "ldap_base": "$(ucr get ldap/base)",
+    "ldap_bind_dn": "uid=Administrator,cn=users,$(ucr get ldap/base)",
+    "ldap_bind_password": "univention",
+    "udm_rest_api_base_url": "https://${master_host}/univention/udm/",
+    "udm_rest_api_username": "Administrator",
+    "udm_rest_api_password": "univention"
+  }
+}
+EOF
+#create test-reports dir in ~/
+mkdir -p "/root/test-reports/26_provisioning/02_e2e_tests/"
+
+docker run \
+    --rm \
+    --network=nubus-provisioning \
+    --volume=/root/e2e_settings_ucs.json:/app/e2e_tests/e2e_settings.json \
+    --volume=/var/www/ucs-root-ca.crt:/etc/ssl/certs/ca-certificates.crt:ro \
+    --volume=/root/test-reports/26_provisioning/02_e2e_tests:/app/e2e_tests/test-reports \
+    --env=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+    gitregistry.knut.univention.de/univention/dev/projects/provisioning/provisioning-e2e-tests:0.63.0-pre-provisioning-in-ucs \
+    pytest -v --junitxml=/app/e2e_tests/test-reports/junit-e2e-provisioning-ucs.xml
+

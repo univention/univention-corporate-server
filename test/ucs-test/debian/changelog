@@ -1,3 +1,10 @@
+ucs-test (12.3.26) unstable; urgency=medium
+
+  * Issue univention/dev/projects/provisioning#96: Run e2e provisioning
+    test on ucs.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 31 Oct 2025 17:14:07 +0100
+
 ucs-test (12.3.25) unstable; urgency=medium
 
   * Bug #46353: add test cases for sync account locked status in ADC/S4C

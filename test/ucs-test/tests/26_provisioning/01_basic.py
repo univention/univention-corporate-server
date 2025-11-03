@@ -3,7 +3,7 @@
 ## tags: [provisioning]
 ## exposure: dangerous
 ## packages:
-##   - python3-univention-provisioning-stack-listener
+##   - python3-univention-provisioning-service-listener
 
 import json
 
@@ -25,7 +25,7 @@ def provisioning_admin_username():
 
 @pytest.fixture
 def provisioning_admin_password():
-    return json.load(open("/etc/provisioning-json.secrets"))["PROVISIONING_API_ADMIN_PASSWORD"]
+    return json.load(open("/etc/provisioning-secrets.json"))["PROVISIONING_API_ADMIN_PASSWORD"]
 
 
 @pytest.fixture

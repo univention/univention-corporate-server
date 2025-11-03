@@ -747,6 +747,7 @@ Description: Test scripts for the Keycloak app
 Package: ucs-test-provisioning
 Architecture: all
 Depends:
+ jq,
  python3-requests,
  ${misc:Depends},
 Recommends:
