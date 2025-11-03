@@ -1,3 +1,9 @@
+ucs-test (10.0.24-28) unstable; urgency=medium
+
+  * Bug #58735: fix copy paste error s4 -> ad
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 03 Nov 2025 21:12:21 +0100
+
 ucs-test (10.0.24-27) unstable; urgency=medium
 
   * Bug #58735: add tests for allow-subtree-ancestors feature
