@@ -1,0 +1,50 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: ffmpeg
+fix: 7:5.1.7-0+deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-59733, CVE-2025-59732, CVE-2025-59731,
+   CVE-2025-0518, CVE-2025-7700)
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2024-35368)
+ * CVSS score 9.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+   (CVE-2024-35367)
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2023-49502)
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2024-31582)
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2023-50008)
+ * CVSS score 7.2 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N).
+   (CVE-2023-6605)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2025-22919)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2023-6604)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2023-6602)
+ * CVSS score 4.7 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:N/A:N).
+   (CVE-2023-6601)
+ * CVSS score 4.0 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2023-50007)
+bug: [58776]
+cve:
+- CVE-2023-6601
+- CVE-2023-6602
+- CVE-2023-6604
+- CVE-2023-6605
+- CVE-2023-49502
+- CVE-2023-50007
+- CVE-2023-50008
+- CVE-2024-31582
+- CVE-2024-35367
+- CVE-2024-35368
+- CVE-2025-0518
+- CVE-2025-7700
+- CVE-2025-22919
+- CVE-2025-59731
+- CVE-2025-59732
+- CVE-2025-59733
