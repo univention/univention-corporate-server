@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: openssl
+fix: 1.1.1n-0+deb10u8
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-9230)
+ * CVSS score 4.1 (CVSS:3.1/AV:P/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2024-13176)
+bug: [58766]
+cve:
+- CVE-2024-13176
+- CVE-2025-9230
