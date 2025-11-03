@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: git
+fix: 1:2.20.1-2+deb10u11
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:L).
+   (CVE-2025-46835)
+ * CVSS score 8.1 (CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:H).
+   (CVE-2025-48384)
+ * CVSS score 3.6 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:N/I:L/A:N).
+   (CVE-2025-27613)
+bug: [58765]
+cve:
+- CVE-2025-27613
+- CVE-2025-48384
+- CVE-2025-46835
