@@ -18,6 +18,7 @@ DEFAULT_UCS_ANNOTATIONS = [{
     # AGPL 3.0
     'path': sorted([
         "test/**.cfg",
+        "test/**matrix.job",
         "test/utils/id-broker/keycloak_ProxyPass.conf.example",
         "test/utils/id-broker/univention-test-app.conf",
         "test/utils/id-broker/univention-vhosts.conf.example",

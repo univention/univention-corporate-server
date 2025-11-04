@@ -3,7 +3,7 @@ SPDX-PackageName = "Univention Corporate Server"
 SPDX-PackageSupplier = "Univention GmbH <info@univention.de>"
 SPDX-PackageDownloadLocation = "https://www.univention.com/"
 [[annotations]]
-path = [ "**.gitignore", ".git-blame-ignore-revs", ".gitlab/issue_templates/*.md", ".gitlab/merge_request_templates/*.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "PULL_REQUEST_TEMPLATE.md", "SECURITY.md", "doc/*/spelling_wordlist", "doc/developer-reference/*/*/debian/*", "doc/developer-reference/umc/*.umc-modules", "doc/developer-reference/umc/*.xml", "doc/errata/**.yaml", "doc/errata/erratum.schema.json", "doc/extended-docs/ucr-deprecated.schema.json", "pyproject.toml", "test/**.cfg", "test/utils/id-broker/keycloak_ProxyPass.conf.example", "test/utils/id-broker/univention-test-app.conf", "test/utils/id-broker/univention-vhosts.conf.example",]
+path = [ "**.gitignore", ".git-blame-ignore-revs", ".gitlab/issue_templates/*.md", ".gitlab/merge_request_templates/*.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "PULL_REQUEST_TEMPLATE.md", "SECURITY.md", "doc/*/spelling_wordlist", "doc/developer-reference/*/*/debian/*", "doc/developer-reference/umc/*.umc-modules", "doc/developer-reference/umc/*.xml", "doc/errata/**.yaml", "doc/errata/erratum.schema.json", "doc/extended-docs/ucr-deprecated.schema.json", "pyproject.toml", "test/**.cfg", "test/**matrix.job", "test/utils/id-broker/keycloak_ProxyPass.conf.example", "test/utils/id-broker/univention-test-app.conf", "test/utils/id-broker/univention-vhosts.conf.example",]
 SPDX-FileCopyrightText = "2025 Univention GmbH"
 SPDX-License-Identifier = "AGPL-3.0-only"
 
@@ -22,12 +22,6 @@ path = "base/pam-runasroot/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2001-2025 Univention GmbH"
-
-[[annotations]]
-path = "base/pam-univentionmailcyrus/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2005-2025 Univention GmbH"
 
 [[annotations]]
 path = "base/univention-archive-key/**"
