@@ -1,3 +1,10 @@
+ucs-test (12.3.30) unstable; urgency=medium
+
+  * Issue univention/dev/projects/provisioning#96: require app
+    provisioning-service to be installed to run provisioning tests.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Nov 2025 14:34:47 +0100
+
 ucs-test (12.3.29) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#245: Adjust test

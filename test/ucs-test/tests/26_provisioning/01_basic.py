@@ -2,8 +2,8 @@
 ## desc: Test create/modify/remove users in the Provisioning Stack
 ## tags: [provisioning]
 ## exposure: dangerous
-## packages:
-##   - python3-univention-provisioning-service-listener
+## apps:
+##  - provisioning-service
 
 import json
 

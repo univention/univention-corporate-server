@@ -3,6 +3,8 @@
 ## desc: Run e2e tests on UCS with Provisioning Service app installed
 ## tags: [provisioning]
 ## exposure: dangerous
+## apps:
+##  - provisioning-service
 
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2025 Univention GmbH
