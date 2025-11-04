@@ -1870,11 +1870,8 @@ class ad(univention.connector.ucs):
                         self._remove_rejected(change_usn)
                         self.__update_lastUSN(ad_object)
                         self._set_DN_for_GUID(elements[0][1]['objectGUID'][0], elements[0][0])
-                        if property_key in ("ou", "container"):
-                            if 'olddn' in ad_object:
-                                self._update_subtree_in_ad_guids(ad_object['olddn'], elements[0][0])
-                            else:
-                                log.warning("Could not run _update_subtree_in_ad_guids because ad_object doesn't have olddn")
+                        if property_key in ("ou", "container") and 'olddn' in ad_object:  # move or rename
+                            self._update_subtree_in_ad_guids(ad_object['olddn'], elements[0][0])
                     else:
                         self.save_rejected(ad_object)
             except ldap.SERVER_DOWN:
@@ -1990,11 +1987,8 @@ class ad(univention.connector.ucs):
                 try:
                     GUID = old_element[1]['objectGUID'][0]
                     self._set_DN_for_GUID(GUID, old_element[0])
-                    if property_key in ("ou", "container"):
-                        if 'olddn' in ad_object:
-                            self._update_subtree_in_ad_guids(ad_object['olddn'], old_element[0])
-                        else:
-                            log.warning("Could not run _update_subtree_in_ad_guids because ad_object doesn't have olddn")
+                    if property_key in ("ou", "container") and 'olddn' in ad_object:  # move or rename
+                        self._update_subtree_in_ad_guids(ad_object['olddn'], old_element[0])
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
