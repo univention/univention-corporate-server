@@ -714,23 +714,6 @@ class ucs(object):
         dn = self._get_dn_by_con(dn_con)
         return self.dn_mapped_to_base(dn, self.lo.base)
 
-    # def _update_subtree_dns_in_mappings_by_ucs(self, old_ucs_dn, old_con_dn, new_ucs_dn, new_con_dn):
-    #     """Maybe not required, maybe _update_subtree_dns_in_mappings_by_con (below) is enough"""
-    #     old_ucs_dn_lower = old_ucs_dn.lower()
-    #     old_con_dn_lower = old_con_dn.lower()
-    #     new_ucs_dn_lower = new_ucs_dn.lower()
-    #     new_con_dn_lower = new_con_dn.lower()
-    #     for row in self.config.get_rows_with_key_ending_in_dn('DN Mapping UCS', old_ucs_dn_lower):
-    #         _new_key = self._subtree_replace(row[0], old_ucs_dn_lower, new_ucs_dn_lower)
-    #         _new_val = self._subtree_replace(row[1], old_con_dn_lower, new_con_dn_lower)
-    #         self._remove_config_option('DN Mapping UCS', row[0])
-    #         self._set_config_option('DN Mapping UCS', _new_key, _new_val)
-    #     for row in self.config.get_rows_with_value_ending_in_dn('DN Mapping CON', old_ucs_dn_lower):
-    #         _new_key = self._subtree_replace(row[0], old_con_dn_lower, new_con_dn_lower)
-    #         _new_val = self._subtree_replace(row[1], old_ucs_dn_lower, new_ucs_dn_lower)
-    #         self._remove_config_option('DN Mapping CON', row[0])
-    #         self._set_config_option('DN Mapping CON', _new_key, _new_val)
-
     def _update_subtree_dns_in_mappings_by_con(self, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
         old_con_dn_lower = old_con_dn.lower()
         old_ucs_dn_lower = old_ucs_dn.lower()
