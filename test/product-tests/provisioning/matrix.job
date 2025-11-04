@@ -1,0 +1,27 @@
+# Description of the Jenkins job
+jenkins_description=Matrix job for provisioning service
+
+# Define the axes for the matrix
+jenkins_axes=mode
+jenkins_axes_config=product-tests/provisioning/${mode}.cfg
+
+# Optional: Filter combinations of axes
+# jenkins_combination_filter=true
+# jenkins_combination_filter=mode != 'unsupported'
+
+# Optional: Default KVM server
+jenkins_default_kvm_server=soft-test01.knut.univention.de
+
+# Email recipients for notifications
+jenkins_recipients=ucs-team@univention.de
+
+# Enable JUnit report publishing
+jenkins_report_junit=true
+
+# Enable HTML report publishing
+jenkins_report_html=true
+jenkins_report_html_dir=test
+jenkins_report_html_index=**/*.html
+
+# Optional: Run sequentially
+# jenkins_run_sequentially=true
