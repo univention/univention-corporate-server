@@ -157,6 +157,51 @@ def test_move_user_in_ucs(udm, lo, ldap_base, mode):
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group2_dn, group3_dn}, {setup.group2_dn_ad, group3_dn_ad})
 
 
+@pytest.mark.parametrize(
+    'mode',
+    [pytest.param('sync', marks=pytest.mark.xfail(reason="Bug #58782")), 'read'],
+    ids=['sync mode', 'read mode'],
+)
+def test_rename_parent_rename_child_in_ad(udm, lo, ldap_base, mode):
+    return
+    with connector_setup2(mode) as ad:
+        # create user and groups in AD
+        setup = create_ou_structure_and_user(udm, ad, in_ad=True)
+        # rename parent
+        ou1_name = f'new-{setup.ou1_name}'
+        ou1_dn_ad = ad.rename(setup.ou1_dn_ad, ou1_name)
+        ou1_dn = f'ou={ou1_name},{ldap_base}'
+        ou11_dn_ad = f'ou={setup.ou11_name},{ou1_dn_ad}'
+        ou11_dn = f'ou={setup.ou11_name},{ou1_dn}'
+        user_dn_ad = f'cn={setup.username},{ou11_dn_ad}'
+        user_dn = f'uid={setup.username},{ou11_dn}'
+        # check rename
+        assert ad.get(ou1_dn_ad)
+        assert ad.get(ou11_dn_ad)
+        assert ad.get(user_dn_ad)
+        assert lo.get(user_dn)
+        assert not ad.get(setup.user_dn_ad)
+        assert not lo.get(setup.user_dn)
+        # rename child (users), change sam account name, in one step (connector not running)
+        with adconnector_stopped():
+            username = f'new-{setup.username}'
+            sam_account_name = username
+            final_user_dn_ad = ad.rename(user_dn_ad, username, wait_for_replication=False)
+            ad.set_attributes(final_user_dn_ad, {'sAMAccountName': [sam_account_name.encode('UTF-8')]})
+        ad.wait_for_sync()
+        final_user_dn = ad.ucs_dn(final_user_dn_ad)
+        # check rename
+        assert ou1_name in final_user_dn and username in final_user_dn
+        assert ou1_name in final_user_dn_ad and username in final_user_dn_ad
+        assert not ad.get(user_dn_ad)
+        assert not lo.get(user_dn)
+        assert lo.get(final_user_dn)
+        assert ad.get(final_user_dn_ad)
+        # change group membership and test
+        group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, final_user_dn_ad)
+        verify_groups(ad, lo, final_user_dn, final_user_dn_ad, {setup.group1_dn, group3_dn}, {setup.group1_dn_ad, group3_dn_ad})
+
+
 @pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
 def test_rename_parent_in_ad(udm, lo, ldap_base, mode):
     with connector_setup2(mode) as ad:

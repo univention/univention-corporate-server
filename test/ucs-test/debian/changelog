@@ -1,3 +1,9 @@
+ucs-test (10.0.24-30) unstable; urgency=medium
+
+  * Bug #58782: added test_rename_parent_rename_child_in_ad
+
+ -- Felix Botner <botner@univention.de>  Tue, 04 Nov 2025 18:05:01 +0100
+
 ucs-test (10.0.24-29) unstable; urgency=medium
 
   * Bug #58739: group membership tests
