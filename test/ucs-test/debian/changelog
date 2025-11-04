@@ -1,3 +1,10 @@
+ucs-test (12.3.28) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#245: Adjust test
+    to Keycloak 26.4.2
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 04 Nov 2025 11:08:39 +0100
+
 ucs-test (12.3.27) unstable; urgency=medium
 
   * Bug #58735: fix copy paste error s4 -> ad
