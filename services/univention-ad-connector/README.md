@@ -166,16 +166,16 @@ Change tracking
 
 Specifics about the change tracking mechanisms offered by Active Directory:
 * [Polling for Changes Using USNChanged](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-usnchanged)
-   * Because `uSNChanged` is a non-replicated attribute, the application must bind to the same domain controller every time it runs
+   > Because `uSNChanged` is a non-replicated attribute, the application must bind to the same domain controller every time it runs
 * [Polling for Changes Using the DirSync Control](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-the-dirsync-control)
-   * For each object, the initial results include all the requested attributes set on the object. Subsequent search results include only the specified attributes that have changed. Unchanged attributes are not included in the search results.
-   * When an object is renamed or moved, its child objects, if any, are not included in the search results, even though the distinguished names of the child objects have changed.
-   * Use the objectGUID attribute to identify the tracked objects.
-   * To use the `DirSync` control, caller must have the "directory get changes" right assigned on the root of the partition being monitored.
-   * Retrieving Deleted Objects With a DirSync Search (see document)
+   > For each object, the initial results include all the requested attributes set on the object. Subsequent search results include only the specified attributes that have changed. Unchanged attributes are not included in the search results.
+   > When an object is renamed or moved, its child objects, if any, are not included in the search results, even though the distinguished names of the child objects have changed.
+   > Use the objectGUID attribute to identify the tracked objects.
+   > To use the `DirSync` control, caller must have the "directory get changes" right assigned on the root of the partition being monitored.
+   > Retrieving Deleted Objects With a DirSync Search (see document)
 * [Change Notifications in Active Directory Domain Services](https://learn.microsoft.com/en-us/windows/win32/ad/change-notifications-in-active-directory-domain-services)
-   * You can register up to five notification requests on a single LDAP connection. You must have a dedicated thread that waits for the notifications and processes them quickly.
-   * Although the subtree scope is supported if the base object is the root of a naming context, its use can severely impact server performance, because it generates an LDAP search result message every time an object in the naming context is modified.
+   > You can register up to five notification requests on a single LDAP connection. You must have a dedicated thread that waits for the notifications and processes them quickly.
+   > Although the subtree scope is supported if the base object is the root of a naming context, its use can severely impact server performance, because it generates an LDAP search result message every time an object in the naming context is modified.
 
 Improvement Suggestions:
 ========================
