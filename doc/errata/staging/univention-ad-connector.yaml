@@ -3,7 +3,7 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: univention-ad-connector
-fix: 14.0.25
+fix: 14.0.26
 desc: |
  This update addresses the following issues:
  * Changing the `sAMAccountName` of a user in AD
@@ -21,4 +21,11 @@ desc: |
    variable is enabled, a resynchronization with one of the
    `resync_object_from_*` scripts will handle the resynchronization of
    ancestors automatically if necessary.
-bug: [58737,58735]
+ * Renaming an OU in Active Directory doesn't trigger `uSNChanged` events
+   for child objects, only for the OU object itself. While this is enough
+   to let the AD-Connector syncronize subtree renames to UDM/OpenLDAP it
+   didn't cause cached DN mappings to be updated in the AD-Connector.
+   This could lead to rejects in case child objects where modified in AD
+   at a later point in time. The AD-Connector now updates the DN caches
+   for subtree objects when a OU is renamed in Active Directroy.
+bug: [58737,58735,58739]
