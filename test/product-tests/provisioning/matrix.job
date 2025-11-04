@@ -2,8 +2,8 @@
 jenkins_description=Matrix job for provisioning service
 
 # Define the axes for the matrix
-jenkins_axes=mode
-jenkins_axes_config=product-tests/provisioning/${mode}.cfg
+# jenkins_axes=mode
+# jenkins_axes_config=product-tests/provisioning/${mode}.cfg
 
 # Optional: Filter combinations of axes
 # jenkins_combination_filter=true
