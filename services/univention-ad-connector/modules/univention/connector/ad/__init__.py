@@ -2097,14 +2097,14 @@ class ad(univention.connector.ucs):
                 case_folding=False)
             del self.group_member_mapping_cache_ucs[x]
 
-    def _update_group_related_caches(self, property_type, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn):
+    def _update_group_related_caches(self, property_type, old_con_dn, old_ucs_dn, new_con_dn, new_ucs_dn, subtree_update=True):
         self._update_group_member_cache(
             remove_con_dn=old_con_dn.lower(),
             remove_ucs_dn=old_ucs_dn.lower(),
             add_con_dn=new_con_dn.lower(),
             add_ucs_dn=new_ucs_dn.lower(),
         )
-        if property_type in ('ou', 'container'):
+        if subtree_update and property_type in ('ou', 'container'):
             self._update_subtree_dns_in_mappings_by_con(
                 old_con_dn=old_con_dn,
                 old_ucs_dn=old_ucs_dn,
@@ -2186,6 +2186,7 @@ class ad(univention.connector.ucs):
                     old_ucs_dn=pre_mapped_ucs_old_dn,
                     new_con_dn=object['dn'],
                     new_ucs_dn=pre_mapped_ucs_dn,
+                    subtree_update=False,  # UDM OU/CN move behaves differently than AD, let's be careful to avoid sth like Bug #57510
                 )
                 self._set_DN_for_GUID(self.ad_search_ext_s(object['dn'], ldap.SCOPE_BASE, 'objectClass=*')[0][1]['objectGUID'][0], object['dn'])
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
