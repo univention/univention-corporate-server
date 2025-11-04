@@ -14,8 +14,9 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.2.2
+# ruff 0.14.0
 target-version = "py37"
+output-format = "concise"
 
 line-length = 180
 extend-exclude = [
@@ -30,6 +31,22 @@ extend-exclude = [
 preview = true
 external = ["W601", "F812", "E403", "E704"]
 ignore-init-module-imports = true
+logger-objects = [
+    "univention.admin.log.log",
+    "univention.admin.log.log_ldap",
+    "univention.management.console.log.CORE",
+    "univention.management.console.log.NETWORK",
+    "univention.management.console.log.CRYPT",
+    "univention.management.console.log.UDM",
+    "univention.management.console.log.MODULE",
+    "univention.management.console.log.AUTH",
+    "univention.management.console.log.PARSER",
+    "univention.management.console.log.LOCALE",
+    "univention.management.console.log.ACL",
+    "univention.management.console.log.RESOURCES",
+    "univention.management.console.log.PROTOCOL",
+    "univention.portal.log.get_logger",
+]
 
 select = ["ALL"]
 ignore = [
@@ -51,12 +68,17 @@ ignore = [
  "D214", "D215", "D405", "D406", "D407", "D408", "D409", "D410", "D411", "D412", "D413", "D414", "D416", # we don't have sections
  "D400",  # first line should end with period
  "D415",  # first line should end with period, question, exclamation: maybe somewhen?!
+ "DOC201",  # docstring-missing-returns
+ "DOC501",  # docstring-missing-exception
+ "DOC402",  # docstring-missing-yields
  "UP031",  # allow %-interpolation
  "PD011",  # we don't use pandas
  "INP001",  # implicit namespace package
  "EXE001",  # Shebang is present but file is not executable
  "S101",  # allow to use assert (must be used in pytest)
- "S105", "S106", "S107",  # allow hardcoded password
+ "S105",  # hardcoded-password-string
+ "S106",  # hardcoded-password-func-arg
+ "S107",  # hardcoded-password-default
  "SLF001",  # allow private member access
  "Q000",  # allow single quotes
  "Q001",  # allow single quote multiline strings
@@ -65,8 +87,13 @@ ignore = [
  "RET503",  # allow missing explicit return None
  "B905",  # allow zip() without an explicit strict= parameter
  "RUF001",  # allow ambiguous-unicode-character-string
+ "RUF039",  # unraw-re-pattern
+ "RUF052",  # used-dummy-variable
+ "FURB103",  # write-whole-file
  "PLR2004",  # allow magic-value-comparison
- "A001", "A002", "A003",  # allow builtin-variable-shadowing
+ "A001",  # builtin-variable-shadowing
+ "A002",  # builtin-argument-shadowing
+ "A003",  # builtin-attribute-shadowing
  "B006",  # allow mutable-argument-default
  "B008",  # allow function-call-argument-default
  "B020",  # allow loop-variable-overrides-iterator
@@ -89,11 +116,12 @@ ignore = [
  "PYI014",  # argument-simple-defaults
  "PYI034",  # non-self-return-type
  "PYI052",  # unannotated-assignment-in-stub
- "FIX001",  #
- "FIX002",  #
- "TD001",
- "TD002",
- "TD003",
+ "FIX001",  # line-contains-fixme
+ "FIX002",  # line-contains-todo
+ "TD001",  # invalid-todo-tag
+ "TD002",  # missing-todo-author
+ "TD003",  # missing-todo-link
+ "S301",  # suspicious-pickle-usage
  "S311",  # suspicious-non-cryptographic-random-usage
  "S602",  # subprocess-popen-with-shell-equals-true
  "S603",  # subprocess-without-shell-equals-true
@@ -118,12 +146,70 @@ ignore = [
  "FURB177",  # implicit-cwd
  "FURB180",  # meta-class-abc-meta
  "FURB181",  # hashlib-digest-hex
+ "FURB189",  # subclass-builtin
  "S404", # suspicious-subprocess-import
  "RUF021",  # parenthesize-chained-operators
  "PLC0415",  # import-outside-top-level
+ "TC006",  # runtime-cast-value
+ "RUF031",  # incorrectly-parenthesized-tuple-in-subscript
+ "SIM112",  # uncapitalized-environment-variables
 
- # not py2 compatible
- "COM812",  # missing-trailing-comma
+ # fixed in UCS 5.2 but not backported to UCS 5.0
+ "PT001",  # pytest-fixture-incorrect-parentheses-style
+ "G002",  # logging-percent-format
+ "F401",  # unused-import
+ "G010",  # logging-warn
+ "A004",  # builtin-import-shadowing
+ "G004",  # logging-f-string
+ "PT023",  # pytest-incorrect-mark-parentheses-style
+ "FURB110",  # if-exp-instead-of-or-operator
+ "SIM103",  # needless-bool
+ "PT028",  # pytest-parameter-with-default-argument
+ "SIM905",  # split-static-string
+ "FURB156",  # hardcoded-string-charset
+ "PLC0206",  # dict-index-missing-items
+ "FURB122",  # for-loop-writes
+ "FURB142",  # for-loop-set-mutations
+ "PLC1802",  # len-test
+ "RUF046",  # unnecessary-cast-to-int
+ "F822",  # undefined-export
+ "PLW0642",  # self-or-cls-assignment
+ "SIM910",  # dict-get-with-none-default
+ "G001",  # logging-string-format
+ "RUF036",  # none-not-at-end-of-union
+ "RUF101",  # redirected-noqa
+ "B909",  # loop-iterator-mutation
+ "FURB154",  # repeated-global
+ "RUF102",  # invalid-rule-code
+ "ASYNC221",  # run-process-in-async-function
+ "ASYNC230",  # blocking-open-call-in-async-function
+ "ASYNC240",  # blocking-path-method-in-async-function
+ "B024",  # abstract-base-class-without-abstract-method
+ "B903",  # class-as-data-structure
+ "LOG004",  # log-exception-outside-except-handler
+ "PLE0101",  # return-in-init
+ "PLR1714",  # repeated-equality-comparison
+ "PLW1508",  # invalid-envvar-default
+ "RUF043",  # pytest-raises-ambiguous-pattern
+ "RUF047",  # needless-else
+ "RUF055",  # unnecessary-regular-expression
+ "RUF065",  # logging-eager-conversion
+ "C409",  # unnecessary-literal-within-tuple-call
+ "ICN001",  # unconventional-import-alias
+ "PLC0207",  # missing-maxsplit-arg
+ "PLE4703",  # modified-iterating-set
+ "RUF034",  # useless-if-else
+ "UP037",  # quoted-annotation
+
+ # should be done/autofixes soon
+ "PLR6104",  # non-augmented-assignment
+
+ # should be done but no autofix available
+ "LOG015",  # root-logger-call
+ "FURB118",  # reimplemented-operator
+
+ # would be nice but no autofix available
+ "PLR1730",  # if-stmt-min-max
  "RUF012",  # mutable-class-default
  "FLY002",  #
  "UP004", "UP008", "UP009", "UP010", "UP025", "UP029",  # be Python 2 compatible
@@ -135,6 +221,9 @@ ignore = [
  "S108",  # hardcoded-temp-file
  "S103",  # bad-file-permissions
  "S110",  # try-except-pass
+ # not py2 compatible
+ "COM812",  # missing-trailing-comma
+
  "UP006",  # use-pep585-annotation
  "UP003",  # type-of-primitive
  "UP012",  # unnecessary-encode-utf8
@@ -181,13 +270,13 @@ ignore = [
  "PLW0603", # global-statement to update identifiers
  "PLR5501",  # collapsible-else-if
  "PYI033", # type-comment-in-stub
- "PYI024",  #
- "PYI048",  #
+ "PYI024",  # collections-named-tuple
+ "PYI048",  # stub-body-multiple-statements
  "TD004",  #
  "TD005",  #
- "FA100",  #
- "PLC1901",  #
- "FIX004",
+ "FA100",  # future-rewritable-type-annotation
+ "PLC1901",  # compare-to-empty-string
+ "FIX004",  # line-contains-hack
  "SIM112",  #
  "PERF203",  # try-except-in-loop
  "PERF401",  # manual-list-comprehension
@@ -199,6 +288,7 @@ ignore = [
  "SIM300",  # do it somewhen
 
  # issues in ruff:
+ "FURB192",  # sorted-min-max, https://github.com/astral-sh/ruff/issues/16964
  "RUF027",  # missing-f-string-syntax, https://github.com/astral-sh/ruff/issues/10023
  "CPY001",  # missing-copyright-notice, https://github.com/astral-sh/ruff/issues/10021
  "SIM114",  # https://github.com/astral-sh/ruff/issues/2848
@@ -213,7 +303,6 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 allowed-confusables = ["’", "`", "´"]
 
-
 task-tags = ["TODO", "FIXME"]
 
 [tool.ruff.lint.extend-per-file-ignores]
@@ -223,11 +312,28 @@ task-tags = ["TODO", "FIXME"]
 "services/univention-ldb-modules/buildtools/*" = [
  "ALL",
 ]
+"services/univention-s4-connector/scripts/*" = [
+ "RUF064",  # broken in S4-C/AD-C
+]
+"services/univention-ad-connector/scripts/*" = [
+ "RUF064",  # broken in S4-C/AD-C
+]
 "**/tests/*" = [
  "PLC0415",
+ "CPY001",
 ]
 "test/ucs-test/*" = [
  "PLC0415",
+ "CPY001",
+]
+"**MODULEID**" = [
+ "CPY001",
+]
+"doc/*/conf.py" = [
+ "UP035",
+]
+"management/univention-portal/unittests/*" = [
+ "RUF029",
 ]
 
 [tool.ruff.lint.flake8-builtins]
@@ -252,6 +358,14 @@ parametrize-names-type = "csv"
 
 [tool.ruff.lint.flake8-annotations]
 ignore-fully-untyped = true
+
+[tool.ruff.lint.ruff]
+parenthesize-tuple-in-subscript = true
+
+[tool.ruff.lint.flake8-copyright]
+# notice-rgx = "(?i)Copyright\\s+((?:\\(C\\)|©)\\s+)?\\d{4}((-|,\\s)\\d{4})*"
+notice-rgx = "(?:Copyright(?:\\s+\\(C\\)|:)?|SPDX-FileCopyrightText:)\\s+([0-9, -]+)\\s+(?:by|Univention\\s+GmbH)"
+min-file-size = 2
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

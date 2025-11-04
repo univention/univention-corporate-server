@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 exclude: "^packaging/ucslint/testframework/\
@@ -6,23 +8,23 @@ exclude: "^packaging/ucslint/testframework/\
          "
 repos:
   - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucr
-    rev: '0.1.0'
+    rev: '0.1.4'
     hooks:
       - id: ucr-flake8
-        additional_dependencies: ["flake8==5.0.4"]
+        additional_dependencies: ["flake8==7.2.0"]
       - id: ucr-ruff
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.14.0"]
       - id: ucr-autopep8
-        additional_dependencies: ["autopep8<=2.0.2"]
+        additional_dependencies: ["autopep8==2.3.2"]
         stages: [ manual ]
       - id: ucr-ruff-fix
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.14.0"]
         stages: [ manual ]
       - id: ucr-ruff-format-check
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.14.0"]
         stages: [ manual ]
       - id: ucr-ruff-format
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.14.0"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -70,7 +72,7 @@ repos:
     - id: rst-directive-colons
     - id: rst-inline-touching-normal
   - repo: https://github.com/pycqa/flake8
-    rev: '7.0.0'
+    rev: '7.2.0'
     hooks:
     - id: flake8
       exclude: "^oidc/python-keycloak/\
@@ -89,7 +91,7 @@ repos:
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.0
+    rev: 0.33.0
     hooks:
       - id: check-gitlab-ci
       - id: check-jsonschema
@@ -98,15 +100,16 @@ repos:
         files: ^doc/errata/staging/[^0].*[.]yaml$
         args: ["--schemafile", "doc/errata/erratum.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.3.2'
+    rev: 'v0.14.0'
     hooks:
-      - id: ruff
+      - id: ruff-check
+        alias: "ruff"
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
-      - id: ruff
+      - id: ruff-check
         alias: "ruff-fix"
         stages: [ manual ]
         args: ["--fix", "--unsafe-fixes"]
@@ -165,8 +168,8 @@ repos:
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.4
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.3.2
     hooks:
     -   id: autopep8
         args: ["-d"]
