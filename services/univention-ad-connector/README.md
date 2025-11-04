@@ -16,8 +16,8 @@
   Active Directory. If an object modification works, the `pickle` file gets removed. If the object modification fails,
   e.g. with a Python traceback, its DN is stored into a table `AD rejected` in `internal.sqlite` in the directory
   `/etc/univention/connector/`.
-* During each replication cycle the AD-Connector polls the Active Directory via LDAP for changes (`usnChanged`/
-  usnCreated` higher than the last value of `highestCommittedUSN` the AD-Connector has seen during the previous
+* During each replication cycle the AD-Connector polls the Active Directory via LDAP for changes (`usnChanged` /
+  `usnCreated` higher than the last value of `highestCommittedUSN` the AD-Connector has seen during the previous
   replication cycle.
   The last seen value of `highestCommittedUSN` is stored in `internal.sqlite`. The AD-Connector attempts to write
   the change to OpenLDAP. If possible it uses the Python UDM API to write changes to OpenLDAP. If object modification
@@ -26,18 +26,18 @@
 ## Ports
 
 * In addition to plain LDAP/LDAP+TLS/LDAPS the AD-Connector uses DRS to sync password hashes. Even if the connector is
-  configured to "write" mode only, it currrently still needs DRS to find out if a password hash is in sync.
-  DRS uses Remote Procedure Calls (RPC) for Active Directory data replication, which primarily involves the RPC Endpoint Mapper (Port 135)
-  for initial communication and then dynamically assigned high-port TCP ports (typically 49152-65535 in modern Windows Server versions)
-  for the actual data transfer. To allow DRS communication through a firewall, both Port 135 and the dynamic range must be open.
+  configured to `write` mode only, it currrently still needs DRS to find out if a password hash is in sync.
+  DRS uses Remote Procedure Calls (RPC) for Active Directory data replication, which primarily involves the RPC Endpoint Mapper (Port `135`)
+  for initial communication and then dynamically assigned high-port TCP ports (typically `49152-65535` in modern Windows Server versions)
+  for the actual data transfer. To allow DRS communication through a firewall, both Port `135` and the dynamic range must be open.
   It's matter of research if a static range of ports can be configured for DRS and other RPC-dependent services.
 
 ## Terminology:
 
-* "move" means: the first RDN stayed the same, but the DN changed.
-* "modify" *can* mean the first RDN changed *and* the object was moved to another position.
-* In the case of users it can be that there is a "modify" in AD including a CN change which changes the DN,
-  while the DN remains the same in UDM (in case the uid/sAMAccountName did not change.
+* `move` means: the first RDN stayed the same, but the DN changed.
+* `modify` *can* mean the first RDN changed *and* the object was moved to another position.
+* In the case of users it can be that there is a `modify` in AD including a CN change which changes the DN,
+  while the DN remains the same in UDM (in case the `uid` / `sAMAccountName` did not change.
 
 ## Developer Information
 
@@ -61,27 +61,28 @@ Updates need special attention when extending ADC to synchronize additional attr
 
 Check list for DEV and QA:
 ==========================
-* scripts/prepare-new-instance must work (Regression Bug #50713)
-* Instances created with scripts/prepare-new-instance before the
+* `scripts/prepare-new-instance` must work (Regression Bug #50713)
+* Instances created with `scripts/prepare-new-instance` before the
   update must continue to work (see also Bug #51918)
 
 Caveats:
 ========
-* object['attributes'] may contain a mix of OL and AD attributes.
-  This can be nasty for attributes like "mail", which exist
+* `object['attributes']` may contain a mix of OL and AD attributes.
+  This can be nasty for attributes like `mail`, which exist
   in both object types.
 
-* Warning: mapping of mail related attributes is especially nasty:
-** git log --grep "Bug #51647: fix regression of Bug #18501"
-** git log --grep "Bug #18501: Fix handling of proxyAddresses mapping"
-** git log --grep "Bug #43216: Revised mapping for MS-Exchange related 'proxyAddresses'"
+* **Warning:** mapping of mail related attributes is especially nasty:
+
+  * `git log --grep "Bug #51647: fix regression of Bug #18501"`
+  * `git log --grep "Bug #18501: Fix handling of proxyAddresses mapping"`
+  * `git log --grep "Bug #43216: Revised mapping for MS-Exchange related 'proxyAddresses'"`
 
 Synchronization of mail attributes:
 ===================================
 
-* MS-Exchange uses 'proxyAddresses' as attribute for one or more mail-addresses.
-* Standard Active Directory uses 'mail' as the default attribute, when filling in an address in the users E-Mail field.
-* UCS uses mailPrimaryAddress and mailAlternativeAddress for functional adresses and 'mail' as informational field,
+* MS-Exchange uses `proxyAddresses` as attribute for one or more mail-addresses.
+* Standard Active Directory uses `mail` as the default attribute, when filling in an address in the users E-Mail field.
+* UCS uses `mailPrimaryAddress` and `mailAlternativeAddress` for functional adresses and `mail` as informational field,
   which may be used for addressbooks
 
 We map them like this (since UCS 4.1-4 Errata Bug #43216):
@@ -89,70 +90,70 @@ We map them like this (since UCS 4.1-4 Errata Bug #43216):
 * UCS:(mailPrimaryAddress, mailAlternativeAddress) <-> AD:proxyAddresses
 * UCS:(mailPrimaryAddress, mailAlternativeAddress) |-> AD:mail
 
-The UCR variable connector/ad/mapping/user/primarymail may be used to influence this (TODO: Details).
+The UCR variable `connector/ad/mapping/user/primarymail` may be used to influence this (TODO: Details).
 
-To make this work a sync_mode='read' hack for mailAlternativeAddress has been introduced
-to avoid duplicate ldap.MOD_REPLACE entries in sync_from_ucs modlist
+To make this work a `sync_mode='read'` hack for mailAlternativeAddress has been introduced
+to avoid duplicate `ldap.MOD_REPLACE` entries in `sync_from_ucs()` modlist
 
 
 Since UCS 4.4-4 Errata Bug #18501:
 
-  Fix handling of proxyAddresses mapping in combination with the Diff-Mode code:
+* Fix handling of proxyAddresses mapping in combination with the Diff-Mode code:
 
-  We need to compare mapped values in sync_from_ucs, because:
+* We need to compare mapped values in `sync_from_ucs()`, because:
 
   1. We must use mapped values in case a mapping function is defined,
      not only for single_value attributes.
 
-  2. proxyAddresses is constructed from mailPrimaryAddress *and*
-     mailAlternativeAddress. The first is marked by capital "SMTP:"
-     prefix in AD, while the other is marked by lowercase "smtp:".
+  2. `proxyAddresses` is constructed from `mailPrimaryAddress` *and*
+     `mailAlternativeAddress`. The first is marked by capital `SMTP:`
+     prefix in AD, while the other is marked by lowercase `smtp:`.
 
-  3. If only mailAlternativeAddress is changed, then still to_proxyAddresses
+  3. If only `mailAlternativeAddress` is changed, then still `to_proxyAddresses`
      needs to be called to construct the new proxyAddresses value, but
-     that mapping function is only attached to mailPrimaryAddress.
+     that mapping function is only attached to `mailPrimaryAddress`.
 
-  Before Diff-Mode, the sync_from_ucs method iterated over attributes
+* Before Diff-Mode, the `sync_from_ucs` method iterated over attributes
   of the mapped object. I think that makes sense, so we can deal only
-  with mapped values in sync_from_ucs. So I adjusted the method
-  to get the mapped object_old as argument, instead of the 'old' dict
-  from the listener. Then it also doesn't need the 'new' dict either,
+  with mapped values in `sync_from_ucs`. So I adjusted the method
+  to get the mapped `object_old` as argument, instead of the `old` dict
+  from the listener. Then it also doesn't need the `new` dict either,
   making the code more readable.
 
 
 Since UCS 4.4-5 Bug #51647 we fixed a regression from UCS 4.4-4 Errata Bug #18501:
 
-  Synchronize AD:"mail" again to UDM:"mailPrimaryAddress"
+* Synchronize AD:`mail` again to UDM:`mailPrimaryAddress`
 
   There is a delicate interplay between the two post_attribute definitions
-  "mailPrimaryAddress_to_mail" and  "mailPrimaryAddress":
+  `mailPrimaryAddress_to_mail` and  `mailPrimaryAddress`:
 
-  The post_attribute mapping "mailPrimaryAddress_to_mail"
-  causes _object_mapping to map AD "mail" to "primaryMailAddress"
+  The `post_attribute` mapping `mailPrimaryAddress_to_mail`
+  causes _object_mapping to map AD `mail` to `primaryMailAddress`
   during sync_to_ucs, even if the sync_mode of this post_attribute
-  mapping is "read".
+  mapping is `read`.
 
-  As a result later, in __set_values, "primaryMailAddress" is present
-  in "object" and the other post_attribute mapping "mailPrimaryAddress"
+  As a result later, in `__set_values()`, `primaryMailAddress` is present
+  in `object` and the other `post_attribute` mapping `mailPrimaryAddress`
   finds this and sets in in UDM.
 
-  The change of Bug #18501 caused only those post_attribute to get
-  considered in __set_values, where the con_attribute/con_other_attribute
-  actually changed in AD. In only "mail" changed, but proxyAddress didn't,
-  then the "primaryMailAddress" post_attribute mapping doesn't get
+  The change of Bug #18501 caused only those `post_attribute` to get
+  considered in `__set_values`, where the `con_attribute` / `con_other_attribute`
+  actually changed in AD. In only `mail` changed, but proxyAddress didn't,
+  then the `primaryMailAddress` `post_attribute` mapping doesn't get
   called any longer and nothing is changed in UDM.
 
   This change re-enables the UDM modification.
 
-  It's ugly and it still relies on the hidden handover from "mailPrimaryAddress_to_mail" to "mailPrimaryAddress".
+  It's ugly and it still relies on the hidden handover from `mailPrimaryAddress_to_mail` to `mailPrimaryAddress`.
 
 
 UCS 5.0 Bug #52044 required an adjustment for Python 3:
 
-  In Python 3 the order of dict keys changed, therefore 'proxyAddresses' was before 'mail'.
+* In Python 3 the order of dict keys changed, therefore `proxyAddresses` was before `mail`.
   The mapping procedure is too complex and has a delicate interplay with the diffmode.
-  It should be revised, but that porbably implies improving the way _object_mapping works and
-  the way that unmapped and mapped attributes are passed to the sync_from/to_ucs methods
+  It should be revised, but that porbably implies improving the way `_object_mapping` works and
+  the way that unmapped and mapped attributes are passed to the `sync_from/to_ucs` methods
   and the way we iterate over them. That's the point to clean up first, otherwise it's
   just messing around.
 
@@ -164,27 +165,27 @@ Change tracking
   handling change tracking for multi-master-replication (i.e. concurrent changes in UDM and Active Directory)
 
 Specifics about the change tracking mechanisms offered by Active Directory:
-• [Polling for Changes Using USNChanged](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-usnchanged)
-   ◇ `Because uSNChanged is a non-replicated attribute, the application must bind to the same domain controller every time it runs`
-• [Polling for Changes Using the DirSync Control](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-the-dirsync-control)
-   ◇ `For each object, the initial results include all the requested attributes set on the object. Subsequent search results include only the specified attributes that have changed. Unchanged attributes are not included in the search results.`
-   ◇ `When an object is renamed or moved, its child objects, if any, are not included in the search results, even though the distinguished names of the child objects have changed.`
-   ◇ `Use the objectGUID attribute to identify the tracked objects.`
-   ◇ `To use the DirSync control, caller must have the "directory get changes" right assigned on the root of the partition being monitored.`
-   ◇ `Retrieving Deleted Objects With a DirSync Search` (see document)
-• [Change Notifications in Active Directory Domain Services](https://learn.microsoft.com/en-us/windows/win32/ad/change-notifications-in-active-directory-domain-services)
-   ◇ `You can register up to five notification requests on a single LDAP connection. You must have a dedicated thread that waits for the notifications and processes them quickly.`
-   ◇ `Although the subtree scope is supported if the base object is the root of a naming context, its use can severely impact server performance, because it generates an LDAP search result message every time an object in the naming context is modified.`
+* [Polling for Changes Using USNChanged](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-usnchanged)
+   * Because `uSNChanged` is a non-replicated attribute, the application must bind to the same domain controller every time it runs
+* [Polling for Changes Using the DirSync Control](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-the-dirsync-control)
+   * For each object, the initial results include all the requested attributes set on the object. Subsequent search results include only the specified attributes that have changed. Unchanged attributes are not included in the search results.
+   * When an object is renamed or moved, its child objects, if any, are not included in the search results, even though the distinguished names of the child objects have changed.
+   * Use the objectGUID attribute to identify the tracked objects.
+   * To use the `DirSync` control, caller must have the "directory get changes" right assigned on the root of the partition being monitored.
+   * Retrieving Deleted Objects With a DirSync Search (see document)
+* [Change Notifications in Active Directory Domain Services](https://learn.microsoft.com/en-us/windows/win32/ad/change-notifications-in-active-directory-domain-services)
+   * You can register up to five notification requests on a single LDAP connection. You must have a dedicated thread that waits for the notifications and processes them quickly.
+   * Although the subtree scope is supported if the base object is the root of a naming context, its use can severely impact server performance, because it generates an LDAP search result message every time an object in the naming context is modified.
 
 Improvement Suggestions:
 ========================
-* Rename "object" and seprate object["attributes"] into "ldap_obj_ol" and "ldap_obj_ad"
-  and pass them around to all functions (e.g. ucs_create_functions),
+* Rename `object` and seprate `object["attributes"]` into `ldap_obj_ol` and `ldap_obj_ad`
+  and pass them around to all functions (e.g. `ucs_create_functions`),
   so they have all required info, can pick the correct attribute values (OL vs AD) in searches
   and don't need to search stuff over and over again.
-* Maybe replace "object" by a "obj_replication_state", which holds "ldap_obj_ol" and "ldap_obj_ad"
-* Differenciate between "ldap_obj_ol_from_listener" and "ldap_obj_ol_current"
-* We first do "dn_mapping_function" (which is "samaccountname_dn_mapping" for most account type objects,
-  but not for all kinds of objects) and after that "position_mapping". That results in "Frankenstein DNs"
-  in case you have a position_mapping = ('dc=foo,dc=bar', 'dc=sub,dc=foo,dc=bar') and the target object
+* Maybe replace `object` by a `obj_replication_state`, which holds `ldap_obj_ol` and `ldap_obj_ad`
+* Differenciate between `ldap_obj_ol_from_listener` and `ldap_obj_ol_current`
+* We first do `dn_mapping_function` (which is `samaccountname_dn_mapping` for most account type objects,
+  but not for all kinds of objects) and after that `position_mapping`. That results in `Frankenstein DNs`
+  in case you have a `position_mapping = ('dc=foo,dc=bar', 'dc=sub,dc=foo,dc=bar')` and the target object
   in AD is found. Maybe see also related S4-C [Bug #48440](https://forge.univention.org/bugzilla/show_bug.cgi?id=48440).
