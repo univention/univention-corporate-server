@@ -1,4 +1,4 @@
-ucs-test (12.3.28) unstable; urgency=medium
+ucs-test (12.3.29) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#245: Adjust test
     to Keycloak 26.4.2
