@@ -1,3 +1,9 @@
+univention-python (15.3.2) unstable; urgency=medium
+
+  * Bug #58756: add more information to log message
+
+ -- Florian Best <best@univention.de>  Wed, 05 Nov 2025 10:00:52 +0100
+
 univention-python (15.3.1) unstable; urgency=medium
 
   * Bug #58756: add logging of LDAP operation durations

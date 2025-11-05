@@ -266,7 +266,7 @@ class access:
         self.binddn = binddn
         self.bindpw = bindpw
         log.debug('bind', binddn=self.binddn)
-        with log.timing('LDAP operation', operation='bind'):
+        with log.timing('LDAP operation', operation='bind', binddn=self.binddn):
             self.lo.simple_bind_s(self.binddn, self.bindpw)
 
     @_fix_reconnect_handling
@@ -383,7 +383,7 @@ class access:
         """
         if dn:
             try:
-                with log.timing('LDAP operation', operation='get'):
+                with log.timing('LDAP operation', operation='get', dn=dn):
                     result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
                 return result[0][1]
             except (ldap.NO_SUCH_OBJECT, LookupError):
@@ -410,7 +410,7 @@ class access:
         """
         if dn:
             try:
-                with log.timing('LDAP operation', operation='getAttr'):
+                with log.timing('LDAP operation', operation='getAttr', dn=dn, attr=attr):
                     result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
                 return result[0][1][attr]
             except (ldap.NO_SUCH_OBJECT, LookupError):
@@ -470,8 +470,7 @@ class access:
     def __search(self, *args, **kwargs):
         response = kwargs.pop('response', None)
         if isinstance(response, dict) and kwargs.get('serverctrls'):
-            with log.timing('LDAP operation', operation='search'):
-                _rtype, res, _rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
+            _rtype, res, _rmsgid, resp_ctrls = self.lo.result3(self.lo.search_ext(*args, **kwargs))
             response['ctrls'] = resp_ctrls
             return res
         else:

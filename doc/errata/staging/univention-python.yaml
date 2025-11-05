@@ -3,7 +3,7 @@ release: "5.2"
 version: [3]
 scope: ucs_5.2-0-errata5.2-3
 src: univention-python
-fix: 15.3.1
+fix: 15.3.2
 desc: |
  This update addresses the following issues:
  * The duration of LDAP operations is now logged at TRACE level.
