@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Backport of `univention.dn`, for use in AD-Connector
 bug: [58735]
+erratum: 1342
+announced: 2025-11-05
+support: core
