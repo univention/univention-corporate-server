@@ -48,6 +48,6 @@ docker run \
     --volume=/var/www/ucs-root-ca.crt:/etc/ssl/certs/ca-certificates.crt:ro \
     --volume=/root/test-reports/26_provisioning/02_e2e_tests:/app/e2e_tests/test-reports \
     --env=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
-    gitregistry.knut.univention.de/univention/dev/projects/provisioning/provisioning-e2e-tests:0.63.0-pre-provisioning-in-ucs \
+    gitregistry.knut.univention.de/univention/dev/projects/provisioning/provisioning-e2e-tests:provisioning-in-ucs \
     pytest -v --junitxml=/app/e2e_tests/test-reports/junit-e2e-provisioning-ucs.xml
 

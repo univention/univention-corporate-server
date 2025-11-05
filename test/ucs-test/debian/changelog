@@ -1,3 +1,10 @@
+ucs-test (12.3.31) unstable; urgency=medium
+
+  * Issue univention/dev/projects/provisioning#99: update docker tag of
+    provisioning-e2e-test.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 05 Nov 2025 07:41:59 +0100
+
 ucs-test (12.3.30) unstable; urgency=medium
 
   * Issue univention/dev/projects/provisioning#96: require app
