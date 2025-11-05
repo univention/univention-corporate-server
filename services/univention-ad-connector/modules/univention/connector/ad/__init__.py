@@ -1419,10 +1419,16 @@ class ad(univention.connector.ucs):
 
     def __compare_lowercase(self, value, value_list):
         """Checks if value is in value_list"""
+        # convert to string
+        value = value.decode('UTF-8') if isinstance(value, bytes) else value
+        value_list = list(map(lambda x: x.decode('UTF-8') if isinstance(x, bytes) else x, value_list))
         return any(value.lower() == v.lower() for v in value_list)
 
     def __compare_lowercase_dn(self, dn, dn_list):
         """Checks if dn is in dn_list"""
+        # convert to string
+        dn = dn.decode('UTF-8') if isinstance(dn, bytes) else dn
+        dn_list = list(map(lambda x: x.decode('UTF-8') if isinstance(x, bytes) else x, dn_list))
         dn_lower = dn.lower()
         return any(self.lo.compare_dn(dn_lower, d.lower()) for d in dn_list)
 
