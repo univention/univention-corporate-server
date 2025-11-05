@@ -1426,11 +1426,11 @@ class ad(univention.connector.ucs):
                 else:
                     log.debug("object_memberships_sync_to_ucs: Failed to append user %s to AD group member cache of %s", object['dn'].lower(), groupDN.lower())
 
-    def __compare_lowercase(self, value, value_list):
+    def __compare_lowercase(self, value: str, value_list: list[str]):
         """Checks if value is in value_list"""
         return any(value.lower() == v.lower() for v in value_list)
 
-    def __compare_lowercase_dn(self, dn, dn_list):
+    def __compare_lowercase_dn(self, dn: str, dn_list: list[str]):
         """Checks if dn is in dn_list"""
         dn_lower = dn.lower()
         return any(self.lo.compare_dn(dn_lower, d.lower()) for d in dn_list)
@@ -1440,12 +1440,12 @@ class ad(univention.connector.ucs):
         # In AD the object['dn'] is member of the group sync_object
 
         ml = []
-        if not self.__compare_lowercase_dn(object['dn'].encode('UTF-8'), ucs_group_object['attributes'].get('uniqueMember', [])):
+        if not self.__compare_lowercase_dn(object['dn'], [x.decode('UTF-8') for x in ucs_group_object['attributes'].get('uniqueMember', [])]):
             ml.append((ldap.MOD_ADD, 'uniqueMember', [object['dn'].encode('UTF-8')]))
 
         if object['attributes'].get('uid'):
             uid = object['attributes']['uid'][0]
-            if not self.__compare_lowercase(uid, ucs_group_object['attributes'].get('memberUid', [])):
+            if not self.__compare_lowercase(uid.decode('UTF-8'), [x.decode('UTF-8') for x in ucs_group_object['attributes'].get('memberUid', [])]):
                 ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
 
         if ml:
@@ -1461,7 +1461,7 @@ class ad(univention.connector.ucs):
     def one_group_member_sync_from_ucs(self, ad_group_object, object):
         """sync groupmembers in AD if changend one member in AD"""
         ml = []
-        if not self.__compare_lowercase_dn(object['dn'].encode('UTF-8'), ad_group_object['attributes'].get('member', [])):
+        if not self.__compare_lowercase_dn(object['dn'], [x.decode('UTF-8') for x in ad_group_object['attributes'].get('member', [])]):
             ml.append((ldap.MOD_ADD, 'member', [object['dn'].encode('UTF-8')]))
 
         if ml:
