@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Update `python-logfmter` to v0.0.11.
 bug: [58754]
+erratum: 280
+announced: 2025-11-05
+support: core
