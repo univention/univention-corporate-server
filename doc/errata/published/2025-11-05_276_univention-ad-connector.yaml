@@ -16,3 +16,6 @@ desc: |
    lockout state from AD to UCS. Account
    unlocking is also synchronized from UCS to AD.
 bug: [58738, 58680]
+erratum: 276
+announced: 2025-11-05
+support: core
