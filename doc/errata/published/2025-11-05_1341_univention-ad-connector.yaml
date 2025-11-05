@@ -29,3 +29,6 @@ desc: |
    at a later point in time. The AD-Connector now updates the DN caches
    for subtree objects when a OU is renamed in Active Directroy.
 bug: [58737,58735,58739]
+erratum: 1341
+announced: 2025-11-05
+support: core
