@@ -9,3 +9,6 @@ desc: |
  * Adjustments for `python-logfmter` v0.0.11 have been done.
  * A method to log the duration of certain operations has been added.
 bug: [58754, 58756]
+erratum: 278
+announced: 2025-11-05
+support: core
