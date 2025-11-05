@@ -9,3 +9,6 @@ desc: |
  * The behavior of account locked status synchronization has been unified
    between S4-Connector and AD-Connector.
 bug: [58680]
+erratum: 277
+announced: 2025-11-05
+support: core
