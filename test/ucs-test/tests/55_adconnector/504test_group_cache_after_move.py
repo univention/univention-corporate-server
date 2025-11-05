@@ -307,8 +307,8 @@ def test_move_parent_in_ucs(udm, lo, ldap_base, mode):
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group2_dn, group3_dn}, {setup.group2_dn_ad, group3_dn_ad})
 
 
-@pytest.mark.parametrize('mode', ['read'], ids=['read mode'])
-def test_rename_user_with_umlauts(udm, lo, ldap_base, mode):
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
+def test_rename_user_with_umlauts_in_ad(udm, lo, ldap_base, mode):
     '''
     ucr set connector/ad/mapping/syncmode=read
     systemctl restart univention-ad-connector.service
