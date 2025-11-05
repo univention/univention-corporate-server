@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * The duration of authorization operations is now logged at TRACE level.
 bug: [58756]
+erratum: 279
+announced: 2025-11-05
+support: core
