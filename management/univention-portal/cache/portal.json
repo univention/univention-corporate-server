@@ -1,0 +1,379 @@
+{
+  "announcements": {},
+  "categories": {
+    "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "display_name": {
+        "de_DE": "Verwaltung",
+        "en_US": "Administration",
+        "fr_FR": "Administration"
+      },
+      "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "entries": [
+        "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa"
+      ],
+      "in_portal": true
+    },
+    "cn=domain-service,cn=category,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "display_name": {
+        "de_DE": "Applikationen",
+        "en_US": "Applications",
+        "fr_FR": "Applications"
+      },
+      "dn": "cn=domain-service,cn=category,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "entries": [
+        "cn=login-ucs,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+        "cn=login-saml,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa"
+      ],
+      "in_portal": true
+    }
+  },
+  "entries": {
+    "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Zertifikat-Sperrliste",
+        "en_US": "Certificate revocation list",
+        "fr_FR": "Liste de révocation de certificats"
+      },
+      "dn": "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": null,
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/ucsCA.crl"
+        }
+      ],
+      "name": {
+        "de_DE": "Zertifikat-Sperrliste",
+        "en_US": "Certificate revocation list",
+        "fr_FR": "Liste de révocation de certificats"
+      },
+      "target": null
+    },
+    "cn=login-saml,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": false,
+      "allowedGroups": [],
+      "anonymous": true,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Am Portal anmelden",
+        "en_US": "Log in to the portal",
+        "fr_FR": "Connectez-vous au portail"
+      },
+      "dn": "cn=login-saml,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": "./icons/entries/login-saml.svg",
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/univention/saml/?location=/univention/portal/"
+        }
+      ],
+      "name": {
+        "de_DE": "Anmelden (Single Sign-on)",
+        "en_US": "Login (Single sign-on)",
+        "fr_FR": "Connexion (authentification unique)"
+      },
+      "target": null
+    },
+    "cn=login-ucs,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": true,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Am Portal anmelden",
+        "en_US": "Log in to the portal",
+        "fr_FR": "Connectez-vous au portail"
+      },
+      "dn": "cn=login-ucs,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": "./icons/entries/login-ucs.svg",
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/univention/login/?location=/univention/portal/"
+        }
+      ],
+      "name": {
+        "de_DE": "Anmelden",
+        "en_US": "Login",
+        "fr_FR": "Connexion"
+      },
+      "target": null
+    },
+    "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Wurzelzertifikat",
+        "en_US": "Root certificate",
+        "fr_FR": "Certificat racine"
+      },
+      "dn": "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": null,
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/ucs-root-ca.crt"
+        }
+      ],
+      "name": {
+        "de_DE": "Wurzelzertifikat",
+        "en_US": "Root certificate",
+        "fr_FR": "Certificat racine"
+      },
+      "target": null
+    },
+    "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [
+        "cn=Domain Users,cn=groups,dc=ucs52,dc=qa"
+      ],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Ihr Passwort ändern",
+        "en_US": "Change your password"
+      },
+      "dn": "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": "./icons/entries/self-service-password-change.svg",
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "samewindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "#/selfservice/passwordchange"
+        }
+      ],
+      "name": {
+        "de_DE": "Ihr Passwort ändern",
+        "en_US": "Change your password"
+      },
+      "target": null
+    },
+    "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": true,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Management Console zur Ver­wal­tung der UCS-Domäne und des lokalen Systems",
+        "en_US": "Univention Management Console for admin­is­tra­ting the UCS domain and the local system",
+        "fr_FR": "Console de gestion Univention pour admin­is­trer le domaine UCS et le système local"
+      },
+      "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": "./icons/entries/umc-domain.svg",
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "/univention/umc/"
+        }
+      ],
+      "name": {
+        "de_DE": "System- und Domäneneinstellungen",
+        "en_US": "System and domain settings",
+        "fr_FR": "Réglages du système et du domaine"
+      },
+      "target": null
+    },
+    "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "News, Tipps und Best Practices",
+        "en_US": "News, tips and best practices",
+        "fr_FR": "Nouvelles, conseils et bonne pratique"
+      },
+      "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": "./icons/entries/univentionblog.png",
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com/news/blog-en"
+        },
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de/news/blog-de"
+        }
+      ],
+      "name": {
+        "de_DE": "Univention Blog",
+        "en_US": "Univention Blog",
+        "fr_FR": "Univention Blog"
+      },
+      "target": null
+    },
+    "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Feedback",
+        "en_US": "Feedback",
+        "fr_FR": "Impressions"
+      },
+      "dn": "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": null,
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com/feedback/?umc=portal"
+        },
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de/produkt-feedback/?umc=portal"
+        }
+      ],
+      "name": {
+        "de_DE": "Feedback",
+        "en_US": "Feedback",
+        "fr_FR": "Impressions"
+      },
+      "target": null
+    },
+    "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Forum (Hilfe)",
+        "en_US": "Univention Forum (Help)",
+        "fr_FR": "Forum Univention (Aide)"
+      },
+      "dn": "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": null,
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "en_US",
+          "value": "https://help.univention.com"
+        }
+      ],
+      "name": {
+        "de_DE": "Univention Forum (Hilfe)",
+        "en_US": "Univention Forum (Help)",
+        "fr_FR": "Forum Univention (Aide)"
+      },
+      "target": null
+    },
+    "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "activated": true,
+      "allowedGroups": [],
+      "anonymous": false,
+      "backgroundColor": null,
+      "description": {
+        "de_DE": "Univention Webseite",
+        "en_US": "Univention Website",
+        "fr_FR": "Site Internet Univention"
+      },
+      "dn": "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "icon_url": null,
+      "in_portal": true,
+      "keywords": [],
+      "linkTarget": "newwindow",
+      "links": [
+        {
+          "locale": "de_DE",
+          "value": "https://www.univention.de"
+        },
+        {
+          "locale": "en_US",
+          "value": "https://www.univention.com"
+        }
+      ],
+      "name": {
+        "de_DE": "Univention Webseite",
+        "en_US": "Univention Website",
+        "fr_FR": "Site Internet Univention"
+      },
+      "target": null
+    }
+  },
+  "folders": {
+    "cn=certificates,cn=folder,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "dn": "cn=certificates,cn=folder,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "entries": [
+        "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+        "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa"
+      ],
+      "in_portal": true,
+      "name": {
+        "de_DE": "Zertifikate",
+        "en_US": "Certificates",
+        "fr_FR": "Certificats"
+      }
+    },
+    "cn=help,cn=folder,cn=portals,cn=univention,dc=ucs52,dc=qa": {
+      "dn": "cn=help,cn=folder,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "entries": [
+        "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+        "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+        "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
+        "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa"
+      ],
+      "in_portal": true,
+      "name": {
+        "de_DE": "Hilfe",
+        "en_US": "Help",
+        "fr_FR": "Aide"
+      }
+    }
+  },
+  "menu_links": [
+    "cn=certificates,cn=folder,cn=portals,cn=univention,dc=ucs52,dc=qa",
+    "cn=help,cn=folder,cn=portals,cn=univention,dc=ucs52,dc=qa"
+  ],
+  "portal": {
+    "background": null,
+    "categories": [
+      "cn=domain-service,cn=category,cn=portals,cn=univention,dc=ucs52,dc=qa",
+      "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=ucs52,dc=qa"
+    ],
+    "defaultLinkTarget": "embedded",
+    "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=ucs52,dc=qa",
+    "ensureLogin": false,
+    "logo": null,
+    "name": {
+      "de_DE": "Univention Portal",
+      "en_US": "Univention Portal",
+      "fr_FR": "Portail Univention"
+    },
+    "showUmc": true
+  },
+  "user_links": [
+    "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa"
+  ]
+}

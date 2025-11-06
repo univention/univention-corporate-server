@@ -1,8 +1,10 @@
+cache	var/cache/univention-portal/
 docker-compose.yaml	usr/share/univention-portal/
 key.svg	usr/share/univention-portal/
 listener/*.py	usr/lib/univention-directory-listener/system/
 login.svg	usr/share/univention-portal/
 portal-server-password-rotate	usr/lib/univention-server/server_password_change.d/
+portals.json	usr/share/univention-portal/portals.json
 udm/acls/62univention-portal.acl	usr/lib/univention-portal/acl/
 udm/api/*.py	usr/lib/python3/dist-packages/univention/udm/modules/
 udm/handlers/*.py	usr/lib/univention-portal/udm/

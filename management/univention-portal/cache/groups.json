@@ -1,0 +1,23 @@
+{
+  "administrator": [
+    "cn=computers,cn=groups,dc=ucs52,dc=qa",
+    "cn=dc backup hosts,cn=groups,dc=ucs52,dc=qa",
+    "cn=dc slave hosts,cn=groups,dc=ucs52,dc=qa",
+    "cn=domain admins,cn=groups,dc=ucs52,dc=qa",
+    "cn=domain users,cn=groups,dc=ucs52,dc=qa",
+    "cn=windows hosts,cn=groups,dc=ucs52,dc=qa"
+  ],
+  "join-backup": [
+    "cn=backup join,cn=groups,dc=ucs52,dc=qa",
+    "cn=computers,cn=groups,dc=ucs52,dc=qa",
+    "cn=dc backup hosts,cn=groups,dc=ucs52,dc=qa",
+    "cn=dc slave hosts,cn=groups,dc=ucs52,dc=qa",
+    "cn=slave join,cn=groups,dc=ucs52,dc=qa",
+    "cn=windows hosts,cn=groups,dc=ucs52,dc=qa"
+  ],
+  "join-slave": [
+    "cn=computers,cn=groups,dc=ucs52,dc=qa",
+    "cn=dc slave hosts,cn=groups,dc=ucs52,dc=qa",
+    "cn=slave join,cn=groups,dc=ucs52,dc=qa"
+  ]
+}
