@@ -1,0 +1,37 @@
+{{/*
+SPDX-FileCopyrightText: 2024 Univention GmbH
+SPDX-License-Identifier: AGPL-3.0-only
+*/}}
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: "{{ include "common.names.fullname" . }}"
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+data:
+  ENVIRONMENT: "{{ .Values.portalServer.environment }}"
+  LOG_LEVEL: "{{ .Values.portalServer.logLevel }}"
+  PORTAL_SERVER_ADMIN_GROUP: {{ include "portal-server.adminGroup" . | quote }}
+  PORTAL_SERVER_AUTH_MODE: {{ include "portal-server.authMode" . | quote }}
+  PORTAL_SERVER_EDITABLE: "{{ .Values.portalServer.editable }}"
+  PORTAL_SERVER_FEATURE_TOGGLES: {{ .Values.portalServer.featureToggles | default dict | toJson | quote }}
+  PORTAL_SERVER_PORT: "{{ .Values.service.ports.http.port }}"
+  PORTAL_SERVER_UCS_INTERNAL_PATH: {{ required "The parameter \"portalServer.ucsInternalPath\" is required." .Values.portalServer.ucsInternalPath | quote }}
+  PORTAL_SERVER_UMC_GET_URL: {{ include "portal-server.umcGetUrl" . | quote }}
+  PORTAL_SERVER_UMC_SESSION_URL: {{ include "portal-server.umcSessionUrl" .| quote }}
+  PORTAL_SERVER_CENTRAL_NAVIGATION_ENABLED: {{ .Values.portalServer.centralNavigation.enabled | quote }}
+  {{- $udmConnectionUrl := tpl (coalesce .Values.udm.connection.url .Values.global.udm.connection.url) . }}
+  PORTAL_UDM_API_URL: {{ required "The UDM Rest API connection has to be configured, udm.connection.url." $udmConnectionUrl | quote }}
+{{- $udmAuthUsername := required "A UDM username has to be supplied, see parameter udm.auth." .Values.udm.auth.username }}
+  PORTAL_UDM_API_USERNAME: {{ tpl .Values.udm.auth.username . | quote }}
+  PORTAL_UDM_API_PASSWORD_FILE: "/var/secrets/udm_api_password"
+  OBJECT_STORAGE_ENDPOINT: {{ tpl ( required "The parameter \"objectStorage.endpoint\" is required." .Values.objectStorage.endpoint ) . | quote }}
+  OBJECT_STORAGE_BUCKET: {{ tpl .Values.objectStorage.bucketName . | quote }}

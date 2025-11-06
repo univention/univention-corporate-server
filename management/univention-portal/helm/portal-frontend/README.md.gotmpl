@@ -1,0 +1,75 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+- **Version**: {{ template "chart.version" . }}
+- **Type**: {{ template "chart.type" . }}
+- **AppVersion**: {{ template "chart.appVersion" . }}
+- {{ template "chart.homepageLine" . }}
+
+
+## TL;DR
+
+```console
+helm repo add univention-portal https://gitlab.souvap-univention.de/api/v4/projects/75/packages/helm/stable
+helm upgrade --install portal-frontend univention-portal/portal-frontend
+```
+
+
+## Introduction
+
+This chart does install the Frontend of the Univention Portal.
+
+The Frontend is a fully stateless component, no special handling of persistent
+volumes or similar is needed.
+
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+
+## Installing
+
+To install the chart with the release name `portal-frontend`:
+
+```console
+helm repo add univention-portal https://gitlab.souvap-univention.de/api/v4/projects/75/packages/helm/stable
+helm upgrade --install portal-frontend univention-portal/portal-frontend
+```
+
+
+### Customization
+
+If `istio` is in use, then injecting a custom CSS styling needs special care.
+The parameter `istio.pathOverrides` is provided as a workaround for such a
+deployment scenario.
+
+A custom version of the file `custom.css` can be injected with the following
+example configuration:
+
+```yaml
+pathOverrides:
+  - match: "exact"
+    path: "/univention/portal/css/custom.css"
+    route:
+      - destination:
+          port:
+            number: 80
+          host: "example-service"
+```
+
+
+## Uninstalling
+
+To uninstall the chart with the release name `portal-frontend`:
+
+```console
+helm uninstall portal-frontend
+```
+
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSectionHtml" . }}

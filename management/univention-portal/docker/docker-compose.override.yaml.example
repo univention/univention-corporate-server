@@ -1,0 +1,16 @@
+---
+
+services:
+  keycloak:
+    extra_hosts:
+      ucs-1234.univention.intranet: "10.200.12.34"
+
+  consumer:
+    extra_hosts:
+      ucs-1234.univention.intranet: "10.200.12.34"
+
+  umc-server:
+    extra_hosts:
+      ucs-1234.univention.intranet: "10.200.12.34"
+
+...

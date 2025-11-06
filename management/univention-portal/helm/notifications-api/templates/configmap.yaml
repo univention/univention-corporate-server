@@ -1,0 +1,26 @@
+{{/*
+SPDX-FileCopyrightText: 2024 Univention GmbH
+SPDX-License-Identifier: AGPL-3.0-only
+*/}}
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: "{{ include "common.names.fullname" . }}"
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+data:
+  APPLY_DATABASE_MIGRATIONS: {{ required ".Values.notificationsApi.applyDatabaseMigrations is not defined." .Values.notificationsApi.applyDatabaseMigrations | quote }}
+  DEV_MODE: {{ required ".Values.notificationsApi.devMode is not defined." .Values.notificationsApi.devMode | quote }}
+  ENVIRONMENT: {{ required ".Values.notificationsApi.environment is not defined." .Values.notificationsApi.environment | quote }}
+  LOG_LEVEL: {{ required ".Values.notificationsApi.logLevel is not defined." .Values.notificationsApi.logLevel | quote }}
+  SQL_ECHO: {{ required ".Values.notificationsApi.sqlEcho is not defined." .Values.notificationsApi.sqlEcho | quote }}
+  ROOT_PATH: {{ required ".Values.notificationsApi.apiPrefix is not defined." .Values.notificationsApi.apiPrefix | quote }}
+...

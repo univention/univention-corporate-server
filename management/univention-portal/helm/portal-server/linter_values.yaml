@@ -1,0 +1,43 @@
+---
+
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Dummy values for running the Helm linter on the portal-server.
+# Run it like this: helm lint -f values.yaml -f linter_values.yaml .
+
+## Application-specific
+portalServer:
+  adminGroup: "cn=Domain Admins,cn=groups,dc=univention,dc=test"
+  centralNavigation:
+    sharedSecret: "stub-authenticator-secret-name"
+  environment: "staging"
+  logLevel: "DEBUG"
+  ucsInternalUrl: "https://portal.example.develop.souvap-univention.de/univention/internal"
+  umcGetUrl: "https://portal.example.develop.souvap-univention.de/univention/internal/umc/get"
+  umcSessionUrl: "https://portal.example.develop.souvap-univention.de/univention/internal/umc/get/session-info"
+  objectStorageAccessKeyId: "stub_user"
+  objectStorageSecretAccessKey: "stub_password"
+
+objectStorage:
+  endpoint: "http://minio:9000"
+  bucketName: "ums"
+  auth:
+    accessKeyId: "stub-linter-value"
+    secretAccessKey: "stub-linter-value"
+
+udm:
+  connection:
+    url: "http://udm-rest-api:9979/udm"
+  auth:
+    password: "stub-linter-value"
+
+## Kubernetes ingress
+ingress:
+  enabled: true
+  host: "portal.example.develop.souvap-univention.de"
+  ingressClassName: "nginx"
+  tls:
+    secretName: "portal-tls"
+
+...

@@ -1,0 +1,496 @@
+---
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# The global properties are used to configure multiple charts at once.
+global:
+  # -- Indicates wether this chart is part of a Nubus deployment.
+  nubusDeployment: false
+  # -- Container registry address.
+  imageRegistry: "artifacts.software-univention.de"
+
+  # -- Credentials to fetch images from private registry.
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  #
+  # imagePullSecrets:
+  #   - "docker-registry"
+  imagePullSecrets: []
+
+  # -- Define an ImagePullPolicy.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  #
+  # "IfNotPresent" => The image is pulled only if it is not already present locally.
+  # "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to
+  #             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached
+  #             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved
+  #             digest, and uses that image to launch the container.
+  # "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the
+  #            kubelet attempts to start the container; otherwise, startup fails.
+  imagePullPolicy: "IfNotPresent"
+
+  configMapUcr: "stack-data-ums-ucr"
+
+  udm:
+    connection:
+      # -- Global default for the URL via which the UDM Rest API can be reached.
+      # See "udm.connection.url".
+      url: null
+
+# -- Additional custom annotations to add to all deployed objects.
+additionalAnnotations: {}
+
+# -- Additional custom labels to add to all deployed objects.
+additionalLabels: {}
+
+# -- Affinity for pod assignment.
+# Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+# Note: podAffinityPreset, podAntiAffinityPreset, and nodeAffinityPreset will be ignored when it's set.
+affinity: {}
+
+# Security Context.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+containerSecurityContext:
+  privileged: false
+  # -- Enable container privileged escalation.
+  allowPrivilegeEscalation: false
+  # -- Security capabilities for container.
+  capabilities:
+    drop:
+      - "ALL"
+  # -- Enable security context.
+  enabled: true
+  # -- Process user id.
+  runAsUser: 1000
+  # -- Process group id.
+  runAsGroup: 1000
+  # Set Seccomp profile.
+  seccompProfile:
+    # -- Disallow custom Seccomp profile by setting it to RuntimeDefault.
+    type: "RuntimeDefault"
+  # -- Mounts the container's root filesystem as read-only.
+  readOnlyRootFilesystem: true
+  # -- Run container as a user.
+  runAsNonRoot: true
+
+# -- Array with extra environment variables to add to containers.
+#
+# extraEnvVars:
+#   - name: FOO
+#     value: "bar"
+extraEnvVars: []
+
+# -- Optionally specify a secret to create (primarily intended to be used in development environments to provide custom certificates)
+extraSecrets: []
+
+# -- Optionally specify an extra list of additional volumes.
+extraVolumes: []
+
+# -- Optionally specify an extra list of additional volumeMounts.
+extraVolumeMounts: []
+
+# -- Provide a name to substitute for the full names of resources.
+fullnameOverride: ""
+
+image:
+  registry: ""
+  repository: "nubus-dev/images/portal-server"
+  tag: "0.26.3@sha256:e3147110fb743d064e38cb48d96820e8b984d813154fb06fdb0d8b9fd2ffaeca"
+  imagePullPolicy: ""
+
+# -- Credentials to fetch images from private registry.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+#
+# imagePullSecrets:
+#   - "docker-registry"
+imagePullSecrets: []
+
+# Define and create Kubernetes Ingress.
+#
+# Ref.: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  # -- Enable creation of Ingress.
+  enabled: true
+
+  # -- Define the Fully Qualified Domain Name (FQDN) where application should be reachable.
+  host: ""
+
+  # Request certificates via cert-manager.io annotation
+  certManager:
+    # -- Enable cert-manager.io annotaion.
+    enabled: true
+
+    # Issuer reference.
+    issuerRef:
+      # -- Name of cert-manager.io Issuer resource.
+      name: ""
+      # -- Type of Issuer, f.e. "Issuer" or "ClusterIssuer".
+      kind: "ClusterIssuer"
+
+  # -- Define the Ingress paths.
+  paths:
+    - path: /()(univention/portal/|univention/selfservice/)(portal.json|navigation.json)$
+      pathType: ImplementationSpecific
+    - path: /()(univention/portal/|univention/selfservice/)(api/v1/me)$
+      pathType: ImplementationSpecific
+
+  # -- The Ingress controller class name.
+  ingressClassName: ""
+
+  # -- Define custom ingress annotations.
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2$3"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+  # -- Secure an Ingress by specifying a Secret that contains a TLS private key and certificate.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+  tls:
+    # -- Enable TLS/SSL/HTTPS for Ingress.
+    enabled: true
+
+    # -- The name of the kubernetes secret which contains a TLS private key and certificate.
+    # Hint: This secret is not created by this chart and must be provided.
+    secretName: ""
+
+# -- Extra ingress configuration
+extraIngresses: []
+# example:
+# - name: custom
+#   host: ""
+#   paths:
+#     - pathType: Exact
+#       path: /custom
+#   ingressClassName: ""
+#   annotations: {}
+#   tls:
+#     enabled: true
+#     secretName: ""
+
+# -- Lifecycle to automate configuration before or after startup.
+lifecycleHooks: {}
+
+#  Configure extra options for containers probes.
+livenessProbe:
+  # -- Number of failed executions until container is terminated.
+  failureThreshold: 10
+  # -- Delay after container start until LivenessProbe is executed.
+  initialDelaySeconds: 15
+  # -- Time between probe executions.
+  periodSeconds: 20
+  # -- Number of successful executions after failed ones until container is marked healthy.
+  successThreshold: 1
+  # -- Timeout for command return.
+  timeoutSeconds: 5
+  tcpSocket:
+    # -- The port to connect to the container.
+    port: 80
+
+# -- String to partially override release name.
+nameOverride: ""
+
+# -- Node labels for pod assignment.
+# Ref: https://kubernetes.io/docs/user-guide/node-selection/
+nodeSelector: {}
+
+objectStorage:
+  # -- Object storage endpoint, e.g. "http://minio:9000".
+  endpoint: ""
+  # -- Bucket in the object storage for storing the portal and assets. Example
+  # "portal-data".
+  bucketName: ""
+  auth:
+    # -- User for the object storage.
+    accessKeyId: ""
+    # -- Password for access to object storage.
+    secretAccessKey: ""
+    existingSecret:
+      # -- The name of an existing Secret to use for retrieving the secret
+      # to use as object storage secret access key.
+      #
+      # "objectStorage.secretAccessKey" and "objectStorage.accessKeyId" will be
+      # ignored if this value is set.
+      name: null
+      keyMapping:
+        # -- The key to retrieve the secret from. Setting this value allows to use
+        # a key with a different name.
+        accessKey: null
+        secretKey: null
+
+# Database persistence settings.
+persistence:
+  # -- The volume access modes, some of "ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany", "ReadWriteOncePod".
+  #
+  # "ReadWriteOnce" => The volume can be mounted as read-write by a single node. ReadWriteOnce access mode still can
+  #                    allow multiple pods to access the volume when the pods are running on the same node.
+  # "ReadOnlyMany" => The volume can be mounted as read-only by many nodes.
+  # "ReadWriteMany" => The volume can be mounted as read-write by many nodes.
+  # "ReadWriteOncePod" => The volume can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if
+  #                       you want to ensure that only one pod across whole cluster can read that PVC or write to it.
+  #
+  accessModes:
+    - "ReadWriteOnce"
+
+  # -- Annotations for the PVC.
+  annotations: {}
+
+  # -- Custom PVC data source.
+  dataSource: {}
+
+  # -- Enable data persistence (true) or use temporary storage (false).
+  enabled: true
+
+  # -- Use an already existing claim.
+  existingClaim: ""
+
+  # -- Labels for the PVC.
+  labels: {}
+
+  # -- The volume size with unit.
+  size: "10Gi"
+
+  # -- The (storage) class of PV.
+  storageClass: ""
+
+  # -- Selector to match an existing Persistent Volume (this value is evaluated as a template).
+  #
+  # selector:
+  #   matchLabels:
+  #     app: my-app
+  #
+  selector: {}
+
+# -- Pod Annotations.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+
+# -- Pod Labels.
+# Ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+# Pod Security Context.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  # -- Enable security context.
+  enabled: true
+
+  # -- If specified, all processes of the container are also part of the supplementary group.
+  fsGroup: 1000
+
+  # -- Change ownership and permission of the volume before being exposed inside a Pod.
+  fsGroupChangePolicy: "Always"
+
+  # -- Allow binding to ports below 1024 without root access.
+  sysctls:
+    - name: "net.ipv4.ip_unprivileged_port_start"
+      value: "1"
+
+#  Configure extra options for containers probes.
+readinessProbe:
+  # -- Number of failed executions until container is terminated.
+  failureThreshold: 10
+  # -- Delay after container start until LivenessProbe is executed.
+  initialDelaySeconds: 15
+  # -- Time between probe executions.
+  periodSeconds: 20
+  # -- Number of successful executions after failed ones until container is marked healthy.
+  successThreshold: 1
+  # -- Timeout for command return.
+  timeoutSeconds: 5
+  tcpSocket:
+    port: 80
+
+# -- Set the amount of replicas of deployment.
+replicaCount: 1
+
+# Configure resource requests and limits.
+#
+# Ref: https://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+  {}
+  # limits:
+  #   # -- The max number of RAM to consume.
+  #   memory: "4Gi"
+  # requests:
+  #   # -- The number of CPUs which has to be available on the scheduled node.
+  #   cpu: "250m"
+  #   # -- The number of RAM which has to be available on the scheduled node.
+  #   memory: "512Mi"
+
+# Define and create Kubernetes Service.
+#
+# Ref.: https://kubernetes.io/docs/concepts/services-networking/service
+service:
+  # -- Additional custom annotations.
+  annotations: {}
+  # "ClusterIP" => Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable
+  #                from within the cluster. This is the default that is used if you don't explicitly specify a type for
+  #                a Service.
+  # "NodePort" => Exposes the Service on each Node's IP at a static port (the NodePort). To make the node port
+  #               available, Kubernetes sets up a cluster IP address, the same as if you had requested a Service of
+  #               type: ClusterIP.
+  # "LoadBalancer" => Exposes the Service externally using a cloud provider's load balancer.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  # -- Choose the kind of Service, one of "ClusterIP", "NodePort" or "LoadBalancer".
+  type: "ClusterIP"
+
+  # Define the ports of Service.
+  # You can set the port value to an arbitrary value, it will map the container port by name.
+  #
+  ports:
+    http:
+      # -- Accessible port.
+      port: 80
+      # -- Internal port.
+      containerPort: 80
+      # -- service protocol.
+      protocol: "TCP"
+
+# Configure resource requests and limits.
+#
+# Ref: https://kubernetes.io/docs/user-guide/compute-resources/
+
+# Service account to use.
+# Ref.: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  ## @param serviceAccount.automountServiceAccountToken Allows auto mount of ServiceAccountToken on the serviceAccount created
+  ## Can be set to false if pods using this serviceAccount do not need to use K8s API
+  ##
+  automountServiceAccountToken: false
+  # -- Additional custom labels for the ServiceAccount.
+  labels: {}
+
+#  Configure extra options for containers probes.
+startupProbe:
+  # -- Delay after container start until StartupProbe is executed.
+  initialDelaySeconds: 15
+  # -- Number of failed executions until container is terminated.
+  failureThreshold: 10
+  # -- Time between probe executions.
+  periodSeconds: 20
+  # -- Number of successful executions after failed ones until container is marked healthy.
+  successThreshold: 1
+  # -- Timeout for command return.
+  timeoutSeconds: 5
+  tcpSocket:
+    # -- The port to connect to the container.
+    port: 80
+
+# -- In seconds, time the given to the pod needs to terminate gracefully.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
+terminationGracePeriodSeconds: ""
+
+# -- Tolerations for pod assignment.
+# Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
+
+# -- Topology spread constraints rely on node labels to identify the topology domain(s) that each Node is in.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+#
+# topologySpreadConstraints:
+#   - maxSkew: 1
+#     topologyKey: failure-domain.beta.kubernetes.io/zone
+#     whenUnsatisfiable: DoNotSchedule
+topologySpreadConstraints: []
+
+# -- Configuration of the UDM Rest API access
+udm:
+  connection:
+    # -- The URL of the UDM Rest API.
+    #
+    # Will use "global.udm.connection.url" as a default if this value is not specified.
+    #
+    # Example: "http://udm-rest-api:9979/udm"
+    url: null
+  auth:
+    # -- The username which the portal-server uses to authenticate with the UDM
+    # Rest API.
+    username: "svc-portal-server"
+    # -- The password used to authenticate with the UDM Rest API.
+    # Either this value or an existing Secret has to be specified.
+    password: null
+    existingSecret:
+      # -- The name of an existing Secret to use for retrieving the password
+      # to use with the UDM Rest API.
+      #
+      # "udm.auth.password" will be ignored if this value is set.
+      name: null
+      keyMapping:
+        # -- The key to retrieve the password from. Setting this value allows to use
+        # a key with a different name.
+        password: null
+
+# Set up update strategy.
+#
+# Ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+#
+# Example:
+# updateStrategy:
+#  type: RollingUpdate
+#  rollingUpdate:
+#    maxSurge: 25%
+#    maxUnavailable: 25%
+updateStrategy:
+  # -- Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to make sure the pods
+  # are destroyed first.
+  type: "RollingUpdate"
+
+portalServer:
+  # -- Define LDAP Admin Group.
+  # Example: `"cn=Domain Admins,cn=groups,dc=example,dc=com"`
+  adminGroup: null
+  # -- Define the authentication mode for the portal. Use "ucs" or "saml". Chart default is "ucs". In a Nubus deployment the default is "saml".
+  authMode: ""
+  # -- Defines if members of the Admin group can use the edit mode in the portal.
+  editable: "true"
+  # -- TODO: Clarify usage of this parameter
+  environment: "production"
+  # -- Allows to configure Feature Toggles for the portal. The value is a map
+  # from string to boolean. The keys are added into the configuration file of
+  # the `portal-server` and should use "snake case".
+  #
+  # The toggle names use snake case consistently throughout the stack.
+  featureToggles:
+    centered_layout: false
+    notifications_api: true
+    umc_session_refresh: true
+    welcome_message: false
+  # -- TODO: Clarify usage of this parameter
+  logLevel: "INFO"
+  port: 80
+  # -- Define object storage path inside the bucket where files are placed.
+  # Example: `"portal-assets"`
+  ucsInternalPath: "portal-data"
+  # -- Define UMC get endpoint.
+  # Example: `"https://portal.example.com/univention/internal/umc/get"`
+  umcGetUrl: null
+  # -- Define UMC session-info" endpoint.
+  # Example: `"https://portal.example.com/univention/internal/umc/get/session-info"`
+  umcSessionUrl: null
+  centralNavigation:
+    # -- Activate the shared secret authenticator for the portal, instead of the
+    # UMC session cookie one. This allows 3rd party apps to authenticate against
+    # the portal server to get the central navigation.
+    enabled: true
+    # -- The shared secret to use for authenticating against the portal server.
+    sharedSecret: null
+    existingSecret:
+      # -- The name of an existing Secret to use for retrieving the secret
+      # to use as central navigation shared secret.
+      #
+      # "portalServer.centralNavigation.sharedSecret" will be ignored if this value is set.
+      name: null
+      keyMapping:
+        # -- The key to retrieve the secret from. Setting this value allows to use
+        # a key with a different name.
+        password: null

@@ -1,0 +1,52 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+- **Version**: {{ template "chart.version" . }}
+- **Type**: {{ template "chart.type" . }}
+- **AppVersion**: {{ template "chart.appVersion" . }}
+- {{ template "chart.homepageLine" . }}
+
+## TL;DR
+
+```console
+helm repo add univention-portal https://gitlab.souvap-univention.de/api/v4/projects/75/packages/helm/stable
+helm upgrade --install portal-server univention-portal/portal-server
+```
+
+
+## Introduction
+
+This chart does install the Portal Server of the Univention Portal.
+
+The Portal Server is a fully stateless component, no special handling of persistent
+volumes or similar is needed.
+
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+
+## Installing
+
+To install the chart with the release name `portal-server`:
+
+```console
+helm repo add univention-portal https://gitlab.souvap-univention.de/api/v4/projects/75/packages/helm/stable
+helm upgrade --install portal-server univention-portal/portal-server
+```
+
+
+## Uninstalling
+
+To uninstall the chart with the release name `portal-server`:
+
+```console
+helm uninstall portal-server
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSectionHtml" . }}

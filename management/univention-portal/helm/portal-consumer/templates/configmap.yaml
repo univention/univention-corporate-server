@@ -1,0 +1,137 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+data:
+  DOMAIN_NAME: {{ include "portal-consumer.ldapDomainName" . | quote }}
+  ENVIRONMENT: "{{ .Values.portalConsumer.environment }}"
+  LDAP_BASE_DN: {{ required "The parameter \"portal-consumer.ldapBaseDn\" is required." (include "portal-consumer.ldapBaseDn" .) | quote }}
+  LDAP_HOST: {{ required "The parameter \"portal-consumer.ldap.connection.host\" is required." (include "portal-consumer.ldap.connection.host" .) | quote }}
+  LDAP_HOST_DN: {{ required "The parameter \"portal-consumer.ldapAdminDn\" is required." (include "portal-consumer.ldapAdminDn" .) | quote }}
+  LDAP_PORT: {{ required "The parameter \"portal-consumer.ldap.connection.port\" is required." (include "portal-consumer.ldap.connection.port" .) | quote }}
+  LOG_LEVEL: {{ required "The parameter \".Values.portalConsumer.logLevel\" is required." .Values.portalConsumer.logLevel | quote }}
+  MAX_ACKNOWLEDGEMENT_RETRIES: {{ required "The parameter \".Values.provisioningApi.config.maxAcknowledgementRetries\" is required." .Values.provisioningApi.config.maxAcknowledgementRetries | quote }}
+  MACHINE_SECRET_FILE: "{{ .Values.portalConsumer.machineSecretFile }}"
+  PORTAL_DEFAULT_DN: {{ include "portal-consumer.portalDefaultDn" . | quote }}
+  PORTAL_CONSUMER_LOG_STREAM: "true"
+  PORTAL_ASSETS_BASE_URL: {{ .Values.portalConsumer.assetsBaseUrl | quote }}
+  PORTAL_SERVER_ADMIN_GROUP: {{ include "portal-consumer.adminGroup" . | quote }}
+  PORTAL_SERVER_ASSETS_ROOT_PATH: "{{ .Values.portalConsumer.assetsRootPath }}"
+  PORTAL_SERVER_AUTH_MODE: {{ include "portal-consumer.authMode" . | quote }}
+  PORTAL_SERVER_EDITABLE: "{{ .Values.portalConsumer.editable }}"
+  PORTAL_SERVER_PORT: "{{ .Values.portalConsumer.port }}"
+  PORTAL_SERVER_UCS_INTERNAL_PATH: {{ required "The parameter \"portalConsumer.ucsInternalPath\" is required." .Values.portalConsumer.ucsInternalPath | quote }}
+  PORTAL_SERVER_UMC_GET_URL: {{ include "portal-consumer.umcGetUrl" . | quote }}
+  PORTAL_SERVER_UMC_SESSION_URL: {{ include "portal-consumer.umcSessionUrl" .| quote }}
+  PORTAL_UDM_API_URL: {{ include "portal-consumer.udmApiUrl" . | quote}}
+  PORTAL_UDM_API_USERNAME: "{{ .Values.portalConsumer.udmApiUsername }}"
+  PORTAL_UDM_API_PASSWORD_FILE: "{{ .Values.portalConsumer.udmApiSecretFile }}"
+  OBJECT_STORAGE_ENDPOINT: {{ tpl ( required "The parameter \"objectStorage.endpoint\" is required." .Values.objectStorage.endpoint ) . | quote }}
+  OBJECT_STORAGE_BUCKET: {{ tpl .Values.objectStorage.bucketName . | quote }}
+  OBJECT_STORAGE_ACCESS_KEY_ID: {{ include "portal-consumer.objectStorageAccessKeyId"  . | quote }}
+  OBJECT_STORAGE_SECRET_ACCESS_KEY: {{ include "portal-consumer.objectStorageSecretAccessKey"  . | quote }}
+  CA_CERT: "{{ .Values.portalConsumer.caCert }}"
+  CA_CERT_FILE: "{{ .Values.portalConsumer.caCertFile }}"
+  TLS_MODE: "{{ .Values.portalConsumer.tlsMode }}"
+  PROVISIONING_API_BASE_URL: {{ include "portal-consumer.provisioningApi.connection.baseUrl" . | quote }}
+  PROVISIONING_API_USERNAME: {{ include "portal-consumer.provisioningApi.auth.username" . | quote }}
+...
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: {{ printf "%s-scripts" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+data:
+  wait-for-provisioning-api.sh: |
+    set -uo pipefail
+
+    retry_interval=2
+    response_code=404
+    timeout_duration=120
+    end_time=$((SECONDS + timeout_duration))
+
+    while [ "$response_code" -ne 200 ]; do
+      if [ $SECONDS -ge $end_time ]; then
+        echo "Timeout reached. Exiting."
+        exit 1
+      fi
+
+      echo "Waiting for the Provisioning API to be available ..."
+      response_code=$(set +x; curl -s -o response.txt -w "%{http_code}" "${PROVISIONING_API_BASE_URL}/v1/subscriptions/${PROVISIONING_API_USERNAME}" -u "${PROVISIONING_API_USERNAME}":"${PROVISIONING_API_PASSWORD}")
+      if [ "${response_code}" -ne 200 ]; then
+        echo "Provisioning API is not reachable, status code: $response_code"
+        cat response.txt
+        sleep ${retry_interval}
+      else
+        echo "The Provisioning API is reachable"
+        exit 0
+      fi
+    done
+
+    echo "Permanent error ocurred. Exiting."
+    exit 1
+  wait-for-ldap.sh: |
+    #!/bin/bash
+    set -euxo pipefail
+
+    while ! ldapsearch -H ldap://$LDAP_HOST -D $LDAP_HOST_DN -y $MACHINE_SECRET_FILE -b "" -s base -LLL; do
+      echo "Checking if LDAP Server can be reached..."
+      sleep 2
+    done
+
+    echo "Success, the LDAP Server is available"
+  wait-for-udm.sh: |
+    #!/bin/bash
+    # TODO: find a way to not leak the udm passwort into the log
+    set -euo pipefail
+
+    while ! (set +x; curl -o- --fail --header "Accept: application/json" --user "${PORTAL_UDM_API_USERNAME}:$(cat $PORTAL_UDM_API_PASSWORD_FILE)" "${PORTAL_UDM_API_URL}ldap/base/"); do
+      echo "Checking if the UDM REST API can be reached..."
+      sleep 2
+    done
+
+    echo "Success, the UDM REST API is available"
+  wait-for-object-store.py: |
+    #!/bin/python3
+    import boto3
+    import os
+
+    s3 = boto3.resource(
+            's3',
+            endpoint_url=os.environ["OBJECT_STORAGE_ENDPOINT"],
+            aws_access_key_id=os.environ["OBJECT_STORAGE_ACCESS_KEY_ID"],
+            aws_secret_access_key=os.environ["OBJECT_STORAGE_SECRET_ACCESS_KEY"]
+        )
+
+    provisioned = False
+    while not provisioned:
+        bucket = s3.Bucket(os.environ["OBJECT_STORAGE_BUCKET"])
+        provisioned = bool(bucket.creation_date)
+        if not provisioned:
+           print("Waiting for the object storage service to be provisioned")
+           break
+        else:
+           print("Object storage already provisioned")
+...

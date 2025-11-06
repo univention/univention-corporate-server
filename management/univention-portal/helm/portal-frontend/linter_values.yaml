@@ -1,0 +1,43 @@
+---
+
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Dummy values for running the Helm linter on the portal-frontend.
+# Run it like this: helm lint -f values.yaml -f linter_values.yaml .
+
+
+## Application-specific
+portalFrontend:
+  environment: "staging"
+  logLevel: "DEBUG"
+
+
+## Kubernetes ingress
+ingress:
+  enabled: true
+  host: "portal.example.develop.souvap-univention.de"
+  ingressClassName: "nginx"
+  tls:
+    secretName: "portal-tls"
+
+## Istio based
+istio:
+  enabled: false
+  host: "portal.example.develop.souvap-univention.de"
+
+
+## Docker image
+image:
+  tag: "branch-feature-example"
+
+
+## Container deployment probes
+probes:
+  liveness:
+    enabled: false
+
+  readiness:
+    enabled: false
+
+...

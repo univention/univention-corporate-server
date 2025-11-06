@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+{{- if .Values.ingress.enabled }}
+{{- range $index, $ingressConfig := .Values.extraIngresses }}
+{{- $_ := set $ingressConfig "host" (default $.Values.ingress.host $ingressConfig.host) }}
+---
+apiVersion: {{ include "common.capabilities.ingress.apiVersion" $ }}
+kind: Ingress
+metadata:
+  name: {{ printf "%s-%s" (include "common.names.fullname" $) (required "Ingress must have a name. Missing key \"name\" on extraIngress definition." .name) }}
+  namespace: {{ include "common.names.namespace" $ }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" $.Values.additionalLabels "context" $ ) | nindent 4 }}
+  annotations:
+    {{- if or .annotations $.Values.additionalAnnotations }}
+    {{- $annotations := include "common.tplvalues.merge" ( dict "values" ( list .annotations $.Values.ingress.annotations $.Values.additionalAnnotations ) "context" $ ) }}
+    {{- include "common.tplvalues.render" ( dict "value" $annotations "context" $) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.ingress.certManager.enabled }}
+    cert-manager.io/{{ .Values.ingress.certManager.issuerRef.kind | kebabcase }}: "{{ coalesce .Values.global.certManagerIssuer .Values.ingress.certManager.issuerRef.name }}"
+    {{- end }}
+spec:
+  ingressClassName: {{ required ".ingressClassName or .Values.global.ingressClass must be defined." ( coalesce .ingressClassName $.Values.global.ingressClass ) | quote }}
+  {{- if or .tls.enabled $.Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ tpl .host $ | quote }}
+      secretName: {{ coalesce (tpl .tls.secretName $) (include "portal-server.ingress.tls.secretName" $) | quote }}
+  {{- end }}
+  rules:
+    - host: {{ required "The hostname for the extraIngress has to be set." (tpl .host $) | quote }}
+      {{- if .paths }}
+      http:
+        paths:
+          {{- range .paths }}
+          - pathType: {{ .pathType }}
+            path: {{ tpl .path $ }}
+            {{- if .backend }}
+            backend: {{- include "common.tplvalues.render" ( dict "value" .backend "context" $) | nindent 14 }}
+            {{- else }}
+            backend: {{- include "common.ingress.backend" (dict "serviceName" (include "common.names.fullname" $) "servicePort" "http" "context" $) | nindent 14 }}
+            {{- end }}
+          {{- end }}
+      {{- end }}
+
+...
+{{- end }}
+{{- end }}

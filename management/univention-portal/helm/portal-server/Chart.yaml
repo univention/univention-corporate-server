@@ -1,0 +1,22 @@
+---
+
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+apiVersion: "v2"
+type: "application"
+name: "portal-server"
+description: "A Helm chart for the Univention Portal Server"
+home: "https://www.univention.de/"
+
+# Chart version
+# Apply Semantic Versioning (https://semver.org/)
+version: "0.1.0"
+
+# Portal Version
+appVersion: "1.16.0"
+
+dependencies:
+  - name: "nubus-common"
+    version: "^0.12.x"
+    repository: "oci://artifacts.software-univention.de/nubus/charts"

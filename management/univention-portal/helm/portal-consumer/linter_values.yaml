@@ -1,0 +1,63 @@
+---
+
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Dummy values for running the Helm linter on the portal-consumer.
+# Run it like this: helm lint -f values.yaml -f linter_values.yaml .
+
+## Application-specific
+portalConsumer:
+  adminGroup: "cn=Domain Admins,cn=groups,dc=univention-organization,dc=intranet"
+  environment: "staging"
+  logLevel: "DEBUG"
+  umcGetUrl: "http://umc-server/get"
+  umcSessionUrl: "http://umc-server/get/session-info"
+  machineSecret: "password"
+  machineSecretFile: "/var/secrets/machine_secret"
+  ucsInternalPath: "portal-data"
+  assetsRootPath: "portal-assets"
+  tlsMode: "unvalidated"
+  objectStorageAccessKeyId: "stub_user"
+  objectStorageSecretAccessKey: "stub_password"
+  ldapBaseDn: "example.test"
+  ldapHost: "ldap.example.test"
+  ldapHostDn: "example.test"
+  ldapPort: "437"
+  udmApiUrl: "Unknown"
+
+objectStorage:
+  endpoint: "http://minio:9000"
+  bucketName: "ums"
+
+## Kubernetes ingress
+ingress:
+  enabled: false
+  host: "localhost"
+
+
+## Istio based
+istio:
+  enabled: true
+  host: "localhost"
+
+## Docker image
+image:
+  tag: "latest"
+
+
+## Container deployment probes
+probes:
+  liveness:
+    enabled: false
+
+  readiness:
+    enabled: false
+
+provisioningApi:
+  connection:
+    baseUrl: "https://provisioning-api"
+  auth:
+    password: "password"
+
+...

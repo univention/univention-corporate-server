@@ -1,0 +1,44 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.description" . }}
+
+- **Version**: {{ template "chart.version" . }}
+- **Type**: {{ template "chart.type" . }}
+- **AppVersion**: {{ template "chart.appVersion" . }}
+- {{ template "chart.homepageLine" . }}
+
+## TL;DR
+
+```console
+helm upgrade --install notifications-api oci://artifacts.software-univention.de/nubus/charts/notifications-api
+```
+
+## Introduction
+
+This chart does install the Notifications API of the Univention Portal.
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+
+## Installing
+
+To install the chart with the release name `notifications-api`:
+
+```console
+helm upgrade --install notifications-api oci://artifacts.software-univention.de/nubus/charts/notifications-api
+```
+
+## Uninstalling
+
+To uninstall the chart with the release name `notifications-api`:
+
+```console
+helm uninstall notifications-api
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSectionHtml" . }}
