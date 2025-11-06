@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.28) unstable; urgency=medium
+
+  * Bug #58787: Improve cache update when renaming or moving OUs
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2025 09:25:31 +0100
+
 univention-ad-connector (14.0.27) unstable; urgency=medium
 
   * Bug #58787: compare strings in__compare_lowercase*
