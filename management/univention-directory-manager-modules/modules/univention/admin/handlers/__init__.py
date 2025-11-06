@@ -1021,7 +1021,7 @@ class simpleLdap:
 
         obj._ldap_post_create()  # Post-create hooks (e.g., group cache updates)
 
-        self.log.info('Restored %s: %r', self.info.get('originalObjectType', 'unknown'), original_dn)
+        self.log.info('Object restored from recyclebin', extra={'original_dn': original_dn, 'object_type': self.info.get('originalObjectType', 'unknown')})
 
         self.restore_references()
 
