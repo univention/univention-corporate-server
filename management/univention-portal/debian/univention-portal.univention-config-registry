@@ -41,5 +41,6 @@ Variables: server/role
 
 Type: file
 File: etc/univention-portal/server.env
+Variables: server/role
 Variables: ldap/.*
 Variables: portal/.*
