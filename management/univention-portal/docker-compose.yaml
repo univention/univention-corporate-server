@@ -12,6 +12,8 @@ services:
     volumes:
       - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
       - /etc/machine.secret:/etc/machine.secret:ro
+      - /usr/share/univention-portal/portals.json:/usr/share/univention-portal/portals.json
+      - /var/cache/univention-portal/:/var/cache/univention-portal/
     ports:
       - "8095:80"
   portal-frontend:
