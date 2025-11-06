@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# abort on nonzero exitstatus
+set -o errexit
+# abort on unbound variable
+set -o nounset
+# don't hide errors within pipes
+set -o pipefail
+
+
+# Set sane defaults for some optional variables
+CA_CERT="${CA_CERT:-}"
+CA_CERT_FILE="${CA_CERT_FILE:-/run/secrets/ca_cert}"
+TLS_MODE="${TLS_MODE:-secure}"
+
+# Test variables which should not be empty
+check_unset_variables() {
+  var_names=(
+    "LDAP_HOST"
+    "LDAP_BASE_DN"
+    "LDAP_HOST_DN"
+  )
+  for var_name in "${var_names[@]}"; do
+    if [[ -z "${!var_name:-}" ]]; then
+      echo "ERROR: '${var_name}' is unset."
+      var_unset=true
+    fi
+  done
+
+  if [[ -n "${var_unset:-}" ]]; then
+    exit 1
+  fi
+}
+check_unset_variables
+
+case "${TLS_MODE}" in
+  "off")
+    TLS_START_NO=0
+    ;;
+  "unvalidated")
+    TLS_START_NO=1
+    ;;
+  *)  # secure
+    TLS_START_NO=2
+    ;;
+esac
+
+if [[ "${TLS_MODE}" != "off" ]]; then
+  if [[ -s "${CA_CERT_FILE}" ]]; then
+    echo "Using CA certificate from file"
+  elif [[ -n "${CA_CERT}" ]]; then
+    echo "Using CA certificate from env"
+    mkdir --parents "$(dirname "${CA_CERT_FILE}")"
+    echo -n "${CA_CERT}" | base64 --decode --output "${CA_CERT_FILE}"
+  else
+    echo "TLS enabled but no CA certificate provided!"
+    echo "Please set \$CA_CERT and/or \$CA_CERT_FILE!."
+    exit 1
+  fi
+
+  CA_DIR="/etc/univention/ssl/ucsCA"
+  mkdir --parents "${CA_DIR}"
+  ln --symbolic --force "${CA_CERT_FILE}" "${CA_DIR}/CAcert.pem"
+
+  echo "Adding CA_CERT_FILE to system ca certificates bundle"
+  CA_CERT_DIR="/usr/local/share/ca-certificates/ucs-ca"
+  mkdir --parents "${CA_CERT_DIR}"
+  ln --symbolic --force "${CA_CERT_FILE}" "${CA_CERT_DIR}/ca_cert.crt"
+  update-ca-certificates
+else
+  echo "TLS mode is disabled!"
+fi
+
+/usr/sbin/ucr set \
+    server/role="memberserver" \
+    ldap/master="${LDAP_HOST}" \
+    ldap/master/port="${LDAP_PORT}" \
+    ldap/hostdn="${LDAP_HOST_DN}" \
+    ldap/base="${LDAP_BASE_DN}" \
+    directory/manager/starttls="${TLS_START_NO}"

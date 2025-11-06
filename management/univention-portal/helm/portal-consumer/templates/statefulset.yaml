@@ -1,0 +1,264 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
+spec:
+  serviceName: {{ include "common.names.fullname" . }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 8 }}
+    spec:
+      {{- with .Values.portalConsumer.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext:
+        {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      {{- if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      initContainers:
+        - name: wait-for-ldap
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            {{- with .Values.containerSecurityContextNonRoot }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+            {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          command: ["/bin/bash", "/scripts/wait-for-ldap.sh"]
+          image: "{{ coalesce .Values.waitForDependency.image.registry .Values.global.imageRegistry }}/{{ .Values.waitForDependency.image.repository }}:{{ .Values.waitForDependency.image.tag }}"
+          imagePullPolicy: {{ coalesce .Values.waitForDependency.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          env:
+            {{- with .Values.waitForDependency.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            {{- include "portal-consumer.secretVolumeMounts" . | nindent 12 }}
+            {{- if .Values.waitForDependency.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.waitForDependency.extraVolumeMounts "context" .) | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
+        - name: wait-for-udm
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            {{- with .Values.containerSecurityContextNonRoot }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+            {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          command: ["/bin/bash", "/scripts/wait-for-udm.sh"]
+          image: "{{ coalesce .Values.waitForDependency.image.registry .Values.global.imageRegistry }}/{{ .Values.waitForDependency.image.repository }}:{{ .Values.waitForDependency.image.tag }}"
+          imagePullPolicy: {{ coalesce .Values.waitForDependency.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          env:
+            {{- with .Values.waitForDependency.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            {{- include "portal-consumer.secretVolumeMounts" . | nindent 12 }}
+            {{- if .Values.waitForDependency.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.waitForDependency.extraVolumeMounts "context" .) | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
+        - name: wait-for-object-storage
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            {{- with .Values.containerSecurityContextNonRoot }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+            {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          command: ["/usr/bin/python3", "/scripts/wait-for-object-store.py"]
+          image: "{{ coalesce .Values.portalConsumer.image.registry .Values.global.imageRegistry }}/{{ .Values.portalConsumer.image.repository }}:{{ .Values.portalConsumer.image.tag }}"
+          imagePullPolicy: {{ coalesce .Values.portalConsumer.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+          env:
+            - name: OBJECT_STORAGE_ACCESS_KEY_ID
+              {{- include "portal-consumer.objectStorageAccessKeyId" . | nindent 14 }}
+            - name: OBJECT_STORAGE_SECRET_ACCESS_KEY
+              {{- include "portal-consumer.objectStorageSecretAccessKey" . | nindent 14 }}
+            {{- with .Values.waitForDependency.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            {{- if .Values.waitForDependency.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.waitForDependency.extraVolumeMounts "context" .) | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
+        - name: wait-for-provisioning-api
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            {{- with .Values.containerSecurityContextNonRoot }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+            {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          image: "{{ coalesce .Values.waitForDependency.image.registry .Values.global.imageRegistry }}/{{ .Values.waitForDependency.image.repository }}:{{ .Values.waitForDependency.image.tag }}"
+          imagePullPolicy: {{ coalesce .Values.waitForDependency.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          command: ["/bin/bash", "/scripts/wait-for-provisioning-api.sh"]
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+          env:
+            - name: PROVISIONING_API_PASSWORD
+              {{- include "portal-consumer.provisioningApi.auth.password" . | nindent 14 }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+          resources:
+            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
+        - name: "univention-compatibility"
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          image: "{{ coalesce .Values.portalConsumer.image.registry .Values.global.imageRegistry }}/{{ .Values.portalConsumer.image.repository }}:{{ .Values.portalConsumer.image.tag }}"
+          imagePullPolicy: {{ coalesce .Values.portalConsumer.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+          env:
+            - name: REQUESTS_CA_BUNDLE
+              value: "/etc/ssl/certs/ca-certificates.crt"
+            - name: OBJECT_STORAGE_ACCESS_KEY_ID
+              {{- include "portal-consumer.objectStorageAccessKeyId" . | nindent 14 }}
+            - name: OBJECT_STORAGE_SECRET_ACCESS_KEY
+              {{- include "portal-consumer.objectStorageSecretAccessKey" . | nindent 14 }}
+            - name: PROVISIONING_API_PASSWORD
+              {{- include "portal-consumer.provisioningApi.auth.password" . | nindent 14 }}
+          command:
+            - sh
+            - -c
+            - './50-ldap-setup.envsh; cp -a /etc/univention/* /target/etc/univention/'
+          volumeMounts:
+            - name: etc-univention-volume
+              mountPath: /target/etc/univention
+            {{- include "portal-consumer.secretVolumeMounts" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resourcesWaitForDependency | nindent 12 }}
+      containers:
+        - name: "portal-consumer"
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            {{- with .Values.containerSecurityContextNonRoot }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+            {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          image: "{{ coalesce .Values.portalConsumer.image.registry .Values.global.imageRegistry }}/{{ .Values.portalConsumer.image.repository }}:{{ .Values.portalConsumer.image.tag }}"
+          imagePullPolicy: {{ coalesce .Values.portalConsumer.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-common" (include "common.names.fullname" .) }}
+          env:
+            - name: REQUESTS_CA_BUNDLE
+              value: "/etc/ssl/certs/ca-certificates.crt"
+            - name: OBJECT_STORAGE_ACCESS_KEY_ID
+              {{- include "portal-consumer.objectStorageAccessKeyId" . | nindent 14 }}
+            - name: OBJECT_STORAGE_SECRET_ACCESS_KEY
+              {{- include "portal-consumer.objectStorageSecretAccessKey" . | nindent 14 }}
+            - name: PROVISIONING_API_PASSWORD
+              {{- include "portal-consumer.provisioningApi.auth.password" . | nindent 14 }}
+            {{- with .Values.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: usr-lib-univention-portal-config-volume
+              mountPath: /usr/lib/univention-portal/config
+            - name: etc-univention-volume
+              mountPath: /etc/univention
+              readOnly: true
+            - name: group-membership-cache
+              mountPath: /usr/share/univention-group-membership-cache/caches
+            {{- include "portal-consumer.secretVolumeMounts" . | nindent 12 }}
+            {{- if .Values.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" .) | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: "usr-lib-univention-portal-config-volume"
+          emptyDir: {}
+        - name: "etc-univention-volume"
+          emptyDir: {}
+        - name: "scripts"
+          configMap:
+            defaultMode: 0555
+            name: {{ printf "%s-scripts" (include "common.names.fullname" .) }}
+        {{- if (include "portal-consumer.ldap.credentialSecret.name" . ) }}
+        - name: {{ printf "%s-volume" (include "portal-consumer.ldap.credentialSecret.name" . ) | quote }}
+          secret:
+            secretName: {{ (include "portal-consumer.ldap.credentialSecret.name" . ) | quote }}
+        {{- if (include "portal-consumer.ldap.tlsSecret.name" . ) }}
+        - name: {{ printf "%s-volume" (include "portal-consumer.ldap.tlsSecret.name" . ) | quote }}
+          secret:
+            secretName: {{ (include "portal-consumer.ldap.tlsSecret.name" . ) | quote }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.extraVolumes }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes  "context" .) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.waitForDependency.extraVolumes }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.waitForDependency.extraVolumes  "context" .) | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: group-membership-cache
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      {{- if .Values.persistence.groupMembershipCache.storageClass }}
+      storageClassName: {{ .Values.persistence.groupMembershipCache.storageClass | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.groupMembershipCache.size | required ".Values.persistence.groupMembershipCache.size is required" | quote }}

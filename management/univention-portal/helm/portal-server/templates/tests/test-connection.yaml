@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  name: "{{ include "common.names.fullname" . }}-test-connection"
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: "wget"
+      image: "busybox"
+      command: ['wget']
+      args: ['{{ include "common.names.fullname" . }}:{{ .Values.service.ports.http.port }}']
+  restartPolicy: "Never"
+...

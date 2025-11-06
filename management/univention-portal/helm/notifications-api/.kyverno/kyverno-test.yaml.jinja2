@@ -1,0 +1,101 @@
+## SPDX-FileCopyrightText: 2024 Bundesministerium des Innern und für Heimat, PG ZenDiS "Projektgruppe für Aufbau ZenDiS"
+## SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: "cli.kyverno.io/v1alpha1"
+kind: "Test"
+metadata:
+  name: "nubus-test"
+policies:
+  - "{{ policies_base_path }}/disallow-container-sock-mounts.yaml"
+  - "{{ policies_base_path }}/disallow-default-serviceaccount.yaml"
+  - "{{ policies_base_path }}/disallow-host-namespaces.yaml"
+  - "{{ policies_base_path }}/disallow-host-path.yaml"
+  - "{{ policies_base_path }}/disallow-host-ports.yaml"
+  - "{{ policies_base_path }}/disallow-host-process.yaml"
+  - "{{ policies_base_path }}/disallow-latest-tag.yaml"
+  - "{{ policies_base_path }}/require-containersecuritycontext.yaml"
+  - "{{ policies_base_path }}/require-health-and-liveness-check.yaml"
+  - "{{ policies_base_path }}/require-imagepullpolicy.yaml"
+  - "{{ policies_base_path }}/require-requests-limits.yaml"
+  - "{{ policies_base_path }}/require-tag-and-digest.yaml"
+  - "{{ policies_base_path }}/template-image-registries.yaml"
+  - "{{ policies_base_path }}/template-ingress.yaml"
+  - "{{ policies_base_path }}/template-replicas.yaml"
+  - "{{ policies_base_path }}/template-require-imagepullsecets.yaml"
+  - "{{ policies_base_path }}/template-storage.yaml"
+resources:
+  - "manifest.yaml"
+results:
+  - resources:
+      - "release-name-notifications-api"
+    policy: "disallow-default-serviceaccount"
+    kind: "Deployment"
+    rule: "disallow-default-serviceAccountName"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-health-and-liveness-check"
+    kind: "Deployment"
+    rule: "require-health-and-liveness-check"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-ro-rootfs"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-no-privilege-escalation"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-all-capabilities-dropped"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-no-privileged"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-run-as-user"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-run-as-group"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-seccomp-profile"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-run-as-non-root"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "require-containersecuritycontext"
+    kind: "Deployment"
+    rule: "require-empty-seLinuxOptions"
+    result: "pass"
+  - resources:
+      - "release-name-notifications-api"
+    policy: "template-replicas"
+    kind: "Deployment"
+    rule: "template-replicas"
+    result: "pass"
+

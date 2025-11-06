@@ -1,0 +1,285 @@
+---
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# The global properties are used to configure multiple charts at once.
+global:
+  # -- Indicates wether this chart is part of a Nubus deployment.
+  nubusDeployment: false
+  # -- Container registry address.
+  imageRegistry: "artifacts.software-univention.de"
+  # -- Credentials to fetch images from private registry.
+  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  #
+  # imagePullSecrets:
+  #   - "docker-registry"
+  imagePullSecrets: []
+
+  # -- Define an ImagePullPolicy.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  #
+  # "IfNotPresent" => The image is pulled only if it is not already present locally.
+  # "Always" => Every time the kubelet launches a container, the kubelet queries the container image registry to
+  #             resolve the name to an image digest. If the kubelet has a container image with that exact digest cached
+  #             locally, the kubelet uses its cached image; otherwise, the kubelet pulls the image with the resolved
+  #             digest, and uses that image to launch the container.
+  # "Never" => The kubelet does not try fetching the image. If the image is somehow already present locally, the
+  #            kubelet attempts to start the container; otherwise, startup fails.
+  imagePullPolicy: "IfNotPresent"
+
+# Default values for univention-portal-consumer
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## Global values
+affinity: {}
+environment: {}
+fullnameOverride: ""
+nameOverride: ""
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext:
+  # -- Enable security context.
+  enabled: true
+
+  # -- If specified, all processes of the container are also part of the supplementary group.
+  fsGroup: 1001
+
+  # -- Change ownership and permission of the volume before being exposed inside a Pod.
+  fsGroupChangePolicy: "Always"
+
+  # -- Allow binding to ports below 1024 without root access.
+  sysctls:
+    - name: "net.ipv4.ip_unprivileged_port_start"
+      value: "1"
+
+replicaCount: 1
+containerSecurityContext:
+  privileged: false
+  # -- Enable container privileged escalation.
+  allowPrivilegeEscalation: false
+  # -- Security capabilities for container.
+  capabilities:
+    drop:
+      - "ALL"
+  # -- Enable security context.
+  enabled: true
+  # Set Seccomp profile.
+  seccompProfile:
+    # -- Disallow custom Seccomp profile by setting it to RuntimeDefault.
+    type: "RuntimeDefault"
+
+# Values for non root containers, because univention-compatibility requires root and helm-test-harness requires
+# containerSecurityContext for all containers and it is tested by setting some values like runAsUser and test
+# if it is the expect value.a
+# FIXME: Move back to containerSecurityContext and override values in template once helm-test-harness
+#        allows specifing expected values
+containerSecurityContextNonRoot:
+  # -- Process user id.
+  runAsUser: 1001
+  # -- Process group id.
+  runAsGroup: 1001
+  # -- Mounts the container's root filesystem as read-only.
+  readOnlyRootFilesystem: true
+  # -- Run container as a user.
+  runAsNonRoot: true
+
+tolerations: []
+extraSecrets: []
+
+# -- In seconds, time the given to the pod needs to terminate gracefully.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods
+terminationGracePeriodSeconds: ""
+
+# -- Application configuration of the Portal Consumer
+portalConsumer:
+  port: "80"
+  # Update configuration to mach the needs of the portal consumer
+  # -- Define LDAP Admin Group.
+  # Example: `"cn=Domain Admins,cn=groups,dc=example,dc=com"`
+  adminGroup: null
+  # -- Where to store the assets inside the object storage bucket, e.g. portal entry icons
+  assetsRootPath: "portal-assets"
+  # -- Base URL to use when generating URLs of the portal assets (icons, logos).
+  # This has to be configured if an S3 compatible storage is used which is
+  # reachable via a separate domain.
+  assetsBaseUrl: null
+  # -- Define the authentication mode for the portal. Use "ucs" or "saml". Chart default is "ucs". In a Nubus deployment the default is "saml".
+  authMode: ""
+  # -- CA root certificate, base64-encoded. Optional; will be written to "caCertFile" if set.
+  caCert: ""
+  certPem: ""
+  # -- The path to the "caCertFile" docker secret or a plain file.
+  caCertFile: "/var/secrets/ca_cert"
+  # -- Whenever to start encryption and validate certificates.
+  # Chose from "off", "unvalidated" and "secure". Chart default is "off".
+  tlsMode: "off"
+  # -- Internal domain name of the UCS machine
+  domainName: "univention.intranet"
+  # -- Defines if members of the Admin group can use the edit mode in the portal.
+  editable: "true"
+  # -- TODO: Clarify usage of this parameter
+  environment: "production"
+
+  # -- Base DN of the LDAP directory
+  ldapBaseDn: null
+  # -- Hostname of the LDAP server
+  ldapHost: null
+  # -- DN of the UCS machine
+  ldapHostDn: null
+  # -- Port to connect to the LDAP server.
+  ldapPort: ""
+
+  logLevel: "INFO"
+  # -- LDAP password for `ldapHostDn`. Will be written to "machineSecretFile" if set.
+  machineSecret: null
+  # -- The path to the "machineSecretFile" docker secret or a plain file
+  machineSecretFile: "/var/secrets/machine_secret"
+  # -- DN of the default portal
+  portalDefaultDn: null
+
+  # -- UDM API connection URL
+  udmApiUrl: null
+  # -- UDM API username.
+  udmApiUsername: "cn=admin"
+  # -- UDM API password file.
+  #    Default: same as `machineSecretFile`.
+  udmApiSecretFile: "/var/secrets/machine_secret"
+
+  # -- Define UCS internal endpoint where the portal, selfservice and groups are defined
+  # Example: `"https://portal.example.com/univention/internal"`
+  ucsInternalPath: "portal-data"
+  # -- Define UMC get endpoint.
+  # Example: `"https://portal.example.com/univention/internal/umc/get"`
+  umcGetUrl: null
+  # -- Define UMC session-info" endpoint.
+  # Example: `"https://portal.example.com/univention/internal/umc/get/session-info"`
+  umcSessionUrl: null
+  # -- User for the object storage. Chart default is "ums_user".
+  objectStorageAccessKeyId: ""
+  # -- Password for access to object storage. Chart default is "stub_password".
+  objectStorageSecretAccessKey: ""
+  # -- Optional reference to a different secret for credentials
+  # credentialSecret:
+  #   name: "custom-credentials"
+  #   accessKeyId: "ums_user"
+  #   secretAccessKey: "ums_password"
+  objectStorageCredentialSecret:
+    name: ""
+    accessKeyKey: "accessKey"
+    secretKeyKey: "secretKey"
+  # -- Path to mount the secrets to.
+  secretMountPath: "/var/secrets"
+
+  image:
+    registry: ""
+    repository: "nubus-dev/images/portal-consumer"
+    imagePullPolicy: "IfNotPresent"
+    tag: "latest"
+
+# Configuration for the communication with the provisioning API.
+provisioningApi:
+  config:
+    # -- The maximum number of retries for acknowledging a message
+    maxAcknowledgementRetries: 3
+  # -- Connection parameters
+  connection:
+    # -- The base URL the provisioning API is reachable at. (e.g. "https://provisioning-api")
+    baseUrl: ""
+  # -- Authentication parameters
+  auth:
+    # -- The username to authenticate with.
+    username: "portal-consumer"
+    # -- The password to authenticate with.
+    password: ""
+    # -- The name of the secret containing the password.
+    credentialSecret:
+      # -- The name of the secret.
+      name: ""
+      # -- The key where the password can be found.
+      key: "PROVISIONING_API_PASSWORD"
+
+# -- Array with extra environment variables to add to containers.
+extraEnvVars: []
+
+# -- Optionally specify an extra list of additional volumes.
+extraVolumes: []
+
+# -- Optionally specify an extra list of additional volumeMounts.
+extraVolumeMounts: []
+
+waitForDependency:
+  image:
+    registry: ""
+    imagePullPolicy: "IfNotPresent"
+    repository: "nubus/images/wait-for-dependency"
+    tag: "0.26.0@sha256:a31fde86bf21c597a31356fe492ab7e7a03a89282ca215eb7100763d6eb96b6b"
+
+  # -- Array with extra environment variables to add to containers.
+  extraEnvVars: []
+
+  # -- Optionally specify an extra list of additional volumes.
+  extraVolumes: []
+
+  # -- Optionally specify an extra list of additional volumeMounts.
+  extraVolumeMounts: []
+
+objectStorage:
+  # -- Object storage endpoint, e.g. "http://minio:9000".
+  endpoint: ""
+  # -- Bucket in the object storage for storing the portal and assets. Example
+  # "portal-data".
+  bucketName: ""
+
+## Container deployment probes
+probes:
+  liveness:
+    enabled: true
+    initialDelaySeconds: 120
+    timeoutSeconds: 3
+    periodSeconds: 30
+    failureThreshold: 3
+    successThreshold: 1
+
+  readiness:
+    enabled: true
+    initialDelaySeconds: 30
+    timeoutSeconds: 3
+    periodSeconds: 15
+    failureThreshold: 30
+    successThreshold: 1
+
+
+# -- Deployment resources for the consumer container
+resources: {}
+# requests:
+#   memory: "512Mi"
+#   cpu: "250m"
+# limits:
+#   memory: "4Gi"
+#   cpu: "4"
+
+# -- Deployment resources for the dependency waiters
+resourcesWaitForDependency: {}
+
+
+autoscaling:
+  enabled: false
+
+
+persistence:
+  groupMembershipCache:
+    storageClass: ""
+    size: "100Mi"
+
+
+ldap:
+  tlsSecret:
+    name: ""
+    caCertKey: "ca.crt"
+    privateKeyKey: "tls.key"
+    certificateKey: "tls.crt"
+  credentialSecret:
+    name: ""
+    machinePasswordKey: "machine.secret"

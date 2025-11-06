@@ -1,0 +1,292 @@
+---
+
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+name: "dev-local"
+
+x-portal-environment:
+  &portal-environment
+  OBJECT_STORAGE_ENDPOINT: "http://minio:9000"
+  OBJECT_STORAGE_BUCKET: "stub_bucket"
+  OBJECT_STORAGE_ACCESS_KEY_ID: "stub_user"
+  OBJECT_STORAGE_SECRET_ACCESS_KEY: "stub_value"
+  PORTAL_SERVER_ADMIN_GROUP: "cn=Domain Admins,cn=groups,dc=univention,dc=test"
+  PORTAL_SERVER_ASSETS_ROOT: "http://portal-server:univention@store-dav/portal-assets/"
+  PORTAL_SERVER_AUTH_MODE: "ucs"
+  PORTAL_SERVER_EDITABLE: "true"
+  PORTAL_SERVER_PORT: "80"
+  PORTAL_SERVER_UCS_INTERNAL_PATH: "portal-data"
+  PORTAL_SERVER_UMC_GET_URL: "http://${DOCKER_HOST_INTERNAL}:${PROXY_PORT}/univention/get"
+  PORTAL_SERVER_UMC_SESSION_URL: "http://${DOCKER_HOST_INTERNAL}:${PROXY_PORT}/univention/get/session-info"
+  PORTAL_CONSUMER_LOG_STREAM: "true"
+  PORTAL_SERVER_FEATURE_TOGGLES: '{"notifications_api": true}'
+
+# Cannot be in the services section currently.
+# See https://github.com/docker/compose/issues/8809
+x-portal-consumer-base:
+  &portal-consumer-base
+  platform: "linux/amd64"
+  build:
+    context: ../
+    dockerfile: docker/portal-consumer/Dockerfile
+  env_file: .env.consumer
+  environment:
+    <<: *portal-environment
+  depends_on:
+    store-dav:
+      condition: service_started
+  secrets:
+    - ca_cert
+    - cert_pem
+    - ldap_secret
+    - machine_secret
+
+services:
+  # The frontend of the Portal. The context directory contains more details.
+  portal-frontend:
+    build:
+      context: ../frontend
+    ports:
+      - "8080:80"
+
+  # The server of the Potral. See "./portal-server/" regarding further details.
+  portal-server:
+    platform: "linux/amd64"
+    build:
+      context: ../
+      dockerfile: docker/portal-server/Dockerfile
+    ports:
+      - "8095:80"
+    depends_on:
+      umc-server:
+        condition: service_started
+    environment:
+      <<: *portal-environment
+
+  portal-consumer-init:
+    <<: *portal-consumer-base
+    command: "/initialize.sh"
+
+  portal-consumer:
+    <<: *portal-consumer-base
+    depends_on:
+      portal-consumer-init:
+        condition: service_completed_successfully
+
+  store-dav:
+    image: gitregistry.knut.univention.de/univention/customers/dataport/upx/container-store-dav/store-dav:latest
+    ports:
+      - "8081:80"
+    secrets:
+      - source: store_dav_htpasswd
+        target: /etc/nginx/conf/htpasswd
+    volumes:
+      - type: volume
+        source: store-dav-data
+        target: /data
+    networks:
+      default:
+        aliases:
+          - store-dav
+
+  # The UMC server.
+  umc-server:
+    image: gitregistry.knut.univention.de/univention/customers/dataport/upx/container-umc/umc-server:latest
+    # image: gitregistry.knut.univention.de/univention/customers/dataport/upx/container-umc/umc-server:branch-tkintscher-helm-charts
+    platform: linux/amd64
+    ports:
+      - 8090:8090
+    volumes:
+      - umc-acls:/var/cache/univention-management-console/acls/
+    env_file: .env.umc-server
+    secrets:
+      - ca_cert
+      - cert_pem
+      - private_key
+      - ldap_secret
+      - machine_secret
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  # The UMC "gateway", keeper of the UMC's static assets.
+  umc-gateway:
+    image: gitregistry.knut.univention.de/univention/customers/dataport/upx/container-umc/umc-gateway:latest
+    platform: linux/amd64
+    ports:
+      - 8091:80
+    env_file: .env.umc-gateway
+
+  # The notifications API of the Portal. The context directory contains more
+  # details.
+  notifications-api:
+    build:
+      context: ../notifications-api
+    restart: on-failure
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://dev:devpassword@db/dev"
+      APPLY_DATABASE_MIGRATIONS: true
+      ROOT_PATH: "/univention/portal/notifications-api"
+    ports:
+      - 8096:8080
+
+  # The reverse proxy to support the local setup. The context directory contains
+  # more details.
+  reverse-proxy:
+    build:
+      context: ./reverse-proxy
+    environment:
+      NOTIFICATIONS_BASE_URL: "http://${DOCKER_HOST_INTERNAL}:8096"
+      PORTAL_FRONTEND_BASE_URL: "http://${DOCKER_HOST_INTERNAL}:8080"
+      PORTAL_ICONS_URL: "http://store-dav/portal-assets/icons/"
+      PORTAL_SERVER_BASE_URL: "http://${DOCKER_HOST_INTERNAL}:8095"
+      STORE_DAV_URL: "http://store-dav"
+      UMC_SERVER_BASE_URL: "http://${DOCKER_HOST_INTERNAL}:8090"
+      UMC_GATEWAY_BASE_URL: "http://umc-gateway"
+      UCS_BASE_URL: "${UCS_BASE_URL}"
+      PROXY_PORT: "${PROXY_PORT}"
+    ports:
+      - "${PROXY_PORT}:80"
+
+  # The database is needed by the notifications API.
+  db:
+    image: postgres:12.13-alpine
+    environment:
+      POSTGRES_PASSWORD: "devpassword"
+      POSTGRES_USER: "dev"
+    volumes:
+      - type: volume
+        source: postgresql-data
+        target: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  # A keycloak instance to allow simulating a login process based on keycloak
+  # for the Portal. The context directory contains more details.
+  keycloak:
+    build:
+      context: ../
+      dockerfile: docker/keycloak/Dockerfile
+    ports:
+      - 8097:8080
+    env_file: .env.keycloak
+    secrets:
+      - idp_ldap_user_secret
+
+  # The test runner of the Portal Server.
+  test:
+    profiles:
+      - test
+    platform: "linux/amd64"
+    build:
+      context: ../
+      dockerfile: docker/portal-server/Dockerfile
+      target: test
+    container_name: univention-portal-server-test
+    environment:
+      <<: *portal-environment
+      PORTAL_SERVER_DEVELOPMENT_MODE: "true"
+      LOG_LEVEL: "DEBUG"
+    volumes:
+      - type: bind
+        source: ../python
+        target: /app/python
+      - type: bind
+        source: ../unittests
+        target: /app/unittests
+      - type: bind
+        source: ../univention-portal-server
+        target: /app/univention-portal
+      - type: bind
+        source: ../univention-portal-server
+        target: /app/univention-portal-server
+
+  test-chart-portal-server:
+    image:   gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.12.0
+    command: bash -c "helm dependency build --insecure-skip-tls-verify  helm/portal-server/ &&
+                      pytest --values helm/portal-server/linter_values.yaml portal-server/tests/chart"
+    profiles:
+      - test
+    working_dir: /app
+    volumes:
+      - "../helm/portal-server/:/app/helm/portal-server"
+      - "../portal-server/tests/chart:/app/portal-server/tests/chart"
+
+  test-chart-portal-consumer:
+    image:   gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.12.0
+    command: bash -c "helm dependency build --insecure-skip-tls-verify helm/portal-consumer/ &&
+                      pytest --values helm/portal-consumer/linter_values.yaml portal-consumer/tests/chart"
+    profiles:
+      - test
+    working_dir: /app
+    volumes:
+      - "../helm/portal-consumer/:/app/helm/portal-consumer"
+      - "../portal-consumer/tests/chart:/app/portal-consumer/tests/chart"
+
+  # Environment to build the Debian package. The context directory contains more
+  # details.
+  deb-builder:
+    profiles:
+      - test
+    platform: "linux/amd64"
+    build:
+      context: ./deb-builder
+    volumes:
+      - type: bind
+        source: ../
+        target: /src
+
+  # Environment of the pre-commit linter.
+  pre-commit:
+    profiles:
+      - test
+    image: gitregistry.knut.univention.de/univention/customers/dataport/upx/container-pre-commit/upx-pre-commit:latest
+    volumes:
+      - type: bind
+        source: ..
+        target: /code
+      - type: volume
+        # pre-commit installs dependencies, having them cached speeds things up
+        # a lot.
+        source: pre-commit-cache
+        target: /cache
+
+  # Environment which allows to run the tool "helm-docs". See the directory
+  # "../helm/" for more details.
+  helm-docs:
+    profiles:
+      - test
+    image: "jnorwood/helm-docs:v1.11.0"
+    command: "-c helm"
+    volumes:
+      - type: bind
+        source: ..
+        target: /helm-docs
+
+secrets:
+  ca_cert:
+    file: ssl/certs/CAcert.pem
+  cert_pem:
+    file: ssl/certs/cert.pem
+  private_key:
+    file: ssl/certs/private.key
+  idp_ldap_user_secret:
+    file: secret/idp-ldap-user.secret
+  ldap_secret:
+    file: secret/ldap.secret
+  machine_secret:
+    file: secret/machine.secret
+  store_dav_htpasswd:
+    file: secret/store-dav-htpasswd
+
+volumes:
+  postgresql-data:
+  pre-commit-cache:
+  store-dav-data:
+  umc-acls:
+
+
+...

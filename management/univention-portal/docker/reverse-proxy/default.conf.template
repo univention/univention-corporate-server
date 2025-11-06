@@ -1,0 +1,52 @@
+# Configuration template to glue the various components together
+# for a development setup.
+
+server {
+
+  listen 8080;
+  listen [::]:8080;
+  listen 8081 ssl;
+  listen [::]:8081 ssl;
+
+  ssl_certificate /etc/nginx/ssl/cert.pem;
+  ssl_certificate_key /etc/nginx/ssl/private.key;
+
+  location ~ ^/univention/(auth|saml|get|set|command|upload|logout) {
+    rewrite ^/univention/(.*)$ /$1 break;
+    proxy_pass ${UMC_SERVER_BASE_URL};
+    proxy_redirect ${UMC_SERVER_BASE_URL} http://$host:${PROXY_PORT}/univention/;
+  }
+
+  location ~ ^/univention/(js|languages.json|login|management|meta.json|theme.css|themes|udm) {
+    proxy_pass ${UMC_GATEWAY_BASE_URL};
+  }
+
+  location /univention/portal/portal.json {
+    proxy_pass ${PORTAL_SERVER_BASE_URL}/univention/portal/portal.json;
+  }
+
+  location /univention/portal/icons/ {
+    proxy_pass ${STORE_DAV_URL}/portal-assets/icons/;
+  }
+
+  location /univention/portal/ {
+    proxy_pass ${PORTAL_FRONTEND_BASE_URL}/;
+  }
+
+  location /univention/portal/notifications-api/ {
+    proxy_pass ${NOTIFICATIONS_BASE_URL}/;
+    proxy_redirect ${NOTIFICATIONS_BASE_URL}/ http://$host:${PROXY_PORT}/univention/portal/notifications-api/;
+  }
+
+  location / {
+    proxy_pass ${UCS_BASE_URL}/;
+    proxy_redirect ${UCS_BASE_URL}/ http://$host:${PROXY_PORT}/;
+  }
+
+  # TODO: missing locations to be added
+  #
+  # - navigation.json
+  # - meta.json
+  # - languages.json
+
+}

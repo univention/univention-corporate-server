@@ -1,0 +1,6 @@
+--extra-index-url https://git.knut.univention.de/api/v4/projects/882/packages/pypi/simple
+nubus-provisioning-consumer==0.42.0
+click==8.1.7
+python-dateutil==2.8.2
+requests==2.28.1
+tornado==6.4.1

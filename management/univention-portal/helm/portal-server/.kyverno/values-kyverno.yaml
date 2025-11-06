@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+---
+
+imagePullSecrets:
+  - "kyverno-test"
+replicaCount: 42
+
+global:
+  imageRegistry: "my_private_registry.domain.tld"
+  imagePullSecrets:
+    - "kyverno-test"
+  imagePullPolicy: "kyverno"
+
+resources:
+  limits:
+    # -- The max number of RAM to consume.
+    memory: "4Gi"
+  requests:
+    # -- The number of CPUs which has to be available on the scheduled node.
+    cpu: "250m"
+    # -- The number of RAM which has to be available on the scheduled node.
+    memory: "512Mi"
+
+...

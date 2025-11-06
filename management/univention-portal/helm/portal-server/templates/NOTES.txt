@@ -1,0 +1,5 @@
+Thank you for installing the Univention Portal Server
+
+{{- if .Values.ingress.enabled }}
+You can access it via http{{ if .Values.ingress.tls }}s{{ end }}://{{ .Values.ingress.host }}{{ .Values.ingress.path }}
+{{- end }}

@@ -1,0 +1,52 @@
+---
+
+# Deployment-specific values for the `example` environment for portal-server.
+# This is a YAML-formatted file.
+# Include the file with the `--values` parameter
+
+
+## Application-specific
+notificationsApi:
+  applyDatabaseMigrations: "True"
+  devMode: "True"
+  environment: "staging"
+  logLevel: "DEBUG"
+  sqlEcho: "False"
+  apiPrefix: "/univention/portal/notifications-api"
+
+
+## Kubernetes ingress
+ingress:
+  enabled: false
+  host: "portal.example.develop.souvap-univention.de"
+
+
+## Istio based
+istio:
+  enabled: true
+  host: "portal.example.develop.souvap-univention.de"
+
+
+## Docker image
+image:
+  tag: "branch-feature-example"
+
+
+## Container deployment probes
+probes:
+  liveness:
+    enabled: false
+
+  readiness:
+    enabled: false
+
+
+## PostgreSQL configuration
+postgresql:
+  bundled: true
+  # You have to define the connection if you are not using the bundled postgresql.
+  # connection:
+  #   host:
+  #   port:
+
+...

@@ -1,0 +1,26 @@
+{
+  "administrator": [
+    "cn=computers,cn=groups,dc=univention,dc=test",
+    "cn=dc backup hosts,cn=groups,dc=univention,dc=test",
+    "cn=dc slave hosts,cn=groups,dc=univention,dc=test",
+    "cn=domain admins,cn=groups,dc=univention,dc=test",
+    "cn=domain users,cn=groups,dc=univention,dc=test",
+    "cn=windows hosts,cn=groups,dc=univention,dc=test"
+  ],
+  "join-backup": [
+    "cn=backup join,cn=groups,dc=univention,dc=test",
+    "cn=computers,cn=groups,dc=univention,dc=test",
+    "cn=dc backup hosts,cn=groups,dc=univention,dc=test",
+    "cn=dc slave hosts,cn=groups,dc=univention,dc=test",
+    "cn=slave join,cn=groups,dc=univention,dc=test",
+    "cn=windows hosts,cn=groups,dc=univention,dc=test"
+  ],
+  "join-slave": [
+    "cn=computers,cn=groups,dc=univention,dc=test",
+    "cn=dc slave hosts,cn=groups,dc=univention,dc=test",
+    "cn=slave join,cn=groups,dc=univention,dc=test"
+  ],
+  "ucs-sso": [
+    "cn=domain users,cn=groups,dc=univention,dc=test"
+  ]
+}

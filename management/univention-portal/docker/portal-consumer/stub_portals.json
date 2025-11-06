@@ -1,0 +1,246 @@
+{
+  "default": {
+    "class": "Portal",
+    "kwargs": {
+      "authenticator": {
+        "class": "UMCAuthenticator",
+        "kwargs": {
+          "auth_mode": {
+            "key": "auth_mode",
+            "type": "config"
+          },
+          "group_cache": {
+            "class": "GroupFileCache",
+            "kwargs": {
+              "cache_file": {
+                "type": "static",
+                "value": "/var/cache/univention-portal/groups.json"
+              },
+              "reloader": {
+                "class": "ObjectStorageGroupsReloader",
+                "kwargs": {
+                  "access_key_id": {
+                    "key": "object_storage_access_key_id",
+                    "type": "config"
+                  },
+                  "assets_root_path": {
+                    "key": "assets_root_path",
+                    "type": "config"
+                  },
+                  "bucket": {
+                    "key": "object_storage_bucket",
+                    "type": "config"
+                  },
+                  "json_path": {
+                    "key": "groups_cache_path",
+                    "type": "config"
+                  },
+                  "object_storage_endpoint": {
+                    "key": "object_storage_endpoint",
+                    "type": "config"
+                  },
+                  "secret_access_key": {
+                    "key": "object_storage_secret_access_key",
+                    "type": "config"
+                  }
+                },
+                "type": "class"
+              }
+            },
+            "type": "class"
+          },
+          "umc_session_url": {
+            "key": "umc_session_url",
+            "type": "config"
+          }
+        },
+        "type": "class"
+      },
+      "portal_cache": {
+        "class": "PortalFileCache",
+        "kwargs": {
+          "cache_file": {
+            "type": "static",
+            "value": "/var/cache/univention-portal/portal.json"
+          },
+          "reloader": {
+            "class": "ObjectStoragePortalReloader",
+            "kwargs": {
+              "access_key_id": {
+                "key": "object_storage_access_key_id",
+                "type": "config"
+              },
+              "assets_base_url": {
+                "key": "assets_base_url",
+                "type": "config"
+              },
+              "assets_root_path": {
+                "key": "assets_root_path",
+                "type": "config"
+              },
+              "bucket": {
+                "key": "object_storage_bucket",
+                "type": "config"
+              },
+              "json_path": {
+                "key": "portal_cache_path",
+                "type": "config"
+              },
+              "object_storage_endpoint": {
+                "key": "object_storage_endpoint",
+                "type": "config"
+              },
+              "portal_dn": {
+                "key": "default_domain_dn",
+                "type": "config"
+              },
+              "secret_access_key": {
+                "key": "object_storage_secret_access_key",
+                "type": "config"
+              }
+            },
+            "type": "class"
+          }
+        },
+        "type": "class"
+      },
+      "scorer": {
+        "class": "PathScorer",
+        "kwargs": {
+          "fallback_score": {
+            "type": "static",
+            "value": 0.5
+          },
+          "path": {
+            "type": "static",
+            "value": "/univention/portal"
+          }
+        },
+        "type": "class"
+      }
+    },
+    "type": "class"
+  },
+  "selfservice": {
+    "class": "Portal",
+    "kwargs": {
+      "authenticator": {
+        "class": "UMCAuthenticator",
+        "kwargs": {
+          "auth_mode": {
+            "key": "auth_mode",
+            "type": "config"
+          },
+          "group_cache": {
+            "class": "GroupFileCache",
+            "kwargs": {
+              "cache_file": {
+                "type": "static",
+                "value": "/var/cache/univention-portal/groups.json"
+              },
+              "reloader": {
+                "class": "ObjectStorageGroupsReloader",
+                "kwargs": {
+                  "access_key_id": {
+                    "key": "object_storage_access_key_id",
+                    "type": "config"
+                  },
+                  "assets_root_path": {
+                    "key": "assets_root_path",
+                    "type": "config"
+                  },
+                  "bucket": {
+                    "key": "object_storage_bucket",
+                    "type": "config"
+                  },
+                  "json_path": {
+                    "key": "groups_cache_path",
+                    "type": "config"
+                  },
+                  "object_storage_endpoint": {
+                    "key": "object_storage_endpoint",
+                    "type": "config"
+                  },
+                  "secret_access_key": {
+                    "key": "object_storage_secret_access_key",
+                    "type": "config"
+                  }
+                },
+                "type": "class"
+              }
+            },
+            "type": "class"
+          },
+          "umc_session_url": {
+            "key": "umc_session_url",
+            "type": "config"
+          }
+        },
+        "type": "class"
+      },
+      "portal_cache": {
+        "class": "PortalFileCache",
+        "kwargs": {
+          "cache_file": {
+            "type": "static",
+            "value": "/var/cache/univention-portal/selfservice.json"
+          },
+          "reloader": {
+            "class": "ObjectStoragePortalReloader",
+            "kwargs": {
+              "access_key_id": {
+                "key": "object_storage_access_key_id",
+                "type": "config"
+              },
+              "assets_base_url": {
+                "key": "assets_base_url",
+                "type": "config"
+              },
+              "assets_root_path": {
+                "key": "assets_root_path",
+                "type": "config"
+              },
+              "bucket": {
+                "key": "object_storage_bucket",
+                "type": "config"
+              },
+              "json_path": {
+                "key": "selfservice_portal_cache_path",
+                "type": "config"
+              },
+              "object_storage_endpoint": {
+                "key": "object_storage_endpoint",
+                "type": "config"
+              },
+              "portal_dn": {
+                "key": "selfservice_portal_dn",
+                "type": "config"
+              },
+              "secret_access_key": {
+                "key": "object_storage_secret_access_key",
+                "type": "config"
+              }
+            },
+            "type": "class"
+          }
+        },
+        "type": "class"
+      },
+      "scorer": {
+        "class": "PathScorer",
+        "kwargs": {
+          "fallback_score": {
+            "type": "static",
+            "value": 0.5
+          },
+          "path": {
+            "type": "static",
+            "value": "/univention/selfservice"
+          }
+        },
+        "type": "class"
+      }
+    },
+    "type": "class"
+  }
+}

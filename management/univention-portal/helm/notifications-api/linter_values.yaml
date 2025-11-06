@@ -1,0 +1,57 @@
+---
+
+# SPDX-FileCopyrightText: 2023-2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Dummy values for running the Helm linter on the notifications-api.
+# Run it like this: helm lint -f values.yaml -f linter_values.yaml .
+
+
+## Application-specific
+notificationsApi:
+  applyDatabaseMigrations: "True"
+  devMode: "True"
+  environment: "staging"
+  logLevel: "DEBUG"
+  apiPrefix: "/univention/portal/notifications-api"
+
+
+## Kubernetes ingress
+ingress:
+  enabled: true
+  host: "portal.example.develop.souvap-univention.de"
+  ingressClassName: "nginx"
+  tls:
+    secretName: "portal-tls"
+
+
+## Istio based
+istio:
+  enabled: true
+  host: "portal.example.develop.souvap-univention.de"
+
+
+## Docker image
+image:
+  tag: "branch-feature-example"
+
+
+## Container deployment probes
+probes:
+  liveness:
+    enabled: false
+
+  readiness:
+    enabled: false
+
+
+## PostgreSQL configuration
+postgresql:
+  connection:
+    host: "postgresql-host"
+    port: "postgresql-port"
+  auth:
+    existingSecret:
+      name: "secret"
+
+...
