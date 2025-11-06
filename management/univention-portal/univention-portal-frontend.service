@@ -1,0 +1,12 @@
+[Unit]
+Description=Univention Portal server
+After=apache2.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker run --rm --name univention-portal-frontend gitregistry.knut.univention.de/univention/dev/projects/portal/portal-frontend:latest
+ExecStop=/usr/bin/docker stop univention-portal-frontend
+Restart=on-failure
