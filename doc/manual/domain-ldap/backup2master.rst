@@ -100,6 +100,12 @@ steps are performed by :command:`univention-backup2master`:
    resolved via DNS and if the repository server can be reached. Also, the
    |UCSPRIMARYDN| must be powered off and not reachable anymore.
 
+#. :command:`univention-backup2master` runs all executable scripts
+   in the :file:`/usr/lib/univention-backup2master/pre` directory.
+   Components that require a custom handling
+   before the conversion to the |UCSPRIMARYDN| begins,
+   can have executable scripts in that directory.
+
 #. Now, the most important services OpenLDAP, Samba, Kerberos and |UCSUDN| and
    Listener will be stopped. Important |UCSUCRV|, such as :envvar:`ldap/master`
    and :envvar:`server/role` will be changed. The UCS Root CA certificate will
@@ -130,6 +136,12 @@ steps are performed by :command:`univention-backup2master`:
 
 #. Finally, the package :program:`univention-server-backup` will be replaced by
    :program:`univention-server-master`.
+
+#. :command:`univention-backup2master` runs all executable scripts
+   in the :file:`/usr/lib/univention-backup2master/post` directory.
+   Components that require a custom handling
+   after the conversion to the |UCSPRIMARYDN| completed,
+   can have executable scripts in that directory.
 
 Subsequently, the LDAP directory on the new |UCSPRIMARYDN| and the |UCSUCR|
 values on all UCS systems of the domain should be checked for any remaining
