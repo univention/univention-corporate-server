@@ -1,3 +1,9 @@
+ucs-test (10.0.24-33) unstable; urgency=medium
+
+  * Bug #58787: 504test_group_cache_after_move.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Nov 2025 09:25:31 +0100
+
 ucs-test (10.0.24-32) unstable; urgency=medium
 
   * Issue univention/dev/internal/dev-issues/dev-incidents#171: test_rename_user_with_umlauts_in_ad
