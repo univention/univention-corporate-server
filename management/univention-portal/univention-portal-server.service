@@ -7,7 +7,7 @@ WantedBy=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/docker run --rm --name univention-portal-server gitregistry.knut.univention.de/univention/dev/projects/portal/portal-server:latest
-ExecStart=/usr/bin/docker run --rm --name mein-container gitregistry.knut.univention.de/univention/dev/projects/portal/portal-frontend:latest
-ExecStop=/usr/bin/docker stop univention-portal-server
+EnvironmentFile=/etc/univention-portal/server.env
+ExecStart=docker-compose -f /usr/share/univention-portal/docker-compose.yaml -p univention-portal up --no-build --no-recreate
+ExecStop=docker-compose down -p univention-portal
 Restart=on-failure
