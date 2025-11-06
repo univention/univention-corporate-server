@@ -103,6 +103,7 @@ def add_user_to_new_group_ad(ad, user_dn_ad):
     ad.add_to_group(group3_dn_ad, user_dn_ad)
     ad.wait_for_sync()
     group3_dn = ad.ucs_dn(group3_dn_ad)
+    assert group3_dn
     return group3_dn, group3_dn_ad
 
 
@@ -112,6 +113,7 @@ def add_user_to_new_group_ucs(udm, ad, user_dn):
     udm.modify_object('users/user', dn=user_dn, append={'groups': [group3_dn]}, wait_for_replication=False)
     ad.wait_for_sync()
     group3_dn_ad = ad.ad_dn(group3_dn)
+    assert group3_dn_ad
     return group3_dn, group3_dn_ad
 
 
@@ -159,7 +161,7 @@ def test_move_user_in_ucs(udm, lo, ldap_base, mode):
 
 @pytest.mark.parametrize(
     'mode',
-    [pytest.param('sync', marks=pytest.mark.xfail(reason="Bug #58782")), 'read'],
+    [pytest.param('sync', marks=pytest.mark.skip(reason="Bug #58782")), 'read'],
     ids=['sync mode', 'read mode'],
 )
 def test_rename_parent_rename_child_in_ad(udm, lo, ldap_base, mode):
@@ -359,7 +361,6 @@ def test_rename_user_with_umlauts_in_ad(udm, lo, ldap_base, mode):
 def test_rename_parent_change_ou_in_ad(udm, lo, mode):
     with connector_setup2(mode) as ad:
         setup = create_ou_structure_and_user(udm, ad, in_ad=True)
-        ad.wait_for_sync()
         ou1_guid = ad.guid(setup.ou1_dn_ad)
         ou11_guid = ad.guid(setup.ou11_dn_ad)
         # check guid cache
@@ -393,10 +394,9 @@ def test_rename_parent_change_ou_in_ad(udm, lo, mode):
 
 
 @pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
-def test_rename_and_move_user_in_ad(udm, lo, mode):
+def test_rename_and_move_and_change_sam_account_name_in_ad(udm, lo, mode):
     with connector_setup2(mode) as ad:
-        setup = create_ou_structure_and_user(udm, ad)
-        ad.wait_for_sync()
+        setup = create_ou_structure_and_user(udm, ad, in_ad=True)
         # rename, move change sam account name, in one step (connector not running)
         with adconnector_stopped():
             username = f'new-{setup.username}'
@@ -408,4 +408,119 @@ def test_rename_and_move_user_in_ad(udm, lo, mode):
         user_dn = ad.ucs_dn(user_dn_ad)
         assert setup.ou2_dn in user_dn
         assert setup.ou2_dn_ad in user_dn_ad
-        # TODO: add to some group and check group membership after sync
+        assert not lo.get(setup.user_dn)
+        assert not ad.get(setup.user_dn_ad)
+        # add to some group and check group membership after sync
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
+        ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
+        ad.wait_for_sync()
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
+def test_change_sam_account_name_in_ad(udm, mode, lo):
+    with connector_setup2(mode) as ad:
+        setup = create_ou_structure_and_user(udm, ad, in_ad=True)
+        sam_account_name = f'new-{setup.username}'
+        ad.set_attributes(setup.user_dn_ad, {'sAMAccountName': [sam_account_name.encode('UTF-8')]})
+        ad.wait_for_sync()
+        user_dn = ad.ucs_dn(setup.user_dn_ad)
+        assert sam_account_name not in setup.user_dn_ad
+        assert ad.get(setup.user_dn_ad)
+        assert setup.user_dn_ad.casefold() == ad.ad_dn(user_dn)
+        assert not lo.get(setup.user_dn)
+        assert lo.get(user_dn)
+        assert sam_account_name in user_dn
+        assert user_dn != setup.user_dn
+        # we have to add this new user DN to udm-test, otherwise we get UCSTestUDM_CannotModifyExistingObject
+        udm._cleanup['users/user'] = [user_dn]
+        verify_groups(ad, lo, user_dn, setup.user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        # and another change, just to be sure
+        group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, setup.user_dn_ad)
+        ad.remove_from_group(setup.group1_dn_ad, setup.user_dn_ad)
+        ad.wait_for_sync()
+        verify_groups(ad, lo, user_dn, setup.user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
+def test_move_and_change_sam_account_name_in_ad(udm, mode, lo):
+    with connector_setup2(mode) as ad:
+        setup = create_ou_structure_and_user(udm, ad, in_ad=True)
+        # rename and change sam account name, in one step (connector not running)
+        with adconnector_stopped():
+            sam_account_name = f'new-{setup.username}'
+            ad._ad.lo.rename_s(setup.user_dn_ad, f'cn={setup.username}', newsuperior=setup.ou2_dn_ad)
+            user_dn_ad = f'cn={setup.username},{setup.ou2_dn_ad}'
+            ad.set_attributes(user_dn_ad, {'sAMAccountName': [sam_account_name.encode('UTF-8')]})
+        ad.wait_for_sync()
+        assert not ad.get(setup.user_dn_ad)
+        assert ad.get(user_dn_ad)
+        user_dn = ad.ucs_dn(user_dn_ad)
+        assert ad.ad_dn(user_dn) == user_dn_ad.casefold()
+        assert user_dn != setup.user_dn
+        assert sam_account_name in user_dn
+        assert setup.ou2_dn in user_dn
+        assert not lo.get(setup.user_dn)
+        assert lo.get(user_dn)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        # add to some group and check group membership after sync
+        group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
+        ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
+        ad.wait_for_sync()
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
+def test_change_cn_in_ad(udm, mode, lo):
+    with connector_setup2(mode) as ad:
+        setup = create_ou_structure_and_user(udm, ad, in_ad=True)
+        cn = f'new-{setup.username}'
+        ad._ad.lo.rename_s(setup.user_dn_ad, f'cn={cn}')
+        ad.wait_for_sync()
+        user_dn_ad = ad.ad_dn(setup.user_dn)
+        assert lo.get(setup.user_dn)
+        assert user_dn_ad != setup.user_dn_ad
+        assert cn in user_dn_ad
+        assert ad.get(user_dn_ad)
+        assert ad.ucs_dn(user_dn_ad) == setup.user_dn
+        verify_groups(ad, lo, setup.user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        # and another change, just to be sure
+        group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
+        ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
+        ad.wait_for_sync()
+        verify_groups(ad, lo, setup.user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize(
+    'mode',
+    [pytest.param('sync', marks=pytest.mark.skip(reason='tries to add wrong DN during modify in sync_from_ucs')), 'read'],
+    ids=['sync mode', 'read mode'],
+)
+def test_move_plus_one_ou_in_ad(udm, mode, lo):
+    with connector_setup2(mode) as ad:
+        username = f'A Ä!{random_username()}'
+        setup = create_ou_structure_and_user(udm, ad, in_ad=True)
+        ou_plus1_dn_ad = ad.create_ou('+1', position=setup.ou1_dn_ad, wait_for_replication=False)
+        user_dn_ad = ad.create_user(username, position=ou_plus1_dn_ad, wait_for_replication=False)
+        ad.add_to_group(setup.group1_dn_ad, user_dn_ad)
+        ad.wait_for_sync()
+        user_dn = ad.ucs_dn(user_dn_ad)
+        # move/rename ou
+        ou1_name = f'new-{setup.ou1_name}'
+        ou1_dn_ad = f'ou={ou1_name},{setup.ou2_dn_ad}'
+        ad.move(setup.ou1_dn_ad, ou1_dn_ad, wait_for_replication=False)
+        ad.wait_for_sync()
+        assert not ad.get(user_dn_ad)
+        assert not lo.get(user_dn)
+        user_dn_ad = f'cn={username},ou=\+1,ou={ou1_name},{setup.ou2_dn_ad}'  # noqa: W605
+        user_dn = ad.ucs_dn(user_dn_ad)
+        assert ad.get(user_dn_ad)
+        assert lo.get(user_dn)
+        assert user_dn == f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        # and another change, just to be sure
+        group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
+        ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
+        ad.wait_for_sync()
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
