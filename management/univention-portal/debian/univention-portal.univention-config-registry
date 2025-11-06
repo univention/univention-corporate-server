@@ -38,3 +38,8 @@ Variables: hostname
 Variables: domainname
 Variables: umc/web/sso/enabled
 Variables: server/role
+
+Type: file
+File: etc/univention-portal/server.env
+Variables: ldap/.*
+Variables: portal/.*
