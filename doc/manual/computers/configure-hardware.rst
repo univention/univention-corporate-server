@@ -301,7 +301,8 @@ waiting time are not forwarded.
 The *Additional bridge options* input field can be used to configure arbitrary
 bridge parameters. This is only necessary in exceptional cases; an overview of
 the possible settings can be found on the manual page
-:manpage:`bridge-utils-interfaces(5)`.
+`bridge-utils-interfaces(5)
+<https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-interfaces.5.en.html>`_.
 
 Clicking on :guilabel:`Next` offers the possibility of optionally assigning the
 bridge an IP address. This interface can then also be used as a network

@@ -92,7 +92,7 @@ To adopt the changes in :program:`Postfix`, complete the following commands:
 
 .. seealso::
 
-   :manpage:`postconf(5)` - manual page for :program:`postconf` - Postfix configuration parameters
+   `postconf(5) <https://manpages.debian.org/bookworm/postfix/postconf.5.en.html>`_ - manual page for :program:`postconf` - Postfix configuration parameters
       for a reference of the configuration values
       `relayhost <manpage-postconf-relayhost_>`_,
       and `smtp_sasl_password_maps <manpage-postconf-smtp-sasl-password-maps_>`_.
