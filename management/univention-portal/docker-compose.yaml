@@ -1,0 +1,68 @@
+version: '3.1'
+
+services:
+  portal-server:
+    container_name: univention-portal-server
+    image: gitregistry.knut.univention.de/univention/dev/projects/portal/portal-server:latest
+    # command: /usr/bin/python3 /usr/sbin/univention-portal-server
+    security_opt:
+      - seccomp:/etc/docker/seccomp-systemd.json
+    restart: unless-stopped  # on-failure
+    environment:
+      PORTAL_SERVER_ASSETS_ROOT_PATH: ""
+      PORTAL_ASSETS_BASE_URL: ""
+      PORTAL_DEFAULT_DN: ""
+      LDAP_HOST_DN: "cn=primary,cn=dc,cn=computers,dc=ucs52,dc=qa"
+      LDAP_BASE_DN: "dc=ucs52,dc=qa"
+      LDAP_PORT: "7389"
+      PORTAL_UDM_API_URL: ""
+      PORTAL_UDM_API_USERNAME: ""
+      PORTAL_UDM_API_PASSWORD_FILE: ""
+      PORTAL_SERVER_UMC_CHECK_ICONS: ""
+      OBJECT_STORAGE_ENDPOINT: "http://minio:9000"
+      OBJECT_STORAGE_BUCKET: "stub_bucket"
+      OBJECT_STORAGE_ACCESS_KEY_ID: "stub_user"
+      OBJECT_STORAGE_SECRET_ACCESS_KEY: "stub_value"
+      PORTAL_SERVER_ADMIN_GROUP: "cn=Domain Admins,cn=groups,dc=ucs52,dc=qa"
+      PORTAL_SERVER_ASSETS_ROOT: "http://Administrator:univention@localhost/todo/portal-assets/"
+      PORTAL_SERVER_AUTH_MODE: "ucs"
+      PORTAL_SERVER_EDITABLE: "true"
+      PORTAL_SERVER_PORT: "80"
+      PORTAL_SERVER_UCS_INTERNAL_PATH: "portal-data"
+      PORTAL_SERVER_UMC_GET_URL: "http://primary.ucs52.qa:8090/univention/get"
+      PORTAL_SERVER_UMC_SESSION_URL: "http://primary.ucs52.qa:8090/univention/get/session-info"
+      PORTAL_CONSUMER_LOG_STREAM: "true"
+      PORTAL_SERVER_FEATURE_TOGGLES: '{"notifications_api": false}'
+      PORTAL_SERVER_DEVELOPMENT_MODE: "true"
+      LOG_LEVEL: "DEBUG"
+    volumes:
+      - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/pki/ca-trust/extracted/pem/ucsCAcert.pem:ro
+    ports:
+      - "8095:80"
+  portal-frontend:
+    container_name: univention-portal-frontend
+    image: gitregistry.knut.univention.de/univention/dev/projects/portal/portal-frontend:latest
+    # command: yarn serve --port 80 mode production
+    security_opt:
+      - seccomp:/etc/docker/seccomp-systemd.json
+    restart: unless-stopped
+    environment:
+      OBJECT_STORAGE_ENDPOINT: "http://minio:9000"
+      OBJECT_STORAGE_BUCKET: "stub_bucket"
+      OBJECT_STORAGE_ACCESS_KEY_ID: "stub_user"
+      OBJECT_STORAGE_SECRET_ACCESS_KEY: "stub_value"
+      PORTAL_SERVER_ADMIN_GROUP: "cn=Domain Admins,cn=groups,dc=ucs52,dc=qa"
+      PORTAL_SERVER_ASSETS_ROOT: "http://portal-server:univention@store-dav/portal-assets/"
+      PORTAL_SERVER_AUTH_MODE: "ucs"
+      PORTAL_SERVER_EDITABLE: "true"
+      PORTAL_SERVER_PORT: "80"
+      PORTAL_SERVER_UCS_INTERNAL_PATH: "portal-data"
+      PORTAL_SERVER_UMC_GET_URL: "http://primary.ucs52.qa:8090/univention/get"
+      PORTAL_SERVER_UMC_SESSION_URL: "http://primary.ucs52.qa:8090/univention/get/session-info"
+      PORTAL_CONSUMER_LOG_STREAM: "true"
+      PORTAL_SERVER_FEATURE_TOGGLES: '{"notifications_api": true}'
+    volumes:
+      - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/pki/ca-trust/extracted/pem/ucsCAcert.pem:ro
+      #- /var/lib/univention-appcenter/apps/keycloak/data/development:/opt/jboss/keycloak/standalone/deployments/
+    ports:
+      - "8080:80"
