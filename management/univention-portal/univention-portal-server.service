@@ -9,5 +9,5 @@ WantedBy=multi-user.target
 Type=simple
 EnvironmentFile=/etc/univention-portal/server.env
 ExecStart=docker-compose -f /usr/share/univention-portal/docker-compose.yaml -p univention-portal up --no-build --no-recreate
-ExecStop=docker-compose down -p univention-portal
+ExecStop=docker-compose -p univention-portal down --remove-orphans
 Restart=on-failure
