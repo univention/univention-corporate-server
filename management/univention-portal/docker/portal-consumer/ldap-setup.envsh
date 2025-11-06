@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-FileCopyrightText: 2017-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 
 # abort on nonzero exitstatus
 set -o errexit
