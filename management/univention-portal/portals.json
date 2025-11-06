@@ -1,0 +1,156 @@
+{
+  "default": {
+    "class": "Portal",
+    "kwargs": {
+      "authenticator": {
+        "class": "UMCAuthenticator",
+        "kwargs": {
+          "auth_mode": {
+            "key": "auth_mode",
+            "type": "config"
+          },
+          "group_cache": {
+            "class": "GroupFileCache",
+            "kwargs": {
+              "cache_file": {
+                "type": "static",
+                "value": "/var/cache/univention-portal/groups.json"
+              },
+              "reloader": {
+                "class": "GroupsReloaderLDAP",
+                "kwargs": {
+                  "binddn": {
+                    "key": "hostdn",
+                    "type": "config"
+                  },
+                  "cache_file": {
+                    "type": "static",
+                    "value": "/var/cache/univention-portal/groups.json"
+                  },
+                  "ldap_base": {
+                    "key": "ldap_base",
+                    "type": "config"
+                  },
+                  "ldap_uri": {
+                    "key": "ldap_uri",
+                    "type": "config"
+                  },
+                  "password_file": {
+                    "type": "static",
+                    "value": "/etc/machine.secret"
+                  }
+                },
+                "type": "class"
+              }
+            },
+            "type": "class"
+          },
+          "umc_session_url": {
+            "key": "umc_session_url",
+            "type": "config"
+          }
+        },
+        "type": "class"
+      },
+      "portal_cache": {
+        "class": "PortalFileCache",
+        "kwargs": {
+          "cache_file": {
+            "type": "static",
+            "value": "/var/cache/univention-portal/portal.json"
+          },
+          "reloader": {
+            "class": "PortalReloaderUDM",
+            "kwargs": {
+              "cache_file": {
+                "type": "static",
+                "value": "/var/cache/univention-portal/portal.json"
+              },
+              "portal_dn": {
+                "key": "default_domain_dn",
+                "type": "config"
+              }
+            },
+            "type": "class"
+          }
+        },
+        "type": "class"
+      },
+      "scorer": {
+        "class": "Scorer",
+        "type": "class"
+      }
+    },
+    "type": "class"
+  },
+  "umc": {
+    "class": "UMCPortal",
+    "kwargs": {
+      "authenticator": {
+        "class": "UMCAuthenticator",
+        "kwargs": {
+          "auth_mode": {
+            "key": "auth_mode",
+            "type": "config"
+          },
+          "group_cache": {
+            "class": "GroupFileCache",
+            "kwargs": {
+              "cache_file": {
+                "type": "static",
+                "value": "/var/cache/univention-portal/groups.json"
+              },
+              "reloader": {
+                "class": "GroupsReloaderLDAP",
+                "kwargs": {
+                  "binddn": {
+                    "key": "hostdn",
+                    "type": "config"
+                  },
+                  "cache_file": {
+                    "type": "static",
+                    "value": "/var/cache/univention-portal/groups.json"
+                  },
+                  "ldap_base": {
+                    "key": "ldap_base",
+                    "type": "config"
+                  },
+                  "ldap_uri": {
+                    "key": "ldap_uri",
+                    "type": "config"
+                  },
+                  "password_file": {
+                    "type": "static",
+                    "value": "/etc/machine.secret"
+                  }
+                },
+                "type": "class"
+              }
+            },
+            "type": "class"
+          },
+          "umc_session_url": {
+            "key": "umc_session_url",
+            "type": "config"
+          }
+        },
+        "type": "class"
+      },
+      "scorer": {
+        "class": "PathScorer",
+        "kwargs": {
+          "fallback_score": {
+            "type": "static",
+            "value": 0.5
+          },
+          "path": {
+            "type": "static",
+            "value": "/univention/umc"
+          }
+        },
+        "type": "class"
+      }
+    },
+    "type": "class"
+  }
+}
