@@ -232,6 +232,10 @@ echo "This tool will wait here for $opt_wait seconds..."
 echo "Press CTRL-c to abort or press ENTER to continue"
 [ -t 0 ] && read -r -t "$opt_wait" REPLY
 
+# Run pre scripts before proceeding
+echo "Running pre scripts..."
+run-parts -v "/usr/lib/univention-backup2master/pre"
+
 # From now on this script should not be terminated before proper completion.
 trap "consider_termination" TERM EXIT QUIT INT HUP
 
@@ -444,5 +448,10 @@ udm_remove_dns_service_account "$old_ldap_master_hostname"
 # Any bind9 that might be running shall be restarted.
 systemctl reload named.service
 
+# Run post scripts after completion
+echo "Running post scripts..."
+run-parts -v "/usr/lib/univention-backup2master/post"
+
+# End of script
 trap - EXIT
 exit 0
