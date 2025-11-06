@@ -1512,25 +1512,40 @@ class ucs(object):
                     result = True
 
             if object['modtype'] == 'modify':
-                res = self.modify_in_ucs(property_type, object, module, position)
-                if res:
-                    if object['dn'].lower() != res.lower():  # This "modify" resulted in a modrdn in UDM even though the DN didn't change in AD
-                        self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
-                        object['dn'] = res
-                    old_con_dn = original_object.get('olddn')
-                    if old_con_dn and pre_mapped_ad_dn != old_con_dn:
-                        self._remove_dn_mapping(object['olddn'], old_con_dn)
-                        self._update_group_related_caches(
-                            property_type,
-                            old_con_dn=old_con_dn,
-                            old_ucs_dn=object['olddn'],
-                            new_con_dn=pre_mapped_ad_dn,
-                            new_ucs_dn=object['dn'],
-                        )
+
+                modified_dn = self.modify_in_ucs(property_type, object, module, position)
+                modified_parent_dn = self.lo.parentDn(modified_dn).lower()
+                parent_object_dn = self.lo.parentDn(object['dn']).lower()
+
+                object['olddn'] = object.get('olddn', object['dn'])
+                if not self.lo.compare_dn(modified_parent_dn, parent_object_dn):
+                    # additionally move the object if position changed
+                    # TODO: object['dn'] seems to be the correct target, but why?
+                    ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: move object from %r to %r" % (modified_dn, object['dn']))
+                    ucs_object = univention.admin.objects.get(module, None, self.lo, dn=modified_dn, position='')
+                    ucs_object.open()
+                    ucs_object.move(object['dn'])
+                elif object['dn'].lower() != modified_dn.lower():
+                    # TODO: in this case object['dn'] is the unchanged UCS DN, why?
+                    # update group cache
+                    object['dn'] = modified_dn
+
+                old_con_dn = original_object.get('olddn', pre_mapped_ad_dn)
+                self._update_group_related_caches(
+                    property_type,
+                    old_con_dn=old_con_dn,
+                    old_ucs_dn=object['olddn'],
+                    new_con_dn=pre_mapped_ad_dn,
+                    new_ucs_dn=object['dn'],
+                )
+
+                if not self.lo.compare_dn(object['olddn'], object['dn']):
+                    self._remove_dn_mapping(object['olddn'], old_con_dn)
+
                 # Finally commit the current DNs to the DN mapping cache
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
-                result = True if res else res
+                result = True
 
             if not result:
                 ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%r)" % (object['dn'],))
