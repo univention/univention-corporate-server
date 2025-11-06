@@ -10,7 +10,8 @@ services:
     restart: unless-stopped  # on-failure
     env_file: /etc/univention-portal/server.env
     volumes:
-      - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/pki/ca-trust/extracted/pem/ucsCAcert.pem:ro
+      - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
+      - /etc/machine.secret:/etc/machine.secret:ro
     ports:
       - "8095:80"
   portal-frontend:
@@ -22,7 +23,6 @@ services:
     restart: unless-stopped  # on-failure
     env_file: /etc/univention-portal/server.env
     volumes:
-      - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/pki/ca-trust/extracted/pem/ucsCAcert.pem:ro
-      #- /var/lib/univention-appcenter/apps/keycloak/data/development:/opt/jboss/keycloak/standalone/deployments/
+      - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
     ports:
       - "8080:80"
