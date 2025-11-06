@@ -125,12 +125,12 @@ Since UCS 4.4-5 Bug #51647 we fixed a regression from UCS 4.4-4 Errata Bug #1850
 
 * Synchronize AD:`mail` again to UDM:`mailPrimaryAddress`
 
-  There is a delicate interplay between the two post_attribute definitions
+  There is a delicate interplay between the two post\_attribute definitions
   `mailPrimaryAddress_to_mail` and  `mailPrimaryAddress`:
 
   The `post_attribute` mapping `mailPrimaryAddress_to_mail`
-  causes _object_mapping to map AD `mail` to `primaryMailAddress`
-  during sync_to_ucs, even if the sync_mode of this post_attribute
+  causes `_object_mapping` to map AD `mail` to `primaryMailAddress`
+  during `sync_to_ucs`, even if the `sync_mode` of this `post_attribute`
   mapping is `read`.
 
   As a result later, in `__set_values()`, `primaryMailAddress` is present
@@ -166,20 +166,40 @@ Change tracking
 
 Specifics about the change tracking mechanisms offered by Active Directory:
 * [Polling for Changes Using USNChanged](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-usnchanged)
-   * Because `uSNChanged` is a non-replicated attribute, the application must bind to the same domain controller every time it runs
+  * Because `uSNChanged` is a non-replicated attribute, the application must bind to the same domain controller every time it runs
 * [Polling for Changes Using the DirSync Control](https://learn.microsoft.com/en-us/windows/win32/ad/polling-for-changes-using-the-dirsync-control)
-   * For each object, the initial results include all the requested attributes set on the object. Subsequent search results include only the specified attributes that have changed. Unchanged attributes are not included in the search results.
-   * When an object is renamed or moved, its child objects, if any, are not included in the search results, even though the distinguished names of the child objects have changed.
-   * Use the objectGUID attribute to identify the tracked objects.
-   * To use the `DirSync` control, caller must have the "directory get changes" right assigned on the root of the partition being monitored.
-   * Retrieving Deleted Objects With a DirSync Search (see document)
+  * For each object, the initial results include all the requested attributes set on the object. Subsequent search results include only the specified attributes that have changed. Unchanged attributes are not included in the search results.
+  * When an object is renamed or moved, its child objects, if any, are not included in the search results, even though the distinguished names of the child objects have changed.
+  * Use the objectGUID attribute to identify the tracked objects.
+  * To use the `DirSync` control, caller must have the "directory get changes" right assigned on the root of the partition being monitored.
+  * Retrieving Deleted Objects With a DirSync Search (see document)
 * [Change Notifications in Active Directory Domain Services](https://learn.microsoft.com/en-us/windows/win32/ad/change-notifications-in-active-directory-domain-services)
-   * You can register up to five notification requests on a single LDAP connection. You must have a dedicated thread that waits for the notifications and processes them quickly.
-   * Although the subtree scope is supported if the base object is the root of a naming context, its use can severely impact server performance, because it generates an LDAP search result message every time an object in the naming context is modified.
+  * You can register up to five notification requests on a single LDAP connection. You must have a dedicated thread that waits for the notifications and processes them quickly.
+  * Although the subtree scope is supported if the base object is the root of a naming context, its use can severely impact server performance, because it generates an LDAP search result message every time an object in the naming context is modified.
 
-Improvement Suggestions:
-========================
-* Rename `object` and seprate `object["attributes"]` into `ldap_obj_ol` and `ldap_obj_ad`
+Notes about code flow
+=====================
+* Changes from AD come in via `poll` or again via `resync_rejected`
+  * The AD object is parsed in `__object_from_element`
+    * The sqlite `adcache` is used to determine  `object['modtype']`
+  * Then this `CON` object is passed through `_object_mapping` to calculate OpenLDAP attributes / UDM properties from the AD attributes
+    * The AD-Connector only looks at specific AD attributes, depending on `modules/univention/connector/ad/mapping.py`
+    * The sqlite table `DN Mapping CON` is consulted to lookup the probable target DNs (so called "premapped")
+    * The `MAPPING.dn_mapping_function` is called (e.g. `samaccountname_dn_mapping` for account type objects)
+      to find out the target DNs (e.g. initially mapping to the base DN of the target LDAP)
+  * The result is given to `sync_to_ucs`
+    * `sync_to_ucs` attempts to find the old UCS object and maybe adjusts the `object['modtype']` to a changed target reality (e.g. for rejects)
+    * The operation is performed via UDM (not via direct LDAP)
+    * Depending on the `modules/univention/connector/ad/mapping.py` and the `property_type`
+      the `post_con_modify_functions` are run (e.g. `password_sync_ucs` and `object_memberships_sync_from_ucs`)
+    * Only if `sync_to_ucs` returns `True`, the change is considered successful, otherwise it's stored in `AD reject` in sqlite
+  * Finally the new AD DN is stored in the sqlite table `AD GUID` (key: GUID as NDR blob, encoded in base64)
+
+
+Improvement Suggestions
+=======================
+* Improve the log lines about `newdn`/`olddn` in `samaccountname_dn_mapping` to output e.g. `ucsdn`/`ad_dn` (depending on `isUCSobject`)
+* Rename `object` and separate `object["attributes"]` into `ldap_obj_ol` and `ldap_obj_ad`
   and pass them around to all functions (e.g. `ucs_create_functions`),
   so they have all required info, can pick the correct attribute values (OL vs AD) in searches
   and don't need to search stuff over and over again.
