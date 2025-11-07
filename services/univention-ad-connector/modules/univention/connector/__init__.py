@@ -1374,10 +1374,10 @@ class ucs:
                 original_attributes = original_object['attributes']
                 if old_ad_object:
                     for attr in original_object['attributes']:
-                        if old_ad_object.get(attr) != original_attributes.get(attr):
+                        if set(old_ad_object.get(attr, [])) != set(original_attributes.get(attr, [])):
                             object['changed_attributes'].append(attr)
                     for attr in old_ad_object:
-                        if old_ad_object.get(attr) != original_attributes.get(attr) and attr not in object['changed_attributes']:
+                        if set(old_ad_object.get(attr, [])) != set(original_attributes.get(attr, [])) and attr not in object['changed_attributes']:
                             object['changed_attributes'].append(attr)
                     if not (set(object['changed_attributes']) - self.irrelevant_attributes):
                         if (
