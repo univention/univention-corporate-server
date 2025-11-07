@@ -212,6 +212,34 @@ class object(simpleLdap):
         # we can't store operational attribute memberOf at the deleted object, so we store it as reference, which we can convert back to memberOf
         references = [Reference(*ref) for ref in info.get('referencedBy', [])]
         memberof_references = [ref for ref in references if ref.target_module == 'groups/group' and ref.target_property in ('users', 'hosts', 'nestedGroup') and ref.source_attr == 'dn']
+
+        # For users, check if there are groups in recyclebin that should be added as references
+        # This handles the case where a group was deleted before the user, so memberOf was already cleaned up
+        if info.get('originalObjectType') == 'users/user' and info.get('originalDN'):
+            original_dn = info['originalDN']
+
+            # Groups in recyclebin keep their original uniqueMember and memberUid attributes
+            recyclebin_groups_filter = ldap.filter.filter_format(
+                '(&(objectClass=univentionRecycleBinObject)(univentionRecycleBinOriginalObjectClass=univentionGroup)(|(uniqueMember=%s)(memberUid=%s)))',
+                [original_dn, original_dn],
+            )
+            results = self.lo.authz_connection.search(
+                base=RECYCLEBIN_BASE,
+                scope='one',
+                filter=recyclebin_groups_filter,
+                attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinOriginalUniventionObjectIdentifier'],
+            )
+
+            for _, group_attrs in results:
+                if group_uuid_bytes := group_attrs.get('univentionRecycleBinOriginalUniventionObjectIdentifier'):
+                    group_uuid = group_uuid_bytes[0].decode('utf-8')
+                    # Check if this group is already in references
+                    if not any(ref.lookup_value == group_uuid for ref in memberof_references):
+                        new_ref = Reference('dn', 'groups/group', 'users', 'uuid', group_uuid)
+                        references.append(new_ref)
+                        memberof_references.append(new_ref)
+                        log.info('Added missing group reference from recyclebin', group_uuid=group_uuid, user_dn=original_dn)
+
         if memberof_references:
             member_of = [
                 ref.resolve(self.lo)
@@ -219,6 +247,7 @@ class object(simpleLdap):
             ]
             oldattr['memberOf'] = [x.encode('UTF-8') for x in member_of if x]
 
+        info['referencedBy'] = [tuple(ref) for ref in references]
         info = super()._post_unmap(info, oldattr)
         info['originalName'] = oldattr.get('uid', oldattr.get('cn', [self.dn.encode('UTF-8')]))[0].decode('UTF-8')
         self._unmap_original_properties(info, oldattr)
