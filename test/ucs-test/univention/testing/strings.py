@@ -10,12 +10,12 @@ from random import choice, randint
 
 
 STR_NUMERIC = string.digits
-STR_ALPHA = string.ascii_lowercase
+STR_ALPHA = string.ascii_letters
 STR_ALPHANUM = STR_ALPHA + STR_NUMERIC
 STR_ALPHANUMDOTDASH = STR_ALPHANUM + '.-'
 
-STR_SPECIAL_CHARACTER = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
-STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉ'
+STR_SPECIAL_CHARACTER = '!"#$ %&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
+STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉÄÖÜÂÊÔÛŴẐŜĜĴŶĈ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 FORBIDDEN_USERNAME_CHARS = ''.join((  # noqa: FLY002
     '@',  # heimdal kerberos principal name breaks due to duplicated @
@@ -25,7 +25,7 @@ FORBIDDEN_USERNAME_CHARS = ''.join((  # noqa: FLY002
 STR_SPECIAL_USERNAME_CHARACTER = STR_SPECIAL_CHARACTER.translate(str.maketrans('', '', FORBIDDEN_USERNAME_CHARS))
 
 
-def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, charset: str = "", encoding: str = 'utf-8') -> str:
+def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, mixed_case: bool = False, charset: str = "", encoding: str = 'utf-8') -> str:
     """
     Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
     Default is an alphanumeric string of 10 characters length. A custom character set
@@ -42,15 +42,17 @@ def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, ch
             result += choice(STR_ALPHA)
         elif numeric:
             result += choice(STR_NUMERIC)
+    if not mixed_case:
+        return result.lower()
     return result
 
 
-def random_name(length: int = 10) -> str:
+def random_name(length: int = 10, mixed_case: bool = False) -> str:
     """create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)"""
     return ''.join((
-        random_string(length=1, alpha=True, numeric=False),
-        random_string(length=(length - 2), alpha=True, numeric=True),
-        random_string(length=1, alpha=True, numeric=False),
+        random_string(length=1, alpha=True, numeric=False, mixed_case=mixed_case),
+        random_string(length=(length - 2), alpha=True, numeric=True, mixed_case=mixed_case),
+        random_string(length=1, alpha=True, numeric=False, mixed_case=mixed_case),
     ))
 
 
