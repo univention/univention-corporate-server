@@ -198,7 +198,8 @@ def test_user_restore_umc(udm, recyclebin_policy_session, lo, Client):
     res = con.umc_command('udm/properties', options, 'recyclebin/removedobject').result[0]
     assert 'username' in [v['id'] for v in res]
     res = con.umc_command('udm/layout', options, 'recyclebin/removedobject').result[0]
-    assert 'Account' in [v['label'] for v in res]
+    labels = [v['label'] for v in res]
+    assert 'Account' in labels or 'Konto' in labels
     # search again
     res = con.umc_command('udm/query', search_options, 'recyclebin/removedobject').result
     assert res
