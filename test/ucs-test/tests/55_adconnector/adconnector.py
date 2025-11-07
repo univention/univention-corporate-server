@@ -1,7 +1,11 @@
 import base64
 import contextlib
+import os
 import subprocess
+from pathlib import Path
+from subprocess import check_call
 from time import sleep
+from types import SimpleNamespace
 
 import ldap
 
@@ -11,6 +15,7 @@ import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
 from univention.connector import ad, configdb
 from univention.testing import ldap_glue
+from univention.testing.strings import random_username
 
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -44,16 +49,19 @@ def wait_for_sync(min_wait_time=0):
     synctime = int(configRegistry.get("connector/ad/poll/sleep", 5))
     synctime = ((synctime + 3) * 2)
     synctime = max(synctime, min_wait_time)
+    synctime = int(os.environ.get('AD_WAIT_TIME', str(synctime)))
     print(f"Waiting {synctime} seconds for sync...")
     sleep(synctime)
 
 
 @contextlib.contextmanager
-def connector_setup(sync_mode):
+def connector_setup(sync_mode, ucr_settings=None):
     user_syntax = "directory/manager/web/modules/users/user/properties/username/syntax=string"
     group_syntax = "directory/manager/web/modules/groups/group/properties/name/syntax=string"
     with testing_ucr.UCSTestConfigRegistry():
         ucr_set([user_syntax, group_syntax])
+        if ucr_settings:
+            ucr_set(ucr_settings)
         tcommon.restart_univention_cli_server()
         ad_in_sync_mode(sync_mode)
         yield
@@ -67,6 +75,9 @@ class _Connector:
         self.domain = self._ad.addomain
         self.cache_internal = configdb('/etc/univention/connector/internal.sqlite')
         self.connector_log = '/var/log/univention/connector-ad.log'
+        self.host = configRegistry['connector/ad/ldap/host']
+        self.admin = ldap.dn.str2dn(configRegistry['connector/ad/ldap/binddn'])[0][0][1]
+        self.admin_password = Path(configRegistry['connector/ad/ldap/bindpw']).read_text()
 
     def tracebacks(self):
         traceback_started = False
@@ -86,6 +97,84 @@ class _Connector:
                 if traceback_started:
                     traceback = f'{traceback}{line}'
         return tracebacks
+
+    # TODO: remove from 504test_group_cache_after_move.py
+    def create_ou_structure_and_user(self, udm, in_ad=False):
+        # create user and groups in AD
+        ou1_name = f'ou1-{random_username(mixed_case=True)}'
+        ou11_name = f'ou11-{random_username(mixed_case=True)}'
+        ou2_name = f'ou2-{random_username(mixed_case=True)}'
+        group1_name = f'grp1-{random_username(mixed_case=True)}'
+        group2_name = f'grp2-{random_username(mixed_case=True)}'
+        username = random_username(mixed_case=True)
+        if in_ad:
+            ou1_dn_ad = self.create_ou(ou1_name, wait_for_replication=False)
+            ou2_dn_ad = self.create_ou(ou2_name, wait_for_replication=False)
+            ou11_dn_ad = self.create_ou(ou11_name, position=ou1_dn_ad, wait_for_replication=False)
+            user_dn_ad = self.create_user(username, position=ou11_dn_ad, wait_for_replication=False)
+            group1_dn_ad = self.create_group(group1_name, wait_for_replication=False)
+            group2_dn_ad = self.create_group(group2_name, wait_for_replication=False)
+            self.add_to_group(group1_dn_ad, user_dn_ad)
+            self.wait_for_sync()
+            user_dn = self.ucs_dn(user_dn_ad)
+            group1_dn = self.ucs_dn(group1_dn_ad)
+            group2_dn = self.ucs_dn(group2_dn_ad)
+            ou1_dn = self.ucs_dn(ou1_dn_ad)
+            ou2_dn = self.ucs_dn(ou2_dn_ad)
+            ou11_dn = self.ucs_dn(ou11_dn_ad)
+        else:
+            ou1_dn = udm.create_object('container/ou', name=ou1_name, wait_for_replication=False)
+            ou2_dn = udm.create_object('container/ou', name=ou2_name, wait_for_replication=False)
+            ou11_dn = udm.create_object('container/ou', name=ou11_name, position=ou1_dn, wait_for_replication=False)
+            group1_dn, _ = udm.create_group(wait_for_replication=False)
+            group2_dn, _ = udm.create_group(wait_for_replication=False)
+            user_dn, username = udm.create_user(groups=[group1_dn], position=ou11_dn, wait_for_replication=False)
+            self.wait_for_sync()
+            user_dn_ad = self.ad_dn(user_dn)
+            group1_dn_ad = self.ad_dn(group1_dn)
+            group2_dn_ad = self.ad_dn(group2_dn)
+            ou1_dn_ad = self.ad_dn(ou1_dn)
+            ou2_dn_ad = self.ad_dn(ou2_dn)
+            ou11_dn_ad = self.ad_dn(ou11_dn)
+
+        return SimpleNamespace(
+            ou1_name=ou1_name,
+            ou1_dn=ou1_dn,
+            ou1_dn_ad=ou1_dn_ad,
+            ou11_name=ou11_name,
+            ou11_dn=ou11_dn,
+            ou11_dn_ad=ou11_dn_ad,
+            ou2_name=ou2_name,
+            ou2_dn=ou2_dn,
+            ou2_dn_ad=ou2_dn_ad,
+            group1_dn=group1_dn,
+            group1_dn_ad=group1_dn_ad,
+            group2_dn=group2_dn,
+            group2_dn_ad=group2_dn_ad,
+            user_dn=user_dn,
+            user_dn_ad=user_dn_ad,
+            username=username,
+            user_position_ad=ou11_dn_ad,
+            user_position=ou11_dn,
+        )
+
+    def get_logs_change(self, mode='sync to ucs', object_type='user', change_type='modify'):
+        lines = []
+        for line in self.get_logs():
+            if 'PROCESS' in line and f'{mode}:' in line and f' {object_type}]' in line and f' {change_type}]' in line:
+                lines.append(line)
+        return lines
+
+    def get_logs(self):
+        with open(self.connector_log) as f_log:
+            yield from f_log.readlines()
+
+    def get_logs_poll_from_con(self):
+        logs = []
+        for line in self.get_logs():
+            if '(PROCESS): POLL FROM CON:' in line:
+                logs.append(line)
+        return logs
 
     def last_traceback(self):
         tracebacks = self.tracebacks()
@@ -133,8 +222,15 @@ class _Connector:
             self.wait_for_sync()
         return dn
 
-    def create_user(self, name, position=None, wait_for_replication=True, **attributes):
+    def samba_tool(self, cmd):
+        cmd = ['samba-tool', *cmd, '-U', f'{self.admin}%{self.admin_password}', '--URL', f'ldap://{self.host}']
+        print('Running: ', cmd)
+        check_call(cmd)
+
+    def create_user(self, name, password=None, position=None, wait_for_replication=True, **attributes):
         dn = self._ad.createuser(name, position=position, **attributes)
+        if password:
+            self.samba_tool(['user', 'setpassword', name, f'--newpassword={password}'])
         if wait_for_replication:
             self.wait_for_sync()
         return dn
@@ -161,25 +257,23 @@ class _Connector:
         self.wait_for_sync()
         return dn
 
-    def rename(self, ad_dn, name, wait_for_replication=True):
-        rdn_attr = 'ou' if ad_dn.startswith('ou=') else 'cn'
-        exploded = ldap.dn.str2dn(ad_dn)
-        new_rdn = [(rdn_attr, name, ldap.AVA_STRING)]
-        new_position = exploded[1:]
-        new_dn = ldap.dn.dn2str([new_rdn], *new_position)
-        self._ad.move(ad_dn, new_dn)
-        if wait_for_replication:
-            self.wait_for_sync()
-        return new_dn
-
-    def move(self, ad_dn, new_dn, wait_for_replication=True):
-        self._ad.move(ad_dn, new_dn)
+    def rename(self, dn, rdn=None, position=None, wait_for_replication=True):
+        exploded = ldap.dn.str2dn(dn)
+        new_rdn = ldap.dn.str2dn(rdn) if rdn else [exploded[0]]
+        new_position = ldap.dn.str2dn(position) if position else exploded[1:]
+        new_dn = ldap.dn.dn2str(new_rdn + new_position)
+        self._ad.move(dn, new_dn)
         if wait_for_replication:
             self.wait_for_sync()
         return new_dn
 
     def set_attributes(self, ad_dn, attrs, wait_for_replication=True):
         self._ad.set_attributes(ad_dn, **attrs)
+        if wait_for_replication:
+            self.wait_for_sync()
+
+    def delete_attribute(self, dn, attr, wait_for_replication=True):
+        self._ad.delete_attribute(dn, attr)
         if wait_for_replication:
             self.wait_for_sync()
 
@@ -207,8 +301,8 @@ class _Connector:
 
 
 @contextlib.contextmanager
-def connector_setup2(mode):
-    with connector_setup(mode):
+def connector_setup2(mode, ucr_settings=None):
+    with connector_setup(mode, ucr_settings=ucr_settings):
         connector = _Connector()
         try:
             yield connector
