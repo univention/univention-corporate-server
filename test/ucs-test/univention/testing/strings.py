@@ -36,16 +36,16 @@ from typing import Iterator, Text, Tuple
 
 
 STR_NUMERIC = '0123456789'
-STR_ALPHA = 'abcdefghijklmnopqrstuvwxyz'
+STR_ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 STR_ALPHANUM = STR_ALPHA + STR_NUMERIC
 STR_ALPHANUMDOTDASH = STR_ALPHANUM + '.-'
 
-STR_SPECIAL_CHARACTER = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
-STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉ'
+STR_SPECIAL_CHARACTER = '!"#$ %&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
+STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉÄÖÜÂÊÔÛŴẐŜĜĴŶĈ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 
-def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, charset: Text = "", encoding: str = 'utf-8') -> str:
+def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, mixed_case: bool = False, charset: Text = "", encoding: str = 'utf-8') -> str:
     """
     Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
     Default is an alphanumeric string of 10 characters length. A custom character set
@@ -62,15 +62,17 @@ def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, ch
             result += choice(STR_ALPHA)
         elif numeric:
             result += choice(STR_NUMERIC)
+    if not mixed_case:
+        return result.lower()
     return result
 
 
-def random_name(length: int = 10) -> str:
+def random_name(length: int = 10, mixed_case: bool = False) -> str:
     """create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)"""
     return ''.join((
-        random_string(length=1, alpha=True, numeric=False),
-        random_string(length=(length - 2), alpha=True, numeric=True),
-        random_string(length=1, alpha=True, numeric=False),
+        random_string(length=1, alpha=True, numeric=False, mixed_case=mixed_case),
+        random_string(length=(length - 2), alpha=True, numeric=True, mixed_case=mixed_case),
+        random_string(length=1, alpha=True, numeric=False, mixed_case=mixed_case),
     ))
 
 
