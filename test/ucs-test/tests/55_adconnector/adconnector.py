@@ -2,6 +2,7 @@ import base64
 import contextlib
 import subprocess
 from time import sleep
+from types import SimpleNamespace
 
 import ldap
 
@@ -14,6 +15,7 @@ import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
 from univention.connector import ad, configdb
 from univention.testing import ldap_glue
+from univention.testing.strings import random_username
 
 
 configRegistry = univention.config_registry.ConfigRegistry()
@@ -89,6 +91,74 @@ class _Connector:
                 if traceback_started:
                     traceback = f'{traceback}{line}'
         return tracebacks
+
+    # TODO: remove from 504test_group_cache_after_move.py
+    def create_ou_structure_and_user(self, udm, in_ad=False):
+        # create user and groups in AD
+        ou1_name = f'ou1-{random_username(mixed_case=True)}'
+        ou11_name = f'ou11-{random_username(mixed_case=True)}'
+        ou2_name = f'ou2-{random_username(mixed_case=True)}'
+        group1_name = f'grp1-{random_username(mixed_case=True)}'
+        group2_name = f'grp2-{random_username(mixed_case=True)}'
+        username = random_username(mixed_case=True)
+        if in_ad:
+            ou1_dn_ad = self.create_ou(ou1_name, wait_for_replication=False)
+            ou2_dn_ad = self.create_ou(ou2_name, wait_for_replication=False)
+            ou11_dn_ad = self.create_ou(ou11_name, position=ou1_dn_ad, wait_for_replication=False)
+            user_dn_ad = self.create_user(username, position=ou11_dn_ad, wait_for_replication=False)
+            group1_dn_ad = self.create_group(group1_name, wait_for_replication=False)
+            group2_dn_ad = self.create_group(group2_name, wait_for_replication=False)
+            self.add_to_group(group1_dn_ad, user_dn_ad)
+            self.wait_for_sync()
+            user_dn = self.ucs_dn(user_dn_ad)
+            group1_dn = self.ucs_dn(group1_dn_ad)
+            group2_dn = self.ucs_dn(group2_dn_ad)
+            ou1_dn = self.ucs_dn(ou1_dn_ad)
+            ou2_dn = self.ucs_dn(ou2_dn_ad)
+            ou11_dn = self.ucs_dn(ou11_dn_ad)
+        else:
+            ou1_dn = udm.create_object('container/ou', name=ou1_name, wait_for_replication=False)
+            ou2_dn = udm.create_object('container/ou', name=ou2_name, wait_for_replication=False)
+            ou11_dn = udm.create_object('container/ou', name=ou11_name, position=ou1_dn, wait_for_replication=False)
+            group1_dn, _ = udm.create_group(wait_for_replication=False)
+            group2_dn, _ = udm.create_group(wait_for_replication=False)
+            user_dn, username = udm.create_user(groups=[group1_dn], position=ou11_dn, wait_for_replication=False)
+            self.wait_for_sync()
+            user_dn_ad = self.ad_dn(user_dn)
+            group1_dn_ad = self.ad_dn(group1_dn)
+            group2_dn_ad = self.ad_dn(group2_dn)
+            ou1_dn_ad = self.ad_dn(ou1_dn)
+            ou2_dn_ad = self.ad_dn(ou2_dn)
+            ou11_dn_ad = self.ad_dn(ou11_dn)
+
+        return SimpleNamespace(
+            ou1_name=ou1_name,
+            ou1_dn=ou1_dn,
+            ou1_dn_ad=ou1_dn_ad,
+            ou11_name=ou11_name,
+            ou11_dn=ou11_dn,
+            ou11_dn_ad=ou11_dn_ad,
+            ou2_name=ou2_name,
+            ou2_dn=ou2_dn,
+            ou2_dn_ad=ou2_dn_ad,
+            group1_dn=group1_dn,
+            group1_dn_ad=group1_dn_ad,
+            group2_dn=group2_dn,
+            group2_dn_ad=group2_dn_ad,
+            user_dn=user_dn,
+            user_dn_ad=user_dn_ad,
+            username=username,
+            user_position_ad=ou11_dn_ad,
+            user_position=ou11_dn,
+        )
+
+    def get_logs(self, level='PROCESS', mode='sync to ucs', object_type='user', change_type='modify'):
+        lines = []
+        with open(self.connector_log) as f_log:
+            for line in f_log.readlines():
+                if f'({level}' in line and f'{mode}:' in line and f' {object_type}]' in line and f' {change_type}]' in line:
+                    lines.append(line)
+        return lines
 
     def last_traceback(self):
         tracebacks = self.tracebacks()
@@ -183,6 +253,11 @@ class _Connector:
 
     def set_attributes(self, ad_dn, attrs, wait_for_replication=True):
         self._ad.set_attributes(ad_dn, **attrs)
+        if wait_for_replication:
+            self.wait_for_sync()
+
+    def delete_attribute(self, dn, attr, wait_for_replication=True):
+        self._ad.delete_attribute(dn, attr)
         if wait_for_replication:
             self.wait_for_sync()
 
