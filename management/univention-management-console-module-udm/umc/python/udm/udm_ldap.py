@@ -1030,7 +1030,7 @@ class UDM_Module:
             obj_options = [*obj.options, *AppAttributes.options_for_obj(obj)]
             mod_options = self.options
             if self.name == 'recyclebin/removedobject':
-                mod_options = UDM_Module(obj['originalObjectType']).options
+                mod_options = UDM_Module(obj['originalObjectType'], ldap_connection=self.ldap_connection).options
                 MODULE.error('HIT %s %s', mod_options, obj_options)
 
         options = []
