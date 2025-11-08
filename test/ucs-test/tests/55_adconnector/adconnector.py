@@ -1,5 +1,6 @@
 import base64
 import contextlib
+import os
 import subprocess
 from time import sleep
 from types import SimpleNamespace
@@ -49,6 +50,7 @@ def wait_for_sync(min_wait_time=0):
     synctime = int(configRegistry.get("connector/ad/poll/sleep", 5))
     synctime = ((synctime + 3) * 2)
     synctime = max(synctime, min_wait_time)
+    synctime = int(os.environ.get('AD_WAIT_TIME', str(synctime)))
     print(f"Waiting {synctime} seconds for sync...")
     sleep(synctime)
 
@@ -234,19 +236,12 @@ class _Connector:
         self.wait_for_sync()
         return dn
 
-    def rename(self, ad_dn, name, wait_for_replication=True):
-        rdn_attr = 'ou' if ad_dn.startswith('ou=') else 'cn'
-        exploded = ldap.dn.str2dn(ad_dn)
-        new_rdn = [(rdn_attr, name, ldap.AVA_STRING)]
-        new_position = exploded[1:]
-        new_dn = ldap.dn.dn2str([new_rdn] + new_position)
-        self._ad.move(ad_dn, new_dn)
-        if wait_for_replication:
-            self.wait_for_sync()
-        return new_dn
-
-    def move(self, ad_dn, new_dn, wait_for_replication=True):
-        self._ad.move(ad_dn, new_dn)
+    def rename(self, dn, rdn=None, position=None, wait_for_replication=True):
+        exploded = ldap.dn.str2dn(dn)
+        new_rdn = ldap.dn.str2dn(rdn) if rdn else [exploded[0]]
+        new_position = ldap.dn.str2dn(position) if position else exploded[1:]
+        new_dn = ldap.dn.dn2str(new_rdn + new_position)
+        self._ad.move(dn, new_dn)
         if wait_for_replication:
             self.wait_for_sync()
         return new_dn
