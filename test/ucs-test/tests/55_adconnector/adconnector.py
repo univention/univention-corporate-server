@@ -2,6 +2,8 @@ import base64
 import contextlib
 import os
 import subprocess
+from pathlib import Path
+from subprocess import check_call
 from time import sleep
 from types import SimpleNamespace
 
@@ -56,11 +58,13 @@ def wait_for_sync(min_wait_time=0):
 
 
 @contextlib.contextmanager
-def connector_setup(sync_mode):
+def connector_setup(sync_mode, ucr_settings=None):
     user_syntax = "directory/manager/web/modules/users/user/properties/username/syntax=string"
     group_syntax = "directory/manager/web/modules/groups/group/properties/name/syntax=string"
     with testing_ucr.UCSTestConfigRegistry():
         ucr_set([user_syntax, group_syntax])
+        if ucr_settings:
+            ucr_set(ucr_settings)
         tcommon.restart_univention_cli_server()
         ad_in_sync_mode(sync_mode)
         yield
@@ -74,6 +78,9 @@ class _Connector:
         self.domain = self._ad.addomain
         self.cache_internal = configdb('/etc/univention/connector/internal.sqlite')
         self.connector_log = '/var/log/univention/connector-ad.log'
+        self.host = configRegistry['connector/ad/ldap/host']
+        self.admin = ldap.dn.str2dn(configRegistry['connector/ad/ldap/binddn'])[0][0][1]
+        self.admin_password = Path(configRegistry['connector/ad/ldap/bindpw']).read_text()
 
     def tracebacks(self):
         traceback_started = False
@@ -154,13 +161,24 @@ class _Connector:
             user_position=ou11_dn,
         )
 
-    def get_logs(self, level='PROCESS', mode='sync to ucs', object_type='user', change_type='modify'):
+    def get_logs_change(self, mode='sync to ucs', object_type='user', change_type='modify'):
         lines = []
+        for line in self.get_logs():
+            if 'PROCESS' in line and f'{mode}:' in line and f' {object_type}]' in line and f' {change_type}]' in line:
+                lines.append(line)
+        return lines
+
+    def get_logs(self):
         with open(self.connector_log) as f_log:
             for line in f_log.readlines():
-                if f'({level}' in line and f'{mode}:' in line and f' {object_type}]' in line and f' {change_type}]' in line:
-                    lines.append(line)
-        return lines
+                yield line
+
+    def get_logs_poll_from_con(self):
+        logs = []
+        for line in self.get_logs():
+            if '(PROCESS): POLL FROM CON:' in line:
+                logs.append(line)
+        return logs
 
     def last_traceback(self):
         tracebacks = self.tracebacks()
@@ -208,8 +226,15 @@ class _Connector:
             self.wait_for_sync()
         return dn
 
-    def create_user(self, name, position=None, wait_for_replication=True, **attributes):
+    def samba_tool(self, cmd):
+        cmd = ['samba-tool'] + cmd + ['-U', f'{self.admin}%{self.admin_password}', '--URL', f'ldap://{self.host}']
+        print('Running: ', cmd)
+        check_call(cmd)
+
+    def create_user(self, name, password=None, position=None, wait_for_replication=True, **attributes):
         dn = self._ad.createuser(name, position=position, **attributes)
+        if password:
+            self.samba_tool(['user', 'setpassword', name, f'--newpassword={password}'])
         if wait_for_replication:
             self.wait_for_sync()
         return dn
@@ -280,8 +305,8 @@ class _Connector:
 
 
 @contextlib.contextmanager
-def connector_setup2(mode):
-    with connector_setup(mode):
+def connector_setup2(mode, ucr_settings=None):
+    with connector_setup(mode, ucr_settings=ucr_settings):
         connector = _Connector()
         try:
             yield connector
