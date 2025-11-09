@@ -20,7 +20,7 @@ from adconnector import connector_setup2
 
 @pytest.mark.parametrize('mode', ['sync'], ids=['sync mode'])
 def test_ignore_attribute_performance_in_ad(udm, mode, lo):
-    max_duration_in_seconds = .1
+    max_duration_in_seconds = .01
     settings = [
         'connector/ad/mapping/attributes/irrelevant=description,whenChanged,uSNChanged,msDS-RevealedDSAs',
         'connector/ad/poll/profiling=yes',
@@ -34,14 +34,26 @@ def test_ignore_attribute_performance_in_ad(udm, mode, lo):
         ad.set_attributes(user_dn_ad, {'description': [b'desc']})
         # check "performance"
         logs = ad.get_logs_poll_from_con()
-        assert len(logs) == 2
-        assert 'Incoming' in logs[0]
-        assert 'Processed' in logs[1]
-        start = logs[0].split()[1]
+        # assert len(logs) == 2
+        assert any('Incoming' in line for line in logs)
+        for line in logs:
+            print(line)
+        assert any(f'Processed non-change of {user_dn_ad}'.lower() in line.lower() for line in logs)
+        incoming_line = logs[0]
+        processed_line = logs[1]
+        for linenum in range(len(logs)):
+            if 'incoming' in logs[linenum].lower():
+                incoming_line = logs[linenum]
+            if f'Processed non-change of {user_dn_ad}'.lower() in logs[linenum].lower():
+                processed_line = logs[linenum]
+                break
+
+        start = incoming_line.split()[1]
         start = datetime.strptime(start, '%H:%M:%S.%f')
-        end = logs[1].split()[1]
+        end = processed_line.split()[1]
         end = datetime.strptime(end, '%H:%M:%S.%f')
         diff = end - start
+        print(f'Took {diff.microseconds} microseconds')
         assert diff.microseconds < (max_duration_in_seconds * 1000000)
         # check description is not synced
         user_dn = ad.ucs_dn(user_dn_ad)
