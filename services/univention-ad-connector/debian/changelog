@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.29) unstable; urgency=medium
+
+  * Bug #???: Improve ad performance on non changes
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 09 Nov 2025 12:02:18 +0100
+
 univention-ad-connector (14.0.28) unstable; urgency=medium
 
   * Bug #58787: Improve cache update when renaming or moving OUs
