@@ -55,7 +55,7 @@ from ldap.controls import LDAPControl, SimplePagedResultsControl
 from ldap.filter import escape_filter_chars
 from samba import drs_utils
 from samba.credentials import DONT_USE_KERBEROS, Credentials
-from samba.dcerpc import drsuapi, lsa, nbt, security
+from samba.dcerpc import drsuapi, lsa, misc, nbt, security
 from samba.ndr import ndr_unpack
 from samba.net import Net
 from samba.param import LoadParm
@@ -80,6 +80,10 @@ class netbiosDomainnameNotFound(Exception):
 
 class kerberosAuthenticationFailed(Exception):
     pass
+
+
+def decode_guid(value):
+    return str(ndr_unpack(misc.GUID, value))
 
 
 def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
@@ -838,6 +842,18 @@ class ad(univention.connector.ucs):
         except Exception:  # FIXME: which exception is to be caught?
             self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
 
+    def check_syncmode_ad(self, property_key, ad_object):
+        if not property_key or self.property[property_key].sync_mode in ['write', 'none']:
+            if property_key:
+                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_key].sync_mode)
+            else:
+                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, no mapping defined")
+            return False
+        if ad_object['dn'].find('\\0ACNF:') > 0:
+            ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % ad_object['dn'])
+            return False
+        return True
+
     def __get_change_usn(self, ad_object):
         """get change USN as max(uSNCreated, uSNChanged)"""
         if not ad_object:
@@ -990,6 +1006,44 @@ class ad(univention.connector.ucs):
             ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
             return None
 
+    def __to_be_synced(self, ad_object):
+        property_key = self.__identify_ad_type(ad_object)
+
+        if not self.check_syncmode_ad(property_key, ad_object):
+            return None
+
+        ad_object['changed_attributes'] = []
+        guid = decode_guid(ad_object.get('attributes').get('objectGUID')[0])
+        if ad_object['modtype'] == 'modify' and ad_object:
+            old_ad_object = self.adcache.get_entry(guid)
+            ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: old_ad_object: %s" % old_ad_object)
+            ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: new_ad_object: %s" % ad_object['attributes'])
+            original_attributes = ad_object['attributes']
+            if old_ad_object and original_attributes:
+                for attr in ad_object['attributes']:
+                    if set(old_ad_object.get(attr, [])) != set(original_attributes.get(attr, [])):
+                        ad_object['changed_attributes'].append(attr)
+                for attr in old_ad_object:
+                    if set(old_ad_object.get(attr, [])) != set(original_attributes.get(attr, [])) and attr not in ad_object['changed_attributes']:
+                        ad_object['changed_attributes'].append(attr)
+                if not (set(ad_object['changed_attributes']) - self.irrelevant_attributes):
+                    if property_key == "user" \
+                       and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) \
+                       and not self.configRegistry.is_true('connector/ad/mapping/user/password/kinit', False):
+                        if ad_object['attributes'].get('pwdLastSet', [b'1'])[0] == b'0':
+                            ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: pwdLastSet is 0. Do not ignore %r" % (ad_object['dn'],))
+                        else:
+                            ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (ad_object['dn'],))
+                            return None
+                    else:
+                        ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (ad_object['dn'],))
+                        ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (ad_object['changed_attributes'],))
+                        return None
+            else:
+                ad_object['changed_attributes'] = list(original_attributes.keys())
+        ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % ad_object['changed_attributes'])
+        return ad_object
+
     def __object_from_element(self, element):
         """
         gets an object from an AD LDAP-element, implements necessary mapping
@@ -1031,6 +1085,9 @@ class ad(univention.connector.ucs):
 
             if not object['dn']:
                 return None
+        if not self.__to_be_synced(object):
+            self.__update_lastUSN(object)
+            return None
         return object
 
     def __identify_ad_type(self, object):
@@ -1833,6 +1890,9 @@ class ad(univention.connector.ucs):
                     ud.debug(ud.LDAP, ud.WARN, "more than one rejected object with id %s found, can't proceed" % change_usn)
                 else:
                     ad_object = self.__object_from_element(elements[0])
+                    # should not be synced
+                    if not ad_object:
+                        continue
                     property_key = self.__identify_ad_type(ad_object)
                     if not property_key:  # TODO: still needed? (removed in s4)
                         ud.debug(ud.LDAP, ud.INFO, "sync to ucs: Dropping reject for unidentified object %s" % (dn,))
@@ -1909,6 +1969,8 @@ class ad(univention.connector.ucs):
 
             if not ad_object:
                 print_progress(True)
+                if self.profiling:
+                    ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Processed non-change of %s" % (element[0],))
                 continue
 
             property_key = self.__identify_ad_type(ad_object)

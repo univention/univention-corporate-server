@@ -1395,56 +1395,10 @@ class ucs(object):
         """
         # NOTE: pre_mapped_ad_dn means: original ad_dn (i.e. before _object_mapping)
         # this function gets an object from the ad class, which should be converted into a ucs module
-
-        # if sync is write (sync to AD) or none, there is nothing to do
-        if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
-            if property_type:
-                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
-            else:
-                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs ignored, no mapping defined")
+        if not self.check_syncmode_ad(property_type, object):
             return True
-
-        if object['dn'].find('\\0ACNF:') > 0:
-            ud.debug(ud.LDAP, ud.PROCESS, 'Ignore conflicted object: %s' % object['dn'])
-            return True
-
         try:
-            guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
-
-            object['changed_attributes'] = []
-            if object['modtype'] == 'modify' and original_object:
-                old_ad_object = self.adcache.get_entry(guid)
-                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: old_ad_object: %s" % old_ad_object)
-                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: new_ad_object: %s" % original_object['attributes'])
-                original_attributes = original_object['attributes']
-                if old_ad_object:
-                    for attr in original_object['attributes']:
-                        if set(old_ad_object.get(attr, [])) != set(original_attributes.get(attr, [])):
-                            object['changed_attributes'].append(attr)
-                    for attr in old_ad_object:
-                        if set(old_ad_object.get(attr, [])) != set(original_attributes.get(attr, [])) and attr not in object['changed_attributes']:
-                            object['changed_attributes'].append(attr)
-                    if not (set(object['changed_attributes']) - self.irrelevant_attributes):
-                        if property_type == "user" \
-                           and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) \
-                           and not self.configRegistry.is_true('connector/ad/mapping/user/password/kinit', False):
-                            if object['attributes'].get('pwdLastSet', [b'1'])[0] == b'0':
-                                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: pwdLastSet is 0. Do not ignore %r" % (original_object['dn'],))
-                            else:
-                                ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
-                                return True
-                        else:
-                            ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
-                            ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (object['changed_attributes'],))
-                            return True
-                else:
-                    object['changed_attributes'] = list(original_attributes.keys())
-            ud.debug(ud.LDAP, ud.INFO, "The following attributes have been changed: %s" % object['changed_attributes'])
-
-            result = False
-
-            # Check if the object on UCS side should be synchronized
-            #  https://forge.univention.org/bugzilla/show_bug.cgi?id=37351
+            guid = decode_guid(object.get('attributes').get('objectGUID')[0])
             if property_type == "windowscomputer":
                 old_ucs_ldap_object = {}
                 old_ucs_ldap_object['dn'] = object.get('olddn', object['dn'])
