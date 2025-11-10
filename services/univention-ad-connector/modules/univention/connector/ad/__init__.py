@@ -1006,7 +1006,7 @@ class ad(univention.connector.ucs):
             ud.debug(ud.LDAP, ud.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn)
             return None
 
-    def __to_be_synced(self, ad_object):
+    def __get_object_changes_ad(self, ad_object):
         property_key = self.__identify_ad_type(ad_object)
 
         if not self.check_syncmode_ad(property_key, ad_object):
@@ -1085,7 +1085,7 @@ class ad(univention.connector.ucs):
 
             if not object['dn']:
                 return None
-        if not self.__to_be_synced(object):
+        if not self.__get_object_changes_ad(object):
             self.__update_lastUSN(object)
             return None
         return object
