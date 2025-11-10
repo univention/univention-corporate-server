@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: "Test groupcache/membership after moving a user object"
 ## exposure: dangerous
 ## packages:
@@ -472,3 +472,73 @@ def test_move_plus_one_ou_in_ad(udm, mode, lo):
         ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
         ad.wait_for_sync()
         verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize(
+    'mode',
+    [pytest.param('sync', marks=pytest.mark.skip(reason='creates group with old name in AD')), 'read'],
+    ids=['sync mode', 'read mode']
+)
+def test_rename_ou_rename_group(mode, udm, lo):
+    """
+    https://git.knut.univention.de/univention/dev/internal/dev-issues/dev-incidents/-/issues/172
+    ucr set connector/ad/mapping/syncmode=read
+    systemctl restart univention-ad-connector.service
+    # Create the following tree in AD ou1->ou1.1->ou1.1.1
+    # Create a group in AD ou1->ou1.1->ou1.1.1->group1
+    # Add some members to the group in AD
+    # Rename ou1 to ou2 in AD
+    # Rename ou1.1.1 to ou1.1.2 in AD
+    # Rename group1 to group2 in AD -> Traceback
+    """
+    # TODO: multiple problems in sync mode
+    # 1. traceback during move -> add ldap.ALREADY_EXISTS to excpetion handling in connector/ad/__init__.py 2217?
+    with connector_setup2(mode) as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=True)
+        group_name = f'grp-{random_username(mixed_case=True)}'
+        group_dn_ad = ad.create_group(group_name, position=setup.ou111_dn_ad, wait_for_replication=False)
+        ad.add_to_group(group_dn_ad, setup.user_dn_ad)
+        ad.wait_for_sync()
+        group_dn = ad.ucs_dn(group_dn_ad)
+        # rename while connector is stopped
+        with adconnector_stopped():
+            # rename ou1
+            ou1_name = f'new-{setup.ou1_name}'
+            ou1_dn_ad = ad.rename(setup.ou1_dn_ad, rdn=f'ou={ou1_name}', wait_for_replication=False)
+            ou111_dn_ad = f'ou={setup.ou111_name},ou={setup.ou11_name},{ou1_dn_ad}'
+            assert ad.get(ou111_dn_ad)
+            # rename ou111
+            ou111_name = f'new-{setup.ou111_name}'
+            ou111_dn_ad = ad.rename(ou111_dn_ad, rdn=f'ou={ou111_name}', wait_for_replication=False)
+            group_dn_ad = f'cn={group_name},{ou111_dn_ad}'
+            assert ad.get(group_dn_ad)
+            # rename group
+            new_group_name = f'new-{group_name}'
+            new_group_dn_ad = ad.rename(group_dn_ad, rdn=f'cn={new_group_name}', wait_for_replication=False)
+            ad.set_attributes(new_group_dn_ad, {'sAMAccountName': [new_group_name.encode('UTF-8')]}, wait_for_replication=False)
+        ad.wait_for_sync()
+        tb = ad.last_traceback()
+        assert not (
+            tb
+            and 'in sync_from_ucs' in tb
+            and "self.lo_ad.rename(old_dn, object['dn'])" in tb
+            and "ldap.ALREADY_EXISTS: {'desc': 'Already exists', 'info': '00002071: UpdErr: " in tb
+            and "DSID-031B0CF6, problem 6005 (ENTRY_EXISTS)" in tb
+        ), f'Suspicious traceback found: {tb}'
+        ou1_dn = ad.ucs_dn(ou1_dn_ad)
+        assert ou1_name.casefold() in ou1_dn
+        ou111_dn = ad.ucs_dn(ou111_dn_ad)
+        assert ou1_name.casefold() in ou111_dn
+        assert ou111_name.casefold() in ou111_dn
+        user_dn_ad = f'cn={setup.username},ou={setup.ou11_name},{ou1_dn_ad}'
+        user_dn = f'uid={setup.username},ou={setup.ou11_name},{ou1_dn}'
+        assert not ad.get(setup.user_dn_ad)
+        assert not lo.get(setup.user_dn)
+        assert ad.get(user_dn_ad)
+        assert lo.get(user_dn)
+        new_group_dn = ad.ucs_dn(new_group_dn_ad)
+        assert not ad.get(group_dn_ad)
+        assert ad.get(new_group_dn_ad)
+        assert lo.get(new_group_dn)
+        assert not lo.get(group_dn)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {new_group_dn, setup.group1_dn}, {new_group_dn_ad, setup.group1_dn_ad})
