@@ -103,6 +103,7 @@ class _Connector:
         # create user and groups in AD
         ou1_name = f'ou1-{random_username(mixed_case=True)}'
         ou11_name = f'ou11-{random_username(mixed_case=True)}'
+        ou111_name = f'ou111-{random_username(mixed_case=True)}'
         ou2_name = f'ou2-{random_username(mixed_case=True)}'
         group1_name = f'grp1-{random_username(mixed_case=True)}'
         group2_name = f'grp2-{random_username(mixed_case=True)}'
@@ -111,6 +112,7 @@ class _Connector:
             ou1_dn_ad = self.create_ou(ou1_name, wait_for_replication=False)
             ou2_dn_ad = self.create_ou(ou2_name, wait_for_replication=False)
             ou11_dn_ad = self.create_ou(ou11_name, position=ou1_dn_ad, wait_for_replication=False)
+            ou111_dn_ad = self.create_ou(ou111_name, position=ou11_dn_ad, wait_for_replication=False)
             user_dn_ad = self.create_user(username, position=ou11_dn_ad, wait_for_replication=False)
             group1_dn_ad = self.create_group(group1_name, wait_for_replication=False)
             group2_dn_ad = self.create_group(group2_name, wait_for_replication=False)
@@ -122,10 +124,12 @@ class _Connector:
             ou1_dn = self.ucs_dn(ou1_dn_ad)
             ou2_dn = self.ucs_dn(ou2_dn_ad)
             ou11_dn = self.ucs_dn(ou11_dn_ad)
+            ou111_dn = self.ucs_dn(ou111_dn_ad)
         else:
             ou1_dn = udm.create_object('container/ou', name=ou1_name, wait_for_replication=False)
             ou2_dn = udm.create_object('container/ou', name=ou2_name, wait_for_replication=False)
             ou11_dn = udm.create_object('container/ou', name=ou11_name, position=ou1_dn, wait_for_replication=False)
+            ou111_dn = udm.create_object('container/ou', name=ou111_name, position=ou11_dn, wait_for_replication=False)
             group1_dn, _ = udm.create_group(wait_for_replication=False)
             group2_dn, _ = udm.create_group(wait_for_replication=False)
             user_dn, username = udm.create_user(groups=[group1_dn], position=ou11_dn, wait_for_replication=False)
@@ -136,6 +140,7 @@ class _Connector:
             ou1_dn_ad = self.ad_dn(ou1_dn)
             ou2_dn_ad = self.ad_dn(ou2_dn)
             ou11_dn_ad = self.ad_dn(ou11_dn)
+            ou111_dn_ad = self.ad_dn(ou111_dn)
 
         return SimpleNamespace(
             ou1_name=ou1_name,
@@ -144,6 +149,9 @@ class _Connector:
             ou11_name=ou11_name,
             ou11_dn=ou11_dn,
             ou11_dn_ad=ou11_dn_ad,
+            ou111_name=ou111_name,
+            ou111_dn=ou111_dn,
+            ou111_dn_ad=ou111_dn_ad,
             ou2_name=ou2_name,
             ou2_dn=ou2_dn,
             ou2_dn_ad=ou2_dn_ad,
