@@ -275,6 +275,7 @@ class _Connector:
         self._ad.move(ad_dn, new_dn)
         if wait_for_replication:
             self.wait_for_sync()
+        return new_dn
 
     def set_attributes(self, ad_dn, attrs, wait_for_replication=True):
         self._ad.set_attributes(ad_dn, **attrs)
