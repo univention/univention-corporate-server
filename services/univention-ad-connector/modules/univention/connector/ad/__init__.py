@@ -2196,6 +2196,12 @@ class ad(univention.connector.ucs):
         # object ist brereits vom eingelesenen UCS-Objekt nach AD gemappt, old_dn ist die alte UCS-DN
         ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: sync object: %s" % object['dn'])
 
+        # WIP: skip changes for object that no longer exist in UCS
+        # maybe add some condition
+        if object['modtype'] != 'delete' and not self.get_ucs_ldap_object_dn(pre_mapped_ucs_dn):
+            ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: ignoring change for %s (does not exist in UCS)" % pre_mapped_ucs_dn)
+            return True
+
         # check for move, if old_object exists, set modtype move
         pre_mapped_ucs_old_dn = old_dn
         if old_dn and object['modtype'] != 'delete':
