@@ -95,11 +95,7 @@ def test_move_user_in_ucs(udm, lo, ldap_base, mode):
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group2_dn, group3_dn}, {setup.group2_dn_ad, group3_dn_ad})
 
 
-@pytest.mark.parametrize(
-    'mode',
-    [pytest.param('sync', marks=pytest.mark.skip(reason="Bug #58782")), 'read'],
-    ids=['sync mode', 'read mode'],
-)
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
 def test_rename_parent_rename_child_in_ad(udm, lo, ldap_base, mode):
     with connector_setup2(mode) as ad:
         # create user and groups in AD
@@ -442,11 +438,7 @@ def test_change_cn_weird_in_ad(udm, mode, lo):
         verify_groups(ad, lo, setup.user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
 
 
-@pytest.mark.parametrize(
-    'mode',
-    [pytest.param('sync', marks=pytest.mark.skip(reason='tries to add wrong DN during modify in sync_from_ucs')), 'read'],
-    ids=['sync mode', 'read mode'],
-)
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
 def test_move_plus_one_ou_in_ad(udm, mode, lo):
     with connector_setup2(mode) as ad:
         username = f'A Ä!{random_username()}'
@@ -465,7 +457,7 @@ def test_move_plus_one_ou_in_ad(udm, mode, lo):
         user_dn = ad.ucs_dn(user_dn_ad)
         assert ad.get(user_dn_ad)
         assert lo.get(user_dn)
-        assert user_dn == f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
+        assert user_dn == f'uid={username},ou=\\2b1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
         # and another change, just to be sure
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
@@ -474,11 +466,7 @@ def test_move_plus_one_ou_in_ad(udm, mode, lo):
         verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
 
 
-@pytest.mark.parametrize(
-    'mode',
-    [pytest.param('sync', marks=pytest.mark.skip(reason='creates group with old name in AD')), 'read'],
-    ids=['sync mode', 'read mode']
-)
+@pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
 def test_rename_ou_rename_group(mode, udm, lo):
     """
     https://git.knut.univention.de/univention/dev/internal/dev-issues/dev-incidents/-/issues/172
