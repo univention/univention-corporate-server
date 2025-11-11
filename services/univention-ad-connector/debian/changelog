@@ -1,4 +1,4 @@
-univention-ad-connector (14.0.29) unstable; urgency=medium
+univention-ad-connector (14.0.30) unstable; urgency=medium
 
   * Bug #58787: Improve ad performance on non changes
 
