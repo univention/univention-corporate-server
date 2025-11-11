@@ -743,6 +743,13 @@ class ucs(object):
         ud.debug(ud.LDAP, level, text)
         ud.debug(ud.LDAP, level, traceback.format_exc())
 
+    def check_syncmode_ucs(self, property_key):
+        # if sync is read (sync from AD) or none, there is nothing to do
+        if self.property[property_key].sync_mode in ['read', 'none']:
+            ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs ignored, sync_mode is %s" % self.property[property_key].sync_mode)
+            return True
+        return False
+
     def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
         """sync changes from UCS stored in given file"""
         try:
@@ -779,6 +786,9 @@ class ucs(object):
 
         _attr = new or old
         _mod, key = self.identify_udm_object(dn, _attr)
+
+        if not self.check_syncmode_ucs(key):
+            return True
 
         if not new:
             change_type = "delete"
