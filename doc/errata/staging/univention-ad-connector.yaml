@@ -3,11 +3,15 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: univention-ad-connector
-fix: 14.0.28
+fix: 14.0.29
 desc: |
  This update addresses the following issues:
  * Renaming a user object with umlauts in AD led to a
    connector reject. The update fixes this issues.
  * In the modify operation also move object in UCS if
    position has changed in AD.
+ * Ignore order of multi value attributes when checking
+   for changed attributes.
+ * Avoid unnecessary object mapping before checking for
+   changed attributes.
 bug: [58787]
