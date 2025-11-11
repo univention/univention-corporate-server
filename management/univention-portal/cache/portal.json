@@ -28,6 +28,8 @@
       "in_portal": true
     }
   },
+  "central_navigation": [],
+  "corner_links": [],
   "entries": {
     "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa": {
       "activated": true,
@@ -42,7 +44,7 @@
       "dn": "cn=certificate-revocation,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": null,
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "samewindow",
       "links": [
         {
@@ -70,7 +72,7 @@
       "dn": "cn=login-saml,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": "./icons/entries/login-saml.svg",
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "samewindow",
       "links": [
         {
@@ -98,7 +100,7 @@
       "dn": "cn=login-ucs,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": "./icons/entries/login-ucs.svg",
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "samewindow",
       "links": [
         {
@@ -126,7 +128,7 @@
       "dn": "cn=root-cert,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": null,
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "samewindow",
       "links": [
         {
@@ -155,7 +157,7 @@
       "dn": "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": "./icons/entries/self-service-password-change.svg",
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "samewindow",
       "links": [
         {
@@ -182,12 +184,12 @@
       "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": "./icons/entries/umc-domain.svg",
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "newwindow",
       "links": [
         {
           "locale": "en_US",
-          "value": "/univention/umc/"
+          "value": "/univention/management/"
         }
       ],
       "name": {
@@ -210,7 +212,7 @@
       "dn": "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": "./icons/entries/univentionblog.png",
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "newwindow",
       "links": [
         {
@@ -242,7 +244,7 @@
       "dn": "cn=univentionfeedback,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": null,
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "newwindow",
       "links": [
         {
@@ -274,7 +276,7 @@
       "dn": "cn=univentionforum,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": null,
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "newwindow",
       "links": [
         {
@@ -302,7 +304,7 @@
       "dn": "cn=univentionwebsite,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa",
       "icon_url": null,
       "in_portal": true,
-      "keywords": [],
+      "keywords": {},
       "linkTarget": "newwindow",
       "links": [
         {
@@ -373,6 +375,7 @@
     },
     "showUmc": true
   },
+  "quick_links": [],
   "user_links": [
     "cn=self-service-password-change,cn=entry,cn=portals,cn=univention,dc=ucs52,dc=qa"
   ]
