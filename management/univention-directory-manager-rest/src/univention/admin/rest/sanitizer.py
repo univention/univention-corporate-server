@@ -8,6 +8,8 @@
 
 # TODO: use pydantic
 
+import base64
+import binascii
 import copy
 import functools
 import inspect
@@ -81,6 +83,15 @@ class JSONPayload(Payload):
             param.alias or key: param.sanitizer if param.content_type == self.content_type else Sanitizer() for key, param in body_params.items()
         })
         return self.sanitizer(self.kwargs, required=True, further_arguments=['resource'], _copy_value=False)
+
+
+class Base64EncodingSanitizer(Sanitizer):
+
+    def _sanitize(self, value, name, further_args):
+        try:
+            return base64.b64decode(value)
+        except binascii.Error:
+            self.raise_validation_error(_('Needs to have proper base64 encoding.'))
 
 
 class PatchDocument(Payload):
@@ -364,11 +375,15 @@ class DNSanitizer(DNSanitizer):
     base_internal = ldap.dn.str2dn('cn=internal'.lower())
     base_internal_len = len(base_internal)
 
+    def __init__(self, **kwargs):
+        self.enforce_correct_ldap_base = kwargs.get('enforce_correct_ldap_base', True)
+        super().__init__(**kwargs)
+
     def _sanitize(self, value, name, further_arguments):
         value = super()._sanitize(value, name, further_arguments)
-        if value:
-            if ldap.dn.str2dn(value.lower())[-self.baselen:] != self.base and \
-               ldap.dn.str2dn(value.lower())[-self.base_internal_len:] != self.base_internal:
+        if value and self.enforce_correct_ldap_base:
+            dn = ldap.dn.str2dn(value.lower())
+            if dn[-self.baselen:] != self.base and dn[-self.base_internal_len:] != self.base_internal:
                 self.raise_validation_error(_('The ldap base is invalid. Use %(details)s.'), details=ldap.dn.dn2str(self.base))
         return value
 

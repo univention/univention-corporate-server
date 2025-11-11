@@ -54,10 +54,10 @@ from univention.admin.rest.ldap_connection import (
 )
 from univention.admin.rest.openapi import OpenAPIBase, RelationsBase, _OpenAPIBase
 from univention.admin.rest.sanitizer import (
-    Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer,
-    IntegerSanitizer, JSONPayload, LDAPFilterSanitizer, LDAPSearchSanitizer, ListSanitizer, MultiValidationError,
-    ObjectPropertySanitizer, PatchRepresentation, PropertiesSanitizer, Query, Sanitizer, SanitizerBase, SearchSanitizer,
-    StringSanitizer, ValidationError, sanitize,
+    Base64EncodingSanitizer, Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer,
+    EmailSanitizer, IntegerSanitizer, JSONPayload, LDAPFilterSanitizer, LDAPSearchSanitizer, ListSanitizer,
+    MultiValidationError, ObjectPropertySanitizer, PatchRepresentation, PropertiesSanitizer, Query, Sanitizer,
+    SanitizerBase, SearchSanitizer, StringSanitizer, ValidationError, sanitize,
 )
 from univention.admin.rest.shared_memory import JsonEncoder, shared_memory
 from univention.admin.rest.utils import (
@@ -875,6 +875,42 @@ class LdapBase(Resource):
         self.set_header('Location', url)
         self.set_status(301)
         self.add_caching(public=True, must_revalidate=True)
+        self.content_negotiation(result)
+
+
+class LdapAttributeUnmap(Resource):
+    """
+    Transform Base64 encoded LDAP attributes to a UDM object that fits.
+    Object does not have to exist.
+    """
+
+    @sanitize
+    async def post(
+        self,
+        representation: dict = JSONPayload(
+            dn=DNSanitizer(enforce_correct_ldap_base=False, required=True),
+            attributes=DictSanitizer({}, required=True, default_sanitizer=ListSanitizer(Base64EncodingSanitizer())),
+        ),
+    ):
+        dn = representation['dn']
+        attributes = representation['attributes']
+        modules = udm_modules.identify(dn, attributes)
+
+        obj = None
+        error = ''
+        for module in modules:
+            try:
+                obj = module.object(None, self.ldap_connection, None, dn, None, attributes)
+                break
+            except udm_errors.wrongObjectType as exc:
+                # e.g. univentionObjectType and objectClass does not match
+                error = str(exc)
+                log.warning('Could not initialize object', dn=dn, error=error, type=module.module)
+        if not obj:
+            self.raise_sanitization_error('dn', _('The object could not be identified: %s') % (error or _('No module found.'),))
+
+        objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+        result = Object.get_representation(objmodule, obj, ['*'], self.ldap_connection, opened=True)
         self.content_negotiation(result)
 
 
@@ -3157,6 +3193,7 @@ class Application(tornado.web.Application):
             ("/udm/license/check", LicenseCheck),
             ("/udm/license/request", LicenseRequest),
             ("/udm/ldap/base/", LdapBase),
+            ("/udm/directory/unmap-ldap-attributes", LdapAttributeUnmap),
             (f"/udm/object/{dn}", ObjectLink),
             ("/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
             ("/udm/directory/", Directory),

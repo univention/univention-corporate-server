@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.3.2) unstable; urgency=medium
+
+  * Bug #58792: New endpoint for LDAP to UDM transformation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 11 Nov 2025 12:31:24 +0100
+
 univention-directory-manager-rest (12.3.1) unstable; urgency=medium
 
   * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile

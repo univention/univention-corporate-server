@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-directory-manager-rest
+fix: 12.3.2
+desc: |
+ This update addresses the following issues:
+ * Added a new endpoint where LDAP attributes can be unmapped to a full UDM
+   object (if the module can be identified).
+bug: [58792]
