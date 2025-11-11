@@ -16,6 +16,11 @@ nats_password=$(sudo cat /etc/provisioning-secrets.json | jq -r '.NATS_PASSWORD'
 host=$(ucr get ldap/server/name)
 master_host=$(ucr get ldap/master)
 
+nast_url_primary="nats://${master_host}:4222"
+if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+    nast_url_primary="nats://nats:4222"
+fi
+
 cat <<EOF > /root/e2e_settings_ucs.json
 {
   "local": {
@@ -25,6 +30,7 @@ cat <<EOF > /root/e2e_settings_ucs.json
     "provisioning_admin_password": "$provisioning_admin_password",
     "provisioning_events_username": "udm",
     "provisioning_events_password": "$provisioning_events_password",
+    "nats_url_primary": "${nast_url_primary}",
     "nats_url": "nats://nats:4222",
     "nats_user": "api",
     "nats_password": "$nats_password",
@@ -39,15 +45,15 @@ cat <<EOF > /root/e2e_settings_ucs.json
 }
 EOF
 #create test-reports dir in ~/
-mkdir -p "/root/test-reports/26_provisioning/02_e2e_tests/"
+mkdir -p "/root/test-reports/26_provisioning/"
 
 docker run \
     --rm \
     --network=nubus-provisioning \
     --volume=/root/e2e_settings_ucs.json:/app/e2e_tests/e2e_settings.json \
     --volume=/var/www/ucs-root-ca.crt:/etc/ssl/certs/ca-certificates.crt:ro \
-    --volume=/root/test-reports/26_provisioning/02_e2e_tests:/app/e2e_tests/test-reports \
+    --volume=/root/test-reports/26_provisioning:/app/e2e_tests/test-reports \
     --env=REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
     gitregistry.knut.univention.de/univention/dev/projects/provisioning/provisioning-e2e-tests:provisioning-in-ucs \
-    pytest -v --junitxml=/app/e2e_tests/test-reports/junit-e2e-provisioning-ucs.xml
+    pytest -v --junitxml=/app/e2e_tests/test-reports/02_e2e_tests_docker.xml --junit-prefix=02_e2e_tests_docker.$(ucr get hostname)
 
