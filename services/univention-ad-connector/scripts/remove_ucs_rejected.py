@@ -48,20 +48,22 @@ class ObjectNotFound(BaseException):
     pass
 
 
-def remove_ucs_rejected(ucs_dn):
+def remove_ucs_rejected(options):
     db_internal_file = '/etc/univention/%s/internal.sqlite' % CONFIGBASENAME
     config = univention.connector.configdb(db_internal_file)
     found = False
     for filename, rejected_dn in config.items('UCS rejected'):
-        if univention.connector.RE_NO_RESYNC.match(rejected_dn):
-            if ucs_dn != rejected_dn:
+        if options.dn:
+            if univention.connector.RE_NO_RESYNC.match(rejected_dn):
+                if options.dn != rejected_dn:
+                    continue
+            elif not univention.uldap.access.compare_dn(options.dn, rejected_dn):
                 continue
-        elif not univention.uldap.access.compare_dn(ucs_dn, rejected_dn):
-            continue
 
         if os.path.exists(filename):
             os.remove(filename)
         config.remove_option('UCS rejected', filename)
+        print('The rejected UCS object %s has been removed.' % rejected_dn)
         found = True
 
     os.chmod(db_internal_file, 640)
@@ -72,8 +74,12 @@ def remove_ucs_rejected(ucs_dn):
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument("-c", "--configbasename", metavar="CONFIGBASENAME", default="connector")
-    parser.add_argument('dn')
+    parser.add_argument('dn', nargs='?')
+    parser.add_argument('--all', '-a', action='store_true')
     options = parser.parse_args()
+
+    if not options.dn and not options.all:
+        parser.error('Either give a dn or --all to delete all ucs rejects')
 
     CONFIGBASENAME = options.configbasename
     state_directory = '/etc/univention/%s' % CONFIGBASENAME
@@ -81,12 +87,8 @@ if __name__ == '__main__':
         parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
         sys.exit(1)
 
-    ucs_dn = options.dn
-
     try:
-        remove_ucs_rejected(ucs_dn)
+        remove_ucs_rejected(options)
     except ObjectNotFound:
-        print('ERROR: The object %s was not found.' % ucs_dn)
+        print('ERROR: The object %s was not found.' % options.dn)
         sys.exit(1)
-
-    print('The rejected UCS object %s has been removed.' % ucs_dn)
