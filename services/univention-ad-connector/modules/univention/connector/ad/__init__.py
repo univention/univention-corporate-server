@@ -212,8 +212,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object not found")
                 return False
 
+    direction = 'CON' if ucsobject else 'UCS'
+
     for dn_key in ['dn', 'olddn']:
-        ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: check newdn for key %s: %s" % (dn_key, object.get(dn_key)))
+        ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: predict mapped DN (to %s) for object['%s']: %s" % (direction, dn_key, object.get(dn_key)))
         if dn_key in object and not dn_premapped(object, dn_key, dn_mapping_stored):
 
             dn = object[dn_key]
@@ -244,15 +246,15 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 result = connector.lo_ad.search(filter=search_filter)
                 if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
                     if dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object):
-                        newdn = result[0][0]
+                        mapped_dn = result[0][0]
                     else:
                         # move
                         # return a kind of frankenstein DN here, sync_from_ucs replaces the UCS LDAP base
                         # with the AD LDAP base at a later stage, see Bug #48440
-                        newdn = ldap.dn.dn2str([str2dn(result[0][0])[0]] + exploded_dn[1:])
+                        mapped_dn = ldap.dn.dn2str([str2dn(result[0][0])[0]] + exploded_dn[1:])
                 else:
-                    newdn = ldap.dn.dn2str([[('cn', fst_rdn_value, ldap.AVA_STRING)]] + exploded_dn[1:])  # new object, don't need to change
-                ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
+                    mapped_dn = ldap.dn.dn2str([[('cn', fst_rdn_value, ldap.AVA_STRING)]] + exploded_dn[1:])  # new object, don't need to change
+                ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % mapped_dn)
             else:
                 # get the object to read the sAMAccountName in AD and use it as name
                 # we have no fallback here, the given dn must be found in AD or we've got an error
@@ -292,20 +294,20 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                     ucsdn = ucsdn_result[0][0]
 
                 if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in object)):
-                    newdn = ucsdn
-                    ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn is ucsdn")
+                    mapped_dn = ucsdn
+                    ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: mapped DN found from UCS LDAP")
                 else:
                     if dn_attr:
-                        newdn_rdn = [(dn_attr, dn_attr_val, ldap.AVA_STRING)]
+                        mapped_rdn = [(dn_attr, dn_attr_val, ldap.AVA_STRING)]
                     else:
-                        newdn_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]
+                        mapped_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]
 
-                    newdn = ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:])  # guess the old dn
+                    mapped_dn = ldap.dn.dn2str([mapped_rdn] + exploded_dn[1:])  # guess the old dn
 
-            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %r:" % (dn_key,))
-            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %r" % (dn,))
-            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %r" % (newdn,))
-            object[dn_key] = newdn
+            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: mapped DN for object['%s']:" % (dn_key,))
+            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: query  DN: %s" % (dn,))
+            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: mapped DN: %s" % (mapped_dn,))
+            object[dn_key] = mapped_dn
     return object
 
 
