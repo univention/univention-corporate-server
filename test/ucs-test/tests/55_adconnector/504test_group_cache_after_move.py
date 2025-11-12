@@ -441,12 +441,13 @@ def test_change_cn_weird_in_ad(udm, mode, lo):
 
 
 @pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
-def test_move_plus_one_ou_in_ad(udm, mode, lo):
+def test_move_plus_one_ou_in_ad(udm, mode, lo, ldap_base):
     with connector_setup2(mode) as ad:
         username = f'A Ä!{random_username()}'
         setup = ad.create_ou_structure_and_user(udm, in_ad=True)
         ou_plus1_dn_ad = ad.create_ou('+1', position=setup.ou1_dn_ad, wait_for_replication=False)
         user_dn_ad = ad.create_user(username, position=ou_plus1_dn_ad, wait_for_replication=False)
+        user_sid_ad = ad.get(user_dn_ad)['objectSid'][0]
         ad.add_to_group(setup.group1_dn_ad, user_dn_ad)
         ad.wait_for_sync()
         user_dn = ad.ucs_dn(user_dn_ad)
@@ -459,13 +460,63 @@ def test_move_plus_one_ou_in_ad(udm, mode, lo):
         user_dn = ad.ucs_dn(user_dn_ad)
         assert ad.get(user_dn_ad)
         assert lo.get(user_dn)
-        assert user_dn == f'uid={username},ou=\\2b1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
+        assert user_dn == f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        assert user_sid_ad == ad.get(user_dn_ad)['objectSid'][0], 'SID for user changed, new object in AD after move in UCS!'
         # and another change, just to be sure
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
-        ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn, setup.group1_dn}, {group3_dn_ad, setup.group1_dn_ad})
+        assert len(ad.initial_tracebacks) == len(ad.tracebacks())
+        # TODO: somehow remove this mapping in sync mode?
+        intermediate_user_dn = f'uid={username},ou=\\2b1,ou={ou1_name},{ldap_base}'.casefold()
+        intermediate_user_dn_ad = f'cn={username},ou=\+1,ou={ou1_name},{ad.ldap_base}'.casefold()  # noqa: W605
+        assert not ad.ad_dn(intermediate_user_dn)
+        assert not ad.ucs_dn(intermediate_user_dn_ad)
+
+
+@pytest.mark.parametrize('mode', ['sync', 'write'], ids=['sync mode', 'write mode'])
+def test_move_plus_one_ou_in_ucs(udm, mode, lo, ldap_base):
+    with connector_setup2(mode) as ad:
+        username = f'A Ä!{random_username()}'
+        setup = ad.create_ou_structure_and_user(udm)
+        ou_plus1_dn = udm.create_object('container/ou', name='+1', position=setup.ou1_dn, wait_for_replication=False)
+        user_dn, _ = udm.create_user(username=username, position=ou_plus1_dn, wait_for_replication=False)
+        udm.modify_object('users/user', dn=user_dn, append={'groups': [setup.group1_dn]}, wait_for_replication=False)
         ad.wait_for_sync()
+        user_dn_ad = ad.ad_dn(user_dn.replace('\\+1', '\\2b1'))  # TODO: why?
+        user_sid_ad = ad.get(user_dn_ad)['objectSid'][0]
+        assert ad.get(user_dn_ad)
+        # move/rename ou
+        ou1_name = f'new-{setup.ou1_name}'
+        with adconnector_stopped():
+            ou1_dn = udm.modify_object('container/ou', dn=setup.ou1_dn, name=ou1_name, wait_for_replication=False)
+            ou1_dn = udm.move_object('container/ou', dn=ou1_dn, position=setup.ou2_dn, wait_for_replication=False)
+        ad.wait_for_sync()
+        assert not ad.get(user_dn_ad)
+        assert not lo.get(user_dn)
+        user_dn_ad = f'cn={username},ou=\+1,ou={ou1_name},{setup.ou2_dn_ad}'  # noqa: W605
+        user_dn = f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'  # noqa: W605
+        assert user_dn_ad.casefold() == ad.ad_dn(user_dn.replace('\\+1', '\\2b1'))  # TODO: why?
+        assert user_dn.casefold().replace('\\+1', '\\2b1') == ad.ucs_dn(user_dn_ad)  # TODO: why?
+        assert ad.get(user_dn_ad)
+        assert lo.get(user_dn)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        assert user_sid_ad == ad.get(user_dn_ad)['objectSid'][0], 'SID for user changed, new object in AD after move in UCS!'
+        # we have to add this new user DN to udm-test, otherwise we get UCSTestUDM_CannotModifyExistingObject
+        udm._cleanup['users/user'].append(user_dn)
+        udm._cleanup['users/user'].append(user_dn.replace('\\+1', '\\2b1'))  # TODO: why?
+        # and another change, just to be sure
+        udm.modify_object('users/user', dn=user_dn, remove={'groups': [setup.group1_dn]}, wait_for_replication=False)
+        udm._cleanup['users/user'].append(user_dn)  # TODO: why again?
+        group3_dn, group3_dn_ad = add_user_to_new_group_ucs(udm, ad, user_dn)
         verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+        assert user_sid_ad == ad.get(user_dn_ad)['objectSid'][0], 'SID for user changed, new object in AD after move in UCS!'
+        assert len(ad.initial_tracebacks) == len(ad.tracebacks())
+        # check intermediate objects in dn mapping tables
+        intermediate_user_dn = f'uid={username},ou=\\2b1,ou={ou1_name},{ldap_base}'.casefold()
+        intermediate_user_dn_ad = f'cn={username},ou=\+1,ou={ou1_name},{ad.ldap_base}'.casefold()  # noqa: W605
+        assert not ad.ad_dn(intermediate_user_dn)
+        assert not ad.ucs_dn(intermediate_user_dn_ad)
 
 
 @pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])

@@ -81,6 +81,7 @@ class _Connector:
         self.host = configRegistry['connector/ad/ldap/host']
         self.admin = ldap.dn.str2dn(configRegistry['connector/ad/ldap/binddn'])[0][0][1]
         self.admin_password = Path(configRegistry['connector/ad/ldap/bindpw']).read_text()
+        self.initial_tracebacks = self.tracebacks()
 
     def tracebacks(self):
         traceback_started = False
