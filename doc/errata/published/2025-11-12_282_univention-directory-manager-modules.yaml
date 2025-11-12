@@ -9,3 +9,6 @@ desc: |
  * The performance of searches with delegative administration enabled has been
    improved.
 bug: [58789]
+erratum: 282
+announced: 2025-11-12
+support: core
