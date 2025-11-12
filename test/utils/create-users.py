@@ -272,9 +272,9 @@ class Environment:
         group_offset = 0
         client_offset = 0
 
-        for ou_idx, num_users_in_ou, num_groups_in_ou, num_clients_in_ou in zip(range(num_ous), user_ou_sizes, group_ou_sizes, client_ou_sizes):
-            progress_pct = (ou_idx / num_ous) * 100
-            logger.info('Progress: %.1f%% - Creating OU %d/%d: %s%d', progress_pct, ou_idx + 1, num_ous, ou_prefix, ou_idx)
+        for ou_idx, num_users_in_ou, num_groups_in_ou, num_clients_in_ou in zip(range(1, num_ous + 1), user_ou_sizes, group_ou_sizes, client_ou_sizes):
+            progress_pct = ((ou_idx - 1) / num_ous) * 100
+            logger.info('Progress: %.1f%% - Creating OU %d/%d: %s%d', progress_pct, ou_idx, num_ous, ou_prefix, ou_idx)
 
             ou_dn = self._create_ou(ou_idx, ou_prefix)
             self.ou_dns.append(ou_dn)
@@ -377,8 +377,8 @@ class Environment:
         avg_group_memberships = self.scenario.avg_group_memberships
 
         return {
-            user_idx: random.sample(range(number_of_groups), min(avg_group_memberships, number_of_groups))
-            for user_idx in range(self.scenario.users)
+            user_idx: random.sample(range(1, number_of_groups + 1), min(avg_group_memberships, number_of_groups))
+            for user_idx in range(1, self.scenario.users + 1)
         }
 
     def _create_users(self, base: str, start_idx: int, count: int) -> list[str]:
@@ -393,12 +393,12 @@ class Environment:
         profile_picture_size = self.scenario.profile_picture_size
         username_prefix = self.scenario.username_prefix
 
-        existing_users = {attr['uid'].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('uid=%s*', [username_prefix]), base=user_base, scope='one', attr=['uid'])}
+        existing_users = {attr['uid'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('uid=%s*', [username_prefix]), base=user_base, scope='one', attr=['uid'])}
 
         if count:
             logger.info('  Creating %d users in %s', count, user_base)
         for i in range(count):
-            user_number = start_idx + i
+            user_number = start_idx + i + 1
             name = f'{username_prefix}{user_number}'
 
             dn = existing_users.get(name)
@@ -434,18 +434,18 @@ class Environment:
         created_groups = []
         groupname_prefix = self.scenario.groupname_prefix
 
-        existing_groups = {attr['cn'].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('cn=%s*', [groupname_prefix]), base=base, scope='one', attr=['cn'])}
+        existing_groups = {attr['cn'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('cn=%s*', [groupname_prefix]), base=base, scope='one', attr=['cn'])}
 
         if count:
             logger.info('  Creating %d groups in %s', count, base)
         for i in range(count):
-            group_number = start_idx + i
+            group_number = start_idx + i + 1
             name = f'{groupname_prefix}{group_number}'
 
             group_members_dns = []
             for user_idx, group_indices in user_to_groups.items():
-                if group_number in group_indices and user_idx < len(all_users):
-                    group_members_dns.append(all_users[user_idx])
+                if group_number in group_indices and user_idx <= len(all_users):
+                    group_members_dns.append(all_users[user_idx - 1])
 
             dn = existing_groups.get(name)
             if not dn:
@@ -473,12 +473,12 @@ class Environment:
         client_dns = []
         client_prefix = self.scenario.client_prefix
 
-        existing_clients = {attr['cn'].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('cn=%s*', [client_prefix]), base=base, scope='one', attr=['cn'])}
+        existing_clients = {attr['cn'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('cn=%s*', [client_prefix]), base=base, scope='one', attr=['cn'])}
 
         if count:
             logger.info('  Creating %d clients in %s', count, base)
         for i in range(count):
-            client_number = start_idx + i
+            client_number = start_idx + i + 1
             client_name = f'{client_prefix}{client_number}'
             dn = existing_clients.get(client_name)
             if not dn:
