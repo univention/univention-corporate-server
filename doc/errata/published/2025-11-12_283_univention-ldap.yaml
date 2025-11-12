@@ -10,3 +10,6 @@ desc: |
    scripts to be executed before and after the conversion from a Backup
    Directory Node to a Primary Directory Node.
 bug: [58778]
+erratum: 283
+announced: 2025-11-12
+support: core
