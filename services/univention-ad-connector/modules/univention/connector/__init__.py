@@ -1460,8 +1460,8 @@ class ucs(object):
                 self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.remove_entry(guid)
             if object['modtype'] == 'move':
-                res = self.move_in_ucs(property_type, object, module, position)
-                if isinstance(res, str):
+                result = self.move_in_ucs(property_type, object, module, position)
+                if isinstance(result, str):
                     old_con_dn = original_object.get('olddn')
                     if old_con_dn and pre_mapped_ad_dn != old_con_dn:
                         self._remove_dn_mapping(object['olddn'], old_con_dn)
@@ -1474,7 +1474,6 @@ class ucs(object):
                         )
                     # self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
                     self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
-                    result = True
 
             if object['modtype'] == 'modify':
 
