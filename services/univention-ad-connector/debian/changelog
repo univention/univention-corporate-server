@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.32) unstable; urgency=medium
+
+  * Bug #58800: Fix sync_to_ucs (UnboundLocalError)
+
+ -- Felix Botner <botner@univention.de>  Thu, 13 Nov 2025 20:19:34 +0100
+
 univention-ad-connector (14.0.31) unstable; urgency=medium
 
   * Bug #58787: Improve ad performance on non changes
