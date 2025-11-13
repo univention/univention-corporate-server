@@ -45,7 +45,8 @@ def subscription(provisioning_url, provisioning_admin_username, provisioning_adm
     requests.delete(provisioning_url + "v1/subscriptions/%s" % name, auth=(provisioning_admin_username, provisioning_admin_password))
     resp = requests.post(provisioning_url + "v1/subscriptions", json=create_sub_json, auth=(provisioning_admin_username, provisioning_admin_password))
     assert resp.status_code == 201
-    return name
+    yield name
+    requests.delete(provisioning_url + "v1/subscriptions/%s" % name, auth=(provisioning_admin_username, provisioning_admin_password))
 
 
 @pytest.fixture
@@ -65,7 +66,8 @@ def prefill_subscription(provisioning_url, provisioning_admin_username, provisio
     requests.delete(provisioning_url + "v1/subscriptions/%s" % name, auth=(provisioning_admin_username, provisioning_admin_password))
     resp = requests.post(provisioning_url + "v1/subscriptions", json=create_sub_json, auth=(provisioning_admin_username, provisioning_admin_password))
     assert resp.status_code == 201
-    return name
+    yield name
+    requests.delete(provisioning_url + "v1/subscriptions/%s" % name, auth=(provisioning_admin_username, provisioning_admin_password))
 
 
 @pytest.fixture

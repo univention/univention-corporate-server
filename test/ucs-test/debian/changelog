@@ -1,3 +1,11 @@
+ucs-test (12.3.35) unstable; urgency=medium
+
+  * Issue univention/dev/projects/provisioning#99: clean up after
+    provisioning basic test.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 13 Nov 2025 9:45:01 +0100
+
+
 ucs-test (12.3.34) unstable; urgency=medium
 
   * Bug #52308: Add test for new UCR variables `appcenter/update/skip-zsync` and
