@@ -55,6 +55,7 @@ from six.moves import cPickle as pickle
 
 import univention.admin.modules
 import univention.admin.objects
+import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.debug as ud_c
 import univention.debug2 as ud
@@ -1255,7 +1256,16 @@ class ucs(object):
         response = {}
 
         serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
-        res = ucs_object.create(serverctrls=serverctrls, response=response)
+        try:
+            res = ucs_object.create(serverctrls=serverctrls, response=response)
+        except univention.admin.uexceptions.objectExists:
+            if property_type == 'ou':
+                # an ou that we never saw in the connector was renamed in AD,
+                # but this new ou already exists in UCS, ignore this
+                # TODO: sync content of AD ou to UCS (currently manually resync_object_from_ad.py)
+                res = True
+            else:
+                raise
         if res:
             for c in response.get('ctrls', []):
                 if c.controlType == PostReadControl.controlType:
