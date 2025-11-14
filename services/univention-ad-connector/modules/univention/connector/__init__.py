@@ -1379,9 +1379,7 @@ class ucs:
             # Corrections in case the target situation is unexpected:
             if old_object and object['modtype'] == 'add':
                 object['modtype'] = 'modify'
-            if not old_object and object['modtype'] == 'modify':
-                object['modtype'] = 'add'
-            if not old_object and object['modtype'] == 'move':
+            if not old_object and object['modtype'] in ['modify', 'move']:
                 if self.get_ucs_ldap_object_dn(object['dn']):
                     object['modtype'] = 'modify'
                 else:
