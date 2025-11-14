@@ -188,6 +188,16 @@ class _OpenAPIBase:
             400: {'$ref': '#/components/responses/BadRequest'},
             401: {'$ref': '#/components/responses/Unauthorized'},
             403: {'$ref': '#/components/responses/Forbidden'},
+            405: {'$ref': '#/components/responses/MethodNotAllowed'},
+            406: {'$ref': '#/components/responses/NotAcceptable'},
+            409: {'$ref': '#/components/responses/Conflict'},
+            411: {'$ref': '#/components/responses/LengthRequired'},  # POST,PUT
+            412: {'$ref': '#/components/responses/PreconditionFailed'},  # GET
+            413: {'$ref': '#/components/responses/PayloadTooLarge'},  # POST,PUT
+            414: {'$ref': '#/components/responses/URITooLong'},
+            415: {'$ref': '#/components/responses/UnsupportedMediaType'},  # POST,PUT
+            416: {'$ref': '#/components/responses/RangeNotSatisfiable'},
+            429: {'$ref': '#/components/responses/TooManyRequests'},
             422: {'$ref': '#/components/responses/UnprocessableEntity'},
             500: {'$ref': '#/components/responses/ServerError'},
             503: {'$ref': '#/components/responses/ServiceUnavailable'},
@@ -451,9 +461,6 @@ class _OpenAPIBase:
             'object.restore.response.notfound': {
                 '$ref': '#/components/responses/ObjectNotFound',
             },
-            'object.restore.response.notallowed': {
-                '$ref': '#/components/responses/RestoreNotAllowed',
-            },
             'object.delete.response.nocontent': {
                 '$ref': '#/components/responses/ObjectDeleted',
             },
@@ -530,16 +537,11 @@ class _OpenAPIBase:
                     "type": "object",
                     "properties": {
                         "dn": {'$ref': '#/components/schemas/dn'},
-                        "uri": {'type': 'string'},
                     },
                 }),
                 "headers": global_response_headers({
                     'Location': {'$ref': '#/components/headers/Location'},
                 }),
-            },
-            'RestoreNotAllowed': {  # 405
-                "description": "Restore operation not supported for this object type",
-                "headers": global_response_headers(),
             },
             'ObjectDeleted': {  # 204
                 "description": "Object deleted",
@@ -572,6 +574,14 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
+            "Unauthorized": {  # 401
+                'description': 'Unauthorized. No Authorization provided or wrong credentials.',
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
             "Forbidden": {  # 403, e.g. unsupported operation, or GET users/self/$wrong_dn
                 "description": 'Forbidden (e.g. unsupported operation)',
                 'headers': global_response_headers({}),
@@ -588,7 +598,23 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
-            "ObjectGone": {  # 410
+            "MethodNotAllowed": {  # 405, e.g. method not allowed
+                "description": 'Method not allowed',
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "NotAcceptable": {  # 406, e.g. unknown wanted Content-Language or Content-Type
+                "description": 'Not Acceptable (e.g. Content-Type or Content-Language not available, check Accept and Accept-Language header)',
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "ObjectGone": {  # 410, e.g. moved to recyclebin
                 "description": "Object has recently been removed.",
                 'headers': global_response_headers({}),
                 "content": content_schema({
@@ -596,8 +622,48 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
-            "Unauthorized": {  # 401
-                'description': 'Unauthorized. No Authorization provided or wrong credentials.',
+            "LengthRequired": {  # 411
+                "description": "Length required (e.g. no Content-Length header given).",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "PreconditionFailed": {  # 412
+                "description": "Precondition failed (If-* conditional GET request failed).",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "PayloadTooLarge": {  # 413
+                "description": "Payload too large.",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "URITooLong": {  # 414
+                "description": "URI too long (DN length).",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "UnsupportedMediaType": {  # 415
+                "description": "Unsupported request Content-Type.",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
+            },
+            "RangeNotSatisfiable": {  # 416
+                "description": "Range not satisfiable.",
                 'headers': global_response_headers({}),
                 "content": content_schema({
                     "type": "object",
@@ -608,6 +674,14 @@ class _OpenAPIBase:
                 'description': 'Validation of input parameters failed.',
                 'headers': global_response_headers({}),
                 "content": content_schema_ref('#/components/schemas/embedded-error'),
+            },
+            "TooManyRequests": {  # 429
+                "description": "Too many requests.",
+                'headers': global_response_headers({}),
+                "content": content_schema({
+                    "type": "object",
+                    "additionalProperties": True,
+                }),
             },
             "ServerError": {  # 500
                 'description': 'Internal server errror.',
@@ -807,6 +881,9 @@ class _OpenAPIBase:
                     "404": {
                         '$ref': '#/components/responses/object.get.response.notfound',
                     },
+                    410: {
+                        '$ref': '#/components/responses/ObjectGone',
+                    },
                 }),
                 "tags": [tag],
             }
@@ -835,9 +912,6 @@ class _OpenAPIBase:
                             },
                             "404": {
                                 '$ref': '#/components/responses/object.restore.response.notfound',
-                            },
-                            "405": {
-                                '$ref': '#/components/responses/object.restore.response.notallowed',
                             },
                         }),
                         "tags": [tag],
