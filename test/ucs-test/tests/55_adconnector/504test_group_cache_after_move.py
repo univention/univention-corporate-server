@@ -8,6 +8,8 @@
 ## bugs:
 ##  - 51929
 
+import subprocess
+
 import pytest
 
 from univention.testing.strings import random_username
@@ -542,3 +544,61 @@ def test_rename_ou_rename_group(mode, udm, lo):
         assert lo.get(new_group_dn)
         assert not lo.get(group_dn)
         verify_groups(ad, lo, user_dn, user_dn_ad, {new_group_dn, setup.group1_dn}, {new_group_dn_ad, setup.group1_dn_ad})
+
+
+def test_move_ad_ou_to_allowsubtree(udm, ldap_base, ucr, lo):
+    """
+    This test tries to emulate the folloing allowsubtree workflow
+    ou=ou1 - not allowed
+    ou=ou2 - allowed
+    in UCS ou=new-ou11,ou=2 already exists (empty)
+    in AD move/rename ou=ou11,ou=1 to ou=new-ou11,ou2
+    """
+    ldap_base_ad = ucr['connector/ad/ldap/base']
+    ou_allowed_name = f'allowed-ou-{random_username(mixed_case=True)}'
+    ou_allowed_dn_ad = f'ou={ou_allowed_name},{ldap_base_ad}'
+    ou_allowed_dn = f'ou={ou_allowed_name},{ldap_base}'
+    settings = [
+        f'connector/ad/mapping/allowsubtree/myou/ucs={ou_allowed_dn}',
+        f'connector/ad/mapping/allowsubtree/myou/ad={ou_allowed_dn_ad}',
+    ]
+    with connector_setup2('read') as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=True)
+        # remove the again in UCS, we will resync this ou to the allowed OU in AD
+        udm._cleanup.setdefault('container/ou', []).append(setup.ou1_dn)
+        udm.remove_object('container/ou', dn=setup.ou1_dn, wait_for_replication=False)
+        with adconnector_stopped():
+            ucr.handler_set(settings)
+        # create allowed ou
+        ad.create_ou(ou_allowed_name, wait_for_replication=True)
+        ou1_name = f'new-{setup.ou1_name}'
+        # create the ou, that we want to move to allowed in AD, also in UCS, that is what we told the customer to do
+        udm.create_object('container/ou', name=ou1_name, position=ou_allowed_dn, wait_for_replication=False)
+        # in AD move ou to allowed OU
+        ou1_dn_ad = ad.rename(setup.ou1_dn_ad, rdn=f'ou={ou1_name}', position=ou_allowed_dn_ad)
+        tb = ad.last_traceback()
+        assert not (
+            tb
+            and f'univention.admin.uexceptions.objectExists: Object exists: ou={ou1_name},' in tb
+        ), f'Suspicious traceback found: {tb}'
+        # resync content, the connector currently does not sync childs in this case
+        cmd = [
+            '/usr/share/univention-ad-connector/resync_object_from_ad.py',
+            '-c', 'connector',
+            '--base', ou1_dn_ad,
+            '--filter', '(objectClass=*)',
+        ]
+        with adconnector_stopped():
+            subprocess.check_call(cmd)
+        ad.wait_for_sync()
+        # check resync
+        ou1_dn = f'ou={ou1_name},ou={ou_allowed_name},{ldap_base}'
+        ou11_dn = f'ou={setup.ou11_name},{ou1_dn}'
+        ou111_dn = f'ou={setup.ou111_name},{ou11_dn}'
+        user_dn = f'uid={setup.username},{ou11_dn}'
+        assert lo.get(ou1_dn)
+        assert lo.get(ou11_dn)
+        assert lo.get(ou111_dn)
+        assert lo.get(user_dn)
+        # no new traceback
+        assert tb == ad.last_traceback()
