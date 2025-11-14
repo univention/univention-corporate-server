@@ -307,8 +307,8 @@ setup_letsencrypt () {
 install_id_connector_broker_plugin () {
     # until we have "ucsschool/extras" install the id connector
     # broker plugin from the 5.0 test repo
-    echo "deb http://updates-test.software-univention.de/5.0/maintained/component/ idbroker_DEVEL/all/" > /etc/apt/sources.list.d/broker.list
-    echo "deb http://updates-test.software-univention.de/5.0/maintained/component/ idbroker_DEVEL/amd64/" >> /etc/apt/sources.list.d/broker.list
+    echo "deb http://updates-test.software-univention.de/${1:?missing ucs version}/maintained/component/ idbroker_DEVEL/all/" > /etc/apt/sources.list.d/broker.list
+    echo "deb http://updates-test.software-univention.de/${1:?missing ucs version}/maintained/component/ idbroker_DEVEL/amd64/" >> /etc/apt/sources.list.d/broker.list
     apt-get -q update || return 1
     apt-get -y install id-broker-id-connector-plugin || return 1
     univention-app configure ucsschool-id-connector --set 'ucsschool-id-connector/log_level'=DEBUG
