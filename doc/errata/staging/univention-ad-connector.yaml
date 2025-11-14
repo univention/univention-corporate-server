@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-ad-connector
+fix: 14.0.32
+desc: |
+ This update addresses the following issues:
+ * Moving objects in UCS has been fixed.
+bug: [58800]
