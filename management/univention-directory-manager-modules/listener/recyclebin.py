@@ -11,7 +11,6 @@ from ldap.extop.dds import RefreshRequest, RefreshResponse
 from ldap.filter import filter_format
 
 import univention.admin.modules
-import univention.dn
 from univention.admin.recyclebin import RECYCLEBIN_BASE, create_references
 from univention.admin.uexceptions import noObject
 from univention.config_registry import ucr
@@ -29,7 +28,7 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.deleted_objects_cache = set()
+        self.deleted_objects_cache = {}
         self._admin_lo = None
         self._cache_initialized = False
         univention.admin.modules.update()
@@ -47,15 +46,16 @@ class RecycleBinListener(ListenerModuleHandler):
         if ucr.get('server/role') != 'domaincontroller_master':
             return
 
-        self.deleted_objects_cache = {
-            univention.dn.DN(dn)
-            for dn in self.admin_lo.searchDn(
-                base=RECYCLEBIN_BASE,
-                scope='one',
-                filter='(objectClass=univentionRecycleBinObject)',
-            )
-        }
-        self.logger.debug('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
+        for dn in self.admin_lo.searchDn(base=RECYCLEBIN_BASE, scope='one', filter='(objectClass=univentionRecycleBinObject)'):
+            exploded = ldap.dn.str2dn(dn)
+            try:
+                orig_dn = exploded[0][0][1]
+                uoid = exploded[0][1][1]
+            except IndexError:
+                continue
+            self.deleted_objects_cache[orig_dn] = uoid
+
+        self.logger.error('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
 
     def _should_process_object(self, dn, attrs):
         """Check if the object should be processed by the recyclebin."""
@@ -84,8 +84,9 @@ class RecycleBinListener(ListenerModuleHandler):
             self._cache_initialized = True
 
         recyclebin_dn = self._move_deleted_object_to_recyclebin(dn, old, object_type)
+        uoid = old['univentionObjectIdentifier'][0].decode('UTF-8')
         if recyclebin_dn:
-            self.deleted_objects_cache.add(univention.dn.DN(recyclebin_dn))
+            self.deleted_objects_cache[dn] = uoid
 
     def _move_deleted_object_to_recyclebin(self, original_dn, original_attrs, original_type):
         """
@@ -193,7 +194,10 @@ class RecycleBinListener(ListenerModuleHandler):
 
         # Step 3 & 4: Check if there are deleted objects and add group reference
         for member_dn in removed_member_dns:
-            deleted_object_dn = self._get_recyclebin_dn_for_original(member_dn)
+            uoid = self.deleted_objects_cache.get(member_dn)
+            if not uoid:
+                continue
+            deleted_object_dn = self._get_recyclebin_dn_for_original(member_dn, uoid)
             deleted_object_attrs = self.admin_lo.get(deleted_object_dn, attr=['univentionRecycleBinOriginalType', 'univentionRecycleBinReference'])
             if deleted_object_attrs and 'univentionRecycleBinOriginalType' in deleted_object_attrs:
                 object_type = deleted_object_attrs['univentionRecycleBinOriginalType'][0].decode('UTF-8')
@@ -205,9 +209,9 @@ class RecycleBinListener(ListenerModuleHandler):
                     self.admin_lo.modify(deleted_object_dn, [('univentionRecycleBinReference', None, refs)])
                     self.logger.info('Added group reference to deleted object: %s', deleted_object_dn)
 
-    def _get_recyclebin_dn_for_original(self, dn):
+    def _get_recyclebin_dn_for_original(self, dn, uoid):
         """Generate recyclebin DN for original object."""
-        return f'univentionRecycleBinOriginalDN={ldap.dn.escape_dn_chars(dn)},{RECYCLEBIN_BASE}'
+        return f'univentionRecycleBinOriginalDN={ldap.dn.escape_dn_chars(dn)}+univentionRecycleBinOriginalUniventionObjectIdentifier={ldap.dn.escape_dn_chars(uoid)},{RECYCLEBIN_BASE}'
 
 
 listener_module = RecycleBinListener

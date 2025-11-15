@@ -198,6 +198,13 @@ class object(simpleLdap):
         self.policies.extend(self.foreign_policies)
         self.save()
 
+    def _ldap_dn(self, *args, **kwargs) -> str:
+        dn = super()._ldap_dn(*args, **kwargs)
+        exploded = ldap.dn.str2dn(dn)
+        exploded[0].append(('univentionRecycleBinOriginalUniventionObjectIdentifier', self.info['originalUniventionObjectIdentifier'], ldap.AVA_STRING))
+        dn = ldap.dn.dn2str(exploded)
+        return dn
+
     def open_guardian(self):
         pass  # lazy loading calls this for users/user
 
@@ -242,12 +249,15 @@ class object(simpleLdap):
         self.lo.lo.base = configRegistry['ldap/base']
         try:
             oldattr = oldattr.copy()
-            oldattr['objectClass'] = oldattr['univentionRecycleBinOriginalObjectClass']
+            oldattr['objectClass'] = oldattr.get('univentionRecycleBinOriginalObjectClass', [])
             obj = module.object(None, self.lo, None, info['originalDN'], attributes=oldattr)
             # some properties are only unmapped in open() e.g. users/user:primaryGroup, groups/group:users,...
             obj.open()
         # we are in hell.. there are potential errors here.
         # except primaryGroup !?
+        except univention.admin.uexceptions.wrongObjectType:
+            # ignore?
+            return
         finally:
             self.lo.lo.base = base
         props = obj.info
