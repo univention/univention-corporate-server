@@ -2223,7 +2223,7 @@ class ad(univention.connector.ucs):
                 ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
                 try:
                     self.lo_ad.rename(old_dn, object['dn'])
-                except (ldap.NO_SUCH_OBJECT, ldap.ALREADY_EXISTS):  # check if object is already moved (we may resync now)
+                except (ldap.ALREADY_EXISTS, ldap.NO_SUCH_OBJECT):  # check if object is already moved (we may resync now)
                     new = self.lo_ad.get(object['dn'])
                     if not new:
                         raise
@@ -2242,7 +2242,9 @@ class ad(univention.connector.ucs):
                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and AD group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
                 self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-        ud.debug(ud.LDAP, ud.PROCESS, 'sync from ucs: [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
+            elif not self.get_ucs_ldap_object_dn(pre_mapped_ucs_dn):
+                ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: ignoring move  for %s (does not exist in UCS)" % pre_mapped_ucs_dn)
+                return True
 
         if 'olddn' in object:
             object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
