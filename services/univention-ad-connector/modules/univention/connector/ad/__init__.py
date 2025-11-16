@@ -2196,6 +2196,12 @@ class ad(univention.connector.ucs):
         # object ist brereits vom eingelesenen UCS-Objekt nach AD gemappt, old_dn ist die alte UCS-DN
         ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: sync object: %s" % object['dn'])
 
+        # WIP: skip changes for object that no longer exist in UCS
+        # maybe add some condition
+        if object['modtype'] != 'delete' and not self.get_ucs_ldap_object_dn(pre_mapped_ucs_dn):
+            ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: ignoring change for %s (does not exist in UCS)" % pre_mapped_ucs_dn)
+            return True
+
         # check for move, if old_object exists, set modtype move
         pre_mapped_ucs_old_dn = old_dn
         if old_dn and object['modtype'] != 'delete':
@@ -2297,9 +2303,6 @@ class ad(univention.connector.ucs):
             ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
             try:
                 self.lo_ad.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
-            except ldap.ALREADY_EXISTS:
-                # could be a UCS pong after renaming/moving containers in AD
-                pass
             except Exception:
                 ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
                 ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
@@ -2319,9 +2322,6 @@ class ad(univention.connector.ucs):
                 ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
                 try:
                     self.lo_ad.lo.modify_ext_s(object['dn'], modlist, serverctrls=ctrls)
-                except ldap.NO_SUCH_OBJECT:
-                    # could be a UCS pong after renaming/moving containers in AD
-                    pass
                 except Exception:
                     ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
                     ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
@@ -2330,11 +2330,7 @@ class ad(univention.connector.ucs):
             if hasattr(self.property[property_type], "post_con_modify_functions"):
                 for post_con_modify_function in self.property[property_type].post_con_modify_functions:
                     ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % post_con_modify_function)
-                    try:
-                        post_con_modify_function(self, property_type, object)
-                    except ldap.NO_SUCH_OBJECT:
-                        # could be a UCS pong after renaming/moving containers in AD
-                        pass
+                    post_con_modify_function(self, property_type, object)
                     ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % post_con_modify_function)
 
         #
