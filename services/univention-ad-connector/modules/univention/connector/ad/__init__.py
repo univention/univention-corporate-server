@@ -1024,8 +1024,8 @@ class ad(univention.connector.ucs):
         guid = decode_guid(ad_object.get('attributes').get('objectGUID')[0])
         if ad_object['modtype'] == 'modify' and ad_object:
             old_ad_object = self.adcache.get_entry(guid)
-            log.info("sync_to_ucs: old_ad_object: %s", old_ad_object)
-            log.info("sync_to_ucs: new_ad_object: %s", ad_object['attributes'])
+            log.info("__get_object_changes_ad: old_ad_object: %s", old_ad_object)
+            log.info("__get_object_changes_ad: new_ad_object: %s", ad_object['attributes'])
             original_attributes = ad_object['attributes']
             if old_ad_object and original_attributes:
                 for attr in ad_object['attributes']:
@@ -1039,13 +1039,13 @@ class ad(univention.connector.ucs):
                        and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) \
                        and not self.configRegistry.is_true('connector/ad/mapping/user/password/kinit', False):
                         if ad_object['attributes'].get('pwdLastSet', [b'1'])[0] == b'0':
-                            log.info("sync_to_ucs: pwdLastSet is 0. Do not ignore %r", ad_object['dn'])
+                            log.info("__get_object_changes_ad: pwdLastSet is 0. Do not ignore %r", ad_object['dn'])
                         else:
-                            log.info("sync_to_ucs: ignore %r", ad_object['dn'])
+                            log.info("__get_object_changes_ad: ignore %r", ad_object['dn'])
                             return None
                     else:
-                        log.info("sync_to_ucs: ignore %r", ad_object['dn'])
-                        log.trace("sync_to_ucs: changed_attributes=%s", ad_object['changed_attributes'])
+                        log.info("__get_object_changes_ad: ignore %r", ad_object['dn'])
+                        log.trace("__get_object_changes_ad: changed_attributes=%s", ad_object['changed_attributes'])
                         return None
             else:
                 ad_object['changed_attributes'] = list(original_attributes.keys())
