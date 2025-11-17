@@ -211,7 +211,11 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def _get_recyclebin_dn_for_original(self, dn, uoid):
         """Generate recyclebin DN for original object."""
-        return f'univentionRecycleBinOriginalDN={ldap.dn.escape_dn_chars(dn)}+univentionRecycleBinOriginalUniventionObjectIdentifier={ldap.dn.escape_dn_chars(uoid)},{RECYCLEBIN_BASE}'
+        rdn = ldap.dn.dn2str([[
+            ('univentionRecycleBinOriginalDN', dn, ldap.AVA_STRING),
+            ('univentionRecycleBinOriginalUniventionObjectIdentifier', uoid, ldap.AVA_STRING),
+        ]])
+        return f'{rdn},{RECYCLEBIN_BASE}'
 
 
 listener_module = RecycleBinListener
