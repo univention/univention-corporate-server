@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libarchive
+fix: 3.2.2-2+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.3 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-5914)
+ * CVSS score 3.9 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:N/A:L).
+   (CVE-2025-5918, CVE-2025-5916)
+ * CVSS score 2.8 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:N/I:N/A:L).
+   (CVE-2025-5917)
+bug: [58808]
+cve:
+- CVE-2025-5914
+- CVE-2025-5916
+- CVE-2025-5917
+- CVE-2025-5918
