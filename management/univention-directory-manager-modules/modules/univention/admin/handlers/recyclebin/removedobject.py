@@ -258,10 +258,12 @@ class object(simpleLdap):
         global options, property_descriptions
         options = copy.deepcopy(default_options)
         property_descriptions = copy.deepcopy(default_property_descriptions)  # reset to original state for each object!
-        property_descriptions.update(self.descriptions)  # overwrite the module property descriptions!!
 
         if not self.dn or 'originalObjectType' not in info:
             return
+
+        self.info['originalObjectType'] = info['originalObjectType']
+        property_descriptions.update(self.descriptions)  # overwrite the module property descriptions!!
 
         module = univention.admin.modules.get(info['originalObjectType'])
         if not module:
