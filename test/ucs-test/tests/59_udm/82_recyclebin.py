@@ -641,7 +641,7 @@ def test_original_name_extraction_and_storage(udm, lo, recyclebin_policy_session
     group_dn, groupname = udm.create_group(wait_for_replication=False, position=container_recyclebin_policy)
     goid = udm.get_object('groups/group', group_dn)['univentionObjectIdentifier'][0]
     udm.remove_object('users/user', dn=user_dn, wait_for_replication=False)
-    udm.remove_object('groups/group', dn=group_dn, wait_for_replication=False, remove_referring=False)
+    udm.remove_object('groups/group', dn=group_dn, wait_for_replication=True, remove_referring=False)
     # check originalName
     verify_ldap_object(user_dn, should_exist=False)
     verify_ldap_object(group_dn, should_exist=False)
@@ -993,7 +993,7 @@ def test_deleted_user_with_complex_attributes_display(udm, lo, recyclebin_policy
     udm.remove_object('users/user', dn=user_dn, wait_for_replication=False)
     verify_ldap_object(user_dn, should_exist=False)
 
-    udm.remove_object('groups/group', dn=group_dn, wait_for_replication=False, remove_referring=False)
+    udm.remove_object('groups/group', dn=group_dn, wait_for_replication=True, remove_referring=False)
     verify_ldap_object(group_dn, should_exist=False)
 
     deleted_user_dn = _deleted_object_dn(user_dn, uoid)
