@@ -18,6 +18,7 @@ RECYCLEBIN_DN = "cn=recyclebin,cn=internal"
 
 
 def _deleted_object_dn(dn, u_obj_id):
+    """Get the DN of the deleted object in the recyclebin"""
     return f'univentionRecycleBinOriginalDN={escape_dn_chars(dn)}+univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(u_obj_id)},{RECYCLEBIN_DN}'
 
 
@@ -50,9 +51,10 @@ def recyclebin_policy(udm, ldap_base):
 def deleted_user_object(recyclebin_policy, udm):
     container_recyclebin_policy, _ = recyclebin_policy
     user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
+    uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
-    deleted_dn = _deleted_object_dn(user_dn)
+    deleted_dn = _deleted_object_dn(user_dn, uoid)
     verify_ldap_object(deleted_dn, should_exist=True)
     return user_dn, deleted_dn
 

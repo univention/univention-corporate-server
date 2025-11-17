@@ -16,6 +16,7 @@ from univention.admin.rest.client import UDM as UDMClient, _NoRelation
 from univention.admin.uexceptions import noObject
 from univention.admin.uldap import getAdminConnection
 from univention.config_registry import ucr
+from univention.testing.fixtures_recyclebin import _deleted_object_dn
 from univention.testing.strings import random_username
 from univention.testing.utils import UCSTestDomainAdminCredentials, restart_slapd, verify_ldap_object
 
@@ -82,11 +83,6 @@ def escape_dn_chars(dn):
     return dn.replace(',', '\\2C').replace('=', '\\3D')
 
 
-def _deleted_object_dn(dn):
-    """Get the DN of the deleted object in the recyclebin"""
-    return f'univentionRecycleBinOriginalDN={escape_dn_chars(dn)},{RECYCLEBIN_DN}'
-
-
 class UDMRestClient(UDMClient):
     @classmethod
     def test_connection(cls):
@@ -133,10 +129,11 @@ def test_user_restore_rest_api(udm, udm_rest, recyclebin_policy):
     """Test restoring a deleted user via REST API"""
     container_recyclebin_policy, _ = recyclebin_policy
     user_dn, _username = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
+    uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     original_props = udm.get_object('users/user', user_dn)
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
-    deleted_dn = _deleted_object_dn(user_dn)
+    deleted_dn = _deleted_object_dn(user_dn, uoid)
     verify_ldap_object(deleted_dn, should_exist=True)
     module = udm_rest.get('recyclebin/removedobject')
     deleted_obj = module.get(deleted_dn)
@@ -155,10 +152,11 @@ def test_group_restore_rest_api(udm, udm_rest, recyclebin_policy):
     """Test restoring a deleted group via REST API"""
     container_recyclebin_policy, _ = recyclebin_policy
     group_dn, _groupname = udm.create_group(position=container_recyclebin_policy, wait_for_replication=False)
+    uoid = udm.get_object('groups/group', group_dn)['univentionObjectIdentifier'][0]
     original_props = udm.get_object('groups/group', group_dn)
     udm.remove_object('groups/group', dn=group_dn)
     verify_ldap_object(group_dn, should_exist=False)
-    deleted_dn = _deleted_object_dn(group_dn)
+    deleted_dn = _deleted_object_dn(group_dn, uoid)
     verify_ldap_object(deleted_dn, should_exist=True)
     module = udm_rest.get('recyclebin/removedobject')
     deleted_obj = module.get(deleted_dn)
@@ -186,9 +184,10 @@ def test_restore_fails_when_parent_container_missing(udm, udm_rest, recyclebin_p
     container_recyclebin_policy, _ = recyclebin_policy
     container_dn = udm.create_object('container/cn', name='temp_container', position=container_recyclebin_policy, wait_for_replication=False)
     user_dn, _ = udm.create_user(position=container_dn, wait_for_replication=False)
+    uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     udm.remove_object('users/user', dn=user_dn)
     udm.remove_object('container/cn', dn=container_dn)
-    deleted_dn = _deleted_object_dn(user_dn)
+    deleted_dn = _deleted_object_dn(user_dn, uoid)
     module = udm_rest.get('recyclebin/removedobject')
     deleted_obj = module.get(deleted_dn)
     with pytest.raises(UnprocessableEntity) as exc_info:
