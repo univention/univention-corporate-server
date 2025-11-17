@@ -83,8 +83,12 @@ class RecycleBinListener(ListenerModuleHandler):
             self._populate_cache()
             self._cache_initialized = True
 
+        try:
+            uoid = old['univentionObjectIdentifier'][0].decode('UTF-8')
+        except KeyError:
+            raise Exception('missing UOID', dn, old)
+
         recyclebin_dn = self._move_deleted_object_to_recyclebin(dn, old, object_type)
-        uoid = old['univentionObjectIdentifier'][0].decode('UTF-8')
         if recyclebin_dn:
             self.deleted_objects_cache[dn] = uoid
 
