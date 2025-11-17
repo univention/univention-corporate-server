@@ -47,13 +47,6 @@ options = {
 }
 
 property_descriptions = {
-    'originalObjectType': univention.admin.property(
-        short_description=_('Original Object Type'),
-        long_description=_('UDM module type of the original object.'),
-        syntax=udm_syntax.RecycleBinSupportedModules,
-        may_change=False,
-        required=True,
-    ),
     'originalDN': univention.admin.property(
         short_description=_('Original DN'),
         long_description=_('Distinguished name of the original object before deletion.'),
@@ -62,6 +55,44 @@ property_descriptions = {
         required=True,
         include_in_default_search=True,
         identifies=True,
+    ),
+    'originalUniventionObjectIdentifier': univention.admin.property(
+        short_description=_('Original Object Identifier'),
+        long_description=_('UniventionObjectIdentifier of the deleted object.'),
+        syntax=udm_syntax.UUID,
+        may_change=False,
+        required=True,
+        identifies=True,
+    ),
+    'originalObjectType': univention.admin.property(
+        short_description=_('Original Object Type'),
+        long_description=_('UDM module type of the original object.'),
+        syntax=udm_syntax.RecycleBinSupportedModules,
+        may_change=False,
+        required=True,
+    ),
+    'originalObjectClasses': univention.admin.property(
+        short_description=_('Original object classes'),
+        long_description=_('Object classes of the deleted object.'),
+        syntax=udm_syntax.string,
+        may_change=False,
+        required=False,
+        multivalue=True,
+        dontsearch=True,
+    ),
+    'originalEntryUUID': univention.admin.property(
+        short_description=_('Original EntryUUID'),
+        long_description=_('EntryUUID of the deleted object.'),
+        syntax=udm_syntax.UUID,
+        may_change=False,
+        required=True,
+    ),
+    'originalName': univention.admin.property(
+        short_description=_('Original Name'),
+        long_description=_('Original name of the deleted object (uid for users, cn for groups).'),
+        syntax=udm_syntax.string,
+        may_change=False,
+        include_in_default_search=True,
     ),
     'purgeAt': univention.admin.property(
         short_description=_('Delete At'),
@@ -84,36 +115,6 @@ property_descriptions = {
         multivalue=True,
         may_change=False,
         dontsearch=True,
-    ),
-    'originalUniventionObjectIdentifier': univention.admin.property(
-        short_description=_('Original Object Identifier'),
-        long_description=_('UniventionObjectIdentifier of the deleted object.'),
-        syntax=udm_syntax.UUID,
-        may_change=False,
-        required=True,
-    ),
-    'originalName': univention.admin.property(
-        short_description=_('Original Name'),
-        long_description=_('Original name of the deleted object (uid for users, cn for groups).'),
-        syntax=udm_syntax.string,
-        may_change=False,
-        include_in_default_search=True,
-    ),
-    'originalObjectClasses': univention.admin.property(
-        short_description=_('Original object classes'),
-        long_description=_('Object classes of the deleted object.'),
-        syntax=udm_syntax.string,
-        may_change=False,
-        required=False,
-        multivalue=True,
-        dontsearch=True,
-    ),
-    'originalEntryUUID': univention.admin.property(
-        short_description=_('Original EntryUUID'),
-        long_description=_('EntryUUID of the deleted object.'),
-        syntax=udm_syntax.UUID,
-        may_change=False,
-        required=True,
     ),
 }
 
@@ -197,13 +198,6 @@ class object(simpleLdap):
         self.options.extend(self.foreign_options)
         self.policies.extend(self.foreign_policies)
         self.save()
-
-    def _ldap_dn(self, *args, **kwargs) -> str:
-        dn = super()._ldap_dn(*args, **kwargs)
-        exploded = ldap.dn.str2dn(dn)
-        exploded[0].append(('univentionRecycleBinOriginalUniventionObjectIdentifier', self.info['originalUniventionObjectIdentifier'], ldap.AVA_STRING))
-        dn = ldap.dn.dn2str(exploded)
-        return dn
 
     def open_guardian(self):
         pass  # lazy loading calls this for users/user
