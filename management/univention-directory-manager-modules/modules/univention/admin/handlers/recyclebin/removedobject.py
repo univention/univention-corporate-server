@@ -208,6 +208,34 @@ class object(simpleLdap):
         # return ldap.dn.explode_rdn(self.dn, True)[0]
         return self.oldattr.get('uid', self.oldattr.get('cn', [self.dn.encode('UTF-8')]))[0].decode('UTF-8')
 
+    @property
+    def descriptions(self):
+        # caution! We are modifying the module (not object's!) property_descriptions here
+        # descriptions = super().descriptions
+        descriptions = copy.deepcopy(default_property_descriptions)
+        if 'originalObjectType' not in self.info:
+            return descriptions
+
+        module = univention.admin.modules.get(self.info['originalObjectType'])
+        if not module:
+            log.error('Original object type %s not found', self.info['originalObjectType'])
+            return descriptions
+
+        # add original properties to description
+        for pname, prop in module.property_descriptions.items():
+            if pname not in descriptions and pname != 'objectFlag':
+                # we need to do this for restore in UMC
+                # otherwise UMC complains about required properties
+                # of the original object that we don't have on the deleted object
+                descriptions[pname] = copy.deepcopy(prop)  # don't change original description!
+                descriptions[pname].may_change = False
+                descriptions[pname].readonly = True
+                descriptions[pname].identifies = False
+                descriptions[pname].required = False
+                descriptions[pname].prevent_umc_default_popup = True
+
+        return descriptions
+
     def _post_unmap(self, info: dict, oldattr: dict) -> dict:
         """Add computed originalName property"""
         # we can't store operational attribute memberOf at the deleted object, so we store it as reference, which we can convert back to memberOf
@@ -229,7 +257,8 @@ class object(simpleLdap):
     def _unmap_original_properties(self, info, oldattr):
         global options, property_descriptions
         options = copy.deepcopy(default_options)
-        property_descriptions = copy.deepcopy(default_property_descriptions)
+        property_descriptions = copy.deepcopy(default_property_descriptions)  # reset to original state for each object!
+        property_descriptions.update(self.descriptions)  # overwrite the module property descriptions!!
 
         if not self.dn or 'originalObjectType' not in info:
             return
@@ -248,26 +277,13 @@ class object(simpleLdap):
             # some properties are only unmapped in open() e.g. users/user:primaryGroup, groups/group:users,...
             obj.open()
         # we are in hell.. there are potential errors here.
-        # except primaryGroup !?
+        # except univention.admin.uexceptions.primaryGroup: !?
         except univention.admin.uexceptions.wrongObjectType:
             # ignore?
             return
         finally:
             self.lo.lo.base = base
         props = obj.info
-
-        # add original properties to description
-        for prop in obj.descriptions:
-            if prop not in self.descriptions and prop != 'objectFlag':
-                # we need to do this for restore in UMC
-                # otherwise UMC complains about required properties
-                # of the original object that we don't have on the deleted object
-                self.descriptions[prop] = copy.deepcopy(obj.descriptions[prop])  # don't change original description!
-                self.descriptions[prop].may_change = False
-                self.descriptions[prop].readonly = True
-                self.descriptions[prop].identifies = False
-                self.descriptions[prop].required = False
-                self.descriptions[prop].prevent_umc_default_popup = True
 
         for opt in module.options:
             if opt not in options and opt != 'defaut':
