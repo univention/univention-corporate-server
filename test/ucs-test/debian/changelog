@@ -1,3 +1,9 @@
+ucs-test (12.3.36) unstable; urgency=medium
+
+  * Bug #58792: Add tests for new UDM REST API endpoint
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 17 Nov 2025 01:05:50 +0100
+
 ucs-test (12.3.35) unstable; urgency=medium
 
   * Issue univention/dev/projects/provisioning#99: clean up after
