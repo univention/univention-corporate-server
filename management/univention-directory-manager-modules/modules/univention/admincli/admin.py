@@ -991,16 +991,18 @@ class CLI:
                 if not univention.admin.modules.virtual(module_name):
                     object.open()
                     for key in object.keys():
-                        if module.property_descriptions[key].lazy_loading_fn and key in properties:
-                            module.property_descriptions[key].lazy_load(object)
+                        prop = object.descriptions[key]
+                        if prop.lazy_loading_fn and key in properties:
+                            prop.lazy_load(object)
                     for key, value in sorted(object.items()):
-                        if not module.property_descriptions[key].show_in_lists:
+                        prop = object.descriptions[key]
+                        if not prop.show_in_lists:
                             continue
                         if key not in properties and '*' not in properties:
                             continue
 
-                        s = module.property_descriptions[key].syntax
-                        if module.property_descriptions[key].multivalue:
+                        s = prop.syntax
+                        if prop.multivalue:
                             for v in value:
                                 if s.tostring(v):
                                     print('  %s: %s' % (key, s.tostring(v)), file=self.stdout)
