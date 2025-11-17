@@ -1755,6 +1755,12 @@ define([
 					},
 					description: _('Value of the LDAP object.')
 				};
+				var orgObjectTypeColumn = {
+					name: 'originalObjectType',
+					label: _('Object type'),
+					description: _('Original objec type of the removed object.')
+					// TODO: transform users/user -> User?!
+				};
 
 				var identifies = this._searchForm ? this.identityProperty() : null;
 				var selected_value = this._searchForm ? this._searchForm._widgets.objectProperty.get('value') : 'None';
@@ -1771,6 +1777,9 @@ define([
 				if (~array.indexOf(['dns/dns'/*, 'dhcp/dhcp'*/], objectType)) {
 //				if (customColumns.length) {
 					columns.push(valueColumn);
+				}
+				if (objectType == 'recyclebin/removedobject' && selected_value !== 'originalObjectType') {
+					columns.push(orgObjectTypeColumn);
 				}
 				if (this._tree || numObjTypes > 2) {
 					columns.push(typeColumn);
