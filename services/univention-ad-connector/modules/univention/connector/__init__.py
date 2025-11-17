@@ -55,7 +55,6 @@ from six.moves import cPickle as pickle
 
 import univention.admin.modules
 import univention.admin.objects
-import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.debug as ud_c
 import univention.debug2 as ud
@@ -1256,16 +1255,7 @@ class ucs(object):
         response = {}
 
         serverctrls = [PostReadControl(True, ['entryUUID', 'entryCSN'])]
-        try:
-            res = ucs_object.create(serverctrls=serverctrls, response=response)
-        except univention.admin.uexceptions.objectExists:
-            if property_type == 'ou':
-                # an ou that we never saw in the connector was renamed in AD,
-                # but this new ou already exists in UCS, ignore this
-                # TODO: sync content of AD ou to UCS (currently manually resync_object_from_ad.py)
-                res = True
-            else:
-                raise
+        res = ucs_object.create(serverctrls=serverctrls, response=response)
         if res:
             for c in response.get('ctrls', []):
                 if c.controlType == PostReadControl.controlType:
@@ -1434,9 +1424,7 @@ class ucs(object):
             # Corrections in case the target situation is unexpected:
             if old_object and object['modtype'] == 'add':
                 object['modtype'] = 'modify'
-            if not old_object and object['modtype'] == 'modify':
-                object['modtype'] = 'add'
-            if not old_object and object['modtype'] == 'move':
+            if not old_object and object['modtype'] in ['modify', 'move']:
                 if self.get_ucs_ldap_object_dn(object['dn']):
                     object['modtype'] = 'modify'
                 else:
