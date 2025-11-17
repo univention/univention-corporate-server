@@ -91,9 +91,10 @@ objectclass ( 1.3.6.1.4.1.10176.4221.2.2 NAME 'univentionRecycleBinObject'
 	SUP top STRUCTURAL
 	MUST ( univentionRecycleBinOriginalDN $
 	       univentionRecycleBinDeleteAt $
+	       univentionRecycleBinOriginalUniventionObjectIdentifier $
+	       univentionRecycleBinOriginalObjectClass $
+	       univentionRecycleBinDeletionDate $
+	       univentionRecycleBinOriginalEntryUUID $
 	       univentionRecycleBinOriginalType )
 	MAY ( univentionObjectIdentifier $ univentionObjectType $
-	      univentionRecycleBinOriginalObjectClass $
-	      univentionRecycleBinOriginalEntryUUID $
-	      univentionRecycleBinOriginalUniventionObjectIdentifier $
 	      univentionRecycleBinReference ) )
