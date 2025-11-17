@@ -460,14 +460,14 @@ def test_move_plus_one_ou_in_ad(udm, mode, lo, ldap_base):
         user_dn = ad.ucs_dn(user_dn_ad)
         assert ad.get(user_dn_ad)
         assert lo.get(user_dn)
-        assert user_dn == f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
+        assert user_dn.replace('\\2b1', '\\+1') == f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
         assert user_sid_ad == ad.get(user_dn_ad)['objectSid'][0], 'SID for user changed, new object in AD after move in UCS!'
         # and another change, just to be sure
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
         verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn, setup.group1_dn}, {group3_dn_ad, setup.group1_dn_ad})
         assert len(ad.initial_tracebacks) == len(ad.tracebacks())
-        # TODO: somehow remove this mapping in sync mode?
+        # check no mapping for intermediate objects
         intermediate_user_dn = f'uid={username},ou=\\2b1,ou={ou1_name},{ldap_base}'.casefold()
         intermediate_user_dn_ad = f'cn={username},ou=\+1,ou={ou1_name},{ad.ldap_base}'.casefold()  # noqa: W605
         assert not ad.ad_dn(intermediate_user_dn)
