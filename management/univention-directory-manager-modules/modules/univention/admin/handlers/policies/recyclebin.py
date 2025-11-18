@@ -95,6 +95,7 @@ property_descriptions = dict({
         short_description=_('Ignored object classes'),
         long_description=_('Objects having one of these object classes will not be moved to recyclebin.'),
         syntax=udm_syntax.ldapObjectClass,
+        multivalue=True,
     ),
 }, **dict([
     requiredObjectClassesProperty(editable=False),
