@@ -32,7 +32,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""Check if users are member of their primary group."""
+"""
+Check if users are member of their primary group and if members of groups exist as objects.
+
+If BASEDN is a user object or for all user objects in BASEDN:
+  Get primary group of user and add user to primary group if not already member.
+
+If BASEDN is a group object or for all group objects in BASEDN:
+  Check if members of group still exist and remove non-existing members.
+"""
 
 from __future__ import print_function
 
@@ -40,9 +48,11 @@ import sys
 from argparse import ArgumentParser
 
 import ldap
+# from ldap.controls.libldap import AssertionControl
 from ldap.filter import filter_format
 
-import univention.uldap
+import univention.admin.uexceptions
+import univention.admin.uldap
 from univention.config_registry import ConfigRegistry
 
 
@@ -66,14 +76,20 @@ def fatal(msg, *args, **kwargs):
     sys.exit(1)
 
 
-def check_primary(conn, basedn):
+def check_primary(lo, basedn, ldap_base, dry_run=False):
     """Check if users are member of their primary group."""
-    info("Checking if users are member of their primary group...")
+    info("Checking if users are member of their primary group (search for users in %s) ...", basedn)
     try:
         # GID's will only be found in posixAccount
-        user_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, '(objectClass=posixAccount)', ['gidNumber', 'uid'])
-    except ldap.NO_SUCH_OBJECT:
+        user_result = lo.search('(objectClass=posixAccount)', base=basedn, scope='sub', attr=['gidNumber', 'uid', 'memberOf'])
+    except univention.admin.uexceptions.noObject:
         fatal("ldap search in %s failed (no such base dn)", basedn)
+
+    # cache gid->groupDn, we just want to avoid to search for the same gid
+    # this should be OK, we lo.get the currenty object in case we hit the cache
+    # we need this, in big environments this search for (gidNumber=%s) for every user takes very long
+    group_gid_dn_cache = {}
+
     count_changes = 0
     for user_dn, account in user_result:
         user_uid = account['uid'][0].decode('utf-8')
@@ -82,113 +98,130 @@ def check_primary(conn, basedn):
             warn("posixAccount without gidNumber: %s", user_dn)
 
         # search corresponding group
-        group_result = conn.search_s(
-            basedn, ldap.SCOPE_SUBTREE,
-            filter_format('(&(objectClass=univentionGroup)(gidNumber=%s))', (user_gid,)),
-            ['uniqueMember', 'memberUid'],
-        )
+        if group_gid_dn_cache.get(user_gid):
+            _dn = group_gid_dn_cache[user_gid]
+            attrs = lo.get(_dn, attr=['uniqueMember', 'memberUid', 'entryCSN'], required=True)
+            group_result = [(_dn, attrs)]
+        else:
+            filter_s = filter_format('(&(objectClass=univentionGroup)(gidNumber=%s))', (user_gid,))
+            group_result = lo.search(filter_s, base=ldap_base, scope='sub', attr=['uniqueMember', 'memberUid', 'entryCSN'])
 
         # there must be exactly one group with this gid
         if len(group_result) > 1:
             warn("found more than one univentionGroup for gidNumber=%s!", user_gid)
         elif len(group_result) < 1 and user_gid != "0":
             warn("found no univentionGroup for gidNumber=%s!", user_gid)
+
         # we change them all -- the user needs to delete all but one of them
         for group_dn, group in group_result:
+            group_gid_dn_cache[user_gid] = group_dn
             # look for the needed entry
             group_member_dns = [dn.decode('utf-8').lower() for dn in group.get('uniqueMember', [])]
             group_member_uids = [uid.decode('utf-8').lower() for uid in group.get('memberUid', [])]
+            current_entry_csn = group['entryCSN'][0].decode('utf-8')
             modlist = []
             if user_dn.lower() not in group_member_dns:
                 modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn.encode('utf-8')))
+                info("Change: primary group of %s is missing uniqueMember, adding to group %s", user_dn, group_dn)
             if user_uid.lower() not in group_member_uids:
                 modlist.append((ldap.MOD_ADD, 'memberUid', user_uid.encode('utf-8')))
+                info("Change: primary group of %s is missing memberUid, adding to group %s", user_dn, group_dn)
             # no entry found, going to add one
-            if modlist:
-                info("Adding uniqueMember and memberUid entry for '%s' in '%s'", user_dn, group_dn)
-                try:
-                    conn.modify_s(group_dn, modlist)
+            if modlist and not dry_run:
+                if modify_group(lo, group_dn, modlist, current_entry_csn):
                     count_changes += 1
-                except ldap.LDAPError:
-                    warn("failed to modify group %s", group_dn)
     info("Checked %d posixAccounts, fixed %d issues.", len(user_result), count_changes)
 
 
-def check_groups(conn, basedn):
-    """Check if members of group exist."""
-    info("Checking if group-members exist...")
+def modify_group(lo, dn, modlist, entry_csn):
     try:
-        group_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, '(objectClass=posixGroup)', ['uniqueMember', 'memberUid'])
-    except ldap.NO_SUCH_OBJECT:
+        # use modify_ext_s directly, we don't want uldap to interfere with our "well-crafted" modlist
+        # Weird when changing the group with serverctrls memberOf is not updated!
+        # lo.lo.lo.modify_ext_s(dn, modlist, serverctrls=[AssertionControl(True, f'(entryCSN={entry_csn})')])
+        lo.lo.lo.modify_ext_s(dn, modlist)
+    except ldap.LDAPError as exc:
+        warn("ERROR: failed to update group '%s': %s", dn, exc)
+        return False
+    return True
+
+
+def check_groups(lo, basedn, dry_run=False):
+    """Check if members of group exist."""
+    info("Checking if group-members exist (searching for groups in %s) ...", basedn)
+    try:
+        group_result = lo.search('(objectClass=posixGroup)', base=basedn, scope='sub', attr=['uniqueMember', 'memberUid', 'entryCSN'])
+    except univention.admin.uexceptions.noObject:
         fatal("ldap search in %s failed (no such base dn)", basedn)
-
     count_changes = 0
-    for group_dn, group in group_result:
-        count_changes += check_groups_by_dn(conn, group_dn, group)
-        count_changes += check_groups_by_uid(conn, basedn, group_dn, group)
 
+    # cache for members dn's to avoid getting the same member objects from LDAP for every group
+    # cache[dn]=uid -> dn exists with uid
+    # cache[dn]=False -> dn does not exist
+    # we need this getting all members for big groups takes very long, doing this for multiple big groups even longer
+    member_cache = {}
+
+    for group_dn, group in group_result:
+        count_changes += check_group(lo, group_dn, group, member_cache, dry_run=dry_run)
     info("Checked %d posixGroups, fixed %d issues.", len(group_result), count_changes)
 
 
-def check_groups_by_dn(conn, group_dn, group):
+def check_group(lo, group_dn, group, member_cache, dry_run=False):
     """Check by 'uniqueMember'."""
     group_member_dns = [dn.decode('utf-8') for dn in group.get('uniqueMember', [])]
-    count_changes = 0
-    remmembers = set()
+    group_member_uids = [dn.decode('utf-8') for dn in group.get('memberUid', [])]
+    remove_member_dns = set()
+    actual_member_uids = set()
+    current_entry_csn = group['entryCSN'][0].decode('utf-8')
+    modlist = []
+
+    info("Checking group %s", group_dn)
+
     for member_dn in group_member_dns:
-        # Split uid=USER, cn=user,dc=FQDN
-        try:
-            member_filter, base = member_dn.split(',', 1)
-        except ValueError:
-            remmembers.add(member_dn)
+        exploded = ldap.dn.str2dn(member_dn)
+
+        # check cache first
+        if member_dn in member_cache:
+            if member_cache[member_dn]:
+                actual_member_uids.add(member_cache[member_dn])
+            else:
+                remove_member_dns.add(member_dn)
             continue
 
+        # uid from dn (users)
+        uid = exploded[0][0][1] if exploded[0][0][0] == 'uid' else None
         try:
-            member_result = conn.search_s(base, ldap.SCOPE_ONELEVEL, member_filter, ['objectClass'])
-        except ldap.LDAPError:
-            warn("Manual: Search for member DN '%s' of group '%s' failed", member_dn, group_dn)
-        else:
-            if len(member_result) > 1:
-                warn("Manual: Multiple members for DN '%s' of group '%s'", member_dn, group_dn)
-            elif len(member_result) < 1:
-                warn("No member for DN '%s', will be removed", member_dn)
-                remmembers.add(member_dn)
-    for member_dn in remmembers:
-        info("Removing member DN '%s' from '%s'", member_dn, group_dn)
-        modlist = [(ldap.MOD_DELETE, 'uniqueMember', member_dn.encode('utf-8'))]
-        try:
-            conn.modify_s(group_dn, modlist)
-            count_changes += 1
-        except ldap.LDAPError:
-            warn("failed to remove DN '%s' from group '%s'", member_dn, group_dn)
-    return count_changes
+            attrs = lo.get(member_dn, attr=['uid'], required=True)
+        except ldap.NO_SUCH_OBJECT:
+            remove_member_dns.add(member_dn)
+            member_cache[member_dn] = False
+            continue
+        # get uid from object if not defined in dn (computers, ...)
+        uid = uid or attrs.get('uid', [b''])[0].decode('UTF-8')
+        if uid:
+            actual_member_uids.add(uid)
+            member_cache[member_dn] = uid
 
+    # handle uniqueMember
+    for member_dn in remove_member_dns:
+        info("Change: Removing uniqueMember '%s' from '%s'", member_dn, group_dn)
+        modlist.append((ldap.MOD_DELETE, 'uniqueMember', member_dn.encode('utf-8')))
+    # handle memberUid
+    remove_member_uid = set(group_member_uids) - actual_member_uids
+    add_member_uid = actual_member_uids - set(group_member_uids)
+    # create modlist
+    for uid in remove_member_uid:
+        info("Change: removing memberUid '%s' from '%s'", uid, group_dn)
+        modlist.append((ldap.MOD_DELETE, 'memberUid', uid.encode('utf-8')))
+    for uid in add_member_uid:
+        info("Change: adding memberUid '%s' to '%s'", uid, group_dn)
+        modlist.append((ldap.MOD_ADD, 'memberUid', uid.encode('utf-8')))
 
-def check_groups_by_uid(conn, basedn, group_dn, group):
-    """Check by 'memberUid'."""
-    group_member_uids = [uid.decode('utf-8') for uid in group.get('memberUid', [])]
-    count_changes = 0
-    remmembers = set()
-    for member_uid in group_member_uids:
-        try:
-            member_result = conn.search_s(basedn, ldap.SCOPE_SUBTREE, filter_format('(uid=%s)', (member_uid,)), ['objectClass'])
-        except ldap.LDAPError:
-            warn("Manual: Search for member UID '%s' of group '%s' failed", member_uid, group_dn)
-        else:
-            if len(member_result) > 1:
-                warn("Manual: Multiple members for UID '%s' of group '%s'", member_uid, group_dn)
-            elif len(member_result) < 1:
-                warn("No member for UID '%s', will be removed", member_uid)
-                remmembers.add(member_uid)
-    for member_uid in remmembers:
-        info("Removing member UID '%s' from '%s'", member_uid, group_dn)
-        modlist = [(ldap.MOD_DELETE, 'memberUid', member_uid.encode('utf-8'))]
-        try:
-            conn.modify_s(group_dn, modlist)
-            count_changes += 1
-        except ldap.LDAPError:
-            warn("Failed to remove UID '%s' from group '%s'", member_uid, group_dn)
-    return count_changes
+    if not modlist or dry_run:
+        return 0
+
+    modify_group(lo, group_dn, modlist, current_entry_csn)
+
+    return len(modlist)
 
 
 def main():
@@ -197,21 +230,25 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("-b", "--base-dn", dest="basedn", action="store", help="ldap base DN for user search")
     parser.add_argument("-c", "--check", dest="check", action="store_true", help="Only check, do not modify")
+    parser.add_argument("--no-check-primary-group", dest="check_primary_group", action="store_false", help="Do not check primary group for user objects.")
+    parser.add_argument("--no-check-groups", dest="check_groups", action="store_false", help="Do not check for non-existing members for group objects.")
+    # TODO: parser.add_argument("-u", "--user-groups", action="store_true", help="If BASEDN is a user object or for all user objects in BASEDN, check all groups the user belongs to for non-existing members")
+    # TODO: enable member cache
     options = parser.parse_args()
 
     ucr = ConfigRegistry()
     ucr.load()
     basedn = ucr['ldap/base']
 
-    conn = univention.uldap.getAdminConnection().lo
+    lo, _ = univention.admin.uldap.getAdminConnection()
 
     if options.basedn:
         basedn = options.basedn
-    if options.check:
-        conn.modify_s = lambda dn, modlist: None
 
-    check_primary(conn, basedn)
-    check_groups(conn, basedn)
+    if options.check_primary_group:
+        check_primary(lo, basedn, ldap_base=ucr['ldap/base'], dry_run=options.check)
+    if options.check_groups:
+        check_groups(lo, basedn, dry_run=options.check)
     if warn.warnings:
         info("There were %d warning(s)!", warn.warnings)
         sys.exit(2)
