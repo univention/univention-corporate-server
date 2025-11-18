@@ -21,9 +21,9 @@ _ = translation.translate
 class recycleBinFixedAttributes(univention.admin.syntax.select):
     name = 'recycleBinFixedAttributes'
     choices = [
-        ('univentionRecycleBinEnabled', _('Recyclebin enabled')),
-        ('univentionRecycleBinUDMModules', _('UDM modules to recycle')),
-        ('univentionRecycleBinRetentionDays', _('Retention days')),
+        ('univentionRecycleBinPolicyEnabled', _('Recyclebin enabled')),
+        ('univentionRecycleBinPolicyUDMModules', _('UDM modules to recycle')),
+        ('univentionRecycleBinPolicyRetentionDays', _('Retention days')),
     ]
 
 
@@ -117,10 +117,10 @@ layout = [
 
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
-mapping.register('enabled', 'univentionRecycleBinEnabled', None, udm_mapping.ListToString)
-mapping.register('udm_modules', 'univentionRecycleBinUDMModules')
-mapping.register('retention_days', 'univentionRecycleBinRetentionDays', None, udm_mapping.ListToString)
-mapping.register('ignored_object_classes', 'univentionRecycleBinIgnoredObjectClasses')
+mapping.register('enabled', 'univentionRecycleBinPolicyEnabled', None, udm_mapping.ListToString)
+mapping.register('udm_modules', 'univentionRecycleBinPolicyUDMModules')
+mapping.register('retention_days', 'univentionRecycleBinPolicyRetentionDays', None, udm_mapping.ListToString)
+mapping.register('ignored_object_classes', 'univentionRecycleBinPolicyIgnoredObjectClasses')
 register_policy_mapping(mapping)
 # fmt: on
 

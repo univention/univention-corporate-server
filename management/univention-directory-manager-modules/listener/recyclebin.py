@@ -177,12 +177,12 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def _get_recyclebin_policy(self, policy_dn, original_type):
         """Check a single policy for retention settings. Returns retention days or None."""
-        policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinEnabled=TRUE)(univentionRecycleBinUDMModules=%s))', [original_type])
+        policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinPolicyEnabled=TRUE)(univentionRecycleBinPolicyUDMModules=%s))', [original_type])
         try:
-            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinRetentionDays', 'univentionRecycleBinIgnoredObjectClasses']):
+            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinPolicyRetentionDays', 'univentionRecycleBinPolicyIgnoredObjectClasses']):
                 return Policy(
-                    retention_days=int(attr.get('univentionRecycleBinRetentionDays', [b'180'])[0].decode('ASCII')),
-                    ignored_object_classes=[x.decode('ASCII') for x in attr.get('univentionRecycleBinIgnoredObjectClasses', [])],
+                    retention_days=int(attr.get('univentionRecycleBinPolicyRetentionDays', [b'180'])[0].decode('ASCII')),
+                    ignored_object_classes=[x.decode('ASCII') for x in attr.get('univentionRecycleBinPolicyIgnoredObjectClasses', [])],
                 )
         except noObject:
             return None
