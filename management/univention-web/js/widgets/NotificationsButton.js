@@ -266,6 +266,11 @@ define([
 			this.notificationsPreview.addNotification(item);
 		},
 
+		_addPassiveNotification: function(item) {
+			// Please dont use this. This is for the summit only
+			this.notificationsContainer.addNotification(lang.clone(item));
+		},
+
 		addWarning: function(item) {
 			item.type = 'warning';
 			this.addNotification(item);
@@ -299,6 +304,13 @@ define([
 	NotificationsButton.addNotification = function(item) {
 		notificationsButtonCreatedDeferred.then(function(notificationsButton) {
 			notificationsButton.addNotification(item);
+		});
+	};
+
+	NotificationsButton._addPassiveNotification = function(item) {
+		// Please dont use this. This is for the summit only
+		notificationsButtonCreatedDeferred.then(function(notificationsButton) {
+			notificationsButton._addPassiveNotification(item);
 		});
 	};
 
