@@ -1,3 +1,9 @@
+ucs-test (10.0.24-36) unstable; urgency=medium
+
+  * Bug #58818: test_move_ad_ou_to_allowsubtree
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Nov 2025 17:12:45 +0100
+
 ucs-test (10.0.24-35) unstable; urgency=medium
 
   * Bug #52308: Add test for new UCR variables `appcenter/update/skip-zsync` and
