@@ -12,13 +12,13 @@ This ensures that deleted objects are no longer visible through regular LDAP sea
 Recycle bin objects retain their original LDAP structure, except for LDAP operational attributes, and use the `extensibleObject` object class.
 This allows regular LDAP tools to operate on them without requiring schema mapping or serialization formats (such as JSON blobs) that could break binary attribute encodings (e.g. `jpegPhoto`).
 
-Objects are created below `cn=recyclebin,cn=internal` with the original DN encoded as the first RDN, for example:
+Objects are created below `cn=recyclebin,cn=internal` with the original DN and original object identifier encoded as the first multivalued RDN, for example:
 
 ```
-univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org,cn=recyclebin,cn=internal
+univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org+univentionObjectIdentifier=43026e47-f1e8-4e85-bc87-b3adde0b3f4d,cn=recyclebin,cn=internal
 ```
 
-This makes lookups straightforward.
+This makes lookups straightforward (at least before the UOI was added).
 
 Each recyclebin object includes metadata such as:
 
@@ -41,10 +41,14 @@ When the object expires, OpenLDAP logs the removal if the `STATS` log level is e
 The log entry appears in syslog at `INFO` level, for example:
 
 ```
-DDS dn="univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org,cn=recyclebin,cn=internal"
+DDS dn="univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org+univentionObjectIdentifier=43026e47-f1e8-4e85-bc87-b3adde0b3f4d,cn=recyclebin,cn=internal"
 ```
 
 This approach eliminates the need for scheduled cleanup jobs.
+
+## Ensurance of uniqueness
+If, for example, a `uid=exam-foo,...` was removed, later on a similar object re-added with the same DN, and finally removed again the corresponding recyclebin entry would already exists.
+By adding the `univentionObjectIdentifier` to the DN of the recyclebin object, it was ensured that even those entries can be added to the recyclebin.
 
 ## Implementation via Listener module
 
