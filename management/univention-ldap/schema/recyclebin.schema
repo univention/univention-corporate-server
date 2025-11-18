@@ -17,6 +17,11 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.2 NAME 'univentionRecycleBinUDMModules'
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.3.6.1.4.1.10176.4221.1.3 NAME 'univentionRecycleBinIgnoredObjectClasses'
+	DESC 'List of object classes for which no recyclebin entry should be created'
+	EQUALITY objectIdentifierMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
+
 attributetype ( 1.3.6.1.4.1.10176.4221.1.4 NAME 'univentionRecycleBinRetentionDays'
 	DESC 'Number of days to keep objects in recyclebin'
 	EQUALITY integerMatch
@@ -34,12 +39,6 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.5 NAME 'univentionRecycleBinOriginalDN'
 
 attributetype ( 1.3.6.1.4.1.10176.4221.1.6 NAME 'univentionRecycleBinDeletionDate'
 	DESC 'Timestamp when the object was deleted'
-	EQUALITY generalizedTimeMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
-	SINGLE-VALUE )
-
-attributetype ( 1.3.6.1.4.1.10176.4221.1.14 NAME 'univentionRecycleBinDeleteAt'
-	DESC 'Timestamp when the object should be permanently deleted based on retention policy'
 	EQUALITY generalizedTimeMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
 	SINGLE-VALUE )
@@ -70,6 +69,12 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.13 NAME 'univentionRecycleBinOriginalUn
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
 	SINGLE-VALUE )
 
+attributetype ( 1.3.6.1.4.1.10176.4221.1.14 NAME 'univentionRecycleBinDeleteAt'
+	DESC 'Timestamp when the object should be permanently deleted based on retention policy'
+	EQUALITY generalizedTimeMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+	SINGLE-VALUE )
+
 attributetype ( 1.3.6.1.4.1.10176.4221.1.15 NAME 'univentionRecycleBinReference'
 	DESC 'Generic references for restoring relationships: format=source_attr:target_module:target_property:lookup_attribute:lookup_value'
 	EQUALITY caseIgnoreMatch
@@ -84,6 +89,7 @@ objectclass ( 1.3.6.1.4.1.10176.4221.2.1 NAME 'univentionRecycleBinPolicy'
 	SUP univentionPolicy STRUCTURAL
 	MAY ( univentionRecycleBinEnabled $
 	      univentionRecycleBinUDMModules $
+	      univentionRecycleBinIgnoredObjectClasses $
 	      univentionRecycleBinRetentionDays ) )
 
 objectclass ( 1.3.6.1.4.1.10176.4221.2.2 NAME 'univentionRecycleBinObject'

@@ -91,6 +91,11 @@ property_descriptions = dict({
         syntax=udm_syntax.integer,
         default='180',
     ),
+    'ignored_object_classes': univention.admin.property(
+        short_description=_('Ignored object classes'),
+        long_description=_('Objects having one of these object classes will not be moved to recyclebin.'),
+        syntax=udm_syntax.ldapObjectClass,
+    ),
 }, **dict([
     requiredObjectClassesProperty(editable=False),
     prohibitedObjectClassesProperty(editable=False),
@@ -105,6 +110,7 @@ layout = [
         'enabled',
         'retention_days',
         'udm_modules',
+        'ignored_object_classes',
     ]),
     policy_object_tab(),
 ]
@@ -114,6 +120,7 @@ mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('enabled', 'univentionRecycleBinEnabled', None, udm_mapping.ListToString)
 mapping.register('udm_modules', 'univentionRecycleBinUDMModules')
 mapping.register('retention_days', 'univentionRecycleBinRetentionDays', None, udm_mapping.ListToString)
+mapping.register('ignored_object_classes', 'univentionRecycleBinIgnoredObjectClasses')
 register_policy_mapping(mapping)
 # fmt: on
 

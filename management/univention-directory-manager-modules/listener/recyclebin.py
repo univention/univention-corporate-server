@@ -5,6 +5,7 @@
 """Listener module for creating recyclebin objects and keep references updated."""
 
 import datetime
+from dataclasses import dataclass
 
 import ldap.dn
 from ldap.extop.dds import RefreshRequest, RefreshResponse
@@ -17,6 +18,14 @@ from univention.config_registry import ucr
 from univention.listener import ListenerModuleHandler
 
 
+@dataclass
+class Policy:
+    """Recyclebin policy settings"""
+
+    retention_days: int
+    ignored_object_classes: list[str]
+
+
 class RecycleBinListener(ListenerModuleHandler):
     """Listener module to move removed objects into the recyclebin and keep references in sync."""
 
@@ -24,6 +33,7 @@ class RecycleBinListener(ListenerModuleHandler):
         name = 'recyclebin'
         description = 'Recyclebin listener'
         ldap_filter = '(|(univentionObjectType=users/user)(univentionObjectType=groups/group))'  # TODO: automatically add all supported modules
+        _ldap_filter = '(%s)' % '|'.join([filter_format('(univentionObjectType=%s)', [mod.module]) for mod in univention.admin.modules.modules.values() if getattr(mod, 'supports_recyclebin', False)])
         attributes = []
 
     def __init__(self, *args, **kwargs):
@@ -99,14 +109,20 @@ class RecycleBinListener(ListenerModuleHandler):
         Returns:
             dn: DN of deleted object or False
         """
-        retention_days = self._get_recyclebin_retention_days(original_dn, original_type, original_attrs)
-        if retention_days is None:
+        policy = self._select_recyclebin_policy(original_dn, original_type, original_attrs)
+        if policy is None:
             self.logger.debug('Object not moved to recyclebin (no policy): %s', original_dn)
+            return False
+
+        actual_ocs = {x.decode('UTF-8').lower() for x in original_attrs['objectClass']}
+        prohibited_ocs = {x.lower() for x in policy.ignored_object_classes}
+        if actual_ocs & prohibited_ocs:
+            self.logger.debug('Object not moved to recyclebin (forbidden object class): %s', original_dn)
             return False
 
         now = datetime.datetime.now(datetime.UTC)
         deletion_time = now.strftime('%Y%m%d%H%M%SZ')
-        delete_at = now + datetime.timedelta(days=retention_days)
+        delete_at = now + datetime.timedelta(days=policy.retention_days)
         delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
 
         mod = univention.admin.modules.get('recyclebin/removedobject')
@@ -123,23 +139,22 @@ class RecycleBinListener(ListenerModuleHandler):
         obj.oldattr = original_attrs
         dn = obj.create(ignore_license=True)
 
-        self.logger.info('Created deleted object: %s (retention: %d days)', dn, retention_days)
+        self.logger.info('Created deleted object: %s (retention: %d days)', dn, policy.retention_days)
 
         # Set TTL for DDS automatic purging based on retention policy
-        ttl_seconds = retention_days * 60 * 60 * 24
+        ttl_seconds = policy.retention_days * 60 * 60 * 24
         refresh_req = RefreshRequest(entryName=dn, requestTtl=ttl_seconds)
         self.admin_lo.lo.lo.extop_s(refresh_req, extop_resp_class=RefreshResponse)
 
         return dn
 
-    def _get_recyclebin_retention_days(self, original_dn, original_type, old_attrs=None):
+    def _select_recyclebin_policy(self, original_dn, original_type, old_attrs=None):
         """Get retention time in days from recyclebin policy, or None if no policy applies or policy is disabled."""
         if old_attrs and 'univentionPolicyReference' in old_attrs:
             for policy_ref in old_attrs['univentionPolicyReference']:
-                policy_dn = policy_ref.decode('utf-8')
-                retention_days = self._check_policy_for_retention(policy_dn, original_type)
-                if retention_days is not None:
-                    return retention_days
+                policy = self._get_recyclebin_policy(policy_ref.decode('utf-8'), original_type)
+                if policy is not None:
+                    return policy
 
         current_dn = original_dn
         while current_dn:
@@ -147,26 +162,28 @@ class RecycleBinListener(ListenerModuleHandler):
 
             if attrs and 'univentionPolicyReference' in attrs:
                 for policy_ref in attrs['univentionPolicyReference']:
-                    policy_dn = policy_ref.decode('utf-8')
-                    retention_days = self._check_policy_for_retention(policy_dn, original_type)
-                    if retention_days is not None:
-                        return retention_days
+                    policy = self._get_recyclebin_policy(policy_ref.decode('utf-8'), original_type)
+                    if policy is not None:
+                        return policy
 
             current_dn = self.admin_lo.parentDn(current_dn)
 
         default_policy_dn = f'cn=default-recyclebin-policy,cn=recyclebin,cn=policies,{ucr["ldap/base"]}'
-        retention_days = self._check_policy_for_retention(default_policy_dn, original_type)
-        if retention_days is not None:
-            return retention_days
+        policy = self._get_recyclebin_policy(default_policy_dn, original_type)
+        if policy is not None:
+            return policy
 
         return None
 
-    def _check_policy_for_retention(self, policy_dn, original_type):
+    def _get_recyclebin_policy(self, policy_dn, original_type):
         """Check a single policy for retention settings. Returns retention days or None."""
         policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinEnabled=TRUE)(univentionRecycleBinUDMModules=%s))', [original_type])
         try:
-            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinRetentionDays']):
-                return int(attr.get('univentionRecycleBinRetentionDays', [b'180'])[0].decode('ASCII'))
+            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinRetentionDays', 'univentionRecycleBinIgnoredObjectClasses']):
+                return Policy(
+                    retention_days=int(attr.get('univentionRecycleBinRetentionDays', [b'180'])[0].decode('ASCII')),
+                    ignored_object_classes=[x.decode('ASCII') for x in attr.get('univentionRecycleBinIgnoredObjectClasses', [])],
+                )
         except noObject:
             return None
 
@@ -201,7 +218,7 @@ class RecycleBinListener(ListenerModuleHandler):
             uoid = self.deleted_objects_cache.get(member_dn)
             if not uoid:
                 continue
-            deleted_object_dn = self._get_recyclebin_dn_for_original(member_dn, uoid)
+            deleted_object_dn = self._get_recyclebin_dn(member_dn, uoid)
             deleted_object_attrs = self.admin_lo.get(deleted_object_dn, attr=['univentionRecycleBinOriginalType', 'univentionRecycleBinReference'])
             if deleted_object_attrs and 'univentionRecycleBinOriginalType' in deleted_object_attrs:
                 object_type = deleted_object_attrs['univentionRecycleBinOriginalType'][0].decode('UTF-8')
@@ -213,7 +230,7 @@ class RecycleBinListener(ListenerModuleHandler):
                     self.admin_lo.modify(deleted_object_dn, [('univentionRecycleBinReference', None, refs)])
                     self.logger.info('Added group reference to deleted object: %s', deleted_object_dn)
 
-    def _get_recyclebin_dn_for_original(self, dn, uoid):
+    def _get_recyclebin_dn(self, dn, uoid):
         """Generate recyclebin DN for original object."""
         rdn = ldap.dn.dn2str([[
             ('univentionRecycleBinOriginalDN', dn, ldap.AVA_STRING),
