@@ -291,6 +291,58 @@ class UDMRestClient:
                 response.failure(f'Delete failed: {response.status_code}')
                 return False
 
+    def move_object(self, object_type: str, object_dn: str, new_position: str, name: str | None = None) -> tuple[bool, str]:
+        """Move an object to a new position."""
+        success, obj_data = self.get_object(object_type, object_dn, name=f'get_{object_type.rsplit("/", maxsplit=1)[-1]}_for_move')
+        if not success:
+            return False, ''
+
+        rdn = object_dn.split(',', 1)[0]
+        new_dn = f'{rdn},{new_position}'
+
+        obj_data['position'] = new_position
+
+        move_name = name or f'move_{object_type.rsplit("/", maxsplit=1)[-1]}'
+
+        with self.make_request('PUT', f'{UDM_BASE_PATH}/{object_type}/{object_dn}', json=obj_data, name=move_name) as response:
+            if response.status_code in [200, 204]:
+                response.success()
+                return True, new_dn
+            else:
+                response.failure(f'Move failed: {response.status_code} - {response.text}')
+                return False, ''
+
+    def modify_group_membership(
+        self, group_dn: str, users_to_add: list[str] | None = None, users_to_remove: list[str] | None = None, name: str | None = None,
+    ) -> bool:
+        """Modify group membership by adding or removing users."""
+        success, group_data = self.get_object('groups/group', group_dn, name='get_group_for_membership')
+        if not success:
+            return False
+
+        current_members = group_data.get('properties', {}).get('users', [])
+        if not isinstance(current_members, list):
+            current_members = []
+
+        new_members = set(current_members)
+
+        if users_to_add:
+            new_members.update(users_to_add)
+
+        if users_to_remove:
+            new_members.difference_update(users_to_remove)
+
+        group_data['properties']['users'] = list(new_members)
+        modify_name = name or 'modify_group_membership'
+
+        with self.make_request('PUT', f'{UDM_BASE_PATH}/groups/group/{group_dn}', json=group_data, name=modify_name) as response:
+            if response.status_code in [200, 204]:
+                response.success()
+                return True
+            else:
+                response.failure(f'Modify group membership failed: {response.status_code}')
+                return False
+
     def cleanup_created_objects(self) -> None:
         """Clean up all objects created by this client."""
         for obj_type, obj_dn in self.created_objects:
