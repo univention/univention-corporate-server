@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-radius
+fix: 9.3.1
+desc: |
+ This update addresses the following issues:
+ * The EAP module configuration setting `tls_min_version` can now be
+   adjusted using the new UCR variable `freeradius/conf/tls-min-version`
+ * The EAP module configuration setting `cipher_list` can now be
+   adjusted using the new UCR variable `freeradius/conf/cipher-list`.
+   The format is documented in `man openssl-ciphers`.
+bug: [58373,58374]
