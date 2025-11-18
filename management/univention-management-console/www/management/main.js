@@ -416,8 +416,38 @@ define([
 			}
 		};
 
+		// Summit
+		var showSummitNotification = function() {
+			var endOfSummit = new Date(2026, 0, 27, 0, 0, 0);
+			var summitNotificationCookieName = `hideSummit${endOfSummit.getFullYear()}Notification`;
+			var summitHasPassed = endOfSummit < new Date();
+			var isUserAdmin = app.getModule('updater') || app.getModule('schoolrooms');
+			var dontShowNotification = !tools.status('has_free_license') || summitHasPassed || !isUserAdmin;
+			if (dontShowNotification) {
+				return;
+			}
+
+			var isDE = (kernel.locale.toLowerCase().indexOf('de') === 0);
+			var message_de = 'Univention Summit 2026 – 28. & 29. Januar in Bremen.<br />Infos & Tickets: <a href="https://www.univention-summit.de/?mtm_campaign=UCS%20User%20Benachrichtigung%20Summit%202026" target="_blank">univention-summit.de</a>';
+			var message_en = 'Univention Summit 2026 – 28th & 29th of January in Bremen.<br />Info & Tickets: <a href="https://www.univention-summit.com/?mtm_campaign=UCS%20User%20Benachrichtigung%20Summit%202026" target="_blank">univention-summit.com</a>';
+			var message = isDE ? message_de : message_en;
+			var title = "Let's connect!";
+			if (cookie(summitNotificationCookieName)) {
+				// has already been shown once, only "passive bell item"
+				// hack it in there, I dont want to make this a public API
+				NotificationsButton._addPassiveNotification({title: title, content: message});
+			} else {
+				// full notification with "active bubble"
+				var notification = dialog.notify(message, title);
+				var nowInTwoWeeks = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
+				var expires = nowInTwoWeeks < endOfSummit ? nowInTwoWeeks : endOfSummit;
+				cookie(summitNotificationCookieName, 'true', {expires: expires.toUTCString()});
+			}
+		};
+
 		// run several checks
 		checkCertificateValidity();
+		showSummitNotification();
 	});
 
 	var UmcHeader = declare([ContainerWidget], {
