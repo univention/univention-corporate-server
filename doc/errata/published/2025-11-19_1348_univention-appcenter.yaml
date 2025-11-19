@@ -13,3 +13,6 @@ desc: |
    `appcenter/update/zsync-timeout` defines a timeout for zsync operations
    before falling back to direct download.
 bug: [58798]
+erratum: 1348
+announced: 2025-11-19
+support: core
