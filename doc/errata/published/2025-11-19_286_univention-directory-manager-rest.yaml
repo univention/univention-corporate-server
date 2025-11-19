@@ -9,3 +9,6 @@ desc: |
  * Added a new endpoint where LDAP attributes can be unmapped to a full UDM
    object (if the module can be identified).
 bug: [58792]
+erratum: 286
+announced: 2025-11-19
+support: core
