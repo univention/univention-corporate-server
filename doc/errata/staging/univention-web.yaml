@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-web
+fix: 4.0.10-5
+desc: |
+ This update addresses the following issues:
+ * Allow adding a notification directly into the notification bar, not showing
+   it as a preview in UMC.
+bug: [58825]

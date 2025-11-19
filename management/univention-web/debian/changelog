@@ -1,3 +1,10 @@
+univention-web (4.0.10-5) unstable; urgency=medium
+
+  * Bug #58825: Allow notifications to only appear behind the bell icon, not
+    as a preview
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 Nov 2025 20:31:37 +0100
+
 univention-web (4.0.10-4) unstable; urgency=medium
 
   * Bug #58268: Correctly encode container names in tree view
