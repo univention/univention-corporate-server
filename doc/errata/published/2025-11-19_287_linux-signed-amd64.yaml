@@ -70,3 +70,6 @@ cve:
 - CVE-2025-40104
 - CVE-2025-40084
 note: This is the 2nd of two parts.
+erratum: 287
+announced: 2025-11-19
+support: core
