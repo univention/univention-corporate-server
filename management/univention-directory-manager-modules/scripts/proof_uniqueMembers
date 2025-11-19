@@ -32,15 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""
-Check if users are member of their primary group and if members of groups exist as objects.
-
-If BASEDN is a user object or for all user objects in BASEDN:
-  Get primary group of user and add user to primary group if not already member.
-
-If BASEDN is a group object or for all group objects in BASEDN:
-  Check if members of group still exist and remove non-existing members.
-"""
+"""Check if accounts are member of their primary group and for group objects if group members exist."""
 
 from __future__ import print_function
 
@@ -89,7 +81,7 @@ def __search_group(lo, gid, ldap_base):
 
 def check_primary(lo, basedn, ldap_base, dry_run=False, check_user_groups=False):
     """Check if users are member of their primary group."""
-    info("Checking if users are member of their primary group (search for users in %s) ...", basedn)
+    info("Check if accounts are member of their primary group (search for accounts in %s) ...", basedn)
     try:
         # GID's will only be found in posixAccount
         user_result = lo.search('(objectClass=posixAccount)', base=basedn, scope='sub', attr=['gidNumber', 'uid', 'memberOf'])
@@ -97,12 +89,14 @@ def check_primary(lo, basedn, ldap_base, dry_run=False, check_user_groups=False)
         fatal("ldap search in %s failed (no such base dn)", basedn)
 
     # save all the groups for the check_user_groups option
-    all_member_of_groups = set()
+    groups_of_all_users = set()
 
     count_changes = 0
+    found_problems = 0
     for user_dn, account in user_result:
 
-        all_member_of_groups.update({x.decode('UTF-8') for x in account.get('memberOf', [])})
+        groups_of_all_users.update({x.decode('UTF-8') for x in account.get('memberOf', [])})
+
         user_uid = account['uid'][0].decode('utf-8')
         user_gid = account.get('gidNumber', [])[0].decode('utf-8')
         if not user_gid:
@@ -125,21 +119,22 @@ def check_primary(lo, basedn, ldap_base, dry_run=False, check_user_groups=False)
             modlist = []
             if user_dn.lower() not in group_member_dns:
                 modlist.append((ldap.MOD_ADD, 'uniqueMember', user_dn.encode('utf-8')))
-                info("Change: primary group of %s is missing uniqueMember, adding to group %s", user_dn, group_dn)
+                info("Change: primary group '%s' of account '%s' is missing uniqueMember, adding to group", group_dn, user_dn)
+                found_problems += 1
             if user_uid.lower() not in group_member_uids:
                 modlist.append((ldap.MOD_ADD, 'memberUid', user_uid.encode('utf-8')))
-                info("Change: primary group of %s is missing memberUid, adding to group %s", user_dn, group_dn)
+                info("Change: primary group '%s' of account '%s' is missing memberUid, adding to group", group_dn, user_dn)
+                found_problems += 1
             # no entry found, going to add one
-            if modlist and not dry_run:
-                if modify_group(lo, group_dn, modlist, current_entry_csn):
-                    count_changes += 1
-    info("Checked %d posixAccounts, fixed %d issues.", len(user_result), count_changes)
+            if modlist:
+                if not dry_run:
+                    if modify_group(lo, group_dn, modlist, current_entry_csn):
+                        count_changes += 1
+
+    info("Checked %d posixAccounts, found %d problems, fixed %d issues", len(user_result), found_problems, count_changes)
 
     if check_user_groups:
-        info("Checking if group-members exist for all users i just checked ...")
-        for group_dn in all_member_of_groups:
-            attrs = lo.get(group_dn, attr=['uniqueMember', 'memberUid', 'entryCSN'], required=True)
-            check_group(lo, group_dn, attrs, dry_run=dry_run)
+        check_groups(lo, basedn, dry_run=dry_run, groups=groups_of_all_users)
 
 
 def modify_group(lo, dn, modlist, entry_csn):
@@ -154,18 +149,32 @@ def modify_group(lo, dn, modlist, entry_csn):
     return True
 
 
-def check_groups(lo, basedn, dry_run=False):
+def check_groups(lo, basedn, dry_run=False, groups=None):
     """Check if members of group exist."""
-    info("Checking if group-members exist (searching for groups in %s) ...", basedn)
-    try:
-        group_result = lo.search('(objectClass=posixGroup)', base=basedn, scope='sub', attr=['uniqueMember', 'memberUid', 'entryCSN'])
-    except univention.admin.uexceptions.noObject:
-        fatal("ldap search in %s failed (no such base dn)", basedn)
+    group_result = []
+
+    if groups:
+        for group_dn in groups:
+            info("Check if group members exist and remove membership for non-existing accounts (for group %s)", group_dn)
+            try:
+                attrs = lo.get(group_dn, attr=['uniqueMember', 'memberUid', 'entryCSN'], required=True)
+            except ldap.NO_SUCH_OBJECT:
+                continue
+            group_result.append((group_dn, attrs))
+    else:
+        info("Check if group members exist and remove membership for non-existing accounts (searching for groups in %s) ...", basedn)
+        try:
+            group_result = lo.search('(objectClass=posixGroup)', base=basedn, scope='sub', attr=['uniqueMember', 'memberUid', 'entryCSN'])
+        except univention.admin.uexceptions.noObject:
+            fatal("ldap search in %s failed (no such base dn)", basedn)
     count_changes = 0
+    count_problems = 0
 
     for group_dn, group in group_result:
-        count_changes += check_group(lo, group_dn, group, dry_run=dry_run)
-    info("Checked %d posixGroups, fixed %d issues.", len(group_result), count_changes)
+        problems, changes = check_group(lo, group_dn, group, dry_run=dry_run)
+        count_problems += problems
+        count_changes += changes
+    info("Checked %d posixGroups, found %d problems, fixed %d issues.", len(group_result), count_problems, count_changes)
 
 
 # cache for members dn's to avoid getting the same member objects for every group
@@ -199,8 +208,7 @@ def check_group(lo, group_dn, group, dry_run=False):
     actual_member_uids = set()
     current_entry_csn = group['entryCSN'][0].decode('utf-8')
     modlist = []
-
-    info("Checking group %s", group_dn)
+    found_problems = 0
 
     for member_dn in group_member_dns:
         uid = __get_uid_for_dn(lo, member_dn)
@@ -211,7 +219,7 @@ def check_group(lo, group_dn, group, dry_run=False):
 
     # handle uniqueMember
     for member_dn in remove_member_dns:
-        info("Removing uniqueMember '%s' from '%s'", member_dn, group_dn)
+        info("Change: removing uniqueMember '%s' from '%s'", member_dn, group_dn)
         modlist.append((ldap.MOD_DELETE, 'uniqueMember', member_dn.encode('utf-8')))
     # handle memberUid
     remove_member_uid = set(group_member_uids) - actual_member_uids
@@ -220,16 +228,18 @@ def check_group(lo, group_dn, group, dry_run=False):
     for uid in remove_member_uid:
         info("Change: removing memberUid '%s' from '%s'", uid, group_dn)
         modlist.append((ldap.MOD_DELETE, 'memberUid', uid.encode('utf-8')))
+        found_problems += 1
     for uid in add_member_uid:
         info("Change: adding memberUid '%s' to '%s'", uid, group_dn)
         modlist.append((ldap.MOD_ADD, 'memberUid', uid.encode('utf-8')))
+        found_problems += 1
 
     if not modlist or dry_run:
-        return 0
+        return found_problems, 0
 
     modify_group(lo, group_dn, modlist, current_entry_csn)
 
-    return len(modlist)
+    return found_problems, len(modlist)
 
 
 def restart_services(services):
@@ -250,14 +260,17 @@ def start_service(service):
 def main():
     # type: () -> None
     """Check group membership."""
-    epilog = 'WARNING: The script uses caches to build an internal view of the status of the LDAP database. Please do NOT make changes to LDAP during the runtime of this script.'
+    epilog = 'WARNING: The script uses internal caches to build a view of the status of the LDAP database. Please do NOT make changes to LDAP during the runtime of this script. Make sure to stop all ad/s4 or other connectors.'
     parser = ArgumentParser(description=__doc__, epilog=epilog)
-    parser.add_argument("-b", "--base-dn", dest="basedn", action="store", help="ldap base DN for user search")
-    parser.add_argument("-c", "--check", dest="check", action="store_true", help="Only check, do not modify")
-    parser.add_argument("--no-check-primary-group", dest="check_primary_group", action="store_false", help="Do not check primary group for user objects.")
-    parser.add_argument("--no-check-groups", dest="check_groups", action="store_false", help="Do not check for non-existing members for group objects.")
-    parser.add_argument("--check-user-groups", action="store_true", help="If BASEDN is a user object or for all user objects in BASEDN, check all groups the user belongs to for non-existing members (like check-groups), also if --no-check-groups is set")
+    parser.add_argument("-b", "--base-dn", dest="basedn", action="store", help="Search for user and group objects below this ldap DN.")
+    parser.add_argument("--make-changes", dest="make_changes", action="store_true", help="By default the script does not change the LDAP, with this switch tell the script to make the modifications.")
+    parser.add_argument("--skip-check-primary-group", dest="skip_check_primary_group", action="store_true", help="Do not check primary group for account objects.")
+    parser.add_argument("--skip-check-membership", dest="skip_check_membership", action="store_true", help="Do not check groups for non-existing accounts.")
+    parser.add_argument("--check-user-groups", action="store_true", help="During the primary-group check, check also membership of non-existing accounts for all those groups the just checked accounts are member of.")
     options = parser.parse_args()
+
+    if not options.skip_check_membership and options.check_user_groups:
+        parser.error('Can\'t use --check-user-groups without --skip-check-membership')
 
     ucr = ConfigRegistry()
     ucr.load()
@@ -268,20 +281,20 @@ def main():
     if options.basedn:
         basedn = options.basedn
 
-    if not options.check:
+    if options.make_changes:
         restart = []
         if 'univention.connector.ad.main' in [y for x in psutil.process_iter() for y in x.cmdline()]:
             stop_service('univention-ad-connector.service')
             restart.append('univention-ad-connector.service')
-        if 'univention.connector.ad.main' in [y for x in psutil.process_iter() for y in x.cmdline()]:
-            stop_service('univention-ad-connector.service')
-            restart.append('univention-ad-connector.service')
+        if 'univention.connector.s4.main' in [y for x in psutil.process_iter() for y in x.cmdline()]:
+            stop_service('univention-s4-connector.service')
+            restart.append('univention-s4-connector.service')
         atexit.register(restart_services, restart)
 
-    if options.check_primary_group:
-        check_primary(lo, basedn, ldap_base=ucr['ldap/base'], dry_run=options.check, check_user_groups=options.check_user_groups)
-    if options.check_groups:
-        check_groups(lo, basedn, dry_run=options.check)
+    if not options.skip_check_primary_group:
+        check_primary(lo, basedn, ldap_base=ucr['ldap/base'], dry_run=not options.make_changes, check_user_groups=options.check_user_groups)
+    if not options.skip_check_membership:
+        check_groups(lo, basedn, dry_run=not options.make_changes)
     if warn.warnings:
         info("There were %d warning(s)!", warn.warnings)
         sys.exit(2)
