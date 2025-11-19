@@ -337,7 +337,7 @@ class MoveOperationsTest(FastHttpUser):
         self.data_generator = UDMTestDataGenerator(prefix='movetest')
         self.containers = get_ldap_containers()
         log.info('Move operations test started')
-        for i in range(3):
+        for i in range(5):
             user_data = self.data_generator.next_user_data(password='Univention.123')
             self.udm_client.create_user(
                 username=user_data['username'],
@@ -353,25 +353,27 @@ class MoveOperationsTest(FastHttpUser):
             self.udm_client.cleanup_created_objects()
         log.info('Move operations test stopped')
 
-    @task(6)
-    def move_user(self):
+    @task(10)
+    def move_user_back_and_forth(self):
         user_objs = [(obj_type, dn) for obj_type, dn in self.udm_client.created_objects if obj_type == 'users/user']
         if not user_objs:
             return
         obj_type, user_dn = random.choice(user_objs)
-        target_position = self.containers['users']
+        current_position = user_dn.split(',', 1)[1]
+        target_position = self.containers['users'] if current_position != self.containers['users'] else self.containers['base']
         success, new_dn = self.udm_client.move_object(object_type=obj_type, object_dn=user_dn, new_position=target_position, name='move_user')
         if success and (obj_type, user_dn) in self.udm_client.created_objects:
             self.udm_client.created_objects.remove((obj_type, user_dn))
             self.udm_client.created_objects.append((obj_type, new_dn))
 
-    @task(5)
-    def move_group(self):
+    @task(8)
+    def move_group_back_and_forth(self):
         group_objs = [(obj_type, dn) for obj_type, dn in self.udm_client.created_objects if obj_type == 'groups/group']
         if not group_objs:
             return
         obj_type, group_dn = random.choice(group_objs)
-        target_position = self.containers['groups']
+        current_position = group_dn.split(',', 1)[1]
+        target_position = self.containers['groups'] if current_position != self.containers['groups'] else self.containers['base']
         success, new_dn = self.udm_client.move_object(object_type=obj_type, object_dn=group_dn, new_position=target_position, name='move_group')
         if success and (obj_type, group_dn) in self.udm_client.created_objects:
             self.udm_client.created_objects.remove((obj_type, group_dn))

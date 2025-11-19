@@ -332,6 +332,17 @@ class UDMRestClient:
         if users_to_remove:
             new_members.difference_update(users_to_remove)
 
+        if 'uuid' in group_data:
+            del group_data['uuid']
+        if 'uri' in group_data:
+            del group_data['uri']
+        if 'id' in group_data:
+            del group_data['id']
+        if '_links' in group_data:
+            del group_data['_links']
+        if '_embedded' in group_data:
+            del group_data['_embedded']
+
         group_data['properties']['users'] = list(new_members)
         modify_name = name or 'modify_group_membership'
 
