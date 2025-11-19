@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-directory-manager-modules
+fix: 15.0.29-5
+desc: |
+ This update addresses the following issues:
+ * `udm users/user modify` could fail in case the account was member
+   of a group where `uniqueMember` contained invalid data (e.g. a DN
+   from a `OU` that has been renamed). This update makes the module
+   robust against this scenario.
+bug: [58822]

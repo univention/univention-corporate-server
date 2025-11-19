@@ -1398,11 +1398,18 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         for memberDNstr in members:
             memberDN = ldap.dn.str2dn(memberDNstr)
             if memberDN[0][0][0] == 'uid':  # UID is stored in DN --> use UID directly
-                new_uids.append(memberDN[0][0][1].encode('UTF-8'))
+                _uid = memberDN[0][0][1].encode('UTF-8')
+                if _uid in new_uids:
+                    log.warning('users/user: skipping duplicate memberUid %s for %s', _uid, memberDNstr)
+                else:
+                    new_uids.append(_uid)
             else:
                 UIDs = self.lo.getAttr(memberDNstr.decode('UTF-8'), 'uid')
                 if UIDs:
-                    new_uids.append(UIDs[0])
+                    if UIDs[0] in new_uids:
+                        log.warning('users/user: skipping duplicate memberUid %s for %s', UIDs[0], memberDNstr)
+                    else:
+                        new_uids.append(UIDs[0])
                     if len(UIDs) > 1:
                         log.warning('users/user: A groupmember has multiple UIDs (%s %r)', memberDNstr, UIDs)
         self.lo.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct

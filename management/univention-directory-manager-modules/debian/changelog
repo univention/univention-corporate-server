@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-5) unstable; urgency=medium
+
+  * Bug #58822: Don't append memberUid multiple times
+
+ -- Arvid Requate <requate@univention.de>  Wed, 19 Nov 2025 10:29:14 +0100
+
 univention-directory-manager-modules (15.0.29-4) unstable; urgency=medium
 
   * Bug #58312: Fix py2 incompatible code from cherry-pick
