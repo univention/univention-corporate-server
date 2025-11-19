@@ -179,6 +179,17 @@ repos:
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                   "
+  - repo: local
+    hooks:
+      - id: update-reuse-toml
+        name: "Update REUSE.toml"
+        entry: python update-reuse-toml.py
+        language: python
+        pass_filenames: false
+        additional_dependencies:
+          - toml
+          - python-debian
+        files: ^.*/debian/copyright$
   - repo: https://github.com/fsfe/reuse-tool
     rev: v5.0.2
     hooks:
