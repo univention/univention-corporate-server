@@ -11,3 +11,6 @@ desc: |
    from a `OU` that has been renamed). This update makes the module
    robust against this scenario.
 bug: [58822]
+erratum: 1349
+announced: 2025-11-19
+support: core
