@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-## desc: Test LDAP trash bin functionality
-## tags: [ldap, udm, trash_bin]
+## desc: Test LDAP recyclebin functionality
+## tags: [ldap, udm, recyclebin]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 ## packages:
@@ -17,6 +17,7 @@ from types import SimpleNamespace
 
 import pytest
 from ldap.extop.dds import RefreshRequest
+from ldap.filter import filter_format
 
 import univention.admin.modules as udm_modules
 from univention.admin.blocklist import hash_blocklist_value
@@ -42,18 +43,17 @@ def _find_deleted_objects(lo, original_dn):
     results = lo.search(
         base=RECYCLEBIN_DN,
         scope='one',
-        filter='(objectClass=univentionRecycleBinObject)',
+        filter=filter_format('(&(objectClass=univentionRecycleBinObject)(univentionRecycleBinOriginalDN=%s))', [original_dn]),
         attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinOriginalType', 'cn'],
     )
     deleted_objects = []
     for dn, attrs in results:
         original = attrs.get('univentionRecycleBinOriginalDN', [b''])[0].decode('utf-8')
-        if original == original_dn:
-            deleted_objects.append({
-                'dn': dn,
-                'originalDn': original,
-                'univentionObjectType': attrs.get('univentionRecycleBinOriginalType', [b''])[0].decode('utf-8'),
-            })
+        deleted_objects.append({
+            'dn': dn,
+            'originalDn': original,
+            'univentionObjectType': attrs.get('univentionRecycleBinOriginalType', [b''])[0].decode('utf-8'),
+        })
     return deleted_objects
 
 
@@ -318,8 +318,8 @@ def test_recyclebin_container_exists(lo):
     assert attrs['cn'][0].decode('utf-8') == 'recyclebin'
 
 
-def test_user_delete_moves_to_trash_bin(udm, lo, recyclebin_policy_session):
-    """Test that deleted user objects are moved to trash bin"""
+def test_user_delete_moves_to_recycle_bin(udm, lo, recyclebin_policy_session):
+    """Test that deleted user objects are moved to recyclebin"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
     verify_ldap_object(user_dn, should_exist=True)
@@ -331,8 +331,18 @@ def test_user_delete_moves_to_trash_bin(udm, lo, recyclebin_policy_session):
         _cleanup_deleted_object(lo, obj['dn'])
 
 
-def test_group_delete_moves_to_trash_bin(udm, lo, recyclebin_policy_session):
-    """Test that deleted group objects are moved to trash bin"""
+def test_ignore_user_delete_moves_to_recycle_bin(udm, lo, recyclebin_policy_session):
+    """Test that deleted user objects are moved to recyclebin"""
+    container_recyclebin_policy, _ = recyclebin_policy_session
+    user_dn, _ = udm.create_user(position=container_recyclebin_policy, append_option=['pki'], wait_for_replication=False)
+    verify_ldap_object(user_dn, should_exist=True)
+    udm.remove_object('users/user', dn=user_dn)
+    verify_ldap_object(user_dn, should_exist=False)
+    assert not _find_deleted_objects(lo, user_dn)
+
+
+def test_group_delete_moves_to_recycle_bin(udm, lo, recyclebin_policy_session):
+    """Test that deleted group objects are moved to recyclebin"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     group_dn, _ = udm.create_group(wait_for_replication=False, position=container_recyclebin_policy)
     verify_ldap_object(group_dn, should_exist=True)
@@ -360,7 +370,7 @@ def test_referenced_by_tracking(udm, lo, recyclebin_policy_session):
 
 
 def test_multiple_object_types_deletion(udm, lo, recyclebin_policy_session):
-    """Test that different types of LDAP objects can be moved to trash bin"""
+    """Test that different types of LDAP objects can be moved to recyclebin"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
     group_dn, _ = udm.create_group(wait_for_replication=False, position=container_recyclebin_policy)
@@ -416,7 +426,7 @@ def test_extensible_object_direct_attribute_storage(udm, lo, recyclebin_policy_s
 
 
 def test_restore_deleted_object(udm, lo, recyclebin_policy_session):
-    """Test that deleted objects can be restored from the trash bin"""
+    """Test that deleted objects can be restored from the recyclebin"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
     uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]

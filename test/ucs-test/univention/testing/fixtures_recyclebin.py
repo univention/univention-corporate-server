@@ -30,6 +30,7 @@ def __recyclebin_policy(udm, ldap_base):
         position=f'cn=policies,{ldap_base}',
         name=name,
         udm_modules=['users/user', 'groups/group'],
+        ignored_object_classes=['pkiUser'],
         retention_days=retention_days,
         wait_for_replication=False,
     )
