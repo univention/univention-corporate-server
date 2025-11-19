@@ -257,22 +257,30 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 # get the object to read the sAMAccountName in AD and use it as name
                 # we have no fallback here, the given dn must be found in AD or we've got an error
                 ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got an AD-Object")
-                i = 0
 
-                while not samaccountname:  # in case of olddn this is already set
-                    i = i + 1
-                    search_dn = dn
-                    if 'deleted_dn' in object:
-                        search_dn = object['deleted_dn']
-                    try:
-                        samaccountname_filter = format_escaped('(objectClass={0!e})', ocad)
-                        samaccountname_search_result = connector.ad_search_ext_s(search_dn, ldap.SCOPE_BASE, samaccountname_filter, ['sAMAccountName'])
-                        samaccountname = samaccountname_search_result[0][1]['sAMAccountName'][0].decode('UTF-8')
-                        ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from AD")
-                    except ldap.NO_SUCH_OBJECT:  # AD may need time
-                        if i > 5:
-                            raise
-                        time.sleep(1)  # AD may need some time...
+                if dn_key == 'dn':
+                    i = 0
+
+                    while not samaccountname:
+                        i = i + 1
+                        search_dn = dn
+                        if 'deleted_dn' in object:
+                            search_dn = object['deleted_dn']
+                        try:
+                            samaccountname_filter = format_escaped('(objectClass={0!e})', ocad)
+                            samaccountname_search_result = connector.ad_search_ext_s(search_dn, ldap.SCOPE_BASE, samaccountname_filter, ['sAMAccountName'])
+                            samaccountname = samaccountname_search_result[0][1]['sAMAccountName'][0].decode('UTF-8')
+                            ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got samaccountname from AD")
+                        except ldap.NO_SUCH_OBJECT:  # AD may need time
+                            if i > 5:
+                                raise
+                            time.sleep(1)  # AD may need some time...
+                elif dn_key == 'olddn':
+                    guid = univention.connector.decode_guid(given_object.get('attributes').get('objectGUID')[0])
+                    old_ad_object = connector.adcache.get_entry(guid)
+                    if old_ad_object:
+                        samaccountname = old_ad_object['sAMAccountName'][0].decode('UTF-8')
+                        ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: got old samaccountname from adcache")
 
                 for ucsval, conval in connector.property[propertyname].mapping_table.get(propertyattrib, []):
                     if samaccountname.lower() == conval.lower():
@@ -285,7 +293,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
                 # search for object with this dn in ucs, needed if it lies in a different container
                 ucsdn = ''
-                ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname is: %r" % (samaccountname,))
+                ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname for %s is: %r" % (dn_key, samaccountname))
                 ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
                 ucsdn_result = connector.search_ucs(filter=ucsdn_filter, base=connector.lo.base, scope='sub', attr=['objectClass'])
                 if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
@@ -300,7 +308,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                     else:
                         newdn_rdn = [(ucsattrib, samaccountname, ldap.AVA_STRING)]
 
-                    newdn = ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:])  # guess the old dn
+                    newdn = ldap.dn.dn2str([newdn_rdn] + exploded_dn[1:])  # guess the mapped dn
 
             ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %r:" % (dn_key,))
             ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %r" % (dn,))
