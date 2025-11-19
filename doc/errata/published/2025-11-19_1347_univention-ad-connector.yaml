@@ -9,3 +9,6 @@ desc: |
  * Moving objects in UCS has been fixed (UnboundLocalError)
  * Avoid ldap.ALREADY_EXISTS if move target exists in UCS
 bug: [58800,58818]
+erratum: 1347
+announced: 2025-11-19
+support: core
