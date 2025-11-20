@@ -335,31 +335,29 @@ class UDMRestClient:
         self, group_dn: str, users_to_add: list[str] | None = None, users_to_remove: list[str] | None = None, name: str | None = None,
     ) -> bool:
         """Modify group membership by adding or removing users."""
-        patch_operations = []
+        success, group_data = self.get_object('groups/group', group_dn, name='get_group_for_membership')
+        if not success:
+            return False
+
+        current_members = group_data.get('properties', {}).get('users', [])
+        if not isinstance(current_members, list):
+            current_members = []
+
+        new_members = set(current_members)
 
         if users_to_add:
-            for user_dn in users_to_add:
-                patch_operations.append({
-                    'op': 'add',
-                    'path': '/properties/users/-',
-                    'value': user_dn,
-                })
+            new_members.update(users_to_add)
 
         if users_to_remove:
-            success, group_data = self.get_object('groups/group', group_dn, name='get_group_for_membership')
-            if not success:
-                return False
-            current_members = group_data.get('properties', {}).get('users', [])
-            for user_dn in users_to_remove:
-                if user_dn in current_members:
-                    index = current_members.index(user_dn)
-                    patch_operations.append({
-                        'op': 'remove',
-                        'path': f'/properties/users/{index}',
-                    })
+            new_members.difference_update(users_to_remove)
 
-        if not patch_operations:
-            return True
+        patch_operations = [
+            {
+                'op': 'replace',
+                'path': '/properties/users',
+                'value': list(new_members),
+            },
+        ]
 
         modify_name = name or 'modify_group_membership'
         headers = {'Content-Type': 'application/json-patch+json'}
@@ -369,7 +367,7 @@ class UDMRestClient:
                 response.success()
                 return True
             else:
-                response.failure(f'Modify group membership failed: {response.status_code}')
+                response.failure(f'Modify group membership failed: {response.status_code} - {response.text}')
                 return False
 
     def cleanup_created_objects(self) -> None:

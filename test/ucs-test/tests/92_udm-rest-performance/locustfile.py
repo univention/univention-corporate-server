@@ -287,45 +287,50 @@ class GroupMembershipTest(FastHttpUser):
         self.data_generator = UDMTestDataGenerator(prefix='groupmember')
         self.containers = get_ldap_containers()
         log.info('Group membership test started')
-        for i in range(5):
-            user_data = self.data_generator.next_user_data(password='Univention.123')
-            success, _ = self.udm_client.create_user(
-                username=user_data['username'],
-                lastname=user_data['lastname'],
-                password=user_data['password'],
-                description=user_data['description'],
-            )
-            if not success:
-                log.error(f'Failed to create user in setup: {user_data["username"]}')
-            group_data = self.data_generator.next_group_data()
-            success, _ = self.udm_client.create_group(groupname=group_data['name'], description=group_data['description'])
-            if not success:
-                log.error(f'Failed to create group in setup: {group_data["name"]}')
 
     def on_stop(self):
         if self.udm_client:
             self.udm_client.cleanup_created_objects()
         log.info('Group membership test stopped')
 
-    @task(8)
-    def add_user_to_group(self):
-        group_dn = random.choice([dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'groups/group']) if self.udm_client.created_objects else None
-        user_dn = random.choice([dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'users/user']) if self.udm_client.created_objects else None
-        if not group_dn or not user_dn:
+    @task(5)
+    def create_user_and_add_to_group(self):
+        group_objs = [dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'groups/group']
+        if not group_objs:
+            group_data = self.data_generator.next_group_data()
+            success, group_dn = self.udm_client.create_group(groupname=group_data['name'], description=group_data['description'])
+            if not success:
+                return
+        else:
+            group_dn = random.choice(group_objs)
+
+        user_data = self.data_generator.next_user_data(password='Univention.123')
+        success, user_dn = self.udm_client.create_user(
+            username=user_data['username'],
+            lastname=user_data['lastname'],
+            password=user_data['password'],
+            description=user_data['description'],
+        )
+        if not success:
             return
+
         success = self.udm_client.modify_group_membership(group_dn=group_dn, users_to_add=[user_dn], name='add_user_to_group')
         if not success:
-            raise AssertionError('Failed to add user to group')
+            log.warning(f'Failed to add user {user_dn} to group {group_dn}')
 
-    @task(5)
+    @task(3)
     def remove_user_from_group(self):
-        group_dn = random.choice([dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'groups/group']) if self.udm_client.created_objects else None
-        user_dn = random.choice([dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'users/user']) if self.udm_client.created_objects else None
-        if not group_dn or not user_dn:
+        group_objs = [dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'groups/group']
+        user_objs = [dn for obj_type, dn in self.udm_client.created_objects if obj_type == 'users/user']
+        if not group_objs or not user_objs:
             return
+
+        group_dn = random.choice(group_objs)
+        user_dn = random.choice(user_objs)
+
         success = self.udm_client.modify_group_membership(group_dn=group_dn, users_to_remove=[user_dn], name='remove_user_from_group')
         if not success:
-            raise AssertionError('Failed to remove user from group')
+            log.warning(f'Failed to remove user {user_dn} from group {group_dn}')
 
 
 class MoveOperationsTest(FastHttpUser):
