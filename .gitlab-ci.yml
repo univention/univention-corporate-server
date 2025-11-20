@@ -22,7 +22,7 @@ include:
     file: kaniko.yml
   - local: '.gitlab-ci/base.yml'
   - project: univention/infrastructure/docker-services
-    file: pre-commit.yml
+    file: prek.yml
 
 variables:
   pipeline:
@@ -30,9 +30,9 @@ variables:
     description: "Skip or force jobs: '(skip|force)-(doc|ucslint|build)'"
   BUILD: docker-registry.knut.univention.de/knut/deb-builder
 
-pre-commit:
+prek:
   stage: prepare
-  extends: .pre-commit
+  extends: .prek
 
 generate-config:
   stage: prepare
