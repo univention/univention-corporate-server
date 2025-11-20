@@ -7,6 +7,7 @@
 @!@
 # flake8: noqa
 # make sure locale is always original english
+from html import escape
 from univention.appcenter.app_cache import Apps
 import locale
 locale.setlocale(locale.LC_ALL, 'C.UTF-8')
@@ -19,7 +20,6 @@ print('''
 			<description></description>
 		</flavor>
 ''')  # noqa: E101
-from html import escape
 
 apps = Apps().get_all_locally_installed_apps()
 

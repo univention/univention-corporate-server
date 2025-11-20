@@ -46,5 +46,4 @@ print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (g
 print('    by set="user/objectClass & ([univentionDomainController] | [univentionMemberServer])" read')
 print('    by * none')
 print('')
-
 @!@
