@@ -1478,31 +1478,38 @@ class ucs(object):
                 modified_dn = self.modify_in_ucs(property_type, object, module, position)
                 modified_parent_dn = self.lo.parentDn(modified_dn).lower()
                 parent_object_dn = self.lo.parentDn(object['dn']).lower()
+                moved_or_renamed = False
 
-                object['olddn'] = object.get('olddn', object['dn'])
                 if not self.lo.compare_dn(modified_parent_dn, parent_object_dn):
                     # additionally move the object if position changed
-                    # TODO: object['dn'] seems to be the correct target, but why?
                     ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: move object from %r to %r" % (modified_dn, object['dn']))
                     ucs_object = univention.admin.objects.get(module, None, self.lo, dn=modified_dn, position='')
                     ucs_object.open()
                     ucs_object.move(object['dn'])
+                    moved_or_renamed = True
                 elif object['dn'].lower() != modified_dn.lower():
-                    # TODO: in this case object['dn'] is the unchanged UCS DN, why?
-                    # update group cache
+                    # e.g. username was changed in UCS but the AD dn remained the same
                     object['dn'] = modified_dn
+                    moved_or_renamed = True
+                elif 'olddn' in object:
+                    # simple rename (e.g. ou's)
+                    if object['olddn'].lower() != object['dn'].lower():
+                        moved_or_renamed = True
 
-                old_con_dn = original_object.get('olddn', pre_mapped_ad_dn)
-                self._update_group_related_caches(
-                    property_type,
-                    old_con_dn=old_con_dn,
-                    old_ucs_dn=object['olddn'],
-                    new_con_dn=pre_mapped_ad_dn,
-                    new_ucs_dn=object['dn'],
-                )
+                if moved_or_renamed:
+                    # update group cache
+                    old_con_dn = original_object.get('olddn', pre_mapped_ad_dn)
+                    old_dn = object.get('olddn', object['dn'])
+                    self._update_group_related_caches(
+                        property_type,
+                        old_con_dn=old_con_dn,
+                        old_ucs_dn=old_dn,
+                        new_con_dn=pre_mapped_ad_dn,
+                        new_ucs_dn=object['dn'],
+                    )
 
-                if not self.lo.compare_dn(object['olddn'], object['dn']):
-                    self._remove_dn_mapping(object['olddn'], old_con_dn)
+                    if not self.lo.compare_dn(old_dn, object['dn']):
+                        self._remove_dn_mapping(old_dn, old_con_dn)
 
                 # Finally commit the current DNs to the DN mapping cache
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
