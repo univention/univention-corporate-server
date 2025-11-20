@@ -10,3 +10,6 @@ desc: |
    the UMC for the first time. After that, it is discreetly sitting behind the
    bell icon.
 bug: [58825]
+erratum: 1351
+announced: 2025-11-20
+support: core
