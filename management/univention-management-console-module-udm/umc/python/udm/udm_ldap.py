@@ -696,7 +696,7 @@ class UDM_Module:
             if superordinate:  # and not ldap_connection.authz_connection.get(superordinate):  # TODO: information disclosure!
                 raise SuperordinateDoesNotExist(superordinate)
             # if container and not ldap_connection.authz_connection.get(container):  # TODO: information disclosure!
-            raise ObjectDoesNotExist(container or ucr['ldap/base'])
+            raise ObjectDoesNotExist(container or self.module.object.ldap_base)
         except udm_errors.base as e:
             UDM_Error(e).reraise()
 

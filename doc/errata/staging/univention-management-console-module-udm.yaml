@@ -3,7 +3,7 @@ release: "5.2"
 version: [3]
 scope: ucs_5.2-0-errata5.2-3
 src: univention-management-console-module-udm
-fix: 12.3.3
+fix: 12.3.4
 desc: |
  This update addresses the following issue:
  * A recyclebin for users and groups has been introduced.
