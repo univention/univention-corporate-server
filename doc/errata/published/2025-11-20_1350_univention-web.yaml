@@ -9,3 +9,6 @@ desc: |
  * Allow adding a notification directly into the notification bar, not showing
    it as a preview in UMC.
 bug: [58825]
+erratum: 1350
+announced: 2025-11-20
+support: core
