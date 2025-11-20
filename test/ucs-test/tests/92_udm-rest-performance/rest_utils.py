@@ -259,18 +259,26 @@ class UDMRestClient:
 
     def modify_object(self, object_type: str, object_dn: str, modifications: dict, name: str | None = None) -> bool:
         """Modify an object with the given modifications."""
-        # First get the current object
         success, obj_data = self.get_object(object_type, object_dn, name=f'get_{object_type.rsplit("/", maxsplit=1)[-1]}_for_modify')
         if not success:
             return False
 
-        # Apply modifications
         if 'properties' not in obj_data:
             obj_data['properties'] = {}
 
         obj_data['properties'].update(modifications)
 
-        # Update the object
+        if 'uuid' in obj_data:
+            del obj_data['uuid']
+        if 'uri' in obj_data:
+            del obj_data['uri']
+        if 'id' in obj_data:
+            del obj_data['id']
+        if '_links' in obj_data:
+            del obj_data['_links']
+        if '_embedded' in obj_data:
+            del obj_data['_embedded']
+
         modify_name = name or f'modify_{object_type.rsplit("/", maxsplit=1)[-1]}'
 
         with self.make_request('PUT', f'{UDM_BASE_PATH}/{object_type}/{object_dn}', json=obj_data, name=modify_name) as response:
@@ -301,6 +309,17 @@ class UDMRestClient:
         new_dn = f'{rdn},{new_position}'
 
         obj_data['position'] = new_position
+
+        if 'uuid' in obj_data:
+            del obj_data['uuid']
+        if 'uri' in obj_data:
+            del obj_data['uri']
+        if 'id' in obj_data:
+            del obj_data['id']
+        if '_links' in obj_data:
+            del obj_data['_links']
+        if '_embedded' in obj_data:
+            del obj_data['_embedded']
 
         move_name = name or f'move_{object_type.rsplit("/", maxsplit=1)[-1]}'
 
