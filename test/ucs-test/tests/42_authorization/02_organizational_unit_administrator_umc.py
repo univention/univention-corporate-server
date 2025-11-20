@@ -11,6 +11,7 @@ import subprocess
 import pytest
 from conftest import translate
 
+from univention.admin.recyclebin import RECYCLEBIN_BASE
 from univention.config_registry import ucr as _ucr
 from univention.lib.umc import BadRequest
 
@@ -23,6 +24,19 @@ pytest_plugins = ('univention.testing.fixtures_recyclebin')
 def restart_umc():
     yield
     subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service'])
+
+
+def test_can_not_query_recyclebin(ouadmin_umc_client):
+    options = {
+        'hidden': False,
+        'objectType': 'recyclebin/removedobject',
+        'objectProperty': 'None',
+        'objectPropertyValue': '',
+        'fields': ['name', 'originalObjectType', 'path'],
+    }
+    with pytest.raises(BadRequest) as err:
+        ouadmin_umc_client.umc_command('udm/query', options, 'recyclebin/removedobject')
+    assert RECYCLEBIN_BASE in err.value.message
 
 
 def test_can_not_restore(deleted_user_object, ouadmin_umc_client, lo):
