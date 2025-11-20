@@ -335,37 +335,36 @@ class UDMRestClient:
         self, group_dn: str, users_to_add: list[str] | None = None, users_to_remove: list[str] | None = None, name: str | None = None,
     ) -> bool:
         """Modify group membership by adding or removing users."""
-        success, group_data = self.get_object('groups/group', group_dn, name='get_group_for_membership')
-        if not success:
-            return False
-
-        current_members = group_data.get('properties', {}).get('users', [])
-        if not isinstance(current_members, list):
-            current_members = []
-
-        new_members = set(current_members)
+        patch_operations = []
 
         if users_to_add:
-            new_members.update(users_to_add)
+            for user_dn in users_to_add:
+                patch_operations.append({
+                    'op': 'add',
+                    'path': '/properties/users/-',
+                    'value': user_dn,
+                })
 
         if users_to_remove:
-            new_members.difference_update(users_to_remove)
+            success, group_data = self.get_object('groups/group', group_dn, name='get_group_for_membership')
+            if not success:
+                return False
+            current_members = group_data.get('properties', {}).get('users', [])
+            for user_dn in users_to_remove:
+                if user_dn in current_members:
+                    index = current_members.index(user_dn)
+                    patch_operations.append({
+                        'op': 'remove',
+                        'path': f'/properties/users/{index}',
+                    })
 
-        if 'uuid' in group_data:
-            del group_data['uuid']
-        if 'uri' in group_data:
-            del group_data['uri']
-        if 'id' in group_data:
-            del group_data['id']
-        if '_links' in group_data:
-            del group_data['_links']
-        if '_embedded' in group_data:
-            del group_data['_embedded']
+        if not patch_operations:
+            return True
 
-        group_data['properties']['users'] = list(new_members)
         modify_name = name or 'modify_group_membership'
+        headers = {'Content-Type': 'application/json-patch+json'}
 
-        with self.make_request('PUT', f'{UDM_BASE_PATH}/groups/group/{group_dn}', json=group_data, name=modify_name) as response:
+        with self.make_request('PATCH', f'{UDM_BASE_PATH}/groups/group/{group_dn}', json=patch_operations, headers=headers, name=modify_name) as response:
             if response.status_code in [200, 204]:
                 response.success()
                 return True
