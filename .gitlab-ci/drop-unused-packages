@@ -2,6 +2,8 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+git fetch --no-tags --depth=1 origin "${CI_MERGE_REQUEST_DIFF_BASE_SHA}"
+
 if ! git cat-file -e "$CI_MERGE_REQUEST_DIFF_BASE_SHA^{commit}"; then
     echo 'Base commit does not exists: GIT_DEPTH too low!'
     exit 1;
