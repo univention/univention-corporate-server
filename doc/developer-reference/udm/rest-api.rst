@@ -66,7 +66,7 @@ The following API clients implemented in Python exist for the |UCSREST|:
      obj = module.get('uid=foo,cn=users,%s' % (ldap_base,))
 
      # 4. get referenced objects e.g. groups
-     pg = obj.objects['primaryGroup'].open()
+     pg = obj.objects['primaryGroup'][0].open()
      print(pg.dn, pg.properties)
      print(obj.objects['groups'])
 
@@ -117,7 +117,7 @@ The following API clients implemented in Python exist for the |UCSREST|:
              obj = await module.get('uid=foo,cn=users,%s' % (ldap_base,))
 
              # 4. get referenced objects e.g. groups
-             pg = await obj.objects['primaryGroup'].open()
+             pg = await obj.objects['primaryGroup'][0].open()
              print(pg.dn, pg.properties)
              print(obj.objects['groups'])
 
