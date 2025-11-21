@@ -1007,25 +1007,24 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         syntax=StringSanitizer(required=True),
         key=SearchSanitizer(use_asterisks=False),
     )
-    @simple_response
-    def syntax_choices_key(self, syntax, key):
+    @threaded
+    def syntax_choices_key(self, request):
         """
         If size limit is reached search only for the current value
         (so that the selected value is valid).
 
         Bug #26556: git:ce2b2842b7c6728047c4d4e1cd2d7d399c401e4a
         """
-        # FIXME: this is a blocking method. At least execute in a thread!
         # FIXME: remove and replace with a elegant mechanism.
         lo, po = self.get_ldap_connection()
-        syntax = _get_syntax(syntax)
+        syntax = _get_syntax(request.options['syntax'])
         if syntax is None:
             return
-        return search_syntax_choices_by_key(syntax, key, lo, po)
+        return search_syntax_choices_by_key(syntax, request.options['key'], lo, po)
 
     @sanitize(syntax=StringSanitizer(required=True))
-    @simple_response
-    def syntax_choices_info(self, syntax):
+    @threaded
+    def syntax_choices_info(self, request):
         """
         Fetch meta information about syntax choices.
         By doing a search query the number of results is returned.
@@ -1033,10 +1032,9 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         If reached, ComboBoxes add a entry with a search bar.
         Only used by UDM_Objects (and UDM_Attributes).
         """
-        # FIXME: this is a blocking method. At least execute in a thread!
         # FIXME: remove, replace with pagination of syntax choices. Or do it directly in udm/properties
         lo, po = self.get_ldap_connection()
-        syntax = _get_syntax(syntax)
+        syntax = _get_syntax(request.options['syntax'])
         if syntax is None:
             return
         return info_syntax_choices(syntax, ldap_connection=lo, ldap_position=po)
