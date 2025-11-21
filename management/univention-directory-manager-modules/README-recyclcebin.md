@@ -61,6 +61,7 @@ Therefore, only the DC Primary, via a listener module, performs the "move" opera
 
 The listener runs asynchronously, so it doesn't affect UDM performance.
 It also provides a form of atomicity by processing all LDAP changes resulting from overlays such as `refint`, ensuring complete and consistent state transitions that UDM itself cannot guarantee.
+The listener also ensures the visibility of all attributes, in case a user has permissions to remove an object without reading all its attributes.
 
 ### Listener Cache limitation
 
@@ -109,6 +110,7 @@ Policy settings include:
 * Enable/disable flag
 * Supported UDM modules
 * Retention time (in days)
+* Ignored object classes
 
 Policies inherit values from parent policy objects along the LDAP tree.
 
