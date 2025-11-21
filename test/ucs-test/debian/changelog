@@ -1,3 +1,9 @@
+ucs-test (12.3.46) unstable; urgency=medium
+
+  * Bug #58805: add test case for subject field in the OIDC token
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 26 Nov 2025 10:34:22 +0100
+
 ucs-test (12.3.45) unstable; urgency=medium
 
   * Bug #52202: add recursive delete to ADConnection
