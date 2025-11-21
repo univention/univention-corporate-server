@@ -12,6 +12,7 @@ import logging
 import os
 import random
 import string
+from urllib.parse import unquote
 
 import urllib3
 
@@ -170,7 +171,7 @@ class UDMRestClient:
             if response.status_code == 201:
                 location = response.headers.get('Location', '')
                 if location:
-                    user_dn = location.rsplit('/', 1)[-1]  # TODO: url-undecode
+                    user_dn = unquote(location.rsplit('/', 1)[-1])
                     self.created_objects.append(('users/user', user_dn))
                     response.success()
                     return True, user_dn
@@ -200,7 +201,7 @@ class UDMRestClient:
             if response.status_code == 201:
                 location = response.headers.get('Location', '')
                 if location:
-                    group_dn = location.rsplit('/', 1)[-1]  # TODO: url-undecode
+                    group_dn = unquote(location.rsplit('/', 1)[-1])
                     self.created_objects.append(('groups/group', group_dn))
                     response.success()
                     return True, group_dn
