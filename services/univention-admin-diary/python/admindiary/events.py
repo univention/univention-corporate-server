@@ -191,6 +191,7 @@ UDM_GROUPS_GROUP_CREATED = DiaryEvent('UDM_GROUPS_GROUP_CREATED', {'en': 'Group 
 UDM_GROUPS_GROUP_MODIFIED = DiaryEvent('UDM_GROUPS_GROUP_MODIFIED', {'en': 'Group {name} modified', 'de': 'Gruppe {name} bearbeitet'}, args=['name'], icon='users')
 UDM_GROUPS_GROUP_MOVED = DiaryEvent('UDM_GROUPS_GROUP_MOVED', {'en': 'Group {name} moved to {position}', 'de': 'Gruppe {name} verschoben nach {position}'}, args=['name'], icon='users')
 UDM_GROUPS_GROUP_REMOVED = DiaryEvent('UDM_GROUPS_GROUP_REMOVED', {'en': 'Group {name} removed', 'de': 'Gruppe {name} gelöscht'}, args=['name'], icon='users')
+UDM_GROUPS_GROUP_RESTORED = DiaryEvent('UDM_GROUPS_GROUP_RESTORED', {'en': 'Group {name} restored', 'de': 'Gruppe {name} wiederhergestellt'}, args=['name'], icon='users')
 
 UDM_KERBEROS_KDCENTRY_CREATED = DiaryEvent('UDM_KERBEROS_KDCENTRY_CREATED', {'en': 'KDC Entry {name} created', 'de': 'KDC-Eintrag {name} angelegt'}, args=['name'], icon='domain')
 UDM_KERBEROS_KDCENTRY_MODIFIED = DiaryEvent('UDM_KERBEROS_KDCENTRY_MODIFIED', {'en': 'KDC Entry {name} modified', 'de': 'KDC-Eintrag {name} bearbeitet'}, args=['name'], icon='domain')
@@ -498,6 +499,7 @@ UDM_USERS_USER_CREATED = DiaryEvent('UDM_USERS_USER_CREATED', {'en': 'User {user
 UDM_USERS_USER_MODIFIED = DiaryEvent('UDM_USERS_USER_MODIFIED', {'en': 'User {username} modified', 'de': 'Benutzer {username} bearbeitet'}, args=['username'], icon='users')
 UDM_USERS_USER_MOVED = DiaryEvent('UDM_USERS_USER_MOVED', {'en': 'User {username} moved to {position}', 'de': 'Benutzer {username} verschoben nach {position}'}, args=['username'], icon='users')
 UDM_USERS_USER_REMOVED = DiaryEvent('UDM_USERS_USER_REMOVED', {'en': 'User {username} removed', 'de': 'Benutzer {username} gelöscht'}, args=['username'], icon='users')
+UDM_USERS_USER_RESTORED = DiaryEvent('UDM_USERS_USER_RESTORED', {'en': 'User {username} restored', 'de': 'Benutzer {username} wiederhergestellt'}, args=['username'], icon='users')
 
 UDM_UVMM_INFO_CREATED = DiaryEvent('UDM_UVMM_INFO_CREATED', {'en': 'Machine information {uuid} created', 'de': 'Informationen zur Maschine {uuid} angelegt'}, args=['uuid'], icon='domain')
 UDM_UVMM_INFO_MODIFIED = DiaryEvent('UDM_UVMM_INFO_MODIFIED', {'en': 'Machine information {uuid} modified', 'de': 'Informationen zur Maschine {uuid} bearbeitet'}, args=['uuid'], icon='domain')
