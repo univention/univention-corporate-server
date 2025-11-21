@@ -351,18 +351,22 @@ class UDMRestClient:
         if users_to_remove:
             new_members.difference_update(users_to_remove)
 
-        patch_operations = [
-            {
-                'op': 'replace',
-                'path': '/properties/users',
-                'value': list(new_members),
-            },
-        ]
+        group_data['properties']['users'] = list(new_members)
+
+        if 'uuid' in group_data:
+            del group_data['uuid']
+        if 'uri' in group_data:
+            del group_data['uri']
+        if 'id' in group_data:
+            del group_data['id']
+        if '_links' in group_data:
+            del group_data['_links']
+        if '_embedded' in group_data:
+            del group_data['_embedded']
 
         modify_name = name or 'modify_group_membership'
-        headers = {'Content-Type': 'application/json-patch+json'}
 
-        with self.make_request('PATCH', f'{UDM_BASE_PATH}/groups/group/{group_dn}', json=patch_operations, headers=headers, name=modify_name) as response:
+        with self.make_request('PUT', f'{UDM_BASE_PATH}/groups/group/{group_dn}', json=group_data, name=modify_name) as response:
             if response.status_code in [200, 204]:
                 response.success()
                 return True
