@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-directory-manager-modules
+fix: 15.0.29-6
+desc: |
+ This update addresses the following issue:
+ * Changing the value of an attribute which is unique,
+   didn't release according lock objects for the old attribute value,
+   which resulted in that new objects using the old value
+   couldn't be created anymore for the next 5 minutes.
+bug: [58832]

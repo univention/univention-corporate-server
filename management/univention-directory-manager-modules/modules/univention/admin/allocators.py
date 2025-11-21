@@ -246,8 +246,11 @@ def acquireUnique(
         if not lo.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
             log.debug('ALLOCATE return %s', value)
             return value
-
-    raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
+    # this is the else-part to the uniqueness search above, if an entry with the to-be-locked attribute already exists in LDAP
+    # before that search, we created a lock-object already, which we don't need anymore as we are aborting anyway
+    # other processes also don't need the lock, as they will fail here again due to the same search
+    univention.admin.locking.unlock(lo, position, type, value.encode('utf-8'), scope=scope)
+    raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked. The value is already in use.') % (type,))
 
 
 @overload

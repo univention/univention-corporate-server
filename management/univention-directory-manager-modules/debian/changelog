@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-6) unstable; urgency=medium
+
+  * Bug #58832: release udm lock if conditions are not met
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 21 Nov 2025 16:34:15 +0100
+
 univention-directory-manager-modules (15.0.29-5) unstable; urgency=medium
 
   * Bug #58822: Don't append memberUid multiple times
