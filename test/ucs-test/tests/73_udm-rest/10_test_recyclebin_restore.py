@@ -60,9 +60,9 @@ description: Container for deleted LDAP objects (recycle bin)
         print("Enabling DDS overlay for internal database...")
         handler_set([
             'ldap/database/internal/overlay/dds=true',
-            'ldap/database/internal/dds/max-ttl=31536000',
-            'ldap/database/internal/dds/min-ttl=60',
-            'ldap/database/internal/dds/default-ttl=86400',
+            'ldap/database/internal/overlay/dds/max-ttl=31536000',
+            'ldap/database/internal/overlay/dds/min-ttl=60',
+            'ldap/database/internal/overlay/dds/default-ttl=86400',
         ])
         print("DDS overlay configured, restarting slapd...")
         restart_slapd()

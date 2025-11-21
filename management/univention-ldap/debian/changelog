@@ -1,3 +1,9 @@
+univention-ldap (18.3.3) unstable; urgency=medium
+
+  * Bug #52202: adjust UCR variable names for DDS overlay
+
+ -- Florian Best <best@univention.de>  Fri, 21 Nov 2025 10:30:37 +0100
+
 univention-ldap (18.3.2) unstable; urgency=medium
 
   * Bug #52202: add schema for recyclebin

@@ -876,8 +876,8 @@ def test_dds_automatic_purging_enabled(udm, lo, recyclebin_policy_session, ucr):
     verify_entryttl_deleteat(retention_time, deleted_dn, lo)
 
     # manually update ttls and check if slapd purges the entry
-    # we need ldap/database/internal/dds/min-ttl='1' for that to work
-    ucr.handler_set(['ldap/database/internal/dds/min-ttl=1'])
+    # we need ldap/database/internal/overlay/dds/min-ttl='1' for that to work
+    ucr.handler_set(['ldap/database/internal/overlay/dds/min-ttl=1'])
     restart_slapd()
     loa, _ = getAdminConnection()
     ttl_seconds = 3

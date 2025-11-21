@@ -77,7 +77,7 @@ class TestDDSRefreshIntegration:
             assert 'dynamicObject' in object_classes
             assert 'entryTtl' in recyclebin_attrs
 
-            min_ttl = int(_ucr.get('ldap/database/internal/dds/min-ttl', '86400'))
+            min_ttl = int(_ucr.get('ldap/database/internal/overlay/dds/min-ttl', '86400'))
             test_ttl = min_ttl
 
             refresh_req = RefreshRequest(entryName=recyclebin_dn, requestTtl=test_ttl)

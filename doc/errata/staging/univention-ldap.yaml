@@ -3,7 +3,7 @@ release: "5.2"
 version: [3]
 scope: ucs_5.2-0-errata5.2-3
 src: univention-ldap
-fix: 18.3.2
+fix: 18.3.3
 desc: |
  This update addresses the following issue:
  * A recyclebin for users and groups has been introduced.

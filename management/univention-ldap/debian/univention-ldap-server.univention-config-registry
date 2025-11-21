@@ -43,9 +43,9 @@ Variables: ldap/database/internal/syncrepl
 Variables: ldap/database/internal/syncrepl/retry
 Variables: ldap/syncprov
 Variables: ldap/database/internal/overlay/dds
-Variables: ldap/database/internal/dds/max-ttl
-Variables: ldap/database/internal/dds/min-ttl
-Variables: ldap/database/internal/dds/default-ttl
+Variables: ldap/database/internal/overlay/dds/max-ttl
+Variables: ldap/database/internal/overlay/dds/min-ttl
+Variables: ldap/database/internal/overlay/dds/default-ttl
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -157,9 +157,9 @@ Variables: ldap/database/internal/acl/blocklists/groups/read
 Variables: ldap/database/internal/syncrepl
 Variables: ldap/database/internal/syncrepl/retry
 Variables: ldap/database/internal/overlay/dds
-Variables: ldap/database/internal/dds/max-ttl
-Variables: ldap/database/internal/dds/min-ttl
-Variables: ldap/database/internal/dds/default-ttl
+Variables: ldap/database/internal/overlay/dds/max-ttl
+Variables: ldap/database/internal/overlay/dds/min-ttl
+Variables: ldap/database/internal/overlay/dds/default-ttl
 Variables: ldap/hostdn
 Variables: ldap/base
 Variables: server/role

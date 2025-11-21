@@ -1,3 +1,9 @@
+ucs-test (12.3.39) unstable; urgency=medium
+
+  * Bug #52202: adjust UCR variable names for DDS overlay
+
+ -- Florian Best <best@univention.de>  Fri, 21 Nov 2025 10:37:13 +0100
+
 ucs-test (12.3.38) unstable; urgency=medium
 
   * Bug #58680: ad locked test not in admember

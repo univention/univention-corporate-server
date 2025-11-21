@@ -122,7 +122,7 @@ def test_manual_dds_object_with_short_ttl():
     test_dn = f"cn={test_cn},cn=internal"
 
     test_ttl = 60
-    min_ttl = int(_ucr.get('ldap/database/internal/dds/min-ttl', '86400'))
+    min_ttl = int(_ucr.get('ldap/database/internal/overlay/dds/min-ttl', '86400'))
 
     if test_ttl < min_ttl:
         test_ttl = min_ttl
