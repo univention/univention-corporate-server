@@ -1900,7 +1900,13 @@ class ad(univention.connector.ucs):
                     ad_object = self.__object_from_element(elements[0])
                     # should not be synced
                     if not ad_object:
+                        self._remove_rejected(change_usn)
                         continue
+                    if change_usn == int(ad_object['attributes'].get('uSNCreated', [b'0'])[0]):
+                        if change_usn < int(ad_object['attributes'].get('uSNChanged', [b'0'])[0]):
+                            # stale reject found via uSNCreated, where uSNChanged is more recent
+                            self._remove_rejected(change_usn)
+                            continue
                     property_key = self.__identify_ad_type(ad_object)
                     if not property_key:  # TODO: still needed? (removed in s4)
                         ud.debug(ud.LDAP, ud.INFO, "sync to ucs: Dropping reject for unidentified object %s" % (dn,))
