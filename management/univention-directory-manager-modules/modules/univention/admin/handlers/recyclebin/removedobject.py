@@ -19,6 +19,7 @@ from univention.admin.layout import Group, Tab
 from univention.admin.log import log
 from univention.admin.modules import _ldap_operational_attribute_names
 from univention.admin.recyclebin import IGNORE_ATTRS, RECYCLEBIN_BASE, Reference, create_references
+from univention.admindiary.events import DiaryEvent
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.recyclebin')
@@ -387,6 +388,10 @@ class object(simpleLdap):
                     target_module=ref.target_module,
                     target_property=prop,
                 )
+
+    def _get_admin_diary_event(self, event_name: str) -> DiaryEvent:
+        name = self['originalObjectType'].replace('/', '_').upper()
+        return DiaryEvent.get('UDM_%s_%s' % (name, event_name)) or DiaryEvent.get('UDM_GENERIC_%s' % event_name)
 
     @classmethod
     def rewrite_filter(cls, filter_expr, mapping) -> None:
