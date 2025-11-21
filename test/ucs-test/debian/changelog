@@ -1,3 +1,9 @@
+ucs-test (12.3.40) unstable; urgency=medium
+
+  * Bug #58828: add test for release udm lock if conditions are not met
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 21 Nov 2025 11:42:39 +0100
+
 ucs-test (12.3.39) unstable; urgency=medium
 
   * Bug #52202: adjust UCR variable names for DDS overlay

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2025-10-27 10:09+0100\n"
+"POT-Creation-Date: 2025-11-21 15:53+0100\n"
 "PO-Revision-Date: 2016-11-08 14:59+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -513,7 +513,7 @@ msgstr "Gruppe: Gruppe"
 msgid "Guardian"
 msgstr "Guardian"
 
-#: modules/univention/admin/syntax.py:7143
+#: modules/univention/admin/syntax.py:7151
 msgid ""
 "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and "
 "underscores, in the format 'app:namespace:role' or "
@@ -1133,8 +1133,8 @@ msgstr "Protokoll"
 msgid "Public key infrastructure - certificate"
 msgstr "Public key infrastruktur - Zertifikat"
 
-#: modules/univention/admin/certificate.py:24
 #: modules/univention/admin/syntax.py:5892
+#: modules/univention/admin/certificate.py:24
 msgid "Public key infrastructure account"
 msgstr "Public Key Infrastruktur-Konto"
 
@@ -1397,13 +1397,25 @@ msgstr "Die LDAP DN ist ungültig."
 msgid "The MAC address is already in use."
 msgstr "Die MAC-Adresse wird bereits verwendet."
 
-#: modules/univention/admin/locking.py:89
-#: modules/univention/admin/locking.py:120
 #: modules/univention/admin/allocators.py:185
-#: modules/univention/admin/allocators.py:243
+#: modules/univention/admin/locking.py:120
 #, python-format
 msgid "The attribute %r could not get locked."
 msgstr "Das Attribut %r konnte nicht gesperrt werden."
+
+#: modules/univention/admin/locking.py:89
+#, python-format
+msgid ""
+"The attribute %r could not get locked. Another process is already trying to acquire the value."
+msgstr ""
+"Das Attribut %r konnte nicht gesperrt werden. Ein anderer Prozess versucht bereits, den Wert zu verwenden."
+
+#: modules/univention/admin/allocators.py:246
+#, python-format
+msgid "The attribute %r could not get locked. The value is already in use."
+msgstr ""
+"Das Attribut %r konnte nicht gesperrt werden. Der Wert wird bereits "
+"verwendet."
 
 #: modules/univention/admin/syntax.py:2776
 #, python-format

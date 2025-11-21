@@ -86,7 +86,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
         except ldap.INSUFFICIENT_ACCESS:
             raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 
-    raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
+    raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked. Another process is already trying to acquire the value.') % (type,))
 
 
 def relock(lo, position, type, value, scope='domain', timeout=300):
