@@ -57,6 +57,7 @@ port_env="${CONFIGBASENAME//-/_}_ad_ldap_port"
 base_env="${CONFIGBASENAME//-/_}_ad_ldap_base"
 cert_env="${CONFIGBASENAME//-/_}_ad_ldap_certificate"
 ldaps_ucr="${CONFIGBASENAME//-/_}/ad/ldap/ldaps"
+ssl_ucr="${CONFIGBASENAME//-/_}/ad/ldap/ssl"
 kerberos_ucr="${CONFIGBASENAME//-/_}/ad/ldap/kerberos"
 
 
@@ -109,10 +110,18 @@ fi
 
 if is_ucr_true "$ldaps_ucr"; then
 	protocol='ldaps'
-	options+=("--option" "tls cafile = ${!cert_env}")
-	options+=("--option" "tls crlfile = /etc/univention/ssl/ucsCA/crl/crl.pem") ## we could add a cert from the AD domain into our CRL
 else
 	protocol='ldap'
+	options+=("--option" "client ldap sasl wrapping = starttls")
+fi
+
+if is_ucr_true "$ssl_ucr" || is_ucr_true "$ldaps_ucr"; then
+	if [ -n "${!cert_env}" ]; then
+		options+=("--option" "tls cafile = ${!cert_env}")
+		options+=("--option" "tls crlfile = /etc/univention/ssl/ucsCA/crl/crl.pem") ## we could add a cert from the AD domain into our CRL
+	else
+		options+=("--option" "tls verify peer = no_check")
+	fi
 fi
 
 

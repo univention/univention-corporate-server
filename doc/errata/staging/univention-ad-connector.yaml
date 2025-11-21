@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [3,4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-ad-connector
+fix: 16.5.2
+desc: |
+ This update addresses the following issues:
+ * `univention-adsearch` only supported LDAPS against port 636,
+   but not StartTLS against port 389. Now it also supports the latter.
+bug: [57747]
