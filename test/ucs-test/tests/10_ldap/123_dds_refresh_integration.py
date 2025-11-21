@@ -49,7 +49,7 @@ class TestDDSRefreshIntegration:
 
     def test_dds_with_refresh_operation(self):
         """Test the core DDS refresh functionality on recyclebin objects."""
-        dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
+        dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', True)
         if not dds_enabled:
             pytest.skip("DDS overlay is not enabled")
 

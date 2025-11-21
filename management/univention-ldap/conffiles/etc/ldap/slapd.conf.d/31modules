@@ -77,6 +77,6 @@ print('moduleload\tunique.so')
 print('moduleload\taccesslog.so')
 if configRegistry.is_true('ldap/overlay/sock', False):
     print('moduleload\tback_sock.so')
-if configRegistry.is_true('ldap/database/internal/overlay/dds', False):
+if configRegistry.is_true('ldap/database/internal/overlay/dds', True):
     print('moduleload\tdds.so')
 @!@

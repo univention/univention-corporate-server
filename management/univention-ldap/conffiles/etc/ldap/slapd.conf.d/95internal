@@ -39,7 +39,7 @@ syncprov-sessionlog %(ldap/database/internal/syncprov/sessionlog)s
 """ % configRegistry)
 
     # DDS overlay for automatic purging of recyclebin objects
-    if configRegistry.is_true('ldap/database/internal/overlay/dds', False):
+    if configRegistry.is_true('ldap/database/internal/overlay/dds', True):
         print("""
 overlay dds
 dds-max-ttl %(ldap/database/internal/overlay/dds/max-ttl)s

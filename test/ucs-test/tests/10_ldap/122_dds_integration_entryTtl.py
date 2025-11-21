@@ -51,12 +51,6 @@ def find_recyclebin_object(lo, original_dn):
         return None
 
 
-def test_dds_overlay_enabled():
-    dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
-    if not dds_enabled:
-        pytest.skip("DDS overlay is not enabled (ldap/database/internal/overlay/dds=false)")
-
-
 def test_recyclebin_object_with_short_ttl_for_testing():
     dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
     if not dds_enabled:
