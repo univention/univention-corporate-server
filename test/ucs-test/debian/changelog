@@ -1,3 +1,9 @@
+ucs-test (12.3.38) unstable; urgency=medium
+
+  * Bug #58680: ad locked test not in admember
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Nov 2025 09:34:25 +0100
+
 ucs-test (12.3.37) unstable; urgency=medium
 
   * Bug #52202: add tests for recyclebin
