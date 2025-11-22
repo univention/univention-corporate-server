@@ -7,4 +7,5 @@ fix: 14.0.34
 desc: |
  This update addresses the following issues:
  * During DN mapping, lookup samaccountname for olddn from adcache.
+ * Avoid unnecessary lookups in AD during modify in UCS.
 bug: [58830]
