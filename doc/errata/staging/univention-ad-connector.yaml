@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-ad-connector
+fix: 14.0.34
+desc: |
+ This update addresses the following issues:
+ * During DN mapping, lookup samaccountname for olddn from adcache.
+bug: [58830]
