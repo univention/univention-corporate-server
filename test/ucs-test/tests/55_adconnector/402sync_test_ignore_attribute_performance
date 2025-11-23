@@ -63,14 +63,21 @@ ucr set connector/ad/poll/profiling=yes
 	ntsd2=$(sed 's/^O:\([^:]*\)G:/O:LAG:/' <<<"$ntsd")
 	ntsd3=$(sed 's/^O:\([^:]*\)G:/O:DAG:/' <<<"$ntsd")
 
-	ldbmodify -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" <<%EOF
+	options=()
+	if [ -n "$connector_ad_ldap_certificate" ]; then
+		options+=("--option" "client ldap sasl wrapping = starttls")
+		options+=("--option" "tls cafile = $connector_ad_ldap_certificate")
+		options+=("--option" "tls crlfile = /etc/univention/ssl/ucsCA/crl/crl.pem")
+	fi
+
+	ldbmodify -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" "${options[@]}" <<%EOF
 dn: $dn
 changetype: modify
 replace: nTSecurityDescriptor
 nTSecurityDescriptor: $ntsd2
 %EOF
 
-	ldbmodify -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" <<%EOF
+	ldbmodify -H "$ad_ldapurl" -U "$ad_admin%$ad_bindpw" "${options[@]}" <<%EOF
 dn: $dn
 changetype: modify
 replace: nTSecurityDescriptor

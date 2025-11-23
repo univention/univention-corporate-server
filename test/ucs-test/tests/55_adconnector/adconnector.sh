@@ -217,7 +217,23 @@ function ad_delete () {
 		kinit --password-file="$(ucr get tests/domainadmin/pwdfile)" "$username"
 		ldapdelete -r -H "ldap://$(ucr get ${configbase}/ad/ldap/host)" -Y GSSAPI "$dn"
 	else
-		ldapdelete -r -H "ldap://$(ucr get ${configbase}/ad/ldap/host)" -x -D "$(ucr get ${configbase}/ad/ldap/binddn)" -y "$pwfile" "$dn"
+
+		python3 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import adconnector
+adconnection = adconnector.ADConnection('$configbase')
+adconnection.delete('$dn')
+sys.exit(42)
+"
+		local retval="$?"
+		if [ "$retval" == 42 ]; then
+			info "object $dn deleted"
+			return 0
+		else
+			scriptlet_error "ad_delete"
+			return 2
+		fi
 	fi
 }
 

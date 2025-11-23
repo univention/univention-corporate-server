@@ -235,7 +235,7 @@ class ADConnection(LDAPConnection):
         self.host = ucr['%s/ad/ldap/host' % configbase]
         self.port = ucr['%s/ad/ldap/port' % configbase]
         self.ca_file = ucr['%s/ad/ldap/certificate' % configbase]
-        self.protocol = 'ldap'
+        self.protocol = 'ldaps' if ucr.is_true('%s/ad/ldap/ldaps' % configbase) else 'ldap'
         self.serverctrls_for_add_and_modify = []
         no_starttls = ucr.is_false('%s/ad/ldap/ssl' % configbase)
         self.connect(no_starttls)
