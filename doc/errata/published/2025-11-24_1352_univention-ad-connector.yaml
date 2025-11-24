@@ -9,3 +9,6 @@ desc: |
  * During DN mapping, lookup samaccountname for olddn from adcache.
  * Avoid unnecessary lookups in AD during modify in UCS.
 bug: [58830]
+erratum: 1352
+announced: 2025-11-24
+support: core
