@@ -2110,8 +2110,9 @@ class uid_umlauts(simple):
     name = 'uid'
     min_length = 1   # TODO: not enforced here
     max_length = 16  # TODO: not enforced here
-    _re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
-    # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
+    _re = re.compile(r'(?u)(^\w[\w\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.]*[\w\-]$)|\w*$')  # TODO: uid() above must be at least 2 chars long
+    # FIXME: AD doesn't allow: [\"\,\*\+] while OTOH UCS doesn't allow [\@]
+    # Note: UDM doesn't allow weird character at the beginning and end (e.g. to avoid space or dot at the end)
 
     @classmethod
     def parse(self, text):
@@ -2151,8 +2152,9 @@ class uid_umlauts_lower_except_first_letter(simple):
 
     min_length = 1   # TODO: not enforced here
     max_length = 16  # TODO: not enforced here
-    _re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
-    # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
+    _re = re.compile(r'(?u)(^\w[\w\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.]*[\w\-]$)|\w*$')  # TODO: uid() above must be at least 2 chars long
+    # FIXME: AD doesn't allow: [\"\,\*\+] while OTOH UCS doesn't allow [\@]
+    # Note: UDM doesn't allow weird character at the beginning and end (e.g. to avoid space or dot at the end)
 
     @classmethod
     def parse(self, text):
@@ -2181,8 +2183,10 @@ class gid(simple):
 
     min_length = 1   # TODO: not enforced here
     max_length = 32  # TODO: not enforced here
-    regex = re.compile(u"(?u)^\\w([\\w -.’]*\\w)?$")
-    # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
+    regex = re.compile(r'(?u)^\w([\w\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.\’]*[\w\-])?$')
+    # Note: \’ is for french "Opérateurs d’impression" etc.
+    # FIXME: AD doesn't allow: [\"\,\*\+] while OTOH UCS doesn't allow [\@]
+    # Note: UDM doesn't allow weird character at the beginning and end (e.g. to avoid space or dot at the end)
     error_message = _(
         "A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
         "and dots are allowed.",
