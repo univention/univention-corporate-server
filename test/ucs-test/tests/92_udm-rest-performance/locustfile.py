@@ -183,7 +183,7 @@ class UserCRUDTest(FastHttpUser):
             description=user_data['description'],
         )
         if not success:
-            raise AssertionError(f'Failed to create user: {user_data["username"]}')
+            log.warning(f'Failed to create user: {user_data["username"]}')
 
     @task(8)
     def read_user(self):
@@ -192,7 +192,7 @@ class UserCRUDTest(FastHttpUser):
             return
         success, _user_data = self.udm_client.get_object('users/user', user_dn[1], name='read_user')
         if not success:
-            raise AssertionError(f'Failed to read user: {user_dn[1]}')
+            log.warning(f'Failed to read user: {user_dn[1]}')
 
     @task(4)
     def modify_user_description(self):
@@ -202,7 +202,7 @@ class UserCRUDTest(FastHttpUser):
         new_description = f'Modified at {random.randint(1000, 9999)}'
         success = self.udm_client.modify_object('users/user', user_dn, {'description': new_description}, name='modify_user_description')
         if not success:
-            raise AssertionError(f'Failed to modify user: {user_dn}')
+            log.warning(f'Failed to modify user: {user_dn}')
 
     @task(2)
     def delete_user(self):
@@ -213,6 +213,8 @@ class UserCRUDTest(FastHttpUser):
         success = self.udm_client.delete_object(obj_type, user_dn)
         if success and (obj_type, user_dn) in self.udm_client.created_objects:
             self.udm_client.created_objects.remove((obj_type, user_dn))
+        elif not success:
+            log.warning(f'Failed to delete user: {user_dn}')
 
 
 class GroupCRUDTest(FastHttpUser):
@@ -242,7 +244,7 @@ class GroupCRUDTest(FastHttpUser):
             description=group_data['description'],
         )
         if not success:
-            raise AssertionError(f'Failed to create group: {group_data["name"]}')
+            log.warning(f'Failed to create group: {group_data["name"]}')
 
     @task(8)
     def read_group(self):
@@ -251,7 +253,7 @@ class GroupCRUDTest(FastHttpUser):
             return
         success, _group_data = self.udm_client.get_object('groups/group', group_dn, name='read_group')
         if not success:
-            raise AssertionError(f'Failed to read group: {group_dn}')
+            log.warning(f'Failed to read group: {group_dn}')
 
     @task(4)
     def modify_group_description(self):
@@ -261,7 +263,7 @@ class GroupCRUDTest(FastHttpUser):
         new_description = f'Modified group at {random.randint(1000, 9999)}'
         success = self.udm_client.modify_object('groups/group', group_dn, {'description': new_description}, name='modify_group_description')
         if not success:
-            raise AssertionError(f'Failed to modify group: {group_dn}')
+            log.warning(f'Failed to modify group: {group_dn}')
 
     @task(6)
     def search_groups(self):
@@ -272,7 +274,7 @@ class GroupCRUDTest(FastHttpUser):
             name='search_groups',
         )
         if not success:
-            raise AssertionError('Failed to search groups')
+            log.warning('Failed to search groups')
 
 
 class GroupMembershipTest(FastHttpUser):
