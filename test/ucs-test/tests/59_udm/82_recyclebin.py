@@ -899,8 +899,6 @@ def test_dds_automatic_purging_enabled(udm, lo, recyclebin_policy_session, ucr):
             break
     assert not lo.get(deleted_dn), '{deleted_dn} should be deleted, but still exists'
 
-    _cleanup_deleted_object(deleted_dn)
-
 
 def test_reference_based_restoration(udm, lo, recyclebin_policy_session):
     """Test that relationships are restored using generic references with UUIDs"""
