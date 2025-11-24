@@ -458,7 +458,7 @@ SPDX-FileCopyrightText = "2002-2025 Univention GmbH"
 path = "management/univention-directory-manager-modules/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
+SPDX-FileCopyrightText = "2001-2025 Univention GmbH"
 
 [[annotations]]
 path = "management/univention-directory-manager-rest/**"
