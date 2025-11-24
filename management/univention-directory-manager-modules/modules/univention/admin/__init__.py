@@ -172,9 +172,9 @@ class property:
 
     def __init__(
         self,
-        *,
         short_description: str = '',
         long_description: str = '',
+        *,
         syntax: type | Any = None,
         module_search: None = None,
         multivalue: bool = False,
