@@ -1,0 +1,37 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libsoup2.4
+fix: 2.56.0-2+deb9u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.0 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H).
+   (CVE-2025-32911)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-32913, CVE-2025-32906)
+ * CVSS score 7.4 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H).
+   (CVE-2025-32914)
+ * CVSS score 7.0 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:H).
+   (CVE-2025-2784)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2025-32912, CVE-2025-32910)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L).
+   (CVE-2025-32053, CVE-2025-32052)
+ * CVSS score 5.9 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-32050)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-32909)
+bug: [58835]
+cve:
+- CVE-2025-2784
+- CVE-2025-32050
+- CVE-2025-32052
+- CVE-2025-32053
+- CVE-2025-32906
+- CVE-2025-32909
+- CVE-2025-32910
+- CVE-2025-32911
+- CVE-2025-32913
+- CVE-2025-32914
+- CVE-2025-32912
