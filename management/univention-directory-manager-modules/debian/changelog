@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.4) unstable; urgency=medium
+
+  * Bug #58898 Allow trailing dash in uid and gid syntaxes
+
+ -- Felix Botner <botner@univention.de>  Thu, 11 Dec 2025 10:03:03 +0100
+
 univention-directory-manager-modules (17.4.3) unstable; urgency=medium
 
   * Bug #58887: rename recyclebin to Recycle Bin
