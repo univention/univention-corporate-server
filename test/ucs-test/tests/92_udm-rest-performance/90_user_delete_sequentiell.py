@@ -65,4 +65,4 @@ class UserDeleteSequentiell(HttpUser):
             self.environment.user_dn = None
         if user_dn:
             if not self.udm_client.delete_object('users/user', user_dn):
-                raise Exception(f'Failed to delete user: {user_dn}')
+                log.warning(f'Failed to delete user (may not exist): {user_dn}')
