@@ -325,7 +325,7 @@ class UDMRestClient:
         move_name = name or f'move_{object_type.rsplit("/", maxsplit=1)[-1]}'
 
         with self.make_request('PUT', f'{UDM_BASE_PATH}/{object_type}/{object_dn}', json=obj_data, name=move_name) as response:
-            if response.status_code in [200, 204]:
+            if response.status_code in [200, 201, 204]:
                 response.success()
                 return True, new_dn
             else:
