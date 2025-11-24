@@ -623,13 +623,13 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Searches for LDAP objects and returns a few properties of the found objects
 
         requests.options = {}
-                'objectType' -- the object type to search for (default: if not given the flavor is used)
-                'objectProperty' -- the object property that should be scanned
-                'objectPropertyValue' -- the filter that should be found in the property
-                'fields' -- the properties which should be returned
-                'container' -- the base container where the search should be started (default: LDAP base)
-                'superordinate' -- the superordinate object for the search (default: None)
-                'scope' -- the search scope (default: sub)
+            'objectType' -- the object type to search for (default: if not given the flavor is used)
+            'objectProperty' -- the object property that should be scanned
+            'objectPropertyValue' -- the filter that should be found in the property
+            'fields' -- the properties which should be returned
+            'container' -- the base container where the search should be started (default: LDAP base)
+            'superordinate' -- the superordinate object for the search (default: None)
+            'scope' -- the search scope (default: sub)
 
         return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
         """
@@ -758,7 +758,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns the default search pattern/value for the given object property
 
         requests.options = {}
-                'objectProperty' -- the object property that should be scanned
+            'objectProperty' -- the object property that should be scanned
 
         return: <value>
         """
@@ -779,8 +779,8 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns the next IP configuration based on the given network object
 
         requests.options = {}
-                'networkDN' -- the LDAP DN of the network object
-                'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
+            'networkDN' -- the LDAP DN of the network object
+            'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
 
         return: {}
         """
@@ -811,7 +811,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         LDAP directory are searched.
 
         requests.options = {}
-                'objectType' -- The UDM module name
+            'objectType' -- The UDM module name
 
         return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
         """
@@ -826,7 +826,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         type.
 
         requests.options = {}
-                'objectType' -- The UDM module name
+            'objectType' -- The UDM module name
 
         return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
         """
@@ -845,8 +845,8 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns the list of object types matching the given flavor or container.
 
         requests.options = {}
-                'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
-                'container' -- if available only types suitable for the given container are returned (only for the navigation)
+            'superordinate' -- if available only types for the given superordinate are returned (not for the navigation)
+            'container' -- if available only types suitable for the given container are returned (only for the navigation)
 
         return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
         """
@@ -900,7 +900,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns the layout information for the given object type.
 
         requests.options = {}
-                'objectType' -- The UDM module name. If not available the flavor is used
+            'objectType' -- The UDM module name. If not available the flavor is used
 
         return: <layout data structure (see UDM Python modules)>
         """
@@ -923,7 +923,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns the properties of the given object type.
 
         requests.options = {}
-                'searchable' -- If given only properties that might be used for search filters are returned
+            'searchable' -- If given only properties that might be used for search filters are returned
 
         return: [ {}, ... ]
         """
@@ -942,7 +942,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns the options specified for the given object type
 
         requests.options = {}
-                'objectType' -- The UDM module name. If not available the flavor is used
+            'objectType' -- The UDM module name. If not available the flavor is used
 
         return: [ {}, ... ]
         """
@@ -964,7 +964,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         given object type. Therefore the syntax definition of the properties is used.
 
         requests.options = {}
-                'objectType' -- The UDM module name. If not available the flavor is used
+            'objectType' -- The UDM module name. If not available the flavor is used
 
         return: [ { 'property' : <name>, 'valid' : (True|False), 'details' : <message> }, ... ]
         """
@@ -1052,7 +1052,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Dynamically determine valid values for a given syntax class
 
         requests.options = {}
-                'syntax' -- The UDM syntax class
+            'syntax' -- The UDM syntax class
 
         return: [ { 'id' : <name>, 'label' : <text> }, ... ]
         """
@@ -1162,10 +1162,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         Returns a list of objects in a LDAP container (scope: one)
 
         requests.options = {}
-                'container' -- the base container where the search should be started (default: LDAP base)
-                'objectType' -- the object type that should be displayed (optional)
-                'objectProperty' -- the object property that should be scanned (optional)
-                'objectPropertyValue' -- the filter that should b found in the property (optional)
+            'container' -- the base container where the search should be started (default: LDAP base)
+            'objectType' -- the object type that should be displayed (optional)
+            'objectProperty' -- the object property that should be scanned (optional)
+            'objectPropertyValue' -- the filter that should b found in the property (optional)
 
         return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
         """

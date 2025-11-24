@@ -17,7 +17,7 @@ def month_map(month: str) -> str | int | None:
     Map English month name to 1-based numeric month-in-year.
 
     .. seealso::
-            :py:func:`month_reverse_map`
+        :py:func:`month_reverse_map`
 
     >>> month_map('*')
     '*'
@@ -38,7 +38,7 @@ def weekday_map(weekday: str) -> str | int | None:
     Map English day-of-week name to numeric value 1-7.
 
     .. seealso::
-            :py:func:`weekday_reverse_map`
+        :py:func:`weekday_reverse_map`
 
     >>> weekday_map('*')
     '*'
@@ -58,7 +58,7 @@ def month_reverse_map(month: str | int) -> str | None:
     Map 1-based numeric month-in-year to English month name.
 
     .. seealso::
-            :py:func:`month_map`
+        :py:func:`month_map`
 
     >>> month_reverse_map('*')
     '*'
@@ -78,7 +78,7 @@ def weekday_reverse_map(weekday: str | int) -> str | None:
     Map numeric day-of-week value 1-7 to English name.
 
     .. seealso::
-            :py:func:`weekday_map`
+        :py:func:`weekday_map`
 
     >>> weekday_reverse_map('*')
     '*'
@@ -100,7 +100,7 @@ def cron_create(cronlist: Mapping[str, Sequence[str]]) -> str:
     :param cronlist: A mapping of strings to lists.
 
     .. seealso::
-            :py:func:`cron_split`
+        :py:func:`cron_split`
 
     >>> cron_create(dict(minute=[], hour=[], day=[], month=[], weekday=[]))
     '* * * * * '
@@ -162,7 +162,7 @@ def cron_split(cronlist):
     :param cronlist: a crontab time string 'minute hour day month weekday'.
 
     .. seealso::
-            :py:func:`cron_create`
+        :py:func:`cron_create`
 
     >>> cron_split('* * * * * ') == {'minute': ['*'], 'hour': ['*'], 'day': ['*'], 'month': ['*'], 'weekday': ['*']}
     True

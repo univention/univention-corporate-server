@@ -31,7 +31,7 @@ class Plugins:
     def __init__(self, python_path: str) -> None:
         """
         :param str python_path: fully dotted Python path that the plugins will
-                be found below
+            be found below
         """
         self.python_path = python_path
         self._imported.setdefault(python_path, False)

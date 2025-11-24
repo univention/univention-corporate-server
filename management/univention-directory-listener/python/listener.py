@@ -73,7 +73,7 @@ def run(exe: str, argv: list[str], uid: int = -1, wait: bool = True) -> int:
     :rtype: int
 
     .. warning::
-       Not waiting for the sub-process leads to zombie processes.
+        Not waiting for the sub-process leads to zombie processes.
     """
     if uid > -1:
         olduid = os.getuid()

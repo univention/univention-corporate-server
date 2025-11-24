@@ -358,7 +358,7 @@ class select(ISyntax):
     """
     Select item from list of choices::
 
-            self.choices = [(id, _("Display text"), ...]
+        self.choices = [(id, _("Display text"), ...]
     """
 
     empty_value = False
@@ -430,7 +430,7 @@ class combobox(select):
     """
     Select item from list of choices but accept all kind of values::
 
-            self.choices = [(id, _("Display text"), ...]
+        self.choices = [(id, _("Display text"), ...]
     """
 
     widget = 'SuggestionBox'
@@ -689,11 +689,11 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
     'uid=Administrator,cn=users,dc=intranet,dc=example,dc=com'
     >>> UDM_Objects.parse("") #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> UDM_Objects.parse("no dn") #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1645,19 +1645,19 @@ class integer(simple):
     '2'
     >>> integer.parse('-1') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> integer.parse('1.1') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> integer.parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> integer.parse('') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1723,15 +1723,15 @@ class boolean(simple):
     ''
     >>> boolean.parse('2') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> boolean.parse('0.1') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> boolean.parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1788,19 +1788,19 @@ class filesize(simple):
     '4GB'
     >>> filesize.parse('5pb') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> filesize.parse('-6') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> filesize.parse('-7.8') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> filesize.parse('text') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1818,15 +1818,15 @@ class mail_folder_name(simple):
     'folder_name'
     >>> mail_folder_name.parse('folder name') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> mail_folder_name.parse('folder\tname') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> mail_folder_name.parse('folder!name') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1881,15 +1881,15 @@ class string_numbers_letters_dots(simple):
 
     >>> string_numbers_letters_dots.parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots.parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots.parse('aA')
     'aA'
@@ -1901,19 +1901,19 @@ class string_numbers_letters_dots(simple):
     'a-A'
     >>> string_numbers_letters_dots.parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots.parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots.parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots.parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1928,15 +1928,15 @@ class string_numbers_letters_dots_spaces(simple):
 
     >>> string_numbers_letters_dots_spaces.parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse('aA')
     'aA'
@@ -1950,23 +1950,23 @@ class string_numbers_letters_dots_spaces(simple):
     'a A'
     >>> string_numbers_letters_dots_spaces.parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse(' ') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> string_numbers_letters_dots_spaces.parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -1986,7 +1986,7 @@ class phone(simple):
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._ ()\\/+-'
     >>> phone.parse('^°!$§%&[]{}<>|*~#",.;:') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -2006,7 +2006,7 @@ class IA5string(string):
     'abc'
     >>> IA5string.parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     """
 
@@ -2027,15 +2027,15 @@ class uid(simple):
 
     >>> uid.parse('a') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('A') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('0') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('aA')
     'aA'
@@ -2047,23 +2047,23 @@ class uid(simple):
     'a-A'
     >>> uid.parse('.') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('_') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('-') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('/') #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('admin') #doctest: +IGNORE_EXCEPTION_DETAIL +SKIP
     Traceback (most recent call last):
-            ...
+        ...
     valueError:
     >>> uid.parse('Admin')
     'Admin'
@@ -2291,7 +2291,7 @@ class hostName(simple):
     """
     hostname based upon :rfc:`1123`::
 
-            <let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
+        <let-or-digit>[*[<let-or-digit-or-hyphen>]<let-or-digit>]
 
     also allow `_` for Microsoft.
 
@@ -2909,8 +2909,8 @@ class date(simple):
     Also accepts the ISO format (YYYY-MM-DD).
 
     .. warning::
-            Centuries are *always* stripped!
-            See :py:class:`date2`.
+        Centuries are *always* stripped!
+        See :py:class:`date2`.
 
     >>> date.parse(None)
     ''
@@ -3195,7 +3195,7 @@ class dnsHostname(dnsName):
     Traceback (most recent call last):
     ...
     valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
-                            In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
+        In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
     """
 
     LABEL = re.compile(r'^(?![0-9]+$|[_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$')
@@ -3227,17 +3227,17 @@ class dnsName_umlauts(simple):
     Traceback (most recent call last):
     ...
     valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
-                            In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
+        In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
     >>> dnsName_umlauts.parse('-') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
-                            In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
+        In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
     >>> dnsName_umlauts.parse('_') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError: A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit.
-                            In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
+        In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.
     """
 
     min_length = 1
@@ -3302,7 +3302,7 @@ class dnsSRVName(complex):
     ['ldap', 'tcp']
 
     .. seealso::
-            * :py:class:`dnsSRVLocation`
+        * :py:class:`dnsSRVLocation`
     """
 
     min_elements = 2
@@ -3430,7 +3430,7 @@ class UNIX_TimeInterval(complex):
     ['3600', 'seconds']
 
     .. seealso::
-            * :py:class:`UNIX_BoundedTimeInterval`
+        * :py:class:`UNIX_BoundedTimeInterval`
     """
 
     min_elements = 1
@@ -3619,7 +3619,7 @@ class userAttributeList(string):
 
     .. note::
 
-            unused
+        unused
 
     >>> userAttributeList.parse('uid')
     'uid'
@@ -4302,8 +4302,8 @@ class GroupDN(UDM_Objects):
     Syntax to select a group from |LDAP| by |DN|.
 
     .. seealso::
-            * :py:class:`GroupID`
-            * :py:class:`GroupDNOrEmpty`
+        * :py:class:`GroupID`
+        * :py:class:`GroupDNOrEmpty`
     """
 
     udm_modules = ('groups/group',)
@@ -4322,8 +4322,8 @@ class GroupDNOrEmpty(GroupDN):
     Syntax to select a group from |LDAP| by |DN| or none.
 
     .. seealso::
-            * :py:class:`GroupID`
-            * :py:class:`GroupDN`
+        * :py:class:`GroupID`
+        * :py:class:`GroupDN`
     """
 
     empty_value = True
@@ -4334,7 +4334,7 @@ class UserDN(UDM_Objects):
     Syntax to select an user from |LDAP| by |DN|.
 
     .. seealso::
-            * :py:class:`UserID`
+        * :py:class:`UserID`
     """
 
     udm_modules = ('users/user',)
@@ -4346,7 +4346,7 @@ class HostDN(UDM_Objects):
     Syntax to select a host from |LDAP| by |DN|.
 
     .. seealso::
-            * :py:class:`IComputer_FQDN`
+        * :py:class:`IComputer_FQDN`
     """
 
     udm_modules = ('computers/computer',)
@@ -4358,7 +4358,7 @@ class UserID(UDM_Objects):
     Syntax to select an user from |LDAP| by numeric user identifier.
 
     .. seealso::
-            * :py:class:`UserDN`.
+        * :py:class:`UserDN`.
 
     >>> UserID.parse('0')
     '0'
@@ -4387,8 +4387,8 @@ class GroupID(UDM_Objects):
     Syntax to select a group from |LDAP| by numeric user identifier.
 
     .. seealso::
-            * :py:class:`GroupDN`
-            * :py:class:`GroupDNOrEmpty`
+        * :py:class:`GroupDN`
+        * :py:class:`GroupDNOrEmpty`
 
     >>> GroupID.parse('5000')
     '5000'
@@ -4429,7 +4429,7 @@ class IComputer_FQDN(UDM_Objects):
     Syntax to select a host from |LDAP| by |FQDN|.
 
     .. seealso::
-            * :py:class:`HostDN`
+        * :py:class:`HostDN`
 
     >>> IComputer_FQDN.parse('a.bc')
     'a.bc'
@@ -4504,7 +4504,7 @@ class ServicePrint_FQDN(IComputer_FQDN):
     Syntax to select a |UCS| host from |LDAP| by |FQDN| offering print services.
 
     .. seealso::
-            * :py:class:`ServicePrint`
+        * :py:class:`ServicePrint`
     """
 
     udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
@@ -4516,7 +4516,7 @@ class MailHomeServer(IComputer_FQDN):
     Syntax to select a |UCS| host from |LDAP| by |FQDN| offering |IMAP| services.
 
     .. seealso::
-            * :py:class:`ServiceMail`
+        * :py:class:`ServiceMail`
     """
 
     udm_modules = ('computers/computer',)
@@ -4603,8 +4603,8 @@ class DNS_ForwardZone(UDM_Objects):
     Syntax to select no or one |DNS| forward zone from |LDAP| using :py:class:`univention.admin.handlers.dns.forward_zone`.
 
     .. seealso::
-            * :py:class:`DNS_ReverseZone`
-            * :py:class:`DNS_ForwardZoneNonempty`
+        * :py:class:`DNS_ReverseZone`
+        * :py:class:`DNS_ForwardZoneNonempty`
     """
 
     description = _('DNS forward zone')
@@ -4618,8 +4618,8 @@ class DNS_ReverseZone(UDM_Objects):
     Syntax to select no or one |DNS| reverse zone from |LDAP| using :py:class:`univention.admin.handlers.dns.reverse_zone`.
 
     .. seealso::
-            * :py:class:`DNS_ForwardZone`
-            * :py:class:`DNS_ReverseZoneNonempty`
+        * :py:class:`DNS_ForwardZone`
+        * :py:class:`DNS_ReverseZoneNonempty`
     """
 
     description = _('DNS reverse zone')
@@ -4634,8 +4634,8 @@ class DNS_ReverseZoneNonempty(DNS_ReverseZone):
     Syntax to select one |DNS| reverse zone from |LDAP| using :py:class:`univention.admin.handlers.dns.reverse_zone`.
 
     .. seealso::
-            * :py:class:`DNS_ForwardZoneNonempty`
-            * :py:class:`DNS_ReverseZone`
+        * :py:class:`DNS_ForwardZoneNonempty`
+        * :py:class:`DNS_ReverseZone`
     """
 
     empty_value = False
@@ -4646,8 +4646,8 @@ class DNS_ForwardZoneNonempty(DNS_ForwardZone):
     Syntax to select one |DNS| forward zone from |LDAP| using :py:class:`univention.admin.handlers.dns.forward_zone`.
 
     .. seealso::
-            * :py:class:`DNS_ReverseZoneNonempty`
-            * :py:class:`DNS_ForwardZone`
+        * :py:class:`DNS_ReverseZoneNonempty`
+        * :py:class:`DNS_ForwardZone`
     """
 
     empty_value = False
@@ -4760,7 +4760,7 @@ class WritableShare(UDM_Objects):
     Syntax for selecting defined writeable |NFS| shares.
 
     .. seealso::
-            * :py:class:`nfsShare`
+        * :py:class:`nfsShare`
     """
 
     udm_modules = ('shares/share',)
@@ -5490,7 +5490,7 @@ class UNIX_AccessRight(simple):
     Syntax to configure UNIX file permissions.
 
     .. seealso::
-            * :py:class:`UNIX_AccessRight_extended`
+        * :py:class:`UNIX_AccessRight_extended`
     """
 
     widget = 'UnixAccessRights'
@@ -5502,7 +5502,7 @@ class UNIX_AccessRight_extended(simple):
     Syntax to configure UNIX file permissions including set\ |UID|, set\ |GID| and sticky bits.
 
     .. seealso::
-            * :py:class:`UNIX_AccessRight`
+        * :py:class:`UNIX_AccessRight`
     """
 
     widget = 'UnixAccessRightsExtended'
@@ -5631,7 +5631,7 @@ class ServiceMail(UDM_Objects):
     Syntax to select a |UCS| host from |LDAP| by |DN| offering |SMTP| services.
 
     .. seealso::
-            * :py:class:`MailHomeServer`
+        * :py:class:`MailHomeServer`
     """
 
     udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
@@ -5643,7 +5643,7 @@ class ServicePrint(UDM_Objects):
     Syntax to select a |UCS| host from |LDAP| by |DN| offering print services.
 
     .. seealso::
-            * :py:class:`ServicePrint_FQDN`
+        * :py:class:`ServicePrint_FQDN`
     """
 
     udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
@@ -5954,11 +5954,11 @@ class LDAP_Search(select):
     Searches can be either defined dynamically via a UDM settings/syntax
     definition and using
 
-            LDAP_Search(syntax_name='<NAME>')
+        LDAP_Search(syntax_name='<NAME>')
 
     or programmatically by directly instantiating
 
-            LDAP_Search(filter='LDAP-Search-Filter>', attribute=['<LDAP attributes>', ...], value='<LDAP attribute>', base='<LDAP base>')
+        LDAP_Search(filter='LDAP-Search-Filter>', attribute=['<LDAP attributes>', ...], value='<LDAP attribute>', base='<LDAP base>')
 
     >>> from univention.admin.uldap import getMachineConnection
     >>> from univention.lib.misc import custom_username
@@ -6002,22 +6002,22 @@ class LDAP_Search(select):
         :param syntax_name: name of the syntax LDAP object.
 
         :param filter: an LDAP filter to find the LDAP objects providing the
-                list of choices. The filter may contain patterns, that are ...
+            list of choices. The filter may contain patterns, that are ...
 
         :param attribute: a list of UDM module attributes definitions like
-                `shares/share: dn` to be used as human readable representation
-                for each element of the choices.
+            `shares/share: dn` to be used as human readable representation
+            for each element of the choices.
 
         :param value: the UDM module attribute that will be stored to identify
-                the selected element. The value is specified like `shares/share: dn`.
+            the selected element. The value is specified like `shares/share: dn`.
 
         :param viewonly: If set to True the values can not be changed.
 
         :param addEmptyValue: If set to True an empty value is add to the list
-                of choices.
+            of choices.
 
         :param appendEmptyValue: Same as addEmptyValue but added at the end.
-                Used to automatically choose an existing entry in frontend.
+            Used to automatically choose an existing entry in frontend.
         """
         self.name = self.__class__.__name__
 
@@ -6212,7 +6212,7 @@ class nfsShare(UDM_Objects):
     Syntax for selecting defined |NFS| shares.
 
     .. seealso::
-            * :py:class:`WritableShare`
+        * :py:class:`WritableShare`
     """
 
     udm_modules = ('shares/share',)
@@ -6361,7 +6361,7 @@ class Printers(UDM_Objects):
     Syntax to select a printers from |LDAP| using :py:class:`univention.admin.handlers.shares.printer`.
 
     .. seealso::
-            * :py:class:`PrinterNames`
+        * :py:class:`PrinterNames`
     """
 
     udm_modules = ('shares/printer',)
@@ -6379,7 +6379,7 @@ class PrinterNames(UDM_Objects):
     Syntax to select a printers from |LDAP| using :py:class:`univention.admin.handlers.shares.printer`.
 
     .. seealso::
-            * :py:class:`Printers`
+        * :py:class:`Printers`
 
     >>> PrinterNames().type_class
     <class 'univention.admin.types.StringType'>
@@ -6401,8 +6401,8 @@ class PrintQuotaGroup(complex):
     Syntax to configure a page quota for all users of a group together.
 
     .. seealso::
-            * :py:class:`PrintQuotaGroupPerUser`
-            * :py:class:`PrintQuotaUser`
+        * :py:class:`PrintQuotaGroupPerUser`
+        * :py:class:`PrintQuotaUser`
     """
 
     subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
@@ -6414,8 +6414,8 @@ class PrintQuotaGroupPerUser(complex):
     Syntax to configure a page quota for all individual users of a group.
 
     .. seealso::
-            * :py:class:`PrintQuotaUser`
-            * :py:class:`PrintQuotaGroup`
+        * :py:class:`PrintQuotaUser`
+        * :py:class:`PrintQuotaGroup`
     """
 
     subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('Group'), GroupName))
@@ -6427,8 +6427,8 @@ class PrintQuotaUser(complex):
     Syntax to configure a page quota for an individual user.
 
     .. seealso::
-            * :py:class:`PrintQuotaGroupPerUser`
-            * :py:class:`PrintQuotaGroup`
+        * :py:class:`PrintQuotaGroupPerUser`
+        * :py:class:`PrintQuotaGroup`
     """
 
     subsyntaxes = ((_('Soft limit (pages)'), integer), (_('Hard limit (pages)'), integer), (_('User'), UserName))

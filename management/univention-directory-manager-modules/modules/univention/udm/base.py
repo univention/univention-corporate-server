@@ -117,7 +117,7 @@ class BaseObject:
         Remove the object (and optionally its child nodes) from the LDAP database.
 
         :param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
-                them before removing this object
+            them before removing this object
         """
         raise NotImplementedError()
 
@@ -250,7 +250,7 @@ class BaseModule(metaclass=ModuleMeta):
         Create a new, unsaved :py:class:`BaseObject` object.
 
         :param superordinate: DN or UDM object this one references as its
-                superordinate (required by some modules)
+            superordinate (required by some modules)
         :return: a new, unsaved BaseObject object
         """
         raise NotImplementedError()
@@ -273,7 +273,7 @@ class BaseModule(metaclass=ModuleMeta):
         This is a convenience function around :py:meth:`search()`.
 
         :param str id: ID of the object to load (e.g. username (uid) for users/user,
-                name (cn) for groups/group etc.)
+            name (cn) for groups/group etc.)
         :return: an existing :py:class:`BaseObject` object.
         :raises univention.udm.exceptions.NoObject: if no object is found with ID `id`
         :raises univention.udm.exceptions.MultipleObjects: if more than one object is found with ID `id`
@@ -292,7 +292,7 @@ class BaseModule(metaclass=ModuleMeta):
         Get all |UDM| objects from |LDAP| that match the given filter.
 
         :param str filter_s: LDAP filter (only object selector like `uid=foo`
-                required, `objectClasses` will be set by the |UDM| module)
+            required, `objectClasses` will be set by the |UDM| module)
         :param str base: |LDAP| search base.
         :param str scope: |LDAP| search scope, e.g. `base` or `sub` or `one`.
         :param int sizelimit: |LDAP| size limit for searched results.

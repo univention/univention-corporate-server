@@ -436,7 +436,7 @@ class TimeType(StringType):
 class DateTimeType(StringType):
     """
     A DateTime
-            syntax classes using this type must support the method from_datetime(), which returns something valid for syntax.parse()
+        syntax classes using this type must support the method from_datetime(), which returns something valid for syntax.parse()
 
     >>> x = DateTimeType(univention.admin.property(syntax=univention.admin.syntax.string), 'a_date_time')
     >>> import datetime

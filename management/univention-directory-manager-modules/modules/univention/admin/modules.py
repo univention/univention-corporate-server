@@ -710,7 +710,7 @@ def superordinate_name(module_name: UdmName) -> str | None:
     Return name of first superordinate module.
 
     .. deprecated :: UCS 4.2
-            Use :py:func:`superordinate_names` instead.
+        Use :py:func:`superordinate_names` instead.
     """
     names = superordinate_names(module_name)
     return names[0] if names else None
@@ -721,7 +721,7 @@ def superordinate(module: UdmModule) -> UdmModule:
     Return instance of superordinate module.
 
     .. deprecated :: UCS 4.2
-            Use :py:func:`superordinates` instead.
+        Use :py:func:`superordinates` instead.
     """
     return get(superordinate_name(module))
 

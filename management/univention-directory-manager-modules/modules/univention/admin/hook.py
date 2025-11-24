@@ -158,11 +158,11 @@ class AttributeHook(simpleHook):
     and :py:meth:`map_attribute_value_to_ldap`.
 
     .. warning::
-            Only derive from this class when you are sure
-            every system in your domain has the update installed that
-            introduced this hook. (Nov 2018; UCS 4.3-2)
-            Otherwise you will get errors when you are distributing your new
-            hook via `ucs_registerLDAPExtension --udm_hook`
+        Only derive from this class when you are sure
+        every system in your domain has the update installed that
+        introduced this hook. (Nov 2018; UCS 4.3-2)
+        Otherwise you will get errors when you are distributing your new
+        hook via `ucs_registerLDAPExtension --udm_hook`
     """
 
     udm_attribute_name = None

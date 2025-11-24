@@ -1340,7 +1340,7 @@ class simpleLdap:
         :returns: True if the option was changed, False otherwise.
 
         .. warning::
-                This does not work for not yet existing objects.
+            This does not work for not yet existing objects.
         """
         return option in set(self.options) ^ set(self.old_options)
 
@@ -3349,7 +3349,7 @@ class simpleComputer(simpleLdap):
         u'3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'
         >>> simpleComputer.calc_dns_reverse_entry_name('1.2.3.4', 'subnet=2.in-addr.arpa')
         Traceback (most recent call last):
-                ...
+            ...
         ValueError: 4.3.2.1.in-addr.arpa not in .2.in-addr.arpa
         """
         addr = ip_address('%s' % (sip,))

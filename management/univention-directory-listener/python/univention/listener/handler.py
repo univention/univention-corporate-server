@@ -73,7 +73,7 @@ class ListenerModuleHandler(metaclass=HandlerMetaClass):
         """
         When subclassing, in :py:meth:`__init__()` first call must be:
 
-                `super(.., self).__init__(*args, **kwargs)`
+            `super(.., self).__init__(*args, **kwargs)`
 
         `self.config` will be set by the metaclass.
         """
@@ -160,8 +160,8 @@ class ListenerModuleHandler(metaclass=HandlerMetaClass):
         Contextmanager to temporarily change the effective UID of the current
         process to 0:
 
-                with self.as_root():
-                        do something
+            with self.as_root():
+                do something
 
         Use :py:func:`listener.setuid()` for any other user than `root`. But be
         aware that :py:func:`listener.unsetuid()` will not be possible

@@ -26,7 +26,7 @@ class config:
     |UDM| configuration object.
 
     .. deprecated:: UCS 4.4
-            use `None` instead
+        use `None` instead
     """
 
     def __init__(self, host: str = '') -> None:

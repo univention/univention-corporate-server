@@ -73,8 +73,8 @@ def LDAP_Connection(func):
     Get a cached ldap connection bound to the user connection.
 
     .. deprecated :: UCS 4.4
-            This must not be used in udm_ldap.py.
-            Use something explicit like self.get_ldap_connection() instead.
+        This must not be used in udm_ldap.py.
+        Use something explicit like self.get_ldap_connection() instead.
 
     """
     @functools.wraps(func)

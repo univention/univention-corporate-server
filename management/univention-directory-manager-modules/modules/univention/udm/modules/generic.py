@@ -200,7 +200,7 @@ class GenericObject(BaseObject):
         Remove the object (and optionally its child nodes) from the LDAP database.
 
         :param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
-                them before removing this object
+            them before removing this object
         :raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
         :raises univention.udm.exceptions.DeletedError: if the operation fails
         """
@@ -499,7 +499,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
         Create a new, unsaved GenericObject object.
 
         :param superordinate: DN or UDM object this one references as its
-                superordinate (required by some modules)
+            superordinate (required by some modules)
         :return: a new, unsaved GenericObject object
         """
         return self._load_obj('', superordinate)
@@ -520,7 +520,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
         Get all UDM objects from LDAP that match the given filter.
 
         :param str filter_s: LDAP filter (only object selector like uid=foo
-                required, objectClasses will be set by the UDM module)
+            required, objectClasses will be set by the UDM module)
         :param str base: subtree to search
         :param str scope: depth to search
         :param int sizelimit: LDAP size limit for searched results.
@@ -640,9 +640,9 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
 
         :param str dn: the DN of the object to load
         :param superordinate: DN or UDM object this one references as its
-                superordinate (required by some modules)
+            superordinate (required by some modules)
         :param univention.admin.handlers.simpleLdap orig_udm_object: original
-                UDM object instance, if unset one will be created from `dn`
+            UDM object instance, if unset one will be created from `dn`
         :return: UDM object
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
@@ -683,15 +683,15 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
 
         :param str dn: the DN of the UDM object to load, if '' a new one
         :param superordinate: DN or UDM object this one references as its
-                superordinate (required by some modules)
+            superordinate (required by some modules)
         :param univention.admin.handlers.simpleLdap orig_udm_object: original
-                UDM object instance, if unset one will be created from `dn`
+            UDM object instance, if unset one will be created from `dn`
         :return: a GenericObject
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.ValueError: if `orig_udm_object` is not a
-                :py:class:`univention.admin.handlers.simpleLdap` instance
+            :py:class:`univention.admin.handlers.simpleLdap` instance
         :raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type
-                :py:attr:`self.name`
+            :py:attr:`self.name`
         """
         obj = self._udm_object_class()
         obj._lo = self.connection
@@ -713,7 +713,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
 
         :param orig_udm_obj: original UDM object
         :raises univention.udm.exceptions.WrongObjectType: if ``univentionObjectType`` of the LDAP object
-                does not match the UDM module name
+            does not match the UDM module name
         """
         uni_obj_type = getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType')
         if uni_obj_type and self.name.split('/', 1)[0] not in [uot.split('/', 1)[0] for uot in uni_obj_type]:

@@ -491,8 +491,7 @@ class DnPropertyEncoder(BaseEncoder):
     ``obj``. ``obj`` is a lazy object that will become the UDM object the DN
     refers to, when accessed.
 
-    :py:func:`dn_property_encoder_for()` will dynamically produce
-    subclasses of this for every UDM module required.
+    :py:func:`dn_property_encoder_for()` will dynamically produce subclasses of this for every UDM module required.
     """
 
     static = False
@@ -560,9 +559,11 @@ def dn_list_property_encoder_for(udm_module_name: str) -> type[DnListPropertyEnc
     Create a (cached) subclass of DnListPropertyEncoder specific for each UDM
     module.
 
-    :param str udm_module_name: name of UDM module (e.g. `users/user`) or
-            `auto` if auto-detection should be done. Auto-detection requires one
-            additional LDAP-query per object (still lazy though)!
+    :param str udm_module_name:
+        name of UDM module (e.g. `users/user`) or
+        `auto` if auto-detection should be done. Auto-detection requires one
+        additional LDAP-query per object (still lazy though)!
+
     :return: subclass of DnListPropertyEncoder
     """
     if udm_module_name not in __dn_list_property_encoder_class_cache:
@@ -578,9 +579,11 @@ def dn_property_encoder_for(udm_module_name: str) -> type[DnPropertyEncoder]:
     Create a (cached) subclass of DnPropertyEncoder specific for each UDM
     module.
 
-    :param str udm_module_name: name of UDM module (e.g. `users/user`) or
-            `auto` if auto-detection should be done. Auto-detection requires one
-            additional LDAP-query per object (still lazy though)!
+    :param str udm_module_name:
+        name of UDM module (e.g. `users/user`) or
+        `auto` if auto-detection should be done. Auto-detection requires one
+        additional LDAP-query per object (still lazy though)!
+
     :return: subclass of DnPropertyEncoder
     """
     if udm_module_name not in __dn_property_encoder_class_cache:

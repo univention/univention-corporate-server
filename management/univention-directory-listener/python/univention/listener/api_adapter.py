@@ -21,7 +21,7 @@ class ListenerModuleAdapter:
 
     Use in a classic listener module like this:
 
-            globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
+        globals().update(ListenerModuleAdapter(MyListenerModuleConfiguration()).get_globals())
     """
 
     def __init__(self, module_configuration: ListenerModuleConfiguration, *args: Any, **kwargs: Any) -> None:
@@ -44,8 +44,8 @@ class ListenerModuleAdapter:
         make up the legacy listener module interface.
 
         :return: a mapping with keys: `name`, `description`, `filter_s`,
-                `attributes`, `modrdn`, `handler`, `initialize`, `clean`, `prerun`,
-                `postrun`, `setdata`, ..
+            `attributes`, `modrdn`, `handler`, `initialize`, `clean`, `prerun`,
+            `postrun`, `setdata`, ..
         :rtype: dict
         """
         name = self.config.get_name()

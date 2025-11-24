@@ -219,7 +219,7 @@ def register_pki_integration(property_descriptions, mapping, options, layout):
     Register the PKI integration for the given object type.
 
     .. deprecated: 5.0-3
-         Warning: Using this function the property descriptions, mapping, options and layout are updated without atomicity.
+        Warning: Using this function the property descriptions, mapping, options and layout are updated without atomicity.
     """
     options['pki'] = pki_option()
     property_descriptions.update(pki_properties())

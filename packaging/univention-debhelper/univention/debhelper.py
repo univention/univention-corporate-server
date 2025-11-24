@@ -55,7 +55,7 @@ def parseRfc822(f: str) -> list[dict[str, list[str]]]:
     :returns: A list of dictionaries.
 
     .. note::
-            For real Debian files, use the :py:mod:`debian.deb822` module from the `python-debian` package.
+        For real Debian files, use the :py:mod:`debian.deb822` module from the `python-debian` package.
 
     >>> res = parseRfc822('Type: file\nFile: /etc/fstab\n\nType: Script\nScript: /bin/false\n')
     >>> res == [{'Type': ['file'], 'File': ['/etc/fstab']}, {'Type': ['Script'], 'Script': ['/bin/false']}]

@@ -97,13 +97,13 @@ class UDM:
     """
     Dynamic factory for creating :py:class:`BaseModule` objects::
 
-            group_mod = UDM.admin().version(2).get('groups/group')
-            folder_mod = UDM.machine().version(2).get('mail/folder')
-            user_mod = UDM.credentials('myuser', 's3cr3t').version(2).get('users/user')
+        group_mod = UDM.admin().version(2).get('groups/group')
+        folder_mod = UDM.machine().version(2).get('mail/folder')
+        user_mod = UDM.credentials('myuser', 's3cr3t').version(2).get('users/user')
 
     A shortcut exists to get UDM objects directly::
 
-            UDM.admin().version(2).obj_by_dn(dn)
+        UDM.admin().version(2).obj_by_dn(dn)
     """
 
     _module_object_cache: dict[tuple[str, int, int], BaseModule] = {}
@@ -114,7 +114,7 @@ class UDM:
 
         :param connection: Any connection object (e.g., univention.admin.uldap.access)
         :param int api_version: load only UDM modules that support the
-                specified version, can be set later using :py:meth:`version()`.
+            specified version, can be set later using :py:meth:`version()`.
         """
         self.connection = connection
         self._api_version: int | None = None
@@ -181,11 +181,11 @@ class UDM:
 
         Use in a chain of methods to get a UDM module::
 
-                UDM.get_admin().version(2).get('groups/group')
+            UDM.get_admin().version(2).get('groups/group')
 
         :param int api_version: load only UDM modules that support the
-                specified version
         :return: self (the :py:class:`univention.udm.udm.UDM` instance)
+            specified version
         :raises univention.udm.exceptions.ApiVersionMustNotChange: if called twice
         """
         if not isinstance(api_version, int):
@@ -236,9 +236,9 @@ class UDM:
         :raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.ImportError: if the Python module for ``univentionObjectType``
-                at ``dn`` could not be loaded
+            at ``dn`` could not be loaded
         :raises univention.udm.exceptions.UnknownModuleType: if the LDAP object at ``dn`` had no or
-                empty attribute ``univentionObjectType``
+            empty attribute ``univentionObjectType``
         """
         if self.connection.__module__ != 'univention.admin.uldap':
             raise NotImplementedError('obj_by_dn() can only be used with an LDAP connection.')
