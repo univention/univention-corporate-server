@@ -370,17 +370,20 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
     if not listener_running:
         stop_listener()
 
-    udm.remove_object(OT_USERS, dn=user_dn, wait_for_replication=False)
+    try:
+        udm.remove_object(OT_USERS, dn=user_dn, wait_for_replication=False)
 
-    # Verify authentication fails for deleted user
-    with pytest.raises(authFail):
-        access(binddn=user_dn, bindpw=password, base=ldap_base)
+        # Verify authentication fails for deleted user
+        with pytest.raises(authFail):
+            access(binddn=user_dn, bindpw=password, base=ldap_base)
 
-    # In listener-stopped scenario, also delete one group
-    if not listener_running:
-        udm.remove_object(OT_GROUPS, dn=group2_dn, wait_for_replication=False)
-        original_props['groups'].remove(group2_dn)
-        start_listener()
+        # In listener-stopped scenario, also delete one group
+        if not listener_running:
+            udm.remove_object(OT_GROUPS, dn=group2_dn, wait_for_replication=False)
+            original_props['groups'].remove(group2_dn)
+    finally:
+        if not listener_running:
+            start_listener()
 
     wait_for_listener_replication()
 
