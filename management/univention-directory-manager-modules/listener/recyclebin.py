@@ -43,6 +43,10 @@ class RecycleBinListener(ListenerModuleHandler):
         self._cache_initialized = False
         univention.admin.modules.update()
 
+        # initialize cache
+        self._populate_cache()
+        self._cache_initialized = True
+
     @property
     def admin_lo(self):
         """LDAP connection with admin privileges for recyclebin operations."""
@@ -65,7 +69,7 @@ class RecycleBinListener(ListenerModuleHandler):
             if orig_dn and uoid:
                 self.deleted_objects_cache[orig_dn] = uoid
 
-        self.logger.error('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
+        self.logger.info('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
 
     def _should_process_object(self, dn, attrs):
         """Check if the object should be processed by the recyclebin."""
