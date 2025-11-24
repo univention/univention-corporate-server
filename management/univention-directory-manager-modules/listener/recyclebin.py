@@ -57,7 +57,7 @@ class RecycleBinListener(ListenerModuleHandler):
             return
 
         dn_attr = 'univentionRecycleBinOriginalDN'.lower()
-        oid_attr = 'univentionObjectIdentifier'.lower()
+        oid_attr = 'univentionRecycleBinOriginalUniventionObjectIdentifier'.lower()
         for dn in self.admin_lo.searchDn(base=RECYCLEBIN_BASE, scope='one', filter='(objectClass=univentionRecycleBinObject)'):
             exploded = ldap.dn.str2dn(dn)
             orig_dn = next((v for a, v, _ in exploded[0] if a.lower() == dn_attr), None)
