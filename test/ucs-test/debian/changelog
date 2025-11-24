@@ -1,6 +1,12 @@
+ucs-test (12.3.43) unstable; urgency=medium
+
+  * Bug #52202: fix test on backup, use correct LDAP connection
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Nov 2025 12:47:19 +0100
+
 ucs-test (12.3.42) unstable; urgency=medium
 
-  * Bug #52202: ensure listener ist started when test fails
+  * Bug #52202: ensure listener is started when test fails
 
  -- Florian Best <best@univention.de>  Mon, 24 Nov 2025 10:23:37 +0100
 
