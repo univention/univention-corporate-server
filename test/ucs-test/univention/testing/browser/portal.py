@@ -116,7 +116,7 @@ class UCSPortalEditMode:
 
         :param text: the text to fill the boxes with. Suffixed with " US" for en_US and " DE" for de_DE
         :param data_test_suffix: this can be used if the button to open to box has an id of the form
-                    "[data-test="iconButton--{data_test_suffix}]"
+            "[data-test="iconButton--{data_test_suffix}]"
         :param locator: if the data-test attribute does not exist on the button the locator can be passed here
         """
         if locator is not None:

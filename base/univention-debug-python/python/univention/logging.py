@@ -276,14 +276,14 @@ class SyslogPrefix(logging.Filter):
         """
         Syslog priorities:
 
-           <0>: Emergency
-           <1>: Alert
-           <2>: Critical
-           <3>: Error
-           <4>: Warning
-           <5>: Notice
-           <6>: Info
-           <7>: Debug
+            <0>: Emergency
+            <1>: Alert
+            <2>: Critical
+            <3>: Error
+            <4>: Warning
+            <5>: Notice
+            <6>: Info
+            <7>: Debug
         """
         if level >= logging.CRITICAL:
             return 2
@@ -307,7 +307,7 @@ class StructuredFormatter(logging.Formatter):
 
     Producing log lines like:
 
-       2025-01-01T00:00:00.000000+00:00 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
+        2025-01-01T00:00:00.000000+00:00 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
     """
 
     def __init__(
@@ -552,7 +552,7 @@ class LevelDependentFormatter(logging.Formatter):
 
     .. deprecated:: 5.2-3
 
-       unstructured logging with different formats will be removed in UCS 5.2-5.
+        unstructured logging with different formats will be removed in UCS 5.2-5.
     """
 
     RESERVED = (*RESERVED, 'prefix', 'request_id', 'pid', 'umcmodule')

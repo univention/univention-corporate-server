@@ -490,9 +490,9 @@ class PatternSanitizer(SearchSanitizer):
     Plus:
 
     :param bool ignore_case: pattern is compiled with re.IGNORECASE flag
-            to search case insensitive.
+        to search case insensitive.
     :param bool multiline: pattern is compiled with re.MULTILINE flag
-            to search across multiple lines.
+        to search across multiple lines.
     """
 
     def __init__(self, ignore_case: bool = True, multiline: bool = True, **kwargs: Any) -> None:

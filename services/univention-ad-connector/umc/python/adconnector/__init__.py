@@ -179,15 +179,15 @@ class Instance(Base, ProgressMixin):
         Saves the Active Directory connection configuration
 
         options:
-                Host_IP: IP address of the AD server
-                LDAP_Host: hostname of the AD server
-                LDAP_Base: LDAP base of the AD server
-                LDAP_BindDN: LDAP DN to use for authentication
-                KerberosDomain: kerberos domain
-                PollSleep: time in seconds between polls
-                RetryRejected: how many time to retry a synchronisation
-                MappingSyncMode: synchronisation mode
-                MappingGroupLanguage: language of the AD server
+            Host_IP: IP address of the AD server
+            LDAP_Host: hostname of the AD server
+            LDAP_Base: LDAP base of the AD server
+            LDAP_BindDN: LDAP DN to use for authentication
+            KerberosDomain: kerberos domain
+            PollSleep: time in seconds between polls
+            RetryRejected: how many time to retry a synchronisation
+            MappingSyncMode: synchronisation mode
+            MappingGroupLanguage: language of the AD server
 
         return: { 'success' : (True|False), 'message' : <details> }
         """

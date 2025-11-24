@@ -20,9 +20,9 @@ class MailSinkGuard:
     if the context is left.
 
     with MaiLSinkGuard() as msg:
-            sink = MailSink(......)
-            msg.add(sink)
-            ....use sink....
+        sink = MailSink(......)
+        msg.add(sink)
+        ....use sink....
     """
 
     def __init__(self) -> None:

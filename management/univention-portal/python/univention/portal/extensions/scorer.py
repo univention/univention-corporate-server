@@ -32,7 +32,7 @@ class DomainScorer(Scorer):
     For this to work you have to make your portal system available under different domains.
 
     domain:
-            Name of the domain, e.g. "myportal2.fqdn.com"
+        Name of the domain, e.g. "myportal2.fqdn.com"
     """
 
     def __init__(self, domain, score=10, fallback_score=0):
@@ -53,8 +53,8 @@ class PathScorer(Scorer):
     "/univention/portal" and "/univention/portal2".
 
     path:
-            The path. Does not have to match exactly, but the request's path needs to start
-            with this value, e.g. "/portal2".
+        The path. Does not have to match exactly, but the request's path needs to start
+        with this value, e.g. "/portal2".
     """
 
     def __init__(self, path, score=10, fallback_score=0):

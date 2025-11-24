@@ -188,9 +188,9 @@ class Changes:
         write the strings that we think are most suitable for the given variable.
 
         *** NOTE *** I would like to see such function in the UCR base class
-                     so we could call
-                     `ucr.set_bool(variable, boolvalue)`
-                     and the ucr itself would know which string representation to write.
+            so we could call
+            `ucr.set_bool(variable, boolvalue)`
+            and the ucr itself would know which string representation to write.
         """
         yesno = ['no', 'yes']
         # truefalse = ['False', 'True']

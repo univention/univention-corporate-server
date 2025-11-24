@@ -405,13 +405,13 @@ class Instance(Base):
 
         :param job: Job name.
         :param count: has the same meaning as already known:
-                <0 ...... return timestamp of file (for polling)
-                0 ....... return whole file as a string list
-                >0 ...... ignore this many lines, return the rest of the file
+            <0 ...... return timestamp of file (for polling)
+            0 ....... return whole file as a string list
+            >0 ...... ignore this many lines, return the rest of the file
 
         .. note::
-                As soon as we have looked for a running job at least once,
-                we know the job key and can associate it here.
+            As soon as we have looked for a running job at least once,
+            we know the job key and can associate it here.
 
         TODO: honor a given 'job' argument
         """
@@ -436,9 +436,9 @@ class Instance(Base):
         Contains all functions needed to view or 'tail' an arbitrary text file.
 
         :param count: can have different values:
-                < 0 ... ignore this many lines, return the rest of the file
-                0 ..... return the whole file, split into lines.
-                > 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
+            < 0 ... ignore this many lines, return the rest of the file
+            0 ..... return the whole file, split into lines.
+            > 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
         """
         lines = []
         try:
@@ -483,12 +483,12 @@ class Instance(Base):
         This is the function that invokes any kind of installer. Arguments accepted:
 
         :param job: ..... the main thing to do. can be one of:
-                'release' ...... perform a release update
-                'distupgrade' .. update all currently installed packages (distupgrade)
+            'release' ...... perform a release update
+            'distupgrade' .. update all currently installed packages (distupgrade)
 
         :param detail: ....... an argument that specifies the subject of the installer:
-                for 'release' .... the target release number,
-                for all other subjects: detail has no meaning.
+            for 'release' .... the target release number,
+            for all other subjects: detail has no meaning.
         """
         MODULE.info("Starting function %r", job)
         self._current_job = job
@@ -565,8 +565,8 @@ class HookManager:
 
         def register_hooks():
             return [
-                    ('test_hook', test_hook),
-                    ('pre_hook', other_hook),
+                ('test_hook', test_hook),
+                ('pre_hook', other_hook),
             ]
 
     The method `call_hook(hookname, *args, **kwargs)` calls all registered methods for specified

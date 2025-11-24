@@ -998,7 +998,7 @@ class ad(univention.connector.ucs):
         gets an object from an AD LDAP-element, implements necessary mapping
 
         :param element:
-                (dn, attributes) tuple from a search in AD-LDAP
+            (dn, attributes) tuple from a search in AD-LDAP
         :ptype element: tuple
         """
         if element[0] == 'None' or element[0] is None:

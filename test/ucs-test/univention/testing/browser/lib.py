@@ -69,7 +69,7 @@ class Interactions:
 
         :param name: the name to search for
         :param nth: controls what to do when there are multiple entries with `name` found. If none the function will throw an exception
-                                    if `int` the function will act on the nth occurrence of the text
+            if `int` the function will act on the nth occurrence of the text
         """
         row = self.page.locator(f"tr:has-text('{name}')")
         if nth is not None:

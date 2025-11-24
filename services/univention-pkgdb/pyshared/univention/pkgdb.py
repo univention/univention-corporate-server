@@ -35,11 +35,11 @@ assert pgdb.paramstyle == 'pyformat'
 def parse_options():
     """
     parse options and return <options> with
-            <options.debug>
-            <options.action>
-            <options.system>
-            <options.db_server>
-            set
+        <options.debug>
+        <options.action>
+        <options.system>
+        <options.db_server>
+        set
     """
     parser = argparse.ArgumentParser(add_help=False, description='Scan all packages in the local system and send this data to the database pkgdb.')
     actions = parser.add_argument_group('Actions', 'Select an action, default is --scan')

@@ -58,7 +58,7 @@ class ProcessOverview:
         Ensures that a process is running, either by PID or Command
 
         :param process: the process to search for. If searching by name the process args are joined together
-                         if searching by pid, process.pid is used
+            if searching by pid, process.pid is used
         :param category: the category to search for the process by. Currently only PID and Command are supported
         """
         process_name = ' '.join(process.args)
@@ -73,7 +73,7 @@ class ProcessOverview:
 
         :param process: the process to kill
         :param force: if false sends SIGTERM to the process by pressing the Terminate button
-                          if true sends SIGKILL to the process by pressing the 'Force termination' button
+            if true sends SIGKILL to the process by pressing the 'Force termination' button
 
         """
         process_pid = str(process.pid)

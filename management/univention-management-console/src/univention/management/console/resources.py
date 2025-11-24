@@ -952,7 +952,7 @@ class SetLocale(Resource):
     Set the locale for the session.
 
     .. deprecated:: 5.0
-            set language via `Accept-Language` HTTP header
+        set language via `Accept-Language` HTTP header
     """
 
     requires_authentication = False

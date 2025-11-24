@@ -243,7 +243,7 @@ def set_function(activate):
     :param bool activate: enable (True) or disable (False) function tracing.
 
     .. deprecated:: 4.4
-       Use function decorator :py:func:`trace` instead.
+        Use function decorator :py:func:`trace` instead.
     """
     global _enable_function
     _enable_function = activate
@@ -273,7 +273,7 @@ class function:
     :param bool utf8: Assume the message is UTF-8 encoded.
 
     .. deprecated:: 4.4
-       Use function decorator :py:func:`trace` instead.
+        Use function decorator :py:func:`trace` instead.
 
     >>> def my_func(agr1, agr2=None):
     ...    _d = function('my_func(...)')  # noqa: F841
@@ -325,7 +325,7 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
     ...     1 / 0
     >>> my_bug()
     Traceback (most recent call last):
-            ...
+        ...
     ZeroDivisionError: integer division or modulo by zero
     """
     def decorator(f):

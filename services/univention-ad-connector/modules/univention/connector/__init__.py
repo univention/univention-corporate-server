@@ -1292,17 +1292,17 @@ class ucs:
         Synchronize an object from AD-LDAP to UCS Open-LDAP.
 
         :param property_type:
-                the type of the object to be synced, must be part of the mapping. (e.g. "user", "group", "dc", "windowscomputer", etc.)
+            the type of the object to be synced, must be part of the mapping. (e.g. "user", "group", "dc", "windowscomputer", etc.)
         :param object:
-                A dictionary describing the AD object.
-                modtype: A modification type ("add", "modify", "move", "delete")
-                dn: The DN of the object in the UCS-LDAP
-                olddn: The olddn of the object object in UCS-LDAP (e.g. on "move" operation)
+            A dictionary describing the AD object.
+            modtype: A modification type ("add", "modify", "move", "delete")
+            dn: The DN of the object in the UCS-LDAP
+            olddn: The olddn of the object object in UCS-LDAP (e.g. on "move" operation)
         :ptype object: dict
         :param pre_mapped_ad_dn:
-                pass
+            pass
         :param original_object:
-                pass
+            pass
         """
         # NOTE: pre_mapped_ad_dn means: original ad_dn (i.e. before _object_mapping)
         # this function gets an object from the ad class, which should be converted into a ucs module
@@ -1624,13 +1624,13 @@ class ucs:
         Create a mapped object from AD or UCS object definition.
 
         :param key:
-                the mapping key
+            the mapping key
         :param old_object:
-                the object definition in univention directory listener style
+            the object definition in univention directory listener style
         :ptype old_object: dict
         :param object_type:
-                "con" if `old_object` is a AD object.
-                "ucs" if `old_object` is a UCS object.
+            "con" if `old_object` is a AD object.
+            "ucs" if `old_object` is a UCS object.
         :ptype object_type: str
         """
         log.debug("_object_mapping: map with key %s and type %s", key, object_type)

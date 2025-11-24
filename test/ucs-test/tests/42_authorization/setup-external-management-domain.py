@@ -176,9 +176,9 @@ def create_oidc_client_external_keycloak():
 def create_idp_ucs_keycloak():
     """
     create idp in ucs realm with mappers to
-     * store nubus_roles from claim
-     * stpre nubus_id from claim
-     * hardcoded mapper to store nubus_federated_account=true
+        * store nubus_roles from claim
+        * stpre nubus_id from claim
+        * hardcoded mapper to store nubus_federated_account=true
     """
     session = get_keycloak_session('ucs')
     idp_payload = {
@@ -282,10 +282,10 @@ def create_idp_ucs_keycloak():
 def add_mappers_to_umc_oidc_client():
     """
     add mappers to UMC client to provide
-     * nubus_roles
-     * nubus_id
-     * uid from user attr nubus_id
-     * nubus_external_username
+        * nubus_roles
+        * nubus_id
+        * uid from user attr nubus_id
+        * nubus_external_username
     """
     session = get_keycloak_session('ucs')
     mappers = [

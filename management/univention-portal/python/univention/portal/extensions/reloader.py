@@ -104,9 +104,9 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
     portal object using UDM. Reacts on reasons like "ldap:portal:<correct_dn>".
 
     portal_dn:
-            DN of the portals/portal object
+        DN of the portals/portal object
     cache_file:
-            Filename this object is responsible for
+        Filename this object is responsible for
     """
 
     def __init__(self, portal_dn, cache_file):

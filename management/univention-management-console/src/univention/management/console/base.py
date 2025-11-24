@@ -372,7 +372,7 @@ class Base(Translation):
     def get_user_ldap_connection(self, no_cache=False, **kwargs):
         """
         .. deprecated:: 5.0-4
-                use request.get_user_ldap_connection() instead!
+            use request.get_user_ldap_connection() instead!
         """
         return self._current_request.get_user_ldap_connection(no_cache=False, **kwargs)
 

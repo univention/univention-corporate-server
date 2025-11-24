@@ -329,7 +329,7 @@ def mail_delivered(token, user=None, mail_address=None, check_root=True):
     "check_root": (boolean) checks /var/mail/systemmail for the requested token/messageid
     "user": (string) checks /var/mail/%s for the requested token/messageid
     "mail_address": (string) checks directly within the mail spool directory
-            of the specified mail address for the requested token/messageid
+        of the specified mail address for the requested token/messageid
     """
     if not isinstance(token, bytes):
         token = token.encode('ASCII')
@@ -363,10 +363,10 @@ def file_search_mail(tokenlist=None, user=None, mail_address=None, folder=None, 
     user: string: if username is specified, a check of /var/mail/%s is performed
     mail_address: string: checks directly within the mail spool directory
     folder: string: if mail_address is specified and folder is not specified, file_search_mail
-                    searches only in the INBOX, if folder is specified too, the given folder
-                    is checked.
+        searches only in the INBOX, if folder is specified too, the given folder
+        is checked.
     timeout: integer: if the number of found mails is 0, the search is retried every second
-                      up to <timeout> attempts.
+        up to <timeout> attempts.
     :return: number of found mails
     """
     result = 0
@@ -613,7 +613,7 @@ def send_mail(
     Send a mail to mailserver.
     Arguments:
     recipients: single recipient as string or a list of recipients
-                (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
+        (e.g. 'foo@example.com' or ['foo@example.com', 'bar@example.com'])
     sender: [optional] mail address of sender (default: tarpit@example.com)
     subject: [optional] mail subject (default: 'Testmessage %s' % time.ctime() )
     msg: [optional] mail message; if msg is defined, idstring will be ignored!

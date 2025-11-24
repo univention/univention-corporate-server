@@ -24,9 +24,9 @@ class Cache(metaclass=Plugin):
     needed.
 
     cache_file:
-            Filename where the content is stored
+        Filename where the content is stored
     reloader:
-            Class that handles the actual refresh
+        Class that handles the actual refresh
     """
 
     def __init__(self, cache_file, reloader=None):

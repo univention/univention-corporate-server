@@ -17,9 +17,9 @@ pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/rest/delegat
 def test_get_property_filtering(setup_role, udm, ldap_base):
     """
     Test property filtering for
-      normal property - guardianRoles and lastname
-      lazy loading property - guardianInheritedRoles
-      and property set by open - primaryGroup
+        normal property - guardianRoles and lastname
+        lazy loading property - guardianInheritedRoles
+        and property set by open - primaryGroup
     """
     role = 'udm:test_roles:test_property_filter'
     acl = '''

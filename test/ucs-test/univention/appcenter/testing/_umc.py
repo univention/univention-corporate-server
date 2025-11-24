@@ -408,7 +408,7 @@ class Client:
         :param str password: The password of the user.
 
         .. warning::
-                not implemented.
+            not implemented.
         """
         raise ConnectionError('SAML authentication currently not supported.')
 

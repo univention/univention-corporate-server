@@ -40,13 +40,13 @@ def is_current_time_between(start_iso_datetime_str: str, end_iso_datetime_str: s
     In case, start is later than end, ignore both.
 
     start_iso_datetime_str : str
-            the first point in time that is in range
+        the first point in time that is in range
     end_iso_datetime_str : str
-            the last point in time that is in range
+        the last point in time that is in range
 
     return: bool
-            is datetime.now() between start_iso_datetime_str and end_iso_datetime_str,
-            including boundaries
+        is datetime.now() between start_iso_datetime_str and end_iso_datetime_str,
+        including boundaries
     """
     now = datetime.now()
     range_start = _sanitize_and_parse_iso_datetime_str(start_iso_datetime_str, datetime(MINYEAR, 1, 1))

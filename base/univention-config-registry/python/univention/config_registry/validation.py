@@ -351,15 +351,15 @@ class Type:
 
     Usage::
 
-            try:
-                    validator = Type(vinfo)
-            except (TypeError, ValueError):
-                    # invalid type
+        try:
+            validator = Type(vinfo)
+        except (TypeError, ValueError):
+            # invalid type
+        else:
+            if validator.check(value_to_be_set):
+                # check ok: set value
             else:
-                    if validator.check(value_to_be_set):
-                            # check ok: set value
-                    else:
-                            # value is not compatible with type definition
+                # value is not compatible with type definition
     """
 
     TYPE_CLASSES: dict[str | None, type[BaseValidator]] = {

@@ -172,9 +172,9 @@ def verify_ldap_object(
     :param int retry_count: how often to retry the verification if it fails before raising an exception
     :param float delay: waiting time in seconds between retries on verification failures
     :param bool primary: whether to connect to the primary (DC master) instead of local LDAP (to be
-            exact: ucr[ldap/server/name], ucr['ldap/server/addition'])
+        exact: ucr[ldap/server/name], ucr['ldap/server/addition'])
     :param pre_check: function to execute before starting verification. Value should be a function object
-            like `utils.wait_for_replication`.
+        like `utils.wait_for_replication`.
     :param dict pre_check_kwargs: dict with kwargs to pass to `pre_check()` call
     :param dict not_expected_attr: attributes and their values that the LDAP object is NOT expected to have
     :return: None
@@ -182,7 +182,7 @@ def verify_ldap_object(
     :raises LDAPUnexpectedObjectFound: when an object was found at `baseDn`, but `should_exist=False`
     :raises LDAPObjectValueMissing: when a value listed in `expected_attr` is missing in the LDAP object
     :raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
-            has more values than were listed in `expected_attr` or an `not_expected_attr` was found
+        has more values than were listed in `expected_attr` or an `not_expected_attr` was found
     """
     ucr = UCR
     ucr.load()
@@ -347,8 +347,9 @@ class AutoCallCommand:
     The keyword arguments enter_cmd and exit_cmd are optional::
 
         with AutoCallCommand(
-                enter_cmd=['/etc/init.d/dovecot', 'reload'],
-                exit_cmd=['/etc/init.d/dovecot', 'restart']) as acc:
+            enter_cmd=['/etc/init.d/dovecot', 'reload'],
+            exit_cmd=['/etc/init.d/dovecot', 'restart']
+        ) as acc:
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 # set some ucr variables, that influence the Univention Directory Listener
                 univention.config_registry.handler_set(['foo/bar=ding/dong'])
@@ -357,9 +358,10 @@ class AutoCallCommand:
     command, they may be passed as kwarg::
 
         with AutoCallCommand(
-                enter_cmd=['/etc/init.d/dovecot', 'reload'],
-                exit_cmd=['/etc/init.d/dovecot', 'restart'],
-                stderr=open('/dev/zero', 'w')) as acc:
+            enter_cmd=['/etc/init.d/dovecot', 'reload'],
+            exit_cmd=['/etc/init.d/dovecot', 'restart'],
+            stderr=open('/dev/zero', 'w')
+        ) as acc:
             pass
     """
 

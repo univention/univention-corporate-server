@@ -66,11 +66,11 @@ class UMCAuthenticator(Authenticator):
     Asks UMC for every request if this session is known.
 
     auth_mode:
-            The preferred mode for auth. The portal hands it over to the frontend.
+        The preferred mode for auth. The portal hands it over to the frontend.
     umc_session_url:
-            The URL where to go to with the cookie. Expects a json answer with the username.
+        The URL where to go to with the cookie. Expects a json answer with the username.
     group_cache:
-            As UMC does not return groups, we need a cache object that gets us the groups for the username.
+        As UMC does not return groups, we need a cache object that gets us the groups for the username.
     """
 
     def __init__(self, auth_mode, umc_session_url, group_cache):
