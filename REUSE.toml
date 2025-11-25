@@ -5,12 +5,44 @@ SPDX-PackageDownloadLocation = "https://www.univention.com/"
 
 # MAKE SURE THIS IS IN SYNC WITH: .pre-commit-config.yaml: reuse-annotate
 [[annotations]]
-path = [ "**.gitignore", ".git-blame-ignore-revs", ".gitlab/issue_templates/*.md", ".gitlab/merge_request_templates/*.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "PULL_REQUEST_TEMPLATE.md", "SECURITY.md", "doc/*/spelling_wordlist", "doc/developer-reference/*/*/debian/*", "doc/developer-reference/umc/*.umc-modules", "doc/developer-reference/umc/*.xml", "doc/errata/**.yaml", "doc/errata/erratum.schema.json", "doc/extended-docs/ucr-deprecated.schema.json", "pyproject.toml", "test/**.cfg", "test/**matrix.job", "test/utils/id-broker/keycloak_ProxyPass.conf.example", "test/utils/id-broker/univention-test-app.conf", "test/utils/id-broker/univention-vhosts.conf.example",]
+path = [
+  "**.gitignore",
+  ".git-blame-ignore-revs",
+  ".gitlab/issue_templates/*.md",
+  ".gitlab/merge_request_templates/*.md",
+  "CODE_OF_CONDUCT.md",
+  "CONTRIBUTING.md",
+  "PULL_REQUEST_TEMPLATE.md",
+  "SECURITY.md",
+  "doc/*/spelling_wordlist",
+  "doc/developer-reference/*/*/debian/*",
+  "doc/developer-reference/umc/*.umc-modules",
+  "doc/developer-reference/umc/*.xml",
+  "doc/errata/**.yaml",
+  "doc/errata/erratum.schema.json",
+  "doc/extended-docs/ucr-deprecated.schema.json",
+  "pyproject.toml",
+  "test/**.cfg",
+  "test/**matrix.job",
+  "test/utils/id-broker/keycloak_ProxyPass.conf.example",
+  "test/utils/id-broker/univention-test-app.conf",
+  "test/utils/id-broker/univention-vhosts.conf.example",
+]
 SPDX-FileCopyrightText = "2025 Univention GmbH"
 SPDX-License-Identifier = "AGPL-3.0-only"
 
 [[annotations]]
-path = [ "doc/**.ai", "doc/**.drawio", "doc/**.graphml", "doc/**.png", "doc/**.svg", "doc/**.txt", "test/product-tests/ucsschool/largeenv-installation.csv", "test/scenarios/veyon/veyon.json", "test/ucs-gui-tests/installation/vminstall/expected_welcome_screen_with_kde.png",]
+path = [
+  "doc/**.ai",
+  "doc/**.drawio",
+  "doc/**.graphml",
+  "doc/**.png",
+  "doc/**.svg",
+  "doc/**.txt",
+  "test/product-tests/ucsschool/largeenv-installation.csv",
+  "test/scenarios/veyon/veyon.json",
+  "test/ucs-gui-tests/installation/vminstall/expected_welcome_screen_with_kde.png",
+]
 SPDX-FileCopyrightText = "2025 Univention GmbH"
 SPDX-License-Identifier = "LicenseRef-Univention-Proprietary"
 
