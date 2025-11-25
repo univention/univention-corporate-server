@@ -474,8 +474,10 @@ performance_optimizations_traeger () {
 
 setup_kelvin_udm_rest () {
     ucr set directory/manager/rest/processes=0
+    systemctl stop univention-directory-manager-rest
+    systemctl start univention-directory-manager-rest
+    sleep 10
     univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 --set ucsschool/kelvin/log_level=DEBUG
-    systemctl restart univention-directory-manager-rest
     univention-app restart ucsschool-kelvin-rest-api
 }
 
