@@ -32,8 +32,6 @@ operations = ('add', 'edit', 'remove', 'search')
 
 policy_oc = 'univentionRecycleBinPolicy'
 policy_apply_to = [
-    'container/ou',
-    'container/cn',
     'users/user',
     'groups/group',
     'computers/domaincontroller_master',
