@@ -130,6 +130,7 @@ def calculate_krb5keys(supplementalCredentialsblob):
     keytypes = []
     kvno = 0
     context = heimdal.context()
+    permitted_etypes = [krb5_etype.toint() for krb5_etype in context.get_permitted_enctypes()]
     #    for i in range(0, spl.sub.num_packages):
     #        pkg = spl.sub.packages[i]
     #        if pkg.name != "Primary:CLEARTEXT":
@@ -150,6 +151,9 @@ def calculate_krb5keys(supplementalCredentialsblob):
         assert krb5_old.version == 3
         for k in krb5_old.ctr.keys:
             if k.keytype not in keytypes:
+                if k.keytype not in permitted_etypes:
+                    log.debug("calculate_krb5key: ctr3.key.keytype: %s (ignored)", k.keytype)
+                    continue
                 log.debug("calculate_krb5key: ctr3.key.keytype: %s", k.keytype)
                 try:
                     key = heimdal.keyblock_raw(context, k.keytype, k.value)
@@ -178,6 +182,9 @@ def calculate_krb5keys(supplementalCredentialsblob):
 
         for k in krb.ctr.keys:
             if k.keytype not in keytypes:
+                if k.keytype not in permitted_etypes:
+                    log.debug("calculate_krb5key: ctr4.key.keytype: %s (ignored)", k.keytype)
+                    continue
                 log.debug("calculate_krb5key: ctr4.key.keytype: %s", k.keytype)
                 try:
                     key = heimdal.keyblock_raw(context, k.keytype, k.value)
