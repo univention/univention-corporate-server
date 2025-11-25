@@ -44,8 +44,12 @@ class RecycleBinListener(ListenerModuleHandler):
         univention.admin.modules.update()
 
         # initialize cache
-        self._populate_cache()
-        self._cache_initialized = True
+        try:
+            self._populate_cache()
+            self._cache_initialized = True
+        except noObject:
+            # during update the recyclebin container may not yet exists
+            pass
 
     @property
     def admin_lo(self):
