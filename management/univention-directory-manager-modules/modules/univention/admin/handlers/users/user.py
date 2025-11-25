@@ -1319,7 +1319,18 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if old_uid and old_uid != new_uid and self.exists():
             self.log.debug('users/user: rewrite memberuid after rename')
             for group in new_groups:
-                self.__rewrite_member_uid(group)
+                try:
+                    self.lo.authz_connection.modify(group, [
+                        ('memberUid', [old_uid.encode('UTF-8')], None),
+                    ], exceptions=True)
+                except ldap.NO_SUCH_ATTRIBUTE:
+                    pass
+                try:
+                    self.lo.authz_connection.modify(group, [
+                        ('memberUid', None, [new_uid.encode('UTF-8')]),
+                    ], exceptions=True)
+                except ldap.TYPE_OR_VALUE_EXISTS:
+                    pass
 
         group_mod = univention.admin.modules._get('groups/group')
 
@@ -1344,34 +1355,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             if not self.exists() and self.info.get('primaryGroup'):
                 grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
                 grpobj.fast_member_add([self.dn], [new_uid])
-
-    def __rewrite_member_uid(self, group, members=None):
-        uids = set(self.lo.authz_connection.getAttr(group, 'memberUid'))
-        if not members:
-            members = self.lo.authz_connection.getAttr(group, 'uniqueMember')
-
-        new_uids = set()
-        for member_dn in members:
-            _member_dn = ldap.dn.str2dn(member_dn)
-            if _member_dn[0][0][0] == 'uid':  # UID is stored in DN --> use UID directly
-                new_uids.add(_member_dn[0][0][1].encode('UTF-8'))
-            else:
-                UIDs = self.lo.authz_connection.getAttr(member_dn.decode('UTF-8'), 'uid')
-                if UIDs:
-                    new_uids.add(UIDs[0])
-                    if len(UIDs) > 1:
-                        self.log.warning('users/user: A groupmember has multiple UIDs (%s %r)', member_dn, UIDs)
-
-        removed_uids = uids - new_uids
-        added_uids = new_uids - uids
-        ml = []
-        if added_uids:
-            ml.append(('memberUid', None, list(added_uids)))
-        if removed_uids:
-            ml.append(('memberUid', list(added_uids), None))
-
-        if ml:
-            self.lo.authz_connection.modify(group, ml)
 
     def __primary_group(self) -> None:
         if not self.hasChanged('primaryGroup'):
