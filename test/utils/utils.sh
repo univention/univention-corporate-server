@@ -1947,6 +1947,24 @@ migrate_postgresql_11_to_15 () {
     echo "PostgreSQL 11 not installed. Nothing to migrate"
   fi
 }
+
+enable_recyclebin_globally () {
+	eval "$(univention-config-registry shell ldap/base)"
+	univention-directory-manager policies/recyclebin create \
+		--ignore_exists \
+		--position "cn=recyclebin,cn=policies,$ldap_base" \
+		--set name="default-ucs-test-recyclebin" \
+		--set retention_days="180" \
+		--set enabled=TRUE \
+		--append ignored_object_classes="ucsschoolExam" \
+		--append udm_modules="users/user" \
+		--append udm_modules="groups/group" || true
+
+	univention-directory-manager container/dc modify \
+		--dn "$ldap_base" \
+		--policy-reference "cn=default-ucs-test-recyclebin,cn=recyclebin,cn=policies,$ldap_base"
+}
+
 ################################################################################
 # performance measurement to syslog
 #
