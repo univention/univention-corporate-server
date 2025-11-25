@@ -8,7 +8,7 @@ exclude: "^packaging/ucslint/testframework/\
          "
 repos:
   - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucr
-    rev: '0.1.6'
+    rev: 0.1.7
     hooks:
       - id: ucr-flake8
         additional_dependencies: ["flake8==7.2.0"]
@@ -27,7 +27,7 @@ repos:
         additional_dependencies: ["ruff==0.14.0"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
     - id: check-added-large-files
       exclude: "^test/ucs-test/debian/changelog$"
@@ -74,7 +74,7 @@ repos:
     - id: rst-directive-colons
     - id: rst-inline-touching-normal
   - repo: https://github.com/pycqa/flake8
-    rev: '7.2.0'
+    rev: 7.3.0
     hooks:
     - id: flake8
       exclude: "^services/univention-ldb-modules/buildtools/\
@@ -92,7 +92,7 @@ repos:
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.0
+    rev: 0.35.0
     hooks:
       - id: check-gitlab-ci
       - id: check-jsonschema
@@ -101,7 +101,7 @@ repos:
         files: ^doc/errata/staging/[^0].*[.]yaml$
         args: ["--schemafile", "doc/errata/erratum.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.14.0'
+    rev: v0.14.0
     hooks:
       - id: ruff-check
         alias: "ruff"
@@ -146,7 +146,7 @@ repos:
                   |^packaging/ucslint/testframework/\
                  "
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 7.0.0
     hooks:
       - id: isort
         entry: isort -c
