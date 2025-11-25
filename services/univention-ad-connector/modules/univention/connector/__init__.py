@@ -260,8 +260,9 @@ class configdb:
                 rows = cur.fetchall()
                 cur.close()
                 return rows or []
-            except lite.Error as e:
-                ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+            except lite.Error:
+                # TODO: why is this just a warning?
+                log.warning('sqlite error', exc_info=True)
                 if self._dbcon:
                     self._dbcon.close()
                 self._dbcon = lite.connect(self.filename)
@@ -275,8 +276,9 @@ class configdb:
                 rows = cur.fetchall()
                 cur.close()
                 return rows or []
-            except lite.Error as e:
-                ud.debug(ud.LDAP, ud.WARN, "sqlite: %s" % e)
+            except lite.Error:
+                # TODO: why is this just a warning?
+                log.warning('sqlite error', exc_info=True)
                 if self._dbcon:
                     self._dbcon.close()
                 self._dbcon = lite.connect(self.filename)
@@ -702,7 +704,7 @@ class ucs:
     def check_syncmode_ucs(self, property_key):
         # if sync is read (sync from AD) or none, there is nothing to do
         if self.property[property_key].sync_mode in ['read', 'none']:
-            ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs ignored, sync_mode is %s" % self.property[property_key].sync_mode)
+            log.info('sync_from_ucs ignored, sync_mode is %s', self.property[property_key].sync_mode)
             return False
         return True
 
@@ -744,7 +746,7 @@ class ucs:
         _mod, key = self.identify_udm_object(dn, _attr)
 
         if not key or not self.check_syncmode_ucs(key):
-            ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: No mapping was found for dn: %s" % dn)
+            log.info('No mapping was found for dn: %s', dn)
             return True
 
         if not new:
@@ -1437,7 +1439,7 @@ class ucs:
 
                 if not self.lo.compare_dn(modified_parent_dn, parent_object_dn):
                     # additionally move the object if position changed
-                    ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: move object from %r to %r" % (modified_dn, object['dn']))
+                    log.info('move object from %r to %r', modified_dn, object['dn'])
                     ucs_object = univention.admin.objects.get(module, None, self.lo, dn=modified_dn, position='')
                     ucs_object.open()
                     ucs_object.move(object['dn'])
