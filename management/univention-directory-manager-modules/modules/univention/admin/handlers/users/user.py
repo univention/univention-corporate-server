@@ -1364,7 +1364,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if old_uid and old_uid != new_uid and self.exists():
             log.debug('users/user: rewrite memberuid after rename')
             for group in new_groups:
-                self.__rewrite_member_uid(group)
+                self.__rewrite_member_uid(group, old_uid, new_uid)
 
         group_mod = univention.admin.modules._get('groups/group')
 
@@ -1390,29 +1390,15 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
                 grpobj.fast_member_add([self.dn], [new_uid])
 
-    def __rewrite_member_uid(self, group, members=[]):
-        uids = self.lo.getAttr(group, 'memberUid')
-        if not members:
-            members = self.lo.getAttr(group, 'uniqueMember')
-        new_uids = []
-        for memberDNstr in members:
-            memberDN = ldap.dn.str2dn(memberDNstr)
-            if memberDN[0][0][0] == 'uid':  # UID is stored in DN --> use UID directly
-                _uid = memberDN[0][0][1].encode('UTF-8')
-                if _uid in new_uids:
-                    log.warning('users/user: skipping duplicate memberUid %s for %s', _uid, memberDNstr)
-                else:
-                    new_uids.append(_uid)
-            else:
-                UIDs = self.lo.getAttr(memberDNstr.decode('UTF-8'), 'uid')
-                if UIDs:
-                    if UIDs[0] in new_uids:
-                        log.warning('users/user: skipping duplicate memberUid %s for %s', UIDs[0], memberDNstr)
-                    else:
-                        new_uids.append(UIDs[0])
-                    if len(UIDs) > 1:
-                        log.warning('users/user: A groupmember has multiple UIDs (%s %r)', memberDNstr, UIDs)
-        self.lo.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct
+    def __rewrite_member_uid(self, group, old_uid, new_uid):
+        try:
+            self.lo.modify(group, [('memberUid', [old_uid.encode('UTF-8')], None)], exceptions=True)
+        except ldap.NO_SUCH_ATTRIBUTE:
+            pass
+        try:
+            self.lo.modify(group, [('memberUid', None, [new_uid.encode('UTF-8')])], exceptions=True)
+        except ldap.TYPE_OR_VALUE_EXISTS:
+            pass
 
     def __primary_group(self):
         # type: () -> None
