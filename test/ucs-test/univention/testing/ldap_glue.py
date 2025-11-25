@@ -240,6 +240,13 @@ class ADConnection(LDAPConnection):
         no_starttls = ucr.is_false('%s/ad/ldap/ssl' % configbase)
         self.connect(no_starttls)
 
+    def delete(self, dn):
+        """Delete LDAP object at 'dn'."""
+        SUBTREE_DELETE_CONTROL = '1.2.840.113556.1.4.805'
+        ctrls = [LDAPControl(SUBTREE_DELETE_CONTROL, criticality=True)]
+        print(f'Deleting {dn!r} with SUBTREE_DELETE_CONTROL ({SUBTREE_DELETE_CONTROL}) control', file=sys.stderr)
+        self.lo.delete_ext_s(dn, serverctrls=ctrls)
+
     def search(self, ldap_filter, attr=[], required=False):
         res = self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, ldap_filter, attr, timeout=10)
         result = []

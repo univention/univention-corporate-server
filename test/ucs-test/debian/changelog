@@ -1,3 +1,9 @@
+ucs-test (12.3.45) unstable; urgency=medium
+
+  * Bug #52202: add recursive delete to ADConnection
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Nov 2025 08:42:14 +0100
+
 ucs-test (12.3.44) unstable; urgency=medium
 
   * Bug #52202: fix test on backup, use correct LDAP connection
