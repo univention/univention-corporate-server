@@ -862,12 +862,9 @@ class ad(univention.connector.ucs):
 
     def check_syncmode_ad(self, property_key, ad_object):
         if not property_key or self.property[property_key].sync_mode in ['write', 'none']:
-            if property_key:
-                log.info("sync_to_ucs ignored, sync_mode is %s", self.property[property_key].sync_mode)
-            else:
-                log.info("sync_to_ucs ignored, no mapping defined")
+            log.info("sync_to_ucs ignored, sync mode is %s", self.property[property_key].sync_mode if property_key else 'none')
             return False
-        if ad_object['dn'].find('\\0ACNF:') > 0:
+        if '\\0ACNF:' in ad_object['dn']:
             log.process('Ignore conflicted object: %s', ad_object['dn'])
             return False
         return True
@@ -1032,7 +1029,7 @@ class ad(univention.connector.ucs):
 
         ad_object['changed_attributes'] = []
         guid = decode_guid(ad_object.get('attributes').get('objectGUID')[0])
-        if ad_object['modtype'] == 'modify' and ad_object:
+        if ad_object['modtype'] == 'modify':
             old_ad_object = self.adcache.get_entry(guid)
             log.info("__get_object_changes_ad: old_ad_object: %s", old_ad_object)
             log.info("__get_object_changes_ad: new_ad_object: %s", ad_object['attributes'])
@@ -1685,7 +1682,7 @@ class ad(univention.connector.ucs):
                 # otherwise it is possible that the user was just created on UCS
 
                 if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), set())) or (
-                    self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']
+                    self.property.get('group') and self.property['group'].sync_mode in ('read', 'none')
                 ):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     log.debug("group_members_sync_to_ucs: %s was found in UCS group member cache of %s", member_dn_lower, object['dn'].lower())
@@ -2209,7 +2206,7 @@ class ad(univention.connector.ucs):
         log.debug("sync_from_ucs: sync object: %s", object['dn'])
 
         # if sync is read (sync from AD) or none, there is nothing to do
-        if self.property[property_type].sync_mode in ['read', 'none']:
+        if self.property[property_type].sync_mode in ('read', 'none'):
             log.debug("sync_from_ucs ignored, sync_mode is %s", self.property[property_type].sync_mode)
             return True
 

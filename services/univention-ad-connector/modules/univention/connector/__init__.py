@@ -703,7 +703,7 @@ class ucs:
 
     def check_syncmode_ucs(self, property_key):
         # if sync is read (sync from AD) or none, there is nothing to do
-        if self.property[property_key].sync_mode in ['read', 'none']:
+        if self.property[property_key].sync_mode in ('read', 'none'):
             log.info('sync_from_ucs ignored, sync_mode is %s', self.property[property_key].sync_mode)
             return False
         return True
@@ -1152,7 +1152,7 @@ class ucs:
 
         MAPPING = self.property[property_type]
         for attr_key, attributes in MAPPING.attributes.items():
-            if attributes.sync_mode not in ['read', 'sync']:
+            if attributes.sync_mode not in ('read', 'sync'):
                 log.debug("__set_values: Skip %s mode attribute %s ", attributes.sync_mode, attr_key)
                 continue
 
@@ -1178,7 +1178,7 @@ class ucs:
             return
         for attr_key, post_attributes in MAPPING.post_attributes.items():
             log.trace("__set_values: mapping for attribute: %s", attr_key)
-            if post_attributes.sync_mode not in ['read', 'sync']:
+            if post_attributes.sync_mode not in ('read', 'sync'):
                 log.trace("__set_values: Skip %s mode attribute %s ", post_attributes.sync_mode, attr_key)
                 continue
 
@@ -1250,10 +1250,6 @@ class ucs:
         return res
 
     def move_in_ucs(self, property_type, object, module, position):
-        if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):
-            log.warning("move_in_ucs: cancel move, old and new dn are the same (%r to %r)", object['olddn'], object['dn'])
-            return True
-
         log.debug("move_in_ucs: move object from %r to %r", object['olddn'], object['dn'])
         ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
         ucs_object.open()
@@ -1415,8 +1411,11 @@ class ucs:
                 self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.remove_entry(guid)
             if object['modtype'] == 'move':
-                result = self.move_in_ucs(property_type, object, module, position)
-                if isinstance(result, str):
+                if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):
+                    log.warning("sync_to_ucs: cancel move, old and new dn are the same (%r to %r)", object['olddn'], object['dn'])
+                    result = True
+                else:
+                    result = self.move_in_ucs(property_type, object, module, position)
                     old_con_dn = original_object.get('olddn')
                     if old_con_dn and pre_mapped_ad_dn != old_con_dn:
                         self._remove_dn_mapping(object['olddn'], old_con_dn)
@@ -1510,8 +1509,8 @@ class ucs:
             subtreereplace = subtreereplace[1:]
             subtree = subtree[1:]
             extra = ','
-        _dn = ldap.dn.str2dn(dn.lower()) if case_folding else ldap.dn.str2dn(dn)
-        _subtree = ldap.dn.str2dn(subtree.lower()) if case_folding else ldap.dn.str2dn(subtree)
+        _dn = ldap.dn.str2dn(dn.lower() if case_folding else dn)
+        _subtree = ldap.dn.str2dn(subtree.lower() if case_folding else subtree)
         if _dn[-len(_subtree):] != _subtree or (extra and _dn == _subtree):
             return dn
         return ldap.dn.dn2str(ldap.dn.str2dn(dn)[:-len(_subtree)] + ldap.dn.str2dn(subtreereplace))
