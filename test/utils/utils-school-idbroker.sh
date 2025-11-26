@@ -52,27 +52,35 @@ wait_for_certificate_replication () {
 }
 
 ansible_run_keycloak_configuration () {
-    docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
-        artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
-        bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && \
-            ANSIBLE_LOG_PATH=ansible.log ansible-playbook \
-            --limit ${LIMIT:-\*} \
-            --inventory inventories/jenkins/hosts \
-            --vault-password-file idbroker_jenkins_ansible.password \
-            --skip-tags partner_provisioning \
-            site.yml"
+    # Retry due to https://git.knut.univention.de/univention/dev/education/ucsschool-api-plugins/id-broker-plugin/-/issues/143
+    for _ in $(seq 3); do
+        sleep 1
+        docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
+            artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
+            bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && \
+                ANSIBLE_LOG_PATH=ansible.log ansible-playbook \
+                --limit ${LIMIT:-\*} \
+                --inventory inventories/jenkins/hosts \
+                --vault-password-file idbroker_jenkins_ansible.password \
+                --skip-tags partner_provisioning \
+                site.yml" && break
+    done
 }
 
 ansible_run_keycloak_partner_provisioning () {
-    docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
-        artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
-        bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && \
-            ANSIBLE_LOG_PATH=ansible.log ansible-playbook \
-            --limit ${LIMIT:-\*} \
-            --inventory inventories/jenkins/hosts \
-            --vault-password-file idbroker_jenkins_ansible.password \
-            --tags partner_provisioning \
-            site.yml"
+    # Retry due to https://git.knut.univention.de/univention/dev/education/ucsschool-api-plugins/id-broker-plugin/-/issues/143
+    for _ in $(seq 3); do
+        sleep 1
+        docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
+            artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
+            bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && \
+                ANSIBLE_LOG_PATH=ansible.log ansible-playbook \
+                --limit ${LIMIT:-\*} \
+                --inventory inventories/jenkins/hosts \
+                --vault-password-file idbroker_jenkins_ansible.password \
+                --tags partner_provisioning \
+                site.yml" && break
+    done
 }
 
 register_idbroker_as_sp_in_ucs_simpleSAML () {
