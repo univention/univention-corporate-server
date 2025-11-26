@@ -146,7 +146,7 @@ class RecycleBinListener(ListenerModuleHandler):
 
         # Set TTL for DDS automatic purging based on retention policy
         ttl_seconds = policy.retention_days * 60 * 60 * 24
-        refresh_req = RefreshRequest(entryName=dn, requestTtl=ttl_seconds)
+        refresh_req = RefreshRequest(entryName=dn.encode('UTF-8'), requestTtl=ttl_seconds)
         self.admin_lo.lo.lo.extop_s(refresh_req, extop_resp_class=RefreshResponse)
 
         return dn
