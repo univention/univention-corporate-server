@@ -11,3 +11,6 @@ desc: |
    which resulted in that new objects using the old value
    couldn't be created anymore for the next 5 minutes.
 bug: [58832]
+erratum: 1354
+announced: 2025-11-26
+support: core
