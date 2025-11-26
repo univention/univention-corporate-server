@@ -1,3 +1,15 @@
+ucs-test (12.3.48) unstable; urgency=medium
+
+  * Bug #52202: wait for removed objects in tests
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 Nov 2025 16:11:07 +0100
+
+ucs-test (12.3.48) unstable; urgency=medium
+
+  * Bug #57747: add recursive delete to ADConnection
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 Nov 2025 16:11:07 +0100
+
 ucs-test (12.3.47) unstable; urgency=medium
 
   * Bug #52202: test recyclebin cycle with objects having special charaters in

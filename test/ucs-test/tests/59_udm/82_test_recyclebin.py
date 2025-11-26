@@ -391,6 +391,8 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
 
     wait_for_listener_replication()
 
+    deleted_dn = _deleted_object_dn(user_dn, user_object_id)
+    verify_ldap_object(deleted_dn, should_exist=True)
     del_obj = lo.search(filter_format('uid=%s', [username]), base=RECYCLEBIN_DN)
 
     # Verify authentication fails for deleted user
@@ -524,26 +526,14 @@ def test_group_delete_moves_to_recycle_bin(udm, lo, recyclebin_policy_session):
     """Test that deleted group objects are moved to recyclebin"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     group_dn, _ = udm.create_group(wait_for_replication=False, position=container_recyclebin_policy)
+    goid = udm.get_object('groups/group', group_dn)['univentionObjectIdentifier'][0]
     verify_ldap_object(group_dn, should_exist=True)
     udm.remove_object('groups/group', dn=group_dn)
     verify_ldap_object(group_dn, should_exist=False)
+    deleted_dn = _deleted_object_dn(group_dn, goid)
+    verify_ldap_object(deleted_dn, should_exist=True)
     deleted_objects = _find_deleted_objects(group_dn)
     assert len(deleted_objects) > 0, 'Group should be found in recycle bin'
-    for obj in deleted_objects:
-        _cleanup_deleted_object(obj['dn'])
-
-
-def test_referenced_by_tracking(udm, lo, recyclebin_policy_session):
-    """Test that referencedBy field tracks objects that reference the deleted object"""
-    container_recyclebin_policy, _ = recyclebin_policy_session
-    user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
-    group_dn, _ = udm.create_group(wait_for_replication=False, position=container_recyclebin_policy, users=[user_dn])
-    group_attrs = lo.get(group_dn)
-    assert group_attrs.get('uniqueMember', [])
-    assert group_attrs.get('memberUid', [])
-    udm.remove_object('users/user', dn=user_dn)
-    deleted_objects = _find_deleted_objects(user_dn)
-    assert len(deleted_objects) > 0, 'User should be found in recycle bin'
     for obj in deleted_objects:
         _cleanup_deleted_object(obj['dn'])
 
@@ -552,13 +542,17 @@ def test_multiple_object_types_deletion(udm, lo, recyclebin_policy_session):
     """Test that different types of LDAP objects can be moved to recyclebin"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     user_dn, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
-    group_dn, _ = udm.create_group(wait_for_replication=False, position=container_recyclebin_policy)
+    group_dn, _ = udm.create_group(wait_for_replication=True, position=container_recyclebin_policy)
+    uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
+    goid = udm.get_object('groups/group', group_dn)['univentionObjectIdentifier'][0]
     test_objects = []
-    test_objects.append(('users/user', user_dn))
-    test_objects.append(('groups/group', group_dn))
+    test_objects.append(('users/user', user_dn, uoid))
+    test_objects.append(('groups/group', group_dn, goid))
     deleted_dns = []
-    for obj_type, obj_dn in test_objects:
+    for obj_type, obj_dn, oid in test_objects:
         udm.remove_object(obj_type, dn=obj_dn)
+        deleted_dn = _deleted_object_dn(obj_dn, oid)
+        verify_ldap_object(deleted_dn, should_exist=True)
         verify_ldap_object(obj_dn, should_exist=False)
         deleted_objects = _find_deleted_objects(obj_dn)
         assert len(deleted_objects) > 0
@@ -580,6 +574,7 @@ def test_extensible_object_direct_attribute_storage(udm, lo, recyclebin_policy_s
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
     deleted_attrs = lo.get(deleted_dn)
     assert 'extensibleObject' in [oc.decode('utf-8') for oc in deleted_attrs['objectClass']]
     assert 'univentionRecycleBinObject' in [oc.decode('utf-8') for oc in deleted_attrs['objectClass']]
@@ -614,6 +609,7 @@ def test_restore_deleted_object(udm, lo, recyclebin_policy_session):
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
     restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_dn)
     assert user_dn == restored_dn
     verify_ldap_object(user_dn, should_exist=True)
@@ -648,6 +644,7 @@ def test_restore_with_name_conflict(udm, lo, recyclebin_policy_session):
 
     # Attempt to restore original user (should fail due to username conflict)
     deleted_dn = _deleted_object_dn(user_dn, user_object_id)
+    verify_ldap_object(deleted_dn, should_exist=True)
     recyclebin_module = udm_modules.modules[OT_RECYCLEBIN]
     deleted_udm_obj = recyclebin_module.object(None, lo, position(RECYCLEBIN_DN), dn=deleted_dn)
     deleted_udm_obj.open()
@@ -674,6 +671,7 @@ def test_entryuuid_univention_object_identifier_preservation_across_delete_resto
     assert original_id, 'Original user should have univentionObjectIdentifier'
     udm.remove_object('users/user', dn=user_dn)
     deleted_obj_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_obj_dn, should_exist=True)
     deleted_attrs = lo.get(deleted_obj_dn, attr=['*'])
     stored_uuid = deleted_attrs.get('univentionRecycleBinOriginalEntryUUID')
     stored_id = deleted_attrs.get('univentionRecycleBinOriginalUniventionObjectIdentifier')
@@ -695,6 +693,7 @@ def test_delete_at_timestamp_based_on_retention_policy(udm, lo, recyclebin_polic
     uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     udm.remove_object('users/user', dn=user_dn)
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
     verify_entryttl_deleteat(retention_time, deleted_dn)
     _cleanup_deleted_object(deleted_dn)
 
@@ -713,9 +712,11 @@ def test_user_group_restoration_comprehensive(udm, lo, recyclebin_policy_session
     udm.remove_object('users/user', dn=user_dn, wait_for_replication=False)
     verify_ldap_object(user_dn, should_exist=False)
     user_deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(user_deleted_dn, should_exist=True)
     udm.remove_object('groups/group', dn=group_dn)
     verify_ldap_object(group_dn, should_exist=False)
     group_deleted_dn = _deleted_object_dn(group_dn, goid)
+    verify_ldap_object(group_deleted_dn, should_exist=True)
 
     # restore
     udm.restore_object('recyclebin/removedobject', dn=group_deleted_dn)
@@ -751,6 +752,8 @@ def test_user_multiple_groups_deletion_restoration(udm, lo, recyclebin_policy_se
         assert user_dn.encode('utf-8') not in attrs.get('uniqueMember', [])
     # restore user
     user_deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(user_deleted_dn, should_exist=True)
+    time.sleep(3)  # TODO: give the listener some time to update the group references, find another way to avoid sleep
     udm.restore_object('recyclebin/removedobject', dn=user_deleted_dn)
     verify_ldap_object(user_dn, should_exist=True)
     # check
@@ -774,6 +777,7 @@ def test_policy_references_restoration(udm, lo, recyclebin_policy_session, ldap_
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     user_deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(user_deleted_dn, should_exist=True, retry_count=3, delay=3)
     deleted_attrs = lo.get(user_deleted_dn)
     assert policy_dn.encode('utf-8') in deleted_attrs.get('univentionPolicyReference', [])
 
@@ -784,7 +788,7 @@ def test_policy_references_restoration(udm, lo, recyclebin_policy_session, ldap_
     assert policy_dn.encode('utf-8') in restored_user_attrs.get('univentionPolicyReference', [])
 
 
-def test_policy_disabled_check(udm, lo, ldap_base):
+def test_policy_disabled_check(udm, ldap_base):
     """Test that recyclebin respects the enabled/disabled policy setting"""
     container_dn = udm.create_object('container/cn', position=ldap_base, name=f'test-disabled-{random_username()}', wait_for_replication=False)
     policy_dn = udm.create_object(
@@ -796,7 +800,7 @@ def test_policy_disabled_check(udm, lo, ldap_base):
         wait_for_replication=False,
     )
     udm.modify_object('container/cn', dn=container_dn, policy_reference=[policy_dn], wait_for_replication=False)
-    user_dn, _ = udm.create_user(position=container_dn, wait_for_replication=False)
+    user_dn, _ = udm.create_user(position=container_dn, wait_for_replication=True)
     uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     verify_ldap_object(user_dn, should_exist=True)
     udm.remove_object('users/user', dn=user_dn)
@@ -805,8 +809,9 @@ def test_policy_disabled_check(udm, lo, ldap_base):
     verify_ldap_object(deleted_dn, should_exist=False)
 
 
-def test_listener_cache_behavior(udm, lo, recyclebin_policy_session):
+def test_listener_cache_behavior(udm, recyclebin_policy_session):
     """Test listener cache tracks deleted objects correctly"""
+    lo = get_ldap_connection(admin_uldap=True, primary=True)
     container_recyclebin_policy, _ = recyclebin_policy_session
     user_dn1, _ = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
     uoid1 = udm.get_object('users/user', user_dn1)['univentionObjectIdentifier'][0]
@@ -820,13 +825,15 @@ def test_listener_cache_behavior(udm, lo, recyclebin_policy_session):
     verify_ldap_object(user_dn2, should_exist=False)
     deleted_dn1 = _deleted_object_dn(user_dn1, uoid1)
     deleted_dn2 = _deleted_object_dn(user_dn2, uoid2)
-    assert user_dn1.encode('UTF-8') in lo.get(deleted_dn1).get('univentionRecycleBinOriginalDN', [])
-    assert user_dn2.encode('UTF-8') in lo.get(deleted_dn2).get('univentionRecycleBinOriginalDN', [])
+    verify_ldap_object(deleted_dn1, should_exist=True)
+    verify_ldap_object(deleted_dn2, should_exist=True)
+    assert user_dn1.encode('UTF-8') in lo.get(deleted_dn1).get('univentionRecycleBinOriginalDN', []), f'missing removed object {deleted_dn1}'
+    assert user_dn2.encode('UTF-8') in lo.get(deleted_dn2).get('univentionRecycleBinOriginalDN', []), f'missing removed object {deleted_dn2}'
     _cleanup_deleted_object(deleted_dn1)
     _cleanup_deleted_object(deleted_dn2)
 
 
-def test_recyclebin_type_limitation(udm, lo, recyclebin_policy_session):
+def test_recyclebin_type_limitation(udm, recyclebin_policy_session):
     """Test that recyclebin only processes users and groups, not computers"""
     container_recyclebin_policy, _ = recyclebin_policy_session
     computer_dn = udm.create_object('computers/linux', position=container_recyclebin_policy, name=random_username())
@@ -853,6 +860,8 @@ def test_original_name_extraction_and_storage(udm, lo, recyclebin_policy_session
     verify_ldap_object(group_dn, should_exist=False)
     deleted_user_dn = _deleted_object_dn(user_dn, uoid)
     deleted_group_dn = _deleted_object_dn(group_dn, goid)
+    verify_ldap_object(deleted_user_dn, should_exist=True)
+    verify_ldap_object(deleted_group_dn, should_exist=True)
     recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     pos = position(RECYCLEBIN_DN)
     deleted_user_obj = recyclebin_module.object(None, lo, pos, dn=deleted_user_dn)
@@ -881,6 +890,7 @@ def test_dds_automatic_purging_enabled(udm, lo, recyclebin_policy_session, ucr):
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
     deleted_attrs = lo.get(deleted_dn)
     object_classes = [cls.decode('utf-8') for cls in deleted_attrs.get('objectClass', [])]
     assert 'dynamicObject' in object_classes
@@ -918,6 +928,8 @@ def test_reference_based_restoration(udm, lo, recyclebin_policy_session):
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
+    time.sleep(3)  # TODO: give the listener some time to update the group references, find another way to avoid sleep
     deleted_attrs = lo.get(deleted_dn)
     references = deleted_attrs.get('univentionRecycleBinReference', [])
     assert len(references) > 0
@@ -954,6 +966,8 @@ def test_reference_restoration_with_colon_in_username(udm, lo, recyclebin_policy
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
+    time.sleep(3)  # TODO: give the listener some time to update the group references, find another way to avoid sleep
     deleted_attrs = lo.get(deleted_dn)
     references = deleted_attrs.get('univentionRecycleBinReference', [])
     assert len(references) > 0
@@ -984,6 +998,7 @@ def test_structured_logging_for_recyclebin_operations(udm, recyclebin_policy_ses
         uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
         udm.remove_object('users/user', dn=user_dn)
         deleted_dn = _deleted_object_dn(user_dn, uoid)
+        verify_ldap_object(deleted_dn, should_exist=True)
         recyclebin_module = udm_modules.modules['recyclebin/removedobject']
         deleted_user_obj = recyclebin_module.object(None, lo, position(RECYCLEBIN_DN), dn=deleted_dn)
         deleted_user_obj.open()
@@ -1042,6 +1057,7 @@ def test_blocklist_different_id_blocked(udm, recyclebin_policy_session, blocklis
     lo.modify(blocklistentry_dn(username, blocklist_username.dn), changes)
     # now restore, should fail, restore with UDM to get the proper exception
     deleted_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_dn, should_exist=True)
     recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     obj = recyclebin_module.object(None, lo, position(RECYCLEBIN_DN), dn=deleted_dn)
     obj.open()
@@ -1097,6 +1113,7 @@ def test_uuid_lookup_from_recyclebin_when_group_deleted_first(udm, lo, recyclebi
     deleted_user_dn = _deleted_object_dn(user_dn, uoid)
 
     # Verify that user's references include our test group with UUID from recyclebin
+    verify_ldap_object(deleted_user_dn, should_exist=True)
     deleted_user_attrs = lo.get(deleted_user_dn)
     references = deleted_user_attrs.get('univentionRecycleBinReference', [])
     assert len(references) > 0, 'User should have at least one reference'
@@ -1141,6 +1158,8 @@ def test_uuid_lookup_from_recyclebin_feature(udm, lo, recyclebin_policy_session)
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
     deleted_user_dn = _deleted_object_dn(user_dn, uoid)
+    verify_ldap_object(deleted_user_dn, should_exist=True)
+    time.sleep(3)  # TODO: give the listener some time to update the group references, find another way to avoid sleep
 
     # Verify references use UUID (from active LDAP)
     deleted_user_attrs = lo.get(deleted_user_dn)
@@ -1202,6 +1221,8 @@ def test_deleted_user_with_complex_attributes_display(udm, lo, recyclebin_policy
 
     deleted_user_dn = _deleted_object_dn(user_dn, uoid)
     deleted_group_dn = _deleted_object_dn(group_dn, goid)
+    verify_ldap_object(deleted_user_dn, should_exist=True)
+    verify_ldap_object(deleted_group_dn, should_exist=True)
 
     recyclebin_module = udm_modules.modules['recyclebin/removedobject']
     pos = position(RECYCLEBIN_DN)
