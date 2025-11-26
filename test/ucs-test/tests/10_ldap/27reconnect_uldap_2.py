@@ -10,8 +10,8 @@
 import subprocess
 import time
 import traceback
-from _thread import start_new_thread
 
+from _thread import start_new_thread
 from ldap import INSUFFICIENT_ACCESS, UNAVAILABLE
 from ldap.filter import filter_format
 
