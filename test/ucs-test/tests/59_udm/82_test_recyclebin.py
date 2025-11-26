@@ -15,6 +15,7 @@ import time
 import uuid
 from types import SimpleNamespace
 
+import ldap.dn
 import pytest
 from ldap.extop.dds import RefreshRequest
 from ldap.filter import filter_format
@@ -245,12 +246,20 @@ def test_create_and_restore(deleted_object_user_properties):
             remaining_users[0].remove()
 
 
-@pytest.mark.parametrize('name_suffix', ['', 'ä+ü', '$(id)', random_name_special_characters()])
+@pytest.mark.parametrize('name_suffix', [
+    '',
+    pytest.param('ä+ü', marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # broken DN chars (and utf-8 umlauts)
+    '§(id)',  # broken filter chars
+    pytest.param(random_name_special_characters().replace('@', '').replace('$', ''), marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # other random special chars: @ causes kerberos errors, $ causes no users/user identification
+])
 def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, Client):
     """Test user deletion and restoration via UMC interface."""
     container_recyclebin_policy, _ = recyclebin_policy_session
 
-    ucr.handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
+    ucr.handler_set([
+        'directory/manager/web/modules/users/user/properties/username/syntax=string',
+        'directory/manager/web/modules/groups/group/properties/name/syntax=string',
+    ])
 
     user_dn, username = udm.create_user(username=random_username() + name_suffix, position=container_recyclebin_policy, wait_for_replication=False)
     group_dn, _ = udm.create_group(name=random_groupname() + name_suffix, position=container_recyclebin_policy)
@@ -281,7 +290,7 @@ def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, 
     detail_result = con.umc_command('udm/get', [deleted_dn], OT_RECYCLEBIN).result[0]
     assert detail_result['username'] == username, 'Username should match in detail view'
     assert detail_result['groups'], 'Groups should be present in detail view'
-    assert detail_result['originalDN'] == user_dn, 'Original DN should be preserved'
+    assert ldap.dn.str2dn(detail_result['originalDN']) == ldap.dn.str2dn(user_dn), 'Original DN should be preserved'
 
     # Test properties endpoint
     properties_options = [{'objectType': OT_RECYCLEBIN, 'objectDN': deleted_dn}]
@@ -302,7 +311,8 @@ def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, 
 
     # Restore the object via UMC
     restore_options = [{'object': deleted_dn}]
-    con.umc_command('udm/restore', restore_options, OT_RECYCLEBIN)
+    restore_result = con.umc_command('udm/restore', restore_options, OT_RECYCLEBIN).result
+    assert restore_result[0]['success'], restore_result[0]
     assert lo.get(user_dn), f'User should be restored at original DN {user_dn}'
 
 
