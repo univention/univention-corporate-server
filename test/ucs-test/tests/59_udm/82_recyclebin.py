@@ -27,7 +27,7 @@ from univention.admin.uexceptions import authFail, noObject, uidAlreadyUsed, val
 from univention.admin.uldap import access, getAdminConnection, position
 from univention.logging import basicConfig
 from univention.testing.fixtures_recyclebin import RECYCLEBIN_DN, _deleted_object_dn
-from univention.testing.strings import random_username
+from univention.testing.strings import random_groupname, random_name_special_characters, random_username
 from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import (
     get_ldap_connection, restart_slapd, start_listener, stop_listener, verify_ldap_object,
@@ -245,12 +245,15 @@ def test_create_and_restore(deleted_object_user_properties):
             remaining_users[0].remove()
 
 
-def test_user_restore_umc(udm, recyclebin_policy_session, lo, Client):
+@pytest.mark.parametrize('name_suffix', ['', 'ä+ü', '$(id)', random_name_special_characters()])
+def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, Client):
     """Test user deletion and restoration via UMC interface."""
     container_recyclebin_policy, _ = recyclebin_policy_session
 
-    user_dn, username = udm.create_user(position=container_recyclebin_policy, wait_for_replication=False)
-    group_dn, _ = udm.create_group(position=container_recyclebin_policy)
+    ucr.handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
+
+    user_dn, username = udm.create_user(username=random_username() + name_suffix, position=container_recyclebin_policy, wait_for_replication=False)
+    group_dn, _ = udm.create_group(name=random_groupname() + name_suffix, position=container_recyclebin_policy)
     user_object_id = _get_object_identifier(udm, OT_USERS, user_dn)
 
     udm.remove_object(OT_USERS, dn=user_dn)
@@ -388,7 +391,7 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
 
     wait_for_listener_replication()
 
-    del_obj = lo.search(f'uid={username}', base=RECYCLEBIN_DN)
+    del_obj = lo.search(filter_format('uid=%s', [username]), base=RECYCLEBIN_DN)
 
     # Verify authentication fails for deleted user
     with pytest.raises(authFail):
@@ -409,7 +412,7 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
         assert results, f'Search {description} should return results'
 
     # Verify TTL and purgeAt timestamps
-    deleted_obj_dn, _ = udm.list_objects(OT_RECYCLEBIN, filter=f'originalDN={user_dn}')[0]
+    deleted_obj_dn, _ = udm.list_objects(OT_RECYCLEBIN, filter=filter_format('originalDN=%s', [user_dn]))[0]
     verify_entryttl_deleteat(retention_time, deleted_obj_dn)
 
     # Restore user

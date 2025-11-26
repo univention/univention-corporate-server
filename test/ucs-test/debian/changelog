@@ -1,3 +1,10 @@
+ucs-test (12.3.47) unstable; urgency=medium
+
+  * Bug #52202: test recyclebin cycle with objects having special charaters in
+    DN
+
+ -- Florian Best <best@univention.de>  Wed, 26 Nov 2025 15:59:22 +0100
+
 ucs-test (12.3.46) unstable; urgency=medium
 
   * Bug #58805: add test case for subject field in the OIDC token
