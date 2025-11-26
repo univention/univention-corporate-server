@@ -401,7 +401,7 @@ class UDMTestDataGenerator:
         self.counters['user'] += 1
         counter = self.counters['user']
 
-        username = f'{self.prefix}_user_{counter}_{generate_random_string(4)}'
+        username = f'{self.prefix}_user_{counter}_{generate_random_string(8)}'
         lastname = f'TestUser{counter}'
 
         return {
@@ -416,7 +416,7 @@ class UDMTestDataGenerator:
         self.counters['group'] += 1
         counter = self.counters['group']
 
-        groupname = f'{self.prefix}_group_{counter}_{generate_random_string(4)}'
+        groupname = f'{self.prefix}_group_{counter}_{generate_random_string(8)}'
 
         return {
             'name': groupname,
