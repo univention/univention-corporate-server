@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention MariaDB
 #  postinst script
@@ -8,76 +8,10 @@
 
 #DEBHELPER#
 
-set -e
-
-MARIADB_CN=$(hostname -f)
-MARIADB_CRT=/etc/univention/ssl/mariadb/mariadb.crt
-MARIADB_KEY=/etc/univention/ssl/mariadb/mariadb.key
-MARIADB_CSR=/etc/univention/ssl/mariadb/mariadb.csr
-CA_CRT=/etc/univention/ssl/ucsCA/CAcert.pem
-CA_KEY=/etc/univention/ssl/ucsCA/private/CAkey.pem
-CA_PASS=/etc/univention/ssl/password
-CA_OPENSSL_CNF=/etc/univention/ssl/openssl.cnf
-
-# env vars that need to be set for openssl.cnf
-: "${DEFAULT_CRL_DAYS:=30}"
-: "${CA_DEFAULT_DAYS:=365}"
-: "${DEFAULT_BITS:=4096}"
-: "${DEFAULT_MD:=sha256}"
-export DEFAULT_CRL_DAYS
-export CA_DEFAULT_DAYS
-export DEFAULT_BITS
-export DEFAULT_MD
-
-generate_default_certificate () {
-	if [ -f "$MARIADB_CRT" ] && [ -f "$MARIADB_KEY" ]; then
-		echo "MariaDB certificate and key already exist, skipping generation.."
-		return 0
-	fi
-
-	mkdir -p "$(dirname "$MARIADB_KEY")"
-
-	# generate private key
-	openssl genpkey -algorithm RSA \
-		-out "$MARIADB_KEY" \
-		-pkeyopt rsa_keygen_bits:4096 \
-		>/dev/null
-	chmod 600 "$MARIADB_KEY"
-	chown mysql:mysql "$MARIADB_KEY"
-
-	# generate CSR
-	openssl req -new \
-		-key "$MARIADB_KEY" \
-		-out "$MARIADB_CSR" \
-		-subj "/CN=${MARIADB_CN}" \
-		-config "$CA_OPENSSL_CNF" \
-		>/dev/null
-
-	# generate cert
-	openssl x509 -req \
-		-in "$MARIADB_CSR" \
-		-CA "$CA_CRT" \
-		-CAkey "$CA_KEY" \
-		-passin file:"$CA_PASS" \
-		-set_serial 0x$(openssl rand -hex 16) \
-		-out "$MARIADB_CRT" \
-		-days 365 \
-		-sha256 \
-		-extfile "$CA_OPENSSL_CNF" \
-		-extensions v3_req \
-		>/dev/null
-	chmod 644 "$MARIADB_CRT"
-	chown root:root "$MARIADB_CRT"
-
-	rm -f "$MARIADB_CSR"
-
-	echo "Generated $MARIADB_CRT and $MARIADB_KEY for default TLS configuration of MariaDB"
+test_mysql_access() {
+	mysql --no-defaults -u root -h localhost </dev/null >/dev/null 2>&1
 }
 
-# MariaDB 10.11 (UCS 5.2) uses unix_socket authentication for the root user by default.
-# /etc/mysql.secret is no longer needed for authentication. However, some UCS code still reads this
-# file, so we continue to create it if it does not exist to avoid breaking those components (for
-# now).
 create_mysql_secret_if_not_exists () {
 	if [ ! -e /etc/mysql.secret ]; then
 		touch /etc/mysql.secret
@@ -87,28 +21,55 @@ create_mysql_secret_if_not_exists () {
 	fi
 }
 
+set_root_password_from_mysql_secret () {
+	tfile=`mktemp`
+	if [ ! -f "$tfile" ]; then
+		return 1
+	fi
+
+	cat << EOF > $tfile
+USE mysql;
+UPDATE user SET plugin='' WHERE User="root";
+UPDATE user SET password=PASSWORD("$(</etc/mysql.secret)") WHERE User='root';
+FLUSH PRIVILEGES;
+EOF
+	mysql --no-defaults -u root -h localhost <$tfile >/dev/null
+	retval=$?
+
+	# Create a working debian.cnf so tools can connect to the database
+	sed -i -e "s/password = .*/password = $(</etc/mysql.secret)/g" /etc/mysql/debian.cnf
+
+	rm -f $tfile
+
+	return $retval
+}
+
 case "$1" in
     configure)
-	generate_default_certificate
-	create_mysql_secret_if_not_exists
 	# mariadb behaves like mysql in ucs 4.3; use and reuse old mysql ucr values
 	ucr set mysql/config/mysqld/bind_address?0.0.0.0 \
 		mysql/config/mysqld/max_connections?151 \
 		mysql/config/mysqld/max_allowed_packet?33554432 \
 		mysql/config/mysqld/query_cache_size?33554432 \
 		mysql/config/mysqld/query_cache_limit?2097152 \
-		mysql/config/mysqld/innodb_buffer_pool_size?157286400 \
-		mysql/config/mariadb/ssl-ca?"$CA_CRT" \
-		mysql/config/mariadb/ssl-cert?"$MARIADB_CRT" \
-		mysql/config/mariadb/ssl-key?"$MARIADB_KEY"
+		mysql/config/mysqld/innodb_buffer_pool_size?157286400
 
 	# Bug #46537: Use the mariadb default values
 	# Debian changed the mariadb defaults to utf8mb4 / utf8mb4_general_ci
 	ucr set mysql/config/mysqld/collation-server?latin1_swedish_ci \
 		mysql/config/mysqld/character-set-server?latin1
+
+	# In most UCS installations the database root password is not set, because most
+	# UCS installation are noninteractive. This results in a database which
+	# can be read by every user. So we generate a password and write this to
+	# /etc/mysql.secret. This file is only readable by root.
+	if test_mysql_access; then
+		create_mysql_secret_if_not_exists
+		set_root_password_from_mysql_secret
+	fi
 esac
 
 systemctl --system daemon-reload >/dev/null
-systemctl restart mariadb
+service mariadb restart
 
 exit 0
