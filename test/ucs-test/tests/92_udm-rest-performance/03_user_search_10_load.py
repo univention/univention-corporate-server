@@ -12,15 +12,15 @@ from locustfile import CheckStats, UserSearchTest as Search10UsersLoad  # noqa: 
 
 
 Search10UsersLoad.filters_expected_results = [
-    ('(uid=testuser1111*)', 11),
-    ('(uid=testuser222*)', 11),
-    ('(uid=testuser333*)', 11),
-    ('(uid=testuser444*)', 11),
-    ('(uid=testuser555*)', 11),
-    ('(uid=testuser666*)', 11),
-    ('(uid=testuser777*)', 11),
-    ('(uid=testuser888*)', 11),
-    ('(uid=testuser999*)', 11),
+    ('(uid=testuser1)', 1),
+    ('(uid=testuser10)', 1),
+    ('(uid=testuser100)', 1),
+    ('(uid=testuser1000)', 1),
+    ('(uid=testuser10000)', 1),
+    ('(uid=testuser2)', 1),
+    ('(uid=testuser20)', 1),
+    ('(uid=testuser200)', 1),
+    ('(uid=testuser2000)', 1),
 ]
 
 
