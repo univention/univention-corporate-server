@@ -4,7 +4,8 @@
 #
 #.PRECIOUS: build build-dev
 #
-#build:
+build:
+	echo skip
 #	./frontend/process_vue_files.sh
 #	npm set prefix=$$HOME/.node
 #	npm install -g npm@8.1.3
