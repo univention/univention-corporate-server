@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.35) unstable; urgency=medium
+
+  * Bug #58845: Skip resync of reject for uSNCreated if < uSNChanged
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Nov 2025 17:33:02 +0100
+
 univention-ad-connector (14.0.34) unstable; urgency=medium
 
   * Bug #58830: lookup samaccountname for olddn from adcache
