@@ -3,17 +3,21 @@ version: '3.1'
 services:
   portal-server:
     container_name: univention-portal-server
-    image: gitregistry.knut.univention.de/univention/dev/projects/portal/portal-server:latest
+    # TODO: Merge Florian's MR: univention/dev/ucs!263
+    image: gitregistry.knut.univention.de/univention/dev/projects/portal/portal-server:0.86.1-pre-fbest-fix-assets-root-path
     # command: /usr/bin/python3 /usr/sbin/univention-portal-server
+    # entrypoint: /bin/bash -c sleep infinity
     security_opt:
       - seccomp:/etc/docker/seccomp-systemd.json
     restart: unless-stopped  # on-failure
     env_file: /etc/univention-portal/server.env
     volumes:
+      # TODO: Make this file configurable to use ObjectStorageCache or FileCache
+      - /usr/share/univention-portal/portals.json:/usr/share/univention-portal/portals.json
+      # TODO: There is a listener module in UCS, we just need to mount the files
+      - /var/cache/univention-portal:/var/cache/univention-portal
       - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
       - /etc/machine.secret:/etc/machine.secret:ro
-      - /usr/share/univention-portal/portals.json:/usr/share/univention-portal/portals.json
-      - /var/cache/univention-portal/:/var/cache/univention-portal/
     ports:
       - "8095:80"
   portal-frontend:
