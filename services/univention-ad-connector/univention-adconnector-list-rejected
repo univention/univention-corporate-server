@@ -37,7 +37,9 @@
 
 from __future__ import print_function
 
+import argparse
 import sys
+import textwrap
 
 import ldap
 
@@ -47,41 +49,34 @@ import univention.connector
 import univention.connector.ad
 
 
-CONFIGBASENAME = "connector"
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Summarize objects rejected due to sync failures.",
+        add_help=True
+    )
 
+    parser.add_argument(
+        "-c", "--configbase",
+        default="connector",
+        help='Configuration base to use (default: "connector")'
+    )
 
-def usage():
-    print("")
-    print("This is univention-adconnector-list-rejected")
-    print("")
-    print("Univention-connector-list-rejected tries to summarize the objects which are rejected due to sync failures")
-    print("")
-    print("Usage:")
-    print("univention-adconnector-list-rejected [-c configbase]")
-    print("")
-    print("The default configbase is \"connector\".")
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Enable verbose output"
+    )
 
-
-if len(sys.argv) > 1:
-    if sys.argv[1] in ['-h', '--help', '-?']:
-        usage()
-        sys.exit(0)
-    if sys.argv[1] == '-c':
-        if len(sys.argv) != 3:
-            print("ERROR: option \"-c\" needs an argument!")
-            usage()
-            sys.exit(1)
-        else:
-            CONFIGBASENAME = sys.argv[2]
-            print("use configbase %s" % CONFIGBASENAME)
+    return parser.parse_args()
 
 
 def main():
+    args = parse_args()
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
 
-    ad = univention.connector.ad.ad.main(configRegistry, CONFIGBASENAME)
-    max_retry_rejected = configRegistry.get('%s/ad/max_retry_rejected' % (CONFIGBASENAME,), 10)
+    ad = univention.connector.ad.ad.main(configRegistry, args.configbase)
+    max_retry_rejected = configRegistry.get('%s/ad/max_retry_rejected' % (args.configbase,), 10)
     try:
         ad.init_ldap_connections()
     except ldap.SERVER_DOWN as exc:
@@ -108,10 +103,22 @@ def main():
         found_rejected = True
         print("%5d:    AD DN: %s" % (i, dn))
         ucs_dn = ad.get_dn_by_con(dn)
+        reason = ad._get_reject_reason(_id)
         if ucs_dn:
             print("         UCS DN: %s" % ucs_dn)
         else:
             print("         UCS DN: <not found>")
+        try:
+            print("         Reason: %s" % reason.splitlines()[0])
+        except IndexError:
+            # No reason stored in DB
+            pass
+        if args.verbose:
+            try:
+                print(textwrap.indent("%s" % "\n".join(reason.splitlines()[1:]), 17 * " "))
+            except IndexError:
+                # Single line reason
+                pass
         print("         tried: %s/%s times\n" % (retry_count, max_retry_rejected))
         i += 1
 

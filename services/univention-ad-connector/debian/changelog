@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.37) unstable; urgency=medium
+
+  * Bug #58860: add reject reason to reject database
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 08 Dec 2025 14:36:49 +0100
+
 univention-ad-connector (14.0.36) unstable; urgency=medium
 
   * Bug #58845: Fixup for previous version

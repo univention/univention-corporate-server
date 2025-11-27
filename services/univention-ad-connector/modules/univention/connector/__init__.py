@@ -639,6 +639,9 @@ class ucs(object):
     def _remove_rejected_ucs(self, filename):
         self._remove_config_option('UCS rejected', filename)
 
+    def _save_ad_reject_reason(self, id, msg):
+        self._set_config_option('AD rejected reason', str(id), msg)
+
     def list_rejected_ucs(self, filter_noresync=False):
         rejected = self._get_config_items('UCS rejected')
         if filter_noresync:
@@ -1518,6 +1521,7 @@ class ucs(object):
 
             if not result:
                 ud.debug(ud.LDAP, ud.WARN, "Failed to get Result for DN (%r)" % (object['dn'],))
+                self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), "Failed to get Result")
                 return False
 
             if object['modtype'] in ['add', 'modify']:
@@ -1531,14 +1535,17 @@ class ucs(object):
 
         except univention.admin.uexceptions.valueInvalidSyntax as msg:
             ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%r)" % (msg, object['dn']))
+            self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), "InvalidSyntax\n%s" % msg)
             return False
         except univention.admin.uexceptions.valueMayNotChange as msg:
             ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%r)" % (msg, object['dn']))
+            self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), "Value may not change\n%s" % msg)
             return False
         except ldap.SERVER_DOWN:
             raise
-        except Exception:  # FIXME: which exception is to be caught?
+        except Exception as msg:  # FIXME: which exception is to be caught?
             self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
+            self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), "%s\n%s" % (msg, traceback.format_exc()))
             return False
 
     @staticmethod
