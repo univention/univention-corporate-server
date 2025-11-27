@@ -9,4 +9,4 @@
 export DH_VERBOSE=1
 
 %:
-	dh $@ --with univention-l10n,ucr,univention-join
+	dh $@ --with ucr,univention-join
