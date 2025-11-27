@@ -457,6 +457,10 @@ class ad(univention.connector.ucs):
             log.debug("__init__: init add config section 'AD rejected'")
             self.config.add_section('AD rejected')
 
+        if not self.config.has_section('AD rejected reason'):
+            log.debug("__init__: init add config section 'AD rejected reason'")
+            self.config.add_section('AD rejected reason')
+
         if not self.config.has_option('AD', 'lastUSN'):
             log.debug("__init__: init lastUSN with 0")
             self._set_config_option('AD', 'lastUSN', '0')
@@ -770,10 +774,14 @@ class ad(univention.connector.ucs):
 
     def _remove_rejected(self, id):
         self._remove_config_option('AD rejected', str(id))
+        self._remove_config_option('AD rejected reason', str(id))
 
     def _list_rejected(self):
         """Returns rejected AD-objects"""
         return self._get_config_items('AD rejected')[:]
+
+    def _get_reject_reason(self, id):
+        return self._get_config_option('AD rejected reason', str(id))
 
     def list_rejected(self):
         return self._list_rejected()
@@ -1915,6 +1923,7 @@ class ad(univention.connector.ucs):
                     ad_object = self.__object_from_element(elements[0])
                     # should not be synced
                     if not ad_object:
+                        log.debug("sync to ucs: Nothing todo, drop reject %s", (dn,))
                         self._remove_rejected(change_usn)
                         continue
                     if int(change_usn) == int(ad_object['attributes'].get('uSNCreated', [b'0'])[0]):

@@ -18,6 +18,7 @@ import re
 import sqlite3 as lite
 import string
 import sys
+import traceback
 from logging import getLogger
 from types import FunctionType
 
@@ -596,6 +597,9 @@ class ucs:
 
     def _remove_rejected_ucs(self, filename):
         self._remove_config_option('UCS rejected', filename)
+
+    def _save_ad_reject_reason(self, id, msg):
+        self._set_config_option('AD rejected reason', str(id), msg)
 
     def list_rejected_ucs(self, filter_noresync=False):
         rejected = self._get_config_items('UCS rejected')
@@ -1474,6 +1478,7 @@ class ucs:
 
             if not result:
                 log.warning("Failed to get Result for DN (%r)", object['dn'])
+                self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), "Failed to get Result")
                 return False
 
             if object['modtype'] in ['add', 'modify']:
@@ -1487,14 +1492,17 @@ class ucs:
 
         except univention.admin.uexceptions.valueInvalidSyntax as msg:
             log.error("InvalidSyntax: %s (%r)", msg, object['dn'])
+            self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), f"InvalidSyntax\n{msg}")
             return False
         except univention.admin.uexceptions.valueMayNotChange as msg:
             log.error("Value may not change: %s (%r)", msg, object['dn'])
+            self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), f"Value may not change\n{msg}")
             return False
         except ldap.SERVER_DOWN:
             raise
-        except Exception:  # FIXME: which exception is to be caught?
+        except Exception as msg:  # FIXME: which exception is to be caught?
             log.exception("Unknown Exception during sync_to_ucs")
+            self._save_ad_reject_reason(object['attributes']['uSNChanged'][0].decode(), f"{msg}\n{traceback.format_exc()}")
             return False
 
     @staticmethod

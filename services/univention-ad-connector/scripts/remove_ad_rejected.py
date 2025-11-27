@@ -26,6 +26,7 @@ def remove_ad_rejected(ad_dn):
     for usn, rejected_dn, _retry_count in config.items('AD rejected'):
         if univention.uldap.access.compare_dn(ad_dn, rejected_dn):
             config.remove_option('AD rejected', usn)
+            config.remove_option('AD rejected reason', usn)
             found = True
     os.chmod(db_internal_file, 640)
     if not found:
