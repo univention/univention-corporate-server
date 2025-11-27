@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-7) unstable; urgency=medium
+
+  * Bug #54589: Allow dash in uid and gid also as last character
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Nov 2025 15:05:56 +0100
+
 univention-directory-manager-modules (15.0.29-6) unstable; urgency=medium
 
   * Bug #58832: release udm lock if conditions are not met
