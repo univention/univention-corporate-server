@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issue:
  * A recyclebin for users and groups has been introduced.
 bug: [52202]
+erratum: 294
+announced: 2025-11-27
+support: core
