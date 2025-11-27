@@ -12,3 +12,6 @@ desc: |
    adjusted using the new UCR variable `freeradius/conf/cipher-list`.
    The format is documented in `man openssl-ciphers`.
 bug: [58373,58374]
+erratum: 292
+announced: 2025-11-27
+support: core
