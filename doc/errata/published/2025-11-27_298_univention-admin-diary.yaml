@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issue:
  * Events for recyclebin restoration have been added to the admin diary.
 bug: [52202]
+erratum: 298
+announced: 2025-11-27
+support: core
