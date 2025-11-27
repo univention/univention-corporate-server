@@ -7,6 +7,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 #DEBHELPER#
+#
+ucr set ucr set umc/http/allowed-session-overtake/ranges?172.18.0.0/16
 
 a2ensite univention-portal.conf
 
