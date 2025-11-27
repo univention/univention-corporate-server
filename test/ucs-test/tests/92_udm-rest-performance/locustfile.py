@@ -98,7 +98,7 @@ class UserSearchTest(FastHttpUser):
         search_filter, expected_results = random.choice(UserSearchTest.filters_expected_results)
         success, _count = self.udm_client.search_objects(
             object_type='users/user',
-            position=self.containers['users'],
+            position=self.containers['base'],
             filter_expr=search_filter,
             name='search_users',
         )
@@ -269,7 +269,7 @@ class GroupCRUDTest(FastHttpUser):
     def search_groups(self):
         success, _count = self.udm_client.search_objects(
             object_type='groups/group',
-            position=self.containers['groups'],
+            position=self.containers['base'],
             scope='sub',
             name='search_groups',
         )
