@@ -37,8 +37,6 @@ repos:
     - id: check-xml
       exclude: "/conffiles/.*[.]xml$\
                "
-    - id: check-yaml
-      exclude: "/conffiles/.*[.]yaml$|[.]gitlab-ci/base-doc[.]yml$"
     - id: check-merge-conflict
     - id: pretty-format-json
       exclude: "/conffiles/.*[.]json$\
