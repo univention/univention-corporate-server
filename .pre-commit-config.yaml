@@ -4,7 +4,8 @@
 # See https://pre-commit.com/hooks.html for more hooks
 exclude: "^packaging/ucslint/testframework/\
           |^services/univention-ldb-modules/buildtools/\
-          |^services/univention-ldb-modules/third_party/
+          |^services/univention-ldb-modules/third_party/\
+          |^management/univention-portal/helm/
          "
 repos:
   - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucr
