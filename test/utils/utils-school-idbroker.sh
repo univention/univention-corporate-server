@@ -229,13 +229,19 @@ create_school_users_classes () {
     i=2; python3 -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
     i=3; python3 -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
     i=3; python3 -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
-    i=1; python3 -m ucsschool.lib.models create --name "parent${i}" --set firstname "$traeger" --set lastname "Parent${i}" --set password univention --school DEMOSCHOOL --append legal_wards "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" LegalGuardian
     python3 -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
-        --append users "uid=parent1,cn=sorgeberechtigte,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" SchoolClass
+
+    # Only create and append a legal guardian on Traeger2, the 5.2 system
+    if [ "$traeger" = "Traeger2" ]; then
+        i=1; python3 -m ucsschool.lib.models create --name "parent${i}" --set firstname "$traeger" --set lastname "Parent${i}" --set password univention --school DEMOSCHOOL --append legal_wards "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" LegalGuardian
+        python3 -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
+            --append users "uid=parent1,cn=sorgeberechtigte,cn=users,ou=DEMOSCHOOL,${lb}" SchoolClass
+    fi
+
     python3 -m ucsschool.lib.models create SchoolClass \
         --name "${ou1}-1a" \
         --school "$ou1" \
