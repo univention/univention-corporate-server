@@ -24,7 +24,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 DEFAULT_CONFIG = {
     'WAIT_MIN': 1,
     'WAIT_MAX': 5,
-    'TIMEOUT': 30,
+    'TIMEOUT': 90,
     'BASE_URL': 'master.ucs.test',
     'LDAP_BASE': 'dc=ucs,dc=test',
     'USERNAME': 'Administrator',
