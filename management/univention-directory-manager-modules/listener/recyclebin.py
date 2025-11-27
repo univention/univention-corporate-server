@@ -24,6 +24,7 @@ class Policy:
 
     retention_days: int
     ignored_object_classes: list[str]
+    enabled: bool
 
 
 class RecycleBinListener(ListenerModuleHandler):
@@ -113,7 +114,7 @@ class RecycleBinListener(ListenerModuleHandler):
             dn: DN of deleted object or False
         """
         policy = self._select_recyclebin_policy(original_dn, original_type, original_attrs)
-        if policy is None:
+        if policy is None or not policy.enabled:
             self.logger.debug('Object not moved to recyclebin (no policy): %s', original_dn)
             return False
 
@@ -180,12 +181,13 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def _get_recyclebin_policy(self, policy_dn, original_type):
         """Check a single policy for retention settings. Returns retention days or None."""
-        policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinPolicyEnabled=TRUE)(univentionRecycleBinPolicyUDMModules=%s))', [original_type])
+        policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinPolicyUDMModules=%s))', [original_type])
         try:
-            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinPolicyRetentionDays', 'univentionRecycleBinPolicyIgnoredObjectClasses']):
+            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinPolicyRetentionDays', 'univentionRecycleBinPolicyIgnoredObjectClasses', 'univentionRecycleBinPolicyEnabled']):
                 return Policy(
                     retention_days=int(attr.get('univentionRecycleBinPolicyRetentionDays', [b'180'])[0].decode('ASCII')),
                     ignored_object_classes=[x.decode('ASCII') for x in attr.get('univentionRecycleBinPolicyIgnoredObjectClasses', [])],
+                    enabled=b'TRUE' in attr.get('univentionRecycleBinPolicyEnabled', [b'FALSE']),
                 )
         except noObject:
             return None
