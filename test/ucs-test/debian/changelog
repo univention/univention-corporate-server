@@ -1,3 +1,9 @@
+ucs-test (10.0.24-38) unstable; urgency=medium
+
+  * testetest
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 28 Nov 2025 16:48:49 +0100
+
 ucs-test (10.0.24-37) unstable; urgency=medium
 
   * Bug #58832: add test for release udm lock if conditions are not met
