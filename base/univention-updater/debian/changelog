@@ -1,3 +1,9 @@
+univention-updater (17.4.1) unstable; urgency=medium
+
+  * Bug #58849: Adapt links and components for 5.2-4
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 12:36:34 +0100
+
 univention-updater (17.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
