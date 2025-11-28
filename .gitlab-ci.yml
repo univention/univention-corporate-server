@@ -236,6 +236,7 @@ sonarqube:
     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
   allow_failure: true
   rules:
+    - when: never  # SonarQube database is broken. No need to run.
     - if: "$CI_COMMIT_MESSAGE =~ /skip-sonarqube/ || $pipeline =~ /skip-sonarqube/"
       when: never
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
