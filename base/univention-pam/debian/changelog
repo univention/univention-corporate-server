@@ -1,3 +1,9 @@
+univention-pam (15.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:07 +0100
+
 univention-pam (15.3.1) unstable; urgency=medium
 
   * Bug #57976: Enable sssd to perform login using mailPrimaryAddress

@@ -1,3 +1,10 @@
+univention-net-installer (15.4.0) unstable; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+  * Bug #58848: Adapt to UCS-5.2-4
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:03 +0100
+
 univention-net-installer (15.3.0) unstable; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump

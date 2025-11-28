@@ -1,3 +1,9 @@
+univention-quota (16.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:07 +0100
+
 univention-quota (16.3.0) UNRELEASED; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump

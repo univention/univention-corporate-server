@@ -1,3 +1,9 @@
+univention-authorization (1.2.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:00 +0100
+
 univention-authorization (1.1.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]

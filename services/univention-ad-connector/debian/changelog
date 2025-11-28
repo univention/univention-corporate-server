@@ -1,3 +1,9 @@
+univention-ad-connector (16.5.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:03 +0100
+
 univention-ad-connector (16.4.5) unstable; urgency=medium
 
   * Bug #58680: synchronize account lockout states (except: AD does not support

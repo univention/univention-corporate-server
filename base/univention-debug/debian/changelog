@@ -1,3 +1,9 @@
+univention-debug (14.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:05 +0100
+
 univention-debug (14.3.2) unstable; urgency=medium
 
   * Bug #58627: fix compiler warnings and make strict compiling

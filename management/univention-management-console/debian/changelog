@@ -1,3 +1,9 @@
+univention-management-console (14.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:00 +0100
+
 univention-management-console (14.3.5) unstable; urgency=medium
 
   * Bug #58817: Show notification for Summit 2026

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:01 +0100
+
 univention-directory-manager-modules (17.3.15) unstable; urgency=medium
 
   * Bug #52202: fix setting of TTL for objects containing umlauts and special

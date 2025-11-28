@@ -1,3 +1,9 @@
+univention-server (17.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:06 +0100
+
 univention-server (17.3.0) UNRELEASED; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump

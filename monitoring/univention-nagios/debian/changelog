@@ -1,3 +1,9 @@
+univention-nagios (15.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:02 +0100
+
 univention-nagios (15.3.1) unstable; urgency=medium
 
   * Bug #58668: Improve check_univention_slapd_mdb_maxsize

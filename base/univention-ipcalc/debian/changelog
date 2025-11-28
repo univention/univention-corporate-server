@@ -1,3 +1,9 @@
+univention-ipcalc (13.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:06 +0100
+
 univention-ipcalc (13.3.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]

@@ -1,3 +1,9 @@
+univention-package-template (10.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:29:58 +0100
+
 univention-package-template (10.3.0) UNRELEASED; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump

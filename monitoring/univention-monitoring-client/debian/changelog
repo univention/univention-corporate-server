@@ -1,3 +1,9 @@
+univention-monitoring-client (3.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:01 +0100
+
 univention-monitoring-client (3.3.1) unstable; urgency=medium
 
   * Bug #58668: Improve alerts/check_univention_mdb_maxsize

@@ -1,3 +1,9 @@
+univention-python (15.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:05 +0100
+
 univention-python (15.3.2) unstable; urgency=medium
 
   * Bug #58756: add more information to log message

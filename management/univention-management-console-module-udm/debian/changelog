@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.4.0) UNRELEASED; urgency=medium
+
+  * Bug #58848: UCS 5.2-4 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 28 Nov 2025 09:30:00 +0100
+
 univention-management-console-module-udm (12.3.4) unstable; urgency=medium
 
   * Bug #52202: display correct LDAP database when no permissions to see
