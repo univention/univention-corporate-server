@@ -18,11 +18,24 @@ options = parser.parse_args()
 
 re_modtype = re.compile(b".*('dn': '[^']*').*(, 'modtype': '[\\w]*').*")
 
+
+def summary(rejdn, summary_lines):
+    if summary_lines[rejdn]:
+        print('''
+## Traceback-Type:
+# %s## Affected object:
+# rejdn='%s'
+## Recommendation:
+# TODO
+''' % ('# '.join(summary_lines[rejdn]), rejdn))
+
+
 with open(options.dn[0], "r+b", buffering=0) as f:
     with mmap.mmap(f.fileno(), 0, flags=mmap.MAP_POPULATE | mmap.MAP_PRIVATE, prot=mmap.PROT_READ) as mm:
         mm.madvise(mmap.MADV_SEQUENTIAL)
         # mm.madvise(mmap.MADV_WILLNEED)
         line = mm.readline()
+        summary_lines = {}
         while line:
             i = line.find(b'Resync rejected dn:')
             if i != -1:
@@ -32,18 +45,36 @@ with open(options.dn[0], "r+b", buffering=0) as f:
                     if result.returncode == 0:
                         line = mm.readline()
                         continue
+                summary_lines[rejdn] = []
                 print("\n# Resync: " + rejdn)
                 line = mm.readline()
                 while line:
                     if b'Resync rejected dn:' in line:
+                        summary(rejdn, summary_lines)
                         break
-                    elif b'Unknown Exception' in line or b'During handling of the above exception' in line or b'Traceback' in line:
+                    elif b'Search AD with filter: ' in line:
+                        if summary_lines[rejdn]:
+                            summary(rejdn, summary_lines)
+                            break
+                        line = mm.readline()
+                    elif b'Traceback' in line:
                         while line != b'\n':
-                            print(line.decode('UTF-8'), end='')
+                            last_line = line.decode('UTF-8')
+                            print(last_line, end='')
                             line = mm.readline()
+                        summary_lines[rejdn].append(last_line)
                         print()
-                    elif b'ERROR' in line:
+                    elif b'During handling of the above exception' in line:
                         print(line.decode('UTF-8'), end='')
+                        line = mm.readline()
+                        print()
+                    elif b'Unknown Exception' in line:
+                        print(line.decode('UTF-8'), end='')
+                        line = mm.readline()
+                    elif b'ERROR' in line:
+                        last_line = line.decode('UTF-8')
+                        print(last_line, end='')
+                        summary_lines[rejdn].append(last_line[last_line.find('): ') + 3:])
                         line = mm.readline()
                     elif b'object_from_element: ' in line:
                         if options.verbose > 0:
