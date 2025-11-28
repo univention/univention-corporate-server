@@ -239,7 +239,7 @@ class UDMRestClient:
                     return False, 0
             else:
                 response.failure(f'Search failed: {response.status_code}')
-                raise Exception(response.text, response.status_code)
+                return False, 0
 
     def get_object(self, object_type: str, object_dn: str, name: str | None = None) -> tuple[bool, dict]:
         """Get a single object by DN."""
