@@ -20,11 +20,19 @@ import univention.admin.uldap
 from univention.config_registry import ucr as _ucr
 from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import verify_ldap_object
+from univention.testing.utils import restart_listener, verify_ldap_object
 
 
 LDAP_BASE = _ucr['ldap/base']
 RECYCLEBIN_DN = "cn=recyclebin,cn=internal"
+
+
+@pytest.fixture(autouse=True, scope='session')
+def enabled_recyclebin(ucr_session):
+    ucr_session.handler_set(['listener/module/recyclebin/deactivate=false'])
+    restart_listener()
+    yield
+    restart_listener()
 
 
 def get_admin_connection():

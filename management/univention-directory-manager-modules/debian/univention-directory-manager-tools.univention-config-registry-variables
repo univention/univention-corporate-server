@@ -18,3 +18,10 @@ Description[en]=Properties removed from a UDM object can be automatically blocke
 Type=cron
 Default=0 8 * * *
 Categories=management-udm
+
+[listener/module/recyclebin/deactivate]
+Description[de]=Deaktiviert den Papierkorb.
+Description[en]=Disables the Recycle Bin.
+Type=bool
+Default=true
+Categories=management-udm

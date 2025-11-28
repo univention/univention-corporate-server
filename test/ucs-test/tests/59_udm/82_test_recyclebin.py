@@ -31,7 +31,7 @@ from univention.testing.fixtures_recyclebin import RECYCLEBIN_DN, _deleted_objec
 from univention.testing.strings import random_groupname, random_name_special_characters, random_username
 from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import (
-    get_ldap_connection, restart_slapd, start_listener, stop_listener, verify_ldap_object,
+    get_ldap_connection, restart_listener, restart_slapd, start_listener, stop_listener, verify_ldap_object,
     wait_for_listener_replication,
 )
 
@@ -47,6 +47,14 @@ LDAP_TIMESTAMP_FORMAT = '%Y%m%d%H%M%S%z'
 OT_USERS = 'users/user'
 OT_GROUPS = 'groups/group'
 OT_RECYCLEBIN = 'recyclebin/removedobject'
+
+
+@pytest.fixture(autouse=True, scope='session')
+def enabled_recyclebin(ucr_session):
+    ucr_session.handler_set(['listener/module/recyclebin/deactivate=false'])
+    restart_listener()
+    yield
+    restart_listener()
 
 
 def _find_deleted_objects(original_dn):

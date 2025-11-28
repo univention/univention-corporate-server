@@ -1941,6 +1941,9 @@ migrate_postgresql_11_to_15 () {
 }
 
 enable_recyclebin_globally () {
+	ucr set listener/module/recyclebin/deactivate=false
+	systemctl restart univention-directory-listener
+
 	eval "$(univention-config-registry shell ldap/base)"
 	univention-directory-manager policies/recyclebin create \
 		--ignore_exists \

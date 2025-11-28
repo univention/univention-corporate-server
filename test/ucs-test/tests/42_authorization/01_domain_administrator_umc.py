@@ -12,10 +12,19 @@ import pytest
 
 from univention.config_registry import ucr as _ucr
 from univention.lib.umc import BadRequest
+from univention.testing.utils import restart_listener
 
 
 pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegative-administration/enabled'), reason='authz not activated')
 pytest_plugins = ('univention.testing.fixtures_recyclebin')
+
+
+@pytest.fixture(autouse=True, scope='session')
+def enabled_recyclebin(ucr_session):
+    ucr_session.handler_set(['listener/module/recyclebin/deactivate=false'])
+    restart_listener()
+    yield
+    restart_listener()
 
 
 @pytest.fixture(autouse=True)

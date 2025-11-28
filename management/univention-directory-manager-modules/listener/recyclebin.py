@@ -94,6 +94,8 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
         """Handle object removal - move to recyclebin."""
+        if not self.config.get_active():
+            return
         should_process, object_type = self._should_process_object(dn, old)
         if not should_process:
             return
@@ -194,6 +196,8 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def modify(self, dn: str, old: dict[str, list[bytes]], new: dict[str, list[bytes]], old_dn: str | None) -> None:
         """Handle object modification - check for group membership changes."""
+        if not self.config.get_active():
+            return
         should_process, object_type = self._should_process_object(dn, new or old)
         if not should_process:
             return
