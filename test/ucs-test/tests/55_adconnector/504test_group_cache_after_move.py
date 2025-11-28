@@ -8,6 +8,8 @@
 ## bugs:
 ##  - 51929
 
+import time
+
 import subprocess
 
 import pytest
@@ -134,6 +136,51 @@ def test_rename_parent_rename_child_in_ad(udm, lo, ldap_base, mode):
         assert ad.get(final_user_dn_ad)
         # change group membership and test
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, final_user_dn_ad)
+        verify_groups(ad, lo, final_user_dn, final_user_dn_ad, {setup.group1_dn, group3_dn}, {setup.group1_dn_ad, group3_dn_ad})
+
+
+@pytest.mark.parametrize('mode', ['sync', 'write'], ids=['sync mode', 'write mode'])
+def test_rename_parent_rename_child_in_ucs(udm, lo, ldap_base, mode):
+    with connector_setup2(mode) as ad:
+        # create user and groups in AD
+        setup = ad.create_ou_structure_and_user(udm, in_ad=False)
+        # rename parent
+        ou1_name = f'new-{setup.ou1_name}'
+        # user_dn = udm.move_object('users/user', dn=setup.user_dn, position=ldap_base, wait_for_replication=False)
+        ou1_dn = udm.modify_object('container/ou', dn=setup.ou1_dn, name=ou1_name, wait_for_replication=True)
+        print(ou1_dn)
+        ou1_dn_ad = f'ou={ou1_name},{ad.ldap_base}'
+        ou11_dn_ad = f'ou={setup.ou11_name},{ou1_dn_ad}'
+        ou11_dn = f'ou={setup.ou11_name},{ou1_dn}'
+        user_dn_ad = f'cn={setup.username},{ou11_dn_ad}'
+        user_dn = f'uid={setup.username},{ou11_dn}'
+        udm._cleanup['users/user'].append(user_dn)
+        # check rename
+        time.sleep(16)
+        assert lo.get(ou1_dn)
+        assert ad.get(ou1_dn_ad)
+        assert ad.get(ou11_dn_ad)
+        assert ad.get(user_dn_ad)
+        assert lo.get(user_dn)
+        assert not ad.get(setup.user_dn_ad.casefold())
+        assert not lo.get(setup.user_dn.casefold())
+        # rename child (users), change sam account name, in one step (connector not running)
+        with adconnector_stopped():
+            username = f'new-{setup.username}'
+            final_user_dn = udm.modify_object('users/user', dn=user_dn, username=username)
+            # final_user_dn_ad = ad.rename(user_dn_ad, username=username, wait_for_replication=False)
+            # udm.modify(user_dn, username=username, wait_for_replication=False)
+        ad.wait_for_sync()
+        final_user_dn_ad = ad.ad_dn(final_user_dn)
+        # check rename
+        assert ou1_name.casefold() in final_user_dn.lower() and username.casefold() in final_user_dn.lower()
+        assert ou1_name.casefold() in final_user_dn_ad and username.casefold() in final_user_dn_ad
+        assert not ad.get(user_dn_ad)
+        assert not lo.get(user_dn)
+        assert lo.get(final_user_dn)
+        assert ad.get(final_user_dn_ad)
+        # change group membership and test
+        group3_dn, group3_dn_ad = add_user_to_new_group_ucs(udm, ad, final_user_dn)
         verify_groups(ad, lo, final_user_dn, final_user_dn_ad, {setup.group1_dn, group3_dn}, {setup.group1_dn_ad, group3_dn_ad})
 
 
@@ -325,6 +372,50 @@ def test_rename_parent_change_ou_in_ad(udm, lo, mode):
         assert ou11_dn_ad.casefold() == ad.cache_guid2dn(ou11_guid).casefold()
 
 
+@pytest.mark.parametrize('mode', ['sync'], ids=['sync mode'])
+def test_rename_parent_change_ou_in_ucs(udm, lo, mode):
+    with connector_setup2(mode) as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=False)
+        ou1_guid = ad.guid(setup.ou1_dn_ad)
+        ou11_guid = ad.guid(setup.ou11_dn_ad)
+        # check guid cache
+        if mode == "sync":
+            assert setup.ou1_dn_ad.casefold() == ad.cache_guid2dn(ou1_guid).casefold()
+            assert setup.ou11_dn_ad.casefold() == ad.cache_guid2dn(ou11_guid).casefold()
+        # rename ou1
+        ou1_name = f'new-{setup.ou1_name}'
+        ou1_dn = udm.modify_object('container/ou', dn=setup.ou1_dn, name=ou1_name)
+        ou11_dn = f'ou={setup.ou11_name},{ou1_dn}'
+        ad.wait_for_sync()
+        ou1_dn_ad = ad.ad_dn(ou1_dn)
+        ou11_dn_ad = ad.ad_dn(ou11_dn)
+        assert ad.get(ou1_dn_ad)
+        assert ad.get(ou11_dn_ad)
+        assert lo.get(ou1_dn)
+        assert lo.get(ou11_dn)
+        assert ou1_name.casefold() in ou1_dn.lower()
+        assert ou1_name.casefold() in ou11_dn.lower()
+        # modify ou11
+        ou11_dn_ad = f'ou={setup.ou11_name},{ou1_dn_ad}'
+        description = random_username(mixed_case=True)
+        udm._cleanup['container/ou'].append(ou11_dn)
+        udm.modify_object('container/ou', dn=ou11_dn, description=description)
+        # check modification
+        ad.wait_for_sync()
+        ou11_dn = ad.ucs_dn(ou11_dn_ad)
+        assert [description.encode('UTF-8')] == ad.get(ou11_dn_ad)['description']
+        assert [description.encode('UTF-8')] == lo.get(ou11_dn)['description']
+        # check guid cache
+
+        # guid of ous does change in sync mode unfortunately
+        # as well as entryuuid/uobjectidentifier in ucs
+        ou1_guid = ad.guid(ou1_dn_ad)
+        ou11_guid = ad.guid(ou11_dn_ad)
+        if mode == "sync":
+            assert ou1_dn_ad.casefold() == ad.cache_guid2dn(ou1_guid).casefold()
+            assert ou11_dn_ad.casefold() == ad.cache_guid2dn(ou11_guid).casefold()
+
+
 @pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
 def test_rename_and_move_and_change_sam_account_name_in_ad(udm, lo, mode):
     with connector_setup2(mode) as ad:
@@ -346,6 +437,32 @@ def test_rename_and_move_and_change_sam_account_name_in_ad(udm, lo, mode):
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
         ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
         ad.wait_for_sync()
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize('mode', ['sync'], ids=['sync mode'])
+def test_rename_and_move_and_change_sam_account_name_in_ucs(udm, lo, mode):
+    with connector_setup2(mode) as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=False)
+        # rename, move change sam account name, in one step (connector not running)
+        with adconnector_stopped():
+            username = f'new-{setup.username}'
+            user_dn = udm.move_object('users/user', dn=setup.user_dn, username=username, cn=username, position=setup.ou2_dn, wait_for_replication=False)
+        ad.wait_for_sync()
+        user_dn_ad = ad.ad_dn(user_dn)
+        assert setup.ou2_dn in user_dn
+        assert setup.ou2_dn_ad in user_dn_ad
+        assert not lo.get(setup.user_dn)
+        assert not ad.get(setup.user_dn_ad)
+        # add to some group and check group membership after sync
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        groupname = random_username(mixed_case=True)
+        group3_dn = udm.create_object('groups/group', name=groupname)
+        group3_dn_ad = ad.ad_dn(group3_dn)
+        udm.modify_object('users/user', dn=user_dn, append={'groups': [group3_dn]}, wait_for_replication=False)
+        udm.modify_object('users/user', dn=user_dn, remove={'groups': [setup.group1_dn]}, wait_for_replication=True)
+        ad.wait_for_sync()
+        time.sleep(20)
         verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
 
 
@@ -373,6 +490,36 @@ def test_change_sam_account_name_in_ad(udm, mode, lo):
         verify_groups(ad, lo, user_dn, setup.user_dn_ad, {group3_dn}, {group3_dn_ad})
 
 
+@pytest.mark.parametrize('mode', ['sync', 'write'], ids=['sync mode', 'write mode'])
+def test_change_sam_account_name_in_ucs(udm, mode, lo):
+    with connector_setup2(mode) as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=False)
+        sam_account_name = f'new-{setup.username}'
+        user_dn = udm.modify_object('users/user', dn=setup.user_dn, username=sam_account_name, wait_for_replication=True)
+        time.sleep(10)
+        user_dn_ad = ad.ad_dn(user_dn)
+        print(user_dn_ad)
+        assert sam_account_name not in setup.user_dn_ad
+        assert ad.get(user_dn_ad)
+        assert user_dn_ad.casefold() == ad.ad_dn(user_dn)
+        assert not lo.get(setup.user_dn)
+        assert lo.get(user_dn)
+        assert sam_account_name.casefold() in user_dn
+        assert user_dn.casefold() != setup.user_dn
+        # we have to add this new user DN to udm-test, otherwise we get UCSTestUDM_CannotModifyExistingObject
+        udm._cleanup['users/user'] = [user_dn]
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        # and another change, just to be sure
+        groupname = random_username(mixed_case=True)
+        group3_dn = udm.create_object('groups/group', name=groupname)
+        group3_dn_ad = ad.ad_dn(group3_dn)
+        udm.modify_object('users/user', dn=user_dn, append={'groups': [group3_dn]}, wait_for_replication=False)
+        udm.modify_object('users/user', dn=user_dn, remove={'groups': [setup.group1_dn]}, wait_for_replication=True)
+        ad.wait_for_sync()
+        time.sleep(20)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
 @pytest.mark.parametrize('mode', ['sync', 'read'], ids=['sync mode', 'read mode'])
 def test_move_and_change_sam_account_name_in_ad(udm, mode, lo):
     with connector_setup2(mode) as ad:
@@ -397,6 +544,44 @@ def test_move_and_change_sam_account_name_in_ad(udm, mode, lo):
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
         ad.remove_from_group(setup.group1_dn_ad, user_dn_ad)
         ad.wait_for_sync()
+        time.sleep(20)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
+
+
+@pytest.mark.parametrize('mode', ['sync', 'write'], ids=['sync mode', 'write mode'])
+def test_move_and_change_sam_account_name_in_ucs(udm, mode, lo):
+    with connector_setup2(mode) as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=False)
+        # move and change sam account name, in one step (connector not running)
+        with adconnector_stopped():
+            # sam_account_name = f'new-{setup.username}'
+            # user_dn_ad = ad.rename(setup.user_dn_ad, position=setup.ou2_dn_ad, wait_for_replication=False)
+            # Vad.set_attributes(user_dn_ad, {'sAMAccountName': [sam_account_name.encode('UTF-8')]}, wait_for_replication=False)
+            sam_account_name = f'new-{setup.username}'
+            user_dn = udm.move_object('users/user', dn=setup.user_dn, username=sam_account_name, position=setup.ou2_dn, wait_for_replication=True)
+            user_dn = udm.modify_object('users/user', dn=user_dn, username=sam_account_name, wait_for_replication=True)
+        ad.wait_for_sync()
+        user_dn_ad = ad.ad_dn(user_dn)
+        assert not ad.get(setup.user_dn_ad)
+        assert ad.get(user_dn_ad)
+        user_dn = ad.ucs_dn(user_dn_ad)
+        assert ad.ad_dn(user_dn) == user_dn_ad.casefold()
+        assert user_dn != setup.user_dn
+        assert sam_account_name.casefold() in user_dn
+        assert setup.ou2_dn.casefold() in user_dn
+        assert not lo.get(setup.user_dn)
+        assert lo.get(user_dn)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
+        # add to some group and check group membership after sync
+        groupname = random_username(mixed_case=True)
+        group3_dn = udm.create_object('groups/group', name=groupname)
+        group3_dn_ad = ad.ad_dn(group3_dn)
+        udm._cleanup['users/user'].append(user_dn)
+        udm.modify_object('users/user', dn=user_dn, append={'groups': [group3_dn]}, wait_for_replication=False)
+        udm._cleanup['users/user'].append(user_dn)
+        udm.modify_object('users/user', dn=user_dn, remove={'groups': [setup.group1_dn]}, wait_for_replication=True)
+        ad.wait_for_sync()
+        time.sleep(10)
         verify_groups(ad, lo, user_dn, user_dn_ad, {group3_dn}, {group3_dn_ad})
 
 
@@ -585,6 +770,81 @@ def test_rename_ou_rename_group(mode, udm, lo):
         verify_groups(ad, lo, user_dn, user_dn_ad, {new_group_dn, setup.group1_dn}, {new_group_dn_ad, setup.group1_dn_ad})
 
 
+@pytest.mark.parametrize('mode', ['sync', 'write'], ids=['sync mode', 'write mode'])
+def test_rename_ou_rename_group_in_ucs(mode, udm, lo):
+    """
+    https://git.knut.univention.de/univention/dev/internal/dev-issues/dev-incidents/-/issues/172
+    ucr set connector/ad/mapping/syncmode=read
+    systemctl restart univention-ad-connector.service
+    # Create the following tree in AD ou1->ou1.1->ou1.1.1
+    # Create a group in AD ou1->ou1.1->ou1.1.1->group1
+    # Add some members to the group in AD
+    # Rename ou1 to ou2 in AD
+    # Rename ou1.1.1 to ou1.1.2 in AD
+    # Rename group1 to group2 in AD -> Traceback
+    """
+    # TODO: multiple problems in sync mode
+    # 1. traceback during move -> add ldap.ALREADY_EXISTS to excpetion handling in connector/ad/__init__.py 2217?
+    with connector_setup2(mode) as ad:
+        setup = ad.create_ou_structure_and_user(udm, in_ad=False)
+        group_name = f'grp-{random_username(mixed_case=True)}'
+        group_dn = udm.create_object('groups/group', position=setup.ou111_dn, name=group_name)
+        group_dn_ad = ad.ad_dn(group_dn)
+        udm.modify_object('users/user', dn=setup.user_dn, append={'groups': [group_dn]}, wait_for_replication=True)
+        # ad.add_to_group(group_dn_ad, setup.user_dn_ad)
+        ad.wait_for_sync()
+        # rename while connector is stopped
+        with adconnector_stopped():
+            # rename ou1
+            ou1_name = f'new-{setup.ou1_name}'
+            # ou1_dn_ad = ad.rename(setup.ou1_dn_ad, rdn=f'ou={ou1_name}', wait_for_replication=False)
+            ou1_dn = udm.modify_object('container/ou', dn=setup.ou1_dn, name=ou1_name, wait_for_replication=True)
+            print(ou1_dn)
+            ou1_dn_ad = f'ou={ou1_name},{ad.ldap_base}'
+            ou111_dn = f'ou={setup.ou111_name},ou={setup.ou11_name},{ou1_dn}'
+            assert lo.get(ou111_dn)
+            # rename ou111
+            ou111_name = f'new-{setup.ou111_name}'
+            # ou111_dn_ad = ad.rename(ou111_dn_ad, rdn=f'ou={ou111_name}', wait_for_replication=False)
+            udm._cleanup['container/ou'].append(ou111_dn)
+            ou111_dn = udm.modify_object('container/ou', dn=ou111_dn, name=ou111_name, wait_for_replication=True)
+            group_dn = f'cn={group_name},{ou111_dn}'
+            # assert ad.get(group_dn_ad)
+            # rename group
+            new_group_name = f'new-{group_name}'
+            # new_group_dn_ad = ad.rename(group_dn_ad, rdn=f'cn={new_group_name}', wait_for_replication=False)
+            group_dn = f'cn={group_name},{ou111_dn}'
+            udm._cleanup['groups/group'].append(group_dn)
+            new_group_dn = udm.modify_object('groups/group', dn=group_dn, name=new_group_name, wait_for_replication=True)
+        ad.wait_for_sync()
+        tb = ad.last_traceback()
+        assert not (
+            tb
+            and 'in sync_from_ucs' in tb
+            and "self.lo_ad.rename(old_dn, object['dn'])" in tb
+            and "ldap.ALREADY_EXISTS: {'desc': 'Already exists', 'info': '00002071: UpdErr: " in tb
+            and "DSID-031B0CF6, problem 6005 (ENTRY_EXISTS)" in tb
+        ), f'Suspicious traceback found: {tb}'
+        ou1_dn_ad = ad.ad_dn(ou1_dn)
+        assert ou1_name.casefold() in ou1_dn.lower()
+        ou111_dn = ad.ad_dn(ou111_dn)
+        assert ou1_name.casefold() in ou111_dn.lower()
+        assert ou111_name.casefold() in ou111_dn.lower()
+        user_dn_ad = f'cn={setup.username},ou={setup.ou11_name},{ou1_dn_ad}'
+        user_dn = f'uid={setup.username},ou={setup.ou11_name},{ou1_dn}'
+        assert not ad.get(setup.user_dn_ad)
+        assert not lo.get(setup.user_dn)
+        assert ad.get(user_dn_ad)
+        assert lo.get(user_dn)
+        new_group_dn_ad = ad.ad_dn(new_group_dn)
+        group_dn_ad = ad.ad_dn(group_dn)
+        assert not ad.get(group_dn_ad)
+        assert ad.get(new_group_dn_ad)
+        assert lo.get(new_group_dn)
+        assert not lo.get(group_dn)
+        verify_groups(ad, lo, user_dn, user_dn_ad, {new_group_dn, setup.group1_dn}, {new_group_dn_ad, setup.group1_dn_ad})
+
+
 def test_move_ad_ou_to_allowsubtree(udm, ldap_base, ucr, lo):
     """
     This test tries to emulate the folloing allowsubtree workflow
@@ -641,3 +901,4 @@ def test_move_ad_ou_to_allowsubtree(udm, ldap_base, ucr, lo):
         assert lo.get(user_dn)
         # no new traceback
         assert tb == ad.last_traceback()
+
