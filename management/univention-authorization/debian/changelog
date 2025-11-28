@@ -1,4 +1,4 @@
-univention-authorization (1.2.0) UNRELEASED; urgency=medium
+univention-authorization (1.2.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
 

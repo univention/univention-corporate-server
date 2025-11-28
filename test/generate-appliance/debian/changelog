@@ -1,4 +1,4 @@
-generate-appliance (8.4.0) UNRELEASED; urgency=medium
+generate-appliance (8.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
 

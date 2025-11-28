@@ -1,4 +1,4 @@
-univention-package-template (10.4.0) UNRELEASED; urgency=medium
+univention-package-template (10.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
 

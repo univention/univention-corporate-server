@@ -1,4 +1,4 @@
-univention-portal (6.4.0) UNRELEASED; urgency=medium
+univention-portal (6.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
 
