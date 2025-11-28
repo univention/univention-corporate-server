@@ -1,4 +1,4 @@
-cache	var/cache/univention-portal/
+cache/*.json	var/cache/univention-portal/
 docker-compose.yaml	usr/share/univention-portal/
 key.svg	usr/share/univention-portal/
 listener/*.py	usr/lib/univention-directory-listener/system/

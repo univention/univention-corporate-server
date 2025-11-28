@@ -13,7 +13,7 @@ services:
     env_file: /etc/univention-portal/server.env
     volumes:
       # TODO: Make portals.json file configurable to use ObjectStorageCache or FileCache
-      # - /usr/share/univention-portal:/usr/share/univention-portal
+      - /usr/share/univention-portal:/usr/share/univention-portal
       # TODO: There is a listener module in UCS, we just need to mount the files
       - /var/cache/univention-portal:/var/cache/univention-portal
       - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
