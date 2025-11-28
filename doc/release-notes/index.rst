@@ -13,7 +13,7 @@ Publication date of UCS |release|: 2025-09-09
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-3, the third patch level release for |UCSUCS| 5.2 is available.
+With |UCSUCS| 5.2-4, the third patch level release for |UCSUCS| 5.2 is available.
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
@@ -26,9 +26,9 @@ Here is an overview of the most important changes:
 
 * Added a listener plugin which fuels the :program:`Provisioning Service`
   that you can install in a preview version through the App Center.
-  The App receives further updates throughout |UCSUCS| 5.2-3.
+  The App receives further updates throughout |UCSUCS| 5.2-4.
 
-* |UCSUCS| 5.2-3 includes numerous security updates for packages,
+* |UCSUCS| 5.2-4 includes numerous security updates for packages,
   such as ``sudo``, ``squid``, ``GnuTLS``, ``firefox-esr``, ``Linux kernel``, and many others
   to ensure protection against the latest vulnerabilities.
   In another update, ``OpenLDAP`` increased the maximum number of indexed attributes from 128 to 256.
@@ -123,10 +123,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-3{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-4{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.2-3{.gpg,} && bash pre-update-checks-5.2-3
+   $ apt-key verify pre-update-checks-5.2-4{.gpg,} && bash pre-update-checks-5.2-4
 
    ...
 
@@ -216,7 +216,7 @@ Changelog
 *********
 
 You find the changes since UCS 5.2-0 in
-:external+uv-changelog-5.2-3:doc:`index`.
+:external+uv-changelog-5.2-4:doc:`index`.
 
 .. _biblio:
 

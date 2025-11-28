@@ -16,118 +16,266 @@ General
 
 .. _security:
 
-* |UCSUCS| |release| includes all security updates issued for UCS 5.2-2:
+* |UCSUCS| |release| includes all security updates issued for UCS 5.2-3:
 
-  * :program:`firefox-esr` (:uv:cve:`2025-5263`, :uv:cve:`2025-5264`,
-    :uv:cve:`2025-5266`, :uv:cve:`2025-5267`, :uv:cve:`2025-5268`,
-    :uv:cve:`2025-5269`, :uv:cve:`2025-8027`, :uv:cve:`2025-8028`,
-    :uv:cve:`2025-8029`, :uv:cve:`2025-8030`, :uv:cve:`2025-8031`,
-    :uv:cve:`2025-8032`, :uv:cve:`2025-8033`, :uv:cve:`2025-8034`,
-    :uv:cve:`2025-8035`, :uv:cve:`2025-9179`, :uv:cve:`2025-9180`,
-    :uv:cve:`2025-9181`, :uv:cve:`2025-9185`) (:uv:bug:`58441`,
-    :uv:bug:`58491`, :uv:bug:`58540`)
+  * :program:`amd64-microcode` (:uv:cve:`2024-56161`)
+    (:uv:bug:`58597`)
 
-  * :program:`gdk-pixbuf` (:uv:cve:`2025-6199`) (:uv:bug:`58409`)
+  * :program:`apache2` (:uv:cve:`2024-42516`, :uv:cve:`2024-43204`,
+    :uv:cve:`2024-43394`, :uv:cve:`2024-47252`, :uv:cve:`2025-23048`,
+    :uv:cve:`2025-49630`, :uv:cve:`2025-49812`, :uv:cve:`2025-53020`,
+    :uv:cve:`2025-54090`) (:uv:bug:`58601`)
 
-  * :program:`gnutls28` (:uv:cve:`2025-32988`, :uv:cve:`2025-32989`,
-    :uv:cve:`2025-32990`, :uv:cve:`2025-6395`) (:uv:bug:`58480`)
+  * :program:`bind9` (:uv:cve:`2025-40778`, :uv:cve:`2025-40780`,
+    :uv:cve:`2025-8677`) (:uv:bug:`58742`)
 
-  * :program:`icu` (:uv:cve:`2025-5222`) (:uv:bug:`58439`)
+  * :program:`clamav` (:uv:cve:`2025-20128`, :uv:cve:`2025-20260`)
+    (:uv:bug:`58593`)
 
-  * :program:`jpeg-xl` (:uv:cve:`2023-0645`, :uv:cve:`2023-35790`,
-    :uv:cve:`2024-11403`, :uv:cve:`2024-11498`) (:uv:bug:`58452`)
+  * :program:`cloud-init` (:uv:cve:`2024-11584`, :uv:cve:`2024-6174`)
+    (:uv:bug:`58611`)
 
-  * :program:`libxml2` (:uv:cve:`2022-49043`, :uv:cve:`2023-39615`,
-    :uv:cve:`2023-45322`, :uv:cve:`2024-25062`, :uv:cve:`2024-34459`,
-    :uv:cve:`2024-56171`, :uv:cve:`2025-24928`, :uv:cve:`2025-27113`,
-    :uv:cve:`2025-32414`, :uv:cve:`2025-32415`) (:uv:bug:`58438`)
+  * :program:`cups` (:uv:cve:`2025-58060`, :uv:cve:`2025-58364`)
+    (:uv:bug:`58641`)
 
-  * :program:`libxslt` (:uv:cve:`2023-40403`, :uv:cve:`2024-55549`,
-    :uv:cve:`2025-24855`, :uv:cve:`2025-7424`) (:uv:bug:`58541`)
+  * :program:`curl` (:uv:cve:`2023-27534`, :uv:cve:`2024-11053`,
+    :uv:cve:`2024-9681`, :uv:cve:`2025-0167`) (:uv:bug:`58618`)
 
-  * :program:`linux` (:uv:cve:`2024-26739`, :uv:cve:`2024-26807`,
-    :uv:cve:`2024-28956`, :uv:cve:`2024-35790`, :uv:cve:`2024-36350`,
-    :uv:cve:`2024-36357`, :uv:cve:`2024-36903`, :uv:cve:`2024-36913`,
-    :uv:cve:`2024-36927`, :uv:cve:`2024-38541`, :uv:cve:`2024-41013`,
-    :uv:cve:`2024-43840`, :uv:cve:`2024-53203`, :uv:cve:`2024-53209`,
-    :uv:cve:`2024-56758`, :uv:cve:`2024-57883`, :uv:cve:`2025-21645`,
-    :uv:cve:`2025-21816`, :uv:cve:`2025-21839`, :uv:cve:`2025-21931`,
-    :uv:cve:`2025-22062`, :uv:cve:`2025-22119`, :uv:cve:`2025-23144`,
-    :uv:cve:`2025-27558`, :uv:cve:`2025-37797`, :uv:cve:`2025-37819`,
-    :uv:cve:`2025-37958`, :uv:cve:`2025-37967`, :uv:cve:`2025-38000`,
-    :uv:cve:`2025-38067`, :uv:cve:`2025-38074`, :uv:cve:`2025-38083`,
-    :uv:cve:`2025-38084`, :uv:cve:`2025-38086`, :uv:cve:`2025-38088`,
-    :uv:cve:`2025-38090`, :uv:cve:`2025-38215`, :uv:cve:`2025-38225`,
-    :uv:cve:`2025-38230`) (:uv:bug:`58294`, :uv:bug:`58528`)
+  * :program:`djvulibre` (:uv:cve:`2021-46310`, :uv:cve:`2021-46312`,
+    :uv:cve:`2025-53367`) (:uv:bug:`58614`)
 
-  * :program:`linux-signed-amd64` (:uv:cve:`2024-26739`,
-    :uv:cve:`2024-26807`, :uv:cve:`2024-28956`, :uv:cve:`2024-35790`,
-    :uv:cve:`2024-36350`, :uv:cve:`2024-36357`, :uv:cve:`2024-36903`,
-    :uv:cve:`2024-36913`, :uv:cve:`2024-36927`, :uv:cve:`2024-38541`,
-    :uv:cve:`2024-41013`, :uv:cve:`2024-43840`, :uv:cve:`2024-53203`,
-    :uv:cve:`2024-53209`, :uv:cve:`2024-56758`, :uv:cve:`2024-57883`,
-    :uv:cve:`2025-21645`, :uv:cve:`2025-21816`, :uv:cve:`2025-21839`,
-    :uv:cve:`2025-21931`, :uv:cve:`2025-22062`, :uv:cve:`2025-22119`,
-    :uv:cve:`2025-23144`, :uv:cve:`2025-27558`, :uv:cve:`2025-37797`,
-    :uv:cve:`2025-37819`, :uv:cve:`2025-37958`, :uv:cve:`2025-37967`,
-    :uv:cve:`2025-38000`, :uv:cve:`2025-38067`, :uv:cve:`2025-38074`,
-    :uv:cve:`2025-38083`, :uv:cve:`2025-38084`, :uv:cve:`2025-38086`,
-    :uv:cve:`2025-38088`, :uv:cve:`2025-38090`, :uv:cve:`2025-38215`,
-    :uv:cve:`2025-38225`, :uv:cve:`2025-38230`) (:uv:bug:`58294`,
-    :uv:bug:`58528`)
+  * :program:`expat` (:uv:cve:`2023-52425`, :uv:cve:`2024-50602`,
+    :uv:cve:`2024-8176`) (:uv:bug:`58598`)
 
-  * :program:`openjdk-17` (:uv:cve:`2025-21587`, :uv:cve:`2025-30691`,
-    :uv:cve:`2025-30698`, :uv:cve:`2025-30749`, :uv:cve:`2025-30754`,
-    :uv:cve:`2025-50059`, :uv:cve:`2025-5010`) (:uv:bug:`58529`)
+  * :program:`fig2dev` (:uv:cve:`2025-46397`, :uv:cve:`2025-46398`,
+    :uv:cve:`2025-46399`, :uv:cve:`2025-46400`) (:uv:bug:`58710`)
 
-  * :program:`rhonabwy` (:uv:cve:`2024-25714`) (:uv:bug:`58389`)
+  * :program:`firefox-esr` (:uv:cve:`2025-10527`,
+    :uv:cve:`2025-10528`, :uv:cve:`2025-10529`, :uv:cve:`2025-10532`,
+    :uv:cve:`2025-10533`, :uv:cve:`2025-10536`, :uv:cve:`2025-10537`,
+    :uv:cve:`2025-11708`, :uv:cve:`2025-11709`, :uv:cve:`2025-11710`,
+    :uv:cve:`2025-11711`, :uv:cve:`2025-11712`, :uv:cve:`2025-11714`,
+    :uv:cve:`2025-11715`, :uv:cve:`2025-13012`, :uv:cve:`2025-13013`,
+    :uv:cve:`2025-13014`, :uv:cve:`2025-13015`, :uv:cve:`2025-13016`,
+    :uv:cve:`2025-13017`, :uv:cve:`2025-13018`, :uv:cve:`2025-13019`,
+    :uv:cve:`2025-13020`) (:uv:bug:`58651`, :uv:bug:`58723`,
+    :uv:bug:`58812`)
 
-  * :program:`squid` (:uv:cve:`2023-5824`, :uv:cve:`2025-54574`)
-    (:uv:bug:`58539`)
+  * :program:`ghostscript` (:uv:cve:`2025-59798`,
+    :uv:cve:`2025-59799`, :uv:cve:`2025-7462`) (:uv:bug:`58709`)
 
-  * :program:`sudo` (:uv:cve:`2025-32462`) (:uv:bug:`58440`)
+  * :program:`glib2.0` (:uv:cve:`2025-3360`, :uv:cve:`2025-4373`,
+    :uv:cve:`2025-7039`) (:uv:bug:`58613`)
 
-  * :program:`xorg-server` (:uv:cve:`2025-49175`,
-    :uv:cve:`2025-49176`, :uv:cve:`2025-49177`, :uv:cve:`2025-49178`,
-    :uv:cve:`2025-49179`, :uv:cve:`2025-49180`) (:uv:bug:`58437`)
+  * :program:`glibc` (:uv:cve:`2025-0395`, :uv:cve:`2025-4802`,
+    :uv:cve:`2025-8058`) (:uv:bug:`58622`)
+
+  * :program:`imagemagick` (:uv:cve:`2025-43965`,
+    :uv:cve:`2025-53014`, :uv:cve:`2025-53019`, :uv:cve:`2025-53101`,
+    :uv:cve:`2025-55154`, :uv:cve:`2025-55212`, :uv:cve:`2025-55298`,
+    :uv:cve:`2025-57803`, :uv:cve:`2025-57807`) (:uv:bug:`58639`)
+
+  * :program:`intel-microcode` (:uv:cve:`2025-20053`,
+    :uv:cve:`2025-20109`, :uv:cve:`2025-21090`, :uv:cve:`2025-22839`,
+    :uv:cve:`2025-22840`, :uv:cve:`2025-22889`, :uv:cve:`2025-24305`,
+    :uv:cve:`2025-26403`, :uv:cve:`2025-32086`) (:uv:bug:`58746`)
+
+  * :program:`jinja2` (:uv:cve:`2024-56201`, :uv:cve:`2024-56326`,
+    :uv:cve:`2025-27516`) (:uv:bug:`58596`)
+
+  * :program:`krb5` (:uv:cve:`2024-26462`, :uv:cve:`2025-24528`,
+    :uv:cve:`2025-3576`) (:uv:bug:`58612`)
+
+  * :program:`lasso` (:uv:cve:`2025-46404`, :uv:cve:`2025-46705`,
+    :uv:cve:`2025-47151`) (:uv:bug:`58813`)
+
+  * :program:`libarchive` (:uv:cve:`2025-5914`, :uv:cve:`2025-5915`,
+    :uv:cve:`2025-5916`, :uv:cve:`2025-5917`) (:uv:bug:`58615`)
+
+  * :program:`libcap2` (:uv:cve:`2025-1390`) (:uv:bug:`58623`)
+
+  * :program:`libcpanel-json-xs-perl` (:uv:cve:`2025-40929`)
+    (:uv:bug:`58640`)
+
+  * :program:`libfcgi` (:uv:cve:`2025-23016`) (:uv:bug:`58625`)
+
+  * :program:`libjson-xs-perl` (:uv:cve:`2025-40928`)
+    (:uv:bug:`58643`)
+
+  * :program:`libsndfile` (:uv:cve:`2022-33065`, :uv:cve:`2024-50612`)
+    (:uv:bug:`58606`)
+
+  * :program:`libyaml-libyaml-perl` (:uv:cve:`2025-40908`)
+    (:uv:bug:`58604`)
+
+  * :program:`linux` (:uv:cve:`2024-36331`, :uv:cve:`2024-47704`,
+    :uv:cve:`2024-57924`, :uv:cve:`2024-58240`, :uv:cve:`2025-21861`,
+    :uv:cve:`2025-23143`, :uv:cve:`2025-23160`, :uv:cve:`2025-37925`,
+    :uv:cve:`2025-37931`, :uv:cve:`2025-37968`, :uv:cve:`2025-38322`,
+    :uv:cve:`2025-38335`, :uv:cve:`2025-38347`, :uv:cve:`2025-38491`,
+    :uv:cve:`2025-38500`, :uv:cve:`2025-38501`, :uv:cve:`2025-38502`,
+    :uv:cve:`2025-38520`, :uv:cve:`2025-38552`, :uv:cve:`2025-38553`,
+    :uv:cve:`2025-38555`, :uv:cve:`2025-38560`, :uv:cve:`2025-38561`,
+    :uv:cve:`2025-38562`, :uv:cve:`2025-38563`, :uv:cve:`2025-38565`,
+    :uv:cve:`2025-38569`, :uv:cve:`2025-38572`, :uv:cve:`2025-38574`,
+    :uv:cve:`2025-38576`, :uv:cve:`2025-38577`, :uv:cve:`2025-38578`,
+    :uv:cve:`2025-38579`, :uv:cve:`2025-38581`, :uv:cve:`2025-38583`,
+    :uv:cve:`2025-38587`, :uv:cve:`2025-38588`, :uv:cve:`2025-38601`,
+    :uv:cve:`2025-38602`, :uv:cve:`2025-38604`, :uv:cve:`2025-38608`,
+    :uv:cve:`2025-38609`, :uv:cve:`2025-38610`, :uv:cve:`2025-38612`,
+    :uv:cve:`2025-38614`, :uv:cve:`2025-38617`, :uv:cve:`2025-38618`,
+    :uv:cve:`2025-38622`, :uv:cve:`2025-38623`, :uv:cve:`2025-38624`,
+    :uv:cve:`2025-38630`, :uv:cve:`2025-38634`, :uv:cve:`2025-38635`,
+    :uv:cve:`2025-38639`, :uv:cve:`2025-38644`, :uv:cve:`2025-38645`,
+    :uv:cve:`2025-38650`, :uv:cve:`2025-38652`, :uv:cve:`2025-38653`,
+    :uv:cve:`2025-38663`, :uv:cve:`2025-38664`, :uv:cve:`2025-38665`,
+    :uv:cve:`2025-38666`, :uv:cve:`2025-38668`, :uv:cve:`2025-38670`,
+    :uv:cve:`2025-38671`, :uv:cve:`2025-38676`, :uv:cve:`2025-38677`,
+    :uv:cve:`2025-38679`, :uv:cve:`2025-38680`, :uv:cve:`2025-38681`,
+    :uv:cve:`2025-38683`, :uv:cve:`2025-38684`, :uv:cve:`2025-38685`,
+    :uv:cve:`2025-38687`, :uv:cve:`2025-38691`, :uv:cve:`2025-38693`,
+    :uv:cve:`2025-38694`, :uv:cve:`2025-38695`, :uv:cve:`2025-38696`,
+    :uv:cve:`2025-38697`, :uv:cve:`2025-38698`, :uv:cve:`2025-38699`,
+    :uv:cve:`2025-38700`, :uv:cve:`2025-38701`, :uv:cve:`2025-38702`,
+    :uv:cve:`2025-38706`, :uv:cve:`2025-38707`, :uv:cve:`2025-38708`,
+    :uv:cve:`2025-38711`, :uv:cve:`2025-38712`, :uv:cve:`2025-38713`,
+    :uv:cve:`2025-38714`, :uv:cve:`2025-38715`, :uv:cve:`2025-38721`,
+    :uv:cve:`2025-38723`, :uv:cve:`2025-38724`, :uv:cve:`2025-38725`,
+    :uv:cve:`2025-38727`, :uv:cve:`2025-38728`, :uv:cve:`2025-38729`,
+    :uv:cve:`2025-38732`, :uv:cve:`2025-38735`, :uv:cve:`2025-38736`,
+    :uv:cve:`2025-39673`, :uv:cve:`2025-39675`, :uv:cve:`2025-39676`,
+    :uv:cve:`2025-39681`, :uv:cve:`2025-39682`, :uv:cve:`2025-39683`,
+    :uv:cve:`2025-39684`, :uv:cve:`2025-39685`, :uv:cve:`2025-39686`,
+    :uv:cve:`2025-39687`, :uv:cve:`2025-39689`, :uv:cve:`2025-39691`,
+    :uv:cve:`2025-39692`, :uv:cve:`2025-39693`, :uv:cve:`2025-39694`,
+    :uv:cve:`2025-39697`, :uv:cve:`2025-39701`, :uv:cve:`2025-39702`,
+    :uv:cve:`2025-39703`, :uv:cve:`2025-39706`, :uv:cve:`2025-39709`,
+    :uv:cve:`2025-39710`, :uv:cve:`2025-39713`, :uv:cve:`2025-39714`,
+    :uv:cve:`2025-39715`, :uv:cve:`2025-39716`, :uv:cve:`2025-39718`,
+    :uv:cve:`2025-39719`, :uv:cve:`2025-39724`, :uv:cve:`2025-39730`,
+    :uv:cve:`2025-39731`, :uv:cve:`2025-39734`, :uv:cve:`2025-39736`,
+    :uv:cve:`2025-39737`, :uv:cve:`2025-39738`, :uv:cve:`2025-39742`,
+    :uv:cve:`2025-39743`, :uv:cve:`2025-39749`, :uv:cve:`2025-39752`,
+    :uv:cve:`2025-39756`, :uv:cve:`2025-39757`, :uv:cve:`2025-39759`,
+    :uv:cve:`2025-39760`, :uv:cve:`2025-39766`, :uv:cve:`2025-39770`,
+    :uv:cve:`2025-39772`, :uv:cve:`2025-39773`, :uv:cve:`2025-39776`,
+    :uv:cve:`2025-39782`, :uv:cve:`2025-39783`, :uv:cve:`2025-39787`,
+    :uv:cve:`2025-39788`, :uv:cve:`2025-39790`, :uv:cve:`2025-39794`,
+    :uv:cve:`2025-39795`, :uv:cve:`2025-39798`, :uv:cve:`2025-39800`,
+    :uv:cve:`2025-39801`, :uv:cve:`2025-39806`, :uv:cve:`2025-39808`,
+    :uv:cve:`2025-39812`, :uv:cve:`2025-39813`, :uv:cve:`2025-39817`,
+    :uv:cve:`2025-39819`, :uv:cve:`2025-39823`, :uv:cve:`2025-39824`,
+    :uv:cve:`2025-39825`, :uv:cve:`2025-39826`, :uv:cve:`2025-39827`,
+    :uv:cve:`2025-39828`, :uv:cve:`2025-39835`, :uv:cve:`2025-39838`,
+    :uv:cve:`2025-39839`, :uv:cve:`2025-39841`, :uv:cve:`2025-39842`,
+    :uv:cve:`2025-39843`, :uv:cve:`2025-39844`, :uv:cve:`2025-39845`,
+    :uv:cve:`2025-39846`, :uv:cve:`2025-39847`, :uv:cve:`2025-39848`,
+    :uv:cve:`2025-39849`, :uv:cve:`2025-39853`, :uv:cve:`2025-39857`,
+    :uv:cve:`2025-39860`, :uv:cve:`2025-39864`, :uv:cve:`2025-39865`,
+    :uv:cve:`2025-39866`, :uv:cve:`2025-39869`, :uv:cve:`2025-39870`,
+    :uv:cve:`2025-39873`, :uv:cve:`2025-39876`, :uv:cve:`2025-39877`,
+    :uv:cve:`2025-39880`, :uv:cve:`2025-39881`, :uv:cve:`2025-39883`,
+    :uv:cve:`2025-39885`, :uv:cve:`2025-39891`, :uv:cve:`2025-39894`,
+    :uv:cve:`2025-39902`, :uv:cve:`2025-39907`, :uv:cve:`2025-39909`,
+    :uv:cve:`2025-39911`, :uv:cve:`2025-39913`, :uv:cve:`2025-39914`,
+    :uv:cve:`2025-39916`, :uv:cve:`2025-39920`, :uv:cve:`2025-39923`,
+    :uv:cve:`2025-39993`, :uv:cve:`2025-39994`, :uv:cve:`2025-39995`,
+    :uv:cve:`2025-39996`, :uv:cve:`2025-39998`, :uv:cve:`2025-40001`,
+    :uv:cve:`2025-40084`, :uv:cve:`2025-40085`, :uv:cve:`2025-40087`,
+    :uv:cve:`2025-40088`, :uv:cve:`2025-40092`, :uv:cve:`2025-40093`,
+    :uv:cve:`2025-40094`, :uv:cve:`2025-40095`, :uv:cve:`2025-40096`,
+    :uv:cve:`2025-40099`, :uv:cve:`2025-40100`, :uv:cve:`2025-40103`,
+    :uv:cve:`2025-40104`, :uv:cve:`2025-40105`, :uv:cve:`2025-40106`,
+    :uv:cve:`2025-40300`) (:uv:bug:`58621`, :uv:bug:`58667`,
+    :uv:bug:`58811`)
+
+  * :program:`linux-signed-amd64` (:uv:cve:`2024-36331`,
+    :uv:cve:`2024-47704`, :uv:cve:`2024-57924`, :uv:cve:`2024-58240`,
+    :uv:cve:`2025-21861`, :uv:cve:`2025-23143`, :uv:cve:`2025-23160`,
+    :uv:cve:`2025-37925`, :uv:cve:`2025-37931`, :uv:cve:`2025-37968`,
+    :uv:cve:`2025-38322`, :uv:cve:`2025-38335`, :uv:cve:`2025-38347`,
+    :uv:cve:`2025-38491`, :uv:cve:`2025-38500`, :uv:cve:`2025-38501`,
+    :uv:cve:`2025-38502`, :uv:cve:`2025-38552`, :uv:cve:`2025-38614`,
+    :uv:cve:`2025-38676`, :uv:cve:`2025-38677`, :uv:cve:`2025-39993`,
+    :uv:cve:`2025-39994`, :uv:cve:`2025-39995`, :uv:cve:`2025-39996`,
+    :uv:cve:`2025-39998`, :uv:cve:`2025-40001`, :uv:cve:`2025-40084`,
+    :uv:cve:`2025-40085`, :uv:cve:`2025-40087`, :uv:cve:`2025-40088`,
+    :uv:cve:`2025-40092`, :uv:cve:`2025-40093`, :uv:cve:`2025-40094`,
+    :uv:cve:`2025-40095`, :uv:cve:`2025-40096`, :uv:cve:`2025-40099`,
+    :uv:cve:`2025-40100`, :uv:cve:`2025-40103`, :uv:cve:`2025-40104`,
+    :uv:cve:`2025-40105`, :uv:cve:`2025-40106`, :uv:cve:`2025-40300`)
+    (:uv:bug:`58621`, :uv:bug:`58667`, :uv:bug:`58811`)
+
+  * :program:`mariadb` (:uv:cve:`2023-52969`, :uv:cve:`2023-52970`,
+    :uv:cve:`2023-52971`, :uv:cve:`2024-21096`, :uv:cve:`2025-21490`,
+    :uv:cve:`2025-30693`, :uv:cve:`2025-30722`) (:uv:bug:`58617`)
+
+  * :program:`openjdk-17` (:uv:cve:`2025-53057`, :uv:cve:`2025-53066`)
+    (:uv:bug:`58741`)
+
+  * :program:`openjpeg2` (:uv:cve:`2025-50952`) (:uv:bug:`58600`)
+
+  * :program:`openssh` (:uv:cve:`2025-32728`) (:uv:bug:`58624`)
+
+  * :program:`openssl` (:uv:cve:`2024-13176`, :uv:cve:`2025-9230`,
+    :uv:cve:`2025-9232`) (:uv:bug:`58599`, :uv:bug:`58688`)
+
+  * :program:`perl` (:uv:cve:`2023-31484`, :uv:cve:`2024-56406`,
+    :uv:cve:`2025-40909`) (:uv:bug:`58607`)
+
+  * :program:`postgresql-15` (:uv:cve:`2012-0868`,
+    :uv:cve:`2017-7484`, :uv:cve:`2025-1094`, :uv:cve:`2025-4207`,
+    :uv:cve:`2025-8713`, :uv:cve:`2025-8714`, :uv:cve:`2025-8715`)
+    (:uv:bug:`58619`)
+
+  * :program:`python-zipp` (:uv:cve:`2024-5569`) (:uv:bug:`58609`)
+
+  * :program:`rubygems` (:uv:cve:`2023-28755`, :uv:cve:`2025-27221`)
+    (:uv:bug:`58605`)
+
+  * :program:`samba` (:uv:cve:`2025-10230`, :uv:cve:`2025-9640`)
+    (:uv:bug:`58708`)
+
+  * :program:`setuptools` (:uv:cve:`2025-47273`) (:uv:bug:`58616`)
+
+  * :program:`sqlite3` (:uv:cve:`2025-6965`) (:uv:bug:`58610`)
+
+  * :program:`squid` (:uv:cve:`2025-62168`) (:uv:bug:`58762`)
+
+  * :program:`systemd` (:uv:cve:`2025-4598`) (:uv:bug:`58603`)
+
+  * :program:`tiff` (:uv:cve:`2025-9900`) (:uv:bug:`58711`)
+
+  * :program:`wpa` (:uv:cve:`2022-37660`) (:uv:bug:`58602`)
+
+  * :program:`xorg-server` (:uv:cve:`2025-62229`,
+    :uv:cve:`2025-62230`, :uv:cve:`2025-62231`) (:uv:bug:`58773`)
 
 
 .. _debian:
 
 * |UCSUCS| |release| includes the following updated packages from Debian 12:
 
-  :program:`aide`
-  :program:`catdoc`
-  :program:`chromium`
-  :program:`djvulibre`
-  :program:`ffmpeg`
-  :program:`gst-plugins-bad1.0`
-  :program:`konsole`
-  :program:`libblockdev`
-  :program:`libxml2`
-  :program:`mediawiki`
-  :program:`node-cipher-base`
-  :program:`nodejs`
-  :program:`pgpool2`
-  :program:`php8.2`
-  :program:`qemu`
-  :program:`redis`
-  :program:`ring`
-  :program:`slurm-wlm`
-  :program:`sope`
-  :program:`thunderbird`
-  :program:`trafficserver`
-  :program:`udisks2`
-  :program:`unbound`
-  :program:`webkit2gtk`
+  :program:`FIXME`
 
 .. _maintained:
 
 * The following packages have been moved to the maintained repository of UCS:
 
-  :program:`asgi-correlation-id` (:uv:bug:`58421`), :program:`nats-py`
-  (:uv:bug:`58420`), :program:`univention-provisioning-stack-listener`
-  (:uv:bug:`58423`)
+  :program:`python-logfmter` (:uv:bug:`58647`)
+
+.. _changelog-basic:
+
+*********************
+Basic system services
+*********************
+
+.. _changelog-basis-ucr:
+
+Univention Configuration Registry
+=================================
+
+* The function `univention_config_is_true` has been added (:uv:bug:`58644`).
 
 .. _changelog-domain:
 
@@ -135,46 +283,84 @@ General
 Domain services
 ***************
 
+* Events for recyclebin restoration have been added to the admin diary
+  (:uv:bug:`52202`).
+
 .. _changelog-domain-openldap:
 
 OpenLDAP
 ========
-
-* OpenLDAP increased the maximum number of indexed attributes from 128 to 256
-  (:uv:bug:`58443`).
 
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
 ------------------------------------
 
-* During the |UCS| domain join process, :program:`slapd` fails to start
-  if schema lines exceed 2000 bytes. The issue is resolved
-  by wrapping long ``attributeType`` and ``objectClass`` lines at 1500 characters
-  to prevent this failure (:uv:bug:`56247`).
+* Structured Logging can now be activated via the UCR Variable `notifier/debug
+  /structured-logging`. The UCR variable `notifier/debug/level` now allows the
+  value 5 for enabling logging of TRACE log messages (:uv:bug:`58644`).
 
-* Fixed a race condition that could prevent listener modules from initializing
-  properly (:uv:bug:`58522`).
+* Structured Logging can now be activated via the UCR Variable `listener/debug
+  /structured-logging`. The UCR variable `listener/debug/level` now allows the
+  value 5 for enabling logging of TRACE log messages (:uv:bug:`58644`).
 
 .. _changelog-udm:
 
 LDAP Directory Manager
 ======================
 
-* The experimental delegative administration feature has been integrated into
-  the |UDM| core library (:uv:bug:`58432`).
+* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
 
-* The primary groups for users and computers are now configurable at the parent
-  container objects where an object is going to be created (:uv:bug:`58356`).
+* Added a new endpoint where LDAP attributes can be unmapped to a full UDM
+  object (if the module can be identified, :uv:bug:`58792`).
 
-* Further improvements for the delegative administration feature have been
-  implemented (:uv:bug:`58517`).
+* The argument `--bindpwd` has been deprecated in UDM commandline, it should be
+  replaced with `--bindpwdfile` (:uv:bug:`20610`).
 
-* Clean up references to apps installed on a domain controller or member server
-  when the computer object is removed (:uv:bug:`54892`).
+* All logmessages of Univention Directory Manager REST API are now in a
+  structured format, if enabled via the UCR variable
+  `directory/manager/rest/debug/structured-logging`. The UCR variable
+  `directory/manager/rest/debug/level` now allows the value 5 for enabling
+  logging of TRACE log messages. The log messages and severity has been
+  overworked. Additional information like IP address, hostname, LDAP
+  Distinguished Name of the requester have been added to the log information
+  (:uv:bug:`58627`).
 
-* Experimental support for delegative administration has been added to the |UDM|
-  REST API (:uv:bug:`58432`).
+* Debug messages from Tornado are now in structured log format as well. The
+  duplicated access log messages for the gateway process have been removed
+  (:uv:bug:`57568`).
+
+* Added internal cache to increase performance on searches (:uv:bug:`58697`).
+
+* The duration of authorization operations is now logged at TRACE level
+  (:uv:bug:`58756`).
+
+* The performance of searches with delegative administration enabled has been
+  improved (:uv:bug:`58789`).
+
+* All logmessages of Univention Directory Manager are now in a structured
+  format, if that is enabled in the services. The UCR variable
+  `directory/manager/cmd/debug/level` now allows the value 5 for enabling
+  logging of TRACE log messages. The log messages and severity has been
+  overworked. Additional information like UDM object type and LDAP
+  Distinguished Name has been added to the log information (:uv:bug:`58627`).
+
+* Minor updates to the UDM policy format for delegative administration
+  (:uv:bug:`58649`).
+
+* The argument `--bindpwd` has been deprecated in UDM commandline, it should be
+  replaced with `--bindpwdfile` (:uv:bug:`20610`).
+
+* New UDM type `users/federated_account` for representing ferderated accounts
+  when logging in via trusted upstream Identity Provider with UMC OIDC
+  (:uv:bug:`58652`).
+
+* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+
+* Changing the value of an attribute which is unique, didn't release according
+  lock objects for the old attribute value, which resulted in that new objects
+  using the old value couldn't be created anymore for the next 5 minutes
+  (:uv:bug:`58828`).
 
 .. _changelog-umc:
 
@@ -182,77 +368,126 @@ LDAP Directory Manager
 Univention Management Console
 *****************************
 
+.. _changelog-umc-web:
+
+Univention Management Console web interface
+===========================================
+
+* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+
+* Allow adding a notification directly into the notification bar, not showing
+  it as a preview in UMC (:uv:bug:`58817`).
+
 .. _changelog-umc-server:
 
 Univention Management Console server
 ====================================
 
-* The error message for 502/503 HTTP errors for services underneath of
-  ``/univention/``, like the :program:`Guardian`, has been corrected (:uv:bug:`58404`).
+* A short notification is shown for the Univention Summit 2026 when you open
+  the UMC for the first time. After that, it is discreetly sitting behind the
+  bell icon (:uv:bug:`58817`).
 
-* Fixed authentication failure lockout functionality for the |UMC|
-  to properly track and enforce login attempt limits
-  (:uv:bug:`57968`).
+* Fixes an issue where the UMC server does not respect the configured timeouts
+  for HTTP requests, which can lead to delays in operations that involve
+  communication with external services. It led particularly to failures on
+  concurrent OpenID Connect (OIDC) authentication (:uv:bug:`58269`).
+
+* The logmessages of Univention Management Console have been adapted to be
+  compatible with structured logging. Structured logging can be enabled via the
+  UCR variable `umc/server/debug/structured-logging`, which will become the
+  default in UCS 5.2-4. The UCR variables `umc/server/debug/level` and
+  `umc/module/debug/level` now allow the value 5 for enabling logging of TRACE
+  log messages. The log messages and severity has been overworked. Additional
+  information like request ID, IP address or LDAP DN of requester have been
+  added to the log information (:uv:bug:`58627`).
+
+* The `session-info` endpoint for the UMC now also returns the DN of the
+  authenticated user (:uv:bug:`58743`).
+
+* UMC OIDC now supports the log in with an account from an external Identiy
+  Provider in Keycloak. These "federated accounts" must provide additional
+  information, like a UUID and guardian role strings, to be accepted and useful
+  in UMC. As UDM authorization for these accounts is based on the roles, this
+  feature requires the UDM delegative administration (:uv:bug:`58652`).
 
 .. _changelog-umc-appcenter:
 
 Univention App Center
 =====================
 
-* Fixed the directory where the *App Center* stores the cache for the next release
-  during :command:`univention-app update-check` (:uv:bug:`58240`).
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
 
-* The *App Center* cache is invalidated if the download fails due to network
-  issues to avoid inconsistency in the *App Center* cache (:uv:bug:`58469`).
+* The Univention App Center update process can now be configured for
+  restrictive HTTP proxy environments. The UCR variable `appcenter/update/skip-
+  zsync` allows skipping zsync and downloading metadata directly via HTTPS. The
+  UCR variable `appcenter/update/zsync-timeout` defines a timeout for zsync
+  operations before falling back to direct download (:uv:bug:`52308`).
+
+* Apps can now set `ListenerUDMVersion=3`. This changes the way the App Center
+  creates JSON files for their Listener integration. It no longer uses the
+  object's `entryUUID`, but the `UniventionObjectIdentifier` (:uv:bug:`58648`).
+
+.. _changelog-umc-setup:
+
+Modules for system settings / setup wizard
+==========================================
+
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
+
+* The argument `--bindpwd` has been deprecated in UDM commandline, it should be
+  replaced with `--bindpwdfile`. The internals of this package have been
+  adapted accordingly (:uv:bug:`20610`).
+
+.. _changelog-umc-join:
+
+Domain join module
+==================
+
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
 
 .. _changelog-umc-user:
 
 User management
 ===============
 
-* Deactivate an unnecessary :program:`systemd` service when installing the :program:`Self Service` app
-  on a Replica Directory Node (:uv:bug:`51256`).
-
-.. _changelog-umc-reports:
-
-Univention Directory Reports
-============================
-
-* The creation of reports now evaluates the authorization rules
-  (:uv:bug:`58517`).
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
 
 .. _changelog-umc-diagnostic:
 
 System diagnostic module
 ========================
 
-* This update ships the UMC diagnostic plugin ``71_samba_memberOf`` which
-  checks that the ``memberOf`` attribute is visible in the output of
-  :command:`univention-s4search` and offers possible measures in case that it ``memberOf`` attribute isn't
-  visible. This update is a follow-up to :uv:kb:`18673` (:uv:bug:`53882`).
+* Fix the UMC module's CSS to be specific and to not affect the appearance of
+  the whole of UMC (:uv:bug:`58553`).
 
-* The output of the diagnostic module ``58_univentionObjectIdentifier`` is now
-  more verbose and shows the affected objects (:uv:bug:`58446`).
+* New diagnostic modules `20_check_share_references` and `20_check_srv_records`
+  as well as `24_portal_entries` have been added. The UCR variable
+  `diagnostic/check/24_portal_entries/ignore` can be used to specify entry
+  names that don't conform to the check criteria. The module
+  `20_check_nameservers` now contains improved warning messages and a fix for a
+  traceback (:uv:bug:`58634`).
+
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
 
 .. _changelog-umc-ldap:
 
 LDAP directory browser
 ======================
 
-* The experimental delegative administration feature has been integrated into
-  the |UDM| core library (:uv:bug:`58432`).
+* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
 
-* The primary groups for users and computers are now configurable at the parent
-  container objects where an object is going to be created (:uv:bug:`58356`).
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58627`).
 
-* The default global search container, for example *"All containers"*, can now be
-  deactivated through the |UCSUCRV|
-  :envvar:`directory/manager/web/modules/search/global-search`.
-  If deactivated, you can enable the |UCSUCRV|
-  :envvar:`directory/manager/web/modules/search/default-search`
-  to limit searches to module-specific default containers. This improves search
-  performance and result relevance, especially in large environments with many
-  objects (:uv:bug:`58418`).
+* Performance improvements during users searches (:uv:bug:`58697`).
+
+* Use session roles for UDM delegative administration for UMC OIDC login with
+  federated account (:uv:bug:`58652`).
 
 .. _changelog-lib:
 
@@ -260,20 +495,40 @@ LDAP directory browser
 Univention base libraries
 *************************
 
-* The script :command:`univention-update-univention-object-identifier` now provides a
-  ``--dry-run`` option (:uv:bug:`58446`).
+* Adjustments for `python-logfmter` v0.0.11 have been done (:uv:bug:`58754`).
 
-* :command:`ldap_setup_index` now checks if number of indexed attributes would exceed
-  maximum number of :program:`lmdb` sub-databases (:uv:bug:`58443`).
+* A method to log the duration of certain operations has been added
+  (:uv:bug:`58756`).
 
-* The primary groups for users and computers are now configurable at the parent
-  container objects where an object is going to be created (:uv:bug:`58356`).
+* The logformat of `univention.debug` has been made configurable to allow a
+  structured format with ISO8601 dates. The old german date format is going to
+  be removed in future releases. A new loglevel `TRACE` (equals the value 5)
+  has been added to `univention.debug`. The library `univention.logging` now
+  allows to setup structured logging using the `logfmt` format by configuring a
+  `univention.debug` logging handler for the Python stdandard library logging
+  system (:uv:bug:`58627`).
 
-* The experimental delegative administration feature has been integrated into
-  the |UDM| core library (:uv:bug:`58432`).
+* New LDAP schema, ACL's for federated account object type and new UCR
+  variables `ldap/authz-regexp/users` (default `true`) and `ldap/authz-regexp
+  /federated-accounts` (default `false`) for the configuration of the LDAP
+  servers DN mapping for federated accounts (:uv:bug:`58652`).
 
-* Further improvements for the delegative administration feature have been
-  implemented (:uv:bug:`58517`).
+* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+
+* `univention-backup2master` now provides two hook points that allow custom
+  scripts to be executed before and after the conversion from a Backup
+  Directory Node to a Primary Directory Node (:uv:bug:`58778`).
+
+* The duration of LDAP operations is now logged at TRACE level
+  (:uv:bug:`58756`).
+
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58627`).
+
+* The logformat of `univention.debug` has been made configurable to allow a
+  structured format with ISO8601 dates. The old german date format is going to
+  be removed in future releases. A new loglevel `TRACE` (equals the value 5)
+  has been added to `univention.debug` (:uv:bug:`58627`).
 
 .. _changelog-deployment:
 
@@ -281,17 +536,9 @@ Univention base libraries
 Software deployment
 *******************
 
-* The pre-update script has been updated to run :program:`univention-prune-kernels`, in
-  case the |UCSUCRV| :envvar:`update52/pruneoldkernel` is enabled, before all the
-  other checks (:uv:bug:`58386`).
-
-* The *JFrog Artifactory* with authentication return a 403 instead of 401 when
-  authentication is missing.
-  This isn't correct.
-  To solve that problem,
-  a preemptive authentication was added
-  which first tries it with credentials,
-  but then also proceeds if they're URL-encoded (:uv:bug:`58371`).
+* Logging has been adapted to be compatible with structured logging. The UCR
+  variable `update/debug/level` now allows the value 5 for enabling logging of
+  TRACE log messages (:uv:bug:`58644`).
 
 .. _changelog-service:
 
@@ -304,45 +551,84 @@ System services
 SAML
 ====
 
-* Add a ``--force`` flag to :command:`oidc/rp create` and :command:`saml/sp create` which updates
-  existing Keycloak clients to the configuration given by the command
-  (:uv:bug:`58426`).
+* Add ``--import-users`` flag to ``univention-keycloak init`` (:uv:bug:`58698`).
 
-* The command :command:`univention-keycloak saml-client-nameid-mapper create`
-  wasn't idempotent and failed with a traceback
-  if the mapper already existed,
-  making it unsuitable for the use in join scripts.
-  This has been fixed (:uv:bug:`58544`).
+* A new operation has been added to univention-keycloak script, this operation
+  allows the creation of client scopes, and assign mappers to the scope
+  (:uv:bug:`58422`).
 
-* Implement compatibility with Keycloak 26.3.1 authentication flows
-  (:uv:bug:`58501`).
+* Added support for enabling standard token exchange on OIDC clients
+  (:uv:bug:`58586`).
+
+* Fixed a regression that breaks univention-keycloak script on kubernetes
+  deployments (:uv:bug:`58588`).
 
 .. _changelog-service-mail:
 
 Mail services
 =============
 
-* The Fetchmail listener module now uses :program:`systemd` instead of the
-  :program:`SysV` init script ``/etc/init.d/fetchmail`` (:uv:bug:`58532`).
+.. _changelog-service-imap:
+
+IMAP services
+-------------
+
+* During login, it could happen that additional mail directories in dovecot
+  containing only the username were created. This made it appear to the user as
+  though their mail folders were emptied. The PAM login configuration for
+  dovecot has been adjusted to circumvent this behaviour (:uv:bug:`57976`).
+
+.. _changelog-service-postfix:
+
+Postfix
+-------
+
+* During login, it could happen that additional mail directories in dovecot
+  containing only the username were created. This made it appear to the user as
+  though their mail folders were emptied. The PAM login configuration for
+  dovecot has been adjusted to circumvent this behaviour (:uv:bug:`57976`).
+
+.. _changelog-service-nagios:
+
+Nagios
+======
+
+* This update enhances the alert `check_univention_mdb_maxsize` by ignoring the
+  (possibly) fragmented freelist pages in the calculation of available pages
+  (:uv:bug:`58668`).
+
+* This update enhances the check `check_univention_slapd_mdb_maxsize` by
+  ignoring the (possibly) fragmented freelist pages in the calculation of
+  available pages (:uv:bug:`58668`).
 
 .. _changelog-service-radius:
 
 RADIUS
 ======
 
-* The log file :file:`/var/log/univention/radius_ntlm_auth.log` is no longer emptied
-  during package updates (:uv:bug:`58425`).
+* The EAP module configuration setting `tls_min_version` can now be adjusted
+  using the new UCR variable `freeradius/conf/tls-min-version`
+  (:uv:bug:`58373`).
 
-* In some situations, :command:`univention-radius-ntlm-auth` did neither correctly report
-  errors to the :program:`RADIUS` server nor logged them. The program has been
-  improved and is now able to intercept these errors and log them to
-  :file:`/var/log/univention/radius_ntlm_auth.log` (:uv:bug:`58132`).
+* The EAP module configuration setting `cipher_list` can now be adjusted using
+  the new UCR variable `freeradius/conf/cipher-list`. The format is documented
+  in `man openssl-ciphers` (:uv:bug:`58374`).
 
-* The permissions for the log file :file:`/var/log/univention/radius_ntlm_auth.log`
-  weren't set correctly by :program:`logrotate`,
-  which caused :command:`univention-radius-ntlm-auth` to crash.
-  This update automatically corrects the file permissions and
-  the configuration of :program:`logrotate` (:uv:bug:`58132`).
+.. _changelog-service-pam:
+
+PAM / Local group cache
+=======================
+
+* The SSSD Service has been configured to allow logins using the
+  mailPrimaryAddress of a user during PAM login (:uv:bug:`57976`).
+
+.. _changelog-service-network:
+
+Networking services
+===================
+
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
 
 .. _changelog-win:
 
@@ -350,65 +636,46 @@ RADIUS
 Services for Windows
 ********************
 
-.. _changelog-win-samba:
+.. _changelog-win-takeover:
 
-Samba
-=====
+Univention AD Takeover
+======================
 
-* Pre-create the AD built-in groups ``Pre-Windows 2000 Compatible Access``,
-  ``Windows Authorization Access Group``, and ``IIS_IUSRS``
-  through |UDM| in the join script.
-  This is required,
-  because Univention puts those groups on the :envvar:`connector/s4/mapping/group/ignorelist`,
-  but Univention wants them to be defined with static POSIX IDs across the |UCS| domain.
-  As a result, these groups are now created with the ``hidden`` flag,
-  so they don't show up in UMC for new |UCS| domains.
-  That's okay, because they aren't to be administrated in any way,
-  they just allocate a POSIX ID. This update is a follow-up to :uv:kb:`18673` (:uv:bug:`53882`).
-
-* Samba 4.21 had a regression
-  where :command:`samba-tool domain trust create` failed to create the trust object.
-  The upstream patch for Samba 4.22 has been ported back to fix this (:uv:bug:`58299`).
+* Logging has been adapted to be compatible with structured logging
+  (:uv:bug:`58644`).
 
 .. _changelog-win-s4c:
 
 Univention S4 Connector
 =======================
 
-* Add the AD built-in groups ``Pre-Windows 2000 Compatible Access``, ``Windows
-  Authorization Access Group``, and ``IIS_IUSRS`` to the |UCSUCRV|
-  :envvar:`connector/s4/mapping/group/ignorelist`. The first of these groups is
-  relevant to control access to the attribute ``memberOf`` in Active Directory,
-  for example for ``univention-s4search``. By default, it contains the virtual group
-  ``Authenticated Users``, but may be configured differently in Samba/AD for
-  security reasons. This update is a follow-up to :uv:kb:`18673` (:uv:bug:`53882`).
+* Structured Logging can now be activated via the UCR Variable `connector/debug
+  /structured-logging`. The UCR variables `connector/debug/level` and
+  `connector/debug/udm/level` now allow the value 5 for enabling logging of
+  TRACE log messages (:uv:bug:`58644`).
 
-* Slight adjustments for the experimental delegative administration feature
-  have been done (:uv:bug:`58432`).
+* The behavior of account locked status synchronization has been unified
+  between S4-Connector and AD-Connector (:uv:bug:`58680`).
 
 .. _changelog-win-adc:
 
 Univention Active Directory Connection
 ======================================
 
-* Introduced the |UCSUCRV|
-  :envvar:`connector/ad/mapping/allow-subtree-ancestors`,
-  which, if enabled, allows the synchronization of ancestors of sub-trees allowed
-  with the |UCSUCRVs| ``connector/ad/mapping/allowsubtree/.*/[ad|ucs]``.
-  This can make the management
-  of the selective synchronization of more complex LDAP DIT structures simpler.
-  Additionally, when this new variable is enabled, a re-synchronization with one
-  of the ``resync_object_from_*`` scripts will handle the re-synchronization of
-  ancestors automatically if necessary (:uv:bug:`57979`).
+* Changing the `sAMAccountName` of a user in AD led to a Python traceback in
+  the AD-Connector because the post modify functions would still use the re-
+  rename DN. This could also cause additional issues when later changing the
+  `CN` of the object. This update fixes these issues (:uv:bug:`58738`).
 
-* Slight adjustments for the experimental delegative administration feature
-  have been done (:uv:bug:`58432`).
+* The AD-Connector now synchronizes the account lockout state from AD to UCS.
+  Account unlocking is also synchronized from UCS to AD (:uv:bug:`58680`).
 
-* In cases where customers chose LDAPS as protocol to bind to Active Directory,
-  by setting the UCR variables ``connector/ad/ldap/port=636`` and ``connector/ad/ldap/ldaps=yes``,
-  the script :command:`univention-adsearch` aborted with ``NT_STATUS_INVALID_PARAMETER_MIX``.
-  Now it passes the parameters ``tls cafile`` and ``tls crlfile`` to :program:`ldbsearch`
-  to avoid that error message (:uv:bug:`56139`).
+* An error where the DN of a synced object multiple times leading to a DN with
+  mixed base was created leading to rejects was fixed (:uv:bug:`58556`).
+
+* Logging in the UMC module has been adapted to be compatible with structured
+  logging. The UCR variable `connector.*/debug/level` now allows the value 5
+  for enabling logging of TRACE log messages (:uv:bug:`58644`).
 
 
 .. _changelog-univention-net-install:
@@ -425,5 +692,8 @@ Univention PXE installation
 Other changes
 *************
 
-* A new library for delegative administration has been introduced
-  (:uv:bug:`58432`).
+* Minor updates to the UDM policy format for delegative administration
+  (:uv:bug:`58649`).
+
+* Update `python-logfmter` to v0.0.11 (:uv:bug:`58754`).
+
