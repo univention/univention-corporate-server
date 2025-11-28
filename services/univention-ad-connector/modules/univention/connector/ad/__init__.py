@@ -2241,10 +2241,10 @@ class ad(univention.connector.ucs):
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
                 ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: Updating UCS and AD group member mapping cache for %s to %s" % (pre_mapped_ucs_dn, object['dn']))
                 self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
-
             elif not self.get_ucs_ldap_object_dn(pre_mapped_ucs_dn):
                 ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: ignoring move  for %s (does not exist in UCS)" % pre_mapped_ucs_dn)
                 return True
+            ud.debug(ud.LDAP, ud.PROCESS, 'sync from ucs: [%14s] [%10s] %s' % (property_type, object['modtype'], object['dn']))
 
         if 'olddn' in object:
             object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
