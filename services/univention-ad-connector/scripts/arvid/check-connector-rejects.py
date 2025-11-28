@@ -12,7 +12,7 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser(description="check connecector log for Tracebacks")
 parser.add_argument('-v', dest='verbose', help='verbose', action='count', default=0)
-parser.add_argument('-x', dest='exclude', help='exclude DNs from file', action='store')
+parser.add_argument('-x', dest='exclude', help='exclude DNs from file', action='append')
 parser.add_argument("dn", nargs='*', help="Active Directory DN to resync")
 options = parser.parse_args()
 
@@ -30,6 +30,10 @@ def summary(rejdn, summary_lines):
 ''' % ('# '.join(summary_lines[rejdn]), rejdn))
 
 
+class SkipDN(Exception):
+    pass
+
+
 with open(options.dn[0], "r+b", buffering=0) as f:
     with mmap.mmap(f.fileno(), 0, flags=mmap.MAP_POPULATE | mmap.MAP_PRIVATE, prot=mmap.PROT_READ) as mm:
         mm.madvise(mmap.MADV_SEQUENTIAL)
@@ -41,9 +45,13 @@ with open(options.dn[0], "r+b", buffering=0) as f:
             if i != -1:
                 rejdn = line[i + 20:].decode('UTF-8').rstrip()
                 if options.exclude:
-                    result = subprocess.run(["grep", "-q", rejdn.replace('\\', '\\\\'), options.exclude], check=False)
-                    if result.returncode == 0:
-                        line = mm.readline()
+                    try:
+                        for f in options.exclude:
+                            result = subprocess.run(["grep", "-q", rejdn.replace('\\', '\\\\'), f], check=False)
+                            if result.returncode == 0:
+                                line = mm.readline()
+                                raise SkipDN
+                    except SkipDN:
                         continue
                 summary_lines[rejdn] = []
                 print("\n# Resync: " + rejdn)
