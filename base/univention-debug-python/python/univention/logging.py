@@ -63,7 +63,7 @@ _LEVEL_TO_FORMAT_MAPPING = {
 _UD_CATEGORIES = {
     cat: name
     for name, cat in ud.__dict__.items()
-    if isinstance(cat, int) and name not in ('FLUSH', 'NO_FLUSH', 'FUNCTION', 'NO_FUNCTION', 'ALL', 'INFO', 'PROCESS', 'WARN', 'ERROR') and name.isupper()
+    if isinstance(cat, int) and name not in ('FLUSH', 'NO_FLUSH', 'FUNCTION', 'NO_FUNCTION', 'ALL', 'INFO', 'PROCESS', 'WARN', 'ERROR', 'DEBUG', 'WARNING') and name.isupper()
 }
 
 

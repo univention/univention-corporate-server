@@ -25,11 +25,12 @@ from univention import _debug
 from univention._debug import (
     ACL, ADMIN, ALL, AUTH, CONFIG, DEBUG, DHCP, ERROR, FLUSH, FUNCTION, INFO, KERBEROS, LDAP, LICENSE, LISTENER, LOCALE,
     MAIN, MODULE, NETWORK, NO_FLUSH, NO_FUNCTION, PARSER, POLICY, PROCESS, PROTOCOL, RESOURCES, SEARCH, SLAPD, SSL,
-    TRACE, TRANSFILE, USERS, WARN, begin, end, exit, get_level, init, reopen, set_function, set_level, set_structured,
+    TRACE, TRANSFILE, USERS, WARN, WARNING, begin, end, exit, get_level, init, reopen, set_function, set_level,
+    set_structured,
 )
 
 
-__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DEBUG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRACE', 'TRANSFILE', 'USERS', 'WARN', 'begin', 'debug', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'set_structured', 'trace')
+__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DEBUG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRACE', 'TRANSFILE', 'USERS', 'WARN', 'WARNING', 'begin', 'debug', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'set_structured', 'trace')
 
 
 def debug(category, level, message, utf8=True):
@@ -37,7 +38,7 @@ def debug(category, level, message, utf8=True):
     Log message 'message' of severity 'level' to facility 'category'.
 
     :param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
-    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+    :param int level: Level of logging, e.g. ERROR, WARNING, PROCESS, INFO, DEBUG
     :param str message: The message to log.
     :param bool utf8: Assume the message is UTF-8 encoded.
 

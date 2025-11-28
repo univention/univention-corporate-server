@@ -41,7 +41,7 @@ PyDoc_STRVAR(py_univention_debug_debug__doc__,
         "\n"
         "Log message 'message' of severity 'level' to facility 'category'.\n"
         "category - ID of the category, e.g. MAIN, LDAP, USERS, ...\n"
-        "level - Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL\n"
+        "level - Level of logging, e.g. ERROR, WARNING, PROCESS, INFO, DEBUG\n"
         "message - The message to log");
 
 static PyObject *
@@ -105,7 +105,7 @@ PyDoc_STRVAR(py_univention_debug_set_level__doc__,
         "\n"
         "Set minimum required severity 'level' for facility 'category'.\n"
         "category - ID of the category, e.g. MAIN, LDAP, USERS, ...\n"
-        "level - Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL");
+        "level - Level of logging, e.g. ERROR, WARNING, PROCESS, INFO, DEBUG");
 
 static PyObject *
 py_univention_debug_get_level(PyObject *self, PyObject *args)
@@ -261,6 +261,7 @@ PyMODINIT_FUNC PyInit__debug(void)
 
     PyDict_SetItemString(dict, "ERROR", PyInt_FromLong(UV_DEBUG_ERROR));
     PyDict_SetItemString(dict, "WARN", PyInt_FromLong(UV_DEBUG_WARN));
+    PyDict_SetItemString(dict, "WARNING", PyInt_FromLong(UV_DEBUG_WARN));
     PyDict_SetItemString(dict, "PROCESS", PyInt_FromLong(UV_DEBUG_PROCESS));
     PyDict_SetItemString(dict, "INFO", PyInt_FromLong(UV_DEBUG_INFO));
     PyDict_SetItemString(dict, "ALL", PyInt_FromLong(UV_DEBUG_ALL));

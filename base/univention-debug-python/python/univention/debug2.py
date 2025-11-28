@@ -1,12 +1,11 @@
+# SPDX-FileCopyrightText: 2008-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 """
 Python native Univention debugging library.
 
 See :py:mod:`univention.debug` for an alternative being a wrapper for the C
 implementation.
 """
-# SPDX-FileCopyrightText: 2008-2025 Univention GmbH
-# SPDX-License-Identifier: AGPL-3.0-only
-
 
 import logging
 import sys
@@ -15,10 +14,8 @@ from itertools import chain
 from warnings import warn
 
 
-# import logging.handlers
-
 ERROR = 0
-WARN = 1
+WARNING = WARN = 1
 PROCESS = 2
 INFO = 3
 ALL = DEBUG = 4
