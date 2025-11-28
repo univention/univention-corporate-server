@@ -9,9 +9,7 @@
 #include <Python.h>
 #include <univention/debug.h>
 
-#if PY_MAJOR_VERSION >= 3
 #define PyInt_FromLong PyLong_FromLong
-#endif
 
 /*
  * example:
@@ -74,12 +72,8 @@ py_univention_debug_init(PyObject *self, PyObject *args)
         Py_RETURN_NONE;
     }
 
-#if PY_MAJOR_VERSION >= 3
     /* use "w+" instead of "a+" as Python3 handels O_APPEND internally by using lseek(), which breaks on STDOUT and STDERR */
     file = PyFile_FromFd(/*fd*/fileno(fd), /*name*/logfile, /*mode*/"wb+", /*buffering*/0, /*encoding*/NULL, /*errors*/NULL, /*newline*/NULL, /*closefd*/0);
-#else
-    file = PyFile_FromFile( fd, logfile, "a+", NULL );
-#endif
 
     return file;
 }
@@ -247,7 +241,6 @@ static struct PyMethodDef debug_methods[] = {
     { NULL, NULL, 0, NULL}
 };
 
-#if PY_MAJOR_VERSION >= 3
 PyDoc_STRVAR(m_doc,
         "univention._debug module");
 static struct PyModuleDef moduledef = {
@@ -256,22 +249,13 @@ static struct PyModuleDef moduledef = {
     .m_doc = m_doc,
     .m_methods = debug_methods,
 };
-#endif
 
 
-#if PY_MAJOR_VERSION >= 3
 PyMODINIT_FUNC PyInit__debug(void)
-#else
-PyMODINIT_FUNC init_debug(void)
-#endif
 {
     PyObject *module, *dict;
 
-#if PY_MAJOR_VERSION >= 3
     module = PyModule_Create(&moduledef);
-#else
-    module = Py_InitModule("univention._debug", debug_methods);
-#endif
 
     dict = PyModule_GetDict(module);
 
@@ -312,9 +296,7 @@ PyMODINIT_FUNC init_debug(void)
     PyDict_SetItemString(dict, "NO_FUNCTION", PyInt_FromLong(UV_DEBUG_NO_FUNCTION));
     PyDict_SetItemString(dict, "FUNCTION", PyInt_FromLong(UV_DEBUG_FUNCTION));
 
-#if PY_MAJOR_VERSION >= 3
     return module;
-#endif
 }
 
 /* vim:set ts=4 sw=4 et: */
