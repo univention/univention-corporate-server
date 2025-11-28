@@ -1580,7 +1580,7 @@ univention-directory-listener (5.0.7-1) unstable; urgency=low
 
   * Skip parent dn check if the DN is the ldap base (Bug #17063)
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Sun, 22 Aug 2010 11:36:59 +0200
+ -- Stefan Gohmann <stefan@univention.de>  Sun, 22 Aug 2010 11:36:59 +0200
 
 univention-directory-listener (5.0.6-1) unstable; urgency=low
 

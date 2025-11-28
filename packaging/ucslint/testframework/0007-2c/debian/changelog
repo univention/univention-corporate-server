@@ -143,7 +143,7 @@ ucs-tools (1.1.5-8) unstable; urgency=low
   * aze-query/query.py update: 
     added the parameter for orders_group
 
- -- Joao Collier de Mendonca <jmendonca@omar.knut.univention.de>  Fri,  4 Jul 2008 15:08:54 +0200
+ -- Joao Collier de Mendonca <mendonca@univention.de>  Fri,  4 Jul 2008 15:08:54 +0200
 
 ucs-tools (1.1.5-7) unstable; urgency=low
 

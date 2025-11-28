@@ -2487,13 +2487,13 @@ univention-config-registry (3.0.6-5) unstable; urgency=low
 
   * new autostart test in init script
 
- -- Felix Botner <fbotner@omar.knut.univention.de>  Tue, 28 Oct 2008 09:35:30 +0100
+ -- Felix Botner <botner@univention.de>  Tue, 28 Oct 2008 09:35:30 +0100
 
 univention-config-registry (3.0.6-4) unstable; urgency=low
 
   * init script update (ntp, portmap, nscd ...)
 
- -- Felix Botner <fbotner@omar.knut.univention.de>  Mon, 27 Oct 2008 17:18:29 +0100
+ -- Felix Botner <botner@univention.de>  Mon, 27 Oct 2008 17:18:29 +0100
 
 univention-config-registry (3.0.6-3) unstable; urgency=low
 
@@ -2573,7 +2573,7 @@ univention-config-registry (2.6.11-7) unstable; urgency=low
 
   * LDAP attribute tagging option ';hexentry-' renamed to ';entry-hex-' for backward-compatibility
 
- -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 24 Jun 2008 16:09:24 +0200
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jun 2008 16:09:24 +0200
 
 univention-config-registry (2.6.11-6) unstable; urgency=low
 
