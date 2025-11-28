@@ -111,7 +111,7 @@ _do_flush = False
 _enable_function = False
 _enable_syslog = False
 _logger_level = {key: DEFAULT for key in _map_id_old2new.values()}  # noqa: C420
-_use_structured = False
+_use_structured = True
 
 
 def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
@@ -174,11 +174,15 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 #             print('opening syslog failed')
 
     logging.addLevelName(25, 'PROCESS')
-    logging.addLevelName(15, 'ALL')
+    logging.addLevelName(15, 'DEBUG')
     logging.addLevelName(5, 'TRACE')
-    logging.addLevelName(100, '------')
+    logging.addLevelName(100, 'INIT')
+    logging.addLevelName(99, 'EXIT')
+    logging.addLevelName(98, 'REINIT')
+    logging.addLevelName(97, 'BEGIN')
+    logging.addLevelName(96, 'END')
 
-    logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_INIT')
+    logging.getLogger('ud2').getChild('MAIN').log(100, '')
 
     _do_flush = force_flush
     _enable_function = enable_function
@@ -190,7 +194,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 def exit():
     """Close debug logfile."""
     global _handler_console, _handler_file
-    logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_EXIT')
+    logging.getLogger('ud2').getChild('MAIN').log(99, 'EXIT')
     if _handler_console:
         logging.getLogger('').removeHandler(_handler_console)
         _handler_console = None
@@ -202,7 +206,7 @@ def exit():
 
 def reopen():
     """Close and re-open the debug logfile."""
-    logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_REINIT')
+    logging.getLogger('ud2').getChild('MAIN').log(98, 'REINIT')
     init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
 
@@ -258,7 +262,7 @@ def debug(category, level, message, utf8=True):
     new_id = _map_id_old2new.get(category, 'MAIN')
     if level <= _logger_level[new_id]:
         new_level = _map_lvl_old2new[level]
-        logging.getLogger('ud2').getChild(new_id).log(new_level, message)
+        logging.getLogger('ud2').getChild(new_id).log(new_level, message, extra={'logname': new_id})
         _flush()
 
 
@@ -283,13 +287,13 @@ class function:
         warn('univention.debug2.function is deprecated and will be removed with UCS-5', PendingDeprecationWarning, stacklevel=2)
         self.fname = fname
         if _enable_function:
-            logging.getLogger('ud2').getChild('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.fname)
+            logging.getLogger('ud2').getChild('MAIN').log(97, self.fname)
             _flush()
 
     def __del__(self):
         """Log the end of function."""
         if _enable_function:
-            logging.getLogger('ud2').getChild('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
+            logging.getLogger('ud2').getChild('MAIN').log(96, self.fname)
             _flush()
 
 
@@ -337,19 +341,19 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
             ) if with_args else '...'
 
             logger = logging.getLogger('ud2').getChild('MAIN')
-            logger.log(100, 'UNIVENTION_DEBUG_BEGIN : %s(%s): ...', fname, _args)
+            logger.log(97, '%s(%s): ...', fname, _args)
             _flush()
             try:
                 ret = f(*args, **kwargs)
             except BaseException:
                 try:
                     (exctype, value) = sys.exc_info()[:2]
-                    logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s(%s)', fname, exctype, value)
+                    logger.log(96, '%s(...): %s(%s)', fname, exctype, value)
                 finally:
                     exctype = value = None
                 raise
             else:
-                logger.log(100, 'UNIVENTION_DEBUG_END   : %s(...): %s', fname, repr(ret) if with_return else '...')
+                logger.log(96, '%s(...): %s', fname, repr(ret) if with_return else '...')
                 return ret
 
         return wrapper

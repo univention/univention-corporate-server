@@ -295,7 +295,7 @@ def test_logger_auto_init_after_close(tmp_path):
     ud.exit()
     ul.getLogger('ADMIN', extend=True).destroy()
     ul.extendLogger('ADMIN', filename=str(tmplog), auto_init=True)
-    assert 'DEBUG_INIT' in tmplog.read_text()
+    assert 'INIT' in tmplog.read_text()
     ud.exit()
 
 
@@ -312,7 +312,7 @@ def test_logger_delayed_auto_init(tmp_path):
     assert not logger.univention_debug_handler.delay_init
     text = [elem for elem in tmplog.read_text().split('\n') if elem]
     assert len(text) == 2
-    assert 'DEBUG_INIT' in text[0] and 'Unimportant Message' in text[1]
+    assert 'INIT' in text[0] and 'Unimportant Message' in text[1]
     logger.exit()
 
 

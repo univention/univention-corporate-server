@@ -3,96 +3,16 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os
-import re
 import sys
-from collections.abc import Callable, Iterator
-from datetime import datetime
 from logging import DEBUG, getLogger
 
 import pytest
+from conftest import CATEGORY, LEVEL
 
 import univention.debug2 as ud
 
 
 TRACE = DEBUG - 5
-
-
-RE = re.compile(
-    r'''
-    (?P<datetime>[0-3]\d\.[01]\d\.\d{4}\s[0-2]\d:[0-5]\d:[0-5]\d)\.(?P<msec>\d{3})\s(?P<category>\S+)\s+\((?P<level>\S+)\s*\):\s(?P<text>
-      (?:UNIVENTION_DEBUG_BEGIN\s:\s(?P<begin>.*)
-        |UNIVENTION_DEBUG_END\s{3}:\s(?P<end>.*)
-        |(?P<msg>.*)
-    ))$
-    ''', re.VERBOSE)
-LEVEL = ['ERROR', 'WARNING', 'PROCESS', 'INFO', 'ALL', 'TRACE']
-CATEGORY = [
-    'MAIN',
-    'LDAP',
-    'USERS',
-    'NETWORK',
-    'SSL',
-    'SLAPD',
-    'SEARCH',
-    'TRANSFILE',
-    'LISTENER',
-    'POLICY',
-    'ADMIN',
-    'CONFIG',
-    'LICENSE',
-    'KERBEROS',
-    'DHCP',
-    'PROTOCOL',
-    'MODULE',
-    'ACL',
-    'RESOURCES',
-    'PARSER',
-    'LOCALE',
-    'AUTH',
-]
-
-
-@pytest.fixture
-def parse() -> Iterator[Callable[[str], Iterator[tuple[str, dict[str, str]]]]]:
-    """Setup parser."""
-    now = datetime.now()
-    start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
-
-    def f(text: str) -> Iterator[tuple[str, dict[str, str]]]:
-        """
-        Parse line into componets.
-
-        :param text: Multi-line text.
-        :returns: 2-tuple (typ, data) where `data` is a mapping from regular-expression-group-name to value.
-        """
-        end = datetime.now()
-
-        for line in text.splitlines():
-            print(repr(line))
-            match = RE.match(line)
-            assert match, line
-            groups = match.groupdict()
-
-            stamp = groups.get('datetime')
-            if stamp is not None:
-                assert start <= datetime.strptime(stamp, '%d.%m.%Y %H:%M:%S').replace(microsecond=int(groups['msec']) * 1000) <= end
-
-            if groups.get('begin') is not None:
-                yield ('begin', groups)
-            elif groups.get('end') is not None:
-                yield ('end', groups)
-            elif groups.get('msg') == 'DEBUG_INIT':
-                yield ('init', groups)
-            elif groups.get('msg') == 'DEBUG_REINIT':
-                yield ('reinit', groups)
-            elif groups.get('msg') == 'DEBUG_EXIT':
-                yield ('exit', groups)
-            elif groups.get('text') is not None:
-                yield ('msg', groups)
-            else:
-                raise AssertionError(groups)
-
-    return f
 
 
 @pytest.fixture
@@ -174,7 +94,7 @@ def test_level(name, parse, tmplog, caplog):
     ud.debug(ud.MAIN, ud.WARN, "Warning in main: %%%")
     ud.debug(ud.MAIN, ud.PROCESS, "Process in main: %%%")
     ud.debug(ud.MAIN, ud.INFO, "Information in main: %%%")
-    ud.debug(ud.MAIN, ud.ALL, "All in main: %%%")
+    ud.debug(ud.MAIN, ud.ALL, "Debug in main: %%%")
     ud.debug(ud.MAIN, ud.TRACE, "Trace in main: %%%")
     ud.exit()
 
@@ -244,8 +164,8 @@ def test_trace_plain(parse, tmplog):
             ('exit', {}),
     ]):
         assert c_type == e_type
-        for key, val in e_groups.items():
-            assert c_groups[key] == val
+        for val in e_groups.values():
+            assert c_groups['msg'] == val
 
 
 def test_trace_detail(parse, tmplog):
@@ -265,8 +185,8 @@ def test_trace_detail(parse, tmplog):
             ('exit', {}),
     ]):
         assert c_type == e_type
-        for key, val in e_groups.items():
-            assert c_groups[key] == val
+        for val in e_groups.values():
+            assert c_groups['msg'] == val
 
 
 def test_trace_exception(parse, tmplog):
@@ -287,8 +207,8 @@ def test_trace_exception(parse, tmplog):
             ('exit', {}),
     ]):
         assert c_type == e_type
-        for key, val in e_groups.items():
-            assert c_groups[key] == val
+        for val in e_groups.values():
+            assert c_groups['msg'] == val
 
 
 def test_error_handling():
@@ -302,9 +222,9 @@ def test_error_handling():
 
 
 # Important! Must be the last test, and must cleanup for test_logging
-def test_structured(tmpdir):
+def test_unstructured(tmpdir):
     ud.exit()
-    ud.set_structured(True)
+    ud.set_structured(False)
     tmp = tmpdir.ensure('log')
     fd = ud.init(str(tmp), ud.FLUSH, ud.FUNCTION)
     assert hasattr(fd, 'write')
@@ -317,5 +237,5 @@ def test_structured(tmpdir):
             getLogger(cat).destroy()
 
     sys.modules.pop('univention.logging')
-    output = [line[32:].split('|', 1)[0] for line in tmp.read().splitlines()]
-    assert output == ['   ------ [         -] DEBUG_INIT\t', '    ERROR [         -] test\t', '   ------ [         -] DEBUG_EXIT\t']
+    output = [line[24:].split('|', 1)[0] for line in tmp.read().splitlines()]
+    assert output == ['MAIN        (INIT   ): ', 'MAIN        (ERROR  ): test', 'MAIN        (EXIT   ): EXIT']
