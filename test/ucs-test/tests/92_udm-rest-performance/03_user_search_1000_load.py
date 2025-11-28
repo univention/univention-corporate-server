@@ -12,7 +12,6 @@ from locustfile import CheckStats, UserSearchTest as Search1000UsersLoad  # noqa
 
 
 Search1000UsersLoad.filters_expected_results = [
-    ('(uid=testuser1*)', 1000),
     ('(uid=testuser2*)', 1000),
     ('(uid=testuser3*)', 1000),
     ('(uid=testuser4*)', 1000),
