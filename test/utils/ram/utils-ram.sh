@@ -228,8 +228,8 @@ enabled_internal_school_repo () {
 	if [ "$UCSSCHOOL_RELEASE" != "public" ]; then
 		version="${UCS_VERSION%%-*}"
 		cat <<EOF > "/etc/apt/sources.list.d/99_internal_school.list"
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_$version-0-ucs-school-$version/all/
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_$version-0-ucs-school-$version/\$(ARCH)/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$version-0-ucs-school-$version/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$version-0-ucs-school-$version/\$(ARCH)/
 EOF
 	fi
 }
@@ -275,8 +275,8 @@ enable_bsb_repos () {
 	# also add internal repo
 	echo "enabling repository ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}..."
 	cat <<EOF > /etc/apt/sources.list.d/99_bsb.list
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}/all/
-deb [trusted=yes] http://192.168.0.10/build2/ ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}/\$(ARCH)/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}/all/
+deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.0-0-${BSB_PACKAGE_SCOPES:-fhh-bsb-iam-dev-intern}/\$(ARCH)/
 EOF
 }
 

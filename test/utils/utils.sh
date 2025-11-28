@@ -1559,7 +1559,7 @@ add_extra_apt_scope () {
 		return 0
 		;;
 	*://*)
-		# support: deb [trusted=yes] http://192.168.0.10/build2/git/fbest-12345-foo/ git main
+		# support: deb [trusted=yes] http://omar.knut.univention.de/build2/git/fbest-12345-foo/ git main
 		echo "deb [trusted=yes] $SCOPE"
 		;;
 	*/*)
@@ -1573,8 +1573,8 @@ add_extra_apt_scope () {
 		echo "Pin-Priority: ${SCOPE_PIN_PRIORITY:-1005}" >> "/etc/apt/preferences.d/99$repo_name.pref"
 		;;
 	*)
-		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
-		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
+		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
+		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
 		;;
 	esac >"$apt_file"
 
