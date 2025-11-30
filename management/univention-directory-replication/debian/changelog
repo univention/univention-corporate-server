@@ -1,3 +1,9 @@
+univention-directory-replication (15.4.1) unstable; urgency=medium
+
+  * Bug #56247: Fix schema file path introduced by Bug #58866
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 30 Nov 2025 17:22:42 +0100
+
 univention-directory-replication (15.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
