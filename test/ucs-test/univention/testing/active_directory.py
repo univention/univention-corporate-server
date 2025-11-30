@@ -27,7 +27,7 @@ class ActiveDirectoryException(Exception):
         if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
             return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].items())
         else:
-            return super().__str__(self)
+            return super().__str__()
 
     __repr__ = __str__
 
