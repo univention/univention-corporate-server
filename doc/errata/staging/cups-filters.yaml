@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: cups-filters
+fix: 1.11.6-3+deb9u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 4.0 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-64503)
+ * CVSS score 3.7 (CVSS:3.1/AV:A/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2025-57812)
+ * CVSS score 3.3 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-64524)
+bug: [58868]
+cve:
+- CVE-2025-64503
+- CVE-2025-57812
+- CVE-2025-64524
