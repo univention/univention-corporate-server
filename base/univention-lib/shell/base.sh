@@ -163,7 +163,7 @@ custom_groupname() {
 # Echo with timestamp
 #
 echowithtimestamp() {
-	echo "[$(date '+%F %T.%N')] $*"
+	echo "$(date -u +"%Y-%m-%dT%H:%M:%S.%6N+00:00")     INFO [         -] $*"
 }
 
 # vim:set sw=4 ts=4 noet:
