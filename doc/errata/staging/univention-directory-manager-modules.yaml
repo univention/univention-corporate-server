@@ -3,8 +3,9 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: univention-directory-manager-modules
-fix: 15.0.29-7
+fix: 15.0.29-8
 desc: |
  This update addresses the following issues:
- * Allow dash in uid and gid syntaxes also as last character
-bug: [54589]
+ * Allow dash in uid and gid syntaxes also as last character.
+ * Write only changed memberUid on user rename.
+bug: [54589,58840]
