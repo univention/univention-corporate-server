@@ -31,6 +31,8 @@ import logging
 import sys
 from contextlib import contextmanager
 
+from univention.logging import StructuredFormatter
+
 
 LOG_FILE = '/var/log/univention/appcenter.log'
 
@@ -230,24 +232,10 @@ def log_to_stream():
 log_to_stream._already_set_up = False
 
 
-class ShortNameFormatter(logging.Formatter):
-    """Simple formatter to cut out unneeded bits of the logger's name"""
-
-    shorten = get_base_logger().name
-
-    def format(self, record):
-        record.short_name = record.name
-        if record.short_name.startswith('%s.' % self.shorten):
-            record.short_name = record.short_name[len(self.shorten) + 1:]
-        return super().format(record)
-
-
 def get_logfile_logger(name):
     mylogger = logging.getLogger(name)
     mylogger.handlers = []
-    log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
-    log_format_time = '%y-%m-%d %H:%M:%S'
-    formatter = ShortNameFormatter(log_format, log_format_time)
+    formatter = StructuredFormatter(with_date_prefix=True)
     handler = logging.FileHandler(LOG_FILE)
     handler.setFormatter(formatter)
     mylogger.addHandler(handler)
@@ -264,9 +252,7 @@ def log_to_logfile():
     """
     if not log_to_logfile._already_set_up:
         log_to_logfile._already_set_up = True
-        log_format = '%(process)6d %(short_name)-32s %(asctime)s [%(levelname)8s]: %(message)s'
-        log_format_time = '%y-%m-%d %H:%M:%S'
-        formatter = ShortNameFormatter(log_format, log_format_time)
+        formatter = StructuredFormatter(with_date_prefix=True)
         handler = logging.FileHandler(LOG_FILE)
         handler.setFormatter(formatter)
         get_base_logger().addHandler(handler)
