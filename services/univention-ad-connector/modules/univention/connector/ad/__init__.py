@@ -1917,8 +1917,8 @@ class ad(univention.connector.ucs):
                     if not ad_object:
                         self._remove_rejected(change_usn)
                         continue
-                    if change_usn == int(ad_object['attributes'].get('uSNCreated', [b'0'])[0]):
-                        if change_usn < int(ad_object['attributes'].get('uSNChanged', [b'0'])[0]):
+                    if int(change_usn) == int(ad_object['attributes'].get('uSNCreated', [b'0'])[0]):
+                        if int(change_usn) < int(ad_object['attributes'].get('uSNChanged', [b'0'])[0]):
                             # stale reject found via uSNCreated, where uSNChanged is more recent
                             self._remove_rejected(change_usn)
                             continue
