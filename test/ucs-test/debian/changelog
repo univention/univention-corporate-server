@@ -1,3 +1,9 @@
+ucs-test (10.0.24-38) unstable; urgency=medium
+
+  * Bug #58840: write only changed memberUid on user rename
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Dec 2025 14:29:20 +0100
+
 ucs-test (10.0.24-37) unstable; urgency=medium
 
   * Bug #58832: add test for release udm lock if conditions are not met
