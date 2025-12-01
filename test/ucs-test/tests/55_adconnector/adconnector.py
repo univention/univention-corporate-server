@@ -180,7 +180,7 @@ class _Connector:
     def get_logs_poll_from_con(self):
         logs = []
         for line in self.get_logs():
-            if '(PROCESS): POLL FROM CON:' in line:
+            if 'PROCESS' in line and 'POLL FROM CON:' in line:
                 logs.append(line)
         return logs
 

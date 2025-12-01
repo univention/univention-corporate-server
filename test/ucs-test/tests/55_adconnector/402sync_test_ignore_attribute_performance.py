@@ -8,7 +8,6 @@
 
 
 from datetime import datetime
-from subprocess import check_call
 
 import pytest
 
@@ -21,6 +20,7 @@ from adconnector import connector_setup2
 @pytest.mark.parametrize('mode', ['sync'], ids=['sync mode'])
 def test_ignore_attribute_performance_in_ad(udm, mode, lo):
     max_duration_in_seconds = .01
+    log_timstamp = '%Y-%m-%dT%H:%M:%S.%f%z'
     settings = [
         'connector/ad/mapping/attributes/irrelevant=description,whenChanged,uSNChanged,msDS-RevealedDSAs',
         'connector/ad/poll/profiling=yes',
@@ -28,30 +28,22 @@ def test_ignore_attribute_performance_in_ad(udm, mode, lo):
     with connector_setup2(mode, ucr_settings=settings) as ad:
         username = random_username(mixed_case=True)
         user_dn_ad = ad.create_user(username, password='Univention.99')
-        # TODO: bad, we "clear" the log file
-        check_call(['logrotate', '-f', '/etc/logrotate.d/univention-ad-connector'])
-        assert not ad.get_logs_poll_from_con()
         ad.set_attributes(user_dn_ad, {'description': [b'desc']})
+        ad.wait_for_sync()
         # check "performance"
         logs = ad.get_logs_poll_from_con()
-        # assert len(logs) == 2
         assert any('Incoming' in line for line in logs)
-        for line in logs:
-            print(line)
         assert any(f'Processed non-change of {user_dn_ad}'.lower() in line.lower() for line in logs)
-        incoming_line = logs[0]
-        processed_line = logs[1]
-        for linenum in range(len(logs)):
-            if 'incoming' in logs[linenum].lower():
-                incoming_line = logs[linenum]
-            if f'Processed non-change of {user_dn_ad}'.lower() in logs[linenum].lower():
-                processed_line = logs[linenum]
+        for line in logs:
+            if 'incoming' in line.lower():
+                incoming_line = line
+            if f'Processed non-change of {user_dn_ad}'.lower() in line.lower():
+                processed_line = line
                 break
-
-        start = incoming_line.split()[1]
-        start = datetime.strptime(start, '%H:%M:%S.%f')
-        end = processed_line.split()[1]
-        end = datetime.strptime(end, '%H:%M:%S.%f')
+        start = incoming_line.split()[0]
+        start = datetime.strptime(start, log_timstamp)
+        end = processed_line.split()[0]
+        end = datetime.strptime(end, log_timstamp)
         diff = end - start
         print(f'Took {diff.microseconds} microseconds')
         assert diff.microseconds < (max_duration_in_seconds * 1000000)
@@ -70,10 +62,10 @@ def test_order_does_not_matter_for_changed_attributes_check_in_ad(mode):
         ad.set_attributes(user_dn_ad, {'otherMobile': [b'test', b'test2', b'test3']}, wait_for_replication=False)
         ad.wait_for_sync()
         user_dn = ad.ucs_dn(user_dn_ad)
-        last_log = ad.get_logs_change()[-1]
-        assert user_dn.casefold() in last_log
+        last_change = ad.get_logs_change()[-1]
+        assert user_dn.casefold() in last_change
         with adconnector_stopped():
             ad.delete_attribute(user_dn_ad, 'otherMobile', wait_for_replication=False)
             ad.set_attributes(user_dn_ad, {'otherMobile': [b'test3', b'test2', b'test']}, wait_for_replication=False)
         ad.wait_for_sync()
-        assert last_log == ad.get_logs_change()[-1]
+        assert last_change == ad.get_logs_change()[-1]
