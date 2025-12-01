@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-8) unstable; urgency=medium
+
+  * Bug #58840: write only changed memberUid on user rename
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Dec 2025 14:30:32 +0100
+
 univention-directory-manager-modules (15.0.29-7) unstable; urgency=medium
 
   * Bug #54589: Allow dash in uid and gid also as last character
