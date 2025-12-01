@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: erlang
+fix: 1:19.2.1+dfsg-2+really23.3.4.18-0+deb9u5
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-48041, CVE-2025-48039, CVE-2025-48038,
+   CVE-2025-4748)
+bug: [58867]
+cve:
+- CVE-2025-4748
+- CVE-2025-48038
+- CVE-2025-48039
+- CVE-2025-48041
