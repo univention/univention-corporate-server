@@ -24,7 +24,7 @@ from collections.abc import Mapping
 from logging.handlers import WatchedFileHandler
 from typing import IO, Any
 
-import univention.debug as ud
+import univention.logging
 from univention.config_registry import ConfigRegistry
 
 import listener
@@ -69,68 +69,14 @@ class UniFileHandler(WatchedFileHandler):
                 listener.unsetuid()
 
 
-class ModuleHandler(logging.Handler):
-    """
-    Used by listener modules using the :py:mod:`univention.listener` API to
-    write log messages through :py:mod:`univention.debug` to
-    :file:`/var/log/univention/listener.log`
-    """
-
-    LOGGING_TO_UDEBUG = {
-        "CRITICAL": ud.ERROR,
-        "ERROR": ud.ERROR,
-        "WARN": ud.WARN,
-        "WARNING": ud.WARN,
-        "INFO": ud.PROCESS,
-        "DEBUG": ud.INFO,
-        "NOTSET": ud.INFO,
-    }
-
-    def __init__(self, level: int = logging.NOTSET, udebug_facility: int = ud.LISTENER) -> None:
-        self._udebug_facility = udebug_facility
-        super().__init__(level)
-
-    def emit(self, record: logging.LogRecord) -> None:
-        msg = self.format(record)
-        msg = '{}: {}'.format(record.name.rsplit('.')[-1], msg)
-        udebug_level = self.LOGGING_TO_UDEBUG[record.levelname]
-        ud.debug(self._udebug_facility, udebug_level, msg)
-
-
-__LF_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
-__LF_I = '%(asctime)s %(levelname)-7s %(message)s'
-FILE_LOG_FORMATS = {
-    "NOTSET": __LF_D,
-    "DEBUG": __LF_D,
-    "INFO": __LF_I,
-    "WARNING": __LF_I,
-    "WARN": __LF_I,
-    "ERROR": __LF_I,
-    "CRITICAL": __LF_I,
-}
-
-__LC_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
-__LC_I = '%(message)s'
-__LC_W = '%(levelname)-7s  %(message)s'
-CMDLINE_LOG_FORMATS = {
-    "NOTSET": __LC_D,
-    "DEBUG": __LC_D,
-    "INFO": __LC_I,
-    "WARNING": __LC_W,
-    "WARN": __LC_W,
-    "ERROR": __LC_W,
-    "CRITICAL": __LC_W,
-}
-
 UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
     0: 'ERROR',
     1: 'WARN',
     2: 'INFO',
     3: 'DEBUG',
     4: 'DEBUG',
+    5: 'TRACE',
 }
-
-LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 _logger_cache: dict[str, logging.Logger] = {}
 _handler_cache: dict[str, UniFileHandler] = {}
@@ -138,18 +84,12 @@ _ucr = ConfigRegistry()
 _ucr.load()
 
 
-def _get_ucr_int(ucr_key: str, default: int) -> int:
-    try:
-        return int(_ucr.get(ucr_key, default))
-    except ValueError:
-        return default
-
-
-_listener_debug_level = _get_ucr_int('listener/debug/level', 2)
-_listener_debug_level_str = UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[max(0, min(4, _listener_debug_level))]
-_listener_module_handler = ModuleHandler(level=getattr(logging, _listener_debug_level_str))
+_listener_debug_level = _ucr.get_int('listener/debug/level', 2)
+_root_logger = univention.logging.getLogger('LISTENER')
+_root_logger.set_structured(_ucr.is_true('listener/debug/structured-logging', True))
+_listener_module_handler = _root_logger.univention_debug_handler
 listener_module_root_logger = logging.getLogger('listener module')
-listener_module_root_logger.setLevel(getattr(logging, _listener_debug_level_str))
+listener_module_root_logger.setLevel(_listener_module_handler.getLevel())
 
 
 def get_logger(name: str, path: str | None = None) -> logging.Logger:
@@ -197,9 +137,9 @@ def calculate_loglevel(name: str) -> str:
     :return: log level
     :rtype: int
     """
-    listener_module_debug_level = _get_ucr_int(f'listener/module/{name}/debug/level', 2)
-    # 0 <= ucr level <= 4
-    return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(4, max(0, _listener_debug_level, listener_module_debug_level))]
+    listener_module_debug_level = _ucr.get_int(f'listener/module/{name}/debug/level', 2)
+    # 0 <= ucr level <= 5
+    return UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL[min(5, max(0, _listener_debug_level, listener_module_debug_level))]
 
 
 def get_listener_logger(name: str, filename: str, level: str | None = None, handler_kwargs: dict[str, Any] | None = None, formatter_kwargs: dict[str, Any] | None = None) -> logging.Logger:
@@ -232,7 +172,7 @@ def get_listener_logger(name: str, filename: str, level: str | None = None, hand
         or :py:class:`UniStreamHandler`. It should be a subclass of one of those!
     :param dict formatter_kwargs: will be passed to the formatters constructor,
         if it has a key `cls` it will be used to create a formatter instead of
-        :py:class`logging.Formatter`.
+        :py:class`univention.logging.StructuredFormatter`.
     :return: a Python logging object
     :rtype: logging.Logger
     """
@@ -243,7 +183,7 @@ def get_listener_logger(name: str, filename: str, level: str | None = None, hand
     name = name.replace('.', '_')  # don't mess up logger hierarchy
     cache_key = f'{name}-{filename}'
     logger_name = f'{listener_module_root_logger.name}.{name}'
-    _logger = logging.getLogger(logger_name)
+    _logger = _root_logger.getChild(logger_name)
 
     if not level:
         level = calculate_loglevel(name)
@@ -265,8 +205,7 @@ def get_listener_logger(name: str, filename: str, level: str | None = None, hand
         # fresh logger
         _logger.setLevel(level)
 
-    fmt = FILE_LOG_FORMATS[level]
-    fmt_kwargs: dict[str, Any] = {"cls": logging.Formatter, "fmt": fmt, "datefmt": LOG_DATETIME_FORMAT}
+    fmt_kwargs: dict[str, Any] = {"cls": univention.logging.StructuredFormatter, "with_date_prefix": True}
     fmt_kwargs.update(formatter_kwargs)
 
     if cache_key in _handler_cache:
