@@ -3,7 +3,7 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: univention-ad-connector
-fix: 14.0.35
+fix: 14.0.36
 desc: |
  This update addresses the following issues:
  * Skip resync of reject for uSNCreated if lower than uSNChanged

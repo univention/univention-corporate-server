@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.36) unstable; urgency=medium
+
+  * Bug #58845: Fixup for previous version
+
+ -- Arvid Requate <requate@univention.de>  Mon, 01 Dec 2025 09:59:51 +0100
+
 univention-ad-connector (14.0.35) unstable; urgency=medium
 
   * Bug #58845: Skip resync of reject for uSNCreated if < uSNChanged
