@@ -775,3 +775,34 @@ def test_user_username_case_modification(udm):
     dn = udm.modify_object('users/user', dn=user, username=name)
     assert dn.startswith(f"uid={name}"), "The dn returned by `modify_object` does not contain the updated name"
     utils.verify_ldap_object(user, {'uid': [name]})
+
+
+@pytest.mark.tags('apptest')
+@pytest.mark.exposure('dangerous')
+@pytest.mark.roles('domaincontroller_master')
+def test_user_rewrite_member_uid(udm, lo, ldap_base):
+    """Test memberUid on user groups after rename"""
+    group_dn, _ = udm.create_group(wait_for_replication=False)
+    user_dn, username = udm.create_user(groups=[group_dn])
+    utils.verify_ldap_object(group_dn, {'memberUid': [username]})
+    new_username = f'new-{username}'
+
+    # check with invalid uniqueMembers
+    # and already existing memberUid
+    invalid_uniqueMember = [x.encode('UTF-8') for x in [
+        f'uid=1234,cn=users,{ldap_base}',
+        f'uid=1234,{ldap_base}',
+        f'uid={new_username},cn=whatever,{ldap_base}',
+
+    ]]
+    lo.modify(group_dn, [('uniqueMember', None, invalid_uniqueMember)])
+    lo.modify(group_dn, [('memberUid', None, [new_username.encode('UTF-8')])])
+    new_username = f'new-{username}'
+    user_dn = udm.modify_object('users/user', dn=user_dn, username=new_username)
+    utils.verify_ldap_object(group_dn, {'memberUid': [new_username]}, retry_count=2, delay=2)
+
+    # check with missing memberUid
+    lo.modify(group_dn, [('memberUid', lo.get(group_dn)['memberUid'], None)])
+    new2_username = f'new2-{username}'
+    user_dn = udm.modify_object('users/user', dn=user_dn, username=new2_username)
+    utils.verify_ldap_object(group_dn, {'memberUid': [new2_username]}, retry_count=2, delay=2)
