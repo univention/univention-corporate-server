@@ -1,3 +1,10 @@
+univention-debug-python (14.4.2) unstable; urgency=medium
+
+  * Bug #58653: fix logging of logfmter data if multiple structured
+    formatters are in chain
+
+ -- Florian Best <best@univention.de>  Thu, 04 Dec 2025 13:25:48 +0100
+
 univention-debug-python (14.4.1) unstable; urgency=medium
 
   * Bug #58653: enable structured logging by default
