@@ -383,7 +383,7 @@ General
 
 .. _maintained:
 
-* The following packages have been moved to the maintained repository of UCS:
+* The following packages have been moved to the maintained repository of |UCS|:
 
   :program:`python-logfmter` (:uv:bug:`58647`)
 
@@ -398,7 +398,7 @@ Basic system services
 Univention Configuration Registry
 =================================
 
-* The function `univention_config_is_true` has been added (:uv:bug:`58644`).
+* The function ``univention_config_is_true`` has been added (:uv:bug:`58644`).
 
 .. _changelog-domain:
 
@@ -406,7 +406,7 @@ Univention Configuration Registry
 Domain services
 ***************
 
-* Events for recyclebin restoration have been added to the admin diary
+* Events for recycle bin restoration have been added to the *Admin Diary*
   (:uv:bug:`52202`).
 
 .. _changelog-domain-openldap:
@@ -419,71 +419,66 @@ OpenLDAP
 Listener/Notifier domain replication
 ------------------------------------
 
-* Structured Logging can now be activated via the UCR Variable `notifier/debug
-  /structured-logging`. The UCR variable `notifier/debug/level` now allows the
-  value 5 for enabling logging of TRACE log messages (:uv:bug:`58644`).
-
-* Structured Logging can now be activated via the UCR Variable `listener/debug
-  /structured-logging`. The UCR variable `listener/debug/level` now allows the
-  value 5 for enabling logging of TRACE log messages (:uv:bug:`58644`).
+* Structured Logging is now enabled by default. The |UCSUCRV| :envvar:`notifier/debug/level` now allows the
+  value ``5`` for enabling logging of ``TRACE`` log messages (:uv:bug:`58644`, :uv:bug:`58653`).
 
 .. _changelog-udm:
 
 LDAP Directory Manager
 ======================
 
-* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
 
-* Added a new endpoint where LDAP attributes can be unmapped to a full UDM
-  object (if the module can be identified, :uv:bug:`58792`).
+* Added an endpoint
+  where LDAP attributes can be unmapped to a full UDM object,
+  if the module can be identified (:uv:bug:`58792`).
 
-* The argument `--bindpwd` has been deprecated in UDM commandline, it should be
-  replaced with `--bindpwdfile` (:uv:bug:`20610`).
+* The argument ``--bindpwd`` has been deprecated in UDM command line.
+  Instead, use the argument ``--bindpwdfile`` (:uv:bug:`20610`).
 
-* All logmessages of Univention Directory Manager REST API are now in a
-  structured format, if enabled via the UCR variable
-  `directory/manager/rest/debug/structured-logging`. The UCR variable
-  `directory/manager/rest/debug/level` now allows the value 5 for enabling
-  logging of TRACE log messages. The log messages and severity has been
-  overworked. Additional information like IP address, hostname, LDAP
-  Distinguished Name of the requester have been added to the log information
+* All log messages of *UDM HTTP REST API* are now in a structured logging format by default.
+  The |UCSUCRV| :envvar:`directory/manager/rest/debug/level` now allows the value ``5``
+  to enable logging of ``TRACE`` log messages.
+  The log messages and severity has been revised.
+  Additional information like IP address, hostname, LDAP distinguished name of the requester
+  have been added to the log information
   (:uv:bug:`58627`).
 
-* Debug messages from Tornado are now in structured log format as well. The
-  duplicated access log messages for the gateway process have been removed
+* Debug messages from :program:`Tornado` are now in structured log format, as well.
+  The duplicated access log messages for the gateway process have been removed
   (:uv:bug:`57568`).
 
 * Added internal cache to increase performance on searches (:uv:bug:`58697`).
 
-* The duration of authorization operations is now logged at TRACE level
+* The duration of authorization operations is now logged at ``TRACE`` level
   (:uv:bug:`58756`).
 
 * The performance of searches with delegative administration enabled has been
   improved (:uv:bug:`58789`).
 
-* All logmessages of Univention Directory Manager are now in a structured
-  format, if that is enabled in the services. The UCR variable
-  `directory/manager/cmd/debug/level` now allows the value 5 for enabling
-  logging of TRACE log messages. The log messages and severity has been
-  overworked. Additional information like UDM object type and LDAP
-  Distinguished Name has been added to the log information (:uv:bug:`58627`).
+* All logging messages of Univention Directory Manager are now in a structured
+  format, if that is enabled in the services. The |UCSUCRV|
+  :envvar:`directory/manager/cmd/debug/level` now allows the value ``5`` for enabling
+  logging of ``TRACE`` log messages. The log messages and severity has been
+  revised. Additional information like UDM object type and LDAP
+  distinguished name has been added to the log information (:uv:bug:`58627`).
 
-* Minor updates to the UDM policy format for delegative administration
+* Minor updates to the |UDM| policy format for delegative administration
   (:uv:bug:`58649`).
 
-* The argument `--bindpwd` has been deprecated in UDM commandline, it should be
-  replaced with `--bindpwdfile` (:uv:bug:`20610`).
+* The argument ``--bindpwd`` has been deprecated in UDM command line.
+  Instead, use the argument ``--bindpwdfile`` (:uv:bug:`20610`).
 
-* New UDM type `users/federated_account` for representing ferderated accounts
-  when logging in via trusted upstream Identity Provider with UMC OIDC
+* Added UDM type ``users/federated_account`` for representation of federated accounts
+  for sign-in through trusted upstream identity provider with UMC OpenID Connect
   (:uv:bug:`58652`).
 
-* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+* A recycle bin for user and group objects has been introduced (:uv:bug:`52202`).
 
-* Changing the value of an attribute which is unique, didn't release according
-  lock objects for the old attribute value, which resulted in that new objects
-  using the old value couldn't be created anymore for the next 5 minutes
-  (:uv:bug:`58828`).
+* Fixed an issue where modifying the value of a unique LDAP attribute
+  didn't correctly release the lock associated with the previous value.
+  This prevented the creation of objects using that former value
+  for up to five minutes (:uv:bug:`58828`).
 
 .. _changelog-umc:
 
@@ -496,10 +491,10 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
 
 * Allow adding a notification directly into the notification bar, not showing
-  it as a preview in UMC (:uv:bug:`58817`).
+  it as a preview in |UMC| (:uv:bug:`58817`).
 
 .. _changelog-umc-server:
 
@@ -507,31 +502,30 @@ Univention Management Console server
 ====================================
 
 * A short notification is shown for the Univention Summit 2026 when you open
-  the UMC for the first time. After that, it is discreetly sitting behind the
+  the UMC for the first time. After that, it's discreetly sitting behind the
   bell icon (:uv:bug:`58817`).
 
-* Fixes an issue where the UMC server does not respect the configured timeouts
+* Fix an issue where the UMC server doesn't respect the configured timeouts
   for HTTP requests, which can lead to delays in operations that involve
   communication with external services. It led particularly to failures on
   concurrent OpenID Connect (OIDC) authentication (:uv:bug:`58269`).
 
-* The logmessages of Univention Management Console have been adapted to be
-  compatible with structured logging. Structured logging can be enabled via the
-  UCR variable `umc/server/debug/structured-logging`, which will become the
-  default in UCS 5.2-4. The UCR variables `umc/server/debug/level` and
-  `umc/module/debug/level` now allow the value 5 for enabling logging of TRACE
-  log messages. The log messages and severity has been overworked. Additional
+* The log messages of Univention Management Console have been adapted to be
+  compatible with structured logging. Structured logging is now enabled by default.
+  The |UCSUCRVs| :envvar:`umc/server/debug/level` and
+  :envvar:`umc/module/debug/level` now allow the value ``5`` for enabling logging of ``TRACE``
+  log messages. The log messages and severity has been revised. Additional
   information like request ID, IP address or LDAP DN of requester have been
   added to the log information (:uv:bug:`58627`).
 
-* The `session-info` endpoint for the UMC now also returns the DN of the
+* The ``session-info`` endpoint for the UMC now also returns the DN of the
   authenticated user (:uv:bug:`58743`).
 
-* UMC OIDC now supports the log in with an account from an external Identiy
-  Provider in Keycloak. These "federated accounts" must provide additional
-  information, like a UUID and guardian role strings, to be accepted and useful
-  in UMC. As UDM authorization for these accounts is based on the roles, this
-  feature requires the UDM delegative administration (:uv:bug:`58652`).
+* UMC OIDC now supports the sign-in with an account from an external identity
+  provider in *Keycloak*. These *"federated accounts"* must provide additional
+  information, like a UUID and guardian role strings, to be accepted and used
+  in |UMC|. As |UDM| authorization for these accounts is based on the roles, this
+  feature requires the |UDM| delegative administration (:uv:bug:`58652`).
 
 .. _changelog-umc-appcenter:
 
@@ -542,14 +536,14 @@ Univention App Center
   (:uv:bug:`58644`).
 
 * The Univention App Center update process can now be configured for
-  restrictive HTTP proxy environments. The UCR variable `appcenter/update/skip-
-  zsync` allows skipping zsync and downloading metadata directly via HTTPS. The
-  UCR variable `appcenter/update/zsync-timeout` defines a timeout for zsync
+  restrictive HTTP proxy environments. The |UCSUCRV| :envvar:`appcenter/update/skip-zsync`
+  allows skipping :program:`zsync` and downloading metadata directly through HTTPS. The
+  |UCSUCRV| :envvar:`appcenter/update/zsync-timeout` defines a timeout for :program:`zsync`
   operations before falling back to direct download (:uv:bug:`52308`).
 
-* Apps can now set `ListenerUDMVersion=3`. This changes the way the App Center
-  creates JSON files for their Listener integration. It no longer uses the
-  object's `entryUUID`, but the `UniventionObjectIdentifier` (:uv:bug:`58648`).
+* Apps can now set ``ListenerUDMVersion=3``. This changes the way the App Center
+  creates JSON files for their listener integration. It no longer uses the
+  object's ``entryUUID``, but the ``UniventionObjectIdentifier`` (:uv:bug:`58648`).
 
 .. _changelog-umc-setup:
 
@@ -559,8 +553,8 @@ Modules for system settings / setup wizard
 * Logging has been adapted to be compatible with structured logging
   (:uv:bug:`58644`).
 
-* The argument `--bindpwd` has been deprecated in UDM commandline, it should be
-  replaced with `--bindpwdfile`. The internals of this package have been
+* The argument ``--bindpwd`` has been deprecated in UDM command line.
+  Instead, use the argument ``--bindpwdfile``. The internals of this package have been
   adapted accordingly (:uv:bug:`20610`).
 
 .. _changelog-umc-join:
@@ -584,14 +578,14 @@ User management
 System diagnostic module
 ========================
 
-* Fix the UMC module's CSS to be specific and to not affect the appearance of
-  the whole of UMC (:uv:bug:`58553`).
+* Fix the |UMC| module's CSS to be specific and to not affect the appearance of
+  the whole of |UMC| (:uv:bug:`58553`).
 
-* New diagnostic modules `20_check_share_references` and `20_check_srv_records`
-  as well as `24_portal_entries` have been added. The UCR variable
-  `diagnostic/check/24_portal_entries/ignore` can be used to specify entry
+* The diagnostic modules ``20_check_share_references`` and ``20_check_srv_records``,
+  as well as, ``24_portal_entries`` have been added. The |UCSUCRV|
+  :envvar:`diagnostic/check/24_portal_entries/ignore` can be used to specify entry
   names that don't conform to the check criteria. The module
-  `20_check_nameservers` now contains improved warning messages and a fix for a
+  ``20_check_nameservers`` now contains improved warning messages and a fix for a
   traceback (:uv:bug:`58634`).
 
 * Logging has been adapted to be compatible with structured logging
@@ -602,14 +596,14 @@ System diagnostic module
 LDAP directory browser
 ======================
 
-* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
 
 * Logging has been adapted to be compatible with structured logging
   (:uv:bug:`58627`).
 
-* Performance improvements during users searches (:uv:bug:`58697`).
+* Performance improvements during user searches (:uv:bug:`58697`).
 
-* Use session roles for UDM delegative administration for UMC OIDC login with
+* Use session roles for |UDM| delegative administration for |UMC| OIDC login with
   federated account (:uv:bug:`58652`).
 
 .. _changelog-lib:
@@ -618,40 +612,37 @@ LDAP directory browser
 Univention base libraries
 *************************
 
-* Adjustments for `python-logfmter` v0.0.11 have been done (:uv:bug:`58754`).
+* Adjustments for ``python-logfmter`` v0.0.11 have been done (:uv:bug:`58754`).
 
 * A method to log the duration of certain operations has been added
   (:uv:bug:`58756`).
 
-* The logformat of `univention.debug` has been made configurable to allow a
-  structured format with ISO8601 dates. The old german date format is going to
-  be removed in future releases. A new loglevel `TRACE` (equals the value 5)
-  has been added to `univention.debug`. The library `univention.logging` now
-  allows to setup structured logging using the `logfmt` format by configuring a
-  `univention.debug` logging handler for the Python stdandard library logging
+* The logging format of ``univention.debug`` has been made configurable
+  to allow a structured format with ISO 8601 dates.
+  The German date format is going to be removed in a future releases.
+  A new logging level ``TRACE``, equal to the logging value ``5``,
+  has been added to ``univention.debug``.
+  The library ``univention.logging`` now allows
+  setting up structured logging using the ``logfmt`` format by configuring a
+  ``univention.debug`` logging handler for the Python standard library logging
   system (:uv:bug:`58627`).
 
-* New LDAP schema, ACL's for federated account object type and new UCR
-  variables `ldap/authz-regexp/users` (default `true`) and `ldap/authz-regexp
-  /federated-accounts` (default `false`) for the configuration of the LDAP
-  servers DN mapping for federated accounts (:uv:bug:`58652`).
+* Added LDAP schema, ACLs for federated account object type,
+  the |UCSUCRVs| :envvar:`ldap/authz-regexp/users` with the default value ``true``,
+  and :envvar:`ldap/authz-regexp/federated-accounts` with the default ``false``
+  for the configuration of the LDAP servers DN mapping for federated accounts (:uv:bug:`58652`).
 
-* A recyclebin for users and groups has been introduced (:uv:bug:`52202`).
+* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
 
-* `univention-backup2master` now provides two hook points that allow custom
-  scripts to be executed before and after the conversion from a Backup
-  Directory Node to a Primary Directory Node (:uv:bug:`58778`).
+* :command:`univention-backup2master` now provides two hook points
+  that allow running custom scripts before and after the conversion
+  from a *UCS Backup Directory Node* to a *UCS Primary Directory Node* (:uv:bug:`58778`).
 
-* The duration of LDAP operations is now logged at TRACE level
+* The duration of LDAP operations is now logged at ``TRACE`` level
   (:uv:bug:`58756`).
 
 * Logging has been adapted to be compatible with structured logging
   (:uv:bug:`58627`).
-
-* The logformat of `univention.debug` has been made configurable to allow a
-  structured format with ISO8601 dates. The old german date format is going to
-  be removed in future releases. A new loglevel `TRACE` (equals the value 5)
-  has been added to `univention.debug` (:uv:bug:`58627`).
 
 .. _changelog-deployment:
 
@@ -659,9 +650,10 @@ Univention base libraries
 Software deployment
 *******************
 
-* Logging has been adapted to be compatible with structured logging. The UCR
-  variable `update/debug/level` now allows the value 5 for enabling logging of
-  TRACE log messages (:uv:bug:`58644`).
+* Logging has been adapted to be compatible with structured logging.
+  The |UCSUCRV| :envvar:`update/debug/level`
+  allows the value ``5`` for enabling logging of
+  ``TRACE`` log messages (:uv:bug:`58644`).
 
 .. _changelog-service:
 
@@ -674,17 +666,17 @@ System services
 SAML
 ====
 
-* Add ``--import-users`` flag to ``univention-keycloak init`` (:uv:bug:`58698`).
+* Add ``--import-users`` parameter to ``univention-keycloak init`` (:uv:bug:`58698`).
 
-* A new operation has been added to univention-keycloak script, this operation
-  allows the creation of client scopes, and assign mappers to the scope
+* The ``scope`` operation has been added to :command:`univention-keycloak` script.
+  The operation allows the creation of client scopes, and assign mappers to the scope
   (:uv:bug:`58422`).
 
 * Added support for enabling standard token exchange on OIDC clients
   (:uv:bug:`58586`).
 
-* Fixed a regression that breaks univention-keycloak script on kubernetes
-  deployments (:uv:bug:`58588`).
+* Fixed a regression that breaks the :command:`univention-keycloak` script
+  in Kubernetes deployments (:uv:bug:`58588`).
 
 .. _changelog-service-mail:
 
@@ -696,32 +688,36 @@ Mail services
 IMAP services
 -------------
 
-* During login, it could happen that additional mail directories in dovecot
-  containing only the username were created. This made it appear to the user as
-  though their mail folders were emptied. The PAM login configuration for
-  dovecot has been adjusted to circumvent this behaviour (:uv:bug:`57976`).
+* During sign-in, it could happen
+  that additional email directories in :program:`Dovecot`
+  containing only the username were created.
+  This made it appear to the user as though their email folders were emptied.
+  The PAM login configuration for :program:`Dovecot` has been adjusted
+  to circumvent this behavior (:uv:bug:`57976`).
 
 .. _changelog-service-postfix:
 
 Postfix
 -------
 
-* During login, it could happen that additional mail directories in dovecot
-  containing only the username were created. This made it appear to the user as
-  though their mail folders were emptied. The PAM login configuration for
-  dovecot has been adjusted to circumvent this behaviour (:uv:bug:`57976`).
+* During sign-in, it could happen
+  that additional email directories in :program:`Dovecot`
+  containing only the username were created.
+  This made it appear to the user as though their mail folders were emptied.
+  The PAM login configuration for :program:`Dovecot` has been adjusted
+  to circumvent this behavior (:uv:bug:`57976`).
 
 .. _changelog-service-nagios:
 
 Nagios
 ======
 
-* This update enhances the alert `check_univention_mdb_maxsize` by ignoring the
-  (possibly) fragmented freelist pages in the calculation of available pages
+* This update enhances the alert ``check_univention_mdb_maxsize`` by ignoring the
+  possibly fragmented ``freelist`` pages in the calculation of available pages
   (:uv:bug:`58668`).
 
-* This update enhances the check `check_univention_slapd_mdb_maxsize` by
-  ignoring the (possibly) fragmented freelist pages in the calculation of
+* This update enhances the check ``check_univention_slapd_mdb_maxsize`` by
+  ignoring the possibly fragmented ``freelist`` pages in the calculation of
   available pages (:uv:bug:`58668`).
 
 .. _changelog-service-radius:
@@ -729,21 +725,23 @@ Nagios
 RADIUS
 ======
 
-* The EAP module configuration setting `tls_min_version` can now be adjusted
-  using the new UCR variable `freeradius/conf/tls-min-version`
+* The EAP module configuration setting ``tls_min_version`` can now be adjusted
+  using the added |UCSUCRV| :envvar:`freeradius/conf/tls-min-version`
   (:uv:bug:`58373`).
 
-* The EAP module configuration setting `cipher_list` can now be adjusted using
-  the new UCR variable `freeradius/conf/cipher-list`. The format is documented
-  in `man openssl-ciphers` (:uv:bug:`58374`).
+* The EAP module configuration setting ``cipher_list`` can now be adjusted using
+  the added |UCSUCRV| :envvar:`freeradius/conf/cipher-list`.
+  The format is documented in
+  `openssl-ciphers(1ssl) <https://manpages.debian.org/bookworm/openssl/openssl-ciphers.1ssl.en.html>`_
+  (:uv:bug:`58374`).
 
 .. _changelog-service-pam:
 
 PAM / Local group cache
 =======================
 
-* The SSSD Service has been configured to allow logins using the
-  mailPrimaryAddress of a user during PAM login (:uv:bug:`57976`).
+* The SSSD service has been configured to allow logins using the
+  ``mailPrimaryAddress`` of a user during PAM login (:uv:bug:`57976`).
 
 .. _changelog-service-network:
 
@@ -772,33 +770,34 @@ Univention AD Takeover
 Univention S4 Connector
 =======================
 
-* Structured Logging can now be activated via the UCR Variable `connector/debug
-  /structured-logging`. The UCR variables `connector/debug/level` and
-  `connector/debug/udm/level` now allow the value 5 for enabling logging of
-  TRACE log messages (:uv:bug:`58644`).
+* Structured Logging is enabled by default.
+  The |UCSUCRVs| :envvar:`connector/debug/level`
+  and :envvar:`connector/debug/udm/level`
+  now allow the value ``5`` for enabling logging of
+  ``TRACE`` log messages (:uv:bug:`58644`, :uv:bug:`58653`).
 
 * The behavior of account locked status synchronization has been unified
-  between S4-Connector and AD-Connector (:uv:bug:`58680`).
+  between S4-Connector and AD Connector (:uv:bug:`58680`).
 
 .. _changelog-win-adc:
 
 Univention Active Directory Connection
 ======================================
 
-* Changing the `sAMAccountName` of a user in AD led to a Python traceback in
-  the AD-Connector because the post modify functions would still use the re-
+* Changing the ``sAMAccountName`` of a user in AD led to a Python traceback in
+  the AD Connector because the post modify functions would still use the re-
   rename DN. This could also cause additional issues when later changing the
-  `CN` of the object. This update fixes these issues (:uv:bug:`58738`).
+  ``CN`` of the object. This update fixes these issues (:uv:bug:`58738`).
 
-* The AD-Connector now synchronizes the account lockout state from AD to UCS.
+* The AD Connector now synchronizes the account lockout state from AD to UCS.
   Account unlocking is also synchronized from UCS to AD (:uv:bug:`58680`).
 
-* An error where the DN of a synced object multiple times leading to a DN with
-  mixed base was created leading to rejects was fixed (:uv:bug:`58556`).
+* An error where the LDAP distinguished name (DN) of a synced object multiple times leading
+  to a DN with mixed base was created leading to rejects was fixed (:uv:bug:`58556`).
 
 * Logging in the UMC module has been adapted to be compatible with structured
-  logging. The UCR variable `connector.*/debug/level` now allows the value 5
-  for enabling logging of TRACE log messages (:uv:bug:`58644`).
+  logging. The |UCSUCRVs| :envvar:`connector.*/debug/level` now allows the value ``5``
+  for enabling logging of ``TRACE`` log messages (:uv:bug:`58644`).
 
 
 .. _changelog-univention-net-install:
@@ -815,8 +814,7 @@ Univention PXE installation
 Other changes
 *************
 
-* Minor updates to the UDM policy format for delegative administration
+* Minor updates to the |UDM| policy format for delegative administration
   (:uv:bug:`58649`).
 
-* Update `python-logfmter` to v0.0.11 (:uv:bug:`58754`).
-
+* Update ``python-logfmter`` to v0.0.11 (:uv:bug:`58754`).

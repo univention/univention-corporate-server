@@ -13,25 +13,28 @@ Publication date of UCS |release|: 2025-09-09
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-4, the third patch level release for |UCSUCS| 5.2 is available.
+With |UCSUCS| 5.2-4, the fourth patch level release for |UCSUCS| 5.2 is available.
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
-* The Active Directory Connector now knows the |UCSUCRV|
-  :envvar:`connector/ad/mapping/allow-subtree-ancestors`
-  which simplifies the management of selective synchronization of more complex LDAP DIT structures.
+* *Delegative Administration* is now available as a preview feature.
+  However, it isn't supported for general production environments at this stage.
+  Delegative administration provides fine-grained delegation capabilities.
+  Administrators can assign specific management responsibilities
+  to designated users within defined scopes.
+  For detailed usage instructions, configuration notes, and known limitations,
+  refer to
+  :external+uv-ext-delegative-administration:ref:`da-intro`
+  in :cite:t:`uv-ext-delegative-administration`.
 
-* |UCSUDM| has seen an update that allows user and computer objects to get
-  their ``Primary Group`` from their parent container during creation.
+* |UCSUCS| 5.2-4 officially discontinues support for the PXE server.
+  This change doesn't affect the UCS installation process.
+  Unattended installations remain fully supported.
+  You can continue to use unattended installations using configured installation profiles.
 
-* Added a listener plugin which fuels the :program:`Provisioning Service`
-  that you can install in a preview version through the App Center.
-  The App receives further updates throughout |UCSUCS| 5.2-4.
-
-* |UCSUCS| 5.2-4 includes numerous security updates for packages,
-  such as ``sudo``, ``squid``, ``GnuTLS``, ``firefox-esr``, ``Linux kernel``, and many others
-  to ensure protection against the latest vulnerabilities.
-  In another update, ``OpenLDAP`` increased the maximum number of indexed attributes from 128 to 256.
+* |UCSUCS| 5.2-4 includes numerous updates for packages,
+  such as ``docker.io``, ``nginx``, ``redis``, ``postgresql-common``, ``qemu``, ``strongswan``,
+  and many others
 
 .. _relnotes-update:
 
@@ -215,7 +218,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.2-0 in
+You find the changes since UCS 5.2-4 in
 :external+uv-changelog-5.2-4:doc:`index`.
 
 .. _biblio:
