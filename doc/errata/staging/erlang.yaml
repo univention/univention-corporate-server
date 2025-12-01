@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: erlang
+fix: 1:22.2.7+dfsg-1+deb10u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-48041, CVE-2025-48039, CVE-2025-48038,
+   CVE-2025-4748)
+bug: [58871]
+cve:
+- CVE-2025-4748
+- CVE-2025-48038
+- CVE-2025-48039
+- CVE-2025-48041
