@@ -4,14 +4,18 @@
 #
 # SPDX-FileCopyrightText: 2020-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-#
 
 import logging
 import sys
+import time
+
+
+# from univention.logging import StructuredFormatter
 
 
 class ShortNameFormatter(logging.Formatter):
     shorten = "univention.portal"
+    converter = time.gmtime
 
     def format(self, record):
         record.short_name = record.name
@@ -28,9 +32,11 @@ def setup_logger(logfile="/var/log/univention/portal.log", stream=True):
 
         return
 
-    log_format = "%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: %(message)s"
-    log_format_time = "%y-%m-%d %H:%M:%S"
-    formatter = ShortNameFormatter(log_format, log_format_time)
+    # log_format = '{asctime} {levelname:>8.8} [{request_id:>10.10}] {message}\t| {logfmt}'
+    log_format = '{asctime} {levelname:>8.8} [         -] {message}'
+    log_format_time = "%Y-%m-%dT%H:%M:%S.000000%z"
+    formatter = ShortNameFormatter(log_format, log_format_time, style='{')
+    # formatter = StructuredFormatter(with_date_prefix=True)
 
     logger.setLevel(logging.DEBUG)
 
