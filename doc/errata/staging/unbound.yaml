@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: unbound
+fix: 1.9.0-2+deb10u8
+desc: |
+ This update addresses the following issue:
+ * CVSS score unknown. (CVE-2025-11411)
+bug: [58872]
+cve:
+- CVE-2025-11411
