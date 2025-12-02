@@ -355,16 +355,15 @@ class object(univention.admin.handlers.simpleLdap):
         searchResult = self.lo.authz_connection.get(self.dn, attr=['uniqueMember', 'memberUid'])
         if searchResult:
             uids = {x.decode('UTF-8').lower() for x in searchResult.get('memberUid', [])}
-            members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
+            members = DN.set(x.decode('UTF-8') for x in searchResult.get('uniqueMember', []))
 
         add_uidlist = [uid for uid in uidlist if uid.lower() not in uids]
         if add_uidlist:
             ml.append(('memberUid', b'', [x.encode('UTF-8') for x in add_uidlist]))
 
-        add_memberdnlist = [dn for dn in memberdnlist if dn.lower() not in members]
-
+        add_memberdnlist = DN.set(memberdnlist) - members
         if add_memberdnlist:
-            ml.append(('uniqueMember', b'', [x.encode('UTF-8') for x in add_memberdnlist]))
+            ml.append(('uniqueMember', b'', [str(x).encode('UTF-8') for x in add_memberdnlist]))
 
         if ml:
             return self.lo.authz_connection.modify(self.dn, ml)
@@ -379,15 +378,15 @@ class object(univention.admin.handlers.simpleLdap):
         searchResult = self.lo.authz_connection.get(self.dn, attr=['uniqueMember', 'memberUid'])
         if searchResult:
             uids = {x.decode('UTF-8').lower(): x.decode('UTF-8') for x in searchResult.get('memberUid', [])}
-            members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
+            members = DN.set(x.decode('UTF-8') for x in searchResult.get('uniqueMember', []))
 
         remove_uidlist = [uids[uid.lower()] for uid in uidlist if uid.lower() in uids]
         if remove_uidlist:
             ml.append(('memberUid', [x.encode('UTF-8') for x in remove_uidlist], b''))
 
-        remove_memberdnlist = [dn for dn in memberdnlist if dn.lower() in members]
+        remove_memberdnlist = DN.set(memberdnlist) & members
         if remove_memberdnlist:
-            ml.append(('uniqueMember', [x.encode('UTF-8') for x in remove_memberdnlist], b''))
+            ml.append(('uniqueMember', [str(x).encode('UTF-8') for x in remove_memberdnlist], b''))
 
         if ml:
             try:
