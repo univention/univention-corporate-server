@@ -179,17 +179,12 @@ repos:
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                   "
-  - repo: local
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-hooks/pre-commit-copyright
+    rev: 0.1.1
     hooks:
-      - id: update-reuse-toml
-        name: "Update REUSE.toml"
-        entry: python update-reuse-toml.py
-        language: python
-        pass_filenames: false
-        additional_dependencies:
-          - toml
-          - python-debian
-        files: ^.*/debian/copyright$
+      - id: reuse-toml-dry-run
+      - id: reuse-toml
+        stages: [ manual ]
   - repo: https://github.com/fsfe/reuse-tool
     rev: v5.0.2
     hooks:

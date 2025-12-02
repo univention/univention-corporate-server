@@ -52,9 +52,10 @@ format-all: ## This formats all python files in the repository
 	-pre-commit run -a --hook-stage manual ruff-fix
 	-pre-commit run -a --hook-stage manual isort-fix
 	-pre-commit run -a --hook-stage manual autopep8-fix
+	-pre-commit run -a --hook-stage manual reuse-toml
 	-pre-commit run -a --hook-stage manual reuse-annotate
 
 copyright:
-	-python3 update-reuse-toml.py
+	-pre-commit run -a --hook-stage manual reuse-toml
 	-pre-commit run -a --hook-stage manual reuse-annotate
 	-pre-commit run -a --hook-stage manual reuse-lint
