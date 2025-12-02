@@ -367,14 +367,7 @@ class object(univention.admin.handlers.simpleLdap):
             ml.append(('uniqueMember', b'', [x.encode('UTF-8') for x in add_memberdnlist]))
 
         if ml:
-            try:
-                return self.lo.authz_connection.modify(self.dn, ml)
-            except ldap.NO_SUCH_OBJECT:
-                raise univention.admin.uexceptions.noObject(self.dn)
-            except ldap.INSUFFICIENT_ACCESS:
-                raise univention.admin.uexceptions.permissionDenied()
-            except ldap.LDAPError as msg:
-                raise univention.admin.uexceptions.ldapError(msg.args[0]['desc'])
+            return self.lo.authz_connection.modify(self.dn, ml)
 
         # return True if object has been modified
         return bool(ml)
