@@ -390,20 +390,13 @@ class object(univention.admin.handlers.simpleLdap):
 
         if ml:
             try:
-                try:
-                    return self.lo.authz_connection.modify(self.dn, ml, exceptions=True, ignore_license=ignore_license)
-                except ldap.NO_SUCH_ATTRIBUTE:
-                    # maybe this is the refint overlay:
-                    # uniqueMember has already been removed. lets try again, probably with just memberUid...
-                    if not _retry_on_attribute_error:
-                        raise
-                    return self.fast_member_remove(memberdnlist, uidlist, ignore_license=ignore_license, _retry_on_attribute_error=False)
-            except ldap.NO_SUCH_OBJECT:
-                raise univention.admin.uexceptions.noObject(self.dn)
-            except ldap.INSUFFICIENT_ACCESS:
-                raise univention.admin.uexceptions.permissionDenied()
-            except ldap.LDAPError as msg:
-                raise univention.admin.uexceptions.ldapError(msg.args[0]['desc'])
+                return self.lo.authz_connection.modify(self.dn, ml, ignore_license=ignore_license)
+            except univention.admin.uexceptions.ldapError as exc:
+                if not _retry_on_attribute_error or not isinstance(exc.original_exception, ldap.NO_SUCH_ATTRIBUTE):
+                    raise
+                # maybe this is the refint overlay:
+                # uniqueMember has already been removed. lets try again, probably with just memberUid...
+                return self.fast_member_remove(memberdnlist, uidlist, ignore_license=ignore_license, _retry_on_attribute_error=False)
 
         # return True if object has been modified
         return bool(ml)
