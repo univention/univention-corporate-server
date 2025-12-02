@@ -39,6 +39,7 @@ from univention.admin.certificate import PKIIntegration, pki_option, pki_propert
 from univention.admin.guardian_roles import GuardianBase, register_role_mapping, role_layout, role_properties
 from univention.admin.layout import Group, Tab
 from univention.admin.log import log
+from univention.dn import DN
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
 
@@ -671,15 +672,6 @@ def check_prohibited_username(lo: univention.admin.uldap.access, username: str) 
             raise univention.admin.uexceptions.prohibitedUsername(username)
 
 
-def case_insensitive_in_list(dn: str, list: Sequence[str]) -> bool:
-    assert isinstance(dn, str)
-    for element in list:
-        assert isinstance(element, str)
-        if dn.lower() == element.lower():
-            return True
-    return False
-
-
 def posixSecondsToLocaltimeDate(seconds: int) -> str:
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(seconds))
 
@@ -1307,48 +1299,46 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     def __update_groups(self) -> None:
         if self.exists():
-            old_groups = self.oldinfo.get('groups', [])
+            old_groups = DN.set(self.oldinfo.get('groups', []))
             old_uid = self.oldinfo.get('username', '')
         else:
-            old_groups = []
+            old_groups = set()
             old_uid = ''
         new_uid = self.info.get('username', '')
-        new_groups = self.info.get('groups', [])
+        new_groups = DN.set(self.info.get('groups', []))
 
         # change memberUid if we have a new username
         if old_uid and old_uid != new_uid and self.exists():
             self.log.debug('users/user: rewrite memberuid after rename')
             for group in new_groups:
+                groupdn = str(group)
                 ml = del_uid, add_uid = [
                     ('memberUid', [old_uid.encode('UTF-8')], None),
                     ('memberUid', None, [new_uid.encode('UTF-8')]),
                 ]
                 ml_retry = []
                 try:
-                    self.lo.authz_connection.modify(group, ml, exceptions=True)
+                    self.lo.authz_connection.modify(groupdn, ml, exceptions=True)
                 except ldap.NO_SUCH_ATTRIBUTE:
                     ml_retry.append(add_uid)
                 except ldap.TYPE_OR_VALUE_EXISTS:
                     ml_retry.append(del_uid)
                 if ml_retry:
                     try:
-                        self.lo.authz_connection.modify(group, ml_retry, exceptions=True)
+                        self.lo.authz_connection.modify(groupdn, ml_retry, exceptions=True)
                     except (ldap.NO_SUCH_ATTRIBUTE, ldap.TYPE_OR_VALUE_EXISTS):
                         pass
 
-        self.log.debug('users/user: check groups in old_groups')
-        for group in old_groups:
-            if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
-                self.__fast_single_member_remove(group, self.old_dn, old_uid)
-                if self.dn != self.old_dn:
-                    # we change our DN _before_ removing it from the group
-                    # so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
-                    self.__fast_single_member_remove(group, self.dn, old_uid)
+        for group in old_groups - new_groups - {DN(self['primaryGroup'])}:
+            groupdn = str(group)
+            self.__fast_single_member_remove(groupdn, self.old_dn, old_uid)
+            if self.dn != self.old_dn:
+                # we change our DN _before_ removing it from the group
+                # so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
+                self.__fast_single_member_remove(groupdn, self.dn, old_uid)
 
-        self.log.debug('users/user: check groups in info[groups]')
-        for group in self.info.get('groups', []):
-            if group and not case_insensitive_in_list(group, old_groups):
-                self.__fast_single_member_add(group, self.dn, new_uid)
+        for group in (new_groups - old_groups):
+            self.__fast_single_member_add(str(group), self.dn, new_uid)
 
         if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             self.log.debug('users/user: check primaryGroup')
