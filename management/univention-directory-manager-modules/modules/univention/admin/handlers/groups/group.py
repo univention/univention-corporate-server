@@ -348,7 +348,13 @@ class object(univention.admin.handlers.simpleLdap):
 
             self.save()
 
-    def fast_member_add(self, memberdnlist, uidlist):
+    def fast_member_add(self, memberdnlist, uidlist) -> bool:
+        """
+        Make groups membership changes in a slow(!) way.
+
+        .. deprecated:: 5.2-4
+        """
+        # actually this is very slow_member_add(). Don't use it. Only used by AD/S4-Connector.
         ml = []
         uids = set()
         members = set()
@@ -371,7 +377,13 @@ class object(univention.admin.handlers.simpleLdap):
         # return True if object has been modified
         return bool(ml)
 
-    def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False, _retry_on_attribute_error=True):
+    def fast_member_remove(self, memberdnlist, uidlist, ignore_license=False, _retry_on_attribute_error=True) -> bool:
+        """
+        Make groups membership changes in a slow(!) way.
+
+        .. deprecated:: 5.2-4
+        """
+        # actually this is very slow_member_remove(). Don't use it. Only used by AD/S4-Connector.
         ml = []
         uids = {}
         members = set()

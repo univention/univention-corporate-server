@@ -1319,42 +1319,41 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if old_uid and old_uid != new_uid and self.exists():
             self.log.debug('users/user: rewrite memberuid after rename')
             for group in new_groups:
+                ml = del_uid, add_uid = [
+                    ('memberUid', [old_uid.encode('UTF-8')], None),
+                    ('memberUid', None, [new_uid.encode('UTF-8')]),
+                ]
+                ml_retry = []
                 try:
-                    self.lo.authz_connection.modify(group, [
-                        ('memberUid', [old_uid.encode('UTF-8')], None),
-                    ], exceptions=True)
+                    self.lo.authz_connection.modify(group, ml, exceptions=True)
                 except ldap.NO_SUCH_ATTRIBUTE:
-                    pass
-                try:
-                    self.lo.authz_connection.modify(group, [
-                        ('memberUid', None, [new_uid.encode('UTF-8')]),
-                    ], exceptions=True)
+                    ml_retry.append(add_uid)
                 except ldap.TYPE_OR_VALUE_EXISTS:
-                    pass
-
-        group_mod = univention.admin.modules._get('groups/group')
+                    ml_retry.append(del_uid)
+                if ml_retry:
+                    try:
+                        self.lo.authz_connection.modify(group, ml_retry, exceptions=True)
+                    except (ldap.NO_SUCH_ATTRIBUTE, ldap.TYPE_OR_VALUE_EXISTS):
+                        pass
 
         self.log.debug('users/user: check groups in old_groups')
         for group in old_groups:
             if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
-                grpobj = group_mod.object(None, self.lo, self.position, group)
-                grpobj.fast_member_remove([self.old_dn], [old_uid])
+                self.__fast_single_member_remove(group, self.old_dn, old_uid)
                 if self.dn != self.old_dn:
                     # we change our DN _before_ removing it from the group
                     # so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
-                    grpobj.fast_member_remove([self.dn], [old_uid])
+                    self.__fast_single_member_remove(group, self.dn, old_uid)
 
         self.log.debug('users/user: check groups in info[groups]')
         for group in self.info.get('groups', []):
             if group and not case_insensitive_in_list(group, old_groups):
-                grpobj = group_mod.object(None, self.lo, self.position, group)
-                grpobj.fast_member_add([self.dn], [new_uid])
+                self.__fast_single_member_add(group, self.dn, new_uid)
 
         if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             self.log.debug('users/user: check primaryGroup')
             if not self.exists() and self.info.get('primaryGroup'):
-                grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
-                grpobj.fast_member_add([self.dn], [new_uid])
+                self.__fast_single_member_add(self.info.get('primaryGroup'), self.dn, new_uid)
 
     def __primary_group(self) -> None:
         if not self.hasChanged('primaryGroup'):
@@ -1362,10 +1361,38 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
         if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             new_uid = self.info.get('username')
-            group_mod = univention.admin.modules._get('groups/group')
-            grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
-            grpobj.fast_member_add([self.dn], [new_uid])
+            self.__fast_single_member_add(self['primaryGroup'], self.dn, new_uid)
             self.log.debug('Adding user to new primaryGroup', primary_group=self['primaryGroup'], uid=new_uid, dn=self.dn)
+
+    def __fast_single_member_add(self, group, member_dn, member_uid, **kwargs):
+        ml = [
+            ('memberUid', None, [member_uid.encode('UTF-8')]),
+            ('uniqueMember', None, [member_dn.encode('UTF-8')]),
+        ]
+        try:
+            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.TYPE_OR_VALUE_EXISTS:
+            for entry in ml:
+                try:
+                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
+                except ldap.TYPE_OR_VALUE_EXISTS:
+                    continue
+                break
+
+    def __fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
+        ml = [
+            ('memberUid', [member_uid.encode('UTF-8')], None),
+            ('uniqueMember', [member_dn.encode('UTF-8')], None),
+        ]
+        try:
+            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.NO_SUCH_ATTRIBUTE:
+            for entry in ml:
+                try:
+                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
+                except ldap.NO_SUCH_ATTRIBUTE:
+                    continue
+                break
 
     def krb5_principal(self) -> str:
         domain = univention.admin.uldap.domain(self.lo, self.position)
@@ -1953,8 +1980,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         super()._ldap_post_remove()
 
         for group in self.oldinfo.get('groups', []):
-            groupObject = univention.admin.objects.get(univention.admin.modules._get('groups/group'), self.co, self.lo, self.position, group)
-            groupObject.fast_member_remove([self.dn], [x.decode('UTF-8') for x in self.oldattr.get('uid', [])], ignore_license=True)
+            self.__fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
 
     def _move(self, newdn: str, modify_childs: bool = True, ignore_license: bool = False) -> str:
         olddn = self.dn
