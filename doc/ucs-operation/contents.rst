@@ -16,5 +16,6 @@ Univention Corporate Server - Operation Manual
 
 .. toctree::
 
+   glossary
    bibliography
 
