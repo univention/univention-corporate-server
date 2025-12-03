@@ -18,15 +18,18 @@ import re
 import sqlite3 as lite
 import string
 import sys
+import time
 import traceback
 from logging import getLogger
+from math import ceil
 from types import FunctionType
+from typing import Any
 
 import ldap
 from ldap.controls.readentry import PostReadControl
-from ldap.filter import escape_filter_chars
+from ldap.filter import escape_filter_chars, filter_format
 from samba.dcerpc import misc
-from samba.ndr import ndr_unpack
+from samba.ndr import ndr_pack, ndr_unpack
 
 import univention.admin.modules
 import univention.admin.objects
@@ -46,6 +49,7 @@ term_signal_caught = False
 univention.admin.modules.update()
 
 RE_NO_RESYNC = re.compile('^<NORESYNC(=.*?)?>;')
+SQL_TIMEOUT = 10
 
 
 try:
@@ -56,6 +60,10 @@ except AttributeError:
 
 def decode_guid(value):
     return str(ndr_unpack(misc.GUID, value))
+
+
+def encode_guid(value: str):
+    return ndr_pack(misc.GUID(value))
 
 
 password_charsets = [
@@ -125,134 +133,167 @@ def compare_lowercase(val1, val2):
 
 
 # helper classes
+class WrongFetchMode(Exception):
+    pass
+
+
 class configdb:
+    SECTION_SUPPORTS_LAZY_DELETE = ['uoid2guid']
 
     def __init__(self, filename):
         self.filename = filename
-        self._dbcon = lite.connect(self.filename)
+        self._dbcon = lite.connect(self.filename, timeout=SQL_TIMEOUT)
 
-    def get_by_value(self, section, option):
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                cur.execute(f"SELECT key FROM '{section}' WHERE value=?", (option,))  # noqa: S608
-                rows = cur.fetchall()
-                cur.close()
-                if rows:
-                    return rows[0][0]
-                return ''
-            except lite.Error:
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
+    def get_by_value(self, section: str, option: str, deleted: bool = False):
+        cmd = f"SELECT key FROM '{section}' WHERE value = ?"  # noqa: S608
+        if section in self.SECTION_SUPPORTS_LAZY_DELETE:
+            cmd = f'{cmd} AND is_deleted = {0 if not deleted else 1}'
 
-    def get(self, section, option):
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                cur.execute(f"SELECT value FROM '{section}' WHERE key=?", (option,))  # noqa: S608
-                rows = cur.fetchall()
-                cur.close()
-                if rows:
-                    return rows[0][0]
-                return ''
-            except lite.Error:
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
+        rows = self._execute(command=cmd, values=[option], fetch_result=True)
+        if rows:
+            return rows[0][0]
+        return ''
 
-    def set(self, section, option, value):
+    def get(self, section: str, option: str, deleted: bool = False):
+        cmd = f"SELECT value FROM '{section}' WHERE key = ?"  # noqa: S608
+        if section in self.SECTION_SUPPORTS_LAZY_DELETE:
+            cmd = f'{cmd} AND is_deleted = {0 if not deleted else 1}'
+
+        rows = self._execute(command=cmd, values=[option], fetch_result=True)
+        if rows:
+            return rows[0][0]
+        return ''
+
+    def set(self, section: str, option: str, value: str):
         cmd = f"INSERT OR REPLACE INTO '{section}' (key, value) VALUES (?, ?);"  # noqa: S608
         val = [option, value]
         if section == "AD rejected":
             # update retry_count
             cmd = f"INSERT OR REPLACE INTO '{section}' (key, value, retry_count) VALUES (?, ?, COALESCE((SELECT retry_count FROM '{section}' WHERE key = ? )+1 ,0));"  # noqa: S608
             val = [option, value, option]
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                cur.execute(cmd, val)
-                self._dbcon.commit()
-                cur.close()
-                return
-            except lite.Error as e:
-                log.error("sqlite: %s", e)
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
+        elif section in self.SECTION_SUPPORTS_LAZY_DELETE:
+            cmd = f"INSERT OR REPLACE INTO '{section}' (key, value, is_deleted, deleted_at) VALUES (?, ?, 0, NULL);"  # noqa: S608
 
-    def items(self, section):
-        for _i in [1, 2]:
+        self._execute(command=cmd, values=val, commit=True)
+
+    def insert(self, section: str, option: str, value: str):
+        cmd = f"INSERT INTO '{section}' (key, value) VALUES (?, ?);"  # noqa: S608
+        val = [option, value]
+
+        self._execute(command=cmd, values=val, commit=True)
+
+    def bulk_insert(self, section: str, values: list[tuple], batch_size: int = 100000):
+        if not values:
+            return
+        cmd = f"INSERT INTO '{section}' (key, value) VALUES (?, ?);"  # noqa: S608
+        no_loops = ceil(len(values) / batch_size)
+        for _h in range(no_loops):
+            for _i in [1, 2]:
+                try:
+                    cur = self._dbcon.cursor()
+                    cur.executemany(cmd, values[(_h * batch_size):((_h + 1) * batch_size)])
+                    self._dbcon.commit()
+                    cur.close()
+                    return
+                except lite.Error as e:
+                    if _i == 2:
+                        raise
+                    log.error("sqlite: %s", e)
+                    if self._dbcon:
+                        self._dbcon.close()
+                    self._dbcon = lite.connect(self.filename, timeout=SQL_TIMEOUT)
+
+    def items(self, section: str) -> list[Any]:
+        cmd = f"SELECT * FROM '{section}'"  # noqa: S608
+        return self._execute(command=cmd, fetch_result=True)
+
+    def remove_option(self, section: str, option: str, lazy_delete: bool = False):
+        if lazy_delete and section in self.SECTION_SUPPORTS_LAZY_DELETE:
+            cmd = f"UPDATE '{section}' SET is_deleted = 1, deleted_at = datetime('now') WHERE key = ?"  # noqa: S608
+        else:
+            cmd = f"DELETE FROM '{section}' WHERE key = ?"  # noqa: S608
+
+        self._execute(command=cmd, values=[option], commit=True)
+
+    def has_section(self, section: str) -> bool:
+        cmd = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
+        rows = self._execute(command=cmd, values=[section], fetch_result=True, fetch_mode='one')
+        return bool(rows)
+
+    def add_section(self, section: str):
+        if section == 'AD rejected':
+            sql_commands = [
+                (
+                    "CREATE TABLE IF NOT EXISTS 'AD rejected' ("
+                    "    Key TEXT PRIMARY KEY, "
+                    "    Value TEXT, "
+                    "    retry_count NUMBER DEFAULT 0"
+                    ")"
+                ),
+            ]
+        elif section == 'uoid2guid':
+            sql_commands = [
+                (
+                    "CREATE TABLE IF NOT EXISTS uoid2guid ("
+                    "    Key TEXT PRIMARY KEY NOT NULL, "
+                    "    Value TEXT NOT NULL, "
+                    "    is_deleted INTEGER DEFAULT 0, "
+                    "    created_at TEXT DEFAULT CURRENT_TIMESTAMP, "
+                    "    deleted_at TEXT, "
+                    "    CHECK(is_deleted IN (0, 1))"
+                    ")"
+                ),
+                "CREATE UNIQUE INDEX IF NOT EXISTS uq_uoid2guid ON uoid2guid(Value)",
+            ]
+        else:
+            sql_commands = [
+                f"CREATE TABLE IF NOT EXISTS '{section}' (Key TEXT PRIMARY KEY, Value TEXT)",
+            ]
+        for cmd in sql_commands:
+            self._execute(cmd)
+
+    def has_option(self, section: str, option: str) -> bool:
+        cmd = f"SELECT value FROM '{section}' WHERE key = ?"  # noqa: S608
+        rows = self._execute(command=cmd, values=[option], fetch_result=True, fetch_mode='one')
+        return bool(rows)
+
+    def _execute(
+        self,
+        command: str,
+        values: list | None = None,
+        fetch_result: bool = False,
+        fetch_mode: str = 'all',
+        commit: bool = False,
+    ) -> list[Any]:
+        for _i in [1, 2, 3]:
             try:
                 cur = self._dbcon.cursor()
-                cur.execute(f"SELECT * FROM '{section}'")  # noqa: S608
-                rows = cur.fetchall()
+                log.trace('Execute command %s with values %s', command, values)
+                if values:
+                    cur.execute(command, values)
+                else:
+                    cur.execute(command)
+                rows = None
+                if fetch_result:
+                    if fetch_mode == 'all':
+                        rows = cur.fetchall()
+                    elif fetch_mode == 'one':
+                        rows = cur.fetchone()
+                    else:
+                        raise WrongFetchMode('Wrong fetch mode %s. Must be one of "all" or "one"!')
+                    log.trace('Result: %s', rows)
+                if commit:
+                    self._dbcon.commit()
                 cur.close()
                 return rows
             except lite.Error as e:
-                log.warning("sqlite: %s", e)
+                if _i == 3:
+                    raise
+                log.warning('sqlite: %s', e)
                 if self._dbcon:
                     self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
-
-    def remove_option(self, section, option):
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                cur.execute(f"DELETE FROM '{section}' WHERE key=?", (option,))  # noqa: S608
-                self._dbcon.commit()
-                cur.close()
-                return
-            except lite.Error as e:
-                log.warning("sqlite: %s", e)
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
-
-    def has_section(self, section):
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (section,))
-                rows = cur.fetchone()
-                cur.close()
-                return bool(rows)
-            except lite.Error as e:
-                log.warning("sqlite: %s", e)
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
-
-    def add_section(self, section):
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                if section in ["AD rejected"]:
-                    cur.execute(f"CREATE TABLE IF NOT EXISTS '{section}' (Key TEXT PRIMARY KEY, Value TEXT, retry_count NUMBER DEFAULT 0)")
-                else:
-                    cur.execute(f"CREATE TABLE IF NOT EXISTS '{section}' (Key TEXT PRIMARY KEY, Value TEXT)")
-                self._dbcon.commit()
-                cur.close()
-                return
-            except lite.Error as e:
-                log.warning("sqlite: %s", e)
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
-
-    def has_option(self, section, option):
-        for _i in [1, 2]:
-            try:
-                cur = self._dbcon.cursor()
-                cur.execute(f"SELECT value FROM '{section}' WHERE key=?", (option,))  # noqa: S608
-                rows = cur.fetchall()
-                cur.close()
-                return bool(rows)
-            except lite.Error as e:
-                log.warning("sqlite: %s", e)
-                if self._dbcon:
-                    self._dbcon.close()
-                self._dbcon = lite.connect(self.filename)
+                time.sleep(1)
+                self._dbcon = lite.connect(self.filename, timeout=SQL_TIMEOUT)
 
     def get_rows_with_key_ending_in_dn(self, section, dn):
         ending = '%%,%s' % dn
@@ -519,7 +560,7 @@ class ucs:
         adcachedbfile = f'/etc/univention/{self.CONFIGBASENAME}/adcache.sqlite'
         self.adcache = ADCache(adcachedbfile)
 
-        for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN']:
+        for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS entryCSN', 'uoid2guid']:
             if not self.config.has_section(section):
                 self.config.add_section(section)
 
@@ -578,16 +619,20 @@ class ucs:
     def close_debug(self):
         log.trace("close debug")
 
-    def _get_config_option(self, section, option):
-        return self.config.get(section, option)
+    def _get_config_option(self, section: str, option: str, deleted: bool = False):
+        return self.config.get(section, option, deleted)
 
-    def _set_config_option(self, section, option, value):
+    def _set_config_option(self, section: str, option: str, value: str):
         self.config.set(section, option, value)
 
-    def _remove_config_option(self, section, option):
-        self.config.remove_option(section, option)
+    def _insert_config_option(self, section: str, option: str, value: str):
+        """Pure insert, without replace, to respect uniquness"""
+        self.config.insert(section, option, value)
 
-    def _get_config_items(self, section):
+    def _remove_config_option(self, section: str, option: str, lazy_delete: bool = False):
+        self.config.remove_option(section, option, lazy_delete)
+
+    def _get_config_items(self, section: str):
         return self.config.items(section)
 
     def _save_rejected_ucs(self, filename, dn, resync=True, reason=''):
@@ -1278,6 +1323,101 @@ class ucs:
         except univention.admin.uexceptions.noObject:
             return None
 
+    def _get_dn_by_univention_object_identifier(self, uoid: str) -> str:
+        result = self.search_ucs(
+            filter=filter_format('(univentionObjectIdentifier=%s)', [uoid]),
+            attr=['1.1'],
+            unique=True,
+        )
+        if result:
+            return result[0][0]
+        else:
+            return None
+
+    def _get_dn_by_univention_object_identifier_from_recyclebin(self, uoid: str) -> str:
+        result = self.search_ucs(
+            filter=filter_format('(univentionRecycleBinOriginalUniventionObjectIdentifier=%s)', [uoid]),
+            attr=['1.1'],
+            unique=True,
+            base=RECYCLEBIN_BASE,
+        )
+        if result:
+            return result[0][0]
+        else:
+            return None
+
+    def _get_dn_by_object_guid(self, guid: str) -> str:
+        binary_guid = encode_guid(guid)
+        guid_filter = escape_filter_chars(binary_guid.decode('ISO8859-1'), 1)
+        result = self.lo_ad.searchDn(filter=filter_format('objectGUID=%s', [guid_filter]))
+        if result:
+            return result[0]
+        return None
+
+    def _get_univention_object_identifier(self, dn: str) -> str:
+        try:
+            result = self.search_ucs(base=dn, scope='base', attr=['univentionObjectIdentifier'], unique=True)
+            if result:
+                return result[0][1].get('univentionObjectIdentifier')[0].decode('ASCII')
+            else:
+                return None
+        except univention.admin.uexceptions.noObject:
+            return None
+
+    def uoid2guid_add_mapping(self, uoid: str | None = None, guid: str | None = None, dn: str | None = None):
+        if not uoid and not guid:
+            raise ValueError('One of uoid or guid must be set!')
+        if not uoid and not dn:
+            raise ValueError('DN is needed when the uoid has to be searched via guid')
+        try:
+            if uoid and guid:
+                if not self.uoid2guid_exists(guid=guid) and not self.uoid2guid_exists(uoid=uoid):
+                    self._set_config_option('uoid2guid', uoid, guid)
+            elif guid:
+                if not self.uoid2guid_exists(guid=guid):
+                    uoid = self._get_univention_object_identifier(dn)
+                    if uoid:
+                        self._set_config_option('uoid2guid', uoid, guid)
+            elif uoid:
+                if not self.uoid2guid_exists(uoid=uoid):
+                    guid = self._get_objectGUID(dn)
+                    if guid:
+                        self._set_config_option('uoid2guid', uoid, guid)
+        except lite.IntegrityError as e:
+            log.warning('IntegrityError: %s ', e, uoid=uoid, guid=guid, dn=dn)
+
+    def uoid2guid_remove_mapping(
+        self,
+        uoid: str | None = None,
+        guid: str | None = None,
+        lazy_delete: bool = True,
+    ):
+        if not uoid and not guid:
+            raise ValueError('One of uoid or guid must be set!')
+        if not uoid:
+            uoid = self.uoid2guid_get_uoid(guid)
+        if self.uoid2guid_exists(uoid=uoid):
+            self._remove_config_option('uoid2guid', uoid, lazy_delete)
+
+    def uoid2guid_exists(self, uoid: str | None = None, guid: str | None = None) -> bool:
+        if uoid:
+            return bool(self.uoid2guid_get_guid(uoid))
+        if guid:
+            return bool(self.uoid2guid_get_uoid(guid))
+        return False
+
+    def uoid2guid_get_guid(self, uoid: str, deleted: bool = False) -> str:
+        guid = self._get_config_option('uoid2guid', uoid)
+        if not guid and deleted:
+            guid = self._get_config_option('uoid2guid', uoid, deleted=True)
+        return guid
+
+    def uoid2guid_get_uoid(self, guid: str, deleted: bool = False) -> str:
+        uoid = self.config.get_by_value('uoid2guid', guid)
+        if not uoid and deleted:
+            uoid = self.config.get_by_value('uoid2guid', guid, deleted=True)
+        return uoid
+
     def update_deleted_cache_after_removal(self, entryUUID, objectGUID):
         if not entryUUID:
             return
@@ -1423,17 +1563,25 @@ class ucs:
                 restored_dn = self.restore_in_ucs(object, property_type)
                 if restored_dn:
                     object['dn'] = restored_dn
-                    object['olddn'] = restored_dn
+                    object['olddn'] = restored_dn  # need to set for the subsequent modify
                     self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                     self.adcache.add_entry(guid, original_object.get('attributes'))
-                    result = True
+                    self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
+                    log.process('sync AD > UCS:   [%14s] [%10s] %s', property_type, 'modify', object['dn'])
+                    result = self.modify_in_ucs(property_type, object, module, position)
                 else:
+                    # Permanently delete old uoid2guid mapping, not deleted object found, we will just
+                    # create a new object in UCS with a new mapping
+                    self.uoid2guid_remove_mapping(guid=guid, lazy_delete=False)
+
                     object['modtype'] = 'add'
+                    log.process('sync AD > UCS:   [%14s] [%10s] %s', property_type, 'add', object['dn'])
 
             if object['modtype'] == 'add':
                 result = self.add_in_ucs(property_type, object, module, position)
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
+                self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
 
             if object['modtype'] == 'delete':
                 if not old_object:
@@ -1443,6 +1591,14 @@ class ucs:
                     result = self.delete_in_ucs(property_type, object, module, position)
                 self._remove_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.remove_entry(guid)
+                # Because the uoid2guid table is not fully filled, it could
+                # be, that the record isn't in the table. We use lazy deletion to
+                # have the record available in the restore, so we have to insert missing
+                # records before removing.
+                # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                if not self.uoid2guid_exists(guid=guid):
+                    self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
+                self.uoid2guid_remove_mapping(guid=guid)
 
             if object['modtype'] == 'move':
                 if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):
@@ -1462,6 +1618,8 @@ class ucs:
                         )
                     # self._remove_dn_mapping(object['olddn'], '')  # we don't know the old ad-dn here anymore, will be checked by remove_dn_mapping
                     self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
+                    # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                    self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
 
             if object['modtype'] == 'modify':
 
@@ -1504,6 +1662,8 @@ class ucs:
                 # Finally commit the current DNs to the DN mapping cache
                 self._check_dn_mapping(object['dn'], pre_mapped_ad_dn)
                 self.adcache.add_entry(guid, original_object.get('attributes'))
+                # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
                 result = True
 
             if not result:
@@ -1547,6 +1707,7 @@ class ucs:
         :returns:
             The DN of the restored object or None.
         """
+        # Check if the module supports restoring.
         SUPPORTED_TYPES = [
             name
             for name, mod in univention.admin.modules.modules.items()
@@ -1554,7 +1715,7 @@ class ucs:
         ]
         if self.property.get(property_type).ucs_module not in SUPPORTED_TYPES:
             log.warning(
-                'Restore chancelled, property type is not in supported types! (%s)',
+                'Restore canceled, property type is not in supported types! (%s)',
                 property_type,
                 supported_types=SUPPORTED_TYPES,
             )
@@ -1562,40 +1723,19 @@ class ucs:
 
         # TODO: Check if this can really happen!
         if not con_object.get('dn'):
-            log.warning('Restore chancelled, object has no DN!')
+            log.warning('Restore canceled , object has no DN!')
             return
 
-        # Get the attributes of the deleted object from the UCS LDAP.
-        original_dn = con_object['dn']
-        search_result = self.lo.search(
-            filter=f'(univentionRecycleBinOriginalDN={escape_filter_chars(original_dn)})', base=RECYCLEBIN_BASE,
-        )
-        if len(search_result) == 1:
-            deleted_object_dn = search_result[0][0]
-            # deleted_object_attr = del_res[0][1]
-        else:
-            if len(search_result) == 0:
-                log.warning('Restore chancelled, deleted object not found with original DN: %s', original_dn)
-            else:
-                log.warning(
-                    'Restore chancelled, more than one deleted object found with original DN: %s', original_dn,
-                )
+        # Get DN of the deleted object by objectGUID in the recyclebin
+        guid = decode_guid(con_object['attributes']['objectGUID'][0])
+        uoid = self.uoid2guid_get_uoid(guid, deleted=True)
+        if not uoid:
+            log.warning('Restore canceled, object is not in ouid2guid! (objectGUID: %s)', guid)
             return
-
-        # Check if the deleted object that was found matches to the requested object.
-        #
-        # TODO: Use guid instead of objectSid,because the guid can be used for all object types!
-        # TODO: Check if this is really necassary
-        # if property_type in ('user', 'group'):
-        #     restored_sid = deleted_object_attr.get('sambaSID', [None])[0]
-        #     sid = self.decode_sid(con_object['attributes']['objectSid'][0]).encode('UTF-8')
-        #     if (not restored_sid or restored_sid != sid):
-        #         # TODO: Check if an exception should be raised.
-        #         log.warning(
-        #             'Restore chancelled, because of SID missmatching! (%s)', con_object['dn'],
-        #             restored_sid=restored_sid, sid=sid,
-        #         )
-        #         return
+        deleted_object_dn = self._get_dn_by_univention_object_identifier_from_recyclebin(uoid)
+        if not deleted_object_dn:
+            log.warning('Restore canceled, deleted object not found in UCS! (univentionObjectIdentifier: %s)', uoid)
+            return
 
         # Restore object in UCS with UDM.
         recyclebin_module = univention.admin.modules.get('recyclebin/removedobject')
@@ -1604,9 +1744,23 @@ class ucs:
         recyclebin_object.open()
         restored_dn = recyclebin_object.restore()
 
-        entryUUID = self._get_entryUUID(original_dn)
+        # check if we need to move the object, because it was restored to another position in AD
+        rdn, *restored_position = ldap.dn.str2dn(restored_dn)
+        _, *wanted_position = ldap.dn.str2dn(con_object['dn'])
+        restored_position_str = ldap.dn.dn2str(restored_position)
+        wanted_position_str = ldap.dn.dn2str(wanted_position)
+        if not self.lo.compare_dn(restored_position_str.lower(), wanted_position_str.lower()):
+            wanted_dn = ldap.dn.dn2str([rdn, *wanted_position])
+            log.warning('Move restored object to %r', wanted_dn)
+            ucs_object = univention.admin.objects.get_object(self.lo, restored_dn)
+            ucs_object.open()
+            restored_dn = ucs_object.move(wanted_dn)
+
+        # update deleted cache
+        entryUUID = recyclebin_object['originalEntryUUID']
         self.update_deleted_cache_after_restore(entryUUID)
 
+        original_dn = recyclebin_object['originalDN']
         log.debug('Object %s successfully restored to %s', original_dn, restored_dn)
 
         return restored_dn

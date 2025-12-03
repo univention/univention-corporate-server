@@ -614,6 +614,47 @@ class ad(univention.connector.ucs):
 
         self.profiling = self.configRegistry.is_true(f'{self.CONFIGBASENAME}/ad/poll/profiling', False)
 
+    # TODO: not used atm
+    # maybe be used for fixing https://forge.univention.org/bugzilla/show_bug.cgi?id=58881
+    def init_uoid2guid(self):
+        """
+        Initililizes the mapping of univentionObjectIdentifier to the objectGUID.
+
+        ...
+        """
+        ucs_result = self.search_ucs(
+            filter='(&(objectClass=univentionObject)(univentionObjectIdentifier=*))', attr=['univentionObjectIdentifier'],
+        )
+        connector_result = self.__search_ad(
+            base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter='(objectClass=*)', attrlist=['objectGUID'],
+        )
+
+        uoids = [
+            {
+                'uoid': x[1].get('univentionObjectIdentifier', [b''])[0].decode('utf-8'),
+                'dn': x[0],
+            }
+            for x in ucs_result
+        ]
+        guids = [
+            {
+                'guid': univention.connector.decode_guid(x[1].get('objectGUID', [b''])[0]),
+                'dn': self.get_dn_by_con(x[0]),
+            }
+            for x in connector_result
+        ]
+
+        uoid2guid_values = []
+        for uoi in uoids:
+            uoid2guid = (
+                uoi['uoid'],
+                next((x['guid'] for x in guids if x['dn'] == uoi['dn']), None),
+            )
+            if uoid2guid[0] and uoid2guid[1]:
+                uoid2guid_values.append(uoid2guid)
+
+        self.config.bulk_insert('uoid2guid', uoid2guid_values)
+
     def open_drs_connection(self):
         lp = LoadParm()
         Net(creds=None, lp=lp)
@@ -2266,8 +2307,6 @@ class ad(univention.connector.ucs):
                 log.debug("sync_from_ucs: Updating UCS and AD group member mapping cache for %s to %s", pre_mapped_ucs_dn, object['dn'])
                 self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-        log.process(self.context_log(property_type, object, to_ucs=False))
-
         if 'olddn' in object:
             object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
         old_dn = None
@@ -2277,12 +2316,36 @@ class ad(univention.connector.ucs):
 
         # get current object
         ad_object = self.get_object(object['dn'])
+        uoid = object['attributes'].get('univentionObjectIdentifier', [b''])[0].decode('ascii')
+
+        if not uoid:
+            # we need this fallback here for unmapped objects, e.g.
+            #   the "object was moved and is ignored now, delete" case,
+            #   move something in ucs from an allowed subtree to a not allowed subtree
+            #   (509test_allow_subtree.py::test_move_out_of_allowed_subtree)
+            uoid = self.lo.getAttr(pre_mapped_ucs_dn, attr='univentionObjectIdentifier')
+            if uoid:
+                uoid = uoid[0].decode('ascii')
+            else:
+                log.warning('Object without UniventionObjectIdentifier: %r', object)
+                if object['modtype'] == 'delete':
+                    # if there is no UCS object anymore, we still want to remove the object in AD, even if we don't have a uoid
+                    log.warning('No UCS object found for %r, deleting AD object %r anyway', pre_mapped_ucs_dn, object['dn'])
+                else:
+                    # FIXME: at some point we need to decide if we raise here
+                    # but for now, just accept and continue without mapping
+                    pass
 
         #
         # RESTORE
         #
         if restored:
+            context_obj = {'modtype': 'restore', 'dn': object['dn']}
+            log.process(self.context_log(property_type, context_obj, to_ucs=False))
             if self.restore_in_ad(object, property_type):
+                if uoid:
+                    self.uoid2guid_add_mapping(dn=object["dn"], uoid=uoid)
+                object['modtype'] = 'modify'
                 return self.sync_from_ucs(
                     property_type,
                     object,
@@ -2290,6 +2353,14 @@ class ad(univention.connector.ucs):
                     old_dn,
                     object_old,
                 )
+            else:
+                # really delete the mapping, we are getting a new mapping for the uoid
+                if uoid:
+                    self.uoid2guid_remove_mapping(uoid=uoid, lazy_delete=False)
+                log.warning('Restore requested but canceled, add object instead: %r', object['dn'])
+                object['modtype'] = 'add'
+
+        log.process(self.context_log(property_type, object, to_ucs=False))
 
         #
         # ADD
@@ -2362,6 +2433,9 @@ class ad(univention.connector.ucs):
                     log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
                     post_con_modify_function(self, property_type, object)
                     log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+
+            if uoid:
+                self.uoid2guid_add_mapping(dn=object["dn"], uoid=uoid)
 
         #
         # MODIFY
@@ -2519,6 +2593,10 @@ class ad(univention.connector.ucs):
                     log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
                     post_con_modify_function(self, property_type, object)
                     log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+
+            # TODO: Remove after 5.2-5, because the DB would be initialized before.
+            if uoid:
+                self.uoid2guid_add_mapping(dn=object['dn'], uoid=uoid)
         #
         # DELETE
         #
@@ -2527,6 +2605,11 @@ class ad(univention.connector.ucs):
             # update group cache
             self._remove_dn_from_group_member_mapping_caches(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
             self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
+            if uoid:
+                if not self.uoid2guid_exists(uoid=uoid):
+                    # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                    self.uoid2guid_add_mapping(dn=object['dn'], uoid=uoid)
+                self.uoid2guid_remove_mapping(uoid=uoid)
         else:
             log.warning("unknown modtype (%s : %s)", object['dn'], object['modtype'])
             return False
@@ -2577,7 +2660,7 @@ class ad(univention.connector.ucs):
         :returns:
             The DN of the restored object or None.
         """
-        def search_deleted_object(filter_s: str) -> str | None:
+        def search_deleted_object_in_ad(filter_s: str) -> str | None:
             return self.ad_search_ext_s(
                 self.lo_ad.base,
                 ldap.SCOPE_SUBTREE,
@@ -2589,35 +2672,36 @@ class ad(univention.connector.ucs):
                 ],
             )
 
-        context_obj = {'modtype': 'restore', 'dn': con_object['dn']}
-        log.process(self.context_log(property_type, context_obj, to_ucs=False))
-
-        try:
-            dn_parts = ldap.dn.str2dn(con_object['dn'])
-            username = dn_parts[0][0][1]
-            parent_dn = ldap.dn.dn2str(dn_parts[1:])
-        except Exception:
-            log.warning('DN could not be parsed! (%s)', con_object['dn'])
-            return
-        if not username or not parent_dn:
-            log.warning('DN could not be parsed! (%s)', con_object['dn'])
-            return
-
         try:
             entry_uuid = con_object['attributes']['entryUUID'][0].decode('ASCII')
         except KeyError:
             entry_uuid = None
 
-        filter_ad = ldap.filter.filter_format('(&(cn=%s\nDEL:*)(lastKnownParent=%s))', [username, parent_dn])
-        result = search_deleted_object(filter_ad)
-        if not result or len(result) > 1:
-            log.warning(
-                ('No deleted object found (%s)', con_object['dn'])
-                if not result else ('More then one object found! (%s)', con_object['dn']),
-            )
+        # Build filter with objectGUID.
+        uoid = con_object['attributes']['univentionObjectIdentifier'][0].decode('ASCII')
+        if not uoid:
+            log.warning('Restore chancelled, object has no univentionObjectIdentifier! (dn: %s)', con_object['dn'])
+            return
+        guid = self.uoid2guid_get_guid(uoid, deleted=True)
+        if not guid:
+            log.warning('Restore chancelled, object is not in ouid2guid! (univentionObjectIdentifier: %s)', uoid)
+            return
+
+        binary_guid = univention.connector.encode_guid(guid)
+        binary_guid_escaped = escape_filter_chars(binary_guid.decode('ISO8859-1'), 1)
+        filter_ad = f'(objectGUID={binary_guid_escaped})'
+
+        # Get the DN where the object should be restored to.
+        result = search_deleted_object_in_ad(filter_ad)
+        if not result:
+            log.warning('No deleted object found with objectGUID %s (%s)', guid, con_object['dn'])
+            return
+        elif len(result) > 1:
+            log.warning('More then one object found with objectGUID %s (%s)', guid, con_object['dn'], result=result)
             return
         restore_dn = result[0][0]
 
+        # Restore object
         restore_modlist = [
             (ldap.MOD_DELETE, 'isDeleted', None),
             (ldap.MOD_REPLACE, 'distinguishedName', con_object['dn'].encode('UTF-8')),
@@ -2630,7 +2714,7 @@ class ad(univention.connector.ucs):
         if entry_uuid:
             self.update_deleted_cache_after_restore(entry_uuid)
 
-        log.debug('Object %s successfully restored to %s', restore_dn, con_object['dn'])
+        log.info('Object %s successfully restored to %s', restore_dn, con_object['dn'])
 
         return con_object['dn']
 
@@ -2652,10 +2736,17 @@ class ad(univention.connector.ucs):
             subobject_ad = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
             key = self.__identify_ad_type(subobject_ad)
             back_mapped_subobject = self._object_mapping(key, subobject_ad)
-            log.warning("delete subobject: %r", back_mapped_subobject['dn'])
+            # FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a ad_object!
+            # ucs_attr = self.lo.get(back_mapped_subobject['dn'])
+            # back_mapped_subobject['attributes'].update(ucs_attr)
+            # subobject_ad = self._object_mapping(key, back_mapped_subobject, object_type='ucs')
+
+            log.warning("delete subobject: %r", subdn)
 
             if not self._ignore_object(key, back_mapped_subobject):
                 # FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a ad_object!
+                # ucs_attr = self.lo.get(back_mapped_subobject['dn'])
+                # subobject_ad['attributes'].update(ucs_attr)
                 if not self.sync_from_ucs(key, subobject_ad, back_mapped_subobject['dn']):
                     log.warning("delete of subobject failed: %r", subdn)
                     return False
