@@ -256,7 +256,9 @@ with the following Univention Configuration Registry (UCR) variables.
    created through the *Create an account* page.
 
    If the variable has no value,
-   the *Self Service* uses the configured default container for user account objects.
+   the *Self Service* uses the default container
+   ``cn=self registered users,$ldap_base``
+   for user account objects.
 
    :Default value: not defined
    :Type: string
