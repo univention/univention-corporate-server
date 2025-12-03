@@ -22,6 +22,7 @@ IGNORE_ATTRS = {
     'univentionobjecttype',
     'univentionobjectidentifier',
     'memberof',
+    'authTimestamp',  # might be enabled on the fly
 }
 
 translation = univention.admin.localization.translation('univention.admin.handlers')
