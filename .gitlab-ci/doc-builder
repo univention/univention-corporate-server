@@ -146,6 +146,31 @@ def job_desc(pkg: str, path: Path, extends: str, languages: list[str], depends: 
     return job
 
 
+def lint_envvars(pkg: str, path: Path, extends: str) -> dict[str, object]:
+    """
+    This job greps in the build artifact of the HTML for references to ``:envvar:`` roles
+    that don't have a linked reference.
+    If this is the case, Sphinx can't resolve the corresponding ``.. envvar::`` directive.
+    It means that the explanation for the envvar isn't defined or miss-spelled.
+    Such cross-references need a fix and should show up in the pipeline.
+    """
+    job: dict[str, object] = {
+        'extends': extends,
+        'needs': [
+            {'job': job_name(pkg, 'html')},
+        ],
+        'rules': [
+            {
+                'if': '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH',
+                'changes': [
+                    job_path(path),
+                ],
+            },
+        ],
+    }
+    return job
+
+
 def job_path(path: Path) -> str:
     return f'{path.relative_to(ROOT).as_posix()}/**/*'
 
@@ -158,11 +183,16 @@ def add_jobs(pipeline: dict[str, object]) -> None:
     docs = find_docs()
     for path, languages in docs.items():
         all_paths.append(job_path(path))
+        pkg = path.name
         for target in TARGETS:
-            pkg = path.name
             name = job_name(pkg, target)
             job = job_desc(pkg, path, f'.sphinx-{target}', languages, DEPENDS.get(pkg, set()))
             pipeline.update({name: job})
+
+        if pkg == 'ucs-operation':
+            name = f'lint envvars {pkg}'
+            lint_envvar = lint_envvars(pkg, path, '.lint-envvar-cross-reference')
+            pipeline.update({name: lint_envvar})
 
     # FIXME: cycle
     path = ROOT / 'doc' / 'developer-reference'
