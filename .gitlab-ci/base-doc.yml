@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 include:
-  - project: 'univention/dev/docs/sphinx-docker'
-    file: 'pipeline/sphinx.yml'
+  - project: "univention/dev/docs/sphinx-docker"
+    file: "pipeline/sphinx.yml"
 
 .sphinx-html:
   extends: .sphinx-html-template
@@ -25,10 +25,24 @@ include:
   variables:
     GIT_STRATEGY: none
 
+.lint-envvar-cross-reference:
+  stage: "build"
+  allow_failure: true
+  image: $SPHINX_BASE
+  script:
+    - '! grep -Rn ''code class="xref std std-envvar'' $(find doc/ -type f -name ''*.html'' -print0 | xargs -0) | grep -v ''reference external'' | grep -v ''reference internal'' | tee "${DOCS_DIR}/${BUILDDIR}/envvars.err"'
+  after_script:
+    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-code-quality-report.json envvars "${DOCS_DIR}/${BUILDDIR}/envvars.err"
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+    when: always
+    expire_in: 1 week
+
 review:
   stage: merge
   rules:
-    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+    - if: "$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH"
   extends: .publish
   tags:
     - omar
@@ -45,7 +59,7 @@ stop_review:
   variables:
     GIT_STRATEGY: none
   rules:
-    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+    - if: "$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH"
       when: manual
   needs:
     - review
@@ -65,9 +79,9 @@ staging:
   tags:
     - omar
   rules:
-    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
   script:
-    - 'rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs'
+    - "rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs"
   environment:
     name: staging
     url: http://apt.knut.univention.de/download/docs/
