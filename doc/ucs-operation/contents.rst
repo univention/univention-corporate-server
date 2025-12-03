@@ -16,6 +16,7 @@ Univention Corporate Server - Operation Manual
 
 .. toctree::
 
+   ucr-variable-reference
    glossary
    bibliography
 
