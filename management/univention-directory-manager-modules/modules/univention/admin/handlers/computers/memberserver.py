@@ -270,7 +270,6 @@ mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.Li
 mapping.register('serverRole', 'univentionServerRole')
 mapping.register('mac', 'macAddress', encoding='ASCII')
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('reinstall', 'univentionServerReinstall', None, univention.admin.mapping.ListToString)
 mapping.register('instprofile', 'univentionServerInstallationProfile', None, univention.admin.mapping.ListToString)
 mapping.register('reinstalloption', 'univentionServerInstallationOption', None, univention.admin.mapping.ListToString)
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
