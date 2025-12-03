@@ -67,6 +67,7 @@ extensions = [
 intersphinx_mapping = {
     'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/en', None),
     'uv-ucs-manual': reference_inventory('manual', version=version),
+    'uv-architecture': reference_inventory('architecture', version=version),
     'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
 }
 
