@@ -10,3 +10,6 @@ desc: |
 bug: [58869]
 cve:
 - CVE-2015-9541
+erratum: 1768
+announced: 2025-12-03
+support: lts
