@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Skip resync of reject for uSNCreated if lower than uSNChanged
 bug: [58845]
+erratum: 1358
+announced: 2025-12-03
+support: core
