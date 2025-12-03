@@ -1,3 +1,9 @@
+univention-updater (17.4.2) unstable; urgency=medium
+
+  * Bug #58875: Remove univention-net-installer
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 03 Dec 2025 16:43:25 +0100
+
 univention-updater (17.4.1) unstable; urgency=medium
 
   * Bug #58849: Adapt links and components for 5.2-4
