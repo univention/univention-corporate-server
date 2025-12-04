@@ -197,7 +197,7 @@ You can fetch the attribute names and their mapping through the command in
 
 .. _end-user-self-service-registration:
 
-Self registration
+User registration
 =================
 
 The *End User Self Service* allows users to register themselves.
@@ -210,10 +210,10 @@ that the user must verify through email.
       in :cite:t:`uv-nubus-manual`
       for information about using the self registration.
 
-.. _end-user-self-service-registration-create-account:
+.. _end-user-self-service-registration-registration-form:
 
-Create account
---------------
+Registration form
+-----------------
 
 You can configure properties of the *Create an account* page
 and the account creation itself
@@ -282,9 +282,9 @@ with the following Univention Configuration Registry (UCR) variables.
    :Default value: not defined
    :Type: List of strings, separated by commas
 
-.. _end-user-self-service-registration-verification-email:
+.. _end-user-self-service-registration-email-verification:
 
-Verification email
+Email verification
 ------------------
 
 When users register through the *Self Service*,
@@ -364,10 +364,10 @@ in :cite:t:`uv-nubus-manual`.
    :Default value: ``64``
    :Type: unsigned integer
 
-.. _end-user-self-service-registration-account-verification:
+.. _end-user-self-service-registration-account-activation:
 
-Account verification
---------------------
+Account activation
+------------------
 
 When the user clicks the verification link from the email,
 the web browser shows the *Account verification* page of the *Self Service*.
@@ -411,11 +411,16 @@ see :external+uv-keycloak-app:ref:`app-settings` in the :cite:t:`ucs-keycloak-do
 
 .. _end-user-self-service-deregistration:
 
-Self deregistration
+User deregistration
 ===================
 
 The :program:`Self Service` allows users
 to request the deletion of their user account.
+
+.. _end-user-self-service-deregistration-request:
+
+Deregistration request
+----------------------
 
 If a user requests to delete their account,
 Nubus doesn't delete the user account directly,
@@ -467,6 +472,11 @@ Use the following UCR variables to configure user self deregistration.
 
    :Default value: :file:`/usr/share/univention-self-service/email_bodies/deregistration_notification_email_body.txt`
    :Type: string
+
+.. _end-user-self-service-deregistration-cleanup:
+
+Account cleanup
+---------------
 
 The *Self Service* provides a script at
 :file:`/usr/share/univention-self-service/delete_deregistered_accounts.py`
