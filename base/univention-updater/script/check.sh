@@ -75,7 +75,7 @@ update_check_hold_packages () {
 	return 1
 }
 
-# Bug #58875 begin - check net-installer
+# Bug #58875 check net-installer
 update_check_net_installer () {
 	local var="update$VERSION/ignore_net_installation"
 	ignore_check "$var" && return 100
@@ -88,6 +88,8 @@ update_check_net_installer () {
 		echo "	  -> univention-remove --purge univention-net-installer"
 		echo "	or via the package management in the Univention Management Console."
 		echo "	Make sure that only the package univention-net-installer gets removed!"
+		echo "	Afterwards, please check if all shares with the name 'ucs-repository', which were created"
+                echo "	by the installation of the package can be safely removed. And do so if possible."
 		echo
 		echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
 		return 1
