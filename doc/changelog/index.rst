@@ -416,7 +416,7 @@ Univention Active Directory Connection
 Univention PXE installation
 ======================================
 
-* The UCS PXE Installation services provided by the package univention-net-installer were deprecated
+* The UCS PXE Installation services provided by the package :program:`univention-net-installer` were deprecated
   and need to be removed before upgrading to UCS 5.2-4.
 
 .. _changelog-other:
