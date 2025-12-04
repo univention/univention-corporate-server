@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-03 14:32+0000\n"
+"POT-Creation-Date: 2025-12-05 14:08+0000\n"
 "PO-Revision-Date: 2025-09-03 17:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -34,65 +34,65 @@ msgstr "Release-Highlights"
 
 #: ../../index.rst:16
 msgid ""
-"With |UCSUCS| 5.2-4, the third patch level release for |UCSUCS| 5.2 is "
+"With |UCSUCS| 5.2-4, the fourth patch level release for |UCSUCS| 5.2 is "
 "available. It provides several feature improvements and extensions, "
 "properties, as well as bug fixes. Here is an overview of the most "
 "important changes:"
 msgstr ""
-"Mit |UCSUCS| 5.2-4 steht das dritte Patchlevel-Update für |UCSUCS| 5.2 "
+"Mit |UCSUCS| 5.2-4 steht das vierte Patchlevel-Update für |UCSUCS| 5.2 "
 "zur Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue"
 " Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
 "Die wichtigsten Änderungen im Überblick:"
 
 #: ../../index.rst:20
 msgid ""
-"The Active Directory Connector now knows the |UCSUCRV| "
-":envvar:`connector/ad/mapping/allow-subtree-ancestors` which simplifies "
-"the management of selective synchronization of more complex LDAP DIT "
-"structures."
+"*Delegative Administration* is now available as a preview feature. "
+"However, it isn't supported for general production environments at this "
+"stage. Delegative administration provides fine-grained delegation "
+"capabilities. Administrators can assign specific management "
+"responsibilities to designated users within defined scopes. For detailed "
+"usage instructions, configuration notes, and known limitations, refer to "
+":external+uv-ext-delegative-administration:ref:`da-intro` in "
+":cite:t:`uv-ext-delegative-administration`."
 msgstr ""
-"Der Active Directory Connector kennt nun die |UCSUCRV| "
-":envvar:`connector/ad/mapping/allow-subtree-ancestors`, welche die "
-"Verwaltung der selektiven Synchronisation von komplexeren LDAP-DIT-"
-"Strukturen vereinfacht."
+"*Delegative Administration* ist nun als Preview-Funktion verfügbar. In "
+"diesem Stadium wird sie jedoch nicht für den produktiven Einsatz "
+"unterstützt. Delegative Administration bietet fein granulare "
+"Delegationsmöglichkeiten. Administratoren können bestimmten Benutzern "
+"definierte Verwaltungsaufgaben innerhalb festgelegter Bereiche zuweisen. "
+"Ausführliche Anweisungen zur Nutzung, Konfigurationshinweise und bekannte "
+"Einschränkungen finden Sie unter "
+":external+uv-ext-delegative-administration:ref:`da-intro` in "
+":cite:t:`uv-ext-delegative-administration`."
 
-#: ../../index.rst:24
+#: ../../index.rst:30
 msgid ""
-"|UCSUDM| has seen an update that allows user and computer objects to get their "
-"``Primary Group`` from their parent container during creation."
+"|UCSUCS| 5.2-4 officially discontinues support for the PXE server. This "
+"change doesn't affect the UCS installation process. Unattended "
+"installations remain fully supported. You can continue to use unattended "
+"installations using configured installation profiles."
 msgstr ""
-"|UCSUDM| erhielt ein Update, so dass die ``Primary Group`` "
-"beim Anlegen von Benutzer- und Computerobjekten durch den "
-"Elterncontainer bestimmt werden kann."
+"Die Unterstützung der PXE-Server-Funktionalität wurde in |UCSUCS| 5.2-4 "
+"offiziell eingestellt. Diese Änderung hat keine Auswirkungen auf den "
+"Installationsprozess von UCS. Unbeaufsichtigte Installationen werden "
+"weiterhin vollständig unterstützt und können weiterhin mithilfe "
+"konfigurierter Installationsprofile automatisiert werden."
 
-#: ../../index.rst:28
+#: ../../index.rst:35
 msgid ""
-"Added a listener plugin which fuels the :program:`Provisioning Service` "
-"that you can install in a preview version through the App Center. The App"
-" receives further updates throughout |UCSUCS| 5.2-4."
+"|UCSUCS| 5.2-4 includes numerous updates for packages, such as "
+"``docker.io``, ``nginx``, ``redis``, ``postgresql-common``, ``qemu``, "
+"``strongswan``, and many others"
 msgstr ""
-"Ein Listener Plugin wurde hinzugefügt, das den :program:`Provisioning Service` "
-"befüllt, welcher in einer Vorschauversion über das App Center installiert werden "
-"kann. Die App erhält weitere Updates im Verlauf von |UCSUCS| 5.2-4."
+"|UCSUCS| 5.2-4 enthält zahlreiche Updates für Pakete wie ``docker.io``, "
+"``nginx``, ``redis``, ``postgresql-common``, ``qemu``, ``strongswan`` und"
+" viele andere."
 
-#: ../../index.rst:32
-msgid ""
-"|UCSUCS| 5.2-4 includes numerous security updates for packages, such as "
-"``sudo``, ``squid``, ``GnuTLS``, ``firefox-esr``, ``Linux kernel``, and "
-"many others to ensure protection against the latest vulnerabilities. In "
-"another update, ``OpenLDAP`` increased the maximum number of indexed "
-"attributes from 128 to 256."
-msgstr ""
-"|UCSUCS| 5.2-4 enthält zahlreiche Sicherheitsupdates für Pakete wie "
-"``curl``, ``glibc``, ``intel-microcode``, ``openssl``, ``firefox-esr``, "
-"``Linux kernel`` und viele andere, um Schutz vor den neuesten "
-"Sicherheitsanfälligkeiten zu gewährleisten."
-
-#: ../../index.rst:41
+#: ../../index.rst:43
 msgid "Notes about the update"
 msgstr "Hinweise zum Update"
 
-#: ../../index.rst:43
+#: ../../index.rst:45
 msgid ""
 "Run the update in a maintenance window, because some services in the "
 "domain may not be available temporarily. It's recommended that you test "
@@ -105,7 +105,7 @@ msgstr ""
 "bevor Sie die eigentliche Aktualisierung durchführen. Die Testumgebung "
 "muss mit der Produktionsumgebung identisch sein."
 
-#: ../../index.rst:48
+#: ../../index.rst:50
 msgid ""
 "Depending on the system performance, network connection, and installed "
 "software, the update can take anywhere from 30 minutes to several hours. "
@@ -116,11 +116,11 @@ msgstr ""
 "Für große Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-"
 "guide`."
 
-#: ../../index.rst:55
+#: ../../index.rst:57
 msgid "Recommended update sequence for environments with more than one UCS system"
 msgstr "Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS System"
 
-#: ../../index.rst:57
+#: ../../index.rst:59
 msgid ""
 "In environments with more than one UCS system, take the update sequence "
 "of the UCS systems into account."
@@ -128,7 +128,7 @@ msgstr ""
 "Beachten Sie in Umgebungen mit mehr als einem UCS-System die Update-"
 "Reihenfolge der UCS-Systeme."
 
-#: ../../index.rst:60
+#: ../../index.rst:62
 msgid ""
 "The authoritative version of the LDAP directory service operates on the "
 "|UCSPRIMARYDN| and replicates to all the remaining LDAP servers of the "
@@ -142,11 +142,11 @@ msgstr ""
 "Schemata auftreten können, muss der |UCSPRIMARYDN| bei einem Release-"
 "Update immer das erste System sein, auf dem das Update durchgeführt wird."
 
-#: ../../index.rst:69
+#: ../../index.rst:71
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:71
+#: ../../index.rst:73
 msgid ""
 "Please note that simultaneous operation of UCS and Debian GNU/Linux on a "
 "UEFI system starting with UCS 5.0 isn't supported."
@@ -154,7 +154,7 @@ msgstr ""
 "Beginnend mit UCS 5.0 wird ein gleichzeitiger Betrieb von UCS und Debian "
 "GNU/Linux auf einem UEFI System nicht unterstützt."
 
-#: ../../index.rst:74
+#: ../../index.rst:76
 msgid ""
 "The reason for this is the GRUB boot loader of |UCSUCS|, which partly "
 "uses the same configuration files as Debian. An already installed Debian "
@@ -170,11 +170,11 @@ msgstr ""
 "Installation von Debian wird ebenfalls dazu führen, dass UCS 5.0 nicht "
 "mehr startet. Mehr Informationen finden Sie unter :uv:kb:`17768`."
 
-#: ../../index.rst:84
+#: ../../index.rst:86
 msgid "Preparation of update"
 msgstr "Vorbereitung des Updates"
 
-#: ../../index.rst:86
+#: ../../index.rst:88
 msgid ""
 "This section provides more information you need to consider before you "
 "update."
@@ -182,11 +182,11 @@ msgstr ""
 "In diesem Abschnitt finden Sie weitere Informationen, die Sie vor der "
 "Aktualisierung beachten müssen."
 
-#: ../../index.rst:91
+#: ../../index.rst:93
 msgid "Sufficient disk space"
 msgstr "Ausreichender Festplattenplatz"
 
-#: ../../index.rst:93
+#: ../../index.rst:95
 msgid ""
 "Also verify that you have sufficient disk space available for the update."
 " A standard installation requires a minimum of 6-10 GB of disk space. The"
@@ -200,11 +200,11 @@ msgstr ""
 "GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der "
 "Pakete."
 
-#: ../../index.rst:101
+#: ../../index.rst:103
 msgid "Console usage for update"
 msgstr "Nutzung der Konsole für das Update"
 
-#: ../../index.rst:103
+#: ../../index.rst:105
 msgid ""
 "For the update, sign in on the system's local console as user ``root``, "
 "and initiate the update there. Alternatively, you can conduct the update "
@@ -214,7 +214,7 @@ msgstr ""
 "dem Benutzer ``root`` an und starten Sie das Update dort. Alternativ "
 "können Sie das Update über |UCSUMC| durchführen."
 
-#: ../../index.rst:107
+#: ../../index.rst:109
 msgid ""
 "If you want or have to run the update over a network connection, ensure "
 "that the update continues in case of network disconnection. Network "
@@ -236,11 +236,11 @@ msgstr ""
 ":command:`screen` oder :command:`at`. Sie sind auf allen UCS Systemrollen"
 " installiert."
 
-#: ../../index.rst:118
+#: ../../index.rst:120
 msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
-#: ../../index.rst:120
+#: ../../index.rst:122
 msgid ""
 "Univention provides a script that checks for problems which would prevent"
 " the successful update of the system. You can download the script before "
@@ -251,7 +251,7 @@ msgstr ""
 "Sie können das Skript vor dem Update manuell auf das System herunterladen"
 " und ausführen:"
 
-#: ../../index.rst:124
+#: ../../index.rst:126
 #, python-brace-format
 msgid ""
 "# download\n"
@@ -296,11 +296,11 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:150
+#: ../../index.rst:152
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:152
+#: ../../index.rst:154
 msgid ""
 "Following the update, you need to run new or updated join scripts. You "
 "can either use the UMC module *Domain join* or run the command :command"
@@ -311,11 +311,11 @@ msgstr ""
 "verwenden oder durch Befehl :command:`univention-run-join-scripts` als "
 "Benutzer ``root`` aufrufen."
 
-#: ../../index.rst:156
+#: ../../index.rst:158
 msgid "Subsequently, you need to restart the UCS system."
 msgstr "Anschließend müssen Sie das UCS-System neu starten."
 
-#: ../../index.rst:158
+#: ../../index.rst:160
 msgid ""
 "Please verify the PostgreSQL version on all UCS systems that updated to "
 "UCS 5.2. As UCS 5.2 ships Version 15 of PostgreSQL, updated systems may "
@@ -327,11 +327,11 @@ msgstr ""
 " müssen aktualisierte Systeme möglicherweise von PostgreSQL-11 migriert "
 "werden. Der :uv:kb:`22162` erläutert die empfohlenen Schritte."
 
-#: ../../index.rst:168
+#: ../../index.rst:170
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:170
+#: ../../index.rst:172
 msgid ""
 "The following sections inform about some selected packages regarding the "
 "update."
@@ -339,11 +339,11 @@ msgstr ""
 "Die folgenden Abschnitte informieren über einige ausgewählte Pakete im "
 "Zusammenhang mit dem Update."
 
-#: ../../index.rst:175
+#: ../../index.rst:177
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:177
+#: ../../index.rst:179
 msgid ""
 "When using the *UCS Core Edition*, UCS collects anonymous statistics on "
 "the use of |UCSUMC|. The modules opened get logged to an instance of the "
@@ -358,7 +358,7 @@ msgstr ""
 " besser auf das Kundeninteresse zuzuschneiden und Usability-"
 "Verbesserungen vorzunehmen."
 
-#: ../../index.rst:182
+#: ../../index.rst:184
 msgid ""
 "You can verify the license status through the menu entry "
 ":menuselection:`License --> License information` of the user menu in the "
@@ -372,7 +372,7 @@ msgstr ""
 "wenn unter *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
 "aufgeführt ist."
 
-#: ../../index.rst:187
+#: ../../index.rst:189
 msgid ""
 "UCS doesn't collect usage statistics, when you use an `Enterprise "
 "Subscription <https://www.univention.com/products/prices-and-"
@@ -384,7 +384,7 @@ msgstr ""
 "subscriptions/>`_ wie *UCS Base Subscription* oder *UCS Standard "
 "Subscription* verwenden."
 
-#: ../../index.rst:191
+#: ../../index.rst:193
 msgid ""
 "Independent of the license used, you can deactivate the usage statistics "
 "collection by setting the |UCSUCRV| :envvar:`umc/web/piwik` to ``false``."
@@ -393,11 +393,11 @@ msgstr ""
 "Nutzungsstatistiken durch Setzen der |UCSUCRV| :envvar:`umc/web/piwik` "
 "auf ``false`` deaktivieren."
 
-#: ../../index.rst:197
+#: ../../index.rst:199
 msgid "Recommended browsers for the access to |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:199
+#: ../../index.rst:201
 msgid ""
 "|UCSUMC| uses numerous JavaScript and CSS functions to display the web "
 "interface. Your web browser needs to permit cookies. |UCSUMC| requires "
@@ -407,40 +407,41 @@ msgstr ""
 "JavaScript- und CSS-Funktionen. Ihr Browser muss dafür Cookies zulassen. "
 "|UCSUMC| benötigt dafür einen der folgenden Browser:"
 
-#: ../../index.rst:203
+#: ../../index.rst:205
 msgid "Chrome as of version 131"
 msgstr "Chrome ab Version 131"
 
-#: ../../index.rst:205
+#: ../../index.rst:207
 msgid "Firefox as of version 128"
 msgstr "Firefox ab Version 128"
 
-#: ../../index.rst:207
+#: ../../index.rst:209
 msgid "Safari and Safari Mobile as of version 18"
 msgstr "Safari und Safari Mobile ab Version 18"
 
-#: ../../index.rst:209
+#: ../../index.rst:211
 msgid "Microsoft Edge as of version 128"
 msgstr "Microsoft Edge ab Version 128"
 
-#: ../../index.rst:211
+#: ../../index.rst:213
 msgid "Users running older browsers may experience display or performance issues."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
 "auftreten."
 
-#: ../../index.rst:217
+#: ../../index.rst:219
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:219
+#: ../../index.rst:221
 msgid ""
-"You find the changes since UCS 5.2-0 in :external+uv-"
+"You find the changes since UCS 5.2-4 in :external+uv-"
 "changelog-5.2-4:doc:`index`."
 msgstr ""
-"Die Änderungen seit UCS 5.2-0 finden Sie in :external+uv-"
+"Die Änderungen seit UCS 5.2-4 finden Sie in :external+uv-"
 "changelog-5.2-4:doc:`index`."
 
-#: ../../index.rst:226
+#: ../../index.rst:228
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
+
