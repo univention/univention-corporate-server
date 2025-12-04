@@ -62,7 +62,7 @@ Source code:
 
       udm "computers/$server_role" modify "$@" \
           --dn "$ldap_hostdn" \
-          --set reinstall=0 || die
+          --set inventoryNumber=1 || die
 
       # create container for extended attributes to be placed in
       udm container/cn create "$@" \
