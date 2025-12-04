@@ -106,8 +106,7 @@ case "${server_role:-}" in
 domaincontroller_master) univention-run-join-scripts >&3 2>&3 ;;
 esac
 
-set -xe
-# Bug #????? remove pxe linux
+# Bug #58875 remove pxe linux
 if is_installed univention-net-installer && [ "$server_role" = "domaincontroller_master" ]; then
 	case "$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | awk '/^boot_filename: / {print $2}')" in
 	''|pxelinux.0)
@@ -117,6 +116,7 @@ if is_installed univention-net-installer && [ "$server_role" = "domaincontroller
 		# unset all pxe ucr vars
 		ucr search --brief --key ^pxe | sed 's/\:.*//' | xargs ucr unset
 	esac
+	a2dissite univention-net-installer.conf
 fi
 
 

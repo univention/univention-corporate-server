@@ -75,7 +75,7 @@ update_check_hold_packages () {
 	return 1
 }
 
-# Bug #??? begin - check net-installer
+# Bug #58875 begin - check net-installer
 update_check_net_installer () {
 	local var="update$VERSION/ignore_net_installation"
 	ignore_check "$var" && return 100
