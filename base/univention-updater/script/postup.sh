@@ -117,6 +117,8 @@ if is_installed univention-net-installer && [ "$server_role" = "domaincontroller
 		ucr search --brief --key ^pxe | sed 's/\:.*//' | xargs ucr unset
 	esac
 	a2dissite univention-net-installer.conf
+        ucr unset security/packetfilter/package/univention-net-installer-daemon/tcp/49173/all
+        ucr unset security/packetfilter/package/univention-net-installer-daemon/tcp/49173/all/en
 fi
 
 
