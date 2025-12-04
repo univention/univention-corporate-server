@@ -85,7 +85,7 @@ update_check_net_installer () {
 		echo "	PXE installation which is not supported since UCS 4.4"
 		echo "	Please remove to package from your system to continue the update"
 		echo "	with either the command line tool univention-remove "
-		echo "	  -> univention-remove univention-net-installer"
+		echo "	  -> univention-remove --purge univention-net-installer"
 		echo "	or via the package management in the Univention Management Console."
 		echo "	Make sure that only the package univention-net-installer gets removed!"
 		echo
