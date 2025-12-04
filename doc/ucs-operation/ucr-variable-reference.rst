@@ -32,6 +32,25 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+.. envvar:: saml/idp/selfservice/check_email_verification
+
+   If activated,
+   users that have registered themselves
+   through the :program:`Self Service` app
+   need to verify their email address first,
+   before they can sign in.
+
+   You must set this UCR variable
+   on the :term:`UCS Primary Directory Node`
+   and all :term:`UCS Backup Directory Node`\s.
+   The variable has no effect on accounts
+   created by user accounts in the ``Domain Admins`` group.
+
+   For more information,
+   see :ref:`end-user-self-service-registration-account-activation`.
+
+   :Default value: ``false``
+   :Type: boolean
 
 .. envvar:: umc/http/processes
 
