@@ -20,56 +20,60 @@
 #include "salt.h"
 #include "keyblock.h"
 
-#if PY_MAJOR_VERSION >= 3
-#define PyString_FromStringAndSize PyBytes_FromStringAndSize
-#endif
-
 krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 {
+	krb5KeyblockObject *self = NULL;
 	krb5_error_code err;
 	krb5ContextObject *context;
 	krb5EnctypeObject *enctype;
 	char *password;
 	PyObject *arg;
+
 	if (!PyArg_ParseTuple(args, "O!O!sO", &krb5ContextType, &context, &krb5EnctypeType, &enctype, &password, &arg))
 		return NULL;
 
-	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
-	if (self == NULL)
+	self = PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
+	if (!self)
 		return NULL;
+
+	memset(&self->keyblock, 0, sizeof(self->keyblock));
 
 	Py_INCREF(context);
 	self->context = context;
 
-#if PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 2
 	if (PyObject_TypeCheck(arg, &krb5SaltType)) {
 		krb5SaltObject *salt = (krb5SaltObject*)arg;
-		unsigned int iter = htonl(4096);
-		krb5_data opaque;
-		opaque.data = &iter;
-		opaque.length = sizeof(iter);
-		err = krb5_string_to_key_salt_opaque(context->context, enctype->enctype, password,
-				salt->salt, opaque, &self->keyblock);
+
+		uint32_t iter = htonl(4096);
+		krb5_data opaque = {
+			.data = (char *)&iter,
+			.length = sizeof(iter)
+		};
+
+		err = krb5_string_to_key_salt_opaque(context->context, enctype->enctype, password, salt->salt, opaque, &self->keyblock);
 	} else if (PyObject_TypeCheck(arg, &krb5PrincipalType)) {
-#else
-	if (1) {
-#endif
 		krb5PrincipalObject *principal = (krb5PrincipalObject*)arg;
 		// TODO also use krb5_string_to_key_salt_opaque here.
-		err = krb5_string_to_key(context->context, enctype->enctype, password,
-				principal->principal, &self->keyblock);
+		err = krb5_string_to_key(context->context, enctype->enctype, password, principal->principal, &self->keyblock);
 	} else {
 		PyErr_SetString(PyExc_TypeError, "either principal or salt needs to be passed");
-		Py_DECREF(self);
-		return NULL;
+		goto error;
 	}
+
 	if (err) {
-		krb5_exception(self->context->context, err);
-		Py_DECREF(self);
-		return NULL;
+		krb5_exception(context->context, err);
+		goto error;
 	}
 
 	return self;
+
+error:
+	if (self) {
+		krb5_free_keyblock_contents(context->context, &self->keyblock);
+		Py_DECREF(self->context);
+		PyObject_Del(self);
+	}
+	return NULL;
 }
 
 krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
@@ -81,47 +85,43 @@ krb5KeyblockObject *keyblock_raw_new(PyObject *unused, PyObject *args)
 	Py_ssize_t key_len;
 	krb5_enctype enctype;
 
-#if PY_MAJOR_VERSION >= 3
 	if (!PyArg_ParseTuple(args, "O!Oy#", &krb5ContextType, &context, &py_enctype, &key_data, &key_len))
-#else
-	if (!PyArg_ParseTuple(args, "O!Os#", &krb5ContextType, &context, &py_enctype, &key_data, &key_len))
-#endif
 		return NULL;
 
-	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_NEW(krb5KeyblockObject, &krb5KeyblockType);
-	if (self == NULL) {
+	krb5KeyblockObject *self = (krb5KeyblockObject *) PyObject_New(krb5KeyblockObject, &krb5KeyblockType);
+	if (!self) {
 		PyErr_NoMemory();
 		return NULL;
 	}
 
+	memset(&self->keyblock, 0, sizeof(self->keyblock));
 	Py_INCREF(context);
 	self->context = context;
 
 	if (PyObject_TypeCheck(py_enctype, &krb5EnctypeType)) {
 		krb5EnctypeObject *enctype_obj = (krb5EnctypeObject*)py_enctype;
 		enctype = enctype_obj->enctype;
-#if PY_MAJOR_VERSION >= 3
 	} else if (PyLong_Check(py_enctype)) {
 		enctype = PyLong_AsLong(py_enctype);
-#else
-	} else if (PyInt_Check(py_enctype)) {
-		enctype = PyInt_AsLong(py_enctype);
-#endif
+		if (PyErr_Occurred()) goto error;
 	} else {
-		PyErr_SetString(PyExc_TypeError, "enctype must be of type integer or krb5EnctypeObject");
-		Py_DECREF(self);
-		return NULL;
+		PyErr_SetString(PyExc_TypeError, "enctype must be an integer or krb5EnctypeObject");
+		goto error;
 	}
 
 	err = krb5_keyblock_init(self->context->context, enctype, key_data, key_len, &self->keyblock);
-
 	if (err) {
 		krb5_exception(self->context->context, err);
-		Py_DECREF(self);
-		return NULL;
+		goto error;
 	}
 
 	return self;
+
+error:
+	krb5_free_keyblock_contents(self->context->context, &self->keyblock);
+	Py_DECREF(self->context);
+	PyObject_Del(self);
+	return NULL;
 }
 
 static PyObject *keyblock_keytype(krb5KeyblockObject *self)
@@ -131,7 +131,7 @@ static PyObject *keyblock_keytype(krb5KeyblockObject *self)
 
 static PyObject *keyblock_keyvalue(krb5KeyblockObject *self)
 {
-	return PyString_FromStringAndSize(self->keyblock.keyvalue.data, self->keyblock.keyvalue.length);
+	return PyBytes_FromStringAndSize(self->keyblock.keyvalue.data, self->keyblock.keyvalue.length);
 }
 
 static void keyblock_dealloc(krb5KeyblockObject *self)
