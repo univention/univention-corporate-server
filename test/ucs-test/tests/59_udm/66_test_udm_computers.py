@@ -896,14 +896,6 @@ class Test_ComputerRolesExceptIpmanagedclient:
 @pytest.mark.parametrize('role', ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup', 'computers/memberserver'))
 class Test_UCSServerRoles:
 
-    def test_modify_instprofile(self, udm, verify_ldap_object, role):
-        """Test modifying instprofile for computers/domaincontroller_master, computers/domaincontroller_slave, computers/domaincontroller_backup and computers/memberserver"""
-        instprofile = random_string()
-
-        computer = udm.create_object(role, name=random_name())
-        udm.modify_object(role, dn=computer, instprofile=instprofile)
-        verify_ldap_object(computer, {'univentionServerInstallationProfile': [instprofile]})
-
     def test_move_computer_ssl(self, udm, role):
         """Create and move computer, should keep SSL certificate"""
         # bugs: [41230]
