@@ -247,10 +247,6 @@ layout = [
     Tab(_('Services'), _('Services'), advanced=True, layout=[
         'service',
     ]),
-    Tab(_('Deployment'), _('Deployment'), advanced=True, layout=[
-        ['reinstall'],
-        ['instprofile', 'reinstalloption'],
-    ]),
     Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
         'groups',
     ]),
@@ -269,8 +265,6 @@ mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.Li
 mapping.register('serverRole', 'univentionServerRole')
 mapping.register('mac', 'macAddress', encoding='ASCII')
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('instprofile', 'univentionServerInstallationProfile', None, univention.admin.mapping.ListToString)
-mapping.register('reinstalloption', 'univentionServerInstallationOption', None, univention.admin.mapping.ListToString)
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
