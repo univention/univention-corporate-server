@@ -75,6 +75,27 @@ update_check_hold_packages () {
 	return 1
 }
 
+# Bug #58875 check net-installer
+update_check_net_installer () {
+	local var="update$VERSION/ignore_net_installer"
+	ignore_check "$var" && return 100
+	installed="$(dpkg-query -W -f='${db:Status-Status} ${Version}' univention-net-installer  2>/dev/null | grep 'installed')"
+	if ! [ -n $installed ]; then
+		echo "	The package univention-net-installer is installed on your system. This package provides"
+		echo "	PXE installation which is not supported since UCS 4.4"
+		echo "	Please remove to package from your system to continue the update"
+		echo "	with either the command line tool univention-remove "
+		echo "	  -> univention-remove --purge univention-net-installer"
+		echo "	or via the package management in the Univention Management Console."
+		echo "	Make sure that only the package univention-net-installer gets removed!"
+		echo "	Afterwards, please check if all shares with the name 'ucs-repository', which were created"
+                echo "	by the installation of the package can be safely removed. And do so if possible."
+		echo
+		echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+		return 1
+	fi
+}
+
 # Bug #44650 begin - check slapd on Managed Node
 update_check_slapd_on_member () {
 	local var="update$VERSION/ignore_slapd_on_member"

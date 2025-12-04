@@ -362,7 +362,6 @@ dh-consoledata
 dh-dkms
 dh-runit
 dh-strip-nondeterminism
-di-univention-net-installer
 di-univention-system-setup
 di-utils
 di-utils-exit-installer
@@ -4832,8 +4831,6 @@ univention-nagios-s4-connector
 univention-nagios-samba
 univention-nagios-smart
 univention-nagios-squid
-univention-net-installer
-univention-net-installer-daemon
 univention-network-common
 univention-newsid
 univention-nfs-server

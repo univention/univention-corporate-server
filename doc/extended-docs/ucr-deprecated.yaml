@@ -573,3 +573,16 @@
     - saml/idp/negotiate/filter-subnets
     - saml/idp/selfservice/account-verification/error-descr
     - saml/idp/selfservice/account-verification/error-title
+
+- git: 59924a2441bbfd56a0cea5467d41bbb98e52e5ca
+  desc: univention-net-installer
+  obsolete: "5.2-4"
+  vars:
+  - pxe/installer/append
+  - pxe/installer/quiet
+  - pxe/installer/initrd
+  - pxe/installer/kernel
+  - pxe/installer/vga
+  - pxe/installer/loglevel
+  - pxe/installer/ipappend
+  - pxe/installer/profiles

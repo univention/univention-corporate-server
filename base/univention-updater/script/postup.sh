@@ -106,9 +106,24 @@ case "${server_role:-}" in
 domaincontroller_master) univention-run-join-scripts >&3 2>&3 ;;
 esac
 
+# Bug #58875 remove pxe linux
+if ! is_installed univention-net-installer && [ "$server_role" = "domaincontroller_master" ]; then
+	case "$(univention-directory-manager policies/dhcp_boot list "$@" --filter cn=default-settings | awk '/^boot_filename: / {print $2}')" in
+	''|pxelinux.0)
+	univention-directory-manager policies/dhcp_boot modify "$@" --ignore_exists \
+		--dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" \
+		--set boot_filename=None || die
+		# unset all pxe ucr vars
+		ucr search --brief --key ^pxe | sed 's/\:.*//' | xargs ucr unset
+	esac
+	a2dissite univention-net-installer.conf
+        ucr unset security/packetfilter/package/univention-net-installer-daemon/tcp/49173/all
+        ucr unset security/packetfilter/package/univention-net-installer-daemon/tcp/49173/all/en
+fi
+
+
 # Bug #52971: fix __pycache__ directory permissions
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} +
-
 
 # Bug #52923 #57296: switch back to old fetchmail/autostart status
 if [ -n "$(ucr search "^fetchmail/autostart/update522$")" ] ; then

@@ -410,6 +410,15 @@ Univention Active Directory Connection
   Now it passes the parameters ``tls cafile`` and ``tls crlfile`` to :program:`ldbsearch`
   to avoid that error message (:uv:bug:`56139`).
 
+
+.. _changelog-univention-net-install:
+
+Univention PXE installation
+======================================
+
+* The UCS PXE Installation services provided by the package :program:`univention-net-installer` were deprecated
+  and need to be removed before upgrading to UCS 5.2-4.
+
 .. _changelog-other:
 
 *************
