@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.2) unstable; urgency=medium
+
+  * Bug #58875: Retire univention-net-installer PXE installation
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 04 Dec 2025 15:04:31 +0100
+
 univention-directory-manager-modules (17.4.1) unstable; urgency=medium
 
   * Bug #58653: set .*/debug/structured-logging=true by default
