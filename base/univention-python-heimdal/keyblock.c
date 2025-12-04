@@ -43,13 +43,23 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 #if PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 2
 	if (PyObject_TypeCheck(arg, &krb5SaltType)) {
 		krb5SaltObject *salt = (krb5SaltObject*)arg;
-		err = krb5_string_to_key_salt(context->context, enctype->enctype, password,
-				salt->salt, &self->keyblock);
+		char iter[4];
+		// FIXME: _krb5_put_int:
+		iter[3] = 0x00;
+		iter[2] = 0x10;  // 4096
+		iter[1] = 0x00;
+		iter[0] = 0x00;
+		krb5_data opaque;
+		opaque.data = iter;
+		opaque.length = sizeof(iter);
+		err = krb5_string_to_key_salt_opaque(context->context, enctype->enctype, password,
+				salt->salt, opaque, &self->keyblock);
 	} else if (PyObject_TypeCheck(arg, &krb5PrincipalType)) {
 #else
 	if (1) {
 #endif
 		krb5PrincipalObject *principal = (krb5PrincipalObject*)arg;
+		// TODO also use krb5_string_to_key_salt_opaque here.
 		err = krb5_string_to_key(context->context, enctype->enctype, password,
 				principal->principal, &self->keyblock);
 	} else {
