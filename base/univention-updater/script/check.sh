@@ -77,7 +77,7 @@ update_check_hold_packages () {
 
 # Bug #58875 check net-installer
 update_check_net_installer () {
-	local var="update$VERSION/ignore_net_installation"
+	local var="update$VERSION/ignore_net_installer"
 	ignore_check "$var" && return 100
 	installed="$(dpkg-query -W -f='${db:Status-Status} ${Version}' univention-net-installer  2>/dev/null | grep 'installed')"
 	if ! [ -n $installed ]; then
