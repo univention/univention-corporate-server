@@ -99,6 +99,7 @@ intersphinx_mapping = {
     "uv-keycloak-mig": ("https://docs.software-univention.de/keycloak-migration/", None),
     "uv-keycloak-app": ("https://docs.software-univention.de/keycloak-app/latest/", None),
     f"uv-changelog-{release}": ref("changelog", ver=release),
+    'uv-ext-delegative-administration': ref(name='ext-delegative-administration'),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
