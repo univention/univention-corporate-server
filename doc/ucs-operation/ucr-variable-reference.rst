@@ -76,17 +76,7 @@ This section provides a reference for UCR variables.
    through OpenID Connect single sign-on
    before using a regular sign-in.
 
-   .. TODO: Clarify support status.
-
-      Source: https://git.knut.univention.de/fschneider/ucs-fixes/-/blob/5.2-0/management/univention-management-console/debian/univention-management-console-frontend.univention-config-registry-variables#L39-L44
-
-      However, we recommend this setting in the documentation. How can't it be supported?
-
-   .. caution::
-
-      Univention doesn't support this setting.
-
-   :Default value: ``false``
+   :Default value: ``true``
    :Type: boolean
 
 
