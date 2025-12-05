@@ -145,7 +145,9 @@ figure_language_filename = '{root}-{language}{ext}'
 
 linkcheck_allowed_redirects = {}
 
-linkcheck_ignore = []
+linkcheck_ignore = [
+    r'https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}',
+]
 
 univention_use_doc_base = True
 
