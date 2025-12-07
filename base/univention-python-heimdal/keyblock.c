@@ -9,6 +9,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
+#include <arpa/inet.h>
 #include <krb5.h>
 #include <stdio.h>
 
@@ -43,14 +44,9 @@ krb5KeyblockObject *keyblock_new(PyObject *unused, PyObject *args)
 #if PY_MAJOR_VERSION >= 2 && PY_MINOR_VERSION >= 2
 	if (PyObject_TypeCheck(arg, &krb5SaltType)) {
 		krb5SaltObject *salt = (krb5SaltObject*)arg;
-		char iter[4];
-		// FIXME: _krb5_put_int:
-		iter[3] = 0x00;
-		iter[2] = 0x10;  // 4096
-		iter[1] = 0x00;
-		iter[0] = 0x00;
+		unsigned int iter = htonl(4096);
 		krb5_data opaque;
-		opaque.data = iter;
+		opaque.data = &iter;
 		opaque.length = sizeof(iter);
 		err = krb5_string_to_key_salt_opaque(context->context, enctype->enctype, password,
 				salt->salt, opaque, &self->keyblock);
