@@ -1,3 +1,9 @@
+univention-ldap (18.4.2) unstable; urgency=medium
+
+  * Bug #58887: rename recyclebin to Recycle Bin
+
+ -- Florian Best <best@univention.de>  Tue, 09 Dec 2025 16:31:32 +0100
+
 univention-ldap (18.4.1) unstable; urgency=medium
 
   * Bug #58875: univentionServerReinstall is obsolete

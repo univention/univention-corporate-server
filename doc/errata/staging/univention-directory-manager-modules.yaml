@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-directory-manager-modules
+fix: 17.4.3
+desc: |
+ This update addresses the following issues:
+ * The Recycle Bin listener module is now disabled by default and can be
+   activated via setting the UCR variable
+   `listener/module/recyclebin/deactivate` to false. Recycle Bin policies can
+   now disable the creation of Recycle Bin objects for a whole subtree. All
+   occurrences of "Recyclebin" in user facing places have been renamed to
+   "Recycle Bin".
+bug: [58887, 58875]

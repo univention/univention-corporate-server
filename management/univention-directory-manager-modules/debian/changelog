@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.3) unstable; urgency=medium
+
+  * Bug #58887: rename recyclebin to Recycle Bin
+
+ -- Florian Best <best@univention.de>  Tue, 09 Dec 2025 16:31:27 +0100
+
 univention-directory-manager-modules (17.4.2) unstable; urgency=medium
 
   * Bug #58875: Retire univention-net-installer PXE installation

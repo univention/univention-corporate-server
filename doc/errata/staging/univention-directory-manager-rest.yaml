@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-directory-manager-rest
+fix: 12.4.2
+desc: |
+ This update addresses the following issues:
+ * All occurrences of "Recyclebin" in user facing places have been renamed to
+   "Recycle Bin".
+bug: [58887, 58653]
