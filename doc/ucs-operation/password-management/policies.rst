@@ -1,11 +1,11 @@
 .. SPDX-FileCopyrightText: 2024 - 2025 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _users-password-management:
+.. _password-management-policies:
 
-************************
-User password management
-************************
+*****************
+Password policies
+*****************
 
 This section describes the UCS appliance specific behavior
 and configuration
@@ -14,7 +14,7 @@ It amends :external+uv-nubus-manual:ref:`nubus-user-password-management`.
 For a general introduction to user password management in Nubus,
 read that section first.
 
-.. _users-password-management-policy-types:
+.. _password-management-policies-types:
 
 Password policy types
 ---------------------
@@ -51,7 +51,7 @@ Password policy for the Samba domain
       :external+uv-ucs-manual:ref:`windows-services-for-windows`
          for general information about Samba providing Services for Windows.
 
-.. _users-password-management-change:
+.. _password-management-policies-change:
 
 Change the user password
 ------------------------
@@ -75,7 +75,7 @@ Kerberos
    that have joined in the UCS domain of UCS appliances through Kerberos.
    They can use the default features of those clients to change the password.
 
-.. _users-password-management-change-policy-settings:
+.. _password-management-policies-settings:
 
 Password policy settings
 ------------------------

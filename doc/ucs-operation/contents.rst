@@ -15,7 +15,7 @@ Univention Corporate Server - Operation Manual
    index
    management-interface/index
    iam/index
-   password-management
+   password-management/index
 
 .. toctree::
 
