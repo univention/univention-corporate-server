@@ -12,4 +12,4 @@ desc: |
    now disable the creation of Recycle Bin objects for a whole subtree. All
    occurrences of "Recyclebin" in user facing places have been renamed to
    "Recycle Bin".
-bug: [58887, 58875]
+bug: [58887]

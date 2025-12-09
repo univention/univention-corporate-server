@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * All occurrences of "Recyclebin" in user facing places have been renamed to
    "Recycle Bin".
-bug: [58887, 58653]
+bug: [58887]
