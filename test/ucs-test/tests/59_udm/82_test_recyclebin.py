@@ -551,7 +551,7 @@ def test_group_delete_moves_to_recycle_bin(udm, lo, recyclebin_policy_session):
     deleted_dn = _deleted_object_dn(group_dn, goid)
     verify_ldap_object(deleted_dn, should_exist=True)
     deleted_objects = _find_deleted_objects(group_dn)
-    assert len(deleted_objects) > 0, 'Group should be found in recycle bin'
+    assert len(deleted_objects) > 0, 'Group should be found in Recycle Bin'
     for obj in deleted_objects:
         _cleanup_deleted_object(obj['dn'])
 

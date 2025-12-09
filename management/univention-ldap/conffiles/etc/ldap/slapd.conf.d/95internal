@@ -38,7 +38,7 @@ syncprov-checkpoint %(ldap/database/internal/syncprov/checkpoint)s
 syncprov-sessionlog %(ldap/database/internal/syncprov/sessionlog)s
 """ % configRegistry)
 
-    # DDS overlay for automatic purging of recyclebin objects
+    # DDS overlay for automatic purging of Recycle Bin objects
     if configRegistry.is_true('ldap/database/internal/overlay/dds', True):
         print("""
 overlay dds

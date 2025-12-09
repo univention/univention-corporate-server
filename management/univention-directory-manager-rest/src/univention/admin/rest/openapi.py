@@ -539,7 +539,7 @@ class _OpenAPIBase:
                 }),
             },
             'ObjectRestored': {  # 201
-                "description": "Object restored from recyclebin",
+                "description": "Object restored from Recycle Bin",
                 "content": content_schema({
                     "type": "object",
                     "properties": {
@@ -629,7 +629,7 @@ class _OpenAPIBase:
                     "additionalProperties": True,
                 }),
             },
-            "ObjectGone": {  # 410, e.g. moved to recyclebin
+            "ObjectGone": {  # 410, e.g. moved to Recycle Bin
                 "description": "Object has recently been removed.",
                 'headers': global_response_headers({}),
                 "content": content_schema({
@@ -917,7 +917,7 @@ class _OpenAPIBase:
                     "parameters": [{"$ref": '#/components/parameters/dn-path'}],
                     "post": {
                         "operationId": f"udm:{name}/object/restore",
-                        "summary": f"Restore a {module.object_name} object from the recyclebin",
+                        "summary": f"Restore a {module.object_name} object from the Recycle Bin",
                         "parameters": [
                             *global_parameters,
                         ],

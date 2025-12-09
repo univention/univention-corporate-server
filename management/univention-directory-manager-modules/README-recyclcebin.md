@@ -1,4 +1,4 @@
-This document describes implementation notices for the Recyclebin feature in UDM.
+This document describes implementation notices for the Recycle Bin feature in UDM.
 
 [TOC]
 
@@ -6,10 +6,10 @@ This document describes implementation notices for the Recyclebin feature in UDM
 
 ## Object representation
 
-The recyclebin is located in a secondary LDAP database under `cn=internal`.
+The Recycle Bin is located in a secondary LDAP database under `cn=internal`.
 This ensures that deleted objects are no longer visible through regular LDAP searches, preventing applications that use generic LDAP filters from returning deleted entries.
 
-Recycle bin objects retain their original LDAP structure, except for LDAP operational attributes, and use the `extensibleObject` object class.
+Recycle Bin objects retain their original LDAP structure, except for LDAP operational attributes, and use the `extensibleObject` object class.
 This allows regular LDAP tools to operate on them without requiring schema mapping or serialization formats (such as JSON blobs) that could break binary attribute encodings (e.g. `jpegPhoto`).
 
 Objects are created below `cn=recyclebin,cn=internal` with the original DN and original object identifier encoded as the first multivalued RDN, for example:
@@ -20,7 +20,7 @@ univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org+univen
 
 This makes lookups straightforward (at least before the UOI was added).
 
-Each recyclebin object includes metadata such as:
+Each Recycle Bin object includes metadata such as:
 
 * Original UDM object type
 * Original DN
@@ -34,7 +34,7 @@ Each recyclebin object includes metadata such as:
 
 ## Automatic removal via LDAP
 
-Recyclebin objects also have the `dynamicObject` object class, provided by the Dynamic Directory Services (DDS) overlay module.
+Recycle Bin objects also have the `dynamicObject` object class, provided by the Dynamic Directory Services (DDS) overlay module.
 Their lifetime is defined via the operational attribute `entryTtl`, specified in seconds from now.
 
 When the object expires, OpenLDAP logs the removal if the `STATS` log level is enabled.
@@ -47,16 +47,16 @@ DDS dn="univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=or
 This approach eliminates the need for scheduled cleanup jobs.
 
 ## Ensurance of uniqueness
-If, for example, a `uid=exam-foo,...` was removed, later on a similar object re-added with the same DN, and finally removed again the corresponding recyclebin entry would already exists.
-By adding the `univentionObjectIdentifier` to the DN of the recyclebin object, it was ensured that even those entries can be added to the recyclebin.
+If, for example, a `uid=exam-foo,...` was removed, later on a similar object re-added with the same DN, and finally removed again the corresponding Recycle Bin entry would already exists.
+By adding the `univentionObjectIdentifier` to the DN of the Recycle Bin object, it was ensured that even those entries can be added to the Recycle Bin.
 
 ## Implementation via Listener module
 
-The move of objects into the recyclebin is implemented using a listener module.
+The move of objects into the Recycle Bin is implemented using a listener module.
 
 **Reasoning:**
 UDM code may run on different machines than the DC Primary and uses the credentials of the currently logged-in user.
-Allowing these components direct write access to the recyclebin would create a security risk - e.g., a user could inject fake references (like adding themselves to "Domain Admins") and later restore to gain elevated privileges.
+Allowing these components direct write access to the Recycle Bin would create a security risk - e.g., a user could inject fake references (like adding themselves to "Domain Admins") and later restore to gain elevated privileges.
 Therefore, only the DC Primary, via a listener module, performs the "move" operation.
 
 The listener runs asynchronously, so it doesn't affect UDM performance.
@@ -67,9 +67,9 @@ The listener also ensures the visibility of all attributes, in case a user has p
 
 The listener may not always have an up-to-date view of an object's state.
 Each listener maintains a cache of object attributes. If an object is modified shortly before deletion, and the notifier has not yet propagated those changes, the listener cache may be outdated.
-As a result, an inaccurate version of the object could be moved to the recyclebin.
+As a result, an inaccurate version of the object could be moved to the Recycle Bin.
 
-Similarly, if an object is created and deleted in rapid succession, the listener may never see the object, and nothing will be moved to the recyclebin.
+Similarly, if an object is created and deleted in rapid succession, the listener may never see the object, and nothing will be moved to the Recycle Bin.
 
 ### Recommended LDAP overlay approach
 
@@ -86,7 +86,7 @@ UDM does not expose these references declaratively - only through business logic
 Currently, only `users/user` and `groups/group` object types are supported.
 Custom extended attributes and hooks are not.
 
-References are stored in the recyclebin object using a URL-encoded format, for example:
+References are stored in the Recycle Bin object using a URL-encoded format, for example:
 
 ```
 univentionRecycleBinReference=dn:groups/group:users:uuid:550e8400-e29b-41d4-a716-446655440000
@@ -96,8 +96,8 @@ This means:
 The deleted object's DN should be placed in the `users` attribute of the `groups/group` object identified by the given UUID of the `uuid` attribute.
 
 The listener observes both deletions and modifications.
-If a user is removed from a group and a corresponding recyclebin object exists, that object is extended with a reference to the group.
-If the group was deleted before the user, the listener's local cache detects this and still adds the appropriate reference to the user's recyclebin entry.
+If a user is removed from a group and a corresponding Recycle Bin object exists, that object is extended with a reference to the group.
+If the group was deleted before the user, the listener's local cache detects this and still adds the appropriate reference to the user's Recycle Bin entry.
 
 **TODO:** verify this behavior.
 

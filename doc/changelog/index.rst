@@ -406,7 +406,7 @@ Univention Configuration Registry
 Domain services
 ***************
 
-* Events for recycle bin restoration have been added to the *Admin Diary*
+* Events for Recycle Bin restoration have been added to the *Admin Diary*
   (:uv:bug:`52202`).
 
 .. _changelog-domain-openldap:
@@ -427,7 +427,7 @@ Listener/Notifier domain replication
 LDAP Directory Manager
 ======================
 
-* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
+* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
 
 * Added an endpoint
   where LDAP attributes can be unmapped to a full UDM object,
@@ -473,7 +473,7 @@ LDAP Directory Manager
   for sign-in through trusted upstream identity provider with UMC OpenID Connect
   (:uv:bug:`58652`).
 
-* A recycle bin for user and group objects has been introduced (:uv:bug:`52202`).
+* A Recycle Bin for user and group objects has been introduced (:uv:bug:`52202`).
 
 * Fixed an issue where modifying the value of a unique LDAP attribute
   didn't correctly release the lock associated with the previous value.
@@ -491,7 +491,7 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
+* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
 
 * Allow adding a notification directly into the notification bar, not showing
   it as a preview in |UMC| (:uv:bug:`58817`).
@@ -596,7 +596,7 @@ System diagnostic module
 LDAP directory browser
 ======================
 
-* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
+* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
 
 * Logging has been adapted to be compatible with structured logging
   (:uv:bug:`58627`).
@@ -632,7 +632,7 @@ Univention base libraries
   and :envvar:`ldap/authz-regexp/federated-accounts` with the default ``false``
   for the configuration of the LDAP servers DN mapping for federated accounts (:uv:bug:`58652`).
 
-* A recycle bin for users and groups has been introduced (:uv:bug:`52202`).
+* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
 
 * :command:`univention-backup2master` now provides two hook points
   that allow running custom scripts before and after the conversion

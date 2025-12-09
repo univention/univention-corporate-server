@@ -244,9 +244,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</requiredCommands>
 		</flavor>
 		<flavor priority="50" icon="recyclebin" id="recyclebin/removedobject">
-			<name>Recyclebin</name>
-			<description>Management of removed objects from recyclebin</description>
-			<keywords>recyclebin,trash,delete,remove,restore</keywords>
+			<name>Recycle Bin</name>
+			<description>Management of removed objects from Recycle Bin</description>
+			<keywords>recycle,bin,trash,delete,remove,restore</keywords>
 			<categories>
 				<category name="domain"/>
 			</categories>

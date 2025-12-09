@@ -5671,7 +5671,7 @@ class nfssync(select):
 
 class RecycleBinSupportedModules(select):
     """
-    Syntax for selecting an |UDM| module for the recyclebin
+    Syntax for selecting an |UDM| module for the Recycle Bin
 
     >>> RecycleBinSupportedModules.parse('users/user')
     'users/user'
@@ -5707,7 +5707,7 @@ __register_choice_update_function(RecycleBinSupportedModules.update_choices)
 
 
 class RecycleBinReference(complex):
-    """Syntax for recyclebin references (objects that referenced the deleted object)."""
+    """Syntax for Recycle Bin references (objects that referenced the deleted object)."""
 
     description = _('Reference')
     subsyntaxes = [

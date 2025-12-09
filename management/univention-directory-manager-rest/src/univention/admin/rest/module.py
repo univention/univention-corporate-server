@@ -2414,10 +2414,10 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
 
 class ObjectRestore(Resource):
-    """Restore an object from the recyclebin"""
+    """Restore an object from the Recycle Bin"""
 
     async def post(self, object_type, dn):
-        """Restore a {module.object_name_plural} object from the recyclebin"""
+        """Restore a {module.object_name_plural} object from the Recycle Bin"""
         dn = unquote_dn(dn)
         module = get_module(object_type, dn, self.ldap_write_connection)
         if module is None:
@@ -2668,7 +2668,7 @@ class ObjectEdit(FormBase, Resource):
 
         if 'restore' in module.operations:
             form = self.add_form(result, id='restore', name='restore', action=self.urljoin('.').rstrip('/'), method='POST', layout='restore', **{'hx-confirm': _('Please confirm the restoration of the selected %s') % (module.object_name,)})
-            restore_layout = [{'label': _('Restore'), 'description': _("Restore the object from the recyclebin"), 'layout': ['']}]
+            restore_layout = [{'label': _('Restore'), 'description': _("Restore the object from the Recycle Bin"), 'layout': ['']}]
             self.add_layout(result, restore_layout, 'restore')
             self.add_form_element(form, '', _('Restore'), type='submit')
 

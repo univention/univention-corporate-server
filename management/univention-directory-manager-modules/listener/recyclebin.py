@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""Listener module for creating recyclebin objects and keep references updated."""
+"""Listener module for creating Recycle Bin objects and keep references updated."""
 
 import datetime
 from dataclasses import dataclass
@@ -20,7 +20,7 @@ from univention.listener import ListenerModuleHandler
 
 @dataclass
 class Policy:
-    """Recyclebin policy settings"""
+    """Recycle Bin policy settings"""
 
     retention_days: int
     ignored_object_classes: list[str]
@@ -28,11 +28,11 @@ class Policy:
 
 
 class RecycleBinListener(ListenerModuleHandler):
-    """Listener module to move removed objects into the recyclebin and keep references in sync."""
+    """Listener module to move removed objects into the Recycle Bin and keep references in sync."""
 
     class Configuration:
         name = 'recyclebin'
-        description = 'Recyclebin listener'
+        description = 'Recycle Bin listener'
         ldap_filter = '(|(univentionObjectType=users/user)(univentionObjectType=groups/group))'  # TODO: automatically add all supported modules
         _ldap_filter = '(%s)' % '|'.join([filter_format('(univentionObjectType=%s)', [mod.module]) for mod in univention.admin.modules.modules.values() if getattr(mod, 'supports_recyclebin', False)])
         attributes = []
@@ -49,12 +49,12 @@ class RecycleBinListener(ListenerModuleHandler):
             self._populate_cache()
             self._cache_initialized = True
         except noObject:
-            # during update the recyclebin container may not yet exists
+            # during update the Recycle Bin container may not yet exists
             pass
 
     @property
     def admin_lo(self):
-        """LDAP connection with admin privileges for recyclebin operations."""
+        """LDAP connection with admin privileges for Recycle Bin operations."""
         if not self._admin_lo:
             with self.as_root():
                 self._admin_lo, _ = univention.admin.uldap.getAdminConnection()
@@ -77,7 +77,7 @@ class RecycleBinListener(ListenerModuleHandler):
         self.logger.info('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
 
     def _should_process_object(self, dn, attrs):
-        """Check if the object should be processed by the recyclebin."""
+        """Check if the object should be processed by the Recycle Bin."""
         if ucr.get('server/role') != 'domaincontroller_master':
             return False, None
 
@@ -93,7 +93,7 @@ class RecycleBinListener(ListenerModuleHandler):
         return True, object_type
 
     def remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
-        """Handle object removal - move to recyclebin."""
+        """Handle object removal - move to Recycle Bin."""
         if not self.config.get_active():
             return
         should_process, object_type = self._should_process_object(dn, old)
@@ -110,20 +110,20 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def _move_deleted_object_to_recyclebin(self, original_dn, original_attrs, original_type):
         """
-        Move deleted object to recyclebin.
+        Move deleted object to Recycle Bin.
 
         Returns:
             dn: DN of deleted object or False
         """
         policy = self._select_recyclebin_policy(original_dn, original_type, original_attrs)
         if policy is None or not policy.enabled:
-            self.logger.debug('Object not moved to recyclebin (no policy): %s', original_dn)
+            self.logger.debug('Object not moved to Recycle Bin (no policy): %s', original_dn)
             return False
 
         actual_ocs = {x.decode('UTF-8').lower() for x in original_attrs['objectClass']}
         prohibited_ocs = {x.lower() for x in policy.ignored_object_classes}
         if actual_ocs & prohibited_ocs:
-            self.logger.debug('Object not moved to recyclebin (forbidden object class): %s', original_dn)
+            self.logger.debug('Object not moved to Recycle Bin (forbidden object class): %s', original_dn)
             return False
 
         now = datetime.datetime.now(datetime.UTC)
@@ -155,7 +155,7 @@ class RecycleBinListener(ListenerModuleHandler):
         return dn
 
     def _select_recyclebin_policy(self, original_dn, original_type, old_attrs=None):
-        """Get retention time in days from recyclebin policy, or None if no policy applies or policy is disabled."""
+        """Get retention time in days from Recycle Bin policy, or None if no policy applies or policy is disabled."""
         if old_attrs and 'univentionPolicyReference' in old_attrs:
             for policy_ref in old_attrs['univentionPolicyReference']:
                 policy = self._get_recyclebin_policy(policy_ref.decode('utf-8'), original_type)
@@ -240,7 +240,7 @@ class RecycleBinListener(ListenerModuleHandler):
                     self.logger.info('Added group reference to deleted object: %s', deleted_object_dn)
 
     def _get_recyclebin_dn(self, dn, uoid):
-        """Generate recyclebin DN for original object."""
+        """Generate Recycle Bin DN for original object."""
         rdn = ldap.dn.dn2str([[
             ('univentionRecycleBinOriginalDN', dn, ldap.AVA_STRING),
             ('univentionRecycleBinOriginalUniventionObjectIdentifier', uoid, ldap.AVA_STRING),

@@ -936,8 +936,8 @@ class simpleLdap:
 
     def restore(self) -> None:  # TODO: support destination: str
         """
-        Restore LDAP object from recyclebin with all the LDAP attributes from the deleted object
-        (excluding operational and recyclebin attributes)
+        Restore LDAP object from Recycle Bin with all the LDAP attributes from the deleted object
+        (excluding operational and Recycle Bin attributes)
 
         :raises: :class:`univention.admin.uexceptions.restoreFailed` if e.g. parent DN doesn't exists.
         :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be restored.

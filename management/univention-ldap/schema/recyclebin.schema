@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 #
-# Recyclebin Policy Attributes
+# Recycle Bin Policy Attributes
 #
 attributetype ( 1.3.6.1.4.1.10176.4221.1.1 NAME 'univentionRecycleBinPolicyEnabled'
-	DESC 'Enable or disable recyclebin functionality'
+	DESC 'Enable or disable Recycle Bin functionality'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
@@ -18,13 +18,13 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.2 NAME 'univentionRecycleBinPolicyUDMMo
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.4221.1.3 NAME 'univentionRecycleBinPolicyIgnoredObjectClasses'
-	DESC 'List of object classes for which no recyclebin entry should be created'
+	DESC 'List of object classes for which no Recycle Bin entry should be created'
 	EQUALITY caseIgnoreIA5Match
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 attributetype ( 1.3.6.1.4.1.10176.4221.1.4 NAME 'univentionRecycleBinPolicyRetentionDays'
-	DESC 'Number of days to keep objects in recyclebin'
+	DESC 'Number of days to keep objects in Recycle Bin'
 	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
 	SINGLE-VALUE )
@@ -86,7 +86,7 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.12 NAME 'univentionRecycleBinReference'
 # Object Classes
 #
 objectclass ( 1.3.6.1.4.1.10176.4221.2.1 NAME 'univentionRecycleBinPolicy'
-	DESC 'Policy for recyclebin configuration'
+	DESC 'Policy for Recycle Bin configuration'
 	SUP univentionPolicy STRUCTURAL
 	MAY ( univentionRecycleBinPolicyEnabled $
 	      univentionRecycleBinPolicyUDMModules $
@@ -94,7 +94,7 @@ objectclass ( 1.3.6.1.4.1.10176.4221.2.1 NAME 'univentionRecycleBinPolicy'
 	      univentionRecycleBinPolicyRetentionDays ) )
 
 objectclass ( 1.3.6.1.4.1.10176.4221.2.2 NAME 'univentionRecycleBinObject'
-	DESC 'Object stored in the recyclebin'
+	DESC 'Object stored in the Recycle Bin'
 	SUP top STRUCTURAL
 	MUST ( univentionRecycleBinOriginalDN $
 	       univentionRecycleBinDeleteAt $

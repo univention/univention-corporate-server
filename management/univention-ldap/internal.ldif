@@ -12,4 +12,4 @@ cn: recyclebin
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
-description: Container for removed LDAP objects (recyclebin)
+description: Container for removed LDAP objects (Recycle Bin)

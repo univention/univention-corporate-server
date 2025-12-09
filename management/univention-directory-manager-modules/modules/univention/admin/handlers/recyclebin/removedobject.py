@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""UDM module for recyclebin deleted objects"""
+"""UDM module for Recycle Bin deleted objects"""
 
 import copy
 
@@ -29,10 +29,10 @@ _ = translation.translate
 module = 'recyclebin/removedobject'
 operations = ['read', 'remove', 'search', 'restore']
 childs = False
-short_description = _('Recyclebin: Deleted Object')
+short_description = _('Recycle Bin: Deleted Object')
 object_name = _('Deleted Object')
 object_name_plural = _('Deleted Objects')
-long_description = _('Objects that have been moved to the recyclebin')
+long_description = _('Objects that have been moved to the Recycle Bin')
 
 # during package upgrade. TODO: remove in UCS 5.3
 udm_syntax.__dict__.setdefault('RecycleBinReference', udm_syntax.string)
@@ -323,7 +323,7 @@ class object(simpleLdap):
         return create_references(self.lo, self.info['originalObjectType'], self.info.get('originalDN'), self.oldattr)
 
     def restore_references(self) -> None:
-        """Restore generic references from recyclebin object"""
+        """Restore generic references from Recycle Bin object"""
         references = self['referencedBy']
         if not references:
             self.log.debug('No preserved references found')

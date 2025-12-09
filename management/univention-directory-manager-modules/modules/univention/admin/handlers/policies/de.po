@@ -300,8 +300,8 @@ msgstr "Definiert den Namen des DHCP-Servers"
 msgid "Defines a set of allowed UMC operations"
 msgstr "Definiert eine Liste von erlaubten UMC Operationen"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:54
-msgid "Defines recyclebin behavior for UDM objects"
+#: modules/univention/admin/handlers/policies/Recycle Bin.py:54
+msgid "Defines Recycle Bin behavior for UDM objects"
 msgstr "Definiert das Papierkorb-Verhalten für UDM-Objekte"
 
 #: modules/univention/admin/handlers/policies/desktop.py:24
@@ -396,8 +396,8 @@ msgstr ""
 "Vergabe von IP-Adressen an Clients ohne eigenen DHCP-Rechner-Eintrag (unter "
 "Berücksichtigung der Einstellungen zum DHCP-Pool)."
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:78
-msgid "Enable or disable recyclebin for objects in this scope"
+#: modules/univention/admin/handlers/policies/Recycle Bin.py:78
+msgid "Enable or disable Recycle Bin for objects in this scope"
 msgstr "Papierkorb für Objekte in diesem Bereich aktivieren oder deaktivieren"
 
 #: modules/univention/admin/handlers/policies/pwhistory.py:77
@@ -779,8 +779,8 @@ msgstr "NFS-Freigaben einbinden"
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:69
-msgid "Name of the recyclebin policy"
+#: modules/univention/admin/handlers/policies/Recycle Bin.py:69
+msgid "Name of the Recycle Bin policy"
 msgstr "Name der Papierkorb-Richtlinie"
 
 #: modules/univention/admin/handlers/policies/dhcp_netbios.py:41
@@ -814,8 +814,8 @@ msgstr "Netbios"
 msgid "Number of days after which the password has to be changed"
 msgstr "Anzahl an Tagen, nach der das Passwort geändert werden muss"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:90
-msgid "Number of days to keep objects in recyclebin (0 = indefinite)"
+#: modules/univention/admin/handlers/policies/Recycle Bin.py:90
+msgid "Number of days to keep objects in Recycle Bin (0 = indefinite)"
 msgstr ""
 "Anzahl der Tage, die Objekte im Papierkorb aufbewahrt werden (0 = "
 "unbegrenzt)"
@@ -979,7 +979,7 @@ msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:51
-msgid "Policy: Recyclebin Configuration"
+msgid "Policy: Recycle Bin Configuration"
 msgstr "Richtlinie: Papierkorb-Konfiguration"
 
 #: modules/univention/admin/handlers/policies/repositoryserver.py:36
@@ -1052,15 +1052,15 @@ msgstr "Nach Paketpflege neu starten"
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:24
 #: modules/univention/admin/handlers/policies/recyclebin.py:77
-msgid "Recyclebin enabled"
+msgid "Recycle Bin enabled"
 msgstr "Papierkorb aktiviert"
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:53
-msgid "Recyclebin policies"
+msgid "Recycle Bin policies"
 msgstr "Papierkorb-Richtlinien"
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:52
-msgid "Recyclebin policy"
+msgid "Recycle Bin policy"
 msgstr "Papierkorb-Richtlinie"
 
 #: modules/univention/admin/handlers/policies/release.py:24
@@ -1209,7 +1209,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:55
 msgid ""
-"This policy controls which UDM objects are moved to the recyclebin when "
+"This policy controls which UDM objects are moved to the Recycle Bin when "
 "deleted and how long they are retained."
 msgstr ""
 "Diese Richtlinie steuert, welche UDM-Objekte beim Löschen in den Papierkorb "

@@ -40,7 +40,7 @@ def setup_recyclebin_infrastructure():
     # Check if recyclebin container exists
     try:
         lo.get(RECYCLEBIN_DN)
-        print(f"Recyclebin container {RECYCLEBIN_DN} already exists")
+        print(f"Recycle Bin container {RECYCLEBIN_DN} already exists")
     except noObject:
         print(f"Creating {RECYCLEBIN_DN} container...")
         ldif_content = f"""dn: {RECYCLEBIN_DN}
@@ -48,7 +48,7 @@ cn: recyclebin
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
-description: Container for deleted LDAP objects (recycle bin)
+description: Container for deleted LDAP objects (Recycle Bin)
 """
         process = subprocess.Popen(
             ['ldapadd', '-x', '-D', f'cn=admin,{LDAP_BASE}', '-y', '/etc/ldap.secret'],
@@ -81,9 +81,9 @@ description: Container for deleted LDAP objects (recycle bin)
 
     try:
         lo.get(RECYCLEBIN_DN)
-        print("✓ Recyclebin infrastructure setup complete")
+        print("✓ Recycle Bin infrastructure setup complete")
     except noObject:
-        raise RuntimeError(f"Recyclebin container {RECYCLEBIN_DN} not accessible after setup")
+        raise RuntimeError(f"Recycle Bin container {RECYCLEBIN_DN} not accessible after setup")
 
 
 def escape_dn_chars(dn):

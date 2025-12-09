@@ -640,7 +640,7 @@ class Object(Client):
         return await self.client.request('DELETE', self.uri, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
     async def restore(self, reload: bool = True) -> Response:
-        """Restore an object from the recyclebin."""
+        """Restore an object from the Recycle Bin."""
         uri = self.client.get_relation(self.hal, 'udm:restore')['href']
         return await self._request('POST', uri, {}, {}, reload=reload)
 

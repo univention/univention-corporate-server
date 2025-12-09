@@ -66,8 +66,8 @@ msgstr "Objektinformationen"
 msgid "Objects referencing this deleted object"
 msgstr "Objekte, die dieses gelöschte Objekt referenzieren"
 
-#: modules/univention/admin/handlers/recyclebin/removedobject.py:34
-msgid "Objects that have been moved to the recyclebin"
+#: modules/univention/admin/handlers/Recycle Bin/removedobject.py:34
+msgid "Objects that have been moved to the Recycle Bin"
 msgstr "Objekte, die in den Papierkorb verschoben wurden"
 
 #: modules/univention/admin/handlers/recyclebin/removedobject.py:58
@@ -101,7 +101,7 @@ msgid "Original object classes"
 msgstr "Ursprüngliche Objektklassen"
 
 #: modules/univention/admin/handlers/recyclebin/removedobject.py:31
-msgid "Recyclebin: Deleted Object"
+msgid "Recycle Bin: Deleted Object"
 msgstr "Papierkorb: Gelöschtes Objekt"
 
 #: modules/univention/admin/handlers/recyclebin/removedobject.py:81

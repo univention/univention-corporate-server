@@ -357,7 +357,7 @@ Shares UMC module - Samba options group
      - Virtual File System (VFS) modules are used in Samba for performing
        actions before an access to the file system of a share is made, e.g., a
        virus scanner which stores every infected file accessed in the share in
-       quarantine or server-side implementation of recycle bin deletion of
+       quarantine or server-side implementation of Recycle Bin deletion of
        files.
 
    * - Hidden files

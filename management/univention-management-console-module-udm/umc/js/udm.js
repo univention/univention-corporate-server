@@ -815,7 +815,7 @@ define([
 					}, {
 						name: 'restore',
 						label: _('Restore'),
-						description: _('Restore deleted objects from recyclebin.'),
+						description: _('Restore deleted objects from Recycle Bin.'),
 						isStandardAction: true,
 						isMultiAction: true,
 						canExecute: lang.hitch(this, '_canRestore'),

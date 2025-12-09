@@ -1714,7 +1714,7 @@ msgid "Restore"
 msgstr "Wiederherstellen"
 
 #: umc/js/udm.js:818
-msgid "Restore deleted objects from recyclebin."
+msgid "Restore deleted objects from Recycle Bin."
 msgstr "Objekte aus dem Papierkorb wiederherstellen."
 
 #: umc/js/udm/DetailPage.js:1387

@@ -434,8 +434,8 @@ Type=str
 Categories=service-ldap
 
 [ldap/database/internal/overlay/dds]
-Description[de]=Aktiviert das DDS (Dynamic Directory Services) Overlay für die interne LDAP-Datenbank. Wenn aktiviert, können Objekte mit der Objektklasse "dynamicObject" automatisch nach Ablauf ihrer TTL (Time To Live) gelöscht werden. Dies wird für die automatische Bereinigung von Recyclebin-Objekten verwendet.
-Description[en]=Enables the DDS (Dynamic Directory Services) overlay for the internal LDAP database. When enabled, objects with the "dynamicObject" objectClass can be automatically deleted after their TTL (Time To Live) expires. This is used for automatic purging of recyclebin objects.
+Description[de]=Aktiviert das DDS (Dynamic Directory Services) Overlay für die interne LDAP-Datenbank. Wenn aktiviert, können Objekte mit der Objektklasse "dynamicObject" automatisch nach Ablauf ihrer TTL (Time To Live) gelöscht werden. Dies wird für die automatische Bereinigung von Recycle Bin-Objekten verwendet.
+Description[en]=Enables the DDS (Dynamic Directory Services) overlay for the internal LDAP database. When enabled, objects with the "dynamicObject" objectClass can be automatically deleted after their TTL (Time To Live) expires. This is used for automatic purging of Recycle Bin objects.
 Default=true
 Type=bool
 Categories=service-ldap

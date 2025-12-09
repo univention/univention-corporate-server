@@ -74,13 +74,13 @@ univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position "cn=internal" \
 	--set name="recyclebin" \
-	--set description="Container for removed LDAP objects (recyclebin)" || die
+	--set description="Container for removed LDAP objects (Recycle Bin)" || die
 
 univention-directory-manager container/cn create "$@" \
 	--ignore_exists \
 	--position "cn=policies,$ldap_base" \
 	--set name="recyclebin" \
-	--set description="Container for recyclebin policies" || die
+	--set description="Container for Recycle Bin policies" || die
 
 univention-directory-manager policies/recyclebin create "$@" \
 	--ignore_exists \

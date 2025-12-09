@@ -56,7 +56,7 @@ def usage(stream: IO[str]) -> None:
     print('  %-32s %s' % ('remove:', 'Remove an existing object'), file=stream)
     print('  %-32s %s' % ('list:', 'List objects'), file=stream)
     print('  %-32s %s' % ('move:', 'Move object in directory tree'), file=stream)
-    print('  %-32s %s' % ('restore:', 'Restore object from recyclebin'), file=stream)
+    print('  %-32s %s' % ('restore:', 'Restore object from Recycle Bin'), file=stream)
     print('', file=stream)
     print('  %-32s %s' % ('-h | --help | -?:', 'print this usage message'), file=stream)
     print('  %-32s %s' % ('--version:', 'print version information'), file=stream)

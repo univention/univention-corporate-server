@@ -80,7 +80,7 @@ msgstr "Verwaltung von Mail-Domänen und Mailing-Listen"
 msgid "Management of printers and printer groups in the domain"
 msgstr "Verwaltung von Druckern und Druckergruppen in der Domäne"
 
-msgid "Management of removed objects from recyclebin"
+msgid "Management of removed objects from Recycle Bin"
 msgstr "Verwaltung von gelöschten Objekten im Papierkorb"
 
 msgid "Management of user and computer groups in the domain"
@@ -101,7 +101,7 @@ msgstr "Richtlinien"
 msgid "Printers"
 msgstr "Drucker"
 
-msgid "Recyclebin"
+msgid "Recycle Bin"
 msgstr "Papierkorb"
 
 msgid "Request new license"
@@ -161,8 +161,8 @@ msgstr "Richtlinien"
 msgid "printers"
 msgstr "Drucker"
 
-msgid "recyclebin,trash,delete,remove,restore"
-msgstr ""
+msgid "recycle,bin,trash,delete,remove,restore"
+msgstr "papierkorb,recycle,bin,trash,delete,remove,restore,löschen,wiederherstellen,müll"
 
 msgid "shares"
 msgstr "Freigaben"

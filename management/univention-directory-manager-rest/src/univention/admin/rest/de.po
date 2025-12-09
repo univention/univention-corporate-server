@@ -670,5 +670,5 @@ msgid "Restore operation not supported for %s"
 msgstr "Wiederherstellungsoperation wird für %s nicht unterstützt"
 
 #: src/univention/admin/rest/module.py:2640
-msgid "Restore the object from the recyclebin"
+msgid "Restore the object from the Recycle Bin"
 msgstr "Das Objekt aus dem Papierkorb wiederherstellen"

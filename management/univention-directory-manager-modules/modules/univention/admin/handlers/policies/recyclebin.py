@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""Policy defining recyclebin configuration"""
+"""Policy defining Recycle Bin configuration"""
 
 import univention.admin.localization
 import univention.admin.mapping as udm_mapping
@@ -21,7 +21,7 @@ _ = translation.translate
 class recycleBinFixedAttributes(univention.admin.syntax.select):
     name = 'recycleBinFixedAttributes'
     choices = [
-        ('univentionRecycleBinPolicyEnabled', _('Recyclebin enabled')),
+        ('univentionRecycleBinPolicyEnabled', _('Recycle Bin enabled')),
         ('univentionRecycleBinPolicyUDMModules', _('UDM modules to recycle')),
         ('univentionRecycleBinPolicyRetentionDays', _('Retention days')),
     ]
@@ -42,15 +42,15 @@ policy_apply_to = [
     'computers/linux',
     'computers/ubuntu',
     'computers/macos',
-]  # TODO: automatically add all modules which support the recyclebin
+]  # TODO: automatically add all modules which support the Recycle Bin
 policy_position_dn_prefix = 'cn=recyclebin'
 
 childs = False
-short_description = _('Policy: Recyclebin Configuration')
-object_name = _('Recyclebin policy')
-object_name_plural = _('Recyclebin policies')
-policy_short_description = _('Defines recyclebin behavior for UDM objects')
-long_description = _('This policy controls which UDM objects are moved to the recyclebin when deleted and how long they are retained.')
+short_description = _('Policy: Recycle Bin Configuration')
+object_name = _('Recycle Bin policy')
+object_name_plural = _('Recycle Bin policies')
+policy_short_description = _('Defines Recycle Bin behavior for UDM objects')
+long_description = _('This policy controls which UDM objects are moved to the Recycle Bin when deleted and how long they are retained.')
 
 # fmt: off
 options = {
@@ -64,7 +64,7 @@ options = {
 property_descriptions = dict({
     'name': univention.admin.property(
         short_description=_('Name'),
-        long_description=_('Name of the recyclebin policy'),
+        long_description=_('Name of the Recycle Bin policy'),
         syntax=udm_syntax.policyName,
         include_in_default_search=True,
         required=True,
@@ -72,8 +72,8 @@ property_descriptions = dict({
         identifies=True,
     ),
     'enabled': univention.admin.property(
-        short_description=_('Recyclebin enabled'),
-        long_description=_('Enable or disable recyclebin for objects in this scope'),
+        short_description=_('Recycle Bin enabled'),
+        long_description=_('Enable or disable Recycle Bin for objects in this scope'),
         syntax=udm_syntax.TrueFalseUp,
         default='TRUE',
     ),
@@ -85,13 +85,13 @@ property_descriptions = dict({
     ),
     'retention_days': univention.admin.property(
         short_description=_('Retention days'),
-        long_description=_('Number of days to keep objects in recyclebin (0 = indefinite)'),
+        long_description=_('Number of days to keep objects in Recycle Bin (0 = indefinite)'),
         syntax=udm_syntax.integer,
         default='180',
     ),
     'ignored_object_classes': univention.admin.property(
         short_description=_('Ignored object classes'),
-        long_description=_('Objects having one of these object classes will not be moved to recyclebin.'),
+        long_description=_('Objects having one of these object classes will not be moved to Recycle Bin.'),
         syntax=udm_syntax.ldapObjectClass,
         multivalue=True,
     ),

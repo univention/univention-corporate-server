@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""|UDM| functions to handle deleted objects in recyclebin"""
+"""|UDM| functions to handle deleted objects in Recycle Bin"""
 
 import string
 from collections import namedtuple
@@ -94,7 +94,7 @@ class Reference(namedtuple('Reference', ['source_attr', 'target_module', 'target
             if results:
                 target_dn = results[0]
 
-        # if not found in normal LDAP, search in recyclebin if requested
+        # if not found in normal LDAP, search in Recycle Bin if requested
         if not target_dn and include_recyclebin:
             ldap_attr = {'dn': 'univentionRecycleBinOriginalDN'}.get(ldap_attr, ldap_attr)
             filter_str = filter_format('(&(objectClass=univentionRecycleBinObject)(%s=%s))', [ldap_attr, self.lookup_value])
@@ -120,7 +120,7 @@ def create_references(lo, object_type: str, original_dn: str | None, oldattr: di
             for dn in groups
         )
 
-    # handle groups references, where the group was deleted first and is already in the recyclebin
+    # handle groups references, where the group was deleted first and is already in the Recycle Bin
     if object_type in ('users/user', 'groups/group') and original_dn:
         results = lo.authz_connection.search(
             base=RECYCLEBIN_BASE,
@@ -149,7 +149,7 @@ def to_uuid(dn: str, lo: univention.admin.uldap.access) -> tuple[str, str]:
 
     Tries to store references by UUID for stability. Search order:
     1. Active LDAP - get UUID from current object
-    2. Recyclebin - get UUID from deleted object
+    2. Recycle Bin - get UUID from deleted object
     3. Fallback - store DN
     """
     ref = lo.authz_connection.get(dn, attr=['univentionObjectIdentifier'])
@@ -166,7 +166,7 @@ def to_uuid(dn: str, lo: univention.admin.uldap.access) -> tuple[str, str]:
     )
     if results and results[0][1].get('univentionRecycleBinOriginalUniventionObjectIdentifier'):
         uuid = results[0][1]['univentionRecycleBinOriginalUniventionObjectIdentifier'][0].decode('utf-8')
-        admin_log.debug('Found UUID in recyclebin', dn=dn, uuid=uuid)
+        admin_log.debug('Found UUID in Recycle Bin', dn=dn, uuid=uuid)
         return 'uuid', uuid
 
     admin_log.debug('Storing reference by DN (UUID not found)', dn=dn)
