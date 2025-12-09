@@ -11,7 +11,7 @@ release='5.2-4'  #
 export CURRENT_AMI="${CURRENT_AMI:=ami-0bfc0e697302dddf8}"  # AMI: Univention Corporate Server (UCS) 5.2 (official image) rev. 5
 old_release='5.0-10'  #
 export OLD_AMI="${OLD_AMI:=ami-00c198b3f9bb2c1ba}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 11
-export KVM_UCSVERSION="${KVM_UCSVERSION:=5.2-4+2025-12-05}"  #
+export KVM_UCSVERSION="${KVM_UCSVERSION:=5.2-4+e298}"  #
 export OPENSTACK_IMAGE_VERSION="${OPENSTACK_IMAGE_VERSION:=5.2-3}"  # version for the openstack image
 export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS $OPENSTACK_IMAGE_VERSION}"  # name of the default openstack image
 export OPENSTACK_IMAGE_NAME_OLD="UCS $old_release"
@@ -20,7 +20,7 @@ export RANDOM_UCS_ROOT_PASSWORD="${RANDOM_UCS_ROOT_PASSWORD:=$(shuf -zern32 {A..
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export OLD_VERSION="${OLD_VERSION:=$old_release}"
-export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=Others}"
+export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=UCS}"
 export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$old_release}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=tross.knut.univention.de}"
