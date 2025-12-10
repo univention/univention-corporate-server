@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [3, 4]
+scope: ucs_5.2-0-errata5.2-4
+src: containerd
+fix: 1.6.20~ds1-1+deb12u2
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-64329)
+ * CVSS score 7.3 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2024-25621)
+bug: [58893]
+cve:
+- CVE-2024-25621
+- CVE-2025-64329
