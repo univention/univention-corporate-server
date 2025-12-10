@@ -19,43 +19,43 @@ help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 lint: ## This checks python files modified by you.
-	{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --files
+	{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --files
 
 lint-all: ## This checks all python files in the repository
-	pre-commit run -a
+	prek run -a
 
 ucr:  ## This formats all UCR templates correctly
-	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual ucr-autopep8 --files
-	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual ucr-ruff-fix --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --hook-stage manual ucr-autopep8 --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --hook-stage manual ucr-ruff-fix --files
 
 ruff:  ## This runs ruff fixes on Python files
-	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual ruff-fix --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --hook-stage manual ruff-fix --files
 
 ruff-statistics:
-	pre-commit run -a --hook-stage manual ruff-statistics
+	prek run -a --hook-stage manual ruff-statistics
 
 isort:  ## This runs isort on Python files
-	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual isort-fix --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --hook-stage manual isort-fix --files
 
 autopep8:  ## this runs isort on Python files
-	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual autopep8-fix --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --hook-stage manual autopep8-fix --files
 
 reuse:
-	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs pre-commit run --hook-stage manual reuse-annotate --files
+	-{ git diff --name-only; git ls-files --others --exclude-standard; git diff --cached --name-only; } | xargs prek run --hook-stage manual reuse-annotate --files
 
 format: ucr ruff isort autopep8 reuse  ## This formats all changed python files.
 	-
 
 format-all: ## This formats all python files in the repository
-	-pre-commit run -a --hook-stage manual ucr-autopep8
-	-pre-commit run -a --hook-stage manual ucr-ruff-fix
-	-pre-commit run -a --hook-stage manual ruff-fix
-	-pre-commit run -a --hook-stage manual isort-fix
-	-pre-commit run -a --hook-stage manual autopep8-fix
-	-pre-commit run -a --hook-stage manual reuse-toml
-	-pre-commit run -a --hook-stage manual reuse-annotate
+	-prek run -a --hook-stage manual ucr-autopep8
+	-prek run -a --hook-stage manual ucr-ruff-fix
+	-prek run -a --hook-stage manual ruff-fix
+	-prek run -a --hook-stage manual isort-fix
+	-prek run -a --hook-stage manual autopep8-fix
+	-prek run -a --hook-stage manual reuse-toml
+	-prek run -a --hook-stage manual reuse-annotate
 
 copyright:
-	-pre-commit run -a --hook-stage manual reuse-toml
-	-pre-commit run -a --hook-stage manual reuse-annotate
-	-pre-commit run -a --hook-stage manual reuse-lint
+	-prek run -a --hook-stage manual reuse-toml
+	-prek run -a --hook-stage manual reuse-annotate
+	-prek run -a --hook-stage manual reuse-lint
