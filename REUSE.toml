@@ -214,7 +214,7 @@ SPDX-FileCopyrightText = "2001-2025 Univention GmbH"
 path = "base/univention-newsid/src/**"
 precedence = "override"
 SPDX-License-Identifier = "GPL-2.0-or-later"
-SPDX-FileCopyrightText = "1992-1998 Andrew Tridgell\n   2001 Simo Sorce\n   1998-1999 Luke Kenneth Caseson Leighton\n   1996-2001 Jeremy Allison\n   2000 Gerald (Jerry) Carter\n   2002 Andrew Bartlett"
+SPDX-FileCopyrightText = [ "1992-1998 Andrew Tridgell", "2001 Simo Sorce", "1998-1999 Luke Kenneth Caseson Leighton", "1996-2001 Jeremy Allison", "2000 Gerald (Jerry) Carter", "2002 Andrew Bartlett",]
 
 [[annotations]]
 path = "base/univention-pam/**"
@@ -250,7 +250,7 @@ SPDX-FileCopyrightText = "2003-2025 Univention GmbH"
 path = [ "base/univention-python-heimdal/keytab.c", "base/univention-python-heimdal/keytab.h",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause and AGPL-3.0-only"
-SPDX-FileCopyrightText = "2003-2025 Univention GmbH\n 1996-2001 Kungliga Tekniska Högskolan (Royal Institute of Technology, Stockholm, Sweden)"
+SPDX-FileCopyrightText = [ "2003-2025 Univention GmbH", "1996-2001 Kungliga Tekniska Högskolan (Royal Institute of Technology, Stockholm, Sweden)",]
 
 [[annotations]]
 path = "base/univention-quota/**"
@@ -394,7 +394,7 @@ SPDX-FileCopyrightText = "2001-2025 Univention GmbH"
 path = "mail/univention-antivir-mail/**.cvd"
 precedence = "override"
 SPDX-License-Identifier = "GPL-2.0-only"
-SPDX-FileCopyrightText = "1998-2015, Sourcefire, Inc.\n 2002-2007, Tomasz Kojm <tkojm@clamav.net>\n 2006, Sensory Networks, Inc\n 2007-2015, Cisco Systems, Inc\n 2014, Cisco and/or its affiliates"
+SPDX-FileCopyrightText = [ "1998-2015, Sourcefire, Inc.", "2002-2007, Tomasz Kojm <tkojm@clamav.net>", "2006, Sensory Networks, Inc", "2007-2015, Cisco Systems, Inc", "2014, Cisco and/or its affiliates",]
 
 [[annotations]]
 path = "mail/univention-fetchmail/**"
@@ -472,13 +472,13 @@ SPDX-FileCopyrightText = "2002-2025 Univention GmbH"
 path = "management/univention-directory-listener/src/base64.c"
 precedence = "override"
 SPDX-License-Identifier = "ISC OR LicenseRef-IBM"
-SPDX-FileCopyrightText = "1996, 1998 by Internet Software Consortium\n  Portions Copyright (c) 1995 by International Business Machines, Inc."
+SPDX-FileCopyrightText = [ "1996, 1998 by Internet Software Consortium", "Portions Copyright (c) 1995 by International Business Machines, Inc.",]
 
 [[annotations]]
 path = "management/univention-directory-listener/debian/tests/lxc-ucs"
 precedence = "override"
 SPDX-License-Identifier = "LGPL-2.1-or-later"
-SPDX-FileCopyrightText = "Daniel Lezcano <daniel.lezcano@free.fr>\n 2002-2019 Univention GmbH"
+SPDX-FileCopyrightText = [ "Daniel Lezcano <daniel.lezcano@free.fr>", "2002-2019 Univention GmbH",]
 
 [[annotations]]
 path = "management/univention-directory-logger/**"
@@ -568,7 +568,7 @@ SPDX-FileCopyrightText = "2001-2025 Univention GmbH"
 path = "management/univention-ldap/schema/solaris.schema"
 precedence = "override"
 SPDX-License-Identifier = "LicenseRef-unknown-solaris-ldap-schema"
-SPDX-FileCopyrightText = "2001 Igor Brezac <igor@ipass.net>\n Marc Bourget <bourget@up2.com>"
+SPDX-FileCopyrightText = [ "2001 Igor Brezac <igor@ipass.net>", "Marc Bourget <bourget@up2.com>",]
 
 [[annotations]]
 path = "management/univention-ldap/dh_2048.pem"
@@ -994,19 +994,19 @@ SPDX-FileCopyrightText = "2002-2025 Univention GmbH"
 path = "services/univention-ldb-modules/buildtools/**"
 precedence = "override"
 SPDX-License-Identifier = "LGPL-3.0-or-later"
-SPDX-FileCopyrightText = "2004-2010 Andrew Tridgell <tridge@samba.org>\n 2004-2010 Simo Sorce <idra@samba.org>\n 2005-2010 Andrew Bartlett <abartlet@samba.org>\n 2005,2006 Tim Potter <tpot@samba.org>\n 2007-2010 Jelmer Vernooij <jelmer@samba.org>\n 2009-2010 Matthias Dieter Wallnöfer\n 2005-2006 Brad Hards <bradh@frogmouth.net>\n 2006 Martin Kuehl <mkhl@samba.org>\n 2004 Stefan Metzmacher\n 2004-2005 Derrell Lipman"
+SPDX-FileCopyrightText = [ "2004-2010 Andrew Tridgell <tridge@samba.org>", "2004-2010 Simo Sorce <idra@samba.org>", "2005-2010 Andrew Bartlett <abartlet@samba.org>", "2005,2006 Tim Potter <tpot@samba.org>", "2007-2010 Jelmer Vernooij <jelmer@samba.org>", "2009-2010 Matthias Dieter Wallnöfer", "2005-2006 Brad Hards <bradh@frogmouth.net>", "2006 Martin Kuehl <mkhl@samba.org>", "2004 Stefan Metzmacher", "2004-2005 Derrell Lipman",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/src/base64.c"
 precedence = "override"
 SPDX-License-Identifier = "ISC OR LicenseRef-IBM"
-SPDX-FileCopyrightText = "1996, 1998 by Internet Software Consortium\n  Portions Copyright (c) 1995 by International Business Machines, Inc."
+SPDX-FileCopyrightText = [ "1996, 1998 by Internet Software Consortium", "Portions Copyright (c) 1995 by International Business Machines, Inc.",]
 
 [[annotations]]
 path = [ "services/univention-ldb-modules/buildtools/bin/waf", "services/univention-ldb-modules/buildtools/wafsamba/stale_files.py", "services/univention-ldb-modules/third_party/waf/**",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Scott Newton, 2005 (scottn)\n  Copyright Thomas Nagy, 2005-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright Scott Newton, 2005 (scottn)", "Copyright Thomas Nagy, 2005-2018 (ita)",]
 
 [[annotations]]
 path = [ "services/univention-ldb-modules/third_party/waf/waflib/extras/bjam.py", "services/univention-ldb-modules/third_party/waf/waflib/extras/proc.py", "services/univention-ldb-modules/third_party/waf/waflib/extras/softlink_libs.py",]
@@ -1030,7 +1030,7 @@ SPDX-FileCopyrightText = "Copyright Yannick LM 2011"
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/boost.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Gernot Vormayr\n  Copyright Ruediger Sonderfeld <ruediger@c-plusplus.de>, 2008\n  Copyright Bjoern Michaelsen, 2008\n  Copyright Luca Fossati, 2008\n  Copyright Thomas Nagy, 2008\n  Copyright Sylvain Rouquette, 2011"
+SPDX-FileCopyrightText = [ "Copyright Gernot Vormayr", "Copyright Ruediger Sonderfeld <ruediger@c-plusplus.de>, 2008", "Copyright Bjoern Michaelsen, 2008", "Copyright Luca Fossati, 2008", "Copyright Thomas Nagy, 2008", "Copyright Sylvain Rouquette, 2011",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/buildcopy.py"
@@ -1096,7 +1096,7 @@ SPDX-FileCopyrightText = "Copyright Richard Quirk 2009-1011"
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/erlang.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Thomas Nagy, 2010 (ita)\n  Copyright Przemyslaw Rzepecki, 2016"
+SPDX-FileCopyrightText = [ "Copyright Thomas Nagy, 2010 (ita)", "Copyright Przemyslaw Rzepecki, 2016",]
 
 [[annotations]]
 path = [ "services/univention-ldb-modules/third_party/waf/waflib/extras/fluid.py", "services/univention-ldb-modules/third_party/waf/waflib/extras/objcopy.py",]
@@ -1132,7 +1132,7 @@ SPDX-FileCopyrightText = "Copyright ultrix gmail com"
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/msvs.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Avalanche Studios 2009-2011\n  Copyright Thomas Nagy 2011"
+SPDX-FileCopyrightText = [ "Copyright Avalanche Studios 2009-2011", "Copyright Thomas Nagy 2011",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/pch.py"
@@ -1150,7 +1150,7 @@ SPDX-FileCopyrightText = "Copyright Antoine Dechaume 2011"
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/protoc.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Philipp Bender, 2012\n  Copyright Matt Clarkson, 2012"
+SPDX-FileCopyrightText = [ "Copyright Philipp Bender, 2012", "Copyright Matt Clarkson, 2012",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/pytest.py"
@@ -1180,7 +1180,7 @@ SPDX-FileCopyrightText = "Copyright Mark Coggeshall, 2010"
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/swig.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Petar Forai\n  Copyright Thomas Nagy 2008-2010 (ita)"
+SPDX-FileCopyrightText = [ "Copyright Petar Forai", "Copyright Thomas Nagy 2008-2010 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/use_config.py"
@@ -1198,19 +1198,19 @@ SPDX-FileCopyrightText = "Copyright Nicolas Joseph 2009"
 path = "services/univention-ldb-modules/third_party/waf/waflib/extras/xcode6.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Nicolas Mercier 2011\n  Copyright Simon Warg 2015, https://github.com/mimom"
+SPDX-FileCopyrightText = [ "Copyright Nicolas Mercier 2011", "Copyright Simon Warg 2015, https://github.com/mimom",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/ar.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Thomas Nagy, 2006-2018 (ita)\n  Copyright Ralf Habacker, 2006 (rh)"
+SPDX-FileCopyrightText = [ "Copyright Thomas Nagy, 2006-2018 (ita)", "Copyright Ralf Habacker, 2006 (rh)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/bison.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright John O'Meara, 2006\n  Copyright Thomas Nagy 2009-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright John O'Meara, 2006", "Copyright Thomas Nagy 2009-2018 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/clang.py"
@@ -1228,31 +1228,31 @@ SPDX-FileCopyrightText = "Copyright Matthias Jahn jahn dôt matthias ât freenet
 path = [ "services/univention-ldb-modules/third_party/waf/waflib/Tools/compiler_d.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/dmd.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/d.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/gdc.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/waf_unit_test.py",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Carlos Rafael Giani, 2006-2007 (dv)\n  Copyright Thomas Nagy, 2008-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright Carlos Rafael Giani, 2006-2007 (dv)", "Copyright Thomas Nagy, 2008-2018 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/flex.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright John O'Meara, 2006\n  Thomas Nagy, 2006-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright John O'Meara, 2006", "Thomas Nagy, 2006-2018 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/g95.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright KWS 2010\n  Copyright Thomas Nagy 2016-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright KWS 2010", "Copyright Thomas Nagy 2016-2018 (ita)",]
 
 [[annotations]]
 path = [ "services/univention-ldb-modules/third_party/waf/waflib/Tools/gcc.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/gxx.py",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Thomas Nagy, 2006-2018 (ita)\n  Copyright Ralf Habacker, 2006 (rh)\n  Copyright Yinon Ehrlich, 2009"
+SPDX-FileCopyrightText = [ "Copyright Thomas Nagy, 2006-2018 (ita)", "Copyright Ralf Habacker, 2006 (rh)", "Copyright Yinon Ehrlich, 2009",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/icc.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Stian Selnes 2008\n  Copyright Thomas Nagy 2009-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright Stian Selnes 2008", "Copyright Thomas Nagy 2009-2018 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/ldc2.py"
@@ -1264,43 +1264,43 @@ SPDX-FileCopyrightText = "Copyright Alex Rønne Petersen, 2012 (alexrp/Zor)"
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/lua.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Sebastian Schlingmann, 2008\n  Copyright Thomas Nagy, 2008-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright Sebastian Schlingmann, 2008", "Copyright Thomas Nagy, 2008-2018 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/msvc.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Carlos Rafael Giani, 2006 (dv)\n  Copyright Tamas Pal, 2007 (folti)\n  Copyright Nicolas Mercier, 2009\n  Copyright Matt Clarkson, 2012"
+SPDX-FileCopyrightText = [ "Copyright Carlos Rafael Giani, 2006 (dv)", "Copyright Tamas Pal, 2007 (folti)", "Copyright Nicolas Mercier, 2009", "Copyright Matt Clarkson, 2012",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/perl.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright andersg at 0x63.nu 2007\n  Copyright Thomas Nagy 2016-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright andersg at 0x63.nu 2007", "Copyright Thomas Nagy 2016-2018 (ita)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/python.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Thomas Nagy, 2007-2015 (ita)\n  Copyright Gustavo Carneiro (gjc), 2007"
+SPDX-FileCopyrightText = [ "Copyright Thomas Nagy, 2007-2015 (ita)", "Copyright Gustavo Carneiro (gjc), 2007",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/ruby.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright daniel.svensson at purplescout.se 2008\n  Copyright Thomas Nagy 2016-2018 (ita)"
+SPDX-FileCopyrightText = [ "Copyright daniel.svensson at purplescout.se 2008", "Copyright Thomas Nagy 2016-2018 (ita)",]
 
 [[annotations]]
 path = [ "services/univention-ldb-modules/third_party/waf/waflib/Tools/suncc.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/suncxx.py",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Thomas Nagy, 2006-2018 (ita)\n  Copyright Ralf Habacker, 2006 (rh)"
+SPDX-FileCopyrightText = [ "Copyright Thomas Nagy, 2006-2018 (ita)", "Copyright Ralf Habacker, 2006 (rh)",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/vala.py"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Ali Sabil, 2007\n  Copyright Radosław Szkodziński, 2010"
+SPDX-FileCopyrightText = [ "Copyright Ali Sabil, 2007", "Copyright Radosław Szkodziński, 2010",]
 
 [[annotations]]
 path = "services/univention-ldb-modules/third_party/waf/waflib/Tools/winres.py"
@@ -1312,7 +1312,7 @@ SPDX-FileCopyrightText = "Copyright Brant Young, 2007"
 path = [ "services/univention-ldb-modules/third_party/waf/waflib/Tools/xlc.py", "services/univention-ldb-modules/third_party/waf/waflib/Tools/xlcxx.py",]
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "Copyright Thomas Nagy, 2006-2018 (ita)\n  Copyright Ralf Habacker, 2006 (rh)\n  Copyright Yinon Ehrlich, 2009\n  Copyright Michael Kuhn, 2009"
+SPDX-FileCopyrightText = [ "Copyright Thomas Nagy, 2006-2018 (ita)", "Copyright Ralf Habacker, 2006 (rh)", "Copyright Yinon Ehrlich, 2009", "Copyright Michael Kuhn, 2009",]
 
 [[annotations]]
 path = "services/univention-mariadb/**"
@@ -1348,7 +1348,7 @@ SPDX-FileCopyrightText = "2001-2025 Univention GmbH"
 path = "services/univention-printserver/conffiles/etc/cupsd.conf"
 precedence = "override"
 SPDX-License-Identifier = "GPL-2.0-only"
-SPDX-FileCopyrightText = "1997-2002 by Easy Software Products\n 2001-2019 Univention GmbH"
+SPDX-FileCopyrightText = [ "1997-2002 by Easy Software Products", "2001-2019 Univention GmbH",]
 
 [[annotations]]
 path = "services/univention-radius/**"
