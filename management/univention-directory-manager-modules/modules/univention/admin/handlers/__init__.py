@@ -3460,6 +3460,21 @@ class simpleComputer(simpleLdap):
         for group in self['groups'] + pg:
             self.__fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'))
 
+    def __fast_single_member_add(self, group, member_dn, member_uid, **kwargs):
+        ml = [
+            ('memberUid', None, [member_uid.encode('UTF-8')]),
+            ('uniqueMember', None, [member_dn.encode('UTF-8')]),
+        ]
+        try:
+            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.TYPE_OR_VALUE_EXISTS:
+            for entry in ml:
+                try:
+                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
+                except ldap.TYPE_OR_VALUE_EXISTS:
+                    continue
+                break
+
     def __fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
         ml = [
             ('memberUid', [member_uid.encode('UTF-8')], None),
@@ -3557,18 +3572,11 @@ class simpleComputer(simpleLdap):
 
         for group in old_groups ^ new_groups:
             groupdn = str(group)
-            groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, groupdn)
-            assert groupObject is not None
-            groupObject.open()
-            # add this computer to the group
-            hosts = DN.set(groupObject['hosts'])
+
             if group not in new_groups:
-                # remove this computer from the group
-                hosts.discard(DN(self.old_dn))
+                self.__fast_single_member_remove(groupdn, self.old_dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
             else:
-                hosts.add(DN(self.dn))
-            groupObject['hosts'] = list(DN.values(hosts))
-            groupObject.modify(ignore_license=True)
+                self.__fast_single_member_add(groupdn, self.dn, '%s$' % self['name'], ignore_license=True)
 
     def primary_group(self) -> None:
         if not self.hasChanged('primaryGroup'):
