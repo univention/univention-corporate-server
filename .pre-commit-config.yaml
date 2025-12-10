@@ -186,12 +186,19 @@ repos:
       - id: reuse-toml
         stages: [ manual ]
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v5.0.2
+    rev: v6.2.0
     hooks:
       - id: reuse
         alias: reuse-annotate
         name: "reuse annotate"
-        args: ["annotate", "-c", "Univention GmbH", "-l", "AGPL-3.0-only", "--skip-unrecognised", "--skip-existing", "--template", "univention"]
+        args: [
+            "annotate",
+            "-c", "Univention GmbH",
+            "-l", "AGPL-3.0-only",
+            "--template", "univention",
+            "--skip-unrecognised",
+            "--skip-existing", # or "--merge-copyrights" but it breaks
+        ]
         pass_filenames: true
         description: "Annotate all unlicensed files as AGPL-3.0-only with Univention GmbH copyright"
         stages: [ manual ]
