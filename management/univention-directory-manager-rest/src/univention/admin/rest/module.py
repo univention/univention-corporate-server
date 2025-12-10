@@ -2060,21 +2060,21 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
         self.set_entity_tags(obj)
 
+        result = {}
+        obj = await self.modify(module, obj, representation or patch_document, result, serverctrls=serverctrls, response=response)
         position = representation.get('position')
         if position and not self.ldap_write_connection.compare_dn(self.ldap_write_connection.parentDn(dn), position):
-            await self.move(module, dn, position)
+            await self.move(module, obj.dn, position)
             return
+
+        self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
+        self.set_entity_tags(obj, check_conditionals=False)
+        self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
+        if result:
+            self.content_negotiation(result)
         else:
-            result = {}
-            obj = await self.modify(module, obj, representation or patch_document, result, serverctrls=serverctrls, response=response)
-            self.set_header('Location', self.urljoin(quote_dn(obj.dn)))
-            self.set_entity_tags(obj, check_conditionals=False)
-            self.add_caching(public=False, must_revalidate=True, no_cache=True, no_store=True)
-            if result:
-                self.content_negotiation(result)
-            else:
-                self.set_status(204)
-            raise Finish()
+            self.set_status(204)
+        raise Finish()
 
     @sanitize
     async def patch(
