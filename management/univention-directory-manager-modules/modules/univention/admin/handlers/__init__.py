@@ -3515,14 +3515,14 @@ class simpleComputer(simpleLdap):
             oldMemberUids = self.lo.authz_connection.getAttr(group, 'memberUid')
             newMemberUids = copy.deepcopy(oldMemberUids)
             if group in new_groups:
-                self.log.debug('__update_groups_after_namechange: changing memberUid', group=group)
+                self.log.trace('changing memberUid', group=group)
                 if oldUid in newMemberUids:
                     newMemberUids.remove(oldUid)
                 if newUid not in newMemberUids:
                     newMemberUids.append(newUid)
                 self.lo.authz_connection.modify(group, [('memberUid', oldMemberUids, newMemberUids)])
             else:
-                self.log.debug('__update_groups_after_namechange: removing memberUid', group=group)
+                self.log.trace('removing memberUid', group=group)
                 if oldUid in oldMemberUids:
                     oldMemberUids = oldUid
                     newMemberUids = b''
@@ -3532,7 +3532,7 @@ class simpleComputer(simpleLdap):
             oldUniqueMembers = self.lo.authz_connection.getAttr(group, 'uniqueMember')
             newUniqueMembers = copy.deepcopy(oldUniqueMembers)
             if group in new_groups:
-                self.log.debug('__update_groups_after_namechange: changing uniqueMember', group=group)
+                self.log.trace('changing uniqueMember', group=group)
                 if olddn in newUniqueMembers:
                     newUniqueMembers.remove(olddn)
                 if newdn not in newUniqueMembers:
@@ -3540,12 +3540,12 @@ class simpleComputer(simpleLdap):
                 self.lo.authz_connection.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
             else:
                 if olddn in oldUniqueMembers:
-                    self.log.debug('__update_groups_after_namechange: removing uniqueMember', group=group)
+                    self.log.trace('removing uniqueMember', group=group)
                     oldUniqueMembers = olddn
                     newUniqueMembers = b''
                     self.lo.authz_connection.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
                 if newdn in oldUniqueMembers:
-                    self.log.debug('__update_groups_after_namechange: removing uniqueMember', group=group)
+                    self.log.trace('removing uniqueMember', group=group)
                     oldUniqueMembers = newdn
                     newUniqueMembers = b''
                     self.lo.authz_connection.modify(group, [('uniqueMember', oldUniqueMembers, newUniqueMembers)])
