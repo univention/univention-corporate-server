@@ -1031,7 +1031,7 @@ class Component:
         :param end: Maximum allowed version.
         :param bool clean: Add additional `clean` statements for `apt-mirror`.
         :param bool for_mirror_list: component entries for `mirror.list` will be returned, otherwise component entries for local `sources.list`.
-        :param failed: A set to recive the failed component names.
+        :param failed: A set to receive the failed component names.
         :returns: A list of strings with APT statements.
         """
         for server, struct in self.versions(start, end, for_mirror_list):
