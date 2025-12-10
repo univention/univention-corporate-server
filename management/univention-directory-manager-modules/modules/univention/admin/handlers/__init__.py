@@ -3456,12 +3456,24 @@ class simpleComputer(simpleLdap):
         super()._ldap_post_remove()
 
         # remove computer from groups
-        groups = copy.deepcopy(self['groups'])
-        if self.oldinfo.get('primaryGroup'):
-            groups.append(self.oldinfo.get('primaryGroup'))
-        for group in groups:
-            groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
-            groupObject.fast_member_remove([self.dn], [x.decode('UTF-8') for x in self.oldattr.get('uid', [])], ignore_license=True)
+        pg = [self.oldinfo['primaryGroup']] if self.oldinfo.get('primaryGroup') else []
+        for group in self['groups'] + pg:
+            self.__fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'))
+
+    def __fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
+        ml = [
+            ('memberUid', [member_uid.encode('UTF-8')], None),
+            ('uniqueMember', [member_dn.encode('UTF-8')], None),
+        ]
+        try:
+            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.NO_SUCH_ATTRIBUTE:
+            for entry in ml:
+                try:
+                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
+                except ldap.NO_SUCH_ATTRIBUTE:
+                    continue
+                break
 
     def __update_groups_after_namechange(self) -> None:
         oldname = self.oldinfo.get('name')
