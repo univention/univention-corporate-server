@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libpng1.6
+fix: 1.6.28-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:H).
+   (CVE-2025-66293, CVE-2025-64720)
+ * CVSS score 7.1 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H).
+   (CVE-2025-65018)
+ * CVSS score 6.1 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:H).
+   (CVE-2025-64506, CVE-2025-64505)
+bug: [58890]
+cve:
+- CVE-2025-64505
+- CVE-2025-64506
+- CVE-2025-64720
+- CVE-2025-65018
+- CVE-2025-66293
