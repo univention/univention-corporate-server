@@ -1,4 +1,4 @@
- /*
+/*
  * Univention Configuration registry
  *  header file for univention config registry lib
  *

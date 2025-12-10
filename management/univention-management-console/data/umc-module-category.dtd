@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2025 Univention GmbH
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <!-- top level element -->
 <!--  version: only 2.0 is allowed -->
 <!ELEMENT umc (categories)>
