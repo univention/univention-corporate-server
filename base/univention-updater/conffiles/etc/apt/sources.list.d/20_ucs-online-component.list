@@ -7,12 +7,13 @@ from univention.updater.tools import UniventionUpdater
 
 try:
     updater = UniventionUpdater()
+    failed = set()
 
     if updater.online_repository:
         ver = updater.current_version
         for comp in sorted(updater.get_components()):
             try:
-                for repo in comp.repositories(ver, ver):
+                for repo in comp.repositories(ver, ver, failed=failed):
                     print(repo)
             except UpdaterException as ex:
                 print("# Component %s: %s" % (comp.name, ex))
@@ -26,6 +27,16 @@ except Exception:
         print('#   %s' % line)
     print('#')
     print('')
+    print('# After fixing this issue, you should rewrite this file with the following command:')
+    print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
+    print('#')
+    print('')
+
+if failed:
+    print('')
+    print('# An error occurred during the repository check. The error message:')
+    for comp, err in failed:
+        print('#   %s' % err)
     print('# After fixing this issue, you should rewrite this file with the following command:')
     print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
     print('#')
