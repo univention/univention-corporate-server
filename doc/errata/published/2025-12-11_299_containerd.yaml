@@ -13,3 +13,6 @@ bug: [58893]
 cve:
 - CVE-2024-25621
 - CVE-2025-64329
+erratum: 299
+announced: 2025-12-11
+support: core
