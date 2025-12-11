@@ -1,0 +1,34 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: lasso
+fix: 2.6.0-2+deb10u2A~5.0.10.202512101314
+desc: |
+ This update addresses the following issues:
+ * Non-maintainer upload by the ELTS Security Team.
+ * CVE-2025-46404: A denial of service vulnerability exists in the
+   lasso_provider_verify_saml_signature functionality. A specially crafted  SAML
+   response can lead to a denial of service.
+ * CVE-2025-46705: A denial of service vulnerability exists in the
+   g_assert_not_reached functionality. A specially crafted SAML assertion
+   response can lead to a denial of service.
+ * CVE-2025-46784: A denial of service vulnerability exists in the
+   lasso_node_init_from_messagee_with_format functionality. A specially  crafted
+   SAML response can lead to a memory depletion, resulting in denial  of
+   service.
+ * CVE-2025-47151: A type confusion vulnerability exists in the
+   lasso_node_impl_init_from_xml functionality. A specially crafted SAML
+   response can lead to an arbitrary code execution. (RCE)
+ * Fix 2 segfaults which were also prerequisites of CVE-2025-46784.
+ * Run full test suite on build.
+ * Fix test suite failure due to expired certificates.
+ * Setup Salsa CI.
+ * Setup git-buildpackage.
+ * Import autopkgtest configuration from sid.
+bug: [58889]
+cve:
+- CVE-2025-46404
+- CVE-2025-46705
+- CVE-2025-46784
+- CVE-2025-47151
