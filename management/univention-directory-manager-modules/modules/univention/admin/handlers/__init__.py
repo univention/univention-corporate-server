@@ -1983,6 +1983,36 @@ class simpleLdap:
         flags = self.oldattr.get('univentionObjectFlag', [])
         return b'synced' in flags and b'docker' not in flags
 
+    def fast_single_member_add(self, group, member_dn, member_uid, **kwargs):
+        ml = [
+            ('memberUid', None, [member_uid.encode('UTF-8')]),
+            ('uniqueMember', None, [member_dn.encode('UTF-8')]),
+        ]
+        try:
+            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.TYPE_OR_VALUE_EXISTS:
+            for entry in ml:
+                try:
+                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
+                except ldap.TYPE_OR_VALUE_EXISTS:
+                    continue
+                break
+
+    def fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
+        ml = [
+            ('memberUid', [member_uid.encode('UTF-8')], None),
+            ('uniqueMember', [member_dn.encode('UTF-8')], None),
+        ]
+        try:
+            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.NO_SUCH_ATTRIBUTE:
+            for entry in ml:
+                try:
+                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
+                except ldap.NO_SUCH_ATTRIBUTE:
+                    continue
+                break
+
     @classmethod
     def get_default_containers(cls, lo: univention.admin.uldap.access) -> list[str]:
         """
@@ -3458,37 +3488,7 @@ class simpleComputer(simpleLdap):
         # remove computer from groups
         pg = [self.oldinfo['primaryGroup']] if self.oldinfo.get('primaryGroup') else []
         for group in self['groups'] + pg:
-            self.__fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'))
-
-    def __fast_single_member_add(self, group, member_dn, member_uid, **kwargs):
-        ml = [
-            ('memberUid', None, [member_uid.encode('UTF-8')]),
-            ('uniqueMember', None, [member_dn.encode('UTF-8')]),
-        ]
-        try:
-            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
-        except ldap.TYPE_OR_VALUE_EXISTS:
-            for entry in ml:
-                try:
-                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
-                except ldap.TYPE_OR_VALUE_EXISTS:
-                    continue
-                break
-
-    def __fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
-        ml = [
-            ('memberUid', [member_uid.encode('UTF-8')], None),
-            ('uniqueMember', [member_dn.encode('UTF-8')], None),
-        ]
-        try:
-            self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
-        except ldap.NO_SUCH_ATTRIBUTE:
-            for entry in ml:
-                try:
-                    self.lo.authz_connection.modify(group, [entry], exceptions=True, **kwargs)
-                except ldap.NO_SUCH_ATTRIBUTE:
-                    continue
-                break
+            self.fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'))
 
     def __update_groups_after_namechange(self) -> None:
         oldname = self.oldinfo.get('name')
@@ -3574,9 +3574,9 @@ class simpleComputer(simpleLdap):
             groupdn = str(group)
 
             if group not in new_groups:
-                self.__fast_single_member_remove(groupdn, self.old_dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
+                self.fast_single_member_remove(groupdn, self.old_dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
             else:
-                self.__fast_single_member_add(groupdn, self.dn, '%s$' % self['name'], ignore_license=True)
+                self.fast_single_member_add(groupdn, self.dn, '%s$' % self['name'], ignore_license=True)
 
     def primary_group(self) -> None:
         if not self.hasChanged('primaryGroup'):

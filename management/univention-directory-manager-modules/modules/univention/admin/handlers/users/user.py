@@ -1331,19 +1331,19 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
         for group in old_groups - new_groups - {DN(self['primaryGroup'])}:
             groupdn = str(group)
-            self.__fast_single_member_remove(groupdn, self.old_dn, old_uid)
+            self.fast_single_member_remove(groupdn, self.old_dn, old_uid)
             if self.dn != self.old_dn:
                 # we change our DN _before_ removing it from the group
                 # so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
-                self.__fast_single_member_remove(groupdn, self.dn, old_uid)
+                self.fast_single_member_remove(groupdn, self.dn, old_uid)
 
         for group in (new_groups - old_groups):
-            self.__fast_single_member_add(str(group), self.dn, new_uid)
+            self.fast_single_member_add(str(group), self.dn, new_uid)
 
         if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             self.log.debug('users/user: check primaryGroup')
             if not self.exists() and self.info.get('primaryGroup'):
-                self.__fast_single_member_add(self.info.get('primaryGroup'), self.dn, new_uid)
+                self.fast_single_member_add(self.info.get('primaryGroup'), self.dn, new_uid)
 
     def __primary_group(self) -> None:
         if not self.hasChanged('primaryGroup'):
@@ -1351,10 +1351,11 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
         if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             new_uid = self.info.get('username')
-            self.__fast_single_member_add(self['primaryGroup'], self.dn, new_uid)
+            self.fast_single_member_add(self['primaryGroup'], self.dn, new_uid)
             self.log.debug('Adding user to new primaryGroup', primary_group=self['primaryGroup'], uid=new_uid, dn=self.dn)
 
-    def __fast_single_member_add(self, group, member_dn, member_uid, **kwargs):
+    def fast_single_member_add(self, group, member_dn, member_uid, **kwargs):
+        # TODO: remove after UCS 5.2-5 as the same get inherited
         ml = [
             ('memberUid', None, [member_uid.encode('UTF-8')]),
             ('uniqueMember', None, [member_dn.encode('UTF-8')]),
@@ -1369,7 +1370,8 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                     continue
                 break
 
-    def __fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
+    def fast_single_member_remove(self, group, member_dn, member_uid, **kwargs):
+        # TODO: remove after UCS 5.2-5 as the same get inherited
         ml = [
             ('memberUid', [member_uid.encode('UTF-8')], None),
             ('uniqueMember', [member_dn.encode('UTF-8')], None),
@@ -1970,7 +1972,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         super()._ldap_post_remove()
 
         for group in self.oldinfo.get('groups', []):
-            self.__fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
+            self.fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
 
     def _move(self, newdn: str, modify_childs: bool = True, ignore_license: bool = False) -> str:
         olddn = self.dn
