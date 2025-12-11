@@ -3,7 +3,7 @@ release: "5.2"
 version: [4]
 scope: ucs_5.2-0-errata5.2-4
 src: univention-directory-manager-modules
-fix: 17.4.3
+fix: 17.4.4
 desc: |
  This update addresses the following issues:
  * The Recycle Bin listener module is now disabled by default and can be
@@ -12,4 +12,5 @@ desc: |
    now disable the creation of Recycle Bin objects for a whole subtree. All
    occurrences of "Recyclebin" in user facing places have been renamed to
    "Recycle Bin".
-bug: [58887]
+ * Allow dash in uid and gid syntaxes also as last character.
+bug: [58887,58898]
