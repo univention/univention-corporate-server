@@ -3,7 +3,7 @@ release: "5.2"
 version: [3,4]
 scope: ucs_5.2-0-errata5.2-4
 src: cups
-fix: 2.4.2-3+deb12u9A~5.2.0.202512101812
+fix: 2.4.2-3+deb12u9A~5.2.3.202512111138
 desc: |
  This update addresses the following issues:
  * When setting up a new printer in CUPS via IPP Everywhere,
