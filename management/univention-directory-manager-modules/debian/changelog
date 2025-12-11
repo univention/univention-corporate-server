@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.4.5) unstable; urgency=medium
+
+  * Bug #58899: fix performance of group membership updates in users and
+    computers module
+
+ -- Florian Best <best@univention.de>  Thu, 11 Dec 2025 13:17:51 +0100
+
 univention-directory-manager-modules (17.4.4) unstable; urgency=medium
 
   * Bug #58898 Allow trailing dash in uid and gid syntaxes
