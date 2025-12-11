@@ -56,6 +56,7 @@ format-all: ## This formats all python files in the repository
 	-prek run -a --hook-stage manual reuse-annotate
 
 copyright:
+	-prek run -a --hook-stage manual update-copyright-year
 	-prek run -a --hook-stage manual reuse-toml
 	-prek run -a --hook-stage manual reuse-annotate
 	-prek run -a --hook-stage manual reuse-lint

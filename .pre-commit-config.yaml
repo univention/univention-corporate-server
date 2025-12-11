@@ -180,8 +180,14 @@ repos:
                   |^packaging/ucslint/testframework/\
                   "
   - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-hooks/pre-commit-copyright
-    rev: 0.1.1
+    rev: 0.2.0
     hooks:
+      - id: update-copyright-year
+        stages: [ manual ]
+        exclude: "^packaging/ucslint/testframework/0010-2-3-4-5/\
+                  |^packaging/ucslint/testframework/0010-2/\
+                  |^packaging/ucslint/testframework/0010-6/\
+                  "
       - id: reuse-toml-dry-run
       - id: reuse-toml
         stages: [ manual ]
