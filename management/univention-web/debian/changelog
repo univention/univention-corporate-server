@@ -1,3 +1,9 @@
+univention-web (6.4.2) unstable; urgency=medium
+
+  * Bug #58843: fix API change for dgrid/Tree formatter
+
+ -- Florian Best <best@univention.de>  Fri, 12 Dec 2025 16:15:30 +0100
+
 univention-web (6.4.1) unstable; urgency=medium
 
   * Bug #58843: upgrade dojo libs

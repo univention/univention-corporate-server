@@ -78,7 +78,7 @@ define([
 		},
 
 		columnsFormatter: function(value, object) {
-			return this.getRowIconHTML(object) + entities.encode(value);
+			return {html: this.getRowIconHTML(object) + entities.encode(value)}
 		},
 
 		getIconClass: function(object) {
@@ -174,7 +174,7 @@ define([
 
 		getRowIconHTML: function(object) {
 			var html = lang.replace('<span role="presentation" class="dgrid-tree-icon dijitInline {iconClass}"></span>', {
-				iconClass: this.getIconClass(object)
+				iconClass: entities.encode(this.getIconClass(object))
 			});
 			return html;
 		},
