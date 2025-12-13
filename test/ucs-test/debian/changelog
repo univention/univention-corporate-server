@@ -1,3 +1,9 @@
+ucs-test (12.4.4) unstable; urgency=medium
+
+  * Bug #58887: workaround to restart listener when activating lastbind
+
+ -- Florian Best <best@univention.de>  Sat, 13 Dec 2025 11:11:24 +0100
+
 ucs-test (12.4.3) unstable; urgency=medium
 
   * Bug #58899: test_user_rewrite_member_uid
