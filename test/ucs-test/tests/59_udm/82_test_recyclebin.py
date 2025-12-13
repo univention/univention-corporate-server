@@ -254,12 +254,21 @@ def test_create_and_restore(deleted_object_user_properties):
             remaining_users[0].remove()
 
 
-@pytest.mark.parametrize('name_suffix', [
-    '',
-    pytest.param('ä+ü', marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # broken DN chars (and utf-8 umlauts)
-    '§(id)',  # broken filter chars
-    pytest.param(random_name_special_characters().replace('@', '').replace('$', ''), marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # other random special chars: @ causes kerberos errors, $ causes no users/user identification
-])
+@pytest.mark.parametrize(
+    'name_suffix',
+    [
+        '',
+        pytest.param('ä+ü', marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # broken DN chars (and utf-8 umlauts)
+        '§(id)',  # broken filter chars
+        pytest.param(
+            random_name_special_characters()
+            .replace('@', '')  # heimdal kerberos principal name breaks due to duplicated @
+            .replace('$', '')  # not identifyable as users/user
+            .replace('+', ''),  # ldap.CONSTRAINT_VIOLATION: {'msgtype': 105, 'msgid': 2684, 'result': 19, 'desc': 'Constraint violation', 'ctrls': [], 'info': "0000202F: samldb: sAMAccountName contains invalid '+' character\n"}
+            marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.'),
+        ),
+    ],
+)
 def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, Client):
     """Test user deletion and restoration via UMC interface."""
     container_recyclebin_policy, _ = recyclebin_policy_session
