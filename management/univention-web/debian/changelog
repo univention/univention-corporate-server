@@ -1,3 +1,9 @@
+univention-web (6.4.3) unstable; urgency=medium
+
+  * Bug #58843: add dgrid patch for auto loading of tree root
+
+ -- Florian Best <best@univention.de>  Sat, 13 Dec 2025 12:22:20 +0100
+
 univention-web (6.4.2) unstable; urgency=medium
 
   * Bug #58843: fix API change for dgrid/Tree formatter

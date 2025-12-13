@@ -109,6 +109,7 @@ libs/dgrid: dgrid-$(DGRID).tar.gz
 	$(RM) -r $@.tmp
 	tar -C libs --no-same-owner -xf $< --transform="s|^[^/]*|$(@F).tmp|"
 	patch -d $@.tmp -p0 -i ../../fix_dgrid_Grid_sortIcon.patch
+	patch -d $@.tmp -p0 -i ../../fix_dgrid_Tree_reload.patch
 	mv $@.tmp $@
 
 libs/dstore: dstore-${DSTORE}.tar.gz

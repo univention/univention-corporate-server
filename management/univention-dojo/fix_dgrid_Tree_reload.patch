@@ -1,0 +1,15 @@
+https://github.com/dojo/dojo1-dgrid/commit/fbd8568210a6d9e943e10250be62a446984f26b6#r172697793
+
+diff --git Tree.js Tree.js
+index 814e62c9..2ad070e9 100644
+--- Tree.js
++++ Tree.js
+@@ -266,7 +266,7 @@ define([
+ 					});
+ 				}
+ 			} else {
+-				if (rowElement.parentNode && this.domNode.offsetHeight) {
++				if (rowElement.parentNode && (this.domNode.offsetHeight || this.domNode.offsetHeight === 0)) {
+ 					if (this._expandPromises && !dfd) {
+ 						dfd = new Deferred();
+ 						this._expandPromises.push(dfd.promise);
