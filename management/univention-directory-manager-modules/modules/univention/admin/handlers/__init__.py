@@ -3488,7 +3488,7 @@ class simpleComputer(simpleLdap):
         # remove computer from groups
         pg = [self.oldinfo['primaryGroup']] if self.oldinfo.get('primaryGroup') else []
         for group in self['groups'] + pg:
-            self.fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'))
+            self.fast_single_member_remove(group, self.dn, self.oldattr['uid'][0].decode('UTF-8'), ignore_license=True)
 
     def __update_groups_after_namechange(self) -> None:
         oldname = self.oldinfo.get('name')

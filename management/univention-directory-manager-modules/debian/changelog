@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.6) unstable; urgency=medium
+
+  * Bug #58899: add missing ignore of license check
+
+ -- Florian Best <best@univention.de>  Sun, 14 Dec 2025 11:19:49 +0100
+
 univention-directory-manager-modules (17.4.5) unstable; urgency=medium
 
   * Bug #58899: fix performance of group membership updates in users and
