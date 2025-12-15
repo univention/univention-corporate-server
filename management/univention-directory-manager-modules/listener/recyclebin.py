@@ -8,7 +8,6 @@ import datetime
 from dataclasses import dataclass
 
 import ldap.dn
-from ldap.controls.simple import RelaxRulesControl
 from ldap.extop.dds import RefreshRequest, RefreshResponse
 from ldap.filter import filter_format
 
@@ -36,7 +35,7 @@ class RecycleBinListener(ListenerModuleHandler):
         description = 'Recycle Bin listener'
         ldap_filter = '(|(univentionObjectType=users/user)(univentionObjectType=groups/group))'  # TODO: automatically add all supported modules
         _ldap_filter = '(%s)' % '|'.join([filter_format('(univentionObjectType=%s)', [mod.module]) for mod in univention.admin.modules.modules.values() if getattr(mod, 'supports_recyclebin', False)])
-        attributes: list[str] = []
+        attributes = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -144,8 +143,7 @@ class RecycleBinListener(ListenerModuleHandler):
         obj['originalEntryUUID'] = original_attrs['entryUUID'][0].decode('UTF-8')
         obj['originalObjectClasses'] = [x.decode('UTF-8') for x in original_attrs['objectClass']]
         obj.oldattr = original_attrs
-        relax_rules_control = RelaxRulesControl(criticality=True)  # e.g. for authTimestamp
-        dn = obj.create(serverctrls=[relax_rules_control], ignore_license=True)
+        dn = obj.create(ignore_license=True)
 
         self.logger.info('Created deleted object: %s (retention: %d days)', dn, policy.retention_days)
 

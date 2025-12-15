@@ -135,7 +135,6 @@ def deleted_object_user_properties(ldap_base) -> SimpleNamespace:
                 f'cn=Domain Admins,cn=groups,{ldap_base}'.encode(),
                 f'cn=doesnotexist,cn=groups,{ldap_base}'.encode(),
             ],
-            'authTimestamp': [b'20251203104907Z'],
         },
         'ignore_ldap_attrs': {
             # these should be ignored
