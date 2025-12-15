@@ -934,7 +934,7 @@ class simpleLdap:
 
         return None  # FIXME:
 
-    def restore(self) -> None:  # TODO: support destination: str
+    def restore(self, *, ignore_license: bool = False) -> None:  # TODO: support destination: str
         """
         Restore LDAP object from Recycle Bin with all the LDAP attributes from the deleted object
         (excluding operational and Recycle Bin attributes)
@@ -1010,20 +1010,23 @@ class simpleLdap:
             obj._ldap_pre_ready()  # Module-specific pre-validation
             obj.ready()  # Allocate auto-generated attributes (uidNumber, gidNumber, etc.)
             obj._ldap_pre_create()  # Final pre-create validation and hooks
+            obj._update_policies()  # Update policy references
             obj.call_udm_property_hook('hook_ldap_pre_create', obj)  # Extended attribute hooks
-            self._update_policies()  # Update policy references
+            # al = obj.call_udm_property_hook('hook_ldap_addlist', obj, al)
             relax_rules_control = RelaxRulesControl(criticality=True)
             # self.lo.authz_connection.add(original_dn, ml, serverctrls=[relax_rules_control])
-            loa.authz_connection.add(original_dn, ml, serverctrls=[relax_rules_control])
+            loa.authz_connection.add(original_dn, ml, serverctrls=[relax_rules_control], ignore_license=ignore_license)
         except Exception:
             obj.cancel()
             raise
 
+        self.restore_references()
         obj._ldap_post_create()  # Post-create hooks (e.g., group cache updates)
+        obj.call_udm_property_hook('hook_ldap_post_create', obj)
+
+        obj.save()
 
         self.log.info('Object restored from recyclebin', original_dn=original_dn, object_type=self.info.get('originalObjectType', 'unknown'))
-
-        self.restore_references()
 
         self.lo.authz_connection.delete(self.dn)
 
