@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.7) unstable; urgency=medium
+
+  * Bug #58887: fix API of restore to behave like create
+
+ -- Florian Best <best@univention.de>  Tue, 16 Dec 2025 12:49:16 +0100
+
 univention-directory-manager-modules (17.4.6) unstable; urgency=medium
 
   * Bug #58899: add missing ignore of license check
