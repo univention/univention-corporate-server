@@ -17,6 +17,12 @@ STR_ALPHANUMDOTDASH = STR_ALPHANUM + '.-'
 STR_SPECIAL_CHARACTER = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ´€Ω®½'
 STR_UMLAUT = 'äöüßâêôûŵẑŝĝĵŷĉ'
 STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
+FORBIDDEN_USERNAME_CHARS = ''.join((  # noqa: FLY002
+    '@',  # heimdal kerberos principal name breaks due to duplicated @
+    '$',  # not identifyable as users/user
+    r'"/\[]:;|=,+*?<>',  # ldap.CONSTRAINT_VIOLATION: "0000202F: samldb: sAMAccountName contains invalid '+' character\n", see https://learn.microsoft.com/en-us/windows/win32/adschema/a-samaccountname
+))
+STR_SPECIAL_USERNAME_CHARACTER = STR_SPECIAL_CHARACTER.translate(str.maketrans('', '', FORBIDDEN_USERNAME_CHARS))
 
 
 def random_string(length: int = 10, alpha: bool = True, numeric: bool = True, charset: str = "", encoding: str = 'utf-8') -> str:
@@ -54,6 +60,16 @@ def random_name_special_characters(length: int = 10) -> str:
         random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
         random_string(length=2, alpha=True, numeric=False),
         random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM),
+    ))
+
+
+def random_username_special_characters(length: int = 10) -> str:
+    """create random username (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)"""
+    return ''.join((
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
+        random_string(length=2, alpha=True, numeric=False),
+        random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_USERNAME_CHARACTER + STR_UMLAUT),
         random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM),
     ))
 

@@ -28,7 +28,7 @@ from univention.admin.uexceptions import authFail, noObject, uidAlreadyUsed, val
 from univention.admin.uldap import access, getAdminConnection, position
 from univention.logging import basicConfig
 from univention.testing.fixtures_recyclebin import RECYCLEBIN_DN, _deleted_object_dn
-from univention.testing.strings import random_groupname, random_name_special_characters, random_username
+from univention.testing.strings import random_groupname, random_username, random_username_special_characters
 from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import (
     get_ldap_connection, restart_listener, restart_slapd, start_listener, stop_listener, verify_ldap_object,
@@ -260,13 +260,7 @@ def test_create_and_restore(deleted_object_user_properties):
         '',
         pytest.param('ä+ü', marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # broken DN chars (and utf-8 umlauts)
         '§(id)',  # broken filter chars
-        pytest.param(
-            random_name_special_characters()
-            .replace('@', '')  # heimdal kerberos principal name breaks due to duplicated @
-            .replace('$', '')  # not identifyable as users/user
-            .replace('+', ''),  # ldap.CONSTRAINT_VIOLATION: {'msgtype': 105, 'msgid': 2684, 'result': 19, 'desc': 'Constraint violation', 'ctrls': [], 'info': "0000202F: samldb: sAMAccountName contains invalid '+' character\n"}
-            marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.'),
-        ),
+        pytest.param(random_username_special_characters(), marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),
     ],
 )
 def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, Client):
