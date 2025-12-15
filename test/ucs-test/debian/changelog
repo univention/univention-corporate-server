@@ -1,3 +1,9 @@
+ucs-test (12.4.5) unstable; urgency=medium
+
+  * Bug #58887: fix Jenkins workspace URL for non-primary systems
+
+ -- Florian Best <best@univention.de>  Mon, 15 Dec 2025 12:02:38 +0100
+
 ucs-test (12.4.4) unstable; urgency=medium
 
   * Bug #58887: workaround to restart listener when activating lastbind

@@ -53,7 +53,7 @@ def _readline(fd):
     return line
 
 
-def main(files, ignore_exceptions=[], out=sys.stdout, err=sys.stderr):
+def main(files, ignore_exceptions=[], out=sys.stdout, err=sys.stderr, url=lambda x: ''):
     tracebacks = {}
     for file_ in files:
         with getfile(file_, 'rb') as (fd, filename):
@@ -108,9 +108,10 @@ def main(files, ignore_exceptions=[], out=sys.stdout, err=sys.stderr):
         found = True
         print('', file=out)
         print('%d times in %s:' % (exceptions.occurred, ', '.join(exceptions.filenames)), file=out)
-        if os.environ.get('JENKINS_WS'):
-            for fn in exceptions.filenames:
-                print('%sws/test/%s' % (os.environ['JENKINS_WS'], os.path.basename(fn)), file=out)
+        for fn in exceptions.filenames:
+            link = url(os.path.basename(fn))
+            if link:
+                print(link, file=out)
         print('Traceback (most recent call last):', file=out)
         print(traceback, end='', file=out)
         for exc in exceptions:

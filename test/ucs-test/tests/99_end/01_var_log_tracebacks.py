@@ -13,7 +13,21 @@ import tempfile
 import psutil
 import pytest
 
+from univention.config_registry import ucr
+
 import grep_traceback
+
+
+def url(path):
+    if os.environ.get('JENKINS_WS'):
+        prefix = ''
+        if ucr.get('server/role') != 'domaincontroller_master':
+            if os.environ.get('UCS_TEST_REMOTE'):
+                prefix = ucr['ldap/master'].split('.', 1)[0] + '/'
+            else:
+                prefix = ucr['hostname'] + '/'
+        return '%sws/test/%s%s' % (os.environ['JENKINS_WS'], prefix, path)
+    return ''
 
 
 @pytest.mark.xfail(reason='If one test case fails this will also fail. Curently the information are not so relevant.')
@@ -35,32 +49,32 @@ def test_ucs_test_logfile():
         args.logfile = os.path.join(ucs_test.cwd(), args.logfile)
 
     if args.logfile and os.path.isfile(args.logfile):
-        not_found = grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
+        not_found = grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS, url=url)
         assert not_found, 'ucs-test logfile contains tracebacks'
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_tracebacks():
-    if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+    if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS, url=url):
         pytest.fail('logfiles contain tracebacks', pytrace=False)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_subdirectory_tracebacks():
-    if not grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+    if not grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS, url=url):
         pytest.fail('logfiles contain tracebacks', pytrace=False)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_tracebacks_gz():
-    if not grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+    if not grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS, url=url):
         pytest.fail('logfiles *.gz contain tracebacks', pytrace=False)
 
 
 @pytest.mark.exposure('safe')
 def test_journallog_tracebacks():
     proc = subprocess.Popen(['journalctl', '-o', 'cat'], stdout=subprocess.PIPE)
-    if not grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
+    if not grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS, url=url):
         pytest.fail('logfiles journalctl contain tracebacks', pytrace=False)
     assert proc.wait() == 0
 
@@ -88,7 +102,7 @@ def test_fetch_logfiles_on_dc_master(ucr, testcase=None):  # noqa: PT028
             pytest.fail(repr((cmd_install, exc.output.decode('UTF-8', 'replace'))), pytrace=False)
 
         try:
-            cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
+            cmd_test = """univention-ssh %s root@%s 'UCS_TEST_REMOTE=1 %s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
             subprocess.check_call(cmd_test, shell=True)
         except subprocess.CalledProcessError as exc:
             print(cmd_test)
