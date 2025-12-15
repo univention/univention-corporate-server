@@ -12,6 +12,10 @@ desc: |
    `dstore` from `1.1.1` to `1.2.1`,
    `dompurify` from `1.0.10` to `2.5.8`,
    `xstyle` from `0.3.2` to `0.3.3`.
+   This fixes several security vulnerabilities, such
+   as XSS protection in `dgrid.Tree`, mXSS protection in `dompurity`
+   (GHSA-mjjq-c88q-qhr6), tampering in `dompurity` (CVE-2024-48910), prototype
+   polution in `dojo` (CVE-2021-23450).
 bug: [58843]
 cve:
  - CVE-2021-23450
