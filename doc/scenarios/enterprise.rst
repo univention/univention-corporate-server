@@ -83,8 +83,8 @@ Software distribution of UCS systems
 ====================================
 
 Installation profiles have been created for the UCS Directory Nodes. These
-profiles can be used to roll out additional systems with the Univention Net Installer
-using PXE or, as required, to restore systems after hardware failure. The
+profiles can be used to roll out additional systems or,
+as required, to restore systems after hardware failure. The
 installation concludes without further user interaction.
 
 A central package installation source - the repository - is established on a
