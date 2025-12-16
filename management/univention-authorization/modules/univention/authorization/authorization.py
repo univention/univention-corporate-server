@@ -11,7 +11,6 @@ import time
 
 import requests
 
-from univention.config_registry import ucr
 from univention.dn import DN
 
 
@@ -287,11 +286,11 @@ class TokenInvalidError(Exception):
 
 class GuardianAuthorizationClient:
 
-    def __init__(self):
-        self._base_url = f'https://{ucr["hostname"]}.{ucr["domainname"]}/guardian/authorization/'.rstrip('/')
-        self.username = 'Administrator'
-        self.password = 'univention'
-        self.oidc_token_endpoint_url = f'https://{ucr["keycloak/server/sso/fqdn"]}/realms/ucs/protocol/openid-connect/token'
+    def __init__(self, guardian_fqdn, keycloak_fqdn, username='Administrator', password='univention'):
+        self._base_url = f'https://{guardian_fqdn}/guardian/authorization/'.rstrip('/')
+        self.username = username
+        self.password = password
+        self.oidc_token_endpoint_url = f'https://{keycloak_fqdn}/realms/ucs/protocol/openid-connect/token'
         self.oidc_client_id = 'guardian-scripts'
 
     def check_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, targeted_permissions_to_check=None, general_permissions_to_check=None):
