@@ -766,10 +766,10 @@ with open(prometheus_data_path, "r") as f:
     warned = False
     print("")
     for line in f:
-        m = re.match(r"(?P<metric_name>.*)\{.*\} (?P<metric>\d.\d{1,4})", line)
+        m = re.match(r"(?P<metric_name>.*)\{.*\} (?P<metric>\d+.\d{1,4})", line)
         if m:
             metric_name = m.group("metric_name")
-            metric = float(m.group("metric"))*100
+            metric = float(m.group("metric"))
             warn_limit = 75
             critical_limit = 90
             if warn_limit <= metric < critical_limit:
