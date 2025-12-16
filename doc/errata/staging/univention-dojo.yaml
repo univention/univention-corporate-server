@@ -16,6 +16,7 @@ desc: |
    as XSS protection in `dgrid.Tree`, mXSS protection in `dompurity`
    (GHSA-mjjq-c88q-qhr6), tampering in `dompurity` (CVE-2024-48910), prototype
    polution in `dojo` (CVE-2021-23450).
+maintained: False
 bug: [58843]
 cve:
  - CVE-2021-23450
