@@ -34,6 +34,16 @@ stop_udm_cli_server
 
 call_joinscript 18python-univention-directory-manager.inst
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.5"; then
+	# shellcheck disable=SC2154
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-directory-manager container/cn create \
+			--ignore_exists \
+			--position "cn=temporary,cn=univention,$ldap_base" \
+			--set name="dn" || true
+	fi
+fi
+
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.3.7"; then
 	# shellcheck disable=SC2154
 	if [ "$server_role" = "domaincontroller_master" ]; then

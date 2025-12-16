@@ -698,6 +698,7 @@ class simpleLdap:
         if not isinstance(response, dict):
             response = {}
 
+        self.request_lock('dn', ldap.dn.dn2str(ldap.dn.str2dn(self.dn)))
         try:
             self._ldap_pre_ready()
             self.ready()

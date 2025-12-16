@@ -62,6 +62,7 @@ _type2attr: dict[_Types, str] = {
     'mac': 'macAddress',
     'groupName': 'cn',
     'cn-uid-position': 'cn',  # ['cn', 'uid', 'ou'],
+    'dn': 'dn',
     'univentionObjectIdentifier': 'univentionObjectIdentifier',
 }
 _type2scope: dict[_Types, _Scopes] = {
@@ -77,6 +78,7 @@ _type2scope: dict[_Types, _Scopes] = {
     'mac': 'domain',
     'groupName': 'domain',
     'cn-uid-position': 'one',
+    'dn': 'base',
     'univentionObjectIdentifier': 'domain',
 }
 
@@ -210,6 +212,8 @@ def acquireUnique(
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
             log.trace('aquired unique', value=value)
             return value
+    elif type == 'dn':
+        return univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
     elif type == 'cn-uid-position':
         base = lo.parentDn(value)
         attr, value, __ = ldap.dn.str2dn(value)[0][0]

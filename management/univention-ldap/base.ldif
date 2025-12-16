@@ -201,6 +201,14 @@ univentionObjectIdentifier: {uuid.uuid4()}
 cn: gidNumber
 univentionLastUsedValue: 5005
 
+dn: cn=dn,cn=temporary,cn=univention,{ldap_base}
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+univentionObjectIdentifier: {uuid.uuid4()}
+cn: dn
+
 dn: cn=uid,cn=temporary,cn=univention,{ldap_base}
 objectClass: top
 objectClass: organizationalRole
