@@ -1,3 +1,11 @@
+ucs-test (12.4.6) unstable; urgency=medium
+
+  * Bug #58887: Wait for replication and postrun after cleanup
+    the following tests were struggeling calculating replication
+    time
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Dec 2025 12:51:05 +0100
+
 ucs-test (12.4.5) unstable; urgency=medium
 
   * Bug #58887: fix Jenkins workspace URL for non-primary systems
