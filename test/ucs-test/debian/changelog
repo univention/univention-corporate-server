@@ -1,3 +1,10 @@
+ucs-test (12.4.8) unstable; urgency=medium
+
+  * Bug #57747: Fix Kerberos etypes to be checked in case Samba is not
+    installed
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Dec 2025 16:41:43 +0100
+
 ucs-test (12.4.7) unstable; urgency=medium
 
   * Bug #57747: Check UCR kerberos/defaults/enctypes/permitted if samba is
