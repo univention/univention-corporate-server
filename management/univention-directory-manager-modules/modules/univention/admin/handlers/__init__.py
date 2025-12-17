@@ -1909,13 +1909,14 @@ class simpleLdap:
         Confirm all temporary done locks. self.alloc should contain a 2-tuple or 3-tuple:
         (name:str, value:str) or (name:str, value:str, updateLastUsedValue:bool)
         """
+        po = univention.admin.uldap.position(configRegistry['ldap/base'])
         while self.alloc:
             item = self.alloc.pop()
             name, value = item[0:2]
             updateLastUsedValue = True
             if len(item) > 2:
                 updateLastUsedValue = item[2]
-            univention.admin.allocators.confirm(self.lo, self.position, name, value, updateLastUsedValue=updateLastUsedValue)
+            univention.admin.allocators.confirm(self.lo, po, name, value, updateLastUsedValue=updateLastUsedValue)
 
     @overload
     def request_lock(self, name: univention.admin.allocators._TypesUidGid, value: str | None = None, updateLastUsedValue: bool = True) -> str:
@@ -1927,12 +1928,13 @@ class simpleLdap:
 
     def request_lock(self, name: univention.admin.allocators._Types, value: str | None = None, updateLastUsedValue: bool = True) -> str:
         """Request a lock for the given value"""
+        po = univention.admin.uldap.position(configRegistry['ldap/base'])
         try:
             if name == 'sid+user':
-                value = univention.admin.allocators.requestUserSid(self.lo, self.position, value)
+                value = univention.admin.allocators.requestUserSid(self.lo, po, value)
                 name = 'sid'
             else:
-                value = univention.admin.allocators.request(self.lo, self.position, name, value)
+                value = univention.admin.allocators.request(self.lo, po, name, value)
         except univention.admin.uexceptions.noLock:
             self._release_locks(name)
             raise
@@ -1945,7 +1947,8 @@ class simpleLdap:
     def request_unique(self, name, value: str | None = None):
         # request a new $name or get lock for manually set $name
         if self[name]:
-            univention.admin.allocators.acquireUnique(self.lo, univention.admin.uldap.position(configRegistry['ldap/base']), name, self[name], name, scope='base')
+            po = univention.admin.uldap.position(configRegistry['ldap/base'])
+            univention.admin.allocators.acquireUnique(self.lo, po, name, self[name], name, scope='base')
             # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
             self.alloc.append((name, self[name], False))
         else:
