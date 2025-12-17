@@ -1,3 +1,9 @@
+univention-ldap (18.4.3) unstable; urgency=medium
+
+  * Bug #58887: do not init internal database on backups, it is syncrepl's job
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Dec 2025 17:27:22 +0100
+
 univention-ldap (18.4.2) unstable; urgency=medium
 
   * Bug #58887: rename recyclebin to Recycle Bin

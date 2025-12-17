@@ -76,8 +76,8 @@ then
 fi
 /usr/share/univention-ldap/setup-translog init "$@"
 
-# setup archive database
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+# setup internal database, only on the primary, syncrepl does the rest
+if [ "$server_role" = "domaincontroller_master" ]; then
 	/usr/share/univention-ldap/setup-internal init
 fi
 
