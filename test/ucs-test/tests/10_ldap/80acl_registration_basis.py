@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test basic ACL registration
 ## tags:
 ##  - ldapextensions
@@ -12,20 +12,15 @@
 from time import sleep
 
 import ldap
+import pytest
 from ldap_extension_utils import (
     call_join_script, get_acl_name, get_container_name, get_package_name, set_container_description,
 )
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
-from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import fail
 
 
-ucr = ConfigRegistry()
-ucr.load()
-
-with UCSTestUDM() as udm:
+def test_acl_registration_basis(udm, ucr):
     package_name = get_package_name()
     acl_name = get_acl_name()
     container_name = get_container_name()
@@ -33,12 +28,8 @@ with UCSTestUDM() as udm:
 
     user_dn, _username = udm.create_user(password='univention')
     container = udm.create_object('container/cn', name=container_name)
-    try:
+    with pytest.raises(ldap.INSUFFICIENT_ACCESS):
         set_container_description(user_dn, container)
-    except ldap.INSUFFICIENT_ACCESS:
-        pass
-    else:
-        fail('New user was able to modify %s' % container)
 
     joinscript_buffer = '''#!/bin/sh
 VERSION=1
@@ -68,9 +59,8 @@ access to dn.base="%(container)s" attrs="description"
     # The ldap server needs a few seconds
     sleep(5)
 
-    set_container_description(user_dn, container)
-
-    package.uninstall()
-    package.remove()
-
-# vim: set ft=python :
+    try:
+        set_container_description(user_dn, container)
+    finally:
+        package.uninstall()
+        package.remove()
