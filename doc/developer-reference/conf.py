@@ -177,6 +177,8 @@ linkcheck_allowed_redirects = {
     r'https://help\.univention\.com/t/13149': r'https://help\.univention\.com/t/howto-update-listener-cachemasterentry/13149',
 }
 
+linkcheck_rate_limit_timeout = 60
+
 root_doc = 'contents'
 
 rst_epilog = """
