@@ -34,7 +34,9 @@ class RecycleBinListener(ListenerModuleHandler):
         name = 'recyclebin'
         description = 'Recycle Bin listener'
         ldap_filter = '(|(univentionObjectType=users/user)(univentionObjectType=groups/group))'  # TODO: automatically add all supported modules
-        _ldap_filter = '(%s)' % '|'.join([filter_format('(univentionObjectType=%s)', [mod.module]) for mod in univention.admin.modules.modules.values() if getattr(mod, 'supports_recyclebin', False)])
+        _ldap_filter = '(%s)' % '|'.join([
+            filter_format('(univentionObjectType=%s)', [mod.module]) for mod in univention.admin.modules.modules.values() if getattr(mod, 'supports_recyclebin', False)
+        ])
         attributes = []
 
     def __init__(self, *args, **kwargs):
@@ -65,13 +67,17 @@ class RecycleBinListener(ListenerModuleHandler):
         if ucr.get('server/role') != 'domaincontroller_master':
             return
 
-        dn_attr = 'univentionRecycleBinOriginalDN'.lower()
-        oid_attr = 'univentionRecycleBinOriginalUniventionObjectIdentifier'.lower()
-        for dn in self.admin_lo.searchDn(base=RECYCLEBIN_BASE, scope='one', filter='(objectClass=univentionRecycleBinObject)'):
-            exploded = ldap.dn.str2dn(dn)
-            orig_dn = next((v for a, v, _ in exploded[0] if a.lower() == dn_attr), None)
-            uoid = next((v for a, v, _ in exploded[0] if a.lower() == oid_attr), None)
-            if orig_dn and uoid:
+        results = self.admin_lo.search(
+            base=RECYCLEBIN_BASE,
+            scope='one',
+            filter='(objectClass=univentionRecycleBinObject)',
+            attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinOriginalUniventionObjectIdentifier', 'entryCSN'],
+        )
+        # sort by entryCSN in case the same DN was used twice but with different UUIDs, so that we get the most recent one
+        for dn, attr in sorted(results, key=lambda e: e[1]['entryCSN'][0], reverse=True):
+            orig_dn = attr['univentionRecycleBinOriginalDN'][0].decode('UTF-8')
+            uoid = attr['univentionRecycleBinOriginalUniventionObjectIdentifier'][0].decode('ASCII')
+            if orig_dn and uoid and orig_dn not in self.deleted_objects_cache:
                 self.deleted_objects_cache[orig_dn] = uoid
 
         self.logger.info('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
@@ -185,7 +191,12 @@ class RecycleBinListener(ListenerModuleHandler):
         """Check a single policy for retention settings. Returns retention days or None."""
         policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinPolicyUDMModules=%s))', [original_type])
         try:
-            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinPolicyRetentionDays', 'univentionRecycleBinPolicyIgnoredObjectClasses', 'univentionRecycleBinPolicyEnabled']):
+            for _dn, attr in self.admin_lo.search(
+                policy_filter,
+                base=policy_dn,
+                scope='base',
+                attr=['univentionRecycleBinPolicyRetentionDays', 'univentionRecycleBinPolicyIgnoredObjectClasses', 'univentionRecycleBinPolicyEnabled'],
+            ):
                 return Policy(
                     retention_days=int(attr.get('univentionRecycleBinPolicyRetentionDays', [b'180'])[0].decode('ASCII')),
                     ignored_object_classes=[x.decode('ASCII') for x in attr.get('univentionRecycleBinPolicyIgnoredObjectClasses', [])],
@@ -232,7 +243,8 @@ class RecycleBinListener(ListenerModuleHandler):
             if deleted_object_attrs and 'univentionRecycleBinOriginalType' in deleted_object_attrs:
                 object_type = deleted_object_attrs['univentionRecycleBinOriginalType'][0].decode('UTF-8')
                 refs = [
-                    bytes(ref) for ref in create_references(self.admin_lo, object_type, None, {'memberOf': [group_dn.encode('UTF-8')]})
+                    bytes(ref)
+                    for ref in create_references(self.admin_lo, object_type, None, {'memberOf': [group_dn.encode('UTF-8')]})
                     if bytes(ref) not in deleted_object_attrs.get('univentionRecycleBinReference', [])
                 ]
                 if refs:
@@ -241,10 +253,11 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def _get_recyclebin_dn(self, dn, uoid):
         """Generate Recycle Bin DN for original object."""
-        rdn = ldap.dn.dn2str([[
-            ('univentionRecycleBinOriginalDN', dn, ldap.AVA_STRING),
-            ('univentionRecycleBinOriginalUniventionObjectIdentifier', uoid, ldap.AVA_STRING),
-        ]])
+        rdn = ldap.dn.dn2str([
+            [
+                ('univentionRecycleBinOriginalUniventionObjectIdentifier', uoid, ldap.AVA_STRING),
+            ],
+        ])
         return f'{rdn},{RECYCLEBIN_BASE}'
 
 

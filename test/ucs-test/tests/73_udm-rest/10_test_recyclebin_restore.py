@@ -141,7 +141,7 @@ def test_user_restore_rest_api(udm, udm_rest, recyclebin_policy):
     original_props = udm.get_object('users/user', user_dn)
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
-    deleted_dn = _deleted_object_dn(user_dn, uoid)
+    deleted_dn = _deleted_object_dn(uoid)
     verify_ldap_object(deleted_dn, should_exist=True)
     module = udm_rest.get('recyclebin/removedobject')
     deleted_obj = module.get(deleted_dn)
@@ -164,7 +164,7 @@ def test_group_restore_rest_api(udm, udm_rest, recyclebin_policy):
     original_props = udm.get_object('groups/group', group_dn)
     udm.remove_object('groups/group', dn=group_dn)
     verify_ldap_object(group_dn, should_exist=False)
-    deleted_dn = _deleted_object_dn(group_dn, uoid)
+    deleted_dn = _deleted_object_dn(uoid)
     verify_ldap_object(deleted_dn, should_exist=True)
     module = udm_rest.get('recyclebin/removedobject')
     deleted_obj = module.get(deleted_dn)
@@ -195,7 +195,7 @@ def test_restore_fails_when_parent_container_missing(udm, udm_rest, recyclebin_p
     uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     udm.remove_object('users/user', dn=user_dn)
     udm.remove_object('container/cn', dn=container_dn)
-    deleted_dn = _deleted_object_dn(user_dn, uoid)
+    deleted_dn = _deleted_object_dn(uoid)
     module = udm_rest.get('recyclebin/removedobject')
     deleted_obj = module.get(deleted_dn)
     with pytest.raises(UnprocessableEntity) as exc_info:

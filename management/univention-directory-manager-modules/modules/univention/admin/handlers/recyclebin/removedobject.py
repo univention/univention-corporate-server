@@ -55,7 +55,7 @@ property_descriptions = {
         may_change=False,
         required=True,
         include_in_default_search=True,
-        identifies=True,
+        identifies=False,
     ),
     'originalUniventionObjectIdentifier': univention.admin.property(
         short_description=_('Original Object Identifier'),

@@ -17,9 +17,9 @@ from univention.testing.utils import verify_ldap_object
 RECYCLEBIN_DN = "cn=recyclebin,cn=internal"
 
 
-def _deleted_object_dn(dn, u_obj_id):
+def _deleted_object_dn(u_obj_id):
     """Get the DN of the deleted object in the recyclebin"""
-    return f'univentionRecycleBinOriginalDN={escape_dn_chars(dn)}+univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(u_obj_id)},{RECYCLEBIN_DN}'
+    return f'univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(u_obj_id)},{RECYCLEBIN_DN}'
 
 
 def __recyclebin_policy(udm, ldap_base):
@@ -55,7 +55,7 @@ def deleted_user_object(recyclebin_policy, udm):
     uoid = udm.get_object('users/user', user_dn)['univentionObjectIdentifier'][0]
     udm.remove_object('users/user', dn=user_dn)
     verify_ldap_object(user_dn, should_exist=False)
-    deleted_dn = _deleted_object_dn(user_dn, uoid)
+    deleted_dn = _deleted_object_dn(uoid)
     verify_ldap_object(deleted_dn, should_exist=True)
     return user_dn, deleted_dn
 
