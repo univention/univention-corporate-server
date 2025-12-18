@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 11:16+0000\n"
-"PO-Revision-Date: 2025-04-30 13:19+0200\n"
+"POT-Creation-Date: 2025-12-18 11:56+0000\n"
+"PO-Revision-Date: 2025-12-18 13:01+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1087,7 +1087,7 @@ msgstr ""
 "Einige weitere DHCP-Richtlinien stehen zur Verfügung, sind aber nur für "
 "Sonderfälle nötig."
 
-#: ../../ip-config/dhcp.rst:564
+#: ../../ip-config/dhcp.rst:561
 msgid "DHCP Dynamic DNS"
 msgstr "DNS Aktualisierung"
 
@@ -1102,7 +1102,7 @@ msgstr ""
 "basierten DNS-Dienst durchgeführt werden, wie er von UCS bereitgestellt "
 "wird."
 
-#: ../../ip-config/dhcp.rst:569
+#: ../../ip-config/dhcp.rst:566
 msgid "DHCP Allow/Deny"
 msgstr "DHCP Erlauben/Verbieten"
 
@@ -1116,7 +1116,7 @@ msgstr ""
 "Optionen, die kontrollieren was für DHCP-Clients erlaubt ist. Diese sind "
 "nur in Ausnahmefällen nötig."
 
-#: ../../ip-config/dhcp.rst:574
+#: ../../ip-config/dhcp.rst:571
 msgid "DHCP statements"
 msgstr "DHCP Verschiedenes"
 
@@ -1164,7 +1164,7 @@ msgstr ""
 msgid "The following DNS data are differentiated:"
 msgstr "Folgende DNS-Daten werden unterschieden:"
 
-#: ../../ip-config/dns.rst:28 ../../ip-config/dns.rst:156
+#: ../../ip-config/dns.rst:23 ../../ip-config/dns.rst:156
 msgid "Forward lookup zone"
 msgstr "Forward Lookup Zone"
 
@@ -1184,7 +1184,7 @@ msgstr ""
 "synchronisieren sich mit dem authoritativen Server über Zonentransfers. "
 "Der Eintrag, der eine solche Zone auszeichnet, ist der *SOA-Record*."
 
-#: ../../ip-config/dns.rst:33
+#: ../../ip-config/dns.rst:30
 msgid "MX record"
 msgstr "MX-Record"
 
@@ -1198,7 +1198,7 @@ msgstr ""
 " notwendige DNS-Information. Er verweist auf den Rechner, der für eine "
 "Domäne E-Mails entgegennimmt."
 
-#: ../../ip-config/dns.rst:37
+#: ../../ip-config/dns.rst:35
 msgid "TXT records"
 msgstr "TXT-Records"
 
@@ -1210,7 +1210,7 @@ msgstr ""
 "*TXT-Records* enthalten menschenlesbaren Text und können beschreibende "
 "Informationen zu einer Forward Lookup Zone enthalten."
 
-#: ../../ip-config/dns.rst:43
+#: ../../ip-config/dns.rst:39
 msgid "CNAME record"
 msgstr "CNAME-Record"
 
@@ -1229,7 +1229,7 @@ msgstr ""
 "wird. Zu einem kanonischen Namen können beliebig viele CNAME-Records "
 "definiert werden."
 
-#: ../../ip-config/dns.rst:47
+#: ../../ip-config/dns.rst:45
 msgid "A record"
 msgstr "A-Record"
 
@@ -1241,7 +1241,7 @@ msgstr ""
 "Ein *A-Record* (unter IPv6 *AAAA-Record*) weist einem DNS-Namen eine IP-"
 "Adresse zu. A-Records werden in UCS auch als *Host-Records* bezeichnet."
 
-#: ../../ip-config/dns.rst:53
+#: ../../ip-config/dns.rst:49
 msgid "SRV record"
 msgstr "SRV-Record"
 
@@ -1257,7 +1257,7 @@ msgstr ""
 " werden Service Records u.a. verwendet, um LDAP-Server oder den "
 "|UCSPRIMARYDN| domänenweit bekannt zu machen."
 
-#: ../../ip-config/dns.rst:60 ../../ip-config/dns.rst:459
+#: ../../ip-config/dns.rst:55 ../../ip-config/dns.rst:459
 msgid "Reverse lookup zone"
 msgstr "Reverse Lookup Zone"
 
@@ -1276,7 +1276,7 @@ msgstr ""
 "synchronisieren sich mit dem authoritativen Server über Zonentransfers. "
 "Der Eintrag, der eine solche Zone auszeichnet, ist der *SOA Record*."
 
-#: ../../ip-config/dns.rst:65
+#: ../../ip-config/dns.rst:62
 msgid "PTR record"
 msgstr "PTR-Record"
 
@@ -1335,7 +1335,7 @@ msgstr ""
 "BIND kann zwei verschiedene Backends für seine Konfigurationsdateien "
 "verwenden:"
 
-#: ../../ip-config/dns.rst:101
+#: ../../ip-config/dns.rst:94
 msgid "LDAP backend"
 msgstr "LDAP-Backend"
 
@@ -1358,7 +1358,7 @@ msgstr ""
 "Informationen aktualisiert und durch einen Zonentransfer an den BIND-"
 "Proxy übertragen."
 
-#: ../../ip-config/dns.rst:109
+#: ../../ip-config/dns.rst:103
 msgid "Samba backend"
 msgstr "Samba-Backend"
 
@@ -1488,7 +1488,7 @@ msgstr ""
 "selektiert werden und :menuselection:`Hinzufügen --> DNS: Forward Lookup "
 "Zone` ausgewählt werden."
 
-#: ../../ip-config/dns.rst:168
+#: ../../ip-config/dns.rst:165 ../../ip-config/dns.rst:168
 msgid "Configuring a forward lookup zone in the UMC module *DNS*"
 msgstr ""
 "Konfiguration einer Forward Lookup Zone durch Univention Management "
@@ -1876,7 +1876,7 @@ msgstr ""
 ":menuselection:`Hinzufügen --> DNS: Service Record` kann dann ein neuer "
 "Record angelegt werden."
 
-#: ../../ip-config/dns.rst:400
+#: ../../ip-config/dns.rst:397 ../../ip-config/dns.rst:400
 msgid "Configuring a service record"
 msgstr "Konfiguration eines Service Records"
 
@@ -2155,63 +2155,115 @@ msgstr ""
 #: ../../ip-config/firewall-packet-filter.rst:13
 msgid ""
 "It permits targeted filtering of undesired services and the protection of"
-" computers during installations. Furthermore it provides the basis for "
-"complex scenarios such as firewalls and application level gateways. "
-"Univention Firewall is included in all UCS installations as standard."
+" computers during installations. Furthermore, it provides the basis for "
+"complex scenarios, such as firewall rules and application level gateways."
+" All UCS installations include Univention Firewall as standard."
 msgstr ""
-"Dies ermöglicht die gezielte Filterung unerwünschter Dienste, die "
-"Absicherung von Rechnern während Installationsarbeiten, und stellt die "
-"Basis für komplexere Szenarien wie Firewalls oder Application Level "
-"Gateways bereit. Univention Firewall ist standardmäßig auf allen "
-"|UCSUCS|-Installationen enthalten."
+"Sie ermöglicht die gezielte Filterung unerwünschter Dienste und die "
+"Absicherung von Rechnern während Installationsarbeiten. Darüber hinaus "
+"stellt sie die Basis für komplexere Szenarien wie Firewall-Regeln oder "
+"Application Level Gateways bereit. Univention Firewall ist standardmäßig "
+"in allen |UCSUCS|-Installationen enthalten."
 
-#: ../../ip-config/firewall-packet-filter.rst:18
+#: ../../ip-config/firewall-packet-filter.rst:19
 msgid ""
-"By default all incoming ports are blocked. Every UCS package provides "
-"rules, which free up the ports required by the package again."
+"By default, UCS blocks all incoming ports. Every UCS package provides "
+"rules, which free up the ports required by the package again. You "
+"primarily configure firewall rules through |UCSUCR| variables. For "
+"information about the definition of packet file rules, see :external+uv-"
+"dev-ref:ref:`misc-nacl` in :cite:t:`developer-reference`."
 msgstr ""
-"In der Grundeinstellung werden eingehende Pakete für alle Ports "
-"blockiert/abgelehnt. Jedes UCS-Paket bringt Regeln mit, die die von dem "
-"Paket benötigten Ports wieder freigeben."
+"Standardmäßig blockiert UCS alle eingehenden Ports. Jedes UCS-Paket "
+"stellt Regeln bereit, die die vom Paket benötigten Ports wieder "
+"freigeben. Firewall-Regeln werden hauptsächlich über |UCSUCR|-Variablen "
+"konfiguriert. Informationen zur Definition von Paketfilter-Regeln finden "
+"Sie unter :external+uv-dev-ref:ref:`misc-nacl` in :cite:t:`developer-"
+"reference`."
 
-#: ../../ip-config/firewall-packet-filter.rst:21
+#: ../../ip-config/firewall-packet-filter.rst:26
 msgid ""
-"The configuration is primarily performed via |UCSUCR| variables. The "
-"definition of this type of packet filter rules is documented in :cite:t"
-":`developer-reference`."
+"In addition, the :file:`/etc/security/packetfilter.d/` directory contains"
+" scripts with firewall rules. The names of all scripts begin with two "
+"digits, which allows a numbered order. The scripts require the executable"
+" bit so that UCS can run them."
 msgstr ""
-"Die Konfiguration erfolgt im Wesentlichen über |UCSUCR|-Variablen. Die "
-"Definition von solchen Paketfilter-Regeln ist in :cite:t:`developer-"
-"reference` dokumentiert."
+"Darüber hinaus enthält das Verzeichnis "
+":file:`/etc/security/packetfilter.d/` Skripte mit Firewall-Regeln. Die "
+"Namen aller Skripte beginnen mit zwei Ziffern, was eine nummerierte "
+"Reihenfolge ermöglicht. Die Skripte müssen als ausführbar markiert sein, "
+"damit UCS sie ausführen kann."
 
-#: ../../ip-config/firewall-packet-filter.rst:25
+#: ../../ip-config/firewall-packet-filter.rst:31
 msgid ""
-"In addition, the configuration scripts in the "
-":file:`/etc/security/packetfilter.d/` directory are listed in alphabetic "
-"order. The names of all scripts begin with two digits, which allows a "
-"numbered order. The scripts must be marked as executable."
-msgstr ""
-"Darüber hinaus werden die im Verzeichnis "
-":file:`/etc/security/packetfilter.d/` liegenden Konfigurationsskripte in "
-"alphabetischer Reihenfolge ausgeführt. Standardmäßig sind alle Skripte "
-"mit zwei führenden Ziffern benannt, so dass eine einfache Festlegung der "
-"Reihenfolge möglich ist. Die Skripte müssen als ausführbar markiert sein."
-
-#: ../../ip-config/firewall-packet-filter.rst:30
-msgid ""
-"After changing the packet filter settings, the :program:`univention-"
-"firewall` service has to be restarted."
+"After changing the packet filter settings, you need to restart the "
+":program:`univention-firewall` service."
 msgstr ""
 "Nach Änderungen der Paketfilter-Einstellungen muss der Dienst :program"
 ":`univention-firewall` neu gestartet werden."
 
-#: ../../ip-config/firewall-packet-filter.rst:33
+#: ../../ip-config/firewall-packet-filter.rst:34
 msgid ""
-"Univention Firewall can be deactivated by setting the |UCSUCRV| "
+"You can deactivate Univention Firewall by setting the |UCSUCRV| "
 ":envvar:`security/packetfilter/disabled` to ``true``"
 msgstr ""
 "Die Univention Firewall kann durch Setzen der |UCSUCRV| "
-":envvar:`security/packetfilter/disabled` auf ``true`` deaktiviert werden"
+":envvar:`security/packetfilter/disabled` auf ``true`` deaktiviert werden."
+
+#: ../../ip-config/firewall-packet-filter.rst:40
+msgid ""
+"`netfilter/iptables project homepage - Documentation about "
+"netfilter/iptables project <https://www.iptables.org/documentation/>`_"
+msgstr ""
+"`netfilter/iptables Projekt-Homepage - Dokumentation zum "
+"netfilter/iptables Projekt <https://www.iptables.org/documentation/>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:41
+msgid "for an overview about available documentation for :program:`iptables`."
+msgstr ""
+"für einen Überblick über die verfügbare Dokumentation zu "
+":program:`iptables`."
+
+#: ../../ip-config/firewall-packet-filter.rst:43
+msgid ""
+"`Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-"
+"tutorial.html>`_"
+msgstr ""
+"`Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-"
+"tutorial.html>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:44
+msgid ""
+"a tutorial about :program:`iptables` from :spelling:word:`Oscar "
+"Andreasson`."
+msgstr "ein Tutorial zu :program:`iptables` von :spelling:word:`Oscar Andreasson`."
+
+#: ../../ip-config/firewall-packet-filter.rst:46
+msgid ""
+"`iptables(8) manpage "
+"<https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_"
+msgstr ""
+"`iptables(8) Manpage "
+"<https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:47
+msgid ""
+"for information about configuration of firewall rules with "
+":program:`iptables`."
+msgstr ""
+"für Informationen zur Konfiguration von Firewall-Regeln mit "
+":program:`iptables`."
+
+#: ../../ip-config/firewall-packet-filter.rst:49
+msgid ""
+"`Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO"
+"/packet-filtering-HOWTO.html>`_"
+msgstr ""
+"`Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO"
+"/packet-filtering-HOWTO.html>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:50
+msgid "for a how-to about packet filtering with :program:`iptables`."
+msgstr "für ein :spelling:word:`Howto` zur Paketfilterung mit :program:`iptables`."
 
 #: ../../ip-config/index.rst:9
 msgid "IP and network management"
@@ -2274,6 +2326,7 @@ msgstr ""
 "erfassen, z.B. die verfügbaren IP-Adressen und die DNS- und DHCP-Zonen, "
 "in denen die Systeme angesiedelt sind."
 
+#: ../../ip-config/network-objects.rst:16
 #: ../../ip-config/network-objects.rst:19
 msgid "Creating a network object"
 msgstr "Erstellen eines Netzwerk-Objekts"
@@ -2530,7 +2583,7 @@ msgstr ""
 "der Benutzer Zugriff auf das Netzwerk. Die Checkbox kann auch für Gruppen"
 " gesetzt werden, so dass alle Benutzer in der Gruppe Zugang erlangen."
 
-#: ../../ip-config/radius.rst:54
+#: ../../ip-config/radius.rst:51 ../../ip-config/radius.rst:54
 msgid "Example for a group allowing network access to its users"
 msgstr "Beispiel für eine Gruppe, die ihren Benutzern Zugang gewährt"
 
@@ -2574,7 +2627,7 @@ msgstr ""
 "auf dem UCS-System, auf dem die :program:`Self Service Backend` App "
 "installiert ist, auf den Wert ``true`` setzen."
 
-#: ../../ip-config/radius.rst:84
+#: ../../ip-config/radius.rst:81 ../../ip-config/radius.rst:84
 msgid "The page in the Self Service to get a RADIUS specific password"
 msgstr "Seite im Self Service, um ein RADIUS-spezifisches Passwort zu bekommen"
 
@@ -2674,7 +2727,7 @@ msgstr ""
 "Führen Sie die folgenden Schritte aus, um die Passwortqualität zu "
 "konfigurieren."
 
-#: ../../ip-config/radius.rst:132 ../../ip-config/radius.rst:161
+#: ../../ip-config/radius.rst:131 ../../ip-config/radius.rst:159
 msgid "Prerequisite"
 msgstr "Voraussetzung"
 
@@ -3116,11 +3169,11 @@ msgstr ""
 "dies verzögert (etwa 15 Sekunden). Neue *Access Points* haben erst nach "
 "diesem Neustart Zugriff auf den RADIUS-Server."
 
-#: ../../ip-config/radius.rst:363
+#: ../../ip-config/radius.rst:360 ../../ip-config/radius.rst:363
 msgid "RADIUS option"
 msgstr "Setzen der RADIUS-Option"
 
-#: ../../ip-config/radius.rst:370
+#: ../../ip-config/radius.rst:367 ../../ip-config/radius.rst:370
 msgid "RADIUS authenticator options"
 msgstr "*RADIUS-Authenticator* Optionen"
 
@@ -3178,7 +3231,7 @@ msgstr ""
 "Die VLAN-ID für einen Benutzer kann konfiguriert werden, indem der "
 "Benutzer einer Gruppe mit einer VLAN-ID zugewiesen wird."
 
-#: ../../ip-config/radius.rst:402
+#: ../../ip-config/radius.rst:399 ../../ip-config/radius.rst:402
 msgid "Assigning VLAN ID to a user group"
 msgstr "Zuweisung VLAN ID zu einer Benutzergruppe"
 
@@ -3558,7 +3611,7 @@ msgstr ""
 "Gruppenzugehörigkeiten muss zuerst aktiviert werden. Dafür werden drei "
 "verschiedene Mechanismen angeboten:"
 
-#: ../../ip-config/web-proxy.rst:157
+#: ../../ip-config/web-proxy.rst:155
 msgid "LDAP server authentication"
 msgstr "LDAP Server Authentifizierung"
 
@@ -3571,7 +3624,7 @@ msgstr ""
 "die |UCSUCRV| :envvar:`squid/basicauth` auf ``yes`` gesetzt und Squid neu"
 " gestartet werden."
 
-#: ../../ip-config/web-proxy.rst:163
+#: ../../ip-config/web-proxy.rst:159
 msgid "NTLM authentication"
 msgstr "NTLM Authentifizierung"
 
@@ -3589,7 +3642,7 @@ msgstr ""
 ":envvar:`squid/ntlmauth` auf ``yes`` gesetzt und Squid neu gestartet "
 "werden."
 
-#: ../../ip-config/web-proxy.rst:172
+#: ../../ip-config/web-proxy.rst:165
 msgid "Kerberos authentication"
 msgstr "Kerberos Authentifizierung"
 
