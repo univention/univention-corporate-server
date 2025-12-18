@@ -35,14 +35,16 @@ You can deactivate Univention Firewall
 by setting the |UCSUCRV|
 :envvar:`security/packetfilter/disabled` to ``true``
 
+.. seealso::
 
-In addition, the configuration scripts in the
-:file:`/etc/security/packetfilter.d/` directory are listed in alphabetic order.
-The names of all scripts begin with two digits, which allows a
-numbered order. The scripts must be marked as executable.
+   `netfilter/iptables project homepage - Documentation about netfilter/iptables project <https://www.iptables.org/documentation/>`_
+      for an overview about available documentation for :program:`iptables`.
 
-After changing the packet filter settings, the :program:`univention-firewall`
-service has to be restarted.
+   `Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html>`_
+      a tutorial about :program:`iptables` from :spelling:word:`Oscar Andreasson`.
 
-Univention Firewall can be deactivated by setting the |UCSUCRV|
-:envvar:`security/packetfilter/disabled` to ``true``
+   `iptables(8) manpage <https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_
+      for information about configuration of firewall rules with :program:`iptables`.
+
+   `Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO/packet-filtering-HOWTO.html>`_
+      for a how-to about packet filtering with :program:`iptables`.
