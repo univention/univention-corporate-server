@@ -132,7 +132,7 @@ Multifile example
 
 This example provides templates for :file:`/etc/hosts.allow` and
 :file:`/etc/hosts.deny`, which is used to control access to system services. See
-:manpage:`hosts_access.5` for more details.
+`hosts_access.5 <https://manpages.debian.org/bookworm/libwrap0/hosts_access.5.en.html>`_ for more details.
 
 Source code: :uv:src:`doc/developer-reference/ucr/hosts/`
 
