@@ -189,6 +189,7 @@ linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
     r'https://ldapwiki\.com/.*',
     r"https://kb\.isc\.org/docs/aa-00502",  # Security check disallows GET requests with curl or wget and produce HTTP 403 error.
+    r'https://www\.samba\.org/samba/docs/old/Samba3-HOWTO/msdfs\.html',
 ]
 
 univention_use_doc_base = True
