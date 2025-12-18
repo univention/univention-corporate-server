@@ -12,13 +12,13 @@ This ensures that deleted objects are no longer visible through regular LDAP sea
 Recycle Bin objects retain their original LDAP structure, except for LDAP operational attributes, and use the `extensibleObject` object class.
 This allows regular LDAP tools to operate on them without requiring schema mapping or serialization formats (such as JSON blobs) that could break binary attribute encodings (e.g. `jpegPhoto`).
 
-Objects are created below `cn=recyclebin,cn=internal` with the original DN and original object identifier encoded as the first multivalued RDN, for example:
+Objects are created below `cn=recyclebin,cn=internal` with the original object identifier encoded as the RDN, for example:
 
 ```
-univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org+univentionObjectIdentifier=43026e47-f1e8-4e85-bc87-b3adde0b3f4d,cn=recyclebin,cn=internal
+univentionObjectIdentifier=43026e47-f1e8-4e85-bc87-b3adde0b3f4d,cn=recyclebin,cn=internal
 ```
 
-This makes lookups straightforward (at least before the UOI was added).
+This makes lookups straightforward and the DN has a fixed length and doesn't reach LDAP / MDB limits.
 
 Each Recycle Bin object includes metadata such as:
 
@@ -41,14 +41,14 @@ When the object expires, OpenLDAP logs the removal if the `STATS` log level is e
 The log entry appears in syslog at `INFO` level, for example:
 
 ```
-DDS dn="univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org+univentionObjectIdentifier=43026e47-f1e8-4e85-bc87-b3adde0b3f4d,cn=recyclebin,cn=internal"
+DDS dn="univentionObjectIdentifier=43026e47-f1e8-4e85-bc87-b3adde0b3f4d,cn=recyclebin,cn=internal"
 ```
 
 This approach eliminates the need for scheduled cleanup jobs.
 
 ## Ensurance of uniqueness
 If, for example, a `uid=exam-foo,...` was removed, later on a similar object re-added with the same DN, and finally removed again the corresponding Recycle Bin entry would already exists.
-By adding the `univentionObjectIdentifier` to the DN of the Recycle Bin object, it was ensured that even those entries can be added to the Recycle Bin.
+By adding the `univentionObjectIdentifier` to the DN of the Recycle Bin object (and not like previously the `univentionRecycleBinOriginalDN=uid\=Test\,cn\=users\,dc\=example\,dc\=org`), it was ensured that even those entries can be added to the Recycle Bin.
 
 ## Implementation via Listener module
 
