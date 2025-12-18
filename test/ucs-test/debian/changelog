@@ -1,3 +1,10 @@
+ucs-test (12.4.9) unstable; urgency=medium
+
+  * Bug #57747: If samba is not installed the test only the relevant
+    AES keys, not historical DES keys, which may not exist in AD.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 18 Dec 2025 11:51:49 +0100
+
 ucs-test (12.4.8) unstable; urgency=medium
 
   * Bug #57747: Fix Kerberos etypes to be checked in case Samba is not
