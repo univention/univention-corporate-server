@@ -316,7 +316,7 @@ The following values need to be filled in:
    Can be either ``tcp`` for server services using the *Transmission Control
    Protocol* or ``udp`` for services using the stateless *User Datagram Protocol*.
 
-:samp:`{port}`; :samp:`min-port}:{max-port}`
+:samp:`{port}`; :samp:`{min-port}:{max-port}`
    Ports can be defined either as a single number between 1 and 65535 or as a
    range separated by a colon: :samp:`{min-port}:{max-port}`
 
