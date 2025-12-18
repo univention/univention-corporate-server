@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-24 07:10+0000\n"
-"PO-Revision-Date: 2024-11-04 21:10+0100\n"
+"POT-Creation-Date: 2025-12-18 11:56+0000\n"
+"PO-Revision-Date: 2025-12-18 13:02+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -204,7 +204,7 @@ msgstr ""
 "Alle AD- und UCS-Server in einer Connector-Umgebung sollten dieselbe "
 "Zeitzone verwenden."
 
-#: ../../windows/ad-connection.rst:94
+#: ../../windows/ad-connection.rst:91 ../../windows/ad-connection.rst:94
 msgid "Configuration of the operating mode as part of an AD domain"
 msgstr "Konfiguration des Betriebsmodus als Teil einer AD-Domäne"
 
@@ -234,7 +234,7 @@ msgstr ""
 " Domäne bereitstellen. Durch Betätigen der Schaltfläche :guilabel:`AD-"
 "Domäne beitreten` wird der Domänenbeitritt gestartet."
 
-#: ../../windows/ad-connection.rst:110
+#: ../../windows/ad-connection.rst:107 ../../windows/ad-connection.rst:110
 msgid "Domain join of an AD domain"
 msgstr "Domänenbeitritt zu einer AD-Domäne"
 
@@ -604,7 +604,7 @@ msgstr ""
 "*Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne*"
 " ausgewählt und mit :guilabel:`Weiter` bestätigt werden."
 
-#: ../../windows/ad-connection.rst:280
+#: ../../windows/ad-connection.rst:277 ../../windows/ad-connection.rst:280
 msgid "Configuration of the UCS AD Connector via UMC module"
 msgstr "Konfiguration des UCS AD-Connectors über UMC-Modul"
 
@@ -783,7 +783,7 @@ msgstr ""
 "Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne "
 "synchronisieren; dies ist in :cite:t:`ext-doc-win` dokumentiert."
 
-#: ../../windows/ad-connection.rst:360
+#: ../../windows/ad-connection.rst:357 ../../windows/ad-connection.rst:360
 msgid "Administration dialogue for the Active Directory Connection"
 msgstr "Administrationsdialog für die Active Directory-Verbindung"
 
@@ -894,7 +894,7 @@ msgstr ""
 "Starten Sie abschließend Ihren Windows Active Directory Server neu, damit"
 " die Änderungen wirksam werden."
 
-#: ../../windows/ad-connection.rst:411
+#: ../../windows/ad-connection.rst:410
 msgid ""
 "`Install the Certification Authority <microsoft-install-the-"
 "certification-authority_>`_"
@@ -1121,7 +1121,7 @@ msgstr ""
 "Die :program:`Active Directory Connection` stellt die folgenden Werkzeuge"
 " und Protokolldateien für die Diagnose zur Verfügung:"
 
-#: ../../windows/ad-connection.rst:532
+#: ../../windows/ad-connection.rst:522
 msgid ":command:`univention-adsearch`"
 msgstr ":command:`univention-adsearch`"
 
@@ -1147,7 +1147,7 @@ msgstr "Beispiel:"
 msgid "$ univention-adsearch cn=administrator cn givenName"
 msgstr "$ univention-adsearch cn=administrator cn givenName"
 
-#: ../../windows/ad-connection.rst:543
+#: ../../windows/ad-connection.rst:536
 msgid ":command:`univention-adconnector-list-rejected`"
 msgstr ":command:`univention-adconnector-list-rejected`"
 
@@ -1171,7 +1171,7 @@ msgstr ""
 "Dieses Skript könnte eine Fehlermeldung oder eine unvollständige Ausgabe "
 "anzeigen, wenn der AD Connector in Betrieb ist."
 
-#: ../../windows/ad-connection.rst:557
+#: ../../windows/ad-connection.rst:547
 msgid ":command:`remove_ad_rejected.py`"
 msgstr ":command:`remove_ad_rejected.py`"
 
@@ -1195,7 +1195,7 @@ msgstr ""
 "$ /usr/share/univention-ad-connector/remove_ad_rejected.py \\\n"
 "   -c connector <AD object DN>"
 
-#: ../../windows/ad-connection.rst:571
+#: ../../windows/ad-connection.rst:561
 msgid ":command:`remove_ucs_rejected.py`"
 msgstr ":command:`remove_ucs_rejected.py`"
 
@@ -1219,7 +1219,7 @@ msgstr ""
 "$ /usr/share/univention-ad-connector/remove_ucs_rejected.py \\\n"
 "   -c connector <UCS object DN>"
 
-#: ../../windows/ad-connection.rst:597
+#: ../../windows/ad-connection.rst:575
 msgid ":command:`resync_object_from_ad.py`"
 msgstr ":command:`resync_object_from_ad.py`"
 
@@ -1264,7 +1264,7 @@ msgstr ""
 "    --filter \"(objectClass=posixAccount)\" \\\n"
 "    --base \"dc=example,dc=com\""
 
-#: ../../windows/ad-connection.rst:622
+#: ../../windows/ad-connection.rst:601
 msgid ":command:`resync_object_from_ucs.py`"
 msgstr ":command:`resync_object_from_ucs.py`"
 
@@ -1313,7 +1313,7 @@ msgstr ""
 "   --filter \"<LDAP filter>\" \\\n"
 "   --base \"<base dn>\" \\"
 
-#: ../../windows/ad-connection.rst:631
+#: ../../windows/ad-connection.rst:626
 msgid ":command:`prepare-new-instance`"
 msgstr ":command:`prepare-new-instance`"
 
@@ -1336,7 +1336,7 @@ msgstr ""
 "Verbindungsinstanz zu löschen. Das Skript löscht dann intern die Dateien "
 "für die Instanz und setzt die UCR-Variablen zurück."
 
-#: ../../windows/ad-connection.rst:637
+#: ../../windows/ad-connection.rst:635
 msgid ":command:`well-known-sid-object-rename`"
 msgstr ":command:`well-known-sid-object-rename`"
 
@@ -1350,7 +1350,7 @@ msgstr ""
 " SIDs in UDM umzubenennen. Die :program:`AD Connection` verwendet es, um "
 "Benutzer und Gruppen mit bekannten SIDs umzubenennen."
 
-#: ../../windows/ad-connection.rst:643
+#: ../../windows/ad-connection.rst:641
 msgid ":command:`make-deleted-objects-readable-for-this-machine`"
 msgstr ":command:`make-deleted-objects-readable-for-this-machine`"
 
@@ -1362,7 +1362,7 @@ msgstr ""
 "Sie können dieses Skript verwenden, um Zugriff zum Auflisten und Lesen "
 "auf ``CN=Deleted Objects`` in Active Directory zu gewähren."
 
-#: ../../windows/ad-connection.rst:654
+#: ../../windows/ad-connection.rst:647
 msgid "Log files"
 msgstr "Logdateien"
 
@@ -1507,7 +1507,7 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school2/ad=\"ou=school2,dc=ad,domain\""
 
-#: ../../windows/ad-connection.rst:723
+#: ../../windows/ad-connection.rst:719
 msgid "Placeholder ``.*``"
 msgstr "Platzhalter ``.*``"
 
@@ -1538,8 +1538,8 @@ msgid ""
 "variable:"
 msgstr ""
 "Um auch die Vorfahren der Wurzel eines LDAP-Teilbaums, der in "
-":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]` definiert "
-"wurde, zu synchronisieren, aktivieren Sie diese Variable:"
+":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]` definiert wurde, "
+"zu synchronisieren, aktivieren Sie diese Variable:"
 
 #: ../../windows/ad-connection.rst:734
 msgid "$ ucr set connector/ad/mapping/allow-subtree-ancestors=yes"
@@ -1547,15 +1547,14 @@ msgstr "$ ucr set connector/ad/mapping/allow-subtree-ancestors=yes"
 
 #: ../../windows/ad-connection.rst:738
 msgid ""
-"In complex structures this can make the configuration of the "
-"selective synchronization easier. This variable will apply for all "
-"subtrees listed in "
-":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`."
+"In complex structures this can make the configuration of the selective "
+"synchronization easier. This variable will apply for all subtrees listed "
+"in :envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`."
 msgstr ""
-"Bei komplexen Strukturen kann dies die Konfiguration der "
-"selektiven Synchronisierung erleichtern. Diese Variable wird für alle "
-"Teilbäume angewendet, die in :envvar:`connector/ad/mapping/allowsubtree/"
-".*/[ad|ucs]` aufgeführt sind."
+"Bei komplexen Strukturen kann dies die Konfiguration der selektiven "
+"Synchronisierung erleichtern. Diese Variable wird für alle Teilbäume "
+"angewendet, die in "
+":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]` aufgeführt sind."
 
 #: ../../windows/ad-connection.rst:743
 msgid ""
@@ -2514,7 +2513,7 @@ msgstr ""
 " und unter *Active Directory Administratorpasswort* das dazugehörige "
 "Passwort."
 
-#: ../../windows/ad-takeover.rst:123
+#: ../../windows/ad-takeover.rst:120 ../../windows/ad-takeover.rst:123
 msgid "First phase of domain migration"
 msgstr "Erste Phase der Domänenmigration"
 
@@ -2526,7 +2525,7 @@ msgstr ""
 "Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und "
 "zeigt die zu migrierenden Domänendaten an."
 
-#: ../../windows/ad-takeover.rst:133
+#: ../../windows/ad-takeover.rst:130 ../../windows/ad-takeover.rst:133
 msgid "Overview of the data to be migrated"
 msgstr "Übersicht über die zu migrierenden Daten"
 
@@ -2628,7 +2627,7 @@ msgstr ""
 "erfolgreich aufgerufen wurde, muss mit :guilabel:`Weiter` bestätigt "
 "werden."
 
-#: ../../windows/ad-takeover.rst:180
+#: ../../windows/ad-takeover.rst:177 ../../windows/ad-takeover.rst:180
 msgid "Copying the SYSVOL share"
 msgstr "Kopieren der SYSVOL-Freigabe"
 
@@ -2664,7 +2663,7 @@ msgstr ""
 "Domänencontroller heruntergefahren werden. Anschließend muss im UMC-Modul"
 " auf :guilabel:`Weiter` geklickt werden."
 
-#: ../../windows/ad-takeover.rst:202
+#: ../../windows/ad-takeover.rst:199 ../../windows/ad-takeover.rst:202
 msgid "Shutdown of the AD server(s)"
 msgstr "Herunterfahren des/der AD-Systeme"
 
@@ -3362,7 +3361,7 @@ msgstr ""
 msgid "There are two types of policies:"
 msgstr "Es existieren zwei Arten von Richtlinien:"
 
-#: ../../windows/samba-domain.rst:238
+#: ../../windows/samba-domain.rst:235
 msgid "User policies"
 msgstr "Benutzerrichtlinien"
 
@@ -3377,7 +3376,7 @@ msgstr ""
 "Gruppenrichtlinien konfiguriert werden (z.B. die Startseite des Browsers "
 "oder Einstellungen in LibreOffice)."
 
-#: ../../windows/samba-domain.rst:241
+#: ../../windows/samba-domain.rst:240
 msgid "Computer policies"
 msgstr "Computer-Richtlinien"
 
@@ -3458,7 +3457,7 @@ msgstr ""
 "können für Windows 10 unter `Remote Server Administration Tools (RSAT) "
 "for Windows 10 <microsoft-rsat-tools_>`_ bezogen werden."
 
-#: ../../windows/samba-domain.rst:281
+#: ../../windows/samba-domain.rst:278 ../../windows/samba-domain.rst:281
 msgid "Activating the Group Policy Management tools"
 msgstr "Aktivierung der Gruppenrichtlinienverwaltung"
 
@@ -3559,7 +3558,7 @@ msgstr ""
 "z.B. könnte die Richtlinie *Aktiviere Mail-Quota* eine zusätzliche Option"
 " mitbringen um die Speichermenge zu verwalten."
 
-#: ../../windows/samba-domain.rst:327
+#: ../../windows/samba-domain.rst:324 ../../windows/samba-domain.rst:327
 msgid "Editing a policy"
 msgstr "Bearbeiten einer Richtlinie"
 
@@ -3567,7 +3566,7 @@ msgstr "Bearbeiten einer Richtlinie"
 msgid "Two standard policy objects are predefined:"
 msgstr "Zwei Standard-Richtlinienobjekte sind vordefiniert:"
 
-#: ../../windows/samba-domain.rst:333
+#: ../../windows/samba-domain.rst:331
 msgid "Default Domain Policy"
 msgstr "Default Domain Policy"
 
@@ -3580,7 +3579,7 @@ msgstr ""
 "Richtlinien für alle Benutzer und Rechner der gesamten Domäne zu "
 "konfigurieren."
 
-#: ../../windows/samba-domain.rst:339
+#: ../../windows/samba-domain.rst:335
 msgid "Default Domain Controllers Policy"
 msgstr "Default Domain Controllers Policy"
 
@@ -3639,7 +3638,7 @@ msgstr ""
 "dem Befehl :command:`gpresult /user BENUTZERNAME /v` auf dem Windows-"
 "Client angezeigt werden."
 
-#: ../../windows/samba-domain.rst:362
+#: ../../windows/samba-domain.rst:359 ../../windows/samba-domain.rst:362
 msgid "Evaluating the GPO for the user ``user01``"
 msgstr "Auswertung der GPO für den Benutzer ``user01``"
 
@@ -3821,7 +3820,7 @@ msgstr ""
 "END POLICY\n"
 "END CATEGORY"
 
-#: ../../windows/samba-domain.rst:450
+#: ../../windows/samba-domain.rst:447 ../../windows/samba-domain.rst:450
 msgid "The activated administrative template"
 msgstr "Die eingebundene administrative Vorlage"
 
@@ -4128,7 +4127,7 @@ msgid ""
 "  forwarders { 192.0.2.20; };\n"
 "};\n"
 "__EOT__\n"
-"$ systemctl restart named"
+"$ systemctl restart bind9"
 msgstr ""
 "$ cat >>/etc/bind/local.conf.samba4 <<__EOT__\n"
 "zone \"addom.example\" {\n"
@@ -4136,7 +4135,7 @@ msgstr ""
 "  forwarders { 192.0.2.20; };\n"
 "};\n"
 "__EOT__\n"
-"$ systemctl restart named"
+"$ systemctl restart bind9"
 
 #: ../../windows/trust.rst:50
 msgid "The success can be checked by running:"
