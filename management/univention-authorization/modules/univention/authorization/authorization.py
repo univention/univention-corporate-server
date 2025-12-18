@@ -286,11 +286,11 @@ class TokenInvalidError(Exception):
 
 class GuardianAuthorizationClient:
 
-    def __init__(self, fqdn, keycloak_fqdn, username='Administrator', password='univention'):
+    def __init__(self, fqdn, keycloak_fqdn, username='Administrator', password='univention', realm='ucs'):
         self._base_url = f'https://{fqdn}/guardian/authorization/'.rstrip('/')
         self.username = username
         self.password = password
-        self.oidc_token_endpoint_url = f'https://{keycloak_fqdn}/realms/ucs/protocol/openid-connect/token'
+        self.oidc_token_endpoint_url = f'https://{keycloak_fqdn}/realms/{realm}/protocol/openid-connect/token'
         self.oidc_client_id = 'guardian-scripts'
 
     def __enter__(self):
