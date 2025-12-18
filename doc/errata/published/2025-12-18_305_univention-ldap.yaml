@@ -9,3 +9,6 @@ desc: |
  * All occurrences of "Recyclebin" in user facing places have been renamed to
    "Recycle Bin".
 bug: [58887]
+erratum: 305
+announced: 2025-12-18
+support: core
