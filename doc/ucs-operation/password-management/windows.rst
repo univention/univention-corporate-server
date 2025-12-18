@@ -3,23 +3,40 @@
 
 .. _password-management-windows-client:
 
-***********************************
-Windows client password integration
-***********************************
+****************************
+Samba domain password policy
+****************************
 
 With the Samba domain object,
 you can set the requirements for user account passwords in a Samba domain.
 
-You can manage the Samba domain object through the UMC module :guilabel:`LDAP directory`.
-The Samba domain object locates in the ``samba`` container and has the domain's NetBIOS name.
-You find the ``samba`` container under the LDAP base.
+You can manage the Samba domain object through the *LDAP directory module* in the *Management UI*.
+For more information,
+see :external+uv-nubus-manual:ref:`nubus-domain-ldap`
+in :cite:t:`uv-nubus-manual`.
 
 .. important::
 
-   It's a strong recommendation to design the password requirement settings of the Samba domain object
-   identical to the user password policy as described in :ref:`users-passwords`.
+   Univention recommends configuring the Samba domain object's password requirements
+   to match the user password policy
+   as described in :ref:`password-management-policies`.
 
-   .. Same note exists in password-management.rst
+   UDM policies apply when administrators change passwords through administrative tools.
+   Samba domain policies apply when users change their own passwords through any service.
+   Because these are separate systems,
+   Univention recommends administrators to configure them identically
+   to ensure consistent behavior.
+
+   .. FIXME:  If UDM and Samba policies differ, what happens? Which one "wins"? Users would benefit from knowing the consequences.
+
+      Suggestion: Add a note explaining the behavior when policies are misaligned.
+
+   .. A similar warning locates in password-management/policies.rst
+
+In the LDAP directory,
+navigate to the ``samba`` container underneath the LDAP base DN
+and select the Samba object.
+The Samba object has the domain's NetBIOS name.
 
 In the *Password* section on the *General* tab of the *Samba Domain* object,
 you can configure the following settings.
@@ -27,26 +44,37 @@ you can configure the following settings.
 Password length
    The minimum number of characters for a user password.
 
+   :Default value: ``8``
+
 Password history
-   UCS stores password changes in the form of hashes.
-   Users can't use passwords from history when setting a password.
+   Nubus stores password changes as hashes.
+   Users can't use passwords from the password history when setting a password.
    For example, with a password history value of ``5``,
-   user must set five other passwords before they can reuse a password from the history.
+   users must set five other passwords before they can reuse a password from the history.
+
+   :Default value: No value set.
 
 Minimum password age
-   Defines the period of time that must elapse,
-   before users can change their password.
+   Defines how long users must wait before changing their password.
+   You can configure the value as seconds, minutes, hours, or days.
+
+   :Default value: No value set.
 
 Maximum password age
-   Defines the maximum age for a password.
-   When the period of time is over,
-   UCS requires the user to change their password upon next sign-in.
+   Defines the maximum password age.
+   When this period expires,
+   Nubus requires the user to change their password upon next sign-in.
+   You can configure the value as seconds, minutes, hours, or days.
 
-   To define an infinite period of time, leave the value empty.
+   To deactivate password expiration, leave the value empty.
+
+   :Default value: No value set.
 
 Password must meet complexity requirements
-   Activating the checkbox activates `Microsoft Password complexity requirements <microsoft-password-complexity-requirements_>`_.
-   A tooltip shows the required characters in a password.
+   Activate the checkbox to enable
+   `Microsoft Password complexity requirements <https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements>`_.
+   A tool tip shows the required characters in a password.
    The library :file:`Passfilt.dll` enforces the complexity requirements.
    Administrators can't change them.
 
+   :Default value: ``activated``.
