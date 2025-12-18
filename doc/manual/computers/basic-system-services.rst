@@ -175,7 +175,8 @@ older log files are additionally zipped with :command:`gzip`.
 Log files located in the directory :file:`/var/log/univention/listener_modules`
 each have their own Logrotate configuration. These log files have global and
 specific Logrotate settings. The |UCSUCRV| :samp:`logrotate/listener-modules/{<directive>}`
-configures the global settings. The :manpage:`logrotate(8)` documentation
+configures the global settings.
+The `logrotate(8) <https://manpages.debian.org/buster/logrotate/logrotate.8.en.html>`_ documentation
 describes the functionality in detail. UCS supports the following directives:
 
 .. envvar:: logrotate/listener-modules/rotate
