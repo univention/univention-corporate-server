@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 10:50+0000\n"
-"PO-Revision-Date: 2025-04-30 12:52+0200\n"
+"POT-Creation-Date: 2025-12-18 11:49+0000\n"
+"PO-Revision-Date: 2025-12-18 12:51+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../ip-config/dhcp.rst:8
+#: ../../ip-config/dhcp.rst:7
 msgid "IP assignment via DHCP"
 msgstr "IP-Vergabe über DHCP"
 
-#: ../../ip-config/dhcp.rst:10
+#: ../../ip-config/dhcp.rst:9
 msgid ""
 "The Dynamic Host Configuration Protocol (DHCP) assigns computers an IP "
 "address, the subnet mask and further settings for the gateway or NetBIOS "
@@ -32,7 +32,7 @@ msgstr ""
 "Gateway oder NetBIOS-Server zu. Die IP-Adresse kann fest oder dynamisch "
 "vergeben werden."
 
-#: ../../ip-config/dhcp.rst:14
+#: ../../ip-config/dhcp.rst:13
 msgid ""
 "The use of DHCP allows central assignment and control of IP addresses via"
 " the LDAP directory without performing manual configuration on the "
@@ -42,11 +42,11 @@ msgstr ""
 "von IP-Adressen über das LDAP-Verzeichnis ohne manuelle Einträge an den "
 "einzelnen Rechnersystemen vorzunehmen."
 
-#: ../../ip-config/dhcp.rst:18
+#: ../../ip-config/dhcp.rst:17
 msgid "The DHCP integration in UCS only supports IPv4."
 msgstr "Die DHCP-Integration in UCS unterstützt nur IPv4."
 
-#: ../../ip-config/dhcp.rst:20
+#: ../../ip-config/dhcp.rst:19
 msgid ""
 "In a *DHCP service*, DHCP servers are grouped in a shared LDAP "
 "configuration. Global configuration parameters are entered in the DHCP "
@@ -56,7 +56,7 @@ msgstr ""
 "Konfiguration zusammengefasst. Globale Konfigurationsparameter werden am "
 "DHCP-Service angegeben, spezifische Parameter in den Objekten darunter."
 
-#: ../../ip-config/dhcp.rst:24
+#: ../../ip-config/dhcp.rst:23
 msgid ""
 "A DHCP server can be installed from the Univention App Center with the "
 "application :program:`DHCP server`. Alternatively, the software package "
@@ -68,7 +68,7 @@ msgstr ""
 ":program:`univention-dhcp` installiert werden. Weitere Informationen "
 "finden sich in :ref:`computers-softwaremanagement-install-software`."
 
-#: ../../ip-config/dhcp.rst:29
+#: ../../ip-config/dhcp.rst:28
 msgid ""
 "Every DHCP assigns IP addresses via DHCP. In the default setting, only "
 "static IP addresses are assigned to computer objects registered in the "
@@ -78,7 +78,7 @@ msgstr ""
 "Grundeinstellungen werden nur statische IP-Adressen an im UCS-LDAP "
 "registrierte Rechnerobjekte vergeben."
 
-#: ../../ip-config/dhcp.rst:32
+#: ../../ip-config/dhcp.rst:31
 msgid ""
 "If only fixed IP addresses are assigned, as many DHCP servers as required"
 " may be used in a DHCP service. All the DHCP servers procure identical "
@@ -91,7 +91,7 @@ msgstr ""
 "Clients die Daten mehrfach an. DHCP-Clients akzeptieren dann die erste "
 "Antwort und verwerfen die übrigen."
 
-#: ../../ip-config/dhcp.rst:37
+#: ../../ip-config/dhcp.rst:36
 msgid ""
 "If dynamic IP addresses are also assigned, the DHCP failover mechanism "
 "must be employed and a maximum of two DHCP servers can be used per "
@@ -101,7 +101,7 @@ msgstr ""
 "Mechanismus eingesetzt werden. Dabei können maximal zwei DHCP-Server pro "
 "Subnetz verwendet werden."
 
-#: ../../ip-config/dhcp.rst:40
+#: ../../ip-config/dhcp.rst:39
 msgid ""
 "A *DHCP host* entry is used to make the DHCP service aware of a computer."
 " A DHCP host object is required for computers attempting to retrieve a "
@@ -116,7 +116,7 @@ msgstr ""
 "automatisch angelegt werden, wenn einem Rechnerobjekt mit fester IP-"
 "Adresse ein DHCP-Service zugewiesen wird."
 
-#: ../../ip-config/dhcp.rst:46
+#: ../../ip-config/dhcp.rst:45
 msgid ""
 "A *DHCP subnet* entry is required for every subnet, irrespective of "
 "whether dynamic IP addresses are to be assigned from this subnet."
@@ -125,7 +125,7 @@ msgstr ""
 "davon, ob dynamische IP-Adressen aus diesen Subnetzen vergeben werden "
 "sollen."
 
-#: ../../ip-config/dhcp.rst:49
+#: ../../ip-config/dhcp.rst:48
 msgid ""
 "Configuration parameters can be assigned to the different IP ranges by "
 "creating *DHCP pools* within subnets. In this way unknown computers can "
@@ -139,7 +139,7 @@ msgstr ""
 "ausgeschlossen werden. DHCP-Pools können nur unterhalb von DHCP-Subnetz-"
 "Objekten angelegt werden."
 
-#: ../../ip-config/dhcp.rst:54
+#: ../../ip-config/dhcp.rst:53
 msgid ""
 "If several IP subnets are used in a physical Ethernet network, this "
 "should be entered as a *DHCP shared subnet* below a *DHCP shared "
@@ -152,7 +152,7 @@ msgstr ""
 "Subnet*-Objekte können nur unterhalb von *DHCP Shared Network*-Objekten "
 "angelegt werden."
 
-#: ../../ip-config/dhcp.rst:58
+#: ../../ip-config/dhcp.rst:57
 msgid ""
 "Values which are set on a DHCP configuration level always apply for this "
 "level and all subordinate levels, unless other values are specified "
@@ -164,11 +164,11 @@ msgstr ""
 "keine anderen Angaben gemacht werden. Ähnlich wie bei Richtlinien gilt "
 "immer der Wert, der dem Objekt am nächsten ist."
 
-#: ../../ip-config/dhcp.rst:65
+#: ../../ip-config/dhcp.rst:64
 msgid "Composition of the DHCP configuration via DHCP LDAP objects"
 msgstr "Aufbau der DHCP-Konfiguration durch DHCP-LDAP-Objekte"
 
-#: ../../ip-config/dhcp.rst:67
+#: ../../ip-config/dhcp.rst:66
 msgid ""
 "The left column of the UMC module :guilabel:`DHCP` includes a list of all"
 " the DHCP services. To add an object to a DHCP service - for example in "
@@ -189,11 +189,11 @@ msgstr ""
 "unterhalb eines Services angelegt, wird der Service in den UMC-Dialogen "
 "als *übergeordnetes Objekt* bezeichnet."
 
-#: ../../ip-config/dhcp.rst:78
+#: ../../ip-config/dhcp.rst:77
 msgid "Administration of DHCP services"
 msgstr "Verwaltung von DHCP-Services"
 
-#: ../../ip-config/dhcp.rst:80
+#: ../../ip-config/dhcp.rst:79
 msgid ""
 "DHCP services are managed in the UMC module :guilabel:`DHCP` (see :ref"
 ":`central-user-interface`). To create a new DHCP service, *All DHCP "
@@ -206,7 +206,7 @@ msgstr ""
 "selektiert werden. Ein Klick auf :guilabel:`Hinzufügen` legt dann einen "
 "neue Service an."
 
-#: ../../ip-config/dhcp.rst:85
+#: ../../ip-config/dhcp.rst:84
 msgid ""
 "A DHCP server can only serve one DHCP service; to use another DHCP "
 "service, a separate DHCP server must be set up (see :ref:`networks-dhcp-"
@@ -216,7 +216,7 @@ msgstr ""
 "DHCP-Service verwendet werden soll, muss dafür ein separater DHCP-Server "
 "eingerichtet werden (siehe :ref:`networks-dhcp-dhcpserver`)."
 
-#: ../../ip-config/dhcp.rst:88
+#: ../../ip-config/dhcp.rst:87
 msgid ""
 "The following parameters are often set on the DHCP service object which "
 "then apply to all the computers which are served by this DHCP service "
@@ -227,15 +227,15 @@ msgstr ""
 "werden (es sei denn, es werden auf tieferen Ebenen andere Angaben "
 "gemacht):"
 
-#: ../../ip-config/dhcp.rst:92
+#: ../../ip-config/dhcp.rst:91
 msgid "*Domain name* and *Domain name servers* under *Policy: DHCP DNS*"
 msgstr "*Domänenname* und *DNS-Server* unter *Richtlinie: DHCP DNS*"
 
-#: ../../ip-config/dhcp.rst:94
+#: ../../ip-config/dhcp.rst:93
 msgid "*NetBIOS name servers* under *Policy: DHCP NetBIOS*"
 msgstr "*NetBIOS-Nameserver* unter *Richtlinie: DHCP NetBIOS*"
 
-#: ../../ip-config/dhcp.rst:96
+#: ../../ip-config/dhcp.rst:95
 msgid ""
 "A description of this and the other DHCP policies can be found at :ref"
 ":`networks-dhcp-policies`."
@@ -243,17 +243,32 @@ msgstr ""
 "Eine Beschreibung dieser und der anderen DHCP-Richtlinien findet sich "
 "unter :ref:`networks-dhcp-policies`."
 
-#: ../../ip-config/dhcp.rst:101 ../../ip-config/dhcp.rst:126
-#: ../../ip-config/dhcp.rst:160 ../../ip-config/dhcp.rst:213
-#: ../../ip-config/dhcp.rst:298 ../../ip-config/dhcp.rst:346
-#: ../../ip-config/dhcp.rst:407 ../../ip-config/dhcp.rst:431
-#: ../../ip-config/dhcp.rst:461 ../../ip-config/dhcp.rst:502
-#: ../../ip-config/dns.rst:177 ../../ip-config/dns.rst:336
-#: ../../ip-config/dns.rst:367 ../../ip-config/dns.rst:407
-#: ../../ip-config/dns.rst:472 ../../ip-config/dns.rst:548
-#: ../../ip-config/network-objects.rst:32
+#: ../../ip-config/dhcp.rst:100 ../../ip-config/dhcp.rst:125
+#: ../../ip-config/dhcp.rst:159 ../../ip-config/dhcp.rst:212
+#: ../../ip-config/dhcp.rst:297 ../../ip-config/dhcp.rst:345
+#: ../../ip-config/dhcp.rst:406 ../../ip-config/dhcp.rst:430
+#: ../../ip-config/dhcp.rst:460 ../../ip-config/dhcp.rst:501
+#: ../../ip-config/dns.rst:176 ../../ip-config/dns.rst:335
+#: ../../ip-config/dns.rst:366 ../../ip-config/dns.rst:406
+#: ../../ip-config/dns.rst:471 ../../ip-config/dns.rst:547
+#: ../../ip-config/network-objects.rst:31
 msgid "*General* tab"
 msgstr "Reiter *Allgemein*"
+
+#: ../../ip-config/dhcp.rst:104 ../../ip-config/dhcp.rst:129
+#: ../../ip-config/dhcp.rst:163 ../../ip-config/dhcp.rst:216
+#: ../../ip-config/dhcp.rst:238 ../../ip-config/dhcp.rst:301
+#: ../../ip-config/dhcp.rst:349 ../../ip-config/dhcp.rst:410
+#: ../../ip-config/dhcp.rst:434 ../../ip-config/dhcp.rst:464
+#: ../../ip-config/dhcp.rst:505 ../../ip-config/dhcp.rst:538
+#: ../../ip-config/dns.rst:180 ../../ip-config/dns.rst:209
+#: ../../ip-config/dns.rst:273 ../../ip-config/dns.rst:292
+#: ../../ip-config/dns.rst:316 ../../ip-config/dns.rst:339
+#: ../../ip-config/dns.rst:370 ../../ip-config/dns.rst:410
+#: ../../ip-config/dns.rst:475 ../../ip-config/dns.rst:504
+#: ../../ip-config/dns.rst:551 ../../ip-config/network-objects.rst:35
+msgid "Attribute"
+msgstr "Attribut"
 
 #: ../../ip-config/dhcp.rst:105 ../../ip-config/dhcp.rst:130
 #: ../../ip-config/dhcp.rst:164 ../../ip-config/dhcp.rst:217
@@ -267,29 +282,14 @@ msgstr "Reiter *Allgemein*"
 #: ../../ip-config/dns.rst:371 ../../ip-config/dns.rst:411
 #: ../../ip-config/dns.rst:476 ../../ip-config/dns.rst:505
 #: ../../ip-config/dns.rst:552 ../../ip-config/network-objects.rst:36
-msgid "Attribute"
-msgstr "Attribut"
-
-#: ../../ip-config/dhcp.rst:106 ../../ip-config/dhcp.rst:131
-#: ../../ip-config/dhcp.rst:165 ../../ip-config/dhcp.rst:218
-#: ../../ip-config/dhcp.rst:240 ../../ip-config/dhcp.rst:303
-#: ../../ip-config/dhcp.rst:351 ../../ip-config/dhcp.rst:412
-#: ../../ip-config/dhcp.rst:436 ../../ip-config/dhcp.rst:466
-#: ../../ip-config/dhcp.rst:507 ../../ip-config/dhcp.rst:540
-#: ../../ip-config/dns.rst:182 ../../ip-config/dns.rst:211
-#: ../../ip-config/dns.rst:275 ../../ip-config/dns.rst:294
-#: ../../ip-config/dns.rst:318 ../../ip-config/dns.rst:341
-#: ../../ip-config/dns.rst:372 ../../ip-config/dns.rst:412
-#: ../../ip-config/dns.rst:477 ../../ip-config/dns.rst:506
-#: ../../ip-config/dns.rst:553 ../../ip-config/network-objects.rst:37
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../ip-config/dhcp.rst:108
+#: ../../ip-config/dhcp.rst:107
 msgid "Service name"
 msgstr "Service-Name"
 
-#: ../../ip-config/dhcp.rst:109
+#: ../../ip-config/dhcp.rst:108
 msgid ""
 "An unambiguous name for the DHCP service must be entered in this input "
 "field, e.g., ``company.example``."
@@ -297,11 +297,11 @@ msgstr ""
 "In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den "
 "DHCP-Service eingetragen werden, z.B. ``firma.com``."
 
-#: ../../ip-config/dhcp.rst:115
+#: ../../ip-config/dhcp.rst:114
 msgid "Administration of DHCP server entries"
 msgstr "Verwaltung von DHCP-Server-Einträgen"
 
-#: ../../ip-config/dhcp.rst:117
+#: ../../ip-config/dhcp.rst:116
 msgid ""
 "Each server which should offer the DHCP service requires a *DHCP server* "
 "entry in the LDAP directory. The entry does not normally need to be "
@@ -320,11 +320,11 @@ msgstr ""
 ":menuselection:`Hinzufügen --> DHCP Server` kann dann ein neuer Server "
 "registriert werden."
 
-#: ../../ip-config/dhcp.rst:133
+#: ../../ip-config/dhcp.rst:132
 msgid "Server name"
 msgstr "Server-Name"
 
-#: ../../ip-config/dhcp.rst:134
+#: ../../ip-config/dhcp.rst:133
 msgid ""
 "The computer name that the DHCP service should offer is entered in this "
 "input field, e.g., ``ucs-primary``."
@@ -332,7 +332,7 @@ msgstr ""
 "In diesem Eingabefeld ist der Rechnername, der den DHCP-Dienst anbieten "
 "soll, einzutragen, z.B. ``ucs-primary``."
 
-#: ../../ip-config/dhcp.rst:137
+#: ../../ip-config/dhcp.rst:136
 msgid ""
 "A server can only ever provide a single DHCP service and therefore cannot"
 " be entered in more than one DHCP service at the same time."
@@ -340,11 +340,11 @@ msgstr ""
 "Ein Server kann immer nur einen einzigen DHCP-Dienst anbieten und kann "
 "deshalb nicht gleichzeitig in mehreren DHCP-Services eingetragen sein."
 
-#: ../../ip-config/dhcp.rst:143
+#: ../../ip-config/dhcp.rst:142
 msgid "Administration of DHCP subnets"
 msgstr "Verwaltung von DHCP-Subnetzen"
 
-#: ../../ip-config/dhcp.rst:145
+#: ../../ip-config/dhcp.rst:144
 msgid ""
 "DHCP subnets are managed in the UMC module :guilabel:`DHCP` (see :ref"
 ":`central-user-interface`). To create another subnet, a DHCP service must"
@@ -357,7 +357,7 @@ msgstr ""
 ":menuselection:`Hinzufügen --> DHCP: Subnetz` kann dann ein neues Subnetz"
 " angelegt werden."
 
-#: ../../ip-config/dhcp.rst:150
+#: ../../ip-config/dhcp.rst:149
 msgid ""
 "A DHCP subnet entry is required for every subnet from which dynamic or "
 "fixed IP addresses are to be assigned. It is only necessary to enter IP "
@@ -368,7 +368,7 @@ msgstr ""
 "Eintragen von IP-Adressbereichen ist nur notwendig, wenn IP-Adressen "
 "dynamisch vergeben werden sollen."
 
-#: ../../ip-config/dhcp.rst:154
+#: ../../ip-config/dhcp.rst:153
 msgid ""
 "If *DHCP shared subnet* objects are to be used, the corresponding subnets"
 " should be created below the *DHCP shared subnet* container created for "
@@ -379,11 +379,11 @@ msgstr ""
 "Network*-Containers angelegt werden (siehe :ref:`networks-dhcp-shared-"
 "subnets`)."
 
-#: ../../ip-config/dhcp.rst:167
+#: ../../ip-config/dhcp.rst:166
 msgid "Subnet address"
 msgstr "Subnetz-Adresse"
 
-#: ../../ip-config/dhcp.rst:168
+#: ../../ip-config/dhcp.rst:167
 msgid ""
 "The IP address of the subnet must be entered in dot-decimal form in this "
 "input field, e.g., ``192.0.2.0``."
@@ -391,11 +391,11 @@ msgstr ""
 "In diesem Eingabefeld ist die IP-Adresse des Subnetzes in "
 "Oktettschreibweise einzutragen, z.B. ``192.0.2.0``."
 
-#: ../../ip-config/dhcp.rst:171
+#: ../../ip-config/dhcp.rst:170
 msgid "Net mask"
 msgstr "Netzmaske"
 
-#: ../../ip-config/dhcp.rst:172
+#: ../../ip-config/dhcp.rst:171
 msgid ""
 "The network mask can be entered in this input field as the network prefix"
 " or in dot-decimal form. If the network mask is entered in dot-decimal "
@@ -407,11 +407,11 @@ msgstr ""
 "Netzmaske in Oktettschreibweise eingegeben wird, wird sie automatisch in "
 "den entsprechenden Netzpräfix umgewandelt und später auch ausgegeben."
 
-#: ../../ip-config/dhcp.rst:177
+#: ../../ip-config/dhcp.rst:176
 msgid "Dynamic address assignment"
 msgstr "Dynamische Adresszuweisung"
 
-#: ../../ip-config/dhcp.rst:178
+#: ../../ip-config/dhcp.rst:177
 msgid ""
 "Here one can set up individual or multiple IP address ranges for dynamic "
 "assignment. The range stretches from the *First address* to the *Last "
@@ -422,7 +422,7 @@ msgstr ""
 "erstreckt sich von *Erste Adresse* bis *Letzte Adresse* in "
 "Oktettschreibweise."
 
-#: ../../ip-config/dhcp.rst:184
+#: ../../ip-config/dhcp.rst:183
 msgid ""
 "Dynamic IP ranges for a subnet should always either be specified "
 "exclusively in the subnet entry or exclusively in one or more special "
@@ -438,7 +438,7 @@ msgstr ""
 "unterschiedlichen Konfigurationen eingesetzt werden sollen, müssen dafür "
 "Pool-Einträge angelegt werden."
 
-#: ../../ip-config/dhcp.rst:190
+#: ../../ip-config/dhcp.rst:189
 msgid ""
 "At this level, the gateway for all computers in a subnet is often set "
 "using the *Policy: DHCP Routing* tab (unless other entries are performed "
@@ -448,11 +448,11 @@ msgstr ""
 "DHCP Routing` das Gateway für alle Rechner in diesem Subnetz festgelegt "
 "(es sei denn, es werden an DHCP-Pools andere Angaben gemacht)."
 
-#: ../../ip-config/dhcp.rst:196
+#: ../../ip-config/dhcp.rst:195
 msgid "Administration of DHCP pools"
 msgstr "Verwaltung von DHCP-Pools"
 
-#: ../../ip-config/dhcp.rst:198
+#: ../../ip-config/dhcp.rst:197
 msgid ""
 "DHCP pools can only be managed via the UMC module :guilabel:`LDAP "
 "directory`. To do so, one must always be in a DHCP subnet object - a DHCP"
@@ -465,7 +465,7 @@ msgstr ""
 "angelegt werden - und dort mit :guilabel:`Hinzufügen` ein *DHCP: "
 "Pool*-Objekt eingefügt werden."
 
-#: ../../ip-config/dhcp.rst:203
+#: ../../ip-config/dhcp.rst:202
 msgid ""
 "If DHCP pools are created in a subnet, no IP address range should be "
 "defined in the subnet entry. These should only be specified via the pool "
@@ -475,15 +475,15 @@ msgstr ""
 "Adressbereiche im Subnetz-Eintrag definiert werden. Diese sind "
 "ausschließlich in den Pool-Einträgen anzulegen."
 
-#: ../../ip-config/dhcp.rst:209
+#: ../../ip-config/dhcp.rst:208
 msgid "General tab"
 msgstr "Reiter Allgemein"
 
-#: ../../ip-config/dhcp.rst:220 ../../ip-config/network-objects.rst:39
+#: ../../ip-config/dhcp.rst:219 ../../ip-config/network-objects.rst:38
 msgid "Name"
 msgstr "Name"
 
-#: ../../ip-config/dhcp.rst:221
+#: ../../ip-config/dhcp.rst:220
 msgid ""
 "An unambiguous name for the DHCP pool must be entered in this input "
 "field, e.g., ``testnet.compaby.example``."
@@ -491,11 +491,11 @@ msgstr ""
 "In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den "
 "DHCP-Pool eingetragen werden, z.B. ``testnetz.firma.com``."
 
-#: ../../ip-config/dhcp.rst:224
+#: ../../ip-config/dhcp.rst:223
 msgid "Dynamic range"
 msgstr "Dynamischer Bereich"
 
-#: ../../ip-config/dhcp.rst:225
+#: ../../ip-config/dhcp.rst:224
 msgid ""
 "Here you can enter the IP addresses in dot-decimal form that are to be "
 "dynamically assigned."
@@ -503,19 +503,19 @@ msgstr ""
 "Hier können die IP-Adressen in Oktettschreibweise angegeben werden, die "
 "dynamisch vergeben werden."
 
-#: ../../ip-config/dhcp.rst:231
+#: ../../ip-config/dhcp.rst:230
 msgid "Advanced settings tab"
 msgstr "Reiter Erweiterte Einstellungen"
 
-#: ../../ip-config/dhcp.rst:235
+#: ../../ip-config/dhcp.rst:234
 msgid "*Advanced settings* tab"
 msgstr "Reiter *Erweiterte Einstellungen*"
 
-#: ../../ip-config/dhcp.rst:242
+#: ../../ip-config/dhcp.rst:241
 msgid "Failover peer"
 msgstr "Failover Peer"
 
-#: ../../ip-config/dhcp.rst:243
+#: ../../ip-config/dhcp.rst:242
 msgid ""
 "The name of a failover configuration, which must to be configured "
 "manually in file :file:`/etc/dhcp/local.conf`. Further information can be"
@@ -527,11 +527,11 @@ msgstr ""
 "Einrichtung finden sich in `A Basic Guide to Configuring DHCP Failover "
 "<isc-dhcp-failober_>`_."
 
-#: ../../ip-config/dhcp.rst:248
+#: ../../ip-config/dhcp.rst:247
 msgid "Allow known clients"
 msgstr "Erlaube bekannte Clients"
 
-#: ../../ip-config/dhcp.rst:249
+#: ../../ip-config/dhcp.rst:248
 msgid ""
 "A computer is identified by its MAC address. If this input field is set "
 "to ``allow`` or unset, a computer **with** a matching DHCP host entry "
@@ -543,7 +543,7 @@ msgstr ""
 "DHCP-Rechner-Eintrag (siehe :ref:`ip-config-dhcp-objects-hosts`) "
 "berechtigt eine IP-Adresse aus diesem Pool zu beziehen."
 
-#: ../../ip-config/dhcp.rst:254 ../../ip-config/dhcp.rst:263
+#: ../../ip-config/dhcp.rst:253 ../../ip-config/dhcp.rst:262
 msgid ""
 "If set to ``deny``, the computer doesn't receive an IP address from the "
 "pool."
@@ -551,11 +551,11 @@ msgstr ""
 "Ist es auf ``verbieten`` gesetzt, erhalten diese Computer keine IP-"
 "Adresse aus dem Pool."
 
-#: ../../ip-config/dhcp.rst:257
+#: ../../ip-config/dhcp.rst:256
 msgid "Allow unknown clients"
 msgstr "Erlaube unbekannte Clients"
 
-#: ../../ip-config/dhcp.rst:258
+#: ../../ip-config/dhcp.rst:257
 msgid ""
 "A computer is identified by its MAC address. If this input field is set "
 "to ``allow`` or unset, a computer **without** a matching DHCP host entry "
@@ -567,11 +567,11 @@ msgstr ""
 "Rechner-Eintrag (siehe :ref:`ip-config-dhcp-objects-hosts`) berechtigt "
 "eine IP-Adresse aus diesem Pool zu beziehen."
 
-#: ../../ip-config/dhcp.rst:266
+#: ../../ip-config/dhcp.rst:265
 msgid "Allow dynamic BOOTP clients"
 msgstr "Dynamische BOOTP-Clients erlauben"
 
-#: ../../ip-config/dhcp.rst:267
+#: ../../ip-config/dhcp.rst:266
 msgid ""
 "BOOTP is the predecessor of the DHCP protocol. It has no mechanism to "
 "renew leases and by default assigns leases infinitely, which can deplete "
@@ -584,11 +584,11 @@ msgstr ""
 "gesetzt können Clients auch über BOOTP eine Adresse aus diesem Pool zu "
 "beziehen."
 
-#: ../../ip-config/dhcp.rst:272
+#: ../../ip-config/dhcp.rst:271
 msgid "All clients"
 msgstr "Alle Clients"
 
-#: ../../ip-config/dhcp.rst:273
+#: ../../ip-config/dhcp.rst:272
 msgid ""
 "If this option is set to ``deny`` the pool is disabled globally. This is "
 "only useful in exceptional scenarios."
@@ -596,11 +596,11 @@ msgstr ""
 "Wird diese Option auf ``verbieten`` gesetzt, wird der Pool global "
 "deaktiviert. Diese Option ist nur in Ausnahmefällen sinnvoll."
 
-#: ../../ip-config/dhcp.rst:279
+#: ../../ip-config/dhcp.rst:278
 msgid "Registration of computers with DHCP computer objects"
 msgstr "Registrierung von Rechnern mit DHCP-Rechner-Objekten"
 
-#: ../../ip-config/dhcp.rst:281
+#: ../../ip-config/dhcp.rst:280
 msgid ""
 "A *DHCP host* entry is used to register the respective computer in the "
 "DHCP service. Computers can be handled depending on their registration "
@@ -613,7 +613,7 @@ msgstr ""
 " dynamische IP-Adressen vom DHCP-Service beziehen; unbekannte Rechner "
 "erhalten nur dynamische IP-Adressen."
 
-#: ../../ip-config/dhcp.rst:286
+#: ../../ip-config/dhcp.rst:285
 msgid ""
 "DHCP computer entries are usually created automatically when a computer "
 "is added via the computer management. Below the DHCP service object you "
@@ -627,7 +627,7 @@ msgstr ""
 "Einträge hinzuzufügen oder bestehende Einträge, egal ob manuell oder "
 "automatisch erzeugt, zu bearbeiten."
 
-#: ../../ip-config/dhcp.rst:291
+#: ../../ip-config/dhcp.rst:290
 msgid ""
 "DHCP host objects are managed in the UMC module :guilabel:`DHCP` (see "
 ":ref:`central-user-interface`). To register a host in the DHCP manually, "
@@ -640,11 +640,11 @@ msgstr ""
 "Service ausgewählt werden. Mit :menuselection:`Hinzufügen --> DHCP: "
 "Rechner` kann dann ein Rechner registriert werden."
 
-#: ../../ip-config/dhcp.rst:305 ../../ip-config/dns.rst:374
+#: ../../ip-config/dhcp.rst:304 ../../ip-config/dns.rst:373
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: ../../ip-config/dhcp.rst:306
+#: ../../ip-config/dhcp.rst:305
 msgid ""
 "A name for the computer is entered in this input field (which usually "
 "also has an entry in the computer management). It is recommended to enter"
@@ -656,11 +656,11 @@ msgstr ""
 " sich, in beiden Einträgen denselben Namen und dieselbe MAC-Adresse für "
 "den Rechner zu verwenden, um die Zuordnung zu erleichtern."
 
-#: ../../ip-config/dhcp.rst:311
+#: ../../ip-config/dhcp.rst:310
 msgid "Type"
 msgstr "Netzwerktyp"
 
-#: ../../ip-config/dhcp.rst:312
+#: ../../ip-config/dhcp.rst:311
 msgid ""
 "The type of network used can be selected in this selection list. "
 "*Ethernet* almost always needs to be selected here."
@@ -668,11 +668,11 @@ msgstr ""
 "In dieser Auswahlliste ist der Typ des verwendeten Netzwerks auszuwählen."
 " Hier ist nahezu immer *Ethernet* auszuwählen."
 
-#: ../../ip-config/dhcp.rst:315 ../../ip-config/dns.rst:555
+#: ../../ip-config/dhcp.rst:314 ../../ip-config/dns.rst:554
 msgid "Address"
 msgstr "Adresse"
 
-#: ../../ip-config/dhcp.rst:316
+#: ../../ip-config/dhcp.rst:315
 msgid ""
 "The MAC address of the network card needs to be entered here, e.g., "
 "``2e:44:56:3f:12:32`` or ``2e-44-56-3f-12-32``."
@@ -680,11 +680,11 @@ msgstr ""
 "In diesem Eingabefeld ist die MAC-Adresse der Netzwerkkarte einzutragen, "
 "z.B. ``2e:44:56:3f:12:32`` oder ``e-44-56-3f-12-32``."
 
-#: ../../ip-config/dhcp.rst:319
+#: ../../ip-config/dhcp.rst:318
 msgid "Fixed IP addresses"
 msgstr "Feste IP-Adressen"
 
-#: ../../ip-config/dhcp.rst:320
+#: ../../ip-config/dhcp.rst:319
 msgid ""
 "One or more fixed IP addresses can be assigned to the computer here. In "
 "addition to an IP address, a fully qualified domain name can also be "
@@ -696,11 +696,11 @@ msgstr ""
 "Domänenname angegeben werden, der vom DHCP-Server in eine oder mehrere "
 "IP-Adressen aufgelöst wird."
 
-#: ../../ip-config/dhcp.rst:328
+#: ../../ip-config/dhcp.rst:327
 msgid "Management of DHCP shared networks / DHCP shared subnets"
 msgstr "Verwaltung von DHCP Shared Networks / DHCP Shared Subnets"
 
-#: ../../ip-config/dhcp.rst:330
+#: ../../ip-config/dhcp.rst:329
 msgid ""
 "*DHCP shared network* objects accept subnets which use a common physical "
 "network."
@@ -708,7 +708,7 @@ msgstr ""
 "*DHCP Shared Network*-Objekte nehmen Subnetze auf, die ein physikalisches"
 " Netzwerk gemeinsam nutzen."
 
-#: ../../ip-config/dhcp.rst:333
+#: ../../ip-config/dhcp.rst:332
 msgid ""
 "DHCP shared network objects are managed in the UMC module "
 ":guilabel:`DHCP` (see :ref:`central-user-interface`). To create a shared "
@@ -722,7 +722,7 @@ msgstr ""
 "ausgewählt werden.  Mit :menuselection:`Hinzufügen --> DHCP: Shared "
 "Network` kann dann ein Netzwerk registriert werden."
 
-#: ../../ip-config/dhcp.rst:340
+#: ../../ip-config/dhcp.rst:339
 msgid ""
 "A shared network must contain at least one shared subnet object. "
 "Otherwise the DHCP service will terminate itself and cannot be restarted "
@@ -732,15 +732,15 @@ msgstr ""
 " Anderenfalls beendet sich der DHCP-Dienst und kann nicht gestartet "
 "werden, bis die Konfiguration korrigiert ist."
 
-#: ../../ip-config/dhcp.rst:353
+#: ../../ip-config/dhcp.rst:352
 msgid "Shared network name"
 msgstr "Shared Network Name"
 
-#: ../../ip-config/dhcp.rst:354
+#: ../../ip-config/dhcp.rst:353
 msgid "A name for the shared network must be entered in this input field."
 msgstr "In dieses Eingabefeld ist ein Name für das Shared Network einzutragen."
 
-#: ../../ip-config/dhcp.rst:356
+#: ../../ip-config/dhcp.rst:355
 msgid ""
 "Subnets are declared as a *DHCP shared subnet* when they use the same, "
 "common physical network. All subnets which use the same network must be "
@@ -753,7 +753,7 @@ msgstr ""
 "angelegt werden. Für jedes Subnetz ist ein eigenes *DHCP:Shared "
 "Subnet*-Objekt anzulegen."
 
-#: ../../ip-config/dhcp.rst:361
+#: ../../ip-config/dhcp.rst:360
 msgid ""
 "DHCP shared subnet objects can only be managed via the UMC module "
 ":guilabel:`LDAP directory`. To do so, one must always be in a DHCP shared"
@@ -768,11 +768,11 @@ msgstr ""
 "mit :guilabel:`Hinzufügen` ein *DHCP: Shared Subnet*-Objekt eingefügt "
 "werden."
 
-#: ../../ip-config/dhcp.rst:370
+#: ../../ip-config/dhcp.rst:369
 msgid "Configuration of clients via DHCP policies"
 msgstr "Konfiguration von Clients durch DHCP-Richtlinien"
 
-#: ../../ip-config/dhcp.rst:374
+#: ../../ip-config/dhcp.rst:373
 msgid ""
 "Many of the settings for DHCP are configured via policies. They are also "
 "applied to DHCP computer objects if a policy is linked to the LDAP base "
@@ -787,7 +787,7 @@ msgstr ""
 "Priorität haben, werden andere Einstellungen an Subnetz- oder Service-"
 "Objekten ignoriert."
 
-#: ../../ip-config/dhcp.rst:380
+#: ../../ip-config/dhcp.rst:379
 msgid ""
 "For this reason, DHCP policies should be linked directly to the DHCP "
 "network objects (e.g., the DHCP subnetworks)."
@@ -795,7 +795,7 @@ msgstr ""
 "DHCP-Richtlinien sollten von daher direkt mit den DHCP-Netzwerk-Objekten "
 "(z.B. den DHCP-Subnetzen) verknüpft werden."
 
-#: ../../ip-config/dhcp.rst:383
+#: ../../ip-config/dhcp.rst:382
 msgid ""
 "Alternatively, the LDAP class ``univentionDhcpHost`` can be added in the "
 "advanced settings of the policies under :menuselection:`Object --> "
@@ -809,7 +809,7 @@ msgstr ""
 "dann nicht länger auf die DHCP-Rechner-Objekte Anwendung, wodurch dann "
 "die Einstellungen aus DHCP-Subnetz und -Service benutzt werden."
 
-#: ../../ip-config/dhcp.rst:391
+#: ../../ip-config/dhcp.rst:390
 msgid ""
 "When using the command line :command:`udm dhcp/host list` (see also :ref"
 ":`central-udm-example-dnsdhcp`), it is possible to use the option "
@@ -819,11 +819,11 @@ msgstr ""
 "auch :ref:`central-udm-example-dnsdhcp`) kann die Option ``--policies 0``"
 " verwendet werden, um die effektiven Einstellungen anzeigen zu lassen."
 
-#: ../../ip-config/dhcp.rst:399
+#: ../../ip-config/dhcp.rst:398
 msgid "Setting the gateway"
 msgstr "Vorgabe des Gateways"
 
-#: ../../ip-config/dhcp.rst:401
+#: ../../ip-config/dhcp.rst:400
 msgid ""
 "The default gateway can be specified via DHCP with a *DHCP routing* "
 "policy, which is managed in the UMC module :guilabel:`Policies` (see :ref"
@@ -833,11 +833,11 @@ msgstr ""
 "Routing* festgelegt werden, die im UMC-Modul :guilabel:`Richtlinien` "
 "verwaltet wird (siehe auch :ref:`central-policies`)."
 
-#: ../../ip-config/dhcp.rst:414
+#: ../../ip-config/dhcp.rst:413
 msgid "Routers"
 msgstr "Router"
 
-#: ../../ip-config/dhcp.rst:415
+#: ../../ip-config/dhcp.rst:414
 msgid ""
 "The names or IP addresses of the routers are to be entered here. It must "
 "be verified that the DHCP server can resolve these names in IP addresses."
@@ -849,11 +849,11 @@ msgstr ""
 "auflösen kann. Die Router werden vom Client in der Reihenfolge "
 "angesprochen, in der sie in der Auswahlliste erscheinen."
 
-#: ../../ip-config/dhcp.rst:423
+#: ../../ip-config/dhcp.rst:422
 msgid "Setting the DNS servers"
 msgstr "Vorgabe der DNS-Server"
 
-#: ../../ip-config/dhcp.rst:425
+#: ../../ip-config/dhcp.rst:424
 msgid ""
 "The name servers to be used by a client can be specified via DHCP with a "
 "*DHCP DNS* policy, which is managed in the UMC module "
@@ -864,11 +864,11 @@ msgstr ""
 ":guilabel:`Richtlinien` verwaltet wird (siehe auch :ref:`central-"
 "policies`)."
 
-#: ../../ip-config/dhcp.rst:438
+#: ../../ip-config/dhcp.rst:437
 msgid "Domain name"
 msgstr "Domänenname"
 
-#: ../../ip-config/dhcp.rst:439
+#: ../../ip-config/dhcp.rst:438
 msgid ""
 "The name of the domain, which the client automatically appends on "
 "computer names that it sends to the DNS server for resolution and which "
@@ -880,11 +880,11 @@ msgstr ""
 "vollqualifierten Domänennamen sind. Üblicherweise wird hier der Name der "
 "Domäne verwendet, der der Client angehört."
 
-#: ../../ip-config/dhcp.rst:444
+#: ../../ip-config/dhcp.rst:443
 msgid "Domain name servers"
 msgstr "DNS-Server"
 
-#: ../../ip-config/dhcp.rst:445
+#: ../../ip-config/dhcp.rst:444
 msgid ""
 "Here IP addresses or fully qualified domain names (FQDNs) of DNS servers "
 "can be added. When using FQDNs, it must be verified that the DHCP server "
@@ -897,11 +897,11 @@ msgstr ""
 "Die DNS-Server werden von den Clients entsprechend der hier angegebenen "
 "Reihenfolge kontaktiert."
 
-#: ../../ip-config/dhcp.rst:453
+#: ../../ip-config/dhcp.rst:452
 msgid "Setting the WINS server"
 msgstr "Vorgabe des WINS-Server"
 
-#: ../../ip-config/dhcp.rst:455
+#: ../../ip-config/dhcp.rst:454
 msgid ""
 "The WINS server to be used can be specified via DHCP with a *DHCP "
 "NetBIOS* policy, which is managed in the UMC module :guilabel:`Policies` "
@@ -912,11 +912,11 @@ msgstr ""
 ":guilabel:`Richtlinien` verwaltet wird (siehe auch :ref:`central-"
 "policies`)."
 
-#: ../../ip-config/dhcp.rst:468
+#: ../../ip-config/dhcp.rst:467
 msgid "NetBIOS name servers"
 msgstr "NetBIOS-Nameserver"
 
-#: ../../ip-config/dhcp.rst:469
+#: ../../ip-config/dhcp.rst:468
 msgid ""
 "The names or IP addresses of the NetBIOS name servers (also known as WINS"
 " servers) should be entered here. It must be verified that the DHCP "
@@ -930,11 +930,11 @@ msgstr ""
 "werden vom Client in der Reihenfolge angesprochen, in der sie in der "
 "Auswahlliste erscheinen."
 
-#: ../../ip-config/dhcp.rst:475
+#: ../../ip-config/dhcp.rst:474
 msgid "NetBIOS scope"
 msgstr "NetBIOS Scope"
 
-#: ../../ip-config/dhcp.rst:476
+#: ../../ip-config/dhcp.rst:475
 msgid ""
 "The NetBIOS over TCP/IP scope for the client according to the "
 "specification in :rfc:`1001` and :rfc:`1002`. Attention must be paid to "
@@ -944,37 +944,37 @@ msgstr ""
 ":rfc:`1001` und :rfc:`1002`. Bei der Angabe des NetBIOS Scopes ist die "
 "Groß- und Kleinschreibung zu beachten."
 
-#: ../../ip-config/dhcp.rst:480
+#: ../../ip-config/dhcp.rst:479
 msgid "NetBIOS node type"
 msgstr "NetBIOS Node Type"
 
-#: ../../ip-config/dhcp.rst:481
+#: ../../ip-config/dhcp.rst:480
 msgid "This field sets the node type of the client. Possible values are:"
 msgstr ""
 "Dieses Auswahlfeld legt den Node Type eines Clients fest. Mögliche Werte "
 "sind:"
 
-#: ../../ip-config/dhcp.rst:483
+#: ../../ip-config/dhcp.rst:482
 msgid "``1 B-node`` (Broadcast: no WINS)"
 msgstr "``1 B-node`` (Broadcast: kein WINS)"
 
-#: ../../ip-config/dhcp.rst:485
+#: ../../ip-config/dhcp.rst:484
 msgid "``2 P-node`` (Peer: only WINS)"
 msgstr "``2 P-node`` (Peer: ausschließlich WINS)"
 
-#: ../../ip-config/dhcp.rst:487
+#: ../../ip-config/dhcp.rst:486
 msgid "``4 M-node`` (Mixed: first Broadcast, then WINS)"
 msgstr "``4 M-node`` (Mixed: erst Broadcast, dann WINS)"
 
-#: ../../ip-config/dhcp.rst:489
+#: ../../ip-config/dhcp.rst:488
 msgid "``8 H-node`` (Hybrid: first WINS, then Broadcast)"
 msgstr "``8 H-node`` (Hybrid: erst WINS, dann Broadcast)"
 
-#: ../../ip-config/dhcp.rst:494
+#: ../../ip-config/dhcp.rst:493
 msgid "Configuration of the DHCP lease"
 msgstr "Konfiguration der DHCP-Vergabedauer (Lease)"
 
-#: ../../ip-config/dhcp.rst:496
+#: ../../ip-config/dhcp.rst:495
 msgid ""
 "The validity of an assigned IP address - a so-called DHCP lease - can be "
 "specified with a *DHCP lease time* policy, which is managed in the UMC "
@@ -985,11 +985,11 @@ msgstr ""
 "die im UMC-Modul :guilabel:`Richtlinien` verwaltet wird (siehe auch :ref"
 ":`central-policies`)."
 
-#: ../../ip-config/dhcp.rst:509
+#: ../../ip-config/dhcp.rst:508
 msgid "Default lease time"
 msgstr "Standard Lease-Zeit"
 
-#: ../../ip-config/dhcp.rst:510
+#: ../../ip-config/dhcp.rst:509
 msgid ""
 "If the client does not request a specific lease time, the standard lease "
 "time is assigned. If this input field is left empty, the DHCP server's "
@@ -999,11 +999,11 @@ msgstr ""
 "Lease-Zeit zugewiesen. Bleibt das Eingabefeld leer, wird der Vorgabewert "
 "des DHCP-Servers verwendet."
 
-#: ../../ip-config/dhcp.rst:514
+#: ../../ip-config/dhcp.rst:513
 msgid "Maximum lease time"
 msgstr "Maximale Lease-Zeit"
 
-#: ../../ip-config/dhcp.rst:515
+#: ../../ip-config/dhcp.rst:514
 msgid ""
 "The maximum lease time specifies the longest period of time for which a "
 "lease can be granted. If this input field is left empty, the DHCP "
@@ -1013,11 +1013,11 @@ msgstr ""
 "Lease vergeben werden kann. Bleibt das Eingabefeld leer, wird der "
 "Vorgabewert des DHCP-Servers verwendet."
 
-#: ../../ip-config/dhcp.rst:519
+#: ../../ip-config/dhcp.rst:518
 msgid "Minimum lease time"
 msgstr "Minimale Lease-Zeit"
 
-#: ../../ip-config/dhcp.rst:520
+#: ../../ip-config/dhcp.rst:519
 msgid ""
 "The minimum lease time specifies the shortest period of time for which a "
 "lease can be granted. If this input field is left empty, the DHCP "
@@ -1027,11 +1027,11 @@ msgstr ""
 "gültig sein soll. Bleibt das Eingabefeld leer, wird der Vorgabewert des "
 "DHCP-Servers verwendet."
 
-#: ../../ip-config/dhcp.rst:527
+#: ../../ip-config/dhcp.rst:526
 msgid "Configuration of boot server/PXE settings"
 msgstr "Konfiguration von Bootserver/PXE-Einstellungen"
 
-#: ../../ip-config/dhcp.rst:529
+#: ../../ip-config/dhcp.rst:528
 msgid ""
 "A *DHCP Boot* policy is used to assign computer configuration parameters "
 "for booting via BOOTP/PXE. They are managed in the UMC module "
@@ -1041,15 +1041,15 @@ msgstr ""
 "für das Booten über BOOTP/PXE zugewiesen. Sie wird im UMC-Modul "
 ":guilabel:`Richtlinien` verwaltet (siehe auch :ref:`central-policies`)."
 
-#: ../../ip-config/dhcp.rst:535
+#: ../../ip-config/dhcp.rst:534
 msgid "*Boot* tab"
 msgstr "Reiter *Boot*"
 
-#: ../../ip-config/dhcp.rst:542
+#: ../../ip-config/dhcp.rst:541
 msgid "Boot server"
 msgstr "Boot-Server"
 
-#: ../../ip-config/dhcp.rst:543
+#: ../../ip-config/dhcp.rst:542
 msgid ""
 "The IP address or the FQDN of the PXE boot server from which the client "
 "should load the boot file is entered in the input field. If no value is "
@@ -1061,11 +1061,11 @@ msgstr ""
 "in diesem Eingabefeld kein Wert eingetragen, bootet der Client von dem "
 "DHCP-Server, von dem er seine IP-Adresse bezieht."
 
-#: ../../ip-config/dhcp.rst:548
+#: ../../ip-config/dhcp.rst:547
 msgid "Boot filename"
 msgstr "Boot-Dateiname"
 
-#: ../../ip-config/dhcp.rst:549
+#: ../../ip-config/dhcp.rst:548
 msgid ""
 "The path to the boot file is entered here. The path must be entered "
 "relative to the base directory of the TFTP service (:file:`/var/lib"
@@ -1075,11 +1075,11 @@ msgstr ""
 "Basisverzeichnis des TFTP-Dienstes (:file:`/var/lib/univention-client-"
 "boot/`) angegeben werden."
 
-#: ../../ip-config/dhcp.rst:556
+#: ../../ip-config/dhcp.rst:555
 msgid "Further DHCP policies"
 msgstr "Weitere DHCP-Richtlinien"
 
-#: ../../ip-config/dhcp.rst:558
+#: ../../ip-config/dhcp.rst:557
 msgid ""
 "There are some further DHCP policies available, but they are only "
 "required in special cases."
@@ -1087,11 +1087,11 @@ msgstr ""
 "Einige weitere DHCP-Richtlinien stehen zur Verfügung, sind aber nur für "
 "Sonderfälle nötig."
 
-#: ../../ip-config/dhcp.rst:564
+#: ../../ip-config/dhcp.rst:560
 msgid "DHCP Dynamic DNS"
 msgstr "DNS Aktualisierung"
 
-#: ../../ip-config/dhcp.rst:562
+#: ../../ip-config/dhcp.rst:561
 msgid ""
 "*DHCP Dynamic DNS* allows the configuration of dynamic DNS updates. These"
 " cannot yet be performed with a LDAP-based DNS service as provided out-"
@@ -1102,11 +1102,11 @@ msgstr ""
 "basierten DNS-Dienst durchgeführt werden, wie er von UCS bereitgestellt "
 "wird."
 
-#: ../../ip-config/dhcp.rst:569
+#: ../../ip-config/dhcp.rst:565
 msgid "DHCP Allow/Deny"
 msgstr "DHCP Erlauben/Verbieten"
 
-#: ../../ip-config/dhcp.rst:567
+#: ../../ip-config/dhcp.rst:566
 msgid ""
 "*DHCP Allow/Deny* allows the configuration of different DHCP options, "
 "which control what clients are allowed to do. The are only useful in "
@@ -1116,11 +1116,11 @@ msgstr ""
 "Optionen, die kontrollieren was für DHCP-Clients erlaubt ist. Diese sind "
 "nur in Ausnahmefällen nötig."
 
-#: ../../ip-config/dhcp.rst:574
+#: ../../ip-config/dhcp.rst:570
 msgid "DHCP statements"
 msgstr "DHCP Verschiedenes"
 
-#: ../../ip-config/dhcp.rst:572
+#: ../../ip-config/dhcp.rst:571
 msgid ""
 "*DHCP statements* allows the configuration of different options, which "
 "are only required in exceptional cases."
@@ -1128,11 +1128,11 @@ msgstr ""
 "*DHCP Verschiedenes* erlaubt die Konfiguration verschiedener Optionen, "
 "die nur in Ausnahmefällen nötig sind."
 
-#: ../../ip-config/dns.rst:8
+#: ../../ip-config/dns.rst:7
 msgid "Administration of DNS data with BIND"
 msgstr "Verwaltung von DNS-Daten mit BIND"
 
-#: ../../ip-config/dns.rst:10
+#: ../../ip-config/dns.rst:9
 msgid ""
 "UCS integrates BIND for the name resolution via the domain name system "
 "(DNS). The majority of DNS functions are used for DNS resolution in the "
@@ -1144,7 +1144,7 @@ msgstr ""
 "lokalen Domäne verwendet, die UCS-BIND-Integration kann aber prinzipiell "
 "auch für einen öffentlichen Nameserver eingesetzt werden."
 
-#: ../../ip-config/dns.rst:15
+#: ../../ip-config/dns.rst:14
 msgid ""
 "BIND is always available on all UCS Directory Node roles; installation on"
 " other system roles is not supported."
@@ -1152,7 +1152,7 @@ msgstr ""
 "Auf allen UCS Directory Node Systemrollen ist BIND immer verfügbar, eine "
 "Installation auf anderen Systemrollen wird nicht unterstützt."
 
-#: ../../ip-config/dns.rst:18
+#: ../../ip-config/dns.rst:17
 msgid ""
 "The configuration of the name servers to be used by a UCS system is "
 "documented in :ref:`hardware-network-configuration`."
@@ -1160,15 +1160,15 @@ msgstr ""
 "Die Konfiguration der von einem UCS-System zu verwendenden Nameserver ist"
 " in :ref:`hardware-network-configuration` dokumentiert."
 
-#: ../../ip-config/dns.rst:21
+#: ../../ip-config/dns.rst:20
 msgid "The following DNS data are differentiated:"
 msgstr "Folgende DNS-Daten werden unterschieden:"
 
-#: ../../ip-config/dns.rst:28 ../../ip-config/dns.rst:156
+#: ../../ip-config/dns.rst:22 ../../ip-config/dns.rst:155
 msgid "Forward lookup zone"
 msgstr "Forward Lookup Zone"
 
-#: ../../ip-config/dns.rst:24
+#: ../../ip-config/dns.rst:23
 msgid ""
 "A *forward lookup zone* contains information which is used to resolve DNS"
 " names into IP addresses. Each DNS zone has at least one authoritative, "
@@ -1184,11 +1184,11 @@ msgstr ""
 "synchronisieren sich mit dem authoritativen Server über Zonentransfers. "
 "Der Eintrag, der eine solche Zone auszeichnet, ist der *SOA-Record*."
 
-#: ../../ip-config/dns.rst:33
+#: ../../ip-config/dns.rst:29
 msgid "MX record"
 msgstr "MX-Record"
 
-#: ../../ip-config/dns.rst:31
+#: ../../ip-config/dns.rst:30
 msgid ""
 "The *MX record* of a forward lookup zone represents important DNS "
 "information necessary for email routing. It points to the computer which "
@@ -1198,11 +1198,11 @@ msgstr ""
 " notwendige DNS-Information. Er verweist auf den Rechner, der für eine "
 "Domäne E-Mails entgegennimmt."
 
-#: ../../ip-config/dns.rst:37
+#: ../../ip-config/dns.rst:34
 msgid "TXT records"
 msgstr "TXT-Records"
 
-#: ../../ip-config/dns.rst:36
+#: ../../ip-config/dns.rst:35
 msgid ""
 "*TXT records* include human-readable text and can include descriptive "
 "information about a forward lookup zone."
@@ -1210,11 +1210,11 @@ msgstr ""
 "*TXT-Records* enthalten menschenlesbaren Text und können beschreibende "
 "Informationen zu einer Forward Lookup Zone enthalten."
 
-#: ../../ip-config/dns.rst:43
+#: ../../ip-config/dns.rst:38
 msgid "CNAME record"
 msgstr "CNAME-Record"
 
-#: ../../ip-config/dns.rst:40
+#: ../../ip-config/dns.rst:39
 msgid ""
 "A *CNAME record*, also called an alias record, refers to an existing, "
 "canonical DNS name. For example, the actual hostname of the mail server "
@@ -1229,11 +1229,11 @@ msgstr ""
 "wird. Zu einem kanonischen Namen können beliebig viele CNAME-Records "
 "definiert werden."
 
-#: ../../ip-config/dns.rst:47
+#: ../../ip-config/dns.rst:44
 msgid "A record"
 msgstr "A-Record"
 
-#: ../../ip-config/dns.rst:46
+#: ../../ip-config/dns.rst:45
 msgid ""
 "An *A record* (under IPv6 *AAAA record*) assigns an IP address to a DNS "
 "name. *A records* are also known as *Host records* in UCS."
@@ -1241,11 +1241,11 @@ msgstr ""
 "Ein *A-Record* (unter IPv6 *AAAA-Record*) weist einem DNS-Namen eine IP-"
 "Adresse zu. A-Records werden in UCS auch als *Host-Records* bezeichnet."
 
-#: ../../ip-config/dns.rst:53
+#: ../../ip-config/dns.rst:48
 msgid "SRV record"
 msgstr "SRV-Record"
 
-#: ../../ip-config/dns.rst:50
+#: ../../ip-config/dns.rst:49
 msgid ""
 "A *SRV record*, called a service record in UCS, can be used to save "
 "information about available system services in the DNS. In UCS, service "
@@ -1257,11 +1257,11 @@ msgstr ""
 " werden Service Records u.a. verwendet, um LDAP-Server oder den "
 "|UCSPRIMARYDN| domänenweit bekannt zu machen."
 
-#: ../../ip-config/dns.rst:60 ../../ip-config/dns.rst:459
+#: ../../ip-config/dns.rst:54 ../../ip-config/dns.rst:458
 msgid "Reverse lookup zone"
 msgstr "Reverse Lookup Zone"
 
-#: ../../ip-config/dns.rst:56
+#: ../../ip-config/dns.rst:55
 msgid ""
 "A *reverse lookup zone* contains information which is used to resolve IP "
 "addresses into DNS names. Each DNS zone has at least one authoritative, "
@@ -1276,11 +1276,11 @@ msgstr ""
 "synchronisieren sich mit dem authoritativen Server über Zonentransfers. "
 "Der Eintrag, der eine solche Zone auszeichnet, ist der *SOA Record*."
 
-#: ../../ip-config/dns.rst:65
+#: ../../ip-config/dns.rst:61
 msgid "PTR record"
 msgstr "PTR-Record"
 
-#: ../../ip-config/dns.rst:63
+#: ../../ip-config/dns.rst:62
 msgid ""
 "A *PTR record* (pointer record) allows resolution of an IP address into a"
 " hostname. It thus represents the equivalent in a reverse lookup zone of "
@@ -1291,15 +1291,15 @@ msgstr ""
 "etwa das Äquivalent zu einem Host Record in einer Forward Lookup Zone "
 "dar."
 
-#: ../../ip-config/dns.rst:70
+#: ../../ip-config/dns.rst:69
 msgid "Configuration of the BIND name server"
 msgstr "Konfiguration des BIND-Dienstes"
 
-#: ../../ip-config/dns.rst:75
+#: ../../ip-config/dns.rst:74
 msgid "Configuration of BIND debug output"
 msgstr "Konfiguration der Debug-Ausgaben von BIND"
 
-#: ../../ip-config/dns.rst:77
+#: ../../ip-config/dns.rst:76
 msgid ""
 "The level of detail of the BIND debug output can be configured via the "
 ":envvar:`dns/debug/level` and :envvar:`dns/dlz/debug/level` (for the "
@@ -1314,11 +1314,11 @@ msgstr ""
 " ``0`` (keine Debug-Ausgaben) bis ``11``. Eine komplette Aufstellung der "
 "Detailgrade findet sich unter :cite:t:`bind-loglevel`."
 
-#: ../../ip-config/dns.rst:86
+#: ../../ip-config/dns.rst:85
 msgid "Configuration of the data backend"
 msgstr "Konfiguration des Daten-Backends des Nameservers"
 
-#: ../../ip-config/dns.rst:88
+#: ../../ip-config/dns.rst:87
 msgid ""
 "In a typical BIND installation on a non-UCS system, the configuration is "
 "performed by editing zone files. In UCS, BIND is completely configured "
@@ -1329,17 +1329,17 @@ msgstr ""
 " wird BIND komplett über UMC-Module konfiguriert, das seine Daten im "
 "LDAP-Verzeichnis speichert."
 
-#: ../../ip-config/dns.rst:92
+#: ../../ip-config/dns.rst:91
 msgid "BIND can use two different backend for its configuration:"
 msgstr ""
 "BIND kann zwei verschiedene Backends für seine Konfigurationsdateien "
 "verwenden:"
 
-#: ../../ip-config/dns.rst:101
+#: ../../ip-config/dns.rst:93
 msgid "LDAP backend"
 msgstr "LDAP-Backend"
 
-#: ../../ip-config/dns.rst:95
+#: ../../ip-config/dns.rst:94
 msgid ""
 "The *LDAP backend* accesses the data in the LDAP directory. This is the "
 "standard backend. The DNS service is split into two in this case: The "
@@ -1358,11 +1358,11 @@ msgstr ""
 "Informationen aktualisiert und durch einen Zonentransfer an den BIND-"
 "Proxy übertragen."
 
-#: ../../ip-config/dns.rst:109
+#: ../../ip-config/dns.rst:102
 msgid "Samba backend"
 msgstr "Samba-Backend"
 
-#: ../../ip-config/dns.rst:104
+#: ../../ip-config/dns.rst:103
 msgid ""
 "Samba/AD provides an Active Directory domain. Active Directory is closely"
 " connected with DNS, for DNS updates of Windows clients or the "
@@ -1381,7 +1381,7 @@ msgstr ""
 "wird. BIND greift dann über die DLZ Schnittstelle auf die Samba-DNS-Daten"
 " zu."
 
-#: ../../ip-config/dns.rst:111
+#: ../../ip-config/dns.rst:110
 msgid ""
 "When using the Samba backend, a search is performed in the LDAP for every"
 " DNS request. With the OpenLDAP backend, a search is only performed in "
@@ -1395,7 +1395,7 @@ msgstr ""
 " LDAP-Backends kann daher zu einer Reduzierung der Systemlast auf Samba"
 "/AD-Systemen führen."
 
-#: ../../ip-config/dns.rst:116
+#: ../../ip-config/dns.rst:115
 msgid ""
 "The backend is configured via the |UCSUCRV| :envvar:`dns/backend`. The "
 "DNS administration is not changed by the backend used and is performed "
@@ -1405,11 +1405,11 @@ msgstr ""
 "Die DNS-Verwaltung ändert sich durch das verwendete Backend nicht und "
 "erfolgt in beiden Fällen über UMC-Module."
 
-#: ../../ip-config/dns.rst:123
+#: ../../ip-config/dns.rst:122
 msgid "Configuration of zone transfers"
 msgstr "Konfiguration von Zonentransfers"
 
-#: ../../ip-config/dns.rst:125
+#: ../../ip-config/dns.rst:124
 msgid ""
 "By default the UCS name server allows zone transfers of the DNS data. If "
 "the UCS server can be reached from the internet, a list of all computer "
@@ -1423,11 +1423,11 @@ msgstr ""
 "Zonentransfer kann bei Verwendung des OpenLDAP-Backends durch Setzen der "
 "|UCSUCRV| :envvar:`dns/allow/transfer` auf ``none`` deaktiviert werden."
 
-#: ../../ip-config/dns.rst:134
+#: ../../ip-config/dns.rst:133
 msgid "Administration of DNS data via |UCSUMC| module"
 msgstr "Konfiguration der DNS-Daten über |UCSUMC| Modul"
 
-#: ../../ip-config/dns.rst:136
+#: ../../ip-config/dns.rst:135
 #, python-brace-format
 msgid ""
 "DNS files are stored in the :samp:`cn=dns,{base DN}` container as "
@@ -1440,7 +1440,7 @@ msgstr ""
 "Container abgelegt. In den jeweiligen Zonen können zusätzliche DNS-"
 "Objekte wie z.B. Pointer-Records angelegt werden."
 
-#: ../../ip-config/dns.rst:141
+#: ../../ip-config/dns.rst:140
 msgid ""
 "The relative or fully qualified domain name (FQDN) should always be used "
 "in the input fields for computers and not the computer's IP address. A "
@@ -1452,7 +1452,7 @@ msgstr ""
 "verwendet werden. Um zu verhindern, dass der Domänenname erneut angehängt"
 " wird, sollte ein FQDN immer mit einem Punkt abgeschlossen werden."
 
-#: ../../ip-config/dns.rst:145
+#: ../../ip-config/dns.rst:144
 msgid ""
 "The left column of the UMC module :guilabel:`DNS` includes a list of all "
 "the forward and reverse lookup zones. To add an object to a zone - for "
@@ -1473,7 +1473,7 @@ msgstr ""
 "ein Objekt unterhalb einer Zone angelegt, wird die Zone in den UMC-"
 "Dialogen als *übergeordnetes Objekt* bezeichnet."
 
-#: ../../ip-config/dns.rst:158
+#: ../../ip-config/dns.rst:157
 msgid ""
 "Forward lookup zones contain information which is used to resolve DNS "
 "names into IP addresses. They are managed in the UMC module "
@@ -1488,38 +1488,38 @@ msgstr ""
 "selektiert werden und :menuselection:`Hinzufügen --> DNS: Forward Lookup "
 "Zone` ausgewählt werden."
 
-#: ../../ip-config/dns.rst:168
+#: ../../ip-config/dns.rst:164 ../../ip-config/dns.rst:167
 msgid "Configuring a forward lookup zone in the UMC module *DNS*"
 msgstr ""
 "Konfiguration einer Forward Lookup Zone durch Univention Management "
 "Console Modul"
 
-#: ../../ip-config/dns.rst:173
+#: ../../ip-config/dns.rst:172
 msgid "DNS UMC module forward lookup - General tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter Allgemein"
 
-#: ../../ip-config/dns.rst:184
+#: ../../ip-config/dns.rst:183
 msgid "Zone name"
 msgstr "Name der Zone"
 
-#: ../../ip-config/dns.rst:185
+#: ../../ip-config/dns.rst:184
 msgid ""
 "This is the complete name of the DNS domain for which the zone will be "
 "responsible."
 msgstr "Der komplette Name der DNS-Domäne, für die die Zone zuständig sein soll."
 
-#: ../../ip-config/dns.rst:188
+#: ../../ip-config/dns.rst:187
 msgid "The domain name **must not** end in a full stop in zone names!"
 msgstr ""
 "In Zonennamen **darf** der Domänenname **nicht** mit einem Punkt "
 "abgeschlossen werden!"
 
-#: ../../ip-config/dns.rst:190 ../../ip-config/dns.rst:381
-#: ../../ip-config/dns.rst:452 ../../ip-config/dns.rst:485
+#: ../../ip-config/dns.rst:189 ../../ip-config/dns.rst:380
+#: ../../ip-config/dns.rst:451 ../../ip-config/dns.rst:484
 msgid "Zone time to live"
 msgstr "Zone Time-to-Live"
 
-#: ../../ip-config/dns.rst:191
+#: ../../ip-config/dns.rst:190
 msgid ""
 "The time to live specifies how long these files may be cached by other "
 "DNS servers. The value is specified in seconds."
@@ -1528,11 +1528,11 @@ msgstr ""
 "im Cache gespeichert werden dürfen. Der Wert wird in Sekunden "
 "gespeichert."
 
-#: ../../ip-config/dns.rst:194 ../../ip-config/dns.rst:512
+#: ../../ip-config/dns.rst:193 ../../ip-config/dns.rst:511
 msgid "Name servers"
 msgstr "Nameserver"
 
-#: ../../ip-config/dns.rst:195
+#: ../../ip-config/dns.rst:194
 msgid ""
 "The fully qualified domain name with a full stop at the end of the "
 "relative domain name of the responsible name server. The first entry in "
@@ -1542,29 +1542,29 @@ msgstr ""
 "zuständigen Nameserver. Der erste Eintrag in der Liste ist der primäre "
 "Nameserver der Zone."
 
-#: ../../ip-config/dns.rst:202
+#: ../../ip-config/dns.rst:201
 msgid "DNS UMC module forward lookup - Start of authority tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter Start of Authority"
 
-#: ../../ip-config/dns.rst:206 ../../ip-config/dns.rst:501
+#: ../../ip-config/dns.rst:205 ../../ip-config/dns.rst:500
 msgid "*Start of authority* tab"
 msgstr "Reiter *Start of Authority*"
 
-#: ../../ip-config/dns.rst:213 ../../ip-config/dns.rst:508
+#: ../../ip-config/dns.rst:212 ../../ip-config/dns.rst:507
 msgid "Contact person"
 msgstr "Verantwortliche Person"
 
-#: ../../ip-config/dns.rst:214
+#: ../../ip-config/dns.rst:213
 msgid "The email address of the person responsible for administrating the zone."
 msgstr ""
 "Die E-Mail-Adresse der für die Verwaltung der Zone verantwortlichen "
 "Person."
 
-#: ../../ip-config/dns.rst:216 ../../ip-config/dns.rst:516
+#: ../../ip-config/dns.rst:215 ../../ip-config/dns.rst:515
 msgid "Serial number"
 msgstr "Seriennummer"
 
-#: ../../ip-config/dns.rst:217
+#: ../../ip-config/dns.rst:216
 msgid ""
 "Other DNS servers use the serial number to recognize whether zone data "
 "have changed. The secondary name server compares the serial number of its"
@@ -1578,17 +1578,17 @@ msgstr ""
 "auf dem sekundären Nameserver niedriger als auf dem primären Nameserver, "
 "so kopiert der sekundäre Nameserver die geänderten Daten."
 
-#: ../../ip-config/dns.rst:223
+#: ../../ip-config/dns.rst:222
 msgid "There are two commonly used patterns for this serial number:"
 msgstr "Es gibt zwei häufig verwendete Muster für die Seriennummer:"
 
-#: ../../ip-config/dns.rst:225
+#: ../../ip-config/dns.rst:224
 msgid "Start with ``1`` and increment the serial number with each change."
 msgstr ""
 "Beginn mit ``1`` unter Inkrementierung der Seriennummer bei jeder "
 "Änderung."
 
-#: ../../ip-config/dns.rst:227
+#: ../../ip-config/dns.rst:226
 msgid ""
 "By including the date the number can be entered in the format "
 "``YYYYMMDDNN``, where"
@@ -1596,23 +1596,23 @@ msgstr ""
 "Unter Einbeziehung des Datums kann die Zahl im Format ``JJJJMMTTNN`` "
 "eingegeben werden, wobei"
 
-#: ../../ip-config/dns.rst:230
+#: ../../ip-config/dns.rst:229
 msgid "``Y`` stands for year,"
 msgstr "``J`` steht für Jahr,"
 
-#: ../../ip-config/dns.rst:231
+#: ../../ip-config/dns.rst:230
 msgid "``M`` for month,"
 msgstr "``M`` steht für Monat,"
 
-#: ../../ip-config/dns.rst:232
+#: ../../ip-config/dns.rst:231
 msgid "``D`` for day and"
 msgstr "``T`` steht für Tag"
 
-#: ../../ip-config/dns.rst:233
+#: ../../ip-config/dns.rst:232
 msgid "``N`` for the number of the change of this day."
 msgstr "``N`` steht für die Nummer der Änderung an diesem Tag steht."
 
-#: ../../ip-config/dns.rst:235
+#: ../../ip-config/dns.rst:234
 msgid ""
 "If the serial number is not changed manually, it will be increased "
 "automatically with every change."
@@ -1620,11 +1620,11 @@ msgstr ""
 "Wird die Seriennummer nicht von Hand geändert, wird sie automatisch bei "
 "jeder Änderung inkrementiert."
 
-#: ../../ip-config/dns.rst:238 ../../ip-config/dns.rst:520
+#: ../../ip-config/dns.rst:237 ../../ip-config/dns.rst:519
 msgid "Refresh interval"
 msgstr "Aktualisierungsintervall"
 
-#: ../../ip-config/dns.rst:239
+#: ../../ip-config/dns.rst:238
 msgid ""
 "The time span in seconds after which the secondary name server checks "
 "that its copy of the zone data is up-to-date."
@@ -1632,11 +1632,11 @@ msgstr ""
 "Die Zeitspanne in Sekunden, nach der der sekundäre Nameserver überprüft, "
 "ob seine Kopie der Zonendaten noch aktuell ist."
 
-#: ../../ip-config/dns.rst:242 ../../ip-config/dns.rst:524
+#: ../../ip-config/dns.rst:241 ../../ip-config/dns.rst:523
 msgid "Retry interval"
 msgstr "Intervall für erneute Versuche"
 
-#: ../../ip-config/dns.rst:243
+#: ../../ip-config/dns.rst:242
 msgid ""
 "The time span in seconds after which the secondary name server tries "
 "again to check that its copy of the zone data is up-to-date after a "
@@ -1649,11 +1649,11 @@ msgstr ""
 "Zeitspanne kürzer gewählt als das Aktualisierungsintervall, darf aber "
 "auch gleich lang sein."
 
-#: ../../ip-config/dns.rst:248 ../../ip-config/dns.rst:528
+#: ../../ip-config/dns.rst:247 ../../ip-config/dns.rst:527
 msgid "Expiry interval"
 msgstr "Ablaufintervall"
 
-#: ../../ip-config/dns.rst:249
+#: ../../ip-config/dns.rst:248
 msgid ""
 "The time span in seconds after which the copy of the zone data on the "
 "secondary becomes invalid if it could not be checked to be up-to-date."
@@ -1662,7 +1662,7 @@ msgstr ""
 "sekundären Nameserver ungültig wird, wenn ihre Aktualität nicht überprüft"
 " werden konnte."
 
-#: ../../ip-config/dns.rst:252
+#: ../../ip-config/dns.rst:251
 msgid ""
 "For example, an expiry interval of one week means that the copy of the "
 "zone data becomes invalid when all requests to update in one week fail. "
@@ -1677,11 +1677,11 @@ msgstr ""
 "weiter verwendet zu werden. Der sekundäre Nameserver kann dann keine "
 "Namensauflösungsanfragen für diese Zone mehr beantworten."
 
-#: ../../ip-config/dns.rst:258
+#: ../../ip-config/dns.rst:257
 msgid "Negative time to live"
 msgstr "Negative Time-to-Live"
 
-#: ../../ip-config/dns.rst:259
+#: ../../ip-config/dns.rst:258
 msgid ""
 "The negative time to live specifies in seconds how long other servers can"
 " cache no-such-domain (NXDOMAIN) answers. This value cannot be set to "
@@ -1691,19 +1691,19 @@ msgstr ""
 "*No-such-Domain*-Antworten (NXDOMAIN) im Cache behalten dürfen. Der Wert "
 "darf nicht mehr als 3 Stunden betragen, der Standard sind 3 Stunden."
 
-#: ../../ip-config/dns.rst:266
+#: ../../ip-config/dns.rst:265
 msgid "DNS UMC module forward lookup - IP addresses tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter IP Adressen"
 
-#: ../../ip-config/dns.rst:270
+#: ../../ip-config/dns.rst:269
 msgid "*IP addresses* tab"
 msgstr "Reiter *IP Adressen*"
 
-#: ../../ip-config/dns.rst:277 ../../ip-config/dns.rst:378
+#: ../../ip-config/dns.rst:276 ../../ip-config/dns.rst:377
 msgid "IP addresses"
 msgstr "IP Adressen"
 
-#: ../../ip-config/dns.rst:278
+#: ../../ip-config/dns.rst:277
 msgid ""
 "This input field can be used to specify one or more IP addresses, which "
 "are output when the name of the zone is resolved. These IP addresses are "
@@ -1714,19 +1714,19 @@ msgstr ""
 "Die hier hinterlegten Adressen werden von Microsoft Windows-Clients in "
 "AD-kompatiblen Domänen abgefragt."
 
-#: ../../ip-config/dns.rst:285
+#: ../../ip-config/dns.rst:284
 msgid "DNS UMC module forward lookup - MX records tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter MX Records"
 
-#: ../../ip-config/dns.rst:289
+#: ../../ip-config/dns.rst:288
 msgid "*MX records* tab"
 msgstr "Reiter *MX Records*"
 
-#: ../../ip-config/dns.rst:296 ../../ip-config/dns.rst:424
+#: ../../ip-config/dns.rst:295 ../../ip-config/dns.rst:423
 msgid "Priority"
 msgstr "Priorität"
 
-#: ../../ip-config/dns.rst:297
+#: ../../ip-config/dns.rst:296
 msgid ""
 "A numerical value between 0 and 65535. If several mail servers are "
 "available for the MX record, an attempt will be made to engage the server"
@@ -1736,11 +1736,11 @@ msgstr ""
 "MX-Record zur Verfügung, wird zuerst versucht, den Server mit dem "
 "niedrigsten Prioritätswert in Anspruch zu nehmen."
 
-#: ../../ip-config/dns.rst:301
+#: ../../ip-config/dns.rst:300
 msgid "Mail server"
 msgstr "Mail-Server"
 
-#: ../../ip-config/dns.rst:302
+#: ../../ip-config/dns.rst:301
 msgid ""
 "The mail server responsible for this domain as fully qualified domain "
 "name with a full stop at the end. Only canonical names and no alias names"
@@ -1750,19 +1750,19 @@ msgstr ""
 "vollqualifizierter Domänenname mit abschließendem Punkt eingetragen. Es "
 "dürfen nur kanonische Namen und keine Alias-Namen verwendet werden."
 
-#: ../../ip-config/dns.rst:309
+#: ../../ip-config/dns.rst:308
 msgid "DNS UMC module forward lookup - TXT records tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter TXT Records"
 
-#: ../../ip-config/dns.rst:313
+#: ../../ip-config/dns.rst:312
 msgid "*TXT records* tab"
 msgstr "Reiter *TXT Recods*"
 
-#: ../../ip-config/dns.rst:320
+#: ../../ip-config/dns.rst:319
 msgid "TXT record"
 msgstr "TXT Record"
 
-#: ../../ip-config/dns.rst:321
+#: ../../ip-config/dns.rst:320
 msgid ""
 "Descriptive text for this zone. Text records must not contain umlauts or "
 "other special characters."
@@ -1770,11 +1770,11 @@ msgstr ""
 "Ein beschreibender Text zu dieser Zone. Text Records dürfen keine Umlaute"
 " oder sonstige Sonderzeichen enthalten."
 
-#: ../../ip-config/dns.rst:327
+#: ../../ip-config/dns.rst:326
 msgid "CNAME record (Alias records)"
 msgstr "CNAME-Record (Alias-Records)"
 
-#: ../../ip-config/dns.rst:329
+#: ../../ip-config/dns.rst:328
 msgid ""
 "CNAME records / alias records are managed in the UMC module "
 ":guilabel:`DNS` (see :ref:`central-user-interface`). To create another "
@@ -1788,11 +1788,11 @@ msgstr ""
 "ausgewählt werden.  Mit :menuselection:`Hinzufügen --> DNS: Alias Record`"
 " kann dann ein neuer Record angelegt werden."
 
-#: ../../ip-config/dns.rst:343
+#: ../../ip-config/dns.rst:342
 msgid "Alias"
 msgstr "Alias"
 
-#: ../../ip-config/dns.rst:344
+#: ../../ip-config/dns.rst:343
 msgid ""
 "The alias name as fully qualified domain name with a full stop at the end"
 " or as a relative domain name which should point to the canonical name."
@@ -1800,11 +1800,11 @@ msgstr ""
 "Der Aliasname als FQDN mit abschließendem Punkt oder als relativer "
 "Domänenname, der auf den kanonischen Namen verweisen soll."
 
-#: ../../ip-config/dns.rst:347
+#: ../../ip-config/dns.rst:346
 msgid "Canonical name"
 msgstr "Kanonischer Name"
 
-#: ../../ip-config/dns.rst:348
+#: ../../ip-config/dns.rst:347
 msgid ""
 "The canonical name of the computer that the alias should point to, "
 "entered as a fully qualified domain name with a full stop at the end or a"
@@ -1814,11 +1814,11 @@ msgstr ""
 "angegeben als FQDN mit abschließendem Punkt oder als relativer "
 "Domänenname."
 
-#: ../../ip-config/dns.rst:355
+#: ../../ip-config/dns.rst:354
 msgid "A/AAAA records (host records)"
 msgstr "A/AAAA-Records (Host Records)"
 
-#: ../../ip-config/dns.rst:357
+#: ../../ip-config/dns.rst:356
 msgid ""
 "Host records are managed in the UMC module :guilabel:`DNS` (see :ref"
 ":`central-user-interface`). To create another record, the forward lookup "
@@ -1831,7 +1831,7 @@ msgstr ""
 ":menuselection:`Hinzufügen --> DNS: Host Record` kann dann ein neuer "
 "Record angelegt werden."
 
-#: ../../ip-config/dns.rst:362
+#: ../../ip-config/dns.rst:361
 msgid ""
 "When adding or editing a computer object a host record can be created "
 "automatically or edited."
@@ -1839,7 +1839,7 @@ msgstr ""
 "Beim Hinzufügen oder Bearbeiten eines Rechner-Objekts kann ein Host "
 "Record automatisch erstellt oder geändert werden."
 
-#: ../../ip-config/dns.rst:375
+#: ../../ip-config/dns.rst:374
 msgid ""
 "The FQDN with a full stop at the end or the relative domain name of the "
 "name server."
@@ -1847,11 +1847,11 @@ msgstr ""
 "Der FQDN mit abschließendem Punkt oder der relative Domänenname des "
 "Rechners."
 
-#: ../../ip-config/dns.rst:379
+#: ../../ip-config/dns.rst:378
 msgid "The IPv4 and/or IPv6 addresses to which the host record should refer."
 msgstr "Die IPv4 und/oder IPv6-Adressen, auf die der Host Record verweisen soll."
 
-#: ../../ip-config/dns.rst:382
+#: ../../ip-config/dns.rst:381
 msgid ""
 "The time to live specifies in seconds how long these files may be cached "
 "by other DNS servers."
@@ -1859,11 +1859,11 @@ msgstr ""
 "Die Time-to-Live gibt in Sekunden an, wie lange diese Daten von anderen "
 "DNS-Servern im Cache gespeichert werden dürfen."
 
-#: ../../ip-config/dns.rst:388
+#: ../../ip-config/dns.rst:387
 msgid "Service records"
 msgstr "Service Records"
 
-#: ../../ip-config/dns.rst:390
+#: ../../ip-config/dns.rst:389
 msgid ""
 "Service records are managed in the UMC module :guilabel:`DNS` (see :ref"
 ":`central-user-interface`). To create another record, the forward lookup "
@@ -1876,11 +1876,11 @@ msgstr ""
 ":menuselection:`Hinzufügen --> DNS: Service Record` kann dann ein neuer "
 "Record angelegt werden."
 
-#: ../../ip-config/dns.rst:400
+#: ../../ip-config/dns.rst:396 ../../ip-config/dns.rst:399
 msgid "Configuring a service record"
 msgstr "Konfiguration eines Service Records"
 
-#: ../../ip-config/dns.rst:402
+#: ../../ip-config/dns.rst:401
 msgid ""
 "A service record must always be assigned to a forward lookup zone and can"
 " therefore only be added to a forward lookup zone or a subordinate "
@@ -1890,19 +1890,19 @@ msgstr ""
 "und kann daher nur einer Forward Lookup Zone oder einem untergeordneten "
 "Container zugewiesen werden."
 
-#: ../../ip-config/dns.rst:414
+#: ../../ip-config/dns.rst:413
 msgid "Service"
 msgstr "Dienst"
 
-#: ../../ip-config/dns.rst:415
+#: ../../ip-config/dns.rst:414
 msgid "The name under which the service should be reachable."
 msgstr "Der Name, unter dem der Dienst erreichbar sein soll."
 
-#: ../../ip-config/dns.rst:417
+#: ../../ip-config/dns.rst:416
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: ../../ip-config/dns.rst:418
+#: ../../ip-config/dns.rst:417
 msgid ""
 "The protocol via which the record can be accessed (``TCP``, ``UDP``, "
 "``MSDCS`` or ``SITES``)."
@@ -1910,15 +1910,15 @@ msgstr ""
 "Das Protokoll, über das der Record erreichbar ist (``TCP``, ``UDP``, "
 "``MSDCS`` oder ``SITES``)."
 
-#: ../../ip-config/dns.rst:421
+#: ../../ip-config/dns.rst:420
 msgid "Extension"
 msgstr "Erweiterung"
 
-#: ../../ip-config/dns.rst:422
+#: ../../ip-config/dns.rst:421
 msgid "This input field can be used to specify additional parameters."
 msgstr "Über dieses Eingabefeld können weitere Parameter übergeben werden."
 
-#: ../../ip-config/dns.rst:425
+#: ../../ip-config/dns.rst:424
 msgid ""
 "A whole number between 0 and 65535. If more than one server offer the "
 "same service, the client will approach the server with the lowest "
@@ -1928,11 +1928,11 @@ msgstr ""
 "Dienst zur Verfügung, wendet sich der Client zuerst an den Server mit dem"
 " niedrigeren Prioritätswert."
 
-#: ../../ip-config/dns.rst:429
+#: ../../ip-config/dns.rst:428
 msgid "Weighting"
 msgstr "Gewichtung"
 
-#: ../../ip-config/dns.rst:430
+#: ../../ip-config/dns.rst:429
 msgid ""
 "A whole number between 0 and 65535. The weight function is used for load "
 "balancing between servers with the same priority. When more than one "
@@ -1945,7 +1945,7 @@ msgstr ""
 "Prioritätswert haben, wird die Last im Verhältnis der Gewichtungen auf "
 "die Server verteilt."
 
-#: ../../ip-config/dns.rst:435
+#: ../../ip-config/dns.rst:434
 msgid ""
 "Example: ``Server1`` has a priority of ``1`` and a weight function of "
 "``1``, whilst ``Server2`` also has a priority of ``1``, but has a weight "
@@ -1959,11 +1959,11 @@ msgstr ""
 "``Server1``. Die Belastung wird abhängig vom Dienst beispielsweise als "
 "Anzahl der Anfragen oder Verbindungen gemessen."
 
-#: ../../ip-config/dns.rst:441
+#: ../../ip-config/dns.rst:440
 msgid "Port"
 msgstr "Port"
 
-#: ../../ip-config/dns.rst:442
+#: ../../ip-config/dns.rst:441
 msgid ""
 "The port where the service can be reached on the server (valid value from"
 " 1 to 65535)."
@@ -1971,11 +1971,11 @@ msgstr ""
 "Der Port, über den der Dienst auf dem Server zu erreichen ist (gültige "
 "Werte liegen zwischen 1 und 65535)."
 
-#: ../../ip-config/dns.rst:445
+#: ../../ip-config/dns.rst:444
 msgid "Server"
 msgstr "Server"
 
-#: ../../ip-config/dns.rst:446
+#: ../../ip-config/dns.rst:445
 msgid ""
 "The name of the server on which the service will be made available, as a "
 "fully qualified domain name with a full stop at the end or a relative "
@@ -1984,13 +1984,13 @@ msgstr ""
 "Der Name des Servers, auf dem der Dienst bereitgestellt wird, als FQDN "
 "mit abschließendem Punkt oder als relativer Domänenname."
 
-#: ../../ip-config/dns.rst:450
+#: ../../ip-config/dns.rst:449
 msgid "Several servers can be entered for each service."
 msgstr ""
 "Für jeden Dienst können über die Auswahlbox auch mehrere Server "
 "eingetragen werden."
 
-#: ../../ip-config/dns.rst:453 ../../ip-config/dns.rst:486
+#: ../../ip-config/dns.rst:452 ../../ip-config/dns.rst:485
 msgid ""
 "The time to live specifies how long these files may be cached by other "
 "DNS servers."
@@ -1998,7 +1998,7 @@ msgstr ""
 "Die Time-to-Live gibt an, wie lange diese Daten von anderen DNS-Servern "
 "im Cache gespeichert werden dürfen."
 
-#: ../../ip-config/dns.rst:461
+#: ../../ip-config/dns.rst:460
 msgid ""
 "A reverse lookup zone is used to resolve IP address into host names. They"
 " are managed in the UMC module :guilabel:`DNS`. To add another reverse "
@@ -2011,15 +2011,15 @@ msgstr ""
 "werden und :menuselection:`Hinzufügen --> DNS: Reverse Lookup Zone` "
 "ausgewählt werden."
 
-#: ../../ip-config/dns.rst:468
+#: ../../ip-config/dns.rst:467
 msgid "DNS UMC module reverse lookup - General tab"
 msgstr "DNS UMC Modul Reverse Lookup - Reiter Allgemein"
 
-#: ../../ip-config/dns.rst:479
+#: ../../ip-config/dns.rst:478
 msgid "Subnet"
 msgstr "Subnetz"
 
-#: ../../ip-config/dns.rst:480
+#: ../../ip-config/dns.rst:479
 msgid ""
 "The IP address of the network for which the reverse lookup zone shall "
 "apply. For example, if the network in question consisted of the IP "
@@ -2030,7 +2030,7 @@ msgstr ""
 "sein soll. Wenn beispielsweise das betreffende Netz aus den IP-Adressen "
 "``192.0.2.0`` bis ``192.0.2.255`` besteht, wäre ``192.0.2`` einzutragen."
 
-#: ../../ip-config/dns.rst:489
+#: ../../ip-config/dns.rst:488
 msgid ""
 "Each DNS zone has at least one authoritative, primary name server whose "
 "information governs the zone. Subordinate servers synchronize themselves "
@@ -2043,11 +2043,11 @@ msgstr ""
 "Der Eintrag, der eine solche Zone definiert, wird in der DNS-Terminologie"
 " als SOA Eintrag bezeichnet."
 
-#: ../../ip-config/dns.rst:497
+#: ../../ip-config/dns.rst:496
 msgid "DNS UMC module reverse lookup - Start of authority tab"
 msgstr "DNS UMC Modul Reverse Lookup - Reiter Start of Authority"
 
-#: ../../ip-config/dns.rst:509
+#: ../../ip-config/dns.rst:508
 msgid ""
 "The email address of the person responsible for administrating the zone "
 "(with a full stop at the end)."
@@ -2055,7 +2055,7 @@ msgstr ""
 "Die E-Mail-Adresse der für die Verwaltung der Zone verantwortlichen "
 "Person (mit abschließendem Punkt)."
 
-#: ../../ip-config/dns.rst:513
+#: ../../ip-config/dns.rst:512
 msgid ""
 "The fully qualified domain name with a full stop at the end or the "
 "relative domain name of the primary name server."
@@ -2064,9 +2064,9 @@ msgstr ""
 "zuständigen Nameserver. Der erste Eintrag in der Liste ist der primäre "
 "Nameserver der Zone."
 
-#: ../../ip-config/dns.rst:517 ../../ip-config/dns.rst:521
-#: ../../ip-config/dns.rst:525 ../../ip-config/dns.rst:529
-#: ../../ip-config/dns.rst:533
+#: ../../ip-config/dns.rst:516 ../../ip-config/dns.rst:520
+#: ../../ip-config/dns.rst:524 ../../ip-config/dns.rst:528
+#: ../../ip-config/dns.rst:532
 msgid ""
 "See the documentation on forward lookup zones in :ref:`networks-dns-"
 "forwardzone`."
@@ -2074,15 +2074,15 @@ msgstr ""
 "Siehe die Dokumentation zu Forward Lookup Zonen in :ref:`networks-dns-"
 "forwardzone`."
 
-#: ../../ip-config/dns.rst:532
+#: ../../ip-config/dns.rst:531
 msgid "Minimum time to live"
 msgstr "Minimum Time-to-Live"
 
-#: ../../ip-config/dns.rst:539
+#: ../../ip-config/dns.rst:538
 msgid "Pointer record"
 msgstr "Pointer Records"
 
-#: ../../ip-config/dns.rst:541
+#: ../../ip-config/dns.rst:540
 msgid ""
 "Pointer records are managed in the UMC module :guilabel:`DNS` (see :ref"
 ":`central-user-interface`). To create another record, the reverse lookup "
@@ -2095,7 +2095,7 @@ msgstr ""
 ":menuselection:`Hinzufügen --> DNS: Pointer Record` kann dann ein neuer "
 "Record angelegt werden."
 
-#: ../../ip-config/dns.rst:556
+#: ../../ip-config/dns.rst:555
 msgid ""
 "The last octet of the computer's IP address (depends on network prefix, "
 "see example below)."
@@ -2103,15 +2103,15 @@ msgstr ""
 "Das letzte Oktett der IP-Adresse des Rechners (abhängig vom Netz-Präfix, "
 "siehe unten)."
 
-#: ../../ip-config/dns.rst:559
+#: ../../ip-config/dns.rst:558
 msgid "Pointer"
 msgstr "Pointer"
 
-#: ../../ip-config/dns.rst:560
+#: ../../ip-config/dns.rst:559
 msgid "The computer's fully qualified domain name with a full stop at the end."
 msgstr "Der FQDN des Rechners mit abschließendem Punkt."
 
-#: ../../ip-config/dns.rst:562
+#: ../../ip-config/dns.rst:561
 msgid ""
 "In a network with a 24-bit network prefix (subnet mask ``255.255.255.0``)"
 " a pointer should be created for the ``client001`` computer with the IP "
@@ -2123,12 +2123,12 @@ msgstr ""
 "``192.0.2.101`` ein Pointer angelegt werden. In das Feld *Adresse* ist "
 "dann ``101`` und in *Pointer* ``client001.firma.com.`` einzutragen."
 
-#: ../../ip-config/dns.rst:568 ../../ip-config/web-proxy.rst:90
-#: ../../ip-config/web-proxy.rst:125
+#: ../../ip-config/dns.rst:567 ../../ip-config/web-proxy.rst:89
+#: ../../ip-config/web-proxy.rst:124
 msgid "Example:"
 msgstr "Beispiel:"
 
-#: ../../ip-config/dns.rst:570
+#: ../../ip-config/dns.rst:569
 msgid ""
 "For a network with a 16-bit network prefix (subnet mask ``255.255.0.0``) "
 "the last two octets should be entered in reverse order for this computer "
@@ -2140,11 +2140,11 @@ msgstr ""
 "umgekehrter Reihenfolge (hier ``101.1``) eingetragen werden. In das Feld "
 "*Pointer* wäre auch hier ``client001.firma.com.`` einzutragen."
 
-#: ../../ip-config/firewall-packet-filter.rst:8
+#: ../../ip-config/firewall-packet-filter.rst:7
 msgid "Packet filter with Univention Firewall"
 msgstr "Paketfilter mit Univention Firewall"
 
-#: ../../ip-config/firewall-packet-filter.rst:10
+#: ../../ip-config/firewall-packet-filter.rst:9
 msgid ""
 "Univention Firewall integrates a packet filter based on "
 ":program:`iptables` in Univention Corporate Server."
@@ -2152,72 +2152,124 @@ msgstr ""
 "Die Univention Firewall integriert einen Paketfilter auf Basis von "
 ":program:`iptables` in |UCSUCS|."
 
-#: ../../ip-config/firewall-packet-filter.rst:13
+#: ../../ip-config/firewall-packet-filter.rst:12
 msgid ""
 "It permits targeted filtering of undesired services and the protection of"
-" computers during installations. Furthermore it provides the basis for "
-"complex scenarios such as firewalls and application level gateways. "
-"Univention Firewall is included in all UCS installations as standard."
+" computers during installations. Furthermore, it provides the basis for "
+"complex scenarios, such as firewall rules and application level gateways."
+" All UCS installations include Univention Firewall as standard."
 msgstr ""
-"Dies ermöglicht die gezielte Filterung unerwünschter Dienste, die "
-"Absicherung von Rechnern während Installationsarbeiten, und stellt die "
-"Basis für komplexere Szenarien wie Firewalls oder Application Level "
-"Gateways bereit. Univention Firewall ist standardmäßig auf allen "
-"|UCSUCS|-Installationen enthalten."
+"Sie ermöglicht die gezielte Filterung unerwünschter Dienste und die "
+"Absicherung von Rechnern während Installationsarbeiten. Darüber hinaus "
+"stellt sie die Basis für komplexere Szenarien wie Firewall-Regeln oder "
+"Application Level Gateways bereit. Univention Firewall ist standardmäßig "
+"in allen |UCSUCS|-Installationen enthalten."
 
 #: ../../ip-config/firewall-packet-filter.rst:18
 msgid ""
-"By default all incoming ports are blocked. Every UCS package provides "
-"rules, which free up the ports required by the package again."
+"By default, UCS blocks all incoming ports. Every UCS package provides "
+"rules, which free up the ports required by the package again. You "
+"primarily configure firewall rules through |UCSUCR| variables. For "
+"information about the definition of packet file rules, see :external+uv-"
+"dev-ref:ref:`misc-nacl` in :cite:t:`developer-reference`."
 msgstr ""
-"In der Grundeinstellung werden eingehende Pakete für alle Ports "
-"blockiert/abgelehnt. Jedes UCS-Paket bringt Regeln mit, die die von dem "
-"Paket benötigten Ports wieder freigeben."
-
-#: ../../ip-config/firewall-packet-filter.rst:21
-msgid ""
-"The configuration is primarily performed via |UCSUCR| variables. The "
-"definition of this type of packet filter rules is documented in :cite:t"
-":`developer-reference`."
-msgstr ""
-"Die Konfiguration erfolgt im Wesentlichen über |UCSUCR|-Variablen. Die "
-"Definition von solchen Paketfilter-Regeln ist in :cite:t:`developer-"
-"reference` dokumentiert."
+"Standardmäßig blockiert UCS alle eingehenden Ports. Jedes UCS-Paket "
+"stellt Regeln bereit, die die vom Paket benötigten Ports wieder "
+"freigeben. Firewall-Regeln werden hauptsächlich über |UCSUCR|-Variablen "
+"konfiguriert. Informationen zur Definition von Paketfilter-Regeln finden "
+"Sie unter :external+uv-dev-ref:ref:`misc-nacl` in :cite:t:`developer-"
+"reference`."
 
 #: ../../ip-config/firewall-packet-filter.rst:25
 msgid ""
-"In addition, the configuration scripts in the "
-":file:`/etc/security/packetfilter.d/` directory are listed in alphabetic "
-"order. The names of all scripts begin with two digits, which allows a "
-"numbered order. The scripts must be marked as executable."
+"In addition, the :file:`/etc/security/packetfilter.d/` directory contains"
+" scripts with firewall rules. The names of all scripts begin with two "
+"digits, which allows a numbered order. The scripts require the executable"
+" bit so that UCS can run them."
 msgstr ""
-"Darüber hinaus werden die im Verzeichnis "
-":file:`/etc/security/packetfilter.d/` liegenden Konfigurationsskripte in "
-"alphabetischer Reihenfolge ausgeführt. Standardmäßig sind alle Skripte "
-"mit zwei führenden Ziffern benannt, so dass eine einfache Festlegung der "
-"Reihenfolge möglich ist. Die Skripte müssen als ausführbar markiert sein."
+"Darüber hinaus enthält das Verzeichnis "
+":file:`/etc/security/packetfilter.d/` Skripte mit Firewall-Regeln. Die "
+"Namen aller Skripte beginnen mit zwei Ziffern, was eine nummerierte "
+"Reihenfolge ermöglicht. Die Skripte müssen als ausführbar markiert sein, "
+"damit UCS sie ausführen kann."
 
 #: ../../ip-config/firewall-packet-filter.rst:30
 msgid ""
-"After changing the packet filter settings, the :program:`univention-"
-"firewall` service has to be restarted."
+"After changing the packet filter settings, you need to restart the "
+":program:`univention-firewall` service."
 msgstr ""
 "Nach Änderungen der Paketfilter-Einstellungen muss der Dienst :program"
 ":`univention-firewall` neu gestartet werden."
 
 #: ../../ip-config/firewall-packet-filter.rst:33
 msgid ""
-"Univention Firewall can be deactivated by setting the |UCSUCRV| "
+"You can deactivate Univention Firewall by setting the |UCSUCRV| "
 ":envvar:`security/packetfilter/disabled` to ``true``"
 msgstr ""
 "Die Univention Firewall kann durch Setzen der |UCSUCRV| "
-":envvar:`security/packetfilter/disabled` auf ``true`` deaktiviert werden"
+":envvar:`security/packetfilter/disabled` auf ``true`` deaktiviert werden."
 
-#: ../../ip-config/index.rst:9
+#: ../../ip-config/firewall-packet-filter.rst:39
+msgid ""
+"`netfilter/iptables project homepage - Documentation about "
+"netfilter/iptables project <https://www.iptables.org/documentation/>`_"
+msgstr ""
+"`netfilter/iptables Projekt-Homepage - Dokumentation zum "
+"netfilter/iptables Projekt <https://www.iptables.org/documentation/>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:40
+msgid "for an overview about available documentation for :program:`iptables`."
+msgstr ""
+"für einen Überblick über die verfügbare Dokumentation zu "
+":program:`iptables`."
+
+#: ../../ip-config/firewall-packet-filter.rst:42
+msgid ""
+"`Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-"
+"tutorial.html>`_"
+msgstr ""
+"`Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-"
+"tutorial.html>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:43
+msgid ""
+"a tutorial about :program:`iptables` from :spelling:word:`Oscar "
+"Andreasson`."
+msgstr "ein Tutorial zu :program:`iptables` von :spelling:word:`Oscar Andreasson`."
+
+#: ../../ip-config/firewall-packet-filter.rst:45
+msgid ""
+"`iptables(8) manpage "
+"<https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_"
+msgstr ""
+"`iptables(8) Manpage "
+"<https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:46
+msgid ""
+"for information about configuration of firewall rules with "
+":program:`iptables`."
+msgstr ""
+"für Informationen zur Konfiguration von Firewall-Regeln mit "
+":program:`iptables`."
+
+#: ../../ip-config/firewall-packet-filter.rst:48
+msgid ""
+"`Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO"
+"/packet-filtering-HOWTO.html>`_"
+msgstr ""
+"`Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO"
+"/packet-filtering-HOWTO.html>`_"
+
+#: ../../ip-config/firewall-packet-filter.rst:49
+msgid "for a how-to about packet filtering with :program:`iptables`."
+msgstr "für ein :spelling:word:`Howto` zur Paketfilterung mit :program:`iptables`."
+
+#: ../../ip-config/index.rst:8
 msgid "IP and network management"
 msgstr "IP- und Netzverwaltung"
 
-#: ../../ip-config/index.rst:11
+#: ../../ip-config/index.rst:10
 msgid ""
 "This chapter describes how IP addresses for computer systems in a UCS "
 "domain can be centrally managed via UMC modules and assigned via DHCP."
@@ -2226,7 +2278,7 @@ msgstr ""
 "verwalteten Rechnersysteme zentral über UMC-Module verwaltet und per DHCP"
 " zugewiesen werden können."
 
-#: ../../ip-config/index.rst:14
+#: ../../ip-config/index.rst:13
 msgid ""
 ":ref:`network-objects` bundle available IP address segments of a network."
 " The DNS resolution as well as the assignment of IP addresses via DHCP "
@@ -2238,7 +2290,7 @@ msgstr ""
 "sind in UCS integriert und werden genauer in :ref:`networks-dns` sowie "
 ":ref:`module-dhcp-dhcp` erläutert."
 
-#: ../../ip-config/index.rst:18
+#: ../../ip-config/index.rst:17
 msgid ""
 "Incoming and outgoing network traffic can be restricted via the "
 "*Univention Firewall* based on :command:`iptables`, see :ref:`ip-config-"
@@ -2249,7 +2301,7 @@ msgstr ""
 "begrenzt werden (:ref:`ip-config-packet-filter-with-univention-"
 "firewall`)."
 
-#: ../../ip-config/index.rst:22
+#: ../../ip-config/index.rst:21
 msgid ""
 "The integration of the proxy server Squid allows the caching of web "
 "contents and the enforcement of content policies for web access, see :ref"
@@ -2260,11 +2312,11 @@ msgstr ""
 "Zugriff (:ref:`ip-config-web-proxy-for-caching-and-policy-management-"
 "virus-scan`)."
 
-#: ../../ip-config/network-objects.rst:8
+#: ../../ip-config/network-objects.rst:7
 msgid "Network objects"
 msgstr "Netzwerk-Objekte"
 
-#: ../../ip-config/network-objects.rst:10
+#: ../../ip-config/network-objects.rst:9
 msgid ""
 "*Network objects* can be used to compile available IP addresses; the next"
 " available address is then automatically specified during assignment to a"
@@ -2274,11 +2326,12 @@ msgstr ""
 "erfassen, z.B. die verfügbaren IP-Adressen und die DNS- und DHCP-Zonen, "
 "in denen die Systeme angesiedelt sind."
 
-#: ../../ip-config/network-objects.rst:19
+#: ../../ip-config/network-objects.rst:15
+#: ../../ip-config/network-objects.rst:18
 msgid "Creating a network object"
 msgstr "Erstellen eines Netzwerk-Objekts"
 
-#: ../../ip-config/network-objects.rst:21
+#: ../../ip-config/network-objects.rst:20
 msgid ""
 "For example, it is possible to define a network object *Workstation "
 "network* which encompasses the IP addresses from ``192.0.2.0`` to "
@@ -2297,7 +2350,7 @@ msgstr ""
 "Adresse automatisch wieder neu vergeben. Dies erspart dem Administrator "
 "eine manuelle Verwaltung verfügbarer Adressen."
 
-#: ../../ip-config/network-objects.rst:29
+#: ../../ip-config/network-objects.rst:28
 msgid ""
 "Network objects are managed in the UMC module :guilabel:`Networks`. For "
 "more information about UMC, see :ref:`central-user-interface`."
@@ -2306,7 +2359,7 @@ msgstr ""
 "verwendet werden. Für mehr Informationen über UMC, siehe :ref:`central-"
 "user-interface`."
 
-#: ../../ip-config/network-objects.rst:40
+#: ../../ip-config/network-objects.rst:39
 msgid ""
 "The name of the network is entered in this input field. This is the name "
 "under which the network also appears in the computer management."
@@ -2314,11 +2367,11 @@ msgstr ""
 "In diesem Eingabefeld ist der Name des Netzwerks einzutragen. Unter "
 "diesem Namen erscheint das Netzwerk auch in der Rechnerverwaltung."
 
-#: ../../ip-config/network-objects.rst:43
+#: ../../ip-config/network-objects.rst:42
 msgid "Networks"
 msgstr "Netzwerk"
 
-#: ../../ip-config/network-objects.rst:44
+#: ../../ip-config/network-objects.rst:43
 msgid ""
 "The network address is entered in dot-decimal form in this input field, "
 "e.g., ``192.0.2.0``."
@@ -2326,11 +2379,11 @@ msgstr ""
 "In diesem Eingabefeld muss die Netzwerk-Adresse in Oktettschreibweise "
 "eingetragen werden, z.B. ``192.0.2.0``."
 
-#: ../../ip-config/network-objects.rst:47
+#: ../../ip-config/network-objects.rst:46
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: ../../ip-config/network-objects.rst:48
+#: ../../ip-config/network-objects.rst:47
 msgid ""
 "The network mask can be entered in this input field in network prefix or "
 "dot-decimal form. If the network mask is entered in dot-decimal form it "
@@ -2342,11 +2395,11 @@ msgstr ""
 "Netzmaske in Oktettschreibweise eingegeben wird, wird sie automatisch in "
 "den entsprechenden Netzpräfix umgewandelt und später auch ausgegeben."
 
-#: ../../ip-config/network-objects.rst:53
+#: ../../ip-config/network-objects.rst:52
 msgid "IP address range"
 msgstr "IP-Adressbereich"
 
-#: ../../ip-config/network-objects.rst:54
+#: ../../ip-config/network-objects.rst:53
 msgid ""
 "One or more IP ranges can be configured here. When a host is assigned to "
 "this network at a later point, it will automatically be assigned the "
@@ -2357,7 +2410,7 @@ msgstr ""
 "Gerät automatisch die nächste freie IP-Adresse aus den hier eingetragenen"
 " IP-Adressbereichen zugewiesen."
 
-#: ../../ip-config/network-objects.rst:58
+#: ../../ip-config/network-objects.rst:57
 msgid ""
 "When no IP range is entered here, the system automatically uses the range"
 " given by the network and the subnet mark entered."
@@ -2366,7 +2419,7 @@ msgstr ""
 "das System automatisch den Bereich, der sich aus dem Netzwerk und der "
 "Netzmaske ergibt."
 
-#: ../../ip-config/network-objects.rst:61
+#: ../../ip-config/network-objects.rst:60
 msgid ""
 "Forward lookup zones and reverse lookup zones can be selected in the sub "
 "menu *DNS preferences*. When a host is assigned to this network at a "
@@ -2379,7 +2432,7 @@ msgstr ""
 " Lookup Zone beziehungsweise ein Pointer Record in der Reverse Lookup "
 "Zone angelegt."
 
-#: ../../ip-config/network-objects.rst:66
+#: ../../ip-config/network-objects.rst:65
 msgid ""
 "The zones are also administrated in the UMC module :guilabel:`DNS`, see "
 ":ref:`networks-dns-forwardzone`."
@@ -2387,7 +2440,7 @@ msgstr ""
 "Die Zonen werden ebenfalls im UMC-Modul :guilabel:`DNS` verwaltet, siehe "
 ":ref:`networks-dns-forwardzone`."
 
-#: ../../ip-config/network-objects.rst:69
+#: ../../ip-config/network-objects.rst:68
 msgid ""
 "If no zone is selected here, no DNS records are created during assignment"
 " to a computer object. However, the DNS entries can still be set "
@@ -2397,11 +2450,11 @@ msgstr ""
 "Rechnerobjekt keine DNS-Records angelegt. Die DNS-Einträge können aber "
 "weiterhin manuell gesetzt werden."
 
-#: ../../ip-config/network-objects.rst:73
+#: ../../ip-config/network-objects.rst:72
 msgid "DNS forward lookup zone"
 msgstr "Forward Lookup Zone für DNS-Einträge"
 
-#: ../../ip-config/network-objects.rst:74
+#: ../../ip-config/network-objects.rst:73
 msgid ""
 "The forward lookup zone where hosts from the network should be added must"
 " be specified here. The resolution of the computer name to an IP address "
@@ -2411,11 +2464,11 @@ msgstr ""
 "Netzwerk eingetragen werden sollen. Über diese Zone wird die Auflösung "
 "des Rechnernamens zu einer IP-Adresse durchgeführt."
 
-#: ../../ip-config/network-objects.rst:78
+#: ../../ip-config/network-objects.rst:77
 msgid "DNS reverse lookup zone"
 msgstr "Reverse Lookup Zone für DNS-Einträge"
 
-#: ../../ip-config/network-objects.rst:79
+#: ../../ip-config/network-objects.rst:78
 msgid ""
 "The reverse lookup zone where hosts from the network should be added must"
 " be specified here. The reverse resolution of the IP address back to a "
@@ -2425,7 +2478,7 @@ msgstr ""
 "Netzwerk eingetragen werden sollen. Über diese Zone wird die "
 "Rückwärtsauflösung der IP-Adresse zu einem Rechnernamen durchgeführt."
 
-#: ../../ip-config/network-objects.rst:83
+#: ../../ip-config/network-objects.rst:82
 msgid ""
 "A DHCP service can be assigned to the network in the sub menu *DHCP "
 "preferences*. When a host is assigned to this network at a later point, a"
@@ -2437,7 +2490,7 @@ msgstr ""
 "für das Gerät automatisch ein DHCP-Rechner-Eintrag mit der festen IP-"
 "Adresse unterhalb des gewählten DHCP-Services angelegt."
 
-#: ../../ip-config/network-objects.rst:88
+#: ../../ip-config/network-objects.rst:87
 msgid ""
 "The DHCP service settings are also administrated in the UMC module "
 ":guilabel:`DHCP`, see :ref:`networks-dhcp-general`."
@@ -2445,7 +2498,7 @@ msgstr ""
 "Die DHCP-Service-Einstellungen werden ebenfalls im UMC-Modul "
 ":guilabel:`DHCP` verwaltet, siehe :ref:`networks-dhcp-general`."
 
-#: ../../ip-config/network-objects.rst:91
+#: ../../ip-config/network-objects.rst:90
 msgid ""
 "If no DHCP service is selected, no DHCP host record is created during "
 "assignment to a computer object. However, such an entry can also still be"
@@ -2455,11 +2508,11 @@ msgstr ""
 "Rechnerobjekt kein DHCP-Rechner-Eintrag angelegt. Ein solcher Eintrag "
 "kann aber weiterhin manuell zugewiesen werden."
 
-#: ../../ip-config/radius.rst:8
+#: ../../ip-config/radius.rst:7
 msgid "RADIUS"
 msgstr "RADIUS"
 
-#: ../../ip-config/radius.rst:10
+#: ../../ip-config/radius.rst:9
 msgid ""
 "The :program:`RADIUS` app increases the security for UCS managed IT "
 "infrastructures by controlling the access to the wireless network for "
@@ -2479,11 +2532,11 @@ msgstr ""
 "alternativ mit einem eigens erzeugten RADIUS-Passwort authentisiert, so "
 "dass unter anderem *Bring-Your-Own-Device-Konzepte* ermöglicht werden."
 
-#: ../../ip-config/radius.rst:22 ../../ip-config/web-proxy.rst:28
+#: ../../ip-config/radius.rst:21 ../../ip-config/web-proxy.rst:27
 msgid "Installation"
 msgstr "Installation"
 
-#: ../../ip-config/radius.rst:24
+#: ../../ip-config/radius.rst:23
 msgid ""
 ":program:`RADIUS` is available through the App Center (see :ref"
 ":`software-appcenter`) and can be installed using the UMC module "
@@ -2500,7 +2553,7 @@ msgstr ""
 "Points*) können den Server via RADIUS kontaktieren und "
 "Netzwerkzugangsanfragen prüfen."
 
-#: ../../ip-config/radius.rst:31
+#: ../../ip-config/radius.rst:30
 msgid ""
 "The RADIUS app can also be installed on UCS\\@school systems. In this "
 "case, the network access can be given to users or groups regardless of "
@@ -2510,15 +2563,15 @@ msgstr ""
 " diesem Fall kann der Zugang an Benutzer oder Gruppen unabhängig von der "
 "Internetregel oder Computerraumeinstellungen vergeben werden."
 
-#: ../../ip-config/radius.rst:38
+#: ../../ip-config/radius.rst:37
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: ../../ip-config/radius.rst:43
+#: ../../ip-config/radius.rst:42
 msgid "Allowed users"
 msgstr "Erlaubte Benutzer"
 
-#: ../../ip-config/radius.rst:45
+#: ../../ip-config/radius.rst:44
 msgid ""
 "By default no user is allowed to access the network. Enabling the "
 "checkbox for *network access* on the *RADIUS* tab, gives the user access "
@@ -2530,15 +2583,15 @@ msgstr ""
 "der Benutzer Zugriff auf das Netzwerk. Die Checkbox kann auch für Gruppen"
 " gesetzt werden, so dass alle Benutzer in der Gruppe Zugang erlangen."
 
-#: ../../ip-config/radius.rst:54
+#: ../../ip-config/radius.rst:50 ../../ip-config/radius.rst:53
 msgid "Example for a group allowing network access to its users"
 msgstr "Beispiel für eine Gruppe, die ihren Benutzern Zugang gewährt"
 
-#: ../../ip-config/radius.rst:59
+#: ../../ip-config/radius.rst:58
 msgid "Service specific password"
 msgstr "Dienst-spezifisches Passwort"
 
-#: ../../ip-config/radius.rst:61
+#: ../../ip-config/radius.rst:60
 msgid ""
 "By default, users authenticate with their domain password. RADIUS uses a "
 "specific password, if an administrator sets the |UCSUCRV| :envvar:`radius"
@@ -2560,7 +2613,7 @@ msgstr ""
 "Zufallspasswort erzeugen, wodurch auch das bestehende Passwort ungültig "
 "wird."
 
-#: ../../ip-config/radius.rst:73
+#: ../../ip-config/radius.rst:72
 msgid ""
 "To enable the service specific password page in the :program:`Self "
 "Service` app, the administrator must set the |UCSUCRV| :envvar:`umc/self-"
@@ -2574,11 +2627,11 @@ msgstr ""
 "auf dem UCS-System, auf dem die :program:`Self Service Backend` App "
 "installiert ist, auf den Wert ``true`` setzen."
 
-#: ../../ip-config/radius.rst:84
+#: ../../ip-config/radius.rst:80 ../../ip-config/radius.rst:83
 msgid "The page in the Self Service to get a RADIUS specific password"
 msgstr "Seite im Self Service, um ein RADIUS-spezifisches Passwort zu bekommen"
 
-#: ../../ip-config/radius.rst:86
+#: ../../ip-config/radius.rst:85
 msgid ""
 "UCS allows configuring the password quality for the auto generated "
 "service specific passwords through the following |UCSUCRVs|. For a "
@@ -2590,67 +2643,67 @@ msgstr ""
 "|UCSUCRVs|. Eine Beschreibung finden Sie in den Verweisen auf die "
 "jeweiligen generischen Passwortqualitätseinstellungen."
 
-#: ../../ip-config/radius.rst:93
+#: ../../ip-config/radius.rst:92
 msgid "Password quality parameters for RADIUS"
 msgstr "RADIUS Passwortqualitätsparameter"
 
-#: ../../ip-config/radius.rst:97
+#: ../../ip-config/radius.rst:96
 msgid "RADIUS password quality parameter"
 msgstr "RADIUS Passwortqualitätsparameter"
 
-#: ../../ip-config/radius.rst:98
+#: ../../ip-config/radius.rst:97
 msgid "Generic password quality parameter"
 msgstr "Allgemeiner Qualitätsparameter für Passwörter"
 
-#: ../../ip-config/radius.rst:100
+#: ../../ip-config/radius.rst:99
 msgid "``password/radius/quality/credit/digits``"
 msgstr "``password/radius/quality/credit/digits``"
 
-#: ../../ip-config/radius.rst:101
+#: ../../ip-config/radius.rst:100
 msgid ":envvar:`password/quality/credit/digits`"
 msgstr ":envvar:`password/quality/credit/digits`"
 
-#: ../../ip-config/radius.rst:103
+#: ../../ip-config/radius.rst:102
 msgid "``password/radius/quality/credit/lower``"
 msgstr "``password/radius/quality/credit/lower``"
 
-#: ../../ip-config/radius.rst:104
+#: ../../ip-config/radius.rst:103
 msgid ":envvar:`password/quality/credit/lower`"
 msgstr ":envvar:`password/quality/credit/lower`"
 
-#: ../../ip-config/radius.rst:106
+#: ../../ip-config/radius.rst:105
 msgid "``password/radius/quality/credit/other``"
 msgstr "``password/radius/quality/credit/other``"
 
-#: ../../ip-config/radius.rst:107
+#: ../../ip-config/radius.rst:106
 msgid ":envvar:`password/quality/credit/other`"
 msgstr ":envvar:`password/quality/credit/other`"
 
-#: ../../ip-config/radius.rst:109
+#: ../../ip-config/radius.rst:108
 msgid "``password/radius/quality/credit/upper``"
 msgstr "``password/radius/quality/credit/upper``"
 
-#: ../../ip-config/radius.rst:110
+#: ../../ip-config/radius.rst:109
 msgid ":envvar:`password/quality/credit/upper`"
 msgstr ":envvar:`password/quality/credit/upper`"
 
-#: ../../ip-config/radius.rst:112
+#: ../../ip-config/radius.rst:111
 msgid "``password/radius/quality/forbidden/chars``"
 msgstr "``password/radius/quality/forbidden/chars``"
 
-#: ../../ip-config/radius.rst:113
+#: ../../ip-config/radius.rst:112
 msgid ":envvar:`password/quality/forbidden/chars`"
 msgstr ":envvar:`password/quality/forbidden/chars`"
 
-#: ../../ip-config/radius.rst:115
+#: ../../ip-config/radius.rst:114
 msgid "``password/radius/quality/length/min``"
 msgstr "``password/radius/quality/length/min``"
 
-#: ../../ip-config/radius.rst:116
+#: ../../ip-config/radius.rst:115
 msgid ":envvar:`password/quality/length/min`"
 msgstr ":envvar:`password/quality/length/min`"
 
-#: ../../ip-config/radius.rst:120
+#: ../../ip-config/radius.rst:119
 msgid ""
 "The settings in the ``password/quality/**`` |UCSUCRVs| don't have an "
 "effect on the service specific password."
@@ -2658,7 +2711,7 @@ msgstr ""
 "Die Einstellungen in den ``password/quality/**`` |UCSUCRVs| haben keinen "
 "Einfluss auf das dienst-spezifische Passwort."
 
-#: ../../ip-config/radius.rst:122
+#: ../../ip-config/radius.rst:121
 msgid ""
 "To configure the password quality, choose the scenario on the following "
 "tabs that matches your environment where you installed the "
@@ -2668,21 +2721,21 @@ msgstr ""
 "Reitern das Szenario aus, das Ihrer Umgebung entspricht, in der Sie die "
 ":program:`RADIUS` App installiert haben."
 
-#: ../../ip-config/radius.rst:128 ../../ip-config/radius.rst:156
+#: ../../ip-config/radius.rst:127 ../../ip-config/radius.rst:155
 msgid "To configure the password quality, use the following steps."
 msgstr ""
 "Führen Sie die folgenden Schritte aus, um die Passwortqualität zu "
 "konfigurieren."
 
-#: ../../ip-config/radius.rst:132 ../../ip-config/radius.rst:161
+#: ../../ip-config/radius.rst:130 ../../ip-config/radius.rst:158
 msgid "Prerequisite"
 msgstr "Voraussetzung"
 
-#: ../../ip-config/radius.rst:132
+#: ../../ip-config/radius.rst:131
 msgid "You have the :program:`RADIUS` app installed on the |UCSPRIMARYDN|."
 msgstr "Sie haben die :program:`RADIUS` App auf dem |UCSPRIMARYDN| installiert."
 
-#: ../../ip-config/radius.rst:134 ../../ip-config/radius.rst:163
+#: ../../ip-config/radius.rst:133 ../../ip-config/radius.rst:162
 msgid ""
 "For available password quality parameters, either look at :numref:`ip-"
 "config-radius-configuration-service-specific-password-table`, or at your "
@@ -2692,7 +2745,7 @@ msgstr ""
 ":numref:`ip-config-radius-configuration-service-specific-password-table` "
 "oder in Ihrem System."
 
-#: ../../ip-config/radius.rst:139
+#: ../../ip-config/radius.rst:138
 msgid ""
 "**On the Primary Directory Node**, open the command-line and lookup the "
 "available password quality parameters:"
@@ -2700,11 +2753,11 @@ msgstr ""
 "Öffnen Sie **auf dem Primary Directory Node** die Befehlszeile und sehen "
 "Sie die verfügbaren Qualitätsparameter für Passwörter nach:"
 
-#: ../../ip-config/radius.rst:143 ../../ip-config/radius.rst:173
+#: ../../ip-config/radius.rst:142 ../../ip-config/radius.rst:172
 msgid "$ ucr search password/radius/quality"
 msgstr "$ ucr search password/radius/quality"
 
-#: ../../ip-config/radius.rst:147
+#: ../../ip-config/radius.rst:146
 msgid ""
 "Pick the parameter that you want to change and set the respective "
 "|UCSUCRv|, for example the minimal password length."
@@ -2712,11 +2765,11 @@ msgstr ""
 "Wählen Sie den Parameter, den Sie ändern möchten, und stellen Sie die "
 "entsprechende |UCSUCRv| ein, z. B. die minimale Passwortlänge."
 
-#: ../../ip-config/radius.rst:150 ../../ip-config/radius.rst:182
+#: ../../ip-config/radius.rst:149 ../../ip-config/radius.rst:181
 msgid "$ ucr set password/radius/quality/length/min=32"
 msgstr "$ ucr set password/radius/quality/length/min=32"
 
-#: ../../ip-config/radius.rst:160
+#: ../../ip-config/radius.rst:159
 msgid ""
 "You have the :program:`RADIUS` app installed on a UCS system **other "
 "than** the |UCSPRIMARYDN|."
@@ -2724,7 +2777,7 @@ msgstr ""
 "Sie haben die Anwendung :program:`RADIUS` auf einem **anderen** UCS "
 "System installiert, als den |UCSPRIMARYDN|."
 
-#: ../../ip-config/radius.rst:168
+#: ../../ip-config/radius.rst:167
 msgid ""
 "**On the UCS system** that has the :program:`RADIUS` app installed, open "
 "the command-line and lookup the available password quality parameters:"
@@ -2733,7 +2786,7 @@ msgstr ""
 "ist, öffnen Sie die Befehlszeile und sehen Sie die verfügbaren "
 "Qualitätsparameter für Passwörter nach:"
 
-#: ../../ip-config/radius.rst:177
+#: ../../ip-config/radius.rst:176
 msgid ""
 "Pick the parameter that you want to change and set the respective "
 "|UCSUCRv|, for example the minimal password length. On the "
@@ -2744,7 +2797,7 @@ msgstr ""
 " dem |UCSPRIMARYDN| die Befehlszeile und führen Sie den folgenden Befehl "
 "aus:"
 
-#: ../../ip-config/radius.rst:186
+#: ../../ip-config/radius.rst:185
 msgid ""
 "Regardless the scenario, you finally need to restart the *UDM HTTP REST "
 "API* on the |UCSPRIMARYDN|. Open the command-line and run the following "
@@ -2754,15 +2807,15 @@ msgstr ""
 "auf dem |UCSPRIMARYDN| neu starten. Öffnen Sie die Befehlszeile und "
 "führen Sie den folgenden Befehl aus."
 
-#: ../../ip-config/radius.rst:190
+#: ../../ip-config/radius.rst:189
 msgid "$ systemctl restart univention-directory-manager-rest.service"
 msgstr "$ systemctl restart univention-directory-manager-rest.service"
 
-#: ../../ip-config/radius.rst:197
+#: ../../ip-config/radius.rst:196
 msgid "MAC filtering"
 msgstr "MAC-Adressfilter"
 
-#: ../../ip-config/radius.rst:199
+#: ../../ip-config/radius.rst:198
 msgid ""
 "By default access to the network is allowed for every device (assuming "
 "the used username has access). It can be restricted to only allow "
@@ -2781,11 +2834,11 @@ msgstr ""
 "entsprechenden Geräteobjekt muss der Zugang zum Netzwerk auch erlaubt "
 "sein (entweder direkt oder über eine der Gruppen)."
 
-#: ../../ip-config/radius.rst:209
+#: ../../ip-config/radius.rst:208
 msgid "MAC Authentication Bypass with computer objects"
 msgstr "MAC Authentication Bypass für Computerobjekte"
 
-#: ../../ip-config/radius.rst:211
+#: ../../ip-config/radius.rst:210
 msgid ""
 "MAC Authentication Bypass (MAB) is a proprietary fallback mode to 802.1X "
 "for devices that don't support 802.1X authentication, such as network "
@@ -2798,7 +2851,7 @@ msgstr ""
 "solchen Geräten ermöglicht, sich mit ihrer MAC-Adresse als Benutzernamen "
 "beim Netzwerk zu authentifizieren."
 
-#: ../../ip-config/radius.rst:217
+#: ../../ip-config/radius.rst:216
 msgid ""
 "This section describes how to use a device's MAC address for "
 "authentication and assign them a VLAN to the corresponding network "
@@ -2812,17 +2865,17 @@ msgstr ""
 "aktivieren, setzen Sie die |UCSUCRV| :envvar:`freeradius/conf/allow-mac-"
 "address-authentication` auf ``true``."
 
-#: ../../ip-config/radius.rst:224
+#: ../../ip-config/radius.rst:223
 msgid "Devices that authenticate using MAB ignore network access settings:"
 msgstr ""
 "Geräte, die sich mit MAB authentifizieren, ignorieren die "
 "Netzwerkzugangseinstellungen:"
 
-#: ../../ip-config/radius.rst:226
+#: ../../ip-config/radius.rst:225
 msgid "|UCSUCRV| :envvar:`radius/mac/whitelisting`"
 msgstr "|UCSUCRV| :envvar:`radius/mac/whitelisting`"
 
-#: ../../ip-config/radius.rst:228
+#: ../../ip-config/radius.rst:227
 msgid ""
 "The checkbox *Allow network access* at the computer object and in the "
 "group setting"
@@ -2830,7 +2883,7 @@ msgstr ""
 "Die Checkbox *Netzwerkzugriff zulassen* beim Computerobjekt und in der "
 "Gruppeneinstellung"
 
-#: ../../ip-config/radius.rst:232
+#: ../../ip-config/radius.rst:231
 msgid ""
 "Attackers can spoof MAC addresses. Consider any port as compromised where"
 " your switch allows to use MAB. Make sure you have put appropriate "
@@ -2841,7 +2894,7 @@ msgstr ""
 "zulässt. Vergewissern Sie sich, dass Sie geeignete Maßnahmen ergriffen "
 "haben, um Ihr Netzwerk weiterhin sicher zu halten."
 
-#: ../../ip-config/radius.rst:238
+#: ../../ip-config/radius.rst:237
 msgid ""
 "To assign the VLAN ID to a computer, you need to add it to the group of "
 "the computer object with the respective VLAN ID. In the UCS management "
@@ -2851,19 +2904,19 @@ msgstr ""
 "Computerobjekts hinzufügen, dass die entsprechende VLAN ID hat. Gehen Sie"
 " im UCS-Managementsystem wie folgt vor: "
 
-#: ../../ip-config/radius.rst:242
+#: ../../ip-config/radius.rst:241
 msgid "Open :menuselection:`Devices --> Computers`."
 msgstr "Öffnen Sie :menuselection:`Geräte --> Computer`."
 
-#: ../../ip-config/radius.rst:244
+#: ../../ip-config/radius.rst:243
 msgid "Click the computer object to edit."
 msgstr "Klicken Sie das Computerobjekt, das Sie bearbeiten möchten."
 
-#: ../../ip-config/radius.rst:246
+#: ../../ip-config/radius.rst:245
 msgid "Go to :menuselection:`Advanced settings --> Groups`."
 msgstr "Gehen Sie zu :menuselection:`Erweiterte Einstellungen --> Gruppen`."
 
-#: ../../ip-config/radius.rst:248
+#: ../../ip-config/radius.rst:247
 msgid ""
 "To add a group with VLAN IDs, click :guilabel:`+ ADD`, select ``Virtual "
 "LAN ID`` from the *Object property* drop-down, and activate the "
@@ -2874,7 +2927,7 @@ msgstr ""
 "*Objekteigenschaft* und aktivieren Sie die entsprechende Gruppe, um sie "
 "hinzuzufügen."
 
-#: ../../ip-config/radius.rst:252
+#: ../../ip-config/radius.rst:251
 msgid ""
 "To save, click :guilabel:`ADD` in the *Add objects* dialog and "
 ":guilabel:`SAVE` in the *Advanced settings*."
@@ -2882,7 +2935,7 @@ msgstr ""
 "Um zu speichern, klicken Sie auf :guilabel:`HINZUFÜGEN` im *Objekte "
 "hinzufügen* Dialog und :guilabel:`SAVE` in *Erweiterte Einstellungen*."
 
-#: ../../ip-config/radius.rst:257
+#: ../../ip-config/radius.rst:256
 msgid ""
 "To assign the VLAN ID to a user group, you need to add it to the user "
 "group settings. In the UCS management system, follow these steps:"
@@ -2891,29 +2944,29 @@ msgstr ""
 "Benutzergruppeneinstellungen hinzufügen. Führen Sie im UCS-"
 "Managementsystem die folgenden Schritte aus:"
 
-#: ../../ip-config/radius.rst:260
+#: ../../ip-config/radius.rst:259
 msgid "Open :menuselection:`Users --> Groups`."
 msgstr "Öffnen Sie :menuselection:`Benutzer --> Gruppen`."
 
-#: ../../ip-config/radius.rst:262
+#: ../../ip-config/radius.rst:261
 msgid "Click the user group object to edit or create a new user group."
 msgstr ""
 "Klicken Sie die Benutzergruppe zum Bearbeiten oder erstellen Sie eine "
 "neue Benutzergruppe."
 
-#: ../../ip-config/radius.rst:264
+#: ../../ip-config/radius.rst:263
 msgid "Go to :menuselection:`RADIUS`."
 msgstr "Gehen Sie zu :menuselection:`RADIUS`."
 
-#: ../../ip-config/radius.rst:266
+#: ../../ip-config/radius.rst:265
 msgid "Enter the VLAN ID as number into the field *Virtual LAN ID*."
 msgstr "Geben Sie die VLAN ID as Zahl in das Feld *Virtual LAN ID*."
 
-#: ../../ip-config/radius.rst:268
+#: ../../ip-config/radius.rst:267
 msgid "To save, click :guilabel:`SAVE`."
 msgstr "Zum Speichern, klicken Sie :guilabel:`SPEICHERN`."
 
-#: ../../ip-config/radius.rst:270
+#: ../../ip-config/radius.rst:269
 msgid ""
 "If a computer object has assigned several groups with VLAN IDs, UCS "
 "selects the VLAN ID with the lowest number and assigns it. To configure a"
@@ -2925,7 +2978,7 @@ msgstr ""
 " eine Standard VLAN-ID zu konfigurieren, setzen Sie diese als Wert in die"
 " |UCSUCRV| :envvar:`freeradius/vlan-id`."
 
-#: ../../ip-config/radius.rst:275
+#: ../../ip-config/radius.rst:274
 msgid ""
 "After you completed the configuration, the Radius server returns the "
 "assigned VLAN ID to requests with the given MAC address."
@@ -2934,7 +2987,7 @@ msgstr ""
 " die zugewiesene VLAN-ID an Anfragen mit der angegebenen MAC-Adresse "
 "zurück."
 
-#: ../../ip-config/radius.rst:278
+#: ../../ip-config/radius.rst:277
 msgid ""
 "UCS stores the MAC address in the LDAP directory as lowercase string with"
 " the colon (``:``) as separator, for example ``00:00:5e:00:53:00``."
@@ -2943,7 +2996,7 @@ msgstr ""
 "Kleinbuchstaben mit dem Doppelpunkt (``:``) als Trennzeichen, zum "
 "Beispiel ``00:00:5e:00:53:00``."
 
-#: ../../ip-config/radius.rst:284
+#: ../../ip-config/radius.rst:283
 msgid ""
 "With :uv:erratum:`5.0x1011` the Radius server can handle different "
 "formats of the MAC addresses for the username when using MAB."
@@ -2952,7 +3005,7 @@ msgstr ""
 "Formaten der MAC Adresse für Benutzernamen umgehen, wenn MAB verwendet "
 "wird."
 
-#: ../../ip-config/radius.rst:287
+#: ../../ip-config/radius.rst:286
 msgid ""
 "Devices that use MAB, use their MAC address as username and they may use "
 "different formats for it. The Radius server supports different case-"
@@ -2964,27 +3017,27 @@ msgstr ""
 "unterscheiden. In der folgenden Liste sind die getesteten Formate "
 "aufgeführt:"
 
-#: ../../ip-config/radius.rst:292
+#: ../../ip-config/radius.rst:291
 msgid "``XX:XX:XX:XX:XX:XX``"
 msgstr "``XX:XX:XX:XX:XX:XX``"
 
-#: ../../ip-config/radius.rst:293
+#: ../../ip-config/radius.rst:292
 msgid "``XX-XX-XX-XX-XX-XX``"
 msgstr "``XX-XX-XX-XX-XX-XX``"
 
-#: ../../ip-config/radius.rst:294
+#: ../../ip-config/radius.rst:293
 msgid "``XX.XX.XX.XX.XX.XX``"
 msgstr "``XX.XX.XX.XX.XX.XX``"
 
-#: ../../ip-config/radius.rst:295
+#: ../../ip-config/radius.rst:294
 msgid "``XXXX.XXXX.XXXX``"
 msgstr "``XXXX.XXXX.XXXX``"
 
-#: ../../ip-config/radius.rst:296
+#: ../../ip-config/radius.rst:295
 msgid "``XXXXXXXXXXXX``"
 msgstr "``XXXXXXXXXXXX``"
 
-#: ../../ip-config/radius.rst:300
+#: ../../ip-config/radius.rst:299
 msgid ""
 "For non-standard formats, you can configure a regular expression in the "
 "|UCSUCRV| :envvar:`freeradius/conf/mac-addr-regexp` to match your custom "
@@ -2994,7 +3047,7 @@ msgstr ""
 "der |UCSUCRV| :envvar:`freeradius/conf/mac-addr-regexp` konfigurieren, "
 "der mit Ihrem benutzerdefinierten MAC-Adressformat zusammen passt."
 
-#: ../../ip-config/radius.rst:303
+#: ../../ip-config/radius.rst:302
 msgid ""
 "Depending on your regular expression, the previously listed formats may "
 "not work anymore."
@@ -3002,7 +3055,7 @@ msgstr ""
 "Je nach regulärem Ausdruck kann es vorkommen, dass die zuvor aufgeführten"
 " Formate nicht mehr funktionieren."
 
-#: ../../ip-config/radius.rst:307
+#: ../../ip-config/radius.rst:306
 msgid ""
 "All devices that use MAB, need to have the same password set, because "
 ":ref:`service specific passwords <ip-config-radius-configuration-service-"
@@ -3018,7 +3071,7 @@ msgstr ""
 "konfigurieren. Sie können Ihr eigenes Passwort für die Geräte mit MAB "
 "erstellen, zum Beispiel ``mab request format attribute 2 password1``."
 
-#: ../../ip-config/radius.rst:314
+#: ../../ip-config/radius.rst:313
 msgid ""
 "If the network infrastructure provides a different format, you can often "
 "reconfigure the format. For example, for Cisco switches, you can use "
@@ -3036,11 +3089,11 @@ msgstr ""
 "xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr- "
 "config-mab-usrname-pwd.html>`_ beschrieben."
 
-#: ../../ip-config/radius.rst:325
+#: ../../ip-config/radius.rst:324
 msgid "Access point administration"
 msgstr "Access Points verwalten"
 
-#: ../../ip-config/radius.rst:327
+#: ../../ip-config/radius.rst:326
 msgid ""
 "All access points must be known to the RADIUS server. An access point can"
 " either be configured in the file "
@@ -3057,13 +3110,13 @@ msgstr ""
 "werden (Zum Beispiel über den Befehl :command:`makepasswd`.). Der Name "
 "kann frei gewählt werden."
 
-#: ../../ip-config/radius.rst:333
+#: ../../ip-config/radius.rst:332
 msgid "Example entry for an access point:"
 msgstr ""
 "Beispiel für einen Eintrag eines Access Points in der "
 ":file:`clients.conf` Datei:"
 
-#: ../../ip-config/radius.rst:335
+#: ../../ip-config/radius.rst:334
 #, python-brace-format
 msgid ""
 "client AP01 {\n"
@@ -3076,7 +3129,7 @@ msgstr ""
 "    ipaddr = 192.0.2.101\n"
 "}"
 
-#: ../../ip-config/radius.rst:342
+#: ../../ip-config/radius.rst:341
 msgid ""
 "To configure an access point using the UMC module :guilabel:`Computers` "
 "create or select a computer object and activate the *RADIUS-"
@@ -3098,7 +3151,7 @@ msgstr ""
 "Eigenschaften *NAS-Type* und Virtueller Server müssen in der Regel nicht "
 "verändert werden."
 
-#: ../../ip-config/radius.rst:350
+#: ../../ip-config/radius.rst:349
 msgid ""
 "Access points that are configured via the UMC module "
 ":guilabel:`Computers` are available to all RADIUS servers in the domain. "
@@ -3116,19 +3169,19 @@ msgstr ""
 "dies verzögert (etwa 15 Sekunden). Neue *Access Points* haben erst nach "
 "diesem Neustart Zugriff auf den RADIUS-Server."
 
-#: ../../ip-config/radius.rst:363
+#: ../../ip-config/radius.rst:359 ../../ip-config/radius.rst:362
 msgid "RADIUS option"
 msgstr "Setzen der RADIUS-Option"
 
-#: ../../ip-config/radius.rst:370
+#: ../../ip-config/radius.rst:366 ../../ip-config/radius.rst:369
 msgid "RADIUS authenticator options"
 msgstr "*RADIUS-Authenticator* Optionen"
 
-#: ../../ip-config/radius.rst:375
+#: ../../ip-config/radius.rst:374
 msgid "Access point and client configuration"
 msgstr "Konfiguration von Access Point und Client"
 
-#: ../../ip-config/radius.rst:377
+#: ../../ip-config/radius.rst:376
 msgid ""
 "The access points must then be configured to use 802.1x (\"WPA "
 "Enterprise\") authentication. And the *RADIUS server* address should be "
@@ -3143,7 +3196,7 @@ msgstr ""
 " des ``secret`` aus dem Eintrag in der :file:`clients.conf` für den "
 "Access Point gesetzt sein."
 
-#: ../../ip-config/radius.rst:382
+#: ../../ip-config/radius.rst:381
 msgid ""
 "Wireless clients have to be configured to use *WPA* with *PEAP* and "
 "*MSCHAPv2* for authentication."
@@ -3151,11 +3204,11 @@ msgstr ""
 "WLAN Clients müssen so konfiguriert sein, dass sie *WPA* mit *PEAP* und "
 "*MSCHAPv2* für die Authentisierung verwenden."
 
-#: ../../ip-config/radius.rst:388
+#: ../../ip-config/radius.rst:387
 msgid "VLAN IDs"
 msgstr "VLAN IDs"
 
-#: ../../ip-config/radius.rst:390
+#: ../../ip-config/radius.rst:389
 msgid ""
 "Virtual Local Area Networks (VLANs) can be used to separate the traffic "
 "of users at the network level. UCS can be configured to return a VLAN ID "
@@ -3170,7 +3223,7 @@ msgstr ""
 "<3580>` zurück gibt. Weitere Informationen finden Sie in :ref:`computers-"
 "network-complex-vlan`."
 
-#: ../../ip-config/radius.rst:395
+#: ../../ip-config/radius.rst:394
 msgid ""
 "The VLAN ID for a user can be configured by assigning the user to a group"
 " with a VLAN ID."
@@ -3178,11 +3231,11 @@ msgstr ""
 "Die VLAN-ID für einen Benutzer kann konfiguriert werden, indem der "
 "Benutzer einer Gruppe mit einer VLAN-ID zugewiesen wird."
 
-#: ../../ip-config/radius.rst:402
+#: ../../ip-config/radius.rst:398 ../../ip-config/radius.rst:401
 msgid "Assigning VLAN ID to a user group"
 msgstr "Zuweisung VLAN ID zu einer Benutzergruppe"
 
-#: ../../ip-config/radius.rst:404
+#: ../../ip-config/radius.rst:403
 msgid ""
 "A default VLAN ID can be configured in the |UCSUCRV| :envvar:`freeradius"
 "/vlan-id`. This default VLAN ID will be returned if the user is not a "
@@ -3196,11 +3249,11 @@ msgstr ""
 "Antwort wird keine VLAN-ID enthalten, wenn der Benutzer nicht Mitglied "
 "einer Gruppe mit VLAN-ID ist und keine Standard VLAN-ID definiert ist."
 
-#: ../../ip-config/radius.rst:412
+#: ../../ip-config/radius.rst:411
 msgid "Disable TLS 1.3"
 msgstr "TLS 1.3 deaktivieren"
 
-#: ../../ip-config/radius.rst:414
+#: ../../ip-config/radius.rst:413
 msgid ""
 "Radius uses Transport Layer Security (TLS) to encrypt web traffic. The "
 "current version of all major operating systems supports TLS 1.3. Some "
@@ -3214,7 +3267,7 @@ msgstr ""
 " 10, gibt es Probleme mit der verwendeten Radius-Implementierung. "
 "Detaillierte Informationen finden Sie unter :uv:bug:`55247`."
 
-#: ../../ip-config/radius.rst:419
+#: ../../ip-config/radius.rst:418
 msgid ""
 "If you still use those, you might have to to disable TLS v1.3. To limit "
 "TLS to version 1.2, change the |UCSUCRV| :envvar:`freeradius/conf/tls-"
@@ -3225,11 +3278,11 @@ msgstr ""
 "|UCSUCRV| :envvar:`freeradius/conf/tls- max-version` auf den Wert "
 "``1.2``."
 
-#: ../../ip-config/radius.rst:426
+#: ../../ip-config/radius.rst:425
 msgid "Debugging"
 msgstr "Fehlersuche"
 
-#: ../../ip-config/radius.rst:428
+#: ../../ip-config/radius.rst:427
 msgid ""
 "The :program:`RADIUS` app has a log file under "
 ":file:`/var/log/univention/radius_ntlm_auth.log`. The log verbosity can "
@@ -3243,7 +3296,7 @@ msgstr ""
 ":envvar:`freeradius/auth/helper/ntlm/debug` steuern. Der :program"
 ":`FreeRADIUS-Server` loggt nach :file:`/var/log/freeradius/radius.log`."
 
-#: ../../ip-config/radius.rst:434
+#: ../../ip-config/radius.rst:433
 msgid ""
 "The tool :program:`univention-radius-check-access` can be used to "
 "evaluate the current access policy for a given user and/or station ID "
@@ -3256,7 +3309,7 @@ msgstr ""
 " dem Server ausgeführt werden, wo das Paket :program:`univention-radius` "
 "installiert ist:"
 
-#: ../../ip-config/radius.rst:439
+#: ../../ip-config/radius.rst:438
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=stefan "
 "--station-id none\n"
@@ -3278,7 +3331,7 @@ msgstr ""
 "-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=example'\n"
 "Thus access is DENIED."
 
-#: ../../ip-config/radius.rst:450
+#: ../../ip-config/radius.rst:449
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=janek "
 "--station-id none\n"
@@ -3306,7 +3359,7 @@ msgstr ""
 "Thus access is ALLOWED.\n"
 "root@primary211:~#"
 
-#: ../../ip-config/radius.rst:464
+#: ../../ip-config/radius.rst:463
 msgid ""
 "It prints a detailed explanation and sets the exit code depending on the "
 "result of the access check (``0`` for *access granted*, ``1`` for *access"
@@ -3316,11 +3369,11 @@ msgstr ""
 "Rückgabewert abhängig vom Ergebnis der Zugangsprüfung (``0`` für *Zugang "
 "gestattet*, ``1`` für *Zugang verweigert*)."
 
-#: ../../ip-config/web-proxy.rst:8
+#: ../../ip-config/web-proxy.rst:7
 msgid "Web proxy for caching and policy management / virus scan"
 msgstr "Web-Proxy für Caching und Policy Management/Virenscan"
 
-#: ../../ip-config/web-proxy.rst:10
+#: ../../ip-config/web-proxy.rst:9
 msgid ""
 "The UCS proxy integration allows the use of a web cache for improving the"
 " performance and controlling data traffic. It is based on the tried-and-"
@@ -3331,7 +3384,7 @@ msgstr ""
 " auf dem bewährten Proxy-Server Squid und unterstützt die Protokolle "
 "HTTP, FTP und HTTPS."
 
-#: ../../ip-config/web-proxy.rst:14
+#: ../../ip-config/web-proxy.rst:13
 msgid ""
 "A proxy server receives requests about internet contents and verifies "
 "whether these contents are already available in a local cache. If this is"
@@ -3349,7 +3402,7 @@ msgstr ""
 "Hierdurch können die Antwortzeiten für die Anwender sowie das "
 "Transfervolumen über den Internetzugang verringert werden."
 
-#: ../../ip-config/web-proxy.rst:21
+#: ../../ip-config/web-proxy.rst:20
 msgid ""
 "Further documentation on proxy services - such as the cascading of proxy "
 "servers, transparent proxies and the integration of a virus scan engine -"
@@ -3359,7 +3412,7 @@ msgstr ""
 "Kaskadierung von Proxy-Servern - werden in :cite:t:`ext-doc-net` "
 "beschrieben."
 
-#: ../../ip-config/web-proxy.rst:30
+#: ../../ip-config/web-proxy.rst:29
 msgid ""
 "Squid can be installed from the Univention App Center with the "
 "application :program:`Web proxy / web cache (Squid)`. Alternatively, the "
@@ -3373,7 +3426,7 @@ msgstr ""
 "Informationen finden sich in :ref:`computers-softwaremanagement-install-"
 "software`."
 
-#: ../../ip-config/web-proxy.rst:35
+#: ../../ip-config/web-proxy.rst:34
 msgid ""
 "The service is configured with standard settings sufficient for operation"
 " so that it can be used immediately. It is possible to configure the port"
@@ -3385,7 +3438,7 @@ msgstr ""
 " dem der Dienst erreichbar ist, kann nach eigenen Wünschen konfiguriert "
 "werden (siehe :ref:`proxy-port`), voreingestellt ist Port ``3128``."
 
-#: ../../ip-config/web-proxy.rst:40
+#: ../../ip-config/web-proxy.rst:39
 msgid ""
 "If changes are made to the configuration, Squid must be restarted. This "
 "can be performed either via the UMC module :guilabel:`System services` or"
@@ -3395,11 +3448,11 @@ msgstr ""
 "gestartet werden. Dies kann entweder über das UMC-Modul "
 ":guilabel:`Systemdienste` oder auf der Kommandozeile erfolgen:"
 
-#: ../../ip-config/web-proxy.rst:44
+#: ../../ip-config/web-proxy.rst:43
 msgid "$ systemctl restart squid"
 msgstr "$ systemctl restart squid"
 
-#: ../../ip-config/web-proxy.rst:48
+#: ../../ip-config/web-proxy.rst:47
 msgid ""
 "In addition to the configuration possibilities via |UCSUCR| described in "
 "this document, it is also possible to set additional Squid configuration "
@@ -3409,11 +3462,11 @@ msgstr ""
 "über |UCSUCR| können in der Datei :file:`/etc/squid/local.conf` auch "
 "beliebige weitere Squid-Optionen gesetzt werden."
 
-#: ../../ip-config/web-proxy.rst:55
+#: ../../ip-config/web-proxy.rst:54
 msgid "Caching of web content"
 msgstr "Caching von Webseiten"
 
-#: ../../ip-config/web-proxy.rst:57
+#: ../../ip-config/web-proxy.rst:56
 msgid ""
 "Squid is a caching proxy, i.e., previously viewed contents can be "
 "provided from a cache without being reloaded from the respective web "
@@ -3426,7 +3479,7 @@ msgstr ""
 "Datenaufkommen über die Internetanbindung und kann zu einer schnelleren "
 "Beantwortung von HTTP-Anfragen führen."
 
-#: ../../ip-config/web-proxy.rst:62
+#: ../../ip-config/web-proxy.rst:61
 msgid ""
 "However, this caching function is not necessary for some environments or,"
 " in the case of cascaded proxies, it should not be activated for all of "
@@ -3440,11 +3493,11 @@ msgstr ""
 "|UCSUCRV| :envvar:`squid/cache` deaktiviert werden, indem diese auf den "
 "Wert ``no`` gesetzt wird. Anschließend muss Squid neu gestartet werden."
 
-#: ../../ip-config/web-proxy.rst:71
+#: ../../ip-config/web-proxy.rst:70
 msgid "Logging proxy accesses"
 msgstr "Protokollierung von Zugriffen"
 
-#: ../../ip-config/web-proxy.rst:73
+#: ../../ip-config/web-proxy.rst:72
 msgid ""
 "All accesses performed via the proxy server are stored in the log file "
 ":file:`/var/log/squid/access.log`. It can be used to follow which "
@@ -3455,11 +3508,11 @@ msgstr ""
 "Logdatei ist es möglich, nachzuvollziehen auf welche Webseiten "
 "zugegriffen wurde."
 
-#: ../../ip-config/web-proxy.rst:80
+#: ../../ip-config/web-proxy.rst:79
 msgid "Restriction of access to permitted networks"
 msgstr "Einschränkung des Zugriffs auf erlaubte Netzwerke"
 
-#: ../../ip-config/web-proxy.rst:82
+#: ../../ip-config/web-proxy.rst:81
 msgid ""
 "As standard, the proxy server can only be accessed from local networks. "
 "If, for example, a network interface with the address ``192.0.2.10`` and "
@@ -3478,7 +3531,7 @@ msgstr ""
 "werden. Dabei muss die CIDR-Notation verwendet werden, mehrere Netzwerke "
 "sind durch Leerzeichen zu trennen."
 
-#: ../../ip-config/web-proxy.rst:92
+#: ../../ip-config/web-proxy.rst:91
 msgid ""
 "$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
 "192.0.3.0/24\""
@@ -3486,7 +3539,7 @@ msgstr ""
 "$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
 "192.0.3.0/24\""
 
-#: ../../ip-config/web-proxy.rst:96
+#: ../../ip-config/web-proxy.rst:95
 msgid ""
 "Once Squid has been restarted, access is now permitted from the networks "
 "``192.0.2.0/24`` and ``192.0.3.0/24``. If configured to ``all``, proxy "
@@ -3496,15 +3549,15 @@ msgstr ""
 "``192.0.2.0/24`` und ``192.0.2.0/24`` erlaubt.  Durch Angabe von ``all`` "
 "kann der Zugriff auch aus allen Netzen erlaubt werden."
 
-#: ../../ip-config/web-proxy.rst:103
+#: ../../ip-config/web-proxy.rst:102
 msgid "Configuration of the ports used"
 msgstr "Konfiguration der verwendeten Ports"
 
-#: ../../ip-config/web-proxy.rst:108
+#: ../../ip-config/web-proxy.rst:107
 msgid "Access port"
 msgstr "Zugriffsport"
 
-#: ../../ip-config/web-proxy.rst:110
+#: ../../ip-config/web-proxy.rst:109
 msgid ""
 "As standard, the web proxy can be accessed via port ``3128``. If another "
 "port is required, this can be configured via the |UCSUCRV| "
@@ -3517,11 +3570,11 @@ msgstr ""
 "Univention Firewall muss zusätzlich die Paketfilterkonfiguration "
 "angepasst werden."
 
-#: ../../ip-config/web-proxy.rst:118
+#: ../../ip-config/web-proxy.rst:117
 msgid "Permitted ports"
 msgstr "Erlaubte Ports"
 
-#: ../../ip-config/web-proxy.rst:120
+#: ../../ip-config/web-proxy.rst:119
 msgid ""
 "In the standard configuration, Squid only forwards client requests "
 "intended for the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The "
@@ -3535,11 +3588,11 @@ msgstr ""
 ":envvar:`squid/webports` geändert werden, mehrere Angaben sind dabei "
 "durch Leerzeichen zu trennen."
 
-#: ../../ip-config/web-proxy.rst:127
+#: ../../ip-config/web-proxy.rst:126
 msgid "$ univention-config-registry set squid/webports=\"80 443\""
 msgstr "$ univention-config-registry set squid/webports=\"80 443\""
 
-#: ../../ip-config/web-proxy.rst:132
+#: ../../ip-config/web-proxy.rst:131
 msgid ""
 "With this setting, access is only allowed to ports 80 and 443 (HTTP and "
 "HTTPS)."
@@ -3547,11 +3600,11 @@ msgstr ""
 "Durch diese Einstellung wird nur noch der Zugriff auf die Ports 80 und "
 "443 (HTTP und HTTPS) erlaubt."
 
-#: ../../ip-config/web-proxy.rst:137
+#: ../../ip-config/web-proxy.rst:136
 msgid "User authentication on the proxy"
 msgstr "Benutzer-Authentifizierung am Proxy"
 
-#: ../../ip-config/web-proxy.rst:139
+#: ../../ip-config/web-proxy.rst:138
 msgid ""
 "It is sometimes necessary to restrict web access to certain users. Squid "
 "allows user-specific access regulation via group memberships. To allow "
@@ -3564,7 +3617,7 @@ msgstr ""
 "Gruppenmitgliedschaft zu ermöglichen, ist es hierbei erforderlich, dass "
 "eine Anmeldung des Benutzers am Proxy-Server durchgeführt wird."
 
-#: ../../ip-config/web-proxy.rst:146
+#: ../../ip-config/web-proxy.rst:145
 msgid ""
 "To prevent unauthorized users from opening websites nonetheless, "
 "additional measures are required to prevent these users from bypassing "
@@ -3577,7 +3630,7 @@ msgstr ""
 "kann z.B. erreicht werden, in dem in der Firewall alle HTTP-Anfragen mit "
 "Ausnahme des Proxys unterbunden werden."
 
-#: ../../ip-config/web-proxy.rst:151
+#: ../../ip-config/web-proxy.rst:150
 msgid ""
 "The proxy authentication (and as a result the possible verification of "
 "the group memberships) must firstly be enabled. There are three possible "
@@ -3587,11 +3640,11 @@ msgstr ""
 "Gruppenzugehörigkeiten muss zuerst aktiviert werden. Dafür werden drei "
 "verschiedene Mechanismen angeboten:"
 
-#: ../../ip-config/web-proxy.rst:157
+#: ../../ip-config/web-proxy.rst:154
 msgid "LDAP server authentication"
 msgstr "LDAP Server Authentifizierung"
 
-#: ../../ip-config/web-proxy.rst:156
+#: ../../ip-config/web-proxy.rst:155
 msgid ""
 "Direct authentication against the LDAP server. This is done by setting "
 "the |UCSUCRV| :envvar:`squid/basicauth` to ``yes`` and restarting Squid."
@@ -3600,11 +3653,11 @@ msgstr ""
 "die |UCSUCRV| :envvar:`squid/basicauth` auf ``yes`` gesetzt und Squid neu"
 " gestartet werden."
 
-#: ../../ip-config/web-proxy.rst:163
+#: ../../ip-config/web-proxy.rst:158
 msgid "NTLM authentication"
 msgstr "NTLM Authentifizierung"
 
-#: ../../ip-config/web-proxy.rst:160
+#: ../../ip-config/web-proxy.rst:159
 msgid ""
 "Authentication is performed via the NTLM interface. Users logged in on a "
 "Windows client then do not need to authenticate themselves again when "
@@ -3618,11 +3671,11 @@ msgstr ""
 ":envvar:`squid/ntlmauth` auf ``yes`` gesetzt und Squid neu gestartet "
 "werden."
 
-#: ../../ip-config/web-proxy.rst:172
+#: ../../ip-config/web-proxy.rst:164
 msgid "Kerberos authentication"
 msgstr "Kerberos Authentifizierung"
 
-#: ../../ip-config/web-proxy.rst:166
+#: ../../ip-config/web-proxy.rst:165
 msgid ""
 "Authentication is performed via Kerberos. Users logged in on a Windows "
 "client which is a member of a Samba/AD domain authenticate themselves on "
@@ -3641,7 +3694,7 @@ msgstr ""
 ":envvar:`squid/krb5auth` auf ``yes`` gesetzt und Squid neu gestartet "
 "werden."
 
-#: ../../ip-config/web-proxy.rst:174
+#: ../../ip-config/web-proxy.rst:173
 msgid ""
 "If NTLM is used an NTLM authentication is performed for every HTTP query "
 "as standard. If for example the website <https://www.univention.com/> is "
@@ -3663,7 +3716,7 @@ msgstr ""
 "Authentifizierung durchgeführt. Bei Problemen mit lokalen Benutzerkonten "
 "kann es helfen, diese Variable auf ``no`` zu setzen."
 
-#: ../../ip-config/web-proxy.rst:183
+#: ../../ip-config/web-proxy.rst:182
 msgid ""
 "In the standard setting all users can access the proxy. The |UCSUCRV| "
 ":envvar:`squid/auth/allowed_groups` can be used to limit the proxy access"
