@@ -36,7 +36,9 @@ repository, which is used to resolve dependencies between packages. While
 :command:`dpkg` works on a set of packages given on the command line,
 :command:`apt-get` builds that set of packages and their dependencies before
 invoking :command:`dpkg` on this set. :command:`apt-get` is a command line tool,
-which is fully described in its manual page :manpage:`apt-get(8)`. A more modern version with
+which is fully described in its manual page
+`apt-get(8) <https://manpages.debian.org/buster/apt/apt-get.8.en.html>`_.
+A more modern version with
 a text based user interface is :command:`aptitude`, while :command:`synaptic`
 provides a graphical frontend.
 
@@ -185,7 +187,7 @@ are needed to build a Debian package. The files and their format will be
 described in the following sections.
 
 To create an initial :file:`debian/` directory with all template files, invoke
-the :manpage:`dh_make(1)` command provided by the package :program:`dh-make`:
+the `dh_make(1) <https://manpages.debian.org/buster/dh-make/dh_make.1.en.html>`_ command provided by the package :program:`dh-make`:
 
 .. code-block::
 
@@ -289,7 +291,8 @@ example, but others must be completed using an editor.
    .. note:: Tabulators must be used for indentation in this file.
 
 :file:`debian/testdeb.install`
-   To compensate the missing :file:`Makefile`, :manpage:`dh_install(1)` is used
+   To compensate the missing :file:`Makefile`,
+   `dh_install(1) <https://manpages.debian.org/buster/debhelper/dh_install.1.en.html>`_ is used
    to install the executable. :command:`dh_install` is indirectly called by
    :command:`dh` from the :file:`debian/rules` file. To install the program into
    :file:`/usr/bin/`, the file needs to be created manually containing the

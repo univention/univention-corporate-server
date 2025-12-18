@@ -112,7 +112,8 @@ Debian specific second TAR archive or a patch file, which adds the
 :file:`debian/` directory and might also modify upstream files for better
 integration into a Debian system.
 
-When a source package is built, :manpage:`dpkg-source.1` separates the files
+When a source package is built,
+`dpkg-source.1 <https://manpages.debian.org/buster/dpkg-dev/dpkg-source.1.en.html>`_ separates the files
 belonging to the packaging process from files belonging to the upstream package.
 For this to work, :command:`dpkg-source` needs the original source either
 provided as a TAR archive or a separate directory containing the unpacked
@@ -166,7 +167,7 @@ The following files are required:
 :file:`compat`
    The :program:`Debhelper` tools support different compatibility levels. For
    UCS-3.x the file must contain a single line with the value ``7``. See
-   :manpage:`debhelper.7` for more details.
+   `debhelper.7 <https://manpages.debian.org/buster/debhelper/debhelper.7.en.html>`_ for more details.
 
 :file:`control`
    Contains control information about the source and all its binary packages.
@@ -183,7 +184,8 @@ The following files are required:
    process. See :ref:`deb-rules` below for more information.
 
 :file:`source/format`
-   This file configures how :manpage:`dpkg-source.1` separates the files
+   This file configures how
+   `dpkg-source.1 <https://manpages.debian.org/buster/dpkg-dev/dpkg-source.1.en.html>`_ separates the files
    belonging to the packaging process from files belonging to the upstream
    package. Historically, the Debian source format ``1.0`` shipped packages as a
    TAR file containing the upstream source plus one patch file, which contained
@@ -193,7 +195,7 @@ The following files are required:
    The new format ``3.0 (quilt)`` replaces the patch file with a second TAR
    archive containing the :file:`debian/` directory. Changes to upstream files
    are no longer applied as one giant patch, but split into logical changes and
-   applied using a built-in :manpage:`quilt.1`.
+   applied using a built-in `quilt.1 <https://manpages.debian.org/buster/quilt/quilt.1.en.html>`_.
 
    For simple packages, where there is no distinction between upstream and the
    packaging entity, the ``3.0 (native)`` format can be used instead, were all
@@ -210,11 +212,13 @@ process:
    :file:`/usr/share/doc/{package_name}/README.Debian`.
 
 :file:`{package}.cron.d`
-   Cron tab entries to be installed. See :manpage:`dh_installcron.1` for more
-   details.
+   Cron tab entries to be installed.
+   See `dh_installcron.1 <https://manpages.debian.org/buster/debhelper/dh_installcron.1.en.html>`_
+   for more details.
 
 :file:`{package}.dirs`
-   List of extra directories to be created. See :manpage:`dh_installdirs.1` for
+   List of extra directories to be created.
+   See `dh_installdirs.1 <https://manpages.debian.org/buster/debhelper/dh_installdirs.1.en.html>`_ for
    more details. May other :command:`dh_` tools automatically create directories
    themselves, so in most cases this file is unneeded.
 
@@ -222,37 +226,41 @@ process:
    List of files and directories to be copied into the package. This is normally
    used to partition all files to be installed into separate packages, but can
    also be used to install arbitrary files into packages. See
-   :manpage:`dh_install.1` for more details.
+   `dh_install.1 <https://manpages.debian.org/buster/debhelper/dh_install.1.en.html>`_ for more details.
 
 :file:`{package}.docs`
    List of documentation files to be installed in
-   :file:`/usr/share/doc/{package}/`. See :manpage:`dh_installdocs.1` for more
-   details.
+   :file:`/usr/share/doc/{package}/`.
+   See `dh_installdocs.1 <https://manpages.debian.org/buster/debhelper/dh_installdocs.1.en.html>`_
+   for more details.
 
 :file:`{package}.emacsen-install`; :file:`{package}.emacsen-remove`; :file:`{package}.emacsen-startup`
    Emacs specific files to be installed below
-   :file:`/usr/share/emacs-common/{package}/`. See
-   :manpage:`dh_installemacsen.1` for more details.
+   :file:`/usr/share/emacs-common/{package}/`.
+   See `dh_installemacsen.1 <https://manpages.debian.org/buster/debhelper/dh_installemacsen.1.en.html>`_
+   for more details.
 
 :file:`{package}.doc-base*`
    Control files to install and register extended HTML and PDF documentation.
-   See :manpage:`dh_installdocs.1` for more details.
+   See `dh_installdocs.1 <https://manpages.debian.org/buster/debhelper/dh_installdocs.1.en.html>`_ for more details.
 
 :file:`{package}.init.d`; :file:`{package}.default`
    Start-/stop script to manage a system daemon or service. See
-   :manpage:`dh_installinit.1` for more details.
+   `dh_installinit.1 <https://manpages.debian.org/buster/debhelper/dh_installinit.1.en.html>`_ for more details.
 
 :file:`{package}.manpage.{1}`; :file:`{package}.manpage.sgml`
    Manual page for programs, library functions or file formats, either directly
-   in :command:`troff` or SGML. See :manpage:`dh_installman.1` for more details.
+   in :command:`troff` or SGML.
+   See `dh_installman.1 <https://manpages.debian.org/buster/debhelper/dh_installman.1.en.html>`_ for more details.
 
 :file:`{package}.menu`
    Control file to register programs with the Debian menu system. See
-   :manpage:`dh_installmenu.1` for more details.
+   `dh_installmenu.1 <https://manpages.debian.org/buster/debhelper/dh_installmenu.1.en.html>`_ for more details.
 
 :file:`watch`
    Control file to specify the download location of this upstream package. This
-   can be used to check for new software versions. See :manpage:`uscan.1` for
+   can be used to check for new software versions.
+   See `uscan.1 <https://manpages.debian.org/buster/devscripts/uscan.1.en.html>`_ for
    more details.
 
 :file:`{package}.preinst`; :file:`{package}.postinst`; :file:`{package}.prerm`; :file:`{package}.postrm`
@@ -261,8 +269,9 @@ process:
 
 :file:`{package}.maintscript`
    Control file to simplify the handling of configuration files. See
-   :manpage:`dpkg-maintscript-helper.1` and :manpage:`dh_installdeb.1` for more
-   information.
+   `dpkg-maintscript-helper.1 <https://manpages.debian.org/buster/dpkg/dpkg-maintscript-helper.1.en.html>`_
+   and `dh_installdeb.1 <https://manpages.debian.org/buster/debhelper/dh_installdeb.1.en.html>`_
+   for more information.
 
 Other :program:`debhelper` programs use additional files, which are described in
 the respective manual pages.

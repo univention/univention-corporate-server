@@ -104,7 +104,7 @@ Digital signature
 -----------------
 
 From UCS 3.2 on the scripts must be digitally signed by an PGP (Pretty Good
-Privacy) key stored in the key-ring of :manpage:`apt-key.8`. The detached
+Privacy) key stored in the key-ring of ``apt-key.8``. The detached
 signature must be placed in a separate file next to each updater scripts with
 the additional filename extension :file:`.gpg`, that is :file:`preup.sh.gpg`
 and :file:`postup.sh.gpg`. These extra files are downloaded as well and any

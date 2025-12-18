@@ -14,7 +14,8 @@ over the network. LDAP objects consist of a collection of attributes which
 conform to so called LDAP schemata. An in depth documentation of LDAP is beyond
 the scope of this document. Other resources cover this topic exhaustively, for
 example `<https://www.zytrax.com/books/ldap/>`_ or the manual pages
-:manpage:`slapd.conf.5` and :manpage:`slapd.access.5`.
+`slapd.conf.5 <https://manpages.debian.org/buster/slapd/slapd.conf.5.en.html>`_
+and `slapd.access.5 <https://manpages.debian.org/buster/slapd/slapd.access.5.en.html>`_.
 
 At least it should be noted that OpenLDAP offers two fundamentally different
 tool sets for direct access or modification of LDAP data:
@@ -252,7 +253,8 @@ change the password associated with the machine account. This is controlled
 through the |UCSUCRV| :envvar:`server/password/change`. For UCS servers this is
 evaluated by the script
 :file:`/usr/lib/univention-server/server_password_change`, which is invoked
-nightly at 01:00 by :manpage:`cron.8`. The interval is controlled through a
+nightly at 01:00 by `cron.8 <https://manpages.debian.org/buster/cron/cron.8.en.html>`_.
+The interval is controlled through a
 second |UCSUCRV| :envvar:`server/password/interval`, which defaults to 21 days.
 
 The password is stored in the plain text file :file:`/etc/machine.secret`. Many
@@ -265,7 +267,7 @@ Hook scripts should be placed in the directory
 :file:`/usr/lib/univention-server/server_password_change.d/`. The name must
 consist of only digits, upper and lower ASCII characters, hyphens and
 underscores. The file must be executable and is called through
-:manpage:`run-parts.8`. It receives one argument, which is used to distinguish
+`run-parts.8 <https://manpages.debian.org/buster/debianutils/run-parts.8.en.html>`_. It receives one argument, which is used to distinguish
 three phases:
 
 .. _join-server-password-procedure:
@@ -274,8 +276,8 @@ three phases:
    password is changed. If any script terminates with an exit status unequal
    zero, the change is aborted.
 
-#. A new password is generated locally using :manpage:`makepasswd.1`. It is
-   changed in the Univention directory service through UDM and stored in
+#. A new password is generated locally using `makepasswd.1 <https://manpages.debian.org/buster/makepasswd/makepasswd.1.en.html>`_.
+   It's changed in the Univention directory service through UDM and stored in
    :file:`/etc/machine.secret`. The old password is logged in
    :file:`/etc/machine.secret.old`.
 
@@ -319,7 +321,9 @@ Install this file to :file:`/usr/lib/univention-server/server_password_change.d/
 
 
 init-scripts should only be invoked indirectly through
-:manpage:`deb-systemd-invoke.1p`. This is required for :command:`chroot`
+`deb-systemd-invoke.1p
+<https://manpages.debian.org/buster/init-system-helpers/deb-systemd-invoke.1p.en.html>`_.
+This is required for :command:`chroot`
 environments and allows the policy layer to control starting and stopping in
 certain special situations like during an system upgrade.
 

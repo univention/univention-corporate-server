@@ -250,7 +250,8 @@ This package provides several Python libraries located in the module
 
 :program:`univention.lib.ucrLogrotate`
    This module provides some helper functions internally used for parsing the
-   |UCSUCRVs| related to :manpage:`logrotate.8`.
+   |UCSUCRVs| related to
+   `logrotate.8 <https://manpages.debian.org/buster/logrotate/logrotate.8.en.html>`_.
 
 :program:`univention.lib.ucs`
    This module provides the class ``UCS_Version`` to more easily handle UCS
