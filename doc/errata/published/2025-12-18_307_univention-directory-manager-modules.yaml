@@ -16,3 +16,6 @@ desc: |
  * The performance of group membership updates for user and computer objects
    has been improved.
 bug: [58887, 58898, 58899]
+erratum: 307
+announced: 2025-12-18
+support: core
