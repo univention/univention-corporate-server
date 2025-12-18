@@ -176,6 +176,8 @@ linkcheck_allowed_redirects = {
 
 root_doc = "contents"
 
+linkcheck_rate_limit_timeout = 60
+
 rst_epilog = """
 .. include:: /../substitutions.txt
 .. include:: /links.txt
