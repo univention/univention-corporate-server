@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 17:18+0200\n"
-"PO-Revision-Date: 2024-05-29 17:20+0200\n"
+"POT-Creation-Date: 2025-12-18 15:15+0000\n"
+"PO-Revision-Date: 2025-12-18 16:19+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../mail/configuration-client.rst:8
 msgid "Configuration of mail clients for the mail server"
@@ -41,6 +41,7 @@ msgstr ""
 "Methode unterscheidet sich je nach Mail-Client. Der folgende Screenshot "
 "zeigt exemplarisch die Einrichtung von Mozilla Thunderbird."
 
+#: ../../mail/configuration-client.rst:22
 #: ../../mail/configuration-client.rst:25
 msgid "Setup of Mozilla Thunderbird"
 msgstr "Einrichtung von Mozilla Thunderbird"
@@ -92,8 +93,8 @@ msgstr ""
 "Um einen Relayhost einzurichten, geben Sie ihn als vollqualifizierten "
 "Domänennamen (FQDN) in der |UCSUCRV| :envvar:`mail/relayhost` an."
 
-#: ../../mail/configuration-server.rst:35
-#: ../../mail/configuration-server.rst:60
+#: ../../mail/configuration-server.rst:28
+#: ../../mail/configuration-server.rst:57
 msgid "Examples:"
 msgstr "Beispiele"
 
@@ -124,6 +125,7 @@ msgstr ""
 "``mx01.example.com`` auf Port ``587``."
 
 #: ../../mail/configuration-server.rst:37
+#, python-brace-format
 msgid ""
 ":program:`Postfix` determines the actual target address of the relay mail"
 " server by querying the MX/SRV record in the DNS. To turn off MX lookup, "
@@ -144,6 +146,7 @@ msgid "``ucr set mail/relayhost=\"[mx01.example.com]:587\"``"
 msgstr "``ucr set mail/relayhost=\"[mx01.example.com]:587\"``"
 
 #: ../../mail/configuration-server.rst:49
+#, python-brace-format
 msgid ""
 "If the relay host requires authentication for sending, set the |UCSUCRV| "
 ":envvar:`mail/relayauth` to ``yes`` and edit the "
@@ -235,12 +238,14 @@ msgstr ""
 "haben und wenn :envvar:`mail/postfix/tls/client/level` nicht den Wert "
 "``none`` hat."
 
-#: ../../mail/configuration-server.rst:98
+#: ../../mail/configuration-server.rst:96
 msgid ""
-":manpage:`postconf(5)` - manual page for :program:`postconf` - Postfix "
-"configuration parameters"
+"`postconf(5) "
+"<https://manpages.debian.org/buster/postfix/postconf.5.en.html>`_ - "
+"manual page for :program:`postconf` - Postfix configuration parameters"
 msgstr ""
-":manpage:`postconf(5)` - Manual Seite für :program:`postconf` - Postfix Konfigurationsparameter"
+"`postconf(5) <https://manpages.debian.org/buster/postfix/postconf.5.en.html>`_ - Manual Seite für :program:`postconf` - Postfix "
+"Konfigurationsparameter"
 
 #: ../../mail/configuration-server.rst:97
 msgid ""
@@ -333,7 +338,7 @@ msgstr ""
 "Auf einem |UCSUCS| Mailserver ist Postfix so konfiguriert, dass es auf "
 "Verbindungen an drei Ports lauscht:"
 
-#: ../../mail/configuration-server.rst:151
+#: ../../mail/configuration-server.rst:146
 msgid "Port 25 - SMTP"
 msgstr "Port 25 - SMTP"
 
@@ -352,7 +357,7 @@ msgstr ""
 ":envvar:`mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable` auf "
 "``yes`` gesetzt werden."
 
-#: ../../mail/configuration-server.rst:156
+#: ../../mail/configuration-server.rst:153
 msgid "Port 465 - SMTPS"
 msgstr "Port 465 - SMTPS"
 
@@ -367,7 +372,7 @@ msgstr ""
 "verschlüsselte Verbindung. ``SMTPS`` wurde zugunsten von Port 587 als "
 "veraltet erklärt, wird jedoch für Altsysteme aktiviert gelassen."
 
-#: ../../mail/configuration-server.rst:160
+#: ../../mail/configuration-server.rst:158
 msgid "Port 587 - Submission"
 msgstr "Port 587 - Submission"
 
@@ -833,7 +838,7 @@ msgstr ""
 "von Index-Dateien: :envvar:`mail/dovecot/process/mail_nfs_index`\\ "
 "``=yes``."
 
-#: ../../mail/configuration-server.rst:377
+#: ../../mail/configuration-server.rst:376
 msgid ""
 "`Mail Location Settings <dovecot-mail-location-settings_>`_ in the "
 "Dovecot documentation"
@@ -845,7 +850,7 @@ msgstr ""
 msgid "for more information about mailbox locations."
 msgstr "für weitere Informationen über Mailbox Orte."
 
-#: ../../mail/configuration-server.rst:380
+#: ../../mail/configuration-server.rst:379
 msgid ""
 "`Shared mailboxes <dovecot-shared-mailboxes_>`_ in the Dovecot "
 "documentation"
@@ -999,6 +1004,7 @@ msgid "Reading :file:`/var/log/dovecot.info` reveals a warning:"
 msgstr "Ein Blick in :file:`/var/log/dovecot.info` offenbart nun eine Warnung:"
 
 #: ../../mail/configuration-server.rst:448
+#, python-brace-format
 msgid ""
 "config: Warning: service auth { client_limit=2000 } is lower than "
 "required under max. load (15000)\n"
@@ -1066,6 +1072,7 @@ msgstr ""
 " Warnung:"
 
 #: ../../mail/configuration-server.rst:477
+#, python-brace-format
 msgid ""
 "master: Warning: fd limit (ulimit -n) is lower than required under max. "
 "load (2000 < 15000),…\n"
@@ -1149,6 +1156,7 @@ msgstr ""
 "Preise."
 
 #: ../../mail/dnsbl.rst:24
+#, python-brace-format
 msgid ""
 "The |UCSUCRV| :envvar:`mail/postfix/smtpd/restrictions/recipient` with a "
 "key-value pair :samp:`{SEQUENCE}={RULE}` must be set to be able to use "
@@ -1636,7 +1644,7 @@ msgstr ""
 "Einem Benutzer können drei verschiedene Arten von E-Mail-Adressen "
 "zugeordnet werden:"
 
-#: ../../mail/management.rst:49
+#: ../../mail/management.rst:42
 msgid "Primary email address"
 msgstr "Primäre E-Mail-Adresse"
 
@@ -1659,7 +1667,7 @@ msgstr ""
 "Domänenanteil der E-Mail-Adresse muss im UMC-Modul :guilabel:`E-Mail` "
 "registriert sein (siehe :ref:`mail-management-domains`)."
 
-#: ../../mail/management.rst:58
+#: ../../mail/management.rst:51
 msgid "Alternative email addresses"
 msgstr "Alternative E-Mail-Adressen"
 
@@ -1696,7 +1704,7 @@ msgstr ""
 "der gesamten Domäne eindeutig sein. Keinem anderen Benutzer kann die "
 "gleiche alternative Adresse zugewiesen werden."
 
-#: ../../mail/management.rst:71
+#: ../../mail/management.rst:66
 msgid "Forward email addresses"
 msgstr "E-Mailadressen zur Weiterleitung"
 
@@ -1788,7 +1796,7 @@ msgstr ""
 "Wird an diese Adresse eine E-Mail gesendet, empfangen sie alle Mitglieder"
 " der Mailingliste."
 
-#: ../../mail/management.rst:118
+#: ../../mail/management.rst:115 ../../mail/management.rst:118
 msgid "Creating a mailing list"
 msgstr "Einrichtung einer Mailingliste"
 
@@ -1938,7 +1946,7 @@ msgstr ""
 "(Standard ist ``no``), wird ein globaler IMAP-Ordner beim Löschen im UMC-"
 "Modul :guilabel:`Mail` auch tatsächlich von der Festplatte gelöscht."
 
-#: ../../mail/management.rst:190
+#: ../../mail/management.rst:187 ../../mail/management.rst:190
 msgid "Creating a shared IMAP folder"
 msgstr "Einrichtung eines globalen IMAP-Ordners"
 
@@ -1955,6 +1963,7 @@ msgid "Name (*)"
 msgstr "Name (*)"
 
 #: ../../mail/management.rst:207
+#, python-brace-format
 msgid ""
 "The name under which the IMAP folder is available in the email clients. "
 "The name displayed in the IMAP client differs depending on if an email "
@@ -2057,7 +2066,7 @@ msgstr ""
 "Die Zugriffsrechte haben folgende Auswirkungen für einzelne Benutzer oder"
 " Mitglieder der angegebenen Gruppe:"
 
-#: ../../mail/management.rst:257
+#: ../../mail/management.rst:256
 msgid "No access"
 msgstr "Keine"
 
@@ -2067,7 +2076,7 @@ msgstr ""
 "Es ist kein Zugriff möglich. Der Ordner wird nicht in der Ordnerliste "
 "angezeigt."
 
-#: ../../mail/management.rst:260
+#: ../../mail/management.rst:259
 msgid "Read"
 msgstr "Lesen"
 
@@ -2075,7 +2084,7 @@ msgstr "Lesen"
 msgid "The user may only perform read access to existing entries."
 msgstr "Es darf nur lesend auf bestehende Einträge zugegriffen werden."
 
-#: ../../mail/management.rst:263
+#: ../../mail/management.rst:262
 msgid "Append"
 msgstr "Anhängen"
 
@@ -2085,7 +2094,7 @@ msgstr ""
 "Bestehende Einträge dürfen nicht verändert werden, nur neue Einträge "
 "erzeugt werden."
 
-#: ../../mail/management.rst:267
+#: ../../mail/management.rst:265
 msgid "Write"
 msgstr "Schreiben"
 
@@ -2097,7 +2106,7 @@ msgstr ""
 "Neue Einträge in diesem Ordner anlegen, bestehende verändern oder "
 "bestehende löschen ist erlaubt."
 
-#: ../../mail/management.rst:271
+#: ../../mail/management.rst:269
 msgid "Post"
 msgstr "Senden"
 
@@ -2109,7 +2118,7 @@ msgstr ""
 "Eine E-Mail an diesen Ordner als Empfänger senden ist zugelassen. Dies "
 "wird nicht von jedem Client unterstützt."
 
-#: ../../mail/management.rst:274
+#: ../../mail/management.rst:273
 msgid "All"
 msgstr "Alles"
 
@@ -2165,6 +2174,7 @@ msgstr ""
 "angeben:"
 
 #: ../../mail/management.rst:297
+#, python-brace-format
 msgid ""
 "The threshold for when the warning message should be issued can be "
 "configured in the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/text`, "
@@ -2266,7 +2276,7 @@ msgstr ""
 "nicht mit diesen Versionen und darf daher nicht mit der separaten App "
 ":program:`OX App Suite` aus dem App Center verwendet werden."
 
-#: ../../mail/ox-connector.rst:28
+#: ../../mail/ox-connector.rst:26
 msgid "OX Connector App documentation"
 msgstr "OX Connector App Dokumentation"
 
