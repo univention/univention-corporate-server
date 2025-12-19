@@ -48,7 +48,6 @@ conditions:
       scope: base
 permission-sets:
   container-dc-role-1-all:
-  - udm:container/dc:create
   - udm:container/dc:modify
   - udm:container/dc:read
   - udm:container/dc:read-property-all
