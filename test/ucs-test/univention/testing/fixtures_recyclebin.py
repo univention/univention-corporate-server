@@ -23,7 +23,7 @@ RECYCLEBIN_DN = "cn=recyclebin,cn=internal"
 
 def _deleted_object_dn(univention_object_identifier: str) -> str:
     """Get the DN of the deleted object in the recyclebin"""
-    return f'univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(univention_object_identifier)},{RECYCLEBIN_DN}'
+    return f'univentionRecycleBinID={escape_dn_chars(univention_object_identifier)},{RECYCLEBIN_DN}'
 
 
 def _restore_in_ucs(univention_object_identifier: str, udm: UCSTestUDM) -> str:

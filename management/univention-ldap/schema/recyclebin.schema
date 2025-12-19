@@ -63,7 +63,8 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.9 NAME 'univentionRecycleBinOriginalEnt
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
 	SINGLE-VALUE )
 
-attributetype ( 1.3.6.1.4.1.10176.4221.1.10 NAME 'univentionRecycleBinOriginalUniventionObjectIdentifier'
+attributetype ( 1.3.6.1.4.1.10176.4221.1.10
+	NAME ('univentionRecycleBinID' 'univentionRecycleBinOriginalUniventionObjectIdentifier')
 	DESC 'Original univentionObjectIdentifier of the deleted object'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
@@ -98,7 +99,7 @@ objectclass ( 1.3.6.1.4.1.10176.4221.2.2 NAME 'univentionRecycleBinObject'
 	SUP top STRUCTURAL
 	MUST ( univentionRecycleBinOriginalDN $
 	       univentionRecycleBinDeleteAt $
-	       univentionRecycleBinOriginalUniventionObjectIdentifier $
+	       univentionRecycleBinID $
 	       univentionRecycleBinOriginalObjectClass $
 	       univentionRecycleBinDeletionDate $
 	       univentionRecycleBinOriginalEntryUUID $
