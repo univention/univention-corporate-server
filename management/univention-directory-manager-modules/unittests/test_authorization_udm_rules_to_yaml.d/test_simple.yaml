@@ -15,7 +15,7 @@ capability-bundles:
 conditions:
   object-type-is-container-dc:
     udm:conditions:target_object_type_equals:
-      objectType: container/dc
+      objecttype: container/dc
   position-1431802d:
     udm:conditions:target_position_in:
       position: ldap_base
@@ -23,9 +23,9 @@ conditions:
 permission-sets:
   container-dc-role-all:
   - udm:container/dc:read
-  - udm:container/dc:read-property-*
+  - udm:container/dc:read-property-all
   - udm:container/dc:search
-  - udm:container/dc:search-property-*
+  - udm:container/dc:search-property-all
 role-capability-mapping:
   udm:default-roles:
     role:
