@@ -41,7 +41,7 @@ guardian_configuration () {
     TOKEN=$(guardian_get_token "$CLIENT_ID" "$BINDUSER" "$BINDPWD" "$KEYCLOAK_URL")
     # create app
     guardian_curl "$TOKEN" \
-        -d '{"name":"demoapp", "display_name":"Univention Directory Manager"}' \
+        -d '{"name":"demoapp", "display_name":"Demo Application"}' \
         "$MANAGEMENT_SERVER/apps/register"
     # create namespace
     guardian_curl "$TOKEN" \
