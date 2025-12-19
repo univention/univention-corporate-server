@@ -30,6 +30,11 @@ with the following sections.
    for configuring password requirements in a Samba-enabled domain,
    including password length, history, age, and complexity settings.
 
+:ref:`end-user-self-service`
+   Describes the installation, configuration, and features of the *End User Self Service*,
+   including contact information management, user self-registration with email verification,
+   and user deregistration.
+
 .. toctree::
 
    policies
