@@ -100,7 +100,7 @@ class Reference(namedtuple('Reference', ['source_attr', 'target_module', 'target
             ldap_attr = {'dn': 'univentionRecycleBinOriginalDN'}.get(ldap_attr, ldap_attr)
             filter_str = filter_format('(&(objectClass=univentionRecycleBinObject)(%s=%s))', [ldap_attr, self.lookup_value])
 
-            from univention.admin.handlers.recyclebin.deletedobject import RECYCLEBIN_BASE
+            from univention.admin.handlers.recyclebin.removedobject import RECYCLEBIN_BASE
 
             results = lo.authz_connection.searchDn(base=RECYCLEBIN_BASE, filter=filter_str)
             if results:
