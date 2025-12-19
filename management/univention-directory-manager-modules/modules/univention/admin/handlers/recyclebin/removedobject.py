@@ -180,7 +180,7 @@ mapping.register('originalObjectType', 'univentionRecycleBinOriginalType', None,
 mapping.register('purgeAt', 'univentionRecycleBinDeleteAt', None, udm_mapping.ListToString)
 mapping.register('removalDate', 'univentionRecycleBinDeletionDate', None, udm_mapping.ListToString)
 mapping.register('referencedBy', 'univentionRecycleBinReference', map_reference, unmap_reference)
-mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinOriginalUniventionObjectIdentifier', None, udm_mapping.ListToString)
+mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinID', None, udm_mapping.ListToString)
 mapping.register('originalDN', 'univentionRecycleBinOriginalDN', None, udm_mapping.ListToString)
 mapping.register('originalObjectClasses', 'univentionRecycleBinOriginalObjectClass')
 mapping.register('originalEntryUUID', 'univentionRecycleBinOriginalEntryUUID', None, udm_mapping.ListToString)

@@ -19,7 +19,7 @@ RECYCLEBIN_DN = "cn=recyclebin,cn=internal"
 
 def _deleted_object_dn(u_obj_id):
     """Get the DN of the deleted object in the recyclebin"""
-    return f'univentionRecycleBinOriginalUniventionObjectIdentifier={escape_dn_chars(u_obj_id)},{RECYCLEBIN_DN}'
+    return f'univentionRecycleBinID={escape_dn_chars(u_obj_id)},{RECYCLEBIN_DN}'
 
 
 def __recyclebin_policy(udm, ldap_base):

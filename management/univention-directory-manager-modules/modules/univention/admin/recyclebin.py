@@ -130,11 +130,11 @@ def create_references(lo, object_type: str, original_dn: str | None, oldattr: di
                 '(&(objectClass=univentionRecycleBinObject)(univentionRecycleBinOriginalType=groups/group)(uniqueMember=%s))',
                 [original_dn],
             ),
-            attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinOriginalUniventionObjectIdentifier'],
+            attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinID'],
         )
         for _dn, attrs in results:
             group_original_dn = attrs.get('univentionRecycleBinOriginalDN', [b''])[0].decode('UTF-8')
-            group_uuid = attrs.get('univentionRecycleBinOriginalUniventionObjectIdentifier', [b''])[0].decode('UTF-8')
+            group_uuid = attrs.get('univentionRecycleBinID', [b''])[0].decode('UTF-8')
             if group_uuid:
                 admin_log.debug('Found deleted group with member', group_dn=group_original_dn, member=original_dn, uuid=group_uuid)
                 refs.append(
@@ -163,10 +163,10 @@ def to_uuid(dn: str, lo: univention.admin.uldap.access) -> tuple[str, str]:
         filter=filter_format(
             '(&(objectClass=univentionRecycleBinObject)(univentionRecycleBinOriginalDN=%s))', [dn],
         ),
-        attr=['univentionRecycleBinOriginalUniventionObjectIdentifier'],
+        attr=['univentionRecycleBinID'],
     )
-    if results and results[0][1].get('univentionRecycleBinOriginalUniventionObjectIdentifier'):
-        uuid = results[0][1]['univentionRecycleBinOriginalUniventionObjectIdentifier'][0].decode('utf-8')
+    if results and results[0][1].get('univentionRecycleBinID'):
+        uuid = results[0][1]['univentionRecycleBinID'][0].decode('utf-8')
         admin_log.debug('Found UUID in Recycle Bin', dn=dn, uuid=uuid)
         return 'uuid', uuid
 

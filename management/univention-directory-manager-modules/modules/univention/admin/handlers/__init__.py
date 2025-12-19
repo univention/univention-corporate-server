@@ -967,8 +967,8 @@ class simpleLdap:
             restore['univentionObjectType'] = self.oldattr['univentionRecycleBinOriginalType']
         if 'univentionRecycleBinOriginalEntryUUID' in self.oldattr:
             restore['entryUUID'] = self.oldattr['univentionRecycleBinOriginalEntryUUID']
-        if 'univentionRecycleBinOriginalUniventionObjectIdentifier' in self.oldattr:
-            restore['univentionObjectIdentifier'] = self.oldattr['univentionRecycleBinOriginalUniventionObjectIdentifier']
+        if 'univentionRecycleBinID' in self.oldattr:
+            restore['univentionObjectIdentifier'] = self.oldattr['univentionRecycleBinID']
         ml = list(restore.items())
 
         self.log.trace('Restoring object', original_dn=original_dn, modlist=ml)

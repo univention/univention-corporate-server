@@ -71,12 +71,12 @@ class RecycleBinListener(ListenerModuleHandler):
             base=RECYCLEBIN_BASE,
             scope='one',
             filter='(objectClass=univentionRecycleBinObject)',
-            attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinOriginalUniventionObjectIdentifier', 'entryCSN'],
+            attr=['univentionRecycleBinOriginalDN', 'univentionRecycleBinID', 'entryCSN'],
         )
         # sort by entryCSN in case the same DN was used twice but with different UUIDs, so that we get the most recent one
         for dn, attr in sorted(results, key=lambda e: e[1]['entryCSN'][0], reverse=True):
             orig_dn = attr['univentionRecycleBinOriginalDN'][0].decode('UTF-8')
-            uoid = attr['univentionRecycleBinOriginalUniventionObjectIdentifier'][0].decode('ASCII')
+            uoid = attr['univentionRecycleBinID'][0].decode('ASCII')
             if orig_dn and uoid and orig_dn not in self.deleted_objects_cache:
                 self.deleted_objects_cache[orig_dn] = uoid
 
@@ -255,7 +255,7 @@ class RecycleBinListener(ListenerModuleHandler):
         """Generate Recycle Bin DN for original object."""
         rdn = ldap.dn.dn2str([
             [
-                ('univentionRecycleBinOriginalUniventionObjectIdentifier', uoid, ldap.AVA_STRING),
+                ('univentionRecycleBinID', uoid, ldap.AVA_STRING),
             ],
         ])
         return f'{rdn},{RECYCLEBIN_BASE}'

@@ -155,7 +155,7 @@ def test_create_and_restore(deleted_object_user_properties):
 
         deleted_obj = recyclebin_module.lookup(
             None, lo,
-            f'univentionRecycleBinOriginalUniventionObjectIdentifier={deleted_object_user_properties.originalUniventionObjectIdentifier}',
+            f'univentionRecycleBinID={deleted_object_user_properties.originalUniventionObjectIdentifier}',
         )[0]
         deleted_obj.open()
 
@@ -416,7 +416,7 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
     # Test various search filters (including wildcards)
     search_tests = [
         (f'originalUniventionObjectIdentifier={user_object_id}', 'by originalUniventionObjectIdentifier'),
-        (f'univentionRecycleBinOriginalUniventionObjectIdentifier={user_object_id}', 'by long attr name'),
+        (f'univentionRecycleBinID={user_object_id}', 'by long attr name'),
         (f'originalName={username}', 'by exact originalName'),
         (f'originalName={username[:-1]}*', 'by originalName prefix wildcard'),
         (f'originalName=*{username[1:]}', 'by originalName suffix wildcard'),
@@ -688,7 +688,7 @@ def test_entryuuid_univention_object_identifier_preservation_across_delete_resto
     verify_ldap_object(deleted_obj_dn, should_exist=True)
     deleted_attrs = lo.get(deleted_obj_dn, attr=['*'])
     stored_uuid = deleted_attrs.get('univentionRecycleBinOriginalEntryUUID')
-    stored_id = deleted_attrs.get('univentionRecycleBinOriginalUniventionObjectIdentifier')
+    stored_id = deleted_attrs.get('univentionRecycleBinID')
     assert stored_uuid[0] == original_uuid
     assert stored_id[0] == original_id
     restored_dn = udm.restore_object('recyclebin/removedobject', dn=deleted_obj_dn)
