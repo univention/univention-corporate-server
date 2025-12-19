@@ -2,13 +2,35 @@ package guardian.conditions
 
 import future.keywords.if
 
+target_position_in_check_dn_position(dn, position, scope) if {
+    scope == "base"
+    regex.match(concat("", [`(?i)^[a-z]+=[^,]+,`, position, `$`]), dn)
+}
+
+target_position_in_check_dn_position(dn, position, scope) if {
+    scope == "subtree"
+    endswith(lower(dn), lower(position))
+}
+
 condition("udm:conditions:target_position_in", parameters, condition_data) if {
-    # TODO: evaluate "*"
-    # TODO: evaluate "$CONTEXT"?
-    parameters.scope = "base" {
-        parameters.position + condition_data.target.ldap_base == condition_data.target.position
-    }
-    parameters.scope = "subtree" {
-        endswith(condition_data.target.position, parameters.position + condition_data.target.ldap_base)
-    }
+    target_position_in_check_dn_position(condition_data.target.old.attributes.dn, parameters.position, parameters.scope)
 } else = false
+
+# For Rego Playground (https://play.openpolicyagent.org):
+#
+# result := condition(
+#             "udm:conditions:target_position_in",
+#             {
+#                 "position": "cn=users,dc=ucs,dc=test",
+#                 "scope": "subtree",
+#             },
+#             {
+#                 "target": {
+#                     "old": {
+#                         "attributes": {
+#                             "dn": "uid=testuser,cn=ou,cn=users,dc=ucs,dc=test"
+#                         }
+#                     }
+#                 }
+#             }
+# )

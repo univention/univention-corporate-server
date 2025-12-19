@@ -24,9 +24,12 @@ from univention.config_registry import ucr
 log = logging.getLogger('ACL').getChild(__name__)
 
 APP_NAME = 'udm'
+APP_DISPLAY_NAME = 'Univention Directory Manager'
 DEFAULT_ROLES_NAMESPACE = 'default-roles'
 CONDITIONS_NAMESPACE_NAME = 'conditions'
 CONTEXTS_NAMESPACE_NAME = 'contexts'
+UMC_NAMESPACE_NAME = 'umc'
+UDM_REST_NAMESPACE_NAME = 'udm-rest'
 LOCAL_PATH = '/var/lib/univention-directory-manager-modules/guardian'
 
 
@@ -63,6 +66,9 @@ class UniventionDirectoryManagerRoles:
 
         subparser = subparsers.add_parser('create-permissions')
         subparser.set_defaults(func=self.create_udm_permissions)
+
+        subparser = subparsers.add_parser('create-conditions')
+        subparser.set_defaults(func=self.create_conditions)
 
         subparser = subparsers.add_parser('create-roles')
         subparser.set_defaults(func=self.create_roles_from_acl)
@@ -119,11 +125,12 @@ class UniventionDirectoryManagerRoles:
             conf.parse()
             yaml_content = conf.to_yaml()
             fd.write(yaml_content)
-        log.info('Wrote temporary YAML to %s:\n%s', cfg, yaml_content)
+        log.info('Wrote temporary YAML to %s', cfg)
         self.args.config = fd
         self.create_roles_from_yaml()
 
     def create_roles_from_yaml(self):
+        log.info('Load configuration %s', self.args.config.name)
         conf = AuthorizationConfig(self.args.config.name)
         conf.parse()
         conf.create(self.client)
@@ -134,20 +141,21 @@ class UniventionDirectoryManagerRoles:
 
     def create_app(self):
         log.info("Creating App")
-        self.client.create_app(APP_NAME, "Univention Directory Manager")
+        self.client.create_app(APP_NAME, APP_DISPLAY_NAME)
 
     def create_namespaces(self):
         log.info("Creating Namespaces")
         self.client.create_namespace(APP_NAME, DEFAULT_ROLES_NAMESPACE)
         self.client.create_namespace(APP_NAME, CONDITIONS_NAMESPACE_NAME)
         self.client.create_namespace(APP_NAME, CONTEXTS_NAMESPACE_NAME)
-        # self.client.create_namespace(APP_NAME, 'umc')
-        # self.client.create_namespace(APP_NAME, 'udm-rest')
+        self.client.create_namespace(APP_NAME, UMC_NAMESPACE_NAME)
+        self.client.create_namespace(APP_NAME, UDM_REST_NAMESPACE_NAME)
 
     def create_conditions(self):
         log.info("Creating Conditions")
         path_list = Path(self.args.condition_dir).glob("*.json")
         for data_file in path_list:
+            log.debug('Processing file %s', data_file)
             with open(data_file) as fd:
                 cond_info = json.load(fd)
             cond_name = data_file.stem
@@ -170,6 +178,7 @@ class UniventionDirectoryManagerRoles:
         log.info("Creating Permissions")
         lo, po = univention.admin.uldap.getAdminConnection()
         for modname, module in univention.admin.modules.modules.items():
+            log.info("Creating Permissions for module %s", modname)
             univention.admin.modules.init(lo, po, module)
 
             permissions = []
@@ -201,11 +210,20 @@ class UniventionDirectoryManagerRoles:
                     (f'writeonly-property-{propname}', f'Allows write but prevents read permission on {module.short_description}: {prop.short_description}'),
                     (f'none-property-{propname}', f'Prevent read and write permissions on {module.short_description}: {prop.short_description}'),
                 ])
+            permissions.extend([
+                ('read-property-all', f'Allow to read all properties on {module.short_description}'),
+                ('search-property-all', f'Allow to search for all properties on {module.short_description}'),
+                ('write-property-all', f'Allow to write all properties on {module.short_description}'),
+                ('readonly-property-all', f'Prevent write permission on all properties on {module.short_description}'),
+                ('writeonly-property-all', f'Allows write but prevents read permission on  all properties on {module.short_description}'),
+                ('none-property-all', f'Prevent read and write permissions on  all properties on {module.short_description}'),
+            ])
 
             MOD_NAMESPACE = self._sanitize_module_name(modname)
             self.client.create_namespace(APP_NAME, MOD_NAMESPACE, f'UDM {module.short_description} ({modname}) permissions')
             for permission_name, display_name in permissions:
                 self.client.create_permission(APP_NAME, MOD_NAMESPACE, permission_name, display_name)
+            log.info('%s permissions created', len(permissions))
 
     def _sanitize_module_name(self, module_name):
         return module_name.replace('/', '-')
@@ -219,4 +237,4 @@ if __name__ == "__main__":
     try:
         UniventionDirectoryManagerRoles.main()
     except requests.HTTPError as exc:
-        log.exception('ERROR: %s', exc.response.json())
+        log.exception('ERROR: HTTP: %s %s', exc.response.status_code, exc, stack_info=True)

@@ -7,15 +7,17 @@ import functools
 import json
 import pathlib
 import re
-import time
+from time import sleep
 
 import requests
 
-from univention.config_registry import ucr
-from univention.dn import DN
+from univention.admin.log import log
+from univention.dn import DN  # type: ignore
 
 
 TIMEOUT = 30
+
+log = log.getChild(__name__)
 
 
 class LocalGuardianAuthorizationClient:
@@ -114,7 +116,9 @@ class LocalGuardianAuthorizationClient:
             for cap in caps:
                 if not cap['conditions'] or cap['relation'](self._evaluate_condition(cond, actor, [r.split('&', 1) for r in actor['roles']], target, contexts, namespaces, extra_request_data) for cond in cap['conditions']):
                     permissions |= set(cap['permissions'])
-            target_permissions.append({'target_id': target['new_target']['id'] or target['old_target']['id'], 'permissions': permissions})
+            # TODO: Fix!!!
+            target_permissions.append({'target_id': target['old_target']['id'], 'permissions': permissions})
+            # target_permissions.append({'target_id': target['new_target']['id'] or target['old_target']['id'], 'permissions': permissions})
         return target_permissions
 
     def _extract_roles(self, roles):
@@ -285,6 +289,14 @@ class TokenInvalidError(Exception):
     pass
 
 
+class UnprocessableEntity(Exception):
+    pass
+
+
+class BadGateway(Exception):
+    pass
+
+
 class GuardianAuthorizationClient:
 
     def __init__(self, fqdn, keycloak_fqdn, username='Administrator', password='univention', realm='ucs'):
@@ -301,33 +313,40 @@ class GuardianAuthorizationClient:
         pass
 
     def check_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, targeted_permissions_to_check=None, general_permissions_to_check=None):
+        if not targets:
+            raise ValueError('Targets must be set!')
+        if not targets[0]['old_target']:
+            raise ValueError('At least old target must be set!')
+
+        # Workaround for missing Guardian dynamic contexts.
+        # See: https://git.knut.univention.de/univention/dev/ucs/-/blob/5.2-4/management/univention-directory-manager-modules/README-authorization.md#no-dynamic-contexts-allowed
+        extra_actor_roles = {'actor_roles': [self._prepare_role(r, with_context_value=True) for r in actor['roles']]}
+
         data = {
-            "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
+            # "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
             "actor": {
                 "id": actor['id'],
-                "roles": [expand_role_string(r) for r in actor['roles']],
+                "roles": [self._prepare_role(r) for r in actor['roles']],
                 "attributes": actor['attributes'],
             },
             "targets": [
                 {
-                    "old_target": {
-                        'id': target['old_target']['id'],
-                        'attributes': target['old_target']['attributes'],
-                        'roles': [expand_role_string(r) for r in target['old_target']['roles']],
-                    } if target['old_target'] else target['old_target'],
-                    "new_target": {
-                        'id': target['new_target']['id'],
-                        'attributes': target['new_target']['attributes'],
-                        'roles': [expand_role_string(r) for r in target['new_target']['roles']],
-                    } if target['new_target'] else target['new_target'],
-                } for target in targets or []
+                    "old_target": self._prepare_target(target['old_target']),
+                    "new_target": self._prepare_target(target['new_target'] or target['old_target']),
+                } for target in targets or {}
             ],
             "contexts": [expand_role_string(c) for c in contexts],
-            "targeted_permissions_to_check": [expand_role_string(t) for t in targeted_permissions_to_check or []],
-            "general_permissions_to_check": [expand_role_string(g) for g in general_permissions_to_check or []],
-            "extra_request_data": extra_request_data,
+            "targeted_permissions_to_check": [expand_role_string(t) for t in targeted_permissions_to_check] if targeted_permissions_to_check else [],
+            "general_permissions_to_check": [expand_role_string(g) for g in general_permissions_to_check] if general_permissions_to_check else [],
+            "extra_request_data": extra_request_data | extra_actor_roles or {},
         }
-        response = self.post('/permissions/check', data).json()
+        log.trace('request to /permissions/check: %s', data)
+
+        response = self.post('/permissions/check', data)
+        if response:
+            response = response.json()
+        log.trace('response: %s', response)
+
         return response
 
     def get_and_check_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, targeted_permissions_to_check=None, general_permissions_to_check=None):
@@ -337,32 +356,40 @@ class GuardianAuthorizationClient:
         return permissions
 
     def get_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, include_general_permissions=False):
+        if not targets:
+            raise ValueError('Targets must be set!')
+        if not targets[0]['old_target']:
+            raise ValueError('At least old target must be set!')
+
+        # Workaround for missing Guardian dynamic contexts.
+        # See: https://git.knut.univention.de/univention/dev/ucs/-/blob/5.2-4/management/univention-directory-manager-modules/README-authorization.md#no-dynamic-contexts-allowed
+        extra_actor_roles = {'actor_roles': self._prepare_roles(actor['roles'], with_context_value=True)}
+
         data = {
-            "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
+            # "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
             "actor": {
                 "id": actor['id'],
-                "roles": [expand_role_string(r) for r in actor['roles']],
+                "roles": self._prepare_roles(actor['roles']),
                 "attributes": actor['attributes'],
             },
             "targets": [
                 {
-                    "old_target": {
-                        'id': target['old_target']['id'],
-                        'attributes': target['old_target']['attributes'],
-                        'roles': [expand_role_string(r) for r in target['old_target']['roles']],
-                    } if target['old_target'] else target['old_target'],
-                    "new_target": {
-                        'id': target['new_target']['id'],
-                        'attributes': target['new_target']['attributes'],
-                        'roles': [expand_role_string(r) for r in target['new_target']['roles']],
-                    } if target['new_target'] else target['new_target'],
-                } for target in targets or []
+                    "old_target": self._prepare_target(target['old_target']),
+                    "new_target": self._prepare_target(target['new_target'] or target['old_target']),
+                } for target in targets or {}
             ],
             "contexts": [expand_role_string(c) for c in contexts],
             "include_general_permissions": include_general_permissions,
-            "extra_request_data": extra_request_data,
+            "include_target_permissions": True,
+            "extra_request_data": extra_request_data | extra_actor_roles or {},
         }
-        response = self.post('/permissions', data).json()
+        log.trace('request to /permissions: %s', data)
+
+        response = self.post('/permissions', data)
+        if response:
+            response = response.json()
+        log.trace('response: %s', response)
+
         return {
             'actor_id': response['actor_id'],
             'general_permissions': {implode_permission(p) for p in response['general_permissions']},
@@ -370,7 +397,56 @@ class GuardianAuthorizationClient:
                 {'target_id': tp['target_id'], 'permissions': {implode_permission(p) for p in tp['permissions']}}
                 for tp in response['target_permissions']
             ],
+        } if response else {}
+
+    @staticmethod
+    def _prepare_target(target: dict) -> dict:
+        return {
+            'id': target['id'],
+            'attributes': target['attributes'],
+            'roles': [expand_role_string(r) for r in target['roles']],
         }
+
+    @staticmethod
+    def _prepare_role(role_str: str, with_context_value: bool = False) -> dict:
+        """
+        Prepares the role dictionary for Guardian.
+
+        :param role_str: UDM role e.g. udm:default-roles:my-role&udm:contexts:my-context=my-value
+        :type role_str: str
+        :param with_context_value:
+            Flag if the context value should be added to the Guardian role.
+            Not supported from Guardian. Only used in extra_request_data!
+        :type with_context_value: bool
+        :return: Guardian role as dict e.g.
+            {
+                'app_name': 'udm',
+                'namespace_name': 'default-roles',
+                'name': 'my-role',
+                'context': {
+                    'app_name': 'udm',
+                    'namespace_name': 'contexts',
+                    'name': 'my-context',
+                    'value': 'my-value', <= Not supported from Guardian. Only used in extra_request_data!
+                }
+            }
+        :rtype: dict
+        """
+        role, _, role_context = role_str.partition('&')
+        role = _expand_role_string(role)
+        if _ and role_context:
+            context, _, context_value = role_context.partition('=')
+            if context:
+                role['context'] = _expand_role_string(context)
+                if with_context_value and context_value:
+                    role['context']['value'] = context_value
+        return role
+
+    def _prepare_roles(self, roles: list[str], with_context_value: bool = False) -> dict:
+        return [
+            self._prepare_role(role, with_context_value=with_context_value)
+            for role in roles
+        ]
 
     @staticmethod
     @functools.lru_cache(maxsize=1)
@@ -393,15 +469,20 @@ class GuardianAuthorizationClient:
                 if attempt > 5:
                     raise
                 else:
-                    time.sleep(2)
+                    sleep(2)
                     continue
             break
         token = response.json()["access_token"]
         return token
 
-    def handle_status_code(self, response):
+    def handle_status_code(self, response: requests.Response) -> requests.Response:
         if response.status_code == 401:
             raise TokenInvalidError()
+        elif response.status_code == 422:
+            raise UnprocessableEntity(response.json())
+        elif response.status_code == 502:
+            # TODO: Check why so often 502 - Proxy error
+            raise BadGateway()
 
         response.raise_for_status()
         return response
@@ -414,14 +495,24 @@ class GuardianAuthorizationClient:
     def post(self, path, data):
         return self.request('POST', path, data)
 
-    def request(self, method, path, data):
-        response = requests.request(method, f"{self._base_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
-        try:
-            return self.handle_status_code(response)
-        except TokenInvalidError:
-            self.get_token.cache_clear()
-            response = requests.request(method, f"{self._base_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
-            return self.handle_status_code(response)
+    def request(self, method, path, data) -> requests.Response:
+        max_retries = 5
+        request_error = None
+        for i in range(5):
+            try:
+                response = requests.request(method, f"{self._base_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+                return self.handle_status_code(response)
+            except TokenInvalidError as exc:
+                request_error = exc
+                self.get_token.cache_clear()
+                log.warning('TokenInvalidError error. Retry with cleared cache (%s/%s)', i + 1, max_retries)
+                continue
+            except BadGateway as exc:
+                request_error = exc
+                log.warning('BadGateway error. Retry (%s/%s)', i + 1, max_retries)
+                sleep(2)
+                continue
+        raise request_error
 
 
 def expand_role(app_name, namespace_name, name):

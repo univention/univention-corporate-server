@@ -3,7 +3,7 @@
   "documentation": "",
   "parameters": [
     {
-      "name": "objectType",
+      "name": "objecttype",
       "value_type": "STRING"
     }
   ]

@@ -1,0 +1,18 @@
+{
+  "display_name": "Unknown",
+  "documentation": "Unknown",
+  "parameters": [
+    {
+      "name": "position",
+      "value_type": "STRING"
+    },
+    {
+      "name": "scope",
+      "value_type": "STRING"
+    },
+    {
+      "name": "context",
+      "value_type": "STRING"
+    }
+  ]
+}

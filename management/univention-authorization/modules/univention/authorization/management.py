@@ -13,14 +13,19 @@ from time import sleep
 from urllib.parse import quote
 
 import requests
+from requests import Response, Session
 
 
 log = logging.getLogger('ACL').getChild(__name__)
 ALREADY_EXISTS = object()
-TIMEOUT = 10
+TIMEOUT = 30
 
 
 class TokenInvalidError(Exception):
+    pass
+
+
+class BadGateway(Exception):
     pass
 
 
@@ -32,7 +37,7 @@ class GuardianManagementClient:
         self.password = password
         self.oidc_token_endpoint_url = oidc_token_endpoint_url
         self.oidc_client_id = oidc_client_id
-        self.session = requests.Session()
+        self.session = Session()
 
     def __enter__(self):
         return self
@@ -77,6 +82,8 @@ class GuardianManagementClient:
 
         if response.status_code == 401:
             raise TokenInvalidError(response.json())
+        elif response.status_code == 502:
+            raise BadGateway()
 
         if not response.ok:
             log.debug('response=%r', response.__dict__)
@@ -88,6 +95,9 @@ class GuardianManagementClient:
         headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
         return headers
 
+    def get(self, path) -> Response:
+        return self.request('GET', path, {})
+
     def post(self, path, data):
         return self.request('POST', path, data)
 
@@ -97,14 +107,38 @@ class GuardianManagementClient:
     def patch(self, path, data):
         return self.request('PATCH', path, data)
 
-    def request(self, method, path, data):
-        response = self.session.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
-        try:
-            return self.handle_status_code(response)
-        except TokenInvalidError:
-            self.get_token.cache_clear()
-            response = self.session.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
-            return self.handle_status_code(response)
+    def delete(self, path):
+        return self.request('DELETE', path, {})
+
+    def request(self, method, path, data) -> Response:
+        max_retries = 5
+        request_error = None
+        for i in range(max_retries):
+            try:
+                response = self.session.request(
+                    method=method,
+                    url=f"{self.management_url}{path}",
+                    headers=self.generate_headers(),
+                    json=data,
+                    timeout=TIMEOUT,
+                )
+                return self.handle_status_code(response)
+            except TokenInvalidError as exc:
+                request_error = exc
+                self.get_token.cache_clear()
+                log.warning('TokenInvalidError error. Retry with cleared cache (%s/%s)', i + 1, max_retries)
+                continue
+            except BadGateway as exc:
+                request_error = exc
+                log.warning('BadGateway error. Retry (%s/%s)', i + 1, max_retries)
+                sleep(2)
+                continue
+            except requests.exceptions.ConnectionError as exc:
+                request_error = exc
+                log.warning('Connection error. Try to reconnect (%s/%s)', i + 1, max_retries)
+                sleep(2)
+                self.session = Session()
+        raise request_error
 
     def create_app(self, app_name, display_name):
         data = {"name": app_name, "display_name": display_name}
@@ -223,10 +257,11 @@ class GuardianManagementClient:
     ):
         if conditions is None:
             conditions = []
+
         data = {
             "name": name,
             "display_name": display_name,
-            "role": role,
+            "role": role if isinstance(role, dict) else {"app_name": app_name, "namespace_name": namespace_name, "name": role},
             "conditions": conditions,
             "relation": relation,
             "permissions": [
@@ -239,7 +274,7 @@ class GuardianManagementClient:
         if response is ALREADY_EXISTS:
             self.modify_role_capability_mapping(app_name, namespace_name, name, display_name, role, permissions, conditions=None, relation="AND")
         else:
-            log.info("Role-Capability-Mapping %r created: %s", name, response.json())
+            log.info("Role-Capability-Mapping %r created: %s", name, response)
 
     def modify_role_capability_mapping(
         self, app_name, namespace_name, name, display_name, role, permissions, conditions=None, relation="AND",
@@ -259,6 +294,10 @@ class GuardianManagementClient:
         response = self.put(f"/capabilities/{quote(app_name)}/{quote(namespace_name)}/{quote(name)}", data)
 
         log.info("Role-Capability-Mapping %r modified: %s", name, response.json())
+
+    def delete_role_capability_mapping(self, app_name, namespace_name, name):
+        response = self.delete(f"/capabilities/{quote(app_name)}/{quote(namespace_name)}/{quote(name)}")
+        log.info("Role-Capability-Mapping %r deleted: %s", name, response)
 
     def prune(self, apps, contexts, namespaces, roles, capabilities):
         pass  # not possible, Guardian supports no removal

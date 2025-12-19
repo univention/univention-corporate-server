@@ -431,12 +431,36 @@ class UDMAuthorizationConfig:
                         if '*' in actions:
                             actions.update(set(ACTIONS))
                             actions.remove('*')
-                        elif 'read' in actions:
-                            actions.add('search')
+                        if 'read' in actions:
+                            if not univention.admin.modules.supports(object_type, 'search'):
+                                actions.remove('read')
+                            else:
+                                actions.add('search')
+                        if 'search' in actions:
+                            if not univention.admin.modules.supports(object_type, 'search'):
+                                actions.remove('search')
+                        if 'restore' in actions:
+                            if not univention.admin.modules.supports(object_type, 'restore'):
+                                actions.remove('restore')
+                        if 'create' in actions:
+                            if not univention.admin.modules.supports(object_type, 'add'):
+                                actions.remove('create')
+                        if 'modify' in actions:
+                            if not univention.admin.modules.supports(object_type, 'edit'):
+                                actions.remove('modify')
+                        if 'rename' in actions:
+                            if not univention.admin.modules.supports(object_type, 'edit'):
+                                actions.remove('rename')
+                        if 'remove' in actions:
+                            if not univention.admin.modules.supports(object_type, 'remove'):
+                                actions.remove('remove')
+                        if 'move' in actions:
+                            if not univention.admin.modules.supports(
+                                object_type, 'move',
+                            ) and not univention.admin.modules.supports(object_type, 'subtree_move'):
+                                actions.remove('move')
 
-                        permissions.update({
-                            f'udm:{object_type}:{action}' for action in sorted(actions)
-                        })
+                        permissions.update({f'udm:{object_type}:{action}' for action in sorted(actions)})
                         continue
 
                     # grant given properties
@@ -454,7 +478,7 @@ class UDMAuthorizationConfig:
                         perms.add('search')
 
                     permissions.update({
-                        f'udm:{object_type}:{perm}-property-{propname}'
+                        f'udm:{object_type}:{perm}-property-{"all" if propname == "*" else propname}'
                         for propname in prop['properties']
                         for perm in perms
                     })
@@ -490,7 +514,7 @@ class UDMAuthorizationConfig:
                     cap['conditions'].setdefault('AND', []).append(ot_condition)
                     conf.conditions[ot_condition] = {
                         'udm:conditions:target_object_type_equals': {
-                            'objectType': object_type,
+                            'objecttype': object_type,
                         },
                     }
 

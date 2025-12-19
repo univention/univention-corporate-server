@@ -25,7 +25,7 @@ ROLE_CACHE_SIZE = 1000
 
 
 def auth_log(action, actor, target, **kwargs):
-    log.debug('%s by %s to %s not allowed', action, actor["id"], target.get("id"), **kwargs)
+    log.warning('%s by %s to %s not allowed', action, actor["id"], target.get("id"), **kwargs)
 
 
 def get_user(lo, user_dn: str):
@@ -161,9 +161,6 @@ class Authorization:
         return self.filter_search_results(lo, results, context)
 
     def filter_search_results_attrs(self, lo, results):
-        if not self.enabled:
-            return results
-
         targets = []
         results_ext = []
         for result in results:
@@ -181,7 +178,7 @@ class Authorization:
                 'attributes': {
                     'dn': dn,
                     'id': dn,
-                    'objectType': module,
+                    'objecttype': module,
                     'position': self.lo.parentDn(dn) or LDAP_BASE,
                     'properties': props,
                     # 'options': ...,
@@ -189,7 +186,7 @@ class Authorization:
                     'uuid': None,
                 },
             }
-            targets.append({'old_target': target, 'new_target': self._empty_target()})
+            targets.append({'old_target': target, 'new_target': None})
             results_ext.append((
                 module, dn, result, set(mod.property_descriptions),
 
@@ -224,7 +221,7 @@ class Authorization:
             ]
         else:
             targets = [
-                self._get_targets(lo, None, target_obj)
+                self._get_targets(lo=lo, old_target=target_obj, new_target=None)
                 for target_obj in results
             ]
             results_ext = [
@@ -232,7 +229,6 @@ class Authorization:
                 for result in results
             ]
         filtered = self._filter_search_results(lo, results_ext, targets)
-
         response = []
         for result, module, readable_attributes in filtered:
             if not context or not context.get('result_is_ldap_dn'):
@@ -249,13 +245,14 @@ class Authorization:
     def _filter_search_results(self, lo, results, targets):
         if not results:
             return results  # FIXME: less error prone but allows side channel timing attacks
-
         actor = self._get_actor(lo)
+        # target_permissions_to_check = [f'udm:{_san_module(module)}:read' for module, _, _, _ in results]
         allowed, permissions_result = self._get_and_check_permissions(
             actor,
             targets,
             *self._get_extras({x[0] for x in results}),
             # general_permissions_to_check=[f'udm:{mod}:read'],  # FIXME: no general permission can be granted, as the object type might differ
+            # targeted_permissions_to_check=target_permissions_to_check,
         )
         if not permissions_result['actor_has_all_general_permissions']:
             auth_log('search', actor, {'id': 'multiple targets'}, general=allowed)
@@ -264,18 +261,23 @@ class Authorization:
 
         filtered = []
         for i, (module, dn, result, all_properties) in enumerate(results):
-            target_permissions = permissions_result['target_permissions'][i]
-            assert target_permissions['target_id'] == dn, (target_permissions['target_id'], dn)  # TODO: replace with UUID
+            target_permission = [p for p in permissions_result['target_permissions'] if p['target_id'] == dn]
+            if len(target_permission) == 1:
+                target_permission = target_permission[0]
+            elif len(target_permission) == 0:
+                log.process('No target permission found!')
+                continue
+            else:
+                raise Exception('Unknown state!')
 
             mod = _san_module(module)
 
-            if not {f'udm:{mod}:read', f'udm:{mod}:search'} & target_permissions['permissions']:
-                auth_log('search', actor, {'id': target_permissions['target_id']})
+            if not {f'udm:{mod}:read', f'udm:{mod}:search'} & target_permission['permissions']:
+                auth_log('search', actor, {'id': target_permission['target_id']})
                 continue
 
-            readable_attributes = self._get_readable_properties(target_permissions['permissions'], mod, all_properties)
+            readable_attributes = self._get_readable_properties(target_permission['permissions'], mod, all_properties)
             filtered.append((result, module, readable_attributes))
-
         return filtered
 
     def is_create_allowed(self, obj, raise_exception=True):
@@ -351,11 +353,18 @@ class Authorization:
                     'id': report_type,
                     'roles': [],
                     'attributes': {
-                        'objectType': module,
+                        'objecttype': module,
                         # 'position': obj.lo.parentDn(obj.old_dn) or LDAP_BASE if old else obj.lo.parentDn(obj.dn) or LDAP_BASE,
                     },
                 },
-                'new_target': self._empty_target(),
+                'new_target': {
+                    'id': report_type,
+                    'roles': [],
+                    'attributes': {
+                        'objecttype': module,
+                        # 'position': obj.lo.parentDn(obj.old_dn) or LDAP_BASE if old else obj.lo.parentDn(obj.dn) or LDAP_BASE,
+                    },
+                },
             }],
             *self._get_extras({mod}),
             targeted_permissions_to_check=[f'udm:{mod}:report-create'],
@@ -431,9 +440,10 @@ class Authorization:
                 unreadable.setdefault(mod, set()).update(perms.get(action, set()))
 
         props = readable.get(module, set())
-        if '*' in props:
+        if '*' in props or 'all' in props:
             props |= {_san_property(p) for p in all_properties}
             props -= {'*'}
+            props -= {'all'}
         props -= unreadable.get(module, set())
         return props
 
@@ -447,9 +457,10 @@ class Authorization:
                 unwriteable.setdefault(mod, set()).update(perms.get(action, set()))
 
         props = writeable.get(module, set())
-        if '*' in props:
+        if '*' in props or 'all' in props:
             props |= {_san_property(p) for p in all_properties}
             props -= {'*'}
+            props -= {'all'}
         props -= unwriteable.get(module, set())
         return props
 
@@ -468,13 +479,13 @@ class Authorization:
 
     def _get_targets(self, lo, old_target, new_target=None):
         return {
-            'old_target': self._get_target(old_target, old=True) if old_target is not None and old_target.exists() else self._empty_target(),
-            'new_target': self._get_target(new_target) if new_target is not None else self._empty_target(),
+            'old_target': self._get_target(old_target, old=True),
+            'new_target': self._get_target(new_target),
         }
 
     def _get_dn_targets(self, dn, module, lo):
         return {
-            'old_target': self._empty_target(),
+            'old_target': self._get_dn_target(dn, module, lo),
             'new_target': self._get_dn_target(dn, module, lo),
         }
 
@@ -499,10 +510,10 @@ class Authorization:
 
     def _get_target(self, obj, old=False):
         return {
-            'id': obj.old_dn if old else obj.dn,
-            'roles': self._get_target_roles(obj.module, obj.old_dn),
+            'id': obj.old_dn if old and obj.old_dn else obj.dn,
+            'roles': self._get_target_roles(obj.module, obj.old_dn if old and obj.old_dn else obj.dn),
             'attributes': self._get_representation(obj, old),
-        }
+        } if obj else None
 
     def _get_dn_target(self, dn, module, lo):
         return {
@@ -511,7 +522,7 @@ class Authorization:
             'attributes': {
                 'dn': dn,
                 'id': None,
-                'objectType': module,
+                'objecttype': module,
                 'position': lo.parentDn(dn) or LDAP_BASE,
                 'properties': {},
                 'options': {},
@@ -531,14 +542,14 @@ class Authorization:
     def _get_representation(self, obj, old=False):
         """Get a represenation of the object like UDM REST API would serve it"""
         return {
-            'dn': obj.old_dn if old else obj.dn,
-            'id': None,
-            'objectType': obj.module,
+            'dn': obj.old_dn if old and obj.old_dn else obj.dn,
+            'id': obj.old_dn if old and obj.old_dn else obj.dn,
+            'objecttype': obj.module,
             'position': obj.lo.parentDn(obj.old_dn) or LDAP_BASE if old else obj.lo.parentDn(obj.dn) or LDAP_BASE,
             'properties': self._decode_properties(obj, obj.oldinfo) if old else self._decode_properties(obj, obj.info),
             'options': self._decode_options(obj, obj.old_options) if old else self._decode_options(obj, obj.options),
-            'policies': None,
-            'uuid': None,
+            # 'policies': None,
+            # 'uuid': None,
         }
 
     def _decode_properties(self, obj, props):
