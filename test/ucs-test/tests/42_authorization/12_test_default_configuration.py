@@ -1,3 +1,5 @@
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
+## desc: Test some UDM permissions. Before that test, the complete installation of the Guardian permissions, apps etc. must be finished!
 from pprint import pprint
 
 import pytest
