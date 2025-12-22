@@ -39,7 +39,8 @@ desc: |
    (CVE-2025-21887, CVE-2024-50143)
  * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
    (CVE-2025-21861)
-bug: [58903]
+bug: [58906]
+note: This is the 2nd of two parts.
 cve:
 - CVE-2025-23143
 - CVE-2025-39913
