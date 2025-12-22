@@ -31,3 +31,6 @@ cve:
 - CVE-2025-14330
 - CVE-2025-14331
 - CVE-2025-14333
+erratum: 309
+announced: 2025-12-22
+support: core
