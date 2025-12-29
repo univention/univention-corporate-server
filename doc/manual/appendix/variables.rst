@@ -7,6 +7,23 @@
 
 This appendix lists the |UCSUCRVs| mentioned in the document.
 
+.. envvar:: appcenter/update/skip-zsync
+
+   When this variable is set to ``true``, :program:`zsync` will be skipped
+   during App Center updates and app metadata will be downloaded directly via
+   HTTPS. This is useful in environments with restrictive proxies that only
+   allow HTTPS or do not support HTTP Range requests.
+
+
+.. envvar:: appcenter/update/zsync-timeout
+
+   Sets a timeout in seconds for :program:`zsync` operations. If
+   :program:`zsync` does not complete within this time, the operation fails and
+   falls back to direct download.  This prevents long wait times in problematic
+   proxy environments. Default is 10 seconds. Can be set to 0 to disable the
+   timeout. Recommended range: 5-300 seconds.
+
+
 .. envvar:: auth/faillog
 
    Configures the automatic locking of users after failed login attempts in the
@@ -95,6 +112,18 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    :ref:`ad-connector-ad-connector-setup`.
 
 
+.. envvar:: connector/debug/level
+
+   Specifies the amount of debug information to be written to
+   :file:`/var/log/univention/connector-s4.log`. Possible values are 0-5.
+
+
+.. envvar:: connector/debug/udm/level
+
+   Specifies the debug level for UDM operations to be written to
+   :file:`/var/log/univention/connector-s4.log`. Possible values are 0-5.
+
+
 .. envvar:: cups/cups-pdf/anonymous
 
    Configures the target directory for the *Generic CUPS-PDF Printer* for
@@ -153,6 +182,19 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    Activates the management of block list entries in UDM.
    Default value is ``false``.
    For information about how to activate, see :ref:`udm-blocklists-activate`.
+
+.. envvar:: directory/manager/cmd/debug/level
+
+   This variable configures the verbosity of log messages in
+   :file:`/var/log/univention/directory-manager-cmd.log`. Possible values: 0-5
+   (0: only error messages to 5: all debug statements).
+
+.. envvar:: directory/manager/rest/debug/level
+
+   The verbosity of log messages in
+   :file:`/var/log/univention/directory-manager-rest.log`. Possible values:
+   0-5/99 (0: only error messages to 5: all debug statements, with = 99
+   sensitive data like clear text passwords is logged as well).
 
 .. envvar:: directory/manager/templates/alphanum/whitelist
 
@@ -448,6 +490,17 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    Defines Linux kernel modules that must not be loaded during system
    boot. Single items must be separated with a semicolon (``;``). For more
    information, see :ref:`computers-hardware-drivers-kernel-modules`.
+
+.. envvar:: ldap/authz-regexp/federated-accounts
+
+   Defines whether to add the :program:`authz-regexp` to map SASL usernames to
+   LDAP DN's for federated accounts. Caution: If activated a login with a
+   normal user with a UUID as username will no longer work.
+
+.. envvar:: ldap/authz-regexp/users
+
+   Defines whether to add the :program:`authz-regexp` to map SASL usernames to
+   LDAP DN's.
 
 .. envvar:: ldap/database/internal/acl/blocklists/groups/read
 
@@ -1394,6 +1447,20 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    extension.
 
 
+.. envvar:: umc/server/debug/level
+
+   This variable configures the verbosity of log messages in
+   :file:`/var/log/univention/management-console-server.log`. Possible values:
+   0-5/99 (0: only error messages to 5: all debug statements, with = 99
+   sensitive data like clear text passwords is logged as well).
+
+.. envvar:: umc/module/debug/level
+
+   The verbosity of log messages in
+   :file:`/var/log/univention/management-console-module-*`. Possible values:
+   0-5/99 (0: only error messages to 5: all debug statements, with = 99
+   sensitive data like clear text passwords is logged as well).
+
 .. envvar:: umc/self-service/account-deregistration/enabled
 
    To activate the :program:`Self Service` deregistration, set the variable to
@@ -1447,3 +1514,8 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    the UMC first tries a single sign-on login through SAML
    before using the regular login.
    For more information, refer to :ref:`central-management-umc-login`.
+
+.. envvar:: update/debug/level
+
+   Specifies the amount of debug information to be written to
+   :file:`/var/log/univention/univention-updater.log`. Possible values are 0-5.
