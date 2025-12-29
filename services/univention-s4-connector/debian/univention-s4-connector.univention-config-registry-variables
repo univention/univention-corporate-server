@@ -43,7 +43,7 @@ Categories=service-s4con
 
 [connector/debug/level]
 Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s5.log. Possible values are 0-5.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s4.log. Possible values are 0-5.
 Type=int
 Min=0
 Max=5
