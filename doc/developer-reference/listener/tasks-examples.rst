@@ -1,4 +1,4 @@
-.. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
+.. SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _listener-example:
@@ -25,7 +25,7 @@ Source code:
 
 .. code:: python
 
-   # SPDX-FileCopyrightText: 2017-2025 Univention GmbH
+   # SPDX-FileCopyrightText: 2017-2026 Univention GmbH
    # SPDX-License-Identifier: AGPL-3.0-only
 
    from univention.listener import ListenerModuleHandler

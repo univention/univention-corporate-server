@@ -3,7 +3,7 @@
 # Univention Join Hook
 #  ensures only systems with a certain UCS version can join into the domain
 #
-# SPDX-FileCopyrightText: 2020-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2020-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 eval "$(univention-config-registry shell version/version version/patchlevel)"

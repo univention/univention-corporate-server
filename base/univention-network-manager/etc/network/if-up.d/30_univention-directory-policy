@@ -3,7 +3,7 @@
 # Univention Network Manager
 #  network script: calls univention-directory-policy
 #
-# SPDX-FileCopyrightText: 2009-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2009-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 [ -x /etc/init.d/univention-directory-policy ] || exit 0

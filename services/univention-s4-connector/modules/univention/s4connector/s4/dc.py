@@ -3,7 +3,7 @@
 # Univention S4 Connector
 #  dc sync
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 from logging import getLogger

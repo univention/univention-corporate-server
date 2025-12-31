@@ -2,7 +2,7 @@
  * Python Heimdal
  *	Bindings for the ticket object of heimdal
  *
- * SPDX-FileCopyrightText: 2003-2025 Univention GmbH
+ * SPDX-FileCopyrightText: 2003-2026 Univention GmbH
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 #ifndef __TICKET_H__

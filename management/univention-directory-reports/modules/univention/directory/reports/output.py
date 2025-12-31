@@ -2,7 +2,7 @@
 # Univention Directory Reports
 #  write an interpreted token structure to a file
 #
-# SPDX-FileCopyrightText: 2007-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2007-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import codecs

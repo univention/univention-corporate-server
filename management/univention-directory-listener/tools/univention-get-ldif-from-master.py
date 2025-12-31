@@ -2,7 +2,7 @@
 #
 # Univention Directory Listener
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """Read LDAP from the Primary Directory Node and create LDIF file (and update local schema)"""

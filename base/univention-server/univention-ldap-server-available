@@ -3,7 +3,7 @@
 # Univention System Role Package
 #  helper script: checks the connection to the LDAP server.
 #
-# SPDX-FileCopyrightText: 2010-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2010-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 eval "$(/usr/sbin/univention-config-registry shell 'ldap/server/.*')"

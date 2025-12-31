@@ -1,7 +1,7 @@
 #
 # Univention Management Console documentation build configuration file, created by
 #
-# SPDX-FileCopyrightText: 2014-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 # sphinx-quickstart on Wed Jun 13 14:44:25 2012.

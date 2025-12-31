@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable-msg=C0103,E0611,R0904
-# SPDX-FileCopyrightText: 2014-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """Unit test for :py:mod:`univention.config_registry_info`"""

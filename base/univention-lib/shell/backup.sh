@@ -1,7 +1,7 @@
 #!/bin/sh
 # Univention Common Shell Library
 #
-# SPDX-FileCopyrightText: 2017-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2017-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # Clean old backups in /var/univention-backup/ that are older than

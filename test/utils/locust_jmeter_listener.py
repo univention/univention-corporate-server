@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2024-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 """
 a listener to provide results from locust tests in a JMeter compatible format

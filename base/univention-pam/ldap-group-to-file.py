@@ -3,7 +3,7 @@
 # Univention PAM
 #   Dump all ldap groups with members to a single file
 #
-# SPDX-FileCopyrightText: 2011-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import argparse

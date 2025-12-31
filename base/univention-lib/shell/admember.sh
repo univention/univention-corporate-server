@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # Univention admember Shell Library
 #
-# SPDX-FileCopyrightText: 2014-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # create a ucs-sso A record in AD

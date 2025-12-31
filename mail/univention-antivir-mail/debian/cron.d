@@ -1,7 +1,7 @@
 # cron job for the univention-antivir-mail package
 # (remove old files every 6 hours)
 #
-# SPDX-FileCopyrightText: 2001-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2001-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 SHELL=/bin/sh

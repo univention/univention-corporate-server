@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 # Univention Common Shell Library
 #
-# SPDX-FileCopyrightText: 2011-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 UCS_JS_DIR='/usr/lib/univention-install'

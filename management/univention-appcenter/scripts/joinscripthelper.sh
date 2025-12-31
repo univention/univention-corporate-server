@@ -1,6 +1,6 @@
 # Helper lib for writing join-scripts for the Univention App Center
 #
-# SPDX-FileCopyrightText: 2015-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 . /usr/share/univention-join/joinscripthelper.lib

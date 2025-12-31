@@ -2,7 +2,7 @@
 #
 # Univention Monitoring Plugin samba drs repl
 #
-# SPDX-FileCopyrightText: 2010-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2010-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 from samba.credentials import Credentials

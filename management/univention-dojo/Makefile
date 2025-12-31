@@ -3,7 +3,7 @@
 # Univention Dojo Package
 #  Makefile for building/installing the package
 #
-# SPDX-FileCopyrightText: 2008-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2008-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 .PHONY: build dojo dojox dijit dijit-themes util patches download-libs download clean

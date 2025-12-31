@@ -3,7 +3,7 @@
 # Univention Common Python and Shell Library
 #  rules file for the debian package
 #
-# SPDX-FileCopyrightText: 2002-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2002-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 #export DH_VERBOSE=1

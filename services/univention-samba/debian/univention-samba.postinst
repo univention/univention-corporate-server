@@ -3,7 +3,7 @@
 # Univention Samba
 #  postinst script for the debian package
 #
-# SPDX-FileCopyrightText: 2001-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2001-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 dpkg-statoverride --update --add root root 0750 /var/log/samba || true

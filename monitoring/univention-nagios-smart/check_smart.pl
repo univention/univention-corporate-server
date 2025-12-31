@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # Check SMART status of ATA/SCSI disks, returning any usable metrics as perfdata.

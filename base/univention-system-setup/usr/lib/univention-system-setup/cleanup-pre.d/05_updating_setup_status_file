@@ -2,7 +2,7 @@
 #
 # Update status file of Univention System Setup
 #
-# SPDX-FileCopyrightText: 2016-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2016-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 echo -n '"cleanup-scripts"' > /var/www/ucs_setup_process_status.json

@@ -3,7 +3,7 @@
 # Univention custom user and group name mapping
 #  listener module: mapping custom user and group names for well known sids
 #
-# SPDX-FileCopyrightText: 2014-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 from __future__ import annotations

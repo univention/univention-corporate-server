@@ -1,4 +1,4 @@
-REM SPDX-FileCopyrightText: 2021-2025 Univention GmbH
+REM SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 REM
 REM SPDX-License-Identifier: AGPL-3.0-only
 

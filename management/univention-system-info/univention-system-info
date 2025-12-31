@@ -3,7 +3,7 @@
 # Univention System Info
 #  collects information about the hardware
 #
-# SPDX-FileCopyrightText: 2009-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2009-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 TEMPDIR=$(mktemp -d)
@@ -70,7 +70,7 @@ display_help() {
 
 display_header() {
 	echo "univention-sysinfo: collect information about your system"
-	echo "Copyright 2009-2025 Univention GmbH, Germany"
+	echo "Copyright 2009-2026 Univention GmbH, Germany"
 	echo ""
 }
 

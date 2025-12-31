@@ -3,7 +3,7 @@
 # Univention Management Console
 # Univention Configuration Registry Module to rewrite SAML SP configuration for UMC
 #
-# SPDX-FileCopyrightText: 2015-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 

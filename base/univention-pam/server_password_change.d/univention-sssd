@@ -3,7 +3,7 @@
 # Univention nss ldap
 #   machine password hook script
 #
-# SPDX-FileCopyrightText: 2011-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 . /usr/lib/univention-server/lib/server_password_change/debug.sh

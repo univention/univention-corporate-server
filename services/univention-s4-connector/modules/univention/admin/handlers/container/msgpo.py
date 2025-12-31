@@ -2,7 +2,7 @@
 # Univention S4 Connector
 #  UDM module for MS GPOs
 #
-# SPDX-FileCopyrightText: 2012-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2012-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import univention.admin.handlers

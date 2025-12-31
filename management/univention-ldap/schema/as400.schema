@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 attributetype ( 1.3.6.1.4.1.10176.2.899 NAME 'as400screen'

@@ -58,7 +58,7 @@ License: BSD-3-Clause
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Files: debian/* src/oauthbearer.c src/pam_oauthbearer.5 src/sasl_oauthbearer.5 README.md
-Copyright: 2022-2025 Univention GmbH
+Copyright: 2022-2026 Univention GmbH
 License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available

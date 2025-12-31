@@ -3,7 +3,7 @@
 # Univention Package Database
 #  postinst script for the debian package
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 dpkg-maintscript-helper rm_conffile /etc/cron.weekly/univention-pkgdb-clean 6.0.17-3 univention-pkgdb -- "$@"

@@ -1,4 +1,4 @@
-" SPDX-FileCopyrightText: 2025 Univention GmbH
+" SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 " SPDX-License-Identifier: AGPL-3.0-only
 " To make use this file an entry `set exrc` is needed in your vimrc file
 " Within a paragraph `gqit` can be used for auto-aligning the [i]nner [t]ag,

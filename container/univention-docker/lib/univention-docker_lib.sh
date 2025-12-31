@@ -1,6 +1,6 @@
 # UCS Docker shell function collection
 #
-# SPDX-FileCopyrightText: 2015-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 CONT_ID_FILE=/var/lib/docker/.stopped_containers

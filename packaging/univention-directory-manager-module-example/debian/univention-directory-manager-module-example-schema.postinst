@@ -3,7 +3,7 @@
 # Example Schema for Univention Directory Manager Example Module
 #  postinst file for the example schema debian package for the directory manager example module
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 #DEBHELPER#

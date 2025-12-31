@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 bugzilla --bugzilla https://forge.univention.org/bugzilla/xmlrpc.cgi query --outputformat '%{id}: %{target_milestone} %{summary}' -b $(tr '\n' ',' < missing)

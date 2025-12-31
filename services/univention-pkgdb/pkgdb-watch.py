@@ -2,7 +2,7 @@
 # Univention Software-Monitor
 #  listener module that watches the availability of the software monitor service
 #
-# SPDX-FileCopyrightText: 2010-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2010-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 from __future__ import annotations

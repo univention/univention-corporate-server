@@ -3,7 +3,7 @@
 # Univention System Setup
 # appliance hook script called at the end of appliance wizard setup
 #
-# SPDX-FileCopyrightText: 2016-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2016-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os.path

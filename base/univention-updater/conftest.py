@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # pylint: disable-msg=C0301,R0903,R0913
 #
-# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2024-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import builtins

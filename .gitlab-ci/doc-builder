@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # vim:set expandtab shiftwidth=4 tabstop=4:
-# SPDX-FileCopyrightText: 2014-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 """
 Generate Gitlab pipeline to build UCS documentation.

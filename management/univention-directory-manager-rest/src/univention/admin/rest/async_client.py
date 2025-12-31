@@ -3,7 +3,7 @@
 # Univention Directory Manager
 #  REST API async client
 #
-# SPDX-FileCopyrightText: 2019-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2019-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 """
 Sample asynchronous client for the UDM REST API.

@@ -3,7 +3,7 @@
 # Univention Management Console
 #  module: manages system services
 #
-# SPDX-FileCopyrightText: 2011-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import time

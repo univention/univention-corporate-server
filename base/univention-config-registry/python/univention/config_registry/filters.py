@@ -1,7 +1,7 @@
 """Univention Configuration Registry output filters."""
 #  main configuration registry classes
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 from univention.config_registry.misc import escape_value, key_shell_escape

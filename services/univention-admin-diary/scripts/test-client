@@ -3,7 +3,7 @@
 # Univention Admin Diary
 #  CLI Tool adding diary entry into Rsyslog to be added to the DB - eventually
 #
-# SPDX-FileCopyrightText: 2019-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2019-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 

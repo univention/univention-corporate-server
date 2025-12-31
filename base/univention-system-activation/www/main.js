@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2013-2025 Univention GmbH
+ * SPDX-FileCopyrightText: 2013-2026 Univention GmbH
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 /*global define require console window */

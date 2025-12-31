@@ -2,7 +2,7 @@
 #
 # Univention Common Python Library
 #
-# SPDX-FileCopyrightText: 2010-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2010-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 '''python3 -m univention.lib.account lock --dn "$user_dn" --lock-time "$(date --utc '+%Y%m%d%H%M%SZ')"'''

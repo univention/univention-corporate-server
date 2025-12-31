@@ -1,7 +1,7 @@
 # Univention Python
 #  LDAP access
 #
-# SPDX-FileCopyrightText: 2002-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2002-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import logging

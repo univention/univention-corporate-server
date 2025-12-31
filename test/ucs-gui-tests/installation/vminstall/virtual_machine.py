@@ -2,7 +2,7 @@
 #
 # Python VNC automate
 #
-# SPDX-FileCopyrightText: 2017-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2017-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 # vim: set fileencoding=utf-8 :
 # pylint: disable=R0903,R0201

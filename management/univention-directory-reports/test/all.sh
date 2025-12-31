@@ -1,5 +1,5 @@
 #!/bin/bash
-# SPDX-FileCopyrightText: 2007-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2007-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 # Generate reports to check implementation is still working

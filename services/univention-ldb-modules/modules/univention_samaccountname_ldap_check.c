@@ -2,7 +2,7 @@
  * Samba LDB module univention_samaccountname_ldap_check
  *	LDB Module for checking samaccountname adds against external LDAP
  *
- * SPDX-FileCopyrightText: 2011-2025 Univention GmbH
+ * SPDX-FileCopyrightText: 2011-2026 Univention GmbH
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 

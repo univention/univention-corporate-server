@@ -2,7 +2,7 @@
 #
 # Univention Management Console module server-overview
 #
-# SPDX-FileCopyrightText: 2017-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2017-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import univention.admin.modules as udm_modules

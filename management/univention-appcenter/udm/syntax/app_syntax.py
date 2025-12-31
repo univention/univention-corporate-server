@@ -2,7 +2,7 @@
 # Univention Directory Manager Modules
 #  direcory manager syntax for Apps
 #
-# SPDX-FileCopyrightText: 2019-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2019-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 from univention.admin.syntax import OkOrNot, TrueFalseUp, boolean

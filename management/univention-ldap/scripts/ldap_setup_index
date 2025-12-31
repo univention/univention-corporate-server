@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Add and remove LDAP attributes to index."""
-# SPDX-FileCopyrightText: 2001-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2001-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import re

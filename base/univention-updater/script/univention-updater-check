@@ -3,7 +3,7 @@
 # Univention Updater
 #  update check script
 #
-# SPDX-FileCopyrightText: 2010-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2010-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 if [ "$1" = "--silent" ] ; then

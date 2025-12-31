@@ -7,7 +7,7 @@
 ##  - provisioning-service
 
 # SPDX-License-Identifier: AGPL-3.0-only
-# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 
 
 provisioning_admin_password=$(sudo cat /etc/provisioning-secrets.json | jq -r '.PROVISIONING_API_ADMIN_PASSWORD')

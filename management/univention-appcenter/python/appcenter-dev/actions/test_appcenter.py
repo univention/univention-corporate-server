@@ -3,7 +3,7 @@
 # Univention App Center
 #  univention-app module for running an app specific test file
 #
-# SPDX-FileCopyrightText: 2017-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2017-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 

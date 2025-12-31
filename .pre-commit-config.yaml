@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
@@ -30,7 +30,9 @@ repos:
     rev: v6.0.0
     hooks:
     - id: check-added-large-files
-      exclude: "^test/ucs-test/debian/changelog$"
+      exclude: "^test/ucs-test/debian/changelog$\
+               |^services/univention-printserver/79univention-printserver.inst$\
+               "
     - id: check-json
       exclude: "/conffiles/.*[.]json$"
     - id: check-xml
@@ -183,11 +185,8 @@ repos:
     rev: 0.2.0
     hooks:
       - id: update-copyright-year
+        args: ["-y", "2026"]
         stages: [ manual ]
-        exclude: "^packaging/ucslint/testframework/0010-2-3-4-5/\
-                  |^packaging/ucslint/testframework/0010-2/\
-                  |^packaging/ucslint/testframework/0010-6/\
-                  "
       - id: reuse-toml-dry-run
       - id: reuse-toml
         stages: [ manual ]

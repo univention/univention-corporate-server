@@ -3,7 +3,7 @@
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
 #
-# SPDX-FileCopyrightText: 2005-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2005-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 

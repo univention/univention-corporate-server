@@ -3,7 +3,7 @@
 # Remove status file of Univention System Setup
 # Stop firefox browser if frontend uses legacy code
 #
-# SPDX-FileCopyrightText: 2016-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2016-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os

@@ -3,7 +3,7 @@
 # Univention LDAP Server
 #  converts a UCS Backup Directory Node into a UCS Primary Directory Node
 #
-# SPDX-FileCopyrightText: 2001-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2001-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 EXE="${0##*/}"

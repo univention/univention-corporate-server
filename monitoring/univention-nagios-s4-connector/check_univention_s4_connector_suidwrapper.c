@@ -3,7 +3,7 @@
 //  check_univention_s4_connector_suidwrapper:
 //  wrapper to call script for checking s4 connector status
 //
-// SPDX-FileCopyrightText: 2015-2025 Univention GmbH
+// SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 // SPDX-License-Identifier: AGPL-3.0-only
 //
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2025 Univention GmbH
+ * Copyright (c) 2022-2026 Univention GmbH
  * Copyright (c) 2009-2015 Emmanuel Dreyfus
  * All rights reserved.
  *

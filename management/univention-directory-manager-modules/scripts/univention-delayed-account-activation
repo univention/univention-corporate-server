@@ -3,7 +3,7 @@
 # Univention Server
 #  helper script: activates accounts with krb5ValidStart >= now
 #
-# SPDX-FileCopyrightText: 2021-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 ts_utc=$(date --utc +"%Y%m%d%H%M%SZ")

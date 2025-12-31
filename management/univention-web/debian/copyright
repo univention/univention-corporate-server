@@ -4,7 +4,7 @@ Upstream-Contact: <package@univention.de>
 Source: https://updates.software-univention.de/
 
 Files: *
-Copyright: 2014-2025 Univention GmbH
+Copyright: 2014-2026 Univention GmbH
 License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available
@@ -29,7 +29,7 @@ License: AGPL-3.0-only
  <https://www.gnu.org/licenses/>.
 
 Files: icons/univention-management-console.svg icons/univention.svg css/images/login_logo.png css/images/login_logo.svg css/images/ucs_logo_gray.svg css/images/univention.svg css/images/univention_u.svg
-Copyright: 2024-2025 Univention GmbH
+Copyright: 2024-2026 Univention GmbH
 License: LicenseRef-Univention-Proprietary
 
 Files: css/images/progressBarAnim.gif css/images/checkmarkNoBorder.gif css/images/login_bg.gif css/images/info.gif css/images/loadingAnimation.gif css/form/images/loading.gif

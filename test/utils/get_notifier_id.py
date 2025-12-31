@@ -2,7 +2,7 @@
 #
 # Univention Directory Listener
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """Read the notifier id from the Primary Directory Node"""

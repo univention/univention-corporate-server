@@ -1,7 +1,7 @@
 """Univention Configuration Registry command line implementation."""
 #  main configuration registry classes
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 # API stability :pylint: disable-msg=W0613
@@ -530,7 +530,7 @@ def handler_help(args: list[str], opts: dict[str, Any] = {}, out: IO = sys.stdou
     """
     print('''
 univention-config-registry: base configuration for UCS
-copyright (c) 2001-2025 Univention GmbH, Germany
+copyright (c) 2001-2026 Univention GmbH, Germany
 
 Syntax:
   univention-config-registry [options] <action> [options] [parameters]

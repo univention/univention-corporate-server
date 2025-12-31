@@ -4,7 +4,7 @@
 #  univention-app module for searching for available upgrading
 #  (docker version)
 #
-# SPDX-FileCopyrightText: 2015-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 

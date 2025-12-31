@@ -3,7 +3,7 @@
 # Univention Join
 #  helper script: checks the join status of the local system
 #
-# SPDX-FileCopyrightText: 2004-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 LOG_FILE=/var/log/univention/check_join_status.log
