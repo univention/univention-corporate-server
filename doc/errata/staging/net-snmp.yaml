@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: net-snmp
+fix: 5.7.3+dfsg-5+deb10u5
+desc: |
+ This update addresses the following issue:
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-68615)
+bug: [58921]
+cve:
+- CVE-2025-68615
