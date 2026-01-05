@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: usbmuxd
+fix: 1.1.0-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.7 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:L).
+   (CVE-2025-66004)
+bug: [58923]
+cve:
+- CVE-2025-66004
