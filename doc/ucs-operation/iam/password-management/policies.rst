@@ -37,14 +37,15 @@ Password Policy in UDM
 
       UDM policies apply when administrators change passwords through administrative tools.
       Samba domain policies apply when users change their own passwords through any service.
-      Because these are separate systems,
-      Univention recommends administrators to configure them identically to ensure consistent behavior.
+      Because these are separate services,
+      Univention recommends configuring them identically
+      to ensure consistent behavior.
+
+      If the policies are inconsistent, the services use the policies as configured.
+      However, the different settings may confuse users.
+      Identical settings in both policies reduce user confusion.
 
       .. A similar warning locates in password-management/windows.rst
-
-      .. FIXME:  If UDM and Samba policies differ, what happens? Which one "wins"? Users would benefit from knowing the consequences.
-
-         Suggestion: Add a note explaining the behavior when policies are misaligned.
 
 Password policy for the Samba domain
    If you have Samba installed in your domain of Nubus for UCS,
