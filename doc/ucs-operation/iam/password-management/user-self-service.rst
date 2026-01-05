@@ -486,12 +486,12 @@ and whose ``DeregistrationTimestamp`` attribute is older than a specified time.
 
 .. _end-user-self-service-deregistration-manual-deletion:
 
-Manually delete deregistered user accounts
+Manually delete de-registered user accounts
    The command in :numref:`end-user-self-service-deregistration-delete-listing`
    deletes user accounts whose ``DeregistrationTimestamp`` is older than 5 days and 2 hours.
 
    .. code-block:: console
-      :caption: Example for deleting deregistered and deactivated user accounts
+      :caption: Example for deleting de-registered and deactivated user accounts
       :name: end-user-self-service-deregistration-delete-listing
 
       $ /usr/share/univention-self-service/delete_deregistered_accounts.py \
@@ -512,13 +512,13 @@ Script arguments
 
 .. _end-user-self-service-deregistration-scheduled-deletion:
 
-Scheduled deletion of deregistered user accounts
+Scheduled deletion of de-registered user accounts
    You can schedule the script to run regularly.
    Create a cron job through a UCR variable,
    as shown in :numref:`end-user-self-service-deregistration-schedule-listing`.
 
    .. code-block:: console
-      :caption: Schedule deletion of deregistered user accounts
+      :caption: Schedule deletion of de-registered user accounts
       :name: end-user-self-service-deregistration-schedule-listing
 
       $ ucr set cron/delete_deregistered_accounts/command=\
