@@ -1923,7 +1923,7 @@ class ad(univention.connector.ucs):
                     ad_object = self.__object_from_element(elements[0])
                     # should not be synced
                     if not ad_object:
-                        log.debug("sync to ucs: Nothing todo, drop reject %s", (dn,))
+                        log.info("sync to ucs: Nothing todo, drop reject %s", dn)
                         self._remove_rejected(change_usn)
                         continue
                     if int(change_usn) == int(ad_object['attributes'].get('uSNCreated', [b'0'])[0]):
@@ -1933,7 +1933,7 @@ class ad(univention.connector.ucs):
                             continue
                     property_key = self.__identify_ad_type(ad_object)
                     if not property_key:  # TODO: still needed? (removed in s4)
-                        log.debug("sync to ucs: Dropping reject for unidentified object %s", dn)
+                        log.info("sync to ucs: Dropping reject for unidentified object %s", dn)
                         self._remove_rejected(change_usn)
                         continue
                     mapped_object = self._object_mapping(property_key, ad_object)
