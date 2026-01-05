@@ -93,6 +93,44 @@ Kerberos
    through Kerberos-joined clients in the domain of Nubus for UCS
    using the client's built-in password change feature.
 
+To administratively change a user password,
+use any of the following methods:
+
+.. tab-set::
+
+   .. tab-item:: Management UI
+
+      To change a user password through the *Management UI* as administrator,
+      follow the steps described in
+      :external+uv-nubus-manual:ref:`nubus-user-password-management-change`
+      in :cite:t:`uv-nubus-manual`.
+
+   .. tab-item:: Command-line
+
+      To change a user password through the UDM command-line,
+      use the following steps:
+
+      #. Obtain the DN of the user account for the password change.
+
+      #. Open a terminal on the *Primary Directory Node*,
+         either locally or remote through SSH.
+
+      #. Write the password to a file
+         to avoid leaking it to the command history.
+         The example uses the file :file:`password.txt`.
+
+      #. Run the commands in
+         :numref:`password-management-policies-change-udm-command-listing`.
+
+      .. code-block:: console
+         :caption: Change user password through UDM command-line
+         :name: password-management-policies-change-udm-command-listing
+
+         $ export USER_DN="<the obtained user DN>"
+         $ udm users/user modify \
+           --dn "$USER_DN" \
+           --set password="$(cat password.txt)"
+
 .. _password-management-policies-settings:
 
 Password policy settings
