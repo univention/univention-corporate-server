@@ -25,7 +25,7 @@ On this page, you find the following sections:
 Installation and activation
 ===========================
 
-To enable users to manage their password on their own
+To enable users to manage their passwords on their own
 through the *End User Self Service*,
 you need to install the following UCS components through the *App Center*
 to your UCS domain:
@@ -81,7 +81,7 @@ because they're just normal portal entries.
 
    Activates the service-specific passwords in the *Self Service*.
 
-   Nubus only supports the service RADIUS.
+   Nubus supports only the RADIUS service.
    For more information,
    see :external+uv-ucs-manual:ref:`ip-config-radius-configuration-service-specific-password`.
 
@@ -125,7 +125,7 @@ use the following UCR variables:
    that the *Self Service* shows on the *Contact information* page
    where users can modify their user account.
 
-   You need to set this UCR variable on all Nubus for UCS systems,
+   You need to set this UCR variable on all Nubus for UCS systems
    where you have installed the :program:`Self Service` app,
    and on the :term:`UCS Primary Directory Node`.
 
@@ -140,7 +140,7 @@ use the following UCR variables:
    :envvar:`self-service/udm_attributes`
    must include the UDM attributes.
 
-   You need to set this UCR variable on all Nubus for UCS systems,
+   You need to set this UCR variable on all Nubus for UCS systems
    where you have installed the :program:`Self Service` app
    and on the :term:`UCS Primary Directory Node`.
 
@@ -208,7 +208,7 @@ that the user must verify through email.
 
    :external+uv-nubus-manual:ref:`nubus-user-management-self-registration`
       in :cite:t:`uv-nubus-manual`
-      for information about using the self registration.
+      for information about using the self-registration.
 
 .. _end-user-self-service-registration-registration-form:
 
@@ -433,7 +433,7 @@ Nubus sets the following attributes of the user account:
 * ``DeregisteredThroughSelfService`` to ``TRUE``
 * ``DeregistrationTimestamp`` to the current time in the `GeneralizedTime LDAP syntax <ldap-generalized-time_>`_.
 
-Use the following UCR variables to configure user self deregistration.
+Use the following UCR variables to configure user self-deregistration.
 
 .. envvar:: umc/self-service/account-deregistration/enabled
 
