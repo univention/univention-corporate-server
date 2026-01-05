@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: python-apt
+fix: 1.8.4.4
+desc: |
+ This update addresses the following issue:
+ * CVSS score unknown. (CVE-2025-6966)
+bug: [58920]
+cve:
+- CVE-2025-6966
