@@ -31,8 +31,8 @@ from univention.testing.fixtures_recyclebin import RECYCLEBIN_DN, _deleted_objec
 from univention.testing.strings import random_groupname, random_username, random_username_special_characters
 from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import (
-    get_ldap_connection, restart_listener, restart_slapd, start_listener, stop_listener, verify_ldap_object,
-    wait_for_listener_replication,
+    get_ldap_connection, package_installed, restart_listener, restart_slapd, start_listener, stop_listener,
+    verify_ldap_object, wait_for_listener_replication,
 )
 
 
@@ -258,7 +258,10 @@ def test_create_and_restore(deleted_object_user_properties):
     'name_suffix',
     [
         '',
-        pytest.param('ä+ü', marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),  # broken DN chars (and utf-8 umlauts)
+        pytest.param('ä+ü', marks=[
+            pytest.mark.xfail(match='uniqueMember: value #0 already exists.'),  # broken DN chars (and utf-8 umlauts)
+            pytest.mark.skipif(package_installed('univention-s4-connector'), reason="s4 connector setup, creating a user with '+' fails with: samldb: sAMAccountName contains invalid '+' character"),
+        ]),
         '§(id)',  # broken filter chars
         pytest.param(random_username_special_characters(), marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),
     ],
