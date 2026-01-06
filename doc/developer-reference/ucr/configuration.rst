@@ -290,8 +290,15 @@ are changed. A typical module entry has the following structure:
    Module: <filename>
    Variables: <variable1>
 
+The file referenced with ``Module: <filename>``,
+must locate in the :file:`/conffiles` directory of the Debian package.
+For example: For the ``Module: my_module.py`` definition,
+you have the file :file:`/conffiles/my_module.py` in the Debian package structure.
+The Python file defines at least the function mentioned at :ref:`ucr-module-module`.
 
 The following keys can be used:
+
+.. _ucr-module-module:
 
 ``Module`` (required)
    Specifies the filename of a Python module, which is installed to
