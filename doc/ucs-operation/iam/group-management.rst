@@ -3,67 +3,77 @@
 
 .. _ucs-operation-groups:
 
-*****************
-Groups management
-*****************
+****************
+Group management
+****************
 
-.. TODO: Add an introduction. Refer to the general chapter about group management in the Nubus Manual.
+This page describes how to manage groups in Nubus for UCS.
+It covers UCS-specific aspects of group creation, nested groups, group caching,
+Active Directory synchronization, and the group overlay module.
+For general information about group management in Nubus,
+see :external+uv-nubus-manual:ref:`nubus-groups` in :cite:t:`uv-nubus-manual`.
 
+In addition to global groups in a Nubus domain,
+there are also local user groups on each system,
+which you predominantly use for hardware access.
+You don't manage local groups through the *Management UI*,
+but through the :file:`/etc/group` file.
 
+.. _ucs-operation-groups-creation-assignment:
 
-In addition, there are also local user groups on each system, which are
-predominantly used for hardware access. These are not managed through the
-*Management UI*, but saved in the :file:`/etc/group` file.
+Group creation and assignment
+=============================
 
-.. _ucs-operation-groups-management:
-
-Managing groups through management module
-=========================================
-
-For a complete reference of the *Group* management module,
+To create groups in Nubus for UCS,
+follow along the section
+:external+uv-nubus-manual:ref:`nubus-groups`
+in :cite:t:`uv-nubus-manual`.
+It describes how to assign users to groups.
+For a complete reference of the *Groups* management module,
 see :external+uv-nubus-manual:ref:`nubus-groups-management`.
 
-This section amends the reference with specifics
-that apply to the UCS appliance.
+The following sections supplement that reference with specifics
+that apply to Nubus for UCS.
 
 .. _ucs-operation-groups-management-tab-general-name:
 
 :menuselection:`General tab --> Name`
    For the reference,
-   see :external+uv-nubus-manual:ref:`nubus-groups-management-tab-general-name`.
+   see :external+uv-nubus-manual:ref:`nubus-groups-management-tab-general-name`
+   in :cite:t:`uv-nubus-manual`.
 
    By default, it isn't possible to create a group
    with the same name as an existing user.
    If the UCR variable
-   :envvar:`directory/manager/user_group/uniqueness` has the value  ``false``,
+   :envvar:`directory/manager/user_group/uniqueness` has the value ``false``,
    Nubus doesn't run this check.
 
 .. _ucs-operation-groups-management-tab-advanced-field-group-type:
 
 :menuselection:`Advanced settings tab --> Windows --> group type`
-
-nubus-groups-management-tab-advanced-field-group-type
    For the reference,
-   see :external+uv-nubus-manual:ref:`nubus-groups-management-tab-advanced-field-group-type`.
+   see :external+uv-nubus-manual:ref:`nubus-groups-management-tab-advanced-field-group-type`
+   in :cite:t:`uv-nubus-manual`.
+
+   .. _ucs-operation-groups-management-tab-advanced-field-group-type-local:
 
    Local groups
-      See the reference for the description.
-
-      If a local group is created on a Windows server,
-      solely the server knows this group.
+      If you create a local group on a Windows server,
+      only that server recognizes this group.
       A local group isn't available across the domain.
-      In contrast, the UCS appliance doesn't differentiate between local and global groups.
-      After taking over an AD domain,
-      the UCS appliance handles local groups in the same way as *Domain Groups*.
-
+      In contrast, Nubus for UCS doesn't differentiate between local and global groups.
+      After taking over an Active Directory domain,
+      Nubus for UCS handles local groups in the same way as *Domain Groups*.
 
 .. _ucs-operation-groups-management-nested:
 
-Group nesting with groups in groups
-===================================
+Nested groups
+=============
 
-For a description,
-see :external+uv-nubus-manual:ref:`nubus-groups-management-nested`.
+For a description of nested groups in Nubus,
+see :external+uv-nubus-manual:ref:`nubus-groups-management-nested`
+in :cite:t:`uv-nubus-manual`.
+Additionally, the following applies to nested groups in Nubus for UCS.
 
 Nubus runs a plausibility check
 to detect cyclic dependencies in nested groups.
@@ -71,63 +81,77 @@ To deactivate this check, set the UCR variable
 :envvar:`directory/manager/web/modules/groups/group/checks/circular_dependency`
 to the value ``no``.
 The default value is ``yes``.
-If you don't use the *Management UI* for group changes,
-you must avoid cyclic memberships in direct group changes.
+If you modify groups without using the *Management UI*,
+you must manually ensure that there are no cyclic memberships.
 
 .. _ucs-operation-groups-management-cache:
 
-Local group cache
-=================
+Group caching
+=============
 
-.. TODO: Rework this section
+Nubus uses the NSS module :program:`libnss-extrausers` for group caching.
+The :file:`/usr/lib/univention-pam/ldap-group-to-file.py` script exports group information automatically
+and writes it to the :file:`/var/lib/extrausers/group` file.
+The NSS module then reads the group information from there.
 
-The user and computer information retrieved from the LDAP is cached by
-the Name Server Cache Daemon (NSCD), see :ref:`computers-nscd`.
-
-Since UCS 3.1, the groups are no longer cached via the NSCD for
-performance and stability reasons; instead they are now cached by the
-NSS module :program:`libnss-extrausers`. The group
-information is automatically exported to the
-:file:`/var/lib/extrausers/group` file by the
-:file:`/usr/lib/univention-pam/ldap-group-to-file.py`
-script and read from there by the NSS module.
-
-In the basic setting, the export is performed once a day by a cron job
-and is additionally started if the *Univention Directory Listener* has been inactive for 15
-seconds. The interval for the cron update is configured in Cron syntax
-(see :ref:`cron-local`) by the UCR variable
-:envvar:`nss/group/cachefile/invalidate_interval`. This listener
-module can be activated/deactivated via the UCR variable
+By default, a cron job runs the export once a day.
+Additionally, the :program:`ldap-group-to-file.py` export also runs
+after the *Univention Directory Listener* has been inactive for 15 seconds.
+You can configure the interval for the cron-based cache updates
+in cron syntax using the
+:envvar:`nss/group/cachefile/invalidate_interval`
+UCR variable.
+For the cron syntax, see :external+uv-ucs-manual:ref:`cron-local`
+in :cite:t:`ucs-manual`.
+You can activate or deactivate the update of the group cache file
+through the *Univention Directory Listener* with the
 :envvar:`nss/group/cachefile/invalidate_on_changes`
-(``true``/``false``).
+UCR variable.
 
-When the group cache file is being generated, the script can verify
-whether the group members are still present in the LDAP directory. If
-not only UMC modules are used for user management, this additional check
-can be can be enabled by setting the UCR variable
-:envvar:`nss/group/cachefile/check_member` to
-``true``.
+.. TODO: Update link for the UCS Manual when information about cron syntax is available here.
 
-.. _ucs-operation-groups-management-ad-groups:
+When the :program:`ldap-group-to-file.py` script generates the group cache file,
+it can verify
+whether the group members still exist in the LDAP directory service.
+If you use user management methods beyond the *Users* and *Groups* management module,
+you can enable this additional verification
+by setting the
+:envvar:`nss/group/cachefile/check_member`
+UCR variable to the value ``true``.
 
-Synchronization of Active Directory groups when using Samba/AD
-==============================================================
+.. _ucs-operation-groups-management-ad-group-sync:
 
-.. TODO: Rework through this section
+Active Directory group synchronization
+======================================
 
-If Samba/AD is used, the group memberships are synchronized between the
-Samba/AD directory service and the OpenLDAP directory service by the
-Univention S4 connector, i.e., each group on the UCS side is associated
-with a group in Active Directory. General information on the Univention
-S4 connector can be found in :ref:`windows-s4-connector`.
+If you have Samba installed in your domain of Nubus for UCS,
+Nubus synchronizes the group memberships
+between the Samba directory service and the OpenLDAP directory service
+through the Univention :program:`S4 Connector`.
+The connector associates each user group in Nubus for UCS
+with a user group in Active Directory.
+For information about the :program:`S4 Connector`,
+see :external+uv-ucs-manual:ref:`windows-s4-connector`
+in :cite:t:`ucs-manual`.
 
-Some exceptions are formed by the *pseudo groups*,
-sometimes also called system groups. These are only managed internally
-by Active Directory/Samba, e.g., the ``Authenticated Users`` group includes a list
-of all the users currently logged on to the system. Pseudo groups are
-stored in the UCS directory service, but they are not synchronized by
-the Univention S4 connector and should usually not be edited. This
-applies to the following groups:
+.. TODO: Replace the S4 Connector reference with a reference not directing to the UCS Manual.
+
+.. note::
+
+   Samba provides Active Directory compatible functionality.
+   It operates a dedicated LDAP directory service.
+   The :program:`S4 Connector` synchronizes the LDAP directory service in Samba
+   with the OpenLDAP directory service in Nubus for UCS.
+
+*Pseudo groups*, also called system groups,
+are exceptions to this synchronization.
+Only Active Directory and Samba manage such *pseudo groups* internally.
+For example, the ``Authenticated Users`` user group
+includes a list of users currently signed in to the domain.
+Nubus stores *pseudo groups* in the Nubus directory service,
+but the :program:`S4 Connector` doesn't synchronize them.
+Don't edit these groups.
+The behavior applies to the following *pseudo groups*:
 
 * ``Anonymous Logon``
 * ``Authenticated Users``
@@ -159,50 +183,69 @@ applies to the following groups:
 * ``This Organization``
 * ``World Authority``
 
-In Active Directory/Samba, a distinction is made between the following
-four AD group types. These group types can be applied to two types of
-groups; *security groups* configure permissions
-(corresponding to the UCS groups), whilst *distribution
-groups* are used for mailing lists:
+Active Directory and Samba distinguish between the following Active Directory group types.
+The :program:`S4 Connector` synchronizes these groups.
+In the LDAP directory service, the groups have attributes to label the group types.
+However, the group types only have a meaning in Active Directory.
+Nubus doesn't evaluate the group types.
 
 Local
-   *Local* groups only exist locally on a host. A local group created in
-   Samba/AD is synchronized by the Univention S4 Connector and thus also appears
-   in the UMC module :guilabel:`Groups`. There is no need to create local groups
-   in the UMC module.
+   *Local* groups exist only on a single host.
+   The :program:`S4 Connector` synchronizes local groups created in Samba.
+   Therefore, they also appear in the *Groups* management module in the *Management UI*.
+   There is no need to create local groups in the *Groups* management module.
 
 Global
-   *Global* groups are the standard type for newly created groups in the UMC
-   module :guilabel:`Groups`. A global group applies for one domain, but it can
-   also accept members from other domains. If there is a trust relationship with
-   a domain, the groups there are displayed and permissions can be assigned.
-   However, the current version of UCS does not support multiple domains/forests
-   or outgoing trust relationships.
+   *Global* groups are the default type
+   when you create groups in the *Groups* management module.
+   A global group applies to one domain
+   but can accept members from other domains.
+   If there is a trust relationship with a domain,
+   the *Groups* management module shows the groups from other trusted domains
+   and you can assign permissions to them.
+
+   .. important::
+
+      Nubus for UCS doesn't support multiple domains or forests or outgoing trust relationships.
 
 Domain local
-   *Domain local* groups can also adopt members of other domains (insofar as
-   there is a trust relationship in place or they form part of a forest). Local
-   domain groups are only shown in their own domain though. However, the current
-   version of UCS does not support multiple domains/forests or outgoing trust
-   relationships.
+   *Domain local* groups can also include members from other domains
+   if there's a trust relationship or if they're part of a forest.
+   The *Groups* management module shows the domain local groups only in their own domain.
+
+   .. important::
+
+      Nubus for UCS doesn't support multiple domains or forests or outgoing trust relationships.
 
 Universal
-   *Universal* groups can adopt members from all domains and these members are
-   also shown in all the domains of a forest. These groups are stored in a
-   separate segment of the directory service, the so-called *global catalog*.
-   Domain forests are currently not supported by Samba/AD.
+   *Universal* groups can adopt members from all domains
+   and these members are visible across all domains in a forest.
+   The *global catalog* is a separate segment of the Samba directory service
+   and it stores universal groups.
+   The :program:`S4 Connector` doesn't synchronize the *global catalog* to OpenLDAP.
 
-.. _ucs-operation-groups-management-memberof:
+   The Active Directory capability in Samba doesn't support domain forests.
 
-Overlay module for displaying the group information on user objects
-===================================================================
+You can apply the group types to the following kind of groups:
+
+Security groups
+   Administrators use them to assign permissions,
+   similar to user groups in Nubus.
+
+Distribution groups
+   Active Directory uses them for mailing lists.
+
+.. _ucs-operation-groups-management-overlay:
+
+Group overlay module
+====================
 
 Nubus only saves group membership properties in the group objects
 and not in the respective user objects in the directory service.
 However, some applications expect group membership properties at the user objects
 in the attribute ``memberOf``.
-An overlay module in the LDAP server makes it possible
-to present these attributes automatically based on the group information.
+An overlay module in the OpenLDAP directory server in Nubus allows presenting
+these attributes automatically based on the group information.
 Nubus doesn't write the additional attributes to the directory service.
 The directory service shows the attributes on-the-fly through the overlay module
 when it answers a query for a user object.
