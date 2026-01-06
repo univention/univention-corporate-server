@@ -1,3 +1,9 @@
+univention-ad-connector (16.5.6) unstable; urgency=medium
+
+  * Bug #58793: cherry-pick changes to 5.2-4
+
+ -- Felix Botner <botner@univention.de>  Tue, 06 Jan 2026 12:27:12 +0100
+
 univention-ad-connector (16.5.5) unstable; urgency=medium
 
   * Bug #58793: cherry-pick changes to 5.2-4
