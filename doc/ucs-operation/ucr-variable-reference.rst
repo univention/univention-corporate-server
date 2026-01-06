@@ -7,6 +7,92 @@ UCR variable reference
 
 This section provides a reference for UCR variables.
 
+.. envvar:: directory/manager/user_group/uniqueness
+
+   If activated with the value ``true``
+   or the variable isn't set,
+   usernames and group names must be distinct.
+   That means if there is a username ``test``,
+   then Nubus doesn't allow a group with the name ``test``.
+
+   For information where to this variable applies,
+   see :ref:`ucs-operation-groups-management-tab-general-name`
+   in :ref:`ucs-operation-groups-creation-assignment`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/groups/group/checks/circular_dependency
+
+   If activated with the value ``yes``
+   or the variable isn't set,
+   Nubus automatically detects cyclic dependencies of nested groups
+   and refuses to create them.
+   To deactivate the check,
+   set it to the value ``no``.
+
+   For information about where this variable applies,
+   see :ref:`ucs-operation-groups-management-nested`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: nss/group/cachefile
+
+   If activated,
+   Nubus exports all group data to a cache file.
+   The NSS module *extrausers* includes the exported data.
+   This results to significant performance improvements in large environments.
+   If the variable isn't set, the cache file is activated.
+
+   For information about where this variable applies,
+   see :ref:`ucs-operation-groups-management-cache`.
+
+   :Default value: ``yes``
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: nss/group/cachefile/check_member
+
+   If activated, the group cache export verifies
+   whether the exported group members are still present in the LDAP directory.
+   If you only use user management methods through the *Users* and *Groups* management module,
+   this validation isn't necessary and you can deactivate it.
+
+   For information about where this variable applies,
+   see :ref:`ucs-operation-groups-management-cache`.
+
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: nss/group/cachefile/invalidate_interval
+
+   If Nubus uses the group cache file, see :envvar:`nss/group/cachefile` UCR variable,
+   Nubus exports the group data to the cache file in the interval specified here.
+   The interval is in cron format, see :command:`man 5 crontab`.
+
+   For information about where this variable applies,
+   see :ref:`ucs-operation-groups-management-cache`.
+
+   :Type: cron
+
+.. envvar:: nss/group/cachefile/invalidate_on_changes
+
+   If Nubus has this variable activated and the group cache file has been enabled,
+   see the :envvar:`nss/group/cachefile` UCR variable,
+   the Nubus automatically regenerates the cache file
+   whenever a domain administrator edits a group in the *Management UI*.
+   If this variable isn't set, the option is enabled.
+
+   For information about where this variable applies,
+   see :ref:`ucs-operation-groups-management-cache`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
 .. envvar:: password/quality/credit/digits
 
    Defines the minimum required number of digits for passwords.
