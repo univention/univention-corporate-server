@@ -20,3 +20,6 @@ desc: |
  * Add AD reject reason to reject database.
    The reason will be shown in the univention-adconnector-list-rejected tool.
 bug: [58793]
+erratum: 312
+announced: 2026-01-08
+support: core
