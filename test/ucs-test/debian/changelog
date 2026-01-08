@@ -1,3 +1,9 @@
+ucs-test (12.4.26) unstable; urgency=medium
+
+  * Bug #56986: remove workaround
+
+ -- Felix Botner <botner@univention.de>  Fri, 30 Jan 2026 11:08:30 +0100
+
 ucs-test (12.4.25) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#250: Adjust tests
