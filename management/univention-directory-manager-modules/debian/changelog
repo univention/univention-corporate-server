@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.12) unstable; urgency=medium
+
+  * Bug #56986: fix recursive remove of objects
+
+ -- Felix Botner <botner@univention.de>  Fri, 30 Jan 2026 11:08:30 +0100
+
 univention-directory-manager-modules (17.4.11) unstable; urgency=medium
 
   * Bug #58987: default to entryUUID for univentionObjectIdentifier

@@ -1378,6 +1378,8 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         ]
         try:
             self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.NO_SUCH_OBJECT:
+            self.log.warning('Can not remove user from group, group does not exist', uid=member_uid, group_dn=group)
         except ldap.NO_SUCH_ATTRIBUTE:
             for entry in ml:
                 try:

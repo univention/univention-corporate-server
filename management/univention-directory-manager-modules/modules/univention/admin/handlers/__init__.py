@@ -1768,7 +1768,7 @@ class simpleLdap:
             # TODO: perf: instead of searching, get it from oldattr
             if b'FALSE' not in self.lo.authz_connection.getAttr(self.dn, 'hasSubordinates'):
                 self.log.debug('Removing children', dn=self.dn)
-                subelements = self.lo.authz_connection.search(base=self.dn, scope='one', attr=[])
+                subelements = self.lo.authz_connection.search(base=self.dn, scope='one', attr=['*', '+'])
 
             for subolddn, suboldattrs in subelements:
                 self.log.debug('Removing child', dn=subolddn)
@@ -2013,6 +2013,8 @@ class simpleLdap:
         ]
         try:
             self.lo.authz_connection.modify(group, ml, exceptions=True, **kwargs)
+        except ldap.NO_SUCH_OBJECT:
+            self.log.warning('Can not remove user from group, group does not exist', uid=member_uid, group_dn=group)
         except ldap.NO_SUCH_ATTRIBUTE:
             for entry in ml:
                 try:
