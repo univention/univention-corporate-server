@@ -1546,6 +1546,10 @@ ucs-winrm () {
 add_extra_apt_scope () {
 	local repo_name REPO_SERVER="http://omar.knut.univention.de/build2/git"
 	local apt_file="/etc/apt/sources.list.d/99_extra_scope.list.disabled"
+
+	# ignore if SCOPE == UCS_VERSION
+	test -n "$UCS_VERSION" && test -n "$SCOPE"  && test "$SCOPE" = "$UCS_VERSION" && return
+
 	case "$SCOPE" in
 	'')
 		return 0
