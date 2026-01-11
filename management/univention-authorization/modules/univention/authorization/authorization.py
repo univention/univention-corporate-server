@@ -319,9 +319,9 @@ class GuardianAuthorizationClient:
                         'attributes': target['new_target']['attributes'],
                         'roles': [expand_role_string(r) for r in target['new_target']['roles']],
                     } if target['new_target'] else target['new_target'],
-                } for target in targets or []
-            ],
-            "contexts": [expand_role_string(c) for c in contexts],
+                } for target in targets
+            ] if targets else None,
+            "contexts": [expand_role_string(c) for c in contexts] if contexts else None,
             "targeted_permissions_to_check": [expand_role_string(t) for t in targeted_permissions_to_check or []],
             "general_permissions_to_check": [expand_role_string(g) for g in general_permissions_to_check or []],
             "extra_request_data": extra_request_data,
@@ -355,9 +355,9 @@ class GuardianAuthorizationClient:
                         'attributes': target['new_target']['attributes'],
                         'roles': [expand_role_string(r) for r in target['new_target']['roles']],
                     } if target['new_target'] else target['new_target'],
-                } for target in targets or []
-            ],
-            "contexts": [expand_role_string(c) for c in contexts],
+                } for target in targets
+            ] if targets else None,
+            "contexts": [expand_role_string(c) for c in contexts] if contexts else None,
             "include_general_permissions": include_general_permissions,
             "extra_request_data": extra_request_data,
         }
