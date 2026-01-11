@@ -301,7 +301,7 @@ class GuardianAuthorizationClient:
 
     def check_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, targeted_permissions_to_check=None, general_permissions_to_check=None):
         data = {
-            "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
+            "namespaces": [expand_namespace_string(n) for n in namespaces],
             "actor": {
                 "id": actor['id'],
                 "roles": [expand_role_string(r) for r in actor['roles']],
@@ -337,7 +337,7 @@ class GuardianAuthorizationClient:
 
     def get_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, include_general_permissions=False):
         data = {
-            "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
+            "namespaces": [expand_namespace_string(n) for n in namespaces],
             "actor": {
                 "id": actor['id'],
                 "roles": [expand_role_string(r) for r in actor['roles']],
@@ -445,3 +445,25 @@ def expand_role_string(string):
 
 def implode_permission(data):
     return f'{data["app_name"]}:{data["namespace_name"]}:{data["name"]}'
+
+
+def expand_namespace(app_name, name):
+    """Expand namespace into the format expected by Guardian API (NamespaceMinimal)."""
+    return {
+        "app_name": app_name,
+        "name": name,
+    }
+
+
+def expand_namespace_string(string):
+    """
+    Expand a namespace string like "app:namespace" into NamespaceMinimal dict.
+
+    Example:
+        expand_namespace_string("univention-portal:portal")
+        # Returns: {"app_name": "univention-portal", "name": "portal"}
+    """
+    parts = string.split(':', 1)
+    if len(parts) != 2:
+        raise ValueError(f"Invalid namespace string format: {string}. Expected 'app:namespace'")
+    return expand_namespace(parts[0], parts[1])
