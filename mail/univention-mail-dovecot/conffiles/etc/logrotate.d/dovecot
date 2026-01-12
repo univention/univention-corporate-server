@@ -11,7 +11,7 @@ rotate_conf = """	daily
 	delaycompress"""
 rsyslog_conf = """
 	postrotate
-		service rsyslog rotate > /dev/null
+		/bin/systemctl kill -s HUP rsyslog.service > /dev/null
 	endscript
 }"""
 regfile_conf = """

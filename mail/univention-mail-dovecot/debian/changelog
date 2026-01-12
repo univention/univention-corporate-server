@@ -1,3 +1,9 @@
+univention-mail-dovecot (8.4.1) unstable; urgency=medium
+
+  * Bug #58551: fix logrotate configuration
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Jan 2026 14:02:58 +0100
+
 univention-mail-dovecot (8.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
