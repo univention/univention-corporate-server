@@ -1,0 +1,32 @@
+product: ucs
+release: "5.2"
+version: [3, 4]
+scope: ucs_5.2-0-errata5.2-4
+src: imagemagick
+fix: 8:6.9.11.60+dfsg-1.6+deb12u5
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2025-66628)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-57803)
+ * CVSS score 5.9 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-62171)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-69204, CVE-2025-68618)
+ * CVSS score 4.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2025-65955)
+ * CVSS score 4.0 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-68950)
+ * CVSS score 3.3 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L).
+   (CVE-2025-68469)
+bug: [58947]
+cve:
+- CVE-2025-62171
+- CVE-2025-57803
+- CVE-2025-65955
+- CVE-2025-66628
+- CVE-2025-68469
+- CVE-2025-68618
+- CVE-2025-68950
+- CVE-2025-69204
