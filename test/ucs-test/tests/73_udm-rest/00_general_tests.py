@@ -20,6 +20,7 @@ from univention.admin.rest.client import (
 from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.testing.conftest import locale_available
+from univention.testing.strings import random_name
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
@@ -313,3 +314,42 @@ def test_error_handling(udm, ldap_base, udm_client):
         {'location': ['body', 'position'], 'message': 'Argument required', 'type': 'value_error'},  # should be value_error.required
         {'location': ['body', 'policies'], 'message': 'Not a "dict"', 'type': 'value_error'},  # should be type_error
     ], key=itemgetter('location'))
+
+
+def test_reload_endpoint_unauthorised():
+    fqdn = ucr['ldap/master']
+    uri = f'http://{fqdn}/univention/udm/-/reload'
+    res = requests.get(uri, headers={'Accept': 'application/json'})
+    assert res.status_code == 401
+
+
+def test_reload_endpoint():
+    fqdn = ucr['ldap/master']
+    uri = f'http://{fqdn}/univention/udm/-/reload'
+    account = UCSTestDomainAdminCredentials(ucr)
+    basic = requests.auth.HTTPBasicAuth(account.username, account.bindpw)
+    res = requests.get(uri, headers={'Accept': 'application/json'}, auth=basic)
+    assert res.status_code == 200, res.text
+
+
+def test_reload_listener(udm, udm_client):
+    name = random_name()
+    account = UCSTestDomainAdminCredentials()
+    udm.create_object(
+        'settings/extended_attribute',
+        position=udm.UNIVENTION_CONTAINER,
+        name=name,
+        shortDescription=name,
+        CLIName=name,
+        module='users/user',
+        objectClass='univentionFreeAttributes',
+        ldapMapping='univentionFreeAttribute9',
+        syntax='string',
+        multivalue=0,
+        valueRequired=0,
+        mayChange=1,
+    )
+    udm.stop_cli_server()
+    mod = udm_client.get('users/user')
+    obj = mod.get(account.binddn)
+    assert name in obj.properties
