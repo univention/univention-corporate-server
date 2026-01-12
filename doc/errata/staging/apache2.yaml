@@ -1,0 +1,23 @@
+product: ucs
+release: "5.2"
+version: [3, 4]
+scope: ucs_5.2-0-errata5.2-4
+src: apache2
+fix: 2.4.66-1~deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.3 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:L).
+   (CVE-2025-58098)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2025-59775, CVE-2025-55753)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2025-65082)
+ * CVSS score 5.4 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:L).
+   (CVE-2025-66200)
+bug: [58945]
+cve:
+- CVE-2025-55753
+- CVE-2025-58098
+- CVE-2025-59775
+- CVE-2025-65082
+- CVE-2025-66200
