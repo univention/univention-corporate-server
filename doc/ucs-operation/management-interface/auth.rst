@@ -57,7 +57,7 @@ To sign in, enter the *Username* and *Password* of the corresponding domain acco
 ``root``
    In some cases, it might be necessary to sign in with the system's local ``root`` account.
    For more information, refer to :external+uv-ucs-manual:ref:`computers-rootaccount`.
-   The ``root`` account only enables access to UMC modules for the administration and configuration of the local system.
+   The ``root`` account only enables access to management modules for the administration and configuration of the local system.
 
    .. TODO: Replace reference to the UCS Manual, as soon as the referred section becomes available.
 
@@ -150,6 +150,8 @@ use the following steps for a better user experience:
 Update the default login tile in the Portal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. TODO: Clarify, if this section still makes a true statement. OIDC is the default since some UCS 5.2-x version.
+
 Restarting the *Portal server* automatically updates the *Login* link in the user menu.
 However, you need to manually update the portal tile for the *Login* to use SAML.
 The default portal has a preconfigured but deactivated single sign-on login tile.
@@ -182,7 +184,7 @@ follow these steps:
 Restore login without single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To change back to the default sign-in in UCS without single sign-on,
+To change back to the default sign-in in Nubus for UCS without single sign-on,
 use the following steps:
 
 #. Revert the steps in :ref:`ucs-operation-auth-sso-saml-update-portal`.
@@ -203,11 +205,13 @@ This section describes how to use it with UCS.
 
 Before you can use OIDC for single sign-on, you must meet the following requirements:
 
-#. You must at least have :uv:erratum:`5.0x1118` installed throughout your UCS domain.
+#. You must at least have :uv:erratum:`5.0x1118` installed throughout your Nubus for UCS domain.
 
-   For information about how to upgrade, refer to :ref:`software-ucs-updates`.
+   For information about how to upgrade, refer to
+   :external+uv-ucs-manual:ref:`software-ucs-updates`
+   in :cite:t:`ucs-manual`.
 
-#. You must have the :program:`Keycloak` app installed in your UCS domain.
+#. You must have the :program:`Keycloak` app installed in your Nubus for UCS domain.
 
    For information about the installation of :program:`Keycloak`,
    refer to :external+uv-keycloak-app:ref:`app-installation`
@@ -451,7 +455,7 @@ You have enabled multiprocessing in the *Management UI*
 if the UCR variable :envvar:`umc/http/processes` has a value greater than one (``> 1``).
 
 If you have only one *UMC Server* without UMC multiprocessing,
-you don't need to change the configuration.
+you you can keep the configuration.
 
 To keep track of the sessions in the database for the *Management UI*,
 you need to configure the database connection string
@@ -543,7 +547,7 @@ In these cases, you must consider the following aspects:
 
 .. important::
 
-   If UCS involves more than one *UMC Server* instance,
+   If Nubus for UCS involves more than one *UMC Server* instance,
    the feature for the refresh of the portal tabs on sign-out or session timeout
    requires :program:`PostgreSQL`.
    You can also use a local :program:`SQLite` database for one *UMC Server* with multiprocessing.
