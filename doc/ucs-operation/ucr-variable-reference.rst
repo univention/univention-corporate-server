@@ -71,7 +71,8 @@ This section provides a reference for UCR variables.
 
    If Nubus uses the group cache file, see :envvar:`nss/group/cachefile` UCR variable,
    Nubus exports the group data to the cache file in the interval specified here.
-   The interval is in cron format, see :command:`man 5 crontab`.
+   The interval is in cron format, see :command:`man 5 crontab`
+   or `crontab(5) <https://manpages.debian.org/bookworm/cron/crontab.5.en.html>`_.
 
    For information about where this variable applies,
    see :ref:`ucs-operation-groups-management-cache`.
@@ -84,7 +85,7 @@ This section provides a reference for UCR variables.
    see the :envvar:`nss/group/cachefile` UCR variable,
    the Nubus automatically regenerates the cache file
    whenever a domain administrator edits a group in the *Management UI*.
-   If this variable isn't set, the option is enabled.
+   If this variable isn't set, the functionality is enabled.
 
    For information about where this variable applies,
    see :ref:`ucs-operation-groups-management-cache`.
@@ -100,7 +101,7 @@ This section provides a reference for UCR variables.
 
    If the password policy has the option *Password quality check* activated,
    Nubus runs additional checks including dictionary checks,
-   for password changes in Management UI (UMC), Samba, and Kerberos.
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -115,7 +116,7 @@ This section provides a reference for UCR variables.
 
    If the password policy has the option *Password quality check* activated,
    Nubus runs additional checks, including dictionary checks,
-   for password changes in Management UI (UMC), Samba, and Kerberos.
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -131,7 +132,7 @@ This section provides a reference for UCR variables.
 
    If the password policy has the option *Password quality check* activated,
    Nubus runs additional checks including dictionary checks,
-   for password changes in Management UI (UMC), Samba, and Kerberos.
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -146,7 +147,7 @@ This section provides a reference for UCR variables.
 
    If the password policy has the option *Password quality check* activated,
    Nubus runs additional checks including dictionary checks,
-   for password changes in Management UI (UMC), Samba, and Kerberos.
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -162,7 +163,7 @@ This section provides a reference for UCR variables.
 
    If the password policy has the option *Password quality check* activated,
    Nubus runs additional checks including dictionary checks,
-   for password changes in Management UI (UMC), Samba, and Kerberos.
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -190,7 +191,7 @@ This section provides a reference for UCR variables.
 .. envvar:: password/quality/length/min
 
    When changing passwords through *Univention Portal*, *Management UI*,
-   *Directory Manager* or Kerberos without Samba/AD,
+   *Directory Manager* or Kerberos without Samba,
    UCS checks whether the new password meets the minimum length requirement.
 
    You can define the minimum length through the following approaches:
@@ -234,7 +235,7 @@ This section provides a reference for UCR variables.
 
    If the password policy has the option *Password quality check* activated,
    Nubus runs additional checks including dictionary checks,
-   for password changes in Management UI (UMC), Samba, and Kerberos.
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -246,9 +247,9 @@ This section provides a reference for UCR variables.
 
    Specifies the mechanism
    that the *Portal* uses to authenticate a user
-   when clicking the login button in the *Portal* sidebar.
+   when clicking the :guilabel:`Login` in the *Portal* sidebar.
    For the values ``saml`` and ``oidc``
-   the clients have to resolve the name of the SSO server
+   the clients have to resolve the name of the single sign-on server
    and retrieve a trustworthy and valid certificate.
 
    :Default value: ``ucs``
@@ -259,7 +260,7 @@ This section provides a reference for UCR variables.
 .. envvar:: portal/reload-tabs-on-logout
 
    If activated,
-   the Management UI sets up a persistent connection
+   the *Management UI* sets up a persistent connection
    to the user's web browser.
    It notifies all Univention Portal browser tabs of a sign-out
    and causes them to reload.
@@ -279,7 +280,7 @@ This section provides a reference for UCR variables.
    on the :term:`UCS Primary Directory Node`
    and all :term:`UCS Backup Directory Node`\s.
    The variable has no effect on accounts
-   created by user accounts in the ``Domain Admins`` group.
+   created by user accounts from the ``Domain Admins`` group.
 
    For more information,
    see :ref:`end-user-self-service-registration-account-activation`.
@@ -337,7 +338,7 @@ This section provides a reference for UCR variables.
 .. envvar:: umc/web/sso/enabled
 
    If activated, the *UMC Server* tries the sign-in
-   through single sign-on
+   through SAML single sign-on
    before using a regular sign-in.
 
    :Default value: not set
