@@ -1,3 +1,9 @@
+univention-demo-configuration (10.4.1) unstable; urgency=medium
+
+  * Summit 2026 Portal tile
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 07 Jan 2026 14:28:09 +0100
+
 univention-demo-configuration (10.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
