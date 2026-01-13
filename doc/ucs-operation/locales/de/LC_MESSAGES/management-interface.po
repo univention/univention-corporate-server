@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-14 17:45+0000\n"
-"PO-Revision-Date: 2026-01-15 09:57+0100\n"
+"PO-Revision-Date: 2026-01-15 09:58+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -387,7 +387,6 @@ msgstr ""
 "UCS Domäne installiert haben."
 
 #: ../../management-interface/auth.rst:210
-#, fuzzy
 msgid ""
 "For information about how to upgrade, refer to :external+uv-ucs-"
 "manual:ref:`software-ucs-updates` in :cite:t:`ucs-manual`."
