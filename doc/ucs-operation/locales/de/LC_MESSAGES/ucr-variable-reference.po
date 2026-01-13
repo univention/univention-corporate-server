@@ -1,0 +1,394 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-13 16:25+0000\n"
+"PO-Revision-Date: 2026-01-13 17:30+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../ucr-variable-reference.rst:6
+msgid "UCR variable reference"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:8
+msgid "This section provides a reference for UCR variables."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:12
+msgid ""
+"If activated with the value ``true`` or the variable isn't set, usernames"
+" and group names must be distinct. That means if there is a username "
+"``test``, then Nubus doesn't allow a group with the name ``test``."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:18
+msgid ""
+"For information where to this variable applies, see :ref:`ucs-operation-"
+"groups-management-tab-general-name` in :ref:`ucs-operation-groups-"
+"creation-assignment`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst
+msgid "Default value"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:22 ../../ucr-variable-reference.rst:38
+#: ../../ucr-variable-reference.rst:92 ../../ucr-variable-reference.rst:108
+#: ../../ucr-variable-reference.rst:123 ../../ucr-variable-reference.rst:139
+#: ../../ucr-variable-reference.rst:154 ../../ucr-variable-reference.rst:170
+#: ../../ucr-variable-reference.rst:187 ../../ucr-variable-reference.rst:218
+#: ../../ucr-variable-reference.rst:242 ../../ucr-variable-reference.rst:313
+#: ../../ucr-variable-reference.rst:323 ../../ucr-variable-reference.rst:343
+msgid "not set"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst
+msgid "Possible values"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:23 ../../ucr-variable-reference.rst:39
+#: ../../ucr-variable-reference.rst:54 ../../ucr-variable-reference.rst:93
+msgid "``yes``, ``no``, not set"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst
+msgid "Type"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:24 ../../ucr-variable-reference.rst:40
+#: ../../ucr-variable-reference.rst:55 ../../ucr-variable-reference.rst:68
+#: ../../ucr-variable-reference.rst:94 ../../ucr-variable-reference.rst:268
+#: ../../ucr-variable-reference.rst:288 ../../ucr-variable-reference.rst:334
+#: ../../ucr-variable-reference.rst:344
+msgid "boolean"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:28
+msgid ""
+"If activated with the value ``yes`` or the variable isn't set, Nubus "
+"automatically detects cyclic dependencies of nested groups and refuses to"
+" create them. To deactivate the check, set it to the value ``no``."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:35
+msgid ""
+"For information about where this variable applies, see :ref:`ucs-"
+"operation-groups-management-nested`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:44
+msgid ""
+"If activated, Nubus exports all group data to a cache file. The NSS "
+"module *extrausers* includes the exported data. This results to "
+"significant performance improvements in large environments. If the "
+"variable isn't set, the cache file is activated."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:50 ../../ucr-variable-reference.rst:64
+#: ../../ucr-variable-reference.rst:76 ../../ucr-variable-reference.rst:89
+msgid ""
+"For information about where this variable applies, see :ref:`ucs-"
+"operation-groups-management-cache`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:53
+msgid "``yes``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:59
+msgid ""
+"If activated, the group cache export verifies whether the exported group "
+"members are still present in the LDAP directory. If you only use user "
+"management methods through the *Users* and *Groups* management module, "
+"this validation isn't necessary and you can deactivate it."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:67
+msgid "``true``, ``false``, not set"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:72
+msgid ""
+"If Nubus uses the group cache file, see :envvar:`nss/group/cachefile` UCR"
+" variable, Nubus exports the group data to the cache file in the interval"
+" specified here. The interval is in cron format, see :command:`man 5 "
+"crontab`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:79
+msgid "cron"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:83
+msgid ""
+"If Nubus has this variable activated and the group cache file has been "
+"enabled, see the :envvar:`nss/group/cachefile` UCR variable, the Nubus "
+"automatically regenerates the cache file whenever a domain administrator "
+"edits a group in the *Management UI*. If this variable isn't set, the "
+"option is enabled."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:98
+msgid ""
+"Defines the minimum required number of digits for passwords. A newly "
+"defined password must include at least this many digits."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:101 ../../ucr-variable-reference.rst:132
+#: ../../ucr-variable-reference.rst:147 ../../ucr-variable-reference.rst:163
+#: ../../ucr-variable-reference.rst:235
+msgid ""
+"If the password policy has the option *Password quality check* activated,"
+" Nubus runs additional checks including dictionary checks, for password "
+"changes in Management UI (UMC), Samba, and Kerberos."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:105 ../../ucr-variable-reference.rst:120
+#: ../../ucr-variable-reference.rst:136 ../../ucr-variable-reference.rst:151
+#: ../../ucr-variable-reference.rst:167 ../../ucr-variable-reference.rst:184
+#: ../../ucr-variable-reference.rst:239
+msgid "For more information, see :ref:`password-management-policies`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:109 ../../ucr-variable-reference.rst:124
+#: ../../ucr-variable-reference.rst:140 ../../ucr-variable-reference.rst:155
+msgid "integer"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:113
+msgid ""
+"Defines the minimum required number of lowercase letters for passwords. A"
+" newly defined password must include at least this many lowercase "
+"letters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:116
+msgid ""
+"If the password policy has the option *Password quality check* activated,"
+" Nubus runs additional checks, including dictionary checks, for password "
+"changes in Management UI (UMC), Samba, and Kerberos."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:128
+msgid ""
+"Defines the minimum required number of characters in the user password "
+"that are neither letters nor digits. A newly defined password must "
+"include at least this many characters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:144
+msgid ""
+"Defines the minimum required number of uppercase letters for passwords. A"
+" newly defined password must include at least this many uppercase "
+"letters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:159
+msgid ""
+"Defines the characters and digits that aren't allowed in passwords. A "
+"newly defined password must not contain these characters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:171 ../../ucr-variable-reference.rst:188
+#: ../../ucr-variable-reference.rst:219 ../../ucr-variable-reference.rst:243
+#: ../../ucr-variable-reference.rst:255 ../../ucr-variable-reference.rst:314
+#: ../../ucr-variable-reference.rst:324
+msgid "string"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:175
+msgid "Defines the standard Microsoft password complexity criteria."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:177
+msgid ""
+"The values ``yes``, ``1``, or ``true`` activate the standard Microsoft "
+"password complexity criteria in addition to the other criteria validated "
+"with :program:`python-cracklib`. The value ``sufficient`` only applies "
+"the standard Microsoft password complexity criteria without :program"
+":`python-cracklib`. The default value is unset and corresponds to the "
+"value ``false``."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:192
+msgid ""
+"When changing passwords through *Univention Portal*, *Management UI*, "
+"*Directory Manager* or Kerberos without Samba/AD, UCS checks whether the "
+"new password meets the minimum length requirement."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:196
+msgid "You can define the minimum length through the following approaches:"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:198
+msgid ""
+"Use this UCR variable to define the minimum password length locally per "
+"Nubus for UCS node. The value applies to all user accounts."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:201
+msgid ""
+"You can use *Policy: Passwords*, type ``policies/pwhistory``, to override"
+" the value defined in this UCR variable. The values of the policy apply "
+"to user accounts that are subject to the policy. The policy takes "
+"precedence over the UCR variable."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:207
+msgid ""
+"If the policy has *Password quality check* activated, :program:`python-"
+"cracklib` demands a minimum password length of 4 characters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:210
+msgid "The UCR variable can have the following values:"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:212
+msgid "Integer to define the minimum password length as number of characters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:214
+msgid "The value ``yes`` applies checks from :program:`python-cracklib`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:216
+msgid ""
+"The value ``sufficient`` doesn't include :program:`python-cracklib` "
+"checks."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:223
+msgid ":ref:`password-management-policies`"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:224
+msgid "for context information about password policies in Nubus for UCS."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:226
+msgid ":external+uv-nubus-manual:ref:`nubus-user-password-management-module`"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:227
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about *Policy: Passwords* in"
+" the *Policies module* in the *Management UI*."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:232
+msgid ""
+"Defines individual characters as required for passwords. A newly defined "
+"password must include the specified characters."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:247
+msgid ""
+"Specifies the mechanism that the *Portal* uses to authenticate a user "
+"when clicking the login button in the *Portal* sidebar. For the values "
+"``saml`` and ``oidc`` the clients have to resolve the name of the SSO "
+"server and retrieve a trustworthy and valid certificate."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:254
+msgid "``ucs``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:256
+msgid "``saml``, ``oidc``, ``ucs``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:261
+msgid ""
+"If activated, the Management UI sets up a persistent connection to the "
+"user's web browser. It notifies all Univention Portal browser tabs of a "
+"sign-out and causes them to reload."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:267 ../../ucr-variable-reference.rst:287
+msgid "``false``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:272
+msgid ""
+"If activated, users that have registered themselves through the "
+":program:`Self Service` app need to verify their email address first "
+"before they can sign in."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:278
+msgid ""
+"You must set this UCR variable on the :term:`UCS Primary Directory Node` "
+"and all :term:`UCS Backup Directory Node`\\s. The variable has no effect "
+"on accounts created by user accounts in the ``Domain Admins`` group."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:284
+msgid ""
+"For more information, see :ref:`end-user-self-service-registration-"
+"account-activation`."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:292
+msgid ""
+"Defines the number of *UMC Server* processes that Nubus for UCS starts in"
+" parallel."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:295
+msgid "``1``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:296 ../../ucr-variable-reference.rst:306
+msgid "Unsigned integer"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:301
+msgid ""
+"The web browser automatically closes the browser session after the "
+"defined time period in seconds. A new session requires a new sign-in"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:305
+msgid "``300``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:311
+msgid "Defines the OpenID provider issuer of this relying party entry."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:319
+msgid ""
+"Defines the fully qualified domain name of the relying party for the *UMC"
+" Server*. If the variable is unset, Nubus for UCS uses the fully "
+"qualified domain name of the UCS system and all IP addresses."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:329
+msgid ""
+"If activated, the *UMC Server* tries the sign-in through OpenID Connect "
+"single sign-on before using a regular sign-in."
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:333
+msgid "``true``"
+msgstr ""
+
+#: ../../ucr-variable-reference.rst:339
+msgid ""
+"If activated, the *UMC Server* tries the sign-in through single sign-on "
+"before using a regular sign-in."
+msgstr ""
+
