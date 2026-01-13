@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.4.2) unstable; urgency=medium
+
+  * Bug #50253: added reload_extended_attributes for reloading extensions
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Jan 2026 12:58:43 +0100
+
 univention-management-console-module-udm (12.4.1) unstable; urgency=medium
 
   * Bug #58887: rename recyclebin to Recycle Bin

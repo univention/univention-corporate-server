@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.4.3) unstable; urgency=medium
+
+  * Bug #50253: add /udm/-/reload endpoint to reload extended attributes
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Jan 2026 12:59:53 +0100
+
 univention-directory-manager-rest (12.4.2) unstable; urgency=medium
 
   * Bug #58887: rename recyclebin to Recycle Bin

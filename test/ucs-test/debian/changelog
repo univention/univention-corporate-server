@@ -1,3 +1,9 @@
+ucs-test (12.4.13) unstable; urgency=medium
+
+  * Bug #50253: tests for udm-rest reload endpoint
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Jan 2026 13:06:19 +0100
+
 ucs-test (12.4.12) unstable; urgency=medium
 
   * Bug #58931: shorten recylebin DN
