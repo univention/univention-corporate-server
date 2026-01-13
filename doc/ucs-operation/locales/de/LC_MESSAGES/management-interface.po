@@ -1,13 +1,10 @@
-# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
-#
-# SPDX-License-Identifier: AGPL-3.0-only
 
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 16:25+0000\n"
-"PO-Revision-Date: 2026-01-13 17:30+0100\n"
+"POT-Creation-Date: 2026-01-14 17:45+0000\n"
+"PO-Revision-Date: 2026-01-15 09:57+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,7 +16,7 @@ msgstr ""
 
 #: ../../management-interface/auth.rst:8
 msgid "Authentication"
-msgstr ""
+msgstr "Authentifizierung"
 
 #: ../../management-interface/auth.rst:10
 msgid ""
@@ -28,10 +25,14 @@ msgid ""
 ":external+uv-nubus-manual:ref:`nubus-authentication` in :cite:t:`uv-"
 "nubus-manual`."
 msgstr ""
+"Diese Seite behandelt Konfigurationsaspekte der Authentifizierung in "
+"Nubus für UCS für technische Administratoren. Eine allgemeine "
+"Beschreibung finden Sie unter :external+uv-nubus-manual:ref:`nubus-"
+"authentication` im :cite:t:`uv-nubus-manual`."
 
 #: ../../management-interface/auth.rst:19
 msgid "Sign-in"
-msgstr ""
+msgstr "Anmelden"
 
 #: ../../management-interface/auth.rst:21
 msgid ""
@@ -39,20 +40,26 @@ msgid ""
 ":`nubus-authentication-sign-in` in :cite:t:`uv-nubus-manual`. This "
 "section covers settings and peculiarities for Nubus for UCS."
 msgstr ""
+"Eine allgemeine Beschreibung der Anmeldung finden Sie unter :external+uv-"
+"nubus-manual:ref:`nubus-authentication-sign-in` im :cite:t:`uv-nubus-"
+"manual`. Dieser Abschnitt behandelt Einstellungen und Besonderheiten für "
+"Nubus für UCS."
 
 #: ../../management-interface/auth.rst:29
 msgid "Choose the right user account"
-msgstr ""
+msgstr "Wählen Sie das richtige Benutzerkonto"
 
 #: ../../management-interface/auth.rst:31
 msgid ""
 "To sign in, enter the *Username* and *Password* of the corresponding "
 "domain account in the login mask."
 msgstr ""
+"Um sich anzumelden, geben Sie den *Benutzernamen* und das *Passwort* des "
+"entsprechenden Domänenkontos in die Anmeldemaske ein."
 
 #: ../../management-interface/auth.rst:35
 msgid "``Administrator``"
-msgstr ""
+msgstr "``Administrator``"
 
 #: ../../management-interface/auth.rst:36
 msgid ""
@@ -61,6 +68,10 @@ msgid ""
 "nubus-manual`. For a specific description of Nubus for UCS, continue "
 "reading."
 msgstr ""
+"Eine allgemeine Beschreibung finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-authentication-sign-in-choose-user-account-"
+"administrator` im :cite:t:`uv-nubus-manual`. Für eine spezifische "
+"Beschreibung für Nubus für UCS lesen Sie weiter."
 
 #: ../../management-interface/auth.rst:41
 msgid ""
@@ -69,6 +80,10 @@ msgid ""
 "for the administration and configuration of the local system as well as "
 "the modules for the administration of data in the domain."
 msgstr ""
+"Wenn Sie sich auf einem :term:`UCS Primary Directory Node` oder "
+":term:`UCS Backup Directory Node` anmelden, zeigt die *Management UI* die"
+" Verwaltungsmodule zur Administration und Konfiguration des lokalen "
+"Systems sowie die Module zur Administration von Daten in der Domäne an."
 
 #: ../../management-interface/auth.rst:49
 msgid ""
@@ -78,23 +93,33 @@ msgid ""
 " account for the initial sign-in at a newly installed :term:`UCS Primary "
 "Directory Node`."
 msgstr ""
+"Sie haben das anfängliche Passwort für das ``Administrator`` Konto "
+"während der Installation im Einrichtungsassistenten festgelegt. Das "
+"Passwort entspricht dem anfänglichen Passwort des lokalen ``root`` "
+"Kontos. Verwenden Sie das ``Administrator`` Konto für die anfängliche "
+"Anmeldung an einem neu installierten :term:`UCS Primary Directory Node`."
 
 #: ../../management-interface/auth.rst:57
 msgid "``root``"
-msgstr ""
+msgstr "``root``"
 
 #: ../../management-interface/auth.rst:58
 msgid ""
 "In some cases, it might be necessary to sign in with the system's local "
 "``root`` account. For more information, refer to :external+uv-ucs-"
 "manual:ref:`computers-rootaccount`. The ``root`` account only enables "
-"access to UMC modules for the administration and configuration of the "
-"local system."
+"access to management modules for the administration and configuration of "
+"the local system."
 msgstr ""
+"In einigen Fällen kann es erforderlich sein, sich mit dem lokalen "
+"``root`` Konto des Systems anzumelden. Weitere Informationen finden Sie "
+"unter :external+uv-ucs-manual:ref:`computers-rootaccount`. Das ``root`` "
+"Konto ermöglicht nur den Zugriff auf Verwaltungsmodule zur Administration"
+" und Konfiguration des lokalen Systems."
 
 #: ../../management-interface/auth.rst:66
 msgid "Other user accounts"
-msgstr ""
+msgstr "Andere Benutzerkonten"
 
 #: ../../management-interface/auth.rst:67
 msgid ""
@@ -102,32 +127,42 @@ msgid ""
 "authentication-sign-in-choose-user-account-others` in :cite:t:`uv-nubus-"
 "manual`."
 msgstr ""
+"Eine allgemeine Beschreibung finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-authentication-sign-in-choose-user-account-others` im "
+":cite:t:`uv-nubus-manual`."
 
 #: ../../management-interface/auth.rst:74
 msgid "Change Nubus web session timeout"
-msgstr ""
+msgstr "Zeitüberschreitung für Nubus Web Sitzung ändern"
 
 #: ../../management-interface/auth.rst:76
 msgid ""
 "You can change the timeout of the Nubus web session through the UCR "
 "variable :envvar:`umc/http/session/timeout`."
 msgstr ""
+"Sie können die Zeitüberschreitung der Nubus Web-Sitzung über die UCR-"
+"Variable :envvar:`umc/http/session/timeout` ändern."
 
 #: ../../management-interface/auth.rst:82
 msgid "Refresh browser tabs on sign-out"
-msgstr ""
+msgstr "Browser-Reiter bei Abmeldung aktualisieren"
 
 #: ../../management-interface/auth.rst:84
 msgid ""
 "For a general description of sign-out, see :external+uv-nubus-manual:ref"
 ":`nubus-authentication-sign-out` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Eine allgemeine Beschreibung der Abmeldung finden Sie unter :external+uv-"
+"nubus-manual:ref:`nubus-authentication-sign-out` im :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../management-interface/auth.rst:88
 msgid ""
 "After detecting a sign-out, Nubus automatically refreshes all browser "
 "tabs with an active *Portal* session."
 msgstr ""
+"Nachdem eine Abmeldung erkannt wurde, aktualisiert Nubus automatisch alle"
+" Browser-Reiter mit einer aktiven *Portal* Sitzung."
 
 #: ../../management-interface/auth.rst:92
 msgid ""
@@ -135,20 +170,26 @@ msgid ""
 "the UCR variable :envvar:`portal/reload-tabs-on-logout` to the value "
 "``true``. The default value is ``false``."
 msgstr ""
+"Sie können verhindern, dass Nubus die Browser-Reiter bei der Abmeldung "
+"neu lädt. Setzen Sie die UCR-Variable :envvar:`portal/reload-tabs-on-"
+"logout` auf den Wert ``true``. Der Standardwert ist ``false``."
 
 #: ../../management-interface/auth.rst:101
 msgid "Single sign-on"
-msgstr ""
+msgstr "Single Sign-On"
 
 #: ../../management-interface/auth.rst:103
 msgid ""
 "For a general description of single sign-on, see :external+uv-nubus-"
 "manual:ref:`nubus-authentication-sso` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Eine allgemeine Beschreibung von Single Sign-On finden Sie unter "
+":external+uv-nubus-manual:ref:`nubus-authentication-sso` im :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../management-interface/auth.rst:110
 msgid "SAML configuration for single sign-on"
-msgstr ""
+msgstr "SAML-Konfiguration für Single Sign-On"
 
 #: ../../management-interface/auth.rst:112
 msgid ""
@@ -156,16 +197,21 @@ msgid ""
 "app. Refer to :external+uv-keycloak-app:ref:`login-portal` in :cite:t"
 ":`ucs-keycloak-doc`."
 msgstr ""
+"Nubus für UCS unterstützt Single Sign-On über SAML unter Verwendung der "
+":program:`Keycloak` App. Siehe :external+uv-keycloak-app:ref:`login-"
+"portal` in :cite:t:`ucs-keycloak-doc`."
 
 #: ../../management-interface/auth.rst:120
 msgid "Activate SAML for single sign-on"
-msgstr ""
+msgstr "SAML für Single Sign-On aktivieren"
 
 #: ../../management-interface/auth.rst:122
 msgid ""
 "After completing the configuration for *Keycloak*, use the following "
 "steps for a better user experience:"
 msgstr ""
+"Nachdem Sie die Konfiguration für *Keycloak* abgeschlossen haben, "
+"verwenden Sie die folgenden Schritte für eine bessere Benutzererfahrung:"
 
 #: ../../management-interface/auth.rst:125
 #, python-brace-format
@@ -174,20 +220,25 @@ msgid ""
 " *Management UI* with single sign-on can reach :samp:`ucs-sso-ng.{[Domain"
 " Name]}`."
 msgstr ""
+"Stellen Sie sicher, dass alle Benutzer in Ihrer Domäne, die das *Portal* "
+"und die *Management UI* mit Single Sign-On nutzen möchten, :samp:`ucs-"
+"sso-ng.{[Domain Name]}` erreichen können."
 
 #: ../../management-interface/auth.rst:129
 msgid ""
 "Change the UCR variable :envvar:`portal/auth-mode` to ``saml`` with the "
 "command in :numref:`ucs-operation-auth-sso-saml-listing`."
 msgstr ""
+"Ändern Sie die UCR-Variable :envvar:`portal/auth-mode` mit dem Befehl in "
+":numref:`ucs-operation-auth-sso-saml-listing` auf ``saml``."
 
 #: ../../management-interface/auth.rst:133
 msgid "Set *Portal* authentication mode to SAML"
-msgstr ""
+msgstr "*Portal* Authentifizierungsmodus auf SAML setzen"
 
 #: ../../management-interface/auth.rst:133
 msgid "$ ucr set portal/auth-mode=\"saml\""
-msgstr ""
+msgstr "$ ucr set portal/auth-mode=\"saml\""
 
 #: ../../management-interface/auth.rst:139
 msgid ""
@@ -195,20 +246,23 @@ msgid ""
 " with the command in :numref:`ucs-operation-auth-sso-saml-restart-"
 "listing`."
 msgstr ""
+"Um die Konfiguration anzuwenden, starten Sie den *Portal-Server* auf "
+"jedem UCS Knoten mit dem Befehl in :numref:`ucs-operation-auth-sso-saml-"
+"restart-listing` neu."
 
 #: ../../management-interface/auth.rst:142
 msgid "Restart *Portal* service"
-msgstr ""
+msgstr "Dienst *Portal* neu starten"
 
 #: ../../management-interface/auth.rst:142
 msgid "$ systemctl restart univention-portal-server.service"
-msgstr ""
+msgstr "$ systemctl restart univention-portal-server.service"
 
 #: ../../management-interface/auth.rst:151
 msgid "Update the default login tile in the Portal"
-msgstr ""
+msgstr "Standard-Kachel zum Anmelden im Portal aktualisieren"
 
-#: ../../management-interface/auth.rst:153
+#: ../../management-interface/auth.rst:155
 msgid ""
 "Restarting the *Portal server* automatically updates the *Login* link in "
 "the user menu. However, you need to manually update the portal tile for "
@@ -216,186 +270,252 @@ msgid ""
 "deactivated single sign-on login tile. Use the portal edit mode to enable"
 " it."
 msgstr ""
+"Durch den Neustart des *Portal-Servers* wird automatisch der Link zum "
+"*Anmelden* im Benutzermenü aktualisiert. Sie müssen jedoch die Portal-"
+"Kachel zum *Anmelden* manuell aktualisieren, um SAML zu verwenden. Das "
+"Standardportal verfügt über eine vorkonfigurierte, aber deaktivierte "
+"Single Sign-On Kachel zum Anmelden. Verwenden Sie den Portal-"
+"Bearbeitungsmodus, um diese zu aktivieren."
 
-#: ../../management-interface/auth.rst:158
+#: ../../management-interface/auth.rst:160
 msgid ""
 "To replace the *Login* tile with the single sign-on tile, follow these "
 "steps:"
 msgstr ""
+"Um die Kachel zum *Anmelden* durch die Single Sign-On Kachel zu ersetzen,"
+" folgen Sie diesen Schritten:"
 
-#: ../../management-interface/auth.rst:161
+#: ../../management-interface/auth.rst:163
 msgid ""
 "In the *Management UI*, open the *Portal* management module through "
 ":menuselection:`Domain --> Portal`."
 msgstr ""
+"Öffnen Sie im *Management UI* das *Portal* Verwaltungsmodul über "
+":menuselection:`Domäne --> Portal`."
 
-#: ../../management-interface/auth.rst:164
+#: ../../management-interface/auth.rst:166
 msgid ""
 "To activate the preconfigured sign-in tile for SAML, edit the entry "
 "``login-saml``, scroll down to the section *Advanced*, and activate the "
 "checkbox :guilabel:`Activated`."
 msgstr ""
+"Um die vorkonfigurierte Kachel zum Anmelden für SAML zu aktivieren, "
+"bearbeiten Sie den Eintrag ``login-saml``, scrollen Sie zum Abschnitt "
+"*Erweitert* und aktivieren Sie das Kontrollkästchen "
+":guilabel:`Aktiviert`."
 
-#: ../../management-interface/auth.rst:169
+#: ../../management-interface/auth.rst:171
 msgid ""
 "To deactivate the default sign-in tile, edit the entry ``login-ucs``, "
 "scroll down to the section *Advanced*, and deactivate the checkbox "
 ":guilabel:`Activated`."
 msgstr ""
+"Um die Standard-Kachel zum Anmelden zu deaktivieren, bearbeiten Sie den "
+"Eintrag ``login-ucs``, scrollen Sie zum Abschnitt *Erweitert* und "
+"deaktivieren Sie das Kontrollkästchen :guilabel:`Aktiviert`."
 
-#: ../../management-interface/auth.rst:176
-#: ../../management-interface/auth.rst:298
+#: ../../management-interface/auth.rst:178
+#: ../../management-interface/auth.rst:302
 msgid ":external+uv-nubus-manual:ref:`nubus-portal`"
-msgstr ""
+msgstr ":external+uv-nubus-manual:ref:`nubus-portal`"
 
-#: ../../management-interface/auth.rst:177
-#: ../../management-interface/auth.rst:299
+#: ../../management-interface/auth.rst:179
+#: ../../management-interface/auth.rst:303
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about the concept and the "
 "management of the *Portal* in Nubus."
 msgstr ""
-
-#: ../../management-interface/auth.rst:183
-msgid "Restore login without single sign-on"
-msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen zum Konzept und zur "
+"Verwaltung des *Portal* in Nubus."
 
 #: ../../management-interface/auth.rst:185
-msgid ""
-"To change back to the default sign-in in UCS without single sign-on, use "
-"the following steps:"
-msgstr ""
+msgid "Restore login without single sign-on"
+msgstr "Anmelden ohne Single Sign-On wiederherstellen"
 
-#: ../../management-interface/auth.rst:188
-msgid "Revert the steps in :ref:`ucs-operation-auth-sso-saml-update-portal`."
+#: ../../management-interface/auth.rst:187
+msgid ""
+"To change back to the default sign-in in Nubus for UCS without single "
+"sign-on, use the following steps:"
 msgstr ""
+"Um zum Standard-Anmeldung in Nubus für UCS ohne Single Sign-On "
+"zurückzukehren, verwenden Sie die folgenden Schritte:"
 
 #: ../../management-interface/auth.rst:190
+msgid "Revert the steps in :ref:`ucs-operation-auth-sso-saml-update-portal`."
+msgstr ""
+"Kehren Sie die Schritte in :ref:`ucs-operation-auth-sso-saml-update-"
+"portal` um."
+
+#: ../../management-interface/auth.rst:192
 msgid ""
 "Set the UCR variable :envvar:`portal/auth-mode` to the value ``ucs`` in "
 ":ref:`ucs-operation-auth-sso-saml-activate`."
 msgstr ""
-
-#: ../../management-interface/auth.rst:197
-msgid "OpenID Connect for single sign-on"
-msgstr ""
+"Setzen Sie die UCR-Variable :envvar:`portal/auth-mode` auf den Wert "
+"``ucs`` in :ref:`ucs-operation-auth-sso-saml-activate`."
 
 #: ../../management-interface/auth.rst:199
+msgid "OpenID Connect for single sign-on"
+msgstr "OpenID Connect für Single Sign-On"
+
+#: ../../management-interface/auth.rst:201
 msgid ""
 "OpenID Connect (OIDC) is a protocol that allows single sign-on. OIDC is a"
 " more lightweight protocol than SAML. It's one variant for using single "
 "sign-on in the *Portal* and the UCS management system. This section "
 "describes how to use it with UCS."
 msgstr ""
+"OpenID Connect (OIDC) ist ein Protokoll, das Single Sign-On ermöglicht. "
+"OIDC ist ein leichteres Protokoll als SAML. Es ist eine Variante für die "
+"Verwendung von Single Sign-On im *Portal* und in der *Management UI*. "
+"Dieser Abschnitt beschreibt die Verwendung mit Nubus für UCS."
 
-#: ../../management-interface/auth.rst:204
+#: ../../management-interface/auth.rst:206
 msgid ""
 "Before you can use OIDC for single sign-on, you must meet the following "
 "requirements:"
 msgstr ""
-
-#: ../../management-interface/auth.rst:206
-msgid ""
-"You must at least have :uv:erratum:`5.0x1118` installed throughout your "
-"UCS domain."
-msgstr ""
+"Bevor Sie OIDC für Single Sign-On verwenden können, müssen Sie die "
+"folgenden Anforderungen erfüllen:"
 
 #: ../../management-interface/auth.rst:208
 msgid ""
-"For information about how to upgrade, refer to :ref:`software-ucs-"
-"updates`."
+"You must at least have :uv:erratum:`5.0x1118` installed throughout your "
+"Nubus for UCS domain."
 msgstr ""
+"Sie müssen mindestens :uv:erratum:`5.0x1118` in Ihrer gesamten Nubus für "
+"UCS Domäne installiert haben."
 
 #: ../../management-interface/auth.rst:210
-msgid "You must have the :program:`Keycloak` app installed in your UCS domain."
+#, fuzzy
+msgid ""
+"For information about how to upgrade, refer to :external+uv-ucs-"
+"manual:ref:`software-ucs-updates` in :cite:t:`ucs-manual`."
 msgstr ""
+"Weitere Informationen zum Aktualisieren finden Sie unter :external+uv-"
+"ucs-manual:ref:`software-ucs-updates` im :cite:t:`ucs-manual`."
 
-#: ../../management-interface/auth.rst:212
+#: ../../management-interface/auth.rst:214
+msgid ""
+"You must have the :program:`Keycloak` app installed in your Nubus for UCS"
+" domain."
+msgstr ""
+"Sie müssen die :program:`Keycloak` App in Ihrer Nubus für UCS Domäne "
+"installiert haben."
+
+#: ../../management-interface/auth.rst:216
 msgid ""
 "For information about the installation of :program:`Keycloak`, refer to "
 ":external+uv-keycloak-app:ref:`app-installation` in :cite:t:`ucs-"
 "keycloak-doc`."
 msgstr ""
+"Weitere Informationen zur Installation von :program:`Keycloak` finden Sie"
+" unter :external+uv-keycloak-app:ref:`app-installation` in :cite:t:`ucs-"
+"keycloak-doc`."
 
-#: ../../management-interface/auth.rst:219
+#: ../../management-interface/auth.rst:223
 msgid "Activate OpenID Connect for single sign-on"
-msgstr ""
+msgstr "OpenID Connect für Single Sign-On aktivieren"
 
-#: ../../management-interface/auth.rst:221
+#: ../../management-interface/auth.rst:225
 msgid ""
 "First, you need to decide on which UCS systems you want to enable single "
 "sign-on using OpenID Connect. Second, you need to apply the following "
 "steps to each of those UCS systems."
 msgstr ""
+"Zuerst müssen Sie entscheiden, auf welchen UCS-Systemen Sie Single Sign-"
+"On mit OpenID Connect aktivieren möchten. Zweitens müssen Sie die "
+"folgenden Schritte auf jedem dieser UCS-Systeme anwenden."
 
-#: ../../management-interface/auth.rst:224
+#: ../../management-interface/auth.rst:228
 msgid ""
 "Deactivate SAML for *Portal* sign-in through the UCR variable "
 ":envvar:`umc/web/sso/enabled` so that the automatic sign-in doesn't try "
 "SAML first, but instead uses OIDC directly."
 msgstr ""
+"Deaktivieren Sie SAML für die *Portal* Anmeldung über die UCR-Variable "
+":envvar:`umc/web/sso/enabled`, damit sich die automatische Anmeldung "
+"nicht zuerst an SAML versucht, sondern direkt OIDC verwendet."
 
-#: ../../management-interface/auth.rst:227
+#: ../../management-interface/auth.rst:231
 msgid ""
 "Change the UCR variable :envvar:`umc/web/oidc/enabled` to ``true`` with "
 "the command in :numref:`ucs-operation-auth-sso-oidc-activate-listing`."
 msgstr ""
+"Ändern Sie die UCR-Variable :envvar:`umc/web/oidc/enabled` auf ``true`` "
+"mit dem Befehl in :numref:`ucs-operation-auth-sso-oidc-activate-listing`."
 
-#: ../../management-interface/auth.rst:230
+#: ../../management-interface/auth.rst:234
 msgid "Activate OpenID Connect and deactivate SAML"
-msgstr ""
+msgstr "OpenID Connect aktivieren und SAML deaktivieren"
 
-#: ../../management-interface/auth.rst:230
+#: ../../management-interface/auth.rst:234
 msgid ""
 "$ ucr set \\\n"
 "   umc/web/sso/enabled=false \\\n"
 "   umc/web/oidc/enabled=true"
 msgstr ""
+"$ ucr set \\\n"
+"   umc/web/sso/enabled=false \\\n"
+"   umc/web/oidc/enabled=true"
 
-#: ../../management-interface/auth.rst:238
+#: ../../management-interface/auth.rst:242
 msgid ""
 "Run the join script for the UMC web server with the command in :numref"
 ":`ucs-operation-auth-sso-oidc-activate-join-script-listing`."
 msgstr ""
+"Führen Sie das Join-Skript für den UMC Webserver mit dem Befehl in "
+":numref:`ucs-operation-auth-sso-oidc-activate-join-script-listing` aus."
 
-#: ../../management-interface/auth.rst:241
+#: ../../management-interface/auth.rst:245
 msgid "Run join script for the UMC web server"
-msgstr ""
+msgstr "Join-Skript für den UMC Webserver ausführen"
 
-#: ../../management-interface/auth.rst:241
+#: ../../management-interface/auth.rst:245
 msgid ""
 "$ univention-run-join-scripts \\\n"
 "   --force \\\n"
 "   --run-scripts \\\n"
 "   92univention-management-console-web-server.inst"
 msgstr ""
+"$ univention-run-join-scripts \\\n"
+"   --force \\\n"
+"   --run-scripts \\\n"
+"   92univention-management-console-web-server.inst"
 
-#: ../../management-interface/auth.rst:250
+#: ../../management-interface/auth.rst:254
 msgid ""
 "Change the UCR variable :envvar:`portal/auth-mode` to ``oidc`` with the "
 "command in :numref:`ucs-operation-auth-sso-oidc-portal-listing`. The "
 "default value is ``ucs``."
 msgstr ""
+"Ändern Sie die UCR-Variable :envvar:`portal/auth-mode` auf ``oidc`` mit "
+"dem Befehl in :numref:`ucs-operation-auth-sso-oidc-portal-listing`. Der "
+"Standardwert ist ``ucs``."
 
-#: ../../management-interface/auth.rst:255
+#: ../../management-interface/auth.rst:259
 msgid "Set *Portal* authentication mode to OIDC"
-msgstr ""
+msgstr "*Portal* Authentifizierungsmodus auf OIDC setzen"
 
-#: ../../management-interface/auth.rst:255
+#: ../../management-interface/auth.rst:259
 msgid "$ ucr set portal/auth-mode=\"oidc\""
-msgstr ""
+msgstr "$ ucr set portal/auth-mode=\"oidc\""
 
-#: ../../management-interface/auth.rst:261
+#: ../../management-interface/auth.rst:265
 msgid ""
 "To apply the configuration, restart the *Portal Server* on every UCS node"
 " with the command in :numref:`ucs-operation-auth-sso-saml-restart-"
 "listing`."
 msgstr ""
+"Um die Konfiguration anzuwenden, starten Sie den *Portal Server* auf "
+"jedem UCS Knoten mit dem Befehl in :numref:`ucs-operation-auth-sso-saml-"
+"restart-listing` neu."
 
-#: ../../management-interface/auth.rst:268
+#: ../../management-interface/auth.rst:272
 msgid "Create sign-in links"
-msgstr ""
+msgstr "Anmeldelinks erstellen"
 
-#: ../../management-interface/auth.rst:270
+#: ../../management-interface/auth.rst:274
 msgid ""
 "Restarting the *Portal Server* automatically updates the *Login* link in "
 "the user menu. You can optionally create a portal tile for the sign-in "
@@ -403,12 +523,17 @@ msgid ""
 "commands in :numref:`central-management-umc-login-single-sign-on-oidc-"
 "sign-in-links-listing`."
 msgstr ""
+"Durch den Neustart des *Portal Servers* wird automatisch der *Anmelden* "
+"Link im Benutzermenü aktualisiert. Optional können Sie auf dem :term:`UCS"
+" Primary Directory Node` eine Portal-Kachel für die Anmeldung mit OpenID "
+"Connect mit den Befehlen in :numref:`central-management-umc-login-single-"
+"sign-on-oidc-sign-in-links-listing` erstellen."
 
-#: ../../management-interface/auth.rst:275
+#: ../../management-interface/auth.rst:279
 msgid "Create portal tile for sign-in with OpenID Connect"
-msgstr ""
+msgstr "Portal-Kachel für die Anmeldung mit OpenID Connect erstellen"
 
-#: ../../management-interface/auth.rst:275
+#: ../../management-interface/auth.rst:279
 msgid ""
 "$ udm portals/entry create --ignore_exists \\\n"
 "    --position \"cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)\""
@@ -434,12 +559,35 @@ msgid ""
 "    --append entries=\"cn=login-"
 "oidc,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)\""
 msgstr ""
+"$ udm portals/entry create --ignore_exists \\\n"
+"    --position \"cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)\""
+" \\\n"
+"    --set name=login-oidc \\\n"
+"    --append displayName=\"\\\"en_US\\\" \\\"Login (Single sign-on)\\\"\""
+" \\\n"
+"    --append displayName=\"\\\"de_DE\\\" \\\"Anmelden (Single Sign-"
+"on)\\\"\" \\\n"
+"    --append description=\"\\\"en_US\\\" \\\"Log in to the portal\\\"\" "
+"\\\n"
+"    --append description=\"\\\"de_DE\\\" \\\"Am Portal anmelden\\\"\" \\\n"
+"    --append link='\"en_US\" "
+"\"/univention/oidc/?location=/univention/portal/\"' \\\n"
+"    --set anonymous=TRUE \\\n"
+"    --set activated=TRUE \\\n"
+"    --set linkTarget=samewindow \\\n"
+"    --set icon=\"$(base64 /usr/share/univention-portal/login.svg)\"\n"
+"\n"
+"$ udm portals/category modify --ignore_exists \\\n"
+"    --dn \"cn=domain-service,cn=category,cn=portals,cn=univention,$(ucr "
+"get ldap/base)\"\\\n"
+"    --append entries=\"cn=login-"
+"oidc,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)\""
 
-#: ../../management-interface/auth.rst:305
+#: ../../management-interface/auth.rst:309
 msgid "Verification and log files"
-msgstr ""
+msgstr "Überprüfung und Protokolldateien"
 
-#: ../../management-interface/auth.rst:307
+#: ../../management-interface/auth.rst:311
 #, python-brace-format
 msgid ""
 "To verify that the setup works, open the URL "
@@ -447,124 +595,162 @@ msgid ""
 " Firefox, and sign in. Open a management module, such as :external+uv-"
 "nubus-manual:ref:`nubus-user-management-users`, and perform a search."
 msgstr ""
+"Um die Funktionalität der Einrichtung zu überprüfen, öffnen Sie die URL "
+":samp:`https://{FQDN}/univention/oidc/` in einem Webbrowser, wie Mozilla "
+"Firefox, und melden Sie sich an. Öffnen Sie ein Verwaltungsmodul, wie das"
+" :external+uv-nubus-manual:ref:`nubus-user-management-users`, und führen "
+"Sie eine Suche durch."
 
-#: ../../management-interface/auth.rst:314
+#: ../../management-interface/auth.rst:318
 msgid ""
 "You can find relevant logging information in the following locations on "
 "the UCS system:"
 msgstr ""
-
-#: ../../management-interface/auth.rst:316
-msgid "Log file: :file:`/var/log/univention/management-console.server.log`"
-msgstr ""
-
-#: ../../management-interface/auth.rst:318
-msgid ":program:`journald`: :command:`journalctl -u slapd.service`"
-msgstr ""
+"Relevante Protokollinformationen finden Sie an den folgenden Stellen auf "
+"dem UCS-System:"
 
 #: ../../management-interface/auth.rst:320
+msgid "Log file: :file:`/var/log/univention/management-console.server.log`"
+msgstr "Protokolldatei: :file:`/var/log/univention/management-console.server.log`"
+
+#: ../../management-interface/auth.rst:322
+msgid ":program:`journald`: :command:`journalctl -u slapd.service`"
+msgstr ":program:`journald`: :command:`journalctl -u slapd.service`"
+
+#: ../../management-interface/auth.rst:324
 msgid ""
 "To reflect the changes for the login method in the *Portal*, you need to "
 "edit the *Login* tile manually, similar to the setup described in :ref"
 ":`ucs-operation-auth-sso-saml`. The link must point to "
 "``/univention/oidc/``."
 msgstr ""
+"Um die Änderungen für die Anmeldemethode im *Portal* widerzuspiegeln, "
+"müssen Sie die *Anmelden* Kachel manuell bearbeiten, ähnlich wie in der "
+"in :ref:`ucs-operation-auth-sso-saml` beschriebenen Einrichtung. Der Link"
+" muss auf ``/univention/oidc/`` zeigen."
 
-#: ../../management-interface/auth.rst:328
+#: ../../management-interface/auth.rst:332
 msgid "Deactivate OpenID Connect for single sign-on"
-msgstr ""
+msgstr "OpenID Connect für Single Sign-On deaktivieren"
 
-#: ../../management-interface/auth.rst:330
+#: ../../management-interface/auth.rst:334
 msgid ""
 "First, you need to decide on which Nubus for UCS node you want to "
 "deactivate single sign-on using OpenID Connect. Second, you need to apply"
 " the following steps to each of those nodes."
 msgstr ""
+"Zuerst müssen Sie entscheiden, auf welchem UMC Knoten Sie Single Sign-On "
+"mit OpenID Connect deaktivieren möchten. Zweitens müssen Sie die "
+"folgenden Schritte auf jedem dieser Knoten anwenden."
 
-#: ../../management-interface/auth.rst:334
+#: ../../management-interface/auth.rst:338
 msgid ""
 "Unset the UCR variable :envvar:`umc/web/oidc/enabled` with the command in"
 " :numref:`ucs-operation-auth-sso-oidc-deactivate-unset-oidc-listing`."
 msgstr ""
+"Setzen Sie die UCR-Variable :envvar:`umc/web/oidc/enabled` mit dem Befehl"
+" in :numref:`ucs-operation-auth-sso-oidc-deactivate-unset-oidc-listing` "
+"zurück."
 
-#: ../../management-interface/auth.rst:337
+#: ../../management-interface/auth.rst:341
 msgid "Unset ``umc/web/oidc/enabled``"
-msgstr ""
+msgstr "``umc/web/oidc/enabled`` zurücksetzen"
 
-#: ../../management-interface/auth.rst:337
+#: ../../management-interface/auth.rst:341
 msgid "$ ucr unset umc/web/oidc/enabled"
-msgstr ""
+msgstr "$ ucr unset umc/web/oidc/enabled"
 
-#: ../../management-interface/auth.rst:343
+#: ../../management-interface/auth.rst:347
 msgid ""
 "Remove the :external+uv-keycloak-app:term:`OIDC RP` from Keycloak with "
 "the command in :numref:`ucs-operation-auth-sso-oidc-deactivate-remove-rp-"
 "listing`."
 msgstr ""
+"Entfernen Sie das :external+uv-keycloak-app:term:`OIDC RP` von Keycloak "
+"mit dem Befehl in :numref:`ucs-operation-auth-sso-oidc-deactivate-remove-"
+"rp-listing`."
 
-#: ../../management-interface/auth.rst:346
+#: ../../management-interface/auth.rst:350
 msgid "Remove the OIDC RP from Keycloak"
-msgstr ""
+msgstr "OIDC RP von Keycloak entfernen"
 
-#: ../../management-interface/auth.rst:346
+#: ../../management-interface/auth.rst:350
 msgid ""
 "$ univention-keycloak oidc/rp remove \\\n"
 "   \"$(ucr get umc/oidc/$(hostname -f)/client-id)\""
 msgstr ""
+"$ univention-keycloak oidc/rp remove \\\n"
+"   \"$(ucr get umc/oidc/$(hostname -f)/client-id)\""
 
-#: ../../management-interface/auth.rst:353
+#: ../../management-interface/auth.rst:357
 msgid ""
 "Unset all UCR variables that you find using the commands in :numref:`ucs-"
 "operation-auth-sso-oidc-deactivate-search-ucr-listing`."
 msgstr ""
+"Setzen Sie alle UCR-Variablen zurück, die Sie mit den Befehlen in :numref"
+":`ucs-operation-auth-sso-oidc-deactivate-search-ucr-listing` finden."
 
-#: ../../management-interface/auth.rst:356
+#: ../../management-interface/auth.rst:360
 msgid "Search for UCR variables to unset"
-msgstr ""
+msgstr "Nach UCR-Variablen zum Zurücksetzen suchen"
 
-#: ../../management-interface/auth.rst:356
+#: ../../management-interface/auth.rst:360
 msgid ""
 "$ ucr search --brief --key ^umc/oidc\n"
 "$ ucr search --brief --key ^ldap/server/sasl/oauthbearer"
 msgstr ""
+"$ ucr search --brief --key ^umc/oidc\n"
+"$ ucr search --brief --key ^ldap/server/sasl/oauthbearer"
 
-#: ../../management-interface/auth.rst:363
+#: ../../management-interface/auth.rst:367
 msgid ""
 "Remove the OIDC secret from the system and restart affected services with"
 " the commands in :numref:`ucs-operation-auth-sso-oidc-deactivate-remove-"
 "secret-listing`."
 msgstr ""
+"Entfernen Sie das OIDC :spelling:word:`Secret` vom System und starten Sie"
+" betroffene Dienste mit den Befehlen in :numref:`ucs-operation-auth-sso-"
+"oidc-deactivate-remove-secret-listing` neu."
 
-#: ../../management-interface/auth.rst:367
+#: ../../management-interface/auth.rst:371
 msgid "Remove OIDC secret"
-msgstr ""
+msgstr "OIDC :spelling:word:`Secret` entfernen"
 
-#: ../../management-interface/auth.rst:367
+#: ../../management-interface/auth.rst:371
 msgid ""
 "$ rm -f \\\n"
 "   /etc/umc-oidc.secret \\\n"
 "   /usr/share/univention-management-console/oidc/http*\n"
 "$ systemctl restart slapd univention-management-console-server"
 msgstr ""
+"$ rm -f \\\n"
+"   /etc/umc-oidc.secret \\\n"
+"   /usr/share/univention-management-console/oidc/http*\n"
+"$ systemctl restart slapd univention-management-console-server"
 
-#: ../../management-interface/auth.rst:376
+#: ../../management-interface/auth.rst:380
 msgid ""
 "Manually update the portal tile for *Login*, so that the link points to "
 "``/univention/login/``."
 msgstr ""
+"Aktualisieren Sie manuell die Portal-Kachel für *Anmelden*, sodass der "
+"Link auf ``/univention/login/`` zeigt."
 
-#: ../../management-interface/auth.rst:379
+#: ../../management-interface/auth.rst:383
 msgid ""
 "Change the UCR variable :envvar:`portal/auth-mode` to ``ucs`` and restart"
 " the *Portal Server*. For details, see :ref:`ucs-operation-auth-sso-saml-"
 "restore`."
 msgstr ""
+"Ändern Sie die UCR-Variable :envvar:`portal/auth-mode` auf ``ucs`` und "
+"starten Sie den *Portal Server* neu. Einzelheiten finden Sie unter :ref"
+":`ucs-operation-auth-sso-saml-restore`."
 
-#: ../../management-interface/auth.rst:386
+#: ../../management-interface/auth.rst:390
 msgid "Identity provider with non-standard FQDN"
-msgstr ""
+msgstr "Identitätsanbieter mit nicht standardmäßigem FQDN"
 
-#: ../../management-interface/auth.rst:388
+#: ../../management-interface/auth.rst:392
 #, python-brace-format
 msgid ""
 "By default, the FQDN for the :program:`Keycloak` identity provider is "
@@ -573,8 +759,13 @@ msgid ""
 "keycloak-app:ref:`use-case-custom-fqdn-idp` in :cite:t:`ucs-keycloak-"
 "doc`."
 msgstr ""
+"Standardmäßig lautet der FQDN für den Identitätsanbieter "
+":program:`Keycloak` :samp:`ucs-sso-ng.{$domainname}`. Sie können jedoch "
+"einen anderen FQDN für den Identitätsanbieter konfigurieren. Weitere "
+"Informationen finden Sie unter :external+uv-keycloak-app:ref:`use-case-"
+"custom-fqdn-idp` in :cite:t:`ucs-keycloak-doc`."
 
-#: ../../management-interface/auth.rst:394
+#: ../../management-interface/auth.rst:398
 msgid ""
 "If you have such a setup, you have to configure the identity provider for"
 " the OpenID Connect authentication in UMC on each UCS system. Change the "
@@ -583,24 +774,36 @@ msgid ""
 "web server again, as shown in :numref:`ucs-operation-auth-sso-oidc-non-"
 "standard-fqdn-listing`."
 msgstr ""
+"Wenn Sie ein solches Setup haben, müssen Sie den Identitätsanbieter für "
+"die OpenID Connect Authentifizierung in UMC auf jedem UCS-System "
+"konfigurieren. Ändern Sie die UCR-Variable :envvar:`umc/oidc/issuer` auf "
+"den FQDN Ihres :program:`Keycloak` Identitätsanbieters und führen Sie das"
+" Join-Skript des UMC Webservers erneut aus, wie in :numref:`ucs-"
+"operation-auth-sso-oidc-non-standard-fqdn-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:402
+#: ../../management-interface/auth.rst:406
 msgid "Set non-standard FQDN for identity provider :program:`Keycloak`"
 msgstr ""
+"Setzen Sie einen nicht standardmäßigen FQDN für den Identitätsanbieter "
+":program:`Keycloak`"
 
-#: ../../management-interface/auth.rst:402
+#: ../../management-interface/auth.rst:406
 msgid ""
 "$ IDP=\"auth.extern.test\"\n"
 "$ ucr set umc/oidc/issuer=\"https://$IDP/realms/ucs\"\n"
 "$ univention-run-join-scripts --force \\\n"
 "   --run-scripts 92univention-management-console-web-server"
 msgstr ""
+"$ IDP=\"auth.extern.test\"\n"
+"$ ucr set umc/oidc/issuer=\"https://$IDP/realms/ucs\"\n"
+"$ univention-run-join-scripts --force \\\n"
+"   --run-scripts 92univention-management-console-web-server"
 
-#: ../../management-interface/auth.rst:414
+#: ../../management-interface/auth.rst:418
 msgid "Non-standard FQDN for the Univention Portal and Management UI"
-msgstr ""
+msgstr "Nicht standardmäßiger FQDN für das Univention Portal und die Management UI"
 
-#: ../../management-interface/auth.rst:416
+#: ../../management-interface/auth.rst:420
 #, python-brace-format
 msgid ""
 "By default, the *Management UI* is available under the FQDN "
@@ -610,39 +813,58 @@ msgid ""
 "the join script of the UMC web server again, as shown in :numref:`ucs-"
 "operation-auth-sso-oidc-non-standard-fqdn-portal-listing`."
 msgstr ""
+"Standardmäßig ist die *Management UI* unter dem FQDN "
+":samp:`{$hostname}.{$domainname}` verfügbar. Wenn Sie ein Setup mit einem"
+" anderen FQDN für die *Management UI* haben, müssen Sie die UCR-Variable "
+":envvar:`umc/oidc/rp/server` auf den FQDN der *Management UI* ändern und "
+"das Join-Skript des UMC Webservers erneut ausführen, wie in :numref:`ucs-"
+"operation-auth-sso-oidc-non-standard-fqdn-portal-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:425
+#: ../../management-interface/auth.rst:429
 msgid "Set non-standard FQDN for the *Portal* and *Management UI*"
 msgstr ""
+"Setzen Sie einen nicht standardmäßigen FQDN für das *Portal* und die "
+"*Management UI*"
 
-#: ../../management-interface/auth.rst:425
+#: ../../management-interface/auth.rst:429
 msgid ""
 "$ ucr set umc/oidc/rp/server=\"portal.extern.test\"\n"
 "$ univention-run-join-scripts --force \\\n"
 "   --run-scripts 92univention-management-console-web-server\n"
 "$ systemctl restart slapd"
 msgstr ""
+"$ ucr set umc/oidc/rp/server=\"portal.extern.test\"\n"
+"$ univention-run-join-scripts --force \\\n"
+"   --run-scripts 92univention-management-console-web-server\n"
+"$ systemctl restart slapd"
 
-#: ../../management-interface/auth.rst:436
+#: ../../management-interface/auth.rst:440
 msgid ""
 "If you want to run multiple *Portal Server*\\ s or *UMC Server*\\ s "
 "behind a load balancer, you need to run these commands on all Nubus for "
 "UCS nodes."
 msgstr ""
+"Wenn Sie mehrere *Portal Server* oder *UMC Server* hinter einem "
+"Lastverteiler betreiben möchten, müssen Sie diese Befehle auf allen Nubus"
+" für UCS Knoten ausführen."
 
-#: ../../management-interface/auth.rst:439
+#: ../../management-interface/auth.rst:443
 msgid ""
 "Since all the nodes use the same OIDC client in this setup, make sure "
 "that the file :file:`/etc/umc-oidc.secret` has the same contents on each "
 "node and matches the client secret in :program:`Keycloak` for that "
 "client."
 msgstr ""
+"Da alle Knoten in diesem Setup denselben OIDC-Client verwenden, stellen "
+"Sie sicher, dass die Datei :file:`/etc/umc-oidc.secret` auf jedem Knoten "
+"denselben Inhalt hat und mit dem Client :spelling:word:`Secrect` in "
+":program:`Keycloak` für diesen Client übereinstimmt."
 
-#: ../../management-interface/auth.rst:446
+#: ../../management-interface/auth.rst:450
 msgid "Back-channel sign-out"
-msgstr ""
+msgstr ":spelling:word:`Back-Channel` Abmeldung"
 
-#: ../../management-interface/auth.rst:448
+#: ../../management-interface/auth.rst:452
 msgid ""
 "If you use OIDC back-channel sign-out together with multiprocessing of "
 "the *Management UI*, the *Management UI* needs a database for session "
@@ -650,14 +872,22 @@ msgid ""
 "multiprocessing in the *Management UI* if the UCR variable "
 ":envvar:`umc/http/processes` has a value greater than one (``> 1``)."
 msgstr ""
+"Wenn Sie OIDC :spelling:word:`Back-Channel` Abmeldung zusammen mit "
+"Multiprocessing der *Management UI* verwenden, benötigt die *Management "
+"UI* eine Datenbank für die Speicherung der Sitzung, um die Abmeldung der "
+"Sitzung korrekt zu verarbeiten. Sie haben Multiprocessing in der "
+"*Management UI* aktiviert, wenn die UCR-Variable "
+":envvar:`umc/http/processes` einen Wert größer als eins (``> 1``) hat."
 
-#: ../../management-interface/auth.rst:453
+#: ../../management-interface/auth.rst:457
 msgid ""
-"If you have only one *UMC Server* without UMC multiprocessing, you don't "
-"need to change the configuration."
+"If you have only one *UMC Server* without UMC multiprocessing, you you "
+"can keep the configuration."
 msgstr ""
+"Wenn Sie nur einen *UMC Server* ohne UMC Multiprocessing haben, können "
+"Sie die Konfiguration beibehalten."
 
-#: ../../management-interface/auth.rst:456
+#: ../../management-interface/auth.rst:460
 msgid ""
 "To keep track of the sessions in the database for the *Management UI*, "
 "you need to configure the database connection string with the :program"
@@ -665,8 +895,13 @@ msgid ""
 ":`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-"
 "optional-listing`."
 msgstr ""
+"Um die Sitzungen in der Datenbank für die *Management UI* zu verfolgen, "
+"müssen Sie die Zeichenfolge für die Datenbankverbindung mit dem Skript "
+":program:`univention-management-console-settings` konfigurieren, wie in "
+":numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-"
+"connection-optional-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:461
+#: ../../management-interface/auth.rst:465
 msgid ""
 "However, if the *Portal* or the *Management UI* use multiple Nubus for "
 "UCS nodes for load balancing, or if the *Management UI* has a "
@@ -674,18 +909,26 @@ msgid ""
 ":program:`PostgreSQL` database that all Nubus for UCS nodes can access. "
 "In these cases, you must consider the following aspects:"
 msgstr ""
+"Wenn jedoch das *Portal* oder die *Management UI* mehrere Nubus für UCS "
+"Knoten für die Lastverteilung verwenden oder die *Management UI* eine "
+"Konfiguration für Multiprocessing hat, ist es erforderlich, eine "
+":program:`PostgreSQL`-Datenbank zu verwenden, auf die alle Nubus für UCS "
+"Knoten zugreifen können. In diesen Fällen müssen Sie folgende Aspekte "
+"berücksichtigen:"
 
-#: ../../management-interface/auth.rst:468
+#: ../../management-interface/auth.rst:472
 msgid "PostgreSQL database server:"
-msgstr ""
+msgstr "PostgreSQL-Datenbankserver:"
 
-#: ../../management-interface/auth.rst:470
+#: ../../management-interface/auth.rst:474
 msgid ""
 "You either need to provide a :program:`PostgreSQL` database yourself that"
 " all the *UMC Server*\\ s have access to."
 msgstr ""
+"Sie stellen selbst eine :program:`PostgreSQL` Datenbank bereit, auf die "
+"alle *UMC Server* zugreifen können."
 
-#: ../../management-interface/auth.rst:473
+#: ../../management-interface/auth.rst:477
 msgid ""
 "Alternatively, you can install and configure :program:`PostgreSQL` on one"
 " of the Nubus for UCS nodes. As shown in the example in :numref:`ucs-"
@@ -694,12 +937,18 @@ msgid ""
 "``db_password``. ``db_host`` is a Nubus for UCS node with "
 ":program:`PostgreSQL` running."
 msgstr ""
+"Alternativ können Sie :program:`PostgreSQL` auf einem der Nubus für UCS "
+"Knoten installieren und konfigurieren. Wie im Beispiel in :numref:`ucs-"
+"operation-auth-sso-oidc-back-channel-sign-out-postgres-install-listing` "
+"gezeigt, können Sie die Werte für ``db_user``, ``db_name`` und "
+"``db_password`` frei wählen. ``db_host`` ist ein Nubus für UCS Knoten, "
+"auf dem :program:`PostgreSQL` ausgeführt wird."
 
-#: ../../management-interface/auth.rst:481
+#: ../../management-interface/auth.rst:485
 msgid "Example for installation of :program:`PostgreSQL`"
-msgstr ""
+msgstr "Beispiel für die Installation von :program:`PostgreSQL`"
 
-#: ../../management-interface/auth.rst:481
+#: ../../management-interface/auth.rst:485
 msgid ""
 "$ univention-install univention-postgresql\n"
 "$ su postgres -c \"createdb db_name\"\n"
@@ -711,84 +960,110 @@ msgid ""
 "$ ucr set postgres15/pg_hba/config/host=\"umc umc 1x.2xx.0.0/16 md5\"\n"
 "$ systemctl restart postgresql"
 msgstr ""
+"$ univention-install univention-postgresql\n"
+"$ su postgres -c \"createdb db_name\"\n"
+"$ su postgres -c \"/usr/bin/createuser db_user\"\n"
+"$ su postgres -c \"psql db_name -c \\\"ALTER ROLE db_user WITH ENCRYPTED "
+"PASSWORD 'db_password'\\\"\"\n"
+"$ su postgres -c \"psql umc -c \\\"GRANT ALL ON SCHEMA public TO "
+"umc;\\\"\"\n"
+"$ ucr set postgres15/pg_hba/config/host=\"umc umc 1x.2xx.0.0/16 md5\"\n"
+"$ systemctl restart postgresql"
 
-#: ../../management-interface/auth.rst:493
+#: ../../management-interface/auth.rst:497
 msgid ""
 "Set the SQL connection URI on the :term:`UCS Primary Directory Node`, as "
 "shown in :numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-"
 "connection-listing`."
 msgstr ""
+"Legen Sie die URI für die SQL-Verbindung auf dem :term:`UCS Primary "
+"Directory Node` fest, wie in :numref:`ucs-operation-auth-sso-oidc-back-"
+"channel-sign-out-sql-connection-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:497
+#: ../../management-interface/auth.rst:501
 msgid "Set SQL connection URI"
-msgstr ""
+msgstr "URI für die SQL-Verbindung festlegen"
 
-#: ../../management-interface/auth.rst:497
+#: ../../management-interface/auth.rst:501
 msgid ""
 "$ univention-management-console-settings set \\\n"
 "   -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'"
 msgstr ""
+"$ univention-management-console-settings set \\\n"
+"   -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'"
 
-#: ../../management-interface/auth.rst:504
+#: ../../management-interface/auth.rst:508
 msgid "Optional parameters for the database connection pool:"
-msgstr ""
+msgstr "Optionale Parameter für den Datenbankverbindungspool:"
 
 #: ../../management-interface/auth.rst
 msgid "``Pool Size``"
-msgstr ""
+msgstr "``Pool Size``"
 
-#: ../../management-interface/auth.rst:506
+#: ../../management-interface/auth.rst:510
 msgid "The number of connections to the database. Default value: ``5``."
-msgstr ""
+msgstr "Die Anzahl der Verbindungen zur Datenbank. Standardwert: ``5``."
 
 #: ../../management-interface/auth.rst
 msgid "``Max Overflow``"
-msgstr ""
+msgstr "``Max Overflow``"
 
-#: ../../management-interface/auth.rst:509
+#: ../../management-interface/auth.rst:513
 msgid "The maximum number of temporary connections. Default value: ``10``."
-msgstr ""
+msgstr "Die maximale Anzahl temporärer Verbindungen. Standardwert: ``10``."
 
 #: ../../management-interface/auth.rst
 msgid "``Pool Timeout``"
-msgstr ""
+msgstr "``Pool Timeout``"
 
-#: ../../management-interface/auth.rst:512
+#: ../../management-interface/auth.rst:516
 msgid ""
 "The number of seconds to wait for a connection to be available. Default "
 "value: ``30``."
 msgstr ""
+"Die Anzahl der Sekunden, die auf eine verfügbare Verbindung gewartet "
+"werden soll. Standardwert: ``30``."
 
 #: ../../management-interface/auth.rst
 msgid "``Pool Recycle``"
-msgstr ""
+msgstr "``Pool Recycle``"
 
-#: ../../management-interface/auth.rst:515
+#: ../../management-interface/auth.rst:519
 msgid ""
 "The number of seconds after which a connection is recycled. Default "
 "value: ``-1``."
 msgstr ""
+"Die Anzahl der Sekunden, nach denen eine Verbindung recycelt wird. "
+"Standardwert: ``-1``."
 
-#: ../../management-interface/auth.rst:518
+#: ../../management-interface/auth.rst:522
 msgid ""
 "With these default values, each UMC process can have up to 15 connections"
 " to the database. The total number of connections is: "
 ":math:`NumberOfServers \\cdot NumberOfProcesses \\cdot (PoolSize + "
 "MaxOverflow)`."
 msgstr ""
+"Mit diesen Standardwerten kann jeder UMC Prozess bis zu 15 Verbindungen "
+"zur Datenbank haben. Die Gesamtanzahl der Verbindungen ist: "
+":math:`NumberOfServers \\cdot NumberOfProcesses \\cdot (PoolSize + "
+"MaxOverflow)`."
 
-#: ../../management-interface/auth.rst:521
+#: ../../management-interface/auth.rst:525
 msgid ""
 "Make sure that the database can handle the number of connections. You can"
 " adjust these parameters as shown in :numref:`ucs-operation-auth-sso-"
 "oidc-back-channel-sign-out-sql-connection-optional-listing`."
 msgstr ""
+"Stellen Sie sicher, dass die Datenbank die Anzahl der Verbindungen "
+"bewältigen kann. Sie können diese Parameter anpassen, wie in :numref"
+":`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-"
+"optional-listing` gezeigt."
 
-#: ../../management-interface/auth.rst:525
+#: ../../management-interface/auth.rst:529
 msgid "Set optional parameters for the database connection pool"
-msgstr ""
+msgstr "Optionale Parameter für den Datenbankverbindungspool festlegen"
 
-#: ../../management-interface/auth.rst:525
+#: ../../management-interface/auth.rst:529
 msgid ""
 "$ univention-management-console-settings set \\\n"
 "     -s 5 \\\n"
@@ -796,31 +1071,43 @@ msgid ""
 "     -t 30 \\\n"
 "     -r 3600"
 msgstr ""
+"$ univention-management-console-settings set \\\n"
+"     -s 5 \\\n"
+"     -o 10 \\\n"
+"     -t 30 \\\n"
+"     -r 3600"
 
-#: ../../management-interface/auth.rst:535
+#: ../../management-interface/auth.rst:539
 msgid ""
 "Restart the *UMC Server* on all Nubus for UCS nodes with the command in "
 ":numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-restart-umc-"
 "listing`."
 msgstr ""
+"Um die Konfiguration anzuwenden, starten Sie den *Portal Server* auf "
+"jedem UCS Knoten mit dem Befehl in :numref:`ucs-operation-auth-sso-saml-"
+"restart-listing` neu."
 
-#: ../../management-interface/auth.rst:538
+#: ../../management-interface/auth.rst:542
 msgid "Restart UMC server"
-msgstr ""
+msgstr "Dienst *Portal* neu starten"
 
-#: ../../management-interface/auth.rst:538
+#: ../../management-interface/auth.rst:542
 msgid "$ systemctl restart univention-management-console-server"
-msgstr ""
+msgstr "$ systemctl restart univention-management-console-server"
 
-#: ../../management-interface/auth.rst:546
+#: ../../management-interface/auth.rst:550
 msgid ""
-"If UCS involves more than one *UMC Server* instance, the feature for the "
-"refresh of the portal tabs on sign-out or session timeout requires "
-":program:`PostgreSQL`. You can also use a local :program:`SQLite` "
-"database for one *UMC Server* with multiprocessing."
+"If Nubus for UCS involves more than one *UMC Server* instance, the "
+"feature for the refresh of the portal tabs on sign-out or session timeout"
+" requires :program:`PostgreSQL`. You can also use a local "
+":program:`SQLite` database for one *UMC Server* with multiprocessing."
 msgstr ""
+"Wenn Nubus für UCS mehr als eine *UMC Server*-Instanz umfasst, erfordert die "
+"Funktion zum Aktualisieren der Portal-Registerkarten bei Abmeldung oder "
+"Sitzungszeitüberschreitung :program:`PostgreSQL`. Sie können auch eine "
+"lokale :program:`SQLite`-Datenbank für einen *UMC Server* mit "
+"Multiprocessing verwenden."
 
 #: ../../management-interface/index.rst:5
 msgid "Management interface"
-msgstr ""
-
+msgstr "Managementoberfläche"
