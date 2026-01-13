@@ -1,0 +1,90 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-13 16:25+0000\n"
+"PO-Revision-Date: 2026-01-13 17:27+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../glossary.rst:9
+msgid "Glossary"
+msgstr ""
+
+#: ../../glossary.rst:13
+msgid "Backup Directory Node"
+msgstr ""
+
+#: ../../glossary.rst:14
+msgid "UCS Backup Directory Node"
+msgstr ""
+
+#: ../../glossary.rst:16
+msgid ""
+"The Backup Directory Node is a system role in Nubus for UCS. It has a "
+"complete read-only copy of the domain database including the security "
+"certificates. Administrators can promote the role to a :term:`Primary "
+"Directory Node`. For more information about the role concept in Nubus for"
+" UCS, see :external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
+"architecture`."
+msgstr ""
+
+#: ../../glossary.rst:23
+msgid "Managed Node"
+msgstr ""
+
+#: ../../glossary.rst:24
+msgid "UCS Managed Node"
+msgstr ""
+
+#: ../../glossary.rst:26
+msgid ""
+"The Managed Node is a system role in Nubus for UCS. It has no copy of the"
+" domain database. For more information about the role concept in Nubus "
+"for UCS, see :external+uv-architecture:ref:`concept-role` in :cite:t"
+":`ucs-architecture`."
+msgstr ""
+
+#: ../../glossary.rst:31
+msgid "Primary Directory Node"
+msgstr ""
+
+#: ../../glossary.rst:32
+msgid "UCS Primary Directory Node"
+msgstr ""
+
+#: ../../glossary.rst:34
+msgid ""
+"The Primary Directory Node is a system role in Nubus for UCS. It's the "
+"first, the primary, domain node in a domain. For more information about "
+"the role concept in Nubus for UCS, see :external+uv-architecture:ref"
+":`concept-role` in :cite:t:`ucs-architecture`."
+msgstr ""
+
+#: ../../glossary.rst:39
+msgid "Replica Directory Node"
+msgstr ""
+
+#: ../../glossary.rst:40
+msgid "UCS Replica Directory Node"
+msgstr ""
+
+#: ../../glossary.rst:42
+msgid ""
+"The Replica Directory Node is a system role in Nubus for UCS. It has a "
+"complete ready-only copy of the domain database, or it can have only a "
+"subset of the domain database through selective replication. For more "
+"information about the role concept in Nubus for UCS, see :external+uv-"
+"architecture:ref:`concept-role` in :cite:t:`ucs-architecture`."
+msgstr ""
+
