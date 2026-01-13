@@ -305,7 +305,7 @@ msgid ""
 "Nubus for UCS node. The value applies to all user accounts."
 msgstr ""
 "Verwenden Sie diese UCR-Variable, um die Mindestlänge für Passwörter "
-"lokal pro Nubus for UCS Knoten festzulegen. Der Wert gilt für alle "
+"lokal pro Nubus für UCS Knoten festzulegen. Der Wert gilt für alle "
 "Benutzerkonten."
 
 #: ../../ucr-variable-reference.rst:202
@@ -449,7 +449,7 @@ msgid ""
 "Defines the number of *UMC Server* processes that Nubus for UCS starts in"
 " parallel."
 msgstr ""
-"Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus for UCS "
+"Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus für UCS "
 "parallel startet."
 
 #: ../../ucr-variable-reference.rst:296
