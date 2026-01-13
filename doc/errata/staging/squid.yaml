@@ -1,0 +1,17 @@
+product: ucs
+release: "5.2"
+version: [3, 4]
+scope: ucs_5.2-0-errata5.2-4
+src: squid
+fix: 5.7-2+deb12u5A~5.2.4.202601131248
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-45802, CVE-2023-46728)
+ * CVSS score 4.0 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-59362)
+bug: [58959]
+cve:
+- CVE-2023-46728
+- CVE-2025-59362
+- CVE-2024-45802
