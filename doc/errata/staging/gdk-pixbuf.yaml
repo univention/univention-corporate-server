@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [3, 4]
+scope: ucs_5.2-0-errata5.2-4
+src: gdk-pixbuf
+fix: 2.42.10+dfsg-1+deb12u3
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-7345)
+bug: [58957]
+cve:
+- CVE-2025-7345
