@@ -1,3 +1,9 @@
+univention-demo-configuration (10.4.7) unstable; urgency=medium
+
+  * Removed *.png and *.b64 from deb .install, because they must exist for packaging
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 12:58:20 +0100
+
 univention-demo-configuration (10.4.6) unstable; urgency=medium
 
   * Added all image files to deb-package .install file
