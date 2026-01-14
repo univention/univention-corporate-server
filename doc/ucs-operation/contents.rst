@@ -8,7 +8,7 @@ Univention Corporate Server - Operation Manual
 .. Add more sections to the toctree directory below.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
    :numbered:
 
