@@ -1,3 +1,9 @@
+ucs-test (12.4.15) unstable; urgency=medium
+
+  * Bug #50253: tests for udm-rest reload endpoint
+
+ -- Felix Botner <botner@univention.de>  Wed, 14 Jan 2026 18:39:10 +0100
+
 ucs-test (12.4.14) unstable; urgency=medium
 
   * Update docker image for provisioning e2e tests

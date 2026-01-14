@@ -21,6 +21,7 @@ from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.testing.conftest import locale_available
 from univention.testing.strings import random_name
+from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UDM, UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
@@ -332,24 +333,30 @@ def test_reload_endpoint():
     assert res.status_code == 200, res.text
 
 
-def test_reload_listener(udm, udm_client):
-    name = random_name()
-    account = UCSTestDomainAdminCredentials()
-    udm.create_object(
-        'settings/extended_attribute',
-        position=udm.UNIVENTION_CONTAINER,
-        name=name,
-        shortDescription=name,
-        CLIName=name,
-        module='users/user',
-        objectClass='univentionFreeAttributes',
-        ldapMapping='univentionFreeAttribute9',
-        syntax='string',
-        multivalue=0,
-        valueRequired=0,
-        mayChange=1,
-    )
-    udm.stop_cli_server()
-    mod = udm_client.get('users/user')
-    obj = mod.get(account.binddn)
-    assert name in obj.properties
+@pytest.mark.parametrize('processes', [4, 1], ids=['processes=4', 'processes=1'])
+def test_reload_listener(udm, udm_client, ucr, processes):
+    try:
+        with UCSTestConfigRegistry() as ucr:
+            ucr.handler_set([f'directory/manager/rest/processes={processes}'])
+            subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
+            mod = udm_client.get('users/user')
+            name = random_name()
+            account = UCSTestDomainAdminCredentials()
+            udm.create_object(
+                'settings/extended_attribute',
+                position=udm.UNIVENTION_CONTAINER,
+                name=name,
+                shortDescription=name,
+                CLIName=name,
+                module='users/user',
+                objectClass='univentionFreeAttributes',
+                ldapMapping='univentionFreeAttribute9',
+                syntax='string',
+                multivalue=0,
+                valueRequired=0,
+                mayChange=1,
+            )
+            obj = mod.get(account.binddn)
+            assert name in obj.properties
+    finally:
+        subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
