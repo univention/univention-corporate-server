@@ -180,7 +180,11 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 return self.force_authorization()
 
             if not auth_type:
-                userdn = self._auth_get_userdn(username)
+                try:
+                    userdn = self._auth_get_userdn(username)
+                except (ldap.LDAPError, udm_errors.base) as exc:
+                    log.debug('Authentication failed.', error=exc)
+                    return self.force_authorization(auth_type)
                 if not userdn:
                     return self.force_authorization(auth_type)
 
