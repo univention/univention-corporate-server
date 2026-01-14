@@ -1,3 +1,9 @@
+univention-demo-configuration (10.4.6) unstable; urgency=medium
+
+  * Added all image files to deb-package .install file
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 12:41:24 +0100
+
 univention-demo-configuration (10.4.5) unstable; urgency=medium
 
   * Icon was too long for argument list as base64 svg, changed into jpg
