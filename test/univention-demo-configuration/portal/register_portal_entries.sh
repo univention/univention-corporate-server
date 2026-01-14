@@ -165,9 +165,9 @@ univention-directory-manager portals/entry remove --ignore_not_exists \
 univention-directory-manager portals/entry create \
 	--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
 	--set name=summit_2026 \
-	--append displayName='"en_US" "Univention Summit 2026"' \
-	--append displayName='"de_DE" "Univention Summit 2026"' \
-	--append displayName='"fr_FR" "Univention Summit 2026"' \
+	--append displayName='"en_US" "Summit 2026"' \
+	--append displayName='"de_DE" "Summit 2026"' \
+	--append displayName='"fr_FR" "Summit 2026"' \
 	--append description='"en_US" "Univention Summit 2026 - Let&apos;s Connect - January 28 &amp; 29 in Bremen"' \
 	--append description='"de_DE" "Univention Summit 2026 - Let&apos;s Connect - 28. &amp; 29. Januar in Bremen"' \
 	--append description='"fr_FR" "Univention Summit 2026 - Let&apos;s Connecter - 28 &amp; 29 Janvier à Brême"' \

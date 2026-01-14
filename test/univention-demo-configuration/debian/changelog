@@ -1,39 +1,3 @@
-univention-demo-configuration (10.4.7) unstable; urgency=medium
-
-  * Removed *.png and *.b64 from deb .install, because they must exist for packaging
-
- -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 12:58:20 +0100
-
-univention-demo-configuration (10.4.6) unstable; urgency=medium
-
-  * Added all image files to deb-package .install file
-
- -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 12:41:24 +0100
-
-univention-demo-configuration (10.4.5) unstable; urgency=medium
-
-  * Icon was too long for argument list as base64 svg, changed into jpg
-
- -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 12:09:35 +0100
-
-univention-demo-configuration (10.4.4) unstable; urgency=medium
-
-  * Fixed udm portal creation to append category correctly
-
- -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 10:52:20 +0100
-
-univention-demo-configuration (10.4.3) unstable; urgency=medium
-
-  * Murphy's typo
-
- -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 09:44:59 +0100
-
-univention-demo-configuration (10.4.2) unstable; urgency=medium
-
-  * Fix Summit 2026 Portal tile
-
- -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 09:23:12 +0100
-
 univention-demo-configuration (10.4.1) unstable; urgency=medium
 
   * Summit 2026 Portal tile
