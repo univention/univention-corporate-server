@@ -55,7 +55,7 @@ Password history
    :Default value: No value set.
 
 Minimum password age
-   Defines how long users must wait before changing their password.
+   Defines how long users must wait before they can change their password.
    You can configure the value as seconds, minutes, hours, or days.
 
    :Default value: No value set.
