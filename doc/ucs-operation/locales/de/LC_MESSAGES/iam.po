@@ -1,13 +1,12 @@
 # SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 16:25+0000\n"
-"PO-Revision-Date: 2026-01-13 17:27+0100\n"
+"POT-Creation-Date: 2026-01-14 18:25+0000\n"
+"PO-Revision-Date: 2026-01-15 09:50+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,16 +18,23 @@ msgstr ""
 
 #: ../../iam/group-management.rst:8
 msgid "Group management"
-msgstr ""
+msgstr "Gruppenverwaltung"
 
 #: ../../iam/group-management.rst:10
 msgid ""
 "This page describes how to manage groups in Nubus for UCS. It covers UCS-"
-"specific aspects of group creation, nested groups, group caching, Active "
-"Directory synchronization, and the group overlay module. For general "
-"information about group management in Nubus, see :external+uv-nubus-"
-"manual:ref:`nubus-groups` in :cite:t:`uv-nubus-manual`."
+"specific aspects of group creation, nested groups, group caching, "
+"synchronization of groups with Active Directory, and the group overlay "
+"module. For general information about group management in Nubus, see "
+":external+uv-nubus-manual:ref:`nubus-groups` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
+"Diese Seite beschreibt die Verwaltung von Gruppen in Nubus für UCS. Sie "
+"behandelt UCS-spezifische Aspekte der Gruppenerstellung, verschachtelte "
+"Gruppen, Caching von Gruppen, Synchronisation von Gruppen mit Active "
+"Directory und das Overlay-Modul für Gruppen. Für allgemeine Informationen"
+" zur Gruppenverwaltung in Nubus siehe :external+uv-nubus-manual:ref"
+":`nubus-groups` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/group-management.rst:16
 msgid ""
@@ -37,10 +43,14 @@ msgid ""
 "You don't manage local groups through the *Management UI*, but through "
 "the :file:`/etc/group` file."
 msgstr ""
+"Zusätzlich zu globalen Gruppen in einer Nubus Domäne gibt es auch lokale "
+"Benutzergruppen auf jedem System, die vorwiegend für den Hardware-Zugriff"
+" verwendet werden. Lokale Gruppen werden nicht über die *Management UI* "
+"verwaltet, sondern über die Datei :file:`/etc/group`."
 
 #: ../../iam/group-management.rst:25
 msgid "Group creation and assignment"
-msgstr ""
+msgstr "Gruppenerstellung und -:spelling:word:`zuweisung`"
 
 #: ../../iam/group-management.rst:27
 msgid ""
@@ -50,22 +60,31 @@ msgid ""
 "*Groups* management module, see :external+uv-nubus-manual:ref:`nubus-"
 "groups-management`."
 msgstr ""
+"Um Gruppen in Nubus für UCS zu erstellen, folgen Sie dem Abschnitt "
+":external+uv-nubus-manual:ref:`nubus-groups` im :cite:t:`uv-nubus-"
+"manual`. Er beschreibt, wie Benutzer zu Gruppen zugewiesen werden. Für eine "
+"vollständige Referenz des *Gruppen*-Verwaltungsmoduls siehe :external+uv-"
+"nubus-manual:ref:`nubus-groups-management`."
 
 #: ../../iam/group-management.rst:35
 msgid ""
 "The following sections supplement that reference with specifics that "
 "apply to Nubus for UCS."
 msgstr ""
+"Die folgenden Abschnitte ergänzen diese Referenz mit spezifischen "
+"Details, die für Nubus für UCS gelten."
 
 #: ../../iam/group-management.rst:40
 msgid ":menuselection:`General tab --> Name`"
-msgstr ""
+msgstr ":menuselection:`Allgemein-Reiter --> Name`"
 
 #: ../../iam/group-management.rst:41
 msgid ""
 "For the reference, see :external+uv-nubus-manual:ref:`nubus-groups-"
 "management-tab-general-name` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Für die Referenz siehe :external+uv-nubus-manual:ref:`nubus-groups-"
+"management-tab-general-name` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/group-management.rst:45
 msgid ""
@@ -74,20 +93,28 @@ msgid ""
 ":envvar:`directory/manager/user_group/uniqueness` has the value "
 "``false``, Nubus doesn't run this check."
 msgstr ""
+"Standardmäßig ist es nicht möglich, eine Gruppe mit demselben Namen wie "
+"ein bestehender Benutzer zu erstellen. Wenn die UCR-Variable "
+":envvar:`directory/manager/user_group/uniqueness` den Wert ``false`` hat,"
+" führt Nubus diese Prüfung nicht durch."
 
 #: ../../iam/group-management.rst:53
 msgid ":menuselection:`Advanced settings tab --> Windows --> group type`"
 msgstr ""
+":menuselection:`Erweiterte Einstellungen-Reiter --> Windows --> "
+"Gruppentyp`"
 
 #: ../../iam/group-management.rst:54
 msgid ""
 "For the reference, see :external+uv-nubus-manual:ref:`nubus-groups-"
 "management-tab-advanced-field-group-type` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Für die Referenz siehe :external+uv-nubus-manual:ref:`nubus-groups-"
+"management-tab-advanced-field-group-type` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/group-management.rst:60
 msgid "Local groups"
-msgstr ""
+msgstr "Lokale Gruppen"
 
 #: ../../iam/group-management.rst:61
 msgid ""
@@ -97,10 +124,16 @@ msgid ""
 " groups. After taking over an Active Directory domain, Nubus for UCS "
 "handles local groups in the same way as *Domain Groups*."
 msgstr ""
+"Wenn Sie eine lokale Gruppe auf einem Windows-Server erstellen, erkennt "
+"nur dieser Server diese Gruppe. Eine lokale Gruppe ist nicht domänenweit "
+"verfügbar. Im Gegensatz dazu unterscheidet Nubus für UCS nicht zwischen "
+"lokalen und globalen Gruppen. Nach der Übernahme einer Active Directory-"
+"Domäne behandelt Nubus für UCS lokale Gruppen genauso wie "
+"*Domänengruppen*."
 
 #: ../../iam/group-management.rst:71
 msgid "Nested groups"
-msgstr ""
+msgstr "Verschachtelte Gruppen"
 
 #: ../../iam/group-management.rst:73
 msgid ""
@@ -108,6 +141,10 @@ msgid ""
 "manual:ref:`nubus-groups-management-nested` in :cite:t:`uv-nubus-manual`."
 " Additionally, the following applies to nested groups in Nubus for UCS."
 msgstr ""
+"Für eine Beschreibung verschachtelter Gruppen in Nubus siehe :external"
+"+uv-nubus-manual:ref:`nubus-groups-management-nested` im :cite:t:`uv-"
+"nubus-manual`. Zusätzlich gilt Folgendes für verschachtelte Gruppen in "
+"Nubus für UCS."
 
 #: ../../iam/group-management.rst:78
 msgid ""
@@ -118,10 +155,17 @@ msgid ""
 "without using the *Management UI*, you must manually ensure that there "
 "are no cyclic memberships."
 msgstr ""
+"Nubus führt eine Plausibilitätsüberprüfung durch, um zyklische "
+"Abhängigkeiten in verschachtelten Gruppen zu erkennen. Um diese Prüfung "
+"zu deaktivieren, setzen Sie die UCR-Variable "
+":envvar:`directory/manager/web/modules/groups/group/checks/circular_dependency`"
+" auf den Wert ``no``. Der Standardwert ist ``yes``. Wenn Sie Gruppen ohne"
+" die *Management UI* ändern, müssen Sie manuell sicherstellen, dass es "
+"keine zyklischen Mitgliedschaften gibt."
 
 #: ../../iam/group-management.rst:90
 msgid "Group caching"
-msgstr ""
+msgstr "Caching von Gruppen"
 
 #: ../../iam/group-management.rst:92
 msgid ""
@@ -131,6 +175,11 @@ msgid ""
 ":file:`/var/lib/extrausers/group` file. The NSS module then reads the "
 "group information from there."
 msgstr ""
+"Nubus verwendet das NSS-Modul :program:`libnss-extrausers` für das "
+"Caching von Gruppen. Das Skript :file:`/usr/lib/univention-pam/ldap-"
+"group-to-file.py` exportiert Gruppeninformationen automatisch und "
+"schreibt sie in die Datei :file:`/var/lib/extrausers/group`. Das NSS-"
+"Modul liest die Gruppeninformationen dann von dort."
 
 #: ../../iam/group-management.rst:97
 msgid ""
@@ -144,6 +193,17 @@ msgid ""
 "cache file through the *Univention Directory Listener* with the "
 ":envvar:`nss/group/cachefile/invalidate_on_changes` UCR variable."
 msgstr ""
+"Standardmäßig führt ein Cron-Job den Export einmal täglich aus. "
+"Zusätzlich läuft der :program:`ldap-group-to-file.py`-Export auch, "
+"nachdem der *Univention Directory Listener* 15 Sekunden lang inaktiv war."
+" Sie können das Intervall für die :spelling:word:`Cron-basierten` Cache-"
+"Aktualisierungen in Cron-Syntax mit der UCR-Variable "
+":envvar:`nss/group/cachefile/invalidate_interval` konfigurieren. Für die "
+"Cron-Syntax siehe :external+uv-ucs-manual:ref:`cron-local` im :cite:t"
+":`ucs-manual`. Sie können die Aktualisierung der Gruppen-Cache-Datei über"
+" den *Univention Directory Listener* mit der UCR-Variable "
+":envvar:`nss/group/cachefile/invalidate_on_changes` aktivieren oder "
+"deaktivieren."
 
 #: ../../iam/group-management.rst:113
 msgid ""
@@ -154,10 +214,17 @@ msgid ""
 "verification by setting the :envvar:`nss/group/cachefile/check_member` "
 "UCR variable to the value ``true``."
 msgstr ""
+"Wenn das Skript :program:`ldap-group-to-file.py` die Gruppen-Cache-Datei "
+"generiert, kann es prüfen, ob die Gruppenmitglieder noch im LDAP-"
+"Verzeichnisdienst existieren. Wenn Sie Methoden zur Benutzerverwaltung "
+"jenseits des *Benutzer*- und *Gruppen*-Verwaltungsmoduls verwenden, "
+"können Sie diese zusätzliche Verifizierung aktivieren, indem Sie die UCR-"
+"Variable :envvar:`nss/group/cachefile/check_member` auf den Wert ``true``"
+" setzen."
 
 #: ../../iam/group-management.rst:125
 msgid "Active Directory group synchronization"
-msgstr ""
+msgstr "Synchronisation von Gruppen mit Active Directory"
 
 #: ../../iam/group-management.rst:127
 msgid ""
@@ -169,6 +236,13 @@ msgid ""
 ":program:`S4 Connector`, see :external+uv-ucs-"
 "manual:ref:`windows-s4-connector` in :cite:t:`ucs-manual`."
 msgstr ""
+"Wenn Sie Samba in Ihrer Domäne von Nubus für UCS installiert haben, "
+"synchronisiert Nubus die Gruppenmitgliedschaften zwischen dem Samba-"
+"Verzeichnisdienst und dem OpenLDAP-Verzeichnisdienst über den Univention "
+":program:`S4 Connector`. Der Connector verknüpft jede Benutzergruppe in "
+"Nubus für UCS mit einer Benutzergruppe in Active Directory. Für "
+"Informationen über den :program:`S4 Connector` siehe :external+uv-ucs-"
+"manual:ref:`windows-s4-connector` im :cite:t:`ucs-manual`."
 
 #: ../../iam/group-management.rst:141
 msgid ""
@@ -177,6 +251,10 @@ msgid ""
 "synchronizes the LDAP directory service in Samba with the OpenLDAP "
 "directory service in Nubus for UCS."
 msgstr ""
+"Samba bietet Active Directory-kompatible Funktionalität. Es betreibt "
+"einen dedizierten LDAP-Verzeichnisdienst. Der :program:`S4 Connector` "
+"synchronisiert den LDAP-Verzeichnisdienst in Samba mit dem OpenLDAP-"
+"Verzeichnisdienst in Nubus für UCS."
 
 #: ../../iam/group-management.rst:146
 msgid ""
@@ -184,139 +262,152 @@ msgid ""
 "synchronization. Only Active Directory and Samba manage such *pseudo "
 "groups* internally. For example, the ``Authenticated Users`` user group "
 "includes a list of users currently signed in to the domain. Nubus stores "
-"*pseudo groups* in the Nubus directory service, but the :program:`S4 "
-"Connector` doesn't synchronize them. Don't edit these groups. The "
-"behavior applies to the following *pseudo groups*:"
+"*pseudo groups* in its directory service, but the :program:`S4 Connector`"
+" doesn't synchronize them. Don't edit these groups. The behavior applies "
+"to the following *pseudo groups*:"
 msgstr ""
+"*Pseudogruppen*, auch Systemgruppen genannt, sind Ausnahmen von dieser "
+"Synchronisation. Nur Active Directory und Samba verwalten solche "
+"*Pseudogruppen* intern. Zum Beispiel enthält die Benutzergruppe "
+"``Authenticated Users`` eine Liste der aktuell in der Domäne angemeldeten"
+" Benutzer. Nubus speichert *Pseudogruppen* in seinem Verzeichnisdienst, "
+"aber der :program:`S4 Connector` synchronisiert sie nicht. Bearbeiten Sie"
+" diese Gruppen nicht. Das Verhalten gilt für die folgenden "
+"*Pseudogruppen*:"
 
 #: ../../iam/group-management.rst:156
 msgid "``Anonymous Logon``"
-msgstr ""
+msgstr "``Anonymous Logon``"
 
 #: ../../iam/group-management.rst:157
 msgid "``Authenticated Users``"
-msgstr ""
+msgstr "``Authenticated Users``"
 
 #: ../../iam/group-management.rst:158
 msgid "``Batch``"
-msgstr ""
+msgstr "``Batch``"
 
 #: ../../iam/group-management.rst:159
 msgid "``Creator Group``"
-msgstr ""
+msgstr "``Creator Group``"
 
 #: ../../iam/group-management.rst:160
 msgid "``Creator Owner``"
-msgstr ""
+msgstr "``Creator Owner``"
 
 #: ../../iam/group-management.rst:161
 msgid "``Dialup``"
-msgstr ""
+msgstr "``Dialup``"
 
 #: ../../iam/group-management.rst:162
 msgid "``Digest Authentication``"
-msgstr ""
+msgstr "``Digest Authentication``"
 
 #: ../../iam/group-management.rst:163
 msgid "``Enterprise Domain Controllers``"
-msgstr ""
+msgstr "``Enterprise Domain Controllers``"
 
 #: ../../iam/group-management.rst:164
 msgid "``Everyone``"
-msgstr ""
+msgstr "``Everyone``"
 
 #: ../../iam/group-management.rst:165
 msgid "``IUSR``"
-msgstr ""
+msgstr "``IUSR``"
 
 #: ../../iam/group-management.rst:166
 msgid "``Interactive``"
-msgstr ""
+msgstr "``Interactive``"
 
 #: ../../iam/group-management.rst:167
 msgid "``Local Service``"
-msgstr ""
+msgstr "``Local Service``"
 
 #: ../../iam/group-management.rst:168
 msgid "``NTLM Authentication``"
-msgstr ""
+msgstr "``NTLM Authentication``"
 
 #: ../../iam/group-management.rst:169
 msgid "``Network Service``"
-msgstr ""
+msgstr "``Network Service``"
 
 #: ../../iam/group-management.rst:170
 msgid "``Network``"
-msgstr ""
+msgstr "``Network``"
 
 #: ../../iam/group-management.rst:171
 msgid "``Nobody``"
-msgstr ""
+msgstr "``Nobody``"
 
 #: ../../iam/group-management.rst:172
 msgid "``Null Authority``"
-msgstr ""
+msgstr "``Null Authority``"
 
 #: ../../iam/group-management.rst:173
 msgid "``Other Organization``"
-msgstr ""
+msgstr "``Other Organization``"
 
 #: ../../iam/group-management.rst:174
 msgid "``Owner Rights``"
-msgstr ""
+msgstr "``Owner Rights``"
 
 #: ../../iam/group-management.rst:175
 msgid "``Proxy``"
-msgstr ""
+msgstr "``Proxy``"
 
 #: ../../iam/group-management.rst:176
 msgid "``Remote Interactive Logon``"
-msgstr ""
+msgstr "``Remote Interactive Logon``"
 
 #: ../../iam/group-management.rst:177
 msgid "``Restricted``"
-msgstr ""
+msgstr "``Restricted``"
 
 #: ../../iam/group-management.rst:178
 msgid "``SChannel Authentication``"
-msgstr ""
+msgstr "``SChannel Authentication``"
 
 #: ../../iam/group-management.rst:179
 msgid "``Self``"
-msgstr ""
+msgstr "``Self``"
 
 #: ../../iam/group-management.rst:180
 msgid "``Service``"
-msgstr ""
+msgstr "``Service``"
 
 #: ../../iam/group-management.rst:181
 msgid "``System``"
-msgstr ""
+msgstr "``System``"
 
 #: ../../iam/group-management.rst:182
 msgid "``Terminal Server User``"
-msgstr ""
+msgstr "``Terminal Server User``"
 
 #: ../../iam/group-management.rst:183
 msgid "``This Organization``"
-msgstr ""
+msgstr "``This Organization``"
 
 #: ../../iam/group-management.rst:184
 msgid "``World Authority``"
-msgstr ""
+msgstr "``World Authority``"
 
 #: ../../iam/group-management.rst:186
 msgid ""
-"Active Directory and Samba distinguish between the following Active "
-"Directory group types. The :program:`S4 Connector` synchronizes these "
-"groups. In the LDAP directory service, the groups have attributes to "
-"label the group types. However, the group types only have a meaning in "
-"Active Directory. Nubus doesn't evaluate the group types."
+"Active Directory and Samba distinguish between the following group types."
+" The :program:`S4 Connector` synchronizes these groups. In the LDAP "
+"directory service, the groups have attributes to label the group types. "
+"However, the group types only have a meaning in Active Directory. Nubus "
+"doesn't evaluate the group types."
 msgstr ""
+"Active Directory und Samba unterscheiden zwischen den folgenden "
+"Gruppentypen. Der :program:`S4 Connector` synchronisiert diese Gruppen. "
+"Im LDAP-Verzeichnisdienst haben die Gruppen Attribute zur Kennzeichnung "
+"der Gruppentypen. Allerdings haben die Gruppentypen nur eine Bedeutung in"
+" Active Directory. Nubus wertet die Gruppentypen nicht aus."
 
 #: ../../iam/group-management.rst:192
 msgid "Local"
-msgstr ""
+msgstr "Lokal"
 
 #: ../../iam/group-management.rst:193
 msgid ""
@@ -325,10 +416,15 @@ msgid ""
 "in the *Groups* management module in the *Management UI*. There is no "
 "need to create local groups in the *Groups* management module."
 msgstr ""
+"*Lokale* Gruppen existieren nur auf einem einzelnen Host. Der "
+":program:`S4 Connector` synchronisiert in Samba erstellte lokale Gruppen."
+" Daher erscheinen sie auch im *Gruppen*-Verwaltungsmodul in der "
+"*Management UI*. Es ist nicht erforderlich, lokale Gruppen im "
+"*Gruppen*-Verwaltungsmodul zu erstellen."
 
 #: ../../iam/group-management.rst:198
 msgid "Global"
-msgstr ""
+msgstr "Global"
 
 #: ../../iam/group-management.rst:199
 msgid ""
@@ -338,16 +434,24 @@ msgid ""
 "a domain, the *Groups* management module shows the groups from other "
 "trusted domains and you can assign permissions to them."
 msgstr ""
+"*Globale* Gruppen sind der Standardtyp, wenn Sie Gruppen im "
+"*Gruppen*-Verwaltungsmodul erstellen. Eine globale Gruppe gilt für eine "
+"Domäne, kann aber Mitglieder aus anderen Domänen aufnehmen. Wenn eine "
+"Vertrauensbeziehung mit einer Domäne besteht, zeigt das "
+"*Gruppen*-Verwaltungsmodul die Gruppen aus anderen vertrauenswürdigen "
+"Domänen an und Sie können ihnen Berechtigungen zuweisen."
 
 #: ../../iam/group-management.rst:209 ../../iam/group-management.rst:218
 msgid ""
 "Nubus for UCS doesn't support multiple domains or forests or outgoing "
 "trust relationships."
 msgstr ""
+"Nubus für UCS unterstützt keine mehrfachen Domänen oder Forests oder "
+"ausgehende Vertrauensbeziehungen."
 
 #: ../../iam/group-management.rst:211
 msgid "Domain local"
-msgstr ""
+msgstr ":spelling:word:`Domain local`"
 
 #: ../../iam/group-management.rst:212
 msgid ""
@@ -356,10 +460,14 @@ msgid ""
 " management module shows the domain local groups only in their own "
 "domain."
 msgstr ""
+"*Domain local* Gruppen können auch Mitglieder aus anderen Domänen "
+"einschließen, wenn eine Vertrauensbeziehung besteht oder wenn sie Teil "
+"eines Forests sind. Das *Gruppen*-Verwaltungsmodul zeigt die *domain "
+"local* Gruppen nur in ihrer eigenen Domäne an."
 
 #: ../../iam/group-management.rst:220
 msgid "Universal"
-msgstr ""
+msgstr "Universal"
 
 #: ../../iam/group-management.rst:221
 msgid ""
@@ -369,36 +477,45 @@ msgid ""
 "groups. The :program:`S4 Connector` doesn't synchronize the *global "
 "catalog* to OpenLDAP."
 msgstr ""
+"*Universal* Gruppen können Mitglieder aus allen Domänen aufnehmen und "
+"diese Mitglieder sind über alle Domänen in einem Forest hinweg sichtbar. "
+"Der *globale Katalog* ist ein separates Segment des Samba-"
+"Verzeichnisdienstes und speichert *universal* Gruppen. Der :program:`S4 "
+"Connector` synchronisiert den *globalen Katalog* nicht mit OpenLDAP."
 
 #: ../../iam/group-management.rst:227
 msgid "The Active Directory capability in Samba doesn't support domain forests."
 msgstr ""
+"Die Funktionalität für Active Directory in Samba unterstützt keine "
+"Domänen-Forests."
 
 #: ../../iam/group-management.rst:229
 msgid "You can apply the group types to the following kind of groups:"
-msgstr ""
+msgstr "Sie können die Gruppentypen auf die folgenden Arten von Gruppen anwenden:"
 
 #: ../../iam/group-management.rst:231
 msgid "Security groups"
-msgstr ""
+msgstr ":spelling:word:`Security Groups`"
 
 #: ../../iam/group-management.rst:232
 msgid ""
 "Administrators use them to assign permissions, similar to user groups in "
 "Nubus."
 msgstr ""
+"Administratoren verwenden sie, um Berechtigungen zuzuweisen, ähnlich wie "
+"Benutzergruppen in Nubus."
 
 #: ../../iam/group-management.rst:235
 msgid "Distribution groups"
-msgstr ""
+msgstr ":spelling:word:`Distribution Groups`"
 
 #: ../../iam/group-management.rst:236
 msgid "Active Directory uses them for mailing lists."
-msgstr ""
+msgstr "Active Directory verwendet sie für Mailinglisten."
 
 #: ../../iam/group-management.rst:241
 msgid "Group overlay module"
-msgstr ""
+msgstr "Overlay-Modul für Gruppen"
 
 #: ../../iam/group-management.rst:243
 msgid ""
@@ -411,67 +528,93 @@ msgid ""
 "the directory service. The directory service shows the attributes on-the-"
 "fly through the overlay module when it answers a query for a user object."
 msgstr ""
+"Nubus speichert die Eigenschaften von Gruppenmitgliedschaften nur in den "
+"Gruppenobjekten und nicht in den jeweiligen Benutzerobjekten im "
+"Verzeichnisdienst. Einige Anwendungen erwarten jedoch Eigenschaften über "
+"Gruppenmitgliedschaften bei den Benutzerobjekten im Attribut "
+"``memberOf``. Ein Overlay-Modul im OpenLDAP-Verzeichnisserver in Nubus "
+"ermöglicht es, diese Attribute automatisch basierend auf den "
+"Gruppeninformationen darzustellen. Nubus schreibt die zusätzlichen "
+"Attribute nicht in den Verzeichnisdienst. Der Verzeichnisdienst zeigt die"
+" Attribute dynamisch über das Overlay-Modul an, wenn er eine Anfrage für "
+"ein Benutzerobjekt beantwortet."
 
 #: ../../iam/index.rst:8
 msgid "Identity and Access Management"
-msgstr ""
+msgstr "Identitäts- und Zugriffsverwaltung"
 
 #: ../../iam/password-management/index.rst:8
 msgid "Password management"
-msgstr ""
+msgstr "Passwortverwaltung"
 
 #: ../../iam/password-management/index.rst:10
-msgid ""
-"This chapter covers password management in Nubus for UCS with the "
-"following sections."
-msgstr ""
+msgid "This chapter covers password management in Nubus for UCS."
+msgstr "Dieses Kapitel behandelt die Passwortverwaltung in Nubus für UCS."
 
-#: ../../iam/password-management/index.rst:15
+#: ../../iam/password-management/index.rst:14
 msgid ""
 "If your domain has Samba installed through the *Active Directory Domain "
 "Controller* app, you have two password policy systems, UDM and Samba "
 "domain. Univention recommends configuring them identically."
 msgstr ""
+"Wenn in Ihrer Domäne Samba über die App *Active Directory Domain "
+"Controller* installiert ist, haben Sie zwei Systeme für Passwort-"
+"Richtlinien, UDM und Samba-Domäne. Univention empfiehlt, diese identisch "
+"zu konfigurieren."
+
+#: ../../iam/password-management/index.rst:18
+msgid ":ref:`password-management-policies`"
+msgstr ":ref:`password-management-policies`"
 
 #: ../../iam/password-management/index.rst:19
-msgid ":ref:`password-management-policies`"
-msgstr ""
-
-#: ../../iam/password-management/index.rst:20
 msgid ""
-"Describes the different policy types in Nubus for UCS: the UDM password "
-"policy and the Samba domain password policy. Explains when each policy "
-"applies and how users can change their password through the Portal, End "
-"User Self Service, Microsoft Windows, or Kerberos. Also covers the "
-"available password policy settings and the UCR variables for password "
-"quality checks."
+"It describes the different policy types in Nubus for UCS: the UDM "
+"password policy and the Samba domain password policy. It explains when "
+"each policy applies and how users can change their password through the "
+"*Portal*, *End User Self Service*, Microsoft Windows, or Kerberos. It "
+"also covers the available password policy settings and the UCR variables "
+"for password quality checks."
 msgstr ""
+"Es beschreibt die verschiedenen Richtlinientypen in Nubus für UCS: die "
+"UDM Passwort-Richtlinie und die Passwort-Richtlinie für Samba-Domänen. Es"
+" erklärt, wann jede Richtlinie gilt und wie Benutzer ihr Passwort über "
+"das *Portal*, *End User Self Service*, Microsoft Windows oder Kerberos "
+"ändern können. Es behandelt auch die verfügbaren Einstellungen für "
+"Passwort-Richtlinien und die UCR-Variablen für Passwort-"
+"Qualitätsprüfungen."
+
+#: ../../iam/password-management/index.rst:27
+msgid ":ref:`password-management-windows-client`"
+msgstr ":ref:`password-management-windows-client`"
 
 #: ../../iam/password-management/index.rst:28
-msgid ":ref:`password-management-windows-client`"
-msgstr ""
-
-#: ../../iam/password-management/index.rst:29
 msgid ""
-"Describes the Samba domain object for configuring password requirements "
-"in a Samba-enabled domain, including password length, history, age, and "
-"complexity settings."
+"It describes the Samba domain object for configuring password "
+"requirements in a Samba-enabled domain, including password length, "
+"history, age, and complexity settings."
 msgstr ""
+"Es beschreibt das Samba-Domänenobjekt zur Konfiguration von "
+"Passwortanforderungen in einer Samba-fähigen Domäne, einschließlich "
+"Passwortlänge, Verlauf, Alter und Komplexitätseinstellungen."
+
+#: ../../iam/password-management/index.rst:32
+msgid ":ref:`end-user-self-service`"
+msgstr ":ref:`end-user-self-service`"
 
 #: ../../iam/password-management/index.rst:33
-msgid ":ref:`end-user-self-service`"
-msgstr ""
-
-#: ../../iam/password-management/index.rst:34
 msgid ""
-"Describes the installation, configuration, and features of the *End User "
-"Self Service*, including contact information management, user self-"
+"It describes the installation, configuration, and features of the *End "
+"User Self Service*, including contact information management, user self-"
 "registration with email verification, and user deregistration."
 msgstr ""
+"Es beschreibt die Installation, Konfiguration und Funktionen des *End "
+"User Self Service*, einschließlich Kontaktinformationsverwaltung, "
+"Selbstregistrierung für Benutzer mit E-Mail-Verifizierung und "
+"Deregistrierung für Benutzer."
 
 #: ../../iam/password-management/policies.rst:8
 msgid "Password policies"
-msgstr ""
+msgstr "Passwort-Richtlinien"
 
 #: ../../iam/password-management/policies.rst:10
 msgid ""
@@ -481,10 +624,15 @@ msgid ""
 "+uv-nubus-manual:ref:`nubus-user-password-management` in :cite:t:`uv-"
 "nubus-manual`."
 msgstr ""
+"Dieser Abschnitt beschreibt das spezifische Verhalten für Nubus für UCS "
+"und die Konfiguration der Benutzerverwaltung für Passwörter. Für eine "
+"allgemeine Einführung in die Passwortverwaltung für Benutzer in Nubus "
+"lesen Sie zunächst :external+uv-nubus-manual:ref:`nubus-user-password-"
+"management` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/password-management/policies.rst:19
 msgid "Password policy types"
-msgstr ""
+msgstr "Passwort-Richtlinientypen"
 
 #: ../../iam/password-management/policies.rst:21
 msgid ""
@@ -493,10 +641,14 @@ msgid ""
 "for UCS has Samba installed through the :program:`Active Directory Domain"
 " Controller` app."
 msgstr ""
+"Nubus hat verschiedene Typen von Passwort-Richtlinien-Einstellungen. "
+"Welche Richtlinie gilt, hängt davon ab, wer die Passwortänderung "
+"einleitet und ob die Domäne von Nubus für UCS Samba über die App "
+":program:`Active Directory Domain Controller` installiert hat."
 
 #: ../../iam/password-management/policies.rst:26
 msgid "Password Policy in UDM"
-msgstr ""
+msgstr "Passwort-Richtlinie in UDM"
 
 #: ../../iam/password-management/policies.rst:27
 msgid ""
@@ -504,6 +656,9 @@ msgid ""
 "password-management-policy-types-policy-udm` in :cite:t:`uv-nubus-"
 "manual`."
 msgstr ""
+"Für die Beschreibung siehe :external+uv-nubus-manual:ref:`nubus-user-"
+"password-management-policy-types-policy-udm` im :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../iam/password-management/policies.rst:33
 msgid ""
@@ -512,6 +667,10 @@ msgid ""
 "the Samba domain object as described in :ref:`password-management-"
 "windows-client`."
 msgstr ""
+"Wenn Samba in Ihrer Domäne von Nubus für UCS installiert ist, "
+"konfigurieren Sie die Passwortanforderungen der Benutzerpasswort-"
+"Richtlinie, um sie dem Samba-Domänenobjekt entsprechend anzupassen wie in"
+" :ref:`password-management-windows-client` beschrieben."
 
 #: ../../iam/password-management/policies.rst:38
 msgid ""
@@ -521,6 +680,11 @@ msgid ""
 "Univention recommends configuring them identically to ensure consistent "
 "behavior."
 msgstr ""
+"UDM Richtlinien gelten, wenn Administratoren Passwörter über "
+"Verwaltungswerkzeuge ändern. Samba Domänen-Richtlinien gelten, wenn "
+"Benutzer ihre eigenen Passwörter über einen beliebigen Dienst ändern. Da "
+"diese separate Dienste sind, empfiehlt Univention, sie identisch zu "
+"konfigurieren, um ein konsistentes Verhalten zu gewährleisten."
 
 #: ../../iam/password-management/policies.rst:44
 #: ../../iam/password-management/samba-policies.rst:30
@@ -529,10 +693,14 @@ msgid ""
 "configured. However, the different settings may confuse users. Identical "
 "settings in both policies reduce user confusion."
 msgstr ""
+"Wenn die Richtlinien nicht konsistent sind, verwenden die Dienste die "
+"konfigurierten Richtlinien. Allerdings können die unterschiedlichen "
+"Einstellungen Benutzer verwirren. Identische Einstellungen in beiden "
+"Richtlinien reduzieren Benutzerverwirrung."
 
 #: ../../iam/password-management/policies.rst:50
 msgid "Password policy for the Samba domain"
-msgstr ""
+msgstr "Passwort-Richtlinie für die Samba-Domäne"
 
 #: ../../iam/password-management/policies.rst:51
 msgid ""
@@ -542,34 +710,45 @@ msgid ""
 "service they use: *Portal*, *End User Self Service*, *Microsoft Windows*,"
 " or *Kerberos*."
 msgstr ""
+"Wenn Samba in Ihrer Domäne von Nubus für UCS installiert ist, hat die "
+"Samba-Domäne ihre eigene Passwort-Richtlinie. Die Passwort-Richtlinie von"
+" Samba gilt **immer**, wenn ein **Benutzer** sein Passwort ändert, "
+"unabhängig davon, welcher Dienst verwendet wird: *Portal*, *End User Self"
+" Service*, *Microsoft Windows* oder *Kerberos*."
 
 #: ../../iam/password-management/policies.rst:57
 msgid ""
 "To configure the password policy for the Samba domain, see :ref"
 ":`password-management-windows-client`."
 msgstr ""
+"Um die Passwort-Richtlinie für die Samba-Domäne zu konfigurieren, siehe "
+":ref:`password-management-windows-client`."
 
 #: ../../iam/password-management/policies.rst:61
 msgid ":external+uv-ucs-manual:ref:`windows-setup4`"
-msgstr ""
+msgstr ":external+uv-ucs-manual:ref:`windows-setup4`"
 
 #: ../../iam/password-management/policies.rst:62
 msgid "in :cite:t:`ucs-manual` for more information about installing Samba."
 msgstr ""
+"im :cite:t:`ucs-manual` für weitere Informationen zur Installation von "
+"Samba."
 
 #: ../../iam/password-management/policies.rst:65
 msgid ":external+uv-ucs-manual:ref:`windows-services-for-windows`"
-msgstr ""
+msgstr ":external+uv-ucs-manual:ref:`windows-services-for-windows`"
 
 #: ../../iam/password-management/policies.rst:66
 msgid ""
 "in :cite:t:`ucs-manual` for general information about Samba providing "
 "Services for Windows."
 msgstr ""
+"im :cite:t:`ucs-manual` für allgemeine Informationen über Samba, das "
+"Services für Windows bereitstellt."
 
 #: ../../iam/password-management/policies.rst:72
 msgid "Change the user password"
-msgstr ""
+msgstr "Benutzerpasswort ändern"
 
 #: ../../iam/password-management/policies.rst:74
 msgid ""
@@ -577,40 +756,49 @@ msgid ""
 "management-change` in :cite:t:`uv-nubus-manual` with content specific to "
 "Nubus for UCS."
 msgstr ""
+"Dieser Abschnitt ergänzt :external+uv-nubus-manual:ref:`nubus-user-"
+"password-management-change` im :cite:t:`uv-nubus-manual` mit Inhalten, "
+"die spezifisch für Nubus für UCS sind."
 
 #: ../../iam/password-management/policies.rst:79
 msgid "*Portal*"
-msgstr ""
+msgstr "*Portal*"
 
 #: ../../iam/password-management/policies.rst:80
 msgid ""
 "See :external+uv-nubus-manual:ref:`nubus-user-password-management-change-"
 "portal` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Siehe :external+uv-nubus-manual:ref:`nubus-user-password-management-"
+"change-portal` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/password-management/policies.rst:83
 msgid "*End User Self Service*"
-msgstr ""
+msgstr "*End User Self Service*"
 
 #: ../../iam/password-management/policies.rst:84
 msgid ""
 "See :external+uv-nubus-manual:ref:`nubus-user-password-management-change-"
 "end-user-self-service` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Siehe :external+uv-nubus-manual:ref:`nubus-user-password-management-"
+"change-end-user-self-service` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/password-management/policies.rst:87
 msgid "Microsoft Windows"
-msgstr ""
+msgstr "Microsoft Windows"
 
 #: ../../iam/password-management/policies.rst:88
 msgid ""
 "Users can change their user password through their Microsoft Windows "
 "client that's joined to the domain of Nubus for UCS through Samba."
 msgstr ""
+"Benutzer können ihr Benutzerpasswort über ihren Microsoft Windows-Client "
+"ändern, der in die Domäne von Nubus für UCS über Samba eingebunden ist."
 
 #: ../../iam/password-management/policies.rst:91
 msgid "Kerberos"
-msgstr ""
+msgstr "Kerberos"
 
 #: ../../iam/password-management/policies.rst:92
 msgid ""
@@ -618,16 +806,21 @@ msgid ""
 "the domain of Nubus for UCS using the client's built-in password change "
 "feature."
 msgstr ""
+"Benutzer können ihr Benutzerpasswort über Kerberos-verbundene Clients in "
+"der Domäne von Nubus für UCS unter Verwendung der integrierten "
+"Passwortänderungsfunktion des Clients ändern."
 
 #: ../../iam/password-management/policies.rst:96
 msgid ""
 "To administratively change a user password, use any of the following "
 "methods:"
 msgstr ""
+"Um ein Benutzerpasswort administrativ zu ändern, verwenden Sie eine der "
+"folgenden Methoden:"
 
 #: ../../iam/password-management/policies.rst
 msgid "Management UI"
-msgstr ""
+msgstr "Management UI"
 
 #: ../../iam/password-management/policies.rst:103
 msgid ""
@@ -635,42 +828,55 @@ msgid ""
 "follow the steps described in :external+uv-nubus-manual:ref:`nubus-user-"
 "password-management-change` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Um ein Benutzerpasswort über die *Management UI* als Administrator zu "
+"ändern, folgen Sie den in :external+uv-nubus-manual:ref:`nubus-user-"
+"password-management-change` im :cite:t:`uv-nubus-manual` beschriebenen "
+"Schritten."
 
 #: ../../iam/password-management/policies.rst
 msgid "Command-line"
-msgstr ""
+msgstr "Befehlszeile"
 
 #: ../../iam/password-management/policies.rst:110
 msgid ""
 "To change a user password through the UDM command-line, use the following"
 " steps:"
 msgstr ""
+"Um ein Benutzerpasswort über die Befehlszeile mit UDM zu ändern, "
+"verwenden Sie die folgenden Schritte:"
 
 #: ../../iam/password-management/policies.rst:113
 msgid "Obtain the DN of the user account for the password change."
-msgstr ""
+msgstr "Besorgen Sie sich den DN des Benutzerkontos für die Passwortänderung."
 
 #: ../../iam/password-management/policies.rst:115
 msgid ""
-"Open a terminal on the *Primary Directory Node*, either locally or remote"
-" through SSH."
+"Open a terminal on the :term:`Primary Directory Node`, either locally or "
+"remote through SSH."
 msgstr ""
+"Öffnen Sie ein Terminal auf dem :term:`Primary Directory Node`, entweder "
+"lokal oder remote über SSH."
 
 #: ../../iam/password-management/policies.rst:118
 msgid ""
 "Write the password to a file to avoid leaking it to the command history. "
 "The example uses the file :file:`password.txt`."
 msgstr ""
+"Schreiben Sie das Passwort in eine Datei, um zu vermeiden, dass es in die"
+" Befehlsverlauf durchsickert. Das Beispiel verwendet die Datei "
+":file:`password.txt`."
 
 #: ../../iam/password-management/policies.rst:122
 msgid ""
 "Run the commands in :numref:`password-management-policies-change-udm-"
 "command-listing`."
 msgstr ""
+"Führen Sie die Befehle in :numref:`password-management-policies-change-"
+"udm-command-listing` aus."
 
 #: ../../iam/password-management/policies.rst:125
 msgid "Change user password through UDM command-line"
-msgstr ""
+msgstr "Benutzerpasswort über die Befehlszeile mit UDM ändern"
 
 #: ../../iam/password-management/policies.rst:125
 msgid ""
@@ -679,10 +885,14 @@ msgid ""
 "  --dn \"$USER_DN\" \\\n"
 "  --set password=\"$(cat password.txt)\""
 msgstr ""
+"$ export USER_DN=\"<the obtained user DN>\"\n"
+"$ udm users/user modify \\\n"
+"  --dn \"$USER_DN\" \\\n"
+"  --set password=\"$(cat password.txt)\""
 
 #: ../../iam/password-management/policies.rst:137
 msgid "Password policy settings"
-msgstr ""
+msgstr "Passwort-Richtlinien-Einstellungen"
 
 #: ../../iam/password-management/policies.rst:139
 msgid ""
@@ -691,39 +901,51 @@ msgid ""
 "manual`. Some settings have additional options in Nubus for UCS as "
 "outlined in the following."
 msgstr ""
+"Für die Passwort-Richtlinien-Einstellungen lesen Sie zunächst :external"
+"+uv-nubus-manual:ref:`nubus-user-password-management-module` im :cite:t"
+":`uv-nubus-manual`. Einige Einstellungen haben zusätzliche Optionen in "
+"Nubus für UCS, wie im Folgenden beschrieben."
 
 #: ../../iam/password-management/policies.rst:144
 #: ../../iam/password-management/samba-policies.rst:44
 msgid "Password length"
-msgstr ""
+msgstr "Passwortlänge"
 
 #: ../../iam/password-management/policies.rst:145
 msgid ""
 "See :external+uv-nubus-manual:ref:`nubus-user-password-management-module`"
 " in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Siehe :external+uv-nubus-manual:ref:`nubus-user-password-management-"
+"module` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/password-management/policies.rst:148
 msgid ""
 "You can configure a default value per Nubus for UCS system through the "
 "UCR variable :envvar:`password/quality/length/min`."
 msgstr ""
+"Sie können einen Standardwert pro Nubus für UCS-System über die UCR-"
+"Variable :envvar:`password/quality/length/min` konfigurieren."
 
 #: ../../iam/password-management/policies.rst:152
 msgid ""
 "The password policy for the affected user account takes precedence over "
 "the UCR variable."
 msgstr ""
+"Die Passwort-Richtlinie für das betroffene Benutzerkonto hat Vorrang vor "
+"der UCR-Variable."
 
 #: ../../iam/password-management/policies.rst:157
 msgid "Password quality check"
-msgstr ""
+msgstr "Passwort-Qualitätsprüfung"
 
 #: ../../iam/password-management/policies.rst:158
 msgid ""
 "See :external+uv-nubus-manual:ref:`nubus-user-password-management-module-"
 "password-quality-check` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Siehe :external+uv-nubus-manual:ref:`nubus-user-password-management-"
+"module-password-quality-check` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/password-management/policies.rst:161
 msgid ""
@@ -731,34 +953,38 @@ msgid ""
 "Configuration Registry variables. For more information, refer to linked "
 "variable descriptions. You can enforce the following checks:"
 msgstr ""
+"Sie konfigurieren die Qualitätsprüfungen über die folgenden Univention "
+"Configuration Registry-Variablen. Weitere Informationen finden Sie in den"
+" verknüpften Variablenbeschreibungen. Sie können die folgenden Prüfungen "
+"durchsetzen:"
 
 #: ../../iam/password-management/policies.rst:165
 msgid ":envvar:`password/quality/credit/digits`"
-msgstr ""
+msgstr ":envvar:`password/quality/credit/digits`"
 
 #: ../../iam/password-management/policies.rst:166
 msgid ":envvar:`password/quality/credit/upper`"
-msgstr ""
+msgstr ":envvar:`password/quality/credit/upper`"
 
 #: ../../iam/password-management/policies.rst:167
 msgid ":envvar:`password/quality/credit/lower`"
-msgstr ""
+msgstr ":envvar:`password/quality/credit/lower`"
 
 #: ../../iam/password-management/policies.rst:168
 msgid ":envvar:`password/quality/credit/other`"
-msgstr ""
+msgstr ":envvar:`password/quality/credit/other`"
 
 #: ../../iam/password-management/policies.rst:169
 msgid ":envvar:`password/quality/forbidden/chars`"
-msgstr ""
+msgstr ":envvar:`password/quality/forbidden/chars`"
 
 #: ../../iam/password-management/policies.rst:170
 msgid ":envvar:`password/quality/required/chars`"
-msgstr ""
+msgstr ":envvar:`password/quality/required/chars`"
 
 #: ../../iam/password-management/policies.rst:171
 msgid ":envvar:`password/quality/mspolicy`"
-msgstr ""
+msgstr ":envvar:`password/quality/mspolicy`"
 
 #: ../../iam/password-management/policies.rst:175
 msgid ""
@@ -766,16 +992,21 @@ msgid ""
 "need to set the Univention Configuration Registry variables on **all** "
 "UCS sign-in servers."
 msgstr ""
+"Um die *Passwort-Qualitätsprüfung* auf allen UCS-Systemen für die "
+"Anmeldung anzuwenden, müssen Sie die Univention Configuration Registry-"
+"Variablen auf **allen** UCS :spelling:word:`Anmeldservern` setzen."
 
 #: ../../iam/password-management/samba-policies.rst:8
 msgid "Samba domain password policy"
-msgstr ""
+msgstr "Samba-Domänen Passwort-Richtlinie"
 
 #: ../../iam/password-management/samba-policies.rst:10
 msgid ""
 "With the Samba domain object, you can set the requirements for user "
 "account passwords in a Samba domain."
 msgstr ""
+"Mit dem Samba-Domänenobjekt können Sie die Anforderungen für "
+"Benutzerkonto-Passwörter in einer Samba-Domäne festlegen."
 
 #: ../../iam/password-management/samba-policies.rst:13
 msgid ""
@@ -783,6 +1014,10 @@ msgid ""
 "module* in the *Management UI*. For more information, see :external+uv-"
 "nubus-manual:ref:`nubus-domain-ldap` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Sie können das Samba-Domänenobjekt über das *LDAP-Verzeichnis-Modul* in "
+"der *Management UI* verwalten. Weitere Informationen finden Sie unter "
+":external+uv-nubus-manual:ref:`nubus-domain-ldap` im :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../iam/password-management/samba-policies.rst:20
 msgid ""
@@ -790,6 +1025,9 @@ msgid ""
 "requirements to match the user password policy as described in :ref"
 ":`password-management-policies`."
 msgstr ""
+"Univention empfiehlt, die Passwortanforderungen des Samba-Domänenobjekts "
+"so zu konfigurieren, dass sie der Benutzerpasswort-Richtlinie "
+"entsprechen, wie in :ref:`password-management-policies` beschrieben."
 
 #: ../../iam/password-management/samba-policies.rst:24
 msgid ""
@@ -799,6 +1037,11 @@ msgid ""
 "Univention recommends configuring them identically to ensure consistent "
 "behavior."
 msgstr ""
+"UDM Richtlinien gelten, wenn Administratoren Passwörter über "
+"Verwaltungswerkzeuge ändern. Samba Domänen-Richtlinien gelten, wenn "
+"Benutzer ihre eigenen Passwörter über einen beliebigen Dienst ändern. Da "
+"diese separate Systeme sind, empfiehlt Univention, sie identisch zu "
+"konfigurieren, um ein konsistentes Verhalten zu gewährleisten."
 
 #: ../../iam/password-management/samba-policies.rst:36
 msgid ""
@@ -806,29 +1049,34 @@ msgid ""
 " LDAP base DN and select the Samba object. The Samba object has the "
 "domain's NetBIOS name."
 msgstr ""
+"Navigieren Sie im LDAP-Verzeichnis zum Container ``samba`` unter dem "
+"LDAP-Basis-DN und wählen Sie das Samba-Objekt aus. Das Samba-Objekt hat "
+"den NetBIOS-Namen der Domäne."
 
 #: ../../iam/password-management/samba-policies.rst:41
 msgid ""
 "In the *Password* section on the *General* tab of the *Samba Domain* "
 "object, you can configure the following settings."
 msgstr ""
+"Im Abschnitt *Passwort* auf der Registerkarte *Allgemein* des Objekts "
+"*Samba-Domäne* können Sie die folgenden Einstellungen konfigurieren."
 
 #: ../../iam/password-management/samba-policies.rst:45
 msgid "The minimum number of characters for a user password."
-msgstr ""
+msgstr "Die minimale Anzahl von Zeichen für ein Benutzerpasswort."
 
 #: ../../iam/password-management/samba-policies.rst
 #: ../../iam/password-management/user-self-service.rst
 msgid "Default value"
-msgstr ""
+msgstr "Standardwert"
 
 #: ../../iam/password-management/samba-policies.rst:47
 msgid "``8``"
-msgstr ""
+msgstr "``8``"
 
 #: ../../iam/password-management/samba-policies.rst:49
 msgid "Password history"
-msgstr ""
+msgstr "Passwort-Verlauf"
 
 #: ../../iam/password-management/samba-policies.rst:50
 msgid ""
@@ -837,26 +1085,34 @@ msgid ""
 "password history value of ``5``, users must set five other passwords "
 "before they can reuse a password from the history."
 msgstr ""
+"Nubus speichert Passwortänderungen als Hashes. Benutzer können keine "
+"Passwörter aus dem Passwort-Verlauf verwenden, wenn sie ein Passwort "
+"setzen. Zum Beispiel mit einem Passwort-Verlauf-Wert von ``5`` müssen "
+"Benutzer fünf andere Passwörter setzen, bevor sie ein Passwort aus dem "
+"Verlauf wiederverwenden können."
 
 #: ../../iam/password-management/samba-policies.rst:55
 #: ../../iam/password-management/samba-policies.rst:61
 #: ../../iam/password-management/samba-policies.rst:71
 msgid "No value set."
-msgstr ""
+msgstr "Kein Wert gesetzt."
 
 #: ../../iam/password-management/samba-policies.rst:57
 msgid "Minimum password age"
-msgstr ""
+msgstr "Minimales Alter des Passworts"
 
 #: ../../iam/password-management/samba-policies.rst:58
 msgid ""
-"Defines how long users must wait before changing their password. You can "
-"configure the value as seconds, minutes, hours, or days."
+"Defines how long users must wait before they can change their password. "
+"You can configure the value as seconds, minutes, hours, or days."
 msgstr ""
+"Definiert, wie lange Benutzer warten müssen, bevor sie ihr Passwort "
+"ändern können. Sie können den Wert als Sekunden, Minuten, Stunden oder "
+"Tage konfigurieren."
 
 #: ../../iam/password-management/samba-policies.rst:63
 msgid "Maximum password age"
-msgstr ""
+msgstr "Maximales Alter des Passworts"
 
 #: ../../iam/password-management/samba-policies.rst:64
 msgid ""
@@ -864,14 +1120,18 @@ msgid ""
 "requires the user to change their password upon next sign-in. You can "
 "configure the value as seconds, minutes, hours, or days."
 msgstr ""
+"Definiert das maximale Alter des Passworts. Wenn dieser Zeitraum abläuft,"
+" verlangt Nubus vom Benutzer, sein Passwort bei der nächsten Anmeldung zu"
+" ändern. Sie können den Wert als Sekunden, Minuten, Stunden oder Tage "
+"konfigurieren."
 
 #: ../../iam/password-management/samba-policies.rst:69
 msgid "To deactivate password expiration, leave the value empty."
-msgstr ""
+msgstr "Um den Ablauf des Passworts zu deaktivieren, lassen Sie den Wert leer."
 
 #: ../../iam/password-management/samba-policies.rst:73
 msgid "Password must meet complexity requirements"
-msgstr ""
+msgstr "Passwort muss Komplexitätsanforderungen erfüllen"
 
 #: ../../iam/password-management/samba-policies.rst:74
 msgid ""
@@ -882,14 +1142,21 @@ msgid ""
 "required characters in a password. The library :file:`Passfilt.dll` "
 "enforces the complexity requirements. Administrators can't change them."
 msgstr ""
+"Aktivieren Sie das Kontrollkästchen, um `Microsoft-Passwort-"
+"Komplexitätsanforderungen <https://learn.microsoft.com/en-us/previous-"
+"versions/windows/it-pro/windows-10/security/threat-protection/security-"
+"policy-settings/password-must-meet-complexity-requirements>`_ zu "
+"aktivieren. Ein Tooltip zeigt die erforderlichen Zeichen in einem "
+"Passwort. Die Bibliothek :file:`Passfilt.dll` erzwingt die "
+"Komplexitätsanforderungen. Administratoren können diese nicht ändern."
 
 #: ../../iam/password-management/samba-policies.rst:80
 msgid "``activated``."
-msgstr ""
+msgstr "``aktiviert``."
 
 #: ../../iam/password-management/user-self-service.rst:8
 msgid "End User Self Service"
-msgstr ""
+msgstr ":spelling:word:`End User Self Service`"
 
 #: ../../iam/password-management/user-self-service.rst:10
 msgid ""
@@ -898,30 +1165,35 @@ msgid ""
 "nubus-manual`. This section describes the *End User Self Service* "
 "configuration specific to Nubus for UCS."
 msgstr ""
+"Allgemeine Informationen über den *End User Self Service* finden Sie "
+"unter :external+uv-nubus-manual:ref:`nubus-user-management-self-service` "
+"im :cite:t:`uv-nubus-manual`. Dieser Abschnitt beschreibt die "
+"Konfiguration des *End User Self Service*, die spezifisch für Nubus für "
+"UCS ist."
 
 #: ../../iam/password-management/user-self-service.rst:16
 msgid "On this page, you find the following sections:"
-msgstr ""
+msgstr "Auf dieser Seite finden Sie die folgenden Abschnitte:"
 
 #: ../../iam/password-management/user-self-service.rst:18
 msgid ":ref:`end-user-self-service-installation`"
-msgstr ""
+msgstr ":ref:`end-user-self-service-installation`"
 
 #: ../../iam/password-management/user-self-service.rst:19
 msgid ":ref:`end-user-self-service-contact-information`"
-msgstr ""
+msgstr ":ref:`end-user-self-service-contact-information`"
 
 #: ../../iam/password-management/user-self-service.rst:20
 msgid ":ref:`end-user-self-service-registration`"
-msgstr ""
+msgstr ":ref:`end-user-self-service-registration`"
 
 #: ../../iam/password-management/user-self-service.rst:21
 msgid ":ref:`end-user-self-service-deregistration`"
-msgstr ""
+msgstr ":ref:`end-user-self-service-deregistration`"
 
 #: ../../iam/password-management/user-self-service.rst:26
 msgid "Installation and activation"
-msgstr ""
+msgstr "Installation und Aktivierung"
 
 #: ../../iam/password-management/user-self-service.rst:28
 msgid ""
@@ -929,70 +1201,85 @@ msgid ""
 "User Self Service*, you need to install the following UCS components "
 "through the *App Center* to your UCS domain:"
 msgstr ""
+"Um Benutzern zu ermöglichen, ihre Passwörter eigenständig über den *End "
+"User Self Service* zu verwalten, müssen Sie die folgenden UCS-Komponenten"
+" über das *App Center* in Ihrer UCS-Domäne installieren:"
 
 #: ../../iam/password-management/user-self-service.rst:33
 msgid ":program:`Self Service Backend`"
-msgstr ""
+msgstr ":program:`Self Service Backend`"
 
 #: ../../iam/password-management/user-self-service.rst:34
 msgid ":program:`Self Service`"
-msgstr ""
+msgstr ":program:`Self Service`"
 
 #: ../../iam/password-management/user-self-service.rst
 msgid "Endpoint"
-msgstr ""
+msgstr "Endpunkt"
 
 #: ../../iam/password-management/user-self-service.rst:36
 msgid ":samp:`https://{{fqdn-to-ucs-appliance}}/univention/selfservice/`"
-msgstr ""
+msgstr ":samp:`https://{{fqdn-to-ucs-appliance}}/univention/selfservice/`"
 
 #: ../../iam/password-management/user-self-service.rst:38
 msgid ""
-"You can use the following UCR variables to activate or deactivate "
-"individual features of the *End User Self Service* password management. "
-"They also activate or deactivate the corresponding entries in the portal."
-" Additionally, you can adjust the portal entries manually, because "
-"they're just normal portal entries."
+"You can use the following Univention Configuration Registry (UCR) "
+"variables to activate or deactivate individual features of the *End User "
+"Self Service* password management. They also activate or deactivate the "
+"corresponding entries in the portal. Additionally, you can adjust the "
+"portal entries manually, because they're just normal portal entries."
 msgstr ""
+"Sie können die folgenden Univention Configuration Registry Variablen "
+"verwenden, um einzelne Funktionen der *End User Self Service* "
+"Passwortverwaltung zu aktivieren oder zu deaktivieren. Sie aktivieren "
+"oder deaktivieren auch die entsprechenden Einträge im Portal. Zusätzlich "
+"können Sie die Portal-Einträge manuell anpassen, da es sich nur um "
+"normale Portal-Einträge handelt."
 
 #: ../../iam/password-management/user-self-service.rst:46
 msgid ""
 "Defines the UCS system that has the :program:`Self Service Backend` app "
 "installed."
 msgstr ""
+"Definiert das UCS-System, auf dem die App :program:`Self Service Backend`"
+" installiert ist."
 
 #: ../../iam/password-management/user-self-service.rst:49
 #: ../../iam/password-management/user-self-service.rst:132
 #: ../../iam/password-management/user-self-service.rst:153
-#: ../../iam/password-management/user-self-service.rst:249
-#: ../../iam/password-management/user-self-service.rst:261
-#: ../../iam/password-management/user-self-service.rst:269
-#: ../../iam/password-management/user-self-service.rst:280
-#: ../../iam/password-management/user-self-service.rst:441
-#: ../../iam/password-management/user-self-service.rst:458
+#: ../../iam/password-management/user-self-service.rst:252
+#: ../../iam/password-management/user-self-service.rst:266
+#: ../../iam/password-management/user-self-service.rst:274
+#: ../../iam/password-management/user-self-service.rst:285
+#: ../../iam/password-management/user-self-service.rst:447
+#: ../../iam/password-management/user-self-service.rst:464
 msgid "not defined"
-msgstr ""
+msgstr "nicht definiert"
 
 #: ../../iam/password-management/user-self-service.rst
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../../iam/password-management/user-self-service.rst:50
-#: ../../iam/password-management/user-self-service.rst:250
-#: ../../iam/password-management/user-self-service.rst:262
-#: ../../iam/password-management/user-self-service.rst:317
-#: ../../iam/password-management/user-self-service.rst:324
-#: ../../iam/password-management/user-self-service.rst:331
-#: ../../iam/password-management/user-self-service.rst:355
-#: ../../iam/password-management/user-self-service.rst:450
-#: ../../iam/password-management/user-self-service.rst:459
-#: ../../iam/password-management/user-self-service.rst:472
+#: ../../iam/password-management/user-self-service.rst:253
+#: ../../iam/password-management/user-self-service.rst:267
+#: ../../iam/password-management/user-self-service.rst:322
+#: ../../iam/password-management/user-self-service.rst:329
+#: ../../iam/password-management/user-self-service.rst:336
+#: ../../iam/password-management/user-self-service.rst:360
+#: ../../iam/password-management/user-self-service.rst:456
+#: ../../iam/password-management/user-self-service.rst:465
+#: ../../iam/password-management/user-self-service.rst:478
 msgid "string"
-msgstr ""
+msgstr "Zeichenkette"
 
 #: ../../iam/password-management/user-self-service.rst:54
-msgid "Activates the *Password forgotten* functionality in the *Self Service*."
+msgid ""
+"Activates the *Password forgotten* functionality in the *End User Self "
+"Service*."
 msgstr ""
+"Aktiviert die Funktionalität *Passwort vergessen* im *End User Self "
+"Service*."
 
 #: ../../iam/password-management/user-self-service.rst:56
 msgid ""
@@ -1001,6 +1288,11 @@ msgid ""
 ":envvar:`self-service/backend-server`, because the *End User Self "
 "Service* forwards requests for password reset to the configured backend."
 msgstr ""
+"Sie müssen diese Einstellung auf dem Nubus für UCS Knoten bereitstellen, "
+"den Sie über die UCR-Variable :envvar:`self-service/backend-server` als "
+":program:`Self Service Backend` definiert haben, da der *End User Self "
+"Service* Anfragen zum Zurücksetzen des Passworts an das konfigurierte "
+"Backend weiterleitet."
 
 #: ../../iam/password-management/user-self-service.rst:63
 #: ../../iam/password-management/user-self-service.rst:77
@@ -1008,22 +1300,24 @@ msgstr ""
 #: ../../iam/password-management/user-self-service.rst:161
 #: ../../iam/password-management/user-self-service.rst:175
 msgid "``true``"
-msgstr ""
+msgstr "``true``"
 
 #: ../../iam/password-management/user-self-service.rst:64
 #: ../../iam/password-management/user-self-service.rst:78
 #: ../../iam/password-management/user-self-service.rst:89
 #: ../../iam/password-management/user-self-service.rst:162
 #: ../../iam/password-management/user-self-service.rst:176
-#: ../../iam/password-management/user-self-service.rst:234
-#: ../../iam/password-management/user-self-service.rst:389
-#: ../../iam/password-management/user-self-service.rst:442
+#: ../../iam/password-management/user-self-service.rst:237
+#: ../../iam/password-management/user-self-service.rst:395
+#: ../../iam/password-management/user-self-service.rst:448
 msgid "boolean"
-msgstr ""
+msgstr "Boolesche Variable"
 
 #: ../../iam/password-management/user-self-service.rst:68
-msgid "Activates the *Protect account* functionality in the *Self Service*."
-msgstr ""
+msgid ""
+"Activates the *Protect account* functionality in the *End User Self "
+"Service*."
+msgstr "Aktiviert die Funktionalität *Konto schützen* im *End User Self Service*."
 
 #: ../../iam/password-management/user-self-service.rst:70
 msgid ""
@@ -1033,10 +1327,15 @@ msgid ""
 "Service* forwards requests for account protection to the configured "
 "backend."
 msgstr ""
+"Sie müssen diese Einstellung auf dem Nubus für UCS Knoten bereitstellen, "
+"den Sie über die UCR-Variable :envvar:`self-service/backend-server` als "
+":program:`Self Service Backend` definiert haben, da der *End User Self "
+"Service* Anfragen zum Schutz von Konten an das konfigurierte Backend "
+"weiterleitet."
 
 #: ../../iam/password-management/user-self-service.rst:82
-msgid "Activates the service-specific passwords in the *Self Service*."
-msgstr ""
+msgid "Activates the service-specific passwords in the *End User Self Service*."
+msgstr "Aktiviert dienst-spezifische Passwörter im *End User Self Service*."
 
 #: ../../iam/password-management/user-self-service.rst:84
 msgid ""
@@ -1044,33 +1343,43 @@ msgid ""
 ":external+uv-ucs-manual:ref:`ip-config-radius-configuration-service-"
 "specific-password`."
 msgstr ""
+"Nubus unterstützt nur den RADIUS-Dienst. Weitere Informationen finden Sie"
+" unter :external+uv-ucs-manual:ref:`ip-config-radius-configuration-"
+"service-specific-password`."
 
 #: ../../iam/password-management/user-self-service.rst:93
 msgid ":external+uv-nubus-manual:ref:`nubus-portal-management`"
-msgstr ""
+msgstr ":external+uv-nubus-manual:ref:`nubus-portal-management`"
 
 #: ../../iam/password-management/user-self-service.rst:94
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about how to edit portal "
 "entries."
 msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen darüber, wie Portal-"
+"Einträge bearbeitet werden."
 
 #: ../../iam/password-management/user-self-service.rst:100
 msgid "Contact information"
-msgstr ""
+msgstr "Kontaktinformationen"
 
 #: ../../iam/password-management/user-self-service.rst:102
 msgid ""
-"Users can view and update their own contact information through the *Self"
-" Service*. Administrators control which attributes users can modify and "
-"which ones are read-only."
+"Users can view and update their own contact information through the *End "
+"User Self Service*. Administrators control which attributes users can "
+"modify and which ones are read-only."
 msgstr ""
+"Benutzer können ihre eigenen Kontaktinformationen über den *End User Self"
+" Service* anzeigen und aktualisieren. Administratoren kontrollieren, "
+"welche Attribute Benutzer ändern können und welche schreibgeschützt sind."
 
 #: ../../iam/password-management/user-self-service.rst:105
 msgid ""
 "To configure the contact information in the *End User Self Service*, use "
 "the following UCR variables:"
 msgstr ""
+"Um die Kontaktinformationen im *End User Self Service* zu konfigurieren, "
+"verwenden Sie die folgenden UCR-Variablen:"
 
 #: ../../iam/password-management/user-self-service.rst:110
 msgid ""
@@ -1080,18 +1389,24 @@ msgid ""
 " Nubus for UCS domain. On the Primary Directory Node, the UCR module "
 "generates and activates the ACL definition list in the directory service."
 msgstr ""
+"Diese Variable konfiguriert die *LDAP* Attribute, die Benutzer in ihrem "
+"eigenen Benutzerkonto ändern können. Sie müssen die Variable auf dem "
+":term:`UCS Primary Directory Node` und dem :term:`UCS Backup Directory "
+"Node` in Ihrer Nubus für UCS Domäne setzen. Auf dem Primary Directory "
+"Node generiert und aktiviert das UCR Modul die ACL-Definitionsliste im "
+"Verzeichnisdienst."
 
 #: ../../iam/password-management/user-self-service.rst:119
 msgid "``jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,c,homePhone,mobile,homePostalAddress``"
-msgstr ""
+msgstr "``jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,c,homePhone,mobile,homePostalAddress``"
 
 #: ../../iam/password-management/user-self-service.rst:120
 #: ../../iam/password-management/user-self-service.rst:133
 #: ../../iam/password-management/user-self-service.rst:154
-#: ../../iam/password-management/user-self-service.rst:270
-#: ../../iam/password-management/user-self-service.rst:281
+#: ../../iam/password-management/user-self-service.rst:275
+#: ../../iam/password-management/user-self-service.rst:286
 msgid "List of strings, separated by commas"
-msgstr ""
+msgstr "Liste von Zeichenketten, durch Kommas getrennt"
 
 #: ../../iam/password-management/user-self-service.rst:124
 msgid ""
@@ -1099,6 +1414,9 @@ msgid ""
 "shows on the *Contact information* page where users can modify their user"
 " account."
 msgstr ""
+"Definiert eine kommagetrennte Liste von UDM Attributen, die der *Self "
+"Service* auf der Seite *Kontaktinformationen* anzeigt, wo Benutzer ihr "
+"Benutzerkonto ändern können."
 
 #: ../../iam/password-management/user-self-service.rst:128
 msgid ""
@@ -1106,6 +1424,9 @@ msgid ""
 "have installed the :program:`Self Service` app, and on the :term:`UCS "
 "Primary Directory Node`."
 msgstr ""
+"Sie müssen diese UCR-Variable auf allen Nubus für UCS-Systemen setzen, "
+"auf denen Sie die App :program:`Self Service` installiert haben, und auf "
+"dem :term:`UCS Primary Directory Node`."
 
 #: ../../iam/password-management/user-self-service.rst:137
 msgid ""
@@ -1114,6 +1435,10 @@ msgid ""
 "variable :envvar:`self-service/udm_attributes` must include the UDM "
 "attributes."
 msgstr ""
+"Definiert die UDM Attribute als kommagetrennte Liste von Zeichenketten, "
+"die der *Self Service* auf den *Kontaktinformationen* als "
+"schreibgeschützt kennzeichnet. Die UCR-Variable :envvar:`self-"
+"service/udm_attributes` muss die UDM Attribute enthalten."
 
 #: ../../iam/password-management/user-self-service.rst:143
 msgid ""
@@ -1121,6 +1446,9 @@ msgid ""
 "have installed the :program:`Self Service` app and on the :term:`UCS "
 "Primary Directory Node`."
 msgstr ""
+"Sie müssen diese UCR-Variable auf allen Nubus für UCS-Systemen setzen, "
+"auf denen Sie die App :program:`Self Service` installiert haben und auf "
+"dem :term:`UCS Primary Directory Node`."
 
 #: ../../iam/password-management/user-self-service.rst:147
 msgid ""
@@ -1129,12 +1457,19 @@ msgid ""
 " you want to be read-only. Otherwise, these *LDAP* attributes keep the "
 "corresponding *UDM* attributes writable."
 msgstr ""
+"Um sicherzustellen, dass diese Variable wie beabsichtigt funktioniert, "
+"entfernen Sie die *LDAP* Attribute, die in der UCR-Variable :envvar"
+":`self-service/ldap_attributes` angegeben sind, die Sie schreibgeschützt "
+"haben möchten. Andernfalls behalten diese *LDAP* Attribute die "
+"entsprechenden *UDM* Attribute schreibbar."
 
 #: ../../iam/password-management/user-self-service.rst:158
 msgid ""
 "Set the value of this variable to ``true`` on all involved Nubus for UCS "
 "systems to enable the profile data mechanism."
 msgstr ""
+"Setzen Sie den Wert dieser Variable auf allen beteiligten Nubus für UCS-"
+"Systemen auf ``true``, um den Profildaten-Mechanismus zu aktivieren."
 
 #: ../../iam/password-management/user-self-service.rst:166
 msgid ""
@@ -1142,28 +1477,40 @@ msgid ""
 "username and password when users open and modify their own user profile "
 "if they have already signed in to the *Portal*."
 msgstr ""
+"Diese Variable definiert, ob der *End User Self Service* Benutzernamen "
+"und Passwort verlangt, wenn Benutzer ihr eigenes Benutzerprofil öffnen "
+"und ändern, wenn sie sich bereits im *Portal* angemeldet haben."
 
 #: ../../iam/password-management/user-self-service.rst:170
 msgid ""
 "The :program:`Self Service` automatically sets the value to ``true`` "
-"during app installation. ``true`` means that the *End User Self Service* "
-"uses an existing Portal session and doesn't ask for username and password"
-" if the user has already signed in."
+"during installation. ``true`` means that the *End User Self Service* uses"
+" an existing Portal session and doesn't ask for username and password if "
+"the user has already signed in."
 msgstr ""
+"Der :program:`Self Service` setzt den Wert automatisch auf ``true`` "
+"während der Installation. ``true`` bedeutet, dass der *End User Self "
+"Service* eine bestehende Portal-Sitzung verwendet und nicht nach "
+"Benutzernamen und Passwort fragt, wenn sich der Benutzer bereits "
+"angemeldet hat."
 
-#: ../../iam/password-management/user-self-service.rst:178
+#: ../../iam/password-management/user-self-service.rst:181
 msgid ""
 "The :envvar:`self-service/ldap_attributes` and :envvar:`self-"
 "service/udm_attributes` variables must match each other. You can fetch "
 "the attribute names and their mapping through the command in :numref"
 ":`nubus-user-management-self-service-contact-info-listing`."
 msgstr ""
+"Die Variablen :envvar:`self-service/ldap_attributes` und :envvar:`self-"
+"service/udm_attributes` müssen einander entsprechen. Sie können die "
+"Attributnamen und ihre Zuordnung über den Befehl in :numref:`nubus-user-"
+"management-self-service-contact-info-listing` abrufen."
 
-#: ../../iam/password-management/user-self-service.rst:183
+#: ../../iam/password-management/user-self-service.rst:186
 msgid "Fetch attribute names and mapping"
-msgstr ""
+msgstr "Attributnamen und Zuordnung abrufen"
 
-#: ../../iam/password-management/user-self-service.rst:183
+#: ../../iam/password-management/user-self-service.rst:186
 #, python-brace-format
 msgid ""
 "$ python3 -c 'from univention.admin.handlers.users.user import mapping; "
@@ -1173,128 +1520,171 @@ msgid ""
 "sorted(mapping._map.items()))) \\\n"
 "  )'"
 msgstr ""
+"$ python3 -c 'from univention.admin.handlers.users.user import mapping; "
+"\\\n"
+"  print(\"\\n\".join( \\\n"
+"  map(\"{0[0]:>30s} {0[1][0]:<30s}\".format, "
+"sorted(mapping._map.items()))) \\\n"
+"  )'"
 
-#: ../../iam/password-management/user-self-service.rst:194
+#: ../../iam/password-management/user-self-service.rst:197
 msgid ""
 ":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
 "contact-info`"
 msgstr ""
+":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
+"contact-info`"
 
-#: ../../iam/password-management/user-self-service.rst:195
+#: ../../iam/password-management/user-self-service.rst:198
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about modifying user contact"
 " information."
 msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen zum Ändern von Benutzer-"
+"Kontaktinformationen."
 
-#: ../../iam/password-management/user-self-service.rst:201
+#: ../../iam/password-management/user-self-service.rst:204
 msgid "User registration"
-msgstr ""
+msgstr "Benutzer-Registrierung"
 
-#: ../../iam/password-management/user-self-service.rst:203
+#: ../../iam/password-management/user-self-service.rst:206
 msgid ""
 "The *End User Self Service* allows users to register themselves. The "
 "registration creates a user account that the user must verify through "
 "email."
 msgstr ""
+"Der *End User Self Service* ermöglicht es Benutzern, sich selbst zu "
+"registrieren. Die Registrierung erstellt ein Benutzerkonto, das der "
+"Benutzer per E-Mail verifizieren muss."
 
-#: ../../iam/password-management/user-self-service.rst:209
+#: ../../iam/password-management/user-self-service.rst:212
 msgid ":external+uv-nubus-manual:ref:`nubus-user-management-self-registration`"
-msgstr ""
+msgstr ":external+uv-nubus-manual:ref:`nubus-user-management-self-registration`"
 
-#: ../../iam/password-management/user-self-service.rst:210
+#: ../../iam/password-management/user-self-service.rst:213
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about using the self-"
 "registration."
 msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen zur Verwendung der "
+"Selbstregistrierung."
 
-#: ../../iam/password-management/user-self-service.rst:216
+#: ../../iam/password-management/user-self-service.rst:219
 msgid "Registration form"
-msgstr ""
+msgstr "Registrierungsformular"
 
-#: ../../iam/password-management/user-self-service.rst:218
+#: ../../iam/password-management/user-self-service.rst:221
 msgid ""
 "You can configure properties of the *Create an account* page and the "
 "account creation itself with the following Univention Configuration "
 "Registry (UCR) variables."
 msgstr ""
+"Sie können die Eigenschaften der Seite *Konto erstellen* und die "
+"Kontoerstellung selbst mit den folgenden Univention Configuration "
+"Registry (UCR)-Variablen konfigurieren."
 
-#: ../../iam/password-management/user-self-service.rst:224
-#: ../../iam/password-management/user-self-service.rst:303
-#: ../../iam/password-management/user-self-service.rst:379
+#: ../../iam/password-management/user-self-service.rst:227
+#: ../../iam/password-management/user-self-service.rst:308
+#: ../../iam/password-management/user-self-service.rst:385
 msgid ""
-"You must set these UCR variables on the Nubus for UCS system that "
+"You need to set these UCR variables on the Nubus for UCS system that "
 "provides :program:`Self Service Backend` as defined in the UCR variable "
 ":envvar:`self-service/backend-server`, because the self-service "
 "registration forwards requests to the Self Service backend."
 msgstr ""
+"Sie müssen diese UCR-Variablen auf dem Nubus für UCS System setzen, das "
+":program:`Self Service Backend` über die UCR-Variable :envvar:`self-"
+"service/backend-server` definiert hat, da die Selbstservice-Registrierung"
+" Anfragen an das Self Service Backend weiterleitet."
 
-#: ../../iam/password-management/user-self-service.rst:231
+#: ../../iam/password-management/user-self-service.rst:234
 msgid "Activates the backend functionality for account creation."
-msgstr ""
+msgstr "Aktiviert die Backend-Funktionalität für die Kontoerstellung."
 
-#: ../../iam/password-management/user-self-service.rst:233
-#: ../../iam/password-management/user-self-service.rst:388
+#: ../../iam/password-management/user-self-service.rst:236
+#: ../../iam/password-management/user-self-service.rst:394
 msgid "``false``"
-msgstr ""
+msgstr "``false``"
 
-#: ../../iam/password-management/user-self-service.rst:238
+#: ../../iam/password-management/user-self-service.rst:241
 msgid ""
 "Defines the DN of the user template that the *Self Service* uses to "
 "create an account through the *Create an account* page."
 msgstr ""
+"Definiert den DN der Benutzervorlage, die der *Self Service* verwendet, "
+"um ein Konto über die Seite *Konto erstellen* zu erstellen."
 
-#: ../../iam/password-management/user-self-service.rst:242
+#: ../../iam/password-management/user-self-service.rst:245
 msgid ""
 "If the variable has no value, the *Self Service* doesn't use a user "
 "template."
 msgstr ""
+"Wenn die Variable keinen Wert hat, verwendet der *Self Service* keine "
+"Benutzervorlage."
 
-#: ../../iam/password-management/user-self-service.rst:245
+#: ../../iam/password-management/user-self-service.rst:248
 msgid ""
 "For information about user account templates, see :external+uv-nubus-"
 "manual:ref:`nubus-user-templates` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Für Informationen zu Benutzerkonto-Vorlagen siehe :external+uv-nubus-"
+"manual:ref:`nubus-user-templates` im :cite:t:`uv-nubus-manual`."
 
-#: ../../iam/password-management/user-self-service.rst:254
+#: ../../iam/password-management/user-self-service.rst:257
 msgid ""
 "Defines the DN of the container in the directory service where the *Self "
 "Service* stores the user account objects created through the *Create an "
 "account* page."
 msgstr ""
+"Definiert den DN des Containers im Verzeichnisdienst, in dem der *Self "
+"Service* die über die Seite *Konto erstellen* erstellten Objekte für "
+"Benutzerkonten speichert."
 
-#: ../../iam/password-management/user-self-service.rst:258
+#: ../../iam/password-management/user-self-service.rst:263
 msgid ""
 "If the variable has no value, the *Self Service* uses the configured "
 "default container for user account objects."
 msgstr ""
+"Wenn die Variable keinen Wert hat, verwendet der *Self Service* den "
+"konfigurierten Standard-Container für Objekte für Benutzerkonten."
 
-#: ../../iam/password-management/user-self-service.rst:266
+#: ../../iam/password-management/user-self-service.rst:271
 msgid ""
 "Defines a comma-separated list of UDM attributes that the *Self Service* "
 "shows on the *Create an account* page."
 msgstr ""
+"Definiert eine kommagetrennte Liste von UDM Attributen, die der *Self "
+"Service* auf der Seite *Konto erstellen* anzeigt."
 
-#: ../../iam/password-management/user-self-service.rst:274
+#: ../../iam/password-management/user-self-service.rst:279
 msgid ""
 "Defines the UDM attributes as a comma-separated list of strings that the "
 "*Self Service* marks as required on the *Create an account* page. The UCR"
 " variable :envvar:`umc/self-service/account-registration/udm_attributes` "
 "must include the UDM attributes."
 msgstr ""
+"Definiert die UDM Attribute als kommagetrennte Liste von Zeichenketten, "
+"die der *Self Service* auf der Seite *Konto erstellen* als erforderlich "
+"kennzeichnet. Die UCR-Variable :envvar:`umc/self-service/account-"
+"registration/udm_attributes` muss die UDM Attribute enthalten."
 
-#: ../../iam/password-management/user-self-service.rst:286
+#: ../../iam/password-management/user-self-service.rst:291
 msgid "Email verification"
-msgstr ""
+msgstr "E-Mail-Verifizierung"
 
-#: ../../iam/password-management/user-self-service.rst:288
+#: ../../iam/password-management/user-self-service.rst:293
 msgid ""
 "When users register through the *Self Service*, they receive a "
 "verification email with a token to confirm their email address. This "
 "section describes how to configure the verification email and token "
 "properties."
 msgstr ""
+"Wenn sich Benutzer über den *Self Service* registrieren, erhalten sie "
+"eine E-Mail zur Verifizierung mit einem Token, um ihre E-Mailadresse zu "
+"bestätigen. Dieser Abschnitt beschreibt die Konfiguration der E-Mail zur "
+"Verifizierung und Token-Eigenschaften."
 
-#: ../../iam/password-management/user-self-service.rst:294
+#: ../../iam/password-management/user-self-service.rst:299
 msgid ""
 "You can configure properties of the *verification email* and of the "
 "verification token through the following Univention Configuration "
@@ -1302,251 +1692,322 @@ msgid ""
 ":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
 "registration-verification-email` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Sie können die Eigenschaften der *E-Mail zur Verifizierung* und des "
+"Tokens über die folgenden Univention Configuration Registry-Variablen "
+"konfigurieren. Für Informationen zum Verifizierungsprozess siehe "
+":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
+"registration-verification-email` im :cite:t:`uv-nubus-manual`."
 
-#: ../../iam/password-management/user-self-service.rst:310
+#: ../../iam/password-management/user-self-service.rst:315
 msgid ""
 "Defines the ``host`` part to use in the verification URL. The default "
 "value uses the fully qualified domain name of the :program:`Self Service "
 "Backend` as defined through the UCR variable :envvar:`self-service"
 "/backend-server`."
 msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:316
-msgid "fully qualified domain name of the :program:`Self Service Backend`"
-msgstr ""
+"Definiert den ``host``-Teil für den Link zur Verifizierung. Der "
+"Standardwert verwendet den vollständig qualifizierten Domänennamen des "
+":program:`Self Service Backend`, wie durch die UCR-Variable :envvar"
+":`self-service/backend-server` definiert."
 
 #: ../../iam/password-management/user-self-service.rst:321
-msgid "Defines the sender address of the verification email."
-msgstr ""
+msgid "fully qualified domain name of the :program:`Self Service Backend`"
+msgstr "Vollständig qualifizierter Domänenname des :program:`Self Service Backend`"
 
-#: ../../iam/password-management/user-self-service.rst:323
-#, python-brace-format
-msgid ":samp:`Account Verification Service <noreply@{FQDN}>`"
-msgstr ""
+#: ../../iam/password-management/user-self-service.rst:326
+msgid "Defines the sender address of the verification email."
+msgstr "Definiert die Absenderadresse der E-Mail für die Verifizierung."
 
 #: ../../iam/password-management/user-self-service.rst:328
+#, python-brace-format
+msgid ":samp:`Account Verification Service <noreply@{FQDN}>`"
+msgstr ":samp:`Account Verification Service <noreply@{FQDN}>`"
+
+#: ../../iam/password-management/user-self-service.rst:333
 msgid "Defines the server name or IP address of the mail server to use."
 msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:330
-msgid "``localhost``"
-msgstr ""
+"Definiert den Servernamen oder die IP-Adresse des zu verwendenden Mail-"
+"Servers."
 
 #: ../../iam/password-management/user-self-service.rst:335
+msgid "``localhost``"
+msgstr "``localhost``"
+
+#: ../../iam/password-management/user-self-service.rst:340
 msgid ""
 "Defines the path to a text file that the *Self Service* uses for the text"
 " body of the verification email. The text can contain the following "
 "strings. The *Self Service* substitutes them accordingly."
 msgstr ""
+"Definiert den Pfad zu einer Textdatei, die der *Self Service* für den "
+"Textinhalt für die E-Mail zur Verifizierung verwendet. Der Text kann die "
+"folgenden Zeichenketten enthalten. Der *Self Service* ersetzt sie "
+"entsprechend."
 
-#: ../../iam/password-management/user-self-service.rst:340
+#: ../../iam/password-management/user-self-service.rst:345
 #, python-brace-format
 msgid "``{link}``"
-msgstr ""
+msgstr "``{link}``"
 
-#: ../../iam/password-management/user-self-service.rst:341
+#: ../../iam/password-management/user-self-service.rst:346
 msgid "URL to the *Self Service* page."
-msgstr ""
+msgstr "URL zur Seite *Self Service*."
 
-#: ../../iam/password-management/user-self-service.rst:343
+#: ../../iam/password-management/user-self-service.rst:348
 #, python-brace-format
 msgid "``{token}``"
-msgstr ""
+msgstr "``{token}``"
 
-#: ../../iam/password-management/user-self-service.rst:344
+#: ../../iam/password-management/user-self-service.rst:349
 msgid ""
 "The token string that the user can enter on the *Self Service* page to "
 "verify their email address."
 msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:347
-#, python-brace-format
-msgid "``{tokenlink}``"
-msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:348
-#, python-brace-format
-msgid "URL to the *Self Service* page that already includes the ``{token}``."
-msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:351
-#: ../../iam/password-management/user-self-service.rst:468
-#, python-brace-format
-msgid "``{username}``"
-msgstr ""
+"Die Token-Zeichenkette, die Benutzer auf der Seite *Self Service* "
+"eingeben können, um ihre E-Mailadresse zu verifizieren."
 
 #: ../../iam/password-management/user-self-service.rst:352
-#: ../../iam/password-management/user-self-service.rst:469
-msgid "The username of the user's account."
-msgstr ""
+#, python-brace-format
+msgid "``{tokenlink}``"
+msgstr "``{tokenlink}``"
 
-#: ../../iam/password-management/user-self-service.rst:354
+#: ../../iam/password-management/user-self-service.rst:353
+#, python-brace-format
+msgid "URL to the *Self Service* page that already includes the ``{token}``."
+msgstr "URL zur Seite *Self Service*, die bereits das ``{token}`` enthält."
+
+#: ../../iam/password-management/user-self-service.rst:356
+#: ../../iam/password-management/user-self-service.rst:474
+#, python-brace-format
+msgid "``{username}``"
+msgstr "``{username}``"
+
+#: ../../iam/password-management/user-self-service.rst:357
+#: ../../iam/password-management/user-self-service.rst:475
+msgid "The username of the user's account."
+msgstr "Der Benutzername des Benutzerkontos."
+
+#: ../../iam/password-management/user-self-service.rst:359
 msgid ""
 ":file:`/usr/share/univention-self-"
 "service/email_bodies/verification_email_body.txt`"
 msgstr ""
+":file:`/usr/share/univention-self-"
+"service/email_bodies/verification_email_body.txt`"
 
-#: ../../iam/password-management/user-self-service.rst:359
+#: ../../iam/password-management/user-self-service.rst:364
 msgid ""
 "Defines the number of characters that the *Self Service* uses for the "
 "verification token."
 msgstr ""
+"Definiert die Anzahl der Zeichen, die der *Self Service* für den Token "
+"zur Verifizierung verwendet."
 
-#: ../../iam/password-management/user-self-service.rst:362
+#: ../../iam/password-management/user-self-service.rst:367
 msgid "``64``"
-msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:363
-msgid "unsigned integer"
-msgstr ""
+msgstr "``64``"
 
 #: ../../iam/password-management/user-self-service.rst:368
-msgid "Account activation"
-msgstr ""
+msgid "unsigned integer"
+msgstr "Ganze Zahl ohne Vorzeichen"
 
-#: ../../iam/password-management/user-self-service.rst:370
+#: ../../iam/password-management/user-self-service.rst:373
+msgid "Account activation"
+msgstr "Konto-Aktivierung"
+
+#: ../../iam/password-management/user-self-service.rst:375
 msgid ""
 "When the user clicks the verification link from the email, the web "
 "browser shows the *Account verification* page of the *Self Service*. For "
 "information about how to verify the registered user account, see "
 ":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
-"registration-account-verification`."
+"registration-account-verification` in :cite:t:`uv-nubus-manual`."
 msgstr ""
+"Wenn der Benutzer auf den Verifizierungslink in der E-Mail klickt, zeigt "
+"der Webbrowser die Seite *Konto-Verifizierung* des *Self Service*. Für "
+"Informationen zum Verifizieren des registrierten Benutzerkontos siehe "
+":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
+"registration-account-verification` im :cite:t:`uv-nubus-manual`."
 
-#: ../../iam/password-management/user-self-service.rst:375
+#: ../../iam/password-management/user-self-service.rst:381
 msgid ""
 "This section provides information about how to configure the account "
 "verification."
 msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:386
-msgid "Activates the *Account verification* functionality in the *Self Service*."
-msgstr ""
-
-#: ../../iam/password-management/user-self-service.rst:391
-msgid "Handle sign-in for user accounts with an unverified email address"
-msgstr ""
+"Dieser Abschnitt bietet Informationen zur Konfiguration der Konto-"
+"Verifizierung."
 
 #: ../../iam/password-management/user-self-service.rst:392
+msgid "Activates the *Account verification* functionality in the *Self Service*."
+msgstr "Aktiviert die Funktionalität *Konto-Verifizierung* im *Self Service*."
+
+#: ../../iam/password-management/user-self-service.rst:397
+msgid "Handle sign-in for user accounts with an unverified email address"
+msgstr ""
+"Behandeln Sie die Anmeldung für Benutzerkonten mit nicht verifizierten E"
+"-Mail-Adressen"
+
+#: ../../iam/password-management/user-self-service.rst:398
 msgid ""
 "You can configure single sign-on to require self-registered users to "
 "first verify their email address."
 msgstr ""
+"Sie können Single Sign-On so konfigurieren, dass selbst registrierte "
+"Benutzer zuerst ihre E-Mailadresse verifizieren müssen."
 
-#: ../../iam/password-management/user-self-service.rst:395
+#: ../../iam/password-management/user-self-service.rst:401
 msgid ""
 "Use the UCR variable :external+uv-keycloak-"
 "app:envvar:`ucs/self/registration/check_email_verification`."
 msgstr ""
+"Verwenden Sie die UCR-Variable :external+uv-keycloak-"
+"app:envvar:`ucs/self/registration/check_email_verification`."
 
-#: ../../iam/password-management/user-self-service.rst:398
+#: ../../iam/password-management/user-self-service.rst:404
 msgid "User notification for user accounts with an unverified email address"
 msgstr ""
+"Benachrichtigung für Benutzerkonten mit nicht verifizierten E-Mail-"
+"Adressen"
 
-#: ../../iam/password-management/user-self-service.rst:399
+#: ../../iam/password-management/user-self-service.rst:405
 msgid ""
 "You can configure the user notification on the single sign-on page for "
 "self-registered user accounts with an unverified email address. Use the "
 "following UCR variables:"
 msgstr ""
+"Sie können die Benachrichtigung für Benutzer auf der Seite zum Single "
+"Sign-On für selbst registrierte Benutzerkonten mit nicht verifizierten "
+"E-Mailadressen konfigurieren. Verwenden Sie die folgenden UCR-Variablen:"
 
-#: ../../iam/password-management/user-self-service.rst:403
+#: ../../iam/password-management/user-self-service.rst:409
 msgid ""
 ":external+uv-keycloak-"
 "app:envvar:`keycloak/login/messages/en/accountNotVerifiedMsg`"
 msgstr ""
+":external+uv-keycloak-"
+"app:envvar:`keycloak/login/messages/en/accountNotVerifiedMsg`"
 
-#: ../../iam/password-management/user-self-service.rst:404
+#: ../../iam/password-management/user-self-service.rst:410
 msgid ""
 ":external+uv-keycloak-"
 "app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`"
 msgstr ""
+":external+uv-keycloak-"
+"app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`"
 
-#: ../../iam/password-management/user-self-service.rst:406
+#: ../../iam/password-management/user-self-service.rst:412
 msgid ""
 "Since UCS 5.2, the :program:`Keycloak` app is the default identity "
 "provider. For information about Keycloak settings, see :external+uv-"
 "keycloak-app:ref:`app-settings` in the :cite:t:`ucs-keycloak-doc`."
 msgstr ""
+"Seit UCS 5.2 ist die App :program:`Keycloak` der Standard-"
+"Identitätsanbieter. Für Informationen zu Einstellungen in Keycloak siehe "
+":external+uv-keycloak-app:ref:`app-settings` in :cite:t:`ucs-keycloak-"
+"doc`."
 
-#: ../../iam/password-management/user-self-service.rst:413
+#: ../../iam/password-management/user-self-service.rst:419
 msgid "User deregistration"
-msgstr ""
+msgstr "Benutzer-Abmeldung"
 
-#: ../../iam/password-management/user-self-service.rst:415
+#: ../../iam/password-management/user-self-service.rst:421
 msgid ""
 "The :program:`Self Service` allows users to request the deletion of their"
 " user account."
 msgstr ""
+"Der :program:`Self Service` ermöglicht es Benutzern, die Löschung ihres "
+"Benutzerkontos anzufordern."
 
-#: ../../iam/password-management/user-self-service.rst:421
+#: ../../iam/password-management/user-self-service.rst:427
 msgid "Deregistration request"
-msgstr ""
+msgstr "Anfrage zur Abmeldung"
 
-#: ../../iam/password-management/user-self-service.rst:423
+#: ../../iam/password-management/user-self-service.rst:429
 msgid ""
 "If a user requests to delete their account, Nubus doesn't delete the user"
 " account directly, but deactivates it. If the user has a "
 "``PasswordRecoveryEmail`` defined, Nubus sends a notification email. In "
 "addition, Nubus sets the following attributes of the user account:"
 msgstr ""
+"Wenn ein Benutzer die Löschung seines Kontos anfordert, löscht Nubus das "
+"Benutzerkonto nicht direkt, sondern deaktiviert es. Wenn der Benutzer "
+"eine ``PasswordRecoveryEmail`` definiert hat, benachrichtigt Nubus den "
+"Benutzer über E-Mail. Zusätzlich setzt Nubus die folgenden Attribute des "
+"Benutzerkontos:"
 
-#: ../../iam/password-management/user-self-service.rst:431
+#: ../../iam/password-management/user-self-service.rst:437
 msgid "``DeregisteredThroughSelfService`` to ``TRUE``"
-msgstr ""
+msgstr "``DeregisteredThroughSelfService`` auf ``TRUE``"
 
-#: ../../iam/password-management/user-self-service.rst:432
+#: ../../iam/password-management/user-self-service.rst:438
 msgid ""
 "``DeregistrationTimestamp`` to the current time in the `GeneralizedTime "
 "LDAP syntax <ldap-generalized-time_>`_."
 msgstr ""
+"``DeregistrationTimestamp`` zur aktuellen Zeit in der `GeneralizedTime "
+"LDAP-Syntax <ldap-generalized-time_>`_."
 
-#: ../../iam/password-management/user-self-service.rst:434
+#: ../../iam/password-management/user-self-service.rst:440
 msgid "Use the following UCR variables to configure user self-deregistration."
 msgstr ""
+"Verwenden Sie die folgenden UCR-Variablen, um die Abmeldung des eigenen Kontos durch Benutzer "
+"zu konfigurieren."
 
-#: ../../iam/password-management/user-self-service.rst:438
+#: ../../iam/password-management/user-self-service.rst:444
 msgid ""
 "Activates the *Delete my account* button on the *Your profile* page of "
 "the *Self Service*."
 msgstr ""
+"Aktiviert die Schaltfläche *Mein Konto löschen* auf der Seite *Mein "
+"Profil* des *Self Service*."
 
-#: ../../iam/password-management/user-self-service.rst:446
+#: ../../iam/password-management/user-self-service.rst:452
 msgid ""
 "Defines the sender address of the notification email about a user account"
 " deletion request."
 msgstr ""
+"Definiert die Absenderadresse der E-Mail zur Benachrichtigung über eine "
+"Anfrage zur Löschung eines Benutzerkontos."
 
-#: ../../iam/password-management/user-self-service.rst:449
+#: ../../iam/password-management/user-self-service.rst:455
 #, python-brace-format
 msgid ":samp:`Password Reset Service <noreply@{FQDN}>`"
-msgstr ""
+msgstr ":samp:`Password Reset Service <noreply@{FQDN}>`"
 
-#: ../../iam/password-management/user-self-service.rst:454
+#: ../../iam/password-management/user-self-service.rst:460
 msgid ""
 "Defines the server name as fully qualified domain name or IP address of "
 "the mail server for sending the notification email about a user account "
 "deletion request."
 msgstr ""
+"Definiert den Servernamen als vollständig qualifizierten Domänennamen "
+"oder IP-Adresse des Mail-Servers zum Senden der E-Mail zur "
+"Benachrichtigung über eine Anfrage zur Löschung eines Benutzerkontos."
 
-#: ../../iam/password-management/user-self-service.rst:463
+#: ../../iam/password-management/user-self-service.rst:469
 msgid ""
 "Defines the path to a text file that the *Self Service* uses for the text"
 " body of the notification email. The text can contain the following "
 "strings. The *Self Service* substitutes them accordingly."
 msgstr ""
+"Definiert den Pfad zu einer Textdatei, die der *Self Service* für den "
+"Textinhalt der E-Mail zur Benachrichtigung verwendet. Der Text kann die "
+"folgenden Zeichenketten enthalten. Der *Self Service* ersetzt sie "
+"entsprechend."
 
-#: ../../iam/password-management/user-self-service.rst:471
+#: ../../iam/password-management/user-self-service.rst:477
 msgid ""
 ":file:`/usr/share/univention-self-"
 "service/email_bodies/deregistration_notification_email_body.txt`"
 msgstr ""
+":file:`/usr/share/univention-self-"
+"service/email_bodies/deregistration_notification_email_body.txt`"
 
-#: ../../iam/password-management/user-self-service.rst:477
+#: ../../iam/password-management/user-self-service.rst:483
 msgid "Account cleanup"
-msgstr ""
+msgstr "Konto-Bereinigung"
 
-#: ../../iam/password-management/user-self-service.rst:479
+#: ../../iam/password-management/user-self-service.rst:485
 msgid ""
 "The *Self Service* provides a script at :file:`/usr/share/univention-"
 "self-service/delete_deregistered_accounts.py` that you can use to delete "
@@ -1554,76 +2015,101 @@ msgid ""
 "``DeregisteredThroughSelfService`` attribute set to ``TRUE`` and whose "
 "``DeregistrationTimestamp`` attribute is older than a specified time."
 msgstr ""
+"Der *Self Service* bietet ein Skript unter :file:`/usr/share/univention-"
+"self-service/delete_deregistered_accounts.py`, das Sie verwenden können, "
+"um alle ``users/user``-Objekte zu löschen, bei denen das Attribut "
+"``DeregisteredThroughSelfService`` auf ``TRUE`` gesetzt ist und deren "
+"Attribut ``DeregistrationTimestamp`` älter als eine angegebene Zeit ist."
 
-#: ../../iam/password-management/user-self-service.rst:489
+#: ../../iam/password-management/user-self-service.rst:495
 msgid "Manually delete de-registered user accounts"
-msgstr ""
+msgstr "Manuell abgemeldete Benutzerkonten löschen"
 
-#: ../../iam/password-management/user-self-service.rst:490
+#: ../../iam/password-management/user-self-service.rst:496
 msgid ""
 "The command in :numref:`end-user-self-service-deregistration-delete-"
 "listing` deletes user accounts whose ``DeregistrationTimestamp`` is older"
 " than 5 days and 2 hours."
 msgstr ""
+"Der Befehl in :numref:`end-user-self-service-deregistration-delete-"
+"listing` löscht Benutzerkonten, deren ``DeregistrationTimestamp`` älter "
+"als 5 Tage und 2 Stunden ist."
 
-#: ../../iam/password-management/user-self-service.rst:493
+#: ../../iam/password-management/user-self-service.rst:499
 msgid "Example for deleting de-registered and deactivated user accounts"
-msgstr ""
+msgstr "Beispiel zum Löschen abgemeldeter und deaktivierter Benutzerkonten"
 
-#: ../../iam/password-management/user-self-service.rst:493
+#: ../../iam/password-management/user-self-service.rst:499
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py \\\n"
 "  --timedelta-days 5 \\\n"
 "  --timedelta-hours 2"
 msgstr ""
+"$ /usr/share/univention-self-service/delete_deregistered_accounts.py \\\n"
+"  --timedelta-days 5 \\\n"
+"  --timedelta-hours 2"
 
-#: ../../iam/password-management/user-self-service.rst:503
+#: ../../iam/password-management/user-self-service.rst:509
 msgid "Script arguments"
-msgstr ""
+msgstr "Skript-Argumente"
 
-#: ../../iam/password-management/user-self-service.rst:504
+#: ../../iam/password-management/user-self-service.rst:510
 msgid ""
 "For the possible arguments of the script, see :numref:`end-user-self-"
 "service-deregistration-script-arguments-listing`."
 msgstr ""
+"Für die möglichen Argumente des Skripts siehe :numref:`end-user-self-"
+"service-deregistration-script-arguments-listing`."
 
-#: ../../iam/password-management/user-self-service.rst:507
+#: ../../iam/password-management/user-self-service.rst:513
 msgid "Available arguments for :file:`delete_deregistered_accounts.py`"
-msgstr ""
+msgstr "Verfügbare Argumente für :file:`delete_deregistered_accounts.py`"
 
-#: ../../iam/password-management/user-self-service.rst:507
+#: ../../iam/password-management/user-self-service.rst:513
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
 msgstr ""
+"$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
+"--help"
 
-#: ../../iam/password-management/user-self-service.rst:515
+#: ../../iam/password-management/user-self-service.rst:521
 msgid "Scheduled deletion of de-registered user accounts"
-msgstr ""
+msgstr "Geplante Löschung abgemeldeter Benutzerkonten"
 
-#: ../../iam/password-management/user-self-service.rst:516
+#: ../../iam/password-management/user-self-service.rst:522
 msgid ""
 "You can schedule the script to run regularly. Create a cron job through a"
 " UCR variable, as shown in :numref:`end-user-self-service-deregistration-"
 "schedule-listing`."
 msgstr ""
+"Sie können das Skript so planen, dass es regelmäßig läuft. Erstellen Sie "
+"einen Cron-Job über eine UCR-Variable, wie in :numref:`end-user-self-"
+"service-deregistration-schedule-listing` gezeigt."
 
-#: ../../iam/password-management/user-self-service.rst:520
+#: ../../iam/password-management/user-self-service.rst:526
 msgid "Schedule deletion of de-registered user accounts"
-msgstr ""
+msgstr "Planen Sie die Löschung abgemeldeter Benutzerkonten"
 
-#: ../../iam/password-management/user-self-service.rst:520
+#: ../../iam/password-management/user-self-service.rst:526
 msgid ""
 "$ ucr set cron/delete_deregistered_accounts/command=\\\n"
 "/usr/share/univention-self-service/delete_deregistered_accounts.py\\\n"
 "' --timedelta-days 30'\\\n"
 "  cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00"
 msgstr ""
+"$ ucr set cron/delete_deregistered_accounts/command=\\\n"
+"/usr/share/univention-self-service/delete_deregistered_accounts.py\\\n"
+"' --timedelta-days 30'\\\n"
+"  cron/delete_deregistered_accounts/time='00 06 * * *'  # täglich um 06:00"
 
-#: ../../iam/password-management/user-self-service.rst:529
+#: ../../iam/password-management/user-self-service.rst:535
 msgid ""
 "For more information about how to set cron jobs through UCR variables, "
 "see :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
 "univention-configuration-registry`."
 msgstr ""
+"Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
+" siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
+"univention-configuration-registry`."
 
