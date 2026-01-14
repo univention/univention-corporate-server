@@ -2001,6 +2001,10 @@ log_execution_time () {
 	${LOGGER:-logger} "$BASH_EXECUTION_STRING needed $(( ($(date +%s%N) - START) / 1000000)) ms"
 }
 
+remove_net_installer () {
+  univention-remove --purge univention-net-installer
+  univention-remove --purge univention-net-installer-daemon
+}
 
 # trap log_execution_time EXIT
 
