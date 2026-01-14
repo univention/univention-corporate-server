@@ -15,6 +15,7 @@ path = [
   "PULL_REQUEST_TEMPLATE.md",
   "SECURITY.md",
   "doc/*/spelling_wordlist",
+  "doc/*/spelling_wordlist_de",
   "doc/developer-reference/*/*/debian/*",
   "doc/developer-reference/umc/*.umc-modules",
   "doc/developer-reference/umc/*.xml",
