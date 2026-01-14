@@ -277,12 +277,22 @@ class Gateway(tornado.web.RequestHandler):
         signal.signal(signal.SIGTERM, cls.signal_handler_stop)
         signal.signal(signal.SIGINT, cls.signal_handler_stop)
         signal.signal(signal.SIGHUP, cls.signal_handler_reload)
+        signal.signal(signal.SIGUSR1, cls.signal_handler_usr1)
+
+    # This is for the processes=1 case.
+    # In this case the downstream child process sends SIGUSR1 upon the "reload" request
+    # directly to the main process here, not to the forked multiprocessing process.
+    # We just have to call signal_handler_reload to SIGHUP to all childs.
+    @classmethod
+    def signal_handler_usr1(cls, sig, frame=None):
+        log.info('Reloading service calling signal_handler_reload.')
+        cls.signal_handler_reload(signal.SIGHUP)
 
     @classmethod
-    def signal_handler_reload(cls, sig, frame):
-        log.debug('Reloading service.')
+    def signal_handler_reload(cls, sig, frame=None):
         if cls.child_id is None:
             for process in cls.PROCESSES.values():
+                log.info('Reloading service by sending SIGHUP to child process %s.', process.pid)
                 cls.safe_kill(process.pid, sig)
         tornado_logger = logging.getLogger("tornado")
         for handler in tornado_logger.handlers:
@@ -292,7 +302,7 @@ class Gateway(tornado.web.RequestHandler):
                 handler.stream = stream
 
     @classmethod
-    def signal_handler_stop(cls, sig, frame):
+    def signal_handler_stop(cls, sig, frame=None):
         if cls.child_id is None:
             try:
                 children_pids = list(shared_memory.children.values())

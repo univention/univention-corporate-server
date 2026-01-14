@@ -86,7 +86,8 @@ class Server:
         # signal handers
         signal.signal(signal.SIGTERM, partial(self.signal_handler_stop, None))
         signal.signal(signal.SIGINT, partial(self.signal_handler_stop, None))
-        signal.signal(signal.SIGHUP, self.signal_handler_reload)
+        signal.signal(signal.SIGHUP, partial(self.signal_handler_reload, None))
+        signal.signal(signal.SIGUSR1, self.signal_handler_usr1)
 
         # start mutliprocessing
         if args.processes != 1:
@@ -134,7 +135,19 @@ class Server:
             self.signal_handler_stop(server, signal.SIGTERM, None)
             raise
 
-    def signal_handler_stop(self, server, sig, frame):
+    # child processes send us a SIGUSR1 upon the "reload" request,
+    # we forward this as SIGHUP to the multiprocess main process
+    # which handles the reload of all childs
+    def signal_handler_usr1(self, sig, frame=None):
+        pid = os.getppid()
+        signo = signal.SIGHUP
+        log.info('Reloading service by sending SIGHUP to parent %s.', pid)
+        try:
+            os.kill(pid, signo)
+        except OSError as exc:
+            log.error('Could not send SIGHUP to parent %s.', pid, signo=signo, error=exc)
+
+    def signal_handler_stop(self, server, sig, frame=None):
         if self.child_id is None:
             try:
                 children_pids = list(shared_memory.children.values())
@@ -166,9 +179,10 @@ class Server:
 
         io_loop.add_callback_from_signal(shutdown)
 
-    def signal_handler_reload(self, application, signal, frame):
-        log.debug('Reloading service.')
-        application.reload()
+    def signal_handler_reload(self, application, signal, frame=None):
+        log.info('Reloading service.')
+        if application:
+            application.reload()
         if self.child_id is None:
             for pid in shared_memory.children.values():
                 self.safe_kill(pid, signal)

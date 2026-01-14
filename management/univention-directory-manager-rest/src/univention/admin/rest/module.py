@@ -17,6 +17,7 @@ import logging
 import operator
 import os
 import re
+import signal
 import socket
 import traceback
 import uuid
@@ -3213,8 +3214,17 @@ class ServiceSpecificPassword(Resource):
 
 class ReloadAPI(Resource):
 
+    # this sends a SIGUSR1 to the parent process, which upon USR1
+    # in the processes=1 case, reloads all child processes with SIGHUP (by calling signal_handler_reload)
+    # in the processes>1 case, sends SIGHUP to its (multiprocess) parent, which reloads all child processes
     def get(self):
-        Application.reload()
+        pid = os.getppid()
+        log.info('Reloading service by sending SIGUSR1 to parent %s.', pid)
+        signo = signal.SIGUSR1
+        try:
+            os.kill(pid, signo)
+        except OSError as exc:
+            log.error('Could not send SIGUSR1 to parent %s.', pid, signo=signo, error=exc)
         self.content_negotiation({})
 
 
