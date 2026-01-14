@@ -32,7 +32,7 @@ Glossary
    Primary Directory Node
    UCS Primary Directory Node
       The Primary Directory Node is a system role in Nubus for UCS.
-      It's the first, the primary, domain node in a domain.
+      It's the first, the primary, node in a domain.
       For more information about the role concept in Nubus for UCS,
       see :external+uv-architecture:ref:`concept-role`
       in :cite:t:`ucs-architecture`.
