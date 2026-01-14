@@ -9,3 +9,6 @@ desc: |
  * The DN of objects in the recycle bin has been shortened to just
    "OriginalUniventionObjectIdentifier=$ID,cn=recyclebin,cn=internal".
 bug: [58931]
+erratum: 329
+announced: 2026-01-14
+support: core
