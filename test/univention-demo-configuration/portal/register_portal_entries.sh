@@ -175,7 +175,7 @@ univention-directory-manager portals/entry create \
         --append link='"de_DE" "https://univention-summit.de/"' \
         --append link='"fr_FR" "https://univention-summit.com/"' \
 	--set linkTarget=newwindow \
-	--set icon="$(base64 "$DIR/summit_icon.svg")"
+	--set icon="$(base64 "$DIR/summit_icon.jpg")"
 
 univention-directory-manager portals/category modify \
 	--dn "cn=announcements,cn=category,cn=portals,cn=univention,$ldap_base" \
