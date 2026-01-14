@@ -1,3 +1,9 @@
+univention-demo-configuration (10.4.3) unstable; urgency=medium
+
+  * Murphy's typo
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 09:44:59 +0100
+
 univention-demo-configuration (10.4.2) unstable; urgency=medium
 
   * Fix Summit 2026 Portal tile

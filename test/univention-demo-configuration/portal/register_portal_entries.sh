@@ -118,7 +118,7 @@ create_app_entry \
 	"#504999"
 
 create_app_entry \
-0	onlyoffice onlyoffice-ds-integration \
+ 	onlyoffice onlyoffice-ds-integration \
 	"ONLYOFFICE Docs Enterprise Edition" \
 	"Feature-rich office suite on your own server" \
 	"Leistungsstarke Büro- und Produktivitäts-Suite auf Ihrem eigenen Server" \
