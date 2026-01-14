@@ -157,3 +157,34 @@ gettext_additional_targets = ['literal-block']
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
 # Information about the feedback link.
 univention_feedback = True
+
+
+def adapt_settings_to_translation(app, config):
+    """
+    Sets the document title correctly according to the target language.
+
+    See https://github.com/sphinx-doc/sphinx/issues/10282
+    """
+    if config.language == 'de':
+        config.project = 'Univention Corporate Server - Betriebshandbuch'
+        config.html_title = config.project
+        config.tokenizer_lang = 'de_DE'
+
+        # Replace English spelling word list with the German spelling word list
+        config.spelling_word_list_filename[0] = 'spelling_wordlist_de'
+
+        config.bibtex_bibfiles = ['../bibliography-de.bib']
+        config.intersphinx_mapping = {
+            'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/de', None),
+            'uv-ucs-manual': reference_inventory('manual', version=version, language=config.language),
+            'uv-architecture': reference_inventory('architecture', version=version),
+            'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
+        }
+        config.numfig_format['code-block'] = 'Listing %s'
+
+
+def setup(app):
+    app.connect(
+        'config-inited',
+        adapt_settings_to_translation,
+    )
