@@ -1,3 +1,9 @@
+univention-demo-configuration (10.4.2) unstable; urgency=medium
+
+  * Fix Summit 2026 Portal tile
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 09:23:12 +0100
+
 univention-demo-configuration (10.4.1) unstable; urgency=medium
 
   * Summit 2026 Portal tile
