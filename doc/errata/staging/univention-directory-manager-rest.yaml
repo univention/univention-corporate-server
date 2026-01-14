@@ -3,7 +3,7 @@ release: "5.2"
 version: [4]
 scope: ucs_5.2-0-errata5.2-4
 src: univention-directory-manager-rest
-fix: 12.4.3
+fix: 12.4.4
 desc: |
  This update addresses the following issues:
  * A new endpoint `/udm/-/reload` has been added to reload UDM extensions.
