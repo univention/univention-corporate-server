@@ -9,7 +9,7 @@ Group management
 
 This page describes how to manage groups in Nubus for UCS.
 It covers UCS-specific aspects of group creation, nested groups, group caching,
-Active Directory synchronization, and the group overlay module.
+synchronization of groups with Active Directory, and the group overlay module.
 For general information about group management in Nubus,
 see :external+uv-nubus-manual:ref:`nubus-groups` in :cite:t:`uv-nubus-manual`.
 
@@ -148,7 +148,7 @@ are exceptions to this synchronization.
 Only Active Directory and Samba manage such *pseudo groups* internally.
 For example, the ``Authenticated Users`` user group
 includes a list of users currently signed in to the domain.
-Nubus stores *pseudo groups* in the Nubus directory service,
+Nubus stores *pseudo groups* in its directory service,
 but the :program:`S4 Connector` doesn't synchronize them.
 Don't edit these groups.
 The behavior applies to the following *pseudo groups*:
@@ -183,7 +183,7 @@ The behavior applies to the following *pseudo groups*:
 * ``This Organization``
 * ``World Authority``
 
-Active Directory and Samba distinguish between the following Active Directory group types.
+Active Directory and Samba distinguish between the following group types.
 The :program:`S4 Connector` synchronizes these groups.
 In the LDAP directory service, the groups have attributes to label the group types.
 However, the group types only have a meaning in Active Directory.

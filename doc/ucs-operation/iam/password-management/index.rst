@@ -7,8 +7,7 @@
 Password management
 *******************
 
-This chapter covers password management in Nubus for UCS
-with the following sections.
+This chapter covers password management in Nubus for UCS.
 
 .. important::
 
@@ -17,21 +16,21 @@ with the following sections.
    Univention recommends configuring them identically.
 
 :ref:`password-management-policies`
-   Describes the different policy types in Nubus for UCS:
+   It describes the different policy types in Nubus for UCS:
    the UDM password policy and the Samba domain password policy.
-   Explains when each policy applies
-   and how users can change their password through the Portal,
-   End User Self Service, Microsoft Windows, or Kerberos.
-   Also covers the available password policy settings
+   It explains when each policy applies
+   and how users can change their password through the *Portal*,
+   *End User Self Service*, Microsoft Windows, or Kerberos.
+   It also covers the available password policy settings
    and the UCR variables for password quality checks.
 
 :ref:`password-management-windows-client`
-   Describes the Samba domain object
+   It describes the Samba domain object
    for configuring password requirements in a Samba-enabled domain,
    including password length, history, age, and complexity settings.
 
 :ref:`end-user-self-service`
-   Describes the installation, configuration, and features of the *End User Self Service*,
+   It describes the installation, configuration, and features of the *End User Self Service*,
    including contact information management, user self-registration with email verification,
    and user deregistration.
 
