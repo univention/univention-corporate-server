@@ -1,3 +1,10 @@
+univention-demo-configuration (10.4.4) unstable; urgency=medium
+
+  * Fixed udm portal creation to append category correctly
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Wed, 14 Jan 2026 10:51:50 +0100
+
+
 univention-demo-configuration (10.4.3) unstable; urgency=medium
 
   * Murphy's typo
