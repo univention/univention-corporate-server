@@ -1,6 +1,7 @@
 data	usr/share/univention-demo-configuration/
 portal/*.css	usr/share/univention-demo-configuration/portal/
 portal/*.html	var/www/apps/
+portal/*.jpg.b64	usr/share/univention-demo-configuration/portal/
 portal/*.jpg	usr/share/univention-demo-configuration/portal/
 portal/*.svg	usr/share/univention-demo-configuration/portal/
 portal/*.json	usr/lib/univention-portal/config/
