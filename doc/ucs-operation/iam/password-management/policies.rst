@@ -112,7 +112,7 @@ use any of the following methods:
 
       #. Obtain the DN of the user account for the password change.
 
-      #. Open a terminal on the *Primary Directory Node*,
+      #. Open a terminal on the :term:`Primary Directory Node`,
          either locally or remote through SSH.
 
       #. Write the password to a file

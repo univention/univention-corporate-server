@@ -35,7 +35,7 @@ to your UCS domain:
 
 :Endpoint: :samp:`https://{{fqdn-to-ucs-appliance}}/univention/selfservice/`
 
-You can use the following UCR variables
+You can use the following Univention Configuration Registry (UCR) variables
 to activate or deactivate individual features of the *End User Self Service* password management.
 They also activate or deactivate the corresponding entries in the portal.
 Additionally, you can adjust the portal entries manually,
@@ -51,7 +51,7 @@ because they're just normal portal entries.
 
 .. envvar:: umc/self-service/passwordreset/backend/enabled
 
-   Activates the *Password forgotten* functionality in the *Self Service*.
+   Activates the *Password forgotten* functionality in the *End User Self Service*.
 
    You need to provide this setting on the Nubus for UCS node
    that you defined as :program:`Self Service Backend`
@@ -65,7 +65,7 @@ because they're just normal portal entries.
 
 .. envvar:: umc/self-service/protect-account/backend/enabled
 
-   Activates the *Protect account* functionality in the *Self Service*.
+   Activates the *Protect account* functionality in the *End User Self Service*.
 
    You need to provide this setting on the Nubus for UCS node
    that you defined as :program:`Self Service Backend`
@@ -79,7 +79,7 @@ because they're just normal portal entries.
 
 .. envvar:: umc/self-service/service-specific-passwords/backend/enabled
 
-   Activates the service-specific passwords in the *Self Service*.
+   Activates the service-specific passwords in the *End User Self Service*.
 
    Nubus supports only the RADIUS service.
    For more information,
@@ -99,7 +99,7 @@ because they're just normal portal entries.
 Contact information
 ===================
 
-Users can view and update their own contact information through the *Self Service*.
+Users can view and update their own contact information through the *End User Self Service*.
 Administrators control which attributes users can modify and which ones are read-only.
 
 To configure the contact information in the *End User Self Service*,
@@ -168,26 +168,29 @@ use the following UCR variables:
    if they have already signed in to the *Portal*.
 
    The :program:`Self Service` automatically sets the value to ``true``
-   during app installation.
+   during installation.
    ``true`` means that the *End User Self Service* uses an existing Portal session
    and doesn't ask for username and password if the user has already signed in.
 
    :Default value: ``true``
    :Type: boolean
 
-The :envvar:`self-service/ldap_attributes` and :envvar:`self-service/udm_attributes`
-variables must match each other.
-You can fetch the attribute names and their mapping through the command in
-:numref:`nubus-user-management-self-service-contact-info-listing`.
 
-.. code-block:: console
-   :caption: Fetch attribute names and mapping
-   :name: nubus-user-management-self-service-contact-info-listing
+.. important::
 
-   $ python3 -c 'from univention.admin.handlers.users.user import mapping; \
-     print("\n".join( \
-     map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))) \
-     )'
+   The :envvar:`self-service/ldap_attributes` and :envvar:`self-service/udm_attributes`
+   variables must match each other.
+   You can fetch the attribute names and their mapping through the command in
+   :numref:`nubus-user-management-self-service-contact-info-listing`.
+
+   .. code-block:: console
+      :caption: Fetch attribute names and mapping
+      :name: nubus-user-management-self-service-contact-info-listing
+
+      $ python3 -c 'from univention.admin.handlers.users.user import mapping; \
+        print("\n".join( \
+        map("{0[0]:>30s} {0[1][0]:<30s}".format, sorted(mapping._map.items()))) \
+        )'
 
 .. seealso::
 
@@ -221,7 +224,7 @@ with the following Univention Configuration Registry (UCR) variables.
 
 .. important::
 
-   You must set these UCR variables
+   You need to set these UCR variables
    on the Nubus for UCS system that provides :program:`Self Service Backend`
    as defined in the UCR variable :envvar:`self-service/backend-server`,
    because the self-service registration forwards requests to the Self Service backend.
@@ -254,6 +257,8 @@ with the following Univention Configuration Registry (UCR) variables.
    Defines the DN of the container in the directory service
    where the *Self Service* stores the user account objects
    created through the *Create an account* page.
+
+   .. TODO: Clarify. What is the default container for user account objects?
 
    If the variable has no value,
    the *Self Service* uses the configured default container for user account objects.
@@ -300,7 +305,7 @@ in :cite:t:`uv-nubus-manual`.
 
 .. important::
 
-   You must set these UCR variables
+   You need to set these UCR variables
    on the Nubus for UCS system that provides :program:`Self Service Backend`
    as defined in the UCR variable :envvar:`self-service/backend-server`,
    because the self-service registration forwards requests to the Self Service backend.
@@ -370,13 +375,14 @@ Account activation
 When the user clicks the verification link from the email,
 the web browser shows the *Account verification* page of the *Self Service*.
 For information about how to verify the registered user account,
-see :external+uv-nubus-manual:ref:`nubus-user-management-self-service-registration-account-verification`.
+see :external+uv-nubus-manual:ref:`nubus-user-management-self-service-registration-account-verification`
+in :cite:t:`uv-nubus-manual`.
 
 This section provides information about how to configure the account verification.
 
 .. important::
 
-   You must set these UCR variables
+   You need to set these UCR variables
    on the Nubus for UCS system that provides :program:`Self Service Backend`
    as defined in the UCR variable :envvar:`self-service/backend-server`,
    because the self-service registration forwards requests to the Self Service backend.
@@ -504,7 +510,7 @@ Script arguments
    For the possible arguments of the script,
    see :numref:`end-user-self-service-deregistration-script-arguments-listing`.
 
-   .. code-block::
+   .. code-block:: console
       :caption: Available arguments for :file:`delete_deregistered_accounts.py`
       :name: end-user-self-service-deregistration-script-arguments-listing
 
