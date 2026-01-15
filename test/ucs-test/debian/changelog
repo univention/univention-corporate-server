@@ -1,3 +1,9 @@
+ucs-test (12.4.16) unstable; urgency=medium
+
+  * Bug #50253: tests for udm-rest reload endpoint
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Jan 2026 10:15:04 +0100
+
 ucs-test (12.4.15) unstable; urgency=medium
 
   * Bug #50253: tests for udm-rest reload endpoint

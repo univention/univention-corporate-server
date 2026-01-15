@@ -202,6 +202,11 @@ def test_etag_after_modification_of_external_referenced_object(udm, udm_client):
 @pytest.mark.parametrize('suffix', ['', 'ä'])
 def test_create_modify_move_remove(random_string, suffix, ucr, udm_rest):
     if suffix:
+        # the udm_rest fixture (class UDM univention.testing) does a reload,
+        # give it some time before restarting udm-rest, otherwise we will get
+        # a "BrokenPipeError: [Errno 32] Broken pipe" traceback in the reload
+        # while restarting the server
+        time.sleep(1)
         ucr.handler_set(['directory/manager/web/modules/users/user/properties/username/syntax=string'])
         subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest'])
         time.sleep(1)
