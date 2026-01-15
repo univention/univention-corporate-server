@@ -9,3 +9,6 @@ desc: |
  * A new endpoint `/udm/-/reload` has been added to reload UDM extensions.
    It is automatically called whenever such an extension is registered.
 bug: [50253]
+erratum: 333
+announced: 2026-01-15
+support: core
