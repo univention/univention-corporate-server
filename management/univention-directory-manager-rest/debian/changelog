@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.4.5) unstable; urgency=medium
+
+  * Bug #58970: error handling in reload listener handler
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Jan 2026 12:19:08 +0100
+
 univention-directory-manager-rest (12.4.4) unstable; urgency=medium
 
   * Bug #50253: add /udm/-/reload endpoint to reload extended attributes

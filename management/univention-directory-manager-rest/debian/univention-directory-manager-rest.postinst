@@ -17,4 +17,8 @@ create_logfile /var/log/univention/directory-manager-rest.log "root:adm" 640
 
 call_joinscript 22univention-directory-manager-rest.inst
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "12.4.5"; then
+	systemctl try-restart univention-directory-listener
+fi
+
 exit 0

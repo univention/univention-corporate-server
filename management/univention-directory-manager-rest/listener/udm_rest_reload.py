@@ -30,6 +30,8 @@
 
 import requests
 
+import univention.debug as ud
+
 from listener import SetUID, configRegistry
 
 
@@ -47,8 +49,10 @@ def handler(dn, new, old):
     with SetUID():
         with open(secret_file) as secret:
             passwd = secret.read().rstrip('\n')
-
     username = f'{configRegistry["hostname"]}$'
     basic = requests.auth.HTTPBasicAuth(username, passwd)
-    requests.get(uri, headers={'Accept': 'application/json'}, auth=basic)
     # TODO: not sure about this. subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest']) worked for me too
+    try:
+        requests.get(uri, headers={'Accept': 'application/json'}, auth=basic)
+    except requests.exceptions.ConnectionError as exc:
+        ud.debug(ud.LISTENER, ud.ERROR, '%s: Failed to reload UDM-REST service - %s.' % (name, exc))
