@@ -7,4 +7,5 @@ fix: 12.4.4
 desc: |
  This update addresses the following issues:
  * A new endpoint `/udm/-/reload` has been added to reload UDM extensions.
+   It is automatically called whenever such an extension is registered.
 bug: [50253]
