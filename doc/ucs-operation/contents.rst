@@ -1,4 +1,4 @@
-.. SPDX-FileCopyrightText: 2024 - 2025 Univention GmbH
+.. SPDX-FileCopyrightText: 2024 - 2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 ##############################################
@@ -13,6 +13,7 @@ Univention Corporate Server - Operation Manual
    :numbered:
 
    index
+   deployment/index
    management-interface/index
    iam/index
 
