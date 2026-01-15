@@ -1,10 +1,13 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
 
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-14 17:45+0000\n"
-"PO-Revision-Date: 2026-01-15 09:58+0100\n"
+"PO-Revision-Date: 2026-01-15 11:44+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
