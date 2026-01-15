@@ -1,3 +1,10 @@
+univention-demo-configuration (10.4.8) unstable; urgency=medium
+
+  * Changed debhelper-compat from '13' to '12' because of dependency issues
+    when packaging for UCS 5.0.0
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Thu, 15 Jan 2026 12:40:10 +0100
+
 univention-demo-configuration (10.4.7) unstable; urgency=medium
 
   * Removed *.png and *.b64 from deb .install, because they must exist for packaging
