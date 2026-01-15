@@ -251,7 +251,11 @@ _upgrade_to_latest () {
 	declare -a upgrade_opts=("--noninteractive" "--ignoreterm" "--ignoressh")
 	while true
 	do
-		[ "true" = "$DISABLE_APP_UPDATES" ] && upgrade_opts+=("--disable-app-updates")
+		if [ "true" = "$DISABLE_APP_UPDATES" ]; then
+			upgrade_opts+=("--disable-app-updates")
+		elif [[ -n "$(ucr get tests/domainadmin/username)" && -n "$(ucr get tests/domainadmin/pwdfile)" ]]; then
+			upgrade_opts+=("--username" "$(ucr get tests/domainadmin/username)" "--pwdfile" "$(ucr get tests/domainadmin/pwdfile)")
+		fi
 		univention-upgrade "${upgrade_opts[@]}" "$@"
 		rv="$?"
 		case "$rv" in
