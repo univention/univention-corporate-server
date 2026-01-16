@@ -1,3 +1,10 @@
+univention-demo-configuration (8.0.7) unstable; urgency=medium
+
+  * Summit 2026 Portal tile
+  * Removed *.png and *.b64 from deb .install, because they must exist for packaging
+
+ -- Jaap Braasch <jaap.braasch@univention.de>  Thu, 15 Jan 2026 12:40:10 +0100
+
 univention-demo-configuration (8.0.6-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
