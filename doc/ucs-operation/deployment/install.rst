@@ -1,49 +1,10 @@
 .. SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _deployment-installation:
-
-Installation methods
-====================
-
-This page provides comprehensive installation procedures for Nubus for UCS across multiple deployment scenarios.
-As a technical administrator, you find detailed instructions for both traditional and cloud-based installation methods,
-along with platform-specific considerations.
-
-Required knowledge and skills
-   * Basic understanding of system administration and networking, including IP addressing, DNS, and DHCP.
-   * Familiarity with partitioning concepts and file system management.
-   * Ability to configure domain settings and directory services.
-   * Experience with virtualization platforms for relevant deployment scenarios.
-   * Understanding of Active Directory integration if joining existing Windows domains.
-
-What you learn
-   * Step-by-step interactive installation through DVD for physical servers
-     and DVD image for virtual machines.
-
-   * Configuration options for BIOS and UEFI systems, including Secure Boot.
-
-   * Network setup procedures for both automatic DHCP and manual IP configuration.
-
-   * Hard drive partitioning strategies including LVM and encryption options.
-
-   * Domain mode selection and system role configuration.
-
-   * Alternative installation methods: text-mode, cloud-based Amazon EC2, and VMware-specific deployment.
-
-   * Troubleshooting common installation issues.
-
-Installation overview
-   * Nubus for UCS divides the installation process into four main deployment paths,
-     each suited to different infrastructure needs.
-
-   * Choose the method that best matches your deployment environment,
-     then follow the relevant subsections for detailed step-by-step guidance.
-
 .. _deployment-installation-physical:
 
 Physical and virtual machine installation
------------------------------------------
+=========================================
 
 The following sections describe how to install Nubus for Univention Corporate Server (UCS).
 You install Nubus for UCS from DVD on physical hardware,
@@ -96,7 +57,7 @@ You can use the installation interfaces with a keyboard and with mouse.
 .. _deployment-installation-physical-install-mode:
 
 Select the installation mode
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 After booting the system from the installation medium,
 the screen shows the boot prompt in
@@ -155,7 +116,7 @@ or for the selection of software for installation.
 .. _deployment-installation-physical-language:
 
 Select the language
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 In the first step, you select the system language that you want to use,
 see :numref:`deployment-installation-physical-language-figure`.
@@ -178,7 +139,7 @@ The installer supports the languages English and German.
 .. _deployment-installation-physical-location:
 
 Select the location
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 After the language selection,
 the installer shows a list of locations related to the selected language,
@@ -198,7 +159,7 @@ select ``other`` at the bottom to see an extensive list.
 .. _deployment-installation-physical-keyboard-layout:
 
 Select the keyboard layout
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 You can select the keyboard layout independently of the system language,
 see :numref:`deployment-installation-physical-keyboard-layout-figure`.
@@ -215,7 +176,7 @@ Otherwise, it may cause operating problems.
 .. _deployment-installation-physical-network-configuration:
 
 Set up network configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 Initially, the Univention Installer attempts to configure the network interfaces automatically,
 see :numref:`deployment-installation-physical-network-configuration-dhcp-figure`.
@@ -291,7 +252,7 @@ They depend on the intended subsequent use of the Nubus for UCS system.
 .. _deployment-installation-physical-password:
 
 Define the root password
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Defining a password for the ``root`` user is necessary to sign in to the installed system,
 see :numref:`deployment-installation-physical-password-figure`.
@@ -728,7 +689,7 @@ in :cite:t:`uv-nubus-manual`.
 .. _deployment-installation-physical-open-portal:
 
 Open the portal
-~~~~~~~~~~~~~~~
+---------------
 
 To open the *Portal* in Nubus for UCS,
 choose any UCS system in your Nubus for UCS domain
@@ -740,72 +701,10 @@ you can use the IP address.
 .. _deployment-installation-physical-license-import:
 
 License import after installation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 
 If you installed the system as the first system in the Nubus for UCS domain
 in the UCS Primary Directory Node role,
 you can import the license for the domain,
 see :external+uv-ucs-manual:ref:`central-license`
 in :cite:t:`ucs-manual`.
-
-.. _deployment-installation-cloud:
-
-Cloud deployment
-----------------
-
-Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 cloud for Nubus for UCS.
-You can use this generic image for all Nubus for UCS system roles
-to derive an individual instance
-that you can configure through management modules regarding topics such as domain name and software selection.
-
-For information about the setup process of a Nubus for UCS instance based on Amazon EC2,
-see :uv:help:`Amazon EC2 Quickstart <21833>`.
-
-.. _deployment-installation-vmware:
-
-VMware-specific considerations
-------------------------------
-
-If you install Nubus for UCS as a guest in VMware,
-select the option :menuselection:`Linux --> Debian` as the *Guest operating system*,
-because Nubus for UCS bases on Debian GNU/Linux.
-
-The Linux kernel in Nubus for UCS includes all the support drivers necessary for operation in VMware,
-such as :file:`vmw_balloon`, :file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`, and :file:`vmxnet3`.
-
-Nubus for UCS delivers the :program:`Open VM Tools`.
-You can install them through the :program:`open-vm-tools` package.
-The package is optional.
-However, you need it, for example,
-to allow time synchronization between the virtualization server and the guest system.
-
-.. _deployment-installation-text-mode:
-
-Text mode installation
-----------------------
-
-On systems that show problems with the graphical Univention installer,
-you can start the installation in text mode.
-For text mode, select :ref:`deployment-installation-physical-install-mode-text-mode`
-in the installation boot prompt.
-
-During installation in text mode
-the installer shows the same information and asks for the same settings.
-After hard drive partitioning, the system is ready for the first boot
-and the installer restarts the system.
-
-After restart,
-you can resume the configuration with the system setup in a web browser.
-Open the URL :samp:`https://{SERVER-IP-ADDRESS}` in your web browser.
-System setup requires authentication with the user ``root``.
-It then asks for location and network setting.
-You continue with the same steps as the graphical installer,
-see :ref:`deployment-installation-physical-domain-settings`.
-
-.. _deployment-installation-troubleshooting:
-
-Troubleshooting for installation problems
------------------------------------------
-
-For information about possible installation problems,
-see `Univention Knowledge base <https://help.univention.com/c/knowledge-base/supported/48>`_ in the *Installation* section.
