@@ -36,7 +36,7 @@ univention-directory-manager portals/category create \
 	--set name=announcements \
 	--append displayName='"en_US" "Announcements"' \
 	--append displayName='"de_DE" "Ankündigungen"' \
-	--append displayName='"fr_FR" "Annonces"' \
+	--append displayName='"fr_FR" "Annonces"'
 
 univention-directory-manager portals/portal remove --ignore_not_exists \
 	--dn "cn=demo,cn=portal,cn=portals,cn=univention,$ldap_base"
