@@ -33,7 +33,7 @@ and installing Nubus for UCS there.
 Besides operating Nubus for UCS on hardware or in a virtualization solution,
 you can also install it on the Amazon EC2 cloud using an AMI image.
 For more information,
-see :ref:`installation-amazon-ec2`.
+see :ref:`deployment-installation-cloud`.
 
 You can use the installation interfaces with a keyboard and with mouse.
 
@@ -76,7 +76,7 @@ Start with default settings
    starts the interactive, graphic installation.
    During the installation,
    the system requests a number of parameters such as the network settings,
-   hard drive partitions and domain settings for the UCS system to be installed and then performs the installation and the configuration.
+   hard drive partitions and domain settings and then runs installation and configuration.
 
 .. _deployment-installation-physical-install-mode-manual-network:
 
@@ -94,6 +94,8 @@ Advanced options
    Start in text mode
       runs an interactive standard installation in text mode.
       Use this option on systems which have problems with the graphic version of the installer.
+      For information,
+      see :ref:`deployment-installation-text-mode`.
 
    Rescue mode
       serves to recover systems that are unable to boot.
@@ -111,7 +113,7 @@ the boot loader runs the kernel from the installation medium.
 The installation consists of separate modules
 that the installer loads subsequently from the installation medium, if necessary.
 For example, the installer has modules for network configuration
-or for the selection of software for installation.
+or for the selection of software.
 
 .. _deployment-installation-physical-language:
 
@@ -146,8 +148,8 @@ the installer shows a list of locations related to the selected language,
 see :numref:`deployment-installation-physical-location-figure`.
 Select a suitable location from the list.
 Nubus for UCS uses the selected location to configure the time zone and the correct language variant.
-If the location you want to select isn't in the list,
-select ``other`` at the bottom to see an extensive list.
+If the needed location isn't in the list,
+select :guilabel:`other` at the bottom to see an extensive list.
 
 .. _deployment-installation-physical-location-figure:
 
@@ -178,7 +180,7 @@ Otherwise, it may cause operating problems.
 Set up network configuration
 ----------------------------
 
-Initially, the Univention Installer attempts to configure the network interfaces automatically,
+Initially, the *Univention Installer* attempts to configure the network interfaces automatically,
 see :numref:`deployment-installation-physical-network-configuration-dhcp-figure`.
 You can deactivate the automatic network interface configuration
 by selecting :ref:`deployment-installation-physical-install-mode-manual-network`
@@ -198,7 +200,7 @@ If again successful, the installer skips the manual network configuration.
 
 If no DHCP server is present in the local network
 or your network requires a static configuration of the network interface,
-use :guilabel:`Cancel`.
+click :guilabel:`Cancel`.
 The installer then offers to repeat the automatic configuration
 or to configure the interface manually,
 see :numref:`deployment-installation-physical-network-configuration-static-figure`.
@@ -216,14 +218,21 @@ see :numref:`deployment-installation-physical-network-configuration-static-figur
 
    Select the manual network configuration
 
-In the manual network configuration you can specify either a static IPv4 or an IPv6 address for the system,
-see :numref:`deployment-installation-physical-network-configuration-ip-figure`.
-IPv4 addresses have a 32-bit length
-and you write them in four blocks in decimal form, for example ``192.0.2.10``.
-IPv6 addresses are four times as long and you typically write them in hexadecimal form,
-for example ``2001:db8:fe29:de27:0000:0000:0000:0000``.
-In addition to a static IP address,
-the installer requests values for network mask, gateway, and DNS servers.
+Manual network address configuration
+   In the manual network configuration you can specify either a static IPv4 or an IPv6 address for the system,
+   see :numref:`deployment-installation-physical-network-configuration-ip-figure`.
+
+   IPv4 addresses
+      IPv4 addresses have a 32-bit length
+      and you write them in four blocks in decimal form, for example ``192.0.2.10``.
+
+   IPv6 addresses
+      IPv6 addresses are four times as long and you typically write them in hexadecimal form,
+      for example ``2001:db8:fe29:de27:0000:0000:0000:0000``.
+
+   Other network address parameters
+      In addition to a static IP address,
+      the installer requests values for network mask, gateway, and DNS servers.
 
 .. _deployment-installation-physical-network-configuration-ip-figure:
 
@@ -232,22 +241,26 @@ the installer requests values for network mask, gateway, and DNS servers.
 
    Specify an IP address
 
-Consider the following points when you specify a DNS server manually.
-They depend on the intended subsequent use of the Nubus for UCS system.
+Manual DNS server setting configuration
+   Consider the following points when you specify a DNS server manually.
+   They depend on the intended subsequent use of the Nubus for UCS system.
 
-* When you install the first Nubus for UCS system and create a Nubus for UCS domain,
-  use the IP address of the local router,
-  if it provides the DNS service,
-  or the DNS server of the internet provider as DNS server address.
+   First Nubus for UCS system
+      When you install the first Nubus for UCS system and create a Nubus for UCS domain,
+      use the IP address of the local router,
+      if it provides the DNS service,
+      or the DNS server of the internet provider as DNS server address.
 
-* For the installation of every additional Nubus for UCS system,
-  use the IP address of a :term:`UCS Primary Directory Node` as the DNS server.
-  This is essential for the automatic detection of the UCS Primary Directory Node to work properly.
-  In case of doubt, use the IP address of the UCS Primary Directory Node system.
+   Additional Nubus for UCS system
+      For the installation of every additional Nubus for UCS system,
+      use the IP address of a :term:`UCS Primary Directory Node` as the DNS server.
+      This is essential for the automatic detection of the UCS Primary Directory Node to work properly.
+      In case of doubt, use the IP address of the UCS Primary Directory Node system.
 
-* If the Nubus for UCS system is to join a Windows Active Directory domain during the installation,
-  use the IP address of an Active Directory domain controller system as the DNS server.
-  This is essential for the automatic detection of the Windows Active Directory domain controller to work properly.
+   Nubus for UCS in Windows Active Directory domain
+      If the Nubus for UCS system is to join a Windows Active Directory domain during the installation,
+      use the IP address of an Active Directory domain controller system as the DNS server.
+      This is essential for the automatic detection of the Windows Active Directory domain controller to work properly.
 
 .. _deployment-installation-physical-password:
 
@@ -274,17 +287,18 @@ For security reasons the password must contain at least eight characters.
 Partition the hard drive
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Univention Installer supports to partition hard drives
+The *Univention Installer* supports to partition hard drives
 and create different file systems, such as ``ext4`` and ``XFS``.
 In addition, you can also configure different partition strategies,
 such as the logical volume manager (LVM), RAID, or partitions encrypted with LUKS.
 
-The Univention Installer automatically selects a suitable partition model,
-MBR or GPT, depending on the size of the selected hard drive.
+The *Univention Installer* automatically selects a suitable partition layout,
+Master Boot Record (MBR) or GUID Partition Table (GPT),
+depending on the size of the selected hard drive.
 On systems with the Unified Extensible Firmware Interface (UEFI),
-the installer automatically uses the GUID Partition Table (GPT).
+the installer automatically uses GPT.
 
-The Univention Installer offers guided partitioning to simplify the installation.
+The *Univention Installer* offers guided partitioning to simplify the installation.
 In the guided installation,
 the installer applies certain standard schemes with respect to the partitioning and formatting to the selected hard drive.
 In addition, you can manually partition the hard drive yourself.
@@ -295,7 +309,7 @@ see :numref:`deployment-installation-physical-partitioning-guided-figure`:
 Guided - Use entire disk
    The installer creates an individual partition for each file system.
    It doesn't use abstraction layers, such as LVM.
-   During the following step, it assigns the number of file systems or partitions.
+   It assigns the number of file systems or partitions.
    The size of the respective hard drive restricts the sizes of the partitions.
 
 .. _deployment-installation-physical-partitioning-lvm:
@@ -366,6 +380,9 @@ After software installation,
 the installer makes the system ready for boot through installation of the GRUB boot loader,
 see :numref:`deployment-installation-physical-finish-reboot-figure`.
 
+A restart into the freshly installed system follows subsequently
+to complete the system configuration.
+
 .. _deployment-installation-physical-finish-reboot-figure:
 
 .. figure:: /images/installer-reboot.*
@@ -373,18 +390,16 @@ see :numref:`deployment-installation-physical-finish-reboot-figure`.
 
    Finish the installation
 
-A restart into the freshly installed system follows subsequently
-to complete the system configuration.
-
 .. _deployment-installation-physical-domain-settings:
 
 Set up the domain
 ~~~~~~~~~~~~~~~~~
 
 You start the final configuration step of the Nubus for UCS system by selecting a domain mode.
-The following domain modes are available,
-see :numref:`deployment-installation-physical-domain-settings-role-figure`.
-They influence the following configuration steps:
+:numref:`deployment-installation-physical-domain-settings-role-figure`
+shows the domain modes.
+They influence the next configuration steps.
+The following domain modes are available:
 
 .. _deployment-installation-physical-domain-settings-new:
 
@@ -402,9 +417,9 @@ Create a new UCS domain
 .. _deployment-installation-physical-domain-settings-join-ad:
 
 Join into an existing Active Directory domain
-   This mode operates Nubus for UCS as a member of an Active Directory domain.
-   The configuration is suitable for expanding an Active Directory domain with applications available on the Nubus platform.
-   Apps installed on Nubus for UCS platform are then available for the users of the Active Directory domain to use.
+   This mode operates Nubus for UCS as a member of a Windows Active Directory domain.
+   The configuration is suitable for expanding an Active Directory domain with applications available on Nubus for UCS.
+   Apps installed on Nubus for UCS are then available for the users of the Active Directory domain to use.
    The subsequent steps request information for joining the Active Directory domain
    and configure Nubus for UCS accordingly.
    For more information, see
@@ -447,16 +462,19 @@ the hostname must adhere to the following naming convention:
 
 * Start and end with an alphanumeric character and can contain a hyphen (``-``) in between.
 
-The naming convention has the following regular expression:
+The naming convention has the regular expression in
+:numref:`deployment-installation-physical-domain-settings-naming-listing`.
 
 .. code-block::
+   :caption: Regular expression for the naming convention for the hostname
+   :name: deployment-installation-physical-domain-settings-naming-listing
 
    ^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$
 
 .. _deployment-installation-physical-domain-settings-new-domain:
 
-*Create a new UCS domain* mode
-""""""""""""""""""""""""""""""
+Mode: Create a new UCS domain
+"""""""""""""""""""""""""""""
 
 .. index::
    single: hostname; Create new UCS domain
@@ -469,14 +487,17 @@ see :numref:`deployment-installation-physical-domain-settings-new-domain-figure`
 
 Organization name
    You can *optionally* specify an organization name.
-   The system setup uses the organization name in the second step
-   to automatically generate a domain name and the LDAP base.
+   The system setup uses the organization name
+   to automatically generate a
+   :ref:`domain name <deployment-installation-physical-domain-settings-new-domain-fqdn>`
+   and the :ref:`LDAP base <deployment-installation-physical-domain-settings-new-domain-ldap-base>`.
 
 .. _deployment-installation-physical-domain-settings-new-domain-email:
 
 Email address
    If you provide a valid email address,
-   system setup uses it to activate a personalized license.
+   system setup activates a personalized license
+   and sends it to the address.
    Univention App Center requires the license to install apps.
    Univention automatically generates the license
    and immediately sends it to the specified email address.
@@ -499,13 +520,13 @@ Fully qualified domain name
 
    .. important::
 
-      Recommendation: don't use publicly available DNS domains for the DNS domain,
-      because this can result name resolution problems.
+      Recommendation: don't use publicly available DNS domains for your DNS domain,
+      as this can result in name resolution problems.
 
 .. _deployment-installation-physical-domain-settings-new-domain-ldap-base:
 
 LDAP base
-   You need to define an LDAP base needs for the initialization of the directory service.
+   You must specify an LDAP base to initialize the directory service.
    System setup automatically creates a suggestion from the
    :ref:`deployment-installation-physical-domain-settings-new-domain-fqdn`.
    You can usually accept the suggestion without changes.
@@ -519,8 +540,8 @@ LDAP base
 
 .. _deployment-installation-physical-domain-settings-ad-member:
 
-*Join an existing Active Directory domain* mode
-"""""""""""""""""""""""""""""""""""""""""""""""
+Mode: Join an existing Active Directory domain
+""""""""""""""""""""""""""""""""""""""""""""""
 
 .. index::
    single: hostname; Join existing Active Directory domain
@@ -538,14 +559,19 @@ The user account must have the permission to join new systems in the Active Dire
 
 In addition, you need to define a hostname for the Nubus for UCS system.
 You can adopt the suggested hostname or provide a different one.
-For the naming convention of the hostname, refer to :ref:`installation-domain-hostname-naming`.
+For the naming convention of the hostname,
+see :ref:`deployment-installation-physical-domain-settings-naming`.
 
 System setup automatically derives the system's domain name from the domain DNS server.
-In some scenarios, for example, it may be necessary to use a specific fully qualified domain name.
+However, in some scenarios such as hosting a public mail server,
+you may need to use a different fully qualified domain name.
 The Nubus for UCS system joins the Active Directory domain with the specified hostname.
-After the configuration is complete, you **can't** change the domain.
 
-In a Nubus for UCS domain, you can install systems in different *system roles*.
+.. important::
+
+   After the configuration is complete, you **can't** change the domain.
+
+In a Nubus for UCS domain, you can install systems in different system roles.
 The first Nubus for UCS system that joins an Active Directory domain,
 automatically has the :term:`UCS Primary Directory Node` system role.
 If you select this mode during the installation of addition Nubus for UCS system,
@@ -562,8 +588,8 @@ see :ref:`deployment-installation-physical-domain-settings-join-ucs`.
 
 .. _deployment-installation-physical-domain-settings-join-ucs:
 
-*Join an existing UCS domain* mode
-"""""""""""""""""""""""""""""""""""""""""
+Mode: Join an existing UCS domain
+"""""""""""""""""""""""""""""""""
 
 .. index::
    single: hostname; Join existing UCS domain
@@ -573,10 +599,12 @@ you need to process the following steps:
 
 #. Select the system role.
 
-   In a Nubus for UCS domain, you can install systems in different *system roles*.
+   In a Nubus for UCS domain, you can install systems in different system roles.
    The first system in a Nubus for UCS domain always has the :term:`UCS Primary Directory Node` system role.
    Additional Nubus for UCS systems can join the domain at a later point in time.
    You can assign them one of the following system roles.
+
+   .. TODO: Make system roles more concise and use the glossary to collect information there.
 
    Backup Directory Node
       The :term:`Backup Directory Node` is the fallback system for the UCS Primary Directory Node.
@@ -628,8 +656,10 @@ you need to process the following steps:
    see :ref:`deployment-installation-physical-domain-settings-naming`.
    The system setup automatically derives the domain name of the computer from the domain DNS server.
    In some scenarios, such as a public mail server, it may be necessary to use a certain fully qualified domain name.
-   After you completed the configuration,
-   you can't change the domain name.
+
+   .. important::
+
+      After the configuration is complete, you **can't** change the domain.
 
 .. _deployment-installation-physical-domain-settings-join-ucs-figure:
 
@@ -648,6 +678,8 @@ see :numref:`deployment-installation-physical-confirm-settings-summary-figure`.
 
 Update system after installation
    The *Update system after installation* option allows the automatic installation of available errata updates.
+
+   .. TODO: Add glossary entry for errata updates.
 
    In addition,
    the :term:`UCS Primary Directory Node` installs all available patch level updates and errata updates.
@@ -671,7 +703,7 @@ It saves the installation protocol in the following files:
 * :file:`/var/log/univention/management-console-module-setup.log`
 
 After you confirm the completion of the system setup,
-your Nubus for UCS system is ready for the first bull boot procedure.
+your Nubus for UCS system is ready for the first full boot procedure.
 You can restart it.
 The system then boots from the hard drive.
 After the boot procedure completes,
@@ -704,7 +736,7 @@ License import after installation
 ---------------------------------
 
 If you installed the system as the first system in the Nubus for UCS domain
-in the UCS Primary Directory Node role,
+in the :term:`UCS Primary Directory Node` role,
 you can import the license for the domain,
 see :external+uv-ucs-manual:ref:`central-license`
 in :cite:t:`ucs-manual`.

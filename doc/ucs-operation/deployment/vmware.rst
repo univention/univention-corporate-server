@@ -15,6 +15,6 @@ such as :file:`vmw_balloon`, :file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`
 
 Nubus for UCS delivers the :program:`Open VM Tools`.
 You can install them through the :program:`open-vm-tools` package.
-The package is optional.
-However, you need it, for example,
-to allow time synchronization between the virtualization server and the guest system.
+The package is optional,
+but necessary for features such as automatic time synchronization
+between the virtualization server and the guest system.
