@@ -3,7 +3,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2017-2024 Univention GmbH
+# Copyright 2017-2026 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -56,6 +56,15 @@ univention-directory-manager portals/category create \
 	--append displayName='"en_US" "Administration"' \
 	--append displayName='"de_DE" "Verwaltung"' \
 	--append displayName='"fr_FR" "Administration"'
+
+univention-directory-manager portals/category remove --ignore_not_exists \
+	--dn "cn=announcements,cn=category,cn=portals,cn=univention,$ldap_base"
+univention-directory-manager portals/category create \
+	--position "cn=category,cn=portals,cn=univention,$ldap_base" \
+	--set name=announcements \
+	--append displayName='"en_US" "Announcements"' \
+	--append displayName='"de_DE" "Ankündigungen"' \
+	--append displayName='"fr_FR" "Annonces"'
 
 univention-directory-manager portals/portal remove --ignore_not_exists \
 	--dn "cn=demo,cn=portal,cn=portals,cn=univention,$ldap_base"
@@ -177,6 +186,27 @@ create_admin_entry () {
 		--dn "cn=demo-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
 		--append entries="$dn"
 }
+
+univention-directory-manager portals/entry remove --ignore_not_exists \
+    	--dn "cn=summit_2026,cn=entry,cn=portals,cn=univention,$ldap_base"
+univention-directory-manager portals/entry create \
+	--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
+	--set name=summit_2026 \
+	--append displayName='"en_US" "Summit 2026"' \
+	--append displayName='"de_DE" "Summit 2026"' \
+	--append displayName='"fr_FR" "Summit 2026"' \
+	--append description='"en_US" "Univention Summit 2026 - Let&apos;s Connect - January 28 &amp; 29 in Bremen"' \
+	--append description='"de_DE" "Univention Summit 2026 - Let&apos;s Connect - 28. &amp; 29. Januar in Bremen"' \
+	--append description='"fr_FR" "Univention Summit 2026 - Let&apos;s Connecter - 28 &amp; 29 Janvier à Brême"' \
+	--append link='"en_US" "https://univention-summit.com/"' \
+        --append link='"de_DE" "https://univention-summit.de/"' \
+        --append link='"fr_FR" "https://univention-summit.com/"' \
+	--set linkTarget=newwindow \
+	--set icon="$(base64 "$DIR/summit_icon.jpg")"
+
+univention-directory-manager portals/category modify \
+	--dn "cn=announcements,cn=category,cn=portals,cn=univention,$ldap_base" \
+	--append entries="cn=summit_2026,cn=entry,cn=portals,cn=univention,$ldap_base"
 
 # create_admin_entry \
 # 	sdb \
