@@ -7,7 +7,8 @@
 System deployment
 *****************
 
-This chapter provides comprehensive installation procedures for Nubus for UCS across multiple deployment scenarios.
+This chapter describes installation procedures for Nubus for UCS across various deployment
+environments.
 As a technical administrator, you find detailed instructions for both traditional and cloud-based installation methods,
 along with platform-specific considerations.
 
@@ -39,7 +40,7 @@ Installation overview
      each suited to different infrastructure needs.
 
    * Choose the method that best matches your deployment environment,
-     then follow the relevant subsections for detailed step-by-step guidance.
+     then follow the relevant subsections for step-by-step guidance.
 
 
 .. toctree::
