@@ -1,3 +1,9 @@
+univention-demo-configuration (10.4.8-1) unstable; urgency=medium
+
+  * removed wrong eol-\
+
+ -- Nico Stöckigt <stoeckigt@univention.de>  Thu, 16 Jan 2026 16:26:12 +0100
+
 univention-demo-configuration (10.4.8) unstable; urgency=medium
 
   * Changed debhelper-compat from '13' to '12' because of dependency issues
