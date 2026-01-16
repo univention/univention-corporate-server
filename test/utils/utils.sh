@@ -702,6 +702,9 @@ install_ucsschool () {
 	# Bug #54228: run tests without stopping the notifier during imports, to detect problems
 	ucr set --force ucsschool/stop_notifier=no
 	activate_ucsschool_repositories || rv=$?
+	local admin_password="${1:-univention}"
+
+	printf '%s' "$admin_password" >/tmp/univention
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
 		appcenter.test)
