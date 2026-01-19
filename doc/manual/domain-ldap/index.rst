@@ -35,6 +35,11 @@ Replication of the directory data within a UCS domain occurs via the Univention
 Directory Listener / Notifier mechanism. Further information can be found in
 :ref:`domain-listener-notifier`.
 
+UCS additionally offers a provisioning service on the level of UDM objects,
+which offers an API for apps to subscribe to information about changes
+of the IAM data in the domain.
+For more information, see :ref:`nubus-provisioning-service`.
+
 Kerberos is an authentication framework the purpose of which is to permit secure
 identification in the potentially insecure connections of decentralized
 networks. Every UCS domain operates its own Kerberos trust context (realm).
@@ -47,6 +52,7 @@ Further information can be found in :ref:`domain-kerberos`.
    system-roles
    ldap-directory
    listener-notifier
+   nubus-provisioning-service
    ssl
    kerberos
    password-hashes
