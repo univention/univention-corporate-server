@@ -88,6 +88,7 @@ extensions = [
     "sphinxcontrib.bibtex",
     "sphinx.ext.intersphinx",
     "sphinx_inline_tabs",
+    "sphinx_design",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
@@ -96,6 +97,8 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-dev-ref": ref("developer-reference"),
     "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
+    "uv-nubus-kubernetes-customization": ('https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/', None),
+    "uv-nubus-kubernetes-architecture": ('https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/', None),
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
     "uv-ext-windows": ref("ext-windows"),
 }
