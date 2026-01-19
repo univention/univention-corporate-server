@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.7-2) unstable; urgency=medium
+
+  * Added other image formats for summit tile
+
+ -- Nico Stöckigt <stoeckigt@univention.de>  Thu, 19 Jan 2026 17:56:26 +0100
+
 univention-demo-configuration (8.0.7-1) unstable; urgency=medium
 
   * version bump for repo-ng cleanup
