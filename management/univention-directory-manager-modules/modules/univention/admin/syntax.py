@@ -70,7 +70,8 @@ def import_syntax_files() -> None:
             for fn in syntax_files:
                 try:
                     with open(fn, 'rb') as fd:
-                        exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
+                        byte_code = compile(fd.read(), fn, "exec")
+                        exec(byte_code, sys.modules[__name__].__dict__)  # noqa: S102
                     log.debug('importing syntax', syntax=fn)
                 except Exception:
                     log.exception('importing syntax failed', syntax=fn)

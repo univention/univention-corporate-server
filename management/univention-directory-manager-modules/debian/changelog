@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.5.4) unstable; urgency=medium
+
+  * Bug #59132: on errors show path of custom hooks/syntax
+    instead of <string>
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 19 Mar 2026 10:56:37 +0100
+
 univention-directory-manager-modules (17.5.3) unstable; urgency=medium
 
   * Bug #58985: fix wrong policy structure for specific udm API version

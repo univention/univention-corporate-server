@@ -43,7 +43,8 @@ def import_hook_files() -> None:
                             'simpleHook': simpleHook,
                             'AttributeHook': AttributeHook,
                         }
-                        exec(fd.read(), env)  # noqa: S102
+                        byte_code = compile(fd.read(), fn, "exec")
+                        exec(byte_code, env)  # noqa: S102
                         sys.modules[__name__].__dict__.update(
                             dict(
                                 inspect.getmembers(

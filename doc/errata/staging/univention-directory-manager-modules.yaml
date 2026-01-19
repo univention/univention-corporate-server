@@ -3,7 +3,7 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-directory-manager-modules
-fix: 17.5.3
+fix: 17.5.4
 desc: |
  This update addresses the following issue:
  * Fix incorrect handling of policy structures when using multiple UDM API
@@ -12,4 +12,6 @@ desc: |
    instances to interpret the policies attribute according to the API version
    of the first instance. This could lead to invalid policy data structures
    and inconsistent behavior when mixing API versions.
-bug: [58985]
+ * In case of errors in a custom hook or syntax, the path of the file is now
+   logged, instead of the placeholder "<string>".
+bug: [58985, 59132]
