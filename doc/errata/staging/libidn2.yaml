@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libidn2
+fix: 2.0.5-1+deb10u2
+desc: |
+ This update addresses the following issue:
+ * CVSS score unknown. (CVE-2019-12290)
+bug: [58977]
+cve:
+- CVE-2019-12290
