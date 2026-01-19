@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: gnupg2
+fix: 2.2.12-1+deb10u3
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N).
+   (CVE-2025-68973)
+bug: [58979]
+cve:
+- CVE-2025-68973
