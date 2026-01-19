@@ -1,5 +1,11 @@
 univention-demo-configuration (8.0.7) unstable; urgency=medium
 
+  * version bump for repo-ng cleanup
+
+ -- Nico Stöckigt <stoeckigt@univention.de>  Thu, 19 Jan 2026 17:33:12 +0100
+
+univention-demo-configuration (8.0.7) unstable; urgency=medium
+
   * Summit 2026 Portal tile
   * Removed *.png and *.b64 from deb .install, because they must exist for packaging
 
