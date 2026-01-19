@@ -7,4 +7,6 @@ portal/*.ldif	usr/share/univention-demo-configuration/portal/
 portal/*.py	usr/lib/python3/dist-packages/univention/portal/extensions/
 portal/*.sh	usr/share/univention-demo-configuration/portal/
 portal/*.svg	usr/share/univention-demo-configuration/portal/
+portal/*.png	usr/share/univention-demo-configuration/portal/
+portal/*.jpg	usr/share/univention-demo-configuration/portal/
 usr
