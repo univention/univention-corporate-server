@@ -1,3 +1,9 @@
+univention-demo-configuration (8.0.7-3) unstable; urgency=medium
+
+  * forgot to add category to demo-portal
+
+ -- Nico Stöckigt <stoeckigt@univention.de>  Thu, 19 Jan 2026 18:02:43 +0100
+
 univention-demo-configuration (8.0.7-2) unstable; urgency=medium
 
   * Added other image formats for summit tile
