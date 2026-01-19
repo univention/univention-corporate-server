@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gnupg2
+fix: 2.1.18-8~deb9u6
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N).
+   (CVE-2025-68973)
+bug: [58981]
+cve:
+- CVE-2025-68973
