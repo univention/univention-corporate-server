@@ -76,6 +76,7 @@ univention-directory-manager portals/portal create \
 	--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
 	--append categories="cn=demo-service,cn=category,cn=portals,cn=univention,$ldap_base" \
 	--append categories="cn=demo-admin,cn=category,cn=portals,cn=univention,$ldap_base" \
+	--append categories="cn=announcements,cn=category,cn=portals,cn=univention,$ldap_base" \
 	--append displayName='"en_US" "UCS"' \
 	--set showUmc=TRUE
 
