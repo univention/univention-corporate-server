@@ -201,6 +201,10 @@ refresh_collations() {
   done <<< "$(su postgres -c 'psql --tuples-only --no-align --command "SELECT datname,oid FROM pg_database WHERE datallowconn IS true;"' 2>&3)"
 }
 
+# Bug #58934: Restart Docker service to use the new default log-driver, journald
+echo "Restarting Docker service..." >&3
+systemctl restart docker >&3 2>&3
+
 POSTGRES_PACKAGE_NAME=univention-postgresql-15
 if [ "$(LANG=c dpkg-query -W -f '${db:Status-Status}' $POSTGRES_PACKAGE_NAME 2>&3)" = 'installed' ]; then
   refresh_collations
