@@ -1,0 +1,43 @@
+product: ucs
+release: "5.2"
+version: [3, 4]
+scope: ucs_5.2-0-errata5.2-4
+src: firefox-esr
+fix: 140.7.0esr-1~deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-0884, CVE-2026-0879)
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2026-0882, CVE-2026-0880)
+ * CVSS score 8.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N).
+   (CVE-2026-0877)
+ * CVSS score 8.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-0891)
+ * CVSS score 8.0 (CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:N).
+   (CVE-2026-0878)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+   (CVE-2025-14327)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L).
+   (CVE-2026-0885)
+ * CVSS score 5.4 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:L).
+   (CVE-2026-0890)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2026-0886, CVE-2026-0883)
+ * CVSS score 4.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N).
+   (CVE-2026-0887)
+bug: [58983]
+cve:
+- CVE-2026-0877
+- CVE-2026-0878
+- CVE-2026-0879
+- CVE-2026-0880
+- CVE-2026-0882
+- CVE-2025-14327
+- CVE-2026-0883
+- CVE-2026-0884
+- CVE-2026-0885
+- CVE-2026-0886
+- CVE-2026-0887
+- CVE-2026-0890
+- CVE-2026-0891
