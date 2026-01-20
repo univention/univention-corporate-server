@@ -236,6 +236,12 @@ def basicConfig(
     >>> logger = logging.getLogger('ADMIN').getChild(__name__)
     >>> logger.info('some info')
     """
+    # Remove any fallback handlers from the root logger that may have been added
+    # by importing univention.management.console.log
+    for handler in logging.root.handlers[:]:
+        if isinstance(handler, logging.StreamHandler) and isinstance(handler.formatter, StructuredFormatter):
+            logging.root.removeHandler(handler)
+
     categories = univention_debug_categories or list(_UD_CATEGORIES.values())
 
     if isinstance(univention_debug_flush, bool):
@@ -437,6 +443,8 @@ class Logger(logging.Logger):
         self.univention_debug_handler.set_structured(use_structured_logging)
         if use_structured_logging:
             self.univention_debug_handler.setFormatter(StructuredFormatter())
+        else:
+            self.univention_debug_handler.setFormatter(self._formatter)
 
     def __repr__(self):
         msg = super().__repr__()
