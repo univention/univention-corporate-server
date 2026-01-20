@@ -6,18 +6,13 @@
 Domain setup
 ============
 
-.. _deployment-installation-physical-domain-settings:
-
-Set up the domain
-~~~~~~~~~~~~~~~~~
-
 You start the final configuration step of the Nubus for UCS system by selecting a domain mode.
-:numref:`deployment-installation-physical-domain-settings-role-figure`
+:numref:`deployment-domain-setup-role-figure`
 shows the domain modes.
 They influence the next configuration steps.
 The following domain modes are available:
 
-.. _deployment-installation-physical-domain-settings-new:
+.. _deployment-domain-setup-new:
 
 Create a new UCS domain
    The *Create a new UCS domain* configures the first system in a UCS domain,
@@ -26,11 +21,11 @@ Create a new UCS domain
    to set up the directory service, authentication service, and the DNS server.
    A Nubus for UCS domain can consist of one single or several Nubus for UCS systems.
    You can add additional Nubus for UCS systems at a later point in time
-   using the :ref:`deployment-installation-physical-domain-settings-join` mode.
+   using the :ref:`deployment-domain-setup-join` mode.
    For more information, see
-   :ref:`deployment-installation-physical-domain-settings-new-domain`.
+   :ref:`deployment-domain-setup-new-domain`.
 
-.. _deployment-installation-physical-domain-settings-join-ad:
+.. _deployment-domain-setup-join-ad:
 
 Join into an existing Active Directory domain
    This mode operates Nubus for UCS as a member of a Windows Active Directory domain.
@@ -39,27 +34,27 @@ Join into an existing Active Directory domain
    The subsequent steps request information for joining the Active Directory domain
    and configure Nubus for UCS accordingly.
    For more information, see
-   :ref:`deployment-installation-physical-domain-settings-ad-member`.
+   :ref:`deployment-domain-setup-ad-member`.
 
-.. _deployment-installation-physical-domain-settings-join:
+.. _deployment-domain-setup-join:
 
 Join into an existing UCS domain
    This mode configures the Nubus for UCS system to join an existing Nubus for UCS domain.
    At a later step, the system setup asks for what system role it assigns.
    For more information, see
-   :ref:`deployment-installation-physical-domain-settings-join-ucs`.
+   :ref:`deployment-domain-setup-join-ucs`.
 
-.. _deployment-installation-physical-domain-settings-role-figure:
+.. _deployment-domain-setup-role-figure:
 
 .. figure:: /images/installer-domainrole.*
    :alt: Domain settings
 
    Domain settings
 
-.. _deployment-installation-physical-domain-settings-naming:
+.. _deployment-domain-setup-naming:
 
 Naming convention for hostnames
-"""""""""""""""""""""""""""""""
+-------------------------------
 
 .. index::
    single: hostname; naming convention
@@ -79,36 +74,36 @@ the hostname must adhere to the following naming convention:
 * Start and end with an alphanumeric character and can contain a hyphen (``-``) in between.
 
 The naming convention has the regular expression in
-:numref:`deployment-installation-physical-domain-settings-naming-listing`.
+:numref:`deployment-domain-setup-naming-listing`.
 
 .. code-block::
    :caption: Regular expression for the naming convention for the hostname
-   :name: deployment-installation-physical-domain-settings-naming-listing
+   :name: deployment-domain-setup-naming-listing
 
    ^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$
 
-.. _deployment-installation-physical-domain-settings-new-domain:
+.. _deployment-domain-setup-new-domain:
 
 Mode: Create a new UCS domain
-"""""""""""""""""""""""""""""
+-----------------------------
 
 .. index::
    single: hostname; Create new UCS domain
 
-After you selected :ref:`deployment-installation-physical-domain-settings-new`,
+After you selected :ref:`deployment-domain-setup-new`,
 system setup asks for the following information,
-see :numref:`deployment-installation-physical-domain-settings-new-domain-figure`:
+see :numref:`deployment-domain-setup-new-domain-figure`:
 
-.. _deployment-installation-physical-domain-settings-new-domain-organization:
+.. _deployment-domain-setup-new-domain-organization:
 
 Organization name
    You can *optionally* specify an organization name.
    The system setup uses the organization name
    to automatically generate a
-   :ref:`domain name <deployment-installation-physical-domain-settings-new-domain-fqdn>`
-   and the :ref:`LDAP base <deployment-installation-physical-domain-settings-new-domain-ldap-base>`.
+   :ref:`domain name <deployment-domain-setup-new-domain-fqdn>`
+   and the :ref:`LDAP base <deployment-domain-setup-new-domain-ldap-base>`.
 
-.. _deployment-installation-physical-domain-settings-new-domain-email:
+.. _deployment-domain-setup-new-domain-email:
 
 Email address
    If you provide a valid email address,
@@ -123,49 +118,49 @@ Email address
 
    .. TODO: Replace link to license management module after it's available in the document.
 
-.. _deployment-installation-physical-domain-settings-new-domain-fqdn:
+.. _deployment-domain-setup-new-domain-fqdn:
 
 Fully qualified domain name
    Provide the fully qualified domain name for the system, including hostname and domain name.
    System setup derives the name of the Nubus for UCS system
    and the DNS domain from it.
    System setup automatically generates a suggestion if you provided an
-   :ref:`deployment-installation-physical-domain-settings-new-domain-organization`.
+   :ref:`deployment-domain-setup-new-domain-organization`.
    For the naming convention of the hostname,
-   see :ref:`deployment-installation-physical-domain-settings-naming`.
+   see :ref:`deployment-domain-setup-naming`.
 
    .. important::
 
       Recommendation: don't use publicly available DNS domains for your DNS domain,
       as this can result in name resolution problems.
 
-.. _deployment-installation-physical-domain-settings-new-domain-ldap-base:
+.. _deployment-domain-setup-new-domain-ldap-base:
 
 LDAP base
    You must specify an LDAP base to initialize the directory service.
    System setup automatically creates a suggestion from the
-   :ref:`deployment-installation-physical-domain-settings-new-domain-fqdn`.
+   :ref:`deployment-domain-setup-new-domain-fqdn`.
    You can usually accept the suggestion without changes.
 
-.. _deployment-installation-physical-domain-settings-new-domain-figure:
+.. _deployment-domain-setup-new-domain-figure:
 
 .. figure:: /images/installer-hostname.*
    :alt: Specify of hostname and LDAP base
 
    Specify of hostname and LDAP base
 
-.. _deployment-installation-physical-domain-settings-ad-member:
+.. _deployment-domain-setup-ad-member:
 
 Mode: Join an existing Active Directory domain
-""""""""""""""""""""""""""""""""""""""""""""""
+----------------------------------------------
 
 .. index::
    single: hostname; Join existing Active Directory domain
 
 If you configured the DNS server of an Active Directory domain during the
-:ref:`network configuration <deployment-installation-physical-network-configuration>`,
+:ref:`network configuration <deployment-initial-system-configuration-network-setup>`,
 system setup automatically suggest the name of the Active Directory domain controller in the *Active Directory account information* step,
-see :numref:`deployment-installation-physical-domain-settings-ad-member-figure`.
+see :numref:`deployment-domain-setup-ad-member-figure`.
 If the suggestion is incorrect,
 you can provide the name of another Active Directory domain controller or another Active Directory domain.
 
@@ -176,7 +171,7 @@ The user account must have the permission to join new systems in the Active Dire
 In addition, you need to define a hostname for the Nubus for UCS system.
 You can adopt the suggested hostname or provide a different one.
 For the naming convention of the hostname,
-see :ref:`deployment-installation-physical-domain-settings-naming`.
+see :ref:`deployment-domain-setup-naming`.
 
 System setup automatically derives the system's domain name from the domain DNS server.
 However, in some scenarios such as hosting a public mail server,
@@ -193,19 +188,19 @@ automatically has the :term:`UCS Primary Directory Node` system role.
 If you select this mode during the installation of addition Nubus for UCS system,
 system setup shows the selection dialog for the system role.
 For the system role selection,
-see :ref:`deployment-installation-physical-domain-settings-join-ucs`.
+see :ref:`deployment-domain-setup-join-ucs`.
 
-.. _deployment-installation-physical-domain-settings-ad-member-figure:
+.. _deployment-domain-setup-ad-member-figure:
 
 .. figure:: /images/installer-adjoin.*
    :alt: Information on the Active directory domain
 
    Information on the Active directory domain
 
-.. _deployment-installation-physical-domain-settings-join-ucs:
+.. _deployment-domain-setup-join-ucs:
 
 Mode: Join an existing UCS domain
-"""""""""""""""""""""""""""""""""
+---------------------------------
 
 .. index::
    single: hostname; Join existing UCS domain
@@ -242,7 +237,7 @@ you need to process the following steps:
 
 #. After you selected the system role for Nubus for UCS,
    the system setup asks for more information to join the domain,
-   see :numref:`deployment-installation-physical-domain-settings-join-ucs-figure`.
+   see :numref:`deployment-domain-setup-join-ucs-figure`.
 
    Start join at the end of the installation
       If you don't intend to let the system setup run the domain join automatically during the installation,
@@ -251,7 +246,7 @@ you need to process the following steps:
    Search Primary Directory Node in DNS
       System setup automatically determines the name of the UCS Primary Directory Node
       if you provided it as DNS server during
-      :ref:`deployment-installation-physical-network-configuration`.
+      :ref:`deployment-initial-system-configuration-network-setup`.
 
       .. TODO: Clarify: What's the reason? Why have the detection and why deactivate it?
 
@@ -259,7 +254,7 @@ you need to process the following steps:
       you can deactivate *Search Primary Directory Node in DNS*
       and provide the fully qualified domain name of the preferred UCS Primary Directory Node.
 
-   .. _deployment-installation-physical-domain-settings-join-ucs-credentials:
+   .. _deployment-domain-setup-join-ucs-credentials:
 
    Credentials for domain administrator
       The domain join process needs to access information about the domain.
@@ -269,7 +264,7 @@ you need to process the following steps:
 #. Finally, provide a hostname for the Nubus for UCS system.
    You can adopt the suggested hostname or change it.
    For the naming convention of the hostname,
-   see :ref:`deployment-installation-physical-domain-settings-naming`.
+   see :ref:`deployment-domain-setup-naming`.
    The system setup automatically derives the domain name of the computer from the domain DNS server.
    In some scenarios, such as a public mail server, it may be necessary to use a certain fully qualified domain name.
 
@@ -277,7 +272,7 @@ you need to process the following steps:
 
       After the configuration is complete, you **can't** change the domain.
 
-.. _deployment-installation-physical-domain-settings-join-ucs-figure:
+.. _deployment-domain-setup-join-ucs-figure:
 
 .. figure:: /images/installer-join.*
    :alt: Information on the domain join
@@ -287,7 +282,7 @@ you need to process the following steps:
 .. _deployment-installation-physical-confirm-settings:
 
 Confirm the installation settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 
 *Confirm configuration settings* shows a summary of your settings,
 see :numref:`deployment-installation-physical-confirm-settings-summary-figure`.
@@ -304,7 +299,7 @@ Update system after installation
    You need to sign in to the UCS Primary Directory Node
    to check the installation status.
    For sign-in, use the same administrator credentials
-   that you provided in :ref:`deployment-installation-physical-domain-settings-join-ucs-credentials`.
+   that you provided in :ref:`deployment-domain-setup-join-ucs-credentials`.
 
 .. TODO: Clarify. Is that true with the updates on the Primary? I don't think all of this happens during a join of an additional system to the domain. It would require major planning of maintenance windows when adding one system to a large domain. I can't imagine that our product requires that.
 
@@ -331,4 +326,3 @@ continue with :ref:`deployment-after-installation`.
    :alt: Installation overview
 
    Installation overview
-
