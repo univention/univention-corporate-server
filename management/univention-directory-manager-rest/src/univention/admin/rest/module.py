@@ -365,10 +365,20 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 break
             if _scheme == 'http':
                 scheme = 'http'
-        return urljoin(urljoin(urlunparse((scheme, base.netloc, 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/', '', '', '')), quote(self.request.path_decoded.lstrip('/'))), '/'.join(args)) + query_string
+        root_path = getattr(self.application, 'root_path', '')
+        if root_path:
+            base_path = '/'
+        else:
+            base_path = 'univention/' if self.request.headers.get('X-Forwarded-Host') else '/'
+        return urljoin(urljoin(urlunparse((scheme, base.netloc, base_path, '', '', '')), quote(self.request.path_decoded.lstrip('/'))), '/'.join(args)) + query_string
 
     def abspath(self, *args):
-        return urljoin(self.urljoin('/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'), '/'.join(args))
+        root_path = getattr(self.application, 'root_path', '')
+        if root_path:
+            base_path = f'{root_path}/udm/'
+        else:
+            base_path = '/univention/udm/' if self.request.headers.get('X-Forwarded-Host') else '/udm/'
+        return urljoin(self.urljoin(), base_path + '/'.join(args))
 
     def log_exception(self, typ, value, tb):
         if isinstance(value, UMC_Error):
@@ -3243,56 +3253,60 @@ class Application(tornado.web.Application):
         if ucr.is_true('directory/manager/rest/delegative-administration/enabled'):
             udm_auth.Authorization.enable(lambda: get_admin_ldap_write_connection()[0])
 
+        root_path = os.environ.get('UDM_REST_API_ROOT_PATH', '').strip().strip('/')
+        root_path = f'/{root_path}' if root_path else ''
+        self.root_path = root_path
+
         # FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
         # Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
         property_ = '([^/]+)'
         super().__init__([
-            ("/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
-            ("/udm/(?:index.html)?", Modules),
-            ("/udm/openapi.json", OpenAPI),
-            ("/udm/relation/(.*)", Relations),
-            ("/udm/license/", License),
-            ("/udm/license/import", LicenseImport),
-            ("/udm/license/check", LicenseCheck),
-            ("/udm/license/request", LicenseRequest),
-            ("/udm/ldap/base/", LdapBase),
-            ("/udm/directory/unmap-ldap-attributes", LdapAttributeUnmap),
-            (f"/udm/object/{dn}", ObjectLink),
-            ("/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
-            ("/udm/directory/", Directory),
-            (f"/udm/{module_type}/", ObjectTypes),
-            ("/udm/(directory)/tree", Tree),
-            (f"/udm/(?:{object_type}|directory)/move-destinations", MoveDestinations),
-            ("/udm/directory/children-types", SubObjectTypes),
-            (f"/udm/{object_type}/", Objects),
-            (f"/udm/{object_type}/openapi.json", OpenAPI),
-            (f"/udm/{object_type}/add", ObjectAdd),
-            (f"/udm/{object_type}/copy", ObjectCopy),
-            (f"/udm/{object_type}/move", ObjectsMove),
-            (f"/udm/{object_type}/multi-edit", ObjectMultiEdit),
-            (f"/udm/{object_type}/tree", Tree),
-            (f"/udm/{object_type}/properties", Properties),
-            (f"/udm/{object_type}/default-containers", DefaultContainers),
-            (f"/udm/{object_type}/()properties/{property_}/choices", PropertyChoices),
-            (f"/udm/{object_type}/layout", Layout),
-            (f"/udm/{object_type}/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
-            (f"/udm/{object_type}/{dn}", Object),
-            (f"/udm/{object_type}/{dn}/restore", ObjectRestore),
-            (f"/udm/{object_type}/{dn}/edit", ObjectEdit),
-            (f"/udm/{object_type}/{dn}/children-types", SubObjectTypes),
-            (f"/udm/{object_type}/report/([^/]+)", Report),
-            (f"/udm/{object_type}/{dn}/{policies_object_type}/", PolicyResult),
-            (f"/udm/{object_type}/{policies_object_type}/", PolicyResultContainer),
-            (f"/udm/{object_type}/{dn}/layout", Layout),
-            (f"/udm/{object_type}/{dn}/properties", Properties),
-            (f"/udm/{object_type}/{dn}/properties/{property_}/choices", PropertyChoices),
-            (f"/udm/{object_type}/{dn}/properties/jpegPhoto.jpg", UserPhoto),
-            (f"/udm/(networks/network)/{dn}/next-free-ip-address", NextFreeIpAddress),
-            (f"/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
-            ("/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
-            (r"/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": "/var/www/univention/udm", "default_filename": "index.html"}),
-            (r"/udm/-/reload", ReloadAPI),
+            (f"{root_path}/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
+            (f"{root_path}/udm/(?:index.html)?", Modules),
+            (f"{root_path}/udm/openapi.json", OpenAPI),
+            (f"{root_path}/udm/relation/(.*)", Relations),
+            (f"{root_path}/udm/license/", License),
+            (f"{root_path}/udm/license/import", LicenseImport),
+            (f"{root_path}/udm/license/check", LicenseCheck),
+            (f"{root_path}/udm/license/request", LicenseRequest),
+            (f"{root_path}/udm/ldap/base/", LdapBase),
+            (f"{root_path}/udm/directory/unmap-ldap-attributes", LdapAttributeUnmap),
+            (f"{root_path}/udm/object/{dn}", ObjectLink),
+            (f"{root_path}/udm/object/([a-z0-9]{{8}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{12}})", ObjectByUiid),
+            (f"{root_path}/udm/directory/", Directory),
+            (f"{root_path}/udm/{module_type}/", ObjectTypes),
+            (f"{root_path}/udm/(directory)/tree", Tree),
+            (f"{root_path}/udm/(?:{object_type}|directory)/move-destinations", MoveDestinations),
+            (f"{root_path}/udm/directory/children-types", SubObjectTypes),
+            (f"{root_path}/udm/{object_type}/", Objects),
+            (f"{root_path}/udm/{object_type}/openapi.json", OpenAPI),
+            (f"{root_path}/udm/{object_type}/add", ObjectAdd),
+            (f"{root_path}/udm/{object_type}/copy", ObjectCopy),
+            (f"{root_path}/udm/{object_type}/move", ObjectsMove),
+            (f"{root_path}/udm/{object_type}/multi-edit", ObjectMultiEdit),
+            (f"{root_path}/udm/{object_type}/tree", Tree),
+            (f"{root_path}/udm/{object_type}/properties", Properties),
+            (f"{root_path}/udm/{object_type}/default-containers", DefaultContainers),
+            (f"{root_path}/udm/{object_type}/()properties/{property_}/choices", PropertyChoices),
+            (f"{root_path}/udm/{object_type}/layout", Layout),
+            (f"{root_path}/udm/{object_type}/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
+            (f"{root_path}/udm/{object_type}/{dn}", Object),
+            (f"{root_path}/udm/{object_type}/{dn}/restore", ObjectRestore),
+            (f"{root_path}/udm/{object_type}/{dn}/edit", ObjectEdit),
+            (f"{root_path}/udm/{object_type}/{dn}/children-types", SubObjectTypes),
+            (f"{root_path}/udm/{object_type}/report/([^/]+)", Report),
+            (f"{root_path}/udm/{object_type}/{dn}/{policies_object_type}/", PolicyResult),
+            (f"{root_path}/udm/{object_type}/{policies_object_type}/", PolicyResultContainer),
+            (f"{root_path}/udm/{object_type}/{dn}/layout", Layout),
+            (f"{root_path}/udm/{object_type}/{dn}/properties", Properties),
+            (f"{root_path}/udm/{object_type}/{dn}/properties/{property_}/choices", PropertyChoices),
+            (f"{root_path}/udm/{object_type}/{dn}/properties/jpegPhoto.jpg", UserPhoto),
+            (f"{root_path}/udm/(networks/network)/{dn}/next-free-ip-address", NextFreeIpAddress),
+            (f"{root_path}/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
+            (f"{root_path}/udm/progress/([a-z0-9]{{8}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{12}})", Operations),
+            (rf"{root_path}/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": "/var/www/univention/udm", "default_filename": "index.html"}),
+            (rf"{root_path}/udm/-/reload", ReloadAPI),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
         ], default_handler_class=Nothing, **settings)
 

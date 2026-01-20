@@ -59,9 +59,12 @@ class Server:
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-directory-manager-rest')
 
         # The UMC-Server and module processes are clearing environment variables
+        root_path = os.environ.get('UDM_REST_API_ROOT_PATH', '')
         os.environ.clear()
         os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
         os.environ['LANG'] = language
+        if root_path:
+            os.environ['UDM_REST_API_ROOT_PATH'] = root_path
 
         # tornado logging
         import univention.logging

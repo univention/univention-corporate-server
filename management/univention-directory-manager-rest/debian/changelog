@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.4.8) unstable; urgency=medium
+
+  * Bug #59032: support root_path configuration
+
+ -- Jaime Conde Segovia <conde-segovia@univention.de>  Wed, 04 Feb 2026 09:36:20 +0100
+
 univention-directory-manager-rest (12.4.7) unstable; urgency=medium
 
   * Bug #50253: add log message in udm_rest_reload.py listener handler

@@ -1,3 +1,9 @@
+ucs-test (12.4.27) unstable; urgency=medium
+
+  * Bug #59032: add test for udm-rest-api root_path environment variable configuration
+
+ -- Jaime Conde Segovia <conde-segovia@univention.de>  Wed, 04 Feb 2026 09:37:53 +0100
+
 ucs-test (12.4.26) unstable; urgency=medium
 
   * Bug #56986: remove workaround
