@@ -437,6 +437,8 @@ class Logger(logging.Logger):
         self.univention_debug_handler.set_structured(use_structured_logging)
         if use_structured_logging:
             self.univention_debug_handler.setFormatter(StructuredFormatter())
+        else:
+            self.univention_debug_handler.setFormatter(self._formatter)
 
     def __repr__(self):
         msg = super().__repr__()
