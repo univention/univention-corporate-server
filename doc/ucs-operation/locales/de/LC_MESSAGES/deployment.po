@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 13:33+0000\n"
-"PO-Revision-Date: 2026-01-20 14:50+0100\n"
+"POT-Creation-Date: 2026-01-20 15:42+0000\n"
+"PO-Revision-Date: 2026-01-20 16:43+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -20,11 +20,25 @@ msgstr ""
 msgid "Steps after the installation"
 msgstr "Schritte nach der Installation"
 
-#: ../../deployment/after-installation.rst:14
+#: ../../deployment/after-installation.rst:9
+msgid ""
+"After completing the Nubus for UCS installation, you can immediately "
+"access the *Portal* and perform essential first tasks. This section "
+"covers only the immediate steps you can take right now. More "
+"comprehensive configuration and management topics follow in later "
+"sections."
+msgstr ""
+"Nach Abschluss der Nubus für UCS Installation können Sie sofort auf das "
+"*Portal* zugreifen und grundlegende erste Aufgaben durchführen. Dieser "
+"Abschnitt behandelt nur die sofortigen Schritte, die Sie jetzt durchführen "
+"können. Weitere umfassendere Konfigurations- und Verwaltungsthemen folgen "
+"in späteren Abschnitten."
+
+#: ../../deployment/after-installation.rst:19
 msgid "Open the portal"
 msgstr "Portal öffnen"
 
-#: ../../deployment/after-installation.rst:16
+#: ../../deployment/after-installation.rst:21
 msgid ""
 "To open the *Portal* in Nubus for UCS, choose any UCS system in your "
 "Nubus for UCS domain and enter its fully qualified hostname into the "
@@ -33,16 +47,27 @@ msgid ""
 "IP address."
 msgstr ""
 "Um das *Portal* in Nubus für UCS zu öffnen, wählen Sie ein beliebiges "
-"UCS-System in Ihrer Nubus für UCS Domäne und geben Sie dessen Fully "
-"Qualified Hostname in die Browser-Adressleiste ein. Ihr Client muss in "
-"der Lage sein, den Rechnernamen über DNS aufzulösen. Wenn Ihr Client den "
-"DNS-Namen nicht auflösen kann, können Sie die IP-Adresse verwenden."
+"UCS-System in Ihrer Nubus für UCS Domäne und geben Sie dessen "
+":spelling:word:`Fully Qualified Hostname` in die Browser-Adressleiste "
+"ein. Ihr Client muss in der Lage sein, den Rechnernamen über DNS "
+"aufzulösen. Wenn Ihr Client den DNS-Namen nicht auflösen kann, können Sie"
+" die IP-Adresse verwenden."
 
-#: ../../deployment/after-installation.rst:26
+#: ../../deployment/after-installation.rst:28
+msgid ""
+"The ``root`` and ``Administrator`` users can sign in to the *Portal*, see"
+" :external+uv-nubus-manual:ref:`nubus-portal` in :cite:t:`uv-nubus-"
+"manual`."
+msgstr ""
+"Der ``root`` und der ``Administrator`` Benutzer können sich im *Portal* "
+"anmelden, siehe :external+uv-nubus-manual:ref:`nubus-portal` in :cite:t"
+":`uv-nubus-manual`."
+
+#: ../../deployment/after-installation.rst:35
 msgid "License import after installation"
 msgstr "Lizenzimport nach der Installation"
 
-#: ../../deployment/after-installation.rst:28
+#: ../../deployment/after-installation.rst:37
 msgid ""
 "If you installed the system as the first system in the Nubus for UCS "
 "domain in the :term:`UCS Primary Directory Node` role, you can import the"
@@ -66,10 +91,9 @@ msgid ""
 "following domain modes are available:"
 msgstr ""
 "Sie starten den finalen Konfigurationsschritt des Nubus for UCS Systems, "
-"indem Sie einen Domänenmodus auswählen. :numref:`deployment-domain-setup-role-figure`"
-" zeigt die Domänenmodi. Sie "
-"beeinflussen die nächsten Konfigurationsschritte. Die folgenden "
-"Domänenmodi sind verfügbar:"
+"indem Sie einen Domänenmodus auswählen. :numref:`deployment-domain-setup-"
+"role-figure` zeigt die Domänenmodi. Sie beeinflussen die nächsten "
+"Konfigurationsschritte. Die folgenden Domänenmodi sind verfügbar:"
 
 #: ../../deployment/domain-setup.rst:17
 msgid "Create a new UCS domain"
@@ -92,9 +116,9 @@ msgstr ""
 "Informationen ab, um den Verzeichnisdienst, Authentifizierungsdienst und "
 "den DNS-Server einzurichten. Eine Nubus für UCS Domäne kann aus einem "
 "einzelnen oder mehreren Nubus für UCS Systemen bestehen. Sie können "
-"später zusätzliche Nubus für UCS Systeme im Modus :ref:`deployment-domain-setup-join`"
-" hinzufügen. Weitere "
-"Informationen finden Sie unter :ref:`deployment-domain-setup-new-domain`."
+"später zusätzliche Nubus für UCS Systeme im Modus :ref:`deployment-"
+"domain-setup-join` hinzufügen. Weitere Informationen finden Sie unter "
+":ref:`deployment-domain-setup-new-domain`."
 
 #: ../../deployment/domain-setup.rst:30
 msgid "Join into an existing Active Directory domain"
@@ -134,8 +158,7 @@ msgstr ""
 "Dieser Modus konfiguriert das Nubus für UCS System, um einer bestehenden "
 "Nubus für UCS Domäne beizutreten. In einem späteren Schritt fragt die "
 "Systemeinrichtung, welche Systemrolle zugewiesen werden soll. Weitere "
-"Informationen finden Sie unter :ref:`deployment-domain-setup-"
-"join-ucs`."
+"Informationen finden Sie unter :ref:`deployment-domain-setup-join-ucs`."
 
 #: ../../deployment/domain-setup.rst:49 ../../deployment/domain-setup.rst:52
 msgid "Domain settings"
@@ -219,8 +242,8 @@ msgstr ""
 "Sie können *optional* einen Organisationsnamen angeben. Die "
 "Systemeinrichtung verwendet den Organisationsnamen, um automatisch einen "
 ":ref:`Domänennamen <deployment-domain-setup-new-domain-fqdn>` und die "
-":ref:`LDAP-Basis <deployment-domain-setup-new-domain-ldap-base>` "
-"zu generieren."
+":ref:`LDAP-Basis <deployment-domain-setup-new-domain-ldap-base>` zu "
+"generieren."
 
 #: ../../deployment/domain-setup.rst:108
 msgid "Email address"
@@ -312,9 +335,9 @@ msgstr ""
 "network-setup>` konfiguriert haben, schlägt die Systemeinrichtung "
 "automatisch den Namen des Active Directory Domain-Controllers im Schritt "
 "*Active Directory Konto-Informationen* vor, siehe :numref:`deployment-"
-"domain-setup-ad-member-figure`. Wenn der "
-"Vorschlag falsch ist, können Sie den Namen eines anderen Active Directory"
-" Domain-Controllers oder einer anderen Active Directory Domäne angeben."
+"domain-setup-ad-member-figure`. Wenn der Vorschlag falsch ist, können Sie"
+" den Namen eines anderen Active Directory Domain-Controllers oder einer "
+"anderen Active Directory Domäne angeben."
 
 #: ../../deployment/domain-setup.rst:167
 msgid ""
@@ -375,8 +398,7 @@ msgstr ""
 ":term:`UCS Primary Directory Node`. Wenn Sie diesen Modus während der "
 "Installation zusätzlicher Nubus für UCS Systeme wählen, zeigt die "
 "Systemeinrichtung den Auswahldialog für die System-Rolle an. Für die "
-"Systemrollenauswahl siehe :ref:`deployment-domain-setup-"
-"join-ucs`."
+"Systemrollenauswahl siehe :ref:`deployment-domain-setup-join-ucs`."
 
 #: ../../deployment/domain-setup.rst:195 ../../deployment/domain-setup.rst:198
 msgid "Information on the Active directory domain"
@@ -543,12 +565,11 @@ msgid ""
 msgstr ""
 "Geben Sie schließlich einen Rechnernamen für das Nubus für UCS System an."
 " Sie können den vorgeschlagenen Rechnernamen übernehmen oder ändern. Für "
-"die Namenskonvention des Rechnernamens siehe :ref:`deployment-"
-"domain-setup-naming`. Die Systemeinrichtung "
-"leitet den Domänennamen des Computers automatisch vom Domänen-DNS-Server "
-"ab. In einigen Szenarien, wie etwa einem öffentlichen Mailserver, kann es"
-" erforderlich sein, einen bestimmten :spelling:word:`Fully Qualified "
-"Domain Name` zu verwenden."
+"die Namenskonvention des Rechnernamens siehe :ref:`deployment-domain-"
+"setup-naming`. Die Systemeinrichtung leitet den Domänennamen des "
+"Computers automatisch vom Domänen-DNS-Server ab. In einigen Szenarien, "
+"wie etwa einem öffentlichen Mailserver, kann es erforderlich sein, einen "
+"bestimmten :spelling:word:`Fully Qualified Domain Name` zu verwenden."
 
 #: ../../deployment/domain-setup.rst:277 ../../deployment/domain-setup.rst:280
 msgid "Information on the domain join"
@@ -596,8 +617,8 @@ msgstr ""
 "Version des UCS Primary Directory Node zu entsprechen. Sie müssen sich "
 "beim UCS Primary Directory Node anmelden, um den Installationsstatus zu "
 "überprüfen. Verwenden Sie für die Anmeldung die gleichen Anmeldedaten für"
-" ein Administrator-Konto, die Sie in :ref:`deployment-domain-setup-"
-"join-ucs-credentials` angegeben haben."
+" ein Administrator-Konto, die Sie in :ref:`deployment-domain-setup-join-"
+"ucs-credentials` angegeben haben."
 
 #: ../../deployment/domain-setup.rst:306
 msgid ""
@@ -630,18 +651,15 @@ msgid ""
 "After you confirm the completion of the system setup, your Nubus for UCS "
 "system is ready for the first full boot procedure. You can restart it. "
 "The system then boots from the hard drive. After the boot procedure "
-"completes, the ``root`` and ``Administrator`` users can sign in to the "
-"*Portal*, see :external+uv-nubus-manual:ref:`nubus-portal` in :cite:t"
-":`uv-nubus-manual`."
+"completes, continue with :ref:`deployment-after-installation`."
 msgstr ""
 "Nachdem Sie den Abschluss der Systemeinrichtung bestätigt haben, ist Ihr "
 "Nubus für UCS System bereit für den ersten vollständigen Bootvorgang. Sie"
 " können es neu starten. Das System startet dann von der Festplatte. Nach "
-"Abschluss des Bootvorgangs können sich die Benutzer ``root`` und "
-"``Administrator`` im *Portal* anmelden, siehe :external+uv-nubus-"
-"manual:ref:`nubus-portal` in :cite:t:`uv-nubus-manual`."
+"Abschluss des Bootvorgangs fahren Sie mit :ref:`deployment-after-"
+"installation` fort."
 
-#: ../../deployment/domain-setup.rst:327 ../../deployment/domain-setup.rst:330
+#: ../../deployment/domain-setup.rst:325 ../../deployment/domain-setup.rst:328
 #: ../../deployment/index.rst:38
 msgid "Installation overview"
 msgstr "Installationsübersicht"
@@ -773,34 +791,144 @@ msgstr ""
 msgid "Initial system configuration"
 msgstr "Initiale Systemkonfiguration"
 
-#: ../../deployment/initial-system-configuration.rst:14
+#: ../../deployment/initial-system-configuration.rst:9
+msgid ""
+"This section guides you through the interactive installation process of "
+"Nubus for UCS. During the graphical installation, you configure all "
+"necessary system settings through a series of prompts. The installer "
+"walks you through each configuration step sequentially and lets you "
+"navigate between steps."
+msgstr ""
+"Dieser Abschnitt führt Sie durch den interaktiven Installationsprozess "
+"von Nubus für UCS. Während der grafischen Installation konfigurieren Sie "
+"alle erforderlichen Systemeinstellungen durch eine Reihe von Abfragen. "
+"Der Installer führt Sie sequenziell durch jeden Konfigurationsschritt und"
+" ermöglicht es Ihnen, zwischen Schritten zu navigieren."
+
+#: ../../deployment/initial-system-configuration.rst:15
+msgid "The configuration process covers the following essential steps:"
+msgstr "Der Konfigurationsprozess umfasst die folgenden grundlegenden Schritte:"
+
+#: ../../deployment/initial-system-configuration.rst:17
+msgid "Installation mode selection"
+msgstr "Auswahl der Installationsmethode"
+
+#: ../../deployment/initial-system-configuration.rst:18
+msgid ""
+"Choose how to proceed with the installation: graphical mode with default "
+"settings, manual network configuration, or text mode."
+msgstr ""
+"Wählen Sie, wie Sie mit der Installation fortfahren: grafischer Modus mit"
+" Standardeinstellungen, manuelle Netzwerkkonfiguration oder Textmodus."
+
+#: ../../deployment/initial-system-configuration.rst:20
+msgid "Language and location settings"
+msgstr "Einstellung von Sprache und Standort"
+
+#: ../../deployment/initial-system-configuration.rst:21
+msgid ""
+"Select the system language and geographic location, which determine the "
+"time zone and language variants."
+msgstr ""
+"Wählen Sie die Systemsprache und den geografischen Ort, die die Zeitzone "
+"und Sprachvarianten bestimmen."
+
+#: ../../deployment/initial-system-configuration.rst:23
+msgid "Keyboard layout configuration"
+msgstr "Konfiguration der Tastaturbelegung"
+
+#: ../../deployment/initial-system-configuration.rst:24
+msgid "Configure the keyboard layout independently of the system language."
+msgstr "Konfigurieren Sie die Tastaturbelegung unabhängig von der Systemsprache."
+
+#: ../../deployment/initial-system-configuration.rst:26
+msgid "Network configuration"
+msgstr "Netzwerkkonfiguration"
+
+#: ../../deployment/initial-system-configuration.rst:27
+msgid ""
+"Set up network interfaces through automatic DHCP discovery or manual IP "
+"address configuration."
+msgstr ""
+"Verfahren zum Einrichten von Netzwerkschnittstellen für sowohl "
+"automatische DHCP-Konfiguration als auch manuelle Konfiguration der IP-"
+"Adresse."
+
+#: ../../deployment/initial-system-configuration.rst:29
+msgid "``root`` password definition"
+msgstr "Definition des ``root`` Passworts"
+
+#: ../../deployment/initial-system-configuration.rst:30
+msgid ""
+"Define the root password, which you also use for the ``Administrator`` "
+"domain user from installation of a :term:`Primary Directory Node`."
+msgstr ""
+"Definieren Sie das Root-Passwort, das Sie auch für den Domänenbenutzer "
+"``Administrator`` bei der Installation eines :term:`Primary Directory "
+"Node` verwenden."
+
+#: ../../deployment/initial-system-configuration.rst:34
+msgid "Hard drive partitioning"
+msgstr "Partitionierung der Festplatte"
+
+#: ../../deployment/initial-system-configuration.rst:35
+msgid ""
+"Select a partitioning strategy such as standard partitioning, logical "
+"volume management (LVM), or encrypted LVM."
+msgstr ""
+"Wählen Sie eine Strategie zur Partitionierung wie Standard-"
+"Partitionierung, Logical Volume Management (LVM) oder verschlüsseltes "
+"LVM."
+
+#: ../../deployment/initial-system-configuration.rst:37
+msgid "Base system installation"
+msgstr "Installation des Basissystems"
+
+#: ../../deployment/initial-system-configuration.rst:38
+msgid ""
+"The installer automatically installs the Nubus for UCS base system and "
+"additional software after partitioning is complete."
+msgstr ""
+"Der Installer installiert automatisch das Nubus für UCS Basissystem und "
+"zusätzliche Software nach Abschluss der Partitionierung."
+
+#: ../../deployment/initial-system-configuration.rst:40
+msgid ""
+"After completing all configuration steps, the system restarts to begin "
+"domain setup and system initialization."
+msgstr ""
+"„Nach Abschluss aller Konfigurationsschritte wird das System neu "
+"gestartet, um mit der Konfiguration der Domänen und Systeminitialisierung"
+" zu beginnen."
+
+#: ../../deployment/initial-system-configuration.rst:45
 msgid "Select the installation mode"
 msgstr "Installationsmodus auswählen"
 
-#: ../../deployment/initial-system-configuration.rst:16
+#: ../../deployment/initial-system-configuration.rst:47
 msgid ""
 "After booting the system from the installation medium, the screen shows "
 "the boot prompt in :numref:`deployment-initial-system-configuration-"
 "isolinux-figure`."
 msgstr ""
 "Nach dem Booten des Systems vom Installationsmedium zeigt der Bildschirm "
-"die Boot-Eingabeaufforderung in :numref:`deployment-initial-system-configuration-"
-"isolinux-figure`."
+"die Boot-Eingabeaufforderung in :numref:`deployment-initial-system-"
+"configuration-isolinux-figure`."
 
-#: ../../deployment/initial-system-configuration.rst:22
-#: ../../deployment/initial-system-configuration.rst:25
+#: ../../deployment/initial-system-configuration.rst:53
+#: ../../deployment/initial-system-configuration.rst:56
 msgid "Installation boot prompt"
 msgstr "Installations-Boot-Eingabeaufforderung"
 
-#: ../../deployment/initial-system-configuration.rst:27
+#: ../../deployment/initial-system-configuration.rst:58
 msgid "You can choose between the following installation procedures:"
 msgstr "Sie können zwischen den folgenden Installationsverfahren wählen:"
 
-#: ../../deployment/initial-system-configuration.rst:31
+#: ../../deployment/initial-system-configuration.rst:62
 msgid "Start with default settings"
 msgstr ":spelling:word:`Start with default settings`"
 
-#: ../../deployment/initial-system-configuration.rst:32
+#: ../../deployment/initial-system-configuration.rst:63
 msgid ""
 "starts the interactive, graphic installation. During the installation, "
 "the system requests a number of parameters such as the network settings, "
@@ -812,11 +940,11 @@ msgstr ""
 "Festplattenpartitionen und Domäneneinstellungen  an und führt dann "
 "Installation und Konfiguration durch."
 
-#: ../../deployment/initial-system-configuration.rst:39
+#: ../../deployment/initial-system-configuration.rst:70
 msgid "Start with manual network settings"
 msgstr ":spelling:word:`Start with manual network settings`"
 
-#: ../../deployment/initial-system-configuration.rst:40
+#: ../../deployment/initial-system-configuration.rst:71
 msgid ""
 "runs a standard installation that doesn't automatically configure the "
 "network through DHCP. Use this option for system installation, where you "
@@ -826,11 +954,11 @@ msgstr ""
 " über DHCP konfiguriert. Verwenden Sie diese Option für die "
 "Systeminstallation, bei der Sie das Netzwerk manuell einrichten müssen."
 
-#: ../../deployment/initial-system-configuration.rst:45
+#: ../../deployment/initial-system-configuration.rst:76
 msgid "Advanced options"
 msgstr ":spelling:word:`Advanced options`"
 
-#: ../../deployment/initial-system-configuration.rst:46
+#: ../../deployment/initial-system-configuration.rst:77
 msgid ""
 "The submenu offers advanced options for the installation process for "
 "selection:"
@@ -838,11 +966,11 @@ msgstr ""
 "Das Untermenü bietet erweiterte Optionen für den Installationsprozess zur"
 " Auswahl:"
 
-#: ../../deployment/initial-system-configuration.rst:50
+#: ../../deployment/initial-system-configuration.rst:81
 msgid "Start in text mode"
 msgstr ":spelling:word:`Start in text mode`"
 
-#: ../../deployment/initial-system-configuration.rst:51
+#: ../../deployment/initial-system-configuration.rst:82
 msgid ""
 "runs an interactive standard installation in text mode. Use this option "
 "on systems which have problems with the graphic version of the installer."
@@ -853,19 +981,19 @@ msgstr ""
 "des Installers haben. Für Informationen, siehe :ref:`deployment-"
 "installation-text-mode`."
 
-#: ../../deployment/initial-system-configuration.rst:58
+#: ../../deployment/initial-system-configuration.rst:89
 msgid "Rescue mode"
 msgstr ":spelling:word:`Rescue mode`"
 
-#: ../../deployment/initial-system-configuration.rst:59
+#: ../../deployment/initial-system-configuration.rst:90
 msgid "serves to recover systems that are unable to boot."
 msgstr "dient zur Wiederherstellung von Systemen, die nicht booten können."
 
-#: ../../deployment/initial-system-configuration.rst:63
+#: ../../deployment/initial-system-configuration.rst:94
 msgid "Boot from first hard drive"
 msgstr ":spelling:word:`Boot from first hard drive`"
 
-#: ../../deployment/initial-system-configuration.rst:64
+#: ../../deployment/initial-system-configuration.rst:95
 msgid ""
 "boots the operating system installed on the first hard drive instead of "
 "the Nubus for UCS installation."
@@ -873,11 +1001,11 @@ msgstr ""
 "bootet das auf der ersten Festplatte installierte Betriebssystem anstelle"
 " der Nubus für UCS Installation."
 
-#: ../../deployment/initial-system-configuration.rst:69
+#: ../../deployment/initial-system-configuration.rst:100
 msgid "Accessible dark contrast installer menu"
 msgstr ":spelling:word:`Accessible dark contrast installer menu`"
 
-#: ../../deployment/initial-system-configuration.rst:70
+#: ../../deployment/initial-system-configuration.rst:101
 msgid ""
 "allows running the setup in a dark and contrast rich mode for visually "
 "impaired persons."
@@ -885,7 +1013,7 @@ msgstr ""
 "ermöglicht die Ausführung der Einrichtung in einem dunklen und "
 "kontrastreichen Modus für Personen mit Seheinschränkungen."
 
-#: ../../deployment/initial-system-configuration.rst:73
+#: ../../deployment/initial-system-configuration.rst:104
 msgid ""
 "After you select one option, the boot loader runs the kernel from the "
 "installation medium. The installation consists of separate modules that "
@@ -899,13 +1027,13 @@ msgstr ""
 "Installationsmedium lädt. Zum Beispiel hat der Installer Module für die "
 "Netzwerk-Konfiguration oder für die Auswahl von Software."
 
-#: ../../deployment/initial-system-configuration.rst:83
-#: ../../deployment/initial-system-configuration.rst:98
-#: ../../deployment/initial-system-configuration.rst:101
+#: ../../deployment/initial-system-configuration.rst:114
+#: ../../deployment/initial-system-configuration.rst:129
+#: ../../deployment/initial-system-configuration.rst:132
 msgid "Select the language"
 msgstr "Sprache auswählen"
 
-#: ../../deployment/initial-system-configuration.rst:85
+#: ../../deployment/initial-system-configuration.rst:116
 msgid ""
 "In the first step, you select the system language that you want to use, "
 "see :numref:`deployment-initial-system-configuration-language-figure`. "
@@ -920,7 +1048,7 @@ msgstr ""
 "Programmausgabe in den ausgewählten Sprachen auf dem installierten Nubus "
 "für UCS System."
 
-#: ../../deployment/initial-system-configuration.rst:91
+#: ../../deployment/initial-system-configuration.rst:122
 msgid ""
 "If *Univention Installer* has a translation for the selected language, it"
 " also uses the language during installation. Otherwise, the installer "
@@ -932,13 +1060,13 @@ msgstr ""
 "Andernfalls fährt der Installer auf Englisch fort. Der Installer "
 "unterstützt die Sprachen Englisch und Deutsch."
 
-#: ../../deployment/initial-system-configuration.rst:106
-#: ../../deployment/initial-system-configuration.rst:118
-#: ../../deployment/initial-system-configuration.rst:121
+#: ../../deployment/initial-system-configuration.rst:137
+#: ../../deployment/initial-system-configuration.rst:149
+#: ../../deployment/initial-system-configuration.rst:152
 msgid "Select the location"
 msgstr "Standort auswählen"
 
-#: ../../deployment/initial-system-configuration.rst:108
+#: ../../deployment/initial-system-configuration.rst:139
 msgid ""
 "After the language selection, the installer shows a list of locations "
 "related to the selected language, see :numref:`deployment-initial-system-"
@@ -949,20 +1077,20 @@ msgid ""
 msgstr ""
 "Nach der Sprachauswahl zeigt der Installer eine Liste von Standorten an, "
 "die mit der ausgewählten Sprache zusammenhängen, siehe :numref"
-":`deployment-initial-system-configuration-location-figure`. Wählen Sie einen "
-"geeigneten Standort aus der Liste. Nubus für UCS verwendet den "
+":`deployment-initial-system-configuration-location-figure`. Wählen Sie "
+"einen geeigneten Standort aus der Liste. Nubus für UCS verwendet den "
 "ausgewählten Standort, um die Zeitzone und die korrekte Sprachvariante zu"
 " konfigurieren. Wenn der benötigte Standort nicht in der Liste ist, "
 "wählen Sie :guilabel:`weitere` am Ende, um eine umfassende Liste zu "
 "sehen."
 
-#: ../../deployment/initial-system-configuration.rst:126
-#: ../../deployment/initial-system-configuration.rst:135
-#: ../../deployment/initial-system-configuration.rst:138
+#: ../../deployment/initial-system-configuration.rst:157
+#: ../../deployment/initial-system-configuration.rst:166
+#: ../../deployment/initial-system-configuration.rst:169
 msgid "Select the keyboard layout"
 msgstr "Tastaturbelegung auswählen"
 
-#: ../../deployment/initial-system-configuration.rst:128
+#: ../../deployment/initial-system-configuration.rst:159
 msgid ""
 "You can select the keyboard layout independently of the system language, "
 "see :numref:`deployment-initial-system-configuration-keyboard-layout-"
@@ -970,15 +1098,15 @@ msgid ""
 "may cause operating problems."
 msgstr ""
 "Sie können die Tastaturbelegung unabhängig von der Systemsprache "
-"auswählen, siehe :numref:`deployment-initial-system-configuration-keyboard-"
-"layout-figure`. Wählen Sie eine mit der Tastatur kompatible Sprache. "
-"Andernfalls kann dies Bedienungsprobleme verursachen."
+"auswählen, siehe :numref:`deployment-initial-system-configuration-"
+"keyboard-layout-figure`. Wählen Sie eine mit der Tastatur kompatible "
+"Sprache. Andernfalls kann dies Bedienungsprobleme verursachen."
 
-#: ../../deployment/initial-system-configuration.rst:143
+#: ../../deployment/initial-system-configuration.rst:174
 msgid "Set up network configuration"
 msgstr "Netzwerkkonfiguration einrichten"
 
-#: ../../deployment/initial-system-configuration.rst:145
+#: ../../deployment/initial-system-configuration.rst:176
 msgid ""
 "Initially, the *Univention Installer* attempts to configure the network "
 "interfaces automatically, see :numref:`deployment-initial-system-"
@@ -989,13 +1117,14 @@ msgid ""
 "mode`."
 msgstr ""
 "Zunächst versucht der *Univention Installer*, die Netzwerkschnittstellen "
-"automatisch zu konfigurieren, siehe :numref:`deployment-initial-system-configuration-"
-"network-setup-dhcp-figure`. Sie können die automatische "
+"automatisch zu konfigurieren, siehe :numref:`deployment-initial-system-"
+"configuration-network-setup-dhcp-figure`. Sie können die automatische "
 "Netzwerkschnittstellenkonfiguration deaktivieren, indem Sie :ref"
-":`deployment-initial-system-configuration-install-mode-manual-network` aus dem "
-"Bootloader-Menü im :ref:`deployment-initial-system-configuration-install-mode`."
+":`deployment-initial-system-configuration-install-mode-manual-network` "
+"aus dem Bootloader-Menü im :ref:`deployment-initial-system-configuration-"
+"install-mode`."
 
-#: ../../deployment/initial-system-configuration.rst:152
+#: ../../deployment/initial-system-configuration.rst:183
 msgid ""
 "First, the installer attempts to determine an IPv6 address through the "
 "stateless address autoconfiguration (SLAAC). If unsuccessful, the "
@@ -1009,12 +1138,12 @@ msgstr ""
 "Configuration Protocol (DHCP) anzufordern. Bei Erfolg überspringt der "
 "Installer die manuelle Netzwerkkonfiguration."
 
-#: ../../deployment/initial-system-configuration.rst:158
-#: ../../deployment/initial-system-configuration.rst:161
+#: ../../deployment/initial-system-configuration.rst:189
+#: ../../deployment/initial-system-configuration.rst:192
 msgid "Automatic network configuration"
 msgstr "Automatische Netzwerkkonfiguration"
 
-#: ../../deployment/initial-system-configuration.rst:163
+#: ../../deployment/initial-system-configuration.rst:194
 msgid ""
 "If no DHCP server is present in the local network or your network "
 "requires a static configuration of the network interface, click "
@@ -1029,7 +1158,7 @@ msgstr ""
 "zu konfigurieren, siehe :numref:`deployment-initial-system-configuration-"
 "network-setup-static-figure`."
 
-#: ../../deployment/initial-system-configuration.rst:172
+#: ../../deployment/initial-system-configuration.rst:203
 msgid ""
 "The installation of Nubus for UCS requires at least one network "
 "interface. If the installer can't detect a supported network card, it "
@@ -1040,16 +1169,16 @@ msgstr ""
 "Netzwerkkarte erkennen kann, öffnet er eine Liste unterstützter Treiber "
 "zur Auswahl."
 
-#: ../../deployment/initial-system-configuration.rst:178
-#: ../../deployment/initial-system-configuration.rst:181
+#: ../../deployment/initial-system-configuration.rst:209
+#: ../../deployment/initial-system-configuration.rst:212
 msgid "Select the manual network configuration"
 msgstr "Manuelle Netzwerkkonfiguration auswählen"
 
-#: ../../deployment/initial-system-configuration.rst:183
+#: ../../deployment/initial-system-configuration.rst:214
 msgid "Manual network address configuration"
 msgstr "Manuelle Konfiguration der Netzwerkadresse"
 
-#: ../../deployment/initial-system-configuration.rst:184
+#: ../../deployment/initial-system-configuration.rst:215
 msgid ""
 "In the manual network configuration you can specify either a static IPv4 "
 "or an IPv6 address for the system, see :numref:`deployment-initial-"
@@ -1059,11 +1188,11 @@ msgstr ""
 " IPv4-oder eine IPv6-Adresse für das System angeben, siehe :numref"
 ":`deployment-initial-system-configuration-ip-figure`."
 
-#: ../../deployment/initial-system-configuration.rst:187
+#: ../../deployment/initial-system-configuration.rst:218
 msgid "IPv4 addresses"
 msgstr "IPv4 Adressen"
 
-#: ../../deployment/initial-system-configuration.rst:188
+#: ../../deployment/initial-system-configuration.rst:219
 msgid ""
 "IPv4 addresses have a 32-bit length and you write them in four blocks in "
 "decimal form, for example ``192.0.2.10``."
@@ -1071,11 +1200,11 @@ msgstr ""
 "IPv4-Adressen haben eine 32-Bit-Länge und Sie schreiben sie in vier "
 "Blöcken in Dezimalform, zum Beispiel ``192.0.2.10``."
 
-#: ../../deployment/initial-system-configuration.rst:191
+#: ../../deployment/initial-system-configuration.rst:222
 msgid "IPv6 addresses"
 msgstr "IPv6 Adressen"
 
-#: ../../deployment/initial-system-configuration.rst:192
+#: ../../deployment/initial-system-configuration.rst:223
 msgid ""
 "IPv6 addresses are four times as long and you typically write them in "
 "hexadecimal form, for example ``2001:db8:fe29:de27:0000:0000:0000:0000``."
@@ -1084,11 +1213,11 @@ msgstr ""
 " Hexadezimalform, zum Beispiel "
 "``2001:db8:fe29:de27:0000:0000:0000:0000``."
 
-#: ../../deployment/initial-system-configuration.rst:195
+#: ../../deployment/initial-system-configuration.rst:226
 msgid "Other network address parameters"
 msgstr "Andere Parameter der Netzwerkadresse"
 
-#: ../../deployment/initial-system-configuration.rst:196
+#: ../../deployment/initial-system-configuration.rst:227
 msgid ""
 "In addition to a static IP address, the installer requests values for "
 "network mask, gateway, and DNS servers."
@@ -1096,16 +1225,16 @@ msgstr ""
 "Zusätzlich zu einer statischen IP-Adresse fordert der Installer Werte für"
 " Netzwerkmaske, Gateway und DNS-Server an."
 
-#: ../../deployment/initial-system-configuration.rst:201
-#: ../../deployment/initial-system-configuration.rst:204
+#: ../../deployment/initial-system-configuration.rst:232
+#: ../../deployment/initial-system-configuration.rst:235
 msgid "Specify an IP address"
 msgstr "IP-Adresse angeben"
 
-#: ../../deployment/initial-system-configuration.rst:206
+#: ../../deployment/initial-system-configuration.rst:237
 msgid "Manual DNS server setting configuration"
 msgstr "Manuelle Konfiguration der DNS Server Einstellung"
 
-#: ../../deployment/initial-system-configuration.rst:207
+#: ../../deployment/initial-system-configuration.rst:238
 msgid ""
 "Consider the following points when you specify a DNS server manually. "
 "They depend on the intended subsequent use of the Nubus for UCS system."
@@ -1114,11 +1243,11 @@ msgstr ""
 "angeben. Sie hängen von der beabsichtigten nachfolgenden Verwendung des "
 "Nubus für UCS Systems ab."
 
-#: ../../deployment/initial-system-configuration.rst:210
+#: ../../deployment/initial-system-configuration.rst:241
 msgid "First Nubus for UCS system"
 msgstr "Erste Nubus für UCS System"
 
-#: ../../deployment/initial-system-configuration.rst:211
+#: ../../deployment/initial-system-configuration.rst:242
 msgid ""
 "When you install the first Nubus for UCS system and create a Nubus for "
 "UCS domain, use the IP address of the local router, if it provides the "
@@ -1130,11 +1259,11 @@ msgstr ""
 "wenn er den DNS-Dienst bereitstellt, oder den DNS-Server des "
 "Internetanbieters als DNS-Server-Adresse."
 
-#: ../../deployment/initial-system-configuration.rst:216
+#: ../../deployment/initial-system-configuration.rst:247
 msgid "Additional Nubus for UCS system"
 msgstr "Weiteres Nubus für UCS System"
 
-#: ../../deployment/initial-system-configuration.rst:217
+#: ../../deployment/initial-system-configuration.rst:248
 msgid ""
 "For the installation of every additional Nubus for UCS system, use the IP"
 " address of a :term:`UCS Primary Directory Node` as the DNS server. This "
@@ -1148,11 +1277,11 @@ msgstr ""
 "Directory Node ordnungsgemäß funktioniert. Im Zweifelsfall verwenden Sie "
 "die IP-Adresse des UCS Primary Directory Node Systems."
 
-#: ../../deployment/initial-system-configuration.rst:222
+#: ../../deployment/initial-system-configuration.rst:253
 msgid "Nubus for UCS in Windows Active Directory domain"
 msgstr "Nubus für UCS in einer Windows Active Directory Domäne"
 
-#: ../../deployment/initial-system-configuration.rst:223
+#: ../../deployment/initial-system-configuration.rst:254
 msgid ""
 "If the Nubus for UCS system is to join a Windows Active Directory domain "
 "during the installation, use the IP address of an Active Directory domain"
@@ -1166,13 +1295,13 @@ msgstr ""
 " unerlässlich, damit die automatische Erkennung des Windows Active "
 "Directory Domain-Controllers ordnungsgemäß funktioniert."
 
-#: ../../deployment/initial-system-configuration.rst:230
-#: ../../deployment/initial-system-configuration.rst:242
-#: ../../deployment/initial-system-configuration.rst:245
+#: ../../deployment/initial-system-configuration.rst:261
+#: ../../deployment/initial-system-configuration.rst:273
+#: ../../deployment/initial-system-configuration.rst:276
 msgid "Define the root password"
 msgstr "Root-Passwort festlegen"
 
-#: ../../deployment/initial-system-configuration.rst:232
+#: ../../deployment/initial-system-configuration.rst:263
 msgid ""
 "Defining a password for the ``root`` user is necessary to sign in to the "
 "installed system, see :numref:`deployment-initial-system-configuration-"
@@ -1185,20 +1314,20 @@ msgid ""
 msgstr ""
 "Die Festlegung eines Passworts für den Benutzer ``root`` ist "
 "erforderlich, um sich am installierten System anzumelden, siehe :numref"
-":`deployment-initial-system-configuration-password-figure`. Wenn Sie einen "
-":term:`UCS Primary Directory Node` installieren, verwendet der Installer "
-"dieses Passwort auch für den Domänenbenutzer ``Administrator``. Im "
-"späteren Betrieb können Sie die Passwörter für die Benutzer ``root`` und "
-"``Administrator`` unabhängig voneinander verwalten. Sie müssen das "
+":`deployment-initial-system-configuration-password-figure`. Wenn Sie "
+"einen :term:`UCS Primary Directory Node` installieren, verwendet der "
+"Installer dieses Passwort auch für den Domänenbenutzer ``Administrator``."
+" Im späteren Betrieb können Sie die Passwörter für die Benutzer ``root`` "
+"und ``Administrator`` unabhängig voneinander verwalten. Sie müssen das "
 "Passwort zweimal eingeben, um sicherzustellen, dass es korrekt definiert "
 "ist. Aus Sicherheitsgründen muss das Passwort mindestens acht Zeichen "
 "enthalten."
 
-#: ../../deployment/initial-system-configuration.rst:250
+#: ../../deployment/initial-system-configuration.rst:281
 msgid "Partition the hard drive"
 msgstr "Festplatte partitionieren"
 
-#: ../../deployment/initial-system-configuration.rst:252
+#: ../../deployment/initial-system-configuration.rst:283
 msgid ""
 "The *Univention Installer* supports to partition hard drives and create "
 "different file systems, such as ``ext4`` and ``XFS``. In addition, you "
@@ -1211,7 +1340,7 @@ msgstr ""
 "konfigurieren, wie den Logical Volume Manager (LVM), RAID oder mit LUKS "
 "verschlüsselte Partitionen."
 
-#: ../../deployment/initial-system-configuration.rst:257
+#: ../../deployment/initial-system-configuration.rst:288
 msgid ""
 "The *Univention Installer* automatically selects a suitable partition "
 "layout, Master Boot Record (MBR) or GUID Partition Table (GPT), depending"
@@ -1225,7 +1354,7 @@ msgstr ""
 "ausgewählten Festplatte. Auf Systemen mit dem Unified Extensible Firmware"
 " Interface (UEFI) verwendet der Installer automatisch GPT."
 
-#: ../../deployment/initial-system-configuration.rst:263
+#: ../../deployment/initial-system-configuration.rst:294
 msgid ""
 "The *Univention Installer* offers guided partitioning to simplify the "
 "installation. In the guided installation, the installer applies certain "
@@ -1239,7 +1368,7 @@ msgstr ""
 "und Formatierung auf die ausgewählte Festplatte an. Zusätzlich können Sie"
 " die Festplatte manuell selbst partitionieren."
 
-#: ../../deployment/initial-system-configuration.rst:268
+#: ../../deployment/initial-system-configuration.rst:299
 msgid ""
 "The installer offers the following schemes for guided partitioning, see "
 ":numref:`deployment-initial-system-configuration-partitioning-figure`:"
@@ -1248,11 +1377,11 @@ msgstr ""
 "Partitionierung, siehe :numref:`deployment-initial-system-configuration-"
 "partitioning-figure`:"
 
-#: ../../deployment/initial-system-configuration.rst:273
+#: ../../deployment/initial-system-configuration.rst:304
 msgid "Guided - Use entire disk"
 msgstr "Geführt - Gesamte Festplatte verwenden"
 
-#: ../../deployment/initial-system-configuration.rst:274
+#: ../../deployment/initial-system-configuration.rst:305
 msgid ""
 "The installer creates an individual partition for each file system. It "
 "doesn't use abstraction layers, such as LVM. It assigns the number of "
@@ -1264,11 +1393,11 @@ msgstr ""
 "der Dateisysteme oder Partitionen zu. Die Größe der jeweiligen Festplatte"
 " begrenzt die Größen der Partitionen."
 
-#: ../../deployment/initial-system-configuration.rst:281
+#: ../../deployment/initial-system-configuration.rst:312
 msgid "Guided - Use entire disk and set up LVM"
 msgstr "Geführt - Gesamte Festplatte verwenden und LVM einrichten"
 
-#: ../../deployment/initial-system-configuration.rst:282
+#: ../../deployment/initial-system-configuration.rst:313
 msgid ""
 "The installer creates a Logical Volume Group on the selected hard drive "
 "first. For each file system, it then creates a separate logical volume "
@@ -1285,11 +1414,11 @@ msgstr ""
 "Festplatten vergrößern. Im Zweifelsfall wählen Sie dieses "
 "Partitionierungsschema."
 
-#: ../../deployment/initial-system-configuration.rst:290
+#: ../../deployment/initial-system-configuration.rst:321
 msgid "Guided - Use entire disk with encrypted LVM"
 msgstr "Geführt - Gesamte Festplatte mit verschlüsseltem LVM verwenden"
 
-#: ../../deployment/initial-system-configuration.rst:291
+#: ../../deployment/initial-system-configuration.rst:322
 msgid ""
 "This partitioning scheme is the same as :ref:`deployment-initial-system-"
 "configuration-partitioning-lvm`, with the addition that it uses an "
@@ -1297,13 +1426,13 @@ msgid ""
 "enter the password for the encrypted volume group every time you start "
 "the system."
 msgstr ""
-"Dieses Partitionierungsschema ist dasselbe wie :ref:`deployment-"
-"initial-system-configuration-partitioning-lvm`, mit der Ergänzung, dass es eine "
+"Dieses Partitionierungsschema ist dasselbe wie :ref:`deployment-initial-"
+"system-configuration-partitioning-lvm`, mit der Ergänzung, dass es eine "
 "verschlüsselte Partition für die LVM Volume Group verwendet. Folglich "
 "müssen Sie das Passwort für die verschlüsselte Volume Group bei jedem "
 "Systemstart eingeben."
 
-#: ../../deployment/initial-system-configuration.rst:297
+#: ../../deployment/initial-system-configuration.rst:328
 msgid ""
 "In all mentioned partitioning schemas, the installer deletes all existing"
 " data on the selected hard drive during the partitioning."
@@ -1312,12 +1441,12 @@ msgstr ""
 "vorhandenen Daten auf der ausgewählten Festplatte während der "
 "Partitionierung."
 
-#: ../../deployment/initial-system-configuration.rst:303
-#: ../../deployment/initial-system-configuration.rst:306
+#: ../../deployment/initial-system-configuration.rst:334
+#: ../../deployment/initial-system-configuration.rst:337
 msgid "Select the partitioning scheme"
 msgstr "Partitionierungsschema auswählen"
 
-#: ../../deployment/initial-system-configuration.rst:308
+#: ../../deployment/initial-system-configuration.rst:339
 msgid ""
 "Select a hard drive from the list of the detected hard drives, where you "
 "want to apply the partitioning scheme to."
@@ -1325,7 +1454,7 @@ msgstr ""
 "Wählen Sie eine Festplatte aus der Liste der erkannten Festplatten aus, "
 "auf die Sie das Partitionierungsschema anwenden möchten."
 
-#: ../../deployment/initial-system-configuration.rst:311
+#: ../../deployment/initial-system-configuration.rst:342
 msgid ""
 "Each partitioning version has the following sub schemas, which differ in "
 "the number of file systems it creates:"
@@ -1333,11 +1462,11 @@ msgstr ""
 "Jede Partitionierungsversion hat die folgenden Unterschemata, die sich in"
 " der Anzahl der erstellten Dateisysteme unterscheiden:"
 
-#: ../../deployment/initial-system-configuration.rst:314
+#: ../../deployment/initial-system-configuration.rst:345
 msgid "All files in one partition"
 msgstr "Alle Dateien in einer Partition"
 
-#: ../../deployment/initial-system-configuration.rst:315
+#: ../../deployment/initial-system-configuration.rst:346
 msgid ""
 "The installer creates just one partition or logical volume for the "
 ":file:`/` file system."
@@ -1345,11 +1474,11 @@ msgstr ""
 "Der Installer erstellt nur eine Partition oder ein logisches Volume für "
 "das :file:`/`-Dateisystem."
 
-#: ../../deployment/initial-system-configuration.rst:318
+#: ../../deployment/initial-system-configuration.rst:349
 msgid "Separate :file:`/home` partition"
 msgstr "Separate :file:`/home`-Partition"
 
-#: ../../deployment/initial-system-configuration.rst:319
+#: ../../deployment/initial-system-configuration.rst:350
 msgid ""
 "In addition to a file system for :file:`/`, the installer creates an "
 "additional file system for :file:`/home/`."
@@ -1357,7 +1486,7 @@ msgstr ""
 "Zusätzlich zu einem Dateisystem für :file:`/` erstellt der Installer ein "
 "zusätzliches Dateisystem für :file:`/home/`."
 
-#: ../../deployment/initial-system-configuration.rst:322
+#: ../../deployment/initial-system-configuration.rst:353
 msgid ""
 "Separate :file:`/home`, :file:`/usr`, :file:`/var` and :file:`/tmp` "
 "partition"
@@ -1365,7 +1494,7 @@ msgstr ""
 "Separate :file:`/home`-, :file:`/usr`-, :file:`/var`- und "
 ":file:`/tmp`-Partitionen"
 
-#: ../../deployment/initial-system-configuration.rst:323
+#: ../../deployment/initial-system-configuration.rst:354
 msgid ""
 "In addition to a file system for :file:`/`, the installer also creates an"
 " additional file system for each of :file:`/home/`, :file:`/usr/`, "
@@ -1375,7 +1504,7 @@ msgstr ""
 " ein zusätzliches Dateisystem für jeweils :file:`/home/`, :file:`/usr/`, "
 ":file:`/var/` und :file:`/tmp/`."
 
-#: ../../deployment/initial-system-configuration.rst:326
+#: ../../deployment/initial-system-configuration.rst:357
 msgid ""
 "Before the installer applies a change to the hard drive, it summarizes "
 "the change again that you must explicitly confirm, see :numref"
@@ -1383,18 +1512,19 @@ msgid ""
 msgstr ""
 "Bevor der Installer eine Änderung auf die Festplatte anwendet, fasst er "
 "die Änderung erneut zusammen, die Sie explizit bestätigen müssen, siehe "
-":numref:`deployment-initial-system-configuration-partitioning-write-lvm-figure`."
+":numref:`deployment-initial-system-configuration-partitioning-write-lvm-"
+"figure`."
 
-#: ../../deployment/initial-system-configuration.rst:332
-#: ../../deployment/initial-system-configuration.rst:335
+#: ../../deployment/initial-system-configuration.rst:363
+#: ../../deployment/initial-system-configuration.rst:366
 msgid "Confirm to apply changes to the hard drive"
 msgstr "Anwendung der Änderungen auf die Festplatte bestätigen"
 
-#: ../../deployment/initial-system-configuration.rst:340
+#: ../../deployment/initial-system-configuration.rst:371
 msgid "Finish installation"
 msgstr "Installation abschließen"
 
-#: ../../deployment/initial-system-configuration.rst:342
+#: ../../deployment/initial-system-configuration.rst:373
 msgid ""
 "After the installer completes the partitioning, it automatically installs"
 " the Nubus for UCS base system and additional software. The software "
@@ -1410,16 +1540,18 @@ msgstr ""
 "Installer das System durch Installation des GRUB-Bootloaders startbereit,"
 " siehe :numref:`deployment-initial-system-configuration-finish-figure`."
 
-#: ../../deployment/initial-system-configuration.rst:349
+#: ../../deployment/initial-system-configuration.rst:380
 msgid ""
 "A restart into the freshly installed system follows subsequently to "
-"complete the system configuration."
+"complete the system configuration. To continue with the domain setup, see"
+" :ref:`deployment-domain-setup`."
 msgstr ""
 "Es folgt anschließend ein Neustart in das frisch installierte System, um "
-"die Systemkonfiguration abzuschließen."
+"die Systemkonfiguration abzuschließen. Um mit der Einrichtung der Domäne "
+"fortzufahren, siehe :ref:`deployment-domain-setup`."
 
-#: ../../deployment/initial-system-configuration.rst:354
-#: ../../deployment/initial-system-configuration.rst:357
+#: ../../deployment/initial-system-configuration.rst:387
+#: ../../deployment/initial-system-configuration.rst:390
 msgid "Finish the installation"
 msgstr "Installation abschließen"
 
@@ -1427,11 +1559,95 @@ msgstr "Installation abschließen"
 msgid "Installation methods"
 msgstr "Installationsmethoden"
 
-#: ../../deployment/install.rst:12
+#: ../../deployment/install.rst:9
+msgid ""
+"This section covers the various methods available to install Nubus for "
+"Univention Corporate Server (UCS) across different infrastructure "
+"environments. Whether deploying on physical servers, virtual machines, "
+"cloud platforms, or systems with specific configurations, the following "
+"sections provide step-by-step instructions for each installation method."
+msgstr ""
+"Dieser Abschnitt behandelt die verschiedenen Methoden zur Installation "
+"von Nubus für Univention Corporate Server (UCS) in verschiedenen "
+"Infrastrukturumgebungen. Ob auf physischen Servern, virtuellen Maschinen,"
+" Cloud-Plattformen oder Systemen mit spezifischen Konfigurationen "
+"bereitgestellt, die folgenden Abschnitte enthalten Schritt-für-Schritt-"
+"Anweisungen für jede Installationsmethode."
+
+#: ../../deployment/install.rst:16
+msgid ""
+"Choose the installation method that best matches your deployment "
+"environment:"
+msgstr ""
+"Wählen Sie die Methode, die am besten zu Ihrer Installationsumgebung "
+"passt:"
+
+#: ../../deployment/install.rst:18
+msgid "Physical and Virtual Machine Installation"
+msgstr "Installation auf physischen und virtuellen Maschinen"
+
+#: ../../deployment/install.rst:19
+msgid ""
+"The standard interactive installation from DVD for traditional on-"
+"premises hardware and hypervisor environments."
+msgstr ""
+"Die standardmäßige interaktive Installation von DVD für traditionelle "
+"physische Hardware und Hypervisor-Umgebungen."
+
+#: ../../deployment/install.rst:21
+msgid "Text Mode Installation"
+msgstr "Installation im Textmodus"
+
+#: ../../deployment/install.rst:22
+msgid ""
+"An alternative text-based installer for systems with graphical interface "
+"compatibility issues."
+msgstr ""
+"Ein alternativer Installer für Systeme mit Problemen mit der grafischen "
+"Version des Installers."
+
+#: ../../deployment/install.rst:24
+msgid "Cloud Deployment"
+msgstr "Cloud Installation"
+
+#: ../../deployment/install.rst:25
+msgid ""
+"Amazon EC2-based installation using pre-configured machine images, "
+"suitable for cloud-native deployments."
+msgstr ""
+"Amazon EC2-basierte Installation mit vorkonfigurierten Machine Images, "
+"geeignet für Cloud-native Installationen."
+
+#: ../../deployment/install.rst:27
+msgid "VMware-Specific Considerations"
+msgstr "VMware-spezifische Überlegungen"
+
+#: ../../deployment/install.rst:28
+msgid ""
+"Platform-specific configuration and driver requirements for VMware "
+"environments."
+msgstr ""
+"Plattformspezifische Konfiguration und Treiberanforderungen für VMware-"
+"Umgebungen."
+
+#: ../../deployment/install.rst:30
+msgid ""
+"Each method guides you through the same core configuration steps: network"
+" setup, hard drive partitioning, hostname and domain naming, and the "
+"domain configuration. The installation process is interactive and prompts"
+" you for all necessary system settings."
+msgstr ""
+"Jede Methode führt Sie durch die gleichen grundlegenden "
+"Konfigurationsschritte: Netzwerkeinrichtung, Partitionierung der "
+"Festplatte, Benennung der Rechnernamen und Domäne sowie die Konfiguration"
+" der Domäne. Die Installation ist interaktiv und erfragt alle notwendigen"
+" Systemeinstellungen."
+
+#: ../../deployment/install.rst:39
 msgid "Physical and virtual machine installation"
 msgstr "Installation auf physischen und virtuellen Maschinen"
 
-#: ../../deployment/install.rst:14
+#: ../../deployment/install.rst:41
 msgid ""
 "The following sections describe how to install Nubus for Univention "
 "Corporate Server (UCS). You install Nubus for UCS from DVD on physical "
@@ -1445,7 +1661,7 @@ msgstr ""
 "erfragt alle notwendigen Systemeinstellungen in einer grafischen "
 "Oberfläche."
 
-#: ../../deployment/install.rst:20
+#: ../../deployment/install.rst:47
 msgid ""
 "The installation DVD is available for the computer architecture "
 "``amd64``, 64-bit. In addition to support for the widely distributed BIOS"
@@ -1461,7 +1677,7 @@ msgstr ""
 "ist auch in der Lage, Systeme mit aktiviertem Secure Boot zu starten und "
 "Nubus für UCS dort zu installieren."
 
-#: ../../deployment/install.rst:28
+#: ../../deployment/install.rst:55
 msgid ""
 "Univention doesn't support the simultaneous operation of UCS and Debian "
 "on a UEFI system."
@@ -1469,7 +1685,7 @@ msgstr ""
 "Univention unterstützt nicht den gleichzeitigen Betrieb von UCS und "
 "Debian auf einem UEFI-System."
 
-#: ../../deployment/install.rst:30
+#: ../../deployment/install.rst:57
 msgid ""
 "The reason for this is the GRUB boot loader of Nubus for UCS that partly "
 "uses the same configuration files as Debian."
@@ -1477,7 +1693,7 @@ msgstr ""
 "Der Grund dafür ist der GRUB-Bootloader von Nubus für UCS, der teilweise "
 "dieselben Konfigurationsdateien wie Debian verwendet."
 
-#: ../../deployment/install.rst:33
+#: ../../deployment/install.rst:60
 msgid ""
 "An already installed Debian leads to the fact that the hardware can't "
 "boot Nubus for UCS anymore after the installation of or an update to UCS "
@@ -1489,7 +1705,7 @@ msgstr ""
 "booten kann. Eine nachträgliche Installation von Debian führt ebenfalls "
 "dazu, dass Nubus für UCS 5.2 nicht mehr booten kann."
 
-#: ../../deployment/install.rst:38
+#: ../../deployment/install.rst:65
 msgid ""
 "Besides operating Nubus for UCS on hardware or in a virtualization "
 "solution, you can also install it on the Amazon EC2 cloud using an AMI "
@@ -1500,21 +1716,21 @@ msgstr ""
 "einem AMI-Image installieren. Weitere Informationen finden Sie unter :ref"
 ":`deployment-installation-cloud`."
 
-#: ../../deployment/install.rst:43
+#: ../../deployment/install.rst:70
 msgid "You can use the installation interfaces with a keyboard and with mouse."
 msgstr "Sie können die Installationsoberflächen mit Tastatur und Maus bedienen."
 
-#: ../../deployment/install.rst:45
+#: ../../deployment/install.rst:72
 msgid "Use the :kbd:`Tab` key to jump to the next field."
 msgstr "Verwenden Sie die :kbd:`Tab`-Taste, um zum nächsten Feld zu springen."
 
-#: ../../deployment/install.rst:47
+#: ../../deployment/install.rst:74
 msgid "Use the :kbd:`Shift+Tab` keys to jump back to the previous field."
 msgstr ""
 "Verwenden Sie die Tasten :kbd:`Shift+Tab`, um zum vorherigen Feld zurück "
 "zu springen."
 
-#: ../../deployment/install.rst:49
+#: ../../deployment/install.rst:76
 msgid ""
 "Use the :kbd:`Enter` key to assign values to the input field and confirm "
 "buttons."
@@ -1522,13 +1738,13 @@ msgstr ""
 "Verwenden Sie die :kbd:`Enter`-Taste, um Werte dem Eingabefeld zuzuweisen"
 " und Schaltflächen zu bestätigen."
 
-#: ../../deployment/install.rst:51
+#: ../../deployment/install.rst:78
 msgid "Use the arrow keys inside a list or table for navigating between entries."
 msgstr ""
 "Verwenden Sie die Pfeiltasten innerhalb einer Liste oder Tabelle zur "
 "Navigation zwischen Einträgen."
 
-#: ../../deployment/install.rst:55
+#: ../../deployment/install.rst:80
 msgid ""
 "Use :guilabel:`Cancel` to cancel the current configuration step. You can "
 "select a previous configuration step again in the menu that the installer"
@@ -1543,73 +1759,19 @@ msgstr ""
 "Konfigurationsschritte nicht direkt auswählen, wenn Sie vorherige "
 "Schritte nicht abgeschlossen haben."
 
-#: ../../deployment/install.rst:65
-msgid "Cloud deployment"
-msgstr "Cloud Installation"
-
-#: ../../deployment/install.rst:67
-msgid ""
-"Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
-"cloud for Nubus for UCS. You can use this generic image for all Nubus for"
-" UCS system roles to derive an individual instance that you can configure"
-" through management modules regarding topics such as domain name and "
-"software selection."
-msgstr ""
-"Univention stellt ein Amazon Machine Image (AMI) für die Amazon EC2 Cloud"
-" für Nubus für UCS bereit. Sie können dieses generische Image für alle "
-"Nubus für UCS Systemrollen verwenden, um eine individuelle Instanz daraus"
-" zu erstellen, die Sie über Management-Module hinsichtlich Themen wie "
-"Domänenname und Softwareauswahl konfigurieren können."
-
-#: ../../deployment/install.rst:72
-msgid ""
-"For information about the setup process of a Nubus for UCS instance based"
-" on Amazon EC2, see :uv:help:`Amazon EC2 Quickstart <21833>`."
-msgstr ""
-"Für Informationen zum Einrichtungsprozess einer Nubus für UCS Instanz "
-"basierend auf Amazon EC2, siehe :uv:help:`Amazon EC2 Quickstart <21833>`."
-
-#: ../../deployment/install.rst:78
-msgid "VMware-specific considerations"
-msgstr "VMware-spezifische Überlegungen"
-
-#: ../../deployment/install.rst:80
-msgid ""
-"If you install Nubus for UCS as a guest in VMware, select the option "
-":menuselection:`Linux --> Debian` as the *Guest operating system*, "
-"because Nubus for UCS bases on Debian GNU/Linux."
-msgstr ""
-"Wenn Sie Nubus für UCS als Gast in VMware installieren, wählen Sie die "
-"Option :menuselection:`Linux --> Debian` als *Gastbetriebssystem*, da "
-"Nubus für UCS auf Debian GNU/Linux basiert."
-
-#: ../../deployment/install.rst:84
-msgid ""
-"The Linux kernel in Nubus for UCS includes all the support drivers "
-"necessary for operation in VMware, such as :file:`vmw_balloon`, "
-":file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`, and :file:`vmxnet3`."
-msgstr ""
-"Der Linux-Kernel in Nubus für UCS enthält alle für den Betrieb in VMware "
-"notwendigen Support-Treiber, wie :file:`vmw_balloon`, :file:`vmw_pvsci`, "
-":file:`vmw_vmci`, :file:`vmwgfx` und :file:`vmxnet3`."
-
 #: ../../deployment/install.rst:87
 msgid ""
-"Nubus for UCS delivers the :program:`Open VM Tools`. You can install them"
-" through the :program:`open-vm-tools` package. The package is optional, "
-"but necessary for features such as automatic time synchronization between"
-" the virtualization server and the guest system."
+"To continue the installation, follow steps in :ref:`deployment-initial-"
+"system-configuration`."
 msgstr ""
-"Nubus für UCS liefert die :program:`Open VM Tools`. Sie können sie über "
-"das Paket :program:`open-vm-tools` installieren. Das Paket ist optional, "
-"aber notwendig für Funktionen wie automatische Zeitsynchronisation "
-"zwischen dem Virtualisierungsserver und dem Gastsystem."
+"Um die Installation fortzusetzen, folgen Sie den Schritten in :ref"
+":`deployment-initial-system-configuration`."
 
-#: ../../deployment/install.rst:96
+#: ../../deployment/install.rst:94
 msgid "Text mode installation"
 msgstr "Installation im Textmodus"
 
-#: ../../deployment/install.rst:98
+#: ../../deployment/install.rst:96
 msgid ""
 "On systems that show problems with the graphical Univention installer, "
 "you can start the installation in text mode. For text mode, select :ref"
@@ -1618,17 +1780,19 @@ msgid ""
 msgstr ""
 "Auf Systemen, die Probleme mit dem grafischen Univention Installer "
 "zeigen, können Sie die Installation im Textmodus starten. Für den "
-"Textmodus wählen Sie :ref:`deployment-initial-system-configuration-install-mode-"
-"text-mode` im Boot-Menü für die Installation."
+"Textmodus wählen Sie :ref:`deployment-initial-system-configuration-"
+"install-mode-text-mode` im Boot-Menü für die Installation."
 
-#: ../../deployment/install.rst:103
+#: ../../deployment/install.rst:101
 msgid ""
 "During installation in text mode the installer shows the same information"
-" and asks for the same settings. After hard drive partitioning, the "
-"system is ready for the first boot and the installer restarts the system."
+" and asks for the same settings, see :ref:`deployment-initial-system-"
+"configuration`. After hard drive partitioning, the system is ready for "
+"the first boot and the installer restarts the system."
 msgstr ""
 "Während der Installation im Textmodus zeigt der Installer dieselben "
-"Informationen an und fragt nach denselben Einstellungen. Nach der "
+"Informationen an und fragt nach denselben Einstellungen, siehe :ref"
+":`deployment-initial-system-configuration`. Nach der "
 "Festplattenpartitionierung ist das System bereit für den ersten Start und"
 " der Installer startet das System neu."
 
@@ -1650,6 +1814,68 @@ msgstr ""
 "gleichen Schritten wie beim grafischen Installer fort, siehe :ref"
 ":`deployment-domain-setup`."
 
+#: ../../deployment/install.rst:119
+msgid "Cloud deployment"
+msgstr "Cloud Installation"
+
+#: ../../deployment/install.rst:121
+msgid ""
+"Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
+"cloud for Nubus for UCS. You can use this generic image for all Nubus for"
+" UCS system roles to derive an individual instance that you can configure"
+" through management modules regarding topics such as domain name and "
+"software selection."
+msgstr ""
+"Univention stellt ein Amazon Machine Image (AMI) für die Amazon EC2 Cloud"
+" für Nubus für UCS bereit. Sie können dieses generische Image für alle "
+"Nubus für UCS Systemrollen verwenden, um eine individuelle Instanz daraus"
+" zu erstellen, die Sie über Management-Module hinsichtlich Themen wie "
+"Domänenname und Softwareauswahl konfigurieren können."
+
+#: ../../deployment/install.rst:126
+msgid ""
+"For information about the setup process of a Nubus for UCS instance based"
+" on Amazon EC2, see :uv:help:`Amazon EC2 Quickstart <21833>`."
+msgstr ""
+"Für Informationen zum Einrichtungsprozess einer Nubus für UCS Instanz "
+"basierend auf Amazon EC2, siehe :uv:help:`Amazon EC2 Quickstart <21833>`."
+
+#: ../../deployment/install.rst:132
+msgid "VMware-specific considerations"
+msgstr "VMware-spezifische Überlegungen"
+
+#: ../../deployment/install.rst:134
+msgid ""
+"If you install Nubus for UCS as a guest in VMware, select the option "
+":menuselection:`Linux --> Debian` as the *Guest operating system*, "
+"because Nubus for UCS bases on Debian GNU/Linux."
+msgstr ""
+"Wenn Sie Nubus für UCS als Gast in VMware installieren, wählen Sie die "
+"Option :menuselection:`Linux --> Debian` als *Gastbetriebssystem*, da "
+"Nubus für UCS auf Debian GNU/Linux basiert."
+
+#: ../../deployment/install.rst:138
+msgid ""
+"The Linux kernel in Nubus for UCS includes all the support drivers "
+"necessary for operation in VMware, such as :file:`vmw_balloon`, "
+":file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`, and :file:`vmxnet3`."
+msgstr ""
+"Der Linux-Kernel in Nubus für UCS enthält alle für den Betrieb in VMware "
+"notwendigen Support-Treiber, wie :file:`vmw_balloon`, :file:`vmw_pvsci`, "
+":file:`vmw_vmci`, :file:`vmwgfx` und :file:`vmxnet3`."
+
+#: ../../deployment/install.rst:141
+msgid ""
+"Nubus for UCS delivers the :program:`Open VM Tools`. You can install them"
+" through the :program:`open-vm-tools` package. The package is optional, "
+"but necessary for features such as automatic time synchronization between"
+" the virtualization server and the guest system."
+msgstr ""
+"Nubus für UCS liefert die :program:`Open VM Tools`. Sie können sie über "
+"das Paket :program:`open-vm-tools` installieren. Das Paket ist optional, "
+"aber notwendig für Funktionen wie automatische Zeitsynchronisation "
+"zwischen dem Virtualisierungsserver und dem Gastsystem."
+
 #: ../../deployment/trouble.rst:7
 msgid "Troubleshooting for installation problems"
 msgstr "Fehlerbehebung bei Installationsproblemen"
@@ -1663,3 +1889,4 @@ msgstr ""
 "Für Informationen zu möglichen Installationsproblemen siehe `Univention "
 "Knowledge Base <https://help.univention.com/c/knowledge-"
 "base/supported/48>`_ im Abschnitt *Installation*."
+
