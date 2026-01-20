@@ -235,7 +235,7 @@ For security reasons the password must contain at least eight characters.
 .. _deployment-installation-physical-partitioning:
 
 Partition the hard drive
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 The *Univention Installer* supports to partition hard drives
 and create different file systems, such as ``ext4`` and ``XFS``.
@@ -321,7 +321,7 @@ see :numref:`deployment-installation-physical-partitioning-write-lvm-figure`.
 .. _deployment-installation-physical-finish:
 
 Finish installation
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 After the installer completes the partitioning,
 it automatically installs the Nubus for UCS base system and additional software.
