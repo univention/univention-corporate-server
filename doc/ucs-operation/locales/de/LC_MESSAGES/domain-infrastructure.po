@@ -1,0 +1,1114 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+msgid ""
+msgstr ""
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-22 15:12+0000\n"
+"PO-Revision-Date: 2026-01-22 16:19+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../domain-infrastructure/ha.rst:7
+msgid "Redundancy and failover for the Primary Directory Node"
+msgstr "Redundanz und Failover für den Primary Directory Node"
+
+#: ../../domain-infrastructure/ha.rst:9
+msgid ""
+"The Primary Directory Node is the central writing instance for the "
+"directory service in a Nubus for UCS domain. For an overview of system "
+"roles, see :ref:`domain-infrastructure-system-roles`."
+msgstr ""
+"Der Primary Directory Node ist die zentrale Schreibinstanz für den "
+"Verzeichnisdienst in einer Nubus für UCS Domäne. Einen Überblick über die"
+" Systemrollen finden Sie unter :ref:`domain-infrastructure-system-roles`."
+
+#: ../../domain-infrastructure/ha.rst:13
+msgid ""
+"A disruption to this single system represents a critical risk with "
+"significant consequences:"
+msgstr ""
+"Eine Störung dieses einzelnen Systems stellt ein kritisches Risiko mit "
+"erheblichen Folgen dar:"
+
+#: ../../domain-infrastructure/ha.rst:15
+msgid "Users can't authenticate to the domain."
+msgstr "Benutzer können sich nicht in der Domäne authentifizieren."
+
+#: ../../domain-infrastructure/ha.rst:16
+msgid "Administrators can't create or modify users and groups."
+msgstr "Administratoren können keine Benutzer und Gruppen erstellen oder ändern."
+
+#: ../../domain-infrastructure/ha.rst:17
+msgid "Password resets and account management operations fail."
+msgstr ""
+"Passwort-Zurücksetzen und Verwaltungsvorgänge für Benutzerkonten schlagen"
+" fehl."
+
+#: ../../domain-infrastructure/ha.rst:18
+msgid "New systems can't join the domain."
+msgstr "Neue Systeme können der Domäne nicht beitreten."
+
+#: ../../domain-infrastructure/ha.rst:19
+msgid ""
+"Mail services, file sharing, and other integrated applications can't "
+"serve domain users."
+msgstr ""
+"Mail-Dienste, Dateifreigabe und andere integrierte Anwendungen können "
+"keine Domänenbenutzer bedienen."
+
+#: ../../domain-infrastructure/ha.rst:20
+msgid ""
+"All domain members lose their ability to modify critical directory data "
+"and manage domain resources."
+msgstr ""
+"Alle Domänenmitglieder verlieren die Fähigkeit, kritische "
+"Verzeichnisdaten zu ändern und Ressourcen in der Domänen zu verwalten."
+
+#: ../../domain-infrastructure/ha.rst:22
+msgid "This page describes two complementary strategies to mitigate this risk:"
+msgstr ""
+"Diese Seite beschreibt zwei ergänzende Strategien, um dieses Risiko zu "
+"verringern:"
+
+#: ../../domain-infrastructure/ha.rst:24
+msgid "Redundancy"
+msgstr "Redundanz"
+
+#: ../../domain-infrastructure/ha.rst:25
+msgid ""
+"Distribute directory data across Backup and Replica Directory Nodes to "
+"ensure read access continues if the Primary becomes unavailable."
+msgstr ""
+"Verteilen Sie Verzeichnisdaten auf Backup und Replica Directory Nodes, um"
+" sicherzustellen, dass der Lesezugriff fortgesetzt wird, wenn der Primary"
+" nicht verfügbar ist."
+
+#: ../../domain-infrastructure/ha.rst:28
+msgid "Failover"
+msgstr "Failover"
+
+#: ../../domain-infrastructure/ha.rst:29
+msgid ""
+"Promote a Backup Directory Node to Primary, restoring write capability "
+"when the current Primary becomes unavailable."
+msgstr ""
+"Verwandeln Sie einen Backup Directory Node in einen Primary Directory "
+"Node, um die Schreibfähigkeit wiederherzustellen, wenn der aktuelle "
+"Primary ausfällt."
+
+#: ../../domain-infrastructure/ha.rst:32
+msgid ""
+"Whether you are planning infrastructure from scratch or recovering from "
+"an outage, this page guides you through building and maintaining a "
+"resilient directory service."
+msgstr ""
+"Ob Sie eine Infrastruktur von Grund auf planen oder sich von einem "
+"Ausfall erholen, diese Seite führt Sie durch das Aufbauen und Beibehalten"
+" eines ausfallsicheren Verzeichnisdienstes."
+
+#: ../../domain-infrastructure/ha.rst:40
+msgid "Fault-tolerant domain setup"
+msgstr "Einrichtung einer fehlertoleranten Domäne"
+
+#: ../../domain-infrastructure/ha.rst:42
+msgid ""
+"A Nubus for UCS domain relies on critical services such as LDAP, DNS, "
+"Kerberos, DHCP, and Active Directory-compatible domain controllers. To "
+"ensure these services remain available during hardware failures or "
+"maintenance, distribute them across multiple Directory Nodes."
+msgstr ""
+"Eine Nubus für UCS Domäne vertraut auf kritische Dienste wie LDAP, DNS, "
+"Kerberos, DHCP und Active Directory-kompatible Domain Controller. Um "
+"sicherzustellen, dass diese Dienste bei Hardwarefehlern oder Wartungen "
+"verfügbar bleiben, verteilen Sie sie auf mehrere Directory Nodes."
+
+#: ../../domain-infrastructure/ha.rst:47
+msgid "Consider the following when planning redundancy:"
+msgstr "Beachten Sie das Folgende bei der Planung der Redundanz:"
+
+#: ../../domain-infrastructure/ha.rst:49
+msgid "At least one Backup Directory Node"
+msgstr "Mindestens ein Backup Directory Node"
+
+#: ../../domain-infrastructure/ha.rst:50
+msgid ""
+"Provides full data replication and promotion capability to a Primary "
+"Directory Node. Essential for production environments."
+msgstr ""
+"Bietet vollständige Datenreplikation und die Fähigkeit zur Umwandlung in "
+"einen Primary Directory Node. Wesentlich für Produktionsumgebungen."
+
+#: ../../domain-infrastructure/ha.rst:53
+msgid "Geographic distribution"
+msgstr "Geografische Verteilung"
+
+#: ../../domain-infrastructure/ha.rst:54
+msgid ""
+"Place Backup and Replica Directory Nodes in different locations for "
+"disaster recovery and local access."
+msgstr ""
+"Platzieren Sie Backup und Replica Directory Nodes an verschiedenen Orten "
+"für Notfallwiederherstellung und lokalen Zugriff."
+
+#: ../../domain-infrastructure/ha.rst:57
+msgid "Network connectivity"
+msgstr "Netzwerkkonnektivität"
+
+#: ../../domain-infrastructure/ha.rst:58
+msgid ""
+"Ensure all systems can reliably communicate with the Primary Directory "
+"Node."
+msgstr ""
+"Stellen Sie sicher, dass alle Systeme zuverlässig mit dem Primary "
+"Directory Node kommunizieren können."
+
+#: ../../domain-infrastructure/ha.rst:60
+msgid "Service distribution"
+msgstr "Verteilung von Diensten"
+
+#: ../../domain-infrastructure/ha.rst:61
+msgid ""
+"Plan which services run on which systems, such as LDAP, DNS, Kerberos, "
+"DHCP, and Samba."
+msgstr ""
+"Planen Sie, welche Dienste auf welchen Systemen laufen, wie LDAP, DNS, "
+"Kerberos, DHCP und Samba."
+
+#: ../../domain-infrastructure/ha.rst:64
+msgid "Building a fault-tolerant domain requires two steps:"
+msgstr "Das Aufbauen einer fehlertoleranten Domäne erfordert zwei Schritte:"
+
+#: ../../domain-infrastructure/ha.rst:66
+msgid "Install redundant Directory Nodes"
+msgstr "Redundante Directory Nodes installieren"
+
+#: ../../domain-infrastructure/ha.rst:68
+msgid ""
+"Add Backup and Replica Directory Nodes to your domain. For more "
+"information, see :external+uv-ucs-manual:ref:`domain-join` in :cite:t"
+":`ucs-manual`."
+msgstr ""
+"Fügen Sie Backup und Replica Directory Nodes zu Ihrer Domäne hinzu. "
+"Weitere Informationen finden Sie unter :external+uv-ucs-manual:ref"
+":`domain-join` im :cite:t:`ucs-manual`."
+
+#: ../../domain-infrastructure/ha.rst:73
+msgid "Configure service redundancy"
+msgstr "Dienst-Redundanz konfigurieren"
+
+#: ../../domain-infrastructure/ha.rst:75
+msgid "Configure LDAP, Kerberos, DNS, DHCP, and Samba to use multiple servers."
+msgstr ""
+"Konfigurieren Sie LDAP, Kerberos, DNS, DHCP und Samba, um mehrere Server "
+"zu verwenden."
+
+#: ../../domain-infrastructure/ha.rst:77
+msgid ""
+"The article :uv:kb:`Fail-safe domain setup <6682>` in the Univention "
+"Support database provides detailed configuration instructions for each "
+"service. Follow the procedures in the article after installing your "
+"Backup and Replica Directory Nodes to complete your fault-tolerant domain"
+" configuration."
+msgstr ""
+"Der Artikel :uv:kb:`Fail-safe domain setup <6682>` in der Univention "
+"Support-Datenbank bietet detaillierte Konfigurationsanleitungen für jeden"
+" Dienst. Befolgen Sie die Verfahren im Artikel nach der Installation "
+"Ihrer Backup und Replica Directory Nodes, um Ihre fehlertolerante Domain-"
+"Konfiguration abzuschließen."
+
+#: ../../domain-infrastructure/ha.rst:82
+msgid "LDAP server failover"
+msgstr "LDAP-Server-Failover"
+
+#: ../../domain-infrastructure/ha.rst:83
+msgid ""
+"Configure additional LDAP servers with UCR variables, so clients "
+"automatically fail over if the Primary Directory Node becomes "
+"unavailable."
+msgstr ""
+"Konfigurieren Sie zusätzliche LDAP-Server mit UCR-Variablen, damit "
+"Clients automatisch ein Failover durchführen, wenn der Primary Directory "
+"Node nicht verfügbar wird."
+
+#: ../../domain-infrastructure/ha.rst:86
+msgid "Kerberos Key Distribution Centers"
+msgstr "Kerberos-Schlüsselverteilungszentren"
+
+#: ../../domain-infrastructure/ha.rst:87
+msgid "Set up multiple Kerberos KDCs for authentication redundancy."
+msgstr ""
+"Richten Sie mehrere :spelling:word:`Kerberos KDCs` für "
+"Authentifizierungsredundanz ein."
+
+#: ../../domain-infrastructure/ha.rst:89
+msgid "DNS name servers"
+msgstr "DNS Nameserver"
+
+#: ../../domain-infrastructure/ha.rst:90
+msgid ""
+"Configure multiple name servers to ensure name resolution continues "
+"during maintenance or failures."
+msgstr ""
+"Konfigurieren Sie mehrere Nameserver, um sicherzustellen, dass die "
+"Namensauflösung während Wartungen oder Ausfällen fortgesetzt wird."
+
+#: ../../domain-infrastructure/ha.rst:93
+msgid "DHCP redundancy"
+msgstr "DHCP-Redundanz"
+
+#: ../../domain-infrastructure/ha.rst:94
+msgid ""
+"Install the DHCP server app on additional systems to ensure network "
+"configuration remains available."
+msgstr ""
+"Installieren Sie die DHCP-Server-App auf zusätzlichen Systemen, um "
+"sicherzustellen, dass die Netzwerkkonfiguration verfügbar bleibt."
+
+#: ../../domain-infrastructure/ha.rst:97
+msgid "Active Directory-compatible Domain Controllers"
+msgstr "Active Directory-kompatible Domain Controller"
+
+#: ../../domain-infrastructure/ha.rst:98
+msgid ""
+"If you need Active Directory functionality, deploy the Samba component on"
+" Backup and Replica Directory Nodes to provide redundant domain "
+"controller functionality."
+msgstr ""
+"Wenn Sie Active Directory Funktionalität benötigen, stellen Sie die "
+"Samba-Komponente auf Backup und Replica Directory Nodes bereit, um "
+"redundante Domain-Controller-Funktionalität zu bieten."
+
+#: ../../domain-infrastructure/ha.rst:105
+msgid "Backup to Primary promotion"
+msgstr "Umwandlung von Backup zu Primary"
+
+#: ../../domain-infrastructure/ha.rst:109
+msgid ""
+"A Nubus for UCS domain consists of only one Primary Directory Node, but "
+"has no limit in the number of Backup Directory Nodes. In contrast to the "
+"Primary Directory Node, the Backup Directory Node can't write changes to "
+"the domain data. For descriptions about the system roles, see the "
+"following sections:"
+msgstr ""
+"Eine Nubus für UCS Domäne besteht aus nur einem Primary Directory Node, "
+"hat aber keine Grenze bei der Anzahl der Backup Directory Nodes. Im "
+"Gegensatz zum Primary Directory Node kann der Backup Directory Node "
+"Änderungen an den Domänendaten nicht schreiben. Für Beschreibungen der "
+"Systemrollen siehe die folgenden Abschnitte:"
+
+#: ../../domain-infrastructure/ha.rst:115
+msgid ":ref:`domain-infrastructure-system-roles-primary-directory-node`"
+msgstr ":ref:`domain-infrastructure-system-roles-primary-directory-node`"
+
+#: ../../domain-infrastructure/ha.rst:116
+msgid ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
+msgstr ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
+
+#: ../../domain-infrastructure/ha.rst:118
+msgid ""
+"You can promote any Backup Directory Node to a Primary Directory Node. "
+"The following promotion scenarios exist:"
+msgstr ""
+"Sie können jeden Backup Directory Node zu einem Primary Directory Node "
+"umwandeln. Die folgenden Szenarien zur Umwandlung existieren:"
+
+#: ../../domain-infrastructure/ha.rst:121
+msgid "Emergency"
+msgstr "Notfall"
+
+#: ../../domain-infrastructure/ha.rst:122
+msgid ""
+"In an emergency, for example if the hardware of the Primary Directory "
+"Node fails."
+msgstr ""
+"In einem Notfall, z. B. wenn die Hardware des Primary Directory Node "
+"ausfällt."
+
+#: ../../domain-infrastructure/ha.rst:124
+msgid "Replacement"
+msgstr "Austausch"
+
+#: ../../domain-infrastructure/ha.rst:125
+msgid "To replace a fully functional Primary Directory Node with modern hardware."
+msgstr ""
+"Um einen vollständig funktionierenden Primary Directory Node durch "
+"moderne Hardware zu ersetzen."
+
+#: ../../domain-infrastructure/ha.rst:130
+msgid "Prepare backup to primary promotion"
+msgstr "Backup zu Primary Umwandlung vorbereiten"
+
+#: ../../domain-infrastructure/ha.rst:132
+msgid ""
+"The promotion primarily involves transferring authentication-related "
+"services such as LDAP, DNS, Kerberos, and Samba. You need to manually "
+"adjust the installed software through the management modules *App Center*"
+" and *Package Management*."
+msgstr ""
+"Die Umwandlung beinhaltet in erster Linie die Übertragung von Diensten "
+"relevant für die Authentifizierung wie LDAP, DNS, Kerberos und Samba. Sie"
+" müssen die installierte Software manuell über die Verwaltungsmodule *App"
+" Center* und *Paketverwaltung* anpassen."
+
+#: ../../domain-infrastructure/ha.rst:137
+msgid ""
+"For example, if the previous Primary Directory Node has the mail "
+"component installed, the promotion process doesn't install the app on the"
+" promoted Primary Directory Node. To minimize manual changes after the "
+"promotion, consider :ref:`deployment-primary-dn-resilience-fault-"
+"tolerant-setup`."
+msgstr ""
+"Wenn beispielsweise der vorherige Primary Directory Node die Mail-"
+"Komponente installiert hat, installiert der Umwandlungsprozess keine App "
+"auf dem umgewandelten Primary Directory Node. Um manuelle Änderungen nach"
+" der Umwandlung zu minimieren, beachten Sie :ref:`deployment-primary-dn-"
+"resilience-fault-tolerant-setup`."
+
+#: ../../domain-infrastructure/ha.rst:145
+msgid ""
+"The promotion of a Backup Directory Node to a Primary Directory Node is a"
+" serious and **irreversible** configuration change."
+msgstr ""
+"Die Umwandlung eines Backup Directory Node zu einem Primary Directory "
+"Node ist eine ernsthafte und **irreversible** Konfigurationsänderung."
+
+#: ../../domain-infrastructure/ha.rst:148
+msgid "Before promoting:"
+msgstr "Vor der Umwandlung:"
+
+#: ../../domain-infrastructure/ha.rst:150
+msgid ""
+"Shut down the Primary Directory Node and keep it powered off during and "
+"after the promotion."
+msgstr ""
+"Fahren Sie den Primary Directory Node herunter und halten Sie ihn während"
+" und nach der Umwandlung ausgeschaltet."
+
+#: ../../domain-infrastructure/ha.rst:151
+msgid ""
+"Compare installed packages, see :ref:`deployment-primary-dn-resilience-"
+"backup-primary-promotion-prepare-sync-ldap-schema`, and configuration, "
+"see :ref:`deployment-primary-dn-resilience-backup-primary-promotion-"
+"prepare-compare-ucr`, between Primary and Backup Directory Nodes."
+msgstr ""
+"Vergleichen Sie installierte Pakete, siehe :ref:`deployment-primary-dn-"
+"resilience-backup-primary-promotion-prepare-sync-ldap-schema`, und "
+"Konfiguration, siehe :ref:`deployment-primary-dn-resilience-backup-"
+"primary-promotion-prepare-compare-ucr`, zwischen Primary und Backup "
+"Directory Nodes."
+
+#: ../../domain-infrastructure/ha.rst:152
+msgid ""
+"If the Primary is unavailable in an emergency, use a file backup for "
+"comparison."
+msgstr ""
+"Wenn der Primary in einem Notfall nicht verfügbar ist, verwenden Sie ein "
+"Datei-Backup zum Vergleich."
+
+#: ../../domain-infrastructure/ha.rst:154
+msgid ""
+"After promoting, see :ref:`deployment-primary-dn-resilience-backup-"
+"primary-promotion-validate`:"
+msgstr ""
+"Nach der Umwandlung, siehe :ref:`deployment-primary-dn-resilience-backup-"
+"primary-promotion-validate`:"
+
+#: ../../domain-infrastructure/ha.rst:156
+msgid ""
+"Remove or update all references to the old Primary Directory Node across "
+"the domain."
+msgstr ""
+"Entfernen oder aktualisieren Sie alle Verweise auf den alten Primary "
+"Directory Node in der gesamten Domäne."
+
+#: ../../domain-infrastructure/ha.rst:158
+msgid "To prepare the backup to primary promotion, follow these steps:"
+msgstr ""
+"Folgen Sie diesen Schritten, um die Backup zu Primary Umwandlung "
+"vorzubereiten:"
+
+#: ../../domain-infrastructure/ha.rst:162
+msgid "Synchronize LDAP schema packages"
+msgstr "LDAP-Schema-Pakete synchronisieren"
+
+#: ../../domain-infrastructure/ha.rst:163
+msgid ""
+"If the Primary Directory Node has additional LDAP schema packages "
+"installed, you need to install them on the Backup Directory Node before "
+"you run the promotion."
+msgstr ""
+"Wenn der Primary Directory Node zusätzliche LDAP-Schema-Pakete "
+"installiert hat, müssen Sie diese vor der Umwandlung auf dem Backup "
+"Directory Node installieren."
+
+#: ../../domain-infrastructure/ha.rst:166
+msgid "Save the package list from the Primary Directory Node"
+msgstr "Speichern Sie die Paketliste vom Primary Directory Node"
+
+#: ../../domain-infrastructure/ha.rst:168
+msgid ""
+"To create the package list, run the command in :numref:`deployment-"
+"primary-dn-resilience-backup-primary-promotion-package-listing`."
+msgstr ""
+"Um die Paketliste zu erstellen, führen Sie den Befehl in :numref"
+":`deployment-primary-dn-resilience-backup-primary-promotion-package-"
+"listing` aus."
+
+#: ../../domain-infrastructure/ha.rst:171
+msgid "Save the package list"
+msgstr "Speichern Sie die Paketliste"
+
+#: ../../domain-infrastructure/ha.rst:171
+msgid "$ dpkg --get-selections \\* > dpkg.selection"
+msgstr "$ dpkg --get-selections \\* > dpkg.selection"
+
+#: ../../domain-infrastructure/ha.rst:177
+msgid "List packages with LDAP schema on the Primary Directory Node"
+msgstr "Pakete mit LDAP-Schema auf dem Primary Directory Node auflisten"
+
+#: ../../domain-infrastructure/ha.rst:179
+msgid ""
+"To list all packages on the Primary Directory Node with an LDAP schema, "
+"run the command in :numref:`deployment-primary-dn-resilience-backup-"
+"primary-promotion-package-ldap-schema-listing`."
+msgstr ""
+"Um alle Pakete auf dem Primary Directory Node mit LDAP-Schema "
+"aufzulisten, führen Sie den Befehl in :numref:`deployment-primary-dn-"
+"resilience-backup-primary-promotion-package-ldap-schema-listing` aus."
+
+#: ../../domain-infrastructure/ha.rst:183
+msgid "List of packages with an LDAP schema"
+msgstr "Liste von Paketen mit LDAP-Schema"
+
+#: ../../domain-infrastructure/ha.rst:183
+msgid ""
+"$ dpkg -S /etc/ldap/schema/*.schema \\\n"
+"  /usr/share/univention-ldap/schema/*.schema"
+msgstr ""
+"$ dpkg -S /etc/ldap/schema/*.schema \\\n"
+"  /usr/share/univention-ldap/schema/*.schema"
+
+#: ../../domain-infrastructure/ha.rst:190
+msgid "Compare the package lists on the Backup Directory Node"
+msgstr "Vergleichen Sie die Paketlisten auf dem Backup Directory Node"
+
+#: ../../domain-infrastructure/ha.rst:192
+msgid ""
+"Compare the :file:`dpkg.selection` file with the output from the same "
+"command on the Backup Directory Node. Ensure that the package list only "
+"differs in the packages :program:`univention-server-master` and :program"
+":`univention-server-backup`."
+msgstr ""
+"Vergleichen Sie die Datei :file:`dpkg.selection` mit der Ausgabe "
+"desselben Befehls auf dem Backup Directory Node. Stellen Sie sicher, dass"
+" sich die Paketliste nur in den Paketen :program:`univention-server-"
+"master` und :program:`univention-server-backup` unterscheidet."
+
+#: ../../domain-infrastructure/ha.rst:196
+msgid ""
+"If the comparison reveals other missing packages, you need to install "
+"them on the Backup Directory Node. Packages that install an LDAP schema "
+"are especially important."
+msgstr ""
+"Wenn der Vergleich andere fehlende Pakete enthüllt, müssen Sie diese auf "
+"dem Backup Directory Node installieren. Besonders wichtig sind Pakete, "
+"die ein LDAP-Schema installieren."
+
+#: ../../domain-infrastructure/ha.rst:200
+#: ../../domain-infrastructure/ha.rst:209
+msgid "Install the same packages on the Backup Directory Node"
+msgstr "Installieren Sie dieselben Pakete auf dem Backup Directory Node"
+
+#: ../../domain-infrastructure/ha.rst:202
+msgid ""
+"Use the :file:`dpkg.selection` file created on the Primary Directory Node"
+" in :numref:`deployment-primary-dn-resilience-backup-primary-promotion-"
+"package-listing` and run the command in :numref:`deployment-primary-dn-"
+"resilience-backup-primary-promotion-package-install-same-listing` on the "
+"Backup Directory Node."
+msgstr ""
+"Verwenden Sie die auf dem Primary Directory Node erstellte Datei "
+":file:`dpkg.selection` in :numref:`deployment-primary-dn-resilience-"
+"backup-primary-promotion-package-listing` und führen Sie den Befehl in "
+":numref:`deployment-primary-dn-resilience-backup-primary-promotion-"
+"package-install-same-listing` auf dem Backup Directory Node aus."
+
+#: ../../domain-infrastructure/ha.rst:209
+msgid ""
+"$ dpkg --set-selections < dpkg.selection\n"
+"$ apt-get dselect-upgrade"
+msgstr ""
+"$ dpkg --set-selections < dpkg.selection\n"
+"$ apt-get dselect-upgrade"
+
+#: ../../domain-infrastructure/ha.rst:218
+msgid "Compare Univention Configuration Registry"
+msgstr "Univention Configuration Registry vergleichen"
+
+#: ../../domain-infrastructure/ha.rst:219
+msgid ""
+"You need to save the Univention Configuration Registry inventory so that "
+"you can compare the configuration adjustments on the promoted Primary "
+"Directory Node."
+msgstr ""
+"Sie müssen das Univention Configuration Registry Inventar speichern, "
+"damit Sie die Konfigurationsanpassungen auf dem umgewandelten Primary "
+"Directory Node vergleichen können."
+
+#: ../../domain-infrastructure/ha.rst:222
+msgid ""
+"Compare the following files on the Primary Directory Node with those on "
+"the Backup Directory Node:"
+msgstr ""
+"Vergleichen Sie die folgenden Dateien auf dem Primary Directory Node mit "
+"denen auf dem Backup Directory Node:"
+
+#: ../../domain-infrastructure/ha.rst:224
+msgid ":file:`/etc/univention/base.conf`"
+msgstr ":file:`/etc/univention/base.conf`"
+
+#: ../../domain-infrastructure/ha.rst:225
+msgid ":file:`/etc/univention/base-forced.conf`"
+msgstr ":file:`/etc/univention/base-forced.conf`"
+
+#: ../../domain-infrastructure/ha.rst:227
+#, python-brace-format, python-format
+msgid ""
+"UCS saves a copy of those files every night to :file:`/var/univention-"
+"backup/ucr-backup_{%Y%m%d}.tgz`."
+msgstr ""
+"UCS speichert jede Nacht eine Kopie dieser Dateien unter :file:`/var"
+"/univention-backup/ucr-backup_{%Y%m%d}.tgz`."
+
+#: ../../domain-infrastructure/ha.rst:233
+msgid "Run the backup to primary promotion"
+msgstr "Führen Sie die Backup zu Primary Umwandlung aus"
+
+#: ../../domain-infrastructure/ha.rst:235
+msgid ""
+"To promote a Backup Directory Node to the Primary Directory Node, run the"
+" :command:`/usr/lib/univention-ldap/univention-backup2master` command on "
+"the Backup Directory Node. The Backup Directory Node system must reboot "
+"after the promotion. The promotion process logs to the "
+":file:`/var/log/univention/backup2master.log` log file."
+msgstr ""
+"Um einen Backup Directory Node in einen Primary Directory Node "
+"umzuwandeln, führen Sie den Befehl :command:`/usr/lib/univention-ldap"
+"/univention-backup2master` auf dem Backup Directory Node aus. Das Backup "
+"Directory Node System muss nach der Umwandlung neu gestartet werden. Der "
+"Umwandlungsprozess protokolliert in der Log-Datei "
+":file:`/var/log/univention/backup2master.log`."
+
+#: ../../domain-infrastructure/ha.rst:240
+msgid "The :command:`univention-backup2master` command runs the following steps:"
+msgstr ""
+"Der Befehl :command:`univention-backup2master` führt die folgenden "
+"Schritte aus:"
+
+#: ../../domain-infrastructure/ha.rst:242
+msgid "Verify the environment:"
+msgstr "Überprüfen der Umgebung:"
+
+#: ../../domain-infrastructure/ha.rst:244
+msgid ""
+"The system must be a Backup Directory Node that has already joined the "
+"domain."
+msgstr ""
+"Das System muss ein Backup Directory Node sein, der bereits der Domäne "
+"beigetreten ist."
+
+#: ../../domain-infrastructure/ha.rst:247
+msgid ""
+"The Backup Directory Node can resolve the Primary Directory Node through "
+"DNS and reaches the repository server."
+msgstr ""
+"Der Backup Directory Node kann den Primary Directory Node über DNS "
+"auflösen und den Repository-Server erreichen."
+
+#: ../../domain-infrastructure/ha.rst:250
+msgid "The Primary Directory Node is offline and not reachable anymore."
+msgstr "Der Primary Directory Node ist offline und nicht mehr erreichbar."
+
+#: ../../domain-infrastructure/ha.rst:254
+msgid ""
+"Run component scripts in the :file:`/usr/lib/univention-"
+"backup2master/pre` directory **before** the promotion begins. The "
+"directory contains executable scripts for components that require custom "
+"handling for the Primary Directory Node."
+msgstr ""
+"Ausführen der Skripte von Komponenten im Verzeichnis :file:`/usr/lib"
+"/univention-backup2master/pre` **vor** Beginn der Umwandlung aus. Das "
+"Verzeichnis enthält ausführbare Skripte für Komponenten, die eine "
+"benutzerdefinierte Behandlung für den Primary Directory Node erfordern."
+
+#: ../../domain-infrastructure/ha.rst:258
+msgid "Reconfigure the critical services:"
+msgstr "Rekonfigurieren der kritischen Dienste:"
+
+#: ../../domain-infrastructure/ha.rst:260
+msgid ""
+"Stop the most important services OpenLDAP, Samba, Kerberos, Univention "
+"Directory Notifier, and Directory Listener."
+msgstr ""
+"Beenden der wichtigsten Dienste OpenLDAP, Samba, Kerberos, Univention "
+"Directory Notifier und Directory Listener."
+
+#: ../../domain-infrastructure/ha.rst:263
+msgid ""
+"Change important UCR variables, such as :envvar:`ldap/master` and "
+":envvar:`server/role`."
+msgstr ""
+"Ändern wichtiger UCR-Variablen wie :envvar:`ldap/master` und "
+":envvar:`server/role`."
+
+#: ../../domain-infrastructure/ha.rst:266
+msgid ""
+"Make the UCS Root CA certificate available through the web server on the "
+"Backup Directory Node."
+msgstr ""
+"Bereitstellen des UCS Root CA Zertifikat über den Webserver auf dem "
+"Backup Directory Node."
+
+#: ../../domain-infrastructure/ha.rst:268
+msgid ""
+"Start the services OpenLDAP, Samba, Kerberos, Univention Directory "
+"Notifier, and Listener."
+msgstr ""
+"Starten der Dienste OpenLDAP, Samba, Kerberos, Univention Directory "
+"Notifier und Listener."
+
+#: ../../domain-infrastructure/ha.rst:271
+msgid ""
+"Update the DNS service record ``kerberos-adm`` from the old Primary "
+"Directory Node to the promoted Primary Directory Node."
+msgstr ""
+"Aktualisieren des DNS-Service-Record ``kerberos-adm`` vom alten Primary "
+"Directory Node zum umgewandelten Primary Directory Node."
+
+#: ../../domain-infrastructure/ha.rst:274
+msgid ""
+"If present, remove the Univention :external+uv-ucs-"
+"manual:ref:`windows-s4-connector` from the computer object of the old "
+"Primary Directory Node and schedule it for re-configuration on the "
+"promoted Primary Directory Node."
+msgstr ""
+"Falls vorhanden, Entfernen des Univention :external+uv-ucs-"
+"manual:ref:`windows-s4-connector` aus dem Computerobjekt des alten "
+"Primary Directory Node und Einplanen für die Neukonfiguration auf dem "
+"umgewandelten Primary Directory Node."
+
+#: ../../domain-infrastructure/ha.rst:282
+msgid ""
+"Change the server role of the promoted Primary Directory Node to "
+"``domaincontroller_master`` in the OpenLDAP directory service. Adjust the"
+" DNS service record ``_domaincontroller_master._tcp`` accordingly."
+msgstr ""
+"Ändern der Serverrolle des umgewandelten Primary Directory Node auf "
+"``domaincontroller_master`` im OpenLDAP-Verzeichnisdienst. Entsprechendes"
+" Anpassen des DNS-Service-Record ``_domaincontroller_master._tcp``."
+
+#: ../../domain-infrastructure/ha.rst:286
+msgid ""
+"If present, remove all entries of the old Primary Directory Node from the"
+" local Samba directory service. Additionally, transfer the FSMO roles to "
+"the promoted Primary Directory Node."
+msgstr ""
+"Falls vorhanden, Entfernen aller Einträge des alten Primary Directory "
+"Node aus dem lokalen Samba-Verzeichnisdienst. Zusätzliche Übertragung der"
+" FSMO-Rollen auf den umgewandelten Primary Directory Node."
+
+#: ../../domain-infrastructure/ha.rst:291
+msgid ""
+"Delete the computer object of the old Primary Directory Node from the "
+"OpenLDAP directory."
+msgstr ""
+"Löschen des Computerobjekts des alten Primary Directory Node aus dem "
+"OpenLDAP-Verzeichnis."
+
+#: ../../domain-infrastructure/ha.rst:293
+msgid ""
+"Search the OpenLDAP directory service for any remaining references to the"
+" old Primary Directory Node. Show all found references, such as DNS "
+"records, and suggest fixing them."
+msgstr ""
+"Durchsuchen des OpenLDAP-Verzeichnisdienstes nach verbleibenden Verweisen"
+" auf den alten Primary Directory Node. Anzeigen aller gefundenen Verweise"
+" wie DNS-Records und Vorschlag von Korrekturen vor."
+
+#: ../../domain-infrastructure/ha.rst:298
+msgid "You need to verify and confirm the suggested fixes one by one."
+msgstr ""
+"Sie müssen die vorgeschlagenen Korrekturen einzeln überprüfen und "
+"bestätigen."
+
+#: ../../domain-infrastructure/ha.rst:300
+msgid ""
+"Finally, replace the package :program:`univention-server-backup` with "
+":program:`univention-server-master`."
+msgstr ""
+"Zum Abschluss, Ersetzen des Pakets :program:`univention-server-backup` "
+"durch :program:`univention-server-master`."
+
+#: ../../domain-infrastructure/ha.rst:303
+msgid ""
+"Run component scripts in the :file:`/usr/lib/univention-"
+"backup2master/post` directory **after** the promotion completed. The "
+"directory contains executable scripts for components that require custom "
+"handling for the Primary Directory Node."
+msgstr ""
+"Ausführen der Skripte von Komponenten im Verzeichnis :file:`/usr/lib"
+"/univention-backup2master/post` **nach** Abschluss der Umwandlung aus. "
+"Das Verzeichnis enthält ausführbare Skripte für Komponenten, die eine "
+"benutzerdefinierte Behandlung für den Primary Directory Node erfordern."
+
+#: ../../domain-infrastructure/ha.rst:310
+msgid "Validate the promotion"
+msgstr "Validieren Sie die Umwandlung"
+
+#: ../../domain-infrastructure/ha.rst:312
+msgid ""
+"After the promotion completes, remove or update all references to the old"
+" Primary Directory Node across the domain."
+msgstr ""
+"Entfernen oder aktualisieren Sie nach Abschluss der Umwandlung alle "
+"Verweise auf den alten Primary Directory Node in der gesamten Domäne."
+
+#: ../../domain-infrastructure/ha.rst:315
+msgid ""
+"The article :uv:help:`How To: backup2master <19514>` provides detailed "
+"validation procedures for:"
+msgstr ""
+"Der Artikel :uv:help:`How To: backup2master <19514>` bietet detaillierte "
+"Verfahren zur Validierung für:"
+
+#: ../../domain-infrastructure/ha.rst:317
+msgid ""
+"Checking UCR variables on all domain systems for old hostname and IP "
+"references."
+msgstr ""
+"Überprüfung von UCR-Variablen auf allen Systemen der Domänen auf alte "
+"Rechnernamen- und IP-Verweise."
+
+#: ../../domain-infrastructure/ha.rst:318
+msgid "Verifying and updating DNS host entries in LDAP."
+msgstr "Überprüfung und Aktualisierung von DNS-Einträgen für Rechnernamen in LDAP."
+
+#: ../../domain-infrastructure/ha.rst:319
+msgid "Reviewing and updating domain policies in the *Managment UI*."
+msgstr ""
+"Überprüfung und Aktualisierung von Domänen-Richtlinien in der *Management"
+" UI*."
+
+#: ../../domain-infrastructure/ha.rst:321
+msgid ""
+"Test regular domain operations after validation to ensure correct "
+"functionality."
+msgstr ""
+"Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
+"korrekte Funktionalität sicherzustellen."
+
+#: ../../domain-infrastructure/index.rst:8
+msgid "Domain infrastructure"
+msgstr ":spelling:word:`Domäneninfrastruktur`"
+
+#: ../../domain-infrastructure/index.rst:10
+msgid ""
+"This chapter covers the infrastructure foundation of a Nubus for UCS "
+"domain. A Nubus domain relies on multiple systems with different roles "
+"and responsibilities. These systems work together to provide the critical"
+" directory, authentication, and management services that keep your domain"
+" operational."
+msgstr ""
+"Dieses Kapitel behandelt die Grundlagen der Infrastruktur einer Nubus für UCS "
+"Domäne. Eine Nubus Domäne verlässt sich auf mehrere Systeme mit "
+"verschiedenen Rollen und Verantwortungen. Diese Systeme arbeiten zusammen, "
+"um die kritischen Dienste für Authentifizierung und Verwaltung und den Verzeichnisdienst "
+"bereitzustellen, die Ihre Domäne funktionsfähig halten."
+
+#: ../../domain-infrastructure/index.rst:15
+msgid ""
+"The Primary Directory Node serves as the central hub of your domain, "
+"storing and managing all domain data. To ensure your domain stays "
+"available and resilient, you need to understand both the different system"
+" roles you can deploy and the strategies for protecting against single "
+"points of disruption."
+msgstr ""
+"Der Primary Directory Node dient als zentrale Drehscheibe Ihrer Domäne und "
+"speichert und verwaltet alle Domänendaten. Um sicherzustellen, dass Ihre "
+"Domäne verfügbar und widerstandsfähig bleibt, müssen Sie sowohl die "
+"verschiedenen Systemrollen, die Sie bereitstellen können, als auch die "
+"Strategien zum Schutz vor einzelnen Ausfallpunkten verstehen."
+
+#: ../../domain-infrastructure/index.rst:21
+msgid "This chapter has the following main sections:"
+msgstr "Dieses Kapitel hat die folgenden Hauptabschnitte:"
+
+#: ../../domain-infrastructure/index.rst:23
+msgid "System Roles"
+msgstr "Systemrollen"
+
+#: ../../domain-infrastructure/index.rst:24
+msgid ""
+"Learn about the different system roles you can deploy in your domain, "
+"from the critical Primary Directory Node to various client systems."
+msgstr ""
+"Erfahren Sie mehr über die verschiedenen Systemrollen, die Sie in Ihrer "
+"Domäne bereitstellen können, vom kritischen Primary Directory Node bis zu "
+"verschiedenen Client-Systemen."
+
+#: ../../domain-infrastructure/index.rst:27
+msgid "Redundancy and Failover for the Primary Directory Node"
+msgstr "Redundanz und Failover für den Primary Directory Node"
+
+#: ../../domain-infrastructure/index.rst:28
+msgid ""
+"Explore strategies to protect your domain infrastructure through "
+"redundancy and failover mechanisms, ensuring continued service "
+"availability even if critical systems experience disruption."
+msgstr ""
+"Erkunden Sie Strategien zum Schutz Ihrer Domäneninfrastruktur durch Mechanismen "
+"für Redundanz und Failover, um die kontinuierliche "
+"Dienstverfügbarkeit sicherzustellen, selbst wenn kritische Systeme eine "
+"Störung erleben."
+
+#: ../../domain-infrastructure/system-roles.rst:7
+msgid "Understanding system roles"
+msgstr "Systemrollen verstehen"
+
+#: ../../domain-infrastructure/system-roles.rst:9
+msgid ""
+"You can install systems in different *system roles* in a Nubus for UCS "
+"domain. This page provides a characterization of the different roles."
+msgstr ""
+"Sie können Systeme in verschiedenen *Systemrollen* in einer Nubus für UCS"
+" Domäne installieren. Diese Seite bietet eine Charakterisierung der "
+"verschiedenen Rollen."
+
+#: ../../domain-infrastructure/system-roles.rst:14
+msgid ""
+"For more information about the role concept in Nubus for UCS, see "
+":external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
+"architecture`."
+msgstr ""
+"Weitere Informationen zum Rollenkonzept in Nubus für UCS finden Sie unter"
+" :external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
+"architecture`."
+
+#: ../../domain-infrastructure/system-roles.rst:21
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
+
+#: ../../domain-infrastructure/system-roles.rst:23
+msgid ""
+"A system with the Primary Directory Node role is the primary domain "
+"controller of a Nubus for UCS domain. It's always the first system "
+"installed in a Nubus for UCS domain."
+msgstr ""
+"Ein System mit der Primary Directory Node Rolle ist der primäre Domain "
+"Controller einer Nubus für UCS Domäne. Es ist immer das erste System, das"
+" in einer Nubus für UCS Domäne installiert wird."
+
+#: ../../domain-infrastructure/system-roles.rst:27
+msgid ""
+"The Primary Directory Node stores domain data, such as users, groups, "
+"printers, and the TLS security certificates. Systems with the Backup "
+"Directory Node role automatically receive copies of this data."
+msgstr ""
+"Der Primary Directory Node speichert Domänendaten wie Benutzer, Gruppen, "
+"Drucker und die TLS Sicherheitszertifikate. Systeme mit der Rolle Backup "
+"Directory Node erhalten automatisch Kopien dieser Daten."
+
+#: ../../domain-infrastructure/system-roles.rst:34
+msgid ""
+"The Primary Directory Node is critical to domain operations. To ensure "
+"continued service availability and eliminate single points of disruption,"
+" see :ref:`deployment-primary-dn-resilience` for strategies on redundancy"
+" and failover."
+msgstr ""
+"Der Primary Directory Node ist für Vorgänge in der Domäne von "
+"entscheidender Bedeutung. Um die kontinuierliche Dienstverfügbarkeit "
+"sicherzustellen und einzelne Ausfallpunkte zu eliminieren, siehe :ref"
+":`deployment-primary-dn-resilience` für Strategien zur Redundanz und zum "
+"Failover."
+
+#: ../../domain-infrastructure/system-roles.rst:41
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
+
+#: ../../domain-infrastructure/system-roles.rst:43
+msgid ""
+"The Primary Directory Node stores a read-only copy of all the domain data"
+" and TLS security certificates. It can't write changes to the domain "
+"data."
+msgstr ""
+"Der Backup Directory Node speichert eine schreibgeschützte Kopie aller "
+"Domänendaten und TLS Sicherheitszertifikate. Es kann keine Änderungen an "
+"den Domänendaten vornehmen."
+
+#: ../../domain-infrastructure/system-roles.rst:46
+msgid ""
+"The Backup Directory Node is the fallback system for the Primary "
+"Directory Node. If the Primary Directory Node fails, a Backup Directory "
+"Node can adopt the role of the Primary Directory Node permanently. For "
+"information about the backup to primary promotion, see :ref:`deployment-"
+"primary-dn-resilience-backup-primary-promotion`."
+msgstr ""
+"Der Backup Directory Node ist das Fallback-System für den Primary "
+"Directory Node. Wenn der Primary Directory Node ausfällt, kann ein Backup"
+" Directory Node die Rolle des Primary Directory Node dauerhaft "
+"übernehmen. Für Informationen zur Promotion von Backup zu Primary siehe "
+":ref:`deployment-primary-dn-resilience-backup-primary-promotion`."
+
+#: ../../domain-infrastructure/system-roles.rst:55
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
+
+#: ../../domain-infrastructure/system-roles.rst:57
+msgid ""
+"Servers with the Replica Directory Node role have all the domain data "
+"saved as read-only copy. In contrast to the Backup Directory Node, they "
+"don't have all security certificates."
+msgstr ""
+"Server mit der Rolle Replica Directory Node haben alle Domänendaten als "
+"schreibgeschützte Kopie gespeichert. Im Gegensatz zum Backup Directory "
+"Node haben sie nicht alle Sicherheitszertifikate."
+
+#: ../../domain-infrastructure/system-roles.rst:60
+msgid ""
+"Services running on a Replica Directory Node access LDAP directory data "
+"through the local LDAP directory service. Replica Directory Node systems "
+"are ideal for site servers and the distribution of high-load services."
+msgstr ""
+"Dienste, die auf einem Replica Directory Node laufen, greifen auf LDAP-"
+"Verzeichnisdaten über den lokalen LDAP-Verzeichnisdienst zu. Replica "
+"Directory Node Systeme sind ideal für Standort-Server und die Verteilung "
+"hoch belasteter Dienste."
+
+#: ../../domain-infrastructure/system-roles.rst:64
+msgid ""
+"A Replica Directory Node doesn't allow promotion to a Primary Directory "
+"Node."
+msgstr ""
+"Ein Replica Directory Node erlaubt keine Promotion zu einem Primary "
+"Directory Node."
+
+#: ../../domain-infrastructure/system-roles.rst:69
+msgid "Managed Node"
+msgstr "Managed Node"
+
+#: ../../domain-infrastructure/system-roles.rst:71
+msgid ""
+"Managed Nodes are Nubus for UCS systems without a local LDAP directory "
+"service. They access domain data through other servers in the domain. "
+"They're suitable for services that don't require a local database for "
+"authentication."
+msgstr ""
+"Managed Nodes sind Nubus für UCS Systeme ohne lokalen LDAP-"
+"Verzeichnisdienst. Sie greifen auf Domänendaten über andere Server in der"
+" Domäne zu. Sie sind geeignet für Dienste, die keine lokale Datenbank für"
+" die Authentifizierung benötigen."
+
+#: ../../domain-infrastructure/system-roles.rst:78
+msgid "Ubuntu"
+msgstr "Ubuntu"
+
+#: ../../domain-infrastructure/system-roles.rst:80
+msgid ""
+"You can manage Ubuntu clients in Nubus with the *Ubuntu* system role. For"
+" more information, see :external+uv-ucs-manual:ref:`computers-ubuntu` in "
+":cite:t:`ucs-manual`."
+msgstr ""
+"Sie können Ubuntu-Clients in Nubus mit der Systemrolle *Ubuntu* "
+"verwalten. Weitere Informationen finden Sie unter :external+uv-ucs-"
+"manual:ref:`computers-ubuntu` im :cite:t:`ucs-manual`."
+
+#: ../../domain-infrastructure/system-roles.rst:88
+msgid "Linux"
+msgstr "Linux"
+
+#: ../../domain-infrastructure/system-roles.rst:90
+msgid ""
+"You manage other Linux systems that neither match Nubus for UCS nor "
+"Ubuntu with the *Linux* system role, for example, Debian GNU/Linux or "
+"CentOS. For information about the integration, see :cite:t:`ext-doc-"
+"domain`."
+msgstr ""
+"Sie verwalten andere Linux-Systeme, die weder Nubus für UCS noch Ubuntu "
+"entsprechen, mit der *Linux* Systemrolle, zum Beispiel Debian GNU/Linux "
+"oder CentOS. Informationen zur Integration finden Sie unter :cite:t:`ext-"
+"doc-domain`."
+
+#: ../../domain-infrastructure/system-roles.rst:99
+msgid "macOS"
+msgstr "macOS"
+
+#: ../../domain-infrastructure/system-roles.rst:101
+msgid ""
+"You can join macOS systems into a Nubus for UCS domain through Samba. For"
+" information about the integration, see :external+uv-ucs-manual:ref"
+":`macos-domain-join` in :cite:t:`ucs-manual`."
+msgstr ""
+"Sie können macOS-Systeme über Samba in ein Nubus für UCS Domäne "
+"integrieren. Informationen zur Integration finden Sie unter :external+uv-"
+"ucs-manual:ref:`macos-domain-join` im :cite:t:`ucs-manual`."
+
+#: ../../domain-infrastructure/system-roles.rst:109
+msgid "Domain Trust Account"
+msgstr "Domain Trust Account"
+
+#: ../../domain-infrastructure/system-roles.rst:111
+msgid ""
+"Nubus uses the *Domain Trust Account* system role for trust relationships"
+" between Windows Active Directory domains and Nubus for UCS domains."
+msgstr ""
+"Nubus nutzt die *Domain Trust Account* Systemrolle für "
+"Vertrauensbeziehungen zwischen Windows Active Directory Domänen und Nubus"
+" für UCS Domänen."
+
+#: ../../domain-infrastructure/system-roles.rst:117
+msgid "Windows Domaincontroller"
+msgstr "Windows Domain Controller"
+
+#: ../../domain-infrastructure/system-roles.rst:119
+msgid ""
+"Windows domain controllers in a Samba environment use the *Windows "
+"Domaincontroller* system role."
+msgstr ""
+"Windows Domain Controller in einer Samba-Umgebung nutzen die *Windows "
+"Domain Controller* Systemrolle."
+
+#: ../../domain-infrastructure/system-roles.rst:124
+msgid "Windows Workstation and Windows Server"
+msgstr "Windows Workstation und Windows Server"
+
+#: ../../domain-infrastructure/system-roles.rst:126
+msgid ""
+"Windows clients and Windows Managed Nodes use the *Windows Workstation* "
+"or *Windows Server* system role."
+msgstr ""
+"Windows-Clients und Windows Managed Nodes  nutzen die *Windows "
+"Workstation* oder *Windows Server* Systemrolle."
+
+#: ../../domain-infrastructure/system-roles.rst:132
+msgid "IP client"
+msgstr "IP-Client"
+
+#: ../../domain-infrastructure/system-roles.rst:134
+msgid ""
+"The IP client system role allows the integration of systems not listed in"
+" :ref:`domain-infrastructure-system-roles` into the IP management of "
+"Nubus for DNS and DHCP, such as network printers or routers."
+msgstr ""
+"Die Systemrolle IP-Client ermöglicht die Integration von Systemen, die "
+"nicht in :ref:`domain-infrastructure-system-roles` aufgeführt sind, in "
+"die IP-Verwaltung von Nubus für DNS und DHCP, wie Netzwerkdrucker oder "
+"Router."
+
