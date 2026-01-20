@@ -903,22 +903,20 @@ class LdapAttributeUnmap(Resource):
         attributes = representation['attributes']
         modules = udm_modules.identify(dn, attributes)
 
-        obj = None
         error = ''
         for module in modules:
+            objmodule = self.get_module(module.module)
             try:
-                obj = module.object(None, self.ldap_connection, None, dn, None, attributes)
-                break
+                obj = objmodule.module.object(None, self.ldap_connection, None, dn, None, attributes)
+                result = Object.get_representation(objmodule, obj, ['*'], self.ldap_connection, opened=True)
+                self.content_negotiation(result)
+                return
             except udm_errors.wrongObjectType as exc:
                 # e.g. univentionObjectType and objectClass does not match
                 error = str(exc)
                 log.warning('Could not initialize object', dn=dn, error=error, type=module.module)
-        if not obj:
-            self.raise_sanitization_error('dn', _('The object could not be identified: %s') % (error or _('No module found.'),))
 
-        objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
-        result = Object.get_representation(objmodule, obj, ['*'], self.ldap_connection, opened=True)
-        self.content_negotiation(result)
+        self.raise_sanitization_error('dn', _('The object could not be identified: %s') % (error or _('No module found.'),))
 
 
 class ObjectLink(Resource):
