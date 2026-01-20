@@ -146,7 +146,7 @@ def test_root_path_object_links_via_apache_proxy(account):
     headers = {'Accept': 'application/json'}
 
     response = requests.get(
-        f'https://{ucr["ldap/master"]}/univention/udm/users/user/uid=Administrator,cn=users,{ucr["ldap/base"]}',
+        f'https://{ucr["ldap/master"]}/univention/udm/users/user/{ucr["tests/domainadmin/account"]}',
         headers=headers,
         auth=auth,
         verify=False,  # noqa: S501
@@ -231,7 +231,7 @@ def test_root_path_env_var_integration(account):
         assert '/univention/udm/relation/' in curies_href, f"Expected '/univention/udm/relation/' in {curies_href}"
 
         response = requests.get(
-            f'http://localhost:9979/univention/udm/users/user/uid=Administrator,cn=users,{ucr["ldap/base"]}',
+            f'http://localhost:9979/univention/udm/users/user/{ucr["tests/domainadmin/account"]}',
             headers=headers,
             auth=auth,
         )
