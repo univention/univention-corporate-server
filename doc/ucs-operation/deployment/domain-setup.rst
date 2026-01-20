@@ -215,25 +215,9 @@ you need to process the following steps:
    Additional Nubus for UCS systems can join the domain at a later point in time.
    You can assign them one of the following system roles.
 
-   .. TODO: Make system roles more concise and use the glossary to collect information there.
-
-   Backup Directory Node
-      The :term:`Backup Directory Node` is the fallback system for the UCS Primary Directory Node.
-      If the Primary Directory Node fails,
-      a Backup Directory Node can adopt the role of the UCS Primary Directory Node permanently.
-      Backup Directory Nodes have all the domain data and SSL security certificates saved as read-only copies.
-
-   Replica Directory Node
-      Servers with the :term:`Replica Directory Node` role have all the domain data saved as read-only copies.
-      In contrast to the Backup Directory Node, however, they don't have all security certificates.
-      Services running on a Replica Directory node access LDAP directory data through the local LDAP directory service.
-      Replica Directory Node systems are ideal for site servers and the distribution of high-load services.
-
-   Managed Node
-      :term:`Managed Node`\ s are Nubus for UCS systems without a local LDAP directory service.
-      They access domain data through other servers in the domain.
-      They're suitable for services that don't require a local database for authentication,
-      for example, print and file servers.
+   * :ref:`domain-infrastructure-system-roles-backup-directory-node`
+   * :ref:`domain-infrastructure-system-roles-replica-directory-node`
+   * :ref:`domain-infrastructure-system-roles-managed-node`
 
 #. After you selected the system role for Nubus for UCS,
    the system setup asks for more information to join the domain,
@@ -244,11 +228,13 @@ you need to process the following steps:
       deactivate the option *Start join at the end of the installation*.
 
    Search Primary Directory Node in DNS
-      System setup automatically determines the name of the UCS Primary Directory Node
-      if you provided it as DNS server during
+      System setup automatically determines the fully qualified domain name
+      of the UCS Primary Directory Node
+      by asking the DNS server
+      for the service record ``_domaincontroller_master._tcp.$domainname``.
+      The automatic lookup only works,
+      if you provided the Primary Directory Node as DNS server during
       :ref:`deployment-initial-system-configuration-network-setup`.
-
-      .. TODO: Clarify: What's the reason? Why have the detection and why deactivate it?
 
       If you decide to join another Nubus for UCS domain,
       you can deactivate *Search Primary Directory Node in DNS*
@@ -288,7 +274,8 @@ Confirm the installation settings
 see :numref:`deployment-installation-physical-confirm-settings-summary-figure`.
 
 Update system after installation
-   The *Update system after installation* option allows the automatic installation of available errata updates.
+   The *Update system after installation* instructs system setup
+   to install available errata updates after the installation.
 
    .. TODO: Add glossary entry for errata updates.
 
