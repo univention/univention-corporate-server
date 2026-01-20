@@ -680,6 +680,16 @@ class TestEncoders(TestCase):
         assert [o.dn for o in obj.props.secretary.objs] == [obj2.dn]
 
 
+@pytest.mark.parametrize("version,expected", [
+    (1, []),
+    (2, []),
+    (3, {'policies/desktop': [], 'policies/pwhistory': [], 'policies/recyclebin': [], 'policies/umc': []}),
+])
+def test_policy_encoder(version, expected):
+    obj = UDM.admin().version(version).get('users/user').new()
+    assert obj.policies == expected
+
+
 @pytest.fixture
 def simple_udm(ucr) -> UDM:
     account = utils.UCSTestDomainAdminCredentials()

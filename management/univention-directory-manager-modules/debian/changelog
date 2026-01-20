@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.3) unstable; urgency=medium
+
+  * Bug #58985: fix wrong policy structure for specific udm API version
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 18 Mar 2026 21:11:59 +0100
+
 univention-directory-manager-modules (17.5.2) unstable; urgency=medium
 
   * Bug #59111: added pre and post move hooks for UDM
