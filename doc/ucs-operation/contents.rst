@@ -14,6 +14,7 @@ Univention Corporate Server - Operation Manual
 
    index
    deployment/index
+   domain-infrastructure/index
    management-interface/index
    iam/index
 
