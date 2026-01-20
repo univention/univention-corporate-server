@@ -6,6 +6,33 @@
 Installation methods
 ====================
 
+This section covers the various methods available
+to install Nubus for Univention Corporate Server (UCS) across different infrastructure environments.
+Whether deploying on physical servers, virtual machines,
+cloud platforms, or systems with specific configurations,
+the following sections provide step-by-step instructions
+for each installation method.
+
+Choose the installation method that best matches your deployment environment:
+
+Physical and Virtual Machine Installation
+   The standard interactive installation from DVD for traditional on-premises hardware and hypervisor environments.
+
+Text Mode Installation
+   An alternative text-based installer for systems with graphical interface compatibility issues.
+
+Cloud Deployment
+   Amazon EC2-based installation using pre-configured machine images, suitable for cloud-native deployments.
+
+VMware-Specific Considerations
+   Platform-specific configuration and driver requirements for VMware environments.
+
+Each method guides you through the same core configuration steps:
+network setup, hard drive partitioning, hostname and domain naming,
+and the domain configuration.
+The installation process is interactive
+and prompts you for all necessary system settings.
+
 .. _deployment-installation-physical:
 
 Physical and virtual machine installation
@@ -50,14 +77,16 @@ You can use the installation interfaces with a keyboard and with mouse.
 
 * Use the arrow keys inside a list or table for navigating between entries.
 
-.. note::
+* Use :guilabel:`Cancel` to cancel the current configuration step.
+  You can select a previous configuration step again in the menu
+  that the installer shows subsequently.
+  Under certain circumstances,
+  you can't directly select subsequent configuration steps
+  if you haven't completed previous steps.
 
-   Use :guilabel:`Cancel` to cancel the current configuration step.
-   You can select a previous configuration step again in the menu
-   that the installer shows subsequently.
-   Under certain circumstances,
-   you can't directly select subsequent configuration steps
-   if you haven't completed previous steps.
+To continue the installation,
+follow steps in
+:ref:`deployment-initial-system-configuration`.
 
 .. _deployment-installation-text-mode:
 
@@ -70,7 +99,9 @@ For text mode, select :ref:`deployment-initial-system-configuration-install-mode
 in the installation boot prompt.
 
 During installation in text mode
-the installer shows the same information and asks for the same settings.
+the installer shows the same information and asks for the same settings,
+see
+:ref:`deployment-initial-system-configuration`.
 After hard drive partitioning, the system is ready for the first boot
 and the installer restarts the system.
 
