@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 15:42+0000\n"
-"PO-Revision-Date: 2026-01-20 16:43+0100\n"
+"POT-Creation-Date: 2026-01-20 16:55+0000\n"
+"PO-Revision-Date: 2026-01-20 17:59+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -30,9 +30,9 @@ msgid ""
 msgstr ""
 "Nach Abschluss der Nubus für UCS Installation können Sie sofort auf das "
 "*Portal* zugreifen und grundlegende erste Aufgaben durchführen. Dieser "
-"Abschnitt behandelt nur die sofortigen Schritte, die Sie jetzt durchführen "
-"können. Weitere umfassendere Konfigurations- und Verwaltungsthemen folgen "
-"in späteren Abschnitten."
+"Abschnitt behandelt nur die sofortigen Schritte, die Sie jetzt "
+"durchführen können. Weitere umfassendere Konfigurations- und "
+"Verwaltungsthemen folgen in späteren Abschnitten."
 
 #: ../../deployment/after-installation.rst:19
 msgid "Open the portal"
@@ -378,7 +378,7 @@ msgstr ""
 " verwenden. Das Nubus für UCS System tritt der Active Directory Domäne "
 "mit dem angegebenen Rechnernamen bei."
 
-#: ../../deployment/domain-setup.rst:183 ../../deployment/domain-setup.rst:273
+#: ../../deployment/domain-setup.rst:183 ../../deployment/domain-setup.rst:257
 msgid "After the configuration is complete, you **can't** change the domain."
 msgstr "Nach Abschluss der Konfiguration können Sie die Domäne **nicht** ändern."
 
@@ -435,62 +435,19 @@ msgstr ""
 "Zeitpunkt beitreten. Sie können ihnen eine der folgenden Systemrollen "
 "zuweisen."
 
+#: ../../deployment/domain-setup.rst:218
+msgid ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
+msgstr ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
+
+#: ../../deployment/domain-setup.rst:219
+msgid ":ref:`domain-infrastructure-system-roles-replica-directory-node`"
+msgstr ":ref:`domain-infrastructure-system-roles-replica-directory-node`"
+
 #: ../../deployment/domain-setup.rst:220
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
+msgid ":ref:`domain-infrastructure-system-roles-managed-node`"
+msgstr ":ref:`domain-infrastructure-system-roles-managed-node`"
 
-#: ../../deployment/domain-setup.rst:221
-msgid ""
-"The :term:`Backup Directory Node` is the fallback system for the UCS "
-"Primary Directory Node. If the Primary Directory Node fails, a Backup "
-"Directory Node can adopt the role of the UCS Primary Directory Node "
-"permanently. Backup Directory Nodes have all the domain data and SSL "
-"security certificates saved as read-only copies."
-msgstr ""
-"Der :term:`Backup Directory Node` ist das Fallback-System für den UCS "
-"Primary Directory Node. Wenn der Primary Directory Node ausfällt, kann "
-"ein Backup Directory Node die Rolle des UCS Primary Directory Node "
-"dauerhaft übernehmen. Backup Directory Nodes haben alle Domänendaten und "
-"SSL-Sicherheitszertifikate als schreibgeschützte Kopien gespeichert."
-
-#: ../../deployment/domain-setup.rst:226
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
-
-#: ../../deployment/domain-setup.rst:227
-msgid ""
-"Servers with the :term:`Replica Directory Node` role have all the domain "
-"data saved as read-only copies. In contrast to the Backup Directory Node,"
-" however, they don't have all security certificates. Services running on "
-"a Replica Directory node access LDAP directory data through the local "
-"LDAP directory service. Replica Directory Node systems are ideal for site"
-" servers and the distribution of high-load services."
-msgstr ""
-"Server mit der Rolle :term:`Replica Directory Node` haben alle Domänen-"
-"Daten als schreibgeschützte Kopien gespeichert. Im Gegensatz zum Backup "
-"Directory Node haben sie jedoch nicht alle Sicherheitszertifikate. Auf "
-"einem Replica Directory Node laufende Dienste greifen über den lokalen "
-"LDAP-Verzeichnisdienst auf LDAP-Verzeichnisdaten zu. Replica Directory "
-"Node Systeme eignen sich ideal für Standort-Server und die Verteilung "
-"hoch belasteter Dienste."
-
-#: ../../deployment/domain-setup.rst:232
-msgid "Managed Node"
-msgstr "Managed Node"
-
-#: ../../deployment/domain-setup.rst:233
-msgid ""
-":term:`Managed Node`\\ s are Nubus for UCS systems without a local LDAP "
-"directory service. They access domain data through other servers in the "
-"domain. They're suitable for services that don't require a local database"
-" for authentication, for example, print and file servers."
-msgstr ""
-":term:`Managed Node`\\ s sind Nubus für UCS Systeme ohne lokalen LDAP-"
-"Verzeichnisdienst. Sie greifen über andere Server in der Domäne auf "
-"Domänendaten zu. Sie eignen sich für Dienste, die keine lokale Datenbank "
-"für die Authentifizierung benötigen, zum Beispiel Druck- und Dateiserver."
-
-#: ../../deployment/domain-setup.rst:238
+#: ../../deployment/domain-setup.rst:222
 msgid ""
 "After you selected the system role for Nubus for UCS, the system setup "
 "asks for more information to join the domain, see :numref:`deployment-"
@@ -500,11 +457,11 @@ msgstr ""
 " Systemeinrichtung nach weiteren Informationen zum Domänenbeitritt, siehe"
 " :numref:`deployment-domain-setup-join-ucs-figure`."
 
-#: ../../deployment/domain-setup.rst:242
+#: ../../deployment/domain-setup.rst:226
 msgid "Start join at the end of the installation"
 msgstr "Beitritt am Ende der Installation starten"
 
-#: ../../deployment/domain-setup.rst:243
+#: ../../deployment/domain-setup.rst:227
 msgid ""
 "If you don't intend to let the system setup run the domain join "
 "automatically during the installation, deactivate the option *Start join "
@@ -514,11 +471,11 @@ msgstr ""
 "Domänenbeitritt automatisch während der Installation durchführt, "
 "deaktivieren Sie die Option *Beitritt am Ende der Installation starten*."
 
-#: ../../deployment/domain-setup.rst:246
+#: ../../deployment/domain-setup.rst:230
 msgid "Search Primary Directory Node in DNS"
 msgstr "Primary Directory Node im DNS suchen"
 
-#: ../../deployment/domain-setup.rst:247
+#: ../../deployment/domain-setup.rst:231
 msgid ""
 "System setup automatically determines the name of the UCS Primary "
 "Directory Node if you provided it as DNS server during :ref:`deployment-"
@@ -528,7 +485,7 @@ msgstr ""
 "Directory Node, wenn Sie ihn als DNS-Server während :ref:`deployment-"
 "initial-system-configuration-network-setup` angegeben haben."
 
-#: ../../deployment/domain-setup.rst:253
+#: ../../deployment/domain-setup.rst:237
 msgid ""
 "If you decide to join another Nubus for UCS domain, you can deactivate "
 "*Search Primary Directory Node in DNS* and provide the fully qualified "
@@ -539,11 +496,11 @@ msgstr ""
 "deaktivieren und den :spelling:word:`Fully Qualified Domain Name` des "
 "bevorzugten UCS Primary Directory Node angeben."
 
-#: ../../deployment/domain-setup.rst:259
+#: ../../deployment/domain-setup.rst:243
 msgid "Credentials for domain administrator"
 msgstr "Anmeldedaten für Domänenadministrator"
 
-#: ../../deployment/domain-setup.rst:260
+#: ../../deployment/domain-setup.rst:244
 msgid ""
 "The domain join process needs to access information about the domain. To "
 "grant system setup the appropriate permission, you need to provide the "
@@ -554,7 +511,7 @@ msgstr ""
 "zu erteilen, müssen Sie die Anmeldedaten für ein *Administrator*-Konto "
 "der Domäne angeben."
 
-#: ../../deployment/domain-setup.rst:264
+#: ../../deployment/domain-setup.rst:248
 msgid ""
 "Finally, provide a hostname for the Nubus for UCS system. You can adopt "
 "the suggested hostname or change it. For the naming convention of the "
@@ -571,15 +528,15 @@ msgstr ""
 "wie etwa einem öffentlichen Mailserver, kann es erforderlich sein, einen "
 "bestimmten :spelling:word:`Fully Qualified Domain Name` zu verwenden."
 
-#: ../../deployment/domain-setup.rst:277 ../../deployment/domain-setup.rst:280
+#: ../../deployment/domain-setup.rst:261 ../../deployment/domain-setup.rst:264
 msgid "Information on the domain join"
 msgstr "Informationen zum Domänenbeitritt"
 
-#: ../../deployment/domain-setup.rst:285
+#: ../../deployment/domain-setup.rst:269
 msgid "Confirm the installation settings"
 msgstr "Installationseinstellungen bestätigen"
 
-#: ../../deployment/domain-setup.rst:287
+#: ../../deployment/domain-setup.rst:271
 msgid ""
 "*Confirm configuration settings* shows a summary of your settings, see "
 ":numref:`deployment-installation-physical-confirm-settings-summary-"
@@ -589,11 +546,11 @@ msgstr ""
 " Einstellungen, siehe :numref:`deployment-installation-physical-confirm-"
 "settings-summary-figure`."
 
-#: ../../deployment/domain-setup.rst:290
+#: ../../deployment/domain-setup.rst:274
 msgid "Update system after installation"
 msgstr "System nach der Installation aktualisieren"
 
-#: ../../deployment/domain-setup.rst:291
+#: ../../deployment/domain-setup.rst:275
 msgid ""
 "The *Update system after installation* option allows the automatic "
 "installation of available errata updates."
@@ -601,7 +558,7 @@ msgstr ""
 "Die Option *System nach der Installation aktualisieren* ermöglicht die "
 "automatische Installation verfügbarer Errata-Updates."
 
-#: ../../deployment/domain-setup.rst:295
+#: ../../deployment/domain-setup.rst:279
 msgid ""
 "In addition, the :term:`UCS Primary Directory Node` installs all "
 "available patch level updates and errata updates. All other system roles "
@@ -620,7 +577,7 @@ msgstr ""
 " ein Administrator-Konto, die Sie in :ref:`deployment-domain-setup-join-"
 "ucs-credentials` angegeben haben."
 
-#: ../../deployment/domain-setup.rst:306
+#: ../../deployment/domain-setup.rst:290
 msgid ""
 "If the settings match your intention, click :guilabel:`Configure System` "
 "to start the configuration of the Nubus for UCS system."
@@ -629,7 +586,7 @@ msgstr ""
 ":guilabel:`System konfigurieren`, um die Konfiguration des Nubus für UCS "
 "Systems zu starten."
 
-#: ../../deployment/domain-setup.rst:310
+#: ../../deployment/domain-setup.rst:294
 msgid ""
 "System setup shows the progress during the system configuration. It saves"
 " the installation protocol in the following files:"
@@ -638,15 +595,15 @@ msgstr ""
 "Systemkonfiguration an. Sie speichert das Installationsprotokoll in den "
 "folgenden Dateien:"
 
-#: ../../deployment/domain-setup.rst:313
+#: ../../deployment/domain-setup.rst:297
 msgid ":file:`/var/log/installer/syslog`"
 msgstr ":file:`/var/log/installer/syslog`"
 
-#: ../../deployment/domain-setup.rst:314
+#: ../../deployment/domain-setup.rst:298
 msgid ":file:`/var/log/univention/management-console-module-setup.log`"
 msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
 
-#: ../../deployment/domain-setup.rst:316
+#: ../../deployment/domain-setup.rst:300
 msgid ""
 "After you confirm the completion of the system setup, your Nubus for UCS "
 "system is ready for the first full boot procedure. You can restart it. "
@@ -659,7 +616,7 @@ msgstr ""
 "Abschluss des Bootvorgangs fahren Sie mit :ref:`deployment-after-"
 "installation` fort."
 
-#: ../../deployment/domain-setup.rst:325 ../../deployment/domain-setup.rst:328
+#: ../../deployment/domain-setup.rst:309 ../../deployment/domain-setup.rst:312
 #: ../../deployment/index.rst:38
 msgid "Installation overview"
 msgstr "Installationsübersicht"
@@ -1889,4 +1846,3 @@ msgstr ""
 "Für Informationen zu möglichen Installationsproblemen siehe `Univention "
 "Knowledge Base <https://help.univention.com/c/knowledge-"
 "base/supported/48>`_ im Abschnitt *Installation*."
-

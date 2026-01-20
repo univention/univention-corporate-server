@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 14:14+0000\n"
-"PO-Revision-Date: 2026-01-14 18:13+0100\n"
+"POT-Creation-Date: 2026-01-20 16:51+0000\n"
+"PO-Revision-Date: 2026-01-20 17:58+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -30,20 +30,23 @@ msgstr "UCS Backup Directory Node"
 
 #: ../../glossary.rst:16
 msgid ""
-"The Backup Directory Node is a system role in Nubus for UCS. It has a "
-"complete read-only copy of the domain database including the security "
-"certificates. Administrators can promote the role to a :term:`Primary "
-"Directory Node`. For more information about the role concept in Nubus for"
-" UCS, see :external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
+"The Backup Directory Node is a system role in Nubus for UCS. For its "
+"description, see :ref:`domain-infrastructure-system-roles-backup-"
+"directory-node`."
+msgstr ""
+"Der :spelling:word:`Backup Directory Node` ist eine Systemrolle in Nubus für UCS. "
+"Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-backup-directory-node`."
+
+#: ../../glossary.rst:20 ../../glossary.rst:30 ../../glossary.rst:40
+#: ../../glossary.rst:50
+msgid ""
+"For more information about the role concept in Nubus for UCS, see "
+":external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
 "architecture`."
 msgstr ""
-"Der :spelling:word:`Backup Directory Node` ist eine Systemrolle in Nubus "
-"für UCS. Er verfügt über eine vollständige schreibgeschützte Kopie der "
-"Domänendatenbank einschließlich der Sicherheitszertifikate. "
-"Administratoren können die Rolle zu einem :term:`Primary Directory Node` "
-"hoch stufen. Weitere Informationen zum Rollenkonzept in Nubus für UCS "
-"finden Sie unter :external+uv-architecture:ref:`concept-role` im :cite:t"
-":`ucs-architecture`."
+"Weitere Informationen "
+"zum Rollenkonzept in Nubus für UCS finden Sie unter :external+uv-"
+"architecture:ref:`concept-role` im :cite:t:`ucs-architecture`."
 
 #: ../../glossary.rst:23
 msgid "Managed Node"
@@ -55,56 +58,42 @@ msgstr "UCS Managed Node"
 
 #: ../../glossary.rst:26
 msgid ""
-"The Managed Node is a system role in Nubus for UCS. It has no copy of the"
-" domain database. For more information about the role concept in Nubus "
-"for UCS, see :external+uv-architecture:ref:`concept-role` in :cite:t"
-":`ucs-architecture`."
+"The Managed Node is a system role in Nubus for UCS. For its description, "
+"see :ref:`domain-infrastructure-system-roles-managed-node`."
 msgstr ""
-"Der :spelling:word:`Managed Node` ist eine Systemrolle in Nubus für UCS. "
-"Er verfügt über keine Kopie der Domänendatenbank. Weitere Informationen "
-"zum Rollenkonzept in Nubus für UCS finden Sie unter :external+uv-"
-"architecture:ref:`concept-role` im :cite:t:`ucs-architecture`."
+"Der :spelling:word:`Managede Node` ist eine Systemrolle in Nubus für UCS. "
+"Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-managed-node`."
 
-#: ../../glossary.rst:31
+#: ../../glossary.rst:33
 msgid "Primary Directory Node"
 msgstr "Primary Directory Node"
 
-#: ../../glossary.rst:32
+#: ../../glossary.rst:34
 msgid "UCS Primary Directory Node"
 msgstr "UCS Primary Directory Node"
 
-#: ../../glossary.rst:34
+#: ../../glossary.rst:36
 msgid ""
-"The Primary Directory Node is a system role in Nubus for UCS. It's the "
-"first, the primary, node in a domain. For more information about the role"
-" concept in Nubus for UCS, see :external+uv-architecture:ref:`concept-"
-"role` in :cite:t:`ucs-architecture`."
+"The Primary Directory Node is a system role in Nubus for UCS. For its "
+"description, see :ref:`domain-infrastructure-system-roles-primary-"
+"directory-node`."
 msgstr ""
-"Der :spelling:word:`Primary Directory Node` ist eine Systemrolle in Nubus"
-" für UCS. Es handelt sich um den ersten, primären Knoten in einer "
-"Domäne. Weitere Informationen zum Rollenkonzept in Nubus für UCS finden "
-"Sie unter :external+uv-architecture:ref:`concept-role` im :cite:t:`ucs-"
-"architecture`."
+"Der :spelling:word:`Primary Directory Node` ist eine Systemrolle in Nubus für UCS. "
+"Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-primary-directory-node`."
 
-#: ../../glossary.rst:39
+#: ../../glossary.rst:43
 msgid "Replica Directory Node"
 msgstr "Replica Directory Node"
 
-#: ../../glossary.rst:40
+#: ../../glossary.rst:44
 msgid "UCS Replica Directory Node"
 msgstr "UCS Replica Directory Node"
 
-#: ../../glossary.rst:42
+#: ../../glossary.rst:46
 msgid ""
-"The Replica Directory Node is a system role in Nubus for UCS. It has a "
-"complete ready-only copy of the domain database, or it can have only a "
-"subset of the domain database through selective replication. For more "
-"information about the role concept in Nubus for UCS, see :external+uv-"
-"architecture:ref:`concept-role` in :cite:t:`ucs-architecture`."
+"The Replica Directory Node is a system role in Nubus for UCS. For its "
+"description, see :ref:`domain-infrastructure-system-roles-replica-"
+"directory-node`."
 msgstr ""
-"Der :spelling:word:`Replica Directory Node` ist eine Systemrolle in Nubus"
-" für UCS. Er verfügt über eine vollständige, schreibgeschützte Kopie der "
-"Domänendatenbank oder kann durch selektive Replikation nur einen Teil der"
-" Domänendatenbank enthalten. Weitere Informationen zum Rollenkonzept in "
-"Nubus für UCS finden Sie unter :external+uv-architecture:ref:`concept-"
-"role` im :cite:t:`ucs-architecture`."
+"Der :spelling:word:`Replicy Directory Node` ist eine Systemrolle in Nubus für UCS. "
+"Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-replica-directory-node`."
