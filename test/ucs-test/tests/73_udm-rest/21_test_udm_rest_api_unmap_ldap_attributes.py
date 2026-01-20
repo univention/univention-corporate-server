@@ -2,13 +2,17 @@
 ## desc: Test the /directory/unmap-ldap-attributes endpoint
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
-## exposure: safe
+## exposure: dangerous
 ## packages:
 ##   - univention-directory-manager-rest
 
 import base64
+import subprocess
+import time
 
 import requests
+
+from univention.testing.strings import random_name
 
 
 def test_invented_object(account):
@@ -66,3 +70,39 @@ def test_unknown_object(account):
     auth = (account.username, account.bindpw)
     response = requests.post('http://localhost/univention/udm/directory/unmap-ldap-attributes', json={'dn': dn, 'attributes': _attrs}, headers={'Accept': 'application/json'}, auth=auth)
     assert response.status_code == 422
+
+
+def test_module_inits_with_new_extended_attribute(account, lo, udm):
+    # first, get the user data
+    dn = account.binddn
+    attrs = lo.get(dn)
+
+    # second create ext attribute and restart UDM REST, so that unmap-ldap-attributes never "saw" the users module
+    name = f'ext-attr-{random_name()}'
+    value = f'ext-attr-value-{random_name()}'
+    udm.create_object(
+        'settings/extended_attribute',
+        position=udm.UNIVENTION_CONTAINER,
+        name=name,
+        shortDescription=name,
+        CLIName=name,
+        module='users/user',
+        objectClass='univentionFreeAttributes',
+        ldapMapping='univentionFreeAttribute9',
+        syntax='string',
+        multivalue=0,
+        valueRequired=0,
+        mayChange=1,
+    )
+    attrs['univentionFreeAttribute9'] = [value.encode()]  # add a value for the new ext attribute
+    subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
+    time.sleep(3)
+
+    # third, check if we get the new ext attr from the unmap-ldap-attributes endpoint
+    auth = (account.username, account.bindpw)
+    _attrs = {k: [base64.b64encode(_v).decode('ASCII') for _v in v] for k, v in attrs.items()}  # the request uses b64 encoded values as we cannot send bytes (e.g. jpegPhoto) via JSON
+    response = requests.post('http://localhost/univention/udm/directory/unmap-ldap-attributes', json={'dn': dn, 'attributes': _attrs}, headers={'Accept': 'application/json'}, auth=auth)
+    assert response.status_code == 200
+    data = response.json()
+    assert name in data['properties']
+    assert data['properties'][name] == value
