@@ -12,3 +12,4 @@ Domain infrastructure
 .. toctree::
 
    system-roles
+   ha
