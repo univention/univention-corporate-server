@@ -112,26 +112,3 @@ You can install them through the :program:`open-vm-tools` package.
 The package is optional,
 but necessary for features such as automatic time synchronization
 between the virtualization server and the guest system.
-
-.. _deployment-installation-physical-open-portal:
-
-Open the portal
----------------
-
-To open the *Portal* in Nubus for UCS,
-choose any UCS system in your Nubus for UCS domain
-and enter its fully qualified hostname into the browser address bar.
-Your client must be able to resolve the hostname through DNS.
-If your client can't resolve the DNS name,
-you can use the IP address.
-
-.. _deployment-installation-physical-license-import:
-
-License import after installation
----------------------------------
-
-If you installed the system as the first system in the Nubus for UCS domain
-in the :term:`UCS Primary Directory Node` role,
-you can import the license for the domain,
-see :external+uv-ucs-manual:ref:`central-license`
-in :cite:t:`ucs-manual`.
