@@ -46,7 +46,7 @@ Installation overview
 .. toctree::
 
    install
-   cloud
-   vmware
-   text-mode
+   initial-system-configuration
+   domain-setup
+   after-installation
    trouble
