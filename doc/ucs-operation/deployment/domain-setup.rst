@@ -215,25 +215,9 @@ you need to process the following steps:
    Additional Nubus for UCS systems can join the domain at a later point in time.
    You can assign them one of the following system roles.
 
-   .. TODO: Make system roles more concise and use the glossary to collect information there.
-
-   Backup Directory Node
-      The :term:`Backup Directory Node` is the fallback system for the UCS Primary Directory Node.
-      If the Primary Directory Node fails,
-      a Backup Directory Node can adopt the role of the UCS Primary Directory Node permanently.
-      Backup Directory Nodes have all the domain data and SSL security certificates saved as read-only copies.
-
-   Replica Directory Node
-      Servers with the :term:`Replica Directory Node` role have all the domain data saved as read-only copies.
-      In contrast to the Backup Directory Node, however, they don't have all security certificates.
-      Services running on a Replica Directory node access LDAP directory data through the local LDAP directory service.
-      Replica Directory Node systems are ideal for site servers and the distribution of high-load services.
-
-   Managed Node
-      :term:`Managed Node`\ s are Nubus for UCS systems without a local LDAP directory service.
-      They access domain data through other servers in the domain.
-      They're suitable for services that don't require a local database for authentication,
-      for example, print and file servers.
+   * :ref:`domain-infrastructure-system-roles-backup-directory-node`
+   * :ref:`domain-infrastructure-system-roles-replica-directory-node`
+   * :ref:`domain-infrastructure-system-roles-managed-node`
 
 #. After you selected the system role for Nubus for UCS,
    the system setup asks for more information to join the domain,
