@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-directory-manager-modules
+fix: 17.3.16
+desc: |
+ This update addresses the following issues:
+ * Fixed: With errata282 a change was introduced to
+   univention-directory-manager-modules which requires
+   a restart of some services that depend on
+   univention-directory-manager-modules. A UCS@school service
+   was missing in the list of services that need to be restarted.
+bug: [58802]
