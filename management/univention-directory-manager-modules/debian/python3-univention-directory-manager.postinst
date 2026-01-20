@@ -68,12 +68,16 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.11-29"; th
 		--append translationLongDescription='"fr_FR" "Définir des drapeaux pour un objet"'
 fi
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.3.13"; then
+# On each incompatible change of UDM code, e.g. new syntax classes, new python modules,
+# we need to restart services which use univention.admin.modules.update()
+# to reload modules in long running processes. Increase version each time such a change is performed!
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.4.10"; then
 	deb-systemd-invoke restart univention-directory-listener.service || true
 	deb-systemd-invoke restart univention-directory-manager-rest.service || true
 	# restart ucs@school importer service if available
 	# shellcheck disable=SC2015
 	systemctl is-active ucs-school-import-celery-worker.service && deb-systemd-invoke restart ucs-school-import-celery-worker.service || true
+	systemctl is-active ucs-school-import-http-api.service && deb-systemd-invoke restart ucs-school-import-http-api.service || true
 fi
 
 exit 0

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.10) unstable; urgency=medium
+
+  * Bug #58992: Restart UCS@school Kelvin HTTP API on upgrade
+
+ -- Johannes Königer <koeniger@univention.de>  Tue, 20 Jan 2026 12:01:07 +0100
+
 univention-directory-manager-modules (17.4.9) unstable; urgency=medium
 
   * Bug #58982: fix UnboundLocalError in logging in syntax.py
