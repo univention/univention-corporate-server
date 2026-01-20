@@ -6,110 +6,128 @@
 Understanding system roles
 ==========================
 
-In a UCS domain systems can be installed in different *system roles*. The
-following gives a short characterization of the different systems.
+You can install systems in different *system roles* in a Nubus for UCS domain.
+This page provides a characterization of the different roles.
 
-.. _domain-ldap-primary-directory-node:
+.. seealso::
 
-|UCSPRIMARYDN|
---------------
+   For more information about the role concept in Nubus for UCS,
+   see :external+uv-architecture:ref:`concept-role`
+   in :cite:t:`ucs-architecture`.
 
-A system with the |UCSPRIMARYDN| role is the primary domain controller of a UCS
-domain and is always installed as the first system. The domain data (such as
-users, groups, printers) and the SSL security certificates are saved on the
-|UCSPRIMARYDN|.
+.. _domain-infrastructure-system-roles-primary-directory-node:
 
-Copies of these data are automatically transferred to all servers with the
-|UCSBACKUPDN| role.
+Primary Directory Node
+----------------------
 
-.. _domain-ldap-backup-directory-node:
+A system with the Primary Directory Node role
+is the primary domain controller of a Nubus for UCS domain.
+It's always the first system installed in a Nubus for UCS domain.
 
-|UCSBACKUPDN|
--------------
+The Primary Directory Node stores domain data,
+such as users, groups, printers,
+and the TLS security certificates.
+Systems with the Backup Directory Node role automatically receive copies of this data.
 
-All the domain data and SSL security certificates are saved as read-only copies
-on servers with the |UCSBACKUPDN| role.
+.. _domain-infrastructure-system-roles-backup-directory-node:
 
-The |UCSBACKUPDN| is the fallback system for the |UCSPRIMARYDN|. If the latter
-should fail, a |UCSBACKUPDN| can take over the role of the |UCSPRIMARYDN|
-permanently (see :ref:`domain-backup2master`).
+Backup Directory Node
+---------------------
 
-.. _domain-ldap-replica-directory-node:
+The Primary Directory Node stores a read-only copy of all the domain data and TLS security certificates.
 
-|UCSREPLICADN|
---------------
+The Backup Directory Node is the fallback system for the Primary Directory Node.
+If the Primary Directory Node fails,
+a Backup Directory Node can adopt the role of the Primary Directory Node permanently.
+For information about the backup to primary promotion,
+see :external+uv-ucs-manual:ref:`domain-backup2master`
+in :cite:t:`ucs-manual`.
 
-All the domain data are saved as read-only copies on servers with the
-|UCSREPLICADN| role. In contrast to the |UCSBACKUPDN|, however, not all security
-certificates are synchronized.
+.. TODO: Replace reference to backup2master after it's in this document.
 
-As access to the services running on a |UCSREPLICADN| are performed against the
-local LDAP server, |UCSREPLICADN|\ s are ideal for site servers and the
-distribution of load-intensive services.
+.. _domain-infrastructure-system-roles-replica-directory-node:
 
-A |UCSREPLICADN| cannot be promoted to a |UCSPRIMARYDN|.
+Replica Directory Node
+----------------------
 
-.. _domain-ldap-managed-node:
+Servers with the Replica Directory Node role have all the domain data saved as read-only copy.
+In contrast to the Backup Directory Node, they don't have all security certificates.
 
-|UCSMANAGEDNODE|
-----------------
+Services running on a Replica Directory Node access LDAP directory data
+through the local LDAP directory service.
+Replica Directory Node systems are ideal for site servers and the distribution of high-load services.
 
-|UCSMANAGEDNODE| are server systems without a local LDAP server. Access to
-domain data here is performed via other servers in the domain.
+A Replica Directory Node doesn't allow promotion to a Primary Directory Node.
 
-.. _domain-ldap-ubuntu:
+.. _domain-infrastructure-system-roles-managed-node:
+
+Managed Node
+------------
+
+Managed Nodes are Nubus for UCS systems without a local LDAP directory service.
+They access domain data through other servers in the domain.
+They're suitable for services that don't require a local database for authentication.
+
+.. _domain-infrastructure-system-roles-ubuntu:
 
 Ubuntu
 ------
 
-Ubuntu clients can be managed with this system role, see
-:ref:`computers-ubuntu`.
+You can manage Ubuntu clients in Nubus with the *Ubuntu* system role.
+For more information, see
+:external+uv-ucs-manual:ref:`computers-ubuntu`
+in :cite:t:`ucs-manual`.
 
-.. _domain-ldap-linux:
+.. _domain-infrastructure-system-roles-linux:
 
 Linux
 -----
 
-This system role is used for the integration of other Linux systems than UCS and
-Ubuntu, e.g., for Debian or CentOS systems. The integration is documented in
-:cite:t:`ext-doc-domain`.
+You manage other Linux systems that neither match Nubus for UCS nor Ubuntu
+with the *Linux* system role,
+for example, Debian GNU/Linux or CentOS.
+For information about the integration,
+see :cite:t:`ext-doc-domain`.
 
-.. _domain-ldap-macos:
+.. _domain-infrastructure-system-roles-macos:
 
 macOS
 -----
 
-macOS systems can be joined into a UCS domain using Samba/AD. Additional
-information can be found in :ref:`macos-domain-join`.
+You can join macOS systems into a Nubus for UCS domain through Samba.
+For information about the integration,
+see :external+uv-ucs-manual:ref:`macos-domain-join`
+in :cite:t:`ucs-manual`.
 
-.. _domain-ldap-domain-trust-account:
+.. _domain-infrastructure-system-roles-domain-trust-account:
 
 Domain Trust Account
 --------------------
 
-A domain trust account is set up for trust relationships between Windows and UCS
-domains.
+Nubus uses the *Domain Trust Account* system role
+for trust relationships between Windows Active Directory domains and Nubus for UCS domains.
 
-.. _domain-ldap-ip-managed-client:
-
-IP client
----------
-
-An IP client allows the integration of non-UCS systems into the IP management
-(DNS/DHCP), e.g., for network printers or routers.
-
-.. _domain-ldap-windows-domain-controller:
+.. _domain-infrastructure-system-roles-windows-domain-controller:
 
 Windows Domaincontroller
 ------------------------
 
-Windows domain controllers in a Samba/AD environment are operated with this
-system role.
+Windows domain controllers in a Samba environment use the *Windows Domaincontroller* system role.
 
-.. _domain-ldap-windows-workstation-server:
+.. _domain-infrastructure-system-roles-windows-workstation-server:
 
-Windows Workstation/Server
---------------------------
+Windows Workstation and Windows Server
+--------------------------------------
 
-Windows clients and Windows |UCSMANAGEDNODE|\ s are managed with this system
-role.
+Windows clients and Windows Managed Nodes
+use the *Windows Workstation* or *Windows Server* system role.
+
+.. _domain-infrastructure-system-roles-ip-managed-client:
+
+IP client
+---------
+
+The IP client system role allows the integration of systems
+not listed in :ref:`domain-infrastructure-system-roles`
+into the IP management of Nubus for DNS and DHCP,
+such as network printers or routers.
