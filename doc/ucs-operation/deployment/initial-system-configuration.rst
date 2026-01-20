@@ -6,7 +6,38 @@
 Initial system configuration
 ============================
 
-.. TODO: Add introduction to chapter
+This section guides you through the interactive installation process of Nubus for UCS.
+During the graphical installation,
+you configure all necessary system settings through a series of prompts.
+The installer walks you through each configuration step sequentially
+and lets you navigate between steps.
+
+The configuration process covers the following essential steps:
+
+Installation mode selection
+   Choose how to proceed with the installation: graphical mode with default settings, manual network configuration, or text mode.
+
+Language and location settings
+   Select the system language and geographic location, which determine the time zone and language variants.
+
+Keyboard layout configuration
+   Configure the keyboard layout independently of the system language.
+
+Network configuration
+   Set up network interfaces through automatic DHCP discovery or manual IP address configuration.
+
+``root`` password definition
+   Define the root password,
+   which you also use for the ``Administrator`` domain user
+   from installation of a :term:`Primary Directory Node`.
+
+Hard drive partitioning
+   Select a partitioning strategy such as standard partitioning, logical volume management (LVM), or encrypted LVM.
+
+Base system installation
+   The installer automatically installs the Nubus for UCS base system and additional software after partitioning is complete.
+
+After completing all configuration steps, the system restarts to begin domain setup and system initialization.
 
 .. _deployment-initial-system-configuration-install-mode:
 
