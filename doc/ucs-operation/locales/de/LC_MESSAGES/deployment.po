@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-19 17:23+0000\n"
-"PO-Revision-Date: 2026-01-19 18:30+0100\n"
+"POT-Creation-Date: 2026-01-20 13:33+0000\n"
+"PO-Revision-Date: 2026-01-20 14:50+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -16,31 +16,635 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../deployment/cloud.rst:7
-msgid "Cloud deployment"
-msgstr "Cloud Installation"
+#: ../../deployment/after-installation.rst:7
+msgid "Steps after the installation"
+msgstr "Schritte nach der Installation"
 
-#: ../../deployment/cloud.rst:9
-msgid ""
-"Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
-"cloud for Nubus for UCS. You can use this generic image for all Nubus for"
-" UCS system roles to derive an individual instance that you can configure"
-" through management modules regarding topics such as domain name and "
-"software selection."
-msgstr ""
-"Univention stellt ein Amazon Machine Image (AMI) für die Amazon EC2 Cloud"
-" für Nubus für UCS bereit. Sie können dieses generische Image für alle "
-"Nubus für UCS Systemrollen verwenden, um eine individuelle Instanz daraus"
-" zu erstellen, die Sie über Management-Module hinsichtlich Themen wie "
-"Domänenname und Softwareauswahl konfigurieren können."
+#: ../../deployment/after-installation.rst:14
+msgid "Open the portal"
+msgstr "Portal öffnen"
 
-#: ../../deployment/cloud.rst:14
+#: ../../deployment/after-installation.rst:16
 msgid ""
-"For information about the setup process of a Nubus for UCS instance based"
-" on Amazon EC2, see :uv:help:`Amazon EC2 Quickstart <21833>`."
+"To open the *Portal* in Nubus for UCS, choose any UCS system in your "
+"Nubus for UCS domain and enter its fully qualified hostname into the "
+"browser address bar. Your client must be able to resolve the hostname "
+"through DNS. If your client can't resolve the DNS name, you can use the "
+"IP address."
 msgstr ""
-"Für Informationen zum Einrichtungsprozess einer Nubus für UCS Instanz "
-"basierend auf Amazon EC2, siehe :uv:help:`Amazon EC2 Quickstart <21833>`."
+"Um das *Portal* in Nubus für UCS zu öffnen, wählen Sie ein beliebiges "
+"UCS-System in Ihrer Nubus für UCS Domäne und geben Sie dessen Fully "
+"Qualified Hostname in die Browser-Adressleiste ein. Ihr Client muss in "
+"der Lage sein, den Rechnernamen über DNS aufzulösen. Wenn Ihr Client den "
+"DNS-Namen nicht auflösen kann, können Sie die IP-Adresse verwenden."
+
+#: ../../deployment/after-installation.rst:26
+msgid "License import after installation"
+msgstr "Lizenzimport nach der Installation"
+
+#: ../../deployment/after-installation.rst:28
+msgid ""
+"If you installed the system as the first system in the Nubus for UCS "
+"domain in the :term:`UCS Primary Directory Node` role, you can import the"
+" license for the domain, see :external+uv-ucs-manual:ref:`central-"
+"license` in :cite:t:`ucs-manual`."
+msgstr ""
+"Wenn Sie das System als erstes System in der Nubus für UCS Domäne in der "
+"Rolle :term:`UCS Primary Directory Node` installiert haben, können Sie "
+"die Lizenz für die Domäne importieren, siehe :external+uv-ucs-manual:ref"
+":`central-license` im :cite:t:`ucs-manual`."
+
+#: ../../deployment/domain-setup.rst:7
+msgid "Domain setup"
+msgstr "Einrichtung der Domäne"
+
+#: ../../deployment/domain-setup.rst:9
+msgid ""
+"You start the final configuration step of the Nubus for UCS system by "
+"selecting a domain mode. :numref:`deployment-domain-setup-role-figure` "
+"shows the domain modes. They influence the next configuration steps. The "
+"following domain modes are available:"
+msgstr ""
+"Sie starten den finalen Konfigurationsschritt des Nubus for UCS Systems, "
+"indem Sie einen Domänenmodus auswählen. :numref:`deployment-domain-setup-role-figure`"
+" zeigt die Domänenmodi. Sie "
+"beeinflussen die nächsten Konfigurationsschritte. Die folgenden "
+"Domänenmodi sind verfügbar:"
+
+#: ../../deployment/domain-setup.rst:17
+msgid "Create a new UCS domain"
+msgstr "Neue UCS-Domäne erstellen"
+
+#: ../../deployment/domain-setup.rst:18
+msgid ""
+"The *Create a new UCS domain* configures the first system in a UCS "
+"domain, a Nubus for UCS system with the :term:`UCS Primary Directory "
+"Node` system role. The subsequent steps request required information to "
+"set up the directory service, authentication service, and the DNS server."
+" A Nubus for UCS domain can consist of one single or several Nubus for "
+"UCS systems. You can add additional Nubus for UCS systems at a later "
+"point in time using the :ref:`deployment-domain-setup-join` mode. For "
+"more information, see :ref:`deployment-domain-setup-new-domain`."
+msgstr ""
+"*Neue UCS-Domäne erstellen* konfiguriert das erste System in einer UCS-"
+"Domäne, ein Nubus für UCS System mit der Systemrolle :term:`UCS Primary "
+"Directory Node`. Die nachfolgenden Schritte fragen erforderliche "
+"Informationen ab, um den Verzeichnisdienst, Authentifizierungsdienst und "
+"den DNS-Server einzurichten. Eine Nubus für UCS Domäne kann aus einem "
+"einzelnen oder mehreren Nubus für UCS Systemen bestehen. Sie können "
+"später zusätzliche Nubus für UCS Systeme im Modus :ref:`deployment-domain-setup-join`"
+" hinzufügen. Weitere "
+"Informationen finden Sie unter :ref:`deployment-domain-setup-new-domain`."
+
+#: ../../deployment/domain-setup.rst:30
+msgid "Join into an existing Active Directory domain"
+msgstr "Einer bestehenden Active Directory Domäne beitreten"
+
+#: ../../deployment/domain-setup.rst:31
+msgid ""
+"This mode operates Nubus for UCS as a member of a Windows Active "
+"Directory domain. The configuration is suitable for expanding an Active "
+"Directory domain with applications available on Nubus for UCS. Apps "
+"installed on Nubus for UCS are then available for the users of the Active"
+" Directory domain to use. The subsequent steps request information for "
+"joining the Active Directory domain and configure Nubus for UCS "
+"accordingly. For more information, see :ref:`deployment-domain-setup-ad-"
+"member`."
+msgstr ""
+"Dieser Modus betreibt Nubus für UCS als Mitglied einer Windows Active "
+"Directory Domäne. Die Konfiguration ist geeignet, um eine Active "
+"Directory Domäne mit verfügbaren Anwendungen auf Nubus für UCS zu "
+"erweitern. Auf Nubus für UCS installierte Apps stehen dann den Benutzern "
+"der Active Directory Domäne zur Nutzung zur Verfügung. Die nachfolgenden "
+"Schritte fordern Informationen zum Beitritt zur Active Directory Domäne "
+"an und konfigurieren Nubus für UCS entsprechend. Weitere Informationen "
+"finden Sie unter :ref:`deployment-domain-setup-ad-member`."
+
+#: ../../deployment/domain-setup.rst:41
+msgid "Join into an existing UCS domain"
+msgstr "Einer bestehenden UCS-Domäne beitreten"
+
+#: ../../deployment/domain-setup.rst:42
+msgid ""
+"This mode configures the Nubus for UCS system to join an existing Nubus "
+"for UCS domain. At a later step, the system setup asks for what system "
+"role it assigns. For more information, see :ref:`deployment-domain-setup-"
+"join-ucs`."
+msgstr ""
+"Dieser Modus konfiguriert das Nubus für UCS System, um einer bestehenden "
+"Nubus für UCS Domäne beizutreten. In einem späteren Schritt fragt die "
+"Systemeinrichtung, welche Systemrolle zugewiesen werden soll. Weitere "
+"Informationen finden Sie unter :ref:`deployment-domain-setup-"
+"join-ucs`."
+
+#: ../../deployment/domain-setup.rst:49 ../../deployment/domain-setup.rst:52
+msgid "Domain settings"
+msgstr "Domäneneinstellungen"
+
+#: ../../deployment/domain-setup.rst:57
+msgid "Naming convention for hostnames"
+msgstr "Namenskonvention für Rechnernamen"
+
+#: ../../deployment/domain-setup.rst:65
+msgid ""
+"During Nubus for UCS installation, the domain setup asks for a hostname "
+"and a domain name as *fully qualified domain name*. For compatibility "
+"reasons with Samba and Active Directory domains, the hostname must adhere"
+" to the following naming convention:"
+msgstr ""
+"Während der Nubus für UCS Installation fragt die Einrichtung der Domäne "
+"nach einem Rechnernamen und einem Domänennamen als :spelling:word:`Fully "
+"Qualified Domain Name`. Wegen der Kompatibilität mit Samba- und Active "
+"Directory Domänen muss der Rechnername der folgenden Namenskonvention "
+"entsprechen:"
+
+#: ../../deployment/domain-setup.rst:70
+msgid "Length from 1 to 13 alphanumeric characters."
+msgstr "Länge von 1 bis 13 alphanumerischen Zeichen."
+
+#: ../../deployment/domain-setup.rst:72
+msgid "Only lower case letters (``a-z``) and numerals (``0-9``)."
+msgstr "Nur Kleinbuchstaben (``a-z``) und Ziffern (``0-9``)."
+
+#: ../../deployment/domain-setup.rst:74
+msgid ""
+"Start and end with an alphanumeric character and can contain a hyphen "
+"(``-``) in between."
+msgstr ""
+"Beginnen und enden mit einem alphanumerischen Zeichen und können "
+"dazwischen einen Bindestrich (``-``) enthalten."
+
+#: ../../deployment/domain-setup.rst:76
+msgid ""
+"The naming convention has the regular expression in :numref:`deployment-"
+"domain-setup-naming-listing`."
+msgstr ""
+"Die Namenskonvention hat den regulären Ausdruck in :numref:`deployment-"
+"domain-setup-naming-listing`."
+
+#: ../../deployment/domain-setup.rst:79
+msgid "Regular expression for the naming convention for the hostname"
+msgstr "Regulärer Ausdruck für die Namenskonvention für den Rechnernamen"
+
+#: ../../deployment/domain-setup.rst:79
+#, python-brace-format
+msgid "^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$"
+msgstr "^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$"
+
+#: ../../deployment/domain-setup.rst:88
+msgid "Mode: Create a new UCS domain"
+msgstr "Modus: Neue UCS-Domäne erstellen"
+
+#: ../../deployment/domain-setup.rst:93
+msgid ""
+"After you selected :ref:`deployment-domain-setup-new`, system setup asks "
+"for the following information, see :numref:`deployment-domain-setup-new-"
+"domain-figure`:"
+msgstr ""
+"Nachdem Sie :ref:`deployment-domain-setup-new` ausgewählt haben, fragt "
+"die Systemeinrichtung nach den folgenden Informationen, siehe :numref"
+":`deployment-domain-setup-new-domain-figure`:"
+
+#: ../../deployment/domain-setup.rst:99
+msgid "Organization name"
+msgstr "Organisationsname"
+
+#: ../../deployment/domain-setup.rst:100
+msgid ""
+"You can *optionally* specify an organization name. The system setup uses "
+"the organization name to automatically generate a :ref:`domain name "
+"<deployment-domain-setup-new-domain-fqdn>` and the :ref:`LDAP base "
+"<deployment-domain-setup-new-domain-ldap-base>`."
+msgstr ""
+"Sie können *optional* einen Organisationsnamen angeben. Die "
+"Systemeinrichtung verwendet den Organisationsnamen, um automatisch einen "
+":ref:`Domänennamen <deployment-domain-setup-new-domain-fqdn>` und die "
+":ref:`LDAP-Basis <deployment-domain-setup-new-domain-ldap-base>` "
+"zu generieren."
+
+#: ../../deployment/domain-setup.rst:108
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: ../../deployment/domain-setup.rst:109
+msgid ""
+"If you provide a valid email address, system setup activates a "
+"personalized license and sends it to the address. Univention App Center "
+"requires the license to install apps. Univention automatically generates "
+"the license and immediately sends it to the specified email address. You "
+"import the license through the *Welcome* management module, see :external"
+"+uv-ucs-manual:ref:`central-license` in :cite:t:`ucs-manual`."
+msgstr ""
+"Wenn Sie eine gültige E-Mail-Adresse angeben, aktiviert die "
+"Systemeinrichtung eine personalisierte Lizenz und schickt sie an die "
+"Adresse. Das Univention App Center benötigt die Lizenz, um Apps zu "
+"installieren. Univention generiert die Lizenz automatisch und sendet sie "
+"sofort an die angegebene E-Mail-Adresse. Sie importieren die Lizenz über "
+"das Verwaltungsmodul *Willkommen*, siehe :external+uv-ucs-manual:ref"
+":`central-license` im :cite:t:`ucs-manual`."
+
+#: ../../deployment/domain-setup.rst:123
+msgid "Fully qualified domain name"
+msgstr ":spelling:word:`Fully Qualified Domain Name`"
+
+#: ../../deployment/domain-setup.rst:124
+msgid ""
+"Provide the fully qualified domain name for the system, including "
+"hostname and domain name. System setup derives the name of the Nubus for "
+"UCS system and the DNS domain from it. System setup automatically "
+"generates a suggestion if you provided an :ref:`deployment-domain-setup-"
+"new-domain-organization`. For the naming convention of the hostname, see "
+":ref:`deployment-domain-setup-naming`."
+msgstr ""
+"Geben Sie den :spelling:word:`Fully Qualified Domain Name` für das System"
+" an, einschließlich Rechnername und Domänenname. Die Systemeinrichtung "
+"leitet daraus den Namen des Nubus für UCS Systems und der DNS-Domäne ab. "
+"Die Systemeinrichtung generiert automatisch einen Vorschlag, wenn Sie "
+"einen :ref:`deployment-domain-setup-new-domain-organization` angegeben "
+"haben. Für die Namenskonvention des Rechnernamens siehe :ref:`deployment-"
+"domain-setup-naming`."
+
+#: ../../deployment/domain-setup.rst:134
+msgid ""
+"Recommendation: don't use publicly available DNS domains for your DNS "
+"domain, as this can result in name resolution problems."
+msgstr ""
+"Empfehlung: Verwenden Sie keine öffentlich verfügbaren DNS-Domänen für "
+"Ihre DNS-Domäne, da dies zu Namensauflösungsproblemen führen kann."
+
+#: ../../deployment/domain-setup.rst:139
+msgid "LDAP base"
+msgstr "LDAP-Basis"
+
+#: ../../deployment/domain-setup.rst:140
+msgid ""
+"You must specify an LDAP base to initialize the directory service. System"
+" setup automatically creates a suggestion from the :ref:`deployment-"
+"domain-setup-new-domain-fqdn`. You can usually accept the suggestion "
+"without changes."
+msgstr ""
+"Sie müssen eine LDAP-Basis angeben, um den Verzeichnisdienst zu "
+"initialisieren. Die Systemeinrichtung erstellt automatisch einen "
+"Vorschlag aus dem :ref:`deployment-domain-setup-new-domain-fqdn`. Sie "
+"können den Vorschlag normalerweise ohne Änderungen akzeptieren."
+
+#: ../../deployment/domain-setup.rst:147 ../../deployment/domain-setup.rst:150
+msgid "Specify of hostname and LDAP base"
+msgstr "Angabe von Hostname und LDAP-Basis"
+
+#: ../../deployment/domain-setup.rst:155
+msgid "Mode: Join an existing Active Directory domain"
+msgstr "Modus: Einer bestehenden Active Directory Domäne beitreten"
+
+#: ../../deployment/domain-setup.rst:160
+msgid ""
+"If you configured the DNS server of an Active Directory domain during the"
+" :ref:`network configuration <deployment-initial-system-configuration-"
+"network-setup>`, system setup automatically suggest the name of the "
+"Active Directory domain controller in the *Active Directory account "
+"information* step, see :numref:`deployment-domain-setup-ad-member-"
+"figure`. If the suggestion is incorrect, you can provide the name of "
+"another Active Directory domain controller or another Active Directory "
+"domain."
+msgstr ""
+"Wenn Sie den DNS-Server einer Active Directory Domäne während der "
+":ref:`Netzwerkkonfiguration <deployment-initial-system-configuration-"
+"network-setup>` konfiguriert haben, schlägt die Systemeinrichtung "
+"automatisch den Namen des Active Directory Domain-Controllers im Schritt "
+"*Active Directory Konto-Informationen* vor, siehe :numref:`deployment-"
+"domain-setup-ad-member-figure`. Wenn der "
+"Vorschlag falsch ist, können Sie den Namen eines anderen Active Directory"
+" Domain-Controllers oder einer anderen Active Directory Domäne angeben."
+
+#: ../../deployment/domain-setup.rst:167
+msgid ""
+"You need to provide an Active Directory account and its corresponding "
+"password to enable your Nubus for UCS system to join the Active Directory"
+" domain. The user account must have the permission to join new systems in"
+" the Active Directory domain."
+msgstr ""
+"Sie müssen ein Active Directory Konto und dessen zugehöriges Passwort "
+"angeben, damit Ihr Nubus für UCS System der Active Directory Domäne "
+"beitreten kann. Das Benutzerkonto muss die Berechtigung haben, neue "
+"Systeme in der Active Directory Domäne hinzuzufügen."
+
+#: ../../deployment/domain-setup.rst:171
+msgid ""
+"In addition, you need to define a hostname for the Nubus for UCS system. "
+"You can adopt the suggested hostname or provide a different one. For the "
+"naming convention of the hostname, see :ref:`deployment-domain-setup-"
+"naming`."
+msgstr ""
+"Zusätzlich müssen Sie einen Rechnernamen für das Nubus für UCS System "
+"festlegen. Sie können den vorgeschlagenen Rechnernamen übernehmen oder "
+"einen anderen angeben. Für die Namenskonvention des Rechnernamens siehe "
+":ref:`deployment-domain-setup-naming`."
+
+#: ../../deployment/domain-setup.rst:176
+msgid ""
+"System setup automatically derives the system's domain name from the "
+"domain DNS server. However, in some scenarios such as hosting a public "
+"mail server, you may need to use a different fully qualified domain name."
+" The Nubus for UCS system joins the Active Directory domain with the "
+"specified hostname."
+msgstr ""
+"Die Systemeinrichtung leitet den Domänennamen des Systems automatisch vom"
+" Domänen-DNS-Server ab. In einigen Szenarien, wie beim "
+":spelling:word:`Hosten` eines öffentlichen Mailservers, müssen Sie "
+"möglicherweise einen anderen :spelling:word:`Fully Qualified Domain Name`"
+" verwenden. Das Nubus für UCS System tritt der Active Directory Domäne "
+"mit dem angegebenen Rechnernamen bei."
+
+#: ../../deployment/domain-setup.rst:183 ../../deployment/domain-setup.rst:273
+msgid "After the configuration is complete, you **can't** change the domain."
+msgstr "Nach Abschluss der Konfiguration können Sie die Domäne **nicht** ändern."
+
+#: ../../deployment/domain-setup.rst:185
+msgid ""
+"In a Nubus for UCS domain, you can install systems in different system "
+"roles. The first Nubus for UCS system that joins an Active Directory "
+"domain, automatically has the :term:`UCS Primary Directory Node` system "
+"role. If you select this mode during the installation of addition Nubus "
+"for UCS system, system setup shows the selection dialog for the system "
+"role. For the system role selection, see :ref:`deployment-domain-setup-"
+"join-ucs`."
+msgstr ""
+"In einer Nubus für UCS Domäne können Sie Systeme in verschiedenen "
+"Systemrollen installieren. Das erste Nubus für UCS System, das einer "
+"Active Directory Domäne beitritt, hat automatisch die Systemrolle "
+":term:`UCS Primary Directory Node`. Wenn Sie diesen Modus während der "
+"Installation zusätzlicher Nubus für UCS Systeme wählen, zeigt die "
+"Systemeinrichtung den Auswahldialog für die System-Rolle an. Für die "
+"Systemrollenauswahl siehe :ref:`deployment-domain-setup-"
+"join-ucs`."
+
+#: ../../deployment/domain-setup.rst:195 ../../deployment/domain-setup.rst:198
+msgid "Information on the Active directory domain"
+msgstr "Informationen zur Active Directory Domäne"
+
+#: ../../deployment/domain-setup.rst:203
+msgid "Mode: Join an existing UCS domain"
+msgstr "Modus: Einer bestehenden UCS-Domäne beitreten"
+
+#: ../../deployment/domain-setup.rst:208
+msgid ""
+"To join an existing Nubus for UCS domain, you need to process the "
+"following steps:"
+msgstr ""
+"Um einer bestehenden Nubus für UCS Domäne beizutreten, müssen Sie die "
+"folgenden Schritte durchführen:"
+
+#: ../../deployment/domain-setup.rst:211
+msgid "Select the system role."
+msgstr "Systemrolle auswählen."
+
+#: ../../deployment/domain-setup.rst:213
+msgid ""
+"In a Nubus for UCS domain, you can install systems in different system "
+"roles. The first system in a Nubus for UCS domain always has the "
+":term:`UCS Primary Directory Node` system role. Additional Nubus for UCS "
+"systems can join the domain at a later point in time. You can assign them"
+" one of the following system roles."
+msgstr ""
+"In einer Nubus für UCS Domäne können Sie Systeme in verschiedenen "
+"Systemrollen installieren. Das erste System in einer Nubus für UCS Domäne"
+" hat immer die Systemrolle :term:`UCS Primary Directory Node`. "
+"Zusätzliche Nubus für UCS Systeme können der Domäne zu einem späteren "
+"Zeitpunkt beitreten. Sie können ihnen eine der folgenden Systemrollen "
+"zuweisen."
+
+#: ../../deployment/domain-setup.rst:220
+msgid "Backup Directory Node"
+msgstr "Backup Directory Node"
+
+#: ../../deployment/domain-setup.rst:221
+msgid ""
+"The :term:`Backup Directory Node` is the fallback system for the UCS "
+"Primary Directory Node. If the Primary Directory Node fails, a Backup "
+"Directory Node can adopt the role of the UCS Primary Directory Node "
+"permanently. Backup Directory Nodes have all the domain data and SSL "
+"security certificates saved as read-only copies."
+msgstr ""
+"Der :term:`Backup Directory Node` ist das Fallback-System für den UCS "
+"Primary Directory Node. Wenn der Primary Directory Node ausfällt, kann "
+"ein Backup Directory Node die Rolle des UCS Primary Directory Node "
+"dauerhaft übernehmen. Backup Directory Nodes haben alle Domänendaten und "
+"SSL-Sicherheitszertifikate als schreibgeschützte Kopien gespeichert."
+
+#: ../../deployment/domain-setup.rst:226
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
+
+#: ../../deployment/domain-setup.rst:227
+msgid ""
+"Servers with the :term:`Replica Directory Node` role have all the domain "
+"data saved as read-only copies. In contrast to the Backup Directory Node,"
+" however, they don't have all security certificates. Services running on "
+"a Replica Directory node access LDAP directory data through the local "
+"LDAP directory service. Replica Directory Node systems are ideal for site"
+" servers and the distribution of high-load services."
+msgstr ""
+"Server mit der Rolle :term:`Replica Directory Node` haben alle Domänen-"
+"Daten als schreibgeschützte Kopien gespeichert. Im Gegensatz zum Backup "
+"Directory Node haben sie jedoch nicht alle Sicherheitszertifikate. Auf "
+"einem Replica Directory Node laufende Dienste greifen über den lokalen "
+"LDAP-Verzeichnisdienst auf LDAP-Verzeichnisdaten zu. Replica Directory "
+"Node Systeme eignen sich ideal für Standort-Server und die Verteilung "
+"hoch belasteter Dienste."
+
+#: ../../deployment/domain-setup.rst:232
+msgid "Managed Node"
+msgstr "Managed Node"
+
+#: ../../deployment/domain-setup.rst:233
+msgid ""
+":term:`Managed Node`\\ s are Nubus for UCS systems without a local LDAP "
+"directory service. They access domain data through other servers in the "
+"domain. They're suitable for services that don't require a local database"
+" for authentication, for example, print and file servers."
+msgstr ""
+":term:`Managed Node`\\ s sind Nubus für UCS Systeme ohne lokalen LDAP-"
+"Verzeichnisdienst. Sie greifen über andere Server in der Domäne auf "
+"Domänendaten zu. Sie eignen sich für Dienste, die keine lokale Datenbank "
+"für die Authentifizierung benötigen, zum Beispiel Druck- und Dateiserver."
+
+#: ../../deployment/domain-setup.rst:238
+msgid ""
+"After you selected the system role for Nubus for UCS, the system setup "
+"asks for more information to join the domain, see :numref:`deployment-"
+"domain-setup-join-ucs-figure`."
+msgstr ""
+"Nachdem Sie die Systemrolle für Nubus für UCS ausgewählt haben, fragt die"
+" Systemeinrichtung nach weiteren Informationen zum Domänenbeitritt, siehe"
+" :numref:`deployment-domain-setup-join-ucs-figure`."
+
+#: ../../deployment/domain-setup.rst:242
+msgid "Start join at the end of the installation"
+msgstr "Beitritt am Ende der Installation starten"
+
+#: ../../deployment/domain-setup.rst:243
+msgid ""
+"If you don't intend to let the system setup run the domain join "
+"automatically during the installation, deactivate the option *Start join "
+"at the end of the installation*."
+msgstr ""
+"Wenn Sie nicht beabsichtigen, dass die Systemeinrichtung den "
+"Domänenbeitritt automatisch während der Installation durchführt, "
+"deaktivieren Sie die Option *Beitritt am Ende der Installation starten*."
+
+#: ../../deployment/domain-setup.rst:246
+msgid "Search Primary Directory Node in DNS"
+msgstr "Primary Directory Node im DNS suchen"
+
+#: ../../deployment/domain-setup.rst:247
+msgid ""
+"System setup automatically determines the name of the UCS Primary "
+"Directory Node if you provided it as DNS server during :ref:`deployment-"
+"initial-system-configuration-network-setup`."
+msgstr ""
+"Die Systemeinrichtung ermittelt automatisch den Namen des UCS Primary "
+"Directory Node, wenn Sie ihn als DNS-Server während :ref:`deployment-"
+"initial-system-configuration-network-setup` angegeben haben."
+
+#: ../../deployment/domain-setup.rst:253
+msgid ""
+"If you decide to join another Nubus for UCS domain, you can deactivate "
+"*Search Primary Directory Node in DNS* and provide the fully qualified "
+"domain name of the preferred UCS Primary Directory Node."
+msgstr ""
+"Wenn Sie sich entscheiden, einer anderen Nubus für UCS Domäne "
+"beizutreten, können Sie *Primary Directory Node im DNS suchen* "
+"deaktivieren und den :spelling:word:`Fully Qualified Domain Name` des "
+"bevorzugten UCS Primary Directory Node angeben."
+
+#: ../../deployment/domain-setup.rst:259
+msgid "Credentials for domain administrator"
+msgstr "Anmeldedaten für Domänenadministrator"
+
+#: ../../deployment/domain-setup.rst:260
+msgid ""
+"The domain join process needs to access information about the domain. To "
+"grant system setup the appropriate permission, you need to provide the "
+"credentials for an *Administrator* account of the domain."
+msgstr ""
+"Der Prozess für den Domänenbeitritt benötigt Zugriff auf Informationen "
+"über die Domäne. Um der Systemeinrichtung die entsprechende Berechtigung "
+"zu erteilen, müssen Sie die Anmeldedaten für ein *Administrator*-Konto "
+"der Domäne angeben."
+
+#: ../../deployment/domain-setup.rst:264
+msgid ""
+"Finally, provide a hostname for the Nubus for UCS system. You can adopt "
+"the suggested hostname or change it. For the naming convention of the "
+"hostname, see :ref:`deployment-domain-setup-naming`. The system setup "
+"automatically derives the domain name of the computer from the domain DNS"
+" server. In some scenarios, such as a public mail server, it may be "
+"necessary to use a certain fully qualified domain name."
+msgstr ""
+"Geben Sie schließlich einen Rechnernamen für das Nubus für UCS System an."
+" Sie können den vorgeschlagenen Rechnernamen übernehmen oder ändern. Für "
+"die Namenskonvention des Rechnernamens siehe :ref:`deployment-"
+"domain-setup-naming`. Die Systemeinrichtung "
+"leitet den Domänennamen des Computers automatisch vom Domänen-DNS-Server "
+"ab. In einigen Szenarien, wie etwa einem öffentlichen Mailserver, kann es"
+" erforderlich sein, einen bestimmten :spelling:word:`Fully Qualified "
+"Domain Name` zu verwenden."
+
+#: ../../deployment/domain-setup.rst:277 ../../deployment/domain-setup.rst:280
+msgid "Information on the domain join"
+msgstr "Informationen zum Domänenbeitritt"
+
+#: ../../deployment/domain-setup.rst:285
+msgid "Confirm the installation settings"
+msgstr "Installationseinstellungen bestätigen"
+
+#: ../../deployment/domain-setup.rst:287
+msgid ""
+"*Confirm configuration settings* shows a summary of your settings, see "
+":numref:`deployment-installation-physical-confirm-settings-summary-"
+"figure`."
+msgstr ""
+"*Konfigurationseinstellungen bestätigen* zeigt eine Zusammenfassung Ihrer"
+" Einstellungen, siehe :numref:`deployment-installation-physical-confirm-"
+"settings-summary-figure`."
+
+#: ../../deployment/domain-setup.rst:290
+msgid "Update system after installation"
+msgstr "System nach der Installation aktualisieren"
+
+#: ../../deployment/domain-setup.rst:291
+msgid ""
+"The *Update system after installation* option allows the automatic "
+"installation of available errata updates."
+msgstr ""
+"Die Option *System nach der Installation aktualisieren* ermöglicht die "
+"automatische Installation verfügbarer Errata-Updates."
+
+#: ../../deployment/domain-setup.rst:295
+msgid ""
+"In addition, the :term:`UCS Primary Directory Node` installs all "
+"available patch level updates and errata updates. All other system roles "
+"update their patch level version to match the patch level version of the "
+"UCS Primary Directory Node. You need to sign in to the UCS Primary "
+"Directory Node to check the installation status. For sign-in, use the "
+"same administrator credentials that you provided in :ref:`deployment-"
+"domain-setup-join-ucs-credentials`."
+msgstr ""
+"Zusätzlich installiert der :term:`UCS Primary Directory Node` alle "
+"verfügbaren Patchlevel-Updates und Errata-Updates. Alle anderen "
+"Systemrollen aktualisieren ihre Patchlevel-Version, um der Patchlevel-"
+"Version des UCS Primary Directory Node zu entsprechen. Sie müssen sich "
+"beim UCS Primary Directory Node anmelden, um den Installationsstatus zu "
+"überprüfen. Verwenden Sie für die Anmeldung die gleichen Anmeldedaten für"
+" ein Administrator-Konto, die Sie in :ref:`deployment-domain-setup-"
+"join-ucs-credentials` angegeben haben."
+
+#: ../../deployment/domain-setup.rst:306
+msgid ""
+"If the settings match your intention, click :guilabel:`Configure System` "
+"to start the configuration of the Nubus for UCS system."
+msgstr ""
+"Wenn die Einstellungen Ihrer Absicht entsprechen, klicken Sie auf "
+":guilabel:`System konfigurieren`, um die Konfiguration des Nubus für UCS "
+"Systems zu starten."
+
+#: ../../deployment/domain-setup.rst:310
+msgid ""
+"System setup shows the progress during the system configuration. It saves"
+" the installation protocol in the following files:"
+msgstr ""
+"Die Systemeinrichtung zeigt den Fortschritt während der "
+"Systemkonfiguration an. Sie speichert das Installationsprotokoll in den "
+"folgenden Dateien:"
+
+#: ../../deployment/domain-setup.rst:313
+msgid ":file:`/var/log/installer/syslog`"
+msgstr ":file:`/var/log/installer/syslog`"
+
+#: ../../deployment/domain-setup.rst:314
+msgid ":file:`/var/log/univention/management-console-module-setup.log`"
+msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
+
+#: ../../deployment/domain-setup.rst:316
+msgid ""
+"After you confirm the completion of the system setup, your Nubus for UCS "
+"system is ready for the first full boot procedure. You can restart it. "
+"The system then boots from the hard drive. After the boot procedure "
+"completes, the ``root`` and ``Administrator`` users can sign in to the "
+"*Portal*, see :external+uv-nubus-manual:ref:`nubus-portal` in :cite:t"
+":`uv-nubus-manual`."
+msgstr ""
+"Nachdem Sie den Abschluss der Systemeinrichtung bestätigt haben, ist Ihr "
+"Nubus für UCS System bereit für den ersten vollständigen Bootvorgang. Sie"
+" können es neu starten. Das System startet dann von der Festplatte. Nach "
+"Abschluss des Bootvorgangs können sich die Benutzer ``root`` und "
+"``Administrator`` im *Portal* anmelden, siehe :external+uv-nubus-"
+"manual:ref:`nubus-portal` in :cite:t:`uv-nubus-manual`."
+
+#: ../../deployment/domain-setup.rst:327 ../../deployment/domain-setup.rst:330
+#: ../../deployment/index.rst:38
+msgid "Installation overview"
+msgstr "Installationsübersicht"
 
 #: ../../deployment/index.rst:8
 msgid "System deployment"
@@ -54,10 +658,10 @@ msgid ""
 "methods, along with platform-specific considerations."
 msgstr ""
 "Dieses Kapitel beschreibt Installationsverfahren für Nubus für UCS in "
-"verschiedenen Installationsumgebungen. Als technischer Administrator finden"
-" Sie detaillierte Anweisungen für sowohl traditionelle als auch "
-"cloudbasierte Installationsmethoden, zusammen mit "
-"plattformspezifischen Überlegungen."
+"verschiedenen Installationsumgebungen. Als technischer Administrator "
+"finden Sie detaillierte Anweisungen für sowohl traditionelle als auch "
+"cloudbasierte Installationsmethoden, zusammen mit plattformspezifischen "
+"Überlegungen."
 
 #: ../../deployment/index.rst:15
 msgid "Required knowledge and skills"
@@ -147,11 +751,6 @@ msgstr ""
 msgid "Troubleshooting common installation issues."
 msgstr "Fehlerbehebung bei häufigen Installationsproblemen."
 
-#: ../../deployment/index.rst:38 ../../deployment/install.rst:716
-#: ../../deployment/install.rst:719
-msgid "Installation overview"
-msgstr "Installationsübersicht"
-
 #: ../../deployment/index.rst:39
 msgid ""
 "Nubus for UCS divides the installation process into four main deployment "
@@ -170,148 +769,38 @@ msgstr ""
 "passt, und folgen Sie dann den relevanten Abschnitten für eine Schritt-"
 "für-Schritt-Anleitung."
 
-#: ../../deployment/install.rst:7
-msgid "Physical and virtual machine installation"
-msgstr "Installation auf physischen und virtuellen Maschinen"
+#: ../../deployment/initial-system-configuration.rst:7
+msgid "Initial system configuration"
+msgstr "Initiale Systemkonfiguration"
 
-#: ../../deployment/install.rst:9
-msgid ""
-"The following sections describe how to install Nubus for Univention "
-"Corporate Server (UCS). You install Nubus for UCS from DVD on physical "
-"hardware, or from DVD image for virtual machines. The installation is "
-"interactive and prompts all the necessary system settings in a graphic "
-"interface."
-msgstr ""
-"Diese Seite beschreibt, wie Sie Nubus für Univention Corporate Server "
-"(UCS) von DVD auf physischer Hardware oder von einem DVD-Image für "
-"virtuelle Maschinen installieren. Die Installation ist interaktiv und "
-"erfragt alle notwendigen Systemeinstellungen in einer grafischen "
-"Oberfläche."
-
-#: ../../deployment/install.rst:15
-msgid ""
-"The installation DVD is available for the computer architecture "
-"``amd64``, 64-bit. In addition to support for the widely distributed BIOS"
-" systems, the DVD also includes support for the Unified Extensible "
-"Firmware Interface (UEFI) standard. The UEFI support on the DVD is also "
-"capable of starting systems with activated Secure Boot and installing "
-"Nubus for UCS there."
-msgstr ""
-"Die Installations-DVD ist für die Computerarchitektur ``amd64``, 64-Bit, "
-"verfügbar. Zusätzlich zur Unterstützung für die weit verbreiteten BIOS-"
-"Systeme enthält die DVD auch Unterstützung für den Unified Extensible "
-"Firmware Interface (UEFI) Standard. Die UEFI-Unterstützung auf der DVD "
-"ist auch in der Lage, Systeme mit aktiviertem Secure Boot zu starten und "
-"Nubus für UCS dort zu installieren."
-
-#: ../../deployment/install.rst:23
-msgid ""
-"Univention doesn't support the simultaneous operation of UCS and Debian "
-"on a UEFI system."
-msgstr ""
-"Univention unterstützt nicht den gleichzeitigen Betrieb von UCS und "
-"Debian auf einem UEFI-System."
-
-#: ../../deployment/install.rst:25
-msgid ""
-"The reason for this is the GRUB boot loader of Nubus for UCS that partly "
-"uses the same configuration files as Debian."
-msgstr ""
-"Der Grund dafür ist der GRUB-Bootloader von Nubus für UCS, der teilweise "
-"dieselben Konfigurationsdateien wie Debian verwendet."
-
-#: ../../deployment/install.rst:28
-msgid ""
-"An already installed Debian leads to the fact that the hardware can't "
-"boot Nubus for UCS anymore after the installation of or an update to UCS "
-"5.2. A subsequent installation of Debian also results in Nubus for UCS "
-"5.2 not being able to boot."
-msgstr ""
-"Ein bereits installiertes Debian führt dazu, dass die Hardware Nubus für "
-"UCS nach der Installation von oder einem Update auf UCS 5.2 nicht mehr "
-"booten kann. Eine nachträgliche Installation von Debian führt ebenfalls "
-"dazu, dass Nubus für UCS 5.2 nicht mehr booten kann."
-
-#: ../../deployment/install.rst:33
-msgid ""
-"Besides operating Nubus for UCS on hardware or in a virtualization "
-"solution, you can also install it on the Amazon EC2 cloud using an AMI "
-"image. For more information, see :ref:`deployment-installation-cloud`."
-msgstr ""
-"Neben dem Betrieb von Nubus für UCS auf Hardware oder in einer "
-"Virtualisierungslösung können Sie es auch in der Amazon EC2 Cloud mit "
-"einem AMI-Image installieren. Weitere Informationen finden Sie unter :ref"
-":`deployment-installation-cloud`."
-
-#: ../../deployment/install.rst:38
-msgid "You can use the installation interfaces with a keyboard and with mouse."
-msgstr "Sie können die Installationsoberflächen mit Tastatur und Maus bedienen."
-
-#: ../../deployment/install.rst:40
-msgid "Use the :kbd:`Tab` key to jump to the next field."
-msgstr "Verwenden Sie die :kbd:`Tab`-Taste, um zum nächsten Feld zu springen."
-
-#: ../../deployment/install.rst:42
-msgid "Use the :kbd:`Shift+Tab` keys to jump back to the previous field."
-msgstr ""
-"Verwenden Sie die Tasten :kbd:`Shift+Tab`, um zum vorherigen Feld zurück "
-"zu springen."
-
-#: ../../deployment/install.rst:44
-msgid ""
-"Use the :kbd:`Enter` key to assign values to the input field and confirm "
-"buttons."
-msgstr ""
-"Verwenden Sie die :kbd:`Enter`-Taste, um Werte dem Eingabefeld zuzuweisen"
-" und Schaltflächen zu bestätigen."
-
-#: ../../deployment/install.rst:46
-msgid "Use the arrow keys inside a list or table for navigating between entries."
-msgstr ""
-"Verwenden Sie die Pfeiltasten innerhalb einer Liste oder Tabelle zur "
-"Navigation zwischen Einträgen."
-
-#: ../../deployment/install.rst:50
-msgid ""
-"Use :guilabel:`Cancel` to cancel the current configuration step. You can "
-"select a previous configuration step again in the menu that the installer"
-" shows subsequently. Under certain circumstances, you can't directly "
-"select subsequent configuration steps if you haven't completed previous "
-"steps."
-msgstr ""
-"Verwenden Sie :guilabel:`Abbrechen`, um den aktuellen "
-"Konfigurationsschritt abzubrechen. Sie können einen vorherigen "
-"Konfigurationsschritt erneut im Menü auswählen, das der Installer "
-"anschließend anzeigt. Unter bestimmten Umständen können Sie nachfolgende "
-"Konfigurationsschritte nicht direkt auswählen, wenn Sie vorherige "
-"Schritte nicht abgeschlossen haben."
-
-#: ../../deployment/install.rst:60
+#: ../../deployment/initial-system-configuration.rst:14
 msgid "Select the installation mode"
 msgstr "Installationsmodus auswählen"
 
-#: ../../deployment/install.rst:62
+#: ../../deployment/initial-system-configuration.rst:16
 msgid ""
 "After booting the system from the installation medium, the screen shows "
-"the boot prompt in :numref:`installation-select-install-mode-isolinux`."
+"the boot prompt in :numref:`deployment-initial-system-configuration-"
+"isolinux-figure`."
 msgstr ""
 "Nach dem Booten des Systems vom Installationsmedium zeigt der Bildschirm "
-"die Boot-Eingabeaufforderung in :numref:`installation-select-install-"
-"mode-isolinux`."
+"die Boot-Eingabeaufforderung in :numref:`deployment-initial-system-configuration-"
+"isolinux-figure`."
 
-#: ../../deployment/install.rst:68 ../../deployment/install.rst:71
+#: ../../deployment/initial-system-configuration.rst:22
+#: ../../deployment/initial-system-configuration.rst:25
 msgid "Installation boot prompt"
 msgstr "Installations-Boot-Eingabeaufforderung"
 
-#: ../../deployment/install.rst:73
+#: ../../deployment/initial-system-configuration.rst:27
 msgid "You can choose between the following installation procedures:"
 msgstr "Sie können zwischen den folgenden Installationsverfahren wählen:"
 
-#: ../../deployment/install.rst:75
+#: ../../deployment/initial-system-configuration.rst:31
 msgid "Start with default settings"
 msgstr ":spelling:word:`Start with default settings`"
 
-#: ../../deployment/install.rst:76
+#: ../../deployment/initial-system-configuration.rst:32
 msgid ""
 "starts the interactive, graphic installation. During the installation, "
 "the system requests a number of parameters such as the network settings, "
@@ -323,11 +812,11 @@ msgstr ""
 "Festplattenpartitionen und Domäneneinstellungen  an und führt dann "
 "Installation und Konfiguration durch."
 
-#: ../../deployment/install.rst:83
+#: ../../deployment/initial-system-configuration.rst:39
 msgid "Start with manual network settings"
 msgstr ":spelling:word:`Start with manual network settings`"
 
-#: ../../deployment/install.rst:84
+#: ../../deployment/initial-system-configuration.rst:40
 msgid ""
 "runs a standard installation that doesn't automatically configure the "
 "network through DHCP. Use this option for system installation, where you "
@@ -337,11 +826,11 @@ msgstr ""
 " über DHCP konfiguriert. Verwenden Sie diese Option für die "
 "Systeminstallation, bei der Sie das Netzwerk manuell einrichten müssen."
 
-#: ../../deployment/install.rst:89
+#: ../../deployment/initial-system-configuration.rst:45
 msgid "Advanced options"
 msgstr ":spelling:word:`Advanced options`"
 
-#: ../../deployment/install.rst:90
+#: ../../deployment/initial-system-configuration.rst:46
 msgid ""
 "The submenu offers advanced options for the installation process for "
 "selection:"
@@ -349,11 +838,11 @@ msgstr ""
 "Das Untermenü bietet erweiterte Optionen für den Installationsprozess zur"
 " Auswahl:"
 
-#: ../../deployment/install.rst:94
+#: ../../deployment/initial-system-configuration.rst:50
 msgid "Start in text mode"
 msgstr ":spelling:word:`Start in text mode`"
 
-#: ../../deployment/install.rst:95
+#: ../../deployment/initial-system-configuration.rst:51
 msgid ""
 "runs an interactive standard installation in text mode. Use this option "
 "on systems which have problems with the graphic version of the installer."
@@ -364,19 +853,19 @@ msgstr ""
 "des Installers haben. Für Informationen, siehe :ref:`deployment-"
 "installation-text-mode`."
 
-#: ../../deployment/install.rst:100
+#: ../../deployment/initial-system-configuration.rst:58
 msgid "Rescue mode"
 msgstr ":spelling:word:`Rescue mode`"
 
-#: ../../deployment/install.rst:101
+#: ../../deployment/initial-system-configuration.rst:59
 msgid "serves to recover systems that are unable to boot."
 msgstr "dient zur Wiederherstellung von Systemen, die nicht booten können."
 
-#: ../../deployment/install.rst:103
+#: ../../deployment/initial-system-configuration.rst:63
 msgid "Boot from first hard drive"
 msgstr ":spelling:word:`Boot from first hard drive`"
 
-#: ../../deployment/install.rst:104
+#: ../../deployment/initial-system-configuration.rst:64
 msgid ""
 "boots the operating system installed on the first hard drive instead of "
 "the Nubus for UCS installation."
@@ -384,11 +873,11 @@ msgstr ""
 "bootet das auf der ersten Festplatte installierte Betriebssystem anstelle"
 " der Nubus für UCS Installation."
 
-#: ../../deployment/install.rst:107
+#: ../../deployment/initial-system-configuration.rst:69
 msgid "Accessible dark contrast installer menu"
 msgstr ":spelling:word:`Accessible dark contrast installer menu`"
 
-#: ../../deployment/install.rst:108
+#: ../../deployment/initial-system-configuration.rst:70
 msgid ""
 "allows running the setup in a dark and contrast rich mode for visually "
 "impaired persons."
@@ -396,7 +885,7 @@ msgstr ""
 "ermöglicht die Ausführung der Einrichtung in einem dunklen und "
 "kontrastreichen Modus für Personen mit Seheinschränkungen."
 
-#: ../../deployment/install.rst:111
+#: ../../deployment/initial-system-configuration.rst:73
 msgid ""
 "After you select one option, the boot loader runs the kernel from the "
 "installation medium. The installation consists of separate modules that "
@@ -410,27 +899,28 @@ msgstr ""
 "Installationsmedium lädt. Zum Beispiel hat der Installer Module für die "
 "Netzwerk-Konfiguration oder für die Auswahl von Software."
 
-#: ../../deployment/install.rst:121 ../../deployment/install.rst:136
-#: ../../deployment/install.rst:139
+#: ../../deployment/initial-system-configuration.rst:83
+#: ../../deployment/initial-system-configuration.rst:98
+#: ../../deployment/initial-system-configuration.rst:101
 msgid "Select the language"
 msgstr "Sprache auswählen"
 
-#: ../../deployment/install.rst:123
+#: ../../deployment/initial-system-configuration.rst:85
 msgid ""
 "In the first step, you select the system language that you want to use, "
-"see :numref:`deployment-installation-physical-language-figure`. The "
-"selection has an influence on the use of language-specific characters and"
-" permits the representation of program output in the selected languages "
-"on the installed Nubus for UCS system."
+"see :numref:`deployment-initial-system-configuration-language-figure`. "
+"The selection has an influence on the use of language-specific characters"
+" and permits the representation of program output in the selected "
+"languages on the installed Nubus for UCS system."
 msgstr ""
 "Im ersten Schritt wählen Sie die Systemsprache aus, die Sie verwenden "
-"möchten, siehe :numref:`deployment-installation-physical-language-"
+"möchten, siehe :numref:`deployment-initial-system-configuration-language-"
 "figure`. Die Auswahl hat einen Einfluss auf die Verwendung "
 "sprachspezifischer Zeichen und ermöglicht die Darstellung der "
 "Programmausgabe in den ausgewählten Sprachen auf dem installierten Nubus "
 "für UCS System."
 
-#: ../../deployment/install.rst:129
+#: ../../deployment/initial-system-configuration.rst:91
 msgid ""
 "If *Univention Installer* has a translation for the selected language, it"
 " also uses the language during installation. Otherwise, the installer "
@@ -442,67 +932,70 @@ msgstr ""
 "Andernfalls fährt der Installer auf Englisch fort. Der Installer "
 "unterstützt die Sprachen Englisch und Deutsch."
 
-#: ../../deployment/install.rst:144 ../../deployment/install.rst:156
-#: ../../deployment/install.rst:159
+#: ../../deployment/initial-system-configuration.rst:106
+#: ../../deployment/initial-system-configuration.rst:118
+#: ../../deployment/initial-system-configuration.rst:121
 msgid "Select the location"
 msgstr "Standort auswählen"
 
-#: ../../deployment/install.rst:146
+#: ../../deployment/initial-system-configuration.rst:108
 msgid ""
 "After the language selection, the installer shows a list of locations "
-"related to the selected language, see :numref:`deployment-installation-"
-"physical-location-figure`. Select a suitable location from the list. "
-"Nubus for UCS uses the selected location to configure the time zone and "
+"related to the selected language, see :numref:`deployment-initial-system-"
+"configuration-location-figure`. Select a suitable location from the list."
+" Nubus for UCS uses the selected location to configure the time zone and "
 "the correct language variant. If the needed location isn't in the list, "
 "select :guilabel:`other` at the bottom to see an extensive list."
 msgstr ""
 "Nach der Sprachauswahl zeigt der Installer eine Liste von Standorten an, "
 "die mit der ausgewählten Sprache zusammenhängen, siehe :numref"
-":`deployment-installation-physical-location-figure`. Wählen Sie einen "
+":`deployment-initial-system-configuration-location-figure`. Wählen Sie einen "
 "geeigneten Standort aus der Liste. Nubus für UCS verwendet den "
 "ausgewählten Standort, um die Zeitzone und die korrekte Sprachvariante zu"
 " konfigurieren. Wenn der benötigte Standort nicht in der Liste ist, "
 "wählen Sie :guilabel:`weitere` am Ende, um eine umfassende Liste zu "
 "sehen."
 
-#: ../../deployment/install.rst:164 ../../deployment/install.rst:173
-#: ../../deployment/install.rst:176
+#: ../../deployment/initial-system-configuration.rst:126
+#: ../../deployment/initial-system-configuration.rst:135
+#: ../../deployment/initial-system-configuration.rst:138
 msgid "Select the keyboard layout"
 msgstr "Tastaturbelegung auswählen"
 
-#: ../../deployment/install.rst:166
+#: ../../deployment/initial-system-configuration.rst:128
 msgid ""
 "You can select the keyboard layout independently of the system language, "
-"see :numref:`deployment-installation-physical-keyboard-layout-figure`. "
-"Select a language compatible with the keyboard. Otherwise, it may cause "
-"operating problems."
+"see :numref:`deployment-initial-system-configuration-keyboard-layout-"
+"figure`. Select a language compatible with the keyboard. Otherwise, it "
+"may cause operating problems."
 msgstr ""
 "Sie können die Tastaturbelegung unabhängig von der Systemsprache "
-"auswählen, siehe :numref:`deployment-installation-physical-keyboard-"
+"auswählen, siehe :numref:`deployment-initial-system-configuration-keyboard-"
 "layout-figure`. Wählen Sie eine mit der Tastatur kompatible Sprache. "
 "Andernfalls kann dies Bedienungsprobleme verursachen."
 
-#: ../../deployment/install.rst:181
+#: ../../deployment/initial-system-configuration.rst:143
 msgid "Set up network configuration"
 msgstr "Netzwerkkonfiguration einrichten"
 
-#: ../../deployment/install.rst:183
+#: ../../deployment/initial-system-configuration.rst:145
 msgid ""
 "Initially, the *Univention Installer* attempts to configure the network "
-"interfaces automatically, see :numref:`deployment-installation-physical-"
-"network-configuration-dhcp-figure`. You can deactivate the automatic "
-"network interface configuration by selecting :ref:`deployment-"
-"installation-physical-install-mode-manual-network` from the boot loader "
-"menu in :ref:`deployment-installation-physical-install-mode`."
+"interfaces automatically, see :numref:`deployment-initial-system-"
+"configuration-network-setup-dhcp-figure`. You can deactivate the "
+"automatic network interface configuration by selecting :ref:`deployment-"
+"initial-system-configuration-install-mode-manual-network` from the boot "
+"loader menu in :ref:`deployment-initial-system-configuration-install-"
+"mode`."
 msgstr ""
 "Zunächst versucht der *Univention Installer*, die Netzwerkschnittstellen "
-"automatisch zu konfigurieren, siehe :numref:`deployment-installation-"
-"physical-network-configuration-dhcp-figure`. Sie können die automatische "
+"automatisch zu konfigurieren, siehe :numref:`deployment-initial-system-configuration-"
+"network-setup-dhcp-figure`. Sie können die automatische "
 "Netzwerkschnittstellenkonfiguration deaktivieren, indem Sie :ref"
-":`deployment-installation-physical-install-mode-manual-network` aus dem "
-"Bootloader-Menü im :ref:`deployment-installation-physical-install-mode`."
+":`deployment-initial-system-configuration-install-mode-manual-network` aus dem "
+"Bootloader-Menü im :ref:`deployment-initial-system-configuration-install-mode`."
 
-#: ../../deployment/install.rst:190
+#: ../../deployment/initial-system-configuration.rst:152
 msgid ""
 "First, the installer attempts to determine an IPv6 address through the "
 "stateless address autoconfiguration (SLAAC). If unsuccessful, the "
@@ -516,26 +1009,27 @@ msgstr ""
 "Configuration Protocol (DHCP) anzufordern. Bei Erfolg überspringt der "
 "Installer die manuelle Netzwerkkonfiguration."
 
-#: ../../deployment/install.rst:196 ../../deployment/install.rst:199
+#: ../../deployment/initial-system-configuration.rst:158
+#: ../../deployment/initial-system-configuration.rst:161
 msgid "Automatic network configuration"
 msgstr "Automatische Netzwerkkonfiguration"
 
-#: ../../deployment/install.rst:201
+#: ../../deployment/initial-system-configuration.rst:163
 msgid ""
 "If no DHCP server is present in the local network or your network "
 "requires a static configuration of the network interface, click "
 ":guilabel:`Cancel`. The installer then offers to repeat the automatic "
 "configuration or to configure the interface manually, see :numref"
-":`deployment-installation-physical-network-configuration-static-figure`."
+":`deployment-initial-system-configuration-network-setup-static-figure`."
 msgstr ""
 "Wenn kein DHCP-Server im lokalen Netzwerk vorhanden ist oder Ihr Netzwerk"
 " eine statische Konfiguration der Netzwerkschnittstelle erfordert, "
 "klicken Sie :guilabel:`Abbrechen`. Der Installer bietet dann an, die "
 "automatische Konfiguration zu wiederholen oder die Schnittstelle manuell "
-"zu konfigurieren, siehe :numref:`deployment-installation-physical-"
-"network-configuration-static-figure`."
+"zu konfigurieren, siehe :numref:`deployment-initial-system-configuration-"
+"network-setup-static-figure`."
 
-#: ../../deployment/install.rst:210
+#: ../../deployment/initial-system-configuration.rst:172
 msgid ""
 "The installation of Nubus for UCS requires at least one network "
 "interface. If the installer can't detect a supported network card, it "
@@ -546,29 +1040,30 @@ msgstr ""
 "Netzwerkkarte erkennen kann, öffnet er eine Liste unterstützter Treiber "
 "zur Auswahl."
 
-#: ../../deployment/install.rst:216 ../../deployment/install.rst:219
+#: ../../deployment/initial-system-configuration.rst:178
+#: ../../deployment/initial-system-configuration.rst:181
 msgid "Select the manual network configuration"
 msgstr "Manuelle Netzwerkkonfiguration auswählen"
 
-#: ../../deployment/install.rst:221
+#: ../../deployment/initial-system-configuration.rst:183
 msgid "Manual network address configuration"
 msgstr "Manuelle Konfiguration der Netzwerkadresse"
 
-#: ../../deployment/install.rst:222
+#: ../../deployment/initial-system-configuration.rst:184
 msgid ""
 "In the manual network configuration you can specify either a static IPv4 "
-"or an IPv6 address for the system, see :numref:`deployment-installation-"
-"physical-network-configuration-ip-figure`."
+"or an IPv6 address for the system, see :numref:`deployment-initial-"
+"system-configuration-ip-figure`."
 msgstr ""
 "In der manuellen Netzwerkkonfiguration können Sie entweder eine statische"
 " IPv4-oder eine IPv6-Adresse für das System angeben, siehe :numref"
-":`deployment-installation-physical-network-configuration-ip-figure`."
+":`deployment-initial-system-configuration-ip-figure`."
 
-#: ../../deployment/install.rst:225
+#: ../../deployment/initial-system-configuration.rst:187
 msgid "IPv4 addresses"
 msgstr "IPv4 Adressen"
 
-#: ../../deployment/install.rst:226
+#: ../../deployment/initial-system-configuration.rst:188
 msgid ""
 "IPv4 addresses have a 32-bit length and you write them in four blocks in "
 "decimal form, for example ``192.0.2.10``."
@@ -576,11 +1071,11 @@ msgstr ""
 "IPv4-Adressen haben eine 32-Bit-Länge und Sie schreiben sie in vier "
 "Blöcken in Dezimalform, zum Beispiel ``192.0.2.10``."
 
-#: ../../deployment/install.rst:229
+#: ../../deployment/initial-system-configuration.rst:191
 msgid "IPv6 addresses"
 msgstr "IPv6 Adressen"
 
-#: ../../deployment/install.rst:230
+#: ../../deployment/initial-system-configuration.rst:192
 msgid ""
 "IPv6 addresses are four times as long and you typically write them in "
 "hexadecimal form, for example ``2001:db8:fe29:de27:0000:0000:0000:0000``."
@@ -589,11 +1084,11 @@ msgstr ""
 " Hexadezimalform, zum Beispiel "
 "``2001:db8:fe29:de27:0000:0000:0000:0000``."
 
-#: ../../deployment/install.rst:233
+#: ../../deployment/initial-system-configuration.rst:195
 msgid "Other network address parameters"
 msgstr "Andere Parameter der Netzwerkadresse"
 
-#: ../../deployment/install.rst:234
+#: ../../deployment/initial-system-configuration.rst:196
 msgid ""
 "In addition to a static IP address, the installer requests values for "
 "network mask, gateway, and DNS servers."
@@ -601,15 +1096,16 @@ msgstr ""
 "Zusätzlich zu einer statischen IP-Adresse fordert der Installer Werte für"
 " Netzwerkmaske, Gateway und DNS-Server an."
 
-#: ../../deployment/install.rst:239 ../../deployment/install.rst:242
+#: ../../deployment/initial-system-configuration.rst:201
+#: ../../deployment/initial-system-configuration.rst:204
 msgid "Specify an IP address"
 msgstr "IP-Adresse angeben"
 
-#: ../../deployment/install.rst:244
+#: ../../deployment/initial-system-configuration.rst:206
 msgid "Manual DNS server setting configuration"
 msgstr "Manuelle Konfiguration der DNS Server Einstellung"
 
-#: ../../deployment/install.rst:245
+#: ../../deployment/initial-system-configuration.rst:207
 msgid ""
 "Consider the following points when you specify a DNS server manually. "
 "They depend on the intended subsequent use of the Nubus for UCS system."
@@ -618,11 +1114,11 @@ msgstr ""
 "angeben. Sie hängen von der beabsichtigten nachfolgenden Verwendung des "
 "Nubus für UCS Systems ab."
 
-#: ../../deployment/install.rst:248
+#: ../../deployment/initial-system-configuration.rst:210
 msgid "First Nubus for UCS system"
 msgstr "Erste Nubus für UCS System"
 
-#: ../../deployment/install.rst:249
+#: ../../deployment/initial-system-configuration.rst:211
 msgid ""
 "When you install the first Nubus for UCS system and create a Nubus for "
 "UCS domain, use the IP address of the local router, if it provides the "
@@ -634,11 +1130,11 @@ msgstr ""
 "wenn er den DNS-Dienst bereitstellt, oder den DNS-Server des "
 "Internetanbieters als DNS-Server-Adresse."
 
-#: ../../deployment/install.rst:254
+#: ../../deployment/initial-system-configuration.rst:216
 msgid "Additional Nubus for UCS system"
 msgstr "Weiteres Nubus für UCS System"
 
-#: ../../deployment/install.rst:255
+#: ../../deployment/initial-system-configuration.rst:217
 msgid ""
 "For the installation of every additional Nubus for UCS system, use the IP"
 " address of a :term:`UCS Primary Directory Node` as the DNS server. This "
@@ -652,11 +1148,11 @@ msgstr ""
 "Directory Node ordnungsgemäß funktioniert. Im Zweifelsfall verwenden Sie "
 "die IP-Adresse des UCS Primary Directory Node Systems."
 
-#: ../../deployment/install.rst:260
+#: ../../deployment/initial-system-configuration.rst:222
 msgid "Nubus for UCS in Windows Active Directory domain"
 msgstr "Nubus für UCS in einer Windows Active Directory Domäne"
 
-#: ../../deployment/install.rst:261
+#: ../../deployment/initial-system-configuration.rst:223
 msgid ""
 "If the Nubus for UCS system is to join a Windows Active Directory domain "
 "during the installation, use the IP address of an Active Directory domain"
@@ -670,17 +1166,18 @@ msgstr ""
 " unerlässlich, damit die automatische Erkennung des Windows Active "
 "Directory Domain-Controllers ordnungsgemäß funktioniert."
 
-#: ../../deployment/install.rst:268 ../../deployment/install.rst:280
-#: ../../deployment/install.rst:283
+#: ../../deployment/initial-system-configuration.rst:230
+#: ../../deployment/initial-system-configuration.rst:242
+#: ../../deployment/initial-system-configuration.rst:245
 msgid "Define the root password"
 msgstr "Root-Passwort festlegen"
 
-#: ../../deployment/install.rst:270
+#: ../../deployment/initial-system-configuration.rst:232
 msgid ""
 "Defining a password for the ``root`` user is necessary to sign in to the "
-"installed system, see :numref:`deployment-installation-physical-password-"
-"figure`. If you install a :term:`UCS Primary Directory Node` the "
-"installer employs this password also the ``Administrator`` domain user. "
+"installed system, see :numref:`deployment-initial-system-configuration-"
+"password-figure`. If you install a :term:`UCS Primary Directory Node` the"
+" installer employs this password also the ``Administrator`` domain user. "
 "In later operation, you can manage the passwords for the ``root`` and "
 "``Administrator`` users independent of each other. You must enter the "
 "password twice to ensure it's defined correctly. For security reasons the"
@@ -688,7 +1185,7 @@ msgid ""
 msgstr ""
 "Die Festlegung eines Passworts für den Benutzer ``root`` ist "
 "erforderlich, um sich am installierten System anzumelden, siehe :numref"
-":`deployment-installation-physical-password-figure`. Wenn Sie einen "
+":`deployment-initial-system-configuration-password-figure`. Wenn Sie einen "
 ":term:`UCS Primary Directory Node` installieren, verwendet der Installer "
 "dieses Passwort auch für den Domänenbenutzer ``Administrator``. Im "
 "späteren Betrieb können Sie die Passwörter für die Benutzer ``root`` und "
@@ -697,11 +1194,11 @@ msgstr ""
 "ist. Aus Sicherheitsgründen muss das Passwort mindestens acht Zeichen "
 "enthalten."
 
-#: ../../deployment/install.rst:288
+#: ../../deployment/initial-system-configuration.rst:250
 msgid "Partition the hard drive"
 msgstr "Festplatte partitionieren"
 
-#: ../../deployment/install.rst:290
+#: ../../deployment/initial-system-configuration.rst:252
 msgid ""
 "The *Univention Installer* supports to partition hard drives and create "
 "different file systems, such as ``ext4`` and ``XFS``. In addition, you "
@@ -714,7 +1211,7 @@ msgstr ""
 "konfigurieren, wie den Logical Volume Manager (LVM), RAID oder mit LUKS "
 "verschlüsselte Partitionen."
 
-#: ../../deployment/install.rst:295
+#: ../../deployment/initial-system-configuration.rst:257
 msgid ""
 "The *Univention Installer* automatically selects a suitable partition "
 "layout, Master Boot Record (MBR) or GUID Partition Table (GPT), depending"
@@ -728,7 +1225,7 @@ msgstr ""
 "ausgewählten Festplatte. Auf Systemen mit dem Unified Extensible Firmware"
 " Interface (UEFI) verwendet der Installer automatisch GPT."
 
-#: ../../deployment/install.rst:301
+#: ../../deployment/initial-system-configuration.rst:263
 msgid ""
 "The *Univention Installer* offers guided partitioning to simplify the "
 "installation. In the guided installation, the installer applies certain "
@@ -742,20 +1239,20 @@ msgstr ""
 "und Formatierung auf die ausgewählte Festplatte an. Zusätzlich können Sie"
 " die Festplatte manuell selbst partitionieren."
 
-#: ../../deployment/install.rst:306
+#: ../../deployment/initial-system-configuration.rst:268
 msgid ""
 "The installer offers the following schemes for guided partitioning, see "
-":numref:`deployment-installation-physical-partitioning-guided-figure`:"
+":numref:`deployment-initial-system-configuration-partitioning-figure`:"
 msgstr ""
 "Der Installer bietet die folgenden Schemata für die geführte "
-"Partitionierung, siehe :numref:`deployment-installation-physical-"
-"partitioning-guided-figure`:"
+"Partitionierung, siehe :numref:`deployment-initial-system-configuration-"
+"partitioning-figure`:"
 
-#: ../../deployment/install.rst:309
+#: ../../deployment/initial-system-configuration.rst:273
 msgid "Guided - Use entire disk"
 msgstr "Geführt - Gesamte Festplatte verwenden"
 
-#: ../../deployment/install.rst:310
+#: ../../deployment/initial-system-configuration.rst:274
 msgid ""
 "The installer creates an individual partition for each file system. It "
 "doesn't use abstraction layers, such as LVM. It assigns the number of "
@@ -767,11 +1264,11 @@ msgstr ""
 "der Dateisysteme oder Partitionen zu. Die Größe der jeweiligen Festplatte"
 " begrenzt die Größen der Partitionen."
 
-#: ../../deployment/install.rst:317
+#: ../../deployment/initial-system-configuration.rst:281
 msgid "Guided - Use entire disk and set up LVM"
 msgstr "Geführt - Gesamte Festplatte verwenden und LVM einrichten"
 
-#: ../../deployment/install.rst:318
+#: ../../deployment/initial-system-configuration.rst:282
 msgid ""
 "The installer creates a Logical Volume Group on the selected hard drive "
 "first. For each file system, it then creates a separate logical volume "
@@ -788,24 +1285,25 @@ msgstr ""
 "Festplatten vergrößern. Im Zweifelsfall wählen Sie dieses "
 "Partitionierungsschema."
 
-#: ../../deployment/install.rst:324
+#: ../../deployment/initial-system-configuration.rst:290
 msgid "Guided - Use entire disk with encrypted LVM"
 msgstr "Geführt - Gesamte Festplatte mit verschlüsseltem LVM verwenden"
 
-#: ../../deployment/install.rst:325
+#: ../../deployment/initial-system-configuration.rst:291
 msgid ""
-"This partitioning scheme is the same as :ref:`deployment-installation-"
-"physical-partitioning-lvm`, with the addition that it uses an encrypted "
-"partition for the LVM volume group. Consequently, you must enter the "
-"password for the encrypted volume group every time you start the system."
+"This partitioning scheme is the same as :ref:`deployment-initial-system-"
+"configuration-partitioning-lvm`, with the addition that it uses an "
+"encrypted partition for the LVM volume group. Consequently, you must "
+"enter the password for the encrypted volume group every time you start "
+"the system."
 msgstr ""
 "Dieses Partitionierungsschema ist dasselbe wie :ref:`deployment-"
-"installation-physical-partitioning-lvm`, mit der Ergänzung, dass es eine "
+"initial-system-configuration-partitioning-lvm`, mit der Ergänzung, dass es eine "
 "verschlüsselte Partition für die LVM Volume Group verwendet. Folglich "
 "müssen Sie das Passwort für die verschlüsselte Volume Group bei jedem "
 "Systemstart eingeben."
 
-#: ../../deployment/install.rst:331
+#: ../../deployment/initial-system-configuration.rst:297
 msgid ""
 "In all mentioned partitioning schemas, the installer deletes all existing"
 " data on the selected hard drive during the partitioning."
@@ -814,11 +1312,12 @@ msgstr ""
 "vorhandenen Daten auf der ausgewählten Festplatte während der "
 "Partitionierung."
 
-#: ../../deployment/install.rst:337 ../../deployment/install.rst:340
+#: ../../deployment/initial-system-configuration.rst:303
+#: ../../deployment/initial-system-configuration.rst:306
 msgid "Select the partitioning scheme"
 msgstr "Partitionierungsschema auswählen"
 
-#: ../../deployment/install.rst:342
+#: ../../deployment/initial-system-configuration.rst:308
 msgid ""
 "Select a hard drive from the list of the detected hard drives, where you "
 "want to apply the partitioning scheme to."
@@ -826,7 +1325,7 @@ msgstr ""
 "Wählen Sie eine Festplatte aus der Liste der erkannten Festplatten aus, "
 "auf die Sie das Partitionierungsschema anwenden möchten."
 
-#: ../../deployment/install.rst:345
+#: ../../deployment/initial-system-configuration.rst:311
 msgid ""
 "Each partitioning version has the following sub schemas, which differ in "
 "the number of file systems it creates:"
@@ -834,11 +1333,11 @@ msgstr ""
 "Jede Partitionierungsversion hat die folgenden Unterschemata, die sich in"
 " der Anzahl der erstellten Dateisysteme unterscheiden:"
 
-#: ../../deployment/install.rst:348
+#: ../../deployment/initial-system-configuration.rst:314
 msgid "All files in one partition"
 msgstr "Alle Dateien in einer Partition"
 
-#: ../../deployment/install.rst:349
+#: ../../deployment/initial-system-configuration.rst:315
 msgid ""
 "The installer creates just one partition or logical volume for the "
 ":file:`/` file system."
@@ -846,11 +1345,11 @@ msgstr ""
 "Der Installer erstellt nur eine Partition oder ein logisches Volume für "
 "das :file:`/`-Dateisystem."
 
-#: ../../deployment/install.rst:352
+#: ../../deployment/initial-system-configuration.rst:318
 msgid "Separate :file:`/home` partition"
 msgstr "Separate :file:`/home`-Partition"
 
-#: ../../deployment/install.rst:353
+#: ../../deployment/initial-system-configuration.rst:319
 msgid ""
 "In addition to a file system for :file:`/`, the installer creates an "
 "additional file system for :file:`/home/`."
@@ -858,7 +1357,7 @@ msgstr ""
 "Zusätzlich zu einem Dateisystem für :file:`/` erstellt der Installer ein "
 "zusätzliches Dateisystem für :file:`/home/`."
 
-#: ../../deployment/install.rst:356
+#: ../../deployment/initial-system-configuration.rst:322
 msgid ""
 "Separate :file:`/home`, :file:`/usr`, :file:`/var` and :file:`/tmp` "
 "partition"
@@ -866,7 +1365,7 @@ msgstr ""
 "Separate :file:`/home`-, :file:`/usr`-, :file:`/var`- und "
 ":file:`/tmp`-Partitionen"
 
-#: ../../deployment/install.rst:357
+#: ../../deployment/initial-system-configuration.rst:323
 msgid ""
 "In addition to a file system for :file:`/`, the installer also creates an"
 " additional file system for each of :file:`/home/`, :file:`/usr/`, "
@@ -876,41 +1375,42 @@ msgstr ""
 " ein zusätzliches Dateisystem für jeweils :file:`/home/`, :file:`/usr/`, "
 ":file:`/var/` und :file:`/tmp/`."
 
-#: ../../deployment/install.rst:360
+#: ../../deployment/initial-system-configuration.rst:326
 msgid ""
 "Before the installer applies a change to the hard drive, it summarizes "
 "the change again that you must explicitly confirm, see :numref"
-":`deployment-installation-physical-partitioning-write-lvm-figure`."
+":`deployment-initial-system-configuration-partitioning-write-lvm-figure`."
 msgstr ""
 "Bevor der Installer eine Änderung auf die Festplatte anwendet, fasst er "
 "die Änderung erneut zusammen, die Sie explizit bestätigen müssen, siehe "
-":numref:`deployment-installation-physical-partitioning-write-lvm-figure`."
+":numref:`deployment-initial-system-configuration-partitioning-write-lvm-figure`."
 
-#: ../../deployment/install.rst:366 ../../deployment/install.rst:369
+#: ../../deployment/initial-system-configuration.rst:332
+#: ../../deployment/initial-system-configuration.rst:335
 msgid "Confirm to apply changes to the hard drive"
 msgstr "Anwendung der Änderungen auf die Festplatte bestätigen"
 
-#: ../../deployment/install.rst:374
+#: ../../deployment/initial-system-configuration.rst:340
 msgid "Finish installation"
 msgstr "Installation abschließen"
 
-#: ../../deployment/install.rst:376
+#: ../../deployment/initial-system-configuration.rst:342
 msgid ""
 "After the installer completes the partitioning, it automatically installs"
 " the Nubus for UCS base system and additional software. The software "
 "installation takes some time depending on the speed of your hardware. "
 "After software installation, the installer makes the system ready for "
 "boot through installation of the GRUB boot loader, see :numref"
-":`deployment-installation-physical-finish-reboot-figure`."
+":`deployment-initial-system-configuration-finish-figure`."
 msgstr ""
 "Nachdem der Installer die Partitionierung abgeschlossen hat, installiert "
 "er automatisch das Nubus für UCS Basissystem und zusätzliche Software. "
 "Die Software-Installation dauert einige Zeit, abhängig von der "
 "Geschwindigkeit Ihrer Hardware. Nach der Softwareinstallation macht der "
 "Installer das System durch Installation des GRUB-Bootloaders startbereit,"
-" siehe :numref:`deployment-installation-physical-finish-reboot-figure`."
+" siehe :numref:`deployment-initial-system-configuration-finish-figure`."
 
-#: ../../deployment/install.rst:383
+#: ../../deployment/initial-system-configuration.rst:349
 msgid ""
 "A restart into the freshly installed system follows subsequently to "
 "complete the system configuration."
@@ -918,658 +1418,210 @@ msgstr ""
 "Es folgt anschließend ein Neustart in das frisch installierte System, um "
 "die Systemkonfiguration abzuschließen."
 
-#: ../../deployment/install.rst:388 ../../deployment/install.rst:391
+#: ../../deployment/initial-system-configuration.rst:354
+#: ../../deployment/initial-system-configuration.rst:357
 msgid "Finish the installation"
 msgstr "Installation abschließen"
 
-#: ../../deployment/install.rst:396
-msgid "Set up the domain"
-msgstr "Domäne einrichten"
+#: ../../deployment/install.rst:7
+msgid "Installation methods"
+msgstr "Installationsmethoden"
 
-#: ../../deployment/install.rst:398
+#: ../../deployment/install.rst:12
+msgid "Physical and virtual machine installation"
+msgstr "Installation auf physischen und virtuellen Maschinen"
+
+#: ../../deployment/install.rst:14
 msgid ""
-"You start the final configuration step of the Nubus for UCS system by "
-"selecting a domain mode. :numref:`deployment-installation-physical-"
-"domain-settings-role-figure` shows the domain modes. They influence the "
-"next configuration steps. The following domain modes are available:"
+"The following sections describe how to install Nubus for Univention "
+"Corporate Server (UCS). You install Nubus for UCS from DVD on physical "
+"hardware, or from DVD image for virtual machines. The installation is "
+"interactive and prompts all the necessary system settings in a graphic "
+"interface."
 msgstr ""
-"Sie starten den finalen Konfigurationsschritt des Nubus for UCS Systems, "
-"indem Sie einen Domänenmodus auswählen. :numref:`deployment-installation-"
-"physical-domain-settings-role-figure` zeigt die Domänenmodi. Sie "
-"beeinflussen die nächsten Konfigurationsschritte. Die folgenden "
-"Domänenmodi sind verfügbar:"
+"Diese Seite beschreibt, wie Sie Nubus für Univention Corporate Server "
+"(UCS) von DVD auf physischer Hardware oder von einem DVD-Image für "
+"virtuelle Maschinen installieren. Die Installation ist interaktiv und "
+"erfragt alle notwendigen Systemeinstellungen in einer grafischen "
+"Oberfläche."
 
-#: ../../deployment/install.rst:406
-msgid "Create a new UCS domain"
-msgstr "Neue UCS-Domäne erstellen"
-
-#: ../../deployment/install.rst:407
+#: ../../deployment/install.rst:20
 msgid ""
-"The *Create a new UCS domain* configures the first system in a UCS "
-"domain, a Nubus for UCS system with the :term:`UCS Primary Directory "
-"Node` system role. The subsequent steps request required information to "
-"set up the directory service, authentication service, and the DNS server."
-" A Nubus for UCS domain can consist of one single or several Nubus for "
-"UCS systems. You can add additional Nubus for UCS systems at a later "
-"point in time using the :ref:`deployment-installation-physical-domain-"
-"settings-join` mode. For more information, see :ref:`deployment-"
-"installation-physical-domain-settings-new-domain`."
+"The installation DVD is available for the computer architecture "
+"``amd64``, 64-bit. In addition to support for the widely distributed BIOS"
+" systems, the DVD also includes support for the Unified Extensible "
+"Firmware Interface (UEFI) standard. The UEFI support on the DVD is also "
+"capable of starting systems with activated Secure Boot and installing "
+"Nubus for UCS there."
 msgstr ""
-"*Neue UCS-Domäne erstellen* konfiguriert das erste System in einer UCS-"
-"Domäne, ein Nubus für UCS System mit der Systemrolle :term:`UCS Primary "
-"Directory Node`. Die nachfolgenden Schritte fragen erforderliche "
-"Informationen ab, um den Verzeichnisdienst, Authentifizierungsdienst und "
-"den DNS-Server einzurichten. Eine Nubus für UCS Domäne kann aus einem "
-"einzelnen oder mehreren Nubus für UCS Systemen bestehen. Sie können "
-"später zusätzliche Nubus für UCS Systeme im Modus :ref:`deployment-"
-"installation-physical-domain-settings-join` hinzufügen. Weitere "
-"Informationen finden Sie unter :ref:`deployment-installation-physical-"
-"domain-settings-new-domain`."
+"Die Installations-DVD ist für die Computerarchitektur ``amd64``, 64-Bit, "
+"verfügbar. Zusätzlich zur Unterstützung für die weit verbreiteten BIOS-"
+"Systeme enthält die DVD auch Unterstützung für den Unified Extensible "
+"Firmware Interface (UEFI) Standard. Die UEFI-Unterstützung auf der DVD "
+"ist auch in der Lage, Systeme mit aktiviertem Secure Boot zu starten und "
+"Nubus für UCS dort zu installieren."
 
-#: ../../deployment/install.rst:419
-msgid "Join into an existing Active Directory domain"
-msgstr "Einer bestehenden Active Directory Domäne beitreten"
-
-#: ../../deployment/install.rst:420
+#: ../../deployment/install.rst:28
 msgid ""
-"This mode operates Nubus for UCS as a member of a Windows Active "
-"Directory domain. The configuration is suitable for expanding an Active "
-"Directory domain with applications available on Nubus for UCS. Apps "
-"installed on Nubus for UCS are then available for the users of the Active"
-" Directory domain to use. The subsequent steps request information for "
-"joining the Active Directory domain and configure Nubus for UCS "
-"accordingly. For more information, see :ref:`deployment-installation-"
-"physical-domain-settings-ad-member`."
+"Univention doesn't support the simultaneous operation of UCS and Debian "
+"on a UEFI system."
 msgstr ""
-"Dieser Modus betreibt Nubus für UCS als Mitglied einer Windows Active "
-"Directory Domäne. Die Konfiguration ist geeignet, um eine Active "
-"Directory Domäne mit verfügbaren Anwendungen auf Nubus für UCS zu "
-"erweitern. Auf Nubus für UCS installierte Apps stehen dann den Benutzern "
-"der Active Directory Domäne zur Nutzung zur Verfügung. Die nachfolgenden "
-"Schritte fordern Informationen zum Beitritt zur Active Directory Domäne "
-"an und konfigurieren Nubus für UCS entsprechend. Weitere Informationen "
-"finden Sie unter :ref:`deployment-installation-physical-domain-settings-"
-"ad-member`."
+"Univention unterstützt nicht den gleichzeitigen Betrieb von UCS und "
+"Debian auf einem UEFI-System."
 
-#: ../../deployment/install.rst:430
-msgid "Join into an existing UCS domain"
-msgstr "Einer bestehenden UCS-Domäne beitreten"
-
-#: ../../deployment/install.rst:431
+#: ../../deployment/install.rst:30
 msgid ""
-"This mode configures the Nubus for UCS system to join an existing Nubus "
-"for UCS domain. At a later step, the system setup asks for what system "
-"role it assigns. For more information, see :ref:`deployment-installation-"
-"physical-domain-settings-join-ucs`."
+"The reason for this is the GRUB boot loader of Nubus for UCS that partly "
+"uses the same configuration files as Debian."
 msgstr ""
-"Dieser Modus konfiguriert das Nubus für UCS System, um einer bestehenden "
-"Nubus für UCS Domäne beizutreten. In einem späteren Schritt fragt die "
-"Systemeinrichtung, welche Systemrolle zugewiesen werden soll. Weitere "
-"Informationen finden Sie unter :ref:`deployment-installation-physical-"
-"domain-settings-join-ucs`."
+"Der Grund dafür ist der GRUB-Bootloader von Nubus für UCS, der teilweise "
+"dieselben Konfigurationsdateien wie Debian verwendet."
 
-#: ../../deployment/install.rst:438 ../../deployment/install.rst:441
-msgid "Domain settings"
-msgstr "Domäneneinstellungen"
-
-#: ../../deployment/install.rst:446
-msgid "Naming convention for hostnames"
-msgstr "Namenskonvention für Rechnernamen"
-
-#: ../../deployment/install.rst:454
+#: ../../deployment/install.rst:33
 msgid ""
-"During Nubus for UCS installation, the domain setup asks for a hostname "
-"and a domain name as *fully qualified domain name*. For compatibility "
-"reasons with Samba and Active Directory domains, the hostname must adhere"
-" to the following naming convention:"
+"An already installed Debian leads to the fact that the hardware can't "
+"boot Nubus for UCS anymore after the installation of or an update to UCS "
+"5.2. A subsequent installation of Debian also results in Nubus for UCS "
+"5.2 not being able to boot."
 msgstr ""
-"Während der Nubus für UCS Installation fragt die Einrichtung der Domäne "
-"nach einem Rechnernamen und einem Domänennamen als :spelling:word:`Fully "
-"Qualified Domain Name`. Wegen der Kompatibilität mit Samba- und Active "
-"Directory Domänen muss der Rechnername der folgenden Namenskonvention "
-"entsprechen:"
+"Ein bereits installiertes Debian führt dazu, dass die Hardware Nubus für "
+"UCS nach der Installation von oder einem Update auf UCS 5.2 nicht mehr "
+"booten kann. Eine nachträgliche Installation von Debian führt ebenfalls "
+"dazu, dass Nubus für UCS 5.2 nicht mehr booten kann."
 
-#: ../../deployment/install.rst:459
-msgid "Length from 1 to 13 alphanumeric characters."
-msgstr "Länge von 1 bis 13 alphanumerischen Zeichen."
-
-#: ../../deployment/install.rst:461
-msgid "Only lower case letters (``a-z``) and numerals (``0-9``)."
-msgstr "Nur Kleinbuchstaben (``a-z``) und Ziffern (``0-9``)."
-
-#: ../../deployment/install.rst:463
+#: ../../deployment/install.rst:38
 msgid ""
-"Start and end with an alphanumeric character and can contain a hyphen "
-"(``-``) in between."
+"Besides operating Nubus for UCS on hardware or in a virtualization "
+"solution, you can also install it on the Amazon EC2 cloud using an AMI "
+"image. For more information, see :ref:`deployment-installation-cloud`."
 msgstr ""
-"Beginnen und enden mit einem alphanumerischen Zeichen und können "
-"dazwischen einen Bindestrich (``-``) enthalten."
+"Neben dem Betrieb von Nubus für UCS auf Hardware oder in einer "
+"Virtualisierungslösung können Sie es auch in der Amazon EC2 Cloud mit "
+"einem AMI-Image installieren. Weitere Informationen finden Sie unter :ref"
+":`deployment-installation-cloud`."
 
-#: ../../deployment/install.rst:465
+#: ../../deployment/install.rst:43
+msgid "You can use the installation interfaces with a keyboard and with mouse."
+msgstr "Sie können die Installationsoberflächen mit Tastatur und Maus bedienen."
+
+#: ../../deployment/install.rst:45
+msgid "Use the :kbd:`Tab` key to jump to the next field."
+msgstr "Verwenden Sie die :kbd:`Tab`-Taste, um zum nächsten Feld zu springen."
+
+#: ../../deployment/install.rst:47
+msgid "Use the :kbd:`Shift+Tab` keys to jump back to the previous field."
+msgstr ""
+"Verwenden Sie die Tasten :kbd:`Shift+Tab`, um zum vorherigen Feld zurück "
+"zu springen."
+
+#: ../../deployment/install.rst:49
 msgid ""
-"The naming convention has the regular expression in :numref:`deployment-"
-"installation-physical-domain-settings-naming-listing`."
+"Use the :kbd:`Enter` key to assign values to the input field and confirm "
+"buttons."
 msgstr ""
-"Die Namenskonvention hat den regulären Ausdruck in :numref:`deployment-"
-"installation-physical-domain-settings-naming-listing`."
+"Verwenden Sie die :kbd:`Enter`-Taste, um Werte dem Eingabefeld zuzuweisen"
+" und Schaltflächen zu bestätigen."
 
-#: ../../deployment/install.rst:468
-msgid "Regular expression for the naming convention for the hostname"
-msgstr "Regulärer Ausdruck für die Namenskonvention für den Rechnernamen"
+#: ../../deployment/install.rst:51
+msgid "Use the arrow keys inside a list or table for navigating between entries."
+msgstr ""
+"Verwenden Sie die Pfeiltasten innerhalb einer Liste oder Tabelle zur "
+"Navigation zwischen Einträgen."
 
-#: ../../deployment/install.rst:468
-#, python-brace-format
-msgid "^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$"
-msgstr "^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$"
-
-#: ../../deployment/install.rst:477
-msgid "Mode: Create a new UCS domain"
-msgstr "Modus: Neue UCS-Domäne erstellen"
-
-#: ../../deployment/install.rst:482
+#: ../../deployment/install.rst:55
 msgid ""
-"After you selected :ref:`deployment-installation-physical-domain-"
-"settings-new`, system setup asks for the following information, see "
-":numref:`deployment-installation-physical-domain-settings-new-domain-"
-"figure`:"
+"Use :guilabel:`Cancel` to cancel the current configuration step. You can "
+"select a previous configuration step again in the menu that the installer"
+" shows subsequently. Under certain circumstances, you can't directly "
+"select subsequent configuration steps if you haven't completed previous "
+"steps."
 msgstr ""
-"Nachdem Sie :ref:`deployment-installation-physical-domain-settings-new` "
-"ausgewählt haben, fragt die Systemeinrichtung nach den folgenden "
-"Informationen, siehe :numref:`deployment-installation-physical-domain-"
-"settings-new-domain-figure`:"
+"Verwenden Sie :guilabel:`Abbrechen`, um den aktuellen "
+"Konfigurationsschritt abzubrechen. Sie können einen vorherigen "
+"Konfigurationsschritt erneut im Menü auswählen, das der Installer "
+"anschließend anzeigt. Unter bestimmten Umständen können Sie nachfolgende "
+"Konfigurationsschritte nicht direkt auswählen, wenn Sie vorherige "
+"Schritte nicht abgeschlossen haben."
 
-#: ../../deployment/install.rst:488
-msgid "Organization name"
-msgstr "Organisationsname"
+#: ../../deployment/install.rst:65
+msgid "Cloud deployment"
+msgstr "Cloud Installation"
 
-#: ../../deployment/install.rst:489
+#: ../../deployment/install.rst:67
 msgid ""
-"You can *optionally* specify an organization name. The system setup uses "
-"the organization name to automatically generate a :ref:`domain name "
-"<deployment-installation-physical-domain-settings-new-domain-fqdn>` and "
-"the :ref:`LDAP base <deployment-installation-physical-domain-settings-"
-"new-domain-ldap-base>`."
+"Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
+"cloud for Nubus for UCS. You can use this generic image for all Nubus for"
+" UCS system roles to derive an individual instance that you can configure"
+" through management modules regarding topics such as domain name and "
+"software selection."
 msgstr ""
-"Sie können *optional* einen Organisationsnamen angeben. Die "
-"Systemeinrichtung verwendet den Organisationsnamen, um automatisch einen "
-":ref:`Domänennamen <deployment-installation-physical-domain-settings-new-"
-"domain-fqdn>` und die :ref:`LDAP-Basis <deployment-installation-physical-"
-"domain-settings-new-domain-ldap-base>` zu generieren."
+"Univention stellt ein Amazon Machine Image (AMI) für die Amazon EC2 Cloud"
+" für Nubus für UCS bereit. Sie können dieses generische Image für alle "
+"Nubus für UCS Systemrollen verwenden, um eine individuelle Instanz daraus"
+" zu erstellen, die Sie über Management-Module hinsichtlich Themen wie "
+"Domänenname und Softwareauswahl konfigurieren können."
 
-#: ../../deployment/install.rst:497
-msgid "Email address"
-msgstr "E-Mail-Adresse"
-
-#: ../../deployment/install.rst:498
+#: ../../deployment/install.rst:72
 msgid ""
-"If you provide a valid email address, system setup activates a "
-"personalized license and sends it to the address. Univention App Center "
-"requires the license to install apps. Univention automatically generates "
-"the license and immediately sends it to the specified email address. You "
-"import the license through the *Welcome* management module, see :external"
-"+uv-ucs-manual:ref:`central-license` in :cite:t:`ucs-manual`."
+"For information about the setup process of a Nubus for UCS instance based"
+" on Amazon EC2, see :uv:help:`Amazon EC2 Quickstart <21833>`."
 msgstr ""
-"Wenn Sie eine gültige E-Mail-Adresse angeben, aktiviert die "
-"Systemeinrichtung eine personalisierte Lizenz und schickt sie an die "
-"Adresse. Das Univention App Center benötigt die Lizenz, um Apps zu "
-"installieren. Univention generiert die Lizenz automatisch und sendet sie "
-"sofort an die angegebene E-Mail-Adresse. Sie importieren die Lizenz über "
-"das Verwaltungsmodul *Willkommen*, siehe :external+uv-ucs-manual:ref"
-":`central-license` im :cite:t:`ucs-manual`."
+"Für Informationen zum Einrichtungsprozess einer Nubus für UCS Instanz "
+"basierend auf Amazon EC2, siehe :uv:help:`Amazon EC2 Quickstart <21833>`."
 
-#: ../../deployment/install.rst:512
-msgid "Fully qualified domain name"
-msgstr ":spelling:word:`Fully Qualified Domain Name`"
+#: ../../deployment/install.rst:78
+msgid "VMware-specific considerations"
+msgstr "VMware-spezifische Überlegungen"
 
-#: ../../deployment/install.rst:513
+#: ../../deployment/install.rst:80
 msgid ""
-"Provide the fully qualified domain name for the system, including "
-"hostname and domain name. System setup derives the name of the Nubus for "
-"UCS system and the DNS domain from it. System setup automatically "
-"generates a suggestion if you provided an :ref:`deployment-installation-"
-"physical-domain-settings-new-domain-organization`. For the naming "
-"convention of the hostname, see :ref:`deployment-installation-physical-"
-"domain-settings-naming`."
+"If you install Nubus for UCS as a guest in VMware, select the option "
+":menuselection:`Linux --> Debian` as the *Guest operating system*, "
+"because Nubus for UCS bases on Debian GNU/Linux."
 msgstr ""
-"Geben Sie den :spelling:word:`Fully Qualified Domain Name` für das System"
-" an, einschließlich Rechnername und Domänenname. Die Systemeinrichtung "
-"leitet daraus den Namen des Nubus für UCS Systems und der DNS-Domäne ab. "
-"Die Systemeinrichtung generiert automatisch einen Vorschlag, wenn Sie "
-"einen :ref:`deployment-installation-physical-domain-settings-new-domain-"
-"organization` angegeben haben. Für die Namenskonvention des Rechnernamens"
-" siehe :ref:`deployment-installation-physical-domain-settings-naming`."
+"Wenn Sie Nubus für UCS als Gast in VMware installieren, wählen Sie die "
+"Option :menuselection:`Linux --> Debian` als *Gastbetriebssystem*, da "
+"Nubus für UCS auf Debian GNU/Linux basiert."
 
-#: ../../deployment/install.rst:523
+#: ../../deployment/install.rst:84
 msgid ""
-"Recommendation: don't use publicly available DNS domains for your DNS "
-"domain, as this can result in name resolution problems."
+"The Linux kernel in Nubus for UCS includes all the support drivers "
+"necessary for operation in VMware, such as :file:`vmw_balloon`, "
+":file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`, and :file:`vmxnet3`."
 msgstr ""
-"Empfehlung: Verwenden Sie keine öffentlich verfügbaren DNS-Domänen für "
-"Ihre DNS-Domäne, da dies zu Namensauflösungsproblemen führen kann."
+"Der Linux-Kernel in Nubus für UCS enthält alle für den Betrieb in VMware "
+"notwendigen Support-Treiber, wie :file:`vmw_balloon`, :file:`vmw_pvsci`, "
+":file:`vmw_vmci`, :file:`vmwgfx` und :file:`vmxnet3`."
 
-#: ../../deployment/install.rst:528
-msgid "LDAP base"
-msgstr "LDAP-Basis"
-
-#: ../../deployment/install.rst:529
+#: ../../deployment/install.rst:87
 msgid ""
-"You must specify an LDAP base to initialize the directory service. System"
-" setup automatically creates a suggestion from the :ref:`deployment-"
-"installation-physical-domain-settings-new-domain-fqdn`. You can usually "
-"accept the suggestion without changes."
+"Nubus for UCS delivers the :program:`Open VM Tools`. You can install them"
+" through the :program:`open-vm-tools` package. The package is optional, "
+"but necessary for features such as automatic time synchronization between"
+" the virtualization server and the guest system."
 msgstr ""
-"Sie müssen eine LDAP-Basis angeben, um den Verzeichnisdienst zu "
-"initialisieren. Die Systemeinrichtung erstellt automatisch einen "
-"Vorschlag aus dem :ref:`deployment-installation-physical-domain-"
-"settings-new-domain-fqdn`. Sie können den Vorschlag normalerweise ohne "
-"Änderungen akzeptieren."
+"Nubus für UCS liefert die :program:`Open VM Tools`. Sie können sie über "
+"das Paket :program:`open-vm-tools` installieren. Das Paket ist optional, "
+"aber notwendig für Funktionen wie automatische Zeitsynchronisation "
+"zwischen dem Virtualisierungsserver und dem Gastsystem."
 
-#: ../../deployment/install.rst:536 ../../deployment/install.rst:539
-msgid "Specify of hostname and LDAP base"
-msgstr "Angabe von Hostname und LDAP-Basis"
-
-#: ../../deployment/install.rst:544
-msgid "Mode: Join an existing Active Directory domain"
-msgstr "Modus: Einer bestehenden Active Directory Domäne beitreten"
-
-#: ../../deployment/install.rst:549
-msgid ""
-"If you configured the DNS server of an Active Directory domain during the"
-" :ref:`network configuration <deployment-installation-physical-network-"
-"configuration>`, system setup automatically suggest the name of the "
-"Active Directory domain controller in the *Active Directory account "
-"information* step, see :numref:`deployment-installation-physical-domain-"
-"settings-ad-member-figure`. If the suggestion is incorrect, you can "
-"provide the name of another Active Directory domain controller or another"
-" Active Directory domain."
-msgstr ""
-"Wenn Sie den DNS-Server einer Active Directory Domäne während der "
-":ref:`Netzwerkkonfiguration <deployment-installation-physical-network-"
-"configuration>` konfiguriert haben, schlägt die Systemeinrichtung "
-"automatisch den Namen des Active Directory Domain-Controllers im Schritt "
-"*Active Directory Konto-Informationen* vor, siehe :numref:`deployment-"
-"installation-physical-domain-settings-ad-member-figure`. Wenn der "
-"Vorschlag falsch ist, können Sie den Namen eines anderen Active Directory"
-" Domain-Controllers oder einer anderen Active Directory Domäne angeben."
-
-#: ../../deployment/install.rst:556
-msgid ""
-"You need to provide an Active Directory account and its corresponding "
-"password to enable your Nubus for UCS system to join the Active Directory"
-" domain. The user account must have the permission to join new systems in"
-" the Active Directory domain."
-msgstr ""
-"Sie müssen ein Active Directory Konto und dessen zugehöriges Passwort "
-"angeben, damit Ihr Nubus für UCS System der Active Directory Domäne "
-"beitreten kann. Das Benutzerkonto muss die Berechtigung haben, neue "
-"Systeme in der Active Directory Domäne hinzuzufügen."
-
-#: ../../deployment/install.rst:560
-msgid ""
-"In addition, you need to define a hostname for the Nubus for UCS system. "
-"You can adopt the suggested hostname or provide a different one. For the "
-"naming convention of the hostname, see :ref:`deployment-installation-"
-"physical-domain-settings-naming`."
-msgstr ""
-"Zusätzlich müssen Sie einen Rechnernamen für das Nubus für UCS System "
-"festlegen. Sie können den vorgeschlagenen Rechnernamen übernehmen oder "
-"einen anderen angeben. Für die Namenskonvention des Rechnernamens siehe "
-":ref:`deployment-installation-physical-domain-settings-naming`."
-
-#: ../../deployment/install.rst:565
-msgid ""
-"System setup automatically derives the system's domain name from the "
-"domain DNS server. However, in some scenarios such as hosting a public "
-"mail server, you may need to use a different fully qualified domain name."
-" The Nubus for UCS system joins the Active Directory domain with the "
-"specified hostname."
-msgstr ""
-"Die Systemeinrichtung leitet den Domänennamen des Systems automatisch vom"
-" Domänen-DNS-Server ab. In einigen Szenarien, wie beim :spelling:word:`Hosten` eines "
-"öffentlichen Mailservers, müssen Sie möglicherweise einen anderen "
-":spelling:word:`Fully Qualified Domain Name` verwenden. Das Nubus für UCS"
-" System tritt der Active Directory Domäne mit dem angegebenen "
-"Rechnernamen bei."
-
-#: ../../deployment/install.rst:572 ../../deployment/install.rst:662
-msgid "After the configuration is complete, you **can't** change the domain."
-msgstr "Nach Abschluss der Konfiguration können Sie die Domäne **nicht** ändern."
-
-#: ../../deployment/install.rst:574
-msgid ""
-"In a Nubus for UCS domain, you can install systems in different system "
-"roles. The first Nubus for UCS system that joins an Active Directory "
-"domain, automatically has the :term:`UCS Primary Directory Node` system "
-"role. If you select this mode during the installation of addition Nubus "
-"for UCS system, system setup shows the selection dialog for the system "
-"role. For the system role selection, see :ref:`deployment-installation-"
-"physical-domain-settings-join-ucs`."
-msgstr ""
-"In einer Nubus für UCS Domäne können Sie Systeme in verschiedenen "
-"Systemrollen installieren. Das erste Nubus für UCS System, das einer "
-"Active Directory Domäne beitritt, hat automatisch die Systemrolle "
-":term:`UCS Primary Directory Node`. Wenn Sie diesen Modus während der "
-"Installation zusätzlicher Nubus für UCS Systeme wählen, zeigt die "
-"Systemeinrichtung den Auswahldialog für die System-Rolle an. Für die "
-"Systemrollenauswahl siehe :ref:`deployment-installation-physical-domain-"
-"settings-join-ucs`."
-
-#: ../../deployment/install.rst:584 ../../deployment/install.rst:587
-msgid "Information on the Active directory domain"
-msgstr "Informationen zur Active Directory Domäne"
-
-#: ../../deployment/install.rst:592
-msgid "Mode: Join an existing UCS domain"
-msgstr "Modus: Einer bestehenden UCS-Domäne beitreten"
-
-#: ../../deployment/install.rst:597
-msgid ""
-"To join an existing Nubus for UCS domain, you need to process the "
-"following steps:"
-msgstr ""
-"Um einer bestehenden Nubus für UCS Domäne beizutreten, müssen Sie die "
-"folgenden Schritte durchführen:"
-
-#: ../../deployment/install.rst:600
-msgid "Select the system role."
-msgstr "Systemrolle auswählen."
-
-#: ../../deployment/install.rst:602
-msgid ""
-"In a Nubus for UCS domain, you can install systems in different system "
-"roles. The first system in a Nubus for UCS domain always has the "
-":term:`UCS Primary Directory Node` system role. Additional Nubus for UCS "
-"systems can join the domain at a later point in time. You can assign them"
-" one of the following system roles."
-msgstr ""
-"In einer Nubus für UCS Domäne können Sie Systeme in verschiedenen "
-"Systemrollen installieren. Das erste System in einer Nubus für UCS Domäne"
-" hat immer die Systemrolle :term:`UCS Primary Directory Node`. "
-"Zusätzliche Nubus für UCS Systeme können der Domäne zu einem späteren "
-"Zeitpunkt beitreten. Sie können ihnen eine der folgenden Systemrollen "
-"zuweisen."
-
-#: ../../deployment/install.rst:609
-msgid "Backup Directory Node"
-msgstr "Backup Directory Node"
-
-#: ../../deployment/install.rst:610
-msgid ""
-"The :term:`Backup Directory Node` is the fallback system for the UCS "
-"Primary Directory Node. If the Primary Directory Node fails, a Backup "
-"Directory Node can adopt the role of the UCS Primary Directory Node "
-"permanently. Backup Directory Nodes have all the domain data and SSL "
-"security certificates saved as read-only copies."
-msgstr ""
-"Der :term:`Backup Directory Node` ist das Fallback-System für den UCS "
-"Primary Directory Node. Wenn der Primary Directory Node ausfällt, kann "
-"ein Backup Directory Node die Rolle des UCS Primary Directory Node "
-"dauerhaft übernehmen. Backup Directory Nodes haben alle Domänendaten und "
-"SSL-Sicherheitszertifikate als schreibgeschützte Kopien gespeichert."
-
-#: ../../deployment/install.rst:615
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
-
-#: ../../deployment/install.rst:616
-msgid ""
-"Servers with the :term:`Replica Directory Node` role have all the domain "
-"data saved as read-only copies. In contrast to the Backup Directory Node,"
-" however, they don't have all security certificates. Services running on "
-"a Replica Directory node access LDAP directory data through the local "
-"LDAP directory service. Replica Directory Node systems are ideal for site"
-" servers and the distribution of high-load services."
-msgstr ""
-"Server mit der Rolle :term:`Replica Directory Node` haben alle Domänen-"
-"Daten als schreibgeschützte Kopien gespeichert. Im Gegensatz zum Backup "
-"Directory Node haben sie jedoch nicht alle Sicherheitszertifikate. Auf "
-"einem Replica Directory Node laufende Dienste greifen über den lokalen "
-"LDAP-Verzeichnisdienst auf LDAP-Verzeichnisdaten zu. Replica Directory "
-"Node Systeme eignen sich ideal für Standort-Server und die Verteilung "
-"hoch belasteter Dienste."
-
-#: ../../deployment/install.rst:621
-msgid "Managed Node"
-msgstr "Managed Node"
-
-#: ../../deployment/install.rst:622
-msgid ""
-":term:`Managed Node`\\ s are Nubus for UCS systems without a local LDAP "
-"directory service. They access domain data through other servers in the "
-"domain. They're suitable for services that don't require a local database"
-" for authentication, for example, print and file servers."
-msgstr ""
-":term:`Managed Node`\\ s sind Nubus für UCS Systeme ohne lokalen LDAP-"
-"Verzeichnisdienst. Sie greifen über andere Server in der Domäne auf "
-"Domänendaten zu. Sie eignen sich für Dienste, die keine lokale Datenbank "
-"für die Authentifizierung benötigen, zum Beispiel Druck- und Dateiserver."
-
-#: ../../deployment/install.rst:627
-msgid ""
-"After you selected the system role for Nubus for UCS, the system setup "
-"asks for more information to join the domain, see :numref:`deployment-"
-"installation-physical-domain-settings-join-ucs-figure`."
-msgstr ""
-"Nachdem Sie die Systemrolle für Nubus für UCS ausgewählt haben, fragt die"
-" Systemeinrichtung nach weiteren Informationen zum Domänenbeitritt, siehe"
-" :numref:`deployment-installation-physical-domain-settings-join-ucs-"
-"figure`."
-
-#: ../../deployment/install.rst:631
-msgid "Start join at the end of the installation"
-msgstr "Beitritt am Ende der Installation starten"
-
-#: ../../deployment/install.rst:632
-msgid ""
-"If you don't intend to let the system setup run the domain join "
-"automatically during the installation, deactivate the option *Start join "
-"at the end of the installation*."
-msgstr ""
-"Wenn Sie nicht beabsichtigen, dass die Systemeinrichtung den "
-"Domänenbeitritt automatisch während der Installation durchführt, "
-"deaktivieren Sie die Option *Beitritt am Ende der Installation starten*."
-
-#: ../../deployment/install.rst:635
-msgid "Search Primary Directory Node in DNS"
-msgstr "Primary Directory Node im DNS suchen"
-
-#: ../../deployment/install.rst:636
-msgid ""
-"System setup automatically determines the name of the UCS Primary "
-"Directory Node if you provided it as DNS server during :ref:`deployment-"
-"installation-physical-network-configuration`."
-msgstr ""
-"Die Systemeinrichtung ermittelt automatisch den Namen des UCS Primary "
-"Directory Node, wenn Sie ihn als DNS-Server während :ref:`deployment-"
-"installation-physical-network-configuration` angegeben haben."
-
-#: ../../deployment/install.rst:642
-msgid ""
-"If you decide to join another Nubus for UCS domain, you can deactivate "
-"*Search Primary Directory Node in DNS* and provide the fully qualified "
-"domain name of the preferred UCS Primary Directory Node."
-msgstr ""
-"Wenn Sie sich entscheiden, einer anderen Nubus für UCS Domäne "
-"beizutreten, können Sie *Primary Directory Node im DNS suchen* "
-"deaktivieren und den :spelling:word:`Fully Qualified Domain Name` des "
-"bevorzugten UCS Primary Directory Node angeben."
-
-#: ../../deployment/install.rst:648
-msgid "Credentials for domain administrator"
-msgstr "Anmeldedaten für Domänenadministrator"
-
-#: ../../deployment/install.rst:649
-msgid ""
-"The domain join process needs to access information about the domain. To "
-"grant system setup the appropriate permission, you need to provide the "
-"credentials for an *Administrator* account of the domain."
-msgstr ""
-"Der Prozess für den Domänenbeitritt benötigt Zugriff auf Informationen "
-"über die Domäne. Um der Systemeinrichtung die entsprechende Berechtigung "
-"zu erteilen, müssen Sie die Anmeldedaten für ein *Administrator*-Konto "
-"der Domäne angeben."
-
-#: ../../deployment/install.rst:653
-msgid ""
-"Finally, provide a hostname for the Nubus for UCS system. You can adopt "
-"the suggested hostname or change it. For the naming convention of the "
-"hostname, see :ref:`deployment-installation-physical-domain-settings-"
-"naming`. The system setup automatically derives the domain name of the "
-"computer from the domain DNS server. In some scenarios, such as a public "
-"mail server, it may be necessary to use a certain fully qualified domain "
-"name."
-msgstr ""
-"Geben Sie schließlich einen Rechnernamen für das Nubus für UCS System an."
-" Sie können den vorgeschlagenen Rechnernamen übernehmen oder ändern. Für "
-"die Namenskonvention des Rechnernamens siehe :ref:`deployment-"
-"installation-physical-domain-settings-naming`. Die Systemeinrichtung "
-"leitet den Domänennamen des Computers automatisch vom Domänen-DNS-Server "
-"ab. In einigen Szenarien, wie etwa einem öffentlichen Mailserver, kann es"
-" erforderlich sein, einen bestimmten :spelling:word:`Fully Qualified "
-"Domain Name` zu verwenden."
-
-#: ../../deployment/install.rst:666 ../../deployment/install.rst:669
-msgid "Information on the domain join"
-msgstr "Informationen zum Domänenbeitritt"
-
-#: ../../deployment/install.rst:674
-msgid "Confirm the installation settings"
-msgstr "Installationseinstellungen bestätigen"
-
-#: ../../deployment/install.rst:676
-msgid ""
-"*Confirm configuration settings* shows a summary of your settings, see "
-":numref:`deployment-installation-physical-confirm-settings-summary-"
-"figure`."
-msgstr ""
-"*Konfigurationseinstellungen bestätigen* zeigt eine Zusammenfassung Ihrer"
-" Einstellungen, siehe :numref:`deployment-installation-physical-confirm-"
-"settings-summary-figure`."
-
-#: ../../deployment/install.rst:679
-msgid "Update system after installation"
-msgstr "System nach der Installation aktualisieren"
-
-#: ../../deployment/install.rst:680
-msgid ""
-"The *Update system after installation* option allows the automatic "
-"installation of available errata updates."
-msgstr ""
-"Die Option *System nach der Installation aktualisieren* ermöglicht die "
-"automatische Installation verfügbarer Errata-Updates."
-
-#: ../../deployment/install.rst:684
-msgid ""
-"In addition, the :term:`UCS Primary Directory Node` installs all "
-"available patch level updates and errata updates. All other system roles "
-"update their patch level version to match the patch level version of the "
-"UCS Primary Directory Node. You need to sign in to the UCS Primary "
-"Directory Node to check the installation status. For sign-in, use the "
-"same administrator credentials that you provided in :ref:`deployment-"
-"installation-physical-domain-settings-join-ucs-credentials`."
-msgstr ""
-"Zusätzlich installiert der :term:`UCS Primary Directory Node` alle "
-"verfügbaren Patchlevel-Updates und Errata-Updates. Alle anderen "
-"Systemrollen aktualisieren ihre Patchlevel-Version, um der Patchlevel-"
-"Version des UCS Primary Directory Node zu entsprechen. Sie müssen sich "
-"beim UCS Primary Directory Node anmelden, um den Installationsstatus zu "
-"überprüfen. Verwenden Sie für die Anmeldung die gleichen Anmeldedaten für"
-" ein Administrator-Konto, die Sie in :ref:`deployment-installation-"
-"physical-domain-settings-join-ucs-credentials` angegeben haben."
-
-#: ../../deployment/install.rst:695
-msgid ""
-"If the settings match your intention, click :guilabel:`Configure System` "
-"to start the configuration of the Nubus for UCS system."
-msgstr ""
-"Wenn die Einstellungen Ihrer Absicht entsprechen, klicken Sie auf "
-":guilabel:`System konfigurieren`, um die Konfiguration des Nubus für UCS "
-"Systems zu starten."
-
-#: ../../deployment/install.rst:699
-msgid ""
-"System setup shows the progress during the system configuration. It saves"
-" the installation protocol in the following files:"
-msgstr ""
-"Die Systemeinrichtung zeigt den Fortschritt während der "
-"Systemkonfiguration an. Sie speichert das Installationsprotokoll in den "
-"folgenden Dateien:"
-
-#: ../../deployment/install.rst:702
-msgid ":file:`/var/log/installer/syslog`"
-msgstr ":file:`/var/log/installer/syslog`"
-
-#: ../../deployment/install.rst:703
-msgid ":file:`/var/log/univention/management-console-module-setup.log`"
-msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
-
-#: ../../deployment/install.rst:705
-msgid ""
-"After you confirm the completion of the system setup, your Nubus for UCS "
-"system is ready for the first full boot procedure. You can restart it. "
-"The system then boots from the hard drive. After the boot procedure "
-"completes, the ``root`` and ``Administrator`` users can sign in to the "
-"*Portal*, see :external+uv-nubus-manual:ref:`nubus-portal` in :cite:t"
-":`uv-nubus-manual`."
-msgstr ""
-"Nachdem Sie den Abschluss der Systemeinrichtung bestätigt haben, ist Ihr "
-"Nubus für UCS System bereit für den ersten vollständigen Bootvorgang. Sie"
-" können es neu starten. Das System startet dann von der Festplatte. Nach "
-"Abschluss des Bootvorgangs können sich die Benutzer ``root`` und "
-"``Administrator`` im *Portal* anmelden, siehe :external+uv-nubus-"
-"manual:ref:`nubus-portal` in :cite:t:`uv-nubus-manual`."
-
-#: ../../deployment/install.rst:724
-msgid "Open the portal"
-msgstr "Portal öffnen"
-
-#: ../../deployment/install.rst:726
-msgid ""
-"To open the *Portal* in Nubus for UCS, choose any UCS system in your "
-"Nubus for UCS domain and enter its fully qualified hostname into the "
-"browser address bar. Your client must be able to resolve the hostname "
-"through DNS. If your client can't resolve the DNS name, you can use the "
-"IP address."
-msgstr ""
-"Um das *Portal* in Nubus für UCS zu öffnen, wählen Sie ein beliebiges "
-"UCS-System in Ihrer Nubus für UCS Domäne und geben Sie dessen Fully "
-"Qualified Hostname in die Browser-Adressleiste ein. Ihr Client muss in "
-"der Lage sein, den Rechnernamen über DNS aufzulösen. Wenn Ihr Client den "
-"DNS-Namen nicht auflösen kann, können Sie die IP-Adresse verwenden."
-
-#: ../../deployment/install.rst:736
-msgid "License import after installation"
-msgstr "Lizenzimport nach der Installation"
-
-#: ../../deployment/install.rst:738
-msgid ""
-"If you installed the system as the first system in the Nubus for UCS "
-"domain in the :term:`UCS Primary Directory Node` role, you can import the"
-" license for the domain, see :external+uv-ucs-manual:ref:`central-"
-"license` in :cite:t:`ucs-manual`."
-msgstr ""
-"Wenn Sie das System als erstes System in der Nubus für UCS Domäne in der "
-"Rolle :term:`UCS Primary Directory Node` installiert haben, können Sie "
-"die Lizenz für die Domäne importieren, siehe :external+uv-ucs-manual:ref"
-":`central-license` im :cite:t:`ucs-manual`."
-
-#: ../../deployment/text-mode.rst:7
+#: ../../deployment/install.rst:96
 msgid "Text mode installation"
 msgstr "Installation im Textmodus"
 
-#: ../../deployment/text-mode.rst:9
+#: ../../deployment/install.rst:98
 msgid ""
 "On systems that show problems with the graphical Univention installer, "
 "you can start the installation in text mode. For text mode, select :ref"
-":`deployment-installation-physical-install-mode-text-mode` in the "
+":`deployment-initial-system-configuration-install-mode-text-mode` in the "
 "installation boot prompt."
 msgstr ""
 "Auf Systemen, die Probleme mit dem grafischen Univention Installer "
 "zeigen, können Sie die Installation im Textmodus starten. Für den "
-"Textmodus wählen Sie :ref:`deployment-installation-physical-install-mode-"
+"Textmodus wählen Sie :ref:`deployment-initial-system-configuration-install-mode-"
 "text-mode` im Boot-Menü für die Installation."
 
-#: ../../deployment/text-mode.rst:14
+#: ../../deployment/install.rst:103
 msgid ""
 "During installation in text mode the installer shows the same information"
 " and asks for the same settings. After hard drive partitioning, the "
@@ -1580,15 +1632,15 @@ msgstr ""
 "Festplattenpartitionierung ist das System bereit für den ersten Start und"
 " der Installer startet das System neu."
 
-#: ../../deployment/text-mode.rst:19
+#: ../../deployment/install.rst:108
 #, python-brace-format
 msgid ""
 "After restart, you can resume the configuration with the system setup in "
 "a web browser. Open the URL :samp:`https://{SERVER-IP-ADDRESS}` in your "
 "web browser. System setup requires authentication with the user ``root``."
 " It then asks for location and network setting. You continue with the "
-"same steps as the graphical installer, see :ref:`deployment-installation-"
-"physical-domain-settings`."
+"same steps as the graphical installer, see :ref:`deployment-domain-"
+"setup`."
 msgstr ""
 "Nach dem Neustart können Sie die Konfiguration mit der Systemeinrichtung "
 "in einem Webbrowser fortsetzen. Öffnen Sie die URL :samp:`https"
@@ -1596,7 +1648,7 @@ msgstr ""
 "erfordert eine Authentifizierung mit dem Benutzer ``root``. Sie fragt "
 "dann nach Standort- und Netzwerkeinstellungen. Sie fahren mit den "
 "gleichen Schritten wie beim grafischen Installer fort, siehe :ref"
-":`deployment-installation-physical-domain-settings`."
+":`deployment-domain-setup`."
 
 #: ../../deployment/trouble.rst:7
 msgid "Troubleshooting for installation problems"
@@ -1611,39 +1663,3 @@ msgstr ""
 "Für Informationen zu möglichen Installationsproblemen siehe `Univention "
 "Knowledge Base <https://help.univention.com/c/knowledge-"
 "base/supported/48>`_ im Abschnitt *Installation*."
-
-#: ../../deployment/vmware.rst:7
-msgid "VMware-specific considerations"
-msgstr "VMware-spezifische Überlegungen"
-
-#: ../../deployment/vmware.rst:9
-msgid ""
-"If you install Nubus for UCS as a guest in VMware, select the option "
-":menuselection:`Linux --> Debian` as the *Guest operating system*, "
-"because Nubus for UCS bases on Debian GNU/Linux."
-msgstr ""
-"Wenn Sie Nubus für UCS als Gast in VMware installieren, wählen Sie die "
-"Option :menuselection:`Linux --> Debian` als *Gastbetriebssystem*, da "
-"Nubus für UCS auf Debian GNU/Linux basiert."
-
-#: ../../deployment/vmware.rst:13
-msgid ""
-"The Linux kernel in Nubus for UCS includes all the support drivers "
-"necessary for operation in VMware, such as :file:`vmw_balloon`, "
-":file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`, and :file:`vmxnet3`."
-msgstr ""
-"Der Linux-Kernel in Nubus für UCS enthält alle für den Betrieb in VMware "
-"notwendigen Support-Treiber, wie :file:`vmw_balloon`, :file:`vmw_pvsci`, "
-":file:`vmw_vmci`, :file:`vmwgfx` und :file:`vmxnet3`."
-
-#: ../../deployment/vmware.rst:16
-msgid ""
-"Nubus for UCS delivers the :program:`Open VM Tools`. You can install them"
-" through the :program:`open-vm-tools` package. The package is optional, "
-"but necessary for features such as automatic time synchronization between"
-" the virtualization server and the guest system."
-msgstr ""
-"Nubus für UCS liefert die :program:`Open VM Tools`. Sie können sie über "
-"das Paket :program:`open-vm-tools` installieren. Das Paket ist optional, "
-"aber notwendig für Funktionen wie automatische Zeitsynchronisation "
-"zwischen dem Virtualisierungsserver und dem Gastsystem."
