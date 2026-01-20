@@ -879,7 +879,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                     if key is None:
                         # ignore the entry as the key is important for a selection, there
                         # is no sensible fallback for the key (Bug #26994)
-                        log.debug('Ignored object as possible choice: Missing key property: %s', cls.key, dn=dn, syntax=cls.name)
+                        log.debug('Ignored object as possible choice: Missing key property: %s', cls.key, dn=obj.dn, syntax=cls.name)
                         continue
                     if label is None:
                         # fallback to the default description as this is just what displayed
