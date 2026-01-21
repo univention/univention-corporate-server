@@ -25,7 +25,7 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - Operation Manual'
+project = 'Nubus for UCS - Operation Manual'
 year_range = date.today().year
 start_year = 2025
 if year_range > start_year:
@@ -166,7 +166,7 @@ def adapt_settings_to_translation(app, config):
     See https://github.com/sphinx-doc/sphinx/issues/10282
     """
     if config.language == 'de':
-        config.project = 'Univention Corporate Server - Betriebshandbuch'
+        config.project = 'Nubus für UCS - Betriebshandbuch'
         config.html_title = config.project
         config.tokenizer_lang = 'de_DE'
 
