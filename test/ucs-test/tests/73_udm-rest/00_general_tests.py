@@ -365,3 +365,21 @@ def test_reload_listener(udm, udm_client, ucr, processes):
             assert name in obj.properties
     finally:
         subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
+
+
+def test_univention_object_identifier_defaults_to_entry_uuid(udm, udm_client, lo):
+    dn, _ = udm.create_user()
+    ldap_univention_object_identifier = lo.getAttr(dn, 'univentionObjectIdentifier')[0].decode()
+    ldap_entry_uuid = lo.getAttr(dn, 'entryUUID')[0].decode()
+    assert ldap_entry_uuid != ldap_univention_object_identifier
+
+    mod = udm_client.get('users/user')
+
+    # univentionObjectIdentifier is set in LDAP, we get this one
+    obj = mod.get(dn)
+    assert obj.properties['univentionObjectIdentifier'] == ldap_univention_object_identifier
+
+    # now remove LDAP univentionObjectIdentifier
+    lo.modify(dn, [('univentionObjectIdentifier', ldap_univention_object_identifier.encode(), None)])
+    obj = mod.get(dn)
+    assert obj.properties['univentionObjectIdentifier'] == ldap_entry_uuid
