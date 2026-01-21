@@ -95,6 +95,7 @@ def test_module_inits_with_new_extended_attribute(account, lo, udm):
         mayChange=1,
     )
     attrs['univentionFreeAttribute9'] = [value.encode()]  # add a value for the new ext attribute
+    time.sleep(3)
     subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
     time.sleep(3)
 
