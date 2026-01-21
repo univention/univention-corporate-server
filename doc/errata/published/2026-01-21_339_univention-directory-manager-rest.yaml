@@ -10,3 +10,6 @@ desc: |
    UDM REST service.
  * Load extended UDM attributes in unmap-ldap-attributes endpoint.
 bug: [58970]
+erratum: 339
+announced: 2026-01-21
+support: core
