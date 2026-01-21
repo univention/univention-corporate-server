@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.11) unstable; urgency=medium
+
+  * Bug #58987: default to entryUUID for univentionObjectIdentifier
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jan 2026 15:14:16 +0100
+
 univention-directory-manager-modules (17.4.10) unstable; urgency=medium
 
   * Bug #58992: Restart UCS@school Kelvin HTTP API on upgrade

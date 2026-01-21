@@ -237,6 +237,11 @@ class simpleLdap:
             oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
             self.info.update(oldinfo)
 
+            # for existing objects default to entryUUID for univentionObjectIdentifier, if not set
+            if 'univentionObjectIdentifier' in self.descriptions and 'univentionObjectIdentifier' not in self.info:
+                univention_object_identifier = self.oldattr.get('entryUUID', [b''])[0].decode()
+                self.info['univentionObjectIdentifier'] = univention_object_identifier
+
         self.policies = [x.decode('utf-8') for x in self.oldattr.get('univentionPolicyReference', [])]
         self.__set_options()
         self.save()
