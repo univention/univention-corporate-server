@@ -12,3 +12,6 @@ desc: |
    App. These packages will be installed automatically
    when installing the new Provisioning Service UCS App.
 bug: [58973]
+erratum: 340
+announced: 2026-01-21
+support: core
