@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.4.7) unstable; urgency=medium
+
+  * Bug #50253: add log message in udm_rest_reload.py listener handler
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Jan 2026 09:44:07 +0100
+
 univention-directory-manager-rest (12.4.6) unstable; urgency=medium
 
   * Bug #58970: load extended attributes in unmap-ldap-attributes endpoint
