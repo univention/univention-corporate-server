@@ -7,7 +7,7 @@ Provisioning Service
 ====================
 
 The *Provisioning Service* is an event and messaging service
-that can notify interested services about events in the Nubus directory service.
+that can notify interested services about events in the LDAP directory service.
 When data changes in the LDAP directory on the |UCSPRIMARYDN|,
 the *Provisioning Service* receives a notification about the change
 and notifies any subscribed services about the change.
@@ -84,7 +84,7 @@ For a reference, see :ref:`nubus-provisioning-service-app-settings`.
 Provisioning workflow
 ---------------------
 
-The *Provisioning Service* provides a stream of events about data changes in the Nubus directory service.
+The *Provisioning Service* delivers a stream of events about data changes in the LDAP directory service.
 It uses the following components:
 
 .. _nubus-provisioning-service-workflow-listener:
@@ -98,14 +98,14 @@ Provisioning Listener
 .. _nubus-provisioning-service-workflow-transformer:
 
 Provisioning UDM Transformer
-   The *Provisioning UDM transformer* transforms incoming LDAP level change events
+   The *Provisioning UDM Transformer* transforms incoming LDAP level change events
    to UDM level provisioning events by calling the *UDM HTTP REST API*.
    It runs on |UCSPRIMARYDN| only.
 
 .. _nubus-provisioning-service-workflow-prefill:
 
 Provisioning Prefill Service
-   The *Provisioning Prefill service* streams all UDM objects of the subscribed type
+   The *Provisioning Prefill Service* streams all UDM objects of the subscribed type
    to the subscribed consumer app.
    It runs on the |UCSPRIMARYDN| only.
 
@@ -113,7 +113,7 @@ Provisioning Prefill Service
 
 Provisioning Dispatcher
    The *Provisioning Dispatcher* routes events about all UDM objects
-   to the provisioning streams of subscribed apps.
+   to the provisioning queues of subscribed apps.
    It runs on |UCSPRIMARYDN| and |UCSBACKUPDN|.
 
 .. _nubus-provisioning-service-workflow-api:
@@ -164,7 +164,7 @@ or remotely through :samp:`https://{<Primary FQDN>}/univention/provisioning/`.
      - Purpose
 
    * - 4230
-     - The localhost :program:`stunnel` port.
+     - The :program:`stunnel` port.
        You can adjust it through the :envvar:`nats/stunnel/accept/port` UCR variable.
 
    * - 4222
@@ -210,8 +210,8 @@ Univention recommends keeping the default values.
 
 To change settings after the app installation,
 sign in to the UCS management system with a user account in the ``Domain Admins`` group
-and go to :menuselection:`App Center --> Keycloak --> Manage Installation --> App Settings`.
-On the *Configure Provisioning service* page,
+and go to :menuselection:`App Center --> Provisioning Service --> Manage Installations --> Select instance via checkbox --> ⋯ More --> App Settings`.
+On the *Configure Provisioning Service* page,
 you can change the settings
 and apply them to the app by clicking :guilabel:`Apply Changes`.
 
@@ -271,7 +271,7 @@ The *Provisioning Service* app has the following app settings.
 
    Number of times the
    :ref:`nubus-provisioning-service-workflow-listener`
-   tries to synchronize each transaction to the provisioning NATS service.
+   re-tries to synchronize each transaction to the provisioning NATS service.
    After you change this setting
    you need to restart the :program:`univention-directory-listener`,
    see :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
@@ -356,9 +356,10 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/connect/port
 
    Connection port of the :program:`stunnel`
-   securing the NATS connection
-   between a *Provisioning Dispatcher* on |UCSBACKUPDN|
-   and |UCSPRIMARYDN| :program:`NATS`.
+   securing the connection
+   between *Provisioning Dispatcher* on |UCSBACKUPDN|
+   and :program:`NATS` on |UCSPRIMARYDN|. Must match
+   the :envvar:`nats/stunnel/accept/port` of the |UCSPRIMARYDN|.
 
    .. list-table::
       :header-rows: 1
@@ -375,8 +376,8 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/cert
 
    Certificate for the :program:`stunnel` :program:`NATS` connection
-   between a *Provisioning Dispatcher* on a |UCSBACKUPDN|
-   and |UCSPRIMARYDN| :program:`NATS`.
+   between *Provisioning Dispatcher* on a |UCSBACKUPDN|
+   and :program:`NATS` on |UCSPRIMARYDN|.
 
    .. list-table::
       :header-rows: 1
@@ -393,8 +394,8 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/key
 
    Certificate key used for the :program:`stunnel` :program:`NATS` connection
-   between a *Provisioning Dispatcher* on a |UCSBACKUPDN|
-   and |UCSPRIMARYDN| :program:`NATS`.
+   between *Provisioning Dispatcher* on a |UCSBACKUPDN|
+   and :program:`NATS` on |UCSPRIMARYDN|.
 
    .. list-table::
       :header-rows: 1
@@ -411,8 +412,8 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/cacert
 
    The CA certificate used for the :program:`stunnel` :program:`NATS` connection
-   between a *Provisioning Dispatcher* on a |UCSBACKUPDN|
-   and |UCSPRIMARYDN| :program:`NATS`.
+   between *Provisioning Dispatcher* on a |UCSBACKUPDN|
+   and :program:`NATS` on |UCSPRIMARYDN|.
 
    .. list-table::
       :header-rows: 1
