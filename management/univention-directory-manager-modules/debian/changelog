@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.1) unstable; urgency=medium
+
+  * Bug #58384: add univentionObjectIdentifier to dns/dhcp objects
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Mar 2026 11:59:47 +0100
+
 univention-directory-manager-modules (17.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump

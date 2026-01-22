@@ -2273,6 +2273,19 @@ class simpleComputer(simpleLdap):
             self.oldinfo['ip'] += ips
             self.info['ip'] += ips
 
+    def add_univention_object_identifier(self, ml):
+        if configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
+            uoid = str(uuid.uuid4())
+            # TODO: maybe without lock, we have the slapo-unique
+            try:
+                univention.admin.allocators.acquireUnique(self.lo, univention.admin.uldap.position(configRegistry['ldap/base']), 'univentionObjectIdentifier', uoid, 'univentionObjectIdentifier', scope='base')
+                # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
+                self.alloc.append(('univentionObjectIdentifier', uoid, False))
+                ml.append(('univentionObjectIdentifier', [uoid.encode()]))
+            except univention.admin.uexceptions.permissionDenied:
+                self.log.info('acquireUnique univentionObjectIdentifier got permissionDenied, continuing without lock, relying on slapo-unique')
+        return ml
+
     def getMachineSid(self, lo: univention.admin.uldap.access, position: univention.admin.uldap.position, uidNum: str, rid: str | None = None) -> str:
         # if rid is given, use it regardless of s4 connector
         if rid:
@@ -2510,8 +2523,10 @@ class simpleComputer(simpleLdap):
             ]
             if ip:
                 ml.append(('univentionDhcpFixedAddress', [bip]))
+            ml = self.add_univention_object_identifier(ml)
             self.lo.authz_connection.add(dn, ml)
             self.log.debug('Created dhcp/host object', dn=dn)
+            self._confirm_locks()
         elif ip:
             # if the object already exists, we append or remove the ip address
             self.log.debug('the dhcp object with the mac address "%s" exists, we change the ip', ethernet)
@@ -2754,16 +2769,17 @@ class simpleComputer(simpleLdap):
             base=tmppos.getBase(), scope='domain', filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart, *list(str2dn(zoneDn)[0][0][:2])]), unique=False,
         )
         if not results:
-            self.lo.authz_connection.add(
-                'relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn),
-                [
-                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                    ('univentionObjectType', [b'dns/ptr_record']),
-                    ('zoneName', [explode_rdn(zoneDn, True)[0].encode('UTF-8')]),
-                    ('relativeDomainName', [ipPart.encode('ASCII')]),
-                    ('PTRRecord', [x.encode('UTF-8') for x in hostname_list]),
-                ],
-            )
+            ml = [
+                ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                ('univentionObjectType', [b'dns/ptr_record']),
+                ('zoneName', [explode_rdn(zoneDn, True)[0].encode('UTF-8')]),
+                ('relativeDomainName', [ipPart.encode('ASCII')]),
+                ('PTRRecord', [x.encode('UTF-8') for x in hostname_list]),
+
+            ]
+            ml = self.add_univention_object_identifier(ml)
+            self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn), ml)
+            self._confirm_locks()
 
             # update Serial
             zone = univention.admin.handlers.dns.reverse_zone.object(self.co, self.lo, self.position, zoneDn)
@@ -2935,16 +2951,16 @@ class simpleComputer(simpleLdap):
         )
         if not results:
             try:
-                self.lo.authz_connection.add(
-                    'relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn),
-                    [
-                        ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                        ('univentionObjectType', [b'dns/host_record']),
-                        ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
-                        ('aAAARecord', [ip]),
-                        ('relativeDomainName', [name.encode('UTF-8')]),
-                    ],
-                )
+                ml = [
+                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                    ('univentionObjectType', [b'dns/host_record']),
+                    ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
+                    ('aAAARecord', [ip]),
+                    ('relativeDomainName', [name.encode('UTF-8')]),
+                ]
+                ml = self.add_univention_object_identifier(ml)
+                self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), ml)
+                self._confirm_locks()
             except univention.admin.uexceptions.objectExists as ex:
                 raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
             # TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
@@ -2968,16 +2984,16 @@ class simpleComputer(simpleLdap):
         )
         if not results:
             try:
-                self.lo.authz_connection.add(
-                    'relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn),
-                    [
-                        ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                        ('univentionObjectType', [b'dns/host_record']),
-                        ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
-                        ('ARecord', [ip]),
-                        ('relativeDomainName', [name.encode('UTF-8')]),
-                    ],
-                )
+                ml = [
+                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                    ('univentionObjectType', [b'dns/host_record']),
+                    ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
+                    ('ARecord', [ip]),
+                    ('relativeDomainName', [name.encode('UTF-8')]),
+                ]
+                ml = self.add_univention_object_identifier(ml)
+                self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), ml)
+                self._confirm_locks()
             except univention.admin.uexceptions.objectExists as ex:
                 raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
             # TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
@@ -3002,16 +3018,16 @@ class simpleComputer(simpleLdap):
                 base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False,
             )
             if not results:
-                self.lo.authz_connection.add(
-                    'relativeDomainName=%s,%s' % (escape_dn_chars(alias), dnsAliasZoneContainer),
-                    [
-                        ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                        ('univentionObjectType', [b'dns/alias']),
-                        ('zoneName', explode_rdn(dnsAliasZoneContainer, True)[0].encode('UTF-8')),
-                        ('cNAMERecord', [b'%s.%s.' % (name.encode('UTF-8'), dnsForwardZone.encode('UTF-8'))]),
-                        ('relativeDomainName', [alias.encode('UTF-8')]),
-                    ],
-                )
+                ml = [
+                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                    ('univentionObjectType', [b'dns/alias']),
+                    ('zoneName', explode_rdn(dnsAliasZoneContainer, True)[0].encode('UTF-8')),
+                    ('cNAMERecord', [b'%s.%s.' % (name.encode('UTF-8'), dnsForwardZone.encode('UTF-8'))]),
+                    ('relativeDomainName', [alias.encode('UTF-8')]),
+                ]
+                ml = self.add_univention_object_identifier(ml)
+                self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(alias), dnsAliasZoneContainer), ml)
+                self._confirm_locks()
 
                 # TODO: check if dnsAliasZoneContainer really is a forwardZone, maybe it is a container under a zone
                 zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, dnsAliasZoneContainer)
