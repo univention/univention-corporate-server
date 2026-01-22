@@ -97,7 +97,7 @@ def test_module_inits_with_new_extended_attribute(account, lo, udm):
     attrs['univentionFreeAttribute9'] = [value.encode()]  # add a value for the new ext attribute
     time.sleep(3)
     subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest.service'])
-    time.sleep(3)
+    time.sleep(6)
 
     # third, check if we get the new ext attr from the unmap-ldap-attributes endpoint
     auth = (account.username, account.bindpw)
