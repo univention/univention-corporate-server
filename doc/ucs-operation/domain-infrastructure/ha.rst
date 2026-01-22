@@ -39,13 +39,67 @@ and maintaining a resilient directory service.
 Fault-tolerant domain setup
 ---------------------------
 
-In a domain exist some services that are important for the functionality of all
-of its members. Redundancy can be used to remove those single points of failure.
-An article in the Univention Support database explains how to secure LDAP,
-Kerberos, DNS, DHCP and Active Directory-compatible Domain Controllers:
-:uv:kb:`Fail-safe domain setup <6682>`.
+A Nubus for UCS domain relies on critical services
+such as LDAP, DNS, Kerberos, DHCP, and Active Directory-compatible domain controllers.
+To ensure these services remain available during hardware failures or maintenance,
+distribute them across multiple Directory Nodes.
 
-.. _deployment-ha-recovery-backup-primary-promotion:
+Consider the following when planning redundancy:
+
+At least one Backup Directory Node
+   Provides full data replication and promotion capability to a Primary Directory Node.
+   Essential for production environments.
+
+Geographic distribution
+   Place Backup and Replica Directory Nodes in different locations
+   for disaster recovery and local access.
+
+Network connectivity
+   Ensure all systems can reliably communicate with the Primary Directory Node.
+
+Service distribution
+   Plan which services run on which systems,
+   such as LDAP, DNS, Kerberos, DHCP, and Samba.
+
+Building a fault-tolerant domain requires two steps:
+
+#. Install redundant Directory Nodes
+
+   Add Backup and Replica Directory Nodes to your domain.
+   For more information,
+   see :external+uv-ucs-manual:ref:`domain-join`
+   in :cite:t:`ucs-manual`.
+
+#. Configure service redundancy
+
+   Configure LDAP, Kerberos, DNS, DHCP, and Samba to use multiple servers.
+
+The article :uv:kb:`Fail-safe domain setup <6682>` in the Univention Support database
+provides detailed configuration instructions for each service.
+Follow the procedures in the article after installing your Backup and Replica Directory Nodes
+to complete your fault-tolerant domain configuration.
+
+LDAP server failover
+   Configure additional LDAP servers with UCR variables,
+   so clients automatically fail over if the Primary Directory Node becomes unavailable.
+
+Kerberos Key Distribution Centers
+   Set up multiple Kerberos KDCs for authentication redundancy.
+
+DNS name servers
+   Configure multiple name servers to ensure name resolution continues
+   during maintenance or failures.
+
+DHCP redundancy
+   Install the DHCP server app on additional systems
+   to ensure network configuration remains available.
+
+Active Directory-compatible Domain Controllers
+   If you need Active Directory functionality,
+   deploy the Samba component on Backup and Replica Directory Nodes
+   to provide redundant domain controller functionality.
+
+.. _deployment-primary-dn-resilience-backup-primary-promotion:
 
 Backup to Primary promotion
 ---------------------------
@@ -68,8 +122,7 @@ Emergency
    In an emergency, for example if the hardware of the Primary Directory Node fails.
 
 Replacement
-   To replace a fully functional Primary Directory Node with modern hardware,
-   or to change the architecture from ``i386`` to ``amd64``.
+   To replace a fully functional Primary Directory Node with modern hardware.
 
 .. _deployment-primary-dn-resilience-backup-primary-promotion-prepare:
 
