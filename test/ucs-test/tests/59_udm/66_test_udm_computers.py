@@ -78,19 +78,19 @@ def get_ssl(name):
 
 def verify_dns_objects(computer_name, computer_ip, forward_zone_dn, forward_zone_name, reverse_zone, ip_netmask):
     """Verify DNS objects which are created alongside a computer object"""
+    host_record_dn = f'relativeDomainName={computer_name},{forward_zone_dn}'
     if ':' in computer_ip:
-        utils.verify_ldap_object('relativeDomainName=%s,%s' % (
-            computer_name, forward_zone_dn), {'aAAARecord': [computer_ip]}, retry_count=3)
-        relative_domainname = '.'.join(
-            reversed(list(computer_ip.replace(':', '')[int(ip_netmask) // 4:])))
+        utils.verify_ldap_object(host_record_dn, {'aAAARecord': [computer_ip]}, retry_count=3)
+        relative_domainname = '.'.join(reversed(list(computer_ip.replace(':', '')[int(ip_netmask) // 4:])))
     else:
-        relative_domainname = '.'.join(
-            computer_ip.split('.')[int(ip_netmask) // 8:])
-        utils.verify_ldap_object('relativeDomainName=%s,%s' % (
-            computer_name, forward_zone_dn), {'aRecord': [computer_ip]}, retry_count=3)
 
-    utils.verify_ldap_object('relativeDomainName=%s,%s' % (relative_domainname, reverse_zone), {
-                             'pTRRecord': ['%s.%s.' % (computer_name, forward_zone_name)]}, retry_count=3)
+        utils.verify_ldap_object(host_record_dn, {'aRecord': [computer_ip]}, retry_count=3)
+        relative_domainname = '.'.join(computer_ip.split('.')[int(ip_netmask) // 8:])
+
+    ptr_record_dn = f'relativeDomainName={relative_domainname},{reverse_zone}'
+    utils.verify_ldap_object(ptr_record_dn, {'pTRRecord': ['%s.%s.' % (computer_name, forward_zone_name)]}, retry_count=3)
+
+    return host_record_dn, ptr_record_dn
 
 
 @pytest.mark.roles('domaincontroller_master')
@@ -113,7 +113,7 @@ class Test_ComputerAllRoles:
              '2001:1:2:3::', '64', '2001:1:2:3::2 2001:1:2:3:0:ffff:ffff:ffff'),
         ],
     )
-    def test_all_roles_creation_check_dns(self, ip_computer, ip_subnet, ip_network, ip_netmask, ip_range, udm, ucr, verify_ldap_object, role):
+    def test_all_roles_creation_check_dns(self, ip_computer, ip_subnet, ip_network, ip_netmask, ip_range, udm, ucr, verify_ldap_object, role, lo):
         """Create object for all computer roles to test if DNS entries are correct"""
         dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
         forwardZoneName = '%s.%s' % (random_name(), random_name())
@@ -135,13 +135,16 @@ class Test_ComputerAllRoles:
         network = udm.create_object('networks/network', **networkProperties)
         verify_ldap_object(network)
 
-        computerProperties = {'mac': '01:23:45:67:89:ab', 'name': random_name(
-        ), 'ip': ip_computer, 'network': network}
+        computerProperties = {'mac': '01:23:45:67:89:ab', 'name': random_name(), 'ip': ip_computer, 'network': network}
         computer = udm.create_object(role, **computerProperties)
         verify_ldap_object(computer)
 
-        verify_dns_objects(computerProperties['name'], computerProperties['ip'],
-                           forwardZone, forwardZoneName, reverseZone, ip_netmask)
+        host_record_dn, ptr_record_dn = verify_dns_objects(computerProperties['name'], computerProperties['ip'], forwardZone, forwardZoneName, reverseZone, ip_netmask)
+        dhcp_host_dn = f"cn={computerProperties['name']},{dhcpService}"
+
+        # verify univentionObjectIdentifier is set
+        for dn in [host_record_dn, ptr_record_dn, dhcp_host_dn]:
+            assert 'univentionObjectIdentifier' in lo.get(dn)
 
     @pytest.mark.tags('udm', 'udm-computers')
     @pytest.mark.parametrize(

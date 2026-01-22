@@ -1,3 +1,9 @@
+ucs-test (12.5.3) unstable; urgency=medium
+
+  * Bug #58384: check for univentionObjectIdentifier
+
+ -- Felix Botner <botner@univention.de>  Mon, 09 Mar 2026 11:59:47 +0100
+
 ucs-test (12.5.2) unstable; urgency=medium
 
   * Bug #59044: Add test for keycloak audit logging environment variables
