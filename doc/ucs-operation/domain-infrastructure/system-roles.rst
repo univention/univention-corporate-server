@@ -29,6 +29,12 @@ such as users, groups, printers,
 and the TLS security certificates.
 Systems with the Backup Directory Node role automatically receive copies of this data.
 
+.. important::
+
+   The Primary Directory Node is critical to domain operations.
+   To ensure continued service availability and eliminate single points of disruption,
+   see :ref:`deployment-primary-dn-resilience` for strategies on redundancy and failover.
+
 .. _domain-infrastructure-system-roles-backup-directory-node:
 
 Backup Directory Node
@@ -41,10 +47,7 @@ The Backup Directory Node is the fallback system for the Primary Directory Node.
 If the Primary Directory Node fails,
 a Backup Directory Node can adopt the role of the Primary Directory Node permanently.
 For information about the backup to primary promotion,
-see :external+uv-ucs-manual:ref:`domain-backup2master`
-in :cite:t:`ucs-manual`.
-
-.. TODO: Replace reference to backup2master after it's in this document.
+see :ref:`deployment-primary-dn-resilience-backup-primary-promotion`.
 
 .. _domain-infrastructure-system-roles-replica-directory-node:
 
