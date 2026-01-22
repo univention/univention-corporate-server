@@ -39,6 +39,12 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+.. envvar:: ldap/master
+
+   Contains the fully qualified domain name of the domain's Primary Directory Node.
+
+   :Type: string
+
 .. envvar:: nss/group/cachefile
 
    If activated,
@@ -287,6 +293,16 @@ This section provides a reference for UCR variables.
 
    :Default value: ``false``
    :Type: boolean
+
+.. envvar:: server/role
+
+   Contains the system role of the system.
+   You can't change this setting after a domain join.
+
+   For information about system roles,
+   see :ref:`domain-infrastructure-system-roles`.
+
+   :Type: string
 
 .. envvar:: umc/http/processes
 
