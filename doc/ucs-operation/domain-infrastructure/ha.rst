@@ -36,6 +36,15 @@ and maintaining a resilient directory service.
 
 .. _deployment-primary-dn-resilience-fault-tolerant-setup:
 
+Fault-tolerant domain setup
+---------------------------
+
+In a domain exist some services that are important for the functionality of all
+of its members. Redundancy can be used to remove those single points of failure.
+An article in the Univention Support database explains how to secure LDAP,
+Kerberos, DNS, DHCP and Active Directory-compatible Domain Controllers:
+:uv:kb:`Fail-safe domain setup <6682>`.
+
 .. _deployment-ha-recovery-backup-primary-promotion:
 
 Backup to Primary promotion
