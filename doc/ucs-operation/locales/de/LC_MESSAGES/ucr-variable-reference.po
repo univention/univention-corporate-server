@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 08:23+0000\n"
-"PO-Revision-Date: 2026-01-15 09:27+0100\n"
+"POT-Creation-Date: 2026-01-22 15:01+0000\n"
+"PO-Revision-Date: 2026-01-22 16:04+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -50,12 +50,12 @@ msgid "Default value"
 msgstr "Standardwert"
 
 #: ../../ucr-variable-reference.rst:22 ../../ucr-variable-reference.rst:38
-#: ../../ucr-variable-reference.rst:93 ../../ucr-variable-reference.rst:109
-#: ../../ucr-variable-reference.rst:124 ../../ucr-variable-reference.rst:140
-#: ../../ucr-variable-reference.rst:155 ../../ucr-variable-reference.rst:171
-#: ../../ucr-variable-reference.rst:188 ../../ucr-variable-reference.rst:219
-#: ../../ucr-variable-reference.rst:243 ../../ucr-variable-reference.rst:314
-#: ../../ucr-variable-reference.rst:324 ../../ucr-variable-reference.rst:344
+#: ../../ucr-variable-reference.rst:99 ../../ucr-variable-reference.rst:115
+#: ../../ucr-variable-reference.rst:130 ../../ucr-variable-reference.rst:146
+#: ../../ucr-variable-reference.rst:161 ../../ucr-variable-reference.rst:177
+#: ../../ucr-variable-reference.rst:194 ../../ucr-variable-reference.rst:225
+#: ../../ucr-variable-reference.rst:249 ../../ucr-variable-reference.rst:330
+#: ../../ucr-variable-reference.rst:340 ../../ucr-variable-reference.rst:360
 msgid "not set"
 msgstr "nicht gesetzt"
 
@@ -64,7 +64,7 @@ msgid "Possible values"
 msgstr "Mögliche Werte"
 
 #: ../../ucr-variable-reference.rst:23 ../../ucr-variable-reference.rst:39
-#: ../../ucr-variable-reference.rst:54 ../../ucr-variable-reference.rst:94
+#: ../../ucr-variable-reference.rst:60 ../../ucr-variable-reference.rst:100
 msgid "``yes``, ``no``, not set"
 msgstr "``yes``, ``no``, nicht gesetzt"
 
@@ -73,10 +73,10 @@ msgid "Type"
 msgstr "Typ"
 
 #: ../../ucr-variable-reference.rst:24 ../../ucr-variable-reference.rst:40
-#: ../../ucr-variable-reference.rst:55 ../../ucr-variable-reference.rst:68
-#: ../../ucr-variable-reference.rst:95 ../../ucr-variable-reference.rst:269
-#: ../../ucr-variable-reference.rst:289 ../../ucr-variable-reference.rst:335
-#: ../../ucr-variable-reference.rst:345
+#: ../../ucr-variable-reference.rst:61 ../../ucr-variable-reference.rst:74
+#: ../../ucr-variable-reference.rst:101 ../../ucr-variable-reference.rst:275
+#: ../../ucr-variable-reference.rst:295 ../../ucr-variable-reference.rst:351
+#: ../../ucr-variable-reference.rst:361
 msgid "boolean"
 msgstr "Boolesche Variable"
 
@@ -101,6 +101,22 @@ msgstr ""
 
 #: ../../ucr-variable-reference.rst:44
 msgid ""
+"Contains the fully qualified domain name of the domain's Primary "
+"Directory Node."
+msgstr ""
+"Enthält den vollständig qualifizierten Domänennamen des Primary Directory "
+"Node der Domäne."
+
+#: ../../ucr-variable-reference.rst:46 ../../ucr-variable-reference.rst:178
+#: ../../ucr-variable-reference.rst:195 ../../ucr-variable-reference.rst:226
+#: ../../ucr-variable-reference.rst:250 ../../ucr-variable-reference.rst:262
+#: ../../ucr-variable-reference.rst:305 ../../ucr-variable-reference.rst:331
+#: ../../ucr-variable-reference.rst:341
+msgid "string"
+msgstr "Zeichenkette"
+
+#: ../../ucr-variable-reference.rst:50
+msgid ""
 "If activated, Nubus exports all group data to a cache file. The NSS "
 "module *extrausers* includes the exported data. This results to "
 "significant performance improvements in large environments. If the "
@@ -109,8 +125,8 @@ msgstr ""
 "Wenn aktiviert, exportiert Nubus alle Gruppendaten in eine Cache-Datei. "
 "Das NSS-Modul *extrausers* enthält die exportierten Daten"
 
-#: ../../ucr-variable-reference.rst:50 ../../ucr-variable-reference.rst:64
-#: ../../ucr-variable-reference.rst:77 ../../ucr-variable-reference.rst:90
+#: ../../ucr-variable-reference.rst:56 ../../ucr-variable-reference.rst:70
+#: ../../ucr-variable-reference.rst:83 ../../ucr-variable-reference.rst:96
 msgid ""
 "For information about where this variable applies, see :ref:`ucs-"
 "operation-groups-management-cache`."
@@ -118,11 +134,11 @@ msgstr ""
 "Informationen darüber, wo diese Variable angewendet wird, finden Sie "
 "unter :ref:`ucs-operation-groups-management-cache`."
 
-#: ../../ucr-variable-reference.rst:53
+#: ../../ucr-variable-reference.rst:59
 msgid "``yes``"
 msgstr "``yes``"
 
-#: ../../ucr-variable-reference.rst:59
+#: ../../ucr-variable-reference.rst:65
 msgid ""
 "If activated, the group cache export verifies whether the exported group "
 "members are still present in the LDAP directory. If you only use user "
@@ -135,11 +151,11 @@ msgstr ""
 "*Gruppen* verwenden, ist diese Überprüfung nicht erforderlich und Sie "
 "können sie deaktivieren."
 
-#: ../../ucr-variable-reference.rst:67
+#: ../../ucr-variable-reference.rst:73
 msgid "``true``, ``false``, not set"
 msgstr "``true``, ``false``, nicht gesetzt"
 
-#: ../../ucr-variable-reference.rst:72
+#: ../../ucr-variable-reference.rst:78
 msgid ""
 "If Nubus uses the group cache file, see :envvar:`nss/group/cachefile` UCR"
 " variable, Nubus exports the group data to the cache file in the interval"
@@ -154,11 +170,11 @@ msgstr ""
 "oder `crontab(5) <https://manpages.debian.org/bookworm/manpages-"
 "de/crontab.5.de.html>`_."
 
-#: ../../ucr-variable-reference.rst:80
+#: ../../ucr-variable-reference.rst:86
 msgid "cron"
 msgstr "Cron"
 
-#: ../../ucr-variable-reference.rst:84
+#: ../../ucr-variable-reference.rst:90
 msgid ""
 "If Nubus has this variable activated and the group cache file has been "
 "enabled, see the :envvar:`nss/group/cachefile` UCR variable, the Nubus "
@@ -172,7 +188,7 @@ msgstr ""
 "Domänenadministrator eine Gruppe in der *Management UI* bearbeitet. Wenn "
 "diese Variable nicht gesetzt ist, ist die Funktionalität aktiviert."
 
-#: ../../ucr-variable-reference.rst:99
+#: ../../ucr-variable-reference.rst:105
 msgid ""
 "Defines the minimum required number of digits for passwords. A newly "
 "defined password must include at least this many digits."
@@ -180,9 +196,9 @@ msgstr ""
 "Legt die Mindestanzahl an Ziffern für Passwörter fest. Ein neu "
 "definiertes Passwort muss mindestens diese Anzahl an Ziffern enthalten."
 
-#: ../../ucr-variable-reference.rst:102 ../../ucr-variable-reference.rst:133
-#: ../../ucr-variable-reference.rst:148 ../../ucr-variable-reference.rst:164
-#: ../../ucr-variable-reference.rst:236
+#: ../../ucr-variable-reference.rst:108 ../../ucr-variable-reference.rst:139
+#: ../../ucr-variable-reference.rst:154 ../../ucr-variable-reference.rst:170
+#: ../../ucr-variable-reference.rst:242
 msgid ""
 "If the password policy has the option *Password quality check* activated,"
 " Nubus runs additional checks including dictionary checks, for password "
@@ -193,21 +209,21 @@ msgstr ""
 "Wörterbuchprüfungen, für Passwortänderungen in der *Management UI* (UMC),"
 " Samba und Kerberos."
 
-#: ../../ucr-variable-reference.rst:106 ../../ucr-variable-reference.rst:121
-#: ../../ucr-variable-reference.rst:137 ../../ucr-variable-reference.rst:152
-#: ../../ucr-variable-reference.rst:168 ../../ucr-variable-reference.rst:185
-#: ../../ucr-variable-reference.rst:240
+#: ../../ucr-variable-reference.rst:112 ../../ucr-variable-reference.rst:127
+#: ../../ucr-variable-reference.rst:143 ../../ucr-variable-reference.rst:158
+#: ../../ucr-variable-reference.rst:174 ../../ucr-variable-reference.rst:191
+#: ../../ucr-variable-reference.rst:246
 msgid "For more information, see :ref:`password-management-policies`."
 msgstr ""
 "Weitere Informationen finden Sie unter :ref:`password-management-"
 "policies`."
 
-#: ../../ucr-variable-reference.rst:110 ../../ucr-variable-reference.rst:125
-#: ../../ucr-variable-reference.rst:141 ../../ucr-variable-reference.rst:156
+#: ../../ucr-variable-reference.rst:116 ../../ucr-variable-reference.rst:131
+#: ../../ucr-variable-reference.rst:147 ../../ucr-variable-reference.rst:162
 msgid "integer"
 msgstr "Ganzzahl"
 
-#: ../../ucr-variable-reference.rst:114
+#: ../../ucr-variable-reference.rst:120
 msgid ""
 "Defines the minimum required number of lowercase letters for passwords. A"
 " newly defined password must include at least this many lowercase "
@@ -217,7 +233,7 @@ msgstr ""
 "definiertes Passwort muss mindestens diese Anzahl an Kleinbuchstaben "
 "enthalten."
 
-#: ../../ucr-variable-reference.rst:117
+#: ../../ucr-variable-reference.rst:123
 msgid ""
 "If the password policy has the option *Password quality check* activated,"
 " Nubus runs additional checks, including dictionary checks, for password "
@@ -228,7 +244,7 @@ msgstr ""
 "Wörterbuchprüfungen, für Passwortänderungen in der *Management UI* (UMC),"
 " Samba und Kerberos."
 
-#: ../../ucr-variable-reference.rst:129
+#: ../../ucr-variable-reference.rst:135
 msgid ""
 "Defines the minimum required number of characters in the user password "
 "that are neither letters nor digits. A newly defined password must "
@@ -238,7 +254,7 @@ msgstr ""
 "Buchstaben noch Ziffern sind. Ein neu definiertes Passwort muss "
 "mindestens diese Anzahl an Zeichen enthalten."
 
-#: ../../ucr-variable-reference.rst:145
+#: ../../ucr-variable-reference.rst:151
 msgid ""
 "Defines the minimum required number of uppercase letters for passwords. A"
 " newly defined password must include at least this many uppercase "
@@ -248,7 +264,7 @@ msgstr ""
 "definiertes Passwort muss mindestens diese Anzahl an Großbuchstaben "
 "enthalten."
 
-#: ../../ucr-variable-reference.rst:160
+#: ../../ucr-variable-reference.rst:166
 msgid ""
 "Defines the characters and digits that aren't allowed in passwords. A "
 "newly defined password must not contain these characters."
@@ -256,20 +272,13 @@ msgstr ""
 "Definiert die Zeichen und Ziffern, die in Passwörtern nicht zulässig "
 "sind. Ein neu definiertes Passwort darf diese Zeichen nicht enthalten."
 
-#: ../../ucr-variable-reference.rst:172 ../../ucr-variable-reference.rst:189
-#: ../../ucr-variable-reference.rst:220 ../../ucr-variable-reference.rst:244
-#: ../../ucr-variable-reference.rst:256 ../../ucr-variable-reference.rst:315
-#: ../../ucr-variable-reference.rst:325
-msgid "string"
-msgstr "Zeichenkette"
-
-#: ../../ucr-variable-reference.rst:176
+#: ../../ucr-variable-reference.rst:182
 msgid "Defines the standard Microsoft password complexity criteria."
 msgstr ""
 "Definiert die Standardkriterien für die Komplexität von Microsoft-"
 "Passwörtern."
 
-#: ../../ucr-variable-reference.rst:178
+#: ../../ucr-variable-reference.rst:184
 msgid ""
 "The values ``yes``, ``1``, or ``true`` activate the standard Microsoft "
 "password complexity criteria in addition to the other criteria validated "
@@ -285,7 +294,7 @@ msgstr ""
 "Passwortkomplexität ohne :program:`python-cracklib` an. Der Standardwert "
 "ist nicht gesetzt und entspricht dem Wert ``false``."
 
-#: ../../ucr-variable-reference.rst:193
+#: ../../ucr-variable-reference.rst:199
 msgid ""
 "When changing passwords through *Univention Portal*, *Management UI*, "
 "*Directory Manager* or Kerberos without Samba, UCS checks whether the new"
@@ -295,11 +304,11 @@ msgstr ""
 "*Directory Manager* oder Kerberos ohne Samba überprüft UCS, ob das neue "
 "Passwort die Mindestlänge erfüllt."
 
-#: ../../ucr-variable-reference.rst:197
+#: ../../ucr-variable-reference.rst:203
 msgid "You can define the minimum length through the following approaches:"
 msgstr "Sie können die Mindestlänge anhand der folgenden Ansätze definieren:"
 
-#: ../../ucr-variable-reference.rst:199
+#: ../../ucr-variable-reference.rst:205
 msgid ""
 "Use this UCR variable to define the minimum password length locally per "
 "Nubus for UCS node. The value applies to all user accounts."
@@ -308,7 +317,7 @@ msgstr ""
 "lokal pro Nubus für UCS Knoten festzulegen. Der Wert gilt für alle "
 "Benutzerkonten."
 
-#: ../../ucr-variable-reference.rst:202
+#: ../../ucr-variable-reference.rst:208
 msgid ""
 "You can use *Policy: Passwords*, type ``policies/pwhistory``, to override"
 " the value defined in this UCR variable. The values of the policy apply "
@@ -321,7 +330,7 @@ msgstr ""
 "der Richtlinie unterliegen. Die Richtlinie hat Vorrang vor der UCR-"
 "Variable."
 
-#: ../../ucr-variable-reference.rst:208
+#: ../../ucr-variable-reference.rst:214
 msgid ""
 "If the policy has *Password quality check* activated, :program:`python-"
 "cracklib` demands a minimum password length of 4 characters."
@@ -329,21 +338,21 @@ msgstr ""
 "Wenn die Richtlinie *Passwortqualitätsprüfung* aktiviert ist, verlangt "
 ":program:`python-cracklib` eine Mindestpasswortlänge von 4 Zeichen."
 
-#: ../../ucr-variable-reference.rst:211
+#: ../../ucr-variable-reference.rst:217
 msgid "The UCR variable can have the following values:"
 msgstr "Die UCR-Variable kann folgende Werte annehmen:"
 
-#: ../../ucr-variable-reference.rst:213
+#: ../../ucr-variable-reference.rst:219
 msgid "Integer to define the minimum password length as number of characters."
 msgstr ""
 "Ganzzahl zur Festlegung der Mindestlänge des Passworts als Anzahl der "
 "Zeichen."
 
-#: ../../ucr-variable-reference.rst:215
+#: ../../ucr-variable-reference.rst:221
 msgid "The value ``yes`` applies checks from :program:`python-cracklib`."
 msgstr "Der Wert ``yes`` wendet Prüfungen aus :program:`python-cracklib` an."
 
-#: ../../ucr-variable-reference.rst:217
+#: ../../ucr-variable-reference.rst:223
 msgid ""
 "The value ``sufficient`` doesn't include :program:`python-cracklib` "
 "checks."
@@ -351,19 +360,19 @@ msgstr ""
 "Der Wert ``sufficient`` (ausreichend) umfasst keine Prüfungen mit "
 ":program:`python-cracklib`."
 
-#: ../../ucr-variable-reference.rst:224
+#: ../../ucr-variable-reference.rst:230
 msgid ":ref:`password-management-policies`"
 msgstr ":ref:`password-management-policies`"
 
-#: ../../ucr-variable-reference.rst:225
+#: ../../ucr-variable-reference.rst:231
 msgid "for context information about password policies in Nubus for UCS."
 msgstr "für Kontextinformationen zu Passwort-Richtlinien in Nubus für UCS."
 
-#: ../../ucr-variable-reference.rst:227
+#: ../../ucr-variable-reference.rst:233
 msgid ":external+uv-nubus-manual:ref:`nubus-user-password-management-module`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-user-password-management-module`"
 
-#: ../../ucr-variable-reference.rst:228
+#: ../../ucr-variable-reference.rst:234
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about *Policy: Passwords* in"
 " the *Policies module* in the *Management UI*."
@@ -371,7 +380,7 @@ msgstr ""
 "im :cite:t:`uv-nubus-manual` für Informationen zu *Richtlinien: "
 "Passwörter* im *Richtlinien*-Modul in der *Management UI*."
 
-#: ../../ucr-variable-reference.rst:233
+#: ../../ucr-variable-reference.rst:239
 msgid ""
 "Defines individual characters as required for passwords. A newly defined "
 "password must include the specified characters."
@@ -379,7 +388,7 @@ msgstr ""
 "Definiert einzelne Zeichen, die für Passwörter erforderlich sind. Ein neu"
 " definiertes Passwort muss die angegebenen Zeichen enthalten."
 
-#: ../../ucr-variable-reference.rst:248
+#: ../../ucr-variable-reference.rst:254
 msgid ""
 "Specifies the mechanism that the *Portal* uses to authenticate a user "
 "when clicking the :guilabel:`Login` in the *Portal* sidebar. For the "
@@ -392,15 +401,15 @@ msgstr ""
 "müssen die Clients den Namen des Single Sign-On Servers auflösen und ein "
 "vertrauenswürdiges und gültiges Zertifikat abrufen."
 
-#: ../../ucr-variable-reference.rst:255
+#: ../../ucr-variable-reference.rst:261
 msgid "``ucs``"
 msgstr "``ucs``"
 
-#: ../../ucr-variable-reference.rst:257
+#: ../../ucr-variable-reference.rst:263
 msgid "``saml``, ``oidc``, ``ucs``"
 msgstr "``saml``, ``oidc``, ``ucs``"
 
-#: ../../ucr-variable-reference.rst:262
+#: ../../ucr-variable-reference.rst:268
 msgid ""
 "If activated, the *Management UI* sets up a persistent connection to the "
 "user's web browser. It notifies all Univention Portal browser tabs of a "
@@ -411,11 +420,11 @@ msgstr ""
 " Univention Portals über eine Abmeldung und veranlasst sie, sich neu zu "
 "laden."
 
-#: ../../ucr-variable-reference.rst:268 ../../ucr-variable-reference.rst:288
+#: ../../ucr-variable-reference.rst:274 ../../ucr-variable-reference.rst:294
 msgid "``false``"
 msgstr "``false``"
 
-#: ../../ucr-variable-reference.rst:273
+#: ../../ucr-variable-reference.rst:279
 msgid ""
 "If activated, users that have registered themselves through the "
 ":program:`Self Service` app need to verify their email address first "
@@ -425,18 +434,18 @@ msgstr ""
 ":program:`Self Service` App registriert haben, zunächst ihre E-Mail-"
 "Adresse bestätigen, bevor sie sich anmelden können."
 
-#: ../../ucr-variable-reference.rst:279
+#: ../../ucr-variable-reference.rst:285
 msgid ""
 "You must set this UCR variable on the :term:`UCS Primary Directory Node` "
 "and all :term:`UCS Backup Directory Node`\\s. The variable has no effect "
 "on accounts created by user accounts from the ``Domain Admins`` group."
 msgstr ""
-"Sie müssen diese UCR-Variable auf dem :term:`UCS Primary Directory Node`"
-" und allen :term:`UCS Backup Directory Node`\\s festlegen. Die Variable "
+"Sie müssen diese UCR-Variable auf dem :term:`UCS Primary Directory Node` "
+"und allen :term:`UCS Backup Directory Node`\\s festlegen. Die Variable "
 "hat keine Auswirkungen auf Konten, die von Benutzerkonten aus der Gruppe "
 "``Domain Admins`` erstellt wurden."
 
-#: ../../ucr-variable-reference.rst:285
+#: ../../ucr-variable-reference.rst:291
 msgid ""
 "For more information, see :ref:`end-user-self-service-registration-"
 "account-activation`."
@@ -444,7 +453,23 @@ msgstr ""
 "Weitere Informationen finden Sie unter :ref:`end-user-self-service-"
 "registration-account-activation`."
 
-#: ../../ucr-variable-reference.rst:293
+#: ../../ucr-variable-reference.rst:299
+msgid ""
+"Contains the system role of the system. You can't change this setting "
+"after a domain join."
+msgstr ""
+"Enthält die Systemrolle des Systems. Sie können diese Einstellung nach "
+"einem Domain Join nicht ändern."
+
+#: ../../ucr-variable-reference.rst:302
+msgid ""
+"For information about system roles, see :ref:`domain-infrastructure-"
+"system-roles`."
+msgstr ""
+"Informationen zu Systemrollen finden Sie unter :ref:`domain-infrastructure-"
+"system-roles`."
+
+#: ../../ucr-variable-reference.rst:309
 msgid ""
 "Defines the number of *UMC Server* processes that Nubus for UCS starts in"
 " parallel."
@@ -452,15 +477,15 @@ msgstr ""
 "Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus für UCS "
 "parallel startet."
 
-#: ../../ucr-variable-reference.rst:296
+#: ../../ucr-variable-reference.rst:312
 msgid "``1``"
 msgstr "``1``"
 
-#: ../../ucr-variable-reference.rst:297 ../../ucr-variable-reference.rst:307
+#: ../../ucr-variable-reference.rst:313 ../../ucr-variable-reference.rst:323
 msgid "Unsigned integer"
 msgstr "Vorzeichenlose Ganzzahl"
 
-#: ../../ucr-variable-reference.rst:302
+#: ../../ucr-variable-reference.rst:318
 msgid ""
 "The web browser automatically closes the browser session after the "
 "defined time period in seconds. A new session requires a new sign-in"
@@ -469,17 +494,17 @@ msgstr ""
 "der festgelegten Zeit in Sekunden. Für eine neue Sitzung ist eine erneute"
 " Anmeldung erforderlich."
 
-#: ../../ucr-variable-reference.rst:306
+#: ../../ucr-variable-reference.rst:322
 msgid "``300``"
 msgstr "``300``"
 
-#: ../../ucr-variable-reference.rst:312
+#: ../../ucr-variable-reference.rst:328
 msgid "Defines the OpenID provider issuer of this relying party entry."
 msgstr ""
 "Definiert den OpenID-Anbieter, der diesen Eintrag für vertrauende "
 "Parteien ausgestellt hat."
 
-#: ../../ucr-variable-reference.rst:320
+#: ../../ucr-variable-reference.rst:336
 msgid ""
 "Defines the fully qualified domain name of the relying party for the *UMC"
 " Server*. If the variable is unset, Nubus for UCS uses the fully "
@@ -490,7 +515,7 @@ msgstr ""
 "Nubus für UCS den voll qualifizierten Domänennamen des UCS-Systems und "
 "alle IP-Adressen."
 
-#: ../../ucr-variable-reference.rst:330
+#: ../../ucr-variable-reference.rst:346
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through OpenID Connect "
 "single sign-on before using a regular sign-in."
@@ -498,15 +523,14 @@ msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über OpenID "
 "Connect Single Sign-On, bevor er eine reguläre Anmeldung verwendet."
 
-#: ../../ucr-variable-reference.rst:334
+#: ../../ucr-variable-reference.rst:350
 msgid "``true``"
 msgstr "``true``"
 
-#: ../../ucr-variable-reference.rst:340
+#: ../../ucr-variable-reference.rst:356
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through SAML single "
 "sign-on before using a regular sign-in."
 msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über SAML Single "
 "Sign-On, bevor er eine reguläre Anmeldung verwendet."
-
