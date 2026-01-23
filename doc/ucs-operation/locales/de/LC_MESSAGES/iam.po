@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 18:25+0000\n"
-"PO-Revision-Date: 2026-01-15 09:50+0100\n"
+"POT-Creation-Date: 2026-01-23 11:01+0000\n"
+"PO-Revision-Date: 2026-01-23 12:05+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -62,9 +62,9 @@ msgid ""
 msgstr ""
 "Um Gruppen in Nubus für UCS zu erstellen, folgen Sie dem Abschnitt "
 ":external+uv-nubus-manual:ref:`nubus-groups` im :cite:t:`uv-nubus-"
-"manual`. Er beschreibt, wie Benutzer zu Gruppen zugewiesen werden. Für eine "
-"vollständige Referenz des *Gruppen*-Verwaltungsmoduls siehe :external+uv-"
-"nubus-manual:ref:`nubus-groups-management`."
+"manual`. Er beschreibt, wie Benutzer zu Gruppen zugewiesen werden. Für "
+"eine vollständige Referenz des *Gruppen*-Verwaltungsmoduls siehe "
+":external+uv-nubus-manual:ref:`nubus-groups-management`."
 
 #: ../../iam/group-management.rst:35
 msgid ""
@@ -1248,11 +1248,11 @@ msgstr ""
 #: ../../iam/password-management/user-self-service.rst:132
 #: ../../iam/password-management/user-self-service.rst:153
 #: ../../iam/password-management/user-self-service.rst:252
-#: ../../iam/password-management/user-self-service.rst:266
-#: ../../iam/password-management/user-self-service.rst:274
-#: ../../iam/password-management/user-self-service.rst:285
-#: ../../iam/password-management/user-self-service.rst:447
-#: ../../iam/password-management/user-self-service.rst:464
+#: ../../iam/password-management/user-self-service.rst:268
+#: ../../iam/password-management/user-self-service.rst:276
+#: ../../iam/password-management/user-self-service.rst:287
+#: ../../iam/password-management/user-self-service.rst:449
+#: ../../iam/password-management/user-self-service.rst:466
 msgid "not defined"
 msgstr "nicht definiert"
 
@@ -1262,14 +1262,14 @@ msgstr "Typ"
 
 #: ../../iam/password-management/user-self-service.rst:50
 #: ../../iam/password-management/user-self-service.rst:253
-#: ../../iam/password-management/user-self-service.rst:267
-#: ../../iam/password-management/user-self-service.rst:322
-#: ../../iam/password-management/user-self-service.rst:329
-#: ../../iam/password-management/user-self-service.rst:336
-#: ../../iam/password-management/user-self-service.rst:360
-#: ../../iam/password-management/user-self-service.rst:456
-#: ../../iam/password-management/user-self-service.rst:465
-#: ../../iam/password-management/user-self-service.rst:478
+#: ../../iam/password-management/user-self-service.rst:269
+#: ../../iam/password-management/user-self-service.rst:324
+#: ../../iam/password-management/user-self-service.rst:331
+#: ../../iam/password-management/user-self-service.rst:338
+#: ../../iam/password-management/user-self-service.rst:362
+#: ../../iam/password-management/user-self-service.rst:458
+#: ../../iam/password-management/user-self-service.rst:467
+#: ../../iam/password-management/user-self-service.rst:480
 msgid "string"
 msgstr "Zeichenkette"
 
@@ -1308,8 +1308,8 @@ msgstr "``true``"
 #: ../../iam/password-management/user-self-service.rst:162
 #: ../../iam/password-management/user-self-service.rst:176
 #: ../../iam/password-management/user-self-service.rst:237
-#: ../../iam/password-management/user-self-service.rst:395
-#: ../../iam/password-management/user-self-service.rst:448
+#: ../../iam/password-management/user-self-service.rst:397
+#: ../../iam/password-management/user-self-service.rst:450
 msgid "boolean"
 msgstr "Boolesche Variable"
 
@@ -1403,8 +1403,8 @@ msgstr "``jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,c,homePh
 #: ../../iam/password-management/user-self-service.rst:120
 #: ../../iam/password-management/user-self-service.rst:133
 #: ../../iam/password-management/user-self-service.rst:154
-#: ../../iam/password-management/user-self-service.rst:275
-#: ../../iam/password-management/user-self-service.rst:286
+#: ../../iam/password-management/user-self-service.rst:277
+#: ../../iam/password-management/user-self-service.rst:288
 msgid "List of strings, separated by commas"
 msgstr "Liste von Zeichenketten, durch Kommas getrennt"
 
@@ -1584,8 +1584,8 @@ msgstr ""
 "Registry (UCR)-Variablen konfigurieren."
 
 #: ../../iam/password-management/user-self-service.rst:227
-#: ../../iam/password-management/user-self-service.rst:308
-#: ../../iam/password-management/user-self-service.rst:385
+#: ../../iam/password-management/user-self-service.rst:310
+#: ../../iam/password-management/user-self-service.rst:387
 msgid ""
 "You need to set these UCR variables on the Nubus for UCS system that "
 "provides :program:`Self Service Backend` as defined in the UCR variable "
@@ -1602,7 +1602,7 @@ msgid "Activates the backend functionality for account creation."
 msgstr "Aktiviert die Backend-Funktionalität für die Kontoerstellung."
 
 #: ../../iam/password-management/user-self-service.rst:236
-#: ../../iam/password-management/user-self-service.rst:394
+#: ../../iam/password-management/user-self-service.rst:396
 msgid "``false``"
 msgstr "``false``"
 
@@ -1642,13 +1642,15 @@ msgstr ""
 
 #: ../../iam/password-management/user-self-service.rst:263
 msgid ""
-"If the variable has no value, the *Self Service* uses the configured "
-"default container for user account objects."
+"If the variable has no value, the *Self Service* uses the default "
+"container ``cn=self registered users,$ldap_base`` for user account "
+"objects."
 msgstr ""
 "Wenn die Variable keinen Wert hat, verwendet der *Self Service* den "
-"konfigurierten Standard-Container für Objekte für Benutzerkonten."
+"Standard-Container ``cn=self registered users,$ldap_base`` für "
+"Benutzerkonto-Objekte."
 
-#: ../../iam/password-management/user-self-service.rst:271
+#: ../../iam/password-management/user-self-service.rst:273
 msgid ""
 "Defines a comma-separated list of UDM attributes that the *Self Service* "
 "shows on the *Create an account* page."
@@ -1656,7 +1658,7 @@ msgstr ""
 "Definiert eine kommagetrennte Liste von UDM Attributen, die der *Self "
 "Service* auf der Seite *Konto erstellen* anzeigt."
 
-#: ../../iam/password-management/user-self-service.rst:279
+#: ../../iam/password-management/user-self-service.rst:281
 msgid ""
 "Defines the UDM attributes as a comma-separated list of strings that the "
 "*Self Service* marks as required on the *Create an account* page. The UCR"
@@ -1668,11 +1670,11 @@ msgstr ""
 "kennzeichnet. Die UCR-Variable :envvar:`umc/self-service/account-"
 "registration/udm_attributes` muss die UDM Attribute enthalten."
 
-#: ../../iam/password-management/user-self-service.rst:291
+#: ../../iam/password-management/user-self-service.rst:293
 msgid "Email verification"
 msgstr "E-Mail-Verifizierung"
 
-#: ../../iam/password-management/user-self-service.rst:293
+#: ../../iam/password-management/user-self-service.rst:295
 msgid ""
 "When users register through the *Self Service*, they receive a "
 "verification email with a token to confirm their email address. This "
@@ -1684,7 +1686,7 @@ msgstr ""
 "bestätigen. Dieser Abschnitt beschreibt die Konfiguration der E-Mail zur "
 "Verifizierung und Token-Eigenschaften."
 
-#: ../../iam/password-management/user-self-service.rst:299
+#: ../../iam/password-management/user-self-service.rst:301
 msgid ""
 "You can configure properties of the *verification email* and of the "
 "verification token through the following Univention Configuration "
@@ -1698,7 +1700,7 @@ msgstr ""
 ":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
 "registration-verification-email` im :cite:t:`uv-nubus-manual`."
 
-#: ../../iam/password-management/user-self-service.rst:315
+#: ../../iam/password-management/user-self-service.rst:317
 msgid ""
 "Defines the ``host`` part to use in the verification URL. The default "
 "value uses the fully qualified domain name of the :program:`Self Service "
@@ -1710,30 +1712,30 @@ msgstr ""
 ":program:`Self Service Backend`, wie durch die UCR-Variable :envvar"
 ":`self-service/backend-server` definiert."
 
-#: ../../iam/password-management/user-self-service.rst:321
+#: ../../iam/password-management/user-self-service.rst:323
 msgid "fully qualified domain name of the :program:`Self Service Backend`"
 msgstr "Vollständig qualifizierter Domänenname des :program:`Self Service Backend`"
 
-#: ../../iam/password-management/user-self-service.rst:326
+#: ../../iam/password-management/user-self-service.rst:328
 msgid "Defines the sender address of the verification email."
 msgstr "Definiert die Absenderadresse der E-Mail für die Verifizierung."
 
-#: ../../iam/password-management/user-self-service.rst:328
+#: ../../iam/password-management/user-self-service.rst:330
 #, python-brace-format
 msgid ":samp:`Account Verification Service <noreply@{FQDN}>`"
 msgstr ":samp:`Account Verification Service <noreply@{FQDN}>`"
 
-#: ../../iam/password-management/user-self-service.rst:333
+#: ../../iam/password-management/user-self-service.rst:335
 msgid "Defines the server name or IP address of the mail server to use."
 msgstr ""
 "Definiert den Servernamen oder die IP-Adresse des zu verwendenden Mail-"
 "Servers."
 
-#: ../../iam/password-management/user-self-service.rst:335
+#: ../../iam/password-management/user-self-service.rst:337
 msgid "``localhost``"
 msgstr "``localhost``"
 
-#: ../../iam/password-management/user-self-service.rst:340
+#: ../../iam/password-management/user-self-service.rst:342
 msgid ""
 "Defines the path to a text file that the *Self Service* uses for the text"
 " body of the verification email. The text can contain the following "
@@ -1744,21 +1746,21 @@ msgstr ""
 "folgenden Zeichenketten enthalten. Der *Self Service* ersetzt sie "
 "entsprechend."
 
-#: ../../iam/password-management/user-self-service.rst:345
+#: ../../iam/password-management/user-self-service.rst:347
 #, python-brace-format
 msgid "``{link}``"
 msgstr "``{link}``"
 
-#: ../../iam/password-management/user-self-service.rst:346
+#: ../../iam/password-management/user-self-service.rst:348
 msgid "URL to the *Self Service* page."
 msgstr "URL zur Seite *Self Service*."
 
-#: ../../iam/password-management/user-self-service.rst:348
+#: ../../iam/password-management/user-self-service.rst:350
 #, python-brace-format
 msgid "``{token}``"
 msgstr "``{token}``"
 
-#: ../../iam/password-management/user-self-service.rst:349
+#: ../../iam/password-management/user-self-service.rst:351
 msgid ""
 "The token string that the user can enter on the *Self Service* page to "
 "verify their email address."
@@ -1766,28 +1768,28 @@ msgstr ""
 "Die Token-Zeichenkette, die Benutzer auf der Seite *Self Service* "
 "eingeben können, um ihre E-Mailadresse zu verifizieren."
 
-#: ../../iam/password-management/user-self-service.rst:352
+#: ../../iam/password-management/user-self-service.rst:354
 #, python-brace-format
 msgid "``{tokenlink}``"
 msgstr "``{tokenlink}``"
 
-#: ../../iam/password-management/user-self-service.rst:353
+#: ../../iam/password-management/user-self-service.rst:355
 #, python-brace-format
 msgid "URL to the *Self Service* page that already includes the ``{token}``."
 msgstr "URL zur Seite *Self Service*, die bereits das ``{token}`` enthält."
 
-#: ../../iam/password-management/user-self-service.rst:356
-#: ../../iam/password-management/user-self-service.rst:474
+#: ../../iam/password-management/user-self-service.rst:358
+#: ../../iam/password-management/user-self-service.rst:476
 #, python-brace-format
 msgid "``{username}``"
 msgstr "``{username}``"
 
-#: ../../iam/password-management/user-self-service.rst:357
-#: ../../iam/password-management/user-self-service.rst:475
+#: ../../iam/password-management/user-self-service.rst:359
+#: ../../iam/password-management/user-self-service.rst:477
 msgid "The username of the user's account."
 msgstr "Der Benutzername des Benutzerkontos."
 
-#: ../../iam/password-management/user-self-service.rst:359
+#: ../../iam/password-management/user-self-service.rst:361
 msgid ""
 ":file:`/usr/share/univention-self-"
 "service/email_bodies/verification_email_body.txt`"
@@ -1795,7 +1797,7 @@ msgstr ""
 ":file:`/usr/share/univention-self-"
 "service/email_bodies/verification_email_body.txt`"
 
-#: ../../iam/password-management/user-self-service.rst:364
+#: ../../iam/password-management/user-self-service.rst:366
 msgid ""
 "Defines the number of characters that the *Self Service* uses for the "
 "verification token."
@@ -1803,19 +1805,19 @@ msgstr ""
 "Definiert die Anzahl der Zeichen, die der *Self Service* für den Token "
 "zur Verifizierung verwendet."
 
-#: ../../iam/password-management/user-self-service.rst:367
+#: ../../iam/password-management/user-self-service.rst:369
 msgid "``64``"
 msgstr "``64``"
 
-#: ../../iam/password-management/user-self-service.rst:368
+#: ../../iam/password-management/user-self-service.rst:370
 msgid "unsigned integer"
 msgstr "Ganze Zahl ohne Vorzeichen"
 
-#: ../../iam/password-management/user-self-service.rst:373
+#: ../../iam/password-management/user-self-service.rst:375
 msgid "Account activation"
 msgstr "Konto-Aktivierung"
 
-#: ../../iam/password-management/user-self-service.rst:375
+#: ../../iam/password-management/user-self-service.rst:377
 msgid ""
 "When the user clicks the verification link from the email, the web "
 "browser shows the *Account verification* page of the *Self Service*. For "
@@ -1829,7 +1831,7 @@ msgstr ""
 ":external+uv-nubus-manual:ref:`nubus-user-management-self-service-"
 "registration-account-verification` im :cite:t:`uv-nubus-manual`."
 
-#: ../../iam/password-management/user-self-service.rst:381
+#: ../../iam/password-management/user-self-service.rst:383
 msgid ""
 "This section provides information about how to configure the account "
 "verification."
@@ -1837,17 +1839,17 @@ msgstr ""
 "Dieser Abschnitt bietet Informationen zur Konfiguration der Konto-"
 "Verifizierung."
 
-#: ../../iam/password-management/user-self-service.rst:392
+#: ../../iam/password-management/user-self-service.rst:394
 msgid "Activates the *Account verification* functionality in the *Self Service*."
 msgstr "Aktiviert die Funktionalität *Konto-Verifizierung* im *Self Service*."
 
-#: ../../iam/password-management/user-self-service.rst:397
+#: ../../iam/password-management/user-self-service.rst:399
 msgid "Handle sign-in for user accounts with an unverified email address"
 msgstr ""
 "Behandeln Sie die Anmeldung für Benutzerkonten mit nicht verifizierten E"
 "-Mail-Adressen"
 
-#: ../../iam/password-management/user-self-service.rst:398
+#: ../../iam/password-management/user-self-service.rst:400
 msgid ""
 "You can configure single sign-on to require self-registered users to "
 "first verify their email address."
@@ -1855,7 +1857,7 @@ msgstr ""
 "Sie können Single Sign-On so konfigurieren, dass selbst registrierte "
 "Benutzer zuerst ihre E-Mailadresse verifizieren müssen."
 
-#: ../../iam/password-management/user-self-service.rst:401
+#: ../../iam/password-management/user-self-service.rst:403
 msgid ""
 "Use the UCR variable :external+uv-keycloak-"
 "app:envvar:`ucs/self/registration/check_email_verification`."
@@ -1863,13 +1865,13 @@ msgstr ""
 "Verwenden Sie die UCR-Variable :external+uv-keycloak-"
 "app:envvar:`ucs/self/registration/check_email_verification`."
 
-#: ../../iam/password-management/user-self-service.rst:404
+#: ../../iam/password-management/user-self-service.rst:406
 msgid "User notification for user accounts with an unverified email address"
 msgstr ""
 "Benachrichtigung für Benutzerkonten mit nicht verifizierten E-Mail-"
 "Adressen"
 
-#: ../../iam/password-management/user-self-service.rst:405
+#: ../../iam/password-management/user-self-service.rst:407
 msgid ""
 "You can configure the user notification on the single sign-on page for "
 "self-registered user accounts with an unverified email address. Use the "
@@ -1879,23 +1881,23 @@ msgstr ""
 "Sign-On für selbst registrierte Benutzerkonten mit nicht verifizierten "
 "E-Mailadressen konfigurieren. Verwenden Sie die folgenden UCR-Variablen:"
 
-#: ../../iam/password-management/user-self-service.rst:409
+#: ../../iam/password-management/user-self-service.rst:411
 msgid ""
 ":external+uv-keycloak-"
 "app:envvar:`keycloak/login/messages/en/accountNotVerifiedMsg`"
 msgstr ""
 ":external+uv-keycloak-"
 "app:envvar:`keycloak/login/messages/en/accountNotVerifiedMsg`"
-
-#: ../../iam/password-management/user-self-service.rst:410
-msgid ""
-":external+uv-keycloak-"
-"app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`"
-msgstr ""
-":external+uv-keycloak-"
-"app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`"
 
 #: ../../iam/password-management/user-self-service.rst:412
+msgid ""
+":external+uv-keycloak-"
+"app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`"
+msgstr ""
+":external+uv-keycloak-"
+"app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`"
+
+#: ../../iam/password-management/user-self-service.rst:414
 msgid ""
 "Since UCS 5.2, the :program:`Keycloak` app is the default identity "
 "provider. For information about Keycloak settings, see :external+uv-"
@@ -1906,11 +1908,11 @@ msgstr ""
 ":external+uv-keycloak-app:ref:`app-settings` in :cite:t:`ucs-keycloak-"
 "doc`."
 
-#: ../../iam/password-management/user-self-service.rst:419
+#: ../../iam/password-management/user-self-service.rst:421
 msgid "User deregistration"
 msgstr "Benutzer-Abmeldung"
 
-#: ../../iam/password-management/user-self-service.rst:421
+#: ../../iam/password-management/user-self-service.rst:423
 msgid ""
 "The :program:`Self Service` allows users to request the deletion of their"
 " user account."
@@ -1918,11 +1920,11 @@ msgstr ""
 "Der :program:`Self Service` ermöglicht es Benutzern, die Löschung ihres "
 "Benutzerkontos anzufordern."
 
-#: ../../iam/password-management/user-self-service.rst:427
+#: ../../iam/password-management/user-self-service.rst:429
 msgid "Deregistration request"
 msgstr "Anfrage zur Abmeldung"
 
-#: ../../iam/password-management/user-self-service.rst:429
+#: ../../iam/password-management/user-self-service.rst:431
 msgid ""
 "If a user requests to delete their account, Nubus doesn't delete the user"
 " account directly, but deactivates it. If the user has a "
@@ -1935,11 +1937,11 @@ msgstr ""
 "Benutzer über E-Mail. Zusätzlich setzt Nubus die folgenden Attribute des "
 "Benutzerkontos:"
 
-#: ../../iam/password-management/user-self-service.rst:437
+#: ../../iam/password-management/user-self-service.rst:439
 msgid "``DeregisteredThroughSelfService`` to ``TRUE``"
 msgstr "``DeregisteredThroughSelfService`` auf ``TRUE``"
 
-#: ../../iam/password-management/user-self-service.rst:438
+#: ../../iam/password-management/user-self-service.rst:440
 msgid ""
 "``DeregistrationTimestamp`` to the current time in the `GeneralizedTime "
 "LDAP syntax <ldap-generalized-time_>`_."
@@ -1947,13 +1949,13 @@ msgstr ""
 "``DeregistrationTimestamp`` zur aktuellen Zeit in der `GeneralizedTime "
 "LDAP-Syntax <ldap-generalized-time_>`_."
 
-#: ../../iam/password-management/user-self-service.rst:440
+#: ../../iam/password-management/user-self-service.rst:442
 msgid "Use the following UCR variables to configure user self-deregistration."
 msgstr ""
-"Verwenden Sie die folgenden UCR-Variablen, um die Abmeldung des eigenen Kontos durch Benutzer "
-"zu konfigurieren."
+"Verwenden Sie die folgenden UCR-Variablen, um die Abmeldung des eigenen "
+"Kontos durch Benutzer zu konfigurieren."
 
-#: ../../iam/password-management/user-self-service.rst:444
+#: ../../iam/password-management/user-self-service.rst:446
 msgid ""
 "Activates the *Delete my account* button on the *Your profile* page of "
 "the *Self Service*."
@@ -1961,7 +1963,7 @@ msgstr ""
 "Aktiviert die Schaltfläche *Mein Konto löschen* auf der Seite *Mein "
 "Profil* des *Self Service*."
 
-#: ../../iam/password-management/user-self-service.rst:452
+#: ../../iam/password-management/user-self-service.rst:454
 msgid ""
 "Defines the sender address of the notification email about a user account"
 " deletion request."
@@ -1969,12 +1971,12 @@ msgstr ""
 "Definiert die Absenderadresse der E-Mail zur Benachrichtigung über eine "
 "Anfrage zur Löschung eines Benutzerkontos."
 
-#: ../../iam/password-management/user-self-service.rst:455
+#: ../../iam/password-management/user-self-service.rst:457
 #, python-brace-format
 msgid ":samp:`Password Reset Service <noreply@{FQDN}>`"
 msgstr ":samp:`Password Reset Service <noreply@{FQDN}>`"
 
-#: ../../iam/password-management/user-self-service.rst:460
+#: ../../iam/password-management/user-self-service.rst:462
 msgid ""
 "Defines the server name as fully qualified domain name or IP address of "
 "the mail server for sending the notification email about a user account "
@@ -1984,7 +1986,7 @@ msgstr ""
 "oder IP-Adresse des Mail-Servers zum Senden der E-Mail zur "
 "Benachrichtigung über eine Anfrage zur Löschung eines Benutzerkontos."
 
-#: ../../iam/password-management/user-self-service.rst:469
+#: ../../iam/password-management/user-self-service.rst:471
 msgid ""
 "Defines the path to a text file that the *Self Service* uses for the text"
 " body of the notification email. The text can contain the following "
@@ -1995,7 +1997,7 @@ msgstr ""
 "folgenden Zeichenketten enthalten. Der *Self Service* ersetzt sie "
 "entsprechend."
 
-#: ../../iam/password-management/user-self-service.rst:477
+#: ../../iam/password-management/user-self-service.rst:479
 msgid ""
 ":file:`/usr/share/univention-self-"
 "service/email_bodies/deregistration_notification_email_body.txt`"
@@ -2003,11 +2005,11 @@ msgstr ""
 ":file:`/usr/share/univention-self-"
 "service/email_bodies/deregistration_notification_email_body.txt`"
 
-#: ../../iam/password-management/user-self-service.rst:483
+#: ../../iam/password-management/user-self-service.rst:485
 msgid "Account cleanup"
 msgstr "Konto-Bereinigung"
 
-#: ../../iam/password-management/user-self-service.rst:485
+#: ../../iam/password-management/user-self-service.rst:487
 msgid ""
 "The *Self Service* provides a script at :file:`/usr/share/univention-"
 "self-service/delete_deregistered_accounts.py` that you can use to delete "
@@ -2021,11 +2023,11 @@ msgstr ""
 "``DeregisteredThroughSelfService`` auf ``TRUE`` gesetzt ist und deren "
 "Attribut ``DeregistrationTimestamp`` älter als eine angegebene Zeit ist."
 
-#: ../../iam/password-management/user-self-service.rst:495
+#: ../../iam/password-management/user-self-service.rst:497
 msgid "Manually delete de-registered user accounts"
 msgstr "Manuell abgemeldete Benutzerkonten löschen"
 
-#: ../../iam/password-management/user-self-service.rst:496
+#: ../../iam/password-management/user-self-service.rst:498
 msgid ""
 "The command in :numref:`end-user-self-service-deregistration-delete-"
 "listing` deletes user accounts whose ``DeregistrationTimestamp`` is older"
@@ -2035,11 +2037,11 @@ msgstr ""
 "listing` löscht Benutzerkonten, deren ``DeregistrationTimestamp`` älter "
 "als 5 Tage und 2 Stunden ist."
 
-#: ../../iam/password-management/user-self-service.rst:499
+#: ../../iam/password-management/user-self-service.rst:501
 msgid "Example for deleting de-registered and deactivated user accounts"
 msgstr "Beispiel zum Löschen abgemeldeter und deaktivierter Benutzerkonten"
 
-#: ../../iam/password-management/user-self-service.rst:499
+#: ../../iam/password-management/user-self-service.rst:501
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py \\\n"
 "  --timedelta-days 5 \\\n"
@@ -2049,11 +2051,11 @@ msgstr ""
 "  --timedelta-days 5 \\\n"
 "  --timedelta-hours 2"
 
-#: ../../iam/password-management/user-self-service.rst:509
+#: ../../iam/password-management/user-self-service.rst:511
 msgid "Script arguments"
 msgstr "Skript-Argumente"
 
-#: ../../iam/password-management/user-self-service.rst:510
+#: ../../iam/password-management/user-self-service.rst:512
 msgid ""
 "For the possible arguments of the script, see :numref:`end-user-self-"
 "service-deregistration-script-arguments-listing`."
@@ -2061,11 +2063,11 @@ msgstr ""
 "Für die möglichen Argumente des Skripts siehe :numref:`end-user-self-"
 "service-deregistration-script-arguments-listing`."
 
-#: ../../iam/password-management/user-self-service.rst:513
+#: ../../iam/password-management/user-self-service.rst:515
 msgid "Available arguments for :file:`delete_deregistered_accounts.py`"
 msgstr "Verfügbare Argumente für :file:`delete_deregistered_accounts.py`"
 
-#: ../../iam/password-management/user-self-service.rst:513
+#: ../../iam/password-management/user-self-service.rst:515
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
@@ -2073,11 +2075,11 @@ msgstr ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
 
-#: ../../iam/password-management/user-self-service.rst:521
+#: ../../iam/password-management/user-self-service.rst:523
 msgid "Scheduled deletion of de-registered user accounts"
 msgstr "Geplante Löschung abgemeldeter Benutzerkonten"
 
-#: ../../iam/password-management/user-self-service.rst:522
+#: ../../iam/password-management/user-self-service.rst:524
 msgid ""
 "You can schedule the script to run regularly. Create a cron job through a"
 " UCR variable, as shown in :numref:`end-user-self-service-deregistration-"
@@ -2087,11 +2089,11 @@ msgstr ""
 "einen Cron-Job über eine UCR-Variable, wie in :numref:`end-user-self-"
 "service-deregistration-schedule-listing` gezeigt."
 
-#: ../../iam/password-management/user-self-service.rst:526
+#: ../../iam/password-management/user-self-service.rst:528
 msgid "Schedule deletion of de-registered user accounts"
 msgstr "Planen Sie die Löschung abgemeldeter Benutzerkonten"
 
-#: ../../iam/password-management/user-self-service.rst:526
+#: ../../iam/password-management/user-self-service.rst:528
 msgid ""
 "$ ucr set cron/delete_deregistered_accounts/command=\\\n"
 "/usr/share/univention-self-service/delete_deregistered_accounts.py\\\n"
@@ -2103,7 +2105,7 @@ msgstr ""
 "' --timedelta-days 30'\\\n"
 "  cron/delete_deregistered_accounts/time='00 06 * * *'  # täglich um 06:00"
 
-#: ../../iam/password-management/user-self-service.rst:535
+#: ../../iam/password-management/user-self-service.rst:537
 msgid ""
 "For more information about how to set cron jobs through UCR variables, "
 "see :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
@@ -2112,4 +2114,3 @@ msgstr ""
 "Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
 " siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
 "univention-configuration-registry`."
-
