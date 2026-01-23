@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.4.1) unstable; urgency=medium
+
+  * Bug #58987: Improve message in 58_univentionObjectIdentifier.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Jan 2026 15:06:16 +0100
+
 univention-management-console-module-diagnostic (8.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

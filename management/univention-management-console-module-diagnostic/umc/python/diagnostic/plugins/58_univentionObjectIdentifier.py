@@ -15,6 +15,7 @@ title = _('Validate all objects have Univention Object Identifier set')
 description = '\n'.join([
     _('All objects of class "univentionObject" should have the attribute "univentionObjectIdentifier" in OpenLDAP.'),
 ])
+detail = _('The following objects are missing the "univentionObjectIdentifier" in OpenLDAP.\nKeep in mind that the UDM field "univentionObjectIdentifier" shows a default value if "univentionObjectIdentifier" is not set in OpenLDAP.')
 
 
 def run(_umc_instance: Instance) -> None:
@@ -28,7 +29,7 @@ def run(_umc_instance: Instance) -> None:
     stdout, _stderr = process.communicate()
     stdout = stdout.decode('UTF-8', 'replace')
     if process.returncode == 2:
-        raise Warning(f'{description}\n\n{stdout}', buttons=[{
+        raise Warning(f'{description}\n\n{detail}\n\n{stdout}', buttons=[{
             'action': 'update_objects',
             'label': _('Update LDAP objects'),
         }])
