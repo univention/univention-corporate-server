@@ -104,6 +104,10 @@ For a general description of single sign-on,
 see :external+uv-nubus-manual:ref:`nubus-authentication-sso`
 in :cite:t:`uv-nubus-manual`.
 
+The default configuration in Nubus for UCS has single sign-on deactivated.
+After you install the :program:`Keycloak` app,
+Nubus for UCS uses SAML.
+
 .. _ucs-operation-auth-sso-saml:
 
 SAML configuration for single sign-on
