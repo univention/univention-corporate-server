@@ -326,6 +326,26 @@ The *Provisioning Service* app has the following app settings.
         - 3
         - Installation and app configuration
 
+.. envvar:: provisioning-service/log/level
+
+   The log level for the Provisioning Service.
+   This affects the container based service components as well as the Listener module.
+   After you change this setting
+   you also may want to restart the :program:`univention-directory-listener`,
+   see :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
+
+   .. list-table::
+      :header-rows: 1
+      :widths: 2 5 5
+
+      * - Required
+        - Default value
+        - Set
+
+      * - No
+        - INFO
+        - Installation and app configuration
+
 .. _nubus-provisioning-service-ucr-variables:
 
 UCR Variables
