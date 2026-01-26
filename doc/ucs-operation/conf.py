@@ -69,6 +69,7 @@ intersphinx_mapping = {
     'uv-ucs-manual': reference_inventory('manual', version=version),
     'uv-architecture': reference_inventory('architecture', version=version),
     'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
+    'uv-docs-overview': ('https://docs.software-univention.de/n/en/', None),
 }
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
@@ -179,6 +180,7 @@ def adapt_settings_to_translation(app, config):
             'uv-ucs-manual': reference_inventory('manual', version=version, language=config.language),
             'uv-architecture': reference_inventory('architecture', version=version),
             'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
+            'uv-docs-overview': ('https://docs.software-univention.de/n/de/', None),
         }
         config.numfig_format['code-block'] = 'Listing %s'
 
