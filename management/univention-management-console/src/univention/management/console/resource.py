@@ -197,7 +197,7 @@ class Resource(RequestHandler):
     def _proxy_uri(self):  # TODO: replace with tornado builtin
         if self.request.headers.get('X-UMC-HTTPS') == 'on':
             self.request.protocol = 'https'
-        self.request.uri = '/univention%s' % (self.request.uri,)
+        # URI no longer needs /univention prefix since routes include root_path
 
     async def parse_authorization(self):
         credentials = self.request.headers.get('Authorization')
@@ -427,4 +427,5 @@ class Resource(RequestHandler):
         return langs
 
     def reverse_abs_url(self, name, path=None):
-        return '%s://%s/univention%s' % (self.request.protocol, self.request.host, self.reverse_url(name, *(self.path_args if path is None else path)))
+        # reverse_url includes root_path from route patterns
+        return '%s://%s%s' % (self.request.protocol, self.request.host, self.reverse_url(name, *(self.path_args if path is None else path)))
