@@ -22,6 +22,7 @@ pam_krb5 = '''
 account  [success=1 default=ignore]   pam_succeed_if.so quiet service = samba
 account  <action>        pam_krb5.so minimum_uid=%d''' % (krb5_minimum_uid,)
 pam_sss = '''
+account  [success=1 default=ignore]   pam_succeed_if.so quiet service = samba
 account  <action>        pam_sss.so'''
 pam_winbind = '''
 account  <action>        pam_winbind.so'''
