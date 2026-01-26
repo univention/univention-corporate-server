@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: php7.3
+fix: 7.3.31-1~deb10u12
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2025-14177)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H).
+   (CVE-2025-14178)
+bug: [58999]
+cve:
+- CVE-2025-14177
+- CVE-2025-14178
