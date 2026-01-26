@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: taglib
+fix: 1.11.1+dfsg.1-0.3+deb9u2
+desc: |
+ This update addresses the following issue:
+ * CVSS score 2.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2023-47466)
+bug: [59001]
+cve:
+- CVE-2023-47466
