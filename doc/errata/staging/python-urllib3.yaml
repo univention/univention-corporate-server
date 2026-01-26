@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: python-urllib3
+fix: 1.24.1-1+deb10u5
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-21441)
+bug: [58996]
+cve:
+- CVE-2026-21441
