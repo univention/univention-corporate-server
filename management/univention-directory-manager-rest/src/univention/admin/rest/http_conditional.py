@@ -55,6 +55,14 @@ class ConditionalResource:
         # etag.update(json.dumps(obj.info, sort_keys=True).encode('utf-8'))
         return '"%s"' % etag.hexdigest()
 
+    def get_collection_etag(self, objects):
+        """Compute an ETag for a collection of objects based on their DNs and entryCSNs."""
+        etag = hashlib.sha1()
+        for obj in sorted(objects, key=lambda o: o.dn):
+            etag.update(obj.dn.encode('utf-8', 'replace'))
+            etag.update(b''.join(obj.oldattr.get('entryCSN', [])))
+        return '"%s"' % etag.hexdigest()
+
     def modified_from_timestamp(self, timestamp):
         modified = time.strptime(timestamp, '%Y%m%d%H%M%SZ')
         # make sure Last-Modified is only send if it is not now

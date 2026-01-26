@@ -1524,6 +1524,9 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
             except SuperordinateDoesNotExist as exc:
                 self.raise_sanitization_error('superordinate', str(exc), type='query')
 
+            self.set_header('Etag', self.get_collection_etag(objects))
+            self.check_conditional_requests()
+
         if opened and properties == ['dn']:  # backwards compatibility with older clients
             opened = False
         props = [_prop for _prop in properties if _prop not in ('dn')] if not opened else properties
