@@ -197,7 +197,18 @@ class Resource(RequestHandler):
     def _proxy_uri(self):  # TODO: replace with tornado builtin
         if self.request.headers.get('X-UMC-HTTPS') == 'on':
             self.request.protocol = 'https'
-        self.request.uri = '/univention%s' % (self.request.uri,)
+        # Only prepend /univention if not using root_path
+        root_path = getattr(self.application, 'root_path', '')
+        if not root_path:
+            self.request.uri = '/univention%s' % (self.request.uri,)
+
+    def _path_without_root_prefix(self):
+        """Strip root_path prefix from request path for path matching."""
+        root_path = getattr(self.application, 'root_path', '')
+        path = self.request.path
+        if root_path and path.startswith(root_path):
+            return path[len(root_path):]
+        return path
 
     async def parse_authorization(self):
         credentials = self.request.headers.get('Authorization')
@@ -286,7 +297,7 @@ class Resource(RequestHandler):
             self.request.body = json.dumps(self.request.body_arguments).encode('ASCII')
         elif self.request.headers.get('Content-Type', '').startswith('multipart/form-data'):  # file upload request
             flavor = self.get_argument('flavor', None)
-        elif self.request.path.startswith(('/auth', '/command', '/get')):  # request is not json
+        elif self._path_without_root_prefix().startswith(('/auth', '/command', '/get')):  # request is not json
             args = {name: self.get_query_arguments(name) for name in self.request.query_arguments}
             if self.request.method == 'POST':
                 args.update({name: self.get_body_arguments(name) for name in self.request.body_arguments})
@@ -427,4 +438,9 @@ class Resource(RequestHandler):
         return langs
 
     def reverse_abs_url(self, name, path=None):
-        return '%s://%s/univention%s' % (self.request.protocol, self.request.host, self.reverse_url(name, *(self.path_args if path is None else path)))
+        root_path = getattr(self.application, 'root_path', '')
+        url_path = self.reverse_url(name, *(self.path_args if path is None else path))
+        if root_path:
+            return '%s://%s%s' % (self.request.protocol, self.request.host, url_path)
+        else:
+            return '%s://%s/univention%s' % (self.request.protocol, self.request.host, url_path)
