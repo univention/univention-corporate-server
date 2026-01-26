@@ -3,55 +3,116 @@
 
 .. _lifecycle-versioning:
 
-Understanding Nubus for UCS versioning
-======================================
+Nubus for UCS versioning
+========================
 
-Four types of UCS updates are differentiated:
+Nubus for UCS follows a structured release and versioning strategy to provide system
+administrators with predictable update cycles and clear compatibility guidelines.
+
+For information on the scripts
+that run during the update process,
+see :ref:`lifecycle-perform-updates`.
+
+.. _lifecycle-versioning-numbering-scheme:
+
+Understand version numbering
+----------------------------
+
+Nubus for UCS version numbers consist of three parts: ``[Major].[Minor]-[Patch level]``.
+
+For example, Nubus for UCS 5.2-4 is the fourth patch level release of the second minor
+update for major release Nubus for UCS 5. This scheme helps you identify which updates
+apply to your systems and track compatibility.
+
+.. _lifecycle-versioning-release-types:
+
+Distinguish release types and cycles
+------------------------------------
+
+Univention releases four types of updates on different schedules:
 
 Major releases
-   *Major releases* appear approximately every three to four years. Major
-   releases can differ significantly from previous major releases in terms of
-   their scope of services, functioning and the software they contain.
+    Appear approximately every 3-4 years
+    and introduce significant changes to services, functioning, and software.
 
 Minor releases
-   During the maintenance period of a major release, *minor releases* are
-   released approximately every 10-12 months. These updates include corrections
-   to recently identified errors and the expansion of the product with
-   additional features. At the same time and as far as this is possible, the
-   minor releases are compatible with the previous versions in terms of their
-   functioning, interfaces and operation. Should a change in behavior prove
-   practical or unavoidable, this will be noted in the release notes when the
-   new version is published.
+    Published approximately every 10-12 months during the maintenance period of a major release.
+    They include bug fixes, new features, and product expansion
+    and maintain backward compatibility where possible.
+    See the Release Notes for behavior changes.
 
-Patchlevel releases
-   *Patchlevel releases* are released approximately every three months and
-   combine all errata updates published until then.
+Patch level releases
+    Published approximately every 3 months.
+    They combine all errata updates into a single, tested release.
 
 Errata updates
-   Univention continuously releases *errata updates*. Errata updates provide
-   fixes for security vulnerabilities, bug fixes, and smaller enhancements to make
-   them available to customer systems quickly. An overview of all errata updates
-   can be found at https://errata.software-univention.de/.
+    Published continuously during the maintenance period of a minor release.
+    They provide security fixes, bug fixes, and small enhancements.
+    Errata updates target specific minor releases, such as Nubus for UCS 5.2,
+    and you can install them on any patch level release.
+    See https://errata.software-univention.de/ for an overview.
 
-Every released UCS version has an unambiguous version number; it is composed of
-a figure (the major version), a full stop, a second figure (the minor version),
-a hyphen and a third figure (the patch level version). The version UCS 4.2-1
-thus refers to the first patch level update for the second minor update for the
-major release UCS 4.
+.. _lifecycle-versioning-update-hierarchy:
 
-The *pre-update script* :file:`preup.sh` is run before every release update. It
-checks for example whether any problems exist, in which case the update is
-canceled in a controlled manner. The *post-update script* :file:`postup.sh` is
-run at the end of the update to perform additional cleanups, if necessary.
+Understanding the update hierarchy
+----------------------------------
 
-Errata updates always refer to certain minor releases, e.g., for UCS 5.0. Errata
-updates can generally be installed for all patch level versions of a minor
-release.
+The four update types form a structured hierarchy:
 
-If a new release or errata updates are available, a corresponding notification
-is given when a user opens a UMC module. The availability of new updates is also
-notified via email; the corresponding newsletters - separated into release and
-error updates - can be subscribed on the Univention website. A changelog
-document is published for every release update listing the updated packages,
-information on error corrections and new functions and references to the
-Univention Bugzilla.
+* Major releases enter a maintenance period during which Univention issues
+  minor releases every 10-12 months.
+
+* Minor releases receive continuous errata updates addressing security
+  vulnerabilities, bugs, and small enhancements.
+
+* Errata updates target specific minor releases
+  and you can install them on any
+  patch level release of that minor release.
+
+* Every 3 months, Univention bundles accumulated errata updates into a patch level release,
+  providing a regular checkpoint for testing and deployment.
+
+This ensures predictable cycles: major versions every 3-4 years, minor versions
+every 10-12 months, patch level releases every 3 months, and errata updates continuously.
+
+.. _lifecycle-versioning-maintenance-periods:
+
+Plan for support and maintenance periods
+----------------------------------------
+
+Each major release has defined support and maintenance periods determining how
+long it receives updates. The *maintenance period* is when Univention issues
+minor releases, patch level releases, and errata updates for a major release.
+
+.. _lifecycle-versioning-stay-informed:
+
+Stay informed about updates
+---------------------------
+
+When new releases or errata updates are available,
+you can receive notifications through the following:
+
+Management UI notifications
+    The system displays a notification
+    when you open a management module in the *Management UI*
+    if updates are available.
+
+Email notifications
+    Subscribe to release and errata update newsletters separately to stay
+    informed about updates relevant to your infrastructure.
+
+Changelog documents
+    Univention publishes a changelog document for every release update, listing
+    updated packages, error corrections, new functions,
+    and references to Univention Bugzilla.
+
+.. seealso::
+
+   For specific maintenance timelines and end-of-life dates, see the
+   :external+uv-docs-overview:ref:`UCS Maintenance Information <maintenance-ucs>`.
+
+   For detailed release information, see the
+   :external+uv-docs-overview:ref:`Nubus for UCS Release Notes <release-notes>`.
+
+   To subscribe to newsletters, visit the
+   `Univention Newsletter <https://www.univention.com/about-us/newsletter/>`_.
