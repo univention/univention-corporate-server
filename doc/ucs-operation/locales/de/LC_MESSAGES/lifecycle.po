@@ -1,0 +1,428 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+msgid ""
+msgstr ""
+"Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-26 17:25+0000\n"
+"PO-Revision-Date: 2026-01-26 18:31+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../lifecycle/index.rst:8
+msgid "Lifecycle"
+msgstr "Lebenszyklus"
+
+#: ../../lifecycle/perform-updates.rst:7
+msgid "Perform updates"
+msgstr "Updates durchführen"
+
+#: ../../lifecycle/perform-updates.rst:9
+msgid ""
+"Nubus for UCS updates follow a structured process that ensures system "
+"stability and consistency. Before and after each update, special scripts "
+"run to validate the system and perform necessary cleanup. Understanding "
+"these scripts helps you troubleshoot issues and ensures smooth updates "
+"across your infrastructure."
+msgstr ""
+"Nubus für UCS Updates folgen einem strukturierten Prozess, der "
+"Systemstabilität und Konsistenz gewährleistet. Vor und nach jedem Update "
+"führen spezielle Skripte eine Validierung des Systems durch und führen "
+"notwendige Bereinigungen durch. Das Verständnis dieser Skripte hilft "
+"Ihnen, Probleme zu beheben und gewährleistet reibungslose Updates in "
+"Ihrer Infrastruktur."
+
+#: ../../lifecycle/perform-updates.rst:16
+msgid ""
+"For information about UCS version numbering and release types, see :ref"
+":`lifecycle-versioning`."
+msgstr ""
+"Informationen zur Nubus für UCS Versionsnummerierung und zu Release-Typen finden "
+"Sie unter :ref:`lifecycle-versioning`."
+
+#: ../../lifecycle/perform-updates.rst:20
+msgid "Understand pre-update checks"
+msgstr "Überprüfungen des Pre-Update verstehen"
+
+#: ../../lifecycle/perform-updates.rst:22
+msgid ""
+"The pre-update script :file:`preup.sh` runs before every release update "
+"to perform critical validation to ensure the system is ready for the "
+"update and that the update can complete successfully."
+msgstr ""
+"Das Pre-Update Skript :file:`preup.sh` läuft vor jedem Release-Update, um"
+" eine kritische Validierung durchzuführen und sicherzustellen, dass das "
+"System für das Update bereit ist und das Update erfolgreich abgeschlossen"
+" werden kann."
+
+#: ../../lifecycle/perform-updates.rst:27
+#: ../../lifecycle/perform-updates.rst:55
+msgid "What it does"
+msgstr "Was es macht"
+
+#: ../../lifecycle/perform-updates.rst:28
+msgid ""
+"The :program:`preup.sh` script checks for potential problems that could "
+"prevent a successful update or cause system instability. If it detects "
+"issues, it cancels the update in a controlled manner to protect your "
+"system. Among these checks are the following:"
+msgstr ""
+"Das :program:`preup.sh` Skript überprüft auf mögliche Probleme, die ein "
+"erfolgreiches Update verhindern oder Systeminstabilität verursachen "
+"könnten. Falls es Probleme erkennt, bricht es das Update auf "
+"kontrollierte Weise ab, um Ihr System zu schützen. Zu diesen "
+"Überprüfungen gehören die folgenden:"
+
+#: ../../lifecycle/perform-updates.rst:34
+msgid "Disk space availability on essential file systems."
+msgstr "Verfügbarkeit von Speicherplatz auf wichtigen Dateisystemen."
+
+#: ../../lifecycle/perform-updates.rst:35
+msgid "Package state consistency."
+msgstr "Konsistenz des Paketstatus."
+
+#: ../../lifecycle/perform-updates.rst:36
+msgid "LDAP schema and connectivity validation."
+msgstr "Validierung von LDAP-Schema und Konnektivität."
+
+#: ../../lifecycle/perform-updates.rst:37
+msgid "Machine account credentials validation."
+msgstr "Validierung der Anmeldedaten des Maschinenkontos."
+
+#: ../../lifecycle/perform-updates.rst:38
+msgid "System compatibility checks."
+msgstr "Überprüfung der Systemkompatibilität."
+
+#: ../../lifecycle/perform-updates.rst:39
+msgid "Version compatibility across systems in the domain."
+msgstr "Versionskompatibilität zwischen Systemen in der Domäne."
+
+#: ../../lifecycle/perform-updates.rst:41
+msgid "What happens if it fails"
+msgstr "Was passiert, wenn es fehlschlägt"
+
+#: ../../lifecycle/perform-updates.rst:42
+msgid ""
+"When :program:`preup.sh` detects a problem, it reports the issue and "
+"stops the update process. This controlled interruption is preferable to "
+"an incomplete update that could compromise system stability. Review the "
+"error messages to identify and fix the underlying problem."
+msgstr ""
+"Wenn :program:`preup.sh` ein Problem erkennt, meldet es das Problem und "
+"stoppt den Update-Prozess. Diese kontrollierte Unterbrechung ist besser "
+"als ein unvollständiges Update, das die Systemstabilität gefährden "
+"könnte. Überprüfen Sie die Fehlermeldungen, um das zugrunde liegende "
+"Problem zu identifizieren und zu beheben."
+
+#: ../../lifecycle/perform-updates.rst:49
+msgid "Understand post-update cleanup"
+msgstr "Bereinigungen des Post-Update verstehen"
+
+#: ../../lifecycle/perform-updates.rst:51
+msgid ""
+"The post-update script :file:`postup.sh` runs at the end of each update "
+"to perform necessary cleanup operations and ensure your system is fully "
+"consistent with the new version."
+msgstr ""
+"Das Post-Update-Skript :file:`postup.sh` läuft am Ende jedes Updates, um "
+"notwendige Bereinigungsvorgänge durchzuführen und sicherzustellen, dass "
+"Ihr System vollständig konsistent mit der neuen Version ist."
+
+#: ../../lifecycle/perform-updates.rst:56
+msgid ""
+"The :command:`postup.sh` script performs cleanup and verification tasks "
+"after the update completes. These operations ensure the system is in a "
+"stable, consistent state and all changes are properly integrated. Common "
+"cleanup operations include the following:"
+msgstr ""
+"Das :command:`postup.sh` Skript führt Aufgaben zur Bereinigung und "
+"Verifizierung durch, nachdem das Update abgeschlossen ist. Diese"
+" Vorgänge stellen sicher, dass sich das System in einem stabilen, "
+"konsistenten Zustand befindet und alle Änderungen ordnungsgemäß "
+"integriert sind. Typische Bereinigungsvorgänge sind die folgenden:"
+
+#: ../../lifecycle/perform-updates.rst:62
+msgid "Removing temporary installation files and backup package sources."
+msgstr "Entfernen von temporären Installationsdateien und Backup-Paketquellen."
+
+#: ../../lifecycle/perform-updates.rst:63
+msgid "Restarting the firewall and *Management UI* for connectivity."
+msgstr "Neustart der Firewall und *Management UI* für Konnektivität."
+
+#: ../../lifecycle/perform-updates.rst:64
+msgid "Updating system information in the LDAP directory."
+msgstr "Aktualisierung der Systeminformationen im LDAP-Verzeichnis."
+
+#: ../../lifecycle/perform-updates.rst:65
+msgid "Running role-specific configurations."
+msgstr "Ausführung von rollenspezifischen Konfigurationen."
+
+#: ../../lifecycle/perform-updates.rst:66
+msgid "Removing deprecated package configurations."
+msgstr "Entfernen veralteter Paketkonfigurationen."
+
+#: ../../lifecycle/versioning.rst:7
+msgid "Nubus for UCS versioning"
+msgstr "Nubus für UCS Versionierung"
+
+#: ../../lifecycle/versioning.rst:9
+msgid ""
+"Nubus for UCS follows a structured release and versioning strategy to "
+"provide system administrators with predictable update cycles and clear "
+"compatibility guidelines."
+msgstr ""
+"Nubus für UCS folgt einer strukturierten Release- und "
+"Versionierungsstrategie, um Systemadministratoren vorhersehbare Update-"
+"Zyklen und klare Kompatibilitätsrichtlinien zur Verfügung zu stellen."
+
+#: ../../lifecycle/versioning.rst:12
+msgid ""
+"For information on the scripts that run during the update process, see "
+":ref:`lifecycle-perform-updates`."
+msgstr ""
+"Informationen über die Skripte, die während des Update-Prozesses "
+"ausgeführt werden, finden Sie unter :ref:`lifecycle-perform-updates`."
+
+#: ../../lifecycle/versioning.rst:19
+msgid "Understand version numbering"
+msgstr "Versionsnummerierung verstehen"
+
+#: ../../lifecycle/versioning.rst:21
+msgid ""
+"Nubus for UCS version numbers consist of three parts: "
+"``[Major].[Minor]-[Patch level]``."
+msgstr ""
+"Nubus für UCS Versionsnummern bestehen aus drei Teilen: "
+"``[Major].[Minor]-[Patchlevel]``."
+
+#: ../../lifecycle/versioning.rst:23
+msgid ""
+"For example, Nubus for UCS 5.2-4 is the fourth patch level release of the"
+" second minor update for major release Nubus for UCS 5. This scheme helps"
+" you identify which updates apply to your systems and track "
+"compatibility."
+msgstr ""
+"Zum Beispiel ist Nubus für UCS 5.2-4 die vierte Patchlevel-Version des "
+"zweiten Minor Updates für Major Release Nubus für UCS 5. Dieses Schema "
+"hilft Ihnen, zu ermitteln, welche Updates auf Ihre Systeme zutreffen, und"
+" die Kompatibilität zu verfolgen."
+
+#: ../../lifecycle/versioning.rst:30
+msgid "Distinguish release types and cycles"
+msgstr "Unterschiedliche Release-Typen und Zyklen"
+
+#: ../../lifecycle/versioning.rst:32
+msgid "Univention releases four types of updates on different schedules:"
+msgstr ""
+"Univention veröffentlicht vier Arten von Updates nach verschiedenen "
+"Zeitplänen:"
+
+#: ../../lifecycle/versioning.rst:34
+msgid "Major releases"
+msgstr "Major Releases"
+
+#: ../../lifecycle/versioning.rst:35
+msgid ""
+"Appear approximately every 3-4 years and introduce significant changes to"
+" services, functioning, and software."
+msgstr ""
+"Erscheinen ungefähr alle 3-4 Jahre und führen bedeutende Änderungen an "
+"Diensten, Funktionalität und Software durch."
+
+#: ../../lifecycle/versioning.rst:38
+msgid "Minor releases"
+msgstr "Minor Releases"
+
+#: ../../lifecycle/versioning.rst:39
+msgid ""
+"Published approximately every 10-12 months during the maintenance period "
+"of a major release. They include bug fixes, new features, and product "
+"expansion and maintain backward compatibility where possible. See the "
+"Release Notes for behavior changes."
+msgstr ""
+"Veröffentlicht ungefähr alle 10-12 Monate während des Wartungszeitraums "
+"eines Major Release. Sie beinhalten Fehlerbehebungen, neue Funktionen und"
+" Produkterweiterungen und wahren Abwärtskompatibilität, wo möglich. Lesen"
+" Sie die Release Notes für Verhaltensänderungen."
+
+#: ../../lifecycle/versioning.rst:44
+msgid "Patch level releases"
+msgstr "Patchlevel-Versionen"
+
+#: ../../lifecycle/versioning.rst:45
+msgid ""
+"Published approximately every 3 months. They combine all errata updates "
+"into a single, tested release."
+msgstr ""
+"Veröffentlicht ungefähr alle 3 Monate. Sie kombinieren alle Errata-"
+"Updates in einer einzigen, getesteten Version."
+
+#: ../../lifecycle/versioning.rst:48
+msgid "Errata updates"
+msgstr "Errata-Updates"
+
+#: ../../lifecycle/versioning.rst:49
+msgid ""
+"Published continuously during the maintenance period of a minor release. "
+"They provide security fixes, bug fixes, and small enhancements. Errata "
+"updates target specific minor releases, such as Nubus for UCS 5.2, and "
+"you can install them on any patch level release. See https://errata"
+".software-univention.de/ for an overview."
+msgstr ""
+"Veröffentlicht während des Wartungszeitraums einer Minor Release. Sie "
+"bieten Sicherheitskorrekturen, Fehlerbehebungen und kleine "
+"Verbesserungen. Errata-Updates zielen auf spezifische Minor Releases ab, "
+"z. B. Nubus für UCS 5.2, und Sie können sie auf jeder Patchlevel-Version "
+"installieren. Unter https://errata.software-univention.de/ finden Sie "
+"einen Überblick."
+
+#: ../../lifecycle/versioning.rst:58
+msgid "Understanding the update hierarchy"
+msgstr "Die Update-Hierarchie verstehen"
+
+#: ../../lifecycle/versioning.rst:60
+msgid "The four update types form a structured hierarchy:"
+msgstr "Die vier Update-Typen bilden eine strukturierte Hierarchie:"
+
+#: ../../lifecycle/versioning.rst:62
+msgid ""
+"Major releases enter a maintenance period during which Univention issues "
+"minor releases every 10-12 months."
+msgstr ""
+"Major Releases treten in einen Wartungszeitraum ein, während dessen "
+"Univention alle 10-12 Monate Minor Releases veröffentlicht."
+
+#: ../../lifecycle/versioning.rst:65
+msgid ""
+"Minor releases receive continuous errata updates addressing security "
+"vulnerabilities, bugs, and small enhancements."
+msgstr ""
+"Minor Releases erhalten kontinuierliche Errata-Updates, die "
+"Sicherheitslücken, Bugs und kleine Verbesserungen adressieren."
+
+#: ../../lifecycle/versioning.rst:68
+msgid ""
+"Errata updates target specific minor releases and you can install them on"
+" any patch level release of that minor release."
+msgstr ""
+"Errata-Updates zielen auf spezifische Minor Releases ab und Sie können "
+"sie auf jeder Patchlevel-Version dieses Minor Releases installieren."
+
+#: ../../lifecycle/versioning.rst:72
+msgid ""
+"Every 3 months, Univention bundles accumulated errata updates into a "
+"patch level release, providing a regular checkpoint for testing and "
+"deployment."
+msgstr ""
+"Alle 3 Monate bündelt Univention gesammelte Errata-Updates in einer "
+"Patchlevel-Version und bietet somit einen regelmäßigen Kontrollpunkt für "
+"Tests und Bereitstellung."
+
+#: ../../lifecycle/versioning.rst:75
+msgid ""
+"This ensures predictable cycles: major versions every 3-4 years, minor "
+"versions every 10-12 months, patch level releases every 3 months, and "
+"errata updates continuously."
+msgstr ""
+"Dies gewährleistet vorhersehbare Zyklen: Major Releases alle 3-4 Jahre, "
+"Minor Releases alle 10-12 Monate, Patchlevel-Versionen alle 3 Monate und "
+"kontinuierlich Errata-Updates."
+
+#: ../../lifecycle/versioning.rst:81
+msgid "Plan for support and maintenance periods"
+msgstr "Planen Sie für Support- und Wartungszeiträume"
+
+#: ../../lifecycle/versioning.rst:83
+msgid ""
+"Each major release has defined support and maintenance periods "
+"determining how long it receives updates. The *maintenance period* is "
+"when Univention issues minor releases, patch level releases, and errata "
+"updates for a major release."
+msgstr ""
+"Jedes Major Release hat definierte Support- und Wartungszeiträume, die "
+"bestimmen, wie lange sie Updates erhält. Der *Wartungszeitraum* ist der "
+"Zeitraum, in dem Univention Minor Releases, Patchlevel-Versionen und "
+"Errata-Updates für ein Major Release veröffentlicht."
+
+#: ../../lifecycle/versioning.rst:90
+msgid "Stay informed about updates"
+msgstr "Bleiben Sie über Updates informiert"
+
+#: ../../lifecycle/versioning.rst:92
+msgid ""
+"When new releases or errata updates are available, you can receive "
+"notifications through the following:"
+msgstr ""
+"Wenn neue Versionen oder Errata-Updates verfügbar sind, können Sie "
+"Benachrichtigungen durch folgende Kanäle erhalten:"
+
+#: ../../lifecycle/versioning.rst:95
+msgid "Management UI notifications"
+msgstr "Benachrichtigungen in der Management UI"
+
+#: ../../lifecycle/versioning.rst:96
+msgid ""
+"The system displays a notification when you open a management module in "
+"the *Management UI* if updates are available."
+msgstr ""
+"Das System zeigt eine Benachrichtigung an, wenn Sie ein Verwaltungsmodul "
+"in der *Management UI* öffnen, falls Updates verfügbar sind."
+
+#: ../../lifecycle/versioning.rst:100
+msgid "Email notifications"
+msgstr "E-Mail-Benachrichtigungen"
+
+#: ../../lifecycle/versioning.rst:101
+msgid ""
+"Subscribe to release and errata update newsletters separately to stay "
+"informed about updates relevant to your infrastructure."
+msgstr ""
+"Abonnieren Sie Release- und Errata-Update-Newsletter separat, um über "
+"Updates informiert zu bleiben, die für Ihre Infrastruktur relevant sind."
+
+#: ../../lifecycle/versioning.rst:104
+msgid "Changelog documents"
+msgstr "Changelog Dokumente"
+
+#: ../../lifecycle/versioning.rst:105
+msgid ""
+"Univention publishes a changelog document for every release update, "
+"listing updated packages, error corrections, new functions, and "
+"references to Univention Bugzilla."
+msgstr ""
+"Univention veröffentlicht für jedes Release-Update ein Changelog Dokument"
+" mit einer Auflistung von aktualisierten Paketen, Fehlerbehebungen, neuen"
+" Funktionen und Verweisen auf Univention Bugzilla."
+
+#: ../../lifecycle/versioning.rst:111
+msgid ""
+"For specific maintenance timelines and end-of-life dates, see the "
+":external+uv-docs-overview:ref:`UCS Maintenance Information <maintenance-"
+"ucs>`."
+msgstr ""
+"Für spezifische Wartungszeiträume und Daten zum End-of-Life siehe :external"
+"+uv-docs-overview:ref:`UCS Maintenance Information <maintenance-ucs>`."
+
+#: ../../lifecycle/versioning.rst:114
+msgid ""
+"For detailed release information, see the :external+uv-docs-"
+"overview:ref:`Nubus for UCS Release Notes <release-notes>`."
+msgstr ""
+"Für detaillierte Release-Informationen siehe :external+uv-docs-"
+"overview:ref:`Nubus for UCS Release Notes <release-notes>`."
+
+#: ../../lifecycle/versioning.rst:117
+msgid ""
+"To subscribe to newsletters, visit the `Univention Newsletter "
+"<https://www.univention.com/about-us/newsletter/>`_."
+msgstr ""
+"Um Newsletter zu abonnieren, besuchen Sie `Univention Newsletter "
+"<https://www.univention.com/about-us/newsletter/>`_."
+
