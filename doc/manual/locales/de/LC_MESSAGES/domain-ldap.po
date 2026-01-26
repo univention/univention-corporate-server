@@ -3007,25 +3007,20 @@ msgstr "3"
 #: ../../domain-ldap/nubus-provisioning-service.rst:331
 msgid ""
 "The log level for the Provisioning Service. This affects the container "
-"based service components as well as the Listener module. After you change"
-" this setting you also may want to restart the :program:`univention-"
-"directory-listener`, see :numref:`nubus-provisioning-service-app-"
-"settings-reference-restart-listener-listing`."
+"based service components. "
+"Possible values: ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO``, ``DEBUG``."
 msgstr ""
 "Der Log-Level für den Provisioning Service. Dies beeinflusst die Container-"
-"basierten Dienstkomponenten ebenso wie das Listener-Modul. "
-"Nachdem Sie diese Einstellung geändert haben, kann es sinnvoll sein, "
-"zusätzlich den :program:`univention-directory-listener` neu zu starten, "
-"siehe :numref:`nubus-provisioning-service-app-settings-reference-restart-"
-"listener-listing`."
+"basierten Dienstkomponenten. "
+"Mögliche Werte: ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO``, ``DEBUG``."
 
 #: ../../domain-ldap/nubus-provisioning-service.rst:345
 msgid "No"
 msgstr "Nein"
 
 #: ../../domain-ldap/nubus-provisioning-service.rst:346
-msgid "INFO"
-msgstr "INFO"
+msgid "``WARNING``"
+msgstr "``WARNING``"
 
 #: ../../domain-ldap/nubus-provisioning-service.rst:352
 msgid "UCR Variables"

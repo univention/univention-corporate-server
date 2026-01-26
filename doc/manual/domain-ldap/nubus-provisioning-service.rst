@@ -329,10 +329,8 @@ The *Provisioning Service* app has the following app settings.
 .. envvar:: provisioning-service/log/level
 
    The log level for the Provisioning Service.
-   This affects the container based service components as well as the Listener module.
-   After you change this setting
-   you also may want to restart the :program:`univention-directory-listener`,
-   see :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
+   This affects the container based service components.
+   Possible values: ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO``, ``DEBUG``.
 
    .. list-table::
       :header-rows: 1
@@ -343,7 +341,7 @@ The *Provisioning Service* app has the following app settings.
         - Set
 
       * - No
-        - INFO
+        - ``WARNING``
         - Installation and app configuration
 
 .. _nubus-provisioning-service-ucr-variables:
