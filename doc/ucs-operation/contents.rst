@@ -16,6 +16,7 @@ Nubus for UCS - Operation Manual
    deployment/index
    domain-infrastructure/index
    management-interface/index
+   lifecycle/index
    iam/index
 
 .. toctree::
