@@ -71,7 +71,7 @@ shows the overview page of the management module.
 To install release updates, perform these steps:
 
 #. :ref:`Sign in <ucs-operation-auth-sign-in>`
-   to the *Management UI* with a user account in the ``Domain Admins`` group,
+   to the *Management UI* with a user account from the ``Domain Admins`` group,
    such as ``Administrator``.
 
 #. Navigate to :menuselection:`Software --> Software update`.
@@ -112,7 +112,7 @@ Run the :command:`univention-upgrade` command to update your system.
 This command does the following:
 
 #. Checks for available release or application updates.
-#. Prompts you to confirm the installation.
+#. Prompts you to confirm the update.
 #. Installs the updates, including any package updates, such as errata updates.
 
 .. important::
@@ -130,17 +130,16 @@ Update through a policy
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure automatic updates for multiple computers at once
-using an *Automatic updates* policy.
+using the *Automatic updates* policy.
 Use this policy in the
 :external+uv-nubus-manual:ref:`nubus-computer-management`
-or :external+uv-nubus-manual:ref:`nubus-domain-ldap`
-management module.
+or :external+uv-nubus-manual:ref:`nubus-domain-ldap`.
 For information about policies,
 see :external+uv-nubus-manual:ref:`nubus-domain-policies`
 in :cite:t:`uv-nubus-manual`.
 
 :numref:`lifecycle-update-strategies-methods-policy-figure`
-shows a typical policy configuration:
+shows a typical policy configuration.
 
 .. _lifecycle-update-strategies-methods-policy-figure:
 
@@ -163,7 +162,8 @@ configure the following settings:
 
 #. Set the update schedule using a *Maintenance* policy,
    see
-   :external+uv-ucs-manual:ref:`computers-softwaremanagement-maintenance-policy`.
+   :external+uv-ucs-manual:ref:`computers-softwaremanagement-maintenance-policy`
+   in :cite:t:`ucs-manual`.
 
 #. Finally, you need to assign the policy,
    see :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`.
