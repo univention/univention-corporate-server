@@ -1,17 +1,21 @@
 .. SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _lifecyle-update-strategies:
+.. _lifecycle-update-strategies:
 
 Update strategies
 =================
 
+Keeping your Nubus for UCS systems current with the latest updates is essential for security,
+stability, and access to new features. Depending on your environment and operational needs,
+you can choose from different update strategies and methods.
+
 You can update Nubus for UCS systems in two ways:
-update individual systems using the *Software update* management module,
+by updating individual systems using the *Software update* management module
 or the command line.
 To update multiple systems at once, use a computer policy.
 
-.. _lifecyle-update-strategies-multiple-systems-environments:
+.. _lifecycle-update-strategies-multiple-systems-environments:
 
 Planning updates in multiserver environments
 --------------------------------------------
@@ -20,8 +24,7 @@ When you update multiple UCS systems,
 you need to plan your update order carefully.
 The Primary Directory Node holds the authoritative LDAP directory service
 and replicates it to all other LDAP servers in your domain.
-Because
-:external+uv-ucs-manual:ref:`domain-ldap-schema` can change during release updates,
+Because :external+uv-ucs-manual:ref:`domain-ldap-schema` can change during release updates,
 you **must always update the Primary Directory Node first**.
 
 .. TODO: Replace reference to LDAP schema after it's available in the document.
@@ -33,7 +36,7 @@ than one minor version older than your Primary Directory Node.
 For information about the versioning,
 see :ref:`lifecycle-versioning-release-types`.
 
-.. _lifecyle-update-strategies-methods:
+.. _lifecycle-update-strategies-methods:
 
 Update methods
 --------------
@@ -41,13 +44,13 @@ Update methods
 You have three ways to perform updates:
 through the graphical interface with the *Management UI*,
 the command line, or using automated policies.
-Choose the method that best fits your environment and operational needs.
+Choose the method appropriate for your environment and operational needs.
 
-Regardless of the update method that you decide for,
+Regardless of the update method that you decide on,
 the system writes all messages from the update process to
 the :file:`/var/log/univention/updater.log` file.
 
-.. _lifecyle-update-strategies-methods-management-module:
+.. _lifecycle-update-strategies-methods-management-module:
 
 Update through the management module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,10 +58,10 @@ Update through the management module
 You can use the *Software update* management module in the *Management UI*
 to install both release updates and errata updates on your system.
 
-:numref:`lifecyle-update-strategies-methods-management-module-figure`
+:numref:`lifecycle-update-strategies-methods-management-module-figure`
 shows the overview page of the management module.
 
-.. _lifecyle-update-strategies-methods-management-module-figure:
+.. _lifecycle-update-strategies-methods-management-module-figure:
 
 .. figure:: /images/software_onlineupdate.*
    :alt: Updating a Nubus for UCS system through the 'Software update' management module
@@ -79,7 +82,7 @@ To install release updates, perform these steps:
 
 Release updates
    The *Release updates* section shows the installed version
-   and for updates available Nubus for UCS versions.
+   and updates available Nubus for UCS versions.
 
    To update to the selected target version,
    click :guilabel:`Install release updates`.
@@ -90,19 +93,19 @@ Release updates
    to reach your selected version.
 
 Package updates
-   The *Package updates* section informs about available errata updates.
+   The *Package updates* section shows the available errata updates.
 
    To install errata updates,
    click :guilabel:`Install available errata updates`.
    This installs all available errata updates for your current release
    and installed components.
 
-.. _lifecyle-update-strategies-methods-command-line:
+.. _lifecycle-update-strategies-methods-command-line:
 
 Update through the command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You must have ``root`` user rights and signed in on a terminal
+You must have ``root`` user rights and work on a terminal
 to perform the following steps.
 
 Run the :command:`univention-upgrade` command to update your system.
@@ -121,7 +124,7 @@ This command does the following:
    to ensure the update continues despite network issues.
    All system roles have both programs installed.
 
-.. _lifecyle-update-strategies-methods-policy:
+.. _lifecycle-update-strategies-methods-policy:
 
 Update through a policy
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,10 +139,10 @@ For information about policies,
 see :external+uv-nubus-manual:ref:`nubus-domain-policies`
 in :cite:t:`uv-nubus-manual`.
 
-:numref:`lifecyle-update-strategies-methods-policy-figure`
+:numref:`lifecycle-update-strategies-methods-policy-figure`
 shows a typical policy configuration:
 
-.. _lifecyle-update-strategies-methods-policy-figure:
+.. _lifecycle-update-strategies-methods-policy-figure:
 
 .. figure:: /images/software_policy.*
    :alt: Updating UCS systems using an update policy
@@ -165,14 +168,14 @@ configure the following settings:
 #. Finally, you need to assign the policy,
    see :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`.
 
-.. _lifecyle-update-strategies-post-processing:
+.. _lifecycle-update-strategies-post-processing:
 
 Post-processing after release updates
 -------------------------------------
 
 After you complete a release update,
 you must verify
-whether you need to added or updated join scripts.
+whether you need to run new or updated join scripts.
 
 You can verify and run join scripts in the following ways:
 
@@ -185,7 +188,7 @@ in :cite:t:`ucs-manual`.
 
 .. TODO: Replace cross reference about UCS domain join with internal reference.
 
-.. _lifecyle-update-strategies-troubleshooting:
+.. _lifecycle-update-strategies-troubleshooting:
 
 Troubleshooting update problems
 -------------------------------
@@ -198,7 +201,7 @@ Update log
 
 Configuration registry backup
    Before the update, the system saves the status of all Univention configuration registry variables to
-   :file:`/var/univention-backup/update-to-{TARGETRELEASEVERSION}/`.
+   :file:`/var/univention-backup/update-to-{<TARGETRELEASEVERSION>}/`.
    Use this directory to verify which configuration values changed during the update.
 
    This information helps you identify
