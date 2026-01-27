@@ -7,6 +7,6 @@ fix: 2.0.1
 desc: |
  This update addresses the following issues:
  * The listener module `nubus-provisiong.py`
-   is no capable of reconnecting to `NATS` without
+   is now capable of reconnecting to `NATS` without
    a restart of the listener being necessary.
 bug: [58991]
