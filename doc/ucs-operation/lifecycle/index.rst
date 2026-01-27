@@ -12,4 +12,5 @@ Lifecycle
 .. toctree::
 
    versioning
+   update-strategies
    perform-updates
