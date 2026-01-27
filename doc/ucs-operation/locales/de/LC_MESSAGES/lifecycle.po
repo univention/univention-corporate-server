@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-27 14:23+0000\n"
-"PO-Revision-Date: 2026-01-27 15:39+0100\n"
+"POT-Creation-Date: 2026-01-27 15:03+0000\n"
+"PO-Revision-Date: 2026-01-27 16:11+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -170,7 +170,7 @@ msgstr "Entfernen veralteter Paketkonfigurationen."
 
 #: ../../lifecycle/update-strategies.rst:7
 msgid "Update strategies"
-msgstr "Update-Strategien"
+msgstr "Update Strategien"
 
 #: ../../lifecycle/update-strategies.rst:9
 msgid ""
@@ -179,10 +179,10 @@ msgid ""
 "on your environment and operational needs, you can choose from different "
 "update strategies and methods."
 msgstr ""
-"Die Aktualisierung Ihrer Nubus für UCS Systeme mit den neuesten Updates ist "
-"wesentlich für Sicherheit, Stabilität und Zugriff auf neue Funktionen. Je "
-"nach Ihrer Umgebung und betrieblichen Anforderungen können Sie aus "
-"verschiedenen Update-Strategien und -Methoden wählen."
+"Die Aktualisierung Ihrer Nubus für UCS Systeme mit den neuesten Updates "
+"ist wesentlich für Sicherheit, Stabilität und Zugriff auf neue "
+"Funktionen. Je nach Ihrer Umgebung und betrieblichen Anforderungen können"
+" Sie aus verschiedenen Update Strategien und Methoden wählen."
 
 #: ../../lifecycle/update-strategies.rst:13
 msgid ""
@@ -191,13 +191,13 @@ msgid ""
 "line. To update multiple systems at once, use a computer policy."
 msgstr ""
 "Sie können Nubus für UCS Systeme auf zwei Arten aktualisieren: durch die "
-"Aktualisierung einzelner Systeme mit dem Verwaltungsmodul *Software-Update* "
-"oder der Befehlszeile. Um mehrere Systeme auf einmal zu aktualisieren, "
-"verwenden Sie eine Computerrichtlinie."
+"Aktualisierung einzelner Systeme mit dem Verwaltungsmodul *Software-"
+"Aktualisierung* oder der Befehlszeile. Um mehrere Systeme auf einmal zu "
+"aktualisieren, verwenden Sie eine Richtlinie für Computer."
 
 #: ../../lifecycle/update-strategies.rst:21
 msgid "Planning updates in multiserver environments"
-msgstr "Planen Sie Updates in Multi-Server-Umgebungen"
+msgstr "Planen Sie Updates in Multiserver-Umgebungen"
 
 #: ../../lifecycle/update-strategies.rst:23
 msgid ""
@@ -208,12 +208,12 @@ msgid ""
 "change during release updates, you **must always update the Primary "
 "Directory Node first**."
 msgstr ""
-"Wenn Sie mehrere UCS Systeme aktualisieren, müssen Sie Ihre Update-"
-"Reihenfolge sorgfältig planen. Der Primary Directory Node enthält den "
-"autoritativen LDAP-Verzeichnisdienst und repliziert ihn auf alle anderen "
-"LDAP-Server in Ihrer Domäne. Da sich :external+uv-ucs-manual:ref:`domain-"
-"ldap-schema` während Release-Updates ändern kann, **müssen Sie immer zuerst "
-"den Primary Directory Node aktualisieren**."
+"Wenn Sie mehrere UCS Systeme aktualisieren, müssen Sie die Reihenfolge "
+"für die Updates sorgfältig planen. Der Primary Directory Node enthält den"
+" autoritativen LDAP-Verzeichnisdienst und repliziert ihn auf alle anderen"
+" LDAP-Server in Ihrer Domäne. Da sich :external+uv-ucs-manual:ref"
+":`domain-ldap-schema` während Release-Aktualisierung ändern können, "
+"**müssen Sie immer zuerst den Primary Directory Node aktualisieren**."
 
 #: ../../lifecycle/update-strategies.rst:32
 msgid ""
@@ -223,15 +223,16 @@ msgid ""
 "Primary Directory Node. For information about the versioning, see :ref"
 ":`lifecycle-versioning-release-types`."
 msgstr ""
-"Aktualisieren Sie nach Möglichkeit alle Ihre Nubus für UCS Systeme in einem "
-"einzigen Wartungsfenster. Falls Sie dies nicht tun können, stellen Sie "
-"sicher, dass alle nicht aktualisierten Systeme nicht mehr als eine Minor "
-"Version älter als Ihr Primary Directory Node sind. Informationen zur "
-"Versionierung finden Sie unter :ref:`lifecycle-versioning-release-types`."
+"Aktualisieren Sie nach Möglichkeit alle Ihre Nubus für UCS Systeme in "
+"einem einzigen Wartungsfenster. Falls Sie dies nicht tun können, stellen "
+"Sie sicher, dass alle nicht aktualisierten Systeme nicht mehr als eine "
+"Minor Version älter als Ihr Primary Directory Node sind. Informationen "
+"zur Versionierung finden Sie unter :ref:`lifecycle-versioning-release-"
+"types`."
 
 #: ../../lifecycle/update-strategies.rst:42
 msgid "Update methods"
-msgstr "Update-Methoden"
+msgstr "Update Methoden"
 
 #: ../../lifecycle/update-strategies.rst:44
 msgid ""
@@ -241,8 +242,8 @@ msgid ""
 msgstr ""
 "Sie haben drei Möglichkeiten, Updates durchzuführen: über die grafische "
 "Oberfläche mit der *Management UI*, die Befehlszeile oder automatisierte "
-"Richtlinien. Wählen Sie die Methode, die für Ihre Umgebung und betrieblichen "
-"Anforderungen geeignet ist."
+"Richtlinien. Wählen Sie die Methode, die für Ihre Umgebung und "
+"betrieblichen Anforderungen geeignet ist."
 
 #: ../../lifecycle/update-strategies.rst:49
 msgid ""
@@ -250,8 +251,8 @@ msgid ""
 " messages from the update process to the "
 ":file:`/var/log/univention/updater.log` file."
 msgstr ""
-"Unabhängig davon, für welche Update-Methode Sie sich entscheiden, schreibt "
-"das System alle Meldungen aus dem Update-Prozess in die Datei "
+"Unabhängig davon, für welche Update Methode Sie sich entscheiden, "
+"schreibt das System alle Meldungen aus dem Update-Prozess in die Datei "
 ":file:`/var/log/univention/updater.log`."
 
 #: ../../lifecycle/update-strategies.rst:56
@@ -263,17 +264,17 @@ msgid ""
 "You can use the *Software update* management module in the *Management "
 "UI* to install both release updates and errata updates on your system."
 msgstr ""
-"Sie können das Verwaltungsmodul *Software-Update* in der *Management UI* "
-"verwenden, um sowohl Release-Updates als auch Errata-Updates auf Ihrem "
-"System zu installieren."
+"Sie können das Verwaltungsmodul *Software-Aktualisierung* in der "
+"*Management UI* verwenden, um sowohl Release-Aktualisierung als auch "
+"Errata-Updates auf Ihrem System zu installieren."
 
 #: ../../lifecycle/update-strategies.rst:61
 msgid ""
 ":numref:`lifecycle-update-strategies-methods-management-module-figure` "
 "shows the overview page of the management module."
 msgstr ""
-":numref:`lifecycle-update-strategies-methods-management-module-figure` zeigt "
-"die Übersichtsseite des Verwaltungsmoduls."
+":numref:`lifecycle-update-strategies-methods-management-module-figure` "
+"zeigt die Übersichtsseite des Verwaltungsmoduls."
 
 #: ../../lifecycle/update-strategies.rst:66
 msgid ""
@@ -281,7 +282,7 @@ msgid ""
 "module"
 msgstr ""
 "Aktualisierung eines Nubus für UCS Systems über das Verwaltungsmodul "
-"'Software-Update'"
+"'Software-Aktualisierung'"
 
 #: ../../lifecycle/update-strategies.rst:69
 msgid ""
@@ -289,24 +290,25 @@ msgid ""
 "module"
 msgstr ""
 "Aktualisierung eines Nubus für UCS Systems über das Verwaltungsmodul "
-"*Software-Update*"
+"*Software-Aktualisierung*"
 
 #: ../../lifecycle/update-strategies.rst:71
 msgid "To install release updates, perform these steps:"
-msgstr "Führen Sie diese Schritte aus, um Release-Updates zu installieren:"
+msgstr "Führen Sie diese Schritte aus, um Release-Aktualisierung zu installieren:"
 
 #: ../../lifecycle/update-strategies.rst:73
 msgid ""
 ":ref:`Sign in <ucs-operation-auth-sign-in>` to the *Management UI* with a"
-" user account in the ``Domain Admins`` group, such as ``Administrator``."
+" user account from the ``Domain Admins`` group, such as "
+"``Administrator``."
 msgstr ""
-":ref:`Melden Sie sich <ucs-operation-auth-sign-in>` bei der *Management UI* "
-"mit einem Benutzerkonto in der Gruppe ``Domain Admins`` an, z. B. "
+":ref:`Melden Sie sich <ucs-operation-auth-sign-in>` an der *Management "
+"UI* mit einem Benutzerkonto aus der Gruppe ``Domain Admins`` an, z.B. "
 "``Administrator``."
 
 #: ../../lifecycle/update-strategies.rst:77
 msgid "Navigate to :menuselection:`Software --> Software update`."
-msgstr "Navigieren Sie zu :menuselection:`Software --> Software-Update`."
+msgstr "Navigieren Sie zu :menuselection:`Software --> Software-Aktualisierung`."
 
 #: ../../lifecycle/update-strategies.rst:79
 msgid ""
@@ -314,21 +316,21 @@ msgid ""
 "updates`. Use this, for example, when a component provides an updated "
 "version."
 msgstr ""
-"Klicken Sie auf :guilabel:`Nach Package-Updates suchen`, um die "
-"Paketquellen zu aktualisieren. Verwenden Sie dies z. B., wenn eine Komponente "
-"eine aktualisierte Version bietet."
+"Klicken Sie auf :guilabel:`Nach Paket-Aktualisierungen suchen`, um die "
+"Paketquellen zu aktualisieren. Verwenden Sie dies zum Beispiel, wenn eine"
+" Komponente eine aktualisierte Version bietet."
 
 #: ../../lifecycle/update-strategies.rst:83
 msgid "Release updates"
-msgstr "Release Updates"
+msgstr "Release-Aktualisierungen"
 
 #: ../../lifecycle/update-strategies.rst:84
 msgid ""
 "The *Release updates* section shows the installed version and updates "
 "available Nubus for UCS versions."
 msgstr ""
-"Der Abschnitt *Release Updates* zeigt die installierte Version und verfügbare "
-"Nubus für UCS Versionen an."
+"Der Abschnitt *Release-Aktualisierungen* zeigt die installierte Version "
+"und verfügbare Nubus für UCS Versionen an."
 
 #: ../../lifecycle/update-strategies.rst:87
 msgid ""
@@ -338,20 +340,22 @@ msgid ""
 "update. The system automatically installs all intermediate versions "
 "needed to reach your selected version."
 msgstr ""
-"Klicken Sie auf :guilabel:`Release-Updates installieren`, um auf die "
-"ausgewählte Zielversion zu aktualisieren. Nubus für UCS zeigt Update-"
-"Notizen mit Informationen zu Diensteinschränkungen während des Updates an "
-"und fordert Sie auf, das Update zu bestätigen. Das System installiert "
-"automatisch alle zwischengeschalteten Versionen, die benötigt werden, um "
-"Ihre ausgewählte Version zu erreichen."
+"Klicken Sie auf :guilabel:`Release-Aktualisierung installieren`, um auf "
+"die ausgewählte Zielversion zu aktualisieren. Nubus für UCS zeigt "
+"Hinweise zur Aktualisierung mit Informationen zu Diensteinschränkungen "
+"während des Updates an und fordert Sie auf, das Update zu bestätigen. Das"
+" System installiert automatisch alle Zwischenversionen, die benötigt "
+"werden, um Ihre ausgewählte Version zu erreichen."
 
 #: ../../lifecycle/update-strategies.rst:95
 msgid "Package updates"
-msgstr "Package Updates"
+msgstr "Paket-Aktualisierungen"
 
 #: ../../lifecycle/update-strategies.rst:96
 msgid "The *Package updates* section shows the available errata updates."
-msgstr "Der Abschnitt *Package-Updates* zeigt die verfügbaren Errata-Updates an."
+msgstr ""
+"Der Abschnitt *Paket-Aktualisierungen* zeigt die verfügbaren Errata-"
+"Updates an."
 
 #: ../../lifecycle/update-strategies.rst:98
 msgid ""
@@ -372,32 +376,32 @@ msgid ""
 "You must have ``root`` user rights and work on a terminal to perform the "
 "following steps."
 msgstr ""
-"Sie müssen ``root`` Benutzerrechte haben und an einem Terminal arbeiten, um "
-"die folgenden Schritte auszuführen."
+"Sie müssen ``root`` Benutzerrechte haben und an einem Terminal arbeiten, "
+"um die folgenden Schritte auszuführen."
 
 #: ../../lifecycle/update-strategies.rst:111
 msgid ""
 "Run the :command:`univention-upgrade` command to update your system. This"
 " command does the following:"
 msgstr ""
-"Führen Sie den Befehl :command:`univention-upgrade` aus, um Ihr System zu "
-"aktualisieren. Dieser Befehl führt Folgendes durch:"
+"Führen Sie den Befehl :command:`univention-upgrade` aus, um Ihr System zu"
+" aktualisieren. Dieser Befehl führt Folgendes durch:"
 
 #: ../../lifecycle/update-strategies.rst:114
 msgid "Checks for available release or application updates."
-msgstr "Überprüft auf verfügbare Release- oder Anwendungs-Updates."
+msgstr "Überprüft auf verfügbare Release- oder Anwendungsaktualisierungen."
 
 #: ../../lifecycle/update-strategies.rst:115
-msgid "Prompts you to confirm the installation."
-msgstr "Fordert Sie auf, die Installation zu bestätigen."
+msgid "Prompts you to confirm the update."
+msgstr "Fordert Sie auf, die Aktualisierung zu bestätigen."
 
 #: ../../lifecycle/update-strategies.rst:116
 msgid ""
 "Installs the updates, including any package updates, such as errata "
 "updates."
 msgstr ""
-"Installiert die Updates, einschließlich aller Package-Updates wie Errata-"
-"Updates."
+"Installiert die Updates, einschließlich aller Paket-Aktualisierungen wie "
+"Errata-Updates."
 
 #: ../../lifecycle/update-strategies.rst:120
 msgid ""
@@ -408,9 +412,9 @@ msgid ""
 msgstr ""
 "Vermeiden Sie Remote-Updates über SSH, da Netzwerkunterbrechungen das "
 "Update unterbrechen können. Falls Sie über eine Netzwerkverbindung "
-"aktualisieren müssen, verwenden Sie :program:`screen` oder :program:`at`, "
-"um sicherzustellen, dass das Update trotz Netzwerkproblemen fortgesetzt wird. "
-"Alle Systemrollen haben beide Programme installiert."
+"aktualisieren müssen, verwenden Sie :program:`screen` oder :program:`at`,"
+" um sicherzustellen, dass das Update trotz Netzwerkproblemen fortgesetzt "
+"wird. Alle Systemrollen haben beide Programme installiert."
 
 #: ../../lifecycle/update-strategies.rst:130
 msgid "Update through a policy"
@@ -419,26 +423,26 @@ msgstr "Update über eine Richtlinie"
 #: ../../lifecycle/update-strategies.rst:132
 msgid ""
 "You can configure automatic updates for multiple computers at once using "
-"an *Automatic updates* policy. Use this policy in the :external+uv-nubus-"
-"manual:ref:`nubus-computer-management` or :external+uv-nubus-manual:ref"
-":`nubus-domain-ldap` management module. For information about policies, "
-"see :external+uv-nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-"
-"nubus-manual`."
+"the *Automatic updates* policy. Use this policy in the :external+uv-"
+"nubus-manual:ref:`nubus-computer-management` or :external+uv-nubus-"
+"manual:ref:`nubus-domain-ldap`. For information about "
+"policies, see :external+uv-nubus-manual:ref:`nubus-domain-policies` in "
+":cite:t:`uv-nubus-manual`."
 msgstr ""
-"Sie können automatische Updates für mehrere Computer gleichzeitig mithilfe "
-"einer Richtlinie *Automatische Updates* konfigurieren. Verwenden Sie diese "
-"Richtlinie im Verwaltungsmodul :external+uv-nubus-manual:ref:`nubus-"
-"computer-management` oder :external+uv-nubus-manual:ref:`nubus-domain-ldap`. "
-"Informationen zu Richtlinien finden Sie unter :external+uv-nubus-"
-"manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+"Sie können automatische Updates für mehrere Computer gleichzeitig "
+"mithilfe der Richtlinie *Automatische Updates* konfigurieren. Verwenden "
+"Sie diese Richtlinie im :external+uv-nubus-manual:ref"
+":`nubus-computer-management` oder :external+uv-nubus-manual:ref:`nubus-"
+"domain-ldap`. Informationen zu Richtlinien finden Sie unter :external+uv-"
+"nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
 
 #: ../../lifecycle/update-strategies.rst:142
 msgid ""
 ":numref:`lifecycle-update-strategies-methods-policy-figure` shows a "
-"typical policy configuration:"
+"typical policy configuration."
 msgstr ""
 ":numref:`lifecycle-update-strategies-methods-policy-figure` zeigt eine "
-"typische Richtlinienkonfiguration:"
+"typische Richtlinienkonfiguration."
 
 #: ../../lifecycle/update-strategies.rst:147
 #: ../../lifecycle/update-strategies.rst:150
@@ -450,8 +454,8 @@ msgid ""
 "To update Nubus for UCS through a policy, configure the following "
 "settings:"
 msgstr ""
-"Konfigurieren Sie die folgenden Einstellungen, um Nubus für UCS über eine "
-"Richtlinie zu aktualisieren:"
+"Konfigurieren Sie die folgenden Einstellungen, um Nubus für UCS über eine"
+" Richtlinie zu aktualisieren:"
 
 #: ../../lifecycle/update-strategies.rst:155
 msgid ""
@@ -464,8 +468,8 @@ msgstr ""
 #: ../../lifecycle/update-strategies.rst:158
 msgid "Activate the *Activate release updates* field to enable release updates."
 msgstr ""
-"Aktivieren Sie das Feld *Release-Updates aktivieren*, um Release-Updates zu "
-"aktivieren."
+"Aktivieren Sie das Feld *Aktiviere Release-Updates*, um Release-"
+"Aktualisierung zu aktivieren."
 
 #: ../../lifecycle/update-strategies.rst:160
 msgid ""
@@ -473,38 +477,38 @@ msgid ""
 "example ``5.2-4``. If you leave this blank, systems update to the highest"
 " available version."
 msgstr ""
-"Geben Sie eine Versionsnummer im Feld *Auf diese UCS-Version aktualisieren* "
-"ein, z. B. ``5.2-4``. Wenn Sie dieses Feld leer lassen, werden Systeme auf "
-"die höchste verfügbare Version aktualisiert."
+"Geben Sie eine Versionsnummer im Feld *Bis zu dieser UCS-Version "
+"aktualisieren* ein, z.B. ``5.2-4``. Wenn Sie dieses Feld leer lassen, "
+"werden Systeme auf die höchste verfügbare Version aktualisiert."
 
 #: ../../lifecycle/update-strategies.rst:164
 msgid ""
 "Set the update schedule using a *Maintenance* policy, see :external+uv-"
-"ucs-manual:ref:`computers-softwaremanagement-maintenance-policy`."
+"ucs-manual:ref:`computers-softwaremanagement-maintenance-policy` :cite:t:`ucs-manual`."
 msgstr ""
-"Legen Sie den Update-Zeitplan mit einer Richtlinie vom Typ *Wartung* fest, "
-"siehe :external+uv-ucs-manual:ref:`computers-softwaremanagement-maintenance-"
-"policy`."
+"Legen Sie den Update-Zeitplan mit einer Richtlinie vom Typ *Wartung* "
+"fest, siehe :external+uv-ucs-manual:ref:`computers-softwaremanagement-"
+"maintenance-policy` im :cite:t:`ucs-manual`."
 
 #: ../../lifecycle/update-strategies.rst:168
 msgid ""
 "Finally, you need to assign the policy, see :external+uv-nubus-manual:ref"
 ":`nubus-domain-policies-assign`."
 msgstr ""
-"Abschließend müssen Sie die Richtlinie zuweisen, siehe :external+uv-nubus-"
-"manual:ref:`nubus-domain-policies-assign`."
+"Abschließend müssen Sie die Richtlinie zuweisen, siehe :external+uv-"
+"nubus-manual:ref:`nubus-domain-policies-assign`."
 
 #: ../../lifecycle/update-strategies.rst:174
 msgid "Post-processing after release updates"
-msgstr "Nachbearbeitung nach Release-Updates"
+msgstr "Nachbearbeitung nach Release-Aktualisierung"
 
 #: ../../lifecycle/update-strategies.rst:176
 msgid ""
 "After you complete a release update, you must verify whether you need to "
 "run new or updated join scripts."
 msgstr ""
-"Nach Abschluss eines Release-Updates müssen Sie überprüfen, ob Sie neue oder "
-"aktualisierte Join-Skripte ausführen müssen."
+"Nach Abschluss eines Release-Aktualisierung müssen Sie überprüfen, ob Sie"
+" neue oder aktualisierte Join-Skripte ausführen müssen."
 
 #: ../../lifecycle/update-strategies.rst:180
 msgid "You can verify and run join scripts in the following ways:"
@@ -512,11 +516,13 @@ msgstr "Sie können Join-Skripte auf folgende Weise überprüfen und ausführen:
 
 #: ../../lifecycle/update-strategies.rst:182
 msgid "Use the *Domain join* management module in the *Management UI*."
-msgstr "Verwenden Sie das Verwaltungsmodul *Domain Join* in der *Management UI*."
+msgstr "Verwenden Sie das *Domänenbeitritt* Verwaltungsmodul in der *Management UI*."
 
 #: ../../lifecycle/update-strategies.rst:183
 msgid "Run the command-line program :command:`univention-run-join-scripts`."
-msgstr "Führen Sie das Befehlszeilenprogramm :command:`univention-run-join-scripts` aus."
+msgstr ""
+"Führen Sie das Befehlszeilenprogramm :command:`univention-run-join-"
+"scripts` aus."
 
 #: ../../lifecycle/update-strategies.rst:185
 msgid ""
@@ -549,8 +555,8 @@ msgid ""
 " messages and diagnostic information."
 msgstr ""
 "Das System schreibt detaillierte Meldungen in die Datei "
-":file:`/var/log/univention/updater.log`. Überprüfen Sie diese Datei zuerst "
-"auf Fehlermeldungen und Diagnoseinformationen."
+":file:`/var/log/univention/updater.log`. Überprüfen Sie diese Datei "
+"zuerst auf Fehlermeldungen und Diagnoseinformationen."
 
 #: ../../lifecycle/update-strategies.rst:202
 msgid "Configuration registry backup"
@@ -564,10 +570,10 @@ msgid ""
 "to-{<TARGETRELEASEVERSION>}/`. Use this directory to verify which "
 "configuration values changed during the update."
 msgstr ""
-"Vor dem Update speichert das System den Status aller Univention-"
-"Konfigurationsregistrierungsvariablen in :file:`/var/univention-backup/"
-"update-to-{<TARGETRELEASEVERSION>}/`. Verwenden Sie dieses Verzeichnis, um "
-"zu überprüfen, welche Konfigurationswerte sich während des Updates "
+"Vor dem Update speichert das System den Status aller Univention "
+"Configuration Registry Variablen in :file:`/var/univention-backup"
+"/update-to-{<TARGETRELEASEVERSION>}/`. Verwenden Sie dieses Verzeichnis, "
+"um zu überprüfen, welche Konfigurationswerte sich während des Updates "
 "geändert haben."
 
 #: ../../lifecycle/update-strategies.rst:207
@@ -576,7 +582,8 @@ msgid ""
 "correctly and which system configurations it affected."
 msgstr ""
 "Diese Informationen helfen Ihnen zu bestimmen, ob das Update korrekt "
-"abgeschlossen wurde und welche Systemkonfigurationen davon betroffen waren."
+"abgeschlossen wurde und welche Systemkonfigurationen davon betroffen "
+"waren."
 
 #: ../../lifecycle/versioning.rst:7
 msgid "Nubus for UCS versioning"
@@ -609,8 +616,8 @@ msgid ""
 "Nubus for UCS version numbers consist of three parts: "
 "``[Major].[Minor]-[Patch level]``."
 msgstr ""
-"Nubus für UCS Versionsnummern bestehen aus drei Teilen: "
-"``[Major].[Minor]-[Patch-Level]``."
+"Nubus für UCS Versionsnummern bestehen aus drei Teilen: ``[Major].[Minor"
+"]-[Patch-Level]``."
 
 #: ../../lifecycle/versioning.rst:23
 msgid ""
@@ -630,7 +637,9 @@ msgstr "Unterschiedliche Release-Typen und Zyklen"
 
 #: ../../lifecycle/versioning.rst:32
 msgid "Univention releases four types of updates on different schedules:"
-msgstr "Univention veröffentlicht vier Arten von Updates nach verschiedenen Zeitplänen:"
+msgstr ""
+"Univention veröffentlicht vier Arten von Updates nach verschiedenen "
+"Zeitplänen:"
 
 #: ../../lifecycle/versioning.rst:34
 msgid "Major releases"
@@ -669,8 +678,8 @@ msgid ""
 "Published approximately every 3 months. They combine all errata updates "
 "into a single, tested release."
 msgstr ""
-"Veröffentlicht ungefähr alle 3 Monate. Sie kombinieren alle Errata-Updates "
-"in einer einzigen, getesteten Version."
+"Veröffentlicht ungefähr alle 3 Monate. Sie kombinieren alle Errata-"
+"Updates in einer einzigen, getesteten Version."
 
 #: ../../lifecycle/versioning.rst:48
 msgid "Errata updates"
@@ -687,7 +696,7 @@ msgstr ""
 "Veröffentlicht während des Wartungszeitraums einer Minor Release. Sie "
 "bieten Sicherheitskorrektionen, Fehlerbehebungen und kleine "
 "Verbesserungen. Errata-Updates zielen auf spezifische Minor Releases ab, "
-"z. B. Nubus für UCS 5.2, und Sie können sie auf jeder Patch-Level-Version "
+"z.B. Nubus für UCS 5.2, und Sie können sie auf jeder Patch-Level-Version "
 "installieren. Einen Überblick finden Sie unter https://errata.software-"
 "univention.de/."
 
@@ -729,9 +738,9 @@ msgid ""
 "patch level release, providing a regular checkpoint for testing and "
 "deployment."
 msgstr ""
-"Alle 3 Monate bündelt Univention gesammelte Errata-Updates in einer Patch-"
-"Level-Version und bietet somit einen regelmäßigen Kontrollpunkt für Tests "
-"und Bereitstellung."
+"Alle 3 Monate bündelt Univention gesammelte Errata-Updates in einer "
+"Patch-Level-Version und bietet somit einen regelmäßigen Kontrollpunkt für"
+" Tests und Bereitstellung."
 
 #: ../../lifecycle/versioning.rst:75
 msgid ""
@@ -740,8 +749,8 @@ msgid ""
 "errata updates continuously."
 msgstr ""
 "Dies gewährleistet vorhersehbare Zyklen: Major Releases alle 3-4 Jahre, "
-"Minor Releases alle 10-12 Monate, Patch-Level-Versionen alle 3 Monate und "
-"kontinuierlich Errata-Updates."
+"Minor Releases alle 10-12 Monate, Patch-Level-Versionen alle 3 Monate und"
+" kontinuierlich Errata-Updates."
 
 #: ../../lifecycle/versioning.rst:81
 msgid "Plan for support and maintenance periods"
@@ -834,3 +843,4 @@ msgid ""
 msgstr ""
 "Um Newsletter zu abonnieren, besuchen Sie `Univention Newsletter "
 "<https://www.univention.com/about-us/newsletter/>`_."
+
