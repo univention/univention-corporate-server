@@ -6,142 +6,201 @@
 Update strategies
 =================
 
-There are two ways to update UCS systems; either on individual systems (via UMC
-module :guilabel:`Software update` or command line) or via a computer policy for
-larger groups of UCS systems.
+You can update Nubus for UCS systems in two ways:
+update individual systems using the *Software update* management module,
+or the command line.
+To update multiple systems at once, use a computer policy.
 
-.. _computers-update-strategy-in-environments-with-more-than-one-ucs-system:
+.. _lifecyle-update-strategies-multiple-systems-environments:
 
-Update strategy in environments with more than one UCS system
--------------------------------------------------------------
+Planning updates in multiserver environments
+--------------------------------------------
 
-In environments with more than one UCS system, the update order of the
-UCS systems must be borne in mind.
+When you update multiple UCS systems,
+you need to plan your update order carefully.
+The Primary Directory Node holds the authoritative LDAP directory service
+and replicates it to all other LDAP servers in your domain.
+Because
+:external+uv-ucs-manual:ref:`domain-ldap-schema` can change during release updates,
+you **must always update the Primary Directory Node first**.
 
-The authoritative version of the LDAP directory service is maintained on the
-|UCSPRIMARYDN| and replicated on all the remaining LDAP servers of the UCS
-domain. As changes to the LDAP schemes (see :ref:`domain-ldap-schema`) can occur
-during release updates, the |UCSPRIMARYDN| **must always be the first system**
-to be updated during a release update.
+.. TODO: Replace reference to LDAP schema after it's available in the document.
 
-It is generally advisable to update all UCS systems in one maintenance
-window whenever possible. If this is not possible, all not-updated UCS
-systems should only be one release version older compared with the
-|UCSPRIMARYDN|.
+Whenever possible, update all your Nubus for UCS systems in a single maintenance window.
+If you can't do this,
+ensure that any systems you haven't updated are no more
+than one minor version older than your Primary Directory Node.
+For information about the versioning,
+see :ref:`lifecycle-versioning-release-types`.
 
-.. _computers-updating-individual-systems-via-the-umc:
+.. _lifecyle-update-strategies-methods:
 
-Updating individual systems via |UCSUMC| module
------------------------------------------------
+Update methods
+--------------
 
-The UMC module :guilabel:`Software update` allows the installation of release
-updates and errata updates.
+You have three ways to perform updates:
+through the graphical interface with the *Management UI*,
+the command line, or using automated policies.
+Choose the method that best fits your environment and operational needs.
 
-:numref:`software-umc-update` shows the overview page of the module. The
-currently installed version is displayed under :guilabel:`Release updates`.
+Regardless of the update method that you decide for,
+the system writes all messages from the update process to
+the :file:`/var/log/univention/updater.log` file.
 
-.. _software-umc-update:
+.. _lifecyle-update-strategies-methods-management-module:
+
+Update through the management module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can use the *Software update* management module in the *Management UI*
+to install both release updates and errata updates on your system.
+
+:numref:`lifecyle-update-strategies-methods-management-module-figure`
+shows the overview page of the management module.
+
+.. _lifecyle-update-strategies-methods-management-module-figure:
 
 .. figure:: /images/software_onlineupdate.*
-   :alt: Updating a UCS system via UMC module 'Software update'
+   :alt: Updating a Nubus for UCS system through the 'Software update' management module
 
-   Updating a UCS system via UMC module *Software update*
+   Updating a Nubus for UCS system through the *Software update* management module
 
+To install release updates, perform these steps:
 
-If a newer UCS version is available, a selection list is displayed.
-After clicking on :guilabel:`Install release updates` and
-confirmation all updates up to the respective version are installed.
-Before the installation process is started, a message will be displayed
-informing the user of possible restrictions of the server's services
-during the update. Any intermediate versions are also installed
-automatically.
+#. :ref:`Sign in <ucs-operation-auth-sign-in>`
+   to the *Management UI* with a user account in the ``Domain Admins`` group,
+   such as ``Administrator``.
 
-Clicking on :guilabel:`Install available errata updates`
-installs all the available errata updates for the current release and
-all installed components.
+#. Navigate to :menuselection:`Software --> Software update`.
 
-:guilabel:`Check for package updates` activates an update of
-the package sources currently entered. This can be used, for example, if
-an updated version is provided for a component.
+#. To refresh the package sources,
+   click :guilabel:`Check for package updates`.
+   Use this, for example, when a component provides an updated version.
 
-The messages created during the update are written to the file
-:file:`/var/log/univention/updater.log`
+Release updates
+   The *Release updates* section shows the installed version
+   and for updates available Nubus for UCS versions.
 
-.. _computers-updating-individual-systems-via-the-command-line:
+   To update to the selected target version,
+   click :guilabel:`Install release updates`.
+   Nubus for UCS shows update notes
+   with information about service restrictions during the update
+   and asks you to confirm the update.
+   The system automatically installs all intermediate versions needed
+   to reach your selected version.
 
-Updating individual systems via the command line
-------------------------------------------------
+Package updates
+   The *Package updates* section informs about available errata updates.
 
-The following steps must be performed with ``root`` user rights.
+   To install errata updates,
+   click :guilabel:`Install available errata updates`.
+   This installs all available errata updates for your current release
+   and installed components.
 
-An individual UCS system can be updated using the :command:`univention-upgrade`
-command in the command line. A check is performed to establish whether new
-release or application updates are available and these are then installed if a
-prompt is confirmed. In addition, package updates are also performed (e.g., in
-the scope of an errata update).
+.. _lifecyle-update-strategies-methods-command-line:
 
-Remote updating over SSH is not advisable as this may result in the update
-procedure being aborted. If updates should occur over a network connection
-nevertheless, it must be verified that the update continues despite
-disconnection from the network. This can be done, for example, using the tools
-:program:`screen` and :program:`at`, which are installed on all system roles.
+Update through the command line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The messages created during the update are written to the file
-:file:`/var/log/univention/updater.log`
+You must have ``root`` user rights and signed in on a terminal
+to perform the following steps.
 
-.. _computers-softwaremanagement-release-policy:
+Run the :command:`univention-upgrade` command to update your system.
+This command does the following:
 
-Updating systems via a policy
------------------------------
+#. Checks for available release or application updates.
+#. Prompts you to confirm the installation.
+#. Installs the updates, including any package updates, such as errata updates.
 
-An update for more than one computer can be configured with an
-*Automatic updates* policy in the UMC modules :guilabel:`Computers`
-and :guilabel:`LDAP directory` (see :ref:`central-policies`).
+.. important::
 
-.. _software-policy-update:
+   Avoid updating remotely over SSH,
+   as network disconnections can interrupt the update.
+   If you must update over a network connection,
+   use :program:`screen` or :program:`at`
+   to ensure the update continues despite network issues.
+   All system roles have both programs installed.
+
+.. _lifecyle-update-strategies-methods-policy:
+
+Update through a policy
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure automatic updates for multiple computers at once
+using an *Automatic updates* policy.
+Use this policy in the
+:external+uv-nubus-manual:ref:`nubus-computer-management`
+or :external+uv-nubus-manual:ref:`nubus-domain-ldap`
+management module.
+For information about policies,
+see :external+uv-nubus-manual:ref:`nubus-domain-policies`
+in :cite:t:`uv-nubus-manual`.
+
+:numref:`lifecyle-update-strategies-methods-policy-figure`
+shows a typical policy configuration:
+
+.. _lifecyle-update-strategies-methods-policy-figure:
 
 .. figure:: /images/software_policy.*
    :alt: Updating UCS systems using an update policy
 
    Updating UCS systems using an update policy
 
-A release update is only run when the *Activate release updates* selection field
-is activated.
+To update Nubus for UCS through a policy,
+configure the following settings:
 
-The *Update to this UCS version* input field includes the version number up to
-which the system should be updated, for example ``5.0-0``. If no entry is made,
-the system continues updating to the highest available version number.
+#. :external+uv-nubus-manual:ref:`nubus-domain-policies-create`.
+   Choose the policy type *Policy: Automatic updates*.
 
-The point at which the update should be performed is configured via a
-*Maintenance* policy (see
-:ref:`computers-softwaremanagement-maintenance-policy`).
+#. Activate the *Activate release updates* field to enable release updates.
 
-The messages created during the update are written to the file
-:file:`/var/log/univention/updater.log`.
+#. Enter a version number in the *Update to this UCS version* field,
+   for example ``5.2-4``.
+   If you leave this blank, systems update to the highest available version.
 
-.. _computers-postprocessing-of-release-updates:
+#. Set the update schedule using a *Maintenance* policy,
+   see
+   :external+uv-ucs-manual:ref:`computers-softwaremanagement-maintenance-policy`.
 
-Post-processing of release updates
-----------------------------------
+#. Finally, you need to assign the policy,
+   see :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`.
 
-Once a release update has been performed successfully, a check should be
-made for whether new or updated join scripts need to be run.
+.. _lifecyle-update-strategies-post-processing:
 
-Either the UMC module :guilabel:`Domain join` or the command
-line program :command:`univention-run-join-scripts` is used
-for checking and starting the join scripts (see
-:ref:`linux-domain-join`).
+Post-processing after release updates
+-------------------------------------
 
-.. _computers-troubleshooting:
+After you complete a release update,
+you must verify
+whether you need to added or updated join scripts.
 
-Troubleshooting in case of update problems
-------------------------------------------
+You can verify and run join scripts in the following ways:
 
-The messages generated during updates are written to the
-:file:`/var/log/univention/updater.log` file, which can
-be used for more in-depth error analysis.
+* Use the *Domain join* management module in the *Management UI*.
+* Run the command-line program :command:`univention-run-join-scripts`.
 
-The status of the |UCSUCR| variables before the release update is saved in
-the :file:`/var/univention-backup/update-to-TARGETRELEASEVERSION/`
-directory. This can then be used to check whether and which variables
-have been changed during the update.
+For details on join script management,
+see :external+uv-ucs-manual:ref:`linux-domain-join`
+in :cite:t:`ucs-manual`.
+
+.. TODO: Replace cross reference about UCS domain join with internal reference.
+
+.. _lifecyle-update-strategies-troubleshooting:
+
+Troubleshooting update problems
+-------------------------------
+
+If you encounter problems during an update, use these resources to diagnose the issue:
+
+Update log
+   The system writes detailed messages to :file:`/var/log/univention/updater.log`.
+   Review this file first for error messages and diagnostic information.
+
+Configuration registry backup
+   Before the update, the system saves the status of all Univention configuration registry variables to
+   :file:`/var/univention-backup/update-to-{TARGETRELEASEVERSION}/`.
+   Use this directory to verify which configuration values changed during the update.
+
+   This information helps you identify
+   whether the update completed correctly
+   and which system configurations it affected.
