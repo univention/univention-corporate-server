@@ -14,3 +14,4 @@ Lifecycle
    versioning
    update-strategies
    perform-updates
+   repository-management
