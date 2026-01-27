@@ -97,7 +97,7 @@ echo "## check whether the directory for the GPO has been replicated to the loca
 echo "## Note: to speed things up for interactive tests, you may run /usr/share/univention-samba4/scripts/sysvol-sync.sh manually now."
 echo -n "Waiting for cron based sysvol-sync"
 retry_delay="$sleep_time" retry "$max_i" [ -d "$gpo_path" ] ||
-	fail_fast 1 "Directory for GPO has not been created after $((retry_i * sleep_time)) seconds"
+	fail_fast 1 "Directory for GPO has not been created after $((retry_i * sleep_time)) seconds. $(ls -la /var/lock/sysvol-sync-dir)\n $(stat -c %x,%z,%n /var/lock/sysvol-sync-dir)"
 echo "GPO sysvol replication took $((retry_i * sleep_time)) seconds."
 
 [ -f "$remote_temp_filename" ] ||

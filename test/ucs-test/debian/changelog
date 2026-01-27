@@ -1,3 +1,9 @@
+ucs-test (12.4.23) unstable; urgency=medium
+
+  * Bug #31771: Add debug to sysvol test
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 27 Jan 2026 18:32:10 +0100
+
 ucs-test (12.4.22) unstable; urgency=medium
 
   * Bug #58987: added test_univention_object_identifier_defaults_to_entry_uuid
