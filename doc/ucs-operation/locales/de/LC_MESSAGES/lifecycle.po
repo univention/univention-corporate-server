@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-27 15:03+0000\n"
-"PO-Revision-Date: 2026-01-27 16:11+0100\n"
+"POT-Creation-Date: 2026-01-27 15:13+0000\n"
+"PO-Revision-Date: 2026-01-27 16:14+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -197,7 +197,7 @@ msgstr ""
 
 #: ../../lifecycle/update-strategies.rst:21
 msgid "Planning updates in multiserver environments"
-msgstr "Planen Sie Updates in Multiserver-Umgebungen"
+msgstr "Planen Sie Updates in :spelling:word:`Multiserver` Umgebungen"
 
 #: ../../lifecycle/update-strategies.rst:23
 msgid ""
@@ -410,11 +410,12 @@ msgid ""
 ":program:`screen` or :program:`at` to ensure the update continues despite"
 " network issues. All system roles have both programs installed."
 msgstr ""
-"Vermeiden Sie Remote-Updates über SSH, da Netzwerkunterbrechungen das "
-"Update unterbrechen können. Falls Sie über eine Netzwerkverbindung "
-"aktualisieren müssen, verwenden Sie :program:`screen` oder :program:`at`,"
-" um sicherzustellen, dass das Update trotz Netzwerkproblemen fortgesetzt "
-"wird. Alle Systemrollen haben beide Programme installiert."
+"Vermeiden Sie :spelling:word:`Remote-Updates` über SSH, da "
+"Netzwerkunterbrechungen das Update unterbrechen können. Falls Sie über "
+"eine Netzwerkverbindung aktualisieren müssen, verwenden Sie "
+":program:`screen` oder :program:`at`, um sicherzustellen, dass das Update"
+" trotz Netzwerkproblemen fortgesetzt wird. Alle Systemrollen haben beide "
+"Programme installiert."
 
 #: ../../lifecycle/update-strategies.rst:130
 msgid "Update through a policy"
@@ -425,18 +426,18 @@ msgid ""
 "You can configure automatic updates for multiple computers at once using "
 "the *Automatic updates* policy. Use this policy in the :external+uv-"
 "nubus-manual:ref:`nubus-computer-management` or :external+uv-nubus-"
-"manual:ref:`nubus-domain-ldap`. For information about "
-"policies, see :external+uv-nubus-manual:ref:`nubus-domain-policies` in "
-":cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-domain-ldap`. For information about policies, see "
+":external+uv-nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-"
+"nubus-manual`."
 msgstr ""
 "Sie können automatische Updates für mehrere Computer gleichzeitig "
 "mithilfe der Richtlinie *Automatische Updates* konfigurieren. Verwenden "
-"Sie diese Richtlinie im :external+uv-nubus-manual:ref"
-":`nubus-computer-management` oder :external+uv-nubus-manual:ref:`nubus-"
-"domain-ldap`. Informationen zu Richtlinien finden Sie unter :external+uv-"
-"nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+"Sie diese Richtlinie im :external+uv-nubus-manual:ref:`nubus-computer-"
+"management` oder :external+uv-nubus-manual:ref:`nubus-domain-ldap`. "
+"Informationen zu Richtlinien finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
 
-#: ../../lifecycle/update-strategies.rst:142
+#: ../../lifecycle/update-strategies.rst:141
 msgid ""
 ":numref:`lifecycle-update-strategies-methods-policy-figure` shows a "
 "typical policy configuration."
@@ -444,12 +445,12 @@ msgstr ""
 ":numref:`lifecycle-update-strategies-methods-policy-figure` zeigt eine "
 "typische Richtlinienkonfiguration."
 
-#: ../../lifecycle/update-strategies.rst:147
-#: ../../lifecycle/update-strategies.rst:150
+#: ../../lifecycle/update-strategies.rst:146
+#: ../../lifecycle/update-strategies.rst:149
 msgid "Updating UCS systems using an update policy"
 msgstr "Aktualisierung von UCS Systemen mithilfe einer Update-Richtlinie"
 
-#: ../../lifecycle/update-strategies.rst:152
+#: ../../lifecycle/update-strategies.rst:151
 msgid ""
 "To update Nubus for UCS through a policy, configure the following "
 "settings:"
@@ -457,7 +458,7 @@ msgstr ""
 "Konfigurieren Sie die folgenden Einstellungen, um Nubus für UCS über eine"
 " Richtlinie zu aktualisieren:"
 
-#: ../../lifecycle/update-strategies.rst:155
+#: ../../lifecycle/update-strategies.rst:154
 msgid ""
 ":external+uv-nubus-manual:ref:`nubus-domain-policies-create`. Choose the "
 "policy type *Policy: Automatic updates*."
@@ -465,13 +466,13 @@ msgstr ""
 ":external+uv-nubus-manual:ref:`nubus-domain-policies-create`. Wählen Sie "
 "den Richtlinientyp *Richtlinie: Automatische Updates*."
 
-#: ../../lifecycle/update-strategies.rst:158
+#: ../../lifecycle/update-strategies.rst:157
 msgid "Activate the *Activate release updates* field to enable release updates."
 msgstr ""
 "Aktivieren Sie das Feld *Aktiviere Release-Updates*, um Release-"
 "Aktualisierung zu aktivieren."
 
-#: ../../lifecycle/update-strategies.rst:160
+#: ../../lifecycle/update-strategies.rst:159
 msgid ""
 "Enter a version number in the *Update to this UCS version* field, for "
 "example ``5.2-4``. If you leave this blank, systems update to the highest"
@@ -481,10 +482,11 @@ msgstr ""
 "aktualisieren* ein, z.B. ``5.2-4``. Wenn Sie dieses Feld leer lassen, "
 "werden Systeme auf die höchste verfügbare Version aktualisiert."
 
-#: ../../lifecycle/update-strategies.rst:164
+#: ../../lifecycle/update-strategies.rst:163
 msgid ""
 "Set the update schedule using a *Maintenance* policy, see :external+uv-"
-"ucs-manual:ref:`computers-softwaremanagement-maintenance-policy` :cite:t:`ucs-manual`."
+"ucs-manual:ref:`computers-softwaremanagement-maintenance-policy` in "
+":cite:t:`ucs-manual`."
 msgstr ""
 "Legen Sie den Update-Zeitplan mit einer Richtlinie vom Typ *Wartung* "
 "fest, siehe :external+uv-ucs-manual:ref:`computers-softwaremanagement-"
@@ -516,7 +518,9 @@ msgstr "Sie können Join-Skripte auf folgende Weise überprüfen und ausführen:
 
 #: ../../lifecycle/update-strategies.rst:182
 msgid "Use the *Domain join* management module in the *Management UI*."
-msgstr "Verwenden Sie das *Domänenbeitritt* Verwaltungsmodul in der *Management UI*."
+msgstr ""
+"Verwenden Sie das *Domänenbeitritt* Verwaltungsmodul in der *Management "
+"UI*."
 
 #: ../../lifecycle/update-strategies.rst:183
 msgid "Run the command-line program :command:`univention-run-join-scripts`."
@@ -571,10 +575,10 @@ msgid ""
 "configuration values changed during the update."
 msgstr ""
 "Vor dem Update speichert das System den Status aller Univention "
-"Configuration Registry Variablen in :file:`/var/univention-backup"
-"/update-to-{<TARGETRELEASEVERSION>}/`. Verwenden Sie dieses Verzeichnis, "
-"um zu überprüfen, welche Konfigurationswerte sich während des Updates "
-"geändert haben."
+"Configuration Registry Variablen in :file:`/var/univention-backup/update-"
+"to-{<TARGETRELEASEVERSION>}/`. Verwenden Sie dieses Verzeichnis, um zu "
+"überprüfen, welche Konfigurationswerte sich während des Updates geändert "
+"haben."
 
 #: ../../lifecycle/update-strategies.rst:207
 msgid ""
@@ -694,7 +698,7 @@ msgid ""
 ".software-univention.de/ for an overview."
 msgstr ""
 "Veröffentlicht während des Wartungszeitraums einer Minor Release. Sie "
-"bieten Sicherheitskorrektionen, Fehlerbehebungen und kleine "
+"bieten Sicherheitskorrekturen, Fehlerbehebungen und kleine "
 "Verbesserungen. Errata-Updates zielen auf spezifische Minor Releases ab, "
 "z.B. Nubus für UCS 5.2, und Sie können sie auf jeder Patch-Level-Version "
 "installieren. Einen Überblick finden Sie unter https://errata.software-"
