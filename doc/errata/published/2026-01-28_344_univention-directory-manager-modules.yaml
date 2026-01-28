@@ -14,3 +14,6 @@ desc: |
  * UDM now shows a default for ``univentionObjectIdentifier``
    if not set in OpenLDAP.
 bug: [58992, 58987]
+erratum: 344
+announced: 2026-01-28
+support: core
