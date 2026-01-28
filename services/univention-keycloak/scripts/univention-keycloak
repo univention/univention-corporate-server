@@ -1943,6 +1943,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_user_attribute_ldap_mapper_subparser = parser_user_attribute_ldap_mapper.add_subparsers(title="operation", description="Valid subcommands", required=True, dest="operation")
     parser_create_user_attribute_ldap_mapper = parser_user_attribute_ldap_mapper_subparser.add_parser("create", help="Create a new user-attribute-ldap-mapper")
     parser_create_user_attribute_ldap_mapper.add_argument("attributename", help="Name of the mapper, the LDAP attribute name and the user attribute name in keycloak")
+    parser_create_user_attribute_ldap_mapper.add_argument("--always-read-from-ldap", help="Always read the value from LDAP instead of using Keycloak's cached value. Recommended for mutable attributes.", action="store_true", default=False)
     parser_create_user_attribute_ldap_mapper.set_defaults(func=create_user_attribute_ldap_mapper)
     parser_delete_user_attribute_ldap_mapper = parser_user_attribute_ldap_mapper_subparser.add_parser("delete", help="Delete a new user-attribute-ldap-mapper")
     parser_delete_user_attribute_ldap_mapper.add_argument("attributename", help="Name of the mapper to delete ")
@@ -2510,6 +2511,8 @@ def create_user_attribute_ldap_mapper(opt: Namespace) -> None:
     if opt.attributename in [x["name"] for x in existing_mappers]:
         print(f"LDAP provider mapper {opt.attributename} already exists.")
     else:
+        # Determine if the value should always be read from LDAP (not cached)
+        always_read = getattr(opt, 'always_read_from_ldap', False)
         payload = {
             "name": opt.attributename,
             "parentId": provider_id,
@@ -2522,6 +2525,7 @@ def create_user_attribute_ldap_mapper(opt: Namespace) -> None:
                 "is.binary.attribute": ["false"],
                 "read.only": ["true"],
                 "user.model.attribute": [opt.attributename],
+                "always.read.value.from.ldap": ["true" if always_read else "false"],
             },
         }
         session.create_component(payload)
