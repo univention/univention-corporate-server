@@ -1,4 +1,4 @@
-ucs-test (12.4.23) unstable; urgency=medium
+ucs-test (12.4.24) unstable; urgency=medium
 
   * Bug #31771: Add debug to sysvol test
 
