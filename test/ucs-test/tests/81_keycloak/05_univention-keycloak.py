@@ -33,6 +33,12 @@ def keycloak_client_id(keycloak_administrator_connection, random_string):
         print(f"Failed to delete client {e}")
 
 
+def check_realm_deleted(realm):
+    cmd = ['univention-keycloak', 'realms', 'get', '--json']
+    realms = json.loads(run_command(cmd))
+    return realm not in realms
+
+
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_create_oidc_client(keycloak_administrator_connection):
     """Creates and delete OIDC client in Keycloak"""
@@ -171,6 +177,9 @@ def test_init_with_force(random_string, keycloak_admin_connection):
             keycloak_admin_connection.delete_realm(realm_name=realm_name)
         except KeycloakGetError:
             pass
+        except KeycloakDeleteError:
+            if not check_realm_deleted(realm_name):
+                raise
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -345,6 +354,9 @@ def test_init_with_parameters(random_string, keycloak_admin_connection):
             keycloak_admin_connection.delete_realm(realm_name=realm_name)
         except KeycloakGetError:
             pass
+        except KeycloakDeleteError:
+            if not check_realm_deleted(realm_name):
+                raise
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -388,6 +400,9 @@ def test_init_with_user_events_flag(random_string, keycloak_admin_connection, en
             keycloak_admin_connection.delete_realm(realm_name=realm_name)
         except KeycloakGetError:
             pass
+        except KeycloakDeleteError:
+            if not check_realm_deleted(realm_name):
+                raise
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -427,6 +442,9 @@ def test_init_with_cors_frame_ancestors(random_string, keycloak_admin_connection
             keycloak_admin_connection.delete_realm(realm_name=realm_name)
         except KeycloakGetError:
             pass
+        except KeycloakDeleteError:
+            if not check_realm_deleted(realm_name):
+                raise
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -460,6 +478,9 @@ def test_init_with_ldap_provider_import_users(random_string, keycloak_admin_conn
             keycloak_admin_connection.delete_realm(realm_name=realm_name)
         except KeycloakGetError:
             pass
+        except KeycloakDeleteError:
+            if not check_realm_deleted(realm_name):
+                raise
 
 
 def test_bindpwd(admin_account):
