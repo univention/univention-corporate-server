@@ -10,3 +10,6 @@ desc: |
    is now capable of reconnecting to `NATS` without
    a restart of the listener being necessary.
 bug: [58991]
+erratum: 346
+announced: 2026-01-28
+support: core
