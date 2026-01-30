@@ -1,3 +1,9 @@
+univention-samba4 (11.4.1) unstable; urgency=medium
+
+  * Bug #58784: Fix "cannot create /var/lock/sysvol-sync-dir: Permission denied"
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Jan 2026 16:57:44 +0100
+
 univention-samba4 (11.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

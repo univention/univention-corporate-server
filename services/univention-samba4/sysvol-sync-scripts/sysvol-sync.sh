@@ -115,7 +115,7 @@ get_remote_lock() {
 	timeout=30
 	univention-ssh --no-split /etc/machine.secret "$remote_login" \
 		-o ServerAliveInterval=20 \
-		"(flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8>\"$SYSVOL_LOCKFILE\"" \
+		"(flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8<\"$SYSVOL_LOCKFILE\"" \
 		< <(cat "$pipe_dir/pipe0") 2>&1 > "$pipe_dir/pipe1" | grep -v 'Could not chdir to home directory' 1>&2 &
 
 	read -r REPLY < "$pipe_dir/pipe1"
@@ -126,8 +126,11 @@ get_remote_lock() {
 		return 1
 	fi
 
-	## if the file does not exists on upstream, the default permissions for $SYSVOL_LOCKFILE are wrong,
-	## we need to fix them to ensure other hosts can get a lock too
+	## If the file does not exists on upstream, the default permissions for $SYSVOL_LOCKFILE are wrong,
+	## we need to fix them to ensure other hosts can get a lock too.
+	## Update for Bug #58784:
+	## * Group write permission is not enough since kernel 4.19 "protected_regular".
+	## * See man flock about mode and read permission beeing sufficient for flock.
 	univention-ssh --no-split /etc/machine.secret "$remote_login" -o ServerAliveInterval=20 \
 		"test -G '$SYSVOL_LOCKFILE' && chgrp 'DC Slave Hosts' '$SYSVOL_LOCKFILE' && chmod 664 '$SYSVOL_LOCKFILE'" \
 		2>/dev/null
@@ -183,7 +186,7 @@ sync_to_local_sysvol() {
 			stderr_log_debug "[$log_prefix] search for multiple gpt.ini files and delete all but the newest"
 			fix_gpt_ini
 		fi
-	) 8>"$SYSVOL_LOCKFILE"
+	) 8<"$SYSVOL_LOCKFILE"  ## see man flock about mode and read permission
 
 	# Note: returns here with subshell exitcode
 }

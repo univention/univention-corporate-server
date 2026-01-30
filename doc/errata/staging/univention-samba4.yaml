@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-samba4
+fix: 11.4.1
+desc: |
+ This update addresses the following issues:
+ * Since Kernel 4.19 the sysvol-sync could fail after reboots with message
+   `cannot create /var/lock/sysvol-sync-dir: Permission denied`. This update
+   fixes this issue.
+bug: [58784]
