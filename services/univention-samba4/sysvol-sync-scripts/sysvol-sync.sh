@@ -115,7 +115,7 @@ get_remote_lock() {
 	timeout=30
 	univention-ssh --no-split /etc/machine.secret "$remote_login" \
 		-o ServerAliveInterval=20 \
-		"(flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8<\"$SYSVOL_LOCKFILE\"" \
+		"[ -f \"$SYSVOL_LOCKFILE\" ] || touch \"$SYSVOL_LOCKFILE\"; (flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8<\"$SYSVOL_LOCKFILE\"" \
 		< <(cat "$pipe_dir/pipe0") 2>&1 > "$pipe_dir/pipe1" | grep -v 'Could not chdir to home directory' 1>&2 &
 
 	read -r REPLY < "$pipe_dir/pipe1"
@@ -169,6 +169,7 @@ sync_to_local_sysvol() {
 	local rsync_options=("$@")
 
 	stderr_log_debug "[$log_prefix] local sync from importdir to sysvol"
+	[ -f "$SYSVOL_LOCKFILE" ] || touch "$SYSVOL_LOCKFILE"
 	(
 		stderr_log_debug "[$log_prefix] trying to get exclusive (write) lock on local sysvol"
 		timeout=60
