@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: pyasn1
+fix: 0.4.2-3+deb10u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-23490)
+bug: [59019]
+cve:
+- CVE-2026-23490
