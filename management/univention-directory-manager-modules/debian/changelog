@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.3.17) unstable; urgency=medium
+
+  * Bug #58802: Revert changes made in 17.3.16
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 04 Feb 2026 09:42:07 +0100
+
 univention-directory-manager-modules (17.3.16) unstable; urgency=medium
 
   * Bug #58802: Restart UCS@school Import HTTP API
