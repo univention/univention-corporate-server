@@ -45,6 +45,23 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
+
+.. envvar:: local/repository
+
+   Activates and deactivates the local repository.
+   When activated with the value ``yes``,
+   the system uses a locally maintained repository for package updates and installations.
+   This is useful in environments with multiple systems
+   to reduce bandwidth consumption and enable offline updates.
+
+   For information about creating and maintaining a local repository,
+   see :ref:`lifecycle-repository-management-local-create-init`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
 .. envvar:: nss/group/cachefile
 
    If activated,
@@ -274,6 +291,147 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+
+.. envvar:: repository/mirror/basepath
+
+   Specifies the base directory where the local repository mirror is stored.
+   The directory is used by the :command:`univention-repository-create`
+   and :command:`univention-repository-update` commands
+   to store mirrored packages and repository metadata.
+
+   For information about managing disk space in local repositories,
+   see :ref:`lifecycle-repository-management-maintenance-disk-space`.
+
+   :Default value: ``/var/lib/univention-repository``
+   :Type: string
+
+
+.. envvar:: repository/mirror/server
+
+   Specifies the upstream repository server
+   from which the local mirror retrieves packages and updates.
+   The value must be a fully qualified domain name or IP address.
+
+   For information about configuring a local repository to use a different upstream server,
+   see :ref:`lifecycle-repository-management-local-create-multiple-locations`.
+
+   :Default value: ``https://updates.software-univention.de``
+   :Type: string
+
+
+.. envvar:: repository/mirror/sources
+
+   Controls whether the local repository mirror includes source packages.
+   When activated with the value ``yes``,
+   the mirror downloads and stores source packages in addition to binary packages.
+   Deactivating this variable reduces the storage space required for the mirror.
+
+   For information about managing disk space in local repositories,
+   see :ref:`lifecycle-repository-management-maintenance-disk-space`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: repository/online/component/.*/unmaintained
+
+   Controls whether to allow installation of unmaintained packages from additional repositories.
+   When activated with the value ``yes``,
+   the system permits installation of packages marked as unmaintained
+   from non-official repository components.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+   .. deprecated:: UCS 5.0-3
+
+      This variable is **deprecated since UCS 5.0-3**.
+      The *Univention Configuration Registry* management module
+      in the *Management UI*.
+      Don't use it in new configurations.
+
+   Impact on existing configurations
+       If you have this variable set in your UCR configuration,
+       the system silently ignores it.
+       The system only uses the *maintained* branch
+       for all repository components.
+
+   Primary alternative
+       Use component-specific configuration
+       through :envvar:`repository/online/component/COMPONENTNAME`
+       to enable or disable entire components.
+       This is the recommended and simplest migration path.
+
+       **Example:** To deactivate the optional component :samp:`{MYCOMPONENT}`,
+       set :samp:`repository/online/component/{MYCOMPONENT}` to ``no``.
+
+   Advanced alternative
+       For more granular control,
+       you can use :samp:`repository/online/component/{COMPONENTNAME}/server`
+       to point to a custom repository
+       that only provides the packages you need.
+
+
+.. envvar:: repository/online/component/COMPONENTNAME
+
+   Enables or disables a specific repository component.
+   Set the variable to ``no`` to exclude the component from synchronization.
+   Leave the variable unset to use the default behavior.
+
+   :samp:`{COMPONENTNAME}` is a placeholder for the actual component name.
+   Multiple components can be configured by using different :samp:`{COMPONENTNAME}` values.
+
+   .. note::
+
+      This variable is the recommended replacement
+      for the deprecated :envvar:`repository/online/component/.*/unmaintained`
+      variable, which is no longer available since UCS 5.0-3.
+
+   For information about excluding optional components,
+   see :ref:`lifecycle-repository-management-maintenance-disk-space`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: repository/online/server
+
+   Specifies the repository server URL used for online package updates and installations.
+   The value must be a fully qualified URL pointing to a valid APT repository.
+
+   For information about configuring the repository server,
+   see :ref:`lifecycle-repository-management-configuration`.
+
+   :Default value: ``https://updates.software-univention.de``
+   :Type: string
+
+.. envvar:: repository/mirror/version/end
+
+   If the mirroring of the repository is active,
+   see :envvar:`local/repository`,
+   this variable is set each time
+   to the UCS version which was last retrieved from the mirror.
+
+   :Default value: not set, uses current system version
+   :Type: string
+
+.. envvar:: repository/mirror/version/start
+
+   If the mirroring of the repository is active,
+   see :envvar:`local/repository`,
+   this variable configures the lowest UCS version
+   which is retrieved from the mirror.
+
+   For information about major versions,
+   see :ref:`lifecycle-versioning-release-types-major`.
+
+   :Default value: not set, uses current major version
+   :Type: string
+
+
 .. envvar:: saml/idp/selfservice/check_email_verification
 
    If activated,
@@ -294,6 +452,7 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+
 .. envvar:: server/role
 
    Contains the system role of the system.
@@ -303,6 +462,7 @@ This section provides a reference for UCR variables.
    see :ref:`domain-infrastructure-system-roles`.
 
    :Type: string
+
 
 .. envvar:: umc/http/processes
 
