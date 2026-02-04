@@ -31,9 +31,13 @@ Distinguish release types and cycles
 
 Univention releases four types of updates on different schedules:
 
+.. _lifecycle-versioning-release-types-major:
+
 Major releases
     Appear approximately every 3-4 years
     and introduce significant changes to services, functioning, and software.
+
+.. _lifecycle-versioning-release-types-minor:
 
 Minor releases
     Published approximately every 10-12 months during the maintenance period of a major release.
@@ -41,9 +45,13 @@ Minor releases
     and maintain backward compatibility where possible.
     See the Release Notes for behavior changes.
 
+.. _lifecycle-versioning-release-types-patch:
+
 Patch level releases
     Published approximately every 3 months.
     They combine all errata updates into a single, tested release.
+
+.. _lifecycle-versioning-release-types-errata:
 
 Errata updates
     Published continuously during the maintenance period of a minor release.
