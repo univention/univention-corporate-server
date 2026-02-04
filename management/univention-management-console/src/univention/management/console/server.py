@@ -55,8 +55,8 @@ class Application(TApplication):
     def __init__(self, **settings):
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
 
-        # Get root_path from environment variable strip trailing slashes
-        root_path = os.environ.get('UMC_ROOT_PATH', '').strip().rstrip('/')
+        root_path = os.environ.get('UMC_ROOT_PATH', '').strip().strip('/')
+        root_path = f'/{root_path}' if root_path else ''
         self.root_path = root_path
 
         super().__init__([

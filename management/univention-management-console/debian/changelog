@@ -1,3 +1,9 @@
+univention-management-console (14.4.2) unstable; urgency=medium
+
+  * Bug #59033: Allow configuration for root path
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Thu, 05 Feb 2026 11:26:02 +0300
+
 univention-management-console (14.4.1) unstable; urgency=medium
 
   * Bug #58653: set .*/debug/structured-logging=true by default
