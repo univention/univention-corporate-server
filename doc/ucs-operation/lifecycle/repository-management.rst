@@ -476,29 +476,60 @@ Not running with sufficient permissions
 Custom package sources
 ----------------------
 
-The initial selection of the software components of a UCS system is performed
-within the scope of the installation. The software components are selected
-relative to the functions, whereby e.g. the *Proxy server* component is
-selected, which then procures the actual software packages via a meta package.
-The administrator does not need to know the actual package names. However,
-individual packages can also be specifically installed and removed for further
-tasks. When installing a package, it is sometimes necessary to install
-additional packages, which are required for the proper functioning of the
-package. These are called package dependencies. All software components are
-loaded from a repository (see :ref:`software-config-repo`).
+Your Nubus for UCS installation includes software components selected during setup
+based on your organization's needs.
+These components cover the core functionality required to operate the system.
+However, you may need to install additional packages
+to extend Nubus for UCS with functionality beyond the initial setup.
+These optional packages aren't required for core operations—they're extra capabilities
+that your organization might need for specific services or integrations.
+When you install a package, the package manager automatically resolves and installs
+any dependencies required by that package,
+so you don't need to manually identify and install supporting packages.
 
-Software which is not available in the Debian package format should be installed
-into the :file:`/opt/` or :file:`/usr/local/` directories. These directories are
-not used for installing UCS packages, thus a clean separation between UCS
-packages and other software is ensured.
+If you need to install software that isn't available as a Debian package,
+place it in the :file:`/opt/` or :file:`/usr/local/` directories.
+Use these directories to keep your custom software separate from Univention packages
+and maintain a clean system architecture.
 
-There are several possibilities for installing further packages subsequently on
-an installed system, as the following sections describe.
+.. _lifecycle-repository-management-custom-package-method:
 
-.. _computers-softwareselection:
+Choose your installation method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Installation/deinstallation of UCS components in the Univention App Center
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+You have several options for installing additional packages on your Nubus for UCS system.
+Each method serves different administrative needs and preferences.
+
+.. _lifecycle-repository-management-custom-package-method-appcenter:
+
+Univention App Center
+   The Univention App Center offers a graphical interface where you can browse, search,
+   and install applications and UCS components.
+   You can choose from applications provided by Univention and third-party vendors
+   for specific use cases and integration scenarios.
+   For details, see :ref:`lifecycle-repository-management-custom-package-appcenter`.
+
+.. _lifecycle-repository-management-custom-package-method-umc:
+
+Package Management
+   The Package Management module in the Management UI lets you search for and install
+   individual Debian packages.
+   For details, see :ref:`lifecycle-repository-management-custom-package-umc`.
+
+.. _lifecycle-repository-management-custom-package-method-commandline:
+
+Command line
+   The command line provides direct control through package management commands.
+   Use the command line when you prefer scripting or need access to advanced options.
+   For details, see :ref:`lifecycle-repository-management-custom-package-commandline`.
+
+All three methods draw from the same package repositories,
+so the packages available to you are the same regardless of which method you choose.
+
+.. _lifecycle-repository-management-custom-package-appcenter:
+
+Installation through Univention App Center
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All software components offered in the Univention Installer can also be
 installed and removed at a later point in time via the Univention App Center.
@@ -513,10 +544,10 @@ information on the Univention App Center can be found in
 
    Selection of UCS components in the App Center
 
-.. _computers-installation-removal-of-individual-packages-in-the-univention-management-console:
+.. _lifecycle-repository-management-custom-package-umc:
 
-Installation/removal of individual packages via |UCSUMC| module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Installation through Management UI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UMC module :guilabel:`Package Management` can be used to
 install and uninstall individual software packages.
@@ -524,9 +555,9 @@ install and uninstall individual software packages.
 .. _software-umc-install:
 
 .. figure:: /images/software_install.*
-   :alt: Installing the package univention-squid via |UCSUMC| module 'Package management'
+   :alt: Installing the package univention-squid via Univention Management Console module 'Package management'
 
-   Installing the package :program:`univention-squid` via |UCSUMC| module
+   Installing the package :program:`univention-squid` via Univention Management Console module
    'Package management'
 
 A search mask is displayed on the start page in which the user can
@@ -557,10 +588,10 @@ Upgrade
 Close
    can be used for returning to the previous search request.
 
-.. _computers-installation-removal-of-individual-packages-in-the-command-line:
+.. _lifecycle-repository-management-custom-package-commandline:
 
-Installation/removal of individual packages in the command line
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Installation from command line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following steps must be performed with ``root`` user rights.
 
@@ -586,7 +617,7 @@ the description of the package are listed, for example:
    $ apt-cache search fax
 
 
-.. _computers-installation-and-remove-hooks:
+.. _lifecycle-repository-management-custom-package-hooks:
 
 Hook scripts for administrators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -615,7 +646,7 @@ can be found in the manual with :command:`man run-parts`.
 The :file:`/var/log/univention/appcenter.log` contains
 possible scripting error messages and further hints.
 
-.. _computers-softwaremanagement-package-lists:
+.. _lifecycle-repository-management-custom-package-policy:
 
 Policy-based installation/deinstallation of individual packages via package lists
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
