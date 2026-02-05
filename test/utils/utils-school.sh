@@ -7,6 +7,9 @@ set -x
 . utils.sh
 
 install_kelvin_api () {
+  if [ -n "$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")" ]; then
+    univention-app remove ucsschool-kelvin-rest-api
+  fi
   install_docker_app_from_branch ucsschool-kelvin-rest-api "$UCS_ENV_KELVIN_IMAGE" ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG || return $?
 }
 
