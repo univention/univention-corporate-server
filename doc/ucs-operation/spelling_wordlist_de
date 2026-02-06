@@ -1,3 +1,5 @@
+App-ID
+App-IDs
 Bootloader-Menü
 Cloud-Plattformen
 Cloud-native
@@ -10,6 +12,7 @@ Exit
 Hexadezimalform
 Hypervisor-Umgebungen
 Infrastrukturumgebungen
+Integrationen
 Mirror
 Mirror-Server
 Mirrors
@@ -29,6 +32,8 @@ Release-Typen
 Remote-Servern
 Repository-Mirror
 SSO-Servers
+Scripting
+Shell-Scripting
 Treiberanforderungen
 Updater-Prozess
 Upstream
@@ -37,6 +42,7 @@ Upstream-Servers
 Verifizierungsprozess
 Versionierung
 Versionierungsstrategie
+Ziel-App
 cloudbasierte
 plattformspezifischen
 rekonfigurieren

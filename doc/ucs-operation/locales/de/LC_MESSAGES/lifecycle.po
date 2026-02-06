@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-05 14:14+0000\n"
-"PO-Revision-Date: 2026-02-05 15:24+0100\n"
+"POT-Creation-Date: 2026-02-09 18:06+0000\n"
+"PO-Revision-Date: 2026-02-09 19:10+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,6 +19,1901 @@ msgstr ""
 #: ../../lifecycle/index.rst:8
 msgid "Lifecycle"
 msgstr "Lebenszyklus"
+
+#: ../../lifecycle/index.rst:10
+msgid ""
+"Software lifecycle management in Nubus for UCS involves understanding "
+"versioning, planning updates, performing updates, managing repositories, "
+"and installing additional software. This chapter covers the following "
+"workflows:"
+msgstr ""
+"Das Management des Software-Lebenszyklus in Nubus für UCS umfasst das "
+"Verständnis von Versionierung, die Planung von Updates, die Durchführung "
+"von Updates, die Verwaltung von Repositories und die Installation "
+"zusätzlicher Software.Dieses Kapitel behandelt die folgenden Abläufe:"
+
+#: ../../lifecycle/index.rst:15
+msgid "System updates and maintenance"
+msgstr "Systemaktualisierungen und Wartung"
+
+#: ../../lifecycle/index.rst:16
+msgid ""
+"Keep your systems current with security fixes, bug fixes, and new "
+"features. Start with :ref:`lifecycle-versioning` to understand release "
+"types, then review :ref:`lifecycle-update-strategies` for planning multi-"
+"server updates. For technical details about the update process, see :ref"
+":`lifecycle-perform-updates`."
+msgstr ""
+"Halten Sie Ihre Systeme mit Sicherheitsupdates, Bugfixes und neuen "
+"Funktionen aktuell. Beginnen Sie mit :ref:`lifecycle-versioning`, um "
+"Release-Typen zu verstehen. Überprüfen Sie dann :ref:`lifecycle-update-"
+"strategies`, um Updates mit mehreren Servern zu planen. Technische "
+"Details zum Update-Prozess finden Sie unter :ref:`lifecycle-perform-"
+"updates`."
+
+#: ../../lifecycle/index.rst:22
+msgid "Software distribution and package management"
+msgstr "Softwareverteilung und Paketverwaltung"
+
+#: ../../lifecycle/index.rst:23
+msgid ""
+"Control how Nubus for UCS systems obtain and install software. For multi-"
+"system environments or offline scenarios, set up local repositories— see "
+":ref:`lifecycle-local-repository-servers`. For routine package "
+"operations, see :ref:`lifecycle-package-installation-management`."
+msgstr ""
+"Steuern Sie, wie Nubus für UCS Systeme Software beziehen und "
+"installieren. Für Multi-System-Umgebungen oder Offline-Szenarien richten "
+"Sie lokale Repositories ein—siehe :ref:`lifecycle-local-repository-"
+"servers`. Für alltägliche Paketvorgänge, siehe :ref:`lifecycle-package-"
+"installation-management`."
+
+#: ../../lifecycle/local-repository-servers.rst:7
+msgid "Local repository servers"
+msgstr "Lokale Repository-Server"
+
+#: ../../lifecycle/local-repository-servers.rst:9
+msgid ""
+"A local repository mirrors packages from Univention update servers to "
+"your infrastructure. This gives you control over updates, reduces "
+"bandwidth usage, and enables offline operations in your environment."
+msgstr ""
+"Ein lokales Repository spiegelt Pakete von Update-Servern von Univention zu "
+"Ihrer Infrastruktur. Dies gibt Ihnen Kontrolle über Updates, reduziert "
+"die Bandbreitennutzung und ermöglicht Offline-Operationen in Ihrer "
+"Umgebung."
+
+#: ../../lifecycle/local-repository-servers.rst:13
+msgid ""
+"Use a local repository when you manage multiple systems, especially "
+"across distributed locations or with limited internet connectivity. For "
+"single-system installations with reliable internet access, you can use "
+"online repositories directly."
+msgstr ""
+"Verwenden Sie einen lokalen Repository-Server, wenn Sie mehrere Nubus für"
+" UCS Systeme verwalten, besonders über verteilte Standorte oder mit "
+"eingeschränkter Internetkonnektivität. Für Installation mit nur einem "
+"System oder Umgebungen mit zuverlässiger, breitbandiger "
+"Internetverbindung verwenden Sie :spelling:word:`Online-Repositories` "
+"direkt."
+
+#: ../../lifecycle/local-repository-servers.rst:18
+msgid ""
+"After you set up a local repository, you install and manage packages from"
+" it. For package installation methods, see :ref:`lifecycle-package-"
+"installation-management`."
+msgstr ""
+"Nach der Einrichtung eines lokalen Repositories installieren und verwalten "
+"Sie Pakete daraus. Informationen zu Paketinstallationsmethoden finden Sie "
+"unter :ref:`lifecycle-package-installation-management`."
+
+#: ../../lifecycle/local-repository-servers.rst:23
+msgid ""
+"This section covers creating, configuring, and maintaining local "
+"repositories."
+msgstr ""
+"Dieser Abschnitt behandelt das Erstellen, Konfigurieren und Warten von "
+"lokalen Repositories."
+
+#: ../../lifecycle/local-repository-servers.rst:27
+msgid "Benefits of using a local repository"
+msgstr "Vorteile eines lokalen Repositories"
+
+#: ../../lifecycle/local-repository-servers.rst:28
+msgid ""
+"Reduced bandwidth usage: Download updates once from Univention servers, "
+"then distribute to all systems locally, significantly reducing internet "
+"bandwidth consumption in environments with many systems."
+msgstr ""
+"Reduzierte Bandbreitenauslastung: Updates einmal von Upstream-Servern "
+"Univention herunterladen und dann lokal auf alle Systeme verteilen, "
+"wodurch der Internet-Bandbreitenverbrauch in Umgebungen mit vielen "
+"Systemen erheblich reduziert wird."
+
+#: ../../lifecycle/local-repository-servers.rst:33
+msgid ""
+"Offline updates: Update systems without requiring internet access. This "
+"is useful for air-:spelling:word:`gapped` networks or locations with "
+"unreliable connectivity."
+msgstr ""
+"Offline-Updates: Systeme ohne Internetverbindung aktualisieren. Dies ist "
+"für isolierte Netzwerke oder Standorte mit unzuverlässiger Konnektivität "
+"nützlich."
+
+#: ../../lifecycle/local-repository-servers.rst:37
+msgid ""
+"Faster deployments: Local package distribution is faster than downloading"
+" from remote servers, especially in geographically distributed "
+"environments or over slow network links."
+msgstr ""
+"Schnellere Bereitstellungen: Lokale Paketverteilung ist schneller als das"
+" Herunterladen von Remote-Servern, besonders in geografisch verteilten "
+"Umgebungen oder über langsame Netzwerkverbindungen."
+
+#: ../../lifecycle/local-repository-servers.rst:42
+msgid ""
+"Update control: Maintain a local copy of packages, giving you control "
+"over which versions are available and when systems can access them."
+msgstr ""
+"Update-Kontrolle: Verwalten Sie eine lokale Kopie von Paketen und "
+"kontrollieren Sie, welche Versionen verfügbar sind und wann Systeme "
+"Zugriff haben."
+
+#: ../../lifecycle/local-repository-servers.rst:48
+msgid "Considerations for maintaining a local repository"
+msgstr "Überlegungen zur Wartung eines lokalen Repositories"
+
+#: ../../lifecycle/local-repository-servers.rst:49
+msgid ""
+"Synchronization effort: You must regularly synchronize the local "
+"repository with upstream Univention servers to stay up to date with "
+"security and stability updates."
+msgstr ""
+"Synchronisationsaufwand: Sie müssen das lokale Repository regelmäßig mit "
+"Upstream-Servern von Univention synchronisieren, um mit "
+"Sicherheitsaktualisierungen auf dem neuesten Stand zu bleiben."
+
+#: ../../lifecycle/local-repository-servers.rst:53
+msgid ""
+"Administrative overhead: You must monitor repository health and manage "
+"synchronization."
+msgstr ""
+"Administrativer Aufwand: Sie müssen die Gesundheit des Repositorys "
+"überwachen und die Synchronisation verwalten."
+
+#: ../../lifecycle/local-repository-servers.rst:57
+msgid "Choosing whether to use a local repository"
+msgstr "Entscheidung, ob ein lokales Repository verwendet werden soll"
+
+#: ../../lifecycle/local-repository-servers.rst:58
+msgid ""
+"Use a local repository server when you manage multiple Nubus for UCS "
+"systems, particularly across distributed locations or with limited "
+"internet connectivity. For single-system installations or environments "
+"with reliable, high-bandwidth internet access, use online repositories "
+"directly."
+msgstr ""
+"Verwenden Sie einen lokalen Repository-Server, wenn Sie mehrere Nubus für"
+" UCS Systeme verwalten, besonders über verteilte Standorte oder mit "
+"eingeschränkter Internetkonnektivität. Für Installation mit nur einem "
+"System oder Umgebungen mit zuverlässiger, breitbandiger "
+"Internetverbindung verwenden Sie :spelling:word:`Online-Repositories` "
+"direkt."
+
+#: ../../lifecycle/local-repository-servers.rst:64
+msgid ""
+"Nubus for UCS automatically generates APT package sources in the "
+":file:`/etc/apt/sources.list.d/` directory based on settings for release,"
+" errata updates, and add-on components. If you need additional "
+"repositories on a system, you can enter them in the "
+":file:`/etc/apt/sources.list` file."
+msgstr ""
+"Nubus für UCS generiert automatisch APT-Paketquellen im Verzeichnis "
+":file:`/etc/apt/sources.list.d/` basierend auf Einstellungen für Release,"
+" Errata-Updates und Zusatzkomponenten. Falls Sie zusätzliche Repositories"
+" auf einem System benötigen, können Sie diese in der Datei "
+":file:`/etc/apt/sources.list` eingeben."
+
+#: ../../lifecycle/local-repository-servers.rst:70
+msgid ""
+"By default, new installations use the Univention repository at "
+"``https://updates.software-univention.de``."
+msgstr ""
+"Standardmäßig verwenden neue Installationen das Repository von Univention"
+" unter ``https://updates.software-univention.de``."
+
+#: ../../lifecycle/local-repository-servers.rst:75
+msgid "Repository package status"
+msgstr "Paketstatus des Repositorys"
+
+#: ../../lifecycle/local-repository-servers.rst:76
+msgid ""
+"Univention classifies packages in its repository as either *maintained* "
+"or *unmaintained*. All packages in the standard package scope are in "
+"*maintained* status. Univention provides security updates in a timely "
+"manner only for *maintained* packages. You can view the list of "
+"*maintained* packages on a Nubus for UCS system at :file:`/usr/share"
+"/univention-errata-level/maintained-packages.txt`."
+msgstr ""
+"Univention klassifiziert Pakete in seinem Repository als entweder "
+"*maintained* oder *unmaintained*. Alle Pakete im Standard-Paketumfang "
+"befinden sich im Status *maintained*. Univention stellt "
+"Sicherheitsupdates nur für *maintained* Pakete zeitnah bereit. Sie können"
+" die Liste der *maintained* Pakete auf einem Nubus für UCS System unter "
+":file:`/usr/share/univention-errata-level/maintained-packages.txt` "
+"ansehen."
+
+#: ../../lifecycle/local-repository-servers.rst:83
+msgid ""
+"Univention doesn't provide security updates or other maintenance for "
+"*unmaintained* packages. To verify whether your system has *unmaintained*"
+" packages installed, run the :command:`univention-list-installed-"
+"unmaintained-packages` command."
+msgstr ""
+"Univention stellt keine Sicherheitsupdates oder andere Wartung für "
+"*unmaintained* Pakete bereit. Um zu überprüfen, ob Ihr System "
+"*unmaintained* Pakete installiert hat, führen Sie den Befehl :command"
+":`univention-list-installed-unmaintained-packages` aus."
+
+#: ../../lifecycle/local-repository-servers.rst:90
+msgid "Repository components"
+msgstr "Repository-Komponenten"
+
+#: ../../lifecycle/local-repository-servers.rst:91
+#, python-brace-format
+msgid ""
+"To manage which repository components your system uses, configure the UCR"
+" variable :envvar:`repository/online/component/COMPONENTNAME`, where "
+":samp:`{COMPONENTNAME}` is the name of the component. Set the variable to"
+" ``no`` to exclude a component from synchronization, or leave it unset to"
+" use the default behavior."
+msgstr ""
+"Konfigurieren Sie die UCR-Variable "
+":envvar:`repository/online/component/COMPONENTNAME`, um zu verwalten, "
+"welche Repository-Komponenten Ihr System verwendet, wobei "
+":samp:`{COMPONENTNAME}` der Name der Komponente ist. Setzen Sie die "
+"Variable auf ``no``, um eine Komponente von der Synchronisation "
+"auszuschließen, oder lassen Sie sie nicht gesetzt, um das "
+"Standardverhalten zu verwenden."
+
+#: ../../lifecycle/local-repository-servers.rst:101
+msgid "Create and update a local repository"
+msgstr "Erstellen und Aktualisieren eines lokalen Repositories"
+
+#: ../../lifecycle/local-repository-servers.rst:103
+msgid ""
+"This section describes how to create and maintain a synchronized local "
+"repository with upstream Univention servers."
+msgstr ""
+"Dieser Abschnitt beschreibt, wie Sie ein synchronisiertes lokales "
+"Repository mit Upstream-Servern von Univention erstellen und warten."
+
+#: ../../lifecycle/local-repository-servers.rst:108
+#: ../../lifecycle/package-installation-management.rst:202
+#: ../../lifecycle/package-installation-management.rst:279
+msgid "Prerequisites"
+msgstr "Voraussetzungen"
+
+#: ../../lifecycle/local-repository-servers.rst:109
+msgid ""
+"To create a local repository, you need Root user credentials to run the "
+"repository commands in a terminal."
+msgstr ""
+"Um ein lokales Repository zu erstellen, benötigen Sie Anmeldedaten für "
+"den Root-Benutzer zum Ausführen der Befehle für das Repository in einem "
+"Terminal."
+
+#: ../../lifecycle/local-repository-servers.rst:114
+msgid "Initialize the repository"
+msgstr "Das Repository initialisieren"
+
+#: ../../lifecycle/local-repository-servers.rst:115
+msgid ""
+"The :command:`univention-repository-create` command initializes a local "
+"repository and begins synchronization with upstream Univention servers. "
+"The command installs the :program:`univention-debmirror` package, if the "
+"system doesn't already have it. Synchronization time depends on your "
+"connection bandwidth and the repository size. The command also enables "
+"the local repository by setting the UCR variable "
+":envvar:`local/repository` to ``yes``."
+msgstr ""
+"Der Befehl :command:`univention-repository-create` initialisiert ein "
+"lokales Repository und startet die Synchronisation mit Upstream-Servern "
+"von Univention. Der Befehl installiert das Paket :program:`univention-"
+"debmirror`, falls das System es nicht bereits hat. Die "
+"Synchronisationszeit hängt von Ihrer Verbindungsbandbreite und der Größe "
+"des Repositorys ab. Der Befehl aktiviert auch das lokale Repository, "
+"indem die UCR-Variable :envvar:`local/repository` auf ``yes`` gesetzt "
+"wird."
+
+#: ../../lifecycle/local-repository-servers.rst:126
+msgid ""
+"To initialize the repository, run the command from :numref:`lifecycle-"
+"local-repository-create-figure` in a terminal. The command requires your "
+"confirmation to proceed. After confirmation, synchronization begins "
+"automatically. It stores the repository in the :file:`/var/lib"
+"/univention-repository/mirror/` directory by default."
+msgstr ""
+"Um das Repository zu initialisieren, führen Sie den Befehl aus :numref"
+":`lifecycle-local-repository-create-figure` in einem Terminal aus. Der "
+"Befehl erfordert Ihre Bestätigung zum Fortfahren. Nach der Bestätigung "
+"beginnt die Synchronisation automatisch. Der Befehl speichert das "
+"Repository standardmäßig im Verzeichnis :file:`/var/lib/univention-"
+"repository/mirror/`."
+
+#: ../../lifecycle/local-repository-servers.rst:132
+msgid ""
+"When initialization completes, the command shows instructions for "
+"configuring other systems. Follow these instructions to configure them to"
+" use this repository."
+msgstr ""
+"Nach Abschluss der Initialisierung zeigt der Befehl Anweisungen zum "
+"Konfigurieren anderer Systeme. Befolgen Sie diese Anweisungen, um sie für"
+" die Verwendung dieses Repositories zu konfigurieren."
+
+#: ../../lifecycle/local-repository-servers.rst:136
+msgid "Create a local repository"
+msgstr "Erstellen Sie ein lokales Repository"
+
+#: ../../lifecycle/local-repository-servers.rst:136
+msgid "$ univention-repository-create"
+msgstr "$ univention-repository-create"
+
+#: ../../lifecycle/local-repository-servers.rst:144
+msgid ""
+"Monitor synchronization progress in the repository log file: "
+":file:`/var/log/univention/repository.log`"
+msgstr ""
+"Überwachen Sie den Synchronisationsfortschritt in der Protokolldatei des "
+"Repositorys: :file:`/var/log/univention/repository.log`"
+
+#: ../../lifecycle/local-repository-servers.rst:149
+msgid "Synchronize the repository regularly"
+msgstr "Synchronisieren Sie das Repository regelmäßig"
+
+#: ../../lifecycle/local-repository-servers.rst:150
+msgid ""
+"After the initial repository creation, use the :command:`univention-"
+"repository-update` command to keep the repository synchronized with "
+"upstream Univention servers, as shown in :numref:`lifecycle-local-"
+"repository-update-figure`. Subsequent synchronization runs download only "
+"changed packages, so they're faster than the initial creation."
+msgstr ""
+"Nach der anfänglichen Erstellung des Repositorys verwenden Sie den Befehl"
+" :command:`univention-repository-update`, um das Repository mit Upstream-"
+"Servern von Univention synchron zu halten, wie in :numref:`lifecycle-"
+"local-repository-update-figure` gezeigt. Nachfolgende "
+"Synchronisationsläufe laden nur geänderte Pakete herunter, daher sind sie"
+" schneller als die anfängliche Erstellung."
+
+#: ../../lifecycle/local-repository-servers.rst:157
+msgid "Update a local repository"
+msgstr "Aktualisieren Sie ein lokales Repository"
+
+#: ../../lifecycle/local-repository-servers.rst:157
+msgid "$ univention-repository-update net"
+msgstr "$ univention-repository-update net"
+
+#: ../../lifecycle/local-repository-servers.rst:165
+msgid "Synchronize repositories across locations"
+msgstr "Synchronisieren Sie Repositories an verschiedenen Standorten"
+
+#: ../../lifecycle/local-repository-servers.rst:166
+msgid ""
+"You can also synchronize local repositories across multiple locations. "
+"For example, maintain a main repository at company headquarters and "
+"synchronize it to local repositories at individual locations."
+msgstr ""
+"Sie können auch lokale Repositories an mehreren Standorten "
+"synchronisieren. Unterhalten Sie beispielsweise ein Haupt-Repository in "
+"der Zentrale und synchronisieren Sie es mit lokalen Repositories an "
+"einzelnen Standorten."
+
+#: ../../lifecycle/local-repository-servers.rst:173
+msgid "Use a main repository for multiple locations"
+msgstr "Verwenden Sie ein Haupt-Repository für mehrere Standorte"
+
+#: ../../lifecycle/local-repository-servers.rst:174
+msgid ""
+"When you manage Nubus for UCS systems across multiple locations, you can "
+"use a centralized main repository instead of having each location "
+"maintain its own repository."
+msgstr ""
+"Wenn Sie Nubus für UCS Systeme an mehreren Standorten verwalten, können "
+"Sie ein zentralisiertes Haupt-Repository verwenden, anstatt dass jeder "
+"Standort sein eigenes Repository wartet."
+
+#: ../../lifecycle/local-repository-servers.rst:178
+msgid ""
+"In this scenario, set up one main repository at your organization "
+"headquarters that synchronizes with upstream Univention servers. At each "
+"remote location, configure the systems to use the main repository as "
+"their repository server instead of synchronizing directly from upstream."
+msgstr ""
+"Richten Sie in diesem Szenario ein Haupt-Repository in der Zentrale Ihrer"
+" Organisation ein, das mit Upstream-Servern von Univention "
+"synchronisiert. Konfigurieren Sie an jedem externen Standort die Systeme,"
+" um das Haupt-Repository als Repository-Server zu verwenden, anstatt "
+"direkt von Upstream zu synchronisieren."
+
+#: ../../lifecycle/local-repository-servers.rst:185
+msgid ""
+"Configure remote locations to use the main repository by setting the UCR "
+"variable :envvar:`repository/mirror/server` to the FQDN of the main "
+"repository on those systems. The systems still run :command:`univention-"
+"repository-update net` to synchronize locally, but they pull packages "
+"from your main repository instead of from upstream."
+msgstr ""
+"Konfigurieren Sie externe Standorte, um das :spelling:word:`Haupt-"
+"Repository` zu verwenden, indem Sie die UCR-Variable "
+":envvar:`repository/mirror/server` auf den FQDN des :spelling:word"
+":`Haupt-Repositories` auf diesen Systemen setzen. Die Systeme führen "
+"immer noch :command:`univention-repository-update net` aus, um lokal zu "
+"synchronisieren, aber sie laden Pakete von Ihrem Haupt-Repository statt "
+"von Upstream herunter."
+
+#: ../../lifecycle/local-repository-servers.rst:193
+msgid "Error handling"
+msgstr "Fehlerbehandlung"
+
+#: ../../lifecycle/local-repository-servers.rst:194
+msgid "If the commands fail, check the following error codes:"
+msgstr "Falls die Befehle fehlschlagen, überprüfen Sie die folgenden Fehlercodes:"
+
+#: ../../lifecycle/local-repository-servers.rst
+msgid "Exit code 0"
+msgstr "Exit code 0"
+
+#: ../../lifecycle/local-repository-servers.rst:197
+msgid "Command completed successfully."
+msgstr "Befehl erfolgreich abgeschlossen."
+
+#: ../../lifecycle/local-repository-servers.rst
+msgid "Exit code 1"
+msgstr "Exit code 1"
+
+#: ../../lifecycle/local-repository-servers.rst:198
+msgid "A configuration error occurred, or the user aborted the operation."
+msgstr ""
+"Ein Konfigurationsfehler ist aufgetreten, oder der Benutzer hat die "
+"Operation abgebrochen."
+
+#: ../../lifecycle/local-repository-servers.rst
+msgid "Exit code 5"
+msgstr "Exit code 5"
+
+#: ../../lifecycle/local-repository-servers.rst:199
+msgid "Another updater process is already running; wait for completion and retry."
+msgstr ""
+"Ein anderer Updater-Prozess wird bereits ausgeführt; warten Sie auf "
+"Abschluss und wiederholen Sie den Vorgang."
+
+#: ../../lifecycle/local-repository-servers.rst:201
+msgid ""
+"For detailed error messages, validate the repository log file: "
+":file:`/var/log/univention/repository.log`"
+msgstr ""
+"Für detaillierte Fehlermeldungen überprüfen Sie die Protokolldatei des "
+"Repositorys: :file:`/var/log/univention/repository.log`"
+
+#: ../../lifecycle/local-repository-servers.rst:207
+msgid "Configure the repository server"
+msgstr "Konfigurieren Sie den Repository-Server"
+
+#: ../../lifecycle/local-repository-servers.rst:209
+msgid ""
+"After you create a local repository, you need to configure your systems "
+"to use it. This section shows you three ways to do this: through the "
+"management module for individual systems, through the Univention "
+"Configuration Registry for command-line configuration, and through LDAP "
+"policies when you manage multiple systems centrally."
+msgstr ""
+"Nach der Erstellung eines lokalen Repositories müssen Sie Ihre Systeme "
+"für die Verwendung konfigurieren. Dieser Abschnitt zeigt Ihnen drei "
+"Möglichkeiten: über das Verwaltungsmodul für einzelne Systeme, über die "
+"Univention Configuration Registry für Konfiguration über die Befehlszeile"
+" und über LDAP-Richtlinien, wenn Sie mehrere Systeme zentral verwalten."
+
+#: ../../lifecycle/local-repository-servers.rst:214
+msgid ""
+"The default value for the repository server URL is ``https://updates"
+".software-univention.de``."
+msgstr ""
+"Der Standardwert für die Repository-Server URL ist ``https://updates"
+".software-univention.de``."
+
+#: ../../lifecycle/local-repository-servers.rst:218
+msgid "Configuration through management module"
+msgstr "Konfiguration über das Verwaltungsmodul"
+
+#: ../../lifecycle/local-repository-servers.rst:219
+msgid ""
+"In the *Repository Settings* management module, specify the *Repository "
+"server URL*. Find the module at :menuselection:`Software --> Repository "
+"Settings`. Use this approach for individual system configuration through "
+"the graphical interface."
+msgstr ""
+"Im Verwaltungsmodul *Repository-Einstellungen* geben Sie die *Repository-"
+"Server URL* an. Sie finden das Modul unter :menuselection:`Software --> "
+"Repository-Einstellungen`. Verwenden Sie diesen Ansatz für die "
+"Konfiguration einzelner Systeme über die grafische Oberfläche."
+
+#: ../../lifecycle/local-repository-servers.rst:226
+msgid "Configuration through Univention Configuration Registry"
+msgstr "Konfiguration über die Univention Configuration Registry"
+
+#: ../../lifecycle/local-repository-servers.rst:227
+msgid ""
+"You can specify the repository server URL in the UCR variable :external"
+"+uv-ucs-manual:envvar:`repository/online/server`. Use this approach for "
+"individual system configuration from the command line."
+msgstr ""
+"Sie können die Repository-Server URL in der UCR-Variable :external+uv-"
+"ucs-manual:envvar:`repository/online/server` angeben. Verwenden Sie "
+"diesen Ansatz für die Konfiguration einzelner Systeme über die "
+"Befehlszeile."
+
+#: ../../lifecycle/local-repository-servers.rst:233
+msgid "Policy-based configuration of the repository server"
+msgstr ":spelling:word:`Richtlinienbasierte` Konfiguration des Repository-Servers"
+
+#: ../../lifecycle/local-repository-servers.rst:234
+msgid ""
+"You can also specify the repository server using the *Repository server* "
+"policy in the :external+uv-nubus-manual:ref:`nubus-computer-management`. "
+"The selection field shows only Nubus for UCS server systems with a "
+"configured DNS entry. Use this approach to configure multiple systems "
+"centrally in larger environments."
+msgstr ""
+"Sie können den Repository-Server auch mithilfe der Richtlinie "
+"*Repository-Server* im :external+uv-nubus-manual:ref:`nubus-computer-"
+"management` angeben. Das Auswahlfeld zeigt nur Nubus für UCS Systeme mit "
+"einem konfigurierten DNS-Eintrag an. Verwenden Sie diesen Ansatz, um "
+"mehrere Systeme in größeren Umgebungen zentral zu konfigurieren."
+
+#: ../../lifecycle/local-repository-servers.rst:240
+msgid ""
+"All configuration methods—the management module, Univention Configuration"
+" Registry, and policy-based configuration—modify the same system files:"
+msgstr ""
+"Alle Konfigurationsmethoden – das Verwaltungsmodul, die Univention "
+"Configuration Registry und die :spelling:word:`richtlinienbasierte` "
+"Konfiguration – ändern dieselben Systemdateien:"
+
+#: ../../lifecycle/local-repository-servers.rst:244
+msgid ":file:`/etc/apt/sources.list.d/15_ucs-online-version.list`"
+msgstr ":file:`/etc/apt/sources.list.d/15_ucs-online-version.list`"
+
+#: ../../lifecycle/local-repository-servers.rst:245
+msgid ":file:`/etc/apt/sources.list.d/20_ucs-online-component.list`"
+msgstr ":file:`/etc/apt/sources.list.d/20_ucs-online-component.list`"
+
+#: ../../lifecycle/local-repository-servers.rst:247
+msgid ""
+"To verify that your configuration is correct, validate that the "
+"repository server URL in these files matches the value in the UCR "
+"variable :envvar:`repository/online/server`. The :file:`20_ucs-online-"
+"component.list` file only contains repository entries when you configure "
+"components."
+msgstr ""
+"Überprüfen Sie, ob die Repository-Server URL in diesen Dateien dem Wert "
+"in der UCR-Variable :envvar:`repository/online/server` entspricht, um zu "
+"bestätigen, dass Ihre Konfiguration korrekt ist. Die Datei :file:`20_ucs-"
+"online-component.list` enthält nur Einträge für Repositories, wenn Sie "
+"Komponenten konfigurieren."
+
+#: ../../lifecycle/local-repository-servers.rst:255
+msgid ""
+":numref:`lifecycle-local-repository-verify-figure` shows how the "
+"repository server URL appears in the file."
+msgstr ""
+":numref:`lifecycle-local-repository-verify-figure` zeigt, wie die "
+"Repository-Server URL in der Datei aussieht."
+
+#: ../../lifecycle/local-repository-servers.rst:258
+msgid "Repository server URL in :file:`sources.list.d` file (excerpt)"
+msgstr "Repository-Server URL in :file:`sources.list.d` Datei (Auszug)"
+
+#: ../../lifecycle/local-repository-servers.rst:258
+msgid "deb https://updates.software-univention.de/ ucs520 main"
+msgstr "deb https://updates.software-univention.de/ ucs520 main"
+
+#: ../../lifecycle/local-repository-servers.rst:267
+msgid "Maintain the local repository"
+msgstr "Wartung des lokalen Repositories"
+
+#: ../../lifecycle/local-repository-servers.rst:269
+msgid ""
+"Regular maintenance ensures optimal performance and manages disk space "
+"efficiently."
+msgstr ""
+"Regelmäßige Wartung gewährleistet optimale Leistung und verwaltet den "
+"Speicherplatz effizient."
+
+#: ../../lifecycle/local-repository-servers.rst:273
+msgid "Schedule synchronization"
+msgstr "Planen Sie die Synchronisation"
+
+#: ../../lifecycle/local-repository-servers.rst:274
+msgid ""
+"Run repository synchronization weekly on Wednesday evening or Thursday "
+"morning to stay current with weekly upstream package updates."
+msgstr ""
+"Führen Sie die Synchronisation des Repositorys wöchentlich am "
+"Mittwochabend oder Donnerstagmorgen aus, um auf dem aktuellen Stand mit "
+"den wöchentlichen Updates der Pakete zu bleiben."
+
+#: ../../lifecycle/local-repository-servers.rst:277
+msgid ""
+"Configure the synchronization task using the :command:`univention-"
+"repository-update net` command through either Univention Configuration "
+"Registry or an LDAP-based scheduling policy. :numref:`lifecycle-local-"
+"repository-maintain-cron-figure` shows an example using UCR variables. "
+"The time format is ``hour minute day month weekday``. This example "
+"synchronizes the repository every Wednesday at 22:00 in your local time "
+"zone. Adjust the schedule based on your organizational needs and network "
+"traffic patterns."
+msgstr ""
+"Konfigurieren Sie die Synchronisationsaufgabe mit dem Befehl :command"
+":`univention-repository-update net` über die Univention Configuration "
+"Registry oder eine LDAP-basierte Planungsrichtlinie. :numref:`lifecycle-"
+"local-repository-maintain-cron-figure` zeigt ein Beispiel mit UCR-"
+"Variablen. Das Zeitformat ist ``hour minute day month weekday``. Dieses "
+"Beispiel synchronisiert das Repository jeden Mittwoch um 22:00 in Ihrer "
+"lokalen Zeitzone. Passen Sie den Zeitplan an Ihre organisatorischen "
+"Anforderungen und Muster des Netzwerkverkehrs an."
+
+#: ../../lifecycle/local-repository-servers.rst:289
+msgid "Configure weekly repository synchronization via UCR"
+msgstr ""
+"Konfigurieren Sie die wöchentliche Synchronisation des Repositorys über "
+"UCR"
+
+#: ../../lifecycle/local-repository-servers.rst:289
+msgid ""
+"$ univention-config-registry set \\\n"
+"   cron/repository-sync/command='/usr/sbin/univention-repository-update "
+"net' \\\n"
+"   cron/repository-sync/time='22 * * * 3'"
+msgstr ""
+"$ univention-config-registry set \\\n"
+"   cron/repository-sync/command='/usr/sbin/univention-repository-update "
+"net' \\\n"
+"   cron/repository-sync/time='22 * * * 3'"
+
+#: ../../lifecycle/local-repository-servers.rst:299
+msgid "Monitor repository health"
+msgstr "Überwachen Sie die Gesundheit des Repositorys"
+
+#: ../../lifecycle/local-repository-servers.rst:300
+msgid "After each synchronization, verify that it completed successfully."
+msgstr ""
+"Nach jeder Synchronisation überprüfen Sie, ob sie erfolgreich "
+"abgeschlossen wurde."
+
+#: ../../lifecycle/local-repository-servers.rst:303
+msgid ""
+"Check the exit code of the synchronization command— exit code ``0`` "
+"indicates success. Review the repository log file for error messages or "
+"warnings. If errors occur, consult the :ref:`lifecycle-local-repository-"
+"troubleshooting` section for diagnosis and resolution."
+msgstr ""
+"Überprüfen Sie den Exit Code des Synchronisationsbefehls – Exit Code "
+"``0`` zeigt Erfolg an. Überprüfen Sie die Protokolldatei des Repositorys "
+"auf Fehlermeldungen oder Warnungen. Falls Fehler auftreten, lesen Sie den"
+" Abschnitt :ref:`lifecycle-local-repository-troubleshooting` zur Diagnose"
+" und Fehlerbehebung."
+
+#: ../../lifecycle/local-repository-servers.rst:310
+msgid "Review disk usage to ensure sufficient space for future synchronizations."
+msgstr ""
+"Überprüfen Sie die Festplattennutzung, um ausreichend Platz für "
+"zukünftige Synchronisationen zu gewährleisten."
+
+#: ../../lifecycle/local-repository-servers.rst:314
+msgid "Manage disk space"
+msgstr "Verwalten Sie den Speicherplatz"
+
+#: ../../lifecycle/local-repository-servers.rst:315
+msgid ""
+"Disk usage grows over time as upstream adds package versions. Regular "
+"cleanup prevents disk space exhaustion."
+msgstr ""
+"Die Festplattennutzung wächst im Laufe der Zeit, wenn Upstream "
+"Paketversionen hinzufügt. Regelmäßige Bereinigung verhindert "
+"Speicherplatzerschöpfung."
+
+#: ../../lifecycle/local-repository-servers.rst:318
+msgid ""
+"Limit the version range using the UCR variables "
+":envvar:`repository/mirror/version/start` and "
+":envvar:`repository/mirror/version/end`. The system synchronizes only "
+"versions within this range."
+msgstr ""
+"Beschränken Sie den Versionsbereich mit den UCR-Variablen "
+":envvar:`repository/mirror/version/start` und "
+":envvar:`repository/mirror/version/end`. Das System synchronisiert nur "
+"Versionen innerhalb dieses Bereichs."
+
+#: ../../lifecycle/local-repository-servers.rst:322
+#, python-brace-format
+msgid ""
+"Exclude optional components by setting the UCR variable "
+":envvar:`repository/online/component/COMPONENTNAME` to ``no``, where "
+":samp:`{COMPONENTNAME}` is the component name you want to deactivate. The"
+" system excludes this component from the next synchronization."
+msgstr ""
+"Schließen Sie optionale Komponenten aus, indem Sie die UCR-Variable "
+":envvar:`repository/online/component/COMPONENTNAME` auf ``no`` setzen, "
+"wobei :samp:`{COMPONENTNAME}` der Name der Komponente ist, die Sie "
+"deaktivieren möchten. Das System schließt diese Komponente von der "
+"nächsten Synchronisation aus."
+
+#: ../../lifecycle/local-repository-servers.rst:329
+msgid ""
+"Exclude source packages using the UCR variable "
+":envvar:`repository/mirror/sources` if you don't require them, since "
+"source packages increase repository size significantly."
+msgstr ""
+"Schließen Sie Quellpakete mit der UCR-Variable "
+":envvar:`repository/mirror/sources` aus, falls Sie diese nicht benötigen,"
+" da Quellpakete die Größe des Repositorys erheblich erhöhen."
+
+#: ../../lifecycle/local-repository-servers.rst:335
+msgid ""
+"Prune old kernel packages using the :command:`univention-prune-kernels` "
+"command to remove outdated kernel packages and free disk space."
+msgstr ""
+"Löschen Sie alte Kernel-Pakete mit dem Befehl :command:`univention-prune-"
+"kernels`, um veraltete Kernel-Pakete zu entfernen und Speicherplatz "
+"freizugeben."
+
+#: ../../lifecycle/local-repository-servers.rst:340
+msgid ""
+"During synchronization, :program:`apt-mirror` requires temporary disk "
+"space in addition to the final repository size. Ensure at least 2x the "
+"expected mirror size in free disk space before running synchronization."
+msgstr ""
+"Während der Synchronisation benötigt :program:`apt-mirror` zusätzlich zur"
+" endgültigen Größe des Repositorys temporären Speicherplatz. Stellen Sie "
+"sicher, dass Sie mindestens das 2-fache der erwarteten Größe des Mirrors "
+"an freiem Speicherplatz haben, bevor Sie die Synchronisation ausführen."
+
+#: ../../lifecycle/local-repository-servers.rst:348
+msgid "Review and plan"
+msgstr "Überprüfen und planen"
+
+#: ../../lifecycle/local-repository-servers.rst:349
+msgid ""
+"Review your repository configuration and growth patterns quarterly to "
+"anticipate storage needs."
+msgstr ""
+"Überprüfen Sie vierteljährlich Ihre Konfiguration für das Repository und "
+"Wachstumsmuster, um Speicherbedarf vorherzusehen."
+
+#: ../../lifecycle/local-repository-servers.rst:353
+msgid ""
+"Monitor repository size trends. If growth consistently approaches your "
+"disk capacity, consider expanding storage or adjusting your version "
+"retention policy."
+msgstr ""
+"Überwachen Sie Trends der :spelling:word:`Repository-Größen`. Wenn das "
+"Wachstum sich Ihrer Festplattenkapazität nähert, erwägen Sie, den "
+"Speicher zu erweitern oder Ihre Richtlinie für die Aufbewahrung der "
+"Versionen anzupassen."
+
+#: ../../lifecycle/local-repository-servers.rst:358
+msgid ""
+"Verify that your version retention strategy matches your UCS support "
+"lifecycle. Univention provides security updates for *maintained* "
+"versions. Remove versions that are no longer in your support scope."
+msgstr ""
+"Überprüfen Sie, dass Ihre Aufbewahrungsstrategie für die Versionen Ihrem "
+"UCS Support Lebenszyklus entspricht. Univention stellt "
+"Sicherheitsaktualisierungen für *maintained* Versionen bereit. Entfernen "
+"Sie Versionen, die nicht mehr in Ihrem Support-Umfang liegen."
+
+#: ../../lifecycle/local-repository-servers.rst:364
+msgid ""
+"Plan for major UCS releases in advance of their publication. Ensure "
+"adequate disk space before the release synchronization begins."
+msgstr ""
+"Planen Sie Major UCS Releases im Voraus ihrer Veröffentlichung. Stellen "
+"Sie sicher, dass ausreichend Speicherplatz vorhanden ist, bevor die "
+"Synchronisation für das Release beginnt."
+
+#: ../../lifecycle/local-repository-servers.rst:372
+msgid "Troubleshooting repository problems"
+msgstr "Fehlerbehebung bei Problemen mit dem Repository"
+
+#: ../../lifecycle/local-repository-servers.rst:374
+msgid ""
+"If you encounter issues when creating or updating a local repository, use"
+" the following guidance to diagnose and resolve common problems."
+msgstr ""
+"Wenn Sie beim Erstellen oder Aktualisieren eines lokalen Repositories auf"
+" Probleme stoßen, verwenden Sie die folgende Anleitung zur Diagnose und "
+"Behebung häufiger Probleme."
+
+#: ../../lifecycle/local-repository-servers.rst:377
+msgid ""
+"Review the repository log file :file:`/var/log/univention/repository.log`"
+" for detailed error messages and diagnostic information."
+msgstr ""
+"Überprüfen Sie die Protokolldatei des Repositorys "
+":file:`/var/log/univention/repository.log` auf detaillierte "
+"Fehlermeldungen und Diagnoseinformationen."
+
+#: ../../lifecycle/local-repository-servers.rst:383
+msgid "Repository creation or update fails to start"
+msgstr "Erstellung des Repositorys oder Aktualisierung kann nicht gestartet werden"
+
+#: ../../lifecycle/local-repository-servers.rst:384
+msgid ""
+"The command returns exit code ``5`` because another updater process is "
+"running."
+msgstr ""
+"Der Befehl gibt den Exit Code ``5`` zurück, da ein anderer Updater-"
+"Prozess ausgeführt wird."
+
+#: ../../lifecycle/local-repository-servers.rst:387
+msgid ""
+"Verify if another :command:`univention-repository-create`, :command"
+":`univention-repository-update`, or system update process is active on "
+"the system. Wait for the other process to complete, then retry your "
+"command."
+msgstr ""
+"Überprüfen Sie, ob ein anderer :command:`univention-repository-create`, "
+":command:`univention-repository-update` oder Prozess zur System-"
+"Aktualisierung auf dem System aktiv ist. Warten Sie, bis der andere "
+"Prozess abgeschlossen ist, bevor Sie Ihren Befehl wiederholen."
+
+#: ../../lifecycle/local-repository-servers.rst:395
+msgid "Configuration fails to apply or appears incorrect"
+msgstr "Konfiguration kann nicht angewendet werden oder erscheint falsch"
+
+#: ../../lifecycle/local-repository-servers.rst:396
+msgid ""
+"The command completes with exit code ``1``, or the system isn't using the"
+" configured repository server."
+msgstr ""
+"Der Befehl endet mit Exit Code ``1``, oder das System verwendet nicht den"
+" konfigurierten Repository-Server."
+
+#: ../../lifecycle/local-repository-servers.rst:399
+msgid ""
+"Confirm that you set the following Univention Configuration Registry "
+"variables correctly:"
+msgstr ""
+"Bestätigen Sie, dass Sie die folgenden Univention Configuration Registry "
+"Variablen korrekt gesetzt haben:"
+
+#: ../../lifecycle/local-repository-servers.rst:401
+msgid ":envvar:`local/repository` must have the value ``yes``."
+msgstr ":envvar:`local/repository` muss den Wert ``yes`` haben."
+
+#: ../../lifecycle/local-repository-servers.rst:402
+msgid ""
+":envvar:`repository/mirror/server` must have the value ``yes`` if you use"
+" a local repository."
+msgstr ""
+":envvar:`repository/mirror/server` muss den Wert ``yes`` haben, wenn Sie "
+"ein lokales Repository verwenden."
+
+#: ../../lifecycle/local-repository-servers.rst:403
+msgid ""
+":envvar:`repository/online/server` must point to the correct repository "
+"server URL."
+msgstr ""
+":envvar:`repository/online/server` muss auf die richtige Repository-"
+"Server URL zeigen."
+
+#: ../../lifecycle/local-repository-servers.rst:405
+msgid ""
+"After you corrected any configuration, review the files to confirm the "
+"changes took effect: :file:`/etc/apt/sources.list.d/15_ucs-online-"
+"version.list` and :file:`/etc/apt/sources.list.d/20_ucs-online-"
+"component.list`."
+msgstr ""
+"Nachdem Sie eine Konfiguration korrigiert haben, überprüfen Sie die "
+"Dateien, um zu bestätigen, dass die Änderungen wirksam wurden: "
+":file:`/etc/apt/sources.list.d/15_ucs-online-version.list` und "
+":file:`/etc/apt/sources.list.d/20_ucs-online-component.list`."
+
+#: ../../lifecycle/local-repository-servers.rst:412
+msgid "Mirror server pointing to itself"
+msgstr "Mirror-Server zeigt auf sich selbst"
+
+#: ../../lifecycle/local-repository-servers.rst:413
+msgid ""
+"The command fails with exit code ``1`` when you configure the mirror "
+"server to point to the local system instead of an upstream repository "
+"server."
+msgstr ""
+"Der Befehl schlägt mit dem Exit Code ``1`` fehl, wenn Sie den Mirror-"
+"Server konfigurieren, um auf das lokale System statt auf einen Upstream "
+"Repository-Server zu zeigen."
+
+#: ../../lifecycle/local-repository-servers.rst:416
+msgid ""
+"Verify that the UCR variable :envvar:`repository/mirror/server` doesn't "
+"contain the FQDN of your local system. It must point to a valid upstream "
+"repository server, like ``https://updates.software-univention.de``."
+msgstr ""
+"Überprüfen Sie, dass die UCR-Variable :envvar:`repository/mirror/server` "
+"nicht den FQDN Ihres lokalen Systems enthält. Sie muss auf einen gültigen"
+" Upstream Repository-Server wie ``https://updates.software-"
+"univention.de`` zeigen."
+
+#: ../../lifecycle/local-repository-servers.rst:423
+msgid "Synchronization is slow or stalls"
+msgstr "Synchronisation ist langsam oder bleibt stecken"
+
+#: ../../lifecycle/local-repository-servers.rst:424
+msgid ""
+"The initial repository synchronization downloads all packages and can "
+"take several hours depending on network bandwidth and repository size."
+msgstr ""
+"Die anfängliche Synchronisation des Repositorys lädt alle Pakete herunter"
+" und kann je nach Netzwerkbandbreite und Größe des Repositorys mehrere "
+"Stunden dauern."
+
+#: ../../lifecycle/local-repository-servers.rst:428
+msgid ""
+"If synchronization appears to stall, verify network connectivity to the "
+"repository server and ensure you have sufficient disk space on your "
+"system."
+msgstr ""
+"Falls die Synchronisation zu stecken scheint, überprüfen Sie die "
+"Netzwerkverbindung zum Repository-Server und stellen Sie sicher, dass Sie"
+" ausreichend Speicherplatz auf Ihrem System haben."
+
+#: ../../lifecycle/local-repository-servers.rst:434
+msgid "Repository server unreachable"
+msgstr "Repository-Server ist nicht erreichbar"
+
+#: ../../lifecycle/local-repository-servers.rst:435
+msgid ""
+"Your system can't connect to the configured repository server. Verify the"
+" following:"
+msgstr ""
+"Ihr System kann keine Verbindung zum konfigurierten Repository-Server "
+"herstellen. Überprüfen Sie Folgendes:"
+
+#: ../../lifecycle/local-repository-servers.rst:438
+msgid "Network connectivity exists from your system to the repository server."
+msgstr "Netzwerkverbindung von Ihrem System zum Repository-Server ist vorhanden."
+
+#: ../../lifecycle/local-repository-servers.rst:439
+msgid "DNS resolution works for the repository server hostname."
+msgstr "DNS-Auflösung funktioniert für den Repository-Server Rechnernamen."
+
+#: ../../lifecycle/local-repository-servers.rst:440
+msgid ""
+"The repository server URL in the UCR variable "
+":envvar:`repository/online/server` is correct."
+msgstr ""
+"Die Repository-Server URL in der UCR-Variable "
+":envvar:`repository/online/server` ist korrekt."
+
+#: ../../lifecycle/local-repository-servers.rst:441
+msgid "Firewall rules allow access to the repository server."
+msgstr "Firewall-Regeln ermöglichen Zugriff auf den Repository-Server."
+
+#: ../../lifecycle/local-repository-servers.rst:445
+msgid "Insufficient disk space"
+msgstr "Unzureichender Speicherplatz"
+
+#: ../../lifecycle/local-repository-servers.rst:446
+msgid "The system runs out of disk space during synchronization."
+msgstr "Der Speicherplatz auf dem System läuft während der Synchronisation voll."
+
+#: ../../lifecycle/local-repository-servers.rst:448
+msgid ""
+"Verify that you have sufficient disk space available in the directory you"
+" configured in the UCR variable :envvar:`repository/mirror/basepath`. The"
+" default path is :file:`/var/lib/univention-repository/`."
+msgstr ""
+"Überprüfen Sie, dass Sie ausreichend Speicherplatz in dem Verzeichnis "
+"verfügbar haben, das Sie in der UCR-Variable "
+":envvar:`repository/mirror/basepath` konfiguriert haben. Der Standardpfad"
+" ist :file:`/var/lib/univention-repository/`."
+
+#: ../../lifecycle/local-repository-servers.rst:452
+msgid ""
+"The amount of space you need depends on which UCS versions and components"
+" you choose to mirror."
+msgstr ""
+"Der benötigte Speicherplatz hängt davon ab, welche UCS-Versionen und "
+"Komponenten Sie spiegeln möchten."
+
+#: ../../lifecycle/local-repository-servers.rst:457
+msgid "Not running with sufficient permissions"
+msgstr "Nicht mit ausreichenden Berechtigungen ausgeführt"
+
+#: ../../lifecycle/local-repository-servers.rst:458
+msgid ""
+"The command fails when you don't run it with root privileges. Run all "
+"repository management commands as the ``root`` user."
+msgstr ""
+"Der Befehl schlägt fehl, wenn Sie ihn nicht mit Root Privilegien "
+"ausführen. Führen Sie alle Verwaltungsbefehle für das Repository als "
+"``root`` Benutzer aus."
+
+#: ../../lifecycle/package-installation-management.rst:7
+msgid "Package installation and management"
+msgstr "Paket-Installation und -Verwaltung"
+
+#: ../../lifecycle/package-installation-management.rst:9
+msgid ""
+"You selected software components during setup based on your "
+"organization's needs. These components cover the core functionality "
+"required to operate the system. However, you may need to install "
+"additional packages to extend Nubus for UCS with functionality beyond the"
+" initial setup. These optional packages aren't required for core "
+"operations—they're extra capabilities that your organization might need "
+"for specific services or integrations."
+msgstr ""
+"Sie haben während der Einrichtung Softwarekomponenten basierend auf den "
+"Anforderungen Ihrer Organisation ausgewählt.\n"
+"Diese Komponenten decken die Grundfunktionalität ab, die für den Betrieb "
+"des Systems erforderlich ist.\n"
+"Sie können jedoch zusätzliche Pakete installieren, um Nubus für UCS um "
+"Funktionalität über die anfängliche Einrichtung hinaus zu erweitern.\n"
+"Diese optionalen Pakete sind nicht für die Kernfunktionen erforderlich – "
+"es sind zusätzliche Funktionen, die Ihre Organisation möglicherweise für "
+"spezifische Dienste oder Integrationen benötigt.\n"
+"Wenn Sie ein Paket installieren, löst der Paket-Manager automatisch "
+"Abhängigkeiten auf und installiert alle erforderlichen Pakete, sodass Sie"
+" manuell keine Paketabhängigkeiten identifizieren und zusätzlich "
+"installieren müssen."
+
+#: ../../lifecycle/package-installation-management.rst:16
+msgid ""
+"Package installation typically uses online repositories or a local "
+"repository. If your environment uses a local repository server for "
+"package distribution, see :ref:`lifecycle-local-repository-servers` for "
+"setup and configuration. If you need to configure which repository "
+"servers your systems use, see :ref:`lifecycle-local-repository-"
+"configuration` in :ref:`lifecycle-local-repository-servers`."
+msgstr ""
+"Die Paketinstallation verwendet normalerweise :spelling:word:`Online-Repositories` oder "
+"ein lokales Repository. Wenn Ihre Umgebung einen lokalen Repository-"
+"Server für die Paketverteilung verwendet, lesen Sie :ref:`lifecycle-"
+"local-repository-servers` für Einrichtung und Konfiguration. Wenn Sie "
+"konfigurieren müssen, welche Repository-Server Ihre Systeme verwenden, "
+"lesen Sie :ref:`lifecycle-local-repository-configuration` in :ref"
+":`lifecycle-local-repository-servers`."
+
+#: ../../lifecycle/package-installation-management.rst:22
+msgid ""
+"When you install a package, the package manager automatically resolves "
+"and installs any package dependencies, so you don't need to manually "
+"identify and install supporting packages."
+msgstr ""
+"Wenn Sie ein Paket installieren, löst der Paket-Manager automatisch "
+"Paketabhängigkeiten auf und installiert diese, sodass Sie nicht manuell "
+"unterstützende Pakete identifizieren und installieren müssen."
+
+#: ../../lifecycle/package-installation-management.rst:26
+msgid ""
+"If you need to install software that isn't available as a Debian package,"
+" place it in the :file:`/opt/` or :file:`/usr/local/` directories. Use "
+"these directories to keep your custom software separate from Univention "
+"packages and maintain a clean system architecture."
+msgstr ""
+"Wenn Sie Software installieren müssen, die nicht als Debian-Paket "
+"verfügbar ist, legen Sie diese in den Verzeichnissen :file:`/opt/` oder "
+":file:`/usr/local/` ab.\n"
+"Verwenden Sie diese Verzeichnisse, um Ihre benutzerdefinierte Software "
+"getrennt von :spelling:word:`Univention-Paketen` zu halten und eine "
+"saubere Systemarchitektur zu erhalten."
+
+#: ../../lifecycle/package-installation-management.rst:34
+msgid "Choose your installation method"
+msgstr "Wählen Sie Ihre Installationsmethode"
+
+#: ../../lifecycle/package-installation-management.rst:36
+msgid ""
+"You have several options to install additional packages on your Nubus for"
+" UCS system. Each method serves different administrative needs and "
+"preferences. All methods draw from the same package repositories, so the "
+"packages available to you are the same regardless of which method you "
+"choose."
+msgstr ""
+"Sie haben mehrere Möglichkeiten, zusätzliche Pakete auf Ihrem Nubus für "
+"UCS System zu installieren.\n"
+"Jede Methode erfüllt unterschiedliche administrative Anforderungen und "
+"Vorlieben.\n"
+"Alle Methoden laden die Pakete von denselben Repositorys, daher sind die "
+"Ihnen verfügbaren Pakete identisch, unabhängig davon, welche Methode Sie "
+"wählen."
+
+#: ../../lifecycle/package-installation-management.rst:43
+msgid "Univention App Center"
+msgstr "Univention App Center"
+
+#: ../../lifecycle/package-installation-management.rst:44
+msgid ""
+"Univention App Center offers a graphical interface where you can browse, "
+"search, and install applications and UCS components. You can choose from "
+"applications provided by Univention and third-party vendors for specific "
+"use cases and integration scenarios. For details, see :ref:`lifecycle-"
+"package-installation-management-appcenter`."
+msgstr ""
+"Univention App Center bietet eine grafische Oberfläche, mit der Sie "
+"Anwendungen und UCS-Komponenten durchsehen, suchen und installieren "
+"können.\n"
+"Sie können aus Anwendungen von Univention und Drittanbieter-Anbietern für"
+" spezifische Anwendungsfälle und Integrationsszenarios wählen.\n"
+"Weitere Einzelheiten finden Sie unter :ref:`lifecycle-package-"
+"installation-management-appcenter`."
+
+#: ../../lifecycle/package-installation-management.rst:52
+msgid "Package Management"
+msgstr "Paket-Verwaltung"
+
+#: ../../lifecycle/package-installation-management.rst:53
+msgid ""
+"The *Package Management* module in the *Management UI* lets you search "
+"for and install individual Debian packages. For details, see :ref"
+":`lifecycle-package-installation-management-umc`."
+msgstr ""
+"Das Modul *Paket-Verwaltung* in der *Management UI* ermöglicht es Ihnen, "
+"einzelne Debian-Pakete zu suchen und zu installieren.\n"
+"Weitere Einzelheiten finden Sie unter :ref:`lifecycle-package-"
+"installation-management-umc`."
+
+#: ../../lifecycle/package-installation-management.rst:59
+msgid "Command line"
+msgstr "Befehlszeile"
+
+#: ../../lifecycle/package-installation-management.rst:60
+msgid ""
+"The command line provides direct control over package management. Use the"
+" command line when you prefer scripting or need access to advanced "
+"options. For details, see :ref:`lifecycle-package-installation-"
+"management-commandline`."
+msgstr ""
+"Die Befehlszeile bietet über Befehle direkte Kontrolle für das Paket-"
+"Management.\n"
+"Verwenden Sie die Befehlszeile, wenn Sie Scripting bevorzugen oder "
+"Zugriff auf erweiterte Optionen benötigen.\n"
+"Weitere Einzelheiten finden Sie unter :ref:`lifecycle-package-"
+"installation-management-commandline`."
+
+#: ../../lifecycle/package-installation-management.rst:67
+msgid "Installation through Univention App Center"
+msgstr "Installation mittels Univention App Center"
+
+#: ../../lifecycle/package-installation-management.rst:69
+msgid ""
+"Univention App Center hosts UCS components alongside applications from "
+"Univention and third-party vendors. You can install or remove UCS "
+"components directly from the App Center. For a glimpse on the App Center "
+"overview, see :numref:`lifecycle-package-installation-management-"
+"appcenter-figure`. To learn more about the App Center and its "
+"capabilities, see :external+uv-ucs-manual:ref:`software-appcenter` in "
+":cite:t:`ucs-manual`."
+msgstr ""
+"Univention App Center stellt UCS-Komponenten zusammen mit Anwendungen von"
+" Univention und Drittanbieter-Anbietern bereit.\n"
+"Sie können UCS-Komponenten direkt über das App Center installieren oder "
+"entfernen.\n"
+"Einen Überblick über das App Center finden Sie in :numref:`lifecycle-"
+"package-installation-management-appcenter-figure`.\n"
+"Weitere Informationen zum App Center und seinen Funktionen finden Sie "
+"unter :external+uv-ucs-manual:ref:`software-appcenter` im :cite:t:`ucs-"
+"manual`."
+
+#: ../../lifecycle/package-installation-management.rst:82
+#: ../../lifecycle/package-installation-management.rst:85
+msgid "UCS components and other apps in the App Center"
+msgstr "UCS-Komponenten und andere Apps im App Center"
+
+#: ../../lifecycle/package-installation-management.rst:90
+msgid "Installation through Management UI"
+msgstr "Installation mittels Management UI"
+
+#: ../../lifecycle/package-installation-management.rst:92
+msgid ""
+"To use the *Package Management* module, you need web access to the "
+"*Management UI* and the ``Domain Admins`` group must include your user "
+"account."
+msgstr ""
+"Um das Modul *Paket-Verwaltung* zu verwenden, benötigen Sie Webzugriff "
+"auf die *Management UI* und Ihr Benutzerkonto muss in der Gruppe ``Domain"
+" Admins`` enthalten sein."
+
+#: ../../lifecycle/package-installation-management.rst:96
+msgid ""
+"The *Package Management* module in the *Management UI* provides a "
+"graphical interface to search for and install individual Debian packages."
+" To open it, navigate to :menuselection:`Software --> Package "
+"Management`."
+msgstr ""
+"Das Modul *Paket-Verwaltung* in der *Management UI* bietet eine grafische"
+" Oberfläche zum Suchen und Installieren einzelner Debian-Pakete.\n"
+"Zum Öffnen navigieren Sie zu :menuselection:`Software --> Paket-"
+"Verwaltung`."
+
+#: ../../lifecycle/package-installation-management.rst:101
+msgid ""
+"To find packages, you search by name or description. The search results "
+"display matching packages in a table with their names, descriptions, and "
+"installation status. Click an entry to view more details, then use the "
+"actions to install, uninstall, or upgrade the package. :numref"
+":`lifecycle-package-installation-management-umc-figure` shows package "
+"details."
+msgstr ""
+"Um Pakete zu finden, suchen Sie nach Namen oder Beschreibung.\n"
+"Die Suchergebnisse zeigen passende Pakete in einer Tabelle mit ihren "
+"Namen, Beschreibungen und Installationsstatus.\n"
+"Klicken Sie auf einen Eintrag, um mehr Details anzuzeigen, und verwenden "
+"Sie dann die Aktionen, um das Paket zu installieren, zu deinstallieren "
+"oder zu aktualisieren.\n"
+":numref:`lifecycle-package-installation-management-umc-figure` zeigt "
+"Paketdetails."
+
+#: ../../lifecycle/package-installation-management.rst:110
+msgid "Action buttons"
+msgstr "Aktionsschaltflächen"
+
+#: ../../lifecycle/package-installation-management.rst
+#: ../../lifecycle/package-installation-management.rst:136
+msgid "Install"
+msgstr "Installieren"
+
+#: ../../lifecycle/package-installation-management.rst:111
+msgid "Select to install a package that isn't yet installed."
+msgstr ""
+"Wählen Sie diese Option, um ein Paket zu installieren, das noch nicht "
+"installiert ist."
+
+#: ../../lifecycle/package-installation-management.rst
+msgid "Uninstall"
+msgstr "Deinstallieren"
+
+#: ../../lifecycle/package-installation-management.rst:112
+msgid "Select to uninstall an installed package."
+msgstr "Wählen Sie diese Option, um ein installiertes Paket zu deinstallieren."
+
+#: ../../lifecycle/package-installation-management.rst
+msgid "Upgrade"
+msgstr "Aktualisieren"
+
+#: ../../lifecycle/package-installation-management.rst:113
+msgid "Select to upgrade an installed package with an available update."
+msgstr ""
+"Wählen Sie diese Option, um ein installiertes Paket mit einem verfügbaren"
+" Update zu aktualisieren."
+
+#: ../../lifecycle/package-installation-management.rst
+msgid "Close"
+msgstr "Schließen"
+
+#: ../../lifecycle/package-installation-management.rst:114
+msgid "Select to return to your previous search."
+msgstr "Wählen Sie diese Option, um zur vorherigen Suche zurückzukehren."
+
+#: ../../lifecycle/package-installation-management.rst:118
+msgid "Installing the package univention-squid through Package Management module"
+msgstr "Installation des Pakets univention-squid über das Paket-Verwaltungsmodul"
+
+#: ../../lifecycle/package-installation-management.rst:121
+msgid ""
+"Installing the package :program:`univention-squid` through Package "
+"Management module"
+msgstr ""
+"Installation des Pakets :program:`univention-squid` über das Paket-"
+"Verwaltungsmodul"
+
+#: ../../lifecycle/package-installation-management.rst:126
+msgid "Installation from command line"
+msgstr "Installation über die Befehlszeile"
+
+#: ../../lifecycle/package-installation-management.rst:128
+msgid ""
+"Use the command line when you prefer working directly in the terminal. "
+"You need ``root`` user rights to perform package management actions. For "
+"interactive actions, use the :command:`univention-install`. For "
+"automation and integration in scripts, use the :command:`apt-get` command"
+" instead of :command:`univention-install`."
+msgstr ""
+"Verwenden Sie die Befehlszeile, wenn Sie direkt im Terminal arbeiten "
+"möchten.\n"
+"Sie benötigen ``root`` Benutzerrechte, um Aktionen in der Paket-"
+"Verwaltung durchzuführen.\n"
+"Für interaktive Aktionen verwenden Sie den Befehl :command:`univention-"
+"install`.\n"
+"Für Automatisierung und Integration in Skripten verwenden Sie den Befehl "
+":command:`apt-get` anstatt :command:`univention-install`."
+
+#: ../../lifecycle/package-installation-management.rst:137
+msgid ""
+"To install a package, use the :command:`univention-install` command in "
+":numref:`lifecycle-package-installation-management-commandline-install-"
+"listing`."
+msgstr ""
+"Um ein Paket zu installieren, verwenden Sie den Befehl :command"
+":`univention-install` in :numref:`lifecycle-package-installation-"
+"management-commandline-install-listing`."
+
+#: ../../lifecycle/package-installation-management.rst:140
+msgid "Install a package with :command:`univention-install`"
+msgstr "Installation eines Pakets mit :command:`univention-install`"
+
+#: ../../lifecycle/package-installation-management.rst:140
+msgid "$ univention-install <PACKAGENAME>"
+msgstr "$ univention-install <PACKAGENAME>"
+
+#: ../../lifecycle/package-installation-management.rst:148
+msgid "Remove"
+msgstr "Entfernen"
+
+#: ../../lifecycle/package-installation-management.rst:149
+msgid ""
+"To remove a package, use the :command:`univention-remove` command in "
+":numref:`lifecycle-package-installation-management-commandline-remove-"
+"listing`."
+msgstr ""
+"Um ein Paket zu entfernen, verwenden Sie den Befehl :command:`univention-"
+"remove` in :numref:`lifecycle-package-installation-management-"
+"commandline-remove-listing`."
+
+#: ../../lifecycle/package-installation-management.rst:152
+msgid "Remove a package with :command:`univention-remove`"
+msgstr "Entfernen eines Pakets mit :command:`univention-remove`"
+
+#: ../../lifecycle/package-installation-management.rst:152
+msgid "$ univention-remove <PACKAGENAME>"
+msgstr "$ univention-remove <PACKAGENAME>"
+
+#: ../../lifecycle/package-installation-management.rst:160
+msgid "Usage"
+msgstr "Verwendung"
+
+#: ../../lifecycle/package-installation-management.rst:161
+msgid ""
+"To view options and usage information for either command, add the "
+"``--help`` flag as in :numref:`lifecycle-package-installation-management-"
+"commandline-help-listing`."
+msgstr ""
+"Um Optionen und Verwendungsinformationen für einen der Befehle "
+"anzuzeigen, fügen Sie das :spelling:word:`Flag` ``--help`` hinzu, wie in "
+":numref:`lifecycle-package-installation-management-commandline-help-"
+"listing`."
+
+#: ../../lifecycle/package-installation-management.rst:165
+msgid "Display help for :command:`univention-install`"
+msgstr "Anzeige der Hilfe für :command:`univention-install`"
+
+#: ../../lifecycle/package-installation-management.rst:165
+msgid ""
+"$ univention-install --help\n"
+"$ univention-remove --help"
+msgstr ""
+"$ univention-install --help\n"
+"$ univention-remove --help"
+
+#: ../../lifecycle/package-installation-management.rst:174
+msgid "Search"
+msgstr "Suche"
+
+#: ../../lifecycle/package-installation-management.rst:175
+msgid ""
+"To search for available packages by name or description, use :command"
+":`apt-cache search` as in :numref:`lifecycle-package-installation-"
+"management-commandline-search-listing`. This command lists all packages "
+"matching your search term in their name or description."
+msgstr ""
+"Um verfügbare Pakete nach Namen oder Beschreibung zu suchen, verwenden "
+"Sie den Befehl :command:`apt-cache search`, wie in :numref:`lifecycle-"
+"package-installation-management-commandline-search-listing`.\n"
+"Dieser Befehl listet alle Pakete auf, die Ihrem Suchbegriff in ihrem "
+"Namen oder ihrer Beschreibung entsprechen."
+
+#: ../../lifecycle/package-installation-management.rst:180
+msgid "Search for packages"
+msgstr "Suche nach Paketen"
+
+#: ../../lifecycle/package-installation-management.rst:180
+msgid "$ apt-cache search fax"
+msgstr "$ apt-cache search fax"
+
+#: ../../lifecycle/package-installation-management.rst:189
+msgid "Automate tasks around app actions with hook scripts"
+msgstr "Automatisieren Sie Aufgaben rund um Aktionen von Apps mit Hook-Skripten"
+
+#: ../../lifecycle/package-installation-management.rst:191
+msgid ""
+"You can use hook scripts to automate tasks that run after you install, "
+"upgrade, or remove applications through Univention App Center. Hook "
+"scripts are custom shell scripts that run at specific lifecycle events. "
+"This feature is for advanced administrators who understand shell "
+"scripting and app identifiers—the ``appid``."
+msgstr ""
+"Sie können Hook-Skripte verwenden, um Aufgaben zu automatisieren, die "
+"nach der Installation, dem Upgrade oder dem Entfernen von Anwendungen "
+"über Univention App Center ausgeführt werden.\n"
+"Hook-Skripte sind benutzerdefinierte Shell-Skripte, die bei spezifischen "
+"Ereignissen im Lebenszyklus der Anwendungen ausgeführt werden.\n"
+"Diese Funktion ist für fortgeschrittene Administratoren gedacht, die "
+"Shell-Scripting und App-IDs verstehen – die ``appid``."
+
+#: ../../lifecycle/package-installation-management.rst:199
+msgid ""
+"Hook scripts only apply to applications installed through the App Center,"
+" not to individual Debian packages."
+msgstr ""
+"Hook-Skripte gelten nur für Anwendungen, die über das App Center "
+"installiert wurden, nicht für einzelne Debian-Pakete."
+
+#: ../../lifecycle/package-installation-management.rst:203
+msgid "To use hook scripts, you need:"
+msgstr "Um Hook-Skripte zu verwenden, benötigen Sie:"
+
+#: ../../lifecycle/package-installation-management.rst:205
+msgid "``root`` user access on the system."
+msgstr "``root`` Benutzerzugriff auf dem System."
+
+#: ../../lifecycle/package-installation-management.rst:206
+msgid "Shell scripting knowledge."
+msgstr "Kenntnisse in Shell-Scripting."
+
+#: ../../lifecycle/package-installation-management.rst:207
+msgid "Understanding of the app identifier ``appid`` for your target app."
+msgstr "Verständnis von App-IDs ``appid`` für Ihre Ziel-App."
+
+#: ../../lifecycle/package-installation-management.rst:209
+msgid "How hook scripts work"
+msgstr "Wie Hook-Skripte funktionieren"
+
+#: ../../lifecycle/package-installation-management.rst:210
+msgid ""
+"When you install, upgrade, or remove an App Center application, the "
+"system looks for hook scripts in specific directories and runs them "
+"automatically. Each hook script phase corresponds to a lifecycle event:"
+msgstr ""
+"Wenn Sie eine App Center-Anwendung installieren, aktualisieren oder "
+"entfernen, sucht das System nach Hook-Skripten in bestimmten "
+"Verzeichnissen und führt diese automatisch aus.\n"
+"Jede Phase der :spelling:word:`Hook-Scripte` entspricht einem Ereignis im"
+" Lebenszyklus:"
+
+#: ../../lifecycle/package-installation-management.rst
+msgid "Post-install"
+msgstr "Post-Installation"
+
+#: ../../lifecycle/package-installation-management.rst:214
+msgid "Runs after you install the app."
+msgstr "Läuft nach der Installation der App."
+
+#: ../../lifecycle/package-installation-management.rst
+msgid "Post-upgrade"
+msgstr "Post-Upgrade"
+
+#: ../../lifecycle/package-installation-management.rst:215
+msgid "Runs after you update the app."
+msgstr "Läuft nach der Aktualisierung der App."
+
+#: ../../lifecycle/package-installation-management.rst
+msgid "Post-remove"
+msgstr "Post-Entfernen"
+
+#: ../../lifecycle/package-installation-management.rst:216
+msgid "Runs after you remove the app."
+msgstr "Läuft nach dem Entfernen der App."
+
+#: ../../lifecycle/package-installation-management.rst:218
+msgid "Storing hook scripts"
+msgstr "Speicherung von Hook-Skripten"
+
+#: ../../lifecycle/package-installation-management.rst:219
+msgid ""
+"Place your custom hook scripts in one of these directories. Replace "
+":samp:`{{appid}}` with the identifier of your target app."
+msgstr ""
+"Platzieren Sie Ihre benutzerdefinierten Hook-Skripte in einem dieser "
+"Verzeichnisse.\n"
+"Ersetzen Sie :samp:`{{appid}}` durch die App-ID Ihrer Ziel-App."
+
+#: ../../lifecycle/package-installation-management.rst:222
+msgid ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"install.d/`"
+msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"install.d/`"
+
+#: ../../lifecycle/package-installation-management.rst:223
+msgid ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"upgrade.d/`"
+msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"upgrade.d/`"
+
+#: ../../lifecycle/package-installation-management.rst:224
+msgid ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"remove.d/`"
+msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"remove.d/`"
+
+#: ../../lifecycle/package-installation-management.rst:227
+msgid "File requirements"
+msgstr "Anforderungen an Dateien"
+
+#: ../../lifecycle/package-installation-management.rst:228
+msgid ""
+"Names must contain only lowercase letters and numbers, regular "
+"expression: ``^[a-z0-9]+$``."
+msgstr ""
+"Namen dürfen nur Kleinbuchstaben und Zahlen enthalten, regulärer "
+"Ausdruck: ``^[a-z0-9]+$``."
+
+#: ../../lifecycle/package-installation-management.rst:229
+msgid "Mark the scripts executable: :command:`chmod +x filename`."
+msgstr "Markieren Sie die Skripte als ausführbar: :command:`chmod +x filename`."
+
+#: ../../lifecycle/package-installation-management.rst:230
+msgid ":program:`run-parts` runs the scripts in order."
+msgstr ":program:`run-parts` führt die Skripte der Reihe nach aus."
+
+#: ../../lifecycle/package-installation-management.rst:232
+msgid "Practical examples"
+msgstr "Praktische Beispiele"
+
+#: ../../lifecycle/package-installation-management.rst:233
+msgid "You might use hook scripts for tasks like the following:"
+msgstr "Sie könnten Hook-Skripte für Aufgaben wie die folgenden verwenden:"
+
+#: ../../lifecycle/package-installation-management.rst:235
+msgid "Restart a service after installation."
+msgstr "Starten Sie einen Dienst nach der Installation neu."
+
+#: ../../lifecycle/package-installation-management.rst:236
+msgid "Configure application-specific settings in a post-install script."
+msgstr ""
+"Konfigurieren Sie anwendungsspezifische Einstellungen in einem "
+":spelling:word:`Post-Install` Skript."
+
+#: ../../lifecycle/package-installation-management.rst:237
+msgid "Back up configuration files or persistent data before removal."
+msgstr ""
+"Sichern Sie Konfigurationsdateien oder persistente Daten vor dem "
+"Entfernen."
+
+#: ../../lifecycle/package-installation-management.rst:238
+msgid "Clean up temporary files in a post-remove script."
+msgstr ""
+"Bereinigen Sie temporäre Dateien in einem :spelling:word:`Post-Remove` "
+"Skript."
+
+#: ../../lifecycle/package-installation-management.rst:240
+msgid "Testing and troubleshooting"
+msgstr "Testen und Fehlerbehebung"
+
+#: ../../lifecycle/package-installation-management.rst:241
+msgid ""
+"To test which scripts would execute in a directory without running them, "
+"use the command shown in :numref:`lifecycle-package-installation-"
+"management-hooks-test`. Script errors and diagnostic messages appear in "
+":file:`/var/log/univention/appcenter.log`. For more information, see "
+":command:`man run-parts`."
+msgstr ""
+"Um zu testen, welche Skripte in einem Verzeichnis ausgeführt würden, ohne"
+" sie tatsächlich auszuführen, verwenden Sie den Befehl, der in :numref"
+":`lifecycle-package-installation-management-hooks-test` gezeigt wird.\n"
+"Fehler in den Skripten und Diagnosemeldungen erscheinen in "
+":file:`/var/log/univention/appcenter.log`.\n"
+"Weitere Informationen finden Sie unter :command:`man run-parts`."
+
+#: ../../lifecycle/package-installation-management.rst:246
+msgid "Test hook scripts without executing them"
+msgstr "Testen Sie Hook-Skripte, ohne sie auszuführen"
+
+#: ../../lifecycle/package-installation-management.rst:246
+msgid ""
+"$ run-parts --test /var/lib/univention-appcenter/apps/appid/local/hooks"
+"/post-install.d/"
+msgstr ""
+"$ run-parts --test /var/lib/univention-appcenter/apps/appid/local/hooks"
+"/post-install.d/"
+
+#: ../../lifecycle/package-installation-management.rst:252
+msgid "Security and permissions"
+msgstr "Sicherheit und Berechtigungen"
+
+#: ../../lifecycle/package-installation-management.rst:253
+msgid "Set appropriate file ownership, typically ``root:root``."
+msgstr ""
+"Legen Sie den angemessenen Dateieigentümer fest, typischerweise "
+"``root:root``."
+
+#: ../../lifecycle/package-installation-management.rst:254
+msgid "Use restrictive permissions, typically ``0755`` for executable scripts."
+msgstr ""
+"Verwenden Sie restriktive Berechtigungen, typischerweise ``0755`` für "
+"ausführbare Skripte."
+
+#: ../../lifecycle/package-installation-management.rst:255
+msgid "Avoid world-writable scripts to prevent unauthorized modification."
+msgstr ""
+"Vermeiden Sie schreibbare Skripte für alle, um unbefugte Änderungen zu "
+"verhindern."
+
+#: ../../lifecycle/package-installation-management.rst:256
+msgid "Validate inputs and sanitize variables in your scripts."
+msgstr "Validieren Sie Eingaben und bereinigen Sie Variablen in Ihren Skripten."
+
+#: ../../lifecycle/package-installation-management.rst:261
+msgid "Centralized package management with policies"
+msgstr "Zentralisierte Paket-Verwaltung mit Richtlinien"
+
+#: ../../lifecycle/package-installation-management.rst:263
+msgid ""
+"This approach suites organizations that manage multiple system centrally "
+"and need consistent deployments to reduce manual effort and prevent "
+"configuration drift."
+msgstr ""
+"Dieser Ansatz eignet sich für Organisationen, die mehrere Systeme zentral"
+" verwalten und konsistente Installationen benötigen, um manuellen Aufwand"
+" zu reduzieren und Abweichungen in der Konfiguration zu verhindern."
+
+#: ../../lifecycle/package-installation-management.rst:269
+msgid "When to use policies"
+msgstr "Wann sollten Richtlinien verwendet werden"
+
+#: ../../lifecycle/package-installation-management.rst:270
+msgid "Use policies when you need to:"
+msgstr "Verwenden Sie Richtlinien, wenn Sie folgendes benötigen:"
+
+#: ../../lifecycle/package-installation-management.rst:272
+msgid "Deploy identical packages to multiple systems consistently."
+msgstr "Stellen Sie identische Pakete konsistent auf mehreren Systemen bereit."
+
+#: ../../lifecycle/package-installation-management.rst:273
+msgid "Manage packages for different roles or departments separately."
+msgstr "Verwalten Sie Pakete für verschiedene Rollen oder Abteilungen separat."
+
+#: ../../lifecycle/package-installation-management.rst:274
+msgid "Scale package management across growing numbers of systems."
+msgstr "Skalieren Sie die Paket-Verwaltung über zunehmend mehr Systeme hinweg."
+
+#: ../../lifecycle/package-installation-management.rst:275
+msgid "Maintain package configurations across multiple locations or departments."
+msgstr ""
+"Verwalten Sie Paket-Konfigurationen über mehrere Standorte oder "
+"Abteilungen hinweg."
+
+#: ../../lifecycle/package-installation-management.rst:280
+msgid "To work with package policies, you need:"
+msgstr "Um mit Paket-Richtlinien zu arbeiten, benötigen Sie:"
+
+#: ../../lifecycle/package-installation-management.rst:282
+msgid "The ``Domain Admins`` group must include your user account."
+msgstr "Die Gruppe ``Domain Admins`` muss Ihr Benutzerkonto enthalten."
+
+#: ../../lifecycle/package-installation-management.rst:283
+msgid "Access to the *Management UI*."
+msgstr "Zugriff auf die *Management UI*."
+
+#: ../../lifecycle/package-installation-management.rst:284
+msgid ""
+"Understanding of your system's organizational structure in form of "
+"containers and organizational units in the directory service."
+msgstr ""
+"Verständnis der organisatorischen Struktur Ihres Systems in Form von "
+"Containern und Organisationseinheiten im Verzeichnisdienst."
+
+#: ../../lifecycle/package-installation-management.rst:288
+msgid "How to find and create policies"
+msgstr "Richtlinien suchen und erstellen"
+
+#: ../../lifecycle/package-installation-management.rst:289
+msgid ""
+"You manage package policies through the *Management UI*. To create a "
+"policy, use the following steps:"
+msgstr ""
+"Sie verwalten Paket-Richtlinien über die *Management UI*.\n"
+"Um eine Richtlinie zu erstellen, gehen Sie nach den folgenden Schritten "
+"vor:"
+
+#: ../../lifecycle/package-installation-management.rst:292
+msgid "Open the *Management UI*"
+msgstr "Öffnen Sie die *Management UI*"
+
+#: ../../lifecycle/package-installation-management.rst:294
+msgid "Navigate to :menuselection:`Domain --> Policies`."
+msgstr "Navigieren Sie zu :menuselection:`Domäne --> Richtlinien`."
+
+#: ../../lifecycle/package-installation-management.rst:296
+msgid "To create a policy, click :guilabel:`Add`."
+msgstr "Um eine Richtlinie zu erstellen, klicken :guilabel:`Hinzufügen`."
+
+#: ../../lifecycle/package-installation-management.rst:298
+msgid ""
+"Select the package policy type for your system role, for example *Policy:"
+" Packages for Managed Nodes*."
+msgstr ""
+"Wählen Sie den Paket-Richtlinientyp für Ihre Systemrolle, beispielsweise "
+"*Richtlinie: Pakete für Managed Nodes*."
+
+#: ../../lifecycle/package-installation-management.rst:301
+msgid "Choose the container where to store the policy."
+msgstr "Wählen Sie den Container zum Speichern der Richtlinie aus."
+
+#: ../../lifecycle/package-installation-management.rst:303
+msgid "Click :guilabel:`Next`"
+msgstr "Klicken Sie :guilabel:`Weiter`"
+
+#: ../../lifecycle/package-installation-management.rst:305
+msgid ""
+"The *General* tab shows fields for the selected policy type. The "
+"*Advanced* settings tab provides additional configuration options."
+msgstr ""
+"Der Reiter *Allgemein* zeigt Felder für den ausgewählten Richtlinientyp.\n"
+"Der Reiter *Erweiterte Einstellungen* bietet zusätzliche "
+"Konfigurationsoptionen."
+
+#: ../../lifecycle/package-installation-management.rst:308
+msgid "Click :guilabel:`Save` to finally create the policy."
+msgstr ""
+"Klicken :guilabel:`Speichern`, um die Richtlinie abschließend zu "
+"erstellen."
+
+#: ../../lifecycle/package-installation-management.rst:312
+msgid "Understanding policy fields"
+msgstr "Verständnis von Richtlinienfeldern"
+
+#: ../../lifecycle/package-installation-management.rst:313
+msgid "Each package policy has the following main fields:"
+msgstr "Jede Paket-Richtlinie hat die folgenden Hauptfelder:"
+
+#: ../../lifecycle/package-installation-management.rst:317
+msgid "Name"
+msgstr "Name"
+
+#: ../../lifecycle/package-installation-management.rst:318
+msgid ""
+"An unambiguous name for the policy, for example *Database Server "
+"Packages* or *Development Team Workstations*."
+msgstr ""
+"Ein eindeutiger Name für die Richtlinie, beispielsweise *Datenbankserver-"
+"Pakete* oder *Entwicklungsteam-Arbeitsstationen*."
+
+#: ../../lifecycle/package-installation-management.rst:323
+msgid "Package installation list"
+msgstr "Paket-Installationsliste"
+
+#: ../../lifecycle/package-installation-management.rst:324
+msgid ""
+"A list of package names to install. Example: :samp:`postgresql "
+"postgresql-contrib mysql-server`"
+msgstr ""
+"Eine Liste von Paketnamen zum Installieren.\n"
+"Beispiel: :samp:`postgresql postgresql-contrib mysql-server`"
+
+#: ../../lifecycle/package-installation-management.rst:329
+msgid "Package removal list"
+msgstr "Paket-Entfernungsliste"
+
+#: ../../lifecycle/package-installation-management.rst:330
+msgid "A list of packages to remove. Example: :samp:`xserver apache2`"
+msgstr ""
+"Eine Liste von Paketen zum Entfernen.\n"
+"Beispiel: :samp:`xserver apache2`"
+
+#: ../../lifecycle/package-installation-management.rst:335
+msgid "Scope and limitations"
+msgstr "Umfang und Einschränkungen"
+
+#: ../../lifecycle/package-installation-management.rst:336
+msgid ""
+"Package policies inherit down the directory container hierarchy. Nubus "
+"applies the policy values defined closest to the object. For detailed "
+"information about policy inheritance, conflict resolution, and advanced "
+"policy options, see :external+uv-nubus-manual:ref:`nubus-domain-policies`"
+" in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Paket-Richtlinien erben die Hierarchie der Container im Verzeichnis "
+"hinunter.\n"
+"Nubus wendet die Richtlinienwerte an, die dem Objekt am nächsten "
+"definiert sind.\n"
+"Weitere Informationen zur Richtlinienvererbung, Konfliktlösung und "
+"erweiterten Richtlinienoptionen finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+
+#: ../../lifecycle/package-installation-management.rst:345
+msgid "Managing packages at scale"
+msgstr "Verwaltung von Paketen im Großmaßstab"
+
+#: ../../lifecycle/package-installation-management.rst:346
+msgid ""
+"When you manage multiple systems across multiple locations or departments"
+" keep the following recommendations in mind:"
+msgstr ""
+"Wenn Sie mehrere Systeme über mehrere Standorte oder Abteilungen hinweg "
+"verwalten, beachten Sie die folgenden Empfehlungen:"
+
+#: ../../lifecycle/package-installation-management.rst:349
+msgid ""
+"Create separate policies for each role or department to maintain clear "
+"ownership."
+msgstr ""
+"Erstellen Sie separate Richtlinien für jede Rolle oder Abteilung, um eine"
+" klare Zuständigkeit zu gewährleisten."
+
+#: ../../lifecycle/package-installation-management.rst:350
+msgid "Use meaningful policy names that indicate their purpose and scope."
+msgstr ""
+"Verwenden Sie aussagekräftige Richtliniennamen, die ihren Zweck und "
+"Umfang anzeigen."
+
+#: ../../lifecycle/package-installation-management.rst:351
+msgid ""
+"Test policies on a small group of systems before you deploy them "
+"organization-wide."
+msgstr ""
+"Testen Sie Richtlinien auf einer kleinen Gruppe von Systemen, bevor Sie "
+"sie für die gesamte Organisation bereitstellen."
+
+#: ../../lifecycle/package-installation-management.rst:352
+msgid "Document which policies apply to which containers or organizational units."
+msgstr ""
+"Dokumentieren Sie, welche Richtlinien auf welche Container oder "
+"Organisationseinheiten angewendet werden."
+
+#: ../../lifecycle/package-installation-management.rst:353
+msgid ""
+"Use the *Referencing objects* section in a policy to verify which systems"
+" have the policy applied."
+msgstr ""
+"Verwenden Sie den Abschnitt *Referenzierte Objekte* in einer Richtlinie, "
+"um zu überprüfen, auf welche Systeme die Richtlinie angewendet wird."
+
+#: ../../lifecycle/package-installation-management.rst:357
+msgid "Installation timing"
+msgstr "Installationszeitpunkt"
+
+#: ../../lifecycle/package-installation-management.rst:358
+msgid ""
+"The maintenance policy defines the time when Nubus for UCS installs or "
+"removes packages. For configuration details, see :external+uv-ucs-"
+"manual:ref:`computers-softwaremanagement-maintenance-policy`. Nubus "
+"registers all packages from policies in the LDAP directory to make them "
+"available for management across the entire domain."
+msgstr ""
+"Die Wartungsrichtlinie definiert den Zeitpunkt, zu dem Nubus für UCS "
+"Pakete installiert oder entfernt.\n"
+"Konfigurationsdetails finden Sie unter :external+uv-ucs-manual:ref"
+":`computers-softwaremanagement-maintenance-policy`.\n"
+"Nubus registriert alle Pakete aus Richtlinien im LDAP-Verzeichnis, um sie"
+" für die Verwaltung in der gesamten Domäne verfügbar zu machen."
+
+#: ../../lifecycle/package-installation-management.rst:370
+msgid ""
+"For more information about policies in general, including policy "
+"creation, assignment, and advanced settings, see :external+uv-nubus-"
+"manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Weitere Informationen zu Richtlinien im Allgemeinen, einschließlich "
+"Richtlinienerstellung, -:spelling:word:`zuweisung` und erweiterten "
+"Einstellungen, finden Sie unter :external+uv-nubus-manual:ref:`nubus-"
+"domain-policies` im :cite:t:`uv-nubus-manual`."
+
+#: ../../lifecycle/package-installation-management.rst:375
+msgid ""
+"For information about computer management in your domain, see :external"
+"+uv-nubus-manual:ref:`nubus-computer-management` in :cite:t:`uv-nubus-"
+"manual`."
+msgstr ""
+"Weitere Informationen zur Computerverwaltung in Ihrer Domäne finden Sie "
+"unter :external+uv-nubus-manual:ref:`nubus-computer-management` im "
+":cite:t:`uv-nubus-manual`."
 
 #: ../../lifecycle/perform-updates.rst:7
 msgid "Perform updates"
@@ -167,990 +2062,6 @@ msgstr "Ausführung von rollenspezifischen Konfigurationen."
 #: ../../lifecycle/perform-updates.rst:66
 msgid "Removing deprecated package configurations."
 msgstr "Entfernen veralteter Paketkonfigurationen."
-
-#: ../../lifecycle/repository-management.rst:7
-msgid "Repository management"
-msgstr "Verwaltung des Repositorys"
-
-#: ../../lifecycle/repository-management.rst:9
-msgid ""
-"Repository management involves two interconnected decisions: creating a "
-"local repository and configuring your systems to use it. Together, these "
-"decisions give you control over system updates. This section covers the "
-"repository management workflow, from setting up a local repository to "
-"maintaining it over time."
-msgstr ""
-"Die Verwaltung des Repositorys beinhaltet zwei miteinander verbundene "
-"Entscheidungen: die Erstellung eines lokalen Repositories und die "
-"Konfiguration Ihrer Systeme für dessen Nutzung. Zusammen geben Ihnen "
-"diese Entscheidungen Kontrolle über System-Aktualisierungen. Dieser "
-"Abschnitt behandelt den Ablauf der Verwaltung des Repositorys, vom "
-"Einrichten eines lokalen Repositories bis zu seiner Wartung im Laufe der "
-"Zeit."
-
-#: ../../lifecycle/repository-management.rst:16
-msgid ""
-"To create a local repository, synchronize packages from upstream "
-"Univention servers to your local infrastructure. After you have a local "
-"repository, you configure your systems to use it instead of reaching out "
-"to remote servers. These two steps are separate but deeply connected—you "
-"need both to manage updates independently."
-msgstr ""
-"Um ein lokales Repository zu erstellen, synchronisieren Sie Pakete von "
-"Upstream-Servern von Univention mit Ihrer lokalen Infrastruktur. Nach der"
-" Erstellung eines lokalen Repositories konfigurieren Sie Ihre Systeme, um"
-" dieses statt Remote-Servern zu verwenden. Diese beiden Schritte sind "
-"getrennt, aber eng miteinander verbunden – Sie benötigen beide, um "
-"Updates unabhängig zu verwalten."
-
-#: ../../lifecycle/repository-management.rst:24
-msgid ""
-"This section covers three main topics: creating and updating a local "
-"repository, configuring your systems to use it, and maintaining it for "
-"long-term stability."
-msgstr ""
-"Dieser Abschnitt behandelt drei Hauptthemen: Erstellen und Aktualisieren "
-"eines lokalen Repositories, Konfigurieren Ihrer Systeme für dessen "
-"Nutzung und Wartung für langfristige Stabilität."
-
-#: ../../lifecycle/repository-management.rst:32
-msgid "Local repository servers"
-msgstr "Lokale Repository-Server"
-
-#: ../../lifecycle/repository-management.rst:34
-msgid ""
-"A local repository mirrors packages from the Univention update server to "
-"your local infrastructure. This enables you to manage updates "
-"independently of internet connectivity and distribute packages "
-"efficiently across multiple systems."
-msgstr ""
-"Ein lokales Repository spiegelt Pakete vom Update-Server von Univention "
-"zu Ihrer lokalen Infrastruktur. Dies ermöglicht es Ihnen, Updates "
-"unabhängig von der Internetkonnektivität zu verwalten und Pakete "
-"effizient über mehrere Systeme zu verteilen."
-
-#: ../../lifecycle/repository-management.rst:40
-msgid "Benefits of using a local repository"
-msgstr "Vorteile eines lokalen Repositories"
-
-#: ../../lifecycle/repository-management.rst:41
-msgid ""
-"Reduced bandwidth usage: Download updates once from Univention servers, "
-"then distribute to all systems locally, significantly reducing internet "
-"bandwidth consumption in environments with many systems."
-msgstr ""
-"Reduzierte Bandbreitenauslastung: Updates einmal von Upstream-Servern "
-"Univention herunterladen und dann lokal auf alle Systeme verteilen, "
-"wodurch der Internet-Bandbreitenverbrauch in Umgebungen mit vielen "
-"Systemen erheblich reduziert wird."
-
-#: ../../lifecycle/repository-management.rst:46
-msgid ""
-"Offline updates: Update systems without requiring internet access. This "
-"is useful for air-:spelling:word:`gapped` networks or locations with "
-"unreliable connectivity."
-msgstr ""
-"Offline-Updates: Systeme ohne Internetverbindung aktualisieren. Dies ist "
-"für isolierte Netzwerke oder Standorte mit unzuverlässiger Konnektivität "
-"nützlich."
-
-#: ../../lifecycle/repository-management.rst:50
-msgid ""
-"Faster deployments: Local package distribution is faster than downloading"
-" from remote servers, especially in geographically distributed "
-"environments or over slow network links."
-msgstr ""
-"Schnellere Bereitstellungen: Lokale Paketverteilung ist schneller als das"
-" Herunterladen von Remote-Servern, besonders in geografisch verteilten "
-"Umgebungen oder über langsame Netzwerkverbindungen."
-
-#: ../../lifecycle/repository-management.rst:55
-msgid ""
-"Update control: Maintain a local copy of packages, giving you control "
-"over which versions are available and when systems can access them."
-msgstr ""
-"Update-Kontrolle: Verwalten Sie eine lokale Kopie von Paketen und "
-"kontrollieren Sie, welche Versionen verfügbar sind und wann Systeme "
-"Zugriff haben."
-
-#: ../../lifecycle/repository-management.rst:61
-msgid "Considerations for maintaining a local repository"
-msgstr "Überlegungen zur Wartung eines lokalen Repositories"
-
-#: ../../lifecycle/repository-management.rst:62
-msgid ""
-"Synchronization effort: You must regularly synchronize the local "
-"repository with upstream Univention servers to stay up to date with "
-"security and stability updates."
-msgstr ""
-"Synchronisationsaufwand: Sie müssen das lokale Repository regelmäßig mit "
-"Upstream-Servern von Univention synchronisieren, um mit "
-"Sicherheitsaktualisierungen auf dem neuesten Stand zu bleiben."
-
-#: ../../lifecycle/repository-management.rst:66
-msgid ""
-"Administrative overhead: You must monitor repository health and manage "
-"synchronization."
-msgstr ""
-"Administrativer Aufwand: Sie müssen die Gesundheit des Repositorys "
-"überwachen und die Synchronisation verwalten."
-
-#: ../../lifecycle/repository-management.rst:70
-msgid "Choosing whether to use a local repository"
-msgstr "Entscheidung, ob ein lokales Repository verwendet werden soll"
-
-#: ../../lifecycle/repository-management.rst:71
-msgid ""
-"Use a local repository server when you manage multiple Nubus for UCS "
-"systems, particularly across distributed locations or with limited "
-"internet connectivity. For single-system installations or environments "
-"with reliable, high-bandwidth internet access, use online repositories "
-"directly."
-msgstr ""
-"Verwenden Sie einen lokalen Repository-Server, wenn Sie mehrere Nubus für"
-" UCS Systeme verwalten, besonders über verteilte Standorte oder mit "
-"eingeschränkter Internetkonnektivität. Für Installation mit nur einem "
-"System oder Umgebungen mit zuverlässiger, breitbandiger "
-"Internetverbindung verwenden Sie :spelling:word:`Online-Repositories` "
-"direkt."
-
-#: ../../lifecycle/repository-management.rst:77
-msgid ""
-"Nubus for UCS automatically generates APT package sources in the "
-":file:`/etc/apt/sources.list.d/` directory based on settings for release,"
-" errata updates, and add-on components. If you need additional "
-"repositories on a system, you can enter them in the "
-":file:`/etc/apt/sources.list` file."
-msgstr ""
-"Nubus für UCS generiert automatisch APT-Paketquellen im Verzeichnis "
-":file:`/etc/apt/sources.list.d/` basierend auf Einstellungen für Release,"
-" Errata-Updates und Zusatzkomponenten. Falls Sie zusätzliche Repositories"
-" auf einem System benötigen, können Sie diese in der Datei "
-":file:`/etc/apt/sources.list` eingeben."
-
-#: ../../lifecycle/repository-management.rst:83
-msgid ""
-"By default, new installations use the Univention repository at "
-"``https://updates.software-univention.de``."
-msgstr ""
-"Standardmäßig verwenden neue Installationen das Repository von Univention"
-" unter ``https://updates.software-univention.de``."
-
-#: ../../lifecycle/repository-management.rst:88
-msgid "Repository package status"
-msgstr "Paketstatus des Repositorys"
-
-#: ../../lifecycle/repository-management.rst:89
-msgid ""
-"Univention classifies packages in its repository as either *maintained* "
-"or *unmaintained*. All packages in the standard package scope are in "
-"*maintained* status. Univention provides security updates in a timely "
-"manner only for *maintained* packages. You can view the list of "
-"*maintained* packages on a Nubus for UCS system at :file:`/usr/share"
-"/univention-errata-level/maintained-packages.txt`."
-msgstr ""
-"Univention klassifiziert Pakete in seinem Repository als entweder "
-"*maintained* oder *unmaintained*. Alle Pakete im Standard-Paketumfang "
-"befinden sich im Status *maintained*. Univention stellt "
-"Sicherheitsupdates nur für *maintained* Pakete zeitnah bereit. Sie können"
-" die Liste der *maintained* Pakete auf einem Nubus für UCS System unter "
-":file:`/usr/share/univention-errata-level/maintained-packages.txt` "
-"ansehen."
-
-#: ../../lifecycle/repository-management.rst:96
-msgid ""
-"Univention doesn't provide security updates or other maintenance for "
-"*unmaintained* packages. To verify whether your system has *unmaintained*"
-" packages installed, run the :command:`univention-list-installed-"
-"unmaintained-packages` command."
-msgstr ""
-"Univention stellt keine Sicherheitsupdates oder andere Wartung für "
-"*unmaintained* Pakete bereit. Um zu überprüfen, ob Ihr System "
-"*unmaintained* Pakete installiert hat, führen Sie den Befehl :command"
-":`univention-list-installed-unmaintained-packages` aus."
-
-#: ../../lifecycle/repository-management.rst:103
-msgid "Repository components"
-msgstr "Repository-Komponenten"
-
-#: ../../lifecycle/repository-management.rst:104
-#, python-brace-format
-msgid ""
-"To manage which repository components your system uses, configure the UCR"
-" variable :envvar:`repository/online/component/COMPONENTNAME`, where "
-":samp:`{COMPONENTNAME}` is the name of the component. Set the variable to"
-" ``no`` to exclude a component from synchronization, or leave it unset to"
-" use the default behavior."
-msgstr ""
-"Konfigurieren Sie die UCR-Variable "
-":envvar:`repository/online/component/COMPONENTNAME`, um zu verwalten, "
-"welche Repository-Komponenten Ihr System verwendet, wobei "
-":samp:`{COMPONENTNAME}` der Name der Komponente ist. Setzen Sie die "
-"Variable auf ``no``, um eine Komponente von der Synchronisation "
-"auszuschließen, oder lassen Sie sie nicht gesetzt, um das "
-"Standardverhalten zu verwenden."
-
-#: ../../lifecycle/repository-management.rst:114
-msgid "Create and update a local repository"
-msgstr "Erstellen und Aktualisieren eines lokalen Repositories"
-
-#: ../../lifecycle/repository-management.rst:116
-msgid ""
-"This section describes how to create and maintain a synchronized local "
-"repository with upstream Univention servers."
-msgstr ""
-"Dieser Abschnitt beschreibt, wie Sie ein synchronisiertes lokales "
-"Repository mit Upstream-Servern von Univention erstellen und warten."
-
-#: ../../lifecycle/repository-management.rst:121
-msgid "Prerequisites"
-msgstr "Voraussetzungen"
-
-#: ../../lifecycle/repository-management.rst:122
-msgid ""
-"To create a local repository, you need Root user credentials to run the "
-"repository commands in a terminal."
-msgstr ""
-"Um ein lokales Repository zu erstellen, benötigen Sie Anmeldedaten für "
-"den Root-Benutzer zum Ausführen der Befehle für das Repository in einem "
-"Terminal."
-
-#: ../../lifecycle/repository-management.rst:127
-msgid "Initialize the repository"
-msgstr "Das Repository initialisieren"
-
-#: ../../lifecycle/repository-management.rst:128
-msgid ""
-"The :command:`univention-repository-create` command initializes a local "
-"repository and begins synchronization with upstream Univention servers. "
-"The command installs the :program:`univention-debmirror` package, if the "
-"system doesn't already have it. Synchronization time depends on your "
-"connection bandwidth and the repository size. The command also enables "
-"the local repository by setting the UCR variable "
-":envvar:`local/repository` to ``yes``."
-msgstr ""
-"Der Befehl :command:`univention-repository-create` initialisiert ein "
-"lokales Repository und startet die Synchronisation mit Upstream-Servern "
-"von Univention. Der Befehl installiert das Paket :program:`univention-"
-"debmirror`, falls das System es nicht bereits hat. Die "
-"Synchronisationszeit hängt von Ihrer Verbindungsbandbreite und der Größe "
-"des Repositorys ab. Der Befehl aktiviert auch das lokale Repository, "
-"indem die UCR-Variable :envvar:`local/repository` auf ``yes`` gesetzt "
-"wird."
-
-#: ../../lifecycle/repository-management.rst:139
-msgid ""
-"To initialize the repository, run the command from :numref:`lifecycle-"
-"repository-management-local-create-figure` in a terminal. The command "
-"requires your confirmation to proceed. After confirmation, "
-"synchronization begins automatically. It stores the repository in the "
-":file:`/var/lib/univention-repository/mirror/` directory by default."
-msgstr ""
-"Um das Repository zu initialisieren, führen Sie den Befehl aus :numref"
-":`lifecycle-repository-management-local-create-figure` in einem Terminal "
-"aus. Der Befehl erfordert Ihre Bestätigung zum Fortfahren. Nach der "
-"Bestätigung beginnt die Synchronisation automatisch. Der Befehl speichert"
-" das Repository standardmäßig im Verzeichnis :file:`/var/lib/univention-"
-"repository/mirror/`."
-
-#: ../../lifecycle/repository-management.rst:145
-msgid ""
-"When initialization completes, the command shows instructions for "
-"configuring other systems. Follow these instructions to configure them to"
-" use this repository."
-msgstr ""
-"Nach Abschluss der Initialisierung zeigt der Befehl Anweisungen zum "
-"Konfigurieren anderer Systeme. Befolgen Sie diese Anweisungen, um sie für"
-" die Verwendung dieses Repositories zu konfigurieren."
-
-#: ../../lifecycle/repository-management.rst:149
-msgid "Create a local repository"
-msgstr "Erstellen Sie ein lokales Repository"
-
-#: ../../lifecycle/repository-management.rst:149
-msgid "$ univention-repository-create"
-msgstr "$ univention-repository-create"
-
-#: ../../lifecycle/repository-management.rst:157
-msgid ""
-"Monitor synchronization progress in the repository log file: "
-":file:`/var/log/univention/repository.log`"
-msgstr ""
-"Überwachen Sie den Synchronisationsfortschritt in der Protokolldatei des "
-"Repositorys: :file:`/var/log/univention/repository.log`"
-
-#: ../../lifecycle/repository-management.rst:162
-msgid "Synchronize the repository regularly"
-msgstr "Synchronisieren Sie das Repository regelmäßig"
-
-#: ../../lifecycle/repository-management.rst:163
-msgid ""
-"After the initial repository creation, use the :command:`univention-"
-"repository-update` command to keep the repository synchronized with "
-"upstream Univention servers, as shown in :numref:`lifecycle-repository-"
-"management-local-update-figure`. Subsequent synchronization runs download"
-" only changed packages, so they're faster than the initial creation."
-msgstr ""
-"Nach der anfänglichen Erstellung des Repositorys verwenden Sie den Befehl"
-" :command:`univention-repository-update`, um das Repository mit Upstream-"
-"Servern von Univention synchron zu halten, wie in :numref:`lifecycle-"
-"repository-management-local-update-figure` gezeigt. Nachfolgende "
-"Synchronisationsläufe laden nur geänderte Pakete herunter, daher sind sie"
-" schneller als die anfängliche Erstellung."
-
-#: ../../lifecycle/repository-management.rst:170
-msgid "Update a local repository"
-msgstr "Aktualisieren Sie ein lokales Repository"
-
-#: ../../lifecycle/repository-management.rst:170
-msgid "$ univention-repository-update net"
-msgstr "$ univention-repository-update net"
-
-#: ../../lifecycle/repository-management.rst:178
-msgid "Synchronize repositories across locations"
-msgstr "Synchronisieren Sie Repositories an verschiedenen Standorten"
-
-#: ../../lifecycle/repository-management.rst:179
-msgid ""
-"You can also synchronize local repositories across multiple locations. "
-"For example, maintain a main repository at company headquarters and "
-"synchronize it to local repositories at individual locations."
-msgstr ""
-"Sie können auch lokale Repositories an mehreren Standorten "
-"synchronisieren. Unterhalten Sie beispielsweise ein Haupt-Repository in "
-"der Zentrale und synchronisieren Sie es mit lokalen Repositories an "
-"einzelnen Standorten."
-
-#: ../../lifecycle/repository-management.rst:186
-msgid "Use a main repository for multiple locations"
-msgstr "Verwenden Sie ein Haupt-Repository für mehrere Standorte"
-
-#: ../../lifecycle/repository-management.rst:187
-msgid ""
-"When you manage Nubus for UCS systems across multiple locations, you can "
-"use a centralized main repository instead of having each location "
-"maintain its own repository."
-msgstr ""
-"Wenn Sie Nubus für UCS Systeme an mehreren Standorten verwalten, können "
-"Sie ein zentralisiertes Haupt-Repository verwenden, anstatt dass jeder "
-"Standort sein eigenes Repository wartet."
-
-#: ../../lifecycle/repository-management.rst:191
-msgid ""
-"In this scenario, set up one main repository at your organization "
-"headquarters that synchronizes with upstream Univention servers. At each "
-"remote location, configure the systems to use the main repository as "
-"their repository server instead of synchronizing directly from upstream."
-msgstr ""
-"Richten Sie in diesem Szenario ein Haupt-Repository in der Zentrale Ihrer"
-" Organisation ein, das mit Upstream-Servern von Univention "
-"synchronisiert. Konfigurieren Sie an jedem externen Standort die Systeme,"
-" um das Haupt-Repository als Repository-Server zu verwenden, anstatt "
-"direkt von Upstream zu synchronisieren."
-
-#: ../../lifecycle/repository-management.rst:198
-msgid ""
-"Configure remote locations to use the main repository by setting the UCR "
-"variable :envvar:`repository/mirror/server` to the FQDN of the main "
-"repository on those systems. The systems still run :command:`univention-"
-"repository-update net` to synchronize locally, but they pull packages "
-"from your main repository instead of from upstream."
-msgstr ""
-"Konfigurieren Sie externe Standorte, um das :spelling:word:`Haupt-"
-"Repository` zu verwenden, indem Sie die UCR-Variable "
-":envvar:`repository/mirror/server` auf den FQDN des :spelling:word"
-":`Haupt-Repositories` auf diesen Systemen setzen. Die Systeme führen "
-"immer noch :command:`univention-repository-update net` aus, um lokal zu "
-"synchronisieren, aber sie laden Pakete von Ihrem Haupt-Repository statt "
-"von Upstream herunter."
-
-#: ../../lifecycle/repository-management.rst:206
-msgid "Error handling"
-msgstr "Fehlerbehandlung"
-
-#: ../../lifecycle/repository-management.rst:207
-msgid "If the commands fail, check the following error codes:"
-msgstr "Falls die Befehle fehlschlagen, überprüfen Sie die folgenden Fehlercodes:"
-
-#: ../../lifecycle/repository-management.rst
-msgid "Exit code 0"
-msgstr "Exit code 0"
-
-#: ../../lifecycle/repository-management.rst:210
-msgid "Command completed successfully."
-msgstr "Befehl erfolgreich abgeschlossen."
-
-#: ../../lifecycle/repository-management.rst
-msgid "Exit code 1"
-msgstr "Exit code 1"
-
-#: ../../lifecycle/repository-management.rst:211
-msgid "A configuration error occurred, or the user aborted the operation."
-msgstr ""
-"Ein Konfigurationsfehler ist aufgetreten, oder der Benutzer hat die "
-"Operation abgebrochen."
-
-#: ../../lifecycle/repository-management.rst
-msgid "Exit code 5"
-msgstr "Exit code 5"
-
-#: ../../lifecycle/repository-management.rst:212
-msgid "Another updater process is already running; wait for completion and retry."
-msgstr ""
-"Ein anderer Updater-Prozess wird bereits ausgeführt; warten Sie auf "
-"Abschluss und wiederholen Sie den Vorgang."
-
-#: ../../lifecycle/repository-management.rst:214
-msgid ""
-"For detailed error messages, validate the repository log file: "
-":file:`/var/log/univention/repository.log`"
-msgstr ""
-"Für detaillierte Fehlermeldungen überprüfen Sie die Protokolldatei des "
-"Repositorys: :file:`/var/log/univention/repository.log`"
-
-#: ../../lifecycle/repository-management.rst:220
-msgid "Configure the repository server"
-msgstr "Konfigurieren Sie den Repository-Server"
-
-#: ../../lifecycle/repository-management.rst:222
-msgid ""
-"After you create a local repository, you need to configure your systems "
-"to use it. This section shows you three ways to do this: through the "
-"management module for individual systems, through the Univention "
-"Configuration Registry for command-line configuration, and through LDAP "
-"policies when you manage multiple systems centrally."
-msgstr ""
-"Nach der Erstellung eines lokalen Repositories müssen Sie Ihre Systeme "
-"für die Verwendung konfigurieren. Dieser Abschnitt zeigt Ihnen drei "
-"Möglichkeiten: über das Verwaltungsmodul für einzelne Systeme, über die "
-"Univention Configuration Registry für Konfiguration über die Befehlszeile"
-" und über LDAP-Richtlinien, wenn Sie mehrere Systeme zentral verwalten."
-
-#: ../../lifecycle/repository-management.rst:227
-msgid ""
-"The default value for the repository server URL is ``https://updates"
-".software-univention.de``."
-msgstr ""
-"Der Standardwert für die Repository-Server URL ist ``https://updates"
-".software-univention.de``."
-
-#: ../../lifecycle/repository-management.rst:231
-msgid "Configuration through management module"
-msgstr "Konfiguration über das Verwaltungsmodul"
-
-#: ../../lifecycle/repository-management.rst:232
-msgid ""
-"In the *Repository Settings* management module, specify the *Repository "
-"server URL*. Find the module at :menuselection:`Software --> Repository "
-"Settings`. Use this approach for individual system configuration through "
-"the graphical interface."
-msgstr ""
-"Im Verwaltungsmodul *Repository-Einstellungen* geben Sie die *Repository-"
-"Server URL* an. Sie finden das Modul unter :menuselection:`Software --> "
-"Repository-Einstellungen`. Verwenden Sie diesen Ansatz für die "
-"Konfiguration einzelner Systeme über die grafische Oberfläche."
-
-#: ../../lifecycle/repository-management.rst:239
-msgid "Configuration through Univention Configuration Registry"
-msgstr "Konfiguration über die Univention Configuration Registry"
-
-#: ../../lifecycle/repository-management.rst:240
-msgid ""
-"You can specify the repository server URL in the UCR variable :external"
-"+uv-ucs-manual:envvar:`repository/online/server`. Use this approach for "
-"individual system configuration from the command line."
-msgstr ""
-"Sie können die Repository-Server URL in der UCR-Variable :external+uv-"
-"ucs-manual:envvar:`repository/online/server` angeben. Verwenden Sie "
-"diesen Ansatz für die Konfiguration einzelner Systeme über die "
-"Befehlszeile."
-
-#: ../../lifecycle/repository-management.rst:246
-msgid "Policy-based configuration of the repository server"
-msgstr ":spelling:word:`Richtlinienbasierte` Konfiguration des Repository-Servers"
-
-#: ../../lifecycle/repository-management.rst:247
-msgid ""
-"You can also specify the repository server using the *Repository server* "
-"policy in the :external+uv-nubus-manual:ref:`nubus-computer-management`. "
-"The selection field shows only Nubus for UCS server systems with a "
-"configured DNS entry. Use this approach to configure multiple systems "
-"centrally in larger environments."
-msgstr ""
-"Sie können den Repository-Server auch mithilfe der Richtlinie "
-"*Repository-Server* im :external+uv-nubus-manual:ref:`nubus-computer-"
-"management` angeben. Das Auswahlfeld zeigt nur Nubus für UCS Systeme mit "
-"einem konfigurierten DNS-Eintrag an. Verwenden Sie diesen Ansatz, um "
-"mehrere Systeme in größeren Umgebungen zentral zu konfigurieren."
-
-#: ../../lifecycle/repository-management.rst:253
-msgid ""
-"All configuration methods—the management module, Univention Configuration"
-" Registry, and policy-based configuration—modify the same system files:"
-msgstr ""
-"Alle Konfigurationsmethoden – das Verwaltungsmodul, die Univention "
-"Configuration Registry und die :spelling:word:`richtlinienbasierte` "
-"Konfiguration – ändern dieselben Systemdateien:"
-
-#: ../../lifecycle/repository-management.rst:257
-msgid ":file:`/etc/apt/sources.list.d/15_ucs-online-version.list`"
-msgstr ":file:`/etc/apt/sources.list.d/15_ucs-online-version.list`"
-
-#: ../../lifecycle/repository-management.rst:258
-msgid ":file:`/etc/apt/sources.list.d/20_ucs-online-component.list`"
-msgstr ":file:`/etc/apt/sources.list.d/20_ucs-online-component.list`"
-
-#: ../../lifecycle/repository-management.rst:260
-msgid ""
-"To verify that your configuration is correct, validate that the "
-"repository server URL in these files matches the value in the UCR "
-"variable :envvar:`repository/online/server`. The :file:`20_ucs-online-"
-"component.list` file only contains repository entries when you configure "
-"components."
-msgstr ""
-"Überprüfen Sie, ob die Repository-Server URL in diesen Dateien dem Wert "
-"in der UCR-Variable :envvar:`repository/online/server` entspricht, um zu "
-"bestätigen, dass Ihre Konfiguration korrekt ist. Die Datei :file:`20_ucs-"
-"online-component.list` enthält nur Einträge für Repositories, wenn Sie "
-"Komponenten konfigurieren."
-
-#: ../../lifecycle/repository-management.rst:268
-msgid ""
-":numref:`lifecycle-repository-management-local-verify-figure` shows how "
-"the repository server URL appears in the file."
-msgstr ""
-":numref:`lifecycle-repository-management-local-verify-figure` zeigt, wie "
-"die Repository-Server URL in der Datei aussieht."
-
-#: ../../lifecycle/repository-management.rst:271
-msgid "Repository server URL in :file:`sources.list.d` file (excerpt)"
-msgstr "Repository-Server URL in :file:`sources.list.d` Datei (Auszug)"
-
-#: ../../lifecycle/repository-management.rst:271
-msgid "deb https://updates.software-univention.de/ ucs520 main"
-msgstr "deb https://updates.software-univention.de/ ucs520 main"
-
-#: ../../lifecycle/repository-management.rst:280
-msgid "Maintain the local repository"
-msgstr "Wartung des lokalen Repositories"
-
-#: ../../lifecycle/repository-management.rst:282
-msgid ""
-"Regular maintenance ensures optimal performance and manages disk space "
-"efficiently."
-msgstr ""
-"Regelmäßige Wartung gewährleistet optimale Leistung und verwaltet den "
-"Speicherplatz effizient."
-
-#: ../../lifecycle/repository-management.rst:286
-msgid "Schedule synchronization"
-msgstr "Planen Sie die Synchronisation"
-
-#: ../../lifecycle/repository-management.rst:287
-msgid ""
-"Run repository synchronization weekly on Wednesday evening or Thursday "
-"morning to stay current with weekly upstream package updates."
-msgstr ""
-"Führen Sie die Synchronisation des Repositorys wöchentlich am "
-"Mittwochabend oder Donnerstagmorgen aus, um auf dem aktuellen Stand mit "
-"den wöchentlichen Updates der Pakete zu bleiben."
-
-#: ../../lifecycle/repository-management.rst:290
-msgid ""
-"Configure the synchronization task using the :command:`univention-"
-"repository-update net` command through either Univention Configuration "
-"Registry or an LDAP-based scheduling policy. :numref:`lifecycle-"
-"repository-management-maintain-cron-figure` shows an example using UCR "
-"variables. The time format is ``hour minute day month weekday``. This "
-"example synchronizes the repository every Wednesday at 22:00 in your "
-"local time zone. Adjust the schedule based on your organizational needs "
-"and network traffic patterns."
-msgstr ""
-"Konfigurieren Sie die Synchronisationsaufgabe mit dem Befehl :command"
-":`univention-repository-update net` über die Univention Configuration "
-"Registry oder eine LDAP-basierte Planungsrichtlinie. :numref:`lifecycle-"
-"repository-management-maintain-cron-figure` zeigt ein Beispiel mit UCR-"
-"Variablen. Das Zeitformat ist ``hour minute day month weekday``. Dieses "
-"Beispiel synchronisiert das Repository jeden Mittwoch um 22:00 in Ihrer "
-"lokalen Zeitzone. Passen Sie den Zeitplan an Ihre organisatorischen "
-"Anforderungen und Muster des Netzwerkverkehrs an."
-
-#: ../../lifecycle/repository-management.rst:302
-msgid "Configure weekly repository synchronization via UCR"
-msgstr ""
-"Konfigurieren Sie die wöchentliche Synchronisation des Repositorys über "
-"UCR"
-
-#: ../../lifecycle/repository-management.rst:302
-msgid ""
-"$ univention-config-registry set \\\n"
-"   cron/repository-sync/command='/usr/sbin/univention-repository-update "
-"net' \\\n"
-"   cron/repository-sync/time='22 * * * 3'"
-msgstr ""
-"$ univention-config-registry set \\\n"
-"   cron/repository-sync/command='/usr/sbin/univention-repository-update "
-"net' \\\n"
-"   cron/repository-sync/time='22 * * * 3'"
-
-#: ../../lifecycle/repository-management.rst:312
-msgid "Monitor repository health"
-msgstr "Überwachen Sie die Gesundheit des Repositorys"
-
-#: ../../lifecycle/repository-management.rst:313
-msgid "After each synchronization, verify that it completed successfully."
-msgstr ""
-"Nach jeder Synchronisation überprüfen Sie, ob sie erfolgreich "
-"abgeschlossen wurde."
-
-#: ../../lifecycle/repository-management.rst:316
-msgid ""
-"Check the exit code of the synchronization command— exit code ``0`` "
-"indicates success. Review the repository log file for error messages or "
-"warnings. If errors occur, consult the :ref:`lifecycle-repository-"
-"management-troubleshooting` section for diagnosis and resolution."
-msgstr ""
-"Überprüfen Sie den Exit Code des Synchronisationsbefehls – Exit Code "
-"``0`` zeigt Erfolg an. Überprüfen Sie die Protokolldatei des Repositorys "
-"auf Fehlermeldungen oder Warnungen. Falls Fehler auftreten, lesen Sie den"
-" Abschnitt :ref:`lifecycle-repository-management-troubleshooting` zur "
-"Diagnose und Fehlerbehebung."
-
-#: ../../lifecycle/repository-management.rst:323
-msgid "Review disk usage to ensure sufficient space for future synchronizations."
-msgstr ""
-"Überprüfen Sie die Festplattennutzung, um ausreichend Platz für "
-"zukünftige Synchronisationen zu gewährleisten."
-
-#: ../../lifecycle/repository-management.rst:327
-msgid "Manage disk space"
-msgstr "Verwalten Sie den Speicherplatz"
-
-#: ../../lifecycle/repository-management.rst:328
-msgid ""
-"Disk usage grows over time as upstream adds package versions. Regular "
-"cleanup prevents disk space exhaustion."
-msgstr ""
-"Die Festplattennutzung wächst im Laufe der Zeit, wenn Upstream "
-"Paketversionen hinzufügt. Regelmäßige Bereinigung verhindert "
-"Speicherplatzerschöpfung."
-
-#: ../../lifecycle/repository-management.rst:331
-msgid ""
-"Limit the version range using the UCR variables "
-":envvar:`repository/mirror/version/start` and "
-":envvar:`repository/mirror/version/end`. The system synchronizes only "
-"versions within this range."
-msgstr ""
-"Beschränken Sie den Versionsbereich mit den UCR-Variablen "
-":envvar:`repository/mirror/version/start` und "
-":envvar:`repository/mirror/version/end`. Das System synchronisiert nur "
-"Versionen innerhalb dieses Bereichs."
-
-#: ../../lifecycle/repository-management.rst:335
-#, python-brace-format
-msgid ""
-"Exclude optional components by setting the UCR variable "
-":envvar:`repository/online/component/COMPONENTNAME` to ``no``, where "
-":samp:`{COMPONENTNAME}` is the component name you want to deactivate. The"
-" system excludes this component from the next synchronization."
-msgstr ""
-"Schließen Sie optionale Komponenten aus, indem Sie die UCR-Variable "
-":envvar:`repository/online/component/COMPONENTNAME` auf ``no`` setzen, "
-"wobei :samp:`{COMPONENTNAME}` der Name der Komponente ist, die Sie "
-"deaktivieren möchten. Das System schließt diese Komponente von der "
-"nächsten Synchronisation aus."
-
-#: ../../lifecycle/repository-management.rst:342
-msgid ""
-"Exclude source packages using the UCR variable "
-":envvar:`repository/mirror/sources` if you don't require them, since "
-"source packages increase repository size significantly."
-msgstr ""
-"Schließen Sie Quellpakete mit der UCR-Variable "
-":envvar:`repository/mirror/sources` aus, falls Sie diese nicht benötigen,"
-" da Quellpakete die Größe des Repositorys erheblich erhöhen."
-
-#: ../../lifecycle/repository-management.rst:348
-msgid ""
-"Prune old kernel packages using the :command:`univention-prune-kernels` "
-"command to remove outdated kernel packages and free disk space."
-msgstr ""
-"Löschen Sie alte Kernel-Pakete mit dem Befehl :command:`univention-prune-"
-"kernels`, um veraltete Kernel-Pakete zu entfernen und Speicherplatz "
-"freizugeben."
-
-#: ../../lifecycle/repository-management.rst:353
-msgid ""
-"During synchronization, :program:`apt-mirror` requires temporary disk "
-"space in addition to the final repository size. Ensure at least 2x the "
-"expected mirror size in free disk space before running synchronization."
-msgstr ""
-"Während der Synchronisation benötigt :program:`apt-mirror` zusätzlich zur"
-" endgültigen Größe des Repositorys temporären Speicherplatz. Stellen Sie "
-"sicher, dass Sie mindestens das 2-fache der erwarteten Größe des Mirrors "
-"an freiem Speicherplatz haben, bevor Sie die Synchronisation ausführen."
-
-#: ../../lifecycle/repository-management.rst:361
-msgid "Review and plan"
-msgstr "Überprüfen und planen"
-
-#: ../../lifecycle/repository-management.rst:362
-msgid ""
-"Review your repository configuration and growth patterns quarterly to "
-"anticipate storage needs."
-msgstr ""
-"Überprüfen Sie vierteljährlich Ihre Konfiguration für das Repository und "
-"Wachstumsmuster, um Speicherbedarf vorherzusehen."
-
-#: ../../lifecycle/repository-management.rst:366
-msgid ""
-"Monitor repository size trends. If growth consistently approaches your "
-"disk capacity, consider expanding storage or adjusting your version "
-"retention policy."
-msgstr ""
-"Überwachen Sie Trends der :spelling:word:`Repository-Größen`. Wenn das "
-"Wachstum sich Ihrer Festplattenkapazität nähert, erwägen Sie, den "
-"Speicher zu erweitern oder Ihre Richtlinie für die Aufbewahrung der "
-"Versionen anzupassen."
-
-#: ../../lifecycle/repository-management.rst:371
-msgid ""
-"Verify that your version retention strategy matches your UCS support "
-"lifecycle. Univention provides security updates for *maintained* "
-"versions. Remove versions that are no longer in your support scope."
-msgstr ""
-"Überprüfen Sie, dass Ihre Aufbewahrungsstrategie für die Versionen Ihrem "
-"UCS Support Lebenszyklus entspricht. Univention stellt "
-"Sicherheitsaktualisierungen für *maintained* Versionen bereit. Entfernen "
-"Sie Versionen, die nicht mehr in Ihrem Support-Umfang liegen."
-
-#: ../../lifecycle/repository-management.rst:377
-msgid ""
-"Plan for major UCS releases in advance of their publication. Ensure "
-"adequate disk space before the release synchronization begins."
-msgstr ""
-"Planen Sie Major UCS Releases im Voraus ihrer Veröffentlichung. Stellen "
-"Sie sicher, dass ausreichend Speicherplatz vorhanden ist, bevor die "
-"Synchronisation für das Release beginnt."
-
-#: ../../lifecycle/repository-management.rst:385
-msgid "Troubleshooting repository problems"
-msgstr "Fehlerbehebung bei Problemen mit dem Repository"
-
-#: ../../lifecycle/repository-management.rst:387
-msgid ""
-"If you encounter issues when creating or updating a local repository, use"
-" the following guidance to diagnose and resolve common problems."
-msgstr ""
-"Wenn Sie beim Erstellen oder Aktualisieren eines lokalen Repositories auf"
-" Probleme stoßen, verwenden Sie die folgende Anleitung zur Diagnose und "
-"Behebung häufiger Probleme."
-
-#: ../../lifecycle/repository-management.rst:390
-msgid ""
-"Review the repository log file :file:`/var/log/univention/repository.log`"
-" for detailed error messages and diagnostic information."
-msgstr ""
-"Überprüfen Sie die Protokolldatei des Repositorys "
-":file:`/var/log/univention/repository.log` auf detaillierte "
-"Fehlermeldungen und Diagnoseinformationen."
-
-#: ../../lifecycle/repository-management.rst:396
-msgid "Repository creation or update fails to start"
-msgstr "Erstellung des Repositorys oder Aktualisierung kann nicht gestartet werden"
-
-#: ../../lifecycle/repository-management.rst:397
-msgid ""
-"The command returns exit code ``5`` because another updater process is "
-"running."
-msgstr ""
-"Der Befehl gibt den Exit Code ``5`` zurück, da ein anderer Updater-"
-"Prozess ausgeführt wird."
-
-#: ../../lifecycle/repository-management.rst:400
-msgid ""
-"Verify if another :command:`univention-repository-create`, :command"
-":`univention-repository-update`, or system update process is active on "
-"the system. Wait for the other process to complete, then retry your "
-"command."
-msgstr ""
-"Überprüfen Sie, ob ein anderer :command:`univention-repository-create`, "
-":command:`univention-repository-update` oder Prozess zur System-"
-"Aktualisierung auf dem System aktiv ist. Warten Sie, bis der andere "
-"Prozess abgeschlossen ist, bevor Sie Ihren Befehl wiederholen."
-
-#: ../../lifecycle/repository-management.rst:408
-msgid "Configuration fails to apply or appears incorrect"
-msgstr "Konfiguration kann nicht angewendet werden oder erscheint falsch"
-
-#: ../../lifecycle/repository-management.rst:409
-msgid ""
-"The command completes with exit code ``1``, or the system isn't using the"
-" configured repository server."
-msgstr ""
-"Der Befehl endet mit Exit Code ``1``, oder das System verwendet nicht den"
-" konfigurierten Repository-Server."
-
-#: ../../lifecycle/repository-management.rst:412
-msgid ""
-"Confirm that you set the following Univention Configuration Registry "
-"variables correctly:"
-msgstr ""
-"Bestätigen Sie, dass Sie die folgenden Univention Configuration Registry "
-"Variablen korrekt gesetzt haben:"
-
-#: ../../lifecycle/repository-management.rst:414
-msgid ":envvar:`local/repository` must have the value ``yes``."
-msgstr ":envvar:`local/repository` muss den Wert ``yes`` haben."
-
-#: ../../lifecycle/repository-management.rst:415
-msgid ""
-":envvar:`repository/mirror/server` must have the value ``yes`` if you use"
-" a local repository."
-msgstr ""
-":envvar:`repository/mirror/server` muss den Wert ``yes`` haben, wenn Sie "
-"ein lokales Repository verwenden."
-
-#: ../../lifecycle/repository-management.rst:416
-msgid ""
-":envvar:`repository/online/server` must point to the correct repository "
-"server URL."
-msgstr ""
-":envvar:`repository/online/server` muss auf die richtige Repository-"
-"Server URL zeigen."
-
-#: ../../lifecycle/repository-management.rst:418
-msgid ""
-"After you corrected any configuration, review the files to confirm the "
-"changes took effect: :file:`/etc/apt/sources.list.d/15_ucs-online-"
-"version.list` and :file:`/etc/apt/sources.list.d/20_ucs-online-"
-"component.list`."
-msgstr ""
-"Nachdem Sie eine Konfiguration korrigiert haben, überprüfen Sie die "
-"Dateien, um zu bestätigen, dass die Änderungen wirksam wurden: "
-":file:`/etc/apt/sources.list.d/15_ucs-online-version.list` und "
-":file:`/etc/apt/sources.list.d/20_ucs-online-component.list`."
-
-#: ../../lifecycle/repository-management.rst:425
-msgid "Mirror server pointing to itself"
-msgstr "Mirror-Server zeigt auf sich selbst"
-
-#: ../../lifecycle/repository-management.rst:426
-msgid ""
-"The command fails with exit code ``1`` when you configure the mirror "
-"server to point to the local system instead of an upstream repository "
-"server."
-msgstr ""
-"Der Befehl schlägt mit dem Exit Code ``1`` fehl, wenn Sie den Mirror-"
-"Server konfigurieren, um auf das lokale System statt auf einen Upstream "
-"Repository-Server zu zeigen."
-
-#: ../../lifecycle/repository-management.rst:429
-msgid ""
-"Verify that the UCR variable :envvar:`repository/mirror/server` doesn't "
-"contain the FQDN of your local system. It must point to a valid upstream "
-"repository server, like ``https://updates.software-univention.de``."
-msgstr ""
-"Überprüfen Sie, dass die UCR-Variable :envvar:`repository/mirror/server` "
-"nicht den FQDN Ihres lokalen Systems enthält. Sie muss auf einen gültigen"
-" Upstream Repository-Server wie ``https://updates.software-"
-"univention.de`` zeigen."
-
-#: ../../lifecycle/repository-management.rst:436
-msgid "Synchronization is slow or stalls"
-msgstr "Synchronisation ist langsam oder bleibt stecken"
-
-#: ../../lifecycle/repository-management.rst:437
-msgid ""
-"The initial repository synchronization downloads all packages and can "
-"take several hours depending on network bandwidth and repository size."
-msgstr ""
-"Die anfängliche Synchronisation des Repositorys lädt alle Pakete herunter"
-" und kann je nach Netzwerkbandbreite und Größe des Repositorys mehrere "
-"Stunden dauern."
-
-#: ../../lifecycle/repository-management.rst:441
-msgid ""
-"If synchronization appears to stall, verify network connectivity to the "
-"repository server and ensure you have sufficient disk space on your "
-"system."
-msgstr ""
-"Falls die Synchronisation zu stecken scheint, überprüfen Sie die "
-"Netzwerkverbindung zum Repository-Server und stellen Sie sicher, dass Sie"
-" ausreichend Speicherplatz auf Ihrem System haben."
-
-#: ../../lifecycle/repository-management.rst:447
-msgid "Repository server unreachable"
-msgstr "Repository-Server ist nicht erreichbar"
-
-#: ../../lifecycle/repository-management.rst:448
-msgid ""
-"Your system can't connect to the configured repository server. Verify the"
-" following:"
-msgstr ""
-"Ihr System kann keine Verbindung zum konfigurierten Repository-Server "
-"herstellen. Überprüfen Sie Folgendes:"
-
-#: ../../lifecycle/repository-management.rst:451
-msgid "Network connectivity exists from your system to the repository server."
-msgstr "Netzwerkverbindung von Ihrem System zum Repository-Server ist vorhanden."
-
-#: ../../lifecycle/repository-management.rst:452
-msgid "DNS resolution works for the repository server hostname."
-msgstr "DNS-Auflösung funktioniert für den Repository-Server Rechnernamen."
-
-#: ../../lifecycle/repository-management.rst:453
-msgid ""
-"The repository server URL in the UCR variable "
-":envvar:`repository/online/server` is correct."
-msgstr ""
-"Die Repository-Server URL in der UCR-Variable "
-":envvar:`repository/online/server` ist korrekt."
-
-#: ../../lifecycle/repository-management.rst:454
-msgid "Firewall rules allow access to the repository server."
-msgstr "Firewall-Regeln ermöglichen Zugriff auf den Repository-Server."
-
-#: ../../lifecycle/repository-management.rst:458
-msgid "Insufficient disk space"
-msgstr "Unzureichender Speicherplatz"
-
-#: ../../lifecycle/repository-management.rst:459
-msgid "The system runs out of disk space during synchronization."
-msgstr "Der Speicherplatz auf dem System läuft während der Synchronisation voll."
-
-#: ../../lifecycle/repository-management.rst:461
-msgid ""
-"Verify that you have sufficient disk space available in the directory you"
-" configured in the UCR variable :envvar:`repository/mirror/basepath`. The"
-" default path is :file:`/var/lib/univention-repository/`."
-msgstr ""
-"Überprüfen Sie, dass Sie ausreichend Speicherplatz in dem Verzeichnis "
-"verfügbar haben, das Sie in der UCR-Variable "
-":envvar:`repository/mirror/basepath` konfiguriert haben. Der Standardpfad"
-" ist :file:`/var/lib/univention-repository/`."
-
-#: ../../lifecycle/repository-management.rst:465
-msgid ""
-"The amount of space you need depends on which UCS versions and components"
-" you choose to mirror."
-msgstr ""
-"Der benötigte Speicherplatz hängt davon ab, welche UCS-Versionen und "
-"Komponenten Sie spiegeln möchten."
-
-#: ../../lifecycle/repository-management.rst:470
-msgid "Not running with sufficient permissions"
-msgstr "Nicht mit ausreichenden Berechtigungen ausgeführt"
-
-#: ../../lifecycle/repository-management.rst:471
-msgid ""
-"The command fails when you don't run it with root privileges. Run all "
-"repository management commands as the ``root`` user."
-msgstr ""
-"Der Befehl schlägt fehl, wenn Sie ihn nicht mit Root Privilegien "
-"ausführen. Führen Sie alle Verwaltungsbefehle für das Repository als "
-"``root`` Benutzer aus."
 
 #: ../../lifecycle/update-strategies.rst:7
 msgid "Update strategies"
@@ -1831,3 +2742,88 @@ msgid ""
 msgstr ""
 "Um Newsletter zu abonnieren, besuchen Sie `Univention Newsletter "
 "<https://www.univention.com/about-us/newsletter/>`_."
+
+#~ msgid "Repository management"
+#~ msgstr "Verwaltung des Repositorys"
+
+#~ msgid ""
+#~ "Repository management involves two "
+#~ "interconnected decisions: creating a local "
+#~ "repository and configuring your systems "
+#~ "to use it. Together, these decisions "
+#~ "give you control over system updates."
+#~ " This section covers the repository "
+#~ "management workflow, from setting up a"
+#~ " local repository to maintaining it "
+#~ "over time."
+#~ msgstr ""
+#~ "Die Verwaltung des Repositorys beinhaltet "
+#~ "zwei miteinander verbundene Entscheidungen: "
+#~ "die Erstellung eines lokalen Repositories "
+#~ "und die Konfiguration Ihrer Systeme für"
+#~ " dessen Nutzung. Zusammen geben Ihnen "
+#~ "diese Entscheidungen Kontrolle über System-"
+#~ "Aktualisierungen. Dieser Abschnitt behandelt "
+#~ "den Ablauf der Verwaltung des "
+#~ "Repositorys, vom Einrichten eines lokalen "
+#~ "Repositories bis zu seiner Wartung im"
+#~ " Laufe der Zeit."
+
+#~ msgid ""
+#~ "To create a local repository, "
+#~ "synchronize packages from upstream Univention"
+#~ " servers to your local infrastructure. "
+#~ "After you have a local repository, "
+#~ "you configure your systems to use "
+#~ "it instead of reaching out to "
+#~ "remote servers. These two steps are "
+#~ "separate but deeply connected—you need "
+#~ "both to manage updates independently."
+#~ msgstr ""
+#~ "Um ein lokales Repository zu erstellen,"
+#~ " synchronisieren Sie Pakete von "
+#~ "Upstream-Servern von Univention mit Ihrer"
+#~ " lokalen Infrastruktur. Nach der Erstellung"
+#~ " eines lokalen Repositories konfigurieren "
+#~ "Sie Ihre Systeme, um dieses statt "
+#~ "Remote-Servern zu verwenden. Diese beiden"
+#~ " Schritte sind getrennt, aber eng "
+#~ "miteinander verbunden – Sie benötigen "
+#~ "beide, um Updates unabhängig zu "
+#~ "verwalten."
+
+#~ msgid ""
+#~ "This section covers three main topics:"
+#~ " creating and updating a local "
+#~ "repository, configuring your systems to "
+#~ "use it, and maintaining it for "
+#~ "long-term stability."
+#~ msgstr ""
+#~ "Dieser Abschnitt behandelt drei Hauptthemen:"
+#~ " Erstellen und Aktualisieren eines lokalen"
+#~ " Repositories, Konfigurieren Ihrer Systeme "
+#~ "für dessen Nutzung und Wartung für "
+#~ "langfristige Stabilität."
+
+#~ msgid ""
+#~ "A local repository mirrors packages from"
+#~ " the Univention update server to your"
+#~ " local infrastructure. This enables you "
+#~ "to manage updates independently of "
+#~ "internet connectivity and distribute packages"
+#~ " efficiently across multiple systems."
+#~ msgstr ""
+#~ "Ein lokales Repository spiegelt Pakete "
+#~ "vom Update-Server von Univention zu "
+#~ "Ihrer lokalen Infrastruktur. Dies ermöglicht"
+#~ " es Ihnen, Updates unabhängig von der"
+#~ " Internetkonnektivität zu verwalten und "
+#~ "Pakete effizient über mehrere Systeme zu"
+#~ " verteilen."
+
+#~ msgid "Custom package sources"
+#~ msgstr "Benutzerdefinierte Paketquellen"
+
+#~ msgid "This chapter covers two main workflows:"
+#~ msgstr "Dieses Kapitel behandelt zwei Hauptworkflows:"
+
