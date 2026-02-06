@@ -68,6 +68,7 @@ intersphinx_mapping = {
     'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/en', None),
     'uv-ucs-manual': reference_inventory('manual', version=version),
     'uv-architecture': reference_inventory('architecture', version=version),
+    'uv-debian-admins': reference_inventory('debian-admins', version='latest'),
     'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
     'uv-docs-overview': ('https://docs.software-univention.de/n/en/', None),
 }
@@ -181,6 +182,7 @@ def adapt_settings_to_translation(app, config):
             'uv-architecture': reference_inventory('architecture', version=version),
             'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
             'uv-docs-overview': ('https://docs.software-univention.de/n/de/', None),
+            'uv-debian-admins': reference_inventory('debian-admins', version='latest'),
         }
         config.numfig_format['code-block'] = 'Listing %s'
 
