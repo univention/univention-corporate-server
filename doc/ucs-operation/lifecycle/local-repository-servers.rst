@@ -6,9 +6,21 @@
 Local repository servers
 ========================
 
-A local repository mirrors packages from the Univention update server to your local infrastructure.
-This enables you to manage updates independently of internet connectivity
-and distribute packages efficiently across multiple systems.
+A local repository mirrors packages from Univention update servers to your infrastructure.
+This gives you control over updates, reduces bandwidth usage,
+and enables offline operations in your environment.
+
+Use a local repository when you manage multiple systems,
+especially across distributed locations or with limited internet connectivity.
+For single-system installations with reliable internet access,
+you can use online repositories directly.
+
+After you set up a local repository,
+you install and manage packages from it.
+For package installation methods,
+see :ref:`lifecycle-package-installation-management`.
+
+This section covers creating, configuring, and maintaining local repositories.
 
 .. _lifecycle-local-repository-benefits:
 

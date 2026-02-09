@@ -55,7 +55,7 @@ This section provides a reference for UCR variables.
    to reduce bandwidth consumption and enable offline updates.
 
    For information about creating and maintaining a local repository,
-   see :ref:`lifecycle-repository-management-local-create-init`.
+   see :ref:`lifecycle-local-repository-create-init`.
 
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
@@ -300,7 +300,7 @@ This section provides a reference for UCR variables.
    to store mirrored packages and repository metadata.
 
    For information about managing disk space in local repositories,
-   see :ref:`lifecycle-repository-management-maintenance-disk-space`.
+   see :ref:`lifecycle-local-repository-maintenance-disk-space`.
 
    :Default value: ``/var/lib/univention-repository``
    :Type: string
@@ -313,7 +313,7 @@ This section provides a reference for UCR variables.
    The value must be a fully qualified domain name or IP address.
 
    For information about configuring a local repository to use a different upstream server,
-   see :ref:`lifecycle-repository-management-local-create-multiple-locations`.
+   see :ref:`lifecycle-local-repository-create-multiple-locations`.
 
    :Default value: ``https://updates.software-univention.de``
    :Type: string
@@ -327,7 +327,7 @@ This section provides a reference for UCR variables.
    Deactivating this variable reduces the storage space required for the mirror.
 
    For information about managing disk space in local repositories,
-   see :ref:`lifecycle-repository-management-maintenance-disk-space`.
+   see :ref:`lifecycle-local-repository-maintenance-disk-space`.
 
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
@@ -390,7 +390,7 @@ This section provides a reference for UCR variables.
       variable, which is no longer available since UCS 5.0-3.
 
    For information about excluding optional components,
-   see :ref:`lifecycle-repository-management-maintenance-disk-space`.
+   see :ref:`lifecycle-local-repository-maintenance-disk-space`.
 
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
@@ -403,7 +403,7 @@ This section provides a reference for UCR variables.
    The value must be a fully qualified URL pointing to a valid APT repository.
 
    For information about configuring the repository server,
-   see :ref:`lifecycle-repository-management-configuration`.
+   see :ref:`lifecycle-local-repository-configuration`.
 
    :Default value: ``https://updates.software-univention.de``
    :Type: string
