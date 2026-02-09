@@ -339,12 +339,19 @@ class Client:
     :param str language: The preferred language.
     :param float timeout: Set the default timeout in seconds (float) for new connections.
     :param bool automatic_reauthentication: Automatically re-authenticate and re-do requests if the authentication cookie expires.
+    :param bool skip_hostname_check: Skip SSL hostname verification. Defaults to True when connecting to localhost
+        (hostname=None), which allows the use of external certificates with different domain names.
+        Set to False to enforce hostname verification for local connections.
     """
 
     ConnectionType = HTTPSConnection
 
-    def __init__(self, hostname: str | None = None, username: str | None = None, password: str | None = None, language: str | None = None, timeout: float | None = None, automatic_reauthentication: bool = False) -> None:
+    def __init__(self, hostname: str | None = None, username: str | None = None, password: str | None = None, language: str | None = None, timeout: float | None = None, automatic_reauthentication: bool = False, skip_hostname_check: bool | None = None) -> None:
+        self._is_localhost = hostname is None
         self.hostname = hostname or '%(hostname)s.%(domainname)s' % ucr
+        # Skip hostname check by default when connecting to localhost, as the server
+        # may be configured with an external certificate that does not match the internal FQDN
+        self._skip_hostname_check = skip_hostname_check if skip_hostname_check is not None else self._is_localhost
         self._language = language or locale.getlocale()[0] or ''
         self._headers = {
             'Content-Type': 'application/json; charset=UTF-8',
@@ -591,6 +598,10 @@ class Client:
         """
         # once keep-alive is over, the socket closes
         #   so create a new connection on every request
+        if self._skip_hostname_check:
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            return self.ConnectionType(self.hostname, timeout=self._timeout, context=ssl_context)
         return self.ConnectionType(self.hostname, timeout=self._timeout)
 
     def __build_data(self, data: dict[str, Any] | None, flavor: str | None = None) -> dict[str, Any]:
