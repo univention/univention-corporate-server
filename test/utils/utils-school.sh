@@ -7,9 +7,6 @@ set -x
 . utils.sh
 
 install_kelvin_api () {
-  if [ -n "$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")" ]; then
-    univention-app remove ucsschool-kelvin-rest-api
-  fi
   install_docker_app_from_branch ucsschool-kelvin-rest-api "$UCS_ENV_KELVIN_IMAGE" ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG || return $?
 }
 
@@ -17,22 +14,13 @@ install_kelvin_in_version() {
   # Install kelvin in a specified version
   local -i rv=0
   printf '%s' univention > /tmp/univention
+  if [ -n "$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")" ]; then
+    univention-app remove ucsschool-kelvin-rest-api
+  fi
   if [ -n "$KELVIN_VERSION" ]; then
-      local CUR_KELVIN_VERSION="$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")"
-      echo "KELVIN_VERSION=$KELVIN_VERSION"
-      echo "CUR_KELVIN_VERSION=$CUR_KELVIN_VERSION"
-      if [ "$CUR_KELVIN_VERSION" = "$KELVIN_VERSION" ]; then
-          echo "INFO: ucsschool-kelvin-rest-api is already installed in version '$KELVIN_VERSION'"
-      else
-          action="install"
-          if [ -n "$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/status")" ]; then
-              echo "INFO: ucsschool-kelvin-rest-api is already installed in version $CUR_KELVIN_VERSION: switching action from 'install' to 'upgrade'"
-              action="upgrade"
-          else
-              univention-app $action ucsschool-kelvin-rest-api="$KELVIN_VERSION" --noninteractive --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
-              return $rv
-          fi
-      fi
+      univention-app install ucsschool-kelvin-rest-api="$KELVIN_VERSION" --noninteractive --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
+      echo "Installed kelvin in Version $(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")"
+      return $rv
   else
     install_kelvin_api
   fi
