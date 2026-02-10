@@ -1,3 +1,9 @@
+univention-management-console (14.4.4) unstable; urgency=medium
+
+  * Bug #59033: Allow configuration for root path
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Feb 2026 15:36:47 +0100
+
 univention-management-console (14.4.3) unstable; urgency=medium
 
   * Bug #59033: Allow configuration for root path
