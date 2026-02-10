@@ -3353,6 +3353,9 @@ def init_keycloak_ucs(opt):
             "user.model.attribute": [
                 "uid",
             ],
+            "always.read.value.from.ldap": [
+                "true",
+            ],
         },
     }
 
@@ -3461,6 +3464,7 @@ def init_keycloak_ucs(opt):
     check_and_create_component(kc_admin, payload_ldap_mapper["name"], payload_ldap_mapper["providerId"], payload_ldap_mapper, force=opt.force)
 
     # Modify default mappers to correct ones
+    modify_component(kc_admin, payload_ldap_mapper)
     modify_component(kc_admin, firstname_ldap_mapper)
     modify_component(kc_admin, mail_ldap_mapper)
     modify_component(kc_admin, lastname_ldap_mapper)
