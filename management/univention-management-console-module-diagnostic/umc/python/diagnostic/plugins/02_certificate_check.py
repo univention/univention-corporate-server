@@ -24,11 +24,13 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/master']
 title = _('Check validity of SSL certificates')
 description = _('All SSL certificates valid.')
-links = [{
-    'name': 'sdb',
-    'href': _('http://sdb.univention.de/1183'),
-    'label': _('Univention Support Database - Renewing the TLS/SSL certificates'),
-}]
+links = [
+    {
+        'name': 'sdb',
+        'href': _('http://sdb.univention.de/1183'),
+        'label': _('Univention Support Database - Renewing the TLS/SSL certificates'),
+    },
+]
 
 
 WARNING_PERIOD = datetime.timedelta(days=50)
@@ -89,6 +91,22 @@ class CertificateMalformed(CertificateError):
         return msg.format(path=self.path)
 
 
+class CertificateHostnameMismatch(CertificateWarning):
+    def __init__(self, path: str, expected_fqdn: str, cert_names: list[str]) -> None:
+        super().__init__(path)
+        self.expected_fqdn = expected_fqdn
+        self.cert_names = cert_names
+
+    def __str__(self) -> str:
+        msg = _(
+            'The Apache SSL certificate {path!r} does not match the local hostname {expected_fqdn!r}.\n'
+            'The certificate is valid for: {cert_names}\n'
+            'Instead of replacing the default certificate, configure a second Apache virtual host\n'
+            'for the external domain name. See https://help.univention.com/t/howto-add-second-vhost-leading-to-the-ucs-portal/24899',
+        )
+        return msg.format(path=self.path, expected_fqdn=self.expected_fqdn, cert_names=', '.join(self.cert_names))
+
+
 class CertificateVerifier:
     def __init__(self, root_cert_path: str, crl_path: str) -> None:
         self.root_cert_path = root_cert_path
@@ -105,8 +123,12 @@ class CertificateVerifier:
         sans_mircoseconds = re.sub(r'\.\d{3}', '', generalized_time)
         sans_difference = re.sub(r'[+-]\d{4}', '', sans_mircoseconds)
         date_format = {
-            10: '%Y%m%d%H', 12: '%Y%m%d%H%M', 14: '%Y%m%d%H%M%S',
-            11: '%Y%m%d%HZ', 13: '%Y%m%d%H%MZ', 15: '%Y%m%d%H%M%SZ',
+            10: '%Y%m%d%H',
+            12: '%Y%m%d%H%M',
+            14: '%Y%m%d%H%M%S',
+            11: '%Y%m%d%HZ',
+            13: '%Y%m%d%H%MZ',
+            15: '%Y%m%d%H%M%SZ',
         }.get(len(sans_difference))
 
         if date_format is None:
@@ -136,7 +158,7 @@ class CertificateVerifier:
     def _verify_timestamps(self, cert_path: str) -> Iterator[CertificateWarning]:
         now = datetime.datetime.now(dateutil.tz.tzutc())
 
-        with open(cert_path, "rb") as fob:
+        with open(cert_path, 'rb') as fob:
             try:
                 cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
             except crypto.Error:
@@ -182,8 +204,48 @@ class CertificateVerifier:
             yield error
 
 
+def _get_certificate_names(cert_path: str) -> list[str]:
+    """Extract all hostnames (CN + SANs) from a certificate."""
+    names = []
+    try:
+        with open(cert_path, 'rb') as fob:
+            cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
+        subject = cert.get_subject()
+        if subject.CN:
+            names.append(subject.CN)
+        for i in range(cert.get_extension_count()):
+            ext = cert.get_extension(i)
+            if ext.get_short_name() == b'subjectAltName':
+                for entry in str(ext).split(','):
+                    entry = entry.strip()
+                    if entry.startswith('DNS:'):
+                        name = entry[4:]
+                        if name not in names:
+                            names.append(name)
+    except Exception:
+        pass
+    return names
+
+
+def check_apache_certificate_hostname() -> Iterator[CertificateWarning]:
+    """Check if the Apache SSL certificate matches the local FQDN."""
+    fqdn = '%(hostname)s.%(domainname)s' % configRegistry
+    default_certificate = f'/etc/univention/ssl/{fqdn}/cert.pem'
+    cert_path = configRegistry.get('apache2/ssl/certificate')
+
+    if not cert_path or cert_path == default_certificate:
+        return
+
+    cert_names = _get_certificate_names(cert_path)
+    if not cert_names:
+        return
+
+    if not any(name == fqdn or (name.startswith('*.') and fqdn.endswith(name[1:])) for name in cert_names):
+        yield CertificateHostnameMismatch(cert_path, fqdn, cert_names)
+
+
 def certificates() -> Iterator[str]:
-    fqdn = "%(hostname)s.%(domainname)s" % configRegistry
+    fqdn = '%(hostname)s.%(domainname)s' % configRegistry
     default_certificate = f'/etc/univention/ssl/{fqdn}/cert.pem'
     yield configRegistry.get('apache2/ssl/certificate', default_certificate)
 
@@ -249,13 +311,14 @@ def verify_from_master(master: str, all_certificates: Iterable[str]) -> Iterator
 
 def run(_umc_instance: Instance) -> None:
     all_certificates = certificates()
-    is_local_check = configRegistry.get('server/role') in \
-        ('domaincontroller_master', 'domaincontroller_backup')
+    is_local_check = configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
 
     if is_local_check:
         cert_verify = list(verify_local(all_certificates))
     else:
         cert_verify = list(verify_from_master(configRegistry.get('ldap/master'), all_certificates))
+
+    cert_verify.extend(check_apache_certificate_hostname())
 
     error_descriptions = [str(error) for error in cert_verify if isinstance(error, CertificateWarning)]
 
@@ -269,4 +332,5 @@ def run(_umc_instance: Instance) -> None:
 
 if __name__ == '__main__':
     from univention.management.console.modules.diagnostic import main
+
     main()

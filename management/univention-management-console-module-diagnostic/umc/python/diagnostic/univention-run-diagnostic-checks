@@ -10,7 +10,7 @@ from getpass import getpass
 from typing import Any
 
 from univention.config_registry import ucr
-from univention.lib.umc import Client, Unauthorized
+from univention.lib.umc import Client, ConnectionError as UMCConnectionError, Unauthorized
 
 
 class CLIClient:
@@ -46,6 +46,34 @@ class CLIClient:
             client = Client(None, args.username, args.password)
         except Unauthorized as exc:
             parser.error('Login failed: %s' % (exc,))
+        except UMCConnectionError as exc:
+            import ssl
+            if isinstance(exc.reason, ssl.SSLCertVerificationError):
+                fqdn = '%(hostname)s.%(domainname)s' % ucr
+                print(
+                    'Error: Could not connect to the local UMC server.\n'
+                    'The SSL certificate configured for Apache does not match the local hostname %r.\n'
+                    '\n'
+                    'This typically happens when the default Apache SSL certificate (apache2/ssl/certificate)\n'
+                    'has been replaced with an external certificate for a different domain name.\n'
+                    '\n'
+                    'Instead of replacing the default certificate, configure a second Apache virtual host\n'
+                    'for the external domain name. This keeps the internal certificate intact and avoids\n'
+                    'issues with internal services that connect using the local hostname.\n'
+                    '\n'
+                    'See: https://help.univention.com/t/howto-add-second-vhost-leading-to-the-ucs-portal/24899\n'
+                    '\n'
+                    'Example:\n'
+                    '  ucr set apache2/vhosts/<external-fqdn>/443/enabled=true\n'
+                    '  ucr set apache2/vhosts/<external-fqdn>/443/ssl/certificate=<path-to-cert>\n'
+                    '  ucr set apache2/vhosts/<external-fqdn>/443/ssl/key=<path-to-key>\n'
+                    '  ucr set apache2/vhosts/<external-fqdn>/443/files="/etc/apache2/ucs-sites.conf.d/*.conf"\n'
+                    '  systemctl restart apache2'
+                    % (fqdn,),
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+            parser.error('Could not connect to UMC: %s' % (exc,))
 
         plugins = {plugin['id'] for plugin in client.umc_command('diagnostic/query').result}
         checks = plugins if 'all' in args.checks else set(args.checks)
