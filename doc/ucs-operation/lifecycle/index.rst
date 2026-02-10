@@ -34,3 +34,4 @@ Software distribution and package management
    perform-updates
    package-installation-management
    local-repository-servers
+   app-center
