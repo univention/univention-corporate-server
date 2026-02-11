@@ -1,3 +1,9 @@
+univention-debug-python (14.4.3) unstable; urgency=medium
+
+  * Bug #58975: disabling structured logging restores original formatter
+
+ -- Jaime Conde Segovia <conde-segovia@univention.de>  Wed, 11 Feb 2026 10:04:30 +0100
+
 univention-debug-python (14.4.2) unstable; urgency=medium
 
   * Bug #58653: fix logging of logfmter data if multiple structured
