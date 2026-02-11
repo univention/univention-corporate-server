@@ -3,8 +3,13 @@ App-IDs
 Bootloader-Menü
 Cloud-Plattformen
 Cloud-native
+Containerisierung
 Cron
 Cron-Format
+Docker-Anwendung
+Docker-Anwendungen
+Docker-basierte
+Docker-basierten
 Domänendatenbank
 Domänenmodi
 End-of-Life
@@ -44,6 +49,7 @@ Versionierung
 Versionierungsstrategie
 Ziel-App
 cloudbasierte
+containerisierte
 plattformspezifischen
 rekonfigurieren
 rollenspezifischen
