@@ -9,3 +9,6 @@ desc: |
  * Allow configuration of the root_path, to reduce the complexity
    on the reverse proxy.
 bug: [59032]
+erratum: 352
+announced: 2026-02-11
+support: core
