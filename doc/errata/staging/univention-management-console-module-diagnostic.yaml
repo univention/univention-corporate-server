@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-management-console-module-diagnostic
+fix: 8.4.2
+desc: |
+ This update addresses the following issues:
+ * Improve the handling of SSL certificate checks when external
+   certificates are configured. The diagnostic tool now provides actionable
+   guidance when detecting hostname mismatches instead of failing with a
+   traceback.
+bug: [55576]

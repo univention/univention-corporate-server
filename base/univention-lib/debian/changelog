@@ -1,3 +1,9 @@
+univention-lib (11.4.1) unstable; urgency=medium
+
+  * Bug #55576: Add support for skipping SSL hostname checks in UMC Client
+
+ -- Carlos García-Mauriño <garcia-maurino@univention.de>  Wed, 11 Feb 2026 16:24:53 +0100
+
 univention-lib (11.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
