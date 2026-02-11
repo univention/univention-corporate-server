@@ -140,6 +140,15 @@ property_descriptions = {
         options=['posix'],
         readonly_when_synced=True,
     ),
+    'mailAlternativeAddress': univention.admin.property(
+        short_description=_('E-mail alias address'),
+        long_description=_('Additional e-mail addresses for which e-mails will be delivered to the "Mail address". The domain must be one of the UCS hosted e-mail domains.'),
+        syntax=univention.admin.syntax.emailAddressValidDomain,
+        multivalue=True,
+        copyable=True,
+        options=['posix'],
+        readonly_when_synced=True,
+    ),
     'memberOf': univention.admin.property(
         short_description=_('Member of'),
         long_description='',
@@ -201,6 +210,7 @@ layout = [
     ]),
     Tab(_('Mail'), _('Mail settings of this group'), advanced=True, layout=[
         'mailAddress',
+        'mailAlternativeAddress',
         'allowedEmailUsers',
         'allowedEmailGroups',
     ]),
@@ -240,6 +250,7 @@ mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListTo
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.register('mailAlternativeAddress', 'mailAlternativeAddress', encoding='ASCII')
 mapping.register('adGroupType', 'univentionGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList', encoding='ASCII')
 mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers')
@@ -433,11 +444,34 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.groupNameAlreadyUsed(self['name'])
 
         # get lock for mailPrimaryAddress
-        if self['mailAddress'] and (not self.exists() or self.hasChanged('mailAddress') and self['mailAddress'].lower() != self.oldinfo.get('mailAddress', '').lower()):
-            try:
-                self.request_lock('mailPrimaryAddress', self['mailAddress'])
-            except univention.admin.uexceptions.noLock:
-                raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
+        if not self.exists() or self.hasChanged('mailAddress'):
+            # ignore case in change of mailAddress, we only store the lowercase address anyway
+            if self['mailAddress'] and self['mailAddress'].lower() != (self.oldinfo.get('mailAddress', None) or '').lower():
+                # do not check the address if it was used as mailAlternativeAddress but now no more
+                do_request_lock = True
+                if configRegistry.is_true('directory/manager/mail-address/uniqueness') and self.hasChanged('mailAlternativeAddress'):
+                    if self['mailAddress'] in self.oldinfo.get('mailAlternativeAddress', []):
+                        if self['mailAddress'] not in self['mailAlternativeAddress']:
+                            do_request_lock = False
+                if do_request_lock:
+                    try:
+                        self.request_lock('mailPrimaryAddress', self['mailAddress'])
+                    except univention.admin.uexceptions.noLock:
+                        raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
+
+        # get lock for mailAlternativeAddress
+        if (not self.exists() or self.hasChanged('mailAlternativeAddress')) and self['mailAlternativeAddress']:
+            old_maas, new_maas = ({addr.lower() for addr in info.get('mailAlternativeAddress', [])} for info in (self.oldinfo, self.info))
+            for added_maa in new_maas - old_maas:
+                # do not check address if it was used as mailPrimaryAddress but now no more
+                if configRegistry.is_true('directory/manager/mail-address/uniqueness') and self.hasChanged('mailPrimaryAddress'):
+                    if self.oldinfo.get('mailAddress', '').lower() == added_maa:
+                        continue
+                # uniqueness for mailAlternativeAddress
+                try:
+                    self.request_lock('mailAlternativeAddress', added_maa)
+                except univention.admin.uexceptions.noLock:
+                    raise univention.admin.uexceptions.mailAddressUsed(added_maa)
 
     def _ldap_pre_create(self) -> None:
         super()._ldap_pre_create()

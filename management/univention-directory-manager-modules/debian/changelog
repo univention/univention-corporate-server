@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.5) unstable; urgency=low
+
+  * Bug #28692: add mailAlternativeAddress to groups/group
+
+ -- Oliver Friedrich <friedrich@univention.de>  Thu, 19 Mar 2026 17:29:22 +0100
+
 univention-directory-manager-modules (17.5.4) unstable; urgency=medium
 
   * Bug #59132: on errors show path of custom hooks/syntax
