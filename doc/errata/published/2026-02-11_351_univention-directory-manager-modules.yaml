@@ -9,3 +9,6 @@ desc: |
  * When deleting a container, the group membership of the objects
    within that container is now correctly removed.
 bug: [56986]
+erratum: 351
+announced: 2026-02-11
+support: core
