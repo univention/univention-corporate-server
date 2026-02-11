@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-09 18:06+0000\n"
-"PO-Revision-Date: 2026-02-09 19:10+0100\n"
+"POT-Creation-Date: 2026-02-16 14:51+0000\n"
+"PO-Revision-Date: 2026-02-16 15:51+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -14,7 +14,898 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../lifecycle/app-center.rst:7
+#: ../../lifecycle/package-installation-management.rst:43
+msgid "Univention App Center"
+msgstr "Univention App Center"
+
+#: ../../lifecycle/app-center.rst:9
+msgid ""
+"Univention App Center is a centralized platform for discovering, "
+"installing, and managing applications in your Nubus for UCS domain. It "
+"simplifies how you extend your UCS environment with additional software "
+"components, from productivity tools to specialized business applications."
+msgstr ""
+"Univention App Center ist eine zentralisierte Plattform zum Entdecken,\n"
+"Installieren und Verwalten von Anwendungen in Ihrer Nubus für UCS Domäne."
+"\n"
+"Es vereinfacht, wie Sie Ihre UCS-Umgebung mit zusätzlichen "
+"Softwarekomponenten erweitern,\n"
+"von Produktivitätswerkzeugen bis hin zu spezialisierten "
+"Geschäftsanwendungen."
+
+#: ../../lifecycle/app-center.rst:14
+msgid ""
+"The App Center handles the complete application lifecycle—from "
+"installation and configuration to updates and removal. It automatically "
+"manages dependencies, resolves conflicts, and supports both traditional "
+"packages and containerized Docker applications. This unified approach "
+"reduces administrative overhead and ensures applications integrate "
+"seamlessly with your domain infrastructure. :numref:`lifecycle-app-"
+"center-overview` shows the overview page in the App Center."
+msgstr ""
+"Das App Center verwaltet den gesamten Anwendungslebenszyklus — von "
+"Installation\n"
+"und Konfiguration bis hin zu Updates und Entfernen der Applikation.\n"
+"Es verwaltet automatisch Abhängigkeiten,\n"
+"löst Konflikte auf und unterstützt sowohl traditionelle Pakete als auch\n"
+"containerisierte Docker-Anwendungen.\n"
+"Dieser einheitliche Ansatz reduziert den administrativen Aufwand\n"
+"und stellt sicher, dass Anwendungen nahtlos mit der Infrastruktur Ihrer "
+"Domäne integriert werden.\n"
+":numref:`lifecycle-app-center-overview` zeigt die Übersichtsseite im App "
+"Center."
+
+#: ../../lifecycle/app-center.rst:22
+msgid ""
+"This section covers how you can use the App Center to find applications, "
+"install them on the appropriate systems, manage their configuration and "
+"lifecycle, and troubleshoot common issues."
+msgstr ""
+"Dieser Abschnitt beschreibt, wie Sie das App Center verwenden können,\n"
+"um Anwendungen zu finden,\n"
+"sie auf den geeigneten Systemen zu installieren,\n"
+"ihre Konfiguration und ihren Lebenszyklus zu verwalten\n"
+"und häufige Probleme zu beheben."
+
+#: ../../lifecycle/app-center.rst:31 ../../lifecycle/app-center.rst:34
+msgid "Overview of applications available in the App Center"
+msgstr "Übersicht der im App Center verfügbaren Anwendungen"
+
+#: ../../lifecycle/app-center.rst:39
+msgid "Finding and viewing applications"
+msgstr "Anwendungen finden und anzeigen"
+
+#: ../../lifecycle/app-center.rst:41
+msgid ""
+"You can open the *App Center* management module in the *Management UI* at"
+" :menuselection:`Software --> App Center`. By default, it displays all "
+"installed and available software components."
+msgstr ""
+"Sie können das *App Center* Verwaltungsmodul in der *Management UI* unter"
+"\n"
+":menuselection:`Software --> App Center` öffnen.\n"
+"Standardmäßig zeigt das *App Center* alle installierten und verfügbaren "
+"Softwarekomponenten an."
+
+#: ../../lifecycle/app-center.rst:45
+msgid ""
+"When you select an application, the App Center shows detailed information"
+" including description, manufacturer, contact, screenshots, and videos. "
+"The *Notification* field indicates whether Univention notifies the vendor"
+" of installation or removal. The *License* section shows licensing "
+"classification. For requests to the app vendor, contact them using the "
+"email in the *Contact* section."
+msgstr ""
+"Wenn Sie eine Anwendung auswählen,\n"
+"zeigt das App Center detaillierte Informationen an,\n"
+"darunter Beschreibung, Hersteller, Kontakt, Screenshots und Videos.\n"
+"Das Feld *Benachrichtigung* zeigt an, ob Univention den Anbieter über "
+"Installation oder Entfernen benachrichtigt.\n"
+"Der Abschnitt *Lizenz* zeigt die Lizenzklassifizierung an.\n"
+"Für Anfragen an den :spelling:word:`App-Anbieter` verwenden Sie bitte die"
+" E-Mail-Adresse im Abschnitt *Kontakt*."
+
+#: ../../lifecycle/app-center.rst:53 ../../lifecycle/app-center.rst:56
+msgid "Details for an application in the App Center"
+msgstr "Details zu einer Anwendung im App Center"
+
+#: ../../lifecycle/app-center.rst:61
+msgid "How to install applications"
+msgstr "Anwendungen installieren"
+
+#: ../../lifecycle/app-center.rst:63
+msgid "To install an app from Univention App Center, use the following steps:"
+msgstr ""
+"Um eine App aus Univention App Center zu installieren, führen Sie die "
+"folgenden Schritte aus:"
+
+#: ../../lifecycle/app-center.rst:66
+msgid ""
+"Open the App Center. Navigate to :menuselection:`Software --> App Center`"
+" in the *Management UI*."
+msgstr ""
+"Öffnen Sie das App Center.\n"
+"Navigieren Sie zu :menuselection:`Software --> App Center` in der "
+"*Management UI*.\n"
+
+#: ../../lifecycle/app-center.rst:69
+msgid "You can find applications in several ways:"
+msgstr "Sie können Anwendungen auf mehrere Arten finden:"
+
+#: ../../lifecycle/app-center.rst:71
+msgid ""
+"Use the search function. To find applications by name or keyword, type in"
+" your search term in :guilabel:`Search Apps...`."
+msgstr ""
+"Verwenden Sie die Suchfunktion.\n"
+"Um Anwendungen nach Name oder Schlüsselwort zu finden,\n"
+"geben Sie Ihren Suchbegriff in :guilabel:`Apps durchsuchen...` ein."
+
+#: ../../lifecycle/app-center.rst:75
+msgid ""
+"Browse by category. Use the *Category* filter to view applications by "
+"category, such as Education, Office, etc."
+msgstr ""
+"Nach Kategorie durchsuchen.\n"
+"Verwenden Sie den Filter *Kategorie*, um Anwendungen nach Kategorie wie "
+"Bildung, Office usw. anzuzeigen."
+
+#: ../../lifecycle/app-center.rst:79
+msgid ""
+"Use additional filters. Apply filters such as *Badges* or *App License* "
+"to narrow down your choices."
+msgstr ""
+"Verwenden Sie zusätzliche Filter.\n"
+"Wenden Sie Filter wie *Badges* oder *App-Lizenz* an, um Ihre Auswahl "
+"einzuschränken."
+
+#: ../../lifecycle/app-center.rst:82
+msgid "Check for conflicts."
+msgstr "Überprüfen Sie auf Konflikte."
+
+#: ../../lifecycle/app-center.rst:84
+msgid ""
+"The App Center automatically checks for conflicts with existing "
+"installations. If the selected application conflicts with installed "
+"packages, the App Center shows a list of conflicts."
+msgstr ""
+"Das App Center überprüft automatisch auf Konflikte mit bestehenden "
+"Installationen.\n"
+"Wenn die ausgewählte Anwendung mit installierten Paketen in Konflikt "
+"steht,\n"
+"zeigt das App Center eine Liste von Konflikten an."
+
+#: ../../lifecycle/app-center.rst:88
+msgid ""
+"You must resolve any conflicts before you continue. For example, some "
+"groupware packages require you to uninstall the mail stack. The system "
+"prevents installation until you resolve all conflicts."
+msgstr ""
+"Sie müssen alle Konflikte beheben, bevor Sie fortfahren.\n"
+"Beispielsweise erfordern einige :spelling:word:`Groupware-Pakete` das "
+"Deinstallieren des Mail-Stacks.\n"
+"Das System verhindert die Installation, bis Sie alle Konflikte gelöst "
+"haben."
+
+#: ../../lifecycle/app-center.rst:92
+msgid "Select installation target."
+msgstr "Wählen Sie das Installationsziel."
+
+#: ../../lifecycle/app-center.rst:94
+msgid ""
+"If your domain has multiple Nubus for UCS systems, you can select which "
+"system to install the application on. Consider which system best suits "
+"the application's purpose and requirements."
+msgstr ""
+"Wenn Ihre Domäne mehrere Nubus für UCS Systeme hat,\n"
+"können Sie auswählen, auf welchem System die Anwendung installiert werden"
+" soll.\n"
+"Überlegen Sie, welches System am besten für den Zweck und die "
+"Anforderungen der Anwendung geeignet ist."
+
+#: ../../lifecycle/app-center.rst:98
+msgid ""
+"Initiate installation. To begin the process click :guilabel:`Install`. "
+"The App Center shows the progress as it proceeds through the installation"
+" steps."
+msgstr ""
+"Starten Sie die Installation.\n"
+"Klicken Sie auf :guilabel:`Installieren`, um den Prozess zu starten.\n"
+"Das App Center zeigt den Fortschritt an, während es die "
+"Installationsschritte durchläuft."
+
+#: ../../lifecycle/app-center.rst:103
+msgid ""
+"Verify successful installation. After installation completes, verify that"
+" the application:"
+msgstr ""
+"Überprüfen Sie die erfolgreiche Installation.\n"
+"Nach Abschluss der Installation überprüfen Sie, dass die Anwendung:"
+
+#: ../../lifecycle/app-center.rst:106
+msgid "Appears in the list of installed applications."
+msgstr "In der Liste der installierten Anwendungen angezeigt wird."
+
+#: ../../lifecycle/app-center.rst:108
+msgid ""
+"Docker apps are running. If configured to start automatically Nubus for "
+"UCS starts them when the system reboots. For automatic start settings, "
+"see :ref:`lifecycle-app-center-after-installation-app-settings`."
+msgstr ""
+"Docker-Anwendungen laufen.\n"
+"Nubus für UCS startet Docker-Anwendungen automatisch beim Systemstart, "
+"wenn sie so konfiguriert sind, dass sie automatisch starten. "
+"Informationen zu den Einstellungen für den automatischen Start finden Sie"
+" unter\n"
+":ref:`lifecycle-app-center-after-installation-app-settings`."
+
+#: ../../lifecycle/app-center.rst:113
+msgid ""
+"If you encounter any issues, consult :ref:`lifecycle-app-center-"
+"troubleshooting`."
+msgstr ""
+"Wenn Probleme auftreten, konsultieren Sie :ref:`lifecycle-app-center-"
+"troubleshooting`."
+
+#: ../../lifecycle/app-center.rst:119
+msgid "Multi-host installation"
+msgstr "Mehrere Hosts installieren"
+
+#: ../../lifecycle/app-center.rst:121
+msgid ""
+"Some applications include packages for the UCS Primary Directory Node "
+"that handle LDAP schema extensions or management modules. The system "
+"automatically installs these packages on the Primary Directory Node. If "
+"installation fails, the system aborts the entire installation. The system"
+" also configures packages on all accessible UCS Backup Directory Nodes."
+msgstr ""
+"Einige Anwendungen enthalten Pakete für den UCS Primary Directory Node,\n"
+"die LDAP-Schema-Erweiterungen oder Verwaltungsmodule behandeln.\n"
+"Das System installiert diese Pakete automatisch auf dem Primary Directory"
+" Node.\n"
+"Wenn die Installation fehlschlägt, bricht das System die gesamte "
+"Installation ab.\n"
+"Das System konfiguriert auch Pakete auf allen verfügbaren UCS Backup "
+"Directory Nodes."
+
+#: ../../lifecycle/app-center.rst:129
+msgid "Docker applications"
+msgstr "Docker-Anwendungen"
+
+#: ../../lifecycle/app-center.rst:131
+msgid ""
+"Some applications use the container technology :program:`Docker`. Docker "
+"encapsulates the application and its direct environment from the rest of "
+"the system. This approach increases both security and compatibility with "
+"other applications."
+msgstr ""
+"Einige Anwendungen verwenden die Container-Technologie :program:`Docker`."
+"\n"
+"Docker kapselt die Anwendung und ihre direkte Umgebung vom Rest des "
+"Systems ab.\n"
+"Dieser Ansatz erhöht sowohl die Sicherheit als auch die Kompatibilität "
+"mit anderen Anwendungen."
+
+#: ../../lifecycle/app-center.rst:138
+msgid "Domain integration"
+msgstr "Domain-Integration"
+
+#: ../../lifecycle/app-center.rst:140
+msgid ""
+"Docker-based applications join the Nubus for UCS domain as Managed Nodes "
+"system role. The App Center automatically creates a computer object in "
+"the LDAP directory and provides the container with domain connection "
+"information and credentials. This allows the container to communicate "
+"with domain services."
+msgstr ""
+"Docker-basierte Anwendungen treten der Nubus für UCS Domäne als *Managed "
+"Node* Systemrolle bei.\n"
+"Das App Center erstellt automatisch ein Computerobjekt im LDAP-"
+"Verzeichnis\n"
+"und stellt dem Container Verbindungsinformationen für die Domäne und "
+"Anmeldedaten zur Verfügung.\n"
+"Dies ermöglicht dem Container, mit Domain-Diensten zu kommunizieren."
+
+#: ../../lifecycle/app-center.rst:145
+msgid ""
+"However, whether and how an app uses this domain integration depends on "
+"the specific application. Not all Docker-based apps integrate with the "
+"LDAP directory for user authentication."
+msgstr ""
+"Ob und wie eine App diese Integration in die Domäne nutzt,\n"
+"hängt jedoch von der spezifischen Anwendung ab.\n"
+"Nicht alle Docker-basierten Apps integrieren sich mit dem LDAP-"
+"Verzeichnis für die Benutzerauthentifizierung."
+
+#: ../../lifecycle/app-center.rst:152
+msgid "Network and port configuration"
+msgstr "Netzwerk- und Port-Konfiguration"
+
+#: ../../lifecycle/app-center.rst:154
+msgid ""
+"The container isolation limits direct network access to the system where "
+"the App Center installed the app. Apps expose ports for forwarding from "
+"the host system to the container. The UCS firewall automatically "
+"configures rules to allow access to these exposed ports. Most "
+"applications handle port configuration automatically through their "
+"settings."
+msgstr ""
+"Die Container-Isolation begrenzt den direkten Netzwerkzugriff auf das "
+"System,\n"
+"auf dem das App Center die App installiert hat.\n"
+"Apps exponieren Ports zur Weiterleitung des Netzwerkverkehrs vom "
+":spelling:word:`Host-System` zum Container. Die Firewall in UCS "
+"konfiguriert automatisch Regeln, um Zugriff auf diese geöffneten Ports zu"
+" ermöglichen.\n"
+"Die meisten Anwendungen handhaben die Port-Konfiguration automatisch über"
+" ihre Einstellungen."
+
+#: ../../lifecycle/app-center.rst:163
+msgid "Container shell access"
+msgstr "Container-Shell-Zugriff"
+
+#: ../../lifecycle/app-center.rst:165
+msgid ""
+"If you need command-line access to a Docker application's environment, "
+"switch to the container by running the command in :numref:`app-center-"
+"docker-shell-command`. This example uses the fictitious app ID ``demo-"
+"docker-app``."
+msgstr ""
+"Wenn Sie Zugriff auf die Befehlszeile einer Docker-Anwendung benötigen,\n"
+"wechseln Sie zum Container, indem Sie den Befehl in :numref:`app-center-"
+"docker-shell-command` ausführen.\n"
+"Dieses Beispiel verwendet die fiktive App-ID ``demo-docker-app``."
+
+#: ../../lifecycle/app-center.rst:170
+msgid "Accessing a Docker application container shell"
+msgstr "Zugriff auf die Shell einer Docker-Anwendung"
+
+#: ../../lifecycle/app-center.rst:170
+msgid "$ univention-app shell demo-docker-app"
+msgstr "$ univention-app shell demo-docker-app"
+
+#: ../../lifecycle/app-center.rst:179
+msgid "After installation"
+msgstr "Nach der Installation"
+
+#: ../../lifecycle/app-center.rst:181
+#, python-brace-format
+msgid ""
+"After installation, the App Center shows various options when you "
+"navigate to :menuselection:`App Center --> <App> --> Manage "
+"installation`, where :samp:`{<App>}` is the name of the installed "
+"application. Depending on the app, you find any of the following actions:"
+msgstr ""
+"Nach der Installation zeigt das App Center verschiedene Optionen an,\n"
+"wenn Sie zu :menuselection:`App Center --> <App> --> Installation "
+"verwalten` navigieren,\n"
+"wobei :samp:`{<App>}` der Name der installierten Anwendung ist.\n"
+"Je nach App finden Sie eine oder mehrere der folgenden Aktionen:"
+
+#: ../../lifecycle/app-center.rst:190
+#: ../../lifecycle/package-installation-management.rst
+msgid "Uninstall"
+msgstr "Deinstallieren"
+
+#: ../../lifecycle/app-center.rst:191
+msgid "Removes the application."
+msgstr "Entfernt die Anwendung."
+
+#: ../../lifecycle/app-center.rst:195
+msgid "Open"
+msgstr "Öffnen"
+
+#: ../../lifecycle/app-center.rst:196
+msgid ""
+"Takes you to a website or Management UI module where you can use or "
+"configure the application. The App Center hides this option for "
+"applications without a web interface or Management UI module."
+msgstr ""
+"Bringt Sie zu einer Website oder einem Verwaltungsmodul,\n"
+"wo Sie die Anwendung verwenden oder konfigurieren können.\n"
+"Das App Center blendet diese Option für Anwendungen ohne Web-Interface "
+"oder Verwaltungsmodul aus."
+
+#: ../../lifecycle/app-center.rst:201
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: ../../lifecycle/app-center.rst:202
+msgid ""
+"For information about the *Update* action, see :ref:`lifecycle-app-"
+"center-lifecycle`."
+msgstr ""
+"Informationen zur *Aktualisieren* Aktion finden Sie unter :ref"
+":`lifecycle-app-center-lifecycle`."
+
+#: ../../lifecycle/app-center.rst:207
+msgid "App Settings"
+msgstr "App-Einstellungen"
+
+#: ../../lifecycle/app-center.rst:208
+msgid ""
+"Some applications provide additional configuration options beyond basic "
+"management. The configuration options available depend on the individual "
+"application. Consult the application documentation for specific "
+"configuration options."
+msgstr ""
+"Einige Anwendungen bieten zusätzliche Konfigurationsoptionen über die "
+"grundlegende Verwaltung hinaus.\n"
+"Die verfügbaren Konfigurationsoptionen hängen von der jeweiligen "
+"Anwendung ab.\n"
+"Konsultieren Sie die Anwendungsdokumentation für spezifische "
+"Konfigurationsoptionen."
+
+#: ../../lifecycle/app-center.rst:214 ../../lifecycle/app-center.rst:217
+msgid "App Center settings dialog for an application"
+msgstr "App Center Einstellungsdialog für eine Anwendung"
+
+#: ../../lifecycle/app-center.rst:219
+msgid ""
+"The *App Settings* also contain configuration for the automatic start of "
+"the app after a system reboot. The *autostart* option can have the "
+"following values:"
+msgstr ""
+"Die *App-Einstellungen* enthalten auch die Konfiguration für den "
+"automatischen Start der App nach einem Systemneustart.\n"
+"Die Option *Autostart* kann die folgenden Werte haben:"
+
+#: ../../lifecycle/app-center.rst:223
+msgid "Started automatically"
+msgstr "Automatisch gestartet"
+
+#: ../../lifecycle/app-center.rst:224
+msgid ""
+"ensures that the app is started automatically when the server is started "
+"up."
+msgstr ""
+"stellt sicher, dass die App automatisch gestartet wird,\n"
+"wenn der Server hochgefahren wird."
+
+#: ../../lifecycle/app-center.rst:226
+msgid "Started manually"
+msgstr "Manuell gestartet"
+
+#: ../../lifecycle/app-center.rst:227
+msgid ""
+"prevents the app from starting automatically. You can start the app "
+"through the *App Center* management module."
+msgstr ""
+"verhindert, dass die App automatisch gestartet wird.\n"
+"Sie können die App über das Verwaltungsmodul *App Center* starten."
+
+#: ../../lifecycle/app-center.rst:230
+msgid "Starting is prevented"
+msgstr "Start wird verhindert"
+
+#: ../../lifecycle/app-center.rst:231
+msgid ""
+"prevents the app from starting at any time. You can't even start the app "
+"through the management module."
+msgstr ""
+"verhindert, dass die App zu irgendeinem Zeitpunkt gestartet wird.\n"
+"Sie können die App auch nicht über das Verwaltungsmodul starten."
+
+#: ../../lifecycle/app-center.rst:237
+msgid "Application lifecycle and updates"
+msgstr "Anwendungslebenszyklus und Updates"
+
+#: ../../lifecycle/app-center.rst:239
+msgid ""
+"Apps receive regular updates to provide new features, fix bugs, and "
+"address security issues. Understanding the app lifecycle helps you keep "
+"your environment current and secure. Under :guilabel:`Manage "
+"installation`, the App Center shows the :guilabel:`Upgrade` option. The "
+":guilabel:`Software update` module also displays update notifications."
+msgstr ""
+"Apps erhalten regelmäßige Updates, um neue Funktionen bereitzustellen,\n"
+"Fehler und Sicherheitsprobleme zu beheben.\n"
+"Das Verständnis des Lebenszyklus einer App hilft Ihnen,\n"
+"Ihre Umgebung aktuell und sicher zu halten.\n"
+"Unter :guilabel:`Installation verwalten` zeigt das App Center die Option "
+":guilabel:`Aktualisieren` an.\n"
+"Das Modul :guilabel:`Software-Aktualisierung` zeigt auch Update-"
+"Benachrichtigungen an."
+
+#: ../../lifecycle/app-center.rst:248
+msgid "How updates work"
+msgstr "So funktionieren Updates"
+
+#: ../../lifecycle/app-center.rst:249
+msgid ""
+"App Center apps receive updates independently of the Univention release "
+"cycles. When a vendor publishes a new version, the App Center detects it "
+"and does the following:"
+msgstr ""
+"App Center Apps erhalten Updates unabhängig von den Univention Release-"
+"Zyklen.\n"
+"Wenn ein Anbieter eine neue Version veröffentlicht,\n"
+"erkennt das App Center diese und führt Folgendes aus:"
+
+#: ../../lifecycle/app-center.rst:252
+msgid "Display a notification in the *App Center* management module."
+msgstr "Zeigt eine Benachrichtigung im *App Center* Verwaltungsmodul an."
+
+#: ../../lifecycle/app-center.rst:253
+msgid ""
+"Show an update notification also in the *Software update* management "
+"module."
+msgstr ""
+"Zeigt auch eine Update-Benachrichtigung im *Software-Aktualisierung* "
+"Verwaltungsmodul an."
+
+#: ../../lifecycle/app-center.rst:254
+msgid "Lets you review the update details before deciding to install."
+msgstr ""
+"Ermöglicht es Ihnen, die Update-Details zu überprüfen,\n"
+"bevor Sie sich entscheiden, sie zu installieren."
+
+#: ../../lifecycle/app-center.rst:258
+msgid "Installing application updates"
+msgstr "Installieren von Anwendungsupdates"
+
+#: ../../lifecycle/app-center.rst:259
+msgid "To install an application update, use the following steps:"
+msgstr ""
+"Um ein App-Update aus Univention App Center zu installieren, führen Sie "
+"die folgenden Schritte aus:"
+
+#: ../../lifecycle/app-center.rst:261
+msgid "Open the *App Center* management module."
+msgstr "Öffnen Sie das *App Center* Verwaltungsmodul."
+
+#: ../../lifecycle/app-center.rst:262
+msgid "Select the application from the *available updates* section."
+msgstr "Wählen Sie die Anwendung aus dem Abschnitt *Verfügbare Updates* aus."
+
+#: ../../lifecycle/app-center.rst:263
+msgid "Review the update details."
+msgstr "Überprüfen Sie die Update-Details."
+
+#: ../../lifecycle/app-center.rst:264
+msgid ""
+"Click the :guilabel:`Upgrade` action in :guilabel:`Manage installation` "
+"to begin the update."
+msgstr ""
+"Klicken Sie auf die Aktion :guilabel:`Aktualisieren` in "
+":guilabel:`Installation verwalten`,\n"
+"um das Update zu starten."
+
+#: ../../lifecycle/app-center.rst:265
+msgid "Monitor the installation progress."
+msgstr "Überwachen Sie den Installationsfortschritt."
+
+#: ../../lifecycle/app-center.rst:266
+msgid "Verify the version is functioning correctly."
+msgstr "Überprüfen Sie, dass die Version ordnungsgemäß funktioniert."
+
+#: ../../lifecycle/app-center.rst:270
+msgid "Application end-of-life"
+msgstr "Lebensende einer Anwendung"
+
+#: ../../lifecycle/app-center.rst:271
+msgid "Some applications may eventually reach end-of-life status:"
+msgstr ""
+"Einige Anwendungen können irgendwann das Ende ihres Lebenszyklus "
+"erreichen:"
+
+#: ../../lifecycle/app-center.rst:273
+msgid "The vendor may stop providing updates and support."
+msgstr "Der Anbieter kann die Bereitstellung von Updates und Support einstellen."
+
+#: ../../lifecycle/app-center.rst:274
+msgid "Consider removing applications that are no longer maintained."
+msgstr ""
+"Ziehen Sie in Betracht, Anwendungen zu entfernen, die nicht mehr gepflegt"
+" werden."
+
+#: ../../lifecycle/app-center.rst:275
+msgid "Plan upgrades or replacements for critical applications."
+msgstr "Planen Sie Upgrades oder Austausch für kritische Anwendungen."
+
+#: ../../lifecycle/app-center.rst:276
+msgid "Coordinate with users before removing applications from production."
+msgstr ""
+"Koordinieren Sie sich mit Benutzern,\n"
+"bevor Sie Anwendungen aus dem produktiven Betrieb entfernen."
+
+#: ../../lifecycle/app-center.rst:281
+msgid "App Center troubleshooting"
+msgstr "Fehlerbehebung im App Center"
+
+#: ../../lifecycle/app-center.rst:283
+msgid ""
+"If you encounter issues with the App Center or installed applications, "
+"this section provides guidance for diagnosing and resolving common "
+"problems."
+msgstr ""
+"Wenn Sie auf Probleme mit dem App Center oder installierten Anwendungen "
+"stoßen,\n"
+"bietet dieser Abschnitt Anleitungen zum Diagnostizieren und Lösen "
+"häufiger Probleme."
+
+#: ../../lifecycle/app-center.rst:289
+msgid "Installation failures"
+msgstr "Installationsfehler"
+
+#: ../../lifecycle/app-center.rst:291
+msgid ""
+"Application installations can fail for various reasons. This section "
+"addresses common installation errors and provides troubleshooting steps."
+msgstr ""
+"Installationen von Anwendungen können aus verschiedenen Gründen "
+"fehlschlagen.\n"
+"Dieser Abschnitt behandelt häufige Installationsfehler und bietet "
+"Schritte zur Fehlerbehebung an."
+
+#: ../../lifecycle/app-center.rst:296
+msgid "Application installation fails to complete"
+msgstr "Anwendungsinstallation wird nicht abgeschlossen"
+
+#: ../../lifecycle/app-center.rst:297
+msgid "Check the following:"
+msgstr "Überprüfen Sie Folgendes:"
+
+#: ../../lifecycle/app-center.rst:299
+msgid ""
+"Review the installation log, see :ref:`lifecycle-app-center-"
+"troubleshooting-logging`."
+msgstr ""
+"Überprüfen Sie das Installationsprotokoll, siehe :ref:`lifecycle-app-"
+"center-troubleshooting-logging`."
+
+#: ../../lifecycle/app-center.rst:300
+msgid "Confirm network connectivity between systems."
+msgstr "Bestätigen Sie die Netzwerkkonnektivität zwischen den Systemen."
+
+#: ../../lifecycle/app-center.rst:301
+msgid "Verify that the Primary Directory Node is operational."
+msgstr "Stellen Sie sicher, dass der Primary Directory Node funktioniert."
+
+#: ../../lifecycle/app-center.rst:305
+msgid "Insufficient disk space error"
+msgstr "Fehler: Unzureichender Speicherplatz"
+
+#: ../../lifecycle/app-center.rst:306
+msgid ""
+"The installation failed because the target system lacks adequate disk "
+"space. To resolve it:"
+msgstr ""
+"Die Installation ist fehlgeschlagen,\n"
+"weil dem Zielsystem nicht genügend Festplattenspeicher zur Verfügung "
+"steht.\n"
+"Um dies zu beheben:"
+
+#: ../../lifecycle/app-center.rst:309
+msgid "Free up disk space by removing unused applications or files."
+msgstr ""
+"Geben Sie Festplattenspeicher frei,\n"
+"indem Sie ungenutzte Anwendungen oder Dateien entfernen."
+
+#: ../../lifecycle/app-center.rst:310
+msgid "Use the :command:`df -h` command to verify available space."
+msgstr ""
+"Verwenden Sie den Befehl :command:`df -h`,\n"
+"um den verfügbaren Speicher zu überprüfen."
+
+#: ../../lifecycle/app-center.rst:311
+msgid "Retry the installation once sufficient space is available."
+msgstr ""
+"Wiederholen Sie die Installation,\n"
+"sobald ausreichend Speicher verfügbar ist."
+
+#: ../../lifecycle/app-center.rst:315
+msgid "Permission denied errors"
+msgstr "Fehler: Berechtigung verweigert"
+
+#: ../../lifecycle/app-center.rst:316
+msgid ""
+"You don't have the required permissions to install applications. To "
+"resolve the errors:"
+msgstr ""
+"Sie haben nicht die erforderlichen Berechtigungen zum Installieren von "
+"Anwendungen.\n"
+"Um die Fehler zu beheben:"
+
+#: ../../lifecycle/app-center.rst:319
+msgid "Make sure you signed in with administrative credentials."
+msgstr ""
+"Stellen Sie sicher, dass Sie sich mit administrativen Anmeldedaten "
+"angemeldet haben."
+
+#: ../../lifecycle/app-center.rst:320
+msgid "Verify that your user account is part of the ``Domain Admins`` group."
+msgstr ""
+"Überprüfen Sie, dass Ihr Benutzerkonto Teil der Gruppe ``Domain Admins`` "
+"ist."
+
+#: ../../lifecycle/app-center.rst:324
+msgid "Dependency resolution failures"
+msgstr "Fehler bei der Abhängigkeitslösung"
+
+#: ../../lifecycle/app-center.rst:325
+msgid ""
+"An application requires other packages that the App Center can't install "
+"automatically. To resolve:"
+msgstr ""
+"Eine Anwendung benötigt andere Pakete,\n"
+"die das App Center nicht automatisch installieren kann.\n"
+"Um dies zu beheben:"
+
+#: ../../lifecycle/app-center.rst:328
+msgid "Review the error message for missing dependencies."
+msgstr "Überprüfen Sie die Fehlermeldung auf fehlende Abhängigkeiten."
+
+#: ../../lifecycle/app-center.rst:329
+msgid "Install required packages manually if necessary."
+msgstr "Installieren Sie erforderliche Pakete bei Bedarf manuell."
+
+#: ../../lifecycle/app-center.rst:330
+msgid "Contact the application vendor for compatibility information."
+msgstr ""
+"Wenden Sie sich an den Anwendungsanbieter,\n"
+"um Kompatibilitätsinformationen zu erhalten."
+
+#: ../../lifecycle/app-center.rst:335
+msgid "Docker-specific issues"
+msgstr ":spelling:word:`Docker-spezifische` Probleme"
+
+#: ../../lifecycle/app-center.rst:337
+msgid ""
+"Docker-based applications may encounter issues related to "
+"containerization, network configuration, or domain integration. This "
+"section covers Docker-specific troubleshooting."
+msgstr ""
+"Docker-basierte Anwendungen können auf Probleme im Zusammenhang mit "
+"Containerisierung, Netzwerkkonfiguration oder Domain-Integration stoßen."
+"\n"
+"Dieser Abschnitt behandelt die spezifische Fehlerbehebung für Docker."
+
+#: ../../lifecycle/app-center.rst:342
+msgid "Container fails to start"
+msgstr "Container wird nicht gestartet"
+
+#: ../../lifecycle/app-center.rst:343
+msgid "The application container doesn't start after installation. To resolve:"
+msgstr ""
+"Der Anwendungscontainer wird nach der Installation nicht gestartet.\n"
+"Um dies zu beheben:"
+
+#: ../../lifecycle/app-center.rst:346
+msgid "Verify Docker is running: :command:`docker ps -a`."
+msgstr "Überprüfen Sie, dass Docker ausgeführt wird: :command:`docker ps -a`."
+
+#: ../../lifecycle/app-center.rst:347
+msgid "Check container logs: :command:`univention-app logs <app-name>`."
+msgstr ""
+"Überprüfen Sie Container-Protokolle: :command:`univention-app logs <app-"
+"name>`."
+
+#: ../../lifecycle/app-center.rst:348
+msgid "Verify adequate system resources, such as disk, memory, and CPU."
+msgstr ""
+"Überprüfen Sie auf ausreichende Systemressourcen wie Festplatte, Speicher"
+" und CPU."
+
+#: ../../lifecycle/app-center.rst:349
+msgid "Check that network connectivity is available."
+msgstr "Überprüfen Sie, dass Netzwerkkonnektivität verfügbar ist."
+
+#: ../../lifecycle/app-center.rst:350
+msgid "Review application-specific documentation."
+msgstr "Überprüfen Sie die anwendungsspezifische Dokumentation."
+
+#: ../../lifecycle/app-center.rst:354
+msgid "Port conflicts"
+msgstr "Port-Konflikte"
+
+#: ../../lifecycle/app-center.rst:355
+msgid "The container can't bind to required ports. To resolve:"
+msgstr ""
+"Der Container kann nicht an erforderliche Ports gebunden werden.\n"
+"Um dies zu beheben:"
+
+#: ../../lifecycle/app-center.rst:358
+msgid "Identify which ports the application requires."
+msgstr "Identifizieren Sie, welche Ports die Anwendung benötigt."
+
+#: ../../lifecycle/app-center.rst:359
+msgid "Free up required ports on the target system."
+msgstr "Geben Sie erforderliche Ports auf dem Zielsystem frei."
+
+#: ../../lifecycle/app-center.rst:363
+msgid "Container can't join the domain"
+msgstr "Container kann der Domäne nicht beitreten"
+
+#: ../../lifecycle/app-center.rst:364
+msgid ""
+"The container fails to integrate with the Nubus for UCS domain. To "
+"resolve:"
+msgstr ""
+"Der Container kann nicht mit der Nubus für UCS Domäne integriert werden.\n"
+"Um dies zu beheben:"
+
+#: ../../lifecycle/app-center.rst:367
+msgid "Verify Primary Directory Node is accessible and operational."
+msgstr ""
+"Stellen Sie sicher, dass der Primary Directory Node zugänglich ist und "
+"funktioniert."
+
+#: ../../lifecycle/app-center.rst:368
+msgid "Check network connectivity from container to LDAP server."
+msgstr "Überprüfen Sie die Netzwerkkonnektivität vom Container zum LDAP-Server."
+
+#: ../../lifecycle/app-center.rst:369
+msgid "Check container logs for LDAP error messages."
+msgstr "Überprüfen Sie Container-Protokolle auf LDAP-Fehlermeldungen."
+
+#: ../../lifecycle/app-center.rst:374
+msgid "Logging and diagnostics"
+msgstr "Protokollierung und Diagnose"
+
+#: ../../lifecycle/app-center.rst:376
+msgid ""
+"Checking log files and diagnostic information helps identify the root "
+"cause of failures. This section lists key log locations to review. For "
+"troubleshooting, check the following log files:"
+msgstr ""
+"Das Überprüfen von Protokolldateien und Diagnoseinformationen hilft bei "
+"der Ermittlung der Grundursache von Fehlern.\n"
+"Dieser Abschnitt listet wichtige Protokollstandorte auf, die überprüft "
+"werden sollten.\n"
+"Überprüfen Sie zur Fehlerbehebung die folgenden Protokolldateien:"
+
+#: ../../lifecycle/app-center.rst:380
+msgid "App Center management module"
+msgstr "Verwaltungsmodul des App Center"
+
+#: ../../lifecycle/app-center.rst:381
+msgid ":file:`/var/log/univention/management-console-module-appcenter.log`"
+msgstr ":file:`/var/log/univention/management-console-module-appcenter.log`"
+
+#: ../../lifecycle/app-center.rst:383
+msgid "Docker application logs"
+msgstr "Protokolle für Docker-basierte Anwendungen"
+
+#: ../../lifecycle/app-center.rst:384
+msgid ""
+"You can access container logs using: :command:`univention-app logs <app-"
+"name>`. For troubleshooting Docker-based apps, see :ref:`lifecycle-app-"
+"center-troubleshooting-docker`."
+msgstr ""
+"Sie können auf Container-Protokolle zugreifen über: :command:`univention-"
+"app logs <app-name>`.\n"
+"Informationen zur Fehlerbehebung bei Docker-basierten Apps finden Sie "
+"unter :ref:`lifecycle-app-center-troubleshooting-docker`."
+
+#: ../../lifecycle/app-center.rst:389
+msgid "System logs"
+msgstr "Systemprotokolle"
+
+#: ../../lifecycle/app-center.rst:390
+msgid ""
+"Review :file:`/var/log/univention/appcenter.log` for the following "
+"information:"
+msgstr ""
+"Überprüfen Sie :file:`/var/log/univention/appcenter.log` für die "
+"folgenden Informationen:"
+
+#: ../../lifecycle/app-center.rst:392
+msgid "LDAP synchronization and domain integration issues."
+msgstr "Probleme mit der LDAP-Synchronisierung und der Integration in die Domäne."
+
+#: ../../lifecycle/app-center.rst:393
+msgid "General system messages for resource or connectivity issues."
+msgstr ""
+"Allgemeine Systemmeldungen zu Ressourcen- oder "
+":spelling:word:`Konnektivitätsproblemen`."
+
+#: ../../lifecycle/app-center.rst:394
+msgid "Container and application-related errors."
+msgstr "Container- und :spelling:word:`anwendungsbezogene` Fehler."
 
 #: ../../lifecycle/index.rst:8
 msgid "Lifecycle"
@@ -78,9 +969,9 @@ msgid ""
 "your infrastructure. This gives you control over updates, reduces "
 "bandwidth usage, and enables offline operations in your environment."
 msgstr ""
-"Ein lokales Repository spiegelt Pakete von Update-Servern von Univention zu "
-"Ihrer Infrastruktur. Dies gibt Ihnen Kontrolle über Updates, reduziert "
-"die Bandbreitennutzung und ermöglicht Offline-Operationen in Ihrer "
+"Ein lokales Repository spiegelt Pakete von Update-Servern von Univention "
+"zu Ihrer Infrastruktur. Dies gibt Ihnen Kontrolle über Updates, reduziert"
+" die Bandbreitennutzung und ermöglicht Offline-Operationen in Ihrer "
 "Umgebung."
 
 #: ../../lifecycle/local-repository-servers.rst:13
@@ -103,9 +994,9 @@ msgid ""
 " it. For package installation methods, see :ref:`lifecycle-package-"
 "installation-management`."
 msgstr ""
-"Nach der Einrichtung eines lokalen Repositories installieren und verwalten "
-"Sie Pakete daraus. Informationen zu Paketinstallationsmethoden finden Sie "
-"unter :ref:`lifecycle-package-installation-management`."
+"Nach der Einrichtung eines lokalen Repositories installieren und "
+"verwalten Sie Pakete daraus. Informationen zu Paketinstallationsmethoden "
+"finden Sie unter :ref:`lifecycle-package-installation-management`."
 
 #: ../../lifecycle/local-repository-servers.rst:23
 msgid ""
@@ -289,8 +1180,8 @@ msgstr ""
 "Repository mit Upstream-Servern von Univention erstellen und warten."
 
 #: ../../lifecycle/local-repository-servers.rst:108
-#: ../../lifecycle/package-installation-management.rst:202
-#: ../../lifecycle/package-installation-management.rst:279
+#: ../../lifecycle/package-installation-management.rst:199
+#: ../../lifecycle/package-installation-management.rst:276
 msgid "Prerequisites"
 msgstr "Voraussetzungen"
 
@@ -1077,13 +1968,13 @@ msgid ""
 "servers your systems use, see :ref:`lifecycle-local-repository-"
 "configuration` in :ref:`lifecycle-local-repository-servers`."
 msgstr ""
-"Die Paketinstallation verwendet normalerweise :spelling:word:`Online-Repositories` oder "
-"ein lokales Repository. Wenn Ihre Umgebung einen lokalen Repository-"
-"Server für die Paketverteilung verwendet, lesen Sie :ref:`lifecycle-"
-"local-repository-servers` für Einrichtung und Konfiguration. Wenn Sie "
-"konfigurieren müssen, welche Repository-Server Ihre Systeme verwenden, "
-"lesen Sie :ref:`lifecycle-local-repository-configuration` in :ref"
-":`lifecycle-local-repository-servers`."
+"Die Paketinstallation verwendet normalerweise :spelling:word:`Online-"
+"Repositories` oder ein lokales Repository. Wenn Ihre Umgebung einen "
+"lokalen Repository-Server für die Paketverteilung verwendet, lesen Sie "
+":ref:`lifecycle-local-repository-servers` für Einrichtung und "
+"Konfiguration. Wenn Sie konfigurieren müssen, welche Repository-Server "
+"Ihre Systeme verwenden, lesen Sie :ref:`lifecycle-local-repository-"
+"configuration` in :ref:`lifecycle-local-repository-servers`."
 
 #: ../../lifecycle/package-installation-management.rst:22
 msgid ""
@@ -1128,10 +2019,6 @@ msgstr ""
 "Alle Methoden laden die Pakete von denselben Repositorys, daher sind die "
 "Ihnen verfügbaren Pakete identisch, unabhängig davon, welche Methode Sie "
 "wählen."
-
-#: ../../lifecycle/package-installation-management.rst:43
-msgid "Univention App Center"
-msgstr "Univention App Center"
 
 #: ../../lifecycle/package-installation-management.rst:44
 msgid ""
@@ -1193,8 +2080,7 @@ msgid ""
 "components directly from the App Center. For a glimpse on the App Center "
 "overview, see :numref:`lifecycle-package-installation-management-"
 "appcenter-figure`. To learn more about the App Center and its "
-"capabilities, see :external+uv-ucs-manual:ref:`software-appcenter` in "
-":cite:t:`ucs-manual`."
+"capabilities, see :ref:`lifecycle-app-center`."
 msgstr ""
 "Univention App Center stellt UCS-Komponenten zusammen mit Anwendungen von"
 " Univention und Drittanbieter-Anbietern bereit.\n"
@@ -1203,19 +2089,18 @@ msgstr ""
 "Einen Überblick über das App Center finden Sie in :numref:`lifecycle-"
 "package-installation-management-appcenter-figure`.\n"
 "Weitere Informationen zum App Center und seinen Funktionen finden Sie "
-"unter :external+uv-ucs-manual:ref:`software-appcenter` im :cite:t:`ucs-"
-"manual`."
+"unter :ref:`lifecycle-app-center`."
 
+#: ../../lifecycle/package-installation-management.rst:79
 #: ../../lifecycle/package-installation-management.rst:82
-#: ../../lifecycle/package-installation-management.rst:85
 msgid "UCS components and other apps in the App Center"
 msgstr "UCS-Komponenten und andere Apps im App Center"
 
-#: ../../lifecycle/package-installation-management.rst:90
+#: ../../lifecycle/package-installation-management.rst:87
 msgid "Installation through Management UI"
 msgstr "Installation mittels Management UI"
 
-#: ../../lifecycle/package-installation-management.rst:92
+#: ../../lifecycle/package-installation-management.rst:89
 msgid ""
 "To use the *Package Management* module, you need web access to the "
 "*Management UI* and the ``Domain Admins`` group must include your user "
@@ -1225,7 +2110,7 @@ msgstr ""
 "auf die *Management UI* und Ihr Benutzerkonto muss in der Gruppe ``Domain"
 " Admins`` enthalten sein."
 
-#: ../../lifecycle/package-installation-management.rst:96
+#: ../../lifecycle/package-installation-management.rst:93
 msgid ""
 "The *Package Management* module in the *Management UI* provides a "
 "graphical interface to search for and install individual Debian packages."
@@ -1237,7 +2122,7 @@ msgstr ""
 "Zum Öffnen navigieren Sie zu :menuselection:`Software --> Paket-"
 "Verwaltung`."
 
-#: ../../lifecycle/package-installation-management.rst:101
+#: ../../lifecycle/package-installation-management.rst:98
 msgid ""
 "To find packages, you search by name or description. The search results "
 "display matching packages in a table with their names, descriptions, and "
@@ -1255,26 +2140,22 @@ msgstr ""
 ":numref:`lifecycle-package-installation-management-umc-figure` zeigt "
 "Paketdetails."
 
-#: ../../lifecycle/package-installation-management.rst:110
+#: ../../lifecycle/package-installation-management.rst:107
 msgid "Action buttons"
 msgstr "Aktionsschaltflächen"
 
 #: ../../lifecycle/package-installation-management.rst
-#: ../../lifecycle/package-installation-management.rst:136
+#: ../../lifecycle/package-installation-management.rst:133
 msgid "Install"
 msgstr "Installieren"
 
-#: ../../lifecycle/package-installation-management.rst:111
+#: ../../lifecycle/package-installation-management.rst:108
 msgid "Select to install a package that isn't yet installed."
 msgstr ""
 "Wählen Sie diese Option, um ein Paket zu installieren, das noch nicht "
 "installiert ist."
 
-#: ../../lifecycle/package-installation-management.rst
-msgid "Uninstall"
-msgstr "Deinstallieren"
-
-#: ../../lifecycle/package-installation-management.rst:112
+#: ../../lifecycle/package-installation-management.rst:109
 msgid "Select to uninstall an installed package."
 msgstr "Wählen Sie diese Option, um ein installiertes Paket zu deinstallieren."
 
@@ -1282,7 +2163,7 @@ msgstr "Wählen Sie diese Option, um ein installiertes Paket zu deinstallieren."
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
-#: ../../lifecycle/package-installation-management.rst:113
+#: ../../lifecycle/package-installation-management.rst:110
 msgid "Select to upgrade an installed package with an available update."
 msgstr ""
 "Wählen Sie diese Option, um ein installiertes Paket mit einem verfügbaren"
@@ -1292,15 +2173,15 @@ msgstr ""
 msgid "Close"
 msgstr "Schließen"
 
-#: ../../lifecycle/package-installation-management.rst:114
+#: ../../lifecycle/package-installation-management.rst:111
 msgid "Select to return to your previous search."
 msgstr "Wählen Sie diese Option, um zur vorherigen Suche zurückzukehren."
 
-#: ../../lifecycle/package-installation-management.rst:118
+#: ../../lifecycle/package-installation-management.rst:115
 msgid "Installing the package univention-squid through Package Management module"
 msgstr "Installation des Pakets univention-squid über das Paket-Verwaltungsmodul"
 
-#: ../../lifecycle/package-installation-management.rst:121
+#: ../../lifecycle/package-installation-management.rst:118
 msgid ""
 "Installing the package :program:`univention-squid` through Package "
 "Management module"
@@ -1308,11 +2189,11 @@ msgstr ""
 "Installation des Pakets :program:`univention-squid` über das Paket-"
 "Verwaltungsmodul"
 
-#: ../../lifecycle/package-installation-management.rst:126
+#: ../../lifecycle/package-installation-management.rst:123
 msgid "Installation from command line"
 msgstr "Installation über die Befehlszeile"
 
-#: ../../lifecycle/package-installation-management.rst:128
+#: ../../lifecycle/package-installation-management.rst:125
 msgid ""
 "Use the command line when you prefer working directly in the terminal. "
 "You need ``root`` user rights to perform package management actions. For "
@@ -1329,7 +2210,7 @@ msgstr ""
 "Für Automatisierung und Integration in Skripten verwenden Sie den Befehl "
 ":command:`apt-get` anstatt :command:`univention-install`."
 
-#: ../../lifecycle/package-installation-management.rst:137
+#: ../../lifecycle/package-installation-management.rst:134
 msgid ""
 "To install a package, use the :command:`univention-install` command in "
 ":numref:`lifecycle-package-installation-management-commandline-install-"
@@ -1339,19 +2220,19 @@ msgstr ""
 ":`univention-install` in :numref:`lifecycle-package-installation-"
 "management-commandline-install-listing`."
 
-#: ../../lifecycle/package-installation-management.rst:140
+#: ../../lifecycle/package-installation-management.rst:137
 msgid "Install a package with :command:`univention-install`"
 msgstr "Installation eines Pakets mit :command:`univention-install`"
 
-#: ../../lifecycle/package-installation-management.rst:140
+#: ../../lifecycle/package-installation-management.rst:137
 msgid "$ univention-install <PACKAGENAME>"
 msgstr "$ univention-install <PACKAGENAME>"
 
-#: ../../lifecycle/package-installation-management.rst:148
+#: ../../lifecycle/package-installation-management.rst:145
 msgid "Remove"
 msgstr "Entfernen"
 
-#: ../../lifecycle/package-installation-management.rst:149
+#: ../../lifecycle/package-installation-management.rst:146
 msgid ""
 "To remove a package, use the :command:`univention-remove` command in "
 ":numref:`lifecycle-package-installation-management-commandline-remove-"
@@ -1361,19 +2242,19 @@ msgstr ""
 "remove` in :numref:`lifecycle-package-installation-management-"
 "commandline-remove-listing`."
 
-#: ../../lifecycle/package-installation-management.rst:152
+#: ../../lifecycle/package-installation-management.rst:149
 msgid "Remove a package with :command:`univention-remove`"
 msgstr "Entfernen eines Pakets mit :command:`univention-remove`"
 
-#: ../../lifecycle/package-installation-management.rst:152
+#: ../../lifecycle/package-installation-management.rst:149
 msgid "$ univention-remove <PACKAGENAME>"
 msgstr "$ univention-remove <PACKAGENAME>"
 
-#: ../../lifecycle/package-installation-management.rst:160
+#: ../../lifecycle/package-installation-management.rst:157
 msgid "Usage"
 msgstr "Verwendung"
 
-#: ../../lifecycle/package-installation-management.rst:161
+#: ../../lifecycle/package-installation-management.rst:158
 msgid ""
 "To view options and usage information for either command, add the "
 "``--help`` flag as in :numref:`lifecycle-package-installation-management-"
@@ -1384,11 +2265,11 @@ msgstr ""
 ":numref:`lifecycle-package-installation-management-commandline-help-"
 "listing`."
 
-#: ../../lifecycle/package-installation-management.rst:165
+#: ../../lifecycle/package-installation-management.rst:162
 msgid "Display help for :command:`univention-install`"
 msgstr "Anzeige der Hilfe für :command:`univention-install`"
 
-#: ../../lifecycle/package-installation-management.rst:165
+#: ../../lifecycle/package-installation-management.rst:162
 msgid ""
 "$ univention-install --help\n"
 "$ univention-remove --help"
@@ -1396,11 +2277,11 @@ msgstr ""
 "$ univention-install --help\n"
 "$ univention-remove --help"
 
-#: ../../lifecycle/package-installation-management.rst:174
+#: ../../lifecycle/package-installation-management.rst:171
 msgid "Search"
 msgstr "Suche"
 
-#: ../../lifecycle/package-installation-management.rst:175
+#: ../../lifecycle/package-installation-management.rst:172
 msgid ""
 "To search for available packages by name or description, use :command"
 ":`apt-cache search` as in :numref:`lifecycle-package-installation-"
@@ -1413,19 +2294,19 @@ msgstr ""
 "Dieser Befehl listet alle Pakete auf, die Ihrem Suchbegriff in ihrem "
 "Namen oder ihrer Beschreibung entsprechen."
 
-#: ../../lifecycle/package-installation-management.rst:180
+#: ../../lifecycle/package-installation-management.rst:177
 msgid "Search for packages"
 msgstr "Suche nach Paketen"
 
-#: ../../lifecycle/package-installation-management.rst:180
+#: ../../lifecycle/package-installation-management.rst:177
 msgid "$ apt-cache search fax"
 msgstr "$ apt-cache search fax"
 
-#: ../../lifecycle/package-installation-management.rst:189
+#: ../../lifecycle/package-installation-management.rst:186
 msgid "Automate tasks around app actions with hook scripts"
 msgstr "Automatisieren Sie Aufgaben rund um Aktionen von Apps mit Hook-Skripten"
 
-#: ../../lifecycle/package-installation-management.rst:191
+#: ../../lifecycle/package-installation-management.rst:188
 msgid ""
 "You can use hook scripts to automate tasks that run after you install, "
 "upgrade, or remove applications through Univention App Center. Hook "
@@ -1441,7 +2322,7 @@ msgstr ""
 "Diese Funktion ist für fortgeschrittene Administratoren gedacht, die "
 "Shell-Scripting und App-IDs verstehen – die ``appid``."
 
-#: ../../lifecycle/package-installation-management.rst:199
+#: ../../lifecycle/package-installation-management.rst:196
 msgid ""
 "Hook scripts only apply to applications installed through the App Center,"
 " not to individual Debian packages."
@@ -1449,27 +2330,27 @@ msgstr ""
 "Hook-Skripte gelten nur für Anwendungen, die über das App Center "
 "installiert wurden, nicht für einzelne Debian-Pakete."
 
-#: ../../lifecycle/package-installation-management.rst:203
+#: ../../lifecycle/package-installation-management.rst:200
 msgid "To use hook scripts, you need:"
 msgstr "Um Hook-Skripte zu verwenden, benötigen Sie:"
 
-#: ../../lifecycle/package-installation-management.rst:205
+#: ../../lifecycle/package-installation-management.rst:202
 msgid "``root`` user access on the system."
 msgstr "``root`` Benutzerzugriff auf dem System."
 
-#: ../../lifecycle/package-installation-management.rst:206
+#: ../../lifecycle/package-installation-management.rst:203
 msgid "Shell scripting knowledge."
 msgstr "Kenntnisse in Shell-Scripting."
 
-#: ../../lifecycle/package-installation-management.rst:207
+#: ../../lifecycle/package-installation-management.rst:204
 msgid "Understanding of the app identifier ``appid`` for your target app."
 msgstr "Verständnis von App-IDs ``appid`` für Ihre Ziel-App."
 
-#: ../../lifecycle/package-installation-management.rst:209
+#: ../../lifecycle/package-installation-management.rst:206
 msgid "How hook scripts work"
 msgstr "Wie Hook-Skripte funktionieren"
 
-#: ../../lifecycle/package-installation-management.rst:210
+#: ../../lifecycle/package-installation-management.rst:207
 msgid ""
 "When you install, upgrade, or remove an App Center application, the "
 "system looks for hook scripts in specific directories and runs them "
@@ -1485,7 +2366,7 @@ msgstr ""
 msgid "Post-install"
 msgstr "Post-Installation"
 
-#: ../../lifecycle/package-installation-management.rst:214
+#: ../../lifecycle/package-installation-management.rst:211
 msgid "Runs after you install the app."
 msgstr "Läuft nach der Installation der App."
 
@@ -1493,7 +2374,7 @@ msgstr "Läuft nach der Installation der App."
 msgid "Post-upgrade"
 msgstr "Post-Upgrade"
 
-#: ../../lifecycle/package-installation-management.rst:215
+#: ../../lifecycle/package-installation-management.rst:212
 msgid "Runs after you update the app."
 msgstr "Läuft nach der Aktualisierung der App."
 
@@ -1501,15 +2382,15 @@ msgstr "Läuft nach der Aktualisierung der App."
 msgid "Post-remove"
 msgstr "Post-Entfernen"
 
-#: ../../lifecycle/package-installation-management.rst:216
+#: ../../lifecycle/package-installation-management.rst:213
 msgid "Runs after you remove the app."
 msgstr "Läuft nach dem Entfernen der App."
 
-#: ../../lifecycle/package-installation-management.rst:218
+#: ../../lifecycle/package-installation-management.rst:215
 msgid "Storing hook scripts"
 msgstr "Speicherung von Hook-Skripten"
 
-#: ../../lifecycle/package-installation-management.rst:219
+#: ../../lifecycle/package-installation-management.rst:216
 msgid ""
 "Place your custom hook scripts in one of these directories. Replace "
 ":samp:`{{appid}}` with the identifier of your target app."
@@ -1518,7 +2399,7 @@ msgstr ""
 "Verzeichnisse.\n"
 "Ersetzen Sie :samp:`{{appid}}` durch die App-ID Ihrer Ziel-App."
 
-#: ../../lifecycle/package-installation-management.rst:222
+#: ../../lifecycle/package-installation-management.rst:219
 msgid ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "install.d/`"
@@ -1526,27 +2407,27 @@ msgstr ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "install.d/`"
 
-#: ../../lifecycle/package-installation-management.rst:223
+#: ../../lifecycle/package-installation-management.rst:220
 msgid ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "upgrade.d/`"
 msgstr ""
 ":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
 "upgrade.d/`"
+
+#: ../../lifecycle/package-installation-management.rst:221
+msgid ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"remove.d/`"
+msgstr ""
+":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
+"remove.d/`"
 
 #: ../../lifecycle/package-installation-management.rst:224
-msgid ""
-":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
-"remove.d/`"
-msgstr ""
-":file:`/var/lib/univention-appcenter/apps/{{appid}}/local/hooks/post-"
-"remove.d/`"
-
-#: ../../lifecycle/package-installation-management.rst:227
 msgid "File requirements"
 msgstr "Anforderungen an Dateien"
 
-#: ../../lifecycle/package-installation-management.rst:228
+#: ../../lifecycle/package-installation-management.rst:225
 msgid ""
 "Names must contain only lowercase letters and numbers, regular "
 "expression: ``^[a-z0-9]+$``."
@@ -1554,49 +2435,49 @@ msgstr ""
 "Namen dürfen nur Kleinbuchstaben und Zahlen enthalten, regulärer "
 "Ausdruck: ``^[a-z0-9]+$``."
 
-#: ../../lifecycle/package-installation-management.rst:229
+#: ../../lifecycle/package-installation-management.rst:226
 msgid "Mark the scripts executable: :command:`chmod +x filename`."
 msgstr "Markieren Sie die Skripte als ausführbar: :command:`chmod +x filename`."
 
-#: ../../lifecycle/package-installation-management.rst:230
+#: ../../lifecycle/package-installation-management.rst:227
 msgid ":program:`run-parts` runs the scripts in order."
 msgstr ":program:`run-parts` führt die Skripte der Reihe nach aus."
 
-#: ../../lifecycle/package-installation-management.rst:232
+#: ../../lifecycle/package-installation-management.rst:229
 msgid "Practical examples"
 msgstr "Praktische Beispiele"
 
-#: ../../lifecycle/package-installation-management.rst:233
+#: ../../lifecycle/package-installation-management.rst:230
 msgid "You might use hook scripts for tasks like the following:"
 msgstr "Sie könnten Hook-Skripte für Aufgaben wie die folgenden verwenden:"
 
-#: ../../lifecycle/package-installation-management.rst:235
+#: ../../lifecycle/package-installation-management.rst:232
 msgid "Restart a service after installation."
 msgstr "Starten Sie einen Dienst nach der Installation neu."
 
-#: ../../lifecycle/package-installation-management.rst:236
+#: ../../lifecycle/package-installation-management.rst:233
 msgid "Configure application-specific settings in a post-install script."
 msgstr ""
 "Konfigurieren Sie anwendungsspezifische Einstellungen in einem "
 ":spelling:word:`Post-Install` Skript."
 
-#: ../../lifecycle/package-installation-management.rst:237
+#: ../../lifecycle/package-installation-management.rst:234
 msgid "Back up configuration files or persistent data before removal."
 msgstr ""
 "Sichern Sie Konfigurationsdateien oder persistente Daten vor dem "
 "Entfernen."
 
-#: ../../lifecycle/package-installation-management.rst:238
+#: ../../lifecycle/package-installation-management.rst:235
 msgid "Clean up temporary files in a post-remove script."
 msgstr ""
 "Bereinigen Sie temporäre Dateien in einem :spelling:word:`Post-Remove` "
 "Skript."
 
-#: ../../lifecycle/package-installation-management.rst:240
+#: ../../lifecycle/package-installation-management.rst:237
 msgid "Testing and troubleshooting"
 msgstr "Testen und Fehlerbehebung"
 
-#: ../../lifecycle/package-installation-management.rst:241
+#: ../../lifecycle/package-installation-management.rst:238
 msgid ""
 "To test which scripts would execute in a directory without running them, "
 "use the command shown in :numref:`lifecycle-package-installation-"
@@ -1611,11 +2492,11 @@ msgstr ""
 ":file:`/var/log/univention/appcenter.log`.\n"
 "Weitere Informationen finden Sie unter :command:`man run-parts`."
 
-#: ../../lifecycle/package-installation-management.rst:246
+#: ../../lifecycle/package-installation-management.rst:243
 msgid "Test hook scripts without executing them"
 msgstr "Testen Sie Hook-Skripte, ohne sie auszuführen"
 
-#: ../../lifecycle/package-installation-management.rst:246
+#: ../../lifecycle/package-installation-management.rst:243
 msgid ""
 "$ run-parts --test /var/lib/univention-appcenter/apps/appid/local/hooks"
 "/post-install.d/"
@@ -1623,37 +2504,37 @@ msgstr ""
 "$ run-parts --test /var/lib/univention-appcenter/apps/appid/local/hooks"
 "/post-install.d/"
 
-#: ../../lifecycle/package-installation-management.rst:252
+#: ../../lifecycle/package-installation-management.rst:249
 msgid "Security and permissions"
 msgstr "Sicherheit und Berechtigungen"
 
-#: ../../lifecycle/package-installation-management.rst:253
+#: ../../lifecycle/package-installation-management.rst:250
 msgid "Set appropriate file ownership, typically ``root:root``."
 msgstr ""
 "Legen Sie den angemessenen Dateieigentümer fest, typischerweise "
 "``root:root``."
 
-#: ../../lifecycle/package-installation-management.rst:254
+#: ../../lifecycle/package-installation-management.rst:251
 msgid "Use restrictive permissions, typically ``0755`` for executable scripts."
 msgstr ""
 "Verwenden Sie restriktive Berechtigungen, typischerweise ``0755`` für "
 "ausführbare Skripte."
 
-#: ../../lifecycle/package-installation-management.rst:255
+#: ../../lifecycle/package-installation-management.rst:252
 msgid "Avoid world-writable scripts to prevent unauthorized modification."
 msgstr ""
 "Vermeiden Sie schreibbare Skripte für alle, um unbefugte Änderungen zu "
 "verhindern."
 
-#: ../../lifecycle/package-installation-management.rst:256
+#: ../../lifecycle/package-installation-management.rst:253
 msgid "Validate inputs and sanitize variables in your scripts."
 msgstr "Validieren Sie Eingaben und bereinigen Sie Variablen in Ihren Skripten."
 
-#: ../../lifecycle/package-installation-management.rst:261
+#: ../../lifecycle/package-installation-management.rst:258
 msgid "Centralized package management with policies"
 msgstr "Zentralisierte Paket-Verwaltung mit Richtlinien"
 
-#: ../../lifecycle/package-installation-management.rst:263
+#: ../../lifecycle/package-installation-management.rst:260
 msgid ""
 "This approach suites organizations that manage multiple system centrally "
 "and need consistent deployments to reduce manual effort and prevent "
@@ -1663,45 +2544,45 @@ msgstr ""
 " verwalten und konsistente Installationen benötigen, um manuellen Aufwand"
 " zu reduzieren und Abweichungen in der Konfiguration zu verhindern."
 
-#: ../../lifecycle/package-installation-management.rst:269
+#: ../../lifecycle/package-installation-management.rst:266
 msgid "When to use policies"
 msgstr "Wann sollten Richtlinien verwendet werden"
 
-#: ../../lifecycle/package-installation-management.rst:270
+#: ../../lifecycle/package-installation-management.rst:267
 msgid "Use policies when you need to:"
 msgstr "Verwenden Sie Richtlinien, wenn Sie folgendes benötigen:"
 
-#: ../../lifecycle/package-installation-management.rst:272
+#: ../../lifecycle/package-installation-management.rst:269
 msgid "Deploy identical packages to multiple systems consistently."
 msgstr "Stellen Sie identische Pakete konsistent auf mehreren Systemen bereit."
 
-#: ../../lifecycle/package-installation-management.rst:273
+#: ../../lifecycle/package-installation-management.rst:270
 msgid "Manage packages for different roles or departments separately."
 msgstr "Verwalten Sie Pakete für verschiedene Rollen oder Abteilungen separat."
 
-#: ../../lifecycle/package-installation-management.rst:274
+#: ../../lifecycle/package-installation-management.rst:271
 msgid "Scale package management across growing numbers of systems."
 msgstr "Skalieren Sie die Paket-Verwaltung über zunehmend mehr Systeme hinweg."
 
-#: ../../lifecycle/package-installation-management.rst:275
+#: ../../lifecycle/package-installation-management.rst:272
 msgid "Maintain package configurations across multiple locations or departments."
 msgstr ""
 "Verwalten Sie Paket-Konfigurationen über mehrere Standorte oder "
 "Abteilungen hinweg."
 
-#: ../../lifecycle/package-installation-management.rst:280
+#: ../../lifecycle/package-installation-management.rst:277
 msgid "To work with package policies, you need:"
 msgstr "Um mit Paket-Richtlinien zu arbeiten, benötigen Sie:"
 
-#: ../../lifecycle/package-installation-management.rst:282
+#: ../../lifecycle/package-installation-management.rst:279
 msgid "The ``Domain Admins`` group must include your user account."
 msgstr "Die Gruppe ``Domain Admins`` muss Ihr Benutzerkonto enthalten."
 
-#: ../../lifecycle/package-installation-management.rst:283
+#: ../../lifecycle/package-installation-management.rst:280
 msgid "Access to the *Management UI*."
 msgstr "Zugriff auf die *Management UI*."
 
-#: ../../lifecycle/package-installation-management.rst:284
+#: ../../lifecycle/package-installation-management.rst:281
 msgid ""
 "Understanding of your system's organizational structure in form of "
 "containers and organizational units in the directory service."
@@ -1709,11 +2590,11 @@ msgstr ""
 "Verständnis der organisatorischen Struktur Ihres Systems in Form von "
 "Containern und Organisationseinheiten im Verzeichnisdienst."
 
-#: ../../lifecycle/package-installation-management.rst:288
+#: ../../lifecycle/package-installation-management.rst:285
 msgid "How to find and create policies"
 msgstr "Richtlinien suchen und erstellen"
 
-#: ../../lifecycle/package-installation-management.rst:289
+#: ../../lifecycle/package-installation-management.rst:286
 msgid ""
 "You manage package policies through the *Management UI*. To create a "
 "policy, use the following steps:"
@@ -1722,19 +2603,19 @@ msgstr ""
 "Um eine Richtlinie zu erstellen, gehen Sie nach den folgenden Schritten "
 "vor:"
 
-#: ../../lifecycle/package-installation-management.rst:292
+#: ../../lifecycle/package-installation-management.rst:289
 msgid "Open the *Management UI*"
 msgstr "Öffnen Sie die *Management UI*"
 
-#: ../../lifecycle/package-installation-management.rst:294
+#: ../../lifecycle/package-installation-management.rst:291
 msgid "Navigate to :menuselection:`Domain --> Policies`."
 msgstr "Navigieren Sie zu :menuselection:`Domäne --> Richtlinien`."
 
-#: ../../lifecycle/package-installation-management.rst:296
+#: ../../lifecycle/package-installation-management.rst:293
 msgid "To create a policy, click :guilabel:`Add`."
 msgstr "Um eine Richtlinie zu erstellen, klicken :guilabel:`Hinzufügen`."
 
-#: ../../lifecycle/package-installation-management.rst:298
+#: ../../lifecycle/package-installation-management.rst:295
 msgid ""
 "Select the package policy type for your system role, for example *Policy:"
 " Packages for Managed Nodes*."
@@ -1742,15 +2623,15 @@ msgstr ""
 "Wählen Sie den Paket-Richtlinientyp für Ihre Systemrolle, beispielsweise "
 "*Richtlinie: Pakete für Managed Nodes*."
 
-#: ../../lifecycle/package-installation-management.rst:301
+#: ../../lifecycle/package-installation-management.rst:298
 msgid "Choose the container where to store the policy."
 msgstr "Wählen Sie den Container zum Speichern der Richtlinie aus."
 
-#: ../../lifecycle/package-installation-management.rst:303
+#: ../../lifecycle/package-installation-management.rst:300
 msgid "Click :guilabel:`Next`"
 msgstr "Klicken Sie :guilabel:`Weiter`"
 
-#: ../../lifecycle/package-installation-management.rst:305
+#: ../../lifecycle/package-installation-management.rst:302
 msgid ""
 "The *General* tab shows fields for the selected policy type. The "
 "*Advanced* settings tab provides additional configuration options."
@@ -1759,25 +2640,25 @@ msgstr ""
 "Der Reiter *Erweiterte Einstellungen* bietet zusätzliche "
 "Konfigurationsoptionen."
 
-#: ../../lifecycle/package-installation-management.rst:308
+#: ../../lifecycle/package-installation-management.rst:305
 msgid "Click :guilabel:`Save` to finally create the policy."
 msgstr ""
 "Klicken :guilabel:`Speichern`, um die Richtlinie abschließend zu "
 "erstellen."
 
-#: ../../lifecycle/package-installation-management.rst:312
+#: ../../lifecycle/package-installation-management.rst:309
 msgid "Understanding policy fields"
 msgstr "Verständnis von Richtlinienfeldern"
 
-#: ../../lifecycle/package-installation-management.rst:313
+#: ../../lifecycle/package-installation-management.rst:310
 msgid "Each package policy has the following main fields:"
 msgstr "Jede Paket-Richtlinie hat die folgenden Hauptfelder:"
 
-#: ../../lifecycle/package-installation-management.rst:317
+#: ../../lifecycle/package-installation-management.rst:314
 msgid "Name"
 msgstr "Name"
 
-#: ../../lifecycle/package-installation-management.rst:318
+#: ../../lifecycle/package-installation-management.rst:315
 msgid ""
 "An unambiguous name for the policy, for example *Database Server "
 "Packages* or *Development Team Workstations*."
@@ -1785,11 +2666,11 @@ msgstr ""
 "Ein eindeutiger Name für die Richtlinie, beispielsweise *Datenbankserver-"
 "Pakete* oder *Entwicklungsteam-Arbeitsstationen*."
 
-#: ../../lifecycle/package-installation-management.rst:323
+#: ../../lifecycle/package-installation-management.rst:320
 msgid "Package installation list"
 msgstr "Paket-Installationsliste"
 
-#: ../../lifecycle/package-installation-management.rst:324
+#: ../../lifecycle/package-installation-management.rst:321
 msgid ""
 "A list of package names to install. Example: :samp:`postgresql "
 "postgresql-contrib mysql-server`"
@@ -1797,21 +2678,21 @@ msgstr ""
 "Eine Liste von Paketnamen zum Installieren.\n"
 "Beispiel: :samp:`postgresql postgresql-contrib mysql-server`"
 
-#: ../../lifecycle/package-installation-management.rst:329
+#: ../../lifecycle/package-installation-management.rst:326
 msgid "Package removal list"
 msgstr "Paket-Entfernungsliste"
 
-#: ../../lifecycle/package-installation-management.rst:330
+#: ../../lifecycle/package-installation-management.rst:327
 msgid "A list of packages to remove. Example: :samp:`xserver apache2`"
 msgstr ""
 "Eine Liste von Paketen zum Entfernen.\n"
 "Beispiel: :samp:`xserver apache2`"
 
-#: ../../lifecycle/package-installation-management.rst:335
+#: ../../lifecycle/package-installation-management.rst:332
 msgid "Scope and limitations"
 msgstr "Umfang und Einschränkungen"
 
-#: ../../lifecycle/package-installation-management.rst:336
+#: ../../lifecycle/package-installation-management.rst:333
 msgid ""
 "Package policies inherit down the directory container hierarchy. Nubus "
 "applies the policy values defined closest to the object. For detailed "
@@ -1827,11 +2708,11 @@ msgstr ""
 "erweiterten Richtlinienoptionen finden Sie unter :external+uv-nubus-"
 "manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
 
-#: ../../lifecycle/package-installation-management.rst:345
+#: ../../lifecycle/package-installation-management.rst:342
 msgid "Managing packages at scale"
 msgstr "Verwaltung von Paketen im Großmaßstab"
 
-#: ../../lifecycle/package-installation-management.rst:346
+#: ../../lifecycle/package-installation-management.rst:343
 msgid ""
 "When you manage multiple systems across multiple locations or departments"
 " keep the following recommendations in mind:"
@@ -1839,7 +2720,7 @@ msgstr ""
 "Wenn Sie mehrere Systeme über mehrere Standorte oder Abteilungen hinweg "
 "verwalten, beachten Sie die folgenden Empfehlungen:"
 
-#: ../../lifecycle/package-installation-management.rst:349
+#: ../../lifecycle/package-installation-management.rst:346
 msgid ""
 "Create separate policies for each role or department to maintain clear "
 "ownership."
@@ -1847,13 +2728,13 @@ msgstr ""
 "Erstellen Sie separate Richtlinien für jede Rolle oder Abteilung, um eine"
 " klare Zuständigkeit zu gewährleisten."
 
-#: ../../lifecycle/package-installation-management.rst:350
+#: ../../lifecycle/package-installation-management.rst:347
 msgid "Use meaningful policy names that indicate their purpose and scope."
 msgstr ""
 "Verwenden Sie aussagekräftige Richtliniennamen, die ihren Zweck und "
 "Umfang anzeigen."
 
-#: ../../lifecycle/package-installation-management.rst:351
+#: ../../lifecycle/package-installation-management.rst:348
 msgid ""
 "Test policies on a small group of systems before you deploy them "
 "organization-wide."
@@ -1861,13 +2742,13 @@ msgstr ""
 "Testen Sie Richtlinien auf einer kleinen Gruppe von Systemen, bevor Sie "
 "sie für die gesamte Organisation bereitstellen."
 
-#: ../../lifecycle/package-installation-management.rst:352
+#: ../../lifecycle/package-installation-management.rst:349
 msgid "Document which policies apply to which containers or organizational units."
 msgstr ""
 "Dokumentieren Sie, welche Richtlinien auf welche Container oder "
 "Organisationseinheiten angewendet werden."
 
-#: ../../lifecycle/package-installation-management.rst:353
+#: ../../lifecycle/package-installation-management.rst:350
 msgid ""
 "Use the *Referencing objects* section in a policy to verify which systems"
 " have the policy applied."
@@ -1875,11 +2756,11 @@ msgstr ""
 "Verwenden Sie den Abschnitt *Referenzierte Objekte* in einer Richtlinie, "
 "um zu überprüfen, auf welche Systeme die Richtlinie angewendet wird."
 
-#: ../../lifecycle/package-installation-management.rst:357
+#: ../../lifecycle/package-installation-management.rst:354
 msgid "Installation timing"
 msgstr "Installationszeitpunkt"
 
-#: ../../lifecycle/package-installation-management.rst:358
+#: ../../lifecycle/package-installation-management.rst:355
 msgid ""
 "The maintenance policy defines the time when Nubus for UCS installs or "
 "removes packages. For configuration details, see :external+uv-ucs-"
@@ -1894,7 +2775,7 @@ msgstr ""
 "Nubus registriert alle Pakete aus Richtlinien im LDAP-Verzeichnis, um sie"
 " für die Verwaltung in der gesamten Domäne verfügbar zu machen."
 
-#: ../../lifecycle/package-installation-management.rst:370
+#: ../../lifecycle/package-installation-management.rst:367
 msgid ""
 "For more information about policies in general, including policy "
 "creation, assignment, and advanced settings, see :external+uv-nubus-"
@@ -1905,7 +2786,7 @@ msgstr ""
 "Einstellungen, finden Sie unter :external+uv-nubus-manual:ref:`nubus-"
 "domain-policies` im :cite:t:`uv-nubus-manual`."
 
-#: ../../lifecycle/package-installation-management.rst:375
+#: ../../lifecycle/package-installation-management.rst:372
 msgid ""
 "For information about computer management in your domain, see :external"
 "+uv-nubus-manual:ref:`nubus-computer-management` in :cite:t:`uv-nubus-"
@@ -2743,87 +3624,8 @@ msgstr ""
 "Um Newsletter zu abonnieren, besuchen Sie `Univention Newsletter "
 "<https://www.univention.com/about-us/newsletter/>`_."
 
-#~ msgid "Repository management"
-#~ msgstr "Verwaltung des Repositorys"
-
-#~ msgid ""
-#~ "Repository management involves two "
-#~ "interconnected decisions: creating a local "
-#~ "repository and configuring your systems "
-#~ "to use it. Together, these decisions "
-#~ "give you control over system updates."
-#~ " This section covers the repository "
-#~ "management workflow, from setting up a"
-#~ " local repository to maintaining it "
-#~ "over time."
+#~ msgid "To install an application update:"
 #~ msgstr ""
-#~ "Die Verwaltung des Repositorys beinhaltet "
-#~ "zwei miteinander verbundene Entscheidungen: "
-#~ "die Erstellung eines lokalen Repositories "
-#~ "und die Konfiguration Ihrer Systeme für"
-#~ " dessen Nutzung. Zusammen geben Ihnen "
-#~ "diese Entscheidungen Kontrolle über System-"
-#~ "Aktualisierungen. Dieser Abschnitt behandelt "
-#~ "den Ablauf der Verwaltung des "
-#~ "Repositorys, vom Einrichten eines lokalen "
-#~ "Repositories bis zu seiner Wartung im"
-#~ " Laufe der Zeit."
-
-#~ msgid ""
-#~ "To create a local repository, "
-#~ "synchronize packages from upstream Univention"
-#~ " servers to your local infrastructure. "
-#~ "After you have a local repository, "
-#~ "you configure your systems to use "
-#~ "it instead of reaching out to "
-#~ "remote servers. These two steps are "
-#~ "separate but deeply connected—you need "
-#~ "both to manage updates independently."
-#~ msgstr ""
-#~ "Um ein lokales Repository zu erstellen,"
-#~ " synchronisieren Sie Pakete von "
-#~ "Upstream-Servern von Univention mit Ihrer"
-#~ " lokalen Infrastruktur. Nach der Erstellung"
-#~ " eines lokalen Repositories konfigurieren "
-#~ "Sie Ihre Systeme, um dieses statt "
-#~ "Remote-Servern zu verwenden. Diese beiden"
-#~ " Schritte sind getrennt, aber eng "
-#~ "miteinander verbunden – Sie benötigen "
-#~ "beide, um Updates unabhängig zu "
-#~ "verwalten."
-
-#~ msgid ""
-#~ "This section covers three main topics:"
-#~ " creating and updating a local "
-#~ "repository, configuring your systems to "
-#~ "use it, and maintaining it for "
-#~ "long-term stability."
-#~ msgstr ""
-#~ "Dieser Abschnitt behandelt drei Hauptthemen:"
-#~ " Erstellen und Aktualisieren eines lokalen"
-#~ " Repositories, Konfigurieren Ihrer Systeme "
-#~ "für dessen Nutzung und Wartung für "
-#~ "langfristige Stabilität."
-
-#~ msgid ""
-#~ "A local repository mirrors packages from"
-#~ " the Univention update server to your"
-#~ " local infrastructure. This enables you "
-#~ "to manage updates independently of "
-#~ "internet connectivity and distribute packages"
-#~ " efficiently across multiple systems."
-#~ msgstr ""
-#~ "Ein lokales Repository spiegelt Pakete "
-#~ "vom Update-Server von Univention zu "
-#~ "Ihrer lokalen Infrastruktur. Dies ermöglicht"
-#~ " es Ihnen, Updates unabhängig von der"
-#~ " Internetkonnektivität zu verwalten und "
-#~ "Pakete effizient über mehrere Systeme zu"
-#~ " verteilen."
-
-#~ msgid "Custom package sources"
-#~ msgstr "Benutzerdefinierte Paketquellen"
-
-#~ msgid "This chapter covers two main workflows:"
-#~ msgstr "Dieses Kapitel behandelt zwei Hauptworkflows:"
+#~ "Um ein Anwendungsupdate zu installieren, "
+#~ "führen Sie folgende Schritte aus:"
 
