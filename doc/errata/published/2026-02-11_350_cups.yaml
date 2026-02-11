@@ -10,3 +10,6 @@ desc: |
    the printer model name is no longer correctly queried from
    the printer via IPP. This has been fixed now. Really.
 bug: [58874]
+erratum: 350
+announced: 2026-02-11
+support: core
