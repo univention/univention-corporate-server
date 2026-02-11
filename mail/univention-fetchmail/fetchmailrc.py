@@ -224,6 +224,6 @@ def postrun() -> None:
     ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')
     listener.setuid(0)
     try:
-        listener.run('systemctl', ['restart', 'fetchmail'], uid=0)
+        listener.run('/usr/bin/systemctl', ['systemctl', 'restart', 'fetchmail'], uid=0)
     finally:
         listener.unsetuid()
