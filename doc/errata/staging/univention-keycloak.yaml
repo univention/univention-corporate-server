@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-keycloak
+fix: 3.4.1
+desc: |
+ This update addresses the following issues:
+ * The UID User Federation Mapper is now created with the "Always Read
+   Value From LDAP" setting enabled by default. This establishes LDAP as
+   the single source of truth for UIDs, bypassing Keycloak's local database
+   cache on every request.
+ * The univention-keycloak script introduces a flag to enable the "Always
+   Read Value From LDAP" setting for new User Federation Mappers.
+bug: [59040]

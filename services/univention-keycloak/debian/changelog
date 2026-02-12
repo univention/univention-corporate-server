@@ -1,3 +1,9 @@
+univention-keycloak (3.4.1) unstable; urgency=medium
+
+  * Bug #59040: Allow configuration to always read mappers from LDAP
+
+ -- Jaime Conde Segovia <conde-segovia@univention.de>  Wed, 11 Feb 2026 10:08:42 +0100
+
 univention-keycloak (3.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump
