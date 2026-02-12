@@ -68,7 +68,9 @@ from univention.admin.rest.utils import (
 from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.error import LDAP_ConnectionFailed, LDAP_ServerDown, UMC_Error, UnprocessableEntity
+from univention.management.console.error import (
+    LDAP_ConnectionFailed, LDAP_ServerDown, ServiceUnavailable, UMC_Error, UnprocessableEntity,
+)
 from univention.management.console.modules.udm.tools import (
     LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
 )
@@ -582,6 +584,10 @@ class Resource(ResourceBase, RequestHandler):
             self.raise_sanitization_error('dn', str(exc))
         except udm_errors.permissionDenied as exc:
             raise HTTPError(403, str(exc))
+        except udm_errors.ldapError as exc:
+            if isinstance(getattr(exc, 'original_exception', None), ldap.TYPE_OR_VALUE_EXISTS | ldap.NO_SUCH_ATTRIBUTE):
+                raise ServiceUnavailable(_('The object was modified by another request at the same time. Please retry the request.'))
+            UDM_Error(exc).reraise()
         except udm_errors.base as exc:
             UDM_Error(exc).reraise()
 
