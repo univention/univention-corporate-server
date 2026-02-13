@@ -1,5 +1,11 @@
 ucs-test (12.4.28) unstable; urgency=medium
 
+  * Issue univention/dev/ucs#3376: fix 10_ldap.42replication_memberof.TestCases.test_remove_user_from_group
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Feb 2026 13:35:23 +0100
+
+ucs-test (12.4.28) unstable; urgency=medium
+
   * Bug #59032: add test for udm-rest-api root_path environment variable configuration
 
  -- Jaime Conde Segovia <conde-segovia@univention.de>  Wed, 04 Feb 2026 11:34:16 +0100

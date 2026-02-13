@@ -37,7 +37,7 @@ from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.testing import utils
 from univention.testing.strings import random_name
-from univention.testing.utils import start_listener, stop_listener, wait_for_replication
+from univention.testing.utils import start_listener, stop_listener, wait_for_connector_replication, wait_for_replication
 
 
 RETRY_COUNT = 20
@@ -244,12 +244,18 @@ class TestCases:
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener)
 
         wait_for_replication()
+        if utils.package_installed('univention-samba4'):
+            wait_for_connector_replication()
+
         with AutoStartStopListener(with_listener):
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener)
 
         wait_for_replication()
+        if utils.package_installed('univention-samba4'):
+            wait_for_connector_replication()
+
         self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)

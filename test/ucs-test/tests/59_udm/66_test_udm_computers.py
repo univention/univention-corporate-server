@@ -982,6 +982,9 @@ def test_concurrent_rename_and_group_change(udm, verify_ldap_object):
     verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn]})
     print('created %s in %s and %s' % (computerdn, groupdn_a, groupdn_b))
 
+    if utils.package_installed('univention-samba4'):
+        utils.wait_for_connector_replication()
+
     new_name = random_string()
     computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=new_name, remove={'groups': [groupdn_a]}, append={'groups': [groupdn_c]})
     print('moved to %s' % (computerdn_new,))
