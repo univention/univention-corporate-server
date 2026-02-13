@@ -1,4 +1,4 @@
-ucs-test (12.4.28) unstable; urgency=medium
+ucs-test (12.4.29) unstable; urgency=medium
 
   * Issue univention/dev/ucs#3376: fix 10_ldap.42replication_memberof.TestCases.test_remove_user_from_group
 
