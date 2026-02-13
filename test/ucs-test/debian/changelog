@@ -1,3 +1,9 @@
+ucs-test (12.4.30) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3373: fix 81_keycloak.01_test_keycloak_login.py.test_login_administrator
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Feb 2026 17:32:37 +0100
+
 ucs-test (12.4.29) unstable; urgency=medium
 
   * Issue univention/dev/ucs#3376: fix 10_ldap.42replication_memberof.TestCases.test_remove_user_from_group
