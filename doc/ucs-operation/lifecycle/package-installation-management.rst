@@ -72,10 +72,7 @@ You can install or remove UCS components directly from the App Center.
 For a glimpse on the App Center overview,
 see :numref:`lifecycle-package-installation-management-appcenter-figure`.
 To learn more about the App Center and its capabilities,
-see :external+uv-ucs-manual:ref:`software-appcenter`
-in :cite:t:`ucs-manual`.
-
-.. TODO: Add cross-reference to App Center chapter once it exists.
+see :ref:`lifecycle-app-center`.
 
 .. _lifecycle-package-installation-management-appcenter-figure:
 
