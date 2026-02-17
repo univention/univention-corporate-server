@@ -2438,11 +2438,11 @@ class s4(univention.s4connector.ucs):
         # Build filter with objectGUID.
         uoid = con_object['attributes']['univentionObjectIdentifier'][0].decode('ASCII')
         if not uoid:
-            log.warning('Restore chancelled, object has no univentionObjectIdentifier! (dn: %s)', con_object['dn'])
+            log.warning('Restore cancelled, object has no univentionObjectIdentifier! (dn: %s)', con_object['dn'])
             return
         guid = self.uoid2guid_get_guid(uoid, deleted=True)
         if not guid:
-            log.warning('Restore chancelled, object is not in ouid2guid! (univentionObjectIdentifier: %s)', uoid)
+            log.warning('Restore cancelled, object is not in uoid2guid! (univentionObjectIdentifier: %s)', uoid)
             return
 
         binary_guid = univention.s4connector.encode_guid(guid)

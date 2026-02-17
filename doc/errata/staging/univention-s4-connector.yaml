@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [4]
+scope: ucs_5.2-0-errata5.2-4
+src: univention-s4-connector
+fix: 16.4.2
+desc: |
+ This update addresses the following issues:
+ * The S4-Connector now supports restoring objects
+   from the UDM Recyclebin also in Samba/AD.
+bug: [58844]

@@ -1,3 +1,9 @@
+univention-s4-connector (16.4.2) unstable; urgency=medium
+
+  * Bug 58844 - Support UDM Recyclebin in S4-Connector
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 Feb 2026 19:07:37 +0100
+
 univention-s4-connector (16.4.1) unstable; urgency=medium
 
   * Bug #58653: set .*/debug/structured-logging=true by default

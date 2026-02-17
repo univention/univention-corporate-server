@@ -265,7 +265,7 @@ class configdb:
                     elif fetch_mode == 'one':
                         rows = cur.fetchone()
                     else:
-                        raise WrongFetchMode('Wrong fetch mode %s. Must be one of "all" or "one"!')
+                        raise WrongFetchMode('Wrong fetch mode %s. Must be "all" or "one"!' % fetch_mode)
                     log.trace('Result: %s', rows)
                 if commit:
                     self._dbcon.commit()
@@ -1312,9 +1312,9 @@ class ucs:
 
     def uoid2guid_add_mapping(self, uoid: str | None = None, guid: str | None = None, dn: str | None = None):
         if not uoid and not guid:
-            raise ValueError('One of uoid or guid must be set!')
+            raise ValueError('One of univentionObjectIdentifier or objectGUID must be set!')
         if not uoid and not dn:
-            raise ValueError('DN is needed when the uoid has to be searched via guid')
+            raise ValueError('DN is needed when the univentionObjectIdentifier has to be searched via objectGUID')
         try:
             if uoid and guid:
                 if not self.uoid2guid_exists(guid=guid) and not self.uoid2guid_exists(uoid=uoid):
@@ -1339,7 +1339,7 @@ class ucs:
         lazy_delete: bool = True,
     ):
         if not uoid and not guid:
-            raise ValueError('One of uoid or guid must be set!')
+            raise ValueError('One of univentionObjectIdentifier or objectGUID must be set!')
         if not uoid:
             uoid = self.uoid2guid_get_uoid(guid)
         if self.uoid2guid_exists(uoid=uoid):
@@ -1369,7 +1369,7 @@ class ucs:
             return
         if not objectGUID:
             objectGUID = 'objectGUID'  # use a dummy value
-        log.debug("update_deleted_cache_after_removal: Save entryUUID %r as deleted to UCS deleted cache. ObjectGUUID: %r", entryUUID, objectGUID)
+        log.debug("update_deleted_cache_after_removal: Save entryUUID %r as deleted to UCS deleted cache. ObjectGUID: %r", entryUUID, objectGUID)
         self._set_config_option('UCS deleted', entryUUID, objectGUID)
 
     def update_deleted_cache_after_restore(self, entryUUID):
@@ -1394,7 +1394,7 @@ class ucs:
     def update_add_cache_after_creation(self, entryUUID, objectGUID):
         if not entryUUID:
             return
-        log.trace("update_add_cache_after_creation: Save entryUUID %r as added in UCS creation cache. ObjectGUUID: %r", entryUUID, objectGUID)
+        log.trace("update_add_cache_after_creation: Save entryUUID %r as added in UCS creation cache. ObjectGUID: %r", entryUUID, objectGUID)
         self._set_config_option('UCS added', entryUUID, objectGUID)
 
     def remove_add_cache_after_removal(self, entryUUID):
@@ -1639,7 +1639,7 @@ class ucs:
                     # be, that the record isn't in the table. We use lazy deletion to
                     # have the record available in the restore, so we have to insert missing
                     # records before removing.
-                    # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                    # TODO: Remove after 5.2-5 (if the DB has been fully initialized then).
                     if not self.uoid2guid_exists(guid=guid):
                         self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
                     self.uoid2guid_remove_mapping(guid=guid)
@@ -1649,14 +1649,14 @@ class ucs:
                     self._remove_dn_mapping(object['olddn'], '')  # we don't know the old s4-dn here anymore, will be checked by remove_dn_mapping
                     self._check_dn_mapping(object['dn'], pre_mapped_s4_dn)
                     # Check S4cache
-                    # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                    # TODO: Remove after 5.2-5 (if the DB has been fully initialized then).
                     self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
 
                 if object['modtype'] == 'modify':
                     result = self.modify_in_ucs(property_type, object, module, position)
                     self._check_dn_mapping(object['dn'], pre_mapped_s4_dn)
                     self.s4cache.add_entry(guid, original_object.get('attributes'))
-                    # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                    # TODO: Remove after 5.2-5 (if the DB has been fully initialized then).
                     self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
 
             if not result:
@@ -1730,7 +1730,7 @@ class ucs:
         guid = decode_guid(con_object['attributes']['objectGUID'][0])
         uoid = self.uoid2guid_get_uoid(guid, deleted=True)
         if not uoid:
-            log.warning('Restore canceled, object is not in ouid2guid! (objectGUID: %s)', guid)
+            log.warning('Restore canceled, object is not in uoid2guid! (objectGUID: %s)', guid)
             return
         deleted_object_dn = self._get_dn_by_univention_object_identifier_from_recyclebin(uoid)
         if not deleted_object_dn:
