@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-23 11:01+0000\n"
-"PO-Revision-Date: 2026-01-23 12:07+0100\n"
+"POT-Creation-Date: 2026-02-17 14:29+0000\n"
+"PO-Revision-Date: 2026-02-17 15:37+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../management-interface/auth.rst:8
 msgid "Authentication"
@@ -195,9 +195,9 @@ msgid ""
 "deactivated. After you install the :program:`Keycloak` app, Nubus for UCS"
 " uses SAML."
 msgstr ""
-"Die Standardkonfiguration in Nubus für UCS hat Single Sign-On deaktiviert. "
-"Nach der Installation der :program:`Keycloak` App verwendet Nubus für UCS "
-"SAML."
+"Die Standardkonfiguration in Nubus für UCS hat Single Sign-On "
+"deaktiviert. Nach der Installation der :program:`Keycloak` App verwendet "
+"Nubus für UCS SAML."
 
 #: ../../management-interface/auth.rst:114
 msgid "SAML configuration for single sign-on"
@@ -1119,6 +1119,174 @@ msgstr ""
 "eine lokale :program:`SQLite`-Datenbank für einen *UMC Server* mit "
 "Multiprocessing verwenden."
 
-#: ../../management-interface/index.rst:5
+#: ../../management-interface/index.rst:8
 msgid "Management interface"
 msgstr "Managementoberfläche"
+
+#: ../../management-interface/theme.rst:7
+msgid "Customize web interface themes"
+msgstr "Designs der Web-Schnittstellen anpassen"
+
+#: ../../management-interface/theme.rst:9
+msgid ""
+"Nubus for UCS provides built-in light and dark themes for all web "
+"interfaces. You can switch themes globally for all users or customize the"
+" appearance by creating your own themes. Both options require only a "
+"configuration change with no service restart."
+msgstr ""
+"Nubus für UCS stellt vordefinierte helle und dunkle Designs für alle "
+"Web-Schnittstellen bereit. "
+"Sie können Designs global für alle Benutzer wechseln "
+"oder das Erscheinungsbild durch Erstellung eigener Designs anpassen. "
+"Beide Optionen erfordern nur eine Konfigurationsänderung ohne Service-Neustart."
+
+#: ../../management-interface/theme.rst:16
+msgid "Switch light and dark theme"
+msgstr "Zwischen hellem und dunklem Design wechseln"
+
+#: ../../management-interface/theme.rst:18
+msgid ""
+"All web interfaces in Nubus for UCS have a dark and a light theme. The "
+"CSS files for the themes are at :file:`/usr/share/univention-"
+"web/themes/`. By default, Nubus for UCS provides a ``light`` and a "
+"``dark`` theme."
+msgstr ""
+"Alle Web-Schnittstellen in Nubus für UCS haben ein dunkles und ein helles"
+" Design. Die CSS-Dateien für die Designs befinden sich unter "
+":file:`/usr/share/univention-web/themes/`. Standardmäßig bietet Nubus für"
+" UCS ein ``light``- und ein ``dark``-Design an."
+
+#: ../../management-interface/theme.rst:22
+msgid ""
+"You can switch between the themes globally for all users by changing the "
+"UCR variable :envvar:`ucs/web/theme`. The variable's value corresponds to"
+" the CSS filename without its extension. For example, the value ``light``"
+" uses the :file:`light.css` theme for all UCS web interfaces."
+msgstr ""
+"Sie können zwischen den Designs global für alle Benutzer wechseln, indem "
+"Sie die UCR-Variable :envvar:`ucs/web/theme` ändern. Der Wert der "
+"Variable entspricht dem CSS-Dateinamen ohne Erweiterung. Beispielsweise "
+"verwendet der Wert ``light`` das :file:`light.css`-Design für alle UCS "
+"Web-Schnittstellen."
+
+#: ../../management-interface/theme.rst:27
+msgid "To apply the theme switch, reload the web interface in the browser."
+msgstr ""
+"Laden Sie die Web-Schnittstelle im Browser neu, um den Design-Wechsel "
+"anzuwenden."
+
+#: ../../management-interface/theme.rst:32
+msgid "Create a custom theme"
+msgstr "Ein benutzerdefiniertes Design erstellen"
+
+#: ../../management-interface/theme.rst:34
+msgid "Nubus for UCS allows providing custom themes for the web interfaces."
+msgstr ""
+"Nubus für UCS ermöglicht es, benutzerdefinierte Designs für die Web-"
+"Schnittstellen bereitzustellen."
+
+#: ../../management-interface/theme.rst:38
+msgid ""
+"Don't edit the files :file:`/usr/share/univention-web/themes/dark.css` "
+"and :file:`/usr/share/univention-web/themes/light.css`, because upgrades "
+"to Nubus for UCS can overwrite your changes."
+msgstr ""
+"Bearbeiten Sie nicht die Dateien :file:`/usr/share/univention-"
+"web/themes/dark.css` und :file:`/usr/share/univention-"
+"web/themes/light.css`, da Aktualisierungen von Nubus für UCS Ihre "
+"Änderungen überschreiben können."
+
+#: ../../management-interface/theme.rst:43
+msgid "To create a custom theme, use the following steps:"
+msgstr ""
+"Führen Sie folgende Schritte aus, um ein benutzerdefiniertes Design zu "
+"erstellen:"
+
+#: ../../management-interface/theme.rst:45
+msgid "Copy one of the CSS files to a separate file."
+msgstr "Kopieren Sie eine der CSS-Dateien in eine separate Datei."
+
+#: ../../management-interface/theme.rst:47
+msgid "For example: :file:`/usr/share/univention-web/themes/mytheme.css`"
+msgstr "Beispielsweise: :file:`/usr/share/univention-web/themes/mytheme.css`"
+
+#: ../../management-interface/theme.rst:50
+msgid ""
+"The files :file:`/usr/share/univention-web/themes/dark.css` and "
+":file:`/usr/share/univention-web/themes/light.css` contain the same list "
+"of `CSS variables <https://developer.mozilla.org/en-"
+"US/docs/Web/CSS/Guides/Cascading_variables/Using_custom_properties>`_. "
+"Other CSS files use these variables."
+msgstr ""
+"Die Dateien :file:`/usr/share/univention-web/themes/dark.css` und "
+":file:`/usr/share/univention-web/themes/light.css` enthalten die gleiche "
+"Liste von `CSS-Variablen <https://developer.mozilla.org/en-"
+"US/docs/Web/CSS/Guides/Cascading_variables/Using_custom_properties>`_. "
+"Andere CSS-Dateien verwenden diese Variablen."
+
+#: ../../management-interface/theme.rst:56
+msgid ""
+"These CSS variables are the supported configuration set for UCS web "
+"interfaces. The names and use cases for these variables remain stable "
+"across Nubus for UCS updates, but Univention may add new names and use "
+"cases."
+msgstr ""
+"Diese CSS-Variablen sind der unterstützte Konfigurationssatz für UCS Web-"
+"Schnittstellen. Die Namen und Anwendungsfälle dieser Variablen bleiben "
+"über Systemaktualisierungen hinweg stabil, aber Univention kann "
+"neue Namen und Anwendungsfälle hinzufügen."
+
+#: ../../management-interface/theme.rst:60
+msgid ""
+"Change the value of the :envvar:`ucs/web/theme` UCR variable to the name "
+"of your custom theme."
+msgstr ""
+"Ändern Sie den Wert der UCR-Variable :envvar:`ucs/web/theme` in den Namen"
+" Ihres benutzerdefinierten Designs."
+
+#: ../../management-interface/theme.rst:63
+msgid "For example, set the value to ``mytheme``."
+msgstr "Beispielsweise setzen Sie den Wert auf ``mytheme``."
+
+#: ../../management-interface/theme.rst:65
+msgid ""
+"Reload the web interface in your browser. The UCR variable change takes "
+"effect without requiring a service restart."
+msgstr ""
+"Laden Sie die Web-Schnittstelle in Ihrem Browser neu. Die Änderung der "
+"UCR-Variable wird wirksam, ohne einen Service-Neustart zu erfordern."
+
+#: ../../management-interface/theme.rst:68
+msgid ""
+"Some UCS web interfaces import their own :file:`custom.css` file which "
+"you can use to adjust their design. The files start empty after you "
+"install Nubus for UCS, and updates don't change these files, so your "
+"customizations persist."
+msgstr ""
+"Einige UCS Web-Schnittstellen importieren eine eigene "
+":file:`custom.css`-Datei, mit der Sie ihre Gestaltung anpassen können. "
+"Die Dateien sind nach der Installation von Nubus für UCS leer, und "
+"Aktualisierungen ändern diese Dateien nicht, sodass Ihre Anpassungen "
+"erhalten bleiben."
+
+#: ../../management-interface/theme.rst:74
+msgid ""
+"For *Management UI*: :file:`/usr/share/univention-management-console-"
+"login/css/custom.css`"
+msgstr ""
+"Für die *Management UI*: :file:`/usr/share/univention-management-console-"
+"login/css/custom.css`"
+
+#: ../../management-interface/theme.rst:76
+msgid "For the Portal: :file:`/usr/share/univention-portal/css/custom.css`"
+msgstr "Für das Portal: :file:`/usr/share/univention-portal/css/custom.css`"
+
+#: ../../management-interface/theme.rst:81
+msgid ""
+"A given `CSS selector <https://developer.mozilla.org/en-"
+"US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors>`_ may "
+"break when you install a Nubus for UCS update."
+msgstr ""
+"Ein `CSS-Selektor <https://developer.mozilla.org/en-"
+"US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors>`_ kann"
+" bei der Installation eines Nubus für UCS-Updates fehlerhaft werden."
