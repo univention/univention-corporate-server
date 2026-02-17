@@ -519,3 +519,18 @@ This section provides a reference for UCR variables.
 
    :Default value: not set
    :Type: boolean
+
+
+.. envvar:: ucs/web/theme
+
+   Specifies the name of the theme to apply to all web interfaces
+   such as the login page, the portal, and the *Management UI*.
+   The value corresponds to a CSS file of the same name
+   in the folder :file:`/usr/share/univention-web/themes/`.
+
+   For information about switching between themes, creating custom themes,
+   and applying changes, see :ref:`management-interface-theming`.
+
+   :Default value: ``dark``
+   :Type: string
+   :Possible values: ``light``, ``dark``, or custom theme names
