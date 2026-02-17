@@ -38,9 +38,6 @@ The implementation of the *Recycle Bin* has the following technical limitations:
 
 * The *Recycle Bin* only supports the UDM types ``users/user`` and ``groups/group``.
 
-* Restoring objects in a setup with the :program:`AD Connector`
-  and :program:`S4 Connector` isn't implemented.
-
 * The *Recycle Bin* is only available for Nubus for UCS.
 
 .. _udm-recyclebin-activate:

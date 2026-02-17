@@ -1366,14 +1366,6 @@ msgstr ""
 "Der *Papierkorb* unterstützt nur die UDM Typen ``users/user`` und "
 "``groups/group``."
 
-#: ../../user-management/udm-recycle-bin.rst:41
-msgid ""
-"Restoring objects in a setup with the :program:`AD Connector` and "
-":program:`S4 Connector` isn't implemented."
-msgstr ""
-"Die Wiederherstellung von Objekten in einem Setup mit :program:`AD "
-"Connector` oder :program:`S4 Connector` ist nicht implementiert."
-
 #: ../../user-management/udm-recycle-bin.rst:44
 msgid "The *Recycle Bin* is only available for Nubus for UCS."
 msgstr "Der *Papierkorb* ist nur für Nubus for UCS verfügbar."
