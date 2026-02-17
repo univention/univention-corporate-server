@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-09 17:41+0000\n"
-"PO-Revision-Date: 2026-02-05 15:24+0100\n"
+"POT-Creation-Date: 2026-02-17 14:47+0000\n"
+"PO-Revision-Date: 2026-02-17 15:47+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../ucr-variable-reference.rst:6
 msgid "UCR variable reference"
@@ -120,6 +120,7 @@ msgstr ""
 #: ../../ucr-variable-reference.rst:409 ../../ucr-variable-reference.rst:419
 #: ../../ucr-variable-reference.rst:432 ../../ucr-variable-reference.rst:464
 #: ../../ucr-variable-reference.rst:491 ../../ucr-variable-reference.rst:501
+#: ../../ucr-variable-reference.rst:535
 msgid "string"
 msgstr "Zeichenkette"
 
@@ -474,7 +475,8 @@ msgid ""
 ":`lifecycle-local-repository-maintenance-disk-space`."
 msgstr ""
 "Informationen zur Verwaltung von Speicherplatz in lokalen Repositories "
-"finden Sie unter :ref:`lifecycle-local-repository-maintenance-disk-space`."
+"finden Sie unter :ref:`lifecycle-local-repository-maintenance-disk-"
+"space`."
 
 #: ../../ucr-variable-reference.rst:305
 msgid "``/var/lib/univention-repository``"
@@ -801,4 +803,33 @@ msgid ""
 msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über SAML Single "
 "Sign-On, bevor er eine reguläre Anmeldung verwendet."
+
+#: ../../ucr-variable-reference.rst:526
+msgid ""
+"Specifies the name of the theme to apply to all web interfaces such as "
+"the login page, the portal, and the *Management UI*. The value "
+"corresponds to a CSS file of the same name in the folder "
+":file:`/usr/share/univention-web/themes/`."
+msgstr ""
+"Gibt den Namen des Designs an, das auf alle Web-Schnittstellen wie die "
+"Anmeldeseite, das *Portal* und die *Management UI* angewendet werden soll. "
+"Der Wert entspricht einer CSS-Datei mit demselben Namen im Ordner "
+":file:`/usr/share/univention-web/themes/`."
+
+#: ../../ucr-variable-reference.rst:531
+msgid ""
+"For information about switching between themes, creating custom themes, "
+"and applying changes, see :ref:`management-interface-theming`."
+msgstr ""
+"Informationen zum Wechsel zwischen Designs, zur Erstellung eigener Designs "
+"und zum Anwenden von Änderungen finden Sie unter "
+":ref:`management-interface-theming`."
+
+#: ../../ucr-variable-reference.rst:534
+msgid "``dark``"
+msgstr "``dark``"
+
+#: ../../ucr-variable-reference.rst:536
+msgid "``light``, ``dark``, or custom theme names"
+msgstr "``light``, ``dark`` oder benutzerdefinierte Design-Namen"
 
