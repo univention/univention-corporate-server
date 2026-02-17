@@ -345,7 +345,7 @@ def test_restore_to_another_position_in_ad(udm: UCSTestUDM, recyclebin_policy_se
     )
 
 
-def test_ouid2guid_state(udm: UCSTestUDM, recyclebin_policy_session: tuple, lo: access, connector: _Connector):
+def test_uoid2guid_state(udm: UCSTestUDM, recyclebin_policy_session: tuple, lo: access, connector: _Connector):
     recyclebin_container, _ = recyclebin_policy_session
     user = _create_user_in_ucs(
         udm=udm,
