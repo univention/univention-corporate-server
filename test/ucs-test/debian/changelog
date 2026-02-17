@@ -1,3 +1,9 @@
+ucs-test (12.4.31) unstable; urgency=medium
+
+  * Bug #58844: Support UDM Recyclebin in S4- and AD-Connector
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 Feb 2026 20:24:16 +0100
+
 ucs-test (12.4.30) unstable; urgency=medium
 
   * Issue univention/dev/ucs#3373: fix 81_keycloak.01_test_keycloak_login.py.test_login_administrator
