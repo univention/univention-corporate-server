@@ -9,3 +9,4 @@ Management interface
 .. toctree::
 
    auth
+   theme
