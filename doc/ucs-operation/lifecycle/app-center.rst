@@ -18,13 +18,13 @@ and supports both traditional packages and containerized Docker applications.
 This unified approach reduces administrative overhead
 and ensures applications integrate seamlessly with your domain infrastructure.
 :numref:`lifecycle-app-center-overview` shows the overview page in the App Center.
+Using the App Center requires a personalized license key.
+For more information, see :ref:`management-interface-license`.
 
 This section covers how you can use the App Center to find applications,
 install them on the appropriate systems,
 manage their configuration and lifecycle,
 and troubleshoot common issues.
-
-.. TODO: Add hint about the requirement of an activation license and refer to the section.
 
 .. _lifecycle-app-center-overview:
 
