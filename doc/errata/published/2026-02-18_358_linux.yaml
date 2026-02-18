@@ -390,3 +390,6 @@ cve:
 - CVE-2026-23108
 - CVE-2026-23110
 note: This is the 1st of two parts.
+erratum: 358
+announced: 2026-02-18
+support: core
