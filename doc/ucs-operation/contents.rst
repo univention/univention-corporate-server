@@ -22,6 +22,7 @@ Nubus for UCS - Operation Manual
 .. toctree::
 
    ucr-variable-reference
+   changelog
    glossary
    bibliography
 
