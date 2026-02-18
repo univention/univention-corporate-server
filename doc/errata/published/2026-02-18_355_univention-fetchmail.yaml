@@ -11,3 +11,6 @@ desc: |
    after user configuration changes, which prevented emails from being
    sent or received.
 bug: [59036]
+erratum: 355
+announced: 2026-02-18
+support: core
