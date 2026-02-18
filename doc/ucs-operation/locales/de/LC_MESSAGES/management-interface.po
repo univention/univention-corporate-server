@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 14:29+0000\n"
-"PO-Revision-Date: 2026-02-17 15:37+0100\n"
+"POT-Creation-Date: 2026-02-19 14:45+0000\n"
+"PO-Revision-Date: 2026-02-19 16:00+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1123,6 +1123,345 @@ msgstr ""
 msgid "Management interface"
 msgstr "Managementoberfläche"
 
+#: ../../management-interface/license.rst:7
+msgid "Activate UCS license"
+msgstr "UCS-Lizenz aktivieren"
+
+#: ../../management-interface/license.rst:9
+msgid ""
+"Your system runs a Nubus for UCS *Core Edition* license by default. "
+"Activating the Nubus for UCS license enables access to the Univention App"
+" Center. It also defines capacity limits for users and clients in your "
+"domain. This section guides you through viewing, activating, requesting, "
+"and managing your license."
+msgstr ""
+"Ihr System läuft standardmäßig eine Nubus für UCS *Core Edition* Lizenz. "
+"Die Aktivierung der Nubus für UCS Lizenz ermöglicht den Zugriff auf das "
+"Univention App Center. Sie definiert auch Kapazitätsbeschränkungen für "
+"Benutzer und Clients in Ihrer Domäne. Dieser Abschnitt führt Sie durch "
+"das Anzeigen, Aktivieren, Anfordern und Verwalten Ihrer Lizenz."
+
+#: ../../management-interface/license.rst:17
+msgid "About UCS licenses"
+msgstr "Über UCS Lizenzen"
+
+#: ../../management-interface/license.rst:19
+msgid ""
+"The UCS license registers your system with Univention and defines your "
+"support status and usage limits. UCS offers two types of licenses: a free"
+" *Core Edition* license and a commercial *Subscription* license."
+msgstr ""
+"Die UCS-Lizenz registriert Ihr System bei Univention und definiert Ihren "
+"Support-Status und Nutzungsgrenzen. UCS bietet zwei Lizenztypen an: eine "
+"kostenlose *Core Edition* Lizenz und eine kommerzielle *Subskription* Lizenz."
+
+#: ../../management-interface/license.rst:25
+msgid ""
+"`Prices and Subscriptions <https://www.univention.com/products/prices-"
+"and-subscriptions/>`_"
+msgstr "`Preise und Subskriptionen <https://www.univention.de/produkte/preise/>`_"
+
+#: ../../management-interface/license.rst:26
+msgid "for information about pricing and subscription options for Nubus for UCS."
+msgstr "für Informationen zu Preisen und Abonnementoptionen für Nubus für UCS."
+
+#: ../../management-interface/license.rst:31
+msgid "Core Edition license"
+msgstr "Core Edition Lizenz"
+
+#: ../../management-interface/license.rst:33
+msgid ""
+"The *Core Edition* license is the free version of UCS with no commercial "
+"support. It comes in two variants:"
+msgstr ""
+"Die *Core Edition* Lizenz ist die kostenlose Version von UCS ohne "
+"kommerzielle Unterstützung. Sie ist in zwei Varianten erhältlich:"
+
+#: ../../management-interface/license.rst:36
+msgid "Unregistered license"
+msgstr "Nicht registrierte Lizenz"
+
+#: ../../management-interface/license.rst:37
+msgid ""
+"When you install Nubus for UCS, it includes an unregistered license by "
+"default. This license doesn't limit your use of Nubus for UCS. Some app "
+"providers expect your system to have a registered license so they can "
+"collect information about who's using their apps."
+msgstr ""
+"Bei der Installation von Nubus für UCS ist standardmäßig eine nicht "
+"registrierte Lizenz enthalten. Diese Lizenz schränkt Ihre Nutzung von "
+"Nubus für UCS nicht ein. Einige :spelling:word:`App-Anbieter` erwarten, dass Ihr System "
+"eine registrierte Lizenz hat, um Informationen darüber zu erfassen, wer "
+"ihre Apps nutzt."
+
+#: ../../management-interface/license.rst:42
+msgid "Registered license"
+msgstr "Registrierte Lizenz"
+
+#: ../../management-interface/license.rst:43
+msgid "You can generate a registered license through one of these methods:"
+msgstr ""
+"Sie können eine registrierte Lizenz auf eine der folgenden Weisen "
+"generieren:"
+
+#: ../../management-interface/license.rst:45
+msgid ""
+"During Nubus for UCS installation in the :ref:`deployment-domain-setup-"
+"new-domain` step."
+msgstr ""
+"Während der Installation von Nubus für UCS im Schritt :ref:`deployment-"
+"domain-setup-new-domain`."
+
+#: ../../management-interface/license.rst:47
+msgid ""
+"When installing an app that requires registration in :ref:`lifecycle-app-"
+"center-installation`."
+msgstr ""
+"Bei der Installation einer App, die Registrierung erfordert, im Abschnitt "
+":ref:`lifecycle-app-center-installation`."
+
+#: ../../management-interface/license.rst:49
+msgid ""
+"Through the steps described in :ref:`management-interface-license-"
+"request-personal`."
+msgstr ""
+"Durch die Schritte, die in :ref:`management-interface-license-request-"
+"personal` beschrieben sind."
+
+#: ../../management-interface/license.rst:51
+msgid ""
+"Registering a license doesn't change how you can use Nubus for UCS—it's "
+"primarily for identification purposes."
+msgstr ""
+"Die Registrierung einer Lizenz ändert nicht, wie Sie Nubus für UCS nutzen "
+"können – sie dient hauptsächlich zu Identifikationszwecken."
+
+#: ../../management-interface/license.rst:56
+msgid "Subscription license"
+msgstr "Subskription Lizenz"
+
+#: ../../management-interface/license.rst:58
+msgid ""
+"Univention generates a subscription license when you sign a subscription "
+"contract with Univention. This license includes an identifier that lets "
+"you create support tickets, get assistance with service level agreements,"
+" and access extended maintenance. Subscription licenses can have usage "
+"limits, as described in :ref:`management-interface-license-limits`."
+msgstr ""
+"Univention generiert eine Subskription Lizenz, wenn Sie einen "
+":spelling:word:`Subskriptionsvertrag` mit Univention unterzeichnen. Diese Lizenz enthält "
+"eine Kennung, mit der Sie Support-Tickets erstellen können, Unterstützung "
+"mit Service-Level-Vereinbarungen erhalten und auf erweiterte Wartung "
+"zugreifen können. Subskription Lizenzen können Nutzungsgrenzen haben, wie "
+"in :ref:`management-interface-license-limits` beschrieben."
+
+#: ../../management-interface/license.rst:68
+msgid "View license information"
+msgstr "Lizenzinformationen anzeigen"
+
+#: ../../management-interface/license.rst:70
+msgid ""
+"You can manage the Nubus for UCS license on the Primary Directory Node "
+"through the *Welcome* management module."
+msgstr ""
+"Sie können die Nubus für UCS Lizenz auf dem Primary Directory Node über "
+"das Verwaltungsmodul *Willkommen* verwalten."
+
+#: ../../management-interface/license.rst:75
+msgid "The Welcome management module"
+msgstr "Das Willkommen Verwaltungsmodul"
+
+#: ../../management-interface/license.rst:78
+msgid "The *Welcome* management module"
+msgstr "Das *Willkommen* Verwaltungsmodul"
+
+#: ../../management-interface/license.rst:80
+msgid "To view the license information, follow these steps:"
+msgstr "Führen Sie diese Schritte aus, um die Lizenzinformationen anzuzeigen:"
+
+#: ../../management-interface/license.rst:83
+msgid "Sign in to the Univention Portal."
+msgstr "Melden Sie sich im Univention Portal an."
+
+#: ../../management-interface/license.rst:85
+msgid ""
+"Navigate to :menuselection:`System --> Welcome!`. :numref:`management-"
+"interface-license-view-welcome-figure` shows the license part of the "
+"*Welcome* module."
+msgstr ""
+"Navigieren Sie zu :menuselection:`System --> Willkommen!`. :numref"
+":`management-interface-license-view-welcome-figure` zeigt den Lizenzteil "
+"des *Willkommen* Verwaltungsmoduls."
+
+#: ../../management-interface/license.rst:89
+msgid ""
+"Click :guilabel:`License info`. You see the license information, as shown"
+" in :numref:`management-interface-license-view-figure`."
+msgstr ""
+"Klicken Sie auf :guilabel:`Lizenz-Informationen`. Sie sehen die "
+"Lizenzinformationen, wie in :numref:`management-interface-license-view-"
+"figure` gezeigt."
+
+#: ../../management-interface/license.rst:95
+#: ../../management-interface/license.rst:98
+msgid "Dialog with information about the UCS license"
+msgstr "Dialog mit Informationen zur UCS-Lizenz"
+
+#: ../../management-interface/license.rst:103
+msgid "Activate a license"
+msgstr "Eine Lizenz aktivieren"
+
+#: ../../management-interface/license.rst:105
+msgid ""
+"To activate a license key in the *Welcome* management module, click "
+":guilabel:`Import a license`. You can import a license in the following "
+"ways:"
+msgstr ""
+"Um einen Lizenzschlüssel im *Willkommen* Verwaltungsmodul zu aktivieren, "
+"klicken Sie auf :guilabel:`Lizenz importieren`. Sie können eine Lizenz "
+"auf folgende Weise importieren:"
+
+#: ../../management-interface/license.rst:109
+msgid "Import from file"
+msgstr "Aus Datei importieren"
+
+#: ../../management-interface/license.rst:110
+msgid ""
+"To select a license file from your computer, click :guilabel:`Import from"
+" file…`."
+msgstr ""
+"Um eine Lizenzdatei von Ihrem Computer auszuwählen, klicken Sie auf "
+":guilabel:`Importieren aus Datei…`."
+
+#: ../../management-interface/license.rst:113
+msgid "Import from text field"
+msgstr "Aus Textfeld importieren"
+
+#: ../../management-interface/license.rst:114
+msgid ""
+"Alternatively, paste your license key into the text field and click "
+":guilabel:`Import from text field`."
+msgstr ""
+"Alternativ können Sie Ihren Lizenzschlüssel in das Textfeld einfügen und "
+"auf :guilabel:`Importieren aus Textfeld` klicken."
+
+#: ../../management-interface/license.rst:118
+msgid ""
+"To verify the imported license key, follow the steps in :ref:`management-"
+"interface-license-view`, where the field ``Key ID`` displays a unique "
+"identifier."
+msgstr ""
+"Um den importierten Lizenzschlüssel zu überprüfen, folgen Sie den "
+"Schritten in :ref:`management-interface-license-view`, wobei das Feld "
+"``Key ID`` einen eindeutigen Bezeichner anzeigt."
+
+#: ../../management-interface/license.rst:125
+msgid "Register for a personalized Core Edition license"
+msgstr "Registrierung für eine personalisierte Core Edition Lizenz"
+
+#: ../../management-interface/license.rst:127
+msgid ""
+"If you're using Nubus for UCS *Core Edition* and need App Center access, "
+"request a personalized license key. You may already have requested the "
+"license during one of the following tasks:"
+msgstr ""
+"Wenn Sie Nubus für UCS *Core Edition* verwenden und Zugriff auf das App "
+"Center benötigen, fordern Sie einen personalisierten Lizenzschlüssel an. "
+"Möglicherweise haben Sie den Lizenzschlüssel bereits während einer der "
+"folgenden Aufgaben angefordert:"
+
+#: ../../management-interface/license.rst:132
+msgid ""
+"During the installation of Nubus for UCS in the domain setup step. See "
+":ref:`deployment-domain-setup-new-domain`."
+msgstr ""
+"Während der Installation von Nubus für UCS im Domain-Setup-Schritt. "
+"Siehe :ref:`deployment-domain-setup-new-domain`."
+
+#: ../../management-interface/license.rst:135
+msgid ""
+"When you install an app through the App Center and haven't activated a "
+"license before, the App Center asks you to request a personalized "
+"license."
+msgstr ""
+"Wenn Sie eine App über das App Center installieren und vorher noch keine "
+"Lizenz aktiviert haben, fordert Sie das App Center auf, einen "
+"personalisierten Lizenzschlüssel anzufordern."
+
+#: ../../management-interface/license.rst:138
+msgid ""
+"If you haven't requested a personalized license for the *Core Edition* "
+"through those methods before, you can request one at any time through the"
+" following steps:"
+msgstr ""
+"Wenn Sie auf diese Weise noch keine personalisierte Lizenz für die "
+"*Core Edition* angefordert haben, können Sie jederzeit durch die folgenden "
+"Schritte eine anfordern:"
+
+#: ../../management-interface/license.rst:142
+msgid "Click :guilabel:`Request a license` in the *Welcome* management module."
+msgstr ""
+"Klicken Sie auf :guilabel:`Lizenz anfordern` im *Willkommen* "
+"Verwaltungsmodul."
+
+#: ../../management-interface/license.rst:144
+msgid "Enter an email address you can access."
+msgstr "Geben Sie eine E-Mailadresse ein, auf die Sie Zugriff haben."
+
+#: ../../management-interface/license.rst:146
+msgid ""
+"Univention sends your license key to that address within a few minutes as"
+" a text file attachment with cryptographic elements."
+msgstr ""
+"Univention sendet Ihren Lizenzschlüssel innerhalb weniger Minuten als "
+"Textdatei-Anlage mit kryptografischen Elementen an diese Adresse."
+
+#: ../../management-interface/license.rst:149
+msgid ""
+"To import your license key, follow the steps in :ref:`management-"
+"interface-license-activate`."
+msgstr ""
+"Um Ihren Lizenzschlüssel zu importieren, folgen Sie den Schritten in "
+":ref:`management-interface-license-activate`."
+
+#: ../../management-interface/license.rst:156
+msgid "License key limits"
+msgstr "Lizenzschlüssel-Limits"
+
+#: ../../management-interface/license.rst:158
+msgid "The license key defines the following limits for the subscription license:"
+msgstr "Der Lizenzschlüssel definiert die folgenden Limits für die Subskription Lizenz:"
+
+#: ../../management-interface/license.rst:160
+msgid "Number of user accounts"
+msgstr "Anzahl der Benutzerkonten"
+
+#: ../../management-interface/license.rst:161
+msgid "Number of managed clients"
+msgstr "Anzahl verwalteter Clients"
+
+#: ../../management-interface/license.rst:163
+msgid ""
+"If you exceed a license limit, you can't create new objects or edit "
+"existing ones in management modules. A warning message appears to explain"
+" which limit you've exceeded."
+msgstr ""
+"Wenn Sie ein Lizenzlimit überschreiten, können Sie in Verwaltungsmodulen "
+"keine neuen Objekte erstellen oder vorhandene bearbeiten. Eine "
+"Warnmeldung erläutert, welche Limits Sie überschritten haben."
+
+#: ../../management-interface/license.rst:167
+msgid "To resolve the limits, you can:"
+msgstr "Um die Limits zu beheben, können Sie:"
+
+#: ../../management-interface/license.rst:169
+msgid "Import an extended license."
+msgstr "Eine erweiterte Lizenz importieren."
+
+#: ../../management-interface/license.rst:170
+msgid "Delete unused user or computer objects."
+msgstr "Ungenutzte Benutzer- oder Computer-Objekte löschen."
+
 #: ../../management-interface/theme.rst:7
 msgid "Customize web interface themes"
 msgstr "Designs der Web-Schnittstellen anpassen"
@@ -1134,11 +1473,11 @@ msgid ""
 " appearance by creating your own themes. Both options require only a "
 "configuration change with no service restart."
 msgstr ""
-"Nubus für UCS stellt vordefinierte helle und dunkle Designs für alle "
-"Web-Schnittstellen bereit. "
-"Sie können Designs global für alle Benutzer wechseln "
-"oder das Erscheinungsbild durch Erstellung eigener Designs anpassen. "
-"Beide Optionen erfordern nur eine Konfigurationsänderung ohne Service-Neustart."
+"Nubus für UCS stellt vordefinierte helle und dunkle Designs für alle Web-"
+"Schnittstellen bereit. Sie können Designs global für alle Benutzer "
+"wechseln oder das Erscheinungsbild durch Erstellung eigener Designs "
+"anpassen. Beide Optionen erfordern nur eine Konfigurationsänderung ohne "
+"Service-Neustart."
 
 #: ../../management-interface/theme.rst:16
 msgid "Switch light and dark theme"
@@ -1233,8 +1572,8 @@ msgid ""
 msgstr ""
 "Diese CSS-Variablen sind der unterstützte Konfigurationssatz für UCS Web-"
 "Schnittstellen. Die Namen und Anwendungsfälle dieser Variablen bleiben "
-"über Systemaktualisierungen hinweg stabil, aber Univention kann "
-"neue Namen und Anwendungsfälle hinzufügen."
+"über Systemaktualisierungen hinweg stabil, aber Univention kann neue "
+"Namen und Anwendungsfälle hinzufügen."
 
 #: ../../management-interface/theme.rst:60
 msgid ""
@@ -1290,3 +1629,28 @@ msgstr ""
 "Ein `CSS-Selektor <https://developer.mozilla.org/en-"
 "US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors>`_ kann"
 " bei der Installation eines Nubus für UCS-Updates fehlerhaft werden."
+
+#~ msgid ""
+#~ "To request a license, click "
+#~ ":guilabel:`Request a license` in the "
+#~ "*Welcome* management module. Enter an "
+#~ "email address you can access. Univention"
+#~ " sends your license key to that "
+#~ "address within a few minutes as a"
+#~ " text file attachment with cryptographic"
+#~ " elements. To import your license "
+#~ "key, follow the steps in :ref"
+#~ ":`management-interface-license-activate`."
+#~ msgstr ""
+#~ "Um eine Lizenz anzufordern, klicken Sie"
+#~ " im *Willkommen* Verwaltungsmodul auf "
+#~ ":guilabel:`Lizenz anfordern`. Geben Sie eine"
+#~ " E-Mailadresse ein, auf die Sie "
+#~ "zugreifen können. Univention sendet Ihren "
+#~ "Lizenzschlüssel innerhalb weniger Minuten als"
+#~ " Textdatei-Anlage mit kryptografischen "
+#~ "Elementen an diese Adresse. Um Ihren "
+#~ "Lizenzschlüssel zu importieren, folgen Sie "
+#~ "den Schritten in :ref:`management-"
+#~ "interface-license-activate`."
+

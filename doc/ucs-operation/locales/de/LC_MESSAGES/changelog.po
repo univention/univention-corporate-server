@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+msgid ""
+msgstr ""
+"Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-18 16:13+0000\n"
+"PO-Revision-Date: 2026-02-18 17:24+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../changelog.rst:8
+msgid "Document changelog"
+msgstr "Änderungshistorie"
+
+#: ../../changelog.rst:10
+msgid ""
+"This section shows the history of updates to the *Nubus for UCS - "
+"Operation Manual*."
+msgstr "Dieser Abschnitt zeigt die Historie der Aktualisierungen des *Nubus für UCS - Betriebshandbuchs*."
+
+#: ../../changelog.rst:17
+msgid "Year 2026"
+msgstr "Jahr 2026"
+
+#: ../../changelog.rst:23
+msgid "Date"
+msgstr "Datum"
+
+#: ../../changelog.rst:24
+msgid "Chapter or topic"
+msgstr "Kapitel oder Thema"
+
+#: ../../changelog.rst:25
+msgid "Change"
+msgstr "Änderung"
+
+#: ../../changelog.rst:27
+msgid "Feb 2026"
+msgstr ":spelling:word:`Feb` 2026"
+
+#: ../../changelog.rst:28
+msgid ":ref:`management-interface-license`"
+msgstr ":ref:`management-interface-license`"
+
+#: ../../changelog.rst:29
+msgid "Add how to activate the UCS license."
+msgstr "Hinzufügen, wie die UCS-Lizenz aktiviert wird."
