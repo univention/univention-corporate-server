@@ -311,3 +311,6 @@ cve:
 - CVE-2025-22083
 - CVE-2025-68223
 note: This is the 2nd of two parts.
+erratum: 357
+announced: 2026-02-18
+support: core
