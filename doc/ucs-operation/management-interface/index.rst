@@ -12,4 +12,5 @@ Management interface
 .. toctree::
 
    auth
+   license
    theme
