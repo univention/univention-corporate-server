@@ -16,3 +16,6 @@ cve:
 - CVE-2026-2004
 - CVE-2026-2005
 - CVE-2026-2006
+erratum: 354
+announced: 2026-02-18
+support: core
