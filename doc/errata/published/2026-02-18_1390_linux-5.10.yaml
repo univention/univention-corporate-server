@@ -274,3 +274,6 @@ cve:
 - CVE-2025-39702
 - CVE-2023-54207
 note: This is the 1st of two parts.
+erratum: 1390
+announced: 2026-02-18
+support: lts
