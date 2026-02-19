@@ -23,6 +23,165 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+.. envvar:: directory/manager/web/modules/users/user/properties/mailPrimaryAddress/required
+
+   If activated with the value ``true``,
+   the *User creation wizard* requires functional administrators
+   to provide a primary email address when creating user accounts.
+
+   For information about this requirement,
+   see :ref:`iam-user-create-wizard-require-primary-email`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/disabled
+
+   Controls whether the *User creation wizard*
+   appears in the *Users* management module
+   in the *Management UI*.
+   When set to ``true``,
+   Nubus deactivates the user creation wizard
+   and displays the full user creation form instead.
+   When unset or set to ``false``,
+   the wizard appears.
+
+   For information about using the user creation wizard,
+   see :ref:`iam-user-create-wizard`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/disabled/default
+
+   Sets the default value for the *Account disabled* checkbox
+   in the *User creation wizard*.
+   When set to ``true``,
+   the wizard creates deactivated user accounts.
+   When set to ``false``,
+   the wizard creates activated user accounts.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/disabled/visible
+
+   Controls whether the *Account disabled* checkbox
+   appears in the *User creation wizard*.
+   When set to ``true``,
+   functional administrators can see the checkbox.
+   When unset or set to ``false``,
+   the checkbox doesn't appear.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/invite/default
+
+   Sets the default value for the *Invite user via e-mail* checkbox
+   in the *User creation wizard*.
+   When set to ``true``,
+   the checkbox is enabled by default for new user creation.
+   When set to ``false``,
+   the checkbox is disabled by default.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/invite/visible
+
+   Controls whether the *Invite user via e-mail* checkbox
+   appears in the *User creation wizard*.
+   When set to ``true``,
+   functional administrators can see the checkbox.
+   When unset or set to ``false``,
+   the checkbox doesn't appear.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/overridePWLength/default
+
+   Sets the default value for the *Override password check* checkbox
+   in the *User creation wizard*.
+   When set to ``true``,
+   the password quality and minimum length checks are bypassed by default.
+   When set to ``false``,
+   password checks are applied by default.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/overridePWLength/visible
+
+   Controls whether the *Override password check* checkbox
+   appears in the *User creation wizard*.
+   When set to ``true``,
+   functional administrators can see the checkbox.
+   When unset or set to ``false``,
+   the checkbox doesn't appear.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/pwdChangeNextLogin/default
+
+   Sets the default value for the *User has to change password on next login* checkbox
+   in the *User creation wizard*.
+   When set to ``true``,
+   users must change their password on the next sign-in by default.
+   When set to ``false``,
+   this requirement is not set by default.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/users/user/wizard/property/pwdChangeNextLogin/visible
+
+   Controls whether the *User has to change password on next login* checkbox
+   appears in the *User creation wizard*.
+   When set to ``true``,
+   functional administrators can see the checkbox.
+   When unset or set to ``false``,
+   the checkbox doesn't appear.
+
+   For information about this property,
+   see :ref:`iam-user-create-wizard-account-properties`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
 .. envvar:: directory/manager/web/modules/groups/group/checks/circular_dependency
 
    If activated with the value ``yes``
