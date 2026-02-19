@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-18 16:13+0000\n"
-"PO-Revision-Date: 2026-02-18 17:24+0100\n"
+"POT-Creation-Date: 2026-02-19 17:46+0000\n"
+"PO-Revision-Date: 2026-02-19 18:50+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -24,7 +24,9 @@ msgstr "Änderungshistorie"
 msgid ""
 "This section shows the history of updates to the *Nubus for UCS - "
 "Operation Manual*."
-msgstr "Dieser Abschnitt zeigt die Historie der Aktualisierungen des *Nubus für UCS - Betriebshandbuchs*."
+msgstr ""
+"Dieser Abschnitt zeigt die Historie der Aktualisierungen des *Nubus für "
+"UCS - Betriebshandbuchs*."
 
 #: ../../changelog.rst:17
 msgid "Year 2026"
@@ -42,14 +44,23 @@ msgstr "Kapitel oder Thema"
 msgid "Change"
 msgstr "Änderung"
 
-#: ../../changelog.rst:27
+#: ../../changelog.rst:27 ../../changelog.rst:31
 msgid "Feb 2026"
 msgstr ":spelling:word:`Feb` 2026"
 
 #: ../../changelog.rst:28
+msgid ":ref:`iam-user-create-wizard`"
+msgstr ":ref:`iam-user-create-wizard`"
+
+#: ../../changelog.rst:29
+msgid "Add configuration options for *User Create Wizard*."
+msgstr "Konfigurationsoptionen für den *Assistenten zum Erstellen von Benutzer* hinzugefügt."
+
+#: ../../changelog.rst:32
 msgid ":ref:`management-interface-license`"
 msgstr ":ref:`management-interface-license`"
 
-#: ../../changelog.rst:29
+#: ../../changelog.rst:33
 msgid "Add how to activate the UCS license."
-msgstr "Hinzufügen, wie die UCS-Lizenz aktiviert wird."
+msgstr "Aktivieren der UCS-Lizenz hinzugefügt."
+
