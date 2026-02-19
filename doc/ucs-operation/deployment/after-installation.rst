@@ -37,5 +37,4 @@ License import after installation
 If you installed the system as the first system in the Nubus for UCS domain
 in the :term:`UCS Primary Directory Node` role,
 you can import the license for the domain,
-see :external+uv-ucs-manual:ref:`central-license`
-in :cite:t:`ucs-manual`.
+see :ref:`management-interface-license`.
