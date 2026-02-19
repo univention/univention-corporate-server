@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 19. Feb 2026
+     - :ref:`iam-user-create-wizard`
+     - Add configuration options for *User Create Wizard*.
+
    * - 18. Feb 2026
      - :ref:`management-interface-license`
      - Add how to activate the UCS license.
