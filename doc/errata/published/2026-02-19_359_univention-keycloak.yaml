@@ -13,3 +13,6 @@ desc: |
  * The univention-keycloak script introduces a flag to enable the "Always
    Read Value From LDAP" setting for new User Federation Mappers.
 bug: [59040]
+erratum: 359
+announced: 2026-02-19
+support: core
