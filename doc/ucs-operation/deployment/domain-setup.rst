@@ -113,10 +113,7 @@ Email address
    Univention automatically generates the license
    and immediately sends it to the specified email address.
    You import the license through the *Welcome* management module,
-   see :external+uv-ucs-manual:ref:`central-license`
-   in :cite:t:`ucs-manual`.
-
-   .. TODO: Replace link to license management module after it's available in the document.
+   see :ref:`management-interface-license-activate`.
 
 .. _deployment-domain-setup-new-domain-fqdn:
 
