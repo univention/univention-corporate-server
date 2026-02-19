@@ -87,7 +87,7 @@ def wait_for_drs_replication(ldap_filter: str, attrs: list[str] | str | None = N
             if bool(res) is bool(should_exist):
                 if verbose:
                     print("\nDRS replication took %d seconds" % (t - t0, ))
-                return  # res
+                return res
         except ldb.LdbError as exc:
             (_num, msg) = exc.args
             if _num == ldb.ERR_INVALID_DN_SYNTAX:

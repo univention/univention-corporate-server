@@ -185,7 +185,7 @@ class _Connector:
             user_position=ou11_dn,
         )
 
-    def get_logs_change(self, mode='sync to ucs', object_type='user', change_type='modify'):
+    def get_logs_change(self, mode='sync AD > UCS', object_type='user', change_type='modify'):
         lines = []
         for line in self.get_logs():
             if 'PROCESS' in line and f'{mode}:' in line and f' {object_type}]' in line and f' {change_type}]' in line:

@@ -1,3 +1,9 @@
+ucs-test (12.4.32) unstable; urgency=medium
+
+  * Bug #58844: Adjust tests to the recyclebin S4-/AD-C changes
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Feb 2026 16:11:01 +0100
+
 ucs-test (12.4.31) unstable; urgency=medium
 
   * Bug #58844: Support UDM Recyclebin in S4- and AD-Connector
