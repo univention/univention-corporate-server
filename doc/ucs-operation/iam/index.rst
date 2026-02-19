@@ -13,3 +13,4 @@ Identity and Access Management
 
    password-management/index
    group-management
+   user-create-wizard
