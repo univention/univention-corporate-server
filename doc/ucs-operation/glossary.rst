@@ -50,3 +50,16 @@ Glossary
       For more information about the role concept in Nubus for UCS,
       see :external+uv-architecture:ref:`concept-role`
       in :cite:t:`ucs-architecture`.
+
+   Univention Configuration Registry variable
+   UCR variable
+      A Univention Configuration Registry (UCR) variable is a named setting
+      that stores system configuration in a central registry.
+      Instead of editing configuration files directly,
+      you use UCR variables to manage local system configuration.
+      When you change a UCR variable,
+      the system automatically regenerates all configuration files that depend on it.
+
+      For more information about UCR variables,
+      see :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
+      in the *Univention Configuration Registry* section.
