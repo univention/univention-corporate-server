@@ -9,3 +9,6 @@ System administration
 
 .. TODO: Add introduction for the chapter.
 
+.. toctree::
+
+   kernel
