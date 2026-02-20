@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 20. Feb 2026
+     - :ref:`system-administration-kernel`
+     - Add concept around Linux kernel.
+
    * - 19. Feb 2026
      - :ref:`iam-user-create-wizard`
      - Add configuration options for *User Create Wizard*.
