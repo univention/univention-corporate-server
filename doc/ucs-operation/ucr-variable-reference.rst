@@ -221,6 +221,38 @@ This section provides a reference for UCR variables.
    :Type: boolean
 
 
+.. envvar:: kernel/blacklist
+
+   Use this variable to prevent specific kernel modules from loading automatically.
+   The system automatically detects and loads required drivers (kernel modules).
+   You can use this variable to exclude modules that you don't want the system to load.
+   If you need to blacklist multiple modules,
+   separate them with a semicolon.
+
+   For information about kernel module configuration,
+   see :ref:`system-administration-kernel-modules-detection`.
+
+   :Default value: not set
+   :Possible values: semicolon-separated list of module names
+   :Type: list
+
+
+.. envvar:: kernel/modules
+
+   Use this variable to load kernel modules that the system doesn't automatically detect.
+   The system automatically detects and loads required drivers (kernel modules).
+   You can use this variable to load modules that the system can't automatically detect.
+   If you need to load multiple modules,
+   separate them with a semicolon.
+
+   For information about kernel module configuration,
+   see :ref:`system-administration-kernel-modules-detection`.
+
+   :Default value: not set
+   :Possible values: semicolon-separated list of module names
+   :Type: list
+
+
 .. envvar:: nss/group/cachefile
 
    If activated,
