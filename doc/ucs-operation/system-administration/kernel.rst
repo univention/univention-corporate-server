@@ -6,69 +6,119 @@
 Kernel
 ======
 
-.. _computers-available-kernel-variants:
+The Linux kernel is the core of your operating system.
+It manages hardware resources like processors, memory, and devices,
+and enables communication between software applications and hardware.
 
-Available kernel variants
--------------------------
+As a system administrator, you configure the kernel to support your hardware
+and optimize system performance.
+This section explains kernel packages, kernel versions, and kernel modules,
+and shows you how to manage drivers and custom kernel functionality
+in Nubus for UCS.
 
-The standard kernel in UCS 5.0 is based on the Linux kernel 4.19. In principle,
-there are three different types of kernel packages:
+.. _system-administration-kernel-packages:
 
-* A *kernel image package* provides an executable kernel which can be installed
-  and started.
+Kernel packages
+---------------
 
-* A *kernel source package* provides the source code for a kernel. From this
-  source, a tailor-made kernel can be created, and functions can be activated or
-  deactivated.
+The :external+uv-docs-overview:ref:`release-notes` contain
+information about the standard kernel version for each Nubus for UCS minor version.
+The Release Notes document the kernel version used, starting with the initial patch level release ``-0``.
+Typically, a Nubus for UCS system requires only one installed kernel image package.
+Nubus for UCS uses the following types of kernel packages:
 
-* A *kernel header package* provides interface information which is required by
-  external packages if these have to access kernel functions. This information
-  is usually necessary for compiling external kernel drivers.
+Kernel image package
+   A *kernel image package* provides an executable kernel
+   that you can install and run.
 
-Normally, the operation of a UCS system only requires the installation of one
-kernel image package.
+Kernel source package
+   A *kernel source package* provides kernel source code.
+   With it, you can create a customized kernel and activate or deactivate functions.
 
-Several kernel versions can be installed in parallel. This makes sure that there
-is always an older version available to which can be reverted in case of an
-error. So-called meta packages are available which always refer to the kernel
-version currently recommended for UCS. In case of an update, the new kernel
-version will be installed, making it possible to keep the system up to date at
-any time.
+Kernel header package
+   A *kernel header package* provides the interface definitions
+   that external software needs to access kernel functions.
+   You need this to compile external kernel drivers.
 
-.. _computers-hardware-drivers-kernel-modules:
+.. _system-administration-kernel-versions:
 
-Hardware drivers / kernel modules
----------------------------------
+Version management
+------------------
 
-The boot process occurs in two steps using an initial RAM disk (*initrd* for
-short). This is composed of an archive with further drivers and programs.
+You can install several kernel versions in parallel.
+This ensures you always have an older version available if you need to revert after an error.
+Univention provides meta packages that always point to the recommended kernel version for Nubus for UCS.
+When you update the system, the system installs the new kernel version automatically, keeping your system current.
 
-The GRUB boot manager (see :ref:`grub`) loads the kernel and the *initrd* into
-the system memory, where the *initrd* archive is extracted and mounted as a
-temporary root file system. The real root file system is then mounted from this,
-before the temporary archive is removed and the system start implemented.
+.. _system-administration-kernel-modules:
 
-The drivers to be used are recognized automatically during system start and
-loaded via the :program:`udev` device manager. At this point, the necessary
-device links are also created under :file:`/dev/`. If drivers are not recognized
-(which can occur if no respective hardware IDs are registered or hardware is
-employed which cannot be recognized automatically, e.g., ISA boards), kernel
-modules to be loaded can be added via |UCSUCRV| :envvar:`kernel/modules`. If
-more than one kernel module is to be loaded, these must be separated by a
-semicolon. The |UCSUCRV| :envvar:`kernel/blacklist` can be used to configure a
-list of one or more kernel modules for which automatic loading should be
-prevented. Multiple entries must also be separated by a semicolon.
+Kernel modules and drivers
+---------------------------
 
-Unlike other operating systems, the Linux kernel (with very few exceptions)
-provides all drivers for hardware components from one source. For this reason,
-it is not normally necessary to install drivers from external sources
-subsequently.
+The kernel relies on modules and drivers to communicate with hardware and enable system functionality.
+This section explains how the boot process loads drivers,
+how you configure additional kernel modules,
+and how to integrate external drivers into your system.
 
-However, if external drivers or kernel modules are required, they can be
-integrated via the DKMS framework (Dynamic Kernel Module Support). This provides
-a standardized interface for kernel sources, which are then built automatically
-for every installed kernel (insofar as the source package is compatible with the
-respective kernel). For this to happen, the kernel header package
-:program:`linux-headers-amd64` must be installed in addition to the
-:program:`dkms` package. Please note that not all the external kernel modules
-are compatible with all kernels.
+.. _system-administration-kernel-modules-loading:
+
+Boot process and driver loading
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The boot process involves several stages.
+The boot loader loads the kernel and an initial RAM disk, *initrd* for short, into system memory.
+The *initrd* is a compressed archive containing essential drivers and programs.
+
+The system then extracts and mounts the *initrd* archive as a temporary root file system.
+Within this temporary environment, the system initializes hardware,
+loads additional drivers as needed,
+and locates the real root file system on disk.
+After mounting the real root file system,
+the system switches to it and removes the temporary *initrd* from memory.
+
+The GRUB boot manager handles the first stage of loading the kernel and *initrd*.
+For more information about GRUB configuration,
+see :external+uv-ucs-manual:ref:`grub`.
+
+.. TODO: Replace to cross-reference of grub once the content exists in this document.
+
+.. _system-administration-kernel-modules-detection:
+
+Automatic driver detection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :program:`udev` service detects and manages hardware devices automatically during system startup.
+It loads drivers and creates device files in the :file:`/dev/` directory so you can access the hardware.
+If the system doesn't detect the drivers you need,
+you can enable kernel modules through the :term:`UCR variable` :envvar:`kernel/modules`.
+This can happen if hardware vendors didn't register hardware IDs.
+Use the UCR variable :envvar:`kernel/blacklist` to prevent specific kernel modules from loading automatically.
+For both variables, separate multiple entries with a semicolon.
+
+.. _system-administration-kernel-modules-standard:
+
+Standard vs. external drivers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Linux kernel includes drivers for most common hardware.
+This means you typically don't need external driver installations for standard hardware.
+However, specialized hardware or newer devices might need external drivers or firmware.
+
+.. _system-administration-kernel-modules-external:
+
+External drivers and DKMS
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you need external drivers or kernel modules,
+you can integrate them through the DKMS framework (Dynamic Kernel Module Support).
+DKMS provides a standardized interface for kernel sources
+and builds them automatically for every installed kernel.
+The source package must be compatible with the kernel.
+External kernel modules aren't compatible with all kernel versions.
+
+To use DKMS, you need:
+
+* Root privileges on the system.
+* The kernel header package :program:`linux-headers-amd64`.
+* The :program:`dkms` package.
+* A C compiler and build tools, usually installed automatically as dependencies.
