@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-19 17:46+0000\n"
-"PO-Revision-Date: 2026-02-19 18:50+0100\n"
+"POT-Creation-Date: 2026-02-20 12:28+0000\n"
+"PO-Revision-Date: 2026-02-20 13:29+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -44,23 +44,32 @@ msgstr "Kapitel oder Thema"
 msgid "Change"
 msgstr "Änderung"
 
-#: ../../changelog.rst:27 ../../changelog.rst:31
+#: ../../changelog.rst:27 ../../changelog.rst:31 ../../changelog.rst:35
 msgid "Feb 2026"
 msgstr ":spelling:word:`Feb` 2026"
 
 #: ../../changelog.rst:28
+msgid ":ref:`system-administration-kernel`"
+msgstr ":ref:`system-administration-kernel`"
+
+#: ../../changelog.rst:29
+msgid "Add concept around Linux kernel."
+msgstr "Konzept rund um den Linux Kernel hinzugefügt."
+
+#: ../../changelog.rst:32
 msgid ":ref:`iam-user-create-wizard`"
 msgstr ":ref:`iam-user-create-wizard`"
 
-#: ../../changelog.rst:29
+#: ../../changelog.rst:33
 msgid "Add configuration options for *User Create Wizard*."
-msgstr "Konfigurationsoptionen für den *Assistenten zum Erstellen von Benutzer* hinzugefügt."
+msgstr ""
+"Konfigurationsoptionen für den *Assistenten zum Erstellen von Benutzer* "
+"hinzugefügt."
 
-#: ../../changelog.rst:32
+#: ../../changelog.rst:36
 msgid ":ref:`management-interface-license`"
 msgstr ":ref:`management-interface-license`"
 
-#: ../../changelog.rst:33
+#: ../../changelog.rst:37
 msgid "Add how to activate the UCS license."
 msgstr "Aktivieren der UCS-Lizenz hinzugefügt."
-

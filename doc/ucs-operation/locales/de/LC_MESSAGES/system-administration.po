@@ -1,0 +1,273 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+msgid ""
+msgstr ""
+"Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-23 11:34+0000\n"
+"PO-Revision-Date: 2026-02-23 12:34+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../system-administration/index.rst:8
+msgid "System administration"
+msgstr "Systemverwaltung"
+
+#: ../../system-administration/kernel.rst:7
+msgid "Kernel"
+msgstr "Kernel"
+
+#: ../../system-administration/kernel.rst:9
+msgid ""
+"The Linux kernel is the core of your operating system. It manages "
+"hardware resources like processors, memory, and devices, and enables "
+"communication between software applications and hardware."
+msgstr ""
+"Der Linux-Kernel ist der Kern Ihres Betriebssystems. Er verwaltet "
+"Hardwareressourcen wie Prozessoren, Speicher und Geräte und ermöglicht "
+"die Kommunikation zwischen Softwareanwendungen und Hardware."
+
+#: ../../system-administration/kernel.rst:13
+msgid ""
+"As a system administrator, you configure the kernel to support your "
+"hardware and optimize system performance. This section explains kernel "
+"packages, kernel versions, and kernel modules, and shows you how to "
+"manage drivers and custom kernel functionality in Nubus for UCS."
+msgstr ""
+"Als Systemadministrator konfigurieren Sie den Kernel, um Ihre Hardware zu"
+" unterstützen und die Systemleistung zu optimieren. Dieser Abschnitt "
+"erklärt Kernel-Pakete, Kernel-Versionen und Kernel-Module und zeigt "
+"Ihnen, wie Sie Treiber und benutzerdefinierte Kernel-Funktionalität in "
+"Nubus für UCS verwalten."
+
+#: ../../system-administration/kernel.rst:22
+msgid "Kernel packages"
+msgstr "Kernel-Pakete"
+
+#: ../../system-administration/kernel.rst:24
+msgid ""
+"The :external+uv-docs-overview:ref:`release-notes` contain information "
+"about the standard kernel version for each Nubus for UCS minor version. "
+"The Release Notes document the kernel version used, starting with the "
+"initial patch level release ``-0``. Typically, a Nubus for UCS system "
+"requires only one installed kernel image package. Nubus for UCS uses the "
+"following types of kernel packages:"
+msgstr ""
+"Die :external+uv-docs-overview:ref:`release-notes` enthalten "
+"Informationen zur Standardkernel-Version für jede Nubus für UCS Minor "
+"Version. Die Release Notes dokumentieren die verwendete Kernel-Version ab"
+" dem anfänglichen Patch-Level ``-0``. In der Regel benötigt ein Nubus für"
+" UCS-System nur ein installiertes Kernel-Image-Paket. Nubus für UCS "
+"verwendet die folgenden Arten von Kernel-Paketen:"
+
+#: ../../system-administration/kernel.rst:30
+msgid "Kernel image package"
+msgstr "Kernel-Image Paket"
+
+#: ../../system-administration/kernel.rst:31
+msgid ""
+"A *kernel image package* provides an executable kernel that you can "
+"install and run."
+msgstr ""
+"Ein *Kernel-Image Paket* stellt einen ausführbaren Kernel bereit, den Sie"
+" installieren und ausführen können."
+
+#: ../../system-administration/kernel.rst:34
+msgid "Kernel source package"
+msgstr "Kernel-Quelltext Paket"
+
+#: ../../system-administration/kernel.rst:35
+msgid ""
+"A *kernel source package* provides kernel source code. With it, you can "
+"create a customized kernel and activate or deactivate functions."
+msgstr ""
+"Ein *Kernel-Quelltext Paket* stellt Kernel-Quellcode bereit. Damit können"
+" Sie einen benutzerdefinierten Kernel erstellen und Funktionen aktivieren"
+" oder deaktivieren."
+
+#: ../../system-administration/kernel.rst:38
+msgid "Kernel header package"
+msgstr "Kernel-Header Paket"
+
+#: ../../system-administration/kernel.rst:39
+msgid ""
+"A *kernel header package* provides the interface definitions that "
+"external software needs to access kernel functions. You need this to "
+"compile external kernel drivers."
+msgstr ""
+"Ein *Kernel-Header Paket* stellt die Schnittstellendefinitionen bereit, "
+"die externe Software benötigt, um auf Kernel-Funktionen zuzugreifen. Dies"
+" benötigen Sie zum Kompilieren externer Kernel-Treiber."
+
+#: ../../system-administration/kernel.rst:46
+msgid "Version management"
+msgstr "Versionsverwaltung"
+
+#: ../../system-administration/kernel.rst:48
+msgid ""
+"You can install several kernel versions in parallel. This ensures you "
+"always have an older version available if you need to revert after an "
+"error. Univention provides meta packages that always point to the "
+"recommended kernel version for Nubus for UCS. When you update the system,"
+" the system installs the new kernel version automatically, keeping your "
+"system current."
+msgstr ""
+"Sie können mehrere Kernel-Versionen parallel installieren. Dies stellt "
+"sicher, dass Sie immer eine ältere Version verfügbar haben, falls Sie "
+"nach einem Fehler zurückkehren müssen. Univention stellt Meta-Pakete "
+"bereit, die immer auf die empfohlene Kernel-Version für Nubus für UCS "
+"verweisen. Wenn Sie das System aktualisieren, installiert das System die "
+"neue Kernel-Version automatisch und hält Ihr System auf dem aktuellen "
+"Stand."
+
+#: ../../system-administration/kernel.rst:56
+msgid "Kernel modules and drivers"
+msgstr "Kernelmodule und Treiber"
+
+#: ../../system-administration/kernel.rst:58
+msgid ""
+"The kernel relies on modules and drivers to communicate with hardware and"
+" enable system functionality. This section explains how the boot process "
+"loads drivers, how you configure additional kernel modules, and how to "
+"integrate external drivers into your system."
+msgstr ""
+"Der Kernel verwendet Module und Treiber zur Kommunikation mit Hardware "
+"und zur Aktivierung von Systemfunktionalität. Dieser Abschnitt erläutert,"
+" wie der Start-Prozess Treiber lädt, wie Sie zusätzliche Kernelmodule "
+"konfigurieren, und wie Sie externe Treiber in Ihr System integrieren."
+
+#: ../../system-administration/kernel.rst:66
+msgid "Boot process and driver loading"
+msgstr "Boot-Prozess und Laden von Treibern"
+
+#: ../../system-administration/kernel.rst:68
+msgid ""
+"The boot process involves several stages. The boot loader loads the "
+"kernel and an initial RAM disk, *initrd* for short, into system memory. "
+"The *initrd* is a compressed archive containing essential drivers and "
+"programs."
+msgstr ""
+"Der Boot-Prozess besteht aus mehreren Stufen. Der Bootloader lädt den "
+"Kernel und ein initiales RAM-Laufwerk, kurz *initrd*, in den "
+"Arbeitsspeicher. Das *initrd* ist ein komprimiertes Archiv mit "
+"wesentlichen Treibern und Programmen."
+
+#: ../../system-administration/kernel.rst:72
+msgid ""
+"The system then extracts and mounts the *initrd* archive as a temporary "
+"root file system. Within this temporary environment, the system "
+"initializes hardware, loads additional drivers as needed, and locates the"
+" real root file system on disk. After mounting the real root file system,"
+" the system switches to it and removes the temporary *initrd* from "
+"memory."
+msgstr ""
+"Das System entpackt und bindet dann das *initrd*-Archiv als temporäres "
+"Root-Dateisystem ein. In dieser temporären Umgebung initialisiert das "
+"System die Hardware, lädt bei Bedarf zusätzliche Treiber und findet das "
+"echte Root-Dateisystem auf der Festplatte. Nach dem Einbinden des echten "
+":spelling:word:`Root-Dateisystems` wechselt das System zu diesem und "
+"entfernt das temporäre *initrd* aus dem Speicher."
+
+#: ../../system-administration/kernel.rst:79
+msgid ""
+"The GRUB boot manager handles the first stage of loading the kernel and "
+"*initrd*. For more information about GRUB configuration, see :external"
+"+uv-ucs-manual:ref:`grub`."
+msgstr ""
+"Der GRUB-Boot-Manager übernimmt die erste Stufe beim Laden des Kernels "
+"und *initrd*. Weitere Informationen zur GRUB-Konfiguration finden Sie "
+"unter :external+uv-ucs-manual:ref:`grub`."
+
+#: ../../system-administration/kernel.rst:88
+msgid "Automatic driver detection"
+msgstr "Automatische Treiberkennung"
+
+#: ../../system-administration/kernel.rst:90
+msgid ""
+"The :program:`udev` service detects and manages hardware devices "
+"automatically during system startup. It loads drivers and creates device "
+"files in the :file:`/dev/` directory so you can access the hardware. If "
+"the system doesn't detect the drivers you need, you can enable kernel "
+"modules through the :term:`UCR variable` :envvar:`kernel/modules`. This "
+"can happen if hardware vendors didn't register hardware IDs. Use the UCR "
+"variable :envvar:`kernel/blacklist` to prevent specific kernel modules "
+"from loading automatically. For both variables, separate multiple entries"
+" with a semicolon."
+msgstr ""
+"Der :program:`udev`-Dienst erkennt und verwaltet Hardwaregeräte "
+"automatisch während des Systemstarts. Er lädt Treiber und erstellt "
+"Gerätedateien im :file:`/dev/`-Verzeichnis, damit Sie auf die Hardware "
+"zugreifen können. Wenn das System die benötigten Treiber nicht erkennt, "
+"können Sie Kernelmodule über die :term:`UCR-Variable` "
+":envvar:`kernel/modules` aktivieren. Dies kann vorkommen, wenn "
+"Hardwarehersteller Hardware-IDs nicht registriert haben. Verwenden Sie "
+"die UCR-Variable :envvar:`kernel/blacklist`, um bestimmte Kernelmodule zu"
+" verhindern, dass sie automatisch geladen werden. Für beide Variablen "
+"werden mehrere Einträge durch ein Semikolon getrennt."
+
+#: ../../system-administration/kernel.rst:101
+msgid "Standard vs. external drivers"
+msgstr "Standard- und externe Treiber"
+
+#: ../../system-administration/kernel.rst:103
+msgid ""
+"The Linux kernel includes drivers for most common hardware. This means "
+"you typically don't need external driver installations for standard "
+"hardware. However, specialized hardware or newer devices might need "
+"external drivers or firmware."
+msgstr ""
+"Der Linux-Kernel enthält Treiber für die meiste Standard-Hardware. Das "
+"bedeutet, dass Sie in der Regel keine externe Treiberinstallation für "
+"Standard-Hardware benötigen. Allerdings benötigen spezialisierte Hardware"
+" oder neuere Geräte möglicherweise externe Treiber oder Firmware."
+
+#: ../../system-administration/kernel.rst:110
+msgid "External drivers and DKMS"
+msgstr "Externe Treiber und DKMS"
+
+#: ../../system-administration/kernel.rst:112
+msgid ""
+"If you need external drivers or kernel modules, you can integrate them "
+"through the DKMS framework (Dynamic Kernel Module Support). DKMS provides"
+" a standardized interface for kernel sources and builds them "
+"automatically for every installed kernel. The source package must be "
+"compatible with the kernel. External kernel modules aren't compatible "
+"with all kernel versions."
+msgstr ""
+"Wenn Sie externe Treiber oder Kernelmodule benötigen, können Sie diese "
+"über das DKMS-Framework (Dynamic Kernel Module Support) integrieren. DKMS"
+" stellt eine standardisierte Schnittstelle für Kernel-Quellen bereit und "
+"erstellt diese automatisch für jeden installierten Kernel. Das Quellpaket"
+" muss mit dem Kernel kompatibel sein. "
+"Externe Kernelmodule sind nicht mit allen Kernel-Versionen kompatibel."
+
+#: ../../system-administration/kernel.rst:119
+msgid "To use DKMS, you need:"
+msgstr "Um DKMS zu verwenden, benötigen Sie:"
+
+#: ../../system-administration/kernel.rst:121
+msgid "Root privileges on the system."
+msgstr ":spelling:word:`Root-Berechtigungen` auf dem System."
+
+#: ../../system-administration/kernel.rst:122
+msgid "The kernel header package :program:`linux-headers-amd64`."
+msgstr "Das Kernel-Header-Paket :program:`linux-headers-amd64`."
+
+#: ../../system-administration/kernel.rst:123
+msgid "The :program:`dkms` package."
+msgstr "Das :program:`dkms`-Paket."
+
+#: ../../system-administration/kernel.rst:124
+msgid ""
+"A C compiler and build tools, usually installed automatically as "
+"dependencies."
+msgstr ""
+"Einen C-Compiler und Build-Tools, normalerweise automatisch als "
+"Abhängigkeiten installiert."
