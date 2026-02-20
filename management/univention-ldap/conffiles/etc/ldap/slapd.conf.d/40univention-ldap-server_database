@@ -5,6 +5,16 @@ print('\n')
 print('database\t%(ldap/database/type)s' % configRegistry)
 print('suffix\t\t"%(ldap/base)s"' % configRegistry)
 
+# changes DB
+if configRegistry.is_true('ldap/database/changes', False) and configRegistry.get('server/role') == 'domaincontroller_master':
+    print('')
+    print('# log all changes to user DB in "changes" DB')
+    print('overlay accesslog')
+    print('logdb cn=changes')
+    print('logops writes')
+    print('logold (objectClass=univentionObject)')
+    print('logoldall true')
+
 print('')
 if configRegistry.get('ldap/translogfile'):
     print("overlay\t\ttranslog")

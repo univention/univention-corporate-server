@@ -46,6 +46,7 @@ Variables: ldap/database/internal/overlay/dds
 Variables: ldap/database/internal/overlay/dds/max-ttl
 Variables: ldap/database/internal/overlay/dds/min-ttl
 Variables: ldap/database/internal/overlay/dds/default-ttl
+Variables: ldap/database/changes
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -127,6 +128,7 @@ Variables: ldap/overlay/sock
 Variables: ldap/overlay/sock/sockops
 Variables: ldap/refint
 Variables: server/role
+Variables: ldap/database/changes
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -162,4 +164,13 @@ Variables: ldap/database/internal/overlay/dds/min-ttl
 Variables: ldap/database/internal/overlay/dds/default-ttl
 Variables: ldap/hostdn
 Variables: ldap/base
+Variables: server/role
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/93changes
+Variables: ldap/database/changes
+Variables: ldap/hostdn
+Variables: ldap/base
+Variables: ldap/database/mdb/maxsize
 Variables: server/role

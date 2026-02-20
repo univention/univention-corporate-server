@@ -1,0 +1,21 @@
+### cn=changes backend
+@!@
+DATABASE_CHANGES = """\
+database   mdb
+suffix     "cn=changes"
+directory  "/var/lib/univention-ldap/changes"
+maxsize    %(ldap/database/mdb/maxsize)s
+envflags   nosync
+checkpoint 0 1
+rootdn     "cn=admin,%(ldap/base)s"
+index      entryCSN eq
+index      entryUUID eq
+index      reqStart eq
+# TODO which index
+# TODO add ACL
+"""
+# changes db
+if configRegistry.is_true('ldap/database/changes', False):
+    if configRegistry['server/role'] == 'domaincontroller_master':
+        print(DATABASE_CHANGES % configRegistry)
+@!@
