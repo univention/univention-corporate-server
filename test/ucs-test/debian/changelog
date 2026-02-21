@@ -1,3 +1,9 @@
+ucs-test (12.4.35) unstable; urgency=medium
+
+  * Bug #58844: recyclebin test must not wait for Samba if it's not installed
+
+ -- Arvid Requate <requate@univention.de>  Sat, 21 Feb 2026 15:41:39 +0100
+
 ucs-test (12.4.34) unstable; urgency=medium
 
   * Bug #58844: Adjust tests to the recyclebin S4-/AD-C changes

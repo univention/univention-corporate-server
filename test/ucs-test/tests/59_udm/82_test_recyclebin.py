@@ -390,16 +390,15 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
         position=container_recyclebin_policy,
     )
 
-    # Next, to avoid flakyness on non-primary nodes, wait for object to receive the final sambaSID
-    verify_ldap_object(user_dn, should_exist=True)  # first wait for initial object replication, to give the S4-Connector on the primary enough time
-    wait_for_listener_replication()
-    res = wait_for_drs_replication(
-        ldap_filter=f'(&(sAMAccountName={username})(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512)))',  # filter copied from UCSTestUDM.ad_object_identifying_filter
-        attrs=['objectSid'],
-    )
-    sid = str(ndr_unpack(security.dom_sid, res[0]["objectSid"][0]))
-    verify_ldap_object(user_dn, expected_attr={'sambaSID': [sid]}, should_exist=True)
-    # Ok, good to go with the actual test
+    if package_installed('univention-samba4'):  # to avoid flakyness on non-primary nodes, wait for object to receive the final sambaSID
+        verify_ldap_object(user_dn, should_exist=True)  # first wait for initial object replication, to give the S4-Connector on the primary enough time
+        wait_for_listener_replication()
+        res = wait_for_drs_replication(
+            ldap_filter=f'(&(sAMAccountName={username})(&(objectClass=user)(!(objectClass=computer))(userAccountControl:1.2.840.113556.1.4.803:=512)))',  # filter copied from UCSTestUDM.ad_object_identifying_filter
+            attrs=['objectSid'],
+        )
+        sid = str(ndr_unpack(security.dom_sid, res[0]["objectSid"][0]))
+        verify_ldap_object(user_dn, expected_attr={'sambaSID': [sid]}, should_exist=True)
 
     original_props = udm.get_object(OT_USERS, user_dn)
     user_object_id = original_props['univentionObjectIdentifier'][0]
