@@ -1,3 +1,9 @@
+ucs-test (12.4.37) unstable; urgency=medium
+
+  * Bug #58844: wait for listener in test case and skip the xfails in this case
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Feb 2026 15:29:24 +0100
+
 ucs-test (12.4.36) unstable; urgency=medium
 
   * Bug #58844: fix for ad member mode

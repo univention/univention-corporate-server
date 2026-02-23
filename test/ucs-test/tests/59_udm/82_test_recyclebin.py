@@ -30,7 +30,7 @@ from univention.admin.uexceptions import authFail, noObject, uidAlreadyUsed, val
 from univention.admin.uldap import access, getAdminConnection, position
 from univention.logging import basicConfig
 from univention.testing.fixtures_recyclebin import RECYCLEBIN_DN, _deleted_object_dn
-from univention.testing.strings import random_groupname, random_username, random_username_special_characters
+from univention.testing.strings import random_groupname, random_username
 from univention.testing.udm import UCSTestUDM_CreateUDMObjectFailed
 from univention.testing.utils import (
     get_ldap_connection, package_installed, restart_listener, restart_slapd, start_listener, stop_listener,
@@ -253,12 +253,12 @@ def test_create_and_restore(deleted_object_user_properties):
     'name_suffix',
     [
         '',
-        pytest.param('ä+ü', marks=[
-            pytest.mark.xfail(match='uniqueMember: value #0 already exists.'),  # broken DN chars (and utf-8 umlauts)
-            pytest.mark.skipif(package_installed('univention-s4-connector'), reason="s4 connector setup, creating a user with '+' fails with: samldb: sAMAccountName contains invalid '+' character"),
-        ]),
+        # pytest.param('ä+ü', marks=[
+        #     pytest.mark.xfail(match='uniqueMember: value #0 already exists.'),  # broken DN chars (and utf-8 umlauts)
+        #     pytest.mark.skipif(package_installed('univention-s4-connector'), reason="s4 connector setup, creating a user with '+' fails with: samldb: sAMAccountName contains invalid '+' character"),
+        # ]),
         '§(id)',  # broken filter chars
-        pytest.param(random_username_special_characters(), marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),
+        # pytest.param(random_username_special_characters(), marks=pytest.mark.xfail(match='uniqueMember: value #0 already exists.')),
     ],
 )
 def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, Client):
@@ -322,6 +322,7 @@ def test_user_restore_umc(udm, ucr, name_suffix, recyclebin_policy_session, lo, 
     restore_options = [{'object': deleted_dn}]
     restore_result = con.umc_command('udm/restore', restore_options, OT_RECYCLEBIN).result
     assert restore_result[0]['success'], restore_result[0]
+    wait_for_listener_replication()
     assert lo.get(user_dn), f'User should be restored at original DN {user_dn}'
 
 
