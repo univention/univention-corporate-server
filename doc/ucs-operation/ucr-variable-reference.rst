@@ -198,6 +198,70 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+
+.. envvar:: grub/append
+
+   Use this variable to pass additional options to the Linux kernel.
+   For a complete list of available kernel parameters,
+   see `Linux Kernel Parameters <https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html>`_.
+
+   For more information about configuring the GRUB boot manager,
+   see :ref:`system-administration-boot-manager-configuration`.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: grub/bootsplash
+
+   Controls whether GRUB displays a graphical startup animation when your system boots.
+   When set to ``splash``,
+   GRUB displays the animation.
+   When set to ``nosplash`` or unset,
+   GRUB doesn't display an animation.
+
+   For more information about configuring the GRUB boot manager,
+   see :ref:`system-administration-boot-manager-configuration`.
+
+   :Default value: not set
+   :Possible values: ``splash``, ``nosplash``, not set
+   :Type: string
+
+
+.. envvar:: grub/gfxmode
+
+   Specifies the graphical resolution for the boot menu.
+   Use the format :samp:`{HORIZONTAL}x{VERTICAL}@{COLORDEPTHBIT}`,
+   for example ``1024x768@16``.
+   Your system's VESA BIOS supports only specific resolutions.
+
+   For more information about available VESA modes,
+   see `VESA BIOS Extensions <https://en.wikipedia.org/wiki/VESA_BIOS_Extensions>`_.
+
+   For more information about configuring the GRUB boot manager,
+   see :ref:`system-administration-boot-manager-configuration`.
+
+   :Default value: ``800x600@16``
+   :Type: string
+
+
+.. envvar:: grub/timeout
+
+   Specifies how long in seconds the boot menu waits for user input
+   before GRUB boots the default kernel.
+   When you set this to ``0``,
+   GRUB boots the default kernel immediately.
+   When you set this to ``-1``,
+   you must select the kernel manually.
+
+   For more information about configuring the GRUB boot manager,
+   see :ref:`system-administration-boot-manager-configuration`.
+
+   :Default value: ``5``
+   :Possible values: integer, ``0`` for immediate boot, ``-1`` for manual selection
+   :Type: integer
+
+
 .. envvar:: ldap/master
 
    Contains the fully qualified domain name of the domain's Primary Directory Node.
