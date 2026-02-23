@@ -1,3 +1,9 @@
+ucs-test (12.4.36) unstable; urgency=medium
+
+  * Bug #58844: fix for ad member mode
+
+ -- Felix Botner <botner@univention.de>  Mon, 23 Feb 2026 14:22:25 +0100
+
 ucs-test (12.4.35) unstable; urgency=medium
 
   * Bug #58844: recyclebin test must not wait for Samba if it's not installed

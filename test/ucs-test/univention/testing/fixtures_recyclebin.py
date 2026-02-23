@@ -12,6 +12,7 @@ import pytest
 from ldap.dn import escape_dn_chars
 
 from univention.config_registry import ucr as _ucr
+from univention.lib.admember import is_domain_in_admember_mode
 from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import restart_listener, verify_ldap_object
@@ -181,4 +182,12 @@ def deleted_object_user_properties(ldap_base) -> SimpleNamespace:
             'hasSubordinates': [b'FALSE'],
         },
     }
+
+    if is_domain_in_admember_mode():
+        # modify Domain Admins not allowed in ad member mode
+        data['ldap_attrs']['memberOf'] = [
+            x for x in data['ldap_attrs']['memberOf']
+            if not x.decode('UTF-8').startswith('cn=Domain Admins,')
+        ]
+
     return SimpleNamespace(**data)
