@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 11:34+0000\n"
-"PO-Revision-Date: 2026-02-23 12:34+0100\n"
+"POT-Creation-Date: 2026-02-24 11:18+0000\n"
+"PO-Revision-Date: 2026-02-24 12:19+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -15,6 +15,185 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: ../../system-administration/boot-manager.rst:7
+msgid "Boot manager"
+msgstr "Boot-Manager"
+
+#: ../../system-administration/boot-manager.rst:9
+msgid ""
+"In Nubus for UCS, GRUB serves as the boot manager. GRUB provides a menu "
+"where you can select which Linux kernel to boot. It can also access file "
+"systems directly and load an alternative kernel if the primary kernel "
+"fails to boot, so you can recover without external media. See :numref"
+":`system-administration-boot-manager-figure` for an example of the GRUB "
+"menu interface."
+msgstr ""
+"In Nubus für UCS ist GRUB der Boot-Manager. GRUB stellt ein Menü bereit, "
+"in dem Sie auswählen können, welchen Linux-Kernel Sie starten möchten. Es"
+" kann auch direkt auf Dateisysteme zugreifen und einen alternativen "
+"Kernel laden, wenn der primäre Kernel nicht startet, sodass Sie ohne "
+"externe Medien wiederherstellen können. :numref:`system-administration-"
+"boot-manager-figure` zeigt ein Beispiel der GRUB-Menüoberfläche."
+
+#: ../../system-administration/boot-manager.rst:18
+#: ../../system-administration/boot-manager.rst:21
+msgid "GRUB boot manager menu"
+msgstr "GRUB-Boot-Manager-Menü"
+
+#: ../../system-administration/boot-manager.rst:25
+msgid "`GRUB <https://www.gnu.org/software/grub/manual/grub/>`_"
+msgstr "`GRUB <https://www.gnu.org/software/grub/manual/grub/>`_"
+
+#: ../../system-administration/boot-manager.rst:26
+msgid "for the documentation of GRUB."
+msgstr "für die Dokumentation von GRUB."
+
+#: ../../system-administration/boot-manager.rst:31
+msgid "Boot loading process"
+msgstr "Boot-Prozess"
+
+#: ../../system-administration/boot-manager.rst:33
+msgid ""
+"GRUB loads in two stages. Your system stores the first stage in the "
+"firmware boot area. This is either the Master Boot Record (BIOS) or the "
+"EFI System Partition (UEFI). The first stage then loads the second stage,"
+" which handles the boot menu and kernel loading. See the :ref:`system-"
+"administration-boot-manager-kernel-selection` section for information on "
+"how to interact with the boot menu during startup."
+msgstr ""
+"GRUB wird in zwei Stufen geladen. Ihr System speichert die erste Stufe im"
+" Firmware-Boot-Bereich. Dies ist entweder der Master Boot Record (BIOS) "
+"oder die EFI System Partition (UEFI). Die erste Stufe lädt dann die "
+"zweite Stufe, die das Boot-Menü und das Laden des Kernels verwaltet. "
+"Weitere Informationen zur Interaktion mit dem Boot-Menü beim Starten "
+"finden Sie im Abschnitt :ref:`system-administration-boot-manager-kernel-"
+"selection`."
+
+#: ../../system-administration/boot-manager.rst:44
+msgid "Kernel selection"
+msgstr "Kernel-Auswahl"
+
+#: ../../system-administration/boot-manager.rst:46
+msgid ""
+"GRUB stores kernel selection options in the file "
+":file:`/boot/grub/grub.cfg`. GRUB automatically generates this file from "
+"your system configuration and kernel packages, so don't edit it manually."
+" The boot menu automatically shows all installed kernel packages."
+msgstr ""
+"GRUB speichert Kernel-Auswahloptionen in der Datei "
+":file:`/boot/grub/grub.cfg`. GRUB generiert diese Datei automatisch aus "
+"Ihrer Systemkonfiguration und Kernel-Paketen, daher darf man sie nicht "
+"manuell bearbeiten. Das Boot-Menü zeigt automatisch alle installierten "
+"Kernel-Pakete an."
+
+#: ../../system-administration/boot-manager.rst:51
+msgid ""
+"During the boot process, GRUB displays a menu with the available kernel "
+"options. GRUB selects the first kernel by default. Use the arrow keys to "
+"navigate between options. Press :kbd:`Enter` to boot the selected kernel."
+" If you don't select a kernel within 5 seconds, GRUB automatically boots "
+"the default kernel. You can customize this timeout in the :ref:`system-"
+"administration-boot-manager-configuration` section."
+msgstr ""
+"Während des Boot-Prozesses zeigt GRUB ein Menü mit den verfügbaren "
+"Kernel-Optionen an. GRUB wählt standardmäßig den ersten Kernel aus. "
+"Verwenden Sie die Pfeiltasten zum Navigieren zwischen den Optionen. "
+"Drücken Sie :kbd:`Enter`, um den ausgewählten Kernel zu starten. Wenn Sie"
+" innerhalb von 5 Sekunden keinen Kernel auswählen, startet GRUB "
+"automatisch den Standard-Kernel. Sie können diese Verzögerung im "
+"Abschnitt :ref:`system-administration-boot-manager-configuration` "
+"anpassen."
+
+#: ../../system-administration/boot-manager.rst:60
+msgid ""
+"You can start the memory test program :command:`Memtest86+x64.bin` by "
+"selecting the option :guilabel:`Memory test` from the boot menu. Use this"
+" to diagnose potential memory issues if you experience system instability"
+" or crashes. If :command:`Memtest86+x64.bin` detects errors, your system "
+"likely has faulty RAM that needs replacement."
+msgstr ""
+"Sie können das Speichertestprogramm :command:`Memtest86+x64.bin` starten,"
+" indem Sie die Option :guilabel:`Memory test` aus dem Boot-Menü "
+"auswählen. Nutzen Sie dies, um mögliche Speicherprobleme zu "
+"diagnostizieren, wenn Sie Systeminstabilität oder Abstürze erleben. Wenn "
+":command:`Memtest86+x64.bin` Fehler erkennt, hat Ihr System "
+"wahrscheinlich fehlerhaften RAM, der ausgetauscht werden muss."
+
+#: ../../system-administration/boot-manager.rst:70
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: ../../system-administration/boot-manager.rst:72
+msgid ""
+"To configure GRUB, you need root privileges. You can configure GRUB using"
+" the command line or the *Management UI*."
+msgstr ""
+"Um GRUB zu konfigurieren, benötigen Sie Root-Berechtigungen. Sie können "
+"GRUB über die Befehlszeile oder die *Management UI* konfigurieren."
+
+#: ../../system-administration/boot-manager.rst:78
+msgid ""
+"By default, you have five seconds to select a kernel to boot. You can "
+"customize this delay using the :term:`UCR variable` "
+":envvar:`grub/timeout`. For available timeout options and their behavior,"
+" refer to the :envvar:`grub/timeout` variable documentation."
+msgstr ""
+"Standardmäßig haben Sie fünf Sekunden Zeit, um einen Kernel zum Starten "
+"auszuwählen. Sie können diese Verzögerung mit der :term:`UCR-Variable` "
+":envvar:`grub/timeout` anpassen. Weitere Informationen zu verfügbaren "
+"Optionen für die Verzögerung und deren Verhalten finden Sie in der "
+"Dokumentation der Variable :envvar:`grub/timeout`."
+
+#: ../../system-administration/boot-manager.rst:83
+#, python-brace-format
+msgid ""
+"By default, the screen displays at ``800x600`` pixels with 16-bit color "
+"depth. You can change this resolution using the UCR variable "
+":envvar:`grub/gfxmode`. You can only use resolutions that your system's "
+"VESA BIOS supports. Before finalizing resolution changes, test them "
+"carefully and ensure you can access the system in recovery mode if "
+"needed. The format for specifying a resolution is "
+":samp:`{HORIZONTAL}x{VERTICAL}@{COLORDEPTHBIT}`, for example: "
+"``1024x768@16``. For available VESA modes, see `VESA BIOS Extensions "
+"<https://en.wikipedia.org/wiki/VESA_BIOS_Extensions>`_."
+msgstr ""
+"Standardmäßig wird der Bildschirm mit ``800x600`` Pixeln und 16-Bit-"
+"Farbtiefe angezeigt. Sie können diese Auflösung mit der UCR-Variable "
+":envvar:`grub/gfxmode` ändern. Sie können nur Auflösungen verwenden, die "
+"das VESA BIOS Ihres Systems unterstützt. Testen Sie die "
+"Auflösungsänderungen sorgfältig, bevor Sie sie abschließen, und stellen "
+"Sie sicher, dass Sie auf das System im :spelling:word:`Recovery-Modus` "
+"zugreifen können, falls erforderlich. Das Format für die Angabe einer "
+"Auflösung ist :samp:`{HORIZONTAL}x{VERTICAL}@{COLORDEPTHBIT}`, zum "
+"Beispiel: ``1024x768@16``. Weitere Informationen zu verfügbaren VESA-Modi"
+" finden Sie unter `VESA BIOS Extensions "
+"<https://en.wikipedia.org/wiki/VESA_BIOS_Extensions>`_."
+
+#: ../../system-administration/boot-manager.rst:92
+msgid ""
+"You can pass kernel options to the Linux kernel with the UCR variable "
+":envvar:`grub/append`. Common kernel options include serial console "
+"parameters such as ``console=ttyS0``, ACPI settings such as ``noacpi``, "
+"and memory management options. For the kernel command-line parameters, "
+"see :external+linux-kernel-docs:ref:`kernelparameters`."
+msgstr ""
+"Sie können Kernel-Optionen an den Linux-Kernel mit der UCR-Variable "
+":envvar:`grub/append` übergeben. Häufige Kernel-Optionen umfassen "
+"Parameter für die serielle Konsole wie ``console=ttyS0``, ACPI-"
+"Einstellungen wie ``noacpi`` und Speicherverwaltungsoptionen. Weitere "
+"Informationen zu einer vollständigen Liste der verfügbaren Parameter "
+"finden Sie in :external+linux-kernel-docs:ref:`kernelparameters`."
+
+#: ../../system-administration/boot-manager.rst:100
+msgid ""
+"You can deactivate the splash screen—the visual representation of the "
+"boot process—by setting the UCR variable :envvar:`grub/bootsplash` to "
+"``nosplash``."
+msgstr ""
+"Sie können den Splash-Screen – die visuelle Darstellung des Boot-"
+"Prozesses – deaktivieren, indem Sie die UCR-Variable "
+":envvar:`grub/bootsplash` auf ``nosplash`` setzen."
 
 #: ../../system-administration/index.rst:8
 msgid "System administration"
@@ -177,19 +356,19 @@ msgstr ""
 
 #: ../../system-administration/kernel.rst:79
 msgid ""
-"The GRUB boot manager handles the first stage of loading the kernel and "
-"*initrd*. For more information about GRUB configuration, see :external"
-"+uv-ucs-manual:ref:`grub`."
+"The boot manager handles the first stage of loading the kernel and "
+"*initrd*. For more information about the boot manager, see :ref:`system-"
+"administration-boot-manager`."
 msgstr ""
-"Der GRUB-Boot-Manager übernimmt die erste Stufe beim Laden des Kernels "
-"und *initrd*. Weitere Informationen zur GRUB-Konfiguration finden Sie "
-"unter :external+uv-ucs-manual:ref:`grub`."
+"Der Boot-Manager übernimmt die erste Stufe beim Laden des Kernels "
+"und *initrd*. Weitere Informationen über den Boot-Manager finden Sie "
+"unter :ref:`system-administration-boot-manager`."
 
-#: ../../system-administration/kernel.rst:88
+#: ../../system-administration/kernel.rst:86
 msgid "Automatic driver detection"
 msgstr "Automatische Treiberkennung"
 
-#: ../../system-administration/kernel.rst:90
+#: ../../system-administration/kernel.rst:88
 msgid ""
 "The :program:`udev` service detects and manages hardware devices "
 "automatically during system startup. It loads drivers and creates device "
@@ -212,11 +391,11 @@ msgstr ""
 " verhindern, dass sie automatisch geladen werden. Für beide Variablen "
 "werden mehrere Einträge durch ein Semikolon getrennt."
 
-#: ../../system-administration/kernel.rst:101
+#: ../../system-administration/kernel.rst:99
 msgid "Standard vs. external drivers"
 msgstr "Standard- und externe Treiber"
 
-#: ../../system-administration/kernel.rst:103
+#: ../../system-administration/kernel.rst:101
 msgid ""
 "The Linux kernel includes drivers for most common hardware. This means "
 "you typically don't need external driver installations for standard "
@@ -228,11 +407,11 @@ msgstr ""
 "Standard-Hardware benötigen. Allerdings benötigen spezialisierte Hardware"
 " oder neuere Geräte möglicherweise externe Treiber oder Firmware."
 
-#: ../../system-administration/kernel.rst:110
+#: ../../system-administration/kernel.rst:108
 msgid "External drivers and DKMS"
 msgstr "Externe Treiber und DKMS"
 
-#: ../../system-administration/kernel.rst:112
+#: ../../system-administration/kernel.rst:110
 msgid ""
 "If you need external drivers or kernel modules, you can integrate them "
 "through the DKMS framework (Dynamic Kernel Module Support). DKMS provides"
@@ -245,29 +424,30 @@ msgstr ""
 "über das DKMS-Framework (Dynamic Kernel Module Support) integrieren. DKMS"
 " stellt eine standardisierte Schnittstelle für Kernel-Quellen bereit und "
 "erstellt diese automatisch für jeden installierten Kernel. Das Quellpaket"
-" muss mit dem Kernel kompatibel sein. "
-"Externe Kernelmodule sind nicht mit allen Kernel-Versionen kompatibel."
+" muss mit dem Kernel kompatibel sein. Externe Kernelmodule sind nicht mit"
+" allen Kernel-Versionen kompatibel."
 
-#: ../../system-administration/kernel.rst:119
+#: ../../system-administration/kernel.rst:117
 msgid "To use DKMS, you need:"
 msgstr "Um DKMS zu verwenden, benötigen Sie:"
 
-#: ../../system-administration/kernel.rst:121
+#: ../../system-administration/kernel.rst:119
 msgid "Root privileges on the system."
-msgstr ":spelling:word:`Root-Berechtigungen` auf dem System."
+msgstr "Root-Berechtigungen auf dem System."
 
-#: ../../system-administration/kernel.rst:122
+#: ../../system-administration/kernel.rst:120
 msgid "The kernel header package :program:`linux-headers-amd64`."
 msgstr "Das Kernel-Header-Paket :program:`linux-headers-amd64`."
 
-#: ../../system-administration/kernel.rst:123
+#: ../../system-administration/kernel.rst:121
 msgid "The :program:`dkms` package."
 msgstr "Das :program:`dkms`-Paket."
 
-#: ../../system-administration/kernel.rst:124
+#: ../../system-administration/kernel.rst:122
 msgid ""
 "A C compiler and build tools, usually installed automatically as "
 "dependencies."
 msgstr ""
 "Einen C-Compiler und Build-Tools, normalerweise automatisch als "
 "Abhängigkeiten installiert."
+
