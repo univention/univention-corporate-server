@@ -12,3 +12,4 @@ System administration
 .. toctree::
 
    kernel
+   boot-manager
