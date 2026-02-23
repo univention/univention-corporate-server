@@ -6,43 +6,98 @@
 Boot manager
 ============
 
-In |UCSUCS| GNU GRUB 2 is used as the boot manager. GRUB provides a menu which
-allows the selection of a Linux kernel or another operating system to be booted.
-GRUB can also access file systems directly and can thus, for example, load
-another kernel in case of an error.
+In Nubus for UCS, GRUB serves as the boot manager.
+GRUB provides a menu where you can select which Linux kernel to boot.
+It can also access file systems directly
+and load an alternative kernel if the primary kernel fails to boot,
+so you can recover without external media.
+See :numref:`system-administration-boot-manager-figure` for an example of the GRUB menu interface.
 
-.. _grub-selection:
+.. _system-administration-boot-manager-figure:
 
 .. figure:: /images/computers_grub.*
-   :alt: GRUB menu
+   :alt: GRUB boot manager menu
 
-   GRUB menu
+   GRUB boot manager menu
 
-GRUB gets loaded in a two-step procedure; in the Master Boot Record of the hard
-drive, the Stage 1 loader is written which refers to the data of Stage 2, which
-in turn manages the rest of the boot procedure.
+.. seealso::
 
-The selection of kernels to be started in the boot menu is stored in the file
-:file:`/boot/grub/grub.cfg`. This file is generated automatically; all installed
-kernel packages are available for selection. The memory test program
-:command:`Memtest86+` can be started by selecting the option :guilabel:`Memory
-test` and performs a consistency check for the main memory.
+   `GRUB <https://www.gnu.org/software/grub/manual/grub/>`_
+      for the documentation of GRUB.
 
-There is a five second waiting period during which the kernel to be booted can
-be selected. This delay can be changed via the |UCSUCRV| :envvar:`grub/timeout`.
+.. _system-administration-boot-manager-loading:
 
-By default a screen size of ``800x600`` pixels and 16 Bit color depth is preset.
-A different value can be set via the |UCSUCRV| :envvar:`grub/gfxmode`. Only
-resolutions are supported which can be set via VESA BIOS extensions. A list of
-available modes can be found in `VESA BIOS Extensions
-<w-vesa-bios-extensions_>`_. The input must be specified in the format
-:samp:`{HORIZONTAL}x{VERTICAL}@{COLOURDEPTHBIT}`, so for example
-``1024x768@16``.
+Boot loading process
+--------------------
 
-Kernel options for the started Linux kernel can be passed with the |UCSUCRV|
-:envvar:`grub/append`. |UCSUCRV| :envvar:`grub/xenhopt` can be used to pass
-options to the Xen hypervisor.
+GRUB loads in two stages.
+Your system stores the first stage in the firmware boot area.
+This is either the Master Boot Record (BIOS)
+or the EFI System Partition (UEFI).
+The first stage then loads the second stage, which handles the boot menu and kernel loading.
+See the :ref:`system-administration-boot-manager-kernel-selection` section
+for information on how to interact with the boot menu during startup.
 
-The graphic representation of the boot procedure - the so-called splash screen -
-can be deactivated by setting |UCSUCRV| :envvar:`grub/bootsplash` to
-``nosplash``.
+.. _system-administration-boot-manager-kernel-selection:
+
+Kernel selection
+----------------
+
+GRUB stores kernel selection options in the file :file:`/boot/grub/grub.cfg`.
+GRUB automatically generates this file from your system configuration and kernel packages,
+so don't edit it manually.
+The boot menu automatically shows all installed kernel packages.
+
+During the boot process, GRUB displays a menu with the available kernel options.
+GRUB selects the first kernel by default.
+Use the arrow keys to navigate between options.
+Press :kbd:`Enter` to boot the selected kernel.
+If you don't select a kernel within 5 seconds,
+GRUB automatically boots the default kernel.
+You can customize this timeout
+in the :ref:`system-administration-boot-manager-configuration` section.
+
+You can start the memory test program :command:`Memtest86+x64.bin`
+by selecting the option :guilabel:`Memory test` from the boot menu.
+Use this to diagnose potential memory issues
+if you experience system instability or crashes.
+If :command:`Memtest86+x64.bin` detects errors,
+your system likely has faulty RAM that needs replacement.
+
+.. _system-administration-boot-manager-configuration:
+
+Configuration
+-------------
+
+To configure GRUB, you need root privileges.
+You can configure GRUB using the command line or the *Management UI*.
+
+.. TODO: Add cross-reference to the "How to set UCR variables" section
+   For now, document that these variables can be changed via UCR.
+
+By default, you have five seconds to select a kernel to boot.
+You can customize this delay using the :term:`UCR variable` :envvar:`grub/timeout`.
+For available timeout options and their behavior,
+refer to the :envvar:`grub/timeout` variable documentation.
+
+By default, the screen displays at ``800x600`` pixels with 16-bit color depth.
+You can change this resolution using the UCR variable :envvar:`grub/gfxmode`.
+You can only use resolutions that your system's VESA BIOS supports.
+Before finalizing resolution changes,
+test them carefully
+and ensure you can access the system in recovery mode if needed.
+The format for specifying a resolution is :samp:`{HORIZONTAL}x{VERTICAL}@{COLORDEPTHBIT}`, for example: ``1024x768@16``.
+For available VESA modes, see `VESA BIOS Extensions <https://en.wikipedia.org/wiki/VESA_BIOS_Extensions>`_.
+
+You can pass kernel options to the Linux kernel with the UCR variable :envvar:`grub/append`.
+Common kernel options include serial console parameters
+such as ``console=ttyS0``,
+ACPI settings such as ``noacpi``,
+and memory management options.
+For the kernel command-line parameters,
+see :external+linux-kernel-docs:ref:`kernelparameters`.
+
+You can deactivate the splash screen—the visual representation of the boot process—by setting the UCR variable :envvar:`grub/bootsplash` to ``nosplash``.
+
+.. TODO: Add instructions on running update-grub after configuration changes
+         Cross-reference to the appropriate section explaining post-configuration steps.
