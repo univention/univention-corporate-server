@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wireshark
+fix: 2.6.20-0+deb10u9~deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-5601, CVE-2024-11596, CVE-2024-9781)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2025-13946, CVE-2025-11626)
+bug: [59070]
+cve:
+- CVE-2024-11596
+- CVE-2025-5601
+- CVE-2024-9781
+- CVE-2025-11626
+- CVE-2025-13946
