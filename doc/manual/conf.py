@@ -101,6 +101,7 @@ intersphinx_mapping = {
     "uv-nubus-kubernetes-architecture": ('https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/', None),
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
     "uv-ext-windows": ref("ext-windows"),
+    'uv-ucs-operation': ref('ucs-operation', ver=version),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
