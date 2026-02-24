@@ -547,6 +547,68 @@ This section provides a reference for UCR variables.
    :Type: boolean
 
 
+.. envvar:: proxy/http
+
+   The system uses this HTTP proxy server for HTTP connections.
+   Enter the proxy URL, including the port and authentication credentials when needed.
+
+   Examples:
+
+   * Without authentication: :samp:`http://192.168.1.100:3128`
+   * With authentication: :samp:`http://{<Username>}:{<Password>}@192.168.1.100:3128`
+
+   When you set this variable,
+   the system creates an ``http_proxy`` environment variable
+   in :file:`/etc/profile`
+   for use by command line tools and system utilities.
+
+   For information about proxy configuration,
+   see :ref:`system-administration-proxy-configuration`.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: proxy/https
+
+   The system uses this proxy server for HTTPS connections.
+   Provide a proxy URL,
+   optionally including port and authentication credentials.
+
+   Examples:
+
+   * Without authentication: :samp:`https://192.168.1.100:3128`
+   * With authentication: :samp:`https://{<Username>}:{<Password>}@192.168.1.100:3128`
+
+   When you set this variable,
+   the system creates an ``https_proxy`` environment variable
+   in :file:`/etc/profile`
+   for use by command line tools and system utilities.
+   If you don't set :envvar:`proxy/https`,
+   the system uses :envvar:`proxy/http` for HTTPS connections.
+
+   For information about proxy configuration,
+   see :ref:`system-administration-proxy-configuration`.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: proxy/no_proxy
+
+   A comma-separated list of domain names that bypass the proxy.
+
+   Example: :samp:`localhost,127.0.0.1,internal.example.com`
+
+   Subdomains inherit proxy exclusions from parent domains.
+   For example, if you exclude ``example.com``,
+   the system also excludes ``mail.example.com`` and ``www.example.com``.
+
+   For information about excluding domains from proxy access,
+   see :ref:`system-administration-proxy-exclusions`.
+
+   :Default value: not set
+   :Type: comma-separated list of strings
+
+
 .. envvar:: repository/mirror/basepath
 
    Specifies the base directory where the local repository mirror is stored.
