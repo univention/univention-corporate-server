@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 23. Feb 2026
+     - :ref:`system-administration-boot-manager`
+     - Add section about the boot manager.
+
    * - 20. Feb 2026
      - :ref:`system-administration-kernel`
      - Add concept around Linux kernel.
