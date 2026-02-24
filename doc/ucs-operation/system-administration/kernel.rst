@@ -76,11 +76,9 @@ and locates the real root file system on disk.
 After mounting the real root file system,
 the system switches to it and removes the temporary *initrd* from memory.
 
-The GRUB boot manager handles the first stage of loading the kernel and *initrd*.
-For more information about GRUB configuration,
-see :external+uv-ucs-manual:ref:`grub`.
-
-.. TODO: Replace to cross-reference of grub once the content exists in this document.
+The boot manager handles the first stage of loading the kernel and *initrd*.
+For more information about the boot manager,
+see :ref:`system-administration-boot-manager`.
 
 .. _system-administration-kernel-modules-detection:
 
