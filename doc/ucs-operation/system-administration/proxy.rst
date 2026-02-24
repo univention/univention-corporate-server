@@ -3,29 +3,77 @@
 
 .. _system-administration-proxy:
 
-Proxy access configuration
-==========================
+Configure proxy settings through UCR variables
+==============================================
 
-The majority of the command line tools which access web servers (e.g.,
-:command:`wget`, :command:`elinks` or :command:`curl`) check whether the
-environment variables :envvar:`http_proxy` or :envvar:`https_proxy` are set. If this is the case, the proxy
-server set in these variables is used automatically.
+This page describes how to configure proxy settings
+so that command line tools and system utilities can access web resources through a proxy server.
 
-The |UCSUCRV| :envvar:`proxy/http` and :envvar:`proxy/https` can also be used to activate the setting of
-these environment variables through an entry in :file:`/etc/profile`.
+Many command line tools that access web servers,
+such as :command:`wget`, :command:`elinks`, and :command:`curl`,
+use the ``http_proxy`` or ``https_proxy`` environment variables
+if you set them.
+The tools automatically use the proxy server
+you've configured in these variables.
 
-The proxy URL must be specified for this, for example :samp:`http://192.0.2.100`. The
-proxy port can be specified in the proxy URL using a colon, for example
-:samp:`http://192.0.2.100:3128`. If the proxy requires authentication,
-this can be provided in the form :samp:`http://{username}:{password}@192.0.2.100`.
+.. _system-administration-proxy-configuration:
 
-The environment variable is not adopted for sessions currently opened. A new login
-is required for the change to be activated.
+Configure proxy access
+----------------------
 
-The Univention tools for software updates also support operation via a proxy and
-query the |UCSUCR| variable.
+To configure these environment variables persistently,
+you can use the :term:`UCR variable` :envvar:`proxy/http` and :envvar:`proxy/https`.
+The system configures the environment variables in :file:`/etc/profile`
+based on these UCR variables.
 
-Individual domains can be excluded from use by the proxy by including them
-separated by commas in the |UCSUCRV| :envvar:`proxy/no_proxy`. Subdomains are
-taken into account; e.g. an exception for ``software-univention.de`` also
-applies for ``updates.software-univention.de``.
+Specify the proxy URL,
+for example :samp:`http://192.0.2.100`.
+To add the proxy port, append a colon to the URL,
+for example :samp:`http://192.0.2.100:3128`.
+If the proxy requires authentication,
+include your credentials in the URL like this:
+:samp:`http://{<Username>}:{<Password>}@192.0.2.100:3128`.
+
+.. _system-administration-proxy-exclusions:
+
+Exclude domains from proxy access
+---------------------------------
+
+To exclude certain domains from proxy access,
+list them in the UCR variable :envvar:`proxy/no_proxy`,
+separated by commas.
+When you exclude a domain,
+the exclusion also applies to all its subdomains.
+For example, if you exclude ``example.com``,
+the system also excludes ``mail.example.com`` and ``www.example.com``.
+
+.. _system-administration-proxy-session-behavior:
+
+Session behavior
+----------------
+
+.. important::
+
+   When you change proxy settings,
+   existing sessions don't update the environment variables.
+   You must sign in again to apply the new settings.
+
+.. _system-administration-proxy-univention-tools:
+
+Integration with Nubus for UCS tools
+------------------------------------
+
+The Nubus for UCS tools for software updates,
+such as :command:`univention-repository-update`,
+also support operation through a proxy.
+These tools read the UCR variables
+:envvar:`proxy/http`, :envvar:`proxy/https`, and :envvar:`proxy/no_proxy`,
+so your proxy configuration applies automatically.
+
+.. seealso::
+
+   For information about software updates,
+   see the following resources:
+
+   * :ref:`lifecycle-update-strategies`
+   * :ref:`lifecycle-package-installation-management`
