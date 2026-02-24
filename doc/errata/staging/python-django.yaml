@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-django
+fix: 1:1.10.7-2+deb9u30
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-1285)
+ * CVSS score 5.4 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2026-1312, CVE-2026-1287, CVE-2026-1207)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2025-13473)
+ * CVSS score 4.3 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-6069)
+bug: [59069]
+cve:
+- CVE-2025-13473
+- CVE-2026-1207
+- CVE-2026-1285
+- CVE-2026-1287
+- CVE-2026-1312
+- CVE-2025-6069
