@@ -206,7 +206,7 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
 
    Controls if UCS prevents users with the same username as existing groups. To
    deactivate the check for uniqueness, set the value to ``false``. For more
-   information see :numref:`users-management-table-general-tab`.
+   information see :ref:`users-management-table-general`.
 
 
 .. envvar:: directory/manager/web/modules/computers/computer/wizard/disabled
