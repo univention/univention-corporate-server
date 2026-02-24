@@ -71,7 +71,10 @@ intersphinx_mapping = {
     'uv-debian-admins': reference_inventory('debian-admins', version='latest'),
     'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
     'uv-docs-overview': ('https://docs.software-univention.de/n/en/', None),
+    'linux-kernel-docs': ('https://www.kernel.org/doc/html/v6.1/', None),  # UCS 5.2 Kernel is 6.1
 }
+
+# TODO: When using a kernel different from 6.1, update the reference to the Kernel docs in the intersphinx mapping.
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
@@ -183,6 +186,7 @@ def adapt_settings_to_translation(app, config):
             'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
             'uv-docs-overview': ('https://docs.software-univention.de/n/de/', None),
             'uv-debian-admins': reference_inventory('debian-admins', version='latest'),
+            'linux-kernel-docs': ('https://www.kernel.org/doc/html/v6.1/', None),  # UCS 5.2 Kernel is 6.1
         }
         config.numfig_format['code-block'] = 'Listing %s'
 
