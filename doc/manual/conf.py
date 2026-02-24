@@ -99,6 +99,7 @@ intersphinx_mapping = {
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
     "uv-ext-windows": ref("ext-windows"),
     'uv-ucs-operation': ref('ucs-operation', ver=version),
+    'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/en/', None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
