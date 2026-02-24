@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 11:18+0000\n"
-"PO-Revision-Date: 2026-02-24 12:19+0100\n"
+"POT-Creation-Date: 2026-02-24 16:49+0000\n"
+"PO-Revision-Date: 2026-02-24 17:50+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -360,9 +360,9 @@ msgid ""
 "*initrd*. For more information about the boot manager, see :ref:`system-"
 "administration-boot-manager`."
 msgstr ""
-"Der Boot-Manager übernimmt die erste Stufe beim Laden des Kernels "
-"und *initrd*. Weitere Informationen über den Boot-Manager finden Sie "
-"unter :ref:`system-administration-boot-manager`."
+"Der Boot-Manager übernimmt die erste Stufe beim Laden des Kernels und "
+"*initrd*. Weitere Informationen über den Boot-Manager finden Sie unter "
+":ref:`system-administration-boot-manager`."
 
 #: ../../system-administration/kernel.rst:86
 msgid "Automatic driver detection"
@@ -451,3 +451,124 @@ msgstr ""
 "Einen C-Compiler und Build-Tools, normalerweise automatisch als "
 "Abhängigkeiten installiert."
 
+#: ../../system-administration/proxy.rst:7
+msgid "Configure proxy settings through UCR variables"
+msgstr "Proxy-Einstellungen mit UCR Variablen konfigurieren"
+
+#: ../../system-administration/proxy.rst:9
+msgid ""
+"This page describes how to configure proxy settings so that command line "
+"tools and system utilities can access web resources through a proxy "
+"server."
+msgstr ""
+"Diese Seite beschreibt, wie Sie Proxy-Einstellungen konfigurieren, damit "
+"Befehlszeilenwerkzeuge und Systemdienstprogramme über einen Proxy-Server "
+"auf Web-Ressourcen zugreifen können."
+
+#: ../../system-administration/proxy.rst:12
+msgid ""
+"Many command line tools that access web servers, such as :command:`wget`,"
+" :command:`elinks`, and :command:`curl`, use the ``http_proxy`` or "
+"``https_proxy`` environment variables if you set them. The tools "
+"automatically use the proxy server you've configured in these variables."
+msgstr ""
+"Viele Befehlszeilenwerkzeuge, die auf Web-Server zugreifen, wie "
+":command:`wget`, :command:`elinks` und :command:`curl`, verwenden die "
+"Umgebungsvariablen ``http_proxy`` oder ``https_proxy``, wenn Sie diese "
+"setzen. Die Werkzeuge verwenden automatisch den Proxy-Server, den Sie in "
+"diesen Variablen konfiguriert haben."
+
+#: ../../system-administration/proxy.rst:22
+msgid "Configure proxy access"
+msgstr "Proxy-Zugriff konfigurieren"
+
+#: ../../system-administration/proxy.rst:24
+msgid ""
+"To configure these environment variables persistently, you can use the "
+":term:`UCR variable` :envvar:`proxy/http` and :envvar:`proxy/https`. The "
+"system configures the environment variables in :file:`/etc/profile` based"
+" on these UCR variables."
+msgstr ""
+"Um diese Umgebungsvariablen persistent zu konfigurieren, können Sie die "
+":term:`UCR-Variable` :envvar:`proxy/http` und :envvar:`proxy/https` "
+"verwenden. Das System konfiguriert die Umgebungsvariablen in "
+":file:`/etc/profile` basierend auf diesen UCR-Variablen."
+
+#: ../../system-administration/proxy.rst:29
+#, python-brace-format
+msgid ""
+"Specify the proxy URL, for example :samp:`http://192.0.2.100`. To add the"
+" proxy port, append a colon to the URL, for example "
+":samp:`http://192.0.2.100:3128`. If the proxy requires authentication, "
+"include your credentials in the URL like this: "
+":samp:`http://{<Username>}:{<Password>}@192.0.2.100:3128`."
+msgstr ""
+"Geben Sie die Proxy-URL an, zum Beispiel :samp:`http://192.0.2.100`. Um "
+"den Proxy-Port hinzuzufügen, hängen Sie einen Doppelpunkt an die URL an, "
+"zum Beispiel :samp:`http://192.0.2.100:3128`. Wenn der Proxy eine "
+"Authentifizierung erfordert, fügen Sie Ihre Anmeldeinformationen in der "
+"URL wie folgt ein: "
+":samp:`http://{<Username>}:{<Password>}@192.0.2.100:3128`."
+
+#: ../../system-administration/proxy.rst:40
+msgid "Exclude domains from proxy access"
+msgstr "Domänen vom Proxy-Zugriff ausschließen"
+
+#: ../../system-administration/proxy.rst:42
+msgid ""
+"To exclude certain domains from proxy access, list them in the UCR "
+"variable :envvar:`proxy/no_proxy`, separated by commas. When you exclude "
+"a domain, the exclusion also applies to all its subdomains. For example, "
+"if you exclude ``example.com``, the system also excludes "
+"``mail.example.com`` and ``www.example.com``."
+msgstr ""
+"Um bestimmte Domänen vom Proxy-Zugriff auszuschließen, listen Sie diese "
+"in der UCR-Variable :envvar:`proxy/no_proxy` auf, getrennt durch Kommas. "
+"Wenn Sie eine Domäne ausschließen, gilt der Ausschluss auch für alle ihre"
+" Subdomänen. Zum Beispiel: Wenn Sie ``example.com`` ausschließen, wird "
+"auch ``mail.example.com`` und ``www.example.com`` ausgeschlossen."
+
+#: ../../system-administration/proxy.rst:53
+msgid "Session behavior"
+msgstr "Sitzungsverhalten"
+
+#: ../../system-administration/proxy.rst:57
+msgid ""
+"When you change proxy settings, existing sessions don't update the "
+"environment variables. You must sign in again to apply the new settings."
+msgstr ""
+"Wenn Sie Proxy-Einstellungen ändern, werden die Umgebungsvariablen in "
+"vorhandenen Sitzungen nicht aktualisiert. Sie müssen sich erneut "
+"anmelden, um die neuen Einstellungen anzuwenden."
+
+#: ../../system-administration/proxy.rst:64
+msgid "Integration with Nubus for UCS tools"
+msgstr "Integration mit Nubus für UCS Werkzeugen"
+
+#: ../../system-administration/proxy.rst:66
+msgid ""
+"The Nubus for UCS tools for software updates, such as :command"
+":`univention-repository-update`, also support operation through a proxy. "
+"These tools read the UCR variables :envvar:`proxy/http`, "
+":envvar:`proxy/https`, and :envvar:`proxy/no_proxy`, so your proxy "
+"configuration applies automatically."
+msgstr ""
+"Die Nubus für UCS Werkzeuge für Software-Updates, wie :command"
+":`univention-repository-update`, unterstützen auch den Betrieb über einen"
+" Proxy. Diese Werkzeuge lesen die UCR-Variablen :envvar:`proxy/http`, "
+":envvar:`proxy/https` und :envvar:`proxy/no_proxy`, sodass Ihre Proxy-"
+"Konfiguration automatisch angewendet wird."
+
+#: ../../system-administration/proxy.rst:75
+msgid "For information about software updates, see the following resources:"
+msgstr ""
+"Für Informationen zu Software-Aktualisierungen, siehe die folgenden "
+"Quellen:"
+
+#: ../../system-administration/proxy.rst:78
+msgid ":ref:`lifecycle-update-strategies`"
+msgstr ":ref:`lifecycle-update-strategies`"
+
+#: ../../system-administration/proxy.rst:79
+msgid ":ref:`lifecycle-package-installation-management`"
+msgstr ":ref:`lifecycle-package-installation-management`"
