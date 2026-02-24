@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 24. Feb 2026
+     - :ref:`system-administration-proxy`
+     - Add section about proxy and its configuration.
+
    * - 23. Feb 2026
      - :ref:`system-administration-boot-manager`
      - Add section about the boot manager.
