@@ -13,3 +13,4 @@ System administration
 
    kernel
    boot-manager
+   proxy
