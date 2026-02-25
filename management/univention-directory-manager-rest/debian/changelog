@@ -1,9 +1,3 @@
-univention-directory-manager-rest (12.4.10) unstable; urgency=medium
-
-  * Bug #58804: return HTTP 503 instead of 400 for concurrent LDAP modification errors
-
- -- Carlos García-Mauriño <garcia-maurino@univention.de>  Wed, 11 Feb 2026 16:22:04 +0100
-
 univention-directory-manager-rest (12.4.9) unstable; urgency=medium
 
   * Bug #59032: support root_path configuration
