@@ -33,5 +33,6 @@ Software distribution and package management
    update-strategies
    perform-updates
    package-installation-management
+   package-maintenance-policy
    local-repository-servers
    app-center
