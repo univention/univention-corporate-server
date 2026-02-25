@@ -6,43 +6,133 @@
 Package maintenance policy
 ==========================
 
-A *Maintenance* policy (see :ref:`central-policies`) in the UMC modules for
-computer and domain management can be used to specify a point at which the
-following steps should be performed:
+This section describes how you can use a package maintenance policy
+to control when Nubus for UCS installs or removes packages.
+For information about package management,
+see :ref:`lifecycle-package-installation-management`.
+For information about policies in general,
+see :external+uv-nubus-manual:ref:`nubus-domain-policies`
+in :cite:t:`uv-nubus-manual`.
 
-* Check for available release updates to be installed (see
-  :ref:`computers-softwaremanagement-release-policy`) and, if applicable,
-  installation.
+A *Maintenance Policy* defines when
+Nubus for UCS runs automatic updates or maintenance tasks.
+You can schedule the maintenance for a specific time or
+trigger it based on system events, such as after boot or before shutdown.
+For example:
 
-* Installation/deinstallation of package lists (see
-  :ref:`computers-softwaremanagement-package-lists`)
+* Check for available release updates and install them.
+  For more information, see :ref:`lifecycle-update-strategies-methods-policy`.
 
-* Installation of available errata updates
+* Install or remove packages with package lists.
+  For more information, see :ref:`lifecycle-package-installation-management-policy`.
 
-Alternatively, the updates can also be performed when the system is booting or
-shut down.
+* Install available errata updates.
 
-.. list-table:: *General* tab
-   :header-rows: 1
-   :widths: 3 9
+.. seealso::
 
-   * - Attribute
-     - Description
+   :ref:`lifecycle-package-installation-management`
+      for information about package management.
 
-   * - Perform maintenance after system startup
-     - If this option is activated, the update steps are performed when the
-       computer is started up.
+   :external+uv-nubus-manual:ref:`nubus-domain-policies`
+      in :cite:t:`uv-nubus-manual`
+      for information about policies in general.
 
-   * - Perform maintenance before system shutdown
-     - If this option is activated, the update steps are performed when the
-       computer is shut down.
+.. _lifecycle-package-maintenance-policy-create:
 
-   * - Use Cron settings
-     - If this flag is activated, the fields *Month*, *Day of week*, *Day*,
-       *Hour* and *Minute* can be used to specify an exact time when the update
-       steps should be performed.
+How to create a maintenance policy
+----------------------------------
 
-   * - Reboot after maintenance
-     - This option allows you to perform an automatic system restart after
-       release updates either directly or after a specified time period of
-       hours.
+You can create a maintenance policy in two ways.
+Both ways result in the same policy behavior.
+Use the first way for multi-system environments,
+and the second way for system-specific configurations.
+
+Centralized policy management:
+   Create a policy once and assign it to multiple systems.
+
+Computer object policies:
+   Assign policies directly to individual computer objects.
+
+.. _lifecycle-package-maintenance-policy-create-centralized:
+
+Centralized policy management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To create a maintenance policy, use the following steps:
+
+#. Open the :external+uv-nubus-manual:ref:`nubus-domain-policies`.
+
+#. To create a policy, click :guilabel:`Add`.
+
+#. Select ``Policy: Maintenance`` for the *Type*
+   and choose a *Container* for the location in the directory service.
+   Click :guilabel:`Next`.
+
+#. Define the maintenance settings.
+   For an explanation of the fields,
+   see :ref:`lifecycle-package-maintenance-policy-fields`.
+
+#. To save the policy, click :guilabel:`Save`.
+
+.. _lifecycle-package-maintenance-policy-create-computer-object:
+
+Computer object policies
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also create a *Maintenance Policy* directly at the computer object
+in the *Computers* management module.
+Use the following steps:
+
+#. Open the :external+uv-nubus-manual:ref:`nubus-computer-management`.
+
+#. Navigate to the *Policies* tab and select the section *Policy: Maintenance*.
+
+#. Select an existing policy configuration or click :guilabel:`Create new Policy`.
+
+#. Define the maintenance settings.
+   For an explanation of the fields,
+   see :ref:`lifecycle-package-maintenance-policy-fields`.
+
+#. To save the maintenance settings, click :guilabel:`Save`.
+
+.. _lifecycle-package-maintenance-policy-fields:
+
+Understanding maintenance policy fields
+---------------------------------------
+
+You can configure the following settings in the *Maintenance Policy*:
+
+.. _lifecycle-package-maintenance-policy-startup:
+
+Perform maintenance after system startup
+   If you activate this option,
+   the system performs the configured updates when you start the computer.
+
+.. _lifecycle-package-maintenance-policy-shutdown:
+
+Perform maintenance before system shutdown
+   If you activate this option,
+   the system performs the configured updates when you shut down the computer.
+
+.. _lifecycle-package-maintenance-policy-cron:
+
+Use Cron settings
+   If you activate this option,
+   use the *Month*, *Day of week*, *Day*, *Hour*, and *Minute* fields
+   to specify when the configured updates run.
+
+.. _lifecycle-package-maintenance-policy-reboot:
+
+Reboot after maintenance
+   This option triggers an automatic restart after release updates
+   either immediately or after a specified number of hours.
+
+.. _lifecycle-package-maintenance-policy-related:
+
+Related policies
+----------------
+
+The *Maintenance Policy* coordinates with other policies:
+
+* Control how and when you install release updates, see :ref:`lifecycle-update-strategies-methods-policy`.
+* Manage package installation and removal, see :ref:`lifecycle-package-installation-management-policy`.
