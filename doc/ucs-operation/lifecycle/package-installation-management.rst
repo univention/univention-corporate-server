@@ -354,11 +354,9 @@ Managing packages at scale
 Installation timing
    The maintenance policy defines the time when Nubus for UCS installs or removes packages.
    For configuration details,
-   see :external+uv-ucs-manual:ref:`computers-softwaremanagement-maintenance-policy`.
+   see :ref:`lifecycle-package-maintenance-policy`.
    Nubus registers all packages from policies in the LDAP directory
    to make them available for management across the entire domain.
-
-   .. TODO: Replace cross-reference with internal reference after section exists.
 
 .. _lifecycle-package-installation-management-policy-examples:
 

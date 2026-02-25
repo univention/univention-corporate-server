@@ -162,8 +162,7 @@ configure the following settings:
 
 #. Set the update schedule using a *Maintenance* policy,
    see
-   :external+uv-ucs-manual:ref:`computers-softwaremanagement-maintenance-policy`
-   in :cite:t:`ucs-manual`.
+   :ref:`lifecycle-package-maintenance-policy`.
 
 #. Finally, you need to assign the policy,
    see :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`.
