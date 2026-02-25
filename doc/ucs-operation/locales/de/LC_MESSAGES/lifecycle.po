@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-19 14:45+0000\n"
-"PO-Revision-Date: 2026-02-23 12:33+0100\n"
+"POT-Creation-Date: 2026-02-26 11:15+0000\n"
+"PO-Revision-Date: 2026-02-26 12:51+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -61,7 +61,8 @@ msgstr ""
 "Center.\n"
 "Die Verwendung des App Center erfordert einen personalisierten "
 "Lizenzschlüssel.\n"
-"Weitere Informationen finden Sie unter :ref:`management-interface-license`."
+"Weitere Informationen finden Sie unter :ref:`management-interface-"
+"license`."
 
 #: ../../lifecycle/app-center.rst:24
 msgid ""
@@ -2617,8 +2618,9 @@ msgid "Navigate to :menuselection:`Domain --> Policies`."
 msgstr "Navigieren Sie zu :menuselection:`Domäne --> Richtlinien`."
 
 #: ../../lifecycle/package-installation-management.rst:293
+#: ../../lifecycle/package-maintenance-policy.rst:65
 msgid "To create a policy, click :guilabel:`Add`."
-msgstr "Um eine Richtlinie zu erstellen, klicken :guilabel:`Hinzufügen`."
+msgstr "Um eine Richtlinie zu erstellen, klicken Sie :guilabel:`Hinzufügen`."
 
 #: ../../lifecycle/package-installation-management.rst:295
 msgid ""
@@ -2768,19 +2770,19 @@ msgstr "Installationszeitpunkt"
 #: ../../lifecycle/package-installation-management.rst:355
 msgid ""
 "The maintenance policy defines the time when Nubus for UCS installs or "
-"removes packages. For configuration details, see :external+uv-ucs-"
-"manual:ref:`computers-softwaremanagement-maintenance-policy`. Nubus "
-"registers all packages from policies in the LDAP directory to make them "
-"available for management across the entire domain."
+"removes packages. For configuration details, see :ref:`lifecycle-package-"
+"maintenance-policy`. Nubus registers all packages from policies in the "
+"LDAP directory to make them available for management across the entire "
+"domain."
 msgstr ""
 "Die Wartungsrichtlinie definiert den Zeitpunkt, zu dem Nubus für UCS "
 "Pakete installiert oder entfernt.\n"
-"Konfigurationsdetails finden Sie unter :external+uv-ucs-manual:ref"
-":`computers-softwaremanagement-maintenance-policy`.\n"
+"Konfigurationsdetails finden Sie unter :ref:`lifecycle-package-"
+"maintenance-policy`.\n"
 "Nubus registriert alle Pakete aus Richtlinien im LDAP-Verzeichnis, um sie"
 " für die Verwaltung in der gesamten Domäne verfügbar zu machen."
 
-#: ../../lifecycle/package-installation-management.rst:367
+#: ../../lifecycle/package-installation-management.rst:365
 msgid ""
 "For more information about policies in general, including policy "
 "creation, assignment, and advanced settings, see :external+uv-nubus-"
@@ -2791,7 +2793,7 @@ msgstr ""
 "Einstellungen, finden Sie unter :external+uv-nubus-manual:ref:`nubus-"
 "domain-policies` im :cite:t:`uv-nubus-manual`."
 
-#: ../../lifecycle/package-installation-management.rst:372
+#: ../../lifecycle/package-installation-management.rst:370
 msgid ""
 "For information about computer management in your domain, see :external"
 "+uv-nubus-manual:ref:`nubus-computer-management` in :cite:t:`uv-nubus-"
@@ -2800,6 +2802,268 @@ msgstr ""
 "Weitere Informationen zur Computerverwaltung in Ihrer Domäne finden Sie "
 "unter :external+uv-nubus-manual:ref:`nubus-computer-management` im "
 ":cite:t:`uv-nubus-manual`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:7
+msgid "Package maintenance policy"
+msgstr "Richtlinie zur Paketpflege"
+
+#: ../../lifecycle/package-maintenance-policy.rst:9
+msgid ""
+"This section describes how you can use a package maintenance policy to "
+"control when Nubus for UCS installs or removes packages. For information "
+"about package management, see :ref:`lifecycle-package-installation-"
+"management`. For information about policies in general, see :external+uv-"
+"nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Dieser Abschnitt beschreibt, wie Sie eine Richtlinie zu Paketpflege "
+"verwenden können, um zu steuern, wann Nubus für UCS Pakete installiert "
+"oder entfernt. "
+"Information zur Paketverwaltung finden Sie unter :ref:`lifecycle-package-installation-"
+"management`. "
+"Informationen zu Richtlinien im Allgemeinen finden Sie "
+"unter :external+uv-nubus-manual:ref:`nubus-domain-policies` in :cite:t"
+":`uv-nubus-manual`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:17
+msgid ""
+"A *Maintenance Policy* defines when Nubus for UCS runs automatic updates "
+"or maintenance tasks. You can schedule the maintenance for a specific "
+"time or trigger it based on system events, such as after boot or before "
+"shutdown. For example:"
+msgstr ""
+"Eine Richtlinie zur *Paketpflege* definiert, wann Nubus für UCS automatische "
+"Updates oder Wartungsaufgaben ausführt. Sie können die Paketpflege zu einem "
+"bestimmten Zeitpunkt planen oder basierend auf Systemereignissen "
+"auslösen, z.B. nach dem Booten oder vor dem Herunterfahren. Zum Beispiel:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:23
+msgid ""
+"Check for available release updates and install them. For more "
+"information, see :ref:`lifecycle-update-strategies-methods-policy`."
+msgstr ""
+"Überprüfen Sie verfügbare Release-Updates und installieren Sie diese. "
+"Weitere Informationen finden Sie unter :ref:`lifecycle-update-strategies-"
+"methods-policy`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:26
+msgid ""
+"Install or remove packages with package lists. For more information, see "
+":ref:`lifecycle-package-installation-management-policy`."
+msgstr ""
+"Installieren oder entfernen Sie Pakete mit Paketlisten. Weitere "
+"Informationen finden Sie unter :ref:`lifecycle-package-installation-"
+"management-policy`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:29
+msgid "Install available errata updates."
+msgstr "Installieren Sie verfügbare Errata-Updates."
+
+#: ../../lifecycle/package-maintenance-policy.rst:33
+msgid ":ref:`lifecycle-package-installation-management`"
+msgstr ":ref:`lifecycle-package-installation-management`"
+
+#: ../../lifecycle/package-maintenance-policy.rst:34
+msgid "for information about package management."
+msgstr "für Informationen zur Paketverwaltung."
+
+#: ../../lifecycle/package-maintenance-policy.rst:36
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
+
+#: ../../lifecycle/package-maintenance-policy.rst:37
+msgid "in :cite:t:`uv-nubus-manual` for information about policies in general."
+msgstr "in :cite:t:`uv-nubus-manual` für Informationen zu Richtlinien im Allgemeinen."
+
+#: ../../lifecycle/package-maintenance-policy.rst:43
+msgid "How to create a maintenance policy"
+msgstr "Wie man eine Richtlinie zur Paketpflege erstellt"
+
+#: ../../lifecycle/package-maintenance-policy.rst:45
+msgid ""
+"You can create a maintenance policy in two ways. Both ways result in the "
+"same policy behavior. Use the first way for multi-system environments, "
+"and the second way for system-specific configurations."
+msgstr ""
+"Sie können eine Richtlinie zur Paketpflege auf zwei Arten erstellen. Beide Wege "
+"führen zu demselben Richtlinienverhalten. Verwenden Sie die erste Methode"
+" für Multi-System-Umgebungen und die zweite Methode für systemspezifische"
+" Konfigurationen."
+
+#: ../../lifecycle/package-maintenance-policy.rst:50
+msgid "Centralized policy management:"
+msgstr "Zentralisierte Richtlinienverwaltung:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:51
+msgid "Create a policy once and assign it to multiple systems."
+msgstr ""
+"Erstellen Sie eine Richtlinie einmalig und weisen Sie sie mehreren "
+"Systemen zu."
+
+#: ../../lifecycle/package-maintenance-policy.rst:53
+msgid "Computer object policies:"
+msgstr "Richtlinien für Computer-Objekte:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:54
+msgid "Assign policies directly to individual computer objects."
+msgstr "Weisen Sie Richtlinien direkt einzelnen Computer-Objekten zu."
+
+#: ../../lifecycle/package-maintenance-policy.rst:59
+msgid "Centralized policy management"
+msgstr "Zentralisierte Richtlinienverwaltung"
+
+#: ../../lifecycle/package-maintenance-policy.rst:61
+msgid "To create a maintenance policy, use the following steps:"
+msgstr ""
+"Um eine Richtlinie zur Paketpflege zu erstellen, gehen Sie nach den folgenden "
+"Schritten vor:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:63
+msgid "Open the :external+uv-nubus-manual:ref:`nubus-domain-policies`."
+msgstr "Öffnen Sie das :external+uv-nubus-manual:ref:`nubus-domain-policies`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:67
+msgid ""
+"Select ``Policy: Maintenance`` for the *Type* and choose a *Container* "
+"for the location in the directory service. Click :guilabel:`Next`."
+msgstr ""
+"Wählen Sie ``Richtlinie: Paketpflege`` für den *Typ* und wählen Sie einen "
+"*Container* für den Standort im Verzeichnisdienst. Klicken Sie "
+":guilabel:`Weiter`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:71
+#: ../../lifecycle/package-maintenance-policy.rst:92
+msgid ""
+"Define the maintenance settings. For an explanation of the fields, see "
+":ref:`lifecycle-package-maintenance-policy-fields`."
+msgstr ""
+"Definieren Sie die Einstellung zur Paketpflege. Für eine Erklärung der Felder, "
+"siehe :ref:`lifecycle-package-maintenance-policy-fields`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:75
+msgid "To save the policy, click :guilabel:`Save`."
+msgstr "Um die Richtlinie zu speichern, klicken Sie :guilabel:`Speichern`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:80
+msgid "Computer object policies"
+msgstr "Richtlinien für Computer-Objekte"
+
+#: ../../lifecycle/package-maintenance-policy.rst:82
+msgid ""
+"You can also create a *Maintenance Policy* directly at the computer "
+"object in the *Computers* management module. Use the following steps:"
+msgstr ""
+"Sie können eine Richtlinie *Paketpflege* auch direkt am Computer-Objekt im "
+"*Computers* Verwaltungsmodul erstellen. Verwenden Sie die folgenden "
+"Schritte:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:86
+msgid "Open the :external+uv-nubus-manual:ref:`nubus-computer-management`."
+msgstr "Öffnen Sie das :external+uv-nubus-manual:ref:`nubus-computer-management`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:88
+msgid ""
+"Navigate to the *Policies* tab and select the section *Policy: "
+"Maintenance*."
+msgstr ""
+"Navigieren Sie zum Reiter *Richtlinien* und wählen Sie den Abschnitt "
+"*Richtlinie: Paketpflege*."
+
+#: ../../lifecycle/package-maintenance-policy.rst:90
+msgid ""
+"Select an existing policy configuration or click :guilabel:`Create new "
+"Policy`."
+msgstr ""
+"Wählen Sie eine vorhandene Richtlinienkonfiguration oder klicken Sie "
+":guilabel:`Neue Richtlinie erstellen`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:96
+msgid "To save the maintenance settings, click :guilabel:`Save`."
+msgstr ""
+"Um die Einstellung zur Paketpflege zu speichern, klicken Sie "
+":guilabel:`Speichern`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:101
+msgid "Understanding maintenance policy fields"
+msgstr "Verständnis der Felder der Richtlinie zur Paketpflege"
+
+#: ../../lifecycle/package-maintenance-policy.rst:103
+msgid "You can configure the following settings in the *Maintenance Policy*:"
+msgstr ""
+"Sie können die folgenden Einstellungen in der Richtlinie zur *Paketpflege* "
+"konfigurieren:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:107
+msgid "Perform maintenance after system startup"
+msgstr "Paketpflege durchführen nach Hochfahren des Systems"
+
+#: ../../lifecycle/package-maintenance-policy.rst:108
+msgid ""
+"If you activate this option, the system performs the configured updates "
+"when you start the computer."
+msgstr ""
+"Wenn Sie diese Option aktivieren, führt das System die konfigurierten "
+"Updates durch, wenn Sie den Computer starten."
+
+#: ../../lifecycle/package-maintenance-policy.rst:113
+msgid "Perform maintenance before system shutdown"
+msgstr "Paketpflege durchführen vor Herunterfahren des Systems"
+
+#: ../../lifecycle/package-maintenance-policy.rst:114
+msgid ""
+"If you activate this option, the system performs the configured updates "
+"when you shut down the computer."
+msgstr ""
+"Wenn Sie diese Option aktivieren, führt das System die konfigurierten "
+"Updates durch, wenn Sie den Computer herunterfahren."
+
+#: ../../lifecycle/package-maintenance-policy.rst:119
+msgid "Use Cron settings"
+msgstr "Cron Einstellungen benutzen"
+
+#: ../../lifecycle/package-maintenance-policy.rst:120
+msgid ""
+"If you activate this option, use the *Month*, *Day of week*, *Day*, "
+"*Hour*, and *Minute* fields to specify when the configured updates run."
+msgstr ""
+"Wenn Sie diese Option aktivieren, verwenden Sie die Felder *Monat*, "
+"*Wochentag*, *Tag*, *Stunde* und *Minute*, um anzugeben, wann die "
+"konfigurierten Updates ausgeführt werden."
+
+#: ../../lifecycle/package-maintenance-policy.rst:126
+msgid "Reboot after maintenance"
+msgstr "Nach Paketpflege neu starten"
+
+#: ../../lifecycle/package-maintenance-policy.rst:127
+msgid ""
+"This option triggers an automatic restart after release updates either "
+"immediately or after a specified number of hours."
+msgstr ""
+"Diese Option löst einen automatischen Neustart nach Release-Updates "
+"entweder sofort oder nach einer angegebenen Anzahl von Stunden aus."
+
+#: ../../lifecycle/package-maintenance-policy.rst:133
+msgid "Related policies"
+msgstr "Verwandte Richtlinien"
+
+#: ../../lifecycle/package-maintenance-policy.rst:135
+msgid "The *Maintenance Policy* coordinates with other policies:"
+msgstr "Die Richtlinie zur *Paketpflege* koordiniert sich mit anderen Richtlinien:"
+
+#: ../../lifecycle/package-maintenance-policy.rst:137
+msgid ""
+"Control how and when you install release updates, see :ref:`lifecycle-"
+"update-strategies-methods-policy`."
+msgstr ""
+"Kontrollieren Sie, wie und wann Sie Release-Updates installieren, siehe "
+":ref:`lifecycle-update-strategies-methods-policy`."
+
+#: ../../lifecycle/package-maintenance-policy.rst:138
+msgid ""
+"Manage package installation and removal, see :ref:`lifecycle-package-"
+"installation-management-policy`."
+msgstr ""
+"Verwalten Sie Installation und Entfernen von Paketen, siehe :ref"
+":`lifecycle-package-installation-management-policy`."
 
 #: ../../lifecycle/perform-updates.rst:7
 msgid "Perform updates"
@@ -2948,6 +3212,10 @@ msgstr "Ausführung von rollenspezifischen Konfigurationen."
 #: ../../lifecycle/perform-updates.rst:66
 msgid "Removing deprecated package configurations."
 msgstr "Entfernen veralteter Paketkonfigurationen."
+
+#: ../../lifecycle/software-monitor.rst:7
+msgid "Software monitor"
+msgstr "Software-Monitor"
 
 #: ../../lifecycle/update-strategies.rst:7
 msgid "Update strategies"
@@ -3265,15 +3533,13 @@ msgstr ""
 
 #: ../../lifecycle/update-strategies.rst:163
 msgid ""
-"Set the update schedule using a *Maintenance* policy, see :external+uv-"
-"ucs-manual:ref:`computers-softwaremanagement-maintenance-policy` in "
-":cite:t:`ucs-manual`."
+"Set the update schedule using a *Maintenance* policy, see :ref"
+":`lifecycle-package-maintenance-policy`."
 msgstr ""
-"Legen Sie den Update-Zeitplan mit einer Richtlinie vom Typ *Wartung* "
-"fest, siehe :external+uv-ucs-manual:ref:`computers-softwaremanagement-"
-"maintenance-policy` im :cite:t:`ucs-manual`."
+"Legen Sie den Update-Zeitplan mit einer Richtlinie vom Typ *Paketpflege* "
+"fest, siehe :ref:`lifecycle-package-maintenance-policy`."
 
-#: ../../lifecycle/update-strategies.rst:168
+#: ../../lifecycle/update-strategies.rst:167
 msgid ""
 "Finally, you need to assign the policy, see :external+uv-nubus-manual:ref"
 ":`nubus-domain-policies-assign`."
@@ -3281,11 +3547,11 @@ msgstr ""
 "Abschließend müssen Sie die Richtlinie zuweisen, siehe :external+uv-"
 "nubus-manual:ref:`nubus-domain-policies-assign`."
 
-#: ../../lifecycle/update-strategies.rst:174
+#: ../../lifecycle/update-strategies.rst:173
 msgid "Post-processing after release updates"
 msgstr "Nachbearbeitung nach Release-Aktualisierung"
 
-#: ../../lifecycle/update-strategies.rst:176
+#: ../../lifecycle/update-strategies.rst:175
 msgid ""
 "After you complete a release update, you must verify whether you need to "
 "run new or updated join scripts."
@@ -3293,23 +3559,23 @@ msgstr ""
 "Nach Abschluss eines Release-Aktualisierung müssen Sie überprüfen, ob Sie"
 " neue oder aktualisierte Join-Skripte ausführen müssen."
 
-#: ../../lifecycle/update-strategies.rst:180
+#: ../../lifecycle/update-strategies.rst:179
 msgid "You can verify and run join scripts in the following ways:"
 msgstr "Sie können Join-Skripte auf folgende Weise überprüfen und ausführen:"
 
-#: ../../lifecycle/update-strategies.rst:182
+#: ../../lifecycle/update-strategies.rst:181
 msgid "Use the *Domain join* management module in the *Management UI*."
 msgstr ""
 "Verwenden Sie das *Domänenbeitritt* Verwaltungsmodul in der *Management "
 "UI*."
 
-#: ../../lifecycle/update-strategies.rst:183
+#: ../../lifecycle/update-strategies.rst:182
 msgid "Run the command-line program :command:`univention-run-join-scripts`."
 msgstr ""
 "Führen Sie das Befehlszeilenprogramm :command:`univention-run-join-"
 "scripts` aus."
 
-#: ../../lifecycle/update-strategies.rst:185
+#: ../../lifecycle/update-strategies.rst:184
 msgid ""
 "For details on join script management, see :external+uv-ucs-manual:ref"
 ":`linux-domain-join` in :cite:t:`ucs-manual`."
@@ -3317,11 +3583,11 @@ msgstr ""
 "Weitere Informationen zur Verwaltung von Join-Skripten finden Sie unter "
 ":external+uv-ucs-manual:ref:`linux-domain-join` in :cite:t:`ucs-manual`."
 
-#: ../../lifecycle/update-strategies.rst:194
+#: ../../lifecycle/update-strategies.rst:193
 msgid "Troubleshooting update problems"
 msgstr "Fehlerbehebung bei Update-Problemen"
 
-#: ../../lifecycle/update-strategies.rst:196
+#: ../../lifecycle/update-strategies.rst:195
 msgid ""
 "If you encounter problems during an update, use these resources to "
 "diagnose the issue:"
@@ -3329,11 +3595,11 @@ msgstr ""
 "Wenn während eines Updates Probleme auftreten, verwenden Sie diese "
 "Ressourcen zur Diagnose des Problems:"
 
-#: ../../lifecycle/update-strategies.rst:198
+#: ../../lifecycle/update-strategies.rst:197
 msgid "Update log"
 msgstr "Update-Protokoll"
 
-#: ../../lifecycle/update-strategies.rst:199
+#: ../../lifecycle/update-strategies.rst:198
 msgid ""
 "The system writes detailed messages to "
 ":file:`/var/log/univention/updater.log`. Review this file first for error"
@@ -3343,11 +3609,11 @@ msgstr ""
 ":file:`/var/log/univention/updater.log`. Überprüfen Sie diese Datei "
 "zuerst auf Fehlermeldungen und Diagnoseinformationen."
 
-#: ../../lifecycle/update-strategies.rst:202
+#: ../../lifecycle/update-strategies.rst:201
 msgid "Configuration registry backup"
 msgstr "Sicherung der Konfigurationsregistrierung"
 
-#: ../../lifecycle/update-strategies.rst:203
+#: ../../lifecycle/update-strategies.rst:202
 #, python-brace-format
 msgid ""
 "Before the update, the system saves the status of all Univention "
@@ -3361,7 +3627,7 @@ msgstr ""
 "überprüfen, welche Konfigurationswerte sich während des Updates geändert "
 "haben."
 
-#: ../../lifecycle/update-strategies.rst:207
+#: ../../lifecycle/update-strategies.rst:206
 msgid ""
 "This information helps you identify whether the update completed "
 "correctly and which system configurations it affected."
