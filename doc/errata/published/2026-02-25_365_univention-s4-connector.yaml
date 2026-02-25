@@ -9,3 +9,6 @@ desc: |
  * The S4-Connector now supports restoring objects
    from the UDM Recyclebin also in Samba/AD.
 bug: [58844]
+erratum: 365
+announced: 2026-02-25
+support: core
