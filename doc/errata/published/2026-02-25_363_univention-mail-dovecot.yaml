@@ -9,3 +9,6 @@ desc: |
  * The logrotate configuration for reloading rsyslog
    has been fixed.
 bug: [58551]
+erratum: 363
+announced: 2026-02-25
+support: core
