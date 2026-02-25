@@ -11,3 +11,6 @@ desc: |
    guidance when detecting hostname mismatches instead of failing with a
    traceback.
 bug: [55576]
+erratum: 367
+announced: 2026-02-25
+support: core
