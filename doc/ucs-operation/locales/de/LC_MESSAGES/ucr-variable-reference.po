@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 18:11+0000\n"
-"PO-Revision-Date: 2026-02-24 19:12+0100\n"
+"POT-Creation-Date: 2026-02-26 16:52+0000\n"
+"PO-Revision-Date: 2026-02-26 17:53+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -62,11 +62,11 @@ msgstr "Standardwert"
 #: ../../ucr-variable-reference.rst:418 ../../ucr-variable-reference.rst:433
 #: ../../ucr-variable-reference.rst:449 ../../ucr-variable-reference.rst:466
 #: ../../ucr-variable-reference.rst:497 ../../ucr-variable-reference.rst:521
-#: ../../ucr-variable-reference.rst:568 ../../ucr-variable-reference.rst:592
-#: ../../ucr-variable-reference.rst:608 ../../ucr-variable-reference.rst:649
-#: ../../ucr-variable-reference.rst:661 ../../ucr-variable-reference.rst:712
-#: ../../ucr-variable-reference.rst:807 ../../ucr-variable-reference.rst:817
-#: ../../ucr-variable-reference.rst:837
+#: ../../ucr-variable-reference.rst:541 ../../ucr-variable-reference.rst:590
+#: ../../ucr-variable-reference.rst:614 ../../ucr-variable-reference.rst:630
+#: ../../ucr-variable-reference.rst:671 ../../ucr-variable-reference.rst:683
+#: ../../ucr-variable-reference.rst:734 ../../ucr-variable-reference.rst:829
+#: ../../ucr-variable-reference.rst:839 ../../ucr-variable-reference.rst:859
 msgid "not set"
 msgstr "nicht gesetzt"
 
@@ -76,8 +76,9 @@ msgstr "Mögliche Werte"
 
 #: ../../ucr-variable-reference.rst:23 ../../ucr-variable-reference.rst:198
 #: ../../ucr-variable-reference.rst:284 ../../ucr-variable-reference.rst:332
-#: ../../ucr-variable-reference.rst:372 ../../ucr-variable-reference.rst:650
-#: ../../ucr-variable-reference.rst:662 ../../ucr-variable-reference.rst:713
+#: ../../ucr-variable-reference.rst:372 ../../ucr-variable-reference.rst:542
+#: ../../ucr-variable-reference.rst:672 ../../ucr-variable-reference.rst:684
+#: ../../ucr-variable-reference.rst:735
 msgid "``yes``, ``no``, not set"
 msgstr "``yes``, ``no``, nicht gesetzt"
 
@@ -93,10 +94,10 @@ msgstr "Typ"
 #: ../../ucr-variable-reference.rst:183 ../../ucr-variable-reference.rst:199
 #: ../../ucr-variable-reference.rst:285 ../../ucr-variable-reference.rst:333
 #: ../../ucr-variable-reference.rst:346 ../../ucr-variable-reference.rst:373
-#: ../../ucr-variable-reference.rst:547 ../../ucr-variable-reference.rst:651
-#: ../../ucr-variable-reference.rst:663 ../../ucr-variable-reference.rst:714
-#: ../../ucr-variable-reference.rst:770 ../../ucr-variable-reference.rst:828
-#: ../../ucr-variable-reference.rst:838
+#: ../../ucr-variable-reference.rst:543 ../../ucr-variable-reference.rst:569
+#: ../../ucr-variable-reference.rst:673 ../../ucr-variable-reference.rst:685
+#: ../../ucr-variable-reference.rst:736 ../../ucr-variable-reference.rst:792
+#: ../../ucr-variable-reference.rst:850 ../../ucr-variable-reference.rst:860
 msgid "boolean"
 msgstr "Boolesche Variable"
 
@@ -308,12 +309,12 @@ msgstr ""
 #: ../../ucr-variable-reference.rst:245 ../../ucr-variable-reference.rst:269
 #: ../../ucr-variable-reference.rst:450 ../../ucr-variable-reference.rst:467
 #: ../../ucr-variable-reference.rst:498 ../../ucr-variable-reference.rst:522
-#: ../../ucr-variable-reference.rst:534 ../../ucr-variable-reference.rst:569
-#: ../../ucr-variable-reference.rst:593 ../../ucr-variable-reference.rst:623
-#: ../../ucr-variable-reference.rst:636 ../../ucr-variable-reference.rst:726
-#: ../../ucr-variable-reference.rst:736 ../../ucr-variable-reference.rst:749
-#: ../../ucr-variable-reference.rst:781 ../../ucr-variable-reference.rst:808
-#: ../../ucr-variable-reference.rst:818 ../../ucr-variable-reference.rst:852
+#: ../../ucr-variable-reference.rst:556 ../../ucr-variable-reference.rst:591
+#: ../../ucr-variable-reference.rst:615 ../../ucr-variable-reference.rst:645
+#: ../../ucr-variable-reference.rst:658 ../../ucr-variable-reference.rst:748
+#: ../../ucr-variable-reference.rst:758 ../../ucr-variable-reference.rst:771
+#: ../../ucr-variable-reference.rst:803 ../../ucr-variable-reference.rst:830
+#: ../../ucr-variable-reference.rst:840 ../../ucr-variable-reference.rst:874
 msgid "string"
 msgstr "Zeichenkette"
 
@@ -724,7 +725,34 @@ msgstr ""
 "Definiert einzelne Zeichen, die für Passwörter erforderlich sind. Ein neu"
 " definiertes Passwort muss die angegebenen Zeichen enthalten."
 
-#: ../../ucr-variable-reference.rst:526
+#: ../../ucr-variable-reference.rst:527
+msgid ""
+"Controls whether Nubus for UCS systems report software installations to "
+"the software monitor. When activated with the value ``yes`` or the "
+"variable isn't set, the system tracks software installations, "
+"deinstallations, and updates in the software monitor database. When set "
+"to ``no``, the system doesn't record software changes in the software "
+"monitor."
+msgstr ""
+"Steuert, ob Nubus for UCS-Systeme Softwareinstallationen an den Software-"
+"Monitor melden. Bei Aktivierung mit dem Wert ``yes`` oder wenn die "
+"Variable nicht gesetzt ist, überwacht das System Softwareinstallationen, "
+"Deinstallationen und Updates in der Software-Monitor-Datenbank. Bei "
+"Einstellung auf ``no`` speichert das System keine Softwareänderungen in "
+"dem Software-Monitor."
+
+#: ../../ucr-variable-reference.rst:536
+msgid ""
+"For information about temporarily deactivating monitoring, see :ref"
+":`lifecycle-software-monitor-configuration`. For information about the "
+"software monitor, see :ref:`lifecycle-software-monitor`."
+msgstr ""
+"Weitere Informationen zur vorübergehenden Deaktivierung der Überwachung "
+"finden Sie unter :ref:`lifecycle-software-monitor-configuration`. Weitere"
+" Informationen zum Software-Monitor finden Sie unter :ref:`lifecycle-"
+"software-monitor`."
+
+#: ../../ucr-variable-reference.rst:548
 msgid ""
 "Specifies the mechanism that the *Portal* uses to authenticate a user "
 "when clicking the :guilabel:`Login` in the *Portal* sidebar. For the "
@@ -737,15 +765,15 @@ msgstr ""
 "müssen die Clients den Namen des Single Sign-On Servers auflösen und ein "
 "vertrauenswürdiges und gültiges Zertifikat abrufen."
 
-#: ../../ucr-variable-reference.rst:533
+#: ../../ucr-variable-reference.rst:555
 msgid "``ucs``"
 msgstr "``ucs``"
 
-#: ../../ucr-variable-reference.rst:535
+#: ../../ucr-variable-reference.rst:557
 msgid "``saml``, ``oidc``, ``ucs``"
 msgstr "``saml``, ``oidc``, ``ucs``"
 
-#: ../../ucr-variable-reference.rst:540
+#: ../../ucr-variable-reference.rst:562
 msgid ""
 "If activated, the *Management UI* sets up a persistent connection to the "
 "user's web browser. It notifies all Univention Portal browser tabs of a "
@@ -756,11 +784,11 @@ msgstr ""
 " Univention Portals über eine Abmeldung und veranlasst sie, sich neu zu "
 "laden."
 
-#: ../../ucr-variable-reference.rst:546 ../../ucr-variable-reference.rst:769
+#: ../../ucr-variable-reference.rst:568 ../../ucr-variable-reference.rst:791
 msgid "``false``"
 msgstr "``false``"
 
-#: ../../ucr-variable-reference.rst:552
+#: ../../ucr-variable-reference.rst:574
 msgid ""
 "The system uses this HTTP proxy server for HTTP connections. Enter the "
 "proxy URL, including the port and authentication credentials when needed."
@@ -769,15 +797,15 @@ msgstr ""
 "Geben Sie die Proxy-URL ein, einschließlich des Ports und der "
 "Authentifizierungsdaten, wenn erforderlich."
 
-#: ../../ucr-variable-reference.rst:555 ../../ucr-variable-reference.rst:577
+#: ../../ucr-variable-reference.rst:577 ../../ucr-variable-reference.rst:599
 msgid "Examples:"
 msgstr "Beispiele:"
 
-#: ../../ucr-variable-reference.rst:557
+#: ../../ucr-variable-reference.rst:579
 msgid "Without authentication: :samp:`http://192.168.1.100:3128`"
 msgstr "Ohne Authentifizierung: :samp:`http://192.168.1.100:3128`"
 
-#: ../../ucr-variable-reference.rst:558
+#: ../../ucr-variable-reference.rst:580
 #, python-brace-format
 msgid ""
 "With authentication: "
@@ -786,17 +814,17 @@ msgstr ""
 "Mit Authentifizierung: "
 ":samp:`http://{<Username>}:{<Password>}@192.168.1.100:3128`"
 
-#: ../../ucr-variable-reference.rst:560
+#: ../../ucr-variable-reference.rst:582
 msgid ""
 "When you set this variable, the system creates an ``http_proxy`` "
 "environment variable in :file:`/etc/profile` for use by command line "
 "tools and system utilities."
 msgstr ""
-"Wenn Sie diese Variable setzen, erstellt das System eine "
-"``http_proxy`` Umgebungsvariable in :file:`/etc/profile` zur "
-"Verwendung durch Befehlszeilenwerkzeuge und Systemdienstprogramme."
+"Wenn Sie diese Variable setzen, erstellt das System eine ``http_proxy`` "
+"Umgebungsvariable in :file:`/etc/profile` zur Verwendung durch "
+"Befehlszeilenwerkzeuge und Systemdienstprogramme."
 
-#: ../../ucr-variable-reference.rst:565 ../../ucr-variable-reference.rst:589
+#: ../../ucr-variable-reference.rst:587 ../../ucr-variable-reference.rst:611
 msgid ""
 "For information about proxy configuration, see :ref:`system-"
 "administration-proxy-configuration`."
@@ -804,7 +832,7 @@ msgstr ""
 "Informationen zur Proxy-Konfiguration finden Sie unter :ref:`system-"
 "administration-proxy-configuration`."
 
-#: ../../ucr-variable-reference.rst:573
+#: ../../ucr-variable-reference.rst:595
 msgid ""
 "The system uses this proxy server for HTTPS connections. Provide a proxy "
 "URL, optionally including port and authentication credentials."
@@ -813,11 +841,11 @@ msgstr ""
 "Sie eine Proxy-URL an, optional einschließlich Port und "
 "Authentifizierungsdaten."
 
-#: ../../ucr-variable-reference.rst:579
+#: ../../ucr-variable-reference.rst:601
 msgid "Without authentication: :samp:`https://192.168.1.100:3128`"
 msgstr "Ohne Authentifizierung: :samp:`https://192.168.1.100:3128`"
 
-#: ../../ucr-variable-reference.rst:580
+#: ../../ucr-variable-reference.rst:602
 #, python-brace-format
 msgid ""
 "With authentication: "
@@ -826,28 +854,28 @@ msgstr ""
 "Mit Authentifizierung: "
 ":samp:`https://{<Username>}:{<Password>}@192.168.1.100:3128`"
 
-#: ../../ucr-variable-reference.rst:582
+#: ../../ucr-variable-reference.rst:604
 msgid ""
 "When you set this variable, the system creates an ``https_proxy`` "
 "environment variable in :file:`/etc/profile` for use by command line "
 "tools and system utilities. If you don't set :envvar:`proxy/https`, the "
 "system uses :envvar:`proxy/http` for HTTPS connections."
 msgstr ""
-"Wenn Sie diese Variable setzen, erstellt das System eine "
-"``https_proxy`` Umgebungsvariable in :file:`/etc/profile` zur "
-"Verwendung durch Befehlszeilenwerkzeuge und Systemdienstprogramme. Wenn "
-"Sie :envvar:`proxy/https` nicht setzen, verwendet das System "
+"Wenn Sie diese Variable setzen, erstellt das System eine ``https_proxy`` "
+"Umgebungsvariable in :file:`/etc/profile` zur Verwendung durch "
+"Befehlszeilenwerkzeuge und Systemdienstprogramme. Wenn Sie "
+":envvar:`proxy/https` nicht setzen, verwendet das System "
 ":envvar:`proxy/http` für HTTPS-Verbindungen."
 
-#: ../../ucr-variable-reference.rst:597
+#: ../../ucr-variable-reference.rst:619
 msgid "A comma-separated list of domain names that bypass the proxy."
 msgstr "Eine durch Kommas getrennte Liste von Domänennamen, die den Proxy umgehen."
 
-#: ../../ucr-variable-reference.rst:599
+#: ../../ucr-variable-reference.rst:621
 msgid "Example: :samp:`localhost,127.0.0.1,internal.example.com`"
 msgstr "Beispiel: :samp:`localhost,127.0.0.1,internal.example.com`"
 
-#: ../../ucr-variable-reference.rst:601
+#: ../../ucr-variable-reference.rst:623
 msgid ""
 "Subdomains inherit proxy exclusions from parent domains. For example, if "
 "you exclude ``example.com``, the system also excludes "
@@ -857,7 +885,7 @@ msgstr ""
 "beispielsweise ``example.com`` ausschließen, schließt das System auch "
 "``mail.example.com`` und ``www.example.com`` aus."
 
-#: ../../ucr-variable-reference.rst:605
+#: ../../ucr-variable-reference.rst:627
 msgid ""
 "For information about excluding domains from proxy access, see :ref"
 ":`system-administration-proxy-exclusions`."
@@ -865,11 +893,11 @@ msgstr ""
 "Informationen zum Ausschließen von Domänen vom Proxy-Zugriff finden Sie "
 "unter :ref:`system-administration-proxy-exclusions`."
 
-#: ../../ucr-variable-reference.rst:609
+#: ../../ucr-variable-reference.rst:631
 msgid "comma-separated list of strings"
 msgstr "durch Kommas getrennte Liste von Zeichenketten"
 
-#: ../../ucr-variable-reference.rst:614
+#: ../../ucr-variable-reference.rst:636
 msgid ""
 "Specifies the base directory where the local repository mirror is stored."
 " The directory is used by the :command:`univention-repository-create` and"
@@ -881,7 +909,7 @@ msgstr ""
 ":command:`univention-repository-update` verwenden das Verzeichnis, um "
 "gespiegelte Pakete und Metadaten für das Repository zu speichern."
 
-#: ../../ucr-variable-reference.rst:619 ../../ucr-variable-reference.rst:646
+#: ../../ucr-variable-reference.rst:641 ../../ucr-variable-reference.rst:668
 msgid ""
 "For information about managing disk space in local repositories, see :ref"
 ":`lifecycle-local-repository-maintenance-disk-space`."
@@ -890,11 +918,11 @@ msgstr ""
 "finden Sie unter :ref:`lifecycle-local-repository-maintenance-disk-"
 "space`."
 
-#: ../../ucr-variable-reference.rst:622
+#: ../../ucr-variable-reference.rst:644
 msgid "``/var/lib/univention-repository``"
 msgstr "``/var/lib/univention-repository``"
 
-#: ../../ucr-variable-reference.rst:628
+#: ../../ucr-variable-reference.rst:650
 msgid ""
 "Specifies the upstream repository server from which the local mirror "
 "retrieves packages and updates. The value must be a fully qualified "
@@ -904,7 +932,7 @@ msgstr ""
 "Pakete und Updates abruft. Der Wert muss ein vollständig qualifizierter "
 "Domänenname oder eine IP-Adresse sein."
 
-#: ../../ucr-variable-reference.rst:632
+#: ../../ucr-variable-reference.rst:654
 msgid ""
 "For information about configuring a local repository to use a different "
 "upstream server, see :ref:`lifecycle-local-repository-create-multiple-"
@@ -914,11 +942,11 @@ msgstr ""
 " eines anderen Upstream-Servers finden Sie unter :ref:`lifecycle-local-"
 "repository-create-multiple-locations`."
 
-#: ../../ucr-variable-reference.rst:635 ../../ucr-variable-reference.rst:725
+#: ../../ucr-variable-reference.rst:657 ../../ucr-variable-reference.rst:747
 msgid "``https://updates.software-univention.de``"
 msgstr "``https://updates.software-univention.de``"
 
-#: ../../ucr-variable-reference.rst:641
+#: ../../ucr-variable-reference.rst:663
 msgid ""
 "Controls whether the local repository mirror includes source packages. "
 "When activated with the value ``yes``, the mirror downloads and stores "
@@ -930,7 +958,7 @@ msgstr ""
 "Binärpaketen herunter und speichert sie. Das Deaktivieren dieser Variable"
 " reduziert den für den Mirror erforderlichen Speicherplatz."
 
-#: ../../ucr-variable-reference.rst:656
+#: ../../ucr-variable-reference.rst:678
 msgid ""
 "Controls whether to allow installation of unmaintained packages from "
 "additional repositories. When activated with the value ``yes``, the "
@@ -942,11 +970,11 @@ msgstr ""
 "das System die Installation von Paketen, die als nicht gewartet "
 "gekennzeichnet sind, aus nicht offiziellen Repository-Komponenten."
 
-#: ../../ucr-variable-reference.rst:665
+#: ../../ucr-variable-reference.rst:687
 msgid "5.0-3"
 msgstr "5.0-3"
 
-#: ../../ucr-variable-reference.rst:667
+#: ../../ucr-variable-reference.rst:689
 msgid ""
 "This variable is **deprecated since UCS 5.0-3**. The *Univention "
 "Configuration Registry* management module in the *Management UI*. Don't "
@@ -956,11 +984,11 @@ msgstr ""
 " das Verwaltungsmodul *Univention Configuration Registry* in der "
 "*Management UI*. Verwenden Sie sie nicht in neuen Konfigurationen."
 
-#: ../../ucr-variable-reference.rst:672
+#: ../../ucr-variable-reference.rst:694
 msgid "Impact on existing configurations"
 msgstr "Auswirkungen auf bestehende Konfigurationen"
 
-#: ../../ucr-variable-reference.rst:673
+#: ../../ucr-variable-reference.rst:695
 msgid ""
 "If you have this variable set in your UCR configuration, the system "
 "silently ignores it. The system only uses the *maintained* branch for all"
@@ -970,11 +998,11 @@ msgstr ""
 " System sie stillschweigend. Das System verwendet nur den *maintained* "
 "Zweig für alle Repository-Komponenten."
 
-#: ../../ucr-variable-reference.rst:678
+#: ../../ucr-variable-reference.rst:700
 msgid "Primary alternative"
 msgstr "Primäre Alternative"
 
-#: ../../ucr-variable-reference.rst:679
+#: ../../ucr-variable-reference.rst:701
 msgid ""
 "Use component-specific configuration through "
 ":envvar:`repository/online/component/COMPONENTNAME` to enable or disable "
@@ -985,7 +1013,7 @@ msgstr ""
 " zu aktivieren oder zu deaktivieren. Dies ist der empfohlene und "
 "einfachste Migrationspfad."
 
-#: ../../ucr-variable-reference.rst:684
+#: ../../ucr-variable-reference.rst:706
 #, python-brace-format
 msgid ""
 "**Example:** To deactivate the optional component :samp:`{MYCOMPONENT}`, "
@@ -995,11 +1023,11 @@ msgstr ""
 "deaktivieren, setzen Sie "
 ":samp:`repository/online/component/{MYCOMPONENT}` auf ``no``."
 
-#: ../../ucr-variable-reference.rst:687
+#: ../../ucr-variable-reference.rst:709
 msgid "Advanced alternative"
 msgstr "Erweiterte Alternative"
 
-#: ../../ucr-variable-reference.rst:688
+#: ../../ucr-variable-reference.rst:710
 #, python-brace-format
 msgid ""
 "For more granular control, you can use "
@@ -1011,7 +1039,7 @@ msgstr ""
 "auf ein benutzerdefiniertes Repository zu verweisen, das nur die "
 "benötigten Pakete bereitstellt."
 
-#: ../../ucr-variable-reference.rst:696
+#: ../../ucr-variable-reference.rst:718
 msgid ""
 "Enables or disables a specific repository component. Set the variable to "
 "``no`` to exclude the component from synchronization. Leave the variable "
@@ -1022,7 +1050,7 @@ msgstr ""
 "auszuschließen. Lassen Sie die Variable nicht gesetzt, um das "
 "Standardverhalten zu verwenden."
 
-#: ../../ucr-variable-reference.rst:700
+#: ../../ucr-variable-reference.rst:722
 #, python-brace-format
 msgid ""
 ":samp:`{COMPONENTNAME}` is a placeholder for the actual component name. "
@@ -1033,7 +1061,7 @@ msgstr ""
 "der Komponente. Mehrere Komponenten können konfiguriert werden, indem "
 "verschiedene :samp:`{COMPONENTNAME}` Werte verwendet werden."
 
-#: ../../ucr-variable-reference.rst:705
+#: ../../ucr-variable-reference.rst:727
 msgid ""
 "This variable is the recommended replacement for the deprecated "
 ":envvar:`repository/online/component/.*/unmaintained` variable, which is "
@@ -1043,7 +1071,7 @@ msgstr ""
 ":envvar:`repository/online/component/.*/unmaintained`, die seit UCS 5.0-3"
 " nicht mehr verfügbar ist."
 
-#: ../../ucr-variable-reference.rst:709
+#: ../../ucr-variable-reference.rst:731
 msgid ""
 "For information about excluding optional components, see :ref:`lifecycle-"
 "local-repository-maintenance-disk-space`."
@@ -1051,7 +1079,7 @@ msgstr ""
 "Informationen zum Ausschließen optionaler Komponenten finden Sie unter "
 ":ref:`lifecycle-local-repository-maintenance-disk-space`."
 
-#: ../../ucr-variable-reference.rst:719
+#: ../../ucr-variable-reference.rst:741
 msgid ""
 "Specifies the repository server URL used for online package updates and "
 "installations. The value must be a fully qualified URL pointing to a "
@@ -1061,7 +1089,7 @@ msgstr ""
 "Updates und Installationen verwendet. Der Wert muss eine vollständig "
 "qualifizierte URL sein, die auf ein gültiges APT Repository verweist."
 
-#: ../../ucr-variable-reference.rst:722
+#: ../../ucr-variable-reference.rst:744
 msgid ""
 "For information about configuring the repository server, see :ref"
 ":`lifecycle-local-repository-configuration`."
@@ -1069,7 +1097,7 @@ msgstr ""
 "Informationen zur Konfiguration des Repository-Servers finden Sie unter "
 ":ref:`lifecycle-local-repository-configuration`."
 
-#: ../../ucr-variable-reference.rst:730
+#: ../../ucr-variable-reference.rst:752
 msgid ""
 "If the mirroring of the repository is active, see "
 ":envvar:`local/repository`, this variable is set each time to the UCS "
@@ -1079,11 +1107,11 @@ msgstr ""
 ":envvar:`local/repository`, wird diese Variable jedes Mal auf die UCS-"
 "Version gesetzt, die zuletzt vom Mirror abgerufen wurde."
 
-#: ../../ucr-variable-reference.rst:735
+#: ../../ucr-variable-reference.rst:757
 msgid "not set, uses current system version"
 msgstr "nicht gesetzt, verwendet aktuelle Systemversion"
 
-#: ../../ucr-variable-reference.rst:740
+#: ../../ucr-variable-reference.rst:762
 msgid ""
 "If the mirroring of the repository is active, see "
 ":envvar:`local/repository`, this variable configures the lowest UCS "
@@ -1093,7 +1121,7 @@ msgstr ""
 ":envvar:`local/repository`, konfiguriert diese Variable die niedrigste "
 "UCS-Version, die vom Mirror abgerufen wird."
 
-#: ../../ucr-variable-reference.rst:745
+#: ../../ucr-variable-reference.rst:767
 msgid ""
 "For information about major versions, see :ref:`lifecycle-versioning-"
 "release-types-major`."
@@ -1101,11 +1129,11 @@ msgstr ""
 "Informationen zu Major Versions finden Sie unter :ref:`lifecycle-"
 "versioning-release-types-major`."
 
-#: ../../ucr-variable-reference.rst:748
+#: ../../ucr-variable-reference.rst:770
 msgid "not set, uses current major version"
 msgstr "nicht gesetzt, verwendet aktuelle Major Version"
 
-#: ../../ucr-variable-reference.rst:754
+#: ../../ucr-variable-reference.rst:776
 msgid ""
 "If activated, users that have registered themselves through the "
 ":program:`Self Service` app need to verify their email address first "
@@ -1115,7 +1143,7 @@ msgstr ""
 ":program:`Self Service` App registriert haben, zunächst ihre E-Mail-"
 "Adresse bestätigen, bevor sie sich anmelden können."
 
-#: ../../ucr-variable-reference.rst:760
+#: ../../ucr-variable-reference.rst:782
 msgid ""
 "You must set this UCR variable on the :term:`UCS Primary Directory Node` "
 "and all :term:`UCS Backup Directory Node`\\s. The variable has no effect "
@@ -1126,7 +1154,7 @@ msgstr ""
 "hat keine Auswirkungen auf Konten, die von Benutzerkonten aus der Gruppe "
 "``Domain Admins`` erstellt wurden."
 
-#: ../../ucr-variable-reference.rst:766
+#: ../../ucr-variable-reference.rst:788
 msgid ""
 "For more information, see :ref:`end-user-self-service-registration-"
 "account-activation`."
@@ -1134,7 +1162,7 @@ msgstr ""
 "Weitere Informationen finden Sie unter :ref:`end-user-self-service-"
 "registration-account-activation`."
 
-#: ../../ucr-variable-reference.rst:775
+#: ../../ucr-variable-reference.rst:797
 msgid ""
 "Contains the system role of the system. You can't change this setting "
 "after a domain join."
@@ -1142,7 +1170,7 @@ msgstr ""
 "Enthält die Systemrolle des Systems. Sie können diese Einstellung nach "
 "einem Domain Join nicht ändern."
 
-#: ../../ucr-variable-reference.rst:778
+#: ../../ucr-variable-reference.rst:800
 msgid ""
 "For information about system roles, see :ref:`domain-infrastructure-"
 "system-roles`."
@@ -1150,7 +1178,7 @@ msgstr ""
 "Informationen zu Systemrollen finden Sie unter :ref:`domain-"
 "infrastructure-system-roles`."
 
-#: ../../ucr-variable-reference.rst:786
+#: ../../ucr-variable-reference.rst:808
 msgid ""
 "Defines the number of *UMC Server* processes that Nubus for UCS starts in"
 " parallel."
@@ -1158,15 +1186,15 @@ msgstr ""
 "Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus für UCS "
 "parallel startet."
 
-#: ../../ucr-variable-reference.rst:789
+#: ../../ucr-variable-reference.rst:811
 msgid "``1``"
 msgstr "``1``"
 
-#: ../../ucr-variable-reference.rst:790 ../../ucr-variable-reference.rst:800
+#: ../../ucr-variable-reference.rst:812 ../../ucr-variable-reference.rst:822
 msgid "Unsigned integer"
 msgstr "Vorzeichenlose Ganzzahl"
 
-#: ../../ucr-variable-reference.rst:795
+#: ../../ucr-variable-reference.rst:817
 msgid ""
 "The web browser automatically closes the browser session after the "
 "defined time period in seconds. A new session requires a new sign-in"
@@ -1175,17 +1203,17 @@ msgstr ""
 "der festgelegten Zeit in Sekunden. Für eine neue Sitzung ist eine erneute"
 " Anmeldung erforderlich."
 
-#: ../../ucr-variable-reference.rst:799
+#: ../../ucr-variable-reference.rst:821
 msgid "``300``"
 msgstr "``300``"
 
-#: ../../ucr-variable-reference.rst:805
+#: ../../ucr-variable-reference.rst:827
 msgid "Defines the OpenID provider issuer of this relying party entry."
 msgstr ""
 "Definiert den OpenID-Anbieter-Aussteller dieses Eintrags für vertrauende "
 "Parteien."
 
-#: ../../ucr-variable-reference.rst:813
+#: ../../ucr-variable-reference.rst:835
 msgid ""
 "Defines the fully qualified domain name of the relying party for the *UMC"
 " Server*. If the variable is unset, Nubus for UCS uses the fully "
@@ -1196,7 +1224,7 @@ msgstr ""
 "Nubus für UCS den voll qualifizierten Domänennamen des UCS-Systems und "
 "alle IP-Adressen."
 
-#: ../../ucr-variable-reference.rst:823
+#: ../../ucr-variable-reference.rst:845
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through OpenID Connect "
 "single sign-on before using a regular sign-in."
@@ -1204,11 +1232,11 @@ msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über OpenID "
 "Connect Single Sign-On, bevor er eine reguläre Anmeldung verwendet."
 
-#: ../../ucr-variable-reference.rst:827
+#: ../../ucr-variable-reference.rst:849
 msgid "``true``"
 msgstr "``true``"
 
-#: ../../ucr-variable-reference.rst:833
+#: ../../ucr-variable-reference.rst:855
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through SAML single "
 "sign-on before using a regular sign-in."
@@ -1216,7 +1244,7 @@ msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über SAML Single "
 "Sign-On, bevor er eine reguläre Anmeldung verwendet."
 
-#: ../../ucr-variable-reference.rst:843
+#: ../../ucr-variable-reference.rst:865
 msgid ""
 "Specifies the name of the theme to apply to all web interfaces such as "
 "the login page, the portal, and the *Management UI*. The value "
@@ -1228,7 +1256,7 @@ msgstr ""
 "soll. Der Wert entspricht einer CSS-Datei mit demselben Namen im Ordner "
 ":file:`/usr/share/univention-web/themes/`."
 
-#: ../../ucr-variable-reference.rst:848
+#: ../../ucr-variable-reference.rst:870
 msgid ""
 "For information about switching between themes, creating custom themes, "
 "and applying changes, see :ref:`management-interface-theming`."
@@ -1237,11 +1265,10 @@ msgstr ""
 "Designs und zum Anwenden von Änderungen finden Sie unter :ref"
 ":`management-interface-theming`."
 
-#: ../../ucr-variable-reference.rst:851
+#: ../../ucr-variable-reference.rst:873
 msgid "``dark``"
 msgstr "``dark``"
 
-#: ../../ucr-variable-reference.rst:853
+#: ../../ucr-variable-reference.rst:875
 msgid "``light``, ``dark``, or custom theme names"
 msgstr "``light``, ``dark`` oder benutzerdefinierte Design-Namen"
-
