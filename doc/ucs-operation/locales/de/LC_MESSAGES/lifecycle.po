@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 11:15+0000\n"
-"PO-Revision-Date: 2026-02-26 12:51+0100\n"
+"POT-Creation-Date: 2026-02-26 16:30+0000\n"
+"PO-Revision-Date: 2026-02-26 17:38+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -393,6 +393,7 @@ msgstr ""
 
 #: ../../lifecycle/app-center.rst:190
 #: ../../lifecycle/package-installation-management.rst
+#: ../../lifecycle/software-monitor.rst
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -2152,6 +2153,7 @@ msgstr "Aktionsschaltflächen"
 
 #: ../../lifecycle/package-installation-management.rst
 #: ../../lifecycle/package-installation-management.rst:133
+#: ../../lifecycle/software-monitor.rst
 msgid "Install"
 msgstr "Installieren"
 
@@ -2817,12 +2819,10 @@ msgid ""
 msgstr ""
 "Dieser Abschnitt beschreibt, wie Sie eine Richtlinie zu Paketpflege "
 "verwenden können, um zu steuern, wann Nubus für UCS Pakete installiert "
-"oder entfernt. "
-"Information zur Paketverwaltung finden Sie unter :ref:`lifecycle-package-installation-"
-"management`. "
-"Informationen zu Richtlinien im Allgemeinen finden Sie "
-"unter :external+uv-nubus-manual:ref:`nubus-domain-policies` in :cite:t"
-":`uv-nubus-manual`."
+"oder entfernt. Information zur Paketverwaltung finden Sie unter :ref"
+":`lifecycle-package-installation-management`. Informationen zu "
+"Richtlinien im Allgemeinen finden Sie unter :external+uv-nubus-manual:ref"
+":`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
 
 #: ../../lifecycle/package-maintenance-policy.rst:17
 msgid ""
@@ -2831,10 +2831,11 @@ msgid ""
 "time or trigger it based on system events, such as after boot or before "
 "shutdown. For example:"
 msgstr ""
-"Eine Richtlinie zur *Paketpflege* definiert, wann Nubus für UCS automatische "
-"Updates oder Wartungsaufgaben ausführt. Sie können die Paketpflege zu einem "
-"bestimmten Zeitpunkt planen oder basierend auf Systemereignissen "
-"auslösen, z.B. nach dem Booten oder vor dem Herunterfahren. Zum Beispiel:"
+"Eine Richtlinie zur *Paketpflege* definiert, wann Nubus für UCS "
+"automatische Updates oder Wartungsaufgaben ausführt. Sie können die "
+"Paketpflege zu einem bestimmten Zeitpunkt planen oder basierend auf "
+"Systemereignissen auslösen, z.B. nach dem Booten oder vor dem "
+"Herunterfahren. Zum Beispiel:"
 
 #: ../../lifecycle/package-maintenance-policy.rst:23
 msgid ""
@@ -2872,7 +2873,9 @@ msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
 
 #: ../../lifecycle/package-maintenance-policy.rst:37
 msgid "in :cite:t:`uv-nubus-manual` for information about policies in general."
-msgstr "in :cite:t:`uv-nubus-manual` für Informationen zu Richtlinien im Allgemeinen."
+msgstr ""
+"in :cite:t:`uv-nubus-manual` für Informationen zu Richtlinien im "
+"Allgemeinen."
 
 #: ../../lifecycle/package-maintenance-policy.rst:43
 msgid "How to create a maintenance policy"
@@ -2884,10 +2887,10 @@ msgid ""
 "same policy behavior. Use the first way for multi-system environments, "
 "and the second way for system-specific configurations."
 msgstr ""
-"Sie können eine Richtlinie zur Paketpflege auf zwei Arten erstellen. Beide Wege "
-"führen zu demselben Richtlinienverhalten. Verwenden Sie die erste Methode"
-" für Multi-System-Umgebungen und die zweite Methode für systemspezifische"
-" Konfigurationen."
+"Sie können eine Richtlinie zur Paketpflege auf zwei Arten erstellen. "
+"Beide Wege führen zu demselben Richtlinienverhalten. Verwenden Sie die "
+"erste Methode für Multi-System-Umgebungen und die zweite Methode für "
+"systemspezifische Konfigurationen."
 
 #: ../../lifecycle/package-maintenance-policy.rst:50
 msgid "Centralized policy management:"
@@ -2914,8 +2917,8 @@ msgstr "Zentralisierte Richtlinienverwaltung"
 #: ../../lifecycle/package-maintenance-policy.rst:61
 msgid "To create a maintenance policy, use the following steps:"
 msgstr ""
-"Um eine Richtlinie zur Paketpflege zu erstellen, gehen Sie nach den folgenden "
-"Schritten vor:"
+"Um eine Richtlinie zur Paketpflege zu erstellen, gehen Sie nach den "
+"folgenden Schritten vor:"
 
 #: ../../lifecycle/package-maintenance-policy.rst:63
 msgid "Open the :external+uv-nubus-manual:ref:`nubus-domain-policies`."
@@ -2926,8 +2929,8 @@ msgid ""
 "Select ``Policy: Maintenance`` for the *Type* and choose a *Container* "
 "for the location in the directory service. Click :guilabel:`Next`."
 msgstr ""
-"Wählen Sie ``Richtlinie: Paketpflege`` für den *Typ* und wählen Sie einen "
-"*Container* für den Standort im Verzeichnisdienst. Klicken Sie "
+"Wählen Sie ``Richtlinie: Paketpflege`` für den *Typ* und wählen Sie einen"
+" *Container* für den Standort im Verzeichnisdienst. Klicken Sie "
 ":guilabel:`Weiter`."
 
 #: ../../lifecycle/package-maintenance-policy.rst:71
@@ -2936,8 +2939,8 @@ msgid ""
 "Define the maintenance settings. For an explanation of the fields, see "
 ":ref:`lifecycle-package-maintenance-policy-fields`."
 msgstr ""
-"Definieren Sie die Einstellung zur Paketpflege. Für eine Erklärung der Felder, "
-"siehe :ref:`lifecycle-package-maintenance-policy-fields`."
+"Definieren Sie die Einstellung zur Paketpflege. Für eine Erklärung der "
+"Felder, siehe :ref:`lifecycle-package-maintenance-policy-fields`."
 
 #: ../../lifecycle/package-maintenance-policy.rst:75
 msgid "To save the policy, click :guilabel:`Save`."
@@ -2952,8 +2955,8 @@ msgid ""
 "You can also create a *Maintenance Policy* directly at the computer "
 "object in the *Computers* management module. Use the following steps:"
 msgstr ""
-"Sie können eine Richtlinie *Paketpflege* auch direkt am Computer-Objekt im "
-"*Computers* Verwaltungsmodul erstellen. Verwenden Sie die folgenden "
+"Sie können eine Richtlinie *Paketpflege* auch direkt am Computer-Objekt "
+"im *Computers* Verwaltungsmodul erstellen. Verwenden Sie die folgenden "
 "Schritte:"
 
 #: ../../lifecycle/package-maintenance-policy.rst:86
@@ -2989,8 +2992,8 @@ msgstr "Verständnis der Felder der Richtlinie zur Paketpflege"
 #: ../../lifecycle/package-maintenance-policy.rst:103
 msgid "You can configure the following settings in the *Maintenance Policy*:"
 msgstr ""
-"Sie können die folgenden Einstellungen in der Richtlinie zur *Paketpflege* "
-"konfigurieren:"
+"Sie können die folgenden Einstellungen in der Richtlinie zur "
+"*Paketpflege* konfigurieren:"
 
 #: ../../lifecycle/package-maintenance-policy.rst:107
 msgid "Perform maintenance after system startup"
@@ -3216,6 +3219,303 @@ msgstr "Entfernen veralteter Paketkonfigurationen."
 #: ../../lifecycle/software-monitor.rst:7
 msgid "Software monitor"
 msgstr "Software-Monitor"
+
+#: ../../lifecycle/software-monitor.rst:9
+msgid ""
+"The software monitor uses a PostgreSQL database to track software "
+"packages across all Nubus for UCS systems. Administrators use it to see "
+"which package versions exist in the domain, identify problems, and plan "
+"staged updates."
+msgstr ""
+"Der Software-Monitor verwendet eine PostgreSQL-Datenbank zum "
+"Nachverfolgen von Softwarepaketen auf allen Nubus für UCS Systemen. "
+"Administratoren nutzen ihn, um zu sehen, welche Paketversionen in der "
+"Domäne vorhanden sind, Probleme zu identifizieren und gestaffelte Updates"
+" zu planen."
+
+#: ../../lifecycle/software-monitor.rst:15
+msgid ""
+"To install the software monitor from the App Center select the "
+":program:`Software installation monitor` app, or install the :program"
+":`univention-pkgdb` package directly. For more information, see :ref"
+":`lifecycle-package-installation-management`."
+msgstr ""
+"Um den Software-Monitor aus dem App Center zu installieren, wählen Sie "
+"die App :program:`Software-Installationsmonitor` oder installieren Sie "
+"das Paket :program:`univention-pkgdb` direkt. Weitere Informationen "
+"finden Sie unter :ref:`lifecycle-package-installation-management`."
+
+#: ../../lifecycle/software-monitor.rst:21
+msgid ""
+"When Nubus for UCS systems install, uninstall, or update software, they "
+"automatically update the package entries in the software monitor "
+"database. The DNS service record ``_pkgdb._tcp`` identifies the system "
+"running the software monitor."
+msgstr ""
+"Wenn Nubus für UCS Systeme Software installieren, deinstallieren oder "
+"aktualisieren, aktualisieren sie automatisch die Paketeinträge in der "
+"Software-Monitor-Datenbank. Der DNS-Diensteintrag ``_pkgdb._tcp`` "
+"identifiziert das System, das den Software-Monitor ausführt."
+
+#: ../../lifecycle/software-monitor.rst:28
+msgid ":ref:`lifecycle-app-center`"
+msgstr ":ref:`lifecycle-app-center`"
+
+#: ../../lifecycle/software-monitor.rst:29
+msgid "for information about Univention App Center."
+msgstr "für Informationen über Univention App Center"
+
+#: ../../lifecycle/software-monitor.rst:34
+msgid "Features and functions"
+msgstr "Funktionen und Merkmale"
+
+#: ../../lifecycle/software-monitor.rst:36
+msgid "The *Software monitor* management module provides the following tabs:"
+msgstr "Das Verwaltungsmodul *Software-Monitor* bietet die folgenden Reiter:"
+
+#: ../../lifecycle/software-monitor.rst:38
+msgid "Search UCS systems"
+msgstr "Suche nach UCS-Systemen"
+
+#: ../../lifecycle/software-monitor.rst:39
+msgid ""
+"Search for installed packages and their version numbers by system name, "
+"UCS versions, and system role."
+msgstr ""
+"Suchen Sie nach installierten Paketen und ihren Versionsnummern nach "
+"Systemname, UCS-Versionen und Systemrolle."
+
+#: ../../lifecycle/software-monitor.rst:42
+msgid "Search software packages"
+msgstr "Suche nach Software-Paketen"
+
+#: ../../lifecycle/software-monitor.rst:43
+msgid "Search the package status database by package name or installation status."
+msgstr ""
+"Durchsuchen Sie die Paketstatus-Datenbank nach Paketname oder "
+"Installationsstatus."
+
+#: ../../lifecycle/software-monitor.rst:45
+msgid ""
+":numref:`lifecycle-software-monitor-capability-figure` shows an example "
+"of the package search results. See the column explanations later."
+msgstr ""
+":numref:`lifecycle-software-monitor-capability-figure` zeigt ein Beispiel"
+" der Ergebnisse einer Paketsuche. Weitere Erklärungen der Spalten folgen später."
+
+#: ../../lifecycle/software-monitor.rst:50
+msgid "Software Monitor interface showing package search results"
+msgstr "Software-Monitor-Oberfläche mit Paketsuchergebnissen"
+
+#: ../../lifecycle/software-monitor.rst:53
+msgid ""
+"The Software Monitor interface displays installed packages and their "
+"status information"
+msgstr ""
+"Die Software-Monitor-Oberfläche zeigt installierte Pakete und ihre "
+"Statusinformationen an"
+
+#: ../../lifecycle/software-monitor.rst:55
+msgid "The results for the packages search have the following columns:"
+msgstr "Die Ergebnisse der Paketsuche haben die folgenden Spalten:"
+
+#: ../../lifecycle/software-monitor.rst:57
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: ../../lifecycle/software-monitor.rst:58
+msgid "The name of the host where the package resides."
+msgstr "Der Name des Rechners, auf dem sich das Paket befindet."
+
+#: ../../lifecycle/software-monitor.rst:60
+msgid "Package name"
+msgstr "Paketname"
+
+#: ../../lifecycle/software-monitor.rst:61
+msgid "The name of the package."
+msgstr "Der Name des Pakets."
+
+#: ../../lifecycle/software-monitor.rst:63
+msgid "Package version"
+msgstr "Paketversion"
+
+#: ../../lifecycle/software-monitor.rst:64
+msgid "The package version installed on the system."
+msgstr "Die auf dem System installierte Paketversion."
+
+#: ../../lifecycle/software-monitor.rst:66
+msgid "Selection state"
+msgstr "Auswahlstatus"
+
+#: ../../lifecycle/software-monitor.rst:67
+msgid ""
+"The *selection state* indicates what the administrator wants the package "
+"manager to do with the package."
+msgstr ""
+"Der *Auswahlstatus* zeigt an, was der Administrator durch den Paketmanager mit "
+"dem Paket tun möchte."
+
+#: ../../lifecycle/software-monitor.rst:69
+msgid "Install the package."
+msgstr "Paket installieren."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Hold"
+msgstr "Hold"
+
+#: ../../lifecycle/software-monitor.rst:70
+msgid "Keep the current version without updates."
+msgstr "Die aktuelle Version ohne Updates behalten."
+
+#: ../../lifecycle/software-monitor.rst:71
+msgid "Remove the package while keeping its configuration files."
+msgstr "Das Paket entfernen und seine Konfigurationsdateien behalten."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Purge"
+msgstr "Purge"
+
+#: ../../lifecycle/software-monitor.rst:72
+msgid "Completely remove the package and its configuration files."
+msgstr "Das Paket und alle seine Konfigurationsdateien vollständig entfernen."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Not installed"
+msgstr "Nicht installiert"
+
+#: ../../lifecycle/software-monitor.rst:73
+msgid "The package isn't on the system."
+msgstr "Das Paket befindet sich nicht auf dem System."
+
+#: ../../lifecycle/software-monitor.rst:75
+msgid "Installation state"
+msgstr "Installationsstatus"
+
+#: ../../lifecycle/software-monitor.rst:76
+msgid ""
+"The *installation state* indicates whether a package's installation is "
+"healthy and ready for updates, or if it needs attention."
+msgstr ""
+"Der *Installationsstatus* gibt an, ob die Installation eines Pakets "
+"fehlerfrei ist und Updates bereit sind, oder ob es Aufmerksamkeit "
+"benötigt."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "OK"
+msgstr "OK"
+
+#: ../../lifecycle/software-monitor.rst:79
+msgid "The system can update the package when a newer version exists."
+msgstr ""
+"Das System kann das Paket aktualisieren, wenn eine neuere Version "
+"vorhanden ist."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Reinstall required"
+msgstr "Neuinstallation erforderlich"
+
+#: ../../lifecycle/software-monitor.rst:80
+msgid ""
+"The system needs to reinstall the package before it can proceed with "
+"updates."
+msgstr ""
+"Das System muss das Paket neu installieren, bevor es mit Updates "
+"fortfahren kann."
+
+#: ../../lifecycle/software-monitor.rst:81
+msgid "The system holds the package and doesn't update it."
+msgstr "Das System hält das Paket und aktualisiert es nicht."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Hold + Reinstall required"
+msgstr "Hold + Reinstall required"
+
+#: ../../lifecycle/software-monitor.rst:82
+msgid "The system holds the package and also needs to reinstall it."
+msgstr "Das System hält das Paket und muss es auch neu installieren."
+
+#: ../../lifecycle/software-monitor.rst:84
+msgid "Package state"
+msgstr "Paketstatus"
+
+#: ../../lifecycle/software-monitor.rst:85
+msgid ""
+"The *package state* indicates the current status of a package on the "
+"system."
+msgstr ""
+"Der *Paketstatus* zeigt den aktuellen Status eines Pakets auf dem System "
+"an."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Installed"
+msgstr "Installiert"
+
+#: ../../lifecycle/software-monitor.rst:87
+msgid "The system installed and fully configured the package."
+msgstr "Das System hat das Paket installiert und vollständig konfiguriert."
+
+#: ../../lifecycle/software-monitor.rst:88
+msgid "The system doesn't have the package installed."
+msgstr "Das System hat das Paket nicht installiert."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Incomplete"
+msgstr "Unvollständig"
+
+#: ../../lifecycle/software-monitor.rst:89
+msgid "The system's package installation or configuration didn't complete."
+msgstr ""
+"Die Paketinstallation oder -:spelling:word:`konfiguration` des Systems "
+"wurden nicht abgeschlossen."
+
+#: ../../lifecycle/software-monitor.rst
+msgid "Config files only"
+msgstr "Nur Konfigurationsdateien"
+
+#: ../../lifecycle/software-monitor.rst:90
+msgid "The system removed the package but kept its configuration files."
+msgstr ""
+"Das System hat das Paket entfernt, aber seine Konfigurationsdateien "
+"behalten."
+
+#: ../../lifecycle/software-monitor.rst:95
+msgid "Configure the software monitor"
+msgstr "Konfigurieren Sie den Software-Monitor"
+
+#: ../../lifecycle/software-monitor.rst:97
+msgid ""
+"You can customize monitoring behavior to handle connectivity issues or "
+"system maintenance periods."
+msgstr ""
+"Sie können das Überwachungsverhalten anpassen, um Verbindungsprobleme "
+"oder Systemwartungszeiträume zu bewältigen."
+
+#: ../../lifecycle/software-monitor.rst:100
+msgid ""
+"To deactivate software monitoring when Nubus for UCS systems can't reach "
+"the database, set the :envvar:`pkgdb/scan` :term:`UCR variable` to "
+"``no``. To reactivate monitoring, run the :command:`univention-pkgdb-"
+"scan` command. This command scans the system and adds to the database any"
+" packages installed during the monitoring deactivation period. Use the "
+"command in :numref:`software-monitor-remove-system-command` to remove a "
+"system's packages from the database."
+msgstr ""
+"Um die Softwareüberwachung zu deaktivieren, wenn Nubus für UCS Systeme "
+"die Datenbank nicht erreichen können, setzen Sie die :term:`UCR-Variable` :envvar:`pkgdb/scan`"
+" auf ``no``. Um die Überwachung zu reaktivieren, "
+"führen Sie den Befehl :command:`univention-pkgdb-scan` aus. Dieser Befehl"
+" scannt das System und fügt alle während des Zeitraums der deaktivierten "
+"Überwachung installierten Pakete zur Datenbank hinzu. Verwenden Sie den "
+"Befehl in :numref:`software-monitor-remove-system-command`, um die Pakete"
+" eines Systems aus der Datenbank zu entfernen."
+
+#: ../../lifecycle/software-monitor.rst:109
+msgid "Remove a system from the software monitor database"
+msgstr "Systems aus der Software-Monitor-Datenbank entfernen"
+
+#: ../../lifecycle/software-monitor.rst:109
+msgid "$ univention-pkgdb-scan --remove-system [HOSTNAME]"
+msgstr "$ univention-pkgdb-scan --remove-system [HOSTNAME]"
 
 #: ../../lifecycle/update-strategies.rst:7
 msgid "Update strategies"
