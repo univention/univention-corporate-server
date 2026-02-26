@@ -521,6 +521,28 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: string
 
+
+.. envvar:: pkgdb/scan
+
+    Controls whether Nubus for UCS systems report software installations
+    to the software monitor.
+    When activated with the value ``yes``
+    or the variable isn't set,
+    the system tracks software installations, deinstallations, and updates
+    in the software monitor database.
+    When set to ``no``,
+    the system doesn't record software changes in the software monitor.
+
+    For information about temporarily deactivating monitoring,
+    see :ref:`lifecycle-software-monitor-configuration`.
+    For information about the software monitor,
+    see :ref:`lifecycle-software-monitor`.
+
+    :Default value: not set
+    :Possible values: ``yes``, ``no``, not set
+    :Type: boolean
+
+
 .. envvar:: portal/auth-mode
 
    Specifies the mechanism
