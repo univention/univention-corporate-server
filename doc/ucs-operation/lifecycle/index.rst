@@ -36,3 +36,4 @@ Software distribution and package management
    package-maintenance-policy
    local-repository-servers
    app-center
+   software-monitor
