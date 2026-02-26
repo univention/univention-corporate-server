@@ -6,71 +6,108 @@
 Software monitor
 ================
 
-The software monitor is a database in which information is stored concerning the
-software packages installed across all UCS systems. This database offers an
-administrator an overview of which release and package versions are installed in
-the domain and offers information for the step-by-step updating of a UCS domain
-and for use in identifying problems.
+The software monitor uses a PostgreSQL database
+to track software packages across all Nubus for UCS systems.
+Administrators use it to see which package versions exist in the domain,
+identify problems,
+and plan staged updates.
 
-The software monitor can be installed from the Univention App Center with the
-application :program:`Software installation monitor`. Alternatively, the
-software package :program:`univention-pkgdb` can be installed. Additional
-information can be found in :ref:`computers-softwaremanagement-install-software`.
+To install the software monitor from the App Center
+select the :program:`Software installation monitor` app,
+or install the :program:`univention-pkgdb` package directly.
+For more information,
+see :ref:`lifecycle-package-installation-management`.
 
-UCS systems update their entries automatically when software is installed,
-uninstalled or updated. The system on which the software monitor is operated is
-located by the DNS service record ``_pkgdb._tcp``.
+When Nubus for UCS systems install, uninstall, or update software,
+they automatically update the package entries in the software monitor database.
+The DNS service record ``_pkgdb._tcp``
+identifies the system running the software monitor.
 
-The software monitor brings its own UMC module :guilabel:`Software monitor`. The
-following functions are available:
+.. seealso::
 
-Systems
-   allows to search for the version numbers of installed systems. It is possible
-   to search for system names, UCS versions and system roles.
+   :ref:`lifecycle-app-center`
+      for information about Univention App Center.
 
-Packages
-   allows to search in the installation data tracked by the package status
-   database. Besides searching for a *Package name* there are various search
-   possibilities available for the installation status of packages:
+.. _lifecycle-software-monitor-capability:
 
-   Selection state
-      The *selection state* influences the action taken when updating a package.
-      ``Install`` is used to select a package for installation. If a package is
-      configured to ``Hold`` it will be excluded from further updates. There are
-      two possibilities for uninstalling a package: A package removed with
-      ``DeInstall`` keeps locally created configuration data, whilst a package
-      removed with ``Purge`` is completely deleted.
+Features and functions
+----------------------
 
-   Installation state
-      The *installation state* describes the status of an installed package in
-      relation to upcoming updates. The normal status is ``Ok``, which leads to a
-      package being updated when a newer version exists. If a package is configured
-      to ``Hold`` it will be excluded from the update.
+The *Software monitor* management module provides the following tabs:
 
-   Package state
-      The *package state* describes the status of a setup package. The normal status
-      here is ``Installed`` for installed packages and ``ConfigFiles`` for removed
-      packages. All other statuses appear when the package's installation was
-      canceled in different phases.
+Search UCS systems
+   Search for installed packages and their version numbers
+   by system name, UCS versions, and system role.
 
-.. _software-monitor:
+Search software packages
+   Search the package status database by package name or installation status.
+
+:numref:`lifecycle-software-monitor-capability-figure` shows an example of the package search results.
+See the column explanations later.
+
+.. _lifecycle-software-monitor-capability-figure:
 
 .. figure:: /images/software_softwaremonitor.*
-   :alt: Searching for packages in the software monitor
+   :alt: Software Monitor interface showing package search results
 
-   Searching for packages in the software monitor
+   The Software Monitor interface displays installed packages and their status information
 
-If you do not wish UCS systems to store installation processes in the software
-monitor (e.g., when there is no network connection to the database), this can be
-arranged by setting the |UCSUCRV| :envvar:`pkgdb/scan` to ``no``.
+The results for the packages search have the following columns:
 
-Should storing be reactivated at a later date, the command
-:command:`univention-pkgdb-scan` must be executed to ensure that package
-versions installed in the meanwhile are also adopted in the database.
+Hostname
+   The name of the host where the package resides.
 
-The following command can be used to remove a system's program inventory from
-the database again:
+Package name
+   The name of the package.
+
+Package version
+   The package version installed on the system.
+
+Selection state
+   The *selection state* indicates what the administrator wants the package manager to do with the package.
+
+   :Install: Install the package.
+   :Hold: Keep the current version without updates.
+   :Uninstall: Remove the package while keeping its configuration files.
+   :Purge: Completely remove the package and its configuration files.
+   :Not installed: The package isn't on the system.
+
+Installation state
+   The *installation state* indicates whether a package's installation is healthy and ready for updates,
+   or if it needs attention.
+
+   :OK: The system can update the package when a newer version exists.
+   :Reinstall required: The system needs to reinstall the package before it can proceed with updates.
+   :Hold: The system holds the package and doesn't update it.
+   :Hold + Reinstall required: The system holds the package and also needs to reinstall it.
+
+Package state
+   The *package state* indicates the current status of a package on the system.
+
+   :Installed: The system installed and fully configured the package.
+   :Not installed: The system doesn't have the package installed.
+   :Incomplete: The system's package installation or configuration didn't complete.
+   :Config files only: The system removed the package but kept its configuration files.
+
+.. _lifecycle-software-monitor-configuration:
+
+Configure the software monitor
+------------------------------
+
+You can customize monitoring behavior
+to handle connectivity issues or system maintenance periods.
+
+To deactivate software monitoring when Nubus for UCS systems can't reach the database,
+set the :envvar:`pkgdb/scan` :term:`UCR variable` to ``no``.
+To reactivate monitoring,
+run the :command:`univention-pkgdb-scan` command.
+This command scans the system and adds to the database
+any packages installed during the monitoring deactivation period.
+Use the command in :numref:`software-monitor-remove-system-command`
+to remove a system's packages from the database.
 
 .. code-block:: console
+   :caption: Remove a system from the software monitor database
+   :name: software-monitor-remove-system-command
 
    $ univention-pkgdb-scan --remove-system [HOSTNAME]
