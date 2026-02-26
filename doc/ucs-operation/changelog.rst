@@ -24,6 +24,14 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 26. Feb 2026
+     - :ref:`lifecycle-software-monitor`
+     - Add section about *Software Monitor* management module.
+
+   * - 25. Feb 2026
+     - :ref:`lifecycle-package-maintenance-policy`
+     - Add section about package maintenance policy.
+
    * - 24. Feb 2026
      - :ref:`system-administration-proxy`
      - Add section about proxy and its configuration.
