@@ -1,6 +1,7 @@
-univention-dvd (7.5.0) UNRELEASED; urgency=medium
+univention-dvd (7.5.0) unstable; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
+  * Bug #59089: UCS-5.2-5 ISO
 
  -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:19:43 +0100
 
