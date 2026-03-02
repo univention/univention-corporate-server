@@ -1,6 +1,7 @@
-univention-updater (17.5.0) UNRELEASED; urgency=medium
+univention-updater (17.5.0) unstable; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
+  * Bug #59083: Adapt links and components for 5.2-5
 
  -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:23 +0100
 
