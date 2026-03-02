@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gnutls28
+fix: 3.5.8-5+deb9u10
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-14831)
+ * CVSS score 4.0 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-9820)
+bug: [59099]
+cve:
+- CVE-2025-9820
+- CVE-2025-14831
