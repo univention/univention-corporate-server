@@ -13,7 +13,7 @@ Publication date of UCS |release|: 2025-12-09
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-4, the fourth patch level release for |UCSUCS| 5.2 is available.
+With |UCSUCS| 5.2-5, the fourth patch level release for |UCSUCS| 5.2 is available.
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
@@ -27,12 +27,12 @@ Here is an overview of the most important changes:
   :external+uv-ext-delegative-administration:ref:`da-intro`
   in :cite:t:`uv-ext-delegative-administration`.
 
-* |UCSUCS| 5.2-4 officially discontinues support for the PXE server.
+* |UCSUCS| 5.2-5 officially discontinues support for the PXE server.
   This change doesn't affect the UCS installation process.
   Unattended installations remain fully supported.
   You can continue to use unattended installations using configured installation profiles.
 
-* |UCSUCS| 5.2-4 includes numerous updates for packages,
+* |UCSUCS| 5.2-5 includes numerous updates for packages,
   such as ``docker.io``, ``nginx``, ``redis``, ``postgresql-common``, ``qemu``, ``strongswan``,
   and many others
 
@@ -126,10 +126,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-4{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-5{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.2-4{.gpg,} && bash pre-update-checks-5.2-4
+   $ apt-key verify pre-update-checks-5.2-5{.gpg,} && bash pre-update-checks-5.2-5
 
    ...
 
@@ -218,8 +218,8 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.2-4 in
-:external+uv-changelog-5.2-4:doc:`index`.
+You find the changes since UCS 5.2-5 in
+:external+uv-changelog-5.2-5:doc:`index`.
 
 .. _biblio:
 

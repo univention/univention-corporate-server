@@ -2,12 +2,6 @@
 ..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _relnotes-changelog:
-
-#########################################################
-Changelog for Univention Corporate Server (UCS) |release|
-#########################################################
-
 .. _changelog-general:
 
 *******
@@ -16,389 +10,414 @@ General
 
 .. _security:
 
-* |UCSUCS| |release| includes all security updates issued for UCS 5.2-3:
+* |UCSUCS| |release| includes all security updates issued for UCS 5.2-4:
 
-  * :program:`amd64-microcode` (:uv:cve:`2024-56161`)
-    (:uv:bug:`58597`)
+  * :program:`apache2` (:uv:cve:`2025-55753`, :uv:cve:`2025-58098`,
+    :uv:cve:`2025-59775`, :uv:cve:`2025-65082`, :uv:cve:`2025-66200`)
+    (:uv:bug:`58945`)
 
-  * :program:`apache2` (:uv:cve:`2024-42516`, :uv:cve:`2024-43204`,
-    :uv:cve:`2024-43394`, :uv:cve:`2024-47252`, :uv:cve:`2025-23048`,
-    :uv:cve:`2025-49630`, :uv:cve:`2025-49812`, :uv:cve:`2025-53020`,
-    :uv:cve:`2025-54090`) (:uv:bug:`58601`)
+  * :program:`bind9` (:uv:cve:`2025-13878`) (:uv:bug:`58995`)
 
-  * :program:`bind9` (:uv:cve:`2025-40778`, :uv:cve:`2025-40780`,
-    :uv:cve:`2025-8677`) (:uv:bug:`58742`)
+  * :program:`clamav` (:uv:cve:`2025-20234`) (:uv:bug:`58962`)
 
-  * :program:`clamav` (:uv:cve:`2025-20128`, :uv:cve:`2025-20260`)
-    (:uv:bug:`58593`)
+  * :program:`containerd` (:uv:cve:`2024-25621`, :uv:cve:`2025-64329`)
+    (:uv:bug:`58893`)
 
-  * :program:`cloud-init` (:uv:cve:`2024-11584`, :uv:cve:`2024-6174`)
-    (:uv:bug:`58611`)
+  * :program:`cups-filters` (:uv:cve:`2025-57812`,
+    :uv:cve:`2025-64503`, :uv:cve:`2025-64524`) (:uv:bug:`58944`)
 
-  * :program:`cups` (:uv:cve:`2025-58060`, :uv:cve:`2025-58364`)
-    (:uv:bug:`58641`)
+  * :program:`ffmpeg` (:uv:cve:`2024-36618`, :uv:cve:`2025-1594`,
+    :uv:cve:`2025-63757`) (:uv:bug:`58928`)
 
-  * :program:`curl` (:uv:cve:`2023-27534`, :uv:cve:`2024-11053`,
-    :uv:cve:`2024-9681`, :uv:cve:`2025-0167`) (:uv:bug:`58618`)
+  * :program:`firefox-esr` (:uv:cve:`2025-14321`,
+    :uv:cve:`2025-14322`, :uv:cve:`2025-14323`, :uv:cve:`2025-14324`,
+    :uv:cve:`2025-14325`, :uv:cve:`2025-14327`, :uv:cve:`2025-14328`,
+    :uv:cve:`2025-14329`, :uv:cve:`2025-14330`, :uv:cve:`2025-14331`,
+    :uv:cve:`2025-14333`, :uv:cve:`2026-0877`, :uv:cve:`2026-0878`,
+    :uv:cve:`2026-0879`, :uv:cve:`2026-0880`, :uv:cve:`2026-0882`,
+    :uv:cve:`2026-0883`, :uv:cve:`2026-0884`, :uv:cve:`2026-0885`,
+    :uv:cve:`2026-0886`, :uv:cve:`2026-0887`, :uv:cve:`2026-0890`,
+    :uv:cve:`2026-0891`) (:uv:bug:`58901`, :uv:bug:`58983`)
 
-  * :program:`djvulibre` (:uv:cve:`2021-46310`, :uv:cve:`2021-46312`,
-    :uv:cve:`2025-53367`) (:uv:bug:`58614`)
+  * :program:`gdk-pixbuf` (:uv:cve:`2025-7345`) (:uv:bug:`58957`)
 
-  * :program:`expat` (:uv:cve:`2023-52425`, :uv:cve:`2024-50602`,
-    :uv:cve:`2024-8176`) (:uv:bug:`58598`)
+  * :program:`git` (:uv:cve:`2025-27613`, :uv:cve:`2025-46835`,
+    :uv:cve:`2025-48384`, :uv:cve:`2025-48385`) (:uv:bug:`58951`)
 
-  * :program:`fig2dev` (:uv:cve:`2025-46397`, :uv:cve:`2025-46398`,
-    :uv:cve:`2025-46399`, :uv:cve:`2025-46400`) (:uv:bug:`58710`)
+  * :program:`glib2.0` (:uv:cve:`2025-13601`, :uv:cve:`2025-14087`,
+    :uv:cve:`2025-14512`) (:uv:bug:`58952`)
 
-  * :program:`firefox-esr` (:uv:cve:`2025-10527`,
-    :uv:cve:`2025-10528`, :uv:cve:`2025-10529`, :uv:cve:`2025-10532`,
-    :uv:cve:`2025-10533`, :uv:cve:`2025-10536`, :uv:cve:`2025-10537`,
-    :uv:cve:`2025-11708`, :uv:cve:`2025-11709`, :uv:cve:`2025-11710`,
-    :uv:cve:`2025-11711`, :uv:cve:`2025-11712`, :uv:cve:`2025-11714`,
-    :uv:cve:`2025-11715`, :uv:cve:`2025-13012`, :uv:cve:`2025-13013`,
-    :uv:cve:`2025-13014`, :uv:cve:`2025-13015`, :uv:cve:`2025-13016`,
-    :uv:cve:`2025-13017`, :uv:cve:`2025-13018`, :uv:cve:`2025-13019`,
-    :uv:cve:`2025-13020`) (:uv:bug:`58651`, :uv:bug:`58723`,
-    :uv:bug:`58812`)
+  * :program:`gnupg2` (:uv:cve:`2025-68973`) (:uv:bug:`58958`)
 
-  * :program:`ghostscript` (:uv:cve:`2025-59798`,
-    :uv:cve:`2025-59799`, :uv:cve:`2025-7462`) (:uv:bug:`58709`)
+  * :program:`gnutls28` (:uv:cve:`2025-14831`, :uv:cve:`2025-9820`)
+    (:uv:bug:`59066`)
 
-  * :program:`glib2.0` (:uv:cve:`2025-3360`, :uv:cve:`2025-4373`,
-    :uv:cve:`2025-7039`) (:uv:bug:`58613`)
+  * :program:`imagemagick` (:uv:cve:`2025-57803`,
+    :uv:cve:`2025-62171`, :uv:cve:`2025-65955`, :uv:cve:`2025-66628`,
+    :uv:cve:`2025-68469`, :uv:cve:`2025-68618`, :uv:cve:`2025-68950`,
+    :uv:cve:`2025-69204`, :uv:cve:`2026-23874`, :uv:cve:`2026-23876`,
+    :uv:cve:`2026-23952`) (:uv:bug:`58947`, :uv:bug:`59014`)
 
-  * :program:`glibc` (:uv:cve:`2025-0395`, :uv:cve:`2025-4802`,
-    :uv:cve:`2025-8058`) (:uv:bug:`58622`)
+  * :program:`inetutils` (:uv:cve:`2026-24061`) (:uv:bug:`59004`)
 
-  * :program:`imagemagick` (:uv:cve:`2025-43965`,
-    :uv:cve:`2025-53014`, :uv:cve:`2025-53019`, :uv:cve:`2025-53101`,
-    :uv:cve:`2025-55154`, :uv:cve:`2025-55212`, :uv:cve:`2025-55298`,
-    :uv:cve:`2025-57803`, :uv:cve:`2025-57807`) (:uv:bug:`58639`)
+  * :program:`libpng1.6` (:uv:cve:`2025-64505`, :uv:cve:`2025-64506`,
+    :uv:cve:`2025-64720`, :uv:cve:`2025-65018`, :uv:cve:`2025-66293`,
+    :uv:cve:`2026-22695`, :uv:cve:`2026-22801`, :uv:cve:`2026-25646`)
+    (:uv:bug:`58902`, :uv:bug:`59065`)
 
-  * :program:`intel-microcode` (:uv:cve:`2025-20053`,
-    :uv:cve:`2025-20109`, :uv:cve:`2025-21090`, :uv:cve:`2025-22839`,
-    :uv:cve:`2025-22840`, :uv:cve:`2025-22889`, :uv:cve:`2025-24305`,
-    :uv:cve:`2025-26403`, :uv:cve:`2025-32086`) (:uv:bug:`58746`)
+  * :program:`libsodium` (:uv:cve:`2025-69277`) (:uv:bug:`58949`)
 
-  * :program:`jinja2` (:uv:cve:`2024-56201`, :uv:cve:`2024-56326`,
-    :uv:cve:`2025-27516`) (:uv:bug:`58596`)
+  * :program:`libssh` (:uv:cve:`2025-4877`, :uv:cve:`2025-4878`,
+    :uv:cve:`2025-5318`, :uv:cve:`2025-5351`, :uv:cve:`2025-5372`,
+    :uv:cve:`2025-5987`, :uv:cve:`2025-8114`, :uv:cve:`2025-8277`)
+    (:uv:bug:`58948`)
 
-  * :program:`krb5` (:uv:cve:`2024-26462`, :uv:cve:`2025-24528`,
-    :uv:cve:`2025-3576`) (:uv:bug:`58612`)
+  * :program:`libvpx` (:uv:cve:`2026-1861`, :uv:cve:`2026-2447`)
+    (:uv:bug:`59067`)
 
-  * :program:`lasso` (:uv:cve:`2025-46404`, :uv:cve:`2025-46705`,
-    :uv:cve:`2025-47151`) (:uv:bug:`58813`)
+  * :program:`libxml2` (:uv:cve:`2025-7425`, :uv:cve:`2025-9714`)
+    (:uv:bug:`58963`)
 
-  * :program:`libarchive` (:uv:cve:`2025-5914`, :uv:cve:`2025-5915`,
-    :uv:cve:`2025-5916`, :uv:cve:`2025-5917`) (:uv:bug:`58615`)
+  * :program:`linux` (:uv:cve:`2023-52658`, :uv:cve:`2023-53421`,
+    :uv:cve:`2023-54285`, :uv:cve:`2024-42079`, :uv:cve:`2024-46786`,
+    :uv:cve:`2024-49968`, :uv:cve:`2025-21946`, :uv:cve:`2025-22022`,
+    :uv:cve:`2025-22083`, :uv:cve:`2025-22090`, :uv:cve:`2025-22107`,
+    :uv:cve:`2025-22111`, :uv:cve:`2025-22121`, :uv:cve:`2025-37899`,
+    :uv:cve:`2025-37926`, :uv:cve:`2025-38022`, :uv:cve:`2025-38057`,
+    :uv:cve:`2025-38073`, :uv:cve:`2025-38104`, :uv:cve:`2025-38125`,
+    :uv:cve:`2025-38129`, :uv:cve:`2025-38232`, :uv:cve:`2025-38361`,
+    :uv:cve:`2025-38408`, :uv:cve:`2025-38591`, :uv:cve:`2025-38678`,
+    :uv:cve:`2025-38718`, :uv:cve:`2025-39721`, :uv:cve:`2025-39805`,
+    :uv:cve:`2025-39871`, :uv:cve:`2025-40039`, :uv:cve:`2025-40083`,
+    :uv:cve:`2025-40110`, :uv:cve:`2025-40149`, :uv:cve:`2025-40164`,
+    :uv:cve:`2025-40211`, :uv:cve:`2025-40214`, :uv:cve:`2025-40215`,
+    :uv:cve:`2025-40253`, :uv:cve:`2025-40254`, :uv:cve:`2025-40257`,
+    :uv:cve:`2025-40258`, :uv:cve:`2025-40259`, :uv:cve:`2025-40261`,
+    :uv:cve:`2025-40262`, :uv:cve:`2025-40263`, :uv:cve:`2025-40264`,
+    :uv:cve:`2025-40269`, :uv:cve:`2025-40271`, :uv:cve:`2025-40272`,
+    :uv:cve:`2025-40273`, :uv:cve:`2025-40275`, :uv:cve:`2025-40277`,
+    :uv:cve:`2025-40278`, :uv:cve:`2025-40279`, :uv:cve:`2025-40280`,
+    :uv:cve:`2025-40281`, :uv:cve:`2025-40282`, :uv:cve:`2025-40283`,
+    :uv:cve:`2025-40284`, :uv:cve:`2025-40285`, :uv:cve:`2025-40286`,
+    :uv:cve:`2025-40288`, :uv:cve:`2025-40292`, :uv:cve:`2025-40293`,
+    :uv:cve:`2025-40294`, :uv:cve:`2025-40297`, :uv:cve:`2025-40301`,
+    :uv:cve:`2025-40304`, :uv:cve:`2025-40306`, :uv:cve:`2025-40308`,
+    :uv:cve:`2025-40309`, :uv:cve:`2025-40312`, :uv:cve:`2025-40314`,
+    :uv:cve:`2025-40315`, :uv:cve:`2025-40317`, :uv:cve:`2025-40318`,
+    :uv:cve:`2025-40319`, :uv:cve:`2025-40321`, :uv:cve:`2025-40322`,
+    :uv:cve:`2025-40324`, :uv:cve:`2025-40331`, :uv:cve:`2025-40341`,
+    :uv:cve:`2025-40342`, :uv:cve:`2025-40343`, :uv:cve:`2025-68211`,
+    :uv:cve:`2025-68223`, :uv:cve:`2025-68254`, :uv:cve:`2025-68255`,
+    :uv:cve:`2025-68256`, :uv:cve:`2025-68257`, :uv:cve:`2025-68258`,
+    :uv:cve:`2025-68259`, :uv:cve:`2025-68261`, :uv:cve:`2025-68263`,
+    :uv:cve:`2025-68264`, :uv:cve:`2025-68266`, :uv:cve:`2025-68291`,
+    :uv:cve:`2025-68325`, :uv:cve:`2025-68332`, :uv:cve:`2025-68335`,
+    :uv:cve:`2025-68336`, :uv:cve:`2025-68337`, :uv:cve:`2025-68340`,
+    :uv:cve:`2025-68344`, :uv:cve:`2025-68345`, :uv:cve:`2025-68346`,
+    :uv:cve:`2025-68347`, :uv:cve:`2025-68349`, :uv:cve:`2025-68354`,
+    :uv:cve:`2025-68362`, :uv:cve:`2025-68363`, :uv:cve:`2025-68364`,
+    :uv:cve:`2025-68365`, :uv:cve:`2025-68366`, :uv:cve:`2025-68367`,
+    :uv:cve:`2025-68369`, :uv:cve:`2025-68371`, :uv:cve:`2025-68372`,
+    :uv:cve:`2025-68380`, :uv:cve:`2025-68724`, :uv:cve:`2025-68725`,
+    :uv:cve:`2025-68727`, :uv:cve:`2025-68728`, :uv:cve:`2025-68732`,
+    :uv:cve:`2025-68733`, :uv:cve:`2025-68740`, :uv:cve:`2025-68742`,
+    :uv:cve:`2025-68746`, :uv:cve:`2025-68753`, :uv:cve:`2025-68757`,
+    :uv:cve:`2025-68758`, :uv:cve:`2025-68759`, :uv:cve:`2025-68764`,
+    :uv:cve:`2025-68765`, :uv:cve:`2025-68766`, :uv:cve:`2025-68767`,
+    :uv:cve:`2025-68769`, :uv:cve:`2025-68771`, :uv:cve:`2025-68772`,
+    :uv:cve:`2025-68773`, :uv:cve:`2025-68774`, :uv:cve:`2025-68776`,
+    :uv:cve:`2025-68777`, :uv:cve:`2025-68778`, :uv:cve:`2025-68780`,
+    :uv:cve:`2025-68781`, :uv:cve:`2025-68782`, :uv:cve:`2025-68783`,
+    :uv:cve:`2025-68785`, :uv:cve:`2025-68786`, :uv:cve:`2025-68787`,
+    :uv:cve:`2025-68788`, :uv:cve:`2025-68789`, :uv:cve:`2025-68795`,
+    :uv:cve:`2025-68796`, :uv:cve:`2025-68797`, :uv:cve:`2025-68798`,
+    :uv:cve:`2025-68799`, :uv:cve:`2025-68800`, :uv:cve:`2025-68801`,
+    :uv:cve:`2025-68803`, :uv:cve:`2025-68804`, :uv:cve:`2025-68806`,
+    :uv:cve:`2025-68808`, :uv:cve:`2025-68813`, :uv:cve:`2025-68814`,
+    :uv:cve:`2025-68815`, :uv:cve:`2025-68816`, :uv:cve:`2025-68817`,
+    :uv:cve:`2025-68818`, :uv:cve:`2025-68819`, :uv:cve:`2025-68820`,
+    :uv:cve:`2025-68821`, :uv:cve:`2025-71064`, :uv:cve:`2025-71066`,
+    :uv:cve:`2025-71069`, :uv:cve:`2025-71071`, :uv:cve:`2025-71075`,
+    :uv:cve:`2025-71077`, :uv:cve:`2025-71078`, :uv:cve:`2025-71079`,
+    :uv:cve:`2025-71081`, :uv:cve:`2025-71082`, :uv:cve:`2025-71083`,
+    :uv:cve:`2025-71084`, :uv:cve:`2025-71085`, :uv:cve:`2025-71086`,
+    :uv:cve:`2025-71087`, :uv:cve:`2025-71088`, :uv:cve:`2025-71091`,
+    :uv:cve:`2025-71093`, :uv:cve:`2025-71094`, :uv:cve:`2025-71095`,
+    :uv:cve:`2025-71096`, :uv:cve:`2025-71097`, :uv:cve:`2025-71098`,
+    :uv:cve:`2025-71102`, :uv:cve:`2025-71104`, :uv:cve:`2025-71105`,
+    :uv:cve:`2025-71108`, :uv:cve:`2025-71111`, :uv:cve:`2025-71112`,
+    :uv:cve:`2025-71113`, :uv:cve:`2025-71114`, :uv:cve:`2025-71116`,
+    :uv:cve:`2025-71118`, :uv:cve:`2025-71119`, :uv:cve:`2025-71120`,
+    :uv:cve:`2025-71121`, :uv:cve:`2025-71123`, :uv:cve:`2025-71125`,
+    :uv:cve:`2025-71126`, :uv:cve:`2025-71127`, :uv:cve:`2025-71130`,
+    :uv:cve:`2025-71131`, :uv:cve:`2025-71132`, :uv:cve:`2025-71133`,
+    :uv:cve:`2025-71136`, :uv:cve:`2025-71137`, :uv:cve:`2025-71147`,
+    :uv:cve:`2025-71149`, :uv:cve:`2025-71150`, :uv:cve:`2025-71154`,
+    :uv:cve:`2025-71162`, :uv:cve:`2025-71163`, :uv:cve:`2025-71180`,
+    :uv:cve:`2025-71182`, :uv:cve:`2025-71183`, :uv:cve:`2025-71185`,
+    :uv:cve:`2025-71186`, :uv:cve:`2025-71189`, :uv:cve:`2025-71190`,
+    :uv:cve:`2025-71191`, :uv:cve:`2025-71192`, :uv:cve:`2025-71194`,
+    :uv:cve:`2025-71196`, :uv:cve:`2025-71197`, :uv:cve:`2025-71199`,
+    :uv:cve:`2026-22976`, :uv:cve:`2026-22977`, :uv:cve:`2026-22978`,
+    :uv:cve:`2026-22979`, :uv:cve:`2026-22980`, :uv:cve:`2026-22982`,
+    :uv:cve:`2026-22984`, :uv:cve:`2026-22990`, :uv:cve:`2026-22991`,
+    :uv:cve:`2026-22992`, :uv:cve:`2026-22994`, :uv:cve:`2026-22997`,
+    :uv:cve:`2026-22998`, :uv:cve:`2026-22999`, :uv:cve:`2026-23001`,
+    :uv:cve:`2026-23003`, :uv:cve:`2026-23005`, :uv:cve:`2026-23006`,
+    :uv:cve:`2026-23010`, :uv:cve:`2026-23011`, :uv:cve:`2026-23019`,
+    :uv:cve:`2026-23020`, :uv:cve:`2026-23021`, :uv:cve:`2026-23025`,
+    :uv:cve:`2026-23026`, :uv:cve:`2026-23030`, :uv:cve:`2026-23031`,
+    :uv:cve:`2026-23033`, :uv:cve:`2026-23037`, :uv:cve:`2026-23038`,
+    :uv:cve:`2026-23047`, :uv:cve:`2026-23049`, :uv:cve:`2026-23054`,
+    :uv:cve:`2026-23056`, :uv:cve:`2026-23058`, :uv:cve:`2026-23060`,
+    :uv:cve:`2026-23061`, :uv:cve:`2026-23063`, :uv:cve:`2026-23064`,
+    :uv:cve:`2026-23068`, :uv:cve:`2026-23069`, :uv:cve:`2026-23071`,
+    :uv:cve:`2026-23073`, :uv:cve:`2026-23074`, :uv:cve:`2026-23075`,
+    :uv:cve:`2026-23076`, :uv:cve:`2026-23078`, :uv:cve:`2026-23080`,
+    :uv:cve:`2026-23083`, :uv:cve:`2026-23084`, :uv:cve:`2026-23085`,
+    :uv:cve:`2026-23086`, :uv:cve:`2026-23087`, :uv:cve:`2026-23089`,
+    :uv:cve:`2026-23090`, :uv:cve:`2026-23091`, :uv:cve:`2026-23093`,
+    :uv:cve:`2026-23095`, :uv:cve:`2026-23096`, :uv:cve:`2026-23097`,
+    :uv:cve:`2026-23098`, :uv:cve:`2026-23099`, :uv:cve:`2026-23101`,
+    :uv:cve:`2026-23102`, :uv:cve:`2026-23103`, :uv:cve:`2026-23105`,
+    :uv:cve:`2026-23107`, :uv:cve:`2026-23108`, :uv:cve:`2026-23110`)
+    (:uv:bug:`58964`, :uv:bug:`59049`)
 
-  * :program:`libcap2` (:uv:cve:`2025-1390`) (:uv:bug:`58623`)
+  * :program:`linux-signed-amd64` (:uv:cve:`2023-52658`,
+    :uv:cve:`2023-53421`, :uv:cve:`2023-54285`, :uv:cve:`2024-42079`,
+    :uv:cve:`2024-46786`, :uv:cve:`2024-49968`, :uv:cve:`2025-21946`,
+    :uv:cve:`2025-22022`, :uv:cve:`2025-22083`, :uv:cve:`2025-22107`,
+    :uv:cve:`2025-22111`, :uv:cve:`2025-37899`, :uv:cve:`2025-37926`,
+    :uv:cve:`2025-38022`, :uv:cve:`2025-38057`, :uv:cve:`2025-38073`,
+    :uv:cve:`2025-38104`, :uv:cve:`2025-38125`, :uv:cve:`2025-38129`,
+    :uv:cve:`2025-38232`, :uv:cve:`2025-38361`, :uv:cve:`2025-38408`,
+    :uv:cve:`2025-38591`, :uv:cve:`2025-38678`, :uv:cve:`2025-38718`,
+    :uv:cve:`2025-39721`, :uv:cve:`2025-39805`, :uv:cve:`2025-39871`,
+    :uv:cve:`2025-40039`, :uv:cve:`2025-40083`, :uv:cve:`2025-40110`,
+    :uv:cve:`2025-40211`, :uv:cve:`2025-40214`, :uv:cve:`2025-40215`,
+    :uv:cve:`2025-40253`, :uv:cve:`2025-40254`, :uv:cve:`2025-40257`,
+    :uv:cve:`2025-40258`, :uv:cve:`2025-40259`, :uv:cve:`2025-40261`,
+    :uv:cve:`2025-40262`, :uv:cve:`2025-40263`, :uv:cve:`2025-40264`,
+    :uv:cve:`2025-40269`, :uv:cve:`2025-40271`, :uv:cve:`2025-40272`,
+    :uv:cve:`2025-40273`, :uv:cve:`2025-40275`, :uv:cve:`2025-40277`,
+    :uv:cve:`2025-40278`, :uv:cve:`2025-40279`, :uv:cve:`2025-40280`,
+    :uv:cve:`2025-40281`, :uv:cve:`2025-40282`, :uv:cve:`2025-40283`,
+    :uv:cve:`2025-40284`, :uv:cve:`2025-40285`, :uv:cve:`2025-40286`,
+    :uv:cve:`2025-40288`, :uv:cve:`2025-40292`, :uv:cve:`2025-40293`,
+    :uv:cve:`2025-40294`, :uv:cve:`2025-40297`, :uv:cve:`2025-40301`,
+    :uv:cve:`2025-40304`, :uv:cve:`2025-40306`, :uv:cve:`2025-40308`,
+    :uv:cve:`2025-40309`, :uv:cve:`2025-40312`, :uv:cve:`2025-40314`,
+    :uv:cve:`2025-40315`, :uv:cve:`2025-40317`, :uv:cve:`2025-40318`,
+    :uv:cve:`2025-40319`, :uv:cve:`2025-40321`, :uv:cve:`2025-40322`,
+    :uv:cve:`2025-40324`, :uv:cve:`2025-40331`, :uv:cve:`2025-40341`,
+    :uv:cve:`2025-40342`, :uv:cve:`2025-40343`, :uv:cve:`2025-68223`,
+    :uv:cve:`2025-68254`, :uv:cve:`2025-68255`, :uv:cve:`2025-68257`,
+    :uv:cve:`2025-68258`, :uv:cve:`2025-68259`, :uv:cve:`2025-68261`,
+    :uv:cve:`2025-68263`, :uv:cve:`2025-68264`, :uv:cve:`2025-68266`,
+    :uv:cve:`2025-68325`, :uv:cve:`2025-68332`, :uv:cve:`2025-68335`,
+    :uv:cve:`2025-68336`, :uv:cve:`2025-68340`, :uv:cve:`2025-68344`,
+    :uv:cve:`2025-68345`, :uv:cve:`2025-68346`, :uv:cve:`2025-68347`,
+    :uv:cve:`2025-68349`, :uv:cve:`2025-68354`, :uv:cve:`2025-68362`,
+    :uv:cve:`2025-68363`, :uv:cve:`2025-68365`, :uv:cve:`2025-68366`,
+    :uv:cve:`2025-68367`, :uv:cve:`2025-68369`, :uv:cve:`2025-68371`,
+    :uv:cve:`2025-68372`, :uv:cve:`2025-68380`, :uv:cve:`2025-68724`,
+    :uv:cve:`2025-68725`, :uv:cve:`2025-68727`, :uv:cve:`2025-68728`,
+    :uv:cve:`2025-68732`, :uv:cve:`2025-68733`, :uv:cve:`2025-68740`,
+    :uv:cve:`2025-68742`, :uv:cve:`2025-68746`, :uv:cve:`2025-68753`,
+    :uv:cve:`2025-68757`, :uv:cve:`2025-68758`, :uv:cve:`2025-68759`,
+    :uv:cve:`2025-68764`, :uv:cve:`2025-68765`, :uv:cve:`2025-68766`,
+    :uv:cve:`2025-68767`, :uv:cve:`2025-68769`, :uv:cve:`2025-68771`,
+    :uv:cve:`2025-68772`, :uv:cve:`2025-68773`, :uv:cve:`2025-68776`,
+    :uv:cve:`2025-68777`, :uv:cve:`2025-68778`, :uv:cve:`2025-68780`,
+    :uv:cve:`2025-68781`, :uv:cve:`2025-68782`, :uv:cve:`2025-68783`,
+    :uv:cve:`2025-68786`, :uv:cve:`2025-68787`, :uv:cve:`2025-68788`,
+    :uv:cve:`2025-68795`, :uv:cve:`2025-68796`, :uv:cve:`2025-68797`,
+    :uv:cve:`2025-68798`, :uv:cve:`2025-68799`, :uv:cve:`2025-68800`,
+    :uv:cve:`2025-68801`, :uv:cve:`2025-68803`, :uv:cve:`2025-68804`,
+    :uv:cve:`2025-68806`, :uv:cve:`2025-68808`, :uv:cve:`2025-68813`,
+    :uv:cve:`2025-68814`, :uv:cve:`2025-68815`, :uv:cve:`2025-68816`,
+    :uv:cve:`2025-68817`, :uv:cve:`2025-68818`, :uv:cve:`2025-68819`,
+    :uv:cve:`2025-68820`, :uv:cve:`2025-68821`, :uv:cve:`2025-71064`,
+    :uv:cve:`2025-71066`, :uv:cve:`2025-71069`, :uv:cve:`2025-71075`,
+    :uv:cve:`2025-71077`, :uv:cve:`2025-71078`, :uv:cve:`2025-71079`,
+    :uv:cve:`2025-71081`, :uv:cve:`2025-71082`, :uv:cve:`2025-71083`,
+    :uv:cve:`2025-71084`, :uv:cve:`2025-71086`, :uv:cve:`2025-71087`,
+    :uv:cve:`2025-71088`, :uv:cve:`2025-71091`, :uv:cve:`2025-71093`,
+    :uv:cve:`2025-71094`, :uv:cve:`2025-71095`, :uv:cve:`2025-71096`,
+    :uv:cve:`2025-71097`, :uv:cve:`2025-71102`, :uv:cve:`2025-71104`,
+    :uv:cve:`2025-71105`, :uv:cve:`2025-71108`, :uv:cve:`2025-71112`,
+    :uv:cve:`2025-71113`, :uv:cve:`2025-71114`, :uv:cve:`2025-71118`,
+    :uv:cve:`2025-71119`, :uv:cve:`2025-71120`, :uv:cve:`2025-71121`,
+    :uv:cve:`2025-71123`, :uv:cve:`2025-71125`, :uv:cve:`2025-71126`,
+    :uv:cve:`2025-71127`, :uv:cve:`2025-71130`, :uv:cve:`2025-71131`,
+    :uv:cve:`2025-71132`, :uv:cve:`2025-71133`, :uv:cve:`2025-71136`,
+    :uv:cve:`2025-71162`, :uv:cve:`2025-71163`, :uv:cve:`2025-71185`,
+    :uv:cve:`2025-71186`, :uv:cve:`2025-71188`, :uv:cve:`2025-71189`,
+    :uv:cve:`2025-71190`, :uv:cve:`2025-71191`, :uv:cve:`2025-71196`,
+    :uv:cve:`2025-71197`, :uv:cve:`2025-71199`, :uv:cve:`2026-22998`,
+    :uv:cve:`2026-22999`, :uv:cve:`2026-23001`, :uv:cve:`2026-23006`,
+    :uv:cve:`2026-23010`, :uv:cve:`2026-23025`, :uv:cve:`2026-23026`,
+    :uv:cve:`2026-23030`, :uv:cve:`2026-23033`, :uv:cve:`2026-23038`,
+    :uv:cve:`2026-23049`, :uv:cve:`2026-23054`, :uv:cve:`2026-23056`,
+    :uv:cve:`2026-23063`, :uv:cve:`2026-23064`, :uv:cve:`2026-23068`,
+    :uv:cve:`2026-23069`, :uv:cve:`2026-23071`, :uv:cve:`2026-23073`,
+    :uv:cve:`2026-23074`, :uv:cve:`2026-23076`, :uv:cve:`2026-23078`,
+    :uv:cve:`2026-23083`, :uv:cve:`2026-23084`, :uv:cve:`2026-23085`,
+    :uv:cve:`2026-23086`, :uv:cve:`2026-23087`, :uv:cve:`2026-23089`,
+    :uv:cve:`2026-23090`, :uv:cve:`2026-23091`, :uv:cve:`2026-23095`,
+    :uv:cve:`2026-23096`, :uv:cve:`2026-23097`, :uv:cve:`2026-23098`,
+    :uv:cve:`2026-23099`, :uv:cve:`2026-23101`, :uv:cve:`2026-23102`,
+    :uv:cve:`2026-23103`, :uv:cve:`2026-23105`, :uv:cve:`2026-23107`,
+    :uv:cve:`2026-23110`) (:uv:bug:`58964`, :uv:bug:`59049`)
 
-  * :program:`libcpanel-json-xs-perl` (:uv:cve:`2025-40929`)
-    (:uv:bug:`58640`)
+  * :program:`net-snmp` (:uv:cve:`2025-68615`) (:uv:bug:`58965`)
 
-  * :program:`libfcgi` (:uv:cve:`2025-23016`) (:uv:bug:`58625`)
+  * :program:`nvidia-graphics-drivers` (:uv:cve:`2025-23279`,
+    :uv:cve:`2025-23286`) (:uv:bug:`58966`)
 
-  * :program:`libjson-xs-perl` (:uv:cve:`2025-40928`)
-    (:uv:bug:`58643`)
+  * :program:`openjdk-17` (:uv:cve:`2025-53057`, :uv:cve:`2025-53066`,
+    :uv:cve:`2026-21925`, :uv:cve:`2026-21932`, :uv:cve:`2026-21933`,
+    :uv:cve:`2026-21945`) (:uv:bug:`58994`)
 
-  * :program:`libsndfile` (:uv:cve:`2022-33065`, :uv:cve:`2024-50612`)
-    (:uv:bug:`58606`)
+  * :program:`openssl` (:uv:cve:`2025-15467`, :uv:cve:`2025-68160`,
+    :uv:cve:`2025-69418`, :uv:cve:`2025-69419`, :uv:cve:`2025-69420`,
+    :uv:cve:`2025-69421`, :uv:cve:`2026-22795`, :uv:cve:`2026-22796`)
+    (:uv:bug:`59016`)
 
-  * :program:`libyaml-libyaml-perl` (:uv:cve:`2025-40908`)
-    (:uv:bug:`58604`)
+  * :program:`postgresql-15` (:uv:cve:`2025-12817`,
+    :uv:cve:`2025-12818`, :uv:cve:`2026-2003`, :uv:cve:`2026-2004`,
+    :uv:cve:`2026-2005`, :uv:cve:`2026-2006`) (:uv:bug:`58954`,
+    :uv:bug:`59052`)
 
-  * :program:`linux` (:uv:cve:`2024-36331`, :uv:cve:`2024-47704`,
-    :uv:cve:`2024-57924`, :uv:cve:`2024-58240`, :uv:cve:`2025-21861`,
-    :uv:cve:`2025-23143`, :uv:cve:`2025-23160`, :uv:cve:`2025-37925`,
-    :uv:cve:`2025-37931`, :uv:cve:`2025-37968`, :uv:cve:`2025-38322`,
-    :uv:cve:`2025-38335`, :uv:cve:`2025-38347`, :uv:cve:`2025-38491`,
-    :uv:cve:`2025-38500`, :uv:cve:`2025-38501`, :uv:cve:`2025-38502`,
-    :uv:cve:`2025-38520`, :uv:cve:`2025-38552`, :uv:cve:`2025-38553`,
-    :uv:cve:`2025-38555`, :uv:cve:`2025-38560`, :uv:cve:`2025-38561`,
-    :uv:cve:`2025-38562`, :uv:cve:`2025-38563`, :uv:cve:`2025-38565`,
-    :uv:cve:`2025-38569`, :uv:cve:`2025-38572`, :uv:cve:`2025-38574`,
-    :uv:cve:`2025-38576`, :uv:cve:`2025-38577`, :uv:cve:`2025-38578`,
-    :uv:cve:`2025-38579`, :uv:cve:`2025-38581`, :uv:cve:`2025-38583`,
-    :uv:cve:`2025-38587`, :uv:cve:`2025-38588`, :uv:cve:`2025-38601`,
-    :uv:cve:`2025-38602`, :uv:cve:`2025-38604`, :uv:cve:`2025-38608`,
-    :uv:cve:`2025-38609`, :uv:cve:`2025-38610`, :uv:cve:`2025-38612`,
-    :uv:cve:`2025-38614`, :uv:cve:`2025-38617`, :uv:cve:`2025-38618`,
-    :uv:cve:`2025-38622`, :uv:cve:`2025-38623`, :uv:cve:`2025-38624`,
-    :uv:cve:`2025-38630`, :uv:cve:`2025-38634`, :uv:cve:`2025-38635`,
-    :uv:cve:`2025-38639`, :uv:cve:`2025-38644`, :uv:cve:`2025-38645`,
-    :uv:cve:`2025-38650`, :uv:cve:`2025-38652`, :uv:cve:`2025-38653`,
-    :uv:cve:`2025-38663`, :uv:cve:`2025-38664`, :uv:cve:`2025-38665`,
-    :uv:cve:`2025-38666`, :uv:cve:`2025-38668`, :uv:cve:`2025-38670`,
-    :uv:cve:`2025-38671`, :uv:cve:`2025-38676`, :uv:cve:`2025-38677`,
-    :uv:cve:`2025-38679`, :uv:cve:`2025-38680`, :uv:cve:`2025-38681`,
-    :uv:cve:`2025-38683`, :uv:cve:`2025-38684`, :uv:cve:`2025-38685`,
-    :uv:cve:`2025-38687`, :uv:cve:`2025-38691`, :uv:cve:`2025-38693`,
-    :uv:cve:`2025-38694`, :uv:cve:`2025-38695`, :uv:cve:`2025-38696`,
-    :uv:cve:`2025-38697`, :uv:cve:`2025-38698`, :uv:cve:`2025-38699`,
-    :uv:cve:`2025-38700`, :uv:cve:`2025-38701`, :uv:cve:`2025-38702`,
-    :uv:cve:`2025-38706`, :uv:cve:`2025-38707`, :uv:cve:`2025-38708`,
-    :uv:cve:`2025-38711`, :uv:cve:`2025-38712`, :uv:cve:`2025-38713`,
-    :uv:cve:`2025-38714`, :uv:cve:`2025-38715`, :uv:cve:`2025-38721`,
-    :uv:cve:`2025-38723`, :uv:cve:`2025-38724`, :uv:cve:`2025-38725`,
-    :uv:cve:`2025-38727`, :uv:cve:`2025-38728`, :uv:cve:`2025-38729`,
-    :uv:cve:`2025-38732`, :uv:cve:`2025-38735`, :uv:cve:`2025-38736`,
-    :uv:cve:`2025-39673`, :uv:cve:`2025-39675`, :uv:cve:`2025-39676`,
-    :uv:cve:`2025-39681`, :uv:cve:`2025-39682`, :uv:cve:`2025-39683`,
-    :uv:cve:`2025-39684`, :uv:cve:`2025-39685`, :uv:cve:`2025-39686`,
-    :uv:cve:`2025-39687`, :uv:cve:`2025-39689`, :uv:cve:`2025-39691`,
-    :uv:cve:`2025-39692`, :uv:cve:`2025-39693`, :uv:cve:`2025-39694`,
-    :uv:cve:`2025-39697`, :uv:cve:`2025-39701`, :uv:cve:`2025-39702`,
-    :uv:cve:`2025-39703`, :uv:cve:`2025-39706`, :uv:cve:`2025-39709`,
-    :uv:cve:`2025-39710`, :uv:cve:`2025-39713`, :uv:cve:`2025-39714`,
-    :uv:cve:`2025-39715`, :uv:cve:`2025-39716`, :uv:cve:`2025-39718`,
-    :uv:cve:`2025-39719`, :uv:cve:`2025-39724`, :uv:cve:`2025-39730`,
-    :uv:cve:`2025-39731`, :uv:cve:`2025-39734`, :uv:cve:`2025-39736`,
-    :uv:cve:`2025-39737`, :uv:cve:`2025-39738`, :uv:cve:`2025-39742`,
-    :uv:cve:`2025-39743`, :uv:cve:`2025-39749`, :uv:cve:`2025-39752`,
-    :uv:cve:`2025-39756`, :uv:cve:`2025-39757`, :uv:cve:`2025-39759`,
-    :uv:cve:`2025-39760`, :uv:cve:`2025-39766`, :uv:cve:`2025-39770`,
-    :uv:cve:`2025-39772`, :uv:cve:`2025-39773`, :uv:cve:`2025-39776`,
-    :uv:cve:`2025-39782`, :uv:cve:`2025-39783`, :uv:cve:`2025-39787`,
-    :uv:cve:`2025-39788`, :uv:cve:`2025-39790`, :uv:cve:`2025-39794`,
-    :uv:cve:`2025-39795`, :uv:cve:`2025-39798`, :uv:cve:`2025-39800`,
-    :uv:cve:`2025-39801`, :uv:cve:`2025-39806`, :uv:cve:`2025-39808`,
-    :uv:cve:`2025-39812`, :uv:cve:`2025-39813`, :uv:cve:`2025-39817`,
-    :uv:cve:`2025-39819`, :uv:cve:`2025-39823`, :uv:cve:`2025-39824`,
-    :uv:cve:`2025-39825`, :uv:cve:`2025-39826`, :uv:cve:`2025-39827`,
-    :uv:cve:`2025-39828`, :uv:cve:`2025-39835`, :uv:cve:`2025-39838`,
-    :uv:cve:`2025-39839`, :uv:cve:`2025-39841`, :uv:cve:`2025-39842`,
-    :uv:cve:`2025-39843`, :uv:cve:`2025-39844`, :uv:cve:`2025-39845`,
-    :uv:cve:`2025-39846`, :uv:cve:`2025-39847`, :uv:cve:`2025-39848`,
-    :uv:cve:`2025-39849`, :uv:cve:`2025-39853`, :uv:cve:`2025-39857`,
-    :uv:cve:`2025-39860`, :uv:cve:`2025-39864`, :uv:cve:`2025-39865`,
-    :uv:cve:`2025-39866`, :uv:cve:`2025-39869`, :uv:cve:`2025-39870`,
-    :uv:cve:`2025-39873`, :uv:cve:`2025-39876`, :uv:cve:`2025-39877`,
-    :uv:cve:`2025-39880`, :uv:cve:`2025-39881`, :uv:cve:`2025-39883`,
-    :uv:cve:`2025-39885`, :uv:cve:`2025-39891`, :uv:cve:`2025-39894`,
-    :uv:cve:`2025-39902`, :uv:cve:`2025-39907`, :uv:cve:`2025-39909`,
-    :uv:cve:`2025-39911`, :uv:cve:`2025-39913`, :uv:cve:`2025-39914`,
-    :uv:cve:`2025-39916`, :uv:cve:`2025-39920`, :uv:cve:`2025-39923`,
-    :uv:cve:`2025-39993`, :uv:cve:`2025-39994`, :uv:cve:`2025-39995`,
-    :uv:cve:`2025-39996`, :uv:cve:`2025-39998`, :uv:cve:`2025-40001`,
-    :uv:cve:`2025-40084`, :uv:cve:`2025-40085`, :uv:cve:`2025-40087`,
-    :uv:cve:`2025-40088`, :uv:cve:`2025-40092`, :uv:cve:`2025-40093`,
-    :uv:cve:`2025-40094`, :uv:cve:`2025-40095`, :uv:cve:`2025-40096`,
-    :uv:cve:`2025-40099`, :uv:cve:`2025-40100`, :uv:cve:`2025-40103`,
-    :uv:cve:`2025-40104`, :uv:cve:`2025-40105`, :uv:cve:`2025-40106`,
-    :uv:cve:`2025-40300`) (:uv:bug:`58621`, :uv:bug:`58667`,
-    :uv:bug:`58811`)
+  * :program:`pyasn1` (:uv:cve:`2026-23490`) (:uv:bug:`59015`)
 
-  * :program:`linux-signed-amd64` (:uv:cve:`2024-36331`,
-    :uv:cve:`2024-47704`, :uv:cve:`2024-57924`, :uv:cve:`2024-58240`,
-    :uv:cve:`2025-21861`, :uv:cve:`2025-23143`, :uv:cve:`2025-23160`,
-    :uv:cve:`2025-37925`, :uv:cve:`2025-37931`, :uv:cve:`2025-37968`,
-    :uv:cve:`2025-38322`, :uv:cve:`2025-38335`, :uv:cve:`2025-38347`,
-    :uv:cve:`2025-38491`, :uv:cve:`2025-38500`, :uv:cve:`2025-38501`,
-    :uv:cve:`2025-38502`, :uv:cve:`2025-38552`, :uv:cve:`2025-38614`,
-    :uv:cve:`2025-38676`, :uv:cve:`2025-38677`, :uv:cve:`2025-39993`,
-    :uv:cve:`2025-39994`, :uv:cve:`2025-39995`, :uv:cve:`2025-39996`,
-    :uv:cve:`2025-39998`, :uv:cve:`2025-40001`, :uv:cve:`2025-40084`,
-    :uv:cve:`2025-40085`, :uv:cve:`2025-40087`, :uv:cve:`2025-40088`,
-    :uv:cve:`2025-40092`, :uv:cve:`2025-40093`, :uv:cve:`2025-40094`,
-    :uv:cve:`2025-40095`, :uv:cve:`2025-40096`, :uv:cve:`2025-40099`,
-    :uv:cve:`2025-40100`, :uv:cve:`2025-40103`, :uv:cve:`2025-40104`,
-    :uv:cve:`2025-40105`, :uv:cve:`2025-40106`, :uv:cve:`2025-40300`)
-    (:uv:bug:`58621`, :uv:bug:`58667`, :uv:bug:`58811`)
+  * :program:`python-urllib3` (:uv:cve:`2025-50181`,
+    :uv:cve:`2025-66418`, :uv:cve:`2026-21441`) (:uv:bug:`58984`)
 
-  * :program:`mariadb` (:uv:cve:`2023-52969`, :uv:cve:`2023-52970`,
-    :uv:cve:`2023-52971`, :uv:cve:`2024-21096`, :uv:cve:`2025-21490`,
-    :uv:cve:`2025-30693`, :uv:cve:`2025-30722`) (:uv:bug:`58617`)
+  * :program:`qemu` (:uv:cve:`2025-11234`) (:uv:bug:`58953`)
 
-  * :program:`openjdk-17` (:uv:cve:`2025-53057`, :uv:cve:`2025-53066`)
-    (:uv:bug:`58741`)
+  * :program:`rsync` (:uv:cve:`2025-10158`) (:uv:bug:`58961`)
 
-  * :program:`openjpeg2` (:uv:cve:`2025-50952`) (:uv:bug:`58600`)
+  * :program:`squid` (:uv:cve:`2023-46728`, :uv:cve:`2024-45802`,
+    :uv:cve:`2025-59362`) (:uv:bug:`58959`)
 
-  * :program:`openssh` (:uv:cve:`2025-32728`) (:uv:bug:`58624`)
+  * :program:`unbound` (:uv:cve:`2023-50387`, :uv:cve:`2023-50868`,
+    :uv:cve:`2024-33655`, :uv:cve:`2025-11411`) (:uv:bug:`58943`)
 
-  * :program:`openssl` (:uv:cve:`2024-13176`, :uv:cve:`2025-9230`,
-    :uv:cve:`2025-9232`) (:uv:bug:`58599`, :uv:bug:`58688`)
+  * :program:`univention-dojo` (:uv:cve:`2021-23450`,
+    :uv:cve:`2024-48910`) (:uv:bug:`58843`)
 
-  * :program:`perl` (:uv:cve:`2023-31484`, :uv:cve:`2024-56406`,
-    :uv:cve:`2025-40909`) (:uv:bug:`58607`)
+  * :program:`univention-web` (:uv:cve:`2021-23450`,
+    :uv:cve:`2024-48910`) (:uv:bug:`58843`)
 
-  * :program:`postgresql-15` (:uv:cve:`2012-0868`,
-    :uv:cve:`2017-7484`, :uv:cve:`2025-1094`, :uv:cve:`2025-4207`,
-    :uv:cve:`2025-8713`, :uv:cve:`2025-8714`, :uv:cve:`2025-8715`)
-    (:uv:bug:`58619`)
-
-  * :program:`python-zipp` (:uv:cve:`2024-5569`) (:uv:bug:`58609`)
-
-  * :program:`rubygems` (:uv:cve:`2023-28755`, :uv:cve:`2025-27221`)
-    (:uv:bug:`58605`)
-
-  * :program:`samba` (:uv:cve:`2025-10230`, :uv:cve:`2025-9640`)
-    (:uv:bug:`58708`)
-
-  * :program:`setuptools` (:uv:cve:`2025-47273`) (:uv:bug:`58616`)
-
-  * :program:`sqlite3` (:uv:cve:`2025-6965`) (:uv:bug:`58610`)
-
-  * :program:`squid` (:uv:cve:`2025-62168`) (:uv:bug:`58762`)
-
-  * :program:`systemd` (:uv:cve:`2025-4598`) (:uv:bug:`58603`)
-
-  * :program:`tiff` (:uv:cve:`2025-9900`) (:uv:bug:`58711`)
-
-  * :program:`wpa` (:uv:cve:`2022-37660`) (:uv:bug:`58602`)
-
-  * :program:`xorg-server` (:uv:cve:`2025-62229`,
-    :uv:cve:`2025-62230`, :uv:cve:`2025-62231`) (:uv:bug:`58773`)
+  * :program:`xen` (:uv:cve:`2024-28956`, :uv:cve:`2024-36350`,
+    :uv:cve:`2024-36357`, :uv:cve:`2025-1713`, :uv:cve:`2025-27465`,
+    :uv:cve:`2025-27466`, :uv:cve:`2025-58142`, :uv:cve:`2025-58143`,
+    :uv:cve:`2025-58144`, :uv:cve:`2025-58145`, :uv:cve:`2025-58147`,
+    :uv:cve:`2025-58148`, :uv:cve:`2025-58149`) (:uv:bug:`58892`)
 
 
 .. _debian:
 
-* |UCSUCS| |release| includes the following updated packages from Debian 12:
+* |UCSUCS| |release| includes the following updated packages from Debian 12.13:
 
-  :program:`docker.io`
-  :program:`aom`
-  :program:`b43-fwcutter`
   :program:`base-files`
   :program:`bash`
+  :program:`btrfs-progs`
   :program:`busybox`
-  :program:`ca-certificates`
-  :program:`criu`
   :program:`distro-info-data`
-  :program:`e2fsprogs`
-  :program:`galera-4`
-  :program:`gnupg2`
-  :program:`init-system-helpers`
-  :program:`kexec-tools`
-  :program:`libbpf`
-  :program:`libtheora`
-  :program:`libxslt`
-  :program:`lintian`
-  :program:`multipath-tools`
-  :program:`postgresql-common`
-  :program:`qemu`
-  :program:`tini`
-  :program:`tzdata`
-  :program:`usb.ids`
-  :program:`wireless-regdb`
-  :program:`ark`
-  :program:`balboa`
-  :program:`botan`
-  :program:`catatonit`
+  :program:`intel-microcode`
+  :program:`libcap2`
+  :program:`python-urllib3`
+  :program:`shadow`
+  :program:`sudo`
+  :program:`allow-html-temp`
+  :program:`angular.js`
+  :program:`c-icap-modules`
+  :program:`calibre`
   :program:`cdebootstrap`
   :program:`chkrootkit`
   :program:`chromium`
-  :program:`cjson`
-  :program:`commons-beanutils`
-  :program:`commons-vfs`
-  :program:`corosync`
+  :program:`composer`
+  :program:`cyrus-imapd`
   :program:`dar`
-  :program:`debian-edu-config`
   :program:`debian-installer`
   :program:`debian-installer-netboot-images`
   :program:`debian-security-support`
   :program:`dpdk`
-  :program:`dropbear`
-  :program:`erlang`
-  :program:`evolution`
-  :program:`firebird3.0`
-  :program:`fort-validator`
+  :program:`e2guardian`
+  :program:`emacs-libvterm`
+  :program:`freerdp2`
   :program:`gegl`
+  :program:`ghdl`
   :program:`gimp`
-  :program:`golang-github-gin-contrib-cors`
-  :program:`gst-plugins-base1.0`
-  :program:`gst-plugins-good1.0`
-  :program:`haproxy`
-  :program:`insighttoolkit4`
-  :program:`insighttoolkit5`
-  :program:`iperf3`
-  :program:`jetty9`
-  :program:`jq`
-  :program:`keystone`
-  :program:`kmail-account-wizard`
-  :program:`krita`
-  :program:`kubernetes`
-  :program:`libcgi-simple-perl`
-  :program:`libfile-tail-perl`
+  :program:`golang-github-containerd-stargz-snapshotter`
+  :program:`golang-github-containers-buildah`
+  :program:`golang-github-openshift-imagebuilder`
+  :program:`lemonldap-ng`
+  :program:`libclamunrar`
+  :program:`libcommons-lang-java`
+  :program:`libcommons-lang3-java`
+  :program:`libhtp`
+  :program:`libnginx-mod-http-lua`
   :program:`libphp-adodb`
-  :program:`libraw`
+  :program:`libpod`
   :program:`libreoffice`
-  :program:`libsoup3`
-  :program:`libtpms`
-  :program:`llvm-toolchain-19`
-  :program:`luajit`
-  :program:`lxc`
+  :program:`libyaml-syck-perl`
+  :program:`log4cxx`
+  :program:`luksmeta`
   :program:`lxd`
-  :program:`mailgraph`
-  :program:`mkchromecast`
-  :program:`mlt`
-  :program:`mono`
-  :program:`mosquitto`
-  :program:`nextcloud-desktop`
+  :program:`mediawiki`
+  :program:`modsecurity-apache`
+  :program:`modsecurity-crs`
+  :program:`mongo-c-driver`
+  :program:`munge`
+  :program:`mydumper`
   :program:`nginx`
-  :program:`nncp`
-  :program:`node-addon-api`
-  :program:`node-csstype`
-  :program:`node-form-data`
-  :program:`node-minipass`
-  :program:`node-nodeunit`
-  :program:`node-sha.js`
-  :program:`node-tar-fs`
-  :program:`node-tmp`
-  :program:`nvda2speechd`
-  :program:`pdfminer`
-  :program:`prody`
-  :program:`python-flask-cors`
-  :program:`python-internetarchive`
-  :program:`python-mitogen`
-  :program:`raptor2`
-  :program:`rar`
-  :program:`redis`
-  :program:`request-tracker4`
-  :program:`request-tracker5`
-  :program:`ruby-rack`
+  :program:`nova`
+  :program:`nvidia-open-gpu-kernel-modules`
+  :program:`onetbb`
+  :program:`open-vm-tools`
+  :program:`openrefine`
+  :program:`openvpn`
+  :program:`pg-snakeoil`
+  :program:`pgbouncer`
+  :program:`python-django`
+  :program:`python-django-storages`
+  :program:`qpwgraph`
+  :program:`r-cran-gh`
+  :program:`rails`
+  :program:`rear`
+  :program:`rlottie`
+  :program:`roundcube`
+  :program:`ruby-sinatra`
   :program:`rust-cbindgen-web`
-  :program:`rustc-web`
   :program:`sash`
   :program:`shaarli`
-  :program:`shibboleth-sp`
-  :program:`simplesamlphp`
+  :program:`skeema`
   :program:`snapd`
-  :program:`strongswan`
+  :program:`sogo`
   :program:`supermin`
-  :program:`swift`
+  :program:`symfony`
+  :program:`syslog-ng`
   :program:`thunderbird`
+  :program:`tomcat10`
   :program:`tripwire`
-  :program:`tryton-sao`
-  :program:`tryton-server`
-  :program:`tsocks`
-  :program:`waitress`
+  :program:`u-boot`
+  :program:`ublock-origin`
+  :program:`usbmuxd`
+  :program:`user-mode-linux`
+  :program:`vlc`
+  :program:`vtk9`
   :program:`webkit2gtk`
-  :program:`webpy`
-  :program:`wolfssl`
-  :program:`xfce4-weather-plugin`
+  :program:`wordpress`
   :program:`xrdp`
-  :program:`ydotool`
   :program:`zsh`
+  :program:`docker.io`
 
 .. _maintained:
 
-* The following packages have been moved to the maintained repository of |UCS|:
-
-  :program:`python-logfmter` (:uv:bug:`58647`)
-
-.. _changelog-basic:
-
-*********************
-Basic system services
-*********************
-
-.. _changelog-basis-ucr:
-
-Univention Configuration Registry
-=================================
-
-* The function ``univention_config_is_true`` has been added (:uv:bug:`58644`).
+* The following packages have been moved to the maintained repository of UCS:
 
 .. _changelog-domain:
 
@@ -406,79 +425,55 @@ Univention Configuration Registry
 Domain services
 ***************
 
-* Events for Recycle Bin restoration have been added to the *Admin Diary*
-  (:uv:bug:`52202`).
-
-.. _changelog-domain-openldap:
-
-OpenLDAP
-========
-
-.. _changelog-domain-openldap-replication:
-
-Listener/Notifier domain replication
-------------------------------------
-
-* Structured Logging is now enabled by default. The |UCSUCRV| :envvar:`notifier/debug/level` now allows the
-  value ``5`` for enabling logging of ``TRACE`` log messages (:uv:bug:`58644`, :uv:bug:`58653`).
-
 .. _changelog-udm:
 
 LDAP Directory Manager
 ======================
 
-* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
+* The Recycle Bin listener module is now disabled by default and can be
+  activated via setting the UCR variable
+  `listener/module/recyclebin/deactivate` to false. Recycle Bin policies can
+  now disable the creation of Recycle Bin objects for a whole subtree. All
+  occurrences of "Recyclebin" in user facing places have been renamed to
+  "Recycle Bin" (:uv:bug:`58887`).
 
-* Added an endpoint
-  where LDAP attributes can be unmapped to a full UDM object,
-  if the module can be identified (:uv:bug:`58792`).
+* Allow dash in uid and gid syntaxes also as last character (:uv:bug:`58898`).
 
-* The argument ``--bindpwd`` has been deprecated in UDM command line.
-  Instead, use the argument ``--bindpwdfile`` (:uv:bug:`20610`).
+* The performance of group membership updates for user and computer objects has
+  been improved (:uv:bug:`58899`).
 
-* All log messages of *UDM HTTP REST API* are now in a structured logging format by default.
-  The |UCSUCRV| :envvar:`directory/manager/rest/debug/level` now allows the value ``5``
-  to enable logging of ``TRACE`` log messages.
-  The log messages and severity has been revised.
-  Additional information like IP address, hostname, LDAP distinguished name of the requester
-  have been added to the log information
-  (:uv:bug:`58627`).
+* The DN of objects in the recycle bin has been shortened to just
+  "OriginalUniventionObjectIdentifier=$ID,cn=recyclebin,cn=internal"
+  (:uv:bug:`58931`).
 
-* Debug messages from :program:`Tornado` are now in structured log format, as well.
-  The duplicated access log messages for the gateway process have been removed
-  (:uv:bug:`57568`).
+* Fix UnboundLocalError in logging in syntax.py (:uv:bug:`58982`).
 
-* Added internal cache to increase performance on searches (:uv:bug:`58697`).
+* Fixed: With errata282 a change was introduced to univention-directory-
+  manager-modules which requires a restart of some services that depend on
+  univention-directory-manager-modules. A UCS@school service was missing in the
+  list of services that need to be restarted (:uv:bug:`58992`).
 
-* The duration of authorization operations is now logged at ``TRACE`` level
-  (:uv:bug:`58756`).
+* UDM now shows a default for ``univentionObjectIdentifier`` if not set in
+  OpenLDAP (:uv:bug:`58987`).
 
-* The performance of searches with delegative administration enabled has been
-  improved (:uv:bug:`58789`).
+* When deleting a container, the group membership of the objects within that
+  container is now correctly removed (:uv:bug:`56986`).
 
-* All logging messages of Univention Directory Manager are now in a structured
-  format, if that is enabled in the services. The |UCSUCRV|
-  :envvar:`directory/manager/cmd/debug/level` now allows the value ``5`` for enabling
-  logging of ``TRACE`` log messages. The log messages and severity has been
-  revised. Additional information like UDM object type and LDAP
-  distinguished name has been added to the log information (:uv:bug:`58627`).
+* All occurrences of "Recyclebin" in user facing places have been renamed to
+  "Recycle Bin" (:uv:bug:`58887`).
 
-* Minor updates to the |UDM| policy format for delegative administration
-  (:uv:bug:`58649`).
+* A new endpoint `/udm/-/reload` has been added to reload UDM extensions. It is
+  automatically called whenever such an extension is registered
+  (:uv:bug:`50253`).
 
-* The argument ``--bindpwd`` has been deprecated in UDM command line.
-  Instead, use the argument ``--bindpwdfile`` (:uv:bug:`20610`).
+* Improved error handling in listener handler for reloading UDM REST service
+  (:uv:bug:`58970`).
 
-* Added UDM type ``users/federated_account`` for representation of federated accounts
-  for sign-in through trusted upstream identity provider with UMC OpenID Connect
-  (:uv:bug:`58652`).
+* Load extended UDM attributes in unmap-ldap-attributes endpoint
+  (:uv:bug:`58970`).
 
-* A Recycle Bin for user and group objects has been introduced (:uv:bug:`52202`).
-
-* Fixed an issue where modifying the value of a unique LDAP attribute
-  didn't correctly release the lock associated with the previous value.
-  This prevented the creation of objects using that former value
-  for up to five minutes (:uv:bug:`58828`).
+* Allow configuration of the root_path, to reduce the complexity on the reverse
+  proxy (:uv:bug:`59032`).
 
 .. _changelog-umc:
 
@@ -486,125 +481,38 @@ LDAP Directory Manager
 Univention Management Console
 *****************************
 
-.. _changelog-umc-web:
-
-Univention Management Console web interface
-===========================================
-
-* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
-
-* Allow adding a notification directly into the notification bar, not showing
-  it as a preview in |UMC| (:uv:bug:`58817`).
-
 .. _changelog-umc-server:
 
 Univention Management Console server
 ====================================
 
-* A short notification is shown for the Univention Summit 2026 when you open
-  the UMC for the first time. After that, it's discreetly sitting behind the
-  bell icon (:uv:bug:`58817`).
-
-* Fix an issue where the UMC server doesn't respect the configured timeouts
-  for HTTP requests, which can lead to delays in operations that involve
-  communication with external services. It led particularly to failures on
-  concurrent OpenID Connect (OIDC) authentication (:uv:bug:`58269`).
-
-* The log messages of Univention Management Console have been adapted to be
-  compatible with structured logging. Structured logging is now enabled by default.
-  The |UCSUCRVs| :envvar:`umc/server/debug/level` and
-  :envvar:`umc/module/debug/level` now allow the value ``5`` for enabling logging of ``TRACE``
-  log messages. The log messages and severity has been revised. Additional
-  information like request ID, IP address or LDAP DN of requester have been
-  added to the log information (:uv:bug:`58627`).
-
-* The ``session-info`` endpoint for the UMC now also returns the DN of the
-  authenticated user (:uv:bug:`58743`).
-
-* UMC OIDC now supports the sign-in with an account from an external identity
-  provider in *Keycloak*. These *"federated accounts"* must provide additional
-  information, like a UUID and guardian role strings, to be accepted and used
-  in |UMC|. As |UDM| authorization for these accounts is based on the roles, this
-  feature requires the |UDM| delegative administration (:uv:bug:`58652`).
-
-.. _changelog-umc-appcenter:
-
-Univention App Center
-=====================
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
-
-* The Univention App Center update process can now be configured for
-  restrictive HTTP proxy environments. The |UCSUCRV| :envvar:`appcenter/update/skip-zsync`
-  allows skipping :program:`zsync` and downloading metadata directly through HTTPS. The
-  |UCSUCRV| :envvar:`appcenter/update/zsync-timeout` defines a timeout for :program:`zsync`
-  operations before falling back to direct download (:uv:bug:`52308`).
-
-* Apps can now set ``ListenerUDMVersion=3``. This changes the way the App Center
-  creates JSON files for their listener integration. It no longer uses the
-  object's ``entryUUID``, but the ``UniventionObjectIdentifier`` (:uv:bug:`58648`).
-
-.. _changelog-umc-setup:
-
-Modules for system settings / setup wizard
-==========================================
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
-
-* The argument ``--bindpwd`` has been deprecated in UDM command line.
-  Instead, use the argument ``--bindpwdfile``. The internals of this package have been
-  adapted accordingly (:uv:bug:`20610`).
-
-.. _changelog-umc-join:
-
-Domain join module
-==================
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
-
-.. _changelog-umc-user:
-
-User management
-===============
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
+* Allow configuration of the root_path, to reduce the complexity on the reverse
+  proxy (:uv:bug:`59033`).
 
 .. _changelog-umc-diagnostic:
 
 System diagnostic module
 ========================
 
-* Fix the |UMC| module's CSS to be specific and to not affect the appearance of
-  the whole of |UMC| (:uv:bug:`58553`).
+* Improved error message in ``univentionObjectIdentifier`` test
+  (:uv:bug:`58987`).
 
-* The diagnostic modules ``20_check_share_references`` and ``20_check_srv_records``,
-  as well as, ``24_portal_entries`` have been added. The |UCSUCRV|
-  :envvar:`diagnostic/check/24_portal_entries/ignore` can be used to specify entry
-  names that don't conform to the check criteria. The module
-  ``20_check_nameservers`` now contains improved warning messages and a fix for a
-  traceback (:uv:bug:`58634`).
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
+* Improve the handling of SSL certificate checks when external certificates are
+  configured. The diagnostic tool now provides actionable guidance when
+  detecting hostname mismatches instead of failing with a traceback
+  (:uv:bug:`55576`).
 
 .. _changelog-umc-ldap:
 
 LDAP directory browser
 ======================
 
-* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
+* All occurrences of "Recyclebin" in user facing places have been renamed to
+  "Recycle Bin" (:uv:bug:`58887`).
 
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58627`).
-
-* Performance improvements during user searches (:uv:bug:`58697`).
-
-* Use session roles for |UDM| delegative administration for |UMC| OIDC login with
-  federated account (:uv:bug:`58652`).
+* A new endpoint `/udm/-/reload` has been added to the UDM REST API to reload
+  UDM extensions. This packages containes shared code for the reload
+  (:uv:bug:`50253`).
 
 .. _changelog-lib:
 
@@ -612,48 +520,11 @@ LDAP directory browser
 Univention base libraries
 *************************
 
-* Adjustments for ``python-logfmter`` v0.0.11 have been done (:uv:bug:`58754`).
+* All occurrences of "Recyclebin" in user facing places have been renamed to
+  "Recycle Bin" (:uv:bug:`58887`).
 
-* A method to log the duration of certain operations has been added
-  (:uv:bug:`58756`).
-
-* The logging format of ``univention.debug`` has been made configurable
-  to allow a structured format with ISO 8601 dates.
-  The German date format is going to be removed in a future releases.
-  A new logging level ``TRACE``, equal to the logging value ``5``,
-  has been added to ``univention.debug``.
-  The library ``univention.logging`` now allows
-  setting up structured logging using the ``logfmt`` format by configuring a
-  ``univention.debug`` logging handler for the Python standard library logging
-  system (:uv:bug:`58627`).
-
-* Added LDAP schema, ACLs for federated account object type,
-  the |UCSUCRVs| :envvar:`ldap/authz-regexp/users` with the default value ``true``,
-  and :envvar:`ldap/authz-regexp/federated-accounts` with the default ``false``
-  for the configuration of the LDAP servers DN mapping for federated accounts (:uv:bug:`58652`).
-
-* A Recycle Bin for users and groups has been introduced (:uv:bug:`52202`).
-
-* :command:`univention-backup2master` now provides two hook points
-  that allow running custom scripts before and after the conversion
-  from a *UCS Backup Directory Node* to a *UCS Primary Directory Node* (:uv:bug:`58778`).
-
-* The duration of LDAP operations is now logged at ``TRACE`` level
-  (:uv:bug:`58756`).
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58627`).
-
-.. _changelog-deployment:
-
-*******************
-Software deployment
-*******************
-
-* Logging has been adapted to be compatible with structured logging.
-  The |UCSUCRV| :envvar:`update/debug/level`
-  allows the value ``5`` for enabling logging of
-  ``TRACE`` log messages (:uv:bug:`58644`).
+* Add functionality to the UMC Client to allow skipping SSL hostname
+  verification for local connections (:uv:bug:`55576`).
 
 .. _changelog-service:
 
@@ -666,90 +537,31 @@ System services
 SAML
 ====
 
-* Add ``--import-users`` parameter to ``univention-keycloak init`` (:uv:bug:`58698`).
+* The UID User Federation Mapper is now created with the "Always Read Value
+  From LDAP" setting enabled by default. This establishes LDAP as the single
+  source of truth for UIDs, bypassing Keycloak's local database cache on every
+  request (:uv:bug:`59040`).
 
-* The ``scope`` operation has been added to :command:`univention-keycloak` script.
-  The operation allows the creation of client scopes, and assign mappers to the scope
-  (:uv:bug:`58422`).
-
-* Added support for enabling standard token exchange on OIDC clients
-  (:uv:bug:`58586`).
-
-* Fixed a regression that breaks the :command:`univention-keycloak` script
-  in Kubernetes deployments (:uv:bug:`58588`).
+* The univention-keycloak script introduces a flag to enable the "Always Read
+  Value From LDAP" setting for new User Federation Mappers (:uv:bug:`59040`).
 
 .. _changelog-service-mail:
 
 Mail services
 =============
 
+* A defect in the Fetchmail listener module has been resolved. The issue
+  prevented the Fetchmail service from restarting correctly after user
+  configuration changes, which prevented emails from being sent or received
+  (:uv:bug:`59036`).
+
 .. _changelog-service-imap:
 
 IMAP services
 -------------
 
-* During sign-in, it could happen
-  that additional email directories in :program:`Dovecot`
-  containing only the username were created.
-  This made it appear to the user as though their email folders were emptied.
-  The PAM login configuration for :program:`Dovecot` has been adjusted
-  to circumvent this behavior (:uv:bug:`57976`).
-
-.. _changelog-service-postfix:
-
-Postfix
--------
-
-* During sign-in, it could happen
-  that additional email directories in :program:`Dovecot`
-  containing only the username were created.
-  This made it appear to the user as though their mail folders were emptied.
-  The PAM login configuration for :program:`Dovecot` has been adjusted
-  to circumvent this behavior (:uv:bug:`57976`).
-
-.. _changelog-service-nagios:
-
-Nagios
-======
-
-* This update enhances the alert ``check_univention_mdb_maxsize`` by ignoring the
-  possibly fragmented ``freelist`` pages in the calculation of available pages
-  (:uv:bug:`58668`).
-
-* This update enhances the check ``check_univention_slapd_mdb_maxsize`` by
-  ignoring the possibly fragmented ``freelist`` pages in the calculation of
-  available pages (:uv:bug:`58668`).
-
-.. _changelog-service-radius:
-
-RADIUS
-======
-
-* The EAP module configuration setting ``tls_min_version`` can now be adjusted
-  using the added |UCSUCRV| :envvar:`freeradius/conf/tls-min-version`
-  (:uv:bug:`58373`).
-
-* The EAP module configuration setting ``cipher_list`` can now be adjusted using
-  the added |UCSUCRV| :envvar:`freeradius/conf/cipher-list`.
-  The format is documented in
-  `openssl-ciphers(1ssl) <https://manpages.debian.org/bookworm/openssl/openssl-ciphers.1ssl.en.html>`_
-  (:uv:bug:`58374`).
-
-.. _changelog-service-pam:
-
-PAM / Local group cache
-=======================
-
-* The SSSD service has been configured to allow logins using the
-  ``mailPrimaryAddress`` of a user during PAM login (:uv:bug:`57976`).
-
-.. _changelog-service-network:
-
-Networking services
-===================
-
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
+* The logrotate configuration for reloading rsyslog has been fixed
+  (:uv:bug:`58551`).
 
 .. _changelog-win:
 
@@ -757,56 +569,61 @@ Networking services
 Services for Windows
 ********************
 
-.. _changelog-win-takeover:
+.. _changelog-win-samba:
 
-Univention AD Takeover
-======================
+Samba
+=====
 
-* Logging has been adapted to be compatible with structured logging
-  (:uv:bug:`58644`).
+* Since Kernel 4.19 the sysvol-sync could fail after reboots with message
+  `cannot create /var/lock/sysvol-sync-dir: Permission denied`. This update
+  fixes this issue (:uv:bug:`58784`).
 
 .. _changelog-win-s4c:
 
 Univention S4 Connector
 =======================
 
-* Structured Logging is enabled by default.
-  The |UCSUCRVs| :envvar:`connector/debug/level`
-  and :envvar:`connector/debug/udm/level`
-  now allow the value ``5`` for enabling logging of
-  ``TRACE`` log messages (:uv:bug:`58644`, :uv:bug:`58653`).
-
-* The behavior of account locked status synchronization has been unified
-  between S4-Connector and AD Connector (:uv:bug:`58680`).
+* The S4-Connector now supports restoring objects from the UDM Recyclebin also
+  in Samba/AD (:uv:bug:`58844`).
 
 .. _changelog-win-adc:
 
 Univention Active Directory Connection
 ======================================
 
-* Changing the ``sAMAccountName`` of a user in AD led to a Python traceback in
-  the AD Connector because the post modify functions would still use the re-
-  rename DN. This could also cause additional issues when later changing the
-  ``CN`` of the object. This update fixes these issues (:uv:bug:`58738`).
+* `univention-adsearch` only supported LDAPS against port 636, but not StartTLS
+  against port 389. Now it also supports the latter (:uv:bug:`57747`).
 
-* The AD Connector now synchronizes the account lockout state from AD to UCS.
-  Account unlocking is also synchronized from UCS to AD (:uv:bug:`58680`).
+* Only consider permitted enctypes when synchronizing Kerberos keys from AD
+  supplementalCredentials. This avoids a compatibility issue with the new
+  `sha256` and `sha384` hash types generated by Windows Server 2025 until we
+  apply the fix for the issue in OpenLDAP (:uv:bug:`57747`).
 
-* An error where the LDAP distinguished name (DN) of a synced object multiple times leading
-  to a DN with mixed base was created leading to rejects was fixed (:uv:bug:`58556`).
+* Renaming a user object with umlauts in AD led to a connector reject. The
+  update fixes this issues (:uv:bug:`58793`).
 
-* Logging in the UMC module has been adapted to be compatible with structured
-  logging. The |UCSUCRVs| :envvar:`connector.*/debug/level` now allows the value ``5``
-  for enabling logging of ``TRACE`` log messages (:uv:bug:`58644`).
+* In the modify operation also move object in UCS if position has changed in AD
+  (:uv:bug:`58793`).
 
+* Ignore order of multi value attributes when checking for changed attributes
+  (:uv:bug:`58793`).
 
-.. _changelog-univention-net-install:
+* Avoid unnecessary object mapping before checking for changed attributes
+  (:uv:bug:`58793`).
 
-Univention PXE installation
-======================================
+* Avoid ldap.ALREADY_EXISTS if move target exists in UCS (:uv:bug:`58793`).
 
-* The UCS PXE Installation services provided by the package :program:`univention-net-installer` were deprecated
-  and need to be removed before upgrading to UCS 5.2-4.
+* During DN mapping, lookup samaccountname for olddn from adcache
+  (:uv:bug:`58793`).
+
+* Skip resync of reject for uSNCreated if lower than uSNChanged
+  (:uv:bug:`58793`).
+
+* Add AD reject reason to reject database. The reason will be shown in the
+  univention-adconnector-list-rejected tool (:uv:bug:`58793`).
+
+* The AD-Connector now supports restoring objects from the UDM Recyclebin also
+  in Active Directory (:uv:bug:`58844`).
 
 .. _changelog-other:
 
@@ -814,7 +631,19 @@ Univention PXE installation
 Other changes
 *************
 
-* Minor updates to the |UDM| policy format for delegative administration
-  (:uv:bug:`58649`).
+* When setting up a new printer in CUPS via IPP Everywhere, the printer model
+  name is no longer correctly queried from the printer via IPP
+  (:uv:bug:`58874`).
 
-* Update ``python-logfmter`` to v0.0.11 (:uv:bug:`58754`).
+* When setting up a new printer in CUPS via IPP Everywhere, the printer model
+  name is no longer correctly queried from the printer via IPP. This has been
+  fixed now. Really (:uv:bug:`58874`).
+
+* The package `univention-provisioning-service` has been added. It ships a
+  listener module that pushes new transactions into the Provisioning Service
+  App. These packages will be installed automatically when installing the new
+  Provisioning Service UCS App (:uv:bug:`58973`).
+
+* The listener module `nubus-provisiong.py` is now capable of reconnecting to
+  `NATS` without a restart of the listener being necessary (:uv:bug:`58991`).
+
