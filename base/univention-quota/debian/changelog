@@ -1,3 +1,9 @@
+univention-quota (16.5.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:07 +0100
+
 univention-quota (16.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

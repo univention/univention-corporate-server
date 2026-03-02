@@ -1,3 +1,9 @@
+univention-ad-connector (16.6.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:40 +0100
+
 univention-ad-connector (16.5.7) unstable; urgency=medium
 
   * Bug 58844 - Support UDM Recyclebin in AD-Connector

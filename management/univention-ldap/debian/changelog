@@ -1,3 +1,9 @@
+univention-ldap (18.5.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:55 +0100
+
 univention-ldap (18.4.3) unstable; urgency=medium
 
   * Bug #58887: do not init internal database on backups, it is syncrepl's job

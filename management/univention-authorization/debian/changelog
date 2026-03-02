@@ -1,3 +1,9 @@
+univention-authorization (1.3.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:38 +0100
+
 univention-authorization (1.2.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:41 +0100
+
 univention-directory-manager-modules (17.4.12) unstable; urgency=medium
 
   * Bug #56986: fix recursive remove of objects

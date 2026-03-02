@@ -1,3 +1,9 @@
+univention-keycloak (3.5.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:45 +0100
+
 univention-keycloak (3.4.1) unstable; urgency=medium
 
   * Bug #59040: Allow configuration to always read mappers from LDAP

@@ -1,3 +1,9 @@
+univention-samba4 (11.5.0) UNRELEASED; urgency=medium
+
+  * Bug #59082: UCS 5.2-5 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:55 +0100
+
 univention-samba4 (11.4.1) unstable; urgency=medium
 
   * Bug #58784: Fix "cannot create /var/lock/sysvol-sync-dir: Permission denied"
