@@ -4,7 +4,9 @@
 """|UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions"""
 
 import collections
+from datetime import UTC, datetime, timedelta
 
+import ldap
 from ldap.filter import filter_format
 
 import univention.admin.filter
@@ -57,7 +59,8 @@ class License:
 
     def __init__(self):
         if _license:
-            raise Exception('never create this object directly')
+            raise RuntimeError('never create this object directly')
+
         self.new_license = False
         self.disable_add = 0
         self._expired = False
@@ -87,6 +90,7 @@ class License:
             custom_username('Standard User'),  # SBS role
             custom_username('WebWorkplaceTools'),  # SBS role "Standard User with administration links"
             'IUSR_WIN-*',  # IIS account
+            'sys-idp-user',
         )
         self.sysAccountsFound = 0
         self.licenses = {
@@ -102,7 +106,7 @@ class License:
                 License.USERS: None,
                 License.SERVERS: None,
                 License.MANAGEDCLIENTS: None,
-                License.CORPORATECLIENTS: None,
+                # License.CORPORATECLIENTS: None,
             },
         }
         self.real = {
@@ -118,7 +122,7 @@ class License:
                 License.USERS: 0,
                 License.SERVERS: 0,
                 License.MANAGEDCLIENTS: 0,
-                License.CORPORATECLIENTS: 0,
+                # License.CORPORATECLIENTS: 0,
             },
         }
         self.names = {
@@ -134,7 +138,7 @@ class License:
                 License.USERS: 'Users',
                 License.SERVERS: 'Servers',
                 License.MANAGEDCLIENTS: 'Managed Clients',
-                License.CORPORATECLIENTS: 'Corporate Clients',
+                # License.CORPORATECLIENTS: 'Corporate Clients',
             },
         }
         self.keys = {
@@ -150,7 +154,7 @@ class License:
                 License.USERS: 'univentionLicenseUsers',
                 License.SERVERS: 'univentionLicenseServers',
                 License.MANAGEDCLIENTS: 'univentionLicenseManagedClients',
-                License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
+                # License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
             },
         }
         self.filters = {
@@ -167,7 +171,7 @@ class License:
                 License.SERVERS: '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))',
                 # Managed Clients, Windows Clients, Ubuntu Clients, Linux Clients, MaxOS X Clients
                 License.MANAGEDCLIENTS: '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
-                License.CORPORATECLIENTS: '(&(objectclass=univentionCorporateClient))',
+                # License.CORPORATECLIENTS: '(&(objectclass=univentionCorporateClient))',
             },
         }
         self.__selected = False
@@ -305,19 +309,19 @@ class License:
                 self.__countObject(License.USERS, lo)
                 self.__countObject(License.SERVERS, lo)
                 self.__countObject(License.MANAGEDCLIENTS, lo)
-                self.__countObject(License.CORPORATECLIENTS, lo)
+                # self.__countObject(License.CORPORATECLIENTS, lo)
 
                 lic = (
                     self.licenses[self.version][License.USERS],
                     self.licenses[self.version][License.SERVERS],
                     self.licenses[self.version][License.MANAGEDCLIENTS],
-                    self.licenses[self.version][License.CORPORATECLIENTS],
+                    # self.licenses[self.version][License.CORPORATECLIENTS],
                 )
                 real = (
                     self.real[self.version][License.USERS],
                     self.real[self.version][License.SERVERS],
                     self.real[self.version][License.MANAGEDCLIENTS],
-                    self.real[self.version][License.CORPORATECLIENTS],
+                    # self.real[self.version][License.CORPORATECLIENTS],
                 )
                 self.licenseKeyID = self.__getValue('univentionLicenseKeyID', '')
                 self.licenseSupport = self.__getValue('univentionLicenseSupport', '0')
@@ -369,13 +373,13 @@ class License:
                 lic_users,
                 _lic_servers,
                 lic_managedclients,
-                lic_corporateclients,
+                # lic_corporateclients,
             ) = lic
             (
                 real_users,
                 _real_servers,
                 real_managedclients,
-                real_corporateclients,
+                # real_corporateclients,
             ) = real
             if lic_users and self.__cmp_gt(int(real_users) - self.sysAccountsFound, lic_users):
                 disable_add = 6
@@ -384,8 +388,8 @@ class License:
             #    disable_add = 7
             if lic_managedclients and self.__cmp_gt(real_managedclients, lic_managedclients):
                 disable_add = 8
-            if lic_corporateclients and self.__cmp_gt(real_corporateclients, lic_corporateclients):
-                disable_add = 9
+            # if lic_corporateclients and self.__cmp_gt(real_corporateclients, lic_corporateclients):
+            #    disable_add = 9
         return disable_add
 
     def __countSysAccounts(self, lo):
@@ -406,22 +410,47 @@ class License:
         if version not in self.licenses:
             version = '2'
         if self.licenses[version][obj] and self.licenses[version][obj] != 'unlimited':
-            result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
-            if result is None:
-                self.real[version][obj] = 0
-            else:
-                self.real[version][obj] = len(result)
+            self.real[version][obj] = self.__cache(lo, version, obj)
             log.debug('Univention License', license=self.names[version][obj], count=self.real[version][obj])
         else:
             self.real[version][obj] = 0
+
+    def __cache(self, lo, version, obj):
+        if self.real[version][obj] != 0:
+            return self.real[version][obj]
+
+        licenses = lo.authz_connection.search(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))', attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients', 'univentionUsedLicenseCorporateClients'])
+        try:
+            dn, attrs = licenses[0]
+        except IndexError:
+            dn, attrs = '', {}
+
+        usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
+        value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
+        if value and value < int(self.licenses[version][obj]):
+            dt = datetime.strptime(attrs['modifyTimestamp'][0].decode('ASCII'), "%Y%m%d%H%M%SZ").replace(tzinfo=UTC)
+            now = datetime.now(UTC)
+
+            if now - dt > timedelta(days=1):
+                return value
+
+        result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
+        if result is not None:
+            result = len(result)
+            try:
+                lo.authz_connection.modify(dn, [(usedkey, [b'X'], [str(result).encode('ASCII')])])
+            except (univention.admin.uexceptions.base, ldap.LDAPError):
+                pass
+            return result
+        return 0
 
     def __raiseException(self):
         if self.error != 0:
             if self.error == -1:
                 raise univention.admin.uexceptions.licenseNotFound()
-            elif self.error == 2:
+            elif self.error & 2 == 2:
                 raise univention.admin.uexceptions.licenseExpired()
-            elif self.error == 4:
+            elif self.error & 4 == 4:
                 raise univention.admin.uexceptions.licenseWrongBaseDn()
             else:
                 raise univention.admin.uexceptions.licenseInvalid()
@@ -467,9 +496,9 @@ class License:
             self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(
                 self.keys[self.version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found',
             )
-            self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(
-                self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found',
-            )
+            # self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(
+            #     self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found',
+            # )
             self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'], 'License Product', 'Product attribute not found')
             if not isinstance(self.types, list | tuple):
                 self.types = [self.types]
