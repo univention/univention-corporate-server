@@ -65,7 +65,7 @@ docker-spelling:
 
 .PHONY: docker-update-po
 docker-update-po:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c 'cd "$(CURDIR)" && sphinx-intl update -l $(SPHINXINTL_LANGUAGE)'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c 'cd "$(CURDIR)" && make gettext && sphinx-intl update -l $(SPHINXINTL_LANGUAGE)'
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
