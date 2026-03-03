@@ -344,6 +344,7 @@ General
   :program:`debian-installer`
   :program:`debian-installer-netboot-images`
   :program:`debian-security-support`
+  :program:`docker.io`
   :program:`dpdk`
   :program:`e2guardian`
   :program:`emacs-libvterm`
@@ -413,11 +414,6 @@ General
   :program:`wordpress`
   :program:`xrdp`
   :program:`zsh`
-  :program:`docker.io`
-
-.. _maintained:
-
-* The following packages have been moved to the maintained repository of UCS:
 
 .. _changelog-domain:
 
@@ -430,28 +426,26 @@ Domain services
 LDAP Directory Manager
 ======================
 
-* The Recycle Bin listener module is now disabled by default and can be
-  activated via setting the UCR variable
-  `listener/module/recyclebin/deactivate` to false. Recycle Bin policies can
-  now disable the creation of Recycle Bin objects for a whole subtree. All
-  occurrences of "Recyclebin" in user facing places have been renamed to
-  "Recycle Bin" (:uv:bug:`58887`).
+* The *Recycle Bin* listener module is now deactivated by default and can be
+  activated through setting the |UCSUCRV| :envvar:`listener/module/recyclebin/deactivate` to ``false``.
+  *Recycle Bin* policies can now deactivate the creation of *Recycle Bin* objects for a whole subtree.
+  All occurrences of :guilabel:`Recyclebin` in user-facing places
+  have been renamed to :guilabel:`Recycle Bin` (:uv:bug:`58887`).
 
-* Allow dash in uid and gid syntaxes also as last character (:uv:bug:`58898`).
+* Allow dash in ``uid`` and ``gid`` syntaxes also as last character (:uv:bug:`58898`).
 
 * The performance of group membership updates for user and computer objects has
   been improved (:uv:bug:`58899`).
 
-* The DN of objects in the recycle bin has been shortened to just
-  "OriginalUniventionObjectIdentifier=$ID,cn=recyclebin,cn=internal"
+* The DN of objects in the *Recycle Bin* has been shortened to just
+  ``OriginalUniventionObjectIdentifier=$ID,cn=recyclebin,cn=internal``
   (:uv:bug:`58931`).
 
-* Fix UnboundLocalError in logging in syntax.py (:uv:bug:`58982`).
+* Fix ``UnboundLocalError`` in logging in :file:`syntax.py` (:uv:bug:`58982`).
 
-* Fixed: With errata282 a change was introduced to univention-directory-
-  manager-modules which requires a restart of some services that depend on
-  univention-directory-manager-modules. A UCS@school service was missing in the
-  list of services that need to be restarted (:uv:bug:`58992`).
+* Fixed: Errata 282 introduced a change to
+  :program:`univention-directory-manager-modules` requiring a restart of dependent
+  services. A |UCSUAS| service was missing from the restart list (:uv:bug:`58992`).
 
 * UDM now shows a default for ``univentionObjectIdentifier`` if not set in
   OpenLDAP (:uv:bug:`58987`).
@@ -459,20 +453,19 @@ LDAP Directory Manager
 * When deleting a container, the group membership of the objects within that
   container is now correctly removed (:uv:bug:`56986`).
 
-* All occurrences of "Recyclebin" in user facing places have been renamed to
-  "Recycle Bin" (:uv:bug:`58887`).
+* All occurrences of :guilabel:`Recyclebin` in user-facing places
+  have been renamed to :guilabel:`Recycle Bin` (:uv:bug:`58887`).
 
-* A new endpoint `/udm/-/reload` has been added to reload UDM extensions. It is
-  automatically called whenever such an extension is registered
-  (:uv:bug:`50253`).
+* A new endpoint ``/udm/-/reload`` has been added to reload UDM extensions,
+  automatically called whenever such an extension is registered (:uv:bug:`50253`).
 
 * Improved error handling in listener handler for reloading UDM REST service
   (:uv:bug:`58970`).
 
-* Load extended UDM attributes in unmap-ldap-attributes endpoint
+* Load extended UDM attributes in ``unmap-ldap-attributes`` endpoint
   (:uv:bug:`58970`).
 
-* Allow configuration of the root_path, to reduce the complexity on the reverse
+* Allow configuration of the ``root_path`` to reduce the complexity on the reverse
   proxy (:uv:bug:`59032`).
 
 .. _changelog-umc:
@@ -486,7 +479,7 @@ Univention Management Console
 Univention Management Console server
 ====================================
 
-* Allow configuration of the root_path, to reduce the complexity on the reverse
+* Allow configuration of the ``root_path`` to reduce the complexity on the reverse
   proxy (:uv:bug:`59033`).
 
 .. _changelog-umc-diagnostic:
@@ -507,12 +500,11 @@ System diagnostic module
 LDAP directory browser
 ======================
 
-* All occurrences of "Recyclebin" in user facing places have been renamed to
-  "Recycle Bin" (:uv:bug:`58887`).
+* All occurrences of :guilabel:`Recyclebin` in user-facing places
+  have been renamed to :guilabel:`Recycle Bin` (:uv:bug:`58887`).
 
-* A new endpoint `/udm/-/reload` has been added to the UDM REST API to reload
-  UDM extensions. This packages containes shared code for the reload
-  (:uv:bug:`50253`).
+* A new endpoint ``/udm/-/reload`` has been added to reload UDM extensions,
+  automatically called whenever such an extension is registered (:uv:bug:`50253`).
 
 .. _changelog-lib:
 
@@ -520,8 +512,8 @@ LDAP directory browser
 Univention base libraries
 *************************
 
-* All occurrences of "Recyclebin" in user facing places have been renamed to
-  "Recycle Bin" (:uv:bug:`58887`).
+* All occurrences of :guilabel:`Recyclebin` in user-facing places
+  have been renamed to :guilabel:`Recycle Bin` (:uv:bug:`58887`).
 
 * Add functionality to the UMC Client to allow skipping SSL hostname
   verification for local connections (:uv:bug:`55576`).
@@ -537,13 +529,12 @@ System services
 SAML
 ====
 
-* The UID User Federation Mapper is now created with the "Always Read Value
-  From LDAP" setting enabled by default. This establishes LDAP as the single
-  source of truth for UIDs, bypassing Keycloak's local database cache on every
+* The *UID User Federation* mapper is now created with the *"Always Read Value From LDAP"* setting enabled by default.
+  This establishes LDAP as the single source of truth for UIDs, bypassing Keycloak's local database cache on every
   request (:uv:bug:`59040`).
 
-* The univention-keycloak script introduces a flag to enable the "Always Read
-  Value From LDAP" setting for new User Federation Mappers (:uv:bug:`59040`).
+* The :program:`univention-keycloak` script introduced a flag to enable the *"Always Read Value From LDAP"*
+  setting for new User Federation Mappers (:uv:bug:`59040`).
 
 .. _changelog-service-mail:
 
@@ -560,7 +551,7 @@ Mail services
 IMAP services
 -------------
 
-* The logrotate configuration for reloading rsyslog has been fixed
+* The logrotate configuration for reloading :program:`rsyslog` has been fixed
   (:uv:bug:`58551`).
 
 .. _changelog-win:
@@ -574,8 +565,8 @@ Services for Windows
 Samba
 =====
 
-* Since Kernel 4.19 the sysvol-sync could fail after reboots with message
-  `cannot create /var/lock/sysvol-sync-dir: Permission denied`. This update
+* Since kernel 4.19, the :program:`sysvol-sync` could fail after reboots with the message
+  ``cannot create /var/lock/sysvol-sync-dir: Permission denied``. This update
   fixes this issue (:uv:bug:`58784`).
 
 .. _changelog-win-s4c:
@@ -583,7 +574,7 @@ Samba
 Univention S4 Connector
 =======================
 
-* The S4-Connector now supports restoring objects from the UDM Recyclebin also
+* The |UCSS4C| now supports restoring objects from the UDM *Recycle Bin* also
   in Samba/AD (:uv:bug:`58844`).
 
 .. _changelog-win-adc:
@@ -591,38 +582,38 @@ Univention S4 Connector
 Univention Active Directory Connection
 ======================================
 
-* `univention-adsearch` only supported LDAPS against port 636, but not StartTLS
-  against port 389. Now it also supports the latter (:uv:bug:`57747`).
+* :program:`univention-adsearch` only supported LDAPS against port 636, but not
+  StartTLS against port 389. Now it also supports the latter (:uv:bug:`57747`).
 
 * Only consider permitted enctypes when synchronizing Kerberos keys from AD
-  supplementalCredentials. This avoids a compatibility issue with the new
-  `sha256` and `sha384` hash types generated by Windows Server 2025 until we
+  ``supplementalCredentials``. This avoids a compatibility issue with the new
+  ``sha256`` and ``sha384`` hash types generated by Windows Server 2025 until we
   apply the fix for the issue in OpenLDAP (:uv:bug:`57747`).
 
 * Renaming a user object with umlauts in AD led to a connector reject. The
-  update fixes this issues (:uv:bug:`58793`).
+  update fixes this issue (:uv:bug:`58793`).
 
 * In the modify operation also move object in UCS if position has changed in AD
   (:uv:bug:`58793`).
 
-* Ignore order of multi value attributes when checking for changed attributes
+* Ignore order of multi-value attributes when checking for changed attributes
   (:uv:bug:`58793`).
 
 * Avoid unnecessary object mapping before checking for changed attributes
   (:uv:bug:`58793`).
 
-* Avoid ldap.ALREADY_EXISTS if move target exists in UCS (:uv:bug:`58793`).
+* Avoid ``ldap.ALREADY_EXISTS`` if move target exists in UCS (:uv:bug:`58793`).
 
-* During DN mapping, lookup samaccountname for olddn from adcache
+* During DN mapping, look up ``samaccountname`` for ``olddn`` from ``adcache``
   (:uv:bug:`58793`).
 
-* Skip resync of reject for uSNCreated if lower than uSNChanged
+* Skip resync of reject for ``uSNCreated`` if lower than ``uSNChanged``
   (:uv:bug:`58793`).
 
 * Add AD reject reason to reject database. The reason will be shown in the
-  univention-adconnector-list-rejected tool (:uv:bug:`58793`).
+  :program:`univention-adconnector-list-rejected` tool (:uv:bug:`58793`).
 
-* The AD-Connector now supports restoring objects from the UDM Recyclebin also
+* The |UCSADC| now supports restoring objects from the UDM *Recycle Bin* also
   in Active Directory (:uv:bug:`58844`).
 
 .. _changelog-other:
@@ -632,18 +623,12 @@ Other changes
 *************
 
 * When setting up a new printer in CUPS via IPP Everywhere, the printer model
-  name is no longer correctly queried from the printer via IPP
-  (:uv:bug:`58874`).
+  name is now correctly queried from the printer via IPP (:uv:bug:`58874`).
 
-* When setting up a new printer in CUPS via IPP Everywhere, the printer model
-  name is no longer correctly queried from the printer via IPP. This has been
-  fixed now. Really (:uv:bug:`58874`).
-
-* The package `univention-provisioning-service` has been added. It ships a
+* The package :program:`univention-provisioning-service` has been added. It ships a
   listener module that pushes new transactions into the Provisioning Service
-  App. These packages will be installed automatically when installing the new
+  App. This package will be installed automatically when installing the new
   Provisioning Service UCS App (:uv:bug:`58973`).
 
-* The listener module `nubus-provisiong.py` is now capable of reconnecting to
-  `NATS` without a restart of the listener being necessary (:uv:bug:`58991`).
-
+* The listener module ``nubus-provisioning.py`` is now capable of reconnecting to
+  ``NATS`` without a restart of the listener being necessary (:uv:bug:`58991`).
