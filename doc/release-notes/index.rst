@@ -5,7 +5,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2025-12-09
+Publication date of UCS |release|: 2026-03-10
 
 .. _relnotes-highlights:
 
@@ -17,24 +17,15 @@ With |UCSUCS| 5.2-5, the fourth patch level release for |UCSUCS| 5.2 is availabl
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
-* *Delegative Administration* is now available as a preview feature.
-  However, it isn't supported for general production environments at this stage.
-  Delegative administration provides fine-grained delegation capabilities.
-  Administrators can assign specific management responsibilities
-  to designated users within defined scopes.
-  For detailed usage instructions, configuration notes, and known limitations,
-  refer to
-  :external+uv-ext-delegative-administration:ref:`da-intro`
-  in :cite:t:`uv-ext-delegative-administration`.
+* The new Provisioning API is now available on |UCSUCS|,
+  offering a REST API to be informed about changes on users, groups and other Nubus objects.
+  Integrations implemented to work with Nubus on Kubernetes
+  can now use the same API to integrate with Nubus on |UCSUCS|.
 
-* |UCSUCS| 5.2-5 officially discontinues support for the PXE server.
-  This change doesn't affect the UCS installation process.
-  Unattended installations remain fully supported.
-  You can continue to use unattended installations using configured installation profiles.
-
-* |UCSUCS| 5.2-5 includes numerous updates for packages,
-  such as ``docker.io``, ``nginx``, ``redis``, ``postgresql-common``, ``qemu``, ``strongswan``,
-  and many others
+* The Recycle Bin Feature has seen various improvements
+  and is now integrated in the :program:`Samba 4` Integration and :program:`Active Directory` Connector,
+  so that a restore of a User in |UCSUDM|, :program:`Samba 4` or :program:`Active Directory`
+  is correctly handled as a restore in the other directory service implementations.
 
 .. _relnotes-update:
 
