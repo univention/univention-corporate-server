@@ -21,6 +21,7 @@ from urllib.request import Request
 from ldap import INVALID_CREDENTIALS, LDAPError
 
 import univention.admin.authorization as udm_auth
+import univention.admin.license as udm_license
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
@@ -218,10 +219,6 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             return
         self.__license_checks.add(id(lo))
         try:
-            import univention.admin.license  # noqa: F401
-        except ImportError:
-            return  # GPL Version
-        try:
             check_license(lo, True)
         except LicenseError:
             lo.allow_modify = False
@@ -279,54 +276,33 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
     def license_info(self, request):
         self.require_license(self.get_ldap_connection()[0])
         license_data = {}
-        try:
-            import univention.admin.license as udm_license
-        except ImportError:
-            license_data['licenseVersion'] = 'gpl'
-        else:
-            license_data['licenseVersion'] = udm_license._license.version
-            if udm_license._license.version == '1':
-                for item in ('licenses', 'real'):
-                    license_data[item] = {}
-                    for lic_type in ('CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE'):
-                        count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                        if isinstance(count, str):
-                            try:
-                                count = int(count)
-                            except ValueError:
-                                count = None
-                        license_data[item][lic_type.lower()] = count
-
-                if 'UGS' in udm_license._license.types:
-                    udm_license._license.types = [x for x in udm_license._license.types if x != 'UGS']
-            elif udm_license._license.version == '2':
-                for item in ('licenses', 'real'):
-                    license_data[item] = {}
-                    for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS'):  # , 'CORPORATECLIENTS'):
-                        count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                        if isinstance(count, str):
-                            try:
-                                count = int(count)
-                            except ValueError:
-                                count = None
-                        license_data[item][lic_type.lower()] = count
-                license_data['keyID'] = udm_license._license.licenseKeyID
-                license_data['support'] = udm_license._license.licenseSupport
-                license_data['premiumSupport'] = udm_license._license.licensePremiumSupport
-
-            license_data['licenseTypes'] = udm_license._license.types
-            license_data['oemProductTypes'] = udm_license._license.oemProductTypes
-            license_data['endDate'] = udm_license._license.endDate
-            license_data['baseDN'] = udm_license._license.licenseBase
-            free_license = ''
-            if license_data['baseDN'] == 'Free for personal use edition':
-                free_license = 'ffpu'
-            if license_data['baseDN'] == 'UCS Core Edition':
-                free_license = 'core'
-            if free_license:
-                license_data['baseDN'] = ucr.get('ldap/base', '')
-            license_data['freeLicense'] = free_license
-            license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
+        license_data['licenseVersion'] = udm_license._license.version
+        for item in ('licenses', 'real'):
+            license_data[item] = {}
+            for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS'):  # , 'CORPORATECLIENTS'):
+                count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
+                if isinstance(count, str):
+                    try:
+                        count = int(count)
+                    except ValueError:
+                        count = None
+                license_data[item][lic_type.lower()] = count
+        license_data['keyID'] = udm_license._license.licenseKeyID
+        license_data['support'] = udm_license._license.licenseSupport
+        license_data['premiumSupport'] = udm_license._license.licensePremiumSupport
+        license_data['licenseTypes'] = udm_license._license.types
+        license_data['oemProductTypes'] = udm_license._license.oemProductTypes
+        license_data['endDate'] = udm_license._license.endDate
+        license_data['baseDN'] = udm_license._license.licenseBase
+        free_license = ''
+        if license_data['baseDN'] == 'Free for personal use edition':
+            free_license = 'ffpu'
+        if license_data['baseDN'] == 'UCS Core Edition':
+            free_license = 'core'
+        if free_license:
+            license_data['baseDN'] = ucr.get('ldap/base', '')
+        license_data['freeLicense'] = free_license
+        license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
 
         self.finished(request.id, license_data)
 

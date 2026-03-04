@@ -32,12 +32,12 @@ options = {
     'Version 1': univention.admin.option(
         short_description=_('Version 1 license'),
         editable=False,
-        default=0,
+        default=False,
     ),
     'Version 2': univention.admin.option(
         short_description=_('Version 2 license'),
         editable=False,
-        default=1,
+        default=True,
     ),
 }
 property_descriptions = {
@@ -57,14 +57,6 @@ property_descriptions = {
         required=True,
         may_change=False,
     ),
-    'module': univention.admin.property(
-        short_description=_('Module'),
-        long_description=_('Module the license is valid for'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 1'],
-        required=True,
-        may_change=False,
-    ),
     'base': univention.admin.property(
         short_description=_('Base DN'),
         long_description=_('Base DN the license is valid for'),
@@ -78,42 +70,6 @@ property_descriptions = {
         long_description=_('This Signature is used to verify the authenticity of the license.'),
         syntax=univention.admin.syntax.string,
         required=True,
-        may_change=False,
-    ),
-    'accounts': univention.admin.property(
-        short_description=_('Max. user accounts'),
-        long_description=_('Maximum number of user accounts managed with the UCS infrastructure'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 1'],
-        may_change=False,
-    ),
-    'clients': univention.admin.property(
-        short_description=_('Max. clients'),
-        long_description=_('Maximum number of client hosts managed with the UCS infrastructure'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 1'],
-        may_change=False,
-    ),
-    'groupwareaccounts': univention.admin.property(
-        short_description=_('Max. groupware accounts'),
-        long_description=_('Maximum number of groupware accounts managed with the UCS infrastructure'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 1'],
-        may_change=False,
-    ),
-    'desktops': univention.admin.property(
-        short_description=_('Max. desktops'),
-        long_description=_('Maximum number of Univention desktop accounts managed with the UCS infrastructure'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 1'],
-        may_change=False,
-    ),
-    'productTypes': univention.admin.property(
-        short_description=_('Valid product types'),
-        long_description=_('Product types this license allows.'),
-        syntax=univention.admin.syntax.string,
-        multivalue=True,
-        options=['Version 1'],
         may_change=False,
     ),
     'oemProductTypes': univention.admin.property(
@@ -172,27 +128,27 @@ property_descriptions = {
         options=['Version 2'],
         may_change=False,
     ),
-    'virtualdesktopusers': univention.admin.property(
-        short_description=_('DVS users'),
-        long_description=_('Maximum number of DVS users this license allows.'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 2'],
-        may_change=False,
-    ),
-    'virtualdesktopclients': univention.admin.property(
-        short_description=_('DVS clients'),
-        long_description=_('Maximum number of DVS clients this license allows.'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 2'],
-        may_change=False,
-    ),
-    'corporateclients': univention.admin.property(
-        short_description=_('Corporate clients'),
-        long_description=_('Maximum number of corporate clients this license allows.'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 2'],
-        may_change=False,
-    ),
+    # 'virtualdesktopusers': univention.admin.property(
+    #     short_description=_('DVS users'),
+    #     long_description=_('Maximum number of DVS users this license allows.'),
+    #     syntax=univention.admin.syntax.string,
+    #     options=['Version 2'],
+    #     may_change=False,
+    # ),
+    # 'virtualdesktopclients': univention.admin.property(
+    #     short_description=_('DVS clients'),
+    #     long_description=_('Maximum number of DVS clients this license allows.'),
+    #     syntax=univention.admin.syntax.string,
+    #     options=['Version 2'],
+    #     may_change=False,
+    # ),
+    # 'corporateclients': univention.admin.property(
+    #     short_description=_('Corporate clients'),
+    #     long_description=_('Maximum number of corporate clients this license allows.'),
+    #     syntax=univention.admin.syntax.string,
+    #     options=['Version 2'],
+    #     may_change=False,
+    # ),
     'version': univention.admin.property(
         short_description=_('Version'),
         long_description=_('Version format of this license.'),
@@ -207,22 +163,19 @@ layout = [
     Tab(_('License'), _('Licensing Information'), layout=[
         Group(_('General license settings'), layout=[
             'name',
-            'module',
             'expires',
             'base',
             'oemProductTypes',
             'signature',
         ]),
-        Group(_('Version 1 license informations'), layout=[
-            'productTypes',
-            ['accounts', 'groupwareaccounts'],
-            ['clients', 'desktops'],
-        ]),
         Group(_('Version 2 license informations'), layout=[
             'keyID',
             ['users', 'servers'],
-            ['corporateclients', 'managedclients'],
-            ['virtualdesktopusers', 'virtualdesktopclients'],
+            [
+                # 'corporateclients',
+                'managedclients',
+            ],
+            # ['virtualdesktopusers', 'virtualdesktopclients'],
             ['support', 'premiumsupport'],
             'version',
         ]),
@@ -232,14 +185,8 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('expires', 'univentionLicenseEndDate', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('module', 'univentionLicenseModule', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('base', 'univentionLicenseBaseDN', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('signature', 'univentionLicenseSignature', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('accounts', 'univentionLicenseAccounts', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('groupwareaccounts', 'univentionLicenseGroupwareAccounts', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('clients', 'univentionLicenseClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('desktops', 'univentionLicenseuniventionDesktops', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('productTypes', 'univentionLicenseType', encoding='ASCII')
 mapping.register('oemProductTypes', 'univentionLicenseOEMProduct', encoding='ASCII')
 mapping.register('product', 'univentionLicenseProduct', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('keyID', 'univentionLicenseKeyID', None, univention.admin.mapping.ListToString, encoding='ASCII')
@@ -248,9 +195,9 @@ mapping.register('support', 'univentionLicenseSupport', None, univention.admin.m
 mapping.register('premiumsupport', 'univentionLicensePremiumSupport', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('managedclients', 'univentionLicenseManagedClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('users', 'univentionLicenseUsers', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('virtualdesktopusers', 'univentionLicenseVirtualDesktopUsers', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('virtualdesktopclients', 'univentionLicenseVirtualDesktopClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('corporateclients', 'univentionLicenseCorporateClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# mapping.register('virtualdesktopusers', 'univentionLicenseVirtualDesktopUsers', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# mapping.register('virtualdesktopclients', 'univentionLicenseVirtualDesktopClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# mapping.register('corporateclients', 'univentionLicenseCorporateClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('version', 'univentionLicenseVersion', None, univention.admin.mapping.ListToString, encoding='ASCII')
 # fmt: on
 

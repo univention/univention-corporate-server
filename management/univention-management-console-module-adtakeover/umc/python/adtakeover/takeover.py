@@ -45,7 +45,6 @@ import univention.config_registry
 import univention.lib.admember
 import univention.lib.s4
 from univention.admin import uexceptions
-from univention.admincli import license_check
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces
 from univention.management.console import Translation
@@ -521,40 +520,7 @@ class UCS_License_detection:
         self._license = univention.admin.license._license
         self.ignored_users_list = self._license.sysAccountNames
 
-    def determine_license(self, lo, dn):
-        def mylen(xs):
-            if xs is None:
-                return 0
-            return len(xs)
-        v = self._license.version
-        types = self._license.licenses[v]
-        if dn is None:
-            max = [self._license.licenses[v][type] for type in types]
-        else:
-            max = [lo.get(dn)[self._license.keys[v][type]][0] for type in types]
-
-        objs = [lo.searchDn(filter=self._license.filters[v][type]) for type in types]
-        num = [mylen(obj) for obj in objs]
-        self._license.checkObjectCounts(max, num)
-        result = []
-        for i in list(types.keys()):
-            types[i]
-            m = max[i]
-            n = num[i]
-            objs[i]
-            if i in (self.License.USERS, self.License.ACCOUNT):
-                n -= self._license.sysAccountsFound
-                if n < 0:
-                    n = 0
-            li = self._license.names[v][i]
-            if m and (i in (self.License.USERS, self.License.ACCOUNT)):
-                log.debug("determine_license for current UCS %s: %s of %s", li, n, m)
-                log.debug("  %s Systemaccounts are ignored.", self._license.sysAccountsFound)
-                result.append((li, n, m))
-        return result
-
     def check_license(self, domain_info):
-
         binddn = self.ucr['ldap/hostdn']
         with open('/etc/machine.secret') as pwfile:
             bindpw = pwfile.readline().strip()
@@ -572,24 +538,21 @@ class UCS_License_detection:
 
         try:
             self._license.init_select(lo, 'admin')
-            check_array = self.determine_license(lo, None)
-        except uexceptions.base:
-            dns = license_check.find_licenses(lo, self.ucr['ldap/base'], 'admin')
-            dn, _expired = license_check.choose_license(lo, dns)
-            check_array = self.determine_license(lo, dn)
-
-        # some name translation
-        object_displayname_for_licensetype = {'Accounts': _('users'), 'Users': _('users')}
-        ad_object_count_for_licensetype = {'Accounts': domain_info["users"], 'Users': domain_info["users"]}
+        except uexceptions.base:  # licenseInvalid, ...
+            pass
 
         license_sufficient = True
         error_msg = None
-        for object_type, num, max_objs in check_array:
-            object_displayname = object_displayname_for_licensetype.get(object_type, object_type)
-            log.info("Found %s %s objects on the remote server.", ad_object_count_for_licensetype[object_type], object_displayname)
-            sum_objs = num + ad_object_count_for_licensetype[object_type]
-            domain_info["licensed_%s" % (object_displayname,)] = max_objs
-            domain_info["estimated_%s" % (object_displayname,)] = sum_objs
+
+        max_objs = self._license.licenses['2'][self.License.USERS]
+        num = self._license.real['2'][self.License.USERS]
+
+        if max_objs and num:
+            object_displayname = _('users')
+            log.info("Found %s %s objects on the remote server.", domain_info["users"], object_displayname)
+            sum_objs = num + domain_info["users"] - self._license.sysAccountsFound
+            domain_info["licensed_users"] = max_objs
+            domain_info["estimated_users"] = sum_objs
             if self._license.compare(sum_objs, max_objs) > 0:
                 license_sufficient = False
                 error_msg = _("Number of %(object_name)s after takeover would be %(sum)s. This would exceed the number of licensed objects (%(max)s).") % {
@@ -606,7 +569,6 @@ class UCS_License_detection:
 class AD_Connection:
 
     def __init__(self, hostname_or_ip, lp=None):
-
         self.hostname_or_ip = hostname_or_ip
         self.ldap_uri = ldap_uri_for_host(hostname_or_ip)
 
@@ -699,7 +661,6 @@ class AD_Connection:
                 return ""
 
     def count_objects(self, ignored_users_list):
-
         ignored_user_objects = 0
         ad_user_objects = 0
         ad_group_objects = 0
