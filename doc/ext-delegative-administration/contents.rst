@@ -17,4 +17,5 @@ Univention Corporate Server - Delegative administration documentation
    configuration
    object-dependencies
    troubleshooting
+   federated-admin-authentication/index
    bibliography
