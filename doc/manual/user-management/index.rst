@@ -53,26 +53,53 @@ There are three different types of user accounts in UCS:
 
 .. rubric:: Recommendation for username definition
 
-One very important and required attribute for user accounts is the *username*. To
-avoid conflicts with the different tools handling user accounts in UCS, adhere
-to the following recommendations for the definition of usernames:
+One important and required attribute for user accounts is the *username*.
+To avoid conflicts with different tools handling user accounts in UCS,
+follow these recommendations for username definition:
 
-* Only use lower case letters (``a-z``), digits (``0-9``) and the hyphen (``-``)
-  from the ASCII character set for usernames.
+* Use letters (``a-z`` and ``A-Z``),
+  digits (``0-9``),
+  dots (``.``),
+  hyphens (``-``),
+  and underscores (``_``)
+  from the ASCII character set in usernames.
+  Unicode characters and umlauts are also supported.
 
-* The username starts with a lower case letter from the ASCII character set. The
-  hyphen is not allowed as last character.
+* The username must start with a letter, digit, or underscore and end with a letter, digit, or hyphen.
 
-* In UCS the username has at least a length of 4 characters and at most 20
-  characters.
+* Don't use spaces in usernames.
 
-The recommendation results in the following regular expression:
+* Don't use ``@``, ``$``,
+  or any of ``" / \ [ ] : ; | = , + * ? < >'`` in usernames.
+  These characters cause failures with Kerberos, Active Directory,
+  and Samba synchronization.
+
+Recommended username length:
+
+* For broad compatibility with Windows clients and legacy systems,
+  keep usernames between 4 and 20 characters.
+  While UCS allows single-character usernames,
+  many external systems don't support them.
+
+* Usernames longer than 20 characters cause problems in two situations:
+
+  * Windows clients can't sign in,
+    as the Microsoft specification limits the ``SAM account name`` to 20 characters.
+
+  * Synchronization with an external Active Directory domain fails,
+    as AD enforces the 20-character limit with a hard error.
+
+  * The *Management UI* shows a warning when a username exceeds 20 characters.
+
+The traditional recommendation follows this regular expression:
 :regexp:`^[a-z][a-z0-9-]{2,18}[a-z0-9]$`.
+This pattern is more restrictive than the actual system validation,
+which also allows dots, underscores, and uppercase letters.
 
-Besides the recommendation, usernames also contain underscores (``_``) and upper
-case ASCII letters in practice. Consider the recommendation as a guideline and
-not a rule and keep potential side-effects in mind when defining usernames
-outside the recommendation.
+Treat the requirements listed before as guidelines for broad compatibility,
+not as strict enforcement rules.
+Keep potential side-effects in mind when defining usernames outside these guidelines,
+especially for integration with legacy systems or Windows clients.
 
 .. toctree::
    :caption: Chapter contents:
