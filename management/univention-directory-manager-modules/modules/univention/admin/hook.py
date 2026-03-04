@@ -145,6 +145,24 @@ class simpleHook(object):
         log.debug('admin.syntax.hook.simpleHook: _ldap_modlist called')
         return ml
 
+    def hook_ldap_pre_move(self, obj):
+        # type: (univention.admin.handlers.simpleLdap) -> None
+        """
+        This method is called before the object is moved in |LDAP|.
+
+        :param obj: The |UDM| object instance.
+        """
+        log.debug('hook_ldap_post_modify called')
+
+    def hook_ldap_post_move(self, obj):
+        # type: (univention.admin.handlers.simpleLdap) -> None
+        """
+        This method is called after the object was moved in |LDAP|.
+
+        :param obj: The |UDM| object instance.
+        """
+        log.debug('hook_ldap_post_move called')
+
     def hook_ldap_post_modify(self, obj):
         # type: (univention.admin.handlers.simpleLdap) -> None
         """
