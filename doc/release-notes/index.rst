@@ -36,27 +36,24 @@ Here is an overview of the most important changes:
 Notes about the update
 **********************
 
-Run the update in a maintenance window, because some services in the domain may
-not be available temporarily. It's recommended that you test the update in a separate
-test environment before the actual update. The test environment must be
-identical to the production environment.
+Before updating,
+test the update in a separate test environment
+that's identical to your production environment.
+Run the update in a maintenance window,
+because some services in the domain may be unavailable temporarily.
 
-Depending on the system performance, network connection, and installed software,
-the update can take anywhere from 30 minutes to several hours. For large
-environments, consult :cite:t:`ucs-performance-guide`.
+The update can take anywhere from 30 minutes to several hours,
+depending on system performance, network connection, and installed software.
+For large environments,
+consult :cite:t:`ucs-performance-guide`.
 
 .. _relnotes-sequence:
 
-Recommended update sequence for environments with more than one UCS system
-==========================================================================
+Updating multiple UCS systems
+=============================
 
-In environments with more than one UCS system, take the update sequence of the UCS
-systems into account.
-
-The authoritative version of the LDAP directory service operates on the |UCSPRIMARYDN|
-and replicates to all the remaining LDAP servers of the UCS domain. As changes to the
-LDAP schema can occur during release updates, the |UCSPRIMARYDN| must always be the
-first system in the update order during a release update.
+In environments with multiple UCS systems,
+follow the update sequence described below.
 
 .. _relnotes-bootloader:
 
@@ -64,57 +61,66 @@ first system in the update order during a release update.
 Simultaneous operation of UCS and Debian on UEFI systems
 ********************************************************
 
-Please note that simultaneous operation of UCS and Debian GNU/Linux on a UEFI
-system starting with UCS 5.0 isn't supported.
+Simultaneous operation of UCS and Debian GNU/Linux on UEFI systems
+isn't supported in UCS 5.0 and later.
 
-The reason for this is the GRUB boot loader of |UCSUCS|, which partly uses the
-same configuration files as Debian. An already installed Debian leads to the
-fact that UCS can't boot (anymore) after the installation of or an update to UCS
-5.0. A subsequent installation of Debian results in UCS 5.0 not being able to
-boot. For more information, refer to :uv:kb:`17768`.
+The GRUB boot loader of |UCSUCS| uses the same configuration files as Debian.
+If Debian is already installed,
+UCS can't boot after you install or update to UCS 5.0.
+Conversely,
+installing Debian after UCS 5.0
+prevents UCS from booting.
+
+For more information,
+refer to :uv:kb:`17768`.
 
 .. _relnotes-prepare:
 
-*********************
-Preparation of update
-*********************
+******************
+Prepare for update
+******************
 
-This section provides more information you need to consider before you update.
+This section covers important considerations before you update.
 
 .. _relnotes-sufficient-disc-space:
 
 Sufficient disk space
 =====================
 
-Also verify that you have sufficient disk space available for the update. A
-standard installation requires a minimum of 6-10 GB of disk space. The update
-requires approximately 1-2 GB additional disk space to download and install the
-packages, depending on the size of the existing installation.
+Ensure you have sufficient disk space available for the update.
+A standard installation requires a minimum of 6-10 GB.
+The update process requires an additional 1-2 GB
+to download and install packages,
+depending on your existing installation size.
 
 .. _relnotes-console-for-update:
 
 Console usage for update
 ========================
 
-For the update, sign in on the system's local console as user ``root``, and
-initiate the update there. Alternatively, you can conduct the update using
-|UCSUMC|.
+Sign in to the system's local console as ``root``
+and run the update.
+Alternatively,
+you can run the update using |UCSUMC|.
 
-If you want or have to run the update over a network connection, ensure that the
-update continues in case of network disconnection. Network connection interrupts
-may cancel the update procedure that you initiated over a remote connection. An
-interrupted update procedure affects the system severely. To keep the update
-running even in case of an interrupted network connection, use tools such as
-:command:`tmux`, :command:`screen`, and :command:`at`. All UCS system roles have
-these tools installed by default.
+If you run the update over a network connection,
+take steps to ensure it continues if the connection is interrupted.
+Network interruptions can cancel the update,
+which severely affects the system.
+
+Use tools like :command:`tmux`, :command:`screen`, or :command:`at`
+to keep the update running through network interruptions.
+All UCS system roles have these tools installed by default.
 
 .. _relnotes-pre-update-checks:
 
 Script to check for known update issues
 =======================================
 
-Univention provides a script that checks for problems which would prevent the
-successful update of the system. You can download the script before the update
+Univention provides a script
+that checks for problems
+that could prevent a successful update.
+You can download the script before the update
 and run it on the UCS system.
 
 .. code-block:: console
@@ -145,15 +151,18 @@ and run it on the UCS system.
 Post processing of the update
 *****************************
 
-Following the update, you need to run new or updated join scripts. You can
-either use the UMC module *Domain join* or run the command
-:command:`univention-run-join-scripts` as user ``root``.
+After the update,
+run new or updated join scripts.
+Use either the UMC module *Domain join*
+or run :command:`univention-run-join-scripts` as ``root``.
 
-Subsequently, you need to restart the UCS system.
+Then restart the UCS system.
 
-Please verify the PostgreSQL version on all UCS systems that updated to UCS 5.2.
-As UCS 5.2 ships Version 15 of PostgreSQL, updated systems may need
-migration from PostgreSQL 11.
+Verify the PostgreSQL version
+on all UCS systems upgraded to UCS 5.2.
+UCS 5.2 includes PostgreSQL 15,
+which may require migration from PostgreSQL 11.
+
 For the recommended migration steps,
 see :uv:kb:`22162`.
 
@@ -163,38 +172,44 @@ see :uv:kb:`22162`.
 Notes on selected packages
 **************************
 
-The following sections inform about some selected packages regarding the update.
+The following sections cover selected packages for this update.
 
 .. _relnotes-usage:
 
 Collection of usage statistics
 ==============================
 
-When using the *UCS Core Edition*, UCS collects anonymous statistics on the use
-of |UCSUMC|. The modules opened get logged to an instance of the web traffic
-analysis tool *Matomo*. Usage statistics enable Univention to better tailor the
-development of |UCSUMC| to customer needs and carry out usability improvements.
+When using UCS Core Edition,
+UCS collects anonymous usage statistics for |UCSUMC|.
+The system logs which modules you open
+to a *Matomo* instance.
+These statistics help Univention
+improve |UCSUMC| development
+based on customer needs.
 
-You can verify the license status through the menu entry :menuselection:`License
---> License information` of the user menu in the upper right corner of |UCSUMC|.
-Your UCS system is a *UCS Core Edition* system, if the *License information*
-lists ``UCS Core Edition`` under *License type*.
+You can verify the license status through the menu entry
+:menuselection:`License --> License information`
+in the user menu in the upper right corner of |UCSUMC|.
+If the *License information*
+lists ``UCS Core Edition`` under *License type*,
+your UCS system is using UCS Core Edition.
 
-UCS doesn't collect usage statistics, when you use an `Enterprise Subscription
-<https://www.univention.com/products/prices-and-subscriptions/>`_ license such
-as *UCS Base Subscription* or *UCS Standard Subscription*.
+UCS doesn't collect usage statistics
+if you use an `Enterprise Subscription
+<https://www.univention.com/products/prices-and-subscriptions/>`_
+license such as *UCS Base Subscription* or *UCS Standard Subscription*.
 
-Independent of the license used, you can deactivate the usage statistics
-collection by setting the |UCSUCRV| :envvar:`umc/web/piwik` to ``false``.
+To deactivate usage statistics collection,
+set the |UCSUCRV| :envvar:`umc/web/piwik` to ``false``.
 
 .. _relnotes-browsers:
 
-Recommended browsers for the access to |UCSUMC|
-===============================================
+Recommended browsers for |UCSUMC|
+=================================
 
-|UCSUMC| uses numerous JavaScript and CSS functions to display the web
-interface. Your web browser needs to permit cookies. |UCSUMC| requires one of
-the following browsers:
+|UCSUMC| uses JavaScript and CSS functions to display the web interface.
+Your web browser must support cookies.
+|UCSUMC| requires one of the following browsers:
 
 * Chrome as of version 131
 
@@ -204,7 +219,7 @@ the following browsers:
 
 * Microsoft Edge as of version 128
 
-Users running older browsers may experience display or performance issues.
+Older browsers may not display correctly or perform as expected.
 
 .. _relnotes-changelog:
 
