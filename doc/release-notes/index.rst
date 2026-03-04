@@ -18,14 +18,17 @@ It provides several feature improvements and extensions, properties, as well as 
 Here is an overview of the most important changes:
 
 * The new Provisioning API is now available on |UCSUCS|,
-  offering a REST API to be informed about changes on users, groups and other Nubus objects.
+  offering a REST API to receive information about changes
+  to users, groups, and other Nubus objects.
   Integrations implemented to work with Nubus on Kubernetes
   can now use the same API to integrate with Nubus on |UCSUCS|.
 
-* The Recycle Bin Feature has seen various improvements
-  and is now integrated in the :program:`Samba 4` Integration and :program:`Active Directory` Connector,
-  so that a restore of a User in |UCSUDM|, :program:`Samba 4` or :program:`Active Directory`
-  is correctly handled as a restore in the other directory service implementations.
+* The *Recycle Bin* feature provides various improvements
+  and now integrates with the :program:`Active Directory-compatible Domain Controller`
+  and :program:`Active Directory Connection`.
+  A restore in |UCSUDM|, :program:`Active Directory-compatible Domain Controller`,
+  or :program:`Active Directory Connection`
+  now correctly restores the object in the other directory service implementations.
 
 .. _relnotes-update:
 
