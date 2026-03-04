@@ -64,6 +64,8 @@ try:
         'hook_ldap_pre_modify',
         'hook_ldap_modlist',
         'hook_ldap_post_modify',
+        'hook_ldap_pre_move',
+        'hook_ldap_post_move',
         'hook_ldap_pre_remove',
         'hook_ldap_post_remove',
     ]
@@ -1730,6 +1732,7 @@ class simpleLdap:
     def _move(self, newdn: str, modify_childs: bool = True, ignore_license: bool = False) -> str:
         """Moves this object to the new DN. Should only be called by :func:`univention.admin.handlers.simpleLdap.move`."""
         self._ldap_pre_move(newdn)
+        self.call_udm_property_hook('hook_ldap_pre_move', self)
 
         olddn = self.dn
         self.lo.authz_connection.rename(self.dn, newdn)
@@ -1740,6 +1743,7 @@ class simpleLdap:
             self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
             self._move_in_subordinates(olddn)
             self._ldap_post_move(olddn)
+            self.call_udm_property_hook('hook_ldap_post_move', self)
         except Exception:
             # move back
             self.log.warning('ldap_post_move failed, move object back', dn=newdn, old_dn=olddn)

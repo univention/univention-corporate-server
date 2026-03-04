@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.2) unstable; urgency=medium
+
+  * Bug #59111: added pre and post move hooks for UDM
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 11 Mar 2026 10:14:43 +0100
+
 univention-directory-manager-modules (17.5.1) unstable; urgency=medium
 
   * Bug #58384: add univentionObjectIdentifier to dns/dhcp objects
