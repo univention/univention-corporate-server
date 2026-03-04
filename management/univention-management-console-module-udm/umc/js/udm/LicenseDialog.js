@@ -104,26 +104,6 @@ define([
 					'': _('UCS License')
 				}[this.licenseInfo.freeLicense];
 
-				if (this.licenseInfo.licenseVersion === '1') {
-
-					// subtract system accounts
-					if (this.licenseInfo.real.account >= this.licenseInfo.sysAccountsFound) {
-						this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
-					}
-
-					entries = [
-						[_('License type'),	licenseTypeLabel],
-						[_('LDAP base'), this.licenseInfo.baseDN],
-						[_('User accounts'), this._limitInfo('account')],
-						[_('Clients'), this._limitInfo('client')],
-						[_('Desktops'), this._limitInfo('desktop')],
-						[_('Expiry date'), _(this.licenseInfo.endDate)],
-						[_('Valid product types'), product]
-					];
-
-
-				} else if (this.licenseInfo.licenseVersion === '2') {
-
 					// subtract system accounts
 					if (this.licenseInfo.real.users >= this.licenseInfo.sysAccountsFound) {
 						this.licenseInfo.real.users -= this.licenseInfo.sysAccountsFound;
@@ -140,7 +120,6 @@ define([
 						[_('Expiry date'), _(this.licenseInfo.endDate)],
 						[_('Valid product types'), product]
 					];
-				}
 
 			// render information
 			var html = array.map(entries, function(ientry) {

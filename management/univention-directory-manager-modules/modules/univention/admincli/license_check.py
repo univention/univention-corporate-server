@@ -7,15 +7,11 @@ from __future__ import annotations
 
 import datetime
 import getopt
-import traceback
 from typing import TYPE_CHECKING
-
-from ldap.filter import filter_format
 
 import univention.admin.license
 import univention.admin.uldap
 import univention.config_registry
-import univention.license
 from univention.admin import uexceptions
 
 
@@ -75,38 +71,15 @@ def format(label: str, num: int, max: str, expired: bool, cmp: Callable, ignored
     return '%s %s of %s... %s' % tuple(args)
 
 
-def find_licenses(lo: univention.admin.uldap.access, baseDN: str, module: str = '*') -> list[str]:
-    def find_wrap(dir: str) -> list[str]:
-        try:
-            return lo.searchDn(base=dir, filter='(univentionLicenseObject=*)')
-        except uexceptions.noObject:
-            return []
-    filter = filter_format('univentionLicenseModule=%s', [module])
-    dirs = ['cn=default containers,cn=univention,%s' % baseDN]
-    objects = [o for d in dirs for o in find_wrap(d)]
-    containers = [c.decode('UTF-8') for o in objects for c in lo.get(o)['univentionLicenseObject']]
-    licenses = [license for c in containers for license in lo.searchDn(base=c, filter=filter)]
-    return licenses
-
-
-def choose_license(lo: univention.admin.uldap.access, dns: list[str]) -> tuple[str | None, int]:
-    for dn in dns:
-        retval = univention.license.check(dn)
-        if retval == -1:
-            continue
-        return dn, retval
-    return None, -1
-
-
-def check_license(lo: univention.admin.uldap.access, dn: str, list_dns: list[str], expired: int) -> list[str]:
+def check_license(lo: univention.admin.uldap.access, dn: str | None, list_dns: bool, expired: int) -> list[str]:
     if expired == -1:
         return ['No valid license object found', 'OPERATION FAILED']
     out: list[str] = []
 
     def check_code(code: int) -> None:
-        for label, value in [('searchpath', 8), ('basedn', 4), ('enddate', 2), ('signature', 1)]:
-            if code >= value:
-                code -= value
+        for label, value in [('basedn', 4), ('enddate', 2), ('signature', 1)]:
+            if code & value == value:
+                code ^= value
                 ok = 'FAILED'
             else:
                 ok = 'OK'
@@ -116,36 +89,23 @@ def check_license(lo: univention.admin.uldap.access, dn: str, list_dns: list[str
         assert _license is not None
         v = _license.version
         types = _license.licenses[v]
-        if dn is None:
-            maximum = [_license.licenses[v][type] for type in types]
-        else:
-            maximum = [lo.get(dn)[_license.keys[v][type]][0].decode('utf-8') for type in types]
-        objs = [lo.searchDn(filter=_license.filters[v][type]) for type in types]
-        num = [len(obj or '') for obj in objs]
-        _license.checkObjectCounts(maximum, num)
-        for i, m, n, odn in zip(range(len(types)), maximum, num, objs):
-            if i in (License.USERS, License.ACCOUNT):
+        maximum = [_license.licenses[v][type] for type in types]
+        num = [_license.real[v][type] for type in types]
+        for i, m, n in zip(range(len(types)), maximum, num):
+            if i == License.USERS:
                 n -= _license.sysAccountsFound
                 if n < 0:
                     n = 0
             ln = _license.names[v][i]
             if m:
-                if list_dns:
-                    out.append("")
-
-                ignored = False
-                if v == '2' and i == License.SERVERS:
-                    # Ignore the server count
-                    ignored = True
+                ignored = v == '2' and i == License.SERVERS  # Ignore the server count
                 out.append(format(ln, n, m, False, _license.compare, ignored))
-                if list_dns and maximum != 'unlimited':
-                    out.extend("  %s" % dnout for dnout in odn)
-                if list_dns and (i in (License.USERS, License.ACCOUNT)):
+                if list_dns and i == License.USERS:
                     out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 
     def check_time() -> None:
         now = datetime.date.today()
-        then = lo.get(dn)['univentionLicenseEndDate'][0].decode('UTF-8')
+        then = _license.endDate
         if then != 'unlimited':
             (day, month, year) = then.split('.')
             then_ = datetime.date(int(year), int(month), int(day))
@@ -156,10 +116,9 @@ def check_license(lo: univention.admin.uldap.access, dn: str, list_dns: list[str
 
     if dn is not None and list_dns:
         out.append('License found at: %s' % dn)
-    check_code(expired)
+    check_code(_license.error)
     check_type()
-    if dn is not None:
-        check_time()
+    check_time()
     return out
 
 
@@ -185,23 +144,15 @@ def main(argv: list[str]) -> list[str]:
     out = ['Base DN: %s' % baseDN]
     try:
         _license.init_select(lo, 'admin')
-        out.extend(check_license(lo, None, 'list-dns' in options, 0))
-    except uexceptions.base:
-        dns = find_licenses(lo, baseDN, 'admin')
-        dn, expired = choose_license(lo, dns)
-        out.extend(check_license(lo, dn, 'list-dns' in options, expired))
-    except Exception:
-        # output any other tracebacks
-        trace_out = traceback.format_exc().splitlines()
-        out.extend(trace_out)
-    finally:
-        return out  # noqa: B012
+    except uexceptions.base:  # ignore license... Exceptions
+        pass
+    out.extend(check_license(lo, None, 'list-dns' in options, 0))
+    return out
 
 
 def doit(argv: list[str]) -> list[str]:
     try:
-        out = main(argv[1:])
-        return out
+        return main(argv[1:])
     except UsageError as msg:
         return usage(str(msg))
 
