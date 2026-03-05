@@ -158,14 +158,6 @@ or run :command:`univention-run-join-scripts` as ``root``.
 
 Then restart the UCS system.
 
-Verify the PostgreSQL version
-on all UCS systems upgraded to UCS 5.2.
-UCS 5.2 includes PostgreSQL 15,
-which may require migration from PostgreSQL 11.
-
-For the recommended migration steps,
-see :uv:kb:`22162`.
-
 .. _relnotes-packages:
 
 **************************

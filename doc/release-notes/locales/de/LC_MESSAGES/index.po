@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-04 14:59+0000\n"
+"POT-Creation-Date: 2026-03-05 07:55+0000\n"
 "PO-Revision-Date: 2026-03-04 16:09+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -66,7 +66,12 @@ msgid ""
 ":program:`Active Directory Connection` now correctly restores the object "
 "in the other directory service implementations."
 msgstr ""
-"Das *Recycle Bin*-Feature bietet verschiedene Verbesserungen und ist nun in die :program:`Active Directory-compatible Domain Controller` und :program:`Active Directory Connection` integriert. Eine Wiederherstellung in |UCSUDM|, :program:`Active Directory-compatible Domain Controller` oder :program:`Active Directory Connection` stellt das Objekt nun korrekt in den anderen Verzeichnisdienst-Implementierungen wieder her."
+"Das *Recycle Bin*-Feature bietet verschiedene Verbesserungen und ist nun "
+"in die :program:`Active Directory-compatible Domain Controller` und "
+":program:`Active Directory Connection` integriert. Eine Wiederherstellung"
+" in |UCSUDM|, :program:`Active Directory-compatible Domain Controller` "
+"oder :program:`Active Directory Connection` stellt das Objekt nun korrekt"
+" in den anderen Verzeichnisdienst-Implementierungen wieder her."
 
 #: ../../index.rst:37
 msgid "Notes about the update"
@@ -79,7 +84,10 @@ msgid ""
 " window, because some services in the domain may be unavailable "
 "temporarily."
 msgstr ""
-"Testen Sie das Update vor der eigentlichen Aktualisierung in einer separaten Testumgebung, die mit Ihrer Produktionsumgebung identisch ist. Führen Sie das Update in einem Wartungsfenster durch, da einige Dienste in der Domäne möglicherweise vorübergehend nicht verfügbar sind."
+"Testen Sie das Update vor der eigentlichen Aktualisierung in einer "
+"separaten Testumgebung, die mit Ihrer Produktionsumgebung identisch ist. "
+"Führen Sie das Update in einem Wartungsfenster durch, da einige Dienste "
+"in der Domäne möglicherweise vorübergehend nicht verfügbar sind."
 
 #: ../../index.rst:45
 msgid ""
@@ -94,8 +102,7 @@ msgstr ""
 
 #: ../../index.rst:53
 msgid "Updating multiple UCS systems"
-msgstr ""
-"Aktualisierung mehrerer UCS-Systeme"
+msgstr "Aktualisierung mehrerer UCS-Systeme"
 
 #: ../../index.rst:55
 msgid ""
@@ -114,7 +121,8 @@ msgid ""
 "Simultaneous operation of UCS and Debian GNU/Linux on UEFI systems isn't "
 "supported in UCS 5.0 and later."
 msgstr ""
-"Der gleichzeitige Betrieb von UCS und Debian GNU/Linux auf UEFI-Systemen wird seit UCS 5.0 nicht mehr unterstützt."
+"Der gleichzeitige Betrieb von UCS und Debian GNU/Linux auf UEFI-Systemen "
+"wird seit UCS 5.0 nicht mehr unterstützt."
 
 #: ../../index.rst:67
 msgid ""
@@ -132,8 +140,7 @@ msgstr ""
 
 #: ../../index.rst:74
 msgid "For more information, refer to :uv:kb:`17768`."
-msgstr ""
-"Weitere Informationen finden Sie in :uv:kb:`17768`."
+msgstr "Weitere Informationen finden Sie in :uv:kb:`17768`."
 
 #: ../../index.rst:81
 msgid "Prepare for update"
@@ -141,8 +148,7 @@ msgstr "Vorbereitung des Updates"
 
 #: ../../index.rst:83
 msgid "This section covers important considerations before you update."
-msgstr ""
-"In diesem Abschnitt finden Sie wichtige Überlegungen vor dem Update."
+msgstr "In diesem Abschnitt finden Sie wichtige Überlegungen vor dem Update."
 
 #: ../../index.rst:88
 msgid "Sufficient disk space"
@@ -155,7 +161,10 @@ msgid ""
 "requires an additional 1-2 GB to download and install packages, depending"
 " on your existing installation size."
 msgstr ""
-"Stellen Sie sicher, dass ausreichend Festplattenplatz verfügbar ist. Eine Standard-Installation benötigt mindestens 6-10 GB. Das Update benötigt zusätzlich 1-2 GB zum Herunterladen und Installieren von Paketen, je nach Größe Ihrer vorhandenen Installation."
+"Stellen Sie sicher, dass ausreichend Festplattenplatz verfügbar ist. Eine"
+" Standard-Installation benötigt mindestens 6-10 GB. Das Update benötigt "
+"zusätzlich 1-2 GB zum Herunterladen und Installieren von Paketen, je nach"
+" Größe Ihrer vorhandenen Installation."
 
 #: ../../index.rst:99
 msgid "Console usage for update"
@@ -176,7 +185,10 @@ msgid ""
 "continues if the connection is interrupted. Network interruptions can "
 "cancel the update, which severely affects the system."
 msgstr ""
-"Wenn Sie das Update über eine Netzwerkverbindung durchführen, ergreifen Sie Maßnahmen, um sicherzustellen, dass es bei einer Unterbrechung der Verbindung weiterläuft. Netzwerkunterbrechungen können das Update abbrechen, was das System erheblich beeinträchtigt."
+"Wenn Sie das Update über eine Netzwerkverbindung durchführen, ergreifen "
+"Sie Maßnahmen, um sicherzustellen, dass es bei einer Unterbrechung der "
+"Verbindung weiterläuft. Netzwerkunterbrechungen können das Update "
+"abbrechen, was das System erheblich beeinträchtigt."
 
 #: ../../index.rst:111
 msgid ""
@@ -184,7 +196,10 @@ msgid ""
 "keep the update running through network interruptions. All UCS system "
 "roles have these tools installed by default."
 msgstr ""
-"Verwenden Sie Tools wie :command:`tmux`, :command:`screen` oder :command:`at`, um das Update auch bei Netzwerkunterbrechungen durchführen zu lassen. Alle UCS-Systemrollen haben diese Tools standardmäßig installiert."
+"Verwenden Sie Tools wie :command:`tmux`, :command:`screen` oder "
+":command:`at`, um das Update auch bei Netzwerkunterbrechungen durchführen"
+" zu lassen. Alle UCS-Systemrollen haben diese Tools standardmäßig "
+"installiert."
 
 #: ../../index.rst:118
 msgid "Script to check for known update issues"
@@ -265,41 +280,34 @@ msgstr ""
 msgid "Then restart the UCS system."
 msgstr "Anschließend müssen Sie das UCS-System neu starten."
 
-#: ../../index.rst:161
-msgid ""
-"Verify the PostgreSQL version on all UCS systems upgraded to UCS 5.2. UCS"
-" 5.2 includes PostgreSQL 15, which may require migration from PostgreSQL "
-"11."
-msgstr ""
-"Überprüfen Sie die PostgreSQL-Version aller auf UCS 5.2 aktualisierten Systeme. UCS 5.2 umfasst PostgreSQL 15, was möglicherweise eine Migration von PostgreSQL 11 erfordert."
-
-#: ../../index.rst:166
-msgid "For the recommended migration steps, see :uv:kb:`22162`."
-msgstr "Für die empfohlenen Migrationsschritte siehe :uv:kb:`22162`."
-
-#: ../../index.rst:173
+#: ../../index.rst:165
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:175
+#: ../../index.rst:167
 msgid "The following sections cover selected packages for this update."
 msgstr ""
-"Die folgenden Abschnitte informieren über ausgewählte Pakete dieses Updates."
+"Die folgenden Abschnitte informieren über ausgewählte Pakete dieses "
+"Updates."
 
-#: ../../index.rst:180
+#: ../../index.rst:172
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:182
+#: ../../index.rst:174
 msgid ""
 "When using UCS Core Edition, UCS collects anonymous usage statistics for "
 "|UCSUMC|. The system logs which modules you open to a *Matomo* instance. "
 "These statistics help Univention improve |UCSUMC| development based on "
 "customer needs."
 msgstr ""
-"Bei Verwendung der UCS Core Edition erfasst UCS anonyme Nutzungsstatistiken für |UCSUMC|. Das System protokolliert, welche Module Sie öffnen, in einer *Matomo*-Instanz. Diese Statistiken helfen Univention, die Entwicklung von |UCSUMC| basierend auf Kundenanforderungen zu verbessern."
+"Bei Verwendung der UCS Core Edition erfasst UCS anonyme "
+"Nutzungsstatistiken für |UCSUMC|. Das System protokolliert, welche Module"
+" Sie öffnen, in einer *Matomo*-Instanz. Diese Statistiken helfen "
+"Univention, die Entwicklung von |UCSUMC| basierend auf "
+"Kundenanforderungen zu verbessern."
 
-#: ../../index.rst:190
+#: ../../index.rst:182
 msgid ""
 "You can verify the license status through the menu entry "
 ":menuselection:`License --> License information` in the user menu in the "
@@ -307,29 +315,38 @@ msgid ""
 "Core Edition`` under *License type*, your UCS system is using UCS Core "
 "Edition."
 msgstr ""
-"Sie können den Lizenzstatus über den Menüeintrag :menuselection:`Lizenz --> Lizenzinformationen` im Benutzermenü in der oberen rechten Ecke von |UCSUMC| überprüfen. Wenn die *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` aufführen, nutzt Ihr UCS-System die UCS Core Edition."
+"Sie können den Lizenzstatus über den Menüeintrag :menuselection:`Lizenz "
+"--> Lizenzinformationen` im Benutzermenü in der oberen rechten Ecke von "
+"|UCSUMC| überprüfen. Wenn die *Lizenzinformationen* unter *Lizenztyp* "
+"``UCS Core Edition`` aufführen, nutzt Ihr UCS-System die UCS Core "
+"Edition."
 
-#: ../../index.rst:197
+#: ../../index.rst:189
 msgid ""
 "UCS doesn't collect usage statistics if you use an `Enterprise "
 "Subscription <https://www.univention.com/products/prices-and-"
 "subscriptions/>`_ license such as *UCS Base Subscription* or *UCS "
 "Standard Subscription*."
 msgstr ""
-"UCS sammelt keine Nutzungsstatistiken, wenn Sie eine `Enterprise Subscription <https://www.univention.com/products/prices-and-subscriptions/>`_-Lizenz wie *UCS Base Subscription* oder *UCS Standard Subscription* nutzen."
+"UCS sammelt keine Nutzungsstatistiken, wenn Sie eine `Enterprise "
+"Subscription <https://www.univention.com/products/prices-and-"
+"subscriptions/>`_-Lizenz wie *UCS Base Subscription* oder *UCS Standard "
+"Subscription* nutzen."
 
-#: ../../index.rst:202
+#: ../../index.rst:194
 msgid ""
 "To deactivate usage statistics collection, set the |UCSUCRV| "
 ":envvar:`umc/web/piwik` to ``false``."
 msgstr ""
-"Unabhängig von Ihrer Lizenz können Sie die Erfassung von Nutzungsstatistiken deaktivieren, indem Sie die |UCSUCRV| :envvar:`umc/web/piwik` auf ``false`` setzen."
+"Unabhängig von Ihrer Lizenz können Sie die Erfassung von "
+"Nutzungsstatistiken deaktivieren, indem Sie die |UCSUCRV| "
+":envvar:`umc/web/piwik` auf ``false`` setzen."
 
-#: ../../index.rst:208
+#: ../../index.rst:200
 msgid "Recommended browsers for |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:210
+#: ../../index.rst:202
 msgid ""
 "|UCSUMC| uses JavaScript and CSS functions to display the web interface. "
 "Your web browser must support cookies. |UCSUMC| requires one of the "
@@ -339,39 +356,57 @@ msgstr ""
 "JavaScript- und CSS-Funktionen. Ihr Browser muss dafür Cookies zulassen. "
 "|UCSUMC| benötigt dafür einen der folgenden Browser:"
 
-#: ../../index.rst:214
+#: ../../index.rst:206
 msgid "Chrome as of version 131"
 msgstr "Chrome ab Version 131"
 
-#: ../../index.rst:216
+#: ../../index.rst:208
 msgid "Firefox as of version 128"
 msgstr "Firefox ab Version 128"
 
-#: ../../index.rst:218
+#: ../../index.rst:210
 msgid "Safari and Safari Mobile as of version 18"
 msgstr "Safari und Safari Mobile ab Version 18"
 
-#: ../../index.rst:220
+#: ../../index.rst:212
 msgid "Microsoft Edge as of version 128"
 msgstr "Microsoft Edge ab Version 128"
 
-#: ../../index.rst:222
+#: ../../index.rst:214
 msgid "Older browsers may not display correctly or perform as expected."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
 "auftreten."
 
-#: ../../index.rst:228
+#: ../../index.rst:220
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:230
+#: ../../index.rst:222
 msgid ""
 "You find the changes since UCS 5.2-5 in :external+uv-"
 "changelog-5.2-5:doc:`index`."
 msgstr ""
-"Die Änderungen seit UCS 5.2-5 finden Sie in :external+uv-changelog-5.2-5:doc:`index`."
+"Die Änderungen seit UCS 5.2-5 finden Sie in :external+uv-"
+"changelog-5.2-5:doc:`index`."
 
-#: ../../index.rst:237
+#: ../../index.rst:229
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
+
+#~ msgid ""
+#~ "Verify the PostgreSQL version on all "
+#~ "UCS systems upgraded to UCS 5.2. "
+#~ "UCS 5.2 includes PostgreSQL 15, which"
+#~ " may require migration from PostgreSQL "
+#~ "11."
+#~ msgstr ""
+#~ "Überprüfen Sie die PostgreSQL-Version "
+#~ "aller auf UCS 5.2 aktualisierten "
+#~ "Systeme. UCS 5.2 umfasst PostgreSQL 15,"
+#~ " was möglicherweise eine Migration von "
+#~ "PostgreSQL 11 erfordert."
+
+#~ msgid "For the recommended migration steps, see :uv:kb:`22162`."
+#~ msgstr "Für die empfohlenen Migrationsschritte siehe :uv:kb:`22162`."
+
