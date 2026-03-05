@@ -12,7 +12,7 @@
 .. _github-univention-domain-join: https://github.com/univention/univention-domain-join
 .. _google-admin-console: https://admin.google.com/
 .. _google-domain-verify: https://support.google.com/a/topic/9196?hl=de
-.. _google-setup-workspace: https://support.google.com/a/answer/6365252?hl=de
+.. _google-setup-workspace: https://knowledge.workspace.google.com/admin/getting-started/set-up-google-workspace-for-your-organization?hl=de
 .. _grafana: https://grafana.com/
 .. _isc-dhcp-failover: https://kb.isc.org/docs/aa-00502
 .. _kernel-bonding: https://www.kernel.org/doc/Documentation/networking/bonding.txt
