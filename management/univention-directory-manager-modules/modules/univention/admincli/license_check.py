@@ -82,7 +82,7 @@ def find_licenses(lo: univention.admin.uldap.access, baseDN: str, module: str = 
         except uexceptions.noObject:
             return []
     filter = filter_format('univentionLicenseModule=%s', [module])
-    dirs = ['cn=directory,cn=univention,%s' % baseDN, 'cn=default containers,cn=univention,%s' % baseDN]
+    dirs = ['cn=default containers,cn=univention,%s' % baseDN]
     objects = [o for d in dirs for o in find_wrap(d)]
     containers = [c.decode('UTF-8') for o in objects for c in lo.get(o)['univentionLicenseObject']]
     licenses = [license for c in containers for license in lo.searchDn(base=c, filter=filter)]

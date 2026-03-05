@@ -8,11 +8,8 @@ from univention.admin import _ldap_cache
 
 @_ldap_cache(ttl=2)
 def default_container_for_objects(lo, domain):
-    pathResult = lo.authz_connection.get('cn=directory,cn=univention,' + domain)
-    default_dn = 'cn=directory,cn=univention,' + domain
-    if not pathResult:
-        pathResult = lo.authz_connection.get('cn=default containers,cn=univention,' + domain)
-        default_dn = 'cn=default containers,cn=univention,' + domain
+    default_dn = 'cn=default containers,cn=univention,' + domain
+    pathResult = lo.authz_connection.get(default_dn)
     return (pathResult, default_dn)
 
 
