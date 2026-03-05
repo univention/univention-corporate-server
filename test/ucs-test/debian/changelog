@@ -1,3 +1,9 @@
+ucs-test (12.5.7) unstable; urgency=medium
+
+  * Bug #59044: Add test for keycloak audit logging environment variables
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Fri, 13 Mar 2026 15:21:06 +0300
+
 ucs-test (12.5.6) unstable; urgency=medium
 
   * Bug: #55073: add executable flag to file 93_test_network_overlap.py
