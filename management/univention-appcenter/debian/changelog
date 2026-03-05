@@ -1,4 +1,10 @@
-univention-appcenter (11.5.0) UNRELEASED; urgency=medium
+univention-appcenter (11.5.1) unstable; urgency=medium
+
+  * Bug #55073: Skip docker networks for compose apps used on the host
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 09 Mar 2026 09:58:25 +0100
+
+univention-appcenter (11.5.0) unstable; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
 

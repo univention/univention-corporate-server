@@ -34,6 +34,7 @@ from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_run_filter, ucr_s
 from univention.appcenter.utils import (
     app_ports, app_ports_with_protocol, call_process, call_process2, mkdir, shell_safe, unique, urlopen,
 )
+from univention.config_registry import interfaces
 
 
 _logger = get_base_logger().getChild('docker')
@@ -212,6 +213,17 @@ def docker_get_existing_subnets():
     except docker.errors.APIError as exc:
         _logger.warning('Could not get existing subnets: %s', exc)
         return []
+
+
+def _get_host_networks():
+    networks = []
+    for _name, iface in interfaces.Interfaces().ipv4_interfaces:
+        if 'address' in iface and 'netmask' in iface:
+            try:
+                networks.append(IPv4Network(f'{iface["address"]}/{iface["netmask"]}', False))
+            except ValueError:
+                continue
+    return networks
 
 
 class Docker:
@@ -425,10 +437,11 @@ class Docker:
                 return None
             else:
                 return network
-        docker0_net = IPv4Network('%s' % (ucr_get('appcenter/docker/compose/network', '172.16.1.1/16'),), False)
+        appcenter_docker_compose_network_var = 'appcenter/docker/compose/network'
+        docker0_net = IPv4Network('%s' % (ucr_get(appcenter_docker_compose_network_var, '172.16.1.1/16'),), False)
         gateway, netmask = docker0_net.exploded.split('/', 1)  # '172.16.1.1', '16'
-        used_docker_networks = []
-        for _app in Apps().get_all_apps():  # TODO: find container not managed by the App Center?
+        used_networks = []
+        for _app in Apps().get_all_apps():
             if _app.id == self.app.id:
                 continue
             ip = ucr_get(_app.ucr_ip_key)
@@ -437,23 +450,27 @@ class Docker:
             except ValueError:
                 continue
             else:
-                used_docker_networks.append(app_network)
-        used_docker_networks.extend(docker_get_existing_subnets())
-        used_docker_networks = set(used_docker_networks)
+                used_networks.append(app_network)
+        used_networks.extend(docker_get_existing_subnets())
+        # we also want to skip networks used by the host.
+        # the host might include networks in the appcenter/docker/compose/network range
+        used_networks.extend(_get_host_networks())
+        used_networks = set(used_networks)
+        app_network_prefix_len = 24
         prefixlen_diff = 24 - int(netmask)
         if prefixlen_diff <= 0:
-            _logger.warning('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
+            _logger.warning('The configured network (%s) must be larger than /%s to allocate app subnets. Please adjust %s', docker0_net, app_network_prefix_len, appcenter_docker_compose_network_var)
             return None
         for network in docker0_net.subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
             _logger.debug('Testing %s', network)
             if IPv4Address('%s' % (gateway,)) in network:
                 _logger.debug('Refusing due to "main subnet"')
                 continue
-            if any(app_network.overlaps(network) for app_network in used_docker_networks):
+            if any(app_network.overlaps(network) for app_network in used_networks):
                 _logger.debug('Refusing due to range already used')
                 continue
             return network
-        _logger.warning('Cannot find any viable subnet')
+        _logger.warning('Failed to find a /%s in the docker compose network (%s). Please adjust %s', app_network_prefix_len, docker0_net, appcenter_docker_compose_network_var)
 
     def backup_run_file(self):
         pass
