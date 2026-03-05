@@ -1819,10 +1819,7 @@ class simpleLdap:
         # re-build layout if there any overwrites defined
         univention.admin.ucr_overwrite_module_layout(policy_module)
 
-        # retrieve path info from 'cn=directory,cn=univention,<current domain>' object
-        pathResult = self.lo.authz_connection.get('cn=directory,cn=univention,' + self.position.getDomain())
-        if not pathResult:
-            pathResult = self.lo.authz_connection.get('cn=default containers,cn=univention,' + self.position.getDomain())
+        pathResult = self.lo.authz_connection.get('cn=default containers,cn=univention,' + self.position.getDomain())
         for j in pathResult.get('univentionPolicyObject', []):
             i = j.decode('utf-8')
             try:

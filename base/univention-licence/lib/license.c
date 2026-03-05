@@ -66,7 +66,7 @@ lObj *univention_license_get_global_license(void) {
         this is the common client function.
         it does the common checks(date,basedn,signature) before returning a license.
         the a license of this type will be searched in all paths defined in univentionLicenseObject
-        in 'cn=directory,cn=univention,[basedn]'.
+        in 'cn=default containers,cn=univention,[basedn]'.
 
         @param	licensetyp the value of 'univentionLicenseModule' that the wished license must have
         @retval -1 no license object found
@@ -93,26 +93,13 @@ int univention_license_select(const char *licensetyp) {
 		}
 
 		// build directoryDN
-		len = strlen(baseDN) + strlen("cn=directory,cn=univention,");
+		len = strlen(baseDN) + strlen("cn=default containers,cn=univention,");
 		directoryDN = malloc(sizeof(char) * (len + 1));
 		if (!directoryDN)
 			goto err1;
+		sprintf(directoryDN, "cn=default containers,cn=univention,%s", baseDN);
 
-		sprintf(directoryDN, "cn=directory,cn=univention,%s", baseDN);
-
-		// find location of licenses
-		if ((searchPath = univention_license_ldap_get_strings(directoryDN, "univentionLicenseObject")) == NULL) {
-			free(directoryDN);
-			len = strlen(baseDN) + strlen("cn=default containers,cn=univention,");
-			directoryDN = malloc(sizeof(char) * (len + 1));
-			if (!directoryDN)
-				goto err1;
-			sprintf(directoryDN, "cn=default containers,cn=univention,%s", baseDN);
-			directoryDN[len] = 0;
-
-			searchPath = univention_license_ldap_get_strings(directoryDN, "univentionLicenseObject");
-		}
-		if (searchPath != NULL) {
+		if (searchPath = univention_license_ldap_get_strings(directoryDN, "univentionLicenseObject") != NULL) {
 			int i = 0;
 			if (searchPath->num > 0) {
 				while (i < searchPath->num && global_license == NULL) {
@@ -386,25 +373,13 @@ int univention_license_check_searchpath(const char *objectDN) {
 		char *baseDN = univention_license_ldap_get_basedn();
 
 		// build directoryDN
-		len = strlen(baseDN) + strlen("cn=directory,cn=univention,");
+		len = strlen(baseDN) + strlen("cn=default containers,cn=univention,");
 		directoryDN = malloc(sizeof(char) * (len + 1));
 		if (!directoryDN)
 			return 0;
+		sprintf(directoryDN, "cn=default containers,cn=univention,%s", baseDN);
 
-		sprintf(directoryDN, "cn=directory,cn=univention,%s", baseDN);
-		directoryDN[len] = 0;
-
-		// find location of licenses
-		if ((searchPath = univention_license_ldap_get_strings(directoryDN, "univentionLicenseObject")) == NULL) {
-			free(directoryDN);
-			len = strlen(baseDN) + strlen("cn=default containers,cn=univention,");
-			directoryDN = malloc(sizeof(char) * (len + 1));
-			sprintf(directoryDN, "cn=default containers,cn=univention,%s", baseDN);
-			directoryDN[len] = 0;
-			searchPath = univention_license_ldap_get_strings(directoryDN, "univentionLicenseObject");
-		}
-
-		if (searchPath != NULL) {
+		if ((searchPath = univention_license_ldap_get_strings(directoryDN, "univentionLicenseObject")) != NULL) {
 			int i = 0;
 			if (searchPath->num > 0) {
 				while (i < searchPath->num && !found) {
