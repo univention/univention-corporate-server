@@ -25,7 +25,7 @@ def setup_logging(args: argparse.Namespace):
 
 def update_univention_object_identifier(args: argparse.Namespace, lo: univention.uldap.access):
     result = lo.search(
-        filter="(&(objectClass=univentionObject)(!(objectClass=univentionLicense))(!(univentionObjectIdentifier=*)))",
+        filter="(&(objectClass=univentionObject)(!(univentionObjectIdentifier=*)))",
         attr=["univentionObjectIdentifier", "entryUUID"],
     )
 

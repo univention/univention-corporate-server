@@ -1,8 +1,12 @@
-univention-licence (13.5.0) UNRELEASED; urgency=medium
+univention-licence (13.5.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:19:57 +0100
+  [ Florian Best ]
+  * Bug #58384: add univentionObjectIdentifier on license import
+
+ -- Florian Best <best@univention.de>  Mon, 09 Mar 2026 11:59:47 +0100
 
 univention-licence (13.4.0) unstable; urgency=medium
 

@@ -8,6 +8,7 @@
 
 import binascii
 import urllib.request
+import uuid
 from urllib.request import ProxyHandler, build_opener
 
 import ldap
@@ -71,6 +72,7 @@ class LicenseImport(ldif.LDIFParser):
 
         self.dncount += 1
 
+        entry['univentionObjectIdentifier'] = str(uuid.uuid4())
         if 'univentionLicenseBaseDN' in entry:
             self.base = entry['univentionLicenseBaseDN'][0].decode('UTF-8')
         else:
