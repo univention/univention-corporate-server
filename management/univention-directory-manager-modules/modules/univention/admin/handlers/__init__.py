@@ -863,6 +863,8 @@ class simpleLdap:
                                     'type': type_ and type_.module,
                                 },
                             )
+                        if not getattr(submodule, 'initialized', False):
+                            univention.admin.modules.init(self.lo, self.position, submodule)
                         to_be_moved.append((subobject, subolddn, subnewdn))
 
                     for subobject, subolddn, subnewdn in to_be_moved:
