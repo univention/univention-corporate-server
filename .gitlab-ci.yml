@@ -185,8 +185,9 @@ drop unused packages:
     when: never
   - when: always
   variables:
-    GIT_DEPTH: 1000
+    GIT_DEPTH: 1
   script:
+    - git fetch origin "$CI_MERGE_REQUEST_DIFF_BASE_SHA"
     - .gitlab-ci/drop-unused-packages
 
 errata validation:
