@@ -1,3 +1,9 @@
+ucs-test (12.5.5) unstable; urgency=medium
+
+  * Bug #59111: added test for pre and post move hook
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 11 Mar 2026 10:16:02 +0100
+
 ucs-test (12.5.4) unstable; urgency=medium
 
   * Bug #55073: add test for skipping docker network overlap check
