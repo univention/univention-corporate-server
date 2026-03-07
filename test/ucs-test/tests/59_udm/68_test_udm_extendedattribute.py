@@ -985,6 +985,100 @@ class %s(univention.admin.hook.simpleHook):
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
+    def test_extended_attribute_ldap_pre_move_hook(self, udm, ucr, hook_name, cleanup):
+        """settings/extented_attribute LDAP pre move hook"""
+        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
+            hook_module.write("""
+import univention.admin
+import univention.admin.modules
+import univention.admin.hook
+import univention.admin.handlers.users.user
+import univention.testing.utils
+
+class %s(univention.admin.hook.simpleHook):
+    def hook_ldap_pre_move(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP pre move hook called with wrong object parameter (Type: %%s)' %% type(module))
+
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
+            except univention.testing.utils.LDAPObjectUnexpectedValue:
+                fp.write('\\nObject had already been moved when LDAP pre move hook was called')
+""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+
+        udm.stop_cli_server()
+        cli_name = uts.random_string()
+        udm.create_object(
+            'settings/extended_attribute',
+            position=udm.UNIVENTION_CONTAINER,
+            name=uts.random_name(),
+            shortDescription=uts.random_string(),
+            CLIName=cli_name,
+            module='users/user',
+            objectClass='univentionFreeAttributes',
+            ldapMapping='univentionFreeAttribute15',
+            hook=hook_name,
+        )
+
+        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        udm.move_object('users/user', dn=user, position=ucr['ldap/base'])
+
+        with open('/tmp/%s_executed' % hook_name) as fp:
+            fails = fp.read()
+            assert not fails, fails
+
+    @pytest.mark.tags('udm', 'apptest')
+    @pytest.mark.roles('domaincontroller_master')
+    @pytest.mark.exposure('careful')
+    def test_extended_attribute_ldap_post_move_hook(self, udm, ucr, hook_name, cleanup):
+        """settings/extented_attribute LDAP post move hook"""
+        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
+            hook_module.write("""
+import univention.admin
+import univention.admin.modules
+import univention.admin.hook
+import univention.admin.handlers.users.user
+import univention.testing.utils
+
+class %s(univention.admin.hook.simpleHook):
+    def hook_ldap_post_move(self, module):
+        with open('/tmp/%s_executed', 'w') as fp:
+            if not isinstance(module, univention.admin.handlers.users.user.object):
+                fp.write('LDAP post move hook called with wrong object parameter (Type: %%s)' %% type(module))
+
+            univention.testing.utils.wait_for_replication()
+            try:
+                univention.testing.utils.verify_ldap_object('uid=%s,%s')
+            except univention.testing.utils.LDAPObjectValueMissing:
+                fp.write('\\nObject was not yet move when LDAP post move hook was called')
+""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+
+        udm.stop_cli_server()
+        cli_name = uts.random_string()
+        udm.create_object(
+            'settings/extended_attribute',
+            position=udm.UNIVENTION_CONTAINER,
+            name=uts.random_name(),
+            shortDescription=uts.random_string(),
+            CLIName=cli_name,
+            module='users/user',
+            objectClass='univentionFreeAttributes',
+            ldapMapping='univentionFreeAttribute15',
+            hook=hook_name,
+        )
+
+        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        udm.move_object('users/user', dn=user, position=ucr['ldap/base'])
+
+        with open('/tmp/%s_executed' % hook_name) as fp:
+            fails = fp.read()
+            assert not fails, fails
+
+    @pytest.mark.tags('udm', 'apptest')
+    @pytest.mark.roles('domaincontroller_master')
+    @pytest.mark.exposure('careful')
     def test_extended_attribute_set_user_required_field_without_default(self, udm, ucr):
         """settings/extented_attribute"""
         kwargs = {"name": 'test', "ldapMapping": 'foo', "objectClass": 'bar', "shortDescription": 'test', "valueRequired": '1', "CLIName": 'test', "module": ['users/user']}
