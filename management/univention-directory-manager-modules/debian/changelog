@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-9) unstable; urgency=medium
+
+  * Bug #59112: added pre and post move hooks for UDM
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 09 Mar 2026 12:22:31 +0100
+
 univention-directory-manager-modules (15.0.29-8) unstable; urgency=medium
 
   * Bug #58840: write only changed memberUid on user rename

@@ -1,3 +1,9 @@
+ucs-test (10.0.24-39) unstable; urgency=medium
+
+  * Bug #59112: added test for pre and post move hook
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 09 Mar 2026 12:21:58 +0100
+
 ucs-test (10.0.24-38) unstable; urgency=medium
 
   * Bug #58840: write only changed memberUid on user rename
