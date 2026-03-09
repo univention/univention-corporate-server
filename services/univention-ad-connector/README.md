@@ -32,12 +32,16 @@
   for the actual data transfer. To allow DRS communication through a firewall, both Port `135` and the dynamic range must be open.
   It's matter of research if a static range of ports can be configured for DRS and other RPC-dependent services.
 
-## Terminology:
+## Terminology of the AD-Connector:
 
 * `move` means: the first RDN stayed the same, but the DN changed.
+  In UDM a `move` (like LDAP `modrdn`) can theoreticaly also entail an RDN change (i.e. "rename").
 * `modify` *can* mean the first RDN changed *and* the object was moved to another position.
+  That's different in UDM, where a UDM `modify` can only "rename" the object (i.e. change the `RDN`),
+  but not do a UDM `move` to a different position in the LDAP tree.
 * In the case of users it can be that there is a `modify` in AD including a CN change which changes the DN,
   while the DN remains the same in UDM (in case the `uid` / `sAMAccountName` did not change.
+  That means the semantics of a "rename" like operation in AD and UDM may differ.
 
 ## Developer Information
 
