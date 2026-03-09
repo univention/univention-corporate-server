@@ -13,4 +13,5 @@ System administration
 
    kernel
    boot-manager
+   network-configuration
    proxy
