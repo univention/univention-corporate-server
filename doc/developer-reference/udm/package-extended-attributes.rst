@@ -615,6 +615,34 @@ inheritance.
 
       This method is called after the object was modified in LDAP.
 
+      .. note::
+
+         * An UDM ``modify`` operation can entail changing the LDAP ``RDN`` of an object ("rename"),
+           but not a change in position. The latter would be a ``move`` operation.
+
+         * When container like objects (``container/cn`` and ``container/ou``) are renamed,
+           UDM creates the new container and then calls a ``move`` operation for all child
+           and objects, regardless of depths.
+
+         * As a corollary, when a ``hook_ldap_post_modify`` is used, there is a high chance
+           that similar code needs to be implemeted for the ``hook_ldap_post_move``.
+
+   .. py:method: hook_ldap_pre_move(obj)
+
+      :param univention.admin.handlers.simpleLdap obj:
+
+      :rtype: None
+
+      This method is called before the object is moved in LDAP.
+
+   .. py:method: hook_ldap_post_move(obj)
+
+      :param univention.admin.handlers.simpleLdap obj:
+
+      :rtype: None
+
+      This method is called after the object was moved in LDAP.
+
    .. py:method:: hook_ldap_pre_remove(obj)
 
       :param univention.admin.handlers.simpleLdap obj:
