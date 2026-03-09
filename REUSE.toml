@@ -10,6 +10,7 @@ path = [
   ".git-blame-ignore-revs",
   ".gitlab/issue_templates/*.md",
   ".gitlab/merge_request_templates/*.md",
+  ".opencode/**.md",
   "CODE_OF_CONDUCT.md",
   "CONTRIBUTING.md",
   "PULL_REQUEST_TEMPLATE.md",
