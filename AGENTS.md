@@ -1,6 +1,52 @@
 # Univention Corporate Server (UCS)
 
-Open-source identity management and IT infrastructure platform. Features Active Directory services (via Samba), an App Center, LDAP directory, and integrated server/cloud application management. Licensed under AGPLv3 (REUSE 3.3 compliant).
+Debian-based Linux distribution featuring the open-source identity and access management (IAM) "Nubus" and various integrated infrastructure and network services like Active Directory services (via Samba), RADIUS, Postfix, and Dovecot, and integrated server/cloud application management. Licensed under AGPLv3 (REUSE 3.3 compliant).
+
+## Product Architecture
+
+- The IAM **Nubus** is the **core domain**. It can be deployed on UCS (Debian packages) and in Kubernetes ("Nubus for Kubernetes", packaged with Helm).
+- Additional services (Samba, RADIUS, Postfix, Dovecot, and App Center applications) belong to **supporting domains**.
+- Some IAM components, although technically installed by the App Center, are part of Nubus (core domain): the Identity Provider (IdP) **Keycloak**, the authorization component **Guardian**, and the event system **Nubus Provisioning**.
+
+### App Center
+
+- Besides installing software using Debian packages, UCS can install additional software using the **App Center**.
+- The App Center installs mostly third-party applications and connectors (e.g. Nextcloud, Open-Xchange) that get automatically integrated with the IAM's authentication and user provisioning mechanisms.
+- The App Center installs software either using Debian packages from additional repositories or using Docker Compose.
+- The App Center exists only in UCS, **not** in Kubernetes.
+
+### Event Systems
+
+UCS has two event systems for reacting to changes in the LDAP database:
+
+- **Listener/Notifier**: An OpenLDAP overlay notifies a network service (the Notifier) about LDAP changes. The Listener service connects to the Notifier, retrieves changed objects, and executes Python-based Listener Modules. Also used for LDAP replication between UCS nodes. See [management/AGENTS.md](management/AGENTS.md) for details.
+- **Nubus Provisioning**: A generic networked event system whose clients are called *Consumers*. Although it can enqueue all kinds of events, it is primarily used — like the Listener/Notifier system — to react to changes in the LDAP database. The source code is in a separate Git repository.
+
+### Data Model and Persistence (UDM)
+
+- UCS's primary database is an **LDAP directory**.
+- The data model is implemented in the **UCS Directory Manager (UDM)**, a persistence layer between applications and LDAP that implements the IAM business logic.
+- UDM has three interfaces: a **Python API**, a **CLI**, and a **REST API**. For details, see [management/univention-directory-manager-modules/AGENTS.md](management/univention-directory-manager-modules/AGENTS.md).
+- Applications that interact with data in the LDAP directory **MUST** use UDM to change (create, update, delete) it and **SHOULD** use UDM to search and read it.
+- For performance reasons, or because UDM objects don't expose all details of their corresponding LDAP objects, applications sometimes access LDAP directly.
+  - This is a **layer violation** and generally undesirable. Data representation in LDAP and UDM can differ — the encoding of UDM data in LDAP is an internal technical detail.
+  - Reading data from LDAP directly can be necessary in some circumstances. When you see this, **warn** developers that they are committing a layer violation.
+  - Writing data directly to LDAP is strictly forbidden. Clients **MUST** use UDM for that. When you see this, treat it as an **error**.
+- Changes to LDAP trigger two event systems — see the [Event Systems](#event-systems) section.
+
+### Authentication
+
+- Authentication is done using **Keycloak**. Keycloak imports users and groups from LDAP.
+
+### Authorization
+
+- Authorization is mostly implemented by each application individually (the legacy approach).
+- UCS services are being migrated to a networked component called **Guardian**, which implements attribute-based access control (ABAC). Its source code is in a separate Git repository.
+
+### User Interfaces
+
+- Traditional UIs for UCS are web UIs implemented using the **UCS Management Console (UMC)** framework. For details, see [management/univention-management-console/AGENTS.md](management/univention-management-console/AGENTS.md).
+- Newer UIs are web UIs running in Docker containers, with their source code in separate Git repositories.
 
 ## Repository Layout
 

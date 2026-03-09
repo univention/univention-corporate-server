@@ -2,6 +2,38 @@
 
 UCS management layer: web console (UMC), directory manager (UDM), LDAP server/client/listener/notifier/replication, portal, App Center, domain join, self-service, and related UMC modules. All subdirectories are Debian source packages (contain `debian/` directories).
 
+## Listener/Notifier System
+
+The Listener/Notifier system is one of UCS's two event systems for reacting to LDAP changes (see also the root [AGENTS.md](../AGENTS.md) for an overview of both).
+
+### Notifier
+
+- The **Notifier** has two parts: an OpenLDAP plugin (called an "overlay" in OpenLDAP terminology) and a network service.
+- The OpenLDAP overlay informs the Notifier service about changes in the LDAP database.
+
+### Listener
+
+- The **Listener** is a service that connects to the Notifier service. It receives a list of LDAP objects that have changed since its last query.
+- For each changed object, the Listener retrieves it from LDAP, compares it to its previous state, and executes a list of **Listener Modules**.
+- To compare old and new states, the Listener keeps a copy of each object in a separate database.
+- All Listener Modules are run sequentially (one after another) for each change.
+- Listener Modules are run when the Listener/Notifier system of a host is triggered by a change to the local OpenLDAP instance.
+
+### Listener Modules
+
+- Listener Modules are written in Python. They receive `dict` objects representing the previous and new states of the changed LDAP object.
+- A common use case is synchronizing a user's state from LDAP to an external system with its own user database.
+- Two Python APIs exist for writing Listener Modules:
+  - **Functional API** (original): the Python module at `management/univention-directory-listener/python/listener.py`.
+  - **Object-oriented API** (newer): the `univention.listener` package at `management/univention-directory-listener/python/univention/listener`.
+
+### LDAP Replication
+
+- Each UCS host runs a separate OpenLDAP instance. Clients write to the OpenLDAP instance on the UCS **Primary** node.
+- Data is replicated from the Primary to **Backup** and **Replica** nodes using Listener/Notifier and Syncrepl. All databases are *eventually consistent*.
+- Replication of the main LDAP database is implemented as a Listener Module in the `univention-directory-notifier` package.
+- Additional LDAP databases for the "blocklist" and "trashbin" features are replicated using OpenLDAP's native **Syncrepl** mechanism.
+
 ## Packages
 
 - [univention-admingrp-user-passwordreset/AGENTS.md](univention-admingrp-user-passwordreset/AGENTS.md) -- LDAP ACLs granting password reset ability to a helpdesk user group.
