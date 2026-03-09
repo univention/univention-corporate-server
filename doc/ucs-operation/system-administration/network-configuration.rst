@@ -9,10 +9,10 @@ Network configuration
 The configuration of network interfaces can be adjusted with the UMC module
 :guilabel:`Network settings`.
 
-The configuration is saved in |UCSUCR| variables, which can also be set
+The configuration is saved in :term:`UCR variables <UCR variable>`, which can also be set
 directly. These variables are listed in the individual sections.
 
-.. _network-settings:
+.. _system-administration-network-figure:
 
 .. figure:: /images/computers_network.*
    :alt: Configuring the network settings
@@ -28,10 +28,10 @@ Network interfaces can be configured for IPv4 and/or IPv6. IPv4 addresses have a
 ``192.0.2.10``), whereas IPv6 addresses are four times as long and typically
 written in hexadecimal form (e.g., ``2001:0DB8:FE29:DE27:0000:0000:0000:0000``).
 
-.. _computers-ipv4:
+.. _system-administration-network-ipv4:
 
-Configuration of IPv4 addresses
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure IPv4 addresses
+------------------------
 
 If the *Dynamic (DHCP)* option was not chosen, the IP address to be bound to the
 network card must be entered. In addition to the *IPv4 address* the *net mask*
@@ -62,10 +62,10 @@ UCR variables:
 Besides the physical interfaces, additional virtual interfaces can also be
 defined in the form :envvar:`interfaces/ethX_Y/setting`.
 
-.. _computers-ipv6:
+.. _system-administration-network-ipv6:
 
-Configuration of IPv6 addresses
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure IPv6 addresses
+------------------------
 
 The IPv6 address can be configured in two ways: Stateless address
 autoconfiguration (SLAAC) is employed in the :guilabel:`Autoconfiguration
@@ -99,10 +99,10 @@ UCR variables:
 
 * :envvar:`ipv6/gateway`
 
-.. _computers-configuring-the-name-servers:
+.. _system-administration-network-name-servers:
 
-Configuring the name servers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure name servers
+----------------------
 
 There are two types of DNS servers:
 
@@ -118,8 +118,8 @@ Domain DNS Server
    server is automatically requested. The DNS data are saved in the LDAP
    directory service, i.e., all domain DNS servers deliver identical data.
 
-A local DNS server is set up on the |UCSPRIMARYDN|, |UCSBACKUPDN| and
-|UCSREPLICADN| system roles. Here, you can configure which server should be
+A local DNS server is set up on the :term:`Primary Directory Node`, :term:`Backup Directory Node` and
+:term:`Replica Directory Node` system roles. Here, you can configure which server should be
 primarily used for the name resolution by entering the *Domain DNS
 Server*.
 
@@ -128,10 +128,10 @@ UCR variables:
 * :envvar:`nameserver1` to :envvar:`nameserver3`
 * :envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`,
 
-.. _computers-network-complex:
+.. _system-administration-network-complex:
 
 Bridges, bonding, VLANs
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 UCS supports advanced network configurations using bridging, bonding and virtual
 networks (VLAN):
@@ -145,10 +145,10 @@ networks (VLAN):
 * VLANs can be used to separate network traffic logically while using only one
   (or more) physical network interface.
 
-.. _computers-network-complex-bridge:
+.. _system-administration-network-bridge:
 
 Configure bridging
-~~~~~~~~~~~~~~~~~~
+------------------
 
 .. index::
    single: network; bridge
@@ -191,10 +191,10 @@ bridge an IP address. This interface can then also be used as a network
 interface for the virtualization host. The options are the same as described in
 :ref:`computers-ipv4` and :ref:`computers-ipv6`.
 
-.. _computers-network-complex-bonding:
+.. _system-administration-network-bonding:
 
 Configure bonding
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. index::
    single: network; bonding
@@ -231,7 +231,7 @@ The *Mode* configures the distribution of the network cards within the bonding:
 
 In addition, there are also a number of other bonding methods. These are
 generally only relevant for special cases and are described under `Linux
-Ethernet Bonding Driver HOWTO <kernel-bonding_>`_.
+Ethernet Bonding Driver HOWTO <https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_.
 
 The Media Independent Interface (MII) of the network cards is used to detect
 failed network adapters. The *MII link monitoring frequency* setting
@@ -240,7 +240,7 @@ specifies the testing interval in milliseconds.
 All other bonding parameters can be configured under *Additional bonding
 options*. This is only necessary in exceptional cases; an overview of the
 possible settings can be found under `Linux Ethernet Bonding Driver HOWTO
-<kernel-bonding_>`_.
+<https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_.
 
 Clicking on :guilabel:`Next` allows to optionally assign the bonding interface
 an IP address. If one of the existing network cards which form part of the
@@ -248,10 +248,10 @@ bonding interface has already been assigned an IP address, this configuration
 will be removed. The options are the same as described in :ref:`computers-ipv4`
 and :ref:`computers-ipv6`.
 
-.. _computers-network-complex-vlan:
+.. _system-administration-network-vlan:
 
 Configure VLAN
-~~~~~~~~~~~~~~
+--------------
 
 .. index::
    pair: network; vlan
