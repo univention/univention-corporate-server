@@ -1,0 +1,18 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: python-ldap
+fix: 3.4.5-1
+desc: |
+ This update addresses the following issues:
+ * Enforce `str` input in `ldap.filter.escape_filter_chars` with
+   `escape_mode=1`; ensure proper escaping. CVSS score 6.5
+   (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N) (CVE-2025-61911).
+ * Correct NUL escaping in `ldap.dn.escape_dn_chars` to `\00` per RFC 4514.
+   CVSS score 5.3 (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L)
+   (CVE-2025-61912).
+bug: [59106]
+cve:
+ - CVE-2025-61911
+ - CVE-2025-61912
