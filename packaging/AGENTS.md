@@ -1,6 +1,6 @@
 # packaging/
 
-Build and packaging tools, linters, localization utilities, pytest plugins, and example/template packages for UCS Debian package development.
+Build and packaging tools, linters, debhelper extensions, localization utilities, pytest plugins, and example/template packages for UCS Debian package development.
 
 All subdirectories are Debian source packages (each contains a `debian/` directory):
 

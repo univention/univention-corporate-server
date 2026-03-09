@@ -1,6 +1,6 @@
 # services/
 
-Infrastructure services for UCS. Each subdirectory is a Debian source package that integrates a third-party service (DNS, DHCP, Samba, etc.) into the UCS platform via UCR templates, join scripts, and listener modules.
+Infrastructure services for UCS. Each subdirectory is a Debian source package that integrates a third-party service (DNS, DHCP, LDAP connectors (AD and Samba4), Samba, RADIUS, Apache, NFS, databases, printing etc.) into the UCS platform via UCR templates, join scripts, and listener modules.
 
 ## Packages
 

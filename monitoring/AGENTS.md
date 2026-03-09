@@ -1,6 +1,6 @@
 # Monitoring
 
-Nagios-based monitoring plugins and client packages for UCS. All subdirectories are Debian source packages.
+Nagios-based monitoring plugins and client packages for checking RAID, SMART, Samba, CUPS, and connector status in UCS. All subdirectories are Debian source packages.
 
 ## Packages
 

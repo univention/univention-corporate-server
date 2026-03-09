@@ -1,6 +1,8 @@
 # test/ucs-test/
 
-Debian source package. The main UCS test framework and test suite collection. Builds ~40 binary packages, each covering a specific UCS subsystem.
+Debian source package. The main UCS test framework and test suite collection.
+Provides the `ucs-test` runner, shared Python/shell libraries (`univention.testing.*`), and dozens of categorized test packages.
+Builds ~40 binary packages, each covering a specific UCS subsystem.
 
 ## Key binary packages
 

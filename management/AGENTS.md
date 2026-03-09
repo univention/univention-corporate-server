@@ -1,6 +1,6 @@
 # Management
 
-UCS management layer: web console (UMC), directory manager (UDM), LDAP server/client, portal, App Center, domain join, self-service, and related UMC modules. All subdirectories are Debian source packages (contain `debian/` directories).
+UCS management layer: web console (UMC), directory manager (UDM), LDAP server/client/listener/notifier/replication, portal, App Center, domain join, self-service, and related UMC modules. All subdirectories are Debian source packages (contain `debian/` directories).
 
 ## Packages
 

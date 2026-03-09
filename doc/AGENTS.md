@@ -1,6 +1,9 @@
 # Documentation (`doc/`)
 
 Product documentation for Univention Corporate Server. All subdirectories are Sphinx RST documentation projects (not Debian packages), except `errata/` and `extended-docs/` which contain structured data.
+English is the default language; German translations use PO files. Published at https://docs.software-univention.de/
+
+Errata advisories (YAML files) are stored under `doc/errata/`.
 
 ## Build
 

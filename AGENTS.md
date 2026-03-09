@@ -20,6 +20,20 @@ Each top-level directory has its own `AGENTS.md` with further details:
 
 ## Conventions
 
+### UCS versions
+
+- Format: `<MAJOR>.<MINOR>-<PATCH>` (e.g., `4.4-10`, `5.2-5`).
+- Git branches matching this format exactly are **release branches** (e.g., `4.4-10`, `5.2-5`). All other branches are NOT release branches, even those starting with `release-`.
+- The **default branch** is the newest published UCS version (NOT `main` or `master`).
+
+### Package updates (errata)
+
+- Package updates for a UCS version are called **errata updates**.
+- They have a monotonically growing number starting at `1` with the release of the major version.
+- Every package update requires an **advisory**.
+- Advisories for planned updates: `doc/errata/staging/`
+- Advisories for released updates: `doc/errata/published/`
+
 ### Package Structure
 
 Directories containing a `debian/` subdirectory are Debian source packages. Each builds one or more `.deb` packages. The `debian/control` file describes the package.
@@ -30,6 +44,47 @@ Directories containing a `debian/` subdirectory are Debian source packages. Each
 - Style: PEP 8, max line length ~120 (not strictly enforced by ruff, which uses 180)
 - Linters/formatters: ruff, isort, autopep8, flake8 (configured in `pyproject.toml`)
 - Run `make lint` to check modified files, `make format` to auto-fix.
+
+#### Python package index
+
+The Python package tree is fractured across this repository to fit Debian packaging needs. When looking for a `univention.*` module, search the entire repository.
+
+##### Installable Python distributions (have setup.py / setup.cfg)
+
+| Distribution name | Directory | Key Python modules |
+|---|---|---|
+| Univention Configuration Registry | `base/univention-config-registry` | `univention.config_registry` |
+| univention-debug-python | `base/univention-debug-python` | `univention.debug` (Python interface) |
+| univention-ipcalc | `base/univention-ipcalc` | `univention.ipcalc` |
+| univention-licence-python | `base/univention-licence-python` | `univention.license` |
+| univention-python | `base/univention-python` | `univention.uldap`, `univention.config_registry` helpers |
+| univention-python-heimdal | `base/univention-python-heimdal` | `heimdal` (C extension) |
+| Univention Updater | `base/univention-updater` | `univention.updater` |
+| univention-appcenter | `management/univention-appcenter` | `univention.appcenter` |
+| univention-directory-listener | `management/univention-directory-listener` | `univention.listener` |
+| univention-management-console | `management/univention-management-console` | `univention.management.console` |
+| univention-portal | `management/univention-portal` | `univention.portal` |
+| univention-debhelper | `packaging/univention-debhelper` | `univention.debhelper` |
+| univention-l10n | `packaging/univention-l10n` | `univention.l10n` |
+| univention-unittests | `packaging/univention-unittests` | Pytest plugins for UCS |
+| ucslint | `packaging/ucslint` | `univention.ucslint` |
+| univention-radius | `services/univention-radius` | `univention.radius` |
+
+##### Python modules installed via Debian packaging only (no setup.py)
+
+| Python module | Directory |
+|---|---|
+| `univention.admin`, `univention.udm`, `univention.admincli` | `management/univention-directory-manager-modules` |
+| `univention.admin.rest` | `management/univention-directory-manager-rest` |
+| `univention.authorization` | `management/univention-authorization` |
+| `univention.directory.reports` | `management/univention-directory-reports` |
+| `univention.lib` | `base/univention-lib` |
+| `univention.ldap_cache` | `base/univention-group-membership-cache` |
+| `univention.connector` | `services/univention-ad-connector` |
+| `univention.s4connector` | `services/univention-s4-connector` |
+| `univention.mail` | `mail/univention-mail-dovecot` |
+| `univention.monitoring` | `monitoring/univention-monitoring-client` |
+| `univention.testing` | `test/ucs-test` |
 
 ### Pre-commit
 
