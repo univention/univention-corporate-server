@@ -24,7 +24,7 @@ The Python package tree is fractured across this repository to fit Debian packag
 | univention-portal | `management/univention-portal` | `univention.portal` |
 | univention-debhelper | `packaging/univention-debhelper` | `univention.debhelper` |
 | univention-l10n | `packaging/univention-l10n` | `univention.l10n` |
-| univention-unittests | `packaging/univention-unittests` | Pytest plugins for UCS |
+| univention-unittests | `packaging/univention-unittests` | `univentionunittests` |
 | ucslint | `packaging/ucslint` | `univention.ucslint` |
 | univention-radius | `services/univention-radius` | `univention.radius` |
 
@@ -43,3 +43,4 @@ The Python package tree is fractured across this repository to fit Debian packag
 | `univention.mail` | `mail/univention-mail-dovecot` |
 | `univention.monitoring` | `monitoring/univention-monitoring-client` |
 | `univention.testing` | `test/ucs-test` |
+| `listener` | `management/univention-directory-listener` |

@@ -93,7 +93,7 @@ Directories containing a `debian/` subdirectory are Debian source packages. Each
 
 #### Python package index
 
-The Python package tree is fractured across this repository to fit Debian packaging needs. When looking for a `univention.*` module, search the entire repository. Use the `python-packages` skill for the full mapping of modules to directories.
+The Python package tree is fractured across this repository to fit Debian packaging needs. When looking for a `univention.*`, `listener`, or `heimdal` module, use the `python-packages` skill for the full mapping of modules to directories.
 
 ### Pre-commit
 
