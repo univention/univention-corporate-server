@@ -18,9 +18,6 @@ located at :menuselection:`System --> Network settings` in the *Management UI*.
 
    Configure network configuration in the *Network settings* module
 
-* **Operation procedures** covers verifying your configuration,
-  troubleshooting problems, and making changes after initial setup.
-
 The management module lists all available network cards in *IPv4 network devices*
 and *IPv6 network devices*.
 It displays only network interfaces in the :samp:`eth{X}` scheme.
@@ -67,4 +64,3 @@ Virtual networks (VLANs)
 
    basic
    advanced
-   operational
