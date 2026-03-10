@@ -403,7 +403,8 @@ set_udm_properties_for_kelvin_api_tests () {
         "mailAddress"
     ],
     "school": [
-        "description"
+        "description",
+        "userPath"
     ]
 }
 EOF
