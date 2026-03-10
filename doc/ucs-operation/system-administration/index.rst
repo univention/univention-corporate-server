@@ -13,5 +13,5 @@ System administration
 
    kernel
    boot-manager
-   network-configuration
+   network/index
    proxy
