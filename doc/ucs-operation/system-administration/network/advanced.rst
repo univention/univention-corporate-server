@@ -1,149 +1,17 @@
 .. SPDX-FileCopyrightText: 2021 - 2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _system-administration-network:
+.. _system-administration-network-advanced:
 
-Network configuration
-=====================
+Advanced network configurations
+-------------------------------
 
-The configuration of network interfaces can be adjusted with the UMC module
-:guilabel:`Network settings`.
-
-The configuration is saved in :term:`UCR variables <UCR variable>`, which can also be set
-directly. These variables are listed in the individual sections.
-
-.. _system-administration-network-figure:
-
-.. figure:: /images/computers_network.*
-   :alt: Configuring the network settings
-
-   Configuring the network settings
-
-All the network cards available in the system are listed under *IPv4 network
-devices* and *IPv6 network devices* (only network interfaces in the
-:samp:`eth{X}` scheme are shown).
-
-Network interfaces can be configured for IPv4 and/or IPv6. IPv4 addresses have a
-32-bit length and are generally written in four blocks in decimal form (e.g.,
-``192.0.2.10``), whereas IPv6 addresses are four times as long and typically
-written in hexadecimal form (e.g., ``2001:0DB8:FE29:DE27:0000:0000:0000:0000``).
-
-.. _system-administration-network-ipv4:
-
-Configure IPv4 addresses
-------------------------
-
-If the *Dynamic (DHCP)* option was not chosen, the IP address to be bound to the
-network card must be entered. In addition to the *IPv4 address* the *net mask*
-must also be entered. *DHCP query* is used to request an address from a DHCP
-server. Unless the *Dynamic (DHCP)* option is activated, the values received
-from the DHCP request are configured statically.
-
-Server systems can also be configured via DHCP. This is necessary for some cloud
-providers, for example. If the assignment of an IP address for a server fails, a
-random link local address (:samp:`169.254.{x}.{y}`) is configured as a
-replacement.
-
-For UCS server systems the address received via DHCP is also written to the LDAP
-directory.
-
-.. note::
-
-   Not all services (e.g., DNS servers) are suitable for use on a DHCP-based
-   server.
-
-UCR variables:
-
-* :envvar:`interfaces/ethX/address`
-* :envvar:`interfaces/ethX/netmask`
-* :envvar:`interfaces/ethX/type`
-* :envvar:`gateway`
-
-Besides the physical interfaces, additional virtual interfaces can also be
-defined in the form :envvar:`interfaces/ethX_Y/setting`.
-
-.. _system-administration-network-ipv6:
-
-Configure IPv6 addresses
-------------------------
-
-The IPv6 address can be configured in two ways: Stateless address
-autoconfiguration (SLAAC) is employed in the :guilabel:`Autoconfiguration
-(SLAAC)` configuration. In this, the IP address is assigned from the routers of
-the local network segment. Alternatively, the address can also be configured
-statically by entering the *IPv6 address* and *IPv6 prefix*.
-
-In contrast to DHCP, in SLAAC there is no assignment of additional data such as
-the DNS server to be used. There is an additional protocol for this (DHCPv6),
-which, however, is not employed in the dynamic assignment. One network card can
-be used for different IPv6 addresses. The *Identifier* is a unique name for
-individual addresses. The main address always uses the identifier ``default``;
-functional identifiers such as ``Interface mail server`` can be assigned for all
-other addresses.
-
-UCR variables:
-
-* :envvar:`interfaces/ethX/ipv6/address`
-* :envvar:`interfaces/ethX/ipv6/prefix`,
-* :envvar:`interfaces/ethX/ipv6/acceptRA` activates SLAAC
-
-Further network settings can be performed under :guilabel:`Global network
-settings`.
-
-The IP addresses for the standard gateways in the subnetwork can be entered
-under *Gateway (IPv4)* and *Gateway (IPv6)*. It is not obligatory to enter a
-gateway for IPv6, but recommended. A gateway configured here has preference over
-router advertisements, which might otherwise be able to change the route.
-
-UCR variables:
-
-* :envvar:`ipv6/gateway`
-
-.. _system-administration-network-name-servers:
-
-Configure name servers
-----------------------
-
-There are two types of DNS servers:
-
-External DNS Server
-   An *External DNS Server* is employed for the resolution of host names and
-   addresses outside of the UCS domain, e.g., ``univention.de``. This is
-   typically a name server operated by the internet provider.
-
-Domain DNS Server
-   A *Domain DNS Server* is a local name server in the UCS domain. This name
-   server usually administrates host names and IP addresses belonging to the UCS
-   domain. If an address is not found in the local inventory, an external DNS
-   server is automatically requested. The DNS data are saved in the LDAP
-   directory service, i.e., all domain DNS servers deliver identical data.
-
-A local DNS server is set up on the :term:`Primary Directory Node`, :term:`Backup Directory Node` and
-:term:`Replica Directory Node` system roles. Here, you can configure which server should be
-primarily used for the name resolution by entering the *Domain DNS
-Server*.
-
-UCR variables:
-
-* :envvar:`nameserver1` to :envvar:`nameserver3`
-* :envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`,
-
-.. _system-administration-network-complex:
-
-Bridges, bonding, VLANs
------------------------
-
-UCS supports advanced network configurations using bridging, bonding and virtual
-networks (VLAN):
-
-* Bridging is often used with virtualization to connect multiple virtual
-  machines running on a host through one shared physical network interface.
-
-* Bonding allows failover redundancy for hosts with multiple physical network
-  interfaces to the same network.
-
-* VLANs can be used to separate network traffic logically while using only one
-  (or more) physical network interface.
+Advanced network configurations address specialized scenarios
+where standard single-interface setups don't meet your needs.
+You can combine multiple network interfaces for redundancy (bonding),
+connect virtual machines to physical networks (bridging),
+or logically separate network traffic (VLAN).
+These techniques require careful planning and may require switch configuration.
 
 .. _system-administration-network-bridge:
 
@@ -189,7 +57,7 @@ the possible settings can be found on the manual page
 Clicking on :guilabel:`Next` offers the possibility of optionally assigning the
 bridge an IP address. This interface can then also be used as a network
 interface for the virtualization host. The options are the same as described in
-:ref:`computers-ipv4` and :ref:`computers-ipv6`.
+:ref:`system-administration-network-ipv4` and :ref:`system-administration-network-ipv6`.
 
 .. _system-administration-network-bonding:
 
@@ -245,8 +113,8 @@ possible settings can be found under `Linux Ethernet Bonding Driver HOWTO
 Clicking on :guilabel:`Next` allows to optionally assign the bonding interface
 an IP address. If one of the existing network cards which form part of the
 bonding interface has already been assigned an IP address, this configuration
-will be removed. The options are the same as described in :ref:`computers-ipv4`
-and :ref:`computers-ipv6`.
+will be removed. The options are the same as described in :ref:`system-administration-network-ipv4`
+and :ref:`system-administration-network-ipv6`.
 
 .. _system-administration-network-vlan:
 
@@ -295,6 +163,6 @@ specified with *Parent interface*. The *VLAN ID* is the unique identifier of the
 VLAN. Valid values are from 1 to 4095. Then :guilabel:`Next` must be clicked.
 
 Clicking on :guilabel:`Next` allows to optionally assign the VLAN interface an
-IP address. The options are the same as described in :ref:`computers-ipv4` and
-:ref:`computers-ipv6`. When assigning an IP address, ensure that the address
+IP address. The options are the same as described in :ref:`system-administration-network-ipv4` and
+:ref:`system-administration-network-ipv6`. When assigning an IP address, ensure that the address
 matches the assigned VLAN address range.
