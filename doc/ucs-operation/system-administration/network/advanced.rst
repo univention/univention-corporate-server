@@ -6,163 +6,188 @@
 Advanced network configurations
 -------------------------------
 
-Advanced network configurations address specialized scenarios
-where standard single-interface setups don't meet your needs.
-You can combine multiple network interfaces for redundancy (bonding),
-connect virtual machines to physical networks (bridging),
-or logically separate network traffic (VLAN).
-These techniques require careful planning and may require switch configuration.
+Advanced network configurations address specialized network scenarios
+beyond basic single-interface setups.
+They require you to plan carefully
+and configure your network switches,
+but provide benefits:
+
+* Performance improvements through load distribution and bonding.
+* Redundancy and failover protection for critical systems.
+* Network isolation and security through VLANs.
+* Virtualization support through bridging.
+
+Three main techniques are available,
+and you must configure your network switches to support each:
+
+Bridging
+   Connect virtual machines to physical networks,
+   see :ref:`system-administration-network-bridge`.
+
+Bonding
+   Combine multiple network interfaces for redundancy,
+   see :ref:`system-administration-network-bonding`.
+
+VLAN
+   Logically separate network traffic,
+   :ref:`system-administration-network-vlan`.
 
 .. _system-administration-network-bridge:
 
 Configure bridging
-------------------
+~~~~~~~~~~~~~~~~~~
 
-.. index::
-   single: network; bridge
-   single: network; switch
-   pair: bridge; network
+*Bridging* allows multiple systems to share one physical network card.
+Instead of needing one network card per virtual machine plus one for the host,
+you can run all systems through a single uplink.
+The *bridge port* is the hardware network adapter that carries this traffic.
 
-The most common application scenario for *bridging* is the shared use of a
-physical network card by one or more virtual machines. Instead of one network
-card for each virtual machine and the virtualization server itself, all systems
-are connected via a shared uplink. A bridge can be compared with a switch
-implemented in software which is used to connect the individual hosts together.
-The hardware network adapter used is called a *bridge port*.
+To configure a bridge in the *Network settings* management module,
+click :guilabel:`Add`
+and select ``Bridge`` as the *Interface type*.
+Enter a name for the new bridge interface in the *Name of new bridge interface* field.
+Click :guilabel:`Next`.
+You see the following fields:
 
-In order to configure a bridge, ``Bridge`` must be selected as the *Interface
-type* under :guilabel:`Add`. The *Name of new bridge interface* can be selected
-at will. Then click on :guilabel:`Next`.
+Bridge ports
+   In *Bridge ports*, select the physical network card to act as the uplink.
+   If the bridge connects two Ethernet networks,
+   enable the Spanning Tree Protocol (STP) to avoid network loops.
+   If you're connecting only virtual machines through a single network card,
+   you don't have a risk of a network loop.
 
-The physical network card intended to act as the uplink can be selected under
-*Bridge ports*. In the typical scenario of connecting virtual machines
-via just one network card, there is no risk of a network loop. If the bridge is
-used to connect two Ethernet networks, the spanning tree protocol (STP) is
-employed to avoid network loops. The Linux kernel only implements STP, not the
-Rapid STP or Multiple STP versions.
+   .. note::
 
-The *Forwarding delay* setting configures the waiting time in seconds during
-which information is collected about the network topology when a connection is
-being made via STP. If the bridge is used for connecting virtual machines to one
-physical network card, STP should be disabled by setting the value to ``0``.
-Otherwise problems may occur when using DHCP, as the packets sent during the
-waiting time are not forwarded.
+      The Linux kernel supports only STP, not Rapid STP or Multiple STP.
 
-The *Additional bridge options* input field can be used to configure arbitrary
-bridge parameters. This is only necessary in exceptional cases; an overview of
-the possible settings can be found on the manual page
-`bridge-utils-interfaces(5)
-<https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-interfaces.5.en.html>`_.
+      Make sure your network switch and virtualization host support bridge operation.
+      Your network switch's configuration might interfere with Linux bridge STP.
 
-Clicking on :guilabel:`Next` offers the possibility of optionally assigning the
-bridge an IP address. This interface can then also be used as a network
-interface for the virtualization host. The options are the same as described in
-:ref:`system-administration-network-ipv4` and :ref:`system-administration-network-ipv6`.
+Forwarding delay
+   The *Forwarding delay* setting determines how long STP waits before activating the bridge.
+
+   When bridging virtual machines through a single network card,
+   set this value to ``0`` to deactivate STP.
+   If STP is active, DHCP may fail because the bridge delays packet forwarding while STP converges.
+
+Additional bridge options
+   Use *Additional bridge options* to configure optional bridge parameters.
+   You only need this for specialized network configurations.
+   For a complete list of available settings,
+   see the `bridge-utils-interfaces(5) manual page <https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-interfaces.5.en.html>`_.
+
+If you want to assign an IP address to the bridge, click :guilabel:`Next`.
+Do this if the virtualization host needs network access through the bridge.
+For IP configuration options, see :ref:`system-administration-network-ipv4` and :ref:`system-administration-network-ipv6`.
 
 .. _system-administration-network-bonding:
 
 Configure bonding
------------------
+~~~~~~~~~~~~~~~~~
 
-.. index::
-   single: network; bonding
-   single: network; link aggregation
-   pair: bonding; network
-   single: network; etherchannel
-   single: network; teaming
-   single: network; trunking
+Use *bonding* to combine two or more network cards for:
 
+* Increased performance through load distribution.
+* Failover redundancy if one card fails.
 
-*Bonding* can be used to bundle two (or more) physical network cards in order to
-increase the performance or improve redundancy in failover scenarios.
+To configure bonding in the *Network settings* management module,
+click :guilabel:`Add`
+and select ``Bonding`` as the *Interface type*.
+Enter a name for the bonding interface in the *Name of the bonding interface* field.
+Click :guilabel:`Next`.
+You see the following fields:
 
-In order to configure a bonding, ``Bonding`` must be selected as the *Interface
-type* under :guilabel:`Add`. The *Name of the bonding interface* can be selected
-at will. Then click on :guilabel:`Next`.
+.. _system-administration-network-bonding-slaves:
 
-The network cards which form part of the bonding interface are selected under
-*Bond slaves*. The network cards which should be given preference in failover
-scenarios (see below) can be selected via *Bond primary*.
+Bond slaves
+   In *Bond slaves*, select the network cards that are part of the bonding interface.
 
-The *Mode* configures the distribution of the network cards within the bonding:
+.. _system-administration-network-bonding-primary:
 
-* ``balance-rr (0)`` distributes the packets equally over the available network
-  interfaces within the bonding one after the other. This increases performance
-  and improves redundancy. In order to use this mode, the network switches used
-  must support *link aggregation*.
+Bond primary
+   In *Bond primary*, select the network card to prioritize during failover.
+   The system switches to a backup card if the primary card fails.
 
-* When ``active-backup (1)`` is used, only one network card is active for each
-  bonding interface (by default this is the network interface configured in
-  *Bond primary*). If the primary network card fails, this is detected by the
-  Linux kernel, which switches to another card in the bonding. This version
-  increases redundancy. It can be used with every network switch.
+Mode
+   The *Mode* setting determines how bonded network cards distribute traffic.
+   Choose a mode based on your redundancy requirements
+   and network switch capabilities:
 
-In addition, there are also a number of other bonding methods. These are
-generally only relevant for special cases and are described under `Linux
-Ethernet Bonding Driver HOWTO <https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_.
+   * ``balance-rr (0)`` distributes packets equally across all bonded network cards in round-robin fashion.
+     This increases performance and provides redundancy.
+     Network switches must support link aggregation.
 
-The Media Independent Interface (MII) of the network cards is used to detect
-failed network adapters. The *MII link monitoring frequency* setting
-specifies the testing interval in milliseconds.
+   * ``active-backup (1)`` keeps only one network card active at a time.
+     By default, this is the network card you selected in :ref:`system-administration-network-bonding-primary`.
+     If the active card fails, the Linux kernel automatically switches to another card.
+     This mode provides redundancy and works with any network switch.
 
-All other bonding parameters can be configured under *Additional bonding
-options*. This is only necessary in exceptional cases; an overview of the
-possible settings can be found under `Linux Ethernet Bonding Driver HOWTO
-<https://www.kernel.org/doc/Documentation/networking/bonding.txt>`_.
+   For other bonding modes,
+   see :external+linux-kernel-docs:doc:`networking/bonding`.
 
-Clicking on :guilabel:`Next` allows to optionally assign the bonding interface
-an IP address. If one of the existing network cards which form part of the
-bonding interface has already been assigned an IP address, this configuration
-will be removed. The options are the same as described in :ref:`system-administration-network-ipv4`
-and :ref:`system-administration-network-ipv6`.
+MII link monitoring frequency
+   The Linux kernel checks network card status using the Media Independent Interface (MII).
+   This setting specifies the interval in milliseconds between health checks.
+
+Additional bonding options
+   You only need *Additional bonding options* in exceptional cases.
+   For an overview of the possible settings,
+   see :external+linux-kernel-docs:doc:`networking/bonding`.
+
+If you want to assign an IP address to the bonding interface,
+click :guilabel:`Next`.
+
+Creating a bond automatically removes any existing IP addresses from the network cards.
+You can assign an IP address to the bonding interface after creation.
+For configuration options, see :ref:`system-administration-network-ipv4` and :ref:`system-administration-network-ipv6`.
 
 .. _system-administration-network-vlan:
 
 Configure VLAN
---------------
+~~~~~~~~~~~~~~
 
-.. index::
-   pair: network; vlan
-   single: network; 802.1q
+Virtual local area networks (VLANs) separate network traffic logically within a single physical network.
+Each VLAN is an independent broadcast domain.
+For example, you can run both employee and guest networks on the same physical cables.
+Configure your network switches to assign devices to their respective VLANs.
+Your switches must support 802.1q VLANs.
 
-VLANs can be used to separate the network traffic in a physical network
-logically over one or more virtual subnetworks. Each of these virtual networks
-is an independent broadcast domain. This makes it e.g. possible to differentiate
-between a network for the employees and a guest network for visitors in a
-company network although they use the same physical cables. The individual end
-devices can be assigned to the VLANs via the configuration of the switches. The
-network switches must support 802.1q VLANs.
+Network connections use one of two VLAN modes.
+Choose based on how many VLANs your system needs to access:
 
-A distinction is made between two types of connections between network cards:
+Untagged (access port)
+    This mode transports packets from a single VLAN only.
+    Packets travel without a VLAN tag.
+    Use this mode when a single device connects to only one VLAN,
+    typical for user workstations.
 
-* A connection only transports packets from a specific VLAN. In this case,
-  untagged data packets are transmitted.
+Tagged (trunk port)
+    This mode transports packets from multiple VLANs.
+    Each packet carries a VLAN ID that identifies which VLAN the packet belongs to.
+    The switch uses this ID to filter and route traffic correctly.
+    During transmission, the switch adds or removes VLAN tags as packets cross VLAN boundaries.
+    Use this mode when a single system needs to access or serve multiple VLANs,
+    such as network servers and switches.
 
-  This is typically the case if only one individual end device is connected via
-  this network connection.
+In the *Network settings* management module,
+you can assign computers to one or more VLANs.
+For example, a web server can access both the employee and guest networks.
 
-* A connection transports packets from several VLANs. This is also referred to
-  as a trunk link. In this case, each packet is assigned to a VLAN using a VLAN
-  ID. During transmission between trunk links and specific VLANs, the network
-  switch takes over the task of filtering the packets by means of the VLAN IDs
-  as well as adding and removing the VLAN IDs.
+To configure a VLAN, follow these steps:
 
-  This type of connection is primarily used between switches/servers.
+#. In the *Network settings* management module,
+   click :guilabel:`Add`
+   and select ``Virtual LAN`` as the *Interface type*.
 
-  Some switches also allow the sending of packets with and without VLAN tags
-  over a shared connection, but this is not described in more detail here.
+#. In *Parent interface*,
+   select the physical network interface that hosts this VLAN.
 
-When configuring a VLAN in the UMC module :guilabel:`Network settings` it is
-possible to configure for a computer which VLANs it wants to participate in. An
-example here would be an internal company web server, which should be available
-both to the employees and any users of the guest network.
+#. In *VLAN ID*, enter the unique identifier for this VLAN.
+   The valid range is ``1`` to ``4095``.
+   Coordinate with your network administrator
+   to ensure each VLAN has a unique ID that matches your network switch configuration.
 
-In order to configure a VLAN, ``Virtual LAN`` must be selected as the *Interface
-type* under :guilabel:`Add`. The network interface for which the VLAN is
-specified with *Parent interface*. The *VLAN ID* is the unique identifier of the
-VLAN. Valid values are from 1 to 4095. Then :guilabel:`Next` must be clicked.
-
-Clicking on :guilabel:`Next` allows to optionally assign the VLAN interface an
-IP address. The options are the same as described in :ref:`system-administration-network-ipv4` and
-:ref:`system-administration-network-ipv6`. When assigning an IP address, ensure that the address
-matches the assigned VLAN address range.
+#. If you want to assign an IP address to the VLAN interface, click :guilabel:`Next`.
+   Configure the IP address using the same options available for regular network interfaces.
+   Ensure the IP address matches the VLAN address range.
+   For details, see :ref:`system-administration-network-ipv4` and :ref:`system-administration-network-ipv6`.
