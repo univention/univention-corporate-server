@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.5.2) unstable; urgency=medium
+
+  * Bug #58384: fix licence upload with delegative administration enabled
+
+ -- Florian Best <best@univention.de>  Wed, 11 Mar 2026 18:24:51 +0100
+
 univention-management-console-module-udm (12.5.1) unstable; urgency=medium
 
   * Bug #58384: fix adding univentionObjectIdentifier on license import

@@ -90,7 +90,7 @@ class LicenseImport(ldif.LDIFParser):
         """Add the license object."""
         if ldap_connection.authz.enabled:
             obj = univention.admin.modules.get('settings/license').object(None, ldap_connection, None, None, None, self.entry)
-            obj.position.setDn(ldap_connection.parendDn(self.dn))
+            obj.position.setDn(ldap_connection.parentDn(self.dn))
             obj._exists = False
             ldap_connection.authz.is_create_allowed(obj)
 
