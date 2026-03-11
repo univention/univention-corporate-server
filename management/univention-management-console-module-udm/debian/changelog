@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.5.1) unstable; urgency=medium
+
+  * Bug #58384: fix adding univentionObjectIdentifier on license import
+
+ -- Florian Best <best@univention.de>  Wed, 11 Mar 2026 15:46:56 +0100
+
 univention-management-console-module-udm (12.5.0) unstable; urgency=medium
 
   [ Marius Meschter ]

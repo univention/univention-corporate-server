@@ -72,7 +72,7 @@ class LicenseImport(ldif.LDIFParser):
 
         self.dncount += 1
 
-        entry['univentionObjectIdentifier'] = str(uuid.uuid4())
+        entry['univentionObjectIdentifier'] = [str(uuid.uuid4()).encode('ASCII')]
         if 'univentionLicenseBaseDN' in entry:
             self.base = entry['univentionLicenseBaseDN'][0].decode('UTF-8')
         else:
