@@ -13,7 +13,7 @@ Publication date of UCS |release|: 2026-03-10
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-5, the fourth patch level release for |UCSUCS| 5.2 is available.
+With |UCSUCS| 5.2-5, the fifth patch level release for |UCSUCS| 5.2 is available.
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
