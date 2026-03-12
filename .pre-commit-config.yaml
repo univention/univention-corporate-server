@@ -13,18 +13,18 @@ repos:
       - id: ucr-flake8
         additional_dependencies: ["flake8==7.2.0"]
       - id: ucr-ruff
-        additional_dependencies: ["ruff==0.14.0"]
+        additional_dependencies: ["ruff==0.15.5"]
       - id: ucr-autopep8
         additional_dependencies: ["autopep8==2.3.2"]
         stages: [ manual ]
       - id: ucr-ruff-fix
-        additional_dependencies: ["ruff==0.14.0"]
+        additional_dependencies: ["ruff==0.15.5"]
         stages: [ manual ]
       - id: ucr-ruff-format-check
-        additional_dependencies: ["ruff==0.14.0"]
+        additional_dependencies: ["ruff==0.15.5"]
         stages: [ manual ]
       - id: ucr-ruff-format
-        additional_dependencies: ["ruff==0.14.0"]
+        additional_dependencies: ["ruff==0.15.5"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -103,7 +103,7 @@ repos:
         files: ^doc/errata/staging/[^0].*[.]yaml$
         args: ["--schemafile", "doc/errata/erratum.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.0
+    rev: v0.15.5
     hooks:
       - id: ruff-check
         alias: "ruff"

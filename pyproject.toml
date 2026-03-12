@@ -88,6 +88,7 @@ ignore = [
  "RUF001",  # allow ambiguous-unicode-character-string
  "RUF039",  # unraw-re-pattern
  "RUF052",  # used-dummy-variable
+ "RUF067",  # non-empty-init-module
  "FURB103",  # write-whole-file
  "PLR2004",  # allow magic-value-comparison
  "A001",  # builtin-variable-shadowing
