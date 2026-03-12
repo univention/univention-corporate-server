@@ -435,9 +435,14 @@ define([
 				parentContainer.own(header);
 			}
 			var descriptionContainer = new ContainerWidget({});
-			domClass.add(domConstruct.create('div', {
+			var descriptionNode = domConstruct.create('div', {
 				innerHTML: purify.sanitize(this.app.longDescription)
-			}, descriptionContainer.domNode));
+			}, descriptionContainer.domNode);
+			domClass.add(descriptionNode);
+			array.forEach(descriptionNode.querySelectorAll('a'), function(link) {
+				link.setAttribute('target', '_blank');
+				link.setAttribute('rel', 'noopener noreferrer');
+			});
 			parentContainer.addChild(descriptionContainer);
 
 		},
@@ -679,8 +684,15 @@ define([
 						'default': true
 					}];
 				}
+				var sanitizedNode = domConstruct.create('div', {
+					innerHTML: purify.sanitize(readme)
+				});
+				array.forEach(sanitizedNode.querySelectorAll('a'), function(link) {
+					link.setAttribute('target', '_blank');
+					link.setAttribute('rel', 'noopener noreferrer');
+				});
 				var content = '<div style="max-height:250px; overflow:auto;">' +
-						purify.sanitize(readme) +
+						sanitizedNode.innerHTML +
 					'</div>';
 				dialog.confirm(content, buttons, title).then(function(response) {
 					if (response == 'yes') {
