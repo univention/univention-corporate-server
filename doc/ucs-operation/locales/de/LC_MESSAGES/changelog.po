@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 16:10+0000\n"
-"PO-Revision-Date: 2026-02-26 17:39+0100\n"
+"POT-Creation-Date: 2026-03-13 10:57+0000\n"
+"PO-Revision-Date: 2026-03-13 11:58+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -44,66 +44,81 @@ msgstr "Kapitel oder Thema"
 msgid "Change"
 msgstr "Änderung"
 
-#: ../../changelog.rst:27 ../../changelog.rst:31 ../../changelog.rst:35
-#: ../../changelog.rst:39 ../../changelog.rst:43 ../../changelog.rst:47
-#: ../../changelog.rst:51
+#: ../../changelog.rst:27
+msgid "Mar 2026"
+msgstr ":spelling:word:`Mär` 2026"
+
+#: ../../changelog.rst:28
+msgid ":ref:`system-administration-network`"
+msgstr ":ref:`system-administration-network`"
+
+#: ../../changelog.rst:29
+msgid ""
+"Add section about network configuration through the *Network settings* "
+"management module."
+msgstr "Abschnitt über die Netzwerkkonfiguration über das *Netzwerk-Einstellungen* Verwaltungsmodul hinzugefügt."
+
+#: ../../changelog.rst:31 ../../changelog.rst:35 ../../changelog.rst:39
+#: ../../changelog.rst:43 ../../changelog.rst:47 ../../changelog.rst:51
+#: ../../changelog.rst:55
 msgid "Feb 2026"
 msgstr ":spelling:word:`Feb` 2026"
 
-#: ../../changelog.rst:28
+#: ../../changelog.rst:32
 msgid ":ref:`lifecycle-software-monitor`"
 msgstr ":ref:`lifecycle-software-monitor`"
 
-#: ../../changelog.rst:29
+#: ../../changelog.rst:33
 msgid "Add section about *Software Monitor* management module."
 msgstr "Abschnitt über *Software-Monitor* Verwaltungsmodul hinzugefügt."
 
-#: ../../changelog.rst:32
+#: ../../changelog.rst:36
 msgid ":ref:`lifecycle-package-maintenance-policy`"
 msgstr ":ref:`lifecycle-package-maintenance-policy`"
 
-#: ../../changelog.rst:33
+#: ../../changelog.rst:37
 msgid "Add section about package maintenance policy."
 msgstr "Abschnitt über Richtlinie zur *Paketpflege* hinzugefügt."
 
-#: ../../changelog.rst:36
+#: ../../changelog.rst:40
 msgid ":ref:`system-administration-proxy`"
 msgstr ":ref:`system-administration-proxy`"
 
-#: ../../changelog.rst:37
+#: ../../changelog.rst:41
 msgid "Add section about proxy and its configuration."
 msgstr "Abschnitt über Proxy und seine Konfiguration hinzugefügt."
 
-#: ../../changelog.rst:40
+#: ../../changelog.rst:44
 msgid ":ref:`system-administration-boot-manager`"
 msgstr ":ref:`system-administration-boot-manager`"
 
-#: ../../changelog.rst:41
+#: ../../changelog.rst:45
 msgid "Add section about the boot manager."
 msgstr "Abschnitt über den Boot Manager hinzugefügt."
 
-#: ../../changelog.rst:44
+#: ../../changelog.rst:48
 msgid ":ref:`system-administration-kernel`"
 msgstr ":ref:`system-administration-kernel`"
 
-#: ../../changelog.rst:45
+#: ../../changelog.rst:49
 msgid "Add concept around Linux kernel."
 msgstr "Konzept rund um den Linux Kernel hinzugefügt."
 
-#: ../../changelog.rst:48
+#: ../../changelog.rst:52
 msgid ":ref:`iam-user-create-wizard`"
 msgstr ":ref:`iam-user-create-wizard`"
 
-#: ../../changelog.rst:49
+#: ../../changelog.rst:53
 msgid "Add configuration options for *User Create Wizard*."
 msgstr ""
 "Konfigurationsoptionen für den *Assistenten zum Erstellen von Benutzer* "
 "hinzugefügt."
 
-#: ../../changelog.rst:52
+#: ../../changelog.rst:56
 msgid ":ref:`management-interface-license`"
 msgstr ":ref:`management-interface-license`"
 
-#: ../../changelog.rst:53
+#: ../../changelog.rst:57
 msgid "Add how to activate the UCS license."
 msgstr "Aktivieren der UCS-Lizenz hinzugefügt."
+

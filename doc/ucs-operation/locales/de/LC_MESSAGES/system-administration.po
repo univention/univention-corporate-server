@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-24 16:49+0000\n"
-"PO-Revision-Date: 2026-02-24 17:50+0100\n"
+"POT-Creation-Date: 2026-03-13 10:26+0000\n"
+"PO-Revision-Date: 2026-03-13 11:37+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -450,6 +450,1002 @@ msgid ""
 msgstr ""
 "Einen C-Compiler und Build-Tools, normalerweise automatisch als "
 "Abhängigkeiten installiert."
+
+#: ../../system-administration/network/advanced.rst:7
+msgid "Advanced network configurations"
+msgstr "Erweiterte Netzwerkkonfigurationen"
+
+#: ../../system-administration/network/advanced.rst:9
+msgid ""
+"Advanced network configurations address specialized network scenarios "
+"beyond basic single-interface setups. They require you to plan carefully "
+"and configure your network switches, but provide benefits:"
+msgstr ""
+"Erweiterte Netzwerkkonfigurationen adressieren spezialisierte "
+"Netzwerkszenarien jenseits von grundlegenden Single-Interface-Setups. Sie"
+" erfordern sorgfältige Planung und Konfiguration Ihrer Netzwerk-Switches,"
+" bieten aber Vorteile:"
+
+#: ../../system-administration/network/advanced.rst:15
+msgid "Performance improvements through load distribution and bonding."
+msgstr "Leistungsverbesserungen durch Lastverteilung und Bonding."
+
+#: ../../system-administration/network/advanced.rst:16
+msgid "Redundancy and failover protection for critical systems."
+msgstr "Redundanz und Ausfallsicherung für kritische Systeme."
+
+#: ../../system-administration/network/advanced.rst:17
+msgid "Network isolation and security through VLANs."
+msgstr "Netzwerkisolation und Sicherheit durch VLANs."
+
+#: ../../system-administration/network/advanced.rst:18
+msgid "Virtualization support through bridging."
+msgstr "Virtualisierungsunterstützung durch Bridging."
+
+#: ../../system-administration/network/advanced.rst:20
+msgid ""
+"Three main techniques are available, and you must configure your network "
+"switches to support each:"
+msgstr ""
+"Es sind drei Haupttechniken verfügbar, und Sie müssen Ihre Netzwerk-"
+"Switches konfigurieren, um jede zu unterstützen:"
+
+#: ../../system-administration/network/advanced.rst:23
+#: ../../system-administration/network/index.rst:28
+#: ../../system-administration/network/index.rst:51
+msgid "Bridging"
+msgstr "Bridging"
+
+#: ../../system-administration/network/advanced.rst:24
+msgid ""
+"Connect virtual machines to physical networks, see :ref:`system-"
+"administration-network-bridge`."
+msgstr ""
+"Verbinden Sie virtuelle Maschinen mit physischen Netzwerken, siehe :ref"
+":`system-administration-network-bridge`."
+
+#: ../../system-administration/network/advanced.rst:27
+#: ../../system-administration/network/index.rst:32
+#: ../../system-administration/network/index.rst:55
+msgid "Bonding"
+msgstr "Bonding"
+
+#: ../../system-administration/network/advanced.rst:28
+msgid ""
+"Combine multiple network interfaces for redundancy, see :ref:`system-"
+"administration-network-bonding`."
+msgstr ""
+"Kombinieren Sie mehrere Netzwerkschnittstellen für Redundanz, siehe :ref"
+":`system-administration-network-bonding`."
+
+#: ../../system-administration/network/advanced.rst:31
+#: ../../system-administration/network/index.rst:59
+msgid "VLAN"
+msgstr "VLAN"
+
+#: ../../system-administration/network/advanced.rst:32
+msgid ""
+"Logically separate network traffic, :ref:`system-administration-network-"
+"vlan`."
+msgstr ""
+"Trennen Sie Netzwerkverkehr logisch, :ref:`system-administration-network-"
+"vlan`."
+
+#: ../../system-administration/network/advanced.rst:38
+msgid "Configure bridging"
+msgstr "Bridging konfigurieren"
+
+#: ../../system-administration/network/advanced.rst:40
+msgid ""
+"*Bridging* allows multiple systems to share one physical network card. "
+"Instead of needing one network card per virtual machine plus one for the "
+"host, you can run all systems through a single uplink. The *bridge port* "
+"is the hardware network adapter that carries this traffic."
+msgstr ""
+"*Bridging* ermöglicht es mehreren Systemen, sich eine physische "
+"Netzwerkkarte zu teilen. Anstatt eine Netzwerkkarte pro virtuelle "
+"Maschine plus eine für den Host zu benötigen, können Sie alle Systeme "
+"durch einen einzigen Uplink betreiben. Der *Bridge-Port* ist der "
+"Hardware-Netzwerkadapter, der diesen Datenverkehr trägt."
+
+#: ../../system-administration/network/advanced.rst:45
+msgid ""
+"To configure a bridge in the *Network settings* management module, click "
+":guilabel:`Add` and select ``Bridge`` as the *Interface type*. Enter a "
+"name for the new bridge interface in the *Name of new bridge interface* "
+"field. Click :guilabel:`Next`. You see the following fields:"
+msgstr ""
+"Um einen Bridge in dem *Netzwerk-Einstellungen* Verwaltungsmodul zu "
+"konfigurieren, klicken Sie auf :guilabel:`Hinzufügen` und wählen Sie "
+"``Netzwerk-Bridge`` als *Netzwerkgerätetyp*. Geben Sie einen Namen für "
+"die neue Bridge Netzwerkschnittstelle im Feld *Name der neuen Bridge-"
+"Schnittstelle* ein. Klicken Sie auf :guilabel:`Weiter`. Sie sehen die "
+"folgenden Felder:"
+
+#: ../../system-administration/network/advanced.rst:52
+msgid "Bridge ports"
+msgstr "Bridge Ports"
+
+#: ../../system-administration/network/advanced.rst:53
+msgid ""
+"In *Bridge ports*, select the physical network card to act as the uplink."
+" If the bridge connects two Ethernet networks, enable the Spanning Tree "
+"Protocol (STP) to avoid network loops. If you're connecting only virtual "
+"machines through a single network card, you don't have a risk of a "
+"network loop."
+msgstr ""
+"Wählen Sie in *Bridge Ports* die physische Netzwerkkarte aus, die als "
+"Uplink fungiert. Wenn die Bridge zwei Ethernet-Netzwerke verbindet, "
+"aktivieren Sie das Spanning Tree Protocol (STP), um Netzwerkschleifen zu "
+"vermeiden. Wenn Sie nur virtuelle Maschinen über eine einzelne "
+"Netzwerkkarte verbinden, besteht keine Gefahr für eine Netzwerkschleife."
+
+#: ../../system-administration/network/advanced.rst:61
+msgid "The Linux kernel supports only STP, not Rapid STP or Multiple STP."
+msgstr "Der Linux-Kernel unterstützt nur STP, nicht Rapid STP oder Multiple STP."
+
+#: ../../system-administration/network/advanced.rst:63
+msgid ""
+"Make sure your network switch and virtualization host support bridge "
+"operation. Your network switch's configuration might interfere with Linux"
+" bridge STP."
+msgstr ""
+"Stellen Sie sicher, dass Ihr Netzwerk-Switch und der "
+"Virtualisierungsserver den Betrieb einer Bridge unterstützen. Die "
+"Konfiguration Ihres Netzwerk-Switch könnte das STP der Bridge "
+"beeinträchtigen."
+
+#: ../../system-administration/network/advanced.rst:66
+msgid "Forwarding delay"
+msgstr ":spelling:word:`Forwarding-Verzögerung`"
+
+#: ../../system-administration/network/advanced.rst:67
+msgid ""
+"The *Forwarding delay* setting determines how long STP waits before "
+"activating the bridge."
+msgstr ""
+"Die Einstellung für die *Forwarding-Verzögerung* bestimmt, wie lange STP "
+"wartet, bevor die Bridge aktiviert wird."
+
+#: ../../system-administration/network/advanced.rst:69
+msgid ""
+"When bridging virtual machines through a single network card, set this "
+"value to ``0`` to deactivate STP. If STP is active, DHCP may fail because"
+" the bridge delays packet forwarding while STP converges."
+msgstr ""
+"Wenn Sie virtuelle Maschinen über eine einzelne Netzwerkkarte verbinden, "
+"setzen Sie diesen Wert auf ``0``, um STP zu deaktivieren. Wenn STP aktiv "
+"ist, kann DHCP fehlschlagen, da die Bridge die Paketweiterleitung "
+"verzögert, während STP konvergiert."
+
+#: ../../system-administration/network/advanced.rst:73
+msgid "Additional bridge options"
+msgstr "Weitere :spelling:word:`Bridge-Optionen`"
+
+#: ../../system-administration/network/advanced.rst:74
+msgid ""
+"Use *Additional bridge options* to configure optional bridge parameters. "
+"You only need this for specialized network configurations. For a complete"
+" list of available settings, see the `bridge-utils-interfaces(5) manual "
+"page <https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-"
+"interfaces.5.en.html>`_."
+msgstr ""
+"Verwenden Sie *Weitere Bridge-Optionen*, um optionale Bridge-"
+"Parameter zu konfigurieren. Dies benötigen Sie nur für spezialisierte "
+"Netzwerkkonfigurationen. Für eine vollständige Liste der verfügbaren "
+"Einstellungen siehe die `bridge-utils-interfaces(5) Manual Page "
+"<https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-"
+"interfaces.5.en.html>`_."
+
+#: ../../system-administration/network/advanced.rst:79
+msgid ""
+"If you want to assign an IP address to the bridge, click "
+":guilabel:`Next`. Do this if the virtualization host needs network access"
+" through the bridge. For IP configuration options, see :ref:`system-"
+"administration-network-ipv4` and :ref:`system-administration-network-"
+"ipv6`."
+msgstr ""
+"Wenn Sie der Bridge eine IP-Adresse zuweisen möchten, klicken Sie auf "
+":guilabel:`Weiter`. Führen Sie dies durch, wenn der "
+"Virtualisierungsserver Netzwerkzugriff über die Bridge benötigt. "
+"Informationen zu IP-Konfigurationsoptionen finden Sie unter :ref:`system-"
+"administration-network-ipv4` und :ref:`system-administration-network-"
+"ipv6`."
+
+#: ../../system-administration/network/advanced.rst:86
+msgid "Configure bonding"
+msgstr "Bonding konfigurieren"
+
+#: ../../system-administration/network/advanced.rst:88
+msgid "Use *bonding* to combine two or more network cards for:"
+msgstr ""
+"Verwenden Sie *Bonding*, um zwei oder mehr Netzwerkkarten zu kombinieren "
+"für:"
+
+#: ../../system-administration/network/advanced.rst:90
+msgid "Increased performance through load distribution."
+msgstr "Erhöhte Leistung durch Lastverteilung."
+
+#: ../../system-administration/network/advanced.rst:91
+msgid "Failover redundancy if one card fails."
+msgstr "Ausfallschutz durch Redundanz, wenn eine Karte ausfällt."
+
+#: ../../system-administration/network/advanced.rst:93
+msgid ""
+"To configure bonding in the *Network settings* management module, click "
+":guilabel:`Add` and select ``Bonding`` as the *Interface type*. Enter a "
+"name for the bonding interface in the *Name of the bonding interface* "
+"field. Click :guilabel:`Next`. You see the following fields:"
+msgstr ""
+"Um Bonding im *Netzwerk-Einstellungen* Verwaltungsmodul zu konfigurieren,"
+" klicken Sie auf :guilabel:`Hinzufügen` und wählen Sie ``Kanalbündelung "
+"(Bonding)`` als *Netzwerkgerätetyp*. Geben Sie einen Namen für die "
+"Bonding-Schnittstelle im Feld *Name des neuen Bonding-Netzwerkgerätes* "
+"ein. Klicken Sie auf :guilabel:`Weiter`. Sie sehen die folgenden Felder:"
+
+#: ../../system-administration/network/advanced.rst:102
+msgid "Bond slaves"
+msgstr ":spelling:word:`Bond` :spelling:word:`Kindnetzwerkschnittstellen`"
+
+#: ../../system-administration/network/advanced.rst:103
+msgid ""
+"In *Bond slaves*, select the network cards that are part of the bonding "
+"interface."
+msgstr ""
+"Wählen Sie in *Bond Kindnetzwerkschnittstellen* die Netzwerkkarten aus, die Teil"
+" der Bonding-Schnittstelle sind."
+
+#: ../../system-administration/network/advanced.rst:107
+msgid "Bond primary"
+msgstr "Primäre Bond-Netzwerkschnittstellen"
+
+#: ../../system-administration/network/advanced.rst:108
+msgid ""
+"In *Bond primary*, select the network card to prioritize during failover."
+" The system switches to a backup card if the primary card fails."
+msgstr ""
+"Wählen Sie in *Primäre Bond-Netzwerkschnittstellen* die Netzwerkschnittstelle aus, die "
+"beim Failover priorisiert werden soll. Das System wechselt zu einer "
+"Backup-Karte, wenn die primäre Karte ausfällt."
+
+#: ../../system-administration/network/advanced.rst:111
+msgid "Mode"
+msgstr "Modus"
+
+#: ../../system-administration/network/advanced.rst:112
+msgid ""
+"The *Mode* setting determines how bonded network cards distribute "
+"traffic. Choose a mode based on your redundancy requirements and network "
+"switch capabilities:"
+msgstr ""
+"Die *Modus* Einstellung bestimmt, wie Bond-Netzwerkschnittstellen den "
+"Datenverkehr verteilen. Wählen Sie einen Modus basierend auf Ihren "
+"Anforderungen an Redundanz und Fähigkeiten des Netzwerk-Switch."
+
+#: ../../system-administration/network/advanced.rst:116
+msgid ""
+"``balance-rr (0)`` distributes packets equally across all bonded network "
+"cards in round-robin fashion. This increases performance and provides "
+"redundancy. Network switches must support link aggregation."
+msgstr ""
+"``balance-rr (0)`` verteilt Pakete gleichmäßig über alle gebundenen "
+"Netzwerkkarten mit der :spelling:word:`Round-Robin-Methode`. Dies erhöht die "
+"Leistung und bietet Redundanz. Netzwerk-Switches müssen Link-Aggregation "
+"unterstützen."
+
+#: ../../system-administration/network/advanced.rst:120
+msgid ""
+"``active-backup (1)`` keeps only one network card active at a time. By "
+"default, this is the network card you selected in :ref:`system-"
+"administration-network-bonding-primary`. If the active card fails, the "
+"Linux kernel automatically switches to another card. This mode provides "
+"redundancy and works with any network switch."
+msgstr ""
+"``active-backup (1)`` hält nur eine Netzwerkschnittstelle zur Zeit aktiv. "
+"Standardmäßig ist dies die Netzwerkschnittstelle, die Sie unter :ref:`system-"
+"administration-network-bonding-primary` ausgewählt haben. Wenn die aktive"
+" Karte ausfällt, wechselt der Linux-Kernel automatisch zu einer anderen "
+"Karte. Dieser Modus bietet Redundanz und funktioniert mit jedem Netzwerk-"
+"Switch."
+
+#: ../../system-administration/network/advanced.rst:125
+msgid ""
+"For other bonding modes, see :external+linux-kernel-"
+"docs:doc:`networking/bonding`."
+msgstr ""
+"Weitere Informationen zu anderen Bonding-Modi finden Sie unter :external"
+"+linux-kernel-docs:doc:`networking/bonding`."
+
+#: ../../system-administration/network/advanced.rst:128
+msgid "MII link monitoring frequency"
+msgstr ":spelling:word:`MII-Trägerüberwachungsfrequenz`"
+
+#: ../../system-administration/network/advanced.rst:129
+msgid ""
+"The Linux kernel checks network card status using the Media Independent "
+"Interface (MII). This setting specifies the interval in milliseconds "
+"between health checks."
+msgstr ""
+"Der Linux-Kernel prüft den Status der Netzwerkschnittstelle mit dem Media "
+"Independent Interface (MII). Diese Einstellung gibt das Intervall in "
+"Millisekunden zwischen Integritätsprüfungen an."
+
+#: ../../system-administration/network/advanced.rst:132
+msgid "Additional bonding options"
+msgstr "Weitere Bonding-Optionen"
+
+#: ../../system-administration/network/advanced.rst:133
+msgid ""
+"You only need *Additional bonding options* in exceptional cases. For an "
+"overview of the possible settings, see :external+linux-kernel-"
+"docs:doc:`networking/bonding`."
+msgstr ""
+"Sie benötigen *Weitere Bonding-Optionen* nur in Ausnahmefällen. Eine "
+"Übersicht der möglichen Einstellungen finden Sie unter :external+linux-"
+"kernel-docs:doc:`networking/bonding`."
+
+#: ../../system-administration/network/advanced.rst:137
+msgid ""
+"If you want to assign an IP address to the bonding interface, click "
+":guilabel:`Next`."
+msgstr ""
+"Wenn Sie der Bonding-Schnittstelle eine IP-Adresse zuweisen möchten, "
+"klicken Sie auf :guilabel:`Weiter`."
+
+#: ../../system-administration/network/advanced.rst:140
+msgid ""
+"Creating a bond automatically removes any existing IP addresses from the "
+"network cards. You can assign an IP address to the bonding interface "
+"after creation. For configuration options, see :ref:`system-"
+"administration-network-ipv4` and :ref:`system-administration-network-"
+"ipv6`."
+msgstr ""
+"Das Erstellen einer Bond-Netzwerkschnittstelle entfernt automatisch alle "
+"vorhandenen IP-Adressen von den Netzwerkkarten. Sie können der Bonding-"
+"Schnittstelle nach der Erstellung eine IP-Adresse zuweisen. Informationen"
+" zu Konfigurationsoptionen finden Sie unter :ref:`system-administration-"
+"network-ipv4` und :ref:`system-administration-network-ipv6`."
+
+#: ../../system-administration/network/advanced.rst:147
+msgid "Configure VLAN"
+msgstr "VLAN konfigurieren"
+
+#: ../../system-administration/network/advanced.rst:149
+msgid ""
+"Virtual local area networks (VLANs) separate network traffic logically "
+"within a single physical network. Each VLAN is an independent broadcast "
+"domain. For example, you can run both employee and guest networks on the "
+"same physical cables. Configure your network switches to assign devices "
+"to their respective VLANs. Your switches must support 802.1q VLANs."
+msgstr ""
+"Virtual Local Area Networks (VLANs) trennen Netzwerkverkehr logisch "
+"innerhalb eines einzelnen physischen Netzwerks. Jedes VLAN ist eine "
+"unabhängige Broadcast-Domain. Zum Beispiel können Sie sowohl Mitarbeiter-"
+" als auch Gastnetzwerke auf den gleichen physischen Kabeln betreiben. "
+"Konfigurieren Sie Ihre Netzwerk-Switches, um Geräte ihren jeweiligen "
+"VLANs zuzuweisen. Ihre Switches müssen 802.1q VLANs unterstützen."
+
+#: ../../system-administration/network/advanced.rst:155
+msgid ""
+"Network connections use one of two VLAN modes. Choose based on how many "
+"VLANs your system needs to access:"
+msgstr ""
+"Netzwerkverbindungen verwenden einen von zwei VLAN-Modi. Wählen Sie "
+"basierend darauf, auf wie viele VLANs Ihr System zugreifen muss:"
+
+#: ../../system-administration/network/advanced.rst:158
+msgid "Untagged (access port)"
+msgstr ":spelling:word:`Ungetaggt` (:spelling:word:`Access-Port`)"
+
+#: ../../system-administration/network/advanced.rst:159
+msgid ""
+"This mode transports packets from a single VLAN only. Packets travel "
+"without a VLAN tag. Use this mode when a single device connects to only "
+"one VLAN, typical for user workstations."
+msgstr ""
+"Dieser Modus transportiert Pakete nur von einem einzelnen VLAN. Pakete "
+"reisen ohne VLAN-Tag. Verwenden Sie diesen Modus, wenn sich ein einzelnes"
+" Gerät nur mit einem VLAN verbindet, typisch für Benutzer-Workstations."
+
+#: ../../system-administration/network/advanced.rst:164
+msgid "Tagged (trunk port)"
+msgstr ":spelling:word:`Getaggt` (Trunk-Port)"
+
+#: ../../system-administration/network/advanced.rst:165
+msgid ""
+"This mode transports packets from multiple VLANs. Each packet carries a "
+"VLAN ID that identifies which VLAN the packet belongs to. The switch uses"
+" this ID to filter and route traffic correctly. During transmission, the "
+"switch adds or removes VLAN tags as packets cross VLAN boundaries. Use "
+"this mode when a single system needs to access or serve multiple VLANs, "
+"such as network servers and switches."
+msgstr ""
+"Dieser Modus transportiert Pakete von mehreren VLANs. Jedes Paket trägt "
+"eine VLAN-ID, die angibt, zu welchem VLAN das Paket gehört. Der Switch "
+"nutzt diese ID, um Datenverkehr korrekt zu filtern und weiterzuleiten. "
+"Während der Übertragung fügt der Switch VLAN-Tags hinzu oder entfernt "
+"sie, wenn Pakete VLAN-Grenzen überschreiten. Verwenden Sie diesen Modus, "
+"wenn ein einzelnes System mehrere VLANs aufrufen oder bereitstellen muss,"
+" wie z.B. Netzwerk-Server und Switches."
+
+#: ../../system-administration/network/advanced.rst:172
+msgid ""
+"In the *Network settings* management module, you can assign computers to "
+"one or more VLANs. For example, a web server can access both the employee"
+" and guest networks."
+msgstr ""
+"Im *Netzwerk-Einstellungen* Verwaltungsmodul können Sie Computer einem "
+"oder mehreren VLANs zuweisen. Beispielsweise kann ein Webserver auf beide"
+" Mitarbeiter- und Gastnetzwerke zugreifen."
+
+#: ../../system-administration/network/advanced.rst:176
+msgid "To configure a VLAN, follow these steps:"
+msgstr "Um ein VLAN zu konfigurieren, führen Sie diese Schritte aus:"
+
+#: ../../system-administration/network/advanced.rst:178
+msgid ""
+"In the *Network settings* management module, click :guilabel:`Add` and "
+"select ``Virtual LAN`` as the *Interface type*."
+msgstr ""
+"Klicken Sie im *Netzwerk-Einstellungen* Verwaltungsmodul auf "
+":guilabel:`Hinzufügen` und wählen Sie ``Virtual LAN`` als "
+"*Netzwerkgerätetyp*."
+
+#: ../../system-administration/network/advanced.rst:182
+msgid ""
+"In *Parent interface*, select the physical network interface that hosts "
+"this VLAN."
+msgstr ""
+"Wählen Sie in *Übergeordnetes Netzwerkgerät* die physische "
+"Netzwerkschnittstelle aus, die dieses VLAN bereit stellt."
+
+#: ../../system-administration/network/advanced.rst:185
+msgid ""
+"In *VLAN ID*, enter the unique identifier for this VLAN. The valid range "
+"is ``1`` to ``4095``. Coordinate with your network administrator to "
+"ensure each VLAN has a unique ID that matches your network switch "
+"configuration."
+msgstr ""
+"Geben Sie in *VLAN ID* den eindeutigen Bezeichner für dieses VLAN ein. "
+"Der gültige Bereich ist ``1`` bis ``4095``. Koordinieren Sie sich mit Ihrem "
+"Netzwerkadministrator, um sicherzustellen, dass jedes VLAN eine "
+"eindeutige ID hat, die der Konfiguration Ihres Netzwerk-Switch "
+"entspricht."
+
+#: ../../system-administration/network/advanced.rst:190
+msgid ""
+"If you want to assign an IP address to the VLAN interface, click "
+":guilabel:`Next`. Configure the IP address using the same options "
+"available for regular network interfaces. Ensure the IP address matches "
+"the VLAN address range. For details, see :ref:`system-administration-"
+"network-ipv4` and :ref:`system-administration-network-ipv6`."
+msgstr ""
+"Wenn Sie der VLAN-Schnittstelle eine IP-Adresse zuweisen möchten, klicken"
+" Sie auf :guilabel:`Weiter`. Konfigurieren Sie die IP-Adresse mit den "
+"gleichen Optionen, die für reguläre Netzwerkschnittstellen verfügbar "
+"sind. Stellen Sie sicher, dass die IP-Adresse dem VLAN-Adressbereich "
+"entspricht. Weitere Details finden Sie unter :ref:`system-administration-"
+"network-ipv4` und :ref:`system-administration-network-ipv6`."
+
+#: ../../system-administration/network/basic.rst:7
+msgid "Basic network configuration"
+msgstr "Grundlegende Netzwerkkonfiguration"
+
+#: ../../system-administration/network/basic.rst:9
+msgid "Basic network setup involves three steps:"
+msgstr "Die grundlegende Netzwerkeinrichtung umfasst drei Schritte:"
+
+#: ../../system-administration/network/basic.rst:11
+msgid "Connect your Nubus for UCS system to a network."
+msgstr "Verbinden Sie Ihr Nubus für UCS-System mit einem Netzwerk."
+
+#: ../../system-administration/network/basic.rst:12
+msgid "Configure IPv4 and/or IPv6 addresses."
+msgstr "Konfigurieren Sie IPv4- und/oder IPv6-Adressen."
+
+#: ../../system-administration/network/basic.rst:13
+msgid "Define name servers."
+msgstr "Definieren Sie DNS-Server."
+
+#: ../../system-administration/network/basic.rst:15
+msgid ""
+"These settings apply to standard network interfaces such as ``eth0`` and "
+"``eth1``."
+msgstr ""
+"Diese Einstellungen gelten für Standard-Netzwerkschnittstellen wie "
+"``eth0`` und ``eth1``."
+
+#: ../../system-administration/network/basic.rst:20
+msgid "Configure IPv4 addresses"
+msgstr "IPv4-Adressen konfigurieren"
+
+#: ../../system-administration/network/basic.rst:22
+msgid ""
+"IPv4 addresses identify your system on the network. Set them manually as "
+"a static address, or let DHCP assign one automatically. You write IPv4 "
+"addresses using a 32-bit length in four decimal blocks, such as "
+"``192.0.2.10``."
+msgstr ""
+"IPv4-Adressen identifizieren Ihr System im Netzwerk. Legen Sie sie "
+"manuell als statische Adresse fest oder lassen Sie per DHCP eine "
+"automatisch zuweisen. IPv4-Adressen werden mit einer 32-Bit-Länge in vier"
+" Dezimalblöcken geschrieben, z.B. ``192.0.2.10``."
+
+#: ../../system-administration/network/basic.rst:26
+msgid ""
+"For a static IP address configuration, enter the IP address in the field "
+"*IPv4 address* and the network mask for the network card in the field "
+"*Netmask*. To request an address from a DHCP server, click "
+":guilabel:`DHCP query` and Nubus for UCS stores the IP address received "
+"from the DHCP server as static configuration."
+msgstr ""
+"Geben Sie für eine statische IP-Adress-Konfiguration die IP-Adresse im "
+"Feld *IPv4-Adresse* und die Netzwerkmaske für die Netzwerkkarte im Feld "
+"*Netzmaske* ein. Um eine Adresse von einem DHCP-Server anzufordern, "
+"klicken Sie auf :guilabel:`DHCP-Abfrage` und Nubus für UCS speichert die "
+"vom DHCP-Server empfangene IP-Adresse als statische Konfiguration."
+
+#: ../../system-administration/network/basic.rst:32
+#, python-brace-format
+msgid ""
+"You can also configure Nubus for UCS systems through DHCP by activating "
+"the *Dynamic (DHCP)* option. Nubus for UCS uses the dynamic configuration"
+" from the DHCP server. Some cloud providers require DHCP-based server "
+"configuration. If the DHCP server doesn't assign an IP address, Nubus for"
+" UCS assigns a random link-local address :samp:`169.254.{x}.{y}` instead."
+msgstr ""
+"Sie können Nubus für UCS-Systeme auch über DHCP konfigurieren, indem Sie "
+"die Option *Dynamisch (DHCP)* aktivieren. Nubus für UCS verwendet die "
+"dynamische Konfiguration vom DHCP-Server. Einige :spelling:word:`Cloud-"
+"Anbieter` erfordern eine DHCP-basierte Server-Konfiguration. Wenn der "
+"DHCP-Server keine IP-Adresse zuweist, weist Nubus für UCS stattdessen "
+"eine zufällige Link-Local-Adresse :samp:`169.254.{x}.{y}` zu."
+
+#: ../../system-administration/network/basic.rst:39
+msgid ""
+"Nubus for UCS systems also write the DHCP-assigned address to the LDAP "
+"directory."
+msgstr ""
+"Nubus für UCS-Systeme schreiben die per DHCP zugewiesene Adresse auch in "
+"das LDAP-Verzeichnis."
+
+#: ../../system-administration/network/basic.rst:43
+msgid ""
+"Not all services are suitable for use on a DHCP-based server. DNS "
+"servers, mail servers, and other services that clients expect to reach at"
+" consistent addresses require static IP configuration. Dynamic addresses "
+"can change, breaking client connections to these services."
+msgstr ""
+"Nicht alle Services eignen sich für die Verwendung auf einem DHCP-"
+"basierten Server. DNS-Server, Mailserver und andere Services, die Clients"
+" unter konsistenten Adressen erreichen sollen, erfordern eine statische "
+"IP-Konfiguration. Dynamische Adressen können sich ändern und Verbindungen"
+" von Clients zu diesen Services unterbrechen."
+
+#: ../../system-administration/network/basic.rst:48
+msgid ""
+"Alternatively, you can set IPv4 addresses through :term:`UCR variables "
+"<UCR variable>`:"
+msgstr ""
+"Alternativ können Sie IPv4-Adressen über :term:`UCR-Variablen <UCR "
+"variable>` festlegen:"
+
+#: ../../system-administration/network/basic.rst:50
+msgid ":envvar:`interfaces/*/address`"
+msgstr ":envvar:`interfaces/*/address`"
+
+#: ../../system-administration/network/basic.rst:51
+msgid ":envvar:`interfaces/*/netmask`"
+msgstr ":envvar:`interfaces/*/netmask`"
+
+#: ../../system-administration/network/basic.rst:52
+msgid ":envvar:`interfaces/*/type`"
+msgstr ":envvar:`interfaces/*/type`"
+
+#: ../../system-administration/network/basic.rst:54
+msgid "For the gateway setting, see :ref:`system-administration-network-gateway`."
+msgstr ""
+"Informationen zur Gateway-Einstellung finden Sie unter :ref:`system-"
+"administration-network-gateway`."
+
+#: ../../system-administration/network/basic.rst:56
+msgid ""
+"Besides the physical interfaces, you can also define additional virtual "
+"interfaces in the form :envvar:`interfaces/*/setting`. Virtual interfaces"
+" use the naming convention ``eth0_1``, ``eth0_2``, and so on. The number "
+"in the name identifies the virtual interface. In the network interface "
+"listing, these appear with colons instead of underscores, such as "
+"``eth0:1`` and ``eth0:2``. This allows one network card to have multiple "
+"independent configurations and IP addresses."
+msgstr ""
+"Neben den physischen Schnittstellen können Sie auch zusätzliche virtuelle"
+" Schnittstellen in der Form :envvar:`interfaces/*/setting` definieren. "
+"Virtuelle Schnittstellen verwenden die Namenskonvention ``eth0_1``, "
+"``eth0_2`` usw. Die Nummer im Namen identifiziert die virtuelle "
+"Schnittstelle. In der Netzwerk-Schnittstellenliste werden diese mit "
+"Doppelpunkten statt Unterstrichen angezeigt, wie z.B. ``eth0:1`` und "
+"``eth0:2``. Dies ermöglicht einer Netzwerkkarte, mehrere unabhängige "
+"Konfigurationen und IP-Adressen zu haben."
+
+#: ../../system-administration/network/basic.rst:64
+msgid ""
+"For redundancy and load distribution across multiple network cards, see "
+":ref:`system-administration-network-bonding`."
+msgstr ""
+"Informationen zur Redundanz und Lastverteilung über mehrere "
+"Netzwerkkarten finden Sie unter :ref:`system-administration-network-"
+"bonding`."
+
+#: ../../system-administration/network/basic.rst:70
+msgid "Configure IPv6 addresses"
+msgstr "IPv6-Adressen konfigurieren"
+
+#: ../../system-administration/network/basic.rst:72
+msgid "You can configure the IPv6 address in two ways:"
+msgstr "Sie können die IPv6-Adresse auf zwei Weisen konfigurieren:"
+
+#: ../../system-administration/network/basic.rst:74
+msgid "Automatic (SLAAC)"
+msgstr "Automatisch (SLAAC)"
+
+#: ../../system-administration/network/basic.rst:75
+msgid ""
+"The routers on your network assign the IP address. Activate "
+":guilabel:`Autoconfiguration (SLAAC)` in the user interface."
+msgstr ""
+"Die Router in Ihrem Netzwerk weisen die IP-Adresse zu. Aktivieren Sie "
+":guilabel:`Autokonfiguration (SLAAC)` in der Benutzeroberfläche."
+
+#: ../../system-administration/network/basic.rst:78
+msgid "Static"
+msgstr "Statisch"
+
+#: ../../system-administration/network/basic.rst:79
+msgid ""
+"Enter the *IPv6 address* and *IPv6 prefix* manually in the respective "
+"fields."
+msgstr ""
+"Geben Sie die *IPv6-Adresse* und das *IPv6-Präfix* manuell in die "
+"entsprechenden Felder ein."
+
+#: ../../system-administration/network/basic.rst:81
+msgid ""
+"You write IPv6 addresses using a 128-bit length in hexadecimal form, such"
+" as ``2001:0DB8:FE29:DE27:0000:0000:0000:0000``."
+msgstr ""
+"IPv6-Adressen werden mit einer 128-Bit-Länge in Hexadezimalform "
+"geschrieben, z.B. ``2001:0DB8:FE29:DE27:0000:0000:0000:0000``."
+
+#: ../../system-administration/network/basic.rst:83
+msgid ""
+"IPv6 automatic configuration (SLAAC) assigns only the IP address, not DNS"
+" server information. Nubus for UCS doesn't run a dedicated DHCPv6 client,"
+" but accepts DNS server information from DHCP if the server provides it."
+msgstr ""
+"Die automatische IPv6-Konfiguration (SLAAC) weist nur die IP-Adresse zu, "
+"nicht die DNS-Serverinformationen. Nubus für UCS führt keinen dedizierten"
+" DHCPv6-Client aus, akzeptiert aber DNS-Serverinformationen von DHCP, "
+"wenn der Server diese bereitstellt."
+
+#: ../../system-administration/network/basic.rst:87
+msgid ""
+"One network card can have multiple IPv6 addresses. Each address needs a "
+"unique *Identifier* in the respective field. The primary address uses the"
+" *Identifier* ``default``. Other addresses can have functional names like"
+" ``mail`` or ``web``. For the gateway setting, see :ref:`system-"
+"administration-network-gateway`. For network isolation using VLANs, see "
+":ref:`system-administration-network-vlan`."
+msgstr ""
+"Eine Netzwerkkarte kann mehrere IPv6-Adressen haben. Jede Adresse "
+"benötigt einen eindeutigen *Bezeichner* im entsprechenden Feld. Die "
+"primäre Adresse verwendet den *Bezeichner* ``default``. Andere Adressen "
+"können funktionale Namen wie ``mail`` oder ``web`` haben. Informationen "
+"zur Gateway-Einstellung finden Sie unter :ref:`system-administration-"
+"network-gateway`. Informationen zur Netzwerkisolation mit VLANs finden "
+"Sie unter :ref:`system-administration-network-vlan`."
+
+#: ../../system-administration/network/basic.rst:95
+msgid ""
+"Alternatively, you can set IPv6 addresses through :term:`UCR variables "
+"<UCR variable>`:"
+msgstr ""
+"Alternativ können Sie IPv6-Adressen über :term:`UCR-Variablen <UCR "
+"variable>` festlegen:"
+
+#: ../../system-administration/network/basic.rst:97
+msgid ":envvar:`interfaces/*/ipv6/address`"
+msgstr ":envvar:`interfaces/*/ipv6/address`"
+
+#: ../../system-administration/network/basic.rst:98
+msgid ":envvar:`interfaces/*/ipv6/prefix`"
+msgstr ":envvar:`interfaces/*/ipv6/prefix`"
+
+#: ../../system-administration/network/basic.rst:99
+msgid ":envvar:`interfaces/*/ipv6/acceptRA`"
+msgstr ":envvar:`interfaces/*/ipv6/acceptRA`"
+
+#: ../../system-administration/network/basic.rst:104
+msgid "Configure gateways"
+msgstr "Gateways konfigurieren"
+
+#: ../../system-administration/network/basic.rst:106
+msgid ""
+"In the *Global network settings* section, enter IP addresses for the "
+"network gateway in the *Gateway (IPv4)* and *Gateway (IPv6)* fields."
+msgstr ""
+"Geben Sie im Abschnitt *Globale Netzwerk-Einstellungen* IP-Adressen für "
+"das Netzwerk-Gateway in den Feldern *Gateway (IPv4)* und *Gateway (IPv6)*"
+" ein."
+
+#: ../../system-administration/network/basic.rst:109
+msgid "IPv4 gateway"
+msgstr "IPv4-Gateway"
+
+#: ../../system-administration/network/basic.rst:110
+msgid "You need a gateway to send traffic to networks outside your local subnet."
+msgstr ""
+"Sie benötigen ein Gateway, um Datenverkehr an Netzwerke außerhalb Ihres "
+"lokalen Subnetzes zu senden."
+
+#: ../../system-administration/network/basic.rst:112
+msgid "IPv6 gateway"
+msgstr "IPv6-Gateway"
+
+#: ../../system-administration/network/basic.rst:113
+msgid ""
+"You can configure an IPv6 gateway, though it's optional. A configured "
+"gateway helps maintain consistent routing behavior."
+msgstr ""
+"Sie können ein IPv6-Gateway konfigurieren, obwohl es optional ist. Ein "
+"konfiguriertes Gateway hilft, ein konsistentes Routing-Verhalten "
+"aufrechtzuerhalten."
+
+#: ../../system-administration/network/basic.rst:116
+msgid ""
+"A manually configured gateway takes priority over router advertisements "
+"(RA). Your system uses the gateway you set, not automatic updates. This "
+"is especially important for IPv6, where systems normally accept RA "
+"updates."
+msgstr ""
+"Ein manuell konfiguriertes Gateway hat Vorrang vor Router-Ankündigungen "
+"(RA). Ihr System verwendet das von Ihnen eingestellte Gateway, nicht "
+"automatische Aktualisierungen. Dies ist besonders wichtig für IPv6, wo "
+"Systeme normalerweise Aktualisierungen von Router-Ankündigungen "
+"akzeptieren."
+
+#: ../../system-administration/network/basic.rst:120
+msgid ""
+"Alternatively, you can set gateways through :term:`UCR variables <UCR "
+"variable>`:"
+msgstr ""
+"Alternativ können Sie Gateways über :term:`UCR-Variablen <UCR variable>` "
+"festlegen:"
+
+#: ../../system-administration/network/basic.rst:122
+msgid ":envvar:`gateway`"
+msgstr ":envvar:`gateway`"
+
+#: ../../system-administration/network/basic.rst:123
+msgid ":envvar:`ipv6/gateway`"
+msgstr ":envvar:`ipv6/gateway`"
+
+#: ../../system-administration/network/basic.rst:125
+msgid "For additional network features, see:"
+msgstr "Weitere Netzwerkfunktionen finden Sie unter:"
+
+#: ../../system-administration/network/basic.rst:127
+msgid ""
+":ref:`system-administration-network-vlan` for network isolation and "
+"security."
+msgstr ""
+":ref:`system-administration-network-vlan` für Netzwerkisolation und "
+"Sicherheit."
+
+#: ../../system-administration/network/basic.rst:128
+msgid ":ref:`system-administration-network-bonding` for redundancy and failover."
+msgstr ":ref:`system-administration-network-bonding` für Redundanz und Failover."
+
+#: ../../system-administration/network/basic.rst:129
+msgid ":ref:`system-administration-network-bridge` for virtualization networking."
+msgstr ":ref:`system-administration-network-bridge` für Virtualisierungs-Netzwerk."
+
+#: ../../system-administration/network/basic.rst:134
+msgid "Define name servers"
+msgstr "DNS-Server definieren"
+
+#: ../../system-administration/network/basic.rst:136
+msgid "There are two types of DNS servers:"
+msgstr "Es gibt zwei Arten von DNS-Servern:"
+
+#: ../../system-administration/network/basic.rst:138
+msgid "External DNS Server"
+msgstr "Externer DNS-Server"
+
+#: ../../system-administration/network/basic.rst:139
+msgid ""
+"Use external DNS servers to look up domain names outside your network, "
+"such as ``example.com``. Your internet provider usually supplies these "
+"servers."
+msgstr ""
+"Verwenden Sie externe DNS-Server, um Domänennamen außerhalb Ihres "
+"Netzwerks nachzuschlagen, z.B. ``example.com``. Ihr Internetanbieter "
+"stellt diese Server normalerweise bereit."
+
+#: ../../system-administration/network/basic.rst:142
+msgid "Domain DNS Server"
+msgstr "Domain-DNS-Server"
+
+#: ../../system-administration/network/basic.rst:143
+msgid ""
+"A domain DNS server is the local DNS server for your Nubus for UCS "
+"domain. It looks up domain names and IP addresses for systems in your "
+"domain. When a query doesn't match a domain name in your LDAP directory, "
+"the domain DNS server forwards it to an external DNS server. All domain "
+"DNS servers in your Nubus for UCS domain return the same information "
+"because they query the same LDAP directory."
+msgstr ""
+"Ein Domain-DNS-Server ist der lokale DNS-Server für Ihre Nubus für UCS "
+"Domäne. Er schlägt Domänennamen und IP-Adressen für Systeme in Ihrer "
+"Domain nach. Wenn eine Abfrage keinem Domänennamen in Ihrem LDAP-"
+"Verzeichnis entspricht, leitet der Domain-DNS-Server sie an einen "
+"externen DNS-Server weiter. Alle Domain-DNS-Server in Ihrer Nubus für UCS"
+" Domäne geben die gleichen Informationen zurück, da sie das gleiche LDAP-"
+"Verzeichnis abfragen."
+
+#: ../../system-administration/network/basic.rst:150
+msgid ""
+"Nubus for UCS has three directory node types: :term:`Primary Directory "
+"Node`, :term:`Backup Directory Node`, and :term:`Replica Directory Node`."
+" Each runs a local DNS server for your domain."
+msgstr ""
+"Nubus für UCS hat drei Typen von :spelling:word:`Directory-Nodes`: "
+":term:`Primary Directory Node`, :term:`Backup Directory Node` und "
+":term:`Replica Directory Node`. Jeder führt einen lokalen DNS-Server für "
+"Ihre Domain aus."
+
+#: ../../system-administration/network/basic.rst:153
+msgid ""
+"To configure name resolution, enter the IP address of your domain's DNS "
+"server in the *Domain DNS Server* field. For the primary domain DNS "
+"server, use the address of your Primary Directory Node."
+msgstr ""
+"Geben Sie zum Konfigurieren der Namensauflösung die IP-Adresse des DNS-"
+"Servers Ihrer Domain im Feld *Domain-DNS-Server* ein. Verwenden Sie für "
+"den primären Domain-DNS-Server die Adresse Ihres Primary Directory Node."
+
+#: ../../system-administration/network/basic.rst:159
+msgid ""
+"Alternatively, you can set name servers through :term:`UCR variables <UCR"
+" variable>`:"
+msgstr ""
+"Alternativ können Sie DNS-Server über :term:`UCR-Variablen <UCR "
+"variable>` festlegen:"
+
+#: ../../system-administration/network/basic.rst:161
+msgid ":envvar:`nameserver1` to :envvar:`nameserver3`"
+msgstr ":envvar:`nameserver1` bis :envvar:`nameserver3`"
+
+#: ../../system-administration/network/basic.rst:162
+msgid ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`"
+msgstr ":envvar:`dns/forwarder1` bis :envvar:`dns/forwarder3`"
+
+#: ../../system-administration/network/index.rst:62
+msgid "Contents"
+msgstr "Inhalt"
+
+#: ../../system-administration/network/index.rst:7
+msgid "Network configuration"
+msgstr "Netzwerkkonfiguration"
+
+#: ../../system-administration/network/index.rst:9
+msgid ""
+"This chapter covers network configuration in Nubus for UCS. You can "
+"adjust network interface configuration in the *Network settings* "
+"management module, located at :menuselection:`System --> Network "
+"settings` in the *Management UI*. :numref:`system-administration-network-"
+"figure` shows the management module."
+msgstr ""
+"Dieses Kapitel behandelt die Netzwerkkonfiguration in Nubus für UCS. Sie "
+"können die Netzwerkschnittstellenkonfiguration im Verwaltungsmodul "
+"*Netzwerk-Einstellungen*-Verwaltungsmodul anpassen, das sich unter "
+":menuselection:`System --> Netzwerk-Einstellungen` in der *Management UI*"
+" befindet. :numref:`system-administration-network-figure` zeigt das "
+"Verwaltungsmodul."
+
+#: ../../system-administration/network/index.rst:16
+msgid "Configure network configuration in the Network settings module"
+msgstr "Netzwerkkonfiguration im Modul Netzwerk-Einstellungen konfigurieren"
+
+#: ../../system-administration/network/index.rst:19
+msgid "Configure network configuration in the *Network settings* module"
+msgstr "Netzwerkkonfiguration im Modul *Netzwerk-Einstellungen* konfigurieren"
+
+#: ../../system-administration/network/index.rst:21
+#, python-brace-format
+msgid ""
+"The management module lists all available network cards in *IPv4 network "
+"devices* and *IPv6 network devices*. It displays only network interfaces "
+"in the :samp:`eth{X}` scheme. Beyond basic configuration, Nubus for UCS "
+"supports the following advanced network configurations. :numref:`system-"
+"administration-network-decision-table` shows common scenarios and the "
+"appropriate technique for each."
+msgstr ""
+"Das Verwaltungsmodul listet alle verfügbaren Netzwerkkarten in "
+"*IPv4-Netzwerkgeräte* und *IPv6-Netzwerkgeräte* auf. Es zeigt nur "
+"Netzwerkschnittstellen im Schema :samp:`eth{X}` an. Neben der "
+"grundlegenden Konfiguration unterstützt Nubus für UCS die folgenden "
+"erweiterten Netzwerkkonfigurationen. :numref:`system-administration-"
+"network-decision-table` zeigt häufige Szenarien und die geeignete Technik"
+" für jedes."
+
+#: ../../system-administration/network/index.rst:29
+msgid ""
+"Bridging lets you connect multiple virtual machines running on a host "
+"through one shared physical network interface for virtualization."
+msgstr ""
+"Bridging ermöglicht es Ihnen, mehrere virtuelle Maschinen, die auf einem "
+"Server ausgeführt werden, über eine gemeinsame physische "
+"Netzwerkschnittstelle für die Virtualisierung zu verbinden."
+
+#: ../../system-administration/network/index.rst:33
+msgid ""
+"Bonding provides failover redundancy for hosts with multiple physical "
+"network interfaces to the same network."
+msgstr ""
+"Bonding bietet Ausfallsicherheit für Computer mit mehreren physischen "
+"Netzwerkschnittstellen zum gleichen Netzwerk."
+
+#: ../../system-administration/network/index.rst:36
+msgid "Virtual networks (VLANs)"
+msgstr "Virtuelle Netzwerke (VLANs)"
+
+#: ../../system-administration/network/index.rst:37
+msgid ""
+"VLANs separate network traffic logically while using one or more physical"
+" network interfaces."
+msgstr ""
+"VLANs trennen Netzwerkverkehr logisch, während sie eine oder mehrere "
+"physische Netzwerkschnittstellen nutzen."
+
+#: ../../system-administration/network/index.rst:42
+msgid "Common network configuration scenarios"
+msgstr "Häufige Netzwerkkonfigurationsszenarien"
+
+#: ../../system-administration/network/index.rst:46
+msgid "Your need"
+msgstr "Ihr Bedarf"
+
+#: ../../system-administration/network/index.rst:47
+msgid "Technique"
+msgstr "Technik"
+
+#: ../../system-administration/network/index.rst:48
+msgid "Where to find it"
+msgstr "Wo es zu finden ist"
+
+#: ../../system-administration/network/index.rst:50
+msgid "Bridge virtual machines to the network."
+msgstr "Virtuelle Maschinen mit dem Netzwerk verbinden."
+
+#: ../../system-administration/network/index.rst:52
+msgid ":ref:`system-administration-network-bridge`"
+msgstr ":ref:`system-administration-network-bridge`"
+
+#: ../../system-administration/network/index.rst:54
+msgid "Bond multiple network cards for failover."
+msgstr "Mehrere Netzwerkkarten für Failover verbinden."
+
+#: ../../system-administration/network/index.rst:56
+msgid ":ref:`system-administration-network-bonding`"
+msgstr ":ref:`system-administration-network-bonding`"
+
+#: ../../system-administration/network/index.rst:58
+msgid "Separate traffic on one physical network."
+msgstr "Datenverkehr in einem physischen Netzwerk trennen."
+
+#: ../../system-administration/network/index.rst:60
+msgid ":ref:`system-administration-network-vlan`"
+msgstr ":ref:`system-administration-network-vlan`"
 
 #: ../../system-administration/proxy.rst:7
 msgid "Configure proxy settings through UCR variables"
