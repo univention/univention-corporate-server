@@ -199,6 +199,50 @@ This section provides a reference for UCR variables.
    :Type: boolean
 
 
+.. envvar:: dns/forwarder1
+
+   You can configure external DNS servers to resolve hostnames and addresses
+   outside the Nubus for UCS domain.
+   The local domain DNS server automatically queries an external DNS server
+   when it can't find an address in the local LDAP directory.
+   This variable sets the first external DNS server.
+
+   For information about configuring external DNS servers,
+   see :ref:`system-administration-network-name-servers`.
+
+   :Type: string
+
+
+.. envvar:: dns/forwarder2
+
+   This UCR variable sets the second external DNS server.
+   For more details about the forwarder,
+   see :envvar:`dns/forwarder1`.
+
+   :Type: string
+
+
+.. envvar:: dns/forwarder3
+
+   This UCR variable sets the third external DNS server.
+   For more details about the forwarder,
+   see :envvar:`dns/forwarder1`.
+
+   :Type: string
+
+
+.. envvar:: gateway
+
+   You need a gateway to send traffic to networks outside your local subnet.
+   This variable sets the IPv4 address of the default gateway.
+   A gateway you configure here takes priority over router advertisements.
+
+   For information about configuring gateways,
+   see :ref:`system-administration-network-gateway`.
+
+   :Type: string
+
+
 .. envvar:: grub/append
 
    Use this variable to pass additional options to the Linux kernel.
@@ -261,6 +305,33 @@ This section provides a reference for UCR variables.
    :Possible values: integer, ``0`` for immediate boot, ``-1`` for manual selection
    :Type: integer
 
+.. envvar:: nameserver1
+
+   Set the first DNS server the system uses for name resolution.
+
+   For information about configuring name servers,
+   see :ref:`system-administration-network-name-servers`.
+
+   :Type: string
+
+
+.. envvar:: nameserver2
+
+   Set the second DNS server the system uses for name resolution.
+   For details about the name server,
+   see :envvar:`nameserver1`.
+
+   :Type: string
+
+
+.. envvar:: nameserver3
+
+   Set the third DNS server the system uses for name resolution.
+   For details about the name server,
+   see :envvar:`nameserver1`.
+
+   :Type: string
+
 
 .. envvar:: kernel/blacklist
 
@@ -315,6 +386,153 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
+
+.. envvar:: interfaces/*/address
+
+   Configure the IPv4 address for a network interface.
+   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/address`,
+   for example :samp:`interfaces/eth0/address`.
+   If you want to use DHCP,
+   don't set this variable.
+   See :envvar:`interfaces/*/type` for dynamic assignment.
+
+   For information about configuring IPv4 addresses,
+   see :ref:`system-administration-network-ipv4`.
+
+   :Type: string
+
+
+.. envvar:: interfaces/*/netmask
+
+   Configure the network mask for a network interface.
+   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/netmask`,
+   for example :samp:`interfaces/eth0/netmask`.
+
+   For information about configuring IPv4 addresses,
+   see :ref:`system-administration-network-ipv4`.
+
+   :Type: string
+
+
+.. envvar:: interfaces/*/setting
+
+   Configure arbitrary settings for a network interface.
+   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/{SETTING}`,
+   where :samp:`{SETTING}` can be any of the supported interface configuration options.
+
+   Common settings include:
+
+   * :envvar:`interfaces/*/address` — IPv4 address
+   * :envvar:`interfaces/*/netmask` — Network mask
+   * :envvar:`interfaces/*/type` — Type of IP assignment
+   * :envvar:`interfaces/*/ipv6/address` — IPv6 address
+   * :envvar:`interfaces/*/ipv6/prefix` — IPv6 prefix length
+   * :envvar:`interfaces/*/ipv6/acceptRA` — Enable SLAAC
+
+   You can define virtual interfaces using the same pattern with a numeric suffix.
+   For example,
+   virtual interfaces use the naming convention ``eth0_1``, ``eth0_2``, and so on.
+   In the network interface listing,
+   these appear with colons instead of underscores,
+   such as ``eth0:1`` and ``eth0:2``.
+   This allows one network card to have multiple independent configurations and IP addresses.
+
+   For information about configuring network interfaces,
+   see :ref:`system-administration-network-ipv4` and :ref:`system-administration-network-ipv6`.
+
+   :Type: depends on setting
+
+
+.. envvar:: interfaces/*/type
+
+   Define the type of IP assignment for a network interface.
+   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/type`,
+   for example :samp:`interfaces/eth0/type`.
+
+   Choose from the following values:
+
+   ``static``
+      Configure the interface with static values
+      from additional variables like :envvar:`interfaces/*/address`.
+
+   ``dhcp``
+      Enable dynamic assignment over DHCP.
+
+   ``manual``
+      Require manual configuration.
+
+   For information about configuring IPv4 addresses,
+   see :ref:`system-administration-network-ipv4`.
+
+   :Type: string
+   :Possible values: ``static``, ``dhcp``, ``manual``
+
+
+.. envvar:: interfaces/*/ipv6/address
+
+   Configure a static IPv6 address for a network interface.
+   The variable name follows the pattern
+   :samp:`interfaces/{INTERFACE}/ipv6/{IDENTIFIER}/address`,
+   for example :samp:`interfaces/eth0/ipv6/default/address`.
+   Use ``default`` for the primary address;
+   you can use functional names like ``mail`` or ``web`` for additional addresses.
+   If you want to use SLAAC,
+   don't set this variable.
+   See :envvar:`interfaces/*/ipv6/acceptRA` for automatic configuration.
+
+   For information about configuring IPv6 addresses,
+   see :ref:`system-administration-network-ipv6`.
+
+   :Type: string
+
+
+.. envvar:: interfaces/*/ipv6/prefix
+
+   Configure the IPv6 prefix length in CIDR notation for a network interface.
+   The variable name follows the pattern
+   :samp:`interfaces/{INTERFACE}/ipv6/{IDENTIFIER}/prefix`,
+   for example :samp:`interfaces/eth0/ipv6/default/prefix`.
+   If you want to use SLAAC,
+   don't set this variable.
+   See :envvar:`interfaces/*/ipv6/acceptRA` for automatic configuration.
+
+   For information about configuring IPv6 addresses,
+   see :ref:`system-administration-network-ipv6`.
+
+   :Type: string
+   :Possible values: ``0`` to ``128``
+
+
+.. envvar:: interfaces/*/ipv6/acceptRA
+
+   Enable Stateless Address Autoconfiguration (SLAAC) for a network interface.
+   When you activate this option,
+   routers on the local network segment assign the IPv6 address.
+   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/ipv6/acceptRA`,
+   for example :samp:`interfaces/eth0/ipv6/acceptRA`.
+
+   For information about configuring IPv6 addresses,
+   see :ref:`system-administration-network-ipv6`.
+
+   :Type: boolean
+
+
+.. envvar:: ipv6/gateway
+
+   You can configure an IPv6 gateway.
+   For IPv6,
+   you must enter a gateway in static configuration;
+   for dynamic configuration,
+   it's optional but recommended.
+   A gateway you configure here takes priority over router advertisements,
+   which might otherwise change the route.
+   You can append a zone index with a percent sign (%)
+   to specify the interface this address is reachable from.
+
+   For information about configuring IPv6 gateways,
+   see :ref:`system-administration-network-gateway`.
+
+   :Type: string
 
 
 .. envvar:: nss/group/cachefile
