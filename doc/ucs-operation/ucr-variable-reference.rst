@@ -262,29 +262,6 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
-.. envvar:: ldap/master
-
-   Contains the fully qualified domain name of the domain's Primary Directory Node.
-
-   :Type: string
-
-
-.. envvar:: local/repository
-
-   Activates and deactivates the local repository.
-   When activated with the value ``yes``,
-   the system uses a locally maintained repository for package updates and installations.
-   This is useful in environments with multiple systems
-   to reduce bandwidth consumption and enable offline updates.
-
-   For information about creating and maintaining a local repository,
-   see :ref:`lifecycle-local-repository-create-init`.
-
-   :Default value: not set
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
-
-
 .. envvar:: kernel/blacklist
 
    Use this variable to prevent specific kernel modules from loading automatically.
@@ -315,6 +292,29 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Possible values: semicolon-separated list of module names
    :Type: list
+
+
+.. envvar:: ldap/master
+
+   Contains the fully qualified domain name of the domain's Primary Directory Node.
+
+   :Type: string
+
+
+.. envvar:: local/repository
+
+   Activates and deactivates the local repository.
+   When activated with the value ``yes``,
+   the system uses a locally maintained repository for package updates and installations.
+   This is useful in environments with multiple systems
+   to reduce bandwidth consumption and enable offline updates.
+
+   For information about creating and maintaining a local repository,
+   see :ref:`lifecycle-local-repository-create-init`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
 
 
 .. envvar:: nss/group/cachefile
@@ -449,22 +449,6 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: string
 
-.. envvar:: password/quality/mspolicy
-
-   Defines the standard Microsoft password complexity criteria.
-
-   The values ``yes``, ``1``, or ``true``
-   activate the standard Microsoft password complexity criteria
-   in addition to the other criteria validated with :program:`python-cracklib`.
-   The value ``sufficient`` only applies the standard Microsoft password complexity criteria
-   without :program:`python-cracklib`.
-   The default value is unset and corresponds to the value ``false``.
-
-   For more information,
-   see :ref:`password-management-policies`.
-
-   :Default value: not set
-   :Type: string
 
 .. envvar:: password/quality/length/min
 
@@ -506,6 +490,7 @@ This section provides a reference for UCR variables.
          in :cite:t:`uv-nubus-manual`
          for information about *Policy: Passwords* in the *Policies module* in the *Management UI*.
 
+
 .. envvar:: password/quality/required/chars
 
    Defines individual characters as required for passwords.
@@ -521,6 +506,23 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: string
 
+
+.. envvar:: password/quality/mspolicy
+
+   Defines the standard Microsoft password complexity criteria.
+
+   The values ``yes``, ``1``, or ``true``
+   activate the standard Microsoft password complexity criteria
+   in addition to the other criteria validated with :program:`python-cracklib`.
+   The value ``sufficient`` only applies the standard Microsoft password complexity criteria
+   without :program:`python-cracklib`.
+   The default value is unset and corresponds to the value ``false``.
+
+   For more information,
+   see :ref:`password-management-policies`.
+
+   :Default value: not set
+   :Type: string
 
 .. envvar:: pkgdb/scan
 
@@ -672,6 +674,29 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+.. envvar:: repository/mirror/version/end
+
+   If the mirroring of the repository is active,
+   see :envvar:`local/repository`,
+   this variable is set each time
+   to the UCS version which was last retrieved from the mirror.
+
+   :Default value: not set, uses current system version
+   :Type: string
+
+.. envvar:: repository/mirror/version/start
+
+   If the mirroring of the repository is active,
+   see :envvar:`local/repository`,
+   this variable configures the lowest UCS version
+   which is retrieved from the mirror.
+
+   For information about major versions,
+   see :ref:`lifecycle-versioning-release-types-major`.
+
+   :Default value: not set, uses current major version
+   :Type: string
+
 
 .. envvar:: repository/online/component/.*/unmaintained
 
@@ -747,30 +772,6 @@ This section provides a reference for UCR variables.
    :Default value: ``https://updates.software-univention.de``
    :Type: string
 
-.. envvar:: repository/mirror/version/end
-
-   If the mirroring of the repository is active,
-   see :envvar:`local/repository`,
-   this variable is set each time
-   to the UCS version which was last retrieved from the mirror.
-
-   :Default value: not set, uses current system version
-   :Type: string
-
-.. envvar:: repository/mirror/version/start
-
-   If the mirroring of the repository is active,
-   see :envvar:`local/repository`,
-   this variable configures the lowest UCS version
-   which is retrieved from the mirror.
-
-   For information about major versions,
-   see :ref:`lifecycle-versioning-release-types-major`.
-
-   :Default value: not set, uses current major version
-   :Type: string
-
-
 .. envvar:: saml/idp/selfservice/check_email_verification
 
    If activated,
@@ -801,6 +802,21 @@ This section provides a reference for UCR variables.
    see :ref:`domain-infrastructure-system-roles`.
 
    :Type: string
+
+
+.. envvar:: ucs/web/theme
+
+   Specifies the name of the theme to apply to all web interfaces
+   such as the login page, the portal, and the *Management UI*.
+   The value corresponds to a CSS file of the same name
+   in the folder :file:`/usr/share/univention-web/themes/`.
+
+   For information about switching between themes, creating custom themes,
+   and applying changes, see :ref:`management-interface-theming`.
+
+   :Default value: ``dark``
+   :Type: string
+   :Possible values: ``light``, ``dark``, or custom theme names
 
 
 .. envvar:: umc/http/processes
@@ -858,18 +874,3 @@ This section provides a reference for UCR variables.
 
    :Default value: not set
    :Type: boolean
-
-
-.. envvar:: ucs/web/theme
-
-   Specifies the name of the theme to apply to all web interfaces
-   such as the login page, the portal, and the *Management UI*.
-   The value corresponds to a CSS file of the same name
-   in the folder :file:`/usr/share/univention-web/themes/`.
-
-   For information about switching between themes, creating custom themes,
-   and applying changes, see :ref:`management-interface-theming`.
-
-   :Default value: ``dark``
-   :Type: string
-   :Possible values: ``light``, ``dark``, or custom theme names
