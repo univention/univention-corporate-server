@@ -369,8 +369,7 @@ def get_client(version: int) -> Iterator[Client]:
     if version != 1:
         raise UnsupportedVersion(version)
     with get_session() as session:
-        client = Client(version=version, session=session)
-        yield client
+        yield Client(version=version, session=session)
 
 
 class UnsupportedVersion(Exception):

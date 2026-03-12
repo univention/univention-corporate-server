@@ -55,9 +55,8 @@ def main():
         print('WARNING: LDAP server could not be reached: %s' % (exc,), file=sys.stderr)
 
     found_rejected = False
-    i = 1
     print("\nUCS rejected\n")
-    for filename, dn in s4.list_rejected_ucs():
+    for i, (filename, dn) in enumerate(s4.list_rejected_ucs(), 1):
         found_rejected = True
         print("%5d:   UCS DN: %s" % (i, dn))
         s4_dn = s4.get_dn_by_ucs(dn)
@@ -66,7 +65,6 @@ def main():
         else:
             print("          S4 DN: <not found>")
         print("         Filename: %s\n" % filename)
-        i += 1
 
     i = 1
     print("\nS4 rejected\n")

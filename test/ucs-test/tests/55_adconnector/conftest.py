@@ -23,5 +23,4 @@ def active_directory_settings(ucr: UCSTestConfigRegistry) -> ActiveDirectorySett
 @pytest.fixture
 def ad_connector():
     with connector_setup('sync'):
-        connector = _Connector()
-        yield connector
+        yield _Connector()

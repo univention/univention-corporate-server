@@ -99,7 +99,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     @tornado.gen.coroutine
     def pool_submit(self, cb, *args, **kwargs):
         future = self.pool.submit(self.pool_wrapper, cb, *args, **kwargs)
-        return (yield future)
+        return (yield future)  # noqa: B901
 
     def pool_wrapper(self, func, *a, **kw):
         self._set_request_context()

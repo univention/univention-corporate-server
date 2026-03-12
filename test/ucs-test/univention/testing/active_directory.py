@@ -127,8 +127,7 @@ class UserData(BaseModel):
     bad_pwd_count: int | None = Field(
         default=None,
         description=(
-            'The number of times the user tried to log on to the account using an incorrect password. '
-            'A value of 0 indicates that the value is unknown.',
+            'The number of times the user tried to log on to the account using an incorrect password. A value of 0 indicates that the value is unknown.',
         ),
     )
     bad_password_time: int | None = Field(

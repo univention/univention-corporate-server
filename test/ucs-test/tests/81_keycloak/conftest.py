@@ -138,8 +138,7 @@ class UnverfiedUser:
 @pytest.fixture
 def unverified_user() -> Iterator[UnverfiedUser]:
     with UCSTestUDM() as udm:
-        user = UnverfiedUser(udm)
-        yield user
+        yield UnverfiedUser(udm)
 
 
 @pytest.fixture

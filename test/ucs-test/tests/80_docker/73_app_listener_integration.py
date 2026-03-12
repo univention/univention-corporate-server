@@ -33,7 +33,7 @@ def dump_db() -> Any:
 
 def obj_exists(obj_type: str, dn: str) -> bool:
     db = dump_db()
-    return any(dn.lower() == obj.get('dn').lower() for obj_id, obj in db[obj_type].items())
+    return any(dn.lower() == obj.get('dn').lower() for obj in db[obj_type].values())
 
 
 def user_exists(dn: str) -> bool:

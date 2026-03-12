@@ -134,7 +134,7 @@ def sanitize(method):
         method.sanitizers['body_arguments'] = DictSanitizer(content_type_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
 
     if payload_params:
-        content_type_sanitizers = {param.content_type: param.make_sanitizer(body_params) for name, param in payload_params.items()}
+        content_type_sanitizers = {param.content_type: param.make_sanitizer(body_params) for param in payload_params.values()}
         method.sanitizers['body_arguments'] = DictSanitizer(content_type_sanitizers, required=True, further_arguments=['resource'], _copy_value=False)
 
     method.sanitizer = DictSanitizer(method.sanitizers, further_arguments=['resource'], _copy_value=False)

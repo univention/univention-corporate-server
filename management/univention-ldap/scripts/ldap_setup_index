@@ -128,7 +128,7 @@ class LdapIndex:
                 attributes |= RECOMMENDED_LDAP_INDEX[typ]
 
     def validate_index(self):
-        indexed_attributes = list(set().union(*[attributes for typ, attributes in self.index.items()]) - {'default'})
+        indexed_attributes = list(set().union(*list(self.index.values())) - {'default'})
         num_sub_dbs = len(indexed_attributes) + len(['ad2i', 'dn2i', 'id2e', 'id2v'])
         if num_sub_dbs > MDB_INDICES:
             LOG.error('Too many attributes to be indexed: %s (MDB_INDICES=%s)', num_sub_dbs, MDB_INDICES)
@@ -194,8 +194,7 @@ class LdapIndex:
         slapindex = Popen(slapindex_cmd, stderr=PIPE)
         beautify_cmd = (
             'sed', '-e',
-            "/Runnig as root!/,"
-            "/There's a fair chance slapd will fail to start./d",
+            "/Runnig as root!/,/There's a fair chance slapd will fail to start./d",
         )
         beautify = Popen(beautify_cmd, stdin=slapindex.stderr)
         slapindex.stderr.close()

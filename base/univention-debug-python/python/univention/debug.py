@@ -30,7 +30,7 @@ from univention._debug import (
 )
 
 
-__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DEBUG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRACE', 'TRANSFILE', 'USERS', 'WARN', 'WARNING', 'begin', 'debug', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'set_structured', 'trace')
+__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DEBUG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRACE', 'TRANSFILE', 'USERS', 'WARN', 'WARNING', 'begin', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'set_structured', 'trace')
 
 
 def debug(category, level, message, utf8=True):

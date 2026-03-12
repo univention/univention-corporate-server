@@ -188,9 +188,7 @@ def umc_browser_test(
     browser = browser_type.launch(**ucs_browser_type_launch_args)
     context = browser.new_context(**ucs_browser_context_args)
     page = setup_browser_context(context)
-    tester = UMCBrowserTest(page)
-
-    yield tester
+    yield UMCBrowserTest(page)
 
     teardown_umc_browser_test(request, ucr, page, context, browser)
 

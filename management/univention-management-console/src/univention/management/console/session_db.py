@@ -205,5 +205,4 @@ class DBSession(Base):
         if oidc_sessions_by_sid:
             yield oidc_sessions_by_sid
         else:
-            oidc_sessions_by_sub = db_session.query(cls).filter(cls.oidc_iss == claims.get('iss'), cls.oidc_sub == claims.get('sub')).all()
-            yield from oidc_sessions_by_sub
+            yield from db_session.query(cls).filter(cls.oidc_iss == claims.get('iss'), cls.oidc_sub == claims.get('sub')).all()

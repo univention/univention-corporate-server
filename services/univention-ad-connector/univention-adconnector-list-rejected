@@ -52,9 +52,8 @@ def main():
         sys.exit(1)
 
     found_rejected = False
-    i = 1
     print("\nUCS rejected\n")
-    for filename, dn in ad.list_rejected_ucs():
+    for i, (filename, dn) in enumerate(ad.list_rejected_ucs(), 1):
         found_rejected = True
         print("%5d:   UCS DN: %s" % (i, dn))
         ad_dn = ad.get_dn_by_ucs(dn)

@@ -300,8 +300,7 @@ class Translog:
         assert self.translog
         for line in self.translog:
             self.log.debug("Read line %r", line)
-            rec = self.parse_line(line)
-            yield rec
+            yield self.parse_line(line)
 
     def seek(self, tid: int) -> int:
         """

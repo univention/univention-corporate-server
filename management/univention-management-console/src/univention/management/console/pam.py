@@ -80,7 +80,7 @@ class PamAuth:
         'The password is too short.': [
             re.compile(r'Password too short, password must be at least (?P<minlen>\d+) characters long.', re.I),
             re.compile('^Password too short$'),
-            'You must choose a longer password'
+            'You must choose a longer password',
             'Password Too Short',
             'Password is too short',
             ': Es ist zu kurz',
