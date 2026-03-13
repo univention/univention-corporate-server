@@ -1,0 +1,17 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-ad-connector
+fix: 16.6.0
+desc: |
+ This update addresses the following issues:
+ * The AD Connector could incorrectly assume that an object was
+   deleted in Active Directory due to stale entries in the connector
+   database and attempted to restore it. Because the lookup did not
+   verify that the AD object was actually marked as deleted, AD
+   rejected the operation (“Trying to restore not deleted object”),
+   causing synchronization rejects. The restore lookup now only
+   considers objects with `isDeleted=TRUE`,
+   preventing unnecessary restore attempts
+bug: [59113]
