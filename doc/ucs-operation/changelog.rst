@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 13. Mar 2026
+     - :ref:`system-administration-network`
+     - Add section about network configuration through the *Network settings* management module.
+
    * - 26. Feb 2026
      - :ref:`lifecycle-software-monitor`
      - Add section about *Software Monitor* management module.
