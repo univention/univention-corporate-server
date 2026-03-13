@@ -183,6 +183,7 @@ COMMON_EXCEPTIONS = (
     E(r'KeyError:.*_UnixSelectorEventLoop', ['tornado/ioloop.py'], 59121),
     E(r'RuntimeError: IOLoop .* already associated with asyncio loop', ['tornado/ioloop.py'], 59121),
     E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
+    E(r"^AttributeError: module 'univention.debug' has no attribute 'TRACE'", ['getLogger'], 59122),
     # E('ImportError: No module named client', [
     #     'univention-directory-listener/system/faillog.py',
     #     'univention-directory-listener/system/udm_extension.py',
