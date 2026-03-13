@@ -61,6 +61,7 @@ def pytest_configure(config: Config) -> None:
     config.addinivalue_line("markers", "slow: test case is slow")
     config.addinivalue_line("markers", "tags(name): tag a test case")
     config.addinivalue_line("markers", "roles(names): specify roles")
+    config.addinivalue_line("markers", "roles_not(names): specify excluded roles")
     config.addinivalue_line("markers", "exposure(exposure): run dangerous tests?")
 
 
