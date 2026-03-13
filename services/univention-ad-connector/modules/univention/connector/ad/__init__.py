@@ -2689,7 +2689,7 @@ class ad(univention.connector.ucs):
 
         binary_guid = univention.connector.encode_guid(guid)
         binary_guid_escaped = escape_filter_chars(binary_guid.decode('ISO8859-1'), 1)
-        filter_ad = f'(objectGUID={binary_guid_escaped})'
+        filter_ad = f'(&(objectGUID={binary_guid_escaped})(isDeleted=TRUE))'
 
         # Get the DN where the object should be restored to.
         result = search_deleted_object_in_ad(filter_ad)

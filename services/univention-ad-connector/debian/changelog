@@ -1,8 +1,12 @@
-univention-ad-connector (16.6.0) UNRELEASED; urgency=medium
+univention-ad-connector (16.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:40 +0100
+  [ Felix Botner ]
+  * Bug #59113: fix filter to search for deleted objects
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Mar 2026 12:36:40 +0100
 
 univention-ad-connector (16.5.7) unstable; urgency=medium
 
