@@ -15,7 +15,7 @@ from univention.testing.utils import wait_for_listener_replication
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_audit_event_log_levels(change_app_setting, keycloak_session, keycloak_admin, keycloak_secret, keycloak_config, udm):
+def test_audit_event_log_levels(change_app_setting, keycloak_session, keycloak_admin, keycloak_secret, keycloak_config, udm, is_keycloak):
     """
     Test that audit events are logged at the configured levels.
 
