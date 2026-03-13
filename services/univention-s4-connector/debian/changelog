@@ -1,8 +1,12 @@
-univention-s4-connector (16.5.0) UNRELEASED; urgency=medium
+univention-s4-connector (16.5.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:53 +0100
+  [ Felix Botner ]
+  * Bug #59113: fix filter to search for deleted objects
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Mar 2026 12:34:46 +0100
 
 univention-s4-connector (16.4.2) unstable; urgency=medium
 

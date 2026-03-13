@@ -2447,7 +2447,7 @@ class s4(univention.s4connector.ucs):
 
         binary_guid = univention.s4connector.encode_guid(guid)
         binary_guid_escaped = escape_filter_chars(binary_guid.decode('ISO8859-1'), 1)
-        filter_s4 = f'(objectGUID={binary_guid_escaped})'
+        filter_s4 = f'(&(objectGUID={binary_guid_escaped})(isDeleted=TRUE))'
 
         # Get the DN where the object should be restored to.
         result = search_deleted_object(filter_s4)
