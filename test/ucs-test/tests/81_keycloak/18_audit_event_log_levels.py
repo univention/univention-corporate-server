@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -v
 ## desc: Test audit event log level settings
 ## tags: [keycloak, skip_admember]
-## roles: [domaincontroller_master, domaincontroller_backup]
+## roles: [domaincontroller_master]
 ## exposure: dangerous
 
 import os
@@ -15,7 +15,7 @@ from univention.testing.utils import wait_for_listener_replication
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_audit_event_log_levels(change_app_setting, keycloak_session, keycloak_admin, keycloak_secret, keycloak_config, udm, is_keycloak):
+def test_audit_event_log_levels(change_app_setting, keycloak_session, keycloak_admin, keycloak_secret, keycloak_config, udm):
     """
     Test that audit events are logged at the configured levels.
 
