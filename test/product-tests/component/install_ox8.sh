@@ -11,6 +11,7 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.31.0/bin/l
 curl -LO https://get.helm.sh/helm-v3.16.2-linux-amd64.tar.gz && tar -zxvf helm-v3.16.2-linux-amd64.tar.gz && mv linux-amd64/helm /usr/local/bin/helm
 curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.24.0/kind-linux-amd64 && chmod +x ./kind && mv ./kind /usr/local/bin/kind
 apt install --yes docker.io
+curl -sSL https://github.com/mikefarah/yq/releases/download/v4.47.2/yq_linux_amd64.tar.gz | tar xz && mv yq_linux_amd64 /usr/local/bin/yq
 kind create cluster
 kubectl create namespace as8
 apt update
@@ -24,7 +25,7 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 apt install --yes python3-venv
 # Use operations-guide mirrored by Nautilus team instead of upstream
 # Parametrize this clone can be a future improvement
-git clone --depth 1 --branch "about" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+git clone --depth 1 --branch "about"  https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
 cd ox-operations-guide-mirror
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
@@ -35,6 +36,7 @@ sed -i "s/retvars |=/retvars = retvars or/" render.py
 sed -i "s/vars | get_additional_script_vars/vars or get_additional_script_vars/" render.py
 sed -i "s/list\[str\]/list/" render.py
 #JUST_UCS
+# Use the values.yaml to avoid sed over the yaml files
 cat <<EOF >values.yaml
 render_sh: true
 generic_script_target: "sh"
@@ -45,6 +47,27 @@ assignment_dollar_env: "export "
 dollar_null: ""
 echo: "echo"
 noop: "true"
+
+# Allow username changes
+contacts_provider_ldap_enabled: true
+enable_username_editable: true
+
+# Enable optional features
+deputy_enabled: true
+
+core_mw_extra_properties:
+
+  # Additional configuration related to the deputy feature
+  com.openexchange.dovecot.doveadm.enabled: "true"
+  com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"
+  com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"
+  com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"
+  com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"
+  com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"
+  com.openexchange.dovecot.doveadm.apiSecret: "secret"
+  com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "/"
+  com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"
+  com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"
 EOF
 
 v/bin/python render.py --values values.yaml
@@ -53,25 +76,25 @@ v/bin/python render.py --values values.yaml
 cd rendered/values
 # JUST_UCS
 # bump version https://www.oxpedia.org/wiki/index.php?title=AppSuite:Versioning_and_Numbering#2025
-# This remove the pining of the version for the appsuite, this brings unexpected updates.
-sed -i 's|AVERAGE_CONTEXT_SIZE: "200"|AVERAGE_CONTEXT_SIZE: "200"\n    /opt/open-xchange/etc/AdminUser.properties:\n       USERNAME_CHANGEABLE: "true"|g' values.yaml
 
-# activate deputy permission provisioning
-sed -i 's|open-xchange-drive-client-windows: disabled|open-xchange-drive-client-windows: disabled\n      open-xchange-deputy: enabled\n|g' values.yaml
-# the content in this line can be done using another way to configure the core-mw files. check https://git.knut.univention.de/univention/dev/projects/open-xchange/connector/-/merge_requests/238/diffs#e7889d94c1408d69cc80d018fca34b82edc0d3c4_102_107
-# It will require some testing.
-sed -i 's|com.openexchange.hostname: "as8.lab.test"|com.openexchange.hostname: "as8.lab.test"\n    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"\n    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"\n    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"\n    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"\n    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"\n    com.openexchange.dovecot.doveadm.enabled: "true"\n    com.openexchange.deputy.enabled: "true"\n    com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "/"\n    com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"\n    com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"\n    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n|g' values.yaml
+# This is a double workaround,
+# First we are using an old chart because new one (branch "ci-0.0.2" doesn't properly works)
+# Second, setting the bitnami charts to use the legacy images (they were changed in the docker.io registry)
+yq -i ".global.security.allowInsecureImages = true" values.bitnami-redis-core-mw-session-store.yaml
+yq -i ".global.security.allowInsecureImages = true" values.bitnami-redis-core-ui-mw.yaml
+yq -i ".global.security.allowInsecureImages = true" values.bitnami-redis-switchboard.yaml
+yq -i ".global.security.allowInsecureImages = true" values.bitnami-redis-core-mw-cache.yaml
 
-# workaround for bitnami moving their images, this may break easily.
-sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-mw-cache.yaml
-sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-mw-session-store.yaml
-sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-ui-mw.yaml
-sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-switchboard.yaml
+yq -i ".image.repository = \"bitnamilegacy/redis\"" values.bitnami-redis-core-mw-session-store.yaml
+yq -i ".image.repository = \"bitnamilegacy/redis\"" values.bitnami-redis-core-ui-mw.yaml
+yq -i ".image.repository = \"bitnamilegacy/redis\"" values.bitnami-redis-switchboard.yaml
+yq -i ".image.repository = \"bitnamilegacy/redis\"" values.bitnami-redis-core-mw-cache.yaml
 
-printf '  image:\n    repository: bitnamilegacy/redis-sentinel' >> values.bitnami-redis-core-mw-session-store.yaml
-printf '  image:\n    repository: bitnamilegacy/redis-sentinel' >> values.bitnami-redis-core-ui-mw.yaml
-printf '  image:\n    repository: bitnamilegacy/redis-sentinel' >> values.bitnami-redis-switchboard.yaml
+yq -i ".sentinel.image.repository = \"bitnamilegacy/redis-sentinel\"" values.bitnami-redis-core-mw-session-store.yaml
+yq -i ".sentinel.image.repository = \"bitnamilegacy/redis-sentinel\"" values.bitnami-redis-core-ui-mw.yaml
+yq -i ".sentinel.image.repository = \"bitnamilegacy/redis-sentinel\"" values.bitnami-redis-switchboard.yaml
 
+# Setting the doveadm api key in dovecot and secrets
 sed -i 's/doveadm_api_key:.*$/doveadm_api_key: "secret"/g' values.dovecot-ce.secret.yaml
 sed -i 's/    com.openexchange.filestore.s3client.s3.accessKey: /    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n    com.openexchange.filestore.s3client.s3.accessKey: /g' values.secret.yaml
 
