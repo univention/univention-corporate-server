@@ -24,7 +24,7 @@ sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd6
 apt install --yes python3-venv
 # Use operations-guide mirrored by Nautilus team instead of upstream
 # Parametrize this clone can be a future improvement
-git clone https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+git clone --depth 1 --branch "about" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
 cd ox-operations-guide-mirror
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
@@ -54,7 +54,6 @@ cd rendered/values
 # JUST_UCS
 # bump version https://www.oxpedia.org/wiki/index.php?title=AppSuite:Versioning_and_Numbering#2025
 # This remove the pining of the version for the appsuite, this brings unexpected updates.
-sed -i -E 's|oci://registry.open-xchange.com/appsuite/charts/appsuite --version [0-9]\.[0-9]{1,2}\.[0-9]{1,3} |oci://registry.open-xchange.com/appsuite/charts/appsuite |g' install.sh
 sed -i 's|AVERAGE_CONTEXT_SIZE: "200"|AVERAGE_CONTEXT_SIZE: "200"\n    /opt/open-xchange/etc/AdminUser.properties:\n       USERNAME_CHANGEABLE: "true"|g' values.yaml
 
 # activate deputy permission provisioning
