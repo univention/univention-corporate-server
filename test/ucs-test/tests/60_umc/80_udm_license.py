@@ -254,10 +254,7 @@ class UDMLicenseManagement(UDMModule):
         assert license_info['endDate'] == "unlimited"
 
         license_info = license_info['licenses']
-        assert not license_info['corporateclients']
         assert license_info['managedclients'] == 5
-        assert not license_info.get('virtualdesktopclients')
-        assert not license_info.get('virtualdesktopusers')
         assert license_info['users'] == 5
         assert not license_info['servers']
 

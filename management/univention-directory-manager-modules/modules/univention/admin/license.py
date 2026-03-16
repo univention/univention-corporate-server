@@ -47,6 +47,8 @@ if configRegistry.is_true('ad/member'):
 
 
 class License:
+    """Non public interface for license handling."""
+
     (ACCOUNT, CLIENT, DESKTOP, GROUPWARE) = range(4)
     # (USERS, SERVERS, MANAGEDCLIENTS, CORPORATECLIENTS) = range(4)
     (USERS, SERVERS, MANAGEDCLIENTS) = range(3)
@@ -304,7 +306,80 @@ class License:
         return 0
 
 
+class LicenseWrapper:
+    """Licence interface."""
+
+    def __init__(self):
+        pass
+
+    def initialize(self, lo):
+        try:
+            self._license.init_select(lo, 'admin')
+        except univention.admin.uexceptions.licenseError:
+            pass  # the license signature is invalid, expired, etc but not the limits are reached, (could not be found?)
+
+    def get_user_limit(self) -> int | float:
+        limit = _license.licenses[_license.version][License.USERS]
+        if limit == 'unlimited':
+            return float('inf')
+        return int(limit)
+
+    def get_server_limit(self) -> int | float:
+        limit = _license.licenses[_license.version][License.SERVERS]
+        if limit == 'unlimited':
+            return float('inf')
+        return int(limit)
+
+    def get_client_limit(self) -> int | float:
+        limit = _license.licenses[_license.version][License.MANAGEDCLIENTS]
+        if limit == 'unlimited':
+            return float('inf')
+        return int(limit)
+
+    def get_user_total(self) -> int:
+        return _license.real[_license.version][License.USERS]
+
+    def get_server_total(self) -> int:
+        return _license.real[_license.version][License.SERVERS]
+
+    def get_client_total(self) -> int:
+        return _license.real[_license.version][License.MANAGEDCLIENTS]
+
+    def get_system_accounts(self):
+        return _license.sysAccountsFound
+
+    def get_license_data(self):
+        license_data = {}
+        license_data['version'] = _license.version
+        license_data['limits'] = {
+            'user': self.get_user_limit(),
+            'server': self.get_server_limit(),
+            'client': self.get_client_limit(),
+        }
+        license_data['used'] = {
+            'user': self.get_user_total(),
+            'server': self.get_server_total(),
+            'client': self.get_client_total(),
+        }
+        license_data['key_id'] = _license.licenseKeyID
+        license_data['support'] = _license.licenseSupport
+        license_data['premium_support'] = _license.licensePremiumSupport
+        license_data['license_types'] = _license.types
+        license_data['oem_product_types'] = _license.oemProductTypes
+        license_data['end_date'] = _license.endDate
+        license_data['base_dn'] = _license.licenseBase
+        free_license = ''
+        if license_data['base_dn'] in ('Free for personal use edition', 'UCS Core Edition'):
+            free_license = 'core'
+            license_data['base_dn'] = configRegistry.get('ldap/base', '')
+        license_data['free_license'] = free_license
+        license_data['system_accounts_total'] = _license.sysAccountsFound
+        return license_data
+
+
 _license = License()
+license = LicenseWrapper()
+del LicenseWrapper
 
 # for compatibility
 select = _license.select
