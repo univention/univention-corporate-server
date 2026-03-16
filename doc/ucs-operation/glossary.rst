@@ -63,3 +63,22 @@ Glossary
       For more information about UCR variables,
       see :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
       in the *Univention Configuration Registry* section.
+
+   Univention Directory Manager
+   UDM
+      Univention Directory Manager (UDM) is the abstraction layer
+      between the domain database and the administrator.
+      It's responsible for domain management in Nubus for UCS,
+      covering identities, devices, and services across the domain.
+
+      UDM provides data aggregation, data consistency, input validation,
+      and process logic on top of the LDAP directory.
+      Administrators can use UDM through the web interface in the *Management UI*,
+      the command line (:command:`univention-directory-manager` or :command:`udm`),
+      or the HTTP REST API.
+
+      .. TODO: Replace the reference after UDM conctent is available. See univention/dev/ucs#2592.
+
+      For more information,
+      see :ref:`component-domain-management`
+      in :cite:t:`ucs-architecture`.
