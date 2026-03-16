@@ -23,17 +23,6 @@ define([
 
 	var ucr = {};
 
-	var checkLicense = function() {
-		tools.umcpCommand('udm/license', {}, false).then(function(data) {
-			var msg = data.result.message;
-			if (msg) {
-				dialog.warn(msg);
-			}
-		}, function() {
-			console.warn('WARNING: An error occurred while verifying the license. Ignoring error.');
-		});
-	};
-
 	var _showActivationDialog = function() {
 		// The following check is only for if this dialogue is opened via topic.publish()
 		if (ucr['uuid/license']) {
@@ -60,7 +49,6 @@ define([
 	topic.subscribe('/umc/license/activation', _showActivationDialog);
 
 	return function() {
-		checkLicense();
 		tools.ucr(['uuid/license']).then(function(_ucr) {
 			lang.mixin(ucr, _ucr);
 			addActivationMenu();
