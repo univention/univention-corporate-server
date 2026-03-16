@@ -178,12 +178,6 @@ Description[en]=If this option is activated, ldaps instead of 'Start TLS' is use
 Type=bool
 Categories=service-adcon
 
-[con.*/password/service/encoding]
-Description[de]=Der Passwortdienst unter Windows benötigt den Benutzernamen bei der Passwortänderung im iso8859-Format. Mit dieser Variable kann das Encoding gesetzt werden. Abweichungen von der Voreinstellung sollten nur in Sonderfällen nötig sein.
-Description[en]=The password service in Windows requires the user name to be in iso8859 format for changing the password. The encoding can be set with this variable. Deviations from the standard setting should only be necessary in corner cases.
-Type=str
-Categories=service-adcon
-
 [con.*/ad/mapping/kerberosdomain]
 Description[de]=Über diese Variable kann ein abweichender Name für die Kerberos-Domäne angegeben werden. Ist sie gesetzt, wird beim Anlegen eines Benutzers im Active Directory der Kerberos Principal auf den Wert '<uid>@KERBEROSDOMAIN' gesetzt.
 Description[en]=This variable can be used to configure a different Kerberos domain. If it is set, the Kerberos principal of a user created in Active Directory is set to '<uid>@KERBEROSDOMAIN'.

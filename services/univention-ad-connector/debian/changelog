@@ -1,3 +1,10 @@
+univention-ad-connector (16.6.1) unstable; urgency=medium
+
+  * Bug #59128: remove obsolete UCR variable
+    connector/password/service/encoding
+
+ -- Florian Best <best@univention.de>  Mon, 16 Mar 2026 13:49:01 +0100
+
 univention-ad-connector (16.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
