@@ -11,7 +11,6 @@ Architecture: any
 Depends:
  libc6-i686 [i386],
  linux-image-${F:BinaryVersion},
- linux-image-${F:BinaryVersion}-signed [amd64],
  univention-config,
  univention-initrd (>= 6.0.0-2),
 Recommends:
