@@ -2,336 +2,258 @@
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _doc-entry:
+.. _intro:
 
 ************
 Introduction
 ************
 
-Welcome to the Manual for users and administrators of Univention Corporate Server (UCS).
-This document is for system administrators who operate UCS.
+.. TODO: Update this paragraph when new chapters or topics are added to the manual.
 
-.. _introduction-what-is-ucs:
+Welcome to the Operation Manual for Nubus for Univention Corporate Server (UCS).
 
-What is Univention Corporate Server?
-====================================
+This manual targets technical administrators who operate UCS domains and systems.
+It assumes familiarity with Linux system administration,
+networking concepts,
+and directory services such as LDAP.
+
+This manual covers the following topics:
+domain infrastructure, management interfaces, software lifecycle,
+identity and access management, and system administration.
+Each chapter includes conceptual overviews and task-oriented procedures.
+
+For installation procedures,
+see the :ref:`deployment` chapter.
+For architectural concepts and design decisions,
+see :cite:t:`ucs-architecture`.
+
+.. _intro-understanding-nubus-for-ucs:
+
+Understanding Nubus and UCS
+============================
+
+This section explains what Nubus and UCS are, how they relate to each other,
+and what capabilities they provide when deployed together.
+
+.. _intro-understanding-nubus-for-ucs-whats-nubus:
+
+What is Nubus?
+--------------
+
+Univention Nubus is an open-source solution for identity and access management.
+It provides a portal as the central entry point for end users
+and provides the following core capabilities:
+
+* Administration of users and groups across your organization.
+
+* User self-service capabilities through the portal.
+
+* Integration interfaces that connect various applications to the identity system.
+
+* Single sign-on across integrated applications.
+
+Nubus consolidates identity management and application access into one system.
+Built-in integrations connect third-party applications to the identity management system,
+eliminating the need for separate authentication systems.
+
+Nubus runs on different platforms.
+This manual covers Nubus for Univention Corporate Server.
+For Nubus on Kubernetes, see
+:cite:t:`uv-nubus-kubernetes-operation`.
+
+.. _intro-understanding-nubus-for-ucs-whats-ucs:
+
+What is UCS?
+------------
 
 Univention Corporate Server (UCS) is a Linux-based server operating system
-for the operation and administration of IT infrastructures for companies and authorities.
-UCS implements an integrated, holistic concept with consistent, central administration.
-It can ensure the operation of all the components in an interrelated security and trust context, the so-called UCS domain.
-At the same time, UCS supports a wide range of open standards
-and includes extensive interfaces to infrastructure components and management tools from other manufacturers,
-meaning it can integrate with existing environments.
+that serves as the platform for deploying Nubus.
+UCS provides the infrastructure layer on which Nubus runs.
 
-UCS consists of reliable open source software, tried and tested in organizations of different sizes.
-UCS combines these software components through a unified web interface.
-This allows the integration and administration of the system in both simple and complex distributed or virtualized environments.
+Nubus for UCS provides two layers of functionality.
+Nubus covers the core identity and access management capabilities,
+and UCS adds the broader infrastructure services:
 
-The central functions of UCS are:
-
-* Flexible and extensive identity/infrastructure management
-  for the central administration of servers, workstations, users,
-  and their permissions, server applications and web services.
-
-* Services for integrating the management of existing Microsoft Active Directory domains
-  or even the provision of such services as an alternative for Microsoft-based server systems.
-
-* App Center for simple installation and management of extensions and applications.
-
-* Network and intranet services for administration of DHCP and DNS.
-
+* Network services for DHCP and DNS administration.
 * File and print services.
-
 * Computer administration and monitoring.
-
 * Mail services.
+* Univention App Center for installing additional applications and extensions.
+* Services for integrating or replacing existing Microsoft Active Directory domains.
 
-Different software packages in UCS provide these functions covered in detail throughout this manual.
-Basically, the software packages contained in UCS belong to one of the following main categories:
+.. _intro-understanding-nubus-for-ucs-together:
 
-1. Base system
+How Nubus and UCS work together
+--------------------------------
 
-2. UCS management system with |UCSUMC| modules
+Nubus for UCS uses a unified administration model.
+All components operate in a shared security and trust context—the Nubus for UCS domain.
+UCS combines Nubus and the infrastructure services through the *Management UI*,
+a unified web interface for managing the system
+across distributed and virtualized environments.
 
-3. Univention App Center,
-   allowing the installation of further components and applications of other software vendors
+Nubus for UCS includes extensive interfaces to infrastructure components
+and management tools from third-party vendors,
+so you can integrate it with existing environments.
 
-The *base system* encompasses the operating system of the UCS Linux distribution
-maintained by Univention, and based on Debian GNU/Linux.
-It largely includes the same software selection as Debian GNU/Linux,
-as well as, additional tools for the installation, updating, and configuration of clients and servers.
+You can find details on each of these components throughout this manual.
 
-The |UCSUMS| realizes a single point of administration
-where a single directory service manages the accounts of all domain members,
-such as users, groups, and hosts,
-and services, such as DNS, and DHCP.
-Core components of the management system are the following services:
+.. _intro-key-concepts:
 
-* OpenLDAP for the directory service
+Key concepts
+============
 
-* Samba for provision of domain, file and print services for Windows
+The following concepts are central to how Nubus for UCS operates.
+Each section provides a brief overview.
+For detailed information, see the referenced chapters.
 
-* Kerberos for authentication and single sign-on
-
-* DNS for network name resolution
-
-* TLS for secure data transmission between systems
-
-You can use UCS through a web interface, the |UCSUMC| modules,
-or in the command line and in individual scripts.
-You can extend the UCS management system with APIs (application programming interfaces).
-UCS provides a flexible client-server architecture
-which transfers changes to the involved systems and activates them there.
-
-You can install additional components from Univention and other manufacturers through the App Center.
-They expand the system with numerous functions such as groupware,
-document management, and services for Windows,
-meaning that you can also operate them on a UCS system and administer them through the UCS management system.
-
-.. _introduction-nubus:
-
-What is Univention Nubus?
-=========================
-
-Univention Nubus is an open source solution for integrating identity and access management of various applications.
-It offers the following functions:
-
-* administration of users and groups
-
-* a portal with integrated user self service as the first entry port for end users
-
-* numerous interfaces for the integration of applications
-
-* shared single sign-on
-
-Standard integrations based on these interfaces connect common applications.
-Most components of Nubus originate directly from UCS.
-
-Nubus is the Univention product for identity and access management and the portal.
-You can deploy Nubus as part of UCS or on a Kubernetes cluster.
-Univention Corporate Server (UCS) is a way to deploy Nubus
-with services and integrations on hardware or virtual machines.
-
-.. _introduction-overview-ucs:
-
-Overview of UCS
-===============
-
-Linux is an operating system which always had a focus on stability,
-security and compatibility with other operating systems. Therefore Linux
-is predestined for being used in server operating systems that are
-stable, secure and highly available.
-
-Built on that base, UCS is a server operating system which is optimized
-for the simple and secure operation and management of applications and
-infrastructure services in enterprises and public authorities. For
-efficient and secure management such applications rely on the tight
-integration in the user and permission management of the |UCSUMS|.
-
-UCS can be employed as the basis for the IT infrastructure in companies
-and authorities and provide the central control for it. This makes a
-considerable contribution to secure, efficient and cost-effective IT
-operation. The business-critical applications are integrated in a
-uniform concept, adapted to each other and pre-configured for
-professional utilization. Alternatively it can be operated as part of an
-existing Microsoft Active Directory domain.
-
-.. _introduction-commissioning:
-
-Commissioning
--------------
-
-The use of UCS begins either with a classic operating system
-installation on a physical server or as a virtual machine. Further
-information can be found in :ref:`installation-chapter`.
-
-.. _introduction-domain-concept:
+.. _intro-domain-concept:
 
 Domain concept
 --------------
 
-In an IT infrastructure managed with UCS, all servers, clients and users
-are contained in a common security and trust context, referred to as the
-UCS domain. Every UCS system is assigned a so-called server role during
-the installation. Possible system roles are Directory Node,
-|UCSMANAGEDNODE| and client.
+Nubus for UCS manages your IT infrastructure within a common security and trust context
+called the Nubus for UCS domain.
+The domain contains all servers, clients, and users.
+During installation,
+you assign each Nubus for UCS system a server role.
+:numref:`intro-domain-concept-figure` illustrates a domain concept across multiple locations
+with different system roles.
 
-.. _introduction-domain:
+For detailed information on system roles,
+domain join procedures,
+and client integration,
+see :ref:`domain-infrastructure`.
+
+.. _intro-domain-concept-figure:
 
 .. figure:: /images/domainconcept.*
-   :alt: UCS domain concept
+   :alt: Nubus for UCS domain concept
 
-   UCS domain concept
+   Nubus for UCS domain concept
 
-Depending on the system role within the domain, such services as
-Kerberos, OpenLDAP, Samba, modules for domain replication or a Root CA
-(certification authority) are installed on the computer. These are
-automatically configured for the selected system role. The manual
-implementation and configuration of every single service and application
-is therefore not required. Due to the modular design and extensive
-configuration interfaces, tailor-made solutions to individual
-requirements can nevertheless be realized.
+.. _intro-management-ui:
 
-The integration of Samba, which provides the domain service for clients
-and servers operated with Microsoft Windows, makes Univention Corporate
-Server compatible with Microsoft Active Directory (AD), whereby the
-system acts as an Active Directory server for Windows-based systems.
-Consequently, for example, group policies for Microsoft Windows systems
-can be administrated in the usual way.
+Management UI
+-------------
 
-UCS can also be operated as part of an existing Microsoft Active
-Directory domain. This way, users and groups of the Active Directory
-domain can access applications from the Univention App Center.
+The *Management UI* provides web-based access to the LDAP directory
+through management modules.
+You can use management modules to display, edit, delete,
+and search data in the LDAP directory.
+The web interface provides wizards for administering users, groups, networks,
+computers, directory shares, and printers.
+For an overview of the available modules,
+see :numref:`intro-management-ui-figure`.
 
-Ubuntu or macOS clients can be integrated in a UCS environment, as well
-(see :ref:`computers-ubuntu`).
+.. _intro-management-ui-figure:
 
-.. _introduction-expandability-with-components:
+.. figure:: /images/umc-favorites-tab.*
+   :alt: Management modules in the Management UI
 
-Expandability with the Univention App Center
---------------------------------------------
+   Management modules in the *Management UI*
 
-The Univention App Center offers additional UCS components and
-extensions and a broad selection of business IT software, e.g.,
-groupware and collaboration, file exchange, CRM or backup. These
-applications can be installed in existing environments with a few clicks
-and are usually ready to use. In most cases they are directly integrated
-into the |UCSUMS| such that they are available as |UCSUMC| modules. This
-provides a central management of data on the domain level and obsoletes
-the separate management of, e.g., user data in multiple places.
+For command-line administration,
+:term:`Univention Directory Manager` lets you perform
+domain-wide administrative tasks through scripts or automated processes.
+Management modules also let you configure individual computers,
+including software installation and service monitoring.
 
-.. _introduction-ldap-directory-service:
+.. TODO: Add cross-reference after Management UI and UDM content is available in the document. See univention/dev/ucs#2591.
+
+For detailed information about the *Management UI* and UDM commands,
+see :external+uv-ucs-manual:ref:`central-general`
+in :cite:t:`ucs-manual`.
+
+.. _intro-ldap-directory-service:
 
 LDAP directory service
 ----------------------
 
-With the |UCSUMS|, all the components of the UCS domain can be centrally
-administrated across computer, operating system and site boundaries. It
-thus provides a single point of administration for the domain. One
-primary element of the UCS management system is an LDAP directory in
-which the data required across the domain for the administration are
-stored. In addition to the user accounts and similar elements, the data
-basis of services such as DHCP is also saved there. The central data
-management in the LDAP directory avoids not only the repeated entry of
-the same data, but also reduces the probability of errors and
-inconsistencies.
+An LDAP directory stores the data you need across the domain,
+including user accounts and service configurations such as DHCP.
+Central data management in the LDAP directory eliminates duplicate data entry
+and reduces errors and inconsistencies.
 
-An LDAP directory has a tree-like structure, the root of which forms the
-so-called basis of the UCS domain. The UCS domain forms the common
-security and trust context for its members. An account in the LDAP
-directory establishes the membership in the UCS domain for users.
-Computers receive a computer account when they join the domain.
-Microsoft Windows systems can also join the domain such that users can
-sign in there with their domain passport.
+.. TODO: Replace this cross-reference after LDAP directory content is available in the document. See univention/dev/ucs#3326.
 
-UCS utilizes OpenLDAP as a directory service server. The directory is
-provided by the |UCSPRIMARYDN| and replicated on all UCS Directory Nodes
-in the domain. The complete LDAP directory is also replicated on a
-|UCSBACKUPDN| as this can replace the |UCSPRIMARYDN| in an emergency. In
-contrast, the replication on |UCSREPLICADN| can be restricted to certain
-areas of the LDAP directory using ACLs (access control lists) in order
-to realize a selective replication. For example, this may be desirable
-if data should only be stored on as few servers as possible for security
-reasons. For secure communication of all systems within the domain, UCS
-integrates a root CA (certification authority).
+For detailed information about LDAP schema management,
+replication topology,
+and directory node roles,
+see :external+uv-ucs-manual:ref:`domain-ldap`
+in :cite:t:`ucs-manual`.
 
-Further information can be found in :ref:`domain-ldap`.
-
-.. _introduction-domain-administration:
-
-Domain administration
----------------------
-
-.. _introduction-umc:
-
-.. figure:: /images/umc-favorites-tab.*
-   :alt: |UCSUMC| modules
-
-   |UCSUMC| modules
-
-Access to the LDAP directory is performed via a web-based user interface
-through |UCSUMC| (UMC) modules. In addition to this, |UCSUDM| allows the
-realization of all domain-wide administrative tasks via a command line
-interface. This is particularly suitable for the integration in scripts
-or automated administrative steps.
-
-|UCSUMC| modules allows to display, edit, delete, and search the data in
-the LDAP directory via various filter criteria. The web interface offers
-a range of wizards for the administration of user, groups, networks,
-computers, directory shares and printers. The administration of
-computers also comprises comprehensive functions for distributing and
-updating software. The integrated LDAP directory browser can be used to
-make further settings and add customer-specific object classes or
-attributes.
-
-Further information can be found in :ref:`central-general`.
-
-.. _introduction-computer-administration:
-
-Computer administration
------------------------
-
-|UCSUMC| modules allows not only the access to the LDAP directory, but
-also the web-based configuration and administration of individual
-computers. These include the adaptation of configuration data, the
-installation of software as well as the monitoring and control of
-services and the operating system itself. With the |UCSUMS|, domain
-administration as well as computer and server configuration is possible
-from any place via a comfortable graphic web interface.
-
-.. _introduction-policy-concept:
+.. _intro-policy-concept:
 
 Policy concept
 --------------
 
-The tree-like structure of LDAP directories is similar to that of a file
-system It ensures that objects (such as users, computers, etc.) are in
-one container which itself can be adopted by other containers. The root
-container is also called the LDAP base object.
+LDAP directories have a hierarchical structure.
+Objects such as users and computers exist in containers,
+and containers can contain other containers.
+The root container forms the LDAP base object.
 
-Policies describe certain administrative settings which are applied to
-more than one object. Linked to containers, they facilitate the
-administration as they are effective for all objects in the container in
-question as well as the objects in subfolders.
+Policies describe settings that apply to multiple objects.
+When you link policies to containers,
+they apply to all objects in that container and its subcontainers,
+without requiring you to configure each object individually.
 
-For example, users can be organized in different containers or
-organizational units (which are a form of containers) depending on which
-department they belong to. Settings such as the desktop background or
-accessible programs can then be connected to these organizational units
-using policies. Subsequently, they apply for all users within the
-organizational unit in question.
+Nubus for UCS uses policies for various administrative tasks,
+including:
 
-Further information can be found in :ref:`central-policies`.
+* Maintenance policies that control when systems install or remove packages,
+  see :ref:`lifecycle-package-maintenance-policy`.
 
-.. _introduction-listener-notifier-replication:
+* Password policies that enforce security requirements for user accounts,
+  see :ref:`password-management-policies`.
+
+* Repository server policies that specify which update server the systems use,
+  see :ref:`lifecycle-local-repository-policy`.
+
+For information about creating and managing policies,
+see :external+uv-nubus-manual:ref:`nubus-domain-policies`
+in :cite:t:`uv-nubus-manual`.
+
+.. _intro-app-center:
+
+Univention App Center
+---------------------
+
+Univention App Center is a centralized platform for discovering,
+installing, and managing applications in your Nubus for UCS domain.
+It handles the complete application lifecycle—from installation and configuration
+to updates and removal—for both traditional packages and Docker applications.
+
+The chapter :ref:`lifecycle-app-center` covers App Center installation and management in detail.
+
+.. _intro-listener-notifier-replication:
 
 Listener/notifier replication
------------------------------
+------------------------------
 
-The listener/notifier mechanism is an important technical component of
-the |UCSUMS|. With this, the creation, editing or deleting of entries in
-the LDAP directory triggers defined actions on the computers in
-question. For example, the creation of a directory share with the UMC
-module :guilabel:`Shares` leads to the share firstly being
-entered in the LDAP directory. The listener/notifier mechanism then
-ensures that the NFS and Samba configuration files are also expanded
-accordingly on the selected server and that the directory is created in
-the file system of the selected server if it does not already exist.
+The listener/notifier mechanism propagates changes across the domain.
+When you create, edit, or delete entries in the LDAP directory,
+the mechanism triggers defined actions on the affected computers.
+For example,
+when you create a directory share,
+the mechanism updates the NFS and Samba configuration files
+and creates the directory on the selected server.
 
-The listener/notifier mechanism can be expanded with modules for
-further - also customer-specific - procedures. Consequently, it is used
-by numerous technology partners for the integration of their products in
-the LDAP directory service and the |UCSUMS| for example.
+You can extend the listener/notifier mechanism with custom modules
+to integrate third-party products with the LDAP directory service.
 
-Further information can be found in :ref:`domain-listener-notifier`.
+.. TODO: Replace this cross-reference after Listener/Notifier content is available in the document. See univention/dev/ucs#3327.
+
+For detailed information about the listener/notifier mechanism,
+see :external+uv-ucs-manual:ref:`domain-listener-notifier`
+in :cite:t:`ucs-manual`.
 
 .. _feedback:
 
 Feedback
 ========
 
-Your feedback on this documentation is welcome and highly appreciated.
-If you have any comments, suggestions, or criticisms,
-please
+Your feedback on this documentation is welcome.
+If you have any comments, suggestions, or corrections,
 `submit your feedback <https://www.univention.com/feedback/?ucs-operation-manual=generic>`_
 to improve the document.
