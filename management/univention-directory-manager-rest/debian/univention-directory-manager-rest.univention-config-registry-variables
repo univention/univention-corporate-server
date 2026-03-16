@@ -93,3 +93,11 @@ Description[de]=Gibt die Passwortdatei an, die das bind-Passwort für die LDAP-V
 Description[en]=Specifies the password file containing the bind password for the LDAP connection types "machine-read", "machine-write".
 Type=str
 Categories=service-udm
+
+[nubus/platform]
+Description[de]=Gibt an auf welcher Platform UDM REST API läuft.
+Description[en]=Specifies the platform where UDM REST API is running on.
+Type=str
+Default=ucs
+Regex=^(ucs|n4k)?$
+Categories=service-udm

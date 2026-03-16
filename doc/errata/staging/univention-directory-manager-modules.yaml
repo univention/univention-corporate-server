@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-directory-manager-modules
+fix: 17.5.10
+desc: |
+ This update addresses the following issue:
+ * The license interface has been extended to use the `entryUUID` of the
+   license as fallback key ID.
+bug: [59176]

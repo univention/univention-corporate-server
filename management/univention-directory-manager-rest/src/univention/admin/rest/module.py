@@ -36,11 +36,13 @@ from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
 from ldap.dn import explode_rdn
 from ldap.filter import filter_format
+from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, Gauge, Info, generate_latest
 from tornado.concurrent import run_on_executor
 from tornado.web import Finish, HTTPError, RequestHandler
 
 import univention
 import univention.admin.authorization as udm_auth
+import univention.admin.license as udm_license
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.types as udm_types
@@ -65,7 +67,7 @@ from univention.admin.rest.utils import (
     RE_UUID, NotFound, _get_post_read_entry_uuid, _map_normalized_dn, decode_properties, parse_content_type, quote_dn,
     superordinate_names, unquote_dn,
 )
-from univention.config_registry import handler_set
+from univention.config_registry import handler_set, ucr_live
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import (
@@ -91,6 +93,8 @@ MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 request_context = contextvars.ContextVar("request_context")
 
 log = univention.logging.Structured(logging.getLogger('MODULE'))
+
+registry = CollectorRegistry()
 
 
 class ResourceBase(SanitizerBase, HAL, HTML):
@@ -317,12 +321,12 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         return lang
 
     def decode_request_arguments(self):
-        content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
         if self.request.method in ('HEAD', 'GET', 'OPTIONS', 'DELETE'):
             if self.request.body:
                 raise HTTPError(400, 'Safe HTTP method should not contain request body/Content-Type header.')
             return
 
+        content_type = parse_content_type(self.request.headers.get('Content-Type', ''))
         if content_type in ('application/json', 'application/json-patch+json'):
             try:
                 self.request.body_arguments = json.loads(self.request.body)
@@ -3124,7 +3128,6 @@ class License(Resource):
         self.add_form_element(form, 'license', '', type='file', label=_('License file (ldif format)'))
         self.add_form_element(form, '', _('Import license'), type='submit')
 
-        import univention.admin.license as udm_license
         try:
             udm_license.license.initialize(self.ldap_connection)
         except udm_errors.licenseError:
@@ -3203,8 +3206,67 @@ class ServiceSpecificPassword(Resource):
         self.content_negotiation(result)
 
 
-class ReloadAPI(Resource):
+class Metrics(Resource):
+    """Prometheus metrics endpoint."""
 
+    ucs_version = Info('version_ucs', 'UCS version information', ['domain'], registry=registry)
+    n4k_version = Info('version_n4k', 'Nubus4Kubernetes version information', ['domain'], registry=registry)
+    nubus_version = Info('version_nubus', 'Nubus version information', ['domain'], registry=registry)
+    domain_users = Gauge('users_user_total', 'Total number of UDM objects of type users/user', ['domain'], registry=registry)
+    license_limit_users = Gauge('settings_license_users_limit_total', 'Number of active users permitted by the installed license', ['domain'], registry=registry)
+
+    def get(self):
+        data = dict(ucr_live.items())
+        lo, _po = get_machine_ldap_read_connection()
+        try:
+            udm_license.license.initialize(lo)
+        except udm_errors.licenseError:  # license signature invalid, etc
+            pass
+
+        domain = data['domainname']
+        license_key = udm_license.license.get_key_id(lo)
+        if data.get('version/version'):
+            self.ucs_version.labels(domain=domain).info(
+                {
+                    'ucs': data['version/version'],
+                    'patch': data['version/patchlevel'],
+                    'errata': data['version/erratalevel'],
+                    'license-uuid': license_key,
+                    'system-uuid': data['uuid/system'],
+                },
+            )
+        if data.get('version-n4k/version'):
+            self.n4k_version.labels(domain=domain).info(
+                {
+                    'major': data['version-n4k/major'],
+                    'minor': data['version-n4k/minor'],
+                    'patch': data['version-n4k/patch'],
+                    'license-uuid': license_key,
+                },
+            )
+
+        self.nubus_version.labels(domain=domain).info({'platform': data.get('nubus/platform', 'k8s')})
+
+        limit = udm_license.license.get_user_limit()
+        actual = udm_license.license.get_user_total()
+        limit = float('inf') if limit is None else limit
+        actual = -1 if actual is None else int(actual)
+
+        self.domain_users.labels(domain=domain).set(actual)
+        self.license_limit_users.labels(domain=domain).set(limit)
+
+        self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
+        self.set_header('Content-Type', CONTENT_TYPE_LATEST)
+        self.write(generate_latest(registry))
+
+    def check_acceptable(self):
+        return 'json'
+
+    def get_authorization_policy(self):
+        return ('metrics', ['cn=udm-rest-metrics,cn=groups,{ldap/base}'.format(**ucr)] + super().get_authorization_policy()[1])
+
+
+class ReloadAPI(Resource):
     # this sends a SIGUSR1 to the parent process, which upon USR1
     # in the processes=1 case, reloads all child processes with SIGHUP (by calling signal_handler_reload)
     # in the processes>1 case, sends SIGHUP to its (multiprocess) parent, which reloads all child processes
@@ -3285,6 +3347,7 @@ class Application(tornado.web.Application):
             (f"{root_path}/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
             (f"{root_path}/udm/progress/([a-z0-9]{{8}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{4}}-[a-z0-9]{{12}})", Operations),
             (rf"{root_path}/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": "/var/www/univention/udm", "default_filename": "index.html"}),
+            (rf"{root_path}/udm/-/metrics", Metrics),
             (rf"{root_path}/udm/-/reload", ReloadAPI),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
         ], default_handler_class=Nothing, **settings)

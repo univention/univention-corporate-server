@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.5.10) unstable; urgency=medium
+
+  * Bug #59176: extend license interface to get fallback UUID for
+    license key ID
+
+ -- Florian Best <best@univention.de>  Thu, 09 Apr 2026 14:10:46 +0200
+
 univention-directory-manager-modules (17.5.9) unstable; urgency=medium
 
   * Bug #59060: bypass TTL cache in univention-license-check for accurate counts

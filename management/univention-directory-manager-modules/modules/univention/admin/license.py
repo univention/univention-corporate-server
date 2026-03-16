@@ -349,6 +349,11 @@ class License:
         log.info('License cache updated', **counts)
         return counts
 
+    def _get_license_entry_uuid(self, lo):
+        for dn, attr in lo.authz_connection.search(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))', attr=['entryUUID']):
+            return attr['entryUUID'][0].decode('ASCII')
+        return configRegistry.get('uuid/license', '00000000-0000-0000-000-0000000000000')
+
 
 class LicenseWrapper:
     """Licence interface."""
@@ -428,6 +433,9 @@ class LicenseWrapper:
 
     def get_system_accounts(self):
         return _license.sysAccountsFound
+
+    def get_key_id(self, lo):
+        return _license.licenseKeyID or _license._get_license_entry_uuid(lo)
 
     def get_license_data(self):
         def tryint(val, default=-1):
