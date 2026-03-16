@@ -275,31 +275,20 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
     def license_info(self, request):
         self.require_license(self.get_ldap_connection()[0])
-        license_data = {}
-        license_data['licenseVersion'] = udm_license._license.version
-        for item in ('licenses', 'real'):
-            license_data[item] = {}
-            for lic_type in ('SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS'):
-                count = getattr(udm_license._license, item)[udm_license._license.version][getattr(udm_license.License, lic_type)]
-                if isinstance(count, str):
-                    try:
-                        count = int(count)
-                    except ValueError:
-                        count = None
-                license_data[item][lic_type.lower()] = count
-        license_data['keyID'] = udm_license._license.licenseKeyID
-        license_data['support'] = udm_license._license.licenseSupport
-        license_data['premiumSupport'] = udm_license._license.licensePremiumSupport
-        license_data['licenseTypes'] = udm_license._license.types
-        license_data['oemProductTypes'] = udm_license._license.oemProductTypes
-        license_data['endDate'] = udm_license._license.endDate
-        license_data['baseDN'] = udm_license._license.licenseBase
-        free_license = ''
-        if license_data['baseDN'] in ('Free for personal use edition', 'UCS Core Edition'):
-            free_license = 'core'
-            license_data['baseDN'] = ucr.get('ldap/base', '')
-        license_data['freeLicense'] = free_license
-        license_data['sysAccountsFound'] = udm_license._license.sysAccountsFound
+        license_data = udm_license.license.get_license_data()
+
+        # conform to legacy structure?
+        license_data['licenseVersion'] = license_data['version']
+        license_data['licenses'] = {'servers': license_data['limits']['server'], 'users': license_data['limits']['user'], 'managedclients': license_data['limits']['client']}
+        license_data['real'] = {'servers': license_data['used']['server'], 'users': license_data['used']['user'], 'managedclients': license_data['used']['client']}
+        license_data['keyID'] = license_data['key_id']
+        license_data['premiumSupport'] = license_data['premium_support']
+        license_data['licenseTypes'] = license_data['license_types']
+        license_data['oemProductTypes'] = license_data['oem_product_types']
+        license_data['endDate'] = license_data['end_date']
+        license_data['baseDN'] = license_data['base_dn']
+        license_data['sysAccountsFound'] = license_data['system_accounts_total']
+        license_data['freeLicense'] = license_data['free_license']
 
         self.finished(request.id, license_data)
 

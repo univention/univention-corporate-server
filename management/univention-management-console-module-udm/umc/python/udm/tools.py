@@ -165,8 +165,7 @@ def dump_license():
         del _pos
         # just one license (should be always the case)
         # return the dictionary without the dn
-        data = ldif.CreateLDIF(data[0][0], data[0][1])
-        return data
+        return ldif.CreateLDIF(data[0][0], data[0][1])
     except Exception as e:
         # no udm, no ldap, malformed return value, whatever
         MODULE.error('getting License from LDAP failed: %s', e)

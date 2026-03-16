@@ -537,20 +537,21 @@ class UCS_License_detection:
             raise LicenseInsufficient(_("Internal Error: License check failed."))
 
         try:
-            self._license.init_select(lo, 'admin')
-        except uexceptions.base:  # licenseInvalid, ...
+            univention.admin.license.license.initialize(lo)
+        except uexceptions.licenseError:
             pass
 
         license_sufficient = True
         error_msg = None
 
-        max_objs = self._license.licenses['2'][self.License.USERS]
-        num = self._license.real['2'][self.License.USERS]
+        max_objs = univention.admin.license.license.get_user_limit()
+        num = univention.admin.license.license.get_user_total()
+        sys_accounts = univention.admin.license.license.get_system_accounts()
 
         if max_objs and num:
             object_displayname = _('users')
             log.info("Found %s %s objects on the remote server.", domain_info["users"], object_displayname)
-            sum_objs = num + domain_info["users"] - self._license.sysAccountsFound
+            sum_objs = num + domain_info["users"] - sys_accounts
             domain_info["licensed_users"] = max_objs
             domain_info["estimated_users"] = sum_objs
             if self._license.compare(sum_objs, max_objs) > 0:

@@ -271,71 +271,75 @@ class bootpXORFailover(base):
     message = _('Dynamic BOOTP leases are not compatible with failover.')
 
 
-class licenseNotFound(base):
+class licenseError(base):
+    pass
+
+
+class licenseNotFound(licenseError):
     message = _('No license found.')
 
 
-class licenseInvalid(base):
+class licenseInvalid(licenseError):
     message = _('The license is invalid.')
 
 
-class licenseExpired(base):
+class licenseExpired(licenseError):
     message = _('The license is expired.')
 
 
-class licenseWrongBaseDn(base):
+class licenseWrongBaseDn(licenseError):
     message = _('The license is invalid for the current base DN.')
 
 
-class licenseCoreEdition(base):
+class licenseCoreEdition(licenseError):
     message = 'UCS Core Edition.'
 
 
-class freeForPersonalUse(base):
+class freeForPersonalUse(licenseError):
     message = 'Free for personal use edition.'
 
 
-class licenseAccounts(base):
+class licenseAccounts(licenseError):
     message = _('Too many user accounts')
 
 
-class licenseClients(base):
+class licenseClients(licenseError):
     message = _('Too many client accounts')
 
 
-class licenseDesktops(base):
+class licenseDesktops(licenseError):
     message = _('Too many desktop accounts')
 
 
-class licenseGroupware(base):
+class licenseGroupware(licenseError):
     message = _('Too many groupware accounts')
 
 
-class licenseUsers(base):
+class licenseUsers(licenseError):
     message = _('Too many users')
 
 
-class licenseServers(base):
+class licenseServers(licenseError):
     message = _('Too many servers')
 
 
-class licenseManagedClients(base):
+class licenseManagedClients(licenseError):
     message = _('Too many managed clients')
 
 
-class licenseCorporateClients(base):
+class licenseCorporateClients(licenseError):
     message = _('Too many corporate clients')
 
 
-class licenseDVSUsers(base):
+class licenseDVSUsers(licenseError):
     message = _('Too many DVS users')
 
 
-class licenseDVSClients(base):
+class licenseDVSClients(licenseError):
     message = _('Too many DVS clients')
 
 
-class licenseDisableModify(base):
+class licenseDisableModify(licenseError):
     message = _('During this session add and modify are disabled')
 
 
