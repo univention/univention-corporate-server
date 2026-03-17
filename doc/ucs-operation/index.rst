@@ -78,7 +78,7 @@ and UCS adds the broader infrastructure services:
 * File and print services.
 * Computer administration and monitoring.
 * Mail services.
-* The Univention App Center for installing additional applications and extensions.
+* Univention App Center for installing additional applications and extensions.
 * Services for integrating or replacing existing Microsoft Active Directory domains.
 
 .. _intro-understanding-nubus-for-ucs-together:
@@ -161,7 +161,7 @@ including software installation and service monitoring.
 
 .. TODO: Add cross-reference after Management UI and UDM content is available in the document. See univention/dev/ucs#2591.
 
-For detailed information about the Management UI and UDM commands,
+For detailed information about the *Management UI* and UDM commands,
 see :external+uv-ucs-manual:ref:`central-general`
 in :cite:t:`ucs-manual`.
 
@@ -223,7 +223,7 @@ The Univention App Center adds applications and integrations to Nubus for UCS.
 Most applications integrate directly into the *Management UI* as management modules,
 so you can manage application data at the domain level.
 
-The :ref:`lifecycle` chapter covers App Center installation and management in detail.
+The :ref:`lifecycle` chapter covers app installation and management in detail.
 
 .. _intro-listener-notifier-replication:
 
