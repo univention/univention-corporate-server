@@ -85,12 +85,6 @@ define([
 			}
 
 			var entries = {};
-			if (this.licenseInfo.licenseVersion === 'gpl') {
-				entries = [
-					[_('License type'), _('GPL')],
-					[_('You are using a GPL license which is not eligible for maintenance or support claims.')]
-				];
-			} else {
 				// content: license info and upload widgets
 				var product = '';
 				if (this.licenseInfo.oemProductTypes.length === 0) {
@@ -100,14 +94,12 @@ define([
 				}
 
 				var additionalInfo = {
-					'ffpu': _('The license type "Free for personal use" can be upgraded to the latest <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">UCS Core Edition license</a> allowing an unlimited amount of user and computer accounts. To upgrade, follow the instructions in the <a href="http://sdb.univention.de/1324" target="_blank">Univention Support Database</a>.'),
 					'core': _('Information about the <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">terms of use</a> for this free license can be found on the Univention website. Information about the <a href="https://www.univention.com/enterprise-subscriptions" target="_blank">UCS Enterprise Subscriptions</a> can also be found there.'),
 					'': ''
 				}[this.licenseInfo.freeLicense];
 				this._additionalInfoWidget.set('content', additionalInfo);
 
 				var licenseTypeLabel = {
-					'ffpu': 'Free for personal use edition',
 					'core': 'UCS Core Edition',
 					'': _('UCS License')
 				}[this.licenseInfo.freeLicense];
@@ -149,7 +141,6 @@ define([
 						[_('Valid product types'), product]
 					];
 				}
-			}
 
 			// render information
 			var html = array.map(entries, function(ientry) {
