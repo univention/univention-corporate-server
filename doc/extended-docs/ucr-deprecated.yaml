@@ -586,3 +586,9 @@
   - pxe/installer/loglevel
   - pxe/installer/ipappend
   - pxe/installer/profiles
+
+- git: e58fc12245a360d42be01a4af1a14419ae9071db
+  obsolete: "4.1-2"
+  desc: univention-ad-connector
+  vars:
+    - connector/password/service/encoding
