@@ -1,13 +1,12 @@
 # SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-13 16:25+0000\n"
-"PO-Revision-Date: 2026-01-14 15:20+0100\n"
+"POT-Creation-Date: 2026-03-19 11:05+0000\n"
+"PO-Revision-Date: 2026-03-19 12:06+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -15,25 +14,479 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../index.rst:8
+#: ../../index.rst:9
 msgid "Introduction"
 msgstr "Einleitung"
 
-#: ../../index.rst:17
+#: ../../index.rst:13
+msgid ""
+"Welcome to the Operation Manual for Nubus for Univention Corporate Server"
+" (UCS)."
+msgstr ""
+"Willkommen im Betriebshandbuch für Nubus für Univention Corporate Server "
+"(UCS)."
+
+#: ../../index.rst:15
+msgid ""
+"This manual targets technical administrators who operate UCS domains and "
+"systems. It assumes familiarity with Linux system administration, "
+"networking concepts, and directory services such as LDAP."
+msgstr ""
+"Dieses Handbuch richtet sich an technische Administratoren, die UCS-"
+"Domänen und -Systeme betreiben. Es setzt Kenntnisse in Linux-"
+"Systemadministration, Netzwerkkonzepten und Verzeichnisdiensten wie LDAP "
+"voraus."
+
+#: ../../index.rst:20
+msgid ""
+"This manual covers the following topics: domain infrastructure, "
+"management interfaces, software lifecycle, identity and access "
+"management, and system administration. Each chapter includes conceptual "
+"overviews and task-oriented procedures."
+msgstr ""
+"Dieses Handbuch behandelt folgende Themen: Domänen-Infrastruktur, "
+"Verwaltungsschnittstellen, Software-Lebenszyklus, Identitäts- und "
+"Zugriffsverwaltung sowie Systemadministration. Jedes Kapitel enthält "
+"konzeptionelle Übersichten und aufgabenorientierte Anleitungen."
+
+#: ../../index.rst:25
+msgid ""
+"For installation procedures, see the :ref:`deployment` chapter. For "
+"architectural concepts and design decisions, see :cite:t:`ucs-"
+"architecture`."
+msgstr ""
+"Installationsverfahren finden Sie im Kapitel :ref:`deployment`. "
+"Architekturkonzepte und Designentscheidungen finden Sie in :cite:t:`ucs-"
+"architecture`."
+
+#: ../../index.rst:33
+msgid "Understanding Nubus and UCS"
+msgstr "Nubus und UCS verstehen"
+
+#: ../../index.rst:35
+msgid ""
+"This section explains what Nubus and UCS are, how they relate to each "
+"other, and what capabilities they provide when deployed together."
+msgstr ""
+"Dieser Abschnitt erklärt, was Nubus und UCS sind, wie sie zusammenhängen "
+"und welche Funktionen sie gemeinsam bereitstellen."
+
+#: ../../index.rst:41
+msgid "What is Nubus?"
+msgstr "Was ist Nubus?"
+
+#: ../../index.rst:43
+msgid ""
+"Univention Nubus is an open-source solution for identity and access "
+"management. It provides a portal as the central entry point for end users"
+" and provides the following core capabilities:"
+msgstr ""
+"Univention Nubus ist eine Open Source-Lösung für Identitäts- und "
+"Zugriffsverwaltung. Es stellt ein Portal als zentralen Einstiegspunkt für"
+" Endbenutzer bereit und bietet folgende Kernfunktionen:"
+
+#: ../../index.rst:47
+msgid "Administration of users and groups across your organization."
+msgstr "Verwaltung von Benutzern und Gruppen in Ihrer Organisation."
+
+#: ../../index.rst:49
+msgid "User self-service capabilities through the portal."
+msgstr "Self-Service Funktionen für Benutzer über das Portal."
+
+#: ../../index.rst:51
+msgid ""
+"Integration interfaces that connect various applications to the identity "
+"system."
+msgstr ""
+"Integrationsschnittstellen, die verschiedene Anwendungen mit dem "
+"Identitätssystem verbinden."
+
+#: ../../index.rst:53
+msgid "Single sign-on across integrated applications."
+msgstr "Single Sign-On für integrierte Anwendungen."
+
+#: ../../index.rst:55
+msgid ""
+"Nubus consolidates identity management and application access into one "
+"system. Built-in integrations connect third-party applications to the "
+"identity management system, eliminating the need for separate "
+"authentication systems."
+msgstr ""
+"Nubus fasst Identitätsverwaltung und Anwendungszugriff in einem System "
+"zusammen. Integrierte Schnittstellen verbinden Anwendungen von "
+"Drittanbietern mit dem Identitätsverwaltungssystem und machen separate "
+"Authentifizierungssysteme überflüssig."
+
+#: ../../index.rst:59
+msgid ""
+"Nubus runs on different platforms. This manual covers Nubus for "
+"Univention Corporate Server. For Nubus on Kubernetes, see :cite:t:`uv-"
+"nubus-kubernetes-operation`."
+msgstr ""
+"Nubus läuft auf verschiedenen Plattformen. Dieses Handbuch behandelt "
+"Nubus für Univention Corporate Server. Für Nubus auf Kubernetes, siehe "
+":cite:t:`uv-nubus-kubernetes-operation`."
+
+#: ../../index.rst:67
+msgid "What is UCS?"
+msgstr "Was ist UCS?"
+
+#: ../../index.rst:69
+msgid ""
+"Univention Corporate Server (UCS) is a Linux-based server operating "
+"system that serves as the platform for deploying Nubus. UCS provides the "
+"infrastructure layer on which Nubus runs."
+msgstr ""
+"Univention Corporate Server (UCS) ist ein Linux-basiertes Server-"
+"Betriebssystem, das als Plattform für den Betrieb von Nubus dient. UCS "
+"stellt die Infrastruktur bereit, auf der Nubus läuft."
+
+#: ../../index.rst:73
+msgid ""
+"Nubus for UCS provides two layers of functionality. Nubus covers the core"
+" identity and access management capabilities, and UCS adds the broader "
+"infrastructure services:"
+msgstr ""
+"Nubus für UCS bietet zwei Funktionsebenen. Nubus deckt die Kernfunktionen"
+" für Identitäts- und Zugriffsverwaltung ab, und UCS ergänzt die "
+"umfassenderen Infrastrukturdienste:"
+
+#: ../../index.rst:77
+msgid "Network services for DHCP and DNS administration."
+msgstr "Netzwerkdienste für DHCP- und DNS-Verwaltung."
+
+#: ../../index.rst:78
+msgid "File and print services."
+msgstr "Datei- und Druckdienste."
+
+#: ../../index.rst:79
+msgid "Computer administration and monitoring."
+msgstr "Computerverwaltung und -:spelling:word:`überwachung`."
+
+#: ../../index.rst:80
+msgid "Mail services."
+msgstr "E-Mail-Dienste."
+
+#: ../../index.rst:81
+msgid ""
+"Univention App Center for installing additional applications and "
+"extensions."
+msgstr ""
+"Univention App Center zur Installation zusätzlicher Anwendungen und "
+"Erweiterungen."
+
+#: ../../index.rst:82
+msgid ""
+"Services for integrating or replacing existing Microsoft Active Directory"
+" domains."
+msgstr ""
+"Dienste zur Integration oder Ablösung bestehender Microsoft Active "
+"Directory-Domänen."
+
+#: ../../index.rst:87
+msgid "How Nubus and UCS work together"
+msgstr "Zusammenspiel von Nubus und UCS"
+
+#: ../../index.rst:89
+msgid ""
+"Nubus for UCS uses a unified administration model. All components operate"
+" in a shared security and trust context—the Nubus for UCS domain. UCS "
+"combines Nubus and the infrastructure services through the *Management "
+"UI*, a unified web interface for managing the system across distributed "
+"and virtualized environments."
+msgstr ""
+"Nubus für UCS verwendet ein einheitliches Verwaltungsmodell. Alle "
+"Komponenten arbeiten in einem gemeinsamen Sicherheits- und "
+"Vertrauenskontext – der Nubus für UCS-Domäne. UCS verbindet Nubus und die"
+" Infrastrukturdienste über die *Management UI*, eine einheitliche "
+"Weboberfläche zur Verwaltung des Systems in verteilten und "
+"virtualisierten Umgebungen."
+
+#: ../../index.rst:95
+msgid ""
+"Nubus for UCS includes extensive interfaces to infrastructure components "
+"and management tools from third-party vendors, so you can integrate it "
+"with existing environments."
+msgstr ""
+"Nubus für UCS umfasst umfangreiche Schnittstellen zu "
+"Infrastrukturkomponenten und Verwaltungswerkzeugen von Drittanbietern, "
+"sodass Sie es in bestehende Umgebungen integrieren können."
+
+#: ../../index.rst:99
+msgid "You can find details on each of these components throughout this manual."
+msgstr "Details zu den einzelnen Komponenten finden Sie in diesem Handbuch."
+
+#: ../../index.rst:104
+msgid "Key concepts"
+msgstr "Schlüsselkonzepte"
+
+#: ../../index.rst:106
+msgid ""
+"The following concepts are central to how Nubus for UCS operates. Each "
+"section provides a brief overview. For detailed information, see the "
+"referenced chapters."
+msgstr ""
+"Die folgenden Konzepte sind grundlegend für den Betrieb von Nubus für "
+"UCS. Jeder Abschnitt bietet eine kurze Übersicht. Detaillierte "
+"Informationen finden Sie in den referenzierten Kapiteln."
+
+#: ../../index.rst:113
+msgid "Domain concept"
+msgstr "Domänenkonzept"
+
+#: ../../index.rst:115
+msgid ""
+"Nubus for UCS manages your IT infrastructure within a common security and"
+" trust context called the Nubus for UCS domain. The domain contains all "
+"servers, clients, and users. During installation, you assign each Nubus "
+"for UCS system a server role. :numref:`intro-domain-concept-figure` "
+"illustrates a domain concept across multiple locations with different "
+"system roles."
+msgstr ""
+"Nubus für UCS verwaltet Ihre IT-Infrastruktur in einem gemeinsamen "
+"Sicherheits- und Vertrauenskontext, der als Nubus für UCS-Domäne "
+"bezeichnet wird. Die Domäne enthält alle Server, Clients und Benutzer. "
+"Bei der Installation weisen Sie jedem Nubus für UCS-System eine "
+"Serverrolle zu. :numref:`intro-domain-concept-figure` veranschaulicht ein"
+" Domänenkonzept über mehrere Standorte mit verschiedenen Systemrollen."
+
+#: ../../index.rst:123
+msgid ""
+"For detailed information on system roles, domain join procedures, and "
+"client integration, see :ref:`domain-infrastructure`."
+msgstr ""
+"Detaillierte Informationen zu Systemrollen, Verfahren für den "
+"Domänenbeitritt und Client-Integration finden Sie unter :ref:`domain-"
+"infrastructure`."
+
+#: ../../index.rst:130 ../../index.rst:133
+msgid "Nubus for UCS domain concept"
+msgstr "Nubus für UCS-Domänenkonzept"
+
+#: ../../index.rst:138
+msgid "Management UI"
+msgstr "Management UI"
+
+#: ../../index.rst:140
+msgid ""
+"The *Management UI* provides web-based access to the LDAP directory "
+"through management modules. You can use management modules to display, "
+"edit, delete, and search data in the LDAP directory. The web interface "
+"provides wizards for administering users, groups, networks, computers, "
+"directory shares, and printers. For an overview of the available modules,"
+" see :numref:`intro-management-ui-figure`."
+msgstr ""
+"Die *Management UI* bietet webbasierten Zugriff auf das LDAP-Verzeichnis "
+"über Verwaltungsmodule. Sie können Verwaltungsmodule verwenden, um Daten "
+"im LDAP-Verzeichnis anzuzeigen, zu bearbeiten, zu löschen und zu suchen. "
+"Die Weboberfläche bietet Assistenten zur Verwaltung von Benutzern, "
+"Gruppen, Netzwerken, Computern, Freigaben von Verzeichnissen und "
+"Druckern. Eine Übersicht der verfügbaren Module finden Sie unter :numref"
+":`intro-management-ui-figure`."
+
+#: ../../index.rst:151
+msgid "Management modules in the Management UI"
+msgstr "Verwaltungsmodule in der Management UI"
+
+#: ../../index.rst:154
+msgid "Management modules in the *Management UI*"
+msgstr "Verwaltungsmodule in der *Management UI*"
+
+#: ../../index.rst:156
+msgid ""
+"For command-line administration, :term:`Univention Directory Manager` "
+"lets you perform domain-wide administrative tasks through scripts or "
+"automated processes. Management modules also let you configure individual"
+" computers, including software installation and service monitoring."
+msgstr ""
+"Für die Befehlszeilenverwaltung ermöglicht :term:`Univention Directory "
+"Manager` die Ausführung domänenweiter Verwaltungsaufgaben über Skripte "
+"oder automatisierte Prozesse. Verwaltungsmodule ermöglichen auch die "
+"Konfiguration einzelner Computer, einschließlich Softwareinstallation und"
+" Dienstüberwachung."
+
+#: ../../index.rst:164
+msgid ""
+"For detailed information about the *Management UI* and UDM commands, see "
+":external+uv-ucs-manual:ref:`central-general` in :cite:t:`ucs-manual`."
+msgstr ""
+"Detaillierte Informationen zur *Management UI* und zu UDM Befehlen finden"
+" Sie unter :external+uv-ucs-manual:ref:`central-general` im :cite:t:`ucs-"
+"manual`."
+
+#: ../../index.rst:171
+msgid "LDAP directory service"
+msgstr "LDAP-Verzeichnisdienst"
+
+#: ../../index.rst:173
+msgid ""
+"An LDAP directory stores the data you need across the domain, including "
+"user accounts and service configurations such as DHCP. Central data "
+"management in the LDAP directory eliminates duplicate data entry and "
+"reduces errors and inconsistencies."
+msgstr ""
+"Ein LDAP-Verzeichnis speichert die domänenweit benötigten Daten, "
+"einschließlich Benutzerkonten und Dienstkonfigurationen wie DHCP. Die "
+"zentrale Datenverwaltung im LDAP-Verzeichnis vermeidet doppelte "
+"Dateneingaben und reduziert Fehler und Inkonsistenzen."
+
+#: ../../index.rst:180
+msgid ""
+"For detailed information about LDAP schema management, replication "
+"topology, and directory node roles, see :external+uv-ucs-manual:ref"
+":`domain-ldap` in :cite:t:`ucs-manual`."
+msgstr ""
+"Detaillierte Informationen zur LDAP-Schemaverwaltung, "
+":spelling:word:`Replikationstopologie` und Rollen für Verzeichnisknoten "
+"finden Sie unter :external+uv-ucs-manual:ref:`domain-ldap` im :cite:t"
+":`ucs-manual`."
+
+#: ../../index.rst:189
+msgid "Policy concept"
+msgstr "Richtlinienkonzept"
+
+#: ../../index.rst:191
+msgid ""
+"LDAP directories have a hierarchical structure. Objects such as users and"
+" computers exist in containers, and containers can contain other "
+"containers. The root container forms the LDAP base object."
+msgstr ""
+"LDAP-Verzeichnisse haben eine hierarchische Struktur. Objekte wie "
+"Benutzer und Computer befinden sich in Containern, und Container können "
+"andere Container enthalten. Der Stammcontainer bildet das LDAP-"
+"Basisobjekt."
+
+#: ../../index.rst:196
+msgid ""
+"Policies describe settings that apply to multiple objects. When you link "
+"policies to containers, they apply to all objects in that container and "
+"its subcontainers, without requiring you to configure each object "
+"individually."
+msgstr ""
+"Richtlinien beschreiben Einstellungen, die für mehrere Objekte gelten. "
+"Wenn Sie Richtlinien mit Containern verknüpfen, gelten sie für alle "
+"Objekte in diesem Container und seinen Untercontainern, ohne dass Sie "
+"jedes Objekt einzeln konfigurieren müssen."
+
+#: ../../index.rst:201
+msgid "Nubus for UCS uses policies for various administrative tasks, including:"
+msgstr ""
+"Nubus für UCS verwendet Richtlinien für verschiedene Verwaltungsaufgaben,"
+" darunter:"
+
+#: ../../index.rst:204
+msgid ""
+"Maintenance policies that control when systems install or remove "
+"packages, see :ref:`lifecycle-package-maintenance-policy`."
+msgstr ""
+"Wartungsrichtlinien, die steuern, wann Systeme Pakete installieren oder "
+"entfernen, siehe :ref:`lifecycle-package-maintenance-policy`."
+
+#: ../../index.rst:207
+msgid ""
+"Password policies that enforce security requirements for user accounts, "
+"see :ref:`password-management-policies`."
+msgstr ""
+"Kennwortrichtlinien, die Sicherheitsanforderungen für Benutzerkonten "
+"durchsetzen, siehe :ref:`password-management-policies`."
+
+#: ../../index.rst:210
+msgid ""
+"Repository server policies that specify which update server the systems "
+"use, see :ref:`lifecycle-local-repository-policy`."
+msgstr ""
+"Richtlinien für Repository-Server, die festlegen, welchen Update-Server "
+"die Systeme verwenden, siehe :ref:`lifecycle-local-repository-policy`."
+
+#: ../../index.rst:213
+msgid ""
+"For information about creating and managing policies, see :external+uv-"
+"nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Informationen zum Erstellen und Verwalten von Richtlinien finden Sie "
+"unter :external+uv-nubus-manual:ref:`nubus-domain-policies` im :cite:t"
+":`uv-nubus-manual`."
+
+#: ../../index.rst:220
+msgid "Univention App Center"
+msgstr "Univention App Center"
+
+#: ../../index.rst:222
+msgid ""
+"Univention App Center is a centralized platform for discovering, "
+"installing, and managing applications in your Nubus for UCS domain. It "
+"handles the complete application lifecycle—from installation and "
+"configuration to updates and removal—for both traditional packages and "
+"Docker applications."
+msgstr ""
+"Univention App Center ist eine zentrale Plattform zum Suchen, "
+"Installieren und Verwalten von Anwendungen in Ihrer Nubus für UCS-Domäne."
+" Es verwaltet den vollständigen Anwendungslebenszyklus—von der "
+"Installation und Konfiguration bis zu Updates und der "
+"Deinstallation—sowohl für herkömmliche Pakete als auch für Docker-"
+"Anwendungen."
+
+#: ../../index.rst:227
+msgid ""
+"The chapter :ref:`lifecycle-app-center` covers App Center installation "
+"and management in detail."
+msgstr ""
+"Das Kapitel :ref:`lifecycle-app-center` behandelt die Installation und Verwaltung "
+"von Apps im Detail."
+
+#: ../../index.rst:232
+msgid "Listener/notifier replication"
+msgstr "Listener/Notifier-Replikation"
+
+#: ../../index.rst:234
+msgid ""
+"The listener/notifier mechanism propagates changes across the domain. "
+"When you create, edit, or delete entries in the LDAP directory, the "
+"mechanism triggers defined actions on the affected computers. For "
+"example, when you create a directory share, the mechanism updates the NFS"
+" and Samba configuration files and creates the directory on the selected "
+"server."
+msgstr ""
+"Der Listener/Notifier-Mechanismus verbreitet Änderungen in der Domäne. "
+"Wenn Sie Einträge im LDAP-Verzeichnis erstellen, bearbeiten oder löschen,"
+" löst der Mechanismus definierte Aktionen auf den betroffenen Computern "
+"aus. Wenn Sie beispielsweise eine Verzeichnisfreigabe erstellen, "
+"aktualisiert der Mechanismus die NFS- und Samba-Konfigurationsdateien und"
+" erstellt das Verzeichnis auf dem ausgewählten Server."
+
+#: ../../index.rst:242
+msgid ""
+"You can extend the listener/notifier mechanism with custom modules to "
+"integrate third-party products with the LDAP directory service."
+msgstr ""
+"Sie können den Listener/Notifier-Mechanismus mit benutzerdefinierten "
+"Modulen erweitern, um Produkte von Drittanbietern in den LDAP-"
+"Verzeichnisdienst zu integrieren."
+
+#: ../../index.rst:247
+msgid ""
+"For detailed information about the listener/notifier mechanism, see "
+":external+uv-ucs-manual:ref:`domain-listener-notifier` in :cite:t:`ucs-"
+"manual`."
+msgstr ""
+"Detaillierte Informationen zum Listener/Notifier-Mechanismus finden Sie "
+"unter :external+uv-ucs-manual:ref:`domain-listener-notifier` im :cite:t"
+":`ucs-manual`."
+
+#: ../../index.rst:254
 msgid "Feedback"
 msgstr "Feedback"
 
-#: ../../index.rst:19
+#: ../../index.rst:256
 msgid ""
-"Your feedback on this documentation is welcome and highly appreciated. If"
-" you have any comments, suggestions, or criticisms, please `submit your "
-"feedback <https://www.univention.com/feedback/?ucs-operation-"
-"manual=generic>`_ to improve the document."
+"Your feedback on this documentation is welcome. If you have any comments,"
+" suggestions, or corrections, `submit your feedback "
+"<https://www.univention.com/feedback/?ucs-operation-manual=generic>`_ to "
+"improve the document."
 msgstr ""
-"Ihr Feedback zu dieser Dokumentation ist willkommen und gern gesehen. "
-"Wenn Sie Kommentare, Ergänzungen oder Kritik haben, "
-"`übermitteln Sie bitte Ihr Feedback <https://www.univention.de/feedback/?ucs-operation-manual=generic>`_, "
-"um das Dokument zu verbessern."
-
+"Ihr Feedback zu dieser Dokumentation ist willkommen. Wenn Sie Kommentare,"
+" Vorschläge oder Korrekturen haben, `übermitteln Sie bitte Ihr Feedback "
+"<https://www.univention.com/feedback/?ucs-operation-manual=generic>`_, um"
+" das Dokument zu verbessern."
