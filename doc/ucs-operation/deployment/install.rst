@@ -27,6 +27,10 @@ Cloud Deployment
 VMware-Specific Considerations
    Platform-specific configuration and driver requirements for VMware environments.
 
+Secure Boot
+   Prerequisites for installing and running Nubus for UCS
+   on systems with UEFI Secure Boot enabled.
+
 Each method guides you through the same core configuration steps:
 network setup, hard drive partitioning, hostname and domain naming,
 and the domain configuration.
@@ -49,6 +53,8 @@ In addition to support for the widely distributed BIOS systems,
 the DVD also includes support for the Unified Extensible Firmware Interface (UEFI) standard.
 The UEFI support on the DVD is also capable of starting systems with activated Secure Boot
 and installing Nubus for UCS there.
+For prerequisites and known limitations,
+see :ref:`deployment-installation-secure-boot`.
 
 .. important::
 
@@ -133,7 +139,7 @@ VMware-specific considerations
 
 If you install Nubus for UCS as a guest in VMware,
 select the option :menuselection:`Linux --> Debian` as the *Guest operating system*,
-because Nubus for UCS bases on Debian GNU/Linux.
+because Nubus for UCS builds on Debian GNU/Linux.
 
 The Linux kernel in Nubus for UCS includes all the support drivers necessary for operation in VMware,
 such as :file:`vmw_balloon`, :file:`vmw_pvsci`, :file:`vmw_vmci`, :file:`vmwgfx`, and :file:`vmxnet3`.
@@ -143,3 +149,95 @@ You can install them through the :program:`open-vm-tools` package.
 The package is optional,
 but necessary for features such as automatic time synchronization
 between the virtualization server and the guest system.
+
+.. _deployment-installation-secure-boot:
+
+Secure Boot
+-----------
+
+Nubus for UCS supports UEFI Secure Boot.
+You don't need to deactivate Secure Boot before installing from the DVD.
+
+Secure Boot relies on a chain of trust
+where the system firmware verifies each component before loading it.
+On Nubus for UCS, this chain works as follows:
+
+#. The UEFI firmware loads :program:`shim`,
+   a *first-stage boot loader* signed by Microsoft.
+   The firmware verifies :program:`shim` against the certificates
+   in the firmware's trust store.
+
+#. :program:`shim` loads the Debian-signed :program:`GRUB` boot loader.
+   :program:`shim` verifies :program:`GRUB`
+   using Debian's key embedded at build time
+   and checks the *Secure Boot Advanced Targeting (SBAT) revocation level*.
+
+#. :program:`GRUB` loads the Linux kernel, also signed by Debian.
+
+Because Nubus for UCS builds on Debian GNU/Linux,
+it uses Debian's signed boot components.
+The following conditions in the current Debian Secure Boot tool chain
+can prevent a successful boot on certain hardware.
+
+SBAT revocation level
+~~~~~~~~~~~~~~~~~~~~~
+
+The *Secure Boot Advanced Targeting (SBAT) revocation level*
+controls which boot loader versions the firmware accepts.
+
+The :program:`GRUB` boot loader on the Nubus for UCS installation media
+declares SBAT generation ``grub,4``.
+Some systems have a higher *SBAT revocation level* stored in their firmware,
+which causes them to reject this :program:`GRUB` version.
+
+A system can have an elevated SBAT level for the following reasons:
+
+* A previous Microsoft Windows installation raised the SBAT level to ``grub,5``
+  through a Windows Update firmware update.
+
+* A previous Linux distribution with a newer :program:`GRUB` version
+  raised the SBAT level.
+
+The *SBAT revocation level* persists in UEFI firmware memory (NVRAM).
+Removing the previous operating system doesn't clear it.
+
+Systems that have never had their SBAT level raised aren't affected.
+
+If the system rejects the boot loader with a *Security Violation* error,
+deactivate Secure Boot in the firmware setup before installation.
+
+.. note::
+
+   Tools such as :program:`Rufus` version 4.6 and later
+   check the SBAT generation proactively
+   and display a *revoked UEFI bootloader* warning.
+   This warning indicates a potential incompatibility,
+   not a security problem with the Nubus for UCS installation media.
+
+Firmware certificate requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :program:`shim` boot loader on the Nubus for UCS installation media
+is signed with the *Microsoft Corporation UEFI CA 2011* certificate.
+The firmware must include this certificate in its trust store
+to verify :program:`shim` before loading it.
+
+Most systems ship with this certificate pre-installed.
+However, some hardware released in 2024 and later
+ships only with the newer *Microsoft UEFI CA 2023* certificate
+and doesn't include the 2011 certificate.
+
+On these systems, the firmware doesn't recognize :program:`shim`
+and refuses to boot from the installation media.
+
+To install Nubus for UCS on affected hardware,
+use one of the following approaches:
+
+* Enroll the *Microsoft Corporation UEFI CA 2011* certificate
+  in the firmware setup.
+
+* Deactivate Secure Boot in the firmware setup before installation.
+
+This limitation affects the entire Debian ecosystem.
+Debian resolves it when it ships a :program:`shim` version
+signed with the *Microsoft UEFI CA 2023* certificate.
