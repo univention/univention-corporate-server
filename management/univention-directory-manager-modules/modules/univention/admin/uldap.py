@@ -345,7 +345,6 @@ class access:
                 raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         self.require_license = False
         self.allow_modify = True
-        self.licensetypes = ['UCS']
 
         from univention.admin.authorization import Authorization
 
@@ -404,9 +403,6 @@ class access:
     def __require_licence(self) -> None:
         if self.require_license:
             res = univention.admin.license.init_select(self.lo, 'admin')
-
-            assert univention.admin.license._license
-            self.licensetypes = univention.admin.license._license.types
 
             if res == 1:
                 self.allow_modify = False
