@@ -181,7 +181,7 @@ class property:
         one_only: bool = False,
         parent: None = None,
         options: list[str] = [],
-        license: list[str] = [],
+        license: None = None,
         required: bool = False,
         may_change: bool = True,
         identifies: bool = False,
@@ -208,12 +208,12 @@ class property:
         :param short_description: a short descriptive text - shown below the input filed in |UMC| by default.
         :param long_description: a long descriptive text - shown only on demand in |UMC|.
         :param syntax: a syntax class or instance to validate the value.
-        :param module_search: UNUSED?
+        :param module_search: UNUSED
         :param multivalue: allow only a single value (`False`) or multiple values (`True`) .
-        :param one_only: UNUSED?
-        :param parent: UNUSED?
+        :param one_only: UNUSED
+        :param parent: UNUSED
         :param options: List of options, which enable this property.
-        :param license: List of license strings, which are required to use this property.
+        :param license: UNUSED
         :param required: `True` for a required property, `False` for an optional property.
         :param may_change: `True` if the property can be changed after the object has been created, `False` when the property can only be specified when the object is created.
         :param identifies: `True` if the property is part of the set of properties, which are required to uniquely identify the object. The properties are used by default to build |RDN| for a new object.
@@ -224,8 +224,8 @@ class property:
         :param show_in_lists: `False` to prevent it from being shown in the CLI.
         :param cli_enabled: `True` to be able to set the attribute in the CLI.
         :param editable: `False` prevents the property from being modified by the user; it still can be modified by code.
-        :param configObjectPosition: UNUSED?
-        :param configAttributeName: UNUSED?
+        :param configObjectPosition: UNUSED
+        :param configAttributeName: UNUSED
         :param include_in_default_search: The default search searches this property when set to `True`.
         :param nonempty_is_default: `True` selects the first non-empty value as the default. `False` always selects the first default value, even if it is empty.
         :param readonly_when_synced: `True` only shows the value as read-only when synchronized from some upstream database.

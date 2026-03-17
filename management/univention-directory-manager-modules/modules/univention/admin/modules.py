@@ -761,60 +761,6 @@ def find_superordinate(dn: str, co: None, lo: univention.admin.uldap.access) -> 
     return None
 
 
-def layout(module_name: UdmName, object: Any = None) -> list[Tab]:
-    """return layout of properties"""
-    module = get(module_name)
-    defining_layout = None
-    if object:
-        log.debug('modules.py layout: got a defined object')
-
-    if object and hasattr(object, 'layout'):  # for dynamic modules like users/self
-        log.debug('modules.py layout:: layout is defined by the object')
-        defining_layout = object.layout
-    elif hasattr(module, 'layout'):
-        defining_layout = module.layout
-        log.debug('modules.py layout:: layout is defined by the module')
-
-    if defining_layout:
-        if object and hasattr(object, 'options'):
-            layout = []
-            for tab in defining_layout:
-                empty = True
-                fields = []
-                for line in tab.layout:
-                    nline = []
-                    for row in line:
-                        single = False
-                        nrow = []
-                        if isinstance(row, str):
-                            single = True
-                            row = [row]
-                        for field in row:
-                            prop = module.property_descriptions[field]
-                            nrow.append(field)
-                            if not prop.options or [opt for opt in prop.options if opt in object.options]:
-                                if not prop.license or [license for license in prop.license if license in object.lo.licensetypes]:
-                                    empty = False
-                        if nrow:
-                            if single:
-                                nrow = nrow[0]
-                            nline.append(nrow)
-                    if nline:
-                        fields.append(nline)
-                if fields and not empty:
-                    ntab = copy.deepcopy(tab)
-                    ntab.layout = fields
-                    layout.append(ntab)
-            log.debug('modules.py layout:: return layout decreased by given options')
-            return layout
-        else:
-            log.debug('modules.py layout:: return defining_layout.')
-            return defining_layout
-
-    else:
-        return []
-
-
 def options(module_name: UdmName) -> dict[str, Any]:
     """return options available for module"""
     module = get(module_name)
