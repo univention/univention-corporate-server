@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 19. Mar 2026
+     - :ref:`deployment-installation-secure-boot`
+     - Add section about secure boot in UCS.
+
    * - 17. Mar 2026
      - :ref:`doc-entry`
      - Add introduction for the Nubus for UCS Operation Manual.
