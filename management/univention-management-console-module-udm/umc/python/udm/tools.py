@@ -102,13 +102,11 @@ class LicenseImport(ldif.LDIFParser):
             ldap_con.add_s(self.dn, self.addlist)
 
 
-def check_license(ldap_connection, ignore_core_edition=False):
+def check_license(ldap_connection, ignore_core_edition=True):
     try:
-        try:
-            _check_license(ldap_connection)
-        except udm_errors.freeForPersonalUse:
-            if ignore_core_edition:
-                return
+        _check_license(ldap_connection)
+    except udm_errors.freeForPersonalUse:
+        return
     except udm_errors.licenseNotFound:
         raise LicenseError(_('License not found. During this session add and modify are disabled.'))
     except udm_errors.licenseAccounts:  # UCS license v1
@@ -139,8 +137,6 @@ def check_license(ldap_connection, ignore_core_edition=False):
         raise LicenseError(_('Your license is not valid. During this session add and modify are disabled.'))
     except udm_errors.licenseDisableModify:
         raise LicenseError(_('Your license does not allow modifications. During this session add and modify are disabled.'))
-    except udm_errors.freeForPersonalUse:
-        raise LicenseError(_('You are currently using the "Free for personal use" edition of Univention Corporate Server.'))
 
 
 def _check_license(ldap_connection):
