@@ -43,7 +43,6 @@ udm_modules.update()
 
 __bind_function = None
 __bind_hash = None
-_licenseCheck = 0
 
 
 def calculate_bind_hash(request):
