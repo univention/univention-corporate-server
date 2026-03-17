@@ -104,7 +104,7 @@ class LicenseImport(ldif.LDIFParser):
 
 def check_license(ldap_connection, ignore_core_edition=True):
     try:
-        _check_license(ldap_connection)
+        ldap_connection.check_license()
     except udm_errors.freeForPersonalUse:
         return
     except udm_errors.licenseNotFound:
@@ -137,26 +137,6 @@ def check_license(ldap_connection, ignore_core_edition=True):
         raise LicenseError(_('Your license is not valid. During this session add and modify are disabled.'))
     except udm_errors.licenseDisableModify:
         raise LicenseError(_('Your license does not allow modifications. During this session add and modify are disabled.'))
-
-
-def _check_license(ldap_connection):
-    mapping = {
-        1: udm_errors.licenseClients,
-        2: udm_errors.licenseAccounts,
-        3: udm_errors.licenseDesktops,
-        4: udm_errors.licenseGroupware,
-        5: udm_errors.freeForPersonalUse,
-        6: udm_errors.licenseUsers,
-        7: udm_errors.licenseServers,
-        8: udm_errors.licenseManagedClients,
-        9: udm_errors.licenseCorporateClients,
-        10: udm_errors.licenseDVSUsers,
-        11: udm_errors.licenseDVSClients,
-    }
-    code = univention.admin.license.init_select(ldap_connection, 'admin')
-    ldap_connection.authz_connection._validateLicense()  # throws more exceptions in case the license could not be found
-    if code in mapping:
-        raise mapping[code]
 
 
 # TODO: this should probably go into univention-lib

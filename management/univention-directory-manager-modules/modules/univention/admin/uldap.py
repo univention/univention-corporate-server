@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 import ldap
 
 import univention.admin.license
+import univention.admin.uexceptions
 import univention.uldap
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
@@ -372,7 +373,7 @@ class access:
             raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         except ldap.UNWILLING_TO_PERFORM:
             raise univention.admin.uexceptions.authFail(_('Authentication failed'))
-        self.__require_licence()
+        self.check_license()
 
     def bind_saml(self, bindpw: str) -> None:
         """
@@ -384,7 +385,7 @@ class access:
             return self.lo.bind_saml(bindpw)
         except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
             raise univention.admin.uexceptions.authFail(_('Authentication failed'))
-        self.__require_licence()
+        self.check_license()
 
     def bind_oauthbearer(self, authzid: str | None, bindpw: str) -> None:
         """
@@ -398,46 +399,32 @@ class access:
         except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM) as exc:
             log.debug('OAUTHBEARER authentication failed', error=repr(exc))
             raise univention.admin.uexceptions.authFail(_('Authentication failed'))
-        self.__require_licence()
+        self.check_license()
 
-    def __require_licence(self) -> None:
+    def check_license(self) -> None:
+        """
+        Check if the license exceeded allowed object count.
+
+        :raises univention.admin.uexceptions.licenseError: If the object count is exceeded.
+        """
         if self.require_license:
-            res = univention.admin.license.init_select(self.lo, 'admin')
-
-            if res == 1:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseClients()
-            elif res == 2:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseAccounts()
-            elif res == 3:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseDesktops()
-            elif res == 4:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseGroupware()
-            elif res == 5:
-                # Free for personal use edition
-                raise univention.admin.uexceptions.freeForPersonalUse()
-            # License Version 2:
-            elif res == 6:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseUsers()
-            elif res == 7:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseServers()
-            elif res == 8:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseManagedClients()
-            elif res == 9:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseCorporateClients()
-            elif res == 10:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseDVSUsers()
-            elif res == 11:
-                self.allow_modify = False
-                raise univention.admin.uexceptions.licenseDVSClients()
+            mapping = {
+                1: univention.admin.uexceptions.licenseClients,
+                2: univention.admin.uexceptions.licenseAccounts,
+                3: univention.admin.uexceptions.licenseDesktops,
+                4: univention.admin.uexceptions.licenseGroupware,
+                5: univention.admin.uexceptions.freeForPersonalUse,
+                6: univention.admin.uexceptions.licenseUsers,
+                7: univention.admin.uexceptions.licenseServers,
+                8: univention.admin.uexceptions.licenseManagedClients,
+                9: univention.admin.uexceptions.licenseCorporateClients,
+                10: univention.admin.uexceptions.licenseDVSUsers,
+                11: univention.admin.uexceptions.licenseDVSClients,
+            }
+            code = univention.admin.license.init_select(self, 'admin')
+            # init_select itself throws further exceptions in case the license could not be found, is expired, signature is invalid!
+            if code in mapping:
+                raise mapping[code]
 
     def unbind(self) -> None:
         """Unauthenticate."""
