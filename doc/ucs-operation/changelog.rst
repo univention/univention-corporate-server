@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 17. Mar 2026
+     - :ref:`doc-entry`
+     - Add introduction for the Nubus for UCS Operation Manual.
+
    * - 13. Mar 2026
      - :ref:`system-administration-network`
      - Add section about network configuration through the *Network settings* management module.
