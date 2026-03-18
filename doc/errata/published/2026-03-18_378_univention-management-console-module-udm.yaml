@@ -9,3 +9,6 @@ desc: |
  * The `univentionObjectIdentifier` is now set for all DNS, DHCP and license
    objects.
 bug: [58384]
+erratum: 378
+announced: 2026-03-18
+support: core
