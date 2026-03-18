@@ -1,0 +1,23 @@
+https://github.com/dojo/dojo1-dgrid/issues/1483
+
+https://github.com/dojo/dojo1-dgrid/commit/adf4d5923465af92387db0c1ee170c974800f964
+https://github.com/dojo/dojo1-dgrid/commit/d47da9f2ba0f4cecc90651e0b4daa90ef5d25deb
+
+https://forge.univention.org/bugzilla/show_bug.cgi?id=59095
+https://forge.univention.org/bugzilla/show_bug.cgi?id=58935
+https://forge.univention.org/bugzilla/show_bug.cgi?id=58930
+https://forge.univention.org/bugzilla/show_bug.cgi?id=59131
+
+diff --git List.js List.js
+index d7d68782..61c94618 100644
+--- List.js
++++ List.js
+@@ -31,7 +31,7 @@ define([
+ 	function byId(id, context) {
+ 		// document.getElementById only works for elements in the document
+ 		// dojo/query with the context parameter works for descendants of 'context' even when it is not in the document
+-		return query('#' + miscUtil.escapeCssIdentifier(id), context)[0];
++		return query('#' + miscUtil.escapeCssIdentifier(id), context)[0] || document.getElementById(id);
+ 	}
+
+ 	function cleanupTestElement(element) {
