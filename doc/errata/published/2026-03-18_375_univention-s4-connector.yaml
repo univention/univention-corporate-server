@@ -15,3 +15,6 @@ desc: |
    considers objects with `isDeleted=TRUE`,
    preventing unnecessary restore attempts.
 bug: [59113]
+erratum: 375
+announced: 2026-03-18
+support: core
