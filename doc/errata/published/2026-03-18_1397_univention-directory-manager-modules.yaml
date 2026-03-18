@@ -9,3 +9,6 @@ desc: |
  * A new extended attribute hook mechanism has been added, which is executed
    before and after moving an object.
 bug: [59112]
+erratum: 1397
+announced: 2026-03-18
+support: lts
