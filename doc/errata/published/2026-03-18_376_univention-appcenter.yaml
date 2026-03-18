@@ -12,3 +12,6 @@ desc: |
  * Links in app descriptions and license agreements now open in a
    new browser tab instead of loading inside the App Center iFrame.
 bug: [55073, 57501]
+erratum: 376
+announced: 2026-03-18
+support: core
