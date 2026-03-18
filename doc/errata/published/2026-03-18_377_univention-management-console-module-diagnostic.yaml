@@ -9,3 +9,6 @@ desc: |
  * A new diagnostic check warns when the Docker bridge network overlaps
    with a host network interface, which can cause routing issues.
 bug: [55073]
+erratum: 377
+announced: 2026-03-18
+support: core
