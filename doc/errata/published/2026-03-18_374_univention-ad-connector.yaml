@@ -16,3 +16,6 @@ desc: |
  * Documentation for the obsolete UCR variable
    `connector/password/service/encoding.` has been removed.
 bug: [59113, 59128]
+erratum: 374
+announced: 2026-03-18
+support: core
