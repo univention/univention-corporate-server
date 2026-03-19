@@ -1,7 +1,7 @@
 .. SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _ucs-operation-auth:
+.. _management-interface-auth:
 
 **************
 Authentication
@@ -13,7 +13,7 @@ For a general description,
 see :external+uv-nubus-manual:ref:`nubus-authentication`
 in :cite:t:`uv-nubus-manual`.
 
-.. _ucs-operation-auth-sign-in:
+.. _management-interface-auth-sign-in:
 
 Sign-in
 =======
@@ -23,14 +23,14 @@ see :external+uv-nubus-manual:ref:`nubus-authentication-sign-in`
 in :cite:t:`uv-nubus-manual`.
 This section covers settings and peculiarities for Nubus for UCS.
 
-.. _ucs-operation-auth-sign-in-choose-account:
+.. _management-interface-auth-sign-in-choose-account:
 
 Choose the right user account
 -----------------------------
 
 To sign in, enter the *Username* and *Password* of the corresponding domain account in the login mask.
 
-.. _ucs-operation-auth-sign-in-choose-account-admin:
+.. _management-interface-auth-sign-in-choose-account-admin:
 
 ``Administrator``
    For the general description,
@@ -52,7 +52,7 @@ To sign in, enter the *Username* and *Password* of the corresponding domain acco
    Use the ``Administrator`` account for the initial sign-in
    at a newly installed :term:`UCS Primary Directory Node`.
 
-.. _ucs-operation-auth-sign-in-choose-account-root:
+.. _management-interface-auth-sign-in-choose-account-root:
 
 ``root``
    In some cases, it might be necessary to sign in with the system's local ``root`` account.
@@ -61,14 +61,14 @@ To sign in, enter the *Username* and *Password* of the corresponding domain acco
 
    .. TODO: Replace reference to the UCS Manual, as soon as the referred section becomes available.
 
-.. _ucs-operation-auth-sign-in-choose-account-others:
+.. _management-interface-auth-sign-in-choose-account-others:
 
 Other user accounts
    For the general description,
    see :external+uv-nubus-manual:ref:`nubus-authentication-sign-in-choose-user-account-others`
    in :cite:t:`uv-nubus-manual`.
 
-.. _ucs-operation-auth-sign-in-session-timeout:
+.. _management-interface-auth-sign-in-session-timeout:
 
 Change Nubus web session timeout
 --------------------------------
@@ -95,7 +95,7 @@ Set the UCR variable
 to the value ``true``.
 The default value is ``false``.
 
-.. _ucs-operation-auth-sso:
+.. _management-interface-auth-sso:
 
 Single sign-on
 ==============
@@ -108,7 +108,7 @@ The default configuration in Nubus for UCS has single sign-on deactivated.
 After you install the :program:`Keycloak` app,
 Nubus for UCS uses SAML.
 
-.. _ucs-operation-auth-sso-saml:
+.. _management-interface-auth-sso-saml:
 
 SAML configuration for single sign-on
 -------------------------------------
@@ -118,7 +118,7 @@ Refer to
 :external+uv-keycloak-app:ref:`login-portal`
 in :cite:t:`ucs-keycloak-doc`.
 
-.. _ucs-operation-auth-sso-saml-activate:
+.. _management-interface-auth-sso-saml-activate:
 
 Activate SAML for single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,24 +132,24 @@ use the following steps for a better user experience:
 
 #. Change the UCR variable :envvar:`portal/auth-mode` to ``saml``
    with the command in
-   :numref:`ucs-operation-auth-sso-saml-listing`.
+   :numref:`management-interface-auth-sso-saml-listing`.
 
    .. code-block:: console
       :caption: Set *Portal* authentication mode to SAML
-      :name: ucs-operation-auth-sso-saml-listing
+      :name: management-interface-auth-sso-saml-listing
 
       $ ucr set portal/auth-mode="saml"
 
 #. To apply the configuration, restart the *Portal server* on every UCS node with the command in
-   :numref:`ucs-operation-auth-sso-saml-restart-listing`.
+   :numref:`management-interface-auth-sso-saml-restart-listing`.
 
    .. code-block:: console
       :caption: Restart *Portal* service
-      :name: ucs-operation-auth-sso-saml-restart-listing
+      :name: management-interface-auth-sso-saml-restart-listing
 
       $ systemctl restart univention-portal-server.service
 
-.. _ucs-operation-auth-sso-saml-update-portal:
+.. _management-interface-auth-sso-saml-update-portal:
 
 Update the default login tile in the Portal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,7 +183,7 @@ follow these steps:
       in :cite:t:`uv-nubus-manual`
       for information about the concept and the management of the *Portal* in Nubus.
 
-.. _ucs-operation-auth-sso-saml-restore:
+.. _management-interface-auth-sso-saml-restore:
 
 Restore login without single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -191,13 +191,13 @@ Restore login without single sign-on
 To change back to the default sign-in in Nubus for UCS without single sign-on,
 use the following steps:
 
-#. Revert the steps in :ref:`ucs-operation-auth-sso-saml-update-portal`.
+#. Revert the steps in :ref:`management-interface-auth-sso-saml-update-portal`.
 
 #. Set the UCR variable :envvar:`portal/auth-mode`
    to the value ``ucs``
-   in :ref:`ucs-operation-auth-sso-saml-activate`.
+   in :ref:`management-interface-auth-sso-saml-activate`.
 
-.. _ucs-operation-auth-sso-oidc:
+.. _management-interface-auth-sso-oidc:
 
 OpenID Connect for single sign-on
 ---------------------------------
@@ -221,7 +221,7 @@ Before you can use OIDC for single sign-on, you must meet the following requirem
    refer to :external+uv-keycloak-app:ref:`app-installation`
    in :cite:t:`ucs-keycloak-doc`.
 
-.. _ucs-operation-auth-sso-oidc-activate:
+.. _management-interface-auth-sso-oidc-activate:
 
 Activate OpenID Connect for single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -233,22 +233,22 @@ Second, you need to apply the following steps to each of those UCS systems.
    so that the automatic sign-in doesn't try SAML first, but instead uses OIDC directly.
 
    Change the UCR variable :envvar:`umc/web/oidc/enabled` to ``true`` with the command in
-   :numref:`ucs-operation-auth-sso-oidc-activate-listing`.
+   :numref:`management-interface-auth-sso-oidc-activate-listing`.
 
    .. code-block:: console
       :caption: Activate OpenID Connect and deactivate SAML
-      :name: ucs-operation-auth-sso-oidc-activate-listing
+      :name: management-interface-auth-sso-oidc-activate-listing
 
       $ ucr set \
          umc/web/sso/enabled=false \
          umc/web/oidc/enabled=true
 
 #. Run the join script for the UMC web server with the command in
-   :numref:`ucs-operation-auth-sso-oidc-activate-join-script-listing`.
+   :numref:`management-interface-auth-sso-oidc-activate-join-script-listing`.
 
    .. code-block:: console
       :caption: Run join script for the UMC web server
-      :name: ucs-operation-auth-sso-oidc-activate-join-script-listing
+      :name: management-interface-auth-sso-oidc-activate-join-script-listing
 
       $ univention-run-join-scripts \
          --force \
@@ -257,20 +257,20 @@ Second, you need to apply the following steps to each of those UCS systems.
 
 #. Change the UCR variable :envvar:`portal/auth-mode` to ``oidc``
    with the command in
-   :numref:`ucs-operation-auth-sso-oidc-portal-listing`.
+   :numref:`management-interface-auth-sso-oidc-portal-listing`.
    The default value is ``ucs``.
 
    .. code-block:: console
       :caption: Set *Portal* authentication mode to OIDC
-      :name: ucs-operation-auth-sso-oidc-portal-listing
+      :name: management-interface-auth-sso-oidc-portal-listing
 
       $ ucr set portal/auth-mode="oidc"
 
 #. To apply the configuration, restart the *Portal Server*
    on every UCS node with the command in
-   :numref:`ucs-operation-auth-sso-saml-restart-listing`.
+   :numref:`management-interface-auth-sso-saml-restart-listing`.
 
-.. _ucs-operation-auth-sso-oidc-sign-in-links:
+.. _management-interface-auth-sso-oidc-sign-in-links:
 
 Create sign-in links
 ~~~~~~~~~~~~~~~~~~~~
@@ -307,7 +307,7 @@ the :term:`UCS Primary Directory Node` with the commands in
       in :cite:t:`uv-nubus-manual`
       for information about the concept and the management of the *Portal* in Nubus.
 
-.. _ucs-operation-auth-sso-oidc-verification:
+.. _management-interface-auth-sso-oidc-verification:
 
 Verification and log files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -327,10 +327,10 @@ You can find relevant logging information in the following locations on the UCS 
 
 To reflect the changes for the login method in the *Portal*,
 you need to edit the *Login* tile manually,
-similar to the setup described in :ref:`ucs-operation-auth-sso-saml`.
+similar to the setup described in :ref:`management-interface-auth-sso-saml`.
 The link must point to ``/univention/oidc/``.
 
-.. _ucs-operation-auth-sso-oidc-deactivate:
+.. _management-interface-auth-sso-oidc-deactivate:
 
 Deactivate OpenID Connect for single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,41 +340,41 @@ you want to deactivate single sign-on using OpenID Connect.
 Second, you need to apply the following steps to each of those nodes.
 
 #. Unset the UCR variable :envvar:`umc/web/oidc/enabled` with the command in
-   :numref:`ucs-operation-auth-sso-oidc-deactivate-unset-oidc-listing`.
+   :numref:`management-interface-auth-sso-oidc-deactivate-unset-oidc-listing`.
 
    .. code-block:: console
       :caption: Unset ``umc/web/oidc/enabled``
-      :name: ucs-operation-auth-sso-oidc-deactivate-unset-oidc-listing
+      :name: management-interface-auth-sso-oidc-deactivate-unset-oidc-listing
 
       $ ucr unset umc/web/oidc/enabled
 
 #. Remove the :external+uv-keycloak-app:term:`OIDC RP` from Keycloak with the command in
-   :numref:`ucs-operation-auth-sso-oidc-deactivate-remove-rp-listing`.
+   :numref:`management-interface-auth-sso-oidc-deactivate-remove-rp-listing`.
 
    .. code-block:: console
       :caption: Remove the OIDC RP from Keycloak
-      :name: ucs-operation-auth-sso-oidc-deactivate-remove-rp-listing
+      :name: management-interface-auth-sso-oidc-deactivate-remove-rp-listing
 
       $ univention-keycloak oidc/rp remove \
          "$(ucr get umc/oidc/$(hostname -f)/client-id)"
 
 #. Unset all UCR variables that you find using the commands in
-   :numref:`ucs-operation-auth-sso-oidc-deactivate-search-ucr-listing`.
+   :numref:`management-interface-auth-sso-oidc-deactivate-search-ucr-listing`.
 
    .. code-block:: console
       :caption: Search for UCR variables to unset
-      :name: ucs-operation-auth-sso-oidc-deactivate-search-ucr-listing
+      :name: management-interface-auth-sso-oidc-deactivate-search-ucr-listing
 
       $ ucr search --brief --key ^umc/oidc
       $ ucr search --brief --key ^ldap/server/sasl/oauthbearer
 
 #. Remove the OIDC secret from the system and restart affected services
    with the commands in
-   :numref:`ucs-operation-auth-sso-oidc-deactivate-remove-secret-listing`.
+   :numref:`management-interface-auth-sso-oidc-deactivate-remove-secret-listing`.
 
    .. code-block:: console
       :caption: Remove OIDC secret
-      :name: ucs-operation-auth-sso-oidc-deactivate-remove-secret-listing
+      :name: management-interface-auth-sso-oidc-deactivate-remove-secret-listing
 
       $ rm -f \
          /etc/umc-oidc.secret \
@@ -386,9 +386,9 @@ Second, you need to apply the following steps to each of those nodes.
 
 #. Change the UCR variable :envvar:`portal/auth-mode` to ``ucs``
    and restart the *Portal Server*.
-   For details, see :ref:`ucs-operation-auth-sso-saml-restore`.
+   For details, see :ref:`management-interface-auth-sso-saml-restore`.
 
-.. _ucs-operation-auth-sso-oidc-non-standard-fqdn:
+.. _management-interface-auth-sso-oidc-non-standard-fqdn:
 
 Identity provider with non-standard FQDN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -405,18 +405,18 @@ for the OpenID Connect authentication in UMC on each UCS system.
 Change the UCR variable :envvar:`umc/oidc/issuer` to the FQDN of your :program:`Keycloak` identity provider
 and run the join script of the UMC web server again,
 as shown in
-:numref:`ucs-operation-auth-sso-oidc-non-standard-fqdn-listing`.
+:numref:`management-interface-auth-sso-oidc-non-standard-fqdn-listing`.
 
 .. code-block:: console
    :caption: Set non-standard FQDN for identity provider :program:`Keycloak`
-   :name: ucs-operation-auth-sso-oidc-non-standard-fqdn-listing
+   :name: management-interface-auth-sso-oidc-non-standard-fqdn-listing
 
    $ IDP="auth.extern.test"
    $ ucr set umc/oidc/issuer="https://$IDP/realms/ucs"
    $ univention-run-join-scripts --force \
       --run-scripts 92univention-management-console-web-server
 
-.. _ucs-operation-auth-sso-oidc-non-standard-fqdn-portal:
+.. _management-interface-auth-sso-oidc-non-standard-fqdn-portal:
 
 Non-standard FQDN for the Univention Portal and Management UI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -428,11 +428,11 @@ you have to change the UCR variable
 :envvar:`umc/oidc/rp/server`
 to the FQDN of the *Management UI*,
 and run the join script of the UMC web server again,
-as shown in :numref:`ucs-operation-auth-sso-oidc-non-standard-fqdn-portal-listing`.
+as shown in :numref:`management-interface-auth-sso-oidc-non-standard-fqdn-portal-listing`.
 
 .. code-block:: console
    :caption: Set non-standard FQDN for the *Portal* and *Management UI*
-   :name: ucs-operation-auth-sso-oidc-non-standard-fqdn-portal-listing
+   :name: management-interface-auth-sso-oidc-non-standard-fqdn-portal-listing
 
    $ ucr set umc/oidc/rp/server="portal.extern.test"
    $ univention-run-join-scripts --force \
@@ -448,7 +448,7 @@ as shown in :numref:`ucs-operation-auth-sso-oidc-non-standard-fqdn-portal-listin
    make sure that the file :file:`/etc/umc-oidc.secret` has the same contents
    on each node and matches the client secret in :program:`Keycloak` for that client.
 
-.. _ucs-operation-auth-sso-oidc-back-channel-sign-out:
+.. _management-interface-auth-sso-oidc-back-channel-sign-out:
 
 Back-channel sign-out
 ~~~~~~~~~~~~~~~~~~~~~
@@ -464,7 +464,7 @@ you you can keep the configuration.
 To keep track of the sessions in the database for the *Management UI*,
 you need to configure the database connection string
 with the :program:`univention-management-console-settings` script,
-as shown in :numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-optional-listing`.
+as shown in :numref:`management-interface-auth-sso-oidc-back-channel-sign-out-sql-connection-optional-listing`.
 
 However, if the *Portal* or the *Management UI*
 use multiple Nubus for UCS nodes for load balancing,
@@ -481,14 +481,14 @@ In these cases, you must consider the following aspects:
    Alternatively,
    you can install and configure :program:`PostgreSQL` on one of the Nubus for UCS nodes.
    As shown in the example in
-   :numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-postgres-install-listing`,
+   :numref:`management-interface-auth-sso-oidc-back-channel-sign-out-postgres-install-listing`,
    you can freely choose the values for
    ``db_user``, ``db_name``, and ``db_password``.
    ``db_host`` is a Nubus for UCS node with :program:`PostgreSQL` running.
 
    .. code-block:: console
       :caption: Example for installation of :program:`PostgreSQL`
-      :name: ucs-operation-auth-sso-oidc-back-channel-sign-out-postgres-install-listing
+      :name: management-interface-auth-sso-oidc-back-channel-sign-out-postgres-install-listing
 
       $ univention-install univention-postgresql
       $ su postgres -c "createdb db_name"
@@ -500,11 +500,11 @@ In these cases, you must consider the following aspects:
 
 #. Set the SQL connection URI on the :term:`UCS Primary Directory Node`,
    as shown in
-   :numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-listing`.
+   :numref:`management-interface-auth-sso-oidc-back-channel-sign-out-sql-connection-listing`.
 
    .. code-block:: console
       :caption: Set SQL connection URI
-      :name: ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-listing
+      :name: management-interface-auth-sso-oidc-back-channel-sign-out-sql-connection-listing
 
       $ univention-management-console-settings set \
          -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'
@@ -528,11 +528,11 @@ In these cases, you must consider the following aspects:
 
    Make sure that the database can handle the number of connections.
    You can adjust these parameters as shown in
-   :numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-optional-listing`.
+   :numref:`management-interface-auth-sso-oidc-back-channel-sign-out-sql-connection-optional-listing`.
 
    .. code-block:: console
       :caption: Set optional parameters for the database connection pool
-      :name: ucs-operation-auth-sso-oidc-back-channel-sign-out-sql-connection-optional-listing
+      :name: management-interface-auth-sso-oidc-back-channel-sign-out-sql-connection-optional-listing
 
       $ univention-management-console-settings set \
            -s 5 \
@@ -541,11 +541,11 @@ In these cases, you must consider the following aspects:
            -r 3600
 
 #. Restart the *UMC Server* on all Nubus for UCS nodes with the command in
-   :numref:`ucs-operation-auth-sso-oidc-back-channel-sign-out-restart-umc-listing`.
+   :numref:`management-interface-auth-sso-oidc-back-channel-sign-out-restart-umc-listing`.
 
    .. code-block:: console
       :caption: Restart UMC server
-      :name: ucs-operation-auth-sso-oidc-back-channel-sign-out-restart-umc-listing
+      :name: management-interface-auth-sso-oidc-back-channel-sign-out-restart-umc-listing
 
       $ systemctl restart univention-management-console-server
 
