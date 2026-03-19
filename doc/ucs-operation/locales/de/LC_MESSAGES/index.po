@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 17:41+0000\n"
-"PO-Revision-Date: 2026-03-17 18:43+0100\n"
+"POT-Creation-Date: 2026-03-19 11:05+0000\n"
+"PO-Revision-Date: 2026-03-19 12:06+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -145,13 +145,13 @@ msgstr ""
 
 #: ../../index.rst:73
 msgid ""
-"Nubus for UCS deployment provides two layers of functionality. Nubus "
-"covers the core identity and access management capabilities, and UCS adds"
-" the broader infrastructure services:"
+"Nubus for UCS provides two layers of functionality. Nubus covers the core"
+" identity and access management capabilities, and UCS adds the broader "
+"infrastructure services:"
 msgstr ""
-"Eine Nubus für UCS Installation bietet zwei Funktionsebenen. Nubus deckt "
-"die Kernfunktionen für Identitäts- und Zugriffsverwaltung ab, und UCS "
-"ergänzt die umfassenderen Infrastrukturdienste:"
+"Nubus für UCS bietet zwei Funktionsebenen. Nubus deckt die Kernfunktionen"
+" für Identitäts- und Zugriffsverwaltung ab, und UCS ergänzt die "
+"umfassenderen Infrastrukturdienste:"
 
 #: ../../index.rst:77
 msgid "Network services for DHCP and DNS administration."
@@ -415,29 +415,32 @@ msgstr "Univention App Center"
 
 #: ../../index.rst:222
 msgid ""
-"The Univention App Center adds applications and integrations to Nubus for"
-" UCS. Most applications integrate directly into the *Management UI* as "
-"management modules, so you can manage application data at the domain "
-"level."
+"Univention App Center is a centralized platform for discovering, "
+"installing, and managing applications in your Nubus for UCS domain. It "
+"handles the complete application lifecycle—from installation and "
+"configuration to updates and removal—for both traditional packages and "
+"Docker applications."
 msgstr ""
-"Das Univention App Center fügt Anwendungen und Integrationen zu Nubus für"
-" UCS hinzu. Die meisten Anwendungen integrieren sich direkt als "
-"Verwaltungsmodule in die *Management UI*, sodass Sie Anwendungsdaten auf "
-"Domänenebene verwalten können."
+"Univention App Center ist eine zentrale Plattform zum Suchen, "
+"Installieren und Verwalten von Anwendungen in Ihrer Nubus für UCS-Domäne."
+" Es verwaltet den vollständigen Anwendungslebenszyklus—von der "
+"Installation und Konfiguration bis zu Updates und der "
+"Deinstallation—sowohl für herkömmliche Pakete als auch für Docker-"
+"Anwendungen."
 
-#: ../../index.rst:226
+#: ../../index.rst:227
 msgid ""
-"The :ref:`lifecycle` chapter covers app installation and management in "
-"detail."
+"The chapter :ref:`lifecycle-app-center` covers App Center installation "
+"and management in detail."
 msgstr ""
-"Das Kapitel :ref:`lifecycle` behandelt die Installation und Verwaltung "
+"Das Kapitel :ref:`lifecycle-app-center` behandelt die Installation und Verwaltung "
 "von Apps im Detail."
 
-#: ../../index.rst:231
+#: ../../index.rst:232
 msgid "Listener/notifier replication"
 msgstr "Listener/Notifier-Replikation"
 
-#: ../../index.rst:233
+#: ../../index.rst:234
 msgid ""
 "The listener/notifier mechanism propagates changes across the domain. "
 "When you create, edit, or delete entries in the LDAP directory, the "
@@ -453,7 +456,7 @@ msgstr ""
 "aktualisiert der Mechanismus die NFS- und Samba-Konfigurationsdateien und"
 " erstellt das Verzeichnis auf dem ausgewählten Server."
 
-#: ../../index.rst:241
+#: ../../index.rst:242
 msgid ""
 "You can extend the listener/notifier mechanism with custom modules to "
 "integrate third-party products with the LDAP directory service."
@@ -462,7 +465,7 @@ msgstr ""
 "Modulen erweitern, um Produkte von Drittanbietern in den LDAP-"
 "Verzeichnisdienst zu integrieren."
 
-#: ../../index.rst:246
+#: ../../index.rst:247
 msgid ""
 "For detailed information about the listener/notifier mechanism, see "
 ":external+uv-ucs-manual:ref:`domain-listener-notifier` in :cite:t:`ucs-"
@@ -472,11 +475,11 @@ msgstr ""
 "unter :external+uv-ucs-manual:ref:`domain-listener-notifier` im :cite:t"
 ":`ucs-manual`."
 
-#: ../../index.rst:253
+#: ../../index.rst:254
 msgid "Feedback"
 msgstr "Feedback"
 
-#: ../../index.rst:255
+#: ../../index.rst:256
 msgid ""
 "Your feedback on this documentation is welcome. If you have any comments,"
 " suggestions, or corrections, `submit your feedback "
