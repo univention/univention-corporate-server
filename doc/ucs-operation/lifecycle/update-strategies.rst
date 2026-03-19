@@ -70,7 +70,7 @@ shows the overview page of the management module.
 
 To install release updates, perform these steps:
 
-#. :ref:`Sign in <ucs-operation-auth-sign-in>`
+#. :ref:`Sign in <management-interface-auth-sign-in>`
    to the *Management UI* with a user account from the ``Domain Admins`` group,
    such as ``Administrator``.
 
