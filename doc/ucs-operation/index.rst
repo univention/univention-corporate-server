@@ -70,7 +70,7 @@ Univention Corporate Server (UCS) is a Linux-based server operating system
 that serves as the platform for deploying Nubus.
 UCS provides the infrastructure layer on which Nubus runs.
 
-Nubus for UCS deployment provides two layers of functionality.
+Nubus for UCS provides two layers of functionality.
 Nubus covers the core identity and access management capabilities,
 and UCS adds the broader infrastructure services:
 
@@ -219,11 +219,12 @@ in :cite:t:`uv-nubus-manual`.
 Univention App Center
 ---------------------
 
-The Univention App Center adds applications and integrations to Nubus for UCS.
-Most applications integrate directly into the *Management UI* as management modules,
-so you can manage application data at the domain level.
+Univention App Center is a centralized platform for discovering,
+installing, and managing applications in your Nubus for UCS domain.
+It handles the complete application lifecycle—from installation and configuration
+to updates and removal—for both traditional packages and Docker applications.
 
-The :ref:`lifecycle` chapter covers app installation and management in detail.
+The chapter :ref:`lifecycle-app-center` covers App Center installation and management in detail.
 
 .. _intro-listener-notifier-replication:
 
