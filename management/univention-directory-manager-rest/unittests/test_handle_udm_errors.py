@@ -7,7 +7,7 @@ Unit tests for handle_udm_errors in the UDM REST API module.
 
 Tests that LDAP errors caused by concurrent modifications
 (TYPE_OR_VALUE_EXISTS, NO_SUCH_ATTRIBUTE) are returned as
-HTTP 503 (Service Unavailable) instead of HTTP 400 (Bad Request).
+HTTP 500 (ServerError) instead of HTTP 400 (Bad Request).
 """
 
 from unittest.mock import MagicMock, patch
@@ -16,7 +16,7 @@ import ldap
 import pytest
 
 import univention.admin.uexceptions as udm_errors
-from univention.management.console.error import ServiceUnavailable
+from univention.management.console.error import ServerError
 from univention.management.console.modules.udm.udm_ldap import UDM_Error
 
 
@@ -46,8 +46,8 @@ def resource():
 class TestHandleUdmErrorsConcurrentModification:
     """Tests for concurrent modification LDAP errors (Bug 58804 / Issue #3243)."""
 
-    def test_type_or_value_exists_raises_503(self, resource):
-        """ldap.TYPE_OR_VALUE_EXISTS should result in HTTP 503, not 400."""
+    def test_type_or_value_exists_raises_500(self, resource):
+        """ldap.TYPE_OR_VALUE_EXISTS should result in HTTP 500, not 400."""
         ldap_exc = ldap.TYPE_OR_VALUE_EXISTS(
             {
                 'desc': 'Type or value exists',
@@ -62,11 +62,11 @@ class TestHandleUdmErrorsConcurrentModification:
         def action():
             raise udm_exc
 
-        with pytest.raises(ServiceUnavailable):
+        with pytest.raises(ServerError):
             resource.handle_udm_errors(action)
 
-    def test_no_such_attribute_raises_503(self, resource):
-        """ldap.NO_SUCH_ATTRIBUTE should result in HTTP 503, not 400."""
+    def test_no_such_attribute_raises_500(self, resource):
+        """ldap.NO_SUCH_ATTRIBUTE should result in HTTP 500, not 400."""
         ldap_exc = ldap.NO_SUCH_ATTRIBUTE(
             {
                 'desc': 'No such attribute',
@@ -81,7 +81,7 @@ class TestHandleUdmErrorsConcurrentModification:
         def action():
             raise udm_exc
 
-        with pytest.raises(ServiceUnavailable):
+        with pytest.raises(ServerError):
             resource.handle_udm_errors(action)
 
     def test_other_ldap_error_raises_udm_error(self, resource):
@@ -112,8 +112,8 @@ class TestHandleUdmErrorsConcurrentModification:
         with pytest.raises(UDM_Error):
             resource.handle_udm_errors(action)
 
-    def test_503_message_mentions_concurrent_modification(self, resource):
-        """The 503 error message should mention concurrent modification."""
+    def test_500_message_mentions_concurrent_modification(self, resource):
+        """The 500 error message should mention concurrent modification."""
         ldap_exc = ldap.TYPE_OR_VALUE_EXISTS(
             {
                 'desc': 'Type or value exists',
@@ -127,7 +127,7 @@ class TestHandleUdmErrorsConcurrentModification:
         def action():
             raise udm_exc
 
-        with pytest.raises(ServiceUnavailable, match='modified by another request'):
+        with pytest.raises(ServerError, match='modified by another request'):
             resource.handle_udm_errors(action)
 
     def test_successful_action_returns_result(self, resource):

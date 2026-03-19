@@ -672,3 +672,11 @@ msgstr "Wiederherstellungsoperation wird für %s nicht unterstützt"
 #: src/univention/admin/rest/module.py:2640
 msgid "Restore the object from the Recycle Bin"
 msgstr "Das Objekt aus dem Papierkorb wiederherstellen"
+
+#: module.py:589
+msgid ""
+"The object was modified by another request at the same time. Please retry "
+"the request."
+msgstr ""
+"Das Objekt wurde gleichzeitig von einer anderen Anfrage geändert. Bitte "
+"wiederholen Sie die Anfrage."

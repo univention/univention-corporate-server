@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.5.2) unstable; urgency=medium
+
+  * Bug #58804: return HTTP 500 instead of 400 for concurrent LDAP modification errors
+
+ -- Felix Botner <botner@univention.de>  Thu, 19 Mar 2026 13:18:38 +0100
+
 univention-directory-manager-rest (12.5.1) unstable; urgency=medium
 
   * Bug #58804: return HTTP 503 instead of 400 for concurrent LDAP modification errors
