@@ -7,40 +7,38 @@
 System deployment
 *****************
 
-This chapter describes installation procedures for Nubus for UCS across various deployment
-environments.
-As a technical administrator, you find detailed instructions for both traditional and cloud-based installation methods,
-along with platform-specific considerations.
+This chapter describes how to install Nubus for UCS
+across physical servers, virtual machines, and cloud environments.
+It covers everything from choosing an installation method
+through the first steps after the system is running.
 
-Required knowledge and skills
-   * Basic understanding of system administration and networking, including IP addressing, DNS, and DHCP.
-   * Familiarity with partitioning concepts and file system management.
-   * Ability to configure domain settings and directory services.
-   * Experience with virtualization platforms for relevant deployment scenarios.
-   * Understanding of Active Directory integration if joining existing Windows domains.
+Installation methods
+   Choose the installation method that matches your environment:
+   interactive DVD installation for physical and virtual machines,
+   text mode for systems without graphical support,
+   Amazon EC2 for cloud deployments,
+   or VMware-specific configuration for VMware environments.
+   See :ref:`deployment-installation-methods`.
 
-What you learn
-   * Step-by-step interactive installation through DVD for physical servers
-     and DVD image for virtual machines.
+Initial system configuration
+   Work through the interactive installer to configure language, keyboard layout,
+   network settings, disk partitioning, and the ``root`` password.
+   See :ref:`deployment-initial-system-configuration`.
 
-   * Configuration options for BIOS and UEFI systems, including Secure Boot.
+Domain setup
+   Select a domain mode to complete the installation:
+   create a Nubus for UCS domain, join an existing Nubus for UCS domain,
+   or join an existing Active Directory domain.
+   See :ref:`deployment-domain-setup`.
 
-   * Network setup procedures for both automatic DHCP and manual IP configuration.
+Steps after the installation
+   Access the *Portal* and complete the first essential tasks
+   after the installation finishes.
+   See :ref:`deployment-after-installation`.
 
-   * Hard drive partitioning strategies including LVM and encryption options.
-
-   * Domain mode selection and system role configuration.
-
-   * Alternative installation methods: text-mode, cloud-based Amazon EC2, and VMware-specific deployment.
-
-   * Troubleshooting common installation issues.
-
-Installation overview
-   * Nubus for UCS divides the installation process into four main deployment paths,
-     each suited to different infrastructure needs.
-
-   * Choose the method that best matches your deployment environment,
-     then follow the relevant subsections for step-by-step guidance.
+Troubleshooting
+   Resolve common installation problems.
+   See :ref:`deployment-installation-troubleshooting`.
 
 .. toctree::
    :caption: Contents
