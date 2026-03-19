@@ -1,3 +1,10 @@
+ucs-test (12.5.12) unstable; urgency=medium
+
+  * Bug #28692: add test case for mail alternative address of groups
+    delivery
+
+ -- Florian Best <best@univention.de>  Mon, 23 Mar 2026 12:36:29 +0100
+
 ucs-test (12.5.11) unstable; urgency=medium
 
   * Bug #55411: replace M2Crypto with python3-cryptography
