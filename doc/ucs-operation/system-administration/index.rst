@@ -7,7 +7,33 @@
 System administration
 *********************
 
-.. TODO: Add introduction for the chapter.
+This chapter covers low-level configuration tasks for technical administrators
+managing Nubus for UCS systems.
+It addresses the components that underpin every running system:
+the kernel, the boot process, network connectivity, and outbound proxy access.
+
+Kernel
+   Manage kernel packages, kernel versions, and kernel modules.
+   This includes loading additional drivers, blacklisting unwanted modules,
+   and integrating external drivers through Dynamic Kernel Module Support (DKMS).
+   See :ref:`system-administration-kernel`.
+
+Boot manager
+   Configure GRUB, the boot manager in Nubus for UCS.
+   Control the boot timeout, screen resolution, kernel options,
+   and which kernel the system boots by default.
+   See :ref:`system-administration-boot-manager`.
+
+Network configuration
+   Configure network interfaces and advanced network setups
+   such as bridging for virtual machines, bonding for failover redundancy,
+   and VLANs for logical traffic separation.
+   See :ref:`system-administration-network`.
+
+Proxy settings
+   Route outbound traffic from command-line tools and Nubus for UCS update utilities
+   through a proxy server using UCR variables.
+   See :ref:`system-administration-proxy`.
 
 .. toctree::
    :caption: Contents
