@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-19 14:45+0000\n"
-"PO-Revision-Date: 2026-01-23 12:08+0100\n"
+"POT-Creation-Date: 2026-03-19 14:40+0000\n"
+"PO-Revision-Date: 2026-03-19 15:41+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -73,10 +73,10 @@ msgid ""
 "domain in the :term:`UCS Primary Directory Node` role, you can import the"
 " license for the domain, see :ref:`management-interface-license`."
 msgstr ""
-"Wenn Sie das System als erstes System in der Nubus für UCS Domäne "
-"in der Rolle :term:`UCS Primary Directory Node` installiert haben, "
-"können Sie die Lizenz für die Domäne importieren, "
-"siehe :ref:`management-interface-license`."
+"Wenn Sie das System als erstes System in der Nubus für UCS Domäne in der "
+"Rolle :term:`UCS Primary Directory Node` installiert haben, können Sie "
+"die Lizenz für die Domäne importieren, siehe :ref:`management-interface-"
+"license`."
 
 #: ../../deployment/domain-setup.rst:7
 msgid "Domain setup"
@@ -257,14 +257,13 @@ msgid ""
 "import the license through the *Welcome* management module, see :ref"
 ":`management-interface-license-activate`."
 msgstr ""
-"Wenn Sie eine gültige E-Mail-Adresse angeben, "
-"aktiviert die Systemeinrichtung eine personalisierte Lizenz "
-"und schickt sie an die Adresse. "
-"Das Univention App Center benötigt die Lizenz, um Apps zu installieren. "
-"Univention generiert die Lizenz automatisch "
-"und sendet sie sofort an die angegebene E-Mail-Adresse. "
-"Sie importieren die Lizenz über das Verwaltungsmodul *Willkommen*, "
-"siehe :ref:`management-interface-license-activate`."
+"Wenn Sie eine gültige E-Mail-Adresse angeben, aktiviert die "
+"Systemeinrichtung eine personalisierte Lizenz und schickt sie an die "
+"Adresse. Das Univention App Center benötigt die Lizenz, um Apps zu "
+"installieren. Univention generiert die Lizenz automatisch und sendet sie "
+"sofort an die angegebene E-Mail-Adresse. Sie importieren die Lizenz über "
+"das Verwaltungsmodul *Willkommen*, siehe :ref:`management-interface-"
+"license-activate`."
 
 #: ../../deployment/domain-setup.rst:120
 msgid "Fully qualified domain name"
@@ -1594,7 +1593,19 @@ msgstr ""
 "Plattformspezifische Konfiguration und Treiberanforderungen für VMware-"
 "Umgebungen."
 
-#: ../../deployment/install.rst:30
+#: ../../deployment/install.rst:30 ../../deployment/install.rst:156
+msgid "Secure Boot"
+msgstr "Secure Boot"
+
+#: ../../deployment/install.rst:31
+msgid ""
+"Prerequisites for installing and running Nubus for UCS on systems with "
+"UEFI Secure Boot enabled."
+msgstr ""
+"Voraussetzungen für die Installation und den Betrieb von Nubus für UCS "
+"auf Systemen mit aktiviertem UEFI Secure Boot."
+
+#: ../../deployment/install.rst:34
 msgid ""
 "Each method guides you through the same core configuration steps: network"
 " setup, hard drive partitioning, hostname and domain naming, and the "
@@ -1607,11 +1618,11 @@ msgstr ""
 " der Domäne. Die Installation ist interaktiv und erfragt alle notwendigen"
 " Systemeinstellungen."
 
-#: ../../deployment/install.rst:39
+#: ../../deployment/install.rst:43
 msgid "Physical and virtual machine installation"
 msgstr "Installation auf physischen und virtuellen Maschinen"
 
-#: ../../deployment/install.rst:41
+#: ../../deployment/install.rst:45
 msgid ""
 "The following sections describe how to install Nubus for Univention "
 "Corporate Server (UCS). You install Nubus for UCS from DVD on physical "
@@ -1625,23 +1636,26 @@ msgstr ""
 "erfragt alle notwendigen Systemeinstellungen in einer grafischen "
 "Oberfläche."
 
-#: ../../deployment/install.rst:47
+#: ../../deployment/install.rst:51
 msgid ""
 "The installation DVD is available for the computer architecture "
 "``amd64``, 64-bit. In addition to support for the widely distributed BIOS"
 " systems, the DVD also includes support for the Unified Extensible "
 "Firmware Interface (UEFI) standard. The UEFI support on the DVD is also "
 "capable of starting systems with activated Secure Boot and installing "
-"Nubus for UCS there."
+"Nubus for UCS there. For prerequisites and known limitations, see :ref"
+":`deployment-installation-secure-boot`."
 msgstr ""
 "Die Installations-DVD ist für die Computerarchitektur ``amd64``, 64-Bit, "
 "verfügbar. Zusätzlich zur Unterstützung für die weit verbreiteten BIOS-"
 "Systeme enthält die DVD auch Unterstützung für den Unified Extensible "
 "Firmware Interface (UEFI) Standard. Die UEFI-Unterstützung auf der DVD "
 "ist auch in der Lage, Systeme mit aktiviertem Secure Boot zu starten und "
-"Nubus für UCS dort zu installieren."
+"Nubus für UCS dort zu installieren. Voraussetzungen und bekannte "
+"Einschränkungen finden Sie unter :ref:`deployment-installation-secure-"
+"boot`."
 
-#: ../../deployment/install.rst:55
+#: ../../deployment/install.rst:61
 msgid ""
 "Univention doesn't support the simultaneous operation of UCS and Debian "
 "on a UEFI system."
@@ -1649,7 +1663,7 @@ msgstr ""
 "Univention unterstützt nicht den gleichzeitigen Betrieb von UCS und "
 "Debian auf einem UEFI-System."
 
-#: ../../deployment/install.rst:57
+#: ../../deployment/install.rst:63
 msgid ""
 "The reason for this is the GRUB boot loader of Nubus for UCS that partly "
 "uses the same configuration files as Debian."
@@ -1657,7 +1671,7 @@ msgstr ""
 "Der Grund dafür ist der GRUB-Bootloader von Nubus für UCS, der teilweise "
 "dieselben Konfigurationsdateien wie Debian verwendet."
 
-#: ../../deployment/install.rst:60
+#: ../../deployment/install.rst:66
 msgid ""
 "An already installed Debian leads to the fact that the hardware can't "
 "boot Nubus for UCS anymore after the installation of or an update to UCS "
@@ -1669,7 +1683,7 @@ msgstr ""
 "booten kann. Eine nachträgliche Installation von Debian führt ebenfalls "
 "dazu, dass Nubus für UCS 5.2 nicht mehr booten kann."
 
-#: ../../deployment/install.rst:65
+#: ../../deployment/install.rst:71
 msgid ""
 "Besides operating Nubus for UCS on hardware or in a virtualization "
 "solution, you can also install it on the Amazon EC2 cloud using an AMI "
@@ -1680,21 +1694,21 @@ msgstr ""
 "einem AMI-Image installieren. Weitere Informationen finden Sie unter :ref"
 ":`deployment-installation-cloud`."
 
-#: ../../deployment/install.rst:70
+#: ../../deployment/install.rst:76
 msgid "You can use the installation interfaces with a keyboard and with mouse."
 msgstr "Sie können die Installationsoberflächen mit Tastatur und Maus bedienen."
 
-#: ../../deployment/install.rst:72
+#: ../../deployment/install.rst:78
 msgid "Use the :kbd:`Tab` key to jump to the next field."
 msgstr "Verwenden Sie die :kbd:`Tab`-Taste, um zum nächsten Feld zu springen."
 
-#: ../../deployment/install.rst:74
+#: ../../deployment/install.rst:80
 msgid "Use the :kbd:`Shift+Tab` keys to jump back to the previous field."
 msgstr ""
 "Verwenden Sie die Tasten :kbd:`Shift+Tab`, um zum vorherigen Feld zurück "
 "zu springen."
 
-#: ../../deployment/install.rst:76
+#: ../../deployment/install.rst:82
 msgid ""
 "Use the :kbd:`Enter` key to assign values to the input field and confirm "
 "buttons."
@@ -1702,13 +1716,13 @@ msgstr ""
 "Verwenden Sie die :kbd:`Enter`-Taste, um Werte dem Eingabefeld zuzuweisen"
 " und Schaltflächen zu bestätigen."
 
-#: ../../deployment/install.rst:78
+#: ../../deployment/install.rst:84
 msgid "Use the arrow keys inside a list or table for navigating between entries."
 msgstr ""
 "Verwenden Sie die Pfeiltasten innerhalb einer Liste oder Tabelle zur "
 "Navigation zwischen Einträgen."
 
-#: ../../deployment/install.rst:80
+#: ../../deployment/install.rst:86
 msgid ""
 "Use :guilabel:`Cancel` to cancel the current configuration step. You can "
 "select a previous configuration step again in the menu that the installer"
@@ -1723,7 +1737,7 @@ msgstr ""
 "Konfigurationsschritte nicht direkt auswählen, wenn Sie vorherige "
 "Schritte nicht abgeschlossen haben."
 
-#: ../../deployment/install.rst:87
+#: ../../deployment/install.rst:93
 msgid ""
 "To continue the installation, follow steps in :ref:`deployment-initial-"
 "system-configuration`."
@@ -1731,11 +1745,11 @@ msgstr ""
 "Um die Installation fortzusetzen, folgen Sie den Schritten in :ref"
 ":`deployment-initial-system-configuration`."
 
-#: ../../deployment/install.rst:94
+#: ../../deployment/install.rst:100
 msgid "Text mode installation"
 msgstr "Installation im Textmodus"
 
-#: ../../deployment/install.rst:96
+#: ../../deployment/install.rst:102
 msgid ""
 "On systems that show problems with the graphical Univention installer, "
 "you can start the installation in text mode. For text mode, select :ref"
@@ -1747,7 +1761,7 @@ msgstr ""
 "Textmodus wählen Sie :ref:`deployment-initial-system-configuration-"
 "install-mode-text-mode` im Boot-Menü für die Installation."
 
-#: ../../deployment/install.rst:101
+#: ../../deployment/install.rst:107
 msgid ""
 "During installation in text mode the installer shows the same information"
 " and asks for the same settings, see :ref:`deployment-initial-system-"
@@ -1760,7 +1774,7 @@ msgstr ""
 "Festplattenpartitionierung ist das System bereit für den ersten Start und"
 " der Installer startet das System neu."
 
-#: ../../deployment/install.rst:108
+#: ../../deployment/install.rst:114
 #, python-brace-format
 msgid ""
 "After restart, you can resume the configuration with the system setup in "
@@ -1778,11 +1792,11 @@ msgstr ""
 "gleichen Schritten wie beim grafischen Installer fort, siehe :ref"
 ":`deployment-domain-setup`."
 
-#: ../../deployment/install.rst:119
+#: ../../deployment/install.rst:125
 msgid "Cloud deployment"
 msgstr "Cloud Installation"
 
-#: ../../deployment/install.rst:121
+#: ../../deployment/install.rst:127
 msgid ""
 "Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
 "cloud for Nubus for UCS. You can use this generic image for all Nubus for"
@@ -1796,7 +1810,7 @@ msgstr ""
 " zu erstellen, die Sie über Management-Module hinsichtlich Themen wie "
 "Domänenname und Softwareauswahl konfigurieren können."
 
-#: ../../deployment/install.rst:126
+#: ../../deployment/install.rst:132
 msgid ""
 "For information about the setup process of a Nubus for UCS instance based"
 " on Amazon EC2, see :uv:help:`Amazon EC2 Quickstart <21833>`."
@@ -1804,21 +1818,21 @@ msgstr ""
 "Für Informationen zum Einrichtungsprozess einer Nubus für UCS Instanz "
 "basierend auf Amazon EC2, siehe :uv:help:`Amazon EC2 Quickstart <21833>`."
 
-#: ../../deployment/install.rst:132
+#: ../../deployment/install.rst:138
 msgid "VMware-specific considerations"
 msgstr "VMware-spezifische Überlegungen"
 
-#: ../../deployment/install.rst:134
+#: ../../deployment/install.rst:140
 msgid ""
 "If you install Nubus for UCS as a guest in VMware, select the option "
 ":menuselection:`Linux --> Debian` as the *Guest operating system*, "
-"because Nubus for UCS bases on Debian GNU/Linux."
+"because Nubus for UCS builds on Debian GNU/Linux."
 msgstr ""
 "Wenn Sie Nubus für UCS als Gast in VMware installieren, wählen Sie die "
 "Option :menuselection:`Linux --> Debian` als *Gastbetriebssystem*, da "
 "Nubus für UCS auf Debian GNU/Linux basiert."
 
-#: ../../deployment/install.rst:138
+#: ../../deployment/install.rst:144
 msgid ""
 "The Linux kernel in Nubus for UCS includes all the support drivers "
 "necessary for operation in VMware, such as :file:`vmw_balloon`, "
@@ -1828,7 +1842,7 @@ msgstr ""
 "notwendigen Support-Treiber, wie :file:`vmw_balloon`, :file:`vmw_pvsci`, "
 ":file:`vmw_vmci`, :file:`vmwgfx` und :file:`vmxnet3`."
 
-#: ../../deployment/install.rst:141
+#: ../../deployment/install.rst:147
 msgid ""
 "Nubus for UCS delivers the :program:`Open VM Tools`. You can install them"
 " through the :program:`open-vm-tools` package. The package is optional, "
@@ -1839,6 +1853,203 @@ msgstr ""
 "das Paket :program:`open-vm-tools` installieren. Das Paket ist optional, "
 "aber notwendig für Funktionen wie automatische Zeitsynchronisation "
 "zwischen dem Virtualisierungsserver und dem Gastsystem."
+
+#: ../../deployment/install.rst:158
+msgid ""
+"Nubus for UCS supports UEFI Secure Boot. You don't need to deactivate "
+"Secure Boot before installing from the DVD."
+msgstr ""
+"Nubus für UCS unterstützt UEFI Secure Boot. Sie müssen Secure Boot vor "
+"der Installation von der DVD nicht deaktivieren."
+
+#: ../../deployment/install.rst:161
+msgid ""
+"Secure Boot relies on a chain of trust where the system firmware verifies"
+" each component before loading it. On Nubus for UCS, this chain works as "
+"follows:"
+msgstr ""
+"Secure Boot basiert auf einer Vertrauenskette, bei der die System-"
+"Firmware jede Komponente vor dem Laden überprüft. Bei Nubus für UCS "
+"funktioniert diese Kette wie folgt:"
+
+#: ../../deployment/install.rst:165
+msgid ""
+"The UEFI firmware loads :program:`shim`, a *first-stage boot loader* "
+"signed by Microsoft. The firmware verifies :program:`shim` against the "
+"certificates in the firmware's trust store."
+msgstr ""
+"Die UEFI-Firmware lädt :program:`shim`, einen von Microsoft signierten "
+"*First-Stage-Bootloader*. Die Firmware überprüft :program:`shim` anhand "
+"der Zertifikate im Zertifikatsspeicher der Firmware."
+
+#: ../../deployment/install.rst:170
+msgid ""
+":program:`shim` loads the Debian-signed :program:`GRUB` boot loader. "
+":program:`shim` verifies :program:`GRUB` using Debian's key embedded at "
+"build time and checks the *Secure Boot Advanced Targeting (SBAT) "
+"revocation level*."
+msgstr ""
+":program:`shim` lädt den von Debian signierten :program:`GRUB` "
+"Bootloader. :program:`shim` überprüft :program:`GRUB` mit dem bei der "
+"Kompilierung eingebetteten Debian-Schlüssel und prüft den *Secure Boot "
+"Advanced Targeting (SBAT) Revocation Level*."
+
+#: ../../deployment/install.rst:175
+msgid ":program:`GRUB` loads the Linux kernel, also signed by Debian."
+msgstr ":program:`GRUB` lädt den Linux-Kernel, ebenfalls signiert von Debian."
+
+#: ../../deployment/install.rst:177
+msgid ""
+"Because Nubus for UCS builds on Debian GNU/Linux, it uses Debian's signed"
+" boot components. The following conditions in the current Debian Secure "
+"Boot tool chain can prevent a successful boot on certain hardware."
+msgstr ""
+"Da Nubus für UCS auf Debian GNU/Linux aufbaut, verwendet es die "
+"signierten Boot-Komponenten von Debian. Die folgenden Bedingungen in der "
+"aktuellen *Debian Secure Boot Toolchain* können einen erfolgreichen Start"
+" auf bestimmter Hardware verhindern."
+
+#: ../../deployment/install.rst:183
+msgid "SBAT revocation level"
+msgstr "SBAT :spelling:word:`Revocation` Level"
+
+#: ../../deployment/install.rst:185
+msgid ""
+"The *Secure Boot Advanced Targeting (SBAT) revocation level* controls "
+"which boot loader versions the firmware accepts."
+msgstr ""
+"Der *Secure Boot Advanced Targeting (SBAT) Revocation Level* legt fest, "
+"welche Bootloader Versionen die Firmware akzeptiert."
+
+#: ../../deployment/install.rst:188
+msgid ""
+"The :program:`GRUB` boot loader on the Nubus for UCS installation media "
+"declares SBAT generation ``grub,4``. Some systems have a higher *SBAT "
+"revocation level* stored in their firmware, which causes them to reject "
+"this :program:`GRUB` version."
+msgstr ""
+"Der :program:`GRUB`-Bootloader auf dem Nubus für UCS Installationsmedium "
+"deklariert die SBAT-Generation ``grub,4``. Einige Systeme haben einen "
+"höheren *SBAT Revocation Level* in der Firmware gespeichert, wodurch sie "
+"diese :program:`GRUB`-Version ablehnen."
+
+#: ../../deployment/install.rst:193
+msgid "A system can have an elevated SBAT level for the following reasons:"
+msgstr "Ein System kann aus folgenden Gründen einen erhöhten SBAT-Level haben:"
+
+#: ../../deployment/install.rst:195
+msgid ""
+"A previous Microsoft Windows installation raised the SBAT level to "
+"``grub,5`` through a Windows Update firmware update."
+msgstr ""
+"Eine frühere Microsoft Windows-Installation hat den SBAT-Level über ein "
+"Windows-Update-Firmware-Update auf ``grub,5`` angehoben."
+
+#: ../../deployment/install.rst:198
+msgid ""
+"A previous Linux distribution with a newer :program:`GRUB` version raised"
+" the SBAT level."
+msgstr ""
+"Eine frühere Linux-Distribution mit einer neueren :program:`GRUB`-Version"
+" hat den SBAT-Level angehoben."
+
+#: ../../deployment/install.rst:201
+msgid ""
+"The *SBAT revocation level* persists in UEFI firmware memory (NVRAM). "
+"Removing the previous operating system doesn't clear it."
+msgstr ""
+"Der *SBAT Revocation Level* bleibt im UEFI-Firmware-Speicher (NVRAM) "
+"erhalten. Das Entfernen des vorherigen Betriebssystems löscht ihn nicht."
+
+#: ../../deployment/install.rst:204
+msgid "Systems that have never had their SBAT level raised aren't affected."
+msgstr "Systeme, deren SBAT-Level nie angehoben wurde, sind nicht betroffen."
+
+#: ../../deployment/install.rst:206
+msgid ""
+"If the system rejects the boot loader with a *Security Violation* error, "
+"deactivate Secure Boot in the firmware setup before installation."
+msgstr ""
+"Wenn das System den Bootloader mit einem *Security Violation*-Fehler "
+"ablehnt, deaktivieren Sie Secure Boot im Firmware-Setup vor der "
+"Installation."
+
+#: ../../deployment/install.rst:211
+msgid ""
+"Tools such as :program:`Rufus` version 4.6 and later check the SBAT "
+"generation proactively and display a *revoked UEFI bootloader* warning. "
+"This warning indicates a potential incompatibility, not a security "
+"problem with the Nubus for UCS installation media."
+msgstr ""
+"Tools wie :program:`Rufus` Version 4.6 und neuer prüfen die SBAT-"
+"Generation proaktiv und zeigen eine Warnung *revoked UEFI bootloader* an."
+" Diese Warnung weist auf eine mögliche Inkompatibilität hin, nicht auf "
+"ein Sicherheitsproblem mit dem Nubus für UCS Installationsmedium."
+
+#: ../../deployment/install.rst:218
+msgid "Firmware certificate requirements"
+msgstr "Anforderungen an Firmware-Zertifikate"
+
+#: ../../deployment/install.rst:220
+msgid ""
+"The :program:`shim` boot loader on the Nubus for UCS installation media "
+"is signed with the *Microsoft Corporation UEFI CA 2011* certificate. The "
+"firmware must include this certificate in its trust store to verify "
+":program:`shim` before loading it."
+msgstr ""
+"Der :program:`shim` Bootloader auf dem Nubus für UCS Installationsmedium "
+"ist mit dem Zertifikat *Microsoft Corporation UEFI CA 2011* signiert. Die"
+" Firmware muss dieses Zertifikat in ihrem Zertifikatsspeicher enthalten, "
+"um :program:`shim` vor dem Laden zu überprüfen."
+
+#: ../../deployment/install.rst:225
+msgid ""
+"Most systems ship with this certificate pre-installed. However, some "
+"hardware released in 2024 and later ships only with the newer *Microsoft "
+"UEFI CA 2023* certificate and doesn't include the 2011 certificate."
+msgstr ""
+"Die meisten Systeme werden mit diesem Zertifikat vorinstalliert "
+"ausgeliefert. Einige Hardware, die ab 2024 veröffentlicht wurde, enthält "
+"jedoch nur das neuere Zertifikat *Microsoft UEFI CA 2023* und nicht das "
+"2011-Zertifikat."
+
+#: ../../deployment/install.rst:230
+msgid ""
+"On these systems, the firmware doesn't recognize :program:`shim` and "
+"refuses to boot from the installation media."
+msgstr ""
+"Auf diesen Systemen erkennt die Firmware :program:`shim` nicht und "
+"verweigert den Start vom Installationsmedium."
+
+#: ../../deployment/install.rst:233
+msgid ""
+"To install Nubus for UCS on affected hardware, use one of the following "
+"approaches:"
+msgstr ""
+"Um Nubus für UCS auf betroffener Hardware zu installieren, verwenden Sie "
+"einen der folgenden Ansätze:"
+
+#: ../../deployment/install.rst:236
+msgid ""
+"Enroll the *Microsoft Corporation UEFI CA 2011* certificate in the "
+"firmware setup."
+msgstr ""
+"Registrieren Sie das Zertifikat *Microsoft Corporation UEFI CA 2011* im "
+"Firmware-Setup."
+
+#: ../../deployment/install.rst:239
+msgid "Deactivate Secure Boot in the firmware setup before installation."
+msgstr "Deaktivieren Sie Secure Boot im Firmware-Setup vor der Installation."
+
+#: ../../deployment/install.rst:241
+msgid ""
+"This limitation affects the entire Debian ecosystem. Debian resolves it "
+"when it ships a :program:`shim` version signed with the *Microsoft UEFI "
+"CA 2023* certificate."
+msgstr ""
+"Diese Einschränkung betrifft das gesamte Debian-Ökosystem. Debian behebt "
+"sie, wenn es eine :program:`shim`-Version ausliefert, die mit dem "
+"Zertifikat *Microsoft UEFI CA 2023* signiert ist."
 
 #: ../../deployment/trouble.rst:7
 msgid "Troubleshooting for installation problems"
@@ -1853,4 +2064,3 @@ msgstr ""
 "Für Informationen zu möglichen Installationsproblemen siehe `Univention "
 "Knowledge Base <https://help.univention.com/c/knowledge-"
 "base/supported/48>`_ im Abschnitt *Installation*."
-
