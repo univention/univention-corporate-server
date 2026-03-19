@@ -29,6 +29,7 @@ Redundancy and Failover for the Primary Directory Node
     ensuring continued service availability even if critical systems experience disruption.
 
 .. toctree::
+   :caption: Contents
 
    system-roles
    ha

@@ -10,6 +10,7 @@ Identity and Access Management
 .. TODO: Add introduction to the IAM chapter.
 
 .. toctree::
+   :caption: Contents
 
    password-management/index
    group-management

@@ -10,6 +10,7 @@ Management interface
 .. TODO: Add introduction for management interface section.
 
 .. toctree::
+   :caption: Contents
 
    auth
    license

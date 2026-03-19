@@ -45,6 +45,7 @@ Domain-wide software monitoring
    See :ref:`lifecycle-software-monitor`.
 
 .. toctree::
+   :caption: Contents
 
    versioning
    update-strategies
