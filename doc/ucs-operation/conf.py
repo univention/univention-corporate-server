@@ -112,6 +112,13 @@ html_theme_options = {
     'typesense_document_version': version,
     'univention_matomo_tracking': True,
     'univention_docs_deployment': True,
+    'announcement': "<p><i class='fa-solid fa-circle-exclamation'></i> "
+    'This document is work in progress and will replace the UCS Manual.</br> '
+    "If you don't the content "
+    'you are looking for, refer to the '
+    "<a href='https://docs.software-univention.de/manual/5.2/en/' "
+    "target='_blank' style='color: var(--pst-color-secondary)'>"
+    'UCS Manual</a>.</p>',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -189,6 +196,16 @@ def adapt_settings_to_translation(app, config):
             'linux-kernel-docs': ('https://www.kernel.org/doc/html/v6.1/', None),  # UCS 5.2 Kernel is 6.1
         }
         config.numfig_format['code-block'] = 'Listing %s'
+        config.html_theme_options['announcement'] = """
+<p><i class='fa-solid fa-circle-exclamation'></i>
+Dieses Dokument befindet sich in Arbeit
+und wird das UCS Handbuch ablöse.</br>
+Wenn Sie den gesuchten Inhalt nicht finden,
+schauen Sie in das
+<a href='https://docs.software-univention.de/manual/5.2/de/'
+target='_blank' style='color: var(--pst-color-secondary)'>
+UCS Handbuch</a>.</p>
+"""
 
 
 def setup(app):
