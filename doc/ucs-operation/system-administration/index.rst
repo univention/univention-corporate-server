@@ -10,6 +10,7 @@ System administration
 .. TODO: Add introduction for the chapter.
 
 .. toctree::
+   :caption: Contents
 
    kernel
    boot-manager

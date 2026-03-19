@@ -35,6 +35,7 @@ This chapter covers password management in Nubus for UCS.
    and user deregistration.
 
 .. toctree::
+   :caption: Contents
 
    policies
    samba-policies

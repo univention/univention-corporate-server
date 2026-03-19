@@ -42,8 +42,8 @@ Installation overview
    * Choose the method that best matches your deployment environment,
      then follow the relevant subsections for step-by-step guidance.
 
-
 .. toctree::
+   :caption: Contents
 
    install
    initial-system-configuration
