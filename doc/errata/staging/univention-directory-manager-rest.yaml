@@ -3,7 +3,7 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-directory-manager-rest
-fix: 12.5.1
+fix: 12.5.2
 desc: |
  This update addresses the following issues:
  * The UDM REST API now returns HTTP 503 (Service Unavailable) instead
