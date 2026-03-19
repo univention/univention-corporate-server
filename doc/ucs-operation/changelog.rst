@@ -25,6 +25,10 @@ Year 2026
      - Change
 
    * - 19. Mar 2026
+     - Document
+     - Add missing chapter introductions and align them to the same pattern.
+
+   * - 19. Mar 2026
      - :ref:`deployment-installation-secure-boot`
      - Add section about secure boot in UCS.
 
@@ -63,3 +67,93 @@ Year 2026
    * - 18. Feb 2026
      - :ref:`management-interface-license`
      - Add how to activate the UCS license.
+
+   * - 17. Feb 2026
+     - :ref:`management-interface-theming`
+     - Add section about how to customize the theme of the *Management UI*.
+
+   * - 10. Feb 2026
+     - :ref:`lifecycle-app-center`
+     - Add section about Univention App Center
+
+   * - 09. Feb 2026
+     - :ref:`lifecycle-package-installation-management`
+     - Add section about package installation and package management.
+
+   * - 05. Feb 2026
+     - :ref:`lifecycle-local-repository-servers`
+     - Add section about local repository servers.
+
+   * - 27. Jan 2026
+     - :ref:`lifecycle-update-strategies`
+     - Add section about update strategies for Nubus for UCS.
+
+   * - 26. Jan 2026
+     - :ref:`lifecycle-perform-updates`
+     - Add section about how to make updates for Nubus for UCS.
+   * - 26. Jan 2026
+     - :ref:`lifecycle-versioning`
+     - Add section about versioning of Nubus for UCS.
+
+   * - 22. Jan 2026
+     - :ref:`deployment-primary-dn-resilience-fault-tolerant-setup`
+     - Add section about fault-tolerant domain setup.
+
+   * - 20. Jan 2026
+     - :ref:`deployment-primary-dn-resilience-backup-primary-promotion`
+     - Add section about promotion to :term:`Primary Directory Node`.
+
+   * - 20. Jan 2026
+     - :ref:`domain-infrastructure-system-roles`
+     - Add section about system roles in Nubus for UCS.
+
+   * - 16. Jan 2026
+     - :ref:`deployment`
+     - Add section about installation of Nubus for UCS.
+
+   * - 13. Jan 2026
+     - Document
+     - Add German translation for existing content.
+
+   * - 06. Jan 2026
+     - :ref:`references-ucr-variables`
+     - Add reference section for :term:`UCR variables <UCR variable>`.
+
+   * - 06. Jan 2026
+     - :ref:`ucs-operation-groups`
+     - Add section about user group management.
+
+Year 2025
+=========
+
+.. list-table::
+   :header-rows: 1
+   :widths: 2 3 7
+
+   * - Date
+     - Chapter or topic
+     - Change
+
+   * - 19. Dec 2025
+     - :ref:`password-management`
+     - Restructure password management section.
+
+   * - 18. Dec 2025
+     - :ref:`password-management-windows-client`
+     - Add section about Samba domain password policy.
+
+   * - 09. Dec 2025
+     - :ref:`password-management-policies`
+     - Add section about password policies.
+
+   * - 03. Dec 2025
+     - :ref:`end-user-self-service`
+     - Add section about *End User Self Service*.
+
+   * - 02. Dec 2025
+     - :ref:`management-interface-auth`
+     - Add section about authentication to Nubus for UCS.
+
+   * - 16. Sep 2025
+     - Document
+     - Create document and build structure.
