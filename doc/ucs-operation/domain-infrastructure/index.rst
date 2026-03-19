@@ -8,25 +8,26 @@ Domain infrastructure
 *********************
 
 This chapter covers the infrastructure foundation of a Nubus for UCS domain.
-A Nubus domain relies on multiple systems with different roles and responsibilities.
-These systems work together to provide the critical directory, authentication, and management services
-that keep your domain operational.
+A Nubus for UCS domain relies on multiple systems with different roles and responsibilities
+that work together to provide directory, authentication, and management services.
 
 The Primary Directory Node serves as the central hub of your domain,
 storing and managing all domain data.
-To ensure your domain stays available and resilient,
-you need to understand both the different system roles you can deploy
+To keep your domain available and resilient,
+you need to understand both the system roles you can deploy
 and the strategies for protecting against single points of disruption.
 
-This chapter has the following main sections:
+System roles
+   Understand the system roles you can deploy in a Nubus for UCS domain,
+   from the Primary Directory Node that stores all domain data
+   to Backup, Replica, and Managed Nodes.
+   See :ref:`domain-infrastructure-system-roles`.
 
-System Roles
-    Learn about the different system roles you can deploy in your domain,
-    from the critical Primary Directory Node to various client systems.
-
-Redundancy and Failover for the Primary Directory Node
-    Explore strategies to protect your domain infrastructure through redundancy and failover mechanisms,
-    ensuring continued service availability even if critical systems experience disruption.
+Redundancy and failover for the Primary Directory Node
+   Protect your domain against disruption to the Primary Directory Node
+   by distributing directory data across Backup and Replica Directory Nodes
+   and by promoting a Backup Directory Node to Primary when needed.
+   See :ref:`deployment-primary-dn-resilience`.
 
 .. toctree::
    :caption: Contents
