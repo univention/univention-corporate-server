@@ -4,7 +4,7 @@
 #
 
 search_base = @%@ldap/base@%@
-query_filter = (&(mailPrimaryAddress=%s)(objectclass=posixGroup))
+query_filter = (&(objectclass=posixGroup)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)))
 result_attribute = mailPrimaryAddress
 leaf_result_attribute = mailPrimaryAddress
 special_result_attribute = uniqueMember

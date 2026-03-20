@@ -1,8 +1,13 @@
-univention-mail-postfix (16.5.0) UNRELEASED; urgency=medium
+univention-mail-postfix (16.5.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:33 +0100
+  [ Florian Best ]
+  * Bug #28692: allow recipient of mailAlternativeAddress in
+    groups/group objects
+
+ -- Florian Best <best@univention.de>  Mon, 23 Mar 2026 10:18:02 +0100
 
 univention-mail-postfix (16.4.0) unstable; urgency=medium
 
