@@ -10,9 +10,11 @@ eval "$(ucr shell)"
 
 usage()
 {
-	echo "Usage: $0 --dn <ldap dn>"
+	echo "Usage: $0 --dn <ldap dn> [--force]"
 	echo
 	echo "The given LDAP DN will be re-replicated by the Univention Directory Notifier to all UCS systems in this UCS domain. This tool must be run on the Primary Directory Node."
+	echo
+	echo "  --force    Continue even if the object does not exist in LDAP."
 	echo
 	echo "Warning: This tool will stop the OpenLDAP and the Notifier daemon."
 	echo
@@ -28,12 +30,45 @@ if [ ! -e /var/lib/univention-ldap/notify/transaction ]; then
 	exit 1
 fi
 
-if [ "$#" != 2 ] || [ "$1" != "--dn" ]; then
+dn=""
+FORCE=0
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		--dn)
+			[ "$#" -ge 2 ] || { usage >&2; exit 1; }
+			dn="$2"
+			shift 2
+			;;
+		--force)
+			FORCE=1
+			shift
+			;;
+		*)
+			usage >&2
+			exit 1
+			;;
+	esac
+done
+
+if [ -z "$dn" ]; then
 	usage >&2
 	exit 1
 fi
 
-dn="$2"
+if ! slapdn -f /etc/ldap/slapd.conf "$dn" > /dev/null 2>&1; then
+	echo "Error: Skip due to invalid DN syntax: $dn" >&2
+	exit 1
+fi
+
+if ! univention-ldapsearch -LLLA -b "$dn" -s base dn >/dev/null 2>&1; then
+	if [ "$FORCE" = 1 ]; then
+		echo "Warning: \"$dn\" does not exist in LDAP, continuing as requested." >&2
+	else
+		echo "Abort: \"$dn\" does not exist in LDAP. Use --force to replicate anyway." >&2
+		exit 1
+	fi
+fi
 
 RESTART_NOTIFIER=0
 if pidof univention-directory-notifier >/dev/null ; then
