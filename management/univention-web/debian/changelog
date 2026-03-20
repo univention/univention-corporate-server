@@ -1,8 +1,12 @@
-univention-web (6.5.0) UNRELEASED; urgency=medium
+univention-web (6.5.1) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:18 +0100
+  [ Christian Castens ]
+  * Bug #59095: fix UMC "Select All" Checkbox
+
+ -- Christian Castens <castens@univention.de>  Fri, 20 Mar 2026 12:03:11 +0100
 
 univention-web (6.4.3) unstable; urgency=medium
 
