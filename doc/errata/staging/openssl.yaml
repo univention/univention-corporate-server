@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: openssl
+fix: 1.1.1n-0+deb10u9
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2026-22795, CVE-2025-69421, CVE-2025-69420,
+   CVE-2025-69419, CVE-2025-69418, CVE-2025-68160)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2026-22796)
+bug: [59138]
+cve:
+- CVE-2025-68160
+- CVE-2025-69418
+- CVE-2025-69419
+- CVE-2025-69420
+- CVE-2025-69421
+- CVE-2026-22795
+- CVE-2026-22796
