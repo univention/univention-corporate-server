@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 16:30+0000\n"
-"PO-Revision-Date: 2026-02-26 17:38+0100\n"
+"POT-Creation-Date: 2026-03-23 19:58+0000\n"
+"PO-Revision-Date: 2026-03-23 21:01+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -914,6 +914,10 @@ msgstr ""
 msgid "Container and application-related errors."
 msgstr "Container- und :spelling:word:`anwendungsbezogene` Fehler."
 
+#: ../../lifecycle/index.rst:47
+msgid "Contents"
+msgstr "Inhalt"
+
 #: ../../lifecycle/index.rst:8
 msgid "Lifecycle"
 msgstr "Lebenszyklus"
@@ -921,50 +925,97 @@ msgstr "Lebenszyklus"
 #: ../../lifecycle/index.rst:10
 msgid ""
 "Software lifecycle management in Nubus for UCS involves understanding "
-"versioning, planning updates, performing updates, managing repositories, "
-"and installing additional software. This chapter covers the following "
-"workflows:"
+"versioning, planning and performing updates, managing repositories, "
+"installing additional software, and monitoring what's installed across "
+"your domain. This chapter covers the following workflows:"
 msgstr ""
 "Das Management des Software-Lebenszyklus in Nubus für UCS umfasst das "
-"Verständnis von Versionierung, die Planung von Updates, die Durchführung "
-"von Updates, die Verwaltung von Repositories und die Installation "
-"zusätzlicher Software.Dieses Kapitel behandelt die folgenden Abläufe:"
+"Verständnis von Versionierung, die Planung und Durchführung von Updates,"
+"  die Verwaltung von Repositories, die Installation zusätzlicher Software"
+" und die Überwachung der installierten Software in Ihrer Domäne. Dieses "
+"Kapitel behandelt die folgenden Abläufe:"
 
-#: ../../lifecycle/index.rst:15
+#: ../../lifecycle/index.rst:16
 msgid "System updates and maintenance"
 msgstr "Systemaktualisierungen und Wartung"
 
-#: ../../lifecycle/index.rst:16
+#: ../../lifecycle/index.rst:17
 msgid ""
-"Keep your systems current with security fixes, bug fixes, and new "
-"features. Start with :ref:`lifecycle-versioning` to understand release "
-"types, then review :ref:`lifecycle-update-strategies` for planning multi-"
-"server updates. For technical details about the update process, see :ref"
+"Keep your systems current with security fixes, bug fixes, and features. "
+"Start with :ref:`lifecycle-versioning` to understand release types, then "
+"review :ref:`lifecycle-update-strategies` for planning multi-server "
+"updates. For technical details about the update process, see :ref"
 ":`lifecycle-perform-updates`."
 msgstr ""
 "Halten Sie Ihre Systeme mit Sicherheitsupdates, Bugfixes und neuen "
 "Funktionen aktuell. Beginnen Sie mit :ref:`lifecycle-versioning`, um "
-"Release-Typen zu verstehen. Überprüfen Sie dann :ref:`lifecycle-update-"
+"Release-Typen zu verstehen. Lesen Sie dann :ref:`lifecycle-update-"
 "strategies`, um Updates mit mehreren Servern zu planen. Technische "
 "Details zum Update-Prozess finden Sie unter :ref:`lifecycle-perform-"
 "updates`."
 
-#: ../../lifecycle/index.rst:22
-msgid "Software distribution and package management"
-msgstr "Softwareverteilung und Paketverwaltung"
-
 #: ../../lifecycle/index.rst:23
+msgid "Package management"
+msgstr "Paketverwaltung"
+
+#: ../../lifecycle/index.rst:24
+msgid ""
+"Install, remove, and manage software packages on your systems. For "
+"routine package operations, see :ref:`lifecycle-package-installation-"
+"management`. To automate package installation and removal on a schedule "
+"or system event, see :ref:`lifecycle-package-maintenance-policy`."
+msgstr ""
+"Installieren, entfernen und verwalten Sie Softwarepakete auf Ihren "
+"Systemen. Für routinemäßige Paketvorgänge, siehe :ref:`lifecycle-package-"
+"installation-management`. Um die Paketinstallation und "
+"-:spelling:word:`entfernung` nach einem Zeitplan oder Systemereignis zu "
+"automatisieren, siehe :ref:`lifecycle-package-maintenance-policy`."
+
+#: ../../lifecycle/index.rst:30
+msgid "Software distribution"
+msgstr "Softwareverteilung"
+
+#: ../../lifecycle/index.rst:31
 msgid ""
 "Control how Nubus for UCS systems obtain and install software. For multi-"
 "system environments or offline scenarios, set up local repositories— see "
-":ref:`lifecycle-local-repository-servers`. For routine package "
-"operations, see :ref:`lifecycle-package-installation-management`."
+":ref:`lifecycle-local-repository-servers`."
 msgstr ""
 "Steuern Sie, wie Nubus für UCS Systeme Software beziehen und "
 "installieren. Für Multi-System-Umgebungen oder Offline-Szenarien richten "
-"Sie lokale Repositories ein—siehe :ref:`lifecycle-local-repository-"
-"servers`. Für alltägliche Paketvorgänge, siehe :ref:`lifecycle-package-"
-"installation-management`."
+"Sie lokale Repositories ein – siehe :ref:`lifecycle-local-repository-"
+"servers`."
+
+#: ../../lifecycle/index.rst:36
+msgid "Application management"
+msgstr "Anwendungsverwaltung"
+
+#: ../../lifecycle/index.rst:37
+msgid ""
+"Extend your domain with additional applications from Univention App "
+"Center. The App Center handles the complete application lifecycle, from "
+"installation and configuration to updates and removal. See :ref"
+":`lifecycle-app-center`."
+msgstr ""
+"Erweitern Sie Ihre Domäne mit zusätzlichen Anwendungen aus dem App "
+"Center. Univention App Center verwaltet den gesamten "
+"Anwendungslebenszyklus, von Installation und Konfiguration bis hin zu "
+"Updates und Entfernen von Apps. Siehe :ref:`lifecycle-app-center`."
+
+#: ../../lifecycle/index.rst:42
+msgid "Domain-wide software monitoring"
+msgstr "Domänenweite Softwareüberwachung"
+
+#: ../../lifecycle/index.rst:43
+msgid ""
+"Track which package versions all systems have installed in your domain. "
+"The software monitor helps you identify problems and plan staged updates."
+" See :ref:`lifecycle-software-monitor`."
+msgstr ""
+"Verfolgen Sie, welche Paketversionen alle Systeme in Ihrer Domäne "
+"installiert haben. Der Software-Monitor hilft Ihnen, Probleme zu "
+"identifizieren und gestaffelte Updates zu planen. Siehe :ref:`lifecycle-"
+"software-monitor`."
 
 #: ../../lifecycle/local-repository-servers.rst:7
 msgid "Local repository servers"
@@ -3301,7 +3352,8 @@ msgid ""
 "of the package search results. See the column explanations later."
 msgstr ""
 ":numref:`lifecycle-software-monitor-capability-figure` zeigt ein Beispiel"
-" der Ergebnisse einer Paketsuche. Weitere Erklärungen der Spalten folgen später."
+" der Ergebnisse einer Paketsuche. Weitere Erklärungen der Spalten folgen "
+"später."
 
 #: ../../lifecycle/software-monitor.rst:50
 msgid "Software Monitor interface showing package search results"
@@ -3352,8 +3404,8 @@ msgid ""
 "The *selection state* indicates what the administrator wants the package "
 "manager to do with the package."
 msgstr ""
-"Der *Auswahlstatus* zeigt an, was der Administrator durch den Paketmanager mit "
-"dem Paket tun möchte."
+"Der *Auswahlstatus* zeigt an, was der Administrator durch den "
+"Paketmanager mit dem Paket tun möchte."
 
 #: ../../lifecycle/software-monitor.rst:69
 msgid "Install the package."
@@ -3501,8 +3553,8 @@ msgid ""
 "system's packages from the database."
 msgstr ""
 "Um die Softwareüberwachung zu deaktivieren, wenn Nubus für UCS Systeme "
-"die Datenbank nicht erreichen können, setzen Sie die :term:`UCR-Variable` :envvar:`pkgdb/scan`"
-" auf ``no``. Um die Überwachung zu reaktivieren, "
+"die Datenbank nicht erreichen können, setzen Sie die :term:`UCR-Variable`"
+" :envvar:`pkgdb/scan` auf ``no``. Um die Überwachung zu reaktivieren, "
 "führen Sie den Befehl :command:`univention-pkgdb-scan` aus. Dieser Befehl"
 " scannt das System und fügt alle während des Zeitraums der deaktivierten "
 "Überwachung installierten Pakete zur Datenbank hinzu. Verwenden Sie den "
@@ -3647,13 +3699,13 @@ msgstr "Führen Sie diese Schritte aus, um Release-Aktualisierung zu installiere
 
 #: ../../lifecycle/update-strategies.rst:73
 msgid ""
-":ref:`Sign in <ucs-operation-auth-sign-in>` to the *Management UI* with a"
-" user account from the ``Domain Admins`` group, such as "
+":ref:`Sign in <management-interface-auth-sign-in>` to the *Management UI*"
+" with a user account from the ``Domain Admins`` group, such as "
 "``Administrator``."
 msgstr ""
-":ref:`Melden Sie sich <ucs-operation-auth-sign-in>` an der *Management "
-"UI* mit einem Benutzerkonto aus der Gruppe ``Domain Admins`` an, z.B. "
-"``Administrator``."
+":ref:`Melden Sie sich <management-interface-auth-sign-in>` an der "
+"*Management UI* mit einem Benutzerkonto aus der Gruppe ``Domain Admins`` "
+"an, z.B. ``Administrator``."
 
 #: ../../lifecycle/update-strategies.rst:77
 msgid "Navigate to :menuselection:`Software --> Software update`."
@@ -4194,3 +4246,4 @@ msgid ""
 msgstr ""
 "Um Newsletter zu abonnieren, besuchen Sie `Univention Newsletter "
 "<https://www.univention.com/about-us/newsletter/>`_."
+

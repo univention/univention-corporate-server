@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-13 10:26+0000\n"
-"PO-Revision-Date: 2026-03-13 11:37+0100\n"
+"POT-Creation-Date: 2026-03-23 13:51+0000\n"
+"PO-Revision-Date: 2026-03-23 21:11+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../system-administration/boot-manager.rst:7
+#: ../../system-administration/index.rst:21
 msgid "Boot manager"
 msgstr "Boot-Manager"
 
@@ -195,13 +196,85 @@ msgstr ""
 "Prozesses – deaktivieren, indem Sie die UCR-Variable "
 ":envvar:`grub/bootsplash` auf ``nosplash`` setzen."
 
+#: ../../system-administration/index.rst:38
+#: ../../system-administration/network/index.rst:62
+msgid "Contents"
+msgstr "Inhalt"
+
 #: ../../system-administration/index.rst:8
 msgid "System administration"
-msgstr "Systemverwaltung"
+msgstr "Systemadministration"
 
+#: ../../system-administration/index.rst:10
+msgid ""
+"This chapter covers low-level configuration tasks for technical "
+"administrators managing Nubus for UCS systems. It addresses the "
+"components that underpin every running system: the kernel, the boot "
+"process, network connectivity, and outbound proxy access."
+msgstr ""
+"Dieses Kapitel behandelt grundlegende Konfigurationsaufgaben für "
+"technische Administratoren, die Nubus für UCS-Systeme verwalten. Es "
+"behandelt die Komponenten, die jedem laufenden System zugrunde liegen: "
+"den Kernel, den Boot-Prozess, die Netzwerkkonnektivität und den "
+"ausgehenden Proxy-Zugriff."
+
+#: ../../system-administration/index.rst:15
 #: ../../system-administration/kernel.rst:7
 msgid "Kernel"
 msgstr "Kernel"
+
+#: ../../system-administration/index.rst:16
+msgid ""
+"Manage kernel packages, kernel versions, and kernel modules. This "
+"includes loading additional drivers, blacklisting unwanted modules, and "
+"integrating external drivers through Dynamic Kernel Module Support "
+"(DKMS). See :ref:`system-administration-kernel`."
+msgstr ""
+"Verwalten Sie Kernel-Pakete, Kernel-Versionen und Kernel-Module. Dies "
+"umfasst das Laden zusätzlicher Treiber, das Sperren unerwünschter Module "
+"und die Integration externer Treiber über Dynamic Kernel Module Support "
+"(DKMS). Siehe :ref:`system-administration-kernel`."
+
+#: ../../system-administration/index.rst:22
+msgid ""
+"Configure GRUB, the boot manager in Nubus for UCS. Control the boot "
+"timeout, screen resolution, kernel options, and which kernel the system "
+"boots by default. See :ref:`system-administration-boot-manager`."
+msgstr ""
+"Konfigurieren Sie GRUB, den Boot-Manager in Nubus für UCS. Steuern Sie "
+"die Verzögerung im Startvorgang, die Bildschirmauflösung, Kernel-Optionen und "
+"welchen Kernel das System standardmäßig startet. Siehe "
+":ref:`system-administration-boot-manager`."
+
+#: ../../system-administration/index.rst:27
+#: ../../system-administration/network/index.rst:7
+msgid "Network configuration"
+msgstr "Netzwerkkonfiguration"
+
+#: ../../system-administration/index.rst:28
+msgid ""
+"Configure network interfaces and advanced network setups such as bridging"
+" for virtual machines, bonding for failover redundancy, and VLANs for "
+"logical traffic separation. See :ref:`system-administration-network`."
+msgstr ""
+"Konfigurieren Sie Netzwerkschnittstellen und erweiterte Netzwerk-Setups "
+"wie Bridging für virtuelle Maschinen, Bonding für Ausfallsicherheit und "
+"VLANs zur logischen Trennung des Datenverkehrs. Siehe "
+":ref:`system-administration-network`."
+
+#: ../../system-administration/index.rst:33
+msgid "Proxy settings"
+msgstr "Proxy-Einstellungen"
+
+#: ../../system-administration/index.rst:34
+msgid ""
+"Route outbound traffic from command-line tools and Nubus for UCS update "
+"utilities through a proxy server using UCR variables. See :ref:`system-"
+"administration-proxy`."
+msgstr ""
+"Leiten Sie ausgehenden Datenverkehr von Befehlszeilenwerkzeugen und "
+"Nubus für UCS Update-Dienstprogrammen über einen Proxy-Server mithilfe "
+"von UCR-Variablen weiter. Siehe :ref:`system-administration-proxy`."
 
 #: ../../system-administration/kernel.rst:9
 msgid ""
@@ -308,7 +381,7 @@ msgstr ""
 
 #: ../../system-administration/kernel.rst:56
 msgid "Kernel modules and drivers"
-msgstr "Kernelmodule und Treiber"
+msgstr "Kernel-Module und Treiber"
 
 #: ../../system-administration/kernel.rst:58
 msgid ""
@@ -319,7 +392,7 @@ msgid ""
 msgstr ""
 "Der Kernel verwendet Module und Treiber zur Kommunikation mit Hardware "
 "und zur Aktivierung von Systemfunktionalität. Dieser Abschnitt erläutert,"
-" wie der Start-Prozess Treiber lädt, wie Sie zusätzliche Kernelmodule "
+" wie der Start-Prozess Treiber lädt, wie Sie zusätzliche Kernel-Module "
 "konfigurieren, und wie Sie externe Treiber in Ihr System integrieren."
 
 #: ../../system-administration/kernel.rst:66
@@ -384,10 +457,10 @@ msgstr ""
 "automatisch während des Systemstarts. Er lädt Treiber und erstellt "
 "Gerätedateien im :file:`/dev/`-Verzeichnis, damit Sie auf die Hardware "
 "zugreifen können. Wenn das System die benötigten Treiber nicht erkennt, "
-"können Sie Kernelmodule über die :term:`UCR-Variable` "
+"können Sie Kernel-Module über die :term:`UCR-Variable` "
 ":envvar:`kernel/modules` aktivieren. Dies kann vorkommen, wenn "
 "Hardwarehersteller Hardware-IDs nicht registriert haben. Verwenden Sie "
-"die UCR-Variable :envvar:`kernel/blacklist`, um bestimmte Kernelmodule zu"
+"die UCR-Variable :envvar:`kernel/blacklist`, um bestimmte Kernel-Module zu"
 " verhindern, dass sie automatisch geladen werden. Für beide Variablen "
 "werden mehrere Einträge durch ein Semikolon getrennt."
 
@@ -420,11 +493,11 @@ msgid ""
 "compatible with the kernel. External kernel modules aren't compatible "
 "with all kernel versions."
 msgstr ""
-"Wenn Sie externe Treiber oder Kernelmodule benötigen, können Sie diese "
+"Wenn Sie externe Treiber oder Kernel-Module benötigen, können Sie diese "
 "über das DKMS-Framework (Dynamic Kernel Module Support) integrieren. DKMS"
 " stellt eine standardisierte Schnittstelle für Kernel-Quellen bereit und "
 "erstellt diese automatisch für jeden installierten Kernel. Das Quellpaket"
-" muss mit dem Kernel kompatibel sein. Externe Kernelmodule sind nicht mit"
+" muss mit dem Kernel kompatibel sein. Externe Kernel-Module sind nicht mit"
 " allen Kernel-Versionen kompatibel."
 
 #: ../../system-administration/kernel.rst:117
@@ -630,8 +703,8 @@ msgid ""
 "page <https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-"
 "interfaces.5.en.html>`_."
 msgstr ""
-"Verwenden Sie *Weitere Bridge-Optionen*, um optionale Bridge-"
-"Parameter zu konfigurieren. Dies benötigen Sie nur für spezialisierte "
+"Verwenden Sie *Weitere Bridge-Optionen*, um optionale Bridge-Parameter zu"
+" konfigurieren. Dies benötigen Sie nur für spezialisierte "
 "Netzwerkkonfigurationen. Für eine vollständige Liste der verfügbaren "
 "Einstellungen siehe die `bridge-utils-interfaces(5) Manual Page "
 "<https://manpages.debian.org/bookworm/bridge-utils/bridge-utils-"
@@ -692,8 +765,8 @@ msgid ""
 "In *Bond slaves*, select the network cards that are part of the bonding "
 "interface."
 msgstr ""
-"Wählen Sie in *Bond Kindnetzwerkschnittstellen* die Netzwerkkarten aus, die Teil"
-" der Bonding-Schnittstelle sind."
+"Wählen Sie in *Bond Kindnetzwerkschnittstellen* die Netzwerkkarten aus, "
+"die Teil der Bonding-Schnittstelle sind."
 
 #: ../../system-administration/network/advanced.rst:107
 msgid "Bond primary"
@@ -704,9 +777,9 @@ msgid ""
 "In *Bond primary*, select the network card to prioritize during failover."
 " The system switches to a backup card if the primary card fails."
 msgstr ""
-"Wählen Sie in *Primäre Bond-Netzwerkschnittstellen* die Netzwerkschnittstelle aus, die "
-"beim Failover priorisiert werden soll. Das System wechselt zu einer "
-"Backup-Karte, wenn die primäre Karte ausfällt."
+"Wählen Sie in *Primäre Bond-Netzwerkschnittstellen* die "
+"Netzwerkschnittstelle aus, die beim Failover priorisiert werden soll. Das"
+" System wechselt zu einer Backup-Karte, wenn die primäre Karte ausfällt."
 
 #: ../../system-administration/network/advanced.rst:111
 msgid "Mode"
@@ -729,9 +802,9 @@ msgid ""
 "redundancy. Network switches must support link aggregation."
 msgstr ""
 "``balance-rr (0)`` verteilt Pakete gleichmäßig über alle gebundenen "
-"Netzwerkkarten mit der :spelling:word:`Round-Robin-Methode`. Dies erhöht die "
-"Leistung und bietet Redundanz. Netzwerk-Switches müssen Link-Aggregation "
-"unterstützen."
+"Netzwerkkarten mit der :spelling:word:`Round-Robin-Methode`. Dies erhöht "
+"die Leistung und bietet Redundanz. Netzwerk-Switches müssen Link-"
+"Aggregation unterstützen."
 
 #: ../../system-administration/network/advanced.rst:120
 msgid ""
@@ -741,12 +814,12 @@ msgid ""
 "Linux kernel automatically switches to another card. This mode provides "
 "redundancy and works with any network switch."
 msgstr ""
-"``active-backup (1)`` hält nur eine Netzwerkschnittstelle zur Zeit aktiv. "
-"Standardmäßig ist dies die Netzwerkschnittstelle, die Sie unter :ref:`system-"
-"administration-network-bonding-primary` ausgewählt haben. Wenn die aktive"
-" Karte ausfällt, wechselt der Linux-Kernel automatisch zu einer anderen "
-"Karte. Dieser Modus bietet Redundanz und funktioniert mit jedem Netzwerk-"
-"Switch."
+"``active-backup (1)`` hält nur eine Netzwerkschnittstelle zur Zeit aktiv."
+" Standardmäßig ist dies die Netzwerkschnittstelle, die Sie unter :ref"
+":`system-administration-network-bonding-primary` ausgewählt haben. Wenn "
+"die aktive Karte ausfällt, wechselt der Linux-Kernel automatisch zu einer"
+" anderen Karte. Dieser Modus bietet Redundanz und funktioniert mit jedem "
+"Netzwerk-Switch."
 
 #: ../../system-administration/network/advanced.rst:125
 msgid ""
@@ -766,8 +839,8 @@ msgid ""
 "Interface (MII). This setting specifies the interval in milliseconds "
 "between health checks."
 msgstr ""
-"Der Linux-Kernel prüft den Status der Netzwerkschnittstelle mit dem Media "
-"Independent Interface (MII). Diese Einstellung gibt das Intervall in "
+"Der Linux-Kernel prüft den Status der Netzwerkschnittstelle mit dem Media"
+" Independent Interface (MII). Diese Einstellung gibt das Intervall in "
 "Millisekunden zwischen Integritätsprüfungen an."
 
 #: ../../system-administration/network/advanced.rst:132
@@ -907,8 +980,8 @@ msgid ""
 "configuration."
 msgstr ""
 "Geben Sie in *VLAN ID* den eindeutigen Bezeichner für dieses VLAN ein. "
-"Der gültige Bereich ist ``1`` bis ``4095``. Koordinieren Sie sich mit Ihrem "
-"Netzwerkadministrator, um sicherzustellen, dass jedes VLAN eine "
+"Der gültige Bereich ist ``1`` bis ``4095``. Koordinieren Sie sich mit "
+"Ihrem Netzwerkadministrator, um sicherzustellen, dass jedes VLAN eine "
 "eindeutige ID hat, die der Konfiguration Ihres Netzwerk-Switch "
 "entspricht."
 
@@ -1328,14 +1401,6 @@ msgstr ":envvar:`nameserver1` bis :envvar:`nameserver3`"
 #: ../../system-administration/network/basic.rst:162
 msgid ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`"
 msgstr ":envvar:`dns/forwarder1` bis :envvar:`dns/forwarder3`"
-
-#: ../../system-administration/network/index.rst:62
-msgid "Contents"
-msgstr "Inhalt"
-
-#: ../../system-administration/network/index.rst:7
-msgid "Network configuration"
-msgstr "Netzwerkkonfiguration"
 
 #: ../../system-administration/network/index.rst:9
 msgid ""
