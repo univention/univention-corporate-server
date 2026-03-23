@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-mail-postfix
+fix: 16.5.0
+desc: |
+ This update addresses the following issue:
+ * Postfix LDAP group lookups now support the `mailAlternativeAddress`
+   attribute in addition to `mailPrimaryAddress`. This allows UDM groups to
+   receive emails via alternative (alias) addresses.
+bug: [28692]

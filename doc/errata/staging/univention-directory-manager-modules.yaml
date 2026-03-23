@@ -3,9 +3,9 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-directory-manager-modules
-fix: 17.5.4
+fix: 17.5.5
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Fix incorrect handling of policy structures when using multiple UDM API
    versions in the same process. Previously, the policy encoder was
    initialized only once and reused globally, causing all subsequent UDM
@@ -14,4 +14,6 @@ desc: |
    and inconsistent behavior when mixing API versions.
  * In case of errors in a custom hook or syntax, the path of the file is now
    logged, instead of the placeholder "<string>".
+ * The property `mailAlternativeAddress` has been added to the `groups/group`
+   UDM module.
 bug: [58985, 59132]
