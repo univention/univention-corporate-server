@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-22 15:12+0000\n"
-"PO-Revision-Date: 2026-01-22 16:19+0100\n"
+"POT-Creation-Date: 2026-03-23 13:51+0000\n"
+"PO-Revision-Date: 2026-03-23 20:53+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -14,9 +14,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../domain-infrastructure/ha.rst:7
+#: ../../domain-infrastructure/index.rst:26
 msgid "Redundancy and failover for the Primary Directory Node"
 msgstr "Redundanz und Failover für den Primary Directory Node"
 
@@ -815,6 +816,10 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
+#: ../../domain-infrastructure/index.rst:32
+msgid "Contents"
+msgstr "Inhalt"
+
 #: ../../domain-infrastructure/index.rst:8
 msgid "Domain infrastructure"
 msgstr ":spelling:word:`Domäneninfrastruktur`"
@@ -822,62 +827,56 @@ msgstr ":spelling:word:`Domäneninfrastruktur`"
 #: ../../domain-infrastructure/index.rst:10
 msgid ""
 "This chapter covers the infrastructure foundation of a Nubus for UCS "
-"domain. A Nubus domain relies on multiple systems with different roles "
-"and responsibilities. These systems work together to provide the critical"
-" directory, authentication, and management services that keep your domain"
-" operational."
+"domain. A Nubus for UCS domain relies on multiple systems with different "
+"roles and responsibilities that work together to provide directory, "
+"authentication, and management services."
 msgstr ""
-"Dieses Kapitel behandelt die Grundlagen der Infrastruktur einer Nubus für UCS "
-"Domäne. Eine Nubus Domäne verlässt sich auf mehrere Systeme mit "
-"verschiedenen Rollen und Verantwortungen. Diese Systeme arbeiten zusammen, "
-"um die kritischen Dienste für Authentifizierung und Verwaltung und den Verzeichnisdienst "
-"bereitzustellen, die Ihre Domäne funktionsfähig halten."
+"Dieses Kapitel behandelt die :spelling:word:`Infrastrukturgrundlagen` einer Nubus für"
+" UCS Domäne. Eine Nubus für UCS Domäne verlässt sich auf mehrere Systeme "
+"mit verschiedenen Rollen und Verantwortlichkeiten, die zusammenarbeiten, "
+"um Verzeichnis-, :spelling:word:`Authentifizierungs`- und Verwaltungsdienste "
+"bereitzustellen."
 
-#: ../../domain-infrastructure/index.rst:15
+#: ../../domain-infrastructure/index.rst:14
 msgid ""
 "The Primary Directory Node serves as the central hub of your domain, "
-"storing and managing all domain data. To ensure your domain stays "
-"available and resilient, you need to understand both the different system"
-" roles you can deploy and the strategies for protecting against single "
-"points of disruption."
+"storing and managing all domain data. To keep your domain available and "
+"resilient, you need to understand both the system roles you can deploy "
+"and the strategies for protecting against single points of disruption."
 msgstr ""
-"Der Primary Directory Node dient als zentrale Drehscheibe Ihrer Domäne und "
-"speichert und verwaltet alle Domänendaten. Um sicherzustellen, dass Ihre "
-"Domäne verfügbar und widerstandsfähig bleibt, müssen Sie sowohl die "
+"Der Primary Directory Node dient als zentrale Drehscheibe Ihrer Domäne "
+"und speichert und verwaltet alle Domänendaten. Um sicherzustellen, dass "
+"Ihre Domäne verfügbar und widerstandsfähig bleibt, müssen Sie sowohl die "
 "verschiedenen Systemrollen, die Sie bereitstellen können, als auch die "
 "Strategien zum Schutz vor einzelnen Ausfallpunkten verstehen."
 
-#: ../../domain-infrastructure/index.rst:21
-msgid "This chapter has the following main sections:"
-msgstr "Dieses Kapitel hat die folgenden Hauptabschnitte:"
-
-#: ../../domain-infrastructure/index.rst:23
-msgid "System Roles"
+#: ../../domain-infrastructure/index.rst:20
+msgid "System roles"
 msgstr "Systemrollen"
 
-#: ../../domain-infrastructure/index.rst:24
+#: ../../domain-infrastructure/index.rst:21
 msgid ""
-"Learn about the different system roles you can deploy in your domain, "
-"from the critical Primary Directory Node to various client systems."
+"Understand the system roles you can deploy in a Nubus for UCS domain, "
+"from the Primary Directory Node that stores all domain data to Backup, "
+"Replica, and Managed Nodes. See :ref:`domain-infrastructure-system-"
+"roles`."
 msgstr ""
-"Erfahren Sie mehr über die verschiedenen Systemrollen, die Sie in Ihrer "
-"Domäne bereitstellen können, vom kritischen Primary Directory Node bis zu "
-"verschiedenen Client-Systemen."
+"Verstehen Sie die Systemrollen, die Sie in einer Nubus für UCS Domäne "
+"bereitstellen können, vom Primary Directory Node, der alle Domänendaten "
+"speichert, bis hin zu Backup-, Replica- und Managed Nodes. Siehe :ref"
+":`domain-infrastructure-system-roles`."
 
 #: ../../domain-infrastructure/index.rst:27
-msgid "Redundancy and Failover for the Primary Directory Node"
-msgstr "Redundanz und Failover für den Primary Directory Node"
-
-#: ../../domain-infrastructure/index.rst:28
 msgid ""
-"Explore strategies to protect your domain infrastructure through "
-"redundancy and failover mechanisms, ensuring continued service "
-"availability even if critical systems experience disruption."
+"Protect your domain against disruption to the Primary Directory Node by "
+"distributing directory data across Backup and Replica Directory Nodes and"
+" by promoting a Backup Directory Node to Primary when needed. See :ref"
+":`deployment-primary-dn-resilience`."
 msgstr ""
-"Erkunden Sie Strategien zum Schutz Ihrer Domäneninfrastruktur durch Mechanismen "
-"für Redundanz und Failover, um die kontinuierliche "
-"Dienstverfügbarkeit sicherzustellen, selbst wenn kritische Systeme eine "
-"Störung erleben."
+"Schützen Sie Ihre Domäne vor Störungen des Primary Directory Node, indem "
+"Sie Verzeichnisdaten auf Backup und Replica Directory Nodes verteilen und "
+"bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
+":`deployment-primary-dn-resilience`."
 
 #: ../../domain-infrastructure/system-roles.rst:7
 msgid "Understanding system roles"
@@ -1111,4 +1110,3 @@ msgstr ""
 "nicht in :ref:`domain-infrastructure-system-roles` aufgeführt sind, in "
 "die IP-Verwaltung von Nubus für DNS und DHCP, wie Netzwerkdrucker oder "
 "Router."
-

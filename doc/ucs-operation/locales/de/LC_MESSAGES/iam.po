@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-19 17:28+0000\n"
-"PO-Revision-Date: 2026-02-19 18:41+0100\n"
+"POT-Creation-Date: 2026-03-23 13:51+0000\n"
+"PO-Revision-Date: 2026-03-23 16:29+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../iam/group-management.rst:8
+#: ../../iam/group-management.rst:8 ../../iam/index.rst:24
 msgid "Group management"
 msgstr "Gruppenverwaltung"
 
@@ -539,13 +539,75 @@ msgstr ""
 " Attribute dynamisch über das Overlay-Modul an, wenn er eine Anfrage für "
 "ein Benutzerobjekt beantwortet."
 
+#: ../../iam/index.rst:35 ../../iam/password-management/index.rst:37
+msgid "Contents"
+msgstr "Inhalt"
+
 #: ../../iam/index.rst:8
 msgid "Identity and Access Management"
 msgstr "Identitäts- und Zugriffsverwaltung"
 
-#: ../../iam/password-management/index.rst:8
+#: ../../iam/index.rst:10
+msgid ""
+"This chapter covers Identity and Access Management (IAM) configuration "
+"tasks for technical administrators in Nubus for UCS. It addresses how "
+"users authenticate, how administrators govern passwords, how they "
+"structure and synchronize groups, and how they create user accounts."
+msgstr ""
+"Dieses Kapitel behandelt Konfigurationsaufgaben für Identity and Access "
+"Management (IAM) für technische Administratoren in Nubus für UCS. Es "
+"behandelt, wie sich Benutzer authentifizieren, wie Administratoren "
+"Passwörter verwalten, wie sie Gruppen strukturieren und synchronisieren "
+"und wie sie Benutzerkonten erstellen."
+
+#: ../../iam/index.rst:15 ../../iam/password-management/index.rst:8
 msgid "Password management"
 msgstr "Passwortverwaltung"
+
+#: ../../iam/index.rst:16
+msgid ""
+"Configure password policies that control password length, complexity, "
+"history, and age. Nubus for UCS supports two policy systems—UDM and Samba"
+" domain— which Univention recommends keeping aligned in Samba-enabled "
+"domains. This section covers the *End User Self Service*, which lets "
+"users manage their own contact information, register, and reset their "
+"passwords. See :ref:`password-management`."
+msgstr ""
+"Konfigurieren Sie Passwort-Richtlinien, die Passwortlänge, Komplexität, "
+"Verlauf und Alter steuern. Nubus für UCS unterstützt zwei "
+"Richtliniensysteme – UDM und Samba-Domäne –, die Univention empfiehlt, "
+"in Samba-fähigen Domänen aufeinander abzustimmen. Dieser Abschnitt "
+"behandelt den *End User Self Service*, der es Benutzern ermöglicht, ihre "
+"eigenen Kontaktinformationen zu verwalten, sich zu registrieren und ihre "
+"Passwörter zurückzusetzen. Siehe :ref:`password-management`."
+
+#: ../../iam/index.rst:25
+msgid ""
+"Create and manage groups in your Nubus for UCS domain, including nested "
+"groups, group caching, and Active Directory group synchronization. See "
+":ref:`ucs-operation-groups`."
+msgstr ""
+"Erstellen und verwalten Sie Gruppen in Ihrer Nubus für UCS Domäne, "
+"einschließlich verschachtelter Gruppen, Caching von Gruppen und "
+"Synchronisation von Gruppen mit Active Directory. Siehe :ref:`ucs-"
+"operation-groups`."
+
+#: ../../iam/index.rst:29 ../../iam/user-create-wizard.rst:7
+msgid "User creation wizard"
+msgstr "Assistent zum Erstellen von Benutzern"
+
+#: ../../iam/index.rst:30
+msgid ""
+"Configure the user creation wizard for functional administrators, "
+"including requiring a primary email address, controlling which account "
+"properties appear, and deactivating the wizard when you don't need it. "
+"See :ref:`iam-user-create-wizard`."
+msgstr ""
+"Konfigurieren Sie den Assistenten zum Erstellen von Benutzern für "
+"funktionale Administratoren, einschließlich der Anforderung einer "
+"primären E-Mailadresse, der Steuerung, welche Kontoeigenschaften "
+"angezeigt werden, und der Deaktivierung des Assistenten, wenn Sie ihn "
+"nicht benötigen. Siehe :ref:`iam-user-create-wizard`."
 
 #: ../../iam/password-management/index.rst:10
 msgid "This chapter covers password management in Nubus for UCS."
@@ -2115,10 +2177,6 @@ msgstr ""
 " siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
 "univention-configuration-registry`."
 
-#: ../../iam/user-create-wizard.rst:7
-msgid "User creation wizard"
-msgstr "Assistent zum Erstellen von Benutzern"
-
 #: ../../iam/user-create-wizard.rst:9
 msgid ""
 "For quick user account creation, functional administrators can use the "
@@ -2136,7 +2194,9 @@ msgstr ""
 
 #: ../../iam/user-create-wizard.rst:20
 msgid "Require primary email address in user creation wizard"
-msgstr "Primäre E-Mailadresse im Assistenten zum Erstellen von Benutzern erforderlich"
+msgstr ""
+"Primäre E-Mailadresse im Assistenten zum Erstellen von Benutzern "
+"erforderlich"
 
 #: ../../iam/user-create-wizard.rst:22
 msgid ""
@@ -2429,4 +2489,3 @@ msgstr ""
 "Wenn Sie jedoch einzelne *UMC-Server* Instanzen neu starten, verlieren "
 "Benutzer, deren Sitzung zu den betroffenen *UMC-Server* Instanzen gehört,"
 " ihre Benutzersitzung."
-

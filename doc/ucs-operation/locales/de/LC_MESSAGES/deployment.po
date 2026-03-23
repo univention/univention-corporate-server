@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 14:40+0000\n"
-"PO-Revision-Date: 2026-03-19 15:41+0100\n"
+"POT-Creation-Date: 2026-03-23 13:51+0000\n"
+"PO-Revision-Date: 2026-03-23 21:21+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: ../../deployment/after-installation.rst:7
+#: ../../deployment/after-installation.rst:7 ../../deployment/index.rst:34
 msgid "Steps after the installation"
 msgstr "Schritte nach der Installation"
 
@@ -78,7 +78,7 @@ msgstr ""
 "die Lizenz für die Domäne importieren, siehe :ref:`management-interface-"
 "license`."
 
-#: ../../deployment/domain-setup.rst:7
+#: ../../deployment/domain-setup.rst:7 ../../deployment/index.rst:28
 msgid "Domain setup"
 msgstr "Einrichtung der Domäne"
 
@@ -259,7 +259,7 @@ msgid ""
 msgstr ""
 "Wenn Sie eine gültige E-Mail-Adresse angeben, aktiviert die "
 "Systemeinrichtung eine personalisierte Lizenz und schickt sie an die "
-"Adresse. Das Univention App Center benötigt die Lizenz, um Apps zu "
+"Adresse. Univention App Center benötigt die Lizenz, um Apps zu "
 "installieren. Univention generiert die Lizenz automatisch und sendet sie "
 "sofort an die angegebene E-Mail-Adresse. Sie importieren die Lizenz über "
 "das Verwaltungsmodul *Willkommen*, siehe :ref:`management-interface-"
@@ -623,9 +623,12 @@ msgstr ""
 "installation` fort."
 
 #: ../../deployment/domain-setup.rst:309 ../../deployment/domain-setup.rst:312
-#: ../../deployment/index.rst:38
 msgid "Installation overview"
 msgstr "Installationsübersicht"
+
+#: ../../deployment/index.rst:43
+msgid "Contents"
+msgstr "Inhalt"
 
 #: ../../deployment/index.rst:8
 msgid "System deployment"
@@ -633,126 +636,81 @@ msgstr "System :spelling:word:`Deployment`"
 
 #: ../../deployment/index.rst:10
 msgid ""
-"This chapter describes installation procedures for Nubus for UCS across "
-"various deployment environments. As a technical administrator, you find "
-"detailed instructions for both traditional and cloud-based installation "
-"methods, along with platform-specific considerations."
+"This chapter describes how to install Nubus for UCS across physical "
+"servers, virtual machines, and cloud environments. It covers everything "
+"from choosing an installation method through the first steps after the "
+"system is running."
 msgstr ""
-"Dieses Kapitel beschreibt Installationsverfahren für Nubus für UCS in "
-"verschiedenen Installationsumgebungen. Als technischer Administrator "
-"finden Sie detaillierte Anweisungen für sowohl traditionelle als auch "
-"cloudbasierte Installationsmethoden, zusammen mit plattformspezifischen "
-"Überlegungen."
+"Dieses Kapitel beschreibt, wie Sie Nubus für UCS auf physischen Servern, "
+"virtuellen Maschinen und Cloud-Umgebungen installieren. Es behandelt "
+"alles von der Wahl einer Installationsmethode bis hin zu den ersten "
+"Schritten, nachdem das System läuft."
 
-#: ../../deployment/index.rst:15
-msgid "Required knowledge and skills"
-msgstr "Erforderliche Kenntnisse und Fähigkeiten"
+#: ../../deployment/index.rst:15 ../../deployment/install.rst:7
+msgid "Installation methods"
+msgstr "Installationsmethoden"
 
 #: ../../deployment/index.rst:16
 msgid ""
-"Basic understanding of system administration and networking, including IP"
-" addressing, DNS, and DHCP."
+"Choose the installation method that matches your environment: interactive"
+" DVD installation for physical and virtual machines, text mode for "
+"systems without graphical support, Amazon EC2 for cloud deployments, or "
+"VMware-specific configuration for VMware environments. See :ref"
+":`deployment-installation-methods`."
 msgstr ""
-"Grundlegendes Verständnis von Systemadministration und Netzwerken, "
-"einschließlich IP-Adressierung, DNS und DHCP."
-
-#: ../../deployment/index.rst:17
-msgid "Familiarity with partitioning concepts and file system management."
-msgstr ""
-"Vertrautheit mit Konzepten der Festplattenpartitionierung und "
-"Dateisystemverwaltung."
-
-#: ../../deployment/index.rst:18
-msgid "Ability to configure domain settings and directory services."
-msgstr ""
-"Fähigkeit zur Konfiguration von Domäneneinstellungen und "
-"Verzeichnisdiensten."
-
-#: ../../deployment/index.rst:19
-msgid ""
-"Experience with virtualization platforms for relevant deployment "
-"scenarios."
-msgstr ""
-"Erfahrung mit Virtualisierungsplattformen für relevante "
-"Installationsszenarien."
-
-#: ../../deployment/index.rst:20
-msgid ""
-"Understanding of Active Directory integration if joining existing Windows"
-" domains."
-msgstr ""
-"Verständnis der Active Directory Integration beim Beitritt zu bestehenden"
-" Windows-Domänen."
-
-#: ../../deployment/index.rst:22
-msgid "What you learn"
-msgstr "Was Sie lernen"
+"Wählen Sie die Installationsmethode, die zu Ihrer Umgebung passt: "
+"interaktive DVD-Installation für physische und virtuelle Maschinen, "
+"Textmodus für Systeme ohne grafische Unterstützung, Amazon EC2 für "
+"Installationen in der Cloud oder VMware-spezifische Konfiguration für "
+"VMware-Umgebungen. Siehe :ref:`deployment-installation-methods`."
 
 #: ../../deployment/index.rst:23
-msgid ""
-"Step-by-step interactive installation through DVD for physical servers "
-"and DVD image for virtual machines."
-msgstr ""
-"Schritt-für-Schritt interaktive Installation über DVD für physische "
-"Server und DVD-Image für virtuelle Maschinen."
-
-#: ../../deployment/index.rst:26
-msgid "Configuration options for BIOS and UEFI systems, including Secure Boot."
-msgstr ""
-"Konfigurationsoptionen für BIOS- und UEFI-Systeme, einschließlich Secure "
-"Boot."
-
-#: ../../deployment/index.rst:28
-msgid ""
-"Network setup procedures for both automatic DHCP and manual IP "
-"configuration."
-msgstr ""
-"Verfahren zur Netzwerkeinrichtung für sowohl automatische DHCP- als auch "
-"manuelle IP-Konfiguration."
-
-#: ../../deployment/index.rst:30
-msgid "Hard drive partitioning strategies including LVM and encryption options."
-msgstr ""
-"Strategien der Festplattenpartitionierung einschließlich LVM- und "
-"Verschlüsselungsoptionen."
-
-#: ../../deployment/index.rst:32
-msgid "Domain mode selection and system role configuration."
-msgstr "Auswahl des Domänenmodus und Systemrollen-Konfiguration."
-
-#: ../../deployment/index.rst:34
-msgid ""
-"Alternative installation methods: text-mode, cloud-based Amazon EC2, and "
-"VMware-specific deployment."
-msgstr ""
-"Alternative Installationsmethoden: Textmodus, cloudbasierte Amazon EC2 "
-"und VMware-spezifische Installation."
-
-#: ../../deployment/index.rst:36
-msgid "Troubleshooting common installation issues."
-msgstr "Fehlerbehebung bei häufigen Installationsproblemen."
-
-#: ../../deployment/index.rst:39
-msgid ""
-"Nubus for UCS divides the installation process into four main deployment "
-"paths, each suited to different infrastructure needs."
-msgstr ""
-"Nubus für UCS unterteilt den Installationsprozess in vier "
-"Installationspfade, die jeweils für unterschiedliche Bedürfnisse der "
-"Infrastruktur geeignet sind."
-
-#: ../../deployment/index.rst:42
-msgid ""
-"Choose the method that best matches your deployment environment, then "
-"follow the relevant subsections for step-by-step guidance."
-msgstr ""
-"Wählen Sie die Methode, die am besten zu Ihrer Installationsumgebung "
-"passt, und folgen Sie dann den relevanten Abschnitten für eine Schritt-"
-"für-Schritt-Anleitung."
-
 #: ../../deployment/initial-system-configuration.rst:7
 msgid "Initial system configuration"
 msgstr "Initiale Systemkonfiguration"
+
+#: ../../deployment/index.rst:24
+msgid ""
+"Work through the interactive installer to configure language, keyboard "
+"layout, network settings, disk partitioning, and the ``root`` password. "
+"See :ref:`deployment-initial-system-configuration`."
+msgstr ""
+"Arbeiten Sie sich durch den interaktiven Installer, um Sprache, "
+"Tastaturbelegung, Netzwerkeinstellungen, Festplattenpartitionierung und "
+"das ``root``-Passwort zu konfigurieren. Siehe :ref:`deployment-initial-"
+"system-configuration`."
+
+#: ../../deployment/index.rst:29
+msgid ""
+"Select a domain mode to complete the installation: create a Nubus for UCS"
+" domain, join an existing Nubus for UCS domain, or join an existing "
+"Active Directory domain. See :ref:`deployment-domain-setup`."
+msgstr ""
+"Wählen Sie einen Domänenmodus, um die Installation abzuschließen: "
+"Erstellen Sie eine Nubus für UCS Domäne, treten Sie einer bestehenden "
+"Nubus für UCS Domäne bei oder treten Sie einer bestehenden Active "
+"Directory Domäne bei. Siehe :ref:`deployment-domain-setup`."
+
+#: ../../deployment/index.rst:35
+msgid ""
+"Access the *Portal* and complete the first essential tasks after the "
+"installation finishes. See :ref:`deployment-after-installation`."
+msgstr ""
+"Greifen Sie auf das *Portal* zu und führen Sie die ersten grundlegenden "
+"Aufgaben nach Abschluss der Installation durch. Siehe :ref:`deployment-"
+"after-installation`."
+
+#: ../../deployment/index.rst:39
+msgid "Troubleshooting"
+msgstr "Fehlerbehebung"
+
+#: ../../deployment/index.rst:40
+msgid ""
+"Resolve common installation problems. See :ref:`deployment-installation-"
+"troubleshooting`."
+msgstr ""
+"Beheben Sie häufige Installationsprobleme. Siehe :ref:`deployment-"
+"installation-troubleshooting`."
 
 #: ../../deployment/initial-system-configuration.rst:9
 msgid ""
@@ -1517,10 +1475,6 @@ msgstr ""
 #: ../../deployment/initial-system-configuration.rst:390
 msgid "Finish the installation"
 msgstr "Installation abschließen"
-
-#: ../../deployment/install.rst:7
-msgid "Installation methods"
-msgstr "Installationsmethoden"
 
 #: ../../deployment/install.rst:9
 msgid ""
