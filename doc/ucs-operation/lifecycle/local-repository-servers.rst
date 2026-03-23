@@ -109,6 +109,67 @@ Prerequisites
    To create a local repository, you need Root user credentials
    to run the repository commands in a terminal.
 
+.. _lifecycle-local-repository-create-disk-space-estimate:
+
+Optional: Estimate required disk space
+   .. dropdown:: Explanation and commands
+      :color: info
+
+      Before you initialize the repository,
+      you can estimate how much disk space you need.
+      The required space depends on which Nubus for UCS versions you mirror.
+
+      Run the command in :numref:`lifecycle-local-repository-size-estimate-figure`
+      on your Nubus for UCS system to calculate the estimated size.
+      The command reads the current Nubus for UCS version from UCR variables,
+      retrieves the list of available patch level releases from the upstream release metadata,
+      and sums the package sizes from each suite's index.
+
+      .. code-block:: console
+         :caption: Estimate total repository size
+         :name: lifecycle-local-repository-size-estimate-figure
+
+         $ eval "$(ucr shell version/version version/patchlevel)"
+         $ cat << EOT > /tmp/get_suites.py
+         import json, sys
+         major, minor = map(int, '${version_version}'.split('.'))
+         r = json.load(sys.stdin)
+         for m in r['releases']:
+           for n in m['minors']:
+             for p in n['patchlevels']:
+               if m['major'] == major and n['minor'] == minor:
+                 v = f'{m["major"]}{n["minor"]}{p["patchlevel"]}'
+                 print(f'ucs{v} errata{v}', end=' ')
+         EOT
+         $ SUITES=$(curl -sf \
+             https://updates.software-univention.de/ucs-releases.json \
+             | python3 /tmp/get_suites.py)
+         $ BASE=https://updates.software-univention.de/dists
+         $ for suite in $SUITES; do \
+             curl -sf "$BASE/$suite/main/binary-amd64/Packages.xz"; \
+           done | xzcat \
+             | awk '/^Size:/{sum+=$2} END{printf "%.1f GB\n", sum/1073741824}'
+         $ rm /tmp/get_suites.py
+
+      .. note::
+
+         The result is an upper bound.
+         :program:`apt-mirror` stores packages in a shared pool,
+         so packages that appear in multiple suites are only stored once on disk.
+         The actual disk usage is therefore somewhat lower than the estimate.
+
+         The estimate doesn't include source packages.
+         If you set :envvar:`repository/mirror/sources` to ``yes``,
+         add additional space for those.
+
+   .. important::
+
+      During synchronization,
+      :program:`apt-mirror` requires temporary working space
+      in addition to the final repository size.
+      Ensure at least twice the estimated size in free disk space
+      before you start.
+
 .. _lifecycle-local-repository-create-init:
 
 Initialize the repository
@@ -120,8 +181,6 @@ Initialize the repository
    and the repository size.
    The command also enables the local repository
    by setting the UCR variable :envvar:`local/repository` to ``yes``.
-
-   .. TODO: Add repository size estimate once measurements are available from colleagues.
 
    To initialize the repository,
    run the command from :numref:`lifecycle-local-repository-create-figure` in a terminal.
@@ -334,14 +393,6 @@ Manage disk space
 
    * Prune old kernel packages using the :command:`univention-prune-kernels` command
      to remove outdated kernel packages and free disk space.
-
-   .. warning::
-
-      During synchronization,
-      :program:`apt-mirror` requires temporary disk space
-      in addition to the final repository size.
-      Ensure at least 2x the expected mirror size in free disk space
-      before running synchronization.
 
 .. _lifecycle-local-repository-maintenance-review:
 
