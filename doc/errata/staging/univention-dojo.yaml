@@ -11,3 +11,4 @@ desc: |
    checkbox in list views and the tree view in the LDAP directory to
    malfunction.
 bug: [59095]
+maintained: false
