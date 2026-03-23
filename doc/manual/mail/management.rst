@@ -143,6 +143,12 @@ There is the possibility of creating a mail group: This is where an email
 address is assigned to a group of users. Emails to this address are delivered
 to the primary email address of each of the group members.
 
+A mail group can also receive emails sent to addresses defined as
+*alternative email addresses* of the group. Emails sent to any address
+listed in the *Alternative email addresses* attribute are delivered to all
+group members, just like emails sent to the primary email address. This
+allows mail groups to be reachable via multiple alias addresses.
+
 Mail groups are managed in the UMC module :guilabel:`Groups` (see
 :ref:`groups`).
 

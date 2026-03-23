@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-06 14:02+0000\n"
+"POT-Creation-Date: 2026-03-23 13:34+0000\n"
 "PO-Revision-Date: 2025-11-06 15:03+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../mail/configuration-client.rst:7
 msgid "Configuration of mail clients for the mail server"
@@ -244,8 +244,9 @@ msgid ""
 "<https://manpages.debian.org/bookworm/postfix/postconf.5.en.html>`_ - "
 "manual page for :program:`postconf` - Postfix configuration parameters"
 msgstr ""
-"`postconf(5) <https://manpages.debian.org/bookworm/postfix/postconf.5.en.html>`_ - Manual Seite für :program:`postconf` - Postfix "
-"Konfigurationsparameter"
+"`postconf(5) "
+"<https://manpages.debian.org/bookworm/postfix/postconf.5.en.html>`_ - "
+"Manual Seite für :program:`postconf` - Postfix Konfigurationsparameter"
 
 #: ../../mail/configuration-server.rst:96
 msgid ""
@@ -1285,12 +1286,12 @@ msgid "*Remote mail retrieval (single)* tab"
 msgstr "Reiter *Mailabruf von externen Servern (Single)*"
 
 #: ../../mail/fetchmail.rst:34 ../../mail/fetchmail.rst:61
-#: ../../mail/management.rst:202 ../../mail/management.rst:244
+#: ../../mail/management.rst:208 ../../mail/management.rst:250
 msgid "Attribute"
 msgstr "Attribut"
 
 #: ../../mail/fetchmail.rst:35 ../../mail/fetchmail.rst:62
-#: ../../mail/management.rst:203 ../../mail/management.rst:245
+#: ../../mail/management.rst:209 ../../mail/management.rst:251
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1861,13 +1862,22 @@ msgstr ""
 
 #: ../../mail/management.rst:146
 msgid ""
+"A mail group can also receive emails sent to addresses defined as "
+"*alternative email addresses* of the group. Emails sent to any address "
+"listed in the *Alternative email addresses* attribute are delivered to "
+"all group members, just like emails sent to the primary email address. "
+"This allows mail groups to be reachable via multiple alias addresses."
+msgstr "Eine Mailgruppe kann auch E-Mails empfangen, die an Adressen gesendet werden, die als *alternative E-Mail-Adressen* der Gruppe definiert sind. E-Mails, die an eine der im Attribut *Alternative E-Mail-Adressen* aufgeführten Adressen gesendet werden, werden an alle Gruppenmitglieder zugestellt, genau wie E-Mails, die an die primäre E-Mail-Adresse gesendet werden. Auf diese Weise sind Mailgruppen über mehrere Alias-Adressen erreichbar."
+
+#: ../../mail/management.rst:152
+msgid ""
 "Mail groups are managed in the UMC module :guilabel:`Groups` (see "
 ":ref:`groups`)."
 msgstr ""
 "Mailgruppen werden im UMC-Modul :guilabel:`Gruppen` verwaltet (siehe auch"
 " :ref:`groups`)."
 
-#: ../../mail/management.rst:149
+#: ../../mail/management.rst:155
 msgid ""
 "The email address of the mail group is specified in the *mail address* "
 "input field under *Advanced settings*. The domain part of the address "
@@ -1877,7 +1887,7 @@ msgstr ""
 "unter *Erweiterte Einstellungen* festgelegt. Der Domänenteil der Adresse "
 "muss einer der verwalteten Mail-Domänen entsprechen."
 
-#: ../../mail/management.rst:153
+#: ../../mail/management.rst:159
 msgid ""
 "By default everyone can write to the mail group. To prevent misuse, there"
 " is the possibility of restricting the circle of people who can send "
@@ -1890,7 +1900,7 @@ msgstr ""
 ":envvar:`mail/postfix/policy/listfilter` auf dem Mailserver auf ``yes`` "
 "gesetzt und Postfix neu gestartet werden."
 
-#: ../../mail/management.rst:158
+#: ../../mail/management.rst:164
 msgid ""
 "*Users that are allowed to send emails to the group* and *Groups that are"
 " allowed to send emails to the group* can be specified under *Advanced "
@@ -1903,11 +1913,11 @@ msgstr ""
 "Feld gesetzt, ist das Senden nur den berechtigten Nutzern/Gruppen "
 "erlaubt."
 
-#: ../../mail/management.rst:166
+#: ../../mail/management.rst:172
 msgid "Management of shared IMAP folders"
 msgstr "Verwaltung von globalen IMAP-Ordnern"
 
-#: ../../mail/management.rst:168
+#: ../../mail/management.rst:174
 msgid ""
 "Shared email access forms the basis for cooperation in many work groups. "
 "In UCS, users can create folders in their own mailboxes and assign "
@@ -1920,7 +1930,7 @@ msgstr ""
 "dass es weiteren Benutzern gestattet ist, E-Mails in diesen Ordnern zu "
 "lesen oder weitere E-Mails in diesen Ordnern abzulegen."
 
-#: ../../mail/management.rst:173
+#: ../../mail/management.rst:179
 msgid ""
 "Alternatively, individual IMAP folders can be shared for users or user "
 "groups. This type of folder is described as a shared IMAP folder. Shared "
@@ -1932,7 +1942,7 @@ msgstr ""
 "bezeichnet. Globale IMAP-Ordner werden im UMC-Modul :guilabel:`Mail` mit "
 "dem Objekttyp *Mail-Ordner (IMAP)* verwaltet."
 
-#: ../../mail/management.rst:178
+#: ../../mail/management.rst:184
 msgid ""
 "Shared folders cannot be renamed, therefore the |UCSUCRV| "
 ":envvar:`mail/dovecot/mailbox/rename` is not taken into account. When a "
@@ -1946,23 +1956,23 @@ msgstr ""
 "(Standard ist ``no``), wird ein globaler IMAP-Ordner beim Löschen im UMC-"
 "Modul :guilabel:`Mail` auch tatsächlich von der Festplatte gelöscht."
 
-#: ../../mail/management.rst:186 ../../mail/management.rst:189
+#: ../../mail/management.rst:192 ../../mail/management.rst:195
 msgid "Creating a shared IMAP folder"
 msgstr "Einrichtung eines globalen IMAP-Ordners"
 
-#: ../../mail/management.rst:194
+#: ../../mail/management.rst:200
 msgid "Shared IMAP folder - General tab"
 msgstr "Globaler IMAP-Ordner - Reiter Allgemein"
 
-#: ../../mail/management.rst:198
+#: ../../mail/management.rst:204
 msgid "*General* tab"
 msgstr "Reiter *Allgemein*"
 
-#: ../../mail/management.rst:205 ../../mail/management.rst:247
+#: ../../mail/management.rst:211 ../../mail/management.rst:253
 msgid "Name (*)"
 msgstr "Name (*)"
 
-#: ../../mail/management.rst:206
+#: ../../mail/management.rst:212
 #, python-brace-format
 msgid ""
 "The name under which the IMAP folder is available in the email clients. "
@@ -1979,11 +1989,11 @@ msgstr ""
 ":samp:`{name}@{domain}/INBOX`. Wird eine Mail-Adresse verwendet, wird der"
 " Name die Form :samp:`shared/{name}@{domain}` haben."
 
-#: ../../mail/management.rst:213
+#: ../../mail/management.rst:219
 msgid "Mail domain (*)"
 msgstr "Mail-Domäne (*)"
 
-#: ../../mail/management.rst:214
+#: ../../mail/management.rst:220
 msgid ""
 "Every shared IMAP folder is assigned to a mail domain. The management of "
 "the domains is documented in the :ref:`mail-management-domains`."
@@ -1992,11 +2002,11 @@ msgstr ""
 "Verwaltung der Domänen ist in :ref:`mail-management-domains` "
 "dokumentiert."
 
-#: ../../mail/management.rst:217
+#: ../../mail/management.rst:223
 msgid "Mail home server (*)"
 msgstr "Mail Home Server (*)"
 
-#: ../../mail/management.rst:218
+#: ../../mail/management.rst:224
 msgid ""
 "An IMAP folder is assigned to a mail home server. Further information can"
 " be found in :ref:`mail-homeserver`."
@@ -2004,11 +2014,11 @@ msgstr ""
 "Ein IMAP-Ordner ist einem Mail Home Server zugeordnet. Weitere Hinweise "
 "finden sich in :ref:`mail-homeserver`."
 
-#: ../../mail/management.rst:221
+#: ../../mail/management.rst:227
 msgid "Quota in MB"
 msgstr "Quota in MB"
 
-#: ../../mail/management.rst:222
+#: ../../mail/management.rst:228
 msgid ""
 "This setting can be used to set the maximum total size of all emails in "
 "this folder."
@@ -2016,11 +2026,11 @@ msgstr ""
 "Mit dieser Einstellung kann die maximale Gesamtgröße aller E-Mails in "
 "diesem Ordner festgelegt werden."
 
-#: ../../mail/management.rst:225
+#: ../../mail/management.rst:231
 msgid "Email address"
 msgstr "E-Mailadresse"
 
-#: ../../mail/management.rst:226
+#: ../../mail/management.rst:232
 msgid ""
 "An email address can be entered here via which emails can be sent "
 "directly to the IMAP folder. If no address is set here, it is only "
@@ -2031,7 +2041,7 @@ msgstr ""
 "gesetzt, so kann nur aus E-Mail-Clients heraus in den Ordner geschrieben "
 "werden."
 
-#: ../../mail/management.rst:230
+#: ../../mail/management.rst:236
 msgid ""
 "The domain part of the email address must be registered in the UMC module"
 " :guilabel:`Mail` (see :ref:`mail-management-domains`)."
@@ -2039,15 +2049,15 @@ msgstr ""
 "Der Domänenanteil der E-Mail-Adresse muss im UMC-Modul :guilabel:`E-Mail`"
 " registriert sein (siehe :ref:`mail-management-domains`)."
 
-#: ../../mail/management.rst:236
+#: ../../mail/management.rst:242
 msgid "Shared IMAP folder - Access rights tab"
 msgstr "Globale IMAP-Ordner - Reiter Zugriffsrechte"
 
-#: ../../mail/management.rst:240
+#: ../../mail/management.rst:246
 msgid "*Access rights* tab"
 msgstr "Reiter *Zugriffsrechte*"
 
-#: ../../mail/management.rst:248
+#: ../../mail/management.rst:254
 msgid ""
 "Access permissions based on users or groups can be entered here. Users "
 "are entered with their username; the groups saved in the UMC module "
@@ -2058,7 +2068,7 @@ msgstr ""
 "als Gruppen werden die im UMC-Modul :guilabel:`Gruppen` angelegten "
 "Gruppen verwendet."
 
-#: ../../mail/management.rst:252
+#: ../../mail/management.rst:258
 msgid ""
 "The access permissions have the following consequences for individual "
 "users or members of the specified group:"
@@ -2066,39 +2076,39 @@ msgstr ""
 "Die Zugriffsrechte haben folgende Auswirkungen für einzelne Benutzer oder"
 " Mitglieder der angegebenen Gruppe:"
 
-#: ../../mail/management.rst:255
+#: ../../mail/management.rst:261
 msgid "No access"
 msgstr "Keine"
 
-#: ../../mail/management.rst:256
+#: ../../mail/management.rst:262
 msgid "No access is possible. The folder is not displayed in the folder list."
 msgstr ""
 "Es ist kein Zugriff möglich. Der Ordner wird nicht in der Ordnerliste "
 "angezeigt."
 
-#: ../../mail/management.rst:258
+#: ../../mail/management.rst:264
 msgid "Read"
 msgstr "Lesen"
 
-#: ../../mail/management.rst:259
+#: ../../mail/management.rst:265
 msgid "The user may only perform read access to existing entries."
 msgstr "Es darf nur lesend auf bestehende Einträge zugegriffen werden."
 
-#: ../../mail/management.rst:261
+#: ../../mail/management.rst:267
 msgid "Append"
 msgstr "Anhängen"
 
-#: ../../mail/management.rst:262
+#: ../../mail/management.rst:268
 msgid "Existing entries may not be edited; only new entries may be created."
 msgstr ""
 "Bestehende Einträge dürfen nicht verändert werden, nur neue Einträge "
 "erzeugt werden."
 
-#: ../../mail/management.rst:264
+#: ../../mail/management.rst:270
 msgid "Write"
 msgstr "Schreiben"
 
-#: ../../mail/management.rst:265
+#: ../../mail/management.rst:271
 msgid ""
 "New entries may be created in this directory; existing entries may be "
 "edited or deleted."
@@ -2106,11 +2116,11 @@ msgstr ""
 "Neue Einträge in diesem Ordner anlegen, bestehende verändern oder "
 "bestehende löschen ist erlaubt."
 
-#: ../../mail/management.rst:268
+#: ../../mail/management.rst:274
 msgid "Post"
 msgstr "Senden"
 
-#: ../../mail/management.rst:269
+#: ../../mail/management.rst:275
 msgid ""
 "Sending an email to this directory as a recipient is permitted. This "
 "function is not supported by all the clients."
@@ -2118,11 +2128,11 @@ msgstr ""
 "Eine E-Mail an diesen Ordner als Empfänger senden ist zugelassen. Dies "
 "wird nicht von jedem Client unterstützt."
 
-#: ../../mail/management.rst:272
+#: ../../mail/management.rst:278
 msgid "All"
 msgstr "Alles"
 
-#: ../../mail/management.rst:273
+#: ../../mail/management.rst:279
 msgid ""
 "Encompasses all permissions of *write* and also allows the changing of "
 "access permissions."
@@ -2130,11 +2140,11 @@ msgstr ""
 "Umfasst alle Berechtigungen von *Schreiben* und erlaubt zusätzlich das "
 "Ändern von Zugriffsrechten."
 
-#: ../../mail/management.rst:279
+#: ../../mail/management.rst:285
 msgid "Mail quota"
 msgstr "Mail-Quota"
 
-#: ../../mail/management.rst:281
+#: ../../mail/management.rst:287
 msgid ""
 "The size of the users' mailboxes can be restricted via the mail quota. "
 "When this is attained, no further emails can be accepted for the mailbox "
@@ -2145,7 +2155,7 @@ msgstr ""
 " Postfach angenommen werden, bis der Benutzer alte Mails aus seinem Konto"
 " entfernt hat."
 
-#: ../../mail/management.rst:285
+#: ../../mail/management.rst:291
 msgid ""
 "The limit is specified in megabytes in the *Mail quota* field under "
 ":menuselection:`Advanced settings --> Mail`. The default value is ``0`` "
@@ -2160,7 +2170,7 @@ msgstr ""
 "Mehrfachbearbeitungsmodus von UMC-Modulen verwendet werden, siehe :ref"
 ":`central-user-interface-edit`."
 
-#: ../../mail/management.rst:291
+#: ../../mail/management.rst:297
 msgid ""
 "The user can be warned once a specified portion of the mailbox is "
 "attained and then receives a message that their available storage space "
@@ -2173,7 +2183,7 @@ msgstr ""
 "Schwellwert in Prozent, den Betreff der Nachricht und ihren Inhalt "
 "angeben:"
 
-#: ../../mail/management.rst:296
+#: ../../mail/management.rst:302
 #, python-brace-format
 msgid ""
 "The threshold for when the warning message should be issued can be "
@@ -2185,13 +2195,13 @@ msgstr ""
 "werden soll, zum Beispiel: "
 ":samp:`mail/dovecot/quota/warning/text/{PROZENT}={TEXT}`"
 
-#: ../../mail/management.rst:300
+#: ../../mail/management.rst:306
 msgid "``PERCENT`` must be a number between 0 and 100 without the percent sign."
 msgstr ""
 "``PROZENT`` muss als Zahl zwischen 0 und 100 ohne Prozentzeichen "
 "angegeben werden."
 
-#: ../../mail/management.rst:302
+#: ../../mail/management.rst:308
 msgid ""
 "``TEXT`` will be the content of the email. If the value ``TEXT`` contains"
 " the string ``$PERCENT``, it will be replaced in the email with the value"
@@ -2201,7 +2211,7 @@ msgstr ""
 "``$PERCENT`` enthält, wird diese in der E-Mail mit dem überschrittenen "
 "Wert ersetzt."
 
-#: ../../mail/management.rst:306
+#: ../../mail/management.rst:312
 msgid ""
 "The value of the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` "
 "will be used for the subject of the email."
@@ -2209,7 +2219,7 @@ msgstr ""
 "Der Wert der |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` wird "
 "als Betreff der E-Mails verwendet."
 
-#: ../../mail/management.rst:309
+#: ../../mail/management.rst:315
 msgid ""
 "When the mail server package is installed, a subject and two warning "
 "messages are automatically configured:"
@@ -2217,13 +2227,13 @@ msgstr ""
 "Bei der Installation des Mail-Server-Paketes werden Betreff und zwei "
 "Warn-Nachrichten automatisch konfiguriert:"
 
-#: ../../mail/management.rst:312
+#: ../../mail/management.rst:318
 msgid ":envvar:`mail/dovecot/quota/warning/subject` is set to ``Quota-Warning``"
 msgstr ""
 ":envvar:`mail/dovecot/quota/warning/subject` wird gesetzt auf ``Quota-"
 "Warning``"
 
-#: ../../mail/management.rst:314
+#: ../../mail/management.rst:320
 msgid ""
 ":envvar:`mail/dovecot/quota/warning/text/80` is set to ``Your mailbox has"
 " filled up to over $PERCENT%.``"
@@ -2231,7 +2241,7 @@ msgstr ""
 ":envvar:`mail/dovecot/quota/warning/text/80` wird gesetzt auf ``Your "
 "mailbox has filled up to over $PERCENT%.``"
 
-#: ../../mail/management.rst:317
+#: ../../mail/management.rst:323
 msgid ""
 ":envvar:`mail/dovecot/quota/warning/text/95` is set to ``Attention: Your "
 "mailbox has already filled up to over $PERCENT%. Please delete some "
