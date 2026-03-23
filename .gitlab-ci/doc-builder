@@ -185,6 +185,9 @@ def add_jobs(pipeline: dict[str, object]) -> None:
         all_paths.append(job_path(path))
         pkg = path.name
         for target in TARGETS:
+            if target == 'pdf' and pkg == 'ucs-operation':
+                continue
+
             name = job_name(pkg, target)
             job = job_desc(pkg, path, f'.sphinx-{target}', languages, DEPENDS.get(pkg, set()))
             pipeline.update({name: job})
