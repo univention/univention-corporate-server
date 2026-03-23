@@ -321,19 +321,19 @@ class DomainPasswordSettings(SambaTool):
             cmd_attributes.append(f'--complexity={domain_passwordsettings.password_complexity}')
         if domain_passwordsettings.store_plaintext_passwords:
             cmd_attributes.append(f'--store-plaintext={domain_passwordsettings.store_plaintext_passwords}')
-        if domain_passwordsettings.password_history_length:
+        if domain_passwordsettings.password_history_length is not None:
             cmd_attributes.append(f'--history-length={domain_passwordsettings.password_history_length}')
-        if domain_passwordsettings.minimum_password_length:
+        if domain_passwordsettings.minimum_password_length is not None:
             cmd_attributes.append(f'--min-pwd-length={domain_passwordsettings.minimum_password_length}')
-        if domain_passwordsettings.minimum_password_age:
+        if domain_passwordsettings.minimum_password_age is not None:
             cmd_attributes.append(f'--min-pwd-age={domain_passwordsettings.minimum_password_age}')
-        if domain_passwordsettings.maximum_password_age:
+        if domain_passwordsettings.maximum_password_age is not None:
             cmd_attributes.append(f'--max-pwd-age={domain_passwordsettings.maximum_password_age}')
-        if domain_passwordsettings.account_lockout_duration:
+        if domain_passwordsettings.account_lockout_duration is not None:
             cmd_attributes.append(f'--account-lockout-duration={domain_passwordsettings.account_lockout_duration}')
-        if domain_passwordsettings.account_lockout_threshold:
+        if domain_passwordsettings.account_lockout_threshold is not None:
             cmd_attributes.append(f'--account-lockout-threshold={domain_passwordsettings.account_lockout_threshold}')
-        if domain_passwordsettings.reset_account_lockout_after:
+        if domain_passwordsettings.reset_account_lockout_after is not None:
             cmd_attributes.append(
                 f'--reset-account-lockout-after={domain_passwordsettings.reset_account_lockout_after}',
             )

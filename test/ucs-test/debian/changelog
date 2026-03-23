@@ -1,3 +1,9 @@
+ucs-test (12.5.13) unstable; urgency=medium
+
+  * Bug #56913: fix(active_directory): DomainPasswordSettings.set() silently drops zero-valued lockout settings
+
+ -- Jan Gietzel <jan.gietzel@univention.de>  Mon, 23 Mar 2026 19:50:35 +0100
+
 ucs-test (12.5.12) unstable; urgency=medium
 
   * Bug #28692: add test case for mail alternative address of groups
