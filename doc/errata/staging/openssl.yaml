@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssl
+fix: 1.1.0l-1~deb9u12
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2026-22796, CVE-2026-22795, CVE-2025-69421,
+   CVE-2025-69420, CVE-2025-69419, CVE-2025-69418, CVE-2025-68160)
+bug: [59141]
+cve:
+- CVE-2025-68160
+- CVE-2025-69418
+- CVE-2025-69419
+- CVE-2025-69420
+- CVE-2025-69421
+- CVE-2026-22795
+- CVE-2026-22796
