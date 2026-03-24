@@ -1933,8 +1933,8 @@ msgstr "Schreiben"
 #: modules/univention/admin/syntax.py:511
 #: modules/univention/admin/syntax.py:6531
 #, python-format
-msgid "Wrong argument count %d; expected %d..%d"
-msgstr "Falsche Anzahl von Argumenten %d; erwartet %d..%d"
+msgid "Wrong argument count %(val)d; expected %(low)d..%(high)d"
+msgstr "Falsche Anzahl von Argumenten %(val)d; erwartet %(low)d..%(high)d"
 
 #: modules/univention/admin/syntax.py:4872
 #: modules/univention/admin/syntax.py:4883

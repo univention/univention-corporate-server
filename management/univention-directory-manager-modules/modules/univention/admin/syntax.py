@@ -509,7 +509,7 @@ class complex(ISyntax):
 
         low, val, high = minn, len(texts), len(self.subsyntaxes)
         if not low <= val <= high:
-            raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %d; expected %d..%d') % (val, low, high))
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %(val)d; expected %(low)d..%(high)d') % {'val': val, 'low': low, 'high': high})
 
         parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
@@ -6533,7 +6533,7 @@ class PrinterURI(complex):
         count = self.min_elements if self.min_elements is not None else len(self.subsyntaxes)
         low, val, high = count, len(texts), len(self.subsyntaxes)
         if not low <= val <= high:
-            raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %d; expected %d..%d') % (val, low, high))
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Wrong argument count %(val)d; expected %(low)d..%(high)d') % {'val': val, 'low': low, 'high': high})
 
         parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
