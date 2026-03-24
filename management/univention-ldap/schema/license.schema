@@ -129,6 +129,21 @@ attributetype ( 1.3.6.1.4.1.10176.1712.1.16 NAME ( 'univentionLicenseVersion' )
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
+attributetype ( 1.3.6.1.4.1.10176.1712.1.17 NAME ( 'univentionUsedLicenseServers' )
+	DESC 'Cache for actual number of used servers'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1712.1.18 NAME ( 'univentionUsedLicenseUsers' )
+	DESC 'Cache for actual number of used users'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1712.1.19 NAME ( 'univentionUsedLicenseManagedClients' )
+	DESC 'Cache for actual number of used (Windows, Linux, Ubuntu, MacOS) clients'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
+
 objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 	DESC 'univention Licence Object'
 	SUP 'top' STRUCTURAL
@@ -147,6 +162,6 @@ objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 		univentionLicenseuniventionDesktops $ univentionLicenseType $
 		univentionLicensePhysicalServers $ univentionLicenseServerInstances $
 		univentionLicenseThinClients $ univentionLicenseVirtualDesktops $
-		univentionLicenseModule
+		univentionLicenseModule $ univentionUsedLicenseServers $
+		univentionUsedLicenseUsers $ univentionUsedLicenseManagedClients
 		) )
-

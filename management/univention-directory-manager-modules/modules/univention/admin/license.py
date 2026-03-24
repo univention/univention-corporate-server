@@ -3,6 +3,14 @@
 
 """|UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions"""
 
+from datetime import UTC, datetime, timedelta
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from univention.admin.uldap import access
+
+import ldap
 from ldap.filter import filter_format
 
 import univention.admin.localization
@@ -265,27 +273,126 @@ class License:
 
     def __countObject(self, obj, lo):
         version = self.version
-        if version not in self.licenses:
-            version = '2'
-        if self.licenses[version][obj] and self.licenses[version][obj] != 'unlimited':
+        if not self.licenses[version][obj] or self.licenses[version][obj] == 'unlimited':
+            return 0
+
+        if self.real[version][obj] != 0:
+            return self.real[version][obj]
+
+        licenses = lo.authz_connection.search(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))', attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'])
+        try:
+            _, attrs = licenses[0]
+        except IndexError:
+            attrs = {}
+
+        usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
+        value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
+
+        # Return cached value if cache is within TTL
+        if value and self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII')):
+            self.real[version][obj] = value
+            return value
+
+        self.real[version][obj] = len(lo.authz_connection.searchDn(filter=self.filters[version][obj]))
+        return self.real[version][obj]
+
+    def recheck(self, lo) -> bool:
+        res = lo.authz_connection.search(
+            filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))',
+            attr=['modifyTimestamp'],
+        )
+        attrs = res[0][1] if res else {}
+        return not self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII'))
+
+    def _check_cache_ttl(self, modify_timestamp) -> int:
+        cache_ttl = min(max(0, configRegistry.get_int('directory/manager/license-cache/ttl', 3600)), 86400)
+        if cache_ttl > 0 and modify_timestamp:
+            dt = datetime.strptime(modify_timestamp, "%Y%m%d%H%M%SZ").replace(tzinfo=UTC)
+            return datetime.now(UTC) - dt < timedelta(seconds=cache_ttl)
+        return False
+
+    def update_cache(self, lo: 'access') -> dict:
+        """
+        Force update all license count caches.
+
+        This performs expensive LDAP searches and should only be called by
+        the cron job or after license import, not during UMC login.
+
+        Returns dict with 'users', 'servers', 'clients' counts.
+        """
+        version = self.version
+        dns = lo.authz_connection.searchDn(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))')
+        if not dns:
+            log.warning('No license object found, cannot update cache')
+            return {'users': 0, 'servers': 0, 'clients': 0}
+        dn = dns[0]
+
+        counts = {}
+        for obj, name in [(License.USERS, 'users'), (License.SERVERS, 'servers'), (License.MANAGEDCLIENTS, 'clients')]:
             result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
-            if result is None:
-                self.real[version][obj] = 0
-            else:
-                self.real[version][obj] = len(result)
-            log.debug('Univention License', license=self.names[version][obj], count=self.real[version][obj])
-        else:
-            self.real[version][obj] = 0
+            count = len(result) if result else 0
+
+            counts[name] = count
+            self.real[version][obj] = count
+
+            usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
+            try:
+                lo.authz_connection.modify(dn, [(usedkey, [b'X'], [str(count).encode('ASCII')])], ignore_license=True)
+            except (univention.admin.uexceptions.base, ldap.LDAPError) as exc:
+                log.warning('Failed to update license cache for %s: %s', name, exc)
+
+        log.info('License cache updated', **counts)
+        return counts
 
 
 class LicenseWrapper:
     """Licence interface."""
 
-    def initialize(self, lo):
+    def initialize(self, lo: 'access') -> None:
+        """Initialize license check. Call this before accessing license data."""
         try:
             _license.init_select(lo, 'admin')
         except univention.admin.uexceptions.licenseError:
             pass  # the license signature is invalid, expired, etc but not the limits are reached, (could not be found?)
+
+    def update_cache(self, lo: 'access') -> dict:
+        """
+        Force update the license count cache.
+
+        This performs expensive LDAP searches to count users, servers, and clients,
+        then updates the cache attributes on the license object.
+
+        Should be called by:
+        - The cron job (hourly by default)
+        - After license import
+        - When quota is exceeded and admin re-logs in
+        """
+        return _license.update_cache(lo)
+
+    def recheck(self, lo) -> bool:
+        """
+        Force-update the license cache and re-check quota.
+        Only runs if the cache is stale (older than TTL), so fresh-cache over-quota
+        logins are fast. Returns True if now within quota.
+        """
+        if not _license.recheck(lo):
+            return False
+        log.info('Cache is stale and quota exceeded, force-updating license cache...')
+
+        try:
+            admin_lo, _ = univention.admin.uldap.getAdminConnection()
+        except OSError:
+            return False
+
+        self.initialize(admin_lo)
+        self.update_cache(admin_lo)
+        try:
+            lo.check_license()
+        except univention.admin.uexceptions.licenseError:
+            log.info('Still over quota after cache update')
+            return False
+
+        return True
 
     def get_user_limit(self) -> int | None:
         limit = _license.licenses[_license.version][License.USERS]

@@ -169,3 +169,25 @@ Description[en]=The bcrypt cost factor (integer) increases security by slowing d
 Type=pint
 Default=12
 Categories=management-udm
+
+[directory/manager/license-cache/ttl]
+Description[de]=TTL in Sekunden für den Cache zur Lizenzanzahl. Standard: 3600, Maximum: 86400. Bei einem Wert von 0 ist der Cache deaktiviert und die Objekte werden bei jeder Lizenzprüfung gezählt.
+Description[en]=TTL in seconds for the license count cache. Default: 3600, Maximum: 86400. If set to 0, the cache is disabled and objects are counted on every license check.
+Type=uint
+Max=86400
+Default=3600
+Categories=management-udm
+
+[directory/manager/license-cache/cron]
+Description[de]=Cron-Zeitplan für die Aktualisierung des Caches für die Lizenzanzahl. Standard: stündlich. Nur auf dem Primary Directory Node aktiv.
+Description[en]=Cron schedule for updating the license count cache. Default: every hour. Only active on the Primary Directory Node.
+Type=cron
+Default=0 * * * *
+Categories=management-udm
+
+[directory/manager/license-cache/log-target]
+Description[de]=Ausgabeziel für das Skript zur Aktualisierung des Lizenz-Caches.
+Description[en]=Log output target for the license cache update script.
+Type=str
+Default=/var/log/univention/directory-manager-cmd.log
+Categories=management-udm

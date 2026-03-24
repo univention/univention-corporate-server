@@ -15,6 +15,7 @@ import ldap
 import ldap.modlist
 import ldif
 
+import univention.admin.license as udm_license
 import univention.admin.modules
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap
@@ -101,25 +102,41 @@ class LicenseImport(ldif.LDIFParser):
             ldap_con.delete_s(self.dn)
             ldap_con.add_s(self.dn, self.addlist)
 
+        # Update license count cache after successful import
+        self._update_license_cache()
 
-def check_license(ldap_connection, ignore_core_edition=True):
+    def _update_license_cache(self):
+        """Update license count cache using admin credentials."""
+        try:
+            admin_lo, _ = univention.admin.uldap.getAdminConnection()
+            udm_license.license.initialize(admin_lo)
+            counts = udm_license.license.update_cache(admin_lo)
+            MODULE.info('License cache updated after import: %s', counts)
+        except Exception as exc:
+            MODULE.warning('Failed to update license cache after import: %s', exc)
+
+
+def check_license(ldap_connection):
     try:
-        ldap_connection.check_license()
+        try:
+            ldap_connection.check_license()
+        except (udm_errors.licenseAccounts, udm_errors.licenseUsers, udm_errors.licenseClients, udm_errors.licenseManagedClients, udm_errors.licenseCorporateClients):
+            if udm_license.license.recheck(ldap_connection):
+                return
+            raise
     except udm_errors.freeForPersonalUse:
         return
     except udm_errors.licenseNotFound:
         raise LicenseError(_('License not found. During this session add and modify are disabled.'))
-    except udm_errors.licenseAccounts:  # UCS license v1
+    except (udm_errors.licenseAccounts, udm_errors.licenseUsers):
         raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
-    except udm_errors.licenseUsers:  # UCS license v2
-        raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
-    except udm_errors.licenseClients:  # UCS license v1
+    except udm_errors.licenseClients:
         raise LicenseError(_('You have too many client accounts for your license. During this session add and modify are disabled.'))
-    except udm_errors.licenseServers:  # UCS license v2
+    except udm_errors.licenseServers:
         raise LicenseError(_('You have too many server accounts for your license. During this session add and modify are disabled.'))
-    except udm_errors.licenseManagedClients:  # UCS license v2
+    except udm_errors.licenseManagedClients:
         raise LicenseError(_('You have too many managed client accounts for your license. During this session add and modify are disabled.'))
-    except udm_errors.licenseCorporateClients:  # UCS license v2
+    except udm_errors.licenseCorporateClients:
         raise LicenseError(_('You have too many corporate client accounts for your license. During this session add and modify are disabled.'))
     except udm_errors.licenseDesktops:  # UCS license v1
         raise LicenseError(_('You have too many desktop accounts for your license. During this session add and modify are disabled.'))

@@ -218,12 +218,12 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         if id(lo) in self.__license_checks:
             return
         self.__license_checks.add(id(lo))
-        try:
-            check_license(lo, True)
-        except LicenseError:
-            lo.allow_modify = False
         lo.requireLicense()
         lo.authz_connection.requireLicense()
+        try:
+            check_license(lo)
+        except LicenseError:
+            lo.allow_modify = False
 
     def get_ldap_connection(self):
         try:
@@ -266,8 +266,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
     def license(self, request):
         message = None
+        lo = self.get_ldap_connection()[0]
+        lo.requireLicense()
         try:
-            check_license(self.get_ldap_connection()[0])
+            check_license(lo)
         except LicenseError as exc:
             message = str(exc)
 
