@@ -18,4 +18,4 @@ desc: |
    UDM module.
  * When a user is locked out, the `krbkdcflag`
    attribute is now adjusted accordingly.
-bug: [58985, 59132]
+bug: [52893, 58985, 59132]
