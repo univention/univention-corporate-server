@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-03 12:57+0200\n"
-"PO-Revision-Date: 2024-06-03 13:51+0200\n"
+"POT-Creation-Date: 2026-03-24 16:33+0000\n"
+"PO-Revision-Date: 2026-03-24 17:35+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,821 +15,136 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../groups.rst:9
+#: ../../groups.rst:8
 msgid "Group management"
 msgstr "Gruppenverwaltung"
 
-#: ../../groups.rst:11
+#: ../../groups.rst:10
 msgid ""
-"Permissions in UCS are predominantly differentiated between on the basis "
-"of *groups*. Groups are stored in the LDAP and are thus identical on all "
-"systems. Groups can contain not only user accounts, but can also "
-"optionally accept computer accounts."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Berechtigungen werden in UCS überwiegend auf Basis von *Gruppen* "
-"unterschieden. Gruppen werden im LDAP gespeichert und sind somit auf "
-"allen Systemen identisch. Gruppen können nicht nur Benutzerkonten "
-"enthalten, sondern optional auch Rechnerkonten aufnehmen."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:16
-msgid ""
-"In addition, there are also local user groups on each system, which are "
-"predominantly used for hardware access. These are not managed through the"
-" |UCSUMS|, but saved in the :file:`/etc/group` file."
-msgstr ""
-"Auf jedem System gibt es darüber hinaus auch noch lokale Benutzergruppen, "
-"die vor allem für den Zugriff auf Hardware verwendet werden. Diese werden"
-" nicht durch das |UCSUMS| verwaltet, sondern in der Datei "
-":file:`/etc/group` gespeichert."
-
-#: ../../groups.rst:22
-msgid ""
-"The group management is part of Univention Nubus in the *Directory "
-"Manager* component. For more information about Nubus, refer to :ref"
-":`introduction-nubus`"
-msgstr ""
-"Die Gruppenverwaltung ist Teil von Univention Nubus in der *Directory "
-"Manager* Komponente. Weitere Informationen zu Nubus finden Sie unter :ref"
-":`introduction-nubus`"
-
-#: ../../groups.rst:28
+#: ../../groups.rst:17
 msgid "User group assignments"
 msgstr "Zuordnung von Benutzergruppen"
 
-#: ../../groups.rst:30
-msgid "The assignment of users to groups is performed in two ways:"
-msgstr "Die Zuordnung von Benutzern zu Gruppen erfolgt auf zwei Wegen:"
-
-#: ../../groups.rst:32
+#: ../../groups.rst:19
 msgid ""
-"A selection of groups can be assigned to a user in the user management, "
-"see :ref:`users-management`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups-assignement` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"In der Benutzerverwaltung kann einem Benutzer eine Auswahl von Gruppen "
-"zugewiesen werden, siehe :ref:`users-management`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups-assignement` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:35
-msgid ""
-"A selection of users can be assigned to a group in the group management, "
-"see :ref:`groups-management`."
-msgstr ""
-"In der Gruppenverwaltung kann einer Gruppe eine Auswahl von Benutzern "
-"zugeordnet werden, siehe :ref:`groups-management`."
-
-#: ../../groups.rst:41
+#: ../../groups.rst:26
 msgid "Recommendation for group name definition"
 msgstr "Empfehlung für Definition von Gruppennamen"
 
-#: ../../groups.rst:43
+#: ../../groups.rst:28
 msgid ""
-"One very important and required attribute for groups is the group name. "
-"To avoid conflicts with the different tools handling groups in UCS, "
-"adhere to the following recommendations for the definition of group "
-"names:"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups-recommendation-group-name` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Ein sehr wichtiges und erforderliches Attribut für Gruppen ist der "
-"Gruppenname. Um Konflikte mit den verschiedenen Werkzeugen zu vermeiden, "
-"die Gruppen in UCS verarbeiten, berücksichtigen Sie die folgenden "
-"Empfehlungen für die Definition von Gruppennamen:"
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups-recommendation-group-name` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:47
-msgid ""
-"Only use upper and lower case letters (``A-Za-z``), digits (``0-9``) the "
-"hyphen (``-``) and space from the ASCII character set for group names."
-msgstr ""
-"Verwenden Sie für Gruppennamen nur Groß- und Kleinbuchstaben "
-"(``A-Za-z``), Ziffern (``0-9``), den Bindestrich (``-``) und Leerzeichen "
-"aus dem ASCII-Zeichensatz."
-
-#: ../../groups.rst:50
-msgid ""
-"The group name starts with a letter from the ASCII character set. The "
-"space is not allowed as first or last character. The hyphen is not "
-"allowed as last character."
-msgstr ""
-"Der Gruppenname beginnt mit einem Buchstaben aus dem ASCII-Zeichensatz. "
-"Das Leerzeichen ist weder als erstes, noch als letztes Zeichen erlaubt. "
-"Der Bindestrich als letztes Zeichen ist nicht erlaubt."
-
-#: ../../groups.rst:54
-msgid ""
-"In UCS the group name has at least a length of 4 characters and at most "
-"20 characters."
-msgstr ""
-"In UCS hat der Gruppenname eine Länge von mindestens 4 und höchstens 20 "
-"Zeichen."
-
-#: ../../groups.rst:57
-msgid "The recommendation results in the following regular expression::"
-msgstr "Die Empfehlung ergibt den folgenden regulären Ausdruck::"
-
-#: ../../groups.rst:59
-msgid "^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$"
-msgstr "^[A-Za-z][A-Za-z0-9 -]{2,18}[A-Za-z0-9]$"
-
-#: ../../groups.rst:61
-msgid ""
-"Consider the recommendation as a guideline and not a rule and keep "
-"potential side-effects in mind when defining group names outside the "
-"recommendation."
-msgstr ""
-"Betrachten Sie die Empfehlung als Richtlinie und nicht als harte Regel "
-"und bedenken Sie mögliche Nebenwirkungen, wenn Sie Gruppennamen außerhalb"
-" der Empfehlung definieren."
-
-#: ../../groups.rst:67
+#: ../../groups.rst:35
 msgid "Managing groups via |UCSUMC| module"
 msgstr "Verwaltung von Gruppen über |UCSUMC| Modul"
 
-#: ../../groups.rst:69
+#: ../../groups.rst:37
 msgid ""
-"Groups are managed in the UMC module :guilabel:`Groups` (see :ref"
-":`central-user-interface`)."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups-management` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Gruppen werden im UMC-Modul *Gruppen* verwaltet (siehe auch :ref"
-":`central-user-interface`)."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups-management` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:77
-msgid "Creating a group via UMC module"
-msgstr "Anlegen einer Gruppe im UMC-Modul"
-
-#: ../../groups.rst:82
+#: ../../groups.rst:44
 msgid "Group management module - General tab"
 msgstr "Gruppenmanagement Modul - Reiter Allgemein"
 
-#: ../../groups.rst:86
-msgid "*General* tab"
-msgstr "Reiter *Allgemein*"
-
-#: ../../groups.rst:90 ../../groups.rst:123 ../../groups.rst:205
-msgid "Attribute"
-msgstr "Attribut"
-
-#: ../../groups.rst:91 ../../groups.rst:102 ../../groups.rst:124
-#: ../../groups.rst:206
-msgid "Description"
-msgstr "Beschreibung"
-
-#: ../../groups.rst:93
-msgid "Name (*)"
-msgstr "Name (*)"
-
-#: ../../groups.rst:94
+#: ../../groups.rst:46
 msgid ""
-"Defines the name of the group. For recommended characters for the group "
-"name, see :ref:`groups-recommendation-group-name`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups-management-tab-general` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Definiert den Namen der Gruppe. Für empfohlene Zeichen für den "
-"Gruppennamen, siehe :ref:`groups-recommendation-group-name`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups-management-tab-general` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:97
-msgid ""
-"By default it is not possible to create a group with the same name as an "
-"existing user. If the |UCSUCRV| "
-":envvar:`directory/manager/user_group/uniqueness` is set to ``false``, "
-"this check is removed."
-msgstr ""
-"In der Grundeinstellung kann keine Gruppe mit dem Namen eines "
-"existierenden Benutzers angelegt werden. Wird die |UCSUCRV| "
-":envvar:`directory/manager/user_group/uniqueness` auf ``false`` gesetzt, "
-"wird diese Prüfung aufgehoben."
-
-#: ../../groups.rst:103
-msgid "A description of the group can be entered here."
-msgstr "Hier kann eine beliebige Beschreibung für die Gruppe eingetragen werden."
-
-#: ../../groups.rst:105
-msgid "Users"
-msgstr "Benutzer"
-
-#: ../../groups.rst:106
-msgid "This input field can be used for adding users as members to the group."
-msgstr ""
-"In diesem Eingabefeld können Benutzer als Mitglieder in diese Gruppe "
-"aufgenommen werden."
-
-#: ../../groups.rst:108
-msgid "Groups"
-msgstr "Gruppen"
-
-#: ../../groups.rst:109
-msgid ""
-"On this input field, other groups can be added as members of the current "
-"group (groups in groups)."
-msgstr ""
-"In diesem Eingabefeld können Gruppen als Mitglieder in diese Gruppe "
-"aufgenommen werden (Gruppen in Gruppen)."
-
-#: ../../groups.rst:115
+#: ../../groups.rst:53
 msgid "Group management module - Advanced settings tab"
 msgstr "Gruppenmanagement Modul - Reiter Erweiterte Einstellungen"
 
-#: ../../groups.rst:119
-msgid "*Advanced settings* tab"
-msgstr "Reiter *Erweiterte Einstellungen*"
-
-#: ../../groups.rst:126
-msgid "Mail"
-msgstr "Mail"
-
-#: ../../groups.rst:127
+#: ../../groups.rst:55
 msgid ""
-"These options define a mail group and are documented in the :ref:`mail-"
-"management-mailgroups`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups-management-tab-advanced` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Diese Optionen definieren eine Mailgruppe und sind in :ref:`mail-"
-"management-mailgroups` dokumentiert."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups-management-tab-advanced` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:130
-msgid "Host members"
-msgstr "Enthaltene Rechner"
-
-#: ../../groups.rst:131
-msgid "This field can be used for accepting computers as members of the group."
-msgstr ""
-"In diesem Feld können Rechner als Mitglieder in diese Gruppe aufgenommen "
-"werden."
-
-#: ../../groups.rst:133
-msgid "Nested groups"
-msgstr "Mitglied von"
-
-#: ../../groups.rst:134
-msgid ""
-"The current group can be added as a member to other groups here (groups "
-"in groups)."
-msgstr ""
-"Hier kann diese Gruppe einer oder mehreren anderen Gruppen als Mitglied "
-"hinzugefügt werden (Gruppen in Gruppen)."
-
-#: ../../groups.rst:137
-msgid "Group ID"
-msgstr "Gruppen ID"
-
-#: ../../groups.rst:138
-msgid ""
-"If a group is to be assigned a certain group ID, the ID in question can "
-"be entered in this field. Otherwise the next available group ID will be "
-"automatically assigned when adding the group. The group ID cannot be "
-"subsequently changed. When editing the group, the group ID will be "
-"represented in gray."
-msgstr ""
-"Wenn der Gruppe eine bestimmte Gruppen-ID zugewiesen werden soll, kann "
-"die Gruppen-ID in diesem Eingabefeld eingetragen werden.  Ansonsten wird "
-"der Gruppe automatisch die nächste freie Gruppen-ID zugeordnet. Sie kann "
-"nachträglich nicht geändert werden und wird beim Bearbeiten der Gruppe "
-"ausgegraut angezeigt."
-
-#: ../../groups.rst:144
-msgid ""
-"The group ID may consist of integers between 1000 and 59999 and between "
-"65536 and 100000."
-msgstr ""
-"Als Gruppen-ID können ganze Zahlen zwischen 1000 und 59999 sowie zwischen"
-" 65536 und 1000000 frei vergeben werden."
-
-#: ../../groups.rst:147
-msgid ":menuselection:`Windows --> Relative ID`"
-msgstr ":menuselection:`Windows --> Relative ID`"
-
-#: ../../groups.rst:148
-msgid ""
-"The relative ID (RID) is the local part of the Security ID (SID) and is "
-"used in Windows and Samba domains. If a group is to be assigned a certain"
-" RID, the ID in question can be entered in this field. Otherwise a RID "
-"will be automatically assigned."
-msgstr ""
-"Die Relative ID (RID) ist der lokale Teil der Security ID (SID) und wird "
-"in Windows- und Samba-Domänen verwendet. Wenn der Gruppe eine bestimmte "
-"RID zugewiesen werden soll, kann sie in diesem Eingabefeld eingetragen "
-"werden. Ansonsten wird automatisch eine RID zugewiesen."
-
-#: ../../groups.rst:153
-msgid ""
-"The RID cannot be subsequently changed. When editing the group, the group"
-" ID will be represented in gray."
-msgstr ""
-"Die RID kann nachträglich nicht geändert werden und wird beim Bearbeiten "
-"der Gruppe ausgegraut angezeigt."
-
-#: ../../groups.rst:156
-msgid ""
-"The RIDs below 1000 are reserved for standard groups and other special "
-"objects."
-msgstr ""
-"Die RIDs bis 1000 sind Standard-Gruppen und anderen speziellen Objekten "
-"vorbehalten."
-
-#: ../../groups.rst:159
-msgid ""
-"When Samba/AD is used, the RID is generated by Samba and cannot be "
-"specified."
-msgstr ""
-"Bei Verwendung von Samba/AD wird die RID durch Samba generiert und kann "
-"nicht vorgegeben werden."
-
-#: ../../groups.rst:162
-msgid ":menuselection:`Windows --> group type`"
-msgstr ":menuselection:`Windows --> Gruppentyp`"
-
-#: ../../groups.rst:163
-msgid ""
-"This group type is evaluated when the user logs in to a Samba/AD-based "
-"domain. Three types of Windows groups can be distinguished:"
-msgstr ""
-"Dieser Gruppentyp wird ausgewertet, wenn der Benutzer sich an einer "
-"Domäne auf Basis von Samba/AD anmeldet. Man unterscheidet zwischen drei "
-"Windows-Gruppentypen:"
-
-#: ../../groups.rst:167
-msgid "Domain Groups"
-msgstr "Domänengruppen"
-
-#: ../../groups.rst:167
-msgid "are known across the domain. This is the default group type."
-msgstr ""
-"sind domänenweit bekannt. Neu erstellte Gruppen im UMC-Modul *Gruppen* "
-"sind standardmäßig von diesem Typ."
-
-#: ../../groups.rst:174
-msgid "Local groups"
-msgstr "Lokale Gruppen"
-
-#: ../../groups.rst:170
-msgid ""
-"are only relevant on Windows servers. If a local group is created on a "
-"Windows server, this group is known solely to the server; it is not "
-"available across the domain. UCS, in contrast, does not differentiate "
-"between local and global groups. After taking over an AD domain, local "
-"groups in UCS can be handled in the same way as global groups."
-msgstr ""
-"sind nur auf Windows-Servern von Bedeutung. Wird auf einem Windows-Server"
-" eine lokale Gruppe erstellt, ist sie nur dem Server bekannt und ist "
-"nicht domänenweit verfügbar. UCS hingegen unterscheidet nicht zwischen "
-"lokalen und globalen Gruppen. Von einer AD-Domäne übernommene lokale "
-"Gruppen werden in UCS wie globale Gruppen verwaltet."
-
-#: ../../groups.rst:178
-msgid "Well-known group"
-msgstr "Bekannte Gruppe"
-
-#: ../../groups.rst:177
-msgid ""
-"This group type covers groups preconfigured by Samba/Windows servers "
-"which generally have special privileges, e.g., ``Power Users``."
-msgstr ""
-"Unter diesem Gruppentyp werden von Samba- und Windows-Servern "
-"vorkonfigurierte Gruppen zusammengefasst, die in der Regel über besondere"
-" Berechtigungen verfügen, z.B. ``Power Users``."
-
-#: ../../groups.rst:180
-msgid ":menuselection:`Windows --> AD group type`"
-msgstr ":menuselection:`Windows --> AD Gruppentyp`"
-
-#: ../../groups.rst:181
-msgid ""
-"This group type is only evaluated when the user logs in to a Samba/AD-"
-"based domain (which offers Active Directory domain services). These "
-"groups are described in :ref:`groups-adgroups`."
-msgstr ""
-"Dieser Gruppentyp wird nur ausgewertet, wenn der Benutzer sich an einer "
-"Domäne auf Basis von Samba/AD anmeldet (das Active Directory-"
-"Domänendienste bereitstellt). Diese Gruppen sind in :ref:`groups-"
-"adgroups` beschrieben."
-
-#: ../../groups.rst:185
-msgid ":menuselection:`Windows --> Samba privileges`"
-msgstr ":menuselection:`Windows --> Samba-Privilegien`"
-
-#: ../../groups.rst:186
-msgid ""
-"This input mask can be used to assign Windows system rights to a group, "
-"e.g., the right to join a Windows client in the domain. This function is "
-"documented in :ref:`users-management`."
-msgstr ""
-"Mit dieser Eingabemaske wird einer Gruppe Windows-Systemrechte "
-"zugewiesen, z.B. die Berechtigung einen Windows-Client in die Domäne zu "
-"joinen. Diese Funktionalität ist in :ref:`users-management` dokumentiert."
-
-#: ../../groups.rst:193
+#: ../../groups.rst:62
 msgid "Group management module - Options settings tab"
 msgstr "Gruppenmanagement Modul - Reiter Optionseinstellungen"
 
-#: ../../groups.rst:197
+#: ../../groups.rst:64
 msgid ""
-"This tab is only available when adding groups, not when editing groups. "
-"Certain LDAP object classes for the group can be de-selected here. The "
-"entry fields for the attributes of these classes can then no longer be "
-"filled in."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-groups-management-tab-options` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Diese Karteikarte steht nur beim Hinzufügen von Gruppen zur Verfügung, "
-"nicht aber beim Bearbeiten von Gruppen. Sie ermöglicht es, bestimmte "
-"LDAP-Objektklassen für die Gruppe abzuwählen. Die Eingabefelder für "
-"Attribute dieser Klassen können dann nicht ausgefüllt werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
+":`nubus-groups-management-tab-options` in :cite:t:`uv-nubus-manual` verschoben."
 
-#: ../../groups.rst:201
-msgid "*Options* tab"
-msgstr "Reiter *Optionen*"
-
-#: ../../groups.rst:208
-msgid "Samba group"
-msgstr "Samba-Gruppe"
-
-#: ../../groups.rst:209
-msgid ""
-"This checkbox indicates whether the group contains the object class "
-"``sambaGroupMapping``."
-msgstr ""
-"Dieses Auswahlkästchen gibt an, ob die Gruppe die Objektklasse "
-"``sambaGroupMapping`` erhält."
-
-#: ../../groups.rst:212
-msgid "POSIX group"
-msgstr "POSIX-Gruppe"
-
-#: ../../groups.rst:213
-msgid ""
-"This checkbox indicates whether the group contains the object class "
-"``posixGroup``."
-msgstr ""
-"Dieses Auswahlkästchen gibt an, ob die Gruppe die Objektklasse "
-"``posixGroup`` erhält."
-
-#: ../../groups.rst:219
+#: ../../groups.rst:71
 msgid "Group nesting with groups in groups"
 msgstr "Verschachtelte Gruppen mit Gruppen in Gruppen"
 
-#: ../../groups.rst:221
+#: ../../groups.rst:73
 msgid ""
-"UCS supports group nesting (also known as \"groups in groups\"). This "
-"simplifies the management of the groups. For example, if two locations "
-"are managed in one domain, two groups can be formed ``IT staff location "
-"A`` and ``IT staff location B``, to which the user accounts of the "
-"location's IT staff can be assigned respectively."
+"The content of this section moved to :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-nested` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"UCS unterstützt die Verschachtelung von Gruppen (auch bekannt als "
-"\"Gruppen in Gruppen\"). Dies vereinfacht die Verwaltung der Gruppen: "
-"Werden in einer Domäne beispielsweise zwei Standorte verwaltet, können "
-"zwei Gruppen ``Techniker Standort A`` und ``Techniker Standort B`` "
-"gebildet werden, denen jeweils die Benutzerkonten der Standort-Techniker "
-"zugewiesen werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-nested` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../groups.rst:227
-msgid ""
-"To create a cross-location group, it is then sufficient to define the "
-"groups ``IT staff location A`` and ``IT staff location B`` as members."
-msgstr ""
-"Um eine standortübergreifende Techniker-Gruppe zu bilden, reicht es dann "
-"aus, die Gruppen ``Techniker Standort A`` und ``Techniker Standort B`` "
-"als Mitglieder dieser Gruppe zu definieren."
-
-#: ../../groups.rst:230
-msgid ""
-"Cyclic dependencies of nested groups are automatically detected and "
-"refused. This check can be disabled with the |UCSUCRV| "
-":envvar:`directory/manager/web/modules/groups/group/checks/circular_dependency`."
-" Cyclic memberships must also be avoided in direct group changes without "
-"the |UCSUMS|."
-msgstr ""
-"Zyklische Abhängigkeiten von Gruppen in Gruppen werden erkannt und "
-"abgewiesen. Diese Prüfung kann durch die |UCSUCRV| "
-":envvar:`directory/manager/web/modules/groups/group/checks/circular_dependency`"
-" deaktiviert werden. Auch bei direkten Gruppenänderungen ohne das "
-"|UCSUMS| müssen zyklische Mitgliedschaften vermieden werden."
-
-#: ../../groups.rst:236
-msgid ""
-"The resolution of nested group memberships is performed during the "
-"generation of the group cache (see :ref:`groups-cache`) and is thus "
-"transparent for applications."
-msgstr ""
-"Die Auflösung der verschachtelten Gruppenmitgliedschaften erfolgt während"
-" der Expandierung des Gruppencaches (siehe :ref:`groups-cache`) und ist "
-"somit für Applikationen transparent."
-
-#: ../../groups.rst:243
+#: ../../groups.rst:80
 msgid "Local group cache"
 msgstr "Lokaler Gruppencache"
 
-#: ../../groups.rst:245
+#: ../../groups.rst:82
 msgid ""
-"The user and computer information retrieved from the LDAP is cached by "
-"the Name Server Cache Daemon (NSCD), see :ref:`computers-nscd`."
+"The content of this section moved to :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-cache` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Aus dem LDAP aufgelöste Benutzer- und Rechnerinformationen werden durch "
-"den Name Server Cache Daemon (NSCD) zwischengespeichert, siehe :ref"
-":`computers-nscd`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-cache` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../groups.rst:248
-msgid ""
-"Since UCS 3.1, the groups are no longer cached via the NSCD for "
-"performance and stability reasons; instead they are now cached by the NSS"
-" module :program:`libnss-extrausers`. The group information is "
-"automatically exported to the :file:`/var/lib/extrausers/group` file by "
-"the :file:`/usr/lib/univention-pam/ldap-group-to-file.py` script and read"
-" from there by the NSS module."
-msgstr ""
-"Die Zwischenspeicherung der Gruppen erfolgt seit UCS 3.1 aus Performance-"
-" und Stabilitätsgründen nicht mehr über den NSCD, sondern durch das NSS-"
-"Modul :program:`libnss-extrausers`. Die Gruppeninformationen werden "
-"automatisch durch das Skript :file:`/usr/lib/univention-pam/ldap-group-"
-"to-file.py` in die Datei :file:`/var/lib/extrausers/group` exportiert und"
-" dort von dem NSS-Modul ausgelesen."
-
-#: ../../groups.rst:256
-msgid ""
-"In the basic setting, the export is performed once a day by a cron job "
-"and is additionally started if the |UCSUDL| has been inactive for 15 "
-"seconds. The interval for the cron update is configured in Cron syntax "
-"(see :ref:`cron-local`) by the |UCSUCRV| "
-":envvar:`nss/group/cachefile/invalidate_interval`. This listener module "
-"can be activated/deactivated via the |UCSUCRV| "
-":envvar:`nss/group/cachefile/invalidate_on_changes` (``true``/``false``)."
-msgstr ""
-"Der Export erfolgt in der Grundeinstellung einmal täglich durch einen "
-"Cron-Job und wird zusätzlich gestartet wenn der |UCSUDL| 15 Sekunden "
-"inaktiv gewesen ist. Das Intervall für die Cron-Aktualisierung wird über "
-"die |UCSUCRV| :envvar:`nss/group/cachefile/invalidate_interval` in Cron-"
-"Syntax (siehe :ref:`cron-local`) festgelegt. Das Listener-Modul kann über"
-" die |UCSUCRV| :envvar:`nss/group/cachefile/invalidate_on_changes` "
-"aktiviert/deaktiviert werden (``true``/``false``)."
-
-#: ../../groups.rst:265
-msgid ""
-"When the group cache file is being generated, the script can verify "
-"whether the group members are still present in the LDAP directory. If not"
-" only UMC modules are used for user management, this additional check can"
-" be can be enabled by setting the |UCSUCRV| "
-":envvar:`nss/group/cachefile/check_member` to ``true``."
-msgstr ""
-"Während des Generierens der Gruppencache-Datei kann das Skript prüfen, ob"
-" die Gruppenmitglieder weiterhin im LDAP-Verzeichnis vorhanden sind.  "
-"Werden für die Verwaltung der Verzeichnisdaten nicht ausschließlich UMC-"
-"Module eingesetzt, kann die zusätzliche Prüfung durch Setzen der "
-"|UCSUCRV| :envvar:`nss/group/cachefile/check_member` auf ``true`` "
-"aktiviert werden."
-
-#: ../../groups.rst:275
+#: ../../groups.rst:89
 msgid "Synchronization of Active Directory groups when using Samba/AD"
 msgstr "Synchronisation von Active Directory-Gruppen bei Verwendung von Samba/AD"
 
-#: ../../groups.rst:277
+#: ../../groups.rst:91
 msgid ""
-"If Samba/AD is used, the group memberships are synchronized between the "
-"Samba/AD directory service and the OpenLDAP directory service by the "
-"Univention S4 connector, i.e., each group on the UCS side is associated "
-"with a group in Active Directory. General information on the Univention "
-"S4 connector can be found in :ref:`windows-s4-connector`."
+"The content of this section moved to :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-ad-group-sync` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Wird Samba/AD eingesetzt, werden die Gruppenmitgliedschaften zwischen dem"
-" Samba 4-Verzeichnisdienst und dem OpenLDAP-Verzeichnisdienst durch den "
-"Univention S4-Connector synchronisiert, d.h. jede Gruppe auf UCS-Seite "
-"ist einer Gruppe im Active Directory assoziiert. Allgemeine Hinweise zum "
-"Univention S4 Connector finden sich in :ref:`windows-s4-connector`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-ad-group-sync` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../groups.rst:283
-msgid ""
-"Some exceptions are formed by the *pseudo groups*, sometimes also called "
-"system groups. These are only managed internally by Active "
-"Directory/Samba, e.g., the ``Authenticated Users`` group includes a list "
-"of all the users currently logged on to the system. Pseudo groups are "
-"stored in the UCS directory service, but they are not synchronized by the"
-" Univention S4 connector and should usually not be edited. This applies "
-"to the following groups:"
-msgstr ""
-"Einzige Ausnahme sind die *Pseudogruppen*, manchmal auch als "
-"Systemgruppen bezeichnet. Diese werden nur intern von Active "
-"Directory/Samba verwaltet, z.B. enthält die Gruppe ``Authenticated "
-"Users`` eine Liste aller aktuell an einem System angemeldeten Benutzer. "
-"Pseudogruppen sind im UCS-Verzeichnisdienst vorhanden; sie werden aber "
-"nicht durch den Univention S4 Connector synchronisiert und müssen "
-"normalerweise nicht bearbeitet werden. Dies betrifft die folgenden "
-"Gruppen:"
-
-#: ../../groups.rst:291
-msgid "``Anonymous Logon``"
-msgstr "``Anonymous Logon``"
-
-#: ../../groups.rst:292
-msgid "``Authenticated Users``"
-msgstr "``Authenticated Users``"
-
-#: ../../groups.rst:293
-msgid "``Batch``"
-msgstr "``Batch``"
-
-#: ../../groups.rst:294
-msgid "``Creator Group``"
-msgstr "``Creator Group``"
-
-#: ../../groups.rst:295
-msgid "``Creator Owner``"
-msgstr "``Creator Owner``"
-
-#: ../../groups.rst:296
-msgid "``Dialup``"
-msgstr "``Dialup``"
-
-#: ../../groups.rst:297
-msgid "``Digest Authentication``"
-msgstr "``Digest Authentication``"
-
-#: ../../groups.rst:298
-msgid "``Enterprise Domain Controllers``"
-msgstr "``Enterprise Domain Controllers``"
-
-#: ../../groups.rst:299
-msgid "``Everyone``"
-msgstr "``Everyone``"
-
-#: ../../groups.rst:300
-msgid "``IUSR``"
-msgstr "``IUSR``"
-
-#: ../../groups.rst:301
-msgid "``Interactive``"
-msgstr "``Interactive``"
-
-#: ../../groups.rst:302
-msgid "``Local Service``"
-msgstr "``Local Service``"
-
-#: ../../groups.rst:303
-msgid "``NTLM Authentication``"
-msgstr "``NTLM Authentication``"
-
-#: ../../groups.rst:304
-msgid "``Network Service``"
-msgstr "``Network Service``"
-
-#: ../../groups.rst:305
-msgid "``Network``"
-msgstr "``Network``"
-
-#: ../../groups.rst:306
-msgid "``Nobody``"
-msgstr "``Nobody``"
-
-#: ../../groups.rst:307
-msgid "``Null Authority``"
-msgstr "``Null Authority``"
-
-#: ../../groups.rst:308
-msgid "``Other Organization``"
-msgstr "``Other Organization``"
-
-#: ../../groups.rst:309
-msgid "``Owner Rights``"
-msgstr "``Owner Rights``"
-
-#: ../../groups.rst:310
-msgid "``Proxy``"
-msgstr "``Proxy``"
-
-#: ../../groups.rst:311
-msgid "``Remote Interactive Logon``"
-msgstr "``Remote Interactive Logon``"
-
-#: ../../groups.rst:312
-msgid "``Restricted``"
-msgstr "``Restricted``"
-
-#: ../../groups.rst:313
-msgid "``SChannel Authentication``"
-msgstr "``SChannel Authentication``"
-
-#: ../../groups.rst:314
-msgid "``Self``"
-msgstr "``Self``"
-
-#: ../../groups.rst:315
-msgid "``Service``"
-msgstr "``Service``"
-
-#: ../../groups.rst:316
-msgid "``System``"
-msgstr "``System``"
-
-#: ../../groups.rst:317
-msgid "``Terminal Server User``"
-msgstr "``Terminal Server User``"
-
-#: ../../groups.rst:318
-msgid "``This Organization``"
-msgstr "``This Organization``"
-
-#: ../../groups.rst:319
-msgid "``World Authority``"
-msgstr "``World Authority``"
-
-#: ../../groups.rst:321
-msgid ""
-"In Active Directory/Samba, a distinction is made between the following "
-"four AD group types. These group types can be applied to two types of "
-"groups; *security groups* configure permissions (corresponding to the UCS"
-" groups), whilst *distribution groups* are used for mailing lists:"
-msgstr ""
-"Man unterscheidet in Active Directory/Samba zwischen den folgenden vier "
-"AD-Gruppentypen. Diese Gruppentypen können auf zwei Arten von Gruppen "
-"angewendet werden; *Sicherheitsgruppen* konfigurieren Berechtigungen "
-"(entsprechend den UCS-Gruppen), während *Verteilungsgruppen* für "
-"Mailverteiler genutzt werden:"
-
-#: ../../groups.rst:331
-msgid "Local"
-msgstr "Lokal"
-
-#: ../../groups.rst:328
-msgid ""
-"*Local* groups only exist locally on a host. A local group created in "
-"Samba/AD is synchronized by the Univention S4 Connector and thus also "
-"appears in the UMC module :guilabel:`Groups`. There is no need to create "
-"local groups in the UMC module."
-msgstr ""
-"*Lokale Gruppen* existieren immer nur lokal auf einem Rechner. Eine "
-"lokale Gruppe, die in Samba/AD angelegt wurde, wird durch den Univention "
-"S4 Connector synchronisiert und erscheint daher auch im UMC-Modul "
-":guilabel:`Gruppen`. Es besteht aber keine Notwendigkeit lokale Gruppen "
-"im UMC-Modul anzulegen."
-
-#: ../../groups.rst:339
-msgid "Global"
-msgstr "Global"
-
-#: ../../groups.rst:334
-msgid ""
-"*Global* groups are the standard type for newly created groups in the UMC"
-" module :guilabel:`Groups`. A global group applies for one domain, but it"
-" can also accept members from other domains. If there is a trust "
-"relationship with a domain, the groups there are displayed and "
-"permissions can be assigned. However, the current version of UCS does not"
-" support multiple domains/forests or outgoing trust relationships."
-msgstr ""
-"*Globale Gruppen* sind der Standardtyp für neu angelegte Gruppen im UMC-"
-"Modul :guilabel:`Gruppen`. Eine globale Gruppe gilt für eine Domäne, es "
-"können aber keine Konten anderer Domänen aufgenommen werden. Besteht eine"
-" Vertrauensstellung zu einer Domäne, werden die Gruppen dort angezeigt "
-"und es können Berechtigungen zugewiesen werden. Die aktuelle Version von "
-"UCS unterstützt allerdings weder mehrfache Domänen/Forests, noch von UCS "
-"ausgehende Vertrauensstellungen."
-
-#: ../../groups.rst:346
-msgid "Domain local"
-msgstr "Domänenlokal"
-
-#: ../../groups.rst:342
-msgid ""
-"*Domain local* groups can also adopt members of other domains (insofar as"
-" there is a trust relationship in place or they form part of a forest). "
-"Local domain groups are only shown in their own domain though. However, "
-"the current version of UCS does not support multiple domains/forests or "
-"outgoing trust relationships."
-msgstr ""
-"*Domänenlokale Gruppen* können auch Mitglieder anderer Domänen aufnehmen "
-"(sofern zu diesen eine Vertrauenstellung besteht oder sie Teil eines "
-"Forests ist). Domänenlokale Gruppen werden aber nur in der eigenen Domäne"
-" angezeigt. Die aktuelle Version von UCS unterstützt allerdings weder "
-"mehrfache Domänen/Forests, noch von UCS ausgehende Vertrauensstellungen."
-
-#: ../../groups.rst:352
-msgid "Universal"
-msgstr "Universell"
-
-#: ../../groups.rst:349
-msgid ""
-"*Universal* groups can adopt members from all domains and these members "
-"are also shown in all the domains of a forest. These groups are stored in"
-" a separate segment of the directory service, the so-called *global "
-"catalog*. Domain forests are currently not supported by Samba/AD."
-msgstr ""
-"*Universelle Gruppen* können Mitglieder aus allen Domänen aufnehmen und "
-"diese Mitglieder werden auch in allen Domänen eines Forests angezeigt. "
-"Diese Gruppen werden in einem separaten Segment des Verzeichnisdienstes "
-"gespeichert, dem sogenannten *Global Catalog*. Domänen-Forests werden "
-"aktuell von Samba/AD nicht unterstützt."
-
-#: ../../groups.rst:357
+#: ../../groups.rst:98
 msgid "Overlay module for displaying the group information on user objects"
 msgstr "Overlay-Modul zur Anzeige der Gruppeninformationen an Benutzerobjekten"
 
-#: ../../groups.rst:359
+#: ../../groups.rst:100
 msgid ""
-"In the UCS directory service, group membership properties are only saved "
-"in the group objects and not in the respective user objects. However, "
-"some applications expect group membership properties at the user objects "
-"(in the attribute ``memberOf``). An overlay module in the LDAP server "
-"makes it possible to present these attributes automatically based on the "
-"group information. The additional attributes are not written to the LDAP,"
-" but displayed on the fly by the overlay module if a user object is "
-"queried."
+"The content of this section moved to :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-overlay` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften nur an den "
-"Gruppenobjekten und nicht am jeweiligen Benutzerobjekt gespeichert.  "
-"Einige Applikationen erwarten jedoch die Gruppenmitgliedschaften an den "
-"Benutzerobjekten (im Attribut ``memberOf``). Durch ein "
-"Overlay-Modul im LDAP-Server können diese Attribute automatisch anhand "
-"der Gruppeninformationen angezeigt werden. Die zusätzlichen Attribute "
-"werden nicht in das LDAP geschrieben, sondern bei einer Anfrage durch das"
-" Overlay-Modul ermittelt und angezeigt."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref:`ucs-"
+"operation-groups-management-overlay` in :cite:t:`uv-ucs-operation` verschoben."
