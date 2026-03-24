@@ -1,0 +1,73 @@
+#!/usr/bin/python3
+#
+# Univention Directory Manager
+#  Update license count cache using admin credentials
+#
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""
+Update the license count cache.
+
+This script performs expensive LDAP searches to count users, servers, and
+managed clients, then stores the counts in cache attributes on the license
+object. It should be run by a cron job on the Primary Directory Node.
+
+The cache is used by UMC to avoid slow license checks during login in
+environments with many users (e.g., 200k+ users).
+"""
+
+import sys
+
+import ldap
+
+import univention.admin.license as udm_license
+import univention.admin.uexceptions
+import univention.admin.uldap as udm_uldap
+import univention.logging
+from univention.admin._ucr import configRegistry
+from univention.admin.log import log
+
+
+def main() -> int:
+    log_target = configRegistry.get('directory/manager/license/cache/log/target', 'stdout')
+    univention.logging.basicConfig(
+        filename=log_target,
+        univention_debug_level=3,
+        use_structured_logging=configRegistry.is_true('directory/manager/cmd/debug/structured-logging', True),
+    )
+
+    if configRegistry.get('server/role') != 'domaincontroller_master':
+        log.info('Not running on Primary Directory Node, skipping license cache update')
+        return 0
+
+    log.info('Starting license cache update')
+
+    try:
+        lo, _ = udm_uldap.getAdminConnection()
+    except (OSError, ldap.LDAPError, univention.admin.uexceptions.authFail) as exc:
+        log.error('Failed to get LDAP connection: %s', exc)
+        return 1
+
+    try:
+        udm_license.license.initialize(lo)
+    except univention.admin.uexceptions.licenseError as exc:
+        log.warning('License initialization warning: %s', exc)
+
+    try:
+        counts = udm_license.license.update_cache(lo)
+    except (ldap.LDAPError, univention.admin.uexceptions.base) as exc:
+        log.error('Failed to update license cache: %s', exc)
+        return 1
+
+    log.info(
+        'License cache updated successfully: users=%d, servers=%d, clients=%d',
+        counts.get('users', 0),
+        counts.get('servers', 0),
+        counts.get('clients', 0),
+    )
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

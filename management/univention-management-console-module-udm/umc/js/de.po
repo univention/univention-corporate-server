@@ -1299,6 +1299,10 @@ msgstr "Optionen"
 msgid "Options describing the basic features of the LDAP object"
 msgstr "Optionen für grundlegende LDAP-Objekt-Eigenschaften"
 
+#: umc/js/udm.js:1761
+msgid "Original objec type of the removed object."
+msgstr "Ursprünglicher Objekttyp des entfernten Objekts."
+
 #: umc/js/udm/OverwriteLabel.js:21
 msgid "Overwrite"
 msgstr "Überschreiben"

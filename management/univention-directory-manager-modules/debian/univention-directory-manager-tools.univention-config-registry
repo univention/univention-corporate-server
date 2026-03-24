@@ -8,3 +8,8 @@ File: etc/cron.d/univention-blocklist-clean-expired-entries
 Variables: directory/manager/blocklist/cleanup/cron
 Variables: directory/manager/blocklist/enabled
 Variables: server/role
+
+Type: file
+File: etc/cron.d/univention-license-count-cache
+Variables: directory/manager/license/cache/cron
+Variables: server/role
