@@ -1754,8 +1754,8 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
             if self['locked'] == '0':  # unlock kerberos password
                 krb_kdcflags &= ~(1 << 17)
-            # elif self['locked'] == '1':  # lock kerberos password
-            #     krb_kdcflags |= (1 << 17)
+            elif self['locked'] == '1':  # lock kerberos password
+                krb_kdcflags |= (1 << 17)
 
             ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), str(krb_kdcflags).encode('ASCII')))
         return ml

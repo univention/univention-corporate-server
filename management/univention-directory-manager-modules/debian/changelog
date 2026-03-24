@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.6) unstable; urgency=medium
+
+  * Bug #52893: Activate krb5kdcflag lockout
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 24 Mar 2026 15:01:11 +0100
+
 univention-directory-manager-modules (17.5.5) unstable; urgency=low
 
   * Bug #28692: add mailAlternativeAddress to groups/group
