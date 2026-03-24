@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: samba
+fix: 2:4.21.1-1A~5.2.0.202603241604
+desc: |
+ This update addresses the following issues:
+ * An uninitialized filedescriptor associated with
+   hanging `rpcd spoolss` processes is now initialized.
+bug: [58646]
