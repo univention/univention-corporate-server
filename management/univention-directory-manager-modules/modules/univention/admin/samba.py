@@ -1,14 +1,28 @@
 # SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""|UDM| samba related code"""
+"""|UDM| Samba related code"""
 
 import string
 from collections import OrderedDict
 
 
 class acctFlags:
-    """Samba Account Flags"""
+    """
+    Samba Account Flags
+
+    N: No password
+    D: Disabled
+    H: Homedir required
+    T: Temp account
+    U: User account (normal)
+    M: MNS logon user account
+    W: Workstation account
+    S: Server account
+    L: Locked account
+    X: No Xpiry on password
+    I: Interdomain trust account
+    """
 
     def __init__(self, flagstring=None, flags=None, fallbackflags=None):
         if flags is not None:
