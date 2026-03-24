@@ -16,6 +16,6 @@ desc: |
    logged, instead of the placeholder "<string>".
  * The property `mailAlternativeAddress` has been added to the `groups/group`
    UDM module.
- * When a user is locked out, the `krbkdcflag`
-   attribute is now adjusted accordingly.
-bug: [52893, 58985, 59132]
+ * The `krb5KDCFlags` attribute is now updated when a user is locked out,
+   setting the locked-out flag to ensure the KDC enforces the lockout state.
+bug: [58985, 59132, 52893]
