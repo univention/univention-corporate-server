@@ -18,7 +18,7 @@ import univention.s4connector.s4.ntsecurity_descriptor
 import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
 import univention.s4connector.s4.user
-from univention.s4connector.s4 import format_escaped
+from univention.s4connector.s4 import format_escaped, proxyAddresses
 
 
 configRegistry = ucr.ConfigRegistry()
@@ -510,12 +510,40 @@ s4_mapping = {
                 con_attribute='groupType',
                 single_value=True,
             ),
-            'mailAddress': univention.s4connector.attribute(
+            # 'mailAddress': univention.s4connector.attribute(
+            #     ucs_attribute='mailAddress',
+            #     ldap_attribute='mailPrimaryAddress',
+            #     con_attribute='mail',
+            #     reverse_attribute_check=True,
+            #     single_value=True,
+            # ),
+            'mailAddress': univention.connector.attribute(
+                sync_mode='read',
+                ucs_attribute='mailAddress',
+                ldap_attribute='mailPrimaryAddress',
+                con_attribute='proxyAddresses',
+                mapping=(
+                    proxyAddresses.to_proxyAddresses,
+                    proxyAddresses.to_mailPrimaryAddress,
+                ),
+                compare_function=proxyAddresses.equal,
+            ),
+            'mailPrimaryAddress_to_mail': univention.connector.attribute(
+                sync_mode='write',
                 ucs_attribute='mailAddress',
                 ldap_attribute='mailPrimaryAddress',
                 con_attribute='mail',
-                reverse_attribute_check=True,
-                single_value=True,
+            ),
+            'mailAlternativeAddress': univention.connector.attribute(
+                sync_mode='read' if configRegistry.is_true('connector/s4/mapping/group/primarymail') else 'sync',  # proxyAddresses.to_mailPrimaryAddress does the write
+                ucs_attribute='mailAlternativeAddress',
+                ldap_attribute='mailAlternativeAddress',
+                con_attribute='proxyAddresses',
+                mapping=(
+                    None,
+                    proxyAddresses.to_mailAlternativeAddress,
+                ),
+                compare_function=proxyAddresses.equal,
             ),
             'gidNumber': univention.s4connector.attribute(
                 sync_mode='write',
