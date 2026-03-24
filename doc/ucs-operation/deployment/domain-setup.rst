@@ -202,6 +202,13 @@ Mode: Join an existing UCS domain
 .. index::
    single: hostname; Join existing UCS domain
 
+.. important::
+
+   Before you join an additional system,
+   make sure the :term:`UCS Primary Directory Node` is at the latest patch level.
+   System setup blocks the join if the joining system is at a higher patch level than the Primary,
+   and displays an error message.
+
 To join an existing Nubus for UCS domain,
 you need to process the following steps:
 
@@ -271,21 +278,30 @@ Confirm the installation settings
 see :numref:`deployment-installation-physical-confirm-settings-summary-figure`.
 
 Update system after installation
-   The *Update system after installation* instructs system setup
-   to install available errata updates after the installation.
+   The *Update system after installation* option instructs system setup
+   to install updates after the installation.
+   The behavior depends on the system role that you want to set up.
 
-   .. TODO: Add glossary entry for errata updates.
+   Setting up a Primary Directory Node
+      System setup installs all available patch level updates and errata updates
+      on the Primary Directory Node itself,
+      up to the latest available patch level within the current release.
 
-   In addition,
-   the :term:`UCS Primary Directory Node` installs all available patch level updates and errata updates.
-   All other system roles update their patch level version
-   to match the patch level version of the UCS Primary Directory Node.
-   You need to sign in to the UCS Primary Directory Node
-   to check the installation status.
-   For sign-in, use the same administrator credentials
-   that you provided in :ref:`deployment-domain-setup-join-ucs-credentials`.
+   Joining an existing UCS domain
+      When a non-Primary system role joins an existing domain,
+      system setup connects to the :term:`UCS Primary Directory Node`
+      to read its current patch level.
+      It then updates the joining system up to that patch level,
+      including all errata updates available for that version.
+      The Primary Directory Node and all other existing domain members
+      aren't affected.
 
-.. TODO: Clarify. Is that true with the updates on the Primary? I don't think all of this happens during a join of an additional system to the domain. It would require major planning of maintenance windows when adding one system to a large domain. I can't imagine that our product requires that.
+      .. TODO: Add glossary entry for errata updates.
+
+   To verify the installation status,
+   sign in to the :term:`UCS Primary Directory Node`
+   using the administrator credentials
+   from :ref:`deployment-domain-setup-join-ucs-credentials`.
 
 If the settings match your intention,
 click :guilabel:`Configure System`
