@@ -169,3 +169,24 @@ Description[en]=The bcrypt cost factor (integer) increases security by slowing d
 Type=pint
 Default=12
 Categories=management-udm
+
+[directory/manager/license/cache/ttl]
+Description[de]=TTL in Sekunden für den Cache zur Lizenzanzahl. Standard: 3600, Maximum: 86400. Bei einem Wert von 0 ist der Cache deaktiviert und die Objekte werden bei jeder Lizenzprüfung gezählt.
+Description[en]=TTL in seconds for the license count cache. Default: 3600, Maximum: 86400. If set to 0, the cache is disabled and objects are counted on every license check.
+Type=int
+Default=3600
+Categories=management-udm
+
+[directory/manager/license/cache/cron]
+Description[de]=Cron-Zeitplan für die Aktualisierung des Caches für die Lizenzanzahl. Standard: stündlich. Nur auf dem primären Verzeichnisknoten aktiv.
+Description[en]=Cron schedule for updating the license count cache. Default: every hour. Only active on the Primary Directory Node.
+Type=str
+Default=0 * * * *
+Categories=management-udm
+
+[directory/manager/license/cache/log/target]
+Description[de]=Ausgabeziel für das Skript zur Aktualisierung des Lizenz-Caches. Standardmäßig ist „stdout“ eingestellt, was sowohl für Nubus für Kubernetes als auch für UCS-Bereitstellungen (Cron-Mail) funktioniert. Setzen Sie den Wert auf einen Dateipfad, um die Protokollierung auf UCS explizit in eine Datei zu leiten, z. B. /var/log/univention/directory-manager-cmd.log.
+Description[en]=Log output target for the license cache update script. Defaults to stdout, which works for both Nubus for Kubernetes and UCS deployments (cron mail). Set to a file path for explicit file logging on UCS, e.g. /var/log/univention/directory-manager-cmd.log.
+Type=str
+Default=stdout
+Categories=management-udm
