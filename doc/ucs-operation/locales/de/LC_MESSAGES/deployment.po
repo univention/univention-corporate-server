@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-23 13:51+0000\n"
-"PO-Revision-Date: 2026-03-23 21:21+0100\n"
+"POT-Creation-Date: 2026-03-24 09:17+0000\n"
+"PO-Revision-Date: 2026-03-24 10:22+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -377,7 +377,7 @@ msgstr ""
 " verwenden. Das Nubus für UCS System tritt der Active Directory Domäne "
 "mit dem angegebenen Rechnernamen bei."
 
-#: ../../deployment/domain-setup.rst:180 ../../deployment/domain-setup.rst:256
+#: ../../deployment/domain-setup.rst:180 ../../deployment/domain-setup.rst:263
 msgid "After the configuration is complete, you **can't** change the domain."
 msgstr "Nach Abschluss der Konfiguration können Sie die Domäne **nicht** ändern."
 
@@ -407,7 +407,20 @@ msgstr "Informationen zur Active Directory Domäne"
 msgid "Mode: Join an existing UCS domain"
 msgstr "Modus: Einer bestehenden UCS-Domäne beitreten"
 
-#: ../../deployment/domain-setup.rst:205
+#: ../../deployment/domain-setup.rst:207
+msgid ""
+"Before you join an additional system, make sure the :term:`UCS Primary "
+"Directory Node` is at the latest patch level. System setup blocks the "
+"join if the joining system is at a higher patch level than the Primary, "
+"and displays an error message."
+msgstr ""
+"Bevor Sie ein weiteres System hinzufügen, stellen Sie sicher, dass der "
+":term:`UCS Primary Directory Node` auf dem neuesten Patch-Level ist. "
+"Die Systemeinrichtung blockiert den Beitritt, wenn das beitretende System"
+" einen höheren Patch-Level hat als der Primary, und zeigt eine "
+"Fehlermeldung an."
+
+#: ../../deployment/domain-setup.rst:212
 msgid ""
 "To join an existing Nubus for UCS domain, you need to process the "
 "following steps:"
@@ -415,11 +428,11 @@ msgstr ""
 "Um einer bestehenden Nubus für UCS Domäne beizutreten, müssen Sie die "
 "folgenden Schritte durchführen:"
 
-#: ../../deployment/domain-setup.rst:208
+#: ../../deployment/domain-setup.rst:215
 msgid "Select the system role."
 msgstr "Systemrolle auswählen."
 
-#: ../../deployment/domain-setup.rst:210
+#: ../../deployment/domain-setup.rst:217
 msgid ""
 "In a Nubus for UCS domain, you can install systems in different system "
 "roles. The first system in a Nubus for UCS domain always has the "
@@ -434,19 +447,19 @@ msgstr ""
 "Zeitpunkt beitreten. Sie können ihnen eine der folgenden Systemrollen "
 "zuweisen."
 
-#: ../../deployment/domain-setup.rst:215
+#: ../../deployment/domain-setup.rst:222
 msgid ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
 
-#: ../../deployment/domain-setup.rst:216
+#: ../../deployment/domain-setup.rst:223
 msgid ":ref:`domain-infrastructure-system-roles-replica-directory-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-replica-directory-node`"
 
-#: ../../deployment/domain-setup.rst:217
+#: ../../deployment/domain-setup.rst:224
 msgid ":ref:`domain-infrastructure-system-roles-managed-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-managed-node`"
 
-#: ../../deployment/domain-setup.rst:219
+#: ../../deployment/domain-setup.rst:226
 msgid ""
 "After you selected the system role for Nubus for UCS, the system setup "
 "asks for more information to join the domain, see :numref:`deployment-"
@@ -456,11 +469,11 @@ msgstr ""
 " Systemeinrichtung nach weiteren Informationen zum Domänenbeitritt, siehe"
 " :numref:`deployment-domain-setup-join-ucs-figure`."
 
-#: ../../deployment/domain-setup.rst:223
+#: ../../deployment/domain-setup.rst:230
 msgid "Start join at the end of the installation"
 msgstr "Beitritt am Ende der Installation starten"
 
-#: ../../deployment/domain-setup.rst:224
+#: ../../deployment/domain-setup.rst:231
 msgid ""
 "If you don't intend to let the system setup run the domain join "
 "automatically during the installation, deactivate the option *Start join "
@@ -470,11 +483,11 @@ msgstr ""
 "Domänenbeitritt automatisch während der Installation durchführt, "
 "deaktivieren Sie die Option *Beitritt am Ende der Installation starten*."
 
-#: ../../deployment/domain-setup.rst:227
+#: ../../deployment/domain-setup.rst:234
 msgid "Search Primary Directory Node in DNS"
 msgstr "Primary Directory Node im DNS suchen"
 
-#: ../../deployment/domain-setup.rst:228
+#: ../../deployment/domain-setup.rst:235
 msgid ""
 "System setup automatically determines the fully qualified domain name of "
 "the UCS Primary Directory Node by asking the DNS server for the service "
@@ -490,7 +503,7 @@ msgstr ""
 "Node als DNS-Server während :ref:`deployment-initial-system-"
 "configuration-network-setup` angegeben haben."
 
-#: ../../deployment/domain-setup.rst:236
+#: ../../deployment/domain-setup.rst:243
 msgid ""
 "If you decide to join another Nubus for UCS domain, you can deactivate "
 "*Search Primary Directory Node in DNS* and provide the fully qualified "
@@ -501,11 +514,11 @@ msgstr ""
 "deaktivieren und den :spelling:word:`Fully Qualified Domain Name` des "
 "bevorzugten UCS Primary Directory Node angeben."
 
-#: ../../deployment/domain-setup.rst:242
+#: ../../deployment/domain-setup.rst:249
 msgid "Credentials for domain administrator"
 msgstr "Anmeldedaten für Domänenadministrator"
 
-#: ../../deployment/domain-setup.rst:243
+#: ../../deployment/domain-setup.rst:250
 msgid ""
 "The domain join process needs to access information about the domain. To "
 "grant system setup the appropriate permission, you need to provide the "
@@ -516,7 +529,7 @@ msgstr ""
 "zu erteilen, müssen Sie die Anmeldedaten für ein *Administrator*-Konto "
 "der Domäne angeben."
 
-#: ../../deployment/domain-setup.rst:247
+#: ../../deployment/domain-setup.rst:254
 msgid ""
 "Finally, provide a hostname for the Nubus for UCS system. You can adopt "
 "the suggested hostname or change it. For the naming convention of the "
@@ -533,15 +546,15 @@ msgstr ""
 "wie etwa einem öffentlichen Mailserver, kann es erforderlich sein, einen "
 "bestimmten :spelling:word:`Fully Qualified Domain Name` zu verwenden."
 
-#: ../../deployment/domain-setup.rst:260 ../../deployment/domain-setup.rst:263
+#: ../../deployment/domain-setup.rst:267 ../../deployment/domain-setup.rst:270
 msgid "Information on the domain join"
 msgstr "Informationen zum Domänenbeitritt"
 
-#: ../../deployment/domain-setup.rst:268
+#: ../../deployment/domain-setup.rst:275
 msgid "Confirm the installation settings"
 msgstr "Installationseinstellungen bestätigen"
 
-#: ../../deployment/domain-setup.rst:270
+#: ../../deployment/domain-setup.rst:277
 msgid ""
 "*Confirm configuration settings* shows a summary of your settings, see "
 ":numref:`deployment-installation-physical-confirm-settings-summary-"
@@ -551,39 +564,65 @@ msgstr ""
 " Einstellungen, siehe :numref:`deployment-installation-physical-confirm-"
 "settings-summary-figure`."
 
-#: ../../deployment/domain-setup.rst:273
+#: ../../deployment/domain-setup.rst:280
 msgid "Update system after installation"
 msgstr "System nach der Installation aktualisieren"
 
-#: ../../deployment/domain-setup.rst:274
+#: ../../deployment/domain-setup.rst:281
 msgid ""
-"The *Update system after installation* instructs system setup to install "
-"available errata updates after the installation."
+"The *Update system after installation* option instructs system setup to "
+"install updates after the installation. The behavior depends on the "
+"system role that you want to set up."
 msgstr ""
 "Die Option *System nach der Installation aktualisieren* veranlasst die "
-"Systemeinrichtung, verfügbare Errata-Updates nach der Installation zu "
-"installieren."
+"Systemeinrichtung, nach der Installation Updates zu installieren. "
+"Das Verhalten hängt von der Systemrolle ab, die Sie einrichten möchten."
 
-#: ../../deployment/domain-setup.rst:279
+#: ../../deployment/domain-setup.rst:285
+msgid "Setting up a Primary Directory Node"
+msgstr "Einrichten eines Primary Directory Node"
+
+#: ../../deployment/domain-setup.rst:286
 msgid ""
-"In addition, the :term:`UCS Primary Directory Node` installs all "
-"available patch level updates and errata updates. All other system roles "
-"update their patch level version to match the patch level version of the "
-"UCS Primary Directory Node. You need to sign in to the UCS Primary "
-"Directory Node to check the installation status. For sign-in, use the "
-"same administrator credentials that you provided in :ref:`deployment-"
-"domain-setup-join-ucs-credentials`."
+"System setup installs all available patch level updates and errata "
+"updates on the Primary Directory Node itself, up to the latest available "
+"patch level within the current release."
 msgstr ""
-"Zusätzlich installiert der :term:`UCS Primary Directory Node` alle "
-"verfügbaren Patchlevel-Updates und Errata-Updates. Alle anderen "
-"Systemrollen aktualisieren ihre Patchlevel-Version, um der Patchlevel-"
-"Version des UCS Primary Directory Node zu entsprechen. Sie müssen sich "
-"beim UCS Primary Directory Node anmelden, um den Installationsstatus zu "
-"überprüfen. Verwenden Sie für die Anmeldung die gleichen Anmeldedaten für"
-" ein Administrator-Konto, die Sie in :ref:`deployment-domain-setup-join-"
-"ucs-credentials` angegeben haben."
+"Die Systemeinrichtung installiert alle verfügbaren Patch-Level-Updates "
+"und Errata-Updates auf dem Primary Directory Node selbst, bis zum "
+"neuesten verfügbaren Patch-Level innerhalb des aktuellen Release."
 
 #: ../../deployment/domain-setup.rst:290
+msgid "Joining an existing UCS domain"
+msgstr "Beitritt zu einer bestehenden UCS-Domäne"
+
+#: ../../deployment/domain-setup.rst:291
+msgid ""
+"When a non-Primary system role joins an existing domain, system setup "
+"connects to the :term:`UCS Primary Directory Node` to read its current "
+"patch level. It then updates the joining system up to that patch level, "
+"including all errata updates available for that version. The Primary "
+"Directory Node and all other existing domain members aren't affected."
+msgstr ""
+"Wenn eine Nicht-Primary-Systemrolle einer bestehenden Domäne beitritt, "
+"verbindet sich die Systemeinrichtung mit dem :term:`UCS Primary Directory"
+" Node`, um dessen aktuellen Patch-Level zu lesen. Anschließend "
+"aktualisiert sie das beitretende System bis zu diesem Patch-Level, "
+"einschließlich aller für diese Version verfügbaren Errata-Updates. "
+"Der Primary Directory Node und alle anderen bestehenden Domänenmitglieder"
+" sind davon nicht betroffen."
+
+#: ../../deployment/domain-setup.rst:301
+msgid ""
+"To verify the installation status, sign in to the :term:`UCS Primary "
+"Directory Node` using the administrator credentials from :ref"
+":`deployment-domain-setup-join-ucs-credentials`."
+msgstr ""
+"Um den Installationsstatus zu überprüfen, melden Sie sich beim "
+":term:`UCS Primary Directory Node` mit den Administratoranmeldedaten aus"
+" :ref:`deployment-domain-setup-join-ucs-credentials` an."
+
+#: ../../deployment/domain-setup.rst:306
 msgid ""
 "If the settings match your intention, click :guilabel:`Configure System` "
 "to start the configuration of the Nubus for UCS system."
@@ -592,7 +631,7 @@ msgstr ""
 ":guilabel:`System konfigurieren`, um die Konfiguration des Nubus für UCS "
 "Systems zu starten."
 
-#: ../../deployment/domain-setup.rst:294
+#: ../../deployment/domain-setup.rst:310
 msgid ""
 "System setup shows the progress during the system configuration. It saves"
 " the installation protocol in the following files:"
@@ -601,15 +640,15 @@ msgstr ""
 "Systemkonfiguration an. Sie speichert das Installationsprotokoll in den "
 "folgenden Dateien:"
 
-#: ../../deployment/domain-setup.rst:297
+#: ../../deployment/domain-setup.rst:313
 msgid ":file:`/var/log/installer/syslog`"
 msgstr ":file:`/var/log/installer/syslog`"
 
-#: ../../deployment/domain-setup.rst:298
+#: ../../deployment/domain-setup.rst:314
 msgid ":file:`/var/log/univention/management-console-module-setup.log`"
 msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
 
-#: ../../deployment/domain-setup.rst:300
+#: ../../deployment/domain-setup.rst:316
 msgid ""
 "After you confirm the completion of the system setup, your Nubus for UCS "
 "system is ready for the first full boot procedure. You can restart it. "
@@ -622,7 +661,7 @@ msgstr ""
 "Abschluss des Bootvorgangs fahren Sie mit :ref:`deployment-after-"
 "installation` fort."
 
-#: ../../deployment/domain-setup.rst:309 ../../deployment/domain-setup.rst:312
+#: ../../deployment/domain-setup.rst:325 ../../deployment/domain-setup.rst:328
 msgid "Installation overview"
 msgstr "Installationsübersicht"
 
@@ -1547,7 +1586,7 @@ msgstr ""
 "Plattformspezifische Konfiguration und Treiberanforderungen für VMware-"
 "Umgebungen."
 
-#: ../../deployment/install.rst:30 ../../deployment/install.rst:156
+#: ../../deployment/install.rst:30 ../../deployment/install.rst:180
 msgid "Secure Boot"
 msgstr "Secure Boot"
 
@@ -1573,10 +1612,61 @@ msgstr ""
 " Systemeinstellungen."
 
 #: ../../deployment/install.rst:43
+msgid "Installation image download"
+msgstr "Download des Installations-Images"
+
+#: ../../deployment/install.rst:45
+msgid ""
+"Download the Nubus for UCS installation image from the `Univention "
+"website <https://www.univention.com/products/download/>`_. The download "
+"page offers ISO and virtual machine images for the latest patch level "
+"release."
+msgstr ""
+"Laden Sie das Nubus für UCS Installations-Image von der `Univention "
+"Website <https://www.univention.com/products/download/>`_ herunter. "
+"Die Download-Seite bietet ISO- und virtuelle Maschinen-Images für das "
+"neueste Patch-Level-Release an."
+
+#: ../../deployment/install.rst:50
+msgid ""
+"If you are adding a system to an existing domain, the image must match "
+"the patch level of your :term:`UCS Primary Directory Node`. If the "
+"Primary is already at the latest patch level, download the image directly"
+" from the download page."
+msgstr ""
+"Wenn Sie ein System zu einer bestehenden Domäne hinzufügen, muss das "
+"Image dem Patch-Level Ihres :term:`UCS Primary Directory Node` "
+"entsprechen. Wenn der Primary bereits auf dem neuesten Patch-Level ist, "
+"laden Sie das Image direkt von der Download-Seite herunter."
+
+#: ../../deployment/install.rst:55
+msgid ""
+"If you can't update the Primary yet, navigate to the parent directory of "
+"the download link after you accept the terms of use and the privacy "
+"policy on the download page. The parent directory contains images for all"
+" available patch level releases. Select the image that matches your "
+"Primary's patch level."
+msgstr ""
+"Wenn Sie den Primary noch nicht aktualisieren können, navigieren Sie "
+"nach dem Akzeptieren der Nutzungsbedingungen und der "
+"Datenschutzerklärung auf der Download-Seite zum übergeordneten "
+"Verzeichnis des Download-Links. Das übergeordnete Verzeichnis enthält "
+"Images für alle verfügbaren Patch-Level-Releases. Wählen Sie das Image "
+"aus, das dem Patch-Level Ihres Primary entspricht."
+
+#: ../../deployment/install.rst:61
+msgid ""
+"For more information about the patch level requirement, see :ref"
+":`deployment-domain-setup-join-ucs`."
+msgstr ""
+"Weitere Informationen zur Patch-Level-Anforderung finden Sie unter "
+":ref:`deployment-domain-setup-join-ucs`."
+
+#: ../../deployment/install.rst:67
 msgid "Physical and virtual machine installation"
 msgstr "Installation auf physischen und virtuellen Maschinen"
 
-#: ../../deployment/install.rst:45
+#: ../../deployment/install.rst:69
 msgid ""
 "The following sections describe how to install Nubus for Univention "
 "Corporate Server (UCS). You install Nubus for UCS from DVD on physical "
@@ -1590,7 +1680,7 @@ msgstr ""
 "erfragt alle notwendigen Systemeinstellungen in einer grafischen "
 "Oberfläche."
 
-#: ../../deployment/install.rst:51
+#: ../../deployment/install.rst:75
 msgid ""
 "The installation DVD is available for the computer architecture "
 "``amd64``, 64-bit. In addition to support for the widely distributed BIOS"
@@ -1609,7 +1699,7 @@ msgstr ""
 "Einschränkungen finden Sie unter :ref:`deployment-installation-secure-"
 "boot`."
 
-#: ../../deployment/install.rst:61
+#: ../../deployment/install.rst:85
 msgid ""
 "Univention doesn't support the simultaneous operation of UCS and Debian "
 "on a UEFI system."
@@ -1617,7 +1707,7 @@ msgstr ""
 "Univention unterstützt nicht den gleichzeitigen Betrieb von UCS und "
 "Debian auf einem UEFI-System."
 
-#: ../../deployment/install.rst:63
+#: ../../deployment/install.rst:87
 msgid ""
 "The reason for this is the GRUB boot loader of Nubus for UCS that partly "
 "uses the same configuration files as Debian."
@@ -1625,7 +1715,7 @@ msgstr ""
 "Der Grund dafür ist der GRUB-Bootloader von Nubus für UCS, der teilweise "
 "dieselben Konfigurationsdateien wie Debian verwendet."
 
-#: ../../deployment/install.rst:66
+#: ../../deployment/install.rst:90
 msgid ""
 "An already installed Debian leads to the fact that the hardware can't "
 "boot Nubus for UCS anymore after the installation of or an update to UCS "
@@ -1637,7 +1727,7 @@ msgstr ""
 "booten kann. Eine nachträgliche Installation von Debian führt ebenfalls "
 "dazu, dass Nubus für UCS 5.2 nicht mehr booten kann."
 
-#: ../../deployment/install.rst:71
+#: ../../deployment/install.rst:95
 msgid ""
 "Besides operating Nubus for UCS on hardware or in a virtualization "
 "solution, you can also install it on the Amazon EC2 cloud using an AMI "
@@ -1648,21 +1738,21 @@ msgstr ""
 "einem AMI-Image installieren. Weitere Informationen finden Sie unter :ref"
 ":`deployment-installation-cloud`."
 
-#: ../../deployment/install.rst:76
+#: ../../deployment/install.rst:100
 msgid "You can use the installation interfaces with a keyboard and with mouse."
 msgstr "Sie können die Installationsoberflächen mit Tastatur und Maus bedienen."
 
-#: ../../deployment/install.rst:78
+#: ../../deployment/install.rst:102
 msgid "Use the :kbd:`Tab` key to jump to the next field."
 msgstr "Verwenden Sie die :kbd:`Tab`-Taste, um zum nächsten Feld zu springen."
 
-#: ../../deployment/install.rst:80
+#: ../../deployment/install.rst:104
 msgid "Use the :kbd:`Shift+Tab` keys to jump back to the previous field."
 msgstr ""
 "Verwenden Sie die Tasten :kbd:`Shift+Tab`, um zum vorherigen Feld zurück "
 "zu springen."
 
-#: ../../deployment/install.rst:82
+#: ../../deployment/install.rst:106
 msgid ""
 "Use the :kbd:`Enter` key to assign values to the input field and confirm "
 "buttons."
@@ -1670,13 +1760,13 @@ msgstr ""
 "Verwenden Sie die :kbd:`Enter`-Taste, um Werte dem Eingabefeld zuzuweisen"
 " und Schaltflächen zu bestätigen."
 
-#: ../../deployment/install.rst:84
+#: ../../deployment/install.rst:108
 msgid "Use the arrow keys inside a list or table for navigating between entries."
 msgstr ""
 "Verwenden Sie die Pfeiltasten innerhalb einer Liste oder Tabelle zur "
 "Navigation zwischen Einträgen."
 
-#: ../../deployment/install.rst:86
+#: ../../deployment/install.rst:110
 msgid ""
 "Use :guilabel:`Cancel` to cancel the current configuration step. You can "
 "select a previous configuration step again in the menu that the installer"
@@ -1691,7 +1781,7 @@ msgstr ""
 "Konfigurationsschritte nicht direkt auswählen, wenn Sie vorherige "
 "Schritte nicht abgeschlossen haben."
 
-#: ../../deployment/install.rst:93
+#: ../../deployment/install.rst:117
 msgid ""
 "To continue the installation, follow steps in :ref:`deployment-initial-"
 "system-configuration`."
@@ -1699,11 +1789,11 @@ msgstr ""
 "Um die Installation fortzusetzen, folgen Sie den Schritten in :ref"
 ":`deployment-initial-system-configuration`."
 
-#: ../../deployment/install.rst:100
+#: ../../deployment/install.rst:124
 msgid "Text mode installation"
 msgstr "Installation im Textmodus"
 
-#: ../../deployment/install.rst:102
+#: ../../deployment/install.rst:126
 msgid ""
 "On systems that show problems with the graphical Univention installer, "
 "you can start the installation in text mode. For text mode, select :ref"
@@ -1715,7 +1805,7 @@ msgstr ""
 "Textmodus wählen Sie :ref:`deployment-initial-system-configuration-"
 "install-mode-text-mode` im Boot-Menü für die Installation."
 
-#: ../../deployment/install.rst:107
+#: ../../deployment/install.rst:131
 msgid ""
 "During installation in text mode the installer shows the same information"
 " and asks for the same settings, see :ref:`deployment-initial-system-"
@@ -1728,7 +1818,7 @@ msgstr ""
 "Festplattenpartitionierung ist das System bereit für den ersten Start und"
 " der Installer startet das System neu."
 
-#: ../../deployment/install.rst:114
+#: ../../deployment/install.rst:138
 #, python-brace-format
 msgid ""
 "After restart, you can resume the configuration with the system setup in "
@@ -1746,11 +1836,11 @@ msgstr ""
 "gleichen Schritten wie beim grafischen Installer fort, siehe :ref"
 ":`deployment-domain-setup`."
 
-#: ../../deployment/install.rst:125
+#: ../../deployment/install.rst:149
 msgid "Cloud deployment"
 msgstr "Cloud Installation"
 
-#: ../../deployment/install.rst:127
+#: ../../deployment/install.rst:151
 msgid ""
 "Univention provides an Amazon Machine Image (AMI) for the Amazon EC2 "
 "cloud for Nubus for UCS. You can use this generic image for all Nubus for"
@@ -1764,7 +1854,7 @@ msgstr ""
 " zu erstellen, die Sie über Management-Module hinsichtlich Themen wie "
 "Domänenname und Softwareauswahl konfigurieren können."
 
-#: ../../deployment/install.rst:132
+#: ../../deployment/install.rst:156
 msgid ""
 "For information about the setup process of a Nubus for UCS instance based"
 " on Amazon EC2, see :uv:help:`Amazon EC2 Quickstart <21833>`."
@@ -1772,11 +1862,11 @@ msgstr ""
 "Für Informationen zum Einrichtungsprozess einer Nubus für UCS Instanz "
 "basierend auf Amazon EC2, siehe :uv:help:`Amazon EC2 Quickstart <21833>`."
 
-#: ../../deployment/install.rst:138
+#: ../../deployment/install.rst:162
 msgid "VMware-specific considerations"
 msgstr "VMware-spezifische Überlegungen"
 
-#: ../../deployment/install.rst:140
+#: ../../deployment/install.rst:164
 msgid ""
 "If you install Nubus for UCS as a guest in VMware, select the option "
 ":menuselection:`Linux --> Debian` as the *Guest operating system*, "
@@ -1786,7 +1876,7 @@ msgstr ""
 "Option :menuselection:`Linux --> Debian` als *Gastbetriebssystem*, da "
 "Nubus für UCS auf Debian GNU/Linux basiert."
 
-#: ../../deployment/install.rst:144
+#: ../../deployment/install.rst:168
 msgid ""
 "The Linux kernel in Nubus for UCS includes all the support drivers "
 "necessary for operation in VMware, such as :file:`vmw_balloon`, "
@@ -1796,7 +1886,7 @@ msgstr ""
 "notwendigen Support-Treiber, wie :file:`vmw_balloon`, :file:`vmw_pvsci`, "
 ":file:`vmw_vmci`, :file:`vmwgfx` und :file:`vmxnet3`."
 
-#: ../../deployment/install.rst:147
+#: ../../deployment/install.rst:171
 msgid ""
 "Nubus for UCS delivers the :program:`Open VM Tools`. You can install them"
 " through the :program:`open-vm-tools` package. The package is optional, "
@@ -1808,7 +1898,7 @@ msgstr ""
 "aber notwendig für Funktionen wie automatische Zeitsynchronisation "
 "zwischen dem Virtualisierungsserver und dem Gastsystem."
 
-#: ../../deployment/install.rst:158
+#: ../../deployment/install.rst:182
 msgid ""
 "Nubus for UCS supports UEFI Secure Boot. You don't need to deactivate "
 "Secure Boot before installing from the DVD."
@@ -1816,7 +1906,7 @@ msgstr ""
 "Nubus für UCS unterstützt UEFI Secure Boot. Sie müssen Secure Boot vor "
 "der Installation von der DVD nicht deaktivieren."
 
-#: ../../deployment/install.rst:161
+#: ../../deployment/install.rst:185
 msgid ""
 "Secure Boot relies on a chain of trust where the system firmware verifies"
 " each component before loading it. On Nubus for UCS, this chain works as "
@@ -1826,7 +1916,7 @@ msgstr ""
 "Firmware jede Komponente vor dem Laden überprüft. Bei Nubus für UCS "
 "funktioniert diese Kette wie folgt:"
 
-#: ../../deployment/install.rst:165
+#: ../../deployment/install.rst:189
 msgid ""
 "The UEFI firmware loads :program:`shim`, a *first-stage boot loader* "
 "signed by Microsoft. The firmware verifies :program:`shim` against the "
@@ -1836,7 +1926,7 @@ msgstr ""
 "*First-Stage-Bootloader*. Die Firmware überprüft :program:`shim` anhand "
 "der Zertifikate im Zertifikatsspeicher der Firmware."
 
-#: ../../deployment/install.rst:170
+#: ../../deployment/install.rst:194
 msgid ""
 ":program:`shim` loads the Debian-signed :program:`GRUB` boot loader. "
 ":program:`shim` verifies :program:`GRUB` using Debian's key embedded at "
@@ -1848,11 +1938,11 @@ msgstr ""
 "Kompilierung eingebetteten Debian-Schlüssel und prüft den *Secure Boot "
 "Advanced Targeting (SBAT) Revocation Level*."
 
-#: ../../deployment/install.rst:175
+#: ../../deployment/install.rst:199
 msgid ":program:`GRUB` loads the Linux kernel, also signed by Debian."
 msgstr ":program:`GRUB` lädt den Linux-Kernel, ebenfalls signiert von Debian."
 
-#: ../../deployment/install.rst:177
+#: ../../deployment/install.rst:201
 msgid ""
 "Because Nubus for UCS builds on Debian GNU/Linux, it uses Debian's signed"
 " boot components. The following conditions in the current Debian Secure "
@@ -1863,11 +1953,11 @@ msgstr ""
 "aktuellen *Debian Secure Boot Toolchain* können einen erfolgreichen Start"
 " auf bestimmter Hardware verhindern."
 
-#: ../../deployment/install.rst:183
+#: ../../deployment/install.rst:207
 msgid "SBAT revocation level"
 msgstr "SBAT :spelling:word:`Revocation` Level"
 
-#: ../../deployment/install.rst:185
+#: ../../deployment/install.rst:209
 msgid ""
 "The *Secure Boot Advanced Targeting (SBAT) revocation level* controls "
 "which boot loader versions the firmware accepts."
@@ -1875,7 +1965,7 @@ msgstr ""
 "Der *Secure Boot Advanced Targeting (SBAT) Revocation Level* legt fest, "
 "welche Bootloader Versionen die Firmware akzeptiert."
 
-#: ../../deployment/install.rst:188
+#: ../../deployment/install.rst:212
 msgid ""
 "The :program:`GRUB` boot loader on the Nubus for UCS installation media "
 "declares SBAT generation ``grub,4``. Some systems have a higher *SBAT "
@@ -1887,11 +1977,11 @@ msgstr ""
 "höheren *SBAT Revocation Level* in der Firmware gespeichert, wodurch sie "
 "diese :program:`GRUB`-Version ablehnen."
 
-#: ../../deployment/install.rst:193
+#: ../../deployment/install.rst:217
 msgid "A system can have an elevated SBAT level for the following reasons:"
 msgstr "Ein System kann aus folgenden Gründen einen erhöhten SBAT-Level haben:"
 
-#: ../../deployment/install.rst:195
+#: ../../deployment/install.rst:219
 msgid ""
 "A previous Microsoft Windows installation raised the SBAT level to "
 "``grub,5`` through a Windows Update firmware update."
@@ -1899,7 +1989,7 @@ msgstr ""
 "Eine frühere Microsoft Windows-Installation hat den SBAT-Level über ein "
 "Windows-Update-Firmware-Update auf ``grub,5`` angehoben."
 
-#: ../../deployment/install.rst:198
+#: ../../deployment/install.rst:222
 msgid ""
 "A previous Linux distribution with a newer :program:`GRUB` version raised"
 " the SBAT level."
@@ -1907,7 +1997,7 @@ msgstr ""
 "Eine frühere Linux-Distribution mit einer neueren :program:`GRUB`-Version"
 " hat den SBAT-Level angehoben."
 
-#: ../../deployment/install.rst:201
+#: ../../deployment/install.rst:225
 msgid ""
 "The *SBAT revocation level* persists in UEFI firmware memory (NVRAM). "
 "Removing the previous operating system doesn't clear it."
@@ -1915,11 +2005,11 @@ msgstr ""
 "Der *SBAT Revocation Level* bleibt im UEFI-Firmware-Speicher (NVRAM) "
 "erhalten. Das Entfernen des vorherigen Betriebssystems löscht ihn nicht."
 
-#: ../../deployment/install.rst:204
+#: ../../deployment/install.rst:228
 msgid "Systems that have never had their SBAT level raised aren't affected."
 msgstr "Systeme, deren SBAT-Level nie angehoben wurde, sind nicht betroffen."
 
-#: ../../deployment/install.rst:206
+#: ../../deployment/install.rst:230
 msgid ""
 "If the system rejects the boot loader with a *Security Violation* error, "
 "deactivate Secure Boot in the firmware setup before installation."
@@ -1928,7 +2018,7 @@ msgstr ""
 "ablehnt, deaktivieren Sie Secure Boot im Firmware-Setup vor der "
 "Installation."
 
-#: ../../deployment/install.rst:211
+#: ../../deployment/install.rst:235
 msgid ""
 "Tools such as :program:`Rufus` version 4.6 and later check the SBAT "
 "generation proactively and display a *revoked UEFI bootloader* warning. "
@@ -1940,11 +2030,11 @@ msgstr ""
 " Diese Warnung weist auf eine mögliche Inkompatibilität hin, nicht auf "
 "ein Sicherheitsproblem mit dem Nubus für UCS Installationsmedium."
 
-#: ../../deployment/install.rst:218
+#: ../../deployment/install.rst:242
 msgid "Firmware certificate requirements"
 msgstr "Anforderungen an Firmware-Zertifikate"
 
-#: ../../deployment/install.rst:220
+#: ../../deployment/install.rst:244
 msgid ""
 "The :program:`shim` boot loader on the Nubus for UCS installation media "
 "is signed with the *Microsoft Corporation UEFI CA 2011* certificate. The "
@@ -1956,7 +2046,7 @@ msgstr ""
 " Firmware muss dieses Zertifikat in ihrem Zertifikatsspeicher enthalten, "
 "um :program:`shim` vor dem Laden zu überprüfen."
 
-#: ../../deployment/install.rst:225
+#: ../../deployment/install.rst:249
 msgid ""
 "Most systems ship with this certificate pre-installed. However, some "
 "hardware released in 2024 and later ships only with the newer *Microsoft "
@@ -1967,7 +2057,7 @@ msgstr ""
 "jedoch nur das neuere Zertifikat *Microsoft UEFI CA 2023* und nicht das "
 "2011-Zertifikat."
 
-#: ../../deployment/install.rst:230
+#: ../../deployment/install.rst:254
 msgid ""
 "On these systems, the firmware doesn't recognize :program:`shim` and "
 "refuses to boot from the installation media."
@@ -1975,7 +2065,7 @@ msgstr ""
 "Auf diesen Systemen erkennt die Firmware :program:`shim` nicht und "
 "verweigert den Start vom Installationsmedium."
 
-#: ../../deployment/install.rst:233
+#: ../../deployment/install.rst:257
 msgid ""
 "To install Nubus for UCS on affected hardware, use one of the following "
 "approaches:"
@@ -1983,7 +2073,7 @@ msgstr ""
 "Um Nubus für UCS auf betroffener Hardware zu installieren, verwenden Sie "
 "einen der folgenden Ansätze:"
 
-#: ../../deployment/install.rst:236
+#: ../../deployment/install.rst:260
 msgid ""
 "Enroll the *Microsoft Corporation UEFI CA 2011* certificate in the "
 "firmware setup."
@@ -1991,11 +2081,11 @@ msgstr ""
 "Registrieren Sie das Zertifikat *Microsoft Corporation UEFI CA 2011* im "
 "Firmware-Setup."
 
-#: ../../deployment/install.rst:239
+#: ../../deployment/install.rst:263
 msgid "Deactivate Secure Boot in the firmware setup before installation."
 msgstr "Deaktivieren Sie Secure Boot im Firmware-Setup vor der Installation."
 
-#: ../../deployment/install.rst:241
+#: ../../deployment/install.rst:265
 msgid ""
 "This limitation affects the entire Debian ecosystem. Debian resolves it "
 "when it ships a :program:`shim` version signed with the *Microsoft UEFI "
