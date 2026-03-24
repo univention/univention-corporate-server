@@ -37,6 +37,30 @@ and the domain configuration.
 The installation process is interactive
 and prompts you for all necessary system settings.
 
+.. _deployment-installation-download:
+
+Installation image download
+---------------------------
+
+Download the Nubus for UCS installation image from the
+`Univention website <https://www.univention.com/products/download/>`_.
+The download page offers ISO and virtual machine images
+for the latest patch level release.
+
+If you are adding a system to an existing domain,
+the image must match the patch level of your :term:`UCS Primary Directory Node`.
+If the Primary is already at the latest patch level,
+download the image directly from the download page.
+
+If you can't update the Primary yet,
+navigate to the parent directory of the download link
+after you accept the terms of use and the privacy policy on the download page.
+The parent directory contains images for all available patch level releases.
+Select the image that matches your Primary's patch level.
+
+For more information about the patch level requirement,
+see :ref:`deployment-domain-setup-join-ucs`.
+
 .. _deployment-installation-physical:
 
 Physical and virtual machine installation
