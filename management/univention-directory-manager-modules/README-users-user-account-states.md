@@ -18,7 +18,7 @@ Active Directory doesn't allow to set a `locked=True` state, which is why UDM de
 - **UCS OpenLDAP attributes** (any of):
 
   - `sambaAcctFlags` contains `L`
-  - `krb5KDCFlags` bitmask includes the `???` bit (aka: `1 << 17`, `0x20000`).
+  - `krb5KDCFlags` bitmask includes the `locked-out` flag (bit 17 aka: `1 << 17` / `0x20000` / `131072`).
   - `pwdAccountLockedTime`: GeneralizedTime. Unset by UDM during unlocking. But only set by ppolicy overlay module.
 - **Related UDM properties**:
 
