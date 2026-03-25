@@ -6,8 +6,10 @@ src: openssl
 fix: 1.1.0l-1~deb9u12
 desc: |
  This update addresses the following issues:
- * CVSS score unknown. (CVE-2026-22796, CVE-2026-22795, CVE-2025-69421,
-   CVE-2025-69420, CVE-2025-69419, CVE-2025-69418, CVE-2025-68160)
+ * CVSS score unknown. (CVE-2026-22795, CVE-2025-69421, CVE-2025-69420,
+   CVE-2025-69419, CVE-2025-69418, CVE-2025-68160)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2026-22796)
 bug: [59141]
 cve:
 - CVE-2025-68160
