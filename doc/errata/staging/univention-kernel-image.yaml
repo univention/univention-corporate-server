@@ -10,7 +10,7 @@ desc: |
    package naming changed, the new kernel may not be selected automatically by
    GRUB or other tools. Follow the short update guide to install, boot and
    verify the new kernel before removing old kernels:
-   https://help.univention.com/t/ucs-4-4-9-extended-kernel-update-version-4-19-316-1-deb9u1/25031
+   https://help.univention.com/t/25031
  * CVSS score unknown. (CVE-2024-39292, CVE-2024-38780, CVE-2024-38633,
    CVE-2024-38621, CVE-2024-38598, CVE-2024-38583, CVE-2024-38578,
    CVE-2024-38567, CVE-2024-38560, CVE-2024-38552, CVE-2024-37356,
