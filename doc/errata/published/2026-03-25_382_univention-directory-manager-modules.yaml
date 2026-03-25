@@ -19,3 +19,6 @@ desc: |
  * The `krb5KDCFlags` attribute is now updated when a user is locked out,
    setting the locked-out flag to ensure the KDC enforces the lockout state.
 bug: [58985, 59132, 52893]
+erratum: 382
+announced: 2026-03-25
+support: core
