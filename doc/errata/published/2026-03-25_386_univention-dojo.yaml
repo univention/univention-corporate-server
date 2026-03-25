@@ -12,3 +12,6 @@ desc: |
    malfunction.
 bug: [59095]
 maintained: false
+erratum: 386
+announced: 2026-03-25
+support: core
