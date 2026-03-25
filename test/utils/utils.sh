@@ -1502,6 +1502,93 @@ fix_certificates53013 () { # <ip>
 	# TODO: What else?
 }
 
+renew_expired_certificates () {
+	# Renew expired SSL certificates in /etc/univention/ssl
+	# Based on: https://help.univention.com/t/renewing-the-ssl-certificates/37
+	echo "Checking for expired SSL certificates in /etc/univention/ssl..."
+
+	local ssl_dir="/etc/univention/ssl"
+	local has_expired=0
+
+	# Check if we're on a master or have access to certificate management
+	if [ ! -d "$ssl_dir/ucsCA" ]; then
+		echo "Warning: Not a certificate authority, skipping certificate renewal"
+		return 0
+	fi
+
+	cd "$ssl_dir" || return 1
+
+	# Find and check all certificates for expiration
+	while IFS= read -r cert_file; do
+		if ! openssl x509 -checkend 0 -noout -in "$cert_file" 2>/dev/null; then
+			echo "Found expired certificate: $cert_file"
+			has_expired=1
+		fi
+	done < <(find . -name 'cert.pem' -type f)
+
+	if [ "$has_expired" -eq 0 ]; then
+		echo "No expired certificates found"
+		return 0
+	fi
+
+	echo "Found expired certificates, starting renewal process..."
+
+	# Backup old certificates
+	local backup_dir="${ssl_dir}_$(date +%Y%m%d_%H%M%S)"
+	echo "Creating backup at: $backup_dir"
+	cp -a "$ssl_dir" "$backup_dir"
+
+	# Renew root certificate
+	echo "Renewing root CA certificate..."
+	cd "$ssl_dir/ucsCA" || return 1
+	local ssl_default_days
+	ssl_default_days="$(ucr get ssl/default/days)"
+	ssl_default_days="${ssl_default_days:-1825}"  # default to 5 years if not set
+
+	openssl x509 -in CAcert.pem -out NewCAcert.pem -days "$ssl_default_days" \
+		-passin file:"$ssl_dir/password" \
+		-signkey private/CAkey.pem \
+		-sha256 || return 1
+	mv NewCAcert.pem CAcert.pem
+
+	# Renew all computer certificates
+	echo "Renewing all computer certificates..."
+	local domainname
+	eval "$(ucr shell domainname ssl/default/days)"
+	ssl_default_days="${ssl_default_days:-1825}"
+
+	cd "$ssl_dir" || return 1
+	for i in *".${domainname}"; do
+		if [ -d "$i" ]; then
+			echo "Renewing certificate for: $i"
+			univention-certificate renew -name "$i" -days "$ssl_default_days" || echo "Warning: Failed to renew $i"
+		fi
+	done
+
+	# Set correct permissions
+	echo "Setting correct permissions..."
+	chgrp -R -h "DC Backup Hosts" "$ssl_dir" 2>/dev/null || true
+
+	# Make certificate available via web
+	echo "Making certificate available via web..."
+	install -o root -g root -m 0644 "$ssl_dir/ucsCA/CAcert.pem" /var/www/ucs-root-ca.crt
+
+	# Update certificate validity info
+	echo "Updating certificate validity information..."
+	/usr/sbin/univention-certificate-check-validity || true
+
+	# Update CA certificates system-wide
+	echo "Updating CA certificates..."
+	update-ca-certificates -f || true
+
+	# Restart services that use SSL certificates
+	echo "Restarting SSL-dependent services..."
+	systemctl try-restart slapd.service apache2.service univention-management-console-server.service 2>/dev/null || true
+
+	echo "Certificate renewal completed successfully"
+	return 0
+}
+
 fake_initial_schema () {
 	[ "$(ucr get ldap/server/type)" = master ] && return
 	[ -s /var/lib/univention-ldap/schema.conf ] && return
