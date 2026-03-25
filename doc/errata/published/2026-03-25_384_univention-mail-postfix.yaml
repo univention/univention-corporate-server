@@ -10,3 +10,6 @@ desc: |
    attribute in addition to `mailPrimaryAddress`. This allows UDM groups to
    receive emails via alternative (alias) addresses.
 bug: [28692]
+erratum: 384
+announced: 2026-03-25
+support: core
