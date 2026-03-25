@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-06 10:31+0000\n"
-"PO-Revision-Date: 2025-08-14 17:03+0200\n"
+"POT-Creation-Date: 2026-03-26 11:21+0000\n"
+"PO-Revision-Date: 2026-03-26 12:24+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../domain-ldap/admin-diary.rst:7
 msgid "Protocol of activities in the domain"
@@ -130,347 +130,14 @@ msgstr ""
 msgid "Converting a |UCSBACKUPDN| backup to the new |UCSPRIMARYDN|"
 msgstr "Umwandlung eines |UCSBACKUPDN| zum neuen |UCSPRIMARYDN|"
 
-#: ../../domain-ldap/backup2master.rst:11
+#: ../../domain-ldap/backup2master.rst:9
 msgid ""
-"A UCS domain consists of only one |UCSPRIMARYDN|, but is not limited in "
-"the number of |UCSBACKUPDN|. A |UCSBACKUPDN| stores all the domain data "
-"and all SSL security certificates as read-only copies. However, in "
-"contrast to the |UCSPRIMARYDN|, writing changes are not allowed."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`deployment-primary-dn-resilience` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Eine UCS Domäne hat immer genau einen |UCSPRIMARYDN|, kann aber beliebig "
-"viele |UCSBACKUPDN| beinhalten. Ein |UCSBACKUPDN| speichert alle "
-"Domänendaten und alle SSL-Sicherheitszertifikate als Kopie, im Gegensatz "
-"zum |UCSPRIMARYDN| können jedoch keine schreibenden Änderungen "
-"vorgenommen werden."
-
-#: ../../domain-ldap/backup2master.rst:16
-msgid ""
-"Any |UCSBACKUPDN| can be converted to a |UCSPRIMARYDN|. There are two "
-"typical scenarios for this:"
-msgstr ""
-"Jeder |UCSBACKUPDN| kann zu einem |UCSPRIMARYDN| umgewandelt werden. "
-"Hierfür gibt es zwei typische Anwendungsfälle:"
-
-#: ../../domain-ldap/backup2master.rst:19
-msgid "In an emergency if the hardware of the |UCSPRIMARYDN| fails."
-msgstr "Im Notfall nach einem Hardwareausfall des |UCSPRIMARYDN|."
-
-#: ../../domain-ldap/backup2master.rst:21
-msgid ""
-"To replace a fully functional |UCSPRIMARYDN| with new hardware or "
-"changing the architecture from *i386* to *amd64*."
-msgstr ""
-"Zum geplanten Ersetzen des |UCSPRIMARYDN| durch neue Hardware oder "
-"Wechsel der Architektur von *i386* auf *amd64*."
-
-#: ../../domain-ldap/backup2master.rst:26
-msgid ""
-"The conversion of a |UCSBACKUPDN| to a |UCSPRIMARYDN| is a serious "
-"configuration change and should be prepared carefully. The conversion "
-"cannot be reversed."
-msgstr ""
-"Die Umwandlung eines |UCSBACKUPDN| in einen |UCSPRIMARYDN| ist ein "
-"tiefgreifender Konfigurationsschritt und sollte gründlich vorbereitet "
-"werden! Die Umwandlung kann nicht rückgängig gemacht werden."
-
-#: ../../domain-ldap/backup2master.rst:30
-msgid ""
-"The |UCSPRIMARYDN| that is going to be replaced has to be shut down "
-"before the conversion. It must not be powered on during or after the "
-"conversion!"
-msgstr ""
-"Der zu ersetzende |UCSPRIMARYDN| muss vor Beginn der Umwandlung "
-"abgeschaltet werden und darf weder während der Umwandlung noch im "
-"Anschluss daran wieder in Betrieb genommen werden!"
-
-#: ../../domain-ldap/backup2master.rst:33
-msgid ""
-"Before the conversion, the installed software packages and the current "
-"configuration has to be compared between the |UCSPRIMARYDN| and "
-"|UCSBACKUPDN|. If the |UCSPRIMARYDN| is not available anymore, use a file"
-" backup. After the conversion, all possibly remaining references of the "
-"old |UCSPRIMARYDN| have to be removed or changed to the new "
-"|UCSPRIMARYDN|."
-msgstr ""
-"Im Vorfeld muss die installierte Software sowie die aktuelle "
-"Konfiguration zwischen |UCSPRIMARYDN| und |UCSBACKUPDN| abgeglichen "
-"werden. Wenn der |UCSPRIMARYDN| wegen eines Ausfalls nicht mehr verfügbar"
-" ist, muss eine Sicherung herangezogen werden. Im Nachgang an die "
-"Umwandlung müssen alle möglichen verbliebenen Referenzen auf den alten "
-"|UCSPRIMARYDN| entfernt oder korrigiert werden."
-
-#: ../../domain-ldap/backup2master.rst:39
-msgid ""
-"The conversion primarily involves the changeover of the services relevant"
-" for authentication such as LDAP, DNS, Kerberos and Samba. The installed "
-"software needs to be adjusted manually (this can be done using the UMC "
-"modules :guilabel:`App Center` or :guilabel:`Package Management`)."
-msgstr ""
-"Die Umwandlung umfasst primär die Umstellung der für die "
-"Authentifizierung relevanten Dienste wie LDAP, DNS, Kerberos und Samba.  "
-"Der Abgleich der installierten Software muss manuell erfolgen (über die "
-"UMC-Module :guilabel:`App Center` und :guilabel:`Paket-Verwaltung`)."
-
-#: ../../domain-ldap/backup2master.rst:44
-msgid ""
-"For example, if the mail component was installed on the previous "
-"|UCSPRIMARYDN|, it will not be automatically installed on the new "
-"|UCSPRIMARYDN| after the conversion. To minimize manual changes after the"
-" conversion, please consider :ref:`domain-fault-tolerant`."
-msgstr ""
-"Wenn also z.B. auf dem vorherigen |UCSPRIMARYDN| die Mailkomponente "
-"installiert war, ist diese nach der Umwandlung nicht automatisch auf dem "
-"neuen |UCSPRIMARYDN| verfügbar. Um den Umfang der Nachbereitung möglichst"
-" gering zu halten, sollte im Vorfeld :ref:`domain-fault-tolerant` "
-"beachtet werden."
-
-#: ../../domain-ldap/backup2master.rst:49
-msgid ""
-"If additional LDAP schema packages were installed on the |UCSPRIMARYDN|, "
-"they must also be installed on the |UCSBACKUPDN| prior to the conversion."
-" The package list of the old |UCSPRIMARYDN| should be saved prior to the "
-"promotion in order to allow a subsequent comparison of the installed "
-"packages. The package list can be created with the following command:"
-msgstr ""
-"Wurden auf dem |UCSPRIMARYDN| zusätzliche LDAP-Schema-Pakete installiert,"
-" so müssen diese vor der Umwandlung auch auf dem |UCSBACKUPDN| "
-"installiert werden. Die Paketliste des alten |UCSPRIMARYDN| sollte vor "
-"der Umstellung gesichert werden, um einen Abgleich der installierten "
-"Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl erstellt"
-" werden:"
-
-#: ../../domain-ldap/backup2master.rst:55
-msgid "$ dpkg --get-selections \\* > dpkg.selection"
-msgstr "$ dpkg --get-selections \\* > dpkg.selection"
-
-#: ../../domain-ldap/backup2master.rst:60
-msgid ""
-"Compare this file with the same output on the |UCSBACKUPDN|. The package "
-"list in the files should only differ in the packages :program"
-":`univention-server-master` and :program:`univention-server-backup`. You "
-"must then install missing packages on the |UCSBACKUPDN|. Especially those"
-" packages that install a LDAP schema are absolutely necessary. The "
-"following command executed on the |UCSPRIMARYDN| lists all packages with "
-"a LDAP schema:"
-msgstr ""
-"Vergleichen Sie die so auf dem |UCSPRIMARYDN| erstellte Datei mit einer "
-"ebenso erstellten Datei des |UCSBACKUPDN|. Sie sollten sich lediglich in "
-"den Paketen :program:`univention-server-master` und :program:`univention-"
-"server-backup` unterscheiden. Installieren Sie die benötigten Pakete auf "
-"dem |UCSBACKUPDN| nach. Insbesondere alle Pakete, die ein LDAP-Schema "
-"installieren, sind zwingend erforderlich. Der folgende Befehl ausgeführt "
-"auf dem |UCSPRIMARYDN| erstellt eine Auflistung aller Pakte mit LDAP-"
-"Schema:"
-
-#: ../../domain-ldap/backup2master.rst:67
-msgid ""
-"$ dpkg -S /etc/ldap/schema/*.schema \\\n"
-"  /usr/share/univention-ldap/schema/*.schema"
-msgstr ""
-"$ dpkg -S /etc/ldap/schema/*.schema \\\n"
-"  /usr/share/univention-ldap/schema/*.schema"
-
-#: ../../domain-ldap/backup2master.rst:73
-msgid ""
-"To simply install all packages of the |UCSPRIMARYDN| also on the "
-"|UCSBACKUPDN|, use the previously created file :file:`dpkg.selection` of "
-"the |UCSPRIMARYDN| and run the following command on the |UCSBACKUPDN|:"
-msgstr ""
-"Um einfach alle installierten Pakete des |UCSPRIMARYDN| auch auf dem "
-"|UCSBACKUPDN| zu installieren, kann die zuvor auf dem |UCSPRIMARYDN| "
-"erstellte Datei :file:`dpkg.selection` mit folgenden Befehlen verwendet "
-"werden:"
-
-#: ../../domain-ldap/backup2master.rst:77
-msgid ""
-"$ dpkg --set-selections < dpkg.selection\n"
-"$ apt-get dselect-upgrade"
-msgstr ""
-"$ dpkg --set-selections < dpkg.selection\n"
-"$ apt-get dselect-upgrade"
-
-#: ../../domain-ldap/backup2master.rst:82
-msgid ""
-"In addition, the |UCSUCR| inventory needs to be saved so that it is "
-"possible to compare the configuration adjustments on the new "
-"|UCSPRIMARYDN|. The following files on the |UCSPRIMARYDN| need to be "
-"compared with those on the |UCSBACKUPDN|:"
-msgstr ""
-"Darüber hinaus sollte der |UCSUCR|-Datenbestand gesichert werden, um "
-"Konfigurationsanpassungen auch auf dem neuen |UCSPRIMARYDN| abgleichen zu"
-" können. Folgende Dateien des |UCSPRIMARYDN| sind dazu mit denen auf dem "
-"|UCSBACKUPDN| zu vergleichen:"
-
-#: ../../domain-ldap/backup2master.rst:86
-msgid ":file:`/etc/univention/base.conf`"
-msgstr ":file:`/etc/univention/base.conf`"
-
-#: ../../domain-ldap/backup2master.rst:87
-msgid ":file:`/etc/univention/base-forced.conf`"
-msgstr ":file:`/etc/univention/base-forced.conf`"
-
-#: ../../domain-ldap/backup2master.rst:89
-#, python-format
-msgid ""
-"UCS saves a copy of those files every night to :file:`/var/univention-"
-"backup/ucr-backup_%Y%m%d.tgz`."
-msgstr ""
-"Eine nächtliche Sicherung dieser Dateien findet sich auch in :file:`/var"
-"/univention-backup/ucr-backup_%Y%m%d.tgz`."
-
-#: ../../domain-ldap/backup2master.rst:92
-msgid ""
-"The conversion of a |UCSBACKUPDN| to the new |UCSPRIMARYDN| is performed "
-"by running the command :command:`/usr/lib/univention-ldap/univention-"
-"backup2master` on the |UCSBACKUPDN|. The system must be rebooted after "
-"the conversion. The process is logged to "
-":file:`/var/log/univention/backup2master.log` The following steps are "
-"performed by :command:`univention-backup2master`:"
-msgstr ""
-"Die Umwandlung eines |UCSBACKUPDN| zum neuen |UCSPRIMARYDN| erfolgt dann "
-"durch Aufruf des Befehls :command:`/usr/lib/univention-ldap/univention-"
-"backup2master` auf dem |UCSBACKUPDN|. Das System muss anschließend neu "
-"gestartet werden. Die Umstellung wird in der Logdatei "
-":file:`/var/log/univention/backup2master.log` protokolliert. Folgende "
-"Schritte führt der Befehl :command:`univention-backup2master` der Reihe "
-"nach aus:"
-
-#: ../../domain-ldap/backup2master.rst:98
-msgid ""
-"Checking the environment: The system must be a |UCSBACKUPDN| that already"
-" joined the domain. Additionally, it is checked if the |UCSPRIMARYDN| can"
-" be resolved via DNS and if the repository server can be reached. Also, "
-"the |UCSPRIMARYDN| must be powered off and not reachable anymore."
-msgstr ""
-"Prüfung der Umgebung: Bei dem System muss es sich um einen |UCSBACKUPDN| "
-"handeln, der der Domäne bereits beigetreten ist. Zudem wird "
-"sichergestellt, dass der |UCSPRIMARYDN| über DNS auflösbar sowie dass "
-"eine Verbindung zum Repository-Server möglich ist. Außerdem darf der "
-"|UCSPRIMARYDN| nicht mehr im Netzwerk erreichbar sein."
-
-#: ../../domain-ldap/backup2master.rst:103
-msgid ""
-":command:`univention-backup2master` runs all executable scripts in the "
-":file:`/usr/lib/univention-backup2master/pre` directory. Components that "
-"require a custom handling before the conversion to the |UCSPRIMARYDN| "
-"begins, can have executable scripts in that directory."
-msgstr ""
-":command:`univention-backup2master` führt alle ausführbaren Skripte im "
-"Verzeichnis :file:`/usr/lib/univention-backup2master/pre` aus."
-"Komponenten, die vor Beginn der Umwandlung zum |UCSPRIMARYDN| eine "
-"spezielle Behandlung erfordern, können ausführbare Skripte in diesem "
-"Verzeichnis ablegen."
-
-#: ../../domain-ldap/backup2master.rst:109
-msgid ""
-"Now, the most important services OpenLDAP, Samba, Kerberos and |UCSUDN| "
-"and Listener will be stopped. Important |UCSUCRV|, such as "
-":envvar:`ldap/master` and :envvar:`server/role` will be changed. The UCS "
-"Root CA certificate will be available via the web server on the "
-"|UCSBACKUPDN|. All mentioned services will be started again."
-msgstr ""
-"Nun werden die wichtigsten Dienste OpenLDAP, Samba, Kerberos sowie "
-"|UCSUDN| und Listener gestoppt, elementare |UCSUCRV| wie "
-":envvar:`ldap/master` und :envvar:`server/role` umgestellt, das UCS Root-"
-"Zertifikat vom Webserver des |UCSBACKUPDN| abrufbar gemacht und die oben "
-"genannten Dienste wieder gestartet."
-
-#: ../../domain-ldap/backup2master.rst:115
-msgid ""
-"The DNS SRV record ``kerberos-adm`` will be changed from the old to the "
-"new |UCSPRIMARYDN|."
-msgstr ""
-"Der DNS SRV Eintrag ``kerberos-adm`` wird vom alten auf den neuen "
-"|UCSPRIMARYDN| geändert."
-
-#: ../../domain-ldap/backup2master.rst:118
-msgid ""
-"If present, the Univention S4 Connector (see :ref:`windows-s4-connector`)"
-" will be removed from the computer object of the old |UCSPRIMARYDN| and "
-"will be scheduled for re-configuration on the new |UCSPRIMARYDN|."
-msgstr ""
-"Sofern vorhanden, wird der Univention S4 Connector (siehe "
-":ref:`windows-s4-connector`) vom Rechnerobjekt des alten |UCSPRIMARYDN| "
-"entfernt und auf dem neuen |UCSPRIMARYDN| zur erneuten Konfiguration "
-"vorgemerkt."
-
-#: ../../domain-ldap/backup2master.rst:122
-msgid ""
-"The server role of the new |UCSPRIMARYDN| will be changed to "
-"``domaincontroller_master`` in the OpenLDAP directory service. The DNS "
-"SRV record ``_domaincontroller_master._tcp`` will also be adjusted."
-msgstr ""
-"Im OpenLDAP wird die Serverrolle des neuen |UCSPRIMARYDN| auf "
-"``domaincontroller_master`` geändert. Ebenfalls wird der DNS SRV Eintrag "
-"``_domaincontroller_master._tcp`` korrigiert."
-
-#: ../../domain-ldap/backup2master.rst:126
-msgid ""
-"If present, all entries of the old |UCSPRIMARYDN| will be removed from "
-"the local Samba directory service. Additionally, the FSMO roles will be "
-"transferred to the new |UCSPRIMARYDN|."
-msgstr ""
-"Sofern vorhanden werden die Einträge des alten |UCSPRIMARYDN| aus der "
-"lokalen Samba-Datenbank des neuen |UCSPRIMARYDN| entfernt. Zudem werden "
-"die FSMO-Rollen auf den neuen |UCSPRIMARYDN| übertragen."
-
-#: ../../domain-ldap/backup2master.rst:130
-msgid ""
-"The computer object of the old |UCSPRIMARYDN| will be deleted from "
-"OpenLDAP."
-msgstr ""
-"Anschließend wird das Rechnerobjekt des alten |UCSPRIMARYDN| im OpenLDAP "
-"gelöscht."
-
-#: ../../domain-ldap/backup2master.rst:132
-msgid ""
-"The OpenLDAP directory service will be searched for any remaining "
-"references to the old |UCSPRIMARYDN|. All found references (e.g. DNS "
-"records) are shown and suggested to be fixed. The suggested fixes have to"
-" be checked and confirmed one by one."
-msgstr ""
-"Nun wird das LDAP nach Referenzen auf den alten |UCSPRIMARYDN| "
-"durchsucht. Alle gefundenen Referenzen werden angezeigt und es wird eine "
-"Korrektur vorgeschlagen, welche einzeln geprüft und bestätigt werden "
-"muss, z.B. weitere DNS-Einträge."
-
-#: ../../domain-ldap/backup2master.rst:137
-msgid ""
-"Finally, the package :program:`univention-server-backup` will be replaced"
-" by :program:`univention-server-master`."
-msgstr ""
-"Zum Abschluss wird das Paket :program:`univention-server-backup` durch "
-":program:`univention-server-master` ersetzt."
-
-#: ../../domain-ldap/backup2master.rst:140
-msgid ""
-":command:`univention-backup2master` runs all executable scripts in the "
-":file:`/usr/lib/univention-backup2master/post` directory. Components that"
-" require a custom handling after the conversion to the |UCSPRIMARYDN| "
-"completed, can have executable scripts in that directory."
-msgstr ""
-":command:`univention-backup2master` führt alle ausführbaren Skripte im "
-"Verzeichnis :file:`/usr/lib/univention-backup2master/post` aus. "
-"Komponenten, die nach der Umwandlung zum |UCSPRIMARYDN| eine spezielle "
-"Behandlung erfordern, können ausführbare Skripte in diesem Verzeichnis "
-"ablegen."
-
-#: ../../domain-ldap/backup2master.rst:146
-msgid ""
-"Subsequently, the LDAP directory on the new |UCSPRIMARYDN| and the "
-"|UCSUCR| values on all UCS systems of the domain should be checked for "
-"any remaining references to the hostname or the IP address of the old "
-"|UCSPRIMARYDN|. Those references need to be adjusted to the new "
-"|UCSPRIMARYDN|, too."
-msgstr ""
-"Im Anschluss sollte sowohl |UCSUCR| auf allen UCS-Systemen der Domäne als"
-" auch das LDAP auf dem jetzt neuen |UCSPRIMARYDN| hinsichtlich Verweisen "
-"auf den Namen und die IP-Adresse des alten |UCSPRIMARYDN| überprüft und "
-"diese angepasst werden."
-
-#: ../../domain-ldap/backup2master.rst:151
-msgid "For additional details, see :uv:help:`How To: backup2master <19514>`."
-msgstr "Für weitere Hinweise, siehe :uv:help:`How To: backup2master <19514>`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`deployment-primary-dn-resilience` in :cite:t:`uv-ucs-operation` "
+"verschoben."
 
 #: ../../domain-ldap/domain-join.rst:7
 msgid "Joining domains"
@@ -1190,18 +857,13 @@ msgstr "Fehlertolerante Domain Einrichtung"
 
 #: ../../domain-ldap/fault-tolerant-setup.rst:9
 msgid ""
-"In a domain exist some services that are important for the functionality "
-"of all of its members. Redundancy can be used to remove those single "
-"points of failure. An article in the Univention Support database explains"
-" how to secure LDAP, Kerberos, DNS, DHCP and Active Directory-compatible "
-"Domain Controllers: :uv:kb:`Fail-safe domain setup <6682>`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`deployment-primary-dn-resilience-fault-tolerant-setup` in :cite:t:`uv-"
+"ucs-operation`."
 msgstr ""
-"Einige Dienste in einer Domäne sind zentral für das Funktionieren von "
-"deren Mitgliedern. Redundanz ist ein Mittel um diesen potenziellen "
-"Bruchstellen (*single points of failure*) zu entfernen. Ein Artikel in "
-"der Univention Support Datenbank erklärt das Vorgehen um die Dienste "
-"LDAP, Kerberos, DNS, DHCP und Active Directory-kompatible Domain "
-"Controller abzusichern: :uv:kb:`Fail-safe domain setup <6682>`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`deployment-primary-dn-resilience-fault-tolerant-setup` in :cite:t:`uv-"
+"ucs-operation` verschoben."
 
 #: ../../domain-ldap/index.rst:43
 msgid "Chapter contents:"
@@ -2659,181 +2321,163 @@ msgstr "UCS-Systemrollen"
 
 #: ../../domain-ldap/system-roles.rst:9
 msgid ""
-"In a UCS domain systems can be installed in different *system roles*. The"
-" following gives a short characterization of the different systems."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"In einer UCS-Domäne können Systeme in unterschiedlichen *Systemrollen* "
-"installiert werden. Im Folgenden werden die verschiedenen Systemrollen "
-"kurz charakterisiert."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles` in :cite:t:`uv-ucs-operation` "
+"verschoben."
 
-#: ../../domain-ldap/system-roles.rst:15
+#: ../../domain-ldap/system-roles.rst:16
 msgid "|UCSPRIMARYDN|"
 msgstr "|UCSPRIMARYDN|"
 
-#: ../../domain-ldap/system-roles.rst:17
+#: ../../domain-ldap/system-roles.rst:18
 msgid ""
-"A system with the |UCSPRIMARYDN| role is the primary domain controller of"
-" a UCS domain and is always installed as the first system. The domain "
-"data (such as users, groups, printers) and the SSL security certificates "
-"are saved on the |UCSPRIMARYDN|."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-primary-directory-node` in :cite:t"
+":`uv-ucs-operation`."
 msgstr ""
-"Ein System mit der Rolle |UCSPRIMARYDN| ist das führende System einer "
-"UCS-Domäne und wird immer als erstes System installiert. Auf dem "
-"|UCSPRIMARYDN| werden die Domänendaten (wie z.B. Benutzer, Gruppen, "
-"Drucker) und die SSL-Sicherheitszertifikate gespeichert."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-primary-directory-node` in :cite:t"
+":`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:22
-msgid ""
-"Copies of these data are automatically transferred to all servers with "
-"the |UCSBACKUPDN| role."
-msgstr ""
-"Kopien dieser Daten werden automatisch auf Server mit der Rolle "
-"|UCSBACKUPDN| übertragen."
-
-#: ../../domain-ldap/system-roles.rst:28
+#: ../../domain-ldap/system-roles.rst:25
 msgid "|UCSBACKUPDN|"
 msgstr "|UCSBACKUPDN|"
 
-#: ../../domain-ldap/system-roles.rst:30
+#: ../../domain-ldap/system-roles.rst:27
 msgid ""
-"All the domain data and SSL security certificates are saved as read-only "
-"copies on servers with the |UCSBACKUPDN| role."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-backup-directory-node` in :cite:t"
+":`uv-ucs-operation`."
 msgstr ""
-"Auf Servern mit der Rolle |UCSBACKUPDN| werden alle Domänendaten und SSL-"
-"Sicherheitszertifikate als Nur-Lese-Kopie gespeichert."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-backup-directory-node` in :cite:t"
+":`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:33
-msgid ""
-"The |UCSBACKUPDN| is the fallback system for the |UCSPRIMARYDN|. If the "
-"latter should fail, a |UCSBACKUPDN| can take over the role of the "
-"|UCSPRIMARYDN| permanently (see :ref:`domain-backup2master`)."
-msgstr ""
-"Der |UCSBACKUPDN| dient als Ersatzsystem des |UCSPRIMARYDN|. Sollte "
-"dieser ausfallen, kann ein |UCSBACKUPDN| die Rolle des |UCSPRIMARYDN| "
-"dauerhaft übernehmen (siehe :ref:`domain-backup2master`)."
-
-#: ../../domain-ldap/system-roles.rst:40
+#: ../../domain-ldap/system-roles.rst:34
 msgid "|UCSREPLICADN|"
 msgstr "|UCSREPLICADN|"
 
-#: ../../domain-ldap/system-roles.rst:42
+#: ../../domain-ldap/system-roles.rst:36
 msgid ""
-"All the domain data are saved as read-only copies on servers with the "
-"|UCSREPLICADN| role. In contrast to the |UCSBACKUPDN|, however, not all "
-"security certificates are synchronized."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-replica-directory-node` in :cite:t"
+":`uv-ucs-operation`."
 msgstr ""
-"Auf Servern mit der Rolle |UCSREPLICADN| werden die Domänendaten als Nur-"
-"Lese-Kopie gespeichert. Im Gegensatz zum |UCSBACKUPDN| werden jedoch "
-"nicht alle SSL-Sicherheitszertifikate gespeichert."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-replica-directory-node` in :cite:t"
+":`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:46
-msgid ""
-"As access to the services running on a |UCSREPLICADN| are performed "
-"against the local LDAP server, |UCSREPLICADN|\\ s are ideal for site "
-"servers and the distribution of load-intensive services."
-msgstr ""
-"Da die Zugriffe der auf einem |UCSREPLICADN| laufenden Dienste gegen den "
-"lokalen LDAP-Datenbestand erfolgen, bieten sich |UCSREPLICADN|\\ s für "
-"Standortserver und für die Verteilung lastintensiver Dienste an."
-
-#: ../../domain-ldap/system-roles.rst:50
-msgid "A |UCSREPLICADN| cannot be promoted to a |UCSPRIMARYDN|."
-msgstr "Ein |UCSREPLICADN| kann nicht zum |UCSPRIMARYDN| hochgestuft werden."
-
-#: ../../domain-ldap/system-roles.rst:55
+#: ../../domain-ldap/system-roles.rst:43
 msgid "|UCSMANAGEDNODE|"
 msgstr "|UCSMANAGEDNODE|"
 
-#: ../../domain-ldap/system-roles.rst:57
+#: ../../domain-ldap/system-roles.rst:45
 msgid ""
-"|UCSMANAGEDNODE| are server systems without a local LDAP server. Access "
-"to domain data here is performed via other servers in the domain."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-managed-node` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"|UCSMANAGEDNODE| sind Server-Systeme ohne lokalen LDAP-Server. Der "
-"Zugriff auf Domänendaten erfolgt hierbei über andere Server der Domäne."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-managed-node` in :cite:t:`uv-ucs-"
+"operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:63
+#: ../../domain-ldap/system-roles.rst:52
 msgid "Ubuntu"
 msgstr "Ubuntu"
 
-#: ../../domain-ldap/system-roles.rst:65
+#: ../../domain-ldap/system-roles.rst:54
 msgid ""
-"Ubuntu clients can be managed with this system role, see :ref:`computers-"
-"ubuntu`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-ubuntu` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Ubuntu-Clients können mit einer eigenen Systemrolle verwaltet werden, "
-"siehe :ref:`computers-ubuntu`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-ubuntu` in :cite:t:`uv-ucs-"
+"operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:71
+#: ../../domain-ldap/system-roles.rst:61
 msgid "Linux"
 msgstr "Linux"
 
-#: ../../domain-ldap/system-roles.rst:73
+#: ../../domain-ldap/system-roles.rst:63
 msgid ""
-"This system role is used for the integration of other Linux systems than "
-"UCS and Ubuntu, e.g., for Debian or CentOS systems. The integration is "
-"documented in :cite:t:`ext-doc-domain`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-linux` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Diese Systemrolle wird für die Integration von anderen Linux-Systemen als"
-" UCS und Ubuntu verwendet, z.B. für Debian- oder CentOS-Systeme. Die "
-"Integration wird in :cite:t:`ext-doc-domain` beschrieben."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-linux` in :cite:t:`uv-ucs-operation`"
+" verschoben."
 
-#: ../../domain-ldap/system-roles.rst:80
+#: ../../domain-ldap/system-roles.rst:70
 msgid "macOS"
 msgstr "macOS"
 
-#: ../../domain-ldap/system-roles.rst:82
+#: ../../domain-ldap/system-roles.rst:72
 msgid ""
-"macOS systems can be joined into a UCS domain using Samba/AD. Additional "
-"information can be found in :ref:`macos-domain-join`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-macos` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"macOS-Systeme können einer UCS-Domäne mit Samba/AD beitreten. Weitere "
-"Hinweise finden sich in :ref:`macos-domain-join`."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-macos` in :cite:t:`uv-ucs-operation`"
+" verschoben."
 
-#: ../../domain-ldap/system-roles.rst:88
+#: ../../domain-ldap/system-roles.rst:79
 msgid "Domain Trust Account"
 msgstr "Domain Trust Account"
 
-#: ../../domain-ldap/system-roles.rst:90
+#: ../../domain-ldap/system-roles.rst:81
 msgid ""
-"A domain trust account is set up for trust relationships between Windows "
-"and UCS domains."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-domain-trust-account` in :cite:t"
+":`uv-ucs-operation`."
 msgstr ""
-"Ein Domain Trust Account wird für Vertrauensstellungen zwischen Windows "
-"und UCS Domänen eingerichtet."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-domain-trust-account` in :cite:t"
+":`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:96
+#: ../../domain-ldap/system-roles.rst:88
 msgid "IP client"
 msgstr "IP-Client"
 
-#: ../../domain-ldap/system-roles.rst:98
+#: ../../domain-ldap/system-roles.rst:90
 msgid ""
-"An IP client allows the integration of non-UCS systems into the IP "
-"management (DNS/DHCP), e.g., for network printers or routers."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-ip-managed-client` in :cite:t:`uv-"
+"ucs-operation`."
 msgstr ""
-"Ein IP-Client ermöglicht die Integration von Nicht-UCS-Systemen in das "
-"IP-Management (DNS/DHCP), z.B. für Netzwerkdrucker oder Router."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-ip-managed-client` in :cite:t:`uv-"
+"ucs-operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:104
+#: ../../domain-ldap/system-roles.rst:97
 msgid "Windows Domaincontroller"
 msgstr "Windows Domänencontroller"
 
-#: ../../domain-ldap/system-roles.rst:106
+#: ../../domain-ldap/system-roles.rst:99
 msgid ""
-"Windows domain controllers in a Samba/AD environment are operated with "
-"this system role."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-windows-domain-controller` in "
+":cite:t:`uv-ucs-operation`."
 msgstr ""
-"Windows-Domänencontroller in einer Samba/AD-Umgebung werden mit dieser "
-"Systemrolle betrieben."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-windows-domain-controller` in "
+":cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/system-roles.rst:112
+#: ../../domain-ldap/system-roles.rst:106
 msgid "Windows Workstation/Server"
 msgstr "Windows Workstation/Server"
 
-#: ../../domain-ldap/system-roles.rst:114
+#: ../../domain-ldap/system-roles.rst:108
 msgid ""
-"Windows clients and Windows |UCSMANAGEDNODE|\\ s are managed with this "
-"system role."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-windows-workstation-server` in "
+":cite:t:`uv-ucs-operation`."
 msgstr ""
-"Windows-Clients und Windows-Memberserver werden mit dieser Systemrolle "
-"verwaltet."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-infrastructure-system-roles-windows-workstation-server` in "
+":cite:t:`uv-ucs-operation` verschoben."
