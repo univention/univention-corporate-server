@@ -1,3 +1,9 @@
+ucs-test (12.5.14) unstable; urgency=medium
+
+  * Bug #52893: Update test case
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Mar 2026 10:58:53 +0100
+
 ucs-test (12.5.13) unstable; urgency=medium
 
   * Bug #56913: fix(active_directory): DomainPasswordSettings.set() silently drops zero-valued lockout settings

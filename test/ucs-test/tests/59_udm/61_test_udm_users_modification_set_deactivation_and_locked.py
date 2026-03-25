@@ -63,7 +63,12 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
             locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
             subprocess.call(['python3', '-m', 'univention.lib.account', 'lock', '--dn', dn, '--lock-time', locktime])
 
-    krb_state = b'254' if disabled_state == '1' or 'kerberos' in disabled_state else b'126'
+    krb_state = 126
+    if disabled_state == '1':
+        krb_state |= 1 << 7
+    if locked_state == '1':
+        krb_state |= 1 << 17
+
     smb_disabled = disabled_state == '1' or 'windows' in disabled_state
     smb_locked = locked_state in ('1')
     if transitions_log:
@@ -74,7 +79,7 @@ def modify_and_check(udm, ldap_base, dn, disabled_state, locked_state):
     lo, _pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
     user = lo.get(dn)
     print_transitions()
-    assert user['krb5KDCFlags'] == [krb_state], 'krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags'])
+    assert user['krb5KDCFlags'] == [str(krb_state).encode()], 'krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags'])
     assert not (smb_disabled and b'D' not in user['sambaAcctFlags'][0]), 'sambaAcctFlags: expected D in flags, found {!r}'.format(user['sambaAcctFlags'])
     assert not ((smb_locked and not smb_disabled) and b'L' not in user['sambaAcctFlags'][0]), 'sambaAcctFlags: expected L in flags, found {!r}'.format(user['sambaAcctFlags'])
     assert not ((smb_locked and smb_disabled) and b'L' in user['sambaAcctFlags'][0]), 'sambaAcctFlags: unexpected L in flags: {!r}'.format(user['sambaAcctFlags'])
