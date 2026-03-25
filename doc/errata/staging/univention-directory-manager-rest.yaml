@@ -6,7 +6,7 @@ src: univention-directory-manager-rest
 fix: 12.5.2
 desc: |
  This update addresses the following issues:
- * The UDM REST API now returns HTTP 503 (Service Unavailable) instead
+ * The UDM REST API now returns HTTP 500 (Server Error) instead
    of HTTP 400 (Bad Request) when concurrent modifications to the same
    LDAP object cause "Type or value exists" or "No such attribute"
    errors. This makes the error transparent to clients and allows them
