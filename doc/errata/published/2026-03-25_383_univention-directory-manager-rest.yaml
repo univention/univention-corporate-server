@@ -12,3 +12,6 @@ desc: |
    errors. This makes the error transparent to clients and allows them
    to retry the request.
 bug: [58804]
+erratum: 383
+announced: 2026-03-25
+support: core
