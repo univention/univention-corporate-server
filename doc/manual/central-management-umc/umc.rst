@@ -82,102 +82,51 @@ The use of policies (:ref:`central-policies`) and the LDAP navigation
 Searching for objects
 ~~~~~~~~~~~~~~~~~~~~~
 
-The module overview lists all the objects managed by this module. *Search*
-performs a search for a selection of important attributes (e.g., for user
-objects by first and last name, primary email address, description, employee
-number and username). A wildcard search is also possible, e.g.,
-``m*``.
-
-Clicking on the :guilabel:`Advanced options` button (the filter icon) next to
-the input field displays additional search options:
-
-* The :guilabel:`Search in` field can be used to select whether the complete
-  LDAP directory or only individual LDAP containers/OUs are searched. Further
-  information on the structure of the LDAP directory service can be found in
-  :ref:`central-cn-and-ous`.
-
-* The :guilabel:`Property` field can be used to search for a certain attribute
-  directly.
-
-* The majority of the modules administrate a range of types of LDAP objects; the
-  computer management for example administrates different objects for the
-  individual system roles. The search can be limited to one type of LDAP object.
-
-* Some of the internally used user groups and groups (e.g., for domain joins)
-  are not shown by default. If the :guilabel:`Include hidden objects` option is
-  enabled, these objects are also shown.
-
-.. _umc-search:
-
-.. figure:: /images/umc_user.*
-   :alt: Searching for users
-
-   Searching for users
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-management-modules-operations-search`
+in :cite:t:`uv-nubus-manual`.
 
 .. _central-management-umc-create:
 
 Creating objects
 ~~~~~~~~~~~~~~~~
 
-At the top of the table that shows the objects is a toolbar which can be used to
-create a new object using :guilabel:`Add`.
-
-There are simplified wizards for some UMC modules (users, hosts), in which only
-the most important settings are requested. All attributes can be shown by
-clicking on :guilabel:`Advanced`.
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-management-modules-operations-create`
+in :cite:t:`uv-nubus-manual`.
 
 .. _central-user-interface-edit:
 
 Editing objects
 ~~~~~~~~~~~~~~~
 
-Right-clicking on an LDAP object and selecting :guilabel:`Edit` allows to edit
-the object. The individual attributes are described in the individual
-documentation chapters. By clicking on :guilabel:`Save` at the top of the
-module, all changes are written into the LDAP directory. The :guilabel:`Back`
-button cancels the editing and returns to the previous search view.
-
-In front of every item in the result list is a checkbox with which individual
-objects can be selected. The selection status is also displayed in toolbar at
-the top of the table, e.g., *2 users of 102 selected*. If more than one object
-is selected, clicking on the :guilabel:`Edit` button in the toolbar activates
-the multi edit mode. The same attributes are now shown as when editing an
-individual object, but the changes are only accepted for the objects where the
-:guilabel:`Overwrite` checkbox is activated. Only objects of the same type can
-be edited at the same time.
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-management-modules-operations-edit`
+in :cite:t:`uv-nubus-manual`.
 
 .. _central-user-interface-remove:
 
 Deleting objects
 ~~~~~~~~~~~~~~~~
 
-Right-clicking on an LDAP object and selecting :guilabel:`Delete` allows to
-delete the object. The prompt must be confirmed. Some objects use internal
-references (e.g., a DNS or DHCP object can be associated with computer objects).
-These can also be deleted by selecting the :guilabel:`Delete referring objects`
-option.
-
-Similar to editing multiple objects at once, multiple objects can be deleted at
-once via the :guilabel:`Delete` button in the toolbar.
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-management-modules-operations-delete`
+in :cite:t:`uv-nubus-manual`.
 
 .. _central-user-interface-move:
 
 Moving objects
 ~~~~~~~~~~~~~~
 
-Right-clicking on an LDAP object and selecting :guilabel:`Move to...` allows to
-to select an LDAP position to which the object should be moved.
-
-Similar to editing multiple objects at once, multiple objects can be moved at
-once by selecting :menuselection:`More --> Move to...` in the toolbar.
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-management-modules-operations-move`
+in :cite:t:`uv-nubus-manual`.
 
 .. _central-management-umc-notifications:
 
 Display of system notifications
 -------------------------------
 
-UMC modules can deploy system notifications to alert the user to potential
-errors like join scripts which have not been run or necessary actions such as
-available updates. These notifications are shown in the top right corner of the
-screen and can be viewed again in the Notifications menu, which can be opened by
-clicking the bell icon in the top right corner of the screen.
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-notifications`
+in :cite:t:`uv-nubus-manual`.
