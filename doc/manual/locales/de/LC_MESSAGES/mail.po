@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-23 13:34+0000\n"
-"PO-Revision-Date: 2025-11-06 15:03+0100\n"
+"POT-Creation-Date: 2026-03-26 16:33+0000\n"
+"PO-Revision-Date: 2026-03-27 16:08+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1286,12 +1286,10 @@ msgid "*Remote mail retrieval (single)* tab"
 msgstr "Reiter *Mailabruf von externen Servern (Single)*"
 
 #: ../../mail/fetchmail.rst:34 ../../mail/fetchmail.rst:61
-#: ../../mail/management.rst:208 ../../mail/management.rst:250
 msgid "Attribute"
 msgstr "Attribut"
 
 #: ../../mail/fetchmail.rst:35 ../../mail/fetchmail.rst:62
-#: ../../mail/management.rst:209 ../../mail/management.rst:251
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1586,565 +1584,93 @@ msgstr "Verwaltung von Mail-Domänen"
 
 #: ../../mail/management.rst:14
 msgid ""
-"A mail domain is an common namespace for email addresses, mailing lists "
-"and IMAP group folders. Postfix differentiates between the delivery of "
-"emails between local and external domains. Delivery to mailboxes defined "
-"in the LDAP directory is only conducted for email address from local "
-"domains. The name of a mail domain may only be composed of lowercase "
-"letters, the figures 0-9, full stops and hyphens."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-management` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Eine Mail-Domäne ist ein gemeinsamer Namensraum für E-Mail-Adressen, "
-"Mailinglisten und IMAP-Gruppen-Ordner. Postfix unterscheidet bei der "
-"Zustellung von E-Mails zwischen lokalen und externen Domänen. Nur für E"
-"-Mail-Adressen lokaler Domänen wird die Mailzustellung vorgenommen. Der "
-"Name einer Mail-Domäne darf nur aus Kleinbuchstaben, den Ziffern 0-9, "
-"Punkten und Bindestrichen bestehen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-management` in :cite:t:`uv-nubus-manual`."
 
 #: ../../mail/management.rst:21
-msgid ""
-"Several mail domains can be managed with UCS. The managed mail domains do"
-" not need to be the DNS domains of the server - they can be selected at "
-"will. The mail domains registered on a mail server are automatically "
-"saved in the |UCSUCRV| :envvar:`mail/hosteddomains`."
-msgstr ""
-"Mit UCS lassen sich mehrere Mail-Domänen verwalten. Die verwalteten Mail-"
-"Domänen müssen dabei nicht der DNS-Domäne des Servers entsprechen, "
-"sondern sind frei wählbar. Die auf einem Mailserver registrierten Mail-"
-"Domänen werden automatisch in der |UCSUCRV| :envvar:`mail/hosteddomains` "
-"gespeichert."
-
-#: ../../mail/management.rst:26
-msgid ""
-"To ensure that external senders can also send emails to members of the "
-"domain, MX records must be created in the configuration of the "
-"authoritative name servers, which designate the UCS server as mail server"
-" for the domain. These DNS adjustments are generally performed by an "
-"internet provider."
-msgstr ""
-"Damit auch externe Absender E-Mails an die Mitglieder der Domäne "
-"versenden können, müssen in der Konfiguration der autoritativen DNS-"
-"Nameserver MX-Records angelegt werden, die den UCS-Server als Mailserver "
-"für die Domäne ausweisen. Diese DNS-Anpassungen werden üblicherweise von "
-"Internet-Providern vorgenommen."
-
-#: ../../mail/management.rst:31
-msgid ""
-"Mail domains are managed in the UMC module :guilabel:`Mail` with the "
-"*Mail domain* object type."
-msgstr ""
-"Mail-Domänen werden im UMC-Modul :guilabel:`E-Mail` mit dem Objekttyp "
-"*Mail-Domäne* verwaltet."
-
-#: ../../mail/management.rst:37
 msgid "Assignment of email addresses to users"
 msgstr "Zuordnung von E-Mail-Adressen zu Benutzern"
 
-#: ../../mail/management.rst:39
-msgid "A user can be assigned three different types of email addresses:"
-msgstr ""
-"Einem Benutzer können drei verschiedene Arten von E-Mail-Adressen "
-"zugeordnet werden:"
-
-#: ../../mail/management.rst:41
-msgid "Primary email address"
-msgstr "Primäre E-Mail-Adresse"
-
-#: ../../mail/management.rst:42
+#: ../../mail/management.rst:23
 msgid ""
-"The *primary email address* is used for authentication on Postfix and "
-"Dovecot. Primary email addresses must always be unique. Only one primary "
-"email address can be configured for every user. It also defines the "
-"user's IMAP mailbox. If a mail home server is assigned to a user (see "
-":ref:`mail-homeserver`), the IMAP inbox is automatically created by a "
-"|UCSUDL| module. The domain part of the email address must be registered "
-"in the UMC module :guilabel:`Mail` (see :ref:`mail-management-domains`)."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-users` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Die *primäre E-Mail-Adresse* wird zur Authentifizierung an Postfix und "
-"Dovecot verwendet. Primäre E-Mail-Adressen müssen eindeutig sein. Pro "
-"Benutzer kann nur eine primäre E-Mail-Adresse konfiguriert werden. Sie "
-"definiert auch das IMAP-Postfach des Benutzers. Wenn dem Benutzer ein "
-"Mail Home Server zugeordnet ist (siehe :ref:`mail-homeserver`), wird das "
-"IMAP-Postfach automatisch durch ein |UCSUDL|-Modul erstellt. Der "
-"Domänenanteil der E-Mail-Adresse muss im UMC-Modul :guilabel:`E-Mail` "
-"registriert sein (siehe :ref:`mail-management-domains`)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-users` in :cite:t:`uv-nubus-manual`."
 
-#: ../../mail/management.rst:50
-msgid "Alternative email addresses"
-msgstr "Alternative E-Mail-Adressen"
-
-#: ../../mail/management.rst:51
-msgid ""
-"Emails to *alternative email addresses* are also delivered to the user's "
-"mailbox. As many addresses can be entered as you wish. The alternative "
-"email addresses do not have to be unique: if two users have the same "
-"email address, they both receive all the emails which are sent to this "
-"address. The domain part of the email address must be registered in the "
-"UMC module :guilabel:`Mail` (see :ref:`mail-management-domains`). To "
-"receive emails to alternative email addresses, a user must have a primary"
-" email address."
-msgstr ""
-"E-Mails an *alternative E-Mail-Adressen* werden ebenfalls in das Postfach"
-" des Benutzers zugestellt. Es können beliebig viele Adressen angegeben "
-"werden. Die alternativen E-Mail-Adressen müssen nicht eindeutig sein; "
-"besitzen zwei Benutzer die gleiche Adresse, erhalten beide Benutzer alle "
-"E-Mails, die an diese Adresse gesandt werden. Der Domänenanteil der E"
-"-Mail-Adresse muss im UMC-Modul :guilabel:`E-Mail` registriert sein "
-"(siehe :ref:`mail-management-domains`).  Um E-Mails an alternative E"
-"-Mail-Adressen zu erhalten, muss ein Benutzer eine primäre E-Mail-Adresse"
-" besitzen."
-
-#: ../../mail/management.rst:61
-msgid ""
-"When setting the |UCSUCRV| :envvar:`directory/manager/mail-"
-"address/uniqueness` to ``true`` the *Alternative email addresses* must be"
-" unique across the domain. No other user can have the same alternative "
-"address assigned."
-msgstr ""
-"Wenn die |UCSUCRV| :envvar:`directory/manager/mail-address/uniqueness` "
-"auf ``true`` gesetzt wird, müssen die *Alternativen E-Mail-Adressen* in "
-"der gesamten Domäne eindeutig sein. Keinem anderen Benutzer kann die "
-"gleiche alternative Adresse zugewiesen werden."
-
-#: ../../mail/management.rst:65
-msgid "Forward email addresses"
-msgstr "E-Mailadressen zur Weiterleitung"
-
-#: ../../mail/management.rst:66
-msgid ""
-"If *forward email addresses* are configured for a user, emails received "
-"through the primary or alternative email addresses are forwarded to them."
-" A copy of the messages can optionally be stored in the user's mailbox. "
-"Forward email addresses do not have to be unique and their domain part "
-"does not have to be registered via a UMC module."
-msgstr ""
-"Wenn *Weiterleitungs-E-Mail-Adressen* für einen Benutzer konfiguriert "
-"sind, werden E-Mails, die er über die primäre oder über alternative E"
-"-Mail-Adressen empfängt, an diese weiter geleitet. Optional kann eine "
-"Kopie der eingehenden Nachrichten in das Postfach des Benutzers "
-"zugestellt werden. Es können beliebig viele Adressen angegeben werden. "
-"E-Mailadressen zur Weiterleitung müssen weder eindeutig, noch muss ihr "
-"Domänenanteil im UMC-Modul registriert sein."
-
-#: ../../mail/management.rst:74
-msgid ""
-"Email addresses can consist of the following characters: letters ``a-z``,"
-" figures ``0-9``, dots (``.``), hyphens (``-``) and underscores (``_``). "
-"The address has to begin with a letter and must include an ``@`` "
-"character. At least one mail domain must be registered for to be able to "
-"assign email addresses (see :ref:`mail-management-domains`)."
-msgstr ""
-"E-Mail-Adressen können die Zeichen ``a-z``, die Ziffern ``0-9``, Punkte "
-"(``.``), Bindestriche (``-``) und Unterstriche (``_``) enthalten. Als "
-"weitere Vorgabe müssen die E-Mail-Adressen mit einem Buchstaben beginnen "
-"und ein ``@``-Zeichen enthalten. Um E-Mail-Adressen vergeben zu können, "
-"muss vorher mindestens eine Mail-Domäne registriert werden (siehe :ref"
-":`mail-management-domains`)."
-
-#: ../../mail/management.rst:80
-msgid ""
-"Email addresses are managed in the UMC module :guilabel:`Users`. The "
-"*primary email address* is entered in the *General* tab in the *User "
-"account* submenu. *Alternative email addresses* can be entered under "
-":menuselection:`Advanced settings --> Mail`."
-msgstr ""
-"E-Mail-Adressen werden im UMC-Modul :guilabel:`Benutzer` verwaltet. Die "
-"*primäre E-Mail-Adresse* wird im Reiter *Allgemein* im Untermenü "
-"*Benutzer-Konto* eingetragen. *Alternative E-Mail-Adressen* können unter "
-":menuselection:`Erweiterte Einstellungen --> Mail` eingetragen werden."
-
-#: ../../mail/management.rst:87
-msgid ""
-"Once the user account is properly configured, authentication to the mail "
-"stack is possible (``IMAP``/``POP3``/``SMTP``). Please keep in mind that "
-"after disabling the account or changing the password, the login to the "
-"mail stack is still possible for 5 minutes due to the authentication "
-"cache of the mail stack. To invalidate the authentication cache run"
-msgstr ""
-"Sobald das Benutzerkonto konfiguriert ist, kann eine Anmeldung am UCS-"
-"Mail-Stack (``IMAP``/``POP3``/``SMTP``) erfolgen. Wurde das Benutzerkonto"
-" deaktiviert (oder das Passwort geändert), ist eine Anmeldung am Mail-"
-"Stack für eine Dauer von 5 Minuten weiterhin möglich. Der Grund hierfür "
-"ist der Authentifizierungscache des Mail-Stacks. Um den Cache zu "
-"invalidieren, führen Sie"
-
-#: ../../mail/management.rst:93
-msgid "$ doveadm auth cache flush"
-msgstr "$ doveadm auth cache flush"
-
-#: ../../mail/management.rst:98
-msgid ""
-"on the mail server. The expiration time of the authentication cache can "
-"be configured on the mail server with the |UCSUCRV| "
-":envvar:`mail/dovecot/auth/cache_ttl` and "
-":envvar:`mail/dovecot/auth/cache_negative_ttl`."
-msgstr ""
-"auf dem Mailserver aus. Die Ablaufzeit des Caches kann auf dem Mailserver"
-" mit der |UCSUCRV| :envvar:`mail/dovecot/auth/cache_ttl` sowie "
-":envvar:`mail/dovecot/auth/cache_negative_ttl` konfiguriert werden."
-
-#: ../../mail/management.rst:106
+#: ../../mail/management.rst:30
 msgid "Management of mailing lists"
 msgstr "Verwaltung von Mailinglisten"
 
-#: ../../mail/management.rst:108
+#: ../../mail/management.rst:32
 msgid ""
-"Mailing lists are used to exchange emails in closed groups. Each mailing "
-"list has its own email address. If an email is sent to this address, it "
-"is received by all the members of the mailing list."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-mailinglists` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Mailinglisten werden zum Austausch von E-Mails in geschlossenen Gruppen "
-"verwendet. Jede Mailingliste verfügt über eine eigene E-Mail-Adresse.  "
-"Wird an diese Adresse eine E-Mail gesendet, empfangen sie alle Mitglieder"
-" der Mailingliste."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-mailinglists` in :cite:t:`uv-nubus-manual`."
 
-#: ../../mail/management.rst:114 ../../mail/management.rst:117
-msgid "Creating a mailing list"
-msgstr "Einrichtung einer Mailingliste"
-
-#: ../../mail/management.rst:119
-msgid ""
-"Mail domains are managed in the UMC module :guilabel:`Mail` with the "
-"*Mailing list* object type. A name of your choice can be entered for the "
-"mailing list under *Name*; the entry of a *Description* is optional. The "
-"email address of the mailing list should be entered as the *Mail "
-"address*. The domain part of the address needs to be the same as one of "
-"the managed mail domains. As many addresses as necessary can be entered "
-"under *Members*. In contrast to mail groups (see :ref:`mail-management-"
-"mailgroups`), external email addresses can also be added here. The "
-"mailing list is available immediately after its creation."
-msgstr ""
-"Mail-Domänen werden im UMC-Modul :guilabel:`E-Mail` mit dem Objekttyp "
-"*Mailingliste* verwaltet. Unter *Name* ist ein frei wählbarer Name der "
-"Mailingliste anzugeben, die Angabe einer *Beschreibung* ist optional. Als"
-" *Mail-Adresse* ist die E-Mail-Adresse der Mailingliste einzugeben. Der "
-"Domänenteil der Adresse muss dabei einer der verwalteten Mail-Domänen "
-"entsprechen. Unter *Mitglieder* können beliebig viele Adressen "
-"aufgenommen werden, im Gegensatz zu Mailgruppen (siehe :ref:`mail-"
-"management-mailgroups`) können hier auch externe E-Mail-Adressen "
-"aufgenommen werden. Nach dem Anlegen einer Mailingliste ist diese "
-"umgehend verfügbar."
-
-#: ../../mail/management.rst:129
-msgid ""
-"By default everyone can write to the mailing list. To prevent misuse, "
-"there is the possibility of restricting the circle of people who can send"
-" mails. To do so, the |UCSUCRV| :envvar:`mail/postfix/policy/listfilter` "
-"on the mail server must be set to ``yes`` and Postfix restarted. *Users "
-"that are allowed to send emails to the list* and *Groups that are allowed"
-" to send emails to the list* can be specified under *Advanced settings*. "
-"If a field is set here, only authorized users/groups are allowed to send "
-"mails."
-msgstr ""
-"In der Grundeinstellung kann jeder an die Mailingliste schreiben. Um "
-"Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis "
-"einzuschränken. Dazu muss die |UCSUCRV| "
-":envvar:`mail/postfix/policy/listfilter` auf dem Mailserver auf ``yes`` "
-"gesetzt und Postfix neu gestartet werden.  Unter *Erweiterte "
-"Einstellungen* können dann *Benutzer, die berechtigt sind, E-Mails an "
-"diese Liste zu versenden* und *Gruppen, die berechtigt sind, E-Mails an "
-"diese Liste zu versenden* festgelegt werden. Ist hier ein Feld gesetzt, "
-"ist das Senden nur den berechtigten Nutzern/Gruppen erlaubt."
-
-#: ../../mail/management.rst:140
+#: ../../mail/management.rst:39
 msgid "Management of mail groups"
 msgstr "Verwaltung von Mailgruppen"
 
-#: ../../mail/management.rst:142
+#: ../../mail/management.rst:41
 msgid ""
-"There is the possibility of creating a mail group: This is where an email"
-" address is assigned to a group of users. Emails to this address are "
-"delivered to the primary email address of each of the group members."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-groups` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Es besteht die Möglichkeit eine Mailgruppe zu bilden: Dabei wird einer "
-"Benutzer-Gruppe eine E-Mail-Adresse zugewiesen. E-Mails an diese Adresse "
-"werden dann allen Gruppenmitgliedern an ihre primäre E-Mail-Adresse "
-"zugestellt."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-groups` in :cite:t:`uv-nubus-manual`."
 
-#: ../../mail/management.rst:146
-msgid ""
-"A mail group can also receive emails sent to addresses defined as "
-"*alternative email addresses* of the group. Emails sent to any address "
-"listed in the *Alternative email addresses* attribute are delivered to "
-"all group members, just like emails sent to the primary email address. "
-"This allows mail groups to be reachable via multiple alias addresses."
-msgstr "Eine Mailgruppe kann auch E-Mails empfangen, die an Adressen gesendet werden, die als *alternative E-Mail-Adressen* der Gruppe definiert sind. E-Mails, die an eine der im Attribut *Alternative E-Mail-Adressen* aufgeführten Adressen gesendet werden, werden an alle Gruppenmitglieder zugestellt, genau wie E-Mails, die an die primäre E-Mail-Adresse gesendet werden. Auf diese Weise sind Mailgruppen über mehrere Alias-Adressen erreichbar."
-
-#: ../../mail/management.rst:152
-msgid ""
-"Mail groups are managed in the UMC module :guilabel:`Groups` (see "
-":ref:`groups`)."
-msgstr ""
-"Mailgruppen werden im UMC-Modul :guilabel:`Gruppen` verwaltet (siehe auch"
-" :ref:`groups`)."
-
-#: ../../mail/management.rst:155
-msgid ""
-"The email address of the mail group is specified in the *mail address* "
-"input field under *Advanced settings*. The domain part of the address "
-"must be the same as one of the managed mail domains."
-msgstr ""
-"Die E-Mail-Adresse der Mailgruppe wird im Eingabefeld *Mail-Adresse* "
-"unter *Erweiterte Einstellungen* festgelegt. Der Domänenteil der Adresse "
-"muss einer der verwalteten Mail-Domänen entsprechen."
-
-#: ../../mail/management.rst:159
-msgid ""
-"By default everyone can write to the mail group. To prevent misuse, there"
-" is the possibility of restricting the circle of people who can send "
-"mails. To do so, the |UCSUCRV| :envvar:`mail/postfix/policy/listfilter` "
-"on the mail server must be set to ``yes`` and Postfix restarted."
-msgstr ""
-"In der Grundeinstellung kann jeder an die Mailgruppe schreiben. Um "
-"Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis "
-"einzuschränken. Dazu muss die |UCSUCRV| "
-":envvar:`mail/postfix/policy/listfilter` auf dem Mailserver auf ``yes`` "
-"gesetzt und Postfix neu gestartet werden."
-
-#: ../../mail/management.rst:164
-msgid ""
-"*Users that are allowed to send emails to the group* and *Groups that are"
-" allowed to send emails to the group* can be specified under *Advanced "
-"settings*. If a field is set here, only authorized users/groups are "
-"allowed to send mails."
-msgstr ""
-"Unter *Erweiterte Einstellungen* können *Benutzer, die berechtigt sind, "
-"E-Mails an diese Gruppe zu versenden* und *Gruppen, die berechtigt sind, "
-"E-Mails an diese Gruppe zu versenden* festgelegt werden.  Ist hier ein "
-"Feld gesetzt, ist das Senden nur den berechtigten Nutzern/Gruppen "
-"erlaubt."
-
-#: ../../mail/management.rst:172
+#: ../../mail/management.rst:48
 msgid "Management of shared IMAP folders"
 msgstr "Verwaltung von globalen IMAP-Ordnern"
 
-#: ../../mail/management.rst:174
+#: ../../mail/management.rst:50
 msgid ""
-"Shared email access forms the basis for cooperation in many work groups. "
-"In UCS, users can create folders in their own mailboxes and assign "
-"permissions so that other users may read emails in these folders or save "
-"additional emails in them."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-shared-folders` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Ein gemeinsamer Zugriff auf E-Mails ist in vielen Arbeitsgruppen die "
-"Grundlage der Zusammenarbeit. Mit UCS können Benutzer sehr einfach Ordner"
-" in Ihren eigenen Postfächern anlegen und Berechtigungen vergeben, so "
-"dass es weiteren Benutzern gestattet ist, E-Mails in diesen Ordnern zu "
-"lesen oder weitere E-Mails in diesen Ordnern abzulegen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-shared-folders` in :cite:t:`uv-nubus-manual`."
 
-#: ../../mail/management.rst:179
-msgid ""
-"Alternatively, individual IMAP folders can be shared for users or user "
-"groups. This type of folder is described as a shared IMAP folder. Shared "
-"IMAP folders are managed in the UMC module :guilabel:`Mail` with the "
-"*Mail folder (IMAP)* object type."
-msgstr ""
-"Alternativ können eigene IMAP-Ordner für Benutzer oder Benutzergruppen "
-"freigegeben werden. Ein solcher Ordner wird als globaler IMAP-Ordner "
-"bezeichnet. Globale IMAP-Ordner werden im UMC-Modul :guilabel:`Mail` mit "
-"dem Objekttyp *Mail-Ordner (IMAP)* verwaltet."
-
-#: ../../mail/management.rst:184
-msgid ""
-"Shared folders cannot be renamed, therefore the |UCSUCRV| "
-":envvar:`mail/dovecot/mailbox/rename` is not taken into account. When a "
-"shared folder is deleted in the UMC module :guilabel:`Mail`, it is only "
-"deleted from the hard disk, if :envvar:`mail/dovecot/mailbox/delete` is "
-"set to ``yes``. The default value is ``no``."
-msgstr ""
-"Globale IMAP-Ordner können nicht umbenannt werden. Die |UCSUCRV| "
-":envvar:`mail/dovecot/mailbox/rename` kommt daher nicht zur Anwendung. "
-"Nur wenn :envvar:`mail/dovecot/mailbox/delete` auf ``yes`` gesetzt ist "
-"(Standard ist ``no``), wird ein globaler IMAP-Ordner beim Löschen im UMC-"
-"Modul :guilabel:`Mail` auch tatsächlich von der Festplatte gelöscht."
-
-#: ../../mail/management.rst:192 ../../mail/management.rst:195
-msgid "Creating a shared IMAP folder"
-msgstr "Einrichtung eines globalen IMAP-Ordners"
-
-#: ../../mail/management.rst:200
+#: ../../mail/management.rst:57
 msgid "Shared IMAP folder - General tab"
 msgstr "Globaler IMAP-Ordner - Reiter Allgemein"
 
-#: ../../mail/management.rst:204
-msgid "*General* tab"
-msgstr "Reiter *Allgemein*"
-
-#: ../../mail/management.rst:211 ../../mail/management.rst:253
-msgid "Name (*)"
-msgstr "Name (*)"
-
-#: ../../mail/management.rst:212
-#, python-brace-format
+#: ../../mail/management.rst:59
 msgid ""
-"The name under which the IMAP folder is available in the email clients. "
-"The name displayed in the IMAP client differs depending on if an email "
-"address is configured (see field *Email address*) or not. If no email "
-"address is configured, the IMAP folder will be displayed in the client as"
-" :samp:`{name}@{domain}/INBOX`. If an email address is configured, it "
-"will be :samp:`shared/{name}@{domain}`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-shared-folders-general-tab` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Der Name, unter dem der IMAP-Ordner im E-Mail-Client verfügbar ist. Der "
-"Name unterscheidet sich je nach dem, ob eine E-Mail-Adresse konfiguriert "
-"wird (siehe Zeile \"Mail-Adresse\" unten) oder nicht. Wird keine Mail-"
-"Adresse konfiguriert, erscheint der IMAP-Ordner im Client als "
-":samp:`{name}@{domain}/INBOX`. Wird eine Mail-Adresse verwendet, wird der"
-" Name die Form :samp:`shared/{name}@{domain}` haben."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-shared-folders-general-tab` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../mail/management.rst:219
-msgid "Mail domain (*)"
-msgstr "Mail-Domäne (*)"
-
-#: ../../mail/management.rst:220
-msgid ""
-"Every shared IMAP folder is assigned to a mail domain. The management of "
-"the domains is documented in the :ref:`mail-management-domains`."
-msgstr ""
-"Jeder globale IMAP-Ordner ist einer Mail-Domäne zugeordnet. Die "
-"Verwaltung der Domänen ist in :ref:`mail-management-domains` "
-"dokumentiert."
-
-#: ../../mail/management.rst:223
-msgid "Mail home server (*)"
-msgstr "Mail Home Server (*)"
-
-#: ../../mail/management.rst:224
-msgid ""
-"An IMAP folder is assigned to a mail home server. Further information can"
-" be found in :ref:`mail-homeserver`."
-msgstr ""
-"Ein IMAP-Ordner ist einem Mail Home Server zugeordnet. Weitere Hinweise "
-"finden sich in :ref:`mail-homeserver`."
-
-#: ../../mail/management.rst:227
-msgid "Quota in MB"
-msgstr "Quota in MB"
-
-#: ../../mail/management.rst:228
-msgid ""
-"This setting can be used to set the maximum total size of all emails in "
-"this folder."
-msgstr ""
-"Mit dieser Einstellung kann die maximale Gesamtgröße aller E-Mails in "
-"diesem Ordner festgelegt werden."
-
-#: ../../mail/management.rst:231
-msgid "Email address"
-msgstr "E-Mailadresse"
-
-#: ../../mail/management.rst:232
-msgid ""
-"An email address can be entered here via which emails can be sent "
-"directly to the IMAP folder. If no address is set here, it is only "
-"possible to write in the folder from email clients."
-msgstr ""
-"Hier kann eine E-Mail-Adresse angegeben werden, durch die E-Mails direkt "
-"an den IMAP-Ordner gesendet werden können. Ist hier keine Adresse "
-"gesetzt, so kann nur aus E-Mail-Clients heraus in den Ordner geschrieben "
-"werden."
-
-#: ../../mail/management.rst:236
-msgid ""
-"The domain part of the email address must be registered in the UMC module"
-" :guilabel:`Mail` (see :ref:`mail-management-domains`)."
-msgstr ""
-"Der Domänenanteil der E-Mail-Adresse muss im UMC-Modul :guilabel:`E-Mail`"
-" registriert sein (siehe :ref:`mail-management-domains`)."
-
-#: ../../mail/management.rst:242
+#: ../../mail/management.rst:66
 msgid "Shared IMAP folder - Access rights tab"
 msgstr "Globale IMAP-Ordner - Reiter Zugriffsrechte"
 
-#: ../../mail/management.rst:246
-msgid "*Access rights* tab"
-msgstr "Reiter *Zugriffsrechte*"
-
-#: ../../mail/management.rst:254
+#: ../../mail/management.rst:68
 msgid ""
-"Access permissions based on users or groups can be entered here. Users "
-"are entered with their username; the groups saved in the UMC module "
-":guilabel:`Groups` can be used as groups."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-shared-folders-access-rights-tab` in :cite:t:`uv-"
+"nubus-manual`."
 msgstr ""
-"Hier können Zugriffsberechtigungen auf Basis von Benutzern oder Gruppen "
-"vergeben werden.  Benutzer werden mit Ihrem Benutzernamen eingetragen; "
-"als Gruppen werden die im UMC-Modul :guilabel:`Gruppen` angelegten "
-"Gruppen verwendet."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
+":`nubus-domain-mail-shared-folders-access-rights-tab` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../mail/management.rst:258
-msgid ""
-"The access permissions have the following consequences for individual "
-"users or members of the specified group:"
-msgstr ""
-"Die Zugriffsrechte haben folgende Auswirkungen für einzelne Benutzer oder"
-" Mitglieder der angegebenen Gruppe:"
-
-#: ../../mail/management.rst:261
-msgid "No access"
-msgstr "Keine"
-
-#: ../../mail/management.rst:262
-msgid "No access is possible. The folder is not displayed in the folder list."
-msgstr ""
-"Es ist kein Zugriff möglich. Der Ordner wird nicht in der Ordnerliste "
-"angezeigt."
-
-#: ../../mail/management.rst:264
-msgid "Read"
-msgstr "Lesen"
-
-#: ../../mail/management.rst:265
-msgid "The user may only perform read access to existing entries."
-msgstr "Es darf nur lesend auf bestehende Einträge zugegriffen werden."
-
-#: ../../mail/management.rst:267
-msgid "Append"
-msgstr "Anhängen"
-
-#: ../../mail/management.rst:268
-msgid "Existing entries may not be edited; only new entries may be created."
-msgstr ""
-"Bestehende Einträge dürfen nicht verändert werden, nur neue Einträge "
-"erzeugt werden."
-
-#: ../../mail/management.rst:270
-msgid "Write"
-msgstr "Schreiben"
-
-#: ../../mail/management.rst:271
-msgid ""
-"New entries may be created in this directory; existing entries may be "
-"edited or deleted."
-msgstr ""
-"Neue Einträge in diesem Ordner anlegen, bestehende verändern oder "
-"bestehende löschen ist erlaubt."
-
-#: ../../mail/management.rst:274
-msgid "Post"
-msgstr "Senden"
-
-#: ../../mail/management.rst:275
-msgid ""
-"Sending an email to this directory as a recipient is permitted. This "
-"function is not supported by all the clients."
-msgstr ""
-"Eine E-Mail an diesen Ordner als Empfänger senden ist zugelassen. Dies "
-"wird nicht von jedem Client unterstützt."
-
-#: ../../mail/management.rst:278
-msgid "All"
-msgstr "Alles"
-
-#: ../../mail/management.rst:279
-msgid ""
-"Encompasses all permissions of *write* and also allows the changing of "
-"access permissions."
-msgstr ""
-"Umfasst alle Berechtigungen von *Schreiben* und erlaubt zusätzlich das "
-"Ändern von Zugriffsrechten."
-
-#: ../../mail/management.rst:285
+#: ../../mail/management.rst:75
 msgid "Mail quota"
 msgstr "Mail-Quota"
 
-#: ../../mail/management.rst:287
+#: ../../mail/management.rst:77
 msgid ""
 "The size of the users' mailboxes can be restricted via the mail quota. "
 "When this is attained, no further emails can be accepted for the mailbox "
@@ -2155,7 +1681,7 @@ msgstr ""
 " Postfach angenommen werden, bis der Benutzer alte Mails aus seinem Konto"
 " entfernt hat."
 
-#: ../../mail/management.rst:291
+#: ../../mail/management.rst:81
 msgid ""
 "The limit is specified in megabytes in the *Mail quota* field under "
 ":menuselection:`Advanced settings --> Mail`. The default value is ``0`` "
@@ -2170,7 +1696,7 @@ msgstr ""
 "Mehrfachbearbeitungsmodus von UMC-Modulen verwendet werden, siehe :ref"
 ":`central-user-interface-edit`."
 
-#: ../../mail/management.rst:297
+#: ../../mail/management.rst:87
 msgid ""
 "The user can be warned once a specified portion of the mailbox is "
 "attained and then receives a message that their available storage space "
@@ -2183,7 +1709,7 @@ msgstr ""
 "Schwellwert in Prozent, den Betreff der Nachricht und ihren Inhalt "
 "angeben:"
 
-#: ../../mail/management.rst:302
+#: ../../mail/management.rst:92
 #, python-brace-format
 msgid ""
 "The threshold for when the warning message should be issued can be "
@@ -2195,13 +1721,13 @@ msgstr ""
 "werden soll, zum Beispiel: "
 ":samp:`mail/dovecot/quota/warning/text/{PROZENT}={TEXT}`"
 
-#: ../../mail/management.rst:306
+#: ../../mail/management.rst:96
 msgid "``PERCENT`` must be a number between 0 and 100 without the percent sign."
 msgstr ""
 "``PROZENT`` muss als Zahl zwischen 0 und 100 ohne Prozentzeichen "
 "angegeben werden."
 
-#: ../../mail/management.rst:308
+#: ../../mail/management.rst:98
 msgid ""
 "``TEXT`` will be the content of the email. If the value ``TEXT`` contains"
 " the string ``$PERCENT``, it will be replaced in the email with the value"
@@ -2211,7 +1737,7 @@ msgstr ""
 "``$PERCENT`` enthält, wird diese in der E-Mail mit dem überschrittenen "
 "Wert ersetzt."
 
-#: ../../mail/management.rst:312
+#: ../../mail/management.rst:102
 msgid ""
 "The value of the |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` "
 "will be used for the subject of the email."
@@ -2219,7 +1745,7 @@ msgstr ""
 "Der Wert der |UCSUCRV| :envvar:`mail/dovecot/quota/warning/subject` wird "
 "als Betreff der E-Mails verwendet."
 
-#: ../../mail/management.rst:315
+#: ../../mail/management.rst:105
 msgid ""
 "When the mail server package is installed, a subject and two warning "
 "messages are automatically configured:"
@@ -2227,13 +1753,13 @@ msgstr ""
 "Bei der Installation des Mail-Server-Paketes werden Betreff und zwei "
 "Warn-Nachrichten automatisch konfiguriert:"
 
-#: ../../mail/management.rst:318
+#: ../../mail/management.rst:108
 msgid ":envvar:`mail/dovecot/quota/warning/subject` is set to ``Quota-Warning``"
 msgstr ""
 ":envvar:`mail/dovecot/quota/warning/subject` wird gesetzt auf ``Quota-"
 "Warning``"
 
-#: ../../mail/management.rst:320
+#: ../../mail/management.rst:110
 msgid ""
 ":envvar:`mail/dovecot/quota/warning/text/80` is set to ``Your mailbox has"
 " filled up to over $PERCENT%.``"
@@ -2241,7 +1767,7 @@ msgstr ""
 ":envvar:`mail/dovecot/quota/warning/text/80` wird gesetzt auf ``Your "
 "mailbox has filled up to over $PERCENT%.``"
 
-#: ../../mail/management.rst:323
+#: ../../mail/management.rst:113
 msgid ""
 ":envvar:`mail/dovecot/quota/warning/text/95` is set to ``Attention: Your "
 "mailbox has already filled up to over $PERCENT%. Please delete some "
@@ -2483,4 +2009,3 @@ msgstr ""
 "Alternativ oder zusätzlich können andere Virenscanner in AMaViS "
 "eingebunden werden. Nach Änderungen an der AMaViS- oder ClamAV-"
 "Konfiguration müssen Postfix und AMaViS neu gestartet werden."
-
