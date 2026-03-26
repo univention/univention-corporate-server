@@ -11,13 +11,9 @@ Introduction
 Access
 ------
 
-The |UCSWEB| can be opened on any UCS system via the URL
-:samp:`https://{servername}/`. Alternatively, access is also possible via the server's
-IP address. Under certain circumstances it may be necessary to access the
-services over an insecure connection (e.g., if no SSL certificates have been
-created for the system yet). In this case, ``http`` must be used instead of
-``https`` in the URL. In this case, passwords are sent over the network in plain
-text!
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-authentication-sign-in`
+in :cite:t:`uv-nubus-manual`.
 
 .. _central-browser-compatibility:
 
