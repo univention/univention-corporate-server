@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-18 11:49+0000\n"
-"PO-Revision-Date: 2025-12-18 12:51+0100\n"
+"POT-Creation-Date: 2026-03-27 10:56+0000\n"
+"PO-Revision-Date: 2026-03-27 12:01+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../ip-config/dhcp.rst:7
 msgid "IP assignment via DHCP"
@@ -170,963 +170,200 @@ msgstr "Aufbau der DHCP-Konfiguration durch DHCP-LDAP-Objekte"
 
 #: ../../ip-config/dhcp.rst:66
 msgid ""
-"The left column of the UMC module :guilabel:`DHCP` includes a list of all"
-" the DHCP services. To add an object to a DHCP service - for example in "
-"an additional subnet - the corresponding service must be selected. "
-":guilabel:`Add` is then used to create the object in this service. To "
-"create a new DHCP service, start by selecting *All DHCP services*. "
-"Clicking on :guilabel:`Add` then creates a new service. If an object is "
-"saved within a service, the service is labeled in UMC dialogues as a "
-"*superordinate object*."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"In der linken Spalte des UMC-Moduls :guilabel:`DHCP` befindet sich eine "
-"Liste aller DHCP-Services. Um einem DHCP-Service ein Objekt hinzuzufügen "
-"- etwa ein weiteres Subnetz - muss der entsprechende Service ausgewählt "
-"werden. Durch :guilabel:`Hinzufügen` wird das Objekt dann in diesem "
-"Service angelegt. Um einen neuen DHCP-Service anzulegen, muss zuerst "
-"*Alle DHCP-Dienste* selektiert werden, der Klick auf "
-":guilabel:`Hinzufügen` legt dann einen neue Service an. Wird ein Objekt "
-"unterhalb eines Services angelegt, wird der Service in den UMC-Dialogen "
-"als *übergeordnetes Objekt* bezeichnet."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:77
+#: ../../ip-config/dhcp.rst:73
 msgid "Administration of DHCP services"
 msgstr "Verwaltung von DHCP-Services"
 
-#: ../../ip-config/dhcp.rst:79
+#: ../../ip-config/dhcp.rst:75
 msgid ""
-"DHCP services are managed in the UMC module :guilabel:`DHCP` (see :ref"
-":`central-user-interface`). To create a new DHCP service, *All DHCP "
-"services* needs to be selected in the left column of the UMC module. "
-"Clicking on :guilabel:`Add` then creates a new service."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-services` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"DHCP-Services werden im UMC-Modul :guilabel:`DHCP` verwaltet (siehe auch "
-":ref:`central-user-interface`). Um einen neuen DHCP-Service anzulegen "
-"muss zuerst *Alle DHCP-Dienste* in der linken Spalte des UMC-Moduls "
-"selektiert werden. Ein Klick auf :guilabel:`Hinzufügen` legt dann einen "
-"neue Service an."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-services` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:84
-msgid ""
-"A DHCP server can only serve one DHCP service; to use another DHCP "
-"service, a separate DHCP server must be set up (see :ref:`networks-dhcp-"
-"dhcpserver`)."
-msgstr ""
-"Ein DHCP-Server kann nur einen DHCP-Service bedienen; wenn ein weiterer "
-"DHCP-Service verwendet werden soll, muss dafür ein separater DHCP-Server "
-"eingerichtet werden (siehe :ref:`networks-dhcp-dhcpserver`)."
-
-#: ../../ip-config/dhcp.rst:87
-msgid ""
-"The following parameters are often set on the DHCP service object which "
-"then apply to all the computers which are served by this DHCP service "
-"(unless other values are entered in lower levels):"
-msgstr ""
-"Am DHCP-Service-Objekt werden häufig folgende Parameter festgelegt, die "
-"dann für alle Rechner gültig sind, die von diesem DHCP-Service bedient "
-"werden (es sei denn, es werden auf tieferen Ebenen andere Angaben "
-"gemacht):"
-
-#: ../../ip-config/dhcp.rst:91
-msgid "*Domain name* and *Domain name servers* under *Policy: DHCP DNS*"
-msgstr "*Domänenname* und *DNS-Server* unter *Richtlinie: DHCP DNS*"
-
-#: ../../ip-config/dhcp.rst:93
-msgid "*NetBIOS name servers* under *Policy: DHCP NetBIOS*"
-msgstr "*NetBIOS-Nameserver* unter *Richtlinie: DHCP NetBIOS*"
-
-#: ../../ip-config/dhcp.rst:95
-msgid ""
-"A description of this and the other DHCP policies can be found at :ref"
-":`networks-dhcp-policies`."
-msgstr ""
-"Eine Beschreibung dieser und der anderen DHCP-Richtlinien findet sich "
-"unter :ref:`networks-dhcp-policies`."
-
-#: ../../ip-config/dhcp.rst:100 ../../ip-config/dhcp.rst:125
-#: ../../ip-config/dhcp.rst:159 ../../ip-config/dhcp.rst:212
-#: ../../ip-config/dhcp.rst:297 ../../ip-config/dhcp.rst:345
-#: ../../ip-config/dhcp.rst:406 ../../ip-config/dhcp.rst:430
-#: ../../ip-config/dhcp.rst:460 ../../ip-config/dhcp.rst:501
-#: ../../ip-config/dns.rst:176 ../../ip-config/dns.rst:335
-#: ../../ip-config/dns.rst:366 ../../ip-config/dns.rst:406
-#: ../../ip-config/dns.rst:471 ../../ip-config/dns.rst:547
-#: ../../ip-config/network-objects.rst:31
-msgid "*General* tab"
-msgstr "Reiter *Allgemein*"
-
-#: ../../ip-config/dhcp.rst:104 ../../ip-config/dhcp.rst:129
-#: ../../ip-config/dhcp.rst:163 ../../ip-config/dhcp.rst:216
-#: ../../ip-config/dhcp.rst:238 ../../ip-config/dhcp.rst:301
-#: ../../ip-config/dhcp.rst:349 ../../ip-config/dhcp.rst:410
-#: ../../ip-config/dhcp.rst:434 ../../ip-config/dhcp.rst:464
-#: ../../ip-config/dhcp.rst:505 ../../ip-config/dhcp.rst:538
-#: ../../ip-config/dns.rst:180 ../../ip-config/dns.rst:209
-#: ../../ip-config/dns.rst:273 ../../ip-config/dns.rst:292
-#: ../../ip-config/dns.rst:316 ../../ip-config/dns.rst:339
-#: ../../ip-config/dns.rst:370 ../../ip-config/dns.rst:410
-#: ../../ip-config/dns.rst:475 ../../ip-config/dns.rst:504
-#: ../../ip-config/dns.rst:551 ../../ip-config/network-objects.rst:35
-msgid "Attribute"
-msgstr "Attribut"
-
-#: ../../ip-config/dhcp.rst:105 ../../ip-config/dhcp.rst:130
-#: ../../ip-config/dhcp.rst:164 ../../ip-config/dhcp.rst:217
-#: ../../ip-config/dhcp.rst:239 ../../ip-config/dhcp.rst:302
-#: ../../ip-config/dhcp.rst:350 ../../ip-config/dhcp.rst:411
-#: ../../ip-config/dhcp.rst:435 ../../ip-config/dhcp.rst:465
-#: ../../ip-config/dhcp.rst:506 ../../ip-config/dhcp.rst:539
-#: ../../ip-config/dns.rst:181 ../../ip-config/dns.rst:210
-#: ../../ip-config/dns.rst:274 ../../ip-config/dns.rst:293
-#: ../../ip-config/dns.rst:317 ../../ip-config/dns.rst:340
-#: ../../ip-config/dns.rst:371 ../../ip-config/dns.rst:411
-#: ../../ip-config/dns.rst:476 ../../ip-config/dns.rst:505
-#: ../../ip-config/dns.rst:552 ../../ip-config/network-objects.rst:36
-msgid "Description"
-msgstr "Beschreibung"
-
-#: ../../ip-config/dhcp.rst:107
-msgid "Service name"
-msgstr "Service-Name"
-
-#: ../../ip-config/dhcp.rst:108
-msgid ""
-"An unambiguous name for the DHCP service must be entered in this input "
-"field, e.g., ``company.example``."
-msgstr ""
-"In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den "
-"DHCP-Service eingetragen werden, z.B. ``firma.com``."
-
-#: ../../ip-config/dhcp.rst:114
+#: ../../ip-config/dhcp.rst:82
 msgid "Administration of DHCP server entries"
 msgstr "Verwaltung von DHCP-Server-Einträgen"
 
-#: ../../ip-config/dhcp.rst:116
+#: ../../ip-config/dhcp.rst:84
 msgid ""
-"Each server which should offer the DHCP service requires a *DHCP server* "
-"entry in the LDAP directory. The entry does not normally need to be "
-"created manually, instead it is created by the join script of the "
-":program:`univention-dhcp` package. However, to create another record "
-"manually, a DHCP service must be selected in the left column of the UMC "
-"module :guilabel:`DHCP`. :menuselection:`Add --> DHCP Server` can then be"
-" used to register a new server."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-servers` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Jeder Server, der den DHCP-Dienst anbieten soll, benötigt zwingend einen "
-"*DHCP-Server*-Eintrag im LDAP-Verzeichnis. Der Eintrag muss in der Regel "
-"nicht von Hand angelegt werden, sondern wird durch das Join-Skript des "
-":program:`univention-dhcp`-Pakets angelegt. Um dennoch manuell einen "
-"weiteren Record anzulegen, muss im UMC-Modul :guilabel:`DHCP` in der "
-"linken Spalte ein DHCP-Service ausgewählt werden. Mit "
-":menuselection:`Hinzufügen --> DHCP Server` kann dann ein neuer Server "
-"registriert werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-servers` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:132
-msgid "Server name"
-msgstr "Server-Name"
-
-#: ../../ip-config/dhcp.rst:133
-msgid ""
-"The computer name that the DHCP service should offer is entered in this "
-"input field, e.g., ``ucs-primary``."
-msgstr ""
-"In diesem Eingabefeld ist der Rechnername, der den DHCP-Dienst anbieten "
-"soll, einzutragen, z.B. ``ucs-primary``."
-
-#: ../../ip-config/dhcp.rst:136
-msgid ""
-"A server can only ever provide a single DHCP service and therefore cannot"
-" be entered in more than one DHCP service at the same time."
-msgstr ""
-"Ein Server kann immer nur einen einzigen DHCP-Dienst anbieten und kann "
-"deshalb nicht gleichzeitig in mehreren DHCP-Services eingetragen sein."
-
-#: ../../ip-config/dhcp.rst:142
+#: ../../ip-config/dhcp.rst:91
 msgid "Administration of DHCP subnets"
 msgstr "Verwaltung von DHCP-Subnetzen"
 
-#: ../../ip-config/dhcp.rst:144
+#: ../../ip-config/dhcp.rst:93
 msgid ""
-"DHCP subnets are managed in the UMC module :guilabel:`DHCP` (see :ref"
-":`central-user-interface`). To create another subnet, a DHCP service must"
-" be selected in the left column. :menuselection:`Add --> DHCP: Subnet` "
-"can be used to create a new subnet."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-subnets` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"DHCP-Subnetze werden im UMC-Modul :guilabel:`DHCP` verwaltet (siehe auch "
-":ref:`central-user-interface`). Um ein weiteres Subnetz anzulegen, muss "
-"in der linken Spalte ein DHCP-Service ausgewählt werden.  Mit "
-":menuselection:`Hinzufügen --> DHCP: Subnetz` kann dann ein neues Subnetz"
-" angelegt werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-subnets` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:149
-msgid ""
-"A DHCP subnet entry is required for every subnet from which dynamic or "
-"fixed IP addresses are to be assigned. It is only necessary to enter IP "
-"address ranges if IP addresses are to be assigned dynamically."
-msgstr ""
-"Ein DHCP-Subnetz-Eintrag ist für jedes Subnetz, aus dem dynamische oder "
-"feste IP-Adressen vergeben werden sollen, zwingend erforderlich. Das "
-"Eintragen von IP-Adressbereichen ist nur notwendig, wenn IP-Adressen "
-"dynamisch vergeben werden sollen."
-
-#: ../../ip-config/dhcp.rst:153
-msgid ""
-"If *DHCP shared subnet* objects are to be used, the corresponding subnets"
-" should be created below the *DHCP shared subnet* container created for "
-"this purpose (see :ref:`networks-dhcp-shared-subnets`)."
-msgstr ""
-"Falls *DHCP:Shared Subnet*-Objekte verwendet werden sollen, sollten die "
-"entsprechenden Subnetze unterhalb des dafür angelegten *DHCP:Shared "
-"Network*-Containers angelegt werden (siehe :ref:`networks-dhcp-shared-"
-"subnets`)."
-
-#: ../../ip-config/dhcp.rst:166
-msgid "Subnet address"
-msgstr "Subnetz-Adresse"
-
-#: ../../ip-config/dhcp.rst:167
-msgid ""
-"The IP address of the subnet must be entered in dot-decimal form in this "
-"input field, e.g., ``192.0.2.0``."
-msgstr ""
-"In diesem Eingabefeld ist die IP-Adresse des Subnetzes in "
-"Oktettschreibweise einzutragen, z.B. ``192.0.2.0``."
-
-#: ../../ip-config/dhcp.rst:170
-msgid "Net mask"
-msgstr "Netzmaske"
-
-#: ../../ip-config/dhcp.rst:171
-msgid ""
-"The network mask can be entered in this input field as the network prefix"
-" or in dot-decimal form. If the network mask is entered in dot-decimal "
-"form it will be subsequently be converted into the corresponding network "
-"prefix and later also shown so."
-msgstr ""
-"Die Netzmaske kann in diesem Eingabefeld wahlweise als Dezimalzahl des "
-"Netzpräfix oder in Oktettschreibweise eingetragen werden. Wenn die "
-"Netzmaske in Oktettschreibweise eingegeben wird, wird sie automatisch in "
-"den entsprechenden Netzpräfix umgewandelt und später auch ausgegeben."
-
-#: ../../ip-config/dhcp.rst:176
-msgid "Dynamic address assignment"
-msgstr "Dynamische Adresszuweisung"
-
-#: ../../ip-config/dhcp.rst:177
-msgid ""
-"Here one can set up individual or multiple IP address ranges for dynamic "
-"assignment. The range stretches from the *First address* to the *Last "
-"address* in dot-decimal form."
-msgstr ""
-"Hier können ein einzelner oder mehrere IP-Adressbereiche eingerichtet "
-"werden, die für die dynamische Vergabe zur Verfügung stehen. Der Bereich "
-"erstreckt sich von *Erste Adresse* bis *Letzte Adresse* in "
-"Oktettschreibweise."
-
-#: ../../ip-config/dhcp.rst:183
-msgid ""
-"Dynamic IP ranges for a subnet should always either be specified "
-"exclusively in the subnet entry or exclusively in one or more special "
-"pool entries. The types of IP range entries within a subnet must not be "
-"mixed! If different IP ranges with different configurations are be set up"
-" in one subnet, pool entries must be created for this purpose."
-msgstr ""
-"Dynamische IP-Adressbereiche für ein Subnetz sind immer entweder "
-"ausschließlich im Subnetz-Eintrag oder ausschließlich in einem oder "
-"mehreren gesonderten Pool-Einträgen anzugeben. Die Typen der Einträge im "
-"IP-Adressbereich innerhalb eines Subnetzes dürfen nicht gemischt werden! "
-"Wenn in einem Subnetz verschiedene IP-Adressbereiche mit "
-"unterschiedlichen Konfigurationen eingesetzt werden sollen, müssen dafür "
-"Pool-Einträge angelegt werden."
-
-#: ../../ip-config/dhcp.rst:189
-msgid ""
-"At this level, the gateway for all computers in a subnet is often set "
-"using the *Policy: DHCP Routing* tab (unless other entries are performed "
-"at lower levels)."
-msgstr ""
-"Auf dieser Ebene wird häufig über dir Karteikarte :guilabel:`Richtlinie: "
-"DHCP Routing` das Gateway für alle Rechner in diesem Subnetz festgelegt "
-"(es sei denn, es werden an DHCP-Pools andere Angaben gemacht)."
-
-#: ../../ip-config/dhcp.rst:195
+#: ../../ip-config/dhcp.rst:100
 msgid "Administration of DHCP pools"
 msgstr "Verwaltung von DHCP-Pools"
 
-#: ../../ip-config/dhcp.rst:197
+#: ../../ip-config/dhcp.rst:102
 msgid ""
-"DHCP pools can only be managed via the UMC module :guilabel:`LDAP "
-"directory`. To do so, one must always be in a DHCP subnet object - a DHCP"
-" pool object must always be created below a DHCP subnet object - and a "
-"*DHCP: Pool* object added with :guilabel:`Add`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-pools` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"DHCP-Pools können nur über das UMC-Modul :guilabel:`LDAP-Verzeichnis` "
-"verwaltet werden. Dazu muss in ein DHCP-Subnetz-Objekt navigiert werden -"
-" ein DHCP-Pool-Objekt muss immer unterhalb eines DHCP-Subnetz-Objektes "
-"angelegt werden - und dort mit :guilabel:`Hinzufügen` ein *DHCP: "
-"Pool*-Objekt eingefügt werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-pools` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:202
-msgid ""
-"If DHCP pools are created in a subnet, no IP address range should be "
-"defined in the subnet entry. These should only be specified via the pool "
-"entries."
-msgstr ""
-"Wenn in einem Subnetz DHCP-Pools angelegt werden, sollten keine IP-"
-"Adressbereiche im Subnetz-Eintrag definiert werden. Diese sind "
-"ausschließlich in den Pool-Einträgen anzulegen."
-
-#: ../../ip-config/dhcp.rst:208
+#: ../../ip-config/dhcp.rst:109
 msgid "General tab"
 msgstr "Reiter Allgemein"
 
-#: ../../ip-config/dhcp.rst:219 ../../ip-config/network-objects.rst:38
-msgid "Name"
-msgstr "Name"
-
-#: ../../ip-config/dhcp.rst:220
+#: ../../ip-config/dhcp.rst:111
 msgid ""
-"An unambiguous name for the DHCP pool must be entered in this input "
-"field, e.g., ``testnet.compaby.example``."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-pools-tab-general` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den "
-"DHCP-Pool eingetragen werden, z.B. ``testnetz.firma.com``."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-pools-tab-general` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:223
-msgid "Dynamic range"
-msgstr "Dynamischer Bereich"
-
-#: ../../ip-config/dhcp.rst:224
-msgid ""
-"Here you can enter the IP addresses in dot-decimal form that are to be "
-"dynamically assigned."
-msgstr ""
-"Hier können die IP-Adressen in Oktettschreibweise angegeben werden, die "
-"dynamisch vergeben werden."
-
-#: ../../ip-config/dhcp.rst:230
+#: ../../ip-config/dhcp.rst:118
 msgid "Advanced settings tab"
 msgstr "Reiter Erweiterte Einstellungen"
 
-#: ../../ip-config/dhcp.rst:234
-msgid "*Advanced settings* tab"
-msgstr "Reiter *Erweiterte Einstellungen*"
-
-#: ../../ip-config/dhcp.rst:241
-msgid "Failover peer"
-msgstr "Failover Peer"
-
-#: ../../ip-config/dhcp.rst:242
+#: ../../ip-config/dhcp.rst:120
 msgid ""
-"The name of a failover configuration, which must to be configured "
-"manually in file :file:`/etc/dhcp/local.conf`. Further information can be"
-" found at `A Basic Guide to Configuring DHCP Failover <isc-dhcp-"
-"failover_>`_."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-pools-tab-advanced` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Name einer Failover-Konfiguration, die von Hand in der Datei "
-":file:`/etc/dhcp/local.conf` konfiguriert werden. Hinweise zur "
-"Einrichtung finden sich in `A Basic Guide to Configuring DHCP Failover "
-"<isc-dhcp-failober_>`_."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-pools-tab-advanced` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:247
-msgid "Allow known clients"
-msgstr "Erlaube bekannte Clients"
-
-#: ../../ip-config/dhcp.rst:248
-msgid ""
-"A computer is identified by its MAC address. If this input field is set "
-"to ``allow`` or unset, a computer **with** a matching DHCP host entry "
-"(see :ref:`ip-config-dhcp-objects-hosts`) is eligible to receive an IP "
-"address from this pool."
-msgstr ""
-"Ein Computer wird durch seine MAC-Adresse identifiziert. Ist dieses Feld "
-"auf ``erlauben`` gesetzt oder nicht gesetzt, ist ein Computer mit einem "
-"DHCP-Rechner-Eintrag (siehe :ref:`ip-config-dhcp-objects-hosts`) "
-"berechtigt eine IP-Adresse aus diesem Pool zu beziehen."
-
-#: ../../ip-config/dhcp.rst:253 ../../ip-config/dhcp.rst:262
-msgid ""
-"If set to ``deny``, the computer doesn't receive an IP address from the "
-"pool."
-msgstr ""
-"Ist es auf ``verbieten`` gesetzt, erhalten diese Computer keine IP-"
-"Adresse aus dem Pool."
-
-#: ../../ip-config/dhcp.rst:256
-msgid "Allow unknown clients"
-msgstr "Erlaube unbekannte Clients"
-
-#: ../../ip-config/dhcp.rst:257
-msgid ""
-"A computer is identified by its MAC address. If this input field is set "
-"to ``allow`` or unset, a computer **without** a matching DHCP host entry "
-"(see :ref:`ip-config-dhcp-objects-hosts`) is eligible to receive an IP "
-"address from this pool."
-msgstr ""
-"Ein Computer wird durch seine MAC-Adresse identifiziert. Ist dieses Feld "
-"auf ``erlauben`` gesetzt oder nicht gesetzt, ist ein Computer ohne DHCP-"
-"Rechner-Eintrag (siehe :ref:`ip-config-dhcp-objects-hosts`) berechtigt "
-"eine IP-Adresse aus diesem Pool zu beziehen."
-
-#: ../../ip-config/dhcp.rst:265
-msgid "Allow dynamic BOOTP clients"
-msgstr "Dynamische BOOTP-Clients erlauben"
-
-#: ../../ip-config/dhcp.rst:266
-msgid ""
-"BOOTP is the predecessor of the DHCP protocol. It has no mechanism to "
-"renew leases and by default assigns leases infinitely, which can deplete "
-"the pool. If this options is set to ``allow`` clients can retrieve an IP "
-"address from this pool using BOOTP."
-msgstr ""
-"BOOTP ist das Vorgängerprotokoll von DHCP. Es kennt keinen Mechanismus "
-"zum Aktualisieren eines Leases und weist Adressen zeitlich unbeschränkt "
-"zu, was den Pool erschöpfen kann. Ist diese Option auf ``erlauben`` "
-"gesetzt können Clients auch über BOOTP eine Adresse aus diesem Pool zu "
-"beziehen."
-
-#: ../../ip-config/dhcp.rst:271
-msgid "All clients"
-msgstr "Alle Clients"
-
-#: ../../ip-config/dhcp.rst:272
-msgid ""
-"If this option is set to ``deny`` the pool is disabled globally. This is "
-"only useful in exceptional scenarios."
-msgstr ""
-"Wird diese Option auf ``verbieten`` gesetzt, wird der Pool global "
-"deaktiviert. Diese Option ist nur in Ausnahmefällen sinnvoll."
-
-#: ../../ip-config/dhcp.rst:278
+#: ../../ip-config/dhcp.rst:127
 msgid "Registration of computers with DHCP computer objects"
 msgstr "Registrierung von Rechnern mit DHCP-Rechner-Objekten"
 
-#: ../../ip-config/dhcp.rst:280
+#: ../../ip-config/dhcp.rst:129
 msgid ""
-"A *DHCP host* entry is used to register the respective computer in the "
-"DHCP service. Computers can be handled depending on their registration "
-"status. Known computers may get fixed and dynamic IP addresses from the "
-"DHCP service; unknown computers only get dynamic IP addresses."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-hosts` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Mit einem *DHCP Rechner*-Eintrag wird der betreffende Rechner im DHCP-"
-"Service registriert. Rechner können in Abhängigkeit von ihrem "
-"Registrierungsstatus behandelt werden. Bekannte Rechner können feste oder"
-" dynamische IP-Adressen vom DHCP-Service beziehen; unbekannte Rechner "
-"erhalten nur dynamische IP-Adressen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-hosts` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:285
-msgid ""
-"DHCP computer entries are usually created automatically when a computer "
-"is added via the computer management. Below the DHCP service object you "
-"have the possibility of adding DHCP computer entries or editing existing "
-"entries manually, irrespective of whether they were created manually or "
-"automatically."
-msgstr ""
-"Üblicherweise werden beim Hinzufügen eines Rechners über die "
-"Rechnerverwaltung automatisch DHCP-Rechner-Einträge erstellt. Unterhalb "
-"des DHCP-Service-Objekts gibt es die Möglichkeit, manuell DHCP-Rechner-"
-"Einträge hinzuzufügen oder bestehende Einträge, egal ob manuell oder "
-"automatisch erzeugt, zu bearbeiten."
-
-#: ../../ip-config/dhcp.rst:290
-msgid ""
-"DHCP host objects are managed in the UMC module :guilabel:`DHCP` (see "
-":ref:`central-user-interface`). To register a host in the DHCP manually, "
-"a DHCP service must be selected in the left column of the module. "
-":menuselection:`Add --> DHCP: Host` can be used to register a host."
-msgstr ""
-"DHCP-Rechner-Objekte werden im UMC-Modul :guilabel:`DHCP` verwaltet "
-"(siehe auch :ref:`central-user-interface`). Um einen Rechner manuell im "
-"DHCP zu registrieren, muss in der linken Spalte des Moduls ein DHCP-"
-"Service ausgewählt werden. Mit :menuselection:`Hinzufügen --> DHCP: "
-"Rechner` kann dann ein Rechner registriert werden."
-
-#: ../../ip-config/dhcp.rst:304 ../../ip-config/dns.rst:373
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: ../../ip-config/dhcp.rst:305
-msgid ""
-"A name for the computer is entered in this input field (which usually "
-"also has an entry in the computer management). It is recommended to enter"
-" the same name and the same MAC address for the computer in both entries "
-"to facilitate assignment."
-msgstr ""
-"In diesem Eingabefeld ist ein Name für den Rechner einzugeben (der in der"
-" Regel auch einen Eintrag in der Rechnerverwaltung besitzt). Es empfiehlt"
-" sich, in beiden Einträgen denselben Namen und dieselbe MAC-Adresse für "
-"den Rechner zu verwenden, um die Zuordnung zu erleichtern."
-
-#: ../../ip-config/dhcp.rst:310
-msgid "Type"
-msgstr "Netzwerktyp"
-
-#: ../../ip-config/dhcp.rst:311
-msgid ""
-"The type of network used can be selected in this selection list. "
-"*Ethernet* almost always needs to be selected here."
-msgstr ""
-"In dieser Auswahlliste ist der Typ des verwendeten Netzwerks auszuwählen."
-" Hier ist nahezu immer *Ethernet* auszuwählen."
-
-#: ../../ip-config/dhcp.rst:314 ../../ip-config/dns.rst:554
-msgid "Address"
-msgstr "Adresse"
-
-#: ../../ip-config/dhcp.rst:315
-msgid ""
-"The MAC address of the network card needs to be entered here, e.g., "
-"``2e:44:56:3f:12:32`` or ``2e-44-56-3f-12-32``."
-msgstr ""
-"In diesem Eingabefeld ist die MAC-Adresse der Netzwerkkarte einzutragen, "
-"z.B. ``2e:44:56:3f:12:32`` oder ``e-44-56-3f-12-32``."
-
-#: ../../ip-config/dhcp.rst:318
-msgid "Fixed IP addresses"
-msgstr "Feste IP-Adressen"
-
-#: ../../ip-config/dhcp.rst:319
-msgid ""
-"One or more fixed IP addresses can be assigned to the computer here. In "
-"addition to an IP address, a fully qualified domain name can also be "
-"entered, which is resolved into one or more IP addresses by the DHCP "
-"server."
-msgstr ""
-"Hier können dem Rechner eine oder mehrere feste IP-Adressen zugewiesen "
-"werden. Neben einer IP-Adresse kann auch ein vollqualifizierter "
-"Domänenname angegeben werden, der vom DHCP-Server in eine oder mehrere "
-"IP-Adressen aufgelöst wird."
-
-#: ../../ip-config/dhcp.rst:327
+#: ../../ip-config/dhcp.rst:136
 msgid "Management of DHCP shared networks / DHCP shared subnets"
 msgstr "Verwaltung von DHCP Shared Networks / DHCP Shared Subnets"
 
-#: ../../ip-config/dhcp.rst:329
+#: ../../ip-config/dhcp.rst:138
 msgid ""
-"*DHCP shared network* objects accept subnets which use a common physical "
-"network."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-shared-network` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"*DHCP Shared Network*-Objekte nehmen Subnetze auf, die ein physikalisches"
-" Netzwerk gemeinsam nutzen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-shared-network` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/dhcp.rst:332
-msgid ""
-"DHCP shared network objects are managed in the UMC module "
-":guilabel:`DHCP` (see :ref:`central-user-interface`). To create a shared "
-"network, a DHCP service must be selected in the left column of the "
-"module. :menuselection:`Add --> DHCP: Shared Network` can be used to "
-"register a network."
-msgstr ""
-"DHCP-Shared-Network-Objekte werden im UMC-Modul :guilabel:`DHCP` "
-"verwaltet (siehe auch :ref:`central-user-interface`). Um ein Shared "
-"Network anzulegen, muss in der linken Spalte des Moduls ein DHCP-Service "
-"ausgewählt werden.  Mit :menuselection:`Hinzufügen --> DHCP: Shared "
-"Network` kann dann ein Netzwerk registriert werden."
-
-#: ../../ip-config/dhcp.rst:339
-msgid ""
-"A shared network must contain at least one shared subnet object. "
-"Otherwise the DHCP service will terminate itself and cannot be restarted "
-"until the configuration is fixed."
-msgstr ""
-"Ein Shared-Network muss mindestens einen Shared-Subnet-Eintrag enthalten."
-" Anderenfalls beendet sich der DHCP-Dienst und kann nicht gestartet "
-"werden, bis die Konfiguration korrigiert ist."
-
-#: ../../ip-config/dhcp.rst:352
-msgid "Shared network name"
-msgstr "Shared Network Name"
-
-#: ../../ip-config/dhcp.rst:353
-msgid "A name for the shared network must be entered in this input field."
-msgstr "In dieses Eingabefeld ist ein Name für das Shared Network einzutragen."
-
-#: ../../ip-config/dhcp.rst:355
-msgid ""
-"Subnets are declared as a *DHCP shared subnet* when they use the same, "
-"common physical network. All subnets which use the same network must be "
-"stored below the same shared network container. A separate *DHCP shared "
-"subnet* object must be created for each subnet."
-msgstr ""
-"Als *DHCP:Shared Subnet* werden Subnetze deklariert, die gemeinsam "
-"dasselbe physikalische Netzwerk verwenden. Alle Subnetze, die dasselbe "
-"Netzwerk verwenden, müssen unterhalb desselben Shared Network-Containers "
-"angelegt werden. Für jedes Subnetz ist ein eigenes *DHCP:Shared "
-"Subnet*-Objekt anzulegen."
-
-#: ../../ip-config/dhcp.rst:360
-msgid ""
-"DHCP shared subnet objects can only be managed via the UMC module "
-":guilabel:`LDAP directory`. To do so, one must always be in a DHCP shared"
-" network object - a DHCP shared subnet object must always be created "
-"below a DHCP shared network object - and a *DHCP shared subnet* object "
-"added with :guilabel:`Add`."
-msgstr ""
-"DHCP-Shared-Subnet-Objekte können nur über das UMC-Modul :guilabel:`LDAP-"
-"Verzeichnis` verwaltet werden. Dazu muss in ein DHCP-Shared Network-"
-"Objekt navigiert werden - ein DHCP-Shared Subnet-Objekt muss immer "
-"unterhalb eines DHCP-Shared Network-Objektes angelegt werden - und dort "
-"mit :guilabel:`Hinzufügen` ein *DHCP: Shared Subnet*-Objekt eingefügt "
-"werden."
-
-#: ../../ip-config/dhcp.rst:369
+#: ../../ip-config/dhcp.rst:145
 msgid "Configuration of clients via DHCP policies"
 msgstr "Konfiguration von Clients durch DHCP-Richtlinien"
 
-#: ../../ip-config/dhcp.rst:373
+#: ../../ip-config/dhcp.rst:147
 msgid ""
-"Many of the settings for DHCP are configured via policies. They are also "
-"applied to DHCP computer objects if a policy is linked to the LDAP base "
-"or one of the other intermediate containers. As the settings for DHCP "
-"computer objects have the highest priority, other settings for subnetwork"
-" and service objects are ignored."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Viele Einstellungen für DHCP werden über Richtlinien konfiguriert.  Diese"
-" finden auch Anwendung auf DHCP-Rechner-Objekte, wenn eine Richtlinie mit"
-" der LDAP-Basis oder einem der anderen dazwischenliegenden Container "
-"verknüpft ist. Da die Einstellungen an DHCP-Rechner-Objekte die höchste "
-"Priorität haben, werden andere Einstellungen an Subnetz- oder Service-"
-"Objekten ignoriert."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:379
-msgid ""
-"For this reason, DHCP policies should be linked directly to the DHCP "
-"network objects (e.g., the DHCP subnetworks)."
-msgstr ""
-"DHCP-Richtlinien sollten von daher direkt mit den DHCP-Netzwerk-Objekten "
-"(z.B. den DHCP-Subnetzen) verknüpft werden."
-
-#: ../../ip-config/dhcp.rst:382
-msgid ""
-"Alternatively, the LDAP class ``univentionDhcpHost`` can be added in the "
-"advanced settings of the policies under :menuselection:`Object --> "
-"Excluded object classes`. Such policies are then no longer applied to the"
-" DHCP computer objects, with the result that the settings from the DHCP "
-"subnetwork and service are used."
-msgstr ""
-"Alternativ kann in den erweiterten Einstellungen der Richtlinien unter "
-":menuselection:`Objekt --> Ausgeschlossene Objektklassen` die LDAP-Klasse"
-" ``univentionDhcpHost`` hinzugefügt werden. Solche Richtlinien finden "
-"dann nicht länger auf die DHCP-Rechner-Objekte Anwendung, wodurch dann "
-"die Einstellungen aus DHCP-Subnetz und -Service benutzt werden."
-
-#: ../../ip-config/dhcp.rst:390
-msgid ""
-"When using the command line :command:`udm dhcp/host list` (see also :ref"
-":`central-udm-example-dnsdhcp`), it is possible to use the option "
-"``--policies 0`` to display the effective settings."
-msgstr ""
-"Bei Verwendung der Kommandozeile :command:`udm dhcp/host list` (siehe "
-"auch :ref:`central-udm-example-dnsdhcp`) kann die Option ``--policies 0``"
-" verwendet werden, um die effektiven Einstellungen anzeigen zu lassen."
-
-#: ../../ip-config/dhcp.rst:398
+#: ../../ip-config/dhcp.rst:154
 msgid "Setting the gateway"
 msgstr "Vorgabe des Gateways"
 
-#: ../../ip-config/dhcp.rst:400
+#: ../../ip-config/dhcp.rst:156
 msgid ""
-"The default gateway can be specified via DHCP with a *DHCP routing* "
-"policy, which is managed in the UMC module :guilabel:`Policies` (see :ref"
-":`central-policies`)"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies-gateway` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Das Default-Gateway kann per DHCP über eine Richtlinie vom Typ *DHCP "
-"Routing* festgelegt werden, die im UMC-Modul :guilabel:`Richtlinien` "
-"verwaltet wird (siehe auch :ref:`central-policies`)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies-gateway` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/dhcp.rst:413
-msgid "Routers"
-msgstr "Router"
-
-#: ../../ip-config/dhcp.rst:414
-msgid ""
-"The names or IP addresses of the routers are to be entered here. It must "
-"be verified that the DHCP server can resolve these names in IP addresses."
-" The routers are contacted by the client in the order in which they stand"
-" in the selection list."
-msgstr ""
-"Hier sind die Namen oder IP-Adressen der Router einzutragen. Dabei ist "
-"darauf zu achten, dass der DHCP-Server diese Namen in IP-Adressen "
-"auflösen kann. Die Router werden vom Client in der Reihenfolge "
-"angesprochen, in der sie in der Auswahlliste erscheinen."
-
-#: ../../ip-config/dhcp.rst:422
+#: ../../ip-config/dhcp.rst:163
 msgid "Setting the DNS servers"
 msgstr "Vorgabe der DNS-Server"
 
-#: ../../ip-config/dhcp.rst:424
+#: ../../ip-config/dhcp.rst:165
 msgid ""
-"The name servers to be used by a client can be specified via DHCP with a "
-"*DHCP DNS* policy, which is managed in the UMC module "
-":guilabel:`Policies` (see :ref:`central-policies`)"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies-dns-servers` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Die von einem Client zu verwendenden Nameserver können per DHCP über eine"
-" Richtlinie vom Typ *DHCP DNS* festgelegt werden, die im UMC-Modul "
-":guilabel:`Richtlinien` verwaltet wird (siehe auch :ref:`central-"
-"policies`)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies-dns-servers` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:437
-msgid "Domain name"
-msgstr "Domänenname"
-
-#: ../../ip-config/dhcp.rst:438
-msgid ""
-"The name of the domain, which the client automatically appends on "
-"computer names that it sends to the DNS server for resolution and which "
-"are not FQDNs. Usually this is the name of the domain to which the client"
-" belongs."
-msgstr ""
-"Der Name der Domäne, den der Client automatisch an Rechnernamen anhängt, "
-"die er zur Auflösung an den DNS-Server schickt und die keine "
-"vollqualifierten Domänennamen sind. Üblicherweise wird hier der Name der "
-"Domäne verwendet, der der Client angehört."
-
-#: ../../ip-config/dhcp.rst:443
-msgid "Domain name servers"
-msgstr "DNS-Server"
-
-#: ../../ip-config/dhcp.rst:444
-msgid ""
-"Here IP addresses or fully qualified domain names (FQDNs) of DNS servers "
-"can be added. When using FQDNs, it must be verified that the DHCP server "
-"can resolve the names in IP addresses. The DNS servers are contacted by "
-"the clients according to the order specified here."
-msgstr ""
-"Hier können IP-Adressen oder vollqualifizierte Domänennamen (FQDNs) von "
-"DNS-Servern hinzugefügt werden. Bei der Verwendung von FQDNs ist darauf "
-"zu achten, dass der DHCP-Server die Namen in IP-Adressen auflösen kann. "
-"Die DNS-Server werden von den Clients entsprechend der hier angegebenen "
-"Reihenfolge kontaktiert."
-
-#: ../../ip-config/dhcp.rst:452
+#: ../../ip-config/dhcp.rst:172
 msgid "Setting the WINS server"
 msgstr "Vorgabe des WINS-Server"
 
-#: ../../ip-config/dhcp.rst:454
+#: ../../ip-config/dhcp.rst:174
 msgid ""
-"The WINS server to be used can be specified via DHCP with a *DHCP "
-"NetBIOS* policy, which is managed in the UMC module :guilabel:`Policies` "
-"(see :ref:`central-policies`)"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies-netbios` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der zu verwendende WINS-Server kann per DHCP über eine Richtlinie vom Typ"
-" *DHCP NetBIOS* festgelegt werden, die im UMC-Modul "
-":guilabel:`Richtlinien` verwaltet wird (siehe auch :ref:`central-"
-"policies`)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies-netbios` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/dhcp.rst:467
-msgid "NetBIOS name servers"
-msgstr "NetBIOS-Nameserver"
-
-#: ../../ip-config/dhcp.rst:468
-msgid ""
-"The names or IP addresses of the NetBIOS name servers (also known as WINS"
-" servers) should be entered here. It must be verified that the DHCP "
-"server can resolve these names in IP addresses. The servers entered are "
-"contacted by the client in the order in which they stand in the selection"
-" list."
-msgstr ""
-"Hier sind die Namen oder IP-Adressen der NetBIOS-Nameserver (auch bekannt"
-" als WINS-Server) einzutragen. Dabei ist darauf zu achten, dass der DHCP-"
-"Server diese Namen in IP-Adressen auflösen kann. Die angegebenen Server "
-"werden vom Client in der Reihenfolge angesprochen, in der sie in der "
-"Auswahlliste erscheinen."
-
-#: ../../ip-config/dhcp.rst:474
-msgid "NetBIOS scope"
-msgstr "NetBIOS Scope"
-
-#: ../../ip-config/dhcp.rst:475
-msgid ""
-"The NetBIOS over TCP/IP scope for the client according to the "
-"specification in :rfc:`1001` and :rfc:`1002`. Attention must be paid to "
-"uppercase and lowercase when entering the NetBIOS scope."
-msgstr ""
-"Der NetBIOS over TCP/IP-Scope für den Client nach der Spezifikation in "
-":rfc:`1001` und :rfc:`1002`. Bei der Angabe des NetBIOS Scopes ist die "
-"Groß- und Kleinschreibung zu beachten."
-
-#: ../../ip-config/dhcp.rst:479
-msgid "NetBIOS node type"
-msgstr "NetBIOS Node Type"
-
-#: ../../ip-config/dhcp.rst:480
-msgid "This field sets the node type of the client. Possible values are:"
-msgstr ""
-"Dieses Auswahlfeld legt den Node Type eines Clients fest. Mögliche Werte "
-"sind:"
-
-#: ../../ip-config/dhcp.rst:482
-msgid "``1 B-node`` (Broadcast: no WINS)"
-msgstr "``1 B-node`` (Broadcast: kein WINS)"
-
-#: ../../ip-config/dhcp.rst:484
-msgid "``2 P-node`` (Peer: only WINS)"
-msgstr "``2 P-node`` (Peer: ausschließlich WINS)"
-
-#: ../../ip-config/dhcp.rst:486
-msgid "``4 M-node`` (Mixed: first Broadcast, then WINS)"
-msgstr "``4 M-node`` (Mixed: erst Broadcast, dann WINS)"
-
-#: ../../ip-config/dhcp.rst:488
-msgid "``8 H-node`` (Hybrid: first WINS, then Broadcast)"
-msgstr "``8 H-node`` (Hybrid: erst WINS, dann Broadcast)"
-
-#: ../../ip-config/dhcp.rst:493
+#: ../../ip-config/dhcp.rst:181
 msgid "Configuration of the DHCP lease"
 msgstr "Konfiguration der DHCP-Vergabedauer (Lease)"
 
-#: ../../ip-config/dhcp.rst:495
+#: ../../ip-config/dhcp.rst:183
 msgid ""
-"The validity of an assigned IP address - a so-called DHCP lease - can be "
-"specified with a *DHCP lease time* policy, which is managed in the UMC "
-"module :guilabel:`Policies` (see :ref:`central-policies`)"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies-dhcp-leases` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Die Gültigkeit einer vergebenen IP-Adresse - ein sogenanntes DHCP-Lease -"
-" kann über eine Richtlinie vom Typ *DHCP Lease-Zeit* festgelegt werden, "
-"die im UMC-Modul :guilabel:`Richtlinien` verwaltet wird (siehe auch :ref"
-":`central-policies`)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies-dhcp-leases` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:508
-msgid "Default lease time"
-msgstr "Standard Lease-Zeit"
-
-#: ../../ip-config/dhcp.rst:509
-msgid ""
-"If the client does not request a specific lease time, the standard lease "
-"time is assigned. If this input field is left empty, the DHCP server's "
-"default value is used."
-msgstr ""
-"Wenn der Client keine bestimmte Lease-Zeit anfragt, so wird die Standard-"
-"Lease-Zeit zugewiesen. Bleibt das Eingabefeld leer, wird der Vorgabewert "
-"des DHCP-Servers verwendet."
-
-#: ../../ip-config/dhcp.rst:513
-msgid "Maximum lease time"
-msgstr "Maximale Lease-Zeit"
-
-#: ../../ip-config/dhcp.rst:514
-msgid ""
-"The maximum lease time specifies the longest period of time for which a "
-"lease can be granted. If this input field is left empty, the DHCP "
-"server's default value is used."
-msgstr ""
-"Die maximale Lease-Zeit gibt die längste Zeitspanne an, die für einen "
-"Lease vergeben werden kann. Bleibt das Eingabefeld leer, wird der "
-"Vorgabewert des DHCP-Servers verwendet."
-
-#: ../../ip-config/dhcp.rst:518
-msgid "Minimum lease time"
-msgstr "Minimale Lease-Zeit"
-
-#: ../../ip-config/dhcp.rst:519
-msgid ""
-"The minimum lease time specifies the shortest period of time for which a "
-"lease can be granted. If this input field is left empty, the DHCP "
-"server's default value is used."
-msgstr ""
-"Die minimale Lease-Zeit gibt die kürzeste Zeitspanne an, die ein Lease "
-"gültig sein soll. Bleibt das Eingabefeld leer, wird der Vorgabewert des "
-"DHCP-Servers verwendet."
-
-#: ../../ip-config/dhcp.rst:526
+#: ../../ip-config/dhcp.rst:190
 msgid "Configuration of boot server/PXE settings"
 msgstr "Konfiguration von Bootserver/PXE-Einstellungen"
 
-#: ../../ip-config/dhcp.rst:528
+#: ../../ip-config/dhcp.rst:192
 msgid ""
-"A *DHCP Boot* policy is used to assign computer configuration parameters "
-"for booting via BOOTP/PXE. They are managed in the UMC module "
-":guilabel:`Policies` (see :ref:`central-policies`)"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies-dhcp-boot` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Mit einer *DHCP Boot*-Richtlinie werden Rechnern Konfigurationsparameter "
-"für das Booten über BOOTP/PXE zugewiesen. Sie wird im UMC-Modul "
-":guilabel:`Richtlinien` verwaltet (siehe auch :ref:`central-policies`)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies-dhcp-boot` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dhcp.rst:534
-msgid "*Boot* tab"
-msgstr "Reiter *Boot*"
-
-#: ../../ip-config/dhcp.rst:541
-msgid "Boot server"
-msgstr "Boot-Server"
-
-#: ../../ip-config/dhcp.rst:542
-msgid ""
-"The IP address or the FQDN of the PXE boot server from which the client "
-"should load the boot file is entered in the input field. If no value is "
-"entered in this input field, the client boots from the DHCP server from "
-"which it retrieves its IP address."
-msgstr ""
-"In diesem Eingabefeld ist die IP-Adresse oder der FQDN des PXE-Boot-"
-"Servers einzutragen, von dem der Client die Boot-Datei laden soll. Wird "
-"in diesem Eingabefeld kein Wert eingetragen, bootet der Client von dem "
-"DHCP-Server, von dem er seine IP-Adresse bezieht."
-
-#: ../../ip-config/dhcp.rst:547
-msgid "Boot filename"
-msgstr "Boot-Dateiname"
-
-#: ../../ip-config/dhcp.rst:548
-msgid ""
-"The path to the boot file is entered here. The path must be entered "
-"relative to the base directory of the TFTP service (:file:`/var/lib"
-"/univention-client-boot/`)."
-msgstr ""
-"Hier ist der Pfad zur Boot-Datei einzutragen. Der Pfad muss relativ zum "
-"Basisverzeichnis des TFTP-Dienstes (:file:`/var/lib/univention-client-"
-"boot/`) angegeben werden."
-
-#: ../../ip-config/dhcp.rst:555
+#: ../../ip-config/dhcp.rst:199
 msgid "Further DHCP policies"
 msgstr "Weitere DHCP-Richtlinien"
 
-#: ../../ip-config/dhcp.rst:557
+#: ../../ip-config/dhcp.rst:201
 msgid ""
-"There are some further DHCP policies available, but they are only "
-"required in special cases."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dhcp-policies-further` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Einige weitere DHCP-Richtlinien stehen zur Verfügung, sind aber nur für "
-"Sonderfälle nötig."
-
-#: ../../ip-config/dhcp.rst:560
-msgid "DHCP Dynamic DNS"
-msgstr "DNS Aktualisierung"
-
-#: ../../ip-config/dhcp.rst:561
-msgid ""
-"*DHCP Dynamic DNS* allows the configuration of dynamic DNS updates. These"
-" cannot yet be performed with a LDAP-based DNS service as provided out-"
-"of-the-box by UCS."
-msgstr ""
-"*DNS Aktualisierung* erlaubt die Konfiguration von dynamischen DNS-"
-"Aktualisierungen. Diese können bislang noch nicht gegen einen LDAP-"
-"basierten DNS-Dienst durchgeführt werden, wie er von UCS bereitgestellt "
-"wird."
-
-#: ../../ip-config/dhcp.rst:565
-msgid "DHCP Allow/Deny"
-msgstr "DHCP Erlauben/Verbieten"
-
-#: ../../ip-config/dhcp.rst:566
-msgid ""
-"*DHCP Allow/Deny* allows the configuration of different DHCP options, "
-"which control what clients are allowed to do. The are only useful in "
-"exceptional cases."
-msgstr ""
-"*DHCP Erlauben/Verbieten* erlaubt die Konfiguration verschiedener "
-"Optionen, die kontrollieren was für DHCP-Clients erlaubt ist. Diese sind "
-"nur in Ausnahmefällen nötig."
-
-#: ../../ip-config/dhcp.rst:570
-msgid "DHCP statements"
-msgstr "DHCP Verschiedenes"
-
-#: ../../ip-config/dhcp.rst:571
-msgid ""
-"*DHCP statements* allows the configuration of different options, which "
-"are only required in exceptional cases."
-msgstr ""
-"*DHCP Verschiedenes* erlaubt die Konfiguration verschiedener Optionen, "
-"die nur in Ausnahmefällen nötig sind."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-policies-further` in :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../ip-config/dns.rst:7
 msgid "Administration of DNS data with BIND"
@@ -1164,7 +401,7 @@ msgstr ""
 msgid "The following DNS data are differentiated:"
 msgstr "Folgende DNS-Daten werden unterschieden:"
 
-#: ../../ip-config/dns.rst:22 ../../ip-config/dns.rst:155
+#: ../../ip-config/dns.rst:22 ../../ip-config/dns.rst:142
 msgid "Forward lookup zone"
 msgstr "Forward Lookup Zone"
 
@@ -1257,7 +494,7 @@ msgstr ""
 " werden Service Records u.a. verwendet, um LDAP-Server oder den "
 "|UCSPRIMARYDN| domänenweit bekannt zu machen."
 
-#: ../../ip-config/dns.rst:54 ../../ip-config/dns.rst:458
+#: ../../ip-config/dns.rst:54 ../../ip-config/dns.rst:223
 msgid "Reverse lookup zone"
 msgstr "Reverse Lookup Zone"
 
@@ -1428,717 +665,172 @@ msgid "Administration of DNS data via |UCSUMC| module"
 msgstr "Konfiguration der DNS-Daten über |UCSUMC| Modul"
 
 #: ../../ip-config/dns.rst:135
-#, python-brace-format
 msgid ""
-"DNS files are stored in the :samp:`cn=dns,{base DN}` container as "
-"standard. Forward and reverse lookup zones are stored directly in the "
-"container. Additional DNS objects such as pointer records can be stored "
-"in the respective zones."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"DNS-Daten werden standardmäßig im Container :samp:`cn=dns,{Basis-DN}` "
-"abgelegt. Forward- und Reverse-Lookup-Zonen werden direkt in dem "
-"Container abgelegt. In den jeweiligen Zonen können zusätzliche DNS-"
-"Objekte wie z.B. Pointer-Records angelegt werden."
-
-#: ../../ip-config/dns.rst:140
-msgid ""
-"The relative or fully qualified domain name (FQDN) should always be used "
-"in the input fields for computers and not the computer's IP address. A "
-"FQDN should always end in a full stop to avoid the domain name being "
-"added anew."
-msgstr ""
-"In Eingabefeldern für Rechner sollte immer der relative oder "
-"vollqualifizierte Domänenname und nicht die IP-Adresse des Rechners "
-"verwendet werden. Um zu verhindern, dass der Domänenname erneut angehängt"
-" wird, sollte ein FQDN immer mit einem Punkt abgeschlossen werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns` in :cite:t:`uv-nubus-manual`."
 
 #: ../../ip-config/dns.rst:144
 msgid ""
-"The left column of the UMC module :guilabel:`DNS` includes a list of all "
-"the forward and reverse lookup zones. To add an object to a zone - for "
-"example an alias record to a forward zone - the corresponding zone must "
-"be selected. :guilabel:`Add` is then used to create the object in this "
-"zone. To create a new forward or reverse zone, start by selecting *All "
-"DNS zones*. Clicking on :guilabel:`Add` then creates a new zone. If an "
-"object is created within the zone, the zone is labeled in the UMC "
-"dialogues as a *superordinate object*."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-forwardzone` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"In der linken Spalte des UMC-Moduls :guilabel:`DNS` befindet sich eine "
-"Liste aller Forward- und Reverse-Lookup-Zonen. Um ein Objekt einer Zone "
-"hinzuzufügen - etwa einen Alias-Record zu einer Forward-Zone - muss die "
-"entsprechende Zone ausgewählt werden. Durch :guilabel:`Hinzufügen` wird "
-"das Objekt dann in dieser Zone angelegt. Um eine neue Forward- oder "
-"Reverse-Zone anzulegen, muss zuerst *Alle DNS-Zonen* selektiert werden, "
-"der Klick auf :guilabel:`Hinzufügen` legt dann eine neue Zone an. Wird "
-"ein Objekt unterhalb einer Zone angelegt, wird die Zone in den UMC-"
-"Dialogen als *übergeordnetes Objekt* bezeichnet."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-forwardzone` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dns.rst:157
-msgid ""
-"Forward lookup zones contain information which is used to resolve DNS "
-"names into IP addresses. They are managed in the UMC module "
-":guilabel:`DNS` (see :ref:`central-user-interface`). To add another "
-"forward lookup zone, select *All DNS zones* and :menuselection:`Add --> "
-"DNS: Forward lookup zone`."
-msgstr ""
-"Forward Lookup Zonen enthalten Informationen, die zum Auflösen von DNS-"
-"Namen in IP-Adressen verwendet werden. Sie werden im UMC-Modul "
-":guilabel:`DNS` verwaltet (siehe auch :ref:`central-user-interface`). Um "
-"eine weitere Forward Lookup Zone anzulegen, muss *Alle DNS-Zonen* "
-"selektiert werden und :menuselection:`Hinzufügen --> DNS: Forward Lookup "
-"Zone` ausgewählt werden."
-
-#: ../../ip-config/dns.rst:164 ../../ip-config/dns.rst:167
-msgid "Configuring a forward lookup zone in the UMC module *DNS*"
-msgstr ""
-"Konfiguration einer Forward Lookup Zone durch Univention Management "
-"Console Modul"
-
-#: ../../ip-config/dns.rst:172
+#: ../../ip-config/dns.rst:151
 msgid "DNS UMC module forward lookup - General tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter Allgemein"
 
-#: ../../ip-config/dns.rst:183
-msgid "Zone name"
-msgstr "Name der Zone"
-
-#: ../../ip-config/dns.rst:184
+#: ../../ip-config/dns.rst:153
 msgid ""
-"This is the complete name of the DNS domain for which the zone will be "
-"responsible."
-msgstr "Der komplette Name der DNS-Domäne, für die die Zone zuständig sein soll."
-
-#: ../../ip-config/dns.rst:187
-msgid "The domain name **must not** end in a full stop in zone names!"
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-forwardzone-general-tab` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"In Zonennamen **darf** der Domänenname **nicht** mit einem Punkt "
-"abgeschlossen werden!"
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-forwardzone-general-tab` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dns.rst:189 ../../ip-config/dns.rst:380
-#: ../../ip-config/dns.rst:451 ../../ip-config/dns.rst:484
-msgid "Zone time to live"
-msgstr "Zone Time-to-Live"
-
-#: ../../ip-config/dns.rst:190
-msgid ""
-"The time to live specifies how long these files may be cached by other "
-"DNS servers. The value is specified in seconds."
-msgstr ""
-"Die Time-to-Live gibt an, wie lange diese Daten von anderen DNS-Servern "
-"im Cache gespeichert werden dürfen. Der Wert wird in Sekunden "
-"gespeichert."
-
-#: ../../ip-config/dns.rst:193 ../../ip-config/dns.rst:511
-msgid "Name servers"
-msgstr "Nameserver"
-
-#: ../../ip-config/dns.rst:194
-msgid ""
-"The fully qualified domain name with a full stop at the end of the "
-"relative domain name of the responsible name server. The first entry in "
-"the line is the primary name server for the zone."
-msgstr ""
-"Der FQDN mit abschließendem Punkt oder der relative Domänenname der "
-"zuständigen Nameserver. Der erste Eintrag in der Liste ist der primäre "
-"Nameserver der Zone."
-
-#: ../../ip-config/dns.rst:201
+#: ../../ip-config/dns.rst:160
 msgid "DNS UMC module forward lookup - Start of authority tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter Start of Authority"
 
-#: ../../ip-config/dns.rst:205 ../../ip-config/dns.rst:500
-msgid "*Start of authority* tab"
-msgstr "Reiter *Start of Authority*"
-
-#: ../../ip-config/dns.rst:212 ../../ip-config/dns.rst:507
-msgid "Contact person"
-msgstr "Verantwortliche Person"
-
-#: ../../ip-config/dns.rst:213
-msgid "The email address of the person responsible for administrating the zone."
-msgstr ""
-"Die E-Mail-Adresse der für die Verwaltung der Zone verantwortlichen "
-"Person."
-
-#: ../../ip-config/dns.rst:215 ../../ip-config/dns.rst:515
-msgid "Serial number"
-msgstr "Seriennummer"
-
-#: ../../ip-config/dns.rst:216
+#: ../../ip-config/dns.rst:162
 msgid ""
-"Other DNS servers use the serial number to recognize whether zone data "
-"have changed. The secondary name server compares the serial number of its"
-" copy with that on the primary name server. If the serial number of the "
-"secondary is lower than that on the primary, the secondary copies the "
-"changed data."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-forwardzone-soa-tab` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Anhand der Seriennummer erkennen andere DNS-Server, ob sich Zonendaten "
-"geändert haben. Der sekundäre Nameserver vergleicht die Seriennummer "
-"seiner Kopie mit der auf dem primären Nameserver. Ist die Seriennummer "
-"auf dem sekundären Nameserver niedriger als auf dem primären Nameserver, "
-"so kopiert der sekundäre Nameserver die geänderten Daten."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-forwardzone-soa-tab` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/dns.rst:222
-msgid "There are two commonly used patterns for this serial number:"
-msgstr "Es gibt zwei häufig verwendete Muster für die Seriennummer:"
-
-#: ../../ip-config/dns.rst:224
-msgid "Start with ``1`` and increment the serial number with each change."
-msgstr ""
-"Beginn mit ``1`` unter Inkrementierung der Seriennummer bei jeder "
-"Änderung."
-
-#: ../../ip-config/dns.rst:226
-msgid ""
-"By including the date the number can be entered in the format "
-"``YYYYMMDDNN``, where"
-msgstr ""
-"Unter Einbeziehung des Datums kann die Zahl im Format ``JJJJMMTTNN`` "
-"eingegeben werden, wobei"
-
-#: ../../ip-config/dns.rst:229
-msgid "``Y`` stands for year,"
-msgstr "``J`` steht für Jahr,"
-
-#: ../../ip-config/dns.rst:230
-msgid "``M`` for month,"
-msgstr "``M`` steht für Monat,"
-
-#: ../../ip-config/dns.rst:231
-msgid "``D`` for day and"
-msgstr "``T`` steht für Tag"
-
-#: ../../ip-config/dns.rst:232
-msgid "``N`` for the number of the change of this day."
-msgstr "``N`` steht für die Nummer der Änderung an diesem Tag steht."
-
-#: ../../ip-config/dns.rst:234
-msgid ""
-"If the serial number is not changed manually, it will be increased "
-"automatically with every change."
-msgstr ""
-"Wird die Seriennummer nicht von Hand geändert, wird sie automatisch bei "
-"jeder Änderung inkrementiert."
-
-#: ../../ip-config/dns.rst:237 ../../ip-config/dns.rst:519
-msgid "Refresh interval"
-msgstr "Aktualisierungsintervall"
-
-#: ../../ip-config/dns.rst:238
-msgid ""
-"The time span in seconds after which the secondary name server checks "
-"that its copy of the zone data is up-to-date."
-msgstr ""
-"Die Zeitspanne in Sekunden, nach der der sekundäre Nameserver überprüft, "
-"ob seine Kopie der Zonendaten noch aktuell ist."
-
-#: ../../ip-config/dns.rst:241 ../../ip-config/dns.rst:523
-msgid "Retry interval"
-msgstr "Intervall für erneute Versuche"
-
-#: ../../ip-config/dns.rst:242
-msgid ""
-"The time span in seconds after which the secondary name server tries "
-"again to check that its copy of the zone data is up-to-date after a "
-"failed attempt to update. This time span is usually set to be less than "
-"the update interval, but can also be equal."
-msgstr ""
-"Die Zeitspanne in Sekunden, nach der der sekundäre Nameserver nach einer "
-"fehlgeschlagenen Aktualisierungsanfrage erneut versucht, die Aktualität "
-"seiner Zonendaten-Kopie zu überprüfen. Üblicherweise wird diese "
-"Zeitspanne kürzer gewählt als das Aktualisierungsintervall, darf aber "
-"auch gleich lang sein."
-
-#: ../../ip-config/dns.rst:247 ../../ip-config/dns.rst:527
-msgid "Expiry interval"
-msgstr "Ablaufintervall"
-
-#: ../../ip-config/dns.rst:248
-msgid ""
-"The time span in seconds after which the copy of the zone data on the "
-"secondary becomes invalid if it could not be checked to be up-to-date."
-msgstr ""
-"Die Zeitspanne in Sekunden, nach der die Zonendaten-Kopie auf dem "
-"sekundären Nameserver ungültig wird, wenn ihre Aktualität nicht überprüft"
-" werden konnte."
-
-#: ../../ip-config/dns.rst:251
-msgid ""
-"For example, an expiry interval of one week means that the copy of the "
-"zone data becomes invalid when all requests to update in one week fail. "
-"In this case, it is assumed that the files are too outdated after the "
-"expiry interval date to be used further. The secondary name server can "
-"then no longer answer name resolution requests for this zone."
-msgstr ""
-"Bei einem Ablaufintervall von einer Woche bedeutet dies beispielsweise, "
-"dass die Zonendaten-Kopie ungültig wird, wenn eine Woche lang alle "
-"Aktualisierungsanfragen fehlgeschlagen sind. In dem Fall wird davon "
-"ausgegangen, dass die Daten nach der Ablaufzeit zu veraltet sind, um "
-"weiter verwendet zu werden. Der sekundäre Nameserver kann dann keine "
-"Namensauflösungsanfragen für diese Zone mehr beantworten."
-
-#: ../../ip-config/dns.rst:257
-msgid "Negative time to live"
-msgstr "Negative Time-to-Live"
-
-#: ../../ip-config/dns.rst:258
-msgid ""
-"The negative time to live specifies in seconds how long other servers can"
-" cache no-such-domain (NXDOMAIN) answers. This value cannot be set to "
-"more than 3 hours, the default value is 3 hours."
-msgstr ""
-"Die negative *Time-to-Live* gibt in Sekunden an, wie lange andere Server "
-"*No-such-Domain*-Antworten (NXDOMAIN) im Cache behalten dürfen. Der Wert "
-"darf nicht mehr als 3 Stunden betragen, der Standard sind 3 Stunden."
-
-#: ../../ip-config/dns.rst:265
+#: ../../ip-config/dns.rst:169
 msgid "DNS UMC module forward lookup - IP addresses tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter IP Adressen"
 
-#: ../../ip-config/dns.rst:269
-msgid "*IP addresses* tab"
-msgstr "Reiter *IP Adressen*"
-
-#: ../../ip-config/dns.rst:276 ../../ip-config/dns.rst:377
-msgid "IP addresses"
-msgstr "IP Adressen"
-
-#: ../../ip-config/dns.rst:277
+#: ../../ip-config/dns.rst:171
 msgid ""
-"This input field can be used to specify one or more IP addresses, which "
-"are output when the name of the zone is resolved. These IP addresses are "
-"queried by Microsoft Windows clients in AD compatible domains."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-forwardzone-ip-addresses-tab` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Mit diesem Eingabefeld können eine oder mehrere IP-Adressen angegeben "
-"werden, die zurückgegeben werden, wenn der Name der Zone aufgelöst wird. "
-"Die hier hinterlegten Adressen werden von Microsoft Windows-Clients in "
-"AD-kompatiblen Domänen abgefragt."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-forwardzone-ip-addresses-tab` in :cite:t"
+":`uv-nubus-manual`."
 
-#: ../../ip-config/dns.rst:284
+#: ../../ip-config/dns.rst:178
 msgid "DNS UMC module forward lookup - MX records tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter MX Records"
 
-#: ../../ip-config/dns.rst:288
-msgid "*MX records* tab"
-msgstr "Reiter *MX Records*"
-
-#: ../../ip-config/dns.rst:295 ../../ip-config/dns.rst:423
-msgid "Priority"
-msgstr "Priorität"
-
-#: ../../ip-config/dns.rst:296
+#: ../../ip-config/dns.rst:180
 msgid ""
-"A numerical value between 0 and 65535. If several mail servers are "
-"available for the MX record, an attempt will be made to engage the server"
-" with the lowest priority value first."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-forwardzone-mx-records-tab` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Ein Zahlenwert zwischen 0 und 65535. Stehen mehrere Mail-Server für den "
-"MX-Record zur Verfügung, wird zuerst versucht, den Server mit dem "
-"niedrigsten Prioritätswert in Anspruch zu nehmen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-forwardzone-mx-records-tab` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dns.rst:300
-msgid "Mail server"
-msgstr "Mail-Server"
-
-#: ../../ip-config/dns.rst:301
-msgid ""
-"The mail server responsible for this domain as fully qualified domain "
-"name with a full stop at the end. Only canonical names and no alias names"
-" can be used here."
-msgstr ""
-"Hier wird der für diese Domäne zuständige Mail-Server als "
-"vollqualifizierter Domänenname mit abschließendem Punkt eingetragen. Es "
-"dürfen nur kanonische Namen und keine Alias-Namen verwendet werden."
-
-#: ../../ip-config/dns.rst:308
+#: ../../ip-config/dns.rst:187
 msgid "DNS UMC module forward lookup - TXT records tab"
 msgstr "DNS UMC Modul Forward Lookup - Reiter TXT Records"
 
-#: ../../ip-config/dns.rst:312
-msgid "*TXT records* tab"
-msgstr "Reiter *TXT Recods*"
-
-#: ../../ip-config/dns.rst:319
-msgid "TXT record"
-msgstr "TXT Record"
-
-#: ../../ip-config/dns.rst:320
+#: ../../ip-config/dns.rst:189
 msgid ""
-"Descriptive text for this zone. Text records must not contain umlauts or "
-"other special characters."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-forwardzone-txt-records-tab` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Ein beschreibender Text zu dieser Zone. Text Records dürfen keine Umlaute"
-" oder sonstige Sonderzeichen enthalten."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-forwardzone-txt-records-tab` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dns.rst:326
+#: ../../ip-config/dns.rst:196
 msgid "CNAME record (Alias records)"
 msgstr "CNAME-Record (Alias-Records)"
 
-#: ../../ip-config/dns.rst:328
+#: ../../ip-config/dns.rst:198
 msgid ""
-"CNAME records / alias records are managed in the UMC module "
-":guilabel:`DNS` (see :ref:`central-user-interface`). To create another "
-"record, the forward lookup zone must be selected in the left column. "
-":menuselection:`Add --> DNS: Alias record` can be used to create a new "
-"record."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-records-alias` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"CNAME-Records / Alias-Records werden im UMC-Modul :guilabel:`DNS` "
-"verwaltet (siehe auch :ref:`central-user-interface`). Um einen weiteren "
-"Record anzulegen, muss in der linken Spalte eine Forward Lookup Zone "
-"ausgewählt werden.  Mit :menuselection:`Hinzufügen --> DNS: Alias Record`"
-" kann dann ein neuer Record angelegt werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-records-alias` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dns.rst:342
-msgid "Alias"
-msgstr "Alias"
-
-#: ../../ip-config/dns.rst:343
-msgid ""
-"The alias name as fully qualified domain name with a full stop at the end"
-" or as a relative domain name which should point to the canonical name."
-msgstr ""
-"Der Aliasname als FQDN mit abschließendem Punkt oder als relativer "
-"Domänenname, der auf den kanonischen Namen verweisen soll."
-
-#: ../../ip-config/dns.rst:346
-msgid "Canonical name"
-msgstr "Kanonischer Name"
-
-#: ../../ip-config/dns.rst:347
-msgid ""
-"The canonical name of the computer that the alias should point to, "
-"entered as a fully qualified domain name with a full stop at the end or a"
-" relative domain name."
-msgstr ""
-"Der kanonische Name des Rechners, auf den der Alias verweisen soll, "
-"angegeben als FQDN mit abschließendem Punkt oder als relativer "
-"Domänenname."
-
-#: ../../ip-config/dns.rst:354
+#: ../../ip-config/dns.rst:205
 msgid "A/AAAA records (host records)"
 msgstr "A/AAAA-Records (Host Records)"
 
-#: ../../ip-config/dns.rst:356
+#: ../../ip-config/dns.rst:207
 msgid ""
-"Host records are managed in the UMC module :guilabel:`DNS` (see :ref"
-":`central-user-interface`). To create another record, the forward lookup "
-"zone must be selected in the left column. :menuselection:`Add --> DNS: "
-"Host record` can be used to create a new record."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-records-host` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Host-Records werden im UMC-Modul :guilabel:`DNS` verwaltet (siehe auch "
-":ref:`central-user-interface`). Um einen weiteren Record anzulegen, muss "
-"in der linken Spalte eine Forward Lookup Zone ausgewählt werden. Mit "
-":menuselection:`Hinzufügen --> DNS: Host Record` kann dann ein neuer "
-"Record angelegt werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-records-host` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dns.rst:361
-msgid ""
-"When adding or editing a computer object a host record can be created "
-"automatically or edited."
-msgstr ""
-"Beim Hinzufügen oder Bearbeiten eines Rechner-Objekts kann ein Host "
-"Record automatisch erstellt oder geändert werden."
-
-#: ../../ip-config/dns.rst:374
-msgid ""
-"The FQDN with a full stop at the end or the relative domain name of the "
-"name server."
-msgstr ""
-"Der FQDN mit abschließendem Punkt oder der relative Domänenname des "
-"Rechners."
-
-#: ../../ip-config/dns.rst:378
-msgid "The IPv4 and/or IPv6 addresses to which the host record should refer."
-msgstr "Die IPv4 und/oder IPv6-Adressen, auf die der Host Record verweisen soll."
-
-#: ../../ip-config/dns.rst:381
-msgid ""
-"The time to live specifies in seconds how long these files may be cached "
-"by other DNS servers."
-msgstr ""
-"Die Time-to-Live gibt in Sekunden an, wie lange diese Daten von anderen "
-"DNS-Servern im Cache gespeichert werden dürfen."
-
-#: ../../ip-config/dns.rst:387
+#: ../../ip-config/dns.rst:214
 msgid "Service records"
 msgstr "Service Records"
 
-#: ../../ip-config/dns.rst:389
+#: ../../ip-config/dns.rst:216
 msgid ""
-"Service records are managed in the UMC module :guilabel:`DNS` (see :ref"
-":`central-user-interface`). To create another record, the forward lookup "
-"zone must be selected in the left column. :menuselection:`Add --> DNS: "
-"Service record` can be used to create a new record."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-records-service` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Service Records werden im Modul :guilabel:`DNS` verwaltet (siehe auch "
-":ref:`central-user-interface`). Um einen weiteren Record anzulegen, muss "
-"in der linken Spalte eine Forward Lookup Zone ausgewählt werden. Mit "
-":menuselection:`Hinzufügen --> DNS: Service Record` kann dann ein neuer "
-"Record angelegt werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-records-service` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/dns.rst:396 ../../ip-config/dns.rst:399
-msgid "Configuring a service record"
-msgstr "Konfiguration eines Service Records"
-
-#: ../../ip-config/dns.rst:401
+#: ../../ip-config/dns.rst:225
 msgid ""
-"A service record must always be assigned to a forward lookup zone and can"
-" therefore only be added to a forward lookup zone or a subordinate "
-"container."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-reversezone` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Ein Service Record muss immer einer Forward Lookup Zone zugewiesen sein "
-"und kann daher nur einer Forward Lookup Zone oder einem untergeordneten "
-"Container zugewiesen werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-reversezone` in :cite:t:`uv-nubus-manual`."
 
-#: ../../ip-config/dns.rst:413
-msgid "Service"
-msgstr "Dienst"
-
-#: ../../ip-config/dns.rst:414
-msgid "The name under which the service should be reachable."
-msgstr "Der Name, unter dem der Dienst erreichbar sein soll."
-
-#: ../../ip-config/dns.rst:416
-msgid "Protocol"
-msgstr "Protokoll"
-
-#: ../../ip-config/dns.rst:417
-msgid ""
-"The protocol via which the record can be accessed (``TCP``, ``UDP``, "
-"``MSDCS`` or ``SITES``)."
-msgstr ""
-"Das Protokoll, über das der Record erreichbar ist (``TCP``, ``UDP``, "
-"``MSDCS`` oder ``SITES``)."
-
-#: ../../ip-config/dns.rst:420
-msgid "Extension"
-msgstr "Erweiterung"
-
-#: ../../ip-config/dns.rst:421
-msgid "This input field can be used to specify additional parameters."
-msgstr "Über dieses Eingabefeld können weitere Parameter übergeben werden."
-
-#: ../../ip-config/dns.rst:424
-msgid ""
-"A whole number between 0 and 65535. If more than one server offer the "
-"same service, the client will approach the server with the lowest "
-"priority value first."
-msgstr ""
-"Eine ganze Zahl zwischen 0 und 65535. Stellen mehrere Server denselben "
-"Dienst zur Verfügung, wendet sich der Client zuerst an den Server mit dem"
-" niedrigeren Prioritätswert."
-
-#: ../../ip-config/dns.rst:428
-msgid "Weighting"
-msgstr "Gewichtung"
-
-#: ../../ip-config/dns.rst:429
-msgid ""
-"A whole number between 0 and 65535. The weight function is used for load "
-"balancing between servers with the same priority. When more than one "
-"server offer the same service and have the same priority the load is "
-"distributed across the servers in relation to the weight function."
-msgstr ""
-"Eine ganze Zahl zwischen 0 und 65535. Die Gewichtung dient der "
-"Lastverteilung zwischen Servern mit gleicher Priorität. Wenn mehrere "
-"Server denselben Dienst zur Verfügung stellen und denselben "
-"Prioritätswert haben, wird die Last im Verhältnis der Gewichtungen auf "
-"die Server verteilt."
-
-#: ../../ip-config/dns.rst:434
-msgid ""
-"Example: ``Server1`` has a priority of ``1`` and a weight function of "
-"``1``, whilst ``Server2`` also has a priority of ``1``, but has a weight "
-"function of ``3``. In this case, ``Server2`` will be used three times as "
-"often as ``Server1``. The load is measured depending on the service, for "
-"example, as the number of requests or connection."
-msgstr ""
-"Beispiel: ``Server1`` hat eine Priorität von 1 und eine Gewichtung von 1,"
-" während ``Server2`` ebenfalls eine Priorität von 1, aber eine Gewichtung"
-" von 3 hat. In diesem Fall wird ``Server2`` dreimal so oft verwendet wie "
-"``Server1``. Die Belastung wird abhängig vom Dienst beispielsweise als "
-"Anzahl der Anfragen oder Verbindungen gemessen."
-
-#: ../../ip-config/dns.rst:440
-msgid "Port"
-msgstr "Port"
-
-#: ../../ip-config/dns.rst:441
-msgid ""
-"The port where the service can be reached on the server (valid value from"
-" 1 to 65535)."
-msgstr ""
-"Der Port, über den der Dienst auf dem Server zu erreichen ist (gültige "
-"Werte liegen zwischen 1 und 65535)."
-
-#: ../../ip-config/dns.rst:444
-msgid "Server"
-msgstr "Server"
-
-#: ../../ip-config/dns.rst:445
-msgid ""
-"The name of the server on which the service will be made available, as a "
-"fully qualified domain name with a full stop at the end or a relative "
-"domain name."
-msgstr ""
-"Der Name des Servers, auf dem der Dienst bereitgestellt wird, als FQDN "
-"mit abschließendem Punkt oder als relativer Domänenname."
-
-#: ../../ip-config/dns.rst:449
-msgid "Several servers can be entered for each service."
-msgstr ""
-"Für jeden Dienst können über die Auswahlbox auch mehrere Server "
-"eingetragen werden."
-
-#: ../../ip-config/dns.rst:452 ../../ip-config/dns.rst:485
-msgid ""
-"The time to live specifies how long these files may be cached by other "
-"DNS servers."
-msgstr ""
-"Die Time-to-Live gibt an, wie lange diese Daten von anderen DNS-Servern "
-"im Cache gespeichert werden dürfen."
-
-#: ../../ip-config/dns.rst:460
-msgid ""
-"A reverse lookup zone is used to resolve IP address into host names. They"
-" are managed in the UMC module :guilabel:`DNS`. To add another reverse "
-"lookup zone, select *All DNS zones* and :menuselection:`Add --> DNS: "
-"Reverse lookup zone`."
-msgstr ""
-"Eine Reverse Lookup Zone dient zur Umwandlung von IP-Adressen in "
-"Rechnernamen. Sie werden im UMC-Modul :guilabel:`DNS` verwaltet. Um eine "
-"weitere Reverse Lookup Zone anzulegen, muss *Alle DNS-Zonen* selektiert "
-"werden und :menuselection:`Hinzufügen --> DNS: Reverse Lookup Zone` "
-"ausgewählt werden."
-
-#: ../../ip-config/dns.rst:467
+#: ../../ip-config/dns.rst:232
 msgid "DNS UMC module reverse lookup - General tab"
 msgstr "DNS UMC Modul Reverse Lookup - Reiter Allgemein"
 
-#: ../../ip-config/dns.rst:478
-msgid "Subnet"
-msgstr "Subnetz"
-
-#: ../../ip-config/dns.rst:479
+#: ../../ip-config/dns.rst:234
 msgid ""
-"The IP address of the network for which the reverse lookup zone shall "
-"apply. For example, if the network in question consisted of the IP "
-"addresses ``192.0.2.0`` to ``192.0.2.255``, ``192.0.2`` should be "
-"entered."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-reversezone-general-tab` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Die IP-Adresse des Netzwerkes, für das die Reverse Lookup Zone gültig "
-"sein soll. Wenn beispielsweise das betreffende Netz aus den IP-Adressen "
-"``192.0.2.0`` bis ``192.0.2.255`` besteht, wäre ``192.0.2`` einzutragen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-reversezone-general-tab` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../ip-config/dns.rst:488
-msgid ""
-"Each DNS zone has at least one authoritative, primary name server whose "
-"information governs the zone. Subordinate servers synchronize themselves "
-"with the authoritative server via zone transfers. The entry which defines"
-" such a zone is called a SOA record in DNS terminology."
-msgstr ""
-"Jede DNS-Zone hat mindestens einen autoritativen, primären Nameserver, "
-"dessen Informationen die Zone regeln. Untergeordnete Server "
-"synchronisieren sich mit dem autoritativen Server über Zonentransfers. "
-"Der Eintrag, der eine solche Zone definiert, wird in der DNS-Terminologie"
-" als SOA Eintrag bezeichnet."
-
-#: ../../ip-config/dns.rst:496
+#: ../../ip-config/dns.rst:241
 msgid "DNS UMC module reverse lookup - Start of authority tab"
 msgstr "DNS UMC Modul Reverse Lookup - Reiter Start of Authority"
 
-#: ../../ip-config/dns.rst:508
+#: ../../ip-config/dns.rst:243
 msgid ""
-"The email address of the person responsible for administrating the zone "
-"(with a full stop at the end)."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-reversezone-soa-tab` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Die E-Mail-Adresse der für die Verwaltung der Zone verantwortlichen "
-"Person (mit abschließendem Punkt)."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-reversezone-soa-tab` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/dns.rst:512
-msgid ""
-"The fully qualified domain name with a full stop at the end or the "
-"relative domain name of the primary name server."
-msgstr ""
-"Der FQDN mit abschließendem Punkt oder der relative Domänenname der "
-"zuständigen Nameserver. Der erste Eintrag in der Liste ist der primäre "
-"Nameserver der Zone."
-
-#: ../../ip-config/dns.rst:516 ../../ip-config/dns.rst:520
-#: ../../ip-config/dns.rst:524 ../../ip-config/dns.rst:528
-#: ../../ip-config/dns.rst:532
-msgid ""
-"See the documentation on forward lookup zones in :ref:`networks-dns-"
-"forwardzone`."
-msgstr ""
-"Siehe die Dokumentation zu Forward Lookup Zonen in :ref:`networks-dns-"
-"forwardzone`."
-
-#: ../../ip-config/dns.rst:531
-msgid "Minimum time to live"
-msgstr "Minimum Time-to-Live"
-
-#: ../../ip-config/dns.rst:538
+#: ../../ip-config/dns.rst:250
 msgid "Pointer record"
 msgstr "Pointer Records"
 
-#: ../../ip-config/dns.rst:540
+#: ../../ip-config/dns.rst:252
 msgid ""
-"Pointer records are managed in the UMC module :guilabel:`DNS` (see :ref"
-":`central-user-interface`). To create another record, the reverse lookup "
-"zone must be selected in the left column. :menuselection:`Add --> DNS: "
-"Pointer record` can be used to create a new record."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-dns-records-pointer` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Pointer-Records werden im UMC-Modul :guilabel:`DNS` verwaltet (siehe auch"
-" :ref:`central-user-interface`). Um einen weiteren Record anzulegen, muss"
-" in der linken Spalte eine Reverse Lookup Zone ausgewählt werden. Mit "
-":menuselection:`Hinzufügen --> DNS: Pointer Record` kann dann ein neuer "
-"Record angelegt werden."
-
-#: ../../ip-config/dns.rst:555
-msgid ""
-"The last octet of the computer's IP address (depends on network prefix, "
-"see example below)."
-msgstr ""
-"Das letzte Oktett der IP-Adresse des Rechners (abhängig vom Netz-Präfix, "
-"siehe unten)."
-
-#: ../../ip-config/dns.rst:558
-msgid "Pointer"
-msgstr "Pointer"
-
-#: ../../ip-config/dns.rst:559
-msgid "The computer's fully qualified domain name with a full stop at the end."
-msgstr "Der FQDN des Rechners mit abschließendem Punkt."
-
-#: ../../ip-config/dns.rst:561
-msgid ""
-"In a network with a 24-bit network prefix (subnet mask ``255.255.255.0``)"
-" a pointer should be created for the ``client001`` computer with the IP "
-"address ``192.0.2.101``. ``101`` must then be entered in the *Address "
-"field* and ``client001.company.com.`` in *Pointer*."
-msgstr ""
-"In einem Netzwerk mit 24-Bit langem Netz-Präfix (Netzmaske "
-"``255.255.255.0``) soll für den Rechner ``client001`` mit der IP-Adresse "
-"``192.0.2.101`` ein Pointer angelegt werden. In das Feld *Adresse* ist "
-"dann ``101`` und in *Pointer* ``client001.firma.com.`` einzutragen."
-
-#: ../../ip-config/dns.rst:567 ../../ip-config/web-proxy.rst:89
-#: ../../ip-config/web-proxy.rst:124
-msgid "Example:"
-msgstr "Beispiel:"
-
-#: ../../ip-config/dns.rst:569
-msgid ""
-"For a network with a 16-bit network prefix (subnet mask ``255.255.0.0``) "
-"the last two octets should be entered in reverse order for this computer "
-"(here ``101.1``). ``client001.company.com.`` also needs to be entered in "
-"the *Pointer* field here."
-msgstr ""
-"Bei einem Netzwerk mit 16-Bit langem Netz-Präfix (Netzmaske "
-"``255.255.0.0``) müssten für diesen Rechner die letzten zwei Oktette in "
-"umgekehrter Reihenfolge (hier ``101.1``) eingetragen werden. In das Feld "
-"*Pointer* wäre auch hier ``client001.firma.com.`` einzutragen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns-records-pointer` in :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../ip-config/firewall-packet-filter.rst:7
 msgid "Packet filter with Univention Firewall"
@@ -2318,195 +1010,12 @@ msgstr "Netzwerk-Objekte"
 
 #: ../../ip-config/network-objects.rst:9
 msgid ""
-"*Network objects* can be used to compile available IP addresses; the next"
-" available address is then automatically specified during assignment to a"
-" computer."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-domain-network-management` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Mit *Netzwerk-Objekten* lassen sich Eigenschaften eines Netzes zentral "
-"erfassen, z.B. die verfügbaren IP-Adressen und die DNS- und DHCP-Zonen, "
-"in denen die Systeme angesiedelt sind."
-
-#: ../../ip-config/network-objects.rst:15
-#: ../../ip-config/network-objects.rst:18
-msgid "Creating a network object"
-msgstr "Erstellen eines Netzwerk-Objekts"
-
-#: ../../ip-config/network-objects.rst:20
-msgid ""
-"For example, it is possible to define a network object *Workstation "
-"network* which encompasses the IP addresses from ``192.0.2.0`` to "
-"``192.0.2.254``. If a Windows computer object is now created and only the"
-" network object selected, an internal check is performed for which IP "
-"addresses are already assigned and the next free one selected. This saves"
-" the administrator having to compile the available addresses manually. If"
-" a computer object is removed, the address is automatically reassigned."
-msgstr ""
-"So kann beispielsweise ein Netzwerk-Objekt *Produktivnetz* definiert "
-"werden, das sich über die IP-Adressen von ``192.0.2.0`` bis "
-"``192.0.2.254`` erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, "
-"muss nun nur das Netzwerk-Objekt ausgewählt werden. Es wird dann intern "
-"geprüft, welche der IP-Adressen des Netzes bereits vergeben sind und die "
-"nächste freie ausgewählt. Wird ein Rechnerobjekt entfernt, wird die "
-"Adresse automatisch wieder neu vergeben. Dies erspart dem Administrator "
-"eine manuelle Verwaltung verfügbarer Adressen."
-
-#: ../../ip-config/network-objects.rst:28
-msgid ""
-"Network objects are managed in the UMC module :guilabel:`Networks`. For "
-"more information about UMC, see :ref:`central-user-interface`."
-msgstr ""
-"Für Netzwerk-Objekte können sowohl IPv4-, als auch IPv6-Adressen "
-"verwendet werden. Für mehr Informationen über UMC, siehe :ref:`central-"
-"user-interface`."
-
-#: ../../ip-config/network-objects.rst:39
-msgid ""
-"The name of the network is entered in this input field. This is the name "
-"under which the network also appears in the computer management."
-msgstr ""
-"In diesem Eingabefeld ist der Name des Netzwerks einzutragen. Unter "
-"diesem Namen erscheint das Netzwerk auch in der Rechnerverwaltung."
-
-#: ../../ip-config/network-objects.rst:42
-msgid "Networks"
-msgstr "Netzwerk"
-
-#: ../../ip-config/network-objects.rst:43
-msgid ""
-"The network address is entered in dot-decimal form in this input field, "
-"e.g., ``192.0.2.0``."
-msgstr ""
-"In diesem Eingabefeld muss die Netzwerk-Adresse in Oktettschreibweise "
-"eingetragen werden, z.B. ``192.0.2.0``."
-
-#: ../../ip-config/network-objects.rst:46
-msgid "Netmask"
-msgstr "Netzmaske"
-
-#: ../../ip-config/network-objects.rst:47
-msgid ""
-"The network mask can be entered in this input field in network prefix or "
-"dot-decimal form. If the network mask is entered in dot-decimal form it "
-"will be subsequently be converted into the corresponding network prefix "
-"and later also shown so."
-msgstr ""
-"Die Netzmaske kann in diesem Eingabefeld wahlweise als Bitzahl "
-"(Netzpräfix) oder in Oktettschreibweise eingetragen werden. Wenn die "
-"Netzmaske in Oktettschreibweise eingegeben wird, wird sie automatisch in "
-"den entsprechenden Netzpräfix umgewandelt und später auch ausgegeben."
-
-#: ../../ip-config/network-objects.rst:52
-msgid "IP address range"
-msgstr "IP-Adressbereich"
-
-#: ../../ip-config/network-objects.rst:53
-msgid ""
-"One or more IP ranges can be configured here. When a host is assigned to "
-"this network at a later point, it will automatically be assigned the "
-"next, free IP address from the IP range entered here."
-msgstr ""
-"In diesem Feld können ein oder mehrere IP-Adressbereiche angelegt werden."
-" Wenn später ein Gerät diesem Netzwerk zugeordnet werden soll, wird dem "
-"Gerät automatisch die nächste freie IP-Adresse aus den hier eingetragenen"
-" IP-Adressbereichen zugewiesen."
-
-#: ../../ip-config/network-objects.rst:57
-msgid ""
-"When no IP range is entered here, the system automatically uses the range"
-" given by the network and the subnet mark entered."
-msgstr ""
-"Wenn an dieser Stelle kein IP-Adressbereich eingerichtet wird, verwendet "
-"das System automatisch den Bereich, der sich aus dem Netzwerk und der "
-"Netzmaske ergibt."
-
-#: ../../ip-config/network-objects.rst:60
-msgid ""
-"Forward lookup zones and reverse lookup zones can be selected in the sub "
-"menu *DNS preferences*. When a host is assigned to this network at a "
-"later point, a host record in the forward lookup zone and/or a pointer "
-"record in the reverse lookup zone will be created automatically."
-msgstr ""
-"Im Untermenü *DNS-Einstellungen* können Forward Lookup Zone und Reverse "
-"Lookup Zone ausgewählt werden. Wird später ein Gerät diesem Netzwerk "
-"zugeordnet, wird für das Gerät automatisch ein Host Record in der Forward"
-" Lookup Zone beziehungsweise ein Pointer Record in der Reverse Lookup "
-"Zone angelegt."
-
-#: ../../ip-config/network-objects.rst:65
-msgid ""
-"The zones are also administrated in the UMC module :guilabel:`DNS`, see "
-":ref:`networks-dns-forwardzone`."
-msgstr ""
-"Die Zonen werden ebenfalls im UMC-Modul :guilabel:`DNS` verwaltet, siehe "
-":ref:`networks-dns-forwardzone`."
-
-#: ../../ip-config/network-objects.rst:68
-msgid ""
-"If no zone is selected here, no DNS records are created during assignment"
-" to a computer object. However, the DNS entries can still be set "
-"manually."
-msgstr ""
-"Wird hier keine Zone ausgewählt, werden bei der Zuweisung zu einem "
-"Rechnerobjekt keine DNS-Records angelegt. Die DNS-Einträge können aber "
-"weiterhin manuell gesetzt werden."
-
-#: ../../ip-config/network-objects.rst:72
-msgid "DNS forward lookup zone"
-msgstr "Forward Lookup Zone für DNS-Einträge"
-
-#: ../../ip-config/network-objects.rst:73
-msgid ""
-"The forward lookup zone where hosts from the network should be added must"
-" be specified here. The resolution of the computer name to an IP address "
-"is performed via the zone."
-msgstr ""
-"Hier ist die Forward Lookup Zone anzugeben, in die Geräte aus diesem "
-"Netzwerk eingetragen werden sollen. Über diese Zone wird die Auflösung "
-"des Rechnernamens zu einer IP-Adresse durchgeführt."
-
-#: ../../ip-config/network-objects.rst:77
-msgid "DNS reverse lookup zone"
-msgstr "Reverse Lookup Zone für DNS-Einträge"
-
-#: ../../ip-config/network-objects.rst:78
-msgid ""
-"The reverse lookup zone where hosts from the network should be added must"
-" be specified here. The reverse resolution of the IP address back to a "
-"computer name is performed via the zone."
-msgstr ""
-"Hier ist die Reverse Lookup Zone anzugeben, in die Geräte aus diesem "
-"Netzwerk eingetragen werden sollen. Über diese Zone wird die "
-"Rückwärtsauflösung der IP-Adresse zu einem Rechnernamen durchgeführt."
-
-#: ../../ip-config/network-objects.rst:82
-msgid ""
-"A DHCP service can be assigned to the network in the sub menu *DHCP "
-"preferences*. When a host is assigned to this network at a later point, a"
-" DHCP computer entry with a fixed IP address will be created "
-"automatically in the selected DHCP service."
-msgstr ""
-"Im Untermenü *DHCP-Einstellungen* kann dem Netzwerk ein DHCP-Service "
-"zugeteilt werden. Wird später ein Gerät diesem Netzwerk zugeordnet, wird "
-"für das Gerät automatisch ein DHCP-Rechner-Eintrag mit der festen IP-"
-"Adresse unterhalb des gewählten DHCP-Services angelegt."
-
-#: ../../ip-config/network-objects.rst:87
-msgid ""
-"The DHCP service settings are also administrated in the UMC module "
-":guilabel:`DHCP`, see :ref:`networks-dhcp-general`."
-msgstr ""
-"Die DHCP-Service-Einstellungen werden ebenfalls im UMC-Modul "
-":guilabel:`DHCP` verwaltet, siehe :ref:`networks-dhcp-general`."
-
-#: ../../ip-config/network-objects.rst:90
-msgid ""
-"If no DHCP service is selected, no DHCP host record is created during "
-"assignment to a computer object. However, such an entry can also still be"
-" assigned manually."
-msgstr ""
-"Wird hier keine DHCP-Service ausgewählt, wird bei der Zuweisung zu einem "
-"Rechnerobjekt kein DHCP-Rechner-Eintrag angelegt. Ein solcher Eintrag "
-"kann aber weiterhin manuell zugewiesen werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-network-management` in :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../ip-config/radius.rst:7
 msgid "RADIUS"
@@ -3531,6 +2040,10 @@ msgstr ""
 "werden. Dabei muss die CIDR-Notation verwendet werden, mehrere Netzwerke "
 "sind durch Leerzeichen zu trennen."
 
+#: ../../ip-config/web-proxy.rst:89 ../../ip-config/web-proxy.rst:124
+msgid "Example:"
+msgstr "Beispiel:"
+
 #: ../../ip-config/web-proxy.rst:91
 msgid ""
 "$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
@@ -3727,4 +2240,3 @@ msgstr ""
 "Mit der |UCSUCRV| :envvar:`squid/auth/allowed_groups` kann der Zugriff "
 "auf eine oder mehrere Gruppen beschränkt werden. Bei Angabe mehrerer "
 "Gruppen sind diese durch ein Semikolon zu trennen."
-
