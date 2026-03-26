@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-06 14:02+0000\n"
-"PO-Revision-Date: 2025-11-06 15:04+0100\n"
+"POT-Creation-Date: 2026-03-27 12:22+0000\n"
+"PO-Revision-Date: 2026-03-27 13:23+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../computers/basic-system-services.rst:7
 msgid "Basic system services"
@@ -350,8 +350,10 @@ msgstr ""
 ":program:`Logrotate`. Diese Logdateien haben globale und spezifische "
 "Einstellungen für :program:`Logrotate`. Die |UCSUCRV| :samp:`logrotate"
 "/listener-modules/{<directive>}` konfiguriert die globalen Einstellungen."
-" Die `logrotate(8) <https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_ Dokumentation beschreibt die Funktionalität "
-"im Detail. UCS unterstützt folgende Direktiven:"
+" Die `logrotate(8) "
+"<https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_ "
+"Dokumentation beschreibt die Funktionalität im Detail. UCS unterstützt "
+"folgende Direktiven:"
 
 #: ../../computers/basic-system-services.rst:183
 msgid "Default value: ``weekly``"
@@ -1011,981 +1013,193 @@ msgstr "Verfügbare Kernel-Varianten"
 
 #: ../../computers/configure-hardware.rst:14
 msgid ""
-"The standard kernel in UCS 5.0 is based on the Linux kernel 4.19. In "
-"principle, there are three different types of kernel packages:"
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-kernel-packages` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Der Standard-Kernel in UCS 5.0 basiert auf dem Linux-Kernel 4.19.  "
-"Prinzipiell sind drei verschiedene Arten von Kernel-Paketen zu "
-"unterscheiden:"
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-kernel-packages` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:17
-msgid ""
-"A *kernel image package* provides an executable kernel which can be "
-"installed and started."
-msgstr ""
-"Ein *Kernel-Image-Paket* stellt einen lauffähigen Kernel bereit, der "
-"installiert und gestartet werden kann."
-
-#: ../../computers/configure-hardware.rst:20
-msgid ""
-"A *kernel source package* provides the source code for a kernel. From "
-"this source, a tailor-made kernel can be created, and functions can be "
-"activated or deactivated."
-msgstr ""
-"Ein *Kernel-Source-Paket* stellt den Quellcode für einen Kernel bereit. "
-"Aus diesem kann beispielsweise ein angepasster Kernel erstellt werden, "
-"indem Funktionen aktiviert oder deaktiviert werden können."
-
-#: ../../computers/configure-hardware.rst:24
-msgid ""
-"A *kernel header package* provides interface information which is "
-"required by external packages if these have to access kernel functions. "
-"This information is usually necessary for compiling external kernel "
-"drivers."
-msgstr ""
-"Ein *Kernel-Header-Paket* stellt Schnittstellen-Informationen bereit, die"
-" von externen Paketen benötigt werden, wenn diese auf Kernel-Funktionen "
-"zugreifen müssen. Sie werden typischerweise zum Übersetzen externer "
-"Kernel-Treiber benötigt."
-
-#: ../../computers/configure-hardware.rst:28
-msgid ""
-"Normally, the operation of a UCS system only requires the installation of"
-" one kernel image package."
-msgstr ""
-"Im Regelfall ist für den Betrieb eines UCS-Systems nur die Installation "
-"eines Kernel-Image-Paketes notwendig."
-
-#: ../../computers/configure-hardware.rst:31
-msgid ""
-"Several kernel versions can be installed in parallel. This makes sure "
-"that there is always an older version available to which can be reverted "
-"in case of an error. So-called meta packages are available which always "
-"refer to the kernel version currently recommended for UCS. In case of an "
-"update, the new kernel version will be installed, making it possible to "
-"keep the system up to date at any time."
-msgstr ""
-"Mehrere Kernel-Varianten können parallel installiert sein. Dies stellt "
-"sicher, dass im Fehlerfall immer auf eine ältere Variante zurückgegriffen"
-" werden kann. Um ein System trotzdem immer auf dem jeweils aktuellen "
-"Stand halten zu können, werden sogenannte Meta-Pakete bereit gestellt, "
-"die immer auf die aktuell für UCS empfohlene Kernel-Version verweisen und"
-" diese im Update-Fall jeweils nachinstallieren."
-
-#: ../../computers/configure-hardware.rst:41
+#: ../../computers/configure-hardware.rst:21
 msgid "Hardware drivers / kernel modules"
 msgstr "Treiber-Management / Kernel-Module"
 
-#: ../../computers/configure-hardware.rst:43
+#: ../../computers/configure-hardware.rst:23
 msgid ""
-"The boot process occurs in two steps using an initial RAM disk (*initrd* "
-"for short). This is composed of an archive with further drivers and "
-"programs."
+"The content of this section moved to the following locations in in "
+":cite:t:`uv-ucs-operation`:"
 msgstr ""
-"Der Boot-Prozess erfolgt zweistufig unter Verwendung einer Initial RAM "
-"Disk (kurz *initrd*). Diese besteht aus einem Archiv mit weiteren "
-"Treibern und Programmen."
+"Der Inhalt dieses Abschnitts ist umgezogen in folgende Abschnitte in  "
+":cite:t:`uv-ucs-operation` umgezogen:"
 
-#: ../../computers/configure-hardware.rst:46
+#: ../../computers/configure-hardware.rst:26
 msgid ""
-"The GRUB boot manager (see :ref:`grub`) loads the kernel and the *initrd*"
-" into the system memory, where the *initrd* archive is extracted and "
-"mounted as a temporary root file system. The real root file system is "
-"then mounted from this, before the temporary archive is removed and the "
-"system start implemented."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"loading`"
 msgstr ""
-"Der Boot-Manager GRUB (siehe :ref:`grub`) lädt den Kernel und die "
-"*initrd* in den Arbeitsspeicher, wo das *initrd*-Archiv entpackt und als "
-"temporäres Root-Dateisystem gemountet wird. Aus diesem wird dann das "
-"tatsächliche Root-Dateisystem eingebunden, woraufhin abschließend das "
-"temporäre Archiv wieder entfernt und der Systemstart eingeleitet wird."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"loading`"
 
-#: ../../computers/configure-hardware.rst:51
+#: ../../computers/configure-hardware.rst:27
 msgid ""
-"The drivers to be used are recognized automatically during system start "
-"and loaded via the :program:`udev` device manager. At this point, the "
-"necessary device links are also created under :file:`/dev/`. If drivers "
-"are not recognized (which can occur if no respective hardware IDs are "
-"registered or hardware is employed which cannot be recognized "
-"automatically, e.g., ISA boards), kernel modules to be loaded can be "
-"added via |UCSUCRV| :envvar:`kernel/modules`. If more than one kernel "
-"module is to be loaded, these must be separated by a semicolon. The "
-"|UCSUCRV| :envvar:`kernel/blacklist` can be used to configure a list of "
-"one or more kernel modules for which automatic loading should be "
-"prevented. Multiple entries must also be separated by a semicolon."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"detection`"
 msgstr ""
-"Die zu verwendenden Treiber werden beim Systemstart automatisch erkannt "
-"und durch den Device Manager :program:`udev` geladen.  Dabei werden "
-"außerdem die notwendigen System-Verknüpfungen unter :file:`/dev/` "
-"angelegt. Wenn Treiber nicht erkannt werden (was vorkommen kann, wenn "
-"keine entsprechenden Hardware-IDs registriert sind oder Hardware "
-"verwendet wird, die nicht automatisch erkannt werden kann, etwa ISA-"
-"Steckkarten), so können zu ladende Kernel-Module durch die |UCSUCRV| "
-":envvar:`kernel/modules` hinzugefügt werden. Soll mehr als ein Kernel-"
-"Modul geladen werden, so müssen diese durch ein Semikolon voneinander "
-"getrennt werden. Mit der |UCSUCRV| :envvar:`kernel/blacklist` kann eine "
-"Liste von einem oder mehreren Kernel-Modulen konfiguriert werden, für die"
-" das automatische Laden verhindert wird. Mehrere Einträge müssen "
-"ebenfalls durch ein Semikolon getrennt werden."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"detection`"
 
-#: ../../computers/configure-hardware.rst:62
+#: ../../computers/configure-hardware.rst:28
 msgid ""
-"Unlike other operating systems, the Linux kernel (with very few "
-"exceptions) provides all drivers for hardware components from one source."
-" For this reason, it is not normally necessary to install drivers from "
-"external sources subsequently."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"standard`"
 msgstr ""
-"Im Gegensatz zu anderen Betriebssystemen liefert der Linux-Kernel (von "
-"wenigen Ausnahmen abgesehen) alle Treiber für Komponenten aus einer Hand."
-" Im Regelfall ist es deshalb nicht notwendig Treiber aus externen Quellen"
-" nachzuinstallieren."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"standard`"
 
-#: ../../computers/configure-hardware.rst:67
+#: ../../computers/configure-hardware.rst:29
 msgid ""
-"However, if external drivers or kernel modules are required, they can be "
-"integrated via the DKMS framework (Dynamic Kernel Module Support). This "
-"provides a standardized interface for kernel sources, which are then "
-"built automatically for every installed kernel (insofar as the source "
-"package is compatible with the respective kernel). For this to happen, "
-"the kernel header package :program:`linux-headers-amd64` must be "
-"installed in addition to the :program:`dkms` package. Please note that "
-"not all the external kernel modules are compatible with all kernels."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"external`"
 msgstr ""
-"Wenn doch externe Treiber oder Kernelmodule benötigt werden, können diese"
-" über *Dynamic Kernel Module Support* (DKMS) eingebunden werden. Es "
-"stellt eine standardisierte Schnittstelle für Kernelquellen bereit und "
-"erlaubt es, Module automatisch für jeden installierten Kernel zu "
-"übersetzen. Dazu müssen neben dem Paket :program:`dkms` auch die Kernel-"
-"Header-Pakete :program:`linux-headers-amd64` für die gewünschten Kernel "
-"installiert werden. Zu beachten ist, dass nicht alle externen "
-"Kernelmodule mit allen Kernel kompatibel sind."
+":external+uv-ucs-operation:ref:`system-administration-kernel-modules-"
+"external`"
 
-#: ../../computers/configure-hardware.rst:79
+#: ../../computers/configure-hardware.rst:34
 msgid "GRUB boot manager"
 msgstr "GRUB Boot-Manager"
 
-#: ../../computers/configure-hardware.rst:81
+#: ../../computers/configure-hardware.rst:36
 msgid ""
-"In |UCSUCS| GNU GRUB 2 is used as the boot manager. GRUB provides a menu "
-"which allows the selection of a Linux kernel or another operating system "
-"to be booted. GRUB can also access file systems directly and can thus, "
-"for example, load another kernel in case of an error."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-boot-manager` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Als Boot-Manager wird in |UCSUCS| GNU GRUB 2 verwendet. GRUB stellt ein "
-"Auswahlmenü bereit, aus dem eine zu bootende Linux-Kernel-Variante oder "
-"ein weiteres Betriebssystem ausgewählt werden kann. GRUB kann auch direkt"
-" auf Dateisysteme zugreifen, so dass im Fehlerfall etwa ein abweichender "
-"Kernel geladen werden kann."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-boot-manager` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:88
-#: ../../computers/configure-hardware.rst:91
-msgid "GRUB menu"
-msgstr "GRUB-Auswahlmenü"
-
-#: ../../computers/configure-hardware.rst:93
-msgid ""
-"GRUB gets loaded in a two-step procedure; in the Master Boot Record of "
-"the hard drive, the Stage 1 loader is written which refers to the data of"
-" Stage 2, which in turn manages the rest of the boot procedure."
-msgstr ""
-"GRUB wird in einem zweistufigen Verfahren geladen: in den Master Boot "
-"Record der Festplatte wird der Stage 1-Loader geschrieben, der auf die "
-"Daten der Stage 2 verweist, welche den Großteil des übrigen Boot-Vorgangs"
-" übernimmt."
-
-#: ../../computers/configure-hardware.rst:97
-msgid ""
-"The selection of kernels to be started in the boot menu is stored in the "
-"file :file:`/boot/grub/grub.cfg`. This file is generated automatically; "
-"all installed kernel packages are available for selection. The memory "
-"test program :command:`Memtest86+` can be started by selecting the option"
-" :guilabel:`Memory test` and performs a consistency check for the main "
-"memory."
-msgstr ""
-"Die Auswahl der zu startenden Kernel im Boot-Menü wird in der Datei "
-":file:`/boot/grub/grub.cfg` abgelegt. Diese Datei wird automatisch "
-"generiert, es stehen alle installierten Kernel-Pakete zur Auswahl. Durch "
-"Auswahl der Option :guilabel:`Memory test` kann das Speicher-Testprogramm"
-" :command:`Memtest86+` gestartet werden, das Konsistenzprüfungen auf dem "
-"Arbeitsspeicher durchführt."
-
-#: ../../computers/configure-hardware.rst:103
-msgid ""
-"There is a five second waiting period during which the kernel to be "
-"booted can be selected. This delay can be changed via the |UCSUCRV| "
-":envvar:`grub/timeout`."
-msgstr ""
-"Standardmäßig wird fünf Sekunden auf die Auswahl des zu bootenden Kernels"
-" gewartet. Durch die |UCSUCRV| :envvar:`grub/timeout` kann ein "
-"abweichender Wert in Sekunden konfiguriert werden."
-
-#: ../../computers/configure-hardware.rst:106
-#, python-brace-format
-msgid ""
-"By default a screen size of ``800x600`` pixels and 16 Bit color depth is "
-"preset. A different value can be set via the |UCSUCRV| "
-":envvar:`grub/gfxmode`. Only resolutions are supported which can be set "
-"via VESA BIOS extensions. A list of available modes can be found in `VESA"
-" BIOS Extensions <w-vesa-bios-extensions_>`_. The input must be specified"
-" in the format :samp:`{HORIZONTAL}x{VERTICAL}@{COLOURDEPTHBIT}`, so for "
-"example ``1024x768@16``."
-msgstr ""
-"In der Grundeinstellung wird in einen ``800x600`` Pixel großen Bildschirm"
-" unter 16 Bit Farbtiefe gewechselt. Durch die |UCSUCRV| "
-":envvar:`grub/gfxmode` kann ein anderer Modus ausgewählt werden. Es "
-"werden nur Auflösungen unterstützt, die über VESA BIOS Extentions gesetzt"
-" werden können. Eine Liste der verfügbaren Modi findet sich unter `VESA "
-"BIOS Extensions <w-vesa-bios-extentions_>`_. Die Eingabe erfolgt im "
-"Format :samp:`{HORIZONTAL}x{VERTIKAL}@{FARBTIEFEBIT}`, also z.B. "
-"``1024x768@16``."
-
-#: ../../computers/configure-hardware.rst:114
-msgid ""
-"Kernel options for the started Linux kernel can be passed with the "
-"|UCSUCRV| :envvar:`grub/append`. |UCSUCRV| :envvar:`grub/xenhopt` can be "
-"used to pass options to the Xen hypervisor."
-msgstr ""
-"Kernel-Optionen für die gestarteten Linux-Kernel können mit der |UCSUCRV|"
-" :envvar:`grub/append` übergeben werden. Mit der :envvar:`grub/xenhopt` "
-"können Optionen an den Xen-Hypervisor übergeben werden."
-
-#: ../../computers/configure-hardware.rst:118
-msgid ""
-"The graphic representation of the boot procedure - the so-called splash "
-"screen - can be deactivated by setting |UCSUCRV| "
-":envvar:`grub/bootsplash` to ``nosplash``."
-msgstr ""
-"Die grafische Darstellung während des Bootvorgangs - der sogenannte "
-"Splash-Screen - kann durch Setzen der |UCSUCRV| :envvar:`grub/bootsplash`"
-" auf ``nosplash`` deaktiviert werden."
-
-#: ../../computers/configure-hardware.rst:125
+#: ../../computers/configure-hardware.rst:43
 msgid "Network configuration"
 msgstr "Netzwerk Konfiguration"
 
-#: ../../computers/configure-hardware.rst:127
+#: ../../computers/configure-hardware.rst:45
 msgid ""
-"The configuration of network interfaces can be adjusted with the UMC "
-"module :guilabel:`Network settings`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Die Konfiguration von Netzwerk-Interfaces kann über das UMC-Modul "
-":guilabel:`Netzwerk-Einstellungen` angepasst werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:130
-msgid ""
-"The configuration is saved in |UCSUCR| variables, which can also be set "
-"directly. These variables are listed in the individual sections."
-msgstr ""
-"Die Konfiguration wird in |UCSUCR|-Variablen gespeichert, die auch direkt"
-" gesetzt werden können. Die Variablen sind in den einzelnen Abschnitten "
-"aufgeführt."
-
-#: ../../computers/configure-hardware.rst:135
-#: ../../computers/configure-hardware.rst:138
-msgid "Configuring the network settings"
-msgstr "Konfiguration der Netzwerkeinstellungen"
-
-#: ../../computers/configure-hardware.rst:140
-#, python-brace-format
-msgid ""
-"All the network cards available in the system are listed under *IPv4 "
-"network devices* and *IPv6 network devices* (only network interfaces in "
-"the :samp:`eth{X}` scheme are shown)."
-msgstr ""
-"Unter *IPv4-Netzwerkgeräte* und *IPv6-Netzwerkgeräte* werden alle im "
-"System verfügbaren Netzwerkkarten aufgeführt (es werden nur "
-"Netzwerkinterfaces im Schema :samp:`eth{X}` dargestellt)."
-
-#: ../../computers/configure-hardware.rst:144
-msgid ""
-"Network interfaces can be configured for IPv4 and/or IPv6. IPv4 addresses"
-" have a 32-bit length and are generally written in four blocks in decimal"
-" form (e.g., ``192.0.2.10``), whereas IPv6 addresses are four times as "
-"long and typically written in hexadecimal form (e.g., "
-"``2001:0DB8:FE29:DE27:0000:0000:0000:0000``)."
-msgstr ""
-"Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert werden."
-" IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier Blöcken"
-" in Dezimalschreibweise dargestellt (z.B. ``192.0.2.10``), während "
-"IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal "
-"dargestellt werden (z.B. ``2001:0DB8:FE29:DE27:0000:0000:0000:0000``)."
-
-#: ../../computers/configure-hardware.rst:152
+#: ../../computers/configure-hardware.rst:52
 msgid "Configuration of IPv4 addresses"
 msgstr "Konfiguration von IPv4-Adressen"
 
-#: ../../computers/configure-hardware.rst:154
+#: ../../computers/configure-hardware.rst:54
 msgid ""
-"If the *Dynamic (DHCP)* option was not chosen, the IP address to be bound"
-" to the network card must be entered. In addition to the *IPv4 address* "
-"the *net mask* must also be entered. *DHCP query* is used to request an "
-"address from a DHCP server. Unless the *Dynamic (DHCP)* option is "
-"activated, the values received from the DHCP request are configured "
-"statically."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-ipv4` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Wenn die Option *Dynamisch (DHCP)* nicht gewählt wurde, muss die IP-"
-"Adresse eingegeben werden, die an die Netzwerkkarte gebunden werden soll."
-" Zusätzlich zur *IPv4-Adresse* muss die *Netzmaske* angegeben werden. Mit"
-" *DHCP-Anfrage* kann eine Adresse von einem DHCP-Server abgefragt werden."
-" Sofern die Option *Dynamisch (DHCP)* nicht aktiviert wird, werden die "
-"aus der DHCP-Anfrage erhaltenen Werte dann statisch konfiguriert."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-ipv4` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:160
-#, python-brace-format
-msgid ""
-"Server systems can also be configured via DHCP. This is necessary for "
-"some cloud providers, for example. If the assignment of an IP address for"
-" a server fails, a random link local address (:samp:`169.254.{x}.{y}`) is"
-" configured as a replacement."
-msgstr ""
-"Auch Server-Systeme können per DHCP konfiguriert werden. Dies ist z.B.  "
-"bei einigen Cloud-Anbietern notwendig. Schlägt die Vergabe einer IP-"
-"Adresse für einen Server fehl, wird ersatzweise eine zufällige Link-"
-"Local-Adresse (:samp:`169.254.{x}.{y}`) konfiguriert."
-
-#: ../../computers/configure-hardware.rst:165
-msgid ""
-"For UCS server systems the address received via DHCP is also written to "
-"the LDAP directory."
-msgstr ""
-"Die über DHCP erhaltene Adresse wird für UCS-Serversysteme auch in das "
-"LDAP-Verzeichnis geschrieben."
-
-#: ../../computers/configure-hardware.rst:170
-msgid ""
-"Not all services (e.g., DNS servers) are suitable for use on a DHCP-based"
-" server."
-msgstr ""
-"Nicht alle Dienste (z.B. DNS-Server) sind für eine Verwendung auf einem "
-"DHCP-basierten Server geeignet."
-
-#: ../../computers/configure-hardware.rst:173
-#: ../../computers/configure-hardware.rst:202
-#: ../../computers/configure-hardware.rst:216
-#: ../../computers/configure-hardware.rst:244
-msgid "UCR variables:"
-msgstr "UCR Variablen:"
-
-#: ../../computers/configure-hardware.rst:175
-msgid ":envvar:`interfaces/ethX/address`"
-msgstr ":envvar:`interfaces/ethX/address`"
-
-#: ../../computers/configure-hardware.rst:176
-msgid ":envvar:`interfaces/ethX/netmask`"
-msgstr ":envvar:`interfaces/ethX/netmask`"
-
-#: ../../computers/configure-hardware.rst:177
-msgid ":envvar:`interfaces/ethX/type`"
-msgstr ":envvar:`interfaces/ethX/type`"
-
-#: ../../computers/configure-hardware.rst:178
-msgid ":envvar:`gateway`"
-msgstr ":envvar:`gateway`"
-
-#: ../../computers/configure-hardware.rst:180
-msgid ""
-"Besides the physical interfaces, additional virtual interfaces can also "
-"be defined in the form :envvar:`interfaces/ethX_Y/setting`."
-msgstr ""
-"Neben den physischen Interfaces können auch zusätzliche virtuelle "
-"Interfaces in der Form :envvar:`interfaces/ethX_Y/setting` definiert "
-"werden."
-
-#: ../../computers/configure-hardware.rst:186
+#: ../../computers/configure-hardware.rst:61
 msgid "Configuration of IPv6 addresses"
 msgstr "Konfiguration von IPv6-Adressen"
 
-#: ../../computers/configure-hardware.rst:188
+#: ../../computers/configure-hardware.rst:63
 msgid ""
-"The IPv6 address can be configured in two ways: Stateless address "
-"autoconfiguration (SLAAC) is employed in the :guilabel:`Autoconfiguration"
-" (SLAAC)` configuration. In this, the IP address is assigned from the "
-"routers of the local network segment. Alternatively, the address can also"
-" be configured statically by entering the *IPv6 address* and *IPv6 "
-"prefix*."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-ipv6` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Die IPv6-Adresse kann auf zwei Arten konfiguriert werden: Bei der "
-":guilabel:`Automatischen Konfiguration (SLAAC)` kommt Stateless Address "
-"Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse von den "
-"Routern des lokalen Netzsegmentes zugewiesen. Alternativ kann die Adresse"
-" auch durch Angabe von *IPv6-Adresse* und *IPv6-Präfix* statisch "
-"konfiguriert werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-ipv6` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:194
-msgid ""
-"In contrast to DHCP, in SLAAC there is no assignment of additional data "
-"such as the DNS server to be used. There is an additional protocol for "
-"this (DHCPv6), which, however, is not employed in the dynamic assignment."
-" One network card can be used for different IPv6 addresses. The "
-"*Identifier* is a unique name for individual addresses. The main address "
-"always uses the identifier ``default``; functional identifiers such as "
-"``Interface mail server`` can be assigned for all other addresses."
-msgstr ""
-"Im Gegensatz zu DHCP wird bei SLAAC keine Zuweisung von weitergehenden "
-"Daten wie dem zu verwendenden DNS-Server durchgeführt. Hierfür gibt es "
-"mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen Zuweisung aber "
-"nicht zum Einsatz kommt. Eine Netzwerkkarte kann verschiedene "
-"IPv6-Adressen bedienen. Der *Bezeichner* ist ein eindeutiger Name für "
-"einzelne Adressen. Die Haupt-Adresse verwendet immer den Bezeichner "
-"*default*, für alle anderen Adressen können funktionale Bezeichner "
-"vergeben werden, z.B. ``Interface-Mailserver``."
-
-#: ../../computers/configure-hardware.rst:204
-msgid ":envvar:`interfaces/ethX/ipv6/address`"
-msgstr ":envvar:`interfaces/ethX/ipv6/address`"
-
-#: ../../computers/configure-hardware.rst:205
-msgid ":envvar:`interfaces/ethX/ipv6/prefix`,"
-msgstr ":envvar:`interfaces/ethX/ipv6/prefix`,"
-
-#: ../../computers/configure-hardware.rst:206
-msgid ":envvar:`interfaces/ethX/ipv6/acceptRA` activates SLAAC"
-msgstr ":envvar:`interfaces/ethX/ipv6/acceptRA` aktiviert SLAAC"
-
-#: ../../computers/configure-hardware.rst:208
-msgid ""
-"Further network settings can be performed under :guilabel:`Global network"
-" settings`."
-msgstr ""
-"Unter :guilabel:`Globale Netzwerk-Einstellungen` können weitere "
-"netzwerkbezogene Einstellungen vorgenommen werden."
-
-#: ../../computers/configure-hardware.rst:211
-msgid ""
-"The IP addresses for the standard gateways in the subnetwork can be "
-"entered under *Gateway (IPv4)* and *Gateway (IPv6)*. It is not obligatory"
-" to enter a gateway for IPv6, but recommended. A gateway configured here "
-"has preference over router advertisements, which might otherwise be able "
-"to change the route."
-msgstr ""
-"Unter *Gateway (IPv4)* und *Gateway (IPv6)* können die für die IP-Adresse"
-" im Subnetz eingesetzten Standard-Gateways für IPv4 und IPv6 eingegeben "
-"werden. Für IPv6 ist die Angabe eines Gateways nicht erforderlich, wird "
-"jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor "
-"Router Advertisements, die ansonsten die Route ändern könnten."
-
-#: ../../computers/configure-hardware.rst:218
-msgid ":envvar:`ipv6/gateway`"
-msgstr ":envvar:`ipv6/gateway`"
-
-#: ../../computers/configure-hardware.rst:223
+#: ../../computers/configure-hardware.rst:70
 msgid "Configuring the name servers"
 msgstr "Konfiguration der Nameserver"
 
-#: ../../computers/configure-hardware.rst:225
-msgid "There are two types of DNS servers:"
-msgstr "Zwei Typen von DNS-Servern werden unterschieden:"
-
-#: ../../computers/configure-hardware.rst:227
-msgid "External DNS Server"
-msgstr "Externer DNS Server"
-
-#: ../../computers/configure-hardware.rst:228
+#: ../../computers/configure-hardware.rst:72
 msgid ""
-"An *External DNS Server* is employed for the resolution of host names and"
-" addresses outside of the UCS domain, e.g., ``univention.de``. This is "
-"typically a name server operated by the internet provider."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-name-servers` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Ein *externer DNS-Server* wird für die Auflösung von Rechnernamen und "
-"Adressen außerhalb der UCS-Domäne verwendet, z.B. ``univention.de``.  "
-"Dies ist typischerweise ein Nameserver, der vom Internet Provider "
-"betrieben wird."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-name-servers` in :cite:t"
+":`uv-ucs-operation`."
 
-#: ../../computers/configure-hardware.rst:232
-msgid "Domain DNS Server"
-msgstr "Domänen DNS Server"
-
-#: ../../computers/configure-hardware.rst:233
-msgid ""
-"A *Domain DNS Server* is a local name server in the UCS domain. This name"
-" server usually administrates host names and IP addresses belonging to "
-"the UCS domain. If an address is not found in the local inventory, an "
-"external DNS server is automatically requested. The DNS data are saved in"
-" the LDAP directory service, i.e., all domain DNS servers deliver "
-"identical data."
-msgstr ""
-"Ein *Domänen-DNS-Server* ist ein lokaler Nameserver der UCS-Domäne.  Dort"
-" werden in der Regel die Rechnernamen und IP-Adressen der UCS-Domäne "
-"verwaltet. Wird eine Adresse im lokalen Datenbestand nicht aufgefunden, "
-"wird automatisch ein externer DNS-Server angefragt. Die DNS-Daten werden "
-"im LDAP-Verzeichnisdienst gespeichert, d.h. alle Domänen-DNS-Server "
-"liefern identische Daten aus."
-
-#: ../../computers/configure-hardware.rst:239
-msgid ""
-"A local DNS server is set up on the |UCSPRIMARYDN|, |UCSBACKUPDN| and "
-"|UCSREPLICADN| system roles. Here, you can configure which server should "
-"be primarily used for the name resolution by entering the *Domain DNS "
-"Server*."
-msgstr ""
-"Auf den Systemrollen |UCSPRIMARYDN|, |UCSBACKUPDN| und |UCSREPLICADN| "
-"läuft ein lokaler DNS-Server. Hier kann durch Angabe von *Domänen-DNS-"
-"Server* konfiguriert werden, welcher Server primär für die "
-"Namensauflösung verwendet wird."
-
-#: ../../computers/configure-hardware.rst:246
-msgid ":envvar:`nameserver1` to :envvar:`nameserver3`"
-msgstr ":envvar:`nameserver1` bis :envvar:`nameserver3`"
-
-#: ../../computers/configure-hardware.rst:247
-msgid ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`,"
-msgstr ":envvar:`dns/forwarder1` bis :envvar:`dns/forwarder3`,"
-
-#: ../../computers/configure-hardware.rst:252
+#: ../../computers/configure-hardware.rst:79
 msgid "Bridges, bonding, VLANs"
 msgstr "Bridges, Bonding, VLANs"
 
-#: ../../computers/configure-hardware.rst:254
+#: ../../computers/configure-hardware.rst:81
 msgid ""
-"UCS supports advanced network configurations using bridging, bonding and "
-"virtual networks (VLAN):"
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-advanced` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"UCS unterstützt komplexe Netzwerk-Konfigurationen mit Bridges, Bonding "
-"und VLAN-Netzen:"
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-advanced` in :cite:t:`uv-"
+"ucs-operation`."
 
-#: ../../computers/configure-hardware.rst:257
-msgid ""
-"Bridging is often used with virtualization to connect multiple virtual "
-"machines running on a host through one shared physical network interface."
-msgstr ""
-"Bridges werden oft von Virtualisierungslösungen verwendet, um "
-"virtualisierte Netzwerkkarten einer virtuellen Maschine mit der "
-"physischen Netzwerkkarte des Virtualisierungsservers zu verbinden."
-
-#: ../../computers/configure-hardware.rst:260
-msgid ""
-"Bonding allows failover redundancy for hosts with multiple physical "
-"network interfaces to the same network."
-msgstr ""
-"Bonding erhöht die Ausfallsicherheit, in dem mehrere physikalische "
-"Netzwerkkarten für den Zugriff auf ein Netzwerk gebündelt werden."
-
-#: ../../computers/configure-hardware.rst:263
-msgid ""
-"VLANs can be used to separate network traffic logically while using only "
-"one (or more) physical network interface."
-msgstr ""
-"VLANs können verwendet werden um den Netzwerkverkehr in einem "
-"physikalischen Netzwerk logisch auf ein oder mehrere virtuelle Unternetze"
-" aufzuteilen."
-
-#: ../../computers/configure-hardware.rst:269
+#: ../../computers/configure-hardware.rst:88
 msgid "Configure bridging"
 msgstr "Konfiguration von Bridging"
 
-#: ../../computers/configure-hardware.rst:276
+#: ../../computers/configure-hardware.rst:95
 msgid ""
-"The most common application scenario for *bridging* is the shared use of "
-"a physical network card by one or more virtual machines. Instead of one "
-"network card for each virtual machine and the virtualization server "
-"itself, all systems are connected via a shared uplink. A bridge can be "
-"compared with a switch implemented in software which is used to connect "
-"the individual hosts together. The hardware network adapter used is "
-"called a *bridge port*."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-bridge` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Der häufigste Anwendungsfall für *Bridging* ist die gemeinsame Nutzung "
-"einer physischen Netzwerkkarte durch eine oder mehrere virtuelle "
-"Maschinen. Anstatt eine Netzwerkkarte für jede virtuelle Maschine und den"
-" Virtualisierungsserver selbst zu verwenden, werden alle System durch "
-"einen gemeinsamen Uplink angebunden. Eine Bridge kann mit einem in "
-"Software realisierten Switch verglichen werden, über den einzelne Hosts "
-"miteinander verbunden werden. Die verwendete Hardware-Netzwerkkarte wird "
-"als *Bridge Port* bezeichnet."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-bridge` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:283
-msgid ""
-"In order to configure a bridge, ``Bridge`` must be selected as the "
-"*Interface type* under :guilabel:`Add`. The *Name of new bridge "
-"interface* can be selected at will. Then click on :guilabel:`Next`."
-msgstr ""
-"Um eine Bridge zu konfigurieren muss unter :guilabel:`Hinzufügen` als "
-"*Netzwerkgerätetyp* ``Bridge`` ausgewählt werden. Der *Name des neuen "
-"Bridge-Netzwerkgerätes* kann beliebig gewählt werden. Anschließend muss "
-"auf :guilabel:`Weiter` geklickt werden."
-
-#: ../../computers/configure-hardware.rst:287
-msgid ""
-"The physical network card intended to act as the uplink can be selected "
-"under *Bridge ports*. In the typical scenario of connecting virtual "
-"machines via just one network card, there is no risk of a network loop. "
-"If the bridge is used to connect two Ethernet networks, the spanning tree"
-" protocol (STP) is employed to avoid network loops. The Linux kernel only"
-" implements STP, not the Rapid STP or Multiple STP versions."
-msgstr ""
-"Unter *Bridge ports* kann die physische Netzwerkkarte ausgewählt werden, "
-"die den Uplink darstellt. Im typischen Anwendungsfall der Anbindung "
-"virtueller Maschinen über nur eine Netzwerkkarte kann keine Schleife "
-"auftreten. Wird die Bridge zur Verbindung zweier Netzwerkkarten "
-"verwendet, wird das Spanning Tree Protocol (STP) zur Vermeidung von "
-"Netzwerkschleifen eingesetzt. Der Linux-Kernel implementiert lediglich "
-"STP, nicht die Varianten Rapid STP oder Multiple STP."
-
-#: ../../computers/configure-hardware.rst:294
-msgid ""
-"The *Forwarding delay* setting configures the waiting time in seconds "
-"during which information is collected about the network topology when a "
-"connection is being made via STP. If the bridge is used for connecting "
-"virtual machines to one physical network card, STP should be disabled by "
-"setting the value to ``0``. Otherwise problems may occur when using DHCP,"
-" as the packets sent during the waiting time are not forwarded."
-msgstr ""
-"Die Einstellung *Forwarding delay* konfiguriert die Wartezeit in "
-"Sekunden, während der bei Aufbau einer Verbindung durch STP Informationen"
-" über die Netzwerktopologie gesammelt werden. Wird die Bridge zur "
-"Anbindung virtueller Maschinen über eine physische Netzwerkkarte "
-"verwendet, sollte STP dann deaktiviert werden, in dem der Wert auf ``0`` "
-"gesetzt wird. Ansonsten kann es zu Problemen bei der Verwendung von DHCP "
-"führen, da die während der Wartezeit versendeten Pakete nicht "
-"weitergeleitet werden."
-
-#: ../../computers/configure-hardware.rst:301
-msgid ""
-"The *Additional bridge options* input field can be used to configure "
-"arbitrary bridge parameters. This is only necessary in exceptional cases;"
-" an overview of the possible settings can be found on the manual page "
-"`bridge-utils-interfaces(5) <https://manpages.debian.org/bookworm/bridge-"
-"utils/bridge-utils-interfaces.5.en.html>`_."
-msgstr ""
-"Über das Eingabefeld *Weitere Geräteoptionen* können beliebige weitere "
-"Bridge-Parameter konfiguriert werden. Dies ist nur in Ausnahmefällen "
-"nötig, eine Übersicht der möglichen Einstellungen findet sich in der "
-"Manpage `bridge-utils-interfaces(5) <https://manpages.debian.org/bookworm/bridge-"
-"utils/bridge-utils-interfaces.5.en.html>`_."
-
-#: ../../computers/configure-hardware.rst:307
-msgid ""
-"Clicking on :guilabel:`Next` offers the possibility of optionally "
-"assigning the bridge an IP address. This interface can then also be used "
-"as a network interface for the virtualization host. The options are the "
-"same as described in :ref:`computers-ipv4` and :ref:`computers-ipv6`."
-msgstr ""
-"Nach einem Klick auf :guilabel:`Weiter` kann der Bridge optional eine IP-"
-"Adresse zugewiesen werden. Diese kann dann auch als Netzwerkinterface auf"
-" dem Virtualisierungshost verwendet werden. Die Einstellungsmöglichkeiten"
-" sind dieselben wie in :ref:`computers-ipv4` und :ref:`computers-ipv6` "
-"beschrieben."
-
-#: ../../computers/configure-hardware.rst:315
+#: ../../computers/configure-hardware.rst:102
 msgid "Configure bonding"
 msgstr "Konfiguration von Bonding"
 
-#: ../../computers/configure-hardware.rst:326
+#: ../../computers/configure-hardware.rst:112
 msgid ""
-"*Bonding* can be used to bundle two (or more) physical network cards in "
-"order to increase the performance or improve redundancy in failover "
-"scenarios."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-bonding` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Mit *Bonding* können zwei (oder mehr) physische Netzwerkkarten zur "
-"Erhöhung des Durchsatzes oder zur Verbesserung der Redundanz in "
-"Failoverszenarien gebündelt werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-bonding` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:329
-msgid ""
-"In order to configure a bonding, ``Bonding`` must be selected as the "
-"*Interface type* under :guilabel:`Add`. The *Name of the bonding "
-"interface* can be selected at will. Then click on :guilabel:`Next`."
-msgstr ""
-"Um ein Bonding zu konfigurieren muss unter :guilabel:`Hinzufügen` als "
-"*Netzwerkgerätetyp* ``Kanalbündelung (Bonding)`` ausgewählt werden. Der "
-"*Name des neuen Bonding-Netzwerkgerätes* kann beliebig gewählt werden. "
-"Anschließend muss auf :guilabel:`Weiter` geklickt werden."
-
-#: ../../computers/configure-hardware.rst:333
-msgid ""
-"The network cards which form part of the bonding interface are selected "
-"under *Bond slaves*. The network cards which should be given preference "
-"in failover scenarios (see below) can be selected via *Bond primary*."
-msgstr ""
-"Unter *Bond slaves* werden die Netzwerkkarten ausgewählt, die Teil des "
-"Bonding-Interfaces sind. Für das Failover-Szenarien (s.u.) können über "
-"*Bond primary* die Netzwerkkarten ausgewählt werden, die bevorzugt "
-"verwendet werden sollen."
-
-#: ../../computers/configure-hardware.rst:337
-msgid ""
-"The *Mode* configures the distribution of the network cards within the "
-"bonding:"
-msgstr ""
-"Der *Modus* konfiguriert die Verteilung der Netzwerkkarten innerhalb des "
-"Bondings:"
-
-#: ../../computers/configure-hardware.rst:339
-msgid ""
-"``balance-rr (0)`` distributes the packets equally over the available "
-"network interfaces within the bonding one after the other. This increases"
-" performance and improves redundancy. In order to use this mode, the "
-"network switches used must support *link aggregation*."
-msgstr ""
-"``balance-rr (0)`` verteilt die Pakete der Reihe nach gleichmässig auf "
-"die verfügbaren Netzwerkschnittstellen innerhalb des Bondings. Dies "
-"erhöht den Durchsatz und verbessert die Ausfallsicherheit. Zur Verwendung"
-" dieser Variante müssen die verwendeten Netzwerk-Switches *Link "
-"Aggregation* unterstützen."
-
-#: ../../computers/configure-hardware.rst:344
-msgid ""
-"When ``active-backup (1)`` is used, only one network card is active for "
-"each bonding interface (by default this is the network interface "
-"configured in *Bond primary*). If the primary network card fails, this is"
-" detected by the Linux kernel, which switches to another card in the "
-"bonding. This version increases redundancy. It can be used with every "
-"network switch."
-msgstr ""
-"Bei Verwendung von ``active-backup (1)`` ist nur jeweils eine "
-"Netzwerkkarte des Bonding-Interfaces aktiv (in der Grundeinstellung die "
-"Netzwerkschnittstelle aus *Bond primary*). Fällt die primäre "
-"Netzwerkkarte aus, wird dies durch den Linux-Kernel erkannt und auf eine "
-"der weiteren Karten des Bondings umgeschaltet. Diese Variante erhöht die "
-"Ausfallsicherheit. Sie kann mit jedem Netzwerk-Switch verwendet werden."
-
-#: ../../computers/configure-hardware.rst:350
-msgid ""
-"In addition, there are also a number of other bonding methods. These are "
-"generally only relevant for special cases and are described under `Linux "
-"Ethernet Bonding Driver HOWTO <kernel-bonding_>`_."
-msgstr ""
-"Darüber hinaus existieren noch weitere Bonding-Methoden. Diese sind in "
-"der Regel nur für Sonderfälle relevant und sind unter `Linux Ethernet "
-"Bonding Driver HOWTO <kernel-bonding_>`_ beschrieben."
-
-#: ../../computers/configure-hardware.rst:354
-msgid ""
-"The Media Independent Interface (MII) of the network cards is used to "
-"detect failed network adapters. The *MII link monitoring frequency* "
-"setting specifies the testing interval in milliseconds."
-msgstr ""
-"Zur Erkennung ausgefallener Netzwerkverbindungen wird das Media "
-"Independent Interface (MII) der Netzwerkkarten verwendet. Die Einstellung"
-" *MII link monitoring frequency* legt das Prüfintervall in Millisekunden "
-"fest."
-
-#: ../../computers/configure-hardware.rst:358
-msgid ""
-"All other bonding parameters can be configured under *Additional bonding "
-"options*. This is only necessary in exceptional cases; an overview of the"
-" possible settings can be found under `Linux Ethernet Bonding Driver "
-"HOWTO <kernel-bonding_>`_."
-msgstr ""
-"Unter *Weitere Bonding-Optionen* können beliebige weitere Bonding-"
-"Parameter konfiguriert werden. Dies ist nur in Ausnahmefällen nötig, eine"
-" Übersicht der möglichen Einstellungen findet sich in `Linux Ethernet "
-"Bonding Driver HOWTO <kernel-bonding_>`_."
-
-#: ../../computers/configure-hardware.rst:363
-msgid ""
-"Clicking on :guilabel:`Next` allows to optionally assign the bonding "
-"interface an IP address. If one of the existing network cards which form "
-"part of the bonding interface has already been assigned an IP address, "
-"this configuration will be removed. The options are the same as described"
-" in :ref:`computers-ipv4` and :ref:`computers-ipv6`."
-msgstr ""
-"Nach einem Klick auf :guilabel:`Weiter` kann dem Bonding-Interface eine "
-"IP-Adresse zugewiesen werden. Sollte eine der bestehenden Netzwerkkarten,"
-" die Bestandteil des Bonding-Interfaces sind, schon eine IP-Adresse "
-"zugewiesen haben, so wird diese Konfiguration entfernt. Die "
-"Einstellungsmöglichkeiten sind dieselben wie in :ref:`computers-ipv4` und"
-" :ref:`computers-ipv6` beschrieben."
-
-#: ../../computers/configure-hardware.rst:372
+#: ../../computers/configure-hardware.rst:119
 msgid "Configure VLAN"
 msgstr "Konfiguration VLAN"
 
-#: ../../computers/configure-hardware.rst:378
+#: ../../computers/configure-hardware.rst:125
 msgid ""
-"VLANs can be used to separate the network traffic in a physical network "
-"logically over one or more virtual subnetworks. Each of these virtual "
-"networks is an independent broadcast domain. This makes it e.g. possible "
-"to differentiate between a network for the employees and a guest network "
-"for visitors in a company network although they use the same physical "
-"cables. The individual end devices can be assigned to the VLANs via the "
-"configuration of the switches. The network switches must support 802.1q "
-"VLANs."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-network-vlan` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"VLANs können verwendet werden um den Netzwerkverkehr in einem physischen "
-"Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen.  "
-"Jedes dieser virtuellen Netze ist eine eigenständige Broadcast-Domäne.  "
-"So kann etwa in einem Firmennetzwerk das Netz für die Mitarbeiter von "
-"einem Gastnetz für Besucher unterschieden werden, obwohl die selbe "
-"physikalische Verkabelung genutzt wird. Die Zuordnung der einzelnen "
-"Endgeräte zu den VLANs erfolgt durch Konfiguration auf den verwendeten "
-"Switches. Die Netzwerk-Switches müssen 802.1q VLANs unterstützen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-network-vlan` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:386
-msgid ""
-"A distinction is made between two types of connections between network "
-"cards:"
-msgstr ""
-"Es werden zwei Typen von Verbindungen zwischen Netzwerkkarten "
-"unterschieden:"
-
-#: ../../computers/configure-hardware.rst:388
-msgid ""
-"A connection only transports packets from a specific VLAN. In this case, "
-"untagged data packets are transmitted."
-msgstr ""
-"Eine Verbindung transportiert nur Pakete eines spezifischen VLANs. In "
-"diesem Fall werden die Datenpakete ungetagged übertragen."
-
-#: ../../computers/configure-hardware.rst:391
-msgid ""
-"This is typically the case if only one individual end device is connected"
-" via this network connection."
-msgstr ""
-"Dies ist typischerweise der Fall, wenn nur ein einzelnes Endgerät über "
-"diese Netzwerkverbindung angebunden wird."
-
-#: ../../computers/configure-hardware.rst:394
-msgid ""
-"A connection transports packets from several VLANs. This is also referred"
-" to as a trunk link. In this case, each packet is assigned to a VLAN "
-"using a VLAN ID. During transmission between trunk links and specific "
-"VLANs, the network switch takes over the task of filtering the packets by"
-" means of the VLAN IDs as well as adding and removing the VLAN IDs."
-msgstr ""
-"Eine Verbindung transportiert Pakete aus mehreren VLANs. Dies wird auch "
-"als *trunk link* bezeichnet. In diesem Fall ist jedes Paket über eine "
-"VLAN-ID einem VLAN zugeordnet. Bei der Weiterleitung zwischen *trunk "
-"links* und spezifischen VLANs übernimmt der Netzwerk-Switch die Aufgabe, "
-"anhand der VLAN-IDs die Pakete zu filtern und die VLAN-IDs hinzuzufügen "
-"und zu entfernen."
-
-#: ../../computers/configure-hardware.rst:400
-msgid "This type of connection is primarily used between switches/servers."
-msgstr ""
-"Diese Verbindungsart wird vornehmlich zwischen Switches und Servern "
-"eingesetzt."
-
-#: ../../computers/configure-hardware.rst:402
-msgid ""
-"Some switches also allow the sending of packets with and without VLAN "
-"tags over a shared connection, but this is not described in more detail "
-"here."
-msgstr ""
-"Einige Switches erlauben es auch Pakete mit und ohne VLAN-Tag über eine "
-"gemeinsame Verbindung zu schicken, darauf wird hier aber nicht weiter "
-"eingegangen."
-
-#: ../../computers/configure-hardware.rst:405
-msgid ""
-"When configuring a VLAN in the UMC module :guilabel:`Network settings` it"
-" is possible to configure for a computer which VLANs it wants to "
-"participate in. An example here would be an internal company web server, "
-"which should be available both to the employees and any users of the "
-"guest network."
-msgstr ""
-"Mit der Konfiguration eines VLANs im UMC-Modul :guilabel:`Netzwerk-"
-"Einstellungen` kann für einen Rechner konfiguriert werden, an welchen "
-"VLANs er teilnehmen möchte. Ein Beispiel wäre ein interner Firmen-"
-"Webserver, der sowohl für die Mitarbeiter, als auch für die Benutzer des "
-"Gastnetzes verfügbar sein soll."
-
-#: ../../computers/configure-hardware.rst:410
-msgid ""
-"In order to configure a VLAN, ``Virtual LAN`` must be selected as the "
-"*Interface type* under :guilabel:`Add`. The network interface for which "
-"the VLAN is specified with *Parent interface*. The *VLAN ID* is the "
-"unique identifier of the VLAN. Valid values are from 1 to 4095. Then "
-":guilabel:`Next` must be clicked."
-msgstr ""
-"Um ein VLAN zu konfigurieren muss unter :guilabel:`Hinzufügen` als "
-"*Netzwerkgerätetyp* ``Virtuelles LAN`` ausgewählt werden. Die "
-"Netzwerkschnittstelle, für die das VLAN konfiguriert wird, wird mit "
-"*Übergeordnetes Netzwerkgerät* angegeben. Die *VLAN ID* ist der "
-"eindeutige Bezeichner für das VLAN. Gültige Werte sind 1 bis 4095. "
-"Anschließend muss auf :guilabel:`Weiter` geklickt werden."
-
-#: ../../computers/configure-hardware.rst:415
-msgid ""
-"Clicking on :guilabel:`Next` allows to optionally assign the VLAN "
-"interface an IP address. The options are the same as described in :ref"
-":`computers-ipv4` and :ref:`computers-ipv6`. When assigning an IP "
-"address, ensure that the address matches the assigned VLAN address range."
-msgstr ""
-"Nach einem Klick auf :guilabel:`Weiter` kann dem VLAN-Interface eine IP-"
-"Adresse zugewiesen werden. Die Einstellungsmöglichkeiten sind dieselben "
-"wie in :ref:`computers-ipv4` und :ref:`computers-ipv6` beschrieben. Bei "
-"der Vergabe einer IP-Adresse muss darauf geachtet werden, dass die "
-"Adresse zum zugeordneten VLAN-Adressbereich passt."
-
-#: ../../computers/configure-hardware.rst:423
+#: ../../computers/configure-hardware.rst:132
 msgid "Proxy access configuration"
 msgstr "Konfiguration des Proxyzugriffs"
 
-#: ../../computers/configure-hardware.rst:425
+#: ../../computers/configure-hardware.rst:134
 msgid ""
-"The majority of the command line tools which access web servers (e.g., "
-":command:`wget`, :command:`elinks` or :command:`curl`) check whether the "
-"environment variables :envvar:`http_proxy` or :envvar:`https_proxy` are "
-"set. If this is the case, the proxy server set in these variables is used"
-" automatically."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-proxy` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Die meisten Kommandozeilen-Tools, die Zugriffe auf Webserver durchführen "
-"(z.B. :command:`wget`, :command:`elinks` oder :command:`curl`), prüfen, "
-"ob die Umgebungsvariablen :envvar:`http_proxy` oder :envvar:`https_proxy`"
-" gesetzt sind. Ist dies der Fall, werden automatisch die in diesen "
-"Variablen eingestellte Proxy-Server verwendet."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`system-administration-proxy` in :cite:t:`uv-ucs-"
+"operation`."
 
-#: ../../computers/configure-hardware.rst:430
-msgid ""
-"The |UCSUCRV| :envvar:`proxy/http` and :envvar:`proxy/https` can also be "
-"used to activate the setting of these environment variables through an "
-"entry in :file:`/etc/profile`."
-msgstr ""
-"Über die |UCSUCRV|\\ n :envvar:`proxy/http` und :envvar:`proxy/https` "
-"kann das Setzen dieser Umgebungsvariablen durch einen Eintrag in "
-":file:`/etc/profile` aktiviert werden."
-
-#: ../../computers/configure-hardware.rst:433
-#, python-brace-format
-msgid ""
-"The proxy URL must be specified for this, for example "
-":samp:`http://192.0.2.100`. The proxy port can be specified in the proxy "
-"URL using a colon, for example :samp:`http://192.0.2.100:3128`. If the "
-"proxy requires authentication, this can be provided in the form "
-":samp:`http://{username}:{password}@192.0.2.100`."
-msgstr ""
-"Dabei muss die Proxy-URL angegeben werden, also z.B. "
-":samp:`http://192.0.2.100`. In Proxy-URL kann optional auch die Angabe "
-"eines Ports folgen, welcher durch einen Doppelpunkt abzutrennen ist, z.B."
-" :samp:`http://192.0.2.100:3128`. Erfordert der Proxy eine "
-"Authentifizierung, so können die Benutzerinformationen in der Form "
-":samp:`http://{username}:{password}@192.0.2.100` übergeben werden."
-
-#: ../../computers/configure-hardware.rst:438
-msgid ""
-"The environment variable is not adopted for sessions currently opened. A "
-"new login is required for the change to be activated."
-msgstr ""
-"Die Umgebungsvariable wird nicht für aktuell geöffnete Sitzungen "
-"übernommen. Damit die Änderung aktiv wird, muss eine Neuanmeldung "
-"erfolgen."
-
-#: ../../computers/configure-hardware.rst:441
-msgid ""
-"The Univention tools for software updates also support operation via a "
-"proxy and query the |UCSUCR| variable."
-msgstr ""
-"Die UCS-Programme zur Paketverwaltung unterstützen ebenfalls den Betrieb "
-"über einen Proxy und lesen die |UCSUCR|-Variable direkt aus."
-
-#: ../../computers/configure-hardware.rst:444
-msgid ""
-"Individual domains can be excluded from use by the proxy by including "
-"them separated by commas in the |UCSUCRV| :envvar:`proxy/no_proxy`. "
-"Subdomains are taken into account; e.g. an exception for ``software-"
-"univention.de`` also applies for ``updates.software-univention.de``."
-msgstr ""
-"Einzelne Domänen können von der Verwendung des Proxys ausgenommen werden,"
-" in dem sie kommasepariert in die |UCSUCRV| :envvar:`proxy/no_proxy` "
-"aufgenommen werden. Unterdomänen werden dabei berücksichtigt; eine "
-"Ausnahme für ``software-univention.de`` wirkt sich also auch auf "
-"``updates.software-univention.de`` aus."
-
-#: ../../computers/configure-hardware.rst:452
+#: ../../computers/configure-hardware.rst:141
 msgid "Mounting NFS shares"
 msgstr "Einbinden von NFS-Freigaben"
 
-#: ../../computers/configure-hardware.rst:454
+#: ../../computers/configure-hardware.rst:143
 msgid ""
 "The *NFS mounts* policy of the UMC computer management can be used to "
 "configure NFS shares, which are mounted on the system. There is a *NFS "
@@ -1997,16 +1211,16 @@ msgstr ""
 "System gemountet werden. Zur Auswahl steht eine *NFS-Freigabe*, die unter"
 " dem in *Mount point* angegebenen Dateipfad eingehängt wird."
 
-#: ../../computers/configure-hardware.rst:461
-#: ../../computers/configure-hardware.rst:464
+#: ../../computers/configure-hardware.rst:150
+#: ../../computers/configure-hardware.rst:153
 msgid "Mounting a NFS share"
 msgstr "Einbinden einer NFS-Freigabe"
 
-#: ../../computers/configure-hardware.rst:469
+#: ../../computers/configure-hardware.rst:158
 msgid "Collection of list of supported hardware"
 msgstr "Erfassung von unterstützter Hardware"
 
-#: ../../computers/configure-hardware.rst:471
+#: ../../computers/configure-hardware.rst:160
 msgid ""
 "Univention collects information about hardware which is compatible with "
 "UCS and in use by customers. The information processed for this is "
@@ -2016,7 +1230,7 @@ msgstr ""
 "und bei Kunden im Einsatz ist. Die hierbei verarbeiteten Informationen "
 "werden über das UMC-Modul :guilabel:`Hardwareinformationen` erfasst."
 
-#: ../../computers/configure-hardware.rst:475
+#: ../../computers/configure-hardware.rst:164
 msgid ""
 "All files are forwarded to Univention anonymously and only transferred "
 "once permission has been received from the user."
@@ -2024,7 +1238,7 @@ msgstr ""
 "Alle Daten werden dabei anonymisiert an Univention weitergeleitet und "
 "erst nach Benutzereinwilligung übermittelt."
 
-#: ../../computers/configure-hardware.rst:478
+#: ../../computers/configure-hardware.rst:167
 msgid ""
 "The start dialogue contains the entry fields *Manufacturer* and *Model*, "
 "which must be completed with the values determined from the DMI "
@@ -2036,7 +1250,7 @@ msgstr ""
 "vorausgefüllt sind. Die Felder können auch angepasst und ein zusätzlicher"
 " *Kommentar* angegeben werden."
 
-#: ../../computers/configure-hardware.rst:483
+#: ../../computers/configure-hardware.rst:172
 msgid ""
 "If the hardware information is transferred as part of a support request, "
 "the :guilabel:`This is related to a support case` option should be "
@@ -2049,7 +1263,7 @@ msgstr ""
 "Ticketnummer angegeben werden, die die Zuordnung vereinfacht und eine "
 "schnellere Bearbeitung ermöglicht."
 
-#: ../../computers/configure-hardware.rst:488
+#: ../../computers/configure-hardware.rst:177
 msgid ""
 "Clicking on :guilabel:`Next` offers an overview of the transferred "
 "hardware information. In addition, a compressed TAR archive is created, "
@@ -2062,7 +1276,7 @@ msgstr ""
 "verwendeten Hardware-Komponenten enthält und über :guilabel:`Archiv mit "
 "den Hardwareinformationen` heruntergeladen werden kann."
 
-#: ../../computers/configure-hardware.rst:493
+#: ../../computers/configure-hardware.rst:182
 msgid ""
 "Clicking on :guilabel:`Next` again allows you to select the way the data "
 "are transferred to Univention. :guilabel:`Upload` transmits the data via "
@@ -2948,577 +2162,132 @@ msgstr "Verwaltung der Rechnerkonten über |UCSUMC| Modul"
 
 #: ../../computers/umc.rst:9
 msgid ""
-"All UCS, Linux and Windows systems within a UCS domain each have a "
-"computer domain account (also referred to as the host account) with which"
-" the systems can authenticate themselves among each other and with which "
-"they can access the LDAP directory."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Alle UCS-, Linux- und Windowssysteme innerhalb einer UCS-Domäne verfügen "
-"über ein Rechner-Domänenkonto, mit dem sich die Systeme untereinander "
-"authentifizieren und mit dem sie auf das LDAP-Verzeichnis zugreifen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management` in :cite:t:`uv-nubus-manual`."
 
-#: ../../computers/umc.rst:14
-msgid ""
-"The computer account is generally created automatically when the system "
-"joins the UCS domain (see :ref:`domain-join`); however, the computer "
-"account can also be added prior to the domain join."
-msgstr ""
-"Das Rechnerkonto wird in der Regel automatisch beim Join des Systems zur "
-"UCS-Domäne angelegt (siehe :ref:`domain-join`), das Rechnerkonto kann "
-"jedoch auch vor dem Domänenbeitritt angelegt werden."
-
-#: ../../computers/umc.rst:18
-msgid ""
-"The password for the computer account is generated automatically during "
-"the domain join and saved in the :file:`/etc/machine.secret` file. By "
-"default the password consists of 20 characters (can be configured via the"
-" |UCSUCRV| :envvar:`machine/password/length`). The password is "
-"regenerated automatically at fixed intervals (default setting: 21 days; "
-"can be configured using the |UCSUCRV| "
-":envvar:`server/password/interval`). Password rotation can also be "
-"disabled using the variable :envvar:`server/password/change`."
-msgstr ""
-"Das Passwort für das Rechnerkonto wird beim Domänenbeitritt automatisch "
-"erzeugt und in der Datei :file:`/etc/machine.secret` gespeichert. Das "
-"Passwort umfasst in der Grundeinstellung 20 Zeichen (konfigurierbar über "
-"die |UCSUCRV| :envvar:`machine/password/length`). Das Passwort wird in "
-"festen Intervallen automatisch neu generiert (in der Grundeinstellung 21 "
-"Tage, konfigurierbar über die |UCSUCRV| "
-":envvar:`server/password/interval`). Die Passwortrotation kann über die "
-"Variable :envvar:`server/password/change` auch deaktiviert werden."
-
-#: ../../computers/umc.rst:28
-msgid ""
-"There is an different computer object type for every system role. Further"
-" information on the individual system roles can be found in :ref:`system-"
-"roles`."
-msgstr ""
-"Für jede Systemrolle existiert ein eigenständiger Rechnerobjekttyp. "
-"Weitergehende Hinweise zu den einzelnen Systemrollen finden sich in :ref"
-":`system-roles`."
-
-#: ../../computers/umc.rst:32
-msgid "Computer accounts are managed in the UMC module :guilabel:`Computers`."
-msgstr "Rechnerkonten werden im UMC-Modul :guilabel:`Rechner` verwaltet."
-
-#: ../../computers/umc.rst:35
-msgid ""
-"By default a simplified wizard for creating a computer is shown, which "
-"only requests the most important settings. All attributes can be shown by"
-" clicking on :guilabel:`Advanced`. If there is a DNS forward zone and/or "
-"a DNS reverse zone (see :ref:`networks-dns`) assigned to the selected "
-"network object (see :ref:`network-objects`), a host record and/or pointer"
-" record is automatically created for the host. If there is a DHCP service"
-" configured for the network object and a MAC address is configured, a "
-"DHCP host entry is created (see :ref:`module-dhcp-dhcp`)."
-msgstr ""
-"In der Grundeinstellung wird zum Anlegen eines Rechners ein vereinfachter"
-" Assistent angezeigt, der nur die wichtigsten Einstellungen abfragt. "
-"Durch einen Klick auf :guilabel:`Erweitert` werden alle Attribute "
-"angezeigt. Ist dem ausgewählten Netzwerk-Objekt (siehe :ref:`network-"
-"objects`) eine DNS-Forward-Zone und/oder eine DNS-Reverse-Zone zugeordnet"
-" (siehe :ref:`networks-dns`), wird für den Rechner automatisch ein Host-"
-"Record und/oder Pointer-Record angelegt. Ist für das Netzwerk-Objekt ein "
-"DHCP-Service konfiguriert und eine MAC-Adresse angegeben, wird ein DHCP-"
-"Rechner-Eintrag angelegt (siehe :ref:`module-dhcp-dhcp`)."
-
-#: ../../computers/umc.rst:45
-msgid ""
-"The simplified wizard can be disabled for all system roles by setting the"
-" |UCSUCRV| "
-":envvar:`directory/manager/web/modules/computers/computer/wizard/disabled`"
-" to ``true``."
-msgstr ""
-"Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden,"
-" indem die |UCSUCRV| "
-":envvar:`directory/manager/web/modules/computers/computer/wizard/disabled`"
-" auf ``true`` gesetzt wird."
-
-#: ../../computers/umc.rst:52 ../../computers/umc.rst:55
-msgid "Creating a computer in the UMC module"
-msgstr "Anlegen eines Rechners im UMC-Modul"
-
-#: ../../computers/umc.rst:59 ../../computers/umc.rst:62
-msgid "Advanced computer settings"
-msgstr "Erweiterte Rechneransicht"
-
-#: ../../computers/umc.rst:67
+#: ../../computers/umc.rst:16
 msgid "Computer management module - General tab"
 msgstr "Modul Rechnerverwaltung - Reiter Allgemein"
 
-#: ../../computers/umc.rst:71
-msgid "*General* tab"
-msgstr "Reiter *Allgemein*"
-
-#: ../../computers/umc.rst:75 ../../computers/umc.rst:166
-#: ../../computers/umc.rst:195 ../../computers/umc.rst:220
-#: ../../computers/umc.rst:250 ../../computers/umc.rst:269
-#: ../../computers/umc.rst:297
-msgid "Attribute"
-msgstr "Attribut"
-
-#: ../../computers/umc.rst:76 ../../computers/umc.rst:96
-#: ../../computers/umc.rst:167 ../../computers/umc.rst:196
-#: ../../computers/umc.rst:221 ../../computers/umc.rst:251
-#: ../../computers/umc.rst:270 ../../computers/umc.rst:298
-msgid "Description"
-msgstr "Beschreibung"
-
-#: ../../computers/umc.rst:78
-msgid "Name"
-msgstr "Name"
-
-#: ../../computers/umc.rst:79
-msgid "The name for the host should be entered in this input field."
-msgstr "In dieses Eingabefeld muss der Rechnername eingetragen werden."
-
-#: ../../computers/umc.rst:81
+#: ../../computers/umc.rst:18
 msgid ""
-"To guarantee compatibility with different operating systems and services,"
-" computer names should only contain the lowercase letters *a* to *z*, "
-"numbers, hyphens and underscores. Umlauts and special characters are not "
-"permitted. The full stop is used as a separating mark between the "
-"individual components of a fully qualified domain name and must therefore"
-" not appear as part of the computer name. Computer names must begin with "
-"a letter."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-general-tab` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Um die Kompatibilität mit verschiedenen Betriebssystemen und Diensten zu "
-"gewährleisten, sollten Rechnernamen ausschließlich die Buchstaben *a* bis"
-" *z* in Kleinschreibung, Zahlen, Bindestriche und Unterstriche enthalten."
-" Umlaute und Sonderzeichen sind nicht erlaubt. Der Punkt wird als "
-"Trennzeichen zwischen den einzelnen Bestandteilen eines voll "
-"qualifizierten Domänennamens interpretiert und darf deswegen nicht "
-"innerhalb des Rechnernamens verwendet werden. Rechnernamen sollten mit "
-"einem Buchstaben beginnen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-general-tab` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../computers/umc.rst:89
-msgid ""
-"Microsoft Windows accepts computer names with a maximum of 15 characters,"
-" so as a rule computer names should be limited to 15 characters if there "
-"is any chance that Microsoft Windows will be used."
-msgstr ""
-"Microsoft Windows akzeptiert nur Rechnernamen mit maximal 15 Zeichen, so "
-"dass man sich bei Rechnernamen grundsätzlich auf 15 Zeichen beschränken "
-"sollte, sofern nicht ausgeschlossen ist, dass Microsoft Windows zum "
-"Einsatz kommen wird."
-
-#: ../../computers/umc.rst:93
-msgid ""
-"After creation, the computer name can only be changed for the system "
-"roles *Windows Workstation/Server*, *macOS Client* and *IP client*."
-msgstr ""
-"Der Rechnername kann nach dem Anlegen nur bei den Systemrollen *Windows "
-"Workstation/Server*, *macOS Client* und *IP-Client* verändert werden."
-
-#: ../../computers/umc.rst:97
-msgid "Any description can be entered for the host in this input field."
-msgstr ""
-"Für den Rechner kann in diesem Eingabefeld eine beliebige Beschreibung "
-"hinterlegt werden."
-
-#: ../../computers/umc.rst:99
-msgid "Inventory number"
-msgstr "Inventarnummer"
-
-#: ../../computers/umc.rst:100
-msgid "Inventory numbers for hosts can be stored here."
-msgstr "Hier können Inventarnummern für Rechner hinterlegt werden."
-
-#: ../../computers/umc.rst:102
-msgid "Network"
-msgstr "Netzwerk"
-
-#: ../../computers/umc.rst:103
-msgid ""
-"The host can be assigned to an existing network object. Information on "
-"the IP configuration can be found in :ref:`network-objects`."
-msgstr ""
-"Der Rechner kann einem bereits angelegten Netzwerk-Objekt zugeordnet "
-"werden. Hinweise zur IP-Konfiguration finden sich in :ref:`network-"
-"objects`."
-
-#: ../../computers/umc.rst:106
-msgid "MAC address"
-msgstr "MAC-Adresse"
-
-#: ../../computers/umc.rst:107
-msgid ""
-"The MAC address of the computer can be entered here, for example "
-"``2e:44:56:3f:12:32``. If the computer is to receive a DHCP entry, the "
-"entry of the MAC address is essential."
-msgstr ""
-"An dieser Stelle kann die MAC-Adresse des Rechners eingetragen werden, "
-"z.B. ``2e:44:56:3f:12:32``. Soll der Rechner einen DHCP-Eintrag erhalten,"
-" ist die Angabe der MAC-Adresse zwingend erforderlich."
-
-#: ../../computers/umc.rst:111
-msgid "IP address"
-msgstr "IP-Adresse"
-
-#: ../../computers/umc.rst:112
-msgid ""
-"Fixed IP addresses for the host can be given here. Further information on"
-" the IP configuration can be found in :ref:`network-objects`."
-msgstr ""
-"Hier können feste IP-Adressen für den Rechner eingegeben werden. Weitere "
-"Hinweise zur IP-Konfiguration finden sich in :ref:`network-objects`."
-
-#: ../../computers/umc.rst:115
-msgid ""
-"If a network was selected on the *General* tab, the IP address assigned "
-"to the host from the network will be shown here automatically."
-msgstr ""
-"Wenn auf der Karteikarte *Allgemein* ein Netzwerk ausgewählt wurde, wird "
-"die IP-Adresse, die dem Rechner aus dem Netzwerk automatisch zugewiesen "
-"wurde, hier angezeigt."
-
-#: ../../computers/umc.rst:118
-msgid ""
-"An IP address entered here (i.e. in the LDAP directory) can only be "
-"transferred to the host via DHCP. If no DHCP is being used, the IP "
-"address must be configured locally, see :ref:`hardware-network-"
-"configuration`."
-msgstr ""
-"Eine hier (also im LDAP-Verzeichnis) eingetragene IP-Adresse kann dem "
-"Rechner nur über DHCP zugewiesen werden. Sollte kein DHCP-Server "
-"verwendet werden, so muss die IP-Adresse auch lokal auf dem Rechner "
-"konfiguriert werden, siehe :ref:`hardware-network-configuration`."
-
-#: ../../computers/umc.rst:123
-msgid ""
-"If the IP addresses entered for a host are changed without the DNS zones "
-"being changed, they are automatically changed in the computer object and "
-"- where they exist - in the DNS entries of the forward and reverse lookup"
-" zones. If the IP address of the host was entered at other places as "
-"well, these entries must be changed manually! For example, if the IP "
-"address was given in a DHCP boot policy instead of the name of the boot "
-"server, this IP address will need to be changed manually by editing the "
-"policy."
-msgstr ""
-"Werden die eingetragenen IP-Adressen eines Rechners ohne Wechsel der DNS-"
-"Zonen geändert, werden diese im Rechner-Objekt und - soweit vorhanden - "
-"auch automatisch in den DNS-Einträgen in der Forward und Reverse Lookup "
-"Zone geändert. Falls die IP-Adresse des Rechners noch an anderen Stellen "
-"eingetragen wurde, müssen diese Einträge manuell geändert werden! Wurde "
-"beispielsweise in einer DHCP-Boot-Richtlinie nicht der Name des Boot-"
-"Servers, sondern seine IP-Adresse dort eingetragen, muss diese IP-Adresse"
-" manuell durch das Bearbeiten der Richtlinie angepasst werden."
-
-#: ../../computers/umc.rst:132
-msgid "Forward zone for DNS entry"
-msgstr "Forward-Zone für DNS-Eintrag"
-
-#: ../../computers/umc.rst:133
-msgid ""
-"The DNS forward zone in which the computer is entered. The zone is used "
-"for the resolution of the computer name in the assigned IP address. "
-"Further information on the IP configuration can be found in :ref"
-":`network-objects`."
-msgstr ""
-"Die DNS-Forward-Zone, in die der Rechner eingetragen wird. Die Zone dient"
-" der Auflösung des Rechnernamens in die zugewiesene IP-Adresse. Hinweise "
-"zur IP-Konfiguration finden sich in :ref:`network-objects`."
-
-#: ../../computers/umc.rst:138
-msgid "Reverse zone for DNS entry"
-msgstr "Reverse-Zone für DNS-Eintrag"
-
-#: ../../computers/umc.rst:139
-msgid ""
-"The DNS reverse zone in which the computer is entered. The zone is used "
-"to resolve the computer's IP address in a computer name. Further "
-"information on the IP configuration can be found in :ref:`network-"
-"objects`."
-msgstr ""
-"Die DNS-Reverse-Zone, in die der Rechner eingetragen wird. Mit der Zone "
-"wird die IP-Adresse des Rechners in einen Rechnernamen aufgelöst. "
-"Hinweise zur IP-Konfiguration finden sich in :ref:`network-objects`."
-
-#: ../../computers/umc.rst:144
-msgid "DHCP service"
-msgstr "Service für DHCP-Eintrag"
-
-#: ../../computers/umc.rst:145
-msgid ""
-"If a computer is supposed to procure its IP address via DHCP, a DHCP "
-"service must be assigned here. Information on the IP configuration can be"
-" found in :ref:`network-objects`."
-msgstr ""
-"Wenn ein Rechner seine IP-Adresse über DHCP beziehen soll, muss hier ein "
-"DHCP-Service zugeordnet werden. Hinweise zur IP-Konfiguration finden sich"
-" in :ref:`network-objects`."
-
-#: ../../computers/umc.rst:149
-msgid ""
-"During assignment, it must be ensured that the DHCP servers of the DHCP "
-"service object are responsible for the physical network."
-msgstr ""
-"Bei der Zuweisung muss darauf geachtet werden, dass die DHCP-Server des "
-"DHCP-Service-Objekts für das physikalische Netzwerk zuständig sind."
-
-#: ../../computers/umc.rst:152
-msgid ""
-"If a network is selected on the *General* tab an appropriate entry for "
-"the network will be added automatically. It can be adapted subsequently."
-msgstr ""
-"Wurde auf der Karteikarte *Allgemein* ein Netzwerk ausgewählt, wird "
-"automatisch ein für das Netzwerk passender Eintrag hinzugefügt, der "
-"nachträglich manuell angepasst werden kann."
-
-#: ../../computers/umc.rst:158
+#: ../../computers/umc.rst:25
 msgid "Computer management module - Account tab"
 msgstr "Modul Rechnerverwaltung - Reiter Konto"
 
-#: ../../computers/umc.rst:162
-msgid "*Account* tab (advanced settings)"
-msgstr "Reiter *Konto* (erweiterte Einstellungen)"
-
-#: ../../computers/umc.rst:169
-msgid "Password"
-msgstr "Passwort"
-
-#: ../../computers/umc.rst:170
+#: ../../computers/umc.rst:27 ../../computers/umc.rst:36
 msgid ""
-"The password for the computer account is usually automatically created "
-"and rotated. For special cases such as the integration of external "
-"systems it can also be explicitly configured in this field."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-section-account` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Das Passwort des Rechnerkontos wird in der Regel automatisch erstellt und"
-" rotiert. Für Sonderfälle wie die Einbindung externer Systeme kann es in "
-"diesem Feld auch explizit konfiguriert werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-section-account` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:174
-msgid ""
-"The same password must then also be entered locally on the computer in "
-"the :file:`/etc/machine.secret` file."
-msgstr ""
-"Dasselbe Passwort muss dann auch lokal auf dem Rechner in die Datei "
-":file:`/etc/machine.secret` eingetragen werden."
-
-#: ../../computers/umc.rst:177
-msgid "Primary group"
-msgstr "Primäre Gruppe"
-
-#: ../../computers/umc.rst:178
-msgid ""
-"The primary group of the host can be selected in this selection field. "
-"This is only necessary when they deviate from the automatically created "
-"default values. The default value for a |UCSPRIMARYDN| or |UCSBACKUPDN| "
-"is ``DC Backup Hosts``, for a |UCSREPLICADN| ``DC Slave Hosts`` and for "
-"|UCSMANAGEDNODE|\\ s ``Computers``."
-msgstr ""
-"In diesem Auswahlfeld kann die primäre Gruppe des Rechners selektiert "
-"werden. Das ist nur notwendig, wenn von den automatisch eingestellten "
-"Vorgabewerten abgewichen werden soll. Der Vorgabewert für einen "
-"|UCSPRIMARYDN| oder |UCSBACKUPDN| lautet ``DC Backup Hosts``, für einen "
-"|UCSREPLICADN| ``DC Slave Hosts`` und für |UCSMANAGEDNODE|\\ s "
-"``Computers``."
-
-#: ../../computers/umc.rst:187
+#: ../../computers/umc.rst:34
 msgid "Computer management module - Unix account tab"
 msgstr "Modul Rechnerverwaltung - Reiter Unix-Konto"
 
-#: ../../computers/umc.rst:191
-msgid "*Unix account* tab (advanced settings)"
-msgstr "Reiter *Unix-Konto* (erweiterte Einstellungen)"
-
-#: ../../computers/umc.rst:198
-msgid "Unix home directory (*)"
-msgstr "UNIX Heimatverzeichnis (*)"
-
-#: ../../computers/umc.rst:199
-msgid ""
-"A different input field for the host account can be entered here. The "
-"automatically created default value for the home directory is "
-":file:`/dev/null`."
-msgstr ""
-"In diesem Eingabefeld kann ein abweichendes Heimatverzeichnis für das "
-"Rechner-Konto eingetragen werden. Der automatisch eingestellte "
-"Vorgabewert für das Heimatverzeichnis lautet :file:`/dev/null`."
-
-#: ../../computers/umc.rst:203
-msgid "Login shell"
-msgstr "Login Shell"
-
-#: ../../computers/umc.rst:204
-msgid ""
-"If a different login shell from the default value is to be used for the "
-"computer account, the login shell can be adapted manually in this input "
-"field. The automatically set default value assumes a login shell of "
-":file:`/bin/sh`."
-msgstr ""
-"Falls eine vom Vorgabewert abweichende Login-Shell für das Rechner-Konto "
-"verwendet werden soll, kann die Login-Shell in diesem Eingabefeld manuell"
-" angepasst werden. Der automatisch eingestellte Vorgabewert sieht "
-":file:`/bin/sh` als Login-Shell vor."
-
-#: ../../computers/umc.rst:212
+#: ../../computers/umc.rst:43
 msgid "Computer management module - Services tab"
 msgstr "Modul Rechnerverwaltung - Reiter Dienste"
 
-#: ../../computers/umc.rst:216
-msgid "*Services* tab (advanced settings)"
-msgstr "Reiter *Dienste* (erweiterte Einstellungen)"
-
-#: ../../computers/umc.rst:223
-msgid "Service"
-msgstr "Dienst"
-
-#: ../../computers/umc.rst:224
+#: ../../computers/umc.rst:45
 msgid ""
-"By means of a service object, applications or services can determine "
-"whether a service is available on a computer or generally in the domain."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-section-services` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Mit einem Dienst-Objekt können Applikationen oder Dienste feststellen, ob"
-" auf einem Rechner oder generell in der Domäne ein Dienst verfügbar ist."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-section-services` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:229
-msgid "The tab *Services* is only displayed on UCS server system roles."
-msgstr "Der Reiter *Dienste* wird nur auf UCS-Systemrollen angezeigt."
-
-#: ../../computers/umc.rst:234
+#: ../../computers/umc.rst:52
 msgid "Computer management module - Deployment tab"
 msgstr "Modul Rechnerverwaltung - Reiter (Re)installation"
 
-#: ../../computers/umc.rst:236
+#: ../../computers/umc.rst:54
 msgid ""
-"This *Deployment* tab is used for the Univention Net Installer, see "
-":cite:t:`ext-doc-inst`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-section-deployment` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Dieser Reiter wird für den Univention Net Installer verwendet, siehe "
-":cite:t:`ext-doc-inst`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-section-deployment` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:242
+#: ../../computers/umc.rst:61
 msgid "Computer management module - DNS alias tab"
 msgstr "Modul Rechnerverwaltung - Reiter DNS-Alias"
 
-#: ../../computers/umc.rst:246
-msgid "*DNS alias* tab (advanced settings)"
-msgstr "Reiter *DNS Alias* (Erweiterte Einstellungen)"
-
-#: ../../computers/umc.rst:253
-msgid "Zone for DNS Alias"
-msgstr "Zone für DNS-Alias"
-
-#: ../../computers/umc.rst:254
+#: ../../computers/umc.rst:63
 msgid ""
-"If a zone entry for forward mapping has been set up for the host in the "
-"*Forward zone for DNS entry* field, the additional alias entries via "
-"which the host can be reached can be configured here."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-section-dns-alias` in :cite:t:`uv-nubus-"
+"manual`."
 msgstr ""
-"Wenn für den Rechner im Feld *Forward Lookup Zone für DNS-Eintrag* ein "
-"Zoneneintrag zur Vorwärtsauflösung eingerichtet wurde, können hier "
-"zusätzlich Alias-Einträge konfiguriert werden, über die der Rechner "
-"erreichbar ist."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-section-dns-alias` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:261
+#: ../../computers/umc.rst:70
 msgid "Computer management module - Alerts tab"
 msgstr "Modul Rechnerverwaltung - Reiter Dienste"
 
-#: ../../computers/umc.rst:265
-msgid "*Alerts* tab (advanced settings)"
-msgstr "Reiter *Alerts* (erweiterte Einstellungen)"
-
-#: ../../computers/umc.rst:272
-msgid "Assigned monitoring alerts"
-msgstr "Überwachungsalarme zuweisen"
-
-#: ../../computers/umc.rst:273
+#: ../../computers/umc.rst:72
 msgid ""
-"Specifies which Monitoring alert checks should be performed for this "
-"computer, see :ref:`monitoring-alert-configuration`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-section-alerts` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Legt fest, welche Monitoring Alert Prüfungen für diesen Rechner "
-"ausgeführt werden, siehe :ref:`monitoring-alert-configuration`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-section-alerts` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:278
+#: ../../computers/umc.rst:79
 msgid "Computer management module - Groups tab"
 msgstr "Modul Rechnerverwaltung - Reiter Gruppen"
 
-#: ../../computers/umc.rst:280
-msgid "The computer can be added into different groups in *Groups* tab."
+#: ../../computers/umc.rst:81
+msgid ""
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-section-groups` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"In diesem Reiter kann der Rechner in verschiedene Gruppen aufgenommen "
-"werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-section-groups` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:285
+#: ../../computers/umc.rst:88
 msgid "Computer management module - Options alias tab"
 msgstr "Modul Rechnerverwaltung - Reiter Optionen"
 
-#: ../../computers/umc.rst:287
+#: ../../computers/umc.rst:90
 msgid ""
-"The *Options* tab allows to disable LDAP object classes for host objects."
-" The entry fields for attributes of disabled object classes are no longer"
-" shown. Not all object classes can be modified subsequently."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-computer-management-table-options` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Reiter ermöglicht es, einzelne LDAP-Objektklassen für den Rechner zu "
-"konfigurieren. Die Eingabefelder für Attribute abgewählter Objektklassen "
-"werden dann nicht angezeigt. Nicht alle Objektklassen können nachträglich"
-" verändert werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management-table-options` in :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../computers/umc.rst:293
-msgid "*(Options)* tab"
-msgstr "Reiter *(Optionen)*"
-
-#: ../../computers/umc.rst:300
-msgid "Kerberos principal"
-msgstr "Kerberos Prinzipal"
-
-#: ../../computers/umc.rst:301
-msgid ""
-"If this checkbox is not selected the host does not receive the "
-"``krb5Principal`` and ``krb5KDCEntry`` object classes."
-msgstr ""
-"Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die "
-"Objektklassen ``krb5Principal`` und ``krb5KDCEntry`` nicht."
-
-#: ../../computers/umc.rst:304
-msgid "POSIX account"
-msgstr "POSIX Konto"
-
-#: ../../computers/umc.rst:305
-msgid ""
-"If this checkbox is not selected the host does not receive the "
-"``posixAccount`` object class."
-msgstr ""
-"Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die "
-"Objektklasse ``posixAccount`` nicht."
-
-#: ../../computers/umc.rst:308
-msgid "Samba account"
-msgstr "Samba-Konto"
-
-#: ../../computers/umc.rst:309
-msgid ""
-"If this checkbox is not selected the host does not receive the "
-"``sambaSamAccount`` object class."
-msgstr ""
-"Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die "
-"Objektklasse ``sambaSamAccount`` nicht."
-
-#: ../../computers/umc.rst:315
+#: ../../computers/umc.rst:97
 msgid "Integration of Ubuntu clients"
 msgstr "Integration von Ubuntu-Clients"
 
-#: ../../computers/umc.rst:317
+#: ../../computers/umc.rst:99
 msgid ""
-"Ubuntu clients can be managed in the UMC module :guilabel:`Computers` "
-"with their own system role. The network properties for DNS/DHCP can also "
-"be managed there."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`computers-ubuntu` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Ubuntu-Clients können mit einer eigenen Rechnerrolle im UMC-Modul "
-":guilabel:`Rechner` verwaltet werden. Die Netzwerkeigenschaften für "
-"DNS/DHCP können dabei ebenfalls dort verwaltet werden."
-
-#: ../../computers/umc.rst:321
-msgid "The use of policies is not supported."
-msgstr "Die Anwendung von Richtlinien wird nicht unterstützt."
-
-#: ../../computers/umc.rst:323
-msgid ""
-"Some configuration adjustments need to be performed on Ubuntu systems; "
-"these are documented in :cite:t:`ext-doc-domain`."
-msgstr ""
-"Auf den Ubuntu-Systemen müssen einige Konfigurationsanpassungen "
-"vorgenommen werden, die in :cite:t:`ext-doc-domain` beschrieben sind."
-
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-computer-management` in :cite:t:`uv-nubus-manual`."
