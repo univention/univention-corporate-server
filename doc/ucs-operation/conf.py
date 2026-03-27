@@ -20,9 +20,6 @@ from datetime import date
 from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 
-# sys.path.insert(0, os.path.abspath('.'))
-
-
 # -- Project information -----------------------------------------------------
 
 project = 'Nubus for UCS - Operation Manual'
