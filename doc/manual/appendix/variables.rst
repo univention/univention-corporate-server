@@ -646,7 +646,6 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
 
    Contents of existing share directories are moved, when the path to a share is
    modified and the value is set to ``yes``. For more information, see
-   :numref:`shares-management-general-tab-table` in
    :ref:`shares-management-general-tab`.
 
 
