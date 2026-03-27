@@ -103,6 +103,7 @@ intersphinx_mapping = {
     "uv-ext-windows": ref("ext-windows"),
     'uv-ucs-operation': ref('ucs-operation', ver=version),
     'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/en/', None),
+    'uv-nubus-customization': ('https://docs.software-univention.de/nubus-customization/latest/en/', None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
@@ -233,6 +234,7 @@ def adapt_settings_to_translation(app, config):
             'uv-ext-windows': ref('ext-windows'),
             'uv-ucs-operation': ref('ucs-operation', ver=version, lang='de'),
             'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/de/', None),
+            'uv-nubus-customization': ('https://docs.software-univention.de/nubus-customization/latest/en/', None),
         }
 
 
