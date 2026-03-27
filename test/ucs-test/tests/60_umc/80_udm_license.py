@@ -15,6 +15,8 @@ from time import localtime, sleep, strftime, time
 import ldap.dn
 import pytest
 
+import univention.admin.license as udm_license
+import univention.admin.uldap as udm_uldap
 from univention import uldap
 from univention.testing.license_client import TestLicenseClient
 from univention.testing.strings import random_username
@@ -144,6 +146,24 @@ def test_junk_license(udm_license_module):
     udm_license_module.junk_license_limits_check('user')
 
 
+def test_license_cache_attributes_written(udm_license_module):
+    """
+    Verifies that update_cache() writes univentionUsedLicense* attributes
+    to the license LDAP object with numeric values
+    """
+    print("\nTesting license cache attribute writes")
+    udm_license_module.check_license_cache_attributes_written()
+
+
+def test_stale_cache_triggers_recount(udm_license_module):
+    """
+    Verifies that a stale cache triggers a re-count: calling update_cache()
+    a second time must update modifyTimestamp on the license object
+    """
+    print("\nTesting stale cache re-count")
+    udm_license_module.check_stale_cache_recount()
+
+
 class UDMLicenseManagement(UDMModule):
 
     def __init__(self):
@@ -159,6 +179,58 @@ class UDMLicenseManagement(UDMModule):
 
         self.users_to_delete = []
         self.computers_to_delete = []
+
+    def check_license_cache_attributes_written(self):
+        """
+        Calls update_cache() with an admin LDAP connection and verifies that
+        univentionUsedLicense* attributes are written to the license object
+        with numeric values
+        """
+        lo, _ = udm_uldap.getAdminConnection()
+        udm_license.license.initialize(lo)
+        counts = udm_license.license.update_cache(lo)
+
+        result = lo.search(
+            base=self.license_dn,
+            attr=['univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'],
+        )
+        assert result, 'License object not found in LDAP at %s' % self.license_dn
+        attrs = result[0][1]
+
+        for attr in ('univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'):
+            assert attr in attrs, '%s not found on license object after update_cache()' % attr
+            assert attrs[attr][0].decode('ASCII').isdigit(), '%s value is not numeric: %r' % (attr, attrs[attr][0])
+
+        assert isinstance(counts, dict), 'update_cache() must return a dict'
+        assert set(counts) >= {'users', 'servers', 'clients'}, 'counts dict missing expected keys'
+
+    def check_stale_cache_recount(self):
+        """
+        Calls update_cache() twice with a 1-second gap and verifies that
+        modifyTimestamp on the license object is updated on the second call
+        """
+        lo, _ = udm_uldap.getAdminConnection()
+        udm_license.license.initialize(lo)
+
+        # initial cache write
+        udm_license.license.update_cache(lo)
+
+        result = lo.search(base=self.license_dn, attr=['modifyTimestamp'])
+        assert result, 'License object not found in LDAP at %s' % self.license_dn
+        ts_before = result[0][1].get('modifyTimestamp', [b''])[0]
+
+        sleep(1)
+
+        # second update that mirrors what _update_cache_and_recheck does on staleness
+        udm_license.license.update_cache(lo)
+
+        result = lo.search(base=self.license_dn, attr=['modifyTimestamp'])
+        ts_after = result[0][1].get('modifyTimestamp', [b''])[0]
+
+        assert ts_after != ts_before, (
+            'modifyTimestamp was not updated on re-count (before=%r, after=%r); '
+            'cache write may have silently failed' % (ts_before, ts_after)
+        )
 
     def restart_umc_server(self):
         """

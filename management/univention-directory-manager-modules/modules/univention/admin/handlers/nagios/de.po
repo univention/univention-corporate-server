@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2023-09-16 23:09+0200\n"
+"POT-Creation-Date: 2026-03-30 14:24+0300\n"
 "PO-Revision-Date: 2021-05-04 10:25+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -14,101 +14,108 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/nagios/service.py:99
+#: modules/univention/admin/handlers/nagios/service.py:72
 msgid "Arguments of used Nagios plugin"
 msgstr "Parameter für das verwendete Plugin-Kommando"
 
-#: modules/univention/admin/handlers/nagios/service.py:108
-#: modules/univention/admin/handlers/nagios/service.py:124
-#: modules/univention/admin/handlers/nagios/service.py:125
+#: modules/univention/admin/handlers/nagios/service.py:81
+#: modules/univention/admin/handlers/nagios/service.py:97
+#: modules/univention/admin/handlers/nagios/service.py:98
 msgid "Assigned hosts"
 msgstr "Zugeordnete Rechner"
 
-#: modules/univention/admin/handlers/nagios/service.py:117
+#: modules/univention/admin/handlers/nagios/service.py:90
 msgid "Basic settings"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/nagios/service.py:109
+#: modules/univention/admin/handlers/nagios/service.py:82
 msgid "Check services on these hosts"
 msgstr "Rechner, auf denen der Dienst überprüft werden soll"
 
-#: modules/univention/admin/handlers/nagios/service.py:93
+#: modules/univention/admin/handlers/nagios/service.py:66
 msgid "Command name of Nagios plugin"
 msgstr "Zu verwendendes Nagios-Plugin"
 
-#: modules/univention/admin/handlers/nagios/service.py:86
+#: modules/univention/admin/handlers/nagios/service.py:59
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/univention/admin/handlers/nagios/service.py:117
+#: modules/univention/admin/handlers/nagios/service.py:90
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/univention/admin/handlers/nagios/service.py:118
+#: modules/univention/admin/handlers/nagios/service.py:91
 msgid "General Nagios service settings"
 msgstr "Grundeinstellungen - Nagios-Dienst"
 
-#: modules/univention/admin/handlers/nagios/service.py:124
+#: modules/univention/admin/handlers/nagios/service.py:97
 msgid "Hosts"
 msgstr "Rechner"
 
-#: modules/univention/admin/handlers/nagios/nagios.py:52
-#: modules/univention/admin/handlers/nagios/nagios.py:53
+#: modules/univention/admin/handlers/nagios/nagios.py:25
+#: modules/univention/admin/handlers/nagios/nagios.py:26
 msgid "Nagios object"
 msgstr "Nagios-Objekt"
 
-#: modules/univention/admin/handlers/nagios/nagios.py:63
+#: modules/univention/admin/handlers/nagios/nagios.py:36
 msgid "Nagios object name"
 msgstr "Nagios-Objekt Name"
 
-#: modules/univention/admin/handlers/nagios/nagios.py:54
+#: modules/univention/admin/handlers/nagios/nagios.py:27
 msgid "Nagios objects"
 msgstr "Nagios-Objekte"
 
-#: modules/univention/admin/handlers/nagios/service.py:60
-#: modules/univention/admin/handlers/nagios/service.py:61
+#: modules/univention/admin/handlers/nagios/service.py:32
+#: modules/univention/admin/handlers/nagios/service.py:33
 msgid "Nagios service"
 msgstr "Nagios-Dienst"
 
-#: modules/univention/admin/handlers/nagios/service.py:62
+#: modules/univention/admin/handlers/nagios/service.py:34
 msgid "Nagios services"
 msgstr "Nagios-Dienste"
 
-#: modules/univention/admin/handlers/nagios/service.py:77
-#: modules/univention/admin/handlers/nagios/nagios.py:62
+#: modules/univention/admin/handlers/nagios/service.py:50
+#: modules/univention/admin/handlers/nagios/nagios.py:35
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/nagios/service.py:92
+#: modules/univention/admin/handlers/nagios/service.py:65
 msgid "Plugin command"
 msgstr "Plugin-Kommando"
 
-#: modules/univention/admin/handlers/nagios/service.py:98
+#: modules/univention/admin/handlers/nagios/service.py:71
 msgid "Plugin command arguments"
 msgstr "Plugin-Kommando-Parameter"
 
-#: modules/univention/admin/handlers/nagios/service.py:87
+#: modules/univention/admin/handlers/nagios/service.py:60
 msgid "Service description"
 msgstr "Dienst-Beschreibung"
 
-#: modules/univention/admin/handlers/nagios/service.py:78
+#: modules/univention/admin/handlers/nagios/service.py:51
 msgid "Service name"
 msgstr "Name des Dienstes"
 
-#: modules/univention/admin/handlers/nagios/service.py:185
+#: modules/univention/admin/handlers/nagios/service.py:159
 #, python-format
 msgid "The host \"%s\" does not exists."
 msgstr "Der Rechner \"%s\" existiert nicht."
 
-#: modules/univention/admin/handlers/nagios/service.py:187
+#: modules/univention/admin/handlers/nagios/service.py:161
 #, python-format
 msgid "The host \"%s\" is invalid, it has no \"cn\" attribute."
 msgstr "Der Rechner \"%s\" ist ungültig, der er kein \"cn\"-Attribut besitzt."
 
-#: modules/univention/admin/handlers/nagios/service.py:103
+#: modules/univention/admin/handlers/nagios/service.py:76
 msgid "Use NRPE"
 msgstr "NRPE benutzen"
 
-#: modules/univention/admin/handlers/nagios/service.py:104
+#: modules/univention/admin/handlers/nagios/service.py:77
 msgid "Use NRPE to check remote services"
 msgstr "NRPE benutzen, um entfernte Dienste zu überprüfen"
+
+#: modules/univention/admin/handlers/nagios/service.py:28
+#: modules/univention/admin/handlers/nagios/nagios.py:19
+msgid ""
+"https://docs.software-"
+"univention.de/manual/5.0/en/monitoring/nagios.html#nagios-general"
+msgstr ""

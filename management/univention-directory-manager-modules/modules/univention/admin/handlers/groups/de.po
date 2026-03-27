@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2026-03-20 16:32+0100\n"
+"POT-Creation-Date: 2026-03-30 14:24+0300\n"
 "PO-Revision-Date: 2011-10-09 19:21+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -27,9 +27,8 @@ msgid ""
 "Additional e-mail addresses for which e-mails will be delivered to the "
 "\"Mail address\". The domain must be one of the UCS hosted e-mail domains."
 msgstr ""
-"Zusätzliche E-Mail Adresse, für die E-Mails zur \"Mail-Adresse"
-"\" gesendet werden. Die Domäne muss eine der von UCS gehosteten "
-"E-Mail Domänen sein."
+"Zusätzliche E-Mail Adresse, für die E-Mails zur \"Mail-Adresse\" gesendet "
+"werden. Die Domäne muss eine der von UCS gehosteten E-Mail Domänen sein."
 
 #: modules/univention/admin/handlers/groups/group.py:202
 msgid "Basic settings"
@@ -95,7 +94,7 @@ msgid "Immutable attribute referencing the name of the source IAM"
 msgstr ""
 "Unveränderlicher Identifikator der den Namen der IAM-Quelle referenziert"
 
-#: modules/univention/admin/handlers/groups/group.py:582
+#: modules/univention/admin/handlers/groups/group.py:605
 #, python-format
 msgid "It is used as %s."
 msgstr "Sie wird als %s genutzt."

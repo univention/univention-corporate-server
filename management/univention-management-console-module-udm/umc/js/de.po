@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm 10.0.0-3\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2025-11-13 16:44+0100\n"
+"POT-Creation-Date: 2026-03-30 15:05+0300\n"
 "PO-Revision-Date: 2020-09-05 16:24+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -24,7 +24,7 @@ msgstr " Die Anwendung kann im %(link)s installiert werden"
 msgid "%(attribute)s: %(message)s\n"
 msgstr "%(attribute)s: %(message)s\n"
 
-#: umc/js/udm/LicenseDialog.js:173
+#: umc/js/udm/LicenseDialog.js:164
 msgid "%(limit)s (used: %(used)s)"
 msgstr "%(limit)s (genutzt: %(used)s)"
 
@@ -104,7 +104,7 @@ msgstr "Apps und Optionen aktivieren"
 msgid "Activated Apps"
 msgstr "Aktivierte Apps"
 
-#: umc/js/udm/startup.js:53
+#: umc/js/udm/startup.js:42
 msgid "Activation of UCS"
 msgstr "UCS-Aktivierung"
 
@@ -230,8 +230,8 @@ msgstr ""
 "setzen Sie die UCR Variable \"%s\" auf \"true\" auf jedem Domänencontroller "
 "in der Domäne."
 
-#: umc/js/udm.js:1578 umc/js/udm.js:1838 umc/js/udm.js:2012
-#: umc/js/udm/CreateReportDialog.js:71 umc/js/udm/DetailPage.js:1391
+#: umc/js/udm.js:1578 umc/js/udm.js:1847 umc/js/udm.js:2021
+#: umc/js/udm/DetailPage.js:1391 umc/js/udm/CreateReportDialog.js:71
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -239,7 +239,7 @@ msgstr "Abbrechen"
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/udm/LicenseDialog.js:126
+#: umc/js/udm/LicenseDialog.js:118
 msgid "Clients"
 msgstr "Clients"
 
@@ -275,7 +275,7 @@ msgstr "Bearbeiten fortführen"
 msgid "Copy"
 msgstr "Kopieren"
 
-#: umc/js/udm/LicenseDialog.js:146
+#: umc/js/udm/LicenseDialog.js:138
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
@@ -423,15 +423,15 @@ msgstr "Standard-Container"
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
-#: umc/js/udm.js:763 umc/js/udm.js:827 umc/js/udm.js:1285 umc/js/udm.js:2016
+#: umc/js/udm.js:763 umc/js/udm.js:827 umc/js/udm.js:1285 umc/js/udm.js:2025
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:2023
+#: umc/js/udm.js:2032
 msgid "Delete objects"
 msgstr "Objekte löschen"
 
-#: umc/js/udm.js:2006
+#: umc/js/udm.js:2015
 msgid "Delete referring objects."
 msgstr "Zugehörige Objekte löschen."
 
@@ -491,7 +491,7 @@ msgstr "Die ausgewählten Freigaben löschen"
 msgid "Delete the selected users."
 msgstr "Die ausgewählten Benutzer löschen"
 
-#: umc/js/udm/LicenseDialog.js:127
+#: umc/js/udm/LicenseDialog.js:119
 msgid "Desktops"
 msgstr "Desktops"
 
@@ -571,7 +571,7 @@ msgstr "Benutzer bearbeiten."
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/udm/LicenseDialog.js:128 umc/js/udm/LicenseDialog.js:148
+#: umc/js/udm/LicenseDialog.js:120 umc/js/udm/LicenseDialog.js:140
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
@@ -642,10 +642,6 @@ msgstr "Fehler beim Hochladen des Zertifikates"
 #: umc/js/udm/DetailPage.js:1291
 msgid "Further settings"
 msgstr "Weiterte Einstellungen"
-
-#: umc/js/udm/LicenseDialog.js:90
-msgid "GPL"
-msgstr "GPL"
 
 #: umc/js/udm/CreateReportDialog.js:127
 #, javascript-format
@@ -779,7 +775,7 @@ msgstr "Importieren der Lizenzdaten..."
 msgid "Include hidden objects"
 msgstr "Versteckte Objekte anzeigen"
 
-#: umc/js/udm/LicenseDialog.js:104
+#: umc/js/udm/LicenseDialog.js:97
 msgid ""
 "Information about the <a href=\"https://www.univention.com/downloads/license-"
 "models/ucs-core-edition\" target=\"_blank\">terms of use</a> for this free "
@@ -802,7 +798,7 @@ msgstr "Informationen über die aktuelle UCS-Lizenz"
 msgid "Invite user via e-mail. Password will be set by the user"
 msgstr "Benutzer per E-Mail einladen. Das Passwort wird vom Benutzer gesetzt"
 
-#: umc/js/udm/LicenseDialog.js:147
+#: umc/js/udm/LicenseDialog.js:139
 msgid "Key ID"
 msgstr "Key ID"
 
@@ -810,7 +806,7 @@ msgstr "Key ID"
 msgid "LDAP Objects"
 msgstr "LDAP-Objekte"
 
-#: umc/js/udm/LicenseDialog.js:124 umc/js/udm/LicenseDialog.js:142
+#: umc/js/udm/LicenseDialog.js:116 umc/js/udm/LicenseDialog.js:134
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -842,8 +838,7 @@ msgstr "Lizenz"
 msgid "License information"
 msgstr "Lizenzinformation"
 
-#: umc/js/udm/LicenseDialog.js:90 umc/js/udm/LicenseDialog.js:123
-#: umc/js/udm/LicenseDialog.js:141
+#: umc/js/udm/LicenseDialog.js:115 umc/js/udm/LicenseDialog.js:133
 msgid "License type"
 msgstr "Lizenztyp"
 
@@ -935,7 +930,7 @@ msgstr ""
 "Hier verwaltete Mail-Objekte werden von der Applikation \"%(name)s\" "
 "benutzt, welche momentan nicht installiert ist."
 
-#: umc/js/udm/LicenseDialog.js:145
+#: umc/js/udm/LicenseDialog.js:137
 msgid "Managed Clients"
 msgstr "Managed Clients"
 
@@ -1184,6 +1179,10 @@ msgstr "Das Verschieben von Containern kann einige Zeit in Anspruch nehmen."
 msgid "Object property"
 msgstr "Objekteigenschaft"
 
+#: umc/js/udm.js:1760
+msgid "Object type"
+msgstr "Objekttyp"
+
 #: umc/js/udm.js:662
 #, javascript-format
 msgid "One DHCP object of %d selected."
@@ -1319,28 +1318,28 @@ msgstr "Pfad"
 msgid "Path of the LDAP object."
 msgstr "Pfad des LDAP-Objekts."
 
-#: umc/js/udm.js:1893
+#: umc/js/udm.js:1902
 #, javascript-format
 msgid "Please confirm the removal of the DHCP object:"
 msgid_plural "Please confirm the removal of the %d selected DHCP objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten DHCP-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten DHCP-Objekte:"
 
-#: umc/js/udm.js:1891
+#: umc/js/udm.js:1900
 #, javascript-format
 msgid "Please confirm the removal of the DNS object:"
 msgid_plural "Please confirm the removal of the %d selected DNS objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten DNS-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten DNS-Objekte:"
 
-#: umc/js/udm.js:1911
+#: umc/js/udm.js:1920
 #, javascript-format
 msgid "Please confirm the removal of the LDAP object:"
 msgid_plural "Please confirm the removal of the %d selected LDAP objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten LDAP-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten LDAP-Objekte:"
 
-#: umc/js/udm.js:1901
+#: umc/js/udm.js:1910
 #, javascript-format
 msgid "Please confirm the removal of the Nagios object:"
 msgid_plural "Please confirm the removal of the %d selected Nagios objects"
@@ -1348,49 +1347,49 @@ msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Nagios-Objekts:"
 msgstr[1] ""
 "Bitte bestätigen Sie das Löschen der %d ausgewählten Nagios-Objekte:"
 
-#: umc/js/udm.js:1903
+#: umc/js/udm.js:1912
 #, javascript-format
 msgid "Please confirm the removal of the alert:"
 msgid_plural "Please confirm the removal of the %d selected alerts"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Alarms:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Alarme:"
 
-#: umc/js/udm.js:1887
+#: umc/js/udm.js:1896
 #, javascript-format
 msgid "Please confirm the removal of the computer:"
 msgid_plural "Please confirm the removal of the %d selected computers"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Rechners:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Rechner :"
 
-#: umc/js/udm.js:1885
+#: umc/js/udm.js:1894
 #, javascript-format
 msgid "Please confirm the removal of the group:"
 msgid_plural "Please confirm the removal of the %d selected groups"
 msgstr[0] "Bitte bestätigen Sie das Löschen der ausgewählten Gruppe:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Gruppen:"
 
-#: umc/js/udm.js:1899
+#: umc/js/udm.js:1908
 #, javascript-format
 msgid "Please confirm the removal of the mail object:"
 msgid_plural "Please confirm the removal of the %d selected mail objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Mail-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Mail-Objekte:"
 
-#: umc/js/udm.js:1889
+#: umc/js/udm.js:1898
 #, javascript-format
 msgid "Please confirm the removal of the network object:"
 msgid_plural "Please confirm the removal of the %d selected network objects"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Netz-Objekts:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Netz-Objekte:"
 
-#: umc/js/udm.js:1905
+#: umc/js/udm.js:1914
 #, javascript-format
 msgid "Please confirm the removal of the policy:"
 msgid_plural "Please confirm the removal of the %d selected ploicies"
 msgstr[0] "Bitte bestätigen Sie das Löschen der ausgewählten Richtlinie:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Richtlinien:"
 
-#: umc/js/udm.js:1907
+#: umc/js/udm.js:1916
 #, javascript-format
 msgid "Please confirm the removal of the portal object:"
 msgid_plural "Please confirm the removal of the %d selected portal objects"
@@ -1398,28 +1397,28 @@ msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Portal-Objekts:"
 msgstr[1] ""
 "Bitte bestätigen Sie das Löschen der %d ausgewählten Portal-Objekte:"
 
-#: umc/js/udm.js:1897
+#: umc/js/udm.js:1906
 #, javascript-format
 msgid "Please confirm the removal of the printer:"
 msgid_plural "Please confirm the removal of the %d selected printers"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Druckers:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Drucker:"
 
-#: umc/js/udm.js:1895
+#: umc/js/udm.js:1904
 #, javascript-format
 msgid "Please confirm the removal of the share:"
 msgid_plural "Please confirm the removal of the %d selected shares"
 msgstr[0] "Bitte bestätigen Sie das Löschen der ausgewählten Freigabe:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Freigaben:"
 
-#: umc/js/udm.js:1883
+#: umc/js/udm.js:1892
 #, javascript-format
 msgid "Please confirm the removal of the user:"
 msgid_plural "Please confirm the removal of the %d selected users"
 msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Benutzers:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Benutzer:"
 
-#: umc/js/udm.js:1824
+#: umc/js/udm.js:1833
 #, javascript-format
 msgid "Please confirm the restore of the deleted object:"
 msgid_plural "Please confirm the restore of the %d selected deleted objects:"
@@ -1427,7 +1426,7 @@ msgstr[0] "Bitte bestätigen Sie das Wiederherstellen des ausgewählten Objekts:
 msgstr[1] ""
 "Bitte bestätigen Sie das Wiederherstellen der %d ausgewählten Objekte:"
 
-#: umc/js/udm.js:2049
+#: umc/js/udm.js:2058
 msgid ""
 "Please select a container in the LDAP directory tree. The new object will be "
 "placed at this location."
@@ -1713,7 +1712,7 @@ msgid_plural "Report for %d users"
 msgstr[0] "Report für Benutzer"
 msgstr[1] "Report für %d Benutzer"
 
-#: umc/js/udm.js:817 umc/js/udm.js:1841
+#: umc/js/udm.js:817 umc/js/udm.js:1850
 msgid "Restore"
 msgstr "Wiederherstellen"
 
@@ -1899,11 +1898,11 @@ msgstr ""
 "Die folgenden leeren Eigenschaften wurden im Formular auf Vorgabewerte "
 "gesetzt. Die Werte werden beim Speichern angewendet."
 
-#: umc/js/udm.js:1975
+#: umc/js/udm.js:1984
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
-#: umc/js/udm.js:1863
+#: umc/js/udm.js:1872
 msgid "The following object(s) could not be restored:"
 msgstr ""
 "Die/das folgende(n) Objekt(e) konnte(n) nicht wiederhergestellt werden:"
@@ -1934,30 +1933,13 @@ msgstr ""
 "Originaldatei. Sollte dieser Fehler wiederholt auftreten, wenden Sie sich "
 "bitte an Univention oder Ihren Univention-Partner."
 
-#: umc/js/udm/startup.js:40
+#: umc/js/udm/startup.js:29
 msgid "The license has already been activated."
 msgstr "Die Lizenz wurde bereits aktiviert."
 
 #: umc/js/udm/LicenseImportDialog.js:122
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
-
-#: umc/js/udm/LicenseDialog.js:103
-msgid ""
-"The license type \"Free for personal use\" can be upgraded to the latest <a "
-"href=\"https://www.univention.com/downloads/license-models/ucs-core-"
-"edition\" target=\"_blank\">UCS Core Edition license</a> allowing an "
-"unlimited amount of user and computer accounts. To upgrade, follow the "
-"instructions in the <a href=\"http://sdb.univention.de/1324\" "
-"target=\"_blank\">Univention Support Database</a>."
-msgstr ""
-"Der Lizenztyp \"Free for personal use\" kann auf die neue <a href=\"https://"
-"www.univention.de/download/lizenzmodelle/ucs-core-edition\" "
-"target=\"_blank\">UCS Core Edition Lizenz</a> aktualisiert werden, welche "
-"eine unlimitierte Anzahl von Benutzer- und Rechnerkonten ermöglicht. Für die "
-"Aktualisierung reicht es, den aufgezeigten Schritten in der <a href=\"http://"
-"sdb.univention.de/1324\" target=\"_blank\">Univention Support Database</a> "
-"zu folgen."
 
 #: umc/js/udm/DetailPage.js:822
 #, javascript-format
@@ -2041,7 +2023,7 @@ msgstr "Darstellungsart ändern"
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/udm/LicenseDialog.js:112
+#: umc/js/udm/LicenseDialog.js:104
 msgid "UCS License"
 msgstr "UCS-Lizenz"
 
@@ -2065,7 +2047,7 @@ msgstr "Zertifikat hochladen"
 msgid "Upload profile image"
 msgstr "Profilbild hochladen"
 
-#: umc/js/udm/LicenseDialog.js:125 umc/js/udm/LicenseDialog.js:144
+#: umc/js/udm/LicenseDialog.js:117 umc/js/udm/LicenseDialog.js:136
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
@@ -2085,7 +2067,7 @@ msgstr ""
 "Hier verwaltete Benutzer werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm/LicenseDialog.js:129 umc/js/udm/LicenseDialog.js:149
+#: umc/js/udm/LicenseDialog.js:121 umc/js/udm/LicenseDialog.js:141
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
@@ -2113,14 +2095,6 @@ msgstr ""
 "Sie bearbeiten eine Richtlinie. Änderungen der Eigenschaften wirkt sich auf "
 "alle referenzierende Objekte aus und kann ggf. das System global "
 "beeinflussen."
-
-#: umc/js/udm/LicenseDialog.js:91
-msgid ""
-"You are using a GPL license which is not eligible for maintenance or support "
-"claims."
-msgstr ""
-"Sie verwenden eine GPL Lizenz, die zu keinem Anspruch auf Support oder "
-"Maintenance-Unterstützung berechtigt."
 
 #: umc/js/udm/wizards/FirstPageWizard.js:456
 msgid "computer"
@@ -2201,7 +2175,7 @@ msgstr "Freigabe"
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/udm/LicenseDialog.js:171
+#: umc/js/udm/LicenseDialog.js:162
 msgid "unlimited"
 msgstr "unbegrenzt"
 
@@ -2215,3 +2189,29 @@ msgstr "Benutzer"
 
 #~ msgid "A portal category has to be selected"
 #~ msgstr "Eine Portal-Kategorie muss ausgewählt sein"
+
+#~ msgid "GPL"
+#~ msgstr "GPL"
+
+#~ msgid ""
+#~ "The license type \"Free for personal use\" can be upgraded to the latest "
+#~ "<a href=\"https://www.univention.com/downloads/license-models/ucs-core-"
+#~ "edition\" target=\"_blank\">UCS Core Edition license</a> allowing an "
+#~ "unlimited amount of user and computer accounts. To upgrade, follow the "
+#~ "instructions in the <a href=\"http://sdb.univention.de/1324\" "
+#~ "target=\"_blank\">Univention Support Database</a>."
+#~ msgstr ""
+#~ "Der Lizenztyp \"Free for personal use\" kann auf die neue <a "
+#~ "href=\"https://www.univention.de/download/lizenzmodelle/ucs-core-"
+#~ "edition\" target=\"_blank\">UCS Core Edition Lizenz</a> aktualisiert "
+#~ "werden, welche eine unlimitierte Anzahl von Benutzer- und Rechnerkonten "
+#~ "ermöglicht. Für die Aktualisierung reicht es, den aufgezeigten Schritten "
+#~ "in der <a href=\"http://sdb.univention.de/1324\" "
+#~ "target=\"_blank\">Univention Support Database</a> zu folgen."
+
+#~ msgid ""
+#~ "You are using a GPL license which is not eligible for maintenance or "
+#~ "support claims."
+#~ msgstr ""
+#~ "Sie verwenden eine GPL Lizenz, die zu keinem Anspruch auf Support oder "
+#~ "Maintenance-Unterstützung berechtigt."

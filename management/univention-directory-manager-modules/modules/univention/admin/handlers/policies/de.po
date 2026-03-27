@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2025-10-22 18:00+0200\n"
+"POT-Creation-Date: 2026-03-30 14:24+0300\n"
 "PO-Revision-Date: 2021-05-04 10:26+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -100,12 +100,12 @@ msgstr "BOOTP"
 msgid "Basic DNS settings"
 msgstr "Allgemeine DNS-Einstellungen"
 
-#: modules/univention/admin/handlers/policies/policy.py:46
-#: modules/univention/admin/handlers/policies/nfsmounts.py:75
-#: modules/univention/admin/handlers/policies/recyclebin.py:103
-#: modules/univention/admin/handlers/policies/printserver.py:74
 #: modules/univention/admin/handlers/policies/ldapserver.py:75
 #: modules/univention/admin/handlers/policies/umc.py:82
+#: modules/univention/admin/handlers/policies/recyclebin.py:107
+#: modules/univention/admin/handlers/policies/policy.py:46
+#: modules/univention/admin/handlers/policies/nfsmounts.py:75
+#: modules/univention/admin/handlers/policies/printserver.py:74
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
@@ -296,13 +296,13 @@ msgstr "Standard-Speicherplatzbegrenzung für jeden User auf der Freigabe"
 msgid "Define the name of the DHCP server"
 msgstr "Definiert den Namen des DHCP-Servers"
 
+#: modules/univention/admin/handlers/policies/recyclebin.py:52
+msgid "Defines Recycle Bin behavior for UDM objects"
+msgstr "Definiert das Papierkorb-Verhalten für UDM-Objekte"
+
 #: modules/univention/admin/handlers/policies/umc.py:46
 msgid "Defines a set of allowed UMC operations"
 msgstr "Definiert eine Liste von erlaubten UMC Operationen"
-
-#: modules/univention/admin/handlers/policies/Recycle Bin.py:54
-msgid "Defines Recycle Bin behavior for UDM objects"
-msgstr "Definiert das Papierkorb-Verhalten für UDM-Objekte"
 
 #: modules/univention/admin/handlers/policies/desktop.py:24
 #: modules/univention/admin/handlers/policies/desktop.py:60
@@ -396,7 +396,7 @@ msgstr ""
 "Vergabe von IP-Adressen an Clients ohne eigenen DHCP-Rechner-Eintrag (unter "
 "Berücksichtigung der Einstellungen zum DHCP-Pool)."
 
-#: modules/univention/admin/handlers/policies/Recycle Bin.py:78
+#: modules/univention/admin/handlers/policies/recyclebin.py:76
 msgid "Enable or disable Recycle Bin for objects in this scope"
 msgstr "Papierkorb für Objekte in diesem Bereich aktivieren oder deaktivieren"
 
@@ -416,26 +416,26 @@ msgstr ""
 " dynamischen Adresse. Sollte nur bei Problemen seitens des Clients mit der "
 "Verzögerung von einer Sekunde deaktiviert werden."
 
-#: modules/univention/admin/handlers/policies/maintenance.py:120
-#: modules/univention/admin/handlers/policies/policy.py:46
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:74
+#: modules/univention/admin/handlers/policies/slavepackages.py:82
+#: modules/univention/admin/handlers/policies/ldapserver.py:75
+#: modules/univention/admin/handlers/policies/umc.py:82
+#: modules/univention/admin/handlers/policies/pwhistory.py:90
+#: modules/univention/admin/handlers/policies/masterpackages.py:82
 #: modules/univention/admin/handlers/policies/share_userquota.py:99
+#: modules/univention/admin/handlers/policies/maintenance.py:120
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:74
+#: modules/univention/admin/handlers/policies/recyclebin.py:107
+#: modules/univention/admin/handlers/policies/admin_container.py:74
+#: modules/univention/admin/handlers/policies/desktop.py:93
+#: modules/univention/admin/handlers/policies/policy.py:46
 #: modules/univention/admin/handlers/policies/repositorysync.py:100
 #: modules/univention/admin/handlers/policies/nfsmounts.py:75
-#: modules/univention/admin/handlers/policies/memberpackages.py:82
-#: modules/univention/admin/handlers/policies/pwhistory.py:90
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:81
-#: modules/univention/admin/handlers/policies/recyclebin.py:103
-#: modules/univention/admin/handlers/policies/admin_container.py:74
 #: modules/univention/admin/handlers/policies/release.py:79
-#: modules/univention/admin/handlers/policies/masterpackages.py:82
-#: modules/univention/admin/handlers/policies/printserver.py:74
-#: modules/univention/admin/handlers/policies/ldapserver.py:75
-#: modules/univention/admin/handlers/policies/desktop.py:93
-#: modules/univention/admin/handlers/policies/registry.py:81
-#: modules/univention/admin/handlers/policies/slavepackages.py:82
-#: modules/univention/admin/handlers/policies/umc.py:82
 #: modules/univention/admin/handlers/policies/repositoryserver.py:75
+#: modules/univention/admin/handlers/policies/memberpackages.py:82
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:81
+#: modules/univention/admin/handlers/policies/printserver.py:74
+#: modules/univention/admin/handlers/policies/registry.py:81
 msgid "General"
 msgstr "Allgemein"
 
@@ -598,6 +598,10 @@ msgstr ""
 "Voreinstellung ist 'Erlauben'. Die Einstellung 'Verbieten' verletzt das "
 "DHCP-Protokoll."
 
+#: modules/univention/admin/handlers/policies/recyclebin.py:93
+msgid "Ignored object classes"
+msgstr ""
+
 #: modules/univention/admin/handlers/policies/dhcp_boot.py:68
 msgid "Initial boot file to be loaded by a client"
 msgstr "Erste Datei, die beim Booten vom Client geladen wird"
@@ -632,7 +636,7 @@ msgid ""
 "Lease time used if the client does not request a specific expiration time"
 msgstr "Lease-Zeit, wenn der Client keine bestimmte Ablaufzeit erbittet"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:84
+#: modules/univention/admin/handlers/policies/recyclebin.py:82
 msgid "List of UDM module names whose objects should be recycled when deleted"
 msgstr ""
 "Liste der UDM-Modulnamen, deren Objekte beim Löschen in den Papierkorb "
@@ -750,36 +754,36 @@ msgstr "NFS-Freigaben-Richtlinie"
 msgid "NFS shares to mount"
 msgstr "NFS-Freigaben einbinden"
 
-#: modules/univention/admin/handlers/policies/maintenance.py:52
-#: modules/univention/admin/handlers/policies/policy.py:38
-#: modules/univention/admin/handlers/policies/dhcp_routing.py:51
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:55
+#: modules/univention/admin/handlers/policies/slavepackages.py:52
+#: modules/univention/admin/handlers/policies/ldapserver.py:51
+#: modules/univention/admin/handlers/policies/umc.py:59
+#: modules/univention/admin/handlers/policies/pwhistory.py:52
+#: modules/univention/admin/handlers/policies/masterpackages.py:52
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:58
 #: modules/univention/admin/handlers/policies/share_userquota.py:55
-#: modules/univention/admin/handlers/policies/dhcp_netbios.py:53
+#: modules/univention/admin/handlers/policies/maintenance.py:52
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:51
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:56
+#: modules/univention/admin/handlers/policies/recyclebin.py:66
+#: modules/univention/admin/handlers/policies/admin_container.py:51
+#: modules/univention/admin/handlers/policies/desktop.py:51
+#: modules/univention/admin/handlers/policies/policy.py:38
 #: modules/univention/admin/handlers/policies/repositorysync.py:52
 #: modules/univention/admin/handlers/policies/nfsmounts.py:51
-#: modules/univention/admin/handlers/policies/memberpackages.py:52
-#: modules/univention/admin/handlers/policies/pwhistory.py:52
-#: modules/univention/admin/handlers/policies/dhcp_dns.py:52
-#: modules/univention/admin/handlers/policies/dhcp_scope.py:55
-#: modules/univention/admin/handlers/policies/dhcp_boot.py:52
-#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:53
-#: modules/univention/admin/handlers/policies/recyclebin.py:68
-#: modules/univention/admin/handlers/policies/admin_container.py:51
 #: modules/univention/admin/handlers/policies/release.py:51
-#: modules/univention/admin/handlers/policies/masterpackages.py:52
-#: modules/univention/admin/handlers/policies/dhcp_statements.py:56
-#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:58
-#: modules/univention/admin/handlers/policies/printserver.py:50
-#: modules/univention/admin/handlers/policies/ldapserver.py:51
-#: modules/univention/admin/handlers/policies/desktop.py:51
-#: modules/univention/admin/handlers/policies/registry.py:57
-#: modules/univention/admin/handlers/policies/slavepackages.py:52
-#: modules/univention/admin/handlers/policies/umc.py:59
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:52
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:53
 #: modules/univention/admin/handlers/policies/repositoryserver.py:51
+#: modules/univention/admin/handlers/policies/memberpackages.py:52
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:52
+#: modules/univention/admin/handlers/policies/printserver.py:50
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:53
+#: modules/univention/admin/handlers/policies/registry.py:57
 msgid "Name"
 msgstr "Name"
 
-#: modules/univention/admin/handlers/policies/Recycle Bin.py:69
+#: modules/univention/admin/handlers/policies/recyclebin.py:67
 msgid "Name of the Recycle Bin policy"
 msgstr "Name der Papierkorb-Richtlinie"
 
@@ -814,7 +818,7 @@ msgstr "Netbios"
 msgid "Number of days after which the password has to be changed"
 msgstr "Anzahl an Tagen, nach der das Passwort geändert werden muss"
 
-#: modules/univention/admin/handlers/policies/Recycle Bin.py:90
+#: modules/univention/admin/handlers/policies/recyclebin.py:88
 msgid "Number of days to keep objects in Recycle Bin (0 = indefinite)"
 msgstr ""
 "Anzahl der Tage, die Objekte im Papierkorb aufbewahrt werden (0 = "
@@ -827,21 +831,26 @@ msgid ""
 msgstr ""
 "IP-Adresse oder Name des Servers, von dem die Boot-Datei geladen werden soll"
 
-#: modules/univention/admin/handlers/policies/memberpackages.py:24
-#: modules/univention/admin/handlers/policies/memberpackages.py:61
-#: modules/univention/admin/handlers/policies/masterpackages.py:24
-#: modules/univention/admin/handlers/policies/masterpackages.py:61
+#: modules/univention/admin/handlers/policies/recyclebin.py:94
+msgid ""
+"Objects having one of these object classes will not be moved to Recycle Bin."
+msgstr ""
+
 #: modules/univention/admin/handlers/policies/slavepackages.py:24
 #: modules/univention/admin/handlers/policies/slavepackages.py:61
+#: modules/univention/admin/handlers/policies/masterpackages.py:24
+#: modules/univention/admin/handlers/policies/masterpackages.py:61
+#: modules/univention/admin/handlers/policies/memberpackages.py:24
+#: modules/univention/admin/handlers/policies/memberpackages.py:61
 msgid "Package installation list"
 msgstr "Paket Installationsliste"
 
-#: modules/univention/admin/handlers/policies/memberpackages.py:25
-#: modules/univention/admin/handlers/policies/memberpackages.py:67
-#: modules/univention/admin/handlers/policies/masterpackages.py:25
-#: modules/univention/admin/handlers/policies/masterpackages.py:67
 #: modules/univention/admin/handlers/policies/slavepackages.py:25
 #: modules/univention/admin/handlers/policies/slavepackages.py:67
+#: modules/univention/admin/handlers/policies/masterpackages.py:25
+#: modules/univention/admin/handlers/policies/masterpackages.py:67
+#: modules/univention/admin/handlers/policies/memberpackages.py:25
+#: modules/univention/admin/handlers/policies/memberpackages.py:67
 msgid "Package removal list"
 msgstr "Paket Deinstallationsliste"
 
@@ -978,7 +987,7 @@ msgstr "Richtlinie: Passwort"
 msgid "Policy: Print server"
 msgstr "Richtlinie: Druckserver"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:51
+#: modules/univention/admin/handlers/policies/recyclebin.py:49
 msgid "Policy: Recycle Bin Configuration"
 msgstr "Richtlinie: Papierkorb-Konfiguration"
 
@@ -1051,15 +1060,15 @@ msgid "Reboot after maintenance"
 msgstr "Nach Paketpflege neu starten"
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:24
-#: modules/univention/admin/handlers/policies/recyclebin.py:77
+#: modules/univention/admin/handlers/policies/recyclebin.py:75
 msgid "Recycle Bin enabled"
 msgstr "Papierkorb aktiviert"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:53
+#: modules/univention/admin/handlers/policies/recyclebin.py:51
 msgid "Recycle Bin policies"
 msgstr "Papierkorb-Richtlinien"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:52
+#: modules/univention/admin/handlers/policies/recyclebin.py:50
 msgid "Recycle Bin policy"
 msgstr "Papierkorb-Richtlinie"
 
@@ -1119,7 +1128,7 @@ msgstr ""
 "DHCP-Rechner-Einträgen von Bedeutung."
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:26
-#: modules/univention/admin/handlers/policies/recyclebin.py:89
+#: modules/univention/admin/handlers/policies/recyclebin.py:87
 msgid "Retention days"
 msgstr "Aufbewahrungstage"
 
@@ -1207,7 +1216,7 @@ msgstr ""
 "Diese Zahl gibt an, nach wie vielen Passwortwechseln der Benutzer ein altes "
 "Passwort wiederverwenden darf"
 
-#: modules/univention/admin/handlers/policies/recyclebin.py:55
+#: modules/univention/admin/handlers/policies/recyclebin.py:53
 msgid ""
 "This policy controls which UDM objects are moved to the Recycle Bin when "
 "deleted and how long they are retained."
@@ -1220,7 +1229,7 @@ msgid "UCR Variables"
 msgstr "UCR-Variablen"
 
 #: modules/univention/admin/handlers/policies/recyclebin.py:25
-#: modules/univention/admin/handlers/policies/recyclebin.py:83
+#: modules/univention/admin/handlers/policies/recyclebin.py:81
 msgid "UDM modules to recycle"
 msgstr "UDM-Module für Papierkorb"
 
