@@ -97,7 +97,6 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-dev-ref": ref("developer-reference"),
     "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
-    "uv-nubus-kubernetes-customization": ('https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/', None),
     "uv-nubus-kubernetes-architecture": ('https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/', None),
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
     "uv-ext-windows": ref("ext-windows"),
@@ -230,6 +229,7 @@ def adapt_settings_to_translation(app, config):
         config.intersphinx_mapping = {
             'uv-dev-ref': ref('developer-reference'),
             'uv-keycloak-ref': ('https://docs.software-univention.de/keycloak-app/latest', None),
+            'uv-nubus-kubernetes-architecture': ('https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/', None),
             'uv-ox-connector-app': ('https://docs.software-univention.de/ox-connector-app/latest', None),
             'uv-ext-windows': ref('ext-windows'),
             'uv-ucs-operation': ref('ucs-operation', ver=version, lang='de'),
