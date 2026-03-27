@@ -123,6 +123,30 @@ listView("${c.jenkins_folder_name}/KVM Templates") {
 
 To create the template, go to Jenkins UCS-X.X / UCS-X.X-X / KVM Templates and start your job.
 
+## Updating existing `2.4masterinstallation` templates to a new UCS version
+
+This section describes the process to update an existing `2.4masterinstallation` KVM template to a new UCS version (e.g., updating the `2.4masterinstallation` template from 5.0-6 to 5.0-9).
+
+### Steps to generate the new template
+
+Start the jenkins job [CreateUpdateFrom24KtGetTemplate](https://jenkins2022.knut.univention.de/job/UCS-5.2/job/UCS-5.2-5/view/Templates/job/CreateUpdateFrom24KtGetTemplate/)
+
+This job supports the following parameters:
+- `START_FROM_UCS_VERSION`: The UCS version of the existing `2.4masterinstallation` template (e.g., 5.0-6)
+- `END_WITH_UCS_VERSION`: The UCS version for the new `2.4masterinstallation` template (e.g., 5.0-9)
+
+The job will:
+1. Start from the base template defined by `START_FROM_UCS_VERSION`
+2. Check and renew any expired SSL certificates in `/etc/univention/ssl`
+3. Upgrade the system to `END_WITH_UCS_VERSION`
+4. Create a new KVM template named: `[END_WITH_UCS_VERSION]_2.4masterinstallation_amd64`
+
+The certificate renewal is handled automatically by the `renew_expired_certificates()` function in `test/utils/utils.sh`. This function:
+- Only acts if certificates are actually expired
+- Creates a timestamped backup before modifications
+- Renews the root CA certificate and all computer certificates
+- Restarts SSL-dependent services
+
 ## Windows Templates
 
 Here some hints how to prepare such a windows template
