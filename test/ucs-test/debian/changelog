@@ -1,3 +1,10 @@
+ucs-test (12.5.16) unstable; urgency=medium
+
+  * Bug #59151: ignore all "AttributeError: module 'univention.admin.syntax' has no
+  	attribute '...'" errors
+
+ -- Florian Best <best@univention.de>  Fri, 27 Mar 2026 14:26:59 +0100
+
 ucs-test (12.5.15) unstable; urgency=medium
 
   * Issue univention/dev/internal/team-horizon#19:  No changes, test build due

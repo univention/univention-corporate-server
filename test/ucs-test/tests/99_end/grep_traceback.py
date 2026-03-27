@@ -180,6 +180,7 @@ COMMON_EXCEPTIONS = (
     # E(r"requests.exceptions.ConnectionError: \('Connection aborted.', ConnectionResetError\(104, 'Connection reset by peer'\)\)", ['univention-directory-listener/system/monitoring-client.py']),
 
     # AutotestUpgrade
+    E("AttributeError: module 'univention.admin.syntax' has no attribute '.*'", ['univention/admin/modules.py.*in update'], 59151),
     E(r'KeyError:.*_UnixSelectorEventLoop', ['tornado/ioloop.py'], 59121),
     E(r'RuntimeError: IOLoop .* already associated with asyncio loop', ['tornado/ioloop.py'], 59121),
     E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
