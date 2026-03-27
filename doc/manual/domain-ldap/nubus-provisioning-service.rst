@@ -25,7 +25,7 @@ in :cite:t:`uv-nubus-kubernetes-architecture`.
    There are no services integrated into UCS that make use of the *Provisioning Service*.
    You can create services that use the *Provisioning Service*
    according to
-   :external+uv-nubus-kubernetes-customization:ref:`customization-api-provisioning`
+   :external+uv-nubus-customization:ref:`customization-api-provisioning`
    in :cite:t:`uv-nubus-kubernetes-customization`.
 
 .. note::
@@ -137,7 +137,7 @@ It streams data through a TLS encrypted connection.
       in :cite:t:`uv-nubus-kubernetes-architecture`
       for information about the architecture of the *Provisioning Service*
 
-   :external+uv-nubus-kubernetes-customization:ref:`customization-api-provisioning`
+   :external+uv-nubus-customization:ref:`customization-api-provisioning`
       in :cite:t:`uv-nubus-kubernetes-customization`
       for information about how to use the *Provisioning Service*
       and create a subscription for a *Provisioning Consumer*.
