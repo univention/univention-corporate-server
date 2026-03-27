@@ -799,16 +799,19 @@ def s4_zone_delete(s4connector, object):
 
 def s4_dns_node_base_create(s4connector, object, dnsRecords):
     relativeDomainNames = object['attributes'].get('relativeDomainName')
-    old_dnsRecords = []
 
     # Create dnsNode object
     dnsNodeDn = object['dn']
     try:
-        old_dnsRecords = s4connector.lo_s4.get(dnsNodeDn, attr=['dnsRecord'], required=True).get('dnsRecord')
+        attrs = s4connector.lo_s4.get(dnsNodeDn, attr=['dnsRecord', 'dNSTombstoned'], required=True)
     except ldap.NO_SUCH_OBJECT:
         __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords)
     else:
-        s4connector.lo_s4.modify(dnsNodeDn, [('dnsRecord', old_dnsRecords, dnsRecords)])
+        ml = [('dnsRecord', attrs.get('dnsRecord'), dnsRecords)]
+        if attrs.get('dNSTombstoned'):
+            log.debug('Remove dNSTombstoned flag')
+            ml.append(('dNSTombstoned', attrs['dNSTombstoned'], None))
+        s4connector.lo_s4.modify(dnsNodeDn, ml)
 
     return dnsNodeDn
 
