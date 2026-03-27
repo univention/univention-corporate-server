@@ -1,3 +1,10 @@
+ucs-test (12.5.15) unstable; urgency=medium
+
+  * Issue univention/dev/internal/team-horizon#19:  No changes, test build due
+    to new repo-ng version.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 27 Mar 2026 11:38:33 +0100
+
 ucs-test (12.5.14) unstable; urgency=medium
 
   * Bug #52893: Update test case
