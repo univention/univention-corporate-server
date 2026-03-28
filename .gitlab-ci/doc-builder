@@ -3,52 +3,72 @@
 # SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 """
-Generate Gitlab pipeline to build UCS documentation.
+Generate a GitLab CI pipeline configuration for building UCS documentation.
 
-Author: Philipp Hahn 2024-03-13
+The script discovers all Sphinx documents under doc/*/, extracts their
+intersphinx dependencies by AST-parsing each conf.py, and generates a
+complete pipeline YAML with one build job per document per target
+(html, pdf, linkcheck, spelling).
+
+Dependency graph and cycle detection
+-------------------------------------
+Internal dependencies are extracted from the module-level
+intersphinx_mapping in each conf.py by collecting document names passed
+to reference_inventory(). The full dependency graph is analysed to detect
+cyclic dependencies — pairs of documents that depend on each other.
+
+For each cycle, the less-central document (fewest reverse dependencies)
+receives a first-pass cycle job built with SPHINXOPTS=--keep-going. This
+allows the dependent document to obtain a valid intersphinx inventory
+even when cross-references are not yet fully resolved. The cycle job is
+triggered both by changes to its own source and by changes to any
+document that depends on it.
+
+Bootstrap jobs
+--------------
+Documents that have no publicly available objects.inv — detected via a
+HEAD request to docs.software-univention.de at pipeline generation time —
+also receive a cycle job, so that documents depending on them can resolve
+intersphinx references before the first publication. On network failure,
+a document is conservatively treated as unpublished.
+
+Usage
+-----
+    doc-builder [--yaml HEAD_YAML ...] [--out OUTPUT]
+
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
+import logging
+import urllib.request
 from pathlib import Path
 
+from concurrent.futures import ThreadPoolExecutor
 from ruamel.yaml import YAML
 
 
 BASE = Path(__file__).parent  # .gilab-ci/
 ROOT = BASE.parent
+logger = logging.getLogger(__name__)
 
 
 TARGETS = ["html", "pdf", "linkcheck", "spelling"]
-DEPENDS = {
-    "app-center": {"manual", "developer-reference cycle"},
-    "architecture": {"manual", "developer-reference cycle", "app-center"},
-    "changelog": {"manual"},
-    "debian-admins": {"manual", "architecture"},
-    "developer-reference": {"app-center", "architecture", "manual"},
-    "ext-domain": {"manual"},
-    "ext-networks": {"manual"},
-    "ext-performance": {"manual", "developer-reference cycle"},
-    "ext-windows": {"manual"},
-    "manual": {"developer-reference cycle", "ext-windows cycle", "ucs-operation cycle"},
-    "quickstart": {"manual", "ext-domain", "ext-installation"},
-    "release-notes": {"manual", "changelog cycle", "ext-windows"},
-    "scenarios": {"manual"},
-    "ext-delegative-administration": {"manual", "developer-reference", "architecture"},
-    "ucs-operation": {"manual", "debian-admins"},
-}  # FIXME: extract this from ../doc/*/conf.py intersphinx_mapping
-SPECIAL: dict[str, dict[str, object]] = {
+
+# Documents that use a patch-level version string in their public URL path.
+# By default, documents are published at $DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language.
+# Documents listed here override DOC_TARGET_PATH to use $CHANGELOG_TARGET_VERSION,
+# which corresponds to the `release` variable in their conf.py (e.g. "5.2-5")
+# rather than the minor `version` (e.g. "5.2").
+DOC_TARGET_PATHS: dict[str, dict[str, object]] = {
     "changelog": {
         "DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language",
     },
     "release-notes": {
         "DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language",
     },
-    "developer-reference cycle": {"SPHINXOPTS": "--keep-going"},
-    "ext-windows cycle": {"SPHINXOPTS": "--keep-going"},
-    "ucs-operation cycle": {"SPHINXOPTS": "--keep-going"},
-    "changelog cycle": {"SPHINXOPTS": "--keep-going"},
 }
 
 
@@ -85,6 +105,7 @@ pipeline: dict[str, object] = {
 
 def main() -> None:
     args = parse_args()
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     yaml = YAML(typ="rt")
     for head in args.yaml:
@@ -116,12 +137,23 @@ def job_desc(
     languages: list[str],
     depends: set[str],
 ) -> dict[str, object]:
+    """
+    Build a GitLab CI job definition for a Sphinx document.
+
+    :param pkg: Document name, used to look up overrides in DOC_TARGET_PATHS.
+    :param path: Absolute path to the document directory.
+    :param extends: The CI job template to extend, e.g. ``.sphinx-html``.
+    :param languages: List of languages to build, used in the parallel matrix.
+    :param depends: Set of job name suffixes this job depends on. Each entry
+        becomes an optional ``needs`` entry pointing to the corresponding html job.
+    :returns: A dict representing the GitLab CI job definition.
+    """
     variables = dict(
-        SPECIAL.get(pkg, {}),
+        DOC_TARGET_PATHS.get(pkg, {}),
         DOCS_DIR=path.relative_to(ROOT).as_posix(),
         DOC_TARGET_NAME=path.name,
-        # For special documents we need to overwrite the default DOC_TARGET_PATH and pull the value from the SPECIAL dict.
-        DOC_TARGET_PATH=SPECIAL.get(pkg, {}).get("DOC_TARGET_PATH", None)
+        # For DOC_TARGET_PATHS documents we need to overwrite the default DOC_TARGET_PATH and pull the value from the DOC_TARGET_PATHS dict.
+        DOC_TARGET_PATH=DOC_TARGET_PATHS.get(pkg, {}).get("DOC_TARGET_PATH", None)
         or "$DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language",
     )
     job: dict[str, object] = {
@@ -185,10 +217,24 @@ def lint_envvars(pkg: str, path: Path, extends: str) -> dict[str, object]:
 
 
 def job_path(path: Path) -> str:
+    """
+    Return the GitLab CI changes glob pattern for a document directory.
+
+    The pattern matches any file under the document's directory and is used
+    in the rules.changes list to trigger jobs when the document changes.
+    """
     return f"{path.relative_to(ROOT).as_posix()}/**/*"
 
 
 def find_docs() -> dict[Path, list[str]]:
+    """
+    Discover all documents in the doc/ directory.
+
+    Scans for conf.py files under doc/*/ and returns a mapping of each
+    document's directory path to its list of languages. The language list
+    always includes "en" and is extended with any additional languages found
+    in the document's locales/ subdirectory.
+    """
     return {
         path.parent: list(
             {lang.name for lang in path.parent.glob("locales/*")} | {"en"},
@@ -197,11 +243,240 @@ def find_docs() -> dict[Path, list[str]]:
     }
 
 
+def extract_version(conf_py: Path) -> str:
+    """Extract the version string from a conf.py file."""
+    tree = ast.parse(conf_py.read_text())
+    for node in tree.body:
+        match node:
+            case ast.Assign(
+                targets=targets,
+                value=ast.Constant(value=str(version)),
+            ) if any(isinstance(t, ast.Name) and t.id == "version" for t in targets):
+                return version
+    return ""
+
+
+def extract_release(conf_py: Path) -> str:
+    """
+    Extract the release string from a conf.py file.
+
+    Returns the release string if it is a distinct string literal,
+    or an empty string if release is assigned from another variable.
+    """
+    tree = ast.parse(conf_py.read_text())
+    for node in tree.body:
+        match node:
+            case ast.Assign(
+                targets=targets,
+                value=ast.Constant(value=str(release)),
+            ) if any(isinstance(t, ast.Name) and t.id == "release" for t in targets):
+                return release
+    return ""
+
+
+def extract_internal_depends(conf_py: Path, known_docs: set[str]) -> set[str]:
+    """
+    Extract internal document dependencies from a conf.py file.
+
+    Parses the module-level intersphinx_mapping assignment and returns
+    the set of document names passed to reference_inventory() that are
+    known documents in this repository.
+    """
+    tree = ast.parse(conf_py.read_text())
+    depends: set[str] = set()
+    for node in tree.body:
+        match node:
+            case ast.Assign(
+                targets=targets,
+                value=ast.Dict() as mapping,
+            ) if any(
+                isinstance(t, ast.Name) and t.id == "intersphinx_mapping"
+                for t in targets
+            ):
+                for value in mapping.values:
+                    match value:
+                        case ast.Call(
+                            func=ast.Name(id="reference_inventory"),
+                            args=[ast.Constant(value=str(name)), *_],
+                        ):
+                            if name in known_docs:
+                                depends.add(name)
+                        case ast.Call(
+                            func=ast.Attribute(attr="reference_inventory"),
+                            args=[ast.Constant(value=str(name)), *_],
+                        ):
+                            if name in known_docs:
+                                depends.add(name)
+    return depends
+
+
+def find_depends(docs: dict[Path, list[str]]) -> dict[str, set[str]]:
+    """Build the dependency graph by parsing each conf.py."""
+    known_docs = {path.name for path in docs}
+    result = {
+        path.name: extract_internal_depends(path / "conf.py", known_docs)
+        for path in docs
+    }
+    for doc, deps in sorted(result.items()):
+        if deps:
+            logger.info("[depends] %s: depends on %s", doc, ", ".join(sorted(deps)))
+        else:
+            logger.info("[depends] %s: no internal dependencies", doc)
+    return result
+
+
+def find_cycles(depends: dict[str, set[str]]) -> list[frozenset[str]]:
+    """Detect all mutually dependent document pairs in the dependency graph."""
+    cycles = []
+    for a, a_deps in depends.items():
+        for b in a_deps:
+            if b in depends and a in depends[b] and frozenset({a, b}) not in cycles:
+                cycles.append(frozenset({a, b}))
+                logger.info("[cycles] Cycle detected: %s <-> %s", a, b)
+    return cycles
+
+
+def is_published(name: str, version: str) -> bool:
+    """Check if a document has a publicly available objects.inv."""
+    url = f"https://docs.software-univention.de/{name}/{version}/en/objects.inv"
+    try:
+        req = urllib.request.Request(url, method="HEAD")
+        with urllib.request.urlopen(req, timeout=3) as response:  # noqa: S310
+            published = response.status == 200
+    except Exception:
+        published = False
+    logger.info(
+        "[published] %s %s: %s",
+        name,
+        version,
+        "published" if published else "not published",
+    )
+    return published
+
+
+def find_unpublished(
+    docs: dict[Path, list[str]],
+    depends: dict[str, set[str]],
+) -> set[str]:
+    """
+    Return the set of documents that have reverse dependencies but no public objects.inv.
+
+    Only documents that other documents depend on need a bootstrap cycle job.
+    Documents with no reverse dependencies are irrelevant for the cycle mechanism.
+    """
+    # Only check documents that at least one other document depends on
+    has_reverse_dep = {dep for deps in depends.values() for dep in deps}
+
+    def check(path: Path) -> tuple[str, bool]:
+        name = path.name
+        if name in DOC_TARGET_PATHS:
+            url_version = extract_release(path / "conf.py") or extract_version(
+                path / "conf.py",
+            )
+        else:
+            url_version = extract_version(path / "conf.py")
+        return name, is_published(name, url_version)
+
+    candidates = [path for path in docs if path.name in has_reverse_dep]
+    with ThreadPoolExecutor() as executor:
+        results = executor.map(check, candidates)
+
+    return {name for name, published in results if not published}
+
+
+def assign_cycle_jobs(
+    cycles: list[frozenset[str]],
+    unpublished: set[str],
+    depends: dict[str, set[str]],
+) -> dict[str, set[str]]:
+    """
+    Determine which documents get a cycle job and what triggers them.
+
+    For true cycles, the less-central node (fewest reverse dependencies)
+    gets the cycle job, triggered by the other cycle members that depend on it.
+
+    For unpublished documents that are not part of a true cycle, a cycle job
+    is added triggered by all documents that depend on them.
+
+    Returns a dict mapping "<name> cycle" to the set of dependent doc names
+    that should trigger it.
+    """
+    # Count reverse dependencies across the whole graph
+    rev_counts: dict[str, int] = dict.fromkeys(depends, 0)
+    for deps in depends.values():
+        for dep in deps:
+            if dep in rev_counts:
+                rev_counts[dep] += 1
+
+    # Nodes already handled as part of a true cycle
+    cycle_nodes: set[str] = set()
+    result: dict[str, set[str]] = {}
+
+    for cycle in cycles:
+        a, b = tuple(cycle)
+        # Pick the less-central node as the cycle job target
+        chosen = min(a, b, key=lambda n: rev_counts.get(n, 0))
+        # Triggered by all direct dependents of chosen that are in the cycle
+        # i.e. the documents that depend on chosen and are part of this cycle
+        triggers = {doc for doc in depends if chosen in depends[doc]} & cycle
+        result.setdefault(f"{chosen} cycle", set()).update(triggers)
+        cycle_nodes.add(chosen)
+        logger.info(
+            "[cycle-jobs] Cycle job: %s cycle (triggered by: %s)",
+            chosen,
+            ", ".join(sorted(triggers)),
+        )
+
+    # Bootstrap: unpublished docs not already covered by a true cycle job
+    for name in unpublished - cycle_nodes:
+        triggers = {doc for doc, deps in depends.items() if name in deps}
+        if triggers:
+            result[f"{name} cycle"] = triggers
+            logger.info(
+                "[cycle-jobs] Bootstrap cycle job: %s cycle (triggered by: %s)",
+                name,
+                ", ".join(sorted(triggers)),
+            )
+
+    return result
+
+
 def add_jobs(pipeline: dict[str, object]) -> None:
+    """
+    Generate and add all document build jobs to the pipeline.
+
+    Discovers all documents, extracts their dependency graph from conf.py,
+    detects cyclic dependencies and unpublished documents, and generates
+    the appropriate CI jobs.
+
+    For each document, one job per build target (html, pdf, linkcheck,
+    spelling) is added. Dependencies are rewritten so that any document
+    involved in a cycle or not yet published depends on the corresponding
+    cycle job rather than the regular build job.
+
+    Cycle jobs are first-pass builds with SPHINXOPTS=--keep-going. They
+    are triggered both by changes to their own document and by changes to
+    any document that depends on them, ensuring the intersphinx inventory
+    is always available in the pipeline cache.
+    """
     docs = find_docs()
+    depends = find_depends(docs)
+    cycles = find_cycles(depends)
+    unpublished = find_unpublished(docs, depends)
+    cycle_jobs = assign_cycle_jobs(cycles, unpublished, depends)
+
+    # Map each cycle job target name to its cycle job key for dependency rewriting
+    # e.g. "developer-reference" -> "developer-reference cycle"
+    cycle_job_map = {name.removesuffix(" cycle"): name for name in cycle_jobs}
+
     for path, languages in docs.items():
         all_paths.append(job_path(path))
         pkg = path.name
+
+        # Rewrite dependencies: replace any dep that has a cycle job with its cycle job name
+        raw_deps = depends.get(pkg, set())
+        adjusted_deps = {cycle_job_map.get(dep, dep) for dep in raw_deps}
+
         for target in TARGETS:
             if target == "pdf" and pkg == "ucs-operation":
                 continue
@@ -212,7 +487,7 @@ def add_jobs(pipeline: dict[str, object]) -> None:
                 path,
                 f".sphinx-{target}",
                 languages,
-                DEPENDS.get(pkg, set()),
+                adjusted_deps,
             )
             pipeline.update({name: job})
 
@@ -221,24 +496,15 @@ def add_jobs(pipeline: dict[str, object]) -> None:
             lint_envvar = lint_envvars(pkg, path, ".lint-envvar-cross-reference")
             pipeline.update({name: lint_envvar})
 
-    # reverse_cycle: cycle-pkg-name -> set of dependent doc directory names
-    # e.g. {"ucs-operation cycle": {"manual"}, "developer-reference cycle": {"manual", "app-center", ...}}
-    reverse_cycle: dict[str, set[str]] = {}
-    for doc, deps in DEPENDS.items():
-        for dep in deps:
-            if dep.endswith(" cycle"):
-                reverse_cycle.setdefault(dep, set()).add(doc)
-
-    for doc in SPECIAL.keys():
-        if not doc.endswith(" cycle"):
-            continue
-        path = ROOT / "doc" / doc.removesuffix(" cycle")
-        pkg = f"{path.name} cycle"
-        name = job_name(pkg, "html")
-        job = job_desc(pkg, path, ".sphinx-html", docs.get(path, ["en"]), set())
+    for cycle_pkg, triggers in cycle_jobs.items():
+        base_pkg = cycle_pkg.removesuffix(" cycle")
+        path = ROOT / "doc" / base_pkg
+        name = job_name(cycle_pkg, "html")
+        job = job_desc(base_pkg, path, ".sphinx-html", docs.get(path, ["en"]), set())
+        job["variables"]["SPHINXOPTS"] = "--keep-going"
 
         # Also trigger this cycle job when any direct dependent changes
-        for dep_name in reverse_cycle.get(doc, set()):
+        for dep_name in triggers:
             dep_path = ROOT / "doc" / dep_name
             extra = job_path(dep_path)
             for rule in job["rules"]:
