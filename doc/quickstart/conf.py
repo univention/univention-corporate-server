@@ -120,9 +120,9 @@ figure_language_filename = "{root}-{language}{ext}"
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual"),
-    "uv-ext-domain": reference_inventory("ext-domain"),
-    "uv-ext-inst": reference_inventory("ext-installation"),
+    "uv-manual": reference_inventory("manual", version=version),
+    "uv-ext-domain": reference_inventory("ext-domain", version=version),
+    "uv-ext-inst": reference_inventory("ext-installation", version=version),
 }
 
 # See Univention Sphinx Extension for its options.
@@ -142,6 +142,7 @@ def fix_title_translation(app, config):
         config.intersphinx_mapping["uv-manual"] = reference_inventory(
             "manual",
             language="de",
+            version=version,
         )
 
 

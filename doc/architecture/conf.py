@@ -51,9 +51,9 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual"),
-    "uv-dev-ref": reference_inventory("developer-reference"),
-    "uv-app-center": reference_inventory("app-center"),
+    "uv-manual": reference_inventory("manual", version=version),
+    "uv-dev-ref": reference_inventory("developer-reference", version=version),
+    "uv-app-center": reference_inventory("app-center", version=version),
     "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
 }
 

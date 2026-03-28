@@ -59,8 +59,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual"),
-    "uv-dev-ref": reference_inventory("developer-reference"),
+    "uv-manual": reference_inventory("manual", version=version),
+    "uv-dev-ref": reference_inventory("developer-reference", version=version),
 }
 
 copybutton_prompt_text = r"\$ "

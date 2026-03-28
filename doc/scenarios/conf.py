@@ -57,8 +57,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual"),
-    "uv-handbuch": reference_inventory("manual", language="de"),
+    "uv-manual": reference_inventory("manual", version=version),
+    "uv-handbuch": reference_inventory("manual", language="de", version=version),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]

@@ -58,8 +58,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual"),
-    "uv-ext-windows": reference_inventory("ext-windows"),
+    "uv-manual": reference_inventory("manual", version=version),
+    "uv-ext-windows": reference_inventory("ext-windows", version=version),
     "uv-keycloak-mig": (
         "https://docs.software-univention.de/keycloak-migration/",
         None,
@@ -71,6 +71,7 @@ intersphinx_mapping = {
     f"uv-changelog-{release}": reference_inventory("changelog", version=release),
     "uv-ext-delegative-administration": reference_inventory(
         name="ext-delegative-administration",
+        version=version,
     ),
 }
 
@@ -192,6 +193,7 @@ def adapt_settings_to_translation(app, config):
         config.intersphinx_mapping["uv-manual"] = reference_inventory(
             "manual",
             language="de",
+            version=version,
         )
         config.bibtex_bibfiles = ["../bibliography-de.bib"]
 

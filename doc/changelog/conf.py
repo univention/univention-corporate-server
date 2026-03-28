@@ -55,7 +55,7 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual"),
+    "uv-manual": reference_inventory("manual", version=version),
 }
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.

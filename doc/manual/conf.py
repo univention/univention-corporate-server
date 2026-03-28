@@ -62,7 +62,7 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-dev-ref": reference_inventory("developer-reference"),
+    "uv-dev-ref": reference_inventory("developer-reference", version=version),
     "uv-keycloak-ref": (
         "https://docs.software-univention.de/keycloak-app/latest",
         None,
@@ -75,7 +75,7 @@ intersphinx_mapping = {
         "https://docs.software-univention.de/ox-connector-app/latest",
         None,
     ),
-    "uv-ext-windows": reference_inventory("ext-windows"),
+    "uv-ext-windows": reference_inventory("ext-windows", version=version),
     "uv-ucs-operation": reference_inventory("ucs-operation", version=version),
     "uv-nubus-manual": (
         "https://docs.software-univention.de/nubus-manual/latest/en/",
@@ -207,7 +207,7 @@ def adapt_settings_to_translation(app, config):
 .. include:: /links-de.txt
 """
         config.intersphinx_mapping = {
-            "uv-dev-ref": reference_inventory("developer-reference"),
+            "uv-dev-ref": reference_inventory("developer-reference", version=version),
             "uv-keycloak-ref": (
                 "https://docs.software-univention.de/keycloak-app/latest",
                 None,
@@ -220,7 +220,7 @@ def adapt_settings_to_translation(app, config):
                 "https://docs.software-univention.de/ox-connector-app/latest",
                 None,
             ),
-            "uv-ext-windows": reference_inventory("ext-windows"),
+            "uv-ext-windows": reference_inventory("ext-windows", version=version),
             "uv-ucs-operation": reference_inventory(
                 "ucs-operation",
                 version=version,

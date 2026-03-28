@@ -62,13 +62,22 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/en', None),
-    'uv-ucs-manual': reference_inventory('manual', version=version),
-    'uv-architecture': reference_inventory('architecture', version=version),
-    'uv-debian-admins': reference_inventory('debian-admins', version='latest'),
-    'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
-    'uv-docs-overview': ('https://docs.software-univention.de/n/en/', None),
-    'linux-kernel-docs': ('https://www.kernel.org/doc/html/v6.1/', None),  # UCS 5.2 Kernel is 6.1
+    "uv-nubus-manual": (
+        "https://docs.software-univention.de/nubus-manual/latest/en",
+        None,
+    ),
+    "uv-ucs-manual": reference_inventory("manual", version=version),
+    "uv-architecture": reference_inventory("architecture", version=version),
+    "uv-debian-admins": reference_inventory("debian-admins", version=version),
+    "uv-keycloak-app": (
+        "https://docs.software-univention.de/keycloak-app/latest",
+        None,
+    ),
+    "uv-docs-overview": ("https://docs.software-univention.de/n/en/", None),
+    "linux-kernel-docs": (
+        "https://www.kernel.org/doc/html/v6.1/",
+        None,
+    ),  # UCS 5.2 Kernel is 6.1
 }
 
 # TODO: When using a kernel different from 6.1, update the reference to the Kernel docs in the intersphinx mapping.
@@ -184,13 +193,26 @@ def adapt_settings_to_translation(app, config):
 
         config.bibtex_bibfiles = ['../bibliography-de.bib']
         config.intersphinx_mapping = {
-            'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/de', None),
-            'uv-ucs-manual': reference_inventory('manual', version=version, language=config.language),
-            'uv-architecture': reference_inventory('architecture', version=version),
-            'uv-keycloak-app': ('https://docs.software-univention.de/keycloak-app/latest', None),
-            'uv-docs-overview': ('https://docs.software-univention.de/n/de/', None),
-            'uv-debian-admins': reference_inventory('debian-admins', version='latest'),
-            'linux-kernel-docs': ('https://www.kernel.org/doc/html/v6.1/', None),  # UCS 5.2 Kernel is 6.1
+            "uv-nubus-manual": (
+                "https://docs.software-univention.de/nubus-manual/latest/de",
+                None,
+            ),
+            "uv-ucs-manual": reference_inventory(
+                "manual",
+                version=version,
+                language=config.language,
+            ),
+            "uv-architecture": reference_inventory("architecture", version=version),
+            "uv-keycloak-app": (
+                "https://docs.software-univention.de/keycloak-app/latest",
+                None,
+            ),
+            "uv-docs-overview": ("https://docs.software-univention.de/n/de/", None),
+            "uv-debian-admins": reference_inventory("debian-admins", version=version),
+            "linux-kernel-docs": (
+                "https://www.kernel.org/doc/html/v6.1/",
+                None,
+            ),  # UCS 5.2 Kernel is 6.1
         }
         config.numfig_format['code-block'] = 'Listing %s'
         config.html_theme_options['announcement'] = """
