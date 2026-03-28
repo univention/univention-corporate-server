@@ -55,7 +55,7 @@ servers.
 
 .. _quickstart-systemrole:
 
-.. figure:: ../manual/images/installer-domainrole.png
+.. figure:: /installer-domainrole.png
 
    Selecting the domain setup
 
