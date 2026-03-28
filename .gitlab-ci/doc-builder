@@ -33,7 +33,7 @@ DEPENDS = {
     "ext-windows": {"manual"},
     "manual": {"developer-reference cycle", "ext-windows cycle", "ucs-operation cycle"},
     "quickstart": {"manual", "ext-domain", "ext-installation"},
-    "release-notes": {"manual", "changelog", "ext-windows"},
+    "release-notes": {"manual", "changelog cycle", "ext-windows"},
     "scenarios": {"manual"},
     "ext-delegative-administration": {"manual", "developer-reference", "architecture"},
     "ucs-operation": {"manual", "debian-admins"},
@@ -48,6 +48,7 @@ SPECIAL: dict[str, dict[str, object]] = {
     "developer-reference cycle": {"SPHINXOPTS": "--keep-going"},
     "ext-windows cycle": {"SPHINXOPTS": "--keep-going"},
     "ucs-operation cycle": {"SPHINXOPTS": "--keep-going"},
+    "changelog cycle": {"SPHINXOPTS": "--keep-going"},
 }
 
 
