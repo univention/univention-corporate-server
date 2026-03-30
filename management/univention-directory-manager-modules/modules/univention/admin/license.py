@@ -47,7 +47,7 @@ class License:
     """Non public interface for license handling."""
 
     (ACCOUNT, CLIENT, DESKTOP, GROUPWARE) = range(4)
-    (USERS, SERVERS, MANAGEDCLIENTS, CORPORATECLIENTS) = range(4)
+    (USERS, SERVERS, MANAGEDCLIENTS) = range(3)
 
     SYSACCOUNTS = 5
 
@@ -92,7 +92,6 @@ class License:
                 License.USERS: None,
                 License.SERVERS: None,
                 License.MANAGEDCLIENTS: None,
-                License.CORPORATECLIENTS: None,
             },
         }
         self.real = {
@@ -101,7 +100,6 @@ class License:
                 License.USERS: 0,
                 License.SERVERS: 0,
                 License.MANAGEDCLIENTS: 0,
-                License.CORPORATECLIENTS: 0,
             },
         }
         self.names = {
@@ -110,7 +108,6 @@ class License:
                 License.USERS: 'Users',
                 License.SERVERS: 'Servers',
                 License.MANAGEDCLIENTS: 'Managed Clients',
-                License.CORPORATECLIENTS: 'Corporate Clients',
             },
         }
         self.keys = {
@@ -119,7 +116,6 @@ class License:
                 License.USERS: 'univentionLicenseUsers',
                 License.SERVERS: 'univentionLicenseServers',
                 License.MANAGEDCLIENTS: 'univentionLicenseManagedClients',
-                License.CORPORATECLIENTS: 'univentionLicenseCorporateClients',
             },
         }
         self.filters = {
@@ -129,7 +125,6 @@ class License:
                 License.SERVERS: '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(!(univentionObjectFlag=docker)))',
                 # Managed Clients, Windows Clients, Ubuntu Clients, Linux Clients, MaxOS X Clients
                 License.MANAGEDCLIENTS: '(&%s)' % ''.join([LDAP_FILTER_managedclients, ldap_filter_not_objectflag(managedclient_exclude_objectflags)]),
-                License.CORPORATECLIENTS: '(&(objectclass=univentionCorporateClient))',
             },
         }
         self.__selected = False
