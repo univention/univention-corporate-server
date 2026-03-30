@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: bind9
+fix: 1:9.18.47-1~deb12u1A~5.2.5.202603301358
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-1519)
+bug: [59152]
+cve:
+- CVE-2026-1519
