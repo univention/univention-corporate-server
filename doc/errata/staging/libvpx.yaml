@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libvpx
+fix: 1.7.0-3+deb10u5
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2026-2447, CVE-2026-1861)
+bug: [59158]
+cve:
+- CVE-2026-2447
+- CVE-2026-1861
