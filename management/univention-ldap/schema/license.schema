@@ -144,11 +144,6 @@ attributetype ( 1.3.6.1.4.1.10176.1712.1.19 NAME ( 'univentionUsedLicenseManaged
 	EQUALITY integerMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
 
-attributetype ( 1.3.6.1.4.1.10176.1712.1.20 NAME ( 'univentionUsedLicenseCorporateClients' )
-	DESC 'Cache for actual number of used UCC systems'
-	EQUALITY integerMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
-
 objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 	DESC 'univention Licence Object'
 	SUP 'top' STRUCTURAL
@@ -168,5 +163,5 @@ objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
 		univentionLicensePhysicalServers $ univentionLicenseServerInstances $
 		univentionLicenseThinClients $ univentionLicenseVirtualDesktops $
 		univentionLicenseModule $ univentionUsedLicenseServers $
-		univentionUsedLicenseUsers $ univentionUsedLicenseManagedClients $ univentionUsedLicenseCorporateClients
+		univentionUsedLicenseUsers $ univentionUsedLicenseManagedClients
 		) )

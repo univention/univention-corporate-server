@@ -18,6 +18,7 @@ environments with many users (e.g., 200k+ users).
 """
 
 import sys
+from argparse import ArgumentParser
 
 import ldap
 
@@ -30,10 +31,13 @@ from univention.admin.log import log
 
 
 def main() -> int:
-    log_target = configRegistry.get('directory/manager/license/cache/log/target', 'stdout')
+    parser = ArgumentParser(description=__doc__)
+    parser.parse_args()
+
+    log_target = configRegistry.get('directory/manager/license-cache/log-target', 'stdout')
     univention.logging.basicConfig(
         filename=log_target,
-        univention_debug_level=3,
+        univention_debug_level=configRegistry.get_int('directory/manager/cmd/debug/level', 3),
         use_structured_logging=configRegistry.is_true('directory/manager/cmd/debug/structured-logging', True),
     )
 

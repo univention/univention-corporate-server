@@ -11,5 +11,5 @@ Variables: server/role
 
 Type: file
 File: etc/cron.d/univention-license-count-cache
-Variables: directory/manager/license/cache/cron
+Variables: directory/manager/license-cache/cron
 Variables: server/role

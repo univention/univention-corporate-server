@@ -9,7 +9,6 @@
 import binascii
 import urllib.request
 import uuid
-from datetime import UTC, datetime, timedelta
 from urllib.request import ProxyHandler, build_opener
 
 import ldap
@@ -20,7 +19,6 @@ import univention.admin.license as udm_license
 import univention.admin.modules
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap
-from univention.admin._ucr import configRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 
@@ -120,17 +118,26 @@ class LicenseImport(ldif.LDIFParser):
 
 def check_license(ldap_connection):
     try:
-        ldap_connection.check_license()
+        try:
+            ldap_connection.check_license()
+        except (udm_errors.licenseAccounts, udm_errors.licenseUsers, udm_errors.licenseClients, udm_errors.licenseManagedClients, udm_errors.licenseCorporateClients):
+            if udm_license.license.recheck(ldap_connection):
+                return
+            raise
     except udm_errors.freeForPersonalUse:
         return
-    except (udm_errors.licenseAccounts, udm_errors.licenseUsers,
-            udm_errors.licenseClients, udm_errors.licenseManagedClients,
-            udm_errors.licenseCorporateClients) as exc:
-        if _update_cache_and_recheck(ldap_connection):
-            return
-        _raise_quota_error(exc)
     except udm_errors.licenseNotFound:
         raise LicenseError(_('License not found. During this session add and modify are disabled.'))
+    except (udm_errors.licenseAccounts, udm_errors.licenseUsers):
+        raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
+    except udm_errors.licenseClients:
+        raise LicenseError(_('You have too many client accounts for your license. During this session add and modify are disabled.'))
+    except udm_errors.licenseServers:
+        raise LicenseError(_('You have too many server accounts for your license. During this session add and modify are disabled.'))
+    except udm_errors.licenseManagedClients:
+        raise LicenseError(_('You have too many managed client accounts for your license. During this session add and modify are disabled.'))
+    except udm_errors.licenseCorporateClients:
+        raise LicenseError(_('You have too many corporate client accounts for your license. During this session add and modify are disabled.'))
     except udm_errors.licenseDesktops:  # UCS license v1
         raise LicenseError(_('You have too many desktop accounts for your license. During this session add and modify are disabled.'))
     except udm_errors.licenseGroupware:  # UCS license v1
@@ -147,59 +154,6 @@ def check_license(ldap_connection):
         raise LicenseError(_('Your license is not valid. During this session add and modify are disabled.'))
     except udm_errors.licenseDisableModify:
         raise LicenseError(_('Your license does not allow modifications. During this session add and modify are disabled.'))
-
-
-def _update_cache_and_recheck(ldap_connection) -> bool:
-    """
-    Force-update the license cache and re-check quota.
-    Only runs if the cache is stale (older than TTL), so fresh-cache over-quota
-    logins are fast. Returns True if now within quota.
-    """
-    try:
-        ttl = configRegistry.get_int('directory/manager/license/cache/ttl', 3600)
-        if ttl > 0:
-            res = ldap_connection.authz_connection.search(
-                filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))',
-                attr=['modifyTimestamp'],
-            )
-            attrs = res[0][1] if res else {}
-            if attrs.get('modifyTimestamp'):
-                dt = datetime.strptime(attrs['modifyTimestamp'][0].decode('ASCII'), '%Y%m%d%H%M%SZ').replace(tzinfo=UTC)
-                if datetime.now(UTC) - dt < timedelta(seconds=ttl):
-                    MODULE.info('Cache is fresh and quota exceeded - not force-updating')
-                    return False
-
-        MODULE.info('Cache is stale and quota exceeded, force-updating license cache...')
-        admin_lo, _ = univention.admin.uldap.getAdminConnection()
-        udm_license.license.initialize(admin_lo)
-        counts = udm_license.license.update_cache(admin_lo)
-        MODULE.info('License cache updated: %s', counts)
-        ldap_connection.check_license()
-        MODULE.info('License re-check passed after cache update')
-        return True
-    except (udm_errors.licenseAccounts, udm_errors.licenseUsers, udm_errors.licenseClients,
-            udm_errors.licenseManagedClients, udm_errors.licenseCorporateClients):
-        MODULE.info('Still over quota after cache update')
-        return False
-    except Exception as exc:
-        MODULE.warning('Failed to update cache and re-check: %s', exc)
-        return False
-
-
-def _raise_quota_error(exc):
-    """Raise the appropriate LicenseError for quota exceptions."""
-    if isinstance(exc, udm_errors.licenseAccounts | udm_errors.licenseUsers):
-        raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
-    elif isinstance(exc, udm_errors.licenseClients):
-        raise LicenseError(_('You have too many client accounts for your license. During this session add and modify are disabled.'))
-    elif isinstance(exc, udm_errors.licenseManagedClients):
-        raise LicenseError(_('You have too many managed client accounts for your license. During this session add and modify are disabled.'))
-    elif isinstance(exc, udm_errors.licenseCorporateClients):
-        raise LicenseError(_('You have too many corporate client accounts for your license. During this session add and modify are disabled.'))
-    elif isinstance(exc, udm_errors.licenseServers):
-        raise LicenseError(_('You have too many server accounts for your license. During this session add and modify are disabled.'))
-    else:
-        raise LicenseError(_('License quota exceeded. During this session add and modify are disabled.'))
 
 
 # TODO: this should probably go into univention-lib

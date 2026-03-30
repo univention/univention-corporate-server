@@ -62,7 +62,6 @@ class License:
     def __init__(self):
         if _license:
             raise RuntimeError('never create this object directly')
-
         self.new_license = False
         self.disable_add = 0
         self._expired = False
@@ -92,7 +91,7 @@ class License:
             custom_username('Standard User'),  # SBS role
             custom_username('WebWorkplaceTools'),  # SBS role "Standard User with administration links"
             'IUSR_WIN-*',  # IIS account
-            'sys-idp-user',
+            'sys-idp-user',  # Keycloak
         )
         self.sysAccountsFound = 0
         self.licenses = {
@@ -269,21 +268,11 @@ class License:
         """
         return (x > y) - (x < y)
 
-    def _get_cache_ttl(self) -> int:
-        """
-        Get cache TTL from UCR.
-        Default = 3600s, Max = 86400s, 0 = disabled.
-        """
-        ttl = configRegistry.get_int('directory/manager/license/cache/ttl', 3600)
-        return min(max(0, ttl), 86400)
-
     def __countObject(self, obj, lo):
-        if self.licenses[self.version][obj] and self.licenses[self.version][obj] != 'unlimited':
-            return self.__cache(lo, obj)
-        return 0
-
-    def __cache(self, lo, obj):
         version = self.version
+        if not self.licenses[version][obj] or self.licenses[version][obj] == 'unlimited':
+            return 0
+
         if self.real[version][obj] != 0:
             return self.real[version][obj]
 
@@ -296,23 +285,30 @@ class License:
         usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
         value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
 
-        cache_ttl = self._get_cache_ttl()
-        if cache_ttl > 0 and value and attrs.get('modifyTimestamp'):
-            dt = datetime.strptime(attrs['modifyTimestamp'][0].decode('ASCII'), "%Y%m%d%H%M%SZ").replace(tzinfo=UTC)
-            now = datetime.now(UTC)
+        # Return cached value if cache is within TTL
+        if value and self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII')):
+            self.real[version][obj] = value
+            return value
 
-            # Return cached value if cache is within TTL
-            if now - dt < timedelta(seconds=cache_ttl):
-                self.real[version][obj] = value
-                return value
+        self.real[version][obj] = len(lo.authz_connection.searchDn(filter=self.filters[version][obj]))
+        return self.real[version][obj]
 
-        result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
-        if result is not None:
-            self.real[version][obj] = len(result)
-            return self.real[version][obj]
-        return 0
+    def recheck(self, lo) -> bool:
+        res = lo.authz_connection.search(
+            filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))',
+            attr=['modifyTimestamp'],
+        )
+        attrs = res[0][1] if res else {}
+        return self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII'))
 
-    def update_counts(self, lo: 'access') -> dict:
+    def _check_cache_ttl(self, modify_timestamp) -> int:
+        cache_ttl = min(max(0, configRegistry.get_int('directory/manager/license-cache/ttl', 3600)), 86400)
+        if cache_ttl > 0 and modify_timestamp:
+            dt = datetime.strptime(modify_timestamp, "%Y%m%d%H%M%SZ").replace(tzinfo=UTC)
+            return datetime.now(UTC) - dt < timedelta(seconds=cache_ttl)
+        return False
+
+    def update_cache(self, lo: 'access') -> dict:
         """
         Force update all license count caches.
 
@@ -330,12 +326,8 @@ class License:
 
         counts = {}
         for obj, name in [(License.USERS, 'users'), (License.SERVERS, 'servers'), (License.MANAGEDCLIENTS, 'clients')]:
-            lic_value = self.licenses[version].get(obj)
-            if lic_value and lic_value != 'unlimited':
-                result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
-                count = len(result) if result else 0
-            else:
-                count = 0
+            result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
+            count = len(result) if result else 0
 
             counts[name] = count
             self.real[version][obj] = count
@@ -352,9 +344,6 @@ class License:
 
 class LicenseWrapper:
     """Licence interface."""
-
-    def __init__(self):
-        pass
 
     def initialize(self, lo: 'access') -> None:
         """Initialize license check. Call this before accessing license data."""
@@ -375,7 +364,32 @@ class LicenseWrapper:
         - After license import
         - When quota is exceeded and admin re-logs in
         """
-        return _license.update_counts(lo)
+        return _license.update_cache(lo)
+
+    def recheck(self, lo) -> bool:
+        """
+        Force-update the license cache and re-check quota.
+        Only runs if the cache is stale (older than TTL), so fresh-cache over-quota
+        logins are fast. Returns True if now within quota.
+        """
+        if _license.recheck(lo):
+            return False
+        log.info('Cache is stale and quota exceeded, force-updating license cache...')
+
+        try:
+            admin_lo, _ = univention.admin.uldap.getAdminConnection()
+        except OSError:
+            return False
+
+        self.initialize(admin_lo)
+        self.update_cache(admin_lo)
+        try:
+            lo.check_license()
+        except univention.admin.uexceptions.licenseError:
+            log.info('Still over quota after cache update')
+            return False
+
+        return True
 
     def get_user_limit(self) -> int | float:
         limit = _license.licenses[_license.version][License.USERS]

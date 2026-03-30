@@ -4,7 +4,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 @!@
 script = "/usr/share/univention-directory-manager-tools/univention-update-license-cache"
-interval = configRegistry.get("directory/manager/license/cache/cron", "0 * * * *")
+interval = configRegistry.get("directory/manager/license-cache/cron", "0 * * * *")
 
 if interval and configRegistry.get('server/role') == 'domaincontroller_master':
     print("%s       root    [ -x %s ] && %s" % (interval, script, script))
