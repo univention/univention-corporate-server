@@ -128,20 +128,6 @@ property_descriptions = {
         options=['Version 2'],
         may_change=False,
     ),
-    'virtualdesktopusers': univention.admin.property(
-        short_description=_('DVS users'),
-        long_description=_('Maximum number of DVS users this license allows.'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 2'],
-        may_change=False,
-    ),
-    'virtualdesktopclients': univention.admin.property(
-        short_description=_('DVS clients'),
-        long_description=_('Maximum number of DVS clients this license allows.'),
-        syntax=univention.admin.syntax.string,
-        options=['Version 2'],
-        may_change=False,
-    ),
     'corporateclients': univention.admin.property(
         short_description=_('Corporate clients'),
         long_description=_('Maximum number of corporate clients this license allows.'),
@@ -172,7 +158,6 @@ layout = [
             'keyID',
             ['users', 'servers'],
             ['corporateclients', 'managedclients'],
-            ['virtualdesktopusers', 'virtualdesktopclients'],
             ['support', 'premiumsupport'],
             'version',
         ]),
@@ -192,8 +177,6 @@ mapping.register('support', 'univentionLicenseSupport', None, univention.admin.m
 mapping.register('premiumsupport', 'univentionLicensePremiumSupport', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('managedclients', 'univentionLicenseManagedClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('users', 'univentionLicenseUsers', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('virtualdesktopusers', 'univentionLicenseVirtualDesktopUsers', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('virtualdesktopclients', 'univentionLicenseVirtualDesktopClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('corporateclients', 'univentionLicenseCorporateClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('version', 'univentionLicenseVersion', None, univention.admin.mapping.ListToString, encoding='ASCII')
 # fmt: on

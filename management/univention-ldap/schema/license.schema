@@ -115,12 +115,12 @@ attributetype ( 1.3.6.1.4.1.10176.1712.1.13 NAME ( 'univentionLicenseUsers' )
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
 attributetype ( 1.3.6.1.4.1.10176.1712.1.14 NAME ( 'univentionLicenseVirtualDesktopUsers' )
-	DESC 'License maximum of users for DVS'
+	DESC 'Deprecated: License maximum of users for DVS'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
 attributetype ( 1.3.6.1.4.1.10176.1712.1.15 NAME ( 'univentionLicenseVirtualDesktopClients' )
-	DESC 'License maximum of clients for DVS'
+	DESC 'Deprecated: License maximum of clients for DVS'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
