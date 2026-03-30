@@ -55,7 +55,6 @@ class License:
     """Non public interface for license handling."""
 
     (ACCOUNT, CLIENT, DESKTOP, GROUPWARE) = range(4)
-    # (USERS, SERVERS, MANAGEDCLIENTS, CORPORATECLIENTS) = range(4)
     (USERS, SERVERS, MANAGEDCLIENTS) = range(3)
 
     SYSACCOUNTS = 5
