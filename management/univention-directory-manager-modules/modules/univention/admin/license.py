@@ -83,6 +83,7 @@ class License:
             custom_username('Standard User'),  # SBS role
             custom_username('WebWorkplaceTools'),  # SBS role "Standard User with administration links"
             'IUSR_WIN-*',  # IIS account
+            'sys-idp-user',  # Keycloak
         )
         self.sysAccountsFound = 0
         self.licenses = {
