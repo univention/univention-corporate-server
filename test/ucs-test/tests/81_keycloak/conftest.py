@@ -101,7 +101,7 @@ def tracing_page(page, request: pytest.FixtureRequest, ucr_proper):
 
 @pytest.fixture
 def upgrade_status_obj(ucr_proper) -> SettingsDataObject:
-    udm = UDM.admin().version(2)
+    udm = UDM.admin().version(3)
     mod = udm.get('settings/data')
     obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr_proper.get('ldap/base')}")
     orig_value = obj.props.data.raw

@@ -99,7 +99,7 @@ def wait_for_dialog_to_disappear(page: Page):
 
 @locale_available()
 def test_inline_creation(umc_browser_test: UMCBrowserTest):
-    udm = UDM.admin().version(2)
+    udm = UDM.admin().version(3)
     edit_mode = UCSPortalEditMode(umc_browser_test)
 
     category = add_category(edit_mode, udm)

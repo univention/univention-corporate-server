@@ -635,7 +635,7 @@ class TestEncoders(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.udm = UDM.admin().version(2)
+        cls.udm = UDM.admin().version(3)
 
     @classmethod
     def tearDownClass(cls):

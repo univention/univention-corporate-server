@@ -25,7 +25,7 @@ from univention.udm import UDM
 from umc import UDMModule
 
 
-udm_users = UDM.admin().version(2).get('users/user')
+udm_users = UDM.admin().version(3).get('users/user')
 users = len(list(udm_users.search()))
 
 check_no_users = pytest.mark.skipif(users > 5, reason='test makes no sense in pre-filled environment')

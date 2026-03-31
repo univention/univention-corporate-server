@@ -52,7 +52,7 @@ def kill_umc_module_process():
 
 @pytest.fixture
 def readudm():
-    return UDM.machine().version(2)
+    return UDM.machine().version(3)
 
 
 @pytest.fixture

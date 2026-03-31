@@ -337,7 +337,7 @@ def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_con
     assert _('Access forbidden.') in page.content()
 
     # add user to group
-    udm = UDM.admin().version(2)
+    udm = UDM.admin().version(3)
     udm_groups = udm.get('groups/group')
     group_obj = udm_groups.get(legacy_authorization_setup_saml.group_dn)
     group_obj.props.users.append(legacy_authorization_setup_saml.user_dn)
@@ -368,7 +368,7 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
     assert _('Access forbidden.') in resp.text
 
     # add user to group
-    udm = UDM.admin().version(2)
+    udm = UDM.admin().version(3)
     udm_groups = udm.get('groups/group')
     group_obj = udm_groups.get(legacy_authorization_setup_oidc.group_dn)
     group_obj.props.users.append(legacy_authorization_setup_oidc.user_dn)

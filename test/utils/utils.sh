@@ -1957,7 +1957,7 @@ create_and_copy_test_data_cache () {
 from diskcache import Index
 from univention.udm import UDM
 
-udm = UDM.admin().version(2)
+udm = UDM.admin().version(3)
 udm_users = udm.get("users/user")
 udm_groups = udm.get("groups/group")
 users_db = Index("/var/lib/test-data/users")

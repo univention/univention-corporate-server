@@ -139,7 +139,7 @@ def test_udm_api_list_delete(add_ldap_blocklistentries, random_string):
     blocklist_entries = [f'{name}1', f'{name}2', f'{name}3']
     dns = add_ldap_blocklistentries(blocklist_entries)
     # list
-    bl_mod = UDM.machine().version(2).get('blocklists/entry')
+    bl_mod = UDM.machine().version(3).get('blocklists/entry')
     objects = bl_mod.search(base=BASE)
     object_dns = [b.dn for b in objects]
     for dn in dns:
@@ -153,7 +153,7 @@ def test_udm_api_list_delete(add_ldap_blocklistentries, random_string):
 
 
 def test_udm_api_create(random_string, blocklist_list):
-    bl_mod = UDM.machine().version(2).get('blocklists/entry')
+    bl_mod = UDM.machine().version(3).get('blocklists/entry')
     value = random_string()
     dn = f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     new_bl = bl_mod.new(superordinate=blocklist_list.dn)

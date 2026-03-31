@@ -33,7 +33,7 @@ except ImportError:
 def get_other_servers():
     with UCSTestConfigRegistry() as ucr:
         role = ucr.get('server/role')
-        udm = UDM.machine().version(2)
+        udm = UDM.machine().version(3)
         others = []
         for mod in ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']:
             if role not in mod:
@@ -99,7 +99,7 @@ def failbinddn():
 
 @pytest.fixture(scope="module")
 def readudm():
-    return UDM.machine().version(2)
+    return UDM.machine().version(3)
 
 
 def bind_for_timestamp(dn, host=None):

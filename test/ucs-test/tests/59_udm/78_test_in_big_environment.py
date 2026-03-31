@@ -19,7 +19,7 @@ USERS = 200000
 USER_WITH_NESTED_GROUPS = ['testuser160549', 'testuser549', 'testuser120549', 'testuser140549', 'testuser180549', 'testuser100549', 'testuser100547', 'testuser180547']
 
 
-users_mod = UDM.machine().version(2).get('users/user')
+users_mod = UDM.machine().version(3).get('users/user')
 ucr = ConfigRegistry()
 ucr.load()
 admin_account = utils.UCSTestDomainAdminCredentials()

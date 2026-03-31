@@ -21,7 +21,7 @@ from univention.udm import UDM
 
 _ = Translation('ucs-test-browser').translate
 
-udm = UDM.admin().version(2)
+udm = UDM.admin().version(3)
 
 
 class PortalContext:
