@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-directory-manager-rest
+fix: 12.5.3
+desc: |
+ This update addresses the following issue:
+ * The counts of licensed users, servers, and managed clients are now cached
+   on the license object via a cron job. The cached numbers are used to
+   improve the performance during UMC startup.
+bug: [59060]

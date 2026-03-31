@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-directory-manager-modules
+fix: 17.5.7
+desc: |
+ This update addresses the following issue:
+ * The counts of licensed users, servers, and managed clients are now cached
+   on the license object via a cron job. The cached numbers are used to
+   improve the performance during UMC startup. Additionally the obsolete
+   Licence Version 1, Free For Personal Use Edition, Univention Corporate
+   Clients, GPL License, Desktop Virtualization Services has been removed from
+   the license evaluation.
+bug: [59060]
