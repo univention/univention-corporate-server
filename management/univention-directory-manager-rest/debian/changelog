@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.5.3) unstable; urgency=medium
+
+  * Bug #59060: cache license counts to improve performance
+
+ -- Florian Best <best@univention.de>  Tue, 31 Mar 2026 23:19:07 +0200
+
 univention-directory-manager-rest (12.5.2) unstable; urgency=medium
 
   * Bug #58804: return HTTP 500 instead of 400 for concurrent LDAP modification errors

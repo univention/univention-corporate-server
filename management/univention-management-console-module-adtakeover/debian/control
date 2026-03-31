@@ -14,6 +14,11 @@ Package: univention-management-console-module-adtakeover
 Architecture: all
 Depends:
  fping,
+ python3-chardet,
+ python3-ldap,
+ python3-ldb,
+ python3-samba,
+ python3-univention-directory-manager (>= 17.5.7),
  python3-univention-lib,
  univention-management-console-server (>= 11.0.4-37),
  univention-s4-connector,

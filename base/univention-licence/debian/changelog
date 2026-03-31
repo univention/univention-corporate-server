@@ -1,3 +1,9 @@
+univention-licence (13.5.1) unstable; urgency=medium
+
+  * Bug #59060: cache license counts to improve performance
+
+ -- Florian Best <best@univention.de>  Tue, 31 Mar 2026 23:19:50 +0200
+
 univention-licence (13.5.0) unstable; urgency=medium
 
   [ Marius Meschter ]

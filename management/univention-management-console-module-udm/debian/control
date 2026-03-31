@@ -15,7 +15,7 @@ Architecture: all
 Depends:
  python3-ldap,
  python3-univention-config-registry,
- python3-univention-directory-manager (>= 17.0.30-1),
+ python3-univention-directory-manager (>= 17.5.7),
  univention-directory-manager-tools (>= 15),
  univention-directory-reports,
  univention-management-console-server (>= 12.0.31-10),

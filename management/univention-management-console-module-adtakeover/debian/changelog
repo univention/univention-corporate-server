@@ -1,8 +1,12 @@
-univention-management-console-module-adtakeover (9.5.0) UNRELEASED; urgency=medium
+univention-management-console-module-adtakeover (9.5.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:59 +0100
+  [ Florian Best ]
+  * Bug #59060: cache license counts to improve performance
+
+ -- Florian Best <best@univention.de>  Tue, 31 Mar 2026 23:19:38 +0200
 
 univention-management-console-module-adtakeover (9.4.0) unstable; urgency=medium
 
