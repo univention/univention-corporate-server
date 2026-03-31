@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * An uninitialized filedescriptor associated with
    hanging `rpcd spoolss` processes is now initialized.
-bug: [58646]
+bug: [59160]
