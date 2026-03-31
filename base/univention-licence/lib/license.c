@@ -25,10 +25,11 @@ int univention_license_init(void) {
 
 	/*init debug*/
 	univention_debug_set_structured(1);
-	univention_debug_init("stderr", UV_DEBUG_FLUSH, UV_DEBUG_NO_FUNCTION);
-	univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ERROR);
-	univention_debug_set_level(UV_DEBUG_LICENSE, UV_DEBUG_ERROR);
-	univention_debug_set_level(UV_DEBUG_SSL, UV_DEBUG_ERROR);
+	if (univention_debug_init("stderr", UV_DEBUG_FLUSH, UV_DEBUG_NO_FUNCTION) != NULL) {
+		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ERROR);
+		univention_debug_set_level(UV_DEBUG_LICENSE, UV_DEBUG_ERROR);
+		univention_debug_set_level(UV_DEBUG_SSL, UV_DEBUG_ERROR);
+	}
 
 	/*init ldap*/
 	is_init &= univention_license_ldap_init();
