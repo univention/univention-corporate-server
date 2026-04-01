@@ -12,20 +12,31 @@ import pytest
 import yaml
 
 
-sys.modules['univention.config_registry'] = MagicMock()
-sys.modules['univention.logging'] = MagicMock()
-sys.modules['univention.admin._ucr'] = MagicMock()
-sys.modules['univention.license'] = MagicMock()
-sys.modules['univention.admin.modules'] = MagicMock()
-sys.modules['univention.admin.syntax'] = MagicMock()
-sys.modules['univention.admin.blocklist'] = MagicMock()
-sys.modules['univention.admin.uldap'] = MagicMock()
-sys.modules['univention.admin.handlers'] = MagicMock()
-sys.modules['univention.dn'] = MagicMock()
-sys.modules['univention.lib.i18n'] = MagicMock()
+_MOCKED_MODULES = [
+    'univention.config_registry',
+    'univention.logging',
+    'univention.admin._ucr',
+    'univention.license',
+    'univention.admin.modules',
+    'univention.admin.syntax',
+    'univention.admin.blocklist',
+    'univention.admin.uldap',
+    'univention.admin.handlers',
+    'univention.dn',
+    'univention.lib.i18n',
+]
+_original_modules = {name: sys.modules.get(name) for name in _MOCKED_MODULES}
+for _name in _MOCKED_MODULES:
+    sys.modules[_name] = MagicMock()
 
+from univention.admin.authorization.config import UDMAuthorizationConfig  # noqa: E402  # isort: skip
 
-from univention.admin.authorization.config import UDMAuthorizationConfig  # noqa: E402
+# Restore sys.modules so mocks don't leak into other tests (e.g. doctests)
+for _name in _MOCKED_MODULES:
+    if _original_modules[_name] is None:
+        sys.modules.pop(_name, None)
+    else:
+        sys.modules[_name] = _original_modules[_name]
 
 
 TEST_FILES = './unittests/test_authorization_udm_rules_to_yaml.d/'
