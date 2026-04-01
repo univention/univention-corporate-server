@@ -288,7 +288,7 @@ class ISyntax:
         Get a LDAP filter for a certain property
 
         >>> ISyntax.get_object_property_filter('foo', 'bar')
-        'foo=bar'
+        '(foo=bar)'
         >>> ISyntax.get_object_property_filter('foo', 'bar*')
         '(|(foo=bar*)(foo=bar))'
         """
@@ -296,7 +296,14 @@ class ISyntax:
         no_substring_value = object_property_value.strip('*')
         if no_substring_value and no_substring_value != object_property_value:
             ret = '(|(%s)(%s))' % (ret, _replace_asterisks_in_filter(filter_format('%s=%s', (object_property, no_substring_value)), allow_asterisks))
-        return ret
+        return cls.wrap_filter(ret)
+
+    @classmethod
+    def wrap_filter(cls, filter_s):
+        if filter_s and not filter_s.startswith('('):
+            # make sure that the LDAP filter is wrapped in brackets
+            filter_s = '(%s)' % filter_s
+        return filter_s
 
 
 class simple(ISyntax):
