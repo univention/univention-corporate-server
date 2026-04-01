@@ -6149,23 +6149,23 @@ class LDAP_Search(select):
             obj.open()
             module = univention.admin.modules.get(obj.module)
             # find the value to store
-            id_ = dn
+            id_ = obj.dn
             if not cls.viewonly:
                 _mod_store, store = split_module_attr(store_pattern)
                 if store == 'dn':
-                    id_ = dn
+                    id_ = obj.dn
                 elif store in obj:
                     id_ = obj[store]
                 elif obj.oldattr.get(store):
                     id_ = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
                 else:
                     # no valid store object, ignore
-                    log.warning('invalid property for LDAP_Seearch syntax - ignoring entry', syntax=cls.name, dn=dn, property=store)
+                    log.warning('invalid property for LDAP_Seearch syntax - ignoring entry', syntax=cls.name, dn=obj.dn, property=store)
                     continue
 
             # find the value to display
             if display == 'dn':
-                label = _normalize_dn(dn)
+                label = _normalize_dn(obj.dn)
             elif display is None:  # if view-only and in case of error
                 label = '%s: %s' % (getattr(module, 'short_description', module.module), obj.description())
             else:
@@ -6174,7 +6174,7 @@ class LDAP_Search(select):
                 elif obj.oldattr.get(display):
                     label = obj.oldattr[display][0].decode(*module.mapping.getEncoding(display))
                 else:
-                    log.warning('unknown label property for LDAP_Seearch syntax', syntax=cls.name, dn=dn, property=repr(display))
+                    log.warning('unknown label property for LDAP_Seearch syntax', syntax=cls.name, dn=obj.dn, property=repr(display))
                     label = 'Unknown attribute %r' % (display,)
 
             # TODO: remove this one day...
