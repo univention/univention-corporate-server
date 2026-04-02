@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.5.8) unstable; urgency=medium
+
+  * Bug #59104: fix search filter and LDAP_Search dropdown
+    when auto_substring_search is off
+
+ -- Johannes Lohmer <lohmer@univention.de>  Thu, 02 Apr 2026 12:36:28 +0200
+
 univention-directory-manager-modules (17.5.7) unstable; urgency=medium
 
   * Bug #59060: cache license counts to improve performance

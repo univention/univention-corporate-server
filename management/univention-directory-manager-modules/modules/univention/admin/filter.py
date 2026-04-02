@@ -284,7 +284,7 @@ def walk(
         raise TypeError(type(filter_p))
 
 
-FQDN_REGEX = re.compile(r'(?:^|\()fqdn=([^)]+)(?:\)|$)')
+FQDN_REGEX = re.compile(r'(?:^|\()fqdn([~><]?=)([^)]*)(?:\)|$)')
 
 
 def replace_fqdn_filter(filter_s: str) -> str:
@@ -298,6 +298,10 @@ def replace_fqdn_filter(filter_s: str) -> str:
     '(&(cn=host)(associatedDomain=domain.tld))'
     >>> replace_fqdn_filter('fqdn=domain')
     '(|(cn=domain)(associatedDomain=domain))'
+    >>> replace_fqdn_filter('fqdn=')
+    '(|(cn=)(associatedDomain=))'
+    >>> replace_fqdn_filter('fqdn~=foo')
+    '(|(cn~=foo)(associatedDomain~=foo))'
     >>> replace_fqdn_filter('(|(fqdn=host.domain.tld)(fqdn=other.domain.tld2))')
     '(|(&(cn=host)(associatedDomain=domain.tld))(&(cn=other)(associatedDomain=domain.tld2)))'
     """
@@ -307,11 +311,11 @@ def replace_fqdn_filter(filter_s: str) -> str:
 
 
 def _replace_fqdn_filter(match: Match[str]) -> str:
-    (value,) = match.groups()
+    (op, value) = match.groups()
     try:
         host, domain = value.split('.', 1)
         operator = '&'
     except ValueError:
         host = domain = value
         operator = '|'
-    return '(%s(cn=%s)(associatedDomain=%s))' % (operator, host, domain)
+    return '(%s(cn%s%s)(associatedDomain%s%s))' % (operator, op, host, op, domain)
