@@ -1,3 +1,10 @@
+ucs-test (12.5.18) unstable; urgency=medium
+
+  * Bug #59060: remove FFPU tests and fix upload license label mapping after FFPU removal
+    and browser tests after license startup check removal
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Tue, 07 Apr 2026 12:50:21 +0300
+
 ucs-test (12.5.17) unstable; urgency=medium
 
   * Bug #59060: cache license counts to improve performance

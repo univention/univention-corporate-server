@@ -66,7 +66,9 @@ def check_license_information(side_menu_license: SideMenuLicense, license_file_p
         expected_license_type = next((line for line in license_file if line.startswith('univentionLicenseBaseDN: ')), None)
         assert expected_license_type is not None
         expected_license_type = expected_license_type.split(':')[1].strip()
-        expect(page.get_by_text(expected_license_type), f'expected license type to be {expected_license_type}').to_be_visible()
+        # FFPU licenses are now displayed as UCS Core Edition
+        display_label = {'Free for personal use edition': 'UCS Core Edition'}.get(expected_license_type, expected_license_type)
+        expect(page.get_by_text(display_label), f'expected license type to be {display_label}').to_be_visible()
         page.get_by_role('button', name=_('Close')).click()
 
 

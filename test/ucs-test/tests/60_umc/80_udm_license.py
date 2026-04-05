@@ -46,33 +46,6 @@ def udm_license_module():
 
 
 @check_no_users
-def test_free_license(udm_license_module):
-    """
-    Uploads a free license, checks its info, attempts to create
-    computers and users and removes those that were created after
-    """
-    udm_license_module.modify_free_license_template()
-
-    print("\nUploading a 'Free' license: 'FreeForPersonalUseTest.license'")
-    udm_license_module.import_new_license('FreeForPersonalUseTest.license')
-
-    print("\nChecking the 'Free' license info")
-    udm_license_module.check_free_license_info()
-
-    print("\nAttempting to create 10 computers with a 'Free' license")
-    udm_license_module.free_license_limits_check('computer')
-
-    print("\nRemoving created test computers for the next test case:")
-    udm_license_module.delete_created_computers()
-
-    print("\nAttempting to create 10 users with a 'Free' license")
-    udm_license_module.free_license_limits_check('user')
-
-    print("\nRemoving created test users for the next test case:")
-    udm_license_module.delete_created_users()
-
-
-@check_no_users
 def test_expired_license(udm_license_module):
     """
     Uploads an expired license, attempts to create computers and users
@@ -144,6 +117,16 @@ def test_junk_license(udm_license_module):
 
     print("\nAttempting to create 10 users with a 'junk' license")
     udm_license_module.junk_license_limits_check('user')
+
+
+def test_license_info_request(udm_license_module):
+    """Verifies that the udm/license/info request returns a valid response"""
+    udm_license_module.create_connection_authenticate()
+    license_info = udm_license_module.request('udm/license/info')
+    assert license_info['baseDN'] == udm_license_module.ldap_base
+    assert 'endDate' in license_info
+    assert 'licenses' in license_info
+    assert 'real' in license_info
 
 
 def test_license_cache_attributes_written(udm_license_module):
@@ -311,25 +294,6 @@ class UDMLicenseManagement(UDMModule):
         }]
         return self.request("udm/add", options, "users/user")
 
-    def check_free_license_info(self):
-        """
-        Makes a check of the free license info, assuming
-        it is active at the moment. Request is 'udm/license/info'.
-        """
-        # recreating the UMC connection to get the current license info:
-        self.create_connection_authenticate()
-        license_info = self.request('udm/license/info')
-        assert license_info['baseDN'] == self.ldap_base
-        assert not license_info['keyID']
-        assert license_info['support'] in ('0', 0)  # str possible
-        assert license_info['premiumSupport'] in ('0', 0)  # str poss.
-        assert license_info['endDate'] == "unlimited"
-
-        license_info = license_info['licenses']
-        assert license_info['managedclients'] == 5
-        assert license_info['users'] == 5
-        assert not license_info['servers']
-
     def import_new_license(self, license_file):
         """
         Reads the given 'license_file' and makes a 'udm/license/import' UMC
@@ -385,12 +349,6 @@ class UDMLicenseManagement(UDMModule):
                 self.delete_obj(user, 'users/user', 'users/user')
         self.users_to_delete = []
 
-    def free_license_limits_check(self, obj_type):
-        """Checks the free license user/computer creation limits"""
-        amount_created = self.create_many_users_computers(obj_type, 10)
-        # 6 since license won't lock with only 5 users/computers
-        assert amount_created <= 6
-
     def expired_license_limits_check(self, obj_type):
         """Checks the expired license user/computer creation limits"""
         amount_created = self.create_many_users_computers(obj_type, 10)
@@ -442,20 +400,6 @@ class UDMLicenseManagement(UDMModule):
         expired_license_file = (self.temp_license_folder + '/ExpiredTest.license')
         if not path.exists(expired_license_file):
             self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=expired_license_file)
-
-    def modify_free_license_template(self):
-        """
-        Modifies the 'FreeForPersonalUseTest.license' to have a correct
-        BaseDN. Skipps the test if Free license template was not found.
-        """
-        print("\nModifing the Free license template for the test")
-        with open('FreeForPersonalUseTest.license', 'r+') as free_license:
-            lines = free_license.readlines()
-            free_license.seek(0)
-            for line in lines:
-                if line.startswith("dn: "):
-                    line = "dn: " + self.license_dn + "\n"
-                free_license.write(line)
 
     def generate_junk_license(self):
         """
