@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.9) unstable; urgency=medium
+
+  * Bug #59060: bypass TTL cache in univention-license-check for accurate counts
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Tue, 07 Apr 2026 12:42:19 +0300
+
 univention-directory-manager-modules (17.5.8) unstable; urgency=medium
 
   * Bug #59104: fix search filter and LDAP_Search dropdown

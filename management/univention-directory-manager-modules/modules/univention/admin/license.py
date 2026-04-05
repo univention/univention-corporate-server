@@ -29,6 +29,7 @@ log = log.getChild('LICENSE')
 
 _license = None
 
+LDAP_FILTER_license_module = '(&(objectClass=univentionLicense)(univentionLicenseModule=%s))'
 LDAP_FILTER_normal_user_account = '(univentionObjectType=users/user)'
 LDAP_FILTER_account_not_disabled = '(!(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'
 LDAP_FILTER_managedclients = '(|(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))'
@@ -136,18 +137,22 @@ class License:
             },
         }
         self.__selected = False
+        self.use_cache = True
+        self.module = 'admin'
 
-    def init_select(self, lo, module):
+    def init_select(self, lo, module, use_cache: bool = True):
+        self.use_cache = use_cache
         self.select(module, lo)
-        return self.set_values(lo, module)
+        return self.set_values(lo)
 
     def select(self, module, lo=None):
         if not self.__selected:
+            self.module = module
             self.error = univention.license.select(module)
             if self.error != 0 and lo:
                 # Try to set the version even if the license load was not successful
-                self.searchResult = lo.authz_connection.search(filter=filter_format('(&(objectClass=univentionLicense)(univentionLicenseModule=%s))', [module]))
-                self.set_values(lo, module)
+                self.searchResult = lo.authz_connection.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
+                self.set_values(lo)
 
             try:
                 if int(self.version) < 2:
@@ -167,7 +172,7 @@ class License:
 
             self.__selected = True
 
-    def set_values(self, lo, module):
+    def set_values(self, lo):
         self.version = version = self.__getValue('univentionLicenseVersion', '2', 'Version', None)
         self.licenses[version][License.USERS] = self.__getValue(self.keys[version][License.USERS], None, 'Users', 'Users not found')
         self.licenses[version][License.SERVERS] = self.__getValue(self.keys[version][License.SERVERS], None, 'Servers', 'Servers not found')
@@ -279,7 +284,7 @@ class License:
         if self.real[version][obj] != 0:
             return self.real[version][obj]
 
-        licenses = lo.authz_connection.search(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))', attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'])
+        licenses = lo.authz_connection.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]), attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'])
         try:
             _, attrs = licenses[0]
         except IndexError:
@@ -289,7 +294,7 @@ class License:
         value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
 
         # Return cached value if cache is within TTL
-        if value and self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII')):
+        if self.use_cache and value and self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII')):
             self.real[version][obj] = value
             return value
 
@@ -298,7 +303,7 @@ class License:
 
     def recheck(self, lo) -> bool:
         res = lo.authz_connection.search(
-            filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))',
+            filter=filter_format(LDAP_FILTER_license_module, [self.module]),
             attr=['modifyTimestamp'],
         )
         attrs = res[0][1] if res else {}
@@ -321,7 +326,7 @@ class License:
         Returns dict with 'users', 'servers', 'clients' counts.
         """
         version = self.version
-        dns = lo.authz_connection.searchDn(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))')
+        dns = lo.authz_connection.searchDn(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
         if not dns:
             log.warning('No license object found, cannot update cache')
             return {'users': 0, 'servers': 0, 'clients': 0}

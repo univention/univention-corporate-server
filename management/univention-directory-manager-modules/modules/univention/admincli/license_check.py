@@ -143,7 +143,7 @@ def main(argv: list[str]) -> list[str]:
 
     out = ['Base DN: %s' % baseDN]
     try:
-        _license.init_select(lo, 'admin')
+        _license.init_select(lo, 'admin', use_cache=False)
     except uexceptions.licenseError:
         pass
     out.extend(check_license(lo, None, 'list-dns' in options, 0))
