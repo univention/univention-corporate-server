@@ -11,7 +11,7 @@ import time
 import urllib.parse
 from enum import Enum
 
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, expect
 
 from univention.config_registry import ucr
 from univention.lib.i18n import Translation
@@ -128,7 +128,8 @@ class Interactions:
         :param expect_response: wait for a specific response to be completed before returning
         :param wait_for_network_idle: wait for no network connections for at least 500ms. Mututally exclusive with expect_response.
         """
-        self.page.locator('.umcModuleSearchToggleButton').click()
+        self.page.wait_for_load_state('networkidle')
+        self.page.locator('.umcModuleSearchToggleButton').click(force=True)
         logger.info('Clicked the search button')
         self.page.locator('.umcModuleSearch input.dijitInputInner').press_sequentially(module_name)
         module_by_title_attrib_locator = self.page.locator(f".umcGalleryName[title='{module_name}']")
@@ -293,6 +294,13 @@ class UMCBrowserTest(Interactions):
         # TODO: wait_until networkidle is discouraged by Playwright, replace at some point
         self.page.wait_for_url(re.compile(r'.*univention/(management|portal|selfservice).*'), wait_until=wait_until)
         logger.info('Login Done')
+        self._dismiss_alert_dialog()
+
+    def _dismiss_alert_dialog(self):
+        try:
+            self.page.get_by_role('button', name=_('Ok')).click(timeout=5 * SEC)
+        except PlaywrightTimeoutError:
+            pass
 
     def end_umc_session(self):
         """Logs the current logged in user out by navigating to /univention/login"""

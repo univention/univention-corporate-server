@@ -11,7 +11,6 @@
 ## join: true
 ## exposure: dangerous
 
-import re
 import time
 from enum import Enum
 
@@ -33,7 +32,6 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 from univention.testing.utils import get_ldap_connection
 
 
-license_query = re.compile(r'https?://.+/univention/command/udm/license')
 _ = Translation('ucs-test-browser').translate
 
 
@@ -157,12 +155,7 @@ def change_own_password(
     def side_menu_navigate():
         side_menu.navigate(user.username, user.password, do_login=do_login, check_for_no_module_available_popup=check_for_no_module_available_popup, **kwargs)
 
-    # When chaning the password for the admin, sometimes the password change is faster than the request to command/udm/license
-    if not check_for_no_module_available_popup and do_login:
-        with side_menu.page.expect_response(license_query):
-            side_menu_navigate()
-    else:
-        side_menu_navigate()
+    side_menu_navigate()
     side_menu.change_password(user.password, new_password)
 
     check_password_change_outcome(outcome, side_menu.page)
@@ -226,8 +219,7 @@ def test_for_short_password_error(admin_user: User, side_menu_user: SideMenuUser
 def test_usability_of_a_module_after_password_change(admin_user: User, random_password, umc_browser_test: UMCBrowserTest):
     user_module = UserModule(umc_browser_test)
     side_menu = SideMenuUser(umc_browser_test)
-    with side_menu.page.expect_response(license_query):
-        user_module.navigate(admin_user.username, admin_user.password)
+    user_module.navigate(admin_user.username, admin_user.password)
     expect(user_module.page.get_by_role('gridcell').first).to_be_visible(timeout=2 * 60 * 1000)
 
     change_own_password(admin_user, random_password, side_menu, do_login=False)
