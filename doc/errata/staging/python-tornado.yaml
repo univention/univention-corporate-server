@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: python-tornado
+fix: 5.1.1-4+deb10u4A~5.0.10.202604061006
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-31958)
+bug: [59163]
+cve:
+- CVE-2026-31958
