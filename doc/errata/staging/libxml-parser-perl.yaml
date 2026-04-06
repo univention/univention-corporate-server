@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libxml-parser-perl
+fix: 2.44-4+deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2006-10003)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2006-10002)
+bug: [59169]
+cve:
+- CVE-2006-10002
+- CVE-2006-10003
