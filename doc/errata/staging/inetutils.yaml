@@ -1,0 +1,20 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: inetutils
+fix: 2:2.4-2+deb12u3
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-32746, CVE-2026-24061)
+ * CVSS score 7.4 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-28372)
+ * CVSS score 3.4 (CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:N/A:N).
+   (CVE-2026-32772)
+bug: [59167]
+cve:
+- CVE-2026-28372
+- CVE-2026-24061
+- CVE-2026-32746
+- CVE-2026-32772
