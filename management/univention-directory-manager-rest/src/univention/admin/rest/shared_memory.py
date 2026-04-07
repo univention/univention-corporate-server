@@ -17,6 +17,7 @@ class _SharedMemory(managers.SyncManager):
     queue = {}
     search_sessions = {}
     authenticated = {}
+    authorized = {}
 
     def start(self, *args, **kwargs):
         setproctitle(proctitle + '   # multiprocessing manager')
@@ -30,6 +31,7 @@ class _SharedMemory(managers.SyncManager):
         self.queue = self.dict()
         self.search_sessions = self.dict()
         self.authenticated = self.dict()
+        self.authorized = self.dict()
 
 
 shared_memory = _SharedMemory()

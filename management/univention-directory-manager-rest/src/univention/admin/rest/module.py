@@ -156,6 +156,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         try:
             if authorization:
                 self.parse_authorization(authorization)
+                self.authorize(authorization)
         finally:
             self.request.content_negotiation_lang = self.check_acceptable()
             self.decode_request_arguments()
@@ -210,10 +211,10 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             self.request.username = username
             self._set_request_context()
 
-        if not already_authenticated:
-            self._auth_check_allowed_groups()
-
         shared_memory.authenticated[authorization] = (auth_type, username, userdn, password)
+
+    def get_authorization_policy(self):
+        return ('default', [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')])
 
     @property
     def ldap_write_connection(self):
@@ -228,13 +229,26 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             return conn
         return udm_auth.Authorization.inject_ldap_connection(conn)
 
-    def _auth_check_allowed_groups(self):
+    def authorize(self, authorization):
+        policy_id, allowed_groups = self.get_authorization_policy()
+        cache_key = (self.request.user_dn, policy_id)
+        if cache_key in shared_memory.authorized:
+            return
+        self._auth_check_allowed_groups(allowed_groups)
+        shared_memory.authorized[cache_key] = True
+
+    def _auth_check_allowed_groups(self, allowed_groups):
         if self.request.username in ('cn=admin',):
             return
-        allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-        memberof = self.ldap_connection.authz_connection.getAttr(self.request.user_dn, 'memberOf')
-        if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
-            raise HTTPError(403, 'Not in allowed groups.')
+        if not allowed_groups:
+            return HTTPError(403, 'No allowed groups configured.')
+
+        authz_filter = '(|(%s))' % ')('.join(filter_format('memberOf=%s', [mem]) for mem in allowed_groups)
+        for user in self.ldap_connection.authz_connection.search(filter=authz_filter, base=self.request.user_dn, scope='base', attr=['1.1']):
+            assert self.ldap_connection.compare_dn(user[0], self.request.user_dn)
+            return
+
+        raise HTTPError(403, 'Not in allowed groups.')
 
     def _auth_get_userdn(self, username):
         if username in ('cn=admin',):
