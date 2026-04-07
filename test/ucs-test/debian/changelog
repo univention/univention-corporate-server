@@ -1,3 +1,9 @@
+ucs-test (12.5.19) unstable; urgency=medium
+
+  * Bug #59176: test UDM REST API metrics endpoint
+
+ -- Florian Best <best@univention.de>  Thu, 09 Apr 2026 14:06:42 +0200
+
 ucs-test (12.5.18) unstable; urgency=medium
 
   * Bug #59060: remove FFPU tests and fix upload license label mapping after FFPU removal
