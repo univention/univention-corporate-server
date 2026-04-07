@@ -61,6 +61,8 @@ except NameError:  # Python 3.7
     def aiter(iterable):
         return _AsyncIterable(iterable)
 
+MAX_HEADER = 1000
+
 
 class HTTPError(Exception):
 
@@ -143,6 +145,7 @@ class Session:
             'User-Agent': self.user_agent,
         }
         self.session = self.create_session(concurrency_limit)
+        self.session._max_headers = MAX_HEADER
 
     async def __aenter__(self):
         await self.session.__aenter__()
