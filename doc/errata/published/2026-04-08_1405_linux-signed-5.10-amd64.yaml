@@ -43,3 +43,6 @@ cve:
 - CVE-2026-23235
 - CVE-2026-23234
 note: This is the 2nd of two parts.
+erratum: 1405
+announced: 2026-04-08
+support: lts
