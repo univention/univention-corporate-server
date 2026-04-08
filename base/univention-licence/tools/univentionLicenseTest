@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+import sys
+
+import univention.license
+
+
+univention.license(sys.argv[1])
+for key, value in univention.license.current.items():
+    print(f'{key} :{value}')

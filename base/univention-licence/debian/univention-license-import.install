@@ -1,2 +1,2 @@
-usr/bin/univentionLicenseTest
-usr/sbin/univention-license-import
+tools/univention-license-import usr/sbin/univention-license-import
+tools/univentionLicenseTest usr/bin/univentionLicenseTest
