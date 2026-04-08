@@ -3,19 +3,24 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- cython3,
  debhelper-compat (=13),
  dh-python,
- libunivention-license-dev (>= 10.0.0-4),
- python3-dbg,
+ python3-all,
+ python3-cryptography,
  python3-debian,
- python3-dev,
+ python3-ldap,
  python3-setuptools,
+ python3-univention,
+ python3-univention-debug,
 Standards-Version: 3.8.2
 
 Package: python3-univention-license
 Architecture: any
 Depends:
+ python3-cryptography,
+ python3-ldap,
+ python3-univention,
+ python3-univention-debug,
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
