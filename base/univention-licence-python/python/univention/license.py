@@ -165,8 +165,8 @@ class _License:
             for dn, candidate in self._search_licenses(path, module):
                 validity = self._validate_license(candidate, base_dn)
 
+                self.current = (dn, candidate)
                 if validity == 0:
-                    self.current = (dn, candidate)
                     log.debug('Valid license selected', path=path, module=module)
                     return 0
 
@@ -262,6 +262,7 @@ class _License:
                 filter=_OBJECT_CLASS_FILTER,
                 base=dn,
                 scope='base',
+                attr=['*', 'modifyTimestamp'],
                 timeout=3,
             )[0][1]
         except ldap.NO_SUCH_OBJECT:
@@ -275,6 +276,7 @@ class _License:
                 filter=ldap_filter,
                 base=search_base,
                 scope='one',
+                attr=['*', 'modifyTimestamp'],
                 timeout=3,
             )
         except ldap.NO_SUCH_OBJECT:

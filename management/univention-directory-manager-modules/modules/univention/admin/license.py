@@ -149,10 +149,8 @@ class License:
         if not self.__selected:
             self.module = module
             self.error = univention.license.select(module)
-            if self.error != 0 and lo:
-                # Try to set the version even if the license load was not successful
-                self.searchResult = lo.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
-                self.set_values(lo)
+            # Try to set the version even if the license load was not successful
+            self.set_values(lo)
 
             try:
                 if int(self.version) < 2:
@@ -242,14 +240,8 @@ class License:
             self.new_license = True
             log.debug('Univention License allowed', license=name, value=value)
         except (KeyError, Exception):
-            if self.searchResult:
-                value = self.searchResult[0][1].get(key, [default])[0]
-                if isinstance(value, bytes):
-                    value = value.decode('ASCII')
-                self.new_license = True
-            else:
-                log.debug('get value failed', license=name, error=errormsg)
-                return default
+            log.debug('get value failed', license=name, error=errormsg)
+            return default
 
         log.debug('get license value:', license=name, value=value)
         return value
@@ -277,18 +269,18 @@ class License:
         return (x > y) - (x < y)
 
     def __countObject(self, obj, lo):
-        licenses = lo.authz_connection.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]), attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'])
-        try:
-            _, attrs = licenses[0]
-        except IndexError:
-            attrs = {}
-
         version = self.version
+        if not self.licenses[version][obj] or self.licenses[version][obj] == 'unlimited':
+            return 0
+
+        if self.real[version][obj] != 0:
+            return self.real[version][obj]
+
         usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
-        value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
+        value = int(self.__getValue(usedkey))
 
         # Return cached value if cache is within TTL
-        if self.use_cache and value and self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII')):
+        if self.use_cache and value and self._check_cache_ttl(self.__getValue('modifyTimestamp')):
             self.real[version][obj] = value
             return value
 
@@ -296,12 +288,10 @@ class License:
         return self.real[version][obj]
 
     def recheck(self, lo) -> bool:
-        res = lo.authz_connection.search(
-            filter=filter_format(LDAP_FILTER_license_module, [self.module]),
-            attr=['modifyTimestamp'],
-        )
-        attrs = res[0][1] if res else {}
-        return not self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII'))
+        univention.license.free()
+        univention.license.select(self.module)
+
+        return not self._check_cache_ttl(self.__getValue('modifyTimestamp'))
 
     def _check_cache_ttl(self, modify_timestamp) -> int:
         cache_ttl = min(max(0, configRegistry.get_int('directory/manager/license-cache/ttl', 3600)), 86400)
@@ -319,11 +309,11 @@ class License:
 
         Returns dict with 'users', 'servers', 'clients' counts.
         """
-        dns = lo.authz_connection.searchDn(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
-        if not dns:
+        version = self.version
+        dn = univention.license._state.current[0]
+        if not dn:
             log.warning('No license object found, cannot update cache')
             return {'users': 0, 'servers': 0, 'clients': 0}
-        dn = dns[0]
 
         version = self.version
         counts = {}
