@@ -10,3 +10,6 @@ desc: |
    on the license object via a cron job. The cached numbers are used to
    improve the performance during UMC startup.
 bug: [59060]
+erratum: 398
+announced: 2026-04-08
+support: core
