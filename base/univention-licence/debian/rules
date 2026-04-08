@@ -8,14 +8,3 @@
 
 %:
 	dh $@
-
-override_dh_auto_clean:
-	[ ! -f Makefile ] || $(MAKE) maintainer-clean
-	dh_auto_clean
-
-override_dh_auto_configure:
-	libtoolize
-	aclocal
-	autoconf
-	automake --add-missing
-	dh_auto_configure
