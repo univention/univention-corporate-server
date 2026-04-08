@@ -14,3 +14,6 @@ bug: [59153]
 cve:
 - CVE-2006-10002
 - CVE-2006-10003
+erratum: 391
+announced: 2026-04-08
+support: core
