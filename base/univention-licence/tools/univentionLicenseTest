@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+import sys
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("usage: %s licensetype" % sys.argv[0])
+        sys.exit(0)
+
+    import univention.license
+    import univention.logging
+
+    univention.logging.basicConfig()
+
+    if univention.license.select(sys.argv[1]) != 0:
+        print("ERROR: Don't got a license of the requested type:%s.\n", sys.argv[1])
+        sys.exit(0)
+
+    for key, values in univention.license._state.current[1].items():
+        if key.startswith('univentionLicense'):
+            for value in values:
+                print(f'{key} :{value.decode()}')
