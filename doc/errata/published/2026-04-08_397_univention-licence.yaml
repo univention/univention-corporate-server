@@ -13,3 +13,6 @@ desc: |
    anymore, which caused that several log messages were dropped in the UMC UDM
    modules.
 bug: [59060, 38735]
+erratum: 397
+announced: 2026-04-08
+support: core
