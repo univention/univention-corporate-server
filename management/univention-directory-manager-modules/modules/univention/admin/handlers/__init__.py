@@ -237,6 +237,7 @@ class simpleLdap:
             oldinfo = self.mapping.unmapValues(self.oldattr)
             oldinfo = self._post_unmap(oldinfo, self.oldattr)
             oldinfo = self._falsy_boolean_extended_attributes(oldinfo)
+            oldinfo = self.call_udm_property_hook('hook_unmap', self, oldinfo, self.oldattr)
             self.info.update(oldinfo)
 
             # for existing objects default to entryUUID for univentionObjectIdentifier, if not set

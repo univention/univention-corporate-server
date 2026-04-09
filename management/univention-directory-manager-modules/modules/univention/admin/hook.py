@@ -187,6 +187,18 @@ class AttributeHook(simpleHook):
 
     version = 1  # don't subclass if you don't set version to 2!
 
+    def hook_unmap(self, obj: univention.admin.handlers.simpleLdap, info, values) -> None:
+        """
+        This method can be overwritten to define special un-map methods to map
+        back from |LDAP| to |UDM| that can not be done with the default extended attribute mapping.
+
+        :param info: The list of UDM properties.
+        :param values: The list of LDAP attributes.
+        :param obj: The |UDM| object instance.
+        :returns: The (modified) list of UDM properties.
+        """
+        return info
+
     def hook_open(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
         Open |UDM| object by loading value from |LDAP|.
