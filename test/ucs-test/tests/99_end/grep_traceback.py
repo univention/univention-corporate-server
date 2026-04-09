@@ -214,6 +214,7 @@ COMMON_EXCEPTIONS = (
     # E(r"TypeError: modify\(\) got an unexpected keyword argument 'rename_callback'", ['_register_app'], 54578),
     # E('sqlite3.OperationalError: no such table: S4 rejected', 'stdin', 54586),
     E("ImportError: cannot import name 'ucr_get_int' from 'univention.appcenter.ucr'", ['appcenter/actions/update.py'], 59177),
+    E("TypeError: cannot use a string pattern on a bytes-like object", ['ConfigHandlers.VERSION_RE.match'], 55230),
 
     # during UCS 5.0-x-errata updates
     # E(r"TypeError: __init__\(\) got an unexpected keyword argument 'cli_enabled'", ['_register_app'], 54584),
