@@ -288,6 +288,7 @@ COMMON_EXCEPTIONS = (
     # Tracebacks caused by specific UCS bugs:
     E('ldap.OTHER:.*0000055B: SysErr: DSID-031A1262, problem 22', ['connector/ad/__init__.py.*in disable_user_from_ucs'], 56816),
     E(r'ldap.ALREADY_EXISTS:.*00000526: UpdErr: DSID-031A119B, problem 6005 \(ENTRY_EXISTS\)', 'connector/__init__.py".*in __sync_file_from_ucs', 58676),
+    E(r'ldap.ALREADY_EXISTS:.*00000524: UpdErr: DSID-031A11DA, problem 6005 \(ENTRY_EXISTS\)', 'connector/__init__.py".*in __sync_file_from_ucs', 58676),
     # E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
     E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
     E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
