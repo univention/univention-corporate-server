@@ -3231,8 +3231,8 @@ class Metrics(Resource):
                     'ucs': data['version/version'],
                     'patch': data['version/patchlevel'],
                     'errata': data['version/erratalevel'],
-                    'license-uuid': license_key,
-                    'system-uuid': data['uuid/system'],
+                    'license_uuid': license_key,
+                    'system_uuid': data['uuid/system'],
                 },
             )
         if data.get('version-n4k/version'):
@@ -3241,7 +3241,7 @@ class Metrics(Resource):
                     'major': data['version-n4k/major'],
                     'minor': data['version-n4k/minor'],
                     'patch': data['version-n4k/patch'],
-                    'license-uuid': license_key,
+                    'license_uuid': license_key,
                 },
             )
 

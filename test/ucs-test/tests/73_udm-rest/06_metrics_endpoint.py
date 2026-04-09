@@ -60,9 +60,9 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
             {
                 'domain': domainname,
                 'errata': ucr['version/erratalevel'],
-                'license-uuid': ucr['uuid/license'],
+                'license_uuid': ucr['uuid/license'],
                 'patch': ucr['version/patchlevel'],
-                'system-uuid': ucr['uuid/system'],
+                'system_uuid': ucr['uuid/system'],
                 'ucs': ucr['version/version'],
             },
         )
