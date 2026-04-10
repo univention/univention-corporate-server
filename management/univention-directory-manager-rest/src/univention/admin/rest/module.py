@@ -125,7 +125,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     def debug_mode_enabled(self):
         return ucr.is_true('directory/manager/rest/debug-mode-enabled')
 
-    def force_authorization(self, auth_type=None, error_information=None):
+    def force_authorization(self, auth_type=None, error_information=None) -> bool:
         self.add_header('WWW-Authenticate', 'Basic realm="Univention Directory Manager"')
         if auth_type == 'Bearer':
             if error_information:
@@ -134,6 +134,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 self.add_header('WWW-Authenticate', 'Bearer realm="Univention Directory Manager"')
         self.set_status(401)
         self.finish()  # TODO: add response body
+        return False
 
     def set_default_headers(self):
         self.set_header('Server', 'Univention/1.0')  # TODO:
@@ -155,17 +156,18 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
         authorization = self.request.headers.get('Authorization')
         if not authorization and self.requires_authentication:
-            return self.force_authorization(None)
+            self.force_authorization(None)
+            return
 
         try:
-            if authorization:
-                self.parse_authorization(authorization)
+            if authorization and self.authenticate(authorization):
                 self.authorize(authorization)
         finally:
             self.request.content_negotiation_lang = self.check_acceptable()
             self.decode_request_arguments()
 
-    def parse_authorization(self, authorization):
+    def authenticate(self, authorization: str) -> bool:
+        """Parse HTTP Authorization header and authenticates with it"""
         if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
             auth_type, username, userdn, password = shared_memory.authenticated[authorization]
             already_authenticated = True
@@ -216,6 +218,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             self._set_request_context()
 
         shared_memory.authenticated[authorization] = (auth_type, username, userdn, password)
+        return True
 
     def get_authorization_policy(self):
         return ('default', [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')])
