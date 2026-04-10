@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.5.6) unstable; urgency=medium
+
+  * Bug #59176: improve metrics
+
+ -- Florian Best <best@univention.de>  Fri, 10 Apr 2026 12:06:37 +0200
+
 univention-directory-manager-rest (12.5.5) unstable; urgency=medium
 
   * Bug #59176: fix invalid metric label name

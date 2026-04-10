@@ -69,20 +69,6 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
         assert sample is not None
         assert sample.value == 1
 
-    with subtests.test("version_nubus_info"):
-        family = _get_family(metrics, 'version_nubus_info')
-        assert family is not None
-
-        sample = _get_sample(
-            family,
-            {
-                'domain': domainname,
-                'platform': 'ucs',
-            },
-        )
-        assert sample is not None
-        assert sample.value == 1
-
     # # no samples expected in UCS
     with subtests.test("version_n4k_info"):
         family = _get_family(metrics, 'version_n4k_info')
@@ -95,7 +81,10 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
 
         sample = _get_sample(
             family,
-            {'domain': domainname},
+            {
+                'domain': domainname,
+                'platform': 'ucs',
+            },
         )
         assert sample is not None
         assert sample.value > 1 or sample.value == -1
@@ -106,7 +95,10 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
 
         sample = _get_sample(
             family,
-            {'domain': domainname},
+            {
+                'domain': domainname,
+                'platform': 'ucs',
+            },
         )
         assert sample is not None
         assert sample.value >= 50

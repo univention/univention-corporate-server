@@ -3211,9 +3211,8 @@ class Metrics(Resource):
 
     ucs_version = Info('version_ucs', 'UCS version information', ['domain'], registry=registry)
     n4k_version = Info('version_n4k', 'Nubus4Kubernetes version information', ['domain'], registry=registry)
-    nubus_version = Info('version_nubus', 'Nubus version information', ['domain'], registry=registry)
-    domain_users = Gauge('users_user_total', 'Total number of UDM objects of type users/user', ['domain'], registry=registry)
-    license_limit_users = Gauge('settings_license_users_limit_total', 'Number of active users permitted by the installed license', ['domain'], registry=registry)
+    domain_users = Gauge('users_user_total', 'Total number of UDM objects of type users/user', ['domain', 'platform'], registry=registry)
+    license_limit_users = Gauge('settings_license_users_limit_total', 'Number of active users permitted by the installed license', ['domain', 'platform'], registry=registry)
 
     def get(self):
         data = dict(ucr_live.items())
@@ -3245,15 +3244,14 @@ class Metrics(Resource):
                 },
             )
 
-        self.nubus_version.labels(domain=domain).info({'platform': data.get('nubus/platform', 'k8s')})
-
         limit = udm_license.license.get_user_limit()
         actual = udm_license.license.get_user_total()
         limit = float('inf') if limit is None else limit
         actual = -1 if actual is None else int(actual)
 
-        self.domain_users.labels(domain=domain).set(actual)
-        self.license_limit_users.labels(domain=domain).set(limit)
+        platform = data.get('nubus/platform', 'k8s')
+        self.domain_users.labels(domain=domain, platform=platform).set(actual)
+        self.license_limit_users.labels(domain=domain, platform=platform).set(limit)
 
         self.add_caching(public=False, no_store=True, no_cache=True, must_revalidate=True)
         self.set_header('Content-Type', CONTENT_TYPE_LATEST)
