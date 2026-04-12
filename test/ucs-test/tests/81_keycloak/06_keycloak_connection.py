@@ -4,12 +4,20 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+import json
 import os
 
 import pytest
 from keycloak import KeycloakAdmin
 from keycloak.connection import ConnectionManager
-from keycloak.exceptions import KeycloakAuthenticationError
+from keycloak.exceptions import KeycloakPostError
+
+
+def assert_invalid_grant(exc):
+    body = json.loads(exc.response_body)
+    assert exc.response_code == 400
+    assert body.get("error") == "invalid_grant"
+    assert body.get("error_description") == "Invalid user credentials"
 
 
 def test_admin_connection_administrator(keycloak_administrator_connection, admin_account):
@@ -27,7 +35,7 @@ def test_admin_connection_admin(keycloak_admin_connection, keycloak_admin):
 
 
 def test_admin_connection_admin_fails_non_existing_user(keycloak_config):
-    with pytest.raises(KeycloakAuthenticationError):
+    with pytest.raises(KeycloakPostError) as exc_info:
         KeycloakAdmin(
             server_url=keycloak_config.url,
             username='sfsdfdfd',
@@ -36,12 +44,13 @@ def test_admin_connection_admin_fails_non_existing_user(keycloak_config):
             user_realm_name='master',
             verify=True,
         )
+    assert_invalid_grant(exc_info.value)
 
 
 def test_admin_connection_non_admin_fails(keycloak_config, udm):
     password = 'univention'
     username = udm.create_user(password=password)[1]
-    with pytest.raises(KeycloakAuthenticationError):
+    with pytest.raises(KeycloakPostError) as exc_info:
         KeycloakAdmin(
             server_url=keycloak_config.url,
             username=username,
@@ -50,6 +59,7 @@ def test_admin_connection_non_admin_fails(keycloak_config, udm):
             user_realm_name='master',
             verify=True,
         )
+    assert_invalid_grant(exc_info.value)
 
 
 def test_admin_connection_domain_admins_group(keycloak_config, domain_admins_dn, udm):
@@ -76,8 +86,9 @@ def test_openid_connection_administrator(keycloak_openid_connection, admin_accou
 
 
 def test_openid_connection_fails_non_existing_user(keycloak_openid_connection):
-    with pytest.raises(KeycloakAuthenticationError):
+    with pytest.raises(KeycloakPostError) as exc_info:
         keycloak_openid_connection.token('lsjdlsajdlksa', 'dskjasdlk')
+    assert_invalid_grant(exc_info.value)
 
 
 def test_openid_connection_user(keycloak_openid_connection, udm):

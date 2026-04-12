@@ -64,7 +64,7 @@ def test_audit_event_log_levels(change_app_setting, keycloak_session, keycloak_a
             'username': username,
             'password': 'wrong_password',
         }, verify=True)
-        assert response.status_code == 401, f'Login should fail, got {response.status_code}: {response.text}'
+        assert response.status_code == 400, f'Login should fail, got {response.status_code}: {response.text}'
 
         logs = run_command(['docker', 'logs', 'keycloak'])
         login_error_pattern = r'ERROR.*\[org\.keycloak\.events\].*type="LOGIN_ERROR"'

@@ -1,3 +1,10 @@
+ucs-test (12.5.27) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#261: Handle HTTP 400 invalid_grant
+    response for failed authentication
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Thu, 16 Apr 2026 15:22:39 +0300
+
 ucs-test (12.5.26) unstable; urgency=medium
 
   * Bug #58426: fix keycloak client fixture to raise on error
