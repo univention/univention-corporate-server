@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: bind9
+fix: 1:9.11.37+git20260204.fcafb2d+dfsg-0~deb10u1A~5.0.10.202604131459
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.6 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N).
+   (CVE-2025-40778)
+bug: [59186]
+cve:
+- CVE-2025-40778
