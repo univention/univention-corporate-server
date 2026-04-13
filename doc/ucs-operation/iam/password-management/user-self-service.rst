@@ -209,7 +209,7 @@ that the user must verify through email.
 
 .. seealso::
 
-   :external+uv-nubus-manual:ref:`nubus-user-management-self-registration`
+   :external+uv-nubus-manual:ref:`nubus-user-management-user-registration`
       in :cite:t:`uv-nubus-manual`
       for information about using the self-registration.
 
@@ -302,7 +302,7 @@ You can configure properties of the *verification email*
 and of the verification token
 through the following Univention Configuration Registry variables.
 For information about the verification process,
-see :external+uv-nubus-manual:ref:`nubus-user-management-self-service-registration-verification-email`
+see :external+uv-nubus-manual:ref:`nubus-user-management-user-registration-email-verification`
 in :cite:t:`uv-nubus-manual`.
 
 .. important::
@@ -377,7 +377,7 @@ Account activation
 When the user clicks the verification link from the email,
 the web browser shows the *Account verification* page of the *Self Service*.
 For information about how to verify the registered user account,
-see :external+uv-nubus-manual:ref:`nubus-user-management-self-service-registration-account-verification`
+see :external+uv-nubus-manual:ref:`nubus-user-management-user-registration-account-activation`
 in :cite:t:`uv-nubus-manual`.
 
 This section provides information about how to configure the account verification.
