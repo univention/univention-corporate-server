@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.11) unstable; urgency=medium
+
+  * Bug #59150: add map and unmap functionatlity for extended attributes
+
+ -- Florian Best <best@univention.de>  Tue, 14 Apr 2026 18:14:07 +0200
+
 univention-directory-manager-modules (17.5.10) unstable; urgency=medium
 
   * Bug #59176: extend license interface to get fallback UUID for

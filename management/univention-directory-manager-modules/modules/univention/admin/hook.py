@@ -23,6 +23,7 @@ if TYPE_CHECKING:
     _Mod3 = tuple[str, list[str], list[str]]
     ModList = list[_Mod2 | _Mod3]
 
+import univention.admin.mapping
 from univention.admin.log import log
 
 
@@ -66,6 +67,26 @@ class simpleHook:
     # To use the LDAP connection of the parent UDM call in any of the following
     # methods, use obj.lo and obj.position.
     #
+
+    def map(self, value: Any, encoding=()) -> list[bytes]:
+        """
+        This method can be overwritten to define special method to map |UDM| property value to |LDAP| attribute value.
+
+        :param value: The UDM property value
+        :param encoding: Optional encoding information
+        :returns: The list of LDAP attributes.
+        """
+        return univention.admin.mapping.MapToBytes(value, encoding)
+
+    def unmap(self, value: list[bytes], encoding=()) -> Any:
+        """
+        This method can be overwritten to define special un-map methods to map back from |LDAP| to |UDM|.
+
+        :param value: The list of LDAP attributes
+        :param encoding: Optional encoding information
+        :returns: The UDM property value.
+        """
+        return univention.admin.mapping.UnmapToUnicode(value, encoding)
 
     def hook_open(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """

@@ -410,18 +410,16 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             _log.error('univentionUDMPropertyDoNotSearch non numeric - assuming doNotSearch=0')
             doNotSearch = False
 
-        # check if CA is multivalue property
-        if attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1':
-            multivalue = True
-            map_method = None
-            unmap_method = None
-        else:
-            multivalue = False
-            map_method = univention.admin.mapping.ListToString
-            unmap_method = None
-            if propertySyntaxString == 'boolean':
-                map_method = univention.admin.mapping.BooleanListToString
-                unmap_method = univention.admin.mapping.BooleanUnMap
+        # check if EA is multivalue property
+        multivalue = attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1'
+        map_method = propertyHook.map if propertyHook else None
+        unmap_method = propertyHook.unmap if propertyHook else None
+        if not multivalue:
+            is_default_unmap = propertyHook and propertyHook.__class__.unmap is univention.admin.hook.simpleHook.unmap
+            unmap_method = propertyHook.unmap if propertyHook and not is_default_unmap else univention.admin.mapping.ListToString
+            if propertySyntaxString == 'boolean' and (not propertyHook or is_default_unmap):
+                unmap_method = univention.admin.mapping.BooleanListToString
+                map_method = univention.admin.mapping.BooleanMap
             # single value ==> use only first value
             propertyDefault = propertyDefault[0]
 
@@ -459,7 +457,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
 
         # add LDAP mapping
         if ldap_attribute_name.lower() != 'objectclass':
-            module.mapping.register(pname, ldap_attribute_name, unmap_method, map_method)
+            module.mapping.register(pname, ldap_attribute_name, map_method, unmap_method)
         else:
             module.mapping.register(pname, ldap_attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 

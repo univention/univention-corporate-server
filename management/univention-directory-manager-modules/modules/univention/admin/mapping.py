@@ -359,16 +359,16 @@ def BooleanListToString(list: list[bytes], encoding: _Encoding = ()) -> str:
     return v
 
 
-def BooleanUnMap(value: str, encoding: _Encoding = ()) -> bytes:
+def BooleanMap(value: str, encoding: _Encoding = ()) -> bytes:
     """
     Convert |UDM| boolean to |LDAP|.
 
     :param list: One |LDAP| attribute values.
     :returns: the empty string for `False` or otherwise the first element.
 
-    >>> BooleanUnMap('0')
+    >>> BooleanMap('0')
     b''
-    >>> BooleanUnMap('1')
+    >>> BooleanMap('1')
     b'1'
     """
     if value == '0':
