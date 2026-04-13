@@ -3,7 +3,7 @@ release: "5.2"
 version: [4, 5]
 scope: ucs_5.2-0-errata5.2-5
 src: dovecot
-fix: 1:2.3.19.1+dfsg1-2.1+deb12u2
+fix: 1:2.3.19.1+dfsg1-2.1+deb12u3
 desc: |
  This update addresses the following issues:
  * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
