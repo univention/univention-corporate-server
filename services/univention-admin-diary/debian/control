@@ -6,6 +6,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  node-stylus,
+ pybuild-plugin-pyproject,
  python3-all,
  univention-config-dev (>= 15.0.3),
  univention-join-dev,
