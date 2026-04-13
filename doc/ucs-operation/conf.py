@@ -22,7 +22,6 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-project = "Nubus for UCS - Operation Manual"
 year_range = date.today().year
 start_year = 2025
 if year_range > start_year:
@@ -34,6 +33,7 @@ version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
 
+project = f"Nubus for UCS {version} - Operation Manual"
 html_show_copyright = True
 language = "en"
 
