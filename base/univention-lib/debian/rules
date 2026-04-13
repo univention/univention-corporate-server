@@ -6,6 +6,8 @@
 # SPDX-FileCopyrightText: 2002-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+export PYBUILD_SYSTEM=pyproject
+
 override_dh_auto_test:
 	dh_auto_test
 	univention-unittest

@@ -9,6 +9,7 @@ Build-Depends:
  dh-python,
  openssl,
  pwgen,
+ pybuild-plugin-pyproject,
  python3-all,
  python3-pil,
  univention-config-dev (>= 15.0.3),
