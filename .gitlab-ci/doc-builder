@@ -500,7 +500,13 @@ def add_jobs(pipeline: dict[str, object]) -> None:
         base_pkg = cycle_pkg.removesuffix(" cycle")
         path = ROOT / "doc" / base_pkg
         name = job_name(cycle_pkg, "html")
-        job = job_desc(base_pkg, path, ".sphinx-html", docs.get(path, ["en"]), set())
+        job = job_desc(
+            base_pkg,
+            path,
+            ".sphinx-html-cycle",
+            docs.get(path, ["en"]),
+            set(),
+        )
         job["variables"]["SPHINXOPTS"] = "--keep-going"
 
         # Also trigger this cycle job when any direct dependent changes
