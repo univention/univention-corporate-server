@@ -7,6 +7,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  heimdal-dev,
+ pybuild-plugin-pyproject,
  python3-dbg,
  python3-debian,
  python3-dev,
