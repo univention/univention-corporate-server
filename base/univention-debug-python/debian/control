@@ -7,6 +7,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  libunivention-debug-dev (>= 14.3.0),
+ pybuild-plugin-pyproject,
  python3-all-dev,
  python3-debian,
  python3-logfmter,

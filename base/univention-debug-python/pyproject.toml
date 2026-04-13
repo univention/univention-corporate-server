@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "python-debian"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-debug-python"
+version = "0.0.0"
+description = "Univention debugging and logging library"
+license = {text = "AGPL-3.0-only"}
+requires-python = ">= 3.11"
+dependencies = ["logfmter"]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+
+[tool.setuptools]
+package-dir = { "" = "python" }
