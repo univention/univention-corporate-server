@@ -1,0 +1,26 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: ffmpeg
+fix: 7:4.1.11-0+deb10u5
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-9951, CVE-2025-7700)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-63757, CVE-2023-6603)
+ * CVSS score 7.2 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N).
+   (CVE-2023-6605)
+ * CVSS score 6.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L).
+   (CVE-2025-1594)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-10256)
+bug: [59187]
+cve:
+- CVE-2023-6603
+- CVE-2023-6605
+- CVE-2025-10256
+- CVE-2025-1594
+- CVE-2025-63757
+- CVE-2025-7700
+- CVE-2025-9951
