@@ -23,13 +23,13 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - Manual for users and administrators'
-copyright = f'2023-{date.today().year}, Univention GmbH'
-author = ''
+copyright = f"2023-{date.today().year}, Univention GmbH"
+author = ""
 
 version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
+project = f"Univention Corporate Server {version} - Manual for users and administrators"
 
 html_show_copyright = True
 language = 'en'
