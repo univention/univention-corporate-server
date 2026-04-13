@@ -8,7 +8,6 @@ from __future__ import annotations
 import inspect
 import os
 import sys
-import warnings
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
 
@@ -201,72 +200,22 @@ class AttributeHook(simpleHook):
         introduced this hook. (Nov 2018; UCS 4.3-2)
         Otherwise you will get errors when you are distributing your new
         hook via `ucs_registerLDAPExtension --udm_hook`
+
+    .. deprecated:: 5.2-6
+        Since UCS 5.2-5-errata :class:`simpleHook` provides :func:`map`
+        and :func:`unmap`, which should be used instead.
     """
 
-    udm_attribute_name = None
-    ldap_attribute_name = None
+    udm_attribute_name = None  # not required anymore
+    ldap_attribute_name = None  # not required anymore
 
-    version = 1  # don't subclass if you don't set version to 2!
+    version = 3
 
-    def hook_open(self, obj: univention.admin.handlers.simpleLdap) -> None:
-        """
-        Open |UDM| object by loading value from |LDAP|.
+    def map(self, value: Any, encoding=()) -> list[bytes]:
+        return self.map_attribute_value_to_ldap(value)
 
-        :param obj: The |UDM| object instance.
-        """
-        log.debug('AttributeHook open: Mapping LDAP -> UDM', ldap=self.ldap_attribute_name, udm=self.udm_attribute_name)
-        old_value = obj.oldattr.get(self.ldap_attribute_name, [])
-        if self.version < 2:  # TODO: remove in UCS 5.1
-            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
-            old_value = obj[self.udm_attribute_name]
-        new_value = self.map_attribute_value_to_udm(old_value)
-        log.debug('AttributeHook: Setting UDM value', old=old_value, new=new_value)
-        obj[self.udm_attribute_name] = new_value
-
-    def hook_ldap_addlist(self, obj: univention.admin.handlers.simpleLdap, al: AddList) -> AddList:
-        """
-        Extend |LDAP| add list.
-
-        :param obj: The |UDM| object instance.
-        :param al: The add list to extend.
-        :returns: The extended add list.
-        """
-        return self.hook_ldap_modlist(obj, al)
-
-    def hook_ldap_modlist(self, obj: univention.admin.handlers.simpleLdap, ml: ModList) -> ModList:
-        """
-        Extend |LDAP| modification list.
-
-        :param obj: The |UDM| object instance.
-        :param ml: The modification list to extend.
-        :returns: The extended modification list.
-        """
-        if self.version < 2:  # TODO: remove in UCS 5.1
-            warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
-            new_ml = []
-            for ml_value in ml:
-                if len(ml_value) == 2:
-                    key, old_value, new_value = ml_value[0], [], ml_value[1]
-                else:
-                    key, old_value, new_value = ml_value
-                if key == self.ldap_attribute_name:
-                    log.debug('AttributeHook modlist: Mapping UDM -> LDAP', ldap=self.ldap_attribute_name, udm=self.udm_attribute_name)
-                    old_value = self.map_attribute_value_to_ldap(old_value)
-                    new_new_value = self.map_attribute_value_to_ldap(new_value)
-                    log.debug('AttributeHook: Setting LDAP value', old=new_value, new=new_new_value)
-                    new_value = new_new_value
-                new_ml.append((key, old_value, new_value))
-            return new_ml
-
-        new_ml = [x for x in ml if x[0] != self.ldap_attribute_name]
-
-        if obj.hasChanged(self.udm_attribute_name):
-            old_value = obj.oldattr.get(self.ldap_attribute_name, [])
-            new_value = obj.info.get(self.udm_attribute_name)
-            if new_value is not None:
-                new_value = self.map_attribute_value_to_ldap(new_value)
-            new_ml.append((self.ldap_attribute_name, old_value, new_value))
-        return new_ml
+    def unmap(self, value: list[bytes], encoding=()) -> Any:
+        return self.map_attribute_value_to_udm(value)
 
     def map_attribute_value_to_ldap(self, value: Any) -> list[bytes]:
         """
