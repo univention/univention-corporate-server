@@ -8,6 +8,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  pwgen,
+ pybuild-plugin-pyproject,
  python3-all,
  python3-pil,
  univention-config-dev (>= 15.0.3),
