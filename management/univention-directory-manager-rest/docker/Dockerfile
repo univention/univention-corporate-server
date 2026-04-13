@@ -14,9 +14,12 @@ RUN apt-get --yes --no-install-recommends install \
 
 WORKDIR /app
 
-RUN python3 -m venv venv
+RUN python3 -m venv --system-site-packages venv
 
 ENV PATH="/app/venv/bin:$PATH"
+
+# python3-apt is Debian-specific and not easily pip-installable
+RUN apt-get --yes --no-install-recommends install python3-apt
 
 # direct pypi deps for udm-rest
 RUN pip3 install --no-cache-dir \
@@ -38,7 +41,7 @@ COPY management/univention-authorization management/univention-authorization
 RUN pip3 install --no-cache-dir management/univention-authorization
 
 # udm
-RUN apt-get --yes --no-install-recommends install libcrack2-dev libunivention-debug-dev libunivention-license-dev
+RUN apt-get --yes --no-install-recommends install libcrack2-dev libunivention-debug-dev libunivention-license-dev swig libssl-dev heimdal-dev pkg-config
 RUN pip3 install --no-cache-dir \
     lark \
     email-validator \
@@ -50,7 +53,11 @@ RUN pip3 install --no-cache-dir \
     pillow \
     python-magic \
     python-debian \
-    logfmter
+    logfmter \
+    trml2pdf \
+    M2Crypto \
+    bcrypt \
+    pkgconfig
 
 COPY base/univention-debug-python base/univention-debug-python
 RUN pip3 install --no-cache-dir base/univention-debug-python
@@ -60,6 +67,9 @@ RUN pip3 install --no-cache-dir base/univention-python
 
 COPY base/univention-licence-python base/univention-licence-python
 RUN pip3 install --no-cache-dir base/univention-licence-python
+
+COPY base/univention-python-heimdal base/univention-python-heimdal
+RUN pip3 install --no-cache-dir base/univention-python-heimdal
 
 COPY services/univention-admin-diary services/univention-admin-diary
 RUN pip3 install --no-cache-dir services/univention-admin-diary
@@ -73,4 +83,33 @@ RUN pip3 install --no-cache-dir base/univention-config-registry
 COPY packaging/univention-debhelper packaging/univention-debhelper
 RUN pip3 install --no-cache-dir packaging/univention-debhelper
 
-ENTRYPOINT [ "/app/venv/bin/python3" ]
+COPY management/univention-management-console management/univention-management-console
+RUN pip3 install --no-cache-dir management/univention-management-console
+
+COPY management/univention-management-console-module-udm management/univention-management-console-module-udm
+RUN pip3 install --no-cache-dir management/univention-management-console-module-udm
+
+COPY management/univention-directory-reports management/univention-directory-reports
+RUN pip3 install --no-cache-dir management/univention-directory-reports
+
+COPY management/univention-directory-manager-rest management/univention-directory-manager-rest
+RUN pip3 install --no-cache-dir management/univention-directory-manager-rest
+
+# Minimal UCR config so modules that read UCR at import time don't crash.
+RUN mkdir -p /etc/univention
+COPY management/univention-directory-manager-rest/docker/base.conf /etc/univention/base.conf
+
+# Generate locales (the server calls locale.setlocale with whatever UCR says)
+RUN apt-get --yes --no-install-recommends install locales && \
+    printf 'en_US.UTF-8 UTF-8\nde_DE.UTF-8 UTF-8\n' >> /etc/locale.gen && \
+    localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-8 && \
+    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+CMD [ \
+  "venv/bin/python3", \
+  "-m", "univention.admin.rest.server", \
+  "--debug", "2", \
+  "--port", "9979", \
+  "--interface", "0.0.0.0", \
+  "--processes", "1" \
+  ]

@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-management-console-module-udm"
+version = "12.0.0"
+description = "UCS - UMC module for UDM"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+dependencies = []
+
+[tool.setuptools]
+packages = ["univention.management.console.modules.udm"]
+
+[tool.setuptools.package-dir]
+"univention.management.console.modules.udm" = "umc/python/udm"

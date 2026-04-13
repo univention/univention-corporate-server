@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-directory-reports"
+version = "18.0.0"
+description = "UCS - directory manager report generation"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# trml2pdf is only needed for actual PDF report generation.
+pdf = ["trml2pdf"]
+
+[tool.setuptools]
+packages = ["univention.directory.reports"]
+
+[tool.setuptools.package-dir]
+"univention.directory.reports" = "modules/univention/directory/reports"

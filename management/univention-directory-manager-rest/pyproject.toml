@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-directory-manager-rest"
+version = "12.0.0"
+description = "REST service for UCS Directory Manager"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+dependencies = [
+    "tornado",
+    "Genshi",
+    "pycurl",
+    "defusedxml",
+    "Jinja2",
+    "python-mimeparse",
+    "setproctitle",
+    "uritemplate",
+]
+
+[project.optional-dependencies]
+client = [
+    "python-ldap",
+    "requests",
+    "uritemplate",
+]
+async-client = [
+    "aiohttp",
+    "uritemplate",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["univention.*"]
+namespaces = true
