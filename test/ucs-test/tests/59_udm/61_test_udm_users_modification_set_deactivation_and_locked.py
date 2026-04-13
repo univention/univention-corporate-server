@@ -8,7 +8,8 @@
 
 import pytest
 
-import univention.admin.uldap
+from univention.admin.uldap import getMachineConnection
+from univention.testing import utils
 
 
 @pytest.mark.parametrize(
@@ -19,7 +20,10 @@ import univention.admin.uldap
             raises=AssertionError,
             match="krb5KDCFlags: expected 131326 found [b'254']",
         )),
-        (False, True),
+        pytest.param(False, True, marks=pytest.mark.skipif(
+            utils.package_installed('univention-s4-connector'),
+            reason="Connector unlocks new 'locked' users, see Bug #59191",
+        )),
         pytest.param(False, False, marks=pytest.mark.xfail(
             reason="setting both, disabled and locked, not supported, see Bug #59178",
             raises=AssertionError,
@@ -57,7 +61,7 @@ def modify_and_check(udm, ldap_base: str, dn: str, disabled: bool, locked: bool)
         krb_state |= 1 << 17
 
     # length of whitespace in sambaAcctFlags varies. cannot use utils.verify_ldap_object() to test it
-    lo, _pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
+    lo, _pos = getMachineConnection(ldap_master=False)
     user = lo.get(dn)
     assert user['krb5KDCFlags'] == [str(krb_state).encode()], 'krb5KDCFlags: expected {!r} found {!r}'.format(krb_state, user['krb5KDCFlags'])
     assert not (disabled and b'D' not in user['sambaAcctFlags'][0]), 'sambaAcctFlags: expected D in flags, found {!r}'.format(user['sambaAcctFlags'])

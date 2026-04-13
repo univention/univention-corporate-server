@@ -1,3 +1,9 @@
+ucs-test (12.5.24) unstable; urgency=medium
+
+  * Bug #59191: added test case
+
+ -- Felix Botner <botner@univention.de>  Mon, 13 Apr 2026 10:19:41 +0200
+
 ucs-test (12.5.23) unstable; urgency=medium
 
   * Bug #59150: added test case
