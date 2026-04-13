@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-admin-diary"
+version = "2.0.0"
+description = "UCS - Univention Admin Diary"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+
+# Client path has no mandatory deps. Backend needs sqlalchemy etc. (extra).
+dependencies = []
+
+[project.optional-dependencies]
+backend = [
+    "sqlalchemy",
+]
+
+[tool.setuptools]
+packages = ["univention.admindiary"]
+
+[tool.setuptools.package-dir]
+"univention.admindiary" = "python/admindiary"

@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-lib"
+version = "9.0.0"
+description = "UCS - common scripting functions for Python 3 scripts"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+
+# Core package has no mandatory dependencies.
+# Modules that need heavier libraries are gated behind optional extras.
+dependencies = []
+
+[project.optional-dependencies]
+ldap = [
+    "python-ldap",
+    "dnspython",
+]
+samba = [
+    "univention-lib[ldap]",
+    "samba",
+]
+umc = [
+    "Pillow",
+    "python-magic",
+]
+apt = [
+    "python-apt",
+]
+full = [
+    "univention-lib[ldap,samba,umc,apt]",
+    "polib",
+]
+
+[tool.setuptools]
+packages = ["univention.lib"]
+
+[tool.setuptools.package-dir]
+"univention.lib" = "python"
