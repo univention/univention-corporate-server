@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-authorization"
+version = "1.3.0"
+description = "This package contains the Python 3 modules that implement the authorization utilities of UCS."
+license = {text = "AGPL-3.0-only"}
+requires-python = ">= 3.11"
+
+dependencies = [
+    "requests",
+    "PyYAML",
+    "univention-python",
+]
+maintainers = [
+    { name = "Univention GmbH", email = "packages@univention.de" },
+]
+
+[project.urls]
+Homepage = "https://www.univention.de/"
+
+[tool.setuptools]
+package-dir = {"" = "modules"}
+packages = ["univention.authorization"]
