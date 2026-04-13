@@ -1,3 +1,9 @@
+univention-s4-connector (16.5.1) unstable; urgency=medium
+
+  * Bug #57174: Remove dnsTombstone from S4 Object if DNS object is synced from UCS
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 13 Apr 2026 08:21:56 +0200
+
 univention-s4-connector (16.5.0) unstable; urgency=medium
 
   [ Marius Meschter ]
