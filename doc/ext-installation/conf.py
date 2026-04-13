@@ -21,13 +21,13 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - Extended installation documentation'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
 version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
+project = f"Univention Corporate Server {version} - Extended installation documentation"
 
 html_show_copyright = True
 language = 'en'

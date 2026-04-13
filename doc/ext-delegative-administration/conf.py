@@ -29,13 +29,15 @@ year_range = date.today().year
 start_year = 2025
 if year_range > start_year:
     year_range = f'{start_year}-{year_range}'
-project = 'Univention Corporate Server - Delegative administration documentation'
 copyright = f'{year_range}, Univention GmbH'
 author = ''
 
 version = '5.2'
 # The full version, including alpha/beta/rc tags
 release = version
+project = (
+    f"Univention Corporate Server {version} - Delegative administration documentation"
+)
 
 html_show_copyright = True
 language = 'en'

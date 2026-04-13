@@ -25,13 +25,15 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-project = 'Univention Corporate Server - Extended domain services documentation'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
 version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
+project = (
+    f"Univention Corporate Server {version} - Extended domain services documentation"
+)
 
 html_show_copyright = True
 language = 'en'
