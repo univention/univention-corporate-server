@@ -9,6 +9,7 @@ Build-Depends:
  dh-python,
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
+ pybuild-plugin-pyproject,
  python3 (>= 3.6) | python3-mock,
  python3-all,
  python3-lazy-object-proxy,

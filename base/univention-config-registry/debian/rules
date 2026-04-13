@@ -7,6 +7,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 export PYBUILD_NAME=univention-config-registry
+export PYBUILD_SYSTEM=pyproject
 export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
 export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
 
