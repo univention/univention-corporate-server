@@ -3,10 +3,14 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: samba
-fix: 4.21.1-1A~5.2.0.202603311744
+fix: 4.21.1-1A~5.2.0.202604131814
 desc: |
  This update addresses the following issues:
+ * The Group Policy Management Console was crashing sometimes
+   when modifying the user permissions in the Security tab.
+   Afterwards, the new created ACLs were malformed, which made
+   the policy inaccessible. The code which parsed the binary
+   structures send by the Windows client has been corrected.
  * An uninitialized filedescriptor associated with
    hanging `rpcd spoolss` processes is now initialized.
- * CVSS score: TODO
-bug: [59160, 59161]
+bug: [59160]
