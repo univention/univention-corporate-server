@@ -100,8 +100,7 @@ macOS
 
 You can join macOS systems into a Nubus for UCS domain through Samba.
 For information about the integration,
-see :external+uv-ucs-manual:ref:`macos-domain-join`
-in :cite:t:`ucs-manual`.
+see :ref:`domain-infrastructure-join-macos`.
 
 .. _domain-infrastructure-system-roles-domain-trust-account:
 

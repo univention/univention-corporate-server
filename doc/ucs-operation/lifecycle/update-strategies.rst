@@ -182,10 +182,7 @@ You can verify and run join scripts in the following ways:
 * Run the command-line program :command:`univention-run-join-scripts`.
 
 For details on join script management,
-see :external+uv-ucs-manual:ref:`linux-domain-join`
-in :cite:t:`ucs-manual`.
-
-.. TODO: Replace cross reference about UCS domain join with internal reference.
+see :ref:`domain-infrastructure-join-ucs`.
 
 .. _lifecycle-update-strategies-troubleshooting:
 
