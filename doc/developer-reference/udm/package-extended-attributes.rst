@@ -544,6 +544,24 @@ inheritance.
 
 .. py:class:: simpleHook
 
+   .. py:method:: map(value, encoding)
+
+      :param Any value: The UDM property value
+      :param tuple encoding: Optional encoding information
+      :returns: The list of LDAP attributes.
+      :rtype: list[bytes]
+
+      This method can be overwritten to define a special method to map an UDM property value to LDAP attribute value.
+
+   .. py:method:: unmap(value, encoding)
+
+      :param list[bytes] value: The list of LDAP attributes
+      :param tuple encoding: Optional encoding information
+      :returns: The UDM property value.
+      :rtype: Any
+
+      This method can be overwritten to define a special un-map method to map a LDAP attribute value to an UDM property value.
+
    .. py:method:: hook_open(obj)
 
       :param univention.admin.handlers.simpleLdap obj:
@@ -659,34 +677,71 @@ inheritance.
 
       This method is called after the object was removed from LDAP.
 
-The following example implements a hook, which removes the object-class
-``univentionFreeAttributes``, if the property ``isSampleUser`` is no longer set.
+Examples
+~~~~~~~~
 
-.. code-block:: python
+* The following example implements a hook,
+  which removes the object-class ``univentionFreeAttributes``,
+  if the property ``isSampleUser`` is no longer set.
 
-   from univention.admin.hook import simpleHook
+  .. code-block:: python
 
-   class RemoveObjClassUnused(simpleHook):
-       type = 'RemoveObjClassUnused'
+     from univention.admin.hook import simpleHook
 
-       def hook_ldap_post_modify(self, obj):
-           """Remove unused objectClass."""
-           ext_attr_name = 'isSampleUser'
-           class_name = 'univentionFreeAttributes'
+     class RemoveObjClassUnused(simpleHook):
+         type = 'RemoveObjClassUnused'
 
-           if obj.oldinfo.get(ext_attr_name) in ('1',) and \
-                   obj.info.get(ext_attr_name) in ('0', None):
-               if class_name in obj.oldattr.get('objectClass', []):
-                   obj.lo.modify(obj.dn,
-                       [('objectClass', class_name, '')])
+         def hook_ldap_post_modify(self, obj):
+             """Remove unused objectClass."""
+             ext_attr_name = 'isSampleUser'
+             class_name = 'univentionFreeAttributes'
 
+             if obj.oldinfo.get(ext_attr_name) in ('1',) and \
+                     obj.info.get(ext_attr_name) in ('0', None):
+                 if class_name in obj.oldattr.get('objectClass', []):
+                     obj.lo.modify(obj.dn,
+                         [('objectClass', class_name, '')])
 
-After installing the file, the hook can be activated by setting the ``hook``
-property of an *Extended Attribute* to ``RemoveObjClassUnused``:
+  After installing the file, the hook can be activated by setting the ``hook``
+  property of an *Extended Attribute* to ``RemoveObjClassUnused``:
 
-.. code-block:: console
+  .. code-block:: console
 
-   $ udm settings/extended_attribute modify \
-     --dn ... \
-     --set hook=RemoveObjClassUnused
+     $ udm settings/extended_attribute modify \
+       --dn ... \
+       --set hook=RemoveObjClassUnused
 
+  .. note::
+
+     This is just an example to demonstrate UDM hooks for extended attributes.
+     The actual functionality can be achieved by setting the
+     ``deleteObjectClass`` flag for extended attributes.
+
+* In this example we have an extended attribute with the
+  UDM date syntax ``iso8601Date`` (1970-01-01).
+  But we want to store the value as a ``GeneralizedTime`` string (19700101000000Z) in LDAP.
+  We can map the values between these formats by providing the
+  appropriate ``map`` and ``unmap`` functions in the hook.
+
+  .. code-block:: python
+
+     from univention.admin.hook import simpleHook
+
+     class myDate(simpleHook):
+         type = 'myDate'
+         ldap_date_format = "%Y%m%d%H%M%SZ"
+         udm_date_format = "%Y-%m-%d"
+
+          def unmap(self, value: list[bytes], encoding=()) -> str:
+              """Convert [b'20090101000000Z'] to u'2009-01-01'. Ignores timezones."""
+              ldap_val = value[0].decode(*encoding)
+              ldap_date = datetime.datetime.strptime(ldap_val, self.ldap_date_format)
+              return ldap_date.strftime(self.udm_date_format)
+
+          def map(self, value: str, encoding=()) -> list[bytes]:
+              """Convert u'2009-01-01' to [b'20090101000000Z']. Ignores timezones."""
+              if not value:
+                  return []
+              udm_date = datetime.datetime.strptime(value, self.udm_date_format)
+              udm_date = udm_date.strftime(self.ldap_date_format)
+              return [udm_date.encode(*encoding)]
