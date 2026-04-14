@@ -33,4 +33,5 @@ Redundancy and failover for the Primary Directory Node
    :caption: Contents
 
    system-roles
+   domain-join
    ha
