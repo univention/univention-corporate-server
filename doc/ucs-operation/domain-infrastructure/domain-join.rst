@@ -3,349 +3,348 @@
 
 .. _domain-infrastructure-join:
 
-Domain join operations
-======================
+Domain join
+===========
 
 .. highlight:: console
 
-A UCS, Ubuntu or Windows system must join the domain after installation.
+A Nubus for UCS system must and Ubuntu, or Windows system can join the domain after installation.
+You can also add any other Unix systems to the domain.
+See :cite:t:`ext-doc-domain` for details.
 
-In addition to UCS, Ubuntu and macOS, arbitrary Unix systems can be integrated
-into the domain. This is described in :cite:t:`ext-doc-domain`.
+.. _domain-infrastructure-join-process:
 
-.. _linux-domain-join:
+Domain join process
+-------------------
+
+The :term:`Primary Directory Node` should run the latest version.
+A UCS system joining the domain must use the same version or an older version.
+Because this causes compatibility errors, don't join a domain with a newer version.
+When a computer joins a domain, the primary system:
+
+* Creates a computer account.
+* Synchronizes the TLS certificates.
+* Copies LDAP data if needed.
+
+After that, the *join scripts* run.
+Installed software packages use them
+to add objects to the directory service.
+For more information, see :ref:`domain-infrastructure-join-ucs-joinscripts`.
+
+The UCS system records the domain join on the client in
+:file:`/var/log/univention/join.log`.
+To analyze errors, review this file.
+The Primary Directory Node stores related join actions in
+:file:`/home/{<Join-Account>}/.univention-server-join.log`.
+
+You can repeat the domain join process at any time.
+You may need to rejoin a system after major changes on the Primary Directory Node,
+such as changes to key system settings.
+
+.. _domain-infrastructure-join-ucs:
 
 How UCS systems join domains
 ----------------------------
 
-There are three possibilities for a UCS system to join an existing domain:
+A UCS system can join an existing domain in three ways:
 
-* Directly after installation in the Univention Installer, see
-  :ref:`installation-domain-settings-join-ucs-domain`.
+* During installation in the *Univention Installer*, see
+  :ref:`deployment-domain-setup-join-ucs`.
 
-* Subsequently with the command :command:`univention-join`, see
-  :ref:`domain-ldap-subsequent-domain-joins-with-univention-join`.
+* After installation with the command :command:`univention-join`, see
+  :ref:`domain-infrastructure-join-univention-join`.
 
-* Using the UMC module :guilabel:`Domain join`, see
-  :ref:`linux-domain-join-umc`.
+* Through the *Domain Join* management module in the *Management UI*, see
+  :ref:`domain-infrastructure-join-ucs-umc`.
 
+.. _domain-infrastructure-join-univention-join:
 
-The |UCSPRIMARYDN| should always be installed at the most up-to-date release
-stand of the domains, as problems can arise with an outdated |UCSPRIMARYDN| when
-a system using the current version joins.
+Subsequent domain joins with :spelling:word:`univention`-join
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When a computer joins, a computer account is created, the SSL
-certificates are synchronized and an LDAP copy is initiated if
-necessary. The *join scripts* are also run at the
-end of the join process. These register further objects, etc., in the
-directory service using the software packages installed on the system
-(see :ref:`domain-ldap-joinscripts`).
-
-The joining of the domain is registered on the client side in the
-:file:`/var/log/univention/join.log` log file, which can be used for reference
-in error analysis. Actions run on the |UCSPRIMARYDN| are stored in the
-:file:`/home/<Join-Account>/.univention-server-join.log` log file.
-
-The joining process can be repeated at any time. Systems may even be required to
-rejoin following certain administrative steps (such as changes to important
-system features on the |UCSPRIMARYDN|).
-
-.. _domain-ldap-subsequent-domain-joins-with-univention-join:
-
-Subsequent domain joins with *univention-join*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The :command:`univention-join` command joins a Nubus for UCS system to a Nubus for UCS domain.
+It accepts command-line arguments or interactive prompts.
+After installation and before the domain join is complete, run this command.
+The command asks for required settings interactively,
+or pass them as command-line options instead.
+This works well for automated or remote setups.
 
 .. program:: univention-join
 
-:command:`univention-join` retrieves a number of essential parameters
-interactively; however, it can also be configured using a number of parameters:
+The following options are available.
+Most are optional.
+The command asks for any missing values.
 
 .. option:: -dcname <HOSTNAME>
 
-   The |UCSPRIMARYDN| is usually detected via a DNS request. If that is not
-   possible (e.g., a |UCSREPLICADN| server with a different DNS domain is set to
-   join), the computer name of the |UCSPRIMARYDN| can also be entered directly
-   using the ``-dcname HOSTNAME`` parameter. The computer name must then be
-   entered as a fully qualified name, e.g., ``primary.company.com``.
+   The system automatically detects the Primary Directory Node through DNS.
+   If automatic detection fails, for example, when a :term:`Replica Directory Node`
+   has a different DNS domain,
+   you can specify the Primary Directory Node hostname directly using this parameter.
+   Enter the hostname as a fully qualified name, for example ``primary.example.com``.
 
 .. option:: -dcaccount <ACCOUNTNAME>
 
-   A user account which is authorized to add systems to the UCS domains is
-   called a join account. By default, this is the ``Administrator`` user or a
-   member of the two groups ``Domain Admins`` and ``DC Backup Hosts``. The join
-   account can be assigned using the ``-dcaccount ACCOUNTNAME`` parameter.
+   The join account is the user account used to add systems to the UCS domain.
+   By default, you use the ``Administrator`` user or a member of the ``Domain Admins``
+   or ``DC Backup Hosts`` groups.
+   You can specify a different join account using this parameter.
 
 .. option:: -dcpwd <FILE>
 
-   The password can be set using the ``-dcpwd FILE`` parameter. The password is
-   then read out of the specified file.
+   Specify the password using this parameter.
+   The command reads the password from the specified file.
 
 .. option:: -verbose
 
-   The ``-verbose`` parameter is used to add additional debug output to the log
-   files, which simplify the analysis in case of errors.
+   This parameter adds additional debug output to the log files.
+   You can review this output to analyze errors.
 
-.. _linux-domain-join-umc:
+.. _domain-infrastructure-join-ucs-umc:
 
-Joining domains via |UCSUMC| module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Join a domain through the management module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A domain join can also be carried out web based via the UMC module
-:guilabel:`Domain join`. As the *Administrator* user does not yet exist on a
-system which has yet to join the domain, the login to the module is done as user
-``root``.
+You can also join a Nubus for UCS domain through the *Domain join* management module.
+The ``Administrator`` user doesn't exist yet on a system that hasn't joined.
+Sign in to the *Management UI* as user ``root`` instead.
+For information about the password, see :ref:`deployment-initial-system-configuration-password`.
 
-As for the :ref:`domain joining procedure via the command line
-<domain-ldap-subsequent-domain-joins-with-univention-join>`, username and
-password of a user account authorized to add computers to a domain must be
-entered in the resulting dialogue. Likewise, the |UCSPRIMARYDN| will be
-determined automatically via a DNS request, but can also be entered manually.
+As with the command-line join,
+enter the username and password of an account that's member of the ``Domain Admins`` group.
+The system finds the Primary Directory Node through DNS.
+You can also enter it by hand.
 
-The :guilabel:`Rejoin` option can be used to repeat the domain join at any time.
+Use the :guilabel:`Rejoin` option to repeat the domain join at any time.
 
-.. _domain-ldap-joinscripts:
+.. _domain-infrastructure-join-ucs-joinscripts:
 
-Join scripts / Unjoin scripts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Join scripts and unjoin scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Join scripts* are run during the domain join. Examples for changes made by
-join scripts are the registration of a print server in the domain or the
-adaptation of DNS entries. Join scripts are components of the individual
-software packages. In the same way, there are also *unjoin scripts*, which can
-reset these changes following deinstallation of software components.
+The system runs scripts during the domain join and during software removal:
 
-Join scripts are stored in the :file:`/usr/lib/univention-install/` directory
-and unjoin scripts in :file:`/usr/lib/univention-uninstall/`. Each join/unjoin
-script has a version. An example: A package has already been installed and the
-join script already run. The new version of the package now requires additional
-changes and the version number of the join script is increased.
+Join scripts
+   The UCS system runs *join scripts* during the domain join.
+   They can register a print server in the domain,
+   adapt DNS entries,
+   or perform other configuration changes.
+   The system stores them in :file:`/usr/lib/univention-install/`.
 
-The :command:`univention-check-join-status` command can be used to check whether
-join/unjoin scripts need to be run (either because they have yet to be run or an
-older version was run).
+Unjoin scripts
+   *Unjoin scripts* reverse changes that join scripts applied.
+   The UCS system runs them when you uninstall software components
+   and stores them in :file:`/usr/lib/univention-uninstall/`.
 
-.. _domain-ldap-joinscripts-execlater:
+Each script belongs to a software package and has a version number.
+When a new package version needs an updated setup, the script version goes up too.
 
-Subsequent running of join scripts
-""""""""""""""""""""""""""""""""""
+.. note::
 
-If there are join/unjoin scripts on a system which have not yet been run or
-which can only be run for an older version, a warning message is shown upon
-opening a UMC module.
+   Join scripts and unjoin scripts are specific to UCS systems.
+   Windows, Ubuntu, and macOS systems don't use this mechanism during domain join.
 
-Join scripts that have not been run can be executed via the UMC module
-:guilabel:`Domain join` by clicking on the menu entry :guilabel:`Execute all
-pending join scripts`.
+.. rubric:: Checking and running scripts
 
-The :command:`univention-run-join-scripts` command is used to run all of the
-join/unjoin scripts installed on a system. The scripts check automatically
-whether they have already been executed.
+Use :command:`univention-check-join-status` to check
+whether any scripts need to run.
+This command identifies scripts that haven't run yet or have an older version.
 
-The name of the join/unjoin script and the output of the script are also
-recorded in :file:`/var/log/univention/join.log`.
+If pending scripts are present,
+the *Domain join* management module displays a warning message when you open it.
+To run all pending join scripts, click :guilabel:`Execute all pending join scripts`.
 
-If :command:`univention-run-join-scripts` is run on another system role than the
-|UCSPRIMARYDN|, the user will be asked to input a username and password. This
-can be performed on the |UCSPRIMARYDN| via the ``--ask-pass`` option.
+To run all scripts from the command line,
+use :command:`univention-run-join-scripts`.
+The system automatically checks whether it has already run each script.
+When you run :command:`univention-run-join-scripts` on a system other than
+the Primary Directory Node, the command asks for a username and password.
+When you run this command on the Primary Directory Node,
+to sign in, use the ``--ask-pass`` option.
 
-.. _windows-domain-join:
+The system records each script name and its output
+in :file:`/var/log/univention/join.log`.
+
+.. _domain-infrastructure-join-windows:
 
 Windows domain joins
 --------------------
 
-Samba enables UCS to allow Microsoft Windows to join a UCS domain.
-This section describes the join procedure on the example of Windows 11.
-The process is similar for other Windows versions.
-In addition to the client versions,
-Windows server systems can also join the domain.
-Windows servers join the domain as member servers.
-UCS doesn't support the join of a Windows system as a domain controller.
-For more information about Windows in a UCS domain,
-refer to :ref:`windows-services-for-windows`.
+Microsoft Windows systems can join a Nubus for UCS domain.
+The join uses Samba with Active Directory support.
 
-Only domain-compatible Windows versions can join the UCS domain, i.e.,
-it is not possible for the Home versions of Windows to join a domain.
+.. _domain-infrastructure-join-windows-overview:
 
-A host account is created for the Windows client automatically when it joins the
-domain (see :ref:`computers-hostaccounts`). Information concerning MAC and IP
-addresses, the network, DHCP or DNS can be configured via UMC modules prior to
-or after joining the domain.
+Windows domain join overview and requirements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Domain joining is usually performed with the local Administrator account on the
-Windows system.
+Samba enables Nubus for UCS to support Microsoft Windows systems.
+This section describes the join procedure for Windows 11 as an example.
+The process is similar for other Windows versions and for Windows Server systems,
+which you can also join as member servers.
+UCS doesn't support Windows systems as domain controllers.
+For more information about Windows in a Nubus for UCS domain,
+see :external+uv-ucs-manual:ref:`windows-services-for-windows`
+in :cite:t:`ucs-manual`.
 
-Joining the domain takes some time and the process must not be canceled
-prematurely. After successful joining a small window appears with the message
-*Welcome to the domain <your domain name>*. This should be confirmed with
-:guilabel:`OK`. The computer must then be restarted for the changes to take
-effect.
+.. TODO: Replace the cross-reference to Windows Services after they're available in the UCS Operation Manual.
 
-Domain names must be limited to 15 characters as they are otherwise truncated at
-the Windows client and this can lead to sign in errors.
+.. important::
 
-For a domain join against a domain controller based on Samba/AD, the DNS
-configuration of the client must be set up in such a way that DNS entries from
-the DNS zone of the UCS domain can also be resolved. In addition, the time on
-the client system must also be synchronized with the time on the domain
-controller.
+   Only domain-compatible Windows versions can join the Nubus for UCS domain.
+   Windows Home editions can't join a domain.
 
-.. _domain-ldap-supported-windows-versions:
+When a Windows client joins, Nubus for UCS creates a host account for it.
+For more information,
+see :external+uv-nubus-manual:ref:`nubus-computer-management`
+in :cite:t:`uv-nubus-manual`.
+You can configure the MAC address, IP address, network, DHCP, and DNS
+through management modules before or after the join.
+
+To join the domain, use the local ``Administrator`` account.
+
+Domain joins take some time.
+Don't cancel the process prematurely.
+After successful joining, a confirmation window appears with the message
+*Welcome to the domain <your domain name>*.
+To confirm the join, click :guilabel:`OK`.
+To apply the changes, restart the Windows computer.
+
+For Windows client domain name rules,
+see :ref:`deployment-domain-setup-naming-domain`.
+
+.. important::
+
+   For a domain join against a domain controller based on Samba/AD,
+   configure the DNS settings on the client to resolve entries from the Nubus for UCS domain.
+   Verify that the system time on the client matches the time on the domain controller.
+
+.. _domain-infrastructure-join-windows-versions:
 
 Supported Windows versions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-UCS supports the following Microsoft Windows versions to join a UCS domain:
+Nubus for UCS supports the following Microsoft Windows versions to join a UCS domain:
 
 * Windows 10
 * Windows 11
-* Windows Server in the versions 2012, 2016, 2019 and 2022
+* Windows Server in the versions 2012, 2016, 2019, and 2022
 
-.. _domain-ldap-windows-11:
+.. _domain-infrastructure-join-windows-11:
 
 Windows 11
 ~~~~~~~~~~
 
-Joining a domain requires one of the editions *Pro*, *Education*, or
-*Enterprise* of Windows 11.
-To join Windows 11 into a UCS domain, use the following steps:
+To join Windows 11 to a Nubus for UCS domain, you need the *Pro*, *Education*, or
+*Enterprise* edition.
+Follow these steps:
 
-#. To open the Windows control panel, search for ``Control Panel`` in the field
-   *Search*.
+#. Open the *Start* menu or press the Windows key.
+   Search for ``Control Panel`` in the *Search* field.
 
-#. On the *Control Panel* navigate to :menuselection:`System and Security -->
-   System` scroll down and click :guilabel:`Domain or workgroup`. Select
-   :menuselection:`Change settings --> Change`.
+#. Navigate to :menuselection:`System and Security --> System`.
+   Scroll down and click :guilabel:`Domain or workgroup`.
+   Select :menuselection:`Change settings --> Change`.
 
-#. Enable the option :guilabel:`Domain`.
+#. Enable the :guilabel:`Domain` option.
 
-#. Enter the name of the domain in the input field for the domain join. Use the
-   full domain name, for example ``mydomain.intranet``. Click the :guilabel:`OK`
-   button.
+#. Enter the domain name in the input field.
+   Use the full domain name, for example ``mydomain.intranet``.
+   Click :guilabel:`OK`.
 
-#. Enter the *Username* and *Password* of a domain administrator account of the
-   UCS domain in the respective input fields. In a UCS domain the default domain
-   administrator username is ``Administrator``.
+#. Enter the username and password of an account that's member in the ``Domain Admins`` group.
+   The default domain username for administrator accounts is ``Administrator``.
 
-#. Finally, to start the process for joining the domain, click :guilabel:`OK`.
+#. To start the domain join, click :guilabel:`OK`.
 
-.. _domain-ldap-windows-10:
+.. _domain-infrastructure-join-windows-10:
 
 Windows 10
 ~~~~~~~~~~
 
-The joining of domains is only possible with the Pro and Enterprise editions of
-Windows 10.
+Only the *Pro* and *Enterprise* editions of Windows 10 can join a domain.
+To join Windows 10 to a Nubus for UCS domain, follow the steps in :ref:`domain-infrastructure-join-windows-11`.
 
-The control panel can be reached via the search field :guilabel:`Search the web
-and Windows`, which can be found in the start bar. Under :menuselection:`System
-and Security --> System` it must be clicked on :menuselection:`Change settings
---> Change`.
-
-The :guilabel:`Domain` option field must be ticked and the name of the domain
-must be entered in the input field for the domain join. The full domain name
-should be used, e.g. ``mydomain.intranet``. After clicking on the :guilabel:`OK`
-button, the username of a domain administrator must be entered in the input
-field :guilabel:`Username`, by default this is ``Administrator``. The password
-of the domain administrator has to be entered in the input field
-:guilabel:`Password`. Finally, the process for joining the domain can then be
-started by clicking on :guilabel:`OK`.
-
-.. _domain-ldap-win-2012:
+.. _domain-infrastructure-join-windows-server:
 
 Windows Server 2012 / 2016 / 2019 / 2022
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The control panel can be reached by moving the cursor to the bottom right-hand
-corner of the screen. The *Control Panel* can then be searched for under
-:menuselection:`Search --> Apps`. :menuselection:`Change settings --> Network
-ID` must be clicked on under :menuselection:`System and Security --> System`.
+To join Windows Server to a Nubus for UCS domain,
+follow these steps:
 
-The *Domain* option field must be ticked and the name of the Samba domain
-entered in the input field for the domain join. After clicking on the
-:guilabel:`OK` button, the username ``Administrator`` must be entered in the
-input field *Name* and the password from :samp:`uid=Administrator,cn=users,{LDAP
-base DN}` transferred to the *Password* input field. The process for joining the
-domain can then be started by clicking on :guilabel:`OK`.
+#. Open the *Start* menu.
 
-.. _ubuntu-domain-join:
+#. Navigate to :menuselection:`System and Security --> System`.
+   Click :menuselection:`Change settings --> Network ID`.
+
+#. Enable the *Domain* option.
+   Enter the domain name in the input field for the domain join.
+   Click :guilabel:`OK`.
+
+#. In the *Name* field, enter ``Administrator``.
+   In the *Password* field, enter the password from :samp:`uid=Administrator,cn=users,{LDAP base DN}`.
+
+#. To start the domain join, click :guilabel:`OK`.
+
+.. _domain-infrastructure-join-ubuntu:
 
 Ubuntu domain joins
 -------------------
 
-Univention provides the :program:`Univention Domain Join Assistant` to integrate
-Ubuntu clients into a UCS domain. Documentation and installation instructions
-are available at `Github <github-univention-domain-join_>`_.
+Univention provides the :program:`Univention Domain Join Assistant`,
+a GUI and command-line tool for adding Ubuntu and Linux Mint clients to a Nubus for UCS domain.
+The assistant sets up LDAP, DNS, Kerberos, and login (PAM/SSSD) for you.
+You don't need to set up anything manually.
 
-.. _macos-domain-join:
+For installation steps, supported versions, and usage details,
+see the `Univention Domain Join Assistant documentation <https://github.com/univention/univention-domain-join>`_.
+
+.. _domain-infrastructure-join-macos:
 
 macOS domain joins
 ------------------
 
-UCS supports domain joins of macOS clients into a UCS environment using
-Samba/AD. This documentation refers to macOS 10.8.2.
+To join the macOS client to a Nubus for UCS domain, follow these steps:
 
-The domain join can be performed using the system preferences menu or
-the :command:`dsconfigad` command line tool.
+#. In *System Preferences*, open :guilabel:`Users & Groups`.
 
-After the domain join it is possible to automatically mount CIFS shares
-to subfolders in :file:`/Volumes` when logging in with a
-domain user. For that, the following line has to be added to the file
-:file:`/etc/auto_master`:
+#. Click the lock icon and enter the credentials for a local *Administrator* account.
 
-::
+#. From the menu, open the *Directory Utility*,
+   as you can see in :numref:`domain-infrastructure-join-macos-gui-figure`.
 
-   /Volumes	auto_custom
-
-
-In addition, the file :file:`/etc/auto_custom` needs to be created and the shares
-which should be mounted have to be listed in it in the following way:
-
-::
-
-   <SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>
-
-
-Note that the automatically mounted shares are not displayed in the finder's sidebar.
-
-.. _macos-domain-join-gui:
-
-Domain join using the system preferences GUI
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In the System Preferences via the :guilabel:`Users & Groups` entry, the
-:guilabel:`Login menu` can be reached. After authenticating by clicking on the
-lock in the lower left corner and providing credentials of a local
-*Administrator* account, the :guilabel:`Network Account Server: Join` button
-needs to be clicked. From that menu it is possible to open the *Directory
-Utility*.
-
-.. _domain-ldap-join-osx:
+.. _domain-infrastructure-join-macos-gui-figure:
 
 .. figure:: /images/macosx-bind.*
    :alt: Domain join of a macOS system
 
    Domain join of a macOS system
 
-In the advanced options section, the option *Create mobile account at login*
-should be activated. A mobile account has the advantage that, when the domain is
-not available, the user can log into the macOS system with the same account used
-for logging into the domain.
+4. In the *Advanced options* section, enable *Create mobile account at login*.
+   A mobile account lets you sign in to the macOS system with your domain account
+   even when the domain isn't available.
 
-After filling in the domain name in the field *Active Directory Domain* and the
-hostname of the macOS client in the field *Computer ID*, the join process is
-initiated after clicking the button :guilabel:`Bind...`. The username and
-password of an account in the ``Domain Admins`` group needs to be entered, e.g.,
-``Administrator``.
+#. Enter the domain name in the *Active Directory Domain* field.
 
-.. _macos-domain-join-cli:
+#. Enter the macOS client hostname in the *Computer ID* field.
+
+#. To start the domain join, click :guilabel:`Bind…`.
+   Enter the username and password for an account in the ``Domain Admins`` group,
+   for example ``Administrator``.
+
+.. _domain-infrastructure-join-macos-cli:
 
 Domain join on the command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The domain join can also be performed on the command line using
-:command:`dsconfigad`:
+You can also use :command:`dsconfigad` on the command line.
+See :numref:`domain-infrastructure-join-macos-cli-listing` for the full command.
+For more options, run :command:`dsconfigad -help`.
 
 .. code-block::
+   :caption: Join a Nubus for UCS domain through CLI on macOS
+   :name: domain-infrastructure-join-macos-cli-listing
 
    $ dsconfigad -a <MAC HOSTNAME> \
      -domain <FQDN> \
@@ -353,6 +352,33 @@ The domain join can also be performed on the command line using
      -u <Domain Administrator> \
      -mobile enable
 
-Additional configuration options are available through :command:`dsconfigad
--help`.
+.. _domain-infrastructure-join-macos-mount-shares:
 
+Optional: Mount CIFS shares
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After the domain join, you can automatically mount CIFS shares
+to subfolders in :file:`/Volumes` when signing in with a domain user.
+To do this, follow these steps:
+
+#. Add the line in :numref:`domain-infrastructure-join-macos-mount-shares-volumes-listing`
+   to the :file:`/etc/auto_master` file.
+
+   .. code-block:: text
+      :caption: Configure ``auto-custom`` for volumes
+      :name: domain-infrastructure-join-macos-mount-shares-volumes-listing
+
+      /Volumes	auto_custom
+
+#. Create the file :file:`/etc/auto_custom`
+   and list the shares you want to mount using the pattern shown in :numref:`domain-infrastructure-join-macos-mount-shares-pattern-listing`.
+
+   .. code-block:: text
+      :caption: Pattern for share definition
+      :name: domain-infrastructure-join-macos-mount-shares-pattern-listing
+
+      <SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>
+
+.. note::
+
+   The :program:`Finder` doesn't show auto-mounted shares in the sidebar.
