@@ -9,7 +9,7 @@
 
 
 import pytest
-from conftest import RestClientHelper
+from conftest import ClientHelper
 
 from univention.admin.uldap import getAdminConnection
 from univention.config_registry import ucr as _ucr
@@ -85,13 +85,14 @@ def school_wizard():
 @check_delegation
 def test_ucsschoolPurgeTimestamp(
     ldap_base: str,
-    admin_rest_client: RestClientHelper,
+    admin_umc_client: ClientHelper,
     school_wizard: schoolWizard,
 ):
-    result, username, dn = school_wizard.create_student()
+    ucsschool_purge_timestamp = "2099-12-12"
+    result, _username, dn = school_wizard.create_student()
     assert result
-    changes = {'ucsschoolPurgeTimestamp': '2099-12-12'}
-    admin_rest_client.modify_user(dn, changes)
-    # check normal user module with delegated administration, this fail with
-    # The given date does not conform to iso8601, example: "2009-01-01"."
-    admin_rest_client.search_user(f'uid={username}')
+    changes = {'ucsschoolPurgeTimestamp': ucsschool_purge_timestamp}
+    admin_umc_client.modify_object('users/user', dn, changes)
+    # check normal user module with delegated administration
+    user = admin_umc_client.get_object('users/user', dn)
+    assert user["ucsschoolPurgeTimestamp"] == ucsschool_purge_timestamp
