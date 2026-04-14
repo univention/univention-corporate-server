@@ -29,8 +29,8 @@ setup(
     url='https://www.univention.de/',
     license='GNU Affero General Public License v3',
 
-    name="univention-debug-python",
-    version="14.5.0",
+    name=dch.package,
+    version=dch.version.full_version.split('A~')[0],
     maintainer=realname,
     maintainer_email=email_address,
 )

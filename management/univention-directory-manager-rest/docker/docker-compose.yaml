@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+#
+# Bring-up for the source-based UDM REST API container with a real LDAP
+# backend (the prebuilt nubus ldap-server image).
+#
+# Usage (from repo root):
+#   docker compose -f management/univention-directory-manager-rest/docker/docker-compose.yaml up --build
+#
+# Then:
+#   curl -u 'cn=admin,dc=univention-organization,dc=intranet:univention' \
+#        http://localhost:9979/udm/users/user/
+
+services:
+  udm-rest-api:
+    build:
+      # Build context is the repo root so the Dockerfile can COPY base/, management/, etc.
+      context: ../../../
+      dockerfile: management/univention-directory-manager-rest/docker/Dockerfile
+    ports:
+      - "9979:9979"
+    environment:
+      LDAP_HOST: ldap-server
+      LDAP_PORT: "389"
+      LDAP_BASE_DN: dc=univention-organization,dc=intranet
+      LDAP_HOST_DN: cn=admin,dc=univention-organization,dc=intranet
+      TLS_MODE: "off"
+      MACHINE_SECRET: univention
+      LDAP_SECRET: univention
+      AUTHORIZED_DOMAIN_ADMINS: "cn=Domain Admins,cn=groups,dc=univention-organization,dc=intranet"
+    depends_on:
+      - ldap-server
+
+  ldap-server:
+    image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/ldap/ldap-server:latest
+    platform: linux/amd64
+    environment:
+      DOMAIN_NAME: univention-organization.intranet
+      LDAP_BASEDN: dc=univention-organization,dc=intranet
+      LDAP_CN_ADMIN_PW: univention
+      TLS_MODE: "off"
+      PYTHON_LOG_LEVEL: DEBUG
+      UPDATE_INDEX_ON_STARTUP: "true"
+    # FIXME: slapd won't work on linux kernel 6.6
+    ulimits:
+      nofile:
+        soft: 1024
+        hard: 1024
+    ports:
+      - "389:389"
+    volumes:
+      # ldap-server needs a UCR base.conf with keys it bootstraps from
+      # (ldap/server/type, self-service/ldap_attributes, etc.). Reuse the
+      # nubus test config which already covers the full set.
+      - type: bind
+        source: /home/marius/git/nubus/container-udm-rest/tests/base.conf
+        target: /etc/univention/base.conf
+        read_only: true

@@ -105,6 +105,27 @@ RUN apt-get --yes --no-install-recommends install locales && \
     localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-8 && \
     localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
+# Runtime directories expected by univention.lib / UMC code paths and the
+# entrypoint scripts that wire up LDAP.
+RUN mkdir -p \
+        /etc/univention/ssl/ucsCA \
+        /etc/univention/directory/reports \
+        /var/cache/univention-config \
+        /var/log/univention \
+        /var/lib/univention-appcenter/attributes && \
+    echo '{}' > /var/lib/univention-appcenter/attributes/mapping.json
+
+# Pre-rendered reports config (univention-directory-reports.Config() expects
+# /etc/univention/directory/reports/config.ini with a [reports] section).
+COPY management/univention-directory-manager-rest/docker/reports-config.ini /etc/univention/directory/reports/config.ini
+
+# Entrypoint: runs /entrypoint.d/* (LDAP wiring) before exec'ing CMD.
+COPY management/univention-directory-manager-rest/docker/entrypoint.sh /entrypoint.sh
+COPY management/univention-directory-manager-rest/docker/entrypoint.d /entrypoint.d/
+RUN chmod +x /entrypoint.sh /entrypoint.d/*
+
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD [ \
   "venv/bin/python3", \
   "-m", "univention.admin.rest.server", \
