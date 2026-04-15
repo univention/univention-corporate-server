@@ -10,3 +10,6 @@ desc: |
    in Samba/AD if a change for the the corresponding DNS object
    is synchronized from OpenLDAP/UDM.
 bug: [57174]
+erratum: 408
+announced: 2026-04-15
+support: core
