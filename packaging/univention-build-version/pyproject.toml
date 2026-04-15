@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-build-version"
+version = "0.1.0"
+description = "Derive PEP 440 version strings from debian/changelog for Univention Python packages"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["univention.*"]
+namespaces = true

@@ -56,3 +56,4 @@ services:
         source: /home/marius/git/nubus/container-udm-rest/tests/base.conf
         target: /etc/univention/base.conf
         read_only: true
+      - ../tests/init-internal-database.sh:/entrypoint.d/91-init-internal-database.sh

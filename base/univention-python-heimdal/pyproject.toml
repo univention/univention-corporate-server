@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = [
+    "setuptools >= 64",
+    "pkgconfig",
+    "python-debian",
+]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-config-registry"
+version = "12.0.0"
+description = "Univention Corporate Server Configuration management tool"
+license = {text = "AGPL-3.0-only"}
+requires-python = ">= 3.7"
+dependencies = [
+    "lazy-object-proxy",
+    "univention-debhelper @ file:///app/packaging/univention-debhelper",
+    "univention-python @ file:///app/base/univention-python",
+]
+
+[project.scripts]
+ldapsearch-decode64 = "univention.ldif:ldif_decode"
+ldapsearch-wrapper = "univention.ldif:ldif_unwrap"
+
+[tool.setuptools.packages.find]
+where = ["python"]
+
+[tool.pytest.ini_options]
+required_plugins = ["pytest-benchmark", "pytest-cov", "pytest-mock"]
+testpaths = ["tests", "python/univention/"]
+addopts = "--verbose --showlocals -r sx --cov-config=pyproject.toml --cov=python/univention/ --cov-branch --cov-report=term-missing --cov-report=html:pytest/ --cov-report=xml:coverage.xml --junit-xml=pytest.xml --doctest-modules --tb=native"
+markers = ["slow: mark test as slow"]
+
+[tool.coverage.run]
+branch = true
+source = ["python/"]
+
+[tool.coverage.paths]
+lib = [
+    "base/univention-config-registry/python/univention/",
+    "python/univention/",
+    "*/python/univention/",
+    "*/dist-packages/univention/",
+    "*/site-packages/univention/",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "except ImportError:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.html]
+directory = "pytest"
+
+[tool.coverage.xml]
+output = "coverage.xml"

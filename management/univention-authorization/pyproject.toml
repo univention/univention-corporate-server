@@ -9,12 +9,14 @@ build-backend = "setuptools.build_meta"
 name = "univention-authorization"
 version = "1.3.0"
 description = "This package contains the Python 3 modules that implement the authorization utilities of UCS."
-license = "AGPL-3.0-only"
+license = {text = "AGPL-3.0-only"}
 requires-python = ">= 3.11"
 
-# Core package has no mandatory dependencies.
-# Modules that need heavier libraries are gated behind optional extras.
-dependencies = []
+dependencies = [
+    "requests",
+    "PyYAML",
+    "univention-python @ file:///app/base/univention-python",
+]
 
 [tool.setuptools]
 package-dir = {"" = "modules"}

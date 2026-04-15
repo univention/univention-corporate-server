@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-debhelper"
+version = "1.0.0"
+description = "Univention helper programs for debian/rules"
+license = {text = "AGPL-3.0-only"}
+requires-python = ">= 3.11"
+dependencies = []
+
+[tool.setuptools]
+packages = ["univention"]
