@@ -14,3 +14,6 @@ desc: |
    error". The implementation now uses `poll()`, eliminating this limitation
    and improving robustness in long-running services.
 bug: [59145]
+erratum: 403
+announced: 2026-04-15
+support: core
