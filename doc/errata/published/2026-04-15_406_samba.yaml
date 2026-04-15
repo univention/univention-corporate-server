@@ -14,3 +14,6 @@ desc: |
  * An uninitialized filedescriptor associated with
    hanging `rpcd spoolss` processes is now initialized.
 bug: [59142, 59160]
+erratum: 406
+announced: 2026-04-15
+support: core
