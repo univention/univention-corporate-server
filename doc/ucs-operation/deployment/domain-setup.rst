@@ -82,6 +82,22 @@ The naming convention has the regular expression in
 
    ^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$
 
+.. _deployment-domain-setup-naming-domain:
+
+Naming constraint for the domain name
+--------------------------------------
+
+.. index::
+   single: domain name; naming constraint
+   single: domain name; Windows compatibility
+   single: domain name; NetBIOS limit
+
+For Windows compatibility, the leftmost label of the DNS domain name must not exceed 15 characters.
+Windows derives a NetBIOS domain name from the leftmost label of the DNS domain name,
+for example ``company`` from ``company.intranet``.
+Windows truncates labels longer than 15 characters,
+which can cause sign-in errors for Windows clients joining the domain.
+
 .. _deployment-domain-setup-new-domain:
 
 Mode: Create a new UCS domain
