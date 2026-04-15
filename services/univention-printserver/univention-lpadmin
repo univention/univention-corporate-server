@@ -99,12 +99,10 @@ if child.exitstatus and child.exitstatus != 0:
 
 # check for several classes
 if '-c' in args:
-    i = 0
-    for arg in args:
+    for i, arg in enumerate(args):
         if arg == '-c':
             # print("arg: ", args[i+1])
             enableaccept(enableexec, args[i + 1], timeout, machine_password)
             enableaccept(acceptexec, args[i + 1], timeout, machine_password)
-        i += 1
 
 sys.exit(0)

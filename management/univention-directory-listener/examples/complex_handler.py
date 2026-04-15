@@ -23,7 +23,7 @@ class ComplexHandler(ListenerModuleHandler):
             return ['cn']
 
         def get_active(self) -> bool:
-            ucr_setting = super(ComplexHandler.Configuration, self).get_active()
+            ucr_setting = super().get_active()
             # check something in a database or network service
             query_external_source = True
             return ucr_setting and query_external_source

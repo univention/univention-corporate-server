@@ -45,7 +45,7 @@ def make_udm_rest_request(method, object_type, object_dn, username, body=None):
         json=body,
         auth=auth,
         headers=headers,
-        verify=False,
+        verify=False,  # noqa: S501
     )
 
 

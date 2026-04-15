@@ -63,7 +63,7 @@ def check_webinterface(app):
     print('    Webinterface for', app)
     for key in ucr_keys():
         if re.match('ucs/web/overview/entries/.*/%s/link', key):
-            utils.fail('FAIL: webinterface still configured' % app.id)
+            utils.fail('FAIL: webinterface still configured')
 
 
 def _check_url(url):

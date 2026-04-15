@@ -110,7 +110,7 @@ class Module:
             dh_ucs.doIt('install', '-p', '-m', '644', src_file, target_file)
 
         # copy translation files (javascript)
-        target_i18n = os.path.join(self.destdir, 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/%%s' % self.module)
+        target_i18n = os.path.join(self.destdir, 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/%%s')
         for lang in self.languages:
             json_file = os.path.join(self.module.js_path, '%s.json' % lang)
             if not os.path.exists(json_file):

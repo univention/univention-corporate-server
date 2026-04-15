@@ -26,9 +26,8 @@ def keycloak_client_id(keycloak_administrator_connection, random_string):
 
     try:
         keycloak_administrator_connection.delete_client(name)
-    except KeycloakDeleteError as e:
-        if e.response_code == 404:
-            pass
+    except KeycloakDeleteError:
+        pass
     except Exception as e:
         print(f"Failed to delete client {e}")
 

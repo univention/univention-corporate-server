@@ -64,9 +64,8 @@ def main():
         print("         Filename: %s\n" % filename)
         i += 1
 
-    i = 1
     print("\nAD rejected\n")
-    for _id, dn, retry_count in ad.list_rejected():
+    for i, (_id, dn, retry_count) in enumerate(ad.list_rejected(), 1):
         found_rejected = True
         print("%5d:    AD DN: %s" % (i, dn))
         ucs_dn = ad.get_dn_by_con(dn)
@@ -87,7 +86,6 @@ def main():
                 # Single line reason
                 pass
         print("         tried: %s/%s times\n" % (retry_count, max_retry_rejected))
-        i += 1
 
     if not found_rejected:
         print("\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n")
