@@ -9,3 +9,6 @@ desc: |
  * The license interface has been extended to use the `entryUUID` of the
    license as fallback key ID.
 bug: [59176]
+erratum: 409
+announced: 2026-04-15
+support: core
