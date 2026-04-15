@@ -6,7 +6,7 @@ src: univention-s4-connector
 fix: 16.5.1
 desc: |
  This update addresses the following issues:
- * The S4-Connector will now remove the dnsTombstone attribute
-   in Samba if the corresponding DNS object is synchronized through the
-   S4-Connector, which will prevent an automatic cleanup of DNS zones.
+ * The S4-Connector will now remove the attribute `dNSTombstoned`
+   in Samba/AD if a change for the the corresponding DNS object
+   is synchronized from OpenLDAP/UDM.
 bug: [57174]
