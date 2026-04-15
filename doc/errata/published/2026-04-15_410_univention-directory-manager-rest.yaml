@@ -13,3 +13,6 @@ desc: |
    identifier derived from the license key. The endpoint is restricted to
    authorized users.
 bug: [59176]
+erratum: 410
+announced: 2026-04-15
+support: core
