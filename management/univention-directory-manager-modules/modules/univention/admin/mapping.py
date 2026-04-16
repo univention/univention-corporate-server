@@ -79,19 +79,19 @@ def StringToLower(string: str) -> str:
     return string.lower()
 
 
-def ListUniq(list: list[_E]) -> list[_E]:
+def ListUniq(value: list[_E]) -> list[_E]:
     """
     Return list of unique items.
 
-    :param list: A list of elements.
+    :param list value: A list of elements.
     :returns: a list with duplicate elements removed.
 
     >>> ListUniq(['1', '1', '2'])
     ['1', '2']
     """
     result: list[_E] = []
-    if list:
-        for element in list:
+    if value:
+        for element in value:
             if element not in result:
                 result.append(element)
     return result
@@ -102,7 +102,7 @@ def ListToString(value: list[bytes], encoding: _Encoding = ()) -> str:
     Return first element from list.
     This is right mapping for single-valued properties, as |LDAP| always returns lists of values.
 
-    :param list: A list of elements.
+    :param list value: A list of elements.
     :returns: the first element or the empty string.
 
     >>> ListToString([])
@@ -116,11 +116,11 @@ def ListToString(value: list[bytes], encoding: _Encoding = ()) -> str:
         return ''
 
 
-def ListToIntToString(list_: list[bytes]) -> str:
+def ListToIntToString(value: list[bytes]) -> str:
     """
     Return first element from list if it is an integer.
 
-    :param list: A list of elements.
+    :param list value: A list of elements.
     :returns: the first element or the empty string.
 
     >>> ListToIntToString([])
@@ -130,19 +130,19 @@ def ListToIntToString(list_: list[bytes]) -> str:
     >>> ListToIntToString([b'1'])
     '1'
     """
-    if list_:
+    if value:
         try:
-            return str(int(list_[0]))
+            return str(int(value[0]))
         except (ValueError, TypeError):
             pass
     return ''
 
 
-def ListToLowerString(list: list[bytes]) -> str:
+def ListToLowerString(value: list[bytes]) -> str:
     """
     Return first element from list lower-cased.
 
-    :param list: A list of elements.
+    :param list value: A list of elements.
     :returns: the first element lower-cased or the empty string.
 
     >>> ListToLowerString([])
@@ -150,20 +150,20 @@ def ListToLowerString(list: list[bytes]) -> str:
     >>> ListToLowerString([b'Value'])
     'value'
     """
-    return StringToLower(ListToString(list))
+    return StringToLower(ListToString(value))
 
 
-def ListToLowerList(list: list[str]) -> list[str]:
+def ListToLowerList(value: list[str]) -> list[str]:
     """
     Return the list with all elements converted to lower-case.
 
-    :param list: A list of elements.
+    :param list value: A list of elements.
     :returns: a list of the elemets converted to lower case.
 
     >>> ListToLowerList(['A', 'a'])
     ['a', 'a']
     """
-    return [StringToLower(string) for string in list]
+    return [StringToLower(string) for string in value]
 
 
 def ListToLowerListUniq(list: list[str]) -> list[str]:
@@ -341,11 +341,11 @@ def mapBase64(value: list[str] | str) -> list[bytes] | bytes:
     return ''
 
 
-def BooleanListToString(list: list[bytes], encoding: _Encoding = ()) -> str:
+def BooleanListToString(value: list[bytes], encoding: _Encoding = ()) -> str:
     """
     Convert |LDAP| boolean to |UDM|.
 
-    :param list: list of |LDAP| attribute values.
+    :param list value: list of |LDAP| attribute values.
     :returns: the empty string for `False` or otherwise the first element.
 
     >>> BooleanListToString([b'0'])
@@ -353,7 +353,7 @@ def BooleanListToString(list: list[bytes], encoding: _Encoding = ()) -> str:
     >>> BooleanListToString([b'1'])
     '1'
     """
-    v = ListToString(list, encoding=encoding)
+    v = ListToString(value, encoding=encoding)
     if v == '0':
         return ''
     return v
@@ -363,7 +363,7 @@ def BooleanMap(value: str, encoding: _Encoding = ()) -> bytes:
     """
     Convert |UDM| boolean to |LDAP|.
 
-    :param list: One |LDAP| attribute values.
+    :param list value: One |LDAP| attribute values.
     :returns: the empty string for `False` or otherwise the first element.
 
     >>> BooleanMap('0')
