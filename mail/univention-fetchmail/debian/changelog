@@ -1,8 +1,12 @@
-univention-fetchmail (15.5.0) UNRELEASED; urgency=medium
+univention-fetchmail (15.5.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:29 +0100
+  [ Florian Best ]
+  * Bug #59150: adjust hooks to new mapping functionality
+
+ -- Florian Best <best@univention.de>  Fri, 17 Apr 2026 12:17:57 +0200
 
 univention-fetchmail (15.4.1) unstable; urgency=medium
 
