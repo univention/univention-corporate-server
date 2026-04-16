@@ -11,7 +11,14 @@ version = "12.0.0"
 description = "UCS - UMC module for UDM"
 license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
-dependencies = []
+dependencies = [
+    "python-ldap",
+    "univention-config-registry",
+    "univention-directory-manager-modules",
+    "univention-directory-reports",
+    "univention-lib",
+    "univention-management-console",
+]
 
 [tool.setuptools]
 packages = ["univention.management.console.modules.udm"]

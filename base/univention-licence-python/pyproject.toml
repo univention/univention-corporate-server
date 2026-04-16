@@ -2,17 +2,13 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 [build-system]
-requires = [
-    "setuptools >= 64",
-    "pkgconfig",
-    "python-debian",
-]
+requires = ["setuptools >= 64", "python-debian"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "univention-python-heimdal"
+name = "univention-licence-python"
 version = "0.0.0"
-description = "Heimdal Kerberos Python bindings"
+description = "Univention license validation library"
 license = {text = "AGPL-3.0-only"}
 requires-python = ">= 3.11"
 dependencies = []

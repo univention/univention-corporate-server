@@ -15,7 +15,7 @@ requires-python = ">= 3.11"
 dependencies = [
     "requests",
     "PyYAML",
-    "univention-python @ file:///app/base/univention-python",
+    "univention-python",
 ]
 
 [tool.setuptools]

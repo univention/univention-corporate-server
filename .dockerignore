@@ -1,2 +1,21 @@
+# Deny everything, then allowlist what the container builds need.
 *
-!base/univention-lib
+
+# Workspace root (docker/pyproject.toml + uv.lock)
+!docker
+
+# Workspace members
+!base
+!management
+!services/univention-admin-diary
+!packaging/univention-build-version
+!packaging/univention-debhelper
+
+# Exclude stuff that isn't needed for building/running
+**/__pycache__
+**/tests
+**/test
+**/.pytest_cache
+**/*.egg-info
+**/.git
+**/.claude

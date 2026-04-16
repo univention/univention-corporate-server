@@ -12,9 +12,11 @@ description = "UCS - common scripting functions for Python 3 scripts"
 license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 
-# Core package has no mandatory dependencies.
-# Modules that need heavier libraries are gated behind optional extras.
-dependencies = []
+dependencies = [
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-python",
+]
 
 [project.optional-dependencies]
 ldap = [
@@ -30,10 +32,11 @@ umc = [
     "python-magic",
 ]
 apt = [
-    "python-apt",
+    # python-apt is Debian-specific and cannot be installed via pip.
+    # Install via: apt-get install python3-apt
 ]
 full = [
-    "univention-lib[ldap,samba,umc,apt]",
+    "univention-lib[ldap,samba,umc]",
     "polib",
 ]
 

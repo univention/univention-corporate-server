@@ -13,8 +13,8 @@ license = {text = "AGPL-3.0-only"}
 requires-python = ">= 3.7"
 dependencies = [
     "lazy-object-proxy",
-    "univention-debhelper @ file:///app/packaging/univention-debhelper",
-    "univention-python @ file:///app/base/univention-python",
+    "univention-debhelper",
+    "univention-python",
 ]
 
 [project.scripts]

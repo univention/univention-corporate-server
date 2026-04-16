@@ -2,6 +2,31 @@
 name = "univention-directory-manager-modules"
 version = "1.3.0"
 
+dependencies = [
+    "bcrypt",
+    "dnspython",
+    "email-validator",
+    "lark",
+    "M2Crypto",
+    "passlib",
+    "pillow",
+    "python-dateutil",
+    "python-debian",
+    "python-ldap",
+    "python-magic",
+    "PyYAML",
+    "tzlocal",
+    "unidecode",
+    "univention-admin-diary",
+    "univention-authorization",
+    "univention-python-heimdal",
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-lib",
+    "univention-licence-python",
+    "univention-python",
+]
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"

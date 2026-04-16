@@ -3,7 +3,7 @@
 
 """|UDM| module for LDAP ACL extensions"""
 
-import apt
+from debian.debian_support import version_compare
 
 import univention.admin.filter
 import univention.admin.handlers
@@ -131,7 +131,7 @@ class object(univention.admin.handlers.simpleLdap):
             return
         if not self.hasChanged('package'):
             old_version = self.oldinfo.get('packageversion', '0')
-            if not apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
+            if not version_compare(self['packageversion'], old_version) > -1:
                 raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion')
 
 

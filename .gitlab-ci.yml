@@ -110,6 +110,14 @@ select ucslint:
     reports:
       dotenv: .env
 
+build udm-rest-api docker:
+  stage: build
+  extends: .kaniko
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE/udm-rest-api:$CI_COMMIT_REF_SLUG
+    KANIKO_BUILD_CONTEXT: "."
+    DOCKERFILE_PATH: "./management/univention-directory-manager-rest/docker/Dockerfile"
+      
 doc-pipeline:
   stage: build
   rules:

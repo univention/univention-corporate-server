@@ -2,25 +2,21 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 [build-system]
-requires = ["setuptools >= 64"]
+requires = ["setuptools >= 64", "python-debian"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "univention-directory-reports"
-version = "18.0.0"
-description = "UCS - directory manager report generation"
+name = "univention-management-console"
+version = "0.0.0"
+description = "Univention Management Console"
 license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
-    "trml2pdf",
+    "python-ldap",
+    "tornado",
     "univention-config-registry",
     "univention-debug-python",
     "univention-directory-manager-modules",
     "univention-lib",
+    "univention-python",
 ]
-
-[tool.setuptools]
-packages = ["univention.directory.reports"]
-
-[tool.setuptools.package-dir]
-"univention.directory.reports" = "modules/univention/directory/reports"

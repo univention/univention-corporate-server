@@ -12,8 +12,7 @@ description = "UCS - Univention Admin Diary"
 license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 
-# Client path has no mandatory deps. Backend needs sqlalchemy etc. (extra).
-dependencies = []
+dependencies = ["univention-config-registry"]
 
 [project.optional-dependencies]
 backend = [

@@ -2,20 +2,16 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 [build-system]
-requires = [
-    "setuptools >= 64",
-    "univention-build-version @ file:///app/packaging/univention-build-version",
-]
+requires = ["setuptools >= 64"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "univention-directory-manager-rest"
-dynamic = ["version"]
+version = "0.0.0"
 description = "REST service for UCS Directory Manager"
 license = "AGPL-3.0-only"
 requires-python = ">= 3.11"
 dependencies = [
-    # Direct PyPI deps
     "tornado",
     "Genshi",
     "pycurl",
@@ -26,43 +22,15 @@ dependencies = [
     "uritemplate",
     "python-ldap",
     "requests",
-
-    # Transitive PyPI deps pulled in by internal packages
-    # (declared here so the single `pip install` in the Dockerfile resolves them)
-    "lark",
-    "email-validator",
-    "dnspython",
-    "passlib",
-    "cracklib",
-    "unidecode",
-    "python-dateutil",
-    "pillow",
-    "python-magic",
-    "python-debian",
-    "logfmter",
-    "trml2pdf",
-    "M2Crypto",
-    "bcrypt",
-    "pkgconfig",
     "prometheus_client",
-
-    # Internal packages — local file:// paths matching the Dockerfile layout
-    # (/app is WORKDIR, COPYs preserve repo-relative paths under it).
-    # Once these are published to a registry, drop the `@ file://...` part
-    # and pip will resolve from the registry.
-    "univention-lib @ file:///app/base/univention-lib",
-    "univention-authorization @ file:///app/management/univention-authorization",
-    "univention-debug-python @ file:///app/base/univention-debug-python",
-    "univention-python @ file:///app/base/univention-python",
-    "univention-licence-python @ file:///app/base/univention-licence-python",
-    "univention-python-heimdal @ file:///app/base/univention-python-heimdal",
-    "univention-admin-diary @ file:///app/services/univention-admin-diary",
-    "univention-directory-manager-modules @ file:///app/management/univention-directory-manager-modules",
-    "univention-config-registry @ file:///app/base/univention-config-registry",
-    "univention-debhelper @ file:///app/packaging/univention-debhelper",
-    "univention-management-console @ file:///app/management/univention-management-console",
-    "univention-management-console-module-udm @ file:///app/management/univention-management-console-module-udm",
-    "univention-directory-reports @ file:///app/management/univention-directory-reports",
+    "univention-config-registry",
+    "univention-debug-python",
+    "univention-directory-manager-modules",
+    "univention-directory-reports",
+    "univention-lib",
+    "univention-management-console",
+    "univention-management-console-module-udm",
+    "univention-python",
 ]
 
 [dependency-groups]
@@ -82,9 +50,6 @@ async-client = [
     "aiohttp",
     "uritemplate",
 ]
-
-[tool.setuptools.dynamic]
-version = {attr = "univention.build_version.version"}
 
 [tool.setuptools.packages.find]
 where = ["src"]

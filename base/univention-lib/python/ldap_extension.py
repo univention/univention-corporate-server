@@ -23,7 +23,7 @@ from copy import copy
 from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values
 from typing import TYPE_CHECKING
 
-import apt
+from debian.debian_support import version_compare
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
@@ -381,7 +381,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
                 registered_package_version = ""
 
             if registered_package == options.packagename:
-                rc = apt.apt_pkg.version_compare(options.packageversion, registered_package_version)
+                rc = version_compare(options.packageversion, registered_package_version)
                 if not rc > -1:
                     print("WARNING: Registered package version %s is newer, refusing registration." % (registered_package_version,), file=sys.stderr)
                     sys.exit(4)
@@ -555,7 +555,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 
                 if new_pkgname == old.get('univentionOwnedByPackage', [b""])[0]:
                     old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
-                    rc = apt.apt_pkg.version_compare(new_version, old_version)
+                    rc = version_compare(new_version, old_version)
                     if not rc > -1:
                         ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
                         return
@@ -774,7 +774,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 
                 if new_pkgname == old.get('univentionOwnedByPackage', [b""])[0]:
                     old_version = old.get('univentionOwnedByPackageVersion', [b'0'])[0].decode('UTF-8')
-                    rc = apt.apt_pkg.version_compare(new_version, old_version)
+                    rc = version_compare(new_version, old_version)
                     if not rc > -1:
                         ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
                         return

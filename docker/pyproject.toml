@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# uv workspace for source-built container images.
+#
+# Usage (Dockerfile):
+#   uv sync --project /app/docker --package univention-directory-manager-rest --frozen
+#
+# Usage (local):
+#   cd docker && uv sync --package univention-directory-manager-rest
+
+[project]
+name = "univention-docker-workspace"
+version = "0.0.0"
+requires-python = ">= 3.11"
+
+[tool.uv.workspace]
+members = [
+    "../packaging/univention-build-version",
+    "../packaging/univention-debhelper",
+    "../base/univention-lib",
+    "../base/univention-config-registry",
+    "../base/univention-python",
+    "../base/univention-python-heimdal",
+    "../base/univention-debug-python",
+    "../base/univention-licence-python",
+    "../services/univention-admin-diary",
+    "../management/univention-authorization",
+    "../management/univention-directory-manager-modules",
+    "../management/univention-directory-manager-rest",
+    "../management/univention-management-console",
+    "../management/univention-management-console-module-udm",
+    "../management/univention-directory-reports",
+]

@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[build-system]
+requires = ["setuptools >= 64", "python-debian"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "univention-python"
+version = "0.0.0"
+description = "Univention Python"
+license = "AGPL-3.0-only"
+requires-python = ">= 3.11"
+dependencies = [
+    "cracklib",
+    "univention-config-registry",
+    "univention-debug-python",
+]
