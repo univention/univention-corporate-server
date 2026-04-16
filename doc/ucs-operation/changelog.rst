@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 16. Apr 2026
+     - :ref:`domain-infrastructure-join`
+     - Add section about domain join.
+
    * - 19. Mar 2026
      - Document
      - Add missing chapter introductions and align them to the same pattern.
