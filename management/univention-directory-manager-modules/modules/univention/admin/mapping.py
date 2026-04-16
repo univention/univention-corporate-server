@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import base64
+import datetime
 import inspect
 from typing import TYPE_CHECKING, TypeVar
 
@@ -374,6 +375,33 @@ def BooleanMap(value: str, encoding: _Encoding = ()) -> bytes:
     if value == '0':
         return b''
     return value.encode(*encoding)
+
+
+def mapISO8601DateToGeneralizedTime(value: str, encoding=()) -> bytes:
+    """
+    Convert ISO8601 date to LDAP Dates (GeneralizedTime). Ignores timezones.
+
+    >>> mapISO8601DateToGeneralizedTime('2009-01-01')
+    [b'20090101000000Z']
+    """
+    if not value:
+        return []
+
+    udm_date = datetime.datetime.strptime(value, "%Y-%m-%d")
+    udm_date = udm_date.strftime("%Y%m%d%H%M%SZ")
+    return [udm_date.encode(*encoding)]
+
+
+def unmapGeneralizedTimeToISO8601Date(value: list[bytes], encoding=()) -> str:
+    """
+    Convert LDAP Dates (GeneralizedTime) to ISO8601 date. Ignores timezones.
+
+    >>> unmapGeneralizedTimeToISO8601Date([b'20090101000000Z'])
+    '2009-01-01'
+    """
+    ldap_val = value[0].decode(*encoding)
+    ldap_date = datetime.datetime.strptime(ldap_val, "%Y%m%d%H%M%SZ")
+    return ldap_date.strftime("%Y-%m-%d")
 
 
 class dontMap:
