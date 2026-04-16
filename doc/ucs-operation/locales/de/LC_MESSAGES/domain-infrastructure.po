@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-23 13:51+0000\n"
-"PO-Revision-Date: 2026-03-23 20:53+0100\n"
+"POT-Creation-Date: 2026-04-17 08:21+0000\n"
+"PO-Revision-Date: 2026-04-17 10:21+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -15,6 +15,753 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: ../../domain-infrastructure/domain-join.rst:7
+msgid "Domain join"
+msgstr "Domänenbeitritt"
+
+#: ../../domain-infrastructure/domain-join.rst:11
+msgid ""
+"A Nubus for UCS system must and Ubuntu, or Windows system can join the "
+"domain after installation. You can also add any other Unix systems to the"
+" domain. See :cite:t:`ext-doc-domain` for details."
+msgstr ""
+"Ein UCS-System muss und Ubuntu- oder Windows-System können nach der "
+"Installation der Domäne beitreten. Sie können auch andere Unix-Systeme "
+"der Domäne hinzufügen. Weitere Informationen finden Sie unter :cite:t"
+":`ext-doc-domain`."
+
+#: ../../domain-infrastructure/domain-join.rst:18
+msgid "Domain join process"
+msgstr ":spelling:word:`Domänenbeitrittsprozess`"
+
+#: ../../domain-infrastructure/domain-join.rst:20
+msgid ""
+"The :term:`Primary Directory Node` should run the latest version. A UCS "
+"system joining the domain must use the same version or an older version. "
+"Because this causes compatibility errors, don't join a domain with a "
+"newer version. When a computer joins a domain, the primary system:"
+msgstr ""
+"Der :term:`Primary Directory Node` sollte die neueste Version ausführen. "
+"Ein UCS-System, das der Domäne beitritt, muss die gleiche Version oder "
+"eine ältere Version verwenden. Da dies zu Kompatibilitätsfehlern führt, "
+"treten Sie keiner Domäne mit einer neueren Version bei. Wenn ein Computer"
+" beitritt, führt das primäre System folgende Aktionen durch:"
+
+#: ../../domain-infrastructure/domain-join.rst:25
+msgid "Creates a computer account."
+msgstr "Erstellt ein Computerkonto."
+
+#: ../../domain-infrastructure/domain-join.rst:26
+msgid "Synchronizes the TLS certificates."
+msgstr "Synchronisiert die TLS-Zertifikate."
+
+#: ../../domain-infrastructure/domain-join.rst:27
+msgid "Copies LDAP data if needed."
+msgstr "Kopiert LDAP-Daten falls erforderlich."
+
+#: ../../domain-infrastructure/domain-join.rst:29
+msgid ""
+"After that, the *join scripts* run. Installed software packages use them "
+"to add objects to the directory service. For more information, see :ref"
+":`domain-infrastructure-join-ucs-joinscripts`."
+msgstr ""
+"Danach werden die *Join-Skripte* ausgeführt. Installierten Softwarepakete"
+" verwenden sie, um Objekte zum Verzeichnisdienst hinzuzufügen. Weitere "
+"Informationen finden Sie unter :ref:`domain-infrastructure-join-ucs-"
+"joinscripts`."
+
+#: ../../domain-infrastructure/domain-join.rst:34
+#, python-brace-format
+msgid ""
+"The UCS system records the domain join on the client in "
+":file:`/var/log/univention/join.log`. To analyze errors, review this "
+"file. The Primary Directory Node stores related join actions in "
+":file:`/home/{<Join-Account>}/.univention-server-join.log`."
+msgstr ""
+"Das UCS System protokolliert den Domänenbeitritt auf dem Client in "
+":file:`/var/log/univention/join.log`. Um Fehler zu analysieren, "
+"überprüfen Sie diese Datei. Der Primary Directory Node speichert "
+"zugehörige Beitrittsvorgänge in :file:`/home/{<Join-Account"
+">}/.univention-server-join.log`."
+
+#: ../../domain-infrastructure/domain-join.rst:40
+msgid ""
+"You can repeat the domain join process at any time. You may need to "
+"rejoin a system after major changes on the Primary Directory Node, such "
+"as changes to key system settings."
+msgstr ""
+"Sie können den Prozess für den Domänenbeitritt jederzeit wiederholen. "
+"Möglicherweise müssen Sie ein System nach größeren Änderungen am Primary "
+"Directory Node, z. B. Änderungen an Schlüsselsystemeinstellungen, erneut "
+"der Domäne hinzufügen."
+
+#: ../../domain-infrastructure/domain-join.rst:47
+msgid "How UCS systems join domains"
+msgstr "Wie UCS-Systeme Domänen beitreten"
+
+#: ../../domain-infrastructure/domain-join.rst:49
+msgid "A UCS system can join an existing domain in three ways:"
+msgstr "Ein UCS-System kann einer existierenden Domäne auf drei Arten beitreten:"
+
+#: ../../domain-infrastructure/domain-join.rst:51
+msgid ""
+"During installation in the *Univention Installer*, see :ref:`deployment-"
+"domain-setup-join-ucs`."
+msgstr ""
+"Während der Installation im *Univention Installer*, siehe :ref"
+":`deployment-domain-setup-join-ucs`."
+
+#: ../../domain-infrastructure/domain-join.rst:54
+msgid ""
+"After installation with the command :command:`univention-join`, see :ref"
+":`domain-infrastructure-join-univention-join`."
+msgstr ""
+"Nach der Installation mit dem Befehl :command:`univention-join`, siehe "
+":ref:`domain-infrastructure-join-univention-join`."
+
+#: ../../domain-infrastructure/domain-join.rst:57
+msgid ""
+"Through the *Domain Join* management module in the *Management UI*, see "
+":ref:`domain-infrastructure-join-ucs-umc`."
+msgstr ""
+"Über das Verwaltungsmodul *Domänenbeitritt* in der *Management UI*, siehe"
+" :ref:`domain-infrastructure-join-ucs-umc`."
+
+#: ../../domain-infrastructure/domain-join.rst:63
+msgid "Subsequent domain joins with :spelling:word:`univention`-join"
+msgstr ""
+"Nachfolgende Domänenbeitritte mit "
+":spelling:word:`univention`-:spelling:word:`join`"
+
+#: ../../domain-infrastructure/domain-join.rst:65
+msgid ""
+"The :command:`univention-join` command joins a Nubus for UCS system to a "
+"Nubus for UCS domain. It accepts command-line arguments or interactive "
+"prompts. After installation and before the domain join is complete, run "
+"this command. The command asks for required settings interactively, or "
+"pass them as command-line options instead. This works well for automated "
+"or remote setups."
+msgstr ""
+"Der Befehl :command:`univention-join` ordnet ein Nubus für UCS System "
+"einer Nubus für UCS Domäne zu. Er akzeptiert Befehlszeilenargumente oder "
+"interaktive Eingabeaufforderungen. Führen Sie diesen Befehl nach der "
+"Installation und vor Abschluss des Domänenbeitritts aus. Der Befehl "
+"fordert erforderliche Einstellungen interaktiv an, oder geben Sie diese "
+"stattdessen als Befehlszeilenoptionen an. Dies funktioniert gut für "
+"automatisierte oder entfernte Einstellungen."
+
+#: ../../domain-infrastructure/domain-join.rst:74
+msgid ""
+"The following options are available. Most are optional. The command asks "
+"for any missing values."
+msgstr ""
+"Die folgenden Optionen sind verfügbar. Die meisten sind optional. Der "
+"Befehl fordert fehlende Werte an."
+
+#: ../../domain-infrastructure/domain-join.rst:80
+msgid ""
+"The system automatically detects the Primary Directory Node through DNS. "
+"If automatic detection fails, for example, when a :term:`Replica "
+"Directory Node` has a different DNS domain, you can specify the Primary "
+"Directory Node hostname directly using this parameter. Enter the hostname"
+" as a fully qualified name, for example ``primary.example.com``."
+msgstr ""
+"Das System erkennt den Primary Directory Node automatisch durch DNS. Wenn"
+" die automatische Erkennung fehlschlägt, z. B. wenn ein :term:`Replica "
+"Directory Node` eine andere DNS-Domäne hat, können Sie den Hostnamen des "
+"Primary Directory Node direkt mit diesem Parameter angeben. Geben Sie den"
+" Hostnamen als vollständig qualifizierten Namen ein, z. B. "
+"``primary.example.com``."
+
+#: ../../domain-infrastructure/domain-join.rst:88
+msgid ""
+"The join account is the user account used to add systems to the UCS "
+"domain. By default, you use the ``Administrator`` user or a member of the"
+" ``Domain Admins`` or ``DC Backup Hosts`` groups. You can specify a "
+"different join account using this parameter."
+msgstr ""
+"Das Beitrittskonto ist das Benutzerkonto, das zum Hinzufügen von Systemen"
+" zur UCS-Domäne verwendet wird. Standardmäßig verwenden Sie den Benutzer "
+"``Administrator`` oder ein Mitglied der ``Domain Admins`` oder ``DC "
+"Backup Hosts`` Gruppen. Sie können mit diesem Parameter ein anderes "
+"Beitrittskonto angeben."
+
+#: ../../domain-infrastructure/domain-join.rst:95
+msgid ""
+"Specify the password using this parameter. The command reads the password"
+" from the specified file."
+msgstr ""
+"Geben Sie das Passwort mit diesem Parameter an. Der Befehl liest das "
+"Passwort aus der angegebenen Datei."
+
+#: ../../domain-infrastructure/domain-join.rst:100
+msgid ""
+"This parameter adds additional debug output to the log files. You can "
+"review this output to analyze errors."
+msgstr ""
+"Dieser Parameter fügt zusätzliche Debug-Ausgaben zu den Log-Dateien "
+"hinzu. Sie können diese Ausgabe überprüfen, um Fehler zu analysieren."
+
+#: ../../domain-infrastructure/domain-join.rst:106
+msgid "Join a domain through the management module"
+msgstr "Einer Domäne über das Verwaltungsmodul beitreten"
+
+#: ../../domain-infrastructure/domain-join.rst:108
+msgid ""
+"You can also join a Nubus for UCS domain through the *Domain join* "
+"management module. The ``Administrator`` user doesn't exist yet on a "
+"system that hasn't joined. Sign in to the *Management UI* as user "
+"``root`` instead. For information about the password, see :ref"
+":`deployment-initial-system-configuration-password`."
+msgstr ""
+"Sie können einer Nubus für UCS Domäne auch über das Verwaltungsmodul "
+"*Domänenbeitritt* beitreten. Der Benutzer ``Administrator`` existiert "
+"noch nicht auf einem System, das nicht beigetreten ist. Melden Sie sich "
+"stattdessen als Benutzer ``root`` bei der *Management UI* an. Weitere "
+"Informationen zum Passwort finden Sie unter :ref:`deployment-initial-"
+"system-configuration-password`."
+
+#: ../../domain-infrastructure/domain-join.rst:113
+msgid ""
+"As with the command-line join, enter the username and password of an "
+"account that's member of the ``Domain Admins`` group. The system finds "
+"the Primary Directory Node through DNS. You can also enter it by hand."
+msgstr ""
+"Wie beim Beitritt über die Befehlszeile geben Sie den Benutzernamen und "
+"das Passwort eines Kontos, das Mitglied in der ``Domain Admins`` Gruppe "
+"ist. Das System findet den Primary Directory Node über DNS. Sie können "
+"ihn auch manuell eingeben."
+
+#: ../../domain-infrastructure/domain-join.rst:118
+msgid "Use the :guilabel:`Rejoin` option to repeat the domain join at any time."
+msgstr ""
+"Verwenden Sie die Option :guilabel:`Erneut beitreten`, um den "
+"Domänenbeitritt jederzeit zu wiederholen."
+
+#: ../../domain-infrastructure/domain-join.rst:123
+msgid "Join scripts and unjoin scripts"
+msgstr "Join-Skripte und Unjoin-Skripte"
+
+#: ../../domain-infrastructure/domain-join.rst:125
+msgid ""
+"The system runs scripts during the domain join and during software "
+"removal:"
+msgstr ""
+"Das System führt Skripte während des Domänenbeitritts und während dem "
+"Entfernen von Software aus:"
+
+#: ../../domain-infrastructure/domain-join.rst:127
+msgid "Join scripts"
+msgstr "Join-Skripte"
+
+#: ../../domain-infrastructure/domain-join.rst:128
+msgid ""
+"The UCS system runs *join scripts* during the domain join. They can "
+"register a print server in the domain, adapt DNS entries, or perform "
+"other configuration changes. The system stores them in :file:`/usr/lib"
+"/univention-install/`."
+msgstr ""
+"Das UCS-System führt *Join-Skripte* während des Domänenbeitritts aus. Sie"
+" können einen Druckserver in der Domäne registrieren, DNS-Einträge "
+"anpassen oder andere Konfigurationsänderungen vornehmen. Das System "
+"speichert sie in :file:`/usr/lib/univention-install/`."
+
+#: ../../domain-infrastructure/domain-join.rst:134
+msgid "Unjoin scripts"
+msgstr "Unjoin-Skripte"
+
+#: ../../domain-infrastructure/domain-join.rst:135
+msgid ""
+"*Unjoin scripts* reverse changes that join scripts applied. The UCS "
+"system runs them when you uninstall software components and stores them "
+"in :file:`/usr/lib/univention-uninstall/`."
+msgstr ""
+"*Unjoin-Skripte* machen Änderungen rückgängig, die Join-Skripte "
+"angewendet haben. Das UCS-System führt sie aus, wenn Sie "
+"Softwarekomponenten deinstallieren und speichert sie in :file:`/usr/lib"
+"/univention-uninstall/`."
+
+#: ../../domain-infrastructure/domain-join.rst:139
+msgid ""
+"Each script belongs to a software package and has a version number. When "
+"a new package version needs an updated setup, the script version goes up "
+"too."
+msgstr ""
+"Jedes Skript gehört zu einem Softwarepaket und hat eine Versionsnummer. "
+"Wenn eine neue Paketversion ein aktualisiertes Setup benötigt, erhöht "
+"sich auch die Skriptversion."
+
+#: ../../domain-infrastructure/domain-join.rst:144
+msgid ""
+"Join scripts and unjoin scripts are specific to UCS systems. Windows, "
+"Ubuntu, and macOS systems don't use this mechanism during domain join."
+msgstr ""
+"Join-Skripte und Unjoin-Skripte sind spezifisch für UCS-Systeme. "
+"Windows-, Ubuntu- und macOS-Systeme verwenden diesen Mechanismus nicht "
+"während des Domänenbeitritts."
+
+#: ../../domain-infrastructure/domain-join.rst:148
+msgid "Checking and running scripts"
+msgstr "Überprüfung und Ausführung von Skripten"
+
+#: ../../domain-infrastructure/domain-join.rst:149
+msgid ""
+"Use :command:`univention-check-join-status` to check whether any scripts "
+"need to run. This command identifies scripts that haven't run yet or have"
+" an older version."
+msgstr ""
+"Verwenden Sie :command:`univention-check-join-status`, um zu überprüfen, "
+"ob Skripte ausgeführt werden müssen. Dieser Befehl identifiziert Skripte,"
+" die noch nicht ausgeführt wurden oder eine ältere Version haben."
+
+#: ../../domain-infrastructure/domain-join.rst:153
+msgid ""
+"If pending scripts are present, the *Domain join* management module "
+"displays a warning message when you open it. To run all pending join "
+"scripts, click :guilabel:`Execute all pending join scripts`."
+msgstr ""
+"Wenn ausstehende Skripte vorhanden sind, zeigt das Verwaltungsmodul "
+"*Domänenbeitritt* eine Warnmeldung an, wenn Sie es öffnen. Um alle "
+"ausstehenden Join-Skripte auszuführen, klicken Sie auf :guilabel:`Alle "
+"ausstehenden Join-Skripte ausführen`."
+
+#: ../../domain-infrastructure/domain-join.rst:157
+msgid ""
+"To run all scripts from the command line, use :command:`univention-run-"
+"join-scripts`. The system automatically checks whether it has already run"
+" each script. When you run :command:`univention-run-join-scripts` on a "
+"system other than the Primary Directory Node, the command asks for a "
+"username and password. When you run this command on the Primary Directory"
+" Node, to sign in, use the ``--ask-pass`` option."
+msgstr ""
+"Um alle Skripte von der Befehlszeile aus auszuführen, verwenden Sie "
+":command:`univention-run-join-scripts`. Das System überprüft automatisch,"
+" ob jedes Skript bereits ausgeführt wurde.Wenn Sie :command:`univention-"
+"run-join-scripts` auf einem anderen System als dem Primary Directory Node"
+" ausführen, fragt der Befehl nach Benutzername und Passwort. Wenn Sie "
+"diesen Befehl auf dem Primary Directory Node ausführen, verwenden Sie zur"
+" Anmeldung die Option ``--ask-pass``."
+
+#: ../../domain-infrastructure/domain-join.rst:165
+msgid ""
+"The system records each script name and its output in "
+":file:`/var/log/univention/join.log`."
+msgstr ""
+"Das System erfasst jeden Skriptnamen und seine Ausgabe in "
+":file:`/var/log/univention/join.log`."
+
+#: ../../domain-infrastructure/domain-join.rst:171
+msgid "Windows domain joins"
+msgstr "Windows Domänenbeitritte"
+
+#: ../../domain-infrastructure/domain-join.rst:173
+msgid ""
+"Microsoft Windows systems can join a Nubus for UCS domain. The join uses "
+"Samba with Active Directory support."
+msgstr ""
+"Microsoft Windows Systeme können einer Nubus für UCS Domäne beitreten. "
+"Der Beitritt verwendet Samba mit Active Directory Unterstützung."
+
+#: ../../domain-infrastructure/domain-join.rst:179
+msgid "Windows domain join overview and requirements"
+msgstr "Überblick über Windows-Domänenbeitritt und Anforderungen"
+
+#: ../../domain-infrastructure/domain-join.rst:181
+msgid ""
+"Samba enables Nubus for UCS to support Microsoft Windows systems. This "
+"section describes the join procedure for Windows 11 as an example. The "
+"process is similar for other Windows versions and for Windows Server "
+"systems, which you can also join as member servers. UCS doesn't support "
+"Windows systems as domain controllers. For more information about Windows"
+" in a Nubus for UCS domain, see :external+uv-ucs-manual:ref:`windows-"
+"services-for-windows` in :cite:t:`ucs-manual`."
+msgstr ""
+"Samba ermöglicht es Nubus für UCS, Microsoft Windows Systeme zu "
+"unterstützen. Dieser Abschnitt beschreibt das Beitrittsverfahren für "
+"Windows 11 als Beispiel. Der Prozess ist ähnlich für andere Windows-"
+"Versionen und für Windows Server Systeme, die auch als Member Server "
+"beitreten können. UCS unterstützt Windows Systeme nicht als Domain "
+"Controller. Weitere Informationen zu Windows in einer Nubus für UCS "
+"Domäne finden Sie unter :external+uv-ucs-manual:ref:`windows-services-"
+"for-windows` im :cite:t:`ucs-manual`."
+
+#: ../../domain-infrastructure/domain-join.rst:194
+msgid ""
+"Only domain-compatible Windows versions can join the Nubus for UCS "
+"domain. Windows Home editions can't join a domain."
+msgstr ""
+"Nur Windows-Versionen mit Domänenfunktionalität können der Nubus für UCS "
+"Domäne beitreten. Windows Home Editionen können keiner Domäne beitreten."
+
+#: ../../domain-infrastructure/domain-join.rst:197
+msgid ""
+"When a Windows client joins, Nubus for UCS creates a host account for it."
+" For more information, see :external+uv-nubus-manual:ref:`nubus-computer-"
+"management` in :cite:t:`uv-nubus-manual`. You can configure the MAC "
+"address, IP address, network, DHCP, and DNS through management modules "
+"before or after the join."
+msgstr ""
+"Wenn ein Windows-Client beitritt, erstellt Nubus für UCS ein "
+"Rechnerkonto. Weitere Informationen finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-computer-management` in :cite:t:`uv-nubus-manual`. Sie "
+"können die MAC-Adresse, IP-Adresse, Netzwerk, DHCP und DNS über "
+"Verwaltungsmodule vor oder nach dem Beitritt konfigurieren."
+
+#: ../../domain-infrastructure/domain-join.rst:204
+msgid "To join the domain, use the local ``Administrator`` account."
+msgstr ""
+"Um der Domäne beizutreten, verwenden Sie das lokale ``Administrator`` "
+"Konto."
+
+#: ../../domain-infrastructure/domain-join.rst:206
+msgid ""
+"Domain joins take some time. Don't cancel the process prematurely. After "
+"successful joining, a confirmation window appears with the message "
+"*Welcome to the domain <your domain name>*. To confirm the join, click "
+":guilabel:`OK`. To apply the changes, restart the Windows computer."
+msgstr ""
+"Domänenbeitritte dauern eine Weile. Brechen Sie den Prozess nicht "
+"vorzeitig ab. Nach erfolgreichem Beitritt wird ein Bestätigungsfenster "
+"mit der Meldung *Willkommen in der Domäne <Ihr Domänenname>* angezeigt. "
+"Um den Beitritt zu bestätigen, klicken Sie :guilabel:`OK`. Um die "
+"Änderungen anzuwenden, starten Sie den Windows-Computer neu."
+
+#: ../../domain-infrastructure/domain-join.rst:213
+msgid ""
+"For Windows client domain name rules, see :ref:`deployment-domain-setup-"
+"naming-domain`."
+msgstr ""
+"Für Regeln zu Domänennamen für Windows-Clients, siehe :ref:`deployment-"
+"domain-setup-naming-domain`."
+
+#: ../../domain-infrastructure/domain-join.rst:218
+msgid ""
+"For a domain join against a domain controller based on Samba/AD, "
+"configure the DNS settings on the client to resolve entries from the "
+"Nubus for UCS domain. Verify that the system time on the client matches "
+"the time on the domain controller."
+msgstr ""
+"Für einen Domänenbeitritt gegen einen Domain Controller basierend auf "
+"Samba/AD konfigurieren Sie die DNS-Einstellungen auf dem Client, um "
+"Einträge aus der Nubus für UCS Domäne zu auflösen. Überprüfen Sie, dass "
+"die Systemzeit auf dem Client mit der Zeit auf dem Domain Controller "
+"übereinstimmt."
+
+#: ../../domain-infrastructure/domain-join.rst:225
+msgid "Supported Windows versions"
+msgstr "Unterstützte Windows-Versionen"
+
+#: ../../domain-infrastructure/domain-join.rst:227
+msgid ""
+"Nubus for UCS supports the following Microsoft Windows versions to join a"
+" UCS domain:"
+msgstr ""
+"Nubus for UCS unterstützt die folgenden Microsoft Windows Versionen zum "
+"Beitritt in eine UCS Domäne:"
+
+#: ../../domain-infrastructure/domain-join.rst:229
+#: ../../domain-infrastructure/domain-join.rst:263
+msgid "Windows 10"
+msgstr "Windows 10"
+
+#: ../../domain-infrastructure/domain-join.rst:230
+#: ../../domain-infrastructure/domain-join.rst:236
+msgid "Windows 11"
+msgstr "Windows 11"
+
+#: ../../domain-infrastructure/domain-join.rst:231
+msgid "Windows Server in the versions 2012, 2016, 2019, and 2022"
+msgstr "Windows Server in den Versionen 2012, 2016, 2019 und 2022"
+
+#: ../../domain-infrastructure/domain-join.rst:238
+msgid ""
+"To join Windows 11 to a Nubus for UCS domain, you need the *Pro*, "
+"*Education*, or *Enterprise* edition. Follow these steps:"
+msgstr ""
+"Um mit Windows 11 einer Nubus für UCS Domäne beizutreten, benötigen Sie "
+"die *Pro*, *Education* oder *Enterprise* Edition. Folgen Sie diesen "
+"Schritten:"
+
+#: ../../domain-infrastructure/domain-join.rst:242
+msgid ""
+"Open the *Start* menu or press the Windows key. Search for ``Control "
+"Panel`` in the *Search* field."
+msgstr ""
+"Öffnen Sie das *Start* Menü oder drücken Sie die Windows Taste. Suchen "
+"Sie nach ``Systemeinstellung`` im Feld *Suchen*."
+
+#: ../../domain-infrastructure/domain-join.rst:245
+msgid ""
+"Navigate to :menuselection:`System and Security --> System`. Scroll down "
+"and click :guilabel:`Domain or workgroup`. Select :menuselection:`Change "
+"settings --> Change`."
+msgstr ""
+"Navigieren Sie zu :menuselection:`System und Sicherheit --> System`. "
+"Scrollen Sie nach unten und klicken Sie auf :guilabel:`Domäne oder "
+"Arbeitsgruppe`. Wählen Sie :menuselection:`Einstellungen ändern --> "
+"Ändern`."
+
+#: ../../domain-infrastructure/domain-join.rst:249
+msgid "Enable the :guilabel:`Domain` option."
+msgstr "Aktivieren Sie die Option :guilabel:`Domäne`."
+
+#: ../../domain-infrastructure/domain-join.rst:251
+msgid ""
+"Enter the domain name in the input field. Use the full domain name, for "
+"example ``mydomain.intranet``. Click :guilabel:`OK`."
+msgstr ""
+"Geben Sie den Domänennamen in das Eingabefeld ein. Verwenden Sie den "
+"vollständigen Domänennamen, z. B. ``mydomain.intranet``. Klicken Sie "
+":guilabel:`OK`."
+
+#: ../../domain-infrastructure/domain-join.rst:255
+msgid ""
+"Enter the username and password of an account that's member in the "
+"``Domain Admins`` group. The default domain username for administrator "
+"accounts is ``Administrator``."
+msgstr ""
+"Geben Sie den Benutzernamen und das Passwort eines Kontos ein, das "
+"Mitglied der Gruppe ``Domain Admins`` ist. Der Standardname für "
+"Domänenbenutzer für Administratorkonten ist ``Administrator``."
+
+#: ../../domain-infrastructure/domain-join.rst:258
+#: ../../domain-infrastructure/domain-join.rst:288
+msgid "To start the domain join, click :guilabel:`OK`."
+msgstr "Um den Domänenbeitritt zu starten, klicken Sie :guilabel:`OK`."
+
+#: ../../domain-infrastructure/domain-join.rst:265
+msgid ""
+"Only the *Pro* and *Enterprise* editions of Windows 10 can join a domain."
+" To join Windows 10 to a Nubus for UCS domain, follow the steps in :ref"
+":`domain-infrastructure-join-windows-11`."
+msgstr ""
+"Nur die *Pro* und *Enterprise* Editionen von Windows 10 können einer "
+"Domäne beitreten. Um Windows 10 einer Nubus für UCS Domäne beizutreten, "
+"folgen Sie den Schritten unter :ref:`domain-infrastructure-join-"
+"windows-11`."
+
+#: ../../domain-infrastructure/domain-join.rst:271
+msgid "Windows Server 2012 / 2016 / 2019 / 2022"
+msgstr "Windows Server 2012 / 2016 / 2019 / 2022"
+
+#: ../../domain-infrastructure/domain-join.rst:273
+msgid "To join Windows Server to a Nubus for UCS domain, follow these steps:"
+msgstr ""
+"Um mit Windows Server einer Nubus für UCS Domäne beizutreten, folgen Sie "
+"diesen Schritten:"
+
+#: ../../domain-infrastructure/domain-join.rst:276
+msgid "Open the *Start* menu."
+msgstr "Öffnen Sie das *Start* Menü."
+
+#: ../../domain-infrastructure/domain-join.rst:278
+msgid ""
+"Navigate to :menuselection:`System and Security --> System`. Click "
+":menuselection:`Change settings --> Network ID`."
+msgstr ""
+"Navigieren Sie zu :menuselection:`System und Sicherheit --> System`. "
+"Klicken Sie :menuselection:`Einstellungen ändern --> Netzwerk ID`."
+
+#: ../../domain-infrastructure/domain-join.rst:281
+msgid ""
+"Enable the *Domain* option. Enter the domain name in the input field for "
+"the domain join. Click :guilabel:`OK`."
+msgstr ""
+"Aktivieren Sie die Option *Domäne*. Geben Sie den Domänennamen im "
+"Eingabefeld für den Domänenbeitritt ein. Klicken Sie :guilabel:`OK`."
+
+#: ../../domain-infrastructure/domain-join.rst:285
+#, python-brace-format
+msgid ""
+"In the *Name* field, enter ``Administrator``. In the *Password* field, "
+"enter the password from :samp:`uid=Administrator,cn=users,{LDAP base "
+"DN}`."
+msgstr ""
+"Geben Sie im Feld *Name* ``Administrator`` ein. Geben Sie im Feld "
+"*Passwort* das Passwort von :samp:`uid=Administrator,cn=users,{LDAP base "
+"DN}` ein."
+
+#: ../../domain-infrastructure/domain-join.rst:293
+msgid "Ubuntu domain joins"
+msgstr "Ubuntu Domänenbeitritte"
+
+#: ../../domain-infrastructure/domain-join.rst:295
+msgid ""
+"Univention provides the :program:`Univention Domain Join Assistant`, a "
+"GUI and command-line tool for adding Ubuntu and Linux Mint clients to a "
+"Nubus for UCS domain. The assistant sets up LDAP, DNS, Kerberos, and "
+"login (PAM/SSSD) for you. You don't need to set up anything manually."
+msgstr ""
+"Univention stellt den :program:`Univention Domain Join Assistant` bereit,"
+" ein GUI- und Befehlszeilen-Werkzeug zum Hinzufügen von Ubuntu und Linux "
+":spelling:word:`Mint` Clients zu einer Nubus für UCS Domäne. Der "
+"Assistent konfiguriert LDAP, DNS, Kerberos und Login (PAM/SSSD) für Sie. "
+"Sie müssen nichts manuell einrichten."
+
+#: ../../domain-infrastructure/domain-join.rst:300
+msgid ""
+"For installation steps, supported versions, and usage details, see the "
+"`Univention Domain Join Assistant documentation "
+"<https://github.com/univention/univention-domain-join>`_."
+msgstr ""
+"Installationsschritte, unterstützte Versionen und Verwendungsdetails "
+"finden Sie in der `Univention Domain Join Assistant Dokumentation "
+"<https://github.com/univention/univention-domain-join>`_."
+
+#: ../../domain-infrastructure/domain-join.rst:306
+msgid "macOS domain joins"
+msgstr ":spelling:word:`macOS`-Domänenbeitritte"
+
+#: ../../domain-infrastructure/domain-join.rst:308
+msgid "To join the macOS client to a Nubus for UCS domain, follow these steps:"
+msgstr ""
+"Um mit einem :spelling:word:`macOS`-Client einer Nubus für UCS Domäne "
+"beizutreten, folgen Sie diesen Schritten:"
+
+#: ../../domain-infrastructure/domain-join.rst:310
+msgid "In *System Preferences*, open :guilabel:`Users & Groups`."
+msgstr ""
+"Öffnen Sie in den *Systemeinstellungen* die Einstellung "
+":guilabel:`Benutzer & Gruppen`."
+
+#: ../../domain-infrastructure/domain-join.rst:312
+msgid ""
+"Click the lock icon and enter the credentials for a local *Administrator*"
+" account."
+msgstr ""
+"Klicken Sie das Schloss-Symbol und geben Sie die Anmeldedaten für ein "
+"lokales *Administrator* Konto ein."
+
+#: ../../domain-infrastructure/domain-join.rst:314
+msgid ""
+"From the menu, open the *Directory Utility*, as you can see in :numref"
+":`domain-infrastructure-join-macos-gui-figure`."
+msgstr ""
+"Öffnen Sie aus dem Menü das *Directory Utility*, wie Sie in :numref"
+":`domain-infrastructure-join-macos-gui-figure` sehen können."
+
+#: ../../domain-infrastructure/domain-join.rst:319
+#: ../../domain-infrastructure/domain-join.rst:322
+msgid "Domain join of a macOS system"
+msgstr "Domänenbeitritt eines macOS-Systems"
+
+#: ../../domain-infrastructure/domain-join.rst:324
+msgid ""
+"In the *Advanced options* section, enable *Create mobile account at "
+"login*. A mobile account lets you sign in to the macOS system with your "
+"domain account even when the domain isn't available."
+msgstr ""
+"Aktivieren Sie im Bereich *Erweiterte Optionen* die Einstellung *Mobilen "
+"Account bei Anmeldung erstellen*. Ein mobiles Konto ermöglicht es Ihnen, "
+"sich mit Ihrem Domänenkonto beim :spelling:word:`macOS`-System "
+"anzumelden, auch wenn die Domäne nicht verfügbar ist."
+
+#: ../../domain-infrastructure/domain-join.rst:328
+msgid "Enter the domain name in the *Active Directory Domain* field."
+msgstr "Geben Sie den Domänennamen im Feld *Active Directory Domain* ein."
+
+#: ../../domain-infrastructure/domain-join.rst:330
+msgid "Enter the macOS client hostname in the *Computer ID* field."
+msgstr "Geben Sie den Rechnernamen des macOS-Clients im Feld *Computer ID* ein."
+
+#: ../../domain-infrastructure/domain-join.rst:332
+msgid ""
+"To start the domain join, click :guilabel:`Bind…`. Enter the username and"
+" password for an account in the ``Domain Admins`` group, for example "
+"``Administrator``."
+msgstr ""
+"Um den Domänenbeitritt zu starten, klicken Sie :guilabel:`Einbinden …`. "
+"Geben Sie den Benutzernamen und das Passwort für ein Konto in der "
+"``Domain Admins`` Gruppe ein, z. B. ``Administrator``."
+
+#: ../../domain-infrastructure/domain-join.rst:339
+msgid "Domain join on the command line"
+msgstr "Domänenbeitritt in der Befehlszeile"
+
+#: ../../domain-infrastructure/domain-join.rst:341
+msgid ""
+"You can also use :command:`dsconfigad` on the command line. See :numref"
+":`domain-infrastructure-join-macos-cli-listing` for the full command. For"
+" more options, run :command:`dsconfigad -help`."
+msgstr ""
+"Sie können auch :command:`dsconfigad` in der Befehlszeile verwenden. "
+"Siehe :numref:`domain-infrastructure-join-macos-cli-listing` für den "
+"vollständigen Befehl. Für weitere Optionen führen Sie "
+":command:`dsconfigad -help` aus."
+
+#: ../../domain-infrastructure/domain-join.rst:345
+msgid "Join a Nubus for UCS domain through CLI on macOS"
+msgstr "Einer Nubus für UCS Domäne über CLI unter macOS beitreten"
+
+#: ../../domain-infrastructure/domain-join.rst:345
+msgid ""
+"$ dsconfigad -a <MAC HOSTNAME> \\\n"
+"  -domain <FQDN> \\\n"
+"  -ou \"CN=Computers,<LDAP base DN>\" \\\n"
+"  -u <Domain Administrator> \\\n"
+"  -mobile enable"
+msgstr ""
+"$ dsconfigad -a <MAC HOSTNAME> \\\n"
+"  -domain <FQDN> \\\n"
+"  -ou \"CN=Computers,<LDAP base DN>\" \\\n"
+"  -u <Domain Administrator> \\\n"
+"  -mobile enable"
+
+#: ../../domain-infrastructure/domain-join.rst:358
+msgid "Optional: Mount CIFS shares"
+msgstr "Optional: CIFS-Freigaben einbinden"
+
+#: ../../domain-infrastructure/domain-join.rst:360
+msgid ""
+"After the domain join, you can automatically mount CIFS shares to "
+"subfolders in :file:`/Volumes` when signing in with a domain user. To do "
+"this, follow these steps:"
+msgstr ""
+"Nach dem Domänenbeitritt können Sie CIFS-Freigaben automatisch in "
+"Unterordnern in :file:`/Volumes` einbinden, wenn Sie sich mit einem "
+"Domänenbenutzer anmelden. Folgen Sie dazu diesen Schritten:"
+
+#: ../../domain-infrastructure/domain-join.rst:364
+msgid ""
+"Add the line in :numref:`domain-infrastructure-join-macos-mount-shares-"
+"volumes-listing` to the :file:`/etc/auto_master` file."
+msgstr ""
+"Fügen Sie die Zeile aus :numref:`domain-infrastructure-join-macos-mount-"
+"shares-volumes-listing` zur Datei :file:`/etc/auto_master` hinzu."
+
+#: ../../domain-infrastructure/domain-join.rst:367
+msgid "Configure ``auto-custom`` for volumes"
+msgstr "``auto-custom`` für Volumes konfigurieren"
+
+#: ../../domain-infrastructure/domain-join.rst:367
+msgid "/Volumes  auto_custom"
+msgstr "/Volumes  auto_custom"
+
+#: ../../domain-infrastructure/domain-join.rst:373
+msgid ""
+"Create the file :file:`/etc/auto_custom` and list the shares you want to "
+"mount using the pattern shown in :numref:`domain-infrastructure-join-"
+"macos-mount-shares-pattern-listing`."
+msgstr ""
+"Erstellen Sie die Datei :file:`/etc/auto_custom` und listen Sie die "
+"Freigaben auf, die Sie einbinden möchten, indem Sie das in :numref"
+":`domain-infrastructure-join-macos-mount-shares-pattern-listing` gezeigte"
+" Muster verwenden."
+
+#: ../../domain-infrastructure/domain-join.rst:376
+msgid "Pattern for share definition"
+msgstr "Muster für Definition von Freigaben"
+
+#: ../../domain-infrastructure/domain-join.rst:376
+msgid "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
+msgstr "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
+
+#: ../../domain-infrastructure/domain-join.rst:384
+msgid "The :program:`Finder` doesn't show auto-mounted shares in the sidebar."
+msgstr ""
+"Die :program:`Finder`-Anwendung zeigt automatisch eingebundene Freigaben "
+"nicht in der Seitenliste an."
 
 #: ../../domain-infrastructure/ha.rst:7
 #: ../../domain-infrastructure/index.rst:26
@@ -831,11 +1578,11 @@ msgid ""
 "roles and responsibilities that work together to provide directory, "
 "authentication, and management services."
 msgstr ""
-"Dieses Kapitel behandelt die :spelling:word:`Infrastrukturgrundlagen` einer Nubus für"
-" UCS Domäne. Eine Nubus für UCS Domäne verlässt sich auf mehrere Systeme "
-"mit verschiedenen Rollen und Verantwortlichkeiten, die zusammenarbeiten, "
-"um Verzeichnis-, :spelling:word:`Authentifizierungs`- und Verwaltungsdienste "
-"bereitzustellen."
+"Dieses Kapitel behandelt die :spelling:word:`Infrastrukturgrundlagen` "
+"einer Nubus für UCS Domäne. Eine Nubus für UCS Domäne verlässt sich auf "
+"mehrere Systeme mit verschiedenen Rollen und Verantwortlichkeiten, die "
+"zusammenarbeiten, um Verzeichnis-, :spelling:word:`Authentifizierungs`- "
+"und Verwaltungsdienste bereitzustellen."
 
 #: ../../domain-infrastructure/index.rst:14
 msgid ""
@@ -874,8 +1621,8 @@ msgid ""
 ":`deployment-primary-dn-resilience`."
 msgstr ""
 "Schützen Sie Ihre Domäne vor Störungen des Primary Directory Node, indem "
-"Sie Verzeichnisdaten auf Backup und Replica Directory Nodes verteilen und "
-"bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
+"Sie Verzeichnisdaten auf Backup und Replica Directory Nodes verteilen und"
+" bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
 ":`deployment-primary-dn-resilience`."
 
 #: ../../domain-infrastructure/system-roles.rst:7
@@ -1052,18 +1799,18 @@ msgstr "macOS"
 #: ../../domain-infrastructure/system-roles.rst:101
 msgid ""
 "You can join macOS systems into a Nubus for UCS domain through Samba. For"
-" information about the integration, see :external+uv-ucs-manual:ref"
-":`macos-domain-join` in :cite:t:`ucs-manual`."
+" information about the integration, see :ref:`domain-infrastructure-join-"
+"macos`."
 msgstr ""
-"Sie können macOS-Systeme über Samba in ein Nubus für UCS Domäne "
-"integrieren. Informationen zur Integration finden Sie unter :external+uv-"
-"ucs-manual:ref:`macos-domain-join` im :cite:t:`ucs-manual`."
+"Sie können macOS-Systeme über Samba einer Nubus für UCS Domäne beitreten "
+"lassen. Informationen zur Integration finden Sie unter :ref:`domain-"
+"infrastructure-join-macos`."
 
-#: ../../domain-infrastructure/system-roles.rst:109
+#: ../../domain-infrastructure/system-roles.rst:108
 msgid "Domain Trust Account"
 msgstr "Domain Trust Account"
 
-#: ../../domain-infrastructure/system-roles.rst:111
+#: ../../domain-infrastructure/system-roles.rst:110
 msgid ""
 "Nubus uses the *Domain Trust Account* system role for trust relationships"
 " between Windows Active Directory domains and Nubus for UCS domains."
@@ -1072,11 +1819,11 @@ msgstr ""
 "Vertrauensbeziehungen zwischen Windows Active Directory Domänen und Nubus"
 " für UCS Domänen."
 
-#: ../../domain-infrastructure/system-roles.rst:117
+#: ../../domain-infrastructure/system-roles.rst:116
 msgid "Windows Domaincontroller"
 msgstr "Windows Domain Controller"
 
-#: ../../domain-infrastructure/system-roles.rst:119
+#: ../../domain-infrastructure/system-roles.rst:118
 msgid ""
 "Windows domain controllers in a Samba environment use the *Windows "
 "Domaincontroller* system role."
@@ -1084,11 +1831,11 @@ msgstr ""
 "Windows Domain Controller in einer Samba-Umgebung nutzen die *Windows "
 "Domain Controller* Systemrolle."
 
-#: ../../domain-infrastructure/system-roles.rst:124
+#: ../../domain-infrastructure/system-roles.rst:123
 msgid "Windows Workstation and Windows Server"
 msgstr "Windows Workstation und Windows Server"
 
-#: ../../domain-infrastructure/system-roles.rst:126
+#: ../../domain-infrastructure/system-roles.rst:125
 msgid ""
 "Windows clients and Windows Managed Nodes use the *Windows Workstation* "
 "or *Windows Server* system role."
@@ -1096,11 +1843,11 @@ msgstr ""
 "Windows-Clients und Windows Managed Nodes  nutzen die *Windows "
 "Workstation* oder *Windows Server* Systemrolle."
 
-#: ../../domain-infrastructure/system-roles.rst:132
+#: ../../domain-infrastructure/system-roles.rst:131
 msgid "IP client"
 msgstr "IP-Client"
 
-#: ../../domain-infrastructure/system-roles.rst:134
+#: ../../domain-infrastructure/system-roles.rst:133
 msgid ""
 "The IP client system role allows the integration of systems not listed in"
 " :ref:`domain-infrastructure-system-roles` into the IP management of "
@@ -1110,3 +1857,17 @@ msgstr ""
 "nicht in :ref:`domain-infrastructure-system-roles` aufgeführt sind, in "
 "die IP-Verwaltung von Nubus für DNS und DHCP, wie Netzwerkdrucker oder "
 "Router."
+
+#~ msgid ""
+#~ "To run all scripts from the "
+#~ "command line, use :command:`univention-run-"
+#~ "join-scripts`. The system automatically "
+#~ "checks whether it has already run "
+#~ "each script."
+#~ msgstr ""
+#~ "Um alle Skripte von der Befehlszeile "
+#~ "aus auszuführen, verwenden Sie :command"
+#~ ":`univention-run-join-scripts`. Das System"
+#~ " überprüft automatisch, ob jedes Skript "
+#~ "bereits ausgeführt wurde."
+

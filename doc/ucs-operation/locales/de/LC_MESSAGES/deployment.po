@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-24 09:17+0000\n"
-"PO-Revision-Date: 2026-03-27 16:51+0100\n"
+"POT-Creation-Date: 2026-04-16 10:37+0000\n"
+"PO-Revision-Date: 2026-04-16 12:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -214,10 +214,29 @@ msgid "^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$"
 msgstr "^[a-z0-9][a-z0-9-]{0,11}[a-z0-9]?$"
 
 #: ../../deployment/domain-setup.rst:88
+msgid "Naming constraint for the domain name"
+msgstr "Namenskonvention für Domänennamen"
+
+#: ../../deployment/domain-setup.rst:95
+msgid ""
+"For Windows compatibility, the leftmost label of the DNS domain name must"
+" not exceed 15 characters. Windows derives a NetBIOS domain name from the"
+" leftmost label of the DNS domain name, for example ``company`` from "
+"``company.intranet``. Windows truncates labels longer than 15 characters,"
+" which can cause sign-in errors for Windows clients joining the domain."
+msgstr ""
+"Für Windows-Kompatibilität darf die linke Bezeichnung des DNS-Domänennamens "
+"15 Zeichen nicht überschreiten. Windows leitet einen NetBIOS-Domänennamen "
+"von der linken Bezeichnung des DNS-Domänennamens ab, zum Beispiel "
+"``company`` von ``company.intranet``. Windows kürzt Bezeichnungen, die länger "
+"als 15 Zeichen sind, was zu Anmeldefehlern für Windows-Clients bei dem Beitritt "
+"zur Domäne führen kann."
+
+#: ../../deployment/domain-setup.rst:104
 msgid "Mode: Create a new UCS domain"
 msgstr "Modus: Neue UCS-Domäne erstellen"
 
-#: ../../deployment/domain-setup.rst:93
+#: ../../deployment/domain-setup.rst:109
 msgid ""
 "After you selected :ref:`deployment-domain-setup-new`, system setup asks "
 "for the following information, see :numref:`deployment-domain-setup-new-"
@@ -227,11 +246,11 @@ msgstr ""
 "die Systemeinrichtung nach den folgenden Informationen, siehe :numref"
 ":`deployment-domain-setup-new-domain-figure`:"
 
-#: ../../deployment/domain-setup.rst:99
+#: ../../deployment/domain-setup.rst:115
 msgid "Organization name"
 msgstr "Organisationsname"
 
-#: ../../deployment/domain-setup.rst:100
+#: ../../deployment/domain-setup.rst:116
 msgid ""
 "You can *optionally* specify an organization name. The system setup uses "
 "the organization name to automatically generate a :ref:`domain name "
@@ -244,11 +263,11 @@ msgstr ""
 ":ref:`LDAP-Basis <deployment-domain-setup-new-domain-ldap-base>` zu "
 "generieren."
 
-#: ../../deployment/domain-setup.rst:108
+#: ../../deployment/domain-setup.rst:124
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: ../../deployment/domain-setup.rst:109
+#: ../../deployment/domain-setup.rst:125
 msgid ""
 "If you provide a valid email address, system setup activates a "
 "personalized license and sends it to the address. Univention App Center "
@@ -265,11 +284,11 @@ msgstr ""
 "das Verwaltungsmodul *Willkommen*, siehe :ref:`management-interface-"
 "license-activate`."
 
-#: ../../deployment/domain-setup.rst:120
+#: ../../deployment/domain-setup.rst:136
 msgid "Fully qualified domain name"
 msgstr ":spelling:word:`Fully Qualified Domain Name`"
 
-#: ../../deployment/domain-setup.rst:121
+#: ../../deployment/domain-setup.rst:137
 msgid ""
 "Provide the fully qualified domain name for the system, including "
 "hostname and domain name. System setup derives the name of the Nubus for "
@@ -286,7 +305,7 @@ msgstr ""
 "haben. Für die Namenskonvention des Rechnernamens siehe :ref:`deployment-"
 "domain-setup-naming`."
 
-#: ../../deployment/domain-setup.rst:131
+#: ../../deployment/domain-setup.rst:147
 msgid ""
 "Recommendation: don't use publicly available DNS domains for your DNS "
 "domain, as this can result in name resolution problems."
@@ -294,11 +313,11 @@ msgstr ""
 "Empfehlung: Verwenden Sie keine öffentlich verfügbaren DNS-Domänen für "
 "Ihre DNS-Domäne, da dies zu Namensauflösungsproblemen führen kann."
 
-#: ../../deployment/domain-setup.rst:136
+#: ../../deployment/domain-setup.rst:152
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
-#: ../../deployment/domain-setup.rst:137
+#: ../../deployment/domain-setup.rst:153
 msgid ""
 "You must specify an LDAP base to initialize the directory service. System"
 " setup automatically creates a suggestion from the :ref:`deployment-"
@@ -310,15 +329,15 @@ msgstr ""
 "Vorschlag aus dem :ref:`deployment-domain-setup-new-domain-fqdn`. Sie "
 "können den Vorschlag normalerweise ohne Änderungen akzeptieren."
 
-#: ../../deployment/domain-setup.rst:144 ../../deployment/domain-setup.rst:147
+#: ../../deployment/domain-setup.rst:160 ../../deployment/domain-setup.rst:163
 msgid "Specify of hostname and LDAP base"
 msgstr "Angabe von Hostname und LDAP-Basis"
 
-#: ../../deployment/domain-setup.rst:152
+#: ../../deployment/domain-setup.rst:168
 msgid "Mode: Join an existing Active Directory domain"
 msgstr "Modus: Einer bestehenden Active Directory Domäne beitreten"
 
-#: ../../deployment/domain-setup.rst:157
+#: ../../deployment/domain-setup.rst:173
 msgid ""
 "If you configured the DNS server of an Active Directory domain during the"
 " :ref:`network configuration <deployment-initial-system-configuration-"
@@ -338,7 +357,7 @@ msgstr ""
 " den Namen eines anderen Active Directory Domain-Controllers oder einer "
 "anderen Active Directory Domäne angeben."
 
-#: ../../deployment/domain-setup.rst:164
+#: ../../deployment/domain-setup.rst:180
 msgid ""
 "You need to provide an Active Directory account and its corresponding "
 "password to enable your Nubus for UCS system to join the Active Directory"
@@ -350,7 +369,7 @@ msgstr ""
 "beitreten kann. Das Benutzerkonto muss die Berechtigung haben, neue "
 "Systeme in der Active Directory Domäne hinzuzufügen."
 
-#: ../../deployment/domain-setup.rst:168
+#: ../../deployment/domain-setup.rst:184
 msgid ""
 "In addition, you need to define a hostname for the Nubus for UCS system. "
 "You can adopt the suggested hostname or provide a different one. For the "
@@ -362,7 +381,7 @@ msgstr ""
 "einen anderen angeben. Für die Namenskonvention des Rechnernamens siehe "
 ":ref:`deployment-domain-setup-naming`."
 
-#: ../../deployment/domain-setup.rst:173
+#: ../../deployment/domain-setup.rst:189
 msgid ""
 "System setup automatically derives the system's domain name from the "
 "domain DNS server. However, in some scenarios such as hosting a public "
@@ -377,11 +396,11 @@ msgstr ""
 " verwenden. Das Nubus für UCS System tritt der Active Directory Domäne "
 "mit dem angegebenen Rechnernamen bei."
 
-#: ../../deployment/domain-setup.rst:180 ../../deployment/domain-setup.rst:263
+#: ../../deployment/domain-setup.rst:196 ../../deployment/domain-setup.rst:279
 msgid "After the configuration is complete, you **can't** change the domain."
 msgstr "Nach Abschluss der Konfiguration können Sie die Domäne **nicht** ändern."
 
-#: ../../deployment/domain-setup.rst:182
+#: ../../deployment/domain-setup.rst:198
 msgid ""
 "In a Nubus for UCS domain, you can install systems in different system "
 "roles. The first Nubus for UCS system that joins an Active Directory "
@@ -399,15 +418,15 @@ msgstr ""
 "Systemeinrichtung den Auswahldialog für die System-Rolle an. Für die "
 "Systemrollenauswahl siehe :ref:`deployment-domain-setup-join-ucs`."
 
-#: ../../deployment/domain-setup.rst:192 ../../deployment/domain-setup.rst:195
+#: ../../deployment/domain-setup.rst:208 ../../deployment/domain-setup.rst:211
 msgid "Information on the Active directory domain"
 msgstr "Informationen zur Active Directory Domäne"
 
-#: ../../deployment/domain-setup.rst:200
+#: ../../deployment/domain-setup.rst:216
 msgid "Mode: Join an existing UCS domain"
 msgstr "Modus: Einer bestehenden UCS-Domäne beitreten"
 
-#: ../../deployment/domain-setup.rst:207
+#: ../../deployment/domain-setup.rst:223
 msgid ""
 "Before you join an additional system, make sure the :term:`UCS Primary "
 "Directory Node` is at the latest patch level. System setup blocks the "
@@ -415,12 +434,12 @@ msgid ""
 "and displays an error message."
 msgstr ""
 "Bevor Sie ein weiteres System hinzufügen, stellen Sie sicher, dass der "
-":term:`UCS Primary Directory Node` auf dem neuesten Patch-Level ist. "
-"Die Systemeinrichtung blockiert den Beitritt, wenn das beitretende System"
-" einen höheren Patch-Level hat als der Primary, und zeigt eine "
+":term:`UCS Primary Directory Node` auf dem neuesten Patch-Level ist. Die "
+"Systemeinrichtung blockiert den Beitritt, wenn das beitretende System "
+"einen höheren Patch-Level hat als der Primary, und zeigt eine "
 "Fehlermeldung an."
 
-#: ../../deployment/domain-setup.rst:212
+#: ../../deployment/domain-setup.rst:228
 msgid ""
 "To join an existing Nubus for UCS domain, you need to process the "
 "following steps:"
@@ -428,11 +447,11 @@ msgstr ""
 "Um einer bestehenden Nubus für UCS Domäne beizutreten, müssen Sie die "
 "folgenden Schritte durchführen:"
 
-#: ../../deployment/domain-setup.rst:215
+#: ../../deployment/domain-setup.rst:231
 msgid "Select the system role."
 msgstr "Systemrolle auswählen."
 
-#: ../../deployment/domain-setup.rst:217
+#: ../../deployment/domain-setup.rst:233
 msgid ""
 "In a Nubus for UCS domain, you can install systems in different system "
 "roles. The first system in a Nubus for UCS domain always has the "
@@ -447,19 +466,19 @@ msgstr ""
 "Zeitpunkt beitreten. Sie können ihnen eine der folgenden Systemrollen "
 "zuweisen."
 
-#: ../../deployment/domain-setup.rst:222
+#: ../../deployment/domain-setup.rst:238
 msgid ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
 
-#: ../../deployment/domain-setup.rst:223
+#: ../../deployment/domain-setup.rst:239
 msgid ":ref:`domain-infrastructure-system-roles-replica-directory-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-replica-directory-node`"
 
-#: ../../deployment/domain-setup.rst:224
+#: ../../deployment/domain-setup.rst:240
 msgid ":ref:`domain-infrastructure-system-roles-managed-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-managed-node`"
 
-#: ../../deployment/domain-setup.rst:226
+#: ../../deployment/domain-setup.rst:242
 msgid ""
 "After you selected the system role for Nubus for UCS, the system setup "
 "asks for more information to join the domain, see :numref:`deployment-"
@@ -469,11 +488,11 @@ msgstr ""
 " Systemeinrichtung nach weiteren Informationen zum Domänenbeitritt, siehe"
 " :numref:`deployment-domain-setup-join-ucs-figure`."
 
-#: ../../deployment/domain-setup.rst:230
+#: ../../deployment/domain-setup.rst:246
 msgid "Start join at the end of the installation"
 msgstr "Beitritt am Ende der Installation starten"
 
-#: ../../deployment/domain-setup.rst:231
+#: ../../deployment/domain-setup.rst:247
 msgid ""
 "If you don't intend to let the system setup run the domain join "
 "automatically during the installation, deactivate the option *Start join "
@@ -483,11 +502,11 @@ msgstr ""
 "Domänenbeitritt automatisch während der Installation durchführt, "
 "deaktivieren Sie die Option *Beitritt am Ende der Installation starten*."
 
-#: ../../deployment/domain-setup.rst:234
+#: ../../deployment/domain-setup.rst:250
 msgid "Search Primary Directory Node in DNS"
 msgstr "Primary Directory Node im DNS suchen"
 
-#: ../../deployment/domain-setup.rst:235
+#: ../../deployment/domain-setup.rst:251
 msgid ""
 "System setup automatically determines the fully qualified domain name of "
 "the UCS Primary Directory Node by asking the DNS server for the service "
@@ -503,7 +522,7 @@ msgstr ""
 "Node als DNS-Server während :ref:`deployment-initial-system-"
 "configuration-network-setup` angegeben haben."
 
-#: ../../deployment/domain-setup.rst:243
+#: ../../deployment/domain-setup.rst:259
 msgid ""
 "If you decide to join another Nubus for UCS domain, you can deactivate "
 "*Search Primary Directory Node in DNS* and provide the fully qualified "
@@ -514,11 +533,11 @@ msgstr ""
 "deaktivieren und den :spelling:word:`Fully Qualified Domain Name` des "
 "bevorzugten UCS Primary Directory Node angeben."
 
-#: ../../deployment/domain-setup.rst:249
+#: ../../deployment/domain-setup.rst:265
 msgid "Credentials for domain administrator"
 msgstr "Anmeldedaten für Domänenadministrator"
 
-#: ../../deployment/domain-setup.rst:250
+#: ../../deployment/domain-setup.rst:266
 msgid ""
 "The domain join process needs to access information about the domain. To "
 "grant system setup the appropriate permission, you need to provide the "
@@ -529,7 +548,7 @@ msgstr ""
 "zu erteilen, müssen Sie die Anmeldedaten für ein *Administrator*-Konto "
 "der Domäne angeben."
 
-#: ../../deployment/domain-setup.rst:254
+#: ../../deployment/domain-setup.rst:270
 msgid ""
 "Finally, provide a hostname for the Nubus for UCS system. You can adopt "
 "the suggested hostname or change it. For the naming convention of the "
@@ -546,15 +565,15 @@ msgstr ""
 "wie etwa einem öffentlichen Mailserver, kann es erforderlich sein, einen "
 "bestimmten :spelling:word:`Fully Qualified Domain Name` zu verwenden."
 
-#: ../../deployment/domain-setup.rst:267 ../../deployment/domain-setup.rst:270
+#: ../../deployment/domain-setup.rst:283 ../../deployment/domain-setup.rst:286
 msgid "Information on the domain join"
 msgstr "Informationen zum Domänenbeitritt"
 
-#: ../../deployment/domain-setup.rst:275
+#: ../../deployment/domain-setup.rst:291
 msgid "Confirm the installation settings"
 msgstr "Installationseinstellungen bestätigen"
 
-#: ../../deployment/domain-setup.rst:277
+#: ../../deployment/domain-setup.rst:293
 msgid ""
 "*Confirm configuration settings* shows a summary of your settings, see "
 ":numref:`deployment-installation-physical-confirm-settings-summary-"
@@ -564,25 +583,25 @@ msgstr ""
 " Einstellungen, siehe :numref:`deployment-installation-physical-confirm-"
 "settings-summary-figure`."
 
-#: ../../deployment/domain-setup.rst:280
+#: ../../deployment/domain-setup.rst:296
 msgid "Update system after installation"
 msgstr "System nach der Installation aktualisieren"
 
-#: ../../deployment/domain-setup.rst:281
+#: ../../deployment/domain-setup.rst:297
 msgid ""
 "The *Update system after installation* option instructs system setup to "
 "install updates after the installation. The behavior depends on the "
 "system role that you want to set up."
 msgstr ""
 "Die Option *System nach der Installation aktualisieren* veranlasst die "
-"Systemeinrichtung, nach der Installation Updates zu installieren. "
-"Das Verhalten hängt von der Systemrolle ab, die Sie einrichten möchten."
+"Systemeinrichtung, nach der Installation Updates zu installieren. Das "
+"Verhalten hängt von der Systemrolle ab, die Sie einrichten möchten."
 
-#: ../../deployment/domain-setup.rst:285
+#: ../../deployment/domain-setup.rst:301
 msgid "Setting up a Primary Directory Node"
 msgstr "Einrichten eines Primary Directory Node"
 
-#: ../../deployment/domain-setup.rst:286
+#: ../../deployment/domain-setup.rst:302
 msgid ""
 "System setup installs all available patch level updates and errata "
 "updates on the Primary Directory Node itself, up to the latest available "
@@ -592,11 +611,11 @@ msgstr ""
 "und Errata-Updates auf dem Primary Directory Node selbst, bis zum "
 "neuesten verfügbaren Patch-Level innerhalb des aktuellen Release."
 
-#: ../../deployment/domain-setup.rst:290
+#: ../../deployment/domain-setup.rst:306
 msgid "Joining an existing UCS domain"
 msgstr "Beitritt zu einer bestehenden UCS-Domäne"
 
-#: ../../deployment/domain-setup.rst:291
+#: ../../deployment/domain-setup.rst:307
 msgid ""
 "When a non-Primary system role joins an existing domain, system setup "
 "connects to the :term:`UCS Primary Directory Node` to read its current "
@@ -604,25 +623,26 @@ msgid ""
 "including all errata updates available for that version. The Primary "
 "Directory Node and all other existing domain members aren't affected."
 msgstr ""
-"Wenn eine Systemrolle einer bestehenden Domäne beitritt, die kein Primary Directory Node ist, "
-"verbindet sich die Systemeinrichtung mit dem :term:`UCS Primary Directory"
-" Node`, um dessen aktuellen Patch-Level zu lesen. Anschließend "
-"aktualisiert sie das beitretende System bis zu diesem Patch-Level, "
-"einschließlich aller für diese Version verfügbaren Errata-Updates. "
-"Der Primary Directory Node und alle anderen bestehenden Domänenmitglieder"
-" sind davon nicht betroffen."
+"Wenn eine Systemrolle einer bestehenden Domäne beitritt, die kein Primary"
+" Directory Node ist, verbindet sich die Systemeinrichtung mit dem "
+":term:`UCS Primary Directory Node`, um dessen aktuellen Patch-Level zu "
+"lesen. Anschließend aktualisiert sie das beitretende System bis zu diesem"
+" Patch-Level, einschließlich aller für diese Version verfügbaren Errata-"
+"Updates. Der Primary Directory Node und alle anderen bestehenden "
+"Domänenmitglieder sind davon nicht betroffen."
 
-#: ../../deployment/domain-setup.rst:301
+#: ../../deployment/domain-setup.rst:317
 msgid ""
 "To verify the installation status, sign in to the :term:`UCS Primary "
 "Directory Node` using the administrator credentials from :ref"
 ":`deployment-domain-setup-join-ucs-credentials`."
 msgstr ""
-"Um den Installationsstatus zu überprüfen, melden Sie sich beim "
-":term:`UCS Primary Directory Node` mit den Anmeldedaten des :spelling:word:`Administratorkontos` aus"
-" :ref:`deployment-domain-setup-join-ucs-credentials` an."
+"Um den Installationsstatus zu überprüfen, melden Sie sich beim :term:`UCS"
+" Primary Directory Node` mit den Anmeldedaten des "
+":spelling:word:`Administratorkontos` aus :ref:`deployment-domain-setup-"
+"join-ucs-credentials` an."
 
-#: ../../deployment/domain-setup.rst:306
+#: ../../deployment/domain-setup.rst:322
 msgid ""
 "If the settings match your intention, click :guilabel:`Configure System` "
 "to start the configuration of the Nubus for UCS system."
@@ -631,7 +651,7 @@ msgstr ""
 ":guilabel:`System konfigurieren`, um die Konfiguration des Nubus für UCS "
 "Systems zu starten."
 
-#: ../../deployment/domain-setup.rst:310
+#: ../../deployment/domain-setup.rst:326
 msgid ""
 "System setup shows the progress during the system configuration. It saves"
 " the installation protocol in the following files:"
@@ -640,15 +660,15 @@ msgstr ""
 "Systemkonfiguration an. Sie speichert das Installationsprotokoll in den "
 "folgenden Dateien:"
 
-#: ../../deployment/domain-setup.rst:313
+#: ../../deployment/domain-setup.rst:329
 msgid ":file:`/var/log/installer/syslog`"
 msgstr ":file:`/var/log/installer/syslog`"
 
-#: ../../deployment/domain-setup.rst:314
+#: ../../deployment/domain-setup.rst:330
 msgid ":file:`/var/log/univention/management-console-module-setup.log`"
 msgstr ":file:`/var/log/univention/management-console-module-setup.log`"
 
-#: ../../deployment/domain-setup.rst:316
+#: ../../deployment/domain-setup.rst:332
 msgid ""
 "After you confirm the completion of the system setup, your Nubus for UCS "
 "system is ready for the first full boot procedure. You can restart it. "
@@ -661,7 +681,7 @@ msgstr ""
 "Abschluss des Bootvorgangs fahren Sie mit :ref:`deployment-after-"
 "installation` fort."
 
-#: ../../deployment/domain-setup.rst:325 ../../deployment/domain-setup.rst:328
+#: ../../deployment/domain-setup.rst:341 ../../deployment/domain-setup.rst:344
 msgid "Installation overview"
 msgstr "Installationsübersicht"
 
@@ -1623,9 +1643,9 @@ msgid ""
 "release."
 msgstr ""
 "Laden Sie das Nubus für UCS Installations-Image von der `Univention "
-"Website <https://www.univention.com/products/download/>`_ herunter. "
-"Die Download-Seite bietet ISO- und virtuelle Maschinen-Images für das "
-"neueste Patch-Level Release an."
+"Website <https://www.univention.com/products/download/>`_ herunter. Die "
+"Download-Seite bietet ISO- und virtuelle Maschinen-Images für das neueste"
+" Patch-Level Release an."
 
 #: ../../deployment/install.rst:50
 msgid ""
@@ -1647,20 +1667,20 @@ msgid ""
 " available patch level releases. Select the image that matches your "
 "Primary's patch level."
 msgstr ""
-"Wenn Sie den Primary noch nicht aktualisieren können, navigieren Sie "
-"nach dem Akzeptieren der Nutzungsbedingungen und der "
-"Datenschutzerklärung auf der Download-Seite zum übergeordneten "
-"Verzeichnis des Download-Links. Das übergeordnete Verzeichnis enthält "
-"Images für alle verfügbaren Patch-Level Releases. Wählen Sie das Image "
-"aus, das dem Patch-Level Ihres Primary entspricht."
+"Wenn Sie den Primary noch nicht aktualisieren können, navigieren Sie nach"
+" dem Akzeptieren der Nutzungsbedingungen und der Datenschutzerklärung auf"
+" der Download-Seite zum übergeordneten Verzeichnis des Download-Links. "
+"Das übergeordnete Verzeichnis enthält Images für alle verfügbaren Patch-"
+"Level Releases. Wählen Sie das Image aus, das dem Patch-Level Ihres "
+"Primary entspricht."
 
 #: ../../deployment/install.rst:61
 msgid ""
 "For more information about the patch level requirement, see :ref"
 ":`deployment-domain-setup-join-ucs`."
 msgstr ""
-"Weitere Informationen zur Patch-Level-Anforderung finden Sie unter "
-":ref:`deployment-domain-setup-join-ucs`."
+"Weitere Informationen zur Patch-Level-Anforderung finden Sie unter :ref"
+":`deployment-domain-setup-join-ucs`."
 
 #: ../../deployment/install.rst:67
 msgid "Physical and virtual machine installation"

@@ -1,3 +1,5 @@
+Administratorkonten
+Administratorkontos
 App-ID
 App-IDs
 Bootloader-Menü
@@ -10,10 +12,12 @@ Cloud-native
 Containerisierung
 Cron
 Cron-Format
+DNS-Domänennamens
 Docker-Anwendung
 Docker-Anwendungen
 Docker-basierte
 Docker-basierten
+Domänenbeitritte
 Domänendatenbank
 Domänenmodi
 End-of-Life
@@ -45,6 +49,9 @@ Root-Berechtigungen
 SSO-Servers
 Scripting
 Shell-Scripting
+Skriptnamen
+Skriptversion
+TLS-Zertifikate
 Treiberanforderungen
 Updater-Prozess
 Upstream

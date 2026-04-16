@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-23 21:47+0000\n"
-"PO-Revision-Date: 2026-03-23 22:53+0100\n"
+"POT-Creation-Date: 2026-04-16 10:37+0000\n"
+"PO-Revision-Date: 2026-04-16 12:42+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1278,12 +1278,12 @@ msgid ""
 "retrieves the list of available patch level releases from the upstream "
 "release metadata, and sums the package sizes from each suite's index."
 msgstr ""
-"Führen Sie den Befehl in :numref:`lifecycle-local-repository-size-estimate-"
-"figure` auf Ihrem Nubus für UCS-System aus, um die geschätzte Größe zu "
-"berechnen. Der Befehl liest die aktuelle Nubus für UCS-Version aus den "
-"UCR-Variablen, ruft die Liste der verfügbaren Patch-Level-Versionen aus "
-"den Metadaten der :spelling:word:`Upstream-Versionen` ab und summiert die Paketgrößen aus "
-"dem Index der jeweiligen Versionen."
+"Führen Sie den Befehl in :numref:`lifecycle-local-repository-size-"
+"estimate-figure` auf Ihrem Nubus für UCS-System aus, um die geschätzte "
+"Größe zu berechnen. Der Befehl liest die aktuelle Nubus für UCS-Version "
+"aus den UCR-Variablen, ruft die Liste der verfügbaren Patch-Level-"
+"Versionen aus den Metadaten der :spelling:word:`Upstream-Versionen` ab "
+"und summiert die Paketgrößen aus dem Index der jeweiligen Versionen."
 
 #: ../../lifecycle/local-repository-servers.rst:128
 msgid "Estimate total repository size"
@@ -1346,7 +1346,8 @@ msgstr ""
 "Das Ergebnis ist eine Obergrenze. :program:`apt-mirror` speichert Pakete "
 "in einem gemeinsamen Pool, sodass Pakete, die in mehreren Versionen "
 "vorkommen, nur einmal auf dem Datenträger gespeichert werden. Der "
-"tatsächliche Speicherverbrauch ist daher etwas geringer als die Schätzung."
+"tatsächliche Speicherverbrauch ist daher etwas geringer als die "
+"Schätzung."
 
 #: ../../lifecycle/local-repository-servers.rst:161
 msgid ""
@@ -1364,8 +1365,8 @@ msgid ""
 "space in addition to the final repository size. Ensure at least twice the"
 " estimated size in free disk space before you start."
 msgstr ""
-"Während der Synchronisation benötigt :program:`apt-mirror` zusätzlich zur "
-"endgültigen Größe des Repositorys temporären Speicherplatz. Stellen Sie "
+"Während der Synchronisation benötigt :program:`apt-mirror` zusätzlich zur"
+" endgültigen Größe des Repositorys temporären Speicherplatz. Stellen Sie "
 "sicher, dass mindestens das Doppelte der geschätzten Größe an freiem "
 "Speicherplatz verfügbar ist, bevor Sie beginnen."
 
@@ -4035,17 +4036,17 @@ msgstr ""
 
 #: ../../lifecycle/update-strategies.rst:184
 msgid ""
-"For details on join script management, see :external+uv-ucs-manual:ref"
-":`linux-domain-join` in :cite:t:`ucs-manual`."
+"For details on join script management, see :ref:`domain-infrastructure-"
+"join-ucs`."
 msgstr ""
 "Weitere Informationen zur Verwaltung von Join-Skripten finden Sie unter "
-":external+uv-ucs-manual:ref:`linux-domain-join` in :cite:t:`ucs-manual`."
+":ref:`domain-infrastructure-join-ucs`."
 
-#: ../../lifecycle/update-strategies.rst:193
+#: ../../lifecycle/update-strategies.rst:190
 msgid "Troubleshooting update problems"
 msgstr "Fehlerbehebung bei Update-Problemen"
 
-#: ../../lifecycle/update-strategies.rst:195
+#: ../../lifecycle/update-strategies.rst:192
 msgid ""
 "If you encounter problems during an update, use these resources to "
 "diagnose the issue:"
@@ -4053,11 +4054,11 @@ msgstr ""
 "Wenn während eines Updates Probleme auftreten, verwenden Sie diese "
 "Ressourcen zur Diagnose des Problems:"
 
-#: ../../lifecycle/update-strategies.rst:197
+#: ../../lifecycle/update-strategies.rst:194
 msgid "Update log"
 msgstr "Update-Protokoll"
 
-#: ../../lifecycle/update-strategies.rst:198
+#: ../../lifecycle/update-strategies.rst:195
 msgid ""
 "The system writes detailed messages to "
 ":file:`/var/log/univention/updater.log`. Review this file first for error"
@@ -4067,11 +4068,11 @@ msgstr ""
 ":file:`/var/log/univention/updater.log`. Überprüfen Sie diese Datei "
 "zuerst auf Fehlermeldungen und Diagnoseinformationen."
 
-#: ../../lifecycle/update-strategies.rst:201
+#: ../../lifecycle/update-strategies.rst:198
 msgid "Configuration registry backup"
 msgstr "Sicherung der Konfigurationsregistrierung"
 
-#: ../../lifecycle/update-strategies.rst:202
+#: ../../lifecycle/update-strategies.rst:199
 #, python-brace-format
 msgid ""
 "Before the update, the system saves the status of all Univention "
@@ -4085,7 +4086,7 @@ msgstr ""
 "überprüfen, welche Konfigurationswerte sich während des Updates geändert "
 "haben."
 
-#: ../../lifecycle/update-strategies.rst:206
+#: ../../lifecycle/update-strategies.rst:203
 msgid ""
 "This information helps you identify whether the update completed "
 "correctly and which system configurations it affected."
