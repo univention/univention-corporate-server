@@ -38,3 +38,4 @@ User creation wizard
    password-management/index
    group-management
    user-create-wizard
+   http-api
