@@ -17,8 +17,27 @@ services:
       # Build context is the repo root so the Dockerfile can COPY base/, management/, etc.
       context: ../../../
       dockerfile: management/univention-directory-manager-rest/docker/Dockerfile
+    image: ${UDM_REST_IMAGE:-gitregistry.knut.univention.de/univention/dev/ucs/udm-rest-api:mmeschter-udm-rest-docker}
     ports:
       - "9979:9979"
+    # The REST API returns 503 with Retry-After for a few seconds after start
+    # while internal state boots. `docker compose up --wait` needs an API-level
+    # probe, not just "process running", to know real readiness.
+    healthcheck:
+      test:
+        - CMD
+        - /app/docker/.venv/bin/python3
+        - -c
+        - |
+          import http.client, sys
+          c = http.client.HTTPConnection("127.0.0.1", 9979, timeout=3)
+          c.request("GET", "/udm/")
+          r = c.getresponse()
+          sys.exit(0 if r.status == 401 else 1)
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
     environment:
       LDAP_HOST: ldap-server
       LDAP_PORT: "389"
@@ -33,7 +52,6 @@ services:
 
   ldap-server:
     image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/ldap/ldap-server:latest
-    platform: linux/amd64
     environment:
       DOMAIN_NAME: univention-organization.intranet
       LDAP_BASEDN: dc=univention-organization,dc=intranet
@@ -49,11 +67,15 @@ services:
     ports:
       - "389:389"
     volumes:
-      # ldap-server needs a UCR base.conf with keys it bootstraps from
-      # (ldap/server/type, self-service/ldap_attributes, etc.). Reuse the
-      # nubus test config which already covers the full set.
-      - type: bind
-        source: /home/marius/git/nubus/container-udm-rest/tests/base.conf
-        target: /etc/univention/base.conf
-        read_only: true
+      - ../tests/base.conf:/etc/univention/base.conf:ro
       - ../tests/init-internal-database.sh:/entrypoint.d/91-init-internal-database.sh
+
+  test:
+    profiles: ["test"]
+    image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/udm-rest-api/testrunner:latest
+    environment:
+      PYTEST_ADDOPTS: --udm-rest-url=http://udm-rest-api:9979/udm/
+    volumes:
+      - ../tests:/app
+    depends_on:
+      - udm-rest-api

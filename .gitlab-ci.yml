@@ -20,6 +20,8 @@ workflow:
 include:
   - project: univention/infrastructure/docker-services
     file: kaniko.yml
+  - project: univention/infrastructure/docker-services
+    file: dind.yml
   - local: '.gitlab-ci/base.yml'
   - project: univention/infrastructure/docker-services
     file: prek.yml
@@ -117,7 +119,28 @@ build udm-rest-api docker:
     IMAGE_TAG: $CI_REGISTRY_IMAGE/udm-rest-api:$CI_COMMIT_REF_SLUG
     KANIKO_BUILD_CONTEXT: "."
     DOCKERFILE_PATH: "./management/univention-directory-manager-rest/docker/Dockerfile"
-      
+  needs: []
+
+test udm-rest-api docker:
+  stage: test
+  extends: .dind
+  needs:
+    - job: build udm-rest-api docker
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/docker:27.4.1
+  variables:
+    COMPOSE_FILE: management/univention-directory-manager-rest/docker/docker-compose.yaml
+    UDM_REST_IMAGE: $CI_REGISTRY_IMAGE/udm-rest-api:$CI_COMMIT_REF_SLUG
+  before_script:
+    - unset DOCKER_API_VERSION
+    - docker --version
+    - docker compose --profile test pull
+    - docker compose up --wait --wait-timeout 120
+  script:
+    - docker compose run --rm test pytest -lvv integration
+  after_script:
+    - docker compose logs udm-rest-api ldap-server || true
+    - docker compose down --volumes
+
 doc-pipeline:
   stage: build
   rules:
