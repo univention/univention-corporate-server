@@ -35,14 +35,13 @@ RUN uv sync --project /app/docker \
 FROM ${UCS_BASE_IMAGE}:${UCS_BASE_IMAGE_TAG}
 
 COPY --from=build /app/docker/.venv /app/docker/.venv
-COPY --from=build /app/management/univention-directory-manager-rest/var/www/univention/udm /var/www/univention/udm
-COPY --from=build /app/management/univention-directory-manager-rest/templates /usr/share/univention-directory-manager-rest/templates
 COPY management/univention-directory-manager-rest/docker/base.conf /etc/univention/base.conf
 
 RUN mkdir -p /etc/univention && \
     apt-get --yes --no-install-recommends install \
         libhdb9-heimdal \
         libsasl2-2 \
+        libsasl2-modules-oauthbearer \
         libcrack2 \
         libmagic1 \
         libunivention-config0 \

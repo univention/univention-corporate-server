@@ -28,7 +28,7 @@ License: AGPL-3.0-only
  /usr/share/common-licenses/AGPL-3; if not, see
  <https://www.gnu.org/licenses/>.
 
-Files: var/www/univention/udm/swaggerui/*
+Files: src/univention/admin/rest/www/swaggerui/*
 Copyright: 2020 SmartBear Software Inc.
 License: Apache-2.0
  Apache License Version 2.0, January 2004
@@ -204,7 +204,7 @@ License: Apache-2.0
     incurred by, or claims asserted against, such Contributor by reason
     of your accepting any such warranty or additional liability.
 
-Files: var/www/univention/udm/js/htmx*.js var/www/univention/udm/js/response-targets.js
+Files: src/univention/admin/rest/www/js/htmx*.js src/univention/admin/rest/www/js/response-targets.js
 Copyright: 2020 Big Sky Software
 License: BSD-2-Clause
  Redistribution and use in source and binary forms, with or without
