@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 10:22+0000\n"
-"PO-Revision-Date: 2026-04-13 12:23+0200\n"
+"POT-Creation-Date: 2026-04-17 10:39+0000\n"
+"PO-Revision-Date: 2026-04-17 12:44+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -538,6 +538,30 @@ msgstr ""
 "Attribute nicht in den Verzeichnisdienst. Der Verzeichnisdienst zeigt die"
 " Attribute dynamisch über das Overlay-Modul an, wenn er eine Anfrage für "
 "ein Benutzerobjekt beantwortet."
+
+#: ../../iam/http-api.rst:7
+msgid "HTTP API for domain management"
+msgstr "HTTP Schnittstelle für Domänenverwaltung"
+
+#: ../../iam/http-api.rst:9
+msgid ""
+"Nubus for UCS provides an HTTP API for the Univention Directory Manager "
+"that you can use to inspect, modify, create, and delete directory objects"
+" through HTTP requests."
+msgstr ""
+"Nubus für UCS bietet eine HTTP-Schnittstelle für den Univention Directory "
+"Manager, mit der Sie Verzeichnisobjekte über HTTP-Anfragen überprüfen, "
+"ändern, erstellen und löschen können."
+
+#: ../../iam/http-api.rst:12
+msgid ""
+"For more information on the API, see :external+uv-nubus-customization:ref"
+":`customization-api-udm-rest` :cite:t:`uv-nubus-kubernetes-"
+"customization`."
+msgstr ""
+"Für weitere Informationen zur Schnittstelle siehe :external+uv-nubus-"
+"customization:ref:`customization-api-udm-rest` :cite:t:`uv-nubus-"
+"kubernetes-customization`."
 
 #: ../../iam/index.rst:35 ../../iam/password-management/index.rst:37
 msgid "Contents"
@@ -1759,8 +1783,8 @@ msgstr ""
 "Sie können die Eigenschaften der *E-Mail zur Verifizierung* und des "
 "Tokens über die folgenden Univention Configuration Registry-Variablen "
 "konfigurieren. Für Informationen zum Verifizierungsprozess siehe "
-":external+uv-nubus-manual:ref:`nubus-user-management-user-"
-"registration-email-verification` im :cite:t:`uv-nubus-manual`."
+":external+uv-nubus-manual:ref:`nubus-user-management-user-registration-"
+"email-verification` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/password-management/user-self-service.rst:317
 msgid ""
@@ -2489,4 +2513,3 @@ msgstr ""
 "Wenn Sie jedoch einzelne *UMC-Server* Instanzen neu starten, verlieren "
 "Benutzer, deren Sitzung zu den betroffenen *UMC-Server* Instanzen gehört,"
 " ihre Benutzersitzung."
-
