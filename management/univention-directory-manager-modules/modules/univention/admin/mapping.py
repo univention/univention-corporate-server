@@ -404,6 +404,33 @@ def unmapGeneralizedTimeToISO8601Date(value: list[bytes], encoding=()) -> str:
     return ldap_date.strftime("%Y-%m-%d")
 
 
+def mapISO8601DateTimeToGeneralizedTime(value: str, encoding=()) -> list[bytes]:
+    """
+    Convert ISO8601 date+time to LDAP Dates (GeneralizedTime). Ignores timezones.
+
+    >>> mapISO8601DateTimeToGeneralizedTime('2009-01-01 00:00:00')
+    [b'20090101000000Z']
+    """
+    if not value:
+        return []
+
+    dt = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+    ldap_val = dt.strftime("%Y%m%d%H%M%SZ")
+    return [ldap_val.encode(*encoding)]
+
+
+def unmapGeneralizedTimeToISO8601DateTime(value: list[bytes], encoding=()) -> str:
+    """
+    Convert LDAP Dates (GeneralizedTime) to ISO8601 date+time. Ignores timezones.
+
+    >>> unmapGeneralizedTimeToISO8601DateTime([b'20090101000000Z'])
+    '2009-01-01 00:00:00'
+    """
+    ldap_val = value[0].decode(*encoding)
+    dt = datetime.datetime.strptime(ldap_val[:14], "%Y%m%d%H%M%S")
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
 class dontMap:
     """'Do nothing' mapping."""
 
