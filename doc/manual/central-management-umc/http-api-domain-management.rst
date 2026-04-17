@@ -6,9 +6,6 @@
 HTTP API of domain management
 =============================
 
-UCS provides an HTTP API for UDM which can be used to inspect, modify, create
-and delete UDM objects via HTTP requests.
-
-For more information on the API please refer to
-:external+uv-nubus-customization:ref:`customization-api-udm-rest`
-:cite:t:`uv-nubus-kubernetes-customization`.
+The content of this section moved to
+:external+uv-ucs-operation:ref:`iam-http-api`
+in :cite:t:`uv-ucs-operation`.
