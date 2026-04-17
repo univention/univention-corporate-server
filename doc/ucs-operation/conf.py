@@ -74,6 +74,10 @@ intersphinx_mapping = {
         None,
     ),
     "uv-docs-overview": ("https://docs.software-univention.de/n/en/", None),
+    "uv-nubus-customization": (
+        "https://docs.software-univention.de/nubus-customization/latest/en/",
+        None,
+    ),
     "linux-kernel-docs": (
         "https://www.kernel.org/doc/html/v6.1/",
         None,
@@ -208,6 +212,10 @@ def adapt_settings_to_translation(app, config):
                 None,
             ),
             "uv-docs-overview": ("https://docs.software-univention.de/n/de/", None),
+            "uv-nubus-customization": (
+                "https://docs.software-univention.de/nubus-customization/latest/en/",
+                None,
+            ),
             "uv-debian-admins": reference_inventory("debian-admins", version=version),
             "linux-kernel-docs": (
                 "https://www.kernel.org/doc/html/v6.1/",
