@@ -6,9 +6,9 @@
 HTTP API for domain management
 ==============================
 
-UCS provides an HTTP API for UDM which can be used to inspect, modify, create
-and delete UDM objects via HTTP requests.
+Nubus for UCS provides an HTTP API for the Univention Directory Manager
+that you can use to inspect, modify, create, and delete directory objects through HTTP requests.
 
-For more information on the API please refer to
+For more information on the API, see
 :external+uv-nubus-customization:ref:`customization-api-udm-rest`
 :cite:t:`uv-nubus-kubernetes-customization`.
