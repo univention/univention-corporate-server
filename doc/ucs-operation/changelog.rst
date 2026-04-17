@@ -24,6 +24,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 17. Apr 2026
+     - :ref:`iam-http-api`
+     - Add section.
+
    * - 16. Apr 2026
      - :ref:`domain-infrastructure-join`
      - Add section about domain join.
