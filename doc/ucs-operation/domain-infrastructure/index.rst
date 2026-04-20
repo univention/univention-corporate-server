@@ -34,4 +34,5 @@ Redundancy and failover for the Primary Directory Node
 
    system-roles
    domain-join
+   kerberos
    ha
