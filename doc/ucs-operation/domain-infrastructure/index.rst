@@ -23,6 +23,19 @@ System roles
    to Backup, Replica, and Managed Nodes.
    See :ref:`domain-infrastructure-system-roles`.
 
+Domain join
+   Enable systems to join your Nubus for UCS domain.
+   Learn how UCS, Windows, Ubuntu, and macOS systems join the domain,
+   configure domain join through the command line or management module,
+   and manage join scripts for automated system configuration.
+   See :ref:`domain-infrastructure-join`.
+
+Kerberos authentication
+   Learn how Nubus for UCS uses Kerberos for domain authentication,
+   how the system selects the Key Distribution Center,
+   and how to configure the Kerberos administration server.
+   See :ref:`domain-infrastructure-kerberos`.
+
 Redundancy and failover for the Primary Directory Node
    Protect your domain against disruption to the Primary Directory Node
    by distributing directory data across Backup and Replica Directory Nodes
