@@ -3,56 +3,85 @@
 
 .. _domain-infrastructure-kerberos:
 
-Kerberos configuration
-======================
+Kerberos
+========
 
-Kerberos is an authentication framework the purpose of which is to
-permit secure identification in the potentially insecure connections of
-decentralized networks. In Kerberos, all clients use a foundation of
-mutual trust, the *Key Distribution Center* (KDC).
-A client authenticates at this KDC and receives an authentication token,
-the so-called ticket which can be used for authentication within the
-Kerberos environment (the so-called Kerberos realm). The name of the
-Kerberos realm is configured as part of the installation of the
-|UCSPRIMARYDN| and stored in the |UCSUCRV| :envvar:`kerberos/realm`.
-It is not possible to change the name of the Kerberos realm at a later
-point in time.
+Nubus for UCS uses Kerberos to authenticate users and services across your domain.
+This section covers how Kerberos works,
+how you configure the realm,
+and how Nubus for UCS implements it.
 
-Tickets have a standard validity period of 8 hours; this is why it is
-vital for a Kerberos domain to have the system time synchronized for all
-the systems belonging to the Kerberos realm.
+.. _domain-infrastructure-kerberos-overview:
 
-|UCSUCS| uses the Heimdal Kerberos implementation. An independent Heimdal
-service is started on UCS Directory Nodes without Samba/AD, while
-Kerberos is provided by a Heimdal version integrated in Samba on
-Samba/AD DCs. In a environment composed of UCS Directory Nodes without
-Samba/AD and Samba/AD domain controllers both Kerberos environments are
-based on identical data (these are synchronized between Samba/AD and
-OpenLDAP via the Univention S4 connector (see
-:ref:`windows-s4-connector`)).
+How Kerberos works
+------------------
 
-.. _domain-kerberos-kdc-selection:
+The *Key Distribution Center* (KDC) is the central trust authority in a Kerberos network.
+When you sign in,
+the KDC issues a *ticket* that grants access to other services inside the Kerberos realm.
+
+Tickets are valid for 8 hours by default.
+
+.. important::
+
+   All systems in the Kerberos realm must have synchronized clocks.
+   Clock skew causes authentication failures.
+
+.. _domain-infrastructure-kerberos-realm:
+
+Kerberos realm
+--------------
+
+The Kerberos realm name derives from your domain name.
+The installer stores it in the :term:`UCR variable` :envvar:`kerberos/realm`.
+
+.. warning::
+
+   You can't change the Kerberos realm name after installation.
+   Choose your realm name carefully.
+
+.. _domain-infrastructure-kerberos-implementation:
+
+Kerberos implementation in Nubus for UCS
+-----------------------------------------
+
+Nubus for UCS uses the Heimdal Kerberos implementation.
+On UCS directory nodes without Samba/AD,
+Heimdal runs as a standalone service.
+On Samba/AD domain controllers,
+Samba provides Kerberos through its built-in Heimdal version.
+
+Both UCS directory nodes and Samba/AD domain controllers access the same Kerberos data.
+The Univention S4 connector synchronizes between Samba/AD and OpenLDAP.
+For more information, see :external+uv-ucs-manual:ref:`windows-s4-connector`.
+
+.. _domain-infrastructure-kerberos-kdc:
 
 KDC selection
 -------------
 
-As standard, the KDC is selected via a DNS service record. The KDC used
-by a system can be reconfigured using the |UCSUCRV|
-:envvar:`kerberos/kdc`. If Samba/AD is installed on a system in
-the domain, the service record is reconfigured so that only the
-Samba/AD-based KDCs are offered. In a mixed environment it is
-recommended only to use the Samba/AD KDCs.
+By default,
+DNS service records determine which KDC your system uses.
+To override the KDC for a specific system,
+set the :term:`UCR variable` :envvar:`kerberos/kdc`.
 
-.. _domain-kerberos-admin-server:
+When you install Samba/AD on any domain member,
+the DNS service record changes to advertise only the Samba/AD KDCs.
+In a mixed environment,
+use only the Samba/AD KDCs.
 
-Kerberos admin server
----------------------
+.. _domain-infrastructure-kerberos-administration-server:
 
-The Kerberos admin server, on which the administrative settings of the
-domain can be made, runs on the |UCSPRIMARYDN|. Most of the settings in
-Univention Corporate Server are taken from the LDAP directory, so that
-the major remaining function is changing passwords. This can be achieved
-by means of the Tool :command:`kpasswd`; the passwords are
-then changed in the LDAP too. The Kerberos admin server can be
-configured on a system via the |UCSUCRV|
-:envvar:`kerberos/adminserver`.
+Kerberos administration server
+------------------------------
+
+The Kerberos administration server runs on the :term:`Primary Directory Node`.
+It manages administrative settings for the domain.
+Because Nubus for UCS reads most settings directly from the LDAP directory,
+the server primarily manages passwords.
+
+Use :command:`kpasswd` to change passwords.
+This tool also updates the password in LDAP.
+
+To configure the administration server,
+set the :term:`UCR variable` :envvar:`kerberos/adminserver`.
