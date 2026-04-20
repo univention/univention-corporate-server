@@ -307,88 +307,6 @@ This section provides a reference for UCR variables.
    :Possible values: integer, ``0`` for immediate boot, ``-1`` for manual selection
    :Type: integer
 
-.. envvar:: nameserver1
-
-   Set the first DNS server the system uses for name resolution.
-
-   For information about configuring name servers,
-   see :ref:`system-administration-network-name-servers`.
-
-   :Type: string
-
-
-.. envvar:: nameserver2
-
-   Set the second DNS server the system uses for name resolution.
-   For details about the name server,
-   see :envvar:`nameserver1`.
-
-   :Type: string
-
-
-.. envvar:: nameserver3
-
-   Set the third DNS server the system uses for name resolution.
-   For details about the name server,
-   see :envvar:`nameserver1`.
-
-   :Type: string
-
-
-.. envvar:: kernel/blacklist
-
-   Use this variable to prevent specific kernel modules from loading automatically.
-   The system automatically detects and loads required drivers (kernel modules).
-   You can use this variable to exclude modules that you don't want the system to load.
-   If you need to blacklist multiple modules,
-   separate them with a semicolon.
-
-   For information about kernel module configuration,
-   see :ref:`system-administration-kernel-modules-detection`.
-
-   :Default value: not set
-   :Possible values: semicolon-separated list of module names
-   :Type: list
-
-
-.. envvar:: kernel/modules
-
-   Use this variable to load kernel modules that the system doesn't automatically detect.
-   The system automatically detects and loads required drivers (kernel modules).
-   You can use this variable to load modules that the system can't automatically detect.
-   If you need to load multiple modules,
-   separate them with a semicolon.
-
-   For information about kernel module configuration,
-   see :ref:`system-administration-kernel-modules-detection`.
-
-   :Default value: not set
-   :Possible values: semicolon-separated list of module names
-   :Type: list
-
-
-.. envvar:: ldap/master
-
-   Contains the fully qualified domain name of the domain's Primary Directory Node.
-
-   :Type: string
-
-
-.. envvar:: local/repository
-
-   Activates and deactivates the local repository.
-   When activated with the value ``yes``,
-   the system uses a locally maintained repository for package updates and installations.
-   This is useful in environments with multiple systems
-   to reduce bandwidth consumption and enable offline updates.
-
-   For information about creating and maintaining a local repository,
-   see :ref:`lifecycle-local-repository-create-init`.
-
-   :Default value: not set
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
-
 .. envvar:: interfaces/*/address
 
    Configure the IPv4 address for a network interface.
@@ -402,6 +320,55 @@ This section provides a reference for UCR variables.
    see :ref:`system-administration-network-ipv4`.
 
    :Type: string
+
+
+.. envvar:: interfaces/*/ipv6/acceptRA
+
+   Enable Stateless Address Autoconfiguration (SLAAC) for a network interface.
+   When you activate this option,
+   routers on the local network segment assign the IPv6 address.
+   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/ipv6/acceptRA`,
+   for example :samp:`interfaces/eth0/ipv6/acceptRA`.
+
+   For information about configuring IPv6 addresses,
+   see :ref:`system-administration-network-ipv6`.
+
+   :Type: boolean
+
+
+.. envvar:: interfaces/*/ipv6/address
+
+   Configure a static IPv6 address for a network interface.
+   The variable name follows the pattern
+   :samp:`interfaces/{INTERFACE}/ipv6/{IDENTIFIER}/address`,
+   for example :samp:`interfaces/eth0/ipv6/default/address`.
+   Use ``default`` for the primary address;
+   you can use functional names like ``mail`` or ``web`` for additional addresses.
+   If you want to use SLAAC,
+   don't set this variable.
+   See :envvar:`interfaces/*/ipv6/acceptRA` for automatic configuration.
+
+   For information about configuring IPv6 addresses,
+   see :ref:`system-administration-network-ipv6`.
+
+   :Type: string
+
+
+.. envvar:: interfaces/*/ipv6/prefix
+
+   Configure the IPv6 prefix length in CIDR notation for a network interface.
+   The variable name follows the pattern
+   :samp:`interfaces/{INTERFACE}/ipv6/{IDENTIFIER}/prefix`,
+   for example :samp:`interfaces/eth0/ipv6/default/prefix`.
+   If you want to use SLAAC,
+   don't set this variable.
+   See :envvar:`interfaces/*/ipv6/acceptRA` for automatic configuration.
+
+   For information about configuring IPv6 addresses,
+   see :ref:`system-administration-network-ipv6`.
+
+   :Type: string
+   :Possible values: ``0`` to ``128``
 
 
 .. envvar:: interfaces/*/netmask
@@ -470,55 +437,6 @@ This section provides a reference for UCR variables.
    :Possible values: ``static``, ``dhcp``, ``manual``
 
 
-.. envvar:: interfaces/*/ipv6/address
-
-   Configure a static IPv6 address for a network interface.
-   The variable name follows the pattern
-   :samp:`interfaces/{INTERFACE}/ipv6/{IDENTIFIER}/address`,
-   for example :samp:`interfaces/eth0/ipv6/default/address`.
-   Use ``default`` for the primary address;
-   you can use functional names like ``mail`` or ``web`` for additional addresses.
-   If you want to use SLAAC,
-   don't set this variable.
-   See :envvar:`interfaces/*/ipv6/acceptRA` for automatic configuration.
-
-   For information about configuring IPv6 addresses,
-   see :ref:`system-administration-network-ipv6`.
-
-   :Type: string
-
-
-.. envvar:: interfaces/*/ipv6/prefix
-
-   Configure the IPv6 prefix length in CIDR notation for a network interface.
-   The variable name follows the pattern
-   :samp:`interfaces/{INTERFACE}/ipv6/{IDENTIFIER}/prefix`,
-   for example :samp:`interfaces/eth0/ipv6/default/prefix`.
-   If you want to use SLAAC,
-   don't set this variable.
-   See :envvar:`interfaces/*/ipv6/acceptRA` for automatic configuration.
-
-   For information about configuring IPv6 addresses,
-   see :ref:`system-administration-network-ipv6`.
-
-   :Type: string
-   :Possible values: ``0`` to ``128``
-
-
-.. envvar:: interfaces/*/ipv6/acceptRA
-
-   Enable Stateless Address Autoconfiguration (SLAAC) for a network interface.
-   When you activate this option,
-   routers on the local network segment assign the IPv6 address.
-   The variable name follows the pattern :samp:`interfaces/{INTERFACE}/ipv6/acceptRA`,
-   for example :samp:`interfaces/eth0/ipv6/acceptRA`.
-
-   For information about configuring IPv6 addresses,
-   see :ref:`system-administration-network-ipv6`.
-
-   :Type: boolean
-
-
 .. envvar:: ipv6/gateway
 
    You can configure an IPv6 gateway.
@@ -533,6 +451,89 @@ This section provides a reference for UCR variables.
 
    For information about configuring IPv6 gateways,
    see :ref:`system-administration-network-gateway`.
+
+   :Type: string
+
+
+.. envvar:: kernel/blacklist
+
+   Use this variable to prevent specific kernel modules from loading automatically.
+   The system automatically detects and loads required drivers (kernel modules).
+   You can use this variable to exclude modules that you don't want the system to load.
+   If you need to blacklist multiple modules,
+   separate them with a semicolon.
+
+   For information about kernel module configuration,
+   see :ref:`system-administration-kernel-modules-detection`.
+
+   :Default value: not set
+   :Possible values: semicolon-separated list of module names
+   :Type: list
+
+
+.. envvar:: kernel/modules
+
+   Use this variable to load kernel modules that the system doesn't automatically detect.
+   The system automatically detects and loads required drivers (kernel modules).
+   You can use this variable to load modules that the system can't automatically detect.
+   If you need to load multiple modules,
+   separate them with a semicolon.
+
+   For information about kernel module configuration,
+   see :ref:`system-administration-kernel-modules-detection`.
+
+   :Default value: not set
+   :Possible values: semicolon-separated list of module names
+   :Type: list
+
+
+.. envvar:: ldap/master
+
+   Contains the fully qualified domain name of the domain's Primary Directory Node.
+
+   :Type: string
+
+
+.. envvar:: local/repository
+
+   Activates and deactivates the local repository.
+   When activated with the value ``yes``,
+   the system uses a locally maintained repository for package updates and installations.
+   This is useful in environments with multiple systems
+   to reduce bandwidth consumption and enable offline updates.
+
+   For information about creating and maintaining a local repository,
+   see :ref:`lifecycle-local-repository-create-init`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: nameserver1
+
+   Set the first DNS server the system uses for name resolution.
+
+   For information about configuring name servers,
+   see :ref:`system-administration-network-name-servers`.
+
+   :Type: string
+
+
+.. envvar:: nameserver2
+
+   Set the second DNS server the system uses for name resolution.
+   For details about the name server,
+   see :envvar:`nameserver1`.
+
+   :Type: string
+
+
+.. envvar:: nameserver3
+
+   Set the third DNS server the system uses for name resolution.
+   For details about the name server,
+   see :envvar:`nameserver1`.
 
    :Type: string
 
