@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gst-plugins-bad1.0
+fix: 1.10.4-1+deb9u7
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2026-3082, CVE-2026-2923)
+bug: [59209]
+cve:
+- CVE-2026-2923
+- CVE-2026-3082
