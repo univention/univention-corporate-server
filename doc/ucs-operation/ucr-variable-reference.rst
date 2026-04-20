@@ -455,6 +455,61 @@ This section provides a reference for UCR variables.
    :Type: string
 
 
+.. envvar:: kerberos/adminserver
+
+   Specify which system serves as the Kerberos admin server.
+   The Kerberos admin server runs on the Primary Directory Node
+   and manages the administrative settings of the domain.
+
+   For information about configuring the Kerberos administration server,
+   see :ref:`domain-infrastructure-kerberos-administration-server`.
+
+   :Type: string
+
+.. envvar:: kerberos/defaults/dns_lookup_kdc
+
+   Control whether the system queries DNS service records for Kerberos KDC servers.
+   When you set this variable to ``true`` or leave it unset,
+   the system reads the KDC(s) from DNS service records.
+   Set it to ``false`` to disable DNS lookup,
+   in which case you must configure the KDC(s) through the :envvar:`kerberos/kdc` variable.
+
+   For information about configuring the Kerberos KDC,
+   see :ref:`domain-infrastructure-kerberos-kdc`.
+
+   :Default value: not set, equivalent to ``true``
+   :Possible values: ``true``, ``false``, not set
+   :Type: string
+
+
+.. envvar:: kerberos/kdc
+
+   Specify a list of Kerberos KDC servers.
+   Use fully qualified domain names (FQDN) for the hostnames
+   and separate multiple values with a blank.
+   If you don't set this variable,
+   the system queries DNS service records for the KDC,
+   see :envvar:`kerberos/defaults/dns_lookup_kdc`.
+
+   For information about overriding the KDC for a specific system,
+   see :ref:`domain-infrastructure-kerberos-kdc`.
+
+   :Type: string
+
+
+.. envvar:: kerberos/realm
+
+   Contains the name of the Kerberos realm,
+   which is the common Kerberos trust context of a domain.
+   The installer sets this value during the installation of the Primary Directory Node,
+   and you cannot change it afterward.
+
+   For information about configuring the Kerberos realm,
+   see :ref:`domain-infrastructure-kerberos-realm`.
+
+   :Type: string
+
+
 .. envvar:: kernel/blacklist
 
    Use this variable to prevent specific kernel modules from loading automatically.
