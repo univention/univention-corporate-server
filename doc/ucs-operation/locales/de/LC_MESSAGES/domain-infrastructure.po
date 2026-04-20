@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 08:21+0000\n"
-"PO-Revision-Date: 2026-04-17 10:21+0200\n"
+"POT-Creation-Date: 2026-04-20 16:10+0000\n"
+"PO-Revision-Date: 2026-04-20 18:30+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../domain-infrastructure/domain-join.rst:7
+#: ../../domain-infrastructure/index.rst:26
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
@@ -764,7 +765,7 @@ msgstr ""
 "nicht in der Seitenliste an."
 
 #: ../../domain-infrastructure/ha.rst:7
-#: ../../domain-infrastructure/index.rst:26
+#: ../../domain-infrastructure/index.rst:39
 msgid "Redundancy and failover for the Primary Directory Node"
 msgstr "Redundanz und Failover für den Primary Directory Node"
 
@@ -1563,7 +1564,7 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
-#: ../../domain-infrastructure/index.rst:32
+#: ../../domain-infrastructure/index.rst:45
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1615,6 +1616,35 @@ msgstr ""
 
 #: ../../domain-infrastructure/index.rst:27
 msgid ""
+"Enable systems to join your Nubus for UCS domain. Learn how UCS, Windows,"
+" Ubuntu, and macOS systems join the domain, configure domain join through"
+" the command line or management module, and manage join scripts for "
+"automated system configuration. See :ref:`domain-infrastructure-join`."
+msgstr ""
+"Ermöglichen Sie Systemen, Ihrer Nubus für UCS Domäne beizutreten. Erfahren "
+"Sie, wie UCS-, Windows-, Ubuntu- und macOS-Systeme der Domäne beitreten, "
+"konfigurieren Sie Domain Join über die Befehlszeile oder das "
+"Verwaltungsmodul und verwalten Sie Join-Skripte für die automatisierte "
+"Systemkonfiguration. Siehe :ref:`domain-infrastructure-join`."
+
+#: ../../domain-infrastructure/index.rst:33
+msgid "Kerberos authentication"
+msgstr "Kerberos-Authentifizierung"
+
+#: ../../domain-infrastructure/index.rst:34
+msgid ""
+"Learn how Nubus for UCS uses Kerberos for domain authentication, how the "
+"system selects the Key Distribution Center, and how to configure the "
+"Kerberos administration server. See :ref:`domain-infrastructure-"
+"kerberos`."
+msgstr ""
+"Erfahren Sie, wie Nubus für UCS Kerberos für die Domain-Authentifizierung "
+"nutzt, wie das System das Key Distribution Center auswählt und wie Sie den "
+"Kerberos-Administrations-Server konfigurieren. Siehe :ref:`domain-"
+"infrastructure-kerberos`."
+
+#: ../../domain-infrastructure/index.rst:40
+msgid ""
 "Protect your domain against disruption to the Primary Directory Node by "
 "distributing directory data across Backup and Replica Directory Nodes and"
 " by promoting a Backup Directory Node to Primary when needed. See :ref"
@@ -1624,6 +1654,152 @@ msgstr ""
 "Sie Verzeichnisdaten auf Backup und Replica Directory Nodes verteilen und"
 " bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
 ":`deployment-primary-dn-resilience`."
+
+#: ../../domain-infrastructure/kerberos.rst:7
+msgid "Kerberos"
+msgstr "Kerberos"
+
+#: ../../domain-infrastructure/kerberos.rst:9
+msgid ""
+"Nubus for UCS uses Kerberos to authenticate users and services across "
+"your domain. This section covers how Kerberos works, how you configure "
+"the realm, and how Nubus for UCS implements it."
+msgstr ""
+"Nubus für UCS nutzt Kerberos, um Benutzer und Dienste in Ihrer Domäne zu "
+"authentifizieren. In diesem Abschnitt werden die Funktionsweise von "
+"Kerberos, die Konfiguration des Realms und die Implementierung von Nubus "
+"für UCS behandelt."
+
+#: ../../domain-infrastructure/kerberos.rst:17
+msgid "How Kerberos works"
+msgstr "Funktionsweise von Kerberos"
+
+#: ../../domain-infrastructure/kerberos.rst:19
+msgid ""
+"The *Key Distribution Center* (KDC) is the central trust authority in a "
+"Kerberos network. When you sign in, the KDC issues a *ticket* that grants"
+" access to other services inside the Kerberos realm."
+msgstr ""
+"Das *Key Distribution Center* (KDC) ist die zentrale Vertrauensinstanz in "
+"einem Kerberos-Netzwerk. Wenn Sie sich anmelden, stellt das KDC ein "
+"*Ticket* aus, das Zugriff auf andere Dienste im Kerberos-Realm gewährt."
+
+#: ../../domain-infrastructure/kerberos.rst:23
+msgid "Tickets are valid for 8 hours by default."
+msgstr "Tickets sind standardmäßig 8 Stunden lang gültig."
+
+#: ../../domain-infrastructure/kerberos.rst:27
+msgid ""
+"All systems in the Kerberos realm must have synchronized clocks. Clock "
+"skew causes authentication failures."
+msgstr ""
+"Alle Systeme im Kerberos-Realm müssen synchronisierte Uhren haben. "
+"Zeitabweichungen führen zu Authentifizierungsfehlern."
+
+#: ../../domain-infrastructure/kerberos.rst:33
+msgid "Kerberos realm"
+msgstr "Kerberos-Realm"
+
+#: ../../domain-infrastructure/kerberos.rst:35
+msgid ""
+"The Kerberos realm name derives from your domain name. The installer "
+"stores it in the :term:`UCR variable` :envvar:`kerberos/realm`."
+msgstr ""
+"Der Name des Kerberos-Realm leitet sich von Ihrem Domänennamen ab. Das "
+"Installationsprogramm speichert ihn in der :term:`UCR variable` "
+":envvar:`kerberos/realm`."
+
+#: ../../domain-infrastructure/kerberos.rst:40
+msgid ""
+"You can't change the Kerberos realm name after installation. Choose your "
+"realm name carefully."
+msgstr ""
+"Sie können den Namen des Kerberos-Realm nach der Installation nicht ändern. "
+"Wählen Sie den Namen für den Realm sorgfältig."
+
+#: ../../domain-infrastructure/kerberos.rst:46
+msgid "Kerberos implementation in Nubus for UCS"
+msgstr "Kerberos-Implementierung in Nubus für UCS"
+
+#: ../../domain-infrastructure/kerberos.rst:48
+msgid ""
+"Nubus for UCS uses the Heimdal Kerberos implementation. On UCS directory "
+"nodes without Samba/AD, Heimdal runs as a standalone service. On Samba/AD"
+" domain controllers, Samba provides Kerberos through its built-in Heimdal"
+" version."
+msgstr ""
+"Nubus für UCS nutzt die Kerberos-Implementierung Heimdal. Auf UCS "
+"Directory Nodes ohne Samba/AD wird Heimdal als eigenständiger Dienst "
+"ausgeführt. Auf Samba/AD Domain Controllern stellt Samba Kerberos über "
+"seine integrierte Heimdal-Version bereit."
+
+#: ../../domain-infrastructure/kerberos.rst:54
+msgid ""
+"Both UCS directory nodes and Samba/AD domain controllers access the same "
+"Kerberos data. The Univention S4 connector synchronizes between Samba/AD "
+"and OpenLDAP. For more information, see :external+uv-ucs-"
+"manual:ref:`windows-s4-connector`."
+msgstr ""
+"Sowohl UCS Directory Nodes als auch Samba/AD Domain Controller greifen "
+"auf die gleichen Kerberos-Daten zu. Der Univention S4 Connector "
+"synchronisiert zwischen Samba/AD und OpenLDAP. Weitere Informationen finden "
+"Sie unter :external+uv-ucs-manual:ref:`windows-s4-connector`."
+
+#: ../../domain-infrastructure/kerberos.rst:61
+msgid "KDC selection"
+msgstr "KDC Auswahl"
+
+#: ../../domain-infrastructure/kerberos.rst:63
+msgid ""
+"By default, DNS service records determine which KDC your system uses. To "
+"override the KDC for a specific system, set the :term:`UCR variable` "
+":envvar:`kerberos/kdc`."
+msgstr ""
+"Standardmäßig bestimmen DNS-Service-Records, welchen KDC Ihr System nutzt. "
+"Um den KDC für ein bestimmtes System zu überschreiben, legen Sie die "
+":term:`UCR variable` :envvar:`kerberos/kdc` fest."
+
+#: ../../domain-infrastructure/kerberos.rst:68
+msgid ""
+"When you install Samba/AD on any domain member, the DNS service record "
+"changes to advertise only the Samba/AD KDCs. In a mixed environment, use "
+"only the Samba/AD KDCs."
+msgstr ""
+"Wenn Sie Samba/AD auf einem :spelling:word:`Domänenmitglied` installieren, ändert sich der "
+"DNS-Service-Record, um nur die Samba/AD KDCs anzuzeigen. Verwenden Sie in "
+"einer gemischten Umgebung nur die Samba/AD KDCs."
+
+#: ../../domain-infrastructure/kerberos.rst:76
+msgid "Kerberos administration server"
+msgstr "Kerberos-Administrations-Server"
+
+#: ../../domain-infrastructure/kerberos.rst:78
+msgid ""
+"The Kerberos administration server runs on the :term:`Primary Directory "
+"Node`. It manages administrative settings for the domain. Because Nubus "
+"for UCS reads most settings directly from the LDAP directory, the server "
+"primarily manages passwords."
+msgstr ""
+"Der Kerberos-Administrations-Server wird auf dem :term:`Primary Directory "
+"Node` ausgeführt. Er verwaltet die administrativen Einstellungen für die "
+"Domäne. Da Nubus für UCS die meisten Einstellungen direkt aus dem LDAP-"
+"Verzeichnis liest, verwaltet der Server hauptsächlich Passwörter."
+
+#: ../../domain-infrastructure/kerberos.rst:83
+msgid ""
+"Use :command:`kpasswd` to change passwords. This tool also updates the "
+"password in LDAP."
+msgstr ""
+"Verwenden Sie :command:`kpasswd`, um Passwörter zu ändern. Dieses Tool "
+"aktualisiert auch das Passwort in LDAP."
+
+#: ../../domain-infrastructure/kerberos.rst:86
+msgid ""
+"To configure the administration server, set the :term:`UCR variable` "
+":envvar:`kerberos/adminserver`."
+msgstr ""
+"Um den Administrations-Server zu konfigurieren, legen Sie die :term:`UCR "
+"variable` :envvar:`kerberos/adminserver` fest."
 
 #: ../../domain-infrastructure/system-roles.rst:7
 msgid "Understanding system roles"
@@ -1857,17 +2033,3 @@ msgstr ""
 "nicht in :ref:`domain-infrastructure-system-roles` aufgeführt sind, in "
 "die IP-Verwaltung von Nubus für DNS und DHCP, wie Netzwerkdrucker oder "
 "Router."
-
-#~ msgid ""
-#~ "To run all scripts from the "
-#~ "command line, use :command:`univention-run-"
-#~ "join-scripts`. The system automatically "
-#~ "checks whether it has already run "
-#~ "each script."
-#~ msgstr ""
-#~ "Um alle Skripte von der Befehlszeile "
-#~ "aus auszuführen, verwenden Sie :command"
-#~ ":`univention-run-join-scripts`. Das System"
-#~ " überprüft automatisch, ob jedes Skript "
-#~ "bereits ausgeführt wurde."
-
