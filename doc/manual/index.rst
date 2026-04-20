@@ -7,6 +7,15 @@
 Introduction
 ************
 
+.. important::
+
+   Univention is actively migrating sections of this manual to the
+   :cite:t:`uv-ucs-operation`.
+   For each moved section, you find a link to its new location
+   in that document.
+   If you don't find the content you're looking for here,
+   check :cite:t:`uv-ucs-operation` directly.
+
 The content of this section moved to
 :external+uv-ucs-operation:ref:`intro`
 in :cite:t:`uv-ucs-operation`.

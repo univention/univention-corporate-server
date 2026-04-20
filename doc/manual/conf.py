@@ -121,6 +121,15 @@ html_theme_options = {
     "typesense_document_version": version,
     "univention_matomo_tracking": True,
     "univention_docs_deployment": True,
+    "announcement": (
+        "<p>Sections of this manual are being migrated to the "
+        "<a href='https://docs.software-univention.de/ucs-operation/5.2/en/' "
+        "target='_blank' style='color: var(--pst-color-secondary)'>"
+        "Nubus for UCS 5.2 - Operation Manual</a>. "
+        "<a href='https://docs.software-univention.de/manual/5.2/en/index.html"
+        "#introduction' "
+        "style='color: var(--pst-color-secondary)'>Learn more.</a></p>"
+    ),
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -235,6 +244,15 @@ def adapt_settings_to_translation(app, config):
                 None,
             ),
         }
+        config.html_theme_options["announcement"] = (
+            "<p>Abschnitte dieses Handbuchs werden in das "
+            "<a href='https://docs.software-univention.de/ucs-operation/5.2/de/' "
+            "target='_blank' style='color: var(--pst-color-secondary)'>"
+            "Nubus for UCS 5.2 - Betriebshandbuch</a> migriert. "
+            "<a href='https://docs.software-univention.de/manual/5.2/de/index.html"
+            "#introduction' "
+            "style='color: var(--pst-color-secondary)'>Mehr erfahren.</a></p>"
+        )
 
 
 def setup(app):
