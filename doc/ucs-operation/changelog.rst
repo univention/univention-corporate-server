@@ -24,9 +24,13 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 20. Apr 2026
+     - :ref:`domain-infrastructure-kerberos`
+     - Add section about Kerberos in Nubus for UCS.
+
    * - 17. Apr 2026
      - :ref:`iam-http-api`
-     - Add section.
+     - Add cross-reference to *UDM HTTP REST API*.
 
    * - 16. Apr 2026
      - :ref:`domain-infrastructure-join`
