@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libyaml-syck-perl
+fix: 1.31-1+deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+   (CVE-2026-4177)
+ * CVSS score 6.5 (CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2025-11683)
+bug: [59203]
+cve:
+- CVE-2025-11683
+- CVE-2026-4177
