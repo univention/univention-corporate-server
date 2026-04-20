@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 10:21+0000\n"
-"PO-Revision-Date: 2026-03-26 11:22+0100\n"
+"POT-Creation-Date: 2026-04-20 16:05+0000\n"
+"PO-Revision-Date: 2026-04-20 18:07+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,19 @@ msgstr ""
 msgid "Introduction"
 msgstr "Einführung"
 
-#: ../../index.rst:10
+#: ../../index.rst:12
+msgid ""
+"Univention is actively migrating sections of this manual to the :cite:t"
+":`uv-ucs-operation`. For each moved section, you find a link to its new "
+"location in that document. If you don't find the content you're looking "
+"for here, check :cite:t:`uv-ucs-operation` directly."
+msgstr ""
+"Univention migriert derzeit Teile dieses Handbuchs zu :cite:t:`uv-ucs-"
+"operation`. Für jeden verschobenen Abschnitt finden Sie einen Link auf seine "
+"neue Position in diesem Dokument. Sollten Sie den gesuchten Inhalt hier "
+"nicht finden, konsultieren Sie :cite:t:`uv-ucs-operation` direkt."
+
+#: ../../index.rst:19
 msgid ""
 "The content of this section moved to :external+uv-ucs-"
 "operation:ref:`intro` in :cite:t:`uv-ucs-operation`."
@@ -27,11 +39,11 @@ msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
 "operation:ref:`intro` in :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:17
+#: ../../index.rst:26
 msgid "What is Univention Corporate Server?"
 msgstr "Was ist Univention Corporate Server?"
 
-#: ../../index.rst:19
+#: ../../index.rst:28
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-understanding-nubus-for-ucs-whats-ucs` in :cite:t:`uv-ucs-"
@@ -41,11 +53,11 @@ msgstr ""
 "operation:ref:`intro-understanding-nubus-for-ucs-whats-ucs` in :cite:t"
 ":`uv-ucs-operation`."
 
-#: ../../index.rst:26
+#: ../../index.rst:35
 msgid "What is Univention Nubus?"
 msgstr "Was ist Univention Nubus?"
 
-#: ../../index.rst:28
+#: ../../index.rst:37
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-understanding-nubus-for-ucs` in :cite:t:`uv-ucs-operation`."
@@ -54,11 +66,11 @@ msgstr ""
 "operation:ref:`intro-understanding-nubus-for-ucs` in :cite:t:`uv-ucs-"
 "operation`."
 
-#: ../../index.rst:35
+#: ../../index.rst:44
 msgid "Overview of UCS"
 msgstr "Überblick über UCS"
 
-#: ../../index.rst:37 ../../index.rst:46 ../../index.rst:91
+#: ../../index.rst:46 ../../index.rst:55 ../../index.rst:100
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-key-concepts` in :cite:t:`uv-ucs-operation`."
@@ -66,15 +78,15 @@ msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
 "operation:ref:`intro-key-concepts` in :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:44
+#: ../../index.rst:53
 msgid "Commissioning"
 msgstr "Inbetriebnahme"
 
-#: ../../index.rst:53
+#: ../../index.rst:62
 msgid "Domain concept"
 msgstr "Domänenkonzept"
 
-#: ../../index.rst:55
+#: ../../index.rst:64
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-domain-concept` in :cite:t:`uv-ucs-operation`."
@@ -82,11 +94,11 @@ msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
 "operation:ref:`intro-domain-concept` in :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:62
+#: ../../index.rst:71
 msgid "Expandability with the Univention App Center"
 msgstr "Erweiterbarkeit durch das Univention App Center"
 
-#: ../../index.rst:64
+#: ../../index.rst:73
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-app-center` in :cite:t:`uv-ucs-operation`."
@@ -94,11 +106,11 @@ msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
 "operation:ref:`intro-app-center` in :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:71
+#: ../../index.rst:80
 msgid "LDAP directory service"
 msgstr "LDAP-Verzeichnisdienst"
 
-#: ../../index.rst:73
+#: ../../index.rst:82
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-ldap-directory-service` in :cite:t:`uv-ucs-operation`."
@@ -107,11 +119,11 @@ msgstr ""
 "operation:ref:`intro-ldap-directory-service` in :cite:t:`uv-ucs-"
 "operation`."
 
-#: ../../index.rst:80
+#: ../../index.rst:89
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
-#: ../../index.rst:82
+#: ../../index.rst:91
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-management-ui` in :cite:t:`uv-ucs-operation`."
@@ -119,15 +131,15 @@ msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
 "operation:ref:`intro-management-ui` in :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:89
+#: ../../index.rst:98
 msgid "Computer administration"
 msgstr "Rechneradministration"
 
-#: ../../index.rst:98
+#: ../../index.rst:107
 msgid "Policy concept"
 msgstr "Richtlinienkonzept"
 
-#: ../../index.rst:100
+#: ../../index.rst:109
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-policy-concept` in :cite:t:`uv-ucs-operation`."
@@ -135,11 +147,11 @@ msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
 "operation:ref:`intro-policy-concept` in :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:107
+#: ../../index.rst:116
 msgid "Listener/notifier replication"
 msgstr "Listener/Notifier-Replikation"
 
-#: ../../index.rst:109
+#: ../../index.rst:118
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`intro-listener-notifier-replication` in :cite:t:`uv-ucs-operation`."
@@ -148,11 +160,11 @@ msgstr ""
 "operation:ref:`intro-listener-notifier-replication` in :cite:t:`uv-ucs-"
 "operation`."
 
-#: ../../index.rst:116
+#: ../../index.rst:125
 msgid "Further documentation"
 msgstr "Weitere Dokumentationen"
 
-#: ../../index.rst:118
+#: ../../index.rst:127
 msgid ""
 "This manual addresses just a small selection of the possibilities in UCS."
 " Among other things, UCS and solutions based on UCS provide:"
@@ -160,7 +172,7 @@ msgstr ""
 "Dieses Handbuch behandelt nur einen kleinen Ausschnitt der Möglichkeiten "
 "von UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:"
 
-#: ../../index.rst:121
+#: ../../index.rst:130
 msgid ""
 "Comprehensive support for complex server environments and replication "
 "scenarios"
@@ -168,27 +180,27 @@ msgstr ""
 "Umfangreiche Unterstützung für komplexe Serverumgebungen und "
 "Replikationsszenarien"
 
-#: ../../index.rst:124
+#: ../../index.rst:133
 msgid "Advanced capabilities for Windows environments"
 msgstr "Weitergehende Einsatzmöglichkeiten für Microsoft Windows-Umgebungen"
 
-#: ../../index.rst:126
+#: ../../index.rst:135
 msgid "Central network management with DNS and DHCP"
 msgstr "Zentrales Netzmanagement mit DNS und DHCP"
 
-#: ../../index.rst:128
+#: ../../index.rst:137
 msgid "Monitoring systems and networks"
 msgstr "System- und Netzüberwachung"
 
-#: ../../index.rst:130
+#: ../../index.rst:139
 msgid "Print server functionalities"
 msgstr "Druckserver-Funktionalität"
 
-#: ../../index.rst:132
+#: ../../index.rst:141
 msgid "Proxy server"
 msgstr "Proxy-Server"
 
-#: ../../index.rst:134
+#: ../../index.rst:143
 msgid ""
 "Further documentation related to UCS and further issues is published "
 "under :cite:t:`ucs-docs`."
@@ -196,51 +208,51 @@ msgstr ""
 "Unter :cite:t:`ucs-docs` sind weitere Dokumentationen zu UCS "
 "veröffentlicht, die weiterführende Themen behandeln."
 
-#: ../../index.rst:140
+#: ../../index.rst:149
 msgid "Symbols and conventions used in this manual"
 msgstr "Verwendete Symbole und Konventionen"
 
-#: ../../index.rst:142
+#: ../../index.rst:151
 msgid "The manual uses the following symbols:"
 msgstr "Im Handbuch werden folgende Symbole verwendet:"
 
-#: ../../index.rst:146
+#: ../../index.rst:155
 msgid "Warnings are highlighted."
 msgstr "Warnungen werden hervorgehoben."
 
-#: ../../index.rst:150
+#: ../../index.rst:159
 msgid "Notes are also highlighted."
 msgstr "Hinweise werden ebenfalls hervorgehoben."
 
-#: ../../index.rst:152
+#: ../../index.rst:161
 msgid "This table describes the functionality of a UMC module:"
 msgstr "Diese Felder beschreiben den Funktionsumfang eines UMC-Moduls:"
 
-#: ../../index.rst:154
+#: ../../index.rst:163
 msgid "Tab DHCP service"
 msgstr "Reiter DHCP-Dienst"
 
-#: ../../index.rst:157
+#: ../../index.rst:166
 msgid "Attribute"
 msgstr "Attribut"
 
-#: ../../index.rst:157 ../../index.rst:161
+#: ../../index.rst:166 ../../index.rst:170
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../../index.rst:159
+#: ../../index.rst:168
 msgid "Name"
 msgstr "Name"
 
-#: ../../index.rst:159
+#: ../../index.rst:168
 msgid "The unique name of a DHCP service."
 msgstr "Ein eindeutiger Name für den DHCP-Dienst."
 
-#: ../../index.rst:161
+#: ../../index.rst:170
 msgid "An arbitrary description of the service."
 msgstr "Eine beliebige Beschreibung des Dienstes."
 
-#: ../../index.rst:164
+#: ../../index.rst:173
 msgid ""
 "Menu entries, button labels, and similar details with actions are printed"
 " in :guilabel:`this font face`."
@@ -248,11 +260,11 @@ msgstr ""
 "Menüeinträge, Schaltflächenbeschriftungen und ähnliches sind "
 ":guilabel:`in dieser Schriftform` gesetzt."
 
-#: ../../index.rst:167
+#: ../../index.rst:176
 msgid "*Names* are highlighted."
 msgstr "Eigennamen sind *hervorgehoben*."
 
-#: ../../index.rst:169
+#: ../../index.rst:178
 msgid ""
 "``Computer names, LDAP DNs``, :command:`program names`, :file:`file "
 "names, file paths`, `internet addresses <https://example.com>`_ and "
@@ -262,11 +274,11 @@ msgstr ""
 ":file:`Dateinamen und -pfade`, ``Internetadressen`` und ``Optionen`` "
 "werden ebenfalls optisch hervorgehoben."
 
-#: ../../index.rst:174
+#: ../../index.rst:183
 msgid "``Commands and other keyboard input`` is accented optically."
 msgstr "``Befehle und Tastatureingaben`` werden optisch hervorgehoben."
 
-#: ../../index.rst:176
+#: ../../index.rst:185
 msgid ""
 "In addition, excerpts from configuration files, screen output, etc. are\n"
 "printed as code block."
@@ -274,7 +286,7 @@ msgstr ""
 "Abschnitte aus Konfigurationsdateien, Bildschirmausgaben usw. werden als\n"
 "Codeblock formatiert."
 
-#: ../../index.rst:181
+#: ../../index.rst:190
 msgid ""
 "A backslash (``\\``) at the end of a line signifies that the subsequent "
 "line feed is not to be understood as an *end of line*. This circumstance "
@@ -290,7 +302,7 @@ msgstr ""
 "Backslash in einem Stück oder mit dem Backslash und einem anschließenden "
 ":kbd:`Enter` eingegeben werden müssen."
 
-#: ../../index.rst:188
+#: ../../index.rst:197
 msgid ""
 "The path to a function is represented in a similar way to a file path. "
 ":menuselection:`Users --> Add` means for example, you have to click "
