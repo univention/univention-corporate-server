@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.5.7) unstable; urgency=medium
+
+  * Bug #59176: fix HTTP 500 in authorization check on DN case mismatch
+
+ -- Johannes Lohmer <lohmer@univention.de>  Tue, 21 Apr 2026 10:00:00 +0200
+
 univention-directory-manager-rest (12.5.6) unstable; urgency=medium
 
   * Bug #59176: improve metrics

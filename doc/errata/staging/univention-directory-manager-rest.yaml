@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-directory-manager-rest
+fix: 12.5.7
+desc: |
+ This update addresses the following issue:
+ * Fixed a regression from erratum 410 for client authenticated via OIDC where
+   the DN of authenticated users caused a case sensitive DN comparision to
+   fail.
+bug: [59176]

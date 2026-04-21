@@ -248,11 +248,10 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         if self.request.username in ('cn=admin',):
             return
         if not allowed_groups:
-            return HTTPError(403, 'No allowed groups configured.')
+            raise HTTPError(403, 'No allowed groups configured.')
 
         authz_filter = '(|(%s))' % ')('.join(filter_format('memberOf=%s', [mem]) for mem in allowed_groups)
         for user in self.ldap_connection.authz_connection.search(filter=authz_filter, base=self.request.user_dn, scope='base', attr=['1.1']):
-            assert self.ldap_connection.compare_dn(user[0], self.request.user_dn)
             return
 
         raise HTTPError(403, 'Not in allowed groups.')
