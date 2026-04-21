@@ -546,6 +546,10 @@ inheritance.
 
    .. py:method:: map(value, encoding)
 
+      .. versionadded:: 5.2-6
+
+         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
+
       :param Any value: The UDM property value
       :param tuple encoding: Optional encoding information
       :returns: The list of LDAP attributes.
@@ -554,6 +558,10 @@ inheritance.
       This method can be overwritten to define a special method to map an UDM property value to LDAP attribute value.
 
    .. py:method:: unmap(value, encoding)
+
+      .. versionadded:: 5.2-6
+
+         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
 
       :param list[bytes] value: The list of LDAP attributes
       :param tuple encoding: Optional encoding information
@@ -722,6 +730,10 @@ Examples
   But we want to store the value as a ``GeneralizedTime`` string (19700101000000Z) in LDAP.
   We can map the values between these formats by providing the
   appropriate ``map`` and ``unmap`` functions in the hook.
+
+  .. versionadded:: 5.2-6
+
+    The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
 
   .. code-block:: python
 
