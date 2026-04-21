@@ -549,6 +549,24 @@ This section provides a reference for UCR variables.
    :Type: string
 
 
+.. envvar:: ldap/pw-bcrypt
+
+   Controls whether the :program:`OpenLDAP` server supports the bcrypt password hashing scheme.
+   Set this variable to ``true`` to enable bcrypt as a password hashing method for user accounts.
+   You must set this variable on all LDAP servers in your domain.
+
+   When you leave this variable unset or set it to ``false``,
+   the bcrypt password hashing module does not load in OpenLDAP.
+   Users cannot authenticate with bcrypt password hashes.
+
+   For information about enabling bcrypt password hashing,
+   see :ref:`password-management-hashes-bcrypt`.
+
+   :Default value: false
+   :Possible values: ``true``, ``false``
+   :Type: boolean
+
+
 .. envvar:: local/repository
 
    Activates and deactivates the local repository.
@@ -647,6 +665,102 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
+
+.. envvar:: password/hashing/bcrypt
+
+   Controls whether Nubus for UCS uses bcrypt for hashing user passwords in the directory service.
+   When you set this variable to ``true``,
+   Nubus hashes new or changed user passwords with bcrypt instead of the default SHA-512 algorithm.
+   Existing passwords keep their original hashing algorithm.
+   Only new passwords use the new algorithm.
+
+   You must set :envvar:`ldap/pw-bcrypt` to ``true`` on all LDAP servers
+   before you activate this variable.
+
+   Nubus for UCS limits bcrypt passwords to a maximum of 72 characters.
+
+   For information about activating bcrypt password hashing,
+   see :ref:`password-management-hashes-bcrypt`.
+
+   :Default value: false
+   :Possible values: ``true``, ``false``
+   :Type: boolean
+
+
+.. envvar:: password/hashing/bcrypt/cost_factor
+
+   Sets the bcrypt cost factor,
+   which increases password security by slowing down the hashing computation.
+   Higher values require more time to hash a password,
+   making brute-force attacks more expensive.
+   However, higher values also slow down legitimate password changes and authentication.
+
+   The cost factor must be an integer between 4 and 31.
+   Each increment approximately doubles the hashing time.
+
+   This setting only affects newly created or changed user passwords.
+   Existing bcrypt hashes with a different cost factor remain unchanged.
+
+   For information about configuring bcrypt settings,
+   see :ref:`password-management-hashes-bcrypt-settings`.
+
+   :Default value: ``12``
+   :Possible values: Integer between ``4`` and ``31``
+   :Type: positive integer
+
+
+.. envvar:: password/hashing/bcrypt/prefix
+
+   Specifies the bcrypt variant identifier to use when hashing passwords.
+   Different bcrypt variants have different properties and compatibility levels.
+
+   The recommended value is ``2b``, which is the patched bcrypt variant
+   and the current standard for most systems.
+   The value ``2a`` represents the original bcrypt variant and isn't recommended.
+   The values ``2x`` and ``2y`` are legacy variants, and you rarely use them.
+
+   This setting only affects newly created or changed user passwords.
+   Existing bcrypt hashes with a different prefix remain unchanged.
+
+   For information about configuring bcrypt settings,
+   see :ref:`password-management-hashes-bcrypt-settings`.
+
+   :Default value: ``2b``
+   :Possible values: ``2a``, ``2b``, ``2x``, ``2y``
+   :Type: string
+
+
+.. envvar:: password/hashing/method
+
+   Specifies the password hashing algorithm to use when storing user passwords in the directory service.
+   You can choose between MD5, SHA-256, or SHA-512.
+   Each algorithm offers a different balance between compatibility and security.
+
+   MD5
+      Deprecated and less secure than the SHA algorithms.
+      Do not use MD5 for new installations.
+
+   SHA-256
+      More secure than MD5.
+      Suitable for most deployments.
+
+   SHA-512
+      More secure than SHA-256.
+      Recommended for new installations and systems with high-security requirements.
+
+   The hashing algorithm only affects newly created or changed user passwords.
+   Existing passwords keep their original hashing algorithm.
+
+   To use bcrypt as the hashing method instead,
+   see :envvar:`password/hashing/bcrypt`.
+
+   For information about password hashing,
+   see :ref:`password-management-hashes`.
+
+   :Default value: ``SHA-512``
+   :Possible values: ``MD5``, ``SHA-256``, ``SHA-512`` (case-insensitive)
+   :Type: string
+
 
 .. envvar:: password/quality/credit/digits
 
