@@ -22,6 +22,11 @@ Domänendatenbank
 Domänenmodi
 End-of-Life
 Exit
+Hash-Algorithmen
+Hash-Algorithmus
+Hash-Einstellungen
+Hashing
+Hashings
 Hexadezimalform
 Hypervisor-Umgebungen
 Infrastrukturdienste
@@ -35,6 +40,8 @@ Partitionierungsschemata
 Partitionierungsstrategien
 Partitionierungsversion
 Partitionslayout
+Passwort-Hash
+Passwort-Hashes
 Patchlevel-Updates
 Patchlevel-Version
 Patchlevel-Versionen
@@ -62,9 +69,11 @@ Versionierung
 Versionierungsstrategie
 Ziel-App
 aufgabenorientierte
+bcrypt
 cloudbasierte
 containerisierte
 domänenweiter
+hasht
 plattformspezifischen
 rekonfigurieren
 rollenspezifischen

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 10:39+0000\n"
-"PO-Revision-Date: 2026-04-17 12:44+0200\n"
+"POT-Creation-Date: 2026-04-21 15:30+0000\n"
+"PO-Revision-Date: 2026-04-21 19:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -549,8 +549,8 @@ msgid ""
 "that you can use to inspect, modify, create, and delete directory objects"
 " through HTTP requests."
 msgstr ""
-"Nubus für UCS bietet eine HTTP-Schnittstelle für den Univention Directory "
-"Manager, mit der Sie Verzeichnisobjekte über HTTP-Anfragen überprüfen, "
+"Nubus für UCS bietet eine HTTP-Schnittstelle für den Univention Directory"
+" Manager, mit der Sie Verzeichnisobjekte über HTTP-Anfragen überprüfen, "
 "ändern, erstellen und löschen können."
 
 #: ../../iam/http-api.rst:12
@@ -563,7 +563,7 @@ msgstr ""
 "customization:ref:`customization-api-udm-rest` :cite:t:`uv-nubus-"
 "kubernetes-customization`."
 
-#: ../../iam/index.rst:35 ../../iam/password-management/index.rst:37
+#: ../../iam/index.rst:35 ../../iam/password-management/index.rst:43
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -684,10 +684,25 @@ msgstr ""
 "Passwortlänge, Verlauf, Alter und Komplexitätseinstellungen."
 
 #: ../../iam/password-management/index.rst:32
+msgid ":ref:`password-management-hashes`"
+msgstr ":ref:`password-management-hashes`"
+
+#: ../../iam/password-management/index.rst:33
+msgid ""
+"It describes how Nubus for UCS stores and hashes user passwords. It "
+"covers the default SHA-512 hashing method and the optional bcrypt hashing"
+" method, including its activation requirements and tuning parameters."
+msgstr ""
+"Es beschreibt, wie Nubus für UCS Benutzerpasswörter speichert und "
+"verschlüsselt. Es behandelt die Standard Hash-Methode SHA-512 und die "
+"optionale bcrypt Hash-Methode, einschließlich ihrer "
+"Aktivierungsanforderungen und Abstimmungsparameter."
+
+#: ../../iam/password-management/index.rst:38
 msgid ":ref:`end-user-self-service`"
 msgstr ":ref:`end-user-self-service`"
 
-#: ../../iam/password-management/index.rst:33
+#: ../../iam/password-management/index.rst:39
 msgid ""
 "It describes the installation, configuration, and features of the *End "
 "User Self Service*, including contact information management, user self-"
@@ -697,6 +712,122 @@ msgstr ""
 "User Self Service*, einschließlich Kontaktinformationsverwaltung, "
 "Selbstregistrierung für Benutzer mit E-Mail-Verifizierung und "
 "Deregistrierung für Benutzer."
+
+#: ../../iam/password-management/password-hashes.rst:7
+msgid "Password hashes"
+msgstr "Passwort-Hashes"
+
+#: ../../iam/password-management/password-hashes.rst:9
+msgid ""
+"Understanding password hashing helps you secure user accounts and comply "
+"with security policies. This page explains how Nubus for UCS hashes "
+"passwords and how to configure stronger hashing algorithms."
+msgstr ""
+"Das Verständnis von Passwort-Hashes hilft Ihnen, Benutzerkonten zu "
+"sichern und Sicherheitsrichtlinien einzuhalten. Diese Seite erklärt, wie "
+"Nubus für UCS Passwörter hasht und wie Sie stärkere Hash-Algorithmen "
+"konfigurieren."
+
+#: ../../iam/password-management/password-hashes.rst:12
+msgid ""
+"By default, Nubus for UCS uses SHA-512, which is secure for most "
+"environments. If your security requirements are higher, you can enable "
+"bcrypt hashing for additional protection."
+msgstr ""
+"Standardmäßig verwendet Nubus für UCS SHA-512, das für die meisten "
+"Umgebungen sicher ist. Wenn Ihre Sicherheitsanforderungen höher sind, "
+"können Sie den bcrypt Hash für zusätzlichen Schutz aktivieren."
+
+#: ../../iam/password-management/password-hashes.rst:18
+msgid "Default hashing method"
+msgstr "Standard Hash-Methode"
+
+#: ../../iam/password-management/password-hashes.rst:20
+msgid ""
+"The directory service stores user password hashes in the ``userPassword``"
+" attribute. The :program:`crypt` library function hashes passwords. You "
+"can configure the hashing method using the :term:`UCR variable` "
+":envvar:`password/hashing/method`. The default value is ``SHA-512``."
+msgstr ""
+"Der Verzeichnisdienst speichert Hashes für Benutzerpasswörter im Attribut "
+"``userPassword``. Die :program:`crypt`-Bibliotheksfunktion hasht "
+"Passwörter. Sie können die Hash-Methode mit der :term:`UCR-Variable` "
+":envvar:`password/hashing/method` konfigurieren. Der Standardwert ist "
+"``SHA-512``."
+
+#: ../../iam/password-management/password-hashes.rst:29
+msgid "bcrypt hashing method"
+msgstr "bcrypt Hash-Methode"
+
+#: ../../iam/password-management/password-hashes.rst:31
+msgid ""
+"As an alternative, Nubus for UCS offers :program:`bcrypt` as a hashing "
+"method for user account passwords. To activate :program:`bcrypt`, you "
+"must complete the following steps. If you don't complete these steps, you"
+" can't authenticate using a :program:`bcrypt` password hash."
+msgstr ""
+"Als Alternative bietet Nubus für UCS :program:`bcrypt` als Hash-Methode "
+"für Benutzerpasswörter an. Um :program:`bcrypt` zu aktivieren, "
+"müssen Sie die folgenden Schritte durchführen. Wenn Sie diese Schritte "
+"nicht durchführen, können Sie sich nicht mit einem :program:`bcrypt`-"
+"Passwort-Hash authentifizieren."
+
+#: ../../iam/password-management/password-hashes.rst:36
+msgid ""
+"Set the :term:`UCR variable` :envvar:`ldap/pw-bcrypt` to ``true`` on all "
+"LDAP servers."
+msgstr ""
+"Stellen Sie die :term:`UCR-Variable` :envvar:`ldap/pw-bcrypt` auf "
+"``true`` auf allen LDAP-Servern ein."
+
+#: ../../iam/password-management/password-hashes.rst:37
+msgid ""
+"Set the :term:`UCR variable` :envvar:`password/hashing/bcrypt` to "
+"``true`` on all LDAP servers to activate :program:`bcrypt` as the hashing"
+" method for setting or changing user passwords."
+msgstr ""
+"Stellen Sie die :term:`UCR-Variable` :envvar:`password/hashing/bcrypt` "
+"auf ``true`` auf allen LDAP-Servern ein, um :program:`bcrypt` als Hash-"
+"Methode zum Festlegen oder Ändern von Benutzerpasswörtern zu aktivieren."
+
+#: ../../iam/password-management/password-hashes.rst:41
+msgid ":program:`bcrypt` limits password length to a maximum of 72 characters."
+msgstr ":program:`bcrypt` begrenzt die Passwortlänge auf maximal 72 Zeichen."
+
+#: ../../iam/password-management/password-hashes.rst:46
+msgid "bcrypt settings"
+msgstr "bcrypt Einstellungen"
+
+#: ../../iam/password-management/password-hashes.rst:48
+msgid ""
+"Configure the :program:`bcrypt` hashing settings to tune the security-"
+"performance balance. These settings apply only to newly created password "
+"hashes. Existing hashes retain their original algorithm and settings."
+msgstr ""
+"Konfigurieren Sie die :program:`bcrypt` Hash-Einstellungen, um das "
+"Sicherheits-Leistungs-Gleichgewicht zu optimieren. Diese Einstellungen "
+"gelten nur für neu erstellte Passwort-Hashes. Vorhandene Hashes behalten "
+"ihren ursprünglichen Algorithmus und ihre Einstellungen bei."
+
+#: ../../iam/password-management/password-hashes.rst:52
+msgid ":envvar:`password/hashing/bcrypt/cost_factor`"
+msgstr ":envvar:`password/hashing/bcrypt/cost_factor`"
+
+#: ../../iam/password-management/password-hashes.rst:53
+msgid ""
+"Sets the bcrypt cost factor and increases security by slowing down "
+"hashing. Default: ``12``."
+msgstr ""
+"Setzt den bcrypt Kostenfaktor und erhöht die Sicherheit durch "
+"Verlangsamung des Hashings. Standard: ``12``."
+
+#: ../../iam/password-management/password-hashes.rst:56
+msgid ":envvar:`password/hashing/bcrypt/prefix`"
+msgstr ":envvar:`password/hashing/bcrypt/prefix`"
+
+#: ../../iam/password-management/password-hashes.rst:57
+msgid "Sets the bcrypt variant. Default: ``2b``."
+msgstr "Setzt die bcrypt Variante. Standard: ``2b``."
 
 #: ../../iam/password-management/policies.rst:8
 msgid "Password policies"
