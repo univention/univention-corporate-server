@@ -531,8 +531,7 @@ def check_and_create_component(kc_client, name, prov_id, payload_, force=False):
 
 def modify_component(kc_client, payload_):
     name = payload_["name"]
-    prov_id = payload_['providerId']
-    ldap_component_filter = {'name': name, 'providerId': prov_id, 'parentId': payload_['parentId']}
+    ldap_component_filter = {'name': name, 'parent': payload_['parentId']}
     ldap_component_list = kc_client.get_components(ldap_component_filter)
     if ldap_component_list:
         ldap_component = ldap_component_list.pop()
