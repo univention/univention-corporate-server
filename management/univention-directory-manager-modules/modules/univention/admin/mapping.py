@@ -381,6 +381,10 @@ def mapISO8601DateToGeneralizedTime(value: str, encoding=()) -> bytes:
     """
     Convert ISO8601 date to LDAP Dates (GeneralizedTime). Ignores timezones.
 
+    .. versionadded:: 5.2-6
+
+      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
+
     >>> mapISO8601DateToGeneralizedTime('2009-01-01')
     [b'20090101000000Z']
     """
@@ -396,6 +400,10 @@ def unmapGeneralizedTimeToISO8601Date(value: list[bytes], encoding=()) -> str:
     """
     Convert LDAP Dates (GeneralizedTime) to ISO8601 date. Ignores timezones.
 
+    .. versionadded:: 5.2-6
+
+      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
+
     >>> unmapGeneralizedTimeToISO8601Date([b'20090101000000Z'])
     '2009-01-01'
     """
@@ -407,6 +415,10 @@ def unmapGeneralizedTimeToISO8601Date(value: list[bytes], encoding=()) -> str:
 def mapISO8601DateTimeToGeneralizedTime(value: str, encoding=()) -> list[bytes]:
     """
     Convert ISO8601 date+time to LDAP Dates (GeneralizedTime). Ignores timezones.
+
+    .. versionadded:: 5.2-6
+
+      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
 
     >>> mapISO8601DateTimeToGeneralizedTime('2009-01-01 00:00:00')
     [b'20090101000000Z']
@@ -422,6 +434,10 @@ def mapISO8601DateTimeToGeneralizedTime(value: str, encoding=()) -> list[bytes]:
 def unmapGeneralizedTimeToISO8601DateTime(value: list[bytes], encoding=()) -> str:
     """
     Convert LDAP Dates (GeneralizedTime) to ISO8601 date+time. Ignores timezones.
+
+    .. versionadded:: 5.2-6
+
+      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
 
     >>> unmapGeneralizedTimeToISO8601DateTime([b'20090101000000Z'])
     '2009-01-01 00:00:00'

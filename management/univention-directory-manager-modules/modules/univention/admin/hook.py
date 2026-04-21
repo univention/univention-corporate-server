@@ -74,6 +74,10 @@ class simpleHook:
         :param value: The UDM property value
         :param encoding: Optional encoding information
         :returns: The list of LDAP attributes.
+
+        .. versionadded:: 5.2-6
+
+          The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
         """
         return univention.admin.mapping.MapToBytes(value, encoding)
 
@@ -84,6 +88,10 @@ class simpleHook:
         :param value: The list of LDAP attributes
         :param encoding: Optional encoding information
         :returns: The UDM property value.
+
+        .. versionadded:: 5.2-6
+
+          The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
         """
         return univention.admin.mapping.UnmapToUnicode(value, encoding)
 
