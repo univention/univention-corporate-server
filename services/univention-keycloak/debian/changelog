@@ -1,3 +1,9 @@
+univention-keycloak (3.5.1) unstable; urgency=medium
+
+  * Bug #59212: Drop providerId query parameter from modify_component filter
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Tue, 21 Apr 2026 16:14:41 +0300
+
 univention-keycloak (3.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
