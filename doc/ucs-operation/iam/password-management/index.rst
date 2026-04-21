@@ -29,6 +29,12 @@ This chapter covers password management in Nubus for UCS.
    for configuring password requirements in a Samba-enabled domain,
    including password length, history, age, and complexity settings.
 
+:ref:`password-management-hashes`
+   It describes how Nubus for UCS stores and hashes user passwords.
+   It covers the default SHA-512 hashing method
+   and the optional bcrypt hashing method,
+   including its activation requirements and tuning parameters.
+
 :ref:`end-user-self-service`
    It describes the installation, configuration, and features of the *End User Self Service*,
    including contact information management, user self-registration with email verification,
