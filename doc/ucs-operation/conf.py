@@ -169,6 +169,7 @@ linkcheck_allowed_redirects = {}
 
 linkcheck_ignore = [
     r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
+    r"https://www\.gnu\.org/software/grub/manual/grub/",  # rate limited
 ]
 
 univention_use_doc_base = True
