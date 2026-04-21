@@ -8,10 +8,7 @@ Document changelog
 ******************
 
 This section shows the history of updates to the *Nubus for UCS - Operation Manual*.
-
-.. TODO: Add publication date:
-
-   since its publication on 28. March 2024.
+The document was published on 28. March 2026 as work in progress document.
 
 Year 2026
 =========
@@ -23,6 +20,10 @@ Year 2026
    * - Date
      - Chapter or topic
      - Change
+
+   * - 21. Apr 2026
+     - :ref:`password-management-hashes`
+     - Add section about password hashes.
 
    * - 20. Apr 2026
      - :ref:`domain-infrastructure-kerberos`
