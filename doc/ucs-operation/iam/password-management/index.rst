@@ -39,4 +39,5 @@ This chapter covers password management in Nubus for UCS.
 
    policies
    samba-policies
+   password-hashes
    user-self-service
