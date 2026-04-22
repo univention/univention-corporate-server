@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-20 16:10+0000\n"
-"PO-Revision-Date: 2026-04-20 18:30+0200\n"
+"POT-Creation-Date: 2026-04-22 13:59+0000\n"
+"PO-Revision-Date: 2026-04-22 16:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -15,6 +15,190 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: ../../domain-infrastructure/activity-logging.rst:7
+msgid "Domain activity logging"
+msgstr "Protokollierung von Aktivitäten in der Domäne"
+
+#: ../../domain-infrastructure/activity-logging.rst:9
+msgid ""
+"The :program:`Admin Diary` app from *Univention App Center* records "
+"important events in the domain. It includes the following capabilities:"
+msgstr ""
+"Die App :program:`Admin Diary` aus dem *Univention App Center* erfasst "
+"wichtige Ereignisse in der Domäne. Sie bietet die folgenden Funktionen:"
+
+#: ../../domain-infrastructure/activity-logging.rst:12
+msgid ""
+"Creation, movement, modification, and deletion of user objects and other "
+"objects through the Univention Directory Manager."
+msgstr ""
+"Erstellen, Verschieben, Ändern und Löschen von Benutzerobjekten und anderen "
+"Objekten durch den Univention Directory Manager."
+
+#: ../../domain-infrastructure/activity-logging.rst:15
+msgid "Installation, update, and removal of apps."
+msgstr "Installation, Aktualisierung und Entfernung von Apps."
+
+#: ../../domain-infrastructure/activity-logging.rst:17
+msgid "Server password changes."
+msgstr "Änderungen an Serverpasswörtern."
+
+#: ../../domain-infrastructure/activity-logging.rst:19
+msgid "Start, end, and possible failures of domain joins."
+msgstr "Start, Ende und mögliche Fehler bei Domänenbeitritten."
+
+#: ../../domain-infrastructure/activity-logging.rst:21
+msgid "Start and end of Nubus for UCS updates."
+msgstr "Start und Ende von Aktualisierungen für Nubus für UCS."
+
+#: ../../domain-infrastructure/activity-logging.rst:26
+msgid "Admin Diary components"
+msgstr "Komponenten von Admin Diary"
+
+#: ../../domain-infrastructure/activity-logging.rst:28
+msgid "The app consists of the following components:"
+msgstr "Die App besteht aus den folgenden Komponenten:"
+
+#: ../../domain-infrastructure/activity-logging.rst:32
+msgid "Admin Diary backend"
+msgstr "Admin Diary Backend"
+
+#: ../../domain-infrastructure/activity-logging.rst:33
+msgid ""
+"The backend includes a customization for :program:`rsyslog` and writes to"
+" a central database, which defaults to PostgreSQL. If you have MariaDB or"
+" MySQL already installed on the target system, the backend uses it "
+"instead of PostgreSQL."
+msgstr ""
+"Das Backend umfasst eine Anpassung für :program:`rsyslog` und schreibt in "
+"eine zentrale Datenbank, die standardmäßig PostgreSQL ist. Wenn MariaDB "
+"oder MySQL bereits auf dem Zielsystem installiert sind, verwendet das "
+"Backend diese statt PostgreSQL."
+
+#: ../../domain-infrastructure/activity-logging.rst:40
+msgid "Admin Diary frontend"
+msgstr "Admin Diary Frontend"
+
+#: ../../domain-infrastructure/activity-logging.rst:41
+msgid ""
+"The frontend provides the *Admin Diary* management module to view and "
+"comment on diary entries."
+msgstr ""
+"Das Frontend stellt das Verwaltungsmodul *Admin Diary* bereit, um "
+"Einträge anzuzeigen und zu kommentieren."
+
+#: ../../domain-infrastructure/activity-logging.rst:47
+msgid "View and search diary entries"
+msgstr "Anzeigen und Durchsuchen von Einträgen"
+
+#: ../../domain-infrastructure/activity-logging.rst:49
+msgid ""
+":numref:`domain-activity-logging-figure` shows events in the *Admin "
+"Diary* management module. By default, the module groups entries by week. "
+"You can also filter them using the search field."
+msgstr ""
+":numref:`domain-activity-logging-figure` zeigt Ereignisse im "
+"Verwaltungsmodul *Admin Diary*. Standardmäßig gruppiert das Modul Einträge "
+"nach Woche. Sie können sie auch mit dem Suchfeld filtern."
+
+#: ../../domain-infrastructure/activity-logging.rst:55
+msgid "Events view in the Admin Diary management module"
+msgstr "Ereignisansicht im Verwaltungsmodul Admin Diary"
+
+#: ../../domain-infrastructure/activity-logging.rst:58
+msgid "Events view in the *Admin Diary* management module"
+msgstr "Ereignisansicht im Verwaltungsmodul *Admin Diary*"
+
+#: ../../domain-infrastructure/activity-logging.rst:60
+msgid ""
+"To view additional details about who triggered an event and when it "
+"occurred, select the entry from the list. A dialog similar to :numref"
+":`domain-activity-logging-detail-figure` appears. You can also add a "
+"comment to each event."
+msgstr ""
+"Um zusätzliche Informationen darüber anzuzeigen, wer ein Ereignis "
+"ausgelöst hat und wann es vorgekommen ist, wählen Sie den Eintrag aus der "
+"Liste aus. Ein Dialogfeld ähnlich wie in :numref:`domain-activity-logging-"
+"detail-figure` wird angezeigt. Sie können auch einen Kommentar zu jedem "
+"Ereignis hinzufügen."
+
+#: ../../domain-infrastructure/activity-logging.rst:67
+msgid "Detail view in Admin Diary management module"
+msgstr "Detailansicht im Verwaltungsmodul Admin Diary"
+
+#: ../../domain-infrastructure/activity-logging.rst:70
+msgid "Detail view in *Admin Diary* management module"
+msgstr "Detailansicht im Verwaltungsmodul *Admin Diary*"
+
+#: ../../domain-infrastructure/activity-logging.rst:75
+msgid "Set up Admin Diary"
+msgstr "Admin Diary einrichten"
+
+#: ../../domain-infrastructure/activity-logging.rst:77
+msgid "Install both components through *Univention App Center*."
+msgstr "Installieren Sie beide Komponenten über das *Univention App Center*."
+
+#: ../../domain-infrastructure/activity-logging.rst:82
+msgid "Install the backend"
+msgstr "Das Backend installieren"
+
+#: ../../domain-infrastructure/activity-logging.rst:84
+msgid ""
+"Use *Univention App Center* to install the *Admin Diary backend* app on "
+"exactly one Nubus for UCS system in the domain. Complete this step before"
+" installing the frontend."
+msgstr ""
+"Verwenden Sie das *Univention App Center*, um die App *Admin Diary "
+"Backend* auf genau einem Nubus für UCS System in der Domäne zu "
+"installieren. Führen Sie diesen Schritt vor der Installation des Frontends "
+"durch."
+
+#: ../../domain-infrastructure/activity-logging.rst:90
+msgid "Install the frontend"
+msgstr "Das Frontend installieren"
+
+#: ../../domain-infrastructure/activity-logging.rst:92
+msgid ""
+"Use *Univention App Center* to install the *Admin Diary frontend* app on "
+"at least one Nubus for UCS system."
+msgstr ""
+"Verwenden Sie das *Univention App Center*, um die App *Admin Diary "
+"Frontend* auf mindestens einem Nubus für UCS System zu installieren."
+
+#: ../../domain-infrastructure/activity-logging.rst:94
+msgid ""
+"If you install the frontend on the same host as the backend, you don't "
+"need any additional configuration. If you install it on a different host,"
+" see :ref:`domain-activity-logging-setup-separate-hosts`."
+msgstr ""
+"Wenn Sie das Frontend auf demselben Host wie das Backend installieren, "
+"benötigen Sie keine zusätzliche Konfiguration. Wenn Sie es auf einem "
+"anderen Host installieren, siehe :ref:`domain-activity-logging-setup-"
+"separate-hosts`."
+
+#: ../../domain-infrastructure/activity-logging.rst:102
+msgid "Configure database access for separate hosts"
+msgstr "Datenbankzugriff für separate Hosts konfigurieren"
+
+#: ../../domain-infrastructure/activity-logging.rst:104
+msgid ""
+"When the frontend and backend run on different hosts, configure the "
+"database access of the frontend manually. The backend stores its data in "
+"a central database, which defaults to PostgreSQL on the backend host."
+msgstr ""
+"Wenn das Frontend und Backend auf verschiedenen Hosts ausgeführt werden, "
+"konfigurieren Sie den Datenbankzugriff des Frontends manuell. Das Backend "
+"speichert seine Daten in einer zentralen Datenbank, die standardmäßig "
+"PostgreSQL auf dem System für das Backend ist."
+
+#: ../../domain-infrastructure/activity-logging.rst:109
+msgid ""
+"For the configuration steps, see :uv:kb:`Admin Diary - How to separate "
+"frontend and backend <11331>`."
+msgstr ""
+"Konfigurationsschritte finden Sie unter :uv:kb:`Admin Diary - How to "
+"separate frontend and backend <11331>`."
 
 #: ../../domain-infrastructure/domain-join.rst:7
 #: ../../domain-infrastructure/index.rst:26
@@ -1564,7 +1748,7 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
-#: ../../domain-infrastructure/index.rst:45
+#: ../../domain-infrastructure/index.rst:47
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1621,9 +1805,9 @@ msgid ""
 " the command line or management module, and manage join scripts for "
 "automated system configuration. See :ref:`domain-infrastructure-join`."
 msgstr ""
-"Ermöglichen Sie Systemen, Ihrer Nubus für UCS Domäne beizutreten. Erfahren "
-"Sie, wie UCS-, Windows-, Ubuntu- und macOS-Systeme der Domäne beitreten, "
-"konfigurieren Sie Domain Join über die Befehlszeile oder das "
+"Ermöglichen Sie Systemen, Ihrer Nubus für UCS Domäne beizutreten. "
+"Erfahren Sie, wie UCS-, Windows-, Ubuntu- und macOS-Systeme der Domäne "
+"beitreten, konfigurieren Sie Domain Join über die Befehlszeile oder das "
 "Verwaltungsmodul und verwalten Sie Join-Skripte für die automatisierte "
 "Systemkonfiguration. Siehe :ref:`domain-infrastructure-join`."
 
@@ -1638,9 +1822,9 @@ msgid ""
 "Kerberos administration server. See :ref:`domain-infrastructure-"
 "kerberos`."
 msgstr ""
-"Erfahren Sie, wie Nubus für UCS Kerberos für die Domain-Authentifizierung "
-"nutzt, wie das System das Key Distribution Center auswählt und wie Sie den "
-"Kerberos-Administrations-Server konfigurieren. Siehe :ref:`domain-"
+"Erfahren Sie, wie Nubus für UCS Kerberos für die Domain-Authentifizierung"
+" nutzt, wie das System das Key Distribution Center auswählt und wie Sie "
+"den Kerberos-Administrations-Server konfigurieren. Siehe :ref:`domain-"
 "infrastructure-kerberos`."
 
 #: ../../domain-infrastructure/index.rst:40
@@ -1680,8 +1864,8 @@ msgid ""
 "Kerberos network. When you sign in, the KDC issues a *ticket* that grants"
 " access to other services inside the Kerberos realm."
 msgstr ""
-"Das *Key Distribution Center* (KDC) ist die zentrale Vertrauensinstanz in "
-"einem Kerberos-Netzwerk. Wenn Sie sich anmelden, stellt das KDC ein "
+"Das *Key Distribution Center* (KDC) ist die zentrale Vertrauensinstanz in"
+" einem Kerberos-Netzwerk. Wenn Sie sich anmelden, stellt das KDC ein "
 "*Ticket* aus, das Zugriff auf andere Dienste im Kerberos-Realm gewährt."
 
 #: ../../domain-infrastructure/kerberos.rst:23
@@ -1714,8 +1898,8 @@ msgid ""
 "You can't change the Kerberos realm name after installation. Choose your "
 "realm name carefully."
 msgstr ""
-"Sie können den Namen des Kerberos-Realm nach der Installation nicht ändern. "
-"Wählen Sie den Namen für den Realm sorgfältig."
+"Sie können den Namen des Kerberos-Realm nach der Installation nicht "
+"ändern. Wählen Sie den Namen für den Realm sorgfältig."
 
 #: ../../domain-infrastructure/kerberos.rst:46
 msgid "Kerberos implementation in Nubus for UCS"
@@ -1742,8 +1926,8 @@ msgid ""
 msgstr ""
 "Sowohl UCS Directory Nodes als auch Samba/AD Domain Controller greifen "
 "auf die gleichen Kerberos-Daten zu. Der Univention S4 Connector "
-"synchronisiert zwischen Samba/AD und OpenLDAP. Weitere Informationen finden "
-"Sie unter :external+uv-ucs-manual:ref:`windows-s4-connector`."
+"synchronisiert zwischen Samba/AD und OpenLDAP. Weitere Informationen "
+"finden Sie unter :external+uv-ucs-manual:ref:`windows-s4-connector`."
 
 #: ../../domain-infrastructure/kerberos.rst:61
 msgid "KDC selection"
@@ -1755,9 +1939,9 @@ msgid ""
 "override the KDC for a specific system, set the :term:`UCR variable` "
 ":envvar:`kerberos/kdc`."
 msgstr ""
-"Standardmäßig bestimmen DNS-Service-Records, welchen KDC Ihr System nutzt. "
-"Um den KDC für ein bestimmtes System zu überschreiben, legen Sie die "
-":term:`UCR variable` :envvar:`kerberos/kdc` fest."
+"Standardmäßig bestimmen DNS-Service-Records, welchen KDC Ihr System "
+"nutzt. Um den KDC für ein bestimmtes System zu überschreiben, legen Sie "
+"die :term:`UCR variable` :envvar:`kerberos/kdc` fest."
 
 #: ../../domain-infrastructure/kerberos.rst:68
 msgid ""
@@ -1765,9 +1949,10 @@ msgid ""
 "changes to advertise only the Samba/AD KDCs. In a mixed environment, use "
 "only the Samba/AD KDCs."
 msgstr ""
-"Wenn Sie Samba/AD auf einem :spelling:word:`Domänenmitglied` installieren, ändert sich der "
-"DNS-Service-Record, um nur die Samba/AD KDCs anzuzeigen. Verwenden Sie in "
-"einer gemischten Umgebung nur die Samba/AD KDCs."
+"Wenn Sie Samba/AD auf einem :spelling:word:`Domänenmitglied` "
+"installieren, ändert sich der DNS-Service-Record, um nur die Samba/AD "
+"KDCs anzuzeigen. Verwenden Sie in einer gemischten Umgebung nur die "
+"Samba/AD KDCs."
 
 #: ../../domain-infrastructure/kerberos.rst:76
 msgid "Kerberos administration server"
@@ -1780,9 +1965,9 @@ msgid ""
 "for UCS reads most settings directly from the LDAP directory, the server "
 "primarily manages passwords."
 msgstr ""
-"Der Kerberos-Administrations-Server wird auf dem :term:`Primary Directory "
-"Node` ausgeführt. Er verwaltet die administrativen Einstellungen für die "
-"Domäne. Da Nubus für UCS die meisten Einstellungen direkt aus dem LDAP-"
+"Der Kerberos-Administrations-Server wird auf dem :term:`Primary Directory"
+" Node` ausgeführt. Er verwaltet die administrativen Einstellungen für die"
+" Domäne. Da Nubus für UCS die meisten Einstellungen direkt aus dem LDAP-"
 "Verzeichnis liest, verwaltet der Server hauptsächlich Passwörter."
 
 #: ../../domain-infrastructure/kerberos.rst:83
