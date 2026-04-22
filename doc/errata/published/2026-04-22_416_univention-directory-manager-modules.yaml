@@ -10,3 +10,6 @@ desc: |
    for extended attributes.
  * The license cache is not also evaluated for unlimited licenses.
 bug: [59150, 59215]
+erratum: 416
+announced: 2026-04-22
+support: core
