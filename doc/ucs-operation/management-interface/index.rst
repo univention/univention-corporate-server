@@ -28,11 +28,10 @@ Web interface themes
    or create a custom theme to match your organization's branding.
    See :ref:`management-interface-theming`.
 
-.. TODO: Add introduction for management interface section.
-
 .. toctree::
    :caption: Contents
 
    auth
    license
    theme
+   directory-reports
