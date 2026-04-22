@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 22. Apr 2026
+     - :ref:`domain-activity-logging`
+     - Add section about logging of domain activity.
+
    * - 21. Apr 2026
      - :ref:`password-management-hashes`
      - Add section about password hashes.
