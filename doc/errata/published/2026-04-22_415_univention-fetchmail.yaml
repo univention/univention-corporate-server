@@ -9,3 +9,6 @@ desc: |
  * The UDM hooks have been adjusted to be compatible with delegative
    administration.
 bug: [59150]
+erratum: 415
+announced: 2026-04-22
+support: core
