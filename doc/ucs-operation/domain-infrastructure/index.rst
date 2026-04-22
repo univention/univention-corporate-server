@@ -42,6 +42,8 @@ Redundancy and failover for the Primary Directory Node
    and by promoting a Backup Directory Node to Primary when needed.
    See :ref:`deployment-primary-dn-resilience`.
 
+.. TODO: Add description for domain activity logging
+
 .. toctree::
    :caption: Contents
 
@@ -49,3 +51,4 @@ Redundancy and failover for the Primary Directory Node
    domain-join
    kerberos
    ha
+   activity-logging
