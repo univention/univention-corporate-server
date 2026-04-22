@@ -77,7 +77,7 @@ class simpleHook:
 
         .. versionadded:: 5.2-6
 
-          The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+          This mapping function is available since :uv:erratum:`5.2x416`.
         """
         return univention.admin.mapping.MapToBytes(value, encoding)
 
@@ -91,7 +91,7 @@ class simpleHook:
 
         .. versionadded:: 5.2-6
 
-          The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+          This mapping function is available since :uv:erratum:`5.2x416`.
         """
         return univention.admin.mapping.UnmapToUnicode(value, encoding)
 

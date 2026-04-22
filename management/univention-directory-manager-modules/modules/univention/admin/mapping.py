@@ -383,7 +383,7 @@ def mapISO8601DateToGeneralizedTime(value: str, encoding=()) -> bytes:
 
     .. versionadded:: 5.2-6
 
-      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+      The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
     >>> mapISO8601DateToGeneralizedTime('2009-01-01')
     [b'20090101000000Z']
@@ -402,7 +402,7 @@ def unmapGeneralizedTimeToISO8601Date(value: list[bytes], encoding=()) -> str:
 
     .. versionadded:: 5.2-6
 
-      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+      The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
     >>> unmapGeneralizedTimeToISO8601Date([b'20090101000000Z'])
     '2009-01-01'
@@ -418,7 +418,7 @@ def mapISO8601DateTimeToGeneralizedTime(value: str, encoding=()) -> list[bytes]:
 
     .. versionadded:: 5.2-6
 
-      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+      The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
     >>> mapISO8601DateTimeToGeneralizedTime('2009-01-01 00:00:00')
     [b'20090101000000Z']
@@ -437,7 +437,7 @@ def unmapGeneralizedTimeToISO8601DateTime(value: list[bytes], encoding=()) -> st
 
     .. versionadded:: 5.2-6
 
-      The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+      The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
     >>> unmapGeneralizedTimeToISO8601DateTime([b'20090101000000Z'])
     '2009-01-01 00:00:00'
