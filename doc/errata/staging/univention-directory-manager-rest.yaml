@@ -9,4 +9,4 @@ desc: |
  * Fixed a regression from erratum 410 for client authenticated via OIDC where
    the DN of authenticated users caused a case sensitive DN comparision to
    fail.
-bug: [59176]
+bug: [59215]
