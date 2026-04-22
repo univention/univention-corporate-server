@@ -1082,7 +1082,10 @@ class UUID(string):
 
     @classmethod
     def parse(cls, text):
-        if str(uuid.UUID(text, version=4)) != text and str(uuid.UUID(text, version=1)) != text:
+        try:
+            if str(uuid.UUID(text, version=4)) != text and str(uuid.UUID(text, version=1)) != text:
+                raise univention.admin.uexceptions.valueError(_('The value must be a valid UUID1 or UUID4 string.'))
+        except ValueError:
             raise univention.admin.uexceptions.valueError(_('The value must be a valid UUID1 or UUID4 string.'))
         return text
 

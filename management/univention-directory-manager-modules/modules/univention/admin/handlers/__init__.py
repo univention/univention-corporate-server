@@ -43,6 +43,7 @@ import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin import configRegistry
+from univention.admin.layout import Tab
 from univention.admindiary.client import write_event
 from univention.admindiary.events import DiaryEvent
 from univention.dn import DN
@@ -275,6 +276,11 @@ class simpleLdap:
             module.property_descriptions.update(prop)
         if hasattr(module, 'default_property_descriptions') and 'univentionObjectIdentifier' not in module.default_property_descriptions:
             module.default_property_descriptions.update(copy.deepcopy(prop))
+        if not hasattr(module, 'layout'):
+            module.layout = []
+        module.layout.insert(min(len(module.layout), 1), Tab(_('Technical information'), '', advanced=True, layout=[
+            'univentionObjectIdentifier',
+        ]))
 
     @property
     def authz(self):
