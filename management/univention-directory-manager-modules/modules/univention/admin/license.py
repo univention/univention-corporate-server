@@ -277,19 +277,13 @@ class License:
         return (x > y) - (x < y)
 
     def __countObject(self, obj, lo):
-        version = self.version
-        if not self.licenses[version][obj] or self.licenses[version][obj] == 'unlimited':
-            return 0
-
-        if self.real[version][obj] != 0:
-            return self.real[version][obj]
-
         licenses = lo.authz_connection.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]), attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'])
         try:
             _, attrs = licenses[0]
         except IndexError:
             attrs = {}
 
+        version = self.version
         usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
         value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
 
@@ -325,13 +319,13 @@ class License:
 
         Returns dict with 'users', 'servers', 'clients' counts.
         """
-        version = self.version
         dns = lo.authz_connection.searchDn(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
         if not dns:
             log.warning('No license object found, cannot update cache')
             return {'users': 0, 'servers': 0, 'clients': 0}
         dn = dns[0]
 
+        version = self.version
         counts = {}
         for obj, name in [(License.USERS, 'users'), (License.SERVERS, 'servers'), (License.MANAGEDCLIENTS, 'clients')]:
             result = lo.authz_connection.searchDn(filter=self.filters[version][obj])

@@ -3,9 +3,10 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-directory-manager-modules
-fix: 17.5.13
+fix: 17.5.14
 desc: |
  This update addresses the following issue:
  * The hooks API has been extended to support `map()` and `unmap()` methods
    for extended attributes.
-bug: [59150]
+ * The license cache is not also evaluated for unlimited licenses.
+bug: [59150, 59215]
