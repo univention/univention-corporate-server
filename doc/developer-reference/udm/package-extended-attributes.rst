@@ -548,7 +548,7 @@ inheritance.
 
       .. versionadded:: 5.2-6
 
-         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
+         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
       :param Any value: The UDM property value
       :param tuple encoding: Optional encoding information
@@ -561,7 +561,7 @@ inheritance.
 
       .. versionadded:: 5.2-6
 
-         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
+         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
       :param list[bytes] value: The list of LDAP attributes
       :param tuple encoding: Optional encoding information
@@ -733,7 +733,7 @@ Examples
 
   .. versionadded:: 5.2-6
 
-    The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x414`.
+    The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
   .. code-block:: python
 
