@@ -983,6 +983,8 @@ class UDM_Module:
                 if isinstance(prop.base_default, list | tuple):
                     if prop.multivalue and prop.base_default and isinstance(prop.base_default[0], list | tuple):
                         item['default'] = prop.base_default
+                    elif callable(prop.base_default[0]):
+                        item['default'] = None
                     else:
                         item['default'] = prop.base_default[0]
                 else:
