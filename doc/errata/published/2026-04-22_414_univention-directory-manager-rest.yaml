@@ -10,3 +10,6 @@ desc: |
    the DN of authenticated users caused a case sensitive DN comparision to
    fail.
 bug: [59215]
+erratum: 414
+announced: 2026-04-22
+support: core
