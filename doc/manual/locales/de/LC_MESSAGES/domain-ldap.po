@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-21 15:31+0000\n"
-"PO-Revision-Date: 2026-04-21 17:32+0200\n"
+"POT-Creation-Date: 2026-04-22 09:54+0000\n"
+"PO-Revision-Date: 2026-04-22 11:55+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -23,108 +23,11 @@ msgstr "Protokollierung von Aktivitäten in der Domäne"
 
 #: ../../domain-ldap/admin-diary.rst:9
 msgid ""
-"The :program:`Admin Diary` app provides the facility to log important "
-"events happening in the domain. This includes among others:"
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-activity-logging` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Über die :program:`Admin Diary` App besteht die Möglichkeit, wichtige "
-"Ereignisse in der Domäne zu protokollieren. Dazu gehören unter anderem:"
-
-#: ../../domain-ldap/admin-diary.rst:12
-msgid ""
-"Creation, move, modification and deletion of users and other objects "
-"using |UCSUDM|"
-msgstr ""
-"Das Anlegen, Verschieben, Verändern oder Löschen von Benutzern und "
-"anderen Objekten über |UCSUDM|"
-
-#: ../../domain-ldap/admin-diary.rst:15
-msgid "Installation, update and deinstallation of apps"
-msgstr "Installation, Update und Deinstallation von Apps"
-
-#: ../../domain-ldap/admin-diary.rst:17
-msgid "Server password changes"
-msgstr "Server-Passwort-Änderungen"
-
-#: ../../domain-ldap/admin-diary.rst:19
-msgid "Start, end and eventual failures of domain joins"
-msgstr "Start, Ende und eventuelle Fehler bei Domänenbeitritten"
-
-#: ../../domain-ldap/admin-diary.rst:21
-msgid "Start and end of UCS updates"
-msgstr "Start und Ende von UCS Updates"
-
-#: ../../domain-ldap/admin-diary.rst:25 ../../domain-ldap/admin-diary.rst:28
-msgid "View of events in Admin Diary"
-msgstr "Ansicht der Ereignisse im Admin Diary"
-
-#: ../../domain-ldap/admin-diary.rst:30
-msgid ""
-":numref:`domain-ldap-admindiary-list` shows, how events are shown in the "
-"UMC module :guilabel:`Admin Diary`. By default the displayed entries are "
-"grouped by week and can additionally be filtered through the search "
-"field. Selecting an entry from the list opens a dialog showing additional"
-" details about the who and when of the event, as shown in :numref"
-":`domain-ldap-admindiary-detail`. Moreover there is the possibility to "
-"comment each event."
-msgstr ""
-":numref:`domain-ldap-admindiary-list` zeigt, wie die Ereignisse im UMC-"
-"Modul :guilabel:`Admin Diary` dargestellt werden. Die angezeigten "
-"Einträge werden standardmäßig wochenweise gruppiert und können über das "
-"Suchfeld weiter eingegrenzt werden. Durch das Auswählen eines Eintrags "
-"gelangt man zu einer Detailansicht, wie sie in :numref:`domain-ldap-"
-"admindiary-detail` zu sehen ist. Dieser kann man weitere Details zum Wo "
-"und Wann entnehmen. Zudem besteht die Möglichkeit, das Ereignis zu "
-"kommentieren."
-
-#: ../../domain-ldap/admin-diary.rst:39 ../../domain-ldap/admin-diary.rst:42
-msgid "Detail view in Admin Diary"
-msgstr "Detailansicht im Admin Diary"
-
-#: ../../domain-ldap/admin-diary.rst:44
-msgid "The app consists of two components:"
-msgstr "Die App besteht aus zwei Komponenten:"
-
-#: ../../domain-ldap/admin-diary.rst:46
-msgid "Admin Diary backend"
-msgstr "Admin Diary Backend"
-
-#: ../../domain-ldap/admin-diary.rst:47
-msgid ""
-"The backend must be installed on one system in the domain before the "
-"frontend can be installed. It includes a customization for "
-":program:`rsyslog` and writes into a central database, which defaults to "
-"PostgreSQL. If MariaDB or MySQL is already installed on the target "
-"system, it will be used instead of PostgreSQL."
-msgstr ""
-"Das Backend muss auf einem System in der Domäne installiert sein, bevor "
-"das Frontend installiert werden kann. Es beinhaltet eine Anpassung für "
-":program:`rsyslog` und schreibt in eine zentrale Datenbank, standardmäßig"
-" PostgreSQL. Falls MariaDB oder MySQL vorher auf dem Zielsystem "
-"installiert ist, dann wird es statt PostgreSQL verwendet."
-
-#: ../../domain-ldap/admin-diary.rst:53
-msgid "Admin Diary frontend"
-msgstr "Admin Diary Frontend"
-
-#: ../../domain-ldap/admin-diary.rst:54
-msgid ""
-"Likewise the frontend must be installed at least once, but more "
-"installations are also possible. The frontend includes the UMC module "
-":guilabel:`Admin Diary`, which is used to show and comment the entries. "
-"When installing it on a different host than where the backend is "
-"installed, access to the central database needs to be configured "
-"manually. The required steps for this are described in `Admin Diary - How"
-" to separate frontend and backend <univention-kb-admin-diary-separate-"
-"frontend-backend_>`_."
-msgstr ""
-"Auch das Frontend muss mindestens einmal installiert sein, kann aber "
-"öfter installiert werden. Das Frontend beinhaltet das UMC-Modul "
-":guilabel:`Admin Diary`, um die Einträge anzuzeigen und zu kommentieren. "
-"Wenn es nicht auf dem selben System installiert werden soll, auf dem das "
-"Backend läuft, dann muss der Zugriff auf die zentrale Datenbank manuell "
-"eingerichtet werden. Die dazu notwendigen Schritte sind in `Admin Diary -"
-" How to separate front end and back end <univention-kb-admin-diary-"
-"separate-frontend-backend_>`_ beschrieben."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`domain-activity-logging` in :cite:t:`uv-ucs-operation` verschoben."
 
 #: ../../domain-ldap/backup2master.rst:7
 msgid "Converting a |UCSBACKUPDN| backup to the new |UCSPRIMARYDN|"
