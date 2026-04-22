@@ -6,55 +6,105 @@
 Domain activity logging
 =======================
 
-The :program:`Admin Diary` app provides the facility to log important events happening in
-the domain. This includes among others:
+The :program:`Admin Diary` app from *Univention App Center* records important events in the domain.
+It includes the following capabilities:
 
-* Creation, move, modification and deletion of users and other objects using
-  |UCSUDM|
+* Creation, movement, modification, and deletion of user objects and other objects
+  through the Univention Directory Manager.
 
-* Installation, update and deinstallation of apps
+* Installation, update, and removal of apps.
 
-* Server password changes
+* Server password changes.
 
-* Start, end and eventual failures of domain joins
+* Start, end, and possible failures of domain joins.
 
-* Start and end of UCS updates
+* Start and end of Nubus for UCS updates.
 
-.. _domain-ldap-admindiary-list:
+.. _domain-activity-logging-admin-diary-components:
 
-.. figure:: /images/admindiary-list.*
-   :alt: View of events in Admin Diary
+Admin Diary components
+----------------------
 
-   View of events in Admin Diary
+The app consists of the following components:
 
-:numref:`domain-ldap-admindiary-list` shows, how events are shown in the UMC
-module :guilabel:`Admin Diary`. By default the displayed entries are grouped by
-week and can additionally be filtered through the search field. Selecting an
-entry from the list opens a dialog showing additional details about the who and
-when of the event, as shown in :numref:`domain-ldap-admindiary-detail`.
-Moreover there is the possibility to comment each event.
-
-.. _domain-ldap-admindiary-detail:
-
-.. figure:: /images/admindiary-detail.*
-   :alt: Detail view in Admin Diary
-
-   Detail view in Admin Diary
-
-The app consists of two components:
+.. _domain-activity-logging-admin-diary-backend:
 
 Admin Diary backend
-   The backend must be installed on one system in the domain before the frontend
-   can be installed. It includes a customization for :program:`rsyslog` and
-   writes into a central database, which defaults to PostgreSQL. If MariaDB or
-   MySQL is already installed on the target system, it will be used instead of
-   PostgreSQL.
+   The backend includes a customization for :program:`rsyslog`
+   and writes to a central database, which defaults to PostgreSQL.
+   If you have MariaDB or MySQL already installed on the target system,
+   the backend uses it instead of PostgreSQL.
+
+.. _domain-activity-logging-admin-diary-frontend:
 
 Admin Diary frontend
-   Likewise the frontend must be installed at least once, but more installations
-   are also possible. The frontend includes the UMC module :guilabel:`Admin
-   Diary`, which is used to show and comment the entries. When installing it on
-   a different host than where the backend is installed, access to the central
-   database needs to be configured manually. The required steps for this are
-   described in `Admin Diary - How to separate frontend and backend
-   <univention-kb-admin-diary-separate-frontend-backend_>`_.
+   The frontend provides the *Admin Diary* management module
+   to view and comment on diary entries.
+
+.. _domain-activity-logging-view-and-search:
+
+View and search diary entries
+-----------------------------
+
+:numref:`domain-activity-logging-figure` shows events in the *Admin Diary* management module.
+By default, the module groups entries by week.
+You can also filter them using the search field.
+
+.. _domain-activity-logging-figure:
+
+.. figure:: /images/admindiary-list.*
+   :alt: Events view in the Admin Diary management module
+
+   Events view in the *Admin Diary* management module
+
+To view additional details about who triggered an event and when it occurred,
+select the entry from the list.
+A dialog similar to :numref:`domain-activity-logging-detail-figure` appears.
+You can also add a comment to each event.
+
+.. _domain-activity-logging-detail-figure:
+
+.. figure:: /images/admindiary-detail.*
+   :alt: Detail view in Admin Diary management module
+
+   Detail view in *Admin Diary* management module
+
+.. _domain-activity-logging-setup:
+
+Set up Admin Diary
+------------------
+
+Install both components through *Univention App Center*.
+
+.. _domain-activity-logging-setup-backend:
+
+Install the backend
+~~~~~~~~~~~~~~~~~~~
+
+Use *Univention App Center* to install the *Admin Diary backend* app on exactly one Nubus for UCS system in the domain.
+Complete this step before installing the frontend.
+
+.. _domain-activity-logging-setup-frontend:
+
+Install the frontend
+~~~~~~~~~~~~~~~~~~~~
+
+Use *Univention App Center* to install the *Admin Diary frontend* app on at least one Nubus for UCS system.
+
+If you install the frontend on the same host as the backend,
+you don't need any additional configuration.
+If you install it on a different host,
+see :ref:`domain-activity-logging-setup-separate-hosts`.
+
+.. _domain-activity-logging-setup-separate-hosts:
+
+Configure database access for separate hosts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the frontend and backend run on different hosts,
+configure the database access of the frontend manually.
+The backend stores its data in a central database,
+which defaults to PostgreSQL on the backend host.
+
+For the configuration steps,
+see :uv:kb:`Admin Diary - How to separate frontend and backend <11331>`.
