@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * The syntax of DNs is now validated in `univention-replicate-one`.
 bug: [33898]
+erratum: 412
+announced: 2026-04-22
+support: core
