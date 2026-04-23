@@ -268,7 +268,6 @@ class simpleLdap:
                 long_description=_('Immutable attribute univentionObjectIdentifier to track the identity of an object in UDM'),
                 syntax=univention.admin.syntax.UUID,
                 may_change=False,
-                dontsearch=True,
                 default=(lambda o, p: str(uuid.uuid4()) if configRegistry.is_true('directory/manager/object-identifier/autogeneration') else None, [], []),
             ),
         }
