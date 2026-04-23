@@ -178,6 +178,7 @@ def create_mapping(configbasename='connector'):
                 univention.connector.ad.set_userPrincipalName_from_ucr,
                 univention.connector.ad.password.password_sync_ucs if configRegistry.is_false(connector('%s/ad/mapping/user/password/disabled'), True) else None,
                 univention.connector.ad.password.lockout_sync_from_ucs,
+                univention.connector.ad.mark_user_password_required,
                 univention.connector.ad.primary_group_sync_from_ucs,
                 univention.connector.ad.object_memberships_sync_from_ucs,
                 univention.connector.ad.disable_user_from_ucs,

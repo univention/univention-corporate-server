@@ -104,6 +104,10 @@ def disable_user_to_ucs(connector, key, object):
     return connector.disable_user_to_ucs(key, object)
 
 
+def mark_user_password_required(connector, key, object):
+    return connector.mark_user_password_required(key, object)
+
+
 def fix_dn_in_search(result):
     return [(fix_dn(dn), attrs) for dn, attrs in result]
 
@@ -1903,6 +1907,22 @@ class ad(univention.connector.ucs):
 
         if modified:
             ucs_admin_object.modify()
+
+    def mark_user_password_required(self, key, object):
+        ldap_object_ad = self.get_object(object['dn'])
+
+        modlist = []
+
+        UF_PASSWD_NOTREQD = 0x20
+        uac = int(ldap_object_ad.get('userAccountControl', [b'0'])[0])
+        if uac & UF_PASSWD_NOTREQD:
+            uac &= ~UF_PASSWD_NOTREQD
+            # unset user has "password not required" flag
+            modlist.append((ldap.MOD_REPLACE, 'userAccountControl', [str(uac).encode('ASCII')]))
+
+        if modlist:
+            log.debug('mark_user_password_required: modlist: %s', modlist)
+            self.lo_ad.lo.modify_s(object['dn'], modlist)
 
     def ucs_object_ignored(self, ad_dn, property_key):
         ignored = True
