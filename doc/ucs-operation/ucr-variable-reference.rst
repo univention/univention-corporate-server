@@ -200,6 +200,133 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+.. envvar:: directory/reports/cleanup/age
+
+   Specifies the maximum age of a report file in seconds
+   before the cleanup cron job removes it.
+   If the variable is unset,
+   the system uses a default of ``43200`` seconds (12 hours).
+
+   For information about configuring report cleanup,
+   see :ref:`management-interface-directory-reports-create-umc`.
+
+   :Default value: ``43200``
+   :Type: integer
+
+
+.. envvar:: directory/reports/cleanup/cron
+
+   Specifies when the cron job runs to remove expired report files.
+   Use standard cron schedule syntax.
+   For the syntax, run :command:`man 5 crontab`.
+   The cleanup job removes reports that exceed the age
+   configured in :envvar:`directory/reports/cleanup/age`.
+
+   For information about configuring report cleanup,
+   see :ref:`management-interface-directory-reports-create-umc`.
+
+   :Default value: ``0 0 * * *``
+   :Type: cron
+
+
+.. envvar:: directory/reports/logo
+
+   Specifies the path to an image file
+   to use as the logo in the header of PDF reports.
+   You can use common image formats such as JPEG, PNG, and GIF.
+   The system scales the image to a fixed width of 5.0 cm.
+
+   For information about customizing report appearance,
+   see :ref:`management-interface-directory-reports-customize`.
+
+   :Default value: ``/usr/share/univention-directory-reports/univention_logo.png``
+   :Type: string
+
+.. envvar:: directory/reports/templates/csv/.*
+
+   Registers a CSV report template for a specific object type.
+   The variable name follows the pattern
+   :samp:`directory/reports/templates/csv/{NAME}`,
+   where :samp:`{NAME}` is an arbitrary identifier, for example ``user1``.
+
+   The value consists of four space-separated fields:
+
+   .. code-block:: none
+
+      <module> "<report name>" <directory> <template file>
+
+   ``<module>``
+      The UDM module the report applies to,
+      for example ``users/user``, ``groups/group``, or ``computers/computer``.
+
+   ``"<report name>"``
+      The display name shown in the management module.
+      Enclose the name in double quotes.
+
+   ``<directory>``
+      The path to the directory containing the template file.
+
+   ``<template file>``
+      The CSV template filename relative to ``<directory>``.
+
+   Example:
+
+   .. code-block:: none
+
+      users/user "CSV Report" /etc/univention/directory/reports/default users.csv
+
+   For information about creating and registering report templates,
+   see :ref:`management-interface-directory-reports-customize`.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: directory/reports/templates/pdf/.*
+
+   Registers a PDF report template for a specific object type.
+   The variable name follows the pattern
+   :samp:`directory/reports/templates/pdf/{NAME}`,
+   where :samp:`{NAME}` is an arbitrary identifier, for example ``user1``.
+
+   The value consists of four space-separated fields:
+
+   .. code-block:: none
+
+      <module> "<report name>" <directory> <template file>
+
+   ``<module>``
+      The UDM module the report applies to,
+      for example ``users/user``, ``groups/group``, or ``computers/computer``.
+
+   ``"<report name>"``
+      The display name shown in the management module.
+      Enclose the name in double quotes.
+
+   ``<directory>``
+      The path to the directory containing the template file.
+      The system resolves the actual template file from a language-specific subdirectory
+      of ``<directory>``, for example :file:`de_DE/` or :file:`en_US/`.
+      If no language subdirectory exists,
+      it loads the template directly from ``<directory>``.
+
+   ``<template file>``
+      The template filename relative to the resolved directory.
+      Use ``.rml`` files for RML-based PDF reports
+      and ``.tex`` files for LaTeX-based PDF reports.
+
+   Example:
+
+   .. code-block:: none
+
+      users/user "PDF Document" /etc/univention/directory/reports/default users.rml
+
+   For information about creating and registering report templates,
+   see :ref:`management-interface-directory-reports-customize`.
+
+   :Default value: not set
+   :Type: string
+
 
 .. envvar:: dns/forwarder1
 
