@@ -1,3 +1,9 @@
+univention-web (6.5.2) unstable; urgency=medium
+
+  * Bug #59217: fix DateTime widget
+
+ -- Florian Best <best@univention.de>  Fri, 24 Apr 2026 09:14:26 +0200
+
 univention-web (6.5.1) unstable; urgency=medium
 
   [ Marius Meschter ]

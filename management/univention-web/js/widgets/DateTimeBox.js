@@ -7,58 +7,75 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	// "dojo/promise/all",
 	"umc/widgets/DateBox",
 	"umc/widgets/TimeBox",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
+	"umc/render",
 	"umc/tools",
-], function(declare, lang, DateBox, TimeBox, ContainerWidget, _FormWidgetMixin, tools) {
+], function(declare, lang, /*all,*/ DateBox, TimeBox, ContainerWidget, _FormWidgetMixin, render, tools) {
 
-	return declare("umc.widgets.DateBox", [ ContainerWidget, _FormWidgetMixin ], {
+	return declare("umc.widgets.DateTimeBox", [ ContainerWidget, _FormWidgetMixin ], {
 		_dateBox: null,
 		_timeBox: null,
 
 		disabled: false,
 
-		postMixInProperties: function() {
-			this.inherited(arguments);
-		},
-
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._dateBox = this.own(new DateBox({
+			// render the widgets and layout them
+			this._widgets = render.widgets([{
+				type: DateBox,
 				name: this.name + '-date',
-				disabled: this.disabled
-			}))[0];
-			this.addChild(this._dateBox);
-
-			this._timeBox = this.own(new TimeBox({
+				disabled: this.disabled,
+				required: this.required
+			}, {
+				type: TimeBox,
 				name: this.name + '-time',
-				disabled: this.disabled
-			}))[0];
-			this.addChild(this._timeBox);
+				disabled: this.disabled,
+				required: this.required
+			}], this);
 
-			// hook to the onChange event
+			this._dateBox = this._widgets[this.name + '-date'];
+			this._timeBox = this._widgets[this.name + '-time'];
+			this._container = render.layout([[this.name + '-date', this.name + '-time']], this._widgets);
+
+			// register for value changes
 			this.own(this._dateBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				this._set('value', newVal + 'T' + this._timeBox.get('value') + ':00');
 			})));
 			this.own(this._timeBox.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
 				this._set('value', this._dateBox.get('value') + 'T' + newVal + ':00');
 			})));
+
+			this.addChild(this._container);
 		},
+
+		// ready: function() {
+		// 	return all([this._dateBox.ready(), this._timeBox.ready(), this.inherited(arguments)]);
+		// },
 
 		// return ISO8601/RFC3339 format (YYYY-MM-DDTHH:MM:SS) as string or null if no date is set
 		_getValueAttr: function() {
-			return this._dateBox.get('value') + 'T' + this._timeBox.get('value');
+			var date = this._dateBox.get('value');
+			var time = this._timeBox.get('value');
+
+			if (!date || !time) {
+				return null;
+			}
+			return date + 'T' + time + ':00';
 		},
 
 		_setValueAttr: function(/*String|Date*/ newVal) {
+			var date, time;
 			if (typeof newVal === 'string') {
-				const [date, time] = newVal.split("T");
+				var sep = newVal.includes('T') ? 'T' : ' ';
+				[date, time] = newVal.split(sep);
 			} else {
-				const date = newVal;
-				const time = newVal;
+				date = newVal;
+				time = newVal;
 			}
 			this._dateBox.set('value', date);
 			this._timeBox.set('value', time);

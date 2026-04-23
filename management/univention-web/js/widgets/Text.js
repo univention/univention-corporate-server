@@ -7,9 +7,10 @@
 define([
 	"dojo/_base/declare",
 	"dojo/dom-class",
+	"dojox/html/entities",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin"
-], function(declare, domClass, _WidgetBase, _TemplatedMixin) {
+], function(declare, domClass, entities, _WidgetBase, _TemplatedMixin) {
 	return declare("umc.widgets.Text", [_WidgetBase, _TemplatedMixin], {
 		// summary:
 		//		Simple widget that displays a given label, e.g., some text to
@@ -38,6 +39,10 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 			this.set('content', this._tmpContent);
+		},
+
+		_setValueAttr: function(content) {
+			this.set('content', entities.encode(content));
 		},
 
 		_setContentAttr: function(content) {
