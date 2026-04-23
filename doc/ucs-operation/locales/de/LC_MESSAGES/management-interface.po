@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-23 13:51+0000\n"
-"PO-Revision-Date: 2026-03-23 21:04+0100\n"
+"POT-Creation-Date: 2026-04-23 13:37+0000\n"
+"PO-Revision-Date: 2026-04-23 15:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -260,8 +260,8 @@ msgid ""
 "listing`."
 msgstr ""
 "Um die Konfiguration anzuwenden, starten Sie den *Portal Server* auf "
-"jedem UCS Knoten mit dem Befehl in :numref:`management-interface-auth-sso-saml-"
-"restart-listing` neu."
+"jedem UCS Knoten mit dem Befehl in :numref:`management-interface-auth-"
+"sso-saml-restart-listing` neu."
 
 #: ../../management-interface/auth.rst:146
 msgid "Restart *Portal* service"
@@ -358,8 +358,8 @@ msgid ""
 "Revert the steps in :ref:`management-interface-auth-sso-saml-update-"
 "portal`."
 msgstr ""
-"Kehren Sie die Schritte in :ref:`management-interface-auth-sso-saml-update-"
-"portal` um."
+"Kehren Sie die Schritte in :ref:`management-interface-auth-sso-saml-"
+"update-portal` um."
 
 #: ../../management-interface/auth.rst:196
 msgid ""
@@ -458,7 +458,8 @@ msgid ""
 "listing`."
 msgstr ""
 "Ändern Sie die UCR-Variable :envvar:`umc/web/oidc/enabled` auf ``true`` "
-"mit dem Befehl in :numref:`management-interface-auth-sso-oidc-activate-listing`."
+"mit dem Befehl in :numref:`management-interface-auth-sso-oidc-activate-"
+"listing`."
 
 #: ../../management-interface/auth.rst:238
 msgid "Activate OpenID Connect and deactivate SAML"
@@ -480,7 +481,8 @@ msgid ""
 ":`management-interface-auth-sso-oidc-activate-join-script-listing`."
 msgstr ""
 "Führen Sie das Join-Skript für den UMC Webserver mit dem Befehl in "
-":numref:`management-interface-auth-sso-oidc-activate-join-script-listing` aus."
+":numref:`management-interface-auth-sso-oidc-activate-join-script-listing`"
+" aus."
 
 #: ../../management-interface/auth.rst:249
 msgid "Run join script for the UMC web server"
@@ -505,8 +507,8 @@ msgid ""
 "The default value is ``ucs``."
 msgstr ""
 "Ändern Sie die UCR-Variable :envvar:`portal/auth-mode` auf ``oidc`` mit "
-"dem Befehl in :numref:`management-interface-auth-sso-oidc-portal-listing`. Der "
-"Standardwert ist ``ucs``."
+"dem Befehl in :numref:`management-interface-auth-sso-oidc-portal-"
+"listing`. Der Standardwert ist ``ucs``."
 
 #: ../../management-interface/auth.rst:263
 msgid "Set *Portal* authentication mode to OIDC"
@@ -523,8 +525,8 @@ msgid ""
 "listing`."
 msgstr ""
 "Um die Konfiguration anzuwenden, starten Sie den *Portal Server* auf "
-"jedem UCS Knoten mit dem Befehl in :numref:`management-interface-auth-sso-saml-"
-"restart-listing` neu."
+"jedem UCS Knoten mit dem Befehl in :numref:`management-interface-auth-"
+"sso-saml-restart-listing` neu."
 
 #: ../../management-interface/auth.rst:276
 msgid "Create sign-in links"
@@ -641,8 +643,8 @@ msgid ""
 msgstr ""
 "Um die Änderungen für die Anmeldemethode im *Portal* widerzuspiegeln, "
 "müssen Sie die *Anmelden* Kachel manuell bearbeiten, ähnlich wie in der "
-"in :ref:`management-interface-auth-sso-saml` beschriebenen Einrichtung. Der Link"
-" muss auf ``/univention/oidc/`` zeigen."
+"in :ref:`management-interface-auth-sso-saml` beschriebenen Einrichtung. "
+"Der Link muss auf ``/univention/oidc/`` zeigen."
 
 #: ../../management-interface/auth.rst:336
 msgid "Deactivate OpenID Connect for single sign-on"
@@ -665,8 +667,8 @@ msgid ""
 "listing`."
 msgstr ""
 "Setzen Sie die UCR-Variable :envvar:`umc/web/oidc/enabled` mit dem Befehl"
-" in :numref:`management-interface-auth-sso-oidc-deactivate-unset-oidc-listing` "
-"zurück."
+" in :numref:`management-interface-auth-sso-oidc-deactivate-unset-oidc-"
+"listing` zurück."
 
 #: ../../management-interface/auth.rst:345
 msgid "Unset ``umc/web/oidc/enabled``"
@@ -683,8 +685,8 @@ msgid ""
 "remove-rp-listing`."
 msgstr ""
 "Entfernen Sie das :external+uv-keycloak-app:term:`OIDC RP` von Keycloak "
-"mit dem Befehl in :numref:`management-interface-auth-sso-oidc-deactivate-remove-"
-"rp-listing`."
+"mit dem Befehl in :numref:`management-interface-auth-sso-oidc-deactivate-"
+"remove-rp-listing`."
 
 #: ../../management-interface/auth.rst:354
 msgid "Remove the OIDC RP from Keycloak"
@@ -704,7 +706,8 @@ msgid ""
 ":`management-interface-auth-sso-oidc-deactivate-search-ucr-listing`."
 msgstr ""
 "Setzen Sie alle UCR-Variablen zurück, die Sie mit den Befehlen in :numref"
-":`management-interface-auth-sso-oidc-deactivate-search-ucr-listing` finden."
+":`management-interface-auth-sso-oidc-deactivate-search-ucr-listing` "
+"finden."
 
 #: ../../management-interface/auth.rst:364
 msgid "Search for UCR variables to unset"
@@ -725,8 +728,8 @@ msgid ""
 "remove-secret-listing`."
 msgstr ""
 "Entfernen Sie das OIDC :spelling:word:`Secret` vom System und starten Sie"
-" betroffene Dienste mit den Befehlen in :numref:`management-interface-auth-sso-"
-"oidc-deactivate-remove-secret-listing` neu."
+" betroffene Dienste mit den Befehlen in :numref:`management-interface-"
+"auth-sso-oidc-deactivate-remove-secret-listing` neu."
 
 #: ../../management-interface/auth.rst:375
 msgid "Remove OIDC secret"
@@ -794,8 +797,8 @@ msgstr ""
 "die OpenID Connect Authentifizierung in UMC auf jedem UCS-System "
 "konfigurieren. Ändern Sie die UCR-Variable :envvar:`umc/oidc/issuer` auf "
 "den FQDN Ihres :program:`Keycloak` Identitätsanbieters und führen Sie das"
-" Join-Skript des UMC Webservers erneut aus, wie in :numref:`management-interface-"
-"auth-sso-oidc-non-standard-fqdn-listing` gezeigt."
+" Join-Skript des UMC Webservers erneut aus, wie in :numref:`management-"
+"interface-auth-sso-oidc-non-standard-fqdn-listing` gezeigt."
 
 #: ../../management-interface/auth.rst:410
 msgid "Set non-standard FQDN for identity provider :program:`Keycloak`"
@@ -833,8 +836,9 @@ msgstr ""
 ":samp:`{$hostname}.{$domainname}` verfügbar. Wenn Sie ein Setup mit einem"
 " anderen FQDN für die *Management UI* haben, müssen Sie die UCR-Variable "
 ":envvar:`umc/oidc/rp/server` auf den FQDN der *Management UI* ändern und "
-"das Join-Skript des UMC Webservers erneut ausführen, wie in :numref:`management-interface-"
-"auth-sso-oidc-non-standard-fqdn-portal-listing` gezeigt."
+"das Join-Skript des UMC Webservers erneut ausführen, wie in :numref"
+":`management-interface-auth-sso-oidc-non-standard-fqdn-portal-listing` "
+"gezeigt."
 
 #: ../../management-interface/auth.rst:433
 msgid "Set non-standard FQDN for the *Portal* and *Management UI*"
@@ -954,11 +958,11 @@ msgid ""
 "with :program:`PostgreSQL` running."
 msgstr ""
 "Alternativ können Sie :program:`PostgreSQL` auf einem der Nubus für UCS "
-"Knoten installieren und konfigurieren. Wie im Beispiel in :numref:`management-interface-"
-"auth-sso-oidc-back-channel-sign-out-postgres-install-listing` "
-"gezeigt, können Sie die Werte für ``db_user``, ``db_name`` und "
-"``db_password`` frei wählen. ``db_host`` ist ein Nubus für UCS Knoten, "
-"auf dem :program:`PostgreSQL` ausgeführt wird."
+"Knoten installieren und konfigurieren. Wie im Beispiel in :numref"
+":`management-interface-auth-sso-oidc-back-channel-sign-out-postgres-"
+"install-listing` gezeigt, können Sie die Werte für ``db_user``, "
+"``db_name`` und ``db_password`` frei wählen. ``db_host`` ist ein Nubus "
+"für UCS Knoten, auf dem :program:`PostgreSQL` ausgeführt wird."
 
 #: ../../management-interface/auth.rst:489
 msgid "Example for installation of :program:`PostgreSQL`"
@@ -993,8 +997,8 @@ msgid ""
 "out-sql-connection-listing`."
 msgstr ""
 "Legen Sie die URI für die SQL-Verbindung auf dem :term:`UCS Primary "
-"Directory Node` fest, wie in :numref:`management-interface-auth-sso-oidc-back-"
-"channel-sign-out-sql-connection-listing` gezeigt."
+"Directory Node` fest, wie in :numref:`management-interface-auth-sso-oidc-"
+"back-channel-sign-out-sql-connection-listing` gezeigt."
 
 #: ../../management-interface/auth.rst:505
 msgid "Set SQL connection URI"
@@ -1072,8 +1076,8 @@ msgid ""
 msgstr ""
 "Stellen Sie sicher, dass die Datenbank die Anzahl der Verbindungen "
 "bewältigen kann. Sie können diese Parameter anpassen, wie in :numref"
-":`management-interface-auth-sso-oidc-back-channel-sign-out-sql-connection-"
-"optional-listing` gezeigt."
+":`management-interface-auth-sso-oidc-back-channel-sign-out-sql-"
+"connection-optional-listing` gezeigt."
 
 #: ../../management-interface/auth.rst:533
 msgid "Set optional parameters for the database connection pool"
@@ -1099,9 +1103,9 @@ msgid ""
 ":numref:`management-interface-auth-sso-oidc-back-channel-sign-out-"
 "restart-umc-listing`."
 msgstr ""
-"Starten Sie den *UMC Server* auf allen Nubus für UCS Knoten mit dem Befehl in "
-":numref:`management-interface-auth-sso-oidc-back-channel-sign-out-"
-"restart-umc-listing` neu."
+"Starten Sie den *UMC Server* auf allen Nubus für UCS Knoten mit dem "
+"Befehl in :numref:`management-interface-auth-sso-oidc-back-channel-sign-"
+"out-restart-umc-listing` neu."
 
 #: ../../management-interface/auth.rst:546
 msgid "Restart UMC server"
@@ -1124,7 +1128,231 @@ msgstr ""
 "eine lokale :program:`SQLite`-Datenbank für einen *UMC Server* mit "
 "Multiprocessing verwenden."
 
-#: ../../management-interface/index.rst:33
+#: ../../management-interface/directory-reports.rst:7
+#: ../../management-interface/index.rst:31
+msgid "Directory reports"
+msgstr "Verzeichnisberichte"
+
+#: ../../management-interface/directory-reports.rst:9
+msgid ""
+"Univention Directory Reports creates ready-made reports for any object in"
+" the directory service."
+msgstr ""
+"Univention Directory Reports erstellt vorgefertigte Berichte für "
+"beliebige Objekte im Verzeichnisdienst."
+
+#: ../../management-interface/directory-reports.rst:12
+msgid ""
+"You define report structure using templates. The specification language "
+"lets you use wildcards that you can replace with values from the LDAP "
+"directory. You can create any number of report templates. This enables "
+"you to generate detailed reports or create basic address lists, for "
+"example."
+msgstr ""
+"Sie definieren die Berichtsstruktur mithilfe von Vorlagen. Die "
+"Spezifikationssprache ermöglicht es Ihnen, Platzhalter zu verwenden, die "
+"Sie durch Werte aus dem LDAP-Verzeichnis ersetzen können. Sie können "
+"beliebig viele Berichtsvorlagen erstellen. Dies ermöglicht es Ihnen, "
+"detaillierte Berichte zu erstellen oder beispielsweise grundlegende "
+"Adresslisten zu erstellen."
+
+#: ../../management-interface/directory-reports.rst:19
+msgid ""
+"You can create reports directly from the management modules *Users*, "
+"*Groups*, and *Computers*. Alternatively, you can use the command line "
+"program :command:`univention-directory-reports`."
+msgstr ""
+"Sie können Berichte direkt aus den Verwaltungsmodulen *Benutzer*, "
+"*Gruppen* und *Computer* erstellen. Alternativ können Sie das "
+"Befehlszeilenprogramm :command:`univention-directory-reports` verwenden."
+
+#: ../../management-interface/directory-reports.rst:24
+msgid ""
+"Univention Directory Reports includes six predefined report templates for"
+" users, groups, and computers. Three templates produce PDF documents and "
+"three produce CSV files that you can import into other programs. You can "
+"also create and register additional templates. For more information, see "
+":ref:`management-interface-directory-reports-customize`."
+msgstr ""
+"Univention Directory Reports enthält sechs vordefinierte Berichtsvorlagen"
+" für Benutzer, Gruppen und Computer. Drei Vorlagen erzeugen PDF-Dokumente"
+" und drei erzeugen CSV-Dateien, die Sie in andere Programme importieren "
+"können. Sie können auch zusätzliche Vorlagen erstellen und registrieren. "
+"Weitere Informationen finden Sie unter :ref:`management-interface-"
+"directory-reports-customize`."
+
+#: ../../management-interface/directory-reports.rst:34
+msgid ""
+"For more information about the management modules, see :cite:t:`uv-nubus-"
+"manual`:"
+msgstr ""
+"Weitere Informationen zu den Verwaltungsmodulen finden Sie unter :cite:t"
+":`uv-nubus-manual`:"
+
+#: ../../management-interface/directory-reports.rst:37
+msgid ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
+
+#: ../../management-interface/directory-reports.rst:38
+msgid ":external+uv-nubus-manual:ref:`nubus-groups-management`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-groups-management`"
+
+#: ../../management-interface/directory-reports.rst:39
+msgid ":external+uv-nubus-manual:ref:`nubus-computer-management`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-computer-management`"
+
+#: ../../management-interface/directory-reports.rst:44
+msgid "Create reports through management modules"
+msgstr "Erstellen Sie Berichte über Verwaltungsmodule"
+
+#: ../../management-interface/directory-reports.rst:46
+msgid "To create a report through the management modules, follow these steps:"
+msgstr ""
+"Um einen Bericht über die Verwaltungsmodule zu erstellen, gehen Sie "
+"folgendermaßen vor:"
+
+#: ../../management-interface/directory-reports.rst:48
+msgid "Open the management module *Users*, *Groups*, or *Computers*."
+msgstr "Öffnen Sie das Verwaltungsmodul *Benutzer*, *Gruppen* oder *Computer*."
+
+#: ../../management-interface/directory-reports.rst:50
+msgid ""
+"Select all the objects you want to include in the report. You can select "
+"all objects by clicking the checkbox to the left of *Name*. For example, "
+"see :numref:`management-interface-directory-reports-create-figure`."
+msgstr ""
+"Wählen Sie alle Objekte aus, die Sie in den Bericht aufnehmen möchten. "
+"Sie können alle Objekte auswählen, indem Sie auf das Kontrollkästchen "
+"links neben *Name* klicken. Ein Beispiel finden Sie unter :numref"
+":`management-interface-directory-reports-create-figure`."
+
+#: ../../management-interface/directory-reports.rst:54
+msgid ""
+"Click :menuselection:`More --> Create report` to choose between the "
+"*Standard Report* (PDF) and the *Standard CSV Report* (CSV)."
+msgstr ""
+"Klicken Sie auf :menuselection:`Weitere --> Bericht erstellen`, um "
+"zwischen dem *Standardbericht* (PDF) und dem *Standard-CSV-Bericht* (CSV)"
+" zu wählen."
+
+#: ../../management-interface/directory-reports.rst:57
+msgid "Download and save the generated report file from the browser."
+msgstr ""
+"Laden Sie die generierte Berichtsdatei aus dem Browser herunter und "
+"speichern Sie sie."
+
+#: ../../management-interface/directory-reports.rst:59
+msgid ""
+"The system stores reports created through a management module for 12 "
+"hours, then automatically deletes them through a cron job. You can "
+"configure when the cron job runs and how long to store reports using two "
+":term:`UCR variables <UCR variable>`:"
+msgstr ""
+"Das System speichert über ein Verwaltungsmodul erstellte Berichte 12 "
+"Stunden lang und löscht sie dann automatisch über einen Cron-Job. Sie "
+"können konfigurieren, wann der Cron-Job ausgeführt wird und wie lange "
+"Berichte gespeichert werden, indem Sie zwei :term:`UCR-Variablen <UCR "
+"variable>` verwenden:"
+
+#: ../../management-interface/directory-reports.rst:64
+msgid ":envvar:`directory/reports/cleanup/cron`"
+msgstr ":envvar:`directory/reports/cleanup/cron`"
+
+#: ../../management-interface/directory-reports.rst:65
+msgid ":envvar:`directory/reports/cleanup/age`"
+msgstr ":envvar:`directory/reports/cleanup/age`"
+
+#: ../../management-interface/directory-reports.rst:69
+#: ../../management-interface/directory-reports.rst:72
+msgid "Create a report"
+msgstr "Erstellen Sie einen Bericht"
+
+#: ../../management-interface/directory-reports.rst:77
+msgid "Create reports on the command line"
+msgstr "Erstellen Sie Berichte über die Befehlszeile"
+
+#: ../../management-interface/directory-reports.rst:79
+msgid ""
+"You can also create reports on the command line with the :command"
+":`univention-directory-reports` command. Run it with the ``--help`` "
+"option to view usage information."
+msgstr ""
+"Sie können Berichte auch über die Befehlszeile mit dem Befehl :command"
+":`univention-directory-reports` erstellen. Führen Sie ihn mit der Option "
+"``--help`` aus, um Nutzungsinformationen anzuzeigen."
+
+#: ../../management-interface/directory-reports.rst:83
+msgid ""
+"To list the available report templates for a specific module, run the "
+"command in :numref:`management-interface-directory-reports-create-cli-"
+"templates-listing`."
+msgstr ""
+"Um die verfügbaren Berichtsvorlagen für ein bestimmtes Modul aufzulisten,"
+" führen Sie den Befehl in :numref:`management-interface-directory-"
+"reports-create-cli-templates-listing` aus."
+
+#: ../../management-interface/directory-reports.rst:86
+msgid "List available report templates"
+msgstr "Verfügbare Berichtsvorlagen auflisten"
+
+#: ../../management-interface/directory-reports.rst:86
+msgid "$ univention-directory-reports -m users/user -l"
+msgstr "$ univention-directory-reports -m users/user -l"
+
+#: ../../management-interface/directory-reports.rst:92
+msgid ""
+"To generate a report, run the command in :numref:`management-interface-"
+"directory-reports-create-cli-report-listing`."
+msgstr ""
+"Um einen Bericht zu generieren, führen Sie den Befehl in :numref"
+":`management-interface-directory-reports-create-cli-report-listing` aus."
+
+#: ../../management-interface/directory-reports.rst:95
+msgid "Generate a report"
+msgstr "Generieren Sie einen Bericht"
+
+#: ../../management-interface/directory-reports.rst:95
+msgid ""
+"$ univention-directory-reports -m users/user -r \"PDF Document\" -f "
+"output.pdf"
+msgstr ""
+"$ univention-directory-reports -m users/user -r \"PDF Document\" -f "
+"output.pdf"
+
+#: ../../management-interface/directory-reports.rst:104
+msgid "Customize reports"
+msgstr "Passen Sie Berichte an"
+
+#: ../../management-interface/directory-reports.rst:106
+msgid ""
+"You can generate reports with the default settings. Some settings can be "
+"adapted using :term:`UCR variables <UCR variable>`."
+msgstr ""
+"Sie können Berichte mit den Standardeinstellungen generieren. Einige "
+"Einstellungen können mithilfe von :term:`UCR-Variablen <UCR variable>` "
+"angepasst werden."
+
+#: ../../management-interface/directory-reports.rst:110
+msgid ""
+"For example, you can replace the logo that appears in the header of each "
+"page of a PDF report. To do so, specify the name of an image file in the "
+":envvar:`directory/reports/logo` UCR variable. You can use common image "
+"formats such as JPEG, PNG, and GIF. The system scales the image to a "
+"fixed width of 5.0 cm."
+msgstr ""
+"Sie können beispielsweise das Logo ersetzen, das in der Kopfzeile jeder "
+"Seite eines PDF-Berichts angezeigt wird. Geben Sie dazu den Namen einer "
+"Bilddatei in der :envvar:`directory/reports/logo` UCR-Variable an. Sie "
+"können gängige Bildformate wie JPEG, PNG und GIF verwenden. Das System "
+"skaliert das Bild auf eine feste Breite von 5,0 cm."
+
+#: ../../management-interface/directory-reports.rst:117
+msgid "You can also adapt the report contents by creating new report templates."
+msgstr ""
+"Sie können die Berichtsinhalte auch anpassen, indem Sie neue "
+"Berichtsvorlagen erstellen."
+
+#: ../../management-interface/index.rst:37
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1142,8 +1370,8 @@ msgstr ""
 "Die *Management UI* ist die webbasierte Oberfläche zur Verwaltung von "
 "Nubus für UCS. Dieses Kapitel behandelt Konfigurationsaufgaben für "
 "technische Administratoren, die steuern müssen, wie sich Benutzer "
-"anmelden, Lizenzen verwalten und das Erscheinungsbild der "
-"Web-Schnittstellen anpassen."
+"anmelden, Lizenzen verwalten und das Erscheinungsbild der Web-"
+"Schnittstellen anpassen."
 
 #: ../../management-interface/index.rst:15
 msgid ""
@@ -1153,9 +1381,10 @@ msgid ""
 ":`management-interface-auth`."
 msgstr ""
 "Konfigurieren Sie, wie sich Benutzer beim *Portal* und der *Management "
-"UI* anmelden. Dies umfasst Einstellungen für Zeitüberschreitungen von Sitzungen,"
-" Single Sign-On mit SAML oder OpenID Connect sowie die Wiederherstellung "
-"der Standard-Anmeldung bei Bedarf. Siehe :ref:`management-interface-auth`."
+"UI* anmelden. Dies umfasst Einstellungen für Zeitüberschreitungen von "
+"Sitzungen, Single Sign-On mit SAML oder OpenID Connect sowie die "
+"Wiederherstellung der Standard-Anmeldung bei Bedarf. Siehe :ref"
+":`management-interface-auth`."
 
 #: ../../management-interface/index.rst:20
 msgid "License management"
@@ -1164,14 +1393,14 @@ msgstr "Lizenzverwaltung"
 #: ../../management-interface/index.rst:21
 msgid ""
 "View, activate, and manage the Nubus for UCS license. The license "
-"controls access to Univention App Center and defines capacity limits "
-"for users and clients in your domain. See :ref:`management-interface-"
+"controls access to Univention App Center and defines capacity limits for "
+"users and clients in your domain. See :ref:`management-interface-"
 "license`."
 msgstr ""
 "Zeigen Sie die Nubus für UCS Lizenz an, aktivieren und verwalten Sie sie."
-" Die Lizenz steuert den Zugriff auf das App Center und "
-"definiert Kapazitätsgrenzen für Benutzer und Clients in Ihrer Domäne. "
-"Siehe :ref:`management-interface-license`."
+" Die Lizenz steuert den Zugriff auf das App Center und definiert "
+"Kapazitätsgrenzen für Benutzer und Clients in Ihrer Domäne. Siehe :ref"
+":`management-interface-license`."
 
 #: ../../management-interface/index.rst:26
 msgid "Web interface themes"
@@ -1186,6 +1415,18 @@ msgstr ""
 "Wechseln Sie zwischen den integrierten hellen und dunklen Designs oder "
 "erstellen Sie ein benutzerdefiniertes Design, das zum Erscheinungsbild "
 "Ihrer Organisation passt. Siehe :ref:`management-interface-theming`."
+
+#: ../../management-interface/index.rst:32
+msgid ""
+"Create predefined reports for users, groups, and computers directly from "
+"the management modules or the command line. Customize the report output "
+"by replacing the logo or registering new report templates. See :ref"
+":`management-interface-directory-reports`."
+msgstr ""
+"Erstellen Sie vordefinierte Berichte für Benutzer, Gruppen und Computer "
+"direkt aus den Verwaltungsmodulen oder der Befehlszeile. Passen Sie die "
+"Berichtausgabe an, indem Sie das Logo ersetzen oder neue Berichtsvorlagen"
+" registrieren. Siehe :ref:`management-interface-directory-reports`."
 
 #: ../../management-interface/license.rst:7
 msgid "Activate UCS license"
