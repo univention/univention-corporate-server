@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-23 13:37+0000\n"
-"PO-Revision-Date: 2026-04-23 15:38+0200\n"
+"POT-Creation-Date: 2026-04-23 21:05+0000\n"
+"PO-Revision-Date: 2026-04-24 10:21+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1128,8 +1128,465 @@ msgstr ""
 "eine lokale :program:`SQLite`-Datenbank für einen *UMC Server* mit "
 "Multiprocessing verwenden."
 
+#: ../../management-interface/delegated-administration.rst:7
+msgid "Delegated administration for management modules"
+msgstr "Delegierte Administration für Verwaltungsmodule"
+
+#: ../../management-interface/delegated-administration.rst:9
+msgid ""
+"By default, only members of the ``Domain Admins`` group can access all "
+"management modules. With a *UMC policy*, you can grant specific groups or"
+" individual users access to selected modules. This lets you delegate "
+"access without giving them full domain administration rights. For "
+"example, you can allow a helpdesk team to manage printers without letting"
+" them access user or group administration."
+msgstr ""
+"Standardmäßig können nur Mitglieder der Gruppe ``Domain Admins`` auf alle"
+" Verwaltungsmodule zugreifen. Mit einer *UMC-Richtlinie* können Sie "
+"bestimmten Gruppen oder einzelnen Benutzern Zugriff auf ausgewählte "
+"Module gewähren. Dies ermöglicht es Ihnen, Zugriff zu delegieren, ohne "
+"ihnen umfassende Verwaltungsrechte für die Domäne zu geben. Sie können "
+"beispielsweise einem Helpdesk-Team die Verwaltung von Druckern "
+"ermöglichen, ohne ihnen Zugriff auf die Benutzer- oder Gruppenverwaltung "
+"zu geben."
+
+#: ../../management-interface/delegated-administration.rst:17
+msgid "How delegated administration works"
+msgstr "Wie die delegierte Verwaltung funktioniert"
+
+#: ../../management-interface/delegated-administration.rst:19
+msgid ""
+"A *UMC policy* defines a list of *UMC operation sets*. Each operation set"
+" covers one or more management modules and the actions you can perform in"
+" them. When you assign a *UMC policy* to a group or user, that group or "
+"user can see and use the modules the policy covers in the *Management "
+"UI*."
+msgstr ""
+"Eine *UMC-Richtlinie* definiert eine Liste von *UMC Operationssätzen*. "
+"Jeder Operationssatz umfasst ein oder mehrere Verwaltungsmodule und die "
+"Aktionen, die Sie darin ausführen können. Wenn Sie eine *UMC-Richtlinie* "
+"einer Gruppe oder einem Benutzer zuweisen, können diese Gruppe oder "
+"dieser Benutzer die Module, die die Richtlinie abdeckt, in der "
+"*Management UI* sehen und nutzen."
+
+#: ../../management-interface/delegated-administration.rst:24
+msgid ""
+"Policies combine. A user gains access from every *UMC* policy assigned to"
+" them directly, plus any policies assigned to the groups they belong to. "
+"For more information about how policies work in general, see :external"
+"+uv-nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-"
+"manual`."
+msgstr ""
+"Richtlinien kombinieren sich. Ein Benutzer erhält Zugriff von jeder *UMC-"
+"Richtlinie*, die ihm direkt zugewiesen ist, sowie von allen Richtlinien, "
+"die den Gruppen zugewiesen sind, denen er angehört. Weitere Informationen"
+" zur allgemeinen Funktionsweise von Richtlinien finden Sie unter "
+":external+uv-nubus-manual:ref:`nubus-domain-policies` im :cite:t:`uv-"
+"nubus-manual`."
+
+#: ../../management-interface/delegated-administration.rst:33
+msgid ""
+"The system only evaluates *UMC policies* assigned directly to user "
+"accounts, computer accounts, and groups. Nubus doesn't evaluate nested "
+"group memberships—groups that belong to other groups."
+msgstr ""
+"Das System wertet nur *UMC-Richtlinien* aus, die direkt Benutzerkonten, "
+"Computerkonten und Gruppen zugewiesen sind. Nubus wertet keine "
+"verschachtelten Gruppenmitgliedschaften aus – also Gruppen, die zu "
+"anderen Gruppen gehören."
+
+#: ../../management-interface/delegated-administration.rst:40
+#: ../../management-interface/delegated-administration.rst:47
+msgid "Built-in UMC operation sets"
+msgstr "Eingebaute UMC Operationssätze"
+
+#: ../../management-interface/delegated-administration.rst:42
+msgid ""
+":numref:`management-interface-delegated-administration-operation-sets-"
+"table` describes the built-in operation sets for *UMC policies*. Use "
+"these when you create a *UMC policy*."
+msgstr ""
+":numref:`management-interface-delegated-administration-operation-sets-"
+"table` beschreibt die eingebauten Operationssätze für *UMC-Richtlinien*. "
+"Verwenden Sie diese, wenn Sie eine *UMC-Richtlinie* erstellen."
+
+#: ../../management-interface/delegated-administration.rst:51
+msgid "Operation set name"
+msgstr "Name des Operationssatzes"
+
+#: ../../management-interface/delegated-administration.rst:52
+msgid "Module shown in the *Management UI*"
+msgstr "Modul, das in der *Management UI* angezeigt wird"
+
+#: ../../management-interface/delegated-administration.rst:53
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../management-interface/delegated-administration.rst:55
+msgid "``udm-all``"
+msgstr "``udm-all``"
+
+#: ../../management-interface/delegated-administration.rst:56
+msgid "All management modules"
+msgstr "Alle Verwaltungsmodule"
+
+#: ../../management-interface/delegated-administration.rst:57
+msgid "Grants access to all management modules."
+msgstr "Gewährt Zugriff auf alle Verwaltungsmodule."
+
+#: ../../management-interface/delegated-administration.rst:59
+msgid "``udm-users``"
+msgstr "``udm-users``"
+
+#: ../../management-interface/delegated-administration.rst:60
+msgid "*Users*"
+msgstr "*Benutzer*"
+
+#: ../../management-interface/delegated-administration.rst:61
+msgid "Grants access to the *Users* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Benutzer*."
+
+#: ../../management-interface/delegated-administration.rst:63
+msgid "``udm-groups``"
+msgstr "``udm-groups``"
+
+#: ../../management-interface/delegated-administration.rst:64
+msgid "*Groups*"
+msgstr "*Gruppen*"
+
+#: ../../management-interface/delegated-administration.rst:65
+msgid "Grants access to the *Groups* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Gruppen*."
+
+#: ../../management-interface/delegated-administration.rst:67
+msgid "``udm-computers``"
+msgstr "``udm-computers``"
+
+#: ../../management-interface/delegated-administration.rst:68
+msgid "*Computers*"
+msgstr "*Computer*"
+
+#: ../../management-interface/delegated-administration.rst:69
+msgid "Grants access to the *Computers* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Computer*."
+
+#: ../../management-interface/delegated-administration.rst:71
+msgid "``udm-printers``"
+msgstr "``udm-printers``"
+
+#: ../../management-interface/delegated-administration.rst:72
+msgid "*Print shares*"
+msgstr "*Druckfreigaben*"
+
+#: ../../management-interface/delegated-administration.rst:73
+msgid "Grants access to the *Print shares* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Druckfreigaben*."
+
+#: ../../management-interface/delegated-administration.rst:75
+msgid "``udm-shares``"
+msgstr "``udm-shares``"
+
+#: ../../management-interface/delegated-administration.rst:76
+msgid "*Shares*"
+msgstr "*Freigaben*"
+
+#: ../../management-interface/delegated-administration.rst:77
+msgid "Grants access to the *Shares* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Freigaben*."
+
+#: ../../management-interface/delegated-administration.rst:79
+msgid "``udm-policies``"
+msgstr "``udm-policies``"
+
+#: ../../management-interface/delegated-administration.rst:80
+msgid "*Policies*"
+msgstr "*Richtlinien*"
+
+#: ../../management-interface/delegated-administration.rst:81
+msgid "Grants access to the *Policies* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Richtlinien*."
+
+#: ../../management-interface/delegated-administration.rst:83
+msgid "``udm-mail``"
+msgstr "``udm-mail``"
+
+#: ../../management-interface/delegated-administration.rst:84
+msgid "*Mail*"
+msgstr "*E-Mail*"
+
+#: ../../management-interface/delegated-administration.rst:85
+msgid "Grants access to the *Mail* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *E-Mail*."
+
+#: ../../management-interface/delegated-administration.rst:87
+msgid "``udm-network``"
+msgstr "``udm-network``"
+
+#: ../../management-interface/delegated-administration.rst:88
+msgid "*Networks*"
+msgstr "*Netzwerke*"
+
+#: ../../management-interface/delegated-administration.rst:89
+msgid "Grants access to the *Networks* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *Netzwerke*."
+
+#: ../../management-interface/delegated-administration.rst:91
+msgid "``udm-dns``"
+msgstr "``udm-dns``"
+
+#: ../../management-interface/delegated-administration.rst:92
+msgid "*DNS*"
+msgstr "*DNS*"
+
+#: ../../management-interface/delegated-administration.rst:93
+msgid "Grants access to the *DNS* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *DNS*."
+
+#: ../../management-interface/delegated-administration.rst:95
+msgid "``udm-dhcp``"
+msgstr "``udm-dhcp``"
+
+#: ../../management-interface/delegated-administration.rst:96
+msgid "*DHCP*"
+msgstr "*DHCP*"
+
+#: ../../management-interface/delegated-administration.rst:97
+msgid "Grants access to the *DHCP* management module."
+msgstr "Gewährt Zugriff auf das Verwaltungsmodul *DHCP*."
+
+#: ../../management-interface/delegated-administration.rst:99
+msgid "``udm-nagios``"
+msgstr "``udm-nagios``"
+
+#: ../../management-interface/delegated-administration.rst:100
+msgid "*Nagios*"
+msgstr "*Nagios*"
+
+#: ../../management-interface/delegated-administration.rst:101
+msgid ""
+"Grants access to the *Nagios* management module for configuring NRPE host"
+" monitoring. Nagios server management isn't available since UCS 5.2."
+msgstr ""
+"Gewährt Zugriff auf das Verwaltungsmodul *Nagios* zur Konfiguration der "
+"NRPE-Host-Überwachung. Die Nagios Serververwaltung ist seit UCS 5.2 nicht"
+" verfügbar."
+
+#: ../../management-interface/delegated-administration.rst:104
+msgid "``udm-navigation``"
+msgstr "``udm-navigation``"
+
+#: ../../management-interface/delegated-administration.rst:105
+msgid "*LDAP directory*"
+msgstr "*LDAP-Verzeichnis*"
+
+#: ../../management-interface/delegated-administration.rst:106
+msgid "Grants access to the *LDAP directory browser*."
+msgstr "Gewährt Zugriff auf den *LDAP-Verzeichnis-Browser*."
+
+#: ../../management-interface/delegated-administration.rst:108
+msgid "``udm-reports``"
+msgstr "``udm-reports``"
+
+#: ../../management-interface/delegated-administration.rst:109
+msgid "—"
+msgstr "—"
+
+#: ../../management-interface/delegated-administration.rst:110
+msgid ""
+"Grants the ability to create directory reports. Reports are available in "
+"the *Users*, *Groups*, and *Computers* modules under :menuselection:`More"
+" --> Create report`."
+msgstr ""
+"Gewährt die Möglichkeit, Verzeichnisberichte zu erstellen. Berichte sind "
+"in den Modulen *Benutzer*, *Gruppen* und *Computer* unter "
+":menuselection:`Mehr --> Bericht erstellen` verfügbar."
+
+#: ../../management-interface/delegated-administration.rst:117
+msgid "LDAP access rights"
+msgstr "LDAP-Zugriffsrechte"
+
+#: ../../management-interface/delegated-administration.rst:119
+msgid ""
+"A *UMC policy* controls which modules a user can see and open. For "
+"modules that read or write data in the LDAP directory, such as *Users*, "
+"*Groups*, or *Print shares*, the user also needs sufficient LDAP access "
+"rights."
+msgstr ""
+"Eine *UMC-Richtlinie* bestimmt, welche Module ein Benutzer sehen und "
+"öffnen kann. Für Module, die Daten im LDAP-Verzeichnis lesen oder "
+"schreiben, wie z. B. *Benutzer*, *Gruppen* oder *Druckfreigaben*, "
+"benötigt der Benutzer auch ausreichende LDAP-Zugriffsrechte."
+
+#: ../../management-interface/delegated-administration.rst:124
+msgid ""
+"By default, only members of ``Domain Admins`` and certain system accounts"
+" have write access to the LDAP directory. If a user can open a module "
+"through a *UMC policy* but doesn't have the necessary LDAP access rights,"
+" the module displays a *Permission denied* error and blocks the changes."
+msgstr ""
+"Standardmäßig haben nur Mitglieder von ``Domain Admins`` und bestimmte "
+"Systemkonten Schreibzugriff auf das LDAP-Verzeichnis. Wenn ein Benutzer "
+"ein Modul über eine *UMC-Richtlinie* öffnen kann, aber nicht über die "
+"erforderlichen LDAP-Zugriffsrechte verfügt, zeigt das Modul den Fehler "
+"*Zugriff verweigert* an und blockiert die Änderungen."
+
+#: ../../management-interface/delegated-administration.rst:132
+msgid ""
+"For information about configuring LDAP access rights, see :external+uv-"
+"ucs-manual:ref:`domain-ldap-acls` in :cite:t:`ucs-manual`."
+msgstr ""
+"Weitere Informationen zur Konfiguration von LDAP-Zugriffsrechten finden "
+"Sie unter :external+uv-ucs-manual:ref:`domain-ldap-acls` im :cite:t:`ucs-"
+"manual`."
+
+#: ../../management-interface/delegated-administration.rst:139
+msgid "Group access to management modules"
+msgstr "Gruppenzugriff auf Verwaltungsmodule"
+
+#: ../../management-interface/delegated-administration.rst:141
+msgid ""
+"The following steps show how to create a *UMC policy*, assign it the "
+"operation sets you want, and link it to a group. The example uses the "
+"*Print shares* module and a helpdesk group."
+msgstr ""
+"Die folgenden Schritte zeigen, wie Sie eine *UMC-Richtlinie* erstellen, "
+"ihr die gewünschten Operationssätze zuweisen und sie mit einer Gruppe "
+"verknüpfen. Das Beispiel verwendet das Modul *Druckfreigaben* und eine "
+"Gruppe für den Helpdesk."
+
+#: ../../management-interface/delegated-administration.rst:149
+msgid "Prerequisites"
+msgstr "Voraussetzungen"
+
+#: ../../management-interface/delegated-administration.rst:151
+msgid "Before you begin, verify the following conditions:"
+msgstr "Überprüfen Sie vor Beginn die folgenden Bedingungen:"
+
+#: ../../management-interface/delegated-administration.rst:153
+msgid "Sign in as a member of ``Domain Admins``."
+msgstr "Melden Sie sich als Mitglied von ``Domain Admins`` an."
+
+#: ../../management-interface/delegated-administration.rst:155
+msgid ""
+"The target group must already exist. If not, create it in "
+":menuselection:`Users --> Groups` first."
+msgstr ""
+"Die Gruppe muss bereits vorhanden sein. Falls nicht, erstellen Sie "
+"sie zuerst in :menuselection:`Benutzer --> Gruppen`."
+
+#: ../../management-interface/delegated-administration.rst:158
+msgid ""
+"For modules that write to the LDAP directory, the group needs sufficient "
+"LDAP access rights. See :ref:`management-interface-delegated-"
+"administration-ldap`."
+msgstr ""
+"Für Module, die in das LDAP-Verzeichnis schreiben, benötigt die Gruppe "
+"ausreichende LDAP-Zugriffsrechte. Siehe :ref:`management-interface-"
+"delegated-administration-ldap`."
+
+#: ../../management-interface/delegated-administration.rst:165
+msgid "Create a UMC policy"
+msgstr "Erstellen Sie eine UMC-Richtlinie"
+
+#: ../../management-interface/delegated-administration.rst:167
+msgid "Follow these steps to create a *UMC policy*:"
+msgstr "Folgen Sie diesen Schritten, um eine *UMC-Richtlinie* zu erstellen:"
+
+#: ../../management-interface/delegated-administration.rst:169
+msgid "Navigate to :menuselection:`Domain --> Policies`."
+msgstr "Gehen Sie zu :menuselection:`Domäne --> Richtlinien`."
+
+#: ../../management-interface/delegated-administration.rst:171
+msgid "Click :guilabel:`Add`."
+msgstr "Klicken Sie :guilabel:`Hinzufügen`."
+
+#: ../../management-interface/delegated-administration.rst:173
+msgid "Select :guilabel:`UMC` as the policy type."
+msgstr "Wählen Sie :guilabel:`UMC` als Richtlinientyp."
+
+#: ../../management-interface/delegated-administration.rst:175
+msgid "Choose a container to store the policy in."
+msgstr "Wählen Sie einen Container, um die Richtlinie darin zu speichern."
+
+#: ../../management-interface/delegated-administration.rst:177
+msgid "Enter a name for the policy, for example ``helpdesk-printers``."
+msgstr "Geben Sie einen Namen für die Richtlinie ein, z. B. ``helpdesk-printers``."
+
+#: ../../management-interface/delegated-administration.rst:180
+msgid ""
+"In the :guilabel:`List of allowed UMC operation sets` field, select the "
+"operation sets you want to grant. For printer administration, select "
+"``udm-printers``."
+msgstr ""
+"Wählen Sie im Feld :guilabel:`Liste der zulässigen UMC-Operationssätze` "
+"die Operationssätze aus, die Sie gewähren möchten. Wählen Sie für die "
+"Druckerverwaltung ``udm-printers``."
+
+#: ../../management-interface/delegated-administration.rst:185
+#: ../../management-interface/delegated-administration.rst:205
+msgid "Click :guilabel:`Save`."
+msgstr "Klicken Sie :guilabel:`Speichern`."
+
+#: ../../management-interface/delegated-administration.rst:190
+msgid "Assign the policy to a group"
+msgstr "Weisen Sie die Richtlinie einer Gruppe zu"
+
+#: ../../management-interface/delegated-administration.rst:192
+msgid "Follow these steps to assign the *UMC policy*:"
+msgstr "Folgen Sie diesen Schritten, um die *UMC-Richtlinie* zuzuweisen:"
+
+#: ../../management-interface/delegated-administration.rst:194
+msgid "Navigate to :menuselection:`Users --> Groups`."
+msgstr "Gehen Sie zu :menuselection:`Benutzer --> Gruppen`."
+
+#: ../../management-interface/delegated-administration.rst:196
+msgid "Select the group, for example ``Helpdesk``."
+msgstr "Wählen Sie die Gruppe aus, z. B. ``Helpdesk``."
+
+#: ../../management-interface/delegated-administration.rst:199
+msgid "Go to the :guilabel:`Policies` tab."
+msgstr "Gehen Sie zur Registerkarte :guilabel:`Richtlinien`."
+
+#: ../../management-interface/delegated-administration.rst:201
+msgid ""
+"In the :guilabel:`UMC` section, select the policy you created, for "
+"example ``helpdesk-printers``."
+msgstr ""
+"Wählen Sie im Bereich :guilabel:`UMC` die Richtlinie aus, die Sie "
+"erstellt haben, z. B. ``helpdesk-printers``."
+
+#: ../../management-interface/delegated-administration.rst:207
+msgid ""
+"Members of the group can now see the *Print shares* module when they sign"
+" in to the *Management UI*."
+msgstr ""
+"Mitglieder der Gruppe können nun das Modul *Druckfreigaben* sehen, wenn "
+"sie sich bei der *Management UI* anmelden."
+
+#: ../../management-interface/delegated-administration.rst:212
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
+
+#: ../../management-interface/delegated-administration.rst:213
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about how policies work and "
+"how to manage them."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen darüber, wie Richtlinien "
+"funktionieren und wie Sie diese verwalten."
+
+#: ../../management-interface/delegated-administration.rst:216
+msgid ":external+uv-ucs-manual:ref:`domain-ldap-acls`"
+msgstr ":external+uv-ucs-manual:ref:`domain-ldap-acls`"
+
+#: ../../management-interface/delegated-administration.rst:217
+msgid "in :cite:t:`ucs-manual` for information about LDAP access control lists."
+msgstr ""
+"im :cite:t:`ucs-manual` für Informationen über LDAP-"
+"Zugriffskontrolllisten."
+
 #: ../../management-interface/directory-reports.rst:7
-#: ../../management-interface/index.rst:31
+#: ../../management-interface/index.rst:36
 msgid "Directory reports"
 msgstr "Verzeichnisberichte"
 
@@ -1352,7 +1809,7 @@ msgstr ""
 "Sie können die Berichtsinhalte auch anpassen, indem Sie neue "
 "Berichtsvorlagen erstellen."
 
-#: ../../management-interface/index.rst:37
+#: ../../management-interface/index.rst:42
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1416,7 +1873,21 @@ msgstr ""
 "erstellen Sie ein benutzerdefiniertes Design, das zum Erscheinungsbild "
 "Ihrer Organisation passt. Siehe :ref:`management-interface-theming`."
 
+#: ../../management-interface/index.rst:31
+msgid "Delegated administration"
+msgstr "Delegierte Administration"
+
 #: ../../management-interface/index.rst:32
+msgid ""
+"Control which management modules specific groups or users can access by "
+"creating and assigning *UMC* policies with selected operation sets. See "
+":ref:`management-interface-delegated-administration`."
+msgstr ""
+"Steuern Sie, welche Verwaltungsmodule bestimmte Gruppen oder Benutzer durch "
+"Erstellen und Zuweisen von *UMC*-Richtlinien mit ausgewählten Operationssätzen "
+"zugreifen können. Siehe :ref:`management-interface-delegated-administration`."
+
+#: ../../management-interface/index.rst:37
 msgid ""
 "Create predefined reports for users, groups, and computers directly from "
 "the management modules or the command line. Customize the report output "
@@ -1938,3 +2409,4 @@ msgstr ""
 "Ein `CSS-Selektor <https://developer.mozilla.org/en-"
 "US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors>`_ kann"
 " bei der Installation eines Nubus für UCS-Updates fehlerhaft werden."
+
