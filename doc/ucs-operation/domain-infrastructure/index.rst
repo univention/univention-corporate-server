@@ -42,7 +42,11 @@ Redundancy and failover for the Primary Directory Node
    and by promoting a Backup Directory Node to Primary when needed.
    See :ref:`deployment-primary-dn-resilience`.
 
-.. TODO: Add description for domain activity logging
+Domain activity logging
+   Record and monitor important domain events including user and object management,
+   app installations and updates, server password changes, domain joins,
+   and system updates using the :program:`Admin Diary` app.
+   See :ref:`domain-activity-logging`.
 
 .. toctree::
    :caption: Contents
