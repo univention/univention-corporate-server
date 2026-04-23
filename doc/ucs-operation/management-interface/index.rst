@@ -40,4 +40,5 @@ Directory reports
    auth
    license
    theme
+   delegated-administration
    directory-reports
