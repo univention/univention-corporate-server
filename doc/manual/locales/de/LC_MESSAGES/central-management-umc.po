@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 10:47+0000\n"
-"PO-Revision-Date: 2026-04-17 12:49+0200\n"
+"POT-Creation-Date: 2026-04-23 13:51+0000\n"
+"PO-Revision-Date: 2026-04-23 15:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -318,165 +318,56 @@ msgstr ""
 "Auswertung von Daten aus dem LDAP-Verzeichnis mit Univention Directory "
 "Reports"
 
-#: ../../central-management-umc/directory-reports.rst:11
+#: ../../central-management-umc/directory-reports.rst:9
 msgid ""
-"Univention Directory Reports offers the possibility of creating "
-"predefined reports for any objects to be managed in the directory "
-"service."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`management-interface-directory-reports` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Univention Directory Reports bietet die Möglichkeit vordefinierte Reports"
-" zu beliebigen im Verzeichnisdienst verwalteten Objekten zu erstellen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`management-interface-directory-reports` in :cite:t:`uv-"
+"ucs-operation`."
 
-#: ../../central-management-umc/directory-reports.rst:14
-msgid ""
-"The structure of the reports is defined using templates. The "
-"specification language developed for this purpose allows the use of "
-"wildcards, which can be replaced with values from the LDAP directory. Any"
-" number of report templates can be created. This allows users to select "
-"very detailed reports or just create simple address lists, for example."
-msgstr ""
-"Die Struktur der Reports wird dabei durch Vorlagen definiert. Die dafür "
-"entwickelte Beschreibungssprache ermöglicht die Verwendung von "
-"Platzhaltern, die durch die Werte aus dem LDAP-Verzeichnis ersetzt "
-"werden. Es können dabei beliebig viele Reportvorlagen vorgegeben werden."
-"  So können beispielsweise für Benutzer wahlweise sehr detaillierte "
-"Reports oder nur einfache Adresslisten erstellt werden."
-
-#: ../../central-management-umc/directory-reports.rst:20
-msgid ""
-"The creation of the reports is directly integrated in the UMC modules "
-":guilabel:`Users`, :guilabel:`Groups` and :guilabel:`Computers`. "
-"Alternatively, the command line program :command:`univention-directory-"
-"reports` can be used."
-msgstr ""
-"Die Erstellung von Reports ist direkt in die UMC-Module "
-":guilabel:`Benutzer`, :guilabel:`Gruppen` und :guilabel:`Rechner` "
-"integriert. Alternativ kann das Kommandozeilenprogramm :command"
-":`univention-directory-reports` verwendet werden."
-
-#: ../../central-management-umc/directory-reports.rst:24
-msgid ""
-"Six report templates are already provided with the delivered Univention "
-"Directory Reports, which can be used for users, groups and computers. "
-"Three templates create PDF documents and three CSV files, which can be "
-"used as an import source for other programs. Further templates can be "
-"created and registered."
-msgstr ""
-"Im Auslieferungszustand werden sechs Reportvorlagen von Univention "
-"Directory Reports bereitgestellt, die für Benutzer, Gruppen und Rechner "
-"verwendet werden können. Drei Vorlagen erzeugen PDF-Dokumente und drei "
-"Vorlagen CSV-Dateien, die als Import-Quelle für andere Programme "
-"verwendet werden können. Weitere Vorlagen können erstellt und registriert"
-" werden."
-
-#: ../../central-management-umc/directory-reports.rst:33
+#: ../../central-management-umc/directory-reports.rst:16
 msgid "Creating reports via |UCSUMC| modules"
 msgstr "Erstellen von Reports in |UCSUMC|-Modulen"
 
-#: ../../central-management-umc/directory-reports.rst:35
+#: ../../central-management-umc/directory-reports.rst:18
 msgid ""
-"To create a report, you need to open the UMC module :guilabel:`Users`, "
-":guilabel:`Groups` or :guilabel:`Computers`. Then all the objects which "
-"should be covered by the report must be selected (you can select all "
-"objects by clicking the checkbox the left of *Name*). Clicking on "
-":menuselection:`More --> Create report` allows to choose between the "
-"*Standard Report* in PDF format and the *Standard CSV Report* in CSV "
-"format."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`management-interface-directory-reports-create-umc` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Um einen Report zu erstellen, muss das UMC-Modul :guilabel:`Benutzer`, "
-":guilabel:`Gruppen` oder :guilabel:`Rechner` geöffnet werden. "
-"Anschließend müssen alle vom Report erfassten Objekte ausgewählt werden "
-"(durch einen Klick auf die Checkbox links von *Name* können alle Objekte "
-"ausgewählt werden). Ein Klick auf :menuselection:`Mehr --> Report "
-"erstellen` ermöglicht die Auswahl zwischen dem *Standard-Report* im PDF-"
-"Format und dem *CSV-Report* im CSV-Format."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`management-interface-directory-reports-create-umc` in "
+":cite:t:`uv-ucs-operation`."
 
-#: ../../central-management-umc/directory-reports.rst:44
-#: ../../central-management-umc/directory-reports.rst:47
-msgid "Creating a report"
-msgstr "Erstellen eines Reports"
-
-#: ../../central-management-umc/directory-reports.rst:49
-msgid ""
-"The reports created via a UMC module are stored for 12 hours and then "
-"deleted by a cron job. The settings for when the cron job should run and "
-"how long the reports should be stored for can be defined via two |UCSUCR|"
-" variables:"
-msgstr ""
-"Die über die UMC-Module erzeugten Reports werden für 12 Stunden "
-"aufbewahrt und danach durch einen Cron-Job entfernt. Die Einstellungen, "
-"wann dieser Cron-Job laufen soll und wie lange diese Reports aufbewahrt "
-"werden sollen, kann über zwei |UCSUCR|-Variablen definiert werden:"
-
-#: ../../central-management-umc/directory-reports.rst:55
-msgid "Defines when the cron job should be run."
-msgstr "Definiert den Zeitpunkt zu dem der Cron-Job ausgeführt werden soll."
-
-#: ../../central-management-umc/directory-reports.rst:59
-msgid ""
-"Defines the maximum age of a report document in seconds before it is "
-"deleted."
-msgstr ""
-"Bestimmt das maximale Alter eines Report-Dokumentes in Sekunden bevor es "
-"gelöscht wird."
-
-#: ../../central-management-umc/directory-reports.rst:64
+#: ../../central-management-umc/directory-reports.rst:25
 msgid "Creating reports on the command line"
 msgstr "Erstellen von Reports auf der Kommandozeile"
 
-#: ../../central-management-umc/directory-reports.rst:66
+#: ../../central-management-umc/directory-reports.rst:27
 msgid ""
-"Reports can also be created via the command line with the :command"
-":`univention-directory-reports` program. Information on the use of the "
-"program can be viewed using the ``--help`` option."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`management-interface-directory-reports-create-cli` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Reports können auch über die Kommandozeile mit dem Programm :command"
-":`univention-directory-reports` erstellt werden. Informationen zur "
-"Verwendung des Programm können über die Option ``--help`` abgefragt "
-"werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`management-interface-directory-reports-create-cli` in "
+":cite:t:`uv-ucs-operation`."
 
-#: ../../central-management-umc/directory-reports.rst:70
-msgid ""
-"The following command can be used to list the report templates available "
-"to users, for example:"
-msgstr ""
-"Mit dem folgenden Befehl können beispielsweise die verfügbaren "
-"Reportvorlagen für Benutzer aufgelistet werden:"
-
-#: ../../central-management-umc/directory-reports.rst:73
-msgid "$ univention-directory-reports -m users/user -l"
-msgstr "$ univention-directory-reports -m users/user -l"
-
-#: ../../central-management-umc/directory-reports.rst:81
+#: ../../central-management-umc/directory-reports.rst:34
 msgid "Adjustment/expansion of Univention Directory Reports"
 msgstr "Anpassung/Erweiterung von Univention Directory Reports"
 
-#: ../../central-management-umc/directory-reports.rst:83
+#: ../../central-management-umc/directory-reports.rst:36
 msgid ""
-"Existing reports can be created directly with the presettings. Some "
-"presettings can be adapted using |UCSUCR|. For example, it is possible to"
-" replace the logo that appears in the header of each page of a PDF "
-"report. To do so, the value of the |UCSUCRV| "
-":envvar:`directory/reports/logo` can include the name of an image file. "
-"The usual image formats such as JPEG, PNG and GIF can be used. The image "
-"is automatically adapted to a fixed width of 5.0 cm."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`management-interface-directory-reports-customize` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Schon vorhandene Reports können direkt mit den Voreinstellungen erstellt "
-"werden. Einige Voreinstellungen können mittels |UCSUCR| angepasst werden."
-" Beispielsweise ist es möglich, das Logo, dass in der Kopfzeile jeder "
-"Seite eines PDF-Reports angezeigt wird, zu ersetzen. Dafür kann der Wert "
-"der |UCSUCRV| :envvar:`directory/reports/logo` den Namen einer Bilddatei "
-"enthalten. Dabei können gängigen Bildformate wie JPEG, PNG oder GIF "
-"verwendet werden. Das Bild wird automatisch auf eine feste Breite von 5.0"
-" cm angepasst."
-
-#: ../../central-management-umc/directory-reports.rst:90
-msgid ""
-"In addition to the logo, the contents of the report can also be adapted "
-"by defining new report templates."
-msgstr ""
-"Neben dem Logo kann auch der Inhalt der Reports angepasst werden, indem "
-"neue Reportvorlagen definiert werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`management-interface-directory-reports-customize` in "
+":cite:t:`uv-ucs-operation`."
 
 #: ../../central-management-umc/extended-attributes.rst:7
 msgid "Expansion of UMC modules with extended attributes"
@@ -570,8 +461,7 @@ msgid ""
 "http-api` in :cite:t:`uv-ucs-operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
-"operation:ref:`iam-http-api` in :cite:t:`uv-ucs-"
-"operation`."
+"operation:ref:`iam-http-api` in :cite:t:`uv-ucs-operation`."
 
 #: ../../central-management-umc/index.rst:68
 msgid "Chapter contents:"
