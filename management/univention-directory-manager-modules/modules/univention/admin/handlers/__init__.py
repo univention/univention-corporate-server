@@ -258,13 +258,14 @@ class simpleLdap:
             return
 
         cls._register_univention_object_identifier_property(module)
+        cls._register_operational_attributes(module)
 
     @classmethod
     def _register_univention_object_identifier_property(cls, module):
         prop = {
             'univentionObjectIdentifier': univention.admin.property(
-                short_description=_('Immutable Object Identifier'),
-                long_description=_('Immutable attribute to track the identity of an object in UDM'),
+                short_description=_('Univention Object Identifier'),
+                long_description=_('Immutable attribute univentionObjectIdentifier to track the identity of an object in UDM'),
                 syntax=univention.admin.syntax.UUID,
                 may_change=False,
                 dontsearch=True,
@@ -278,9 +279,38 @@ class simpleLdap:
             module.default_property_descriptions.update(copy.deepcopy(prop))
         if not hasattr(module, 'layout'):
             module.layout = []
-        module.layout.insert(min(len(module.layout), 1), Tab(_('Technical information'), '', advanced=True, layout=[
-            'univentionObjectIdentifier',
+        module.layout.append(Tab(_('Technical information'), '', advanced=True, layout=[
+            ['univentionObjectIdentifier', 'entryUUID'],
+            ['creatorsName', 'createTimestamp'],
+            ['modifiersName', 'modifyTimestamp'],
+            ['entryCSN'],
         ]))
+
+    @classmethod
+    def _register_operational_attributes(cls, module):
+        for name, short_description, long_description in [
+            ('creatorsName', _('Created By'), _('Distinguished Name (DN) of the user or system that created this entry.')),
+            ('createTimestamp', _('Created'), _('Timestamp in UTC when this entry was originally created, set automatically by the directory server.')),
+            ('modifiersName', _('Last Modified By'), _('Distinguished Name (DN) of the user or system that last modified this entry.')),
+            ('modifyTimestamp', _('Last Modified'), _('Timestamp in UTC of the most recent change to this entry, maintained automatically by the directory server.')),
+            ('entryUUID', _('Entry UUID'), _('Globally unique identifier (entryUUID) for this LDAP object. Assigned by the directory server and does not change.')),
+            ('entryCSN', _('Change Sequence Number (CSN)'), _('Internal change identifier used for replication. Increases with each modification and helps synchronize directory servers.')),
+        ]:
+            prop = {
+                name: univention.admin.property(
+                    short_description=short_description,
+                    long_description=long_description,
+                    syntax=univention.admin.syntax.iso8601DateTime if name.endswith('Timestamp') else univention.admin.syntax.string,
+                    may_change=False,
+                    dontsearch=False,  # True,
+                    size='Two' if name.endswith(('Name', 'Timestamp', 'CSN')) else None,
+                ),
+            }
+            if hasattr(module, 'property_descriptions') and name not in module.property_descriptions:
+                module.mapping.register(name, name, univention.admin.mapping.dontMap(), univention.admin.mapping.unmapGeneralizedTimeToISO8601DateTime if name.endswith('Timestamp') else univention.admin.mapping.ListToString)
+                module.property_descriptions.update(prop)
+            if hasattr(module, 'default_property_descriptions') and name not in module.default_property_descriptions:
+                module.default_property_descriptions.update(copy.deepcopy(prop))
 
     @property
     def authz(self):
@@ -2244,7 +2274,7 @@ class simpleLdap:
     @classmethod
     def _ldap_attributes(cls) -> list[str]:
         """Get a list of additional (operational) LDAP attributes which needs to be fetched from the LDAP server when creating an instance of this object"""
-        return list({'*', 'entryUUID', 'entryCSN', 'modifyTimestamp'} | cls._static_ldap_attributes)
+        return list({'*', 'entryUUID', 'entryCSN', 'modifiersName', 'modifyTimestamp', 'creatorsName', 'createTimestamp'} | cls._static_ldap_attributes)
 
 
 class simpleComputer(simpleLdap):

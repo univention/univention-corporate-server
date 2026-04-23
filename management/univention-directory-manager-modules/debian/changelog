@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.5.15) unstable; urgency=medium
+
+  * Bug #59217: display univentionObjectIdentifier and technical
+    information in UMC
+
+ -- Florian Best <best@univention.de>  Fri, 24 Apr 2026 09:22:32 +0200
+
 univention-directory-manager-modules (17.5.14) unstable; urgency=medium
 
   * Bug #59215: count license objects also for unlimited licenses

@@ -14,6 +14,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
+msgid "Change Sequence Number (CSN)"
+msgstr "Änderungssequenznummer (CSN)"
+
+msgid "Created"
+msgstr "Erstellt"
+
+msgid "Created By"
+msgstr "Erstellt von"
+
+msgid "Distinguished Name (DN) of the user or system that created this entry."
+msgstr "Distinguished Name (DN) des Benutzers oder Systems, der bzw. das diesen Eintrag erstellt hat."
+
+msgid "Distinguished Name (DN) of the user or system that last modified this entry."
+msgstr "Distinguished Name (DN) des Benutzers oder Systems, der bzw. das diesen Eintrag zuletzt geändert hat."
+
+msgid "Entry UUID"
+msgstr "Eintrags-UUID"
+
+msgid "Globally unique identifier (entryUUID) for this LDAP object. Assigned by the directory server and does not change."
+msgstr "Global eindeutiger Bezeichner (entryUUID) für dieses LDAP-Objekt. Wird vom Verzeichnisdienst vergeben und ändert sich nicht."
+
+msgid "Immutable attribute univentionObjectIdentifier to track the identity of an object in UDM"
+msgstr "Unveränderliches Attribut univentionObjectIdentifier zur Nachverfolgung der Identität eines Objekts in UDM"
+
+msgid "Internal change identifier used for replication. Increases with each modification and helps synchronize directory servers."
+msgstr "Interner Änderungsbezeichner für die Replikation. Erhöht sich bei jeder Änderung und hilft, Verzeichnisserver zu synchronisieren."
+
+msgid "Last Modified"
+msgstr "Zuletzt geändert"
+
+msgid "Last Modified By"
+msgstr "Zuletzt geändert von"
+
+msgid "Timestamp in UTC of the most recent change to this entry, maintained automatically by the directory server."
+msgstr "Zeitstempel (UTC) der letzten Änderung dieses Eintrags, wird automatisch vom Verzeichnisdienst gepflegt."
+
+msgid "Timestamp in UTC when this entry was originally created, set automatically by the directory server."
+msgstr "Zeitstempel (UTC) der ursprünglichen Erstellung dieses Eintrags, wird automatisch vom Verzeichnisdienst gesetzt."
+
+msgid "Univention Object Identifier"
+msgstr "Univention Objekt-Identifikator"
+
 #: modules/univention/admin/handlers/__init__.py:999
 #, python-format
 msgid "Cannot restore object to %s: Parent container %s does not exist."
@@ -28,16 +70,6 @@ msgstr "DNS-Alias ist bereits verwendet."
 #: modules/univention/admin/handlers/__init__.py:812
 msgid "Destination object can't have sub objects."
 msgstr "Zielobjekt kann keine Unterobjekte haben."
-
-#: modules/univention/admin/handlers/__init__.py:266
-msgid "Immutable Object Identifier"
-msgstr "Unveränderlicher Objekt-Identifikator"
-
-#: modules/univention/admin/handlers/__init__.py:267
-msgid "Immutable attribute to track the identity of an object in UDM"
-msgstr ""
-"Unveränderliches Attribut, um die Identität eines Objekts in UDM zu "
-"verfolgen"
 
 #: modules/univention/admin/handlers/__init__.py:825
 msgid "Moving into one's own sub container not allowed."

@@ -1161,6 +1161,13 @@ class TextArea(string):
     widget_default_search_pattern = ''
 
 
+class Text(string):
+    """Syntax for a string with an input allowing multi-line input."""
+
+    widget = 'Text'
+    widget_default_search_pattern = ''
+
+
 class Editor(string):
     widget = 'Editor'
     widget_default_search_pattern = ''
@@ -2912,6 +2919,21 @@ class iso8601Date(simple):
                 # FIXME: broken: When used with the strptime() method, %U and %W are only used in calculations when the day of the week and the year are specified.
                 return datetime.datetime.strptime(value, '%Y-W%U').date()
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+
+    @classmethod
+    def from_datetime(cls, value):
+        return value.isoformat()
+
+
+class iso8601DateTime(simple):
+    widget = 'DateTimeBox'
+    widget_default_search_pattern = '1970-01-01T00:00'
+    type_class = univention.admin.types.DateTimeType
+
+    @classmethod
+    def to_datetime(cls, value):
+        if value:
+            return datetime.datetime.fromisoformat(value)
 
     @classmethod
     def from_datetime(cls, value):
