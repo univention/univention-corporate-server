@@ -944,7 +944,18 @@ class UDM_Module:
     def properties(self, position_dn):
         """All properties of the UDM module"""
         ldap_connection, ldap_position = self.get_ldap_connection()
-        props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
+        props = [{
+            'id': '$dn$',
+            'type': 'TextBox',
+            'label': _('Distinguished Name'),
+            'description': _('The unique LDAP path of this object, indicating where it is located in the directory structure.'),
+            'searchable': False,
+            'size': 'Two',
+            'editable': False,
+            'readonly': True,
+            'disabled': True,
+        }]
+
         for key, prop in list(getattr(self.module, 'property_descriptions', {}).items()):
             if key == 'filler':
                 continue  # FIXME: should be removed from all UDM modules

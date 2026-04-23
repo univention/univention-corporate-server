@@ -1758,7 +1758,7 @@ define([
 				var orgObjectTypeColumn = {
 					name: 'originalObjectType',
 					label: _('Object type'),
-					description: _('Original objec type of the removed object.')
+					description: _('Original object type of the removed object.')
 					// TODO: transform users/user -> User?!
 				};
 

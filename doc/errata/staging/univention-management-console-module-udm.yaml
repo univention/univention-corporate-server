@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-management-console-module-udm
+fix: 17.5.15
+desc: |
+ This update addresses the following issue:
+ * It was not possible to add a property to the layout if it's default value
+   was a function call. The `univentionObjectIdentifier` and other technical
+   information about LDAP operational attributes has been added to the
+   advanced settings tab of all UDM modules.
+bug: [59217]
