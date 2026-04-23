@@ -28,6 +28,12 @@ Web interface themes
    or create a custom theme to match your organization's branding.
    See :ref:`management-interface-theming`.
 
+Directory reports
+   Create predefined reports for users, groups, and computers
+   directly from the management modules or the command line.
+   Customize the report output by replacing the logo or registering new report templates.
+   See :ref:`management-interface-directory-reports`.
+
 .. toctree::
    :caption: Contents
 

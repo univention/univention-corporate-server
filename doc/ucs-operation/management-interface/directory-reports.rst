@@ -3,87 +3,115 @@
 
 .. _management-interface-directory-reports:
 
-Directory reports and queries
-=============================
+Directory reports
+=================
 
-Univention Directory Reports offers the possibility of creating predefined
-reports for any objects to be managed in the directory service.
+Univention Directory Reports creates ready-made reports
+for any object in the directory service.
 
-The structure of the reports is defined using templates. The specification
-language developed for this purpose allows the use of wildcards, which can be
-replaced with values from the LDAP directory. Any number of report templates
-can be created. This allows users to select very detailed reports or just create
-simple address lists, for example.
+You define report structure using templates.
+The specification language lets you use wildcards
+that you can replace with values from the LDAP directory.
+You can create any number of report templates.
+This enables you to generate detailed reports
+or create basic address lists, for example.
 
-The creation of the reports is directly integrated in the UMC modules
-:guilabel:`Users`, :guilabel:`Groups` and :guilabel:`Computers`. Alternatively,
-the command line program :command:`univention-directory-reports` can be used.
+You can create reports directly from the management modules
+*Users*, *Groups*, and *Computers*.
+Alternatively, you can use the command line program
+:command:`univention-directory-reports`.
 
-Six report templates are already provided with the delivered Univention
-Directory Reports, which can be used for users, groups and computers. Three
-templates create PDF documents and three CSV files, which can be used as an
-import source for other programs. Further templates can be created and
-registered.
+Univention Directory Reports includes six predefined report templates
+for users, groups, and computers.
+Three templates produce PDF documents
+and three produce CSV files
+that you can import into other programs.
+You can also create and register additional templates.
+For more information, see :ref:`management-interface-directory-reports-customize`.
 
-.. _central-reports-create:
+.. seealso::
 
-Creating reports via |UCSUMC| modules
--------------------------------------
+   For more information about the management modules,
+   see :cite:t:`uv-nubus-manual`:
 
-To create a report, you need to open the UMC module :guilabel:`Users`,
-:guilabel:`Groups` or :guilabel:`Computers`. Then all the objects which should
-be covered by the report must be selected (you can select all objects by
-clicking the checkbox the left of *Name*). Clicking on :menuselection:`More -->
-Create report` allows to choose between the *Standard Report* in PDF format and
-the *Standard CSV Report* in CSV format.
+   * :external+uv-nubus-manual:ref:`nubus-user-management-users`
+   * :external+uv-nubus-manual:ref:`nubus-groups-management`
+   * :external+uv-nubus-manual:ref:`nubus-computer-management`
 
-.. _umc-report:
+.. _management-interface-directory-reports-create-umc:
+
+Create reports through management modules
+-----------------------------------------
+
+To create a report through the management modules, follow these steps:
+
+#. Open the management module *Users*, *Groups*, or *Computers*.
+
+#. Select all the objects you want to include in the report.
+   You can select all objects by clicking the checkbox to the left of *Name*.
+   For example, see :numref:`management-interface-directory-reports-create-figure`.
+
+#. Click :menuselection:`More --> Create report`
+   to choose between the *Standard Report* (PDF) and the *Standard CSV Report* (CSV).
+
+#. Download and save the generated report file from the browser.
+
+The system stores reports created through a management module for 12 hours,
+then automatically deletes them through a cron job.
+You can configure when the cron job runs and how long to store reports
+using two :term:`UCR variables <UCR variable>`:
+
+* :envvar:`directory/reports/cleanup/cron`
+* :envvar:`directory/reports/cleanup/age`
+
+.. _management-interface-directory-reports-create-figure:
 
 .. figure:: /images/umc_report.*
-   :alt: Creating a report
+   :alt: Create a report
 
-   Creating a report
+   Create a report
 
-The reports created via a UMC module are stored for 12 hours and then deleted by
-a cron job. The settings for when the cron job should run and how long the
-reports should be stored for can be defined via two |UCSUCR| variables:
+.. _management-interface-directory-reports-create-cli:
 
-.. envvar:: directory/reports/cleanup/cron
+Create reports on the command line
+----------------------------------
 
-   Defines when the cron job should be run.
+You can also create reports on the command line with the
+:command:`univention-directory-reports` command.
+Run it with the ``--help`` option to view usage information.
 
-.. envvar:: directory/reports/cleanup/age
+To list the available report templates for a specific module,
+run the command in :numref:`management-interface-directory-reports-create-cli-templates-listing`.
 
-   Defines the maximum age of a report document in seconds before it is deleted.
-
-.. _central-management-umc-create-reports-cli:
-
-Creating reports on the command line
-------------------------------------
-
-Reports can also be created via the command line with the
-:command:`univention-directory-reports` program. Information on the use of the
-program can be viewed using the ``--help`` option.
-
-The following command can be used to list the report templates available to
-users, for example:
-
-.. code-block::
+.. code-block:: console
+   :caption: List available report templates
+   :name: management-interface-directory-reports-create-cli-templates-listing
 
    $ univention-directory-reports -m users/user -l
 
+To generate a report, run the command in
+:numref:`management-interface-directory-reports-create-cli-report-listing`.
 
-.. _central-management-umc-adjustment-expansion-of-directory-reports:
+.. code-block:: console
+   :caption: Generate a report
+   :name: management-interface-directory-reports-create-cli-report-listing
 
-Adjustment/expansion of Univention Directory Reports
-----------------------------------------------------
+   $ univention-directory-reports -m users/user -r "PDF Document" -f output.pdf
 
-Existing reports can be created directly with the presettings. Some presettings
-can be adapted using |UCSUCR|. For example, it is possible to replace the logo
-that appears in the header of each page of a PDF report. To do so, the value of
-the |UCSUCRV| :envvar:`directory/reports/logo` can include the name of an image
-file. The usual image formats such as JPEG, PNG and GIF can be used. The image
-is automatically adapted to a fixed width of 5.0 cm.
+.. _management-interface-directory-reports-customize:
 
-In addition to the logo, the contents of the report can also be adapted by
-defining new report templates.
+Customize reports
+-----------------
+
+You can generate reports with the default settings.
+Some settings can be adapted using
+:term:`UCR variables <UCR variable>`.
+
+For example, you can replace the logo that appears in the header of each page
+of a PDF report.
+To do so, specify the name of an image file in the
+:envvar:`directory/reports/logo` UCR variable.
+You can use common image formats such as JPEG, PNG, and GIF.
+The system scales the image to a fixed width of 5.0 cm.
+
+You can also adapt the report contents by creating new report templates.
