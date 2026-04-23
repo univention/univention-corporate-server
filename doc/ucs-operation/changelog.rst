@@ -22,6 +22,10 @@ Year 2026
      - Change
 
    * - 23. Apr 2026
+     - :ref:`management-interface-delegated-administration`
+     - Add section about delegated administration.
+
+   * - 23. Apr 2026
      - :ref:`management-interface-directory-reports`
      - Add section about directory reports.
 
