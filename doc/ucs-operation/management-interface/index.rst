@@ -28,6 +28,11 @@ Web interface themes
    or create a custom theme to match your organization's branding.
    See :ref:`management-interface-theming`.
 
+Delegated administration
+   Control which management modules specific groups or users can access
+   by creating and assigning *UMC* policies with selected operation sets.
+   See :ref:`management-interface-delegated-administration`.
+
 Directory reports
    Create predefined reports for users, groups, and computers
    directly from the management modules or the command line.
