@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 23. Apr 2026
+     - :ref:`management-interface-directory-reports`
+     - Add section about directory reports.
+
    * - 22. Apr 2026
      - :ref:`domain-activity-logging`
      - Add section about logging of domain activity.
