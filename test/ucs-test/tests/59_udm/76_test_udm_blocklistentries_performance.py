@@ -11,6 +11,7 @@
 
 import base64
 import os
+import subprocess
 import time
 
 import pytest
@@ -125,6 +126,10 @@ def test_create_1000_users_with_extreme_blocklist_setup(mail_domain_name):
         end = time.monotonic()
         for dn in user_dns:
             lo.delete(dn)
+
+        # creating 1000 users reaches the license limits. we need to update the cache so that followup tests don't block creating objects
+        subprocess.check_call(['/usr/share/univention-directory-manager-tools/univention-update-license-cache'])
+
     duration = end - start
     if package_installed('univention-samba4'):
         assert duration < 300

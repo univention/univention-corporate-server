@@ -1,3 +1,9 @@
+ucs-test (12.5.28) unstable; urgency=medium
+
+  * Bug #59060: reset license cache after removing 1000 users
+
+ -- Florian Best <best@univention.de>  Thu, 23 Apr 2026 10:14:24 +0200
+
 ucs-test (12.5.27) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#261: Handle HTTP 400 invalid_grant
