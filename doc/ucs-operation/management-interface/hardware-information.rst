@@ -6,29 +6,41 @@
 Hardware information
 ====================
 
-Univention collects information about hardware which is compatible with UCS and
-in use by customers. The information processed for this is gathered by the UMC
-module :guilabel:`Hardware information`.
+Univention collects data about hardware
+that customers use with Nubus for UCS.
+The *Hardware information* management module gathers this data.
 
-All files are forwarded to Univention anonymously and only transferred once
-permission has been received from the user.
+Nubus for UCS sends the data only after you grant permission.
+It doesn't attach any personal data to the transfer.
 
-The start dialogue contains the entry fields *Manufacturer* and *Model*, which
-must be completed with the values determined from the DMI information of the
-hardware. The fields can also be adapted and an additional
-*Descriptive comment* added.
+.. _management-interface-hardware-information-submit:
 
-If the hardware information is transferred as part of a support request, the
-:guilabel:`This is related to a support case` option should be activated. A
-ticket number can be entered in the next field; this facilitates assignment and
-allows quicker processing.
+Submit hardware information
+   To submit hardware information to Univention, follow these steps:
 
-Clicking on :guilabel:`Next` offers an overview of the transferred hardware
-information. In addition, a compressed TAR archive is created, which contains a
-list of the hardware components used in the system and can be downloaded via
-:guilabel:`Archive with system information`.
+   #. Open the *Hardware information* management module
+      in the *Management UI* at
+      :menuselection:`System --> Hardware information`.
 
-Clicking on :guilabel:`Next` again allows you to select the way the data are
-transferred to Univention. :guilabel:`Upload` transmits the data via HTTPS,
-:guilabel:`Send mail)` opens a dialogue, which lists the needed steps to send
-the archive via email.
+   #. Fill in the *Manufacturer* and *Model* fields.
+      The module pre-fills these fields with values from your hardware's DMI data.
+      You can adjust the values and add an optional *Comment*.
+      For an example, see :numref:`management-interface-hardware-information-figure`.
+
+   #. If the hardware information relates to a support case,
+      activate :guilabel:`This is related to a support case`
+      and enter the ticket number in the next field.
+
+   #. Click :guilabel:`Next` to view the hardware information before you transfer it.
+      Optionally, download a TAR archive of the hardware components by clicking :guilabel:`Archive with system information`.
+
+   #. Click :guilabel:`Next` again and choose the transfer method:
+      :guilabel:`Upload` sends the data through HTTPS,
+      and :guilabel:`Send mail` lets you send the archive by email.
+
+.. _management-interface-hardware-information-figure:
+
+.. figure:: /images/umc_hardware-information.*
+   :alt: The Hardware information management module start dialog
+
+   The *Hardware information* management module start dialog

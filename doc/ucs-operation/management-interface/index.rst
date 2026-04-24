@@ -39,7 +39,10 @@ Directory reports
    Customize the report output by replacing the logo or registering new report templates.
    See :ref:`management-interface-directory-reports`.
 
-.. TODO: Add description entry for hardware information section
+Hardware information
+   Submit hardware and system information to Univention
+   for compatibility tracking or as part of a support request.
+   See :ref:`management-interface-hardware-information`.
 
 .. toctree::
    :caption: Contents
