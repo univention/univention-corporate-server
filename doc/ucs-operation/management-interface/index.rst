@@ -39,6 +39,8 @@ Directory reports
    Customize the report output by replacing the logo or registering new report templates.
    See :ref:`management-interface-directory-reports`.
 
+.. TODO: Add description entry for hardware information section
+
 .. toctree::
    :caption: Contents
 
@@ -47,3 +49,4 @@ Directory reports
    theme
    delegated-administration
    directory-reports
+   hardware-information
