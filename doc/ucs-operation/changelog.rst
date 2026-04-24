@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 24. Apr 2026
+     - :ref:`management-interface-hardware-information`
+     - Add section about the *Hardware information* management module.
+
    * - 23. Apr 2026
      - :ref:`management-interface-delegated-administration`
      - Add section about delegated administration.
