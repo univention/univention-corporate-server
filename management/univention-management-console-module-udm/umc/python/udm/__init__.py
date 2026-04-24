@@ -874,7 +874,29 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             object_dn = None
         else:
             object_dn = request.options.get('objectDN')
-        return module.get_layout(object_dn)
+        layout = module.get_layout(object_dn)
+
+        # add DN dynamically only to UMC layout
+        # rely on AppAttributes to already have deepcopy'ed it
+        dn_field = '$dn$'
+        needle = 'univentionObjectIdentifier'
+        for tab in layout:
+            if not isinstance(tab, dict):
+                continue
+            rows = tab.get('layout')
+            if not isinstance(rows, list):
+                continue
+
+            for i, row in enumerate(rows):
+                if isinstance(row, list) and needle in row:
+                    if i == 0 or rows[i - 1] != dn_field:
+                        rows.insert(i, dn_field)
+                    break
+                if row == needle:
+                    if i == 0 or rows[i - 1] != dn_field:
+                        rows.insert(i, dn_field)
+                    break
+        return layout
 
     @bundled
     @sanitize(
