@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-23 21:05+0000\n"
-"PO-Revision-Date: 2026-04-24 10:21+0200\n"
+"POT-Creation-Date: 2026-04-24 10:12+0000\n"
+"PO-Revision-Date: 2026-04-24 12:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1471,8 +1471,8 @@ msgid ""
 "The target group must already exist. If not, create it in "
 ":menuselection:`Users --> Groups` first."
 msgstr ""
-"Die Gruppe muss bereits vorhanden sein. Falls nicht, erstellen Sie "
-"sie zuerst in :menuselection:`Benutzer --> Gruppen`."
+"Die Gruppe muss bereits vorhanden sein. Falls nicht, erstellen Sie sie "
+"zuerst in :menuselection:`Benutzer --> Gruppen`."
 
 #: ../../management-interface/delegated-administration.rst:158
 msgid ""
@@ -1809,7 +1809,101 @@ msgstr ""
 "Sie können die Berichtsinhalte auch anpassen, indem Sie neue "
 "Berichtsvorlagen erstellen."
 
+#: ../../management-interface/hardware-information.rst:7
 #: ../../management-interface/index.rst:42
+msgid "Hardware information"
+msgstr "Hardwareinformationen"
+
+#: ../../management-interface/hardware-information.rst:9
+msgid ""
+"Univention collects data about hardware that customers use with Nubus for"
+" UCS. The *Hardware information* management module gathers this data."
+msgstr ""
+"Univention sammelt Daten über Hardware, die Kunden mit Nubus für UCS "
+"verwenden. Das Verwaltungsmodul *Hardwareinformationen* erfasst diese "
+"Daten."
+
+#: ../../management-interface/hardware-information.rst:13
+msgid ""
+"Nubus for UCS sends the data only after you grant permission. It doesn't "
+"attach any personal data to the transfer."
+msgstr ""
+"Nubus für UCS sendet die Daten erst, nachdem Sie die Erlaubnis erteilt "
+"haben. Es werden keine personenbezogenen Daten an die Übertragung "
+"angehängt."
+
+#: ../../management-interface/hardware-information.rst:18
+msgid "Submit hardware information"
+msgstr "Hardwareinformationen übermitteln"
+
+#: ../../management-interface/hardware-information.rst:19
+msgid "To submit hardware information to Univention, follow these steps:"
+msgstr ""
+"Führen Sie diese Schritte aus, um Hardwareinformationen an Univention zu "
+"übermitteln:"
+
+#: ../../management-interface/hardware-information.rst:21
+msgid ""
+"Open the *Hardware information* management module in the *Management UI* "
+"at :menuselection:`System --> Hardware information`."
+msgstr ""
+"Öffne das Verwaltungsmodul *Hardwareinformationen* in der *Management UI*"
+" unter :menuselection:`System --> Hardwareinformation`."
+
+#: ../../management-interface/hardware-information.rst:25
+msgid ""
+"Fill in the *Manufacturer* and *Model* fields. The module pre-fills these"
+" fields with values from your hardware's DMI data. You can adjust the "
+"values and add an optional *Comment*. For an example, see :numref"
+":`management-interface-hardware-information-figure`."
+msgstr ""
+"Füllen Sie die Felder *Hersteller* und *Modell* aus. Das Modul füllt "
+"diese Felder vorab mit Werten aus den :spelling:word:`DMI-Daten` Ihrer Hardware. Sie "
+"können die Werte anpassen und einen optionalen *Kommentar* hinzufügen. "
+"Ein Beispiel finden Sie unter :numref:`management-interface-hardware-"
+"information-figure`."
+
+#: ../../management-interface/hardware-information.rst:30
+msgid ""
+"If the hardware information relates to a support case, activate "
+":guilabel:`This is related to a support case` and enter the ticket number"
+" in the next field."
+msgstr ""
+"Wenn die Hardwareinformationen sich auf einen Support-Fall beziehen, "
+"aktivieren Sie :guilabel:`Dies bezieht sich auf einen Supporfall` und "
+"geben Sie die Ticketnummer im nächsten Feld ein."
+
+#: ../../management-interface/hardware-information.rst:34
+msgid ""
+"Click :guilabel:`Next` to view the hardware information before you "
+"transfer it. Optionally, download a TAR archive of the hardware "
+"components by clicking :guilabel:`Archive with system information`."
+msgstr ""
+"Klicken Sie :guilabel:`Weiter`, um die Hardwareinformationen vor der "
+"Übertragung anzuzeigen. Optional können Sie ein :spelling:word:`TAR-Archiv` der "
+"Hardwarekomponenten herunterladen, indem Sie auf :guilabel:`Archiv mit "
+"Systeminformationen` klicken."
+
+#: ../../management-interface/hardware-information.rst:37
+msgid ""
+"Click :guilabel:`Next` again and choose the transfer method: "
+":guilabel:`Upload` sends the data through HTTPS, and :guilabel:`Send "
+"mail` lets you send the archive by email."
+msgstr ""
+"Klicken Sie erneut :guilabel:`Weiter` und wählen Sie die "
+"Übertragungsmethode: :guilabel:`Hochladen` sendet die Daten über HTTPS, und "
+":guilabel:`Mail senden` ermöglicht es Ihnen, das Archiv per E-Mail zu "
+"senden."
+
+#: ../../management-interface/hardware-information.rst:43
+msgid "The Hardware information management module start dialog"
+msgstr "Das Startdialogfeld des Verwaltungsmoduls Hardwareinformationen"
+
+#: ../../management-interface/hardware-information.rst:46
+msgid "The *Hardware information* management module start dialog"
+msgstr "Das Startdialogfeld des Verwaltungsmoduls *Hardwareinformationen*"
+
+#: ../../management-interface/index.rst:47
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1883,9 +1977,10 @@ msgid ""
 "creating and assigning *UMC* policies with selected operation sets. See "
 ":ref:`management-interface-delegated-administration`."
 msgstr ""
-"Steuern Sie, welche Verwaltungsmodule bestimmte Gruppen oder Benutzer durch "
-"Erstellen und Zuweisen von *UMC*-Richtlinien mit ausgewählten Operationssätzen "
-"zugreifen können. Siehe :ref:`management-interface-delegated-administration`."
+"Steuern Sie, welche Verwaltungsmodule bestimmte Gruppen oder Benutzer "
+"durch Erstellen und Zuweisen von *UMC*-Richtlinien mit ausgewählten "
+"Operationssätzen zugreifen können. Siehe :ref:`management-interface-"
+"delegated-administration`."
 
 #: ../../management-interface/index.rst:37
 msgid ""
@@ -1898,6 +1993,16 @@ msgstr ""
 "direkt aus den Verwaltungsmodulen oder der Befehlszeile. Passen Sie die "
 "Berichtausgabe an, indem Sie das Logo ersetzen oder neue Berichtsvorlagen"
 " registrieren. Siehe :ref:`management-interface-directory-reports`."
+
+#: ../../management-interface/index.rst:43
+msgid ""
+"Submit hardware and system information to Univention for compatibility "
+"tracking or as part of a support request. See :ref:`management-interface-"
+"hardware-information`."
+msgstr ""
+"Übermitteln Sie Hardware- und Systeminformationen an Univention zur "
+"Kompatibilitätsverfolgung oder als Teil einer Support-Anfrage. Siehe :ref"
+":`management-interface-hardware-information`."
 
 #: ../../management-interface/license.rst:7
 msgid "Activate UCS license"
