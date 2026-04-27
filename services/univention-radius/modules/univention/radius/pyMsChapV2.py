@@ -6,12 +6,23 @@
 # SPDX-FileCopyrightText: 2012-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import passlib.crypto.des
-from samba.crypto import md4_hash_blob
+# #55996 md4 is now part of the legacy provider. To
+# use it we need to load it before importing hashlib.
+import ctypes
 
 
-def md4(data: bytes) -> bytes:
-    return md4_hash_blob(data)
+ctypes.CDLL("libssl.so").OSSL_PROVIDER_load(None, b"legacy")
+ctypes.CDLL("libssl.so").OSSL_PROVIDER_load(None, b"default")
+import hashlib  # noqa: E402
+
+import passlib.crypto.des  # noqa: E402
+
+
+def md4(data):
+    # type: (bytes) -> bytes
+    md = hashlib.new('md4')
+    md.update(data)
+    return md.digest()
 
 
 def DesEncrypt(data: bytes, key: bytes) -> bytes:
