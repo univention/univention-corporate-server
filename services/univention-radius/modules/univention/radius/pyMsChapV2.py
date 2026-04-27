@@ -8,11 +8,12 @@
 
 # #55996 md4 is now part of the legacy provider. To
 # use it we need to load it before importing hashlib.
+
 import ctypes
 
 
-ctypes.CDLL("libssl.so").OSSL_PROVIDER_load(None, b"legacy")
-ctypes.CDLL("libssl.so").OSSL_PROVIDER_load(None, b"default")
+ctypes.CDLL("/usr/lib/x86_64-linux-gnu/libssl.so.3").OSSL_PROVIDER_load(None, b"legacy")
+ctypes.CDLL("/usr/lib/x86_64-linux-gnu/libssl.so.3").OSSL_PROVIDER_load(None, b"default")
 import hashlib  # noqa: E402
 
 import passlib.crypto.des  # noqa: E402
