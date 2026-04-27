@@ -76,6 +76,8 @@ class AuthHandler:
         except BaseException as exc:
             result = exc
             AUTH.exception("Unexpected authentication error")
+        finally:
+            pam.end()
 
         if isinstance(result, tuple):
             username, password = result
@@ -124,3 +126,9 @@ class AuthHandler:
         except Exception:
             AUTH.exception('Canonicalization of username failed')
         return username
+
+    def change_password(self, pam, username, password, new_password):
+        try:
+            return pam.change_password(username, password, new_password)
+        finally:
+            pam.end()

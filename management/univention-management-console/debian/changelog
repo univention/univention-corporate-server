@@ -1,8 +1,12 @@
-univention-management-console (14.5.0) UNRELEASED; urgency=medium
+univention-management-console (14.5.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59082: UCS 5.2-5 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:21:12 +0100
+  [ Florian Best ]
+  * Bug #59220: fix socket file descriptor leak after PAM authentication
+
+ -- Florian Best <best@univention.de>  Mon, 27 Apr 2026 20:02:37 +0200
 
 univention-management-console (14.4.4) unstable; urgency=medium
 

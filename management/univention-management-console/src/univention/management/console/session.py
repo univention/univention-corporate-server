@@ -111,7 +111,6 @@ class Session:
         pam = self.__auth.get_handler(args['locale'])
         future = pool.submit(self.__auth.authenticate, pam, args)
         result = await asyncio.wrap_future(future)
-        pam.end()
 
         if (
             self.user.authenticated
@@ -137,9 +136,8 @@ class Session:
         username = args['username']
         password = args['password']
         new_password = args['new_password']
-        future = pool.submit(pam.change_password, username, password, new_password)
+        future = pool.submit(self.__auth.change_password, pam, username, password, new_password)
         await asyncio.wrap_future(future)
-        pam.end()
         self.set_credentials(username, new_password, None)
 
     def set_credentials(self, username, password, auth_type, object_id=None, roles=None, federated_account=False):
