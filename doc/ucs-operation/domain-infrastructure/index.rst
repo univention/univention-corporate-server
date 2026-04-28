@@ -30,6 +30,12 @@ Domain join
    and manage join scripts for automated system configuration.
    See :ref:`domain-infrastructure-join`.
 
+Certificate management
+   Understand how UCS manages TLS certificates,
+   the built-in CA on the Primary Directory Node,
+   certificate validity monitoring, and renewal procedures.
+   See :ref:`domain-infrastructure-tls`.
+
 Kerberos authentication
    Learn how Nubus for UCS uses Kerberos for domain authentication,
    how the system selects the Key Distribution Center,

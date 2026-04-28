@@ -6,76 +6,111 @@
 Certificate management
 ======================
 
-In UCS, sensitive data are always sent across the network encrypted, e.g., via
-the use of SSH for the login to systems or via the use of protocols based on
-SSL/TLS. (*Transport Layer Security (TLS)* is the current protocol name, the
-name of the previous protocol *Secure Socket Layer (SSL)*, however, is still
-more common and is also used in this documentation).
+Nubus for UCS always encrypts sensitive data in transit.
+For example, it uses SSH for signing in to systems
+and TLS for domain replication and LDAP communication.
 
-For example, SSL/TLS is employed in the listener/notifier domain
-replication or for HTTPS access to |UCSWEB|\ s.
+Each computer must verify each other's identity before exchanging encrypted data.
+To do this,
+each computer has a *host certificate*
+that a certification authority (CA) issues and signs.
 
-Both communication partners must be able to verify the authenticity of the key
-used for encrypted communication between two computers. To this end, each
-computer also features a so-called *host certificate*, which is issued and
-signed by a certification authority (CA).
+This section describes the built-in UCS certificate authority,
+which manages trust within the Nubus for UCS domain.
+For publicly trusted certificates for web-facing services such as Apache,
+see :ref:`lifecycle-lets-encrypt`.
 
-UCS provides its own CA, which is automatically set up during installation of
-the |UCSPRIMARYDN| and from which every UCS system automatically procures a
-certificate for itself and the CA's public certificate when joining the domain.
-This CA appears as the root CA, signs its own certificate and can sign
-certificates for other certification authorities.
+.. _domain-infrastructure-tls-ca:
 
-The properties of the CA are generated automatically during the installation
-based on system settings such as the locale. These settings can be subsequently
-adapted on the |UCSPRIMARYDN| in the UMC module :guilabel:`Certificate
-settings`.
+UCS built-in certificate authority
+----------------------------------
 
-.. caution::
+Nubus for UCS automatically creates its own CA when you install the :term:`Primary Directory Node`.
+When a Nubus for UCS system joins the domain,
+it automatically requests its own host certificate
+and retrieves the CA's public certificate.
+The CA acts as the root CA:
+it signs its own certificate,
+and can sign certificates for subordinate CAs.
 
-   If the UCS domain contains more than one system, all other host certificates
-   need to be reissued after changing the root certificate! The procedure
-   required for this is documented in :uv:kb:`Renewing the SSL certificates <37>`.
+The UCS CA secures communication within the Nubus for UCS domain,
+not public-facing web services.
 
-The UCS-CA is always found on the |UCSPRIMARYDN|. A copy of the CA is stored on
-every |UCSBACKUPDN|, which is synchronized with the CA on the |UCSPRIMARYDN| by
-a Cron job every 20 minutes.
-
-.. caution::
-
-   The CA is synchronized from the |UCSPRIMARYDN| to the |UCSBACKUPDN| and not
-   vice-versa. For this reason, only the CA on the |UCSPRIMARYDN| should be
-   used.
-
-If a |UCSBACKUPDN| is promoted to the |UCSPRIMARYDN| (see
-:ref:`domain-backup2master`), the CA on the new |UCSPRIMARYDN| can be used
-directly.
-
-The UCS root certificate has a specified validity period - as do the
-computer certificates created with it.
+Nubus for UCS generates the CA properties automatically during installation,
+based on system settings such as the locale.
+To change these settings after installation,
+open the *Certificate settings* module in the *Management UI*
+on the Primary Directory Node.
 
 .. caution::
 
-   Once this period of time elapses, services which encrypt their
-   communication with SSL (e.g., LDAP or domain replication) no longer
-   function.
+   If you change the root certificate through the *Certificate settings* module,
+   you must reissue all host certificates.
+   See :uv:kb:`Renewing the SSL/TLS certificates <37>`.
 
-It is thus necessary to verify the validity of the certificate regularly
-and to renew the root certificate in time. A Nagios plugin is provided
-for the monitoring of the validity period. In addition, a warning is
-shown when opening a UMC module if the root certificate is going to
-expire soon (the warning period can be specified with the |UCSUCRV|
-:envvar:`ssl/validity/warning`; the standard value is 30 days).
+The CA in Nubus for UCS resides on the Primary Directory Node.
+Every :term:`Backup Directory Node` stores a copy of the CA.
+A cron job updates each copy from the Primary Directory Node every 20 minutes.
 
-The renewal of the root certificate and the other host certificates is
-documented in :uv:kb:`Renewing the SSL certificates <37>`.
+.. important::
 
-On UCS systems, a Cron job verifies the validity of the local computer
-certificate and the root certificate daily and records the expiry date in the
-|UCSUCR| variables :envvar:`ssl/validity/host` (host certificate) and
-:envvar:`ssl/validity/root` (root certificate). The values entered there
-reflect the number of days since the 1970-01-01.
+   CA updates transfer only from the Primary Directory Node to the Backup Directory Node,
+   not in the other direction.
+   Always use the CA on the Primary Directory Node.
 
-In |UCSUMC|, the effective expiry date of the computer and root certificate can
-be accessed via the upper right menu and the entry :menuselection:`License -->
-License information`.
+If you promote a Backup Directory Node to the Primary Directory Node,
+you can immediately use the CA on the new Primary Directory Node.
+For more information about the promotion,
+see :ref:`deployment-primary-dn-resilience-backup-primary-promotion`.
+
+.. seealso::
+
+   :ref:`deployment-domain-setup-new-domain`
+      for information about the installation of a Primary Directory Node
+
+   :ref:`deployment-domain-setup-join-ucs`
+      for information about a Nubus for UCS joining a domain.
+
+.. _domain-infrastructure-tls-validity:
+
+Certificate validity
+--------------------
+
+The Nubus for UCS root certificate and all host certificates issued from it expire after a set period.
+To renew the root certificate and all host certificates,
+see :uv:kb:`Renewing the SSL/TLS certificates <37>`.
+
+.. caution::
+
+   When a certificate expires,
+   services that use TLS-encrypted communication,
+   such as LDAP or domain replication,
+   stop working.
+
+.. _domain-infrastructure-tls-monitoring:
+
+Monitor certificate expiry
+--------------------------
+
+Nubus for UCS monitors certificate validity automatically.
+The Nagios plugin monitors the validity period,
+and the *Management UI* shows a warning
+when the root certificate is about to expire.
+You can configure the warning period with the :term:`UCR variable`
+:envvar:`ssl/validity/warning`.
+The default warning period is 30 days.
+You must renew the root certificate before the root certificate expires.
+
+Each day, a separate cron job on Nubus for UCS systems checks the validity of the host certificate
+and the root certificate.
+The cron job stores the expiry dates in the following UCR variables.
+These values are the number of days since 1970-01-01.
+
+:Host certificate: :envvar:`ssl/validity/host`
+:Root certificate: :envvar:`ssl/validity/root`
+
+To download the root certificate and the certificate revocation list in the *Management UI*:
+
+#. Open the hamburger menu.
+#. For the root certificate select :menuselection:`Certificates --> Root certificate`.
+#. For the revocation list select :menuselection:`Certificates --> Certificate revocation list`.
