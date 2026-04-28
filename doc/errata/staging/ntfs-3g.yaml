@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: ntfs-3g
+fix: 1:2017.3.23AR.3-4+deb11u4~deb10u2
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.4 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-40706)
+bug: [59224]
+cve:
+- CVE-2026-40706
