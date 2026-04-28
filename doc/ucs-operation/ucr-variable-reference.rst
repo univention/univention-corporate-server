@@ -1309,6 +1309,57 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+.. envvar:: ssl/validity/host
+
+   Stores the expiry date of the local host certificate.
+   A daily cron job on each Nubus for UCS system updates this value
+   after checking the host certificate.
+   The value is the number of days elapsed since 1970-01-01.
+
+   .. note::
+
+      Nubus for UCS sets this variable automatically.
+      Don't change it manually.
+
+   For information about monitoring certificate expiry,
+   see :ref:`domain-infrastructure-tls-monitoring`.
+
+   :Default value: not set
+   :Type: integer (days since 1970-01-01)
+
+
+.. envvar:: ssl/validity/root
+
+   Stores the expiry date of the root certificate.
+   A daily cron job on each Nubus for UCS system updates this value
+   after checking the root certificate.
+   The value is the number of days elapsed since 1970-01-01.
+
+   .. note::
+
+      Nubus for UCS sets this variable automatically.
+      Don't change it manually.
+
+   For information about monitoring certificate expiry,
+   see :ref:`domain-infrastructure-tls-monitoring`.
+
+   :Default value: not set
+   :Type: integer (days since 1970-01-01)
+
+
+.. envvar:: ssl/validity/warning
+
+   Sets the warning threshold in days for root certificate expiry.
+   When the root certificate expires within the configured number of days,
+   the *Management UI* displays a warning.
+   The Nagios plugin also uses this threshold for its certificate validity check.
+
+   For information about monitoring certificate expiry,
+   see :ref:`domain-infrastructure-tls-monitoring`.
+
+   :Default value: ``30``
+   :Type: integer
+
 
 .. envvar:: server/role
 
