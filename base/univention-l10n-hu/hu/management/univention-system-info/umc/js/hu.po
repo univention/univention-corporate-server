@@ -1,0 +1,220 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-sysinfo package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-sysinfo\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-11 21:55+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/js/sysinfo.js:120
+msgid ""
+"<p>Additionally to the information listed above some more details about the "
+"system has been collected. The whole set of collected data that will be "
+"transmitted to Univention can be downloaded at the following URL:</p>"
+msgstr ""
+"<p>A fent felsorolt információkon kívül további részleteket gyűjtöttünk a "
+"rendszerről. A Univentionnek továbbítandó összes összegyűjtött adat "
+"letölthető a következő URL-címen:</p>"
+
+#: umc/js/sysinfo.js:70
+msgid ""
+"<p>If a Univention Support Engineer has asked you to provide this "
+"information, then please insert the ticket number of the related support "
+"ticket into the following text field. The ticket number can be found in the "
+"subject of a support mail of the ticket. This information will speed up the "
+"processing of the ticket.</p>"
+msgstr ""
+"<p>Ha egy Univention támogatási mérnök kérte tőled ezen információk "
+"megadását, kérjük, írd be a kapcsolódó támogatási jegy számát a következő "
+"szövegmezőbe. A jegy száma megtalálható a jegyet tartalmazó támogatási e-"
+"mail tárgyában. Ez az információ felgyorsítja a jegy feldolgozását.</p>"
+
+#: umc/js/sysinfo.js:79
+msgid ""
+"<p>In the next step the information about the hardware of your system will "
+"be collected and a summary will be shown. During this step, no information "
+"will be sent to Univention.</p>"
+msgstr ""
+"<p>A következő lépésben a rendszer hardverinformációit gyűjtjük össze, és "
+"egy összefoglaló jelenik meg. Ebben a lépésben semmilyen információ nem "
+"kerül elküldésre az Univention számára.</p>"
+
+#: umc/js/sysinfo.js:145
+msgid ""
+"<p>The collected information can be transferred to Univention by uploading "
+"the data or by sending it via mail. Please select the corresponding option."
+"</p>"
+msgstr ""
+"<p>Az összegyűjtött információk feltöltéssel vagy postai úton történő "
+"küldéssel továbbíthatók az Univention-nek. Kérjük, válaszd ki a megfelelő "
+"lehetőséget.</p>"
+
+#: umc/js/sysinfo.js:91
+msgid ""
+"<p>The following information has been collected and will be transferred to "
+"Univention with your acceptance.</p>"
+msgstr ""
+"<p>A következő információkat összegyűjtöttük, és a beleegyezéseddel "
+"továbbítjuk az Univention-nek.</p>"
+
+#: umc/js/sysinfo.js:240
+msgid ""
+"<p>The information could not be transferred to Univention.</p><p>You can "
+"send them as email!</p>"
+msgstr ""
+"<p>Az információt nem lehetett átadni az Univention-nek.</p><p> Elküldheted "
+"őket emailben!</p>"
+
+#: umc/js/sysinfo.js:165
+msgid ""
+"<p>The information were transferred to Univention successfully.</p><p>Thank "
+"you very much for your support!</p>"
+msgstr ""
+"<p>Az információk sikeresen továbbítva az Univention-nek.</p><p> Nagyon "
+"szépen köszönöm a támogatást!</p>"
+
+#: umc/js/sysinfo.js:37
+msgid ""
+"<p>This module collects information about the hardware of your system. This "
+"might be helpful in connection with a support case. By transmitting the "
+"data to Univention you provide the information on which platforms UCS is "
+"currently used and therefore should be supported by newer versions. In the "
+"following procedure you will be informed in detail about the each step.</"
+"p><p>No information is transmitted without your acceptance</p>"
+msgstr ""
+"<p>Ez a modul információkat gyűjt a rendszer hardveréről. Ez hasznos lehet "
+"egy támogatási eset kapcsán. Az adatok Univention-nak történő "
+"továbbításával információt szolgáltat arról, hogy mely platformokon "
+"használják jelenleg az UCS-t, és ezért melyik új verzióknak kell "
+"támogatniuk azt. A következő eljárásban részletesen tájékoztatunk az egyes "
+"lépésekről.</p><p>A beleegyezésed nélkül semmilyen információ nem kerül "
+"továbbításra.</p>"
+
+#: umc/js/sysinfo.js:124 umc/js/sysinfo.js:179 umc/js/sysinfo.js:297
+msgid "Archive with system information"
+msgstr "Archívum rendszerinformációkkal"
+
+#: umc/js/sysinfo.js:95
+msgid "CPU"
+msgstr "Processzor (CPU)"
+
+#: umc/js/sysinfo.js:86
+msgid "Collected data"
+msgstr "Összegyűjtött adatok"
+
+#: umc/js/sysinfo.js:49
+msgid "Comment"
+msgstr "Hozzászólás"
+
+#: umc/js/sysinfo.js:36
+msgid "General information"
+msgstr "Általános információ"
+
+#: umc/js/sysinfo.js:116
+msgid "Graphics card"
+msgstr "Grafikus kártya"
+
+#: umc/js/sysinfo.js:57
+msgid ""
+"If this is related to a support case the next step will be to enter the "
+"ticket number. Otherwise the information about your system will be "
+"collected and a summary is shown."
+msgstr ""
+"Ha ez egy támogatási esethez kapcsolódik, a következő lépés a jegyszám "
+"megadása. Ellenkező esetben a rendszer adatait összegyűjti a rendszer, és "
+"megjelenik egy összefoglaló."
+
+#: umc/js/sysinfo.js:128
+msgid ""
+"In the following step two possibilities to transmit the information to "
+"Univention will be described."
+msgstr ""
+"A következő lépésben két lehetőséget ismertetünk az információk Univention-"
+"nek történő továbbítására."
+
+#: umc/js/sysinfo.js:41
+msgid "Manufacturer"
+msgstr "Gyártó"
+
+#: umc/js/sysinfo.js:106
+msgid "Memory"
+msgstr "Memória"
+
+#: umc/js/sysinfo.js:150
+msgid "Method"
+msgstr "Módszer"
+
+#: umc/js/sysinfo.js:45
+msgid "Model"
+msgstr "Modell"
+
+#: umc/js/sysinfo.js:111
+msgid "Network adapter"
+msgstr "Hálózati adapter"
+
+#: umc/js/sysinfo.js:101
+msgid "Number of CPUs"
+msgstr "CPU-k száma"
+
+#: umc/js/sysinfo.js:153 umc/js/sysinfo.js:314
+msgid "Send mail"
+msgstr "Levél küldése"
+
+#: umc/js/sysinfo.js:65
+msgid "Support information"
+msgstr "Támogatási információk"
+
+#: umc/js/sysinfo.js:53
+msgid "This is related to a support case"
+msgstr "Ez egy támogatási esethez kapcsolódik"
+
+#: umc/js/sysinfo.js:74
+msgid "Ticket"
+msgstr "Jegy"
+
+#: umc/js/sysinfo.js:175
+msgid ""
+"To transfer the information via mail please follow these steps:"
+"<ol><li>Download the archive with the collected information and save it on "
+"your local system</li><li>Click on link <i>Send mail</i> to open your mail "
+"program</li><li>Attach the downloaded archive to the mail and send it to "
+"Univention</li><li>End this assistant by clicking on the button <i>Finish</"
+"i></li></ol>"
+msgstr ""
+"Az információk postai úton történő továbbításához kérjük, kövesd az alábbi "
+"lépéseket:<ol><li> Töltsd le az összegyűjtött információkat tartalmazó "
+"archívumot, és mentsd el a helyi rendszerre.</li><li> Kattints a <i>Levél "
+"küldése</i> linkre a levelezőprogram megnyitásához</li><li> Csatold a "
+"letöltött archívumot az e-mailhez, és küldd el az Univention-nek</li><li> A "
+"<i>Befejezés</i> gombra kattintva zárd be az asszisztenst.</li></ol>"
+
+#: umc/js/sysinfo.js:140
+msgid "Transfer the information"
+msgstr "Az információk átvitele"
+
+#: umc/js/sysinfo.js:170
+msgid "Transfer via mail"
+msgstr "Továbbítás postai úton"
+
+#: umc/js/sysinfo.js:160
+msgid "Transferred successfully"
+msgstr "Sikeresen továbbítva"
+
+#: umc/js/sysinfo.js:152
+msgid "Upload"
+msgstr "Feltöltés"
+
+#: umc/js/sysinfo.js:239
+msgid "Uploading failed"
+msgstr "Feltöltés sikertelen"

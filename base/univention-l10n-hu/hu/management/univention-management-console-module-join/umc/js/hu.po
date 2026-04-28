@@ -1,0 +1,299 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-join package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-join\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-10 00:21+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/js/join/Grid.js:148
+#, javascript-format
+msgid "%d scripts are pending to be run."
+msgstr "%d szkript futtatása függőben van."
+
+#: umc/js/join/Grid.js:140
+#, javascript-format
+msgid "%d scripts selected"
+msgstr "%d szkript kiválasztva"
+
+#: umc/js/join.js:135
+msgid "... loading log ..."
+msgstr "... naplófájl betöltése ..."
+
+#: umc/js/join/Grid.js:140
+msgid "1 script selected"
+msgstr "1 szkript kiválasztva"
+
+#: umc/js/join.js:419
+msgid ""
+"<p>Please enter credentials of a user account with administrator rights to "
+"run the selected join scripts.</p>"
+msgstr ""
+"<p>Kérjük, adj meg egy rendszergazdai jogosultságokkal rendelkező "
+"felhasználói fiók hitelesítő adatait a kiválasztott csatlakozási szkriptek "
+"futtatásához.</p>"
+
+#. i18n: %s is the "XXX module".
+#: umc/js/join.js:287
+#, javascript-format
+msgid "A Primary Directory Node should be joined by the %s."
+msgstr ""
+"Az elsődleges könyvtárcsomópontot a(z) %s jelöléssel kell csatlakoztatni."
+
+#: umc/js/join.js:282
+msgid "A join process is already running..."
+msgstr "Már fut egy csatlakozási folyamat..."
+
+#: umc/js/join.js:382
+msgid "A reboot of the server is recommended after joining the system."
+msgstr "A rendszerhez való csatlakozás után ajánlott a szerver újraindítása."
+
+#: umc/js/join.js:384
+msgid ""
+"A restart of the UMC server components may be necessary for changes to take "
+"effect."
+msgstr ""
+"A változások érvénybe lépéséhez szükség lehet az UMC szerver összetevőinek "
+"újraindítására."
+
+#: umc/js/join.js:37
+msgid ""
+"As %(root)s you do not have access to the App Center. For this you need to "
+"log in as %(administrator)s."
+msgstr ""
+"Mivel %(root)s nincs hozzáférése az App Centerhez. Ehhez %(administrator)s "
+"névvel kell bejelentkezni."
+
+#: umc/js/join.js:39
+msgid ""
+"As %(root)s you have neither access to the domain administration nor to the "
+"App Center. For this you need to log in as %(administrator)s."
+msgstr ""
+"Mivel %(root)s nincs hozzáférés sem a domain adminisztrációhoz, sem az App "
+"Centerhez. Ehhez %(administrator)s névvel kell bejelentkezni."
+
+#. i18n: %s is the "XXX module".
+#: umc/js/join.js:287
+msgid "Basic settings module"
+msgstr "Alapbeállítások modul"
+
+#: umc/js/join.js:247
+msgid ""
+"Currently, software is being installed or uninstalled. Join scripts should "
+"not be run right now."
+msgstr ""
+"Jelenleg szoftver telepítése vagy eltávolítása zajlik. A csatlakozási "
+"szkriptek jelenleg nem futtathatók."
+
+#: umc/js/join/Grid.js:28
+msgid "Execute"
+msgstr "Végrehajtás"
+
+#: umc/js/join/Grid.js:56
+msgid "Execute all pending join scripts"
+msgstr "Az összes függő csatlakozási szkript végrehajtása"
+
+#: umc/js/join/Grid.js:57
+msgid "Executes join scripts which are not properly configured."
+msgstr "Nem megfelelően konfigurált csatlakozási szkriptek végrehajtása."
+
+#: umc/js/join/Grid.js:29
+msgid "Executes this join script"
+msgstr "Végrehajtja ezt a csatlakozási szkriptet"
+
+#: umc/js/join/Grid.js:46
+msgid "Force execute"
+msgstr "Végrehajtás kényszerítése"
+
+#: umc/js/join/Grid.js:47
+msgid "Forces execution of selected join scripts"
+msgstr "A kiválasztott illesztési szkriptek végrehajtásának kényszerítése"
+
+#: umc/js/join/Form.js:41
+msgid "Hostname of Primary Directory Node"
+msgstr "Az elsődleges könyvtárcsomópont gazdanevének megadása"
+
+#: umc/js/join.js:347 umc/js/join.js:350
+msgid "Join error"
+msgstr "Csatlakozási hiba"
+
+#: umc/js/join.js:114
+msgid "Join log"
+msgstr "Csatlakozási napló"
+
+#: umc/js/join/Grid.js:145
+msgid "Join status ok, nothing to do."
+msgstr "Csatlakozási állapot rendben, nincs teendő."
+
+#: umc/js/join/Form.js:22
+msgid "Join system"
+msgstr "Csatlakozás a rendszerhez"
+
+#. i18n: %s is the "Domain join module".
+#: umc/js/join.js:64
+#, javascript-format
+msgid ""
+"Not all installed components have been registered. Please visit the %s to "
+"register the remaining components."
+msgstr ""
+"Nem minden telepített összetevő lett regisztrálva. Kérjük, látogasd meg "
+"a(z) %s oldalt a fennmaradó összetevők regisztrálásához."
+
+#: umc/js/join/Grid.js:148
+msgid "One script is pending to be run."
+msgstr "Egy szkript futtatása függőben van."
+
+#: umc/js/join/Grid.js:39
+msgid ""
+"Only join scripts which are not successfully configured can be executed. To "
+"execute the selected scripts anyway the force execution option have to be "
+"used."
+msgstr ""
+"Csak azok a szkriptek futtathatók, amelyek konfigurálása nem volt sikeres. "
+"A kiválasztott szkriptek futtatásához a kényszerített futtatás opciót kell "
+"használni."
+
+#: umc/js/join.js:433 umc/js/join/Form.js:35
+msgid "Password"
+msgstr "Jelszó"
+
+#: umc/js/join.js:441
+msgid "Password invalid"
+msgstr "A jelszó érvénytelen"
+
+#: umc/js/join/Form.js:36
+msgid "Password of the domain administrator"
+msgstr "A domain adminisztrátor jelszava"
+
+#: umc/js/join.js:83
+msgid ""
+"Please enter credentials of a user account with administrator rights to "
+"join the system."
+msgstr ""
+"Kérjük, add meg a rendszerhez való csatlakozáshoz szükséges rendszergazdai "
+"jogosultságokkal rendelkező felhasználói fiók hitelesítő adatait."
+
+#: umc/js/join/Grid.js:67
+msgid "Rejoin"
+msgstr "Újracsatlakozás"
+
+#: umc/js/join.js:259
+msgid "Rejoin system"
+msgstr "Csatlakozzon újra a rendszerhez"
+
+#: umc/js/join/Grid.js:68
+msgid "Rejoins the system"
+msgstr "Újra csatlakozik a rendszerhez"
+
+#: umc/js/join.js:437
+msgid "Run"
+msgstr "Futtatás"
+
+#: umc/js/join.js:233 umc/js/join.js:436
+msgid "Run join scripts"
+msgstr "Csatlakozási szkriptek futtatása"
+
+#: umc/js/join/Grid.js:89
+msgid "Script (package)"
+msgstr "Szkript (csomag)"
+
+#: umc/js/join/Grid.js:90
+msgid "Script name (the same as the package it belongs to)"
+msgstr "A szkript neve (megegyezik a csomag nevével, amelyhez tartozik)"
+
+#: umc/js/join.js:124
+msgid "Show Join status"
+msgstr "Csatlakozási állapot megjelenítése"
+
+#: umc/js/join/Grid.js:74
+msgid "Shows the join log"
+msgstr "Megjeleníti a csatlakozási naplót"
+
+#: umc/js/join.js:338
+msgid "Starting the join process..."
+msgstr "A csatlakozási folyamat elindítása..."
+
+#: umc/js/join/Grid.js:95
+msgid "State"
+msgstr "Státusz"
+
+#: umc/js/join/Grid.js:96
+msgid "Status of this package"
+msgstr "A csomag állapota"
+
+#. i18n: %s is the "Network settings module".
+#: umc/js/join/Form.js:66
+#, javascript-format
+msgid "The DNS settings can be adjusted in the %s."
+msgstr "A DNS-beállítások a %s menüpontban módosíthatók."
+
+#: umc/js/join.js:227
+msgid "The following join scripts will be executed: "
+msgstr "A következő csatlakozási szkriptek kerülnek végrehajtásra: "
+
+#: umc/js/join/Form.js:42
+msgid "The hostname of the Primary Directory Node of the domain"
+msgstr "A domain elsődleges könyvtárcsomópontjának gazdaneve"
+
+#: umc/js/join.js:355
+msgid "The join process was successful."
+msgstr "A csatlakozási folyamat sikeres volt."
+
+#: umc/js/join.js:282
+msgid "The join scripts have successfully been executed."
+msgstr "A csatlakozási szkriptek sikeresen végrehajtva."
+
+#: umc/js/join.js:441
+msgid "The password may not be empty."
+msgstr "A jelszó mező nem lehet üres."
+
+#: umc/js/join.js:445
+msgid "The username may not be empty."
+msgstr "A felhasználónév nem lehet üres."
+
+#: umc/js/join/Form.js:30
+msgid "The username of the domain administrator"
+msgstr "A domain adminisztrátor felhasználóneve"
+
+#: umc/js/join.js:98
+msgid ""
+"This page shows the status of all available join scripts on this system, "
+"along with all join-related actions."
+msgstr ""
+"Ez az oldal az összes elérhető csatlakozási szkript állapotát mutatja ezen "
+"a rendszeren, valamint az összes csatlakozással kapcsolatos műveletet."
+
+#: umc/js/join.js:428 umc/js/join/Form.js:29
+msgid "Username"
+msgstr "Felhasználónév"
+
+#: umc/js/join.js:445
+msgid "Username invalid"
+msgstr "Felhasználónév érvénytelen"
+
+#: umc/js/join/Grid.js:73
+msgid "View join log"
+msgstr "Csatlakozási napló megtekintése"
+
+#: umc/js/join/Form.js:64
+msgid "Warning: "
+msgstr "Figyelmeztetés: "
+
+#: umc/js/join/Grid.js:99
+msgid "pending"
+msgstr "függőben"
+
+#: umc/js/join/Grid.js:99
+msgid "successful"
+msgstr "sikeres"

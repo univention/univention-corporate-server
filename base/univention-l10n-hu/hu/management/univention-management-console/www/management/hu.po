@@ -1,0 +1,268 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-frontend\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 23:58+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: www/management/widgets/LicenseImportPage.js:24
+msgid ""
+"<p><b>You have got mail!</b></p><p>A license file should have been sent to "
+"your email address. Upload the license file from the email to activate your "
+"UCS instance.</p>"
+msgstr ""
+"<p><b>Üzeneted érkezett!</b></p><p>A licencfájlt elküldtük az e-mail címed. "
+"Töltsd fel a licencfájlt az e-mailből, hogy aktiváld az UCS példányodat.</p>"
+
+#: www/management/widgets/HelpPage.js:20
+msgid ""
+"<p>Detailed usage information on Univention Management Console can be found "
+"in the UCS manual. The manual as well as further important information are "
+"available via the following links:</p>"
+msgstr ""
+"<p>Az Univention Management Console részletes használati információi az UCS "
+"kézikönyvében találhatók. A kézikönyv, valamint további fontos információk "
+"a következő linkeken érhetők el:</p>"
+
+#: www/management/widgets/ActivationPage.js:41
+msgid ""
+"<p>Details about the activation of a UCS license can be found in the <a "
+"href=\"https://docs.software-univention.de/manual-%"
+"(version)s.html#central:license\" target=\"_blank\">UCS manual</a>.</p>"
+msgstr ""
+"<p>Az UCS licenc aktiválásával kapcsolatos részletek az <a href=\"https://"
+"docs.software-univention.de/manual-%(version)s.html#central:license\" "
+"target=\"_blank\">UCS kézikönyvében</a> találhatók.</p>"
+
+#: www/management/widgets/ActivationPage.js:37
+msgid ""
+"<p>Leave the field empty to perform the activation at a later point in time "
+"via the user menu in top right corner.</p>"
+msgstr ""
+"<p>Hagyd üresen a mezőt, ha az aktiválást később, a jobb felső sarokban "
+"található felhasználói menün keresztül szeretnéd elvégezni.</p>"
+
+#: www/management/widgets/FeedbackPage.js:23
+msgid ""
+"<p>On UCS evaluation systems, anonymous usage statistics are created by "
+"default and sent to Univention. This allows to continuously adapt UCS to "
+"suit the practical needs of its users.</p><p>The information consists of "
+"UMC usage statistics and a one-time statistic on the hardware "
+"configuration. Details about the usage statistics and about its "
+"deactivation can be found in the <a href=\"https://docs.software-"
+"univention.de/manual-%(version)s.html#central-management-umc:piwik\" "
+"target=\"_blank\">UCS manual</a>.</p><p>Usage statistics are automatically "
+"deactivated when importing a commercial license.</p>"
+msgstr ""
+"<p>Az UCS értékelőrendszerein alapértelmezés szerint névtelen használati "
+"statisztikák készülnek, amelyeket elküldenek az Univention-nek. Ez lehetővé "
+"teszi az UCS folyamatos hozzáigazítását a felhasználók gyakorlati "
+"igényeihez.</p><p> Az információk az UMC használati statisztikáiból és a "
+"hardverkonfiguráció egyszeri statisztikájából állnak. A használati "
+"statisztikákkal és a deaktiválásával kapcsolatos részletek az <a "
+"href=\"https://docs.software-univention.de/manual-%(version)s.html#central-"
+"management-umc:piwik\" target=\"_blank\">UCS kézikönyvében</a> találhatók.</"
+"p><p> A használati statisztikák automatikusan deaktiválódnak kereskedelmi "
+"licenc importálásakor.</p>"
+
+#: www/management/widgets/FinishedActivationPage.js:20
+msgid ""
+"<p>The license has been updated successfully.</p><p>You can now continue to "
+"use UMC, all applications in the Univention App Center are now available "
+"for installation on this system.</p>"
+msgstr ""
+"<p>A licenc frissítése sikeresen megtörtént.</p><p> Mostantól továbbra is "
+"használhatja az UMC-t, az Univention App Center összes alkalmazása "
+"telepíthető erre a rendszerre.</p>"
+
+#: www/management/widgets/ActivationPage.js:23
+msgid ""
+"<p>You may now enter a valid e-mail address in order to activate the UCS "
+"system to use the App Center. In the next step you can upload the license "
+"file that has been sent to your email address.</p>"
+msgstr ""
+"<p>Most megadhatsz egy érvényes e-mail címet az UCS rendszer aktiválásához "
+"az App Center használatához. A következő lépésben feltöltheted az e-mail "
+"címre küldött licencfájlt.</p>"
+
+#: www/management/widgets/HelpPage.js:24
+msgid ""
+"<ul><li><a href=\"https://docs.software-univention.de/\" "
+"target=\"_blank\">Online documentation</a></li><li><a href=\"https://"
+"www.univention.com/products/support/community-support/\" "
+"target=\"_blank\">Community and support</a></li></ul>"
+msgstr ""
+"<ul><li><a href=\"https://docs.software-univention.de/\" "
+"target=\"_blank\">Online dokumentáció</a></li><li> <a href=\"https://"
+"www.univention.com/products/support/community-support/\" "
+"target=\"_blank\">Közösség és támogatás</a></li></ul>"
+
+#: www/management/main.js:642
+msgid "About UMC"
+msgstr "Az UMC-ről"
+
+#: www/management/widgets/ActivationPage.js:16
+#: www/management/widgets/ActivationDialog.js:32
+msgid "Activation of Univention Corporate Server"
+msgstr "Az Univention Corporate Server aktiválása"
+
+#: www/management/main.js:1315
+msgid "Add to favorites"
+msgstr "Kedvencekhez"
+
+#: www/management/main.js:668
+msgid "Close"
+msgstr "Bezár"
+
+#: www/management/main.js:1089
+#, javascript-format
+msgid "Could not load module \"%s\"."
+msgstr "A(z) \"%s\" modul betöltése sikertelen."
+
+#: www/management/widgets/AboutPage.js:35
+msgid "Date of expiry of the SSL certificate for this system"
+msgstr "A rendszer SSL tanúsítványának lejárati dátuma"
+
+#: www/management/widgets/AboutPage.js:32
+msgid "Date of expiry of the SSL root certificate"
+msgstr "Az SSL gyökértanúsítvány lejárati dátuma"
+
+#: www/management/main.js:635
+msgid "Documentation and Support"
+msgstr "Dokumentáció és támogatás"
+
+#: www/management/widgets/ActivationPage.js:27
+msgid "E-mail address"
+msgstr "E-mail cím"
+
+#: www/management/widgets/FeedbackPage.js:30
+msgid "Enable one-time statistic on hardware configuration."
+msgstr "Egyszeri statisztika engedélyezése a hardverkonfigurációról."
+
+#: www/management/widgets/FeedbackPage.js:16
+msgid "Feedback via usage statistics"
+msgstr "Visszajelzés használati statisztikákon keresztül"
+
+#: www/management/widgets/HelpPage.js:13
+msgid "Further Information"
+msgstr "További információk"
+
+#: www/management/widgets/LicenseImportPage.js:33
+#: www/management/widgets/ActivationDialog.js:115
+msgid "Importing license data..."
+msgstr "Licencadatok importálása..."
+
+#: www/management/widgets/LicenseImportPage.js:17
+msgid "License import"
+msgstr "Licenc importálás"
+
+#: www/management/widgets/ActivationPage.js:29
+msgid "No valid e-mail address."
+msgstr "Nincs érvényes e-mail cím."
+
+#: www/management/main.js:1305
+msgid "Open module"
+msgstr "Modul megnyitása"
+
+#: www/management/main.js:1315
+msgid "Remove from favorites"
+msgstr "Eltávolítás a kedvencek közül"
+
+#: www/management/main.js:410
+msgid "SSL host certificate"
+msgstr "SSL gazdatanúsítvány"
+
+#: www/management/main.js:407
+msgid "SSL root certificate"
+msgstr "SSL gyökértanúsítvány"
+
+#: www/management/main.js:574
+msgid "Search"
+msgstr "Keresés"
+
+#: www/management/main.js:1451
+#, javascript-format
+msgid "Search query ›%s‹"
+msgstr "Keresési lekérdezés ›%s‹"
+
+#: www/management/widgets/ActivationDialog.js:109
+msgid "Send license"
+msgstr "Licenc küldése"
+
+#: www/management/widgets/ActivationDialog.js:77
+msgid "Sending activation email..."
+msgstr "Aktiváló e-mail küldése..."
+
+#: www/management/widgets/AboutPage.js:23
+msgid "Server"
+msgstr "Szerver"
+
+#: www/management/widgets/ActivationDialog.js:126
+msgid "Server error message:"
+msgstr "Szerver hibaüzenet:"
+
+#: www/management/main.js:415
+msgid ""
+"The %(certificate)s will expire in %(days)d days and should be renewed!"
+msgstr "A(z) %(certificate)s %(days)d nap múlva lejár, és meg kell újítani!"
+
+#: www/management/widgets/ActivationDialog.js:164
+msgid ""
+"The activation of UCS failed. Please re-try to perform the activation again "
+"via the user menu in the top right."
+msgstr ""
+"Az UCS aktiválása sikertelen. Próbáld meg újra végrehajtani az aktiválást a "
+"jobb felső sarokban található felhasználói menün keresztül."
+
+#: www/management/widgets/ActivationDialog.js:124
+msgid ""
+"The import of the license failed. Check the integrity of the original file "
+"given to you."
+msgstr ""
+"A licenc importálása sikertelen. Ellenőrizd az átadott eredeti fájl "
+"integritását."
+
+#: www/management/main.js:1153
+#, javascript-format
+msgid "There is no module available for the authenticated user %s."
+msgstr "Nincs elérhető modul a hitelesített felhasználóhoz (%s)."
+
+#: www/management/widgets/AboutPage.js:26
+msgid "UCS Version"
+msgstr "UCS verzió"
+
+#: www/management/widgets/AboutPage.js:29
+msgid "UMC Version"
+msgstr "UMC verzió"
+
+#: www/management/widgets/AboutPage.js:20
+msgid "Univention Management Console"
+msgstr "Univention felügyeleti konzol"
+
+#: www/management/widgets/LicenseImportPage.js:38
+msgid "Updating session data..."
+msgstr "Munkamenet adatok frissítése..."
+
+#: www/management/widgets/LicenseImportPage.js:28
+msgid "Upload license file..."
+msgstr "Licencfájl feltöltése..."
+
+#: www/management/main.js:655
+msgid "Usage statistics"
+msgstr "Használati statisztikák"
+
+#: www/management/widgets/LicenseImportPage.js:54
+msgid ""
+"You may as well import the license file at a later point in time via the "
+"user menu in the top right."
+msgstr ""
+"A licencfájl később is importálható a jobb felső sarokban található "
+"felhasználói menün keresztül."

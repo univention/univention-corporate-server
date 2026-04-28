@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-adtakeover package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-adtakeover\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-10 00:00+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/js/adtakeover.js:78
+msgid ""
+"<p>A <i>{ad_os}</i> Active Directory domain with the domainname "
+"<i>{ad_domain}</i> has been found. The server <i>{ad_hostname} ({ad_ip})</"
+"i> will be used as Active Directory Domain Controller for the takeover.</"
+"p><p>The following accounts have been found in the Active Directory domain:"
+"<ul><li>{users} users</li><li>{groups} groups</li><li>{computers} "
+"computers</li></ul>Click \"Next\" to start with the migration.</p>"
+msgstr ""
+"<p>Egy <i>{ad_os}</i> Active Directory tartományt találtunk <i>{ad_domain}</"
+"i> tartománynévvel. A(z) <i>{ad_hostname} ({ad_ip})</i> szervert fogjuk "
+"használni Active Directory tartományvezérlőként az átvételhez.</p><p>A "
+"következő fiókok kerültek elő az Active Directory tartományban:"
+"<ul><li>{users} felhasználó</li><li>{groups} csoport</li><li>{computers} "
+"számítógép</li></ul>Kattints a „Tovább” gombra az áttérés megkezdéséhez.</p>"
+
+#: umc/js/adtakeover.js:46
+msgid ""
+"<p>A previous Active Directory takeover was detected.</p><p>In order to "
+"start another takeover process, click \"Next\".</p>"
+msgstr ""
+"<p>Korábbi Active Directory átvétel észlelve.</p><p>Egy újabb átvételi "
+"folyamat elindításához kattints a „Tovább” gombra.</p>"
+
+#: umc/js/adtakeover.js:89
+msgid ""
+"<p>All Windows domain accounts have been successfully transferred.</p><p>As "
+"next step, group policies must be copied from the Active Directory SYSVOL "
+"share to Univention Corporate Server. We recommend using robocopy from a "
+"Windows client or Windows server which is joined to the domain:</p>"
+msgstr ""
+"<p>Az összes Windows-tartományfiók átvitele sikeresen megtörtént.</p><p>A "
+"következő lépésként a csoportházirendeket át kell másolni az Active "
+"Directory SYSVOL megosztásból az Univention Corporate Serverre. Javasoljuk "
+"a robocopy használatát egy Windows kliensről vagy Windows szerverről, amely "
+"csatlakozik a domain-hez:</p>"
+
+#: umc/js/adtakeover.js:107
+msgid ""
+"<p>Congratulations, the Active Directory Takeover wizard has been "
+"successfully completed and all Windows domain accounts have been "
+"transferred to Univention Corporate Server.</p><p>The domain is now ready "
+"for usage without any further changes.</p>"
+msgstr ""
+"<p>Gratulálunk, az Active Directory átvételi varázsló sikeresen "
+"befejeződött, és az összes Windows-tartományi fiók átkerült az Univention "
+"Corporate Serverre.</p><p> A domain mostantól további változtatások nélkül "
+"használatra kész.</p>"
+
+#: umc/js/adtakeover.js:98
+msgid ""
+"<p>The group policies have been transferred successfully.</p><p>In order to "
+"complete the takeover process, all previous Active Directory Domain "
+"Controllers need to be switched off now. Click \"Next\" as soon as all "
+"Domain Controllers are shutdown completely.</p>"
+msgstr ""
+"<p>A csoportházirendek sikeresen átkerültek.</p><p> Az átvételi folyamat "
+"befejezéséhez az összes korábbi Active Directory tartományvezérlőt ki kell "
+"kapcsolni. Kattints a „Tovább” gombra, amint az összes tartományvezérlő "
+"teljesen leállt.</p>"
+
+#: umc/js/adtakeover.js:62
+msgid "Active Directory Administrator account"
+msgstr "Active Directory rendszergazdai fiók"
+
+#: umc/js/adtakeover.js:68
+msgid "Active Directory Administrator password"
+msgstr "Active Directory rendszergazdai jelszó"
+
+#: umc/js/adtakeover.js:103
+msgid "Completion of the Active Directory Takeover"
+msgstr "Az Active Directory átvételének befejezése"
+
+#: umc/js/adtakeover.js:73
+msgid "Import statistics"
+msgstr "Import statisztikák"
+
+#: umc/js/adtakeover.js:57
+msgid "Name or address of the Domain Controller"
+msgstr "A tartományvezérlő neve vagy címe"
+
+#: umc/js/adtakeover.js:42
+msgid "Previous takeover detected"
+msgstr "Korábbi átvétel észlelve"
+
+#: umc/js/adtakeover.js:94
+msgid "Takeover of the Windows domain"
+msgstr "A Windows domain átvétele"
+
+#: umc/js/adtakeover.js:52
+msgid ""
+"This module guides through the migration from a Windows Active Directory "
+"domain to Univention Corporate Server. All user, group and computer "
+"accounts along with their passwords and group policies are transferred. "
+"After the migration, the Windows clients are directly operable without the "
+"need of a domain rejoin."
+msgstr ""
+"Ez a modul végigvezet a Windows Active Directory tartományról az Univention "
+"Corporate Serverre történő migrálás folyamatán. Minden felhasználói, "
+"csoport- és számítógépfiók, valamint a hozzájuk tartozó jelszavak és "
+"csoportházirendek átkerülnek. A migrálás után a Windows kliensek "
+"közvetlenül, tartományhoz való újbóli csatlakozás nélkül is működtethetők."
+
+#: umc/js/adtakeover.js:84
+msgid "Transfer of group policies"
+msgstr "Csoportházirendek átvitele"
+
+#: umc/js/adtakeover.js:51
+msgid "Windows domain authentication"
+msgstr "Windows tartományhitelesítés"

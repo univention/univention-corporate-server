@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-ucr package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-ucr\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-01 11:05+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/ucr.js:261
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: umc/js/ucr.js:198
+msgid "Add UCR variable"
+msgstr "UCR változó hozzáadása"
+
+#: umc/js/ucr.js:262
+msgid "Adding a new UCR variable"
+msgstr "Új UCR változó hozzáadása"
+
+#: umc/js/ucr.js:337 umc/js/ucr.js:349
+msgid "All"
+msgstr "Összes"
+
+#: umc/js/ucr.js:289
+#, javascript-format
+msgid "Are you sure to delete the %d selected UCR variable(s)?"
+msgstr "Biztosan törlöd a kiválasztott %d UCR változót?"
+
+#: umc/js/ucr.js:119
+msgid ""
+"Are you sure you want to save an empty string in this UCR variable or do "
+"you want to unset it?<br><br>UCR variables that were created manually are "
+"fully removed from UCR when unsetting them. Any other UCR Variable will be "
+"set to its default value."
+msgstr ""
+"Biztosan üres karakterláncot szeretnél menteni ebbe az UCR változóba, vagy "
+"törölni szeretnéd a beállítását?<br><br> A manuálisan létrehozott UCR "
+"változók a beállítások törlésekor teljesen eltávolításra kerülnek az UCR-"
+"ből. Minden más UCR változó az alapértelmezett értékre lesz beállítva."
+
+#: umc/js/ucr.js:96 umc/js/ucr.js:120 umc/js/ucr.js:290
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/ucr.js:335
+msgid "Category"
+msgstr "Kategória"
+
+#: umc/js/ucr.js:334
+msgid "Category the UCR variable should be associated with"
+msgstr "Az UCR változóhoz társítandó kategória"
+
+#: umc/js/ucr.js:90
+msgid "Default value (pattern)"
+msgstr "Alapértelmezett érték (minta)"
+
+#: umc/js/ucr.js:283 umc/js/ucr.js:293
+msgid "Delete"
+msgstr "Törlés"
+
+#: umc/js/ucr.js:284
+msgid "Deleting the selected UCR variables"
+msgstr "A kiválasztott UCR változók törlése"
+
+#: umc/js/ucr.js:352
+msgid "Description"
+msgstr "Leírás"
+
+#: umc/js/ucr.js:73
+msgid "Description of the UCR variable"
+msgstr "Az UCR változó leírása"
+
+#: umc/js/ucr.js:74
+msgid "Description:"
+msgstr "Leírás:"
+
+#: umc/js/ucr.js:271
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: umc/js/ucr.js:47 umc/js/ucr.js:211
+msgid "Edit UCR variable"
+msgstr "UCR változó szerkesztése"
+
+#: umc/js/ucr.js:63
+msgid "Name of UCR variable"
+msgstr "UCR változó neve"
+
+#: umc/js/ucr.js:110
+msgid "Save"
+msgstr "Mentés"
+
+#: umc/js/ucr.js:347
+msgid "Search attribute"
+msgstr "Keresési attribútum"
+
+#: umc/js/ucr.js:360
+msgid "Search..."
+msgstr "Keresés..."
+
+#: umc/js/ucr.js:346
+msgid ""
+"Select the attribute of a UCR variable that should be searched for the "
+"given keyword"
+msgstr ""
+"Válaszd ki az UCR változó azon attribútumát, amelyben a megadott kulcsszót "
+"keresni kell"
+
+#: umc/js/ucr.js:272
+msgid "Setting the UCR variable, editing the categories and/or description"
+msgstr "Az UCR változó beállítása, a kategóriák és/vagy a leírás szerkesztése"
+
+#: umc/js/ucr.js:132
+msgid "Store empty string"
+msgstr "Üres karakterlánc tárolása"
+
+#: umc/js/ucr.js:254
+msgid ""
+"The Univention Configuration Registry (UCR) is the local database for the "
+"configuration of UCS systems to access and edit system-wide properties in a "
+"unified manner. Caution: Changing UCR variables directly results in the "
+"change of the system configuration. Misconfiguration may cause an unusable "
+"system!"
+msgstr ""
+"Az Univention Configuration Registry (UCR) az UCS rendszerek "
+"konfigurációjához használt helyi adatbázis, amely egységes módon teszi "
+"lehetővé a rendszer egészére kiterjedő tulajdonságok elérését és "
+"szerkesztését. Figyelem: Az UCR változók módosítása közvetlenül a "
+"rendszerkonfiguráció megváltozását eredményezi. A helytelen konfiguráció "
+"használhatatlanná teheti a rendszert!"
+
+#: umc/js/ucr.js:88
+msgid ""
+"The default value of the UCR variable which is applied if the variable is "
+"not set. This might be a UCR pattern."
+msgstr ""
+"Az UCR változó alapértelmezett értéke, amely akkor érvényes, ha a változó "
+"nincs beállítva. Ez lehet egy UCR minta."
+
+#: umc/js/ucr.js:64 umc/js/ucr.js:308
+msgid "UCR variable"
+msgstr "UCR változó"
+
+#: umc/js/ucr.js:309
+msgid "Unique name of the UCR variable"
+msgstr "Az UCR változó egyedi neve"
+
+#: umc/js/ucr.js:102 umc/js/ucr.js:124
+msgid "Unset"
+msgstr "Beállítás törlése"
+
+#: umc/js/ucr.js:103 umc/js/ucr.js:125
+msgid ""
+"Unsetting a manually created UCR variable is equal to deleting it. More "
+"information about this topic can be found <a href=\"https://docs.software-"
+"univention.de/manual/5.0/en/computers/ucr.html?highlight=ucr#deleting-ucr-"
+"variables\" target=\"_blank\">here</a>."
+msgstr ""
+"Egy manuálisan létrehozott UCR változó beállításainak törlése egyenlő a "
+"változó törlésével. További információ erről a témáról <a href=\"https://"
+"docs.software-univention.de/manual/5.0/en/computers/ucr.html?"
+"highlight=ucr#deleting-ucr-variables\" target=\"_blank\">itt</a> található."
+
+#: umc/js/ucr.js:69 umc/js/ucr.js:313 umc/js/ucr.js:351
+msgid "Value"
+msgstr "Érték"
+
+#: umc/js/ucr.js:68 umc/js/ucr.js:314
+msgid "Value of the UCR variable"
+msgstr "Az UCR változó értéke"
+
+#: umc/js/ucr.js:350
+msgid "Variable"
+msgstr "Változó"

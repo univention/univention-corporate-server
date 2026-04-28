@@ -1,0 +1,637 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-rest\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-01-26 23:39+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: src/univention/admin/rest/module.py:1704
+#: src/univention/admin/rest/module.py:1862
+#, python-format
+msgid "%s module"
+msgstr "%s modul"
+
+#: src/univention/admin/rest/module.py:2980
+msgid "A new license has been requested and sent to your email address."
+msgstr "Új licenc igényelve, és elküldve az e-mail címedre."
+
+#: src/univention/admin/rest/module.py:2443
+#, python-format
+msgid "Add %s"
+msgstr "%s hozzáadása"
+
+#: src/univention/admin/rest/module.py:1529
+msgid "Advanced options"
+msgstr "Haladó beállítás"
+
+#: src/univention/admin/rest/module.py:1179
+msgid "Advanced settings"
+msgstr "Haladó beállítások"
+
+#: src/univention/admin/rest/module.py:630
+#, python-format
+msgid "All %s types"
+msgstr "Minden %s típus"
+
+#: src/univention/admin/rest/module.py:854
+#: src/univention/admin/rest/module.py:2734
+msgid "All containers"
+msgstr "Minden konténer"
+
+#: src/univention/admin/rest/module.py:644
+msgid "All link relations"
+msgstr "Minden kapcsolat"
+
+#: src/univention/admin/rest/openapi.py:159
+#: src/univention/admin/rest/module.py:628
+#: src/univention/admin/rest/module.py:770
+#: src/univention/admin/rest/module.py:1021
+#: src/univention/admin/rest/module.py:1026
+#: src/univention/admin/rest/module.py:1063
+#: src/univention/admin/rest/module.py:1088
+#: src/univention/admin/rest/module.py:1094
+#: src/univention/admin/rest/module.py:1152
+#: src/univention/admin/rest/module.py:1158
+#: src/univention/admin/rest/module.py:1701
+#: src/univention/admin/rest/module.py:1856
+#: src/univention/admin/rest/module.py:2467
+#: src/univention/admin/rest/module.py:2588
+#: src/univention/admin/rest/module.py:2730
+#: src/univention/admin/rest/module.py:2787
+#: src/univention/admin/rest/module.py:2793
+msgid "All modules"
+msgstr "Minden modul"
+
+#: src/univention/admin/rest/module.py:759
+msgid "All object types"
+msgstr "Minden objektumtípus"
+
+#: src/univention/admin/rest/module.py:854
+msgid "All types"
+msgstr "Összes típus"
+
+#: src/univention/admin/rest/module.py:1178
+msgid "Apps & Options"
+msgstr "Alkalmazások és beállítások"
+
+#: src/univention/admin/rest/module.py:1883
+#, python-format
+msgid "Are you sure you want to delete this %s?"
+msgstr "Biztosan törölni szeretné ezt a(z) %s elemet?"
+
+#: src/univention/admin/rest/module.py:1549
+msgid "Ascending"
+msgstr "Növekvő"
+
+#: src/univention/admin/rest/module.py:435
+#, python-format
+msgid "Body data \"%s\": %s\n"
+msgstr "„%s” törzsadatok: %s\n"
+
+#: src/univention/admin/rest/module.py:1222
+msgid "CSV Report"
+msgstr "CSV jelentés"
+
+#: src/univention/admin/rest/module.py:2957
+msgid "Cannot parse License from LDAP"
+msgstr "Nem lehet elemezni a licencet az LDAP-ból"
+
+#: src/univention/admin/rest/module.py:3001
+msgid "Check license status"
+msgstr "Licenc állapotának ellenőrzése"
+
+#: src/univention/admin/rest/module.py:2865
+msgid "Click to edit the inherited properties of the policy"
+msgstr "Kattints ide a szabályzat örökölt tulajdonságainak szerkesztéséhez"
+
+#: src/univention/admin/rest/module.py:2529
+msgid "Container"
+msgstr "Tároló"
+
+#: src/univention/admin/rest/module.py:2558
+#, python-format
+msgid "Copy %s"
+msgstr "%s másolása"
+
+#: src/univention/admin/rest/module.py:2975
+#, python-format
+msgid "Could not request a license from Univention: %s"
+msgstr "Nem sikerült licencet kérni az Univentiontől: %s"
+
+#: src/univention/admin/rest/module.py:2524
+#, python-format
+msgid "Create %s"
+msgstr "%s létrehozása"
+
+#: src/univention/admin/rest/module.py:1515
+#: src/univention/admin/rest/module.py:1516
+#: src/univention/admin/rest/module.py:1523
+#, python-format
+msgid "Create %s report"
+msgstr "%s jelentés létrehozása"
+
+#: src/univention/admin/rest/module.py:1714
+#: src/univention/admin/rest/module.py:1715
+#, python-format
+msgid "Create a %s"
+msgstr "%s létrehozása"
+
+#: src/univention/admin/rest/module.py:2728
+#, python-format
+msgid "Default containers for %s"
+msgstr "Alapértelmezett tárolók %s számára"
+
+#: src/univention/admin/rest/module.py:1539
+msgid "Defaults"
+msgstr "Alapértelmezett"
+
+#: src/univention/admin/rest/module.py:1519
+msgid "Delete"
+msgstr "Törlés"
+
+#: src/univention/admin/rest/module.py:1519
+#, python-format
+msgid "Delete %s"
+msgstr "%s törlése"
+
+#: src/univention/admin/rest/module.py:1549
+msgid "Descending"
+msgstr "Csökkenő"
+
+#: src/univention/admin/rest/module.py:1549
+msgid "Direction"
+msgstr "Irány"
+
+#: src/univention/admin/rest/module.py:3006
+msgid "E-Mail address"
+msgstr "E-mail cím"
+
+#: src/univention/admin/rest/module.py:1560
+#: src/univention/admin/rest/module.py:1846
+#, python-format
+msgid "Evaluate referenced %s policies"
+msgstr "A hivatkozott %s házirendek kiértékelése"
+
+#: src/univention/admin/rest/module.py:2459
+msgid "Fill template values"
+msgstr "Sablonértékek kitöltése"
+
+#: src/univention/admin/rest/module.py:1505
+msgid "First page"
+msgstr "Első lap"
+
+#: src/univention/admin/rest/module.py:1842
+msgid "Generate a new service specific password"
+msgstr "Új, szolgáltatásspecifikus jelszó létrehozása"
+
+#: src/univention/admin/rest/module.py:899
+msgid "Get UDM object by DN or UUID"
+msgstr "UDM objektum lekérése DN vagy UUID alapján"
+
+#: src/univention/admin/rest/module.py:1105
+#, python-format
+msgid "Get choices for property %s"
+msgstr "Lehetőségek lekérése a(z) %s tulajdonsághoz"
+
+#: src/univention/admin/rest/html_ui.py:160
+msgid "HTTP redirection"
+msgstr "HTTP átirányítás"
+
+#: src/univention/admin/rest/module.py:454
+#: src/univention/admin/rest/html_ui.py:147
+#, python-format
+msgid "HTTP-Error %d: %s"
+msgstr "HTTP-hiba %d: %s"
+
+#: src/univention/admin/rest/sanitizer.py:243
+msgid "Has more than the allowed keys"
+msgstr "Több kulcsot tartalmaz, mint a megengedett"
+
+#: src/univention/admin/rest/module.py:1178
+msgid ""
+"Here you can activate the user for one of the installed apps. The user can "
+"then log on to the app and use it."
+msgstr ""
+"Itt aktiválhatod a felhasználót az egyik telepített alkalmazáshoz. A "
+"felhasználó ezután bejelentkezhet az alkalmazásba és használhatja azt."
+
+#: src/univention/admin/rest/http_conditional.py:88
+msgid "If-Unmodified-Since does not match Last-Modified."
+msgstr ""
+"Az If-Unmodified-Since érték nem egyezik meg a Last-Modified értékkel."
+
+#: src/univention/admin/rest/module.py:3011
+msgid "Import license"
+msgstr "Importengedély"
+
+#: src/univention/admin/rest/module.py:3100
+#, python-format
+msgid "Importing the license failed: %s."
+msgstr "A licenc importálása sikertelen: %s."
+
+#: src/univention/admin/rest/module.py:3096
+#, python-format
+msgid "Importing the license failed: LDAP error: %s."
+msgstr "A licenc importálása sikertelen: LDAP hiba: %s."
+
+#: src/univention/admin/rest/module.py:1543
+msgid "Include hidden objects"
+msgstr "Rejtett objektumokat is"
+
+#: src/univention/admin/rest/module.py:309
+#, python-format
+msgid "Invalid JSON document: %r"
+msgstr "Érvénytelen JSON dokumentum: %r"
+
+#: src/univention/admin/rest/module.py:2652
+msgid "LDAP Distinguished Name (DN)"
+msgstr "LDAP megkülönböztető név (DN)"
+
+#: src/univention/admin/rest/module.py:643
+#: src/univention/admin/rest/module.py:874
+msgid "LDAP base"
+msgstr "LDAP alap"
+
+#: src/univention/admin/rest/module.py:664
+msgid "LDAP directory"
+msgstr "LDAP könyvtár"
+
+#: src/univention/admin/rest/module.py:1511
+msgid "Last page"
+msgstr "Utolsó oldal"
+
+#: src/univention/admin/rest/module.py:1149
+#, python-format
+msgid "Layout for %s"
+msgstr "Elrendezés a(z) %s számára"
+
+#: src/univention/admin/rest/module.py:3010
+msgid "License file (ldif format)"
+msgstr "Licencfájl (ldif formátum)"
+
+#: src/univention/admin/rest/module.py:1546
+msgid "Limit"
+msgstr "Korlát"
+
+#: src/univention/admin/rest/openapi.py:158
+msgid "Link relations"
+msgstr "Kapcsolatok összekapcsolása"
+
+#: src/univention/admin/rest/module.py:1192
+msgid ""
+"List of all object properties that are inherited by policies. The values "
+"cannot be edited directly. By clicking on \"Create new policy\", a new tab "
+"with a new policy will be opened. If an attribute is already set, the "
+"corresponding policy can be edited in a new tab by clicking on the \"edit\" "
+"link."
+msgstr ""
+"A házirendek által örökölt összes objektum tulajdonságok listája. Az "
+"értékek közvetlenül nem szerkeszthetők. Az „Új házirend létrehozása” gombra "
+"kattintva megnyílik egy új lap egy új házirenddel. Ha egy attribútum már be "
+"van állítva, a megfelelő házirend szerkeszthető egy új lapon az "
+"„szerkesztés” linkre kattintva."
+
+#: src/univention/admin/rest/module.py:1173
+msgid "Meta information"
+msgstr "Meta információk"
+
+#: src/univention/admin/rest/module.py:2592
+msgid "Modify"
+msgstr "Módosítás"
+
+#: src/univention/admin/rest/module.py:2685
+#, python-format
+msgid "Modify %s"
+msgstr "Módosítás %s"
+
+#: src/univention/admin/rest/module.py:1518
+#, python-format
+msgid "Modify %s (multi edit)"
+msgstr "Módosítás %s (többszörös szerkesztés)"
+
+#: src/univention/admin/rest/module.py:1518
+msgid "Modify (multi edit)"
+msgstr "Módosítás (többszörös szerkesztés)"
+
+#: src/univention/admin/rest/module.py:1884
+#, python-format
+msgid "Modify, move or remove this %s"
+msgstr "Módosítsa, helyezze át vagy távolítsa el a(z) %s-t"
+
+#: src/univention/admin/rest/module.py:1556
+#: src/univention/admin/rest/module.py:1843
+msgid "Module layout"
+msgstr "Modul elrendezés"
+
+#: src/univention/admin/rest/module.py:1557
+#: src/univention/admin/rest/module.py:1844
+msgid "Module properties"
+msgstr "Modul tulajdonságai"
+
+#: src/univention/admin/rest/module.py:2605
+#: src/univention/admin/rest/module.py:2608
+msgid "Move"
+msgstr "Áthelyezés"
+
+#: src/univention/admin/rest/module.py:1520
+#, python-format
+msgid "Move %s"
+msgstr "%s áthelyezése"
+
+#: src/univention/admin/rest/module.py:2605
+msgid "Move the object"
+msgstr "Helyezze át az objektumot"
+
+#: src/univention/admin/rest/module.py:1520
+msgid "Move to"
+msgstr "Áthelyezés ide"
+
+#: src/univention/admin/rest/module.py:1768
+#, python-format
+msgid "Moved %d of %d objects. Last object was: %s."
+msgstr "%d objektum áthelyezve %d-ból/ből. Utolsó objektum: %s."
+
+#: src/univention/admin/rest/module.py:714
+msgid "Name"
+msgstr "Név"
+
+#: src/univention/admin/rest/module.py:1836
+msgid "Next free IP address"
+msgstr "Következő szabad IP cím"
+
+#: src/univention/admin/rest/module.py:1509
+msgid "Next page"
+msgstr "Következő oldal"
+
+#: src/univention/admin/rest/module.py:2670
+msgid "No photo set"
+msgstr "Nincs beállítva fotó"
+
+#: src/univention/admin/rest/sanitizer.py:240
+msgid "Not a \"dict\""
+msgstr "Nem szótár típus"
+
+#: src/univention/admin/rest/module.py:537
+#, python-format
+msgid "Object exists: %s: %s"
+msgstr "Létezik az objektum: %s: %s"
+
+#: src/univention/admin/rest/module.py:1720
+msgid "Object type tree"
+msgstr "Objektum típus fa"
+
+#. i18n: translation for univention-directory-reports
+#: src/univention/admin/rest/module.py:1221
+msgid "PDF Document"
+msgstr "PDF dokumentum"
+
+#: src/univention/admin/rest/module.py:716
+msgid "Path"
+msgstr "Útvonal"
+
+#: src/univention/admin/rest/module.py:2599
+msgid "Perform a cleanup"
+msgstr "Végezzen tisztítást"
+
+#: src/univention/admin/rest/module.py:2604
+#, python-format
+msgid "Please confirm the move of the selected %s"
+msgstr "Kérjük, erősítsd meg a kiválasztott %s áthelyezését"
+
+#: src/univention/admin/rest/module.py:2596
+#, python-format
+msgid "Please confirm the removal of the selected %s"
+msgstr "Kérjük, erősítsd meg a kiválasztott %s eltávolítását"
+
+#: src/univention/admin/rest/module.py:1190
+msgid "Policies"
+msgstr "Házirendek"
+
+#: src/univention/admin/rest/module.py:2617
+#: src/univention/admin/rest/module.py:2675
+msgid "Policy DN"
+msgstr "Házirend DN"
+
+#: src/univention/admin/rest/module.py:2487
+#: src/univention/admin/rest/module.py:2618
+msgid "Policy result"
+msgstr "Házirend eredménye"
+
+#: src/univention/admin/rest/module.py:1507
+msgid "Previous page"
+msgstr "Előző oldal"
+
+#: src/univention/admin/rest/module.py:1085
+#: src/univention/admin/rest/module.py:2477
+#: src/univention/admin/rest/module.py:2631
+#, python-format
+msgid "Properties for %s"
+msgstr "Tulajdonságok %s"
+
+#: src/univention/admin/rest/module.py:1189
+msgid "Properties inherited from policies"
+msgstr "A házirendekből örökölt tulajdonságok"
+
+#: src/univention/admin/rest/module.py:1540
+msgid "Property"
+msgstr "Tulajdonság"
+
+#: src/univention/admin/rest/module.py:2784
+#, python-format
+msgid "Property choices for %s property %s"
+msgstr "Tulajdonság lehetőségek a(z) %s %s tulajdonsághoz"
+
+#: src/univention/admin/rest/module.py:432
+#, python-format
+msgid "Query string \"%s\": %s\n"
+msgstr "Lekérdezési karakterlánc \"%s\": %s\n"
+
+#: src/univention/admin/rest/module.py:2597
+#: src/univention/admin/rest/module.py:2601
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: src/univention/admin/rest/module.py:2600
+msgid "Remove referring objects"
+msgstr "Hivatkozó objektumok eltávolítása"
+
+#: src/univention/admin/rest/module.py:2597
+msgid "Remove the object"
+msgstr "Az objektum eltávolítása"
+
+#: src/univention/admin/rest/module.py:1883
+#, python-format
+msgid "Remove this %s"
+msgstr "A(z) %s eltávolítása"
+
+#: src/univention/admin/rest/module.py:429
+#, python-format
+msgid "Request argument \"%s\" %s\n"
+msgstr "Kérési argumentum \"%s\" %s\n"
+
+#: src/univention/admin/rest/module.py:3007
+msgid "Request new license"
+msgstr "Új licenc igénylése"
+
+#: src/univention/admin/rest/module.py:668
+#: src/univention/admin/rest/module.py:673
+#: src/univention/admin/rest/module.py:1551
+msgid "Search"
+msgstr "Keresés"
+
+#: src/univention/admin/rest/module.py:1541
+msgid "Search for"
+msgstr "Keresés"
+
+#: src/univention/admin/rest/module.py:1527
+#: src/univention/admin/rest/module.py:1711
+#, python-format
+msgid "Search for %s"
+msgstr "Keresés %s"
+
+#: src/univention/admin/rest/module.py:1534
+msgid "Search in"
+msgstr "Keresés a következő(k)ben"
+
+#: src/univention/admin/rest/module.py:1542
+msgid "Search scope"
+msgstr "Keresési hatókör"
+
+#: src/univention/admin/rest/module.py:1541
+msgid "Search value (e.g. *)"
+msgstr "Keresési érték (pl. *)"
+
+#: src/univention/admin/rest/module.py:2528
+msgid "Select position"
+msgstr "Pozíció kiválasztása"
+
+#: src/univention/admin/rest/module.py:1547
+msgid "Selected page"
+msgstr "Kiválasztott oldal"
+
+#: src/univention/admin/rest/module.py:1548
+msgid "Sort by"
+msgstr "Rendezés"
+
+#: src/univention/admin/rest/module.py:1874
+#, python-format
+msgid "Sub object types of %s"
+msgstr "A(z) %s alobjektumtípusai"
+
+#: src/univention/admin/rest/module.py:1537
+msgid "Superordinate"
+msgstr "Magasabb rangú"
+
+#: src/univention/admin/rest/module.py:2456
+msgid "Template"
+msgstr "Sablon"
+
+#: src/univention/admin/rest/sanitizer.py:327
+#, python-format
+msgid "The %(module)s module has no property %(name)s."
+msgstr "A(z) %(module)s modulnak nincs %(name)s tulajdonsága."
+
+#: src/univention/admin/rest/module.py:2636
+#: src/univention/admin/rest/module.py:2637
+#, python-format
+msgid "The %s \"%s\" is part of the Active Directory domain."
+msgstr "A(z) %s \"%s\" az Active Directory tartomány része."
+
+#: src/univention/admin/rest/module.py:2485
+msgid "The container where the object is going to be created in"
+msgstr "A konténer, amelyben az objektum létrejön"
+
+#: src/univention/admin/rest/sanitizer.py:372
+#, python-format
+msgid "The ldap base is invalid. Use %(details)s."
+msgstr "Az ldap alap érvénytelen. Használja a következőt: %(details)s."
+
+#: src/univention/admin/rest/module.py:2987
+msgid "The license is valid."
+msgstr "A licenc érvényes."
+
+#: src/univention/admin/rest/module.py:3103
+msgid "The license was imported successfully."
+msgstr "A licenc importálása sikeresen megtörtént."
+
+#: src/univention/admin/rest/module.py:544
+#, python-format
+msgid "The property \"%(name)s\" is required."
+msgstr "A \"%(name)s\" tulajdonság kötelező."
+
+#: src/univention/admin/rest/sanitizer.py:337
+#: src/univention/admin/rest/module.py:2206
+#, python-format
+msgid "The property %(name)s has an invalid value: %(details)s"
+msgstr "A %(name)s tulajdonság értéke érvénytelen: %(details)s"
+
+#: src/univention/admin/rest/http_conditional.py:119
+#, python-format
+msgid ""
+"The resource has meanwhile been changed. If-Match %s does not match entity "
+"tag %s."
+msgstr ""
+"Az erőforrás időközben megváltozott. Az If-Match %s nem egyezik az entitás "
+"címkéjével: %s."
+
+#: src/univention/admin/rest/http_conditional.py:109
+#, python-format
+msgid ""
+"The resource has meanwhile been changed. If-None-Match %s does not match "
+"entity tag %s."
+msgstr ""
+"Az erőforrás időközben megváltozott. Az If-None-Match %s nem egyezik a(z) "
+"%s entitáscímkével."
+
+#: src/univention/admin/rest/html_ui.py:231
+msgid "This form requires JavaScript enabled!"
+msgstr "Ehhez az űrlaphoz engedélyezni kell a JavaScriptet!"
+
+#: src/univention/admin/rest/module.py:2970
+msgid ""
+"This seems to be a problem with the license server. Please try again later."
+msgstr ""
+"Úgy tűnik, ezzel a licenc szerverrel van probléma. Kérjük, próbálja meg "
+"később."
+
+#: src/univention/admin/rest/module.py:2120
+msgid "Trying to create an object with wrong RDN."
+msgstr "Helytelen RDN-nel próbál objektumot létrehozni."
+
+#: src/univention/admin/rest/module.py:672
+#: src/univention/admin/rest/module.py:715
+msgid "Type"
+msgstr "Típus"
+
+#: src/univention/admin/rest/module.py:863
+msgid "Types"
+msgstr "Típusok"
+
+#: src/univention/admin/rest/module.py:642
+msgid "UCS license"
+msgstr "UCS licenc"
+
+#: src/univention/admin/rest/module.py:2647
+msgid "Upload user photo"
+msgstr "Felhasználói fotó feltöltése"
+
+#: src/univention/admin/rest/module.py:1839
+#: src/univention/admin/rest/module.py:2648
+msgid "User photo"
+msgstr "Felhasználói fotó"
+
+#: src/univention/admin/rest/module.py:2600
+msgid "e.g. DNS or DHCP references of a computer"
+msgstr "pl. egy számítógép DNS vagy DHCP hivatkozásai"
+
+#: src/univention/admin/rest/module.py:2599
+msgid "e.g. temporary objects, locks, etc."
+msgstr "pl. ideiglenes tárgyak, zárolások stb."

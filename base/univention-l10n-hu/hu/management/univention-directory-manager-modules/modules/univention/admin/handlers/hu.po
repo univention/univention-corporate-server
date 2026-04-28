@@ -1,0 +1,152 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-12-02 23:06+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/__init__.py:2869
+msgid "DNS alias is already in use."
+msgstr "A DNS-alias már használatban van."
+
+#: modules/univention/admin/handlers/__init__.py:789
+msgid "Destination object can't have sub objects."
+msgstr "A célobjektum nem tartalmazhat alobjektumokat."
+
+#: modules/univention/admin/handlers/__init__.py:256
+msgid "Immutable Object Identifier"
+msgstr "Változatlan objektumazonosító"
+
+#: modules/univention/admin/handlers/__init__.py:257
+msgid "Immutable attribute to track the identity of an object in UDM"
+msgstr ""
+"Változatlan attribútum az objektum identitásának nyomon követéséhez az UDM-"
+"ben"
+
+#: modules/univention/admin/handlers/__init__.py:802
+msgid "Moving into one's own sub container not allowed."
+msgstr "A saját alkonténerbe való áthelyzés nem megengedett."
+
+#: modules/univention/admin/handlers/__init__.py:793
+msgid "Moving not possible: old and new DN are identical."
+msgstr "Áthelyezés nem lehetséges: a régi és az új DN azonos."
+
+#: modules/univention/admin/handlers/__init__.py:1099
+msgid "Neither DN nor position given."
+msgstr "Sem DN, sem pozíció nincs megadva."
+
+#: modules/univention/admin/handlers/__init__.py:1110
+msgid "No superordinate object given"
+msgstr "Nincs megadva felsőbbrendű objektum"
+
+#: modules/univention/admin/handlers/__init__.py:775
+msgid "Objects from Active Directory can not be moved."
+msgstr "Az Active Directory objektumok nem mozgathatók."
+
+#: modules/univention/admin/handlers/__init__.py:1640
+msgid "Objects from Active Directory can not be removed."
+msgstr "Az Active Directory objektumok nem távolíthatók el."
+
+#: modules/univention/admin/handlers/__init__.py:588
+#, python-format
+msgid "Objects of the \"%s\" object type can not be created."
+msgstr "A \"%s\" objektumtípusú objektumok nem hozhatók létre."
+
+#: modules/univention/admin/handlers/__init__.py:682
+#, python-format
+msgid "Objects of the \"%s\" object type can not be modified."
+msgstr "A „%s” objektumtípusú objektumok nem módosíthatók."
+
+#: modules/univention/admin/handlers/__init__.py:759
+#, python-format
+msgid "Objects of the \"%s\" object type can not be moved."
+msgstr "A „%s” objektumtípusú objektumok nem mozgathatók."
+
+#: modules/univention/admin/handlers/__init__.py:941
+#, python-format
+msgid "Objects of the \"%s\" object type can not be removed."
+msgstr "A „%s” objektumtípusú objektumok nem távolíthatók el."
+
+#: modules/univention/admin/handlers/__init__.py:2588
+msgid "Reverse zone and IP address are incompatible."
+msgstr "A fordított zóna és az IP cím nem kompatibilis."
+
+#: modules/univention/admin/handlers/__init__.py:3185
+msgid ""
+"The DHCP entry for this host should contain the zone LDAP-DN, the IP "
+"address and the MAC address."
+msgstr ""
+"Ennek a gazdagépnek a DHCP bejegyzésében szerepelnie kell a zóna LDAP-DN-"
+"jének, az IP címnek és a MAC címnek."
+
+#: modules/univention/admin/handlers/__init__.py:1119
+msgid "The DN must be underneath of the superordinate."
+msgstr "A DN-nek a felettes alatt kell lennie."
+
+#: modules/univention/admin/handlers/__init__.py:3219
+msgid ""
+"The DNS alias entry for this host should contain the zone name, the alias "
+"zone container LDAP-DN and the alias."
+msgstr ""
+"Ennek a gazdagépnek a DNS-alias bejegyzésének tartalmaznia kell a zóna "
+"nevét, az alias zóna konténer LDAP-DN-jét és az alias nevét."
+
+#: modules/univention/admin/handlers/__init__.py:383
+#, python-format
+msgid ""
+"The following properties are missing:\n"
+"%s"
+msgstr "A következő tulajdonságok hiányoznak: %s"
+
+#: modules/univention/admin/handlers/__init__.py:1115
+#, python-format
+msgid "The given %r superordinate is expected to be of type %s."
+msgstr "A megadott %r felsőbb szintű elem várhatóan %s típusú lesz."
+
+#: modules/univention/admin/handlers/__init__.py:766
+#: modules/univention/admin/handlers/__init__.py:769
+msgid "The own object cannot be moved."
+msgstr "A saját objektum nem mozgatható."
+
+#: modules/univention/admin/handlers/__init__.py:950
+#: modules/univention/admin/handlers/__init__.py:953
+msgid "The own object cannot be removed."
+msgstr "A saját objektum nem távolítható el."
+
+#: modules/univention/admin/handlers/__init__.py:387
+msgid "The position must be in the subtree of the superordinate."
+msgstr "A pozíció a felettes alfa-fa alfa-fájában kell lennie."
+
+#: modules/univention/admin/handlers/__init__.py:442
+#, python-format
+msgid "The property %s is required"
+msgstr "A %s tulajdonság kötelező"
+
+#: modules/univention/admin/handlers/__init__.py:456
+#, python-format
+msgid "The property %s must be a list"
+msgstr "A %s tulajdonságnak listának kell lennie."
+
+#: modules/univention/admin/handlers/__init__.py:845
+#: modules/univention/admin/handlers/__init__.py:910
+#, python-format
+msgid ""
+"Unable to move object %(name)s (%(type)s) in subtree, trying to revert "
+"changes."
+msgstr ""
+"Az objektum %(name)s (%(type)s) nem mozgatható az alfa-fában, a változások "
+"visszaállítására kerül sor."
+
+#: modules/univention/admin/handlers/__init__.py:439
+#: modules/univention/admin/handlers/__init__.py:1866
+#, python-format
+msgid "key=%(key)s old=%(old)s new=%(new)s"
+msgstr "kulcs=%(key)s régi=%(old)s új=%(new)s"

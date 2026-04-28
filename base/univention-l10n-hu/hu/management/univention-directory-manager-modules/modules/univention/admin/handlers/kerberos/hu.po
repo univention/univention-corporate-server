@@ -1,0 +1,70 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-12-03 18:59+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:94
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:46
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:94
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:58
+msgid "Generate random password"
+msgstr "Véletlenszerű jelszó generálása"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:26
+msgid "KDC Entries"
+msgstr "KDC Bejegyzések"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:25
+msgid "KDC Entry"
+msgstr "KDC Bejegyzés"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:71
+msgid "KDC Flags"
+msgstr "KDC Zászlók"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:95
+msgid "KDC entry"
+msgstr "KDC bejegyzés"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:24
+msgid "Kerberos: KDC Entry"
+msgstr "Kerberos: KDC Bejegyzés"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:64
+msgid "Key version"
+msgstr "Kulcs verzió"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:78
+msgid "Maximum life time"
+msgstr "Maximális élettartam"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:85
+msgid "Maximum renew time"
+msgstr "Maximális megújítási idő"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:52
+msgid "Password"
+msgstr "Jelszó"
+
+#: modules/univention/admin/handlers/kerberos/kdcentry.py:38
+msgid "Principal name"
+msgstr "Elsődleges név"

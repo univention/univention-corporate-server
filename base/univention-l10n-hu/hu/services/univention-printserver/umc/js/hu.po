@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-printers package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-printers\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-07 00:25+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/js/printers/OverviewPage.js:109 umc/js/printers/DetailPage.js:51
+msgid "Activate"
+msgstr "Aktiválás"
+
+#: umc/js/printers/DetailPage.js:52
+msgid "Activate this printer"
+msgstr "Aktiválja ezt a nyomtatót"
+
+#: umc/js/printers/DetailPage.js:106
+msgid "Back to overview"
+msgstr "Vissza az áttekintéshez"
+
+#: umc/js/printers/DetailPage.js:95
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/printers/DetailPage.js:96
+msgid "Cancel this job/these jobs"
+msgstr "Faladat/faladatok törlése"
+
+#: umc/js/printers/OverviewPage.js:125 umc/js/printers/DetailPage.js:60
+msgid "Deactivate"
+msgstr "Inaktíválás"
+
+#: umc/js/printers/DetailPage.js:61
+msgid "Deactivate this printer"
+msgstr "A nyomtató inaktiválása"
+
+#: umc/js/printers/OverviewPage.js:47 umc/js/printers/OverviewPage.js:96
+#: umc/js/printers/DetailPage.js:172
+msgid "Description"
+msgstr "Leírás"
+
+#: umc/js/printers/DetailPage.js:81
+msgid "Job"
+msgstr "Feladat"
+
+#: umc/js/printers/OverviewPage.js:48 umc/js/printers/OverviewPage.js:93
+#: umc/js/printers/DetailPage.js:171
+msgid "Location"
+msgstr "Hely"
+
+#: umc/js/printers/DetailPage.js:84
+msgid "Owner"
+msgstr "Tulajdonos"
+
+#: umc/js/printers/OverviewPage.js:76
+msgid "Printer"
+msgstr "Nyomtató"
+
+#: umc/js/printers/OverviewPage.js:26
+msgid "Printer administration"
+msgstr "Nyomtató adminisztráció"
+
+#: umc/js/printers/DetailPage.js:28
+msgid "Printer details"
+msgstr "Nyomtató adatai"
+
+#: umc/js/printers/OverviewPage.js:46
+msgid "Printer name"
+msgstr "Nyomtató neve"
+
+#: umc/js/printers/DetailPage.js:113
+msgid "Refresh job list"
+msgstr "Feladatlista frissítése"
+
+#: umc/js/printers/OverviewPage.js:141
+msgid "Refresh printer list"
+msgstr "Nyomtatólista frissítése"
+
+#: umc/js/printers/OverviewPage.js:44
+msgid "Search for"
+msgstr "Keresés"
+
+#: umc/js/printers/OverviewPage.js:55
+msgid "Search..."
+msgstr "Keresés..."
+
+#: umc/js/printers/OverviewPage.js:73 umc/js/printers/DetailPage.js:169
+msgid "Server"
+msgstr "Szerver"
+
+#: umc/js/printers/DetailPage.js:87
+msgid "Size"
+msgstr "Méret"
+
+#: umc/js/printers/OverviewPage.js:79 umc/js/printers/DetailPage.js:170
+msgid "Status"
+msgstr "Állapot"
+
+#: umc/js/printers/DetailPage.js:90
+msgid "Submitted at"
+msgstr "Beküldve ekkor"
+
+#: umc/js/printers/OverviewPage.js:25
+msgid ""
+"This module allows to manage print jobs of printers on your local machine."
+msgstr ""
+"Ez a modul lehetővé teszi a helyi gépen lévő nyomtatók nyomtatási "
+"feladatainak kezelését."
+
+#: umc/js/printers/OverviewPage.js:101
+msgid "View details"
+msgstr "Részletek megtekintése"
+
+#: umc/js/printers/DetailPage.js:27
+msgid ""
+"You see the details of this printer and its print jobs. You can activate/"
+"deactivate the printer and cancel print jobs."
+msgstr ""
+"Megtekinthető a nyomtató(k) és a nyomtatási feladat(ok) részletei. "
+"Aktiválható/deaktiválható a nyomtatót, és megszakítható a nyomtatási "
+"feladatokat."
+
+#: umc/js/printers/OverviewPage.js:86 umc/js/printers/DetailPage.js:163
+msgid "active"
+msgstr "aktív"
+
+#: umc/js/printers/OverviewPage.js:87 umc/js/printers/DetailPage.js:164
+msgid "inactive"
+msgstr "inaktív"
+
+#: umc/js/printers/OverviewPage.js:89 umc/js/printers/DetailPage.js:161
+msgid "unknown"
+msgstr "ismeretlen"

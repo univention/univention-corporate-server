@@ -1,0 +1,167 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-udm\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 16 Nov 2025 22:33:24 +0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "Blocklists"
+msgstr "Tiltólisták"
+
+msgid "Browsing and managing the LDAP tree"
+msgstr "Az LDAP fa böngészése és kezelése"
+
+msgid "Change settings for the user currently logged in"
+msgstr "A jelenleg bejelentkezett felhasználó beállításainak módosítása"
+
+msgid "Computers"
+msgstr "Számítógépek"
+
+msgid "Configuration of DHCP settings in the domain"
+msgstr "A DHCP beállítások konfigurálása a tartományban"
+
+msgid "Configuration of DNS settings in the domain"
+msgstr "A DNS-beállítások konfigurálása a tartományban"
+
+msgid "Configuration of Nagios settings in the domain"
+msgstr "A Nagios beállításainak konfigurálása a tartományban"
+
+msgid "Configuration of network settings in the domain"
+msgstr "A hálózati beállítások konfigurálása a tartományban"
+
+msgid "Contacts"
+msgstr "Kapcsolatok"
+
+msgid "DHCP"
+msgstr "DHCP"
+
+msgid "DNS"
+msgstr "DNS"
+
+msgid "Groups"
+msgstr "Csoportok"
+
+msgid "Import new license"
+msgstr "Új licenc importálása"
+
+msgid "LDAP directory"
+msgstr "LDAP könyvtár"
+
+msgid "Mail"
+msgstr "E-mail"
+
+msgid "Management of blocklists in the domain"
+msgstr "Tiltólisták kezelése a tartományban"
+
+msgid "Management of computers in the domain"
+msgstr "Számítógépek kezelése a tartományban"
+
+msgid "Management of contacts"
+msgstr "Kapcsolatok kezelése"
+
+msgid "Management of directory shares in the domain"
+msgstr "A könyvtármegosztások kezelése a tartományban"
+
+msgid "Management of domain users"
+msgstr "Felhasználók kezelése a tartományban"
+
+msgid "Management of domain wide policies"
+msgstr "A tartomány szintű házirendek kezelése"
+
+msgid "Management of mail domains and mailing lists"
+msgstr "Levelezési domainek és levelezőlisták kezelése"
+
+msgid "Management of printers and printer groups in the domain"
+msgstr "Nyomtatók és nyomtatócsoportok kezelése a tartományban"
+
+msgid "Management of user and computer groups in the domain"
+msgstr "Felhasználói és számítógépes csoportok kezelése a tartományban"
+
+msgid "Manages all UDM modules"
+msgstr "Az összes UDM modult kezelése"
+
+msgid "Nagios"
+msgstr "Nagios"
+
+msgid "Networks"
+msgstr "Hálózatok"
+
+msgid "Policies"
+msgstr "Házirendek"
+
+msgid "Printers"
+msgstr "Nyomtatók"
+
+msgid "Request new license"
+msgstr "Új licenc igénylése"
+
+msgid "Shares"
+msgstr "Megosztások"
+
+msgid "UCS license import"
+msgstr "UCS licenc importálása"
+
+msgid "UCS license request"
+msgstr "UCS licenc igénylés"
+
+msgid "Univention Directory Manager"
+msgstr "Univention Directory Manager"
+
+msgid "User settings"
+msgstr "Felhasználói beállítások"
+
+msgid "Users"
+msgstr "Felhasználók"
+
+msgid "blocklists"
+msgstr "tiltólisták"
+
+msgid "computers"
+msgstr "számítógépek"
+
+msgid "contacts"
+msgstr "kapcsolatok"
+
+msgid "dhcp"
+msgstr "dhcp"
+
+msgid "dns"
+msgstr "dns"
+
+msgid "groups"
+msgstr "csoportok"
+
+msgid "ldap,directory,udm"
+msgstr "ldap,könyvtár,udm"
+
+msgid "mail,e-mail,email"
+msgstr "levél, e-mail, elektronikus levél"
+
+msgid "nagios"
+msgstr "nagios"
+
+msgid "networks"
+msgstr "hálózatok"
+
+msgid "policy,policies"
+msgstr "házirend,házirendek"
+
+msgid "printers"
+msgstr "nyomtatók"
+
+msgid "shares"
+msgstr "megosztások"
+
+msgid "user,password"
+msgstr "felhasználónév, jelszó"
+
+msgid "users"
+msgstr "felhasználó"

@@ -1,0 +1,165 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-activation\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-08 22:49+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: www/ActivationWizard.js:103
+msgid ""
+"%(appliance_name)s Appliance is now activated. Click \"Finish\" to access "
+"the management interface (which may take a while)."
+msgstr ""
+"%(appliance_name)s az eszköz aktiválva. Kattints a \"Befejezés\" gombra, a "
+"kezelőfelülethez eléréséhez (eltarthat egy ideig)."
+
+#: www/ActivationWizard.js:71
+#, javascript-format
+msgid ""
+"A license file has been sent to <strong class=\"email-address\">%s</"
+"strong>. This file is necessary to activate the system. For this, please "
+"carry out the following steps: <ol><li>Open the email.</li><li>Save the "
+"attachment (ucs.license) on your computer.</li><li>Click the button 'Upload "
+"license file'.</li><li>Select the file (ucs.license) you just saved.</"
+"li><li>Confirm the selection.</li></ol>Once the activation has been "
+"finished your email address will be sent to the app provider. The app "
+"provider may contact you."
+msgstr ""
+"A licencfájlt elküldtünk a megadott <strong class=\"email-address\"> %s</"
+"strong> címre. Ez a fájl szükséges a rendszer aktiválásához. Ehhez kérjük, "
+"hajtsd végre a következő lépéseket:<ol><li> Nyisd meg az e-mailt.</li><li> "
+"Mentsd el a mellékletet (ucs.license) a számítógépedre.</li><li> Kattintson "
+"a „Licencfájl feltöltése” gombra.</li><li> Jelöld ki az imént mentett fájlt "
+"(ucs.license).</li><li> Erősítse meg a kiválasztást.</li></ol> Az aktiválás "
+"befejezése után az e-mail címedet elküldjük az alkalmazás szolgáltatójának. "
+"Az alkalmazás szolgáltatója felveheti veled a kapcsolatot."
+
+#: www/ActivationWizard.js:68
+msgid "Activation of %(appliance_name)s Appliance"
+msgstr "%(appliance_name) eszköz aktiválása"
+
+#: www/ActivationWizard.js:102
+msgid "Activation successful!"
+msgstr "Aktiválás sikeres!"
+
+#: www/ActivationWizard.js:261
+msgid ""
+"An error has occurred. More information on how to avoid this error can be "
+"found <a href=\"https://help.univention.com/t/14544\" target=\"_blank\" "
+"rel=\"noreferrer noopener\">in our support database</a>."
+msgstr ""
+"Hiba történt. További információ arról, hogyan kerülhetjük el ezt a hibát "
+"<a href=\"https://help.univention.com/t/14544\" target=\"_blank\" "
+"rel=\"noreferrer noopener\">, a támogató adatbázisunkban</a> található."
+
+#: www/ActivationWizard.js:148 www/ActivationWizard.js:152
+msgid "An unknown error has occurred."
+msgstr "Ismeretlen hiba történt."
+
+#: www/ActivationWizard.js:252
+msgid ""
+"An unknown error occurred. It is possible that a browser addon blocks "
+"sending the request to \"license.univention.de\". More information how to "
+"avoid this error can be found <a href=\"https://help.univention.com/t/"
+"7698\" target=\"_blank\" rel=\"noreferrer noopener\">in our support "
+"database</a>."
+msgstr ""
+"Egy ismeretlen hiba történt. Lehetséges, hogy egy böngészőbővítmény "
+"blokkolja a kérés küldését a \"license.univention.de\"-hez. További "
+"információ arról, hogyan kerülhető el ez a hiba <a href=\"https://"
+"help.univention.com/t/7698\" target=\"_blank\" rel=\"noreferrer "
+"noopener\">, a támogató adatbázisunkban</a> található."
+
+#: www/ActivationWizard.js:44
+msgid "E-mail address"
+msgstr "Email cím"
+
+#: www/ActivationWizard.js:254
+msgid "Error "
+msgstr "Hiba "
+
+#: www/ActivationWizard.js:56
+msgid ""
+"If you already have a license file you can <a href=\"#upload\">skip this "
+"step and upload the license</a>."
+msgstr ""
+"Ha már van licencfájlod <a href=\"#upload\">, kihagyhatod ezt a lépést, és "
+"feltöltheted a fájlt</a> ."
+
+#: www/ActivationWizard.js:75
+msgid ""
+"If you did not receive an email, please check your SPAM directory or <a "
+"href=\"#register\"> request the email again</a>."
+msgstr ""
+"Ha nem kaptál e-mailt, kérjük, nézd meg a SPAM mappát, vagy <a "
+"href=\"#register\"> kérd újra az e-mailt</a>."
+
+#: www/ActivationWizard.js:37
+msgid "License request for %(appliance_name)s Appliance"
+msgstr "Engedélykérés a(z) %(appliance_name) eszköz számára"
+
+#: www/ActivationWizard.js:52
+#, javascript-format
+msgid ""
+"More details about the activation can be found in the <a href=\"https://"
+"docs.software-univention.de/manual/%s/de/central-management-umc/"
+"umc.html#central-license\" target=\"_blank\">UCS manual</a>."
+msgstr ""
+"Az aktiválásról további részletek az <a href=\"https://docs.software-"
+"univention.de/manual/%s/de/central-management-umc/umc.html#central-"
+"license\" target=\"_blank\">UCS kézikönyvben</a> találhatók."
+
+#: www/ActivationWizard.js:47
+msgid "No valid email address."
+msgstr "Nem érvényes e-mail cím."
+
+#: www/ActivationWizard.js:40
+msgid ""
+"Please enter a valid email address in order to activate %(appliance_name)s "
+"Appliance. The activation is mandatory to deploy the system. In the next "
+"step you can upload the license file that has been sent to your email "
+"address."
+msgstr ""
+"Kérjük, adj meg egy érvényes e-mail címet a(z) %(appliance_name) készülék "
+"aktiválásához. Az aktiválás kötelező a rendszer telepítéséhez. A következő "
+"lépésben feltöltheted az elküldött licencfájlt az e-mail címedre."
+
+#: www/ActivationWizard.js:118
+msgid "Request activation"
+msgstr "Aktiválás kérése"
+
+#: www/main.js:47
+msgid "Switch language"
+msgstr "Nyelvváltás"
+
+#: www/ActivationWizard.js:260
+msgid "The following error occurred:"
+msgstr "A következő hiba történt:"
+
+#: www/ActivationWizard.js:287
+msgid "The server is not responding. Please restart the system."
+msgstr "A szerver nem válaszol. Kérem, indítsd újra a rendszert."
+
+#: www/ActivationWizard.js:81
+msgid "Upload license file"
+msgstr "Licencfájl feltöltése"
+
+#: www/ActivationWizard.js:243
+msgid "[%(appliance_name)s Appliance] Activation Error"
+msgstr "[%(appliance_name) készülék] Aktiválási hiba"
+
+#: www/ActivationWizard.js:45
+msgid "mail@example.org"
+msgstr "mail@example.org"
+
+#: www/ActivationWizard.js:71
+msgid "your email address"
+msgstr "az e-mail címed"

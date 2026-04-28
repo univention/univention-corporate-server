@@ -1,0 +1,23 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-pkgdb\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 16 Nov 2025 22:33:24 +0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "Manage installed software versions of UCS systems in the domain"
+msgstr "A tartományban telepített UCS rendszerek szoftververzióinak kezelése"
+
+msgid "Software monitor"
+msgstr "Szoftverfigyelő"
+
+msgid "pkgdb"
+msgstr "pkgdb"

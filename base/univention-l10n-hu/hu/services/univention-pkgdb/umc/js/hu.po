@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-pkgdb package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-pkgdb\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-24 23:54+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/pkgdb/KeyTranslator.js:44
+msgid "Hostname"
+msgstr "Hosztnév"
+
+#: umc/js/pkgdb/KeyTranslator.js:23
+msgid "Installation state"
+msgstr "Telepítési állapot"
+
+#: umc/js/pkgdb/KeyTranslator.js:27
+msgid "Inventory date"
+msgstr "Leltár dátuma"
+
+#: umc/js/pkgdb/KeyTranslator.js:30
+msgid "Package name"
+msgstr "Csomag neve"
+
+#: umc/js/pkgdb/KeyTranslator.js:36
+msgid "Package state"
+msgstr "Csomag állapota"
+
+#: umc/js/pkgdb/KeyTranslator.js:33
+msgid "Package version"
+msgstr "Csomag verziója"
+
+#: umc/js/pkgdb/SearchForm.js:50 umc/js/pkgdb/SearchForm.js:63
+msgid "Pattern"
+msgstr "Minta"
+
+#: umc/js/pkgdb.js:26
+msgid "Search UCS systems"
+msgstr "UCS rendszerek keresése"
+
+#: umc/js/pkgdb/SearchForm.js:36
+msgid "Search for:"
+msgstr "Keresés:"
+
+#: umc/js/pkgdb.js:33
+msgid "Search software packages"
+msgstr "Szoftvercsomagok keresése"
+
+#: umc/js/pkgdb/KeyTranslator.js:40
+msgid "Selection state"
+msgstr "Kijelölési állapot"
+
+#: umc/js/pkgdb/KeyTranslator.js:47
+msgid "System role"
+msgstr "Rendszer szerepe"
+
+#: umc/js/pkgdb/KeyTranslator.js:50
+msgid "UCS version"
+msgstr "UCS verzió"

@@ -1,0 +1,263 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-self-service-passwordreset-umc package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-self-service-passwordreset-umc\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-17 00:01+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/passwordreset/send_plugin.py:29
+msgid "????"
+msgstr "????"
+
+#: umc/python/passwordreset/__init__.py:220
+msgid ""
+"A message containing a token has been sent to the user (if the user exists "
+"and is allowed to use this service)."
+msgstr ""
+"Egy token-t tartalmazó üzenetet küldtünk a felhasználónak (ha a felhasználó "
+"létezik és jogosult a szolgáltatás használatára)."
+
+#: umc/python/passwordreset/__init__.py:894
+msgid "Account could not be deleted"
+msgstr "A fiók nem törölhető"
+
+#: umc/python/passwordreset/__init__.py:791
+msgid "Changing contact data failed."
+msgstr "A kapcsolattartási adatok módosítása sikertelen."
+
+#: umc/python/passwordreset/__init__.py:198
+msgid ""
+"Either username or password is incorrect or you are not allowed to use this "
+"service."
+msgstr ""
+"A felhasználónév vagy a jelszó helytelen, vagy nincs jogosultság ezt a "
+"szolgáltatást igénybe venni."
+
+#: umc/python/passwordreset/__init__.py:463
+#: umc/python/passwordreset/sending/send_email.py:50
+msgid "Email"
+msgstr "Email"
+
+#: umc/python/passwordreset/__init__.py:1066
+msgid "Error sending token: {}"
+msgstr "Hiba a token küldésekor: {}"
+
+#: umc/python/passwordreset/sending/send_with_external.py:51
+msgid "External"
+msgstr "Külső"
+
+#: umc/python/passwordreset/__init__.py:962
+msgid "Failed to change password."
+msgstr "Nem sikerült megváltoztatni a jelszót."
+
+#: umc/python/passwordreset/sending/send_sms.py:73
+msgid "Mobile number"
+msgstr "Mobiltelefonszám"
+
+#: umc/python/passwordreset/__init__.py:213
+msgid ""
+"No contact information is stored for this user. Resetting the password is "
+"not possible."
+msgstr ""
+"Nincsenek tárolt elérhetőségi adatok ehhez a felhasználóhoz. A jelszó "
+"visszaállítása nem lehetséges."
+
+#: umc/python/passwordreset/__init__.py:330
+#, python-format
+msgid "Service specific passwords were disabled for \"%s\"."
+msgstr "Szolgáltatásspecifikus jelszavak letiltva a(z) \"%s\" számára."
+
+#: umc/python/passwordreset/__init__.py:291
+#: umc/python/passwordreset/__init__.py:319
+msgid ""
+"Service specific passwords were disabled via the Univention Configuration "
+"Registry."
+msgstr ""
+"A szolgáltatás specifikus jelszavak az Univention Configuration Registry "
+"segítségével letiltva."
+
+#: umc/python/passwordreset/__init__.py:961
+msgid "Successfully changed your password."
+msgstr "A jelszavad sikeresen megváltozott."
+
+#: umc/python/passwordreset/__init__.py:579
+msgid "Successfully changed your profile data."
+msgstr "Sikeresen módosítottad a profilod adatait."
+
+#: umc/python/passwordreset/__init__.py:687
+#, python-format
+msgid ""
+"The account could not be created:\n"
+"%s\n"
+"%s"
+msgstr ""
+"A fiók nem hozható létre:\n"
+"%s\n"
+"%s"
+
+#: umc/python/passwordreset/__init__.py:624
+#, python-format
+msgid ""
+"The account could not be created:\n"
+"Information provided is not sufficient. The following properties are "
+"missing:\n"
+"%s"
+msgstr ""
+"A fiók létrehozása nem sikerült:\n"
+"A megadott információ nem elegendő. A következő tulajdonságok hiányoznak:\n"
+"%s"
+
+#: umc/python/passwordreset/__init__.py:885
+msgid ""
+"The account deregistration was disabled via the Univention Configuration "
+"Registry."
+msgstr ""
+"A fiók törlése az Univention Configuration Registry segítségével letiltva."
+
+#: umc/python/passwordreset/__init__.py:347
+#: umc/python/passwordreset/__init__.py:781
+msgid ""
+"The account protection was disabled via the Univention Configuration "
+"Registry."
+msgstr ""
+"A fiók védelme az Univention Configuration Registry segítségével letiltva."
+
+#: umc/python/passwordreset/__init__.py:593
+msgid ""
+"The account registration was disabled via the Univention Configuration "
+"Registry."
+msgstr ""
+"A fiók regisztrációját az Univention Configuration Registry segítségével "
+"letiltva."
+
+#: umc/python/passwordreset/__init__.py:743
+#: umc/python/passwordreset/__init__.py:837
+msgid ""
+"The account verification was disabled via the Univention Configuration "
+"Registry."
+msgstr ""
+"A fiók ellenőrzése az Univention Configuration Registry segítségével "
+"letiltva."
+
+#: umc/python/passwordreset/__init__.py:190
+msgid ""
+"The allowed maximum number of connections to the server has been reached. "
+"Please retry in {}."
+msgstr ""
+"A szerverhez engedélyezett maximális kapcsolatok száma elérte a "
+"határértéket. Kérjük, próbálkozz újra {} másodperc múlva."
+
+#: umc/python/passwordreset/__init__.py:568
+#, python-format
+msgid "The attribute %s is read-only."
+msgstr "A(z) %s attribútum csak olvasható."
+
+#: umc/python/passwordreset/__init__.py:578
+#, python-format
+msgid "The attributes could not be saved: %s"
+msgstr "Az attribútumok nem menthetők: %s"
+
+#: umc/python/passwordreset/__init__.py:1154
+msgid ""
+"The configuration of the password reset service is not complete. The UCR "
+"variables \"ad/reset/username\" and \"ad/reset/password\" need to be set "
+"properly. Please inform an administrator."
+msgstr ""
+"A jelszó visszaállítási szolgáltatás konfigurálása nem teljes. Az UCR "
+"változókat „ad/reset/username” és „ad/reset/password” megfelelően kell "
+"beállítani. Kérjük, értesítsd a rendszergazdát."
+
+#: umc/python/passwordreset/__init__.py:78
+#, python-format
+msgid ""
+"The connection to the server could not be established. Please try again "
+"later. Error message was: %s"
+msgstr ""
+"Nem sikerült kapcsolatot létesíteni a szerverrel. Kérjük, próbáld meg "
+"később. A hibaüzenet: %s"
+
+#: umc/python/passwordreset/__init__.py:656
+#, python-brace-format
+msgid ""
+"The container \"{container_dn}\" set by the \"umc/self-service/account-"
+"registration/usercontainer\" UCR variable does not exist. A user account "
+"can not be created. Please contact your system administrator."
+msgstr ""
+"Az „umc/self-service/account-registration/usercontainer” UCR változó által "
+"beállított „{container_dn}” konténer nem létezik. Nem hozható létre "
+"felhasználói fiók. Kérjük, fordulj a rendszergazdához."
+
+#: umc/python/passwordreset/__init__.py:227
+msgid "The password reset service is disabled via configuration registry."
+msgstr ""
+"A jelszó visszaállítási szolgáltatás a konfigurációs rendszerleíró "
+"adatbázisban van letiltva."
+
+#: umc/python/passwordreset/__init__.py:801
+#: umc/python/passwordreset/__init__.py:996
+msgid ""
+"The password reset was disabled via the Univention Configuration Registry."
+msgstr ""
+"A jelszó visszaállítása az Univention Configuration Registry segítségével "
+"letiltva."
+
+#: umc/python/passwordreset/__init__.py:206
+msgid ""
+"The token you supplied is either expired or invalid. Please request a new "
+"one."
+msgstr "A megadott token lejárt vagy érvénytelen. Kérj újat."
+
+#: umc/python/passwordreset/__init__.py:640
+#, python-brace-format
+msgid ""
+"The user template \"{template_dn}\" set by the \"umc/self-service/account-"
+"registration/usertemplate\" UCR variable does not exist. A user account can "
+"not be created. Please contact your system administrator."
+msgstr ""
+"Az „umc/self-service/account-registration/usertemplate” UCR változó által "
+"beállított „{template_dn}” felhasználói sablon nem létezik. Nem hozható "
+"létre felhasználói fiók. Kérjük, fordulj a rendszergazdához."
+
+#: umc/python/passwordreset/__init__.py:610
+msgid "The username is already taken"
+msgstr "A felhasználónév már foglalt"
+
+#: umc/python/passwordreset/__init__.py:537
+msgid "This value is required"
+msgstr "Ez az érték kötelező"
+
+#: umc/python/passwordreset/__init__.py:809
+msgid "Unknown recovery method '{}'."
+msgstr "Ismeretlen helyreállítási módszer: '{}'."
+
+#: umc/python/passwordreset/__init__.py:421
+msgid "Your picture"
+msgstr "A képed"
+
+#: umc/python/passwordreset/__init__.py:101
+msgid "one hour"
+msgstr "egy óra"
+
+#: umc/python/passwordreset/__init__.py:96
+msgid "one minute"
+msgstr "egy perc"
+
+#: umc/python/passwordreset/__init__.py:103
+msgid "{} hours"
+msgstr "{} óra"
+
+#: umc/python/passwordreset/__init__.py:99
+msgid "{} minutes"
+msgstr "{} perc"

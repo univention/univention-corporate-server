@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-pkgdb package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-pkgdb\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-24 23:59+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/pkgdb/__init__.py:145
+msgid "All properties"
+msgstr "Minden tulajdonság"
+
+#: umc/python/pkgdb/__init__.py:148
+msgid "Backup Directory Node"
+msgstr "Biztonsági mentési könyvtár csomópont"
+
+#: umc/python/pkgdb/__init__.py:168
+msgid "Config files only"
+msgstr "Csak konfigurációs fájlok"
+
+#: umc/python/pkgdb/__init__.py:222
+#, python-format
+msgid ""
+"Connection to the database lost.\n"
+"\n"
+"%s"
+msgstr ""
+"Megszakadt a kapcsolat az adatbázissal.\n"
+"\n"
+"%s"
+
+#: umc/python/pkgdb/__init__.py:208
+#, python-format
+msgid ""
+"Could not establish connection to the database.\n"
+"\n"
+"%s"
+msgstr ""
+"Nem sikerült kapcsolatot létesíteni az adatbázissal.\n"
+"\n"
+"%s"
+
+#: umc/python/pkgdb/__init__.py:165
+msgid "Half-configured"
+msgstr "Félig konfigurált"
+
+#: umc/python/pkgdb/__init__.py:167
+msgid "Half-installed"
+msgstr "Félig telepített"
+
+#: umc/python/pkgdb/__init__.py:153
+msgid "Hold"
+msgstr "Tart"
+
+#: umc/python/pkgdb/__init__.py:161
+msgid "Hold + Reinstall required"
+msgstr "Tartás + Újratelepítés szükséges"
+
+#: umc/python/pkgdb/__init__.py:140
+msgid "Hostname"
+msgstr "Hosztnév"
+
+#: umc/python/pkgdb/__init__.py:170
+msgid "Incomplete"
+msgstr "Befejezetlen"
+
+#: umc/python/pkgdb/__init__.py:152
+msgid "Install"
+msgstr "Telepítés"
+
+#: umc/python/pkgdb/__init__.py:133
+msgid "Installation state"
+msgstr "Telepítési állapot"
+
+#: umc/python/pkgdb/__init__.py:169
+msgid "Installed"
+msgstr "Telepítve"
+
+#: umc/python/pkgdb/__init__.py:134
+msgid "Inventory date"
+msgstr "Leltár dátuma"
+
+#: umc/python/pkgdb/__init__.py:150
+msgid "Managed Node"
+msgstr "Kezelt csomópont"
+
+#: umc/python/pkgdb/__init__.py:179
+msgid ""
+"Maybe the PostgreSQL server is not running.\n"
+"It can be started with the UMC module \"System services\"."
+msgstr "Lehet, hogy a PostgreSQL szerver nem fut. Az UMC modul „Rendszerszolgáltatások” segítségével indítható el."
+
+#: umc/python/pkgdb/__init__.py:156 umc/python/pkgdb/__init__.py:163
+msgid "Not installed"
+msgstr "Nem telepített"
+
+#: umc/python/pkgdb/__init__.py:158
+msgid "OK"
+msgstr "OK"
+
+#: umc/python/pkgdb/__init__.py:136
+msgid "Package name"
+msgstr "Csomag neve"
+
+#: umc/python/pkgdb/__init__.py:138
+msgid "Package state"
+msgstr "Csomag állapota"
+
+#: umc/python/pkgdb/__init__.py:147
+msgid "Primary Directory Node"
+msgstr "Elsődleges könyvtárcsomópont"
+
+#: umc/python/pkgdb/__init__.py:155
+msgid "Purge"
+msgstr "Tisztítás"
+
+#: umc/python/pkgdb/__init__.py:159
+msgid "Reinstall required"
+msgstr "Újratelepítés szükséges"
+
+#: umc/python/pkgdb/__init__.py:149
+msgid "Replica Directory Node"
+msgstr "Replika könyvtárcsomópont"
+
+#: umc/python/pkgdb/__init__.py:139
+msgid "Selection state"
+msgstr "Kijelölési állapot"
+
+#: umc/python/pkgdb/__init__.py:141
+msgid "System role"
+msgstr "Rendszer szerepe"
+
+#: umc/python/pkgdb/__init__.py:172
+msgid "Triggers awaited"
+msgstr "Várható kiváltó okok"
+
+#: umc/python/pkgdb/__init__.py:171
+msgid "Triggers pending"
+msgstr "Függőben lévő kiváltó okok"
+
+#: umc/python/pkgdb/__init__.py:142
+msgid "UCS Version"
+msgstr "UCS verzió"
+
+#: umc/python/pkgdb/__init__.py:143
+msgid "UCS Version is greater than"
+msgstr "Az UCS verziója nagyobb, mint"
+
+#: umc/python/pkgdb/__init__.py:144
+msgid "UCS Version is lower than"
+msgstr "Az UCS verzió alacsonyabb, mint"
+
+#: umc/python/pkgdb/__init__.py:154
+msgid "Uninstall"
+msgstr "Eltávolítás"
+
+#: umc/python/pkgdb/__init__.py:166
+msgid "Uninstalled"
+msgstr "Eltávolítva"
+
+#: umc/python/pkgdb/__init__.py:164
+msgid "Unpacked"
+msgstr "Kicsomagolva"

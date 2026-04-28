@@ -1,0 +1,481 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-26 20:07+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:70
+msgid "App schema version"
+msgstr "Alkalmazás sémaváltozat"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:152
+msgid "Authentication options"
+msgstr "Hitelesítési lehetőségek"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:73
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:73
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:62
+#: modules/univention/admin/handlers/ms/domainpolicy.py:159
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:62
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:77
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:84
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:208
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:68
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:84
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:62
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:83
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:239
+msgid "COM"
+msgstr "COM"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:188
+msgid "COM class ID"
+msgstr "COM osztály azonosító"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:182
+msgid "COM interface ID"
+msgstr "COM interfész azonosító"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:176
+msgid "COM prog ID"
+msgstr "COM prog azonosító"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:170
+msgid "COM type lib ID"
+msgstr "COM típusú lib azonosító"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:200
+msgid "Can upgrade script"
+msgstr "Frissíthető szkript"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:194
+msgid "Category"
+msgstr "Kategória"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:54
+msgid "Data"
+msgstr "Adat"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:49
+msgid "Data type"
+msgstr "Adattípus"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:147
+msgid "Default local policy object"
+msgstr "Alapértelmezett helyi házirend objektum"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:39
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:39
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:39
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:39
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:44
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:39
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:44
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:39
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:39
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:39
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:39
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:39
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:39
+msgid "Display name"
+msgstr "Megjelenő név"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:141
+msgid "Domain CAs"
+msgstr "Domain CA-k"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:136
+msgid "Domain policy reference"
+msgstr "Domain-házirend hivatkozás"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:130
+msgid "Domain wide policy"
+msgstr "Domain szintű szabályzat"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:124
+msgid "EFS policy"
+msgstr "EFS házirend"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:64
+msgid "Extension name"
+msgstr "Bővítmény neve"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:119
+msgid "Force logoff"
+msgstr "Kényszerített kijelentkezés"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:73
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:74
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:73
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:74
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:62
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:63
+#: modules/univention/admin/handlers/ms/domainpolicy.py:159
+#: modules/univention/admin/handlers/ms/domainpolicy.py:160
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:62
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:63
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:77
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:78
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:84
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:85
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:208
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:209
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:68
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:69
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:84
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:85
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:62
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:63
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:83
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:84
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:44
+msgid "ID"
+msgstr "ID"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:114
+msgid "IP-security policy reference"
+msgstr "IP-biztonsági házirend hivatkozás"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:66
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:66
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:66
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:66
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:66
+msgid "IPsec Data"
+msgstr "IPsec adat"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:61
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:61
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:61
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:61
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:61
+msgid "IPsec Data Type"
+msgstr "IPsec adattípus"
+
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:76
+msgid "IPsec Filter reference"
+msgstr "IPsec szűrő hivatkozás"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:56
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:56
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:56
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:56
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:56
+msgid "IPsec ID"
+msgstr "IPsec azonosító"
+
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:77
+msgid "IPsec ISAKMP Reference"
+msgstr "IPsec ISAKMP hivatkozás"
+
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:71
+msgid "IPsec NFA Reference"
+msgstr "IPsec NFA hivatkozás"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:51
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:51
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:51
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:51
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:51
+msgid "IPsec Name"
+msgstr "IPsec név"
+
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:71
+msgid "IPsec Negotiation Policy Reference"
+msgstr "IPsec-tárgyalási házirend hivatkozás"
+
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:76
+msgid "IPsec Negotiation Policy action"
+msgstr "IPsec-tárgyalási házirend intézkedés"
+
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:71
+msgid "IPsec Negotiation Policy type"
+msgstr "IPsec-tárgyalási házirend típusa"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:45
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:45
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:45
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:45
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:45
+msgid "IPsec Owners reference"
+msgstr "IPsec tulajdonosok hivatkozása"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:59
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:148
+msgid "Last update sequence"
+msgstr "Utolsó frissítési sorrend"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:142
+msgid "Locale ID"
+msgstr "Helyi azonosító"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:104
+msgid "Lockout duration"
+msgstr "Zárolás időtartama"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:109
+msgid "Lockout observation window"
+msgstr "Zárolási megfigyelő ablak"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:99
+msgid "Lockout threshold"
+msgstr "Zárolási küszöbérték"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:20
+msgid "MS Domain Policy"
+msgstr "MS domain házirend"
+
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:20
+msgid "MS IPsec policy"
+msgstr "MS IPsec házirend"
+
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:20
+msgid "MS IPsec policy: ISAKMP Policy"
+msgstr "MS IPsec házirend: ISAKMP házirend"
+
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:20
+msgid "MS IPsec policy: NFA"
+msgstr "MS IPsec házirend: NFA"
+
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:20
+msgid "MS IPsec policy: Negotiation Policy"
+msgstr "MS IPsec házirend: Tárgyalási házirend"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:20
+msgid "MS IPsec policy: filter"
+msgstr "MS IPsec házirend: szűrő"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:20
+msgid "MS Software Installation Group Policy: Category Registration"
+msgstr "MS szoftver telepítésicsoport házirend: Kategória regisztráció"
+
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:20
+msgid "MS wired Group Policy"
+msgstr "MS vezetékes csoportházirend"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:20
+msgid "MS wireless Group Policy"
+msgstr "MS vezeték nélküli csoportházirend"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:20
+msgid "MS wireless Group Policy blob"
+msgstr "MS vezeték nélküli csoportházirend blob"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:232
+msgid "MSI"
+msgstr "MSI"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:125
+msgid "MSI file list"
+msgstr "MSI fájllista"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:120
+msgid "MSI script"
+msgstr "MSI szkript"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:115
+msgid "MSI script name"
+msgstr "MSI szkript neve"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:110
+msgid "MSI script path"
+msgstr "MSI szkript elérési útja"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:105
+msgid "MSI script size"
+msgstr "MSI szkript mérete"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:94
+msgid "Managed by"
+msgstr "Kezelő"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:89
+msgid "Maximum password age"
+msgstr "Maximális jelszóélettartam"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:84
+msgid "Maximum renew age"
+msgstr "Maximális megújítási időhatár"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:79
+msgid "Maximum ticket age"
+msgstr "A jegy maximális érvényességi ideje"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:74
+msgid "Minimum password age"
+msgstr "Minimális jelszóélettartam"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:69
+msgid "Minimum password length"
+msgstr "Minimális jelszóhossz"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:64
+msgid "Minimum ticket age"
+msgstr "Minimális jegy időhatár"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:32
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:32
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:32
+#: modules/univention/admin/handlers/ms/domainpolicy.py:32
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:32
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:32
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:32
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:32
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:32
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:32
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:32
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:32
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:54
+msgid "Next level store"
+msgstr "Következő szintű tároló"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:49
+msgid "Password history length"
+msgstr "Megjegyzett jelszavak száma"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:44
+msgid "Password properties"
+msgstr "Jelszó tulajdonságok"
+
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:49
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:49
+msgid "Policy Data"
+msgstr "Házirend adatok"
+
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:55
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:55
+msgid "Policy GUID"
+msgstr "Házirend GUID"
+
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:44
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:44
+msgid "Policy Reserved"
+msgstr "Házirend fenntartva"
+
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:66
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:66
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:66
+msgid "Policy settings"
+msgstr "Házirend beállítások"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:59
+msgid "Proxy lifetime"
+msgstr "Proxy élettartam"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:54
+msgid "Publickey policy"
+msgstr "Nyilvános kulcs házirend"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:39
+msgid "Quality of service"
+msgstr "Szolgáltatás minősége"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:69
+msgid "Revision"
+msgstr "Változat"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:80
+msgid "Setup command"
+msgstr "Beállítási parancs"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:20
+msgid "Software Installation Group Policy: Class Store"
+msgstr "Szoftvertelepítési csoportházirend: Osztály tároló"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:20
+msgid "Software Installation Group Policy: Package Registration"
+msgstr "Szoftvertelepítési csoportházirend: Csomag regisztráció"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:64
+msgid "URL"
+msgstr "URL"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:74
+msgid "Upgrade product code"
+msgstr "Termék kód frissítése"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:59
+msgid "Vendor"
+msgstr "Gyártó"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:49
+msgid "Version number"
+msgstr "Verziószám"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:54
+msgid "Version number high"
+msgstr "Verziószám felső értéke"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:49
+msgid "Version number low"
+msgstr "Verziószám alsó értéke"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:61
+msgid "category ID"
+msgstr "kategória azonosító"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:164
+msgid "file ext priority"
+msgstr "fájl kiterjesztés prioritás"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:158
+msgid "icon path"
+msgstr "ikon elérési út"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:153
+msgid "install UI level"
+msgstr "telepítés: UI szint"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:55
+msgid "locale ID"
+msgstr "helyi azonosító"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:49
+msgid "localized description"
+msgstr "helyi leírás"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:136
+msgid "machine architecture"
+msgstr "gép architektúra"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:131
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:44
+msgid "managed by"
+msgstr "kezelő"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:100
+msgid "package flags"
+msgstr "csomagjelzők"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:95
+msgid "package name"
+msgstr "csomag neve"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:90
+msgid "package type"
+msgstr "csomag típus"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:85
+msgid "product code"
+msgstr "termékkód"

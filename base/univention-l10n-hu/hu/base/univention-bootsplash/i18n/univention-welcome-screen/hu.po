@@ -1,0 +1,30 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-welcome-screen\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-11-19 15:14+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: univention-welcome-screen:96
+msgid "Navigate to the following address:"
+msgstr "Elérhető a következő címen:"
+
+#: univention-welcome-screen:95
+msgid "Open a browser window"
+msgstr "Nyisd meg böngészőben"
+
+#: univention-welcome-screen:97
+msgid "Open the web management interface"
+msgstr "Webes kezelő felület megnyitása"
+
+#: univention-welcome-screen:94
+msgid "Press any key to open text console"
+msgstr "Nyomj meg egy billentyűt a parancssorhoz"

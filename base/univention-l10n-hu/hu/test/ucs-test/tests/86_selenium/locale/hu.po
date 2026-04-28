@@ -1,0 +1,62 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ucs-test-selenium\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-26 22:12+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: tests/90_umc-screenshots/03_users.py:29
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: tests/90_umc-screenshots/02_portal.py:18
+msgid "Administration"
+msgstr "Adminisztráció"
+
+#: tests/90_umc-screenshots/03_users.py:43
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: tests/90_umc-screenshots/03_users.py:172
+msgid "Developer"
+msgstr "Fejlesztő"
+
+#: tests/90_umc-screenshots/00_favorites.py:17
+msgid "Favorites"
+msgstr "Kedvencek"
+
+#: tests/90_umc-screenshots/03_users.py:31
+msgid "First name"
+msgstr "Keresztnév"
+
+#: tests/90_umc-screenshots/03_users.py:176
+msgid "Guest"
+msgstr "Vendég"
+
+#: tests/90_umc-screenshots/04_ldap.py:17
+msgid "LDAP directory"
+msgstr "LDAP könyvtár"
+
+#: tests/90_umc-screenshots/03_users.py:58
+msgid "Next"
+msgstr "Következő"
+
+#: tests/90_umc-screenshots/03_users.py:47
+msgid "User template"
+msgstr "Felhasználói sablon"
+
+#: tests/90_umc-screenshots/03_users.py:23
+msgid "Users"
+msgstr "Felhasználók"
+
+#: tests/90_umc-screenshots/03_users.py:62
+msgid "password history"
+msgstr "jelszó előzmény"

@@ -1,0 +1,372 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-adtakeover package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-adtakeover\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-10 00:01+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#. i18n: The program "fping" failed.
+#: umc/python/adtakeover/takeover.py:2022
+msgid " failed"
+msgstr " sikertelen"
+
+#: umc/python/adtakeover/takeover.py:822
+#, python-format
+msgid "AD Server did not return proper time string: %s."
+msgstr "Az AD szerver nem adott vissza megfelelő idő karakterláncot: %s."
+
+#: umc/python/adtakeover/takeover.py:625
+#, python-format
+msgid "Active Directory services not detected at %s."
+msgstr ""
+"Nem észlelhetők Active Directory szolgáltatások a következő címen: %s."
+
+#: umc/python/adtakeover/takeover.py:1515
+msgid "Active Directory takeover finished already."
+msgstr "Az Active Directory átvétele már befejeződött."
+
+#: umc/python/adtakeover/takeover.py:331
+msgid "Adjusting settings in Samba directory service"
+msgstr "Beállítások módosítása a Samba címtárszolgáltatásban"
+
+#: umc/python/adtakeover/takeover.py:192
+msgid ""
+"At least one GPO in SYSVOL is newer than the Group Policy Container version."
+msgstr ""
+"A SYSVOL-ban legalább egy csoportházirend-objektum újabb, mint a "
+"csoportházirend-tároló verziója."
+
+#: umc/python/adtakeover/takeover.py:188
+#: umc/python/adtakeover/takeover.py:1943
+msgid "At least one GPO in SYSVOL is not up to date yet."
+msgstr "A SYSVOL legalább egy csoportházirend-objektuma még nem naprakész."
+
+#: umc/python/adtakeover/takeover.py:184
+msgid "At least one GPO is still missing in SYSVOL."
+msgstr ""
+"Legalább egy csoportházirend-objektum továbbra is hiányzik a SYSVOL-ból."
+
+#: umc/python/adtakeover/takeover.py:243 umc/python/adtakeover/takeover.py:272
+msgid "Authenticating"
+msgstr "Hitelesítés"
+
+#: umc/python/adtakeover/takeover.py:176
+msgid "Authentication failed."
+msgstr "A hitelesítés sikertelen."
+
+#: umc/python/adtakeover/takeover.py:388
+msgid "Checking GPOs in SYSVOL"
+msgstr "Csoportházirend-objektumok ellenőrzése a SYSVOL-ban"
+
+#: umc/python/adtakeover/takeover.py:293
+msgid "Checking group policies"
+msgstr "Csoportházirendek ellenőrzése"
+
+#: umc/python/adtakeover/takeover.py:335
+msgid "Claiming FSMO roles"
+msgstr "FSMO szerepkörök igénylése"
+
+#: umc/python/adtakeover/takeover.py:240 umc/python/adtakeover/takeover.py:268
+#, python-format
+msgid "Connecting to %s"
+msgstr "Csatlakozás a(z) %s-hoz"
+
+#: umc/python/adtakeover/takeover.py:2057
+#, python-format
+msgid "Connection to Active Directory server %s failed."
+msgstr "Sikertelen kapcsolódás az Active Directory kiszolgálóhoz (%s)."
+
+#: umc/python/adtakeover/takeover.py:960 umc/python/adtakeover/takeover.py:970
+#, python-format
+msgid "Copying %s"
+msgstr "Másolás %s"
+
+#: umc/python/adtakeover/takeover.py:932
+#, python-format
+msgid "Could not read local machine password: %s"
+msgstr "Nem sikerült beolvasni a helyi gép jelszavát: %s"
+
+#: umc/python/adtakeover/takeover.py:180
+msgid "Domain join failed."
+msgstr "A tartományhoz való csatlakozás sikertelen."
+
+#: umc/python/adtakeover/__init__.py:38
+#, python-format
+msgid ""
+"Execution of command '%(command)s' has failed:\n"
+"\n"
+"%(text)s"
+msgstr ""
+"A(z) „%(command)s” parancs végrehajtása sikertelen:\n"
+"\n"
+"%(text)s"
+
+#: umc/python/adtakeover/takeover.py:2087
+msgid "Failed to detect the Active Directory site of the server."
+msgstr "Nem sikerült felismerni a szerver Active Directory webhelyét."
+
+#: umc/python/adtakeover/takeover.py:678
+msgid "Failed to determine AD domain SID."
+msgstr "Nem sikerült meghatározni az AD-tartomány SID-jét."
+
+#: umc/python/adtakeover/takeover.py:1049
+msgid "Failed to determine new domain SID."
+msgstr "Nem sikerült meghatározni az új domain SID-jét."
+
+#: umc/python/adtakeover/takeover.py:357
+msgid "Finalizing"
+msgstr "Véglegesítés"
+
+#: umc/python/adtakeover/takeover.py:295
+msgid "Initializing the S4 Connector listener"
+msgstr "Az S4 csatlakozó figyelőjének inicializálása"
+
+#: umc/python/adtakeover/takeover.py:212
+msgid "Insufficient License."
+msgstr "Nem megfelelő licenc."
+
+#: umc/python/adtakeover/takeover.py:571
+msgid "Internal Error: License check failed."
+msgstr "Belső hiba: A licenc ellenőrzése sikertelen."
+
+#: umc/python/adtakeover/takeover.py:842
+#, python-format
+msgid "Internal Error: rdate -s -p failed (%d)."
+msgstr "Belső hiba: rdate -s -p sikertelen (%d)."
+
+#: umc/python/adtakeover/takeover.py:434
+#, python-format
+msgid ""
+"Internal module error: Cannot go from state '%(current)s' to state "
+"'%(new)s'."
+msgstr ""
+"Belső modulhiba: Nem lehet a(z) '%(current)s' állapotból a(z) '%(new)s' "
+"állapotba váltani."
+
+#: umc/python/adtakeover/takeover.py:439
+#, python-format
+msgid ""
+"Internal module error: Expected to be in state 'sysvol', but found '%s'."
+msgstr ""
+"Belső modulhiba: A várt állapot 'sysvol' lett volna, de a találat '%s'."
+
+#: umc/python/adtakeover/takeover.py:444
+#, python-format
+msgid ""
+"Internal module error: Expected to be in state 'takeover', but found '%s'."
+msgstr ""
+"Belső modulhiba: A várt állapotnak 'átvétel'-nek kellett volna lennie, de a "
+"találat '%s'."
+
+#: umc/python/adtakeover/takeover.py:417
+#, python-format
+msgid "Internal module error: Refusing to set invalid state '%s'."
+msgstr ""
+"Belső modulhiba: A(z) „%s” érvénytelen állapot beállításának megtagadása."
+
+#: umc/python/adtakeover/takeover.py:449
+msgid "Internal module error: Takeover running, aborting attempt to restart."
+msgstr "Belső modulhiba: Átvétel fut, az újraindítási kísérlet megszakad."
+
+#: umc/python/adtakeover/takeover.py:2531
+#, python-format
+msgid "Invalid UNC string: %s"
+msgstr "Érvénytelen UNC karakterlánc: %s"
+
+#: umc/python/adtakeover/takeover.py:476
+#, python-format
+msgid "Invalid state in file %s"
+msgstr "Érvénytelen állapot a(z) %s fájlban"
+
+#: umc/python/adtakeover/takeover.py:281
+msgid "Joining the domain"
+msgstr "Csatlakozás a domainhez"
+
+#: umc/python/adtakeover/takeover.py:2025
+#, python-format
+msgid "Network connection to %s failed."
+msgstr "Hálózati kapcsolat a következővel: %s sikertelen."
+
+#: umc/python/adtakeover/takeover.py:595
+#, python-format
+msgid ""
+"Number of %(object_name)s after takeover would be %(sum)s. This would "
+"exceed the number of licensed objects (%(max)s)."
+msgstr ""
+"Az átvétel utáni %(object_name)s objektumok száma %(sum)s lenne. Ez "
+"meghaladná a licencelt objektumok számát (%(max)s)."
+
+#: umc/python/adtakeover/takeover.py:303
+msgid "Rebuilding IDMAP"
+msgstr "Az IDMAP újraépítése"
+
+#: umc/python/adtakeover/takeover.py:354
+msgid "Reconfiguring nameserver"
+msgstr "Névszerver újrakonfigurálása"
+
+#: umc/python/adtakeover/takeover.py:351
+msgid "Registering IP in DNS"
+msgstr "IP cím regisztrálása a DNS-ben"
+
+#: umc/python/adtakeover/takeover.py:832
+#, python-format
+msgid ""
+"Remote clock is behind local clock by more than %s seconds, refusing to "
+"turn back time. Please advance the clock of the Active Directory DC."
+msgstr ""
+"A távoli óra több mint %s másodperccel elmarad a helyi órától, és nem tudja "
+"visszaállítani az időt. Kérjük, állítsd előre az Active Directory "
+"tartományvezérlő óráját."
+
+#: umc/python/adtakeover/takeover.py:338
+msgid "Removing the previous AD server account"
+msgstr "Az előző AD szerverfiók eltávolítása"
+
+#: umc/python/adtakeover/takeover.py:306
+msgid "Reset SYSVOL ACLs"
+msgstr "SYSVOL ACL-ek visszaállítása"
+
+#: umc/python/adtakeover/takeover.py:246
+msgid "Retrieving information from AD DC"
+msgstr "Információk lekérése az AD DC-ből"
+
+#: umc/python/adtakeover/takeover.py:290
+msgid "Rewriting SIDs in the UCS directory service"
+msgstr "SID-ek átírása az UCS címtárszolgáltatásban"
+
+#: umc/python/adtakeover/takeover.py:325
+#, python-format
+msgid "Search for %s in network"
+msgstr "Keresés a hálózatban %s"
+
+#: umc/python/adtakeover/takeover.py:196
+msgid "Something is wrong with the SYSVOL."
+msgstr "Valami nincs rendben a SYSVOL-lal."
+
+#: umc/python/adtakeover/takeover.py:287
+msgid "Starting Samba"
+msgstr "Samba indítása"
+
+#: umc/python/adtakeover/takeover.py:299
+msgid "Starting the S4 Connector"
+msgstr "Az S4 csatlakozó elindítása"
+
+#: umc/python/adtakeover/takeover.py:276
+msgid "Synchronizing system clock"
+msgstr "A rendszeróra szinkronizálása"
+
+#: umc/python/adtakeover/takeover.py:330
+msgid "Taking over Active Directory domain controller roles"
+msgstr "Active Directory tartományvezérlői szerepkörök átvétele"
+
+#: umc/python/adtakeover/takeover.py:342
+msgid "Taking over DNS address"
+msgstr "DNS-cím átvétele"
+
+#: umc/python/adtakeover/takeover.py:348
+msgid "Taking over IP address"
+msgstr "IP-cím átvétele"
+
+#: umc/python/adtakeover/takeover.py:345
+msgid "Taking over NETBIOS address"
+msgstr "NETBIOS cím átvétele"
+
+#: umc/python/adtakeover/takeover.py:674
+#, python-format
+msgid ""
+"The Active Directory domain has a function level of Windows Server 2012 or "
+"newer, Samba currently only supports up to Windows 2008R2: %s"
+msgstr ""
+"Az Active Directory tartomány funkcionális szintje Windows Server 2012 vagy "
+"újabb, a Samba jelenleg csak a Windows 2008R2-ig terjedő verziókat "
+"támogatja: %s"
+
+#: umc/python/adtakeover/takeover.py:1487
+#: umc/python/adtakeover/takeover.py:1495
+msgid "The Active Directory domain join was not completed successfully yet."
+msgstr ""
+"Az Active Directory tartományhoz való csatlakozás még nem fejeződött be "
+"sikeresen."
+
+#: umc/python/adtakeover/takeover.py:200
+msgid "The Active Directory server seems to be running. It must be shut off."
+msgstr "Úgy tűnik, hogy az Active Directory-kiszolgáló fut. Le kell állítani."
+
+#: umc/python/adtakeover/takeover.py:657
+msgid ""
+"The LDAP base of this UCS domain differs from the LDAP base of the selected "
+"Active Directory domain."
+msgstr ""
+"Ennek az UCS-tartománynak az LDAP-bázisa eltér a kiválasztott Active "
+"Directory-tartomány LDAP-bázisától."
+
+#: umc/python/adtakeover/takeover.py:1541
+#, python-format
+msgid "The Server IP %s is still online, please shut down the machine."
+msgstr "A(z) %s kiszolgáló IP-címe még online, kérjük, állítsd le a gépet."
+
+#: umc/python/adtakeover/takeover.py:2065
+#, python-format
+msgid ""
+"The automatic search for an Active Directory server for realm %s did not "
+"yield any results."
+msgstr ""
+"A(z) %s tartomány Active Directory-kiszolgálójának automatikus keresése nem "
+"hozott eredményt."
+
+#: umc/python/adtakeover/takeover.py:172
+msgid "The computer is not reachable."
+msgstr "A számítógép nem elérhető."
+
+#: umc/python/adtakeover/takeover.py:865 umc/python/adtakeover/takeover.py:981
+#: umc/python/adtakeover/takeover.py:1028
+#, python-format
+msgid "The domain join failed. See %s for details."
+msgstr ""
+"A tartományhoz való csatlakozás sikertelen volt. A részleteket lásd a(z) %s "
+"pontban."
+
+#: umc/python/adtakeover/takeover.py:653
+msgid ""
+"The selected Active Directory server has the same NTDS GUID as this UCS "
+"server."
+msgstr ""
+"A kiválasztott Active Directory-kiszolgáló ugyanazzal az NTDS GUID-dal "
+"rendelkezik, mint ez az UCS-kiszolgáló."
+
+#: umc/python/adtakeover/takeover.py:208
+msgid "Time difference critical for Kerberos but synchronization aborted."
+msgstr ""
+"Az időeltolódás kritikus a Kerberos számára, de a szinkronizálás megszakadt."
+
+#: umc/python/adtakeover/takeover.py:204
+msgid "Time synchronization failed."
+msgstr "Az időszinkronizálás sikertelen."
+
+#: umc/python/adtakeover/takeover.py:2524
+msgid "UNC doesn't start with \\\\ or //"
+msgstr "Az UNC nem \\\\ vagy // karakterekkel kezdődik"
+
+#: umc/python/adtakeover/takeover.py:251
+msgid ""
+"You may proceed with the takeover, but the domain management may be limited "
+"afterwards until a new license is installed."
+msgstr ""
+"Folytathatod az átvételt, de a domain kezelés ezt követően korlátozott "
+"lehet, amíg új licencet nem telepítenek."
+
+#: umc/python/adtakeover/takeover.py:582
+msgid "users"
+msgstr "felhasználók"

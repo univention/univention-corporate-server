@@ -1,0 +1,423 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-setup package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-01 11:46+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/setup/__init__.py:465
+msgid "A domain name server needs to be specified."
+msgstr "Meg kell adni egy domain név szervert."
+
+#: umc/python/setup/__init__.py:387
+msgid ""
+"A valid NetBIOS name can not be longer than 15 characters. If Samba is "
+"installed, the hostname should be shortened."
+msgstr ""
+"Az érvényes NetBIOS név nem lehet hosszabb 15 karakternél. Ha a Samba "
+"telepítve van, akkor a gazdagép nevét rövidíteni kell."
+
+#: umc/python/setup/__init__.py:488
+msgid "Active Directory"
+msgstr "Active Directory"
+
+#: umc/python/setup/network.py:676
+msgid "Bond-primary must exist in bond-slaves"
+msgstr "Az elsődleges kötésnek léteznie kell a szolga kötésben"
+
+#: umc/python/setup/__init__.py:423
+msgid "Business unit"
+msgstr "Üzleti egység"
+
+#: umc/python/setup/util.py:173 umc/python/setup/__init__.py:501
+msgid ""
+"Cannot automatically determine the domain. Please specify the server's "
+"fully qualified domain name."
+msgstr ""
+"A domain automatikusan nem határozható meg. Adja meg a szerver teljes "
+"domain nevét."
+
+#: umc/python/setup/network.py:769
+#, python-format
+msgid "Cannot use bridge %r as bridge-port"
+msgstr "A %r híd nem használható hídportként"
+
+#: umc/python/setup/network.py:672
+#, python-format
+msgid "Cannot use device %s: Device must be unconfigured"
+msgstr "Az eszköz %s nem használható: Az eszközt konfigurálni kell"
+
+#: umc/python/setup/__init__.py:426
+msgid "Common name for the root SSL certificate"
+msgstr "A gyökér SSL-tanúsítvány általános neve"
+
+#: umc/python/setup/__init__.py:418
+msgid "Country"
+msgstr "Ország"
+
+#: umc/python/setup/__init__.py:436
+msgid "Country must be a country code consisting of 2 characters."
+msgstr "Az országnak egy 2 karakterből álló országkódnak kell lennie."
+
+#: umc/python/setup/network.py:365
+#, python-format
+msgid "Device %(device)r is already in use by %(name)r"
+msgstr "Az %(device)r eszköz már használatban van %(name)r által"
+
+#: umc/python/setup/network.py:667
+#, python-format
+msgid "Devices used in a bonding must be physical: %s is not"
+msgstr "A kötésben használt eszközöknek fizikaiaknak kell lenniük: nem %s"
+
+#: umc/python/setup/__init__.py:452
+msgid "Domain name server"
+msgstr "Domain név szerver"
+
+#: umc/python/setup/network.py:135 umc/python/setup/network.py:145
+#, python-format
+msgid "Duplicated IP address: %r"
+msgstr "Duplikált IP-cím: %r"
+
+#: umc/python/setup/checks/univention_join.py:95
+#, python-brace-format
+msgid ""
+"During the check of the license status the following error occurred:\n"
+"{error}"
+msgstr ""
+"A licenc állapotának ellenőrzése során a következő hiba történt: {error}"
+
+#: umc/python/setup/__init__.py:424 umc/python/setup/__init__.py:425
+msgid "Email address"
+msgstr "Email cím"
+
+#: umc/python/setup/__init__.py:224 umc/python/setup/__init__.py:289
+#, python-format
+msgid "Encountered unexpected error during setup process: %s"
+msgstr "A telepítési folyamat során váratlan hiba történt: %s"
+
+#: umc/python/setup/__init__.py:452
+msgid "External name server"
+msgstr "Külső névszerver"
+
+#: umc/python/setup/setup_script.py:438
+#, python-format
+msgid "Failed to get package for Role %s"
+msgstr "Nem sikerült letölteni a %s szerepkör csomagját"
+
+#: umc/python/setup/__init__.py:397
+msgid "Hostname is equal to domain name."
+msgstr "A gazdagépnév megegyezik a domainnévvel."
+
+#: umc/python/setup/network.py:322
+#, python-format
+msgid "Invalid IPv4 address: %r"
+msgstr "Érvénytelen IPv4-cím: %r"
+
+#: umc/python/setup/network.py:328
+#, python-format
+msgid "Invalid IPv4 netmask: %r"
+msgstr "Érvénytelen IPv4 alhálózati maszk: %r"
+
+#: umc/python/setup/network.py:338
+#, python-format
+msgid "Invalid IPv6 address: %r"
+msgstr "Érvénytelen IPv6-cím: %r"
+
+#: umc/python/setup/network.py:348
+#, python-format
+msgid "Invalid IPv6 identifier: %r"
+msgstr "Érvénytelen IPv6 azonosító: %r"
+
+#: umc/python/setup/network.py:344
+#, python-format
+msgid "Invalid IPv6 netmask: %r"
+msgstr "Érvénytelen IPv6 alhálózati maszk: %r"
+
+#: umc/python/setup/network.py:583
+msgid "Invalid VLAN ID. Must be between 1 and 4095."
+msgstr "Érvénytelen VLAN azonosító. 1 és 4095 között kell lennie."
+
+#: umc/python/setup/network.py:686
+#, python-format
+msgid "Invalid bond-mode: %r"
+msgstr "Érvénytelen kötési mód: %r"
+
+#: umc/python/setup/network.py:312 umc/python/setup/network.py:581
+#, python-format
+msgid "Invalid device name: %r"
+msgstr "Érvénytelen eszköznév: %r"
+
+#: umc/python/setup/__init__.py:517
+msgid ""
+"It is not possible to install Samba 3 and Samba 4 on one system. Please "
+"select only one of these components."
+msgstr ""
+"A Samba 3 és a Samba 4 nem telepíthető egy rendszerre. Kérjük, válasszon "
+"csak az egyik komponenst."
+
+#: umc/python/setup/__init__.py:420
+msgid "Location"
+msgstr "Hely"
+
+#: umc/python/setup/network.py:352
+msgid "Missing IPv6 default identifier"
+msgstr "Hiányzó IPv6 alapértelmezett azonosító"
+
+#: umc/python/setup/network.py:658
+msgid "Missing device for bond-slaves"
+msgstr "Hiányzó eszköz a szolga kötés számára"
+
+#: umc/python/setup/network.py:572 umc/python/setup/network.py:663
+#: umc/python/setup/network.py:765
+#, python-format
+msgid "Missing device: %r"
+msgstr "Hiányzó eszköz: %r"
+
+#: umc/python/setup/network.py:357
+msgid "Multiple IPv4 addresses are not supported on this device."
+msgstr "Ez az eszköz nem támogatja a több IPv4-címet."
+
+#: umc/python/setup/checks/univention_join.py:61
+msgid "No UCS Primary Directory Node could be found at the address."
+msgstr "A megadott címen nem található UCS elsődleges könyvtárcsomópont."
+
+#: umc/python/setup/__init__.py:400
+msgid "No fully qualified domain name has been specified for the system."
+msgstr "A rendszerhez nem lett megadva teljes domain név."
+
+#: umc/python/setup/__init__.py:402
+msgid "No hostname has been specified for the system."
+msgstr "A rendszerhez nem lett megadva gazdagépnév."
+
+#: umc/python/setup/__init__.py:421 umc/python/setup/__init__.py:422
+msgid "Organization"
+msgstr "Szervezet"
+
+#: umc/python/setup/__init__.py:438
+msgid "Please enter a valid email address"
+msgstr "Kérjük, adj meg egy érvényes e-mail címet"
+
+#: umc/python/setup/__init__.py:390
+msgid ""
+"Please enter a valid fully qualified domain name (e.g. host.example.com)."
+msgstr ""
+"Kérjük, adj meg egy érvényes, teljes domain nevet (pl. host.example.com)."
+
+#: umc/python/setup/__init__.py:70
+msgid "Request Timeout"
+msgstr "Kérés időtúllépés"
+
+#: umc/python/setup/__init__.py:419
+msgid "State"
+msgstr "Állam/megye"
+
+#: umc/python/setup/__init__.py:410
+msgid ""
+"The LDAP base may neither contain blanks nor any special characters. Its "
+"structure needs to consist of at least two relative distinguished names "
+"(RDN) which may only use the attribute tags 'dc', 'cn', 'c', 'o', or 'l' "
+"(e.g., dc=test,dc=net)."
+msgstr ""
+"Az LDAP-alap nem tartalmazhat szóközöket vagy speciális karaktereket. "
+"Felépítésének legalább két relatív megkülönböztető névből (RDN) kell "
+"állnia, amelyek csak a „dc”, „cn”, „c”, „o” vagy „l” attribútumcímkéket "
+"használhatják (pl. dc=test,dc=net)."
+
+#: umc/python/setup/checks/univention_join.py:108
+msgid ""
+"The UCS version of the domain you are trying to join ({}) is lower than the "
+"local one ({}). This constellation is not supported."
+msgstr ""
+"A csatlakozni kívánt domain UCS verziója ({}) alacsonyabb, mint a helyi "
+"({}). Ez az együttállás nem támogatott."
+
+#: umc/python/setup/util.py:1099
+msgid ""
+"The connection to the Active Directory server failed. Please recheck the "
+"address."
+msgstr ""
+"Az Active Directory szerverhez való csatlakozás sikertelen. Kérjük, "
+"ellenőrizze újra a címet."
+
+#: umc/python/setup/util.py:1102
+msgid ""
+"The connection to the Active Directory server was refused. Please recheck "
+"the password."
+msgstr ""
+"Az Active Directory szerverhez való csatlakozás megtagadva. Kérjük, "
+"ellenőrizze újra a jelszót."
+
+#: umc/python/setup/checks/univention_join.py:64
+msgid ""
+"The connection to the UCS Primary Directory Node was refused. Please "
+"recheck the password."
+msgstr ""
+"Az UCS elsődleges könyvtárcsomópontjához való csatlakozás megtagadva. "
+"Kérjük, ellenőrizze újra a jelszót."
+
+#: umc/python/setup/__init__.py:430
+#, python-format
+msgid ""
+"The following value is too long, only %(max)s characters allowed: %(name)s"
+msgstr ""
+"A következő érték túl hosszú, csak %(max)s karakter megengedett: %(name)s"
+
+#: umc/python/setup/util.py:1105
+msgid ""
+"The given user is not member of the Domain Admins group in Active "
+"Directory. This is a requirement for the Active Directory domain join."
+msgstr ""
+"Az adott felhasználó nem tagja az Active Directory Domain Admins "
+"csoportjának. Ez az Active Directory domain csatlakozáshoz szükséges."
+
+#: umc/python/setup/__init__.py:387
+#, python-format
+msgid ""
+"The hostname %s is longer than 15 characters. It will not be possible to "
+"install an Active Directory compatible Domaincontroller (Samba 4) or "
+"UCS@school. The hostname cannot be changed after the installation of %s. It "
+"is recommended to shorten the hostname to maximal 15 characters."
+msgstr ""
+"A gazdagépnév %s hosszabb, mint 15 karakter. Nem lehet Active Directory "
+"kompatibilis Domaincontroller (Samba 4) vagy UCS@school telepíteni. A "
+"gazdagépnév a %s telepítése után nem módosítható. Javasoljuk, hogy a "
+"gazdagépnevet legfeljebb 15 karakterre rövidítse."
+
+#: umc/python/setup/__init__.py:381
+msgid ""
+"The hostname or the hostname part of the fully qualified domain name is "
+"invalid. Please go back to the host setting and make sure, that the "
+"hostname only contains letter (a-zA-Z) and digits (0-9)."
+msgstr ""
+"A gazdagép neve vagy a teljes domainnév gazdagépneve érvénytelen. Kérjük, "
+"térjen vissza a gazdagép beállításához, és ellenőrizze, hogy a gazdagép "
+"neve csak betűket (a-zA-Z) és számokat (0-9) tartalmazzon."
+
+#: umc/python/setup/__init__.py:395
+msgid ""
+"The length of fully qualified domain name is greater than 63 characters."
+msgstr "A teljes domainnév hossza meghaladja a 63 karaktert."
+
+#: umc/python/setup/checks/univention_join.py:90
+#, python-format
+msgid "The license %s is not valid."
+msgstr "A licenc %s érvénytelen."
+
+#: umc/python/setup/__init__.py:449
+msgid "The primary network device must exist."
+msgstr "Az elsődleges hálózati eszköznek léteznie kell."
+
+#: umc/python/setup/__init__.py:413
+msgid ""
+"The root password is too short. For security reasons, your password must "
+"contain at least 8 characters."
+msgstr ""
+"A root jelszó túl rövid. Biztonsági okokból a jelszónak legalább 8 "
+"karaktert kell tartalmaznia."
+
+#: umc/python/setup/__init__.py:414
+msgid "The root password may only contain ascii characters."
+msgstr "A root jelszó csak ASCII karaktereket tartalmazhat."
+
+#: umc/python/setup/__init__.py:459
+#, python-format
+msgid "The specified IP address (%(name)s) is not valid: %(value)s"
+msgstr "A megadott IP-cím (%(name)s) érvénytelen: %(value)s"
+
+#: umc/python/setup/__init__.py:488
+#, python-format
+msgid ""
+"The specified domain name is different to the %s domain name found via the "
+"configured DNS server: %s"
+msgstr ""
+"A megadott domainnév eltér a konfigurált DNS-kiszolgálón keresztül talált "
+"%s domainnévtől: %s"
+
+#: umc/python/setup/__init__.py:508
+#, python-format
+msgid "The specified gateway IPv4 address is not valid: %s"
+msgstr "A megadott átjáró IPv4-címe érvénytelen: %s"
+
+#: umc/python/setup/__init__.py:510
+#, python-format
+msgid "The specified gateway IPv6 address is not valid: %s"
+msgstr "A megadott átjáró IPv6-címe érvénytelen: %s"
+
+#: umc/python/setup/__init__.py:504
+#, python-format
+msgid "The specified nameserver %s is not part of a valid UCS domain."
+msgstr "A megadott névszerver %s nem része az érvényes UCS-tartománynak."
+
+#: umc/python/setup/__init__.py:513
+#, python-format
+msgid ""
+"The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s"
+msgstr "A megadott proxy cím nem érvényes (pl. http://10.201.1.1:8080): %s"
+
+#: umc/python/setup/__init__.py:434
+#, python-format
+msgid "The value for %s contains invalid characters."
+msgstr "A(z) %s érték érvénytelen karaktereket tartalmaz."
+
+#: umc/python/setup/__init__.py:405
+msgid "The windows domain name can only consist of upper case characters."
+msgstr "A Windows domain név csak nagybetűkből állhat."
+
+#: umc/python/setup/__init__.py:406
+msgid "The windows domain name cannot be longer than 15 characters."
+msgstr "A Windows domainnév nem lehet hosszabb 15 karakternél."
+
+#: umc/python/setup/__init__.py:407
+msgid "The windows domain name is not valid."
+msgstr "A Windows domainnév érvénytelen."
+
+#: umc/python/setup/network.py:124
+msgid ""
+"There is no device configured. At least one IPv4 or IPv6 address or DHCP or "
+"SLAAC has to be specified."
+msgstr ""
+"Nincs konfigurált eszköz. Legalább egy IPv4 vagy IPv6 címet, illetve DHCP-t "
+"vagy SLAAC-ot meg kell adni."
+
+#: umc/python/setup/checks/univention_join.py:94
+#, python-brace-format
+msgid ""
+"To install the {appliance_name} appliance it is necessary to have an "
+"activated UCS license on the Primary Directory Node."
+msgstr ""
+"A(z) {appliance_name} eszköz telepítéséhez aktivált UCS licencre van "
+"szükség az elsődleges könyvtárcsomóponton."
+
+#: umc/python/setup/__init__.py:488
+msgid "UCS"
+msgstr "UCS"
+
+#: umc/python/setup/__init__.py:386
+#, python-format
+msgid "the %s appliance"
+msgstr "a(z) %s készülék"
+
+#: umc/python/setup/__init__.py:384
+msgid "the UCS system"
+msgstr "az UCS rendszer"
+
+#: umc/python/setup/checks/univention_join.py:39
+msgid ""
+"univention-join -checkPrerequisites reported a problem. Output of check:\n"
+"\n"
+msgstr ""
+"az univention-join -checkPrerequisites problémát jelentett. Az ellnőrzés "
+"kimenete:\n"
+"\n"

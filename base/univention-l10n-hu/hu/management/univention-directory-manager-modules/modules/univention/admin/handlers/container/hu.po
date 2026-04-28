@@ -1,0 +1,271 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-11-30 22:51+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/container/ou.py:58
+#: modules/univention/admin/handlers/container/cn.py:57
+msgid "Add to standard DHCP containers"
+msgstr "Hozzáadás a szabványos DHCP tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:64
+#: modules/univention/admin/handlers/container/cn.py:63
+msgid "Add to standard DNS containers"
+msgstr "Hozzáadás a szabványos DNS-tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:88
+#: modules/univention/admin/handlers/container/cn.py:87
+msgid "Add to standard Directory Node computer containers"
+msgstr ""
+"Hozzáadás a szabványos könyvtárcsomópont számítógép-tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:82
+#: modules/univention/admin/handlers/container/cn.py:81
+msgid "Add to standard computer containers"
+msgstr "Hozzáadás a szabványos számítógépes tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:76
+#: modules/univention/admin/handlers/container/cn.py:75
+msgid "Add to standard group containers"
+msgstr "Hozzáadás a standard csoporttárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:118
+#: modules/univention/admin/handlers/container/cn.py:117
+msgid "Add to standard license containers"
+msgstr "Hozzáadás a standard licenctárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:112
+#: modules/univention/admin/handlers/container/cn.py:111
+msgid "Add to standard mail containers"
+msgstr "Hozzáadás a standard levelezési tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:94
+#: modules/univention/admin/handlers/container/cn.py:93
+msgid "Add to standard network containers"
+msgstr "Hozzáadás a szabványos hálózati tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:52
+#: modules/univention/admin/handlers/container/cn.py:51
+msgid "Add to standard policy containers"
+msgstr "Hozzáadás a standard szabály tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:106
+#: modules/univention/admin/handlers/container/cn.py:105
+msgid "Add to standard printer containers"
+msgstr "Hozzáadás a szabványos nyomtató tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:100
+#: modules/univention/admin/handlers/container/cn.py:99
+msgid "Add to standard share containers"
+msgstr "Hozzáadás a standard megosztási tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:70
+#: modules/univention/admin/handlers/container/cn.py:69
+msgid "Add to standard user containers"
+msgstr "Hozzáadás a standard felhasználói tárolókhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:181
+#: modules/univention/admin/handlers/container/dc.py:165
+#: modules/univention/admin/handlers/container/cn.py:180
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/container/cn.py:23
+msgid "Container"
+msgstr "Tároló"
+
+#: modules/univention/admin/handlers/container/cn.py:181
+msgid "Container description"
+msgstr "Tároló leírása"
+
+#: modules/univention/admin/handlers/container/ou.py:185
+#: modules/univention/admin/handlers/container/cn.py:184
+msgid "Container settings"
+msgstr "Tároló beállítások"
+
+#: modules/univention/admin/handlers/container/cn.py:22
+msgid "Container: Container"
+msgstr "Tároló: tároló"
+
+#: modules/univention/admin/handlers/container/dc.py:22
+msgid "Container: Domain"
+msgstr "Tároló: Domain"
+
+#: modules/univention/admin/handlers/container/ou.py:23
+msgid "Container: Organisational Unit"
+msgstr "Tároló: Szervezeti egység"
+
+#: modules/univention/admin/handlers/container/cn.py:24
+msgid "Containers"
+msgstr "Tárolók"
+
+#: modules/univention/admin/handlers/container/dc.py:170
+msgid "DNS"
+msgstr "DNS"
+
+#: modules/univention/admin/handlers/container/dc.py:170
+msgid "DNS Zones"
+msgstr "DNS zónák"
+
+#: modules/univention/admin/handlers/container/dc.py:61
+msgid "DNS forward lookup zone"
+msgstr "DNS előrekeresési zóna"
+
+#: modules/univention/admin/handlers/container/dc.py:68
+msgid "DNS reverse lookup zone"
+msgstr "DNS fordított keresési zóna"
+
+#: modules/univention/admin/handlers/container/ou.py:35
+#: modules/univention/admin/handlers/container/dc.py:44
+#: modules/univention/admin/handlers/container/cn.py:34
+msgid "Default Group Settings"
+msgstr "Alapértelmezett csoportbeállítások"
+
+#: modules/univention/admin/handlers/container/ou.py:171
+#: modules/univention/admin/handlers/container/dc.py:155
+#: modules/univention/admin/handlers/container/cn.py:170
+msgid "Default Group for Client Computers"
+msgstr "Alapértelmezett csoport az ügyfélszámítógépekhez"
+
+#: modules/univention/admin/handlers/container/ou.py:139
+#: modules/univention/admin/handlers/container/dc.py:123
+#: modules/univention/admin/handlers/container/cn.py:138
+msgid "Default Group for Computers"
+msgstr "Alapértelmezett csoport a számítógépekhez"
+
+#: modules/univention/admin/handlers/container/ou.py:163
+#: modules/univention/admin/handlers/container/dc.py:147
+#: modules/univention/admin/handlers/container/cn.py:162
+msgid "Default Group for Managed Nodes"
+msgstr "Alapértelmezett csoport a kezelt csomópontokhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:155
+#: modules/univention/admin/handlers/container/dc.py:139
+#: modules/univention/admin/handlers/container/cn.py:154
+msgid "Default Group for Primary and Backup Directory Nodes"
+msgstr ""
+"Alapértelmezett csoport az elsődleges és a biztonsági mentési "
+"könyvtárcsomópontokhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:147
+#: modules/univention/admin/handlers/container/dc.py:131
+#: modules/univention/admin/handlers/container/cn.py:146
+msgid "Default Group for Replica Directory Nodes"
+msgstr "Alapértelmezett csoport a replika könyvtárcsomópontokhoz"
+
+#: modules/univention/admin/handlers/container/ou.py:131
+#: modules/univention/admin/handlers/container/dc.py:115
+#: modules/univention/admin/handlers/container/cn.py:130
+msgid "Default Primary Group"
+msgstr "Alapértelmezett elsődleges csoport"
+
+#: modules/univention/admin/handlers/container/ou.py:194
+#: modules/univention/admin/handlers/container/ou.py:195
+#: modules/univention/admin/handlers/container/dc.py:180
+#: modules/univention/admin/handlers/container/dc.py:181
+#: modules/univention/admin/handlers/container/cn.py:193
+#: modules/univention/admin/handlers/container/cn.py:194
+msgid "Default Primary Groups"
+msgstr "Alapértelmezett elsődleges csoportok"
+
+#: modules/univention/admin/handlers/container/ou.py:185
+#: modules/univention/admin/handlers/container/cn.py:184
+msgid "Default position when adding objects"
+msgstr "Alapértelmezett pozíció objektumok hozzáadásakor"
+
+#: modules/univention/admin/handlers/container/ou.py:124
+#: modules/univention/admin/handlers/container/cn.py:123
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/container/dc.py:23
+msgid "Domain Container"
+msgstr "Domain tároló"
+
+#: modules/univention/admin/handlers/container/dc.py:24
+msgid "Domain Containers"
+msgstr "Domain tárolók"
+
+#: modules/univention/admin/handlers/container/dc.py:166
+msgid "Domain container description"
+msgstr "Domain tároló leírása"
+
+#: modules/univention/admin/handlers/container/ou.py:181
+#: modules/univention/admin/handlers/container/dc.py:165
+#: modules/univention/admin/handlers/container/cn.py:180
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/container/ou.py:259
+msgid ""
+"It is not allowed to create a container/ou as child object of a "
+"container/cn."
+msgstr ""
+"Nem engedélyezett tároló/ou létrehozása egy tároló/cn "
+"gyermekobjektumaként."
+
+#: modules/univention/admin/handlers/container/dc.py:177
+msgid "Kerberos"
+msgstr "Kerberos"
+
+#: modules/univention/admin/handlers/container/dc.py:177
+msgid "Kerberos Settings"
+msgstr "Kerberos beállítások"
+
+#: modules/univention/admin/handlers/container/dc.py:34
+#: modules/univention/admin/handlers/container/dc.py:106
+msgid "Kerberos realm"
+msgstr "Kerberos tartomány"
+
+#: modules/univention/admin/handlers/container/ou.py:43
+#: modules/univention/admin/handlers/container/dc.py:52
+#: modules/univention/admin/handlers/container/cn.py:42
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/container/ou.py:24
+msgid "Organisational Unit"
+msgstr "Szervezeti egység"
+
+#: modules/univention/admin/handlers/container/ou.py:25
+msgid "Organisational Units"
+msgstr "Szervezeti egységek"
+
+#: modules/univention/admin/handlers/container/ou.py:182
+msgid "Organisational unit description"
+msgstr "Szervezeti egység leírása"
+
+#: modules/univention/admin/handlers/container/dc.py:39
+#: modules/univention/admin/handlers/container/dc.py:173
+msgid "Samba"
+msgstr "Samba"
+
+#: modules/univention/admin/handlers/container/dc.py:99
+msgid "Samba Next Group RID"
+msgstr "Samba következő csoport RID"
+
+#: modules/univention/admin/handlers/container/dc.py:92
+msgid "Samba Next User RID"
+msgstr "Samba következő felhasználói RID"
+
+#: modules/univention/admin/handlers/container/dc.py:84
+msgid "Samba SID"
+msgstr "Samba SID"
+
+#: modules/univention/admin/handlers/container/dc.py:173
+msgid "Samba Settings"
+msgstr "Samba beállítások"
+
+#: modules/univention/admin/handlers/container/dc.py:75
+msgid "Samba domain name"
+msgstr "Samba domain név"

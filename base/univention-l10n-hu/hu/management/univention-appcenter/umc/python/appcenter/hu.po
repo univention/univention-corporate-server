@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-appcenter package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-08 23:18+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/python/appcenter/__init__.py:340
+#, python-format
+msgid "%d Apps: Connecting to %s"
+msgstr "%d Alkalmazások: Kapcsolódás ehhez: %s"
+
+#: umc/python/appcenter/__init__.py:284
+#, python-format
+msgid "%d Apps: Running tests"
+msgstr "%d Alkalmazások: Tesztek futtatása"
+
+#: umc/python/appcenter/__init__.py:338
+#, python-format
+msgid "%s: Connecting to %s"
+msgstr "%s: Kapcsolódás ehhez: %s"
+
+#: umc/python/appcenter/__init__.py:282
+#, python-format
+msgid "%s: Running tests"
+msgstr "%s: Tesztek futtatása"
+
+#: umc/python/appcenter/__init__.py:379
+msgid ""
+"A conflict between the system network settings and the docker bridge "
+"default network has been detected."
+msgstr ""
+"Ütközés észlelve a rendszer hálózati beállításai és a Docker Bridge "
+"alapértelmezett hálózata között."
+
+#: umc/python/appcenter/__init__.py:518 umc/python/appcenter/__init__.py:659
+msgid "Another package operation is in progress"
+msgstr "Egy másik csomagkezelés folyamatban van"
+
+#: umc/python/appcenter/sanitizers.py:29 umc/python/appcenter/sanitizers.py:33
+#: umc/python/appcenter/sanitizers.py:37
+msgid "Cannot connect to the LDAP service."
+msgstr "Nem lehet csatlakozni az LDAP szolgáltatáshoz."
+
+#: umc/python/appcenter/sanitizers.py:52 umc/python/appcenter/__init__.py:431
+#: umc/python/appcenter/__init__.py:452
+#, python-format
+msgid "Could not find an application for %s"
+msgstr "Nem található alkalmazás ehhez: %s"
+
+#: umc/python/appcenter/__init__.py:398
+msgid "Could not load suggestions."
+msgstr "A javaslatok betöltése nem sikerült."
+
+#: umc/python/appcenter/__init__.py:309
+#, python-format
+msgid "Installing %s"
+msgstr "%s telepítése"
+
+#: umc/python/appcenter/__init__.py:808 umc/python/appcenter/__init__.py:867
+#, python-format
+msgid "Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r"
+msgstr ""
+"Érvénytelen séma, használj http vagy https protokollt: %(base)r/%(key)r: "
+"%(value)r"
+
+#: umc/python/appcenter/__init__.py:363 umc/python/appcenter/__init__.py:410
+msgid ""
+"Make sure docker.io is installed, try starting the service with \"service "
+"docker start\"."
+msgstr ""
+"Győződj meg róla, hogy a docker.io telepítve van, próbáld meg elindítani a "
+"szolgáltatást a \"service docker start\" paranccsal."
+
+#: umc/python/appcenter/sanitizers.py:37
+msgid "Maybe the machine password changed during the session."
+msgstr "Lehetséges, hogy a gép jelszava megváltozott a munkamenet során."
+
+#: umc/python/appcenter/sanitizers.py:33
+msgid "Maybe your password changed during the session."
+msgstr "Lehetséges, hogy a jelszavad megváltozott a munkamenet során."
+
+#: umc/python/appcenter/__init__.py:64
+msgid "Package not found in repository"
+msgstr "A csomag nem található a tárolóban"
+
+#: umc/python/appcenter/sanitizers.py:29
+msgid "Please check the join state of the machine."
+msgstr "Kérjük, ellenőrizd a gép csatlakozási állapotát."
+
+#: umc/python/appcenter/__init__.py:380
+msgid ""
+"Please either configure a different network for the docker bridge by "
+"setting the UCR variable docker/daemon/default/opts/bip to a different "
+"network and restart the system,"
+msgstr ""
+"Kérjük, vagy állíts be másik hálózatot a Docker Bridge számára a docker/"
+"daemon/default/opts/bip UCR változó másik hálózatra állításával, majd "
+"indítsd újra a rendszert,"
+
+#: umc/python/appcenter/__init__.py:204
+#, python-brace-format
+msgid "Problems connecting to {0} ({1}). Please update {0}!"
+msgstr ""
+"Problémák a(z) {0} ({1}) webhelyhez való csatlakozással. Kérjük, frissítsd "
+"a(z) {0} webhelyet!"
+
+#: umc/python/appcenter/__init__.py:206
+msgid "Problems connecting to {} ({})."
+msgstr "Problémák a(z) {} ({}) webhelyhez való csatlakozáskor."
+
+#: umc/python/appcenter/__init__.py:207
+msgid ""
+"The App Center version of the this host ({}) is not compatible with the "
+"version of {} ({})"
+msgstr ""
+"Ennek a gazdagépnek az App Center verziója ({}) nem kompatibilis a(z) {} "
+"({}) verziójával."
+
+#: umc/python/appcenter/sanitizers.py:33 umc/python/appcenter/sanitizers.py:37
+msgid "The credentials provided were not accepted."
+msgstr "A megadott hitelesítő adatok nem kerültek elfogadásra."
+
+#: umc/python/appcenter/__init__.py:363
+msgid ""
+"The docker service is not running! The App Center will not work properly."
+msgstr ""
+"A Docker szolgáltatás nem fut! Az App Center nem fog megfelelően működni."
+
+#: umc/python/appcenter/sanitizers.py:29
+msgid "The server seems to be lacking a proper password file."
+msgstr "Úgy tűnik, hogy a szervernek nincs megfelelő jelszófájlja."
+
+#: umc/python/appcenter/sanitizers.py:74
+msgid "There already is a component with this name"
+msgstr "Már létezik egy ilyen nevű komponens"
+
+#: umc/python/appcenter/sanitizers.py:33 umc/python/appcenter/sanitizers.py:37
+msgid "This may be solved by simply logging out and in again."
+msgstr "Ez megoldható egyszerűen kijelentkezéssel és újbóli bejelentkezéssel."
+
+#: umc/python/appcenter/__init__.py:410
+msgid "Unable to start the docker service!"
+msgstr "A Docker szolgáltatás nem indítható el!"
+
+#: umc/python/appcenter/__init__.py:403
+msgid "Unexpected suggestions data."
+msgstr "Váratlan javaslatok adatai."
+
+#: umc/python/appcenter/__init__.py:311
+#, python-format
+msgid "Uninstalling %s"
+msgstr "%s eltávolítása"
+
+#: umc/python/appcenter/__init__.py:313
+#, python-format
+msgid "Upgrading %s"
+msgstr "%s frissítése"
+
+#: umc/python/appcenter/__init__.py:712
+msgid "installed"
+msgstr "telepítve"
+
+#: umc/python/appcenter/__init__.py:714
+msgid "not installed"
+msgstr "nincs telepítve"
+
+#: umc/python/appcenter/__init__.py:381
+msgid ""
+"or disable the docker support in the AppCenter by setting appcenter/docker "
+"to false."
+msgstr ""
+"vagy tiltsd le a docker támogatást az AppCenterben az appcenter/docker "
+"false értékre állításával."
+
+#: umc/python/appcenter/__init__.py:710
+msgid "upgradable"
+msgstr "fejleszthető"

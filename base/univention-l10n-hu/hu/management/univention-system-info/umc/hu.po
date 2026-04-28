@@ -1,0 +1,23 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-sysinfo\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 16 Nov 2025 22:25:23 +0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "Hardware information"
+msgstr "Hardver információk"
+
+msgid "Overview of local systems hardware information"
+msgstr "A helyi rendszerek hardverinformációinak áttekintése"
+
+msgid "system,information"
+msgstr "rendszer, információ"

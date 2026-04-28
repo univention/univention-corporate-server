@@ -1,0 +1,629 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-server\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 23:41+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: src/univention/management/console/modules/sanitizers.py:97
+#, python-format
+msgid "%d error(s) occurred"
+msgstr "%d hiba történt"
+
+#: src/univention/management/console/modules/decorators.py:739
+#, python-format
+msgid "%s can only be used as UPLOAD"
+msgstr "A(z) %s csak FELTÖLTÉSKÉNT használható"
+
+#: src/univention/management/console/session.py:410
+#, python-format
+msgid "An unknown operating system error occurred (%s)."
+msgstr "Ismeretlen operációsrendszer hiba történt (%s)."
+
+#: src/univention/management/console/modules/sanitizers.py:154
+msgid "Argument required"
+msgstr "Argumentum szükséges"
+
+#: src/univention/management/console/oidc.py:168
+#: src/univention/management/console/oidc.py:399
+msgid "Authorization server response did not contain token."
+msgstr "Az engedélyezési szerver válasza nem tartalmazott token-t."
+
+#: src/univention/management/console/error.py:42
+msgid "Bad request"
+msgstr "Hibás lekérdezés"
+
+#: src/univention/management/console/modules/sanitizers.py:332
+msgid "Cannot be converted to a boolean"
+msgstr "Nem alakítható át logikai értékké"
+
+#: src/univention/management/console/modules/sanitizers.py:364
+msgid "Cannot be converted to a number"
+msgstr "Nem alakítható át számmá"
+
+#: src/univention/management/console/error.py:105
+#: src/univention/management/console/error.py:128
+msgid "Cannot connect to the LDAP service."
+msgstr "Nem lehet csatlakozni az LDAP szolgáltatáshoz."
+
+#: src/univention/management/console/pam.py:244
+msgid "Changing password failed."
+msgstr "A jelszó módosítása sikertelen."
+
+#: src/univention/management/console/error.py:111
+msgid ""
+"Check if enough hard disk space and free RAM is available on this server "
+"and on the Primary Directory Node or free some resources"
+msgstr ""
+"Ellenőrizd, hogy van-e elegendő lemezterület és szabad RAM ezen a szerveren "
+"és az elsődleges könyvtárcsomóponton, vagy szabadíts fel erőforrásokat"
+
+#: src/univention/management/console/error.py:108
+msgid ""
+"Check if enough hard disk space and free RAM is available on this server or "
+"free some resources"
+msgstr ""
+"Ellenőrizd, hogy van-e elég szabad lemezterület és RAM ezen a szerveren, "
+"vagy szabadíts fel erőforrásokat"
+
+#: src/univention/management/console/error.py:134
+msgid "Check the SSL certificates, proxy and firewall settings"
+msgstr "Ellenőrizd az SSL tanúsítványokat, a proxy és a tűzfal beállításait"
+
+#: src/univention/management/console/pam.py:345
+#, python-format
+msgid "Choose a password which does not match any of your last %s passwords."
+msgstr "Válassz olyan jelszót, amely nem egyezik meg az utolsó %s jelszóval."
+
+#: src/univention/management/console/resources.py:707
+#: src/univention/management/console/resources.py:715
+msgid "Connection to module process failed"
+msgstr "Kapcsolódás a modulfolyamathoz sikertelen"
+
+#: src/univention/management/console/session.py:404
+#, python-format
+msgid "Could not open the module. %s Please try again later."
+msgstr "Nem sikerült megnyitni a(z) %s modult. Kérjük, próbáld meg később."
+
+#: src/univention/management/console/saml.py:136
+#, python-format
+msgid ""
+"Could not pick an identity provider. You can specify one via the query "
+"string parameter %(param)r from %(idps)r"
+msgstr ""
+"Nem sikerült kiválasztani az identitásszolgáltatót. A(z) %(param)r "
+"lekérdezési karakterlánc paraméterrel adhatsz meg egyet a(z) %(idps)r közül"
+
+#: src/univention/management/console/oidc.py:342
+#: src/univention/management/console/oidc.py:346
+msgid "Could not receive certificate from OP."
+msgstr "Nem sikerült tanúsítványt fogadni az OP-tól."
+
+#: src/univention/management/console/oidc.py:161
+#: src/univention/management/console/oidc.py:386
+#: src/univention/management/console/oidc.py:392
+msgid "Could not receive token from authorization server."
+msgstr "Nem sikerült token-t kapni az engedélyezési szervertől."
+
+#: src/univention/management/console/oidc.py:328
+msgid "Could not receive user information from OP."
+msgstr "Nem sikerült felhasználói adatokat fogadni az OP-tól."
+
+#: src/univention/management/console/base.py:257
+msgid ""
+"Cross Site Request Forgery attack detected. Please provide the "
+"\"UMCSessionId\" cookie value as HTTP request header \"X-Xsrf-Protection\"."
+msgstr ""
+"Webhelyek közötti kéréshamisítási támadás észlelve. Kérjük, add meg az "
+"„UMCSessionId” süti értékét HTTP kérésfejlécként: „X-Xsrf-Protection”."
+
+#: src/univention/management/console/error.py:129
+#, python-format
+msgid "Error message: %s"
+msgstr "Hibaüzenet: %s"
+
+#: src/univention/management/console/modserver.py:150
+#, python-format
+msgid ""
+"Failed to load module %(module)s: %(error)s\n"
+"%(traceback)s"
+msgstr ""
+"Nem sikerült betölteni a(z) %(module)s modult: %(error)s\n"
+"%(traceback)s"
+
+#: src/univention/management/console/resources.py:625
+msgid "For using this module a login is required."
+msgstr "A modul használatához bejelentkezés szükséges."
+
+#: src/univention/management/console/resource.py:65
+msgid "For using this request a login is required."
+msgstr "A kérés használatához bejelentkezés szükséges."
+
+#: src/univention/management/console/error.py:52
+msgid "Forbidden"
+msgstr "Tiltott"
+
+#: src/univention/management/console/modserver.py:158
+#, python-format
+msgid "Further information can be found in the logfile %s."
+msgstr "További információ a naplófájlban található %s."
+
+#: src/univention/management/console/modules/sanitizers.py:251
+msgid "Has more than the allowed keys"
+msgstr "Több kulcsot tartalmaz, mint a megengedett"
+
+#: src/univention/management/console/pam.py:312
+msgid "In case it helps, the raw error message will be displayed"
+msgstr "Ha ez segít, a nyers hibaüzenet jelenik meg"
+
+#: src/univention/management/console/error.py:135
+msgid ""
+"In case the SSL certificates are expired or a recent renewal of the root "
+"SSL CA has been done, please consider http://sdb.univention.de/1183"
+msgstr ""
+"Ha az SSL tanúsítványok lejártak, vagy a gyökér SSL CA nemrégiben megújult, "
+"kérjük, tekintsd meg a http://sdb.univention.de/1183 oldalt"
+
+#: src/univention/management/console/error.py:114
+#: src/univention/management/console/error.py:138
+msgid "Install the latest software updates"
+msgstr "Telepítsd a legújabb szoftverfrissítéseket"
+
+#: src/univention/management/console/error.py:75
+msgid "Internal error"
+msgstr "Belső hiba"
+
+#: src/univention/management/console/base.py:360
+#, python-format
+msgid "Internal server error during \"%(command)s\"."
+msgstr "Belső szerverhiba a(z) \"%(command)s\" során."
+
+#: src/univention/management/console/resource.py:270
+msgid "Invalid JSON document"
+msgstr "Érvénytelen JSON dokumentum"
+
+#: src/univention/management/console/modules/mixins.py:128
+msgid "Invalid progress ID"
+msgstr "Érvénytelen folyamatazonosító"
+
+#: src/univention/management/console/resource.py:268
+msgid "JSON document have to be dict"
+msgstr "A JSON dokumentumnak szótárnak kell lennie"
+
+#: src/univention/management/console/error.py:110
+#: src/univention/management/console/error.py:133
+#, python-format
+msgid "Make sure the Primary Directory Node is running and reachable from %s"
+msgstr ""
+"Győződj meg arról, hogy az Elsődleges könyvtárcsomópont fut és elérhető a "
+"következő címről: %s"
+
+#: src/univention/management/console/pam.py:40
+msgid ""
+"Make sure the kerberos service is functioning or inform an Administrator."
+msgstr ""
+"Győződj meg arról, hogy a Kerberos szolgáltatás működik, vagy értesíts egy "
+"rendszergazdát."
+
+#: src/univention/management/console/modules/sanitizers.py:302
+#, python-format
+msgid "May have at most %(max_elements)d element(s)"
+msgstr "Legfeljebb %(max_elements)d elemet tartalmazhat"
+
+#: src/univention/management/console/base.py:222
+#, python-format
+msgid ""
+"Method %(method)r (%(path)r) in %(module)r does not exist.\n"
+"\n"
+"%(traceback)s"
+msgstr ""
+"A(z) %(module)r módszer %(method)r (%(path)r) nem létezik. %(traceback)s"
+
+#: src/univention/management/console/error.py:62
+msgid "Method not allowed"
+msgstr "Nem megengedett módszer"
+
+#: src/univention/management/console/modules/sanitizers.py:300
+#, python-format
+msgid "Must have at least %(min_elements)d element(s)"
+msgstr "Legalább %(min_elements)d elemmel kell rendelkeznie"
+
+#: src/univention/management/console/modserver.py:281
+msgid "No authentication provided to module process."
+msgstr "Nincs hitelesítés a modulfolyamat számára."
+
+#: src/univention/management/console/resources.py:678
+msgid "No module found for this request."
+msgstr "Nem található modul ehhez a kéréshez."
+
+#: src/univention/management/console/modules/sanitizers.py:248
+msgid "Not a \"dict\""
+msgstr "Nem egy szótár"
+
+#: src/univention/management/console/modules/sanitizers.py:297
+msgid "Not a \"list\""
+msgstr "Nem egy „lista”"
+
+#: src/univention/management/console/resources.py:685
+msgid "Not allowed to perform this request."
+msgstr "Nem engedélyezett a kérés végrehajtása."
+
+#: src/univention/management/console/error.py:57
+msgid "Not found"
+msgstr "Nem található"
+
+#: src/univention/management/console/oidc.py:501
+#: src/univention/management/console/oidc.py:522
+msgid "Not logged in"
+msgstr "Nincs bejelentkezve"
+
+#: src/univention/management/console/resources.py:1001
+msgid "Password successfully changed."
+msgstr "Jelszó sikeresen megváltoztatva."
+
+#: src/univention/management/console/pam.py:218
+msgid "Please insert your one time password (OTP)."
+msgstr "Kérjük, add meg az egyszer használatos jelszót (OTP)."
+
+#: src/univention/management/console/modserver.py:157
+msgid ""
+"Please relogin to the Univention Management Console to see if the error "
+"persists."
+msgstr ""
+"Kérjük, jelentkezz be újra az Univention Management Console-ba, hogy "
+"megtudd, fennáll-e a hiba."
+
+#: src/univention/management/console/modules/mixins.py:116
+msgid "Please wait for operation to finish"
+msgstr "Kérjük, várd meg a művelet befejezését"
+
+#: src/univention/management/console/saml.py:112
+#, python-format
+msgid ""
+"Received an unsolicited SAML response. Please try to single sign on again "
+"by accessing /univention/saml/. Error message: %s"
+msgstr ""
+"Kéretlen SAML válasz érkezett. Próbáld meg újra az egyszeri bejelentkezést "
+"a /univention/saml/ elérésével. Hibaüzenet: %s"
+
+#: src/univention/management/console/error.py:112
+#: src/univention/management/console/error.py:136
+msgid ""
+"Restart the LDAP service on the Primary Directory Node either via \"service "
+"slapd restart\" on command line or with the UMC module \"System services\""
+msgstr ""
+"Indítsd újra az LDAP szolgáltatást az elsődleges könyvtárcsomóponton a "
+"parancssorból a \"service slapd restart\" paranccsal, vagy az UMC \"System "
+"services\" moduljával."
+
+#: src/univention/management/console/modules/sanitizers.py:369
+#: src/univention/management/console/modules/sanitizers.py:372
+#: src/univention/management/console/modules/sanitizers.py:376
+#: src/univention/management/console/modules/sanitizers.py:379
+#, python-format
+msgid "Should stay %s"
+msgstr "Maradnia kellene %s"
+
+#: src/univention/management/console/resources.py:968
+#: src/univention/management/console/base.py:138
+msgid "Specified locale is not available"
+msgstr "A megadott területi beállítás nem érhető el"
+
+#: src/univention/management/console/base.py:261
+msgid "The \"Referer\" HTTP header must start with \"/univention/\"."
+msgstr "A „Referer” HTTP-fejlécnek „/univention/”-nel kell kezdődnie."
+
+#: src/univention/management/console/oidc.py:121
+msgid ""
+"The OpenID Provider is not available. This might be a misconfiguration."
+msgstr ""
+"Az OpenID-szolgáltató nem érhető el. Ez egy hibás konfigurációra utalhat."
+
+#: src/univention/management/console/saml.py:128
+msgid "The SAML message is invalid for this service provider."
+msgstr "A SAML üzenet érvénytelen ehhez a szolgáltatóhoz."
+
+#: src/univention/management/console/saml.py:124
+#, python-format
+msgid "The SAML response contained a invalid signature: %s"
+msgstr "A SAML válasz érvénytelen aláírást tartalmazott: %s"
+
+#: src/univention/management/console/saml.py:108
+#, python-format
+msgid "The SAML response could not be verified: %s"
+msgstr "A SAML válasz nem ellenőrizhető: %s"
+
+#: src/univention/management/console/oidc.py:303
+#, python-format
+msgid "The Token contains an immature signature: %s"
+msgstr "A token érvénytelen (időben) aláírást tartalmaz: %s"
+
+#: src/univention/management/console/oidc.py:297
+#, python-format
+msgid "The Token contains an invalid audience: %s"
+msgstr "A token érvénytelen célközösséget tartalmaz: %s"
+
+#: src/univention/management/console/oidc.py:294
+#, python-format
+msgid "The Token contains an invalid issuer: %s"
+msgstr "A token érvénytelen kibocsátót tartalmaz: %s"
+
+#: src/univention/management/console/oidc.py:291
+#, python-format
+msgid "The Token contains an invalid signature: %s"
+msgstr "A token érvénytelen aláírást tartalmaz: %s"
+
+#: src/univention/management/console/oidc.py:300
+#, python-format
+msgid "The Token is missing a required claim: %s"
+msgstr "A token-hez hiányzik egy kötelező igény: %s"
+
+#: src/univention/management/console/oidc.py:288
+msgid "The Token signature is expired."
+msgstr "A token aláírás lejárt."
+
+#: src/univention/management/console/base.py:232
+msgid ""
+"The UMC service is currently shutting down or restarting. Please retry soon."
+msgstr ""
+"Az UMC szolgáltatás jelenleg leáll vagy újraindul. Kérjük, próbáld újra "
+"később."
+
+#: src/univention/management/console/pam.py:319
+msgid "The account is expired and can not be used anymore."
+msgstr "A fiók lejárt, és már nem használható."
+
+#: src/univention/management/console/pam.py:320
+#: src/univention/management/console/pam.py:321
+msgid "The authentication has failed, please login again."
+msgstr "A hitelesítés sikertelen, kérjük, jelentkezz be újra."
+
+#: src/univention/management/console/resource.py:191
+msgid ""
+"The current session is not valid with your IP address for security reasons. "
+"This might happen after switching the network. Please login again."
+msgstr ""
+"A jelenlegi munkamenet biztonsági okokból nem érvényes az IP-címeddel. Ez "
+"hálózatváltás után fordulhat elő. Kérjük, jelentkezz be újra."
+
+#: src/univention/management/console/pam.py:323
+msgid "The entered password does not match the current one."
+msgstr "A megadott jelszó nem egyezik meg a jelenlegivel."
+
+#: src/univention/management/console/session.py:409
+msgid "The executable was not found."
+msgstr "A futtatható fájl nem található."
+
+#: src/univention/management/console/error.py:106
+#: src/univention/management/console/error.py:131
+msgid "The following steps can help to solve this problem:"
+msgstr "A következő lépések segíthetnek megoldani ezt a problémát:"
+
+#: src/univention/management/console/saml.py:116
+#, python-format
+msgid "The identity provider reported a status error: %s"
+msgstr "Az identitásszolgáltató állapothibát jelzett: %s"
+
+#: src/univention/management/console/modserver.py:214
+#, python-format
+msgid "The initialization of the module failed: %s"
+msgstr "A modul inicializálása sikertelen: %s"
+
+#: src/univention/management/console/saml.py:120
+#, python-format
+msgid ""
+"The issuer %r is not known to the SAML service provider. This is probably a "
+"misconfiguration and might be resolved by restarting the univention-"
+"management-console-server."
+msgstr ""
+"A(z) %r kibocsátója nem ismert a SAML szolgáltató számára. Ez valószínűleg "
+"egy hibás konfiguráció, és a univention-management-console-server "
+"újraindításával megoldható."
+
+#: src/univention/management/console/saml.py:104
+msgid "The logout binding is not known."
+msgstr "A kijelentkezés kötése nem ismert."
+
+#: src/univention/management/console/oidc.py:234
+msgid "The logout token is missing a events claim"
+msgstr "A kijelentkezési token-ből hiányzik egy eseményigény"
+
+#: src/univention/management/console/oidc.py:232
+msgid "The logout token is missing a sub or sid claim"
+msgstr "A kijelentkezési token-ből hiányzik egy sub- vagy sid-igény"
+
+#: src/univention/management/console/oidc.py:236
+msgid "The logout token must not have a nounce claim"
+msgstr "A kijelentkezési token-hez nem tartozhat bejelentési igény"
+
+#: src/univention/management/console/modules/sanitizers.py:451
+#, python-format
+msgid ""
+"The maximum number of asterisks (*) in the search string is "
+"%(max_number_of_asterisks)d"
+msgstr ""
+"A keresési karakterláncban a csillagok (*) maximális száma "
+"%(max_number_of_asterisks)d"
+
+#: src/univention/management/console/pam.py:39
+msgid "The minimum password age is not reached yet."
+msgstr "A jelszó minimális élettartama még nem járt le."
+
+#: src/univention/management/console/modserver.py:156
+msgid "The module may have been removed recently."
+msgstr "Lehetséges, hogy a modult nemrég eltávolították."
+
+#: src/univention/management/console/pam.py:322
+msgid "The new password could not be set."
+msgstr "Az új jelszó nem állítható be."
+
+#: src/univention/management/console/pam.py:44
+msgid "The password contains parts of the full user name."
+msgstr "A jelszó a teljes felhasználónév egyes részeit tartalmazza."
+
+#: src/univention/management/console/pam.py:43
+msgid "The password contains user account name."
+msgstr "A jelszó tartalmazza a felhasználói fiók nevét."
+
+#: src/univention/management/console/pam.py:37
+msgid "The password does not contain enough different characters."
+msgstr "A jelszó nem tartalmaz elegendő különböző karaktert."
+
+#: src/univention/management/console/pam.py:42
+msgid "The password does not meet the password complexity requirements."
+msgstr "A jelszó nem felel meg a jelszó bonyolultsági követelményeinek."
+
+#: src/univention/management/console/pam.py:38
+#: src/univention/management/console/pam.py:318
+msgid "The password has expired and must be renewed."
+msgstr "A jelszó lejárt, és meg kell újítani."
+
+#: src/univention/management/console/pam.py:34
+msgid "The password is a palindrome."
+msgstr "A jelszó egy palindrom."
+
+#: src/univention/management/console/pam.py:35
+msgid "The password is based on a dictionary word."
+msgstr "A jelszó egy szótári szóból származik."
+
+#: src/univention/management/console/pam.py:32
+msgid "The password is too long."
+msgstr "A jelszó túl hosszú."
+
+#: src/univention/management/console/pam.py:31
+msgid "The password is too short."
+msgstr "A jelszó túl rövid."
+
+#: src/univention/management/console/pam.py:41
+msgid "The password is too similar to the old one."
+msgstr "A jelszó túlságosan hasonlít a régihez."
+
+#: src/univention/management/console/pam.py:33
+msgid "The password is too simple."
+msgstr "A jelszó túl egyszerű."
+
+#: src/univention/management/console/pam.py:344
+#, python-format
+msgid "The password must consist of at least %s characters."
+msgstr "A jelszónak legalább %s karakterből kell állnia."
+
+#: src/univention/management/console/pam.py:36
+msgid "The password was already used."
+msgstr "A jelszó már használatban volt."
+
+#: src/univention/management/console/saml.py:96
+#, python-format
+msgid "The principal is unknown: %s"
+msgstr "Az azonosító ismeretlen: %s"
+
+#: src/univention/management/console/pam.py:311
+msgid "The reason could not be determined"
+msgstr "Az okot nem lehetett megállapítani"
+
+#: src/univention/management/console/base.py:267
+#, python-format
+msgid "The requested Content-Type is not acceptable. Please use one of %s."
+msgstr ""
+"A kért tartalomtípus nem elfogadható. Kérjük, a következő típusokat "
+"használd: %s."
+
+#: src/univention/management/console/base.py:254
+msgid "The requested HTTP method is not allowed on this resource."
+msgstr "A kért HTTP módszer nem engedélyezett ezen az erőforráson."
+
+#: src/univention/management/console/saml.py:100
+#, python-format
+msgid "The requested SAML binding is not known: %s"
+msgstr "A kért SAML kötés ismeretlen: %s"
+
+#: src/univention/management/console/modserver.py:155
+#, python-format
+msgid "The requested module %r does not exist."
+msgstr "A kért %r modul nem létezik."
+
+#: src/univention/management/console/resource.py:84
+msgid "The session has expired."
+msgstr "A munkamenet lejárt."
+
+#: src/univention/management/console/session.py:406
+#: src/univention/management/console/session.py:407
+msgid "There are too many opened files on the server."
+msgstr "Túl sok megnyitott fájl van a szerveren."
+
+#: src/univention/management/console/saml.py:132
+msgid ""
+"There is a configuration error in the service provider: No identity "
+"provider are set up for use."
+msgstr ""
+"Konfigurációs hiba van a szolgáltatóban: Nincsenek beállítva "
+"identitásszolgáltatók."
+
+#: src/univention/management/console/session.py:408
+msgid "There is not enough free space on the server."
+msgstr "Nincs elegendő szabad hely a szerveren."
+
+#: src/univention/management/console/session.py:405
+msgid "There is not enough memory available on the server."
+msgstr "Nincs elég szabad memória a szerveren."
+
+#: src/univention/management/console/error.py:90
+msgid "This action requires you to supply your password."
+msgstr "Ehhez a művelethez jelszót kell megadni."
+
+#: src/univention/management/console/error.py:47
+msgid "Unauthorized"
+msgstr "Jogosulatlan"
+
+#: src/univention/management/console/resources.py:690
+msgid "Unknown request."
+msgstr "Ismeretlen kérés."
+
+#: src/univention/management/console/modules/sanitizers.py:633
+#, python-format
+msgid "Value has to be one of %(choices)r"
+msgstr "Az értéknek a következő értékek egyikének kell lennie: %(choices)r"
+
+#: src/univention/management/console/modules/sanitizers.py:581
+msgid "Value is invalid"
+msgstr "Érvénytelen érték"
+
+#: src/univention/management/console/modules/sanitizers.py:597
+msgid "Value is not a LDAP DN."
+msgstr "Az érték nem LDAP DN."
+
+#: src/univention/management/console/modules/sanitizers.py:572
+msgid "Value is not a string"
+msgstr "Az érték nem karakterlánc"
+
+#: src/univention/management/console/modules/sanitizers.py:578
+#, python-format
+msgid "Value is too long, it has to be at most of length %(maximum)d"
+msgstr "A megadott érték túl hosszú, legfeljebb ennyi lehet: %(maximum)d"
+
+#: src/univention/management/console/modules/sanitizers.py:575
+#, python-format
+msgid "Value is too short, it has to be at least of length %(minimum)d"
+msgstr ""
+"A megadott érték túl rövid, legalább ilyen hosszúnak kell lennie: "
+"%(minimum)d"
+
+#: src/univention/management/console/modserver.py:499
+msgid "failed to cancel request."
+msgstr "nem sikerült visszavonni a kérelmet."
+
+#: src/univention/management/console/resources.py:595
+#, python-format
+msgid "filesize is too large, maximum allowed filesize is %d bytes"
+msgstr "a fájlméret túl nagy, a maximálisan megengedett fájlméret %d bájt"
+
+#: src/univention/management/console/modules/mixins.py:143
+msgid "finished..."
+msgstr "kész..."

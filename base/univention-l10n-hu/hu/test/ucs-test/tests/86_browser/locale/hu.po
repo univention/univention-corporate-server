@@ -1,0 +1,633 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ucs-test-browser\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-07 00:23+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: tests/86_browser/110_product_test_do_rejoin.py:52
+msgid "A reboot of the server is recommended"
+msgstr "A szerver újraindítása ajánlott"
+
+#: tests/86_browser/10_product_test_password_change.py:280
+msgid "Account"
+msgstr "Fiók"
+
+#: tests/86_browser/17_self_service_registration.py:285
+msgid "Account creation successful"
+msgstr "Fiók létrehozása sikeres"
+
+#: tests/86_browser/15_favorite_modules.py:81
+#: tests/86_browser/15_favorite_modules.py:122
+msgid "Add to favorites"
+msgstr "Kedvencekhez"
+
+#: tests/86_browser/180_portal_entries.py:24
+#: tests/86_browser/180_portal_entries.py:25
+#: tests/86_browser/180_portal_entries.py:26
+#: tests/86_browser/180_portal_entries.py:27
+msgid "Administration"
+msgstr "Adminisztráció"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:54
+#: tests/86_browser/131_miscellaneous_module_availability.py:95
+#: tests/86_browser/131_miscellaneous_module_availability.py:123
+#: tests/86_browser/131_miscellaneous_module_availability.py:151
+msgid "App Center"
+msgstr "Alkalmazásközpont"
+
+#: tests/86_browser/12_product_test_ucr.py:70
+msgid "Base Settings"
+msgstr "Alap beállítások"
+
+#: tests/86_browser/151_udm_users.py:70
+#: tests/86_browser/10_product_test_password_change.py:236
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: tests/86_browser/110_product_test_do_rejoin.py:53
+#: tests/86_browser/18_overview_false.py:56
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: tests/86_browser/12_product_test_ucr.py:70
+msgid "Category"
+msgstr "Kategória"
+
+#: tests/86_browser/180_portal_entries.py:27
+msgid "Central portal web page for the UCS domain"
+msgstr "Az UCS domain központi portál weboldala"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:46
+#: tests/86_browser/131_miscellaneous_module_availability.py:62
+msgid "Certificate settings"
+msgstr "Tanúsítványbeállítások"
+
+#: tests/86_browser/10_product_test_password_change.py:177
+#: tests/86_browser/134_side_menu.py:27
+#: tests/86_browser/14_password_self-service.py:87
+#: tests/86_browser/14_password_self-service.py:104
+#: tests/86_browser/14_password_self-service.py:114
+#: tests/86_browser/14_password_self-service.py:129
+msgid "Change password"
+msgstr "Jelszó megváltoztatása"
+
+#: tests/86_browser/14_password_self-service.py:106
+msgid "Change your (expired) password."
+msgstr "Változtasd meg a (lejárt) jelszavadat."
+
+#: tests/86_browser/135_upload_license.py:70
+msgid "Close"
+msgstr "Bezárás"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:35
+#: tests/86_browser/131_miscellaneous_module_availability.py:77
+msgid "Computers"
+msgstr "Számítógépek"
+
+#: tests/86_browser/110_product_test_do_rejoin.py:47
+msgid "Confirmation"
+msgstr "Megerősítés"
+
+#: tests/86_browser/17_self_service_registration.py:116
+#: tests/86_browser/17_self_service_registration.py:126
+msgid "Create an account"
+msgstr "Fiók létrehozása"
+
+#: tests/86_browser/18_overview_false.py:37
+msgid "Create new policy"
+msgstr "Új házirend létrehozása"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:38
+#: tests/86_browser/131_miscellaneous_module_availability.py:80
+msgid "DHCP"
+msgstr "DHCP"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:39
+#: tests/86_browser/131_miscellaneous_module_availability.py:81
+msgid "DNS"
+msgstr "DNS"
+
+#: tests/86_browser/151_udm_users.py:73
+#: tests/86_browser/17_self_service_registration.py:153
+msgid "Description"
+msgstr "Leírás"
+
+#: tests/86_browser/151_udm_users.py:84
+msgid "Domain Admins"
+msgstr "Domain adminisztrátorok"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:40
+#: tests/86_browser/131_miscellaneous_module_availability.py:61
+#: tests/86_browser/131_miscellaneous_module_availability.py:82
+#: tests/86_browser/131_miscellaneous_module_availability.py:102
+#: tests/86_browser/131_miscellaneous_module_availability.py:115
+#: tests/86_browser/131_miscellaneous_module_availability.py:130
+#: tests/86_browser/131_miscellaneous_module_availability.py:143
+#: tests/86_browser/131_miscellaneous_module_availability.py:158
+#: tests/86_browser/111_product_test_execute_join_script.py:68
+#: tests/86_browser/110_product_test_do_rejoin.py:43
+msgid "Domain join"
+msgstr "Csatlakozás domain-hez"
+
+#: tests/86_browser/184_portal_administration_inline_order.py:105
+msgid "Edit Portal"
+msgstr "Portál szerkesztése"
+
+#: tests/86_browser/17_self_service_registration.py:67
+#: tests/86_browser/17_self_service_registration.py:135
+#: tests/86_browser/17_self_service_registration.py:150
+#: tests/86_browser/17_self_service_registration.py:270
+msgid "Email"
+msgstr "Email"
+
+#: tests/86_browser/17_self_service_registration.py:271
+msgid "Email (retype)"
+msgstr "Email (gépeld be újra)"
+
+#: tests/86_browser/10_product_test_password_change.py:186
+msgid "Error changing password"
+msgstr "Hiba a jelszó módosításakor"
+
+#: tests/86_browser/111_product_test_execute_join_script.py:79
+msgid "Execute"
+msgstr "Végrehajtás"
+
+#: tests/86_browser/10_product_test_password_change.py:266
+#: tests/86_browser/10_product_test_password_change.py:271
+#: tests/86_browser/15_favorite_modules.py:83
+#: tests/86_browser/132_miscellaneous_open_all_modules.py:53
+#: tests/86_browser/130_miscellaneous.py:44
+#: tests/86_browser/130_miscellaneous.py:51
+msgid "Favorites"
+msgstr "Kedvencek"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:32
+#: tests/86_browser/131_miscellaneous_module_availability.py:60
+#: tests/86_browser/131_miscellaneous_module_availability.py:74
+#: tests/86_browser/131_miscellaneous_module_availability.py:101
+#: tests/86_browser/131_miscellaneous_module_availability.py:114
+#: tests/86_browser/131_miscellaneous_module_availability.py:129
+#: tests/86_browser/131_miscellaneous_module_availability.py:142
+#: tests/86_browser/131_miscellaneous_module_availability.py:157
+msgid "Filesystem quotas"
+msgstr "Fájlrendszer kvóták"
+
+#: tests/86_browser/17_self_service_registration.py:138
+msgid "First name"
+msgstr "Keresztnév"
+
+#: tests/86_browser/14_password_self-service.py:131
+msgid "Forgot your password"
+msgstr "Elfelejtett jelszó"
+
+#: tests/86_browser/151_udm_users.py:95
+#: tests/86_browser/131_miscellaneous_module_availability.py:33
+#: tests/86_browser/131_miscellaneous_module_availability.py:75
+msgid "Groups"
+msgstr "Csoportok"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:47
+#: tests/86_browser/131_miscellaneous_module_availability.py:63
+#: tests/86_browser/131_miscellaneous_module_availability.py:88
+#: tests/86_browser/131_miscellaneous_module_availability.py:103
+#: tests/86_browser/131_miscellaneous_module_availability.py:116
+#: tests/86_browser/131_miscellaneous_module_availability.py:131
+#: tests/86_browser/131_miscellaneous_module_availability.py:144
+#: tests/86_browser/131_miscellaneous_module_availability.py:159
+msgid "Hardware information"
+msgstr "Hardver információk"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:41
+#: tests/86_browser/131_miscellaneous_module_availability.py:83
+msgid "LDAP directory"
+msgstr "LDAP könyvtár"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:48
+#: tests/86_browser/131_miscellaneous_module_availability.py:64
+#: tests/86_browser/131_miscellaneous_module_availability.py:89
+#: tests/86_browser/131_miscellaneous_module_availability.py:104
+#: tests/86_browser/131_miscellaneous_module_availability.py:117
+#: tests/86_browser/131_miscellaneous_module_availability.py:132
+#: tests/86_browser/131_miscellaneous_module_availability.py:145
+#: tests/86_browser/131_miscellaneous_module_availability.py:160
+msgid "Language settings"
+msgstr "Nyelvi beállítások"
+
+#: tests/86_browser/17_self_service_registration.py:65
+#: tests/86_browser/17_self_service_registration.py:139
+msgid "Last name"
+msgstr "Vezetéknév"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:42
+#: tests/86_browser/131_miscellaneous_module_availability.py:84
+msgid "Mail"
+msgstr "Levél"
+
+#: tests/86_browser/170_system_services_module.py:117
+msgid "Manually"
+msgstr "Kézzel"
+
+#: tests/86_browser/151_udm_users.py:48
+msgid "More"
+msgstr "Több"
+
+#: tests/86_browser/151_udm_users.py:51
+msgid "Move User"
+msgstr "Felhasználó áthelyezése"
+
+#: tests/86_browser/151_udm_users.py:49
+msgid "Move to..."
+msgstr "Áthelyezés ide..."
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:36
+#: tests/86_browser/131_miscellaneous_module_availability.py:78
+msgid "Nagios"
+msgstr "Nagios"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:49
+#: tests/86_browser/131_miscellaneous_module_availability.py:65
+#: tests/86_browser/131_miscellaneous_module_availability.py:90
+#: tests/86_browser/131_miscellaneous_module_availability.py:105
+#: tests/86_browser/131_miscellaneous_module_availability.py:118
+#: tests/86_browser/131_miscellaneous_module_availability.py:133
+#: tests/86_browser/131_miscellaneous_module_availability.py:146
+#: tests/86_browser/131_miscellaneous_module_availability.py:161
+msgid "Network settings"
+msgstr "Hálózati beállítások"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:43
+#: tests/86_browser/131_miscellaneous_module_availability.py:85
+msgid "Networks"
+msgstr "Hálózatok"
+
+#: tests/86_browser/170_system_services_module.py:118
+msgid "Never"
+msgstr "Soha"
+
+#: tests/86_browser/10_product_test_password_change.py:260
+msgid "New Password (retype)"
+msgstr "Új jelszó (gépeld be újra)"
+
+#: tests/86_browser/10_product_test_password_change.py:257
+msgid "New password"
+msgstr "Új jelszó"
+
+#: tests/86_browser/17_self_service_registration.py:265
+#: tests/86_browser/14_password_self-service.py:93
+#: tests/86_browser/14_password_self-service.py:133
+#: tests/86_browser/14_password_self-service.py:135
+msgid "Next"
+msgstr "Következő"
+
+#: tests/86_browser/10_product_test_password_change.py:185
+msgid "Notification"
+msgstr "Értesítés"
+
+#: tests/86_browser/170_system_services_module.py:42
+#: tests/86_browser/170_system_services_module.py:59
+#: tests/86_browser/170_system_services_module.py:65
+#: tests/86_browser/170_system_services_module.py:112
+msgid "OK"
+msgstr "OK"
+
+#: tests/86_browser/10_product_test_password_change.py:171
+msgid "Ok"
+msgstr "Ok"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:55
+#: tests/86_browser/131_miscellaneous_module_availability.py:96
+#: tests/86_browser/131_miscellaneous_module_availability.py:124
+#: tests/86_browser/131_miscellaneous_module_availability.py:152
+msgid "Package Management"
+msgstr "Csomagkezelés"
+
+#: tests/86_browser/17_self_service_registration.py:66
+#: tests/86_browser/17_self_service_registration.py:136
+#: tests/86_browser/17_self_service_registration.py:151
+#: tests/86_browser/17_self_service_registration.py:264
+msgid "Password"
+msgstr "Jelszó"
+
+#: tests/86_browser/17_self_service_registration.py:137
+#: tests/86_browser/17_self_service_registration.py:152
+msgid "Password (retype)"
+msgstr "Jelszó (gépeld be újra)"
+
+#: tests/86_browser/14_password_self-service.py:105
+msgid "Password change"
+msgstr "Jelszó módosítás"
+
+#: tests/86_browser/14_password_self-service.py:130
+msgid "Password forgotten"
+msgstr "Elfelejtett jelszó"
+
+#: tests/86_browser/14_password_self-service.py:134
+msgid "Please choose an option"
+msgstr "Kérjük, válassz egy lehetőséget"
+
+#: tests/86_browser/111_product_test_execute_join_script.py:82
+msgid "Please enter credentials"
+msgstr "Kérjük, add meg a hitelesítő adatokat"
+
+#: tests/86_browser/17_self_service_registration.py:231
+msgid "Please follow the instructions in the email to verify your account"
+msgstr ""
+"Kérjük, kövesd az e-mailben található utasításokat a fiók ellenőrzéséhez"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:44
+#: tests/86_browser/131_miscellaneous_module_availability.py:86
+#: tests/86_browser/18_overview_false.py:31
+#: tests/86_browser/18_overview_false.py:48
+msgid "Policies"
+msgstr "Házirendek"
+
+#: tests/86_browser/18_overview_false.py:36
+msgid "Policy: Desktop"
+msgstr "Házirend: Asztali számítógép"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:37
+#: tests/86_browser/131_miscellaneous_module_availability.py:79
+msgid "Printers"
+msgstr "Nyomtatók"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:50
+#: tests/86_browser/131_miscellaneous_module_availability.py:66
+#: tests/86_browser/131_miscellaneous_module_availability.py:91
+#: tests/86_browser/131_miscellaneous_module_availability.py:106
+#: tests/86_browser/131_miscellaneous_module_availability.py:119
+#: tests/86_browser/131_miscellaneous_module_availability.py:134
+#: tests/86_browser/131_miscellaneous_module_availability.py:147
+#: tests/86_browser/131_miscellaneous_module_availability.py:162
+#: tests/86_browser/130_miscellaneous.py:117
+msgid "Process overview"
+msgstr "Folyamat áttekintése"
+
+#: tests/86_browser/14_password_self-service.py:88
+msgid "Protect account"
+msgstr "Fiók védelme"
+
+#: tests/86_browser/180_portal_entries.py:23
+msgid "Provide an overview of all UCS server in the domain"
+msgstr "Áttekintést nyújt a tartomány összes UCS kiszolgálójáról"
+
+#: tests/86_browser/110_product_test_do_rejoin.py:45
+msgid "Rejoin"
+msgstr "Újracsatlakozás"
+
+#: tests/86_browser/110_product_test_do_rejoin.py:50
+msgid "Rejoin system"
+msgstr "Újra csatlakozás a rendszerhez"
+
+#: tests/86_browser/15_favorite_modules.py:64
+msgid "Remove from favorites"
+msgstr "Eltávolítás a kedvencek közül"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:56
+#: tests/86_browser/131_miscellaneous_module_availability.py:97
+#: tests/86_browser/131_miscellaneous_module_availability.py:125
+#: tests/86_browser/131_miscellaneous_module_availability.py:153
+msgid "Repository Settings"
+msgstr "Tároló beállításai"
+
+#: tests/86_browser/17_self_service_registration.py:203
+#: tests/86_browser/17_self_service_registration.py:229
+msgid "Request new token"
+msgstr "Új tokenek igénylése"
+
+#: tests/86_browser/111_product_test_execute_join_script.py:92
+#: tests/86_browser/170_system_services_module.py:150
+msgid "Restart"
+msgstr "Újraindítás"
+
+#: tests/86_browser/111_product_test_execute_join_script.py:88
+msgid "Run"
+msgstr "Futtatás"
+
+#: tests/86_browser/111_product_test_execute_join_script.py:84
+msgid "Run join scripts"
+msgstr "Csatlakozási szkriptek futtatása"
+
+#: tests/86_browser/14_password_self-service.py:99
+msgid "Save"
+msgstr "Mentés"
+
+#: tests/86_browser/180_portal_entries.py:25
+msgid "Server overview"
+msgstr "Szerver áttekintése"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:45
+#: tests/86_browser/131_miscellaneous_module_availability.py:87
+msgid "Shares"
+msgstr "Megosztások"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:57
+#: tests/86_browser/131_miscellaneous_module_availability.py:69
+#: tests/86_browser/131_miscellaneous_module_availability.py:98
+#: tests/86_browser/131_miscellaneous_module_availability.py:109
+#: tests/86_browser/131_miscellaneous_module_availability.py:126
+#: tests/86_browser/131_miscellaneous_module_availability.py:137
+#: tests/86_browser/131_miscellaneous_module_availability.py:154
+#: tests/86_browser/131_miscellaneous_module_availability.py:165
+msgid "Software update"
+msgstr "Szoftverfrissítés"
+
+#: tests/86_browser/170_system_services_module.py:64
+#: tests/86_browser/170_system_services_module.py:149
+msgid "Start"
+msgstr "Kezdés"
+
+#: tests/86_browser/170_system_services_module.py:58
+msgid "Start automatically"
+msgstr "Automatikus indítás"
+
+#: tests/86_browser/170_system_services_module.py:109
+msgid "Start manually"
+msgstr "Kézi indítás"
+
+#: tests/86_browser/170_system_services_module.py:110
+msgid "Start never"
+msgstr "Soha ne induljon el"
+
+#: tests/86_browser/170_system_services_module.py:102
+#: tests/86_browser/170_system_services_module.py:148
+msgid "Stop"
+msgstr "Leállítás"
+
+#: tests/86_browser/17_self_service_registration.py:273
+#: tests/86_browser/17_self_service_registration.py:276
+msgid "Submit"
+msgstr "Küldés"
+
+#: tests/86_browser/180_portal_entries.py:24
+msgid "System and domain settings"
+msgstr "Rendszer- és tartománybeállítások"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:53
+#: tests/86_browser/131_miscellaneous_module_availability.py:94
+#: tests/86_browser/131_miscellaneous_module_availability.py:122
+#: tests/86_browser/131_miscellaneous_module_availability.py:150
+msgid "System diagnostic"
+msgstr "Rendszerdiagnosztika"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:51
+#: tests/86_browser/131_miscellaneous_module_availability.py:67
+#: tests/86_browser/131_miscellaneous_module_availability.py:92
+#: tests/86_browser/131_miscellaneous_module_availability.py:107
+#: tests/86_browser/131_miscellaneous_module_availability.py:120
+#: tests/86_browser/131_miscellaneous_module_availability.py:135
+#: tests/86_browser/131_miscellaneous_module_availability.py:148
+#: tests/86_browser/131_miscellaneous_module_availability.py:163
+#: tests/86_browser/170_system_services_module.py:49
+msgid "System services"
+msgstr "Rendszerszolgáltatások"
+
+#: tests/86_browser/180_portal_entries.py:26
+msgid "System settings"
+msgstr "Rendszerbeállítások"
+
+#: tests/86_browser/17_self_service_registration.py:196
+msgid "The account could not be verified. Please verify your input"
+msgstr ""
+"A fiókot nem sikerült ellenőrizni. Kérjük, ellenőrizd a megadott adatokat"
+
+#: tests/86_browser/17_self_service_registration.py:129
+msgid ""
+"The account registration was disabled via the Univention Configuration "
+"Registry."
+msgstr ""
+"A fiók regisztrációja az Univention Configuration Registry segítségével "
+"letiltva."
+
+#: tests/86_browser/10_product_test_password_change.py:55
+msgid "The password has been changed successfully."
+msgstr "A jelszó sikeresen megváltozott."
+
+#: tests/86_browser/10_product_test_password_change.py:253
+msgid "The password has expired and must be renewed."
+msgstr "A jelszó lejárt, és meg kell újítani."
+
+#: tests/86_browser/17_self_service_registration.py:218
+msgid ""
+"The token you supplied is either expired or invalid. Please request a new "
+"one."
+msgstr "A megadott token lejárt vagy érvénytelen. Kérj újat."
+
+#: tests/86_browser/17_self_service_registration.py:206
+msgid "The verification token could not be sent. Please verify your input."
+msgstr ""
+"Az ellenőrző token elküldése sikertelen. Kérjük, ellenőrizd a bevitt "
+"adatokat."
+
+#: tests/86_browser/110_product_test_do_rejoin.py:44
+msgid "This page shows the status of"
+msgstr "Ez az oldal az állapotot mutatja"
+
+#: tests/86_browser/17_self_service_registration.py:154
+msgid "Title"
+msgstr "Cím"
+
+#: tests/86_browser/17_self_service_registration.py:191
+#: tests/86_browser/17_self_service_registration.py:213
+msgid "Token"
+msgstr "Token"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:52
+#: tests/86_browser/131_miscellaneous_module_availability.py:68
+#: tests/86_browser/131_miscellaneous_module_availability.py:93
+#: tests/86_browser/131_miscellaneous_module_availability.py:108
+#: tests/86_browser/131_miscellaneous_module_availability.py:121
+#: tests/86_browser/131_miscellaneous_module_availability.py:136
+#: tests/86_browser/131_miscellaneous_module_availability.py:149
+#: tests/86_browser/131_miscellaneous_module_availability.py:164
+#: tests/86_browser/130_miscellaneous.py:116
+msgid "Univention Configuration Registry"
+msgstr "Univention konfiguráció regisztrációs adatbázisa"
+
+#: tests/86_browser/180_portal_entries.py:22
+msgid ""
+"Univention Management Console for admin­is­tra­ting the UCS domain and the "
+"local system"
+msgstr ""
+"Univention Management Console az UCS tartomány és a helyi rendszer "
+"adminisztrálásához"
+
+#: tests/86_browser/180_portal_entries.py:26
+msgid "Univention Management Console for admin­is­tra­ting the local system"
+msgstr "Univention Management Console a helyi rendszer adminisztrálásához"
+
+#: tests/86_browser/180_portal_entries.py:27
+#: tests/86_browser/14_password_self-service.py:100
+#: tests/86_browser/14_password_self-service.py:115
+msgid "Univention Portal"
+msgstr "Univention portál"
+
+#: tests/86_browser/10_product_test_password_change.py:281
+msgid "User has to change password on next login"
+msgstr ""
+"A felhasználónak a következő bejelentkezéskor meg kell változtatnia a "
+"jelszavát"
+
+#: tests/86_browser/17_self_service_registration.py:64
+#: tests/86_browser/17_self_service_registration.py:140
+msgid "User name"
+msgstr "Felhasználó neve"
+
+#: tests/86_browser/17_self_service_registration.py:190
+#: tests/86_browser/17_self_service_registration.py:201
+#: tests/86_browser/17_self_service_registration.py:212
+#: tests/86_browser/17_self_service_registration.py:227
+#: tests/86_browser/17_self_service_registration.py:262
+msgid "Username"
+msgstr "Felhasználónév"
+
+#: tests/86_browser/131_miscellaneous_module_availability.py:34
+#: tests/86_browser/131_miscellaneous_module_availability.py:76
+#: tests/86_browser/15_favorite_modules.py:73
+#: tests/86_browser/18_overview_false.py:32
+msgid "Users"
+msgstr "Felhasználók"
+
+#: tests/86_browser/17_self_service_registration.py:193
+#: tests/86_browser/17_self_service_registration.py:215
+#: tests/86_browser/17_self_service_registration.py:305
+msgid "Verify Account"
+msgstr "Fiók hitelesítése"
+
+#: tests/86_browser/17_self_service_registration.py:235
+#: tests/86_browser/17_self_service_registration.py:294
+#: tests/86_browser/17_self_service_registration.py:308
+msgid "Your account has been successfully verified"
+msgstr "Fiókod sikeresen ellenőrizve"
+
+#: tests/86_browser/17_self_service_registration.py:267
+msgid ""
+"Your account recovery options have been updated.. Your account has to be "
+"verified again"
+msgstr ""
+"Fiók helyreállítási lehetőségeid frissültek. Fiókodat újra ellenőrizni kell"
+
+#: tests/86_browser/170_system_services_module.py:57
+#: tests/86_browser/170_system_services_module.py:107
+msgid "more"
+msgstr "több"
+
+#: tests/86_browser/10_product_test_password_change.py:57
+msgid "password is too short"
+msgstr "a jelszó túl rövid"
+
+#: tests/86_browser/10_product_test_password_change.py:59
+msgid "password was already used"
+msgstr "jelszó már használatban volt"
+
+#: tests/86_browser/111_product_test_execute_join_script.py:91
+msgid "restart of the UMC server"
+msgstr "az UMC szerver újraindítása"

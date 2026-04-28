@@ -1,0 +1,109 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-portal\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-14 23:12+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: frontend/src/store/modules/portalData/index.ts:418
+#: frontend/src/store/modules/portalData/index.ts:422
+msgid "Action not possible. Please try another direction."
+msgstr "A művelet nem lehetséges. Próbáld meg másik helyre."
+
+#: frontend/src/store/modules/portalData/index.ts:609
+msgid "Categories could not be re-sorted"
+msgstr "A kategóriákat nem sikerült újra rendezni"
+
+#: frontend/src/store/modules/portalData/portalData.helper.ts:41
+msgid ""
+"Category moved to position %(newCategoryPosition)s of %(numberOfCategories)s"
+msgstr ""
+"Kategória áthelyezve a(z) %(numberOfCategories)s-ből a(z) %"
+"(newCategoryPosition)s. pozícióba"
+
+#: frontend/src/store/modules/portalData/index.ts:669
+msgid "Entered edit mode"
+msgstr "Szerkesztési módba lépve"
+
+#: frontend/src/store/modules/portalData/index.ts:563
+#: frontend/src/store/modules/portalData/index.ts:584
+#: frontend/src/store/modules/portalData/index.ts:594
+msgid "Entries could not be re-sorted"
+msgstr "A bejegyzések újra rendezése nem sikerült"
+
+#: frontend/src/store/modules/portalData/index.ts:616
+msgid "Entries successfully re-sorted"
+msgstr "Bejegyzések sikeresen újra rendezve"
+
+#: frontend/src/jsHelper/forms.ts:263
+msgid ""
+"Internal name must not contain anything other than digits, letters or dots, "
+"must be at least 2 characters long, and start and end with a digit or "
+"letter!"
+msgstr ""
+"A belső név nem tartalmazhat mást, mint számjegyeket, betűket vagy "
+"pontokat, legalább 2 karakter hosszúnak kell lennie, és számjeggyel vagy "
+"betűvel kell kezdődnie és végződnie!"
+
+#: frontend/src/store/modules/portalData/index.ts:671
+msgid "Left edit mode"
+msgstr "Bal szerkesztési mód"
+
+#: frontend/src/store/modules/user/index.ts:42
+msgid "Logged in as \"%(username)s\""
+msgstr "Bejelentkezve mint „%(username)s”"
+
+#: frontend/src/store/modules/user/index.ts:44
+msgid "Not logged in"
+msgstr "Nincs bejelentkezve"
+
+#: frontend/src/store/modules/portalData/index.ts:156
+#: frontend/src/store/modules/portalData/index.ts:157
+#: frontend/src/store/modules/portalData/index.ts:158
+#: frontend/src/store/modules/portalData/index.ts:159
+msgid "Portal"
+msgstr "Portál"
+
+#: frontend/src/store/modules/portalData/index.ts:205
+#: frontend/src/store/modules/portalData/index.ts:206
+#: frontend/src/store/modules/portalData/index.ts:207
+#: frontend/src/store/modules/portalData/index.ts:208
+msgid "Portal Menu"
+msgstr "Portál menü"
+
+#: frontend/src/jsHelper/forms.ts:134
+msgid "This value is required"
+msgstr "Ez az érték kötelező"
+
+#: frontend/src/store/modules/portalData/portalData.helper.ts:31
+msgid ""
+"Tile in Folder moved into position %(newPositionInArray)s of %"
+"(numberOfTilesInFolder)s"
+msgstr ""
+"A mappa csempéje a(z) %(numberOfTilesInFolder)s-ből a(z) %"
+"(newPositionInArray)s. pozícióba került"
+
+#: frontend/src/store/modules/portalData/portalData.helper.ts:20
+msgid "Tile moved into category %(category)s"
+msgstr "A csempe átkerült a(z) %(category)s kategóriába"
+
+#: frontend/src/store/modules/portalData/portalData.helper.ts:24
+msgid "Tile moved into position %(positionInArray)s of %(numberOfTiles)s"
+msgstr ""
+"Csempe áthelyezve a(z) %(numberOfTiles)s-ből a(z) %(positionInArray)s. "
+"pozícióba"
+
+#: frontend/src/store/modules/portalData/index.ts:218
+#: frontend/src/store/modules/portalData/index.ts:219
+#: frontend/src/store/modules/portalData/index.ts:220
+#: frontend/src/store/modules/portalData/index.ts:221
+msgid "User Menu"
+msgstr "Felhasználói menü"

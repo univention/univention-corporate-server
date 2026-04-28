@@ -1,0 +1,793 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 01:29+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: modules/univention/admin/handlers/users/user.py:1880
+#, python-format
+msgid "%(homeSharePath)s must be given if %(homeShare)s is given."
+msgstr ""
+"%(homeSharePath)s megadása kötelező, ha az %(homeShare)s meg van adva."
+
+#: modules/univention/admin/handlers/users/user.py:1885
+#, python-format
+msgid "%s: Invalid path"
+msgstr "%s: Érvénytelen elérési út"
+
+#: modules/univention/admin/handlers/users/user.py:593
+msgid "Account"
+msgstr "Fiók"
+
+#: modules/univention/admin/handlers/users/ldap.py:88
+msgid "Account deactivation"
+msgstr "Fiók deaktiválása"
+
+#: modules/univention/admin/handlers/users/user.py:171
+msgid "Account expiry date"
+msgstr "Fiók lejárati dátuma"
+
+#: modules/univention/admin/handlers/users/user.py:200
+msgid "Account is deactivated"
+msgstr "Fiók deaktiválva"
+
+#: modules/univention/admin/handlers/users/user.py:593
+msgid "Account settings"
+msgstr "Fiókbeállítások"
+
+#: modules/univention/admin/handlers/users/user.py:209
+msgid "Activate user account starting from"
+msgstr "Felhasználói fiók aktiválásának kezdete"
+
+#: modules/univention/admin/handlers/users/user.py:604
+msgid "Activation"
+msgstr "Aktiválás"
+
+#: modules/univention/admin/handlers/users/user.py:464
+msgid ""
+"Additional e-mail addresses for which e-mails will be delivered to the "
+"\"Primary e-mail address\". The domain must be one of the UCS hosted e-mail "
+"domains."
+msgstr ""
+"További e-mail címek, amelyekre az e-mailek az „Elsődleges e-mail cím” "
+"címre kerülnek kézbesítésre. A domainnek az UCS által üzemeltetett e-mail "
+"domainek egyikének kell lennie."
+
+#: modules/univention/admin/handlers/users/user.py:589
+msgid "Additional groups"
+msgstr "További csoportok"
+
+#: modules/univention/admin/handlers/users/user.py:622
+msgid "Advanced settings"
+msgstr "Haladó beállítások"
+
+#: modules/univention/admin/handlers/users/user.py:517
+msgid "Allow the authentication only on this Microsoft Windows host"
+msgstr "Csak ezen a Microsoft Windows gazdagépen engedélyezze a hitelesítést"
+
+#: modules/univention/admin/handlers/users/federated_account.py:63
+#: modules/univention/admin/handlers/users/ldap.py:133
+#: modules/univention/admin/handlers/users/user.py:566
+#: modules/univention/admin/handlers/users/contact.py:256
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/users/user.py:378
+#: modules/univention/admin/handlers/users/contact.py:97
+msgid "Birthdate"
+msgstr "Születési dátum"
+
+#: modules/univention/admin/handlers/users/user.py:632
+#: modules/univention/admin/handlers/users/contact.py:273
+msgid "Business"
+msgstr "Üzleti"
+
+#: modules/univention/admin/handlers/users/passwd.py:49
+msgid "Change password"
+msgstr "Jelszó megváltoztatása"
+
+#: modules/univention/admin/handlers/users/user.py:284
+#: modules/univention/admin/handlers/users/contact.py:191
+msgid "City"
+msgstr "Város"
+
+#: modules/univention/admin/handlers/users/user.py:631
+#: modules/univention/admin/handlers/users/contact.py:26
+#: modules/univention/admin/handlers/users/contact.py:27
+#: modules/univention/admin/handlers/users/contact.py:272
+msgid "Contact"
+msgstr "Kapcsolat"
+
+#: modules/univention/admin/handlers/users/user.py:631
+#: modules/univention/admin/handlers/users/contact.py:28
+#: modules/univention/admin/handlers/users/contact.py:29
+#: modules/univention/admin/handlers/users/contact.py:272
+msgid "Contact information"
+msgstr "Kapcsolattartási adatok"
+
+#: modules/univention/admin/handlers/users/user.py:291
+#: modules/univention/admin/handlers/users/contact.py:198
+msgid "Country"
+msgstr "Ország"
+
+#: modules/univention/admin/handlers/users/user.py:1871
+msgid "DN given as share is not valid."
+msgstr "A megosztásként megadott DN érvénytelen."
+
+#: modules/univention/admin/handlers/users/user.py:379
+msgid "Date of birth"
+msgstr "Születési dátum"
+
+#: modules/univention/admin/handlers/users/user.py:594
+msgid "Deactivation"
+msgstr "Deaktiválás"
+
+#: modules/univention/admin/handlers/users/user.py:351
+#: modules/univention/admin/handlers/users/contact.py:248
+msgid "Delivery office name"
+msgstr "Szállítási iroda neve"
+
+#: modules/univention/admin/handlers/users/user.py:332
+#: modules/univention/admin/handlers/users/contact.py:157
+msgid "Department number"
+msgstr "Osztály száma"
+
+#: modules/univention/admin/handlers/users/federated_account.py:45
+#: modules/univention/admin/handlers/users/ldap.py:80
+#: modules/univention/admin/handlers/users/user.py:156
+#: modules/univention/admin/handlers/users/contact.py:81
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/users/user.py:201
+msgid "Disable the user account for Windows, Kerberos and POSIX."
+msgstr "Tiltsa le a felhasználói fiókot Windows, Kerberos és POSIX esetén."
+
+#: modules/univention/admin/handlers/users/federated_account.py:37
+#: modules/univention/admin/handlers/users/user.py:125
+#: modules/univention/admin/handlers/users/contact.py:89
+msgid "Display name"
+msgstr "Megjelenő név"
+
+#: modules/univention/admin/handlers/users/user.py:264
+#: modules/univention/admin/handlers/users/contact.py:136
+msgid "E-mail address"
+msgstr "Email cím"
+
+#: modules/univention/admin/handlers/users/user.py:457
+msgid ""
+"E-mail address that will be used to create the IMAP/POP3 mailbox and that "
+"can be used as login for SMTP/IMAP/POP3 connections. The domain must be one "
+"of the UCS hosted e-mail domains."
+msgstr ""
+"Az IMAP/POP3 postafiók létrehozásához használt, és az SMTP/IMAP/POP3 "
+"kapcsolatokhoz bejelentkezési névként használható e-mail cím. A domainnek "
+"az UCS által üzemeltetett e-mail domainek egyikének kell lennie."
+
+#: modules/univention/admin/handlers/users/user.py:463
+msgid "E-mail alias address"
+msgstr "E-mail álnév cím"
+
+#: modules/univention/admin/handlers/users/user.py:313
+#: modules/univention/admin/handlers/users/contact.py:117
+msgid "Employee number"
+msgstr "Alkalmazott száma"
+
+#: modules/univention/admin/handlers/users/user.py:339
+#: modules/univention/admin/handlers/users/contact.py:123
+msgid "Employee type"
+msgstr "Alkalmazott típusa"
+
+#: modules/univention/admin/handlers/users/federated_account.py:23
+#: modules/univention/admin/handlers/users/federated_account.py:24
+#: modules/univention/admin/handlers/users/federated_account.py:64
+msgid "Federated account"
+msgstr "Összevont fiók"
+
+#: modules/univention/admin/handlers/users/federated_account.py:25
+msgid "Federated accounts"
+msgstr "Összevont fiókok"
+
+#: modules/univention/admin/handlers/users/user.py:103
+#: modules/univention/admin/handlers/users/contact.py:59
+msgid "First name"
+msgstr "Keresztnév"
+
+#: modules/univention/admin/handlers/users/user.py:470
+msgid "Forward e-mail address"
+msgstr "E-mail cím továbbítása"
+
+#: modules/univention/admin/handlers/users/user.py:477
+msgid "Forwarding setting"
+msgstr "Továbbítási beállítás"
+
+#: modules/univention/admin/handlers/users/user.py:118
+msgid "GECOS"
+msgstr "GECOS"
+
+#: modules/univention/admin/handlers/users/federated_account.py:63
+#: modules/univention/admin/handlers/users/ldap.py:133
+#: modules/univention/admin/handlers/users/user.py:566
+#: modules/univention/admin/handlers/users/contact.py:256
+#: modules/univention/admin/handlers/users/self.py:27
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/users/user.py:1891
+msgid "Given DN is no share."
+msgstr "A megadott DN nem megosztás."
+
+#: modules/univention/admin/handlers/users/user.py:94
+msgid "Group ID of the primary group"
+msgstr "Az elsődleges csoport csoportazonosítója"
+
+#: modules/univention/admin/handlers/users/user.py:432
+#: modules/univention/admin/handlers/users/user.py:585
+msgid "Groups"
+msgstr "Csoportok"
+
+#: modules/univention/admin/handlers/users/user.py:502
+#: modules/univention/admin/handlers/users/user.py:1880
+msgid "Home share"
+msgstr "Saját mappa megosztás"
+
+#: modules/univention/admin/handlers/users/user.py:509
+#: modules/univention/admin/handlers/users/user.py:1880
+#: modules/univention/admin/handlers/users/user.py:1885
+msgid "Home share path"
+msgstr "Saját mappa megosztás útvonala"
+
+#: modules/univention/admin/handlers/users/user.py:187
+msgid ""
+"If enabled, the user has to change his password the next time when he logs "
+"in."
+msgstr ""
+"Ha engedélyezve van, a felhasználónak a következő bejelentkezéskor meg kell "
+"változtatnia a jelszavát."
+
+#: modules/univention/admin/handlers/users/ldap.py:105
+#: modules/univention/admin/handlers/users/user.py:233
+msgid ""
+"If the account is locked out due to too many login failures, this checkbox "
+"allows unlocking."
+msgstr ""
+"Ha a fiók túl sok bejelentkezési hiba miatt zárolva van, ezzel a "
+"jelölőnégyzettel feloldható a zárolás."
+
+#: modules/univention/admin/handlers/users/user.py:555
+msgid "Immutable Identifier of the source IAM"
+msgstr "A forrás IAM megváltoztathatatlan azonosítója"
+
+#: modules/univention/admin/handlers/users/federated_account.py:52
+msgid "Immutable Object Identifier"
+msgstr "Megváltoztathatatlan objektumazonosító"
+
+#: modules/univention/admin/handlers/users/user.py:556
+msgid "Immutable attribute to identfy source IAM"
+msgstr "Megváltoztathatatlan attribútum az azonosító forrás IAM-hez"
+
+#: modules/univention/admin/handlers/users/federated_account.py:53
+msgid "Immutable attribute to track the identity of an object in UDM"
+msgstr ""
+"Megváltoztathatatlan attribútum egy objektum azonosságának nyomon "
+"követésére UDM-ben"
+
+#: modules/univention/admin/handlers/users/user.py:471
+msgid ""
+"Incoming e-mails for this user are copied/redirected to the specified "
+"forward e-mail addresses. Depending on the forwarding setting, a local copy "
+"of each e-mail is kept. If no forwarding e-mail addresses are specified, "
+"the e-mails are always kept in the user's mailbox."
+msgstr ""
+"A felhasználó bejövő e-mailjei a megadott továbbítási e-mail címekre "
+"lesznek másolva/átirányítva. A továbbítási beállítástól függően minden e-"
+"mailről egy helyi másolat marad. Ha nincsenek továbbítási e-mail címek "
+"megadva, az e-mailek mindig a felhasználó postaládájában maradnak."
+
+#: modules/univention/admin/handlers/users/user.py:138
+#: modules/univention/admin/handlers/users/contact.py:74
+msgid "Initials"
+msgstr "Monogram"
+
+#: modules/univention/admin/handlers/users/ldap.py:227
+#: modules/univention/admin/handlers/users/user.py:1755
+msgid "Invalid password."
+msgstr "Érvénytelen jelszó."
+
+#: modules/univention/admin/handlers/users/user.py:540
+msgid "Key value pairs storing user preferences for UMC"
+msgstr "Az UMC felhasználói beállításait tároló kulcs-érték párok"
+
+#: modules/univention/admin/handlers/users/ldap.py:60
+#: modules/univention/admin/handlers/users/user.py:110
+#: modules/univention/admin/handlers/users/contact.py:50
+msgid "Last name"
+msgstr "Vezetéknév"
+
+#: modules/univention/admin/handlers/users/user.py:598
+msgid "Locked login"
+msgstr "Zárolt bejelentkezés"
+
+#: modules/univention/admin/handlers/users/user.py:216
+msgid "Locked state of account"
+msgstr "Fiók zárolt állapota"
+
+#: modules/univention/admin/handlers/users/user.py:240
+msgid "Lockout till"
+msgstr "Zárolás alatt"
+
+#: modules/univention/admin/handlers/users/user.py:223
+msgid "Lockout time"
+msgstr "Kizárási idő"
+
+#: modules/univention/admin/handlers/users/user.py:390
+msgid "Login shell"
+msgstr "Bejelentkezési shell"
+
+#: modules/univention/admin/handlers/users/user.py:621
+msgid "Mail"
+msgstr "Email"
+
+#: modules/univention/admin/handlers/users/user.py:626
+msgid "Mail forwarding"
+msgstr "Levéltovábbítás"
+
+#: modules/univention/admin/handlers/users/user.py:449
+msgid "Mail home server"
+msgstr "Saját levelezési szerver"
+
+#: modules/univention/admin/handlers/users/user.py:621
+msgid "Mail preferences"
+msgstr "Levelezési beállítások"
+
+#: modules/univention/admin/handlers/users/user.py:149
+msgid "Manage Samba privileges"
+msgstr "Samba jogosultságok kezelése"
+
+#: modules/univention/admin/handlers/users/user.py:364
+#: modules/univention/admin/handlers/users/contact.py:220
+msgid "Mobile phone number"
+msgstr "Mobiltelefonszám"
+
+#: modules/univention/admin/handlers/users/ldap.py:70
+#: modules/univention/admin/handlers/users/contact.py:41
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/users/ldap.py:120
+#: modules/univention/admin/handlers/users/user.py:495
+msgid "No check for password quality and minimum length is performed."
+msgstr "A jelszó erősségét és minimális hosszát nem ellenőrzi."
+
+#: modules/univention/admin/handlers/users/ldap.py:112
+#: modules/univention/admin/handlers/users/user.py:487
+msgid "No check if the password was already used is performed."
+msgstr "Nem ellenőrzi, hogy a jelszó használatban volt-e már."
+
+#: modules/univention/admin/handlers/users/user.py:164
+#: modules/univention/admin/handlers/users/user.py:579
+#: modules/univention/admin/handlers/users/contact.py:110
+#: modules/univention/admin/handlers/users/contact.py:266
+msgid "Organisation"
+msgstr "Szervezet"
+
+#: modules/univention/admin/handlers/users/ldap.py:119
+#: modules/univention/admin/handlers/users/user.py:494
+msgid "Override password check"
+msgstr "Jelszóellenőrzés felülbírálása"
+
+#: modules/univention/admin/handlers/users/ldap.py:111
+#: modules/univention/admin/handlers/users/user.py:486
+msgid "Override password history"
+msgstr "Jelszóelőzmények felülbírálása"
+
+#: modules/univention/admin/handlers/users/user.py:615
+msgid "POSIX (Linux/UNIX)"
+msgstr "POSIX (Linux/UNIX)"
+
+#: modules/univention/admin/handlers/users/user.py:64
+#: modules/univention/admin/handlers/users/user.py:70
+msgid "POSIX, Samba, Kerberos and mail account"
+msgstr "POSIX, Samba, Kerberos és levelezési fiók"
+
+#: modules/univention/admin/handlers/users/user.py:371
+#: modules/univention/admin/handlers/users/contact.py:228
+msgid "Pager telephone number"
+msgstr "Személyhívó telefonszáma"
+
+#: modules/univention/admin/handlers/users/passwd.py:24
+#: modules/univention/admin/handlers/users/passwd.py:40
+#: modules/univention/admin/handlers/users/ldap.py:96
+#: modules/univention/admin/handlers/users/user.py:249
+msgid "Password"
+msgstr "Jelszó"
+
+#: modules/univention/admin/handlers/users/user.py:178
+msgid "Password expiry date"
+msgstr "Jelszó lejárati dátuma"
+
+#: modules/univention/admin/handlers/users/passwd.py:25
+msgid "Passwords"
+msgstr "Jelszavak"
+
+#: modules/univention/admin/handlers/users/user.py:510
+msgid "Path to the home directory on the home share"
+msgstr "Elérési út a saját mappa megosztás útvonalához"
+
+#: modules/univention/admin/handlers/users/user.py:525
+msgid "Permitted times for Windows logins"
+msgstr "Windows bejelentkezések engedélyezett időpontjai"
+
+#: modules/univention/admin/handlers/users/user.py:574
+#: modules/univention/admin/handlers/users/contact.py:261
+msgid "Personal information"
+msgstr "Személyes adat"
+
+#: modules/univention/admin/handlers/users/user.py:534
+#: modules/univention/admin/handlers/users/contact.py:104
+msgid "Picture for user account in JPEG format"
+msgstr "Felhasználói fiók képe JPEG formátumban"
+
+#: modules/univention/admin/handlers/users/user.py:533
+#: modules/univention/admin/handlers/users/contact.py:103
+msgid "Picture of the user (JPEG format)"
+msgstr "A felhasználó képe (JPEG formátum)"
+
+#: modules/univention/admin/handlers/users/user.py:277
+#: modules/univention/admin/handlers/users/contact.py:178
+msgid "Post office box"
+msgstr "Postafiók"
+
+#: modules/univention/admin/handlers/users/user.py:270
+#: modules/univention/admin/handlers/users/contact.py:171
+msgid "Postal code"
+msgstr "Irányítószám"
+
+#: modules/univention/admin/handlers/users/user.py:143
+#: modules/univention/admin/handlers/users/contact.py:243
+msgid "Preferred delivery method"
+msgstr "Előnyben részesített átviteli mód"
+
+#: modules/univention/admin/handlers/users/user.py:194
+#: modules/univention/admin/handlers/users/contact.py:185
+msgid "Preferred language"
+msgstr "Előnyben részesített nyelv"
+
+#: modules/univention/admin/handlers/users/user.py:195
+msgid "Preferred written or spoken language for the person."
+msgstr "A személy által előnyben részesített írott vagy beszélt nyelv."
+
+#: modules/univention/admin/handlers/users/user.py:456
+msgid "Primary e-mail address (mailbox)"
+msgstr "Elsődleges e-mail cím (postafiók)"
+
+#: modules/univention/admin/handlers/users/user.py:1829
+msgid ""
+"Primary e-mail address must be set, if a copy of forwarded messages should "
+"be stored in its mailbox."
+msgstr ""
+"Az elsődleges e-mail címet be kell állítani, ha a továbbított üzenetek "
+"másolatát a postaládájában kell tárolni."
+
+#: modules/univention/admin/handlers/users/user.py:1827
+msgid ""
+"Primary e-mail address must be set, if messages should be forwarded for it."
+msgstr ""
+"Az elsődleges e-mail címet be kell állítani, ha üzeneteket kell továbbítani "
+"rá."
+
+#: modules/univention/admin/handlers/users/user.py:440
+#: modules/univention/admin/handlers/users/user.py:586
+msgid "Primary group"
+msgstr "Elsődleges csoport"
+
+#: modules/univention/admin/handlers/users/user.py:639
+#: modules/univention/admin/handlers/users/contact.py:280
+msgid "Private"
+msgstr "Magán"
+
+#: modules/univention/admin/handlers/users/user.py:345
+#: modules/univention/admin/handlers/users/contact.py:236
+msgid "Private postal address"
+msgstr "Magán postai cím"
+
+#: modules/univention/admin/handlers/users/user.py:357
+#: modules/univention/admin/handlers/users/contact.py:212
+msgid "Private telephone number"
+msgstr "Magán telefonszám"
+
+#: modules/univention/admin/handlers/users/user.py:425
+msgid "Relative ID"
+msgstr "Relatív azonosító"
+
+#: modules/univention/admin/handlers/users/ldap.py:104
+msgid "Reset lockout"
+msgstr "Zárolás visszaállítása"
+
+#: modules/univention/admin/handlers/users/user.py:318
+#: modules/univention/admin/handlers/users/contact.py:150
+msgid "Room number"
+msgstr "Szobaszám"
+
+#: modules/univention/admin/handlers/users/user.py:148
+msgid "Samba privilege"
+msgstr "Samba privilégium"
+
+#: modules/univention/admin/handlers/users/self.py:31
+#: modules/univention/admin/handlers/users/self.py:32
+msgid "Self"
+msgstr "Önmaga"
+
+#: modules/univention/admin/handlers/users/user.py:547
+msgid "Service Specific Password"
+msgstr "Szolgáltatásspecifikus jelszó"
+
+#: modules/univention/admin/handlers/users/user.py:1946
+msgid "Service does not support service specific passwords"
+msgstr "A szolgáltatás nem támogatja a szolgáltatásspecifikus jelszavakat"
+
+#: modules/univention/admin/handlers/users/user.py:503
+msgid "Share, the user's home directory resides on"
+msgstr "Megosztás, a felhasználó saját könyvtára a következő helyen található"
+
+#: modules/univention/admin/handlers/users/user.py:241
+msgid ""
+"Shows the time when the account gets unlocked again according to policy."
+msgstr ""
+"Megjeleníti azt az időpontot, amikor a fiók a házirendnek megfelelően újra "
+"feloldásra kerül."
+
+#: modules/univention/admin/handlers/users/ldap.py:34
+#: modules/univention/admin/handlers/users/ldap.py:35
+msgid "Simple authentication account"
+msgstr "Egyszerű hitelesítési fiók"
+
+#: modules/univention/admin/handlers/users/ldap.py:36
+msgid "Simple authentication accounts"
+msgstr "Egyszerű hitelesítési fiókok"
+
+#: modules/univention/admin/handlers/users/user.py:179
+msgid ""
+"Specified the date from when the user must change his password. Enter date "
+"as \"day.month.year\"."
+msgstr ""
+"Dátum megadása, amelytől kezdve a felhasználónak meg kell változtatnia a "
+"jelszavát. Írja be a dátumot \"nap.hónap.év\" formátumban."
+
+#: modules/univention/admin/handlers/users/user.py:478
+msgid ""
+"Specifies if a local copy of each incoming e-mail is kept for this user. If "
+"no forwarding e-mail addresses are specified, the e-mails are always kept "
+"in the user's mailbox."
+msgstr ""
+"Meghatározza, hogy minden bejövő e-mailről legyen-e helyi másolat a "
+"felhasználó számára. Ha nincsenek továbbítási e-mail címek megadva, az e-"
+"mailek mindig a felhasználó postaládájában maradnak."
+
+#: modules/univention/admin/handlers/users/user.py:172
+msgid ""
+"Specifies the date from when the user is not allowed to login anymore. "
+"Enter date as \"day.month.year\"."
+msgstr ""
+"Dátum megadása, amelytől kezdve a felhasználó többé nem jelentkezhet be. "
+"Írja be a dátumot \"nap.hónap.év\" formátumban."
+
+#: modules/univention/admin/handlers/users/user.py:298
+#: modules/univention/admin/handlers/users/contact.py:205
+msgid "State"
+msgstr "Állam/megye"
+
+#: modules/univention/admin/handlers/users/user.py:299
+#: modules/univention/admin/handlers/users/contact.py:206
+msgid "State / Province"
+msgstr "Tagállam / Tartomány"
+
+#: modules/univention/admin/handlers/users/user.py:257
+#: modules/univention/admin/handlers/users/contact.py:164
+msgid "Street"
+msgstr "Utca"
+
+#: modules/univention/admin/handlers/users/user.py:325
+#: modules/univention/admin/handlers/users/contact.py:129
+msgid "Superior"
+msgstr "Kiváló"
+
+#: modules/univention/admin/handlers/users/user.py:305
+#: modules/univention/admin/handlers/users/contact.py:142
+msgid "Telephone number"
+msgstr "Telefonszám"
+
+#: modules/univention/admin/handlers/users/user.py:412
+msgid ""
+"The directory path (resolvable by windows clients) e.g. %LOGONSERVER%\\"
+"%USERNAME%\\windows-profiles\\default which is used to configure a roaming "
+"profile."
+msgstr ""
+"A könyvtár elérési útja (Windows kliensek számára feloldható), pl. "
+"%LOGONSERVER%\\%USERNAME%\\windows-profiles\\default, amely a roaming "
+"profil konfigurálására szolgál."
+
+#: modules/univention/admin/handlers/users/user.py:398
+msgid ""
+"The directory path which is used as the user's Windows home directory, e.g. "
+"\\\\ucs-file-server\\smith."
+msgstr ""
+"A felhasználó Windows kezdőkönyvtáraként használt könyvtár elérési útja, "
+"pl. \\\\ucs-file-server\\smith."
+
+#: modules/univention/admin/handlers/users/user.py:419
+msgid ""
+"The drive letter (with trailing colon) where the Windows home directory of "
+"this user lies, e.g. M:. Needs only be specified if it is different to the "
+"Samba configuration."
+msgstr ""
+"A meghajtó betűjele (kettősponttal a végén), ahol a felhasználó Windows "
+"kezdőkönyvtára található, pl. M:. Csak akkor kell megadni, ha eltér a Samba "
+"konfigurációjától."
+
+#: modules/univention/admin/handlers/users/ldap.py:288
+#: modules/univention/admin/handlers/users/user.py:1615
+#, python-format
+msgid "The password is too short, at least %d characters needed!"
+msgstr "A jelszó túl rövid, legalább %d karakter szükséges!"
+
+#: modules/univention/admin/handlers/users/user.py:426
+msgid ""
+"The relative ID (RID) is the local part of the SID and will be assigned "
+"automatically to next available RID. It can not be subsequently changed. "
+"Valid values are numbers upwards 1000. RIDs below 1000 are reserved to "
+"standard groups and other special objects."
+msgstr ""
+"A relatív azonosító (RID) a SID helyi része, és automatikusan "
+"hozzárendelődik a következő elérhető RID-hez. Ezt követően nem lehet "
+"módosítani. Az érvényes értékek az 1000-től felfelé lévő számok. Az 1000 "
+"alatti RID-ek a standard csoportok és más speciális objektumok számára "
+"vannak fenntartva."
+
+#: modules/univention/admin/handlers/users/user.py:405
+msgid ""
+"The user-specific logon script relative to the NETLOGON share, e.g. "
+"user.bat."
+msgstr ""
+"A NETLOGON megosztáshoz tartozó felhasználó-specifikus bejelentkezési "
+"parancsfájl, pl. user.bat."
+
+#: modules/univention/admin/handlers/users/user.py:210
+msgid "This disables the account until the specified time."
+msgstr "Ez letiltja a fiókot a megadott ideig."
+
+#: modules/univention/admin/handlers/users/user.py:265
+msgid ""
+"This e-mail address serves only as contact information. This address has no "
+"effect on the UCS mail stack and is not related to a local mailbox."
+msgstr ""
+"Ez az e-mail cím csak elérhetőségi információként szolgál. A címnek nincs "
+"hatása az UCS levelezési körére, és nem kapcsolódik helyi postaládához."
+
+#: modules/univention/admin/handlers/users/user.py:217
+msgid ""
+"This indicates if the account is locked out due to too many authentication "
+"failures."
+msgstr ""
+"Ez azt jelzi, hogy a fiók túl sok hitelesítési hiba miatt zárolva van."
+
+#: modules/univention/admin/handlers/users/federated_account.py:26
+msgid ""
+"This object represents a federated account. It is intended for functional "
+"purposes and is not counted as user object in the license."
+msgstr ""
+"Ez az objektum egy összevont fiókot jelöl. Funkcionális célokra szolgál, és "
+"nem számít felhasználói objektumnak a licencben."
+
+#: modules/univention/admin/handlers/users/ldap.py:37
+msgid ""
+"This user object can only simply do an LDAP bind. It is intended for "
+"functional purposes and is not counted as user object in the license."
+msgstr ""
+"Ez a felhasználói objektum csak egyszerű LDAP-kötést tud végrehajtani. "
+"Funkcionális célokra szolgál, és a licencben nem számít felhasználói "
+"objektumnak."
+
+#: modules/univention/admin/handlers/users/user.py:224
+msgid "Timestamp when account lockout happened."
+msgstr "A fiókzárolás időbélyege."
+
+#: modules/univention/admin/handlers/users/user.py:132
+#: modules/univention/admin/handlers/users/contact.py:67
+msgid "Title"
+msgstr "Cím"
+
+#: modules/univention/admin/handlers/users/user.py:647
+#: modules/univention/admin/handlers/users/user.py:648
+msgid "UMC preferences"
+msgstr "UMC beállítások"
+
+#: modules/univention/admin/handlers/users/user.py:539
+msgid "UMC user preferences"
+msgstr "UMC felhasználói beállítások"
+
+#: modules/univention/admin/handlers/users/user.py:383
+msgid "Unix home directory"
+msgstr "Unix home könyvtár"
+
+#: modules/univention/admin/handlers/users/user.py:232
+msgid "Unlock account"
+msgstr "Fiók feloldása"
+
+#: modules/univention/admin/handlers/users/user.py:61
+#: modules/univention/admin/handlers/users/user.py:62
+msgid "User"
+msgstr "Felhasználó"
+
+#: modules/univention/admin/handlers/users/user.py:87
+msgid "User ID"
+msgstr "Felhasználói azonosító"
+
+#: modules/univention/admin/handlers/users/ldap.py:134
+#: modules/univention/admin/handlers/users/user.py:567
+#: modules/univention/admin/handlers/users/contact.py:257
+msgid "User account"
+msgstr "Felhasználói fiók"
+
+#: modules/univention/admin/handlers/users/user.py:186
+msgid "User has to change password on next login"
+msgstr ""
+"A felhasználónak a következő bejelentkezéskor meg kell változtatnia a "
+"jelszavát"
+
+#: modules/univention/admin/handlers/users/passwd.py:31
+#: modules/univention/admin/handlers/users/ldap.py:51
+#: modules/univention/admin/handlers/users/user.py:78
+msgid "User name"
+msgstr "Felhasználó név"
+
+#: modules/univention/admin/handlers/users/passwd.py:23
+msgid "User: Password"
+msgstr "Felhasználó: Jelszó"
+
+#: modules/univention/admin/handlers/users/self.py:30
+msgid "User: Self"
+msgstr "Felhasználó: Saját maga"
+
+#: modules/univention/admin/handlers/users/user.py:63
+msgid "Users"
+msgstr "Felhasználók"
+
+#: modules/univention/admin/handlers/users/user.py:548
+msgid "Virtual attribute to set different Service Specific Passwords via UDM"
+msgstr ""
+"Virtuális attribútum különböző szolgáltatásspecifikus jelszavak "
+"beállításához UDM-en keresztül"
+
+#: modules/univention/admin/handlers/users/user.py:607
+msgid "Windows"
+msgstr "Windows"
+
+#: modules/univention/admin/handlers/users/user.py:418
+msgid "Windows home drive"
+msgstr "Windows saját meghajtó"
+
+#: modules/univention/admin/handlers/users/user.py:397
+msgid "Windows home path"
+msgstr "Windows saját mappa elérési út"
+
+#: modules/univention/admin/handlers/users/user.py:404
+msgid "Windows logon script"
+msgstr "Windows bejelentkezési parancsfájl"
+
+#: modules/univention/admin/handlers/users/user.py:411
+msgid "Windows profile directory"
+msgstr "Windows profil könyvtár"
+
+#: modules/univention/admin/handlers/users/user.py:1247
+msgid "unlimited"
+msgstr "korlátlan"

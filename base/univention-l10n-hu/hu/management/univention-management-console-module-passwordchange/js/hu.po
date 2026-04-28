@@ -1,0 +1,44 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-passwordchange\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-03 23:43+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: js/passwordchange.js:53 js/passwordchange.js:54 js/passwordchange.js:60
+#: js/passwordchange.js:69
+msgid "Change password"
+msgstr "Jelszó megváltoztatása"
+
+#: js/passwordchange.js:42
+#, javascript-format
+msgid "Change the password of user \"%s\":"
+msgstr "A(z) „%s” felhasználó jelszavának módosítása:"
+
+#: js/passwordchange.js:32
+msgid "Error changing password"
+msgstr "Hiba a jelszó módosításakor"
+
+#: js/passwordchange.js:51
+msgid "New password"
+msgstr "Új jelszó"
+
+#: js/passwordchange.js:30
+msgid "OK"
+msgstr "OK"
+
+#: js/passwordchange.js:46
+msgid "Old password"
+msgstr "Régi jelszó"
+
+#: js/passwordchange.js:26
+msgid "The password has been changed successfully."
+msgstr "A jelszó sikeresen megváltoztatva."

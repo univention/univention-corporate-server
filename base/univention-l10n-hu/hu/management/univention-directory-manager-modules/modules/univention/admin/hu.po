@@ -1,0 +1,1969 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-08 23:23+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: modules/univention/admin/syntax.py:5787
+#, python-format
+msgid "\"%s\" is not a Univention Admin Module."
+msgstr "A „%s” nem egy Univention Admin Modul."
+
+#: modules/univention/admin/syntax.py:4768
+#, python-format
+msgid "%(name)s (%(path)s on %(host)s)"
+msgstr "%(name)s (%(path)s %(host)s-n)"
+
+#: modules/univention/admin/syntax.py:2187
+msgid ""
+"A group name must start and end with a letter, number or underscore. In between "
+"additionally spaces, dashes and dots are allowed."
+msgstr ""
+"A csoportnévnek betűvel, számmal vagy aláhúzással kell kezdődnie és végződnie. "
+"Közöttük szóköz, kötőjel és pont is lehet."
+
+#: modules/univention/admin/syntax.py:3213 modules/univention/admin/syntax.py:3247
+msgid ""
+"A hostname or any part of a FQDN, separated by dots, starts and ends with a "
+"letter or a digit. In between letters, digits, dashes and underscores are "
+"allowed. Only numbers are not allowed."
+msgstr ""
+"A pontokkal elválasztott gazdanév vagy FQDN bármely része betűvel vagy számmal "
+"kezdődik és végződik. A betűk között számok, kötőjelek és aláhúzások "
+"használhatók. Csak számok nem használhatók."
+
+#: modules/univention/admin/syntax.py:6953
+msgid ""
+"A mailing list name must start and end with a letter, number or underscore. In "
+"between additionally spaces, dashes and dots are allowed."
+msgstr ""
+"A levelezőlista neve betűvel, számmal vagy aláhúzással kell kezdődnie és "
+"végződnie. Közöttük szóközök, kötőjelek és pontok is megengedettek."
+
+#: modules/univention/admin/syntax.py:3048
+msgid ""
+"A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address "
+"(example: \"192.168.0\") or of the first 1 to 31 nibbles of an expanded (with "
+"leading zeroes and without ::-substitution) IPv6 address (example: "
+"\"2001:0db8:010\" for \"2001:db8:100::/24\")"
+msgstr ""
+"A fordított kereséshez használt alhálózat egy IPv4-cím első 1-3 oktettjéből "
+"(például: „192.168.0”) vagy egy kibővített (vezető nullákkal és ::-helyettesítés "
+"nélkül) IPv6-cím első 1-31 félbájtjából áll (például: „2001:0db8:010” a "
+"„2001:db8:100::/24” esetében)."
+
+#: modules/univention/admin/syntax.py:4053
+msgid "Above primary display"
+msgstr "Az elsődleges kijelző felett"
+
+#: modules/univention/admin/syntax.py:3778 modules/univention/admin/syntax.py:3786
+#: modules/univention/admin/syntax.py:3794 modules/univention/admin/syntax.py:3802
+msgid "Access right"
+msgstr "Hozzáférési jog"
+
+#: modules/univention/admin/syntax.py:5598
+msgid "Add machines to domain"
+msgstr "Gépek hozzáadása a tartományhoz"
+
+#: modules/univention/admin/syntax.py:5605
+msgid "Add users and groups to the domain"
+msgstr "Felhasználók és csoportok hozzáadása a tartományhoz"
+
+#: modules/univention/admin/syntax.py:3580
+msgid "Address"
+msgstr "Cím"
+
+#: modules/univention/admin/syntax.py:4702
+msgid "Alias"
+msgstr "Álnév"
+
+#: modules/univention/admin/syntax.py:3740
+msgid "All"
+msgstr "Összes"
+
+#: modules/univention/admin/syntax.py:466 modules/univention/admin/syntax.py:740
+#: modules/univention/admin/syntax.py:951
+msgid "An empty value is not allowed"
+msgstr "Üres érték nem megengedett"
+
+#: modules/univention/admin/uexceptions.py:442
+msgid "An object with the name already exists in the subtree position"
+msgstr "Egy ilyen nevű objektum már létezik az részfa pozíciójában"
+
+#: modules/univention/admin/syntax.py:3750
+msgid "Anyone"
+msgstr "Bárki"
+
+#: modules/univention/admin/syntax.py:3738
+msgid "Append"
+msgstr "Csatolás"
+
+#: modules/univention/admin/syntax.py:5316
+msgid "April"
+msgstr "Április"
+
+#: modules/univention/admin/nagios.py:23
+msgid "Assigned Nagios services"
+msgstr "Hozzárendelt Nagios szolgáltatások"
+
+#: modules/univention/admin/syntax.py:5320
+msgid "August"
+msgstr "Augusztus"
+
+#: modules/univention/admin/uexceptions.py:129
+msgid "Authentication Failed."
+msgstr "A hitelesítés sikertelen."
+
+#: modules/univention/admin/uldap.py:343 modules/univention/admin/uldap.py:345
+#: modules/univention/admin/uldap.py:373 modules/univention/admin/uldap.py:375
+#: modules/univention/admin/uldap.py:387 modules/univention/admin/uldap.py:401
+msgid "Authentication failed"
+msgstr "A hitelesítés nem sikerült"
+
+#: modules/univention/admin/syntax.py:4882
+msgid "Auto"
+msgstr "Automatikus"
+
+#: modules/univention/admin/syntax.py:5601
+msgid "Back up files and directories"
+msgstr "Fájlok és könyvtárak biztonsági mentése"
+
+#: modules/univention/admin/syntax.py:5623
+msgid "Backup Directory Node"
+msgstr "Biztonsági mentési könyvtár csomópont"
+
+#: modules/univention/admin/syntax.py:4054
+msgid "Below primary display"
+msgstr "Az elsődleges kijelző alatt"
+
+#: modules/univention/admin/types.py:369
+#, python-format
+msgid "Binary data have invalid encoding (expected: %s)."
+msgstr "A bináris adatok kódolása érvénytelen (várt: %s)."
+
+#: modules/univention/admin/syntax.py:6548
+msgid "Black"
+msgstr "Fekete"
+
+#: modules/univention/admin/locking.py:73 modules/univention/admin/locking.py:87
+#: modules/univention/admin/locking.py:117
+#, python-format
+msgid "Can not modify lock time of %r."
+msgstr "A(z) %r zárolási ideje nem módosítható."
+
+#: modules/univention/admin/uexceptions.py:267
+msgid "Cannot overwrite a fixed attribute."
+msgstr "A rögzített attribútumot nem lehet felülírni."
+
+#: modules/univention/admin/certificate.py:192
+msgid "Certificate"
+msgstr "Tanúsítvány"
+
+#: modules/univention/admin/certificate.py:82
+msgid "Certificate Issuer Common Name"
+msgstr "Tanúsítványkibocsátó általános neve"
+
+#: modules/univention/admin/certificate.py:42
+msgid "Certificate Issuer Country"
+msgstr "Tanúsítvány kibocsátójának országa"
+
+#: modules/univention/admin/certificate.py:58
+msgid "Certificate Issuer Location"
+msgstr "Tanúsítványkibocsátó helye"
+
+#: modules/univention/admin/certificate.py:90
+msgid "Certificate Issuer Mail"
+msgstr "Tanúsítványkibocsátó e-mail"
+
+#: modules/univention/admin/certificate.py:66
+msgid "Certificate Issuer Organisation"
+msgstr "Tanúsítványkibocsátó szervezet"
+
+#: modules/univention/admin/certificate.py:74
+msgid "Certificate Issuer Organisational Unit"
+msgstr "Tanúsítványkibocsátó szervezeti egysége"
+
+#: modules/univention/admin/certificate.py:50
+msgid "Certificate Issuer State"
+msgstr "Tanúsítványkibocsátó állam"
+
+#: modules/univention/admin/certificate.py:178
+msgid "Certificate Serial"
+msgstr "Tanúsítvány sorozatszáma"
+
+#: modules/univention/admin/certificate.py:138
+msgid "Certificate Subject Common Name"
+msgstr "Tanúsítvány tárgyának általános neve"
+
+#: modules/univention/admin/certificate.py:98
+msgid "Certificate Subject Country"
+msgstr "Tanúsítvány tárgya, Ország"
+
+#: modules/univention/admin/certificate.py:114
+msgid "Certificate Subject Location"
+msgstr "Tanúsítvány tárgya Hely"
+
+#: modules/univention/admin/certificate.py:146
+msgid "Certificate Subject Mail"
+msgstr "Tanúsítvány tárgya E-mail"
+
+#: modules/univention/admin/certificate.py:122
+msgid "Certificate Subject Organisation"
+msgstr "Tanúsítvány tárgya Szervezet"
+
+#: modules/univention/admin/certificate.py:130
+msgid "Certificate Subject Organisational Unit"
+msgstr "Tanúsítvány tárgya Szervezeti egység"
+
+#: modules/univention/admin/certificate.py:106
+msgid "Certificate Subject State"
+msgstr "Tanúsítvány tárgya Állam"
+
+#: modules/univention/admin/certificate.py:170
+msgid "Certificate Version"
+msgstr "Tanúsítvány verziója"
+
+#: modules/univention/admin/certificate.py:154
+msgid "Certificate valid from"
+msgstr "A tanúsítvány érvényes ettől"
+
+#: modules/univention/admin/certificate.py:162
+msgid "Certificate valid until"
+msgstr "A tanúsítvány érvényessége eddig"
+
+#: modules/univention/admin/uexceptions.py:422
+msgid "Circular group dependency detected: "
+msgstr "Körkörös csoportfüggőség észlelve: "
+
+#: modules/univention/admin/syntax.py:3356
+msgid "City"
+msgstr "Város"
+
+#: modules/univention/admin/syntax.py:3701
+msgid "Command pattern"
+msgstr "Parancsminta"
+
+#: modules/univention/admin/uexceptions.py:125
+msgid "Could not acquire lock."
+msgstr "Nem sikerült zárolást szerezni."
+
+#: modules/univention/admin/modules.py:467
+msgid "Custom"
+msgstr "Egyedi"
+
+#: modules/univention/admin/syntax.py:4734
+msgid "DHCP Entry"
+msgstr "DHCP bejegyzés"
+
+#: modules/univention/admin/syntax.py:4754
+msgid "DHCP option"
+msgstr "DHCP opció"
+
+#: modules/univention/admin/uexceptions.py:227
+msgid "DHCP server name already used: "
+msgstr "A DHCP kiszolgáló neve már használatban van: "
+
+#: modules/univention/admin/syntax.py:4711 modules/univention/admin/syntax.py:4729
+msgid "DHCP service"
+msgstr "DHCP szolgáltatás"
+
+#: modules/univention/admin/syntax.py:4659
+msgid "DNS Entry"
+msgstr "DNS bejegyzés"
+
+#: modules/univention/admin/syntax.py:4701
+msgid "DNS Entry Alias"
+msgstr "DNS bejegyzés álnév"
+
+#: modules/univention/admin/syntax.py:4669
+msgid "DNS Entry Reverse"
+msgstr "DNS bejegyzés fordított sorrendben"
+
+#: modules/univention/admin/uexceptions.py:414
+msgid "DNS Forward Zone entry required to assign Nagios services!"
+msgstr ""
+"DNS továbbító zóna bejegyzés szükséges a Nagios szolgáltatások hozzárendeléséhez!"
+
+#: modules/univention/admin/uexceptions.py:195
+msgid "DNS alias is already in use."
+msgstr "A DNS álnév már használatban van."
+
+#: modules/univention/admin/syntax.py:4610 modules/univention/admin/syntax.py:4660
+#: modules/univention/admin/syntax.py:4702
+msgid "DNS forward zone"
+msgstr "DNS továbbító zóna"
+
+#: modules/univention/admin/syntax.py:4625 modules/univention/admin/syntax.py:4670
+msgid "DNS reverse zone"
+msgstr "DNS fordított zóna"
+
+#: modules/univention/admin/syntax.py:6974
+msgid "Date"
+msgstr "Dátum"
+
+#: modules/univention/admin/types.py:401
+msgid "Date does not match format \"%Y-%m-%d\"."
+msgstr "A dátum nem felel meg a \"%Y-%m-%d\" formátumnak."
+
+#: modules/univention/admin/types.py:468
+msgid "Datetime does not match format \"%Y-%m-%dT%H:%M:%S\"."
+msgstr "A dátum és idő nem felel meg a \"%Y-%m-%dT%H:%M:%S\" formátumnak."
+
+#: modules/univention/admin/syntax.py:5324
+msgid "December"
+msgstr "December"
+
+#: modules/univention/admin/uexceptions.py:231
+msgid "Default Kolab home server does not exist"
+msgstr "Az alapértelmezett Kolab saját szerver nem létezik"
+
+#: modules/univention/admin/uexceptions.py:235
+msgid "Default primary group does not exist"
+msgstr "Az alapértelmezett elsődleges csoport nem létezik"
+
+#: modules/univention/admin/syntax.py:6413 modules/univention/admin/syntax.py:6576
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/syntax.py:6467
+msgid "Destination"
+msgstr "Cél"
+
+#: modules/univention/admin/syntax.py:6570
+msgid "Display Name"
+msgstr "Megjelenítendő név"
+
+#: modules/univention/admin/syntax.py:5517
+msgid "Domain Group"
+msgstr "Tartománycsoport"
+
+#: modules/univention/admin/syntax.py:5531
+msgid "Domain local (Type: Security)"
+msgstr "Helyi tartomány (Típus: Biztonság)"
+
+#: modules/univention/admin/syntax.py:6413
+msgid "Driver"
+msgstr "Illesztőprogram"
+
+#: modules/univention/admin/types.py:513
+msgid "Duplicated entries."
+msgstr "Duplikált bejegyzések."
+
+#: modules/univention/admin/uexceptions.py:339
+msgid "During this session add and modify are disabled"
+msgstr "Ebben a munkamenetben a hozzáadás és módosítás le van tiltva"
+
+#: modules/univention/admin/uexceptions.py:271
+msgid "Dynamic BOOTP leases are not compatible with failover."
+msgstr "A dinamikus BOOTP-bérletek nem kompatibilisek a feladatátvétellel."
+
+#: modules/univention/admin/policy.py:70
+msgid "Empty attribute"
+msgstr "Üres attribútum"
+
+#: modules/univention/admin/syntax.py:2287
+msgid "Empty password not allowed!"
+msgstr "Üres jelszó nem megengedett!"
+
+#: modules/univention/admin/uexceptions.py:383
+msgid "Empty printer groups are not possible."
+msgstr "Üres nyomtatócsoportok nem lehetségesek."
+
+#: modules/univention/admin/syntax.py:6642
+#, python-format
+msgid "Error: %(text)s - %(exc)s"
+msgstr "Hiba: %(text)s - %(exc)s"
+
+#: modules/univention/admin/syntax.py:3530
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: modules/univention/admin/policy.py:49
+msgid "Excluded object class"
+msgstr "Kizárt objektumosztály"
+
+#: modules/univention/admin/syntax.py:3313
+msgid "Extension"
+msgstr "Kiterjesztés"
+
+#: modules/univention/admin/syntax.py:3531
+msgid "FDDI"
+msgstr "FDDI"
+
+#: modules/univention/admin/syntax.py:1450
+msgid "Failed to convert file into JPEG format."
+msgstr "Nem sikerült a fájlt JPEG formátumba konvertálni."
+
+#: modules/univention/admin/syntax.py:4902 modules/univention/admin/syntax.py:4926
+#: modules/univention/admin/syntax.py:4945
+msgid "False"
+msgstr "Hamis"
+
+#: modules/univention/admin/syntax.py:5314
+msgid "February"
+msgstr "Február"
+
+#: modules/univention/admin/syntax.py:2020
+msgid "Field must only contain ASCII characters!"
+msgstr "A mező csak ASCII karaktereket tartalmazhat!"
+
+#: modules/univention/admin/syntax.py:1241
+#, python-format
+msgid "Filename must not contain slashes: %s"
+msgstr "A fájlnév nem tartalmazhat perjelet: %s"
+
+#: modules/univention/admin/syntax.py:2530 modules/univention/admin/syntax.py:2585
+msgid "First address"
+msgstr "Első cím"
+
+#: modules/univention/admin/policy.py:60
+msgid "Fixed attribute"
+msgstr "Rögzített attribútum"
+
+#: modules/univention/admin/syntax.py:5603
+msgid "Force shutdown from a remote system"
+msgstr "Kényszerített leállítás távoli rendszerről"
+
+#: modules/univention/admin/syntax.py:5560
+msgid "Fri"
+msgstr "Pén"
+
+#: modules/univention/admin/syntax.py:5338
+msgid "Friday"
+msgstr "Péntek"
+
+#: modules/univention/admin/syntax.py:4584
+msgid "From known-hosts pool"
+msgstr "Ismert gazdagépek készletéből"
+
+#: modules/univention/admin/syntax.py:3132
+msgid "Full domain name must be between 1 and 253 characters long!"
+msgstr ""
+"A teljes domain névnek 1 és 253 karakter közötti hosszúságúnak kell lennie!"
+
+#: modules/univention/admin/syntax.py:3208
+msgid "Full name must not be all numeric!"
+msgstr "A teljes név nem állhat csak számokból!"
+
+#: modules/univention/admin/syntax.py:1615 modules/univention/admin/syntax.py:1628
+msgid "GNU message catalog"
+msgstr "GNU üzenet katalógus"
+
+#: modules/univention/admin/certificate.py:193
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/syntax.py:5533
+msgid "Global (Type: Distribution)"
+msgstr "Globális (Típus: Terjesztés)"
+
+#: modules/univention/admin/syntax.py:5529
+msgid "Global (Type: Security)"
+msgstr "Globális (Típus: Biztonság)"
+
+#: modules/univention/admin/syntax.py:3786 modules/univention/admin/syntax.py:3802
+#: modules/univention/admin/syntax.py:6356 modules/univention/admin/syntax.py:6369
+msgid "Group"
+msgstr "Csoport"
+
+#: modules/univention/admin/syntax.py:2193
+msgid "Group names must not consist only of numbers!"
+msgstr "A csoportnevek nem állhatnak csak számokból!"
+
+#: modules/univention/admin/guardian_roles.py:71
+#: modules/univention/admin/guardian_roles.py:82
+msgid "Guardian"
+msgstr "Gondviselő"
+
+#: modules/univention/admin/syntax.py:7091
+msgid ""
+"Guardian role strings must be lowercase ASCII alphanumeric with hyphens and "
+"underscores, in the format 'app:namespace:role' or "
+"'app:namespace:role&app:namespace:context'.The final part of context "
+"additionally allows equal and comma."
+msgstr ""
+"A gondviselő szerepköröknek kisbetűs ASCII alfanumerikus karakterekből kell "
+"állniuk, kötőjelekkel és aláhúzásokkal, az „app:namespace:role” vagy "
+"„app:namespace:role&app:namespace:context” formátumban. A kontextus utolsó része "
+"emellett egyenlőségjelet és vesszőt is tartalmazhat."
+
+#: modules/univention/admin/syntax.py:6356 modules/univention/admin/syntax.py:6369
+#: modules/univention/admin/syntax.py:6382
+msgid "Hard limit (pages)"
+msgstr "Szigorú korlát (oldalap)"
+
+#: modules/univention/admin/syntax.py:3726
+msgid "IMAP"
+msgstr "IMAP"
+
+#: modules/univention/admin/syntax.py:4660 modules/univention/admin/syntax.py:4670
+#: modules/univention/admin/syntax.py:4730
+msgid "IP address"
+msgstr "IP cím"
+
+#: modules/univention/admin/uexceptions.py:410
+msgid "IP address entry required to assign Nagios services!"
+msgstr "A Nagios szolgáltatások hozzárendeléséhez IP-cím megadása szükséges!"
+
+#: modules/univention/admin/uexceptions.py:191
+msgid "IP address is already in use."
+msgstr "Az IP-cím már használatban van."
+
+#: modules/univention/admin/syntax.py:6654
+msgid "Ignore this object in standard UDM modules"
+msgstr "Ne vegye figyelembe ezt az objektumot a szabványos UDM modulokban"
+
+#: modules/univention/admin/syntax.py:2545 modules/univention/admin/syntax.py:2550
+msgid "Illegal range"
+msgstr "Érvénytelen tartomány"
+
+#: modules/univention/admin/syntax.py:5834
+msgid "Immediately"
+msgstr "Azonnal"
+
+#: modules/univention/admin/uexceptions.py:85
+msgid "Information provided is not sufficient."
+msgstr "A megadott információ nem elegendő."
+
+#: modules/univention/admin/syntax.py:1187
+#, python-format
+msgid "Invalid UCS version: %s"
+msgstr "Érvénytelen UCS verzió: %s"
+
+#: modules/univention/admin/syntax.py:1218
+#, python-format
+msgid "Invalid character in Debian package version: %s"
+msgstr "Érvénytelen karakter a Debian csomag verziójában: %s"
+
+#: modules/univention/admin/syntax.py:4805
+msgid "Invalid choice."
+msgstr "Érvénytelen választás."
+
+#: modules/univention/admin/uexceptions.py:367
+msgid "Invalid combination of options."
+msgstr "Érvénytelen opciók kombinációja."
+
+#: modules/univention/admin/mapping.py:520 modules/univention/admin/mapping.py:567
+#, python-format
+msgid "Invalid encoding for %s"
+msgstr "Érvénytelen kódolás a(z) %s esetén"
+
+#: modules/univention/admin/syntax.py:3145
+#, python-format
+msgid "Invalid escape sequence: %r"
+msgstr "Érvénytelen feloldó sorozat: %r"
+
+#: modules/univention/admin/types.py:626
+msgid "Invalid format for SambaLogonHours."
+msgstr "Érvénytelen formátum a SambaLogonHours esetében."
+
+#: modules/univention/admin/uexceptions.py:403
+#, python-format
+msgid "Invalid syntax in default value. Check these templates: %s."
+msgstr ""
+"Érvénytelen szintaxis az alapértelmezett értékben. Ellenőrizze ezeket a "
+"sablonokat: %s."
+
+#: modules/univention/admin/uexceptions.py:113
+msgid "Invalid syntax."
+msgstr "Érvénytelen szintaxis."
+
+#: modules/univention/admin/syntax.py:6485
+#, python-format
+msgid "Invalid syntax: %s > %s"
+msgstr "Érvénytelen szintaxis: %s > %s"
+
+#: modules/univention/admin/syntax.py:317 modules/univention/admin/syntax.py:451
+#: modules/univention/admin/syntax.py:942
+msgid "Invalid value"
+msgstr "Érvénytelen érték"
+
+#: modules/univention/admin/certificate.py:202
+msgid "Issuer"
+msgstr "Kibocsátó"
+
+#: modules/univention/admin/certificate.py:81
+msgid "Issuer Common Name"
+msgstr "Kibocsátó általános neve"
+
+#: modules/univention/admin/certificate.py:41
+msgid "Issuer Country"
+msgstr "Kibocsátó ország"
+
+#: modules/univention/admin/certificate.py:57
+msgid "Issuer Location"
+msgstr "Kibocsátó hely"
+
+#: modules/univention/admin/certificate.py:89
+msgid "Issuer Mail"
+msgstr "Kibocsátó e-mail"
+
+#: modules/univention/admin/certificate.py:65
+msgid "Issuer Organisation"
+msgstr "Kibocsátó szervezet"
+
+#: modules/univention/admin/certificate.py:73
+msgid "Issuer Organisational Unit"
+msgstr "Kibocsátó szervezeti egység"
+
+#: modules/univention/admin/certificate.py:49
+msgid "Issuer State"
+msgstr "Kibocsátó állam"
+
+#: modules/univention/admin/syntax.py:5313
+msgid "January"
+msgstr "Január"
+
+#: modules/univention/admin/syntax.py:5319
+msgid "July"
+msgstr "Július"
+
+#: modules/univention/admin/syntax.py:5318
+msgid "June"
+msgstr "Június"
+
+#: modules/univention/admin/syntax.py:2633
+msgid "Keep e-mails and forward a copy"
+msgstr "E-mailek megtartása és másolat továbbítása"
+
+#: modules/univention/admin/syntax.py:3277
+msgid "Key"
+msgstr "Kulcs"
+
+#: modules/univention/admin/uexceptions.py:69
+msgid "LDAP Error"
+msgstr "LDAP hiba"
+
+#: modules/univention/admin/policy.py:80
+msgid "LDAP filter"
+msgstr "LDAP szűrő"
+
+#: modules/univention/admin/syntax.py:3134
+msgid "Labels must be between 1 and 63 characters long!"
+msgstr "A címkék hossza 1 és 63 karakter között lehet!"
+
+#: modules/univention/admin/syntax.py:6213 modules/univention/admin/syntax.py:6221
+#: modules/univention/admin/syntax.py:6227 modules/univention/admin/syntax.py:6233
+#: modules/univention/admin/syntax.py:6239 modules/univention/admin/syntax.py:6570
+#: modules/univention/admin/syntax.py:6576 modules/univention/admin/syntax.py:6585
+msgid "Language code (e.g. en_US)"
+msgstr "Nyelvi kód (pl. en_US)"
+
+#: modules/univention/admin/syntax.py:6206
+msgid "Language code must be in format \"xx_XX\"!"
+msgstr "A nyelvi kódnak \"xx_XX\" formátumban kell lennie!"
+
+#: modules/univention/admin/syntax.py:2531 modules/univention/admin/syntax.py:2586
+msgid "Last address"
+msgstr "Utolsó cím"
+
+#: modules/univention/admin/syntax.py:4051
+msgid "Left of primary display"
+msgstr "Az elsődleges kijelző bal oldalán"
+
+#: modules/univention/admin/syntax.py:5532
+msgid "Local (Type: Distribution)"
+msgstr "Helyi (Típus: Terjesztés)"
+
+#: modules/univention/admin/syntax.py:5528
+msgid "Local (Type: Security)"
+msgstr "Helyi (Típus: Biztonság)"
+
+#: modules/univention/admin/syntax.py:5518
+msgid "Local Group"
+msgstr "Helyi Csoport"
+
+#: modules/univention/admin/syntax.py:1615
+msgid "Locale subdir name"
+msgstr "Helyi alkönyvtár neve"
+
+#: modules/univention/admin/guardian_roles.py:28
+#: modules/univention/admin/guardian_roles.py:40
+msgid ""
+"Lowercase ASCII alphanumeric string with underscores or dashes, in the format "
+"'app:namespace:role' or 'app:namespace:role&app:namespace:context'"
+msgstr ""
+"Kisbetűs ASCII alfanumerikus karakterlánc aláhúzás- vagy kötőjelekkel, "
+"„app:namespace:role” vagy „app:namespace:role&app:namespace:context” formátumban"
+
+#: modules/univention/admin/syntax.py:4731
+msgid "MAC address"
+msgstr "MAC cím"
+
+#: modules/univention/admin/syntax.py:3290
+msgid "Mail server"
+msgstr "Levelezőszerver"
+
+#: modules/univention/admin/syntax.py:614
+#, python-format
+msgid "Malformed syntax %r: %s"
+msgstr "Hibás szintaxis %r: %s"
+
+#: modules/univention/admin/syntax.py:5599
+msgid "Manage auditing and security log"
+msgstr "Naplózási és biztonsági napló kezelése"
+
+#: modules/univention/admin/syntax.py:5606
+msgid "Manage disk shares"
+msgstr "Lemez megosztások kezelése"
+
+#: modules/univention/admin/syntax.py:5604
+msgid "Manage printers"
+msgstr "Nyomtatók kezelése"
+
+#: modules/univention/admin/guardian_roles.py:72
+#: modules/univention/admin/guardian_roles.py:83
+msgid "Manage roles that are used for authorization"
+msgstr "Az engedélyezéshez használt szerepkörök kezelése"
+
+#: modules/univention/admin/syntax.py:5625
+msgid "Managed Node"
+msgstr "Kezelhető csomópont"
+
+#: modules/univention/admin/syntax.py:5315
+msgid "March"
+msgstr "Március"
+
+#: modules/univention/admin/syntax.py:6652
+msgid "Mark this object as hidden"
+msgstr "Jelölje ezt az objektumot rejtettként"
+
+#: modules/univention/admin/syntax.py:6653
+msgid "Mark this object as temporary"
+msgstr "Jelölje meg ezt az objektumot ideiglenesként"
+
+#: modules/univention/admin/syntax.py:5317
+msgid "May"
+msgstr "Május"
+
+#: modules/univention/admin/syntax.py:6528
+msgid ""
+"May only contain letters (except umlauts), digits, space as well as the "
+"characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must "
+"not end with space."
+msgstr ""
+"Csak betűket (ékezetek kivételével), számjegyeket, szóközt, valamint a # ! $ % & "
+"| ^ . ~ _ - karaktereket tartalmazhat. Betűvel vagy számjeggyel kell kezdődnie, "
+"és nem végződhet szóközzel."
+
+#: modules/univention/admin/syntax.py:6585
+msgid "Message that is shown to anonymous visitors when the portal is empty"
+msgstr "Üzenet, amely névtelen látogatóknak jelenik meg, amikor a portál üres"
+
+#: modules/univention/admin/certificate.py:211
+msgid "Misc"
+msgstr "Vegyes"
+
+#: modules/univention/admin/syntax.py:517
+#, python-format
+msgid "Missing argument: %s > %s"
+msgstr "Hiányzó argumentum: %s > %s"
+
+#: modules/univention/admin/syntax.py:3126
+msgid "Missing value!"
+msgstr "Hiányzó érték!"
+
+#: modules/univention/admin/syntax.py:5556
+msgid "Mon"
+msgstr "Hé"
+
+#: modules/univention/admin/syntax.py:5334
+msgid "Monday"
+msgstr "Hétfő"
+
+#: modules/univention/admin/uldap.py:691
+msgid "Moving children is not supported."
+msgstr "A gyermekek költöztetése nem támogatott."
+
+#: modules/univention/admin/types.py:532
+#, python-format
+msgid "Must have at least %d values."
+msgstr "Legalább %d értékkel kell rendelkeznie."
+
+#: modules/univention/admin/syntax.py:6175
+msgid "NFS share"
+msgstr "NFS megosztás"
+
+#: modules/univention/admin/nagios.py:32
+msgid "Nagios Service Settings"
+msgstr "Nagios szolgáltatás beállításai"
+
+#: modules/univention/admin/nagios.py:32
+msgid "Nagios services"
+msgstr "Nagios szolgáltatások"
+
+#: modules/univention/admin/nagios.py:39
+msgid "Nagios support"
+msgstr "Nagios támogatás"
+
+#: modules/univention/admin/syntax.py:4751
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/uexceptions.py:430
+msgid "Need a primary group with samba option to create a user with samba option"
+msgstr ""
+"Samba opcióval rendelkező felhasználó létrehozásához szükséges egy elsődleges "
+"csoport Samba opcióval"
+
+#: modules/univention/admin/syntax.py:4562
+msgid "Network"
+msgstr "Hálózat"
+
+#: modules/univention/admin/uexceptions.py:351
+msgid "Network and IP range are incompatible."
+msgstr "A hálózat és az IP-tartomány nem kompatibilis."
+
+#: modules/univention/admin/syntax.py:6555 modules/univention/admin/syntax.py:6563
+msgid "New tab"
+msgstr "Új lap"
+
+#: modules/univention/admin/uexceptions.py:211
+msgid "Next IP address not found."
+msgstr "A következő IP-cím nem található."
+
+#: modules/univention/admin/syntax.py:4873 modules/univention/admin/syntax.py:4884
+msgid "No"
+msgstr "Nem"
+
+#: modules/univention/admin/syntax.py:5834
+msgid "No Reboot"
+msgstr "Nincs újraindítás"
+
+#: modules/univention/admin/syntax.py:3735
+msgid "No access"
+msgstr "Nincs hozzáférés"
+
+#: modules/univention/admin/uexceptions.py:275
+msgid "No license found."
+msgstr "Nem található licenc."
+
+#: modules/univention/admin/uexceptions.py:57
+msgid "No such object."
+msgstr "Nincs ilyen objektum."
+
+#: modules/univention/admin/uexceptions.py:97
+msgid "No such property."
+msgstr "Nincs ilyen tulajdonság."
+
+#: modules/univention/admin/syntax.py:1221
+#, python-format
+msgid "Non-integer epoch in Debian package version: %s"
+msgstr "Nem egész szám epoch a Debian csomag verziójában: %s"
+
+#: modules/univention/admin/syntax.py:1553
+#, python-format
+msgid "Not Base64 encoded GNU message catalog (.mo) data: %s"
+msgstr "Nem Base64 kódolású GNU üzenetkatalógus (.mo) adat: %s"
+
+#: modules/univention/admin/syntax.py:1498
+#, python-format
+msgid "Not Base64 encoded XML data: %s"
+msgstr "Nem Base64 kódolású XML adat: %s"
+
+#: modules/univention/admin/syntax.py:4962
+msgid "Not OK"
+msgstr "Nem OK"
+
+#: modules/univention/admin/syntax.py:1293 modules/univention/admin/syntax.py:1330
+#: modules/univention/admin/syntax.py:1363 modules/univention/admin/syntax.py:1391
+#: modules/univention/admin/syntax.py:1492 modules/univention/admin/syntax.py:1522
+#: modules/univention/admin/syntax.py:1551
+#, python-format
+msgid "Not a valid Base64 string: %s"
+msgstr "Érvénytelen Base64 karakterlánc: %s"
+
+#: modules/univention/admin/syntax.py:2970 modules/univention/admin/syntax.py:3021
+msgid "Not a valid Date"
+msgstr "Érvénytelen dátum"
+
+#: modules/univention/admin/syntax.py:4477
+msgid "Not a valid FQDN"
+msgstr "Nem érvényes FQDN"
+
+#: modules/univention/admin/syntax.py:2348 modules/univention/admin/syntax.py:2371
+#: modules/univention/admin/syntax.py:2547
+msgid "Not a valid IP address!"
+msgstr "Nem érvényes IP cím!"
+
+#: modules/univention/admin/syntax.py:716 modules/univention/admin/syntax.py:3648
+#: modules/univention/admin/syntax.py:3840
+msgid "Not a valid LDAP DN"
+msgstr "Érvénytelen LDAP DN"
+
+#: modules/univention/admin/syntax.py:3945
+msgid "Not a valid LDAP search filter"
+msgstr "Érvénytelen LDAP keresési szűrő"
+
+#: modules/univention/admin/syntax.py:3752
+msgid "Not a valid e-mail address"
+msgstr "Nem érvényes e-mail cím"
+
+#: modules/univention/admin/syntax.py:2739 modules/univention/admin/syntax.py:2742
+#: modules/univention/admin/syntax.py:2786
+msgid "Not a valid email address!"
+msgstr "Nem érvényes e-mail cím!"
+
+#: modules/univention/admin/syntax.py:1590
+msgid ""
+"Not a valid filename for umcmessagecatalog. It must match \"$language-"
+"$moduleid.mo\" (e.g. \"de-udm-foo.mo\")"
+msgstr ""
+"Érvénytelen fájlnév az umcmessagecatalog számára. Meg kell felelnie a "
+"\"$language-$moduleid.mo\" formátumnak (pl. \"de-udm-foo.mo\")"
+
+#: modules/univention/admin/syntax.py:2413
+msgid "Not a valid hostname or IP address!"
+msgstr "Érvénytelen gazdagépnév vagy IP-cím!"
+
+#: modules/univention/admin/syntax.py:1574
+#, python-format
+msgid "Not a valid locale subdir name: %s"
+msgstr "Érvénytelen helyi alkönyvtár név: %s"
+
+#: modules/univention/admin/syntax.py:2447 modules/univention/admin/syntax.py:2479
+msgid "Not a valid netmask!"
+msgstr "Érvénytelen hálózati maszk!"
+
+#: modules/univention/admin/syntax.py:2500
+msgid "Not a valid network!"
+msgstr "Nem érvényes hálózat!"
+
+#: modules/univention/admin/syntax.py:3379 modules/univention/admin/syntax.py:3406
+msgid "Not a valid time format"
+msgstr "Érvénytelen időformátum"
+
+#: modules/univention/admin/uexceptions.py:263
+msgid "Not all needed information was entered."
+msgstr "Nincs minden szükséges információ megadva."
+
+#: modules/univention/admin/syntax.py:2625
+msgid "Not an absolute path!"
+msgstr "Nem abszolút útvonal!"
+
+#: modules/univention/admin/syntax.py:5323
+msgid "November"
+msgstr "November"
+
+#: modules/univention/admin/syntax.py:4961
+msgid "OK"
+msgstr "OK"
+
+#: modules/univention/admin/policy.py:29
+msgid "Object"
+msgstr "Objektum"
+
+#: modules/univention/admin/uexceptions.py:49
+msgid "Object exists."
+msgstr "Az objektum létezik."
+
+#: modules/univention/admin/syntax.py:5322
+msgid "October"
+msgstr "Október"
+
+#: modules/univention/admin/uexceptions.py:395
+msgid "Only existing groups are allowed."
+msgstr "Csak meglévő csoportok engedélyezettek."
+
+#: modules/univention/admin/uexceptions.py:399
+msgid "Only existing users are allowed."
+msgstr "Csak meglévő felhasználók engedélyezettek."
+
+#: modules/univention/admin/uexceptions.py:391
+msgid "Only printer objects can be members of a printer group."
+msgstr "Csak nyomtatóobjektumok lehetnek tagjai egy nyomtatócsoportnak."
+
+#: modules/univention/admin/syntax.py:2162
+msgid "Only the first letter of the username may be uppercase!"
+msgstr "A felhasználónévnek csak az első betűje lehet nagybetű!"
+
+#: modules/univention/admin/syntax.py:3701
+msgid "Option Pattern"
+msgstr "Opciós minta"
+
+#: modules/univention/admin/uexceptions.py:363
+msgid "Overlapping IP ranges"
+msgstr "Átfedő IP tartományok"
+
+#: modules/univention/admin/certificate.py:34
+msgid "PKI certificate (DER format)"
+msgstr "PKI tanúsítvány (DER formátum)"
+
+#: modules/univention/admin/syntax.py:3727
+msgid "POP3"
+msgstr "POP3"
+
+#: modules/univention/admin/uexceptions.py:343
+msgid "Password has been used before. Please choose a different one."
+msgstr "Ezt a jelszót már korábban használták. Kérjük, válassz egy másikat."
+
+#: modules/univention/admin/uexceptions.py:371
+#: modules/univention/admin/uexceptions.py:375
+msgid "Password policy error: "
+msgstr "Jelszó házirend hiba: "
+
+#: modules/univention/admin/syntax.py:2221
+msgid "Path may not contain double quotes (\")!"
+msgstr "Az elérési út nem tartalmazhat idézőjeleket (\")!"
+
+#: modules/univention/admin/syntax.py:2226
+msgid "Path must begin with \"/\"!"
+msgstr "Az elérési útnak \"/\" karakterrel kell kezdődnie!"
+
+#: modules/univention/admin/syntax.py:2229
+#, python-format
+msgid "Path must not start with \"/%s\" !"
+msgstr "Az elérési út nem kezdődhet \"/%s\"-val!"
+
+#: modules/univention/admin/uexceptions.py:65
+msgid "Permission denied."
+msgstr "Hozzáférés megtagadva."
+
+#: modules/univention/admin/syntax.py:3369
+msgid "Port"
+msgstr "Port"
+
+#: modules/univention/admin/syntax.py:3737
+msgid "Post"
+msgstr "Bejegyzés"
+
+#: modules/univention/admin/syntax.py:3356
+msgid "Postal code"
+msgstr "Irányítószám"
+
+#: modules/univention/admin/syntax.py:5622
+msgid "Primary Directory Node"
+msgstr "Elsődleges könyvtárcsomópont"
+
+#: modules/univention/admin/syntax.py:4543 modules/univention/admin/syntax.py:4555
+msgid "Primary Group"
+msgstr "Elsődleges csoport"
+
+#: modules/univention/admin/uexceptions.py:387
+msgid "Printer groups with quota support can only have members with quota support."
+msgstr ""
+"A kvóta támogatással rendelkező nyomtatócsoportoknak csak kvóta támogatással "
+"rendelkező tagjai lehetnek."
+
+#: modules/univention/admin/syntax.py:3290 modules/univention/admin/syntax.py:3369
+msgid "Priority"
+msgstr "Prioritás"
+
+#: modules/univention/admin/uexceptions.py:187
+msgid "Prohibited username."
+msgstr "Tiltott felhasználónév."
+
+#: modules/univention/admin/syntax.py:3312 modules/univention/admin/syntax.py:6467
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: modules/univention/admin/certificate.py:35
+msgid "Public key infrastructure - certificate"
+msgstr "Nyilvános kulcsú infrastruktúra - tanúsítvány"
+
+#: modules/univention/admin/certificate.py:24
+#: modules/univention/admin/syntax.py:5840
+msgid "Public key infrastructure account"
+msgstr "Nyilvános kulcsú infrastruktúra-fiók"
+
+#: modules/univention/admin/syntax.py:3736
+msgid "Read"
+msgstr "Olvasás"
+
+#: modules/univention/admin/syntax.py:2632
+msgid "Redirect all e-mails to forward addresses"
+msgstr "Az összes e-mail átirányítása a továbbítási címekre"
+
+#: modules/univention/admin/syntax.py:5624
+msgid "Replica Directory Node"
+msgstr "Replika könyvtárcsomópont"
+
+#: modules/univention/admin/policy.py:38
+msgid "Required object class"
+msgstr "Kötelező objektumosztály"
+
+#: modules/univention/admin/syntax.py:5602
+msgid "Restore files and directories"
+msgstr "Fájlok és könyvtárak visszaállítása"
+
+#: modules/univention/admin/syntax.py:4052
+msgid "Right of primary display"
+msgstr "Az elsődleges kijelző jobb oldalán"
+
+#: modules/univention/admin/guardian_roles.py:39
+msgid "Roles used by Guardian for access permissions"
+msgstr "A Gondviselő által a hozzáférési jogosultságokhoz használt szerepkörök"
+
+#: modules/univention/admin/guardian_roles.py:27
+msgid ""
+"Roles used by Guardian for access permissions, these roles are passed to the "
+"members of this group"
+msgstr ""
+"A Gondviselő által a hozzáférési jogosultságokhoz használt szerepkörök, ezek a "
+"szerepkörök átadódnak a csoport tagjainak"
+
+#: modules/univention/admin/guardian_roles.py:46
+#: modules/univention/admin/guardian_roles.py:47
+msgid ""
+"Roles used by Guardian for access permissions. Inherited by group membership"
+msgstr ""
+"A Gondviselő által a hozzáférési jogosultságokhoz használt szerepkörök. A "
+"csoporttagok öröklik"
+
+#: modules/univention/admin/syntax.py:6554 modules/univention/admin/syntax.py:6562
+msgid "Same tab"
+msgstr "Ugyanaz a lap"
+
+#: modules/univention/admin/syntax.py:5561
+msgid "Sat"
+msgstr "Szo"
+
+#: modules/univention/admin/syntax.py:5339
+msgid "Saturday"
+msgstr "Szombat"
+
+#: modules/univention/admin/syntax.py:5321
+msgid "September"
+msgstr "Szeptember"
+
+#: modules/univention/admin/certificate.py:177
+msgid "Serial"
+msgstr "Sorozatszám"
+
+#: modules/univention/admin/syntax.py:3369
+msgid "Server"
+msgstr "Szerver"
+
+#: modules/univention/admin/syntax.py:3311
+msgid "Service"
+msgstr "Szolgáltatás"
+
+#: modules/univention/admin/syntax.py:6356 modules/univention/admin/syntax.py:6369
+#: modules/univention/admin/syntax.py:6382
+msgid "Soft limit (pages)"
+msgstr "Enyhe korlát (oldalak)"
+
+#: modules/univention/admin/syntax.py:2121
+msgid "Spaces are not allowed in the username!"
+msgstr "A felhasználónévben nem lehet szóköz!"
+
+#: modules/univention/admin/syntax.py:3356
+msgid "Street"
+msgstr "Utca"
+
+#: modules/univention/admin/certificate.py:196
+msgid "Subject"
+msgstr "Tárgy"
+
+#: modules/univention/admin/certificate.py:137
+msgid "Subject Common Name"
+msgstr "Tárgy általános neve"
+
+#: modules/univention/admin/certificate.py:97
+msgid "Subject Country"
+msgstr "Tárgy országa"
+
+#: modules/univention/admin/certificate.py:113
+msgid "Subject Location"
+msgstr "Tárgy helye"
+
+#: modules/univention/admin/certificate.py:145
+msgid "Subject Mail"
+msgstr "Tárgy E-mail"
+
+#: modules/univention/admin/certificate.py:121
+msgid "Subject Organisation"
+msgstr "Tárgy Szervezet"
+
+#: modules/univention/admin/certificate.py:129
+msgid "Subject Organisational Unit"
+msgstr "Tárgy Szervezeti egység"
+
+#: modules/univention/admin/certificate.py:105
+msgid "Subject State"
+msgstr "Tárgy Állam"
+
+#: modules/univention/admin/syntax.py:5555
+msgid "Sun"
+msgstr "Vas"
+
+#: modules/univention/admin/syntax.py:5340
+msgid "Sunday"
+msgstr "Vasárnap"
+
+#: modules/univention/admin/syntax.py:5600
+msgid "Take ownership of files or other objects"
+msgstr "Fájlok vagy más objektumok tulajdonjogának átvétele"
+
+#: modules/univention/admin/syntax.py:6213
+msgid "Text"
+msgstr "Szöveg"
+
+#: modules/univention/admin/uexceptions.py:183
+msgid "The AD group type can not be changed from domain local to global."
+msgstr "Az AD-csoport típusa nem változtatható meg helyi tartományról globálisra."
+
+#: modules/univention/admin/uexceptions.py:171
+msgid ""
+"The AD group type can not be changed from domain local to universal, because the "
+"group has another domain local group as member."
+msgstr ""
+"Az AD-csoport típusa nem változtatható meg helyi doménről univerzálisra, mert a "
+"csoportnak van egy másik helyi doméncsoportja is tagként."
+
+#: modules/univention/admin/uexceptions.py:179
+msgid "The AD group type can not be changed from global to domain local."
+msgstr "Az AD-csoport típusa nem változtatható globálisról domain-helyi típusúra."
+
+#: modules/univention/admin/uexceptions.py:167
+msgid ""
+"The AD group type can not be changed from global to universal, because the group "
+"is member of another global group."
+msgstr ""
+"Az AD-csoport típusa nem változtatható globálisról univerzálisra, mert a csoport "
+"egy másik globális csoport tagja."
+
+#: modules/univention/admin/uexceptions.py:159
+msgid "The AD group type can not be changed from type local to any other type."
+msgstr "Az AD csoport típusa nem változtatható meg helyi típusról más típusra."
+
+#: modules/univention/admin/uexceptions.py:175
+msgid ""
+"The AD group type can not be changed from universal to global, because the group "
+"has another universal group as member."
+msgstr ""
+"Az AD csoport típusa nem változtatható univerzálisról globálisra, mert a "
+"csoportnak van egy másik univerzális csoportja tagként."
+
+#: modules/univention/admin/uexceptions.py:163
+msgid "The AD group type can not be changed to type local."
+msgstr "Az AD csoport típusa nem változtatható helyi típusra."
+
+#: modules/univention/admin/uexceptions.py:199
+msgid ""
+"The DHCP entry for this host should contain the zone DN, the IP address and the "
+"MAC address."
+msgstr ""
+"Ennek a gazdagépnek a DHCP bejegyzésében szerepelnie kell a zóna LDAP-DN-jének, "
+"az IP címnek és a MAC címnek."
+
+#: modules/univention/admin/uexceptions.py:251
+msgid "The DHCP entry was not found."
+msgstr "A DHCP-bejegyzés nem található."
+
+#: modules/univention/admin/uexceptions.py:203
+msgid ""
+"The DNS alias entry for this host should contain the zone name, the alias zone "
+"container DN and the alias."
+msgstr ""
+"A gazdagép DNS-alias bejegyzésének tartalmaznia kell a zóna nevét, az alias zóna "
+"konténer DN-jét és az aliast."
+
+#: modules/univention/admin/uexceptions.py:255
+msgid "The DNS entry was not found"
+msgstr "A DNS bejegyzés nem található"
+
+#: modules/univention/admin/uexceptions.py:418
+msgid ""
+"The DNS forward entry could not be created. Please remove existing alias records "
+"or comparable DNS objects with the same name as this host from the forward zone."
+msgstr ""
+"A DNS továbbítási bejegyzés nem hozható létre. Kérjük, távolítsd el a "
+"továbbítási zónából a meglévő aliasrekordokat vagy a gazdagép nevével megegyező "
+"nevű, hasonló DNS-objektumokat."
+
+#: modules/univention/admin/uexceptions.py:259
+msgid "The FQDN of this object is too long, it must have less than 64 characters."
+msgstr "Az objektum FQDN-je túl hosszú, 64 karakternél rövidebbnek kell lennie."
+
+#: modules/univention/admin/uexceptions.py:359
+msgid "The IP range contains its broadcast address. That is not permitted!"
+msgstr "Az IP-tartomány tartalmazza a broadcast címét. Ez nem megengedett!"
+
+#: modules/univention/admin/uexceptions.py:355
+msgid "The IP range contains its network address. That is not permitted!"
+msgstr "Az IP-tartomány tartalmazza a hálózati címét. Ez nem megengedett!"
+
+#: modules/univention/admin/types.py:334
+msgid "The LDAP DN is invalid."
+msgstr "Az LDAP DN érvénytelen."
+
+#: modules/univention/admin/uexceptions.py:219
+msgid "The MAC address is already in use."
+msgstr "A MAC-cím már foglalt."
+
+#: modules/univention/admin/allocators.py:185
+#: modules/univention/admin/allocators.py:243
+#: modules/univention/admin/locking.py:89 modules/univention/admin/locking.py:120
+#, python-format
+msgid "The attribute %r could not get locked."
+msgstr "A(z) %r attribútum zárolása sikertelen."
+
+#: modules/univention/admin/syntax.py:2776
+#, python-format
+msgid ""
+"The domain part of the following mail addresses is not in list of configured "
+"mail domains: %s"
+msgstr ""
+"A következő levelezési címek domain része nem szerepel a konfigurált levelezési "
+"domain-ek listájában: %s"
+
+#: modules/univention/admin/syntax.py:2832
+#, python-format
+msgid ""
+"The domain part of the primary mail address is not in list of configured mail "
+"domains: %s"
+msgstr ""
+"Az elsődleges levelezési cím domain része nem szerepel a konfigurált levelezési "
+"domain-ek listájában: %s"
+
+#: modules/univention/admin/uexceptions.py:155
+msgid "The gidNumber is already in use as a uidNumber"
+msgstr "A gidNumber már használatban van uidNumber-ként"
+
+#: modules/univention/admin/uexceptions.py:215
+msgid "The given IP address is not within the range of the selected network"
+msgstr "A megadott IP-cím nem tartozik a kiválasztott hálózat tartományába"
+
+#: modules/univention/admin/syntax.py:2875
+msgid "The given date does not conform to iso8601, example: \"2009-01-01\"."
+msgstr ""
+"A megadott dátum nem felel meg az ISO8601 szabványnak, például: \"2009-01-01\"."
+
+#: modules/univention/admin/uexceptions.py:147
+msgid "The groupname is already in use"
+msgstr "A csoportnév már használatban van"
+
+#: modules/univention/admin/uexceptions.py:145
+msgid "The groupname is already in use as groupname or as username"
+msgstr "A csoportnév már használatban van csoportnévként vagy felhasználónévként"
+
+#: modules/univention/admin/uexceptions.py:283
+msgid "The license is expired."
+msgstr "A licenc lejárt."
+
+#: modules/univention/admin/uexceptions.py:287
+msgid "The license is invalid for the current base DN."
+msgstr "A licenc érvénytelen a jelenlegi alap DN-hez."
+
+#: modules/univention/admin/uexceptions.py:279
+msgid "The license is invalid."
+msgstr "A licenc érvénytelen."
+
+#: modules/univention/admin/uexceptions.py:223
+msgid "The mail address is already in use."
+msgstr "A e-mail cím már használatban van."
+
+#: modules/univention/admin/syntax.py:3066
+msgid ""
+"The name of a reverse zone for IPv4 consists of the reversed subnet address "
+"followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 in "
+"nibble format followed by .ip6.arpa (example: "
+"\"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")"
+msgstr ""
+"IPv4 esetén a fordított zóna neve a fordított alhálózati címből és az .in-"
+"addr.arpa kiterjesztésből áll (például: \"0.168.192.in-addr.arpa\"), IPv6 esetén "
+"pedig egy nibble formátumú zónából és az .ip6.arpa kiterjesztésből (például: "
+"\"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")"
+
+#: modules/univention/admin/uexceptions.py:434
+msgid "The object type of this object differs from the specified object type."
+msgstr "Az objektum típusa eltér a megadott objektumtípustól."
+
+#: modules/univention/admin/syntax.py:3612
+#, python-format
+msgid ""
+"The package \"%s\" can not be removed as it would uninstall necessary components."
+msgstr ""
+"A(z) „%s” csomag nem távolítható el, mivel az a szükséges összetevőket is "
+"eltávolítaná."
+
+#: modules/univention/admin/syntax.py:2262
+#, python-format
+msgid "The password is too short, at least %d characters needed."
+msgstr "A jelszó túl rövid, legalább %d karakter szükséges."
+
+#: modules/univention/admin/uexceptions.py:347
+msgid "The password is too short, at least 8 character!"
+msgstr "A jelszó túl rövid, legalább 8 karakter!"
+
+#: modules/univention/admin/uexceptions.py:207
+msgid "The provided DNS information are invalid."
+msgstr "A megadott DNS információk érvénytelenek."
+
+#: modules/univention/admin/uexceptions.py:140
+msgid "The relative ID (SAMBA) is already in use."
+msgstr "A relatív azonosító (SAMBA) már használatban van."
+
+#: modules/univention/admin/uexceptions.py:247
+msgid "The requested group not be found."
+msgstr "A kért csoport nem található."
+
+#: modules/univention/admin/syntax.py:3343
+msgid ""
+"The reversed host name for IPv4 consists of the reversed host address (example: "
+"\"4.3\") or for IPv6 in nibble format (example: "
+"\"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
+msgstr ""
+"Az IPv4 fordított gazdagépneve a fordított gazdagépcímből áll (például: „4.3”), "
+"az IPv6 esetében pedig nibble formátumban (például: "
+"„8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0”)."
+
+#: modules/univention/admin/uexceptions.py:81
+msgid "The specified size limit for the LDAP search has been exceeded."
+msgstr "Túllépte az LDAP kereséshez megadott méretkorlátot."
+
+#: modules/univention/admin/uexceptions.py:77
+msgid "The specified timeout for the LDAP search has been exceeded."
+msgstr "Az LDAP kereséshez megadott időkorlát túllépve."
+
+#: modules/univention/admin/uexceptions.py:151
+msgid "The uidNumber is already in use as a gidNumber"
+msgstr "Az uidNumber már használatban van gidNumber-ként"
+
+#: modules/univention/admin/uexceptions.py:136
+msgid "The username is already in use"
+msgstr "A felhasználónév már használatban van"
+
+#: modules/univention/admin/uexceptions.py:134
+msgid "The username is already in use as username or as groupname"
+msgstr ""
+"A felhasználónév már használatban van felhasználónévként vagy csoportnévként"
+
+#: modules/univention/admin/blocklist.py:123
+#, python-format
+msgid "The value \"%(value)s\" is blocked for the property \"%(prop)s\"."
+msgstr "A(z) „%(value)s” érték blokkolva van a(z) „%(prop)s” tulajdonsághoz."
+
+#: modules/univention/admin/syntax.py:1078
+msgid "The value must be a valid UUID1 or UUID4 string."
+msgstr "Az értéknek érvényes UUID1 vagy UUID4 karakterláncnak kell lennie."
+
+#: modules/univention/admin/syntax.py:1060 modules/univention/admin/syntax.py:1106
+#, python-format
+msgid "The value must not be longer than %d characters."
+msgstr "Az érték nem lehet hosszabb, mint %d karakter."
+
+#: modules/univention/admin/uldap.py:137
+msgid "There was no LDAP base specified."
+msgstr "Nem volt megadva LDAP bázis."
+
+#: modules/univention/admin/uexceptions.py:438
+msgid "There was no valid kerberos realm found."
+msgstr "Nem található érvényes kerberos tartomány."
+
+#: modules/univention/admin/uexceptions.py:239
+msgid "This is a primary group."
+msgstr "Ez egy elsődleges csoport."
+
+#: modules/univention/admin/syntax.py:3559
+msgid ""
+"This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-"
+"f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)"
+msgstr ""
+"Ez nem érvényes MAC-cím (érvényes példák: 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, "
+"86f5d1f56b3e, 86f5.d1f5.6b3e)"
+
+#: modules/univention/admin/syntax.py:2323
+msgid "This is not a valid hostname."
+msgstr "Ez nem érvényes gazdagépnév."
+
+#: modules/univention/admin/syntax.py:6655
+msgid "This object is related to a Docker App container"
+msgstr "Ez az objektum egy Docker alkalmazástárolóhoz kapcsolódik"
+
+#: modules/univention/admin/syntax.py:6656
+msgid "This object is synchronized from Active Directory"
+msgstr "Ez az objektum szinkronizálva van az Active Directory-ból"
+
+#: modules/univention/admin/uexceptions.py:379
+msgid "This operation is not allowed on this object."
+msgstr "Ez a művelet nem engedélyezett ezen az objektumon."
+
+#: modules/univention/admin/policy.py:81
+msgid "This policy applies only to objects which matches this LDAP filter."
+msgstr ""
+"Ez a házirend csak azokra az objektumokra vonatkozik, amelyek megfelelnek ennek "
+"az LDAP szűrőnek."
+
+#: modules/univention/admin/syntax.py:6990
+msgid "This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ."
+msgstr ""
+"Ennek az időbélyegnek UTC-ben kell lennie, és a következő formátumot kell "
+"követnie: ÉÉÉÉHHNNÓÓppssZ."
+
+#: modules/univention/admin/syntax.py:5559
+msgid "Thu"
+msgstr "Csü"
+
+#: modules/univention/admin/syntax.py:5337
+msgid "Thursday"
+msgstr "Csütörtök"
+
+#: modules/univention/admin/syntax.py:6974
+msgid "Time"
+msgstr "Idő"
+
+#: modules/univention/admin/types.py:433
+msgid "Time does not match format \"%H:%M:%S\"."
+msgstr "Az idő nem egyezik a következő formátummal: \"%H:%M:%S\"."
+
+#: modules/univention/admin/syntax.py:6974
+msgid "Timezone"
+msgstr "Időzóna"
+
+#: modules/univention/admin/syntax.py:3532
+msgid "Token-Ring"
+msgstr "Token-Ring"
+
+#: modules/univention/admin/uexceptions.py:335
+msgid "Too many DVS clients"
+msgstr "Túl sok DVS kliens"
+
+#: modules/univention/admin/uexceptions.py:331
+msgid "Too many DVS users"
+msgstr "Túl sok DVS felhasználó"
+
+#: modules/univention/admin/uexceptions.py:303
+msgid "Too many client accounts"
+msgstr "Túl sok ügyfélfiók"
+
+#: modules/univention/admin/uexceptions.py:327
+msgid "Too many corporate clients"
+msgstr "Túl sok vállalati ügyfél"
+
+#: modules/univention/admin/uexceptions.py:307
+msgid "Too many desktop accounts"
+msgstr "Túl sok asztali fiók"
+
+#: modules/univention/admin/uexceptions.py:311
+msgid "Too many groupware accounts"
+msgstr "Túl sok csoportmunka fiók"
+
+#: modules/univention/admin/uexceptions.py:323
+msgid "Too many managed clients"
+msgstr "Túl sok kezelt ügyfél"
+
+#: modules/univention/admin/uexceptions.py:319
+msgid "Too many servers"
+msgstr "Túl sok szerver"
+
+#: modules/univention/admin/uexceptions.py:299
+msgid "Too many user accounts"
+msgstr "Túl sok felhasználói fiók"
+
+#: modules/univention/admin/uexceptions.py:315
+msgid "Too many users"
+msgstr "Túl sok felhasználó"
+
+#: modules/univention/admin/syntax.py:6239
+msgid "Translated group name"
+msgstr "Lefordított csoportnév"
+
+#: modules/univention/admin/syntax.py:6227
+msgid "Translated long description"
+msgstr "Lefordított hosszú leírás"
+
+#: modules/univention/admin/syntax.py:6221
+msgid "Translated short description"
+msgstr "Lefordított rövid leírás"
+
+#: modules/univention/admin/syntax.py:6233
+msgid "Translated tab name"
+msgstr "Lefordított lapnév"
+
+#: modules/univention/admin/syntax.py:4901 modules/univention/admin/syntax.py:4925
+#: modules/univention/admin/syntax.py:4944
+msgid "True"
+msgstr "Igaz"
+
+#: modules/univention/admin/syntax.py:5557
+msgid "Tue"
+msgstr "Ke"
+
+#: modules/univention/admin/syntax.py:5335
+msgid "Tuesday"
+msgstr "Kedd"
+
+#: modules/univention/admin/syntax.py:3580
+msgid "Type"
+msgstr "Típus"
+
+#: modules/univention/admin/syntax.py:5805
+msgid "UDM module"
+msgstr "UDM modul"
+
+#: modules/univention/admin/syntax.py:1628
+msgid "UMCMessageCatalogFilename"
+msgstr "UMCMessageCatalogFilename"
+
+#: modules/univention/admin/syntax.py:5534
+msgid "Universal (Type: Distribution)"
+msgstr "Univerzális (Típus: Elosztó)"
+
+#: modules/univention/admin/syntax.py:5530
+msgid "Universal (Type: Security)"
+msgstr "Univerzális (Típus: Biztonság)"
+
+#: modules/univention/admin/syntax.py:6561
+msgid "Use default of portal"
+msgstr "A portál alapértelmezett beállításainak használata"
+
+#: modules/univention/admin/syntax.py:3778 modules/univention/admin/syntax.py:3794
+#: modules/univention/admin/syntax.py:6382
+msgid "User"
+msgstr "Felhasználó"
+
+#: modules/univention/admin/syntax.py:2129 modules/univention/admin/syntax.py:2169
+msgid "Username must only contain numbers, letters and dots!"
+msgstr "A felhasználónév csak betűket, számokat és pontokat tartalmazhat!"
+
+#: modules/univention/admin/syntax.py:123
+msgid "Usernames must not consist only of numbers!"
+msgstr "A felhasználónév nem állhat csak számokból!"
+
+#: modules/univention/admin/certificate.py:153
+msgid "Valid from"
+msgstr "Érvényesség kezdete"
+
+#: modules/univention/admin/certificate.py:161
+msgid "Valid until"
+msgstr "Lejárati dátum"
+
+#: modules/univention/admin/certificate.py:208
+msgid "Validity"
+msgstr "Érvényesség"
+
+#: modules/univention/admin/syntax.py:3277 modules/univention/admin/syntax.py:4751
+#: modules/univention/admin/syntax.py:5893
+msgid "Value"
+msgstr "Érték"
+
+#: modules/univention/admin/syntax.py:3964
+msgid "Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")"
+msgstr ""
+"Az érték két egész számból áll, amelyeket egy \"-\" jel választ el egymástól "
+"(pl. \"30-70\")"
+
+#: modules/univention/admin/syntax.py:3957
+msgid ""
+"Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")"
+msgstr ""
+"Az érték két egész számból áll, amelyeket egy „x” választ el egymástól (pl. "
+"„1024x768”)."
+
+#: modules/univention/admin/uexceptions.py:117
+msgid "Value is required."
+msgstr "Kötelező érték."
+
+#: modules/univention/admin/uexceptions.py:109
+msgid "Value may not change."
+msgstr "Az érték nem változhat."
+
+#: modules/univention/admin/syntax.py:6407
+msgid ""
+"Value may not contain other than numbers, letters, underscore (\"_\") and minus "
+"(\"-\")!"
+msgstr ""
+"Az érték nem tartalmazhat mást, mint számokat, betűket, aláhúzásjelet (\"_\") és "
+"mínuszjelet (\"-\")!"
+
+#: modules/univention/admin/syntax.py:1836
+msgid "Value may not contain whitespace or exclamation mark !"
+msgstr "Az érték nem tartalmazhat szóközt vagy felkiáltójelet!"
+
+#: modules/univention/admin/syntax.py:1741
+msgid "Value must be 0 or 1"
+msgstr "Az értéknek 0-nak vagy 1-nek kell lennie"
+
+#: modules/univention/admin/syntax.py:1453
+msgid "Value must be Base64 encoded jpeg."
+msgstr "Az értéknek Base64 kódolású jpeg formátumúnak kell lennie."
+
+#: modules/univention/admin/syntax.py:1678
+msgid "Value must be a number!"
+msgstr "Az értéknek számnak kell lennie!"
+
+#: modules/univention/admin/syntax.py:1810
+msgid ""
+"Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!"
+msgstr ""
+"Az értéknek egész számnak kell lennie, amelyet a következők egyike követhet: GB, "
+"MB, KB, B, vagy semmi (egyenlő B-vel)!"
+
+#: modules/univention/admin/syntax.py:1334 modules/univention/admin/syntax.py:1496
+#, python-format
+msgid "Value must be bzip2 compressed and Base64 encoded: %s"
+msgstr "Az értéknek bzip2 tömörítésűnek és Base64 kódolásúnak kell lennie: %s"
+
+#: modules/univention/admin/syntax.py:1297
+#, python-format
+msgid "Value must be gzip compressed and Base64 encoded: %s"
+msgstr "Az értéknek gzip tömörítésűnek és Base64 kódolásúnak kell lennie: %s"
+
+#: modules/univention/admin/types.py:167
+#, python-format
+msgid "Value must be of type %s not %s."
+msgstr "Az értéknek %s, nem pedig %s típusúnak kell lennie."
+
+#: modules/univention/admin/syntax.py:1921
+msgid ""
+"Value must not contain anything other than digits, letters or dots, must be at "
+"least 2 characters long, and start and end with a digit or letter!"
+msgstr ""
+"Az érték nem tartalmazhat mást, mint számjegyeket, betűket vagy pontokat, "
+"legalább 2 karakter hosszúnak kell lennie, és számjeggyel vagy betűvel kell "
+"kezdődnie és végződnie!"
+
+#: modules/univention/admin/syntax.py:1974
+msgid ""
+"Value must not contain anything other than digits, letters, dots or spaces, must "
+"be at least 2 characters long, and start and end with a digit or letter!"
+msgstr ""
+"Az érték nem tartalmazhat mást, mint számjegyeket, betűket, pontokat vagy "
+"szóközöket, legalább 2 karakter hosszúnak kell lennie, és számjeggyel vagy "
+"betűvel kell kezdődnie és végződnie!"
+
+#: modules/univention/admin/syntax.py:1996
+msgid ""
+"Value must not contain anything other than digits, letters, dots, brackets, "
+"slash, plus, or minus!"
+msgstr ""
+"Az érték nem tartalmazhat mást, mint számjegyeket, betűket, pontokat, szögletes "
+"zárójeleket, perjelet, pluszjelet vagy mínuszjelet!"
+
+#: modules/univention/admin/syntax.py:2077
+msgid ""
+"Value must not contain anything other than digits, letters, dots, dash or "
+"underscore, must be at least 2 characters long, must start and end with a digit "
+"or letter, and must not be admin!"
+msgstr ""
+"Az érték nem tartalmazhat mást, mint számjegyeket, betűket, pontokat, kötőjelet "
+"vagy aláhúzásjelet, legalább 2 karakter hosszúnak kell lennie, számjeggyel vagy "
+"betűvel kell kezdődnie és végződnie, és nem lehet adminisztratív!"
+
+#: modules/univention/admin/syntax.py:3465
+#, python-format
+msgid "Value out of bounds (%d - %d seconds)"
+msgstr "Érték a megengedett határokon kívül (%d - %d másodperc)"
+
+#: modules/univention/admin/uexceptions.py:121
+msgid "Values do not match."
+msgstr "Az értékek nem egyeznek."
+
+#: modules/univention/admin/syntax.py:5893
+msgid "Variable"
+msgstr "Változó"
+
+#: modules/univention/admin/certificate.py:169
+msgid "Version"
+msgstr "Verzió"
+
+#: modules/univention/admin/syntax.py:6537
+msgid "Visible for Admins only"
+msgstr "Csak adminisztrátorok számára látható"
+
+#: modules/univention/admin/syntax.py:6538
+msgid "Visible for authenticated users"
+msgstr "Látható a hitelesített felhasználók számára"
+
+#: modules/univention/admin/syntax.py:6539
+msgid "Visible for everyone"
+msgstr "Mindenki számára látható"
+
+#: modules/univention/admin/syntax.py:5558
+msgid "Wed"
+msgstr "Sze"
+
+#: modules/univention/admin/syntax.py:5336
+msgid "Wednesday"
+msgstr "Szerda"
+
+#: modules/univention/admin/syntax.py:3369
+msgid "Weighting"
+msgstr "Súlyozás"
+
+#: modules/univention/admin/syntax.py:5519
+msgid "Well-Known Group"
+msgstr "Jól ismert csoport"
+
+#: modules/univention/admin/syntax.py:6547
+msgid "White"
+msgstr "Fehér"
+
+#: modules/univention/admin/syntax.py:3739
+msgid "Write"
+msgstr "Írás"
+
+#: modules/univention/admin/syntax.py:511 modules/univention/admin/syntax.py:6479
+#, python-format
+msgid "Wrong argument count %d; expected %d..%d"
+msgstr "Hibás argumentumszám: %d; a várt érték: %d..%d"
+
+#: modules/univention/admin/syntax.py:4872 modules/univention/admin/syntax.py:4883
+msgid "Yes"
+msgstr "Igen"
+
+#: modules/univention/admin/syntax.py:4702
+msgid "Zone of existing host record"
+msgstr "Meglévő gazdagéprekord zónája"
+
+#: modules/univention/admin/syntax.py:4979
+msgid "ad-hoc"
+msgstr "eseti"
+
+#: modules/univention/admin/syntax.py:5312 modules/univention/admin/syntax.py:5333
+#: modules/univention/admin/syntax.py:5349 modules/univention/admin/syntax.py:5389
+#: modules/univention/admin/syntax.py:5453
+msgid "all"
+msgstr "összes"
+
+#: modules/univention/admin/syntax.py:4784 modules/univention/admin/syntax.py:4850
+msgid "allow"
+msgstr "engedélyez"
+
+#: modules/univention/admin/syntax.py:5668
+msgid "asynchronous"
+msgstr "aszinkron"
+
+#: modules/univention/admin/syntax.py:6936
+msgid "cisco"
+msgstr "cisco"
+
+#: modules/univention/admin/syntax.py:6937
+msgid "computone"
+msgstr "számítógép"
+
+#: modules/univention/admin/syntax.py:1871
+msgid "contacts"
+msgstr "kapcsolatok"
+
+#: modules/univention/admin/syntax.py:3392
+msgid "days"
+msgstr "nap"
+
+#: modules/univention/admin/syntax.py:4785 modules/univention/admin/syntax.py:4851
+msgid "deny"
+msgstr "megtagad"
+
+#: modules/univention/admin/syntax.py:1870
+msgid "events"
+msgstr "események"
+
+#: modules/univention/admin/syntax.py:3391
+msgid "hours"
+msgstr "óra"
+
+#: modules/univention/admin/syntax.py:4786
+msgid "ignore"
+msgstr "kihagy"
+
+#: modules/univention/admin/syntax.py:4980
+msgid "interim"
+msgstr "ideiglenes"
+
+#: modules/univention/admin/syntax.py:1874
+msgid "journals"
+msgstr "naplók"
+
+#: modules/univention/admin/syntax.py:6939
+msgid "juniper"
+msgstr "boróka"
+
+#: modules/univention/admin/syntax.py:6938
+msgid "livingston"
+msgstr "livingston"
+
+#: modules/univention/admin/syntax.py:1869
+msgid "mails"
+msgstr "levelek"
+
+#: modules/univention/admin/syntax.py:6940
+msgid "max40xx"
+msgstr "max40xx"
+
+#: modules/univention/admin/syntax.py:3390
+msgid "minutes"
+msgstr "perc"
+
+#: modules/univention/admin/syntax.py:531
+#, python-format
+msgid "missing argument %s"
+msgstr "hiányzó argumentum %s"
+
+#: modules/univention/admin/syntax.py:6941
+msgid "multitech"
+msgstr "multitech"
+
+#: modules/univention/admin/syntax.py:6942
+msgid "netserver"
+msgstr "hálózati szerver"
+
+#: modules/univention/admin/syntax.py:4981
+msgid "none"
+msgstr "nincs"
+
+#: modules/univention/admin/syntax.py:1873
+msgid "notes"
+msgstr "megjegyzések"
+
+#: modules/univention/admin/syntax.py:4991
+msgid "off"
+msgstr "ki"
+
+#: modules/univention/admin/syntax.py:4990
+msgid "on"
+msgstr "be"
+
+#: modules/univention/admin/syntax.py:6935
+msgid "other"
+msgstr "egyéb"
+
+#: modules/univention/admin/syntax.py:6943
+msgid "pathras"
+msgstr "pathras"
+
+#: modules/univention/admin/syntax.py:6944
+msgid "patton"
+msgstr "patton"
+
+#: modules/univention/admin/syntax.py:6945
+msgid "portslave"
+msgstr "portslave"
+
+#: modules/univention/admin/syntax.py:5805
+msgid "property"
+msgstr "tulajdonság"
+
+#: modules/univention/admin/syntax.py:3389
+msgid "seconds"
+msgstr "másodperc"
+
+#: modules/univention/admin/syntax.py:5667
+msgid "synchronous"
+msgstr "szinkron"
+
+#: modules/univention/admin/syntax.py:1872
+msgid "tasks"
+msgstr "feladatok"
+
+#: modules/univention/admin/syntax.py:6946
+msgid "tc"
+msgstr "tc"
+
+#: modules/univention/admin/syntax.py:1868
+msgid "undefined"
+msgstr "nincs meghatározva"
+
+#: modules/univention/admin/syntax.py:6947
+msgid "usrhiper"
+msgstr "usrhiper"

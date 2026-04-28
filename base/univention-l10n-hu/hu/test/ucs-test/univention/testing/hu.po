@@ -1,0 +1,538 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ucs-test-framework\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-26 22:45+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: univention/testing/selenium/appcenter.py:94
+msgid "(this computer)"
+msgstr "(ez a számítógép)"
+
+#: univention/testing/selenium/appcenter.py:43
+#: univention/testing/selenium/appcenter.py:50
+msgid "Accept license"
+msgstr "Licenc elfogadása"
+
+#: univention/testing/selenium/udm.py:108
+#: univention/testing/browser/generic_udm_module.py:120
+#: univention/testing/browser/generic_udm_module.py:128
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: univention/testing/browser/generic_udm_module.py:196
+msgid "Add a new user"
+msgstr "Új felhasználó hozzáadása"
+
+#: univention/testing/browser/portal.py:68
+msgid "Add category"
+msgstr "Kategória hozzáadása"
+
+#: univention/testing/browser/portal.py:69
+msgid "Add new category"
+msgstr "Új kategória hozzáadása"
+
+#: univention/testing/browser/portal.py:79
+#: univention/testing/browser/portal.py:96
+msgid "Add new tile"
+msgstr "Új csempe hozzáadása"
+
+#: univention/testing/selenium/udm.py:148
+msgid "Advanced"
+msgstr "Haladó"
+
+#: univention/testing/selenium/appcenter.py:113
+msgid "All"
+msgstr "Minden"
+
+#: univention/testing/selenium/appcenter.py:141
+#: univention/testing/browser/appcenter.py:40
+msgid "App Center"
+msgstr "Alkalmazásközpont"
+
+#: univention/testing/browser/appcenter.py:49
+msgid "Available"
+msgstr "Elérhető"
+
+#: univention/testing/selenium/udm.py:65
+msgid "Back"
+msgstr "Vissza"
+
+#: univention/testing/selenium/appcenter.py:71
+#: univention/testing/browser/appcenter.py:61
+msgid "Back to overview"
+msgstr "Vissza az áttekintéshez"
+
+#: univention/testing/browser/generic_udm_module.py:197
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: univention/testing/selenium/udm.py:195
+#: univention/testing/selenium/udm.py:286
+#: univention/testing/browser/generic_udm_module.py:41
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: univention/testing/browser/portal.py:75
+msgid "Category successfully added"
+msgstr "Kategória sikeresen hozzáadva"
+
+#: univention/testing/browser/sidemenu.py:35
+msgid "Change password"
+msgstr "Jelszó megváltoztatása"
+
+#: univention/testing/browser/lib.py:110
+msgid "Close"
+msgstr "Bezárás"
+
+#: univention/testing/selenium/udm.py:185
+#: univention/testing/browser/generic_udm_module.py:307
+msgid "Computers"
+msgstr "Számítógépek"
+
+#: univention/testing/browser/packagemanagement.py:103
+#: univention/testing/browser/sidemenu.py:162
+msgid "Confirmation"
+msgstr "Megerősítés"
+
+#: univention/testing/selenium/udm.py:126
+#: univention/testing/browser/generic_udm_module.py:201
+#: univention/testing/browser/generic_udm_module.py:204
+msgid "Container"
+msgstr "Konténer"
+
+#: univention/testing/selenium/appcenter.py:39
+#: univention/testing/selenium/appcenter.py:155
+#: univention/testing/browser/appcenter.py:80
+msgid "Continue"
+msgstr "Folytatás"
+
+#: univention/testing/selenium/appcenter.py:43
+#: univention/testing/selenium/appcenter.py:50
+msgid "Continue anyway"
+msgstr "Folytatás mindenképpen"
+
+#: univention/testing/selenium/udm.py:296
+msgid "Copy"
+msgstr "Másolás"
+
+#: univention/testing/browser/generic_udm_module.py:318
+msgid "Create Computer"
+msgstr "Számítógép létrehozása"
+
+#: univention/testing/browser/generic_udm_module.py:277
+msgid "Create Group"
+msgstr "Csoport létrehozása"
+
+#: univention/testing/browser/generic_udm_module.py:297
+msgid "Create Policy"
+msgstr "Házirend létrehozása"
+
+#: univention/testing/browser/generic_udm_module.py:181
+msgid "Create Portal"
+msgstr "Portál létrehozása"
+
+#: univention/testing/browser/generic_udm_module.py:262
+msgid "Create User"
+msgstr "Felhasználó létrehozása"
+
+#: univention/testing/browser/portal.py:81
+msgid "Create a new Entry"
+msgstr "Új bejegyzés létrehozása"
+
+#: univention/testing/browser/portal.py:98
+msgid "Create a new folder"
+msgstr "Új mappa létrehozása"
+
+#: univention/testing/browser/selfservice.py:35
+msgid "Create an account"
+msgstr "Fiók létrehozása"
+
+#: univention/testing/selenium/udm.py:193
+msgid "Create computer"
+msgstr "Számítógép létrehozása"
+
+#: univention/testing/selenium/udm.py:211
+msgid "Create group"
+msgstr "Csoport létrehozása"
+
+#: univention/testing/browser/policies.py:33
+msgid "Create new policy"
+msgstr "Új házirend létrehozása"
+
+#: univention/testing/selenium/udm.py:226
+msgid "Create policy"
+msgstr "Házirend létrehozása"
+
+#: univention/testing/selenium/udm.py:178
+msgid "Create portal"
+msgstr "Portál létrehozása"
+
+#: univention/testing/selenium/udm.py:284
+#: univention/testing/selenium/udm.py:311
+msgid "Create user"
+msgstr "Felhasználó létrehozása"
+
+#: univention/testing/selenium/udm.py:79 univention/testing/selenium/udm.py:84
+#: univention/testing/browser/generic_udm_module.py:144
+#: univention/testing/browser/generic_udm_module.py:145
+msgid "Delete"
+msgstr "Törlés"
+
+#: univention/testing/browser/generic_udm_module.py:147
+msgid "Description"
+msgstr "Leírás"
+
+#: univention/testing/selenium/base.py:235
+msgid "Devices"
+msgstr "Eszközök"
+
+#: univention/testing/browser/generic_udm_module.py:180
+msgid "Display Name"
+msgstr "Megjelenítendő név"
+
+#: univention/testing/selenium/appcenter.py:154
+#: univention/testing/browser/appcenter.py:52
+msgid "Do not show this message again"
+msgstr "Ne jelenítse meg ezt az üzenetet újra"
+
+#: univention/testing/selenium/base.py:236
+msgid "Domain"
+msgstr "Domain"
+
+#: univention/testing/browser/portal.py:92
+msgid "Entry successfully added"
+msgstr "Bejegyzés sikeresen hozzáadva"
+
+#: univention/testing/selenium/udm.py:275
+#: univention/testing/browser/generic_udm_module.py:238
+msgid "First name"
+msgstr "Keresztnév"
+
+#: univention/testing/selenium/udm.py:202
+#: univention/testing/browser/generic_udm_module.py:267
+msgid "Groups"
+msgstr "Csoportok"
+
+#: univention/testing/browser/sidemenu.py:77
+msgid "Import from file..."
+msgstr "Importálás fájlból..."
+
+#: univention/testing/browser/sidemenu.py:73
+msgid "Import from text field"
+msgstr "Importálás szövegmezőből"
+
+#: univention/testing/browser/sidemenu.py:67
+msgid "Import new license"
+msgstr "Új licenc importálása"
+
+#: univention/testing/selenium/appcenter.py:35
+msgid "In order to proceed with the installation"
+msgstr "A telepítés folytatásához"
+
+#: univention/testing/selenium/appcenter.py:31
+#: univention/testing/selenium/appcenter.py:88
+#: univention/testing/browser/appcenter.py:70
+#: univention/testing/browser/packagemanagement.py:30
+msgid "Install"
+msgstr "Telepítés"
+
+#: univention/testing/selenium/appcenter.py:68
+msgid "Install Information"
+msgstr "Telepítési információk"
+
+#: univention/testing/selenium/appcenter.py:43
+#: univention/testing/selenium/appcenter.py:56
+msgid "Install anyway"
+msgstr "Telepítés mindenképpen"
+
+#: univention/testing/selenium/appcenter.py:43
+#: univention/testing/selenium/appcenter.py:56
+msgid "Install app"
+msgstr "Alkalmazás telepítése"
+
+#: univention/testing/selenium/base.py:239
+msgid "Installed Applications"
+msgstr "Telepített alkalmazások"
+
+#: univention/testing/selenium/appcenter.py:66
+msgid "Installing"
+msgstr "Telepítés"
+
+#: univention/testing/browser/generic_udm_module.py:178
+msgid "Internal name"
+msgstr "Belső név"
+
+#: univention/testing/browser/portal.py:70
+#: univention/testing/browser/portal.py:82
+#: univention/testing/browser/portal.py:99
+msgid "Internal name *"
+msgstr "Belső név *"
+
+#: univention/testing/browser/ldap_directory.py:22
+msgid "LDAP directory"
+msgstr "LDAP könyvtár"
+
+#: univention/testing/browser/generic_udm_module.py:239
+msgid "Last name"
+msgstr "Vezetéknév"
+
+#: univention/testing/browser/sidemenu.py:87
+msgid "License information"
+msgstr "Információ a licencről"
+
+#: univention/testing/browser/lib.py:272
+#: univention/testing/browser/sidemenu.py:131
+msgid "Login"
+msgstr "Belépés"
+
+#: univention/testing/browser/portal.py:145
+#: univention/testing/browser/sidemenu.py:130
+#: univention/testing/browser/sidemenu.py:159
+#: univention/testing/browser/sidemenu.py:162
+msgid "Logout"
+msgstr "Kilépés"
+
+#: univention/testing/selenium/appcenter.py:68
+msgid "Manage domain wide installations"
+msgstr "Domain szintű telepítések kezelése"
+
+#: univention/testing/selenium/appcenter.py:68
+#: univention/testing/selenium/appcenter.py:78
+#: univention/testing/browser/appcenter.py:92
+msgid "Manage installation"
+msgstr "Telepítés kezelése"
+
+#: univention/testing/selenium/appcenter.py:68
+#: univention/testing/selenium/appcenter.py:78
+msgid "Manage installations"
+msgstr "Telepítések kezelése"
+
+#: univention/testing/selenium/udm.py:209
+msgid "Members of this group"
+msgstr "A csoport tagjai"
+
+#: univention/testing/browser/appcenter.py:103
+msgid "More"
+msgstr "Több"
+
+#: univention/testing/selenium/appcenter.py:108
+#: univention/testing/selenium/appcenter.py:149
+msgid "More information"
+msgstr "További információ"
+
+#: univention/testing/selenium/appcenter.py:43
+#: univention/testing/selenium/appcenter.py:50
+#: univention/testing/selenium/udm.py:116
+#: univention/testing/selenium/udm.py:143
+#: univention/testing/selenium/udm.py:280
+#: univention/testing/browser/generic_udm_module.py:44
+#: univention/testing/browser/generic_udm_module.py:123
+#: univention/testing/browser/generic_udm_module.py:130
+msgid "Next"
+msgstr "Következő"
+
+#: univention/testing/browser/generic_udm_module.py:212
+msgid "None"
+msgstr "Nincs"
+
+#: univention/testing/selenium/base.py:244
+#: univention/testing/browser/lib.py:236
+msgid "Ok"
+msgstr "Ok"
+
+#: univention/testing/browser/portal.py:30
+msgid "Open edit sidebar"
+msgstr "Szerkesztési oldalsáv megnyitása"
+
+#: univention/testing/browser/packagemanagement.py:51
+msgid "Package Management"
+msgstr "Csomagkezelés"
+
+#: univention/testing/selenium/udm.py:281
+#: univention/testing/browser/selfservice.py:40
+#: univention/testing/browser/lib.py:271
+msgid "Password"
+msgstr "Jelszó"
+
+#: univention/testing/browser/selfservice.py:41
+msgid "Password (retype)"
+msgstr "Jelszó (gépeld be újra)"
+
+#: univention/testing/selenium/udm.py:80
+msgid "Please confirm the removal"
+msgstr "Kérjük, erősítsd meg az eltávolítást"
+
+#: univention/testing/selenium/udm.py:218
+#: univention/testing/browser/policies.py:27
+#: univention/testing/browser/generic_udm_module.py:284
+msgid "Policies"
+msgstr "Házirendek"
+
+#: univention/testing/browser/generic_udm_module.py:165
+msgid "Portal"
+msgstr "Portál"
+
+#: univention/testing/selenium/udm.py:152
+msgid "Portal settings"
+msgstr "Portál beállítások"
+
+#: univention/testing/browser/process_overview.py:26
+msgid "Process overview"
+msgstr "Folyamat áttekintése"
+
+#: univention/testing/browser/systemdiagnostics.py:27
+msgid "Run system diagnosis"
+msgstr "Rendszerdiagnózis futtatása"
+
+#: univention/testing/selenium/appcenter.py:84
+msgid "Running tests"
+msgstr "Tesztek futtatása"
+
+#: univention/testing/selenium/udm.py:70
+#: univention/testing/browser/generic_udm_module.py:59
+#: univention/testing/browser/univentionconfigurationregistry.py:66
+msgid "Save"
+msgstr "Mentés"
+
+#: univention/testing/selenium/base.py:284
+msgid "Search query"
+msgstr "Keresőkifejezés"
+
+#: univention/testing/selenium/base.py:163
+#: univention/testing/selenium/base.py:164
+msgid "Show server error message"
+msgstr "Szerver hibaüzenet megjelenítése"
+
+#: univention/testing/selenium/base.py:238
+msgid "Software"
+msgstr "Szoftver"
+
+#: univention/testing/selenium/appcenter.py:43
+#: univention/testing/selenium/appcenter.py:56
+#: univention/testing/browser/appcenter.py:79
+msgid "Start installation"
+msgstr "Telepítés indítása"
+
+#: univention/testing/selenium/appcenter.py:85
+#: univention/testing/selenium/appcenter.py:86
+#: univention/testing/browser/appcenter.py:108
+msgid "Start removal"
+msgstr "Eltávolítás indítása"
+
+#: univention/testing/selenium/base.py:237
+msgid "System"
+msgstr "Rendszer"
+
+#: univention/testing/browser/systemdiagnostics.py:18
+msgid "System diagnostic"
+msgstr "Rendszerdiagnosztika"
+
+#: univention/testing/browser/lib.py:281
+msgid "The authentication has failed, please login again."
+msgstr "A hitelesítés sikertelen, kérjük, jelentkezz be újra."
+
+#: univention/testing/browser/sidemenu.py:82
+msgid "The license has been imported successfully."
+msgstr "A licenc importálása sikeresen megtörtént."
+
+#: univention/testing/selenium/udm.py:112
+#: univention/testing/browser/generic_udm_module.py:122
+#: univention/testing/browser/generic_udm_module.py:129
+msgid "This UCS system is part of an Active Directory domain"
+msgstr "Ez az UCS rendszer egy Active Directory tartomány része"
+
+#: univention/testing/selenium/appcenter.py:68
+#: univention/testing/selenium/appcenter.py:83
+#: univention/testing/browser/appcenter.py:96
+#: univention/testing/browser/appcenter.py:104
+#: univention/testing/browser/packagemanagement.py:32
+msgid "Uninstall"
+msgstr "Eltávolítás"
+
+#: univention/testing/browser/generic_udm_module.py:301
+msgid "Update to this UCS version"
+msgstr "Frissítés erre az UCS verzióra"
+
+#: univention/testing/selenium/appcenter.py:95
+#: univention/testing/selenium/appcenter.py:102
+#: univention/testing/selenium/appcenter.py:106
+msgid "Upgrade"
+msgstr "Frissítés"
+
+#: univention/testing/selenium/appcenter.py:98
+msgid "Upgrade Information"
+msgstr "Frissítési információk"
+
+#: univention/testing/selenium/appcenter.py:105
+#, python-format
+msgid "Upgrade of %s"
+msgstr "%s frissítése"
+
+#: univention/testing/browser/generic_udm_module.py:70
+msgid "Upload profile image"
+msgstr "Profilkép feltöltése"
+
+#: univention/testing/browser/generic_udm_module.py:240
+msgid "User name"
+msgstr "Felhasználó neve"
+
+#: univention/testing/selenium/udm.py:134
+#: univention/testing/browser/generic_udm_module.py:208
+#: univention/testing/browser/generic_udm_module.py:212
+#: univention/testing/browser/generic_udm_module.py:216
+msgid "User template"
+msgstr "Felhasználói sablon"
+
+#: univention/testing/browser/lib.py:270
+msgid "Username"
+msgstr "Felhasználónév"
+
+#: univention/testing/selenium/udm.py:239
+#: univention/testing/selenium/base.py:234
+#: univention/testing/browser/generic_udm_module.py:188
+msgid "Users"
+msgstr "Felhasználók"
+
+#: univention/testing/browser/univentionconfigurationregistry.py:61
+msgid "Value"
+msgstr "Érték"
+
+#: univention/testing/browser/generic_udm_module.py:253
+msgid "copy"
+msgstr "másolás"
+
+#: univention/testing/selenium/udm.py:194
+#: univention/testing/selenium/udm.py:285
+msgid "has been created"
+msgstr "létrehozva"
+
+#: univention/testing/browser/packagemanagement.py:38
+msgid "installed"
+msgstr "telepítve"
+
+#: univention/testing/selenium/udm.py:295
+#: univention/testing/browser/generic_udm_module.py:252
+msgid "more"
+msgstr "több"
+
+#: univention/testing/selenium/base.py:240
+#: univention/testing/selenium/base.py:243
+msgid "no module available"
+msgstr "nincs elérhető modul"
+
+#: univention/testing/browser/packagemanagement.py:40
+msgid "not installed"
+msgstr "nincs telepítve"
+
+#: univention/testing/browser/appcenter.py:102
+msgid "this computer"
+msgstr "ez a számítógép"

@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-welcome package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-welcome\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-13 00:38+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/welcome.js:75
+msgid "Documentation"
+msgstr "Dokumentáció"
+
+#: umc/js/welcome.js:76
+msgid "Explore everything you need to know about the Keycloak app here"
+msgstr "Fedezz fel itt mindent, amit a Keycloak alkalmazásról tudni kell"
+
+#: umc/js/welcome.js:28
+msgid ""
+"Great to see you! Now that your system is ready, these simple steps will "
+"guide you through the next phase. Let’s ensure everything is set up "
+"perfectly for a smooth experience!"
+msgstr ""
+"Örülök, hogy látlak! Most, hogy a rendszered készen áll, ezek az egyszerű "
+"lépések végigvezetnek a következő fázison. Gondoskodjunk róla, hogy minden "
+"tökéletesen be legyen állítva a zökkenőmentes élmény érdekében!"
+
+#: umc/js/welcome.js:52
+msgid "Import a license"
+msgstr "Licenc importálása"
+
+#: umc/js/welcome.js:68
+msgid "Keycloak app"
+msgstr "Keycloak alkalmazás"
+
+#: umc/js/welcome.js:47
+msgid "License info"
+msgstr "Licencinformációk"
+
+#: umc/js/welcome.js:36
+msgid "Manage your license for your Univention Corporate Server domain"
+msgstr "Az Univention Corporate Server domain licencének kezelése"
+
+#: umc/js/welcome.js:69
+msgid "Open in Univention App Center"
+msgstr "Megnyitás az Univention App Centerben"
+
+#: umc/js/welcome.js:41
+msgid "Request a new license"
+msgstr "Új licenc igénylése"
+
+#: umc/js/welcome.js:48
+msgid "Show your current license"
+msgstr "A jelenlegi licenc megjelenítése"
+
+#: umc/js/welcome.js:62
+msgid "Single Sign-on"
+msgstr "Egyszeri bejelentkezés"
+
+#: umc/js/welcome.js:64
+msgid ""
+"The Keycloak app enables single sign-on (SSO) for your UCS system, "
+"providing a unified and secure login experience."
+msgstr ""
+"A Keycloak alkalmazás lehetővé teszi az egyszeri bejelentkezést (SSO) az "
+"UCS rendszerében, egységes és biztonságos bejelentkezési élményt nyújtva."
+
+#: umc/js/welcome.js:34
+msgid "UCS License"
+msgstr "UCS licenc"
+
+#: umc/js/welcome.js:53
+msgid "Upload a new license we sent you earlier"
+msgstr "Töltsd fel az új licencet, amelyet korábban elküldtünk neked"
+
+#: umc/js/welcome.js:42
+msgid "We send you a license with a Key ID to your email address"
+msgstr "Elküldjük a kulcsazonosítóval ellátott licencet az e-mail címedre"

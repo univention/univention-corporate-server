@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-join package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-join\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-03 23:19+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/join/__init__.py:420 umc/python/join/__init__.py:469
+msgid "A join process is already running."
+msgstr "Már fut egy csatlakozási folyamat..."
+
+#: umc/python/join/__init__.py:451 umc/python/join/__init__.py:502
+#, python-format
+msgid "An unexpected error occurred: %s"
+msgstr "Váratlan hiba történt: %s"
+
+#: umc/python/join/__init__.py:483
+msgid "Authentication"
+msgstr "Hitelesítés"
+
+#: umc/python/join/__init__.py:428 umc/python/join/__init__.py:473
+msgid ""
+"Currently, software is being installed or uninstalled. Join scripts should "
+"not be run right now."
+msgstr ""
+"Jelenleg szoftver telepítése vagy eltávolítása zajlik. A csatlakozási "
+"szkriptek jelenleg nem futtathatók."
+
+#: umc/python/join/__init__.py:432
+msgid "Domain join"
+msgstr "Csatlakozás domain-hez"
+
+#: umc/python/join/__init__.py:340
+#, python-format
+msgid "Error: %s"
+msgstr "Hiba: %s"
+
+#: umc/python/join/__init__.py:217
+#, python-format
+msgid "Executing join script %s"
+msgstr "Csatlakozási szkript végrehajtása %s"
+
+#: umc/python/join/__init__.py:216
+msgid "Executing join scripts"
+msgstr "Csatlakozási szkriptek végrehajtása"
+
+#: umc/python/join/__init__.py:86
+msgid "Initializing"
+msgstr "Inicializálás"
+
+#: umc/python/join/__init__.py:424
+msgid "Invalid server role! A Primary Directory Node cannot be joined."
+msgstr ""
+"Érvénytelen szerver szerepkör! Az elsődleges könyvtárcsomópont nem "
+"csatlakoztatható."
+
+#: umc/python/join/__init__.py:54
+msgid ""
+"No DNS record for the Primary Directory Node was found. This might be a "
+"problem with the configured DNS server. Please make sure the DNS settings "
+"are correct."
+msgstr ""
+"Nem található DNS rekord az elsődleges könyvtárcsomóponthoz. Ez a "
+"konfigurált DNS kiszolgálóval kapcsolatos probléma lehet. Ellenőrizd, hogy "
+"a DNS-beállítások helyesek-e."
+
+#: umc/python/join/__init__.py:276
+msgid ""
+"Some join scripts could not be executed. More details can be found in the "
+"log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
+"the join scripts after resolving any conflicting issues."
+msgstr ""
+"Néhány csatlakozási szkriptet nem sikerült végrehajtani. További részletek "
+"a <i>/var/log/univention/join.log</i> naplófájlban találhatók.<br/> Kérjük, "
+"próbáld meg újra végrehajtani a csatlakozási szkripteket az esetleges "
+"ütköző problémák megoldása után."
+
+#: umc/python/join/__init__.py:74
+msgid "The entered FQDN is not a valid value"
+msgstr "A megadott FQDN nem érvényes érték"
+
+#: umc/python/join/__init__.py:273
+msgid ""
+"The join process could not be executed. More details can be found in the "
+"log file <i>/var/log/univention/join.log</i>.<br/>Please retry to join the "
+"system after resolving any conflicting issues."
+msgstr ""
+"A csatlakozási folyamat nem hajtható végre. További részletek a <i>/var/log/"
+"univention/join.log</i> naplófájlban találhatók.<br/> Kérjük, próbálj meg "
+"újra csatlakozni a rendszerhez az esetleges ütköző problémák megoldása után."
+
+#: umc/python/join/__init__.py:57
+msgid ""
+"The lookup of the Primary Directory Node record timed out. There might be a "
+"problem with the configured DNS server. Make sure the DNS server is up and "
+"running or check the DNS settings."
+msgstr ""
+"Az elsődleges könyvtárcsomópont rekordjának keresése időtúllépést okozott. "
+"Probléma lehet a konfigurált DNS-kiszolgálóval. Győződj meg arról, hogy a "
+"DNS-kiszolgáló működik, vagy ellenőrizd a DNS-beállításokat."
+
+#: umc/python/join/__init__.py:203
+#, python-format
+msgid ""
+"The system join process could not be completed:<br/><br/><i>%s</i><br/><br/"
+"> More details can be found in the log file <i>/var/log/univention/"
+"join.log</i>.<br/>Please retry after resolving any conflicting issues."
+msgstr ""
+"A rendszerhez való csatlakozási folyamat nem fejezhető be:<br/><br/> <i>%s</"
+"i><br/><br/> További részletek a <i>/var/log/univention/join.log</i> "
+"naplófájlban találhatók.<br/> Kérjük, próbáld újra az esetleges ütköző "
+"problémák megoldása után."
+
+#: umc/python/join/__init__.py:446 umc/python/join/__init__.py:497
+msgid "finished..."
+msgstr "kész..."
