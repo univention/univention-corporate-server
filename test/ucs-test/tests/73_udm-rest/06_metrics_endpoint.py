@@ -50,6 +50,7 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
     metrics = list(text_string_to_metric_families(text))
 
     domainname = ucr['domainname']
+    license_uuid = ucr['uuid/license']
 
     with subtests.test("version_ucs_info"):
         family = _get_family(metrics, 'version_ucs_info')
@@ -60,7 +61,7 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
             {
                 'domain': domainname,
                 'errata': ucr['version/erratalevel'],
-                'license_uuid': ucr['uuid/license'],
+                'license_uuid': license_uuid,
                 'patch': ucr['version/patchlevel'],
                 'system_uuid': ucr['uuid/system'],
                 'ucs': ucr['version/version'],
@@ -83,6 +84,7 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
             family,
             {
                 'domain': domainname,
+                'license_uuid': license_uuid,
                 'platform': 'ucs',
             },
         )
@@ -97,6 +99,7 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
             family,
             {
                 'domain': domainname,
+                'license_uuid': license_uuid,
                 'platform': 'ucs',
             },
         )
