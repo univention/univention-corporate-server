@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: libyaml-syck-perl
-fix: 1.29-1+deb9u1
+fix: 1.29-1+deb9u2
 desc: |
  This update addresses the following issues:
  * CVSS score 9.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
