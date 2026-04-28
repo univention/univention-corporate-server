@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.5.8) unstable; urgency=medium
+
+  * Bug #59231: improve format of metrics
+
+ -- Christian Castens <castens@univention.de>  Tue, 28 Apr 2026 07:49:05 +0200
+
 univention-directory-manager-rest (12.5.7) unstable; urgency=medium
 
   * Bug #59176: fix HTTP 500 in authorization check on DN case mismatch

@@ -1,3 +1,9 @@
+ucs-test (12.5.30) unstable; urgency=medium
+
+  * Bug #59231: fix tests after change to format of nubus metrics
+
+ -- Christian Castens <castens@univention.de>  Wed, 29 Apr 2026 15:37:15 +0200
+
 ucs-test (12.5.29) unstable; urgency=medium
 
   * Bug #59220: added test case
