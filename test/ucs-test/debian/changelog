@@ -1,3 +1,9 @@
+ucs-test (12.5.29) unstable; urgency=medium
+
+  * Bug #59220: added test case
+
+ -- Felix Botner <botner@univention.de>  Tue, 28 Apr 2026 18:27:11 +0200
+
 ucs-test (12.5.28) unstable; urgency=medium
 
   * Bug #59060: reset license cache after removing 1000 users
