@@ -1,3 +1,9 @@
+univention-radius (9.6.3) unstable; urgency=medium
+
+  * Bug #59042: univention-radius-ntlm-auth rewrite in rust
+
+ -- Florian Best <best@univention.de>  Fri, 28 Aug 2026 17:10:39 +0200
+
 univention-radius (9.6.2) unstable; urgency=medium
 
   * Bug #59456: only update outer.session-state when an outer request
