@@ -1,0 +1,28 @@
+[package]
+name = "univention-radius"
+version = "9.5.0"
+edition = "2021"
+
+[[bin]]
+name = "univention-radius-ntlm-auth"
+path = "src/main.rs"
+
+[[bin]]
+name = "univention-radius-check-access"
+path = "src/check_access.rs"
+
+[dependencies]
+univentionpolicy = "13"
+univentionconfig = "17"
+hex = "0.4"
+des = "0.6"
+md4 = "0.10"
+digest = "0.10"
+# cipher = { version = "0.2", features = ["block-padding"] }
+cipher = "0.2"
+libc = "0.2"
+log = "0.4"
+once_cell = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+clap = { version = "3.2", features = ["derive"] }
+subtle = "2"
