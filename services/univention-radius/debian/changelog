@@ -1,3 +1,9 @@
+univention-radius (9.7.1) unstable; urgency=medium
+
+  * Bug #59042: univention-radius-ntlm-auth rewrite in rust
+
+ -- Florian Best <best@univention.de>  Thu, 10 Sep 2026 17:07:45 +0200
+
 univention-radius (9.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

@@ -2,5 +2,4 @@
 80univention-radius.inst	usr/lib/univention-install/
 clients.conf.example	etc/freeradius/3.0/
 listener/*	usr/lib/univention-directory-listener/system/
-univention-radius-ntlm-auth-suidwrapper	usr/bin/
 usr/
