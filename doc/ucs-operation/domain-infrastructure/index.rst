@@ -53,6 +53,7 @@ Domain activity logging
 
    system-roles
    domain-join
+   tls
    kerberos
    ha
    activity-logging
