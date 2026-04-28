@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: ntfs-3g
+fix: 1:2022.10.3-1+deb12u3
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.4 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-40706)
+bug: [59228]
+cve:
+- CVE-2026-40706
