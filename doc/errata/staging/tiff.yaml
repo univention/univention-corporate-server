@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: tiff
+fix: 4.1.0+git191117-2~deb10u12
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2026-4775)
+bug: [59226]
+cve:
+- CVE-2026-4775
