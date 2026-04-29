@@ -82,14 +82,12 @@ def _gauge(name, description, dp):
     return {"name": name, "description": description, "unit": "1", "gauge": {"dataPoints": [dp]}}
 
 
-def build_otlp(samples, ts):
-    metrics = []
-
-    for sample in samples.get('version_ucs_info', []):
+def _ucs_metrics(samples, ts):
+    for sample in samples:
         labels = sample['labels']
         if 'license_uuid' not in labels:
             continue
-        metrics.append(_gauge(
+        yield _gauge(
             "nubus.installation.ucs",
             "UCS version info per installation (value is always 1)",
             {
@@ -101,13 +99,15 @@ def build_otlp(samples, ts):
                     _int_attr("errata", int(labels.get("errata", "0"))),
                 ],
             },
-        ))
+        )
 
-    for sample in samples.get('version_n4k_info', []):
+
+def _n4k_metrics(samples, ts):
+    for sample in samples:
         labels = sample['labels']
         if 'license_uuid' not in labels:
             continue
-        metrics.append(_gauge(
+        yield _gauge(
             "nubus.installation.n4k",
             "N4K version info per installation (value is always 1)",
             {
@@ -119,16 +119,18 @@ def build_otlp(samples, ts):
                     _int_attr("patch", int(labels.get("patch", "0"))),
                 ],
             },
-        ))
+        )
 
-    for sample in samples.get('users_user_total', []):
+
+def _user_metrics(samples, ts):
+    for sample in samples:
         labels = sample['labels']
         if 'license_uuid' not in labels:
             continue
         count = int(sample['value'])
         if count < 0:
             continue
-        metrics.append(_gauge(
+        yield _gauge(
             "nubus.identities.active",
             "Count of non-deactivated users/user LDAP objects",
             {
@@ -138,8 +140,15 @@ def build_otlp(samples, ts):
                     _str_attr("platform", labels.get("platform", "ucs")),
                 ],
             },
-        ))
+        )
 
+
+def build_otlp(samples, ts):
+    metrics = [
+        *_ucs_metrics(samples.get('version_ucs_info', []), ts),
+        *_n4k_metrics(samples.get('version_n4k_info', []), ts),
+        *_user_metrics(samples.get('users_user_total', []), ts),
+    ]
     return {
         "resourceMetrics": [{
             "resource": {"attributes": [
