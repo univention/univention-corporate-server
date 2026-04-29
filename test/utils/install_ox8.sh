@@ -1,50 +1,44 @@
 #!/bin/bash
+
+set -e
+
 # SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+# This script is really hard to maintain due to how it works with YAML files.
+# Pined versions, etc.
+
 # install OX 8 (kubernetes)
 # see https://git.knut.univention.de/univention/prof-services/team-enterprise/zit-sh/-/issues/56
-curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.14.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
+curl -LO https://dl.k8s.io/release/v1.36.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
 curl -LO https://get.helm.sh/helm-v3.16.2-linux-amd64.tar.gz && tar -zxvf helm-v3.16.2-linux-amd64.tar.gz && mv linux-amd64/helm /usr/local/bin/helm
 curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.24.0/kind-linux-amd64 && chmod +x ./kind && mv ./kind /usr/local/bin/kind
+
+# for debugging only
+curl -LO https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
+
 apt install --yes docker.io
 kind create cluster
 kubectl create namespace as8
 apt update
 apt install --yes jq
-apt install  --yes git
-helm plugin install https://github.com/databus23/helm-diff
+apt install --yes git
+helm plugin install https://github.com/databus23/helm-diff --version 3.12.5
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
 helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
-sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+curl -Lo ./yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && chmod +x ./yq && mv ./yq /usr/local/bin/yq
 apt install --yes python3-venv
-git clone https://gitlab.open-xchange.com/appsuite/operation-guides.git
-cd operation-guides
+# Use operations-guide mirrored by Nautilus team instead of upstream
+# Parametrize this clone can be a future improvement
+git clone --depth 1 --branch "ci-0.0.2" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+cd ox-operations-guide-mirror
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
 v/bin/pip install -r requirements.txt
-#JUST_UCS
-cat <<EOF >render.py.patch
---- operation-guides-orig/render.py     2024-10-18 12:57:47.140523950 +0200
-+++ operation-guides/render.py  2024-10-18 12:57:16.505807054 +0200
-@@ -0,0 +1 @@
-+from __future__ import annotations
-@@ -101 +102 @@
--    retvars = { 'generic_script_target': lang } | additional_script_vars[lang]
-+    retvars = { 'generic_script_target': lang } or additional_script_vars[lang]
-@@ -111 +112 @@
--        retvars |= {
-+        retvars = retvars or {
-@@ -138,0 +140 @@
-+
-@@ -210 +212 @@
--                    template.render(vars | get_additional_script_vars(lang[1:]) ) if vars['render_'+lang[1:]] else "",
-+                    template.render(vars or get_additional_script_vars(lang[1:]) ) if vars['render_'+lang[1:]] else "",
-EOF
-patch render.py <render.py.patch
-#JUST_UCS
+
 cat <<EOF >values.yaml
+as_hostname: "as8.lab.test"
 render_sh: true
 generic_script_target: "sh"
 generic_script_interpreter: "bash"
@@ -54,86 +48,57 @@ assignment_dollar_env: "export "
 dollar_null: ""
 echo: "echo"
 noop: "true"
+do_provisioning: false
+redis_deployment_mode: lab
+deputy_enabled: true
+contacts_provider_ldap_enabled: true
+enable_username_editable: true
+core_mw_extra_properties:
+  # Additional configuration related to the deputy feature
+  com.openexchange.dovecot.doveadm.enabled: "true"
+  com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"
+  com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"
+  com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"
+  com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"
+  com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"
+  com.openexchange.dovecot.doveadm.apiSecret: "value-will-be-replaced"
+  com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "/"
+  com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"
+  com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"
 EOF
+
+if [ "${OX_APP_SUITE_CHART_VERSION}" != "" ]; then
+    echo "Using OX app suite chart version: ${OX_APP_SUITE_CHART_VERSION}"
+    yq -i \
+        ".dependencies |= map(select(.name == \"appsuite\").version = \"${OX_APP_SUITE_CHART_VERSION}\")" \
+        dependencies.yml
+fi
+
+PASSWORD_DOVEADM="$(openssl rand -base64 18)"
+mkdir -p rendered/values
+python3 vault.py -c -v ./rendered/values/vault.json -s "dovecot.doveconf.doveadm_api_key=${PASSWORD_DOVEADM}"
+yq -i ".core_mw_extra_properties.\"com.openexchange.dovecot.doveadm.apiSecret\" = \"${PASSWORD_DOVEADM}\"" values.yaml
 
 v/bin/python render.py --values values.yaml
 
-# cd rendered/lab
+# workaround for bitnami moving their images
+yq ".image.repository = \"bitnamilegacy/redis\"" rendered/values/values.bitnami-redis.yaml
+
 cd rendered/values
-# JUST_UCS
-cat <<'EOF' >install.sh.patch
---- install.sh.orig     2024-10-19 10:13:37.540000000 +0200
-+++ install.sh.new      2024-10-19 10:14:25.612000000 +0200
-@@ -145 +145,9 @@
--    kubectl wait tenant -n "as8" minio --for='jsonpath={.status.currentState}=Initialized' --timeout=600s || portableExit 1
-+    counter=0
-+    until [ "$(kubectl get tenant -n "as8" minio -o 'jsonpath={.status.currentState}')" == "Initialized" ]; do
-+        sleep 10
-+        let "counter=counter+1"
-+        if [ $counter -gt 60 ]; then
-+            echo "Waiting to long"
-+            exit 1
-+        fi
-+    done
-EOF
-patch install.sh <install.sh.patch
-sed -i '/--for=create/d' install.sh
-sed -i 's/cpu: 100/cpu: 50/g' install.sh
-# bump version https://www.oxpedia.org/wiki/index.php?title=AppSuite:Versioning_and_Numbering#2025
-sed -i -E 's|oci://registry.open-xchange.com/appsuite/charts/appsuite --version [0-9]\.[0-9]{1,2}\.[0-9]{1,3} |oci://registry.open-xchange.com/appsuite/charts/appsuite |g' install.sh
-# Bug in OX templating. Workaround is to disable wopi-server
-sed -i "s/^istio:/wopi-server:\n   enabled: false\nistio:/" values.yaml
-sed -i 's|AVERAGE_CONTEXT_SIZE: "200"|AVERAGE_CONTEXT_SIZE: "200"\n    /opt/open-xchange/etc/AdminUser.properties:\n       USERNAME_CHANGEABLE: "true"|g' values.yaml
 
-# activate deputy permission provisioning
-cat <<'EOF' >values.yaml.patch
-@@ -37,11 +37,20 @@
-       open-xchange-documentconverter-client: disabled
-       open-xchange-documents-backend: disabled
-       open-xchange-drive-client-windows: disabled
-+      open-xchange-deputy: enabled
-
-   # using this will cause an initjob invoke initconfigdb
-   enableInitialization: false
-
-   properties:
-+    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"
-+    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"
-+    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"
-+    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"
-+    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"
-+    com.openexchange.dovecot.doveadm.enabled: "true"
-+    com.openexchange.deputy.enabled: "true"
-+    com.openexchange.deputy.adminOnly: "true"
-     com.openexchange.hostname: "as8.lab.test"
-     # S3 Filestore
-     com.openexchange.filestore.s3client.s3.endpoint: "https://minio.as8:443"
-EOF
-patch values.yaml <values.yaml.patch
-
-sed -i 's/doveadm_api_key:.*$/doveadm_api_key: "secret"/g' values.dovecot-ce.secret.yaml
-sed -i 's/    com.openexchange.filestore.s3client.s3.accessKey: /    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n    com.openexchange.filestore.s3client.s3.accessKey: /g' values.secret.yaml
-
-./install.sh
-
-# TODO FIXME: service dovecot-ce needs port 8080
-# verify
-# kubectl get all -n as8
+# run install in a subshell it might change environment, sometimes kubectl is no longer found after calling it
+(./install.sh)
 
 cluster_ip="$(kubectl get nodes -o wide | awk '/kind-control-plane/ {print $6}')"
 ucr set "hosts/static/$cluster_ip=as8.lab.test"
 
 # certs
-cp operation-guides/rendered/values/cacert.pem /usr/share/ca-certificates/clustercert.crt && update-ca-certificates
-univention-certificate new -name as8.lab.test -days 500
-ucr set apache2/vhosts/as8.lab.test/443/aliases=as8.lab.test apache2/vhosts/as8.lab.test/443/enabled=1 apache2/vhosts/as8.lab.test/443/ssl/certificate=/etc/univention/ssl/as8.lab.test/cert.pem apache2/vhosts/as8.lab.test/443/ssl/key=/etc/univention/ssl/as8.lab.test/private.key apache2/vhosts/as8.lab.test/443/ssl/certificatechain=/etc/univention/ssl/ucsCA/CAcert.pem
-systemctl restart apache2
-
 cp cacert.pem /usr/local/share/ca-certificates/cluster.crt
 update-ca-certificates
 
-# for debugging only
-wget https://github.com/derailed/k9s/releases/download/v0.32.7/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
+univention-certificate new -name as8.lab.test -days 500
+ucr set apache2/vhosts/as8.lab.test/443/aliases=as8.lab.test apache2/vhosts/as8.lab.test/443/enabled=1 apache2/vhosts/as8.lab.test/443/ssl/certificate=/etc/univention/ssl/as8.lab.test/cert.pem apache2/vhosts/as8.lab.test/443/ssl/key=/etc/univention/ssl/as8.lab.test/private.key apache2/vhosts/as8.lab.test/443/ssl/certificatechain=/etc/univention/ssl/ucsCA/CAcert.pem
+systemctl restart apache2
 
 echo "DONE" >>/root/ox8_deployed
 
@@ -240,4 +205,24 @@ systemctl restart apache2.service
 
 # test doveadm connection
 # echo "secret"|base64  # -> c2VjcmV0
-kubectl exec -n as8 "$(kubectl get pods -n as8 |grep mw-default|awk '{print $1}')" -it -- bash -c 'curl -v -H "Authorization: X-Dovecot-API c2VjcmV0" http://dovecot-ce:8080/doveadm/v1'
+dovecot_api_pw="$(echo ${PASSWORD_DOVEADM}|base64)"
+kubectl exec -n as8 "$(kubectl get pods -n as8 | grep mw-default | awk '{print $1}' | head -n1)" -it -- bash -c "curl -v -H 'Authorization: X-Dovecot-API ${dovecot_api_pw}' http://dovecot-ce:8080/doveadm/v1"
+
+# This adds the cluster ip to the ox-core-mw pod. Otherwise it can't resolve as8.lab.test
+kubectl patch deployment as8-core-mw-default \
+  -n as8 \
+  --type merge \
+  -p "{
+    \"spec\": {
+      \"template\": {
+        \"spec\": {
+          \"hostAliases\": [
+            {
+              \"ip\": \"${cluster_ip}\",
+              \"hostnames\": [\"as8.lab.test\"]
+            }
+          ]
+        }
+      }
+    }
+  }"
