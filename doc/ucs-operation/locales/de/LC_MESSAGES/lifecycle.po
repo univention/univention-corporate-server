@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-16 10:37+0000\n"
-"PO-Revision-Date: 2026-04-16 12:42+0200\n"
+"POT-Creation-Date: 2026-04-29 13:02+0000\n"
+"PO-Revision-Date: 2026-04-29 15:11+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -914,7 +914,7 @@ msgstr ""
 msgid "Container and application-related errors."
 msgstr "Container- und :spelling:word:`anwendungsbezogene` Fehler."
 
-#: ../../lifecycle/index.rst:47
+#: ../../lifecycle/index.rst:53
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1003,10 +1003,25 @@ msgstr ""
 "Updates und Entfernen von Apps. Siehe :ref:`lifecycle-app-center`."
 
 #: ../../lifecycle/index.rst:42
+msgid "Publicly trusted certificates"
+msgstr "Öffentlich vertrauenswürdige Zertifikate"
+
+#: ../../lifecycle/index.rst:43
+msgid ""
+"Obtain publicly trusted TLS certificates for web-facing services such as "
+"the Apache web server, Postfix, and Dovecot using the *Let's Encrypt* app"
+" from Univention App Center. See :ref:`lifecycle-lets-encrypt`."
+msgstr ""
+"Beziehen Sie öffentlich vertrauenswürdige TLS-Zertifikate für "
+"webbasierte Dienste wie den Apache-Webserver, Postfix und Dovecot über "
+"die App *Let's Encrypt* aus dem Univention App Center. Siehe "
+":ref:`lifecycle-lets-encrypt`."
+
+#: ../../lifecycle/index.rst:48
 msgid "Domain-wide software monitoring"
 msgstr "Domänenweite Softwareüberwachung"
 
-#: ../../lifecycle/index.rst:43
+#: ../../lifecycle/index.rst:49
 msgid ""
 "Track which package versions all systems have installed in your domain. "
 "The software monitor helps you identify problems and plan staged updates."
@@ -1016,6 +1031,41 @@ msgstr ""
 "installiert haben. Der Software-Monitor hilft Ihnen, Probleme zu "
 "identifizieren und gestaffelte Updates zu planen. Siehe :ref:`lifecycle-"
 "software-monitor`."
+
+#: ../../lifecycle/lets-encrypt.rst:7
+msgid "Let's Encrypt"
+msgstr "Let's Encrypt"
+
+#: ../../lifecycle/lets-encrypt.rst:9
+msgid ""
+"Let's Encrypt is a non-profit certificate authority that provides X.509 "
+"certificates for TLS encryption at no charge. Use it to secure public-"
+"facing services in Nubus for UCS with certificates that browsers and "
+"operating systems trust. The *Let's Encrypt* app in Univention App Center"
+" provides automated integration of the :program:`acme-tiny` client in "
+"Nubus for UCS. The app secures the Apache web server, the Postfix SMTP "
+"mail server, and the Dovecot IMAP mail server."
+msgstr ""
+"Let's Encrypt ist eine gemeinnützige Zertifizierungsstelle, die X.509-"
+"Zertifikate für die TLS-Verschlüsselung kostenlos bereitstellt. "
+"Verwenden Sie sie, um öffentlich zugängliche Dienste in Nubus für UCS "
+"mit Zertifikaten zu sichern, denen Browser und Betriebssysteme "
+"vertrauen. Die App *Let's Encrypt* im Univention App Center bietet eine "
+"automatisierte Integration des :program:`acme-tiny`-Clients in Nubus für "
+"UCS. Die App sichert den Apache Webserver, den Postfix SMTP-Mailserver "
+"und den Dovecot IMAP-Mailserver."
+
+#: ../../lifecycle/lets-encrypt.rst:20
+msgid ":ref:`domain-infrastructure-tls`"
+msgstr ":ref:`domain-infrastructure-tls`"
+
+#: ../../lifecycle/lets-encrypt.rst:21
+msgid ""
+"For information about the built-in UCS certificate authority for domain-"
+"internal services."
+msgstr ""
+"Informationen zur integrierten UCS Zertifizierungsstelle für "
+"interne Domänendienste."
 
 #: ../../lifecycle/local-repository-servers.rst:7
 msgid "Local repository servers"
@@ -4353,3 +4403,4 @@ msgid ""
 msgstr ""
 "Um Newsletter zu abonnieren, besuchen Sie `Univention Newsletter "
 "<https://www.univention.com/about-us/newsletter/>`_."
+

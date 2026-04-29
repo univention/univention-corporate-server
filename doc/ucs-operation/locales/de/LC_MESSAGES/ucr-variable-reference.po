@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-23 13:37+0000\n"
-"PO-Revision-Date: 2026-04-23 15:44+0200\n"
+"POT-Creation-Date: 2026-04-29 09:28+0000\n"
+"PO-Revision-Date: 2026-04-29 12:02+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -66,8 +66,9 @@ msgstr "Standardwert"
 #: ../../ucr-variable-reference.rst:1060 ../../ucr-variable-reference.rst:1109
 #: ../../ucr-variable-reference.rst:1133 ../../ucr-variable-reference.rst:1149
 #: ../../ucr-variable-reference.rst:1190 ../../ucr-variable-reference.rst:1225
-#: ../../ucr-variable-reference.rst:1276 ../../ucr-variable-reference.rst:1362
-#: ../../ucr-variable-reference.rst:1372 ../../ucr-variable-reference.rst:1392
+#: ../../ucr-variable-reference.rst:1276 ../../ucr-variable-reference.rst:1327
+#: ../../ucr-variable-reference.rst:1346 ../../ucr-variable-reference.rst:1413
+#: ../../ucr-variable-reference.rst:1423 ../../ucr-variable-reference.rst:1443
 msgid "not set"
 msgstr "nicht gesetzt"
 
@@ -99,8 +100,8 @@ msgstr "Typ"
 #: ../../ucr-variable-reference.rst:814 ../../ucr-variable-reference.rst:1062
 #: ../../ucr-variable-reference.rst:1088 ../../ucr-variable-reference.rst:1192
 #: ../../ucr-variable-reference.rst:1227 ../../ucr-variable-reference.rst:1278
-#: ../../ucr-variable-reference.rst:1310 ../../ucr-variable-reference.rst:1383
-#: ../../ucr-variable-reference.rst:1393
+#: ../../ucr-variable-reference.rst:1310 ../../ucr-variable-reference.rst:1434
+#: ../../ucr-variable-reference.rst:1444
 msgid "boolean"
 msgstr "Boolesche Variable"
 
@@ -294,16 +295,16 @@ msgid ""
 msgstr ""
 "Gibt das maximale Alter einer Berichtsdatei in Sekunden an, bevor der "
 "Cron-Job zur Bereinigung diese entfernt. Wenn die Variable nicht gesetzt "
-"ist, verwendet das System einen Standardwert von ``43200`` Sekunden "
-"(12 Stunden)."
+"ist, verwendet das System einen Standardwert von ``43200`` Sekunden (12 "
+"Stunden)."
 
 #: ../../ucr-variable-reference.rst:210 ../../ucr-variable-reference.rst:225
 msgid ""
 "For information about configuring report cleanup, see :ref:`management-"
 "interface-directory-reports-create-umc`."
 msgstr ""
-"Informationen zur Konfiguration der Bericht-Bereinigung finden Sie unter"
-" :ref:`management-interface-directory-reports-create-umc`."
+"Informationen zur Konfiguration der Bericht-Bereinigung finden Sie unter "
+":ref:`management-interface-directory-reports-create-umc`."
 
 #: ../../ucr-variable-reference.rst:213
 msgid "``43200``"
@@ -312,6 +313,7 @@ msgstr "``43200``"
 #: ../../ucr-variable-reference.rst:214 ../../ucr-variable-reference.rst:435
 #: ../../ucr-variable-reference.rst:905 ../../ucr-variable-reference.rst:920
 #: ../../ucr-variable-reference.rst:936 ../../ucr-variable-reference.rst:951
+#: ../../ucr-variable-reference.rst:1361
 msgid "integer"
 msgstr "Ganzzahl"
 
@@ -322,11 +324,12 @@ msgid ""
 "crontab`. The cleanup job removes reports that exceed the age configured "
 "in :envvar:`directory/reports/cleanup/age`."
 msgstr ""
-"Gibt an, wann der Cron-Job ausgeführt wird, um abgelaufene Berichtsdateien "
-"zu entfernen. Verwenden Sie die Standardsyntax für Zeitpläne. "
-"Weitere Informationen zur Syntax erhalten Sie durch Ausführung von "
-":command:`man 5 crontab`. Der Bereinigungs-Job entfernt Berichte, die das in "
-":envvar:`directory/reports/cleanup/age` konfigurierte Alter überschreiten."
+"Gibt an, wann der Cron-Job ausgeführt wird, um abgelaufene "
+"Berichtsdateien zu entfernen. Verwenden Sie die Standardsyntax für "
+"Zeitpläne. Weitere Informationen zur Syntax erhalten Sie durch Ausführung"
+" von :command:`man 5 crontab`. Der Bereinigungs-Job entfernt Berichte, "
+"die das in :envvar:`directory/reports/cleanup/age` konfigurierte Alter "
+"überschreiten."
 
 #: ../../ucr-variable-reference.rst:228
 msgid "``0 0 * * *``"
@@ -352,8 +355,8 @@ msgid ""
 "For information about customizing report appearance, see :ref"
 ":`management-interface-directory-reports-customize`."
 msgstr ""
-"Informationen zur Anpassung des Berichtserscheinungsbildes finden Sie unter "
-":ref:`management-interface-directory-reports-customize`."
+"Informationen zur Anpassung des Berichtserscheinungsbildes finden Sie "
+"unter :ref:`management-interface-directory-reports-customize`."
 
 #: ../../ucr-variable-reference.rst:242
 msgid "``/usr/share/univention-directory-reports/univention_logo.png``"
@@ -378,8 +381,8 @@ msgstr "``/usr/share/univention-directory-reports/univention_logo.png``"
 #: ../../ucr-variable-reference.rst:1134 ../../ucr-variable-reference.rst:1164
 #: ../../ucr-variable-reference.rst:1177 ../../ucr-variable-reference.rst:1202
 #: ../../ucr-variable-reference.rst:1215 ../../ucr-variable-reference.rst:1290
-#: ../../ucr-variable-reference.rst:1321 ../../ucr-variable-reference.rst:1335
-#: ../../ucr-variable-reference.rst:1363 ../../ucr-variable-reference.rst:1373
+#: ../../ucr-variable-reference.rst:1372 ../../ucr-variable-reference.rst:1386
+#: ../../ucr-variable-reference.rst:1414 ../../ucr-variable-reference.rst:1424
 msgid "string"
 msgstr "Zeichenkette"
 
@@ -390,9 +393,10 @@ msgid ""
 "name follows the pattern :samp:`directory/reports/templates/csv/{NAME}`, "
 "where :samp:`{NAME}` is an arbitrary identifier, for example ``user1``."
 msgstr ""
-"Registriert eine Berichtsvorlage im CSV-Format für einen bestimmten Objekttyp. Der "
-"Variablenname folgt dem Muster :samp:`directory/reports/templates/csv/{NAME}`, "
-"wobei :samp:`{NAME}` eine beliebige Kennung ist, beispielsweise ``user1``."
+"Registriert eine Berichtsvorlage im CSV-Format für einen bestimmten "
+"Objekttyp. Der Variablenname folgt dem Muster "
+":samp:`directory/reports/templates/csv/{NAME}`, wobei :samp:`{NAME}` eine"
+" beliebige Kennung ist, beispielsweise ``user1``."
 
 #: ../../ucr-variable-reference.rst:252 ../../ucr-variable-reference.rst:292
 msgid "The value consists of four space-separated fields:"
@@ -470,8 +474,9 @@ msgid ""
 "where :samp:`{NAME}` is an arbitrary identifier, for example ``user1``."
 msgstr ""
 "Registriert eine PDF-Berichtsvorlage für einen bestimmten Objekttyp. Der "
-"Variablenname folgt dem Muster :samp:`directory/reports/templates/pdf/{NAME}`, "
-"wobei :samp:`{NAME}` eine beliebige Kennung ist, beispielsweise ``user1``."
+"Variablenname folgt dem Muster "
+":samp:`directory/reports/templates/pdf/{NAME}`, wobei :samp:`{NAME}` eine"
+" beliebige Kennung ist, beispielsweise ``user1``."
 
 #: ../../ucr-variable-reference.rst:307
 msgid ""
@@ -484,8 +489,8 @@ msgstr ""
 "Der Pfad zu dem Verzeichnis, das die Vorlagendatei enthält. Das System "
 "erstellt die tatsächliche Vorlagendatei aus einem sprachspezifischen "
 "Unterverzeichnis von ``<directory>``, beispielsweise :file:`de_DE/` oder "
-":file:`en_US/`. Falls kein Sprachunterverzeichnis vorhanden ist, lädt das "
-"System die Vorlage direkt aus ``<directory>``."
+":file:`en_US/`. Falls kein Sprachunterverzeichnis vorhanden ist, lädt das"
+" System die Vorlage direkt aus ``<directory>``."
 
 #: ../../ucr-variable-reference.rst:314
 msgid ""
@@ -494,8 +499,8 @@ msgid ""
 "reports."
 msgstr ""
 "Der Vorlagendateiname relativ zum aufgelösten Verzeichnis. Verwenden Sie "
-"``.rml``-Dateien für :spelling:word:`RML-basierte` PDF-Berichte und ``.tex``-Dateien für "
-"LaTeX-basierte PDF-Berichte."
+"``.rml``-Dateien für :spelling:word:`RML-basierte` PDF-Berichte und "
+"``.tex``-Dateien für LaTeX-basierte PDF-Berichte."
 
 #: ../../ucr-variable-reference.rst:320
 msgid ""
@@ -2018,7 +2023,62 @@ msgstr ""
 "Weitere Informationen finden Sie unter :ref:`end-user-self-service-"
 "registration-account-activation`."
 
-#: ../../ucr-variable-reference.rst:1315
+#: ../../ucr-variable-reference.rst:1314
+msgid ""
+"Stores the expiry date of the local host certificate. A daily cron job on"
+" each Nubus for UCS system updates this value after checking the host "
+"certificate. The value is the number of days elapsed since 1970-01-01."
+msgstr ""
+"Speichert das Ablaufdatum des lokalen Rechnerzertifikats. Ein täglicher "
+"Cron-Job auf jedem Nubus for UCS-System aktualisiert diesen Wert, nachdem "
+"das Rechnerzertifikat überprüft wurde. Der Wert ist die Anzahl der Tage seit "
+"1970-01-01."
+
+#: ../../ucr-variable-reference.rst:1321 ../../ucr-variable-reference.rst:1340
+msgid "Nubus for UCS sets this variable automatically. Don't change it manually."
+msgstr "Nubus for UCS setzt diese Variable automatisch. Ändern Sie sie nicht manuell."
+
+#: ../../ucr-variable-reference.rst:1324 ../../ucr-variable-reference.rst:1343
+#: ../../ucr-variable-reference.rst:1357
+msgid ""
+"For information about monitoring certificate expiry, see :ref:`domain-"
+"infrastructure-tls-monitoring`."
+msgstr ""
+"Informationen zur Überwachung des Ablaufdatums des Zertifikats finden Sie "
+"unter :ref:`domain-infrastructure-tls-monitoring`."
+
+#: ../../ucr-variable-reference.rst:1328 ../../ucr-variable-reference.rst:1347
+msgid "integer (days since 1970-01-01)"
+msgstr "Ganzzahl (Tage seit 1970-01-01)"
+
+#: ../../ucr-variable-reference.rst:1333
+msgid ""
+"Stores the expiry date of the root certificate. A daily cron job on each "
+"Nubus for UCS system updates this value after checking the root "
+"certificate. The value is the number of days elapsed since 1970-01-01."
+msgstr ""
+"Speichert das Ablaufdatum des Root-Zertifikats. Ein täglicher Cron-Job auf "
+"jedem Nubus for UCS-System aktualisiert diesen Wert, nachdem das "
+"Root-Zertifikat überprüft wurde. Der Wert ist die Anzahl der Tage seit "
+"1970-01-01."
+
+#: ../../ucr-variable-reference.rst:1352
+msgid ""
+"Sets the warning threshold in days for root certificate expiry. When the "
+"root certificate expires within the configured number of days, the "
+"*Management UI* displays a warning. The Nagios plugin also uses this "
+"threshold for its certificate validity check."
+msgstr ""
+"Legt den Schwellenwert in Tagen für das Ablaufdatum des Root-Zertifikats "
+"fest. Wenn das Root-Zertifikat innerhalb der konfigurierten Anzahl von "
+"Tagen abläuft, zeigt die *Management UI* eine Warnung an. Das Nagios-Plugin"
+" verwendet diesen Schwellenwert auch für seine Zertifikatsgültigkeitsprüfung."
+
+#: ../../ucr-variable-reference.rst:1360
+msgid "``30``"
+msgstr "``30``"
+
+#: ../../ucr-variable-reference.rst:1366
 msgid ""
 "Contains the system role of the system. You can't change this setting "
 "after a domain join."
@@ -2026,7 +2086,7 @@ msgstr ""
 "Enthält die Systemrolle des Systems. Sie können diese Einstellung nach "
 "einem Domain Join nicht ändern."
 
-#: ../../ucr-variable-reference.rst:1318
+#: ../../ucr-variable-reference.rst:1369
 msgid ""
 "For information about system roles, see :ref:`domain-infrastructure-"
 "system-roles`."
@@ -2034,7 +2094,7 @@ msgstr ""
 "Informationen zu Systemrollen finden Sie unter :ref:`domain-"
 "infrastructure-system-roles`."
 
-#: ../../ucr-variable-reference.rst:1326
+#: ../../ucr-variable-reference.rst:1377
 msgid ""
 "Specifies the name of the theme to apply to all web interfaces such as "
 "the login page, the portal, and the *Management UI*. The value "
@@ -2046,7 +2106,7 @@ msgstr ""
 "soll. Der Wert entspricht einer CSS-Datei mit demselben Namen im Ordner "
 ":file:`/usr/share/univention-web/themes/`."
 
-#: ../../ucr-variable-reference.rst:1331
+#: ../../ucr-variable-reference.rst:1382
 msgid ""
 "For information about switching between themes, creating custom themes, "
 "and applying changes, see :ref:`management-interface-theming`."
@@ -2055,15 +2115,15 @@ msgstr ""
 "Designs und zum Anwenden von Änderungen finden Sie unter :ref"
 ":`management-interface-theming`."
 
-#: ../../ucr-variable-reference.rst:1334
+#: ../../ucr-variable-reference.rst:1385
 msgid "``dark``"
 msgstr "``dark``"
 
-#: ../../ucr-variable-reference.rst:1336
+#: ../../ucr-variable-reference.rst:1387
 msgid "``light``, ``dark``, or custom theme names"
 msgstr "``light``, ``dark`` oder benutzerdefinierte Design-Namen"
 
-#: ../../ucr-variable-reference.rst:1341
+#: ../../ucr-variable-reference.rst:1392
 msgid ""
 "Defines the number of *UMC Server* processes that Nubus for UCS starts in"
 " parallel."
@@ -2071,15 +2131,15 @@ msgstr ""
 "Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus für UCS "
 "parallel startet."
 
-#: ../../ucr-variable-reference.rst:1344
+#: ../../ucr-variable-reference.rst:1395
 msgid "``1``"
 msgstr "``1``"
 
-#: ../../ucr-variable-reference.rst:1345 ../../ucr-variable-reference.rst:1355
+#: ../../ucr-variable-reference.rst:1396 ../../ucr-variable-reference.rst:1406
 msgid "Unsigned integer"
 msgstr "Vorzeichenlose Ganzzahl"
 
-#: ../../ucr-variable-reference.rst:1350
+#: ../../ucr-variable-reference.rst:1401
 msgid ""
 "The web browser automatically closes the browser session after the "
 "defined time period in seconds. A new session requires a new sign-in"
@@ -2088,17 +2148,17 @@ msgstr ""
 "der festgelegten Zeit in Sekunden. Für eine neue Sitzung ist eine erneute"
 " Anmeldung erforderlich."
 
-#: ../../ucr-variable-reference.rst:1354
+#: ../../ucr-variable-reference.rst:1405
 msgid "``300``"
 msgstr "``300``"
 
-#: ../../ucr-variable-reference.rst:1360
+#: ../../ucr-variable-reference.rst:1411
 msgid "Defines the OpenID provider issuer of this relying party entry."
 msgstr ""
 "Definiert den OpenID-Anbieter-Aussteller dieses Eintrags für vertrauende "
 "Parteien."
 
-#: ../../ucr-variable-reference.rst:1368
+#: ../../ucr-variable-reference.rst:1419
 msgid ""
 "Defines the fully qualified domain name of the relying party for the *UMC"
 " Server*. If the variable is unset, Nubus for UCS uses the fully "
@@ -2109,7 +2169,7 @@ msgstr ""
 "Nubus für UCS den voll qualifizierten Domänennamen des UCS-Systems und "
 "alle IP-Adressen."
 
-#: ../../ucr-variable-reference.rst:1378
+#: ../../ucr-variable-reference.rst:1429
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through OpenID Connect "
 "single sign-on before using a regular sign-in."
@@ -2117,11 +2177,11 @@ msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über OpenID "
 "Connect Single Sign-On, bevor er eine reguläre Anmeldung verwendet."
 
-#: ../../ucr-variable-reference.rst:1382
+#: ../../ucr-variable-reference.rst:1433
 msgid "``true``"
 msgstr "``true``"
 
-#: ../../ucr-variable-reference.rst:1388
+#: ../../ucr-variable-reference.rst:1439
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through SAML single "
 "sign-on before using a regular sign-in."

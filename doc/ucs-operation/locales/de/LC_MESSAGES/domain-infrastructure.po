@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-23 10:14+0000\n"
-"PO-Revision-Date: 2026-04-23 12:18+0200\n"
+"POT-Creation-Date: 2026-04-29 13:02+0000\n"
+"PO-Revision-Date: 2026-04-29 15:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../domain-infrastructure/activity-logging.rst:7
-#: ../../domain-infrastructure/index.rst:45
+#: ../../domain-infrastructure/index.rst:51
 msgid "Domain activity logging"
 msgstr "Protokollierung von Aktivitäten in der Domäne"
 
@@ -316,9 +316,7 @@ msgstr ""
 
 #: ../../domain-infrastructure/domain-join.rst:63
 msgid "Subsequent domain joins with :spelling:word:`univention`-join"
-msgstr ""
-"Nachfolgende Domänenbeitritte mit "
-":spelling:word:`univention`-:spelling:word:`join`"
+msgstr "Nachfolgende Domänenbeitritte mit :spelling:word:`univention-join`"
 
 #: ../../domain-infrastructure/domain-join.rst:65
 msgid ""
@@ -950,7 +948,7 @@ msgstr ""
 "nicht in der Seitenliste an."
 
 #: ../../domain-infrastructure/ha.rst:7
-#: ../../domain-infrastructure/index.rst:39
+#: ../../domain-infrastructure/index.rst:45
 msgid "Redundancy and failover for the Primary Directory Node"
 msgstr "Redundanz und Failover für den Primary Directory Node"
 
@@ -1749,7 +1747,7 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
-#: ../../domain-infrastructure/index.rst:51
+#: ../../domain-infrastructure/index.rst:57
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1813,10 +1811,26 @@ msgstr ""
 "Systemkonfiguration. Siehe :ref:`domain-infrastructure-join`."
 
 #: ../../domain-infrastructure/index.rst:33
+#: ../../domain-infrastructure/tls.rst:7
+msgid "Certificate management"
+msgstr "Zertifikatsverwaltung"
+
+#: ../../domain-infrastructure/index.rst:34
+msgid ""
+"Understand how UCS manages TLS certificates, the built-in CA on the "
+"Primary Directory Node, certificate validity monitoring, and renewal "
+"procedures. See :ref:`domain-infrastructure-tls`."
+msgstr ""
+"Erfahren Sie, wie UCS TLS-Zertifikate verwaltet, die integrierte "
+"Zertifizierungsstelle auf dem Primary Directory Node, die Überwachung der"
+" Zertifikatsgültigkeit und Verlängerungsverfahren. Siehe :ref:`domain-"
+"infrastructure-tls`."
+
+#: ../../domain-infrastructure/index.rst:39
 msgid "Kerberos authentication"
 msgstr "Kerberos-Authentifizierung"
 
-#: ../../domain-infrastructure/index.rst:34
+#: ../../domain-infrastructure/index.rst:40
 msgid ""
 "Learn how Nubus for UCS uses Kerberos for domain authentication, how the "
 "system selects the Key Distribution Center, and how to configure the "
@@ -1828,7 +1842,7 @@ msgstr ""
 "den Kerberos-Administrations-Server konfigurieren. Siehe :ref:`domain-"
 "infrastructure-kerberos`."
 
-#: ../../domain-infrastructure/index.rst:40
+#: ../../domain-infrastructure/index.rst:46
 msgid ""
 "Protect your domain against disruption to the Primary Directory Node by "
 "distributing directory data across Backup and Replica Directory Nodes and"
@@ -1840,17 +1854,18 @@ msgstr ""
 " bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
 ":`deployment-primary-dn-resilience`."
 
-#: ../../domain-infrastructure/index.rst:46
+#: ../../domain-infrastructure/index.rst:52
 msgid ""
 "Record and monitor important domain events including user and object "
 "management, app installations and updates, server password changes, "
 "domain joins, and system updates using the :program:`Admin Diary` app. "
 "See :ref:`domain-activity-logging`."
 msgstr ""
-"Erfassen und überwachen Sie wichtige Ereignisse in der Domäne wie Verwaltung von "
-"Benutzerobjekten und anderen Objekten, Installationen von Apps und Updates, "
-"Serverpasswortänderungen, Domänenbeitritte und Systemaktualisierungen mit "
-"der App :program:`Admin Diary`. Siehe :ref:`domain-activity-logging`."
+"Erfassen und überwachen Sie wichtige Ereignisse in der Domäne wie "
+"Verwaltung von Benutzerobjekten und anderen Objekten, Installationen von "
+"Apps und Updates, Serverpasswortänderungen, Domänenbeitritte und "
+"Systemaktualisierungen mit der App :program:`Admin Diary`. Siehe :ref"
+":`domain-activity-logging`."
 
 #: ../../domain-infrastructure/kerberos.rst:7
 msgid "Kerberos"
@@ -2231,3 +2246,238 @@ msgstr ""
 "nicht in :ref:`domain-infrastructure-system-roles` aufgeführt sind, in "
 "die IP-Verwaltung von Nubus für DNS und DHCP, wie Netzwerkdrucker oder "
 "Router."
+
+#: ../../domain-infrastructure/tls.rst:9
+msgid ""
+"Nubus for UCS always encrypts sensitive data in transit. For example, it "
+"uses SSH for signing in to systems and TLS for domain replication and "
+"LDAP communication."
+msgstr ""
+"Nubus für UCS verschlüsselt vertrauliche Daten bei der Übertragung immer. "
+"Beispielsweise verwendet es SSH für die Anmeldung an Systemen und TLS "
+"für die Domänenreplikation und LDAP-Kommunikation."
+
+#: ../../domain-infrastructure/tls.rst:13
+msgid ""
+"Each computer must verify each other's identity before exchanging "
+"encrypted data. To do this, each computer has a *host certificate* that a"
+" certification authority (CA) issues and signs."
+msgstr ""
+"Jeder Computer muss die Identität des anderen überprüfen, bevor "
+"verschlüsselte Daten ausgetauscht werden. Dazu hat jeder Computer ein "
+"*Rechnerzertifikat*, das eine Zertifizierungsstelle (CA) ausstellt und "
+"signiert."
+
+#: ../../domain-infrastructure/tls.rst:18
+msgid ""
+"This section describes the built-in UCS certificate authority, which "
+"manages trust within the Nubus for UCS domain. For publicly trusted "
+"certificates for web-facing services such as Apache, see :ref:`lifecycle-"
+"lets-encrypt`."
+msgstr ""
+"Dieser Abschnitt beschreibt die integrierte UCS Zertifizierungsstelle, "
+"die die Vertrauensstellung innerhalb der Nubus für UCS-Domäne verwaltet. "
+"Für öffentlich vertrauenswürdige Zertifikate für webbasierte Dienste wie "
+"Apache, siehe :ref:`lifecycle-lets-encrypt`."
+
+#: ../../domain-infrastructure/tls.rst:26
+msgid "UCS built-in certificate authority"
+msgstr "Integrierte UCS Zertifizierungsstelle"
+
+#: ../../domain-infrastructure/tls.rst:28
+msgid ""
+"Nubus for UCS automatically creates its own CA when you install the "
+":term:`Primary Directory Node`. When a Nubus for UCS system joins the "
+"domain, it automatically requests its own host certificate and retrieves "
+"the CA's public certificate. The CA acts as the root CA: it signs its own"
+" certificate, and can sign certificates for subordinate CAs."
+msgstr ""
+"Nubus für UCS erstellt automatisch eine eigene Zertifizierungsstelle, "
+"wenn Sie den :term:`Primary Directory Node` installieren. Wenn ein Nubus "
+"für UCS System der Domäne beitritt, fordert es automatisch sein eigenes "
+"Rechnerzertifikat an und ruft das öffentliche Zertifikat der "
+"Zertifizierungsstelle ab. Die Zertifizierungsstelle fungiert als Root CA:"
+" sie signiert ihr eigenes Zertifikat und kann Zertifikate für "
+"untergeordnete Zertifizierungsstellen signieren."
+
+#: ../../domain-infrastructure/tls.rst:36
+msgid ""
+"The UCS CA secures communication within the Nubus for UCS domain, not "
+"public-facing web services."
+msgstr ""
+"Die UCS-CA sichert die Kommunikation innerhalb der Nubus für UCS-Domäne, "
+"nicht öffentlich zugängliche Webdienste."
+
+#: ../../domain-infrastructure/tls.rst:39
+msgid ""
+"Nubus for UCS generates the CA properties automatically during "
+"installation, based on system settings such as the locale. To change "
+"these settings after installation, open the *Certificate settings* module"
+" in the *Management UI* on the Primary Directory Node."
+msgstr ""
+"Nubus für UCS generiert die Eigenschaften der Zertifizierungsstelle "
+"automatisch während der Installation basierend auf Systemeinstellungen "
+"wie dem Gebietsschema. Um diese Einstellungen nach der Installation zu "
+"ändern, öffnen Sie das Modul *Zertifikateinstellungen* in der *Management"
+" UI* auf dem Primary Directory Node."
+
+#: ../../domain-infrastructure/tls.rst:47
+msgid ""
+"If you change the root certificate through the *Certificate settings* "
+"module, you must reissue all host certificates. See :uv:kb:`Renewing the "
+"SSL/TLS certificates <37>`."
+msgstr ""
+"Wenn Sie das Root-Zertifikat über das Modul *Zertifikateinstellungen* "
+"ändern, müssen Sie alle Rechnerzertifikate neu ausstellen. Siehe "
+":uv:kb:`Renewing the SSL/TLS certificates <37>`."
+
+#: ../../domain-infrastructure/tls.rst:51
+msgid ""
+"The CA in Nubus for UCS resides on the Primary Directory Node. Every "
+":term:`Backup Directory Node` stores a copy of the CA. A cron job updates"
+" each copy from the Primary Directory Node every 20 minutes."
+msgstr ""
+"Die Zertifizierungsstelle in Nubus für UCS befindet sich auf dem Primary "
+"Directory Node. Jeder :term:`Backup Directory Node` speichert eine Kopie "
+"der Zertifizierungsstelle. Ein Cron-Job aktualisiert jede Kopie vom "
+"Primary Directory Node alle 20 Minuten."
+
+#: ../../domain-infrastructure/tls.rst:57
+msgid ""
+"CA updates transfer only from the Primary Directory Node to the Backup "
+"Directory Node, not in the other direction. Always use the CA on the "
+"Primary Directory Node."
+msgstr ""
+"Zertifizierungsstelle-Updates werden nur vom Primary Directory Node zum "
+"Backup Directory Node übertragen, nicht in die andere Richtung. Verwenden"
+" Sie immer die Zertifizierungsstelle auf dem Primary Directory Node."
+
+#: ../../domain-infrastructure/tls.rst:61
+msgid ""
+"If you promote a Backup Directory Node to the Primary Directory Node, you"
+" can immediately use the CA on the new Primary Directory Node. For more "
+"information about the promotion, see :ref:`deployment-primary-dn-"
+"resilience-backup-primary-promotion`."
+msgstr ""
+"Wenn Sie einen Backup Directory Node zum Primary Directory Node "
+"befördern, können Sie sofort die Zertifizierungsstelle auf dem neuen "
+"Primary Directory Node nutzen. Weitere Informationen zur Beförderung "
+"finden Sie unter :ref:`deployment-primary-dn-resilience-backup-primary-"
+"promotion`."
+
+#: ../../domain-infrastructure/tls.rst:68
+msgid ":ref:`deployment-domain-setup-new-domain`"
+msgstr ":ref:`deployment-domain-setup-new-domain`"
+
+#: ../../domain-infrastructure/tls.rst:69
+msgid "for information about the installation of a Primary Directory Node"
+msgstr "für Informationen zur Installation eines Primary Directory Node"
+
+#: ../../domain-infrastructure/tls.rst:71
+msgid ":ref:`deployment-domain-setup-join-ucs`"
+msgstr ":ref:`deployment-domain-setup-join-ucs`"
+
+#: ../../domain-infrastructure/tls.rst:72
+msgid "for information about a Nubus for UCS joining a domain."
+msgstr "für Informationen über Nubus für UCS, das einer Domäne beitritt."
+
+#: ../../domain-infrastructure/tls.rst:77
+msgid "Certificate validity"
+msgstr "Gültigkeit von Zertifikaten"
+
+#: ../../domain-infrastructure/tls.rst:79
+msgid ""
+"The Nubus for UCS root certificate and all host certificates issued from "
+"it expire after a set period. To renew the root certificate and all host "
+"certificates, see :uv:kb:`Renewing the SSL/TLS certificates <37>`."
+msgstr ""
+"Das Root-Zertifikat von Nubus für UCS und alle von ihm ausgestellten "
+"Rechnerzertifikate verfallen nach einem festgelegten Zeitraum. Um das "
+"Root-Zertifikat und alle Rechnerzertifikate zu erneuern, siehe "
+":uv:kb:`Renewing the SSL/TLS certificates <37>`."
+
+#: ../../domain-infrastructure/tls.rst:85
+msgid ""
+"When a certificate expires, services that use TLS-encrypted "
+"communication, such as LDAP or domain replication, stop working."
+msgstr ""
+"Wenn ein Zertifikat abläuft, funktionieren Dienste, die TLS-"
+"verschlüsselte Kommunikation verwenden, wie LDAP oder Domänenreplikation,"
+" nicht mehr."
+
+#: ../../domain-infrastructure/tls.rst:93
+msgid "Monitor certificate expiry"
+msgstr "Überwachen Sie die Gültigkeit von Zertifikaten"
+
+#: ../../domain-infrastructure/tls.rst:95
+msgid ""
+"Nubus for UCS monitors certificate validity automatically. The Nagios "
+"plugin monitors the validity period, and the *Management UI* shows a "
+"warning when the root certificate is about to expire. You can configure "
+"the warning period with the :term:`UCR variable` "
+":envvar:`ssl/validity/warning`. The default warning period is 30 days. "
+"You must renew the root certificate before the root certificate expires."
+msgstr ""
+"Nubus für UCS überwacht die Gültigkeit von Zertifikaten automatisch. Das "
+"Nagios-Plugin überwacht den Gültigkeitszeitraum und die *Management UI* "
+"zeigt eine Warnung an, wenn das Root-Zertifikat bald abläuft. Sie können "
+"den Warnzeitraum mit der :term:`UCR variable` "
+":envvar:`ssl/validity/warning` konfigurieren. Der Standardwarnzeitraum "
+"beträgt 30 Tage. Sie müssen das Root-Zertifikat erneuern, bevor das Root-"
+"Zertifikat abläuft."
+
+#: ../../domain-infrastructure/tls.rst:104
+msgid ""
+"Each day, a separate cron job on Nubus for UCS systems checks the "
+"validity of the host certificate and the root certificate. The cron job "
+"stores the expiry dates in the following UCR variables. These values are "
+"the number of days since 1970-01-01."
+msgstr ""
+"Jeden Tag überprüft ein separater Cron-Job auf Nubus für UCS Systemen die"
+" Gültigkeit des Rechnerzertifikats und des Root-Zertifikats. Der Cron-Job"
+" speichert die Ablaufdaten in den folgenden UCR-Variablen. Diese Werte "
+"sind die Anzahl der Tage seit 1970-01-01."
+
+#: ../../domain-infrastructure/tls.rst
+msgid "Host certificate"
+msgstr "Rechnerzertifikat"
+
+#: ../../domain-infrastructure/tls.rst:109
+msgid ":envvar:`ssl/validity/host`"
+msgstr ":envvar:`ssl/validity/host`"
+
+#: ../../domain-infrastructure/tls.rst
+msgid "Root certificate"
+msgstr "Root-Zertifikat"
+
+#: ../../domain-infrastructure/tls.rst:110
+msgid ":envvar:`ssl/validity/root`"
+msgstr ":envvar:`ssl/validity/root`"
+
+#: ../../domain-infrastructure/tls.rst:112
+msgid ""
+"To download the root certificate and the certificate revocation list in "
+"the *Management UI*:"
+msgstr ""
+"So laden Sie das Root-Zertifikat und die Widerrufsliste für Zertifikate "
+"in der *Management UI* herunter:"
+
+#: ../../domain-infrastructure/tls.rst:114
+msgid "Open the hamburger menu."
+msgstr "Öffnen Sie das Hamburger-Menü."
+
+#: ../../domain-infrastructure/tls.rst:115
+msgid ""
+"For the root certificate select :menuselection:`Certificates --> Root "
+"certificate`."
+msgstr ""
+"Wählen Sie für das Root-Zertifikat :menuselection:`Zertifikate --> Root-"
+"Zertifikat` aus."
+
+#: ../../domain-infrastructure/tls.rst:116
+msgid ""
+"For the revocation list select :menuselection:`Certificates --> "
+"Certificate revocation list`."
+msgstr ""
+"Wählen Sie für die Widerrufsliste :menuselection:`Zertifikate --> "
+"Zertifikatwiderrufsliste` aus."
