@@ -39,6 +39,12 @@ Application management
    from installation and configuration to updates and removal.
    See :ref:`lifecycle-app-center`.
 
+Publicly trusted certificates
+   Obtain publicly trusted TLS certificates for web-facing services
+   such as the Apache web server, Postfix, and Dovecot
+   using the *Let's Encrypt* app from Univention App Center.
+   See :ref:`lifecycle-lets-encrypt`.
+
 Domain-wide software monitoring
    Track which package versions all systems have installed in your domain.
    The software monitor helps you identify problems and plan staged updates.

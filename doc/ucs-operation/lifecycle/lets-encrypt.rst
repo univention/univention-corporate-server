@@ -6,12 +6,16 @@
 Let's Encrypt
 =============
 
-Let's Encrypt is a non-profit certificate authority that provides X.509
-certificates for TLS encryption at no charge. It is the world's largest
-certificate authority with the goal of all websites being secure and using
-HTTPS.
+Let's Encrypt is a non-profit certificate authority
+that provides X.509 certificates for TLS encryption at no charge.
+Use it to secure public-facing services in Nubus for UCS
+with certificates that browsers and operating systems trust.
+The *Let's Encrypt* app in Univention App Center provides automated
+integration of the :program:`acme-tiny` client in Nubus for UCS.
+The app secures the Apache web server, the Postfix SMTP mail server,
+and the Dovecot IMAP mail server.
 
-The :program:`Let's Encrypt` app in Univention App Center offers a largely automated
-integration of the *acme-tiny Let's Encrypt client* in UCS. The supported services
-in UCS are the Apache Web server, the Postfix SMTP mail server and the Dovecot
-IMAP mail server.
+.. seealso::
+
+   :ref:`domain-infrastructure-tls`
+      For information about the built-in UCS certificate authority for domain-internal services.
