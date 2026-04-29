@@ -32,9 +32,13 @@ from datetime import UTC, datetime
 import requests
 from prometheus_client.parser import text_string_to_metric_families
 
+import univention.config_registry
 import univention.logging
-from univention.admin._ucr import configRegistry
 from univention.admin.log import log
+
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
 
 TELEMETRY_ENDPOINT = "https://telemetry.univention.de/v1/metrics"
@@ -48,7 +52,7 @@ JITTER_MAX = 60
 
 
 def fetch_metrics(session, username, password):
-    url = 'https://{ldap/master}/univention/udm/-/metrics'.format(**configRegistry)
+    url = f'https://{ucr.get("ldap/master")}/univention/udm/-/metrics'
     verify = UCS_CA if os.path.exists(UCS_CA) else True
     resp = session.get(url, auth=(username, password), verify=verify, timeout=30)
     resp.raise_for_status()
@@ -175,11 +179,11 @@ def main() -> int:
 
     univention.logging.basicConfig(
         filename='stdout',
-        univention_debug_level=configRegistry.get_int('directory/manager/cmd/debug/level', 3),
-        use_structured_logging=configRegistry.is_true('directory/manager/cmd/debug/structured-logging', True),
+        univention_debug_level=ucr.get_int('directory/manager/cmd/debug/level', 3),
+        use_structured_logging=ucr.is_true('directory/manager/cmd/debug/structured-logging', True),
     )
 
-    if configRegistry.get('server/role') != 'domaincontroller_master':
+    if ucr.get('server/role') != 'domaincontroller_master':
         log.info('Not running on Primary Directory Node, skipping')
         return 0
 
@@ -190,7 +194,7 @@ def main() -> int:
     time.sleep(jitter)
 
     password_file = os.environ.get('PASSWORD_FILE', '/etc/machine.secret')
-    username = os.environ.get('BINDDN') or os.environ.get('USERNAME') or configRegistry.get('ldap/hostdn', '')
+    username = os.environ.get('BINDDN') or os.environ.get('USERNAME') or ucr.get('ldap/hostdn', '')
     try:
         with open(password_file) as f:
             password = f.read().strip()
