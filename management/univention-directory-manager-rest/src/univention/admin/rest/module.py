@@ -3211,10 +3211,10 @@ class ServiceSpecificPassword(Resource):
 class Metrics(Resource):
     """Prometheus metrics endpoint."""
 
-    ucs_version = Info('version_ucs', 'UCS version information', ['domain'], registry=registry)
-    n4k_version = Info('version_n4k', 'Nubus4Kubernetes version information', ['domain'], registry=registry)
-    domain_users = Gauge('users_user_total', 'Total number of UDM objects of type users/user', ['domain', 'platform', 'license_uuid'], registry=registry)
-    license_limit_users = Gauge('settings_license_users_limit_total', 'Number of active users permitted by the installed license', ['domain', 'platform', 'license_uuid'], registry=registry)
+    ucs_version = Info('nubus_ucs_version', 'UCS version information', ['license_uuid', 'domain'], registry=registry)
+    n4k_version = Info('nubus_n4k_version', 'Nubus for Kubernetes version information', ['license_uuid', 'domain'], registry=registry)
+    domain_users = Gauge('nubus_users_user_total', 'Total number of UDM objects of type users/user', ['domain', 'platform', 'license_uuid'], registry=registry)
+    license_limit_users = Gauge('nubus_settings_license_users_limit_total', 'Number of active users permitted by the installed license', ['domain', 'platform', 'license_uuid'], registry=registry)
 
     def get(self):
         data = dict(ucr_live.items())

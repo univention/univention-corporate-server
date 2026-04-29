@@ -52,8 +52,8 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
     domainname = ucr['domainname']
     license_uuid = ucr['uuid/license']
 
-    with subtests.test("version_ucs_info"):
-        family = _get_family(metrics, 'version_ucs_info')
+    with subtests.test("nubus_ucs_version_info"):
+        family = _get_family(metrics, 'nubus_ucs_version_info')
         assert family is not None
 
         sample = _get_sample(
@@ -71,13 +71,13 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
         assert sample.value == 1
 
     # # no samples expected in UCS
-    with subtests.test("version_n4k_info"):
-        family = _get_family(metrics, 'version_n4k_info')
+    with subtests.test("nubus_n4k_version_info"):
+        family = _get_family(metrics, 'nubus_n4k_version_info')
         assert family is not None
         assert len(family.samples) == 0
 
-    with subtests.test("users_user_total"):
-        family = _get_family(metrics, 'users_user_total')
+    with subtests.test("nubus_users_user_total"):
+        family = _get_family(metrics, 'nubus_users_user_total')
         assert family is not None
 
         sample = _get_sample(
@@ -91,8 +91,8 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
         assert sample is not None
         assert sample.value > 1 or sample.value == -1
 
-    with subtests.test("settings_license_users_limit_total"):
-        family = _get_family(metrics, 'settings_license_users_limit_total')
+    with subtests.test("nubus_settings_license_users_limit_total"):
+        family = _get_family(metrics, 'nubus_settings_license_users_limit_total')
         assert family is not None
 
         sample = _get_sample(
