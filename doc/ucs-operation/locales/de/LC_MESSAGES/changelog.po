@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-29 13:02+0000\n"
-"PO-Revision-Date: 2026-04-29 15:03+0200\n"
+"POT-Creation-Date: 2026-04-29 15:33+0000\n"
+"PO-Revision-Date: 2026-04-29 17:35+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -34,141 +34,149 @@ msgstr ""
 msgid "Year 2026"
 msgstr "Jahr 2026"
 
-#: ../../changelog.rst:20 ../../changelog.rst:170
+#: ../../changelog.rst:20 ../../changelog.rst:174
 msgid "Date"
 msgstr "Datum"
 
-#: ../../changelog.rst:21 ../../changelog.rst:171
+#: ../../changelog.rst:21 ../../changelog.rst:175
 msgid "Chapter or topic"
 msgstr "Kapitel oder Thema"
 
-#: ../../changelog.rst:22 ../../changelog.rst:172
+#: ../../changelog.rst:22 ../../changelog.rst:176
 msgid "Change"
 msgstr "Änderung"
 
 #: ../../changelog.rst:24 ../../changelog.rst:28 ../../changelog.rst:32
 #: ../../changelog.rst:36 ../../changelog.rst:40 ../../changelog.rst:44
 #: ../../changelog.rst:48 ../../changelog.rst:52 ../../changelog.rst:56
-#: ../../changelog.rst:60
+#: ../../changelog.rst:60 ../../changelog.rst:64
 msgid "Apr 2026"
 msgstr ":spelling:word:`Apr` 2026"
 
 #: ../../changelog.rst:25
+msgid ":ref:`management-interface-cookie-consent`"
+msgstr ":ref:`management-interface-cookie-consent`"
+
+#: ../../changelog.rst:26
+msgid "Add section about the cookie consent banner."
+msgstr "Abschnitt über Banner für Zustimmung von Cookies hinzugefügt."
+
+#: ../../changelog.rst:29
 msgid ":ref:`lifecycle-lets-encrypt`"
 msgstr ":ref:`lifecycle-lets-encrypt`"
 
-#: ../../changelog.rst:26
+#: ../../changelog.rst:30
 msgid "Add section to inform about *Let's Encrypt*."
 msgstr "Abschnitt als Info über *Let's Encrypt* hinzugefügt."
 
-#: ../../changelog.rst:29
+#: ../../changelog.rst:33
 msgid ":ref:`domain-infrastructure-tls`"
 msgstr ":ref:`domain-infrastructure-tls`"
 
-#: ../../changelog.rst:30
+#: ../../changelog.rst:34
 msgid "Add section about certificate management."
 msgstr "Abschnitt über die Zertifikatsverwaltung hinzugefügt."
 
-#: ../../changelog.rst:33
+#: ../../changelog.rst:37
 msgid ":ref:`management-interface-hardware-information`"
 msgstr ":ref:`management-interface-hardware-information`"
 
-#: ../../changelog.rst:34
+#: ../../changelog.rst:38
 msgid "Add section about the *Hardware information* management module."
 msgstr "Abschnitt über *Hardware-Information* Verwaltungsmodul hinzugefügt."
 
-#: ../../changelog.rst:37
+#: ../../changelog.rst:41
 msgid ":ref:`management-interface-delegated-administration`"
 msgstr ":ref:`management-interface-delegated-administration`"
 
-#: ../../changelog.rst:38
+#: ../../changelog.rst:42
 msgid "Add section about delegated administration."
 msgstr "Abschnitt über delegierte Administration hinzugefügt."
 
-#: ../../changelog.rst:41
+#: ../../changelog.rst:45
 msgid ":ref:`management-interface-directory-reports`"
 msgstr ":ref:`management-interface-directory-reports`"
 
-#: ../../changelog.rst:42
+#: ../../changelog.rst:46
 msgid "Add section about directory reports."
 msgstr "Abschnitt über Verzeichnisberichte hinzugefügt."
 
-#: ../../changelog.rst:45
+#: ../../changelog.rst:49
 msgid ":ref:`domain-activity-logging`"
 msgstr ":ref:`domain-activity-logging`"
 
-#: ../../changelog.rst:46
+#: ../../changelog.rst:50
 msgid "Add section about logging of domain activity."
 msgstr "Abschnitt über Aufzeichnung von Aktivitäten in der Domäne hinzugefügt."
 
-#: ../../changelog.rst:49
+#: ../../changelog.rst:53
 msgid ":ref:`password-management-hashes`"
 msgstr ":ref:`password-management-hashes`"
 
-#: ../../changelog.rst:50
+#: ../../changelog.rst:54
 msgid "Add section about password hashes."
 msgstr "Abschnitt über Passwort-Hashes hinzugefügt."
 
-#: ../../changelog.rst:53
+#: ../../changelog.rst:57
 msgid ":ref:`domain-infrastructure-kerberos`"
 msgstr ":ref:`domain-infrastructure-kerberos`"
 
-#: ../../changelog.rst:54
+#: ../../changelog.rst:58
 msgid "Add section about Kerberos in Nubus for UCS."
 msgstr "Abschnitt über Kerberos in Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:57
+#: ../../changelog.rst:61
 msgid ":ref:`iam-http-api`"
 msgstr ":ref:`iam-http-api`"
 
-#: ../../changelog.rst:58
+#: ../../changelog.rst:62
 msgid "Add cross-reference to *UDM HTTP REST API*."
 msgstr "Abschnitt über Querverweis zu *UDM HTTP REST API* hinzugefügt."
 
-#: ../../changelog.rst:61
+#: ../../changelog.rst:65
 msgid ":ref:`domain-infrastructure-join`"
 msgstr ":ref:`domain-infrastructure-join`"
 
-#: ../../changelog.rst:62
+#: ../../changelog.rst:66
 msgid "Add section about domain join."
 msgstr "Abschnitt über Betritt einer Domäne hinzugefügt."
 
-#: ../../changelog.rst:64 ../../changelog.rst:68 ../../changelog.rst:72
-#: ../../changelog.rst:76
+#: ../../changelog.rst:68 ../../changelog.rst:72 ../../changelog.rst:76
+#: ../../changelog.rst:80
 msgid "Mar 2026"
 msgstr ":spelling:word:`Mär` 2026"
 
-#: ../../changelog.rst:65 ../../changelog.rst:152 ../../changelog.rst:195
+#: ../../changelog.rst:69 ../../changelog.rst:156 ../../changelog.rst:199
 msgid "Document"
 msgstr "Dokument"
 
-#: ../../changelog.rst:66
+#: ../../changelog.rst:70
 msgid "Add missing chapter introductions and align them to the same pattern."
 msgstr ""
 "Fehlende Einleitungen für Kapitel hinzugefügt und auf dasselbe Muster "
 "ausgerichtet."
 
-#: ../../changelog.rst:69
+#: ../../changelog.rst:73
 msgid ":ref:`deployment-installation-secure-boot`"
 msgstr ":ref:`deployment-installation-secure-boot`"
 
-#: ../../changelog.rst:70
+#: ../../changelog.rst:74
 msgid "Add section about secure boot in UCS."
 msgstr "Abschnitt über Secure Boot hinzugefügt."
 
-#: ../../changelog.rst:73
+#: ../../changelog.rst:77
 msgid ":ref:`doc-entry`"
 msgstr ":ref:`doc-entry`"
 
-#: ../../changelog.rst:74
+#: ../../changelog.rst:78
 msgid "Add introduction for the Nubus for UCS Operation Manual."
 msgstr "Einleitung für das Nubus für UCS Betriebshandbuch hinzugefügt."
 
-#: ../../changelog.rst:77
+#: ../../changelog.rst:81
 msgid ":ref:`system-administration-network`"
 msgstr ":ref:`system-administration-network`"
 
-#: ../../changelog.rst:78
+#: ../../changelog.rst:82
 msgid ""
 "Add section about network configuration through the *Network settings* "
 "management module."
@@ -176,243 +184,243 @@ msgstr ""
 "Abschnitt über die Netzwerkkonfiguration über das Verwaltungsmodul "
 "*Netzwerk-Einstellungen* hinzugefügt."
 
-#: ../../changelog.rst:80 ../../changelog.rst:84 ../../changelog.rst:88
-#: ../../changelog.rst:92 ../../changelog.rst:96 ../../changelog.rst:100
-#: ../../changelog.rst:104 ../../changelog.rst:108 ../../changelog.rst:112
-#: ../../changelog.rst:116 ../../changelog.rst:120
+#: ../../changelog.rst:84 ../../changelog.rst:88 ../../changelog.rst:92
+#: ../../changelog.rst:96 ../../changelog.rst:100 ../../changelog.rst:104
+#: ../../changelog.rst:108 ../../changelog.rst:112 ../../changelog.rst:116
+#: ../../changelog.rst:120 ../../changelog.rst:124
 msgid "Feb 2026"
 msgstr ":spelling:word:`Feb` 2026"
 
-#: ../../changelog.rst:81
+#: ../../changelog.rst:85
 msgid ":ref:`lifecycle-software-monitor`"
 msgstr ":ref:`lifecycle-software-monitor`"
 
-#: ../../changelog.rst:82
+#: ../../changelog.rst:86
 msgid "Add section about *Software Monitor* management module."
 msgstr "Abschnitt über *Software-Monitor* Verwaltungsmodul hinzugefügt."
 
-#: ../../changelog.rst:85
+#: ../../changelog.rst:89
 msgid ":ref:`lifecycle-package-maintenance-policy`"
 msgstr ":ref:`lifecycle-package-maintenance-policy`"
 
-#: ../../changelog.rst:86
+#: ../../changelog.rst:90
 msgid "Add section about package maintenance policy."
 msgstr "Abschnitt über Richtlinie zur *Paketpflege* hinzugefügt."
 
-#: ../../changelog.rst:89
+#: ../../changelog.rst:93
 msgid ":ref:`system-administration-proxy`"
 msgstr ":ref:`system-administration-proxy`"
 
-#: ../../changelog.rst:90
+#: ../../changelog.rst:94
 msgid "Add section about proxy and its configuration."
 msgstr "Abschnitt über Proxy und seine Konfiguration hinzugefügt."
 
-#: ../../changelog.rst:93
+#: ../../changelog.rst:97
 msgid ":ref:`system-administration-boot-manager`"
 msgstr ":ref:`system-administration-boot-manager`"
 
-#: ../../changelog.rst:94
+#: ../../changelog.rst:98
 msgid "Add section about the boot manager."
 msgstr "Abschnitt über den Boot Manager hinzugefügt."
 
-#: ../../changelog.rst:97
+#: ../../changelog.rst:101
 msgid ":ref:`system-administration-kernel`"
 msgstr ":ref:`system-administration-kernel`"
 
-#: ../../changelog.rst:98
+#: ../../changelog.rst:102
 msgid "Add concept around Linux kernel."
 msgstr "Konzept rund um den Linux Kernel hinzugefügt."
 
-#: ../../changelog.rst:101
+#: ../../changelog.rst:105
 msgid ":ref:`iam-user-create-wizard`"
 msgstr ":ref:`iam-user-create-wizard`"
 
-#: ../../changelog.rst:102
+#: ../../changelog.rst:106
 msgid "Add configuration options for *User Create Wizard*."
 msgstr ""
 "Konfigurationsoptionen für den *Assistenten zum Erstellen von Benutzer* "
 "hinzugefügt."
 
-#: ../../changelog.rst:105
+#: ../../changelog.rst:109
 msgid ":ref:`management-interface-license`"
 msgstr ":ref:`management-interface-license`"
 
-#: ../../changelog.rst:106
+#: ../../changelog.rst:110
 msgid "Add how to activate the UCS license."
 msgstr "Aktivieren der UCS-Lizenz hinzugefügt."
 
-#: ../../changelog.rst:109
+#: ../../changelog.rst:113
 msgid ":ref:`management-interface-theming`"
 msgstr ":ref:`management-interface-theming`"
 
-#: ../../changelog.rst:110
+#: ../../changelog.rst:114
 msgid "Add section about how to customize the theme of the *Management UI*."
 msgstr ""
 "Abschnitt über die Anpassung des Designs der *Management-Oberfläche* "
 "hinzugefügt."
 
-#: ../../changelog.rst:113
+#: ../../changelog.rst:117
 msgid ":ref:`lifecycle-app-center`"
 msgstr ":ref:`lifecycle-app-center`"
 
-#: ../../changelog.rst:114
+#: ../../changelog.rst:118
 msgid "Add section about Univention App Center"
 msgstr "Abschnitt über Univention App Center hinzugefügt."
 
-#: ../../changelog.rst:117
+#: ../../changelog.rst:121
 msgid ":ref:`lifecycle-package-installation-management`"
 msgstr ":ref:`lifecycle-package-installation-management`"
 
-#: ../../changelog.rst:118
+#: ../../changelog.rst:122
 msgid "Add section about package installation and package management."
 msgstr "Abschnitt über Paketinstallation und Paketverwaltung hinzugefügt."
 
-#: ../../changelog.rst:121
+#: ../../changelog.rst:125
 msgid ":ref:`lifecycle-local-repository-servers`"
 msgstr ":ref:`lifecycle-local-repository-servers`"
 
-#: ../../changelog.rst:122
+#: ../../changelog.rst:126
 msgid "Add section about local repository servers."
 msgstr "Abschnitt über lokale Repository-Server hinzugefügt."
 
-#: ../../changelog.rst:124 ../../changelog.rst:128 ../../changelog.rst:131
-#: ../../changelog.rst:135 ../../changelog.rst:139 ../../changelog.rst:143
-#: ../../changelog.rst:147 ../../changelog.rst:151 ../../changelog.rst:155
-#: ../../changelog.rst:159
+#: ../../changelog.rst:128 ../../changelog.rst:132 ../../changelog.rst:135
+#: ../../changelog.rst:139 ../../changelog.rst:143 ../../changelog.rst:147
+#: ../../changelog.rst:151 ../../changelog.rst:155 ../../changelog.rst:159
+#: ../../changelog.rst:163
 msgid "Jan 2026"
 msgstr ":spelling:word:`Jan` 2026"
 
-#: ../../changelog.rst:125
+#: ../../changelog.rst:129
 msgid ":ref:`lifecycle-update-strategies`"
 msgstr ":ref:`lifecycle-update-strategies`"
 
-#: ../../changelog.rst:126
+#: ../../changelog.rst:130
 msgid "Add section about update strategies for Nubus for UCS."
 msgstr "Abschnitt über Update-Strategien für Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:129
+#: ../../changelog.rst:133
 msgid ":ref:`lifecycle-perform-updates`"
 msgstr ":ref:`lifecycle-perform-updates`"
 
-#: ../../changelog.rst:130
+#: ../../changelog.rst:134
 msgid "Add section about how to make updates for Nubus for UCS."
 msgstr "Abschnitt über die Durchführung von Updates für Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:132
+#: ../../changelog.rst:136
 msgid ":ref:`lifecycle-versioning`"
 msgstr ":ref:`lifecycle-versioning`"
 
-#: ../../changelog.rst:133
+#: ../../changelog.rst:137
 msgid "Add section about versioning of Nubus for UCS."
 msgstr "Abschnitt über die Versionierung von Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:136
+#: ../../changelog.rst:140
 msgid ":ref:`deployment-primary-dn-resilience-fault-tolerant-setup`"
 msgstr ":ref:`deployment-primary-dn-resilience-fault-tolerant-setup`"
 
-#: ../../changelog.rst:137
+#: ../../changelog.rst:141
 msgid "Add section about fault-tolerant domain setup."
 msgstr "Abschnitt über fehlertolerante Domänen-Einrichtung hinzugefügt."
 
-#: ../../changelog.rst:140
+#: ../../changelog.rst:144
 msgid ":ref:`deployment-primary-dn-resilience-backup-primary-promotion`"
 msgstr ":ref:`deployment-primary-dn-resilience-backup-primary-promotion`"
 
-#: ../../changelog.rst:141
+#: ../../changelog.rst:145
 msgid "Add section about promotion to :term:`Primary Directory Node`."
 msgstr ""
 "Abschnitt über die Umwandlung zum :term:`Primary Directory Node` "
 "hinzugefügt."
 
-#: ../../changelog.rst:144
+#: ../../changelog.rst:148
 msgid ":ref:`domain-infrastructure-system-roles`"
 msgstr ":ref:`domain-infrastructure-system-roles`"
 
-#: ../../changelog.rst:145
+#: ../../changelog.rst:149
 msgid "Add section about system roles in Nubus for UCS."
 msgstr "Abschnitt über Systemrollen in Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:148
+#: ../../changelog.rst:152
 msgid ":ref:`deployment`"
 msgstr ":ref:`deployment`"
 
-#: ../../changelog.rst:149
+#: ../../changelog.rst:153
 msgid "Add section about installation of Nubus for UCS."
 msgstr "Abschnitt über die Installation von Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:153
+#: ../../changelog.rst:157
 msgid "Add German translation for existing content."
 msgstr "Deutsche Übersetzung für bestehende Inhalte hinzugefügt."
 
-#: ../../changelog.rst:156
+#: ../../changelog.rst:160
 msgid ":ref:`references-ucr-variables`"
 msgstr ":ref:`references-ucr-variables`"
 
-#: ../../changelog.rst:157
+#: ../../changelog.rst:161
 msgid "Add reference section for :term:`UCR variables <UCR variable>`."
 msgstr "Referenzabschnitt für :term:`UCR-Variablen <UCR variable>` hinzugefügt."
 
-#: ../../changelog.rst:160
+#: ../../changelog.rst:164
 msgid ":ref:`ucs-operation-groups`"
 msgstr ":ref:`ucs-operation-groups`"
 
-#: ../../changelog.rst:161
+#: ../../changelog.rst:165
 msgid "Add section about user group management."
 msgstr "Abschnitt über die Verwaltung von Benutzergruppen hinzugefügt."
 
-#: ../../changelog.rst:164
+#: ../../changelog.rst:168
 msgid "Year 2025"
 msgstr "Jahr 2025"
 
-#: ../../changelog.rst:174 ../../changelog.rst:178 ../../changelog.rst:182
-#: ../../changelog.rst:186 ../../changelog.rst:190
+#: ../../changelog.rst:178 ../../changelog.rst:182 ../../changelog.rst:186
+#: ../../changelog.rst:190 ../../changelog.rst:194
 msgid "Dec 2025"
 msgstr ":spelling:word:`Dez` 2025"
 
-#: ../../changelog.rst:175
+#: ../../changelog.rst:179
 msgid ":ref:`password-management`"
 msgstr ":ref:`password-management`"
 
-#: ../../changelog.rst:176
+#: ../../changelog.rst:180
 msgid "Restructure password management section."
 msgstr "Abschnitt zur Passwortverwaltung umstrukturiert."
 
-#: ../../changelog.rst:179
+#: ../../changelog.rst:183
 msgid ":ref:`password-management-windows-client`"
 msgstr ":ref:`password-management-windows-client`"
 
-#: ../../changelog.rst:180
+#: ../../changelog.rst:184
 msgid "Add section about Samba domain password policy."
 msgstr "Abschnitt über die Passwortrichtlinien in Samba-Domänen hinzugefügt."
 
-#: ../../changelog.rst:183
+#: ../../changelog.rst:187
 msgid ":ref:`password-management-policies`"
 msgstr ":ref:`password-management-policies`"
 
-#: ../../changelog.rst:184
+#: ../../changelog.rst:188
 msgid "Add section about password policies."
 msgstr "Abschnitt über Passwortrichtlinien hinzugefügt."
 
-#: ../../changelog.rst:187
+#: ../../changelog.rst:191
 msgid ":ref:`end-user-self-service`"
 msgstr ":ref:`end-user-self-service`"
 
-#: ../../changelog.rst:188
+#: ../../changelog.rst:192
 msgid "Add section about *End User Self Service*."
 msgstr "Abschnitt über den *Self-Service für Endbenutzer* hinzugefügt."
 
-#: ../../changelog.rst:191
+#: ../../changelog.rst:195
 msgid ":ref:`management-interface-auth`"
 msgstr ":ref:`management-interface-auth`"
 
-#: ../../changelog.rst:192
+#: ../../changelog.rst:196
 msgid "Add section about authentication to Nubus for UCS."
 msgstr "Abschnitt über die Authentifizierung bei Nubus für UCS hinzugefügt."
 
-#: ../../changelog.rst:194
+#: ../../changelog.rst:198
 msgid "Sep 2025"
 msgstr ":spelling:word:`Sep` 2025"
 
-#: ../../changelog.rst:196
+#: ../../changelog.rst:200
 msgid "Create document and build structure."
 msgstr "Dokument erstellt und Struktur aufgebaut."

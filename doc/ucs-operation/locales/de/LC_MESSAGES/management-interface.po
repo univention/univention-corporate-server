@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-24 10:12+0000\n"
-"PO-Revision-Date: 2026-04-24 12:17+0200\n"
+"POT-Creation-Date: 2026-04-30 08:37+0000\n"
+"PO-Revision-Date: 2026-04-30 10:43+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../management-interface/auth.rst:8
-#: ../../management-interface/index.rst:14
+#: ../../management-interface/index.rst:18
 msgid "Authentication"
 msgstr "Authentifizierung"
 
@@ -1128,6 +1128,260 @@ msgstr ""
 "eine lokale :program:`SQLite`-Datenbank für einen *UMC Server* mit "
 "Multiprocessing verwenden."
 
+#: ../../management-interface/cookie-consent.rst:7
+msgid "Consent for using cookies"
+msgstr "Einwilligung zur Verwendung von Cookies"
+
+#: ../../management-interface/cookie-consent.rst:9
+msgid ""
+"Both the Univention Portal and the *Management UI* store cookies on the "
+"user's computer. Depending on your use case and the public profile of "
+"your Univention Portal, you may need to inform users about the cookies."
+msgstr ""
+"Sowohl das Univention Portal als auch die *Management UI* speichern "
+"Cookies auf dem Computer des Benutzers. Abhängig von Ihrem Anwendungsfall"
+" und dem öffentlichen Profil Ihres Univention Portals müssen Sie Benutzer"
+" möglicherweise über die Cookies informieren."
+
+#: ../../management-interface/cookie-consent.rst:14
+msgid ""
+"When you enable the cookie consent banner, both the Univention Portal and"
+" the *Management UI* show the banner that users must accept before "
+"continuing. You can configure the banner content using :term:`UCR "
+"variables <UCR variable>`."
+msgstr ""
+"Wenn Sie das Cookie-Einwilligungsbanner aktivieren, zeigen sowohl das "
+"Univention Portal als auch die *Management UI* das Banner an, das "
+"Benutzer akzeptieren müssen, bevor sie fortfahren können. Sie können den "
+"Bannerinhalt mithilfe von :term:`UCR-Variablen <UCR variable>` "
+"konfigurieren."
+
+#: ../../management-interface/cookie-consent.rst:22
+msgid "Configure the cookie consent banner"
+msgstr "Das Cookie-Einwilligungsbanner konfigurieren"
+
+#: ../../management-interface/cookie-consent.rst:24
+msgid "To enable and customize the cookie consent banner, follow these steps:"
+msgstr ""
+"Führen Sie diese Schritte aus, um das Cookie-Einwilligungsbanner zu "
+"aktivieren und anzupassen:"
+
+#: ../../management-interface/cookie-consent.rst:27
+msgid ""
+"Set :envvar:`umc/cookie-banner/show` to ``true`` to enable the banner. "
+"The banner displays the default content."
+msgstr ""
+"Setzen Sie :envvar:`umc/cookie-banner/show` auf ``true``, um das Banner "
+"zu aktivieren. Das Banner zeigt den Standardinhalt an."
+
+#: ../../management-interface/cookie-consent.rst:31
+msgid ""
+"To customize the title and text, set the UCR variables :envvar:`umc"
+"/cookie-banner/title` and :envvar:`umc/cookie-banner/text` as needed."
+msgstr ""
+"Um Titel und Text anzupassen, setzen Sie die UCR-Variablen :envvar:`umc"
+"/cookie-banner/title` und :envvar:`umc/cookie-banner/text` nach Bedarf."
+
+#: ../../management-interface/cookie-consent.rst:38
+msgid ""
+"Both settings support language-specific configuration. For more "
+"information, see :ref:`management-interface-cookie-consent-reference`."
+msgstr ""
+"Beide Einstellungen unterstützen sprachspezifische Konfigurationen. "
+"Weitere Informationen finden Sie unter :ref:`management-interface-cookie-"
+"consent-reference`."
+
+#: ../../management-interface/cookie-consent.rst:41
+msgid "You can also set the following variables:"
+msgstr "Sie können auch die folgenden Variablen setzen:"
+
+#: ../../management-interface/cookie-consent.rst:43
+msgid ":envvar:`umc/cookie-banner/cookie`"
+msgstr ":envvar:`umc/cookie-banner/cookie`"
+
+#: ../../management-interface/cookie-consent.rst:44
+msgid "for the name of the cookie that Nubus for UCS stores on the user's system."
+msgstr ""
+"für den Namen des Cookies, den Nubus für UCS auf dem System des Benutzers"
+" speichert."
+
+#: ../../management-interface/cookie-consent.rst:46
+msgid ":envvar:`umc/cookie-banner/domains`"
+msgstr ":envvar:`umc/cookie-banner/domains`"
+
+#: ../../management-interface/cookie-consent.rst:47
+msgid "for the domains for which Nubus for UCS shows the cookie consent banner."
+msgstr ""
+"für die Domänen, für die Nubus für UCS das Cookie-Einwilligungsbanner "
+"anzeigt."
+
+#: ../../management-interface/cookie-consent.rst:49
+msgid ""
+"To restore the default content, unset the :envvar:`umc/cookie-"
+"banner/title` and :envvar:`umc/cookie-banner/text` UCR variables. To "
+"deactivate the cookie banner, set :envvar:`umc/cookie-banner/show` to "
+"``false``."
+msgstr ""
+"Um den Standardinhalt wiederherzustellen, heben Sie die Einstellung der "
+"UCR-Variablen :envvar:`umc/cookie-banner/title` und :envvar:`umc/cookie-"
+"banner/text` auf. Um das Cookie-Banner zu deaktivieren, setzen Sie "
+":envvar:`umc/cookie-banner/show` auf ``false``."
+
+#: ../../management-interface/cookie-consent.rst:58
+msgid "UCR reference for cookie consent banner"
+msgstr "UCR Referenz für Cookie-Einwilligungsbanner"
+
+#: ../../management-interface/cookie-consent.rst:60
+msgid "The following UCR variables control the cookie consent banner."
+msgstr "Die folgenden UCR-Variablen steuern das Cookie-Einwilligungsbanner."
+
+#: ../../management-interface/cookie-consent.rst:64
+msgid ""
+"Sets the name of the cookie that Nubus for UCS stores on the user's "
+"system when the user accepts the cookie consent banner. If you don't set "
+"this variable, Nubus for UCS uses the name "
+"``univentionCookieSettingsAccepted``."
+msgstr ""
+"Legt den Namen des Cookies fest, das Nubus für UCS auf dem System des "
+"Benutzers speichert, wenn der Benutzer das Cookie-Einwilligungsbanner "
+"akzeptiert. Wenn Sie diese Variable nicht setzen, verwendet Nubus für UCS"
+" den Namen ``univentionCookieSettingsAccepted``."
+
+#: ../../management-interface/cookie-consent.rst
+msgid "Default value"
+msgstr "Standardwert"
+
+#: ../../management-interface/cookie-consent.rst:69
+#: ../../management-interface/cookie-consent.rst:86
+#: ../../management-interface/cookie-consent.rst:109
+#: ../../management-interface/cookie-consent.rst:122
+msgid "not set"
+msgstr "nicht gesetzt"
+
+#: ../../management-interface/cookie-consent.rst
+msgid "Type"
+msgstr "Typ"
+
+#: ../../management-interface/cookie-consent.rst:70
+#: ../../management-interface/cookie-consent.rst:110
+#: ../../management-interface/cookie-consent.rst:123
+msgid "string"
+msgstr "Zeichenkette"
+
+#: ../../management-interface/cookie-consent.rst:74
+msgid ""
+"Sets the domains for which Nubus for UCS shows the cookie consent banner."
+" The value is a comma-separated list of domain names. Nubus for UCS "
+"matches domains from the end, so a single entry covers multiple "
+"subdomains. If you don't set this variable, Nubus for UCS shows the "
+"banner for all domain names."
+msgstr ""
+"Legt die Domänen fest, für die Nubus für UCS das Cookie-"
+"Einwilligungsbanner anzeigt. Der Wert ist eine kommagetrennte Liste von "
+"Domänennamen. Nubus für UCS vergleicht Domänen vom Ende her, sodass ein "
+"einzelner Eintrag mehrere Subdomänen abdeckt. Wenn Sie diese Variable "
+"nicht setzen, zeigt Nubus für UCS das Banner für alle Domänennamen an."
+
+#: ../../management-interface/cookie-consent.rst:81
+msgid ""
+"Example: The value ``example.com`` matches both ``portal.example.com`` "
+"and ``sso.example.com``. Both sites share the cookie, so users only need "
+"to accept once."
+msgstr ""
+"Beispiel: Der Wert ``example.com`` trifft sowohl auf "
+"``portal.example.com`` als auch auf ``sso.example.com`` zu. Beide Seiten "
+"teilen das Cookie, sodass Benutzer nur einmal zustimmen müssen."
+
+#: ../../management-interface/cookie-consent.rst:87
+msgid "list"
+msgstr "Liste"
+
+#: ../../management-interface/cookie-consent.rst:91
+msgid ""
+"Sets whether Nubus for UCS shows the cookie consent banner in the "
+"Univention Portal and during sign in."
+msgstr ""
+"Legt fest, ob Nubus für UCS das Cookie-Einwilligungsbanner im Univention "
+"Portal und bei der Anmeldung anzeigt."
+
+#: ../../management-interface/cookie-consent.rst:94
+msgid "``false``"
+msgstr "``false``"
+
+#: ../../management-interface/cookie-consent.rst
+msgid "Possible values"
+msgstr "Mögliche Werte"
+
+#: ../../management-interface/cookie-consent.rst:95
+msgid "``true``, ``false``"
+msgstr "``true``, ``false``"
+
+#: ../../management-interface/cookie-consent.rst:96
+msgid "boolean"
+msgstr "Boolean"
+
+#: ../../management-interface/cookie-consent.rst:100
+msgid ""
+"Sets the title for the cookie consent banner. If you don't set this "
+"variable, Nubus for UCS provides a default title in English, ``Cookie "
+"Settings``, and German, ``Cookie-Einstellungen``."
+msgstr ""
+"Legt den Titel für das Cookie-Einwilligungsbanner fest. Wenn Sie diese "
+"Variable nicht setzen, stellt Nubus für UCS einen Standardtitel auf "
+"Englisch, ``Cookie Settings``, und auf Deutsch, ``Cookie-Einstellungen``,"
+" bereit."
+
+#: ../../management-interface/cookie-consent.rst:105
+#, python-brace-format
+msgid ""
+"Use :samp:`umc/cookie-banner/title/{LANGUAGE}` to set a title for a "
+"specific language, where :samp:`{LANGUAGE}` is a two-letter ISO 639-1 "
+"language code."
+msgstr ""
+"Verwenden Sie :samp:`umc/cookie-banner/title/{LANGUAGE}`, um einen Titel "
+"für eine bestimmte Sprache festzulegen, wobei :samp:`{LANGUAGE}` ein "
+"zweistelliger ISO 639-1 Sprachcode ist."
+
+#: ../../management-interface/cookie-consent.rst:114
+#, python-brace-format
+msgid ""
+"Sets the text for the cookie consent banner. If you don't set this "
+"variable, Nubus for UCS provides default text in English and German that "
+"links to the Univention privacy policy. Use :samp:`umc/cookie-"
+"banner/text/{LANGUAGE}` to set text for a specific language, where "
+":samp:`{LANGUAGE}` is a two-letter ISO 639-1 language code."
+msgstr ""
+"Legt den Text für das Cookie-Einwilligungsbanner fest. Wenn Sie diese "
+"Variable nicht setzen, stellt Nubus für UCS Standardtext auf Englisch und"
+" Deutsch bereit, der auf die Datenschutzrichtlinie von Univention "
+"verweist. Verwenden Sie :samp:`umc/cookie-banner/text/{LANGUAGE}`, um "
+"Text für eine bestimmte Sprache festzulegen, wobei :samp:`{LANGUAGE}` ein"
+" zweistelliger ISO 639-1 Sprachcode ist."
+
+#: ../../management-interface/cookie-consent.rst:127
+msgid "`ISO 639-1 on Wikipedia <https://en.wikipedia.org/wiki/ISO_639-1>`_"
+msgstr "`ISO 639-1 auf Wikipedia <https://en.wikipedia.org/wiki/ISO_639-1>`_"
+
+#: ../../management-interface/cookie-consent.rst:128
+msgid "for a list of two-letter language codes."
+msgstr "für eine Liste zweistelliger Sprachcodes."
+
+#: ../../management-interface/cookie-consent.rst:130
+msgid ""
+"`Univention Privacy statement <https://www.univention.com/privacy-"
+"statement/>`_"
+msgstr ""
+"`Univention Datenschutzerklärung "
+"<https://www.univention.de/datenschutzerklaerung/>`_"
+
+#: ../../management-interface/cookie-consent.rst:131
+msgid ""
+"for the content of the privacy statement that the :envvar:`umc/cookie-"
+"banner/text` UCR variable uses by default."
+msgstr ""
+"für den Inhalt der Datenschutzerklärung, die die UCR-Variable "
+":envvar:`umc/cookie-banner/text` standardmäßig verwendet."
+
 #: ../../management-interface/delegated-administration.rst:7
 msgid "Delegated administration for management modules"
 msgstr "Delegierte Administration für Verwaltungsmodule"
@@ -1586,7 +1840,7 @@ msgstr ""
 "Zugriffskontrolllisten."
 
 #: ../../management-interface/directory-reports.rst:7
-#: ../../management-interface/index.rst:36
+#: ../../management-interface/index.rst:46
 msgid "Directory reports"
 msgstr "Verzeichnisberichte"
 
@@ -1810,7 +2064,7 @@ msgstr ""
 "Berichtsvorlagen erstellen."
 
 #: ../../management-interface/hardware-information.rst:7
-#: ../../management-interface/index.rst:42
+#: ../../management-interface/index.rst:52
 msgid "Hardware information"
 msgstr "Hardwareinformationen"
 
@@ -1858,10 +2112,10 @@ msgid ""
 ":`management-interface-hardware-information-figure`."
 msgstr ""
 "Füllen Sie die Felder *Hersteller* und *Modell* aus. Das Modul füllt "
-"diese Felder vorab mit Werten aus den :spelling:word:`DMI-Daten` Ihrer Hardware. Sie "
-"können die Werte anpassen und einen optionalen *Kommentar* hinzufügen. "
-"Ein Beispiel finden Sie unter :numref:`management-interface-hardware-"
-"information-figure`."
+"diese Felder vorab mit Werten aus den :spelling:word:`DMI-Daten` Ihrer "
+"Hardware. Sie können die Werte anpassen und einen optionalen *Kommentar* "
+"hinzufügen. Ein Beispiel finden Sie unter :numref:`management-interface-"
+"hardware-information-figure`."
 
 #: ../../management-interface/hardware-information.rst:30
 msgid ""
@@ -1880,9 +2134,9 @@ msgid ""
 "components by clicking :guilabel:`Archive with system information`."
 msgstr ""
 "Klicken Sie :guilabel:`Weiter`, um die Hardwareinformationen vor der "
-"Übertragung anzuzeigen. Optional können Sie ein :spelling:word:`TAR-Archiv` der "
-"Hardwarekomponenten herunterladen, indem Sie auf :guilabel:`Archiv mit "
-"Systeminformationen` klicken."
+"Übertragung anzuzeigen. Optional können Sie ein :spelling:word:`TAR-"
+"Archiv` der Hardwarekomponenten herunterladen, indem Sie auf "
+":guilabel:`Archiv mit Systeminformationen` klicken."
 
 #: ../../management-interface/hardware-information.rst:37
 msgid ""
@@ -1891,9 +2145,9 @@ msgid ""
 "mail` lets you send the archive by email."
 msgstr ""
 "Klicken Sie erneut :guilabel:`Weiter` und wählen Sie die "
-"Übertragungsmethode: :guilabel:`Hochladen` sendet die Daten über HTTPS, und "
-":guilabel:`Mail senden` ermöglicht es Ihnen, das Archiv per E-Mail zu "
-"senden."
+"Übertragungsmethode: :guilabel:`Hochladen` sendet die Daten über HTTPS, "
+"und :guilabel:`Mail senden` ermöglicht es Ihnen, das Archiv per E-Mail zu"
+" senden."
 
 #: ../../management-interface/hardware-information.rst:43
 msgid "The Hardware information management module start dialog"
@@ -1903,7 +2157,7 @@ msgstr "Das Startdialogfeld des Verwaltungsmoduls Hardwareinformationen"
 msgid "The *Hardware information* management module start dialog"
 msgstr "Das Startdialogfeld des Verwaltungsmoduls *Hardwareinformationen*"
 
-#: ../../management-interface/index.rst:47
+#: ../../management-interface/index.rst:57
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1914,17 +2168,26 @@ msgstr "Managementoberfläche"
 #: ../../management-interface/index.rst:10
 msgid ""
 "The *Management UI* is the web-based interface for administering Nubus "
-"for UCS. This chapter covers configuration tasks for technical "
-"administrators who need to control how users sign in, manage licenses, "
-"and customize the appearance of the web interfaces."
+"for UCS. For general information about the *Management UI* in Nubus, see "
+":external+uv-nubus-manual:ref:`nubus-ui` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Die *Management UI* ist die webbasierte Oberfläche zur Verwaltung von "
-"Nubus für UCS. Dieses Kapitel behandelt Konfigurationsaufgaben für "
-"technische Administratoren, die steuern müssen, wie sich Benutzer "
-"anmelden, Lizenzen verwalten und das Erscheinungsbild der Web-"
-"Schnittstellen anpassen."
+"Nubus für UCS. "
+"Allgemeine Informationen zur *Management UI* in Nubus finden Sie unter "
+":external+uv-nubus-manual:ref:`nubus-ui` in :cite:t:`uv-nubus-manual`."
 
 #: ../../management-interface/index.rst:15
+msgid ""
+"This chapter covers configuration tasks for technical administrators who "
+"need to control how users sign in, manage licenses, and customize the "
+"appearance of the web interfaces."
+msgstr ""
+"Dieses Kapitel behandelt Konfigurationsaufgaben für technische "
+"Administratoren, die steuern müssen, wie sich Benutzer anmelden, "
+"Lizenzen verwalten und das Erscheinungsbild der Web-Schnittstellen "
+"anpassen."
+
+#: ../../management-interface/index.rst:19
 msgid ""
 "Configure how users sign in to the *Portal* and the *Management UI*. This"
 " includes session timeout settings, single sign-on with SAML or OpenID "
@@ -1937,11 +2200,11 @@ msgstr ""
 "Wiederherstellung der Standard-Anmeldung bei Bedarf. Siehe :ref"
 ":`management-interface-auth`."
 
-#: ../../management-interface/index.rst:20
+#: ../../management-interface/index.rst:24
 msgid "License management"
 msgstr "Lizenzverwaltung"
 
-#: ../../management-interface/index.rst:21
+#: ../../management-interface/index.rst:25
 msgid ""
 "View, activate, and manage the Nubus for UCS license. The license "
 "controls access to Univention App Center and defines capacity limits for "
@@ -1953,11 +2216,11 @@ msgstr ""
 "Kapazitätsgrenzen für Benutzer und Clients in Ihrer Domäne. Siehe :ref"
 ":`management-interface-license`."
 
-#: ../../management-interface/index.rst:26
+#: ../../management-interface/index.rst:30
 msgid "Web interface themes"
 msgstr "Designs der Web-Schnittstellen"
 
-#: ../../management-interface/index.rst:27
+#: ../../management-interface/index.rst:31
 msgid ""
 "Switch between the built-in light and dark themes, or create a custom "
 "theme to match your organization's branding. See :ref:`management-"
@@ -1967,11 +2230,27 @@ msgstr ""
 "erstellen Sie ein benutzerdefiniertes Design, das zum Erscheinungsbild "
 "Ihrer Organisation passt. Siehe :ref:`management-interface-theming`."
 
-#: ../../management-interface/index.rst:31
+#: ../../management-interface/index.rst:35
+msgid "Cookie consent banner"
+msgstr "Cookie-Einwilligungsbanner"
+
+#: ../../management-interface/index.rst:36
+msgid ""
+"Inform users about the use of cookies by enabling a consent banner in the"
+" UCS Portal and *Management UI*. Configure its title, text, and the "
+"domains it applies to using UCR variables. See :ref:`management-"
+"interface-cookie-consent`."
+msgstr ""
+"Informieren Sie Benutzer über die Verwendung von Cookies, indem Sie ein "
+"Einwilligungsbanner im UCS Portal und in der *Management UI* aktivieren. "
+"Konfigurieren Sie Titel, Text und die Domänen, für die es gilt, mithilfe "
+"von UCR-Variablen. Siehe :ref:`management-interface-cookie-consent`."
+
+#: ../../management-interface/index.rst:41
 msgid "Delegated administration"
 msgstr "Delegierte Administration"
 
-#: ../../management-interface/index.rst:32
+#: ../../management-interface/index.rst:42
 msgid ""
 "Control which management modules specific groups or users can access by "
 "creating and assigning *UMC* policies with selected operation sets. See "
@@ -1982,7 +2261,7 @@ msgstr ""
 "Operationssätzen zugreifen können. Siehe :ref:`management-interface-"
 "delegated-administration`."
 
-#: ../../management-interface/index.rst:37
+#: ../../management-interface/index.rst:47
 msgid ""
 "Create predefined reports for users, groups, and computers directly from "
 "the management modules or the command line. Customize the report output "
@@ -1994,7 +2273,7 @@ msgstr ""
 "Berichtausgabe an, indem Sie das Logo ersetzen oder neue Berichtsvorlagen"
 " registrieren. Siehe :ref:`management-interface-directory-reports`."
 
-#: ../../management-interface/index.rst:43
+#: ../../management-interface/index.rst:53
 msgid ""
 "Submit hardware and system information to Univention for compatibility "
 "tracking or as part of a support request. See :ref:`management-interface-"
@@ -2514,4 +2793,3 @@ msgstr ""
 "Ein `CSS-Selektor <https://developer.mozilla.org/en-"
 "US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors>`_ kann"
 " bei der Installation eines Nubus für UCS-Updates fehlerhaft werden."
-
