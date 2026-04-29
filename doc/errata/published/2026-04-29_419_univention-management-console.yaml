@@ -9,3 +9,6 @@ desc: |
  * A file descriptor leak caused during PAM authentication via SSS has been
    fixed.
 bug: [59220]
+erratum: 419
+announced: 2026-04-29
+support: core
