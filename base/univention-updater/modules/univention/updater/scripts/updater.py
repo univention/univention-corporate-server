@@ -9,10 +9,12 @@ from __future__ import annotations
 import os
 import re
 import sys
+import time
 from argparse import SUPPRESS, ArgumentParser, Namespace
 from datetime import datetime
 from errno import ENOENT
-from subprocess import DEVNULL, call
+from pathlib import Path
+from subprocess import DEVNULL, CalledProcessError, call, check_call
 from textwrap import dedent, wrap
 from typing import IO, TYPE_CHECKING, Any, Literal, NoReturn
 
@@ -212,6 +214,41 @@ def update_ucr_updatestatus() -> None:
         dprint('Warning: calling univention-updater-check failed.')
 
 
+def update_udm_extensions() -> None:
+    """
+    Resync UDM extensions
+
+    UDM extensions have ucsversionend and ucsversionstart, they might be out of date on the system.
+    A resync reevaluates which extensions should be active.
+    """
+    extension_listener = Path("/usr/lib/univention-directory-listener/system/udm_extension.py")
+    extension_listener_status = Path("/var/lib/univention-directory-listener/handlers/udm_extension")
+    timeout = 300
+    if not extension_listener.exists():
+        log('**** udm_extension.py listener not found. No extensions need to be updated.')
+        return
+    log('**** Update UDM extensions.')
+    try:
+        check_call([
+            "univention-directory-listener-ctrl",
+            "resync",
+            "udm_extension",
+        ])
+    except CalledProcessError as exc:
+        log('**** Failed to resync udm_extension listener: %s' % (exc,))
+        return
+    start_time = time.monotonic()
+    while start_time + timeout > time.monotonic():
+        if extension_listener_status.exists():
+            status = extension_listener_status.read_text()
+            if status.strip() == "3":
+                log('**** Finished updating UDM extensions.')
+                break
+        time.sleep(1)
+    else:
+        log('**** UDM extension resync not finished within %s seconds.' % timeout)
+
+
 def call_local(opt: Namespace) -> NoReturn:
     """Call updater in "local" mode."""
     cmd = [
@@ -378,6 +415,7 @@ def run(opt: Namespace, ucr: ConfigRegistry, updater: UniventionUpdater, nextver
                     f'version/patchlevel={nextversion.patchlevel}',
                 ]
                 call(cmd, stdout=fd_log, stderr=fd_log)
+                update_udm_extensions()
 
     except BaseException:
         if phase == 'preup' or (phase == 'update' and order == 'pre'):

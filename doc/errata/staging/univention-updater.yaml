@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-updater
+fix: 17.5.2
+desc: |
+ This update addresses the following issues:
+ * After a patchlevel update, UDM extensions are now automatically resynced to
+   ensure that extensions with version constraints are correctly activated or
+   deactivated for the new UCS version.
+bug: [59229]

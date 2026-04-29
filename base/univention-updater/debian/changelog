@@ -1,3 +1,9 @@
+univention-updater (17.5.2) unstable; urgency=medium
+
+  * Bug #59229: update UDM extensions on UCS upgrade
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 29 Apr 2026 16:10:08 +0200
+
 univention-updater (17.5.1) unstable; urgency=medium
 
   * Bug #58875: Remove section in postup.sh for univention-net-installer
