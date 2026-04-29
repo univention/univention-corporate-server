@@ -8,6 +8,10 @@ Management interface
 ********************
 
 The *Management UI* is the web-based interface for administering Nubus for UCS.
+For general information about the *Management UI* in Nubus,
+see :external+uv-nubus-manual:ref:`nubus-ui`
+in :cite:t:`uv-nubus-manual`.
+
 This chapter covers configuration tasks for technical administrators
 who need to control how users sign in, manage licenses, and customize the appearance of the web interfaces.
 
@@ -27,6 +31,12 @@ Web interface themes
    Switch between the built-in light and dark themes,
    or create a custom theme to match your organization's branding.
    See :ref:`management-interface-theming`.
+
+Cookie consent banner
+   Inform users about the use of cookies
+   by enabling a consent banner in the UCS Portal and *Management UI*.
+   Configure its title, text, and the domains it applies to using UCR variables.
+   See :ref:`management-interface-cookie-consent`.
 
 Delegated administration
    Control which management modules specific groups or users can access
