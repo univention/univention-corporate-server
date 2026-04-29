@@ -22,6 +22,10 @@ Year 2026
      - Change
 
    * - 29. Apr 2026
+     - :ref:`management-interface-cookie-consent`
+     - Add section about the cookie consent banner.
+
+   * - 29. Apr 2026
      - :ref:`lifecycle-lets-encrypt`
      - Add section to inform about *Let's Encrypt*.
 
