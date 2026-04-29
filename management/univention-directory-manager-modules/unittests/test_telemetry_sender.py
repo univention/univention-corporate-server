@@ -1,13 +1,10 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
-## desc: Test UCS telemetry sender script
-## tags: [udm, apptest]
-## roles: [domaincontroller_master]
-## exposure: safe
-## packages:
-##   - univention-directory-manager-tools
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 
 import importlib.machinery
 import importlib.util
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 import jsonschema
@@ -15,7 +12,13 @@ import pytest
 import requests
 
 
-SCRIPT_PATH = '/usr/share/univention-directory-manager-tools/univention-telemetry-sender'
+_SCRIPT = Path(__file__).parent.parent / 'scripts' / 'univention-telemetry-sender'
+_loader = importlib.machinery.SourceFileLoader('univention_telemetry_sender', str(_SCRIPT))
+_spec = importlib.util.spec_from_loader('univention_telemetry_sender', _loader)
+sender = importlib.util.module_from_spec(_spec)
+_loader.exec_module(sender)
+
+
 PROMETHEUS_TEXT = """\
 # HELP version_ucs_info UCS version information
 # TYPE version_ucs_info gauge
@@ -119,20 +122,13 @@ OTLP_SCHEMA = {
     },
 }
 
-_loader = importlib.machinery.SourceFileLoader('univention_telemetry_sender', SCRIPT_PATH)
-_spec = importlib.util.spec_from_loader('univention_telemetry_sender', _loader)
-sender = importlib.util.module_from_spec(_spec)
-_loader.exec_module(sender)
-
 
 def test_parse_ucs_version():
+    expected = [
+        {'labels': {'domain': 'example.com', 'errata': '1234', 'license_uuid': 'test-uuid', 'patch': '4', 'system_uuid': 'sys-uuid', 'ucs': '5.2'}, 'value': 1.0},
+    ]
     samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
-    assert len(samples['version_ucs_info']) == 1
-    labels = samples['version_ucs_info'][0]['labels']
-    assert labels['license_uuid'] == 'test-uuid'
-    assert labels['ucs'] == '5.2'
-    assert labels['patch'] == '4'
-    assert labels['errata'] == '1234'
+    assert samples['version_ucs_info'] == expected
 
 
 def test_parse_n4k_version():
@@ -141,21 +137,19 @@ def test_parse_n4k_version():
 # TYPE version_n4k_info gauge
 version_n4k_info{domain="example.com",license_uuid="n4k-uuid",major="1",minor="6",patch="1"} 1.0
 """
+    expected = [
+        {'labels': {'domain': 'example.com', 'license_uuid': 'n4k-uuid', 'major': '1', 'minor': '6', 'patch': '1'}, 'value': 1.0},
+    ]
     samples = sender.parse_prometheus_text(text)
-    assert len(samples['version_n4k_info']) == 1
-    labels = samples['version_n4k_info'][0]['labels']
-    assert labels['license_uuid'] == 'n4k-uuid'
-    assert labels['major'] == '1'
-    assert labels['minor'] == '6'
-    assert labels['patch'] == '1'
+    assert samples['version_n4k_info'] == expected
 
 
 def test_parse_user_count():
+    expected = [
+        {'labels': {'domain': 'example.com', 'license_uuid': 'test-uuid', 'platform': 'ucs'}, 'value': 42.0},
+    ]
     samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
-    assert len(samples['users_user_total']) == 1
-    assert samples['users_user_total'][0]['value'] == 42
-    assert samples['users_user_total'][0]['labels']['license_uuid'] == 'test-uuid'
-    assert samples['users_user_total'][0]['labels']['platform'] == 'ucs'
+    assert samples['users_user_total'] == expected
 
 
 def test_build_otlp_conforms_to_schema():
@@ -164,51 +158,51 @@ def test_build_otlp_conforms_to_schema():
     jsonschema.validate(payload, OTLP_SCHEMA)
 
 
-def test_build_otlp_ucs_metric():
+def test_ucs_version_metric():
+    expected = [{
+        'name': 'nubus.installation.ucs',
+        'description': 'UCS version info per installation (value is always 1)',
+        'unit': '1',
+        'gauge': {'dataPoints': [{'timeUnixNano': '0', 'asInt': '1', 'attributes': [
+            {'key': 'license_uuid', 'value': {'stringValue': 'test-uuid'}},
+            {'key': 'ucs', 'value': {'stringValue': '5.2'}},
+            {'key': 'patch', 'value': {'intValue': '4'}},
+            {'key': 'errata', 'value': {'intValue': '1234'}},
+        ]}]},
+    }]
     samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
-    payload = sender.build_otlp(samples, '1700000000000000000')
-
-    resource_attrs = {a['key']: a['value'] for a in payload['resourceMetrics'][0]['resource']['attributes']}
-    assert resource_attrs['service.name']['stringValue'] == sender.SERVICE_NAME
-
-    metrics = {metric['name']: metric for metric in payload['resourceMetrics'][0]['scopeMetrics'][0]['metrics']}
-    assert 'nubus.installation.ucs' in metrics
-
-    dp = metrics['nubus.installation.ucs']['gauge']['dataPoints'][0]
-    assert dp['asInt'] == '1'
-    assert dp['timeUnixNano'] == '1700000000000000000'
-
-    attrs = {a['key']: a['value'] for a in dp['attributes']}
-    assert attrs['license_uuid']['stringValue'] == 'test-uuid'
-    assert attrs['ucs']['stringValue'] == '5.2'
-    assert attrs['patch']['intValue'] == '4'
-    assert attrs['errata']['intValue'] == '1234'
+    assert list(sender._ucs_version_metrics(samples['version_ucs_info'], '0')) == expected
 
 
-def test_build_otlp_identities_metric():
+def test_user_metric():
+    expected = [{
+        'name': 'nubus.identities.active',
+        'description': 'Count of non-deactivated users/user LDAP objects',
+        'unit': '1',
+        'gauge': {'dataPoints': [{'timeUnixNano': '0', 'asInt': '42', 'attributes': [
+            {'key': 'license_uuid', 'value': {'stringValue': 'test-uuid'}},
+            {'key': 'platform', 'value': {'stringValue': 'ucs'}},
+        ]}]},
+    }]
     samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
-    metrics = {metric['name']: metric for metric in sender.build_otlp(samples, '0')['resourceMetrics'][0]['scopeMetrics'][0]['metrics']}
-    assert 'nubus.identities.active' in metrics
-
-    dp = metrics['nubus.identities.active']['gauge']['dataPoints'][0]
-    assert dp['asInt'] == '42'
-
-    attrs = {a['key']: a['value'] for a in dp['attributes']}
-    assert attrs['license_uuid']['stringValue'] == 'test-uuid'
-    assert attrs['platform']['stringValue'] == 'ucs'
+    assert list(sender._user_metrics(samples['users_user_total'], '0')) == expected
 
 
-def test_build_otlp_n4k_metric():
+def test_n4k_metric():
     text = 'version_n4k_info{domain="x",license_uuid="u",major="1",minor="6",patch="1"} 1.0\n'
+    expected = [{
+        'name': 'nubus.installation.n4k',
+        'description': 'N4K version info per installation (value is always 1)',
+        'unit': '1',
+        'gauge': {'dataPoints': [{'timeUnixNano': '0', 'asInt': '1', 'attributes': [
+            {'key': 'license_uuid', 'value': {'stringValue': 'u'}},
+            {'key': 'major', 'value': {'intValue': '1'}},
+            {'key': 'minor', 'value': {'intValue': '6'}},
+            {'key': 'patch', 'value': {'intValue': '1'}},
+        ]}]},
+    }]
     samples = sender.parse_prometheus_text(text)
-    metrics = {metric['name']: metric for metric in sender.build_otlp(samples, '0')['resourceMetrics'][0]['scopeMetrics'][0]['metrics']}
-    assert 'nubus.installation.n4k' in metrics
-
-    attrs = {a['key']: a['value'] for a in metrics['nubus.installation.n4k']['gauge']['dataPoints'][0]['attributes']}
-    assert attrs['license_uuid']['stringValue'] == 'u'
-    assert attrs['major']['intValue'] == '1'
-    assert attrs['minor']['intValue'] == '6'
-    assert attrs['patch']['intValue'] == '1'
+    assert list(sender._n4k_metrics(samples['version_n4k_info'], '0')) == expected
 
 
 def test_send_with_retry_succeeds_on_first_attempt():
@@ -248,7 +242,7 @@ def test_send_with_retry_raises_after_all_attempts_fail():
     assert session.post.call_count == 3
 
 
-def test_send_with_retry_raises_on_http_error():
+def test_send_with_retry_retries_on_http_error():
     session = Mock()
     response = Mock()
     response.raise_for_status.side_effect = requests.HTTPError('500')
@@ -256,3 +250,5 @@ def test_send_with_retry_raises_on_http_error():
 
     with patch.object(sender.time, 'sleep'), pytest.raises(RuntimeError):
         sender.send_with_retry(session, {})
+
+    assert session.post.call_count == 3
