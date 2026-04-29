@@ -171,7 +171,7 @@ def test_ucs_version_metric():
         ]}]},
     }]
     samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
-    assert list(sender._ucs_version_metrics(samples['version_ucs_info'], '0')) == expected
+    assert list(sender._ucs_metrics(samples['version_ucs_info'], '0')) == expected
 
 
 def test_user_metric():
