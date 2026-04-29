@@ -50,6 +50,7 @@ Hardware information
    auth
    license
    theme
+   cookie-consent
    delegated-administration
    directory-reports
    hardware-information
