@@ -54,4 +54,5 @@ Domain-wide software monitoring
    package-maintenance-policy
    local-repository-servers
    app-center
+   lets-encrypt
    software-monitor
