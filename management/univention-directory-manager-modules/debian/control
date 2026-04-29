@@ -94,6 +94,8 @@ Description: UCS - Modules for administration tools
 Package: univention-directory-manager-tools
 Architecture: all
 Depends:
+ python3-prometheus-client,
+ python3-requests,
  python3-univention-directory-manager (= ${binary:Version}),
  ${misc:Depends},
 Description: UCS - Command-line based administration tools

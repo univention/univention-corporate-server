@@ -21,6 +21,7 @@ scripts/remove_sambapwdmustchange	usr/share/univention-directory-manager-tools/
 scripts/univention-blocklist-clean-expired-entries	usr/share/univention-directory-manager-tools/
 scripts/univention-configure-udm-authorization	usr/share/univention-directory-manager-tools/
 scripts/univention-delayed-account-activation	usr/share/univention-directory-manager-tools/
+scripts/univention-telemetry-sender	usr/share/univention-directory-manager-tools/
 scripts/univention-update-license-cache	usr/share/univention-directory-manager-tools/
 udm-default-authorization-roles.policy usr/share/univention-directory-manager-modules/
 univention-cli-client	usr/share/univention-directory-manager-tools/

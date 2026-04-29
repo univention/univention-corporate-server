@@ -19,6 +19,20 @@ Type=cron
 Default=0 8 * * *
 Categories=management-udm
 
+[univention/telemetry/disabled]
+Description[de]=Deaktiviert die tägliche Übermittlung von Telemetriedaten an Univention.
+Description[en]=Disables the daily transmission of telemetry data to Univention.
+Type=bool
+Default=false
+Categories=management-udm
+
+[univention/telemetry/cron]
+Description[de]=Konfiguriert den Zeitplan für die Übertragung der Telemetriedaten. Der Wert muss das Zeitformat eines Crontab-Eintrags haben.
+Description[en]=Configures the schedule for the telemetry data transmission. The value must have the time format of a crontab entry.
+Type=cron
+Default=0 2 * * *
+Categories=management-udm
+
 [listener/module/recyclebin/deactivate]
 Description[de]=Deaktiviert den Papierkorb.
 Description[en]=Disables the Recycle Bin.

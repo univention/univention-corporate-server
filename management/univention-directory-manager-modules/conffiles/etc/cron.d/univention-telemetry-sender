@@ -1,0 +1,12 @@
+@%@UCRWARNING=# @%@
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+@!@
+if not configRegistry.is_true('univention/telemetry/disabled', False) and configRegistry.get('server/role') == 'domaincontroller_master':
+    script = "/usr/share/univention-directory-manager-tools/univention-telemetry-sender"
+    interval = configRegistry.get("univention/telemetry/cron", "0 2 * * *")
+    logfile = '/var/log/univention/telemetry-sender.log'
+    if interval:
+        print("%s       root    [ -x %s ] && umask 026 && %s >>%s 2>&1" % (interval, script, script, logfile))
+@!@
