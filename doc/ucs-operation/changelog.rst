@@ -21,6 +21,14 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 29. Apr 2026
+     - :ref:`lifecycle-lets-encrypt`
+     - Add section to inform about *Let's Encrypt*.
+
+   * - 28. Apr 2026
+     - :ref:`domain-infrastructure-tls`
+     - Add section about certificate management.
+
    * - 24. Apr 2026
      - :ref:`management-interface-hardware-information`
      - Add section about the *Hardware information* management module.
