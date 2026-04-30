@@ -39,7 +39,6 @@ print('\tport = %s' % (configRegistry.get('freeradius/conf/inner-tunnel-port', '
        type = auth
 }
 
-
 #  Authorization. First preprocess (hints and huntgroups files),
 #  then realms, and finally look in the "users" file.
 #
@@ -58,11 +57,51 @@ authorize {
 	#
 	filter_username
 
+    # MAC-normalisation
+    rewrite_calling_station_id_univention
+
 	#
 	#  Do checks on outer / inner User-Name, so that users
 	#  can't spoof us by using incompatible identities
 	#
 #	filter_inner_identity
+
+	#  The ldap module reads passwords from the LDAP database.
+    # fetch LDAP: NT-Password + authorization attributes
+    ldap
+    if (notfound) {
+        reject
+    }
+
+    # UCS@school Proxy-Filter
+    univention_check_school_proxy
+
+    # univentionNetworkAccess + sambaAcctFlags
+    univention_check_authorization
+
+    # MAC-Whitelist
+    univention_check_mac_whitelist
+
+    # set Auth-Type für MSCHAPv2
+    if (&control:NT-Password) {
+        update control {
+            Auth-Type := MS-CHAP
+        }
+    }
+@!@
+# Service-specific password support [5]
+if configRegistry.is_true('radius/use-service-specific-password'):
+    print("""
+        # univentionRadiusPassword statt sambaNTPassword
+        if (&control:Univention-Radius-Password) {
+            update control {
+                NT-Password := &control:Univention-Radius-Password
+            }
+        }
+""")
+@!@
+
+        mschap
 
 	#
 	#  The chap module will set 'Auth-Type := CHAP' if we are
@@ -170,10 +209,6 @@ print('%s' % configRegistry.get('freeradius/conf/users', 'files'))
 	#  mschap authentication, the un-comment this line, and
 	#  enable the "smbpasswd" module.
 #	smbpasswd
-
-	#
-	#  The ldap module reads passwords from the LDAP database.
-	ldap
 
 	#
 	#  Enforce daily limits on time spent logged in.
@@ -387,6 +422,12 @@ post-auth {
 			MS-MPPE-Encryption-Policy !* ANY
 			MS-MPPE-Send-Key !* ANY
 			MS-MPPE-Recv-Key !* ANY
+
+            Tmp-String-0 !* ANY
+            Tmp-String-1 !* ANY
+            Tmp-String-2 !* ANY
+            Tmp-String-3 !* ANY
+            Tmp-String-4 !* ANY
 		}
 
 		#
@@ -418,6 +459,9 @@ post-auth {
 		update outer.session-state {
 			&Module-Failure-Message := &request:Module-Failure-Message
 		}
+        update reply {
+            Reply-Message := "Access denied"
+        }
 	}
 }
 

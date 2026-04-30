@@ -18,24 +18,25 @@ ldap {
 	#  - ldapi:// (LDAP over Unix socket)
 	#  - ldapc:// (Connectionless LDAP)
 	server = "@%@ldap/server/name@%@"
-#	server = 'ldap.rrdns.example.org'
-#	server = 'ldap.rrdns.example.org'
+
+	# Failover to ldap/master if ldap/server/name is not reachable
+@!@
+master = configRegistry.get('ldap/master', '')
+master_port = configRegistry.get('ldap/master/port', '7389')
+if master:
+    print(f'\tserver2 = "{master}:{master_port}"')
+@!@
 
 	#  Port to connect on, defaults to 389, will be ignored for LDAP URIs.
 #	port = 389
-@!@
-print('\tport = "%s"' % (configRegistry.get('ldap/server/port', '7389'), ))
-@!@
+	port = @!@print(configRegistry.get("ldap/server/port", "7389"))@!@
 
 	#  Administrator account for searching and possibly modifying.
 	#  If using SASL + KRB5 these should be commented out.
 #	identity = 'cn=admin,dc=example,dc=org'
 	identity = "@%@ldap/hostdn@%@"
-#	password = mypass
-@!@
-with open('/etc/machine.secret') as credfile:
-    print('\tpassword = "%s"' % credfile.readline().rstrip("\n"))
-@!@
+	password_file = /etc/freeradius.secret
+	basedn = '@!@print(configRegistry.get("ldap/base", ""))@!@'
 
 	#  Unless overridden in another section, the dn from which all
 	#  searches will start from.
@@ -161,6 +162,8 @@ else:
     print('control:LM-Password\t\t:=\tsambaLmPassword')
     print('control:NT-Password\t\t:=\tsambaNtPassword')
 @!@
+		reply:Univention-Network-Access := 'univentionNetworkAccess'
+		reply:Samba-Acct-Flags		  := 'sambaAcctFlags'
 	}
 
 	#  Set to yes if you have eDirectory and want to use the universal
@@ -231,9 +234,9 @@ auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
 filter = 'mschap:User-Name' if auth_type else 'Stripped-User-Name'
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
-    print('\t\tfilter = "(|(uid=%%{%s:-%%{User-Name}})(macAddress=%%{Calling-Station-Id}))"' % (filter))
+    print('\t\tfilter = "(|(uid=%%{%s:-%%{User-Name}})(mailPrimaryAddress=%%{%s:-%%{User-Name}})(macAddress=%%{Calling-Station-Id}))"' % (filter, filter))
 else:
-    print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
+    print('\t\tfilter = "((uid=%%{%s:-%%{User-Name}})(mailPrimaryAddress=%%{%s:-%%{User-Name}}))"' % (filter, filter))
 @!@
 
 		#  For Active Directory nested group, you should comment out the previous 'filter = ...'
@@ -326,7 +329,8 @@ else:
 		#
 		#  If using Active Directory you are likely to need "group"
 		#  instead of "posixGroup".
-		filter = '(objectClass=posixGroup)'
+		# filter = '(objectClass=posixGroup)'
+		filter = "(objectClass=univentionGroup)"
 
 		# Search scope, may be 'base', 'one', sub' or 'children'
 #		scope = 'sub'
@@ -350,6 +354,7 @@ if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
 else:
     print('#\t\tmembership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"')
 @!@
+		# TODO: membership_filter = "(uniqueMember=%{control:Ldap-UserDn})"
 
 		#  The attribute, in user objects, which contain the names
 		#  or DNs of groups a user is a member of.
@@ -382,6 +387,7 @@ else:
 		#  cacheable_dn else enable cacheable_name.
 #		cacheable_name = 'no'
 #		cacheable_dn = 'no'
+		cacheable_dn = yes
 
 		#  Override the normal cache attribute (<inst>-LDAP-Group or
 		#  LDAP-Group if using the default instance) and create a

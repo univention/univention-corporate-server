@@ -291,6 +291,9 @@ print('\tport = %s' % (configRegistry.get('freeradius/conf/accountingport', '0')
 #
 #  Make *sure* that 'preprocess' comes before any realm if you
 #  need to setup hints for the remote radius server
+
+@%@UCRWARNING=# @%@
+
 authorize {
 	#
 	#  Take a User-Name, and perform some checks on it, for spaces and other
@@ -301,6 +304,8 @@ authorize {
 	#
 	filter_username
 
+    # MAC-normalization
+    rewrite_called_station_id_univention
 @!@
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
     print("\trewrite_calling_station_id_univention")
@@ -308,6 +313,25 @@ else:
     print("#\trewrite_calling_station_id_univention")
 @!@
 
+    # MAB (MAC Authentication Bypass)
+    user_name_is_mac
+
+    # LDAP
+    ldap
+    if (notfound) {
+        reject
+    }
+
+    # UCS@school
+    univention_check_school_proxy
+
+    # Authorization
+    univention_check_authorization
+
+    # MAC-Whitelist
+    univention_check_mac_whitelist
+
+    pap
 	#
 	#  Some broken equipment sends passwords with embedded zeros.
 	#  i.e. the debug output will show
@@ -923,6 +947,13 @@ post-auth {
 	update {
 		&reply: += &session-state:
 	}
+    update reply {
+        Tmp-String-0 !* ANY
+        Tmp-String-1 !* ANY
+        Tmp-String-2 !* ANY
+        Tmp-String-3 !* ANY
+        Tmp-String-4 !* ANY
+    }
 
 	#
 	#  Refresh leases when we see a start or alive. Return an address to
@@ -1160,6 +1191,10 @@ else:
 
 		#  Remove reply message if the response contains an EAP-Message
 		remove_reply_message_if_eap
+
+        update reply {
+            Reply-Message := "Access denied"
+        }
 	}
 
 	#

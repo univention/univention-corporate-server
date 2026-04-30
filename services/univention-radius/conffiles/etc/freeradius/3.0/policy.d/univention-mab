@@ -53,21 +53,134 @@ rewrite_calling_station_id_univention {
 	}
 }
 
-# Add "user_name_is_mac" in the "authorize" section.
-#
 # If the User-Name is equal to Calling-Station-Id, or Service-Type
 # is Call-Check, then set Auth-Type to CSID.
 #
 user_name_is_mac {
-    if (&User-Name && (&User-Name =~ /^${policy.mac-addr-regexp}$/i)) {
-        if ((&Service-Type && &Service-Type == "Call-Check") || (&Calling-Station-Id && &Calling-Station-Id == "%{toupper:%{1}:%{2}:%{3}:%{4}:%{5}:%{6}}")) {
-            update control {
-                Auth-Type := 'CSID'
-            }
-            updated
-        }
+	if (&User-Name && (&User-Name =~ /^${policy.mac-addr-regexp}$/i)) {
+		if ((&Service-Type && &Service-Type == "Call-Check") || (&Calling-Station-Id && &Calling-Station-Id == "%{toupper:%{1}:%{2}:%{3}:%{4}:%{5}:%{6}}")) {
+			update control {
+				Auth-Type := 'CSID'
+			}
+			updated
+		}
+	}
+	else {
+		noop
+	}
+}
+
+# check univentionNetworkAccess and sambaAcctFlags
+univention_check_authorization {
+
+	# sambaAcctFlags: D=Disabled, L=Locked
+	if (&reply:Samba-Acct-Flags && \
+		&reply:Samba-Acct-Flags =~ /.*[DL].*/) {
+		reject
+	}
+
+	# univentionNetworkAccess directly at the user object
+	if (&reply:Univention-Network-Access) {
+		if (&reply:Univention-Network-Access != '1') {
+			# check groups of the user
+			if (!&LDAP-Group[*]) {
+				reject
+			}
+			# rlm_ldap group membership delivers univentionNetworkAccess=1
+			# via group { cacheable_dn = yes }
+			# if not group access is allowed: reject
+			update request {
+				Tmp-String-0 := "%{ldap:univentionNetworkAccess}"
+			}
+			if (&Tmp-String-0 != '1') {
+				reject
+			}
+		}
+	}
+
+	# Cleanup
+	update reply {
+		Samba-Acct-Flags !* ANY
+		Univention-Network-Access !* ANY
+	}
+}
+
+#
+# MAC-Adresse whitelist
+# only active if radius/mac/whitelisting = true
+#
+univention_check_mac_whitelist {
+@!@
+if configRegistry.is_true('radius/mac/whitelisting'):
+    print("""
+    if (!&Calling-Station-Id) {
+        reject
     }
-    else {
+    # Calling-Station-Id is already normalizes by
+    # rewrite_calling_station_id_univention
+    update request {
+        Tmp-String-1 := "%{ldap:univentionNetworkAccess}"
+    }
+    if (!&Tmp-String-1 || &Tmp-String-1 != '1') {
+        reject
+    }
+""")
+else:
+    print("""
+    # radius/mac/whitelisting is disabled
+    noop
+""")
+@!@
+}
+
+#
+# UCS@school proxy filter policy [8]
+# Nur aktiv wenn ucsschool/radius/whitelisting installiert
+#
+univention_check_school_proxy {
+@!@
+if configRegistry.is_true('radius/check-ucsschool-proxy'):
+    # proxy/filter/usergroup/<username> -> Gruppenname
+    entries = []
+    for key in configRegistry:
+        if key.startswith('proxy/filter/usergroup/'):
+            group = key[len('proxy/filter/usergroup/'):]
+            users = configRegistry[key].split(',')
+            for user in users:
+                entries.append((user.strip().lower(), group))
+
+    for user, group in entries:
+        print(f"""
+    if (&User-Name == "{user}") {{
+        update request {{
+            Tmp-String-2 := "{group}"
+        }}
+    }}""")
+
+    print("""
+    if (!&Tmp-String-2) {
         noop
     }
+    else {
+        update request {
+            Tmp-String-3 := "%{config:proxy/filter/groupdefault/%{Tmp-String-2}}"
+        }
+        if (!&Tmp-String-3) {
+            noop
+        }
+        else {
+            update request {
+                Tmp-String-4 := "%{config:proxy/filter/setting/%{Tmp-String-3}/wlan}"
+            }
+            if (&Tmp-String-4 != 'true' && \
+                &Tmp-String-4 != 'yes'  && \
+                &Tmp-String-4 != '1') {
+                reject
+            }
+        }
+    }
+""")
+else:
+    print("noop")
+@!@
 }
