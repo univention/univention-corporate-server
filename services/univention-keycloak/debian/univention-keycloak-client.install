@@ -1,3 +1,0 @@
-scripts/fix-duplicate-uid-mappers /usr/share/univention-keycloak/
-scripts/univention-keycloak /usr/sbin/
-scripts/univention-keycloak-migration-status /usr/sbin/
