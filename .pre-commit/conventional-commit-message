@@ -87,7 +87,6 @@ mapping = {
     'univention-initrd': 'initrd',
     'univention-ipcalc': 'ipcalc',
     'univention-join': 'join',
-    'univention-keycloak': 'keycloak',
     'univention-l10n': 'l10n',
     'univention-l10n-fr': 'l10n-fr',
     'univention-ldap': 'ldap',
