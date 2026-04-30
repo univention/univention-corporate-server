@@ -151,7 +151,7 @@ class License:
             self.error = univention.license.select(module)
             if self.error != 0 and lo:
                 # Try to set the version even if the license load was not successful
-                self.searchResult = lo.authz_connection.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
+                self.searchResult = lo.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
                 self.set_values(lo)
 
             try:
