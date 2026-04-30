@@ -3417,6 +3417,16 @@ class unixTime(simple):
 
     type_class = univention.admin.types.DateTimeType
 
+    @classmethod
+    def to_datetime(cls, value):
+        if value:
+            value = cls.parse(value)
+            return datetime.datetime.fromtimestamp(int(value))
+
+    @classmethod
+    def from_datetime(cls, value):
+        return int(value.timestamp())
+
 
 class TimeUnits(select):
     """Syntax to select a time unit."""

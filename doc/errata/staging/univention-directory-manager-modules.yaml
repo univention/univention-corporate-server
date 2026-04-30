@@ -9,4 +9,5 @@ desc: |
  * The `univentionObjectIdentifier` and other technical information about
    LDAP operational attributes has been added to the advanced settings tab of
    all UDM modules.
-bug: [59217]
+ * The `unixTime` UDM syntax is now compatible with UDM REST API.
+bug: [59217, 58211]
