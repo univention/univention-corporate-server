@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Univention Telemetry Sender
+#  postinst script
+#
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/all.sh
+
+#DEBHELPER#
+
+create_logfile /var/log/univention/telemetry-sender.log "root:adm" 640
+
+exit 0

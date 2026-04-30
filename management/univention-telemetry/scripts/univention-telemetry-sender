@@ -1,0 +1,237 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""
+Send UCS telemetry to Univention.
+
+Fetches metrics from the local UDM REST API /metrics endpoint, transforms
+them to OTLP/JSON format, and POSTs to Univention's telemetry receiver.
+Intended to run once daily on the Primary Directory Node via cron.
+"""
+
+import json
+import os
+import random
+import sys
+import time
+from urllib.parse import urljoin
+
+import requests
+from prometheus_client.parser import text_string_to_metric_families
+
+import univention.logging
+from univention.admin.log import log
+from univention.config_registry import ucr
+
+
+TELEMETRY_ENDPOINT = os.environ.get('TELEMETRY_ENDPOINT', 'http://localhost:4318/v1/metrics')
+UDM_REST_BASE_URL = os.environ.get('UDM_API_URL', f'https://{ucr["ldap/master"]}/univention/udm/')
+UDM_REST_USERNAME = os.environ.get('UDM_API_USER', f'{ucr["hostname"]}$')
+SERVICE_NAME = 'univention-telemetry-sender'
+SERVICE_VERSION = '1.0.0'
+SCOPE_NAME = 'nubus.platform'
+RETRY_COUNT = 3
+RETRY_DELAY = 10
+JITTER_MAX = 60
+
+
+def fetch_metrics(session):
+    with open('/etc/machine.secret') as f:
+        password = f.read().strip()
+
+    url = urljoin(UDM_REST_BASE_URL, '-/metrics')
+    resp = session.get(
+        url,
+        proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
+        auth=(UDM_REST_USERNAME, password),
+        timeout=30,
+    )
+    resp.raise_for_status()
+    return resp.text
+
+
+def parse_prometheus_text(text):
+    result = {}
+    for family in text_string_to_metric_families(text):
+        if family.name not in result:
+            result[family.name] = []
+        for sample in family.samples:
+            result[family.name].append({'labels': dict(sample.labels), 'value': sample.value})
+    return result
+
+
+def build_otlp(parsed_prometheus_metrics, ts):
+    nubus_ucs_version_info_samples = parsed_prometheus_metrics['nubus_ucs_version_info']
+    nubus_n4k_version_info_samples = parsed_prometheus_metrics['nubus_n4k_version_info']
+    nubus_users_user_total_samples = parsed_prometheus_metrics['nubus_users_user_total']
+    nubus_license_users_limit_samples = parsed_prometheus_metrics['nubus_settings_license_users_limit_total']
+
+    metrics = []
+
+    if nubus_ucs_version_info_samples:
+        metrics.extend(_build_otlp_nubus_ucs_version(nubus_ucs_version_info_samples, ts))
+
+    if nubus_n4k_version_info_samples:
+        metrics.extend(_build_otlp_nubus_n4k_version(nubus_n4k_version_info_samples, ts))
+
+    if nubus_users_user_total_samples:
+        metrics.extend(_build_otlp_users_user_total(nubus_users_user_total_samples, ts))
+
+    if nubus_license_users_limit_samples:
+        metrics.extend(_build_otlp_license_users_limit(nubus_license_users_limit_samples, ts))
+
+    if not metrics:
+        raise ValueError("No metrics were populated. Skipping telemetry send.")
+
+    return {
+        'resourceMetrics': [{
+            'resource': {'attributes': [
+                _str_attr('service.name', SERVICE_NAME),
+                _str_attr('service.version', SERVICE_VERSION),
+            ]},
+            'scopeMetrics': [{'scope': {'name': SCOPE_NAME}, 'metrics': metrics}],
+        }],
+    }
+
+
+def send_with_retry(session, payload):
+    body = json.dumps(payload).encode()
+    for attempt in range(1, RETRY_COUNT + 1):
+        try:
+            resp = session.post(
+                TELEMETRY_ENDPOINT,
+                proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
+                data=body,
+                headers={'Content-Type': 'application/json'},
+                timeout=30,
+            )
+            resp.raise_for_status()
+            return
+        except requests.RequestException as exc:
+            if attempt == RETRY_COUNT:
+                log.exception('Permanent failure after %d attempts: %s', RETRY_COUNT, exc)
+                raise
+            log.warning('Send attempt %d/%d to %s failed: %s', attempt, RETRY_COUNT, TELEMETRY_ENDPOINT, exc)
+            time.sleep(RETRY_DELAY)
+
+
+def _str_attr(key, value):
+    return {'key': key, 'value': {'stringValue': str(value)}}
+
+
+def _int_attr(key, value):
+    return {'key': key, 'value': {'intValue': str(value)}}
+
+
+def _gauge(name, description, dp):
+    return {'name': name, 'description': description, 'unit': '1', 'gauge': {'dataPoints': [dp]}}
+
+
+def _build_otlp_nubus_ucs_version(prometheus_samples, ts):
+    for sample in prometheus_samples:
+        labels = sample['labels']
+        yield _gauge(
+            'nubus.ucs.version',
+            'UCS version info per installation (value is always 1)',
+            {
+                'timeUnixNano': ts,
+                'asDouble': 1.0,
+                'attributes': [
+                    _str_attr('license_uuid', labels['license_uuid']),
+                    _str_attr('ucs', labels['ucs']),
+                    _int_attr('patch', int(labels['patch'])),
+                    _int_attr('errata', int(labels['errata'])),
+                ],
+            },
+        )
+
+
+def _build_otlp_nubus_n4k_version(prometheus_samples, ts):
+    for sample in prometheus_samples:
+        labels = sample['labels']
+        yield _gauge(
+            'nubus.n4k.version',
+            'N4K version info per installation (value is always 1)',
+            {
+                'timeUnixNano': ts,
+                'asDouble': 1.0,
+                'attributes': [
+                    _str_attr('license_uuid', labels['license_uuid']),
+                    _int_attr('major', int(labels['major'])),
+                    _int_attr('minor', int(labels['minor'])),
+                    _int_attr('patch', int(labels['patch'])),
+                ],
+            },
+        )
+
+
+def _build_otlp_users_user_total(prometheus_samples, ts):
+    for sample in prometheus_samples:
+        labels = sample['labels']
+        yield _gauge(
+            'nubus.identities.active',
+            'Count of non-deactivated users/user LDAP objects',
+            {
+                'timeUnixNano': ts,
+                'asDouble': float(sample['value']),
+                'attributes': [
+                    _str_attr('license_uuid', labels['license_uuid']),
+                    _str_attr('platform', labels['platform']),
+                ],
+            },
+        )
+
+
+def _build_otlp_license_users_limit(prometheus_samples, ts):
+    for sample in prometheus_samples:
+        labels = sample['labels']
+        yield _gauge(
+            'nubus.settings.license.users.limit',
+            'Maximum number of users allowed by the license',
+            {
+                'timeUnixNano': ts,
+                'asDouble': float(sample['value']),
+                'attributes': [
+                    _str_attr('license_uuid', labels['license_uuid']),
+                    _str_attr('platform', labels['platform']),
+                ],
+            },
+        )
+
+
+def main():
+    if ucr.get('server/role') != 'domaincontroller_master':
+        log.info('Not running on Primary Directory Node, skipping')
+        return 0
+
+    univention.logging.basicConfig(
+        filename='stdout',
+        univention_debug_level=ucr.get_int('directory/manager/cmd/debug/level', 3),
+        use_structured_logging=ucr.is_true('directory/manager/cmd/debug/structured-logging', True),
+    )
+
+    log.info('Starting telemetry sender')
+
+    jitter = random.uniform(0, JITTER_MAX)
+    log.info('Sleeping %.1fs before sending', jitter)
+    time.sleep(jitter)
+
+    session = requests.Session()
+
+    raw_prometheus_metrics_text = fetch_metrics(session)
+    parsed_prometheus_metrics = parse_prometheus_text(raw_prometheus_metrics_text)
+    payload = build_otlp(parsed_prometheus_metrics, str(time.time_ns()))
+    send_with_retry(session, payload)
+
+    log.info('Telemetry sent successfully')
+
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main())
+    except Exception:
+        log.exception("Unhandled exception in telemetry-sender")
+        sys.exit(1)

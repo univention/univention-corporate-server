@@ -722,6 +722,12 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
+path = "management/univention-telemetry/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2026 Univention GmbH"
+
+[[annotations]]
 path = "management/univention-web/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"

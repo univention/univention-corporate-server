@@ -1,0 +1,5 @@
+univention-telemetry (0.1.0) unstable; urgency=medium
+
+  * Bug #59235: Initial release
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Thu, 30 Apr 2026 06:21:35 +0300

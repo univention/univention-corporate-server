@@ -17,6 +17,7 @@ Recommends:
  univention-monitoring-client,
  univention-nagios-client,
  univention-server-overview,
+ univention-telemetry,
 Depends:
  nscd,
  univention-bind,

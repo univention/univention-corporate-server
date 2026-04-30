@@ -1,0 +1,5 @@
+Type: file
+File: etc/cron.d/univention-telemetry-sender
+Variables: telemetry/cron
+Variables: telemetry/enabled
+Variables: server/role

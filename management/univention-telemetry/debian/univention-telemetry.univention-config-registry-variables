@@ -1,0 +1,13 @@
+[telemetry/enabled]
+Description[de]=Aktiviert die tägliche Übermittlung von Telemetriedaten an Univention.
+Description[en]=Enables the daily transmission of telemetry data to Univention.
+Type=bool
+Default=false
+Categories=telemetry
+
+[telemetry/cron]
+Description[de]=Konfiguriert den Zeitplan für die Übertragung der Telemetriedaten. Der Wert muss das Zeitformat eines Crontab-Eintrags haben.
+Description[en]=Configures the schedule for the telemetry data transmission. The value must have the time format of a crontab entry.
+Type=cron
+Default=0 2 * * *
+Categories=telemetry

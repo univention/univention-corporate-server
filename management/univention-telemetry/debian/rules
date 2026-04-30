@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+#
+# Univention Telemetry Sender
+#
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+override_dh_auto_test:
+	dh_auto_test
+	pytest-3 unittests/
+
+%:
+	dh $@ --with ucr

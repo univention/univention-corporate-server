@@ -1,0 +1,33 @@
+Source: univention-telemetry
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends:
+ debhelper-compat (=13),
+ python3-jsonschema,
+ python3-prometheus-client,
+ python3-pytest,
+ python3-requests,
+ python3-univention-config-registry,
+ python3-univention-debug,
+ python3-univention-directory-manager,
+ univention-config-dev,
+
+Package: univention-telemetry
+Architecture: all
+Depends:
+ python3,
+ python3-prometheus-client,
+ python3-requests,
+ python3-univention-config-registry,
+ shell-univention-lib,
+ ${misc:Depends},
+Description: Nubus telemetry sender
+ This package facilitates the transmission of Nubus metrics
+ to Univention.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
