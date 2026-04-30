@@ -29,11 +29,6 @@ can check the current status at any time continually in the
 *Grafana UCS Dashboard* web interface displaying the status information
 in a compact manner.
 
-.. figure:: /images/dashboard-alert.*
-   :alt: Alert dashboard
-
-   Alert dashboard
-
 See UCS-Dashboard :ref:`dashboard-installation` for an overview of all involved components.
 
 Administrators define the alert configuration in |UCSUMC|.
