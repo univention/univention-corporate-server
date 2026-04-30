@@ -391,8 +391,8 @@ def mapISO8601DateToGeneralizedTime(value: str, encoding=()) -> bytes:
     if not value:
         return []
 
-    udm_date = datetime.datetime.strptime(value, "%Y-%m-%d")
-    udm_date = udm_date.strftime("%Y%m%d%H%M%SZ")
+    udm_date = datetime.datetime.strptime(value, '%Y-%m-%d')
+    udm_date = udm_date.strftime('%Y%m%d%H%M%SZ')
     return [udm_date.encode(*encoding)]
 
 
@@ -408,8 +408,8 @@ def unmapGeneralizedTimeToISO8601Date(value: list[bytes], encoding=()) -> str:
     '2009-01-01'
     """
     ldap_val = value[0].decode(*encoding)
-    ldap_date = datetime.datetime.strptime(ldap_val, "%Y%m%d%H%M%SZ")
-    return ldap_date.strftime("%Y-%m-%d")
+    ldap_date = datetime.datetime.strptime(ldap_val, '%Y%m%d%H%M%SZ')
+    return ldap_date.strftime('%Y-%m-%d')
 
 
 def mapISO8601DateTimeToGeneralizedTime(value: str, encoding=()) -> list[bytes]:
@@ -426,8 +426,8 @@ def mapISO8601DateTimeToGeneralizedTime(value: str, encoding=()) -> list[bytes]:
     if not value:
         return []
 
-    dt = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-    ldap_val = dt.strftime("%Y%m%d%H%M%SZ")
+    dt = datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+    ldap_val = dt.strftime('%Y%m%d%H%M%SZ')
     return [ldap_val.encode(*encoding)]
 
 
@@ -443,8 +443,8 @@ def unmapGeneralizedTimeToISO8601DateTime(value: list[bytes], encoding=()) -> st
     '2009-01-01 00:00:00'
     """
     ldap_val = value[0].decode(*encoding)
-    dt = datetime.datetime.strptime(ldap_val[:14], "%Y%m%d%H%M%S")
-    return dt.strftime("%Y-%m-%d %H:%M:%S")
+    dt = datetime.datetime.strptime(ldap_val[:14], '%Y%m%d%H%M%S')
+    return dt.strftime('%Y-%m-%d %H:%M:%S')
 
 
 class dontMap:
