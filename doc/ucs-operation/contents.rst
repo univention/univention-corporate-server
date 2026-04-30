@@ -19,6 +19,7 @@ Nubus for UCS - Operation Manual
    lifecycle/index
    iam/index
    system-administration/index
+   monitoring/index
 
 .. toctree::
 
