@@ -227,7 +227,7 @@ def adapt_settings_to_translation(app, config):
         config.html_theme_options["announcement"] = """
 <p><i class='fa-solid fa-circle-exclamation'></i>
 Dieses Dokument befindet sich in Arbeit
-und wird das UCS Handbuch ablöse.</br>
+und wird das UCS Handbuch ablösen.</br>
 Wenn Sie den gesuchten Inhalt nicht finden,
 schauen Sie in das
 <a href='https://docs.software-univention.de/manual/5.2/de/'
