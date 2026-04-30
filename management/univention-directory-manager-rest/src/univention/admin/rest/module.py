@@ -3227,22 +3227,20 @@ class Metrics(Resource):
         domain = data['domainname']
         license_key = udm_license.license.get_key_id(lo)
         if data.get('version/version'):
-            self.ucs_version.labels(domain=domain).info(
+            self.ucs_version.labels(domain=domain, license_uuid=license_key).info(
                 {
                     'ucs': data['version/version'],
                     'patch': data['version/patchlevel'],
                     'errata': data['version/erratalevel'],
-                    'license_uuid': license_key,
                     'system_uuid': data['uuid/system'],
                 },
             )
         if data.get('version-n4k/version'):
-            self.n4k_version.labels(domain=domain).info(
+            self.n4k_version.labels(domain=domain, license_uuid=license_key).info(
                 {
                     'major': data['version-n4k/major'],
                     'minor': data['version-n4k/minor'],
                     'patch': data['version-n4k/patch'],
-                    'license_uuid': license_key,
                 },
             )
 
