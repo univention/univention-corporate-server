@@ -1,4 +1,4 @@
-univention-directory-manager-rest (12.5.8) unstable; urgency=medium
+univention-directory-manager-rest (12.5.9) unstable; urgency=medium
 
   * Bug #59231: improve format of metrics
 
