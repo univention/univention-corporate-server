@@ -28,7 +28,7 @@ variables:
   pipeline:
     value: ""
     description: "Skip or force jobs: '(skip|force)-(doc|ucslint|build)'"
-  BUILD: docker-registry.knut.univention.de/knut/deb-builder
+  BUILD: docker-registry.knut.univention.de/knut/deb-builder:branch-jconde-allow-empty-noop-job
 
 prek:
   stage: prepare
