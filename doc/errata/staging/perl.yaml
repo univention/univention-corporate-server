@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: perl
+fix: 5.28.1-6+deb10u3
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.9 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2025-40909)
+bug: [59233]
+cve:
+- CVE-2025-40909
