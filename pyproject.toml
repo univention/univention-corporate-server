@@ -23,7 +23,6 @@ extend-exclude = [
     "services/univention-ldb-modules/buildtools/",
     "services/univention-ldb-modules/third_party/",
     "doc/developer-reference/",
-    "oidc/python-keycloak",
     "packaging/ucslint/testframework/",
 ]
 
@@ -231,9 +230,6 @@ allowed-confusables = ["’", "`", "´"]
 task-tags = ["TODO", "FIXME"]
 
 [tool.ruff.lint.extend-per-file-ignores]
-"oidc/python-keycloak/keycloak/*" = [
- "ALL",
-]
 "services/univention-ldb-modules/buildtools/*" = [
  "ALL",
 ]
