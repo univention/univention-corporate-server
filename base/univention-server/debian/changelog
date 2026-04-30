@@ -1,3 +1,9 @@
+univention-server (17.5.1) unstable; urgency=medium
+
+  * Bug #59235: recommend univention-telemetry to automatically install the telemetry sender
+
+ -- Rehema Owino <rehema.owino.extern@univention.de>  Thu, 30 Apr 2026 21:32:06 +0300
+
 univention-server (17.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
