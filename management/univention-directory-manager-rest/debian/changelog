@@ -1,6 +1,8 @@
 univention-directory-manager-rest (12.5.10) unstable; urgency=medium
 
   * Bug #59217: hide pre-calculated univentionObjectIdentifier in object template
+  * Bug #59217: ignore false positive "value may not change" for operational
+  	attribute timestamps
 
  -- Florian Best <best@univention.de>  Fri, 01 May 2026 22:16:03 +0200
 

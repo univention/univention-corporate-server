@@ -2267,6 +2267,8 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             except udm_errors.valueMayNotChange:
                 if obj[property_name] == value:  # UDM does not check equality before raising the exception
                     return
+                if property_name in ('modifyTimestamp', 'createTimestamp'):
+                    return  # no map() function for operational attributes, causing the diff: old=2026-04-13 15:35:55 new=2026-04-13T15:35:55.
                 raise udm_errors.valueMayNotChange()  # the original exception is ugly!
             except udm_errors.valueRequired:
                 if value is None:
