@@ -2610,6 +2610,7 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
         obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
         obj.open()
         result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy, True))
+        result['properties']['univentionObjectIdentifier'] = None
 
         form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='create-form')
         self.add_form_element(form, 'position', position or '')
