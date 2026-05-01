@@ -302,6 +302,7 @@ class simpleLdap:
                     syntax=univention.admin.syntax.iso8601DateTime if name.endswith('Timestamp') else univention.admin.syntax.string,
                     may_change=False,
                     dontsearch=False,  # True,
+                    editable=False,
                     size='Two' if name.endswith(('Name', 'Timestamp', 'CSN')) else None,
                 ),
             }

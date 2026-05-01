@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.17) unstable; urgency=medium
+
+  * Bug #59217: set editable=False for operational attributes
+
+ -- Florian Best <best@univention.de>  Fri, 01 May 2026 22:02:27 +0200
+
 univention-directory-manager-modules (17.5.16) unstable; urgency=medium
 
   * Bug #59231: fix error while expired license is in use
