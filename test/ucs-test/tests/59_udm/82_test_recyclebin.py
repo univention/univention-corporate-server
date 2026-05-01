@@ -401,7 +401,7 @@ def test_user_restore(udm, recyclebin_policy_session, ldap_base, lo, listener_ru
         sid = str(ndr_unpack(security.dom_sid, res[0]["objectSid"][0]))
         verify_ldap_object(user_dn, expected_attr={'sambaSID': [sid]}, should_exist=True)
 
-    original_props = udm.get_object(OT_USERS, user_dn)
+    original_props = remove_operational_attributes(udm.get_object(OT_USERS, user_dn))
     user_object_id = original_props['univentionObjectIdentifier'][0]
 
     # Stop listener if testing that scenario
@@ -482,7 +482,7 @@ def test_group_restore(udm, recyclebin_policy_session, ldap_base):
     udm.create_object('computers/linux', name=random_username(), groups=[group_dn])
 
     # Store original properties for comparison
-    original_props = udm.get_object(OT_GROUPS, group_dn)
+    original_props = remove_operational_attributes(udm.get_object(OT_GROUPS, group_dn))
 
     # Delete the group
     udm.remove_object(OT_GROUPS, dn=group_dn)
@@ -501,6 +501,12 @@ def test_group_restore(udm, recyclebin_policy_session, ldap_base):
     # Verify all properties are restored correctly
     for key in original_props.keys():
         assert set(original_props[key]) == set(restored_props[key]), f'Property {key} mismatch: original={original_props[key]}, restored={restored_props[key]}'
+
+
+def remove_operational_attributes(props):
+    for prop in ('entryUUID', 'creatorsName', 'createTimestamp', 'modifiersName', 'modifyTimestamp', 'entryCSN'):
+        props.pop(prop, None)
+    return props
 
 
 def test_recyclebin_container_exists(lo):
