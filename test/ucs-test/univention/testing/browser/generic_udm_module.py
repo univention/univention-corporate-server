@@ -51,7 +51,8 @@ class DetailsView:
         self.page = tester.page
 
     def fill_field(self, label: str, value: str) -> None:
-        self.page.get_by_label(label).fill(value)
+        # "name" matches "Name *" and "Distinguished Name" (which is disabled)
+        self.page.get_by_label(label).filter(has_not=self.page.locator("[disabled]")).fill(value)
 
     def check_checkbox(self, label: str) -> None:
         self.page.get_by_role('checkbox', name=label).check()
