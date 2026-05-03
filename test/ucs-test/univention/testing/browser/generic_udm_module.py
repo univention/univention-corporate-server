@@ -51,8 +51,7 @@ class DetailsView:
         self.page = tester.page
 
     def fill_field(self, label: str, value: str) -> None:
-        # "name" matches "Name *" and "Distinguished Name" (which is disabled)
-        self.page.get_by_label(label).filter(has_not=self.page.locator("[disabled]")).fill(value)
+        self.page.get_by_label(label).fill(value)
 
     def check_checkbox(self, label: str) -> None:
         self.page.get_by_role('checkbox', name=label).check()
@@ -274,7 +273,7 @@ class GroupModule(GenericUDMModule):
         :return: CreatedItem which can be passed to subsequent methods of this class to modify the added group
         """
         detail_view = self.add_object_detail_view()
-        detail_view.fill_field('name', group_name)
+        detail_view.fill_field('Name *', group_name)
         detail_view.save(_('Create Group'))
         expect(self.page.get_by_role('gridcell').filter(has_text=group_name).first, 'expect created group to be visible in grid').to_be_visible()
         return CreatedItem(group_name)
