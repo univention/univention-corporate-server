@@ -388,6 +388,10 @@ class object(univention.admin.handlers.simpleLdap):
         self['_options'].extend(self.options)
         self['_options'] = list(set(self['_options']) - {'default'})
 
+    @classmethod
+    def _register_operational_attributes(cls, module):
+        return
+
 
 lookup = object.lookup
 lookup_filter = object.lookup_filter

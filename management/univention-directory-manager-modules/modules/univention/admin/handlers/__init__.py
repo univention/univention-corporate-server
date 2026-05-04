@@ -257,6 +257,10 @@ class simpleLdap:
         if not module:
             return
 
+        cls._register_technical_information(module)
+
+    @classmethod
+    def _register_technical_information(cls, module):
         cls._register_univention_object_identifier_property(module)
         cls._register_operational_attributes(module)
 
@@ -276,14 +280,6 @@ class simpleLdap:
             module.property_descriptions.update(prop)
         if hasattr(module, 'default_property_descriptions') and 'univentionObjectIdentifier' not in module.default_property_descriptions:
             module.default_property_descriptions.update(copy.deepcopy(prop))
-        if not hasattr(module, 'layout'):
-            module.layout = []
-        module.layout.append(Tab(_('Technical information'), '', advanced=True, layout=[
-            ['univentionObjectIdentifier', 'entryUUID'],
-            ['creatorsName', 'createTimestamp'],
-            ['modifiersName', 'modifyTimestamp'],
-            ['entryCSN'],
-        ]))
 
     @classmethod
     def _register_operational_attributes(cls, module):
@@ -311,6 +307,15 @@ class simpleLdap:
                 module.property_descriptions.update(prop)
             if hasattr(module, 'default_property_descriptions') and name not in module.default_property_descriptions:
                 module.default_property_descriptions.update(copy.deepcopy(prop))
+
+        if not hasattr(module, 'layout'):
+            module.layout = []
+        module.layout.append(Tab(_('Technical information'), '', advanced=True, layout=[
+            ['univentionObjectIdentifier', 'entryUUID'],
+            ['creatorsName', 'createTimestamp'],
+            ['modifiersName', 'modifyTimestamp'],
+            ['entryCSN'],
+        ]))
 
     @property
     def authz(self):
