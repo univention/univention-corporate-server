@@ -47,7 +47,7 @@ def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -
     where = ud.LISTENER
     level = ud.INFO
 
-    # deleted -> remove all privileges
+    # deleted ->  remove all privileges
     if old and not new and old.get("univentionSambaPrivilegeList") and old.get("sambaSID"):
         ud.debug(where, level, "%s: remove all samba privs (%r)" % (name, old["sambaSID"][0]))
         removePrivileges(old["sambaSID"][0], ALL_SAMBA_PRIVILEGES)
