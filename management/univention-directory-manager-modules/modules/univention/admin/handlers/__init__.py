@@ -866,7 +866,7 @@ class simpleLdap:
                 copyobject.options = self.options[:]
                 copyobject.open()
                 for key in self.keys():
-                    if key == 'univentionObjectIdentifier':
+                    if key == 'univentionObjectIdentifier' or not self.descriptions[key].editable:
                         continue
                     copyobject[key] = self[key]
                 copyobject.policies = self.policies

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.5.18) unstable; urgency=medium
+
+  * Bug #59217: ignore un-editable properties when copying a container on
+  	move()/rename()
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2026 17:22:51 +0200
+
 univention-directory-manager-modules (17.5.17) unstable; urgency=medium
 
   * Bug #59217: set editable=False for operational attributes
