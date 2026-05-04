@@ -3,7 +3,7 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-management-console-module-udm
-fix: 12.5.4
+fix: 12.5.5
 desc: |
  This update addresses the following issue:
  * It was not possible to add a property to the layout if it's default value

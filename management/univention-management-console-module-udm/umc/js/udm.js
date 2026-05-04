@@ -2190,12 +2190,7 @@ define([
 				};
 				all(getFromDetailPage).then(lang.hitch(this, function(results) {
 					var properties = results.properties;
-					var template = results.template && results.template.result;
-					if (template && template.length > 0) {
-						template = template[0];
-					} else {
-						template = null;
-					}
+					var template = results.template;
 					this._newObjectDialog.setDetails(this._detailPage, template, properties);
 				}));
 			} else {

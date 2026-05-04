@@ -238,7 +238,13 @@ define([
 			// in case an object template has been chosen, add the umcp request for the template
 			var objTemplate = lang.getObject('objectTemplate', false, this.newObjectOptions);
 			if (objTemplate && 'None' != objTemplate) {
-				this.templateQuery = this.umcpCommand('udm/get', [objTemplate], true, 'settings/usertemplate');
+				this.templateQuery = this.umcpCommand('udm/get', [objTemplate], true, 'settings/usertemplate').then(function(result) {
+					var template = lang.clone(result && result.result && result.result[0]) || null;
+					if (template) {
+						delete template.univentionObjectIdentifier;
+					}
+					return template;
+				});
 				commands.template = this.templateQuery;
 			} else {
 				this.templateQuery = new Deferred();
@@ -247,7 +253,7 @@ define([
 
 			// when the commands have been finished, create the detail page
 			all(commands).then(lang.hitch(this, function(results) {
-				var template = lang.getObject('template.result', false, results) || null;
+				var template = lang.clone(results.template);
 				var layout = lang.clone(results.layout);
 				var policies = lang.clone(results.policies);
 				var properties = lang.clone(results.properties);
@@ -1240,11 +1246,6 @@ define([
 				}
 			}));
 
-			if (template && template.length > 0) {
-				template = template[0];
-			} else {
-				template = null;
-			}
 			// create detail page
 			this._tabs = new StackContainer({
 				region: 'main'

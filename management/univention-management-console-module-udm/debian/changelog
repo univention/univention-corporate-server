@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.5.5) unstable; urgency=medium
+
+  * Bug #59217: ignore univentionObjectIdentifier in usertemplates
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2026 16:54:51 +0200
+
 univention-management-console-module-udm (12.5.4) unstable; urgency=medium
 
   * Bug #59217: allow functions to be default value for UMC
