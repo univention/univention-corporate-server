@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 04. May 2026
+     - :ref:`infrastructure-monitoring-ucs-dashboard`
+     - Add section about *UCS Dashboard*.
+
    * - 29. Apr 2026
      - :ref:`management-interface-cookie-consent`
      - Add section about the cookie consent banner.
