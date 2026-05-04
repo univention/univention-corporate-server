@@ -1,0 +1,268 @@
+# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+msgid ""
+msgstr ""
+"Project-Id-Version: Nubus for UCS 5.2 - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-04 15:06+0000\n"
+"PO-Revision-Date: 2026-05-04 17:18+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../monitoring/dashboard.rst:7 ../../monitoring/dashboard.rst:21
+msgid "UCS Dashboard"
+msgstr "UCS Dashboard"
+
+#: ../../monitoring/dashboard.rst:9
+msgid ""
+"The *UCS Dashboard* app gives administrators a clear, up-to-date view of "
+"the domain and individual servers. You can access the dashboards in a web"
+" browser to view live reports on specific aspects."
+msgstr ""
+"Die App *UCS Dashboard* gibt Administratoren einen übersichtlichen und "
+"aktuellen Überblick über die Domäne und einzelne Server. Sie können die "
+"Dashboards in einem Webbrowser aufrufen, um Live-Berichte zu bestimmten "
+"Aspekten anzuzeigen."
+
+#: ../../monitoring/dashboard.rst:17
+msgid "Installation"
+msgstr "Installation"
+
+#: ../../monitoring/dashboard.rst:19
+msgid "The UCS Dashboard consists of the following three apps:"
+msgstr "Das UCS Dashboard besteht aus den folgenden drei Apps:"
+
+#: ../../monitoring/dashboard.rst:22
+msgid ""
+"Visualizes data from the central database using `Grafana "
+"<https://grafana.com/>`_ [1]_."
+msgstr ""
+"Visualisiert Daten aus der zentralen Datenbank mithilfe von `Grafana "
+"<https://grafana.com/>`_ [1]_."
+
+#: ../../monitoring/dashboard.rst:25
+msgid "UCS Dashboard Database"
+msgstr "UCS Dashboard Database"
+
+#: ../../monitoring/dashboard.rst:26
+msgid "Stores metrics in a time series database using *Prometheus*."
+msgstr "Speichert Metriken in einer Zeitreihendatenbank mithilfe von *Prometheus*."
+
+#: ../../monitoring/dashboard.rst:28
+msgid "UCS Dashboard Client"
+msgstr "UCS Dashboard Client"
+
+#: ../../monitoring/dashboard.rst:29
+msgid "Collects metrics from server systems using the *Prometheus Node Exporter*."
+msgstr ""
+"Erfasst Metriken von Serversystemen mithilfe des *Prometheus Node "
+"Exporters*."
+
+#: ../../monitoring/dashboard.rst:31
+msgid ""
+"You can install the *UCS Dashboard* app from the *Univention App Center* "
+"on any server in the domain with one of the following roles:"
+msgstr ""
+"Sie können die App *UCS Dashboard* aus dem *Univention App Center* auf "
+"einem beliebigen Server in der Domäne mit einer der folgenden Rollen "
+"installieren:"
+
+#: ../../monitoring/dashboard.rst:34
+msgid ":term:`Primary Directory Node`"
+msgstr ":term:`Primary Directory Node`"
+
+#: ../../monitoring/dashboard.rst:35
+msgid ":term:`Backup Directory Node`"
+msgstr ":term:`Backup Directory Node`"
+
+#: ../../monitoring/dashboard.rst:36
+msgid ":term:`Replica Directory Node`"
+msgstr ":term:`Replica Directory Node`"
+
+#: ../../monitoring/dashboard.rst:38
+msgid ""
+"The *App Center* automatically installs the *UCS Dashboard Database* and "
+"*UCS Dashboard Client* apps on the same server."
+msgstr ""
+"Das *App Center* installiert die Apps *UCS Dashboard Database* und *UCS "
+"Dashboard Client* automatisch auf demselben Server."
+
+#: ../../monitoring/dashboard.rst:43
+msgid ""
+"Grafana Labs and its affiliates don't endorse, sponsor, or have any "
+"affiliation with Univention."
+msgstr ""
+"Grafana Labs und seine verbundenen Unternehmen stehen in keiner "
+"Verbindung zu Univention."
+
+#: ../../monitoring/dashboard.rst:48
+msgid ":ref:`lifecycle-app-center`"
+msgstr ":ref:`lifecycle-app-center`"
+
+#: ../../monitoring/dashboard.rst:49
+msgid "for information about *Univention App Center*."
+msgstr "Informationen über das *Univention App Center*."
+
+#: ../../monitoring/dashboard.rst:54
+msgid "Accessing the UCS Dashboard"
+msgstr "Zugriff auf das UCS Dashboard"
+
+#: ../../monitoring/dashboard.rst:56
+#, python-brace-format
+msgid ""
+"After installing the *UCS Dashboard* app, the portal includes a link to "
+"the *UCS Dashboard*. Alternatively, you can access the *UCS Dashboard* "
+"directly through :samp:`https://{SERVERNAME-OR-IP}/ucs-dashboard/`."
+msgstr ""
+"Nach der Installation der App *UCS Dashboard* enthält das Portal einen "
+"Link zum *UCS Dashboard*. Alternativ können Sie das *UCS Dashboard* "
+"direkt über :samp:`https://{SERVERNAME-OR-IP}/ucs-dashboard/` aufrufen."
+
+#: ../../monitoring/dashboard.rst:61
+msgid ""
+"By default, only users in the ``Domain Admins`` group can access the "
+"dashboard. For example, the ``Administrator`` user has access by default."
+" To enable other users to access the *UCS Dashboard*, add those users to "
+"the ``Domain Admins`` group."
+msgstr ""
+"Standardmäßig können nur Benutzer der Gruppe ``Domain Admins`` auf das "
+"Dashboard zugreifen. Beispielsweise hat der Benutzer ``Administrator`` "
+"standardmäßig Zugriff. Um weiteren Benutzern den Zugriff auf das *UCS "
+"Dashboard* zu ermöglichen, fügen Sie diese Benutzer der Gruppe ``Domain "
+"Admins`` hinzu."
+
+#: ../../monitoring/dashboard.rst:69
+msgid "Dashboards"
+msgstr "Dashboards"
+
+#: ../../monitoring/dashboard.rst:71
+msgid ""
+"The *UCS Dashboard* app provides three dashboards by default, each "
+"showing a different aspect of your domain."
+msgstr ""
+"Die App *UCS Dashboard* stellt standardmäßig drei Dashboards bereit, die "
+"jeweils einen anderen Aspekt Ihrer Domäne anzeigen."
+
+#: ../../monitoring/dashboard.rst:77 ../../monitoring/dashboard.rst:91
+#: ../../monitoring/dashboard.rst:94
+msgid "Domain dashboard"
+msgstr "Domain Dashboard"
+
+#: ../../monitoring/dashboard.rst:79
+msgid ""
+"After you sign in, the *Domain Dashboard* opens by default, as shown in "
+":numref:`infrastructure-monitoring-ucs-dashboard-domain-figure`. This "
+"dashboard displays general information about the domain, such as the "
+"number of servers and users in the environment. The dashboard also lists "
+"all servers in a table, including the server role, installed apps, and "
+"whether an update is available. It shows CPU usage, memory usage, free "
+"disk space, and the LDAP replication status across all servers."
+msgstr ""
+"Nach der Anmeldung öffnet sich standardmäßig das *Domain Dashboard*, wie "
+"in :numref:`infrastructure-monitoring-ucs-dashboard-domain-figure` "
+"dargestellt. Dieses Dashboard zeigt allgemeine Informationen über die "
+"Domäne an, wie beispielsweise die Anzahl der Server und Benutzer in der "
+"Umgebung. Das Dashboard listet außerdem alle Server in einer Tabelle auf,"
+" einschließlich der Serverrolle, der installierten Apps und der "
+"Verfügbarkeit von Updates. Es zeigt die CPU-Auslastung, den "
+"Arbeitsspeicherverbrauch, den freien Festplattenplatz und den LDAP-"
+"Replikationsstatus für alle Server an."
+
+#: ../../monitoring/dashboard.rst:99 ../../monitoring/dashboard.rst:111
+#: ../../monitoring/dashboard.rst:114
+msgid "Server dashboard"
+msgstr "Server Dashboard"
+
+#: ../../monitoring/dashboard.rst:101
+msgid ""
+"The *Server Dashboard* is also available by default, as shown in :numref"
+":`infrastructure-monitoring-ucs-dashboard-server-figure`. This dashboard "
+"displays detailed information about individual servers, such as CPU "
+"usage, memory usage, and network throughput."
+msgstr ""
+"Das *Server Dashboard* ist ebenfalls standardmäßig verfügbar, wie in "
+":numref:`infrastructure-monitoring-ucs-dashboard-server-figure` "
+"dargestellt. Dieses Dashboard zeigt detaillierte Informationen zu "
+"einzelnen Servern an, wie beispielsweise CPU-Auslastung, "
+"Arbeitsspeicherverbrauch und Netzwerkdurchsatz."
+
+#: ../../monitoring/dashboard.rst:106
+msgid ""
+"Select a server from the *Server* drop-down. The dashboard updates to "
+"show the metrics for the selected server."
+msgstr ""
+"Wählen Sie einen Server aus dem Dropdown *Server* aus. Das Dashboard "
+"aktualisiert sich und zeigt die Metriken des ausgewählten Servers an."
+
+#: ../../monitoring/dashboard.rst:119 ../../monitoring/dashboard.rst:127
+#: ../../monitoring/dashboard.rst:130
+msgid "Alert dashboard"
+msgstr "Alert Dashboard"
+
+#: ../../monitoring/dashboard.rst:121
+msgid ""
+"The *UCS Dashboard* app includes the *Alert Dashboard* by default, as "
+"shown in :numref:`infrastructure-monitoring-ucs-dashboard-alert-figure`. "
+"It displays the status of all alerts configured in UCS."
+msgstr ""
+"Die App *UCS Dashboard* enthält standardmäßig das *Alert Dashboard*, wie "
+"in :numref:`infrastructure-monitoring-ucs-dashboard-alert-figure` "
+"dargestellt. Es zeigt den Status aller in UCS konfigurierten "
+"Warnmeldungen an."
+
+#: ../../monitoring/dashboard.rst:135
+msgid "Custom dashboards"
+msgstr "Benutzerdefinierte Dashboards"
+
+#: ../../monitoring/dashboard.rst:137
+msgid ""
+"You can't change the three built-in dashboards *Domain Dashboard*, "
+"*Server Dashboard*, and *Alert Dashboard*, because Univention provides "
+"updates for them."
+msgstr ""
+"Die drei integrierten Dashboards *Domain Dashboard*, *Server Dashboard* "
+"und *Alert Dashboard* können Sie nicht ändern, da Univention Updates für "
+"diese bereitstellt."
+
+#: ../../monitoring/dashboard.rst:141
+msgid ""
+"Instead, you can create your own custom dashboards in Grafana. Click "
+":guilabel:`+` in the Grafana navigation menu to create a dashboard and "
+"add elements to it."
+msgstr ""
+"Stattdessen können Sie in Grafana eigene benutzerdefinierte Dashboards "
+"erstellen. Klicken Sie auf :guilabel:`+` im Navigationsmenü, um "
+"ein Dashboard zu erstellen und Elemente hinzuzufügen."
+
+#: ../../monitoring/index.rst:18
+msgid "Contents"
+msgstr "Inhalt"
+
+#: ../../monitoring/index.rst:8
+msgid "Infrastructure monitoring"
+msgstr "Überwachung der Infrastruktur"
+
+#: ../../monitoring/index.rst:10
+msgid ""
+"Nubus for UCS includes built-in monitoring tools that give administrators"
+" a clear view of the domain's health and performance. The *UCS Dashboard*"
+" provides a web-based interface where you can track server metrics such "
+"as CPU usage, memory, and disk space, monitor LDAP replication status, "
+"and review the state of configured alerts, all in one place and "
+"continuously updated."
+msgstr ""
+"Nubus für UCS enthält integrierte Überwachungswerkzeuge, die Administratoren "
+"einen klaren Überblick über den Zustand und die Leistung der Domäne "
+"geben. Das *UCS Dashboard* bietet eine webbasierte Oberfläche, über die "
+"Sie Server-Metriken wie CPU-Auslastung, Arbeitsspeicher und "
+"Festplattenplatz verfolgen, den LDAP-Replikationsstatus überwachen und "
+"den Status konfigurierter Warnmeldungen einsehen können – alles an einem "
+"Ort und kontinuierlich aktualisiert."
+
