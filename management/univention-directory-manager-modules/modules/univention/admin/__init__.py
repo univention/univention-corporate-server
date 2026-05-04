@@ -176,31 +176,32 @@ class property:
         long_description: str = '',
         *,
         syntax: type | Any = None,
-        module_search: None = None,
         multivalue: bool = False,
-        one_only: bool = False,
-        parent: None = None,
         options: list[str] = [],
-        license: None = None,
         required: bool = False,
         may_change: bool = True,
+        editable: bool = True,
         identifies: bool = False,
         unique: bool = False,
         default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = None,
-        prevent_umc_default_popup: bool = False,
+        copyable: bool = False,
         dontsearch: bool = False,
+        size: str | None = None,
+        type_class: type[TypeHint] | None = None,
         show_in_lists: bool = True,
         cli_enabled: bool = True,
-        editable: bool = True,
-        configObjectPosition: None = None,
-        configAttributeName: None = None,
         include_in_default_search: bool = False,
+        prevent_umc_default_popup: bool = False,
         nonempty_is_default: bool = False,
         readonly_when_synced: bool = False,
-        size: str | None = None,
-        copyable: bool = False,
-        type_class: type[TypeHint] | None = None,
         lazy_loading_fn: str | None = None,
+        # obsolete
+        module_search: None = None,
+        one_only: bool = False,
+        parent: None = None,
+        license: None = None,
+        configObjectPosition: None = None,
+        configAttributeName: None = None,
     ) -> None:
         """
         |UDM| property.
@@ -208,31 +209,31 @@ class property:
         :param short_description: a short descriptive text - shown below the input filed in |UMC| by default.
         :param long_description: a long descriptive text - shown only on demand in |UMC|.
         :param syntax: a syntax class or instance to validate the value.
-        :param module_search: UNUSED
         :param multivalue: allow only a single value (`False`) or multiple values (`True`) .
-        :param one_only: UNUSED
-        :param parent: UNUSED
         :param options: List of options, which enable this property.
-        :param license: UNUSED
         :param required: `True` for a required property, `False` for an optional property.
         :param may_change: `True` if the property can be changed after the object has been created, `False` when the property can only be specified when the object is created.
+        :param editable: `False` prevents the property from being modified by the user; it still can be modified by code.
         :param identifies: `True` if the property is part of the set of properties, which are required to uniquely identify the object. The properties are used by default to build |RDN| for a new object.
         :param unique: `True` if the property must be unique for all object instances.
         :param default: The default value for the property when a new object is created.
-        :param prevent_umc_default_popup: `True` to prevent a pop-up dialog in |UMC| when the default value is not set.
+        :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param dontsearch: `True` to prevent searches using the property.
+        :param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
+        :param type_class: An optional Typing class which overwrites the syntax class specific type.
         :param show_in_lists: `False` to prevent it from being shown in the CLI.
         :param cli_enabled: `True` to be able to set the attribute in the CLI.
-        :param editable: `False` prevents the property from being modified by the user; it still can be modified by code.
-        :param configObjectPosition: UNUSED
-        :param configAttributeName: UNUSED
         :param include_in_default_search: The default search searches this property when set to `True`.
+        :param prevent_umc_default_popup: `True` to prevent a pop-up dialog in |UMC| when the default value is not set.
         :param nonempty_is_default: `True` selects the first non-empty value as the default. `False` always selects the first default value, even if it is empty.
         :param readonly_when_synced: `True` only shows the value as read-only when synchronized from some upstream database.
-        :param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
-        :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
-        :param type_class: An optional Typing class which overwrites the syntax class specific type.
         :param lazy_loading_fn: An optional function name that implements loading additional expensive properties if requested.
+        :param module_search: UNUSED
+        :param one_only: UNUSED
+        :param parent: UNUSED
+        :param license: UNUSED
+        :param configObjectPosition: UNUSED
+        :param configAttributeName: UNUSED
         """
         self.short_description = short_description
         self.long_description = long_description
