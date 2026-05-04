@@ -1900,7 +1900,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         props = {}
         props.update(self._options(object_type, obj.dn))
         props['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
-        props.update(self.get_representation(module, obj, properties, self.ldap_connection, copy))
+        props.update(self.get_representation(module, obj, properties, self.ldap_connection, copy=copy))
         for reference in module.get_references(obj):
             # TODO: add a reference for the "position" object?!
             if reference['module'] != 'udm':
@@ -2136,7 +2136,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         self.set_entity_tags(obj)
 
         if not patch_document:
-            entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection, False)
+            entry = Object.get_representation(module, obj, ['*'], self.ldap_write_connection)
             if representation['options'] is None:
                 representation['options'] = entry['options']
             if representation['policies'] is None:
@@ -2611,8 +2611,9 @@ class ObjectAdd(FormBase, _OpenAPIBase, Resource):
 
         obj = module.module.object(dn, self.ldap_connection, ldap_position, superordinate=superordinate)
         obj.open()
-        result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy, True))
-        result['properties']['univentionObjectIdentifier'] = None
+        result.update(Object.get_representation(module, obj, ['*'], self.ldap_connection, copy=copy, add=True))
+        if 'univentionObjectIdentifier' in result['properties']:
+            result['properties']['univentionObjectIdentifier'] = None
 
         form = self.add_form(result, action=self.urljoin(''), method='POST', id='add', layout='create-form')
         self.add_form_element(form, 'position', position or '')

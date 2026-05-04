@@ -1,3 +1,10 @@
+univention-directory-manager-rest (12.5.11) unstable; urgency=medium
+
+  * Bug #59217: only add univentionObjectIdentifier in object template if
+  	original module provides it
+
+ -- Florian Best <best@univention.de>  Mon, 04 May 2026 13:10:37 +0200
+
 univention-directory-manager-rest (12.5.10) unstable; urgency=medium
 
   * Bug #59217: hide pre-calculated univentionObjectIdentifier in object template
