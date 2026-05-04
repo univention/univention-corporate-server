@@ -30,7 +30,7 @@ msgid "Distinguished Name (DN) of the user or system that last modified this ent
 msgstr "Distinguished Name (DN) des Benutzers oder Systems, der bzw. das diesen Eintrag zuletzt geändert hat."
 
 msgid "Entry UUID"
-msgstr "Eintrags-UUID"
+msgstr "Entry-UUID"
 
 msgid "Globally unique identifier (entryUUID) for this LDAP object. Assigned by the directory server and does not change."
 msgstr "Global eindeutiger Bezeichner (entryUUID) für dieses LDAP-Objekt. Wird vom Verzeichnisdienst vergeben und ändert sich nicht."
