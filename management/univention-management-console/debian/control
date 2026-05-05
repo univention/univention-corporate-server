@@ -65,8 +65,6 @@ Depends:
  univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
  ${misc:Depends},
-Pre-Depends:
- univention-management-console-web-server-fix,
 Description: UCS Management Console - server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -178,8 +176,6 @@ Depends:
  univention-management-console-frontend,
  univention-management-console-server,
  ${misc:Depends},
-Pre-Depends:
- univention-management-console-web-server-fix,
 Description: UCS Management Console - Web server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement
@@ -193,7 +189,7 @@ Description: UCS Management Console - Web server
 
 Package: univention-management-console-web-server-fix
 Architecture: all
-Description: UCS Management Console - Web server fix
+Description: Transitional package
 
 Package: univention-management-console-login
 Architecture: all
