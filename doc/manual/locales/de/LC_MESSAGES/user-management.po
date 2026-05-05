@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-27 10:56+0000\n"
-"PO-Revision-Date: 2026-03-27 15:57+0100\n"
+"POT-Creation-Date: 2026-05-05 14:58+0000\n"
+"PO-Revision-Date: 2026-05-05 16:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -166,10 +166,9 @@ msgid ""
 " usernames. These characters cause failures with Kerberos, Active "
 "Directory, and Samba synchronization."
 msgstr ""
-"Verwenden Sie nicht ``@``, ``$`` oder einer der folgenden Zeichen "
-"``\" / \\ [ ] : ; | = , + * ? < >'`` in Benutzernamen. Diese Zeichen "
-"führen zu Fehlern bei der Kerberos-, Active Directory- und "
-"Samba-Synchronisation."
+"Verwenden Sie nicht ``@``, ``$`` oder einer der folgenden Zeichen ``\" / "
+"\\ [ ] : ; | = , + * ? < >'`` in Benutzernamen. Diese Zeichen führen zu "
+"Fehlern bei der Kerberos-, Active Directory- und Samba-Synchronisation."
 
 #: ../../user-management/index.rst:77
 msgid "Recommended username length:"
@@ -188,29 +187,31 @@ msgstr ""
 
 #: ../../user-management/index.rst:84
 msgid "Usernames longer than 20 characters cause problems in two situations:"
-msgstr "Benutzernamen mit mehr als 20 Zeichen verursachen Probleme in zwei Situationen:"
+msgstr ""
+"Benutzernamen mit mehr als 20 Zeichen verursachen Probleme in zwei "
+"Situationen:"
 
 #: ../../user-management/index.rst:86
 msgid ""
 "Windows clients can't sign in, as the Microsoft specification limits the "
 "``SAM account name`` to 20 characters."
 msgstr ""
-"Windows-Clients können sich nicht anmelden, da die "
-"Microsoft-Spezifikation den ``SAM account name`` auf 20 Zeichen "
-"begrenzt."
+"Windows-Clients können sich nicht anmelden, da die Microsoft-"
+"Spezifikation den ``SAM account name`` auf 20 Zeichen begrenzt."
 
 #: ../../user-management/index.rst:89
 msgid ""
 "Synchronization with an external Active Directory domain fails, as AD "
 "enforces the 20-character limit with a hard error."
 msgstr ""
-"Die Synchronisation mit einer externen Active Directory-Domäne "
-"schlägt fehl, da AD das 20-Zeichen-Limit mit einem kritischen "
-"Fehler erzwingt."
+"Die Synchronisation mit einer externen Active Directory-Domäne schlägt "
+"fehl, da AD das 20-Zeichen-Limit mit einem kritischen Fehler erzwingt."
 
 #: ../../user-management/index.rst:92
 msgid "The *Management UI* shows a warning when a username exceeds 20 characters."
-msgstr "Die *Management UI* zeigt eine Warnung an, wenn ein Benutzername 20 Zeichen überschreitet."
+msgstr ""
+"Die *Management UI* zeigt eine Warnung an, wenn ein Benutzername 20 "
+"Zeichen überschreitet."
 
 #: ../../user-management/index.rst:94
 #, python-brace-format
@@ -244,99 +245,13 @@ msgstr ""
 "Overlay-Modul zur Aufzeichnung der letzten erfolgreichen LDAP-Anmeldung "
 "eines Kontos"
 
-#: ../../user-management/last-bind-overlay.rst:11
+#: ../../user-management/last-bind-overlay.rst:9
 msgid ""
-"Before using this feature please read :uv:kb:`support article about "
-"activating the OpenLDAP lastbind overlay module <14404>`."
+"The content of this section moved to :external+uv-ucs-operation:ref:`iam-"
+"last-bind` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Bevor Sie diese Funktion verwenden, lesen Sie :uv:kb:`Support-Artikel "
-"über die Aktivierung des lastbind Overlay-Moduls <14404>`."
-
-#: ../../user-management/last-bind-overlay.rst:14
-msgid ""
-"The optional `lastbind overlay module <lastbind-overlay_>`_ for OpenLDAP "
-"allows recording the timestamp of the last successful LDAP bind in the "
-"``authTimestamp`` attribute and can for example be used to detect unused "
-"accounts."
-msgstr ""
-"Das optionale `lastbind Overlay-Modul <last-bind-overlay_>`_ für OpenLDAP"
-" ermöglicht die Aufzeichnung des Zeitstempels der letzten erfolgreichen "
-"LDAP-Anmeldung im ``authTimestamp`` Attribut und kann z.B. zur Erkennung "
-"nicht genutzter Konten verwendet werden."
-
-#: ../../user-management/last-bind-overlay.rst:19
-msgid ""
-"The ``lastbind`` overlay module can be activated by setting the |UCSUCRV|"
-" :envvar:`ldap/overlay/lastbind` to ``yes`` and restarting the OpenLDAP "
-"server. When the module is activated on an UCS server, a timestamp is "
-"written to the account's ``authTimestamp`` attribute when that account "
-"logs into the LDAP server. The |UCSUCRV| "
-":envvar:`ldap/overlay/lastbind/precision` can be used to configure the "
-"time in seconds that has to pass before the ``authTimestamp`` attribute "
-"is updated. This prevents a large number of write operations that can "
-"impair performance."
-msgstr ""
-"Das ``lastbind`` Overlay-Modul kann aktiviert werden, indem die |UCSUCRV|"
-" :envvar:`ldap/overlay/lastbind` auf ``yes`` gesetzt und der OpenLDAP-"
-"Server neu gestartet wird. Wenn das Modul auf einem UCS-Server aktiviert "
-"ist, wird der Zeitstempel einer erfolgreichen LDAP-Anmeldung eines "
-"Kontos, in das ``authTimestamp`` Attribut jenes Kontos geschrieben. Die "
-"|UCSUCRV| :envvar:`ldap/overlay/lastbind/precision` kann verwendet "
-"werden, um die Zeit in Sekunden zu konfigurieren, die vergehen muss, "
-"bevor das ``authTimestamp`` Attribut aktualisiert wird. Dies verhindert "
-"eine große Anzahl von Schreiboperationen, die die Leistung "
-"beeinträchtigen können."
-
-#: ../../user-management/last-bind-overlay.rst:28
-msgid ""
-"The ``authTimestamp`` attribute can only be queried on the LDAP server "
-"where the ``lastbind`` overlay module is activated. It is not replicated "
-"to other LDAP servers. For that reason the :file:`/usr/share/univention-"
-"ldap/univention_lastbind.py` script can be executed to collect the "
-"youngest ``authTimestamp`` value from all reachable LDAP servers in the "
-"UCS domain and save it into the ``lastbind`` extended UDM attribute of a "
-"user. The script can be invoked to update the ``lastbind`` extended "
-"attribute of one or all users. The ``lastbind`` extended attribute maps "
-"to the ``univentionAuthTimestamp`` LDAP attribute."
-msgstr ""
-"Das ``authTimestamp`` Attribut kann nur auf dem LDAP-Server abgefragt "
-"werden, auf dem das ``lastbind`` Overlay-Modul aktiviert ist. Es wird "
-"nicht auf andere LDAP-Server repliziert. Aus diesem Grund kann das Skript"
-" :file:`/usr/share/univention-ldap/univention_lastbind.py` ausgeführt "
-"werden, um den jüngsten ``authTimestamp`` Wert von allen erreichbaren "
-"LDAP-Servern in der UCS-Domäne zu sammeln und in das erweiterte UDM "
-"Attribut ``lastbind`` eines Benutzers zu speichern. Das Skript kann "
-"aufgerufen werden, um das erweiterte Attribut ``lastbind`` eines oder "
-"aller Benutzer zu aktualisieren. Das erweiterte Attribut ``lastbind`` "
-"wird auf das LDAP-Attribut ``univentionAuthTimestamp`` abgebildet."
-
-#: ../../user-management/last-bind-overlay.rst:38
-msgid ""
-"One way to keep the ``lastbind`` extended attribute up-to-date is by "
-"creating a cron job via UCR:"
-msgstr ""
-"Eine Möglichkeit, das erweiterte Attribute ``lastbind`` aktuell zu "
-"halten, ist durch das Anlegen eines Cron-Jobs via UCR:"
-
-#: ../../user-management/last-bind-overlay.rst:41
-msgid ""
-"$ ucr set cron/update_lastbind_attribute/command='\\\n"
-"/usr/share/univention-ldap/univention_lastbind.py --allusers'\\\n"
-"  cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m."
-msgstr ""
-"$ ucr set cron/update_lastbind_attribute/command='\\\n"
-"/usr/share/univention-ldap/univention_lastbind.py --allusers'\\\n"
-"  cron/update_lastbind_attribute/time='00 06 * * *'  # täglich um 06:00 "
-"Uhr."
-
-#: ../../user-management/last-bind-overlay.rst:48
-msgid ""
-"More information on how to set cron jobs via UCR can be found in :ref"
-":`computers-defining-cron-jobs-in-univention-configuration-registry`."
-msgstr ""
-"Weitere Informationen über die Einstellung von Cron-Jobs über UCR können "
-"in :ref:`computers-defining-cron-jobs-in-univention-configuration-"
-"registry` gefunden werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`iam-last-bind` in :cite:t:`uv-ucs-operation` verschoben."
 
 #: ../../user-management/password-management.rst:7
 msgid "User password management"
@@ -412,7 +327,8 @@ msgid ""
 ":`nubus-domain-blocklists-activate` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
-":`nubus-domain-blocklists-activate` in :cite:t:`uv-nubus-manual` verschoben."
+":`nubus-domain-blocklists-activate` in :cite:t:`uv-nubus-manual` "
+"verschoben."
 
 #: ../../user-management/udm-blocklists.rst:25
 msgid "Configure block lists"
@@ -424,7 +340,8 @@ msgid ""
 ":`nubus-domain-blocklists-configure` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
-":`nubus-domain-blocklists-configure` in :cite:t:`uv-nubus-manual` verschoben."
+":`nubus-domain-blocklists-configure` in :cite:t:`uv-nubus-manual` "
+"verschoben."
 
 #: ../../user-management/udm-blocklists.rst:34
 msgid "Manage block list entries"
@@ -436,7 +353,8 @@ msgid ""
 ":`nubus-domain-blocklists-manage` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
-":`nubus-domain-blocklists-manage` in :cite:t:`uv-nubus-manual` verschoben."
+":`nubus-domain-blocklists-manage` in :cite:t:`uv-nubus-manual` "
+"verschoben."
 
 #: ../../user-management/udm-blocklists.rst:43
 msgid "Expired block list entries"
@@ -448,8 +366,8 @@ msgid ""
 ":`nubus-domain-blocklists-expired-entries` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts wurde nach :external+uv-nubus-manual:ref"
-":`nubus-domain-blocklists-expired-entries` in :cite:t:`uv-nubus-manual`"
-" verschoben."
+":`nubus-domain-blocklists-expired-entries` in :cite:t:`uv-nubus-manual` "
+"verschoben."
 
 #: ../../user-management/udm-blocklists.rst:52
 msgid "LDAP ACLs for block lists"
@@ -627,7 +545,7 @@ msgstr ""
 msgid "The *Recycle Bin* policy has the following configuration properties:"
 msgstr "Die *Papierkorb*-Richtlinie hat die folgenden Konfigurationseigenschaften:"
 
-#: ../../user-management/udm-recycle-bin.rst:81
+#: ../../user-management/udm-recycle-bin.rst:78
 msgid "Recycle Bin enabled"
 msgstr "Papierkorb aktiviert"
 
@@ -640,7 +558,7 @@ msgstr ""
 "Container über eine verknüpfte *Papierkorb*-Richtlinie verfügt, können "
 "Sie diese hiermit deaktivieren."
 
-#: ../../user-management/udm-recycle-bin.rst:88
+#: ../../user-management/udm-recycle-bin.rst:85
 msgid "UDM modules to recycle"
 msgstr "UDM Module für Papierkorb"
 
@@ -652,7 +570,7 @@ msgstr ""
 "Legt eine Liste von UDM Modultypen fest, für die die "
 "*Papierkorb*-Richtlinie gilt, z. B. ``users/user`` oder ``groups/group``."
 
-#: ../../user-management/udm-recycle-bin.rst:95
+#: ../../user-management/udm-recycle-bin.rst:92
 msgid "Ignored object classes"
 msgstr "Ignorierte Objektklassen"
 
@@ -668,7 +586,7 @@ msgstr ""
 " Objekt einer dieser Objektklassen besitzt, verschiebt UDM das Objekt "
 "nicht in den *Papierkorb*-Container."
 
-#: ../../user-management/udm-recycle-bin.rst:104
+#: ../../user-management/udm-recycle-bin.rst:101
 msgid "Retention days"
 msgstr "Aufbewahrungszeit in Tagen"
 
@@ -873,7 +791,7 @@ msgstr ""
 "Die folgenden Dateien enthalten Informationen zur Erstellung von "
 "Einträgen im *Papierkorb* und zum Wiederherstellungsprozess."
 
-#: ../../user-management/udm-recycle-bin.rst:217
+#: ../../user-management/udm-recycle-bin.rst:214
 msgid ":file:`/var/log/univention/listener.log` on the |UCSPRIMARYDN|"
 msgstr ":file:`/var/log/univention/listener.log` auf dem |UCSPRIMARYDN|"
 
@@ -883,7 +801,7 @@ msgstr ""
 "Enthält Protokollinformationen zur Erstellung von Einträgen im "
 "*Papierkorb*."
 
-#: ../../user-management/udm-recycle-bin.rst:220
+#: ../../user-management/udm-recycle-bin.rst:217
 msgid ":file:`/var/log/univention/management-console-module-udm.log`"
 msgstr ":file:`/var/log/univention/management-console-module-udm.log`"
 
@@ -891,7 +809,7 @@ msgstr ":file:`/var/log/univention/management-console-module-udm.log`"
 msgid "Contains log information about the restoration of objects with UMC."
 msgstr "Enthält Protokollinformationen zur Wiederherstellung von Objekten mit UMC."
 
-#: ../../user-management/udm-recycle-bin.rst:223
+#: ../../user-management/udm-recycle-bin.rst:220
 msgid ":file:`/var/log/univention/directory-manager-rest.log`"
 msgstr ":file:`/var/log/univention/directory-manager-rest.log`"
 
