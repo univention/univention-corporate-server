@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: policykit-1
+fix: 0.105-25+deb10u2
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-4897)
+bug: [59258]
+cve:
+- CVE-2026-4897
