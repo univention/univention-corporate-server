@@ -53,6 +53,7 @@ redis_deployment_mode: lab
 deputy_enabled: true
 contacts_provider_ldap_enabled: true
 enable_username_editable: true
+external_tls_termination: true
 core_mw_extra_properties:
   # Additional configuration related to the deputy feature
   com.openexchange.dovecot.doveadm.enabled: "true"
@@ -143,7 +144,7 @@ cat > /etc/apache2/conf-available/proxy_http.conf <<- EOF
    <Proxy balancer://oxcluster>
        Order allow,deny
        # multiple server setups need to have the hostname inserted instead localhost
-       BalancerMember https://as8.lab.test:30443 timeout=100 smax=0 ttl=60 retry=60 loadfactor=50 route=APP1
+       BalancerMember http://as8.lab.test:30080 timeout=100 smax=0 ttl=60 retry=60 loadfactor=50 route=APP1
        # Enable and maybe add additional hosts running OX here
        # BalancerMember http://oxhost2:8009 timeout=100 smax=0 ttl=60 retry=60 loadfactor=50 route=APP2
       ProxySet stickysession=JSESSIONID|jsessionid scolonpathdelim=On
@@ -156,7 +157,7 @@ cat > /etc/apache2/conf-available/proxy_http.conf <<- EOF
      Order allow,deny
      Allow from all
      # multiple server setups need to have the hostname inserted instead localhost
-     BalancerMember https://as8.lab.test_sync:30443 timeout=1900 smax=0 ttl=60 retry=60 loadfactor=50 route=APP1
+     BalancerMember http://as8.lab.test_sync:30080 timeout=1900 smax=0 ttl=60 retry=60 loadfactor=50 route=APP1
      # Enable and maybe add additional hosts running OX here
      # BalancerMember http://oxhost2:8009 timeout=1900  smax=0 ttl=60 retry=60 loadfactor=50 route=APP2
      ProxySet stickysession=JSESSIONID|jsessionid scolonpathdelim=On
