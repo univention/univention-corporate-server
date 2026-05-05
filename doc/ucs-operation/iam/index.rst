@@ -39,3 +39,4 @@ User creation wizard
    group-management
    user-create-wizard
    http-api
+   last-bind
