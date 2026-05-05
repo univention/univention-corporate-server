@@ -1,3 +1,9 @@
+univention-keycloak (1.0.16) unstable; urgency=medium
+
+  * Bug #59257: Drop providerId query parameter from modify_component filter
+
+ -- Christian Castens <castens@univention.de>  Tue, 05 May 2026 11:24:58 +0200
+
 univention-keycloak (1.0.15) unstable; urgency=medium
 
   * Bug #58515: Update univention-keycloak to 26.3.1

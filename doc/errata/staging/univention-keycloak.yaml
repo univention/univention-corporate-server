@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-keycloak
+fix: 1.0.16
+desc: |
+ This update addresses the following issues:
+ * Fixed a regression introduced in Keycloak 26.6.0 where a change in
+   the component lookup API broke the Kerberos configuration update in
+   the `univention-keycloak` script.
+bug: [59257]
