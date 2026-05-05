@@ -2,6 +2,7 @@
 ## desc: Test all udm extensions functionality
 ## tags: [udm,udm-extensions,udm-ldapextensions,apptest,fbest]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
+## timeout: 7200
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
