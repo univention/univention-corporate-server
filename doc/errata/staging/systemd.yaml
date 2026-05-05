@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: systemd
+fix: 241-7~deb10u12A~5.0.10.202605051101
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.7 (CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2026-4105)
+ * CVSS score 6.4 (CVSS:3.1/AV:P/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-40225)
+ * CVSS score 6.4 (CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-40226)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-29111)
+bug: [59251]
+cve:
+- CVE-2026-4105
+- CVE-2026-29111
+- CVE-2026-40225
+- CVE-2026-40226
