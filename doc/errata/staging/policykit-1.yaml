@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: policykit-1
+fix: 0.105-18+deb9u3
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-4897)
+ * CVSS score 4.4 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:L).
+   (CVE-2018-1116)
+ * CVSS score 4.4 (AV:L/AC:M/Au:N/C:P/I:P/A:P). (CVE-2019-6133)
+bug: [59255]
+cve:
+- CVE-2026-4897
+- CVE-2018-1116
+- CVE-2019-6133
