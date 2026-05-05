@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: systemd
+fix: 232-25+deb9u18A~4.4.9.202605051103
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.7 (CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2026-4105)
+ * CVSS score 6.4 (CVSS:3.1/AV:P/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2026-40225)
+bug: [59252]
+cve:
+- CVE-2026-4105
+- CVE-2026-40225
