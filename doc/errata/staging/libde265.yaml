@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libde265
+fix: 1.0.11-0+deb9u7
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2026-33164)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2026-33165)
+ * CVSS score 3.3 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N).
+   (CVE-2023-51792)
+bug: [59256]
+cve:
+- CVE-2023-51792
+- CVE-2026-33164
+- CVE-2026-33165
