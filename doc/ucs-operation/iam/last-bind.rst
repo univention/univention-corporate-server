@@ -3,47 +3,85 @@
 
 .. _iam-last-bind:
 
-Lastbind overlay module
-=======================
+Track last sign-in time to detect inactive accounts
+===================================================
+
+Inactive user accounts are a security risk
+because attackers can compromise them without anyone noticing.
+By recording when each account last signed in,
+you can identify accounts that haven't signed in recently
+and take appropriate action.
+
+Read this page to learn how to:
+
+* activate the OpenLDAP ``lastbind`` overlay module.
+* collect sign-in timestamps from all LDAP servers in the domain.
+* schedule automatic updates to keep the timestamps current.
 
 .. caution::
-
-   Before using this feature please read :uv:kb:`support article about
+   Before using this feature, read :uv:kb:`knowledge base article about
    activating the OpenLDAP lastbind overlay module <14404>`.
 
-The optional `lastbind overlay module <lastbind-overlay_>`_ for OpenLDAP allows
-recording the timestamp of the last successful LDAP bind in the
-``authTimestamp`` attribute and can for example be used to detect unused
-accounts.
+.. _iam-last-bind-activate:
 
-The ``lastbind`` overlay module can be activated by setting the |UCSUCRV|
-:envvar:`ldap/overlay/lastbind` to ``yes`` and restarting the OpenLDAP server.
-When the module is activated on an UCS server, a timestamp is written to the
-account's ``authTimestamp`` attribute when that account logs into the LDAP
-server. The |UCSUCRV| :envvar:`ldap/overlay/lastbind/precision` can be used to
-configure the time in seconds that has to pass before the ``authTimestamp``
-attribute is updated. This prevents a large number of write operations that can
-impair performance.
+Activate the overlay module
+---------------------------
 
-The ``authTimestamp`` attribute can only be queried on the LDAP server where the
-``lastbind`` overlay module is activated. It is not replicated to other LDAP
-servers. For that reason the
-:file:`/usr/share/univention-ldap/univention_lastbind.py` script can be executed
-to collect the youngest ``authTimestamp`` value from all reachable LDAP servers
-in the UCS domain and save it into the ``lastbind`` extended UDM attribute of a
-user. The script can be invoked to update the ``lastbind`` extended attribute of
-one or all users. The ``lastbind`` extended attribute maps to the
-``univentionAuthTimestamp`` LDAP attribute.
+The `lastbind overlay module <https://manpages.debian.org/bookworm/slapd/slapo-lastbind.5.en.html>`_
+for OpenLDAP records when a user last signed in,
+storing the result in the ``authTimestamp`` attribute.
+Use these timestamps to identify accounts that haven't signed in recently.
 
-One way to keep the ``lastbind`` extended attribute
-up-to-date is by creating a cron job via UCR:
+When you set the :term:`UCR variable` :envvar:`ldap/overlay/lastbind` to ``yes``
+and restart the OpenLDAP server,
+the ``lastbind`` overlay module activates.
+To restart the OpenLDAP server,
+run the command in :numref:`iam-last-bind-activate-listing`.
+The module writes a timestamp to the account's ``authTimestamp`` attribute
+each time that account performs an LDAP bind.
+:envvar:`ldap/overlay/lastbind/precision` sets
+the minimum time in seconds between updates to the ``authTimestamp`` attribute.
+This prevents excessive write operations that impair performance.
 
 .. code-block:: console
+   :caption: Restart the OpenLDAP server
+   :name: iam-last-bind-activate-listing
+
+   $ systemctl restart slapd
+
+.. _iam-last-bind-collect:
+
+Collect and store the timestamp
+-------------------------------
+
+The ``lastbind`` overlay module only writes ``authTimestamp`` to the local LDAP server.
+Other LDAP servers don't replicate this attribute.
+For that reason,
+run the :file:`/usr/share/univention-ldap/univention_lastbind.py` script.
+The script collects the most recent ``authTimestamp`` value
+from all reachable LDAP servers in the Nubus for UCS domain
+and stores it in the ``lastbind`` extended attribute.
+
+The ``lastbind`` extended attribute
+stores its value in the ``univentionAuthTimestamp`` LDAP attribute,
+which you can query directly in the directory.
+
+.. _iam-last-bind-schedule:
+
+Schedule automatic updates
+--------------------------
+
+To keep the ``lastbind`` extended attribute up to date,
+create a cron job using UCR as shown in :numref:`iam-last-bind-schedule-listing`.
+
+For more information, see :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-univention-configuration-registry`
+in :cite:t:`ucs-manual`.
+
+.. code-block:: console
+   :caption: Create cron job to regularly update the ``lastbind`` extended attribute
+   :name: iam-last-bind-schedule-listing
 
    $ ucr set cron/update_lastbind_attribute/command='\
    /usr/share/univention-ldap/univention_lastbind.py --allusers'\
-     cron/update_lastbind_attribute/time='00 06 * * *'  # daily at 06:00 a.m.
-
-
-More information on how to set cron jobs via UCR can be found in
-:ref:`computers-defining-cron-jobs-in-univention-configuration-registry`.
+     cron/update_lastbind_attribute/time='00 06 * * *'
+   # daily at 06:00
