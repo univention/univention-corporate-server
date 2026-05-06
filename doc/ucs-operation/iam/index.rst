@@ -32,6 +32,19 @@ User creation wizard
    and deactivating the wizard when you don't need it.
    See :ref:`iam-user-create-wizard`.
 
+User activation for apps
+   Activate and deactivate users or groups for *App Center* apps directly from the user account
+   in the *Management UI*,
+   including app-specific settings per user.
+   See :ref:`iam-user-activation-apps`.
+
+Track last sign-in time to detect inactive accounts
+   Identify inactive user accounts by recording when each account last signed in.
+   Activate the OpenLDAP ``lastbind`` overlay module,
+   collect sign-in timestamps from all LDAP servers in the domain,
+   and schedule automatic updates to keep the timestamps current.
+   See :ref:`iam-last-bind`.
+
 .. toctree::
    :caption: Contents
 
