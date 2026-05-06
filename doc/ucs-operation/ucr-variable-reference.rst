@@ -676,6 +676,44 @@ This section provides a reference for UCR variables.
    :Type: string
 
 
+.. envvar:: ldap/overlay/lastbind
+
+   Controls whether the :program:`OpenLDAP` ``lastbind`` overlay module is active.
+   When set to ``yes``,
+   the overlay records the timestamp of the last successful LDAP bind
+   in the ``authTimestamp`` attribute of the user account.
+   To limit how often the overlay writes to the attribute,
+   configure :envvar:`ldap/overlay/lastbind/precision`.
+   After you set this variable,
+   restart the ``slapd`` service for the change to take effect.
+
+   For information about activating the overlay and its prerequisites,
+   see :ref:`iam-last-bind-activate`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: ldap/overlay/lastbind/precision
+
+   Sets the minimum time in seconds
+   between updates to the ``authTimestamp`` attribute
+   by the :program:`OpenLDAP` ``lastbind`` overlay module.
+   When the stored timestamp isn't older than this value,
+   the overlay skips the update.
+   When unset,
+   the overlay updates ``authTimestamp`` on every successful LDAP bind.
+   After you set this variable,
+   restart the ``slapd`` service for the change to take effect.
+
+   For information about the overlay module and this variable,
+   see :ref:`iam-last-bind-activate`.
+
+   :Default value: ``3600``
+   :Type: integer
+
+
 .. envvar:: ldap/pw-bcrypt
 
    Controls whether the :program:`OpenLDAP` server supports the bcrypt password hashing scheme.
