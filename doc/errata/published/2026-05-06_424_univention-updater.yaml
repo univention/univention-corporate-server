@@ -10,3 +10,6 @@ desc: |
    ensure that extensions with version constraints are correctly activated or
    deactivated for the new UCS version.
 bug: [59229]
+erratum: 424
+announced: 2026-05-06
+support: core
