@@ -11,3 +11,6 @@ desc: |
    information about LDAP operational attributes has been added to the
    advanced settings tab of all UDM modules.
 bug: [59217]
+erratum: 430
+announced: 2026-05-06
+support: core
