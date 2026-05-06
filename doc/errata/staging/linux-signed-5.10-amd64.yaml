@@ -2,7 +2,7 @@ product: ucs
 release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
-src: linux-5.10
+src: linux-signed-5.10-amd64
 fix: 5.10.251+3~deb10u1
 desc: |
  This update addresses the following issues:
