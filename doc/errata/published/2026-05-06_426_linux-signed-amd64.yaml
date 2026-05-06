@@ -147,3 +147,6 @@ cve:
 - CVE-2026-31786
 - CVE-2026-31787
 note: This is the 2nd of two parts.
+erratum: 426
+announced: 2026-05-06
+support: core
