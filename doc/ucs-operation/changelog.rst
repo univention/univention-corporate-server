@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 05. May 2026
+     - :ref:`iam-last-bind`
+     - Add section about the user's last sign-in time.
+
    * - 04. May 2026
      - :ref:`infrastructure-monitoring-ucs-dashboard`
      - Add section about *UCS Dashboard*.
