@@ -568,6 +568,7 @@ The guardian management API and UI doesn't allow to remove any created object li
 Only a capability can be removed.
 
 **Change request:** The Guardian Management API should implement the endpoints to remove Guardian objects (and the UI should use it).
+
 **Related issue:** univention/dev/projects/authorization-engine/guardian#262
 
 ### Permission granting: no negative permissions
@@ -967,10 +968,26 @@ E.g. in OX some values are stored like `$DN || foo || bar`.
 **Related issue:** univention/dev/projects/authorization-engine/guardian#278
 
 ### Guardian as Policy Information endpoint doesn't add security to the whole system architecture automatically
+
 In some meetings there was the view, that as OPA is a industry standard and proven by large companies, just integrating it will make our architecture more secure.
+
 OPA with Rego is a language to easily write a permission system without side effects (clear input and output) and a restricted environment.
-That's great. But in the end, Guardian is the Policy Information Point and UDM is the Policy Enforcement Point.
-Therefore the whole permission evaluation is done in the client (UDM), which is more complexity than the whole logic happening in Guardian.
+That's great. But in the end:
+
+1. Guardian is the Policy Information Point and UDM is the Policy Enforcement Point.
+   Therefore the whole permission evaluation is still effectively done in the client (UDM). This means the trusted computing base is not reduced, but instead split across multiple components and protocols, increasing architectural complexity compared to a centralized LDAP ACL evaluation.
+
+2. Previously, nearly all authorization depended only on correct LDAP ACLs, because UMC and UDM mostly performed LDAP binds and then acted under the permissions of that authenticated identity.
+   With Guardian, several additional attack surfaces are introduced, because Guardian roles are effectively coarse-grained capability strings which may grant broad permissions independently from LDAP ACL evaluation:
+
+   1. Modification of `guardianRoles` or `guardianMemberRoles` attributes in LDAP - if some endpoint or client is missing to restrict write access to it.
+   2. Trick UMC into sending different roles for the authenticated account, e.g. via header smuggling or request confusion attacks, see [Bug #59280](https://forge.univention.org/bugzilla/show_bug.cgi?id=59280).
+   3. SQL injections in the management/ authorization UI or API would allow to inject permissions to the own role
+   4. Attack the underlying PostgreSQL database where Guardian policy objects are stored, espeically if that is installed on a lower privileged server role.
+   5. MITM attacks against the Guardian API communication if transport security or certificate validation is misconfigured.
+   6. Increased risk from implicit trust boundaries, because components now trust externally provided role assertions instead of deriving permissions directly from the LDAP authenticated identity.
+
+Therefore the introduction of Guardian does not automatically strengthen the security model. It primarily replaces one authorization architecture with a more distributed and more complex one, which can improve maintainability and policy expressiveness, but also introduces additional trust boundaries and failure modes that did not previously exist with pure LDAP ACL enforcement.
 
 ### Guardian has no way to trace decisions
 A BSI-Grundschutz requirement is that the rule evaluation can be easily traced in logfiles.
@@ -1098,6 +1115,7 @@ time /usr/share/univention-directory-manager-tools/univention-configure-udm-auth
 There is no `PUT` endpoint, which allows the creation or modification in one idempotent step.
 
 **Change Request:** All objects in Guardian should support the idempotent PUT endpoint, which creates the object in case it doesn't exists otherwise modify it.
+
 **Related issue:** univention/dev/projects/authorization-engine/guardian#265
 
 When creating a permission, which already exists, 100 lines of Traceback are logged.
