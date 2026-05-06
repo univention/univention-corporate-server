@@ -11,3 +11,6 @@ desc: |
    all UDM modules.
  * The `unixTime` UDM syntax is now compatible with UDM REST API.
 bug: [59217, 58211]
+erratum: 427
+announced: 2026-05-06
+support: core
