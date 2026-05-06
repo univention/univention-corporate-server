@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-21 15:30+0000\n"
-"PO-Revision-Date: 2026-04-21 19:17+0200\n"
+"POT-Creation-Date: 2026-05-06 14:10+0000\n"
+"PO-Revision-Date: 2026-05-06 16:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -633,6 +633,165 @@ msgstr ""
 "angezeigt werden, und der Deaktivierung des Assistenten, wenn Sie ihn "
 "nicht benötigen. Siehe :ref:`iam-user-create-wizard`."
 
+#: ../../iam/last-bind.rst:7
+msgid "Track last sign-in time to detect inactive accounts"
+msgstr "Zeitpunkt der letzten Anmeldung erfassen, um inaktive Konten zu erkennen"
+
+#: ../../iam/last-bind.rst:9
+msgid ""
+"Inactive user accounts are a security risk because attackers can "
+"compromise them without anyone noticing. By recording when each account "
+"last signed in, you can identify accounts that haven't signed in recently"
+" and take appropriate action."
+msgstr ""
+"Inaktive Benutzerkonten stellen ein Sicherheitsrisiko dar, da Angreifer "
+"sie kompromittieren können, ohne dass es jemandem auffällt. Durch die "
+"Aufzeichnung des letzten Anmeldezeitpunkts jedes Kontos können Sie "
+"Konten identifizieren, die sich seit längerem nicht mehr angemeldet "
+"haben, und geeignete Maßnahmen ergreifen."
+
+#: ../../iam/last-bind.rst:15
+msgid "Read this page to learn how to:"
+msgstr "Lesen Sie diese Seite, um zu erfahren, wie Sie:"
+
+#: ../../iam/last-bind.rst:17
+msgid "activate the OpenLDAP ``lastbind`` overlay module."
+msgstr "das OpenLDAP ``lastbind`` Overlay-Modul aktivieren."
+
+#: ../../iam/last-bind.rst:18
+msgid "collect sign-in timestamps from all LDAP servers in the domain."
+msgstr "Anmeldezeitstempel von allen LDAP-Servern der Domäne erfassen."
+
+#: ../../iam/last-bind.rst:19
+msgid "schedule automatic updates to keep the timestamps current."
+msgstr "automatische Aktualisierungen planen, um die Zeitstempel aktuell zu halten."
+
+#: ../../iam/last-bind.rst:22
+msgid ""
+"Before using this feature, read :uv:kb:`knowledge base article about "
+"activating the OpenLDAP lastbind overlay module <14404>`."
+msgstr ""
+"Lesen Sie vor der Verwendung dieser Funktion den :uv:kb:`Knowledge-Base-"
+"Artikel zur Aktivierung des OpenLDAP-lastbind-Overlay-Moduls <14404>`."
+
+#: ../../iam/last-bind.rst:28
+msgid "Activate the overlay module"
+msgstr "Overlay-Modul aktivieren"
+
+#: ../../iam/last-bind.rst:30
+msgid ""
+"The `lastbind overlay module <https://manpages.debian.org/bookworm/slapd"
+"/slapo-lastbind.5.en.html>`_ for OpenLDAP records when a user last signed"
+" in, storing the result in the ``authTimestamp`` attribute. Use these "
+"timestamps to identify accounts that haven't signed in recently."
+msgstr ""
+"Das `lastbind-Overlay-Modul <https://manpages.debian.org/bookworm/slapd"
+"/slapo-lastbind.5.en.html>`_ für OpenLDAP zeichnet auf, wann sich ein "
+"Benutzer zuletzt angemeldet hat, und speichert das Ergebnis im Attribut "
+"``authTimestamp``. Verwenden Sie diese Zeitstempel, um Konten zu "
+"identifizieren, die sich seit längerer Zeit nicht angemeldet haben."
+
+#: ../../iam/last-bind.rst:35
+msgid ""
+"When you set the :term:`UCR variable` :envvar:`ldap/overlay/lastbind` to "
+"``yes`` and restart the OpenLDAP server, the ``lastbind`` overlay module "
+"activates. To restart the OpenLDAP server, run the command in :numref"
+":`iam-last-bind-activate-listing`. The module writes a timestamp to the "
+"account's ``authTimestamp`` attribute each time that account performs an "
+"LDAP bind. :envvar:`ldap/overlay/lastbind/precision` sets the minimum "
+"time in seconds between updates to the ``authTimestamp`` attribute. This "
+"prevents excessive write operations that impair performance."
+msgstr ""
+"Wenn Sie die :term:`UCR-Variable` :envvar:`ldap/overlay/lastbind` auf "
+"``yes`` setzen und den OpenLDAP-Server neu starten, wird das ``lastbind"
+"``-Overlay-Modul aktiviert. Um den OpenLDAP-Server neu zu starten, führen"
+" Sie den Befehl in :numref:`iam-last-bind-activate-listing` aus. Das "
+"Modul schreibt bei jedem LDAP-Bind des Kontos einen Zeitstempel in das "
+"Attribut ``authTimestamp`` des Kontos. "
+":envvar:`ldap/overlay/lastbind/precision` legt die minimale Zeit in "
+"Sekunden zwischen Aktualisierungen des Attributs ``authTimestamp`` fest. "
+"Dies verhindert übermäßige Schreiboperationen, die die Leistung "
+"beeinträchtigen."
+
+#: ../../iam/last-bind.rst:46
+msgid "Restart the OpenLDAP server"
+msgstr "OpenLDAP-Server neu starten"
+
+#: ../../iam/last-bind.rst:46
+msgid "$ systemctl restart slapd"
+msgstr "$ systemctl restart slapd"
+
+#: ../../iam/last-bind.rst:55
+msgid "Collect and store the timestamp"
+msgstr "Zeitstempel erfassen und speichern"
+
+#: ../../iam/last-bind.rst:57
+msgid ""
+"The ``lastbind`` overlay module only writes ``authTimestamp`` to the "
+"local LDAP server. Other LDAP servers don't replicate this attribute. For"
+" that reason, run the :file:`/usr/share/univention-"
+"ldap/univention_lastbind.py` script. The script collects the most recent "
+"``authTimestamp`` value from all reachable LDAP servers in the Nubus for "
+"UCS domain and stores it in the ``lastbind`` extended attribute."
+msgstr ""
+"Das ``lastbind`` Overlay-Modul schreibt ``authTimestamp`` nur auf den "
+"lokalen LDAP-Server. Andere LDAP-Server replizieren dieses Attribut "
+"nicht. Führen Sie daher das Skript :file:`/usr/share/univention-"
+"ldap/univention_lastbind.py` aus. Das Skript erfasst den neuesten "
+"``authTimestamp``-Wert von allen erreichbaren LDAP-Servern in der Nubus "
+"für UCS Domäne und speichert ihn im erweiterten Attribut ``lastbind``."
+
+#: ../../iam/last-bind.rst:65
+msgid ""
+"The ``lastbind`` extended attribute stores its value in the "
+"``univentionAuthTimestamp`` LDAP attribute, which you can query directly "
+"in the directory."
+msgstr ""
+"Das erweiterte Attribut ``lastbind`` speichert seinen Wert im LDAP-"
+"Attribut ``univentionAuthTimestamp``, das Sie direkt im Verzeichnis "
+"abfragen können."
+
+#: ../../iam/last-bind.rst:72
+msgid "Schedule automatic updates"
+msgstr "Automatische Aktualisierungen planen"
+
+#: ../../iam/last-bind.rst:74
+msgid ""
+"To keep the ``lastbind`` extended attribute up to date, create a cron job"
+" using UCR as shown in :numref:`iam-last-bind-schedule-listing`."
+msgstr ""
+"Um das erweiterte Attribut ``lastbind`` aktuell zu halten, erstellen Sie "
+"einen Cron-Job mit UCR, wie in :numref:`iam-last-bind-schedule-listing` "
+"gezeigt."
+
+#: ../../iam/last-bind.rst:77
+msgid ""
+"For more information, see :external+uv-ucs-manual:ref:`computers-"
+"defining-cron-jobs-in-univention-configuration-registry` in :cite:t:`ucs-"
+"manual`."
+msgstr ""
+"Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
+" siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
+"univention-configuration-registry` in :cite:t:`ucs-manual`."
+
+#: ../../iam/last-bind.rst:80
+msgid "Create cron job to regularly update the ``lastbind`` extended attribute"
+msgstr ""
+"Cron-Job erstellen, um das erweiterte Attribut ``lastbind`` regelmäßig zu"
+" aktualisieren"
+
+#: ../../iam/last-bind.rst:80
+msgid ""
+"$ ucr set cron/update_lastbind_attribute/command='\\\n"
+"/usr/share/univention-ldap/univention_lastbind.py --allusers'\\\n"
+"  cron/update_lastbind_attribute/time='00 06 * * *'\n"
+"# daily at 06:00"
+msgstr ""
+"$ ucr set cron/update_lastbind_attribute/command='\\\n"
+"/usr/share/univention-ldap/univention_lastbind.py --allusers'\\\n"
+"  cron/update_lastbind_attribute/time='00 06 * * *'\n"
+"# daily at 06:00"
+
 #: ../../iam/password-management/index.rst:10
 msgid "This chapter covers password management in Nubus for UCS."
 msgstr "Dieses Kapitel behandelt die Passwortverwaltung in Nubus für UCS."
@@ -749,8 +908,8 @@ msgid ""
 "can configure the hashing method using the :term:`UCR variable` "
 ":envvar:`password/hashing/method`. The default value is ``SHA-512``."
 msgstr ""
-"Der Verzeichnisdienst speichert Hashes für Benutzerpasswörter im Attribut "
-"``userPassword``. Die :program:`crypt`-Bibliotheksfunktion hasht "
+"Der Verzeichnisdienst speichert Hashes für Benutzerpasswörter im Attribut"
+" ``userPassword``. Die :program:`crypt`-Bibliotheksfunktion hasht "
 "Passwörter. Sie können die Hash-Methode mit der :term:`UCR-Variable` "
 ":envvar:`password/hashing/method` konfigurieren. Der Standardwert ist "
 "``SHA-512``."
@@ -767,10 +926,10 @@ msgid ""
 " can't authenticate using a :program:`bcrypt` password hash."
 msgstr ""
 "Als Alternative bietet Nubus für UCS :program:`bcrypt` als Hash-Methode "
-"für Benutzerpasswörter an. Um :program:`bcrypt` zu aktivieren, "
-"müssen Sie die folgenden Schritte durchführen. Wenn Sie diese Schritte "
-"nicht durchführen, können Sie sich nicht mit einem :program:`bcrypt`-"
-"Passwort-Hash authentifizieren."
+"für Benutzerpasswörter an. Um :program:`bcrypt` zu aktivieren, müssen Sie"
+" die folgenden Schritte durchführen. Wenn Sie diese Schritte nicht "
+"durchführen, können Sie sich nicht mit einem :program:`bcrypt`-Passwort-"
+"Hash authentifizieren."
 
 #: ../../iam/password-management/password-hashes.rst:36
 msgid ""
