@@ -39,4 +39,5 @@ User creation wizard
    group-management
    user-create-wizard
    http-api
+   user-activation-apps
    last-bind
