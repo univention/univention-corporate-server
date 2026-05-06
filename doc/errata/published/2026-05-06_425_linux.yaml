@@ -407,3 +407,6 @@ cve:
 - CVE-2026-43057
 - CVE-2025-38617
 note: This is the 1st of two parts.
+erratum: 425
+announced: 2026-05-06
+support: core
