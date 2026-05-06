@@ -14,3 +14,6 @@ desc: |
  * A pre-calculated value for `univentionObjectIdentifier` is now hidden in
    the object template, as this might be used to create multiple objects.
 bug: [59231, 59217]
+erratum: 428
+announced: 2026-05-06
+support: core
