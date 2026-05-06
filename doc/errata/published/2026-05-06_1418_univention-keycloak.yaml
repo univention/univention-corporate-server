@@ -10,3 +10,6 @@ desc: |
    the component lookup API broke the Kerberos configuration update in
    the `univention-keycloak` script.
 bug: [59257]
+erratum: 1418
+announced: 2026-05-06
+support: lts
