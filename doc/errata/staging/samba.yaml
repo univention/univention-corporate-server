@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: samba
+fix: 2:4.21.1-1A~5.2.0.202605061531
+desc: |
+ This update addresses the following issues:
+ * Windows domain trusts to Samba became unusable when
+   `Require NTLMv2 session security` was activated in MS AD.
+bug: [59259]
