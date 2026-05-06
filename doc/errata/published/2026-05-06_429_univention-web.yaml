@@ -9,3 +9,6 @@ desc: |
  * The `DateTime` widget has been fixed to support all and empty date formats
    and respect the configured size.
 bug: [59217]
+erratum: 429
+announced: 2026-05-06
+support: core
