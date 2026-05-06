@@ -146,7 +146,7 @@ import univention.admin.uldap
 from univention.admin.authorization import Authorization
 
 def init_the_service()
-    lo_admin = univention.admin.uldap.getAdminConnection()  # e.g. cache somehwere, and handle reconnections
+    lo_admin = univention.admin.uldap.getAdminConnection()  # e.g. cache somewhere, and handle reconnections
     univention.admin.authorization.Authorization.enable(lambda: lo_admin)
 
     # get user connection
@@ -241,7 +241,7 @@ The implementation still has several possible vulnerabilities:
 * probably many other things
 
 From product management we were not allowed to implement this feature by creating mappings to LDAP ACLs, which would make us safe against all this (and would have been a lot easier to implement).
-Therefor we have to address them somewhen.
+Therefore we have to address them somewhen.
 
 Other vulnerabilities are possible in the rules itself.
 Creating rules requires knowledge about the object structure.
@@ -336,7 +336,7 @@ UDM by default provides permissions:
 What would it help to differentiate a `search` permission, while we already have a general `read` permission to retrieve a specific single object?
 
 1. UDM modules support a optional `search` operation. If no permissions for searching exists for the specific module, the search form is not rendered (but opening specific objects is possible e.g. via the LDAP directory tree). The same applies to the `report-create` permission, which makes the button in the UI (in)visible.
-2. Another use case could be, that users should not get the permissions to open a certain object type, while the user object itself allows to choose objects of such objects in a selection list. Filling the selection list then requires the permission for the `search` operation.
+2. Another use case could be, that users should not get the permissions to open a certain object type, while the user object itself allows one to choose objects of such objects in a selection list. Filling the selection list then requires the permission for the `search` operation.
 3. We could differentiate whether a property can not be used in a search filter, e.g. prohibit searching for `password=*`, `fetchmailPassword=*`, etc.
 
 ## Handling of UDM extensions e.g. Extended Attributes
@@ -385,12 +385,14 @@ Wildcard permissions allow to not be required to specify a whitelist of all allo
 UDM is a dynamically extensible framework, where new properties can be added 1) via additional schema extensions and 2) on the fly via UDM "extended attributes".
 
 Supporting wildcard permissions adds a security risk.
-If customers need to copy our default capability definitions for an example role and in some errata update we introduce new security-relevant properties e.g. another service specific password, customers need to adjust their access defintions prior to the software upgrade.
+If customers need to copy our default capability definitions for an example role and in some errata update we introduce new security-relevant properties e.g. another service specific password, customers need to adjust their access definitions prior to the software upgrade.
 Otherwise a vulnerability time window exists, where access is allowed to these attributes, even if the customer references (in a currently impossible way) our default policies.
 
-Alernative concept to wildcard permissions would be something like a "permission bundle", where we group certain properties, e.g. default-users-user-properties, custom-users-user-properties, sensitive-users-user-properties.
+Alternative concept to wildcard permissions would be something like a "permission bundle", where we group certain properties, e.g. default-users-user-properties, custom-users-user-properties, sensitive-users-user-properties.
 
 The conflicting issue: We have to offer security by default and usability and maintainability of rules for the customers.
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#280
 
 ## Define the role of the tree structure / Comparison with LDAP ACLs
 
@@ -455,6 +457,8 @@ To be useable, a capability definition should stand on its own, not yet assigned
 
 **Change request:** The Guardian should remove the role assignment from the capability and introduce a different layer in the Management API to link (multiple) capabilities to (multiple) roles.
 
+**Related issue:** univention/dev/internal/team-nubus#1497 (comment 665918)
+
 ### Capabilities vs Permissions: What is API, what is opaque?
 
 Guardian introduces all these different concepts but doesn't clearly state, which objects are supposed to be created by an App and which are supposed to be created by an administrator.
@@ -472,7 +476,7 @@ We could learn from FreeIPA how to design this very simple (KISS principle), the
 
 It doesn't feel correct, that permissions create a API. Managing single permissions to a UDM properties can't evolve. Only pre-defined permission sets by use can do this.
 
-**Change request:** Guardian should throw away the concept of capabilities and provide *Privileges*. which are the external API and referenced by customers. Apps provide these priviledges. Permissions should be nearly opaque - implementation details which might be changed by the app at any time.
+**Change request:** Guardian should throw away the concept of capabilities and provide *Privileges*. which are the external API and referenced by customers. Apps provide these privileges. Permissions should be nearly opaque - implementation details which might be changed by the app at any time.
 
 ### Restricted charset
 
@@ -492,6 +496,8 @@ We need to create a mapping of UDM module and UDM property names.
 
 **Change request:** The Guardian should allow for `app names`, `namespaces`, `permissions` and in `contexts` all printable ASCII characters, except for the separator `&`.
 
+**Related issue:** univention/dev/projects/authorization-engine/guardian#275
+
 ### Capability namespace binding restricted to the permission namespace
 
 Guardian has a concept of `app:namespace:thing` for `permissions`, `capabilities`, `roles`, etc.
@@ -509,6 +515,8 @@ So it is not possible to create a capability which grants permissions for more t
 - to be inherited from another `capability`, and then the `sub-capability` can add further `conditions` (linked with any relation) which are linked with the `super-capability` via `AND`.
 
 The problem realizing this, is that the Guardian Authorization Engine cannot just search for all capabilities in a certain namespace anymore but must inspect all capabilities, which include permissions of a given namespace.
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#274
 
 ## Unnecessary namespaces for roles and contexts
 
@@ -529,13 +537,15 @@ Best fit IMHO:
 
 **Change request:** Remove the namespaces for `roles`, `capabilities` and `contexts`. They should be a free choseable label/token.
 
+**Related issue:** univention/dev/projects/authorization-engine/guardian#273
+
 ### No dynamic contexts allowed
 
 While we would benefit from dynamic permissions, because UDM properties and modules can be added dynamically, having such functionality is crucial for `Contexts`.
 If we want to use the `context` Guardian concept we want to extend permissions so operations are e.g. restricted to targets underneath of a certain OU.
 
 1. A context cannot have the full characterset of a LDAP DN (basically also restricted to `[a-z0-9]`). So we cannot add a context `udm:udm:ou-admin & udm:contexts:ou=ou2,dc=example,dc=org`
-2. Every context must be registered in guardian. This requires that everytime a OU is created or removed, the context must be added/removed in Guardian. A listener module would have to do this, which adds unnecessary overall complexity to the whole system.
+2. Every context must be registered in guardian. This requires that every time a OU is created or removed, the context must be added/removed in Guardian. A listener module would have to do this, which adds unnecessary overall complexity to the whole system.
 
 A concept of named context would be good, so that the value is freely chosen but the context name is registered in guardian.
 One could name a context `udm:contexts:ou` and it's value would be `ou=My school 1,dc=example,dc=org` so that the resulting role string would be `udm:udm:organisatzional-unit-administrator&udm:contexts:ou=ou=My school 1,dc=example,dc=org`.
@@ -550,13 +560,15 @@ It would allow be nice if multiple contexts could be given per role, not just on
 
 **Change request:** The Guardian should allow to specify multiple contexts in a role string, separated via `&` (e.g. `udm:roles:foo-role&context1&context2`).
 
+**Related issue:** univention/dev/projects/authorization-engine/guardian#272
+
 ### No removal in Guardian possible
 
 The guardian management API and UI doesn't allow to remove any created object like `app`, `namespace`, `role`, `context`, `permission`, `condition`.
 Only a capability can be removed.
 
 **Change request:** The Guardian Management API should implement the endpoints to remove Guardian objects (and the UI should use it).
-Fix univention/dev/projects/authorization-engine/guardian#262
+**Related issue:** univention/dev/projects/authorization-engine/guardian#262
 
 ### Permission granting: no negative permissions
 
@@ -570,7 +582,7 @@ UDM is dynamically extensible and is also evolving, so that we sometimes add new
 3. If we introduce a wildcard concept, we cannot use the check-permission endpoint anymore: We have to do the whole rule evaluation in UDM.
 4. If we introduce a permission-restriction-afterwards concept we cannot use the check-permission endpoint anymore: We have to do the whole rule evaluation in UDM, see the below realization idea how Guardian could support it.
 5. If we don't have a wildcard concept, we have to adjust existing rules on every software upgrade / extended attribute.
-6. If we don't have a wildcard concept, we will send very large amount of permissions strings on each rule evaulation check.
+6. If we don't have a wildcard concept, we will send very large amount of permissions strings on each rule evaluation check.
 
 Drawbacks of negative permissions:
 
@@ -600,13 +612,15 @@ UCS development takes place in erratum-updates, even for new features. We don't 
 after we added a new property.
 Not having the permission to write this attribute will cause the object creation to fail.
 UDM REST API and UMC require the full data representation of the new object to be send.
-Customers will also not see the reason for it. The error message will just be `permission denied` withtout the information which attributes are not writeable.
+Customers will also not see the reason for it. The error message will just be `permission denied` without the information which attributes are not writeable.
 Guardian will not provide this information. Maybe when looking up the log files. This should not end in a support case.
 UCS cannot change the defined roles of customers.
 
 Guardian has no concept for the permission lifecycle.
 
-**Implementation idea:** If Guardian would provide a feature for re-useable sets of permission and capabilitiy bundles (privileges), which serve as an API, UDM could provide usefull defaults.
+**Implementation idea:** If Guardian would provide a feature for re-useable sets of permission and capabilitiy bundles (privileges), which serve as an API, UDM could provide useful defaults.
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#280
 
 ### No language to describe rules: just HTTP API endpoints with JSON payloads
 
@@ -691,7 +705,7 @@ We should offer configuration formats and ways which are easy to write, have no 
 So what are configuration formats which are nearly standards, and easy to parse?
 
 **Example:** One example to describe the default rules for our uses cases is the following YAML, which are 100 lines of YAML instead of (the current) 24.362 lines of JSON within 143 files.
-This is very specific to the terminology and concepts of Guardian. It could be used a a general purpose configuration format for Guardian.
+This is very specific to the terminology and concepts of Guardian. It could be used as a general purpose configuration format for Guardian.
 <!-- `find /var/lib/univention-directory-manager-modules/guardian/capabilities/ /var/lib/univention-directory-manager-modules/guardian/roles/ -type f -exec python3 -m json.tool {} \; | wc -l` -->
 
 ```yaml
@@ -721,15 +735,15 @@ permission-sets:  # named permission bundles (can be emulated or actually implem
     - "udm:groups/group:write-property-*"
     # TODO: restrict on sensitive defaults
   allow-all-read:
-    - "udm:users/user:read-property-*"  # my lazyness to not list all permissions here
-    - "udm:groups/group:read-property-*"  # my lazyness to not list all permissions here
-    - …  # further lazyness for the object types
+    - "udm:users/user:read-property-*"  # my laziness to not list all permissions here
+    - "udm:groups/group:read-property-*"  # my laziness to not list all permissions here
+    - …  # further laziness for the object types
   allow-all-write:
     - "udm:users/user:read-property-*"
     - "udm:users/user:write-property-*"
     - "udm:groups/group:read-property-*"
     - "udm:groups/group:write-property-*"
-    - …  # further lazyness for the object types
+    - …  # further laziness for the object types
 
 capabilities:  # raw capabilities suitable for re-use/reference, suitable as API for customers
   udm:generic:  # namespace
@@ -752,7 +766,7 @@ capabilities:  # raw capabilities suitable for re-use/reference, suitable as API
          - object-access-underneath-own-ou
 
     allow-everything:
-      displayname: "Allow everyting! Use carefully, only for domain admins!"
+      displayname: "Allow everything! Use carefully, only for domain admins!"
       grants-permissions:
         - allow-all-write
 
@@ -819,7 +833,7 @@ named-condition "in-global-users-container"  # unused example
 
 # Organizational Unit Administrators
 access by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
-  description="Organizational Unit Adminstrators can administrate users and groups in their OU"
+  description="Organizational Unit Administrators can administrate users and groups in their OU"
 
   to objecttype="container/ou" position="{context}" scope="subtree"
     grant actions="search,read"
@@ -878,14 +892,18 @@ The permission system of UMC works that way, that it stores a cache of the grant
 This makes UMC usable even if no LDAP server is running.
 And this is an important use case as in case of errors administrators go into the diagnostic module / software update / etc to find out or fix the reasons.
 
+**Related issue:** univention/dev/projects/authorization-engine/guardian#276
+
 ### Guardian concepts are too abstract
 Guardian doesn't know about basic things a target constists of, which most apps require to implement, e.g. actions like CRUD or more, object types, properties, etc.
 It just leaves this up to free-form permission strings.
 Every app in the end can define a own structure. Our company should implement this for all apps in a uniform way.
 
-Therefor the generic Management UI is also not suitable to be used.
+Therefore the generic Management UI is also not suitable to be used.
 One must create another UI frontend to realize these concepts
 so that an Administrator can click on "Is allowed to create/modify" objects of type "teacher" and gets "write" permissions for propertes "name, ...".
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#277
 
 ## Security Impacts
 
@@ -904,7 +922,7 @@ We had a support case which took weeks to solve because Keycloak couldn't be rea
 2. security issues
 
 * Denial of Service has a larger attack surface (attacking just Keycloak makes UDM unusable)
-* Denial of Service of UDM affects the other services. Just throw enought requests against various UDM instances to get the other components Co-DoSed.
+* Denial of Service of UDM affects the other services. Just throw enough requests against various UDM instances to get the other components Co-DoSed.
 * Overtaking one component via one vulnerability in the stack allows overtaking the full domain
 
 3. scalability issues
@@ -920,15 +938,15 @@ We had a support case which took weeks to solve because Keycloak couldn't be rea
 To prevent information disclosure, the whole implementation must return the same response structure as LDAP would do it.
 E.g. LDAP says "No Such Object" if a search with a certain search base is done.
 The `cn=admin` account, with which UDM then runs, has permissions to read all those objects.
-The UDM interfaces must now raise the same exception and signature. When it would say "Forbidden" instead or the output differs otherwise, a arbitraty user can obtain any information.
+The UDM interfaces must now raise the same exception and signature. When it would say "Forbidden" instead or the output differs otherwise, a arbitrary user can obtain any information.
 By combining search bases, search filters and search scopes a lot of attack vectors are possible in every API endpoint and further down, as e.g. syntax classes expose a lot of different possibilities.
 
 This is very tricky to realize, it must be realized everywhere and it must be understood by every further UDM developer so that things don't break when evolving UDM.
 
 The integration of Guardian will make UDM vulnerable to side-channel atttacks.
-If one measures the statistical average time to get such a "no object" response, one can also differentiate wheather a object exists or not.
+If one measures the statistical average time to get such a "no object" response, one can also differentiate whether a object exists or not.
 In combination with a LDAP filter, this attack can be made very fine granular.
-Therefor we also have to do guardian requests for objects, which don't exists at all.
+Therefore we also have to do guardian requests for objects, which don't exists at all.
 A http request will add enough time to the response so that this gets a real attack vector.
 
 For large environments doing a search with a base underneath of an object which returns more objects than the configured sizelimit will raise an LDAP `SIZELIMIT_EXCEEDED` before any filtering can happen, which will reveal that the object exists.
@@ -945,6 +963,8 @@ See the above paragraph; it is required to prevent that actors can enumerate val
 We can normalize actor and target DN's before sending them to Guardian, still it must be able to handle special chars.
 And when it comes to value based comparisons this will break, as we don't have enough Code introspection possibilities in UDM to know if something is a DN or another value.
 E.g. in OX some values are stored like `$DN || foo || bar`.
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#278
 
 ### Guardian as Policy Information endpoint doesn't add security to the whole system architecture automatically
 In some meetings there was the view, that as OPA is a industry standard and proven by large companies, just integrating it will make our architecture more secure.
@@ -1034,24 +1054,24 @@ Daniel proposes:
 So a new UI must be created to be able to work with it.
 This can by the way, very easily be achieved via a simple UDM module without the need to write a new Javascript frontend.
 
-## Managment API bugs and issues
+## Management API bugs and issues
 
 ### Changing conditions impossible
-It's not possible to change a condition, one just get's an Internal Server Error.
+It's not possible to change a condition, one just gets an Internal Server Error.
 
-**Change Request:** Fix univention/dev/projects/authorization-engine/guardian#258
+**Related issue:** univention/dev/projects/authorization-engine/guardian#258
 
 ### Failed decoding of input JSON data
 
 The Management API crashes permanently randomly due to broken error handling if the Authorization API sends a non successful response.
 
-**Change Request:** Fix univention/dev/projects/authorization-engine/guardian#264
+**Related issue:** univention/dev/projects/authorization-engine/guardian#264
 
 ### Unreachable API
 
 Sometimes the Apache gateway says the system is not available: `Read timeout`: Nothing occurs in the logfiles.
 
-**Change Request:** Fix univention/dev/projects/authorization-engine/guardian#259
+**Related issue:** univention/dev/projects/authorization-engine/guardian#259
 
 ### Performance of Management API
 
@@ -1078,11 +1098,11 @@ time /usr/share/univention-directory-manager-tools/univention-configure-udm-auth
 There is no `PUT` endpoint, which allows the creation or modification in one idempotent step.
 
 **Change Request:** All objects in Guardian should support the idempotent PUT endpoint, which creates the object in case it doesn't exists otherwise modify it.
-Fix univention/dev/projects/authorization-engine/guardian#265
+**Related issue:** univention/dev/projects/authorization-engine/guardian#265
 
 When creating a permission, which already exists, 100 lines of Traceback are logged.
 
-**Change Request:** Fix univention/dev/projects/authorization-engine/guardian#255
+**Related issue:** univention/dev/projects/authorization-engine/guardian#255
 
 Simply storing all permissions on local JSON files was done in nearly 1 second (when not writing debug messages to stdout).
 A mass-import of the whole structure would help to reduce the performance costs here and would also make sure we always push a idempotent and consistent state for our app "UDM".
@@ -1098,7 +1118,7 @@ We can implement a solution in UDM which allows certain users (like `cn=admin`) 
 ## Questions
 
 * How should we solve all the guardian problems in a small time frame, where we have a lot of other issues to solve while we also could just create a simple implementation of all this, which doesn't hinder us in the first step and get us going into a compliant solution?
-* Do we need for security reasons to evaluate some permissions early in the service, e.g. UDM REST API, UMC-UDM and UDM-CLI? E.g. adding a futher additional layer: `udm:udm-rest-api:create-users-user`. Should this be achieved via namespaces or via contexts? Or via extra-data and a condition?
+* Do we need for security reasons to evaluate some permissions early in the service, e.g. UDM REST API, UMC-UDM and UDM-CLI? E.g. adding a further additional layer: `udm:udm-rest-api:create-users-user`. Should this be achieved via namespaces or via contexts? Or via extra-data and a condition?
 * How to handle situations where one is not allowed to read all the groups of a user (e.g. not the Domain Admins or not the OU2-Teacher group) but he wants to modify the user. The client would send back the received groups and just remove the user from all the other groups not allowed to see.
 
 ## Conclusion
@@ -1109,8 +1129,8 @@ We don't see the cost-benefit ratio in using the Guardian:
 
 * Why should we use it, when we have to adjust and fix so many things, which requires nearly a Guardian 2.0?
 * Why should we use it, when it creates much overhead like sending a lot of strings see-saw?
-* If we have to adjust so many things, we have to do in in a generic fashion and have followup work like adjusting manuals, etc.
-* Why should we adjust it in a generic way if we don't know the exact use cases so it gets usefull for everyone?
+* If we have to adjust so many things, we have to do it in a generic fashion and have followup work like adjusting manuals, etc.
+* Why should we adjust it in a generic way if we don't know the exact use cases so it gets useful for everyone?
 * Are the specific complex things UDM required useful for every other guardian user or just for UDM? Does it give others any value?
 * Does it make sense to change the Guardian just to satisfy the UDM needs?
 
