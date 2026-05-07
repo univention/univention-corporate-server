@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 14:10+0000\n"
-"PO-Revision-Date: 2026-05-06 16:12+0200\n"
+"POT-Creation-Date: 2026-05-07 10:52+0000\n"
+"PO-Revision-Date: 2026-05-07 12:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -563,7 +563,7 @@ msgstr ""
 "customization:ref:`customization-api-udm-rest` :cite:t:`uv-nubus-"
 "kubernetes-customization`."
 
-#: ../../iam/index.rst:35 ../../iam/password-management/index.rst:43
+#: ../../iam/index.rst:48 ../../iam/password-management/index.rst:43
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -633,9 +633,39 @@ msgstr ""
 "angezeigt werden, und der Deaktivierung des Assistenten, wenn Sie ihn "
 "nicht benötigen. Siehe :ref:`iam-user-create-wizard`."
 
-#: ../../iam/last-bind.rst:7
+#: ../../iam/index.rst:35 ../../iam/user-activation-apps.rst:7
+msgid "User activation for apps"
+msgstr "Benutzeraktivierung für Apps"
+
+#: ../../iam/index.rst:36
+msgid ""
+"Activate and deactivate users or groups for *App Center* apps directly "
+"from the user account in the *Management UI*, including app-specific "
+"settings per user. See :ref:`iam-user-activation-apps`."
+msgstr ""
+"Aktivieren und deaktivieren Sie Benutzer oder Gruppen für *App "
+"Center*-Apps direkt aus dem Benutzerkonto in der *Management UI*, "
+"einschließlich spezifischer Einstellung für Apps pro Benutzer. Siehe :ref"
+":`iam-user-activation-apps`."
+
+#: ../../iam/index.rst:41 ../../iam/last-bind.rst:7
 msgid "Track last sign-in time to detect inactive accounts"
 msgstr "Zeitpunkt der letzten Anmeldung erfassen, um inaktive Konten zu erkennen"
+
+#: ../../iam/index.rst:42
+msgid ""
+"Identify inactive user accounts by recording when each account last "
+"signed in. Activate the OpenLDAP ``lastbind`` overlay module, collect "
+"sign-in timestamps from all LDAP servers in the domain, and schedule "
+"automatic updates to keep the timestamps current. See :ref:`iam-last-"
+"bind`."
+msgstr ""
+"Identifizieren Sie inaktive Benutzerkonten, indem Sie aufzeichnen, wann "
+"sich jedes Konto zuletzt angemeldet hat. Aktivieren Sie das "
+"OpenLDAP-``lastbind``-Overlay-Modul, erfassen Sie Anmeldezeitstempel von "
+"allen LDAP-Servern in der Domäne und planen Sie automatische "
+"Aktualisierungen, um die Zeitstempel aktuell zu halten. Siehe :ref:`iam-"
+"last-bind`."
 
 #: ../../iam/last-bind.rst:9
 msgid ""
@@ -646,9 +676,9 @@ msgid ""
 msgstr ""
 "Inaktive Benutzerkonten stellen ein Sicherheitsrisiko dar, da Angreifer "
 "sie kompromittieren können, ohne dass es jemandem auffällt. Durch die "
-"Aufzeichnung des letzten Anmeldezeitpunkts jedes Kontos können Sie "
-"Konten identifizieren, die sich seit längerem nicht mehr angemeldet "
-"haben, und geeignete Maßnahmen ergreifen."
+"Aufzeichnung des letzten Anmeldezeitpunkts jedes Kontos können Sie Konten"
+" identifizieren, die sich seit längerem nicht mehr angemeldet haben, und "
+"geeignete Maßnahmen ergreifen."
 
 #: ../../iam/last-bind.rst:15
 msgid "Read this page to learn how to:"
@@ -664,7 +694,9 @@ msgstr "Anmeldezeitstempel von allen LDAP-Servern der Domäne erfassen."
 
 #: ../../iam/last-bind.rst:19
 msgid "schedule automatic updates to keep the timestamps current."
-msgstr "automatische Aktualisierungen planen, um die Zeitstempel aktuell zu halten."
+msgstr ""
+"automatische Aktualisierungen planen, um die Zeitstempel aktuell zu "
+"halten."
 
 #: ../../iam/last-bind.rst:22
 msgid ""
@@ -1434,8 +1466,8 @@ msgid ""
 "In the *Password* section on the *General* tab of the *Samba Domain* "
 "object, you can configure the following settings."
 msgstr ""
-"Im Abschnitt *Passwort* auf der Registerkarte *Allgemein* des Objekts "
-"*Samba-Domäne* können Sie die folgenden Einstellungen konfigurieren."
+"Im Abschnitt *Passwort* auf dem Reiter *Allgemein* des Objekts *Samba-"
+"Domäne* können Sie die folgenden Einstellungen konfigurieren."
 
 #: ../../iam/password-management/samba-policies.rst:45
 msgid "The minimum number of characters for a user password."
@@ -2490,6 +2522,197 @@ msgstr ""
 "Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
 " siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
 "univention-configuration-registry`."
+
+#: ../../iam/user-activation-apps.rst:9
+msgid ""
+"This section explains how to activate and deactivate users or groups for "
+"apps available in the *App Center*. Some apps offer app-specific settings"
+" per user if the app integrates with identity management in Nubus for "
+"UCS."
+msgstr ""
+"Dieser Abschnitt erläutert, wie Sie Benutzer oder Gruppen für Apps "
+"aktivieren und deaktivieren, die im *App Center* verfügbar sind. Einige "
+"Apps bieten spezifische Einstellungen für Apps pro Benutzer, wenn die App"
+" mit der Identitätsverwaltung in Nubus für UCS integriert ist."
+
+#: ../../iam/user-activation-apps.rst:16
+msgid "Before you activate users or groups for an app, verify the following:"
+msgstr ""
+"Bevor Sie Benutzer oder Gruppen für eine App aktivieren, überprüfen Sie "
+"Folgendes:"
+
+#: ../../iam/user-activation-apps.rst:19
+msgid "The app supports user activation."
+msgstr "Die App unterstützt die Benutzeraktivierung."
+
+#: ../../iam/user-activation-apps.rst:20
+msgid "You have installed the app in your Nubus for UCS environment."
+msgstr "Sie haben die App in Ihrer Nubus für UCS-Umgebung installiert."
+
+#: ../../iam/user-activation-apps.rst:24
+msgid ":ref:`lifecycle-app-center`"
+msgstr ":ref:`lifecycle-app-center`"
+
+#: ../../iam/user-activation-apps.rst:25
+msgid "for information about the *App Center*."
+msgstr "für Informationen zum *App Center*."
+
+#: ../../iam/user-activation-apps.rst:27
+msgid ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
+
+#: ../../iam/user-activation-apps.rst:28
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Users* management"
+" module in the *Management UI*."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen zum Verwaltungsmodul "
+"*Benutzer* in der *Management UI*."
+
+#: ../../iam/user-activation-apps.rst:34
+msgid "Activate a user or a group for an app"
+msgstr "Einen Benutzer oder eine Gruppe für eine App aktivieren"
+
+#: ../../iam/user-activation-apps.rst:36
+msgid ""
+"The *Management UI* stores the activation status in the user or the group"
+" object in the LDAP directory service."
+msgstr ""
+"Die *Management UI* speichert den Aktivierungsstatus im Benutzer- oder "
+"Gruppenobjekt im LDAP-Verzeichnisdienst."
+
+#: ../../iam/user-activation-apps.rst:39
+msgid "To activate a users or groups for an app, follow these steps."
+msgstr ""
+"Um Benutzer oder Gruppen für eine App zu aktivieren, führen Sie die "
+"folgenden Schritte aus."
+
+#: ../../iam/user-activation-apps.rst
+msgid "Users"
+msgstr "Benutzer"
+
+#: ../../iam/user-activation-apps.rst:47 ../../iam/user-activation-apps.rst:108
+msgid "For apps that activate on a per-user basis."
+msgstr "Für Apps, die auf Benutzerbasis aktiviert werden."
+
+#: ../../iam/user-activation-apps.rst:49 ../../iam/user-activation-apps.rst:110
+msgid "Open the *Users* management module in the *Management UI*."
+msgstr "Öffnen Sie das Verwaltungsmodul *Benutzer* in der *Management UI*."
+
+#: ../../iam/user-activation-apps.rst:51
+msgid "Open the user account you want to activate."
+msgstr "Öffnen Sie das Benutzerkonto, das Sie aktivieren möchten."
+
+#: ../../iam/user-activation-apps.rst:53 ../../iam/user-activation-apps.rst:76
+#: ../../iam/user-activation-apps.rst:114
+#: ../../iam/user-activation-apps.rst:131
+msgid "Go to the :guilabel:`Apps` tab."
+msgstr "Wechseln Sie auf den Reiter :guilabel:`Apps`."
+
+#: ../../iam/user-activation-apps.rst:55 ../../iam/user-activation-apps.rst:78
+msgid ""
+"Select the checkbox next to the app logo. This activates the user for the"
+" app."
+msgstr ""
+"Aktivieren Sie das Kontrollkästchen neben dem Logo der App. Dadurch wird "
+"der Benutzer für die App aktiviert."
+
+#: ../../iam/user-activation-apps.rst:58 ../../iam/user-activation-apps.rst:81
+msgid "For example, see :numref:`iam-user-activation-apps-apps-tab`."
+msgstr "Ein Beispiel finden Sie unter :numref:`iam-user-activation-apps-apps-tab`."
+
+#: ../../iam/user-activation-apps.rst:60 ../../iam/user-activation-apps.rst:83
+msgid ""
+"If the app offers specific settings, configure them in the app's settings"
+" tab."
+msgstr ""
+"Wenn die App spezifische Einstellungen anbietet, konfigurieren Sie diese "
+"im Reiter für die Einstellungen der App."
+
+#: ../../iam/user-activation-apps.rst:63 ../../iam/user-activation-apps.rst:118
+msgid "Save the user account."
+msgstr "Speichern Sie das Benutzerkonto."
+
+#: ../../iam/user-activation-apps.rst:65
+msgid "For group based apps, add the user to the user group."
+msgstr "Für gruppenbasierte Apps, fügen Sie den Benutzer der Gruppe hinzu."
+
+#: ../../iam/user-activation-apps.rst
+msgid "Groups"
+msgstr "Gruppen"
+
+#: ../../iam/user-activation-apps.rst:70 ../../iam/user-activation-apps.rst:125
+msgid "For apps that activate on a per-group basis."
+msgstr "Für Apps, die auf Gruppenbasis aktiviert werden."
+
+#: ../../iam/user-activation-apps.rst:72 ../../iam/user-activation-apps.rst:127
+msgid "Open the *Groups* management module in the *Management UI*."
+msgstr "Öffnen Sie das Verwaltungsmodul *Gruppen* in der *Management UI*."
+
+#: ../../iam/user-activation-apps.rst:74
+msgid "Open the group you want to activate."
+msgstr "Öffnen Sie die Gruppe, die Sie aktivieren möchten."
+
+#: ../../iam/user-activation-apps.rst:86 ../../iam/user-activation-apps.rst:135
+msgid "Save the group."
+msgstr "Speichern Sie Gruppe."
+
+#: ../../iam/user-activation-apps.rst:90
+msgid "Group activation settings for each app in the Apps tab"
+msgstr "Einstellungen zur Aktivierung einer Gruppe für jede App im Reiter Apps"
+
+#: ../../iam/user-activation-apps.rst:93
+msgid "Group activation for installed apps"
+msgstr "Aktivierung einer Gruppe für installierte Apps"
+
+#: ../../iam/user-activation-apps.rst:98
+msgid "Deactivate a user or a group for an app"
+msgstr "Einen Benutzer oder eine Gruppe für eine App deaktivieren"
+
+#: ../../iam/user-activation-apps.rst:100
+msgid "To deactivate a user for an app, follow these steps."
+msgstr ""
+"Um einen Benutzer für eine App zu deaktivieren, führen Sie die folgenden "
+"Schritte aus."
+
+#: ../../iam/user-activation-apps.rst:112
+msgid "Open the user account you want to deactivate."
+msgstr "Öffnen Sie das Benutzerkonto, das Sie deaktivieren möchten."
+
+#: ../../iam/user-activation-apps.rst:116
+#: ../../iam/user-activation-apps.rst:133
+msgid "Clear the checkbox beside the app logo."
+msgstr "Deaktivieren Sie das Kontrollkästchen neben dem Logo der App."
+
+#: ../../iam/user-activation-apps.rst:120
+msgid "For group based apps, remove the user from the user group."
+msgstr "Für gruppenbasierte Apps, entfernen Sie den Benutzer aus der Gruppe."
+
+#: ../../iam/user-activation-apps.rst:129
+msgid "Open the group you want to deactivate."
+msgstr "Öffnen Sie die Gruppe, die Sie deaktivieren möchten."
+
+#: ../../iam/user-activation-apps.rst:140
+msgid "Effect of app deinstallation"
+msgstr "Effekt bei Deinstallation einer App"
+
+#: ../../iam/user-activation-apps.rst:142
+msgid ""
+"When you uninstall an app, the *Management UI* removes the checkbox for "
+"user activation from the :guilabel:`Apps` tab. The *App Center* removes "
+"the extended attribute definitions for that app from the LDAP directory "
+"service. However, the *App Center* retains the user activation data that "
+"it stored on user or group objects. If you reinstall the app, the "
+":guilabel:`Apps` tab shows the stored activation data again."
+msgstr ""
+"Wenn Sie eine App deinstallieren, entfernt die *Management UI* das "
+"Kontrollkästchen für die Benutzeraktivierung von dem Reiter "
+":guilabel:`Apps`. Das *App Center* entfernt die erweiterten Attribute für"
+" diese App aus dem LDAP-Verzeichnisdienst. Das *App Center* behält jedoch"
+" die Benutzeraktivierungsdaten bei, die es in den Benutzer- oder "
+"Gruppenobjekten gespeichert hat. Wenn Sie die App erneut installieren, "
+"zeigt der Reiter :guilabel:`Apps` die gespeicherten Aktivierungsdaten "
+"wieder an."
 
 #: ../../iam/user-create-wizard.rst:9
 msgid ""
