@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.19) unstable; urgency=medium
+
+  * Bug #59281: allow to set cn for users/contact in deterministic manner
+
+ -- Florian Best <best@univention.de>  Thu, 07 May 2026 14:01:37 +0200
+
 univention-directory-manager-modules (17.5.18) unstable; urgency=medium
 
   * Bug #59217: ignore un-editable properties when copying a container on

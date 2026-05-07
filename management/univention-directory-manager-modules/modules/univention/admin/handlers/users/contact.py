@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Any
 
 import univention.admin
@@ -323,15 +324,34 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def description(self) -> str:
-        description = '%s %s' % (self['firstname'] or '', self['lastname'])
+        return self._pattern(self)
+
+    @staticmethod
+    def _pattern(obj) -> str:
+        description = '%s %s' % (obj['firstname'] or '', obj['lastname'])
         return description.strip()
 
-    def get_candidate_dn(self) -> str:
-        dn = self._ldap_dn()
+    def _ldap_pre_ready(self) -> None:
+        super()._ldap_pre_ready()
+
         if self.exists():
-            rdn = self.lo.explodeDn(dn)[0]
-            dn = '%s,%s' % (rdn, self.lo.parentDn(self.dn))
-        return dn
+            if (
+                self.hasChanged(('firstname', 'lastname'))  # change of pattern candidates
+                and not self.hasChanged('cn')  # no explicit CN given
+                and self.oldinfo['cn'].startswith(f'{self._pattern(self.oldinfo)} ')  # former CN consists of the pattern
+            ):
+                self.acquire_unique_dn()
+
+        elif not self.info.get('cn'):  # no explicit CN given
+            self.acquire_unique_dn()
+
+    def acquire_unique_dn(self) -> str:
+        pattern = self._pattern(self)
+        for nonce in range(1, sys.maxsize):
+            self['cn'] = f'{pattern} {nonce}'
+            if self.unique_dn():
+                break
+        return self.get_candidate_dn()
 
     def unique_dn(self) -> bool:
         candidate_dn = self.get_candidate_dn()
@@ -342,21 +362,12 @@ class object(univention.admin.handlers.simpleLdap):
         else:
             return False
 
-    def acquire_unique_dn(self) -> str:
-        nonce = 1
-        cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
-        self['cn'] = cn.strip()
-        while not self.unique_dn():
-            nonce += 1
-            cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
-            self['cn'] = cn.strip()
-        return self.get_candidate_dn()
-
-    def _ldap_pre_ready(self) -> None:
-        super()._ldap_pre_ready()
-
-        if not self.exists() or self.hasChanged(('firstname', 'lastname')):
-            self.acquire_unique_dn()
+    def get_candidate_dn(self) -> str:
+        dn = self._ldap_dn()
+        if self.exists():
+            rdn = self.lo.explodeDn(dn)[0]
+            dn = '%s,%s' % (rdn, self.lo.parentDn(self.dn))
+        return dn
 
     def _ldap_modlist(self) -> list[tuple[str, Any, Any]]:
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -391,12 +402,19 @@ class object(univention.admin.handlers.simpleLdap):
     def _move(self, newdn: str, modify_childs: bool = True, ignore_license: bool = False) -> str:
         olddn = self.dn
 
-        # acquire unique dn in new position
-        self.dn = newdn
-        newdn = self.acquire_unique_dn()
-        self.dn = olddn
+        try:
+            self.lo.authz_connection.rename(self.dn, newdn)
+        except univention.admin.uexceptions.objectExists:
+            if not self.oldinfo['cn'].startswith(f'{self._pattern(self.oldinfo)} '):
+                raise
+            # acquire unique DN in new position
+            self.dn = newdn
+            try:
+                newdn = self.acquire_unique_dn()
+            finally:
+                self.dn = olddn
 
-        self.lo.authz_connection.rename(self.dn, newdn)
+            self.lo.authz_connection.rename(self.dn, newdn)
         self.dn = newdn
 
         try:

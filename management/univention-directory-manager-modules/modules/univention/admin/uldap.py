@@ -687,6 +687,8 @@ class access:
             raise univention.admin.uexceptions.permissionDenied()
         except ldap.INVALID_DN_SYNTAX as msg:
             raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), dn), original_exception=msg)
+        except ldap.ALREADY_EXISTS:
+            raise univention.admin.uexceptions.objectExists(dn)
         except ldap.LDAPError as msg:
             log.debug('rename failed', dn=dn, error=msg)
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
