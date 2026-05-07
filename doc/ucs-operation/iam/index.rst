@@ -53,4 +53,5 @@ Track last sign-in time to detect inactive accounts
    user-create-wizard
    http-api
    user-activation-apps
+   user-lockout
    last-bind
