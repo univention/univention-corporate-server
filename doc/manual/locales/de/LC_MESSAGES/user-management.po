@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 15:02+0000\n"
-"PO-Revision-Date: 2026-05-06 17:04+0200\n"
+"POT-Creation-Date: 2026-05-07 12:30+0000\n"
+"PO-Revision-Date: 2026-05-07 14:32+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -936,327 +936,42 @@ msgstr ""
 msgid "Automatic lockout of users after failed login attempts"
 msgstr "Automatisches Sperren von Benutzern nach fehlgeschlagenen Anmeldungen"
 
-#: ../../user-management/user-lockout.rst:11
+#: ../../user-management/user-lockout.rst:9
 msgid ""
-"By default, a user can enter their password incorrectly any number of "
-"times. To hinder brute force attacks on passwords, an automatic lockout "
-"for user accounts can be activated after a configured number of failed "
-"login attempts."
+"The content of this section moved to :external+uv-ucs-operation:ref:`iam-"
+"user-lockout` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Standardmäßig kann ein Benutzer sein Passwort beliebig oft falsch "
-"eingeben. Um Brute Force-Angriffe auf Passwörter zu erschweren, kann eine"
-" automatische Sperre von einem Benutzerkonto nach einer konfigurierbaren "
-"Anzahl von fehlerhaften Anmeldungen aktiviert werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`iam-user-lockout` in :cite:t:`uv-ucs-operation` verschoben."
 
 #: ../../user-management/user-lockout.rst:16
-msgid ""
-"UCS unifies various methods for user authentication and authorization. "
-"Depending on the installed software components, there may be different "
-"mechanisms for configuring and counting failed login attempts."
-msgstr ""
-"UCS vereinheitlicht verschiedene Methoden zur Authentifizierung und "
-"Autorisierung von Benutzern. Abhängig von den installierten "
-"Softwarekomponenten kann es verschiedene Mechanismen geben, wie "
-"fehlgeschlagene Anmeldeversuche konfiguriert und gezählt werden."
-
-#: ../../user-management/user-lockout.rst:20
-msgid "The three different methods are described in the next sections."
-msgstr "Im folgenden werden die drei unterschiedlichen Methoden beschrieben."
-
-#: ../../user-management/user-lockout.rst:25
 msgid "Samba Active Directory Service"
 msgstr "Samba Active Directory Dienste"
 
-#: ../../user-management/user-lockout.rst:27
+#: ../../user-management/user-lockout.rst:18
 msgid ""
-"In Samba Active Directory environments, various services are provided by "
-"Samba, such as Kerberos. To lockout users after too many failed login "
-"attempts, the tool :command:`samba-tool` can be used."
+"The content of this section moved to :external+uv-ucs-operation:ref:`iam-"
+"user-lockout-samba` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"In Samba Active Directory Umgebungen werden diverse Dienste von Samba "
-"bereitgestellt, wie zum Beispiel Kerberos. Um Benutzer nach "
-"fehlgeschlagenen Anmeldungen zu sperren, kann das Tool :command:`samba-"
-"tool` verwendet werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`iam-user-lockout-samba` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../user-management/user-lockout.rst:32
-msgid "To show the currently configured values:"
-msgstr "Um die aktuell konfigurierten Werte anzuzeigen:"
-
-#: ../../user-management/user-lockout.rst:34
-msgid "$ samba-tool domain passwordsettings show"
-msgstr "$ samba-tool domain passwordsettings show"
-
-#: ../../user-management/user-lockout.rst:38
-msgid ""
-"To specify how often a user can attempt to sign in with an incorrect "
-"password before the account is locked:"
-msgstr ""
-"Um festzulegen, wie oft ein Benutzer versuchen kann, sich mit einem "
-"falschen Passwort anzumelden, bevor das Konto gesperrt wird:"
-
-#: ../../user-management/user-lockout.rst:41
-msgid "$ samba-tool domain passwordsettings set --account-lockout-threshold=5"
-msgstr "$ samba-tool domain passwordsettings set --account-lockout-threshold=5"
-
-#: ../../user-management/user-lockout.rst:45
-msgid ""
-"To specify the number of minutes an account will be locked after too many"
-" incorrect passwords have been entered:"
-msgstr ""
-"Um festzulegen, wie viele Minuten ein Konto gesperrt wird, nachdem zu "
-"viele falsche Passwörter eingegeben wurden:"
-
-#: ../../user-management/user-lockout.rst:48
-msgid "$ samba-tool domain passwordsettings set --account-lockout-duration=3"
-msgstr "$ samba-tool domain passwordsettings set --account-lockout-duration=3"
-
-#: ../../user-management/user-lockout.rst:52
-msgid "To define the number of minutes after which the counter is reset:"
-msgstr ""
-"Um die Anzahl der Minuten festzulegen, nach der der Zähler zurückgesetzt "
-"wird:"
-
-#: ../../user-management/user-lockout.rst:54
-msgid "$ samba-tool domain passwordsettings set --reset-account-lockout-after=5"
-msgstr "$ samba-tool domain passwordsettings set --reset-account-lockout-after=5"
-
-#: ../../user-management/user-lockout.rst:58
-msgid ""
-"If an account gets automatically unlocked after the lockout duration, the"
-" counter is not reset immediately, to keep the account under strict "
-"monitoring for some time. During the time window between the end of the "
-"lockout duration and the point when the counter gets reset, a single "
-"attempt to sign in with an incorrect password will lock the account "
-"immediately again."
-msgstr ""
-"Wenn ein Konto automatisch nach der konfigurierten Aussperrungsdauer "
-"entsperrt wird, dann wird der Zähler nicht direkt mit zurückgesetzt, um "
-"das Konto noch eine gewisse Zeit unter strikter Beobachtung zu halten. In"
-" dem Zeitfenster nach dem Ende der Aussperrung und vor der endgültigen "
-"Rücksetzung des Zählers führt ein einziger erneuter Login-Versuch mit "
-"einem falschen Passwort direkt wieder zu einer Sperrung des Kontos."
-
-#: ../../user-management/user-lockout.rst:65
-msgid ""
-"The manual unlocking of a user is done in the user administration on the "
-"tab :guilabel:`Account` by activating the checkbox *Unlock account*."
-msgstr ""
-"Die manuelle Entsperrung eines Benutzers erfolgt in der "
-"Benutzerverwaltung auf dem Reiter :guilabel:`Konto` über die Aktivierung "
-"der Checkbox *Aussperrung zurücksetzen*."
-
-#: ../../user-management/user-lockout.rst:71
+#: ../../user-management/user-lockout.rst:25
 msgid "PAM-Stack"
 msgstr "PAM-Stack"
 
-#: ../../user-management/user-lockout.rst:73
+#: ../../user-management/user-lockout.rst:27
+#: ../../user-management/user-lockout.rst:36
 msgid ""
-"The automatic locking of users after failed logins in the PAM stack can "
-"be enabled by setting the |UCSUCRV| :envvar:`auth/faillog` to ``yes``. "
-"The upper limit of failed login attempts at which an account lockout is "
-"configured in the |UCSUCRV| :envvar:`auth/faillog/limit`. The counter is "
-"reset each time the password is entered correctly."
+"The content of this section moved to :external+uv-ucs-operation:ref:`iam-"
+"user-lockout-pam` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Das automatische Sperren von Benutzern nach fehlgeschlagenen Anmeldungen "
-"im PAM-Stack kann durch Setzen der |UCSUCRV| :envvar:`auth/faillog` auf "
-"``yes`` aktiviert werden. Die Obergrenze an fehlerhaften "
-"Passworteingaben, bei der eine Kontosperre aktiviert wird, wird in der "
-"|UCSUCRV| :envvar:`auth/faillog/limit` konfiguriert. Unterhalb des Limits"
-" wird nach einer korrekten Passworteingabe der Zähler jedesmal wieder "
-"zurückgesetzt."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`iam-user-lockout-pam` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../user-management/user-lockout.rst:79
-msgid ""
-"The lockout is activated locally per system by default. In other words, "
-"if a user enters their password incorrectly too many times on one system,"
-" they can still login on another system. Setting the |UCSUCRV| "
-":envvar:`auth/faillog/lock_global` will make the lock effective globally "
-"and register it in the LDAP directory. The global lock can only be set on"
-" |UCSPRIMARYDN|/Backup systems as other system roles do not have the "
-"necessary permissions in the LDAP directory. On all systems with any of "
-"these system roles, the lockout gets automatically activated locally or "
-"deactivated again via the listener module, depending on the current lock "
-"state in the LDAP directory."
-msgstr ""
-"Die Sperre im PAM-Stack ist standardmäßig nur auf ein lokales System "
-"begrenzt. Wenn ein Benutzer also auf einem System zu oft sein Passwort "
-"falsch eingegeben hat, kann er sich auf einem anderen System weiterhin "
-"anmelden. Durch Setzen der |UCSUCRV| :envvar:`auth/faillog/lock_global` "
-"kann die Sperre auch global erfolgen und wird im LDAP registriert. Die "
-"globale Sperrung kann nur auf |UCSPRIMARYDN|/Backup-Systemen eingesetzt "
-"werden, da andere Systemrollen nicht über die nötigen Berechtigungen im "
-"LDAP-Verzeichnis verfügen. Auf allen Servern der genannten Systemrollen "
-"wird die Aussperrung aber automatisch auch lokal umgesetzt oder über das "
-"verwendete Listener-Modul auch wieder zurückgenommen, abhängig vom "
-"aktuellen Aussperrungszustands des Kontos im LDAP-Verzeichnis."
-
-#: ../../user-management/user-lockout.rst:89
-msgid ""
-"As standard, the lockout is not subject to time limitations and must be "
-"reset by the administrator. However, it can also be reset automatically "
-"after a certain time interval has elapsed. This is done by specifying a "
-"time period in seconds in the |UCSUCRV| "
-":envvar:`auth/faillog/unlock_time`. If the value is set to ``0``, the "
-"lock is reset immediately."
-msgstr ""
-"Standardmäßig ist die Sperre über den PAM-Stack unbegrenzt gültig, sie "
-"kann aber auch nach Ablauf eines Intervalls automatisch wieder aufgehoben"
-" werden. Hierzu ist in der |UCSUCRV| :envvar:`auth/faillog/unlock_time` "
-"ein Zeitraum in Sekunden anzugeben. Wird der Wert auf ``0`` gesetzt, wird"
-" die Sperre direkt wiederaufgehoben."
-
-#: ../../user-management/user-lockout.rst:95
-msgid ""
-"By default, the ``root`` user is excluded from the password lock, but can"
-" also be subjected to it by setting the |UCSUCRV| "
-":envvar:`auth/faillog/root` to ``yes``."
-msgstr ""
-"Der ``root``-Benutzer ist standardmäßig von der Passwort-Sperre "
-"ausgenommen, kann aber durch Setzen der |UCSUCRV| "
-":envvar:`auth/faillog/root` auf ``yes`` ebenfalls aufgenommen werden."
-
-#: ../../user-management/user-lockout.rst:99
-msgid ""
-"If accounts are only locked locally, the administrator can unlock a user "
-"account by entering the command:"
-msgstr ""
-"Werden Konten nur lokal gesperrt, kann der Administrator ein "
-"Benutzerkonto durch Eingabe des folgenden Befehls entsperren:"
-
-#: ../../user-management/user-lockout.rst:102
-msgid "$ faillock --reset --user USERNAME"
-msgstr "$ faillock --reset --user USERNAME"
-
-#: ../../user-management/user-lockout.rst:106
-msgid ""
-"If the lock occurs globally in the LDAP directory, the user will be "
-"deactivated. The user can be activated again in the |UCSUMC| module "
-":guilabel:`Users` on the tab *Account* via the checkbox *Account is "
-"deactivated*."
-msgstr ""
-"Erfolgt die Sperrung global im LDAP, wird der Benutzer deaktiviert. Der "
-"Benutzer kann im UMC-Modul :guilabel:`Benutzer` unter dem Reiter *Konto* "
-"mit der Option *Konto ist deaktiviert* zurückgesetzt werden."
-
-#: ../../user-management/user-lockout.rst:113
+#: ../../user-management/user-lockout.rst:34
 msgid "OpenLDAP"
 msgstr "OpenLDAP"
-
-#: ../../user-management/user-lockout.rst:115
-msgid ""
-"On UCS Directory Nodes, automatic account locking can be enabled for too "
-"many failed LDAP server login attempts. The MDB LDAP backend must be "
-"used. This is the default backend since UCS 4, previous systems must be "
-"migrated to the MDB LDAP backend, see :cite:t:`ucs-performance-guide`."
-msgstr ""
-"Bei UCS Directory Nodes kann die automatische Kontosperre für den Fall "
-"eines wiederholten LDAP-Authentifizierungsfehlers aktiviert werden. "
-"Voraussetzung ist, dass das MDB LDAP-Backend verwendet wird. Dies ist "
-"seit UCS 4 das Standard Backend, vorherige Systeme müssen auf das MDB "
-"LDAP-Backend migriert werden, siehe :cite:t:`ucs-performance-guide`."
-
-#: ../../user-management/user-lockout.rst:120
-msgid ""
-"Automatic account locking must be enabled for each UCS Directory Node. To"
-" do this, the |UCSUCRV| :envvar:`ldap/ppolicy/enabled` must be set to "
-"``yes`` and the OpenLDAP server must be restarted:"
-msgstr ""
-"Die Aktivierung der automatischen Kontosperrung muss pro UCS Directory "
-"Node erfolgen. Dazu müssen die |UCSUCRV| :envvar:`ldap/ppolicy/enabled` "
-"auf ``yes`` gesetzt und der OpenLDAP Server neu gestartet werden:"
-
-#: ../../user-management/user-lockout.rst:124
-msgid ""
-"$ ucr set ldap/ppolicy/enabled=yes\n"
-"$ systemctl restart slapd"
-msgstr ""
-"$ ucr set ldap/ppolicy/enabled=yes\n"
-"$ systemctl restart slapd"
-
-#: ../../user-management/user-lockout.rst:130
-msgid ""
-"The default policy is designed so that five repeated failed LDAP server "
-"login attempts within five minutes cause the lockout. A locked account "
-"can only be unlocked by a domain administrator through the UMC module "
-":guilabel:`Users` via the checkbox *Unlock account* on the *Account* tab."
-msgstr ""
-"Die Standardrichtlinie ist so ausgelegt, dass fünf wiederholte LDAP-"
-"Authentifizierungsfehler innerhalb eines Überwachungsintervalls von fünf "
-"Minuten dazu führen, dass das authentifizierende Konto gesperrt wird. Ein"
-" gesperrtes Konto kann nur von einem Domain-Administrator über das UMC-"
-"Modul :guilabel:`Benutzer` über die Checkbox *Aussperrung zurücksetzen* "
-"im Reiter *Konto* freigeschaltet werden."
-
-#: ../../user-management/user-lockout.rst:135
-msgid ""
-"The number of repeated failed LDAP server login attempts can be adjusted "
-"in the configuration object with the *objectClass* ``pwdPolicy``:"
-msgstr ""
-"Die Anzahl der wiederholten LDAP-Authentifizierungsfehler kann in dem "
-"Konfigurationsobjekt mit der *objectClass* ``pwdPolicy`` angepasst "
-"werden:"
-
-#: ../../user-management/user-lockout.rst:138
-msgid "$ univention-ldapsearch objectclass=pwdPolicy"
-msgstr "$ univention-ldapsearch objectclass=pwdPolicy"
-
-#: ../../user-management/user-lockout.rst:143
-msgid "``pwdMaxFailure``"
-msgstr "``pwdMaxFailure``"
-
-#: ../../user-management/user-lockout.rst:144
-msgid ""
-"attribute determines the number of LDAP authentication errors before "
-"locking."
-msgstr ""
-"Das Attribut bestimmt die Anzahl der LDAP-Authentifizierungsfehler vor "
-"der Sperrung."
-
-#: ../../user-management/user-lockout.rst:146
-msgid "``pwdMaxFailureCountInterval``"
-msgstr "``pwdMaxFailureCountInterval``"
-
-#: ../../user-management/user-lockout.rst:147
-msgid ""
-"attribute determines the time interval in seconds that is considered. "
-"Failed login attempts outside this interval are ignored in the count."
-msgstr ""
-"Das Attribut bestimmt das Zeitintervall in Sekunden, das berücksichtigt "
-"wird. LDAP-Authentifizierungsfehler außerhalb dieses Intervalls werden "
-"bei der Zählung vernachlässigt."
-
-#: ../../user-management/user-lockout.rst:150
-msgid "The following command can be used to block the account after 10 attempts:"
-msgstr ""
-"Um den Account erst nach 10 Versuchen zu sperren kann der folgende Befehl"
-" verwendet werden:"
-
-#: ../../user-management/user-lockout.rst:153
-msgid ""
-"$ LB=\"$(ucr get ldap/base)\"\n"
-"$ ldapmodify -x -D \"cn=admin,$LB\" -y /etc/ldap.secret <<__EOT__\n"
-"dn: cn=default,cn=ppolicy,cn=univention,$LB\n"
-"changetype: modify\n"
-"replace: pwdMaxFailure\n"
-"pwdMaxFailure: 10\n"
-"__EOT__"
-msgstr ""
-"$ LB=\"$(ucr get ldap/base)\"\n"
-"$ ldapmodify -x -D \"cn=admin,$LB\" -y /etc/ldap.secret <<__EOT__\n"
-"dn: cn=default,cn=ppolicy,cn=univention,$LB\n"
-"changetype: modify\n"
-"replace: pwdMaxFailure\n"
-"pwdMaxFailure: 10\n"
-"__EOT__"
-
-#: ../../user-management/user-lockout.rst:164
-msgid ""
-"The manual unlocking of a user is done in the user administration on the "
-"tab *Account* by activating the checkbox *Unlock account*."
-msgstr ""
-"Die manuelle Entsperrung eines Benutzers erfolgt in der "
-"Benutzerverwaltung auf dem Reiter *Konto* über die Aktivierung der "
-"Checkbox *Aussperrung zurücksetzen*."
 
 #: ../../user-management/user-self-service.rst:7
 msgid "User self services"
