@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 06. May 2026
+     - :ref:`iam-user-activation-apps`
+     - Add section about user activation for apps.
+
    * - 05. May 2026
      - :ref:`iam-last-bind`
      - Add section about the user's last sign-in time.
