@@ -5,8 +5,20 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  autoconf,
  automake,
+ cargo:native,
+ clang,
  debhelper-compat (=13),
+ dh-cargo (>= 25),
  dh-python,
+ libclang-dev,
+ librust-bindgen+clap-dev,
+ librust-bindgen-dev,
+ librust-env-logger+humantime-dev,
+ librust-env-logger-dev,
+ librust-libc-dev,
+ librust-libloading-dev,
+ librust-which-dev,
+ libstd-rust-dev,
  libtool,
  libunivention-debug-dev (>= 5.0.6-1),
  python3 (>= 3.6) | python3-mock,
@@ -20,6 +32,8 @@ Build-Depends:
  python3-pytest-timeout,
  python3-setuptools,
  python3-univention-debhelper,
+ rustc:native,
+X-Cargo-Crate: univentionconfig
 Standards-Version: 3.5.2
 
 Package: univention-config-registry
@@ -68,6 +82,30 @@ Depends:
 Description: UCS - configuration manager (development files)
  This package contains the files needed to develop packages
  that use univention-config.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: librust-univentionconfig-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ librust-bindgen+clap-dev,
+ librust-bindgen-dev,
+ librust-env-logger+humantime-dev,
+ librust-env-logger-dev,
+ librust-libc-dev,
+ librust-libloading-dev,
+ librust-which-dev,
+ univention-config-dev (= ${binary:Version}),
+ ${misc:Depends},
+Provides:
+ librust-univentionconfig+default-dev (= ${binary:Version}),
+Description: UCS - configuration registry (Rust crate)
+ This packages contains the files needed to development rust crates
+ that use UCR bindings for Univention config.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

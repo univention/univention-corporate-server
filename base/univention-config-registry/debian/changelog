@@ -1,3 +1,9 @@
+univention-config-registry (17.6.1) unstable; urgency=medium
+
+  * Bug #59042: add rust library
+
+ -- Florian Best <best@univention.de>  Fri, 28 Aug 2026 17:07:32 +0200
+
 univention-config-registry (17.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
