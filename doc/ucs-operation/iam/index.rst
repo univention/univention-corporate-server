@@ -38,6 +38,14 @@ User activation for apps
    including app-specific settings per user.
    See :ref:`iam-user-activation-apps`.
 
+User lockout after failed sign-in attempts
+   Automatically lock user accounts after too many failed sign-in attempts
+   to prevent brute force attacks on passwords.
+   Nubus for UCS supports three independent lockout mechanisms—
+   Samba and Active Directory, PAM stack, and OpenLDAP—
+   each with its own configuration and scope.
+   See :ref:`iam-user-lockout`.
+
 Track last sign-in time to detect inactive accounts
    Identify inactive user accounts by recording when each account last signed in.
    Activate the OpenLDAP ``lastbind`` overlay module,

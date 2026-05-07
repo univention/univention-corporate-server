@@ -3,154 +3,167 @@
 
 .. _iam-user-lockout:
 
-Automatic lockout of users after failed sign-in attempts
-========================================================
+User account lockout after failed sign-in attempts
+==================================================
 
-.. highlight:: console
+By default, there is no limit on failed password attempts.
+To prevent brute force attacks,
+you can configure an automatic lockout for user accounts
+after a set number of failed sign-in attempts.
 
-By default, a user can enter their password incorrectly any number of
-times. To hinder brute force attacks on passwords, an automatic lockout
-for user accounts can be activated after a configured number of failed
-login attempts.
+Nubus for UCS supports multiple authentication methods.
+Each method has its own way to configure and count failed sign-in attempts.
 
-UCS unifies various methods for user authentication and authorization.
-Depending on the installed software components, there may be different
-mechanisms for configuring and counting failed login attempts.
+.. _iam-user-lockout-samba:
 
-The three different methods are described in the next sections.
+Configure lockout for Samba and Active Directory
+------------------------------------------------
 
-.. _users-faillog-samba:
+Samba provides services in Active Directory environments, such as Kerberos.
+To lock out users after too many failed sign-in attempts,
+use :command:`samba-tool`.
 
-Samba Active Directory Service
-------------------------------
+#. Show the currently configured values:
 
-In Samba Active Directory environments, various services are provided by
-Samba, such as Kerberos. To lockout users after too many failed login
-attempts, the tool :command:`samba-tool` can be used.
+   .. code-block:: console
+      :name: samba-show-password-settings
+      :caption: Show Samba password lockout settings
 
+      $ samba-tool domain passwordsettings show
 
-* To show the currently configured values:
+#. Set the number of failed sign-in attempts before locking the account:
 
-  .. code-block::
+   .. code-block:: console
+      :name: samba-set-lockout-threshold
+      :caption: Set the sign-in attempt limit before lockout
 
-     $ samba-tool domain passwordsettings show
+      $ samba-tool domain passwordsettings set --account-lockout-threshold=5
 
-* To specify how often a user can attempt to sign in with an incorrect password
-  before the account is locked:
+#. Set the number of minutes that the account locks
+   after a user enters too many incorrect passwords:
 
-  .. code-block::
+   .. code-block:: console
+      :name: samba-set-lockout-duration
+      :caption: Set the account lockout duration in minutes
 
-     $ samba-tool domain passwordsettings set --account-lockout-threshold=5
+      $ samba-tool domain passwordsettings set --account-lockout-duration=3
 
-* To specify the number of minutes an account will be locked after too many
-  incorrect passwords have been entered:
+#. Set the number of minutes after which the counter resets:
 
-  .. code-block::
+   .. code-block:: console
+      :name: samba-set-lockout-reset-interval
+      :caption: Set the lockout counter reset interval in minutes
 
-     $ samba-tool domain passwordsettings set --account-lockout-duration=3
+      $ samba-tool domain passwordsettings set --reset-account-lockout-after=5
 
-* To define the number of minutes after which the counter is reset:
+To unlock a locked account,
+see :ref:`iam-user-lockout-unlock`.
 
-  .. code-block::
+.. important::
 
-     $ samba-tool domain passwordsettings set --reset-account-lockout-after=5
+   After the lockout duration expires,
+   Nubus for UCS unlocks the account
+   but doesn't reset the counter immediately.
+   Until the counter resets,
+   a single failed sign-in attempt locks the account again.
 
-  If an account gets automatically unlocked after the lockout duration, the
-  counter is not reset immediately, to keep the account under strict monitoring
-  for some time. During the time window between the end of the lockout duration
-  and the point when the counter gets reset, a single attempt to sign in with an
-  incorrect password will lock the account immediately again.
+.. _iam-user-lockout-pam:
 
+Configure lockout for the PAM stack
+-----------------------------------
 
-The manual unlocking of a user is done in the user administration on the tab
-:guilabel:`Account` by activating the checkbox *Unlock account*.
+To automatically lock users in the PAM stack after failed sign-in attempts,
+set the :term:`UCR variable` :envvar:`auth/faillog` to ``yes``.
+Set the limit of failed sign-in attempts that triggers a lockout
+in :envvar:`auth/faillog/limit`.
+The counter resets each time the user enters the password correctly.
 
-.. _users-faillog-pam:
+By default, the lockout is per system.
+A user locked out on one system can still sign in on another.
+Set :envvar:`auth/faillog/lock_global` to ``yes``
+to apply the lockout globally
+and register it in the LDAP directory.
+You can set the global lock only on
+:term:`Primary Directory Node` or :term:`Backup Directory Node` systems,
+because other system roles lack write permissions
+in the LDAP directory.
+On these systems,
+the listener module automatically activates or deactivates
+the local lockout depending on the lock state in the LDAP directory.
 
-PAM-Stack
----------
+By default, the lockout has no time limit,
+and you must reset the lockout manually.
+However, Nubus for UCS can also reset the lockout automatically after a configured period.
+Specify the period in seconds in :envvar:`auth/faillog/unlock_time`.
+If the value is ``0``, Nubus for UCS resets the lockout counter immediately.
 
-The automatic locking of users after failed logins in the PAM stack can be
-enabled by setting the |UCSUCRV| :envvar:`auth/faillog` to ``yes``. The upper
-limit of failed login attempts at which an account lockout is configured in the
-|UCSUCRV| :envvar:`auth/faillog/limit`. The counter is reset each time the
-password is entered correctly.
+By default, the ``root`` user is exempt from the lockout.
+You can apply the lockout to ``root`` by setting :envvar:`auth/faillog/root` to ``yes``.
 
-The lockout is activated locally per system by default. In other words, if a
-user enters their password incorrectly too many times on one system, they can still
-login on another system. Setting the |UCSUCRV|
-:envvar:`auth/faillog/lock_global` will make the lock effective globally and
-register it in the LDAP directory. The global lock can only be set on
-|UCSPRIMARYDN|/Backup systems as other system roles do not have the necessary
-permissions in the LDAP directory. On all systems with any of these system
-roles, the lockout gets automatically activated locally or deactivated again via
-the listener module, depending on the current lock state in the LDAP directory.
+If the lockout applies only locally,
+you can unlock a user account
+by running the command in :numref:`pam-faillock-reset`.
 
-As standard, the lockout is not subject to time limitations and must be reset by
-the administrator. However, it can also be reset automatically after a certain
-time interval has elapsed. This is done by specifying a time period in seconds
-in the |UCSUCRV| :envvar:`auth/faillog/unlock_time`. If the value is set to
-``0``, the lock is reset immediately.
-
-By default, the ``root`` user is excluded from the password lock, but can also
-be subjected to it by setting the |UCSUCRV| :envvar:`auth/faillog/root` to
-``yes``.
-
-If accounts are only locked locally, the administrator can unlock a user account
-by entering the command:
-
-.. code-block::
+.. code-block:: console
+   :name: pam-faillock-reset
+   :caption: Reset a locally locked user account
 
    $ faillock --reset --user USERNAME
 
-If the lock occurs globally in the LDAP directory, the user will be deactivated.
-The user can be activated again in the |UCSUMC| module :guilabel:`Users`
-on the tab *Account* via the checkbox *Account is deactivated*.
+If Nubus for UCS locks the account globally in the LDAP directory,
+see :ref:`iam-user-lockout-unlock`.
 
-.. _users-faillog-openldap:
+.. _iam-user-lockout-openldap:
 
-OpenLDAP
---------
+Configure lockout for OpenLDAP
+------------------------------
 
-On UCS Directory Nodes, automatic account locking can be enabled for too many
-failed LDAP server login attempts. The MDB LDAP backend must be used. This is
-the default backend since UCS 4, previous systems must be migrated to the MDB
-LDAP backend, see :cite:t:`ucs-performance-guide`.
-
-Automatic account locking must be enabled for each UCS Directory Node.
-To do this, the |UCSUCRV| :envvar:`ldap/ppolicy/enabled` must be set to
-``yes`` and the OpenLDAP server must be restarted:
+This feature is available on :term:`Primary Directory Node` and :term:`Backup Directory Node` systems.
+To enable it,
+set :envvar:`ldap/ppolicy/enabled` to ``yes``
+and restart the OpenLDAP server,
+as shown in :numref:`openldap-enable-ppolicy`.
 
 .. code-block:: console
+   :name: openldap-enable-ppolicy
+   :caption: Enable OpenLDAP password policy and restart the server
 
    $ ucr set ldap/ppolicy/enabled=yes
    $ systemctl restart slapd
 
+By default, five failed LDAP sign-in attempts
+within five minutes trigger the lockout.
+To unlock a locked account,
+see :ref:`iam-user-lockout-unlock`.
 
-The default policy is designed so that five repeated failed LDAP server login
-attempts within five minutes cause the lockout. A locked account can only be
-unlocked by a domain administrator through the UMC module :guilabel:`Users` via
-the checkbox *Unlock account* on the *Account* tab.
+In the configuration object with the ``objectClass`` ``pwdPolicy``,
+you can adjust the number of failed LDAP sign-in attempts
+that trigger a lockout.
 
-The number of repeated failed LDAP server login attempts can be adjusted
-in the configuration object with the *objectClass* ``pwdPolicy``:
+The ``pwdPolicy`` object has these attributes:
+
+``pwdMaxFailure``
+   The number of failed LDAP sign-in attempts before the account locks.
+
+``pwdMaxFailureCountInterval``
+   The time interval in seconds during which Nubus for UCS counts failed sign-in attempts.
+   Nubus for UCS ignores failed sign-in attempts outside this time interval.
+
+To list the current values,
+run the following command:
 
 .. code-block:: console
+   :name: openldap-search-pwdpolicy
+   :caption: List the ``pwdPolicy`` configuration object
 
    $ univention-ldapsearch objectclass=pwdPolicy
 
-
-``pwdMaxFailure``
-   attribute determines the number of LDAP authentication errors before locking.
-
-``pwdMaxFailureCountInterval``
-   attribute determines the time interval in seconds that is considered. Failed
-   login attempts outside this interval are ignored in the count.
-
-The following command can be used to block the account after 10
-attempts:
+To set ``pwdMaxFailure`` to 10,
+run the following command:
 
 .. code-block:: console
+   :name: openldap-set-pwdmaxfailure
+   :caption: Set the maximum sign-in failure count to 10
 
    $ LB="$(ucr get ldap/base)"
    $ ldapmodify -x -D "cn=admin,$LB" -y /etc/ldap.secret <<__EOT__
@@ -160,6 +173,24 @@ attempts:
    pwdMaxFailure: 10
    __EOT__
 
+.. _iam-user-lockout-unlock:
 
-The manual unlocking of a user is done in the user administration on the tab
-*Account* by activating the checkbox *Unlock account*.
+Unlock a locked user account
+----------------------------
+
+The unlock method depends on which lockout mechanism locked the account.
+
+If Samba or OpenLDAP locked the account:
+
+#. Open the *Users* management module.
+#. Open the :guilabel:`Account` tab.
+#. Select :guilabel:`Unlock account`.
+#. Save the changes.
+
+If the PAM stack locked the account globally,
+Nubus for UCS also deactivates the user account:
+
+#. Open the *Users* management module.
+#. Open the :guilabel:`Account` tab.
+#. Clear the :guilabel:`Account is deactivated` checkbox.
+#. Save the changes.
