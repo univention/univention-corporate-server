@@ -1622,7 +1622,6 @@ class ucs:
                     self.uoid2guid_add_mapping(dn=object['dn'], guid=guid)
 
             if object['modtype'] == 'modify':
-
                 modified_dn = self.modify_in_ucs(property_type, object, module, position)
                 modified_parent_dn = self.lo.parentDn(modified_dn).lower()
                 parent_object_dn = self.lo.parentDn(object['dn']).lower()
@@ -2001,12 +2000,10 @@ class ucs:
         # DN mapping functions
         for function in MAPPING.dn_mapping_function:
             object = function(self, object, dn_mapping_stored, isUCSobject=True)
-
         for dntype in ['dn', 'olddn']:
             if dntype in object and dntype not in dn_mapping_stored:
                 dn_mapped = object[dntype]
                 # save the old rdn with the correct upper and lower case
-                rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
                 if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
                     # avoid additional _subtree_replace in case dn_mapping_function already found an AD DN (can happen for account type objects)
                     log.debug("The dn %s is already converted to the AD base, don't do additional ldap base mapping.", dn_mapped)
@@ -2016,16 +2013,15 @@ class ucs:
                         if replaced_dn_mapped_lower != dn_mapped.lower():
                             # explanation: only change dn_mapped if _subtree_replace actually changed anything and not only MixedCase.lower()
                             dn_mapped = replaced_dn_mapped_lower
-
                     if dn_mapped == object[dntype]:
                         if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
                             # Introduced via Bug #13745#c14 : avoid default _subtree_replace in case position_mapping was applied
                             log.debug("The dn %s is already converted to the AD base, don't do this again.", dn_mapped)
                         else:
                             dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
-                # write the correct upper and lower case back to the DN
-                object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
+                object[dntype] = dn_mapped
 
+        self._map_rdn_name(object)
         object_out = object
 
         for attribute, values in list(object['attributes'].items()):
@@ -2090,8 +2086,6 @@ class ucs:
         for dntype in ['dn', 'olddn']:
             if dntype in object and dntype not in dn_mapping_stored:
                 dn_mapped = object[dntype]
-                # save the old rdn with the correct upper and lower case
-                rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
                 for mapping in MAPPING.position_mapping:  # note: position_mapping == [] by default
                     replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
                     if replaced_dn_mapped_lower != dn_mapped.lower():
@@ -2104,8 +2098,6 @@ class ucs:
                         log.debug("The dn %s is already converted to the UCS base, don't do this again.", dn_mapped)
                     else:
                         dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
-                # write the correct upper and lower case back to the DN
-                dn_mapped = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
                 # group_members_sync_to_ucs uses _object_mapping to map AD group
                 # member DNs to OpenLDAP group member DNs. To avoid cache
                 # inconsistencies between the use of AD DN escaping (using '\+')
@@ -2114,6 +2106,7 @@ class ucs:
                 # do the inverse simply by using dn2str(str2dn(dn)).
                 object[dntype] = RFC4514_dn.to_openldap(dn_mapped)
 
+        self._map_rdn_name(object)
         object_out = object
 
         # other mapping
@@ -2157,6 +2150,23 @@ class ucs:
 
         log.trace("_object_mapping_con: object_out : %r", object_out)
         return object_out
+
+    def _map_rdn_name(self, obj):
+        """
+        Map the rdn to the object name for containers and OU's.
+        This function takes ad-objects and ucs-objects and mixed objects
+        in various stages of the mapping.
+        """
+        rdntype = ldap.dn.str2dn(obj['dn'])[0][0][0].lower()
+        classes = obj['attributes'].get('objectClass', [])
+        attr = None
+        if (b'organizationalUnit' in classes or obj['attributes'].get('univentionObjectType', [b''])[0] == b'container/ou') and rdntype == 'ou' and obj['attributes'].get('ou'):
+            attr = 'ou'
+        if (b'container' in classes or obj['attributes'].get('univentionObjectType', [b''])[0] == b'container/cn') and rdntype == 'cn' and obj['attributes'].get('cn'):
+            attr = 'cn'
+        if not attr:
+            return
+        obj['attributes'][attr] = [ldap.dn.str2dn(obj['dn'])[0][0][1].encode('utf-8')]
 
     def identify_udm_object(self, dn, attrs):
         """Get the type of the specified UCS object"""
