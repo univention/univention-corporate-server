@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 10:52+0000\n"
-"PO-Revision-Date: 2026-05-07 12:52+0200\n"
+"POT-Creation-Date: 2026-05-08 10:58+0000\n"
+"PO-Revision-Date: 2026-05-08 12:58+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -563,7 +563,7 @@ msgstr ""
 "customization:ref:`customization-api-udm-rest` :cite:t:`uv-nubus-"
 "kubernetes-customization`."
 
-#: ../../iam/index.rst:48 ../../iam/password-management/index.rst:43
+#: ../../iam/index.rst:56 ../../iam/password-management/index.rst:43
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -648,11 +648,30 @@ msgstr ""
 "einschließlich spezifischer Einstellung für Apps pro Benutzer. Siehe :ref"
 ":`iam-user-activation-apps`."
 
-#: ../../iam/index.rst:41 ../../iam/last-bind.rst:7
+#: ../../iam/index.rst:41
+msgid "User lockout after failed sign-in attempts"
+msgstr "Kontosperrung nach fehlgeschlagenen Anmeldeversuchen"
+
+#: ../../iam/index.rst:42
+msgid ""
+"Automatically lock user accounts after too many failed sign-in attempts "
+"to prevent brute force attacks on passwords. Nubus for UCS supports three"
+" independent lockout mechanisms— Samba and Active Directory, PAM stack, "
+"and OpenLDAP— each with its own configuration and scope. See :ref:`iam-"
+"user-lockout`."
+msgstr ""
+"Benutzerkonten werden nach zu vielen fehlgeschlagenen Anmeldeversuchen "
+"automatisch gesperrt, um Brute-Force-Angriffe auf Passwörter zu "
+"verhindern. Nubus for UCS unterstützt drei unabhängige Sperrmechanismen –"
+" Samba und Active Directory, PAM-Stack und OpenLDAP – jeweils mit eigener"
+" Konfiguration und eigenem Geltungsbereich. Siehe :ref:`iam-user-"
+"lockout`."
+
+#: ../../iam/index.rst:49 ../../iam/last-bind.rst:7
 msgid "Track last sign-in time to detect inactive accounts"
 msgstr "Zeitpunkt der letzten Anmeldung erfassen, um inaktive Konten zu erkennen"
 
-#: ../../iam/index.rst:42
+#: ../../iam/index.rst:50
 msgid ""
 "Identify inactive user accounts by recording when each account last "
 "signed in. Activate the OpenLDAP ``lastbind`` overlay module, collect "
@@ -3026,3 +3045,361 @@ msgstr ""
 "Wenn Sie jedoch einzelne *UMC-Server* Instanzen neu starten, verlieren "
 "Benutzer, deren Sitzung zu den betroffenen *UMC-Server* Instanzen gehört,"
 " ihre Benutzersitzung."
+
+#: ../../iam/user-lockout.rst:7
+msgid "User account lockout after failed sign-in attempts"
+msgstr "Benutzerkonto-Sperrung nach fehlgeschlagenen Anmeldeversuchen"
+
+#: ../../iam/user-lockout.rst:9
+msgid ""
+"By default, there is no limit on failed password attempts. To prevent "
+"brute force attacks, you can configure an automatic lockout for user "
+"accounts after a set number of failed sign-in attempts."
+msgstr ""
+"Standardmäßig gibt es keine Begrenzung für fehlgeschlagene "
+"Passwortversuche. Um Brute-Force-Angriffe zu verhindern, können Sie eine "
+"automatische Kontosperrung für Benutzerkonten nach einer festgelegten "
+"Anzahl von fehlgeschlagenen Anmeldeversuchen konfigurieren."
+
+#: ../../iam/user-lockout.rst:14
+msgid ""
+"Nubus for UCS supports multiple authentication methods. Each method has "
+"its own way to configure and count failed sign-in attempts."
+msgstr ""
+"Nubus für UCS unterstützt mehrere Authentifizierungsmethoden. Jede "
+"Methode hat ihre eigene Art, fehlgeschlagene Anmeldeversuche zu "
+"konfigurieren und zu zählen."
+
+#: ../../iam/user-lockout.rst:20
+msgid "Configure lockout for Samba and Active Directory"
+msgstr "Kontosperrung für Samba und Active Directory konfigurieren"
+
+#: ../../iam/user-lockout.rst:22
+msgid ""
+"Samba provides services in Active Directory environments, such as "
+"Kerberos. To lock out users after too many failed sign-in attempts, use "
+":command:`samba-tool`."
+msgstr ""
+"Samba stellt Dienste in Active Directory Umgebungen bereit, "
+"beispielsweise Kerberos. Um Benutzer nach zu vielen fehlgeschlagenen "
+"Anmeldeversuchen zu sperren, verwenden Sie :command:`samba-tool`."
+
+#: ../../iam/user-lockout.rst:26
+msgid "Show the currently configured values:"
+msgstr "Zeigen Sie die aktuell konfigurierten Werte an:"
+
+#: ../../iam/user-lockout.rst:28
+msgid "Show Samba password lockout settings"
+msgstr "Einstellungen für die Sperrung des Samba-Passworts anzeigen"
+
+#: ../../iam/user-lockout.rst:28
+msgid "$ samba-tool domain passwordsettings show"
+msgstr "$ samba-tool domain passwordsettings show"
+
+#: ../../iam/user-lockout.rst:34
+msgid "Set the number of failed sign-in attempts before locking the account:"
+msgstr ""
+"Legen Sie die Anzahl der fehlgeschlagenen Anmeldeversuche vor der "
+"Kontosperrung fest:"
+
+#: ../../iam/user-lockout.rst:36
+msgid "Set the sign-in attempt limit before lockout"
+msgstr "Anmeldeversuchslimit vor der Sperrung festlegen"
+
+#: ../../iam/user-lockout.rst:36
+msgid "$ samba-tool domain passwordsettings set --account-lockout-threshold=5"
+msgstr "$ samba-tool domain passwordsettings set --account-lockout-threshold=5"
+
+#: ../../iam/user-lockout.rst:42
+msgid ""
+"Set the number of minutes that the account locks after a user enters too "
+"many incorrect passwords:"
+msgstr ""
+"Legen Sie die Anzahl der Minuten fest, für die das Konto gesperrt wird, "
+"nachdem ein Benutzer zu viele falsche Passwörter eingegeben hat:"
+
+#: ../../iam/user-lockout.rst:45
+msgid "Set the account lockout duration in minutes"
+msgstr "Sperrdauer des Kontos in Minuten festlegen"
+
+#: ../../iam/user-lockout.rst:45
+msgid "$ samba-tool domain passwordsettings set --account-lockout-duration=3"
+msgstr "$ samba-tool domain passwordsettings set --account-lockout-duration=3"
+
+#: ../../iam/user-lockout.rst:51
+msgid "Set the number of minutes after which the counter resets:"
+msgstr ""
+"Legen Sie die Anzahl der Minuten fest, nach denen der Zähler "
+"zurückgesetzt wird:"
+
+#: ../../iam/user-lockout.rst:53
+msgid "Set the lockout counter reset interval in minutes"
+msgstr "Intervall zum Zurücksetzen des Sperrzählers in Minuten festlegen"
+
+#: ../../iam/user-lockout.rst:53
+msgid "$ samba-tool domain passwordsettings set --reset-account-lockout-after=5"
+msgstr "$ samba-tool domain passwordsettings set --reset-account-lockout-after=5"
+
+#: ../../iam/user-lockout.rst:59
+msgid "To unlock a locked account, see :ref:`iam-user-lockout-unlock`."
+msgstr ""
+"Informationen zum Entsperren eines gesperrten Kontos finden Sie unter "
+":ref:`iam-user-lockout-unlock`."
+
+#: ../../iam/user-lockout.rst:64
+msgid ""
+"After the lockout duration expires, Nubus for UCS unlocks the account but"
+" doesn't reset the counter immediately. Until the counter resets, a "
+"single failed sign-in attempt locks the account again."
+msgstr ""
+"Nach Ablauf der Sperrdauer entsperrt Nubus für UCS das Konto, setzt den "
+"Zähler jedoch nicht sofort zurück. Bis der Zähler zurückgesetzt wird, "
+"führt ein einziger fehlgeschlagener Anmeldeversuch erneut zur Sperrung "
+"des Kontos."
+
+#: ../../iam/user-lockout.rst:73
+msgid "Configure lockout for the PAM stack"
+msgstr "Kontosperrung für den PAM-Stack konfigurieren"
+
+#: ../../iam/user-lockout.rst:75
+msgid ""
+"To automatically lock users in the PAM stack after failed sign-in "
+"attempts, set the :term:`UCR variable` :envvar:`auth/faillog` to ``yes``."
+" Set the limit of failed sign-in attempts that triggers a lockout in "
+":envvar:`auth/faillog/limit`. The counter resets each time the user "
+"enters the password correctly."
+msgstr ""
+"Um Benutzer im PAM-Stack nach fehlgeschlagenen Anmeldeversuchen "
+"automatisch zu sperren, setzen Sie die :term:`UCR-Variable` "
+":envvar:`auth/faillog` auf ``yes``. Legen Sie die Anzahl fehlgeschlagener"
+" Anmeldeversuche, die eine Sperrung auslöst, in "
+":envvar:`auth/faillog/limit` fest. Der Zähler wird zurückgesetzt, sobald "
+"der Benutzer das Passwort korrekt eingibt."
+
+#: ../../iam/user-lockout.rst:81
+msgid ""
+"By default, the lockout is per system. A user locked out on one system "
+"can still sign in on another. Set :envvar:`auth/faillog/lock_global` to "
+"``yes`` to apply the lockout globally and register it in the LDAP "
+"directory. You can set the global lock only on :term:`Primary Directory "
+"Node` or :term:`Backup Directory Node` systems, because other system "
+"roles lack write permissions in the LDAP directory. On these systems, the"
+" listener module automatically activates or deactivates the local lockout"
+" depending on the lock state in the LDAP directory."
+msgstr ""
+"Standardmäßig gilt die Sperrung pro System. Ein auf einem System "
+"gesperrter Benutzer kann sich weiterhin auf einem anderen System "
+"anmelden. Setzen Sie :envvar:`auth/faillog/lock_global` auf ``yes``, um "
+"die Sperrung global anzuwenden und im LDAP-Verzeichnis zu registrieren. "
+"Die globale Sperrung kann nur auf :term:`Primary Directory Node`- oder "
+":term:`Backup Directory Node`-Systemen gesetzt werden, da andere "
+"Systemrollen keine Schreibrechte im LDAP-Verzeichnis besitzen. Auf diesen"
+" Systemen aktiviert oder deaktiviert das Listener-Modul die lokale "
+"Sperrung automatisch, abhängig vom Sperrstatus im LDAP-Verzeichnis."
+
+#: ../../iam/user-lockout.rst:94
+msgid ""
+"By default, the lockout has no time limit, and you must reset the lockout"
+" manually. However, Nubus for UCS can also reset the lockout "
+"automatically after a configured period. Specify the period in seconds in"
+" :envvar:`auth/faillog/unlock_time`. If the value is ``0``, Nubus for UCS"
+" resets the lockout counter immediately."
+msgstr ""
+"Standardmäßig ist die Sperrung zeitlich unbegrenzt und muss manuell "
+"zurückgesetzt werden. Nubus für UCS kann die Sperrung jedoch auch "
+"automatisch nach einem konfigurierten Zeitraum aufheben. Geben Sie den "
+"Zeitraum in Sekunden in :envvar:`auth/faillog/unlock_time` an. Ist der "
+"Wert ``0``, setzt Nubus für UCS den Sperrzähler sofort zurück."
+
+#: ../../iam/user-lockout.rst:100
+msgid ""
+"By default, the ``root`` user is exempt from the lockout. You can apply "
+"the lockout to ``root`` by setting :envvar:`auth/faillog/root` to "
+"``yes``."
+msgstr ""
+"Standardmäßig ist der Benutzer ``root`` von der Sperrung ausgenommen. Sie"
+" können die Sperrung auf ``root`` anwenden, indem Sie "
+":envvar:`auth/faillog/root` auf ``yes`` setzen."
+
+#: ../../iam/user-lockout.rst:103
+msgid ""
+"If the lockout applies only locally, you can unlock a user account by "
+"running the command in :numref:`pam-faillock-reset`."
+msgstr ""
+"Gilt die Sperrung nur lokal, können Sie ein Benutzerkonto entsperren, "
+"indem Sie den Befehl in :numref:`pam-faillock-reset` ausführen."
+
+#: ../../iam/user-lockout.rst:107
+msgid "Reset a locally locked user account"
+msgstr "Lokal gesperrtes Benutzerkonto zurücksetzen"
+
+#: ../../iam/user-lockout.rst:107
+msgid "$ faillock --reset --user USERNAME"
+msgstr "$ faillock --reset --user USERNAME"
+
+#: ../../iam/user-lockout.rst:113
+msgid ""
+"If Nubus for UCS locks the account globally in the LDAP directory, see "
+":ref:`iam-user-lockout-unlock`."
+msgstr ""
+"Wenn Nubus für UCS das Konto global im LDAP-Verzeichnis sperrt, lesen Sie"
+" :ref:`iam-user-lockout-unlock`."
+
+#: ../../iam/user-lockout.rst:119
+msgid "Configure lockout for OpenLDAP"
+msgstr "Kontosperrung für OpenLDAP konfigurieren"
+
+#: ../../iam/user-lockout.rst:121
+msgid ""
+"This feature is available on :term:`Primary Directory Node` and "
+":term:`Backup Directory Node` systems. To enable it, set "
+":envvar:`ldap/ppolicy/enabled` to ``yes`` and restart the OpenLDAP "
+"server, as shown in :numref:`openldap-enable-ppolicy`."
+msgstr ""
+"Diese Funktion ist auf :term:`Primary Directory Node`- und :term:`Backup "
+"Directory Node`-Systemen verfügbar. Um sie zu aktivieren, setzen Sie "
+":envvar:`ldap/ppolicy/enabled` auf ``yes`` und starten Sie den OpenLDAP-"
+"Server neu, wie in :numref:`openldap-enable-ppolicy` gezeigt."
+
+#: ../../iam/user-lockout.rst:127
+msgid "Enable OpenLDAP password policy and restart the server"
+msgstr "OpenLDAP-Passwortrichtlinie aktivieren und Server neu starten"
+
+#: ../../iam/user-lockout.rst:127
+msgid ""
+"$ ucr set ldap/ppolicy/enabled=yes\n"
+"$ systemctl restart slapd"
+msgstr ""
+"$ ucr set ldap/ppolicy/enabled=yes\n"
+"$ systemctl restart slapd"
+
+#: ../../iam/user-lockout.rst:134
+msgid ""
+"By default, five failed LDAP sign-in attempts within five minutes trigger"
+" the lockout. To unlock a locked account, see :ref:`iam-user-lockout-"
+"unlock`."
+msgstr ""
+"Standardmäßig lösen fünf fehlgeschlagene LDAP-Anmeldeversuche innerhalb "
+"von fünf Minuten die Sperrung aus. Informationen zum Entsperren eines "
+"gesperrten Kontos finden Sie unter :ref:`iam-user-lockout-unlock`."
+
+#: ../../iam/user-lockout.rst:139
+msgid ""
+"In the configuration object with the ``objectClass`` ``pwdPolicy``, you "
+"can adjust the number of failed LDAP sign-in attempts that trigger a "
+"lockout."
+msgstr ""
+"Im Konfigurationsobjekt mit der ``objectClass`` ``pwdPolicy`` können Sie "
+"die Anzahl fehlgeschlagener LDAP-Anmeldeversuche anpassen, die eine "
+"Sperrung auslösen."
+
+#: ../../iam/user-lockout.rst:143
+msgid "The ``pwdPolicy`` object has these attributes:"
+msgstr "Das ``pwdPolicy``-Objekt hat folgende Attribute:"
+
+#: ../../iam/user-lockout.rst:145
+msgid "``pwdMaxFailure``"
+msgstr "``pwdMaxFailure``"
+
+#: ../../iam/user-lockout.rst:146
+msgid "The number of failed LDAP sign-in attempts before the account locks."
+msgstr ""
+"Die Anzahl fehlgeschlagener LDAP-Anmeldeversuche, bevor das Konto "
+"gesperrt wird."
+
+#: ../../iam/user-lockout.rst:148
+msgid "``pwdMaxFailureCountInterval``"
+msgstr "``pwdMaxFailureCountInterval``"
+
+#: ../../iam/user-lockout.rst:149
+msgid ""
+"The time interval in seconds during which Nubus for UCS counts failed "
+"sign-in attempts. Nubus for UCS ignores failed sign-in attempts outside "
+"this time interval."
+msgstr ""
+"Das Zeitintervall in Sekunden, in dem Nubus für UCS fehlgeschlagene "
+"Anmeldeversuche zählt. Fehlgeschlagene Anmeldeversuche außerhalb dieses "
+"Zeitintervalls werden von Nubus für UCS nicht berücksichtigt."
+
+#: ../../iam/user-lockout.rst:152
+msgid "To list the current values, run the following command:"
+msgstr "Um die aktuellen Werte aufzulisten, führen Sie den folgenden Befehl aus:"
+
+#: ../../iam/user-lockout.rst:155
+msgid "List the ``pwdPolicy`` configuration object"
+msgstr "Das ``pwdPolicy`` Konfigurationsobjekt auflisten"
+
+#: ../../iam/user-lockout.rst:155
+msgid "$ univention-ldapsearch objectclass=pwdPolicy"
+msgstr "$ univention-ldapsearch objectclass=pwdPolicy"
+
+#: ../../iam/user-lockout.rst:161
+msgid "To set ``pwdMaxFailure`` to 10, run the following command:"
+msgstr ""
+"Um ``pwdMaxFailure`` auf 10 zu setzen, führen Sie den folgenden Befehl "
+"aus:"
+
+#: ../../iam/user-lockout.rst:164
+msgid "Set the maximum sign-in failure count to 10"
+msgstr "Die maximale Anzahl fehlgeschlagener Anmeldeversuche auf 10 setzen"
+
+#: ../../iam/user-lockout.rst:164
+msgid ""
+"$ LB=\"$(ucr get ldap/base)\"\n"
+"$ ldapmodify -x -D \"cn=admin,$LB\" -y /etc/ldap.secret <<__EOT__\n"
+"dn: cn=default,cn=ppolicy,cn=univention,$LB\n"
+"changetype: modify\n"
+"replace: pwdMaxFailure\n"
+"pwdMaxFailure: 10\n"
+"__EOT__"
+msgstr ""
+"$ LB=\"$(ucr get ldap/base)\"\n"
+"$ ldapmodify -x -D \"cn=admin,$LB\" -y /etc/ldap.secret <<__EOT__\n"
+"dn: cn=default,cn=ppolicy,cn=univention,$LB\n"
+"changetype: modify\n"
+"replace: pwdMaxFailure\n"
+"pwdMaxFailure: 10\n"
+"__EOT__"
+
+#: ../../iam/user-lockout.rst:179
+msgid "Unlock a locked user account"
+msgstr "Gesperrtes Benutzerkonto entsperren"
+
+#: ../../iam/user-lockout.rst:181
+msgid "The unlock method depends on which lockout mechanism locked the account."
+msgstr ""
+"Die Methode zum Entsperren hängt davon ab, welcher Sperrmechanismus das "
+"Konto gesperrt hat."
+
+#: ../../iam/user-lockout.rst:183
+msgid "If Samba or OpenLDAP locked the account:"
+msgstr "Wenn Samba oder OpenLDAP das Konto gesperrt hat:"
+
+#: ../../iam/user-lockout.rst:185 ../../iam/user-lockout.rst:193
+msgid "Open the *Users* management module."
+msgstr "Öffnen Sie das Verwaltungsmodul *Benutzer*."
+
+#: ../../iam/user-lockout.rst:186 ../../iam/user-lockout.rst:194
+msgid "Open the :guilabel:`Account` tab."
+msgstr "Öffnen Sie den Reiter :guilabel:`Konto`."
+
+#: ../../iam/user-lockout.rst:187
+msgid "Select :guilabel:`Unlock account`."
+msgstr "Wählen Sie :guilabel:`Konto entsperren`."
+
+#: ../../iam/user-lockout.rst:188 ../../iam/user-lockout.rst:196
+msgid "Save the changes."
+msgstr "Speichern Sie die Änderungen."
+
+#: ../../iam/user-lockout.rst:190
+msgid ""
+"If the PAM stack locked the account globally, Nubus for UCS also "
+"deactivates the user account:"
+msgstr ""
+"Wenn der PAM-Stack das Konto global gesperrt hat, deaktiviert Nubus für "
+"UCS auch das Benutzerkonto:"
+
+#: ../../iam/user-lockout.rst:195
+msgid "Clear the :guilabel:`Account is deactivated` checkbox."
+msgstr "Deaktivieren Sie das Kontrollkästchen :guilabel:`Konto ist deaktiviert`."
+
