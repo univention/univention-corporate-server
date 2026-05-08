@@ -9,6 +9,117 @@ UCR variable reference
 
 This section provides a reference for UCR variables.
 
+.. envvar:: auth/faillog
+
+   Controls whether Nubus for UCS automatically locks user accounts
+   after too many failed sign-in attempts.
+   When set to ``yes``,
+   the lockout mechanism is active.
+   When unset,
+   the lockout mechanism is inactive.
+
+   Configure the number of failed attempts that trigger the lockout
+   in :envvar:`auth/faillog/limit`.
+
+   For information about configuring the PAM stack lockout,
+   see :ref:`iam-user-lockout-pam`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: auth/faillog/limit
+
+   Sets the number of failed sign-in attempts
+   that trigger an automatic account lockout.
+   This variable has effect only
+   when :envvar:`auth/faillog` is set to ``yes``.
+
+   For information about configuring the PAM stack lockout,
+   see :ref:`iam-user-lockout-pam`.
+
+   :Default value: ``5``
+   :Type: integer
+
+
+.. envvar:: auth/faillog/lock_global
+
+   Controls whether Nubus for UCS stores account lockouts
+   globally in the LDAP directory
+   instead of locally on each system.
+   When set to ``yes``,
+   a lockout on one system applies to all systems in the domain.
+   When unset,
+   lockouts apply only to the local system.
+
+   You can set this variable only on
+   :term:`Primary Directory Node` or :term:`Backup Directory Node` systems,
+   because other system roles lack write permissions in the LDAP directory.
+
+   For information about configuring the PAM stack lockout,
+   see :ref:`iam-user-lockout-pam`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: auth/faillog/root
+
+   Controls whether the automatic account lockout
+   also applies to the ``root`` user account.
+   By default,
+   Nubus for UCS exempts ``root`` from the lockout mechanism.
+   When set to ``yes``,
+   the lockout applies to ``root`` as well.
+
+   For information about configuring the PAM stack lockout,
+   see :ref:`iam-user-lockout-pam`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: auth/faillog/unlock_time
+
+   Sets the time in seconds
+   after which Nubus for UCS automatically unlocks a locked account.
+   When unset,
+   the lockout has no time limit
+   and an administrator must unlock the account manually.
+   When set to ``0``,
+   Nubus for UCS resets the lockout counter immediately.
+
+   For information about configuring the PAM stack lockout,
+   see :ref:`iam-user-lockout-pam`.
+
+   :Default value: not set
+   :Possible values: integer (seconds), ``0`` for immediate counter reset, not set
+   :Type: integer
+
+
+.. envvar:: ldap/ppolicy/enabled
+
+   Controls whether the :program:`OpenLDAP` ``ppolicy`` overlay is active
+   on the local system.
+   When set to ``yes``,
+   the LDAP server monitors bind attempts
+   according to the settings in the ``pwdPolicy`` object in the LDAP directory.
+   After you set this variable,
+   restart the ``slapd`` service for the change to take effect.
+
+   This variable is available on
+   :term:`Primary Directory Node` and :term:`Backup Directory Node` systems only.
+
+   For information about configuring the OpenLDAP lockout,
+   see :ref:`iam-user-lockout-openldap`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
 .. envvar:: directory/manager/user_group/uniqueness
 
    If activated with the value ``true``
