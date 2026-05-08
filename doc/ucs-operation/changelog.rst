@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 07. May 2026
+     - :ref:`iam-user-lockout`
+     - Add section about user account lockout after failed sign-in attempts.
+
    * - 06. May 2026
      - :ref:`iam-user-activation-apps`
      - Add section about user activation for apps.
