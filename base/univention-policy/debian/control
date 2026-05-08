@@ -6,14 +6,30 @@ Standards-Version: 3.5.5
 Build-Depends:
  autoconf,
  automake,
+ cargo:native,
+ clang,
  debhelper-compat (=13),
+ dh-cargo (>= 25),
  dh-python,
+ libclang-dev,
  libldap-dev,
+ librust-bindgen+clap-dev,
+ librust-bindgen-dev,
+ librust-env-logger+humantime-dev,
+ librust-env-logger-dev,
+ librust-libc-dev,
+ librust-libloading-dev,
+ librust-log-dev,
+ librust-univentionconfig-dev,
+ librust-which-dev,
  libsasl2-dev,
+ libstd-rust-dev,
  libtool,
  libunivention-config-dev,
  libunivention-debug-dev (>= 5.0.2-1),
  python3-all,
+ rustc:native,
+X-Cargo-Crate: univentionpolicy
 
 Package: libunivention-policy0
 Architecture: any
@@ -40,6 +56,31 @@ Replaces:
 Description: UCS - group policy library (development files)
  This package contains the header files and static library to read group
  policies from LDAP.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: librust-univentionpolicy-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ librust-bindgen+clap-dev,
+ librust-bindgen-dev,
+ librust-env-logger+humantime-dev,
+ librust-env-logger-dev,
+ librust-libc-dev,
+ librust-libloading-dev,
+ librust-log-dev,
+ librust-univentionconfig-dev,
+ librust-which-dev,
+ ${misc:Depends},
+Provides:
+ librust-univentionpolicy+default-dev (= ${binary:Version}),
+Description: UCS - LDAP library (Rust crate)
+ This packages contains the files needed to development rust crates
+ that use LDAP bindings for Univention policy.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
