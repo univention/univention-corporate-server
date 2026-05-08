@@ -1,0 +1,38 @@
+Source: rust-des
+Section: rust
+Priority: optional
+Build-Depends:
+ cargo:native <!nocheck>,
+ debhelper (>= 12),
+ dh-cargo (>= 25),
+ librust-byteorder-1-dev <!nocheck>,
+ librust-cipher-0.2+default-dev <!nocheck>,
+ librust-opaque-debug-0.3+default-dev <!nocheck>,
+ libstd-rust-dev <!nocheck>,
+ rustc:native <!nocheck>,
+Maintainer: Debian Rust Maintainers <pkg-rust-maintainers@alioth-lists.debian.net>
+Standards-Version: 4.6.1
+Vcs-Git: https://salsa.debian.org/rust-team/debcargo-conf.git [src/des]
+Vcs-Browser: https://salsa.debian.org/rust-team/debcargo-conf/tree/master/src/des
+X-Cargo-Crate: des
+Rules-Requires-Root: no
+
+Package: librust-des-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ librust-byteorder-1-dev,
+ librust-cipher-0.2+default-dev,
+ librust-opaque-debug-0.3+default-dev,
+ ${misc:Depends},
+Provides:
+ librust-des+default-dev (= ${binary:Version}),
+ librust-des-0+default-dev (= ${binary:Version}),
+ librust-des-0-dev (= ${binary:Version}),
+ librust-des-0.6+default-dev (= ${binary:Version}),
+ librust-des-0.6-dev (= ${binary:Version}),
+ librust-des-0.6.0+default-dev (= ${binary:Version}),
+ librust-des-0.6.0-dev (= ${binary:Version}),
+Description: DES and Triple DES (3DES, TDES) block ciphers implementation - Rust source code
+ This package contains the source for the Rust des crate, packaged by debcargo
+ for use with cargo and dh-cargo.

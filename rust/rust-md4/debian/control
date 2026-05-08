@@ -1,0 +1,71 @@
+Source: rust-md4
+Section: rust
+Priority: optional
+Build-Depends:
+ cargo:native <!nocheck>,
+ debhelper (>= 12),
+ dh-cargo (>= 25),
+ librust-digest-0.10+default-dev (>= 0.10.3-~~) <!nocheck>,
+ librust-digest-0.10+std-dev (>= 0.10.3-~~) <!nocheck>,
+ libstd-rust-dev <!nocheck>,
+ rustc:native <!nocheck>,
+Maintainer: Debian Rust Maintainers <pkg-rust-maintainers@alioth-lists.debian.net>
+Standards-Version: 4.6.1
+Vcs-Git: https://salsa.debian.org/rust-team/debcargo-conf.git [src/md4]
+Vcs-Browser: https://salsa.debian.org/rust-team/debcargo-conf/tree/master/src/md4
+X-Cargo-Crate: md4
+Rules-Requires-Root: no
+
+Package: librust-md4-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ librust-digest-0.10+default-dev (>= 0.10.3-~~),
+ ${misc:Depends},
+Recommends:
+ librust-md4+std-dev (= ${binary:Version}),
+Suggests:
+ librust-md4+oid-dev (= ${binary:Version}),
+Provides:
+ librust-md4-0-dev (= ${binary:Version}),
+ librust-md4-0.10-dev (= ${binary:Version}),
+ librust-md4-0.10.2-dev (= ${binary:Version}),
+Description: MD4 hash function - Rust source code
+ This package contains the source for the Rust md4 crate, packaged by debcargo
+ for use with cargo and dh-cargo.
+
+Package: librust-md4+oid-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ librust-digest-0.10+oid-dev (>= 0.10.3-~~),
+ librust-md4-dev (= ${binary:Version}),
+ ${misc:Depends},
+Provides:
+ librust-md4-0+oid-dev (= ${binary:Version}),
+ librust-md4-0.10+oid-dev (= ${binary:Version}),
+ librust-md4-0.10.2+oid-dev (= ${binary:Version}),
+Description: MD4 hash function - feature "oid"
+ This metapackage enables feature "oid" for the Rust md4 crate, by pulling in
+ any additional dependencies needed by that feature.
+
+Package: librust-md4+std-dev
+Architecture: any
+Multi-Arch: same
+Depends:
+ librust-digest-0.10+std-dev (>= 0.10.3-~~),
+ librust-md4-dev (= ${binary:Version}),
+ ${misc:Depends},
+Provides:
+ librust-md4+default-dev (= ${binary:Version}),
+ librust-md4-0+default-dev (= ${binary:Version}),
+ librust-md4-0+std-dev (= ${binary:Version}),
+ librust-md4-0.10+default-dev (= ${binary:Version}),
+ librust-md4-0.10+std-dev (= ${binary:Version}),
+ librust-md4-0.10.2+default-dev (= ${binary:Version}),
+ librust-md4-0.10.2+std-dev (= ${binary:Version}),
+Description: MD4 hash function - feature "std" and 1 more
+ This metapackage enables feature "std" for the Rust md4 crate, by pulling in
+ any additional dependencies needed by that feature.
+ .
+ Additionally, this package also provides the "default" feature.

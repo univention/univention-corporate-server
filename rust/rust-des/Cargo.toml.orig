@@ -1,0 +1,20 @@
+[package]
+name = "des"
+version = "0.6.0"
+description = "DES and Triple DES (3DES, TDES) block ciphers implementation"
+authors = ["RustCrypto Developers"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+edition = "2018"
+documentation = "https://docs.rs/des"
+repository = "https://github.com/RustCrypto/block-ciphers"
+keywords = ["crypto", "des", "tdes", "block-cipher"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+cipher = "0.2"
+byteorder = { version = "1", default-features = false }
+opaque-debug = "0.3"
+
+[dev-dependencies]
+cipher = { version = "0.2", features = ["dev"] }

@@ -1,0 +1,6 @@
+rust-des (0.6.0-1) unstable; urgency=medium
+
+  * Team upload.
+  * Package des 0.6.0 from crates.io using debcargo 2.6.0
+
+ -- Florian Best <best@univention.de>  Fri, 08 May 2026 07:25:26 +0000

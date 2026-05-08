@@ -938,6 +938,48 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2011-2026 Univention GmbH"
 
 [[annotations]]
+path = "rust/rust-des/**"
+precedence = "override"
+SPDX-License-Identifier = "MIT or Apache-2.0"
+SPDX-FileCopyrightText = "FIXME (overlay) UNKNOWN-YEARS RustCrypto Developers"
+
+[[annotations]]
+path = "rust/rust-des/LICENSE-APACHE"
+precedence = "override"
+SPDX-License-Identifier = "UNKNOWN-LICENSE; FIXME (overlay)"
+SPDX-FileCopyrightText = "2017 Gulshan Singh"
+
+[[annotations]]
+path = "rust/rust-des/LICENSE-MIT"
+precedence = "override"
+SPDX-License-Identifier = "UNKNOWN-LICENSE; FIXME (overlay)"
+SPDX-FileCopyrightText = "2017 Gulshan Singh, Antoni Boucher, Artyom Pavlov"
+
+[[annotations]]
+path = "rust/rust-des/debian/**"
+precedence = "override"
+SPDX-License-Identifier = "MIT or Apache-2.0"
+SPDX-FileCopyrightText = "2026 Debian Rust Maintainers <pkg-rust-maintainers@alioth-lists.debian.net>"
+
+[[annotations]]
+path = "rust/rust-md4/**"
+precedence = "override"
+SPDX-License-Identifier = "MIT or Apache-2.0"
+SPDX-FileCopyrightText = "FIXME (overlay) UNKNOWN-YEARS RustCrypto Developers"
+
+[[annotations]]
+path = "rust/rust-md4/LICENSE-MIT"
+precedence = "override"
+SPDX-License-Identifier = "UNKNOWN-LICENSE; FIXME (overlay)"
+SPDX-FileCopyrightText = "2016 bacher09, Artyom Pavlov"
+
+[[annotations]]
+path = "rust/rust-md4/debian/**"
+precedence = "override"
+SPDX-License-Identifier = "MIT or Apache-2.0"
+SPDX-FileCopyrightText = "2026 Debian Rust Maintainers <pkg-rust-maintainers@alioth-lists.debian.net>"
+
+[[annotations]]
 path = "saml/crudesaml/**"
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause"

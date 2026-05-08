@@ -1,0 +1,7 @@
+0011-3: debian/control
+0011-5: debian/control
+0007-2: debian/changelog
+0010-2: debian/copyright
+0010-2: benches/des.rs
+0010-2: benches/tdes.rs
+0010-2: debian/rules

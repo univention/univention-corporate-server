@@ -1,0 +1,49 @@
+Test-Command: /usr/share/cargo/bin/cargo-auto-test md4 0.10.2 --all-targets --all-features
+Features: test-name=rust-md4:@
+Depends:
+ dh-cargo (>= 18),
+ librust-digest-0.10+default-dev (>= 0.10.4-~~),
+ librust-digest-0.10+dev-dev (>= 0.10.4-~~),
+ librust-hex-literal-0.2+default-dev (>= 0.2.2-~~),
+ @,
+Restrictions: allow-stderr, skip-not-installable
+
+Test-Command: /usr/share/cargo/bin/cargo-auto-test md4 0.10.2 --all-targets --no-default-features
+Features: test-name=librust-md4-dev:
+Depends:
+ dh-cargo (>= 18),
+ librust-digest-0.10+default-dev (>= 0.10.4-~~),
+ librust-digest-0.10+dev-dev (>= 0.10.4-~~),
+ librust-hex-literal-0.2+default-dev (>= 0.2.2-~~),
+ @,
+Restrictions: allow-stderr, skip-not-installable
+
+Test-Command: /usr/share/cargo/bin/cargo-auto-test md4 0.10.2 --all-targets --no-default-features --features oid
+Features: test-name=librust-md4+oid-dev:oid
+Depends:
+ dh-cargo (>= 18),
+ librust-digest-0.10+default-dev (>= 0.10.4-~~),
+ librust-digest-0.10+dev-dev (>= 0.10.4-~~),
+ librust-hex-literal-0.2+default-dev (>= 0.2.2-~~),
+ @,
+Restrictions: allow-stderr, skip-not-installable
+
+Test-Command: /usr/share/cargo/bin/cargo-auto-test md4 0.10.2 --all-targets
+Features: test-name=librust-md4+std-dev:default
+Depends:
+ dh-cargo (>= 18),
+ librust-digest-0.10+default-dev (>= 0.10.4-~~),
+ librust-digest-0.10+dev-dev (>= 0.10.4-~~),
+ librust-hex-literal-0.2+default-dev (>= 0.2.2-~~),
+ @,
+Restrictions: allow-stderr, skip-not-installable
+
+Test-Command: /usr/share/cargo/bin/cargo-auto-test md4 0.10.2 --all-targets --no-default-features --features std
+Features: test-name=librust-md4+std-dev:std
+Depends:
+ dh-cargo (>= 18),
+ librust-digest-0.10+default-dev (>= 0.10.4-~~),
+ librust-digest-0.10+dev-dev (>= 0.10.4-~~),
+ librust-hex-literal-0.2+default-dev (>= 0.2.2-~~),
+ @,
+Restrictions: allow-stderr, skip-not-installable

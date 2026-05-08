@@ -1,0 +1,26 @@
+Test-Command: /usr/share/cargo/bin/cargo-auto-test des 0.6.0 --all-targets --all-features
+Features: test-name=rust-des:@
+Depends:
+ dh-cargo (>= 18),
+ librust-cipher-0.2+default-dev,
+ librust-cipher-0.2+dev-dev,
+ @,
+Restrictions: allow-stderr, skip-not-installable
+
+Test-Command: /usr/share/cargo/bin/cargo-auto-test des 0.6.0 --all-targets
+Features: test-name=librust-des-dev:default
+Depends:
+ dh-cargo (>= 18),
+ librust-cipher-0.2+default-dev,
+ librust-cipher-0.2+dev-dev,
+ @,
+Restrictions: allow-stderr, skip-not-installable
+
+Test-Command: /usr/share/cargo/bin/cargo-auto-test des 0.6.0 --all-targets --no-default-features
+Features: test-name=librust-des-dev:
+Depends:
+ dh-cargo (>= 18),
+ librust-cipher-0.2+default-dev,
+ librust-cipher-0.2+dev-dev,
+ @,
+Restrictions: allow-stderr, skip-not-installable
