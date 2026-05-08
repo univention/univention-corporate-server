@@ -1,8 +1,12 @@
-univention-policy (13.6.0) UNRELEASED; urgency=medium
+univention-policy (13.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:40 +0200
+  [ Florian Best ]
+  * Bug #59042: add rust library
+
+ -- Florian Best <best@univention.de>  Fri, 28 Aug 2026 17:08:58 +0200
 
 univention-policy (13.5.0) UNRELEASED; urgency=medium
 
