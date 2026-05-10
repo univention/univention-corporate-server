@@ -63,3 +63,4 @@ Domain activity logging
    kerberos
    ha
    activity-logging
+   listener-notifier
