@@ -843,6 +843,33 @@ This section provides a reference for UCR variables.
    :Type: boolean
 
 
+.. envvar:: listener/debug/level
+
+   Sets the verbosity of log messages
+   that the Univention Directory Listener writes to
+   :file:`/var/log/univention/listener.log`.
+   Each level includes all messages from less-severe levels.
+   When unset,
+   the Listener logs only error messages.
+
+   .. _ucr-reference-debug-levels-listener-notifier:
+
+   Debug levels for listener and notifier
+      :``0``: Error messages only.
+      :``1``: Warnings.
+      :``2``: Process messages.
+      :``3``: Informational messages.
+      :``4``: Debug messages.
+      :``5``: Trace messages (most verbose).
+
+   For information about reading log files and setting the debug level,
+   see :ref:`listener-notifier-troubleshooting-logfiles`.
+
+   :Default value: not set, equivalent to ``0``
+   :Possible values: ``0`` to ``5``
+   :Type: integer
+
+
 .. envvar:: local/repository
 
    Activates and deactivates the local repository.
@@ -885,6 +912,26 @@ This section provides a reference for UCR variables.
    see :envvar:`nameserver1`.
 
    :Type: string
+
+
+.. envvar:: notifier/debug/level
+
+   Sets the verbosity of log messages
+   that the Univention Directory Notifier writes to
+   :file:`/var/log/univention/notifier.log`.
+   Each level includes all messages from less-severe levels.
+   When unset,
+   the Notifier logs only error messages.
+
+   For the debug levels,
+   see :ref:`ucr-reference-debug-levels-listener-notifier`.
+
+   For information about reading log files and setting the debug level,
+   see :ref:`listener-notifier-troubleshooting-logfiles`.
+
+   :Default value: not set, equivalent to ``0``
+   :Possible values: ``0`` to ``5``
+   :Type: integer
 
 
 .. envvar:: nss/group/cachefile
