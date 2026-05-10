@@ -54,6 +54,12 @@ Domain activity logging
    and system updates using the :program:`Admin Diary` app.
    See :ref:`domain-activity-logging`.
 
+Listener and Notifier replication
+    Understand how the Listener and Notifier mechanism replicates directory data across your domain,
+    how transaction-based replication ensures consistency,
+    and how to diagnose and resolve replication issues.
+    See :ref:`listener-notifier`.
+
 .. toctree::
    :caption: Contents
 

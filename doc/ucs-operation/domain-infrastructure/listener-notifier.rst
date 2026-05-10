@@ -3,141 +3,152 @@
 
 .. _listener-notifier:
 
-Domain replication with Listener/Notifier
-=========================================
+Domain replication with Listener and Notifier
+=============================================
 
-.. highlight:: console
+The Univention Directory Listener and Notifier mechanism replicates directory data within a Nubus for UCS domain
+and consists of two services.
 
-.. _domain-listener-notifier-intro:
+* The Univention Directory Listener service runs on all UCS systems.
 
-Listener/notifier replication workflow
---------------------------------------
+* On the :term:`Primary Directory Node`,
+  and on any existing :term:`Backup Directory Node` systems,
+  the Univention Directory Notifier service monitors changes in the LDAP directory
+  and distributes those changes to the Univention Directory Listener services on the other Nubus for UCS systems.
 
-Replication of the directory data within a UCS domain occurs via the
-|UCSUDL|/Notifier mechanism:
+As :numref:`listener-notifier-figure` shows,
+the active Univention Directory Listener instances in the domain connect to a Univention Directory Notifier service.
+All other LDAP servers in the domain are read-only replicas.
+If an LDAP change occurs on the Primary Directory Node,
+the Univention Directory Notifier registers the change
+and notifies the listener instances.
 
-* The |UCSUDL| service runs on all UCS systems.
-
-* On the |UCSPRIMARYDN| (and possibly existing |UCSBACKUPDN| systems) the
-  |UCSUDN| service monitors changes in the LDAP directory and makes the selected
-  changes available to the |UCSUDL| services on the other UCS systems.
-
-.. _domain-join-listener-notifier:
+.. _listener-notifier-figure:
 
 .. figure:: /images/administration-overview.*
-   :alt: Listener/Notifier mechanism
+   :alt: Diagram showing Univention Directory Listener instances connecting to a Univention Directory Notifier service on the Primary Directory Node, which monitors LDAP changes and distributes them to listener instances on other UCS systems.
 
-   Listener/Notifier mechanism
+   Listener and Notifier mechanism
 
-The active |UCSUDL| instances in the domain connect to a |UCSUDN| service. If
-an LDAP change is performed on the |UCSPRIMARYDN| (all other LDAP servers in the
-domain are read-only), this is registered by the |UCSUDN| and notified to the
-listener instances.
+.. _listener-notifier-modules:
 
-Each |UCSUDL| instance uses a range of |UCSUDL| modules. These modules are
-shipped by the installed applications; the print server package includes, for
-example, listener modules which generate the CUPS configuration.
+Listener modules
+----------------
 
-|UCSUDL| modules can be used to communicate domain changes to services which are
-not LDAP-compatible. The print server CUPS is an example of this: The printer
-definitions are not read from the LDAP, but instead from the
-:file:`/etc/cups/printers.conf` file. Now, if a printer is saved in the UMC
-printer management, it is stored in the LDAP directory. This change is detected
-by the |UCSUDL| module *cups-printers* and an entry added to, modified or
-deleted in :file:`/etc/cups/printers.conf` based on the data in the LDAP.
+Each Listener instance uses several listener modules.
+Installed applications provide these modules.
+For example, the print server package includes listener modules that generate the CUPS configuration.
 
-Additional information on the setup of |UCSUDL| modules and developing your own
-modules can be found in :cite:t:`developer-reference`.
+Listener modules communicate domain changes to services that aren't compatible with LDAP.
+The print server CUPS demonstrates this:
+CUPS reads printer definitions from :file:`/etc/cups/printers.conf`, not from LDAP.
+When you save a printer in the *Printer* management module,
+Nubus for UCS stores it in the LDAP directory.
+The Univention Directory Listener module ``cups-printers`` detects this change
+and adds, modifies, or deletes the corresponding entry in :file:`/etc/cups/printers.conf`
+based on the data in LDAP.
 
-LDAP replication is also performed by a listener module. If the LDAP server to
-be replicated to is not accessible, the LDAP changes are temporarily stored in
-the :file:`/var/lib/univention-directory-replication/failed.ldif` file. The
-contents of the file are automatically transferred to the LDAP when the LDAP
-server is available again.
+For more information about setting up and developing listener modules,
+see :cite:t:`developer-reference`.
 
-The listener/notifier mechanism works based on transactions. A transaction ID is
-increased for every change in the LDAP directory of the |UCSPRIMARYDN|. A
-|UCSUDL| instance which has missed several transactions - for example, because
-the computer was switched off - automatically requests all the missing
-transactions once the connection is available again until its local transaction
-ID corresponds to that of the |UCSPRIMARYDN|.
+.. _listener-notifier-transactions:
 
-.. _domain-listener-notifier-erroranalysis:
+Transaction-based replication
+-----------------------------
 
-Analysis of listener/notifier problems
---------------------------------------
+One of the built-in listener modules also performs LDAP replication.
+If the target LDAP server isn't accessible,
+the system temporarily stores the LDAP changes in :file:`/var/lib/univention-directory-replication/failed.ldif`.
+The system automatically transfers the file contents to LDAP
+when the LDAP server becomes available again.
 
-.. _domain-listener-notifier-erroranalysis-debug:
+The Listener and Notifier mechanism is transaction-based.
+The Primary Directory Node increments the transaction ID for every LDAP change.
+A Listener instance that has missed several transactions,
+for example, because you turned it off,
+automatically requests the missing transactions
+after the connection becomes available again
+until its local transaction ID matches the one on the Primary Directory Node.
 
-Log files/debug level of replication
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _listener-notifier-troubleshooting:
 
-All status messages from the |UCSUDL| and the executed listener modules are
-logged in the :file:`/var/log/univention/listener.log` file. The level of detail
-of the log messages can be configured using the |UCSUCRV|
-:envvar:`listener/debug/level`.
+Listener and Notifier troubleshooting
+-------------------------------------
 
-Status messages from the |UCSUDN| service are logged in the
-:file:`/var/log/univention/notifier.log` file. The debug level can be configured
-using the :envvar:`notifier/debug/level`.
+When replication doesn't work as expected,
+the Listener and Notifier services provide diagnostic information through log files and transaction IDs.
+The following sections guide you through examining this data and resolving common issues.
 
-.. _domain-listener-notifier-erroranalysis-replication:
+.. _listener-notifier-troubleshooting-logfiles:
 
-Identification of replication problems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Read log files and set debug levels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When the domain replication is running normally (normal system load, no network
-problems), the delay between changes being made in UMC modules and these changes
-being replicated to, for example, a |UCSREPLICADN| is barely noticeable. An
-incomplete replication can be identified by comparing the transaction IDs of the
-listener and notifier services.
+The Listener and all listener modules write status messages to :file:`/var/log/univention/listener.log`.
+You can set the log detail level
+with the :term:`UCR variable` :envvar:`listener/debug/level`.
 
-The transactions registered by the notifier service are written in the
-:file:`/var/lib/univention-ldap/notify/transaction` file in ascending order on
-the |UCSPRIMARYDN|. An example:
+The Notifier service writes status messages to :file:`/var/log/univention/notifier.log`.
+You can set the debug level
+with :envvar:`notifier/debug/level`.
+
+.. _listener-notifier-troubleshooting-replication:
+
+Identify replication problems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Under normal load with no network problems,
+replication from management modules to a :term:`Replica Directory Node` is nearly instant.
+To verify replication is complete,
+compare the transaction IDs of the listener and notifier services.
+
+* On the Primary Directory Node,
+  the Notifier writes all transactions to :file:`/var/lib/univention-ldap/notify/transaction`, in order,
+  as shown in :numref:`listener-notifier-troubleshooting-replication-translation-listing`.
+
+  .. code-block::
+     :caption: Check the last notifier transaction on the Primary Directory Node
+     :name: listener-notifier-troubleshooting-replication-translation-listing
+
+     root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction
+     836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m
+
+* The Listener stores the last received transaction ID in
+  :file:`/var/lib/univention-directory-listener/notifier_id`,
+  as shown in :numref:`listener-notifier-troubleshooting-replication-translation-last-id-listing`.
+
+  .. code-block::
+     :caption: Check the last transaction ID received by the listener
+     :name: listener-notifier-troubleshooting-replication-translation-last-id-listing
+
+     root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id
+     836
+
+The Nagios service ``UNIVENTION_REPLICATION`` can also perform this check automatically,
+see :external+uv-ucs-manual:ref:`nagios-preconfigured-checks` in :cite:t:`ucs-manual`.
+
+.. _listener-notifier-troubleshooting-init-modules:
+
+Reinitialize listener modules
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a listener module has problems,
+you can reinitialize it.
+Reinitialization causes the listener module to process all LDAP objects it works with again.
+Pass the listener module name as an argument to the reinitialization command.
+The installed listener modules are in
+:file:`/var/lib/univention-directory-listener/handlers/`.
+
+For example,
+to reinitialize the ``cups-printers`` module, run the command in :numref:`listener-notifier-troubleshooting-init-modules-listing`.
 
 .. code-block::
-
-   root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction
-   836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m
-
-
-The last transaction received by the listener system is stored in the
-:file:`/var/lib/univention-directory-listener/notifier_id` file:
-
-.. code-block::
-
-   root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id
-   836
-
-
-This check can also be performed automatically by the Nagios service
-``UNIVENTION_REPLICATION`` (see :ref:`nagios-preconfigured-checks`).
-
-.. _domain-listener-notifier-erroranalysis-reinit:
-
-Reinitialization of listener modules
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If there are problems in running a listener module, there is the option to
-reinitialize the module. In this case, all LDAP objects with which the
-listener module works are passed on again.
-
-.. warning::
-
-   This is a destructive operation.
-   It removes some internal state of the listener.
-   Use with care!
-
-The name of the listener module must be supplied to the command for the renewed
-initialization. The installed listener modules can be found in the
-:file:`/var/lib/univention-directory-listener/handlers/` directory.
-
-The following command can be used to reinitialize the printer module, for
-example:
-
-.. code-block::
+   :caption: Reinitialize the cups-printers listener module
+   :name: listener-notifier-troubleshooting-init-modules-listing
 
    $ univention-directory-listener-ctrl resync cups-printers
 
+.. warning::
 
+   Reinitialization removes internal state from the listener module and can't be undone.
+   Back up the listener state before reinitialization if you need to preserve it.
