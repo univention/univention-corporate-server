@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 14:56+0000\n"
-"PO-Revision-Date: 2026-04-28 16:57+0200\n"
+"POT-Creation-Date: 2026-05-10 15:08+0000\n"
+"PO-Revision-Date: 2026-05-10 17:09+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1113,255 +1113,62 @@ msgstr "Ablauf der Listener/Notifier-Replikation"
 
 #: ../../domain-ldap/listener-notifier.rst:16
 msgid ""
-"Replication of the directory data within a UCS domain occurs via the "
-"|UCSUDL|/Notifier mechanism:"
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`listener-notifier` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt "
-"über den |UCSUDL|/Notifier-Mechanismus:"
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`listener-notifier` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/listener-notifier.rst:19
-msgid "The |UCSUDL| service runs on all UCS systems."
-msgstr "Der |UCSUDL|-Dienst läuft auf jedem UCS-System."
-
-#: ../../domain-ldap/listener-notifier.rst:21
-msgid ""
-"On the |UCSPRIMARYDN| (and possibly existing |UCSBACKUPDN| systems) the "
-"|UCSUDN| service monitors changes in the LDAP directory and makes the "
-"selected changes available to the |UCSUDL| services on the other UCS "
-"systems."
-msgstr ""
-"Auf dem |UCSPRIMARYDN| (und eventuell vorhandenen |UCSBACKUPDN|\\ s) "
-"überwacht der |UCSUDN|-Dienst Änderungen im LDAP-Verzeichnis und stellt "
-"die aufgezeichneten Änderungen transaktionsbasiert den |UCSUDL|-Diensten "
-"auf den weiteren UCS-Systemen zur Verfügung."
-
-#: ../../domain-ldap/listener-notifier.rst:27
-#: ../../domain-ldap/listener-notifier.rst:30
-msgid "Listener/Notifier mechanism"
-msgstr "Listener/Notifier-Mechanismus"
-
-#: ../../domain-ldap/listener-notifier.rst:32
-msgid ""
-"The active |UCSUDL| instances in the domain connect to a |UCSUDN| "
-"service. If an LDAP change is performed on the |UCSPRIMARYDN| (all other "
-"LDAP servers in the domain are read-only), this is registered by the "
-"|UCSUDN| and notified to the listener instances."
-msgstr ""
-"Die aktiven |UCSUDL|-Instanzen der Domäne verbinden sich zu einem "
-"|UCSUDN|-Dienst. Wird auf dem |UCSPRIMARYDN| eine LDAP-Änderung "
-"durchgeführt (alle anderen LDAP-Server der Domäne sind nur lesend), wird "
-"diese durch den |UCSUDN| registriert und an die Listener-Instanzen "
-"gemeldet."
-
-#: ../../domain-ldap/listener-notifier.rst:37
-msgid ""
-"Each |UCSUDL| instance uses a range of |UCSUDL| modules. These modules "
-"are shipped by the installed applications; the print server package "
-"includes, for example, listener modules which generate the CUPS "
-"configuration."
-msgstr ""
-"Jede |UCSUDL|-Instanz verwendet eine Reihe von |UCSUDL|-Modulen. Diese "
-"Module werden von den installierten Applikationen mitgeliefert, das "
-"Druckserver-Paket bringt z.B Listener-Module mit, die die CUPS-"
-"Konfiguration erzeugen."
-
-#: ../../domain-ldap/listener-notifier.rst:41
-msgid ""
-"|UCSUDL| modules can be used to communicate domain changes to services "
-"which are not LDAP-compatible. The print server CUPS is an example of "
-"this: The printer definitions are not read from the LDAP, but instead "
-"from the :file:`/etc/cups/printers.conf` file. Now, if a printer is saved"
-" in the UMC printer management, it is stored in the LDAP directory. This "
-"change is detected by the |UCSUDL| module *cups-printers* and an entry "
-"added to, modified or deleted in :file:`/etc/cups/printers.conf` based on"
-" the data in the LDAP."
-msgstr ""
-"Durch |UCSUDL|-Module können Änderungen an der Domäne auch an Dienste "
-"übermittelt werden, die selbst nicht LDAP-fähig sind. Ein Beispiel ist "
-"der Druckserver CUPS: Die Druckerdefinitionen werden nicht aus dem LDAP "
-"ausgelesen, sondern aus der Datei :file:`/etc/cups/printers.conf`. Wird "
-"nun im UMC-Modul :guilabel:`Drucker` ein Drucker angelegt, wird dieser im"
-" LDAP registriert. Diese Änderung wird dann vom |UCSUDL|-Modul *cups-"
-"printers* erkannt und basierend auf den Daten im LDAP ein Eintrag in "
-":file:`/etc/cups/printers.conf` hinzugefügt, modifiziert oder gelöscht."
-
-#: ../../domain-ldap/listener-notifier.rst:49
-msgid ""
-"Additional information on the setup of |UCSUDL| modules and developing "
-"your own modules can be found in :cite:t:`developer-reference`."
-msgstr ""
-"Weitergehende Informationen zum Aufbau von |UCSUDL|-Modulen und zur "
-"Entwicklung eigener Module finden sich in :cite:t:`developer-reference`."
-
-#: ../../domain-ldap/listener-notifier.rst:52
-msgid ""
-"LDAP replication is also performed by a listener module. If the LDAP "
-"server to be replicated to is not accessible, the LDAP changes are "
-"temporarily stored in the :file:`/var/lib/univention-directory-"
-"replication/failed.ldif` file. The contents of the file are automatically"
-" transferred to the LDAP when the LDAP server is available again."
-msgstr ""
-"Die LDAP-Replikation erfolgt ebenfalls durch ein Listener-Modul. Ist der "
-"LDAP-Server zu dem repliziert werden soll nicht erreichbar, werden die "
-"LDAP-Änderungen in der Datei :file:`/var/lib/univention-directory-"
-"replication/failed.ldif` zwischengespeichert. Der Inhalt dieser Datei "
-"wird beim späteren Start des LDAP-Servers automatisch in das LDAP "
-"übertragen."
-
-#: ../../domain-ldap/listener-notifier.rst:58
-msgid ""
-"The listener/notifier mechanism works based on transactions. A "
-"transaction ID is increased for every change in the LDAP directory of the"
-" |UCSPRIMARYDN|. A |UCSUDL| instance which has missed several "
-"transactions - for example, because the computer was switched off - "
-"automatically requests all the missing transactions once the connection "
-"is available again until its local transaction ID corresponds to that of "
-"the |UCSPRIMARYDN|."
-msgstr ""
-"Der Listener/Notifier-Mechanismus arbeitet transaktionsbasiert. Für jede "
-"Änderung im LDAP-Verzeichnis des |UCSPRIMARYDN| wird eine Transaktions-ID"
-" erhöht. Eine |UCSUDL|-Instanz, die mehrere Transaktionen verpasst hat - "
-"weil zum Beispiel der Rechner ausgeschaltet war - fragt bei erneuter "
-"Verfügbarkeit der Verbindung automatisch alle fehlenden Transaktionen ab,"
-" bis seine lokale Transaktions-ID der des |UCSPRIMARYDN| entspricht."
-
-#: ../../domain-ldap/listener-notifier.rst:68
+#: ../../domain-ldap/listener-notifier.rst:23
 msgid "Analysis of listener/notifier problems"
 msgstr "Analyse von Listener/Notifier-Problemen"
 
-#: ../../domain-ldap/listener-notifier.rst:73
+#: ../../domain-ldap/listener-notifier.rst:25
+msgid ""
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting` in :cite:t:`uv-ucs-operation`."
+msgstr ""
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting` in :cite:t:`uv-ucs-operation` verschoben."
+
+#: ../../domain-ldap/listener-notifier.rst:32
 msgid "Log files/debug level of replication"
 msgstr "Logdateien/Debug-Level der Replikation"
 
-#: ../../domain-ldap/listener-notifier.rst:75
+#: ../../domain-ldap/listener-notifier.rst:34
 msgid ""
-"All status messages from the |UCSUDL| and the executed listener modules "
-"are logged in the :file:`/var/log/univention/listener.log` file. The "
-"level of detail of the log messages can be configured using the |UCSUCRV|"
-" :envvar:`listener/debug/level`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting-logfiles` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Alle Statusmeldungen des |UCSUDL| und der aufgerufenen Listener-Module "
-"werden in die Datei :file:`/var/log/univention/listener.log` "
-"protokolliert.  Der Detailgrad der Logmeldungen kann über die |UCSUCRV| "
-":envvar:`listener/debug/level` konfiguriert werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting-logfiles` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/listener-notifier.rst:80
-msgid ""
-"Status messages from the |UCSUDN| service are logged in the "
-":file:`/var/log/univention/notifier.log` file. The debug level can be "
-"configured using the :envvar:`notifier/debug/level`."
-msgstr ""
-"Statusmeldungen des |UCSUDN|-Dienstes werden in die Datei "
-":file:`/var/log/univention/notifier.log` protokolliert.  Der Debuglevel "
-"kann mit der Variable :envvar:`notifier/debug/level` konfiguriert werden."
-
-#: ../../domain-ldap/listener-notifier.rst:87
+#: ../../domain-ldap/listener-notifier.rst:41
 msgid "Identification of replication problems"
 msgstr "Erkennung von Replikationsproblemen"
 
-#: ../../domain-ldap/listener-notifier.rst:89
+#: ../../domain-ldap/listener-notifier.rst:43
 msgid ""
-"When the domain replication is running normally (normal system load, no "
-"network problems), the delay between changes being made in UMC modules "
-"and these changes being replicated to, for example, a |UCSREPLICADN| is "
-"barely noticeable. An incomplete replication can be identified by "
-"comparing the transaction IDs of the listener and notifier services."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting-replication` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Im Regelbetrieb der Domänenreplikation (keine hohe Last auf den Systemen,"
-" keine Störungen im Netzwerk) ist die Verzögerung zwischen Änderungen in "
-"UMC-Modulen bis zur Replikation auf z.B. eines |UCSREPLICADN| kaum "
-"merkbar. Eine möglicherweise unvollständige Replikation kann durch einen "
-"Vergleich der Transaktions-IDs von Listener- und Notifier-Dienst "
-"identifiziert werden."
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting-replication` in :cite:t:`uv-ucs-operation` verschoben."
 
-#: ../../domain-ldap/listener-notifier.rst:95
-msgid ""
-"The transactions registered by the notifier service are written in the "
-":file:`/var/lib/univention-ldap/notify/transaction` file in ascending "
-"order on the |UCSPRIMARYDN|. An example:"
-msgstr ""
-"Auf dem |UCSPRIMARYDN| werden die vom Notifier-Dienst registrierten "
-"Transaktionen in aufsteigender Reihenfolge in die Datei :file:`/var/lib"
-"/univention-ldap/notify/transaction` geschrieben. Ein Beispiel:"
-
-#: ../../domain-ldap/listener-notifier.rst:99
-msgid ""
-"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
-"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
-msgstr ""
-"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
-"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
-
-#: ../../domain-ldap/listener-notifier.rst:105
-msgid ""
-"The last transaction received by the listener system is stored in the "
-":file:`/var/lib/univention-directory-listener/notifier_id` file:"
-msgstr ""
-"Auf dem Listener-System wird die zuletzt vom Listener empfangene "
-"Transaktion in der Datei :file:`/var/lib/univention-directory-"
-"listener/notifier_id` gespeichert:"
-
-#: ../../domain-ldap/listener-notifier.rst:108
-msgid ""
-"root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id\n"
-"836"
-msgstr ""
-"root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id\n"
-"836"
-
-#: ../../domain-ldap/listener-notifier.rst:114
-msgid ""
-"This check can also be performed automatically by the Nagios service "
-"``UNIVENTION_REPLICATION`` (see :ref:`nagios-preconfigured-checks`)."
-msgstr ""
-"Diese Prüfung kann auch automatisiert durch den Nagios-Dienst "
-"``UNIVENTION_REPLICATION`` durchgeführt werden (siehe :ref:`nagios-"
-"preconfigured-checks`)."
-
-#: ../../domain-ldap/listener-notifier.rst:120
+#: ../../domain-ldap/listener-notifier.rst:50
 msgid "Reinitialization of listener modules"
 msgstr "Neuinitialiisierung von Listener-Modulen"
 
-#: ../../domain-ldap/listener-notifier.rst:122
+#: ../../domain-ldap/listener-notifier.rst:52
 msgid ""
-"If there are problems in running a listener module, there is the option "
-"to reinitialize the module. In this case, all LDAP objects with which the"
-" listener module works are passed on again."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting-init-modules` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Falls es zu Problemen bei der Abarbeitung eines Listener-Moduls gekommen "
-"ist, besteht die Möglichkeit, das Modul neu zu initialisieren. Dabei "
-"werden alle LDAP-Objekte mit denen das Listener-Modul arbeitet erneut "
-"übergeben."
-
-#: ../../domain-ldap/listener-notifier.rst:128
-msgid ""
-"This is a destructive operation. It removes some internal state of the "
-"listener. Use with care!"
-msgstr ""
-"Dies ist eine destruktive Operation. Sie entfernt internen Zustand des "
-"Listeners. Nur mit Vorsicht verwenden!"
-
-#: ../../domain-ldap/listener-notifier.rst:132
-msgid ""
-"The name of the listener module must be supplied to the command for the "
-"renewed initialization. The installed listener modules can be found in "
-"the :file:`/var/lib/univention-directory-listener/handlers/` directory."
-msgstr ""
-"Dem Befehl zum erneuten Initialisieren muss der Name des Listener-Moduls "
-"übergeben werden. Die installierten Listener-Module sind im Verzeichnis "
-":file:`/var/lib/univention-directory-listener/handlers/` zu finden."
-
-#: ../../domain-ldap/listener-notifier.rst:136
-msgid ""
-"The following command can be used to reinitialize the printer module, for"
-" example:"
-msgstr ""
-"Mit dem folgenden Befehl kann beispielsweise das Druckermodul neu "
-"initialisiert werden:"
-
-#: ../../domain-ldap/listener-notifier.rst:139
-msgid "$ univention-directory-listener-ctrl resync cups-printers"
-msgstr "$ univention-directory-listener-ctrl resync cups-printers"
+"Der Inhalt dieses Abschnitts wurde nach :external+uv-ucs-operation:ref"
+":`listener-notifier-troubleshooting-init-modules` in :cite:t:`uv-ucs-operation` verschoben."
 
 #: ../../domain-ldap/nubus-provisioning-service.rst:7
 msgid "Provisioning Service"
