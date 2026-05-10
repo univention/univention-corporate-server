@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 11. May 2026
+     - :ref:`listener-notifier`
+     - Add section about Univention Listener and Notifier mechanism for domain replication.
+
    * - 07. May 2026
      - :ref:`iam-user-lockout`
      - Add section about user account lockout after failed sign-in attempts.
