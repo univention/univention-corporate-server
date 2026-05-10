@@ -356,13 +356,21 @@ def password_sync_ucs(connector, key, object):
     else:
         log.warning("password_sync_ucs: Failed to get NT Hash from UCS")
 
-    res = connector.lo_ad.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid'])
+    res = connector.lo_ad.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['pwdLastSet', 'objectSid', 'msDS-SupportedEncryptionTypes'])
     pwdLastSet = None
     if 'pwdLastSet' in res[0][1]:
         pwdLastSet = int(res[0][1]['pwdLastSet'][0])
     log.debug("password_sync_ucs: pwdLastSet from AD : %s", pwdLastSet)
     if 'objectSid' in res[0][1]:
         str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
+
+    supp_enctypes_new = 0
+    supp_enctypes_old = 0
+    if 'msDS-SupportedEncryptionTypes' in res[0][1]:
+        supp_enctypes_old = int(res[0][1]['msDS-SupportedEncryptionTypes'][0])
+        supp_enctypes_new = supp_enctypes_old | 4
+    else:
+        supp_enctypes_new = 28
 
     # Only sync passwords from UCS to AD when the password timestamp in UCS is newer
     if connector.configRegistry.is_true(f'{connector.CONFIGBASENAME}/ad/password/timestamp/check', False):
@@ -414,6 +422,9 @@ def password_sync_ucs(connector, key, object):
         except NTSTATUSError as exc:
             log.process("password_sync: set_password_in_ad failed with %s, retry with reconnect", exc)
             res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd, reconnect=True)
+        # we need to allow arc4 kerberos keys when we set a password through UCS, since that is the only keytype we can set
+        if supp_enctypes_new != supp_enctypes_old:
+            connector.lo_ad.lo.modify_s(object['dn'], [(ldap.MOD_REPLACE, 'msDS-SupportedEncryptionTypes', [str(supp_enctypes_new).encode('utf-8')])])
 
     newpwdlastset = "-1"  # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0
     # if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
@@ -455,8 +466,7 @@ def password_sync(connector, key, ucs_object):
     # "kerberos_now"
 
     object = connector._object_mapping(key, ucs_object, 'ucs')
-    res = connector.lo_ad.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet', 'msDS-ResultantPSO'])
-
+    res = connector.lo_ad.lo.search_s(object['dn'], ldap.SCOPE_BASE, '(objectClass=*)', ['objectSid', 'pwdLastSet', 'msDS-ResultantPSO', 'msds-SupportedEncryptionTypes'])
     if connector.isInCreationList(object['dn']):
         connector.removeFromCreationList(object['dn'])
         log.debug("password_sync: Synchronisation of password has been canceled. Object was just created.")
@@ -469,6 +479,12 @@ def password_sync(connector, key, ucs_object):
 
     if 'objectSid' in res[0][1]:
         str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
+
+    supp_enctypes_old = 0
+    supp_enctypes_new = 0
+    if 'msDS-SupportedEncryptionTypes' in res[0][1]:
+        supp_enctypes_old = int(res[0][1]['msDS-SupportedEncryptionTypes'][0])
+        supp_enctypes_new = supp_enctypes_old ^ 4
 
     ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'pwhistory'])
 
@@ -537,7 +553,9 @@ def password_sync(connector, key, ucs_object):
             if krb5Key:
                 krb5Key_ucs = ucs_result[0][1]['krb5Key'][0]
                 modlist.append(('krb5Key', krb5Key_ucs, krb5Key))
-
+            # if we changed the password in UCS before, we allowed arc4, we need to fall back to default then.
+            if supp_enctypes_old != supp_enctypes_new:
+                connector.lo_ad.lo.modify_s(object['dn'], [(ldap.MOD_DELETE, 'msds-SupportedEncryptionTypes', [str(supp_enctypes_old).encode('utf-8')])])
             connector.lo.lo.modify_s(ucs_object['dn'], [(ldap.MOD_REPLACE, 'userPassword', b'{K5KEY}')])
 
             ucs_object_ = connector.get_ucs_object("user", ucs_object['dn'])

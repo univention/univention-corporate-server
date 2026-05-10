@@ -1,3 +1,9 @@
+univention-ad-connector (16.6.3) unstable; urgency=medium
+
+  * Bug #58876: Set msDS-SupportedEncryptionTypes to support arc4 password during sync ucs->ad
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Thu, 14 May 2026 10:31:14 +0200
+
 univention-ad-connector (16.6.2) unstable; urgency=medium
 
   * Bug #59200: Make position mapping available for the mapped object itself

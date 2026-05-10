@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-ad-connector
+fix: 16.6.3
+desc: |
+ This update addresses the following issues:
+ * Added support for arc4 during password synchronization
+   from UCS to AD in KB5082063 onwards.
+bug: [58876]

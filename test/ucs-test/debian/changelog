@@ -1,3 +1,9 @@
+ucs-test (12.5.39) unstable; urgency=medium
+
+  * Bug #58876: Test msDS-SupportedEncryptionTypes handling during password sync
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Thu, 14 May 2026 10:43:15 +0200
+
 ucs-test (12.5.38) unstable; urgency=medium
 
   * Bug #59280: test case for UMC header smuggling
