@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-29 13:02+0000\n"
-"PO-Revision-Date: 2026-04-29 15:12+0200\n"
+"POT-Creation-Date: 2026-05-10 20:07+0000\n"
+"PO-Revision-Date: 2026-05-10 22:07+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1747,7 +1747,7 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
-#: ../../domain-infrastructure/index.rst:57
+#: ../../domain-infrastructure/index.rst:63
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1866,6 +1866,23 @@ msgstr ""
 "Apps und Updates, Serverpasswortänderungen, Domänenbeitritte und "
 "Systemaktualisierungen mit der App :program:`Admin Diary`. Siehe :ref"
 ":`domain-activity-logging`."
+
+#: ../../domain-infrastructure/index.rst:57
+msgid "Listener and Notifier replication"
+msgstr "Listener- und Notifier-Replikation"
+
+#: ../../domain-infrastructure/index.rst:58
+msgid ""
+"Understand how the Listener and Notifier mechanism replicates directory "
+"data across your domain, how transaction-based replication ensures "
+"consistency, and how to diagnose and resolve replication issues. See :ref"
+":`listener-notifier`."
+msgstr ""
+"Erfahren Sie, wie der Listener- und Notifier-Mechanismus Verzeichnisdaten"
+" in Ihrer Domäne repliziert, wie die "
+":spelling:word:`transaktionsbasierte` Replikation die Konsistenz "
+"sicherstellt und wie Sie Probleme bei der Replikation diagnostizieren und"
+" beheben. Siehe :ref:`listener-notifier`."
 
 #: ../../domain-infrastructure/kerberos.rst:7
 msgid "Kerberos"
@@ -2013,6 +2030,314 @@ msgid ""
 msgstr ""
 "Um den Administrations-Server zu konfigurieren, legen Sie die :term:`UCR "
 "variable` :envvar:`kerberos/adminserver` fest."
+
+#: ../../domain-infrastructure/listener-notifier.rst:7
+msgid "Domain replication with Listener and Notifier"
+msgstr "Domänenreplikation mit Listener und Notifier"
+
+#: ../../domain-infrastructure/listener-notifier.rst:9
+msgid ""
+"The Univention Directory Listener and Notifier mechanism replicates "
+"directory data within a Nubus for UCS domain and consists of two "
+"services."
+msgstr ""
+"Der Univention Directory Listener- und Notifier-Mechanismus repliziert "
+"Verzeichnisdaten innerhalb einer Nubus für UCS-Domäne und besteht aus "
+"zwei Diensten."
+
+#: ../../domain-infrastructure/listener-notifier.rst:12
+msgid "The Univention Directory Listener service runs on all UCS systems."
+msgstr ""
+"Der Univention Directory Listener-Dienst wird auf allen UCS-Systemen "
+"ausgeführt."
+
+#: ../../domain-infrastructure/listener-notifier.rst:14
+msgid ""
+"On the :term:`Primary Directory Node`, and on any existing :term:`Backup "
+"Directory Node` systems, the Univention Directory Notifier service "
+"monitors changes in the LDAP directory and distributes those changes to "
+"the Univention Directory Listener services on the other Nubus for UCS "
+"systems."
+msgstr ""
+"Auf dem :term:`Primary Directory Node` und auf vorhandenen :term:`Backup "
+"Directory Node`-Systemen überwacht der Univention Directory Notifier-"
+"Dienst Änderungen im LDAP-Verzeichnis und verteilt diese Änderungen an "
+"die Univention Directory Listener-Dienste auf den anderen Nubus für UCS-"
+"Systemen."
+
+#: ../../domain-infrastructure/listener-notifier.rst:19
+msgid ""
+"As :numref:`listener-notifier-figure` shows, the active Univention "
+"Directory Listener instances in the domain connect to a Univention "
+"Directory Notifier service. All other LDAP servers in the domain are "
+"read-only replicas. If an LDAP change occurs on the Primary Directory "
+"Node, the Univention Directory Notifier registers the change and notifies"
+" the listener instances."
+msgstr ""
+"Wie :numref:`listener-notifier-figure` zeigt, verbinden sich die aktiven "
+"Univention Directory Listener-Instanzen in der Domäne mit einem "
+"Univention Directory Notifier-Dienst. Alle anderen LDAP-Server in der "
+"Domäne sind schreibgeschützte :spelling:word:`Replicas`. Wenn eine LDAP-"
+"Änderung auf dem Primary Directory Node auftritt, registriert der "
+"Univention Directory Notifier die Änderung und benachrichtigt die "
+"Listener-Instanzen."
+
+#: ../../domain-infrastructure/listener-notifier.rst:28
+msgid ""
+"Diagram showing Univention Directory Listener instances connecting to a "
+"Univention Directory Notifier service on the Primary Directory Node, "
+"which monitors LDAP changes and distributes them to listener instances on"
+" other UCS systems."
+msgstr ""
+"Diagramm, das zeigt, wie Univention Directory Listener-Instanzen eine "
+"Verbindung zu einem Univention Directory Notifier-Dienst auf dem Primary "
+"Directory Node herstellen, der LDAP-Änderungen überwacht und an Listener-"
+"Instanzen auf anderen UCS-Systemen verteilt."
+
+#: ../../domain-infrastructure/listener-notifier.rst:31
+msgid "Listener and Notifier mechanism"
+msgstr "Listener- und Notifier-Mechanismus"
+
+#: ../../domain-infrastructure/listener-notifier.rst:36
+msgid "Listener modules"
+msgstr "Listener-Module"
+
+#: ../../domain-infrastructure/listener-notifier.rst:38
+msgid ""
+"Each Listener instance uses several listener modules. Installed "
+"applications provide these modules. For example, the print server package"
+" includes listener modules that generate the CUPS configuration."
+msgstr ""
+"Jede Listener-Instanz verwendet mehrere Listener-Module. Installierte "
+"Anwendungen stellen diese Module bereit. Das Druckserver-Paket enthält "
+"beispielsweise Listener-Module, die die CUPS-Konfiguration erzeugen."
+
+#: ../../domain-infrastructure/listener-notifier.rst:42
+msgid ""
+"Listener modules communicate domain changes to services that aren't "
+"compatible with LDAP. The print server CUPS demonstrates this: CUPS reads"
+" printer definitions from :file:`/etc/cups/printers.conf`, not from LDAP."
+" When you save a printer in the *Printer* management module, Nubus for "
+"UCS stores it in the LDAP directory. The Univention Directory Listener "
+"module ``cups-printers`` detects this change and adds, modifies, or "
+"deletes the corresponding entry in :file:`/etc/cups/printers.conf` based "
+"on the data in LDAP."
+msgstr ""
+"Listener-Module übermitteln Änderungen in der Domäne an Dienste, die "
+"nicht mit LDAP kompatibel sind. Der Druckserver CUPS veranschaulicht "
+"dies: CUPS liest Druckerdefinitionen aus :file:`/etc/cups/printers.conf`,"
+" nicht aus LDAP. Wenn Sie einen Drucker im Verwaltungsmodul *Drucker* "
+"speichern, legt Nubus für UCS ihn im LDAP-Verzeichnis ab. Das Univention "
+"Directory Listener-Modul ``cups-printers`` erkennt diese Änderung und "
+"fügt den entsprechenden Eintrag in :file:`/etc/cups/printers.conf` hinzu,"
+" ändert oder löscht ihn basierend auf den Daten in LDAP."
+
+#: ../../domain-infrastructure/listener-notifier.rst:51
+msgid ""
+"For more information about setting up and developing listener modules, "
+"see :cite:t:`developer-reference`."
+msgstr ""
+"Weitere Informationen zum Einrichten und Entwickeln von Listener-Modulen "
+"finden Sie unter :cite:t:`developer-reference`."
+
+#: ../../domain-infrastructure/listener-notifier.rst:57
+msgid "Transaction-based replication"
+msgstr ":spelling:word:`Transaktionsbasierte` Replikation"
+
+#: ../../domain-infrastructure/listener-notifier.rst:59
+msgid ""
+"One of the built-in listener modules also performs LDAP replication. If "
+"the target LDAP server isn't accessible, the system temporarily stores "
+"the LDAP changes in :file:`/var/lib/univention-directory-"
+"replication/failed.ldif`. The system automatically transfers the file "
+"contents to LDAP when the LDAP server becomes available again."
+msgstr ""
+"Eines der integrierten Listener-Module führt auch die LDAP-Replikation "
+"durch. Wenn der Ziel-LDAP-Server nicht erreichbar ist, speichert das "
+"System die LDAP-Änderungen vorübergehend in :file:`/var/lib/univention-"
+"directory-replication/failed.ldif`. Das System überträgt den Dateiinhalt "
+"automatisch in LDAP, wenn der LDAP-Server wieder verfügbar ist."
+
+#: ../../domain-infrastructure/listener-notifier.rst:65
+msgid ""
+"The Listener and Notifier mechanism is transaction-based. The Primary "
+"Directory Node increments the transaction ID for every LDAP change. A "
+"Listener instance that has missed several transactions, for example, "
+"because you turned it off, automatically requests the missing "
+"transactions after the connection becomes available again until its local"
+" transaction ID matches the one on the Primary Directory Node."
+msgstr ""
+"Der Listener- und Notifier-Mechanismus ist transaktionsbasiert. Der "
+"Primary Directory Node erhöht die Transaktions-ID bei jeder LDAP-"
+"Änderung. Eine Listener-Instanz, die mehrere Transaktionen verpasst hat, "
+"beispielsweise weil Sie sie ausgeschaltet haben, fordert die fehlenden "
+"Transaktionen nach dem Wiederherstellen der Verbindung automatisch an, "
+"bis ihre lokale Transaktions-ID mit der des Primary Directory Node "
+"übereinstimmt."
+
+#: ../../domain-infrastructure/listener-notifier.rst:76
+msgid "Listener and Notifier troubleshooting"
+msgstr "Fehlerbehebung bei Listener und Notifier"
+
+#: ../../domain-infrastructure/listener-notifier.rst:78
+msgid ""
+"When replication doesn't work as expected, the Listener and Notifier "
+"services provide diagnostic information through log files and transaction"
+" IDs. The following sections guide you through examining this data and "
+"resolving common issues."
+msgstr ""
+"Wenn die Replikation nicht wie erwartet funktioniert, stellen die "
+"Listener- und Notifier-Dienste Diagnoseinformationen über Log-Dateien und"
+" Transaktions-IDs bereit. Die folgenden Abschnitte führen Sie durch die "
+"Auswertung dieser Daten und die Behebung häufiger Probleme."
+
+#: ../../domain-infrastructure/listener-notifier.rst:85
+msgid "Read log files and set debug levels"
+msgstr "Log-Dateien lesen und Debug-Level festlegen"
+
+#: ../../domain-infrastructure/listener-notifier.rst:87
+msgid ""
+"The Listener and all listener modules write status messages to "
+":file:`/var/log/univention/listener.log`. You can set the log detail "
+"level with the :term:`UCR variable` :envvar:`listener/debug/level`."
+msgstr ""
+"Der Listener und alle Listener-Module schreiben Statusmeldungen in "
+":file:`/var/log/univention/listener.log`. Den Detailgrad der "
+"Protokollierung legen Sie mit der :term:`UCR variable` "
+":envvar:`listener/debug/level` fest."
+
+#: ../../domain-infrastructure/listener-notifier.rst:91
+msgid ""
+"The Notifier service writes status messages to "
+":file:`/var/log/univention/notifier.log`. You can set the debug level "
+"with :envvar:`notifier/debug/level`."
+msgstr ""
+"Der Notifier-Dienst schreibt Statusmeldungen in "
+":file:`/var/log/univention/notifier.log`. Den Debug-Level legen Sie mit "
+":envvar:`notifier/debug/level` fest."
+
+#: ../../domain-infrastructure/listener-notifier.rst:98
+msgid "Identify replication problems"
+msgstr "Probleme bei der Replikation identifizieren"
+
+#: ../../domain-infrastructure/listener-notifier.rst:100
+msgid ""
+"Under normal load with no network problems, replication from management "
+"modules to a :term:`Replica Directory Node` is nearly instant. To verify "
+"replication is complete, compare the transaction IDs of the listener and "
+"notifier services."
+msgstr ""
+"Bei normaler Last und ohne Netzwerkprobleme erfolgt die Replikation von "
+"den Verwaltungsmodulen zu einem :term:`Replica Directory Node` nahezu "
+"sofort. Um zu überprüfen, ob die Replikation abgeschlossen ist, "
+"vergleichen Sie die Transaktions-IDs der Listener- und Notifier-Dienste."
+
+#: ../../domain-infrastructure/listener-notifier.rst:105
+msgid ""
+"On the Primary Directory Node, the Notifier writes all transactions to "
+":file:`/var/lib/univention-ldap/notify/transaction`, in order, as shown "
+"in :numref:`listener-notifier-troubleshooting-replication-translation-"
+"listing`."
+msgstr ""
+"Auf dem Primary Directory Node schreibt der Notifier alle Transaktionen "
+"in der Reihenfolge in :file:`/var/lib/univention-"
+"ldap/notify/transaction`, wie in :numref:`listener-notifier-"
+"troubleshooting-replication-translation-listing` gezeigt."
+
+#: ../../domain-infrastructure/listener-notifier.rst:109
+msgid "Check the last notifier transaction on the Primary Directory Node"
+msgstr ""
+"Letzte :spelling:word:`Notifier-Transaktion` auf dem Primary Directory "
+"Node prüfen"
+
+#: ../../domain-infrastructure/listener-notifier.rst:109
+msgid ""
+"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
+"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
+msgstr ""
+"root@primary:~# tail -1 /var/lib/univention-ldap/notify/transaction\n"
+"836 cn=replica3,cn=dc,cn=computers,dc=firma,dc=de m"
+
+#: ../../domain-infrastructure/listener-notifier.rst:116
+msgid ""
+"The Listener stores the last received transaction ID in :file:`/var/lib"
+"/univention-directory-listener/notifier_id`, as shown in :numref"
+":`listener-notifier-troubleshooting-replication-translation-last-id-"
+"listing`."
+msgstr ""
+"Der Listener speichert die zuletzt empfangene Transaktions-ID in "
+":file:`/var/lib/univention-directory-listener/notifier_id`, wie in "
+":numref:`listener-notifier-troubleshooting-replication-translation-last-"
+"id-listing` gezeigt."
+
+#: ../../domain-infrastructure/listener-notifier.rst:120
+msgid "Check the last transaction ID received by the listener"
+msgstr "Letzte vom Listener empfangene Transaktions-ID prüfen"
+
+#: ../../domain-infrastructure/listener-notifier.rst:120
+msgid ""
+"root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id\n"
+"836"
+msgstr ""
+"root@replica1:~# cat /var/lib/univention-directory-listener/notifier_id\n"
+"836"
+
+#: ../../domain-infrastructure/listener-notifier.rst:127
+msgid ""
+"The Nagios service ``UNIVENTION_REPLICATION`` can also perform this check"
+" automatically, see :external+uv-ucs-manual:ref:`nagios-preconfigured-"
+"checks` in :cite:t:`ucs-manual`."
+msgstr ""
+"Der Nagios-Dienst ``UNIVENTION_REPLICATION`` kann diese Prüfung auch "
+"automatisch durchführen, siehe :external+uv-ucs-manual:ref:`nagios-"
+"preconfigured-checks` in :cite:t:`ucs-manual`."
+
+#: ../../domain-infrastructure/listener-notifier.rst:133
+msgid "Reinitialize listener modules"
+msgstr "Listener-Module neu initialisieren"
+
+#: ../../domain-infrastructure/listener-notifier.rst:135
+msgid ""
+"If a listener module has problems, you can reinitialize it. "
+"Reinitialization causes the listener module to process all LDAP objects "
+"it works with again. Pass the listener module name as an argument to the "
+"reinitialization command. The installed listener modules are in "
+":file:`/var/lib/univention-directory-listener/handlers/`."
+msgstr ""
+"Wenn ein Listener-Modul Probleme hat, können Sie es neu initialisieren. "
+"Die Neuinitialisierung bewirkt, dass das Listener-Modul alle LDAP-"
+"Objekte, mit denen es arbeitet, erneut verarbeitet. Übergeben Sie den "
+"Namen des Listener-Moduls als Argument an den Befehl zur "
+"Neuinitialisierung. Die installierten Listener-Module befinden sich in "
+":file:`/var/lib/univention-directory-listener/handlers/`."
+
+#: ../../domain-infrastructure/listener-notifier.rst:142
+msgid ""
+"For example, to reinitialize the ``cups-printers`` module, run the "
+"command in :numref:`listener-notifier-troubleshooting-init-modules-"
+"listing`."
+msgstr ""
+"Um beispielsweise das ``cups-printers`` Modul neu zu initialisieren, führen Sie den "
+"Befehl in :numref:`listener-notifier-troubleshooting-init-modules-"
+"listing` aus."
+
+#: ../../domain-infrastructure/listener-notifier.rst:145
+msgid "Reinitialize the cups-printers listener module"
+msgstr "Das ``cups-printers`` Listener-Modul neu initialisieren"
+
+#: ../../domain-infrastructure/listener-notifier.rst:145
+msgid "$ univention-directory-listener-ctrl resync cups-printers"
+msgstr "$ univention-directory-listener-ctrl resync cups-printers"
+
+#: ../../domain-infrastructure/listener-notifier.rst:153
+msgid ""
+"Reinitialization removes internal state from the listener module and "
+"can't be undone. Back up the listener state before reinitialization if "
+"you need to preserve it."
+msgstr ""
+"Die Neuinitialisierung entfernt den internen Zustand des Listener-Moduls "
+"und kann nicht rückgängig gemacht werden. Sichern Sie den Zustand des "
+"Listeners vor der Neuinitialisierung, wenn Sie ihn erhalten möchten."
 
 #: ../../domain-infrastructure/system-roles.rst:7
 msgid "Understanding system roles"
@@ -2253,8 +2578,8 @@ msgid ""
 "uses SSH for signing in to systems and TLS for domain replication and "
 "LDAP communication."
 msgstr ""
-"Nubus für UCS verschlüsselt vertrauliche Daten bei der Übertragung immer. "
-"Beispielsweise verwendet es SSH für die Anmeldung an Systemen und TLS "
+"Nubus für UCS verschlüsselt vertrauliche Daten bei der Übertragung immer."
+" Beispielsweise verwendet es SSH für die Anmeldung an Systemen und TLS "
 "für die Domänenreplikation und LDAP-Kommunikation."
 
 #: ../../domain-infrastructure/tls.rst:13

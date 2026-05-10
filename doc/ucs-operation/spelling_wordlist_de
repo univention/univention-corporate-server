@@ -16,6 +16,7 @@ Containerisierung
 Cron
 Cron-Format
 DNS-Domänennamens
+Debug-Ebenen
 Docker-Anwendung
 Docker-Anwendungen
 Docker-basierte
@@ -35,10 +36,12 @@ Hypervisor-Umgebungen
 Infrastrukturdienste
 Infrastrukturumgebungen
 Integrationen
+Listener-Dienste
 Mirror
 Mirror-Server
 Mirrors
 Multiprocessing
+Notifier-Dienste
 Partitionierungsschemata
 Partitionierungsstrategien
 Partitionierungsversion
