@@ -1505,6 +1505,54 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+.. envvar:: self-service/backend-server
+
+   Specifies the :term:`Primary Directory Node` or :term:`Backup Directory Node`
+   that runs the *Self Service* backend.
+   The system must have the package :program:`univention-management-console-module-passwordreset` installed.
+   When unset,
+   the *End User Self Service* uses the domain's Primary Directory Node.
+
+   For information about setting up the *End User Self Service*,
+   see :ref:`end-user-self-service-installation`.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: self-service/ldap_attributes
+
+   Specifies the LDAP attributes
+   that users can modify through the *End User Self Service*.
+   Set this variable only on the :term:`Primary Directory Node`.
+   On the Primary Directory Node,
+   a UCR module generates and activates an ACL definition file
+   that grants users write access to these attributes
+   in the directory service.
+
+   For information about configuring user-editable contact information,
+   see :ref:`end-user-self-service-contact-information`.
+
+   :Default value: ``jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,c,homePhone,mobile,homePostalAddress``
+   :Type: List of strings, separated by commas
+
+
+.. envvar:: self-service/udm_attributes
+
+   Specifies the UDM attributes
+   that the *End User Self Service* shows on the *Contact information* page
+   where users can modify their user account.
+   Set this variable on all systems
+   where you have installed the :program:`Self Service` app
+   and on the :term:`Primary Directory Node`.
+
+   For information about configuring user-editable contact information,
+   see :ref:`end-user-self-service-contact-information`.
+
+   :Default value: not set
+   :Type: List of strings, separated by commas
+
+
 .. envvar:: ssl/validity/host
 
    Stores the expiry date of the local host certificate.
@@ -1618,6 +1666,22 @@ This section provides a reference for UCR variables.
 
    :Default value: not set
    :Type: string
+
+
+.. envvar:: umc/self-service/account-registration/udm_attributes
+
+   Specifies the UDM attributes
+   that the *End User Self Service* shows on the *Create an account* page.
+   Set this variable on the *Self Service* backend
+   defined through :envvar:`self-service/backend-server`,
+   because the *End User Self Service* forwards account registration requests
+   to that backend.
+
+   For information about configuring the account registration form,
+   see :ref:`end-user-self-service-registration-registration-form`.
+
+   :Default value: not set
+   :Type: List of strings, separated by commas
 
 
 .. envvar:: umc/web/oidc/enabled
