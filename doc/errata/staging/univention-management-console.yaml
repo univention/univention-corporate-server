@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [5]
+scope: ucs_5.2-0-errata5.2-5
+src: univention-management-console
+fix: 14.5.1
+desc: |
+ This update addresses the following issue:
+ * The UMC server allowed HTTP request header smuggling for the
+   `X-UMC-Federated-Account` and `X-UMC-Roles` values, which were used for
+   interprocess communication between UMC server and UMC module processes, if
+   delegative administration was enabled.
+bug: [59280]

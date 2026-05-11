@@ -565,14 +565,14 @@ class Categories(Resource):
     def get(self):
         categoryManager.load()
         ucr.load()
-        _ucr_dict = dict(ucr.items())
+        ucr_dict = dict(ucr.items())
         categories = []
         for category in categoryManager.values():
             categories.append({
                 'id': category.id,
                 'icon': category.icon,
                 'color': category.color,
-                'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
+                'name': self.i18n._(category.name, category.domain).format(**ucr_dict),
                 'priority': category.priority,
             })
         CORE.debug('Categories: %s', categories)
@@ -740,9 +740,29 @@ class Command(Resource):
             self.finish()
 
     def get_request_header(self, session, methodname, umcp_command):
-        headers = dict(self.request.headers)
-        for header in ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection', 'X-Http-Reason', 'Range', 'Trailer', 'Server', 'Set-Cookie', 'X-UMC-AuthType'):
-            headers.pop(header, None)
+        headers = {
+            k: v for k, v in self.request.headers.items()
+            if k.lower() not in {
+                'content-length',
+                'transfer-encoding',
+                'content-encoding',
+                'connection',
+                'x-http-reason',
+                'range',
+                'trailer',
+                'server',
+                'set-cookie',
+                'x-user-dn',
+                'x-umc-authtype',
+                'x-umc-flavor',
+                'x-umc-roles',
+                'x-umc-federated-account',
+                'x-umc-method',
+                'x-umc-command',
+                'x-umc-request-id',
+            }
+        }
+
         headers['Cookie'] = '; '.join([m.OutputString(attrs=[]) for name, m in self.cookies.items() if not name.startswith('UMCUsername')])
         headers['X-User-Dn'] = json.dumps(session.user.user_dn)
         # headers['X-UMC-Flavor'] = None
