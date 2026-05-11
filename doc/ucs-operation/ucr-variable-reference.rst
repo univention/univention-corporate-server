@@ -120,6 +120,72 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+
+.. envvar:: directory/manager/blocklist/cleanup/cron
+
+   Specifies when the cleanup script runs
+   to lift expired block list entries.
+   The script removes entries whose retention time has elapsed.
+   Use standard cron schedule syntax.
+   For the syntax, run :command:`man 5 crontab`.
+
+   For the block list feature this variable depends on,
+   see :envvar:`directory/manager/blocklist/enabled`.
+
+   For general information about the *Blocklists* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-blocklists`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: ``0 8 * * *``
+   :Type: cron
+
+
+.. envvar:: directory/manager/blocklist/enabled
+
+   Controls whether Nubus for UCS automatically blocks property values
+   removed from a UDM object,
+   preventing them from being reused on other objects.
+   When set to ``false``,
+   the block list feature is inactive.
+
+   Configure the cleanup schedule with
+   :envvar:`directory/manager/blocklist/cleanup/cron`.
+
+   For general information about the *Blocklists* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-blocklists`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: ``false``
+   :Possible values: ``true``, ``false``
+   :Type: boolean
+
+
+.. envvar:: directory/manager/mail-address/uniqueness
+
+   Controls whether alternative email addresses must also be globally unique.
+   When unset,
+   only the primary email address must be unique across the domain.
+   When set to ``true``,
+   alternative email addresses must also be unique
+   and can't overlap with any primary email address.
+
+   :Default value: ``false``
+   :Possible values: ``true``, ``false``
+   :Type: boolean
+
+
+.. envvar:: directory/manager/templates/alphanum/whitelist
+
+   Specifies additional characters to preserve
+   when the UDM object template option ``<:alphanum>`` is applied.
+   By default,
+   ``<:alphanum>`` removes all characters that aren't letters or digits.
+   Characters listed in this variable are exempt from removal.
+
+   :Default value: not set
+   :Type: string
+
+
 .. envvar:: directory/manager/user_group/uniqueness
 
    If activated with the value ``true``
@@ -870,6 +936,21 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
+.. envvar:: listener/shares/rename
+
+   Controls whether Nubus moves the content of a NFS or CIFS share
+   when its storage path changes.
+   When activated,
+   Nubus moves the existing directory content to the new path.
+   When unset or deactivated,
+   Nubus creates a new empty directory at the new path
+   and leaves the existing content at the old path.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
 .. envvar:: local/repository
 
    Activates and deactivates the local repository.
@@ -880,6 +961,123 @@ This section provides a reference for UCR variables.
 
    For information about creating and maintaining a local repository,
    see :ref:`lifecycle-local-repository-create-init`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: mail/dovecot/auth/cache_negative_ttl
+
+   Sets the time-to-live for negative authentication results in Dovecot,
+   such as when a user isn't found or a password doesn't match.
+   When set to ``0``,
+   Dovecot doesn't cache negative results.
+
+   For the TTL of successful :spelling:word:`lookups`,
+   see :envvar:`mail/dovecot/auth/cache_ttl`.
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: ``1 mins``
+   :Type: string
+
+
+.. envvar:: mail/dovecot/auth/cache_ttl
+
+   Sets the time-to-live for cached authentication data in Dovecot.
+   After the TTL expires,
+   Dovecot no longer uses the cached record,
+   except when the LDAP lookup fails with an internal error.
+
+   For the TTL of negative results,
+   see :envvar:`mail/dovecot/auth/cache_negative_ttl`.
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: ``5 mins``
+   :Type: string
+
+
+.. envvar:: mail/dovecot/mailbox/delete
+
+   Controls whether Dovecot deletes a user's IMAP mailbox
+   when the corresponding user account is deleted.
+   When activated,
+   Dovecot removes the mailbox together with the account.
+   When unset or deactivated,
+   the mailbox is retained after the account is deleted.
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: mail/dovecot/mailbox/rename
+
+   Controls whether Dovecot renames a user's IMAP mailbox
+   when the user's primary email address changes.
+   The mailbox name is linked to the primary email address,
+   not to the username.
+   When activated,
+   Dovecot renames the mailbox to match the new primary email address.
+
+   .. caution::
+
+      When unset or deactivated,
+      the mailbox retains the old name
+      and the user can no longer access their previous emails
+      after the primary email address changes.
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: mail/hosteddomains
+
+   Contains the mail domains configured in the Nubus for UCS domain.
+   Nubus sets this variable automatically
+   when you create or remove mail domains
+   through the *Mail* module in the *Management UI*.
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
+
+   .. note::
+
+      Don't set this variable directly.
+      Manage mail domains through the *Management UI* instead.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: mail/postfix/policy/listfilter
+
+   Controls whether Postfix enforces sender restrictions
+   for mail groups and mailing lists configured in the *Management UI*.
+   When activated,
+   only permitted senders can write to those groups and lists.
+   When unset,
+   any user can send to mail groups and mailing lists.
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
 
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
@@ -1272,6 +1470,17 @@ This section provides a reference for UCR variables.
    :Possible values: ``saml``, ``oidc``, ``ucs``
 
 
+.. envvar:: portal/default-dn
+
+   Specifies the LDAP distinguished name of the portal object
+   that holds the configuration for the *Portal*.
+   After you change this variable,
+   run :command:`univention-portal update` to apply the change.
+
+   :Default value: :samp:`cn=domain,cn=portal,cn=portals,cn=univention,{ldap/base}`
+   :Type: string
+
+
 .. envvar:: portal/reload-tabs-on-logout
 
    If activated,
@@ -1505,53 +1714,6 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
-.. envvar:: self-service/backend-server
-
-   Specifies the :term:`Primary Directory Node` or :term:`Backup Directory Node`
-   that runs the *Self Service* backend.
-   The system must have the package :program:`univention-management-console-module-passwordreset` installed.
-   When unset,
-   the *End User Self Service* uses the domain's Primary Directory Node.
-
-   For information about setting up the *End User Self Service*,
-   see :ref:`end-user-self-service-installation`.
-
-   :Default value: not set
-   :Type: string
-
-
-.. envvar:: self-service/ldap_attributes
-
-   Specifies the LDAP attributes
-   that users can modify through the *End User Self Service*.
-   Set this variable only on the :term:`Primary Directory Node`.
-   On the Primary Directory Node,
-   a UCR module generates and activates an ACL definition file
-   that grants users write access to these attributes
-   in the directory service.
-
-   For information about configuring user-editable contact information,
-   see :ref:`end-user-self-service-contact-information`.
-
-   :Default value: ``jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,c,homePhone,mobile,homePostalAddress``
-   :Type: List of strings, separated by commas
-
-
-.. envvar:: self-service/udm_attributes
-
-   Specifies the UDM attributes
-   that the *End User Self Service* shows on the *Contact information* page
-   where users can modify their user account.
-   Set this variable on all systems
-   where you have installed the :program:`Self Service` app
-   and on the :term:`Primary Directory Node`.
-
-   For information about configuring user-editable contact information,
-   see :ref:`end-user-self-service-contact-information`.
-
-   :Default value: not set
-   :Type: List of strings, separated by commas
-
 
 .. envvar:: ssl/validity/host
 
@@ -1666,22 +1828,6 @@ This section provides a reference for UCR variables.
 
    :Default value: not set
    :Type: string
-
-
-.. envvar:: umc/self-service/account-registration/udm_attributes
-
-   Specifies the UDM attributes
-   that the *End User Self Service* shows on the *Create an account* page.
-   Set this variable on the *Self Service* backend
-   defined through :envvar:`self-service/backend-server`,
-   because the *End User Self Service* forwards account registration requests
-   to that backend.
-
-   For information about configuring the account registration form,
-   see :ref:`end-user-self-service-registration-registration-form`.
-
-   :Default value: not set
-   :Type: List of strings, separated by commas
 
 
 .. envvar:: umc/web/oidc/enabled
