@@ -97,3 +97,20 @@ class TestSecurityHeaders:
 
         # make sure any UMC module is present (the session is not dropped to anonymous)
         assert any(x['id'] == 'top' for x in client.umc_get('modules').data['modules'])
+
+    def test_header_smuggling(self, umc_allow_ucstest, umc_client):
+        headers = {
+            'x-user-dn': '"cn=admin"',
+            'x-umc-authtype': 'AUTH',
+            'x-umc-flavor': 'FLAVOR',
+            'x-umc-roles': '["guardian::super-admin"]',
+            'x-umc-federated-account': 'true',
+            'x-umc-method': 'METHOD',
+            'x-umc-command': 'MYCMD',
+            'x-umc-request-id': 'ID',
+        }
+        result = umc_client.umc_command('ucstest/all_headers', headers=dict(FOo='Bar', **headers)).result
+        assert result['Foo'] == 'Bar'
+        result_ci = {k.lower(): v for k, v in result.items()}
+        for key, value in headers.items():
+            assert result_ci.get(key.lower()) != value

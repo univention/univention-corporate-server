@@ -15,7 +15,6 @@ import shlex
 import pytest
 
 from univention.lib.umc import HTTPError
-from univention.management.console.modules.ucstest import joinscript, unjoinscript
 
 
 ADR0010_EXT_REGEX = re.compile(
@@ -34,20 +33,16 @@ ERRORS = {
 
 
 @pytest.mark.parametrize('path,expected_trace', list(ERRORS.items()), ids=['mainthread', 'thread', 'threadresult'])
-def test_umc_tracebacks(Client, path, expected_trace):
-    joinscript()
-    try:
-        umc_client = Client.get_test_connection(language='en_US')
-        print(f"checking: {path}")
-        with open('/var/log/univention/management-console-server.log') as server_log, open('/var/log/univention/management-console-module-ucstest.log') as module_log:
-            server_log.seek(0, 2)
-            module_log.seek(0, 2)
-            with pytest.raises(HTTPError) as exc:
-                umc_client.umc_command(path)
-            server_log_text = parse_log(server_log.read())
-            module_log_text = parse_log(module_log.read())
-    finally:
-        unjoinscript()
+def test_umc_tracebacks(Client, path, expected_trace, umc_allow_ucstest):
+    umc_client = Client.get_test_connection(language='en_US')
+    print(f"checking: {path}")
+    with open('/var/log/univention/management-console-server.log') as server_log, open('/var/log/univention/management-console-module-ucstest.log') as module_log:
+        server_log.seek(0, 2)
+        module_log.seek(0, 2)
+        with pytest.raises(HTTPError) as exc:
+            umc_client.umc_command(path)
+        server_log_text = parse_log(server_log.read())
+        module_log_text = parse_log(module_log.read())
 
     assert exc.value.status == 591
 
@@ -109,16 +104,12 @@ def parse_logfmt(line: str) -> dict[str, str]:
     ("ucstest/umc_error_traceback", "This is an UMC Error"),
     ("ucstest/umc_error_as_thread_result", "This is an UMC Error"),
 ])
-def test_umc_errors(Client, path, expected_error):
-    joinscript()
-    try:
-        umc_client = Client.get_test_connection()
-        print(f"checking: {path}")
-        with pytest.raises(HTTPError) as exc:
-            umc_client.umc_command(path)
-        assert exc.value.status == 400, 'Wrong http return code'
-        error = json.loads(exc.value.response.body)
-        assert error["message"] == expected_error, (error["message"], expected_error)
-        assert error["traceback"] is None, (error["traceback"], 'Traceback should be None (null')
-    finally:
-        unjoinscript()
+def test_umc_errors(Client, path, expected_error, umc_allow_ucstest):
+    umc_client = Client.get_test_connection()
+    print(f"checking: {path}")
+    with pytest.raises(HTTPError) as exc:
+        umc_client.umc_command(path)
+    assert exc.value.status == 400, 'Wrong http return code'
+    error = json.loads(exc.value.response.body)
+    assert error["message"] == expected_error, (error["message"], expected_error)
+    assert error["traceback"] is None, (error["traceback"], 'Traceback should be None (null')

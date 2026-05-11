@@ -13,15 +13,6 @@ import concurrent.futures
 import pytest
 
 from univention.lib.umc import BadGateway
-from univention.management.console.modules.ucstest import joinscript, unjoinscript
-
-
-@pytest.fixture(autouse=True)
-def ucs_test_module_joined():
-    joinscript()
-    subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
-    yield
-    unjoinscript()
 
 
 def pool_runner(func):
@@ -31,7 +22,7 @@ def pool_runner(func):
             print(future.result())
 
 
-def test_max_parallel_requests_to_module_processes(Client):
+def test_max_parallel_requests_to_module_processes(Client, umc_allow_ucstest):
     client = Client.get_test_connection()
     print("Open module processes")
     client.umc_command('ucstest/sleep', {'seconds': 1})
@@ -58,13 +49,13 @@ def test_max_parallel_requests_to_module_processes(Client):
         subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
 
 
-def test_module_process_can_be_reached_when_request_exceeds_initial_timeout(ucr, Client):
+def test_module_process_can_be_reached_when_request_exceeds_initial_timeout(ucr, Client, umc_allow_ucstest):
     client = Client.get_test_connection(language='en-US')
     subprocess.call(['pkill', '-f', 'univention-management-console-module.*-m.*ucstest'])
     assert client.umc_command('ucstest/sleep', {'seconds': 12}).data
 
 
-def test_error_status_if_module_process_cannot_initialized_in_time(ucr, Client):
+def test_error_status_if_module_process_cannot_initialized_in_time(ucr, Client, umc_allow_ucstest):
     """Test error handling works when module initialization takes more than 10 seconds (which is the timeout)"""
     ucr.handler_set(['ucstest/sleep-during-init=11'])
     client = Client.get_test_connection(language='en-US')
@@ -72,7 +63,7 @@ def test_error_status_if_module_process_cannot_initialized_in_time(ucr, Client):
     assert client.umc_command('ucstest/sleep', {'seconds': 11}).data
 
 
-def test_error_status_if_module_process_cannot_import_in_time(ucr, Client):
+def test_error_status_if_module_process_cannot_import_in_time(ucr, Client, umc_allow_ucstest):
     """Test error handling works when module import takes more than 10 seconds (which is the timeout)"""
     ucr.handler_set(['ucstest/sleep-during-import=11'])
     subprocess.call(['pkill', '-f', 'univention-management-console-module.*-m.*ucstest'])

@@ -104,3 +104,6 @@ class Instance(Base):
             thread = FakeThread()
             thread.exc_info = (etype, result, None)
         self.thread_finished_callback(thread, result, request)
+
+    def all_headers(self, request):
+        self.finished(request.id, request.headers)

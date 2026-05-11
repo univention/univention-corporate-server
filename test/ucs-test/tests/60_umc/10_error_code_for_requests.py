@@ -11,13 +11,10 @@
 import http.client as httplib
 import json
 import ssl
-import subprocess
 import time
 
 import psutil
-import pytest
 
-from univention.management.console.modules.ucstest import joinscript, unjoinscript
 from univention.testing.umc import Client
 
 
@@ -41,10 +38,6 @@ def kill_ucstest():
             raise AssertionError(f'ERROR: ... module process {process.pid} {process.cmdline()!r} is still there, this should not happen!')
 
 
-def restart_web_server():
-    subprocess.call(['systemctl', 'restart', 'univention-management-console-server', 'apache2'])
-
-
 class AsyncClient(Client):
 
     def async_request(self, path):
@@ -57,17 +50,7 @@ class AsyncClient(Client):
         return connection
 
 
-@pytest.fixture(autouse=True)
-def with_joinscript():
-    joinscript()
-    try:
-        yield
-    finally:
-        restart_web_server()
-        unjoinscript()
-
-
-def test_error_code_for_requests():
+def test_error_code_for_requests(umc_allow_ucstest):
     print('Setting up the connections and sending requests...')
     connections = [
         AsyncClient.get_test_connection(timeout=10).async_request('ucstest/norespond')

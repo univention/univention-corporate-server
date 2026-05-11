@@ -18,5 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<command name="ucstest/traceback_as_thread_result" function="traceback_as_thread_result" />
 		<command name="ucstest/umc_error_as_thread_result" function="umc_error_as_thread_result" />
 		<command name="ucstest/sleep" function="sleep" />
+		<command name="ucstest/all_headers" function="all_headers" />
 	</module>
 </umc>
