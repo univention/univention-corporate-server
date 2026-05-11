@@ -135,6 +135,12 @@ def create_mapping(configbasename='connector'):
         ou_ignore_filter = f'({ou_ignore_filter})'
     ou_ignore_filter = f'(|{ou_ignore_filter}{ou_ignore_attrs})' if ou_ignore_filter or ou_ignore_attrs else ''
 
+    contact_ignore_attrs = ignore_filter_from_attr('cn', connector('%s/ad/mapping/contact/ignorelist'))
+    contact_ignore_filter = configRegistry.get(connector('%s/ad/mapping/contact/ignorefilter'), '')
+    if contact_ignore_filter and not contact_ignore_filter.startswith('('):
+        contact_ignore_filter = f'({contact_ignore_filter})'
+    contact_ignore_filter = f'(|{contact_ignore_filter}{contact_ignore_attrs})' if contact_ignore_filter or contact_ignore_attrs else ''
+
     ad_mapping = {
         'user': univention.connector.property(
             ucs_default_dn='cn=users,{ldap/base}'.format(**configRegistry),
@@ -466,6 +472,116 @@ def create_mapping(configbasename='connector'):
                     ucs_attribute='description',
                     ldap_attribute='description',
                     con_attribute='description',
+                ),
+            },
+        ),
+        'contact': univention.connector.property(
+            ucs_default_dn='cn=users,{ldap/base}'.format(**configRegistry),
+            con_default_dn=connector('cn=users,%%(%s/ad/ldap/base)s') % configRegistry,
+            ucs_module='users/contact',
+            sync_mode=configRegistry.get(connector('%s/ad/mapping/contact/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
+            scope='sub',
+            con_search_filter='objectClass=contact',
+            ignore_filter=contact_ignore_filter or None,
+            ignore_subtree=global_ignore_subtree,
+            allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
+            con_create_objectclass=['top', 'contact'],
+            post_ucs_modify_functions=[
+                univention.connector.ad.set_univentionObjectFlag_to_synced,
+            ],
+            attributes={
+                'cn': univention.connector.attribute(
+                    ucs_attribute='cn',
+                    ldap_attribute='cn',
+                    con_attribute='cn',
+                    required=True,
+                    compare_function=univention.connector.compare_lowercase,
+                ),
+                'sn': univention.connector.attribute(
+                    ucs_attribute='lastname',
+                    ldap_attribute='sn',
+                    con_attribute='sn',
+                ),
+                'givenName': univention.connector.attribute(
+                    ucs_attribute='firstname',
+                    ldap_attribute='givenName',
+                    con_attribute='givenName',
+                ),
+            },
+            post_attributes={
+                'displayName': univention.connector.attribute(
+                    ucs_attribute='displayName',
+                    ldap_attribute='displayName',
+                    con_attribute='displayName',
+                ),
+                'description': univention.connector.attribute(
+                    ucs_attribute='description',
+                    ldap_attribute='description',
+                    con_attribute='description',
+                ),
+                'organisation': univention.connector.attribute(
+                    ucs_attribute='organisation',
+                    ldap_attribute='o',
+                    con_attribute=configRegistry.get(connector('%s/ad/mapping/organisation'), 'company'),
+                ),
+                'title': univention.connector.attribute(
+                    ucs_attribute='title',
+                    ldap_attribute='title',
+                    con_attribute='title',
+                ),
+                'telephoneNumber': univention.connector.attribute(
+                    ucs_attribute='phone',
+                    ldap_attribute='telephoneNumber',
+                    con_attribute='telephoneNumber',
+                    con_other_attribute='otherTelephone',
+                ),
+                'homePhone': univention.connector.attribute(
+                    ucs_attribute='homeTelephoneNumber',
+                    ldap_attribute='homePhone',
+                    con_attribute='homePhone',
+                    con_other_attribute='otherHomePhone',
+                ),
+                'mobilePhone': univention.connector.attribute(
+                    ucs_attribute='mobileTelephoneNumber',
+                    ldap_attribute='mobile',
+                    con_attribute='mobile',
+                    con_other_attribute='otherMobile',
+                ),
+                'pager': univention.connector.attribute(
+                    ucs_attribute='pagerTelephoneNumber',
+                    ldap_attribute='pager',
+                    con_attribute='pager',
+                    con_other_attribute='otherPager',
+                ),
+                'mail': univention.connector.attribute(
+                    ucs_attribute='e-mail',
+                    ldap_attribute='mail',
+                    con_attribute='mail',
+                ),
+                'street': univention.connector.attribute(
+                    ucs_attribute='street',
+                    ldap_attribute='street',
+                    con_attribute='streetAddress',
+                ),
+                'city': univention.connector.attribute(
+                    ucs_attribute='city',
+                    ldap_attribute='l',
+                    con_attribute='l',
+                ),
+                'postcode': univention.connector.attribute(
+                    ucs_attribute='postcode',
+                    ldap_attribute='postalCode',
+                    con_attribute='postalCode',
+                ),
+                'state': univention.connector.attribute(
+                    ucs_attribute='state',
+                    ldap_attribute='st',
+                    con_attribute='st',
+                ),
+                'country': univention.connector.attribute(
+                    ucs_attribute='country',
+                    ldap_attribute='c',
+                    con_attribute='c',
                 ),
             },
         ),

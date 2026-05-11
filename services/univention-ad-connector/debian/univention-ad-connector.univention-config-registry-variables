@@ -130,6 +130,12 @@ Description[en]=Defines the synchronisation mode for containers (cn) between the
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/contact/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für Kontakte zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Nur Änderungen im Active Directory werden in das UCS-LDAP übertragen), 'write' (Nur Änderungen im UCS-LDAP werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, Änderungen in beiden Verzeichnisdiensten werden übertragen). Falls diese Variable nicht gesetzt ist, wird der Wert von connector/ad/mapping/syncmode verwendet.
+Description[en]=Defines the synchronisation mode for contacts between the UCS LDAP and Active Directory. The following values are supported: 'read' (Only changes in Active Directory are synchronised to UCS LDAP), 'write' (Only changes in UCS LDAP are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes in both directory services are synchronised). If this variable is not set, the value of connector/ad/mapping/syncmode will be used.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/mapping/ignoresubtree/.*]
 Description[de]=Definiert die Positionen im Verzeichnisdienst, die von der Synchronisation ausgeschlossen werden. Die Werte können sowohl Positionen im Active Directory als auch im UCS-LDAP enthalten. Standardmäßig ist die Variable nicht gesetzt.
 Description[en]=Defines the locations in the directory service that are excluded from the synchronization. The values can contain positions in Active Directory and in the UCS LDAP. By default, the variable is not set.
@@ -228,6 +234,12 @@ Description[en]=All OUs which match this LDAP-Filter are not synchronised by the
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/contact/ignorefilter]
+Description[de]=Alle Kontakte, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Description[en]=All contacts which match this LDAP filter are not synchronised by the connector.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/mapping/group/ignorelist]
 Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
@@ -247,6 +259,14 @@ Categories=service-adcon
 [con.*/ad/mapping/ou/ignorelist]
 Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
 Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated by commas. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
+Type=list
+Separator=,
+Elementtype=str
+Categories=service-adcon
+
+[con.*/ad/mapping/contact/ignorelist]
+Description[de]=Die hier angegebenen Namen von Kontakten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der cn= Teil muss nicht angegeben werden.
+Description[en]=The names of contacts (by cn) specified here are not synchronised by the connector. Multiple values need to be separated by commas. The cn= part is not needed.
 Type=list
 Separator=,
 Elementtype=str
@@ -379,5 +399,11 @@ Categories=service-adcon
 [con.*/ad/mapping/windowscomputer/allowfilter]
 Description[de]=Nur die Windows-Computer Objekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
 Description[en]=Only those windowscomputer objects that match this LDAP filter are synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/contact/allowfilter]
+Description[de]=Nur die Kontakt-Objekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
+Description[en]=Only those contact objects that match this LDAP filter are synchronised by the connector.
 Type=str
 Categories=service-adcon
