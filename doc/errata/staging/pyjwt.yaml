@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: pyjwt
+fix: 1.4.2-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-32597 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+bug: [59278]
+cve:
+- CVE-2026-32597
