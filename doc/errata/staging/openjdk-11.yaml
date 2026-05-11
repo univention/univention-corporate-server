@@ -1,0 +1,32 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: openjdk-11
+fix: 11.0.31+11-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-34282 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-22016 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-23865 (CVSS score 5.3 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L/E:U/RL:O/RC:C).
+ * CVE-2026-22013 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N).
+ * CVE-2026-22021 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-22018 (CVSS score 3.7 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-34268, CVE-2026-22007 (CVSS score 2.9 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+bug: [59275]
+cve:
+- CVE-2026-22016
+- CVE-2026-34282
+- CVE-2026-22021
+- CVE-2026-22013
+- CVE-2026-23865
+- CVE-2026-22018
+- CVE-2026-22007
+- CVE-2026-34268
