@@ -22,6 +22,10 @@ Year 2026
      - Change
 
    * - 11. May 2026
+     - :ref:`references-ucr-variables`
+     - Add referenced but undefined UCR variables to the reference list.
+
+   * - 11. May 2026
      - :ref:`listener-notifier`
      - Add section about Univention Listener and Notifier mechanism for domain replication.
 
