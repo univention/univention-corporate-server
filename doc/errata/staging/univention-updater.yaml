@@ -5,11 +5,17 @@ scope: ucs_5.2-0-errata5.2-5
 src: univention-updater
 fix: 17.5.3
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The UMC updater module raised an unhandled OSError when the serial file
    '/etc/apt/sources.list.d/20_ucs-online-component.list' was missing from
    the system. The error caused a misleading "Error contacting the update
    server" message in the UI. The Watched_File class now handles the missing
    file gracefully and logs a warning instead of raising an exception.
    (Bug #53615)
+ * During a release upgrade (5.1 to 5.2), the pre-upgrade script moved
+   '/etc/apt/sources.list.d/20_ucs-online-component.list' to a backup but
+   the post-upgrade script only deleted the backup without regenerating the
+   file. The post-upgrade script now calls 'ucr commit' to recreate the
+   component sources list after a successful upgrade, preventing the above
+   error from occurring permanently after a release upgrade. (Bug #53615)
 bug: [53615]
