@@ -1,0 +1,30 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u28
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-33908, CVE-2026-33901 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-33900 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-40311, CVE-2026-40310, CVE-2026-33905 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2026-33899 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-34238 (CVSS score 5.1 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-42050 (CVSS score unknown).
+bug: [59276]
+cve:
+- CVE-2026-33899
+- CVE-2026-33900
+- CVE-2026-33901
+- CVE-2026-33905
+- CVE-2026-33908
+- CVE-2026-34238
+- CVE-2026-40310
+- CVE-2026-40311
+- CVE-2026-42050
