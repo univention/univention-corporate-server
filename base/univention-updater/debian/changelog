@@ -1,3 +1,9 @@
+univention-updater (17.5.3) unstable; urgency=medium
+
+  * Bug #53615: Handle missing serial file gracefully in Watched_File.timestamp()
+
+ -- Iván Barbecho Delgado <ivan.delgado@univention.de>  Mon, 11 May 2026 12:44:21 +0200
+
 univention-updater (17.5.2) unstable; urgency=medium
 
   * Bug #59229: update UDM extensions on UCS upgrade

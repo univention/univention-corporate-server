@@ -91,7 +91,14 @@ class Watched_File:
         """
         current_stamp = 0
         current_size = 0
-        st = stat(self._file)
+        try:
+            st = stat(self._file)
+        except FileNotFoundError:
+            MODULE.warning("Serial file not found: %s", self._file)
+            return self._last_returned_stamp
+        except OSError as exc:
+            MODULE.error("Cannot stat serial file %s: %s", self._file, exc)
+            return self._last_returned_stamp
         if st:
             current_stamp = int(st.st_mtime)
             current_size = st.st_size
