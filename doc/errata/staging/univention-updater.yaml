@@ -13,9 +13,10 @@ desc: |
    file gracefully and logs a warning instead of raising an exception.
    (Bug #53615)
  * During a release upgrade (5.1 to 5.2), the pre-upgrade script moved
-   '/etc/apt/sources.list.d/20_ucs-online-component.list' to a backup but
-   the post-upgrade script only deleted the backup without regenerating the
-   file. The post-upgrade script now calls 'ucr commit' to recreate the
-   component sources list after a successful upgrade, preventing the above
+   '/etc/apt/sources.list.d/20_ucs-online-component.list' and
+   '/etc/apt/sources.list.d/15_ucs-online-version.list' to backups but
+   the post-upgrade script only deleted the backups without regenerating the
+   files. The post-upgrade script now calls 'ucr commit' to recreate both
+   sources list files after a successful upgrade, preventing the above
    error from occurring permanently after a release upgrade. (Bug #53615)
 bug: [53615]

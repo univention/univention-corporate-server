@@ -131,6 +131,7 @@ rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade522.bak
 # Bug #53615: regenerate component sources list after upgrade, as preup.sh
 # moved it away and postup.sh only deleted the backup without recreating it
 univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list >&3 2>&3
+univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3 2>&3
 
 echo "
 

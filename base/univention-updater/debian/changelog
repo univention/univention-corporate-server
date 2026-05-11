@@ -1,7 +1,7 @@
 univention-updater (17.5.3) unstable; urgency=medium
 
   * Bug #53615: Handle missing serial file gracefully in Watched_File.timestamp()
-  * Bug #53615: Regenerate component sources list in postup.sh after release upgrade
+  * Bug #53615: Regenerate component and version sources lists in postup.sh after release upgrade
 
  -- Iván Barbecho Delgado <ivan.delgado@univention.de>  Mon, 11 May 2026 12:44:21 +0200
 
