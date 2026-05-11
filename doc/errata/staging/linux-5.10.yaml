@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: linux-5.10
+fix: 5.10.251-4~deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-43284 (CVSS score 7.8 -
+   CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H).
+ * CVE-2026-43500 (CVSS score unknown).
+bug: [59273]
+cve:
+- CVE-2026-43284
+- CVE-2026-43500
