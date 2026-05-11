@@ -23,17 +23,17 @@ from datetime import date
 from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 
-sys.path.append(os.path.abspath("./_ext"))
+sys.path.append(os.path.abspath('./_ext'))
 
 # -- Project information -----------------------------------------------------
 
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.2"
+version = '5.2'
 # The full version, including alpha/beta/rc tags
 release = version
-project = f"Quick start guide for Univention Corporate Server {version}"
+project = f'Quick start guide for Univention Corporate Server {version}'
 
 html_show_copyright = True
 language = 'en'
@@ -46,10 +46,10 @@ html_title = project
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "univention_sphinx_extension",
-    "sphinxcontrib.spelling",
-    "sphinx_last_updated_by_git",
-    "sphinx.ext.intersphinx",
+    'univention_sphinx_extension',
+    'sphinxcontrib.spelling',
+    'sphinx_last_updated_by_git',
+    'sphinx.ext.intersphinx',
     'sphinx_sitemap',
 ]
 
@@ -74,13 +74,13 @@ pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
 html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
-    "pdf_download_filename": f"{pdf_doc_base}.pdf",
-    "show_source_license": True,
-    "typesense_search": True,
-    "typesense_document": pdf_doc_base,
-    "typesense_document_version": version,
-    "univention_matomo_tracking": True,
-    "univention_docs_deployment": True,
+    'pdf_download_filename': f'{pdf_doc_base}.pdf',
+    'show_source_license': True,
+    'typesense_search': True,
+    'typesense_document': pdf_doc_base,
+    'typesense_document_version': version,
+    'univention_matomo_tracking': True,
+    'univention_docs_deployment': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -93,36 +93,36 @@ git_last_updated_timezone = 'Europe/Berlin'
 
 numfig = True
 
-if "spelling" in sys.argv:
-    spelling_lang = "en_US"
+if 'spelling' in sys.argv:
+    spelling_lang = 'en_US'
     spelling_show_suggestions = True
     spelling_warning = True
     spelling_word_list_filename = []
 
-root_doc = "contents"
+root_doc = 'contents'
 
 html_sidebars = {
-    "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
+    '**': ['navbar-logo.html', 'icon-links.html', 'sections/sidebar-links.html'],
 }
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
-latex_show_urls = "footnote"
-latex_documents = [(root_doc, f'{pdf_doc_base}.tex', "", author, "howto", False)]
+latex_show_urls = 'footnote'
+latex_documents = [(root_doc, f'{pdf_doc_base}.tex', '', author, 'howto', False)]
 latex_elements = {
-    "papersize": "a4paper",
-    "babel": "\\usepackage{babel}",
+    'papersize': 'a4paper',
+    'babel': '\\usepackage{babel}',
 }
 
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-figure_language_filename
-figure_language_filename = "{root}-{language}{ext}"
+figure_language_filename = '{root}-{language}{ext}'
 
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual", version=version),
-    "uv-ext-domain": reference_inventory("ext-domain", version=version),
-    "uv-ext-inst": reference_inventory("ext-installation", version=version),
+    'uv-manual': reference_inventory('manual', version=version),
+    'uv-ext-domain': reference_inventory('ext-domain', version=version),
+    'uv-ext-inst': reference_inventory('ext-installation', version=version),
 }
 
 # See Univention Sphinx Extension for its options.
@@ -135,19 +135,19 @@ univention_use_doc_base = True
 
 
 def fix_title_translation(app, config):
-    if config.language == "de":
-        config.project = "Quickstart Guide für Univention Corporate Server"
+    if config.language == 'de':
+        config.project = 'Quickstart Guide für Univention Corporate Server'
         config.html_title = config.project
-        config.tokenizer_lang = "de_DE"
-        config.intersphinx_mapping["uv-manual"] = reference_inventory(
-            "manual",
-            language="de",
+        config.tokenizer_lang = 'de_DE'
+        config.intersphinx_mapping['uv-manual'] = reference_inventory(
+            'manual',
+            language='de',
             version=version,
         )
 
 
 def setup(app):
     app.connect(
-        "config-inited",
+        'config-inited',
         fix_title_translation,
     )

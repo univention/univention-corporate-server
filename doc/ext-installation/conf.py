@@ -24,10 +24,10 @@ from datetime import date
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.2"
+version = '5.2'
 # The full version, including alpha/beta/rc tags
 release = version
-project = f"Univention Corporate Server {version} - Extended installation documentation"
+project = f'Univention Corporate Server {version} - Extended installation documentation'
 
 html_show_copyright = True
 language = 'en'
@@ -40,26 +40,26 @@ html_title = project
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "univention_sphinx_extension",
-    "sphinxcontrib.spelling",
-    "sphinx_last_updated_by_git",
-    "sphinx_sitemap",
-    "sphinx_copybutton",
-    "sphinxcontrib.bibtex",
+    'univention_sphinx_extension',
+    'sphinxcontrib.spelling',
+    'sphinx_last_updated_by_git',
+    'sphinx_sitemap',
+    'sphinx_copybutton',
+    'sphinxcontrib.bibtex',
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
 
-bibtex_bibfiles = ["../bibliography.bib"]
-bibtex_encoding = "utf-8"
-bibtex_default_style = "unsrt"
-bibtex_reference_style = "label"
+bibtex_bibfiles = ['../bibliography.bib']
+bibtex_encoding = 'utf-8'
+bibtex_default_style = 'unsrt'
+bibtex_reference_style = 'label'
 
-copybutton_prompt_text = r"\$ |.+# "
+copybutton_prompt_text = r'\$ |.+# '
 copybutton_prompt_is_regexp = True
-copybutton_line_continuation_character = "\\"
-copybutton_here_doc_delimiter = "EOT"
+copybutton_line_continuation_character = '\\'
+copybutton_here_doc_delimiter = 'EOT'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -79,14 +79,14 @@ pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
 html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
-    "use_download_button": False,
-    "pdf_download_filename": f"{pdf_doc_base}.pdf",
-    "show_source_license": True,
-    "typesense_search": True,
-    "typesense_document": pdf_doc_base,
-    "typesense_document_version": version,
-    "univention_matomo_tracking": True,
-    "univention_docs_deployment": True,
+    'use_download_button': False,
+    'pdf_download_filename': f'{pdf_doc_base}.pdf',
+    'show_source_license': True,
+    'typesense_search': True,
+    'typesense_document': pdf_doc_base,
+    'typesense_document_version': version,
+    'univention_matomo_tracking': True,
+    'univention_docs_deployment': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -99,17 +99,17 @@ git_last_updated_timezone = 'Europe/Berlin'
 
 numfig = True
 
-if "spelling" in sys.argv:
-    spelling_lang = "en_US"
+if 'spelling' in sys.argv:
+    spelling_lang = 'en_US'
     spelling_show_suggestions = True
     spelling_warning = True
-    spelling_word_list_filename = ["spelling_wordlist"]
+    spelling_word_list_filename = ['spelling_wordlist']
     # Don't load extension to speed up the job
-    extensions.remove("sphinx_last_updated_by_git")
-    extensions.remove("sphinx_sitemap")
-    suppress_warnings.append("bibtex")
+    extensions.remove('sphinx_last_updated_by_git')
+    extensions.remove('sphinx_sitemap')
+    suppress_warnings.append('bibtex')
 
-root_doc = "index"
+root_doc = 'index'
 
 rst_epilog = """
 .. include:: /../substitutions.txt
@@ -117,12 +117,11 @@ rst_epilog = """
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
-latex_show_urls = "footnote"
-latex_documents = [
-    (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)]
+latex_show_urls = 'footnote'
+latex_documents = [(root_doc, f'{pdf_doc_base}.tex', '', author, 'manual', False)]
 latex_elements = {
-    "papersize": "a4paper",
-    "babel": "\\usepackage{babel}",
+    'papersize': 'a4paper',
+    'babel': '\\usepackage{babel}',
 }
 
 univention_use_doc_base = True

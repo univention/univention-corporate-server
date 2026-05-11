@@ -63,23 +63,23 @@ bibtex_default_style = 'unsrt'
 bibtex_reference_style = 'label'
 
 intersphinx_mapping = {
-    "uv-architecture": reference_inventory("architecture", version=version),
-    "uv-manual": reference_inventory("manual", version=version),
-    "uv-nubus-kubernetes-customization": (
-        "https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/",
+    'uv-architecture': reference_inventory('architecture', version=version),
+    'uv-manual': reference_inventory('manual', version=version),
+    'uv-nubus-kubernetes-customization': (
+        'https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/',
         None,
     ),
-    "uv-app-center": reference_inventory("app-center", version=version),
-    "python": (
-        "https://docs.python.org/3.11/",
-        ("/usr/share/doc/python3/html/objects.inv", None),
+    'uv-app-center': reference_inventory('app-center', version=version),
+    'python': (
+        'https://docs.python.org/3.11/',
+        ('/usr/share/doc/python3/html/objects.inv', None),
     ),
-    "python-general": (
-        "https://docs.python.org/3/",
-        ("/usr/share/doc/python3/html/objects.inv", None),
+    'python-general': (
+        'https://docs.python.org/3/',
+        ('/usr/share/doc/python3/html/objects.inv', None),
     ),
-    "python-udm-rest-client": (
-        "https://udm-rest-client.readthedocs.io/en/latest/",
+    'python-udm-rest-client': (
+        'https://udm-rest-client.readthedocs.io/en/latest/',
         None,
     ),
 }

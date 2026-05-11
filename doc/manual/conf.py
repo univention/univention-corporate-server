@@ -23,13 +23,13 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-copyright = f"2023-{date.today().year}, Univention GmbH"
-author = ""
+copyright = f'2023-{date.today().year}, Univention GmbH'
+author = ''
 
-version = "5.2"
+version = '5.2'
 # The full version, including alpha/beta/rc tags
 release = version
-project = f"Univention Corporate Server {version} - Manual for users and administrators"
+project = f'Univention Corporate Server {version} - Manual for users and administrators'
 
 html_show_copyright = True
 language = 'en'
@@ -47,56 +47,56 @@ doc_basename = os.path.basename(os.path.dirname(__file__))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "univention_sphinx_extension",
-    "sphinxcontrib.spelling",
-    "sphinx_last_updated_by_git",
-    "sphinx_sitemap",
-    "sphinx_copybutton",
-    "sphinxcontrib.bibtex",
-    "sphinx.ext.intersphinx",
-    "sphinx_inline_tabs",
-    "sphinx_design",
+    'univention_sphinx_extension',
+    'sphinxcontrib.spelling',
+    'sphinx_last_updated_by_git',
+    'sphinx_sitemap',
+    'sphinx_copybutton',
+    'sphinxcontrib.bibtex',
+    'sphinx.ext.intersphinx',
+    'sphinx_inline_tabs',
+    'sphinx_design',
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-dev-ref": reference_inventory("developer-reference", version=version),
-    "uv-keycloak-ref": (
-        "https://docs.software-univention.de/keycloak-app/latest",
+    'uv-dev-ref': reference_inventory('developer-reference', version=version),
+    'uv-keycloak-ref': (
+        'https://docs.software-univention.de/keycloak-app/latest',
         None,
     ),
-    "uv-nubus-kubernetes-architecture": (
-        "https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/",
+    'uv-nubus-kubernetes-architecture': (
+        'https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/',
         None,
     ),
-    "uv-ox-connector-app": (
-        "https://docs.software-univention.de/ox-connector-app/latest",
+    'uv-ox-connector-app': (
+        'https://docs.software-univention.de/ox-connector-app/latest',
         None,
     ),
-    "uv-ext-windows": reference_inventory("ext-windows", version=version),
-    "uv-ucs-operation": reference_inventory("ucs-operation", version=version),
-    "uv-nubus-manual": (
-        "https://docs.software-univention.de/nubus-manual/latest/en/",
+    'uv-ext-windows': reference_inventory('ext-windows', version=version),
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
+    'uv-nubus-manual': (
+        'https://docs.software-univention.de/nubus-manual/latest/en/',
         None,
     ),
-    "uv-nubus-customization": (
-        "https://docs.software-univention.de/nubus-customization/latest/en/",
+    'uv-nubus-customization': (
+        'https://docs.software-univention.de/nubus-customization/latest/en/',
         None,
     ),
 }
 
-bibtex_bibfiles = ["../bibliography.bib"]
-bibtex_encoding = "utf-8"
-bibtex_default_style = "unsrt"
-bibtex_reference_style = "label"
+bibtex_bibfiles = ['../bibliography.bib']
+bibtex_encoding = 'utf-8'
+bibtex_default_style = 'unsrt'
+bibtex_reference_style = 'label'
 
 # For Windows prompt, we still need ``> ``
-copybutton_prompt_text = r"\$ |> |.+# "
+copybutton_prompt_text = r'\$ |> |.+# '
 copybutton_prompt_is_regexp = True
-copybutton_line_continuation_character = "\\"
-copybutton_here_doc_delimiter = "EOT"
+copybutton_line_continuation_character = '\\'
+copybutton_here_doc_delimiter = 'EOT'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -114,18 +114,18 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
-    "pdf_download_filename": f"{doc_basename}.pdf",
-    "show_source_license": True,
-    "typesense_search": True,
-    "typesense_document": doc_basename,
-    "typesense_document_version": version,
-    "univention_matomo_tracking": True,
-    "univention_docs_deployment": True,
-    "announcement": (
-        "<p>Sections of this manual are being migrated to the "
+    'pdf_download_filename': f'{doc_basename}.pdf',
+    'show_source_license': True,
+    'typesense_search': True,
+    'typesense_document': doc_basename,
+    'typesense_document_version': version,
+    'univention_matomo_tracking': True,
+    'univention_docs_deployment': True,
+    'announcement': (
+        '<p>Sections of this manual are being migrated to the '
         "<a href='https://docs.software-univention.de/ucs-operation/5.2/en/' "
         "target='_blank' style='color: var(--pst-color-secondary)'>"
-        "Nubus for UCS 5.2 - Operation Manual</a>. "
+        'Nubus for UCS 5.2 - Operation Manual</a>. '
         "<a href='https://docs.software-univention.de/manual/5.2/en/index.html"
         "#introduction' "
         "style='color: var(--pst-color-secondary)'>Learn more.</a></p>"
@@ -142,17 +142,17 @@ git_last_updated_timezone = 'Europe/Berlin'
 
 numfig = True
 
-if "spelling" in sys.argv:
-    spelling_lang = "en_US"
+if 'spelling' in sys.argv:
+    spelling_lang = 'en_US'
     spelling_show_suggestions = True
     spelling_warning = True
-    spelling_word_list_filename = ["spelling_wordlist"]
+    spelling_word_list_filename = ['spelling_wordlist']
     # Don't load extension to speed up the job
-    extensions.remove("sphinx_last_updated_by_git")
-    extensions.remove("sphinx_sitemap")
-    suppress_warnings.append("bibtex")
+    extensions.remove('sphinx_last_updated_by_git')
+    extensions.remove('sphinx_sitemap')
+    suppress_warnings.append('bibtex')
 
-root_doc = "contents"
+root_doc = 'contents'
 
 rst_epilog = """
 .. include:: /../substitutions.txt
@@ -162,34 +162,34 @@ rst_epilog = """
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
-latex_show_urls = "footnote"
-latex_documents = [(root_doc, f"{doc_basename}.tex", "", author, "manual", False)]
+latex_show_urls = 'footnote'
+latex_documents = [(root_doc, f'{doc_basename}.tex', '', author, 'manual', False)]
 latex_elements = {
-    "papersize": "a4paper",
-    "babel": "\\usepackage{babel}",
+    'papersize': 'a4paper',
+    'babel': '\\usepackage{babel}',
 }
 
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-figure_language_filename
-figure_language_filename = "{root}-{language}{ext}"
+figure_language_filename = '{root}-{language}{ext}'
 
 linkcheck_allowed_redirects = {
-    r"https://help\.univention\.com/t/\d+": r"https://help\.univention\.com/t/[\w-]+/\d+",
-    r"https://admin\.google\.com/": r"https://accounts\.google\.com/v3/signin/identifier\?.+",
-    r"https://www\.microsoft\.com/en-US/download/details\.aspx\?id=\d+": r"https://www\.microsoft\.com/en-us/download/details\.aspx\?id=[\w\d-]+",
-    r"https://www\.office\.com/": r"https://www\.office\.com/.*",
+    r'https://help\.univention\.com/t/\d+': r'https://help\.univention\.com/t/[\w-]+/\d+',
+    r'https://admin\.google\.com/': r'https://accounts\.google\.com/v3/signin/identifier\?.+',
+    r'https://www\.microsoft\.com/en-US/download/details\.aspx\?id=\d+': r'https://www\.microsoft\.com/en-us/download/details\.aspx\?id=[\w\d-]+',
+    r'https://www\.office\.com/': r'https://www\.office\.com/.*',
 }
 
 linkcheck_ignore = [
-    r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
+    r'https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}',
     r'https://ldapwiki\.com/.*',
-    r"https://kb\.isc\.org/docs/aa-00502",  # Security check disallows GET requests with curl or wget and produce HTTP 403 error.
+    r'https://kb\.isc\.org/docs/aa-00502',  # Security check disallows GET requests with curl or wget and produce HTTP 403 error.
     r'https://www\.samba\.org/samba/docs/old/Samba3-HOWTO/msdfs\.html',
     r'https://example\.com',
 ]
 
 univention_use_doc_base = True
 
-gettext_additional_targets = ["literal-block"]
+gettext_additional_targets = ['literal-block']
 
 # See Univention Sphinx Extension for its options.
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
@@ -205,50 +205,50 @@ def adapt_settings_to_translation(app, config):
 
     See https://github.com/sphinx-doc/sphinx/issues/10282
     """
-    if config.language == "de":
-        config.project = "Univention Corporate Server - Handbuch für Benutzer und Administratoren"
+    if config.language == 'de':
+        config.project = 'Univention Corporate Server - Handbuch für Benutzer und Administratoren'
         config.html_title = config.project
-        config.tokenizer_lang = "de_DE"
-        config.bibtex_bibfiles = ["../bibliography-de.bib"]
+        config.tokenizer_lang = 'de_DE'
+        config.bibtex_bibfiles = ['../bibliography-de.bib']
         config.rst_epilog = """
 .. include:: /../substitutions-de.txt
 
 .. include:: /links-de.txt
 """
         config.intersphinx_mapping = {
-            "uv-dev-ref": reference_inventory("developer-reference", version=version),
-            "uv-keycloak-ref": (
-                "https://docs.software-univention.de/keycloak-app/latest",
+            'uv-dev-ref': reference_inventory('developer-reference', version=version),
+            'uv-keycloak-ref': (
+                'https://docs.software-univention.de/keycloak-app/latest',
                 None,
             ),
-            "uv-nubus-kubernetes-architecture": (
-                "https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/",
+            'uv-nubus-kubernetes-architecture': (
+                'https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/',
                 None,
             ),
-            "uv-ox-connector-app": (
-                "https://docs.software-univention.de/ox-connector-app/latest",
+            'uv-ox-connector-app': (
+                'https://docs.software-univention.de/ox-connector-app/latest',
                 None,
             ),
-            "uv-ext-windows": reference_inventory("ext-windows", version=version),
-            "uv-ucs-operation": reference_inventory(
-                "ucs-operation",
+            'uv-ext-windows': reference_inventory('ext-windows', version=version),
+            'uv-ucs-operation': reference_inventory(
+                'ucs-operation',
                 version=version,
-                language="de",
+                language='de',
             ),
-            "uv-nubus-manual": (
-                "https://docs.software-univention.de/nubus-manual/latest/de/",
+            'uv-nubus-manual': (
+                'https://docs.software-univention.de/nubus-manual/latest/de/',
                 None,
             ),
-            "uv-nubus-customization": (
-                "https://docs.software-univention.de/nubus-customization/latest/en/",
+            'uv-nubus-customization': (
+                'https://docs.software-univention.de/nubus-customization/latest/en/',
                 None,
             ),
         }
-        config.html_theme_options["announcement"] = (
-            "<p>Abschnitte dieses Handbuchs werden in das "
+        config.html_theme_options['announcement'] = (
+            '<p>Abschnitte dieses Handbuchs werden in das '
             "<a href='https://docs.software-univention.de/ucs-operation/5.2/de/' "
             "target='_blank' style='color: var(--pst-color-secondary)'>"
-            "Nubus for UCS 5.2 - Betriebshandbuch</a> migriert. "
+            'Nubus for UCS 5.2 - Betriebshandbuch</a> migriert. '
             "<a href='https://docs.software-univention.de/manual/5.2/de/index.html"
             "#introduction' "
             "style='color: var(--pst-color-secondary)'>Mehr erfahren.</a></p>"
@@ -257,6 +257,6 @@ def adapt_settings_to_translation(app, config):
 
 def setup(app):
     app.connect(
-        "config-inited",
+        'config-inited',
         adapt_settings_to_translation,
     )

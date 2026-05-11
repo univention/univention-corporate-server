@@ -24,9 +24,9 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-version = "5.2"
-release = "5.2-5"
-project = f"Univention Corporate Server {version} Architecture"
+version = '5.2'
+release = '5.2-5'
+project = f'Univention Corporate Server {version} Architecture'
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
 language = 'en'
@@ -39,30 +39,30 @@ html_title = project
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinxcontrib.spelling",
-    "univention_sphinx_extension",
-    "sphinx_last_updated_by_git",
-    "sphinxcontrib.inkscapeconverter",
-    "sphinxext.rediraffe",
-    "sphinxcontrib.bibtex",
-    "sphinx.ext.intersphinx",
-    "sphinx_inline_tabs",
+    'sphinxcontrib.spelling',
+    'univention_sphinx_extension',
+    'sphinx_last_updated_by_git',
+    'sphinxcontrib.inkscapeconverter',
+    'sphinxext.rediraffe',
+    'sphinxcontrib.bibtex',
+    'sphinx.ext.intersphinx',
+    'sphinx_inline_tabs',
     'sphinx_sitemap',
 ]
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual", version=version),
-    "uv-dev-ref": reference_inventory("developer-reference", version=version),
-    "uv-app-center": reference_inventory("app-center", version=version),
-    "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
+    'uv-manual': reference_inventory('manual', version=version),
+    'uv-dev-ref': reference_inventory('developer-reference', version=version),
+    'uv-app-center': reference_inventory('app-center', version=version),
+    'uv-ucs-python-api': ('https://docs.software-univention.de/ucs-python-api', None),
 }
 
-bibtex_bibfiles = ["../bibliography.bib", "bibliography.bib"]
-bibtex_encoding = "utf-8"
-bibtex_default_style = "unsrt"
-bibtex_reference_style = "label"
+bibtex_bibfiles = ['../bibliography.bib', 'bibliography.bib']
+bibtex_encoding = 'utf-8'
+bibtex_default_style = 'unsrt'
+bibtex_reference_style = 'label'
 
-root_doc = "contents"
+root_doc = 'contents'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -79,7 +79,7 @@ rst_epilog = """
 .. include:: /../substitutions.txt
 """
 
-rediraffe_redirects = "redirects.txt"
+rediraffe_redirects = 'redirects.txt'
 rediraffe_branch = release
 
 
@@ -88,18 +88,18 @@ rediraffe_branch = release
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-pdf_doc_base = "architecture"
+pdf_doc_base = 'architecture'
 
 html_theme = 'univention_sphinx_book_theme'
 
 html_theme_options = {
-    "pdf_download_filename": f"{pdf_doc_base}.pdf",
-    "show_source_license": True,
-    "typesense_search": True,
-    "typesense_document": pdf_doc_base,
-    "typesense_document_version": version,
-    "univention_matomo_tracking": True,
-    "univention_docs_deployment": True,
+    'pdf_download_filename': f'{pdf_doc_base}.pdf',
+    'show_source_license': True,
+    'typesense_search': True,
+    'typesense_document': pdf_doc_base,
+    'typesense_document_version': version,
+    'univention_matomo_tracking': True,
+    'univention_docs_deployment': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -113,24 +113,24 @@ git_last_updated_timezone = 'Europe/Berlin'
 numfig = True
 
 linkcheck_ignore = [
-    f"https://github.com/univention/univention-corporate-server/blob/{release}/base/univention-config-registry/python/univention/config_registry/misc.py",
+    f'https://github.com/univention/univention-corporate-server/blob/{release}/base/univention-config-registry/python/univention/config_registry/misc.py',
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed to
 # avoid the warnings from failing the pipeline.
 suppress_warnings = ['git.too_shallow']
 
-if "spelling" in sys.argv:
-    spelling_lang = "en_US"
+if 'spelling' in sys.argv:
+    spelling_lang = 'en_US'
     spelling_show_suggestions = True
-    spelling_word_list_filename = ["spelling_wordlist"]
+    spelling_word_list_filename = ['spelling_wordlist']
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
-latex_show_urls = "footnote"
-latex_documents = [(root_doc, f'{pdf_doc_base}.tex', project, author, "manual", False)]
+latex_show_urls = 'footnote'
+latex_documents = [(root_doc, f'{pdf_doc_base}.tex', project, author, 'manual', False)]
 latex_elements = {
-    "papersize": "a4paper",
+    'papersize': 'a4paper',
 }
 
 # See Univention Sphinx Extension for its options.

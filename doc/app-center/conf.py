@@ -45,27 +45,27 @@ html_title = project
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "univention_sphinx_extension",
-    "sphinxcontrib.spelling",
-    "sphinx_last_updated_by_git",
-    "sphinx_copybutton",
-    "sphinx_sitemap",
-    "sphinx.ext.intersphinx",
-    "sphinx_inline_tabs",
-    "sphinxcontrib.inkscapeconverter",
+    'univention_sphinx_extension',
+    'sphinxcontrib.spelling',
+    'sphinx_last_updated_by_git',
+    'sphinx_copybutton',
+    'sphinx_sitemap',
+    'sphinx.ext.intersphinx',
+    'sphinx_inline_tabs',
+    'sphinxcontrib.inkscapeconverter',
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": reference_inventory("manual", version=version),
-    "uv-dev-ref": reference_inventory("developer-reference", version=version),
+    'uv-manual': reference_inventory('manual', version=version),
+    'uv-dev-ref': reference_inventory('developer-reference', version=version),
 }
 
-copybutton_prompt_text = r"\$ "
+copybutton_prompt_text = r'\$ '
 copybutton_prompt_is_regexp = True
-copybutton_line_continuation_character = "\\"
+copybutton_line_continuation_character = '\\'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -73,7 +73,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -82,15 +82,15 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
-html_theme = "univention_sphinx_book_theme"
+html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
-    "pdf_download_filename": f"{pdf_doc_base}.pdf",
-    "show_source_license": True,
-    "typesense_search": True,
-    "typesense_document": pdf_doc_base,
-    "typesense_document_version": version,
-    "univention_matomo_tracking": True,
-    "univention_docs_deployment": True,
+    'pdf_download_filename': f'{pdf_doc_base}.pdf',
+    'show_source_license': True,
+    'typesense_search': True,
+    'typesense_document': pdf_doc_base,
+    'typesense_document_version': version,
+    'univention_matomo_tracking': True,
+    'univention_docs_deployment': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -101,7 +101,7 @@ html_static_path = []  # Value usally is ['_static']
 # https://github.com/mgeier/sphinx-last-updated-by-git
 git_last_updated_timezone = 'Europe/Berlin'
 
-root_doc = "contents"
+root_doc = 'contents'
 
 rst_epilog = """
 .. include:: /../substitutions.txt
@@ -111,26 +111,26 @@ rst_epilog = """
 
 numfig = True
 
-if "spelling" in sys.argv:
-    spelling_lang = "en_US"
+if 'spelling' in sys.argv:
+    spelling_lang = 'en_US'
     spelling_show_suggestions = True
     spelling_warning = True
     spelling_word_list_filename = []
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
-latex_show_urls = "footnote"
-latex_documents = [(root_doc, f'{pdf_doc_base}.tex', project, author, "manual", False)]
+latex_show_urls = 'footnote'
+latex_documents = [(root_doc, f'{pdf_doc_base}.tex', project, author, 'manual', False)]
 latex_elements = {
-    "papersize": "a4paper",
+    'papersize': 'a4paper',
 }
 
 linkcheck_ignore = [
-    r"https://errata\.software-univention\.de/#/\?erratum=",
+    r'https://errata\.software-univention\.de/#/\?erratum=',
 ]
 
 linkcheck_allowed_redirects = {
-    r"https://help\.univention\.com/t/\d+": r"https://help\.univention\.com/t/[\w-]+/\d+",
+    r'https://help\.univention\.com/t/\d+': r'https://help\.univention\.com/t/[\w-]+/\d+',
 }
 
 univention_use_doc_base = True
