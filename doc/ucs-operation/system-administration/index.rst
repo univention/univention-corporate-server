@@ -12,6 +12,15 @@ managing Nubus for UCS systems.
 It addresses the components that underpin every running system:
 the kernel, the boot process, network connectivity, and outbound proxy access.
 
+Univention Configuration Registry
+   Manage system settings through Univention Configuration Registry (UCR),
+   the central tool for managing configuration on Nubus for UCS systems.
+   Configure settings using the command-line interface, the web-based management UI,
+   or configuration policies that apply across multiple systems.
+   UCR automatically regenerates configuration files from templates when settings change,
+   eliminating the need for manual file editing.
+   See :ref:`system-administration-ucr`.
+
 Kernel
    Manage kernel packages, kernel versions, and kernel modules.
    This includes loading additional drivers, blacklisting unwanted modules,

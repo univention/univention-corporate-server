@@ -3,411 +3,461 @@
 
 .. _system-administration-ucr:
 
-Administration of local system configuration with Univention Configuration Registry
-===================================================================================
+Configure the local system with Univention Configuration Registry
+=================================================================
 
-|UCSUCR| is the central tool for managing the local system configuration of a
-UCS-based system. Direct editing of the configuration files is usually not
-necessary.
+Univention Configuration Registry (UCR) is a key-value store for system settings.
+Services and programs read these settings
+to configure themselves automatically.
+UCR runs on every Nubus for UCS system.
 
-Settings are specified in a consistent format in a registry mechanism, the
-so-called *Univention Configuration Registry variables*. These variables are
-used to generate the configuration files used effectively by the
-services/programs from the configuration templates (the so-called *Univention
-Configuration Registry templates*).
+UCR provides the following advantages:
 
-This procedure offers a range of advantages:
+* UCR manages configuration files without requiring direct edits.
+  This avoids errors from invalid syntax or incorrect values.
 
-* It is not usually necessary to edit any configuration files manually. This
-  avoids errors arising from invalid syntax of configuration settings or
-  similar.
+* UCR provides a single interface for editing settings,
+  regardless of the format used by the underlying configuration files.
 
-* There is a uniform interface for editing the settings and the different
-  syntax formats of the configuration files are hidden from the administrator.
+* UCR variables are independent of the configuration file format.
+  If a package switches to a different format,
+  you update the UCR template instead of converting the file.
 
-* Settings are decoupled from the actual configuration file, i.e., if a
-  software uses a different configuration format in a new version, a new
-  template in a new format is simply delivered instead of performing
-  time-consuming and error-prone conversion of the file.
+* When a variable changes,
+  UCR automatically regenerates all configuration files that use it.
 
-* The variables used in a configuration file administrated with |UCSUCR| are
-  registered internally. This ensures that when a UCR variable is changed, all
-  the configuration files containing the changed variable are recreated.
+To manage UCR variables:
 
-|UCSUCR| variables can be configured in the command line using the
-:command:`univention-config-registry` command (short form: :command:`ucr`) or via
-the UMC module :guilabel:`Univention Configuration Registry`.
+* On the command line,
+  run :command:`univention-config-registry`.
 
-As the majority of packages perform their configuration via |UCSUCR| and the
-corresponding basic settings need to be set up during the installation, hundreds
-of |UCSUCR| variables are already set after the installation of a UCS system.
+* In the *Management UI*,
+  open the *Univention Configuration Registry* management module.
 
-UCR variables can also be used efficiently in shell scripts for accessing
-current system settings.
+When you install Nubus for UCS,
+you provide the initial settings for packages that use UCR.
+Afterward, the system automatically sets hundreds of UCR variables.
 
-The variables are named according to a tree structure with a forward slash being
-used to separate components of the name. For example, |UCSUCR| variables
-beginning with ``ldap`` are settings which apply to the local directory service.
+You can also use UCR variables in shell scripts
+to access system settings.
 
-A description is given for the majority of variables explaining their use.
+Variable names use forward slashes to separate parts,
+for example :envvar:`ldap/base` or :envvar:`mail/relayhost`.
+UCR variables whose names begin with ``ldap`` control the local LDAP service.
 
-If a configuration file is administrated by a UCR template and the required
-setting has not already been covered by an existing variable, the UCR template
-should be edited instead of the configuration file. If the configuration were
-directly adapted, the next time the file is regenerated - e.g., when a
-registered UCR variable is set - the local modification will be overwritten
-again. Adaptation of UCR templates is described in :ref:`ucr-templates-extend`.
+Each UCR variable describes what it does.
 
-Part of the settings configured in |UCSUCR| are system-specific (e.g., the
-computer name); many settings can, however, be used on more then one computer.
-The |UCSUCR| policy in the domain administration UMC modules can be used to
-compile variables and apply them on more than one computer.
+.. caution::
 
-The evaluation of the |UCSUCR| variables on a UCS system comprises four stages:
+   If UCR manages a configuration file through a template,
+   edit the template instead of the configuration file directly.
+   UCR overwrites any changes you make to the file
+   the next time UCR regenerates the file from the template.
+   For details,
+   see :ref:`system-administration-ucr-templates`.
 
-* First the local |UCSUCR| variables are evaluated.
+.. _system-administration-ucr-umc:
 
-* The local variables are overruled by policy variables which are usually
-  sourced from the directory service
+Manage UCR variables in the Management UI
+-----------------------------------------
 
-* The ``--schedule`` option is used to set local variables which are only
-  intended to apply for a certain period of time. This level of the |UCSUCR| is
-  reserved for local settings which are automated by time-controlled mechanisms
-  in |UCSUCS|.
+Use the *Univention Configuration Registry* management module
+to search, edit, and delete variables.
 
-* When the ``--force`` option is used in setting a local variable, settings
-  adopted from the directory service and variables from the schedule level are
-  overruled and the given value for the local system fixed instead. An example:
+The start page shows a search box and a list of variable categories.
+For example, you can browse all LDAP-specific settings in one view,
+see :numref:`system-administration-ucr-umc-figure`.
 
-  .. code-block:: console
+To manage UCR variables in the management module,
+your account must belong to the ``Domain Admins`` group.
 
-     $ univention-config-registry set --force mail/messagesizelimit=1000000
-
-If a variable is set which is overwritten by a superordinate policy, a warning
-message is given.
-
-The use of the |UCSUCR| policy is documented in the :ref:`ucr-templates-policy`.
-
-.. _computers-using-the-univention-management-console-web-interface:
-
-Using the |UCSUMC| module
--------------------------
-
-The UMC module :guilabel:`Univention Configuration Registry` can be used to
-display and adjust the variables of a system. There is also the possibility of
-setting new variables using :guilabel:`Add new variable`.
-
-.. _ucr-umc-module:
+.. _system-administration-ucr-umc-figure:
 
 .. figure:: /images/ucr.*
-   :alt: Managing |UCSUCR| variables via the UMC
+   :alt: Managing UCR variables in the Management UI
 
-   Managing |UCSUCR| variables via the UMC
+   Managing UCR variables in the *Management UI*
 
-A search mask is displayed on the start page. All variables are classified using
-a *Category*, for example all LDAP-specific settings.
+.. _system-administration-ucr-umc-manage:
 
-The *Search attribute* can be entered as a filter in the search mask, which can
-refer to the variable name, value or description.
+Manage a UCR variable
+~~~~~~~~~~~~~~~~~~~~~
 
-Following a successful search, the variables found are displayed in a table with
-the variable name and the value. A detailed description of the variable is
-displayed when moving the mouse cursor over the variable name.
+To manage UCR variables in the management module:
 
-A variable can be edited by clicking on its name. A variable can be deleted by
-right-clicking and selecting :guilabel:`Delete`.
+#. In the :guilabel:`Search attribute` field,
+   filter variables by name, value, or description.
 
-.. _computers-using-the-command-line-front-end:
+#. In the results table,
+   confirm the variable names and values match your expectations.
 
-Using the command line frontend
--------------------------------
+#. To view a brief description of a variable,
+   point to its name to open a tooltip.
+
+#. To view the full details of a variable,
+   select it.
+
+#. To edit a variable, click its name.
+
+#. To delete a variable, right-click it and select :guilabel:`Delete`.
+
+.. _system-administration-ucr-umc-create:
+
+Create a UCR variable
+~~~~~~~~~~~~~~~~~~~~~
+
+To create a UCR variable:
+
+#. Click :guilabel:`Add`.
+
+#. Enter a name in the :guilabel:`Variable` field
+   and a value in the :guilabel:`Value` field.
+
+#. Click :guilabel:`Save`.
+
+.. _system-administration-ucr-command-line:
+
+Manage UCR variables on the command line
+----------------------------------------
 
 .. program:: ucr
 
-The command line interface of |UCSUCR| is run using the
-:command:`univention-config-registry` command. Alternatively, the short form
-:command:`ucr` can be used.
+You must have root access to run UCR commands on the command line.
 
-.. _computers-querying-a-ucr-variable:
+Run UCR commands with :command:`univention-config-registry`.
+You can also use the short command :command:`ucr`.
 
-Querying a UCR variable
-~~~~~~~~~~~~~~~~~~~~~~~
+.. _system-administration-ucr-command-line-query:
+
+Query a UCR variable
+~~~~~~~~~~~~~~~~~~~~
+
+.. Note to editors: The ``.. option::`` directive is used here for sub-commands
+   (get, dump, set, search, unset, commit, shell) rather than flags.
+   This is an intentional pragmatic choice because ``.. option::`` generates
+   cross-referenceable targets through ``:option:``.
 
 .. option:: get
 
-   A single |UCSUCR| variable can be queried with the parameter
-   :option:`get`:
+   Use the :option:`get` sub-command to query a single UCR variable.
+   :numref:`ucr-get-example` shows an example.
 
    .. code-block:: console
+      :caption: Query a UCR variable with :option:`get`
+      :name: ucr-get-example
 
       $ univention-config-registry get ldap/server/ip
 
+.. _system-administration-ucr-command-line-dump:
+
+Display all UCR variables
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: dump
 
-   The parameter :option:`dump` can also be used to display all currently set
-   variables:
+   Use the :option:`dump` sub-command to display all variables that have a value assigned.
+   :numref:`ucr-dump-example` shows an example.
 
    .. code-block:: console
+      :caption: Display all UCR variables with :option:`dump`
+      :name: ucr-dump-example
 
       $ univention-config-registry dump
 
+.. _system-administration-ucr-command-line-set:
 
-.. _computers-setting-ucr-variables:
-
-Setting UCR variables
-~~~~~~~~~~~~~~~~~~~~~
+Set a UCR variable
+~~~~~~~~~~~~~~~~~~
 
 .. option:: set
 
-   The parameter :option:`set` is used to set a variable. The variable can be given
-   any name consisting exclusively of letters, full stops, figures, hyphens and
-   forward slashes.
+   Use the :option:`set` sub-command to set a variable.
+   Use only letters, periods, digits, hyphens, and forward slashes in variable names.
+   See :numref:`ucr-set-example`.
 
    .. code-block:: console
+      :caption: Set a UCR variable with :option:`set`
+      :name: ucr-set-example
 
       $ univention-config-registry set VARIABLENAME=VALUE
 
+   If the variable already exists,
+   UCR updates its value.
+   Otherwise, UCR creates the variable.
 
-If the variable already exists, the content is updated; otherwise, a new entry
-is created.
+   When you set a new value for a UCR variable,
+   UCR checks whether the value is compatible with the variable type.
+   If the value is incompatible,
+   UCR rejects the value and displays an error message.
 
-When setting a new value for a |UCSUCR| variable UCR runs checks to verify
-the compatibility of the value with the variable type. In case
-of incompatibility the variable is not set to the new value.
-If the ``--ignore-check`` option is used, the value is always
-set independent of type compatibility.
+   To verify the new value,
+   use :option:`ucr get` as shown in :numref:`ucr-get-verify-example`.
 
-When a variable changes, UCR rewrites all configuration files immediately for which the
-variable is registered. UCR outputs the paths of the updated files to the console.
+   .. code-block:: console
+      :caption: Verify a UCR variable value with :option:`ucr get`
+      :name: ucr-get-verify-example
 
-In doing so it must be noted that although the configuration of a service is
-updated, the service in question is not restarted automatically! The restart
-must be performed manually.
+      $ univention-config-registry get VARIABLENAME
 
-It is also possible to perform simultaneous changes to several variables in one
-command line. If these refer to the same configuration file, the file is only
-rewritten once.
+   .. caution::
+
+      If you use ``--ignore-check``, UCR skips type checking.
+      This might disrupt service configuration or corrupt data.
+      Use this option only if you understand the risks.
+
+When a variable changes,
+UCR rewrites all linked configuration files
+and displays the paths of the updated files in the console.
+UCR doesn't restart the affected services automatically.
+You need to restart the services that use the updated configuration files.
+
+You can also change several variables in a single command,
+as shown in :numref:`ucr-set-multiple-example`.
+If these variables share a configuration file,
+UCR rewrites it only once.
 
 .. code-block:: console
+   :caption: Set multiple UCR variables in a single command
+   :name: ucr-set-multiple-example
 
    $ univention-config-registry set \
      dns/forwarder1=192.0.2.2 \
      sshd/xforwarding="no" \
      sshd/port=2222
 
-A conditional setting is also possible. For example, if a value should only be
-saved in a |UCSUCR| variable when the variable does not yet exist, this can be
-done by entering a question mark (``?``) instead of the equals sign (``=``)
-when assigning values.
+UCR lets you assign a variable value conditionally.
+To set a variable only when it doesn't already exist,
+use a question mark (``?``) instead of an equals sign (``=``),
+as shown in :numref:`ucr-set-conditional-example`.
 
 .. code-block:: console
+   :caption: Set a UCR variable conditionally
+   :name: ucr-set-conditional-example
 
    $ univention-config-registry set dns/forwarder1?192.0.2.2
 
+.. _system-administration-ucr-command-line-search:
 
-.. _computers-searching-for-variables-and-set-values:
-
-Searching for variables and set values
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Search for variables
+~~~~~~~~~~~~~~~~~~~~
 
 .. option:: search
 
-   The parameter :option:`search` can be used to search for a variable. This
-   command searches for variable names which contain ``ldap`` and displays these
-   with their current assignments:
+   Use the :option:`search` sub-command to find a variable.
+   :numref:`ucr-search-name-example` shows a search for variable names
+   that contain ``ldap`` and their current values.
+   The :option:`search` sub-command supports regular expressions.
+   For the full syntax, see
+   :external+python-docs:py:mod:`re — Regular expression operations <re>`
+   in :cite:t:`python-docs`.
 
    .. code-block:: console
+      :caption: Search for UCR variables by name
+      :name: ucr-search-name-example
 
       $ univention-config-registry search ldap
 
-
-   Alternatively, searches can also be performed for set variable values. This
-   request searches for all variables set to ``primary.example.com``:
+   To search by value,
+   see :numref:`ucr-search-value-example`,
+   which lists all variables set to ``primary.example.com``.
 
    .. code-block:: console
+      :caption: Search for UCR variables by value
+      :name: ucr-search-value-example
 
       $ univention-config-registry search --value primary.example.com
 
+.. _system-administration-ucr-command-line-delete:
 
-Search templates in the form of regular expressions can also be used in
-the search. The complete format is documented at
-`Regular expression operations in the Python 3 documentation <python3-re_>`_.
-
-.. _computers-deleting-ucr-variables:
-
-Deleting UCR variables
-~~~~~~~~~~~~~~~~~~~~~~
+Delete a UCR variable
+~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: unset
 
-   The parameter :option:`unset` is used to delete a variable. The following
-   example deletes the variable :envvar:`dns/forwarder2`. It is also possible here
-   to specify several variables to be deleted:
+   Use the :option:`unset` sub-command to delete a variable.
+   :numref:`ucr-unset-example` shows an example that deletes the variable :envvar:`dns/forwarder2`.
+   You can also delete multiple variables in one command.
 
    .. code-block:: console
+      :caption: Delete a UCR variable with :option:`unset`
+      :name: ucr-unset-example
 
       $ univention-config-registry unset dns/forwarder2
 
+.. _system-administration-ucr-command-line-regenerate:
 
-.. _computers-regeneration-of-configuration-files-from-their-template:
-
-Regeneration of configuration files from their template
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Regenerate a configuration file from its template
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: commit
 
-   The parameter :option:`commit` is used to regenerate a configuration file
-   from its template. The name of the configuration file is entered as a
-   parameter, e.g.:
+   Use the :option:`commit` sub-command to regenerate a configuration file from its template.
+   :numref:`ucr-commit-example` shows an example that regenerates :file:`/etc/samba/smb.conf`.
+   Use the :option:`commit` sub-command when you edit a template file manually,
+   rather than when you change a UCR variable value.
+
+   If you run :command:`ucr commit` without a filename,
+   UCR rebuilds all managed files from their templates.
+   This command is useful after restoring a backup
+   or when troubleshooting template-related issues.
 
    .. code-block:: console
+      :caption: Regenerate a configuration file with :option:`commit`
+      :name: ucr-commit-example
 
       $ univention-config-registry commit /etc/samba/smb.conf
 
+   To verify that UCR regenerated the file,
+   inspect its content or check its modification time,
+   as shown in :numref:`ucr-commit-verify-example`.
 
-As UCR templates are generally regenerated automatically when UCR variables are
-edited, this is primarily used for tests.
+   .. code-block:: console
+      :caption: Verify a regenerated configuration file with :option:`commit`
+      :name: ucr-commit-verify-example
 
-If no filename is given when running :command:`ucr commit`, all of the files
-managed by |UCSUCR| will be regenerated from the templates. It is, however, not
-generally necessary to regenerate all the configuration files.
+      $ stat /etc/samba/smb.conf
 
-.. _computers-sourcing-variables-in-shell-scripts:
+.. _system-administration-ucr-command-line-source:
 
-Sourcing variables in shell scripts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use UCR variables in shell scripts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. option:: shell
 
-   The parameter :option:`shell` is used to display |UCSUCR| variables and their
-   current assignments in a format that can be used in shell scripts.
+   Use the :option:`shell` sub-command to display UCR variables
+   and their current values in shell script format,
+   as shown in :numref:`ucr-shell-example`.
 
    .. code-block:: console
+      :caption: Display UCR variables in shell format
+      :name: ucr-shell-example
 
       $ univention-config-registry shell ldap/server/name
 
+UCR applies the following two conversions to the output:
 
-Different conversions are involved in this: forward slashes in variable names
-are replaced with underscores and characters in the values which have a
-particular significance in shell scripts are included in quotation marks to
-ensure they are not altered.
+* Forward slashes in variable names become underscores.
 
-The |UCSUCR| output must be executed via the command :command:`eval` for
-|UCSUCR| variables to be able to be read in a shell script as environment
-variables:
+* UCR escapes characters with special meaning in shell,
+  such as spaces, quotes, and dollar signs,
+  to prevent unintended interpretation by the shell.
+
+To use UCR variables as environment variables in a shell script,
+pipe the output to :command:`eval`.
+See :numref:`ucr-shell-eval-example` for an example.
 
 .. code-block:: console
+   :caption: Load UCR variables into a shell script with ``eval``
+   :name: ucr-shell-eval-example
 
-   # eval "$(univention-config-registry shell ldap/server/name)"
-   # echo "$ldap_server_name"
-   primary.firma.de
+   $ eval "$(univention-config-registry shell ldap/server/name)"
+   $ echo "$ldap_server_name"
+   primary.example.com
 
+.. _system-administration-ucr-precedence:
 
-.. _ucr-templates-policy:
-
-Policy-based configuration of UCR variables
--------------------------------------------
-
-Part of the settings configured in |UCSUCR| are system-specific (e.g., the
-computer name); many settings can, however, be used on more then one computer.
-The *Univention Configuration Registry* policy managed in the UMC module
-:guilabel:`Policies` can be used to compile variables and apply them on more
-than one computer.
-
-.. _policy-apache-settings:
-
-.. figure:: /images/computers_policy_apache_settings.*
-   :alt: Policy-based configuration of the Apache start page and forced HTTPS
-
-   Policy-based configuration of the Apache start page and forced HTTPS
-
-Firstly, a *Name* must be set for the policy which is to be created, under which
-the variables will later be assigned to the individual computer objects.
-
-In addition, at least one *Variable* must be configured and a *Value* assigned.
-
-This policy can then be assigned to a computer object or a container or OU
-(see :ref:`central-policies-assign`). Note that the evaluation of
-configured values differs from other policies: The values are not
-forwarded directly to the computer, but rather written on the assigned
-computer by Univention Directory Policy. The time interval used for this
-is configured by the |UCSUCRV| :envvar:`ldap/policy/cron` and is
-set to hourly as standard.
-
-.. _ucr-templates-extend:
-
-Modifying UCR templates
+UCR variable precedence
 -----------------------
 
-In the simplest case, a |UCSUCR| template is a copy of the original
-configuration file in which the points at which the value of a variable
-are to be used contain a reference to the variable name.
+UCR applies variable values in this priority order,
+from lowest to highest:
 
-Inline Python code can also be integrated for more complicated
-scenarios, which then also allows more complicated constructions such as
-conditional assignments.
+Local variables
+   Variables you set directly on the system with :option:`ucr set`.
 
-.. note::
+Policy variables
+   Variables distributed from the directory service that override local variables.
+   If a higher-priority policy already overrides the variable you set,
+   UCR displays a warning.
 
-   |UCSUCR| templates are included in the corresponding software packages
-   as configuration files. When packages are updated, a check is
-   performed for whether any changes have been made to the configuration
-   files.
+Schedule-level variables
+   Variables that are valid only for a specified period.
+   Set them with ``--schedule``.
+   Nubus for UCS uses the schedule level for time-based automation.
 
-   If configuration files are no longer there in the form in which they were
-   delivered, they will not be overwritten. Instead a new version will be
-   created in the same directory with the ending :file:`.debian.dpkg-new`.
+Force-level variables
+   Variables with the highest priority.
+   They override policy and schedule variables.
+   Set them with ``--force``.
+   See :numref:`ucr-force-example` for an example.
 
-   If changes are to be made on the |UCSUCR| templates, these templates are also
-   not overwritten during the update and are instead re-saved in the same
-   directory with the ending :file:`.dpkg-new` or :file:`.dpkg-dist`.
-   Corresponding notes are written in the
-   :file:`/var/log/univention/actualise.log` log file. This only occurs if UCR
-   templates have been locally modified.
+   .. code-block:: console
+      :caption: Override policy variables with ``--force``
+      :name: ucr-force-example
 
-The UCR templates are stored in the :file:`/etc/univention/templates/files/`
-directory. The path to the templates is the absolute path to the configuration
-file with the prefixed path to the template directory. For example, the template
-for the :file:`/etc/issue` configuration file can be found under
-:file:`/etc/univention/templates/files/etc/issue`.
+      $ univention-config-registry set --force mail/messagesizelimit=1000000
 
-For the configuration files to be processed correctly by |UCSUCR| they must be
-in UNIX format. If configuration files are edited in DOS or Windows, for
-example, control characters are inserted to indicate line breaks, which can
-disrupt the way |UCSUCR| uses the file.
+.. _system-administration-ucr-templates:
 
-.. _ucr-templates-extend-simple:
+Modify UCR templates
+--------------------
 
-Referencing of UCR variables in templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A UCR template is a configuration file with markers.
+UCR replaces these markers with variable values when it generates the file.
 
-In the simplest case, a UCR variable can be directly referenced in the template.
-The variable name framed by the string ``@%@`` represents the wildcard. As an
-example the option for the activation of X11 forwarding in the configuration
-file :file:`/etc/ssh/sshd_config` of the OpenSSH server:
+You can embed inline Python code in UCR templates.
+Use it to add conditions or compute values from other variables.
+
+UCR stores templates in :file:`/etc/univention/templates/files/`
+and uses the absolute path of the configuration file as the template filename.
+For example,
+the template for :file:`/etc/issue` is at :file:`/etc/univention/templates/files/etc/issue`.
+
+UCR template files must use Unix line endings: LF only, not CRLF.
+
+.. caution::
+
+   If you edit a template file on Windows,
+   the editor may insert CRLF line endings
+   that disrupt UCR processing.
+   Before you edit the template,
+   run :command:`dos2unix` ``FILENAME``
+   to convert it to Unix format.
+
+Nubus for UCS packages ship with UCR templates.
+When you update a package,
+UCR checks whether you modified the templates.
+If you modified a template,
+UCR preserves your changes.
+It saves the updated package template
+with the suffix :file:`.dpkg-new` or :file:`.dpkg-dist`
+in the same directory
+and logs a message to :file:`/var/log/univention/actualise.log`.
+
+.. _system-administration-ucr-templates-reference:
+
+Reference UCR variables in templates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To reference a UCR variable in a template, use the ``@%@`` marker.
+:numref:`ucr-template-reference-example` shows the X11 forwarding option
+in :file:`/etc/ssh/sshd_config`.
 
 .. code-block::
+   :caption: Reference a UCR variable in a template
+   :name: ucr-template-reference-example
 
    X11Forwarding @%@sshd/xforwarding@%@
 
-Newly added references to UCR variables are automatically evaluated by
-templates; additional registration is only required with the use of inline
-Python code (see :ref:`ucr-templates-extend-python`).
+UCR detects variable references in templates
+that use the ``@%@`` marker.
+If your template uses inline Python code,
+you must register additional variables explicitly.
+For details, see :ref:`system-administration-ucr-templates-python`.
 
-.. _ucr-templates-extend-python:
+.. _system-administration-ucr-templates-python:
 
-Integration of inline Python code in templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Integrate inline Python code in templates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Any type of Python code can be embedded in UCR templates by entering a code
-block framed by the string ``@!@``. For example, these blocks can be used to
-realize conditional requests so that when a parameter is changed via a variable,
-further dependent settings are automatically adopted in the configuration file.
-The following code sequence configures for example network settings using the
-|UCSUCR| settings:
+You can embed Python code blocks delimited by ``@!@``
+to add conditions or compute values from other variables.
+:numref:`ucr-python-ssl-example` shows how inline Python code in a template
+configures SSL settings from UCR variables.
 
 .. code-block::
+   :caption: Configure SSL settings with inline Python code
+   :name: ucr-python-ssl-example
 
    @!@
    if configRegistry.get('apache2/ssl/certificate'):
@@ -415,12 +465,17 @@ The following code sequence configures for example network settings using the
            configRegistry['apache2/ssl/certificate'])
    @!@
 
+UCR inserts the output of ``print`` statements
+into the generated configuration file.
+:numref:`ucr-python-configregistry-example` shows how to access UCR data
+through the ``ConfigRegistry`` object.
 
-All the data output with the print function are written in the generated
-configuration file. The data saved in |UCSUCR| can be requested via the
-``ConfigRegistry`` object, e.g.:
+For details about how UCR registers variables,
+see :ref:`system-administration-ucr-templates-reference`.
 
 .. code-block::
+   :caption: Access UCR data through the ``ConfigRegistry`` object
+   :name: ucr-python-configregistry-example
 
    @!@
    if configRegistry.get('version/version') and \
@@ -429,18 +484,90 @@ configuration file. The data saved in |UCSUCR| can be requested via the
            configRegistry)
    @!@
 
+.. _system-administration-ucr-templates-info:
 
-In contrast to directly referenced UCR variables (see
-:ref:`ucr-templates-extend-simple`), variables accessed in inline Python code
-must be explicitly registered.
+Register UCR variables in an info file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The |UCSUCR| variables used in the configuration files are registered in *info*
-files in the :file:`/etc/univention/templates/info/` directory which are usually
-named after the package name with the file ending :file:`.info`. If new Python
-code is entered into the templates or the existing code changed in such a way
-that it requires additional or different variables, one of the existing
-:file:`.info` files will need to be modified or a new one added.
+To register UCR variables in an info file:
 
-Following the changing of :file:`.info` files, the :command:`ucr update` command
-must be run.
+#. Create an info file under :file:`/etc/univention/templates/info/`.
+   Name the file after the package,
+   for example :file:`{PACKAGENAME}.info`.
 
+#. In the info file,
+   list the UCR variables that your template uses.
+   For the info file format,
+   see :external+uv-dev-ref:ref:`ucr-info` in :cite:t:`developer-reference`.
+
+#. If you add Python code that uses additional variables,
+   either add them to the existing :file:`.info` file
+   or create a new one for that package.
+
+#. Run :command:`ucr update` to apply the changes.
+
+.. _system-administration-ucr-policy:
+
+Configure UCR variables with policies
+-------------------------------------
+
+Some UCR settings apply to a single system,
+such as the hostname.
+Other UCR settings apply to all systems in the domain,
+such as the mail relay host setting.
+Use the *UCR policy* in the *Policies* management module
+to group variables and assign them to multiple computers.
+
+.. _system-administration-ucr-policy-figure:
+
+.. figure:: /images/computers_policy_apache_settings.*
+   :alt: Policy-based configuration of the Apache start page and forced HTTPS
+
+   Policy-based configuration of the Apache start page and forced HTTPS
+
+To create and assign a UCR policy:
+
+#. Open *Policies* management module
+   in the *Management UI*.
+
+#. Click :guilabel:`Add` and select :guilabel:`Univention Configuration Registry`.
+
+#. Enter a :guilabel:`Name` for the policy.
+
+#. Add at least one variable name in the :guilabel:`Variable` field
+   and enter a value in the :guilabel:`Value` field.
+   For an example, see :numref:`system-administration-ucr-policy-figure`.
+
+#. Click :guilabel:`Create Policy` to create the policy.
+
+#. Assign the policy to a computer object, container,
+   or organizational unit (OU).
+   For details, see :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`.
+
+UCR policies don't write values directly to the system.
+Instead, Nubus for UCS writes the values to the LDAP object of the computer.
+The computer reads the values during the next synchronization.
+The :envvar:`ldap/policy/cron` UCR variable controls the synchronization interval.
+The default interval is one hour.
+
+To verify that UCR applied the policy after the next synchronization,
+run :option:`ucr dump` on the target system.
+For an example, see :numref:`ucr-policy-verify-example`.
+To learn how UCR prioritizes variables,
+see :ref:`system-administration-ucr-precedence`.
+
+.. code-block:: console
+   :caption: Verify a policy-applied UCR variable with :option:`ucr dump`
+   :name: ucr-policy-verify-example
+
+   $ univention-config-registry dump | grep VARIABLENAME
+
+.. seealso::
+
+   :external+uv-nubus-manual:ref:`nubus-domain-policies`
+      in :cite:t:`uv-nubus-manual`
+      for reference information about the *Policies* management module
+
+   :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`
+      in :cite:t:`uv-nubus-manual`
+      for information about how to assign policies.
