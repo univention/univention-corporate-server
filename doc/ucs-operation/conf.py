@@ -82,6 +82,10 @@ intersphinx_mapping = {
         'https://www.kernel.org/doc/html/v6.1/',
         None,
     ),  # UCS 5.2 Kernel is 6.1
+    'python-docs': (
+        'https://docs.python.org/3.12/',
+        None,
+    ),
 }
 
 # TODO: When using a kernel different from 6.1, update the reference to the Kernel docs in the intersphinx mapping.
