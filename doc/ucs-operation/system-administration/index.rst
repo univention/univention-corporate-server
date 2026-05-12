@@ -38,6 +38,7 @@ Proxy settings
 .. toctree::
    :caption: Contents
 
+   ucr
    kernel
    boot-manager
    network/index
