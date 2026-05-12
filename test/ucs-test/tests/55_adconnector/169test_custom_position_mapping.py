@@ -60,8 +60,8 @@ def create_localmapping():
 @pytest.mark.parametrize("mode", ["write", "sync"])
 def test_udm_to_ad_position_mapping_cn(udm, ucr, mode):
     """
-    Create OU in UDM → expect mapped OU in AD
-    Rename OU in UDM → expect rename in AD
+    Create CN in UDM → expect mapped CN in AD
+    Rename CN in UDM → expect rename in AD
     """
     with testing_ucr.UCSTestConfigRegistry() as ucr:
         ucr_set(
@@ -73,12 +73,14 @@ def test_udm_to_ad_position_mapping_cn(udm, ucr, mode):
 
         ad_base = ucr.get("connector/ad/ldap/base")
         ucs_base = ucr.get("ldap/base")
-        # Create OU in mapped position
+        # Create CN in mapped position
         udm.create_object("container/cn", name=ucs_name1)
 
         wait_for_sync()
         AD.verify_object(f"cn={ad_name1},{ad_base}", {'cn': f"+1{name1}"})
         wait_for_sync()
+
+        # Expect UDM CN "plus1"
         udm.verify_ldap_object(f"cn={ucs_name1},{ucs_base}", retry_count=3, delay=1)
 
         # Rename in UDM
@@ -111,6 +113,8 @@ def test_udm_to_ad_position_mapping_ou(udm, ucr, mode):
         wait_for_sync()
         AD.verify_object(f"ou={ad_name1},{ad_base}", {'name': f"+1{name1}"})
         wait_for_sync()
+
+        # Expect UDM OU "plus1"
         udm.verify_ldap_object(f"ou={ucs_name1},{ucs_base}", retry_count=3, delay=1)
 
         # Rename in UDM
@@ -124,8 +128,8 @@ def test_udm_to_ad_position_mapping_ou(udm, ucr, mode):
 @pytest.mark.parametrize("mode", ["sync", "read"])
 def test_ad_to_udm_position_mapping_cn(udm, ucr, mode):
     """
-    Create OU in AD → expect mapped OU in UDM
-    Rename OU in AD → expect rename in UDM
+    Create CN in AD → expect mapped CN in UDM
+    Rename CN in AD → expect rename in UDM
     """
     with testing_ucr.UCSTestConfigRegistry() as ucr:
         ucr_set(
@@ -136,17 +140,16 @@ def test_ad_to_udm_position_mapping_cn(udm, ucr, mode):
         restart_adconnector()
         ad_base = ucr.get("connector/ad/ldap/base")
         ucs_base = ucr.get("ldap/base")
-        # Create OU in AD
+        # Create CN in AD
         connector._ad.container_create(f"+2{name2}")
         AD.verify_object(f"cn={ad_name2},{ad_base}", {'cn': f"+2{name2}"})
 
         wait_for_sync()
 
-        # Expect UDM OU "plus1"
+        # Expect UDM CN "plus2"
         udm.verify_ldap_object(f"cn={ucs_name2},{ucs_base}", retry_count=3, delay=1)
 
         # Rename in AD
-# new    _dn = f"ou=renamed,{ad_base}"
         connector.rename(f"cn={ad_name2},{ad_base}", rdn="cn=renamed")
         connector.delete_object(f"cn=renamed,{ad_base}", f"cn=renamed,{ucs_base}")
 
@@ -174,11 +177,10 @@ def test_ad_to_udm_position_mapping_ou(udm, ucr, mode):
 
         wait_for_sync()
 
-        # Expect UDM OU "plus1"
+        # Expect UDM OU "plus2"
         udm.verify_ldap_object(f"ou={ucs_name2},{ucs_base}", retry_count=3, delay=1)
 
         # Rename in AD
-# new    _dn = f"ou=renamed,{ad_base}"
         connector.rename(f"ou={ad_name2},{ad_base}", rdn="ou=renamed")
 
         wait_for_sync()
