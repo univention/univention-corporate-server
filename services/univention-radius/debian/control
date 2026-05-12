@@ -8,7 +8,6 @@ Build-Depends:
  clang,
  debhelper-compat (=13),
  dh-cargo,
- dh-python,
  libldap-dev,
  librust-chrono-0.4+clock-dev,
  librust-cipher-dev,
@@ -25,12 +24,6 @@ Build-Depends:
  libssl-dev,
  libunivention-config-dev,
  libunivention-policy-dev,
- pkg-config,
- python3-all,
- python3-debian,
- python3-passlib,
- python3-pytest,
- python3-setuptools,
  rustc,
  univention-config-dev (>= 15.0.3),
 
@@ -42,7 +35,6 @@ Depends:
  freeradius-utils,
  libldap-2.5-0,
  libssl3,
- python3-univention-radius,
  shell-univention-lib (>= 9.0.11-9),
  univention-config,
  univention-directory-listener (>= 13.0.0-2),
@@ -61,18 +53,4 @@ Description: FreeRADIUS 802.1X integration package for Univention Corporate Serv
 
 Package: python3-univention-radius
 Architecture: all
-Depends:
- libssl-dev,
- python3-ldap,
- python3-passlib,
- python3-univention,
- ${misc:Depends},
- ${python3:Depends},
-Description: UCS - RADIUS Python 3 modules
- This package contains Python 3 modules for the RADIUS
- integration.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+Description: Transitional package
