@@ -4908,6 +4908,7 @@ univention-system-activation
 univention-system-info
 univention-system-setup
 univention-system-setup-boot
+univention-telemetry
 univention-tftp
 univention-updater
 univention-web-js
