@@ -9,3 +9,6 @@ desc: |
  * The `univention-telemetry` package has been added as a recommended
    dependency for univention-server.
 bug: [59235]
+erratum: 440
+announced: 2026-05-13
+support: core
