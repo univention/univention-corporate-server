@@ -1,3 +1,9 @@
+ucs-test (12.5.38) unstable; urgency=medium
+
+  * Bug #59280: test case for UMC header smuggling
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 May 2026 09:15:37 +0200
+
 ucs-test (12.5.37) unstable; urgency=medium
 
   * Bug #59280: add test case for UMC header smuggling

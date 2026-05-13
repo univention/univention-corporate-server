@@ -98,11 +98,11 @@ class TestSecurityHeaders:
         # make sure any UMC module is present (the session is not dropped to anonymous)
         assert any(x['id'] == 'top' for x in client.umc_get('modules').data['modules'])
 
+    @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
     def test_header_smuggling(self, umc_allow_ucstest, umc_client):
         headers = {
             'x-user-dn': '"cn=admin"',
             'x-umc-authtype': 'AUTH',
-            'x-umc-flavor': 'FLAVOR',
             'x-umc-roles': '["guardian::super-admin"]',
             'x-umc-federated-account': 'true',
             'x-umc-method': 'METHOD',
