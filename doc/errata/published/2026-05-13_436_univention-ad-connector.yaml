@@ -10,3 +10,6 @@ desc: |
    AD-Connector now applies to the object mentioned
    in the mapping as well.
 bug: [59200]
+erratum: 436
+announced: 2026-05-13
+support: core
