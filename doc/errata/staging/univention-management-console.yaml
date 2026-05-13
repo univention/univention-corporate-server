@@ -3,7 +3,7 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-management-console
-fix: 14.5.1
+fix: 14.5.2
 desc: |
  This update addresses the following issue:
  * The UMC server allowed HTTP request header smuggling for the

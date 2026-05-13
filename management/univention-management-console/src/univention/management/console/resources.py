@@ -754,7 +754,6 @@ class Command(Resource):
                 'set-cookie',
                 'x-user-dn',
                 'x-umc-authtype',
-                'x-umc-flavor',
                 'x-umc-roles',
                 'x-umc-federated-account',
                 'x-umc-method',

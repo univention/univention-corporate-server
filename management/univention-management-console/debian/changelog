@@ -1,3 +1,9 @@
+univention-management-console (14.5.2) unstable; urgency=medium
+
+  * Bug #59280: prevent request header smuggling
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 May 2026 09:11:29 +0200
+
 univention-management-console (14.5.1) unstable; urgency=medium
 
   * Bug #59280: prevent request header smuggling
