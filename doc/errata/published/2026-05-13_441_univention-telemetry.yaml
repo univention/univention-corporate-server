@@ -11,3 +11,6 @@ desc: |
    format and forwards them to Univention's telemetry receiver. The feature
    is disabled by default.
 bug: [59235]
+erratum: 441
+announced: 2026-05-13
+support: core
