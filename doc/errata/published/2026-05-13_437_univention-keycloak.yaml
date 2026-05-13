@@ -9,3 +9,6 @@ desc: |
  * The package was rebuilt as part of an internal repository migration. This
    update contains no functional changes.
 bug: [59234]
+erratum: 437
+announced: 2026-05-13
+support: core
