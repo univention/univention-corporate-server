@@ -1,0 +1,32 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: openssh
+fix: 1:7.9p1-10+deb10u7
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-35385 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2025-32728 (CVSS score 4.3 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:N).
+ * CVE-2026-35414 (CVSS score 4.2 -
+   CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-35386, CVE-2025-61985, CVE-2025-61984 (CVSS score 3.6 -
+   CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-35387 (CVSS score 3.1 -
+   CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N).
+ * CVE-2026-35388 (CVSS score 2.5 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:L/A:N).
+ * CVE-2026-3497 (CVSS score unknown).
+bug: [59302]
+cve:
+- CVE-2025-61984
+- CVE-2025-61985
+- CVE-2026-3497
+- CVE-2026-35386
+- CVE-2026-35414
+- CVE-2026-35385
+- CVE-2026-35387
+- CVE-2026-35388
+- CVE-2025-32728
