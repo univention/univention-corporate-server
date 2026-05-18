@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: sed
+fix: 4.9-1+deb12u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-5958 (CVSS score unknown).
+bug: [59315]
+cve:
+- CVE-2026-5958
