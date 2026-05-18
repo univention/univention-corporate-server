@@ -1,0 +1,19 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: xorg-server
+fix: 2:21.1.7-3+deb12u12
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-34003, CVE-2026-34001, CVE-2026-33999 (CVSS score 7.8 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-34002, CVE-2026-34000 (CVSS score 6.1 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:L).
+bug: [59312]
+cve:
+- CVE-2026-33999
+- CVE-2026-34000
+- CVE-2026-34001
+- CVE-2026-34002
+- CVE-2026-34003
