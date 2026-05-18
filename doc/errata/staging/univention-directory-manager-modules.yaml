@@ -3,9 +3,10 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-directory-manager-modules
-fix: 17.5.19
+fix: 17.5.20
 desc: |
  This update addresses the following issue:
  * The `users/contact` UDM module now supports to set the `cn` property
    explicitly, so that objects can be created in a deterministic fashion.
+   The UDM CLI now displayed the correct new DN of a moved object.
 bug: [59281]

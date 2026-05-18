@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.5.20) unstable; urgency=medium
+
+  * Bug #59281: fix printed DN after move on CLI
+
+ -- Florian Best <best@univention.de>  Mon, 18 May 2026 16:57:24 +0200
+
 univention-directory-manager-modules (17.5.19) unstable; urgency=medium
 
   * Bug #59281: allow to set cn for users/contact in deterministic manner
