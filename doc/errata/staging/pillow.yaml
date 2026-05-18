@@ -1,0 +1,20 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: pillow
+fix: 5.4.1-2+deb10u7
+desc: |
+ This update addresses the following issues:
+ * CVE-2022-24303 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H).
+ * CVE-2021-28676, CVE-2021-25293 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-28675 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+bug: [59300]
+cve:
+- CVE-2021-25293
+- CVE-2021-28675
+- CVE-2021-28676
+- CVE-2022-24303
