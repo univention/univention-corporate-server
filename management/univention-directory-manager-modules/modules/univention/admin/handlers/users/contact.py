@@ -328,7 +328,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     @staticmethod
     def _pattern(obj) -> str:
-        description = '%s %s' % (obj['firstname'] or '', obj['lastname'])
+        description = '%s %s' % (obj.get('firstname', ''), obj['lastname'])
         return description.strip()
 
     def _ldap_pre_ready(self) -> None:
