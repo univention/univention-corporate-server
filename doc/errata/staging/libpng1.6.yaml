@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libpng1.6
+fix: 1.6.36-6+deb10u4
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-34757 (CVSS score 5.1 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-40930 (CVSS score unknown).
+bug: [59299]
+cve:
+- CVE-2026-34757
+- CVE-2026-40930
