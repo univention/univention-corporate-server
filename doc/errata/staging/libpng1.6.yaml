@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libpng1.6
+fix: 1.6.28-1+deb9u5
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-34757 (CVSS score 5.1 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+bug: [59303]
+cve:
+- CVE-2026-34757
