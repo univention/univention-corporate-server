@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: dovecot
+fix: 1:2.3.19.1+dfsg1-2.1+deb12u5
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-27855 (CVSS score 6.8 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N).
+ * CVE-2026-27857 (CVSS score 4.3 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L).
+bug: [59309]
+cve:
+- CVE-2026-27855
+- CVE-2026-27857
