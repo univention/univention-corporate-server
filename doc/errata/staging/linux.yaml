@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: linux
+fix: 6.1.172-1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-46333 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N).
+bug: [59320]
+cve:
+- CVE-2026-46333
