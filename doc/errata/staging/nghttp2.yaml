@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: nghttp2
+fix: 1.52.0-1+deb12u3
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-27135 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59295]
+cve:
+- CVE-2026-27135
