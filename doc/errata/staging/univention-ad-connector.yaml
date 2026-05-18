@@ -6,6 +6,17 @@ src: univention-ad-connector
 fix: 16.6.3
 desc: |
  This update addresses the following issues:
- * Added support for arc4 during password synchronization
-   from UCS to AD in KB5082063 onwards.
+ * As Microsoft is continuing with the deprecation of NT-hashes
+   (see https://go.microsoft.com/fwlink/?linkid=2344614 )
+   the Microsoft update `KB5082063` changed the default value
+   for `DefaultDomainSupportedEncTypes` to allow AES-SHA1 only,
+   which blocks issuing Kerberos tickets with `RC4` hashes.
+   The AD-Connector now implements the advice by Microsoft to set
+   `msDS-SupportedEncryptionTypes` on a per account basis during
+   the Sync from UCS to MS AD, to allow the MS KDC to make use of
+   the synced NT-hash.
+   As Microsoft doesn't offer a RPC call to pass stronger Kerberos
+   hashes, this workaround is currently necessary. When a password
+   is changed on the MS AD side the AD-Connector removes this setting
+   again, to keep security as high as possible.
 bug: [58876]
