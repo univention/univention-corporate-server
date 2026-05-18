@@ -1,6 +1,10 @@
-univention-management-console-module-diagnostic (8.6.0) UNRELEASED; urgency=medium
+univention-management-console-module-diagnostic (8.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
+
+  [ Florian Best ]
+  * Bug #55411: replace PyOpenSSL with python3-cryptography
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:07 +0200
 

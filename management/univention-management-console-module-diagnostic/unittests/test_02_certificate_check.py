@@ -2,39 +2,44 @@
 # SPDX-FileCopyrightText: 2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import datetime
 import os
 import tempfile
 
 import pytest
-from OpenSSL import crypto
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.x509.oid import NameOID
 
 
 def _create_test_cert(cn, san_names=None, days_valid=365):
     """Create a self-signed test certificate and return its path."""
-    key = crypto.PKey()
-    key.generate_key(crypto.TYPE_RSA, 2048)
+    key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
-    cert = crypto.X509()
-    cert.get_subject().CN = cn
-    cert.set_serial_number(1000)
-    cert.gmtime_adj_notBefore(0)
-    cert.gmtime_adj_notAfter(days_valid * 24 * 60 * 60)
-    cert.set_issuer(cert.get_subject())
+    subject = issuer = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, cn)])
+    now = datetime.datetime.now(datetime.UTC)
+    builder = (
+        x509.CertificateBuilder()
+        .subject_name(subject)
+        .issuer_name(issuer)
+        .public_key(key.public_key())
+        .serial_number(1000)
+        .not_valid_before(now)
+        .not_valid_after(now + datetime.timedelta(days=days_valid))
+    )
 
     if san_names:
-        san_string = ', '.join(f'DNS:{name}' for name in san_names)
-        cert.add_extensions(
-            [
-                crypto.X509Extension(b'subjectAltName', False, san_string.encode()),
-            ],
+        builder = builder.add_extension(
+            x509.SubjectAlternativeName([x509.DNSName(name) for name in san_names]),
+            critical=False,
         )
 
-    cert.set_pubkey(key)
-    cert.sign(key, 'sha256')
+    cert = builder.sign(key, hashes.SHA256())
 
     fd, path = tempfile.mkstemp(suffix='.pem')
     with os.fdopen(fd, 'wb') as f:
-        f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
+        f.write(cert.public_bytes(serialization.Encoding.PEM))
     return path
 
 
@@ -72,27 +77,17 @@ def cert_wildcard_nonmatching():
 
 class TestGetCertificateNames:
     def test_extracts_cn(self, cert_internal):
-        # Since the module has complex imports, test the logic directly
-        from OpenSSL import crypto
-
         with open(cert_internal, 'rb') as f:
-            cert = crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        assert cert.get_subject().CN == 'server.domain.local'
+            cert = x509.load_pem_x509_certificate(f.read())
+        cn_attrs = cert.subject.get_attributes_for_oid(NameOID.COMMON_NAME)
+        assert cn_attrs[0].value == 'server.domain.local'
 
     def test_extracts_san(self, cert_external):
-        from OpenSSL import crypto
-
         with open(cert_external, 'rb') as f:
-            cert = crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
+            cert = x509.load_pem_x509_certificate(f.read())
 
-        names = []
-        for i in range(cert.get_extension_count()):
-            ext = cert.get_extension(i)
-            if ext.get_short_name() == b'subjectAltName':
-                for entry in str(ext).split(','):
-                    entry = entry.strip()
-                    if entry.startswith('DNS:'):
-                        names.append(entry[4:])
+        san_ext = cert.extensions.get_extension_for_class(x509.SubjectAlternativeName)
+        names = san_ext.value.get_values_for_type(x509.DNSName)
         assert 'portal.example.com' in names
 
 

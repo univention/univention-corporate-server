@@ -5,15 +5,14 @@
 import contextlib
 import datetime
 import os.path
-import re
 import shutil
 import subprocess
 import tempfile
 from collections.abc import Iterable, Iterator
 
-import dateutil.tz
 import requests
-from OpenSSL import crypto
+from cryptography import x509
+from cryptography.x509.oid import NameOID
 
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
@@ -34,6 +33,7 @@ links = [
 
 
 WARNING_PERIOD = datetime.timedelta(days=50)
+_CRYPT_HAS_UTC = hasattr(x509.Certificate, 'not_valid_after_utc')  # > Debian bookworm
 
 
 class CertificateWarning(Exception):
@@ -112,67 +112,24 @@ class CertificateVerifier:
         self.root_cert_path = root_cert_path
         self.crl_path = crl_path
 
-    @staticmethod
-    def parse_generalized_time(data: bytes) -> datetime.datetime:
-        # ASN.1 GeneralizedTime
-        # Local time only. ``YYYYMMDDHH[MM[SS[.fff]]]''
-        # Universal time (UTC time) only. ``YYYYMMDDHH[MM[SS[.fff]]]Z''.
-        # Difference between local and UTC times. ``YYYYMMDDHH[MM[SS[.fff]]]+-HHMM''.
-
-        generalized_time = data.decode('ASCII')
-        sans_mircoseconds = re.sub(r'\.\d{3}', '', generalized_time)
-        sans_difference = re.sub(r'[+-]\d{4}', '', sans_mircoseconds)
-        date_format = {
-            10: '%Y%m%d%H',
-            12: '%Y%m%d%H%M',
-            14: '%Y%m%d%H%M%S',
-            11: '%Y%m%d%HZ',
-            13: '%Y%m%d%H%MZ',
-            15: '%Y%m%d%H%M%SZ',
-        }.get(len(sans_difference))
-
-        if date_format is None:
-            raise ValueError(f'Unparsable generalized_time {generalized_time!r}')
-
-        date = datetime.datetime.strptime(sans_mircoseconds, date_format)
-        utc_difference = re.search(r'([+-])(\d{2})(\d{2})', sans_mircoseconds)
-
-        if sans_mircoseconds.endswith('Z'):
-            return date.replace(tzinfo=dateutil.tz.tzutc())
-        elif utc_difference:
-            (op, hours_str, minutes_str) = utc_difference.groups()
-            try:
-                (hours, minutes) = (int(hours_str), int(minutes_str))
-            except ValueError:
-                raise ValueError(f'Unparsable generalized_time {generalized_time!r}')
-
-            if op == '+':
-                offset = datetime.timedelta(hours=hours, minutes=minutes)
-            else:
-                offset = datetime.timedelta(hours=-hours, minutes=-minutes)
-            with_offset = date.replace(tzinfo=dateutil.tz.tzoffset('unknown', offset))
-            return with_offset.astimezone(dateutil.tz.tzutc())
-        as_local = date.replace(tzinfo=dateutil.tz.tzlocal())
-        return as_local.astimezone(dateutil.tz.tzutc())
-
     def _verify_timestamps(self, cert_path: str) -> Iterator[CertificateWarning]:
-        now = datetime.datetime.now(dateutil.tz.tzutc())
+        now = datetime.datetime.now(datetime.UTC)
 
         with open(cert_path, 'rb') as fob:
             try:
-                cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
-            except crypto.Error:
+                cert = x509.load_pem_x509_certificate(fob.read())
+            except ValueError:
                 yield CertificateMalformed(cert_path)
             else:
-                valid_from = self.parse_generalized_time(cert.get_notBefore() or b'')
+                valid_from = cert.not_valid_before_utc if _CRYPT_HAS_UTC else cert.not_valid_before.replace(tzinfo=datetime.UTC)
 
                 if now < valid_from:
                     yield CertificateNotYetValid(cert_path)
 
-                valid_until = self.parse_generalized_time(cert.get_notAfter() or b'')
+                valid_until = cert.not_valid_after_utc if _CRYPT_HAS_UTC else cert.not_valid_after.replace(tzinfo=datetime.UTC)
                 expires_in = valid_until - now
 
-                if expires_in < datetime.timedelta():
+                if expires_in < datetime.timedelta(0):
                     yield CertificateExpired(cert_path)
                 elif expires_in < WARNING_PERIOD:
                     yield CertificateWillExpire(cert_path, expires_in)
@@ -206,22 +163,21 @@ class CertificateVerifier:
 
 def _get_certificate_names(cert_path: str) -> list[str]:
     """Extract all hostnames (CN + SANs) from a certificate."""
-    names = []
+    names: list[str] = []
     try:
         with open(cert_path, 'rb') as fob:
-            cert = crypto.load_certificate(crypto.FILETYPE_PEM, fob.read())
-        subject = cert.get_subject()
-        if subject.CN:
-            names.append(subject.CN)
-        for i in range(cert.get_extension_count()):
-            ext = cert.get_extension(i)
-            if ext.get_short_name() == b'subjectAltName':
-                for entry in str(ext).split(','):
-                    entry = entry.strip()
-                    if entry.startswith('DNS:'):
-                        name = entry[4:]
-                        if name not in names:
-                            names.append(name)
+            cert = x509.load_pem_x509_certificate(fob.read())
+        for attr in cert.subject.get_attributes_for_oid(NameOID.COMMON_NAME):
+            if attr.value and attr.value not in names:
+                names.append(attr.value)
+        try:
+            san_ext = cert.extensions.get_extension_for_class(x509.SubjectAlternativeName)
+        except x509.ExtensionNotFound:
+            pass
+        else:
+            for name in san_ext.value.get_values_for_type(x509.DNSName):
+                if name not in names:
+                    names.append(name)
     except Exception:
         pass
     return names
