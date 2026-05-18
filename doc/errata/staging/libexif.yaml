@@ -1,0 +1,17 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: libexif
+fix: 0.6.24-1+deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-32775 (CVSS score 7.4 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-40386, CVE-2026-40385 (CVSS score 4.0 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:L).
+bug: [59287]
+cve:
+- CVE-2026-40386
+- CVE-2026-40385
+- CVE-2026-32775
