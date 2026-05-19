@@ -93,12 +93,17 @@ in :cite:t:`uv-ucs-operation`.
 
 .. _domain-ldap-win-2012:
 
-Windows Server 2012 / 2016 / 2019 / 2022
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows Server 2012 / 2016 / 2019 / 2022 / 2025
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The content of this section moved to
 :external+uv-ucs-operation:ref:`domain-infrastructure-join-windows-server`
 in :cite:t:`uv-ucs-operation`.
+
+.. warning::
+
+   For Windows Server 2025, we don't support using AD without RC4 hashes.
+
 
 .. _ubuntu-domain-join:
 
