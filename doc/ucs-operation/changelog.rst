@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 18. May 2026
+     - :ref:`system-administration-ucr`
+     - Add section about local system configuration with Univention Configuration Registry.
+
    * - 11. May 2026
      - :ref:`references-ucr-variables`
      - Add referenced but undefined UCR variables to the reference list.
