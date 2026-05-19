@@ -1,9 +1,9 @@
 product: ucs
 release: "5.2"
-version: [3, 4, 5]
+version: [4, 5]
 scope: ucs_5.2-0-errata5.2-5
 src: libcap2
-fix: 1:2.66-4+deb12u3+b1
+fix: 1:2.66-4+deb12u3
 desc: |
  This update addresses the following issue:
  * CVE-2026-4878 (CVSS score 6.7 -
