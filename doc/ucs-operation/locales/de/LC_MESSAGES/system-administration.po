@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-23 13:51+0000\n"
-"PO-Revision-Date: 2026-03-23 21:11+0100\n"
+"POT-Creation-Date: 2026-05-19 14:44+0000\n"
+"PO-Revision-Date: 2026-05-19 16:44+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../system-administration/boot-manager.rst:7
-#: ../../system-administration/index.rst:21
+#: ../../system-administration/index.rst:30
 msgid "Boot manager"
 msgstr "Boot-Manager"
 
@@ -196,7 +196,7 @@ msgstr ""
 "Prozesses – deaktivieren, indem Sie die UCR-Variable "
 ":envvar:`grub/bootsplash` auf ``nosplash`` setzen."
 
-#: ../../system-administration/index.rst:38
+#: ../../system-administration/index.rst:47
 #: ../../system-administration/network/index.rst:62
 msgid "Contents"
 msgstr "Inhalt"
@@ -219,11 +219,34 @@ msgstr ""
 "ausgehenden Proxy-Zugriff."
 
 #: ../../system-administration/index.rst:15
+msgid "Univention Configuration Registry"
+msgstr "Univention Configuration Registry"
+
+#: ../../system-administration/index.rst:16
+msgid ""
+"Manage system settings through Univention Configuration Registry (UCR), "
+"the central tool for managing configuration on Nubus for UCS systems. "
+"Configure settings using the command-line interface, the web-based "
+"management UI, or configuration policies that apply across multiple "
+"systems. UCR automatically regenerates configuration files from templates"
+" when settings change, eliminating the need for manual file editing. See "
+":ref:`system-administration-ucr`."
+msgstr ""
+"Verwalten Sie Systemeinstellungen über die Univention Configuration "
+"Registry (UCR), das zentrale Werkzeug zur Verwaltung der Konfiguration "
+"auf Nubus für UCS-Systemen. Konfigurieren Sie Einstellungen über die "
+"Befehlszeilenschnittstelle, die webbasierte Verwaltungsoberfläche oder "
+"Konfigurationsrichtlinien, die auf mehrere Systeme angewendet werden. UCR"
+" generiert Konfigurationsdateien automatisch aus Vorlagen neu, wenn sich "
+"Einstellungen ändern, sodass keine manuelle Dateibearbeitung erforderlich"
+" ist. Siehe :ref:`system-administration-ucr`."
+
+#: ../../system-administration/index.rst:24
 #: ../../system-administration/kernel.rst:7
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../../system-administration/index.rst:16
+#: ../../system-administration/index.rst:25
 msgid ""
 "Manage kernel packages, kernel versions, and kernel modules. This "
 "includes loading additional drivers, blacklisting unwanted modules, and "
@@ -235,23 +258,23 @@ msgstr ""
 "und die Integration externer Treiber über Dynamic Kernel Module Support "
 "(DKMS). Siehe :ref:`system-administration-kernel`."
 
-#: ../../system-administration/index.rst:22
+#: ../../system-administration/index.rst:31
 msgid ""
 "Configure GRUB, the boot manager in Nubus for UCS. Control the boot "
 "timeout, screen resolution, kernel options, and which kernel the system "
 "boots by default. See :ref:`system-administration-boot-manager`."
 msgstr ""
 "Konfigurieren Sie GRUB, den Boot-Manager in Nubus für UCS. Steuern Sie "
-"die Verzögerung im Startvorgang, die Bildschirmauflösung, Kernel-Optionen und "
-"welchen Kernel das System standardmäßig startet. Siehe "
-":ref:`system-administration-boot-manager`."
+"die Verzögerung im Startvorgang, die Bildschirmauflösung, Kernel-Optionen"
+" und welchen Kernel das System standardmäßig startet. Siehe :ref:`system-"
+"administration-boot-manager`."
 
-#: ../../system-administration/index.rst:27
+#: ../../system-administration/index.rst:36
 #: ../../system-administration/network/index.rst:7
 msgid "Network configuration"
 msgstr "Netzwerkkonfiguration"
 
-#: ../../system-administration/index.rst:28
+#: ../../system-administration/index.rst:37
 msgid ""
 "Configure network interfaces and advanced network setups such as bridging"
 " for virtual machines, bonding for failover redundancy, and VLANs for "
@@ -259,22 +282,22 @@ msgid ""
 msgstr ""
 "Konfigurieren Sie Netzwerkschnittstellen und erweiterte Netzwerk-Setups "
 "wie Bridging für virtuelle Maschinen, Bonding für Ausfallsicherheit und "
-"VLANs zur logischen Trennung des Datenverkehrs. Siehe "
-":ref:`system-administration-network`."
+"VLANs zur logischen Trennung des Datenverkehrs. Siehe :ref:`system-"
+"administration-network`."
 
-#: ../../system-administration/index.rst:33
+#: ../../system-administration/index.rst:42
 msgid "Proxy settings"
 msgstr "Proxy-Einstellungen"
 
-#: ../../system-administration/index.rst:34
+#: ../../system-administration/index.rst:43
 msgid ""
 "Route outbound traffic from command-line tools and Nubus for UCS update "
 "utilities through a proxy server using UCR variables. See :ref:`system-"
 "administration-proxy`."
 msgstr ""
-"Leiten Sie ausgehenden Datenverkehr von Befehlszeilenwerkzeugen und "
-"Nubus für UCS Update-Dienstprogrammen über einen Proxy-Server mithilfe "
-"von UCR-Variablen weiter. Siehe :ref:`system-administration-proxy`."
+"Leiten Sie ausgehenden Datenverkehr von Befehlszeilenwerkzeugen und Nubus"
+" für UCS Update-Dienstprogrammen über einen Proxy-Server mithilfe von "
+"UCR-Variablen weiter. Siehe :ref:`system-administration-proxy`."
 
 #: ../../system-administration/kernel.rst:9
 msgid ""
@@ -460,8 +483,8 @@ msgstr ""
 "können Sie Kernel-Module über die :term:`UCR-Variable` "
 ":envvar:`kernel/modules` aktivieren. Dies kann vorkommen, wenn "
 "Hardwarehersteller Hardware-IDs nicht registriert haben. Verwenden Sie "
-"die UCR-Variable :envvar:`kernel/blacklist`, um bestimmte Kernel-Module zu"
-" verhindern, dass sie automatisch geladen werden. Für beide Variablen "
+"die UCR-Variable :envvar:`kernel/blacklist`, um bestimmte Kernel-Module "
+"zu verhindern, dass sie automatisch geladen werden. Für beide Variablen "
 "werden mehrere Einträge durch ein Semikolon getrennt."
 
 #: ../../system-administration/kernel.rst:99
@@ -497,8 +520,8 @@ msgstr ""
 "über das DKMS-Framework (Dynamic Kernel Module Support) integrieren. DKMS"
 " stellt eine standardisierte Schnittstelle für Kernel-Quellen bereit und "
 "erstellt diese automatisch für jeden installierten Kernel. Das Quellpaket"
-" muss mit dem Kernel kompatibel sein. Externe Kernel-Module sind nicht mit"
-" allen Kernel-Versionen kompatibel."
+" muss mit dem Kernel kompatibel sein. Externe Kernel-Module sind nicht "
+"mit allen Kernel-Versionen kompatibel."
 
 #: ../../system-administration/kernel.rst:117
 msgid "To use DKMS, you need:"
@@ -1633,3 +1656,1019 @@ msgstr ":ref:`lifecycle-update-strategies`"
 #: ../../system-administration/proxy.rst:79
 msgid ":ref:`lifecycle-package-installation-management`"
 msgstr ":ref:`lifecycle-package-installation-management`"
+
+#: ../../system-administration/ucr.rst:7
+msgid "Configure the local system with Univention Configuration Registry"
+msgstr "Das lokale System mit der Univention Configuration Registry konfigurieren"
+
+#: ../../system-administration/ucr.rst:9
+msgid ""
+"Univention Configuration Registry (UCR) is a key-value store for system "
+"settings. Services and programs read these settings to configure "
+"themselves automatically. UCR runs on every Nubus for UCS system."
+msgstr ""
+"Die Univention Configuration Registry (UCR) ist ein Schlüssel-Wert-"
+"Speicher für Systemeinstellungen. Dienste und Programme lesen diese "
+"Einstellungen, um sich automatisch zu konfigurieren. UCR läuft auf jedem "
+"Nubus für UCS-System."
+
+#: ../../system-administration/ucr.rst:14
+msgid "UCR provides the following advantages:"
+msgstr "UCR bietet die folgenden Vorteile:"
+
+#: ../../system-administration/ucr.rst:16
+msgid ""
+"UCR manages configuration files without requiring direct edits. This "
+"avoids errors from invalid syntax or incorrect values."
+msgstr ""
+"UCR verwaltet Konfigurationsdateien, ohne dass direkte Bearbeitungen "
+"erforderlich sind. Dies verhindert Fehler durch ungültige Syntax oder "
+"falsche Werte."
+
+#: ../../system-administration/ucr.rst:19
+msgid ""
+"UCR provides a single interface for editing settings, regardless of the "
+"format used by the underlying configuration files."
+msgstr ""
+"UCR stellt eine einheitliche Schnittstelle zur Bearbeitung von "
+"Einstellungen bereit, unabhängig vom Format der zugrunde liegenden "
+"Konfigurationsdateien."
+
+#: ../../system-administration/ucr.rst:22
+msgid ""
+"UCR variables are independent of the configuration file format. If a "
+"package switches to a different format, you update the UCR template "
+"instead of converting the file."
+msgstr ""
+"UCR-Variablen sind unabhängig vom Format der Konfigurationsdatei. Wenn "
+"ein Paket auf ein anderes Format wechselt, aktualisieren Sie die UCR-"
+"Vorlage anstatt die Datei zu konvertieren."
+
+#: ../../system-administration/ucr.rst:26
+msgid ""
+"When a variable changes, UCR automatically regenerates all configuration "
+"files that use it."
+msgstr ""
+"Wenn sich eine Variable ändert, generiert UCR automatisch alle "
+"Konfigurationsdateien neu, die diese Variable verwenden."
+
+#: ../../system-administration/ucr.rst:29
+msgid "To manage UCR variables:"
+msgstr "So verwalten Sie UCR-Variablen:"
+
+#: ../../system-administration/ucr.rst:31
+msgid "On the command line, run :command:`univention-config-registry`."
+msgstr "Führen Sie auf der Befehlszeile :command:`univention-config-registry` aus."
+
+#: ../../system-administration/ucr.rst:34
+msgid ""
+"In the *Management UI*, open the *Univention Configuration Registry* "
+"management module."
+msgstr ""
+"Öffnen Sie in der *Management UI* das Verwaltungsmodul *Univention "
+"Configuration Registry*."
+
+#: ../../system-administration/ucr.rst:37
+msgid ""
+"When you install Nubus for UCS, you provide the initial settings for "
+"packages that use UCR. Afterward, the system automatically sets hundreds "
+"of UCR variables."
+msgstr ""
+"Bei der Installation von Nubus für UCS geben Sie die Anfangseinstellungen"
+" für Pakete an, die UCR verwenden. Danach setzt das System automatisch "
+"Hunderte von UCR-Variablen."
+
+#: ../../system-administration/ucr.rst:41
+msgid "You can also use UCR variables in shell scripts to access system settings."
+msgstr ""
+"Sie können UCR-Variablen auch in Shell-Skripten verwenden, um auf "
+"Systemeinstellungen zuzugreifen."
+
+#: ../../system-administration/ucr.rst:44
+msgid ""
+"Variable names use forward slashes to separate parts, for example "
+":envvar:`ldap/base` or :envvar:`mail/relayhost`. UCR variables whose "
+"names begin with ``ldap`` control the local LDAP service."
+msgstr ""
+"Variablennamen verwenden Schrägstriche zur Trennung der Teile, zum "
+"Beispiel :envvar:`ldap/base` oder :envvar:`mail/relayhost`. UCR-"
+"Variablen, deren Namen mit ``ldap`` beginnen, steuern den lokalen LDAP-"
+"Dienst."
+
+#: ../../system-administration/ucr.rst:48
+msgid "Each UCR variable describes what it does."
+msgstr "Jede UCR-Variable beschreibt, was sie bewirkt."
+
+#: ../../system-administration/ucr.rst:52
+msgid ""
+"If UCR manages a configuration file through a template, edit the template"
+" instead of the configuration file directly. UCR overwrites any changes "
+"you make to the file the next time UCR regenerates the file from the "
+"template. For details, see :ref:`system-administration-ucr-templates`."
+msgstr ""
+"Wenn UCR eine Konfigurationsdatei über eine Vorlage verwaltet, bearbeiten"
+" Sie die Vorlage anstelle der Konfigurationsdatei direkt. UCR "
+"überschreibt alle Änderungen, die Sie an der Datei vorgenommen haben, "
+"wenn UCR die Datei das nächste Mal aus der Vorlage neu generiert. Weitere"
+" Informationen finden Sie unter :ref:`system-administration-ucr-"
+"templates`."
+
+#: ../../system-administration/ucr.rst:62
+msgid "Manage UCR variables in the Management UI"
+msgstr "UCR-Variablen in der :spelling:word:`Management UI` verwalten"
+
+#: ../../system-administration/ucr.rst:64
+msgid ""
+"Use the *Univention Configuration Registry* management module to search, "
+"edit, and delete variables."
+msgstr ""
+"Verwenden Sie das Verwaltungsmodul *Univention Configuration Registry*, "
+"um Variablen zu suchen, zu bearbeiten und zu löschen."
+
+#: ../../system-administration/ucr.rst:67
+msgid ""
+"The start page shows a search box and a list of variable categories. For "
+"example, you can browse all LDAP-specific settings in one view, see "
+":numref:`system-administration-ucr-umc-figure`."
+msgstr ""
+"Die Startseite zeigt ein Suchfeld und eine Liste von Variablenkategorien."
+" Sie können beispielsweise alle LDAP-spezifischen Einstellungen in einer "
+"Ansicht durchsuchen, siehe :numref:`system-administration-ucr-umc-"
+"figure`."
+
+#: ../../system-administration/ucr.rst:71
+msgid ""
+"To manage UCR variables in the management module, your account must "
+"belong to the ``Domain Admins`` group."
+msgstr ""
+"Um UCR-Variablen im Verwaltungsmodul zu verwalten, muss Ihr Konto zur "
+"Gruppe ``Domain Admins`` gehören."
+
+#: ../../system-administration/ucr.rst:76
+msgid "Managing UCR variables in the Management UI"
+msgstr "Verwaltung von UCR-Variablen in der Management-UI"
+
+#: ../../system-administration/ucr.rst:79
+msgid "Managing UCR variables in the *Management UI*"
+msgstr "Verwaltung von UCR-Variablen in der *Management UI*"
+
+#: ../../system-administration/ucr.rst:84
+msgid "Manage a UCR variable"
+msgstr "Eine UCR-Variable verwalten"
+
+#: ../../system-administration/ucr.rst:86
+msgid "To manage UCR variables in the management module:"
+msgstr "So verwalten Sie UCR-Variablen im Verwaltungsmodul:"
+
+#: ../../system-administration/ucr.rst:88
+msgid ""
+"In the :guilabel:`Search attribute` field, filter variables by name, "
+"value, or description."
+msgstr ""
+"Filtern Sie im Feld :guilabel:`Suchattribut` Variablen nach Name, Wert "
+"oder Beschreibung."
+
+#: ../../system-administration/ucr.rst:91
+msgid ""
+"In the results table, confirm the variable names and values match your "
+"expectations."
+msgstr ""
+"Überprüfen Sie in der Ergebnistabelle, ob die Variablennamen und -werte "
+"Ihren Erwartungen entsprechen."
+
+#: ../../system-administration/ucr.rst:94
+msgid ""
+"To view a brief description of a variable, point to its name to open a "
+"tooltip."
+msgstr ""
+"Um eine kurze Beschreibung einer Variable anzuzeigen, zeigen Sie auf "
+"ihren Namen, um einen Tooltip zu öffnen."
+
+#: ../../system-administration/ucr.rst:97
+msgid "To view the full details of a variable, select it."
+msgstr ""
+"Um die vollständigen Details einer Variable anzuzeigen, wählen Sie sie "
+"aus."
+
+#: ../../system-administration/ucr.rst:100
+msgid "To edit a variable, click its name."
+msgstr "Um eine Variable zu bearbeiten, klicken Sie auf ihren Namen."
+
+#: ../../system-administration/ucr.rst:102
+msgid "To delete a variable, right-click it and select :guilabel:`Delete`."
+msgstr ""
+"Um eine Variable zu löschen, klicken Sie mit der rechten Maustaste darauf"
+" und wählen Sie :guilabel:`Löschen`."
+
+#: ../../system-administration/ucr.rst:107
+msgid "Create a UCR variable"
+msgstr "Eine UCR-Variable erstellen"
+
+#: ../../system-administration/ucr.rst:109
+msgid "To create a UCR variable:"
+msgstr "So erstellen Sie eine UCR-Variable:"
+
+#: ../../system-administration/ucr.rst:111
+msgid "Click :guilabel:`Add`."
+msgstr "Klicken Sie auf :guilabel:`Speichern`."
+
+#: ../../system-administration/ucr.rst:113
+msgid ""
+"Enter a name in the :guilabel:`Variable` field and a value in the "
+":guilabel:`Value` field."
+msgstr ""
+"Geben Sie im Feld :guilabel:`Variable` einen Namen und im Feld "
+":guilabel:`Wert` einen Wert ein."
+
+#: ../../system-administration/ucr.rst:116
+msgid "Click :guilabel:`Save`."
+msgstr "Klicken Sie auf :guilabel:`Speichern`."
+
+#: ../../system-administration/ucr.rst:121
+msgid "Manage UCR variables on the command line"
+msgstr "UCR-Variablen auf der Befehlszeile verwalten"
+
+#: ../../system-administration/ucr.rst:125
+msgid "You must have root access to run UCR commands on the command line."
+msgstr ""
+"Sie müssen Root-Zugriff haben, um UCR-Befehle auf der Befehlszeile "
+"auszuführen."
+
+#: ../../system-administration/ucr.rst:127
+msgid ""
+"Run UCR commands with :command:`univention-config-registry`. You can also"
+" use the short command :command:`ucr`."
+msgstr ""
+"Führen Sie UCR-Befehle mit :command:`univention-config-registry` aus. Sie"
+" können auch den Kurzbefehl :command:`ucr` verwenden."
+
+#: ../../system-administration/ucr.rst:133
+msgid "Query a UCR variable"
+msgstr "Eine UCR-Variable abfragen"
+
+#: ../../system-administration/ucr.rst:142
+msgid ""
+"Use the :option:`get` sub-command to query a single UCR variable. :numref"
+":`ucr-get-example` shows an example."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`get`, um eine einzelne UCR-"
+"Variable abzufragen. :numref:`ucr-get-example` zeigt ein Beispiel."
+
+#: ../../system-administration/ucr.rst:145
+msgid "Query a UCR variable with :option:`get`"
+msgstr "Eine UCR-Variable mit :option:`get` abfragen"
+
+#: ../../system-administration/ucr.rst:145
+msgid "$ univention-config-registry get ldap/server/ip"
+msgstr "$ univention-config-registry get ldap/server/ip"
+
+#: ../../system-administration/ucr.rst:154
+msgid "Display all UCR variables"
+msgstr "Alle UCR-Variablen anzeigen"
+
+#: ../../system-administration/ucr.rst:158
+msgid ""
+"Use the :option:`dump` sub-command to display all variables that have a "
+"value assigned. :numref:`ucr-dump-example` shows an example."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`dump`, um alle Variablen "
+"anzuzeigen, denen ein Wert zugewiesen ist. :numref:`ucr-dump-example` "
+"zeigt ein Beispiel."
+
+#: ../../system-administration/ucr.rst:161
+msgid "Display all UCR variables with :option:`dump`"
+msgstr "Alle UCR-Variablen mit :option:`dump` anzeigen"
+
+#: ../../system-administration/ucr.rst:161
+msgid "$ univention-config-registry dump"
+msgstr "$ univention-config-registry dump"
+
+#: ../../system-administration/ucr.rst:170
+msgid "Set a UCR variable"
+msgstr "Eine UCR-Variable setzen"
+
+#: ../../system-administration/ucr.rst:174
+msgid ""
+"Use the :option:`set` sub-command to set a variable. Use only letters, "
+"periods, digits, hyphens, and forward slashes in variable names. See "
+":numref:`ucr-set-example`."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`set`, um eine Variable zu setzen. "
+"Verwenden Sie in Variablennamen nur Buchstaben, Punkte, Ziffern, "
+"Bindestriche und Schrägstriche. Siehe :numref:`ucr-set-example`."
+
+#: ../../system-administration/ucr.rst:178
+msgid "Set a UCR variable with :option:`set`"
+msgstr "Eine UCR-Variable mit :option:`set` setzen"
+
+#: ../../system-administration/ucr.rst:178
+msgid "$ univention-config-registry set VARIABLENAME=VALUE"
+msgstr "$ univention-config-registry set VARIABLENAME=VALUE"
+
+#: ../../system-administration/ucr.rst:184
+msgid ""
+"If the variable already exists, UCR updates its value. Otherwise, UCR "
+"creates the variable."
+msgstr ""
+"Wenn die Variable bereits existiert, aktualisiert UCR ihren Wert. "
+"Andernfalls erstellt UCR die Variable."
+
+#: ../../system-administration/ucr.rst:188
+msgid ""
+"When you set a new value for a UCR variable, UCR checks whether the value"
+" is compatible with the variable type. If the value is incompatible, UCR "
+"rejects the value and displays an error message."
+msgstr ""
+"Wenn Sie einen neuen Wert für eine UCR-Variable setzen, prüft UCR, ob der"
+" Wert mit dem Variablentyp kompatibel ist. Wenn der Wert nicht kompatibel"
+" ist, lehnt UCR den Wert ab und zeigt eine Fehlermeldung an."
+
+#: ../../system-administration/ucr.rst:193
+msgid ""
+"To verify the new value, use :option:`ucr get` as shown in :numref:`ucr-"
+"get-verify-example`."
+msgstr ""
+"Um den neuen Wert zu überprüfen, verwenden Sie :option:`ucr get` wie in "
+":numref:`ucr-get-verify-example` gezeigt."
+
+#: ../../system-administration/ucr.rst:196
+msgid "Verify a UCR variable value with :option:`ucr get`"
+msgstr "Den Wert einer UCR-Variable mit :option:`ucr get` überprüfen"
+
+#: ../../system-administration/ucr.rst:196
+msgid "$ univention-config-registry get VARIABLENAME"
+msgstr "$ univention-config-registry get VARIABLENAME"
+
+#: ../../system-administration/ucr.rst:204
+msgid ""
+"If you use ``--ignore-check``, UCR skips type checking. This might "
+"disrupt service configuration or corrupt data. Use this option only if "
+"you understand the risks."
+msgstr ""
+"Wenn Sie ``--ignore-check`` verwenden, überspringt UCR die Überprüfung "
+"des Variablentyps. Dies kann die Dienstkonfiguration stören oder Daten "
+"beschädigen. Verwenden Sie diese Option nur, wenn Sie die Risiken kennen."
+
+#: ../../system-administration/ucr.rst:208
+msgid ""
+"When a variable changes, UCR rewrites all linked configuration files and "
+"displays the paths of the updated files in the console. UCR doesn't "
+"restart the affected services automatically. You need to restart the "
+"services that use the updated configuration files."
+msgstr ""
+"Wenn sich eine Variable ändert, schreibt UCR alle verknüpften "
+"Konfigurationsdateien neu und zeigt die Pfade der aktualisierten Dateien "
+"in der Konsole an. UCR startet die betroffenen Dienste nicht automatisch "
+"neu. Sie müssen die Dienste neu starten, die die aktualisierten "
+"Konfigurationsdateien verwenden."
+
+#: ../../system-administration/ucr.rst:214
+msgid ""
+"You can also change several variables in a single command, as shown in "
+":numref:`ucr-set-multiple-example`. If these variables share a "
+"configuration file, UCR rewrites it only once."
+msgstr ""
+"Sie können auch mehrere Variablen in einem einzigen Befehl ändern, wie in"
+" :numref:`ucr-set-multiple-example` gezeigt. Wenn diese Variablen eine "
+"Konfigurationsdatei gemeinsam nutzen, schreibt UCR sie nur einmal neu."
+
+#: ../../system-administration/ucr.rst:219
+msgid "Set multiple UCR variables in a single command"
+msgstr "Mehrere UCR-Variablen in einem einzigen Befehl setzen"
+
+#: ../../system-administration/ucr.rst:219
+msgid ""
+"$ univention-config-registry set \\\n"
+"  dns/forwarder1=192.0.2.2 \\\n"
+"  sshd/xforwarding=\"no\" \\\n"
+"  sshd/port=2222"
+msgstr ""
+"$ univention-config-registry set \\\n"
+"  dns/forwarder1=192.0.2.2 \\\n"
+"  sshd/xforwarding=\"no\" \\\n"
+"  sshd/port=2222"
+
+#: ../../system-administration/ucr.rst:228
+msgid ""
+"UCR lets you assign a variable value conditionally. To set a variable "
+"only when it doesn't already exist, use a question mark (``?``) instead "
+"of an equals sign (``=``), as shown in :numref:`ucr-set-conditional-"
+"example`."
+msgstr ""
+"UCR ermöglicht es Ihnen, einen Variablenwert bedingt zuzuweisen. Um eine "
+"Variable nur dann zu setzen, wenn sie noch nicht existiert, verwenden Sie"
+" ein Fragezeichen (``?``) anstelle eines Gleichheitszeichens (``=``), wie"
+" in :numref:`ucr-set-conditional-example` gezeigt."
+
+#: ../../system-administration/ucr.rst:233
+msgid "Set a UCR variable conditionally"
+msgstr "Eine UCR-Variable bedingt setzen"
+
+#: ../../system-administration/ucr.rst:233
+msgid "$ univention-config-registry set dns/forwarder1?192.0.2.2"
+msgstr "$ univention-config-registry set dns/forwarder1?192.0.2.2"
+
+#: ../../system-administration/ucr.rst:242
+msgid "Search for variables"
+msgstr "Nach Variablen suchen"
+
+#: ../../system-administration/ucr.rst:246
+msgid ""
+"Use the :option:`search` sub-command to find a variable. :numref:`ucr-"
+"search-name-example` shows a search for variable names that contain "
+"``ldap`` and their current values. The :option:`search` sub-command "
+"supports regular expressions. For the full syntax, see :external+python-"
+"docs:py:mod:`re — Regular expression operations <re>` in :cite:t:`python-"
+"docs`."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`search`, um eine Variable zu "
+"suchen. :numref:`ucr-search-name-example` zeigt eine Suche nach "
+"Variablennamen, die ``ldap`` enthalten, und deren aktuelle Werte. Der "
+"Unterbefehl :option:`search` unterstützt reguläre Ausdrücke. Die "
+"vollständige Syntax finden Sie unter :external+python-docs:py:mod:`re — "
+"Regular expression operations <re>` in :cite:t:`python-docs`."
+
+#: ../../system-administration/ucr.rst:254
+msgid "Search for UCR variables by name"
+msgstr "Nach UCR-Variablen anhand des Namens suchen"
+
+#: ../../system-administration/ucr.rst:254
+msgid "$ univention-config-registry search ldap"
+msgstr "$ univention-config-registry search ldap"
+
+#: ../../system-administration/ucr.rst:260
+msgid ""
+"To search by value, see :numref:`ucr-search-value-example`, which lists "
+"all variables set to ``primary.example.com``."
+msgstr ""
+"Um nach dem Wert zu suchen, siehe :numref:`ucr-search-value-example`, das"
+" alle Variablen auflistet, die auf ``primary.example.com`` gesetzt sind."
+
+#: ../../system-administration/ucr.rst:264
+msgid "Search for UCR variables by value"
+msgstr "Nach UCR-Variablen anhand des Werts suchen"
+
+#: ../../system-administration/ucr.rst:264
+msgid "$ univention-config-registry search --value primary.example.com"
+msgstr "$ univention-config-registry search --value primary.example.com"
+
+#: ../../system-administration/ucr.rst:273
+msgid "Delete a UCR variable"
+msgstr "Eine UCR-Variable löschen"
+
+#: ../../system-administration/ucr.rst:277
+msgid ""
+"Use the :option:`unset` sub-command to delete a variable. :numref:`ucr-"
+"unset-example` shows an example that deletes the variable "
+":envvar:`dns/forwarder2`. You can also delete multiple variables in one "
+"command."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`unset`, um eine Variable zu "
+"löschen. :numref:`ucr-unset-example` zeigt ein Beispiel, das die Variable"
+" :envvar:`dns/forwarder2` löscht. Sie können auch mehrere Variablen in "
+"einem Befehl löschen."
+
+#: ../../system-administration/ucr.rst:281
+msgid "Delete a UCR variable with :option:`unset`"
+msgstr "Eine UCR-Variable mit :option:`unset` löschen"
+
+#: ../../system-administration/ucr.rst:281
+msgid "$ univention-config-registry unset dns/forwarder2"
+msgstr "$ univention-config-registry unset dns/forwarder2"
+
+#: ../../system-administration/ucr.rst:290
+msgid "Regenerate a configuration file from its template"
+msgstr "Eine Konfigurationsdatei aus der Vorlage neu generieren"
+
+#: ../../system-administration/ucr.rst:294
+msgid ""
+"Use the :option:`commit` sub-command to regenerate a configuration file "
+"from its template. :numref:`ucr-commit-example` shows an example that "
+"regenerates :file:`/etc/samba/smb.conf`. Use the :option:`commit` sub-"
+"command when you edit a template file manually, rather than when you "
+"change a UCR variable value."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`commit`, um eine "
+"Konfigurationsdatei aus ihrer Vorlage neu zu generieren. :numref:`ucr-"
+"commit-example` zeigt ein Beispiel, das :file:`/etc/samba/smb.conf` neu "
+"generiert. Verwenden Sie den Unterbefehl :option:`commit`, wenn Sie eine "
+"Vorlagendatei manuell bearbeiten, nicht wenn Sie den Wert eine UCR-"
+"Variable ändern."
+
+#: ../../system-administration/ucr.rst:299
+msgid ""
+"If you run :command:`ucr commit` without a filename, UCR rebuilds all "
+"managed files from their templates. This command is useful after "
+"restoring a backup or when troubleshooting template-related issues."
+msgstr ""
+"Wenn Sie :command:`ucr commit` ohne Dateinamen ausführen, erstellt UCR "
+"alle verwalteten Dateien aus ihren Vorlagen neu. Dieser Befehl ist nach "
+"der Wiederherstellung einer Sicherungskopie oder bei der Behebung von "
+"Problemen mit Vorlagen nützlich."
+
+#: ../../system-administration/ucr.rst:304
+msgid "Regenerate a configuration file with :option:`commit`"
+msgstr "Eine Konfigurationsdatei mit :option:`commit` neu generieren"
+
+#: ../../system-administration/ucr.rst:304
+msgid "$ univention-config-registry commit /etc/samba/smb.conf"
+msgstr "$ univention-config-registry commit /etc/samba/smb.conf"
+
+#: ../../system-administration/ucr.rst:310
+msgid ""
+"To verify that UCR regenerated the file, inspect its content or check its"
+" modification time, as shown in :numref:`ucr-commit-verify-example`."
+msgstr ""
+"Um zu überprüfen, ob UCR die Datei neu generiert hat, prüfen Sie den "
+"Inhalt oder die Änderungszeit der Datei, wie in :numref:`ucr-commit-"
+"verify-example` gezeigt."
+
+#: ../../system-administration/ucr.rst:314
+msgid "Verify a regenerated configuration file with :option:`commit`"
+msgstr "Eine neu generierte Konfigurationsdatei mit :option:`commit` überprüfen"
+
+#: ../../system-administration/ucr.rst:314
+msgid "$ stat /etc/samba/smb.conf"
+msgstr "$ stat /etc/samba/smb.conf"
+
+#: ../../system-administration/ucr.rst:323
+msgid "Use UCR variables in shell scripts"
+msgstr "UCR-Variablen in Shell-Skripten verwenden"
+
+#: ../../system-administration/ucr.rst:327
+msgid ""
+"Use the :option:`shell` sub-command to display UCR variables and their "
+"current values in shell script format, as shown in :numref:`ucr-shell-"
+"example`."
+msgstr ""
+"Verwenden Sie den Unterbefehl :option:`shell`, um UCR-Variablen und ihre "
+"aktuellen Werte im Shell-Skript-Format anzuzeigen, wie in :numref:`ucr-"
+"shell-example` gezeigt."
+
+#: ../../system-administration/ucr.rst:331
+msgid "Display UCR variables in shell format"
+msgstr "UCR-Variablen im Shell-Format anzeigen"
+
+#: ../../system-administration/ucr.rst:331
+msgid "$ univention-config-registry shell ldap/server/name"
+msgstr "$ univention-config-registry shell ldap/server/name"
+
+#: ../../system-administration/ucr.rst:337
+msgid "UCR applies the following two conversions to the output:"
+msgstr "UCR wendet die folgenden zwei Konvertierungen auf die Ausgabe an:"
+
+#: ../../system-administration/ucr.rst:339
+msgid "Forward slashes in variable names become underscores."
+msgstr "Schrägstriche in Variablennamen werden zu Unterstrichen."
+
+#: ../../system-administration/ucr.rst:341
+msgid ""
+"UCR escapes characters with special meaning in shell, such as spaces, "
+"quotes, and dollar signs, to prevent unintended interpretation by the "
+"shell."
+msgstr ""
+"UCR maskiert Zeichen mit besonderer Bedeutung in der Shell, wie "
+"Leerzeichen, Anführungszeichen und Dollarzeichen, um eine unbeabsichtigte"
+" Interpretation durch die Shell zu verhindern."
+
+#: ../../system-administration/ucr.rst:345
+msgid ""
+"To use UCR variables as environment variables in a shell script, pipe the"
+" output to :command:`eval`. See :numref:`ucr-shell-eval-example` for an "
+"example."
+msgstr ""
+"Um UCR-Variablen als Umgebungsvariablen in einem Shell-Skript zu "
+"verwenden, leiten Sie die Ausgabe an :command:`eval` weiter. Siehe "
+":numref:`ucr-shell-eval-example` für ein Beispiel."
+
+#: ../../system-administration/ucr.rst:349
+msgid "Load UCR variables into a shell script with ``eval``"
+msgstr "UCR-Variablen mit ``eval`` in ein Shell-Skript laden"
+
+#: ../../system-administration/ucr.rst:349
+msgid ""
+"$ eval \"$(univention-config-registry shell ldap/server/name)\"\n"
+"$ echo \"$ldap_server_name\"\n"
+"primary.example.com"
+msgstr ""
+"$ eval \"$(univention-config-registry shell ldap/server/name)\"\n"
+"$ echo \"$ldap_server_name\"\n"
+"primary.example.com"
+
+#: ../../system-administration/ucr.rst:360
+msgid "UCR variable precedence"
+msgstr "Rangfolge von UCR-Variablen"
+
+#: ../../system-administration/ucr.rst:362
+msgid ""
+"UCR applies variable values in this priority order, from lowest to "
+"highest:"
+msgstr ""
+"UCR wendet Variablenwerte in der Reihenfolge dieser Prioritäten an, von "
+"der niedrigsten zur höchsten:"
+
+#: ../../system-administration/ucr.rst:365
+msgid "Local variables"
+msgstr "Lokale Variablen"
+
+#: ../../system-administration/ucr.rst:366
+msgid "Variables you set directly on the system with :option:`ucr set`."
+msgstr "Variablen, die Sie direkt auf dem System mit :option:`ucr set` setzen."
+
+#: ../../system-administration/ucr.rst:368
+msgid "Policy variables"
+msgstr "Richtlinienvariablen"
+
+#: ../../system-administration/ucr.rst:369
+msgid ""
+"Variables distributed from the directory service that override local "
+"variables. If a higher-priority policy already overrides the variable you"
+" set, UCR displays a warning."
+msgstr ""
+"Variablen, die vom Verzeichnisdienst verteilt werden und lokale Variablen"
+" überschreiben. Wenn eine Richtlinie mit höherer Priorität die von Ihnen "
+"gesetzte Variable bereits überschreibt, zeigt UCR eine Warnung an."
+
+#: ../../system-administration/ucr.rst:373
+msgid "Schedule-level variables"
+msgstr "Variablen auf zeitgesteuerter Ebene"
+
+#: ../../system-administration/ucr.rst:374
+msgid ""
+"Variables that are valid only for a specified period. Set them with "
+"``--schedule``. Nubus for UCS uses the schedule level for time-based "
+"automation."
+msgstr ""
+"Variablen, die nur für einen bestimmten Zeitraum gültig sind. Setzen Sie "
+"sie mit ``--schedule``. Nubus für UCS verwendet die zeitgesteuerte Ebene "
+"für :spelling:word:`zeitbasierte` Automatisierung."
+
+#: ../../system-administration/ucr.rst:378
+msgid "Force-level variables"
+msgstr "Variablen auf erzwungener Ebene"
+
+#: ../../system-administration/ucr.rst:379
+msgid ""
+"Variables with the highest priority. They override policy and schedule "
+"variables. Set them with ``--force``. See :numref:`ucr-force-example` for"
+" an example."
+msgstr ""
+"Variablen mit der höchsten Priorität. Sie überschreiben Richtlinien- und "
+"zeitgesteuerte Variablen. Setzen Sie sie mit ``--force``. Siehe :numref"
+":`ucr-force-example` für ein Beispiel."
+
+#: ../../system-administration/ucr.rst:384
+msgid "Override policy variables with ``--force``"
+msgstr "Richtlinienvariablen mit ``--force`` überschreiben"
+
+#: ../../system-administration/ucr.rst:384
+msgid "$ univention-config-registry set --force mail/messagesizelimit=1000000"
+msgstr "$ univention-config-registry set --force mail/messagesizelimit=1000000"
+
+#: ../../system-administration/ucr.rst:393
+msgid "Modify UCR templates"
+msgstr "UCR-Vorlagen anpassen"
+
+#: ../../system-administration/ucr.rst:395
+msgid ""
+"A UCR template is a configuration file with markers. UCR replaces these "
+"markers with variable values when it generates the file."
+msgstr ""
+"Eine UCR-Vorlage ist eine Konfigurationsdatei mit Markierungen. UCR "
+"ersetzt diese Markierungen durch Variablenwerte, wenn es die Datei "
+"generiert."
+
+#: ../../system-administration/ucr.rst:398
+msgid ""
+"You can embed inline Python code in UCR templates. Use it to add "
+"conditions or compute values from other variables."
+msgstr ""
+"Sie können in UCR-Vorlagen eingebetteten Python-Code verwenden. Nutzen "
+"Sie ihn, um Bedingungen hinzuzufügen oder Werte aus anderen Variablen zu "
+"berechnen."
+
+#: ../../system-administration/ucr.rst:401
+msgid ""
+"UCR stores templates in :file:`/etc/univention/templates/files/` and uses"
+" the absolute path of the configuration file as the template filename. "
+"For example, the template for :file:`/etc/issue` is at "
+":file:`/etc/univention/templates/files/etc/issue`."
+msgstr ""
+"UCR speichert Vorlagen in :file:`/etc/univention/templates/files/` und "
+"verwendet den absoluten Pfad der Konfigurationsdatei als Dateiname für "
+"die Vorlage. Die Vorlage für :file:`/etc/issue` befindet sich "
+"beispielsweise unter :file:`/etc/univention/templates/files/etc/issue`."
+
+#: ../../system-administration/ucr.rst:406
+msgid "UCR template files must use Unix line endings: LF only, not CRLF."
+msgstr ""
+"Dateien für UCR-Vorlagen müssen Unix-Zeilenenden verwenden: nur LF, kein "
+"CRLF."
+
+#: ../../system-administration/ucr.rst:410
+msgid ""
+"If you edit a template file on Windows, the editor may insert CRLF line "
+"endings that disrupt UCR processing. Before you edit the template, run "
+":command:`dos2unix` ``FILENAME`` to convert it to Unix format."
+msgstr ""
+"Wenn Sie eine Vorlagendatei unter Windows bearbeiten, kann der Editor "
+"CRLF-Zeilenenden einfügen, die die Verarbeitung in UCR stören. Bevor Sie "
+"die Vorlage bearbeiten, führen Sie :command:`dos2unix` ``FILENAME`` aus, "
+"um sie in das Unix-Format zu konvertieren."
+
+#: ../../system-administration/ucr.rst:417
+msgid ""
+"Nubus for UCS packages ship with UCR templates. When you update a "
+"package, UCR checks whether you modified the templates. If you modified a"
+" template, UCR preserves your changes. It saves the updated package "
+"template with the suffix :file:`.dpkg-new` or :file:`.dpkg-dist` in the "
+"same directory and logs a message to "
+":file:`/var/log/univention/actualise.log`."
+msgstr ""
+"Nubus für UCS-Pakete werden mit UCR-Vorlagen geliefert. Wenn Sie ein "
+"Paket aktualisieren, prüft UCR, ob Sie die Vorlagen geändert haben. Wenn "
+"Sie eine Vorlage geändert haben, bewahrt UCR Ihre Änderungen. Es "
+"speichert die aktualisierte Paketvorlage mit dem Suffix :file:`.dpkg-new`"
+" oder :file:`.dpkg-dist` im selben Verzeichnis und schreibt eine Meldung "
+"in :file:`/var/log/univention/actualise.log`."
+
+#: ../../system-administration/ucr.rst:430
+msgid "Reference UCR variables in templates"
+msgstr "UCR-Variablen in Vorlagen referenzieren"
+
+#: ../../system-administration/ucr.rst:432
+msgid ""
+"To reference a UCR variable in a template, use the ``@%@`` marker. "
+":numref:`ucr-template-reference-example` shows the X11 forwarding option "
+"in :file:`/etc/ssh/sshd_config`."
+msgstr ""
+"Um eine UCR-Variable in einer Vorlage zu referenzieren, verwenden Sie die"
+" Markierung ``@%@``. :numref:`ucr-template-reference-example` zeigt die "
+"X11-Weiterleitungsoption in :file:`/etc/ssh/sshd_config`."
+
+#: ../../system-administration/ucr.rst:436
+msgid "Reference a UCR variable in a template"
+msgstr "Eine UCR-Variable in einer Vorlage referenzieren"
+
+#: ../../system-administration/ucr.rst:436
+msgid "X11Forwarding @%@sshd/xforwarding@%@"
+msgstr "X11Forwarding @%@sshd/xforwarding@%@"
+
+#: ../../system-administration/ucr.rst:442
+msgid ""
+"UCR detects variable references in templates that use the ``@%@`` marker."
+" If your template uses inline Python code, you must register additional "
+"variables explicitly. For details, see :ref:`system-administration-ucr-"
+"templates-python`."
+msgstr ""
+"UCR erkennt Variablenreferenzen in Vorlagen, die die Markierung ``@%@`` "
+"verwenden. Wenn Ihre Vorlage eingebetteten Python-Code verwendet, müssen "
+"Sie zusätzliche Variablen explizit registrieren. Weitere Informationen "
+"finden Sie unter :ref:`system-administration-ucr-templates-python`."
+
+#: ../../system-administration/ucr.rst:451
+msgid "Integrate inline Python code in templates"
+msgstr "Eingebetteten Python-Code in Vorlagen integrieren"
+
+#: ../../system-administration/ucr.rst:453
+msgid ""
+"You can embed Python code blocks delimited by ``@!@`` to add conditions "
+"or compute values from other variables. :numref:`ucr-python-ssl-example` "
+"shows how inline Python code in a template configures SSL settings from "
+"UCR variables."
+msgstr ""
+"Sie können Python-Codeblöcke, die durch ``@!@`` begrenzt sind, einbetten,"
+" um Bedingungen hinzuzufügen oder Werte aus anderen Variablen zu "
+"berechnen. :numref:`ucr-python-ssl-example` zeigt, wie eingebetteter "
+"Python-Code in einer Vorlage Einstellungen für SSL aus UCR-Variablen "
+"konfiguriert."
+
+#: ../../system-administration/ucr.rst:458
+msgid "Configure SSL settings with inline Python code"
+msgstr "Einstellungen für SSL mit eingebettetem Python-Code konfigurieren"
+
+#: ../../system-administration/ucr.rst:458
+#, python-format
+msgid ""
+"@!@\n"
+"if configRegistry.get('apache2/ssl/certificate'):\n"
+"    print('SSLCertificateFile %s' %\n"
+"        configRegistry['apache2/ssl/certificate'])\n"
+"@!@"
+msgstr ""
+"@!@\n"
+"if configRegistry.get('apache2/ssl/certificate'):\n"
+"    print('SSLCertificateFile %s' %\n"
+"        configRegistry['apache2/ssl/certificate'])\n"
+"@!@"
+
+#: ../../system-administration/ucr.rst:468
+msgid ""
+"UCR inserts the output of ``print`` statements into the generated "
+"configuration file. :numref:`ucr-python-configregistry-example` shows how"
+" to access UCR data through the ``ConfigRegistry`` object."
+msgstr ""
+"UCR fügt die Ausgabe von ``print``-Anweisungen in die generierte "
+"Konfigurationsdatei ein. :numref:`ucr-python-configregistry-example` "
+"zeigt, wie auf UCR-Daten über das ``ConfigRegistry``-Objekt zugegriffen "
+"wird."
+
+#: ../../system-administration/ucr.rst:473
+msgid ""
+"For details about how UCR registers variables, see :ref:`system-"
+"administration-ucr-templates-reference`."
+msgstr ""
+"Weitere Informationen zur Registrierung von Variablen durch UCR finden "
+"Sie unter :ref:`system-administration-ucr-templates-reference`."
+
+#: ../../system-administration/ucr.rst:476
+msgid "Access UCR data through the ``ConfigRegistry`` object"
+msgstr "Auf UCR-Daten über das ``ConfigRegistry``-Objekt zugreifen"
+
+#: ../../system-administration/ucr.rst:476
+msgid ""
+"@!@\n"
+"if configRegistry.get('version/version') and \\\n"
+"        configRegistry.get('version/patchlevel'):\n"
+"    print('UCS %(version/version)s-%(version/patchlevel)s' %\n"
+"        configRegistry)\n"
+"@!@"
+msgstr ""
+"@!@\n"
+"if configRegistry.get('version/version') and \\\n"
+"        configRegistry.get('version/patchlevel'):\n"
+"    print('UCS %(version/version)s-%(version/patchlevel)s' %\n"
+"        configRegistry)\n"
+"@!@"
+
+#: ../../system-administration/ucr.rst:490
+msgid "Register UCR variables in an info file"
+msgstr "UCR-Variablen in einer Info-Datei registrieren"
+
+#: ../../system-administration/ucr.rst:492
+msgid "To register UCR variables in an info file:"
+msgstr "So registrieren Sie UCR-Variablen in einer Info-Datei:"
+
+#: ../../system-administration/ucr.rst:494
+#, python-brace-format
+msgid ""
+"Create an info file under :file:`/etc/univention/templates/info/`. Name "
+"the file after the package, for example :file:`{PACKAGENAME}.info`."
+msgstr ""
+"Erstellen Sie eine Info-Datei unter "
+":file:`/etc/univention/templates/info/`. Benennen Sie die Datei nach dem "
+"Paket, zum Beispiel :file:`{PACKAGENAME}.info`."
+
+#: ../../system-administration/ucr.rst:498
+msgid ""
+"In the info file, list the UCR variables that your template uses. For the"
+" info file format, see :external+uv-dev-ref:ref:`ucr-info` in :cite:t"
+":`developer-reference`."
+msgstr ""
+"Listen Sie in der Info-Datei die UCR-Variablen auf, die Ihre Vorlage "
+"verwendet. Das Format der Info-Datei ist unter :external+uv-dev-ref:ref"
+":`ucr-info` in :cite:t:`developer-reference` beschrieben."
+
+#: ../../system-administration/ucr.rst:503
+msgid ""
+"If you add Python code that uses additional variables, either add them to"
+" the existing :file:`.info` file or create a new one for that package."
+msgstr ""
+"Wenn Sie Python-Code hinzufügen, der zusätzliche Variablen verwendet, "
+"fügen Sie diese entweder zur vorhandenen :file:`.info`-Datei hinzu oder "
+"erstellen Sie eine neue Datei für dieses Paket."
+
+#: ../../system-administration/ucr.rst:507
+msgid "Run :command:`ucr update` to apply the changes."
+msgstr "Führen Sie :command:`ucr update` aus, um die Änderungen anzuwenden."
+
+#: ../../system-administration/ucr.rst:512
+msgid "Configure UCR variables with policies"
+msgstr "UCR-Variablen mit Richtlinien konfigurieren"
+
+#: ../../system-administration/ucr.rst:514
+msgid ""
+"Some UCR settings apply to a single system, such as the hostname. Other "
+"UCR settings apply to all systems in the domain, such as the mail relay "
+"host setting. Use the *UCR policy* in the *Policies* management module to"
+" group variables and assign them to multiple computers."
+msgstr ""
+"Einige UCR-Einstellungen gelten für ein einzelnes System, wie zum "
+"Beispiel der Rechnername. Andere UCR-Einstellungen gelten für alle "
+"Systeme in der Domäne, wie zum Beispiel die Einstellung des E-Mail Relay-"
+"Hosts. Verwenden Sie die *UCR-Richtlinie* im Verwaltungsmodul *Policies*,"
+" um Variablen zu gruppieren und mehreren Computern zuzuweisen."
+
+#: ../../system-administration/ucr.rst:523
+#: ../../system-administration/ucr.rst:526
+msgid "Policy-based configuration of the Apache start page and forced HTTPS"
+msgstr ""
+"Richtlinienbasierte Konfiguration der Apache-Startseite und erzwungenes "
+"HTTPS"
+
+#: ../../system-administration/ucr.rst:528
+msgid "To create and assign a UCR policy:"
+msgstr "So erstellen und weisen Sie eine UCR-Richtlinie zu:"
+
+#: ../../system-administration/ucr.rst:530
+msgid "Open *Policies* management module in the *Management UI*."
+msgstr "Öffnen Sie das *Richtlinien* Verwaltungsmodul in der *Management UI*."
+
+#: ../../system-administration/ucr.rst:533
+msgid ""
+"Click :guilabel:`Add` and select :guilabel:`Univention Configuration "
+"Registry`."
+msgstr ""
+"Klicken Sie :guilabel:`Hinzufügen` und wählen Sie :guilabel:`Richtlinie: "
+"Univention Configuration Registry`."
+
+#: ../../system-administration/ucr.rst:535
+msgid "Enter a :guilabel:`Name` for the policy."
+msgstr "Geben Sie einen :guilabel:`Name` für die Richtlinie ein."
+
+#: ../../system-administration/ucr.rst:537
+msgid ""
+"Add at least one variable name in the :guilabel:`Variable` field and "
+"enter a value in the :guilabel:`Value` field. For an example, see :numref"
+":`system-administration-ucr-policy-figure`."
+msgstr ""
+"Fügen Sie im Feld :guilabel:`Variable` mindestens einen Variablennamen "
+"hinzu und geben Sie im Feld :guilabel:`Wert` einen Wert ein. Ein Beispiel"
+" finden Sie unter :numref:`system-administration-ucr-policy-figure`."
+
+#: ../../system-administration/ucr.rst:541
+msgid "Click :guilabel:`Create Policy` to create the policy."
+msgstr ""
+"Klicken Sie auf :guilabel:`Richtlinie erstellen`, um die Richtlinie zu "
+"erstellen."
+
+#: ../../system-administration/ucr.rst:543
+msgid ""
+"Assign the policy to a computer object, container, or organizational unit"
+" (OU). For details, see :external+uv-nubus-manual:ref:`nubus-domain-"
+"policies-assign`."
+msgstr ""
+"Weisen Sie die Richtlinie einem Computerobjekt, einem Container oder "
+"einer Organisationseinheit (OU) zu. Weitere Informationen finden Sie "
+"unter :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`."
+
+#: ../../system-administration/ucr.rst:547
+msgid ""
+"UCR policies don't write values directly to the system. Instead, Nubus "
+"for UCS writes the values to the LDAP object of the computer. The "
+"computer reads the values during the next synchronization. The "
+":envvar:`ldap/policy/cron` UCR variable controls the synchronization "
+"interval. The default interval is one hour."
+msgstr ""
+"UCR-Richtlinien schreiben Werte nicht direkt auf das System. Stattdessen "
+"schreibt Nubus für UCS die Werte in das LDAP-Objekt des Computers. Der "
+"Computer liest die Werte bei der nächsten Synchronisierung. Die UCR-"
+"Variable :envvar:`ldap/policy/cron` steuert das "
+"Synchronisierungsintervall. Das Standardintervall beträgt eine Stunde."
+
+#: ../../system-administration/ucr.rst:553
+msgid ""
+"To verify that UCR applied the policy after the next synchronization, run"
+" :option:`ucr dump` on the target system. For an example, see :numref"
+":`ucr-policy-verify-example`. To learn how UCR prioritizes variables, see"
+" :ref:`system-administration-ucr-precedence`."
+msgstr ""
+"Um zu überprüfen, ob UCR die Richtlinie nach der nächsten "
+"Synchronisierung angewendet hat, führen Sie :option:`ucr dump` auf dem "
+"Zielsystem aus. Ein Beispiel finden Sie unter :numref:`ucr-policy-verify-"
+"example`. Informationen dazu, wie UCR Variablen priorisiert, finden Sie "
+"unter :ref:`system-administration-ucr-precedence`."
+
+#: ../../system-administration/ucr.rst:559
+msgid "Verify a policy-applied UCR variable with :option:`ucr dump`"
+msgstr "Eine per Richtlinie gesetzte UCR-Variable mit :option:`ucr dump` überprüfen"
+
+#: ../../system-administration/ucr.rst:559
+msgid "$ univention-config-registry dump | grep VARIABLENAME"
+msgstr "$ univention-config-registry dump | grep VARIABLENAME"
+
+#: ../../system-administration/ucr.rst:567
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
+
+#: ../../system-administration/ucr.rst:568
+msgid ""
+"in :cite:t:`uv-nubus-manual` for reference information about the "
+"*Policies* management module"
+msgstr ""
+"in :cite:t:`uv-nubus-manual` für Referenzinformationen zum "
+"Verwaltungsmodul *Policies*"
+
+#: ../../system-administration/ucr.rst:571
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies-assign`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies-assign`"
+
+#: ../../system-administration/ucr.rst:572
+msgid "in :cite:t:`uv-nubus-manual` for information about how to assign policies."
+msgstr ""
+"in :cite:t:`uv-nubus-manual` für Informationen zum Zuweisen von "
+"Richtlinien."
+
+#~ msgid "Click :guilabel:`Add new variable`."
+#~ msgstr "Klicken Sie auf :guilabel:`Hinzufügen`."
+
