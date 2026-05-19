@@ -32,7 +32,9 @@ from univention.logging import Structured
 
 log = Structured(getLogger("LDAP").getChild(__name__))
 
-SUPPORTED_ENCTYPES = {  # see e.g. man smb.conf or samba:librpc/idl/security.idl
+SUPPORTED_ENCTYPES = {
+    # See https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/6cfc7b50-11ed-4b4d-846d-6f08f0812919
+    # and e.g. man smb.conf or samba:librpc/idl/security.idl
     'KERB_ENCTYPE_RC4_HMAC_MD5': 0x04,
     'KERB_ENCTYPE_AES128_CTS_HMAC_SHA1_96': 0x08,
     'KERB_ENCTYPE_AES256_CTS_HMAC_SHA1_96': 0x10,
