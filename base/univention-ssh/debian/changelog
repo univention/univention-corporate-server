@@ -1,6 +1,10 @@
-univention-ssh (13.6.0) UNRELEASED; urgency=medium
+univention-ssh (13.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
+
+  [ Florian Best ]
+  * Bug #59144: prevent public key authentication in univention-ssh
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:45 +0200
 

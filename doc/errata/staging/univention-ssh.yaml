@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-ssh
+fix: 13.6.0
+desc: |
+ This update addresses the following issue:
+ * `univention-ssh` now disables SSH public key authentication when
+   authenticating with machine account credentials. This avoids authentication
+   failures caused by excessive SSH authentication attempts. Furhter
+   security-related configuration options for joined systems have been added.
+bug: [59144]
