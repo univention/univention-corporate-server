@@ -78,6 +78,7 @@ intersphinx_mapping = {
         'https://docs.software-univention.de/nubus-customization/latest/en/',
         None,
     ),
+    'uv-dev-ref': reference_inventory('developer-reference', version=version),
     'linux-kernel-docs': (
         'https://www.kernel.org/doc/html/v6.1/',
         None,
@@ -224,10 +225,15 @@ def adapt_settings_to_translation(app, config):
                 None,
             ),
             'uv-debian-admins': reference_inventory('debian-admins', version=version),
+            'uv-dev-ref': reference_inventory('developer-reference', version=version),
             'linux-kernel-docs': (
                 'https://www.kernel.org/doc/html/v6.1/',
                 None,
             ),  # UCS 5.2 Kernel is 6.1
+            'python-docs': (
+                'https://docs.python.org/3.12/',
+                None,
+            ),
         }
         config.numfig_format['code-block'] = 'Listing %s'
         config.html_theme_options['announcement'] = """
