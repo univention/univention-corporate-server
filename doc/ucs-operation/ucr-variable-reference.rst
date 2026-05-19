@@ -100,6 +100,39 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
+.. envvar:: ldap/base
+
+   Contains the base distinguished name (DN) of the LDAP directory.
+   The base DN defines the root of the directory tree
+   and serves as the search base for LDAP queries across the domain.
+   The installer sets this value during the installation of the Primary Directory Node.
+   You can't change it afterward.
+
+   .. note::
+
+      Nubus for UCS sets this variable automatically during installation.
+      Don't change it manually.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: ldap/policy/cron
+
+   Specifies when Nubus for UCS synchronizes UCR policy variables
+   from the LDAP directory to the local system.
+   UCR policies set in the directory service take effect
+   on the local system after the next synchronization.
+   Use standard cron schedule syntax.
+   For the syntax, run :command:`man 5 crontab`.
+
+   For information about UCR policies,
+   see :ref:`system-administration-ucr-policy`.
+
+   :Default value: ``5 * * * *``
+   :Type: cron
+
+
 .. envvar:: ldap/ppolicy/enabled
 
    Controls whether the :program:`OpenLDAP` ``ppolicy`` overlay is active
@@ -1082,6 +1115,26 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
+
+
+.. envvar:: mail/relayhost
+
+   Specifies the mail relay server
+   that Postfix uses to forward outgoing email to non-local addresses.
+   When unset,
+   Postfix resolves the responsible mail server directly
+   by querying the MX record in DNS.
+   When set,
+   Postfix forwards all outgoing email to this server,
+   which then handles further delivery.
+   Enter the server as a fully qualified domain name (FQDN).
+
+   For general information about the *Mail* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-mail`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: not set
+   :Type: string
 
 
 .. envvar:: nameserver1
