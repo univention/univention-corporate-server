@@ -32,19 +32,17 @@ from univention.logging import Structured
 
 log = Structured(getLogger("LDAP").getChild(__name__))
 
-SUPPORTED_ENCTYPES = {
-    # See https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/6cfc7b50-11ed-4b4d-846d-6f08f0812919
-    # and e.g. man smb.conf or samba:librpc/idl/security.idl
-    'KERB_ENCTYPE_RC4_HMAC_MD5': 0x04,
-    'KERB_ENCTYPE_AES128_CTS_HMAC_SHA1_96': 0x08,
-    'KERB_ENCTYPE_AES256_CTS_HMAC_SHA1_96': 0x10,
-    'KERB_ENCTYPE_AES256_CTS_HMAC_SHA1_96_SK': 0x20,
-}
+# [MS-KILE] 2.2.7 Supported Encryption Types Bit Flags
+# See https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/6cfc7b50-11ed-4b4d-846d-6f08f0812919
+# and e.g. man smb.conf or samba:librpc/idl/security.idl
+KERB_ENCTYPE_RC4_HMAC_MD5 = 0x04
+KERB_ENCTYPE_AES128_CTS_HMAC_SHA1_96 = 0x08
+KERB_ENCTYPE_AES256_CTS_HMAC_SHA1_96 = 0x10
 
 DEFAULT_SUPPORTED_ENCTYPES = \
-    SUPPORTED_ENCTYPES['KERB_ENCTYPE_AES256_CTS_HMAC_SHA1_96'] + \
-    SUPPORTED_ENCTYPES['KERB_ENCTYPE_AES128_CTS_HMAC_SHA1_96'] + \
-    SUPPORTED_ENCTYPES['KERB_ENCTYPE_RC4_HMAC_MD5']
+    KERB_ENCTYPE_AES256_CTS_HMAC_SHA1_96 + \
+    KERB_ENCTYPE_AES128_CTS_HMAC_SHA1_96 + \
+    KERB_ENCTYPE_RC4_HMAC_MD5
 
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
@@ -382,7 +380,7 @@ def password_sync_ucs(connector, key, object):
     supp_enctypes_old = 0
     if 'msDS-SupportedEncryptionTypes' in res[0][1]:
         supp_enctypes_old = int(res[0][1]['msDS-SupportedEncryptionTypes'][0])
-        supp_enctypes_new = supp_enctypes_old | SUPPORTED_ENCTYPES['KERB_ENCTYPE_RC4_HMAC_MD5']
+        supp_enctypes_new = supp_enctypes_old | KERB_ENCTYPE_RC4_HMAC_MD5
     else:
         supp_enctypes_new = DEFAULT_SUPPORTED_ENCTYPES
 
@@ -498,7 +496,7 @@ def password_sync(connector, key, ucs_object):
     supp_enctypes_new = 0
     if 'msDS-SupportedEncryptionTypes' in res[0][1]:
         supp_enctypes_old = int(res[0][1]['msDS-SupportedEncryptionTypes'][0])
-        supp_enctypes_new = supp_enctypes_old ^ SUPPORTED_ENCTYPES['KERB_ENCTYPE_RC4_HMAC_MD5']
+        supp_enctypes_new = supp_enctypes_old ^ KERB_ENCTYPE_RC4_HMAC_MD5
 
     ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet', 'sambaNTPassword', 'krb5PrincipalName', 'krb5Key', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'pwhistory'])
 

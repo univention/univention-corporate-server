@@ -1,6 +1,12 @@
+univention-ad-connector (16.6.4) unstable; urgency=medium
+
+  * Bug #58876: Document msDS-SupportedEncryptionTypes
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 May 2026 13:06:24 +0200
+
 univention-ad-connector (16.6.3) unstable; urgency=medium
 
-  * Bug #58876: Set msDS-SupportedEncryptionTypes to support arc4 password during sync ucs->ad
+  * Bug #58876: Set msDS-SupportedEncryptionTypes to support RC4 hashes during sync UCS>AD
 
  -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Thu, 14 May 2026 10:31:14 +0200
 

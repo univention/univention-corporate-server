@@ -3,7 +3,7 @@ release: "5.2"
 version: [5]
 scope: ucs_5.2-0-errata5.2-5
 src: univention-ad-connector
-fix: 16.6.3
+fix: 16.6.4
 desc: |
  This update addresses the following issues:
  * As Microsoft is continuing with the deprecation of NT-hashes
