@@ -13,6 +13,8 @@ import sys
 import time
 from textwrap import dedent
 
+from univention.config_registry import ucr
+
 
 def display_help(out=sys.stdout):
     """Display help text."""
@@ -147,10 +149,17 @@ try:
             with open(arg) as pw_filehandle:
                 password = pw_filehandle.readline().rstrip('\n')
 
+            options = []
+            if not ucr.is_true('ssh/StrictHostKeyChecking'):
+                options.extend(['-o', 'StrictHostKeyChecking=no'])
+            options.extend(['-o', 'ControlPath=none'])
+            if not ucr.is_true('ssh/PubkeyAuthentication'):
+                options.extend(['-o', 'PubkeyAuthentication=no'])
+
             command = {
-                'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
-                'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
-                'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no -o ControlPath=none'],
+                'univention-ssh': ['ssh', *options],
+                'univention-scp': ['scp', *options],
+                'univention-ssh-rsync': ['rsync', '-e', 'ssh %s' % ' '.join(shlex.quote(o) for o in options)],
             }[cmd]
             if split:
                 sys.argv = shlex.split(' '.join(sys.argv))

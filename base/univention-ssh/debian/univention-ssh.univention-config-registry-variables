@@ -4,3 +4,16 @@ Description[en]=Specifies the number of bits in the key to create. See `man ssh-
 Type=int
 Categories=service-ssh
 
+[ssh/StrictHostKeyChecking]
+Description[de]=Gibt an, ob die Option "StrictHostKeyChecking" für den Univention SSH-Client aktiviert ist. Damit lassen sich Anmeldungen an Rechnern steuern, deren Hostschlüssel unbekannt ist oder sich geändert hat. In der Regel muss diese Option für Systeme deaktiviert werden, die noch nicht in die Domäne aufgenommen wurden.
+Description[en]=Specifies whether the StrictHostKeyChecking option is enabled for the Univention SSH Client. It can be used to control logins to machines whose host key is not known or has changed. Typically this option must be disabled for systems which haven't joined into the domain yet.
+Type=bool
+Default=false
+Categories=service-ssh
+
+[ssh/PubkeyAuthentication]
+Description[de]=Legt fest, ob die Option "PubkeyAuthentication" für den Univention SSH-Client aktiviert ist. Spezifiziert, ob eine Authentifizierung per öffentlichem Schlüssel versucht werden soll. Da das Passwort aus einer Datei gelesen wird, sollte diese Option deaktiviert bleiben.
+Description[en]=Specifies whether the "PubkeyAuthentication" option is enabled for the Univention SSH Client. Specifies whether to try public key authentication. As the password is read from file, this should stay disabled.
+Type=bool
+Default=false
+Categories=service-ssh
