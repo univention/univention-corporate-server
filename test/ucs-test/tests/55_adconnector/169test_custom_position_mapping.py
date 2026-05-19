@@ -154,6 +154,7 @@ def test_ad_to_udm_position_mapping_cn(udm, ucr, mode):
         connector.delete_object(f"cn=renamed,{ad_base}", f"cn=renamed,{ucs_base}")
 
         wait_for_sync()
+    restart_adconnector()
 
 
 @pytest.mark.parametrize("mode", ["sync", "read"])
@@ -188,3 +189,4 @@ def test_ad_to_udm_position_mapping_ou(udm, ucr, mode):
         udm.verify_ldap_object(f"ou=renamed,{ucs_base}", retry_count=3, delay=1)
         connector.delete_object(f"ou=renamed,{ad_base}", f"ou=renamed,{ucs_base}")
         wait_for_sync()
+    restart_adconnector()
