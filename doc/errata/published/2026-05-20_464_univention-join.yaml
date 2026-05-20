@@ -11,3 +11,6 @@ desc: |
    5.0-10 vs 5.0-9. The fix uses dpkg --compare-versions for correct
    Debian version ordering.
 bug: [58212]
+erratum: 464
+announced: 2026-05-20
+support: core
