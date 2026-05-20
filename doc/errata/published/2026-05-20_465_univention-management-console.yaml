@@ -11,3 +11,6 @@ desc: |
    interprocess communication between UMC server and UMC module processes, if
    delegative administration was enabled.
 bug: [59280]
+erratum: 465
+announced: 2026-05-20
+support: core
