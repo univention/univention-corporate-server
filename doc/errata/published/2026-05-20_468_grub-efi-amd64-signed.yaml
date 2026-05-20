@@ -53,3 +53,6 @@ cve:
 - CVE-2025-1118
 - CVE-2025-1125
 note: This is the 2nd of two parts.
+erratum: 468
+announced: 2026-05-20
+support: core
