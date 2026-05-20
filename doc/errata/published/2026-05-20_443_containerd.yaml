@@ -10,3 +10,6 @@ desc: |
 bug: [59292]
 cve:
 - CVE-2025-64329
+erratum: 443
+announced: 2026-05-20
+support: core
