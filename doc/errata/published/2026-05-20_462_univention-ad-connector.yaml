@@ -20,3 +20,6 @@ desc: |
    is changed on the MS AD side the AD-Connector removes this setting
    again, to keep security as high as possible.
 bug: [58876]
+erratum: 462
+announced: 2026-05-20
+support: core
