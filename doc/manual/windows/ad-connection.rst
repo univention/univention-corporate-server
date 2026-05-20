@@ -44,10 +44,33 @@ detail in :ref:`ad-connector-ad-connector-setup`.
 
 .. _ad-connector-ad-member-supported-versions:
 
-Supported Windows versions in AD Connection
--------------------------------------------
+Supported Windows versions in Active Directory Connection
+---------------------------------------------------------
 
-:program:`Active Directory Connection` supports Microsoft Windows Server in the versions 2012, 2016, 2019 and 2022.
+:program:`Active Directory Connection` supports Microsoft Windows Server versions 2012, 2016, 2019, 2022,
+and 2025.
+
+.. warning::
+
+   :program:`Active Directory Connection` uses the RPC call ``SamrSetInformationUser2`` against Active Directory domain controllers
+   to synchronize ``NT/RC4`` password hashes *to* Active Directory without storing clear-text passwords.
+
+   Microsoft chose not to implement or document a similar call
+   to synchronize stronger Kerberos password hashes *into* Active Directory.
+
+   To enable Kerberos ticket issuance for these user accounts,
+   :program:`Active Directory Connection` sets the appropriate ``RC4-HMAC`` bit
+   in ``msDS-SupportedEncryptionTypes`` on accounts
+   when it synchronizes changed password hashes to Active Directory.
+   The Microsoft update ``KB5082063`` changed the ``DefaultDomainSupportedEncTypes`` to disable ``RC4-HMAC`` hashes by
+   default, so setting this bit is required to let the Active Directory ``KDC`` issue Kerberos tickets for these user accounts.
+   When Active Directory initiates a password change
+   and :program:`Active Directory Connection` synchronizes the password change back to Nubus,
+   :program:`Active Directory Connection` removes that bit again.
+
+   .. seealso::
+
+      `How to manage Kerberos KDC usage of RC4 for service account ticket issuance changes related to CVE-2026-20833 <https://support.microsoft.com/en-gb/topic/how-to-manage-kerberos-kdc-usage-of-rc4-for-service-account-ticket-issuance-changes-related-to-cve-2026-20833-1ebcda33-720a-4da8-93c1-b0496e1910dc>`_
 
 .. _ad-connector-ad-member-setup:
 

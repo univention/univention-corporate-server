@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-24 07:10+0000\n"
-"PO-Revision-Date: 2024-11-04 21:10+0100\n"
+"POT-Creation-Date: 2026-05-21 14:45+0000\n"
+"PO-Revision-Date: 2026-05-22 10:32+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../windows/ad-connection.rst:8
+#: ../../windows/ad-connection.rst:7
 msgid "Active Directory Connection"
 msgstr "Active Directory-Verbindung"
 
-#: ../../windows/ad-connection.rst:10
+#: ../../windows/ad-connection.rst:9
 msgid ""
 "|UCSUCS| can be operated together with an existing Active Directory "
 "domain (AD domain) in two different ways. Both modes can be set up using "
@@ -36,11 +36,11 @@ msgstr ""
 ":`computers-softwaremanagement-install-software`). Diese steht auf einem "
 "|UCSPRIMARYDN| und |UCSBACKUPDN| zur Verfügung."
 
-#: ../../windows/ad-connection.rst:16
+#: ../../windows/ad-connection.rst:15
 msgid "The two modes are:"
 msgstr "Die beiden Varianten sind:"
 
-#: ../../windows/ad-connection.rst:18
+#: ../../windows/ad-connection.rst:17
 msgid ""
 "UCS as a part (domain member) of an AD domain (see :ref:`ad-connector-ad-"
 "member-setup`)"
@@ -48,7 +48,7 @@ msgstr ""
 "UCS als Teil (Domänen-Mitglied) einer AD-Domäne (siehe :ref:`ad-"
 "connector-ad-member-setup`)"
 
-#: ../../windows/ad-connection.rst:21
+#: ../../windows/ad-connection.rst:20
 msgid ""
 "Synchronization of account data between an AD domain and a UCS domain "
 "(see :ref:`ad-connector-ad-connector-setup`)."
@@ -56,7 +56,7 @@ msgstr ""
 "Synchronisation von Kontendaten zwischen einer AD-Domäne und einer UCS-"
 "Domäne (siehe :ref:`ad-connector-ad-connector-setup`)."
 
-#: ../../windows/ad-connection.rst:24
+#: ../../windows/ad-connection.rst:23
 msgid ""
 "In both modes, the :program:`Active Directory Connection` service is used"
 " in UCS (UCS AD Connector for short), which can synchronize the directory"
@@ -69,7 +69,7 @@ msgstr ""
 "Active Directory (AD) und dem OpenLDAP-Verzeichnis aus |UCSUCS| "
 "synchronisieren kann."
 
-#: ../../windows/ad-connection.rst:29
+#: ../../windows/ad-connection.rst:28
 msgid ""
 "In the first case, the configuration of a UCS server system as a member "
 "of an AD domain, the AD functions as the primary directory service and "
@@ -86,7 +86,7 @@ msgstr ""
 "Betriebsmodus ist im Detail in :ref:`ad-connector-ad-member-setup` "
 "beschrieben."
 
-#: ../../windows/ad-connection.rst:36
+#: ../../windows/ad-connection.rst:35
 msgid ""
 "The second mode, which can be configured via the :program:`Active "
 "Directory Connection` app, is used to run the UCS domain parallel to an "
@@ -111,23 +111,82 @@ msgstr ""
 " von der AD-Domäne. Die Einrichtung diese Betriebsmodus ist im Detail in "
 ":ref:`ad-connector-ad-connector-setup` beschrieben."
 
-#: ../../windows/ad-connection.rst:49
-msgid "Supported Windows versions in AD Connection"
-msgstr "Unterstütze Windows-Versionen in *AD-Verbindung*"
+#: ../../windows/ad-connection.rst:48
+msgid "Supported Windows versions in Active Directory Connection"
+msgstr "Unterstütze Windows-Versionen in *Active Directory-Verbindung*"
 
-#: ../../windows/ad-connection.rst:51
+#: ../../windows/ad-connection.rst:50
 msgid ""
 ":program:`Active Directory Connection` supports Microsoft Windows Server "
-"in the versions 2012, 2016, 2019 and 2022."
+"versions 2012, 2016, 2019, 2022, and 2025."
 msgstr ""
-":program:`Active Directory Connection` unterstützt Microsoft Windows "
-"Server in den Versionen 2012, 2016, 2019 und 2022."
+"*Active Directory-Verbindung* unterstützt Microsoft Windows "
+"Server in den Versionen 2012, 2016, 2019, 2022 und 2025."
 
-#: ../../windows/ad-connection.rst:56
+#: ../../windows/ad-connection.rst:55
+msgid ""
+":program:`Active Directory Connection` uses the RPC call "
+"``SamrSetInformationUser2`` against Active Directory domain controllers "
+"to synchronize ``NT/RC4`` password hashes *to* Active Directory without "
+"storing clear-text passwords."
+msgstr ""
+":program:`Active Directory-Verbindung` verwendet den RPC-Aufruf "
+"``SamrSetInformationUser2`` gegen Active Directory Domänencontroller "
+"um ``NT/RC4``-Passwort-Hashes *nach* Active Directory zu synchronisieren, ohne "
+"Klartext-Passwörter zu speichern."
+
+#: ../../windows/ad-connection.rst:58
+msgid ""
+"Microsoft chose not to implement or document a similar call to "
+"synchronize stronger Kerberos password hashes *into* Active Directory."
+msgstr ""
+"Microsoft entschied, keinen vergleichbaren RPC-Aufruf zu implementieren oder zu dokumentieren, um "
+"stärkere Kerberos-Passwort-Hashes *nach* Active Directory zu synchronisieren."
+
+#: ../../windows/ad-connection.rst:61
+msgid ""
+"To enable Kerberos ticket issuance for these user accounts, "
+":program:`Active Directory Connection` sets the appropriate ``RC4-HMAC`` "
+"bit in ``msDS-SupportedEncryptionTypes`` on accounts when it synchronizes "
+"changed password hashes to Active Directory. The Microsoft update "
+"``KB5082063`` changed the ``DefaultDomainSupportedEncTypes`` to disable ``RC4-HMAC`` hashes "
+"by default, so setting this bit is required to let the Active Directory ``KDC`` "
+"issue Kerberos tickets for these user accounts. "
+"When Active Directory initiates a password change and "
+":program:`Active Directory Connection` synchronizes the password change "
+"back to Nubus, :program:`Active Directory Connection` removes that bit "
+"again."
+msgstr ""
+"Um die Ausgabe von Kerberostickets für diese Benutzerkonten zu ermöglichen, "
+"setzt :program:`Active Directory-Verbindung` das entsprechende Bit ``RC4-HMAC`` "
+"in ``msDS-SupportedEncryptionTypes`` für Konten, wenn es geänderte "
+"Passwort-Hashes nach Active Directory synchronisiert. Das Microsoft Update "
+"``KB5082063`` veränderte die ``DefaultDomainSupportedEncTypes``, um ``RC4-HMAC``-Hashes "
+"standardmäßig zu deaktivieren. Daher ist es notwendig, dieses Bit zu setzen, "
+"um den Active Directory ``KDC`` für diese Benutzerkonten Kerberostickets ausgeben zu lassen. "
+"Wenn ein Passwortwechsel von Active Directory ausgeht und "
+":program:`Active Directory-Verbindung` den Passwortwechsel zurück nach Nubus synchronisiert, "
+"dann entfernt :program:`Active Directory-Verbindung` das Bit wieder."
+
+#: ../../windows/ad-connection.rst:73
+msgid ""
+"`How to manage Kerberos KDC usage of RC4 for service account ticket "
+"issuance changes related to CVE-2026-20833 <https://support.microsoft.com"
+"/en-gb/topic/how-to-manage-kerberos-kdc-usage-of-rc4-for-service-account-"
+"ticket-issuance-changes-related-to-cve-2026-20833-1ebcda33-720a-"
+"4da8-93c1-b0496e1910dc>`_"
+msgstr ""
+"`How to manage Kerberos KDC usage of RC4 for service account ticket "
+"issuance changes related to CVE-2026-20833 <https://support.microsoft.com"
+"/en-gb/topic/how-to-manage-kerberos-kdc-usage-of-rc4-for-service-account-"
+"ticket-issuance-changes-related-to-cve-2026-20833-1ebcda33-720a-"
+"4da8-93c1-b0496e1910dc>`_"
+
+#: ../../windows/ad-connection.rst:78
 msgid "UCS as a member of an Active Directory domain"
 msgstr "UCS als Mitglied einer Active Directory-Domäne"
 
-#: ../../windows/ad-connection.rst:58
+#: ../../windows/ad-connection.rst:80
 msgid ""
 "In the configuration of a UCS server system as a member of an AD domain "
 "(*AD member* mode), the AD functions as the primary directory service and"
@@ -149,7 +208,7 @@ msgstr ""
 " den eigenen OpenLDAP-basierten Verzeichnisdienst schreibt. In dieser "
 "Konfiguration schreibt der UCS AD-Connector keine Änderungen in das AD."
 
-#: ../../windows/ad-connection.rst:67
+#: ../../windows/ad-connection.rst:89
 msgid ""
 "The *AD member* mode is ideal for expanding an AD domain with "
 "applications that are available on the UCS platform. Apps installed on "
@@ -163,7 +222,7 @@ msgstr ""
 "nutzbar. Die Authentifikation erfolgt dabei weiter gegen native Microsoft"
 " AD-Domänencontroller."
 
-#: ../../windows/ad-connection.rst:72
+#: ../../windows/ad-connection.rst:94
 msgid ""
 "The setup wizard can be started directly from the UCS installation by "
 "selecting *Join into an existing Active Directory domain*. Subsequently, "
@@ -181,13 +240,13 @@ msgstr ""
 ":`univention-ad-connector` installiert werden. Weitere Informationen "
 "finden sich in :ref:`computers-softwaremanagement-install-software`."
 
-#: ../../windows/ad-connection.rst:81
+#: ../../windows/ad-connection.rst:103
 msgid "The *AD member* mode can only be configured on a |UCSPRIMARYDN|."
 msgstr ""
 "Der *AD member*-Modus kann nur auf einem |UCSPRIMARYDN| konfiguriert "
 "werden."
 
-#: ../../windows/ad-connection.rst:83
+#: ../../windows/ad-connection.rst:105
 msgid ""
 "The name of the DNS domain of the UCS systems must match that of the AD "
 "domain. The hostname must of course be different."
@@ -196,7 +255,7 @@ msgstr ""
 "übereinstimmen. Die Hostnamen selbst müssen natürlich unterschiedlich "
 "sein."
 
-#: ../../windows/ad-connection.rst:86
+#: ../../windows/ad-connection.rst:108
 msgid ""
 "All the AD and UCS servers in a connector environment must use the same "
 "time zone."
@@ -204,11 +263,11 @@ msgstr ""
 "Alle AD- und UCS-Server in einer Connector-Umgebung sollten dieselbe "
 "Zeitzone verwenden."
 
-#: ../../windows/ad-connection.rst:94
+#: ../../windows/ad-connection.rst:116
 msgid "Configuration of the operating mode as part of an AD domain"
 msgstr "Konfiguration des Betriebsmodus als Teil einer AD-Domäne"
 
-#: ../../windows/ad-connection.rst:96
+#: ../../windows/ad-connection.rst:118
 msgid ""
 "In the first dialogue window of the setup wizard, the point *Configure "
 "UCS as part of an AD domain* is preselected and can be confirmed with "
@@ -218,7 +277,7 @@ msgstr ""
 "einer AD-Domäne konfigurieren* vorausgewählt und kann mit "
 ":guilabel:`Weiter` bestätigt werden."
 
-#: ../../windows/ad-connection.rst:99
+#: ../../windows/ad-connection.rst:121
 msgid ""
 "The next dialogue window requests the address of an AD domain controller "
 "as well as the name of the standard administrator account of the AD "
@@ -234,11 +293,11 @@ msgstr ""
 " Domäne bereitstellen. Durch Betätigen der Schaltfläche :guilabel:`AD-"
 "Domäne beitreten` wird der Domänenbeitritt gestartet."
 
-#: ../../windows/ad-connection.rst:110
+#: ../../windows/ad-connection.rst:132
 msgid "Domain join of an AD domain"
 msgstr "Domänenbeitritt zu einer AD-Domäne"
 
-#: ../../windows/ad-connection.rst:112
+#: ../../windows/ad-connection.rst:134
 msgid ""
 "If the system time of the UCS system is more than 5 minutes ahead of the "
 "system time of the AD domain controller, manual adjustment of the system "
@@ -253,7 +312,7 @@ msgstr ""
 " sollten dabei nicht zurückgestellt werden, um Inkonsistenzen zu "
 "vermeiden."
 
-#: ../../windows/ad-connection.rst:118
+#: ../../windows/ad-connection.rst:140
 msgid ""
 "The domain join is performed automatically. The subsequent dialogue "
 "window should be confirmed with :guilabel:`Finish`. Then the UMC server "
@@ -263,7 +322,7 @@ msgstr ""
 " mit :guilabel:`Fertigstellen` bestätigt werden. Danach sollte mit einem "
 "Klick auf :guilabel:`Neustart` der UMC-Server neu gestartet werden."
 
-#: ../../windows/ad-connection.rst:124
+#: ../../windows/ad-connection.rst:146
 msgid ""
 "Once the *AD member* mode has been set up, the authentication is "
 "performed against the AD domain controller. **Consequently, the password "
@@ -281,7 +340,7 @@ msgstr ""
 "in die Schreibweise des AD umbenannt. Gleiches gilt für alle Benutzer- "
 "und Gruppenobjekte mit *Well Known SID* (z.B. ``Domain Admins``)."
 
-#: ../../windows/ad-connection.rst:134
+#: ../../windows/ad-connection.rst:156
 msgid ""
 "If additional UCS systems were already part of the UCS domain in addition"
 " to the |UCSPRIMARYDN|, they must also join the domain anew. At the same "
@@ -295,7 +354,7 @@ msgstr ""
 "und treten ebenfalls der Authentifikationsstruktur der AD-Domäne bei und "
 "können dann z.B. zusätzlich Samba-Dateifreigaben bereitstellen."
 
-#: ../../windows/ad-connection.rst:143
+#: ../../windows/ad-connection.rst:165
 msgid ""
 "As the AD Kerberos infrastructure is used for the authentication of users"
 " in this mode, it is essential that the system times of UCS and the AD "
@@ -311,7 +370,7 @@ msgstr ""
 "Zeitserver konfiguriert. Im Falle von Authentifikationsproblemen sollte "
 "immer als erstes die Systemzeit überprüft werden."
 
-#: ../../windows/ad-connection.rst:150
+#: ../../windows/ad-connection.rst:172
 msgid ""
 "Following this setup, the UMC module :guilabel:`Active Directory "
 "Connection` can be used for further administration, e.g., for checking "
@@ -323,7 +382,7 @@ msgstr ""
 "prüfen, ob der Dienst läuft und ihn gegebenenfalls neu zu starten (siehe "
 ":ref:`ad-connector-restart`)."
 
-#: ../../windows/ad-connection.rst:154
+#: ../../windows/ad-connection.rst:176
 msgid ""
 "To use an encrypted connection between Active Directory and the "
 "|UCSPRIMARYDN| not only for the authentication, but also for data "
@@ -339,7 +398,7 @@ msgstr ""
 "UMC-Modul hochgeladen werden. Weitere Informationen dazu liefert :ref"
 ":`ad-connector-ad-certificate`."
 
-#: ../../windows/ad-connection.rst:160
+#: ../../windows/ad-connection.rst:182
 msgid ""
 "By default the Active Directory connection setup in this way does not "
 "transfer any password data from AD to the UCS directory service. Some "
@@ -352,7 +411,7 @@ msgstr ""
 "Sofern eine App diese benötigt, wird ein entsprechender Hinweis im App "
 "Center angezeigt."
 
-#: ../../windows/ad-connection.rst:165
+#: ../../windows/ad-connection.rst:187
 msgid ""
 "In *AD member* mode the UCS AD Connector exports object data from the AD "
 "with the authorizations of the |UCSPRIMARYDN|'s machine account by "
@@ -382,11 +441,11 @@ msgstr ""
 "Datei sollten so eingeschränkt werden, dass nur der Besitzer ``root`` "
 "Zugriff hat."
 
-#: ../../windows/ad-connection.rst:176
+#: ../../windows/ad-connection.rst:198
 msgid "The following commands demonstrate the steps in an example:"
 msgstr "Die folgenden Kommandos zeigen die Schritte beispielhaft:"
 
-#: ../../windows/ad-connection.rst:178
+#: ../../windows/ad-connection.rst:200
 msgid ""
 "$ ucr set connector/ad/ldap/binddn=Administrator\n"
 "$ ucr set connector/ad/ldap/bindpw=/etc/univention/connector/password\n"
@@ -404,7 +463,7 @@ msgstr ""
 "\n"
 "$ ucr set connector/ad/mapping/user/password/kinit=false"
 
-#: ../../windows/ad-connection.rst:188
+#: ../../windows/ad-connection.rst:210
 msgid ""
 "If needed, the AD domain controller can also be replaced by the "
 "|UCSPRIMARYDN| at a later point in time. This is possible via the "
@@ -416,11 +475,11 @@ msgstr ""
 " über die Applikation *Active Directory Takeover* möglich (siehe :ref"
 ":`windows-ad-takeover`)."
 
-#: ../../windows/ad-connection.rst:196
+#: ../../windows/ad-connection.rst:218
 msgid "Setup of the UCS AD connector"
 msgstr "Einrichtung des UCS AD-Connectors"
 
-#: ../../windows/ad-connection.rst:198
+#: ../../windows/ad-connection.rst:220
 msgid ""
 "As an alternative to membership in an AD domain, as described in the "
 "previous section, the :program:`Active Directory Connection` can be used "
@@ -441,7 +500,7 @@ msgstr ""
 "Betriebsmodus setzt die Synchronisation verschlüsselter Passwortdaten "
 "voraus."
 
-#: ../../windows/ad-connection.rst:206
+#: ../../windows/ad-connection.rst:228
 msgid ""
 "By default containers, organizational units, users, groups and computers "
 "are synchronized."
@@ -449,7 +508,7 @@ msgstr ""
 "In der Standardeinstellung werden Container, Organisationseinheiten, "
 "Benutzer, Gruppen und Rechner synchronisiert."
 
-#: ../../windows/ad-connection.rst:209
+#: ../../windows/ad-connection.rst:231
 msgid ""
 "The UCS AD connector can only be installed on a |UCSPRIMARYDN| or "
 "|UCSBACKUPDN| system."
@@ -457,7 +516,7 @@ msgstr ""
 "Der UCS AD Connector kann nur auf einem |UCSPRIMARYDN| oder einem "
 "|UCSBACKUPDN| installiert werden."
 
-#: ../../windows/ad-connection.rst:212
+#: ../../windows/ad-connection.rst:234
 msgid ""
 "Information on the attributes configured in the basic setting and "
 "particularities to take into account can be found in :ref:`ad-connector-"
@@ -467,7 +526,7 @@ msgstr ""
 "beachtende Besonderheiten finden sich in :ref:`ad-connector-details-on-"
 "preconfigured-synchronization`."
 
-#: ../../windows/ad-connection.rst:216
+#: ../../windows/ad-connection.rst:238
 msgid ""
 "The identical user settings in both domains allow users to access "
 "services in both environments transparently. After logging in to a UCS "
@@ -486,7 +545,7 @@ msgstr ""
 "gleichnamige Benutzer und Gruppen vor und können so mit den gewohnten "
 "Rechtestrukturen arbeiten."
 
-#: ../../windows/ad-connection.rst:223
+#: ../../windows/ad-connection.rst:245
 msgid ""
 "The initialization is performed after the first start of the connector. "
 "All the entries are read out of the UCS, converted to AD objects "
@@ -507,7 +566,7 @@ msgstr ""
 "weiter abgefragt. Der UCS AD-Connector kann auch in einem "
 "unidirektionalen Modus betrieben werden."
 
-#: ../../windows/ad-connection.rst:231
+#: ../../windows/ad-connection.rst:253
 msgid ""
 "Following the initial sync, additional changes are requested at a set "
 "interval. This value is set to five seconds and can be adjusted manually "
@@ -518,7 +577,7 @@ msgstr ""
 "kann manuell per |UCSUCR|-Variable :envvar:`connector/ad/poll/sleep` "
 "angepasst werden."
 
-#: ../../windows/ad-connection.rst:235
+#: ../../windows/ad-connection.rst:257
 msgid ""
 "If an object cannot be synchronized, it is firstly reset (*rejected*). "
 "Following a configurable number of cycles – the interval can be adjusted "
@@ -536,11 +595,11 @@ msgstr ""
 "ebenfalls versucht, die zuvor zurückgewiesenen Änderungen erneut zu "
 "synchronisieren."
 
-#: ../../windows/ad-connection.rst:245
+#: ../../windows/ad-connection.rst:267
 msgid "Basic configuration of the UCS AD Connector"
 msgstr "Grundkonfiguration des UCS AD-Connectors"
 
-#: ../../windows/ad-connection.rst:247
+#: ../../windows/ad-connection.rst:269
 msgid ""
 "The UCS AD Connector is configured using a wizard in the UMC module "
 ":guilabel:`Active Directory Connection`."
@@ -548,7 +607,7 @@ msgstr ""
 "Der UCS AD-Connector wird über einen Assistenten im UMC-Modul "
 ":guilabel:`Active Directory-Verbindung` konfiguriert."
 
-#: ../../windows/ad-connection.rst:250
+#: ../../windows/ad-connection.rst:272
 msgid ""
 "The module can be installed from the Univention App Center with the "
 "application :program:`Active Directory Connection`. Alternatively, the "
@@ -562,7 +621,7 @@ msgstr ""
 "Weitere Informationen finden sich in :ref:`computers-softwaremanagement-"
 "install-software`."
 
-#: ../../windows/ad-connection.rst:257
+#: ../../windows/ad-connection.rst:279
 msgid ""
 "All AD and UCS servers in a connector environment must use the same time "
 "zone."
@@ -570,7 +629,7 @@ msgstr ""
 "Alle AD- und UCS-Server in einer Connector-Umgebung müssen dieselbe "
 "Zeitzone verwenden."
 
-#: ../../windows/ad-connection.rst:262
+#: ../../windows/ad-connection.rst:284
 msgid ""
 "Despite intensive tests it is not possible to rule out that the results "
 "of the synchronization may affect the operation of a productive domain. "
@@ -583,7 +642,7 @@ msgstr ""
 "Domäne beeinträchtigen. Der UCS AD-Connector sollte daher vorab in einer "
 "getrennten Umgebung auf die jeweiligen Anforderungen geprüft werden."
 
-#: ../../windows/ad-connection.rst:267
+#: ../../windows/ad-connection.rst:289
 msgid ""
 "It is convenient to perform the following steps with a web browser from "
 "the AD domain controller, as the files need to be downloaded from the AD "
@@ -594,7 +653,7 @@ msgstr ""
 "Domänencontroller herunter geladen und im Assistenten hochgeladen werden "
 "müssen."
 
-#: ../../windows/ad-connection.rst:271
+#: ../../windows/ad-connection.rst:293
 msgid ""
 "In the first dialog window of the setup wizard, the point "
 "*Synchronization of content data between an AD and this UCS domain* must "
@@ -604,11 +663,11 @@ msgstr ""
 "*Synchronisation von Kontendaten zwischen einer AD und dieser UCS-Domäne*"
 " ausgewählt und mit :guilabel:`Weiter` bestätigt werden."
 
-#: ../../windows/ad-connection.rst:280
+#: ../../windows/ad-connection.rst:302
 msgid "Configuration of the UCS AD Connector via UMC module"
 msgstr "Konfiguration des UCS AD-Connectors über UMC-Modul"
 
-#: ../../windows/ad-connection.rst:282
+#: ../../windows/ad-connection.rst:304
 msgid ""
 "The address of an AD domain controller is requested in the next dialogue "
 "window. Here you can specify the IP address of a fully qualified DNS "
@@ -625,7 +684,7 @@ msgstr ""
 ":guilabel:`DNS` ein DNS-Host-Record für das AD-System angelegt werden "
 "(siehe :ref:`networks-dns-hostrecord`)."
 
-#: ../../windows/ad-connection.rst:289
+#: ../../windows/ad-connection.rst:311
 msgid ""
 "Alternatively, a static entry can also be adopted in :file:`/etc/hosts` "
 "via |UCSUCR|, e.g."
@@ -633,11 +692,11 @@ msgstr ""
 "Alternativ kann auch über |UCSUCR| ein statischer Eintrag in "
 ":file:`/etc/hosts` aufgenommen werden, z.B. mit"
 
-#: ../../windows/ad-connection.rst:292
+#: ../../windows/ad-connection.rst:314
 msgid "$ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com"
 msgstr "$ ucr set hosts/static/192.0.2.100=w2k8-32.ad.example.com"
 
-#: ../../windows/ad-connection.rst:296
+#: ../../windows/ad-connection.rst:318
 msgid ""
 "In the *Active Directory account* field, the user is configured which is "
 "used for the access on the AD. The setting is saved in the |UCSUCRV| "
@@ -650,7 +709,7 @@ msgstr ""
 "Replikationsbenutzer muss im AD Mitglied der Gruppe ``Domänen-Admins`` "
 "sein."
 
-#: ../../windows/ad-connection.rst:301
+#: ../../windows/ad-connection.rst:323
 msgid ""
 "The password used for the access must be entered in the *Active Directory"
 " password* field. On the UCS system it is only saved locally in a file "
@@ -660,7 +719,7 @@ msgstr ""
 "Passwort* eingetragen werden. Es wird auf dem UCS-System lokal in einer "
 "Datei gespeichert, die nur für den Benutzer ``root`` lesbar ist."
 
-#: ../../windows/ad-connection.rst:305
+#: ../../windows/ad-connection.rst:327
 msgid ""
 ":ref:`ad-connector-ad-password` describes the steps required if these "
 "access data need to be adjusted at a later point in time."
@@ -669,7 +728,7 @@ msgstr ""
 "sind, falls diese Zugangsdaten zu einem späteren Zeitpunkt angepasst "
 "werden müssen."
 
-#: ../../windows/ad-connection.rst:308
+#: ../../windows/ad-connection.rst:330
 msgid ""
 "Clicking on :guilabel:`Next` prompts the setup wizard to check the "
 "connection to the AD domain controller. If it is not possible to create "
@@ -683,7 +742,7 @@ msgstr ""
 "zur Installation einer Zertifizierungsstelle auf dem AD-Domänencontroller"
 " geraten wird. Es wird empfohlen diesem Rat zu folgen."
 
-#: ../../windows/ad-connection.rst:314
+#: ../../windows/ad-connection.rst:336
 msgid ""
 "UCS 5.0 requires TLS 1.2, which needs to be activated manually for "
 "Windows Server Releases prior to 2012R2. UCS 5.0 doesn't support the hash"
@@ -697,7 +756,7 @@ msgstr ""
 "des AD Root-Zertifikat oder des Zertifikat des Windows Servers dieses "
 "Verfahren verwendet wurde, dann sollten diese ersetzt werden."
 
-#: ../../windows/ad-connection.rst:320
+#: ../../windows/ad-connection.rst:342
 msgid ""
 "Following this step, the setup can be continued by clicking "
 ":guilabel:`Next` again. If it is still not possible to create an SSL/TLS-"
@@ -716,7 +775,7 @@ msgstr ""
 "Verschlüsselung` fortgesetzt werden. In diesem Fall findet die "
 "Synchronisation der Verzeichnisdaten unverschlüsselt statt."
 
-#: ../../windows/ad-connection.rst:327
+#: ../../windows/ad-connection.rst:349
 msgid ""
 "If the AD domain controller supports SSL/TLS-encrypted connections, the "
 "setup wizard offers :guilabel:`Upload AD root certificate` in the next "
@@ -737,7 +796,7 @@ msgstr ""
 "werden (bis dahin werden dann aber alle Verzeichnisdaten unverschlüsselt "
 "synchronisiert)."
 
-#: ../../windows/ad-connection.rst:335
+#: ../../windows/ad-connection.rst:357
 msgid ""
 "The connector can be operated in different modes, which can be selected "
 "in the next dialogue window *Configuration of Active Directory domain "
@@ -753,7 +812,7 @@ msgstr ""
 "oder unidirektional von UCS in das AD repliziert werden. Nach Auswahl des"
 " Modus muss auf :guilabel:`Weiter` geklickt werden."
 
-#: ../../windows/ad-connection.rst:341
+#: ../../windows/ad-connection.rst:363
 msgid ""
 "Once :guilabel:`Next` is clicked, the configuration is taken over and the"
 " UCS AD Connector started. The subsequent dialogue window needs to be "
@@ -763,7 +822,7 @@ msgstr ""
 " und der UCS AD-Connector wird gestartet. Der abschließende Dialog muss "
 "dann durch Klick auf :guilabel:`Fertigstellen` geschlossen werden."
 
-#: ../../windows/ad-connection.rst:345
+#: ../../windows/ad-connection.rst:367
 msgid ""
 "Following this setup, the UMC module :guilabel:`Active Directory "
 "Connection` can be used for further administration of the Active "
@@ -775,7 +834,7 @@ msgstr ""
 "Connectors verwendet werden, z.B. um zu prüfen, ob der Dienst läuft und "
 "ihn gegebenenfalls neu zu starten (siehe :ref:`ad-connector-restart`)."
 
-#: ../../windows/ad-connection.rst:352
+#: ../../windows/ad-connection.rst:374
 msgid ""
 "The connector can also synchronize several AD domains within one UCS "
 "domain; this is documented in :cite:t:`ext-doc-win`."
@@ -783,15 +842,15 @@ msgstr ""
 "Der Connector kann auch mehrere AD-Domänen mit einer UCS-Domäne "
 "synchronisieren; dies ist in :cite:t:`ext-doc-win` dokumentiert."
 
-#: ../../windows/ad-connection.rst:360
+#: ../../windows/ad-connection.rst:382
 msgid "Administration dialogue for the Active Directory Connection"
 msgstr "Administrationsdialog für die Active Directory-Verbindung"
 
-#: ../../windows/ad-connection.rst:365
+#: ../../windows/ad-connection.rst:387
 msgid "Importing the SSL certificate of the Active Directory"
 msgstr "Import des SSL-Zertifikats des Active Directory"
 
-#: ../../windows/ad-connection.rst:367
+#: ../../windows/ad-connection.rst:389
 msgid ""
 "A SSL certificate must be created on the Active Directory system and the "
 "root certificate exported to allow encrypted communication. The "
@@ -806,7 +865,7 @@ msgstr ""
 "abhängig von der eingesetzten Windows-Version und werden hier "
 "beispielhaft für drei Varianten dargestellt."
 
-#: ../../windows/ad-connection.rst:372
+#: ../../windows/ad-connection.rst:394
 msgid ""
 "The encrypted communication between the UCS system and Active Directory "
 "can also be deactivated by setting the |UCSUCRV| "
@@ -819,11 +878,11 @@ msgstr ""
 "Einstellung betrifft nicht die Synchronisation der verschlüsselten "
 "Passwortdaten."
 
-#: ../../windows/ad-connection.rst:380
+#: ../../windows/ad-connection.rst:402
 msgid "Exporting the certificate on Microsoft Windows Server"
 msgstr "Export unter Microsoft Windows Server"
 
-#: ../../windows/ad-connection.rst:382
+#: ../../windows/ad-connection.rst:404
 msgid ""
 "If the certificate service isn't installed yet, add it to your domain "
 "with the following steps before you proceed:"
@@ -831,11 +890,11 @@ msgstr ""
 "Falls der Zertifizierungsdienst noch nicht installiert ist, installieren "
 "Sie ihn in Ihre Domäne mit den folgenden Schritten, bevor sie fortfahren:"
 
-#: ../../windows/ad-connection.rst:385 ../../windows/ad-connection.rst:416
+#: ../../windows/ad-connection.rst:407 ../../windows/ad-connection.rst:438
 msgid "Open the *Server Manager*."
 msgstr "Öffnen Sie den *Server Manager*."
 
-#: ../../windows/ad-connection.rst:387
+#: ../../windows/ad-connection.rst:409
 msgid ""
 "Select the role *Active Directory Certificate Services* in "
 ":menuselection:`Manage --> Add Roles and Features`."
@@ -844,7 +903,7 @@ msgstr ""
 "hinzufügen` die Rolle :guilabel:`Active Directory-Zertifikatsdienste` "
 "aus."
 
-#: ../../windows/ad-connection.rst:390
+#: ../../windows/ad-connection.rst:412
 msgid ""
 "In the services list, select :guilabel:`Certification Authority`. The top"
 " bar in the *Server Manager* shows a yellow warning triangle."
@@ -853,7 +912,7 @@ msgstr ""
 " aus. Die obere Leiste des *Server Manager*\\ s zeigt ein gelbes "
 "Warndreieck an."
 
-#: ../../windows/ad-connection.rst:393
+#: ../../windows/ad-connection.rst:415
 msgid ""
 "Select the option :guilabel:`Configure Active Directory Certificate "
 "Services on the server` and configure the *Certification Authority* as "
@@ -863,13 +922,13 @@ msgstr ""
 "konfigurieren` auf dem Server und konfigurieren Sie die "
 "*Zertifizierungsstelle* als ausgewählten Rollendienst."
 
-#: ../../windows/ad-connection.rst:397
+#: ../../windows/ad-connection.rst:419
 msgid "Choose :menuselection:`Enterprise CA --> Root CA` as type of installation."
 msgstr ""
 "Wählen Sie :menuselection:`Unternehmenszertifizierungsstelle --> "
 "Stammzertifizierungsstelle` als Installationstyp."
 
-#: ../../windows/ad-connection.rst:399
+#: ../../windows/ad-connection.rst:421
 msgid ""
 "Click :guilabel:`Create a new private key`, confirm the suggested "
 "encryption settings and the name of the certification authority."
@@ -878,7 +937,7 @@ msgstr ""
 "Sie die vorgeschlagenen Verschlüsselungseinstellungen und den Namen der "
 "Zertifizierungsstelle."
 
-#: ../../windows/ad-connection.rst:402
+#: ../../windows/ad-connection.rst:424
 msgid ""
 "Choose any period for validity and use the standard paths for the "
 "database location."
@@ -886,7 +945,7 @@ msgstr ""
 "Wählen Sie einen beliebigen Zeitraum für die Gültigkeit und verwenden Sie"
 " die Standardpfade für den Speicherort der Datenbank."
 
-#: ../../windows/ad-connection.rst:405
+#: ../../windows/ad-connection.rst:427
 msgid ""
 "Finally, restart your Windows Active Directory server to let the changes "
 "come into effect."
@@ -894,7 +953,7 @@ msgstr ""
 "Starten Sie abschließend Ihren Windows Active Directory Server neu, damit"
 " die Änderungen wirksam werden."
 
-#: ../../windows/ad-connection.rst:411
+#: ../../windows/ad-connection.rst:433
 msgid ""
 "`Install the Certification Authority <microsoft-install-the-"
 "certification-authority_>`_"
@@ -902,7 +961,7 @@ msgstr ""
 "`Installieren der Zertifizierungsstelle <microsoft-install-the-"
 "certification-authority_>`_"
 
-#: ../../windows/ad-connection.rst:411
+#: ../../windows/ad-connection.rst:433
 msgid ""
 "for detailed procedure about installing the certificate authority in "
 ":cite:t:`microsoft-install-the-certification-authority`."
@@ -911,17 +970,17 @@ msgstr ""
 "Zertifizierungsstelle in :cite:t:`microsoft-install-the-certification-"
 "authority`."
 
-#: ../../windows/ad-connection.rst:414
+#: ../../windows/ad-connection.rst:436
 msgid "To export the certificate authority certificate, use the following steps:"
 msgstr ""
 "Um das Zertifikat der Zertifizierungsstelle zu exportieren, gehen Sie wie"
 " folgt vor:"
 
-#: ../../windows/ad-connection.rst:418
+#: ../../windows/ad-connection.rst:440
 msgid "Select the role *Active Directory Certificate Services* (AD CS)."
 msgstr "Wählen Sie die Rolle *AD-Zertifikatsdienste*."
 
-#: ../../windows/ad-connection.rst:420
+#: ../../windows/ad-connection.rst:442
 msgid ""
 "Right-click the name of the Windows server and select "
 ":guilabel:`Certification Authority`. A window with the certification "
@@ -933,7 +992,7 @@ msgstr ""
 "Zertifizierungsstelle öffnet sich. Ein Baum von Rechnern erscheint unter "
 "*Zertifizierungsstelle* auf der linken Seite."
 
-#: ../../windows/ad-connection.rst:425
+#: ../../windows/ad-connection.rst:447
 msgid ""
 "Every host has the elements *Revoked Certificates*, *Issued "
 "Certificates*, *Pending Requests*, *Failed Requests*, and *Certificate "
@@ -943,7 +1002,7 @@ msgstr ""
 "Zertifikate*, *Ausgestellte Zertifikate*, *Ausstehende Anforderungen*, "
 "*Fehlgeschlagene Anforderungen* und *Zertifikatsvorlagen*."
 
-#: ../../windows/ad-connection.rst:429
+#: ../../windows/ad-connection.rst:451
 msgid ""
 "In the server list, right-click the Windows host that serves your "
 "certificate authority and select :guilabel:`Properties`. Don't mix it up "
@@ -954,7 +1013,7 @@ msgstr ""
 ":guilabel:`Eigenschaften`. Verwechseln Sie ihn nicht mit einem der "
 "anderen Elemente."
 
-#: ../../windows/ad-connection.rst:433
+#: ../../windows/ad-connection.rst:455
 msgid ""
 "In the *Properties* window, select :menuselection:`General --> CA "
 "certificates --> Certificate #0` and click :guilabel:`View Certificate`."
@@ -963,7 +1022,7 @@ msgstr ""
 "Stammzertifikat --> Zertifikat Nr. 0` und klicken auf "
 ":guilabel:`Zertifikat anzeigen`."
 
-#: ../../windows/ad-connection.rst:438
+#: ../../windows/ad-connection.rst:460
 msgid ""
 "It's important to copy the certificate usually with the name "
 "``Certificate #0``, because :program:`AD Connection` needs exactly this "
@@ -973,7 +1032,7 @@ msgstr ""
 "``Zertifikat Nr. 0`` trägt, da die App :program:`AD Connection` genau "
 "dieses Zertifikat für eine sichere Verbindung benötigt."
 
-#: ../../windows/ad-connection.rst:442
+#: ../../windows/ad-connection.rst:464
 msgid ""
 "In the opening *Certificate* window, select the tab *Details* and click "
 ":guilabel:`Copy to File …`."
@@ -981,11 +1040,11 @@ msgstr ""
 "Wählen Sie im sich öffnenden Fenster *Zertifikat* die Registerkarte "
 "*Details* und klicken Sie auf :guilabel:`In Datei kopieren …`."
 
-#: ../../windows/ad-connection.rst:448
+#: ../../windows/ad-connection.rst:470
 msgid "Copying the Active Directory certificate to the UCS system"
 msgstr "Kopieren des AD-Zertifikats auf das UCS-System"
 
-#: ../../windows/ad-connection.rst:450
+#: ../../windows/ad-connection.rst:472
 msgid ""
 "The SSL AD certificate should now be imported into the UCS system using "
 "the UMC module."
@@ -993,7 +1052,7 @@ msgstr ""
 "Nun muss das SSL-AD-Zertifikat über das UMC-Modul in das UCS-System "
 "importiert werden."
 
-#: ../../windows/ad-connection.rst:453
+#: ../../windows/ad-connection.rst:475
 msgid ""
 "This is done by clicking on :guilabel:`Upload` in the sub menu *Active "
 "Directory connection SSL configuration*. This opens a window in which a "
@@ -1005,11 +1064,11 @@ msgstr ""
 "Fenster, in dem eine Datei ausgewählt wird. Das hochgeladene Zertifikat "
 "wird dadurch für den UCS AD-Connector verfügbar gemacht."
 
-#: ../../windows/ad-connection.rst:460
+#: ../../windows/ad-connection.rst:482
 msgid "Starting/Stopping the Active Directory Connection"
 msgstr "Start/Stopp des Active Directory Connectors"
 
-#: ../../windows/ad-connection.rst:462
+#: ../../windows/ad-connection.rst:484
 msgid ""
 "The connector can be started using *Start Active Directory connection "
 "service* and stopped using *Stop Active Directory connection service*. "
@@ -1023,11 +1082,11 @@ msgstr ""
 ":command:`/etc/init.d/univention-ad-connector start` und "
 ":command:`/etc/init.d/univention-ad-connector stop` erfolgen."
 
-#: ../../windows/ad-connection.rst:470
+#: ../../windows/ad-connection.rst:492
 msgid "Functional test of basic settings"
 msgstr "Funktionstest der Grundeinstellungen"
 
-#: ../../windows/ad-connection.rst:472
+#: ../../windows/ad-connection.rst:494
 msgid ""
 "The correct basic configuration of the connector can be checked by "
 "searching in Active Directory from the UCS system. Here one can search "
@@ -1038,11 +1097,11 @@ msgstr ""
 " kann z.B. nach dem Administrator-Konto im Active Directory gesucht "
 "werden:"
 
-#: ../../windows/ad-connection.rst:476
+#: ../../windows/ad-connection.rst:498
 msgid "$ univention-adsearch cn=Administrator"
 msgstr "$ univention-adsearch cn=Administrator"
 
-#: ../../windows/ad-connection.rst:480
+#: ../../windows/ad-connection.rst:502
 msgid ""
 "As :command:`univention-adsearch` accesses the configuration saved in "
 "|UCSUCR|, this allows you to check the reachability/configuration of the "
@@ -1053,11 +1112,11 @@ msgstr ""
 "Erreichbarkeit/Konfiguration des Active Directory-Zugriffs geprüft "
 "werden."
 
-#: ../../windows/ad-connection.rst:487
+#: ../../windows/ad-connection.rst:509
 msgid "Changing the AD access password"
 msgstr "Änderung des AD-Zugriffspassworts"
 
-#: ../../windows/ad-connection.rst:489
+#: ../../windows/ad-connection.rst:511
 msgid ""
 "The access data required by the UCS AD Connector for Active Directory are"
 " configured via the |UCSUCRV| :envvar:`connector/ad/ldap/binddn` and "
@@ -1071,7 +1130,7 @@ msgstr ""
 "geändert hat oder ein anderes Benutzerkonto verwendet werden soll, können"
 " diese Variablen manuell angepasst werden."
 
-#: ../../windows/ad-connection.rst:494
+#: ../../windows/ad-connection.rst:516
 msgid ""
 "The |UCSUCRV| :envvar:`connector/ad/ldap/binddn` is used to configure the"
 " LDAP DN of a privileged replication user. This must be a member of the "
@@ -1090,7 +1149,7 @@ msgstr ""
 "eingeschränkt werden, dass nur der Besitzer ``root`` Zugriff hat. Die "
 "folgenden Kommandos zeigen dies beispielhaft:"
 
-#: ../../windows/ad-connection.rst:502
+#: ../../windows/ad-connection.rst:524
 #, python-brace-format
 msgid ""
 "$ eval \"$(ucr shell)\"\n"
@@ -1109,11 +1168,11 @@ msgstr ""
 "$ echo -n \"Current AD Syncuser password\" > "
 "\"${connector_ad_ldap_bindpw?}\""
 
-#: ../../windows/ad-connection.rst:515
+#: ../../windows/ad-connection.rst:537
 msgid "Additional tools / Debugging connector problems"
 msgstr "Werkzeuge / Fehlersuche"
 
-#: ../../windows/ad-connection.rst:517
+#: ../../windows/ad-connection.rst:539
 msgid ""
 "The :program:`Active Directory Connection` provides the following tools "
 "and log files for diagnosis:"
@@ -1121,11 +1180,11 @@ msgstr ""
 "Die :program:`Active Directory Connection` stellt die folgenden Werkzeuge"
 " und Protokolldateien für die Diagnose zur Verfügung:"
 
-#: ../../windows/ad-connection.rst:532
+#: ../../windows/ad-connection.rst:554
 msgid ":command:`univention-adsearch`"
 msgstr ":command:`univention-adsearch`"
 
-#: ../../windows/ad-connection.rst:523
+#: ../../windows/ad-connection.rst:545
 msgid ""
 "This tool facilitates a LDAP search in Active Directory. Objects deleted "
 "in AD are always shown (they are still kept in an LDAP sub tree in AD). "
@@ -1138,20 +1197,20 @@ msgstr ""
 " das Skript einen LDAP-Filter, die zweite Option kann eine Liste der "
 "anzuzeigenden LDAP-Attribute sein, z.B.:"
 
-#: ../../windows/ad-connection.rst:528 ../../windows/ad-connection.rst:552
-#: ../../windows/ad-connection.rst:566 ../../windows/ad-connection.rst:580
+#: ../../windows/ad-connection.rst:550 ../../windows/ad-connection.rst:574
+#: ../../windows/ad-connection.rst:588 ../../windows/ad-connection.rst:602
 msgid "Example:"
 msgstr "Beispiel:"
 
-#: ../../windows/ad-connection.rst:530
+#: ../../windows/ad-connection.rst:552
 msgid "$ univention-adsearch cn=administrator cn givenName"
 msgstr "$ univention-adsearch cn=administrator cn givenName"
 
-#: ../../windows/ad-connection.rst:543
+#: ../../windows/ad-connection.rst:565
 msgid ":command:`univention-adconnector-list-rejected`"
 msgstr ":command:`univention-adconnector-list-rejected`"
 
-#: ../../windows/ad-connection.rst:537
+#: ../../windows/ad-connection.rst:559
 msgid ""
 "This tool lists the DNs of non-synchronized objects. In addition, in so "
 "far as temporarily stored, the corresponding DN in the respective other "
@@ -1163,7 +1222,7 @@ msgstr ""
 "anderen LDAP-Verzeichnis angegeben. Abschließend gibt ``lastUSN`` die ID "
 "der letzten von AD synchronisierten Änderung an."
 
-#: ../../windows/ad-connection.rst:542
+#: ../../windows/ad-connection.rst:564
 msgid ""
 "This script may display an error message or an incomplete output if the "
 "AD connector is in operation."
@@ -1171,11 +1230,11 @@ msgstr ""
 "Dieses Skript könnte eine Fehlermeldung oder eine unvollständige Ausgabe "
 "anzeigen, wenn der AD Connector in Betrieb ist."
 
-#: ../../windows/ad-connection.rst:557
+#: ../../windows/ad-connection.rst:579
 msgid ":command:`remove_ad_rejected.py`"
 msgstr ":command:`remove_ad_rejected.py`"
 
-#: ../../windows/ad-connection.rst:548
+#: ../../windows/ad-connection.rst:570
 #, python-brace-format
 msgid ""
 "You can use this script to remove an AD object from the AD rejected list "
@@ -1187,7 +1246,7 @@ msgstr ""
 "Datenbankdatei :file:`/etc/univention/{connector}/internal.sqlite` "
 "befindet."
 
-#: ../../windows/ad-connection.rst:554
+#: ../../windows/ad-connection.rst:576
 msgid ""
 "$ /usr/share/univention-ad-connector/remove_ad_rejected.py \\\n"
 "   -c connector <AD object DN>"
@@ -1195,11 +1254,11 @@ msgstr ""
 "$ /usr/share/univention-ad-connector/remove_ad_rejected.py \\\n"
 "   -c connector <AD object DN>"
 
-#: ../../windows/ad-connection.rst:571
+#: ../../windows/ad-connection.rst:593
 msgid ":command:`remove_ucs_rejected.py`"
 msgstr ":command:`remove_ucs_rejected.py`"
 
-#: ../../windows/ad-connection.rst:562
+#: ../../windows/ad-connection.rst:584
 #, python-brace-format
 msgid ""
 "You can use this script to remove an UCS directory object from the UCS "
@@ -1211,7 +1270,7 @@ msgstr ""
 "Datenbankdatei :file:`/etc/univention/{connector}/internal.sqlite` "
 "befindet."
 
-#: ../../windows/ad-connection.rst:568
+#: ../../windows/ad-connection.rst:590
 msgid ""
 "$ /usr/share/univention-ad-connector/remove_ucs_rejected.py \\\n"
 "   -c connector <UCS object DN>"
@@ -1219,11 +1278,11 @@ msgstr ""
 "$ /usr/share/univention-ad-connector/remove_ucs_rejected.py \\\n"
 "   -c connector <UCS object DN>"
 
-#: ../../windows/ad-connection.rst:597
+#: ../../windows/ad-connection.rst:619
 msgid ":command:`resync_object_from_ad.py`"
 msgstr ":command:`resync_object_from_ad.py`"
 
-#: ../../windows/ad-connection.rst:576
+#: ../../windows/ad-connection.rst:598
 msgid ""
 "You can use this script to re-synchronize directory objects from AD to "
 "UCS. Use it to synchronize a single or multiple directory objects."
@@ -1232,7 +1291,7 @@ msgstr ""
 "erneut zu synchronisieren. Verwenden Sie es, um ein einzelnes oder "
 "mehrere Verzeichnisobjekte zu synchronisieren."
 
-#: ../../windows/ad-connection.rst:582
+#: ../../windows/ad-connection.rst:604
 msgid ""
 "# to re-sychronize a single object\n"
 "$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
@@ -1264,11 +1323,11 @@ msgstr ""
 "    --filter \"(objectClass=posixAccount)\" \\\n"
 "    --base \"dc=example,dc=com\""
 
-#: ../../windows/ad-connection.rst:622
+#: ../../windows/ad-connection.rst:644
 msgid ":command:`resync_object_from_ucs.py`"
 msgstr ":command:`resync_object_from_ucs.py`"
 
-#: ../../windows/ad-connection.rst:602
+#: ../../windows/ad-connection.rst:624
 msgid ""
 "You can use this script to re-synchronize directory objects from UCS to "
 "AD. Use it to synchronize a single or multiple directory objects."
@@ -1277,11 +1336,11 @@ msgstr ""
 " erneut zu synchronisieren. Verwenden Sie es, um ein einzelnes oder "
 "mehrere Verzeichnisobjekte zu synchronisieren. "
 
-#: ../../windows/ad-connection.rst:605
+#: ../../windows/ad-connection.rst:627
 msgid "Examples:"
 msgstr "Beispiele:"
 
-#: ../../windows/ad-connection.rst:607
+#: ../../windows/ad-connection.rst:629
 msgid ""
 "# to re-synchronize a single object\n"
 "$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
@@ -1313,11 +1372,11 @@ msgstr ""
 "   --filter \"<LDAP filter>\" \\\n"
 "   --base \"<base dn>\" \\"
 
-#: ../../windows/ad-connection.rst:631
+#: ../../windows/ad-connection.rst:653
 msgid ":command:`prepare-new-instance`"
 msgstr ":command:`prepare-new-instance`"
 
-#: ../../windows/ad-connection.rst:627
+#: ../../windows/ad-connection.rst:649
 msgid ""
 "You can use this script to create AD connection instances. The script "
 "copies the required files and sets specific UCR variables."
@@ -1326,7 +1385,7 @@ msgstr ""
 "erstellen. Das Skript kopiert die erforderlichen Dateien und setzt "
 "bestimmte UCR-Variablen."
 
-#: ../../windows/ad-connection.rst:630
+#: ../../windows/ad-connection.rst:652
 msgid ""
 "Alternatively, you can use this script to delete an AD connection "
 "instance. The script then internally removes the files for the instance "
@@ -1336,11 +1395,11 @@ msgstr ""
 "Verbindungsinstanz zu löschen. Das Skript löscht dann intern die Dateien "
 "für die Instanz und setzt die UCR-Variablen zurück."
 
-#: ../../windows/ad-connection.rst:637
+#: ../../windows/ad-connection.rst:659
 msgid ":command:`well-known-sid-object-rename`"
 msgstr ":command:`well-known-sid-object-rename`"
 
-#: ../../windows/ad-connection.rst:636
+#: ../../windows/ad-connection.rst:658
 msgid ""
 "You can use this script to rename users and groups with well-known SIDs "
 "in UDM. The AD Connection uses it to rename users and groups with well-"
@@ -1350,11 +1409,11 @@ msgstr ""
 " SIDs in UDM umzubenennen. Die :program:`AD Connection` verwendet es, um "
 "Benutzer und Gruppen mit bekannten SIDs umzubenennen."
 
-#: ../../windows/ad-connection.rst:643
+#: ../../windows/ad-connection.rst:665
 msgid ":command:`make-deleted-objects-readable-for-this-machine`"
 msgstr ":command:`make-deleted-objects-readable-for-this-machine`"
 
-#: ../../windows/ad-connection.rst:642
+#: ../../windows/ad-connection.rst:664
 msgid ""
 "You can use this script to grant list and read access to ``CN=Deleted "
 "Objects`` in Active Directory."
@@ -1362,11 +1421,11 @@ msgstr ""
 "Sie können dieses Skript verwenden, um Zugriff zum Auflisten und Lesen "
 "auf ``CN=Deleted Objects`` in Active Directory zu gewähren."
 
-#: ../../windows/ad-connection.rst:654
+#: ../../windows/ad-connection.rst:676
 msgid "Log files"
 msgstr "Logdateien"
 
-#: ../../windows/ad-connection.rst:648
+#: ../../windows/ad-connection.rst:670
 msgid ""
 "For troubleshooting when experiencing synchronization problems, "
 "corresponding messages can be found in the following files on the UCS "
@@ -1375,19 +1434,19 @@ msgstr ""
 "Zur Fehlersuche bei Synchronisationsproblemen finden sich entsprechende "
 "Meldungen in folgenden Dateien auf dem UCS-System:"
 
-#: ../../windows/ad-connection.rst:652
+#: ../../windows/ad-connection.rst:674
 msgid ":file:`/var/log/univention/connector-ad.log`"
 msgstr ":file:`/var/log/univention/connector-ad.log`"
 
-#: ../../windows/ad-connection.rst:653
+#: ../../windows/ad-connection.rst:675
 msgid ":file:`/var/log/univention/connector-ad-status.log`"
 msgstr ":file:`/var/log/univention/connector-ad-status.log`"
 
-#: ../../windows/ad-connection.rst:659
+#: ../../windows/ad-connection.rst:681
 msgid "Selective synchronization"
 msgstr "Selektive Synchronisation"
 
-#: ../../windows/ad-connection.rst:661
+#: ../../windows/ad-connection.rst:683
 msgid ""
 "You can configure the :program:`Active Directory Connection` to "
 "synchronize only a specific selection of source objects. You can select "
@@ -1399,27 +1458,27 @@ msgstr ""
 "Sie können die Quellobjekte nach Kriterien auswählen, die in den "
 "folgenden Abschnitten ausführlich beschrieben werden: "
 
-#: ../../windows/ad-connection.rst:666
+#: ../../windows/ad-connection.rst:688
 msgid "Selecting objects by location in the LDAP subtree"
 msgstr "Auswahl von Objekten nach Standort im LDAP-Teilbaum"
 
-#: ../../windows/ad-connection.rst:667
+#: ../../windows/ad-connection.rst:689
 msgid "Selecting objects by matching an LDAP filter"
 msgstr "Auswahl von Objekten durch Übereinstimmung mit einem LDAP-Filter"
 
-#: ../../windows/ad-connection.rst:668
+#: ../../windows/ad-connection.rst:690
 msgid "Selecting all items except by location in the LDAP subtree"
 msgstr "Auswahl aller Elemente außer nach Standort im LDAP-Teilbaum"
 
-#: ../../windows/ad-connection.rst:669
+#: ../../windows/ad-connection.rst:691
 msgid "Selecting all items except by matching an LDAP filter"
 msgstr "Auswahl aller Elemente außer durch Übereinstimmung mit einem LDAP-Filter"
 
-#: ../../windows/ad-connection.rst:672
+#: ../../windows/ad-connection.rst:694
 msgid "Allow only specific LDAP subtrees"
 msgstr "Nur bestimmte LDAP-Teilbäume zulassen"
 
-#: ../../windows/ad-connection.rst:674
+#: ../../windows/ad-connection.rst:696
 msgid ""
 "To configure the connector to synchronize only specific subtrees of the "
 "LDAP structure you can use the following UCR variables:"
@@ -1428,11 +1487,11 @@ msgstr ""
 " LDAP-Struktur synchronisiert, können Sie die folgenden UCR-Variablen "
 "verwenden: "
 
-#: ../../windows/ad-connection.rst:679
+#: ../../windows/ad-connection.rst:701
 msgid "For synchronization from UCS LDAP directory to Active Directory"
 msgstr "Für die Synchronisation von UCS LDAP-Verzeichnis zu Active Directory"
 
-#: ../../windows/ad-connection.rst:681
+#: ../../windows/ad-connection.rst:703
 msgid ""
 "Use this |UCSUCRV| to define a DN from your UCS LDAP directory for the "
 "synchronization to the connected Active Directory. Then the *AD "
@@ -1449,17 +1508,17 @@ msgstr ""
 "enthalten sein und der Vergleich der DNs ist unabhängig von der Groß- und"
 " Kleinschreibung. "
 
-#: ../../windows/ad-connection.rst:689 ../../windows/ad-connection.rst:710
+#: ../../windows/ad-connection.rst:711 ../../windows/ad-connection.rst:732
 msgid "See the explanation of the ``.*`` placeholder below."
 msgstr "Siehe die Erklärung des Platzhalters ``.*`` weiter unten."
 
-#: ../../windows/ad-connection.rst:691 ../../windows/ad-connection.rst:712
-#: ../../windows/ad-connection.rst:784 ../../windows/ad-connection.rst:820
-#: ../../windows/ad-connection.rst:896
+#: ../../windows/ad-connection.rst:713 ../../windows/ad-connection.rst:734
+#: ../../windows/ad-connection.rst:806 ../../windows/ad-connection.rst:842
+#: ../../windows/ad-connection.rst:918
 msgid "For example:"
 msgstr "Zum Beispiel:"
 
-#: ../../windows/ad-connection.rst:693
+#: ../../windows/ad-connection.rst:715
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school1/ucs=\"ou=school1,dc=ucs,domain\""
@@ -1473,11 +1532,11 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school2/ucs=\"ou=school2,dc=ucs,domain\""
 
-#: ../../windows/ad-connection.rst:700
+#: ../../windows/ad-connection.rst:722
 msgid "For synchronization from Active Directory to UCS LDAP directory"
 msgstr "Für die Synchronisation von Active Directory zum UCS Verzeichnisdienst"
 
-#: ../../windows/ad-connection.rst:702
+#: ../../windows/ad-connection.rst:724
 msgid ""
 "Use this |UCSUCRV| to define a DN from your Active Directory for the "
 "synchronization to your UCS LDAP directory. Then the *AD Connection* only"
@@ -1493,7 +1552,7 @@ msgstr ""
 "sein, und beim Vergleich der DNs wird nicht zwischen Groß- und "
 "Kleinschreibung unterschieden. "
 
-#: ../../windows/ad-connection.rst:714
+#: ../../windows/ad-connection.rst:736
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school1/ad=\"ou=school1,dc=ad,domain\""
@@ -1507,11 +1566,11 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school2/ad=\"ou=school2,dc=ad,domain\""
 
-#: ../../windows/ad-connection.rst:723
+#: ../../windows/ad-connection.rst:745
 msgid "Placeholder ``.*``"
 msgstr "Platzhalter ``.*``"
 
-#: ../../windows/ad-connection.rst:720
+#: ../../windows/ad-connection.rst:742
 msgid ""
 "The ``.*`` part of the variable is a placeholder that you can use as an "
 "individual label for each variable. If you follow this approach, you "
@@ -1523,7 +1582,7 @@ msgstr ""
 "diesen Ansatz verfolgen, können Sie eine Reihe von UCR-Variablen der "
 "beschriebenen Typen erstellen. Jede Variable enthält nur einen DN."
 
-#: ../../windows/ad-connection.rst:725
+#: ../../windows/ad-connection.rst:747
 msgid ""
 "For each LDAP subtree that you want to allow for synchronization, you "
 "have to configure a separate |UCSUCRV|."
@@ -1531,33 +1590,32 @@ msgstr ""
 "Für jeden LDAP-Teilbaum, den Sie für die Synchronisierung zulassen "
 "möchten, müssen Sie eine separate |UCSUCRV| konfigurieren. "
 
-#: ../../windows/ad-connection.rst:731
+#: ../../windows/ad-connection.rst:753
 msgid ""
 "To include the ancestors of the root of an allowed subtree defined in "
 ":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`, enable this "
 "variable:"
 msgstr ""
 "Um auch die Vorfahren der Wurzel eines LDAP-Teilbaums, der in "
-":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]` definiert "
-"wurde, zu synchronisieren, aktivieren Sie diese Variable:"
+":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]` definiert wurde, "
+"zu synchronisieren, aktivieren Sie diese Variable:"
 
-#: ../../windows/ad-connection.rst:734
+#: ../../windows/ad-connection.rst:756
 msgid "$ ucr set connector/ad/mapping/allow-subtree-ancestors=yes"
 msgstr "$ ucr set connector/ad/mapping/allow-subtree-ancestors=yes"
 
-#: ../../windows/ad-connection.rst:738
+#: ../../windows/ad-connection.rst:760
 msgid ""
-"In complex structures this can make the configuration of the "
-"selective synchronization easier. This variable will apply for all "
-"subtrees listed in "
-":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`."
+"In complex structures this can make the configuration of the selective "
+"synchronization easier. This variable will apply for all subtrees listed "
+"in :envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`."
 msgstr ""
-"Bei komplexen Strukturen kann dies die Konfiguration der "
-"selektiven Synchronisierung erleichtern. Diese Variable wird für alle "
-"Teilbäume angewendet, die in :envvar:`connector/ad/mapping/allowsubtree/"
-".*/[ad|ucs]` aufgeführt sind."
+"Bei komplexen Strukturen kann dies die Konfiguration der selektiven "
+"Synchronisierung erleichtern. Diese Variable wird für alle Teilbäume "
+"angewendet, die in "
+":envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]` aufgeführt sind."
 
-#: ../../windows/ad-connection.rst:743
+#: ../../windows/ad-connection.rst:765
 msgid ""
 "After you have defined or changed the UCR variables, you must restart the"
 " :program:`Active Directory Connection`."
@@ -1565,7 +1623,7 @@ msgstr ""
 "Nachdem Sie die UCR-Variablen definiert oder geändert haben, müssen Sie "
 "die :program:`Active Directory Verbindung` neu starten. "
 
-#: ../../windows/ad-connection.rst:748
+#: ../../windows/ad-connection.rst:770
 msgid ""
 "The :program:`Active Directory Connection` determines the position of the"
 " target object by dynamic and static factors such as the mapping property"
@@ -1581,7 +1639,7 @@ msgstr ""
 "entsprechenden Zielobjekts kann also außerhalb der Teilbäume liegen, die "
 "den |UCSUCRV|\\ n entsprechen."
 
-#: ../../windows/ad-connection.rst:757
+#: ../../windows/ad-connection.rst:779
 msgid ""
 "If you use of the ``…/allowsubtree/.*/[ad|ucs]`` configuration and move a"
 " source object from inside a considered subtree to a position that's "
@@ -1596,11 +1654,11 @@ msgstr ""
 ":program:`Active Directory Verbindung` das Objekt aus dem "
 "Zielverzeichnis."
 
-#: ../../windows/ad-connection.rst:763
+#: ../../windows/ad-connection.rst:785
 msgid "Allow only objects that match an LDAP filter"
 msgstr "Nur Objekte zulassen, die einem LDAP-Filter entsprechen"
 
-#: ../../windows/ad-connection.rst:765
+#: ../../windows/ad-connection.rst:787
 msgid ""
 "You can configure an LDAP filter for each type of object. "
 ":program:`Active Directory Connection` synchronizes only LDAP objects "
@@ -1611,7 +1669,7 @@ msgstr ""
 "die diesem Filter entsprechen. Alle anderen LDAP-Objekte werden "
 "ignoriert. "
 
-#: ../../windows/ad-connection.rst:769
+#: ../../windows/ad-connection.rst:791
 msgid ""
 "For bi-directional synchronization, the filter must match both, the UCS "
 "object and the AD object. If an object matching the filter is deleted, "
@@ -1622,7 +1680,7 @@ msgstr ""
 "das mit dem Filter übereinstimmt, gelöscht, löscht der Connector auch das"
 " entsprechende Objekt auf der anderen Seite."
 
-#: ../../windows/ad-connection.rst:775
+#: ../../windows/ad-connection.rst:797
 #, python-brace-format
 msgid ""
 "The connector only synchronizes those objects with ``{type}`` object type"
@@ -1633,36 +1691,36 @@ msgstr ""
 "``{type}``, die diesem LDAP-Filter entsprechen. ``{type}`` kann einer der"
 " folgenden Werte sein: "
 
-#: ../../windows/ad-connection.rst:778 ../../windows/ad-connection.rst:850
-#: ../../windows/ad-connection.rst:890
+#: ../../windows/ad-connection.rst:800 ../../windows/ad-connection.rst:872
+#: ../../windows/ad-connection.rst:912
 msgid "``user``"
 msgstr "``user``"
 
-#: ../../windows/ad-connection.rst:779 ../../windows/ad-connection.rst:853
-#: ../../windows/ad-connection.rst:891
+#: ../../windows/ad-connection.rst:801 ../../windows/ad-connection.rst:875
+#: ../../windows/ad-connection.rst:913
 msgid "``group``"
 msgstr "``group``"
 
-#: ../../windows/ad-connection.rst:780 ../../windows/ad-connection.rst:856
-#: ../../windows/ad-connection.rst:892
+#: ../../windows/ad-connection.rst:802 ../../windows/ad-connection.rst:878
+#: ../../windows/ad-connection.rst:914
 msgid "``container``"
 msgstr "``container``"
 
-#: ../../windows/ad-connection.rst:781 ../../windows/ad-connection.rst:859
-#: ../../windows/ad-connection.rst:860 ../../windows/ad-connection.rst:893
+#: ../../windows/ad-connection.rst:803 ../../windows/ad-connection.rst:881
+#: ../../windows/ad-connection.rst:882 ../../windows/ad-connection.rst:915
 msgid "``ou``"
 msgstr "``ou``"
 
-#: ../../windows/ad-connection.rst:782 ../../windows/ad-connection.rst:862
-#: ../../windows/ad-connection.rst:894
+#: ../../windows/ad-connection.rst:804 ../../windows/ad-connection.rst:884
+#: ../../windows/ad-connection.rst:916
 msgid "``windowscomputer``"
 msgstr "``windowscomputer``"
 
-#: ../../windows/ad-connection.rst:786
+#: ../../windows/ad-connection.rst:808
 msgid "$ ucr set connector/ad/mapping/user/allowfilter=\"(description=sync)\""
 msgstr "$ ucr set connector/ad/mapping/user/allowfilter=\"(description=sync)\""
 
-#: ../../windows/ad-connection.rst:790
+#: ../../windows/ad-connection.rst:812
 msgid ""
 "After changing these settings you must restart the :program:`Active "
 "Directory Connection`."
@@ -1670,7 +1728,7 @@ msgstr ""
 "Nach dem Ändern dieser Einstellungen müssen Sie die :program:`Active "
 "Directory Verbindung` neu starten."
 
-#: ../../windows/ad-connection.rst:794 ../../windows/ad-connection.rst:904
+#: ../../windows/ad-connection.rst:816 ../../windows/ad-connection.rst:926
 msgid ""
 "However, this filter doesn't support the full LDAP filter syntax. It's "
 "always case-sensitive. You can only use the placeholder ``*`` as a single"
@@ -1681,7 +1739,7 @@ msgstr ""
 "unterschieden. Sie können nur den Platzhalter ``*`` als Einzelwert ohne "
 "andere Zeichen verwenden."
 
-#: ../../windows/ad-connection.rst:800
+#: ../../windows/ad-connection.rst:822
 msgid ""
 "If an object that matches the filter is changed so that the filter no "
 "longer matches, the connector **doesn't** synchronize the change. This "
@@ -1693,7 +1751,7 @@ msgstr ""
 "Änderung. Das bedeutet, dass der Connector weiterhin Änderungen von der "
 "anderen Seite auf das Objekt anwendet."
 
-#: ../../windows/ad-connection.rst:804
+#: ../../windows/ad-connection.rst:826
 msgid ""
 "If you want to turn off the synchronization for an object, you must make "
 "the change on both sides, UCS and Active Directory."
@@ -1701,11 +1759,11 @@ msgstr ""
 "Wenn Sie die Synchronisierung für ein Objekt ausschalten wollen, müssen "
 "Sie die Änderung auf beiden Seiten, UCS und Active Directory, vornehmen."
 
-#: ../../windows/ad-connection.rst:808
+#: ../../windows/ad-connection.rst:830
 msgid "Ignore objects from specific LDAP subtrees"
 msgstr "Ignorieren von Objekten aus bestimmten LDAP-Teilbäumen"
 
-#: ../../windows/ad-connection.rst:810
+#: ../../windows/ad-connection.rst:832
 msgid ""
 "To configure the connector to ignore objects from certain LDAP subtrees "
 "you can use the following |UCSUCRV|:"
@@ -1713,7 +1771,7 @@ msgstr ""
 "Um den Connector so zu konfigurieren, dass er Objekte aus bestimmten "
 "LDAP-Teilbäumen ignoriert, können Sie die folgende |UCSUCRV| verwenden:"
 
-#: ../../windows/ad-connection.rst:815
+#: ../../windows/ad-connection.rst:837
 msgid ""
 "The variable defines the locations in the directory service that the "
 "connector excludes from the synchronization. The values can contain "
@@ -1725,7 +1783,7 @@ msgstr ""
 "Positionen in Active Directory und im UCS LDAP-Verzeichnis enthalten. "
 "Standardmäßig ist die Variable nicht gesetzt."
 
-#: ../../windows/ad-connection.rst:822
+#: ../../windows/ad-connection.rst:844
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/ignoresubtree/ignore1=\"cn=alumni,dc=ucs,domain\"\n"
@@ -1737,7 +1795,7 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/ignoresubtree/ignore2=\"cn=alumni,dc=ad,domain\""
 
-#: ../../windows/ad-connection.rst:827
+#: ../../windows/ad-connection.rst:849
 msgid ""
 "After changing this setting you must restart the :program:`Active "
 "Directory Connection`."
@@ -1745,11 +1803,11 @@ msgstr ""
 "Nach der Änderung dieser Einstellung müssen Sie die :program:`Active "
 "Directory Verbindung` neu starten."
 
-#: ../../windows/ad-connection.rst:830
+#: ../../windows/ad-connection.rst:852
 msgid "Ignore objects by LDAP filter"
 msgstr "Objekte durch LDAP-Filter ignorieren"
 
-#: ../../windows/ad-connection.rst:832
+#: ../../windows/ad-connection.rst:854
 msgid ""
 "To exclude objects from the synchronization, you can add their names to "
 "the following |UCSUCRV|:"
@@ -1757,7 +1815,7 @@ msgstr ""
 "Um Objekte von der Synchronisierung auszuschließen, können Sie ihre Namen"
 " zu den folgenden |UCSUCRV| hinzufügen:"
 
-#: ../../windows/ad-connection.rst:836
+#: ../../windows/ad-connection.rst:858
 #, python-brace-format
 msgid ""
 "The connector **doesn't** synchronize the objects that this variable "
@@ -1772,34 +1830,34 @@ msgstr ""
 "ignore-rules-type-value-mapping-tab`. Die Tabelle zeigt auch, welche "
 "LDAP-Attribute Sie je nach Objekttyp im Filter berücksichtigen müssen."
 
-#: ../../windows/ad-connection.rst:843
+#: ../../windows/ad-connection.rst:865
 #, python-brace-format
 msgid "Mapping for which ``{type}`` needs which LDAP attribute"
 msgstr "Zuordnung, welcher ``{type}`` welches LDAP-Attribut benötigt"
 
-#: ../../windows/ad-connection.rst:847
+#: ../../windows/ad-connection.rst:869
 #, python-brace-format
 msgid "``{type}``"
 msgstr "``{type}``"
 
-#: ../../windows/ad-connection.rst:848
+#: ../../windows/ad-connection.rst:870
 msgid "Value from LDAP attribute"
 msgstr "Wert aus LDAP-Attribut"
 
-#: ../../windows/ad-connection.rst:851
+#: ../../windows/ad-connection.rst:873
 msgid "``uid``"
 msgstr "``uid``"
 
-#: ../../windows/ad-connection.rst:854 ../../windows/ad-connection.rst:857
-#: ../../windows/ad-connection.rst:863
+#: ../../windows/ad-connection.rst:876 ../../windows/ad-connection.rst:879
+#: ../../windows/ad-connection.rst:885
 msgid "``cn``"
 msgstr "``cn``"
 
-#: ../../windows/ad-connection.rst:865
+#: ../../windows/ad-connection.rst:887
 msgid "For example, the ``user`` type considers the LDAP attribute ``uid``:"
 msgstr "Der Typ ``user`` berücksichtigt zum Beispiel das LDAP-Attribut ``uid``:"
 
-#: ../../windows/ad-connection.rst:867
+#: ../../windows/ad-connection.rst:889
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/user/ignorelist=\"Administrator,krbtgt,root,pcpatch,mmustermann\""
@@ -1807,7 +1865,7 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/user/ignorelist=\"Administrator,krbtgt,root,pcpatch,mmustermann\""
 
-#: ../../windows/ad-connection.rst:873
+#: ../../windows/ad-connection.rst:895
 msgid ""
 "Some of the ``ignorelist`` settings have defaults that are important for "
 "the functionality of the connector. Make sure that you don't overwrite "
@@ -1819,11 +1877,11 @@ msgstr ""
 "Sie diese Einstellungen nicht überschreiben. Sie können den aktuellen "
 "Wert einer |UCSUCRV| mit dem folgenden Befehl überprüfen: "
 
-#: ../../windows/ad-connection.rst:878
+#: ../../windows/ad-connection.rst:900
 msgid "$ ucr get connector/ad/mapping/user/ignorelist"
 msgstr "$ ucr get connector/ad/mapping/user/ignorelist"
 
-#: ../../windows/ad-connection.rst:882
+#: ../../windows/ad-connection.rst:904
 msgid ""
 "For more flexibility you can also set an LDAP filter to ignore objects. "
 "Use the following |UCSUCRV|:"
@@ -1831,7 +1889,7 @@ msgstr ""
 "Für mehr Flexibilität können Sie auch einen LDAP-Filter setzen, um "
 "Objekte zu ignorieren. Verwenden Sie die folgende |UCSUCRV|:"
 
-#: ../../windows/ad-connection.rst:887
+#: ../../windows/ad-connection.rst:909
 #, python-brace-format
 msgid ""
 "The connector **doesn't** synchronize the objects that match this LDAP "
@@ -1840,11 +1898,11 @@ msgstr ""
 "Der Connector synchronisiert **keine** Objekte, die diesem LDAP-Filter "
 "entsprechen. ``{type}`` kann einen der folgenden Werte haben:"
 
-#: ../../windows/ad-connection.rst:898
+#: ../../windows/ad-connection.rst:920
 msgid "$ ucr set connector/ad/mapping/user/ignorefilter=\"(description=no sync)\""
 msgstr "$ ucr set connector/ad/mapping/user/ignorefilter=\"(description=no sync)\""
 
-#: ../../windows/ad-connection.rst:908
+#: ../../windows/ad-connection.rst:930
 msgid ""
 "After changing these settings, you must restart the :program:`Active "
 "Directory Connection`."
@@ -1852,11 +1910,11 @@ msgstr ""
 "Nach dem Ändern dieser Einstellungen müssen Sie die :program:`Active "
 "Directory Verbindung` neu starten."
 
-#: ../../windows/ad-connection.rst:911
+#: ../../windows/ad-connection.rst:933
 msgid "Priority of allow and ignore rules"
 msgstr "Vorrang der Regeln"
 
-#: ../../windows/ad-connection.rst:913
+#: ../../windows/ad-connection.rst:935
 msgid ""
 "This section describes the processing order for the previously documented"
 " settings for selective synchronization."
@@ -1864,7 +1922,7 @@ msgstr ""
 "In diesem Abschnitt wird die Verarbeitungsreihenfolge für die bisher "
 "dokumentierten Einstellungen zur selektiven Synchronisation beschrieben. "
 
-#: ../../windows/ad-connection.rst:916
+#: ../../windows/ad-connection.rst:938
 msgid ""
 "The :program:`Active Directory Connection` processes the allow and ignore"
 " rules in a defined order. Depending on the evaluation result, the "
@@ -1874,7 +1932,7 @@ msgstr ""
 "Erlauben und Ignorieren in einer definierten Reihenfolge. Abhängig vom "
 "Ergebnis der Auswertung verhält sich der Connector wie folgt: "
 
-#: ../../windows/ad-connection.rst:919
+#: ../../windows/ad-connection.rst:941
 msgid ""
 "If a rule results in the connector ignoring an object, the connector "
 "stops processing the rule and doesn't synchronize the object."
@@ -1883,7 +1941,7 @@ msgstr ""
 "stoppt der Connector die Verarbeitung der Regel und synchronisiert kein "
 "Objekt."
 
-#: ../../windows/ad-connection.rst:922
+#: ../../windows/ad-connection.rst:944
 msgid ""
 "If a rule results in the connector not ignoring an object, the connector "
 "evaluates the next rule. If the rule was the last rule and there's no "
@@ -1894,13 +1952,13 @@ msgstr ""
 "Regel war und es keine nächste Regel gibt, synchronisiert der Connector "
 "das Objekt. "
 
-#: ../../windows/ad-connection.rst:927
+#: ../../windows/ad-connection.rst:949
 msgid "The connector evaluates the rules for each object in the following order:"
 msgstr ""
 "Der Connector wertet die Regeln für jedes Objekt in der folgenden "
 "Reihenfolge aus:"
 
-#: ../../windows/ad-connection.rst:929
+#: ../../windows/ad-connection.rst:951
 msgid "**Allow subtree**:"
 msgstr "**Teilbaum zulassen**:"
 
@@ -1908,7 +1966,7 @@ msgstr "**Teilbaum zulassen**:"
 msgid "UCR variables"
 msgstr "UCR Variablen"
 
-#: ../../windows/ad-connection.rst:931
+#: ../../windows/ad-connection.rst:953
 msgid ""
 ":envvar:`connector/ad/mapping/allowsubtree/.*/ucs`, "
 ":envvar:`connector/ad/mapping/allowsubtree/.*/ad` and "
@@ -1922,8 +1980,8 @@ msgstr ""
 msgid "No match"
 msgstr "Keine Übereinstimmung"
 
-#: ../../windows/ad-connection.rst:932 ../../windows/ad-connection.rst:938
-#: ../../windows/ad-connection.rst:945 ../../windows/ad-connection.rst:951
+#: ../../windows/ad-connection.rst:954 ../../windows/ad-connection.rst:960
+#: ../../windows/ad-connection.rst:967 ../../windows/ad-connection.rst:973
 msgid "No synchronization. Stop."
 msgstr "Keine Synchronisation. Abarbeitung der Regeln beenden."
 
@@ -1931,12 +1989,12 @@ msgstr "Keine Synchronisation. Abarbeitung der Regeln beenden."
 msgid "Match"
 msgstr "Übereinstimmung"
 
-#: ../../windows/ad-connection.rst:933 ../../windows/ad-connection.rst:939
-#: ../../windows/ad-connection.rst:944 ../../windows/ad-connection.rst:950
+#: ../../windows/ad-connection.rst:955 ../../windows/ad-connection.rst:961
+#: ../../windows/ad-connection.rst:966 ../../windows/ad-connection.rst:972
 msgid "Continue."
 msgstr "Fortsetzen."
 
-#: ../../windows/ad-connection.rst:935
+#: ../../windows/ad-connection.rst:957
 msgid "**Allow filter**:"
 msgstr "**Filter zulassen**:"
 
@@ -1944,24 +2002,24 @@ msgstr "**Filter zulassen**:"
 msgid "UCR variable"
 msgstr "UCR Variable"
 
-#: ../../windows/ad-connection.rst:937
+#: ../../windows/ad-connection.rst:959
 #, python-brace-format
 msgid ":envvar:`connector/ad/mapping/{type}/allowfilter`"
 msgstr ":envvar:`connector/ad/mapping/{type}/allowfilter`"
 
-#: ../../windows/ad-connection.rst:941
+#: ../../windows/ad-connection.rst:963
 msgid "**Ignore subtree**:"
 msgstr "**Unterbaum ignorieren**:"
 
-#: ../../windows/ad-connection.rst:943
+#: ../../windows/ad-connection.rst:965
 msgid ":envvar:`connector/ad/mapping/ignoresubtree/.*`"
 msgstr ":envvar:`connector/ad/mapping/ignoresubtree/.*`"
 
-#: ../../windows/ad-connection.rst:947
+#: ../../windows/ad-connection.rst:969
 msgid "**Ignore filter**:"
 msgstr "**Filter ignorieren**:"
 
-#: ../../windows/ad-connection.rst:949
+#: ../../windows/ad-connection.rst:971
 #, python-brace-format
 msgid ""
 ":envvar:`connector/ad/mapping/{type}/ignorelist` and "
@@ -1970,19 +2028,19 @@ msgstr ""
 ":envvar:`connector/ad/mapping/{type}/ignorelist` und "
 ":envvar:`connector/ad/mapping/{type}/ignorefilter`"
 
-#: ../../windows/ad-connection.rst:953
+#: ../../windows/ad-connection.rst:975
 msgid "**End of rules**."
 msgstr "**Ende der Regeln**."
 
-#: ../../windows/ad-connection.rst:955
+#: ../../windows/ad-connection.rst:977
 msgid "**Synchronize object**."
 msgstr "**Objekt synchronisieren**."
 
-#: ../../windows/ad-connection.rst:960
+#: ../../windows/ad-connection.rst:982
 msgid "Details on preconfigured synchronization"
 msgstr "Details zur vorkonfigurierten Synchronisation"
 
-#: ../../windows/ad-connection.rst:962
+#: ../../windows/ad-connection.rst:984
 msgid ""
 "By default, the :program:`Active Directory Connection` excludes some LDAP"
 " subtrees from the synchronization. You can find the list of ignored "
@@ -1995,11 +2053,11 @@ msgstr ""
 "ad-mapping.log` unter der Einstellung ``ignore_subtree`` für jeden "
 "Objekttyp."
 
-#: ../../windows/ad-connection.rst:969
+#: ../../windows/ad-connection.rst:991
 msgid "Containers and organizational units"
 msgstr "Container und Organisationseinheiten"
 
-#: ../../windows/ad-connection.rst:971
+#: ../../windows/ad-connection.rst:993
 msgid ""
 "Containers and organizational units are synchronized together with their "
 "description. In addition, the ``cn=mail`` and ``cn=kerberos`` containers "
@@ -2016,12 +2074,12 @@ msgstr ""
 "Container anzulegen. AD zeigt diese im erweiterten Modus aber an "
 "(:menuselection:`Ansicht --> Erweiterte Funktionen`)."
 
-#: ../../windows/ad-connection.rst:978 ../../windows/ad-connection.rst:1002
-#: ../../windows/ad-connection.rst:1086
+#: ../../windows/ad-connection.rst:1000 ../../windows/ad-connection.rst:1024
+#: ../../windows/ad-connection.rst:1108
 msgid "Take the following particularities into account:"
 msgstr "Berücksichtigen Sie die folgenden Besonderheiten:"
 
-#: ../../windows/ad-connection.rst:980
+#: ../../windows/ad-connection.rst:1002
 msgid ""
 "Containers or organizational units deleted in AD are deleted recursively "
 "in UCS, which means that any non-synchronized subordinate objects, which "
@@ -2031,11 +2089,11 @@ msgstr ""
 " rekursiv gelöscht, das bedeutet, dass nicht synchronisierte "
 "Unterobjekte, die in AD nicht zu sehen sind, ebenfalls entfernt werden."
 
-#: ../../windows/ad-connection.rst:987
+#: ../../windows/ad-connection.rst:1009
 msgid "Groups"
 msgstr "Gruppen"
 
-#: ../../windows/ad-connection.rst:989
+#: ../../windows/ad-connection.rst:1011
 msgid ""
 "Groups are synchronized using the group name, whereby a user's primary "
 "group is taken into account (which is only stored for the user in LDAP in"
@@ -2045,7 +2103,7 @@ msgstr ""
 " Berücksichtigung der primären Gruppe eines Benutzers statt (die unter AD"
 " nur am Benutzer im LDAP hinterlegt wird)."
 
-#: ../../windows/ad-connection.rst:992
+#: ../../windows/ad-connection.rst:1014
 msgid ""
 "Group members with no opposite in the other system, e.g., due to ignore "
 "filters, are ignored (thus remain members of the group)."
@@ -2054,15 +2112,15 @@ msgstr ""
 " kein Gegenstück haben, werden ignoriert (bleiben also Mitglied der "
 "Gruppe)."
 
-#: ../../windows/ad-connection.rst:995
+#: ../../windows/ad-connection.rst:1017
 msgid "The description of the group is also synchronized."
 msgstr "Zusätzlich wird die Beschreibung der Gruppe synchronisiert."
 
-#: ../../windows/ad-connection.rst:1000
+#: ../../windows/ad-connection.rst:1022
 msgid "Particularities"
 msgstr "Besonderheiten"
 
-#: ../../windows/ad-connection.rst:1004
+#: ../../windows/ad-connection.rst:1026
 msgid ""
 "The *pre Windows 2000 name* (LDAP attribute ``samAccountName``) is used "
 "in AD, which means that a group in Active Directory can appear under a "
@@ -2072,7 +2130,7 @@ msgstr ""
 "``samAccountName``) verwendet, daher kann eine Gruppe im Active Directory"
 " mit anderem Namen erscheinen als unter UCS."
 
-#: ../../windows/ad-connection.rst:1008
+#: ../../windows/ad-connection.rst:1030
 msgid ""
 "The connector ignores groups, which have been configured as a *Well-Known"
 " Group* under :guilabel:`Samba group type` in |UCSUDM|. There is no "
@@ -2082,7 +2140,7 @@ msgstr ""
 "Gruppentyp` als *Bekannte Gruppe* konfiguriert wurden. Eine "
 "Synchronisation von SID oder RID findet nicht statt."
 
-#: ../../windows/ad-connection.rst:1012
+#: ../../windows/ad-connection.rst:1034
 msgid ""
 "Groups which were configured as *Local Group* under :guilabel:`Samba "
 "group type` in |UCSUDM| are synchronized as a *global group* in the "
@@ -2092,7 +2150,7 @@ msgstr ""
 "Gruppe* konfiguriert wurden, werden vom Connector als *globale Gruppen* "
 "in das Active Directory synchronisiert."
 
-#: ../../windows/ad-connection.rst:1016
+#: ../../windows/ad-connection.rst:1038
 msgid ""
 "Newly created or moved groups are always saved in the same subcontainer "
 "on the opposite side. If several groups with the same name are present in"
@@ -2110,7 +2168,7 @@ msgstr ""
 "auf der anderen Seite identisch, so dass sich die DNs der Gruppen ab "
 "diesem Zeitpunkt nicht mehr unterscheiden."
 
-#: ../../windows/ad-connection.rst:1023
+#: ../../windows/ad-connection.rst:1045
 msgid ""
 "Certain group names are converted using a mapping table so that, for "
 "example in a German language setup, the UCS group ``Domain Users`` is "
@@ -2127,43 +2185,43 @@ msgstr ""
 "Dazu kann die |UCSUCRV| :envvar:`connector/ad/mapping/group/language` "
 "verwendet werden."
 
-#: ../../windows/ad-connection.rst:1030
+#: ../../windows/ad-connection.rst:1052
 msgid "The complete table is:"
 msgstr "Die vollständige Tabelle ist:"
 
-#: ../../windows/ad-connection.rst:1036
+#: ../../windows/ad-connection.rst:1058
 msgid "*UCS group*"
 msgstr "*UCS-Gruppe*"
 
-#: ../../windows/ad-connection.rst:1037
+#: ../../windows/ad-connection.rst:1059
 msgid "*AD group*"
 msgstr "*AD-Gruppe*"
 
-#: ../../windows/ad-connection.rst:1039
+#: ../../windows/ad-connection.rst:1061
 msgid "``Domain Users``"
 msgstr "``Domain Users``"
 
-#: ../../windows/ad-connection.rst:1040
+#: ../../windows/ad-connection.rst:1062
 msgid "``Domänen-Benutzer``"
 msgstr "``Domänen-Benutzer``"
 
-#: ../../windows/ad-connection.rst:1042
+#: ../../windows/ad-connection.rst:1064
 msgid "``Domain Admins``"
 msgstr "``Domain Admins``"
 
-#: ../../windows/ad-connection.rst:1043
+#: ../../windows/ad-connection.rst:1065
 msgid "``Domänen-Admins``"
 msgstr "``Domänen-Admins``"
 
-#: ../../windows/ad-connection.rst:1045
+#: ../../windows/ad-connection.rst:1067
 msgid "``Windows Hosts``"
 msgstr "``Windows Hosts``"
 
-#: ../../windows/ad-connection.rst:1046
+#: ../../windows/ad-connection.rst:1068
 msgid "``Domänencomputer``"
 msgstr "``Domänencomputer``"
 
-#: ../../windows/ad-connection.rst:1048
+#: ../../windows/ad-connection.rst:1070
 msgid ""
 "Nested groups are represented differently in AD and UCS. In UCS, if "
 "groups are members of groups, these objects can not always be "
@@ -2178,7 +2236,7 @@ msgstr ""
 "daher aufgrund der in Active Directory vorliegenden Einschränkungen immer"
 " nur dort zugewiesen werden."
 
-#: ../../windows/ad-connection.rst:1053
+#: ../../windows/ad-connection.rst:1075
 #, python-brace-format
 msgid ""
 "If a global group :samp:`{A}` is accepted as a member of another global "
@@ -2197,11 +2255,11 @@ msgstr ""
 ":program:`Windows 2008` besteht diese Einschränkung nicht mehr, dort "
 "können im Active Directory auch globale Gruppen verschachtelt werden."
 
-#: ../../windows/ad-connection.rst:1063
+#: ../../windows/ad-connection.rst:1085
 msgid "Custom mappings"
 msgstr "Benutzerdefinierte Mappings"
 
-#: ../../windows/ad-connection.rst:1065
+#: ../../windows/ad-connection.rst:1087
 msgid ""
 "For custom mappings, see :ref:`uv-dev-ref:ad-connection-custom-mappings` "
 "in :cite:t:`developer-reference`."
@@ -2209,11 +2267,11 @@ msgstr ""
 "Für benutzerdefinierte Mappings, siehe :ref:`uv-dev-ref:ad-connection-"
 "custom-mappings` in :cite:t:`developer-reference`."
 
-#: ../../windows/ad-connection.rst:1071
+#: ../../windows/ad-connection.rst:1093
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../windows/ad-connection.rst:1073
+#: ../../windows/ad-connection.rst:1095
 msgid ""
 "Users are synchronized like groups using the username or using the AD pre"
 " Windows 2000 name. The *First name*, *Last name*, *Primary group* (in so"
@@ -2236,11 +2294,11 @@ msgstr ""
 "der Mapping-Konfiguration auskommentiert, sind *Primäre Mail-Adresse* und"
 " *Telefonnummer*."
 
-#: ../../windows/ad-connection.rst:1082
+#: ../../windows/ad-connection.rst:1104
 msgid "The ``root`` and ``Administrator`` users are exempted."
 msgstr "Ausgenommen werden die Benutzer ``root`` und ``Administrator``."
 
-#: ../../windows/ad-connection.rst:1088
+#: ../../windows/ad-connection.rst:1110
 msgid ""
 "Users are also identified using the name, so that for users created "
 "before the first synchronization on both sides, the same process applies "
@@ -2251,7 +2309,7 @@ msgstr ""
 "wurden, hinsichtlich der Position im LDAP das gleiche Verhalten gilt wie "
 "bei Gruppen."
 
-#: ../../windows/ad-connection.rst:1092
+#: ../../windows/ad-connection.rst:1114
 msgid ""
 "In some cases, a user to be created under AD, for which the password has "
 "been rejected, is deleted from AD immediately after creation. The "
@@ -2272,7 +2330,7 @@ msgstr ""
 "Rückübertragung gelöscht. Das Auftreten dieses Verhaltens ist abhängig "
 "von dem eingestellten Abfrageintervall des Connectors."
 
-#: ../../windows/ad-connection.rst:1101
+#: ../../windows/ad-connection.rst:1123
 msgid ""
 "AD and UCS create new users in a specific primary group (usually ``Domain"
 " Users`` or ``Domänen-Benutzer``) depending on the presetting. During the"
@@ -2284,11 +2342,11 @@ msgstr ""
 " der ersten Synchronisation von UCS nach AD werden die Benutzer daher "
 "immer in dieser Gruppe Mitglied."
 
-#: ../../windows/ad-takeover.rst:8
+#: ../../windows/ad-takeover.rst:7
 msgid "Migrating an Active Directory domain to UCS using Univention AD Takeover"
 msgstr "Migration einer Active Directory-Domäne zu UCS mit Univention AD Takeover"
 
-#: ../../windows/ad-takeover.rst:12
+#: ../../windows/ad-takeover.rst:11
 msgid ""
 "UCS supports the takeover of user, group and computer objects as well as "
 "Group Policy Objects (GPOs) from a Microsoft Active Directory (AD) "
@@ -2301,25 +2359,25 @@ msgstr ""
 "beitreten. Diese Übernahme ist ein interaktiver Prozess, der aus drei "
 "Phasen besteht:"
 
-#: ../../windows/ad-takeover.rst:17
+#: ../../windows/ad-takeover.rst:16
 msgid "Copy all objects from Active Directory to UCS"
 msgstr "Kopieren aller Objekte aus Active Directory nach UCS"
 
-#: ../../windows/ad-takeover.rst:19
+#: ../../windows/ad-takeover.rst:18
 msgid "Copy of the group policy files from the AD server to UCS"
 msgstr "Kopieren der Gruppenrichtliniendateien aus Active Directory nach UCS"
 
-#: ../../windows/ad-takeover.rst:21
+#: ../../windows/ad-takeover.rst:20
 msgid "Deactivate the AD server and assign all FSMO roles to the UCS DC"
 msgstr ""
 "Abschalten des AD-Servers und Zuweisung der FSMO-Rollen auf den UCS "
 "Directory Node"
 
-#: ../../windows/ad-takeover.rst:23
+#: ../../windows/ad-takeover.rst:22
 msgid "The following requirements must be met for the takeover:"
 msgstr "Die folgenden Voraussetzungen müssen für die Übernahme erfüllt sein:"
 
-#: ../../windows/ad-takeover.rst:25
+#: ../../windows/ad-takeover.rst:24
 msgid ""
 "The UCS Directory Node (|UCSPRIMARYDN|) needs to be installed with a "
 "unique hostname, not used in the AD domain."
@@ -2328,7 +2386,7 @@ msgstr ""
 "Rechnernamen installiert werden, der nicht in der AD-Domäne vorhanden "
 "ist."
 
-#: ../../windows/ad-takeover.rst:28
+#: ../../windows/ad-takeover.rst:27
 msgid ""
 "The UCS Directory Node needs to be installed with the same DNS domain "
 "name, NetBIOS (pre Windows 2000) domain name and Kerberos realm as the AD"
@@ -2338,7 +2396,7 @@ msgstr ""
 "Domänennamen und Kerberos-Domänennamen installiert werden wie die AD-"
 "Domäne. Es wird empfohlen auch die selbe LDAP-Basis-DN zu verwenden."
 
-#: ../../windows/ad-takeover.rst:32
+#: ../../windows/ad-takeover.rst:31
 msgid ""
 "The UCS Directory Node needs to be installed with a unique IPv4 address "
 "in the same IP subnet as the Active Directory domain controller that is "
@@ -2347,7 +2405,7 @@ msgstr ""
 "Der UCS Directory Node muss eine IPv4-Adresse im selben Subnetz wie der "
 "zu übernehmende Active Directory-Domänencontroller verwenden."
 
-#: ../../windows/ad-takeover.rst:38
+#: ../../windows/ad-takeover.rst:37
 msgid ""
 "If the system is already a member of an Active Directory Domain, "
 "installing the *Active Directory Takeover* application removes this "
@@ -2360,7 +2418,7 @@ msgstr ""
 "*Takeover* Applikation erst kurz vor der eigentlichen Übernahme der "
 "Active Directory Domäne erfolgen."
 
-#: ../../windows/ad-takeover.rst:43
+#: ../../windows/ad-takeover.rst:42
 msgid ""
 "The *Active Directory Takeover* application must be installed from the "
 "Univention App Center for the migration. It must be installed on the "
@@ -2372,11 +2430,11 @@ msgstr ""
 "dem System installiert werden, auf dem der Univention S4 Connector läuft "
 "(siehe :ref:`windows-s4-connector`, normalerweise der |UCSPRIMARYDN|)."
 
-#: ../../windows/ad-takeover.rst:51
+#: ../../windows/ad-takeover.rst:50
 msgid "Preparation"
 msgstr "Vorbereitung"
 
-#: ../../windows/ad-takeover.rst:53
+#: ../../windows/ad-takeover.rst:52
 msgid ""
 "The following steps are strongly recommended before attempting the "
 "takeover:"
@@ -2384,11 +2442,11 @@ msgstr ""
 "Es wird empfohlen die folgenden Schritte durchzuführen, bevor die "
 "Übernahme initiiert wird:"
 
-#: ../../windows/ad-takeover.rst:55
+#: ../../windows/ad-takeover.rst:54
 msgid "A backup of the AD server(s) should be performed."
 msgstr "Ein Backup des/der AD-Server(s) sollte durchgeführt werden."
 
-#: ../../windows/ad-takeover.rst:57
+#: ../../windows/ad-takeover.rst:56
 msgid ""
 "If user logins to the AD server are possible (e.g. through domain logins "
 "or terminal server sessions) it is recommended to deactivate them and to "
@@ -2402,7 +2460,7 @@ msgstr ""
 "Mailserver). Dies stellt sicher das durch den Rollback auf ein Backup "
 "oder einen Snapshot keine Daten verloren gehen."
 
-#: ../../windows/ad-takeover.rst:62
+#: ../../windows/ad-takeover.rst:61
 msgid ""
 "It is recommended to set the same password for the ``Administrator`` "
 "account on the AD server as the corresponding account in the UCS domain. "
@@ -2415,7 +2473,7 @@ msgstr ""
 "verwendet, wird anhand der Zeitstempel verglichen, welches Passwort "
 "aktueller ist und dieses verwendet."
 
-#: ../../windows/ad-takeover.rst:68
+#: ../../windows/ad-takeover.rst:67
 msgid ""
 "In a default installation the ``Administrator`` account of the AD server "
 "is deactivated. It should be activated in the local user management "
@@ -2425,7 +2483,7 @@ msgstr ""
 "AD-Server deaktiviert. Es sollte in der lokalen Benutzerverwaltung "
 "aktiviert werden."
 
-#: ../../windows/ad-takeover.rst:71
+#: ../../windows/ad-takeover.rst:70
 msgid ""
 "The activation of the ``Administrator`` account on the AD server is "
 "recommended because this account has all the required privileges to copy "
@@ -2439,7 +2497,7 @@ msgstr ""
 " AD-Verwaltungs-Tool für Benutzer und Gruppen oder mit den folgenden "
 "Kommandos auf der Kommandozeile aktiviert werden:"
 
-#: ../../windows/ad-takeover.rst:76
+#: ../../windows/ad-takeover.rst:75
 msgid ""
 "> net user administrator /active:yes\n"
 "> net user administrator PASSWORD"
@@ -2447,11 +2505,11 @@ msgstr ""
 "> net user administrator /active:yes\n"
 "> net user administrator PASSWORD"
 
-#: ../../windows/ad-takeover.rst:85
+#: ../../windows/ad-takeover.rst:84
 msgid "Domain migration"
 msgstr "Domänenmigration"
 
-#: ../../windows/ad-takeover.rst:87
+#: ../../windows/ad-takeover.rst:86
 msgid ""
 "The takeover must be initiated on the UCS Directory Node that runs the "
 "Univention S4 Connector (by default the |UCSPRIMARYDN|). During the "
@@ -2468,7 +2526,7 @@ msgstr ""
 "werden. Dies ist wichtig um replikationsbedingte Dateninkonsistenzen zu "
 "vermeiden."
 
-#: ../../windows/ad-takeover.rst:95
+#: ../../windows/ad-takeover.rst:94
 msgid ""
 "Other UCS Samba/AD systems can be stopped by logging into each of the "
 "other UCS Directory Nodes as the ``root`` user and running"
@@ -2476,11 +2534,11 @@ msgstr ""
 "Andere UCS Samba/AD-Systeme können gestoppt werden, indem auf jedem UCS "
 "Directory Node als Benutzer ``root`` folgender Befehl ausgeführt wird"
 
-#: ../../windows/ad-takeover.rst:98
+#: ../../windows/ad-takeover.rst:97
 msgid "$ /etc/init.d/samba4 stop"
 msgstr "$ /etc/init.d/samba4 stop"
 
-#: ../../windows/ad-takeover.rst:103
+#: ../../windows/ad-takeover.rst:102
 msgid ""
 "After ensuring that only the Univention S4 Connector host runs Samba/AD, "
 "the takeover process can be started. If the UCS domain was installed "
@@ -2492,11 +2550,11 @@ msgstr ""
 "Domäne mit einer UCS-Version vor 3.2 installiert, muss zuerst die "
 "folgende |UCSUCRV| gesetzt werden:"
 
-#: ../../windows/ad-takeover.rst:107
+#: ../../windows/ad-takeover.rst:106
 msgid "$ ucr set connector/s4/mapping/group/grouptype=false"
 msgstr "$ ucr set connector/s4/mapping/group/grouptype=false"
 
-#: ../../windows/ad-takeover.rst:111
+#: ../../windows/ad-takeover.rst:110
 msgid ""
 "The takeover is performed with the UMC module :guilabel:`Active Directory"
 " Takeover`. The IP address of the AD system must be specified under *Name"
@@ -2514,11 +2572,11 @@ msgstr ""
 " und unter *Active Directory Administratorpasswort* das dazugehörige "
 "Passwort."
 
-#: ../../windows/ad-takeover.rst:123
+#: ../../windows/ad-takeover.rst:122
 msgid "First phase of domain migration"
 msgstr "Erste Phase der Domänenmigration"
 
-#: ../../windows/ad-takeover.rst:125
+#: ../../windows/ad-takeover.rst:124
 msgid ""
 "The module checks whether the AD domain controller can be accessed and "
 "displays the domain data to be migrated."
@@ -2526,11 +2584,11 @@ msgstr ""
 "Das Modul prüft, ob der AD-Domänencontroller erreicht werden kann und "
 "zeigt die zu migrierenden Domänendaten an."
 
-#: ../../windows/ad-takeover.rst:133
+#: ../../windows/ad-takeover.rst:132
 msgid "Overview of the data to be migrated"
 msgstr "Übersicht über die zu migrierenden Daten"
 
-#: ../../windows/ad-takeover.rst:135
+#: ../../windows/ad-takeover.rst:134
 msgid ""
 "When :guilabel:`Next` is clicked, the following steps are performed "
 "automatically:"
@@ -2538,7 +2596,7 @@ msgstr ""
 "Nach einem Klick auf :guilabel:`Weiter` werden die folgenden Schritte "
 "automatisch durchgeführt:"
 
-#: ../../windows/ad-takeover.rst:138
+#: ../../windows/ad-takeover.rst:137
 msgid ""
 "Adjust the system time of the UCS system to the system time of the Active"
 " Directory domain controller in case the UCS time is behind by more than "
@@ -2547,11 +2605,11 @@ msgstr ""
 "Anpassung der Systemzeit des UCS-Systems auf die Systemzeit der Active "
 "Directory-Domäne (wenn diese um mehr als drei Minuten nachgeht)."
 
-#: ../../windows/ad-takeover.rst:142
+#: ../../windows/ad-takeover.rst:141
 msgid "Join the UCS Directory Node into the Active Directory domain."
 msgstr "Beitritt des UCS Directory Nodes in die Active Directory-Domäne."
 
-#: ../../windows/ad-takeover.rst:144
+#: ../../windows/ad-takeover.rst:143
 msgid ""
 "Start Samba and the Univention S4 connector to replicate the Active "
 "Directory objects into the UCS OpenLDAP directory."
@@ -2559,7 +2617,7 @@ msgstr ""
 "Start von Samba und dem Univention S4 Connector zur Replikation der AD-"
 "Objekte in das UCS-OpenLDAP-Verzeichnis."
 
-#: ../../windows/ad-takeover.rst:147
+#: ../../windows/ad-takeover.rst:146
 msgid ""
 "When \"*Well Known*\" account and group objects (identified by their "
 "special RIDs) are synchronized into the UCS OpenLDAP, a listener module "
@@ -2571,7 +2629,7 @@ msgstr ""
 " UCS-System lokal eine |UCSUCR| Variable, die dem englischen Namen den "
 "nicht-englischen Namen zuordnet."
 
-#: ../../windows/ad-takeover.rst:152
+#: ../../windows/ad-takeover.rst:151
 msgid ""
 "These variables are used to translate the English names used in the UCS "
 "configuration files to the specific names used in Active Directory. To "
@@ -2587,7 +2645,7 @@ msgstr ""
 ":envvar:`groups/default/domainadmins` auf den spezifischen Namen gesetzt "
 "(analog für Benutzer, z.B.  :envvar:`users/default/administrator`)."
 
-#: ../../windows/ad-takeover.rst:159
+#: ../../windows/ad-takeover.rst:158
 msgid ""
 "Additional information is logged to :file:`/var/log/univention/ad-"
 "takeover.log` as well as to :file:`/var/log/univention/management-"
@@ -2597,7 +2655,7 @@ msgstr ""
 "takeover.log` sowie nach :file:`/var/log/univention/management-console-"
 "module-adtakeover.log` protokolliert."
 
-#: ../../windows/ad-takeover.rst:163
+#: ../../windows/ad-takeover.rst:162
 msgid ""
 "The UCS Directory Node now contains all users, groups and computers of "
 "the Active Directory domain. In the next step, the SYSVOL share is "
@@ -2607,7 +2665,7 @@ msgstr ""
 " der Active Directory-Domäne. Im nächsten Schritt wird die SYSVOL-"
 "Freigabe kopiert, in der u.a. die Gruppenrichtlinien gespeichert werden."
 
-#: ../../windows/ad-takeover.rst:167
+#: ../../windows/ad-takeover.rst:166
 msgid ""
 "This phase requires the login to the Active Directory domain controller "
 "as the ``Administrator`` (or the equivalent non-English name). There a "
@@ -2619,7 +2677,7 @@ msgstr ""
 "Gruppenrichtlinien aus der SYSVOL-Freigabe des AD-Servers auf den UCS-"
 "Server kopiert werden."
 
-#: ../../windows/ad-takeover.rst:172
+#: ../../windows/ad-takeover.rst:171
 msgid ""
 "The command to be run in shown in the UMC module. If it has been "
 "successfully run, it must be confirmed with :guilabel:`Next`."
@@ -2628,11 +2686,11 @@ msgstr ""
 "erfolgreich aufgerufen wurde, muss mit :guilabel:`Weiter` bestätigt "
 "werden."
 
-#: ../../windows/ad-takeover.rst:180
+#: ../../windows/ad-takeover.rst:179
 msgid "Copying the SYSVOL share"
 msgstr "Kopieren der SYSVOL-Freigabe"
 
-#: ../../windows/ad-takeover.rst:182
+#: ../../windows/ad-takeover.rst:181
 msgid ""
 "It may be necessary to install the required :command:`robocopy` tool, "
 "which is part of the Windows Server 2003 Resource Kit Tools. Starting "
@@ -2642,7 +2700,7 @@ msgstr ""
 "Server 2003 Resource Kit Tools nachinstalliert werden. Ab Windows 2008 "
 "ist es vorinstalliert."
 
-#: ../../windows/ad-takeover.rst:188
+#: ../../windows/ad-takeover.rst:187
 msgid ""
 "The ``/mir`` option of :command:`robocopy` mirrors the specified source "
 "directory to the destination directory. Please be aware that if you "
@@ -2654,7 +2712,7 @@ msgstr ""
 "bei einem erneuten Aufruf des Tools Dateien, die im Quellverzeichnis "
 "gelöscht wurden, auch im Zielverzeichnis gelöscht werden."
 
-#: ../../windows/ad-takeover.rst:193
+#: ../../windows/ad-takeover.rst:192
 msgid ""
 "After successful completion of this step, it is now necessary to shutdown"
 " all domain controllers of the Active Directory domain. Then "
@@ -2664,15 +2722,15 @@ msgstr ""
 "Domänencontroller heruntergefahren werden. Anschließend muss im UMC-Modul"
 " auf :guilabel:`Weiter` geklickt werden."
 
-#: ../../windows/ad-takeover.rst:202
+#: ../../windows/ad-takeover.rst:201
 msgid "Shutdown of the AD server(s)"
 msgstr "Herunterfahren des/der AD-Systeme"
 
-#: ../../windows/ad-takeover.rst:204
+#: ../../windows/ad-takeover.rst:203
 msgid "The following steps are now automatically performed:"
 msgstr "Die folgenden Schritte werden nun automatisch durchgeführt:"
 
-#: ../../windows/ad-takeover.rst:206
+#: ../../windows/ad-takeover.rst:205
 msgid ""
 "Claiming all FSMO roles for the UCS Directory Node. These describe "
 "different tasks that a server can take on in an AD domain."
@@ -2681,7 +2739,7 @@ msgstr ""
 "kennzeichnen verschiedene Aufgaben, die ein Server in einer AD-Domäne "
 "übernehmen kann."
 
-#: ../../windows/ad-takeover.rst:209
+#: ../../windows/ad-takeover.rst:208
 msgid ""
 "Register the name of the Active Directory domain controller as a DNS "
 "alias (see :ref:`ip-config-cname-record-alias-records`) for the UCS DNS "
@@ -2690,7 +2748,7 @@ msgstr ""
 "Einrichten des Rechnernamens des AD-Servers als DNS-Alias (siehe :ref"
 ":`ip-config-cname-record-alias-records`) für den UCS-Server."
 
-#: ../../windows/ad-takeover.rst:212
+#: ../../windows/ad-takeover.rst:211
 msgid ""
 "Configure the IP address of the Active Directory domain controller as a "
 "virtual Ethernet interface."
@@ -2698,7 +2756,7 @@ msgstr ""
 "Konfiguration der IP-Adresse des AD-Servers als zusätzliche virtuelle IP-"
 "Adresse des UCS-Servers."
 
-#: ../../windows/ad-takeover.rst:215
+#: ../../windows/ad-takeover.rst:214
 msgid ""
 "Perform some cleanup, e.g. removal of the AD domain controller account "
 "and related objects in the Samba SAM account database."
@@ -2706,19 +2764,19 @@ msgstr ""
 "Verschiedene Anpassungen, z.B. Entfernen des alten AD-Domänencontroller-"
 "Eintrags aus der Samba SAM-Datenbank."
 
-#: ../../windows/ad-takeover.rst:218
+#: ../../windows/ad-takeover.rst:217
 msgid "Finally restart Samba and the DNS server."
 msgstr "Abschließender Neustart von Samba und DNS-Server."
 
-#: ../../windows/ad-takeover.rst:223
+#: ../../windows/ad-takeover.rst:222
 msgid "Final steps of the takeover"
 msgstr "Abschluss der Übernahme"
 
-#: ../../windows/ad-takeover.rst:225
+#: ../../windows/ad-takeover.rst:224
 msgid "Finally the following steps are required:"
 msgstr "Abschließend müssen noch die folgenden Schritte durchgeführt werden:"
 
-#: ../../windows/ad-takeover.rst:227
+#: ../../windows/ad-takeover.rst:226
 msgid ""
 "The domain function level of the migrated Active Directory domain needs "
 "to be checked by running the following command:"
@@ -2726,11 +2784,11 @@ msgstr ""
 "Der Domänenfunktionslevel der migrierten AD-Domäne muss mit dem folgenden"
 " Kommando geprüft werden:"
 
-#: ../../windows/ad-takeover.rst:230
+#: ../../windows/ad-takeover.rst:229
 msgid "> samba-tool domain level show"
 msgstr "> samba-tool domain level show"
 
-#: ../../windows/ad-takeover.rst:235
+#: ../../windows/ad-takeover.rst:234
 msgid ""
 "In case this command returns the message ``ATTENTION: You run SAMBA 4 on "
 "a forest function level lower than Windows 2000 (Native).`` the following"
@@ -2740,7 +2798,7 @@ msgstr ""
 "function level lower than Windows 2000 (Native)`` anzeigt, müssen die "
 "folgenden Befehle aufgerufen werden:"
 
-#: ../../windows/ad-takeover.rst:239
+#: ../../windows/ad-takeover.rst:238
 msgid ""
 "> samba-tool domain level raise --forest-level=2003 --domain-level=2003\n"
 "> samba-tool dbcheck --fix --yes"
@@ -2748,7 +2806,7 @@ msgstr ""
 "> samba-tool domain level raise --forest-level=2003 --domain-level=2003\n"
 "> samba-tool dbcheck --fix --yes"
 
-#: ../../windows/ad-takeover.rst:244
+#: ../../windows/ad-takeover.rst:243
 msgid ""
 "In case there has been more than one Active Directory domain controller "
 "in the original Active Directory domain, all the host accounts of the "
@@ -2766,7 +2824,7 @@ msgstr ""
 "``Domain Admins`` erfolgt und das AD-Verwaltungstool für Benutzer und "
 "Computer aufgerufen wird."
 
-#: ../../windows/ad-takeover.rst:252
+#: ../../windows/ad-takeover.rst:251
 msgid ""
 "If more than one UCS Directory Node with Samba/AD has been installed, "
 "these servers need to be re-joined."
@@ -2774,15 +2832,15 @@ msgstr ""
 "Gibt es weitere Samba-Domänencontroller, müssen diese neu der Domäne "
 "beitreten."
 
-#: ../../windows/ad-takeover.rst:255
+#: ../../windows/ad-takeover.rst:254
 msgid "All Windows clients need to be rebooted."
 msgstr "Alle Windows-Clients müssen neu gestartet werden."
 
-#: ../../windows/ad-takeover.rst:260
+#: ../../windows/ad-takeover.rst:259
 msgid "Tests"
 msgstr "Tests"
 
-#: ../../windows/ad-takeover.rst:262
+#: ../../windows/ad-takeover.rst:261
 msgid ""
 "It is recommended to perform thorough tests with Windows client systems, "
 "e.g."
@@ -2790,35 +2848,35 @@ msgstr ""
 "Es wird empfohlen nach der Übernahme gründliche Tests mit Windows-Clients"
 " durchzuführen, z.B."
 
-#: ../../windows/ad-takeover.rst:265
+#: ../../windows/ad-takeover.rst:264
 msgid "Login to a migrated client as a migrated user."
 msgstr "Anmeldung auf einem migrierten Client mit einem migrierten Benutzer."
 
-#: ../../windows/ad-takeover.rst:267
+#: ../../windows/ad-takeover.rst:266
 msgid "Login to a migrated client as the *Administrator*."
 msgstr "Anmeldung auf einem migrierten Client als *Administrator*."
 
-#: ../../windows/ad-takeover.rst:269
+#: ../../windows/ad-takeover.rst:268
 msgid "Test group policies."
 msgstr "Test der Gruppenrichtlinien."
 
-#: ../../windows/ad-takeover.rst:271
+#: ../../windows/ad-takeover.rst:270
 msgid "Join of a new Windows client."
 msgstr "Domänenbeitritt eines neuen Windows-Clients."
 
-#: ../../windows/ad-takeover.rst:273
+#: ../../windows/ad-takeover.rst:272
 msgid "Create a new UCS user and login to a Windows client."
 msgstr "Anlegen eines neuen Benutzers und Anmeldung an einem Windows-Client."
 
-#: ../../windows/index.rst:42
+#: ../../windows/index.rst:41
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
-#: ../../windows/index.rst:9
+#: ../../windows/index.rst:8
 msgid "Services for Windows"
 msgstr "Services für Windows"
 
-#: ../../windows/index.rst:11
+#: ../../windows/index.rst:10
 msgid ""
 "UCS can offer Active Directory (AD) services, be a member of an Active "
 "Directory domain or synchronize objects between Active Directory domains "
@@ -2828,7 +2886,7 @@ msgstr ""
 "Directory-Domäne sein oder Objekte zwischen Active Directory-Domänen und "
 "einer UCS-Domäne synchronisieren."
 
-#: ../../windows/index.rst:14
+#: ../../windows/index.rst:13
 msgid ""
 "For the purposes of Windows systems, UCS can assume the tasks of Windows "
 "server systems:"
@@ -2836,23 +2894,23 @@ msgstr ""
 "Aus Sicht von Windows-Systemen kann UCS die Aufgaben von Windows-"
 "Serversystemen übernehmen:"
 
-#: ../../windows/index.rst:17
+#: ../../windows/index.rst:16
 msgid "Domain controller function / authentication services"
 msgstr "Domänencontrollerfunktionalität / Authentifizierungsdienste"
 
-#: ../../windows/index.rst:19 ../../windows/samba-domain.rst:66
+#: ../../windows/index.rst:18 ../../windows/samba-domain.rst:65
 msgid "File services"
 msgstr "Dateidienste"
 
-#: ../../windows/index.rst:21 ../../windows/samba-domain.rst:103
+#: ../../windows/index.rst:20 ../../windows/samba-domain.rst:102
 msgid "Print services"
 msgstr "Druckdienste"
 
-#: ../../windows/index.rst:23
+#: ../../windows/index.rst:22
 msgid "In UCS all these services are provided by Samba."
 msgstr "Alle diese Dienste werden in UCS durch die Software Samba bereitgestellt."
 
-#: ../../windows/index.rst:25
+#: ../../windows/index.rst:24
 msgid ""
 "UCS supports the mostly automatic migration of an existing Active "
 "Directory domain to UCS. All users, groups, computer objects and group "
@@ -2865,7 +2923,7 @@ msgstr ""
 " dass die Windows-Clients erneut der Domäne beitreten müssen. Dies ist in"
 " :ref:`windows-ad-takeover` beschrieben."
 
-#: ../../windows/index.rst:30
+#: ../../windows/index.rst:29
 msgid ""
 "Microsoft Active Directory domain controllers cannot join the Samba "
 "domain. This functionality is planned at a later point in time."
@@ -2874,13 +2932,13 @@ msgstr ""
 "UCS-Samba-Domäne beitreten. Diese Funktionalität ist zu einem späteren "
 "Zeitpunkt geplant."
 
-#: ../../windows/index.rst:33
+#: ../../windows/index.rst:32
 msgid "Samba can not join an Active Directory Forest yet at this point."
 msgstr ""
 "Samba kann zum jetzigen Zeitpunkt noch nicht einem Active Directory "
 "Forest beitreten."
 
-#: ../../windows/index.rst:35
+#: ../../windows/index.rst:34
 msgid ""
 "Incoming trust relationships with other Active Directory domains are "
 "configurable. In this setup the external Active Directory domain trusts "
@@ -2897,15 +2955,15 @@ msgstr ""
 "(siehe :ref:`windows-trust`). Ausgehende Vertrauensstellungen mit Active "
 "Directory Domänen (UCS vertraut Windows) sind aktuell nicht unterstützt."
 
-#: ../../windows/samba-domain.rst:8
+#: ../../windows/samba-domain.rst:7
 msgid "Operation of a Samba domain based on Active Directory"
 msgstr "Betrieb einer Samba-Domäne auf Basis von Active Directory"
 
-#: ../../windows/samba-domain.rst:13
+#: ../../windows/samba-domain.rst:12
 msgid "Installation"
 msgstr "Installation"
 
-#: ../../windows/samba-domain.rst:15
+#: ../../windows/samba-domain.rst:14
 msgid ""
 "Samba as an AD domain controller can be installed on all UCS Directory "
 "Nodes from the Univention App Center with the application "
@@ -2927,7 +2985,7 @@ msgstr ""
 "Weitere Informationen finden sich in :ref:`computers-softwaremanagement-"
 "install-software`."
 
-#: ../../windows/samba-domain.rst:24
+#: ../../windows/samba-domain.rst:23
 msgid ""
 "A Samba member server can be installed on UCS Managed Nodes from the "
 "Univention App Center with the application :program:`Windows-compatible "
@@ -2944,7 +3002,7 @@ msgstr ""
 "Informationen finden sich in :ref:`computers-softwaremanagement-install-"
 "software`."
 
-#: ../../windows/samba-domain.rst:31
+#: ../../windows/samba-domain.rst:30
 msgid ""
 "Samba supports the operation as a *read-only domain controller*. The "
 "setup is documented in :cite:t:`ext-doc-win`."
@@ -2952,15 +3010,15 @@ msgstr ""
 "Samba unterstützt auch den Betrieb als *read-only domain controller*. Die"
 " Einrichtung ist in :cite:t:`ext-doc-win` dokumentiert."
 
-#: ../../windows/samba-domain.rst:37
+#: ../../windows/samba-domain.rst:36
 msgid "Services of a Samba domain"
 msgstr "Dienste einer Samba-Domäne"
 
-#: ../../windows/samba-domain.rst:42
+#: ../../windows/samba-domain.rst:41
 msgid "Authentication services"
 msgstr "Authentifizierungsdienst"
 
-#: ../../windows/samba-domain.rst:44
+#: ../../windows/samba-domain.rst:43
 msgid ""
 "User logins can only be performed on Microsoft Windows systems joined in "
 "the Samba domain. Domain joins are documented in :ref:`windows-domain-"
@@ -2970,7 +3028,7 @@ msgstr ""
 "die der Samba-Domäne beigetreten sind. Der Domänenbeitritt ist in :ref"
 ":`windows-domain-join` dokumentiert."
 
-#: ../../windows/samba-domain.rst:47
+#: ../../windows/samba-domain.rst:46
 msgid ""
 "Users who login to a Windows system are supplied with a Kerberos ticket "
 "when they login. The ticket is then used for the further authentication. "
@@ -2981,11 +3039,11 @@ msgstr ""
 "durchgeführt wird. Mit diesem Ticket wird dann auf die Ressourcen der "
 "Domäne zugegriffen."
 
-#: ../../windows/samba-domain.rst:51
+#: ../../windows/samba-domain.rst:50
 msgid "Common sources of error in failed logins are:"
 msgstr "Häufige Fehlerquellen bei fehlschlagenden Anmeldungen sind:"
 
-#: ../../windows/samba-domain.rst:53
+#: ../../windows/samba-domain.rst:52
 msgid ""
 "Synchronization of the system times between the Windows client and domain"
 " controller is essential for functioning Kerberos authentication. By "
@@ -2999,7 +3057,7 @@ msgstr ""
 "beim Systemstart die Systemzeit über NTP aktualisiert. Dies kann mit dem "
 "Befehl :command:`w32tm /resync` auch manuell erfolgen."
 
-#: ../../windows/samba-domain.rst:59
+#: ../../windows/samba-domain.rst:58
 msgid ""
 "DNS service records need to be resolved during login. For this reason, "
 "the Windows client should use the domain controller's IP address as its "
@@ -3009,7 +3067,7 @@ msgstr ""
 "Windows-Client sollte daher als DNS-Nameserver die IP-Adresse des "
 "Domänencontrollers verwenden."
 
-#: ../../windows/samba-domain.rst:68
+#: ../../windows/samba-domain.rst:67
 msgid ""
 "A file server provides files over the network and allows concentrating "
 "the storage of user data on a central server."
@@ -3018,7 +3076,7 @@ msgstr ""
 " ermöglicht es unter anderem Benutzerdaten auf einem zentralen Server zu "
 "bündeln."
 
-#: ../../windows/samba-domain.rst:71
+#: ../../windows/samba-domain.rst:70
 msgid ""
 "The file services integrated in UCS support the provision of shares using"
 " the CIFS protocol (see :ref:`shares-general`). Insofar as the underlying"
@@ -3031,7 +3089,7 @@ msgstr ""
 "unterstützt (verwendbar bei ``ext4`` und ``XFS``) sind ACLs auch von "
 "Windows-Clients verwendbar."
 
-#: ../../windows/samba-domain.rst:76
+#: ../../windows/samba-domain.rst:75
 msgid ""
 "Samba Active Directory domain controllers, i.e. UCS Directory Nodes, can "
 "also provide file services. As a general rule, it is recommended to "
@@ -3054,7 +3112,7 @@ msgstr ""
 "gegeben ist, können Datei- und Druckdienste auch mit auf einem "
 "Domänencontroller betrieben werden."
 
-#: ../../windows/samba-domain.rst:86
+#: ../../windows/samba-domain.rst:85
 msgid ""
 "Samba supports the *CIFS* protocol and the successor *SMB2* to provide "
 "file services. Using a client which supports *SMB2* (as of "
@@ -3066,7 +3124,7 @@ msgstr ""
 ":program:`Windows Vista`, also auch :program:`Windows 7/8`), verbessert "
 "sich die Performance und die Skalierbarkeit."
 
-#: ../../windows/samba-domain.rst:90
+#: ../../windows/samba-domain.rst:89
 msgid ""
 "The protocol can be configured using the |UCSUCR| variable "
 ":envvar:`samba/max/protocol`. It must be set on all Samba servers and "
@@ -3077,11 +3135,11 @@ msgstr ""
 "Samba-Servern gesetzt und anschließend der/die Samba-Server neu gestartet"
 " werden."
 
-#: ../../windows/samba-domain.rst:94
+#: ../../windows/samba-domain.rst:93
 msgid "``NT1`` configures *CIFS* (supported by all Windows versions)"
 msgstr "``NT1`` konfiguriert *CIFS* (unterstützt von allen Windows-Versionen)"
 
-#: ../../windows/samba-domain.rst:96
+#: ../../windows/samba-domain.rst:95
 msgid ""
 "``SMB2`` *SMB2* (supported as of :program:`Windows Vista` / "
 ":program:`Windows 7`)"
@@ -3089,11 +3147,11 @@ msgstr ""
 "``SMB2`` konfiguriert *SMB2* (unterstützt ab :program:`Windows "
 "Vista`/:program:`Windows 7`)"
 
-#: ../../windows/samba-domain.rst:98
+#: ../../windows/samba-domain.rst:97
 msgid "``SMB3`` configures *SMB3* (supported as of :program:`Windows 8`)"
 msgstr "``SMB3`` konfiguriert *SMB3* (unterstützt ab :program:`Windows 8`)"
 
-#: ../../windows/samba-domain.rst:105
+#: ../../windows/samba-domain.rst:104
 msgid ""
 "Samba offers the possibility of sharing printers set up under Linux as "
 "network printers for Windows clients. The management of the printer "
@@ -3105,7 +3163,7 @@ msgstr ""
 "Druckerfreigaben und die Integration der Druckertreiber ist in :ref"
 ":`print-general` beschrieben."
 
-#: ../../windows/samba-domain.rst:109
+#: ../../windows/samba-domain.rst:108
 msgid ""
 "Samba AD domain controllers can also provide print services. In this "
 "case, the restrictions described in :ref:`windows-samba4-fileservices` "
@@ -3115,11 +3173,11 @@ msgstr ""
 "werden. Hierbei sind die in :ref:`windows-samba4-fileservices` "
 "beschriebenen Einschränkungen zu beachten."
 
-#: ../../windows/samba-domain.rst:116
+#: ../../windows/samba-domain.rst:115
 msgid "Univention S4 connector"
 msgstr "Univention S4 Connector"
 
-#: ../../windows/samba-domain.rst:118
+#: ../../windows/samba-domain.rst:117
 msgid ""
 "When using Samba as an Active Directory domain controller, Samba provides"
 " a separate LDAP directory service. The synchronization between the UCS "
@@ -3133,7 +3191,7 @@ msgstr ""
 " ist standardmäßig auf dem |UCSPRIMARYDN| aktiviert und benötigt "
 "normalerweise keine weitere Konfiguration."
 
-#: ../../windows/samba-domain.rst:124
+#: ../../windows/samba-domain.rst:123
 msgid ""
 "Further information on the status of the synchronization can be found in "
 "the log file :file:`/var/log/univention/connector-s4.log`. Additional "
@@ -3145,7 +3203,7 @@ msgstr ""
 "Fehleranalyse von eventuellen Connectorproblemen finden sich in "
 ":uv:kb:`Samba 4 Troubleshooting <32>`."
 
-#: ../../windows/samba-domain.rst:130
+#: ../../windows/samba-domain.rst:129
 msgid ""
 "The :command:`univention-s4search` command can be used to search in the "
 "Samba directory service. If it is run as the ``root`` user, the required "
@@ -3156,7 +3214,7 @@ msgstr ""
 "aufgerufen, werden automatisch die nötigen Credentials des "
 "Maschinenkontos verwendet:"
 
-#: ../../windows/samba-domain.rst:135
+#: ../../windows/samba-domain.rst:134
 msgid ""
 "$ root@primary:~# univention-s4search sAMAccountName=Administrator\n"
 "# record 1\n"
@@ -3180,11 +3238,11 @@ msgstr ""
 "instanceType: 4\n"
 "(..)"
 
-#: ../../windows/samba-domain.rst:152
+#: ../../windows/samba-domain.rst:151
 msgid "Replication of directory data"
 msgstr "DRS-Replikation der Verzeichnisdaten"
 
-#: ../../windows/samba-domain.rst:154
+#: ../../windows/samba-domain.rst:153
 msgid ""
 "Samba/AD domains use the Directory Replication System (DRS) to replicate "
 "the directory data. DRS allows multi-master replication, i.e., the write "
@@ -3201,7 +3259,7 @@ msgstr ""
 "vermieden und Samba/AD auf einem Server betrieben werden, der durchgehend"
 " eingeschaltet bleibt."
 
-#: ../../windows/samba-domain.rst:161
+#: ../../windows/samba-domain.rst:160
 msgid ""
 "The complexity of the multi-master replication increases with each "
 "additional Samba/AD domain controller. Consequently, it must be checked "
@@ -3214,7 +3272,7 @@ msgstr ""
 "/AD-Domänencontroller auf Basis von UCS Directory Nodes nötig sind oder "
 "für neue Server nicht ein UCS Managed Node die bessere Wahl ist."
 
-#: ../../windows/samba-domain.rst:167
+#: ../../windows/samba-domain.rst:166
 msgid ""
 "Additional information on troubleshooting replication problems can be "
 "found in :uv:kb:`Samba 4 Troubleshooting <32>`."
@@ -3222,11 +3280,11 @@ msgstr ""
 "Hinweise zur Analyse von DRS-Replikationsproblemen finden sich in "
 ":uv:kb:`Samba 4 Troubleshooting <32>`."
 
-#: ../../windows/samba-domain.rst:173
+#: ../../windows/samba-domain.rst:172
 msgid "Synchronization of the SYSVOL share"
 msgstr "Synchronisation der SYSVOL-Freigabe"
 
-#: ../../windows/samba-domain.rst:175
+#: ../../windows/samba-domain.rst:174
 msgid ""
 "The SYSVOL share is a share which provides group policies and logon "
 "scripts in Active Directory/Samba. It is synchronized among all domain "
@@ -3237,7 +3295,7 @@ msgstr ""
 "allen Domänencontrollern synchronisiert und im Verzeichnis "
 ":file:`/var/lib/samba/sysvol/` gespeichert."
 
-#: ../../windows/samba-domain.rst:179
+#: ../../windows/samba-domain.rst:178
 msgid ""
 "In Microsoft Active Directory, the SYSVOL share is synchronized by the "
 "File Replication Service (introduced with :program:`Windows 2000`) or the"
@@ -3255,15 +3313,15 @@ msgstr ""
 "UCS durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar"
 " durch die |UCSUCRV| :envvar:`samba4/sysvol/sync/cron`)."
 
-#: ../../windows/samba-domain.rst:190
+#: ../../windows/samba-domain.rst:189
 msgid "Configuration and management of Windows desktops"
 msgstr "Konfiguration und Management von Windows-Desktops"
 
-#: ../../windows/samba-domain.rst:195
+#: ../../windows/samba-domain.rst:194
 msgid "Group policies"
 msgstr "Gruppenrichtlinien"
 
-#: ../../windows/samba-domain.rst:197
+#: ../../windows/samba-domain.rst:196
 msgid ""
 "Group policies are an Active Directory feature which allows the central "
 "configuration of settings for computers and users. Group policies are "
@@ -3276,7 +3334,7 @@ msgstr ""
 "Richtlinien greifen nur auf Windows-Clients; Linux- oder Mac OS-Systeme "
 "werten die Richtlinien nicht aus."
 
-#: ../../windows/samba-domain.rst:202
+#: ../../windows/samba-domain.rst:201
 msgid ""
 "Group policies are often referred to as GPOs (*group policy objects*). "
 "Put more precisely, a GPO can contain a series of policies. Despite their"
@@ -3302,7 +3360,7 @@ msgstr ""
 "denen sich das Recht *Gruppenrichtlinie übernehmen* gezielt auf bestimmte"
 " Gruppen, Benutzer oder Computer einschränken lässt."
 
-#: ../../windows/samba-domain.rst:212
+#: ../../windows/samba-domain.rst:211
 msgid ""
 "As a basic rule, a distinction must be made between *group policies* "
 "(GPOs) and the similarly named *group policy preferences (GPPs)*:"
@@ -3311,7 +3369,7 @@ msgstr ""
 "den sehr ähnlich benannten *Gruppenrichtlinieneinstellungen* (*Group "
 "Policy Preferences* (GPP)) zu unterscheiden:"
 
-#: ../../windows/samba-domain.rst:215
+#: ../../windows/samba-domain.rst:214
 msgid ""
 "The settings made via *GPOs* are binding, whereas *GPPs* are merely used "
 "to enter preferences in the registry of Windows clients, which can still "
@@ -3322,7 +3380,7 @@ msgstr ""
 "Präferenzen in die Registry von Windows-Clients eintragen lassen, die "
 "aber unter Umständen am Client überschrieben werden können."
 
-#: ../../windows/samba-domain.rst:219
+#: ../../windows/samba-domain.rst:218
 msgid ""
 "The settings made via *GPOs* are also dynamically applied to the target "
 "objects, whereas, in contrast, the settings made via *GPPs* are entered "
@@ -3335,7 +3393,7 @@ msgstr ""
 "statisch in die Registry von Windows-Clients eintragen werden (man "
 "spricht hier auch von *Tattooing*)."
 
-#: ../../windows/samba-domain.rst:224
+#: ../../windows/samba-domain.rst:223
 msgid ""
 "For these reasons, *GPOs* are preferable to *GPPs* in the majority of "
 "cases. This remainder of this section deals exclusively with *GPOs*."
@@ -3344,7 +3402,7 @@ msgstr ""
 " den *Gruppenrichtlinieneinstellungen* (GPPs) vorzuziehen. Dieses Kapitel"
 " bezieht sich im weiteren ausschließlich auf *Gruppenrichtlinien* (GPOs)."
 
-#: ../../windows/samba-domain.rst:227
+#: ../../windows/samba-domain.rst:226
 msgid ""
 "In contrast to UCS policies (see :ref:`central-policies`), group policies"
 " are not configured via UMC modules, but instead are configured in a "
@@ -3358,15 +3416,15 @@ msgstr ""
 " *Remote Server Administration Tools* (RSAT) ist. Die Einrichtung ist in "
 ":ref:`gpo-install` dokumentiert."
 
-#: ../../windows/samba-domain.rst:233
+#: ../../windows/samba-domain.rst:232
 msgid "There are two types of policies:"
 msgstr "Es existieren zwei Arten von Richtlinien:"
 
-#: ../../windows/samba-domain.rst:238
+#: ../../windows/samba-domain.rst:237
 msgid "User policies"
 msgstr "Benutzerrichtlinien"
 
-#: ../../windows/samba-domain.rst:236
+#: ../../windows/samba-domain.rst:235
 msgid ""
 "*User policies* configure a user's settings, e.g., the configuration of "
 "the desktop. It is also possible to configure applications via group "
@@ -3377,15 +3435,15 @@ msgstr ""
 "Gruppenrichtlinien konfiguriert werden (z.B. die Startseite des Browsers "
 "oder Einstellungen in LibreOffice)."
 
-#: ../../windows/samba-domain.rst:241
+#: ../../windows/samba-domain.rst:240
 msgid "Computer policies"
 msgstr "Computer-Richtlinien"
 
-#: ../../windows/samba-domain.rst:241
+#: ../../windows/samba-domain.rst:240
 msgid "*Computer policies* define a Windows client's settings."
 msgstr "*Computer-Richtlinien* definieren die Einstellungen von Windows-Clients."
 
-#: ../../windows/samba-domain.rst:243
+#: ../../windows/samba-domain.rst:242
 msgid ""
 "Computer policies are evaluated for the first time the computer starts "
 "up; user policies during login. The policies are also continually "
@@ -3398,7 +3456,7 @@ msgstr ""
 "aktualisiert (in der Grundeinstellung alle 90-120 Minuten, der Zeitraum "
 "wird zur Vermeidung von Lastspitzen nach dem Zufallsprinzip variiert)."
 
-#: ../../windows/samba-domain.rst:249
+#: ../../windows/samba-domain.rst:248
 msgid ""
 "The command :command:`gpupdate /force` can also be run specifically to "
 "start the evaluation of group policies."
@@ -3406,7 +3464,7 @@ msgstr ""
 "Die Auswertung der Gruppenrichtlinien kann durch Aufruf des Befehls "
 ":command:`gpupdate /force` auch gezielt gestartet werden."
 
-#: ../../windows/samba-domain.rst:252
+#: ../../windows/samba-domain.rst:251
 msgid ""
 "Some policies - e.g., for the installation of software or for login "
 "scripts - are only evaluated during login (user policies) or system "
@@ -3416,7 +3474,7 @@ msgstr ""
 "Anmeldeskripte - werden nur bei der Anmeldung (Benutzerrichtlinien) oder "
 "beim Systemstart (Rechnerrichtlinien) ausgewertet."
 
-#: ../../windows/samba-domain.rst:256
+#: ../../windows/samba-domain.rst:255
 msgid ""
 "The majority of group policies only set one value in the Windows "
 "registry, which is then evaluated by Windows or an application. As "
@@ -3432,7 +3490,7 @@ msgstr ""
 "Benutzer-Desktops konfiguriert werden, in denen z.B.  Benutzer den "
 "Windows Task Manager nicht aufrufen dürfen."
 
-#: ../../windows/samba-domain.rst:263
+#: ../../windows/samba-domain.rst:262
 msgid ""
 "The group policies are stored in the SYSVOL share, see :ref:`windows-"
 "sysvolshare`. They are linked with user and host accounts in the Samba "
@@ -3442,11 +3500,11 @@ msgstr ""
 ":ref:`windows-sysvolshare`. Sie werden mit Benutzer- und Rechnerkonten im"
 " Samba-Verzeichnisdienst verknüpft."
 
-#: ../../windows/samba-domain.rst:269
+#: ../../windows/samba-domain.rst:268
 msgid "Installation of Group Policy Management"
 msgstr "Installation der Gruppenrichtlinienverwaltung"
 
-#: ../../windows/samba-domain.rst:271
+#: ../../windows/samba-domain.rst:270
 msgid ""
 ":program:`Group Policy Management` can be installed as a component of the"
 " *Remote Server Administration Tools* on Windows clients. They can be "
@@ -3458,11 +3516,11 @@ msgstr ""
 "können für Windows 10 unter `Remote Server Administration Tools (RSAT) "
 "for Windows 10 <microsoft-rsat-tools_>`_ bezogen werden."
 
-#: ../../windows/samba-domain.rst:281
+#: ../../windows/samba-domain.rst:280
 msgid "Activating the Group Policy Management tools"
 msgstr "Aktivierung der Gruppenrichtlinienverwaltung"
 
-#: ../../windows/samba-domain.rst:283
+#: ../../windows/samba-domain.rst:282
 msgid ""
 "Following the installation, Group Policy Management must still be enabled"
 " in the Windows Control Panel. This is done by enabling the *Group Policy"
@@ -3477,7 +3535,7 @@ msgstr ""
 "--> Featureverwaltungs-Tools` die Option *Tools für die "
 "Gruppenrichtlinienverwaltung* aktiviert wird."
 
-#: ../../windows/samba-domain.rst:289
+#: ../../windows/samba-domain.rst:288
 msgid ""
 "Following the enabling, Group Policy Management can be run under "
 ":menuselection:`Start --> Administrative Tools --> Group Policy "
@@ -3487,11 +3545,11 @@ msgstr ""
 ":menuselection:`Start --> Verwaltung --> Gruppenrichtlinienverwaltung` "
 "aufgerufen werden."
 
-#: ../../windows/samba-domain.rst:295
+#: ../../windows/samba-domain.rst:294
 msgid "Configuration of policies with Group Policy Management"
 msgstr "Konfiguration von Richtlinien mit der Gruppenrichtlinienverwaltung"
 
-#: ../../windows/samba-domain.rst:297
+#: ../../windows/samba-domain.rst:296
 msgid ""
 "Group policies can only be configured by users who are members of the "
 "``Domain Admins`` group (e.g., the ``Administrator``). When logging in, "
@@ -3506,7 +3564,7 @@ msgstr ""
 "der Domäne. Die Gruppenrichtlinienverwaltung kann auf einem beliebigen "
 "System der Domäne aufgerufen werden."
 
-#: ../../windows/samba-domain.rst:303
+#: ../../windows/samba-domain.rst:302
 msgid ""
 "If more than one Samba domain controller is in use, consideration must be"
 " given to the replication of the GPO data, see :ref:`gpo-gposync`."
@@ -3515,11 +3573,11 @@ msgstr ""
 "Replikation der GPO-Daten berücksichtigt werden, siehe :ref:`gpo-"
 "gposync`."
 
-#: ../../windows/samba-domain.rst:306
+#: ../../windows/samba-domain.rst:305
 msgid "There are two basic possibilities for creating GPOs:"
 msgstr "Es gibt zwei prinzipielle Möglichkeiten GPOs zu erstellen:"
 
-#: ../../windows/samba-domain.rst:308
+#: ../../windows/samba-domain.rst:307
 msgid ""
 "They can be created in the *Group Policy Objects* folder and then linked "
 "to different positions in the LDAP. This is practical if a policy is to "
@@ -3530,7 +3588,7 @@ msgstr ""
 "wenn eine Richtlinie mit mehreren Positionen im LDAP verknüpft werden "
 "soll."
 
-#: ../../windows/samba-domain.rst:312
+#: ../../windows/samba-domain.rst:311
 msgid ""
 "The GPO can also be created at an LDAP position ad hoc and then directly "
 "linked to it. This is the simpler means for small and medium-sized "
@@ -3542,7 +3600,7 @@ msgstr ""
 "Weg. Auch ad hoc erstellte Domänen werden im "
 "*Gruppenrichtlinienobjekte*-Ordner angezeigt."
 
-#: ../../windows/samba-domain.rst:316
+#: ../../windows/samba-domain.rst:315
 msgid ""
 "A policy can have one of three statuses: ``enabled``, ``disabled`` or "
 "``unset``. The effect is always based on the formulation of the policy. "
@@ -3559,19 +3617,19 @@ msgstr ""
 "z.B. könnte die Richtlinie *Aktiviere Mail-Quota* eine zusätzliche Option"
 " mitbringen um die Speichermenge zu verwalten."
 
-#: ../../windows/samba-domain.rst:327
+#: ../../windows/samba-domain.rst:326
 msgid "Editing a policy"
 msgstr "Bearbeiten einer Richtlinie"
 
-#: ../../windows/samba-domain.rst:329
+#: ../../windows/samba-domain.rst:328
 msgid "Two standard policy objects are predefined:"
 msgstr "Zwei Standard-Richtlinienobjekte sind vordefiniert:"
 
-#: ../../windows/samba-domain.rst:333
+#: ../../windows/samba-domain.rst:332
 msgid "Default Domain Policy"
 msgstr "Default Domain Policy"
 
-#: ../../windows/samba-domain.rst:332
+#: ../../windows/samba-domain.rst:331
 msgid ""
 "The *Default Domain Policy* object can be used to configure global "
 "policies for all users and computers within the same domain."
@@ -3580,11 +3638,11 @@ msgstr ""
 "Richtlinien für alle Benutzer und Rechner der gesamten Domäne zu "
 "konfigurieren."
 
-#: ../../windows/samba-domain.rst:339
+#: ../../windows/samba-domain.rst:338
 msgid "Default Domain Controllers Policy"
 msgstr "Default Domain Controllers Policy"
 
-#: ../../windows/samba-domain.rst:336
+#: ../../windows/samba-domain.rst:335
 msgid ""
 "The *Default Domain Controllers Policy* object has no use in a Samba "
 "domain (in a Microsoft AD domain the policies for Microsoft domain "
@@ -3597,7 +3655,7 @@ msgstr ""
 "Konfiguration der Samba-Domänencontroller erfolgt in UCS weitgehend über "
 "|UCSUCR|."
 
-#: ../../windows/samba-domain.rst:341
+#: ../../windows/samba-domain.rst:340
 msgid ""
 "AD domains can be structured in sites. All the sites are listed in the "
 "main menu of *Global Policy Management*. There is also a list of the "
@@ -3611,7 +3669,7 @@ msgstr ""
 "unterstützen keine Forest-Domänen, so dass hier immer nur eine Domäne "
 "angezeigt wird."
 
-#: ../../windows/samba-domain.rst:346
+#: ../../windows/samba-domain.rst:345
 msgid ""
 "One domain can be structured in different organizational units (OUs). "
 "This can, for example, be used to store the employees from accounting and"
@@ -3622,7 +3680,7 @@ msgstr ""
 "der Buchhaltung und die Benutzer der Verwaltung in unterschiedlichen "
 "LDAP-Positionen zu speichern."
 
-#: ../../windows/samba-domain.rst:351
+#: ../../windows/samba-domain.rst:350
 msgid ""
 "Group policies can mutually overlap. In this case, the inheritance "
 "principle applies, e.g., the superordinate policies overwrite the "
@@ -3639,15 +3697,15 @@ msgstr ""
 "dem Befehl :command:`gpresult /user BENUTZERNAME /v` auf dem Windows-"
 "Client angezeigt werden."
 
-#: ../../windows/samba-domain.rst:362
+#: ../../windows/samba-domain.rst:361
 msgid "Evaluating the GPO for the user ``user01``"
 msgstr "Auswertung der GPO für den Benutzer ``user01``"
 
-#: ../../windows/samba-domain.rst:364
+#: ../../windows/samba-domain.rst:363
 msgid "The policies are evaluated in the following order:"
 msgstr "Die Richtlinien werden in folgender Reihenfolge ausgewertet:"
 
-#: ../../windows/samba-domain.rst:366
+#: ../../windows/samba-domain.rst:365
 msgid ""
 "By default *Default Domain Policy* settings apply for all the users and "
 "computers within the domain."
@@ -3655,7 +3713,7 @@ msgstr ""
 "Richtlinien der *Default Domain Policy* gelten als Grundeinstellung für "
 "alle Benutzer und Rechner der gesamten Domäne."
 
-#: ../../windows/samba-domain.rst:369
+#: ../../windows/samba-domain.rst:368
 msgid ""
 "Policies linked to an OU overwrite policies from the default domain "
 "policy. If the OUs are nested further, in the case of conflict, the "
@@ -3668,15 +3726,15 @@ msgstr ""
 "Konfliktfall die jeweils \"untersten\" Richtlinien, d.h. die, die näher "
 "am Zielobjekt verknüpft sind. Es gilt folgende Auswertungsreihenfolge:"
 
-#: ../../windows/samba-domain.rst:374
+#: ../../windows/samba-domain.rst:373
 msgid "Assignment of a policy to an Active Directory site"
 msgstr "Zuweisung einer Richtlinie zu einem Active Directory Standort"
 
-#: ../../windows/samba-domain.rst:376
+#: ../../windows/samba-domain.rst:375
 msgid "Settings of the default domain policy"
 msgstr "Vorgaben der Default Domain Policy"
 
-#: ../../windows/samba-domain.rst:378
+#: ../../windows/samba-domain.rst:377
 msgid ""
 "Assignment of a policy to an organizational unit (OU) (in turn, each "
 "subordinate OU overrules policies from superordinate OUs)."
@@ -3684,7 +3742,7 @@ msgstr ""
 "Zuweisung einer Richtlinie zu einer Organisationseinheit / OU (jede "
 "unterliegende OU überstimmt wiederum Richtlinien aus übergeordneten OUs)."
 
-#: ../../windows/samba-domain.rst:381
+#: ../../windows/samba-domain.rst:380
 msgid ""
 "Example: A company blocks access to the :program:`Windows Task Manager` "
 "in general. This is done by enabling the :guilabel:`Remove Task Manager` "
@@ -3705,7 +3763,7 @@ msgstr ""
 "unterbinden` auf *deaktiviert* gesetzt wird. Dieses neue GPO wird mit der"
 " OU *Technik* verbunden."
 
-#: ../../windows/samba-domain.rst:394
+#: ../../windows/samba-domain.rst:393
 msgid ""
 "Configuration of group policies in environments with more than one Samba "
 "domain controller"
@@ -3713,7 +3771,7 @@ msgstr ""
 "Konfiguration von Gruppenrichtlinien in Umgebungen mit mehr als einem "
 "Samba-Domänencontroller"
 
-#: ../../windows/samba-domain.rst:396
+#: ../../windows/samba-domain.rst:395
 msgid ""
 "A group policy is technically composed of two parts: On the one hand "
 "there is a directory in the domain controllers' file system which "
@@ -3731,7 +3789,7 @@ msgstr ""
 " LDAP-Baum des Samba-Verzeichnisdienstes (Samba AD/DS), das üblicherweise"
 " unter einem LDAP-Container namens *Group Policy Objects* abgelegt ist."
 
-#: ../../windows/samba-domain.rst:404
+#: ../../windows/samba-domain.rst:403
 msgid ""
 "Although the LDAP replication between the domain controllers is performed"
 " in just a few seconds, the files in the SYSVOL share are only replicated"
@@ -3748,11 +3806,11 @@ msgstr ""
 "Domänencontroller konsultiert, der noch nicht die aktuellen Dateien zu "
 "sich repliziert hat."
 
-#: ../../windows/samba-domain.rst:413
+#: ../../windows/samba-domain.rst:412
 msgid "Administrative templates (ADMX/ADM)"
 msgstr "Administrative Vorlagen (ADMX/ADM)"
 
-#: ../../windows/samba-domain.rst:415
+#: ../../windows/samba-domain.rst:414
 msgid ""
 "The policies displayed in *Group Policy Management* can be expanded with "
 "so-called *administrative templates*. This type of template defines the "
@@ -3769,7 +3827,7 @@ msgstr ""
 "sogenannten *ADMX-Dateien* (früher *ADM-Dateien*) gespeichert, siehe "
 ":cite:t:`admx-reference`."
 
-#: ../../windows/samba-domain.rst:421
+#: ../../windows/samba-domain.rst:420
 msgid ""
 "Among other things, ADMX files offer the advantage that they can be "
 "provided centrally across several domain controllers so that Group Policy"
@@ -3781,7 +3839,7 @@ msgstr ""
 "Gruppenrichtlinienverwaltung an allen Windows-Clients die gleichen "
 "Konfigurationsmöglichkeiten zeigt, siehe :cite:t:`admx-central`."
 
-#: ../../windows/samba-domain.rst:426
+#: ../../windows/samba-domain.rst:425
 msgid ""
 "The following example of an ADM file defines a computer policy in which a"
 " registry key is configured for the (fictitious) Univention RDP client. "
@@ -3795,7 +3853,7 @@ msgstr ""
 "ADMX-Format umgewandelt werden. Die administrativen Vorlagen müssen die "
 "Dateiendung :file:`.adm` verwenden:"
 
-#: ../../windows/samba-domain.rst:431
+#: ../../windows/samba-domain.rst:430
 msgid ""
 "CLASS MACHINE\n"
 "CATEGORY \"Univention\"\n"
@@ -3821,11 +3879,11 @@ msgstr ""
 "END POLICY\n"
 "END CATEGORY"
 
-#: ../../windows/samba-domain.rst:450
+#: ../../windows/samba-domain.rst:449
 msgid "The activated administrative template"
 msgstr "Die eingebundene administrative Vorlage"
 
-#: ../../windows/samba-domain.rst:452
+#: ../../windows/samba-domain.rst:451
 msgid ""
 "The ADM file can then be converted to the ADMX format or imported "
 "directly via Group Policy Management. This is done by following the "
@@ -3844,11 +3902,11 @@ msgstr ""
 "wodurch die Gruppenrichtlinienverwaltung von den Windows-Clients aus auf "
 "sie zugreifen kann."
 
-#: ../../windows/samba-domain.rst:462
+#: ../../windows/samba-domain.rst:461
 msgid "Application of policies based on computer properties (WMI filters)"
 msgstr "Anwendung von Richtlinien auf Basis von Rechnereigenschaften (WMI-Filter)"
 
-#: ../../windows/samba-domain.rst:464
+#: ../../windows/samba-domain.rst:463
 msgid ""
 "It is also possible to configure policies based on system properties. "
 "These properties are provided via the Windows Management Instrumentation "
@@ -3867,7 +3925,7 @@ msgstr ""
 "sich eine Eigenschaft eines Systems (z.B. weil mehr Speicher eingebaut "
 "wurde), wird der jeweilige Filter automatisch vom Client neu ausgewertet."
 
-#: ../../windows/samba-domain.rst:472
+#: ../../windows/samba-domain.rst:471
 msgid ""
 "The WMI filters are displayed in the domain structure in the *WMI "
 "Filters* container. :guilabel:`New` can be used to define an additional "
@@ -3881,11 +3939,11 @@ msgstr ""
 " einer SQL-ähnlichen Syntax definiert.  Regel-Beispiele finden sich in "
 ":cite:t:`microsoft-wmi-filter` und :cite:t:`add-wmi-filters`."
 
-#: ../../windows/samba-domain.rst:481
+#: ../../windows/samba-domain.rst:480
 msgid "Logon scripts / NETLOGON share"
 msgstr "Anmeldeskripte / NETLOGON-Freigabe"
 
-#: ../../windows/samba-domain.rst:483
+#: ../../windows/samba-domain.rst:482
 msgid ""
 "The NETLOGON share serves the purpose of providing logon scripts in "
 "Windows domains. The logon scripts are executed following after the user "
@@ -3899,7 +3957,7 @@ msgstr ""
 "Arbeitsumgebung des Benutzers. Die Skripte müssen in einem für Windows "
 "ausführbaren Format gespeichert werden, wie z.B. :file:`bat`."
 
-#: ../../windows/samba-domain.rst:488
+#: ../../windows/samba-domain.rst:487
 #, python-brace-format
 msgid ""
 "The logon scripts are stored in "
@@ -3912,13 +3970,13 @@ msgstr ""
 "dem Freigabennamen *NETLOGON* bereitgestellt. Der Dateiname des Skripts "
 "muss relativ zu diesem Verzeichnis angegeben werden."
 
-#: ../../windows/samba-domain.rst:493
+#: ../../windows/samba-domain.rst:492
 msgid ""
 "The NETLOGON share is replicated within the scope of the SYSVOL "
 "replication."
 msgstr "Die NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert."
 
-#: ../../windows/samba-domain.rst:495
+#: ../../windows/samba-domain.rst:494
 msgid ""
 "The logon script can be assigned for each user, see :ref:`users-"
 "management`."
@@ -3926,11 +3984,11 @@ msgstr ""
 "Das Anmeldeskript kann pro Benutzer zugewiesen werden, siehe :ref:`users-"
 "management`."
 
-#: ../../windows/samba-domain.rst:500
+#: ../../windows/samba-domain.rst:499
 msgid "Configuration of the file server for the home directory"
 msgstr "Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird"
 
-#: ../../windows/samba-domain.rst:502
+#: ../../windows/samba-domain.rst:501
 msgid ""
 "The home directory can be defined user-specifically in the UMC module "
 ":guilabel:`Users`, see :ref:`users-management`. This is performed with "
@@ -3942,7 +4000,7 @@ msgstr ""
 "erfolgt mit der Einstellung *Windows-Heimatverzeichnis*, z.B. :file"
 ":`\\\\ucs-file-server\\meier`."
 
-#: ../../windows/samba-domain.rst:506
+#: ../../windows/samba-domain.rst:505
 msgid ""
 "The multi edit mode of UMC modules can be used to assign the home "
 "directory to multiple users at one time, see :ref:`central-user-"
@@ -3952,11 +4010,11 @@ msgstr ""
 "einmal kann der Mehrfachbearbeitungsmodus von UMC-Modulen verwendet "
 "werden, siehe :ref:`central-user-interface-edit`."
 
-#: ../../windows/samba-domain.rst:512
+#: ../../windows/samba-domain.rst:511
 msgid "Roaming profiles"
 msgstr "Servergespeicherte Profile"
 
-#: ../../windows/samba-domain.rst:514
+#: ../../windows/samba-domain.rst:513
 msgid ""
 "Samba supports roaming profiles, i.e., user settings are saved on a "
 "central server. This directory is also used for storing the files which "
@@ -3971,13 +4029,13 @@ msgstr ""
 "Rechner vorgehalten und erst bei der Abmeldung auf den Samba-Server "
 "synchronisiert."
 
-#: ../../windows/samba-domain.rst:520
+#: ../../windows/samba-domain.rst:519
 msgid "No roaming profiles are used by default in Samba/AD."
 msgstr ""
 "In Samba-Domänen mit Active Directory-Support werden in der "
 "Voreinstellung keine serverseitigen Profile verwendet."
 
-#: ../../windows/samba-domain.rst:522
+#: ../../windows/samba-domain.rst:521
 #, python-brace-format
 msgid ""
 "Roaming profiles can be configured via a group policy found under "
@@ -3999,7 +4057,7 @@ msgstr ""
 "Heimatverzeichnis des Benutzers auf dem jeweils gewählten Logonserver "
 "verwendet."
 
-#: ../../windows/samba-domain.rst:530
+#: ../../windows/samba-domain.rst:529
 msgid ""
 "Alternatively the profile path can be defined for individual user "
 "accounts. This is possible in the UMC module :guilabel:`Users` under the "
@@ -4014,7 +4072,7 @@ msgstr ""
 "heißt ``profilepath``. Mit OpenLDAP als Backend wird dies im LDAP-"
 "Attribut ``sambaProfilePath`` gespeichert."
 
-#: ../../windows/samba-domain.rst:536
+#: ../../windows/samba-domain.rst:535
 msgid ""
 "If the profile path is changed, then a new profile directory will be "
 "created. The data in the old profile directory will be kept. These data "
@@ -4027,7 +4085,7 @@ msgstr ""
 "verschoben werden. Abschließend kann das alte Profilverzeichnis gelöscht "
 "werden."
 
-#: ../../windows/samba-domain.rst:543
+#: ../../windows/samba-domain.rst:542
 msgid ""
 "As standard, the ``Administrator`` accesses shares with ``root`` rights. "
 "If as a result the profile directory is created with the root user, it "
@@ -4039,11 +4097,11 @@ msgstr ""
 "Benutzer angelegt wird, sollte es manuell mit dem Befehl :command:`chown`"
 " an den Administrator vergeben werden."
 
-#: ../../windows/trust.rst:8
+#: ../../windows/trust.rst:7
 msgid "Trust relationships"
 msgstr "Vertrauensstellungen"
 
-#: ../../windows/trust.rst:10
+#: ../../windows/trust.rst:9
 msgid ""
 "Trust relationships between domains make it possible for users from one "
 "domain to sign in to computers from another domain."
@@ -4051,7 +4109,7 @@ msgstr ""
 "Vertrauensstellungen zwischen Domänen ermöglichen es den Benutzern einer "
 "Domäne, sich an Rechnern einer anderen Domäne anzumelden."
 
-#: ../../windows/trust.rst:13
+#: ../../windows/trust.rst:12
 msgid ""
 "In general, Windows trust relations can be *unidirectional* or "
 "*bidirectional*. Technically a bidirectional trust is simply realized as "
@@ -4062,7 +4120,7 @@ msgstr ""
 "Vertrauensstellung zwei unidirektional konfigurierten "
 "Vertrauensstellungen in beide Richtungen."
 
-#: ../../windows/trust.rst:17
+#: ../../windows/trust.rst:16
 msgid ""
 "The terminology of unidirectional trusts depends on the perspective of "
 "either the trusting or trusted domain: From the perspective of the "
@@ -4074,7 +4132,7 @@ msgstr ""
 "Domäne ist die Vertrauensstellung *ausgehend* und aus Sicht der "
 "vertrauten Domäne *eingehend*."
 
-#: ../../windows/trust.rst:22
+#: ../../windows/trust.rst:21
 msgid ""
 "In UCS, outgoing trust (UCS trusts Windows) is not supported. As a "
 "consequence, bidirectional trust is not supported either."
@@ -4083,7 +4141,7 @@ msgstr ""
 "/AD-Domänen nicht unterstützt. Entsprechend werden auch keine "
 "bidirektionalen Vertrauensstellungen unterstützt."
 
-#: ../../windows/trust.rst:25
+#: ../../windows/trust.rst:24
 msgid ""
 "When setting up and using the trust relationship the domain controllers "
 "of both domains must be able to reach each other over the network and "
@@ -4100,7 +4158,7 @@ msgstr ""
 "funktioniert. In beiden Domänen richtet man zu diesem Zweck eine bedingte"
 " DNS Weiterleitung ein."
 
-#: ../../windows/trust.rst:32
+#: ../../windows/trust.rst:31
 msgid ""
 "The following example assumes, that the UCS Samba/AD DC |UCSPRIMARYDN| "
 "``primary.ucsdom.example`` has the IP address ``192.0.2.10`` and that the"
@@ -4112,7 +4170,7 @@ msgstr ""
 "hat und dass der Active Directory Domänencontroller ``dc1.addom.example``"
 " der entfernten Domäne die IP-Adresse ``192.0.2.20`` hat."
 
-#: ../../windows/trust.rst:37
+#: ../../windows/trust.rst:36
 msgid ""
 "On the UCS side the conditional forwarding of DNS queries can be set up "
 "as ``root`` with the following commands:"
@@ -4120,7 +4178,7 @@ msgstr ""
 "Auf der UCS-Seite lässt sich die bedingte Weiterleitung von DNS-Anfragen "
 "mit folgenden Schritten als ``root`` einrichten:"
 
-#: ../../windows/trust.rst:40
+#: ../../windows/trust.rst:39
 msgid ""
 "$ cat >>/etc/bind/local.conf.samba4 <<__EOT__\n"
 "zone \"addom.example\" {\n"
@@ -4138,15 +4196,15 @@ msgstr ""
 "__EOT__\n"
 "$ systemctl restart named"
 
-#: ../../windows/trust.rst:50
+#: ../../windows/trust.rst:49
 msgid "The success can be checked by running:"
 msgstr "Der Erfolg kann mit folgendem Befehl überprüft werden:"
 
-#: ../../windows/trust.rst:52
+#: ../../windows/trust.rst:51
 msgid "$ host dc1.addom.example"
 msgstr "$ host dc1.addom.example"
 
-#: ../../windows/trust.rst:56
+#: ../../windows/trust.rst:55
 msgid ""
 "In addition, it may be useful to create a static entry for the domain "
 "controller of the remote Active Directory domain in the file "
@@ -4156,11 +4214,11 @@ msgstr ""
 "entfernten Active Directory Domäne einen statischen Eintrag in der Datei "
 ":file:`/etc/hosts` anzulegen:"
 
-#: ../../windows/trust.rst:59
+#: ../../windows/trust.rst:58
 msgid "$ ucr set hosts/static/192.0.2.20=dc1.addom.example"
 msgstr "$ ucr set hosts/static/192.0.2.20=dc1.addom.example"
 
-#: ../../windows/trust.rst:64
+#: ../../windows/trust.rst:63
 msgid ""
 "On a Windows AD DC, a so-called *conditional forwarding* can be set up "
 "for the UCS domain via the DNS server console."
@@ -4169,7 +4227,7 @@ msgstr ""
 "*Bedingte Weiterleitung* (*Conditional Forwarding*) für die UCS-Domäne "
 "eingerichtet werden."
 
-#: ../../windows/trust.rst:67
+#: ../../windows/trust.rst:66
 msgid ""
 "Trust relationships can only be configured on domain controllers but they"
 " affect the whole domain."
@@ -4177,7 +4235,7 @@ msgstr ""
 "Vertrauensstellungen können nur auf Domänencontrollern eingerichtet "
 "werden, gelten dann aber für die gesamte Domäne."
 
-#: ../../windows/trust.rst:70
+#: ../../windows/trust.rst:69
 msgid ""
 "After this preliminary work, the trust relationship can be established "
 "directly from the command line of the UCS Samba/AD DC using the tool "
@@ -4188,7 +4246,7 @@ msgstr ""
 "Domänen ist diese Konstellation sehr einfach an der Kommandozeile über "
 "das Werkzeug :command:`samba-tool` einzurichten:"
 
-#: ../../windows/trust.rst:74
+#: ../../windows/trust.rst:73
 msgid ""
 "$ samba-tool domain trust create addom.example \\\n"
 "  -k no -UADDOM\\\\Administrator%ADAdminPassword \\\n"
@@ -4198,11 +4256,11 @@ msgstr ""
 " -k no -UADDOM\\\\Administrator%ADAdminPassword \\\n"
 " --type=external --direction=incoming"
 
-#: ../../windows/trust.rst:80
+#: ../../windows/trust.rst:79
 msgid "The trust can be checked using the following commands:"
 msgstr "Mit folgenden Kommandos kann die Vertrauensstellung überprüft werden:"
 
-#: ../../windows/trust.rst:82
+#: ../../windows/trust.rst:81
 msgid ""
 "$ samba-tool domain trust list\n"
 "$ wbinfo --ping-dc –domain=addom.example\n"
@@ -4212,7 +4270,7 @@ msgstr ""
 "$ wbinfo --ping-dc –domain=addom.example\n"
 "$ wbinfo --check-secret –domain=addom.example"
 
-#: ../../windows/trust.rst:89
+#: ../../windows/trust.rst:88
 msgid ""
 "After the setup, a UCS user should be able to sign in to systems of the "
 "remote Active Directory domain. Users must either use the format "

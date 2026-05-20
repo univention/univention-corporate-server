@@ -228,7 +228,7 @@ Nubus for UCS supports the following Microsoft Windows versions to join a UCS do
 
 * Windows 10
 * Windows 11
-* Windows Server in the versions 2012, 2016, 2019, and 2022
+* Windows Server in the versions 2012, 2016, 2019, 2022, and 2025
 
 .. _domain-infrastructure-join-windows-11:
 
@@ -267,8 +267,8 @@ To join Windows 10 to a Nubus for UCS domain, follow the steps in :ref:`domain-i
 
 .. _domain-infrastructure-join-windows-server:
 
-Windows Server 2012 / 2016 / 2019 / 2022
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows Server 2012 / 2016 / 2019 / 2022 / 2025
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To join Windows Server to a Nubus for UCS domain,
 follow these steps:
@@ -286,6 +286,16 @@ follow these steps:
    In the *Password* field, enter the password from :samp:`uid=Administrator,cn=users,{LDAP base DN}`.
 
 #. To start the domain join, click :guilabel:`OK`.
+
+.. warning::
+
+   Univention doesn't support joining Microsoft Active Directory Domain Controllers into the Nubus for UCS domain.
+   Use the :program:`Active Directory Connection` app
+   from the :ref:`lifecycle-app-center` as an alternative.
+
+   For more information,
+   see :external+uv-ucs-manual:ref:`ad-connector-general`
+   in :cite:t:`ucs-manual`.
 
 .. _domain-infrastructure-join-ubuntu:
 

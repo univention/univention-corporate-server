@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-10 20:07+0000\n"
-"PO-Revision-Date: 2026-05-10 22:07+0200\n"
+"POT-Creation-Date: 2026-05-21 14:47+0000\n"
+"PO-Revision-Date: 2026-05-22 11:11+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -14,10 +14,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../domain-infrastructure/activity-logging.rst:7
-#: ../../domain-infrastructure/index.rst:51
+#: ../../domain-infrastructure/index.rst:55
 msgid "Domain activity logging"
 msgstr "Protokollierung von Aktivitäten in der Domäne"
 
@@ -61,7 +61,7 @@ msgstr "Komponenten von Admin Diary"
 msgid "The app consists of the following components:"
 msgstr "Die App besteht aus den folgenden Komponenten:"
 
-#: ../../domain-infrastructure/activity-logging.rst:32
+#: ../../domain-infrastructure/activity-logging.rst:36
 msgid "Admin Diary backend"
 msgstr "Admin Diary Backend"
 
@@ -77,7 +77,7 @@ msgstr ""
 "oder MySQL bereits auf dem Zielsystem installiert sind, verwendet das "
 "Backend diese statt PostgreSQL."
 
-#: ../../domain-infrastructure/activity-logging.rst:40
+#: ../../domain-infrastructure/activity-logging.rst:42
 msgid "Admin Diary frontend"
 msgstr "Admin Diary Frontend"
 
@@ -103,7 +103,7 @@ msgstr ""
 "Verwaltungsmodul *Admin Diary*. Standardmäßig gruppiert das Modul "
 "Einträge nach Woche. Sie können sie auch mit dem Suchfeld filtern."
 
-#: ../../domain-infrastructure/activity-logging.rst:55
+#: ../../domain-infrastructure/activity-logging.rst:58
 msgid "Events view in the Admin Diary management module"
 msgstr "Ereignisansicht im Verwaltungsmodul Admin Diary"
 
@@ -124,7 +124,7 @@ msgstr ""
 "logging-detail-figure` wird angezeigt. Sie können auch einen Kommentar zu"
 " jedem Ereignis hinzufügen."
 
-#: ../../domain-infrastructure/activity-logging.rst:67
+#: ../../domain-infrastructure/activity-logging.rst:70
 msgid "Detail view in Admin Diary management module"
 msgstr "Detailansicht im Verwaltungsmodul Admin Diary"
 
@@ -202,7 +202,7 @@ msgstr ""
 "separate frontend and backend <11331>`."
 
 #: ../../domain-infrastructure/domain-join.rst:7
-#: ../../domain-infrastructure/index.rst:26
+#: ../../domain-infrastructure/index.rst:31
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
@@ -435,7 +435,7 @@ msgstr ""
 "Das System führt Skripte während des Domänenbeitritts und während dem "
 "Entfernen von Software aus:"
 
-#: ../../domain-infrastructure/domain-join.rst:127
+#: ../../domain-infrastructure/domain-join.rst:132
 msgid "Join scripts"
 msgstr "Join-Skripte"
 
@@ -451,7 +451,7 @@ msgstr ""
 "anpassen oder andere Konfigurationsänderungen vornehmen. Das System "
 "speichert sie in :file:`/usr/lib/univention-install/`."
 
-#: ../../domain-infrastructure/domain-join.rst:134
+#: ../../domain-infrastructure/domain-join.rst:137
 msgid "Unjoin scripts"
 msgstr "Unjoin-Skripte"
 
@@ -655,8 +655,8 @@ msgid "Windows 11"
 msgstr "Windows 11"
 
 #: ../../domain-infrastructure/domain-join.rst:231
-msgid "Windows Server in the versions 2012, 2016, 2019, and 2022"
-msgstr "Windows Server in den Versionen 2012, 2016, 2019 und 2022"
+msgid "Windows Server in the versions 2012, 2016, 2019, 2022, and 2025"
+msgstr "Windows Server in den Versionen 2012, 2016, 2019, 2022 und 2025"
 
 #: ../../domain-infrastructure/domain-join.rst:238
 msgid ""
@@ -726,8 +726,8 @@ msgstr ""
 "windows-11`."
 
 #: ../../domain-infrastructure/domain-join.rst:271
-msgid "Windows Server 2012 / 2016 / 2019 / 2022"
-msgstr "Windows Server 2012 / 2016 / 2019 / 2022"
+msgid "Windows Server 2012 / 2016 / 2019 / 2022 / 2025"
+msgstr "Windows Server 2012 / 2016 / 2019 / 2022 / 2025"
 
 #: ../../domain-infrastructure/domain-join.rst:273
 msgid "To join Windows Server to a Nubus for UCS domain, follow these steps:"
@@ -766,11 +766,30 @@ msgstr ""
 "*Passwort* das Passwort von :samp:`uid=Administrator,cn=users,{LDAP base "
 "DN}` ein."
 
-#: ../../domain-infrastructure/domain-join.rst:293
+#: ../../domain-infrastructure/domain-join.rst:292
+msgid ""
+"Univention doesn't support joining Microsoft Active Directory Domain "
+"Controllers into the Nubus for UCS domain. Use the :program:`Active "
+"Directory Connection` app from the :ref:`lifecycle-app-center` as an "
+"alternative."
+msgstr ""
+"Univention unterstützt kein Joinen von Microsoft Active Directory Domain Controllern "
+"in eine Nubus für UCS-Domäne. Verwenden Sie als Alternative "
+"die App :program:`Active Directory-Verbindung` aus dem :ref:`lifecycle-app-center`."
+
+#: ../../domain-infrastructure/domain-join.rst:296
+msgid ""
+"For more information, see :external+uv-ucs-manual:ref:`ad-connector-"
+"general` in :cite:t:`ucs-manual`."
+msgstr ""
+"Weitere Informationen finden Sie unter :external+uv-ucs-manual:ref:`ad-connector-"
+"general` im :cite:t:`ucs-manual`."
+
+#: ../../domain-infrastructure/domain-join.rst:303
 msgid "Ubuntu domain joins"
 msgstr "Ubuntu Domänenbeitritte"
 
-#: ../../domain-infrastructure/domain-join.rst:295
+#: ../../domain-infrastructure/domain-join.rst:305
 msgid ""
 "Univention provides the :program:`Univention Domain Join Assistant`, a "
 "GUI and command-line tool for adding Ubuntu and Linux Mint clients to a "
@@ -783,7 +802,7 @@ msgstr ""
 "Assistent konfiguriert LDAP, DNS, Kerberos und Login (PAM/SSSD) für Sie. "
 "Sie müssen nichts manuell einrichten."
 
-#: ../../domain-infrastructure/domain-join.rst:300
+#: ../../domain-infrastructure/domain-join.rst:310
 msgid ""
 "For installation steps, supported versions, and usage details, see the "
 "`Univention Domain Join Assistant documentation "
@@ -793,23 +812,23 @@ msgstr ""
 "finden Sie in der `Univention Domain Join Assistant Dokumentation "
 "<https://github.com/univention/univention-domain-join>`_."
 
-#: ../../domain-infrastructure/domain-join.rst:306
+#: ../../domain-infrastructure/domain-join.rst:316
 msgid "macOS domain joins"
 msgstr ":spelling:word:`macOS`-Domänenbeitritte"
 
-#: ../../domain-infrastructure/domain-join.rst:308
+#: ../../domain-infrastructure/domain-join.rst:318
 msgid "To join the macOS client to a Nubus for UCS domain, follow these steps:"
 msgstr ""
 "Um mit einem :spelling:word:`macOS`-Client einer Nubus für UCS Domäne "
 "beizutreten, folgen Sie diesen Schritten:"
 
-#: ../../domain-infrastructure/domain-join.rst:310
+#: ../../domain-infrastructure/domain-join.rst:320
 msgid "In *System Preferences*, open :guilabel:`Users & Groups`."
 msgstr ""
 "Öffnen Sie in den *Systemeinstellungen* die Einstellung "
 ":guilabel:`Benutzer & Gruppen`."
 
-#: ../../domain-infrastructure/domain-join.rst:312
+#: ../../domain-infrastructure/domain-join.rst:322
 msgid ""
 "Click the lock icon and enter the credentials for a local *Administrator*"
 " account."
@@ -817,7 +836,7 @@ msgstr ""
 "Klicken Sie das Schloss-Symbol und geben Sie die Anmeldedaten für ein "
 "lokales *Administrator* Konto ein."
 
-#: ../../domain-infrastructure/domain-join.rst:314
+#: ../../domain-infrastructure/domain-join.rst:324
 msgid ""
 "From the menu, open the *Directory Utility*, as you can see in :numref"
 ":`domain-infrastructure-join-macos-gui-figure`."
@@ -825,12 +844,11 @@ msgstr ""
 "Öffnen Sie aus dem Menü das *Directory Utility*, wie Sie in :numref"
 ":`domain-infrastructure-join-macos-gui-figure` sehen können."
 
-#: ../../domain-infrastructure/domain-join.rst:319
-#: ../../domain-infrastructure/domain-join.rst:322
+#: ../../domain-infrastructure/domain-join.rst:332
 msgid "Domain join of a macOS system"
 msgstr "Domänenbeitritt eines macOS-Systems"
 
-#: ../../domain-infrastructure/domain-join.rst:324
+#: ../../domain-infrastructure/domain-join.rst:334
 msgid ""
 "In the *Advanced options* section, enable *Create mobile account at "
 "login*. A mobile account lets you sign in to the macOS system with your "
@@ -841,15 +859,15 @@ msgstr ""
 "sich mit Ihrem Domänenkonto beim :spelling:word:`macOS`-System "
 "anzumelden, auch wenn die Domäne nicht verfügbar ist."
 
-#: ../../domain-infrastructure/domain-join.rst:328
+#: ../../domain-infrastructure/domain-join.rst:338
 msgid "Enter the domain name in the *Active Directory Domain* field."
 msgstr "Geben Sie den Domänennamen im Feld *Active Directory Domain* ein."
 
-#: ../../domain-infrastructure/domain-join.rst:330
+#: ../../domain-infrastructure/domain-join.rst:340
 msgid "Enter the macOS client hostname in the *Computer ID* field."
 msgstr "Geben Sie den Rechnernamen des macOS-Clients im Feld *Computer ID* ein."
 
-#: ../../domain-infrastructure/domain-join.rst:332
+#: ../../domain-infrastructure/domain-join.rst:342
 msgid ""
 "To start the domain join, click :guilabel:`Bind…`. Enter the username and"
 " password for an account in the ``Domain Admins`` group, for example "
@@ -859,11 +877,11 @@ msgstr ""
 "Geben Sie den Benutzernamen und das Passwort für ein Konto in der "
 "``Domain Admins`` Gruppe ein, z. B. ``Administrator``."
 
-#: ../../domain-infrastructure/domain-join.rst:339
+#: ../../domain-infrastructure/domain-join.rst:349
 msgid "Domain join on the command line"
 msgstr "Domänenbeitritt in der Befehlszeile"
 
-#: ../../domain-infrastructure/domain-join.rst:341
+#: ../../domain-infrastructure/domain-join.rst:351
 msgid ""
 "You can also use :command:`dsconfigad` on the command line. See :numref"
 ":`domain-infrastructure-join-macos-cli-listing` for the full command. For"
@@ -874,11 +892,11 @@ msgstr ""
 "vollständigen Befehl. Für weitere Optionen führen Sie "
 ":command:`dsconfigad -help` aus."
 
-#: ../../domain-infrastructure/domain-join.rst:345
+#: ../../domain-infrastructure/domain-join.rst:355
 msgid "Join a Nubus for UCS domain through CLI on macOS"
 msgstr "Einer Nubus für UCS Domäne über CLI unter macOS beitreten"
 
-#: ../../domain-infrastructure/domain-join.rst:345
+#: ../../domain-infrastructure/domain-join.rst:355
 msgid ""
 "$ dsconfigad -a <MAC HOSTNAME> \\\n"
 "  -domain <FQDN> \\\n"
@@ -892,11 +910,11 @@ msgstr ""
 "  -u <Domain Administrator> \\\n"
 "  -mobile enable"
 
-#: ../../domain-infrastructure/domain-join.rst:358
+#: ../../domain-infrastructure/domain-join.rst:368
 msgid "Optional: Mount CIFS shares"
 msgstr "Optional: CIFS-Freigaben einbinden"
 
-#: ../../domain-infrastructure/domain-join.rst:360
+#: ../../domain-infrastructure/domain-join.rst:370
 msgid ""
 "After the domain join, you can automatically mount CIFS shares to "
 "subfolders in :file:`/Volumes` when signing in with a domain user. To do "
@@ -906,7 +924,7 @@ msgstr ""
 "Unterordnern in :file:`/Volumes` einbinden, wenn Sie sich mit einem "
 "Domänenbenutzer anmelden. Folgen Sie dazu diesen Schritten:"
 
-#: ../../domain-infrastructure/domain-join.rst:364
+#: ../../domain-infrastructure/domain-join.rst:374
 msgid ""
 "Add the line in :numref:`domain-infrastructure-join-macos-mount-shares-"
 "volumes-listing` to the :file:`/etc/auto_master` file."
@@ -914,15 +932,15 @@ msgstr ""
 "Fügen Sie die Zeile aus :numref:`domain-infrastructure-join-macos-mount-"
 "shares-volumes-listing` zur Datei :file:`/etc/auto_master` hinzu."
 
-#: ../../domain-infrastructure/domain-join.rst:367
+#: ../../domain-infrastructure/domain-join.rst:377
 msgid "Configure ``auto-custom`` for volumes"
 msgstr "``auto-custom`` für Volumes konfigurieren"
 
-#: ../../domain-infrastructure/domain-join.rst:367
+#: ../../domain-infrastructure/domain-join.rst:377
 msgid "/Volumes  auto_custom"
 msgstr "/Volumes  auto_custom"
 
-#: ../../domain-infrastructure/domain-join.rst:373
+#: ../../domain-infrastructure/domain-join.rst:383
 msgid ""
 "Create the file :file:`/etc/auto_custom` and list the shares you want to "
 "mount using the pattern shown in :numref:`domain-infrastructure-join-"
@@ -933,22 +951,22 @@ msgstr ""
 ":`domain-infrastructure-join-macos-mount-shares-pattern-listing` gezeigte"
 " Muster verwenden."
 
-#: ../../domain-infrastructure/domain-join.rst:376
+#: ../../domain-infrastructure/domain-join.rst:386
 msgid "Pattern for share definition"
 msgstr "Muster für Definition von Freigaben"
 
-#: ../../domain-infrastructure/domain-join.rst:376
+#: ../../domain-infrastructure/domain-join.rst:386
 msgid "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 msgstr "<SUBFOLDER_NAME>    -fstype=smbfs    ://<FQDN>/<SHARE_NAME>"
 
-#: ../../domain-infrastructure/domain-join.rst:384
+#: ../../domain-infrastructure/domain-join.rst:394
 msgid "The :program:`Finder` doesn't show auto-mounted shares in the sidebar."
 msgstr ""
 "Die :program:`Finder`-Anwendung zeigt automatisch eingebundene Freigaben "
 "nicht in der Seitenliste an."
 
 #: ../../domain-infrastructure/ha.rst:7
-#: ../../domain-infrastructure/index.rst:45
+#: ../../domain-infrastructure/index.rst:49
 msgid "Redundancy and failover for the Primary Directory Node"
 msgstr "Redundanz und Failover für den Primary Directory Node"
 
@@ -1010,7 +1028,7 @@ msgstr ""
 "Diese Seite beschreibt zwei ergänzende Strategien, um dieses Risiko zu "
 "verringern:"
 
-#: ../../domain-infrastructure/ha.rst:24
+#: ../../domain-infrastructure/ha.rst:26
 msgid "Redundancy"
 msgstr "Redundanz"
 
@@ -1023,7 +1041,7 @@ msgstr ""
 " sicherzustellen, dass der Lesezugriff fortgesetzt wird, wenn der Primary"
 " nicht verfügbar ist."
 
-#: ../../domain-infrastructure/ha.rst:28
+#: ../../domain-infrastructure/ha.rst:30
 msgid "Failover"
 msgstr "Failover"
 
@@ -1066,7 +1084,7 @@ msgstr ""
 msgid "Consider the following when planning redundancy:"
 msgstr "Beachten Sie das Folgende bei der Planung der Redundanz:"
 
-#: ../../domain-infrastructure/ha.rst:49
+#: ../../domain-infrastructure/ha.rst:51
 msgid "At least one Backup Directory Node"
 msgstr "Mindestens ein Backup Directory Node"
 
@@ -1078,7 +1096,7 @@ msgstr ""
 "Bietet vollständige Datenreplikation und die Fähigkeit zur Umwandlung in "
 "einen Primary Directory Node. Wesentlich für Produktionsumgebungen."
 
-#: ../../domain-infrastructure/ha.rst:53
+#: ../../domain-infrastructure/ha.rst:55
 msgid "Geographic distribution"
 msgstr "Geografische Verteilung"
 
@@ -1090,7 +1108,7 @@ msgstr ""
 "Platzieren Sie Backup und Replica Directory Nodes an verschiedenen Orten "
 "für Notfallwiederherstellung und lokalen Zugriff."
 
-#: ../../domain-infrastructure/ha.rst:57
+#: ../../domain-infrastructure/ha.rst:58
 msgid "Network connectivity"
 msgstr "Netzwerkkonnektivität"
 
@@ -1102,7 +1120,7 @@ msgstr ""
 "Stellen Sie sicher, dass alle Systeme zuverlässig mit dem Primary "
 "Directory Node kommunizieren können."
 
-#: ../../domain-infrastructure/ha.rst:60
+#: ../../domain-infrastructure/ha.rst:62
 msgid "Service distribution"
 msgstr "Verteilung von Diensten"
 
@@ -1156,7 +1174,7 @@ msgstr ""
 "Ihrer Backup und Replica Directory Nodes, um Ihre fehlertolerante Domain-"
 "Konfiguration abzuschließen."
 
-#: ../../domain-infrastructure/ha.rst:82
+#: ../../domain-infrastructure/ha.rst:84
 msgid "LDAP server failover"
 msgstr "LDAP-Server-Failover"
 
@@ -1170,7 +1188,7 @@ msgstr ""
 "Clients automatisch ein Failover durchführen, wenn der Primary Directory "
 "Node nicht verfügbar wird."
 
-#: ../../domain-infrastructure/ha.rst:86
+#: ../../domain-infrastructure/ha.rst:87
 msgid "Kerberos Key Distribution Centers"
 msgstr "Kerberos-Schlüsselverteilungszentren"
 
@@ -1180,7 +1198,7 @@ msgstr ""
 "Richten Sie mehrere :spelling:word:`Kerberos KDCs` für "
 "Authentifizierungsredundanz ein."
 
-#: ../../domain-infrastructure/ha.rst:89
+#: ../../domain-infrastructure/ha.rst:91
 msgid "DNS name servers"
 msgstr "DNS Nameserver"
 
@@ -1192,7 +1210,7 @@ msgstr ""
 "Konfigurieren Sie mehrere Nameserver, um sicherzustellen, dass die "
 "Namensauflösung während Wartungen oder Ausfällen fortgesetzt wird."
 
-#: ../../domain-infrastructure/ha.rst:93
+#: ../../domain-infrastructure/ha.rst:95
 msgid "DHCP redundancy"
 msgstr "DHCP-Redundanz"
 
@@ -1204,7 +1222,7 @@ msgstr ""
 "Installieren Sie die DHCP-Server-App auf zusätzlichen Systemen, um "
 "sicherzustellen, dass die Netzwerkkonfiguration verfügbar bleibt."
 
-#: ../../domain-infrastructure/ha.rst:97
+#: ../../domain-infrastructure/ha.rst:100
 msgid "Active Directory-compatible Domain Controllers"
 msgstr "Active Directory-kompatible Domain Controller"
 
@@ -1252,7 +1270,7 @@ msgstr ""
 "Sie können jeden Backup Directory Node zu einem Primary Directory Node "
 "umwandeln. Die folgenden Szenarien zur Umwandlung existieren:"
 
-#: ../../domain-infrastructure/ha.rst:121
+#: ../../domain-infrastructure/ha.rst:122
 msgid "Emergency"
 msgstr "Notfall"
 
@@ -1264,7 +1282,7 @@ msgstr ""
 "In einem Notfall, z. B. wenn die Hardware des Primary Directory Node "
 "ausfällt."
 
-#: ../../domain-infrastructure/ha.rst:124
+#: ../../domain-infrastructure/ha.rst:125
 msgid "Replacement"
 msgstr "Austausch"
 
@@ -1367,7 +1385,7 @@ msgstr ""
 "Folgen Sie diesen Schritten, um die Backup zu Primary Umwandlung "
 "vorzubereiten:"
 
-#: ../../domain-infrastructure/ha.rst:162
+#: ../../domain-infrastructure/ha.rst:214
 msgid "Synchronize LDAP schema packages"
 msgstr "LDAP-Schema-Pakete synchronisieren"
 
@@ -1481,7 +1499,7 @@ msgstr ""
 "$ dpkg --set-selections < dpkg.selection\n"
 "$ apt-get dselect-upgrade"
 
-#: ../../domain-infrastructure/ha.rst:218
+#: ../../domain-infrastructure/ha.rst:228
 msgid "Compare Univention Configuration Registry"
 msgstr "Univention Configuration Registry vergleichen"
 
@@ -1781,7 +1799,7 @@ msgstr ""
 "verschiedenen Systemrollen, die Sie bereitstellen können, als auch die "
 "Strategien zum Schutz vor einzelnen Ausfallpunkten verstehen."
 
-#: ../../domain-infrastructure/index.rst:20
+#: ../../domain-infrastructure/index.rst:24
 msgid "System roles"
 msgstr "Systemrollen"
 
@@ -1810,7 +1828,7 @@ msgstr ""
 "Verwaltungsmodul und verwalten Sie Join-Skripte für die automatisierte "
 "Systemkonfiguration. Siehe :ref:`domain-infrastructure-join`."
 
-#: ../../domain-infrastructure/index.rst:33
+#: ../../domain-infrastructure/index.rst:37
 #: ../../domain-infrastructure/tls.rst:7
 msgid "Certificate management"
 msgstr "Zertifikatsverwaltung"
@@ -1826,7 +1844,7 @@ msgstr ""
 " Zertifikatsgültigkeit und Verlängerungsverfahren. Siehe :ref:`domain-"
 "infrastructure-tls`."
 
-#: ../../domain-infrastructure/index.rst:39
+#: ../../domain-infrastructure/index.rst:43
 msgid "Kerberos authentication"
 msgstr "Kerberos-Authentifizierung"
 
@@ -1867,7 +1885,7 @@ msgstr ""
 "Systemaktualisierungen mit der App :program:`Admin Diary`. Siehe :ref"
 ":`domain-activity-logging`."
 
-#: ../../domain-infrastructure/index.rst:57
+#: ../../domain-infrastructure/index.rst:61
 msgid "Listener and Notifier replication"
 msgstr "Listener- und Notifier-Replikation"
 
@@ -2082,7 +2100,7 @@ msgstr ""
 "Univention Directory Notifier die Änderung und benachrichtigt die "
 "Listener-Instanzen."
 
-#: ../../domain-infrastructure/listener-notifier.rst:28
+#: ../../domain-infrastructure/listener-notifier.rst:31
 msgid ""
 "Diagram showing Univention Directory Listener instances connecting to a "
 "Univention Directory Notifier service on the Primary Directory Node, "
@@ -2317,9 +2335,9 @@ msgid ""
 "command in :numref:`listener-notifier-troubleshooting-init-modules-"
 "listing`."
 msgstr ""
-"Um beispielsweise das ``cups-printers`` Modul neu zu initialisieren, führen Sie den "
-"Befehl in :numref:`listener-notifier-troubleshooting-init-modules-"
-"listing` aus."
+"Um beispielsweise das ``cups-printers`` Modul neu zu initialisieren, "
+"führen Sie den Befehl in :numref:`listener-notifier-troubleshooting-init-"
+"modules-listing` aus."
 
 #: ../../domain-infrastructure/listener-notifier.rst:145
 msgid "Reinitialize the cups-printers listener module"
@@ -2690,7 +2708,7 @@ msgstr ""
 "finden Sie unter :ref:`deployment-primary-dn-resilience-backup-primary-"
 "promotion`."
 
-#: ../../domain-infrastructure/tls.rst:68
+#: ../../domain-infrastructure/tls.rst:69
 msgid ":ref:`deployment-domain-setup-new-domain`"
 msgstr ":ref:`deployment-domain-setup-new-domain`"
 
@@ -2806,3 +2824,4 @@ msgid ""
 msgstr ""
 "Wählen Sie für die Widerrufsliste :menuselection:`Zertifikate --> "
 "Zertifikatwiderrufsliste` aus."
+

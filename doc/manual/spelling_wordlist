@@ -83,3 +83,7 @@ App-Settings
 App-Konfiguration
 Empfangs-Portnummer
 CA-Zertifikat
+RPC-Aufruf
+Kerberos-Passwort-Hashes
+Kerberostickets
+Passwort-Hashes
