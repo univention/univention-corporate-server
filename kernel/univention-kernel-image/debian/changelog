@@ -1,3 +1,9 @@
+univention-kernel-image (12.0.0-18) unstable; urgency=medium
+
+  * Bug #59322: Update to 5.10.251-5~deb9u1
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 20 May 2026 14:29:20 +0200
+
 univention-kernel-image (12.0.0-17) unstable; urgency=medium
 
   * Issue #3509: Update to 5.10.251-4~deb9u1
