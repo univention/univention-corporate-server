@@ -38,4 +38,20 @@ int univention_config_set_string(const char *key, const char *value);
  */
 bool univention_config_is_true(const char *key, bool default_value);
 
+/**
+ * Iterate over all UCR variables and calling the given callback.
+ */
+void univention_config_iterate(
+    void (*callback)(const char *key, const char *value, void *userdata),
+    void *userdata
+);
+
+/**
+ * Iterate over UCR variables with the given prefix and calling the given callback.
+ */
+void univention_config_iterate_prefix(
+	const char *prefix,
+	void (*callback)(const char *key, const char *value, void *userdata),
+	void *userdata
+);
 #endif
