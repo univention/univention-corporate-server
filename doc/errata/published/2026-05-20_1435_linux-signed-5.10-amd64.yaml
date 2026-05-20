@@ -12,3 +12,6 @@ bug: [59321]
 cve:
 - CVE-2026-46333
 note: This is the 1st of two parts.
+erratum: 1435
+announced: 2026-05-20
+support: lts
