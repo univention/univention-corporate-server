@@ -10,3 +10,6 @@ desc: |
    explicitly, so that objects can be created in a deterministic fashion.
    The UDM CLI now displayed the correct new DN of a moved object.
 bug: [59281]
+erratum: 463
+announced: 2026-05-20
+support: core
