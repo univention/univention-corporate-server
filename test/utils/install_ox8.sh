@@ -2,6 +2,13 @@
 
 set -e
 
+if [ $# -ne 1 ]; then
+  echo "First parameter must be LDAP server IP"
+fi
+
+LDAP_SERVER="$1"
+LDAP_BASE="$(ucr get ldap/base)"
+
 # SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -32,10 +39,13 @@ apt install --yes python3-venv
 # Use operations-guide mirrored by Nautilus team instead of upstream
 # Parametrize this clone can be a future improvement
 git clone --depth 1 --branch "ci-0.0.2" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+
 cd ox-operations-guide-mirror
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
 v/bin/pip install -r requirements.txt
+
+PASSWORD_DOVEADM="$(openssl rand -base64 18)"
 
 cat <<EOF >values.yaml
 as_hostname: "as8.lab.test"
@@ -54,9 +64,37 @@ deputy_enabled: true
 contacts_provider_ldap_enabled: true
 enable_username_editable: true
 external_tls_termination: true
+
+switchboard_enabled: false
+
+use_ldap: true
+use_ldap_resolver: true
+ldap_server_host: "${LDAP_SERVER}"
+ldap_server_scheme: ldap
+ldap_server_port: "389"
+as_hostname_dc: "${LDAP_BASE}"
+ldap_binddn_appsuite: "uid=Administrator,cn=users,${LDAP_BASE}"
+ldap_binddn_dovecot: "uid=Administrator,cn=users,${LDAP_BASE}"
+ldap_basedn: "${LDAP_BASE}"
+
+mail_server: "dovecot-ce:143"
+mail_login_source: mail
+
+attribute_sources:
+  userName:
+    ldap: uid
+    claim: ox_username
+  contextName:
+    ldap: oxContextIDNum
+    claim: ox_contextname
+  mailboxName:
+    ldap: mailPrimaryAddress
+    claim: dc_username
+
 core_mw_extra_properties:
   # enable shared accounts
   com.openexchange.sharedaccount.enabled: "true"
+  # the shared accounts are only virtual and not backed by a real LDAP user -> use the technical account for the login
   com.openexchange.mail.secondary.passwordSource: "global"
   # Additional configuration related to the deputy feature
   com.openexchange.dovecot.doveadm.enabled: "true"
@@ -65,10 +103,13 @@ core_mw_extra_properties:
   com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"
   com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"
   com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"
-  com.openexchange.dovecot.doveadm.apiSecret: "value-will-be-replaced"
+  com.openexchange.dovecot.doveadm.apiSecret: "${PASSWORD_DOVEADM}"
   com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "/"
   com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"
   com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"
+  # Requirements for OX-Connector
+  com.openexchange.user.enforceUniqueDisplayName: "false"
+  com.openexchange.folderstorage.database.preferDisplayName: "false"
 EOF
 
 if [ "${OX_APP_SUITE_CHART_VERSION}" != "" ]; then
@@ -78,15 +119,28 @@ if [ "${OX_APP_SUITE_CHART_VERSION}" != "" ]; then
         dependencies.yml
 fi
 
-PASSWORD_DOVEADM="$(openssl rand -base64 18)"
-mkdir -p rendered/values
-python3 vault.py -c -v ./rendered/values/vault.json -s "dovecot.doveconf.doveadm_api_key=${PASSWORD_DOVEADM}"
-yq -i ".core_mw_extra_properties.\"com.openexchange.dovecot.doveadm.apiSecret\" = \"${PASSWORD_DOVEADM}\"" values.yaml
+mkdir -p "./rendered/values/"
+
+v/bin/python vault.py -c -v "./rendered/values/vault.json" -s "dovecot.doveconf.doveadm_api_key=${PASSWORD_DOVEADM}"
+# ldap.readpw.appsuite (password of oxSystemUser is used for authentication)
+v/bin/python vault.py -c -v "./rendered/values/vault.json" -s "ldap.readpw.appsuite=univention"
+# ldap.readpw.dovecot (password of oxSystemUser is used for authentication)
+v/bin/python vault.py -c -v "./rendered/values/vault.json" -s "ldap.readpw.dovecot=univention"
 
 v/bin/python render.py --values values.yaml
 
+# mail_server variable is used in appsuite and postfix but postfix does not support port so remove it manually
+yq -i ".postconf.lmtp_target = \"dovecot-ce\"" rendered/values/values.postfix.yaml
+
 # workaround for bitnami moving their images
-yq ".image.repository = \"bitnamilegacy/redis\"" rendered/values/values.bitnami-redis.yaml
+yq -i ".image.repository = \"bitnamilegacy/redis\"" rendered/values/values.bitnami-redis.yaml
+
+# more cpu for middleware -> not needed features
+yq -i ".core-guidedtours.enabled = false" rendered/values/values.yaml
+yq -i ".core-user-guide.enabled = false" rendered/values/values.yaml
+
+# doveconf.ldap.uri (bug? hardcoded to: uri: ldap://slapd:389/ )
+yq -i ".doveconf.ldap.uri = \"ldap://${LDAP_SERVER}:389/\"" rendered/values/values.dovecot-ce.yaml
 
 cd rendered/values
 
@@ -206,27 +260,3 @@ EOF
 a2enmod proxy proxy_http proxy_balancer expires deflate headers rewrite mime setenvif lbmethod_byrequests
 a2enconf proxy_http.conf
 systemctl restart apache2.service
-
-# test doveadm connection
-# echo "secret"|base64  # -> c2VjcmV0
-dovecot_api_pw="$(echo ${PASSWORD_DOVEADM}|base64)"
-kubectl exec -n as8 "$(kubectl get pods -n as8 | grep mw-default | awk '{print $1}' | head -n1)" -it -- bash -c "curl -v -H 'Authorization: X-Dovecot-API ${dovecot_api_pw}' http://dovecot-ce:8080/doveadm/v1"
-
-# This adds the cluster ip to the ox-core-mw pod. Otherwise it can't resolve as8.lab.test
-kubectl patch deployment as8-core-mw-default \
-  -n as8 \
-  --type merge \
-  -p "{
-    \"spec\": {
-      \"template\": {
-        \"spec\": {
-          \"hostAliases\": [
-            {
-              \"ip\": \"${cluster_ip}\",
-              \"hostnames\": [\"as8.lab.test\"]
-            }
-          ]
-        }
-      }
-    }
-  }"
