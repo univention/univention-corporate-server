@@ -21,18 +21,18 @@ changes in their respective section in the changelog.
 This document uses Sphinx for building the artifacts from the reStructeredText
 (reST) documents. To extract the content from the errata YAML files, Sphinx
 uses the custom builder [Univention Sphinx
-Changelog](https://git.knut.univention.de/univention/dev/docs/univention_sphinx_changelog).
+Changelog](https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog).
 
 The following example illustrates the procedure in detail on the example for
-the UCS 5.2-7 patch level release version.
+the UCS 5.3-0 patch level release version.
 
 1. Update configuration settings in `conf.py`:
 
-   * Set `univention_changelog_previous_release` to `"5.2-6"`.
+   * Set `univention_changelog_previous_release` to `"5.3-4"`.
 
-   * Set `release` to `5.2-7`.
+   * Set `release` to `5.3-0`.
 
-   * Keep `version` at `5.2`.
+   * Keep `version` at `5.3`.
 
 1. Extract the changes from the errata YAML files and create a reST document:
    ```sh
@@ -44,7 +44,7 @@ the UCS 5.2-7 patch level release version.
 
 1. Review the content and add reST semantics to it. Check the style with the
    [Univention Documentation
-   Styleguide](https://univention.gitpages.knut.univention.de/dev/docs/styleguide/).
+   Styleguide](https://univention.gitpages.knut.univention.de/documentation/styleguide/).
 
 1. Commit the changes to the repository and let the CI/CD pipeline build the
    artifacts.

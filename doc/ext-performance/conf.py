@@ -28,7 +28,7 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = '5.2'
+version = '5.3'
 # The full version, including alpha/beta/rc tags
 release = version
 project = f'Univention Corporate Server {version} - Performance Guide'
