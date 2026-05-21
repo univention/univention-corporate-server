@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
-"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-08 10:58+0000\n"
 "PO-Revision-Date: 2026-05-08 12:58+0200\n"
@@ -2326,11 +2326,11 @@ msgstr ""
 
 #: ../../iam/password-management/user-self-service.rst:414
 msgid ""
-"Since UCS 5.2, the :program:`Keycloak` app is the default identity "
+"Since UCS 5.3, the :program:`Keycloak` app is the default identity "
 "provider. For information about Keycloak settings, see :external+uv-"
 "keycloak-app:ref:`app-settings` in the :cite:t:`ucs-keycloak-doc`."
 msgstr ""
-"Seit UCS 5.2 ist die App :program:`Keycloak` der Standard-"
+"Seit UCS 5.3 ist die App :program:`Keycloak` der Standard-"
 "Identitätsanbieter. Für Informationen zu Einstellungen in Keycloak siehe "
 ":external+uv-keycloak-app:ref:`app-settings` in :cite:t:`ucs-keycloak-"
 "doc`."

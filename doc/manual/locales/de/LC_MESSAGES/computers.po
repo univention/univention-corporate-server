@@ -756,11 +756,11 @@ msgstr ""
 
 #: ../../computers/basic-system-services.rst:384
 msgid ""
-"Since UCS 5.2-0, the user information (``passwd``) is no longer cached "
+"Since UCS 5.3-0, the user information (``passwd``) is no longer cached "
 "via NSCD. Instead the *System Security Services Daemon* (SSSD) is used to"
 " get and cache user information, see `SSSD documentation <sssd-docs_>`_."
 msgstr ""
-"Ab UCS 5.2-0 werden Benutzerinformationen (``passwd``) nicht mehr über "
+"Ab UCS 5.3-0 werden Benutzerinformationen (``passwd``) nicht mehr über "
 "den NSCD zwischengespeichert. Stattdessen wird der *System Security "
 "Services Daemon* (SSSD) verwendet, um Benutzerinformationen abzurufen und"
 " zwischenzuspeichern, siehe `SSSD-Dokumentation <sssd-docs_>`_."

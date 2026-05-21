@@ -546,9 +546,9 @@ inheritance.
 
    .. py:method:: map(value, encoding)
 
-      .. versionadded:: 5.2-6
+      .. versionadded:: 5.3-6
 
-         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.3x416`.
 
       :param Any value: The UDM property value
       :param tuple encoding: Optional encoding information
@@ -559,9 +559,9 @@ inheritance.
 
    .. py:method:: unmap(value, encoding)
 
-      .. versionadded:: 5.2-6
+      .. versionadded:: 5.3-6
 
-         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+         The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.3x416`.
 
       :param list[bytes] value: The list of LDAP attributes
       :param tuple encoding: Optional encoding information
@@ -731,9 +731,9 @@ Examples
   We can map the values between these formats by providing the
   appropriate ``map`` and ``unmap`` functions in the hook.
 
-  .. versionadded:: 5.2-6
+  .. versionadded:: 5.3-6
 
-    The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+    The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.3x416`.
 
   .. code-block:: python
 

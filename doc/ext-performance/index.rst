@@ -319,7 +319,7 @@ To use LMDB instead of TDB, set the corresponding |UCSUCRV|
 :envvar:`samba/database/backend/store` to ``mdb`` before you install the app
 :program:`Active Directory-compatible Domain Controller` in your UCS domain.
 
-.. versionadded:: 5.2-0
+.. versionadded:: 5.3-0
 
    LMDB is the default for provisioning the Samba backend database.
 

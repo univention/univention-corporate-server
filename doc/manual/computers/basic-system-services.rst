@@ -381,7 +381,7 @@ Since UCS 3.1, the groups are no longer cached via the NSCD for performance and
 stability reasons; instead they are now cached by a local group cache, see
 :ref:`groups-cache`.
 
-Since UCS 5.2-0, the user information (``passwd``) is no longer cached via
+Since UCS 5.3-0, the user information (``passwd``) is no longer cached via
 NSCD. Instead the *System Security Services Daemon* (SSSD) is used to get and
 cache user information, see `SSSD documentation <sssd-docs_>`_.
 

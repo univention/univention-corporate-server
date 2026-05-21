@@ -411,7 +411,7 @@ User notification for user accounts with an unverified email address
    * :external+uv-keycloak-app:envvar:`keycloak/login/messages/en/accountNotVerifiedMsg`
    * :external+uv-keycloak-app:envvar:`keycloak/login/messages/de/accountNotVerifiedMsg`
 
-Since UCS 5.2, the :program:`Keycloak` app is the default identity provider.
+Since UCS 5.3, the :program:`Keycloak` app is the default identity provider.
 For information about Keycloak settings,
 see :external+uv-keycloak-app:ref:`app-settings` in the :cite:t:`ucs-keycloak-doc`.
 
