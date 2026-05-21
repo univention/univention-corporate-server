@@ -13,8 +13,8 @@ then
 fi
 ###CHECKS_COMMON###
 
-VERSION="52"  # we don't put 51 here because the upgrade should look like upgrading to UCS 5.2
-VERSION_NAME="5.2"
+VERSION="53"
+VERSION_NAME="5.3"
 MIN_VERSION="5.0-7"
 MIN_VERSION_SYSTEM="5.2-1-39"
 
@@ -431,7 +431,7 @@ update_check_disk_space () {
 		then
 			echo "	Not enough space in $partition, need at least $usersize."
 			echo "	This may interrupt the update and result in an inconsistent system!"
-			if [ "$partition" = "/boot" ] && [ "$update52_pruneoldkernel" != "yes" ]
+			if [ "$partition" = "/boot" ] && [ "$update53_pruneoldkernel" != "yes" ]
 			then
 				echo
 				echo "	Old kernel versions on /boot/ can be pruned by manully by running"
