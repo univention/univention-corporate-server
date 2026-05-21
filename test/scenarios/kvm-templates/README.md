@@ -129,7 +129,7 @@ This section describes the process to update an existing `2.4masterinstallation`
 
 ### Steps to generate the new template
 
-Start the jenkins job [CreateUpdateFrom24KtGetTemplate](https://jenkins2022.knut.univention.de/job/UCS-5.2/job/UCS-5.2-5/view/Templates/job/CreateUpdateFrom24KtGetTemplate/)
+Start the jenkins job [CreateUpdateFrom24KtGetTemplate](https://jenkins2022.knut.univention.de/job/UCS-5.3/job/UCS-5.3-0/view/Templates/job/CreateUpdateFrom24KtGetTemplate/)
 
 This job supports the following parameters:
 - `START_FROM_UCS_VERSION`: The UCS version of the existing `2.4masterinstallation` template (e.g., 5.0-6)
