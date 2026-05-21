@@ -30,7 +30,7 @@ sys.path.append(os.path.abspath('./_ext'))
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = '5.2'
+version = '5.3'
 # The full version, including alpha/beta/rc tags
 release = version
 project = f'Quick start guide for Univention Corporate Server {version}'

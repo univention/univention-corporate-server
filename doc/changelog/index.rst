@@ -10,7 +10,7 @@ General
 
 .. _security:
 
-* |UCSUCS| |release| includes all security updates issued for UCS 5.2-4:
+* |UCSUCS| |release| includes all security updates issued for UCS 5.3-4:
 
   * :program:`apache2` (:uv:cve:`2025-55753`, :uv:cve:`2025-58098`,
     :uv:cve:`2025-59775`, :uv:cve:`2025-65082`, :uv:cve:`2025-66200`)

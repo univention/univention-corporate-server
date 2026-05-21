@@ -29,7 +29,7 @@ if year_range > start_year:
 copyright = f'{year_range}, Univention GmbH'
 author = ''
 
-version = '5.2'
+version = '5.3'
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -82,7 +82,7 @@ intersphinx_mapping = {
     'linux-kernel-docs': (
         'https://www.kernel.org/doc/html/v6.1/',
         None,
-    ),  # UCS 5.2 Kernel is 6.1
+    ),  # UCS 5.3 Kernel is 6.1
     'python-docs': (
         'https://docs.python.org/3.12/',
         None,
@@ -131,7 +131,7 @@ html_theme_options = {
     'This document is work in progress and will replace the UCS Manual.</br> '
     "If you don't find the content "
     'you are looking for, refer to the '
-    "<a href='https://docs.software-univention.de/manual/5.2/en/' "
+    "<a href='https://docs.software-univention.de/manual/5.3/en/' "
     "target='_blank' style='color: var(--pst-color-secondary)'>"
     'UCS Manual</a>.</p>',
 }
@@ -229,7 +229,7 @@ def adapt_settings_to_translation(app, config):
             'linux-kernel-docs': (
                 'https://www.kernel.org/doc/html/v6.1/',
                 None,
-            ),  # UCS 5.2 Kernel is 6.1
+            ),  # UCS 5.3 Kernel is 6.1
             'python-docs': (
                 'https://docs.python.org/3.12/',
                 None,
@@ -242,7 +242,7 @@ Dieses Dokument befindet sich in Arbeit
 und wird das UCS Handbuch ablösen.</br>
 Wenn Sie den gesuchten Inhalt nicht finden,
 schauen Sie in das
-<a href='https://docs.software-univention.de/manual/5.2/de/'
+<a href='https://docs.software-univention.de/manual/5.3/de/'
 target='_blank' style='color: var(--pst-color-secondary)'>
 UCS Handbuch</a>.</p>
 """
