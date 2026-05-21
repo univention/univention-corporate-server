@@ -1,3 +1,9 @@
+univention-dojo (16.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:47 +0200
+
 univention-dojo (15.5.1) unstable; urgency=medium
 
   [ Marius Meschter ]

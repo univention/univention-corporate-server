@@ -1,3 +1,9 @@
+univention-join (15.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:49 +0200
+
 univention-join (14.5.1) unstable; urgency=medium
 
   * Bug #58212: Fix version comparison in univention-join using dpkg --compare-versions

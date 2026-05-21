@@ -1,3 +1,9 @@
+univention-directory-manager-modules (18.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:44 +0200
+
 univention-directory-manager-modules (17.5.20) unstable; urgency=medium
 
   * Bug #59281: fix printed DN after move on CLI

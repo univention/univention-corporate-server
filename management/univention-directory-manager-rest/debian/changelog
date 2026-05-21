@@ -1,3 +1,9 @@
+univention-directory-manager-rest (13.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:45 +0200
+
 univention-directory-manager-rest (12.5.11) unstable; urgency=medium
 
   * Bug #59217: only add univentionObjectIdentifier in object template if

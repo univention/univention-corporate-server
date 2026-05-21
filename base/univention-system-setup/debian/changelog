@@ -1,3 +1,9 @@
+univention-system-setup (16.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:59 +0200
+
 univention-system-setup (15.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump

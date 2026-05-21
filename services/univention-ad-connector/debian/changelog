@@ -1,3 +1,9 @@
+univention-ad-connector (17.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:51 +0200
+
 univention-ad-connector (16.6.4) unstable; urgency=medium
 
   * Bug #58876: Document msDS-SupportedEncryptionTypes

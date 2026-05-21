@@ -1,3 +1,9 @@
+ucs-test (13.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:50 +0200
+
 ucs-test (12.5.40) unstable; urgency=medium
 
   * Bug #59200: Fix test

@@ -1,3 +1,9 @@
+crudesaml (2.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:55 +0200
+
 crudesaml (1.9.0-2) unstable; urgency=medium
 
   * Bug #51489: remove 20_fix-private-signature.patch, fixed in bug #51479.

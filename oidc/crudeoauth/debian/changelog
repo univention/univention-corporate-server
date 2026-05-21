@@ -1,3 +1,9 @@
+crudeoauth (2.0.1) unstable; urgency=medium
+
+  * Bug #55706: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 21 May 2026 19:09:44 +0200
+
 crudeoauth (1.0.0-5) unstable; urgency=medium
 
   * Bug #58210: fix TLS check for server side
