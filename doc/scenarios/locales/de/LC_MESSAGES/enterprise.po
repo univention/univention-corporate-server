@@ -437,10 +437,10 @@ msgstr "Referenzen"
 
 #: ../../enterprise.rst:204
 msgid ""
-":external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual "
+":external+uv-ucs-operation:doc:`Nubus for UCS 5.3 - Operation Manual "
 "<index>`"
 msgstr ""
-":external+uv-ucs-operation:doc:`Nubus für UCS 5.2 - Betriebshandbuch "
+":external+uv-ucs-operation:doc:`Nubus für UCS 5.3 - Betriebshandbuch "
 "<index>`"
 
 #: ../../enterprise.rst:206
