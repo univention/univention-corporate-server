@@ -1,3 +1,15 @@
+univention-licence (14.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 03 Nov 2026 17:48:53 +0100
+
+univention-licence (13.7.1) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Tue, 03 Nov 2026 17:48:53 +0100
+
 univention-licence (13.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]
