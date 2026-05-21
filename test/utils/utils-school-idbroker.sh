@@ -33,7 +33,7 @@ ansible_preperation () {
     echo "EXTERNAL_ROOT_URL=https://$(hostname -f)/univention-test-app/" >> /etc/univention-test-app.conf
     curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger1-simple-saml_metadata.xml
     curl -k "https://ucs-sso-ng.$traeger1_domain/realms/ucs/protocol/saml/descriptor" > files/jenkins/univention_id_broker/idp_metadata/traeger1-kc-saml_metadata.xml
-    mv inventories/jenkins/group_vars/partner_provisioning_5.2.yml inventories/jenkins/group_vars/partner_provisioning.yml
+    mv inventories/jenkins/group_vars/partner_provisioning_5.3.yml inventories/jenkins/group_vars/partner_provisioning.yml
 }
 
 create_certificate_kc_vhost () {
@@ -235,7 +235,7 @@ create_school_users_classes () {
         --append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
         --append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" SchoolClass
 
-    # Only create and append a legal guardian on Traeger2, the 5.2 system
+    # Only create and append a legal guardian on Traeger2, the 5.3 system
     if [ "$traeger" = "Traeger2" ]; then
         i=1; python3 -m ucsschool.lib.models create --name "parent${i}" --set firstname "$traeger" --set lastname "Parent${i}" --set password univention --school DEMOSCHOOL --append legal_wards "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" LegalGuardian
         python3 -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
