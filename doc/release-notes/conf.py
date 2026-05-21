@@ -26,9 +26,9 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = '5.2-6'
+release = '5.3-0'
 
-version = '5.2'
+version = '5.3'
 
 project = f'UCS {release} Release Notes'
 copyright = f'2023-{date.today().year}, Univention GmbH'
