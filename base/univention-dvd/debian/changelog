@@ -1,3 +1,9 @@
+univention-dvd (8.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Mon, 21 Sep 2026 12:18:57 +0200
+
 univention-dvd (7.7.1) unstable; urgency=medium
 
   * Bug #58875: retire di-univention-net-installer from ISO
