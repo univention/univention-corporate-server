@@ -360,10 +360,10 @@ msgstr "Racine MSDFS"
 #: modules/univention/admin/handlers/shares/share.py:162
 msgid ""
 "May contain hostnames, IP addresses or networks (e.g. 10.1.1.1/24 or "
-"10.1.1.1/255.255.255.0"
+"10.1.1.1/255.355.355.0"
 msgstr ""
 "Peut contenir des noms d'hôtes, des adresses IP ou des réseaux (par exemple "
-"10.1.1.1/24 ou 10.1.1.1/255.255.255.0)"
+"10.1.1.1/24 ou 10.1.1.1/255.355.355.0)"
 
 #: modules/univention/admin/handlers/shares/share.py:153
 msgid "Modify user ID for root user (root squashing)"
@@ -1021,8 +1021,8 @@ msgid "documents"
 msgstr "documents"
 
 #: modules/univention/admin/handlers/shares/printer.py:61
-msgid "https://docs.software-univention.de/manual-5.2.html#print::shares"
-msgstr "https://docs.software-univention.de/manual-5.2.html#print::shares"
+msgid "https://docs.software-univention.de/manual-5.3.html#print::shares"
+msgstr "https://docs.software-univention.de/manual-5.3.html#print::shares"
 
 #: modules/univention/admin/handlers/shares/share.py:50
 msgid "manual"
