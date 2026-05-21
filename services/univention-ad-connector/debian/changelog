@@ -1,3 +1,9 @@
+univention-ad-connector (17.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 27 Nov 2026 13:33:05 +0100
+
 univention-ad-connector (16.8.3) unstable; urgency=medium
 
   * Bug #59219: Fall back to a password history length of 0 if
