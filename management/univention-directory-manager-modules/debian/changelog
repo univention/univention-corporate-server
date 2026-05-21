@@ -1,3 +1,15 @@
+univention-directory-manager-modules (18.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2026 12:56:37 +0100
+
+univention-directory-manager-modules (17.7.6) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Fri, 06 Nov 2026 12:56:37 +0100
+
 univention-directory-manager-modules (17.7.5) unstable; urgency=medium
 
   * Bug #60103: fix replacing of license in delegative administration

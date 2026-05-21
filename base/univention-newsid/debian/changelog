@@ -1,3 +1,9 @@
+univention-newsid (14.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 11 Sep 2026 14:19:39 +0200
+
 univention-newsid (13.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump
@@ -183,6 +189,3 @@ univention-newsid (0.1.0) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Sep 2003 17:10:40 +0200
 
-Local variables:
-mode: debian-changelog
-End:
