@@ -1,3 +1,9 @@
+univention-directory-manager-rest (13.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 13 Oct 2026 12:01:25 +0200
+
 univention-directory-manager-rest (12.7.1) unstable; urgency=medium
 
   * Bug #59702: handle malformed auth cache entries gracefully
