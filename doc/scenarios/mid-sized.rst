@@ -163,7 +163,7 @@ authenticate the users against the UCS LDAP server.
 References
 ==========
 
-* :external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual <index>`
+* :external+uv-ucs-operation:doc:`Nubus for UCS 5.3 - Operation Manual <index>`
 
 * `OX App Suite
   <https://www.univention.com/products/app-catalog/oxseforucs/>`_

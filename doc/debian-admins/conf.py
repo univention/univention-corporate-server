@@ -24,7 +24,7 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-version = '5.2'
+version = '5.3'
 project = f'UCS {version} for Debian and Ubuntu Administrators'
 release = version
 copyright = f'2023-{date.today().year}, Univention GmbH'

@@ -460,7 +460,7 @@ The following commands create a repository for UCS 5.0 with the component name :
 
 .. code-block::
 
-   $ WWW_BASE="/var/www/repository/5.2/maintained/component"
+   $ WWW_BASE="/var/www/repository/5.3/maintained/component"
    $ TESTCOMP="testcomp/all"
    $ install -m755 -d "$WWW_BASE/$TESTCOMP"
    $ install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
@@ -476,7 +476,7 @@ assuming that the FQDN of the host with the repository is :samp:`{repository.exa
 
 .. code-block:: debsources
 
-   deb [trusted=yes] http://repository.example.com/repository/5.2/maintained/component testcomp/all/
+   deb [trusted=yes] http://repository.example.com/repository/5.3/maintained/component testcomp/all/
 
 .. important::
 
