@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: samba
+fix: 4.18.3-1A~5.0.0.202605211527
+desc: |
+ This update addresses the following issues:
+ * TODO
+bug: [59342]
