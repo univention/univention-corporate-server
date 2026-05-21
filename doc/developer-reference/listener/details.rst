@@ -368,7 +368,7 @@ While in UCS 4 :py:func:`handler() <low_level.handler>` typically looked like:
            ...
 
 
-In UCS 5.2 it would look like:
+In UCS 5.3 it would look like:
 
 .. code:: python
 
