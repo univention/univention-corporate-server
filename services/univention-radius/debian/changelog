@@ -1,3 +1,9 @@
+univention-radius (10.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 11 Sep 2026 14:19:16 +0200
+
 univention-radius (9.7.2) unstable; urgency=medium
 
   * Bug #59042: avoid patching dh-cargo during build

@@ -1,3 +1,9 @@
+univention-archive-key (13.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 11 Sep 2026 14:19:45 +0200
+
 univention-archive-key (12.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump
