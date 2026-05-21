@@ -6,9 +6,9 @@
 Recycle Bin
 ===========
 
-.. versionadded:: 5.2-3-erratum-298
+.. versionadded:: 5.3-3-erratum-298
 
-   Since :uv:erratum:`5.2x298`, UCS supports a *Recycle Bin* feature for
+   Since :uv:erratum:`5.3x298`, UCS supports a *Recycle Bin* feature for
    user and group objects in UDM.
 
 The *Recycle Bin* is a feature in UDM

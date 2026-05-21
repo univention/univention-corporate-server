@@ -16,7 +16,7 @@ General
 
 .. _security:
 
-* |UCSUCS| |release| includes all security updates issued for UCS 5.2-5:
+* |UCSUCS| |release| includes all security updates issued for UCS 5.3-5:
 
   * :program:`apache2` (:uv:cve:`2026-23918`, :uv:cve:`2026-24072`,
     :uv:cve:`2026-29169`, :uv:cve:`2026-33006`, :uv:cve:`2026-33007`,
@@ -661,7 +661,7 @@ Univention Management Console web interface
 ===========================================
 
 * A regression has been fixed, which was introduced by updating Dojo ``dgrid`` to
-  version 1.3.3 in UCS 5.2 Erratum 304 and caused the "Select All" checkbox in
+  version 1.3.3 in UCS 5.3 Erratum 304 and caused the "Select All" checkbox in
   list views and the tree view in the LDAP directory to malfunction
   (:uv:bug:`59095`).
 

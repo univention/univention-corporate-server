@@ -567,7 +567,7 @@
 
 - git: 9467660bec04029b3dd18e1925fe15897c885864
   desc: univention-keycloak
-  obsolete: "5.2-0"
+  obsolete: "5.3-0"
   vars:
     - saml/idp/authsource
     - saml/idp/negotiate/filter-subnets
@@ -576,7 +576,7 @@
 
 - git: 59924a2441bbfd56a0cea5467d41bbb98e52e5ca
   desc: univention-net-installer
-  obsolete: "5.2-4"
+  obsolete: "5.3-4"
   vars:
   - pxe/installer/append
   - pxe/installer/quiet

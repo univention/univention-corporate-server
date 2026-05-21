@@ -99,7 +99,7 @@ Use these when you create a *UMC policy*.
    * - ``udm-nagios``
      - *Nagios*
      - Grants access to the *Nagios* management module for configuring NRPE host monitoring.
-       Nagios server management isn't available since UCS 5.2.
+       Nagios server management isn't available since UCS 5.3.
 
    * - ``udm-navigation``
      - *LDAP directory*

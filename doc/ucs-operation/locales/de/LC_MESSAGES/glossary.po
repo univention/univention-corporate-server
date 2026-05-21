@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
-"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-17 16:54+0000\n"
 "PO-Revision-Date: 2026-03-23 16:25+0100\n"
