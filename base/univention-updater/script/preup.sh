@@ -52,8 +52,7 @@ echo ""
 
 update_check_ssh () {
 	[ -n "$SSH_CLIENT" ] || return 0
-	[ "${update51_ignoressh:-}" = "yes" ] && return 0
-	[ "${update52_ignoressh:-}" = "yes" ] && return 0
+	[ "${update53_ignoressh:-}" = "yes" ] && return 0
 	echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 	echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 	return 1
@@ -61,8 +60,7 @@ update_check_ssh () {
 
 update_check_term () {
 	[ "$TERM" = "xterm" ] || return 0
-	[ "${update51_ignoreterm:-}" = "yes" ] && return 0
-	[ "${update52_ignoreterm:-}" = "yes" ] && return 0
+	[ "${update53_ignoreterm:-}" = "yes" ] && return 0
 	echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 	echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 	return 1
@@ -130,8 +128,8 @@ mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 
 # Bug #52923 #57296: disable fetchmail during update to prevent aborting update
 if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
-	if [ -z "$(ucr search "^fetchmail/autostart/update522$")" ] ; then
-		ucr set fetchmail/autostart/update522="$(ucr get fetchmail/autostart)" >&3
+	if [ -z "$(ucr search "^fetchmail/autostart/update530$")" ] ; then
+		ucr set fetchmail/autostart/update530="$(ucr get fetchmail/autostart)" >&3
 	fi
 	ucr set fetchmail/autostart=no >&3 2>&3
 	systemctl stop fetchmail >&3 2>&3 || :
@@ -140,7 +138,7 @@ fi
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d
-echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update520.conf
+echo -en "[Service]\nKillMode=process" > /etc/systemd/system/atd.service.d/update530.conf
 systemctl daemon-reload
 
 # ensure that en_US is included in list of available locales (Bug #44150)
@@ -150,7 +148,7 @@ case "${locale:-}" in
 esac
 
 # autoremove before the update
-is_ucr_true update52/skip/autoremove ||
+is_ucr_true update53/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
 deactivate_old_package_sources () {
@@ -158,7 +156,7 @@ deactivate_old_package_sources () {
 	local sources_lists
 	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
 	for sources_list in "${sources_lists[@]}"; do
-		mv "$sources_list" "${sources_list}.upgrade522.bak"
+		mv "$sources_list" "${sources_list}.upgrade530.bak"
 	done
 }
 deactivate_old_package_sources
