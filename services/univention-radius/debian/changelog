@@ -1,3 +1,9 @@
+univention-radius (10.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jun 2026 18:08:00 +0200
+
 univention-radius (9.6.2) unstable; urgency=medium
 
   * Bug #59456: only update outer.session-state when an outer request

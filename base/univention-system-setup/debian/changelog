@@ -1,3 +1,9 @@
+univention-system-setup (16.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Fri, 03 Jul 2026 14:16:20 +0200
+
 univention-system-setup (15.6.1) unstable; urgency=medium
 
   * Bug #51626: Simplify component package collection in system setup
