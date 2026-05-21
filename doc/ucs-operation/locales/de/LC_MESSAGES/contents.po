@@ -4,7 +4,7 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-13 16:25+0000\n"
 "PO-Revision-Date: 2026-01-21 10:11+0100\n"

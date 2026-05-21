@@ -54,7 +54,7 @@ If configured and enabled, components are considered required if the variable
 As an alternative a fixed list of :samp:`{major}.{minor}` releases can be used
 to include the component only for a sub-set of releases: such a component is
 only used locally if the listed component versions include the current version,
-for example a ``5.0 5.1 5.2`` component will not be used on a ``5.4`` system.
+for example a ``5.0 5.1 5.3`` component will not be used on a ``5.4`` system.
 
 .. _updater-scripts:
 

@@ -23,9 +23,9 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-version = '5.2'
+version = '5.3'
 # The full version, including alpha/beta/rc tags
-release = '5.2-7'
+release = '5.3-0'
 
 project = f'UCS {release} Changelog'
 copyright = f'2023-{date.today().year}, Univention GmbH'

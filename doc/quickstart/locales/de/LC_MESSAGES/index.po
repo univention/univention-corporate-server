@@ -519,10 +519,10 @@ msgstr "|UCSUCS| ist umfangreich dokumentiert:"
 #: ../../index.rst:261
 msgid ""
 "The primary source of information on UCS is the :external+uv-ucs-"
-"operation:doc:`Nubus for UCS 5.2 - Operation Manual <index>`."
+"operation:doc:`Nubus for UCS 5.3 - Operation Manual <index>`."
 msgstr ""
 "Primäre Dokumentationsquelle zu UCS ist das "
-":external+uv-ucs-operation:doc:`Nubus für UCS 5.2 - Betriebshandbuch <index>`."
+":external+uv-ucs-operation:doc:`Nubus für UCS 5.3 - Betriebshandbuch <index>`."
 
 #: ../../index.rst:264
 msgid ""
