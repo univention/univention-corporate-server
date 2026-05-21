@@ -1796,10 +1796,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/21_check_join_status.py:17
 msgid ""
 "https://docs.software-univention.de/"
-"manual-5.2.html#domain:listenernotifier:erroranalysis"
+"manual-5.3.html#domain:listenernotifier:erroranalysis"
 msgstr ""
 "https://docs.software-univention.de/"
-"handbuch-5.2.html#domain:listenernotifier:erroranalysis"
+"handbuch-5.3.html#domain:listenernotifier:erroranalysis"
 
 #: umc/python/diagnostic/plugins/32_security_limits.py:27
 msgid "https://help.univention.com/t/samba4-max-open-files/1758"
