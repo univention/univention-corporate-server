@@ -1,3 +1,15 @@
+univention-directory-manager-modules (18.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Sat, 31 Oct 2026 00:21:17 +0100
+
+univention-directory-manager-modules (17.7.4) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Sat, 31 Oct 2026 00:21:17 +0100
+
 univention-directory-manager-modules (17.7.3) unstable; urgency=medium
 
   * Bug #60078: don't mark accounts with a disabled password hash (!) as

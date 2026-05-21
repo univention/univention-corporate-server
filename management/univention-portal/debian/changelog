@@ -1,3 +1,15 @@
+univention-portal (7.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Sat, 31 Oct 2026 00:21:16 +0100
+
+univention-portal (6.7.1) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Sat, 31 Oct 2026 00:21:16 +0100
+
 univention-portal (6.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]
