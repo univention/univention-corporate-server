@@ -1,3 +1,9 @@
+univention-nagios-smart (12.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jun 2026 17:28:34 +0200
+
 univention-nagios-smart (11.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

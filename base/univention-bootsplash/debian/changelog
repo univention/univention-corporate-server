@@ -1,3 +1,9 @@
+univention-bootsplash (14.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jun 2026 17:28:47 +0200
+
 univention-bootsplash (13.6.0) UNRELEASED; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
