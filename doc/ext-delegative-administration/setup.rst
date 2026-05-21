@@ -7,7 +7,7 @@
 Set up a test environment
 *************************
 
-Univention released the preview for the delegative administration as an errata update for UCS 5.2-2.
+Univention released the preview for the delegative administration as an errata update for UCS 5.3-2.
 To test its functionality,
 you as an administrator need to explicitly activate the feature
 and run some additional steps:
@@ -23,10 +23,10 @@ and run some additional steps:
 Preparation
 ===========
 
-To prepare a UCS 5.2-2 test environment for using delegative administration,
+To prepare a UCS 5.3-2 test environment for using delegative administration,
 use the following steps:
 
-#. Set up a dedicated UCS 5.2-2 |UCSPRIMARYDN| test system
+#. Set up a dedicated UCS 5.3-2 |UCSPRIMARYDN| test system
    and upgrade to the latest errata level.
 
 #. To allow the ``Administrator`` user access to the directory,

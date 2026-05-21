@@ -25,9 +25,9 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 
 # -- Project information -----------------------------------------------------
 
-version = '5.2'
+version = '5.3'
 # The full version, including alpha/beta/rc tags
-release = '5.2-5'
+release = '5.3-0'
 
 project = f'UCS {release} Changelog'
 copyright = f'2023-{date.today().year}, Univention GmbH'
@@ -149,7 +149,7 @@ univention_use_doc_base = True
 
 # See README.md in this repository
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog#configuration-settings
-univention_changelog_previous_release = '5.2-4'
+univention_changelog_previous_release = '5.3-4'
 univention_changelog_builder = 'ucs'
 
 # See Univention Sphinx Extension for its options.

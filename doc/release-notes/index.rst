@@ -13,7 +13,7 @@ Publication date of UCS |release|: 2026-03-10
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-5, the fifth patch level release for |UCSUCS| 5.2 is available.
+With |UCSUCS| 5.3-0, the fifth patch level release for |UCSUCS| 5.3 is available.
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
@@ -126,10 +126,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-5{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.3-0{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.2-5{.gpg,} && bash pre-update-checks-5.2-5
+   $ apt-key verify pre-update-checks-5.3-0{.gpg,} && bash pre-update-checks-5.3-0
 
    ...
 
@@ -219,8 +219,8 @@ Older browsers may not display correctly or perform as expected.
 Changelog
 *********
 
-You find the changes since UCS 5.2-5 in
-:external+uv-changelog-5.2-5:doc:`index`.
+You find the changes since UCS 5.3-0 in
+:external+uv-changelog-5.3-0:doc:`index`.
 
 .. _biblio:
 

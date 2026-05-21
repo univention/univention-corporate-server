@@ -20,7 +20,7 @@ Understand version numbering
 
 Nubus for UCS version numbers consist of three parts: ``[Major].[Minor]-[Patch level]``.
 
-For example, Nubus for UCS 5.2-4 is the fourth patch level release of the second minor
+For example, Nubus for UCS 5.3-4 is the fourth patch level release of the second minor
 update for major release Nubus for UCS 5. This scheme helps you identify which updates
 apply to your systems and track compatibility.
 
@@ -56,7 +56,7 @@ Patch level releases
 Errata updates
     Published continuously during the maintenance period of a minor release.
     They provide security fixes, bug fixes, and small enhancements.
-    Errata updates target specific minor releases, such as Nubus for UCS 5.2,
+    Errata updates target specific minor releases, such as Nubus for UCS 5.3,
     and you can install them on any patch level release.
     See https://errata.software-univention.de/ for an overview.
 
