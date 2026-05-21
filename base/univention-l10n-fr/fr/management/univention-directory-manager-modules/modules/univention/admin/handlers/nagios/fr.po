@@ -276,8 +276,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/nagios/nagios.py:46
 msgid ""
-"https://docs.software-univention.de/manual-5.2.html#nagios:"
+"https://docs.software-univention.de/manual-5.3.html#nagios:"
 "Configuration_of_the_Nagios_monitoring"
 msgstr ""
-"https://docs.software-univention.de/manual-5.2.html#nagios:"
+"https://docs.software-univention.de/manual-5.3.html#nagios:"
 "Configuration_of_the_Nagios_monitoring"

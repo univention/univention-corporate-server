@@ -403,7 +403,7 @@ TODO: State the recommended interface for reading these states
 (UDM REST API, Provisioning API, SCIM, or LDAP).
 
 # Password policies
-UCS has different [ways to achieve password policy enforcement](https://docs.software-univention.de/manual/5.2/en/user-management/user-lockout.html).
+UCS has different [ways to achieve password policy enforcement](https://docs.software-univention.de/manual/5.3/en/user-management/user-lockout.html).
 They are not synchronized: [epic 664](https://git.knut.univention.de/groups/univention/-/epics/664).
 
 ## Global password policy via UDM
@@ -517,7 +517,7 @@ TODO: `ldbsearch  -H /var/lib/samba/private/sam.ldb -b "DC=ucs,DC=test" "(object
 ## OpenLDAP `ppolicy` overlay module
 
 The `policy` overlay can be activated in OpenLDDAP via the UCR variable `ldap/ppolicy/enabled`.
-See [documentation](https://docs.software-univention.de/manual/5.2/en/user-management/user-lockout.html#openldap).
+See [documentation](https://docs.software-univention.de/manual/5.3/en/user-management/user-lockout.html#openldap).
 
 It allows user object to have the attribute `pwdPolicySubentry`, pointing to a certain policy.
 Otherwise the default `cn=default,cn=ppolicy,cn=univention,dc=example,dc=org` applies.
