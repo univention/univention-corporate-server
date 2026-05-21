@@ -6,7 +6,7 @@ Product Management and the challenged of integration Guardian and Guardian conce
 
 # Documentation
 
-The documentation for this feature can be obtained in [ext-delegative-administration](https://docs.software-univention.de/ext-delegative-administration/5.2/en/).
+The documentation for this feature can be obtained in [ext-delegative-administration](https://docs.software-univention.de/ext-delegative-administration/5.3/en/).
 
 # Current state of the implementation
 

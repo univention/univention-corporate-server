@@ -20,7 +20,7 @@ def app_cache_mock():
     app_cache_mock = Mock(spec=AppCache)
     app_cache_mock.get_cache_dir.return_value = '/tmp/'
     app_cache_mock.get_server.return_value = 'https://127.0.0.1:3000'
-    app_cache_mock.get_ucs_version.return_value = '5.2'
+    app_cache_mock.get_ucs_version.return_value = '5.3'
 
     return app_cache_mock
 
