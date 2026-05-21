@@ -89,8 +89,8 @@ see :ref:`deployment-installation-secure-boot`.
 
    An already installed Debian leads to the fact
    that the hardware can't boot Nubus for UCS anymore
-   after the installation of or an update to UCS 5.2.
-   A subsequent installation of Debian also results in Nubus for UCS 5.2 not being able to boot.
+   after the installation of or an update to UCS 5.3.
+   A subsequent installation of Debian also results in Nubus for UCS 5.3 not being able to boot.
 
 Besides operating Nubus for UCS on hardware or in a virtualization solution,
 you can also install it on the Amazon EC2 cloud using an AMI image.

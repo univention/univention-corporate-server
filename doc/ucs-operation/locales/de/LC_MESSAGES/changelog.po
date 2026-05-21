@@ -22,13 +22,13 @@ msgstr "Änderungshistorie"
 
 #: ../../changelog.rst:10
 msgid ""
-"This section shows the history of updates to the *Nubus for UCS - "
-"Operation Manual*. The document was published on 28. March 2026 as work "
-"in progress document."
+"This section shows the history of updates to the *Nubus for UCS - Operation "
+"Manual*. The document was published on 28. March 2026 as work in progress "
+"document."
 msgstr ""
-"Dieser Abschnitt zeigt die Historie der Aktualisierungen des *Nubus für "
-"UCS - Betriebshandbuchs*. Das Dokument wurde am 28. März 2026 als "
-"Dokument in Arbeit veröffentlicht."
+"Dieser Abschnitt zeigt die Historie der Aktualisierungen des *Nubus für UCS "
+"- Betriebshandbuchs*. Das Dokument wurde am 28. März 2026 als Dokument in "
+"Arbeit veröffentlicht."
 
 #: ../../changelog.rst:14
 msgid "Year 2026"
@@ -83,11 +83,11 @@ msgstr ":ref:`domain-infrastructure-udm-blocklists`"
 
 #: ../../changelog.rst:38
 msgid ""
-"Add section about *Blocklists* management module and how to use LDAP ACLs"
-" for it."
+"Add section about *Blocklists* management module and how to use LDAP ACLs "
+"for it."
 msgstr ""
-"Abschnitt über *Blocklisten* Verwaltungsmodul und wie man LDAP ACLs dafür"
-" verwendet hinzugefügt."
+"Abschnitt über *Blocklisten* Verwaltungsmodul und wie man LDAP ACLs dafür "
+"verwendet hinzugefügt."
 
 #: ../../changelog.rst:41
 msgid ":ref:`lifecycle`"
@@ -95,7 +95,8 @@ msgstr ":ref:`lifecycle`"
 
 #: ../../changelog.rst:42
 msgid "Clarify update scope in the lifecycle chapter."
-msgstr "Umfang der Software Updates im Kapitel über den Lebenszyklus präzisiert."
+msgstr ""
+"Umfang der Software Updates im Kapitel über den Lebenszyklus präzisiert."
 
 #: ../../changelog.rst:45
 msgid ":ref:`management-interface-usage-statistics`"
@@ -103,7 +104,8 @@ msgstr ":ref:`management-interface-usage-statistics`"
 
 #: ../../changelog.rst:46
 msgid "Add section about usage statistics in the *Management UI*."
-msgstr "Abschnitt über die Nutzungsstatistiken in der *Management UI* hinzugefügt."
+msgstr ""
+"Abschnitt über die Nutzungsstatistiken in der *Management UI* hinzugefügt."
 
 #: ../../changelog.rst:48 ../../changelog.rst:52 ../../changelog.rst:56
 msgid "Sep 2026"
@@ -199,10 +201,11 @@ msgid ":ref:`monitoring`"
 msgstr ":ref:`monitoring`"
 
 #: ../../changelog.rst:83
-msgid "Add section about monitoring of Nubus for UCS systems and their services."
+msgid ""
+"Add section about monitoring of Nubus for UCS systems and their services."
 msgstr ""
-"Abschnitt über die Überwachung von Nubus für UCS Systemen und ihren "
-"Diensten hinzugefügt."
+"Abschnitt über die Überwachung von Nubus für UCS Systemen und ihren Diensten "
+"hinzugefügt."
 
 #: ../../changelog.rst:86
 msgid ":ref:`domain-infrastructure-ldap-directory`"
@@ -218,7 +221,8 @@ msgstr ":ref:`management-interface-udm-command`"
 
 #: ../../changelog.rst:91
 msgid "Add section about the :program:`udm` command-line interface."
-msgstr "Abschnitt über die :program:`udm` Befehlszeilenschnittstelle hinzugefügt."
+msgstr ""
+"Abschnitt über die :program:`udm` Befehlszeilenschnittstelle hinzugefügt."
 
 #: ../../changelog.rst:93 ../../changelog.rst:97 ../../changelog.rst:101
 #: ../../changelog.rst:105 ../../changelog.rst:109 ../../changelog.rst:113
@@ -274,7 +278,8 @@ msgstr ":ref:`system-administration-access-authentication`"
 
 #: ../../changelog.rst:115
 msgid "Add section about administrative access and authentication."
-msgstr "Abschnitt über administrativen Zugriff und Authentifizierung hinzugefügt."
+msgstr ""
+"Abschnitt über administrativen Zugriff und Authentifizierung hinzugefügt."
 
 #: ../../changelog.rst:118
 msgid ":ref:`system-administration-ucr`"
@@ -282,11 +287,11 @@ msgstr ":ref:`system-administration-ucr`"
 
 #: ../../changelog.rst:119
 msgid ""
-"Add section about local system configuration with Univention "
-"Configuration Registry."
+"Add section about local system configuration with Univention Configuration "
+"Registry."
 msgstr ""
-"Abschnitt über die lokale Systemkonfiguration mit Univention "
-"Configuration Registry hinzugefügt."
+"Abschnitt über die lokale Systemkonfiguration mit Univention Configuration "
+"Registry hinzugefügt."
 
 #: ../../changelog.rst:123
 msgid "Add referenced but undefined UCR variables to the reference list."
@@ -330,7 +335,8 @@ msgstr ":ref:`iam-last-bind`"
 
 #: ../../changelog.rst:139
 msgid "Add section about the user's last sign-in time."
-msgstr "Abschnitt zum Zeitpunkt der letzten Anmeldung eines Nutzers hinzugefügt."
+msgstr ""
+"Abschnitt zum Zeitpunkt der letzten Anmeldung eines Nutzers hinzugefügt."
 
 #: ../../changelog.rst:142
 msgid ":ref:`infrastructure-monitoring-ucs-dashboard`"
@@ -471,8 +477,8 @@ msgid ""
 "Add section about network configuration through the *Network settings* "
 "management module."
 msgstr ""
-"Abschnitt über die Netzwerkkonfiguration über das Verwaltungsmodul "
-"*Netzwerk-Einstellungen* hinzugefügt."
+"Abschnitt über die Netzwerkkonfiguration über das Verwaltungsmodul *Netzwerk-"
+"Einstellungen* hinzugefügt."
 
 #: ../../changelog.rst:205 ../../changelog.rst:209 ../../changelog.rst:213
 #: ../../changelog.rst:217 ../../changelog.rst:221 ../../changelog.rst:225
@@ -594,7 +600,8 @@ msgstr ":ref:`lifecycle-perform-updates`"
 
 #: ../../changelog.rst:255
 msgid "Add section about how to make updates for Nubus for UCS."
-msgstr "Abschnitt über die Durchführung von Updates für Nubus für UCS hinzugefügt."
+msgstr ""
+"Abschnitt über die Durchführung von Updates für Nubus für UCS hinzugefügt."
 
 #: ../../changelog.rst:257
 msgid ":ref:`lifecycle-versioning`"
@@ -619,8 +626,7 @@ msgstr ":ref:`deployment-primary-dn-resilience-backup-primary-promotion`"
 #: ../../changelog.rst:266
 msgid "Add section about promotion to :term:`Primary Directory Node`."
 msgstr ""
-"Abschnitt über die Umwandlung zum :term:`Primary Directory Node` "
-"hinzugefügt."
+"Abschnitt über die Umwandlung zum :term:`Primary Directory Node` hinzugefügt."
 
 #: ../../changelog.rst:269
 msgid ":ref:`domain-infrastructure-system-roles`"
@@ -644,7 +650,8 @@ msgstr "Deutsche Übersetzung für bestehende Inhalte hinzugefügt."
 
 #: ../../changelog.rst:282
 msgid "Add reference section for :term:`UCR variables <UCR variable>`."
-msgstr "Referenzabschnitt für :term:`UCR-Variablen <UCR variable>` hinzugefügt."
+msgstr ""
+"Referenzabschnitt für :term:`UCR-Variablen <UCR variable>` hinzugefügt."
 
 #: ../../changelog.rst:285
 msgid ":ref:`ucs-operation-groups`"
@@ -706,4 +713,3 @@ msgstr ":spelling:word:`Sep` 2025"
 #: ../../changelog.rst:321
 msgid "Create document and build structure."
 msgstr "Dokument erstellt und Struktur aufgebaut."
-
