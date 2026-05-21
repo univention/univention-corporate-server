@@ -48,7 +48,7 @@ Sometimes the scripts need to be modified **after** a release, for example to bl
 2. It is then recommended to import and build the package using `repo-ng`, after which the scripts can be extract from the binary package by using `dpkg -x univention-updaeter_${version}_all.deb /some/temporary/directory/`.
 3. The scripts **must** be signed **manually** using `repo-ng-sign-release-file` from `repo-ng` with the PGP key **corresponding** to the UCS release.
     ```sh
-    repo-ng-sign-release-file -i pre-update-checks-5.2-0 -o pre-update-checks-5.2-0.gpg -k 92E57AE68A7988BD9651C222C882B6F1F7229D9A -p /etc/archive-keys/ucs5.2.txt
+    repo-ng-sign-release-file -i pre-update-checks-5.2-0 -o pre-update-checks-5.2-0.gpg -k 92E57AE68A7988BD9651C222C882B6F1F7229D9A -p /etc/archive-keys/ucs5.3.txt
     ```
 4. Afterwards the script and signature files must be copied **manually** to the locations mentioned above.
 5.  In case prior changes have been made, the script files under `test_mirror/ftp` may be write protected with `chattr +i` (not the signature files).
