@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
-"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
+"Project-Id-Version: Univention Corporate Server - Operation Manual 5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-04 14:11+0000\n"
 "PO-Revision-Date: 2026-06-04 16:13+0200\n"
@@ -1619,10 +1619,10 @@ msgstr "*Nagios*"
 #: ../../management-interface/delegated-administration.rst:101
 msgid ""
 "Grants access to the *Nagios* management module for configuring NRPE host"
-" monitoring. Nagios server management isn't available since UCS 5.2."
+" monitoring. Nagios server management isn't available since UCS 5.3."
 msgstr ""
 "Gewährt Zugriff auf das Verwaltungsmodul *Nagios* zur Konfiguration der "
-"NRPE-Host-Überwachung. Die Nagios Serververwaltung ist seit UCS 5.2 nicht"
+"NRPE-Host-Überwachung. Die Nagios Serververwaltung ist seit UCS 5.3 nicht"
 " verfügbar."
 
 #: ../../management-interface/delegated-administration.rst:104

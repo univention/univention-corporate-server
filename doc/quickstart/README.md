@@ -7,11 +7,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 # Redirects from legacy DocBook text to Sphinx builds
 
 The legacy DocBook text for the quickstart guide was published at
-<https://docs.software-univention.de/quickstart-en-5.2.html> and
-<https://docs.software-univention.de/quickstart-de-5.2.html>. The
+<https://docs.software-univention.de/quickstart-en-5.3.html> and
+<https://docs.software-univention.de/quickstart-de-5.3.html>. The
 generic links to the latest documentation were
-<https://docs.software-univention.de/quickstart-en-5.2.html> and
-<https://docs.software-univention.de/quickstart-de-5.2.html>.
+<https://docs.software-univention.de/quickstart-en-5.3.html> and
+<https://docs.software-univention.de/quickstart-de-5.3.html>.
 
 Links to the documentation are spread in Univention products, Univention
 forum, blog postings, reader's bookmark lists and so on. For readers'
@@ -23,8 +23,8 @@ with a HTML file that takes care of the redirects. When a reader opens
 an old link, their browser redirects them to the new documentation
 location.
 
-In the document's root directory are the files `quickstart-en-5.2.html`
-and `quickstart-de-5.2.html`, called *redirect maps* in this README. In
+In the document's root directory are the files `quickstart-en-5.3.html`
+and `quickstart-de-5.3.html`, called *redirect maps* in this README. In
 takes care of the redirection from the before mentioned links to the new
 location and supports the following cases:
 
@@ -34,7 +34,7 @@ location and supports the following cases:
    together with the direct link.
 2. The reader accesses the documentation with an anchor link to a
    specific section, for example
-   <https://docs.software-univention.de/quickstart-en-5.2.html#quickstart:administration>.
+   <https://docs.software-univention.de/quickstart-en-5.3.html#quickstart:administration>.
    The redirect map detects the hash part of the link and redirects the
    reader's browser to the new location
    <https://docs.software-univention.de/quickstart/5.0/en/index.html#quickstart-administration>

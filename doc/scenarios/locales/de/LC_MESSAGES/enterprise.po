@@ -447,10 +447,10 @@ msgstr ":ref:`uv-handbuch:domain-ldap-directory-logger`"
 #: ../../enterprise.rst:208
 msgid ""
 "`Extended installation documentation <https://docs.software-univention.de"
-"/ext-installation/5.2/en/index.html>`_"
+"/ext-installation/5.3/en/index.html>`_"
 msgstr ""
 "`Extended installation documentation <https://docs.software-univention.de"
-"/ext-installation/5.2/en/index.html>`_"
+"/ext-installation/5.3/en/index.html>`_"
 
 #: ../../enterprise.rst:211
 msgid "`opsi <https://www.univention.com/products/app-catalog/opsi/>`_"
