@@ -1,3 +1,9 @@
+univention-ldap-overlay-memberof (15.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Mon, 13 Jul 2026 18:22:22 +0200
+
 univention-ldap-overlay-memberof (14.6.5) unstable; urgency=medium
 
   * Bug #47464: Turn into a transitional package. The OpenLDAP memberOf overlay

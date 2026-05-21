@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (9.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 20 Aug 2026 08:52:40 +0200
+
 univention-management-console-module-diagnostic (8.6.2) unstable; urgency=medium
 
   * Bug #59718: only run 20_check_share_references on the Primary Directory Node

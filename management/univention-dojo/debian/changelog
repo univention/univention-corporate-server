@@ -1,3 +1,15 @@
+univention-dojo (16.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 02 Sep 2026 09:30:13 +0200
+
+univention-dojo (15.6.1) UNRELEASED; urgency=medium
+
+  * Bug #59324: UCS 5.2-6 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 02 Sep 2026 09:30:13 +0200
+
 univention-dojo (15.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

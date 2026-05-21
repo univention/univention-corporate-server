@@ -1,3 +1,9 @@
+ucs-test (13.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Wed, 02 Sep 2026 09:30:12 +0200
+
 ucs-test (12.6.53) unstable; urgency=medium
 
   * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst
