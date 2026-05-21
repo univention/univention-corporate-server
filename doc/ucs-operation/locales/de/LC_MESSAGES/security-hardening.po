@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
-"Project-Id-Version: Nubus for UCS 5.2 - Operation Manual 5.2\n"
+"Project-Id-Version: Nubus for UCS 5.2 - Operation Manual 5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-17 08:59+0000\n"
 "PO-Revision-Date: 2026-09-17 11:20+0200\n"
