@@ -1,3 +1,9 @@
+univention-directory-manager-modules (18.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Tue, 09 Jun 2026 21:14:41 +0200
+
 univention-directory-manager-modules (17.6.1) unstable; urgency=medium
 
   * Bug #55411: strip trailing newline from base64 decoding

@@ -1,3 +1,9 @@
+univention-nagios (16.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jun 2026 17:28:33 +0200
+
 univention-nagios (15.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
