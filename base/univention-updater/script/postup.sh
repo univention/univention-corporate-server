@@ -58,15 +58,15 @@ memberserver) apt_install univention-server-member ;;
 *) die "The server role '$server_role' is not supported!" ;;
 esac
 
-is_ucr_true update52/skip/autoremove ||
+is_ucr_true update53/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
 # removes temporary sources list (always required)
 rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 
 # removing the atd service conf file that is setting the KillMode attribute
-if [ -e "/etc/systemd/system/atd.service.d/update520.conf" ]; then
-	rm -f /etc/systemd/system/atd.service.d/update520.conf
+if [ -e "/etc/systemd/system/atd.service.d/update530.conf" ]; then
+	rm -f /etc/systemd/system/atd.service.d/update530.conf
 	rmdir --ignore-fail-on-non-empty /etc/systemd/system/atd.service.d/
 	systemctl daemon-reload
 fi
@@ -110,14 +110,14 @@ esac
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} +
 
 # Bug #52923 #57296: switch back to old fetchmail/autostart status
-if [ -n "$(ucr search "^fetchmail/autostart/update522$")" ] ; then
-	eval "$(ucr shell fetchmail/autostart/update522)"
-	if [ -z "$fetchmail_autostart_update522" ] ; then
+if [ -n "$(ucr search "^fetchmail/autostart/update530$")" ] ; then
+	eval "$(ucr shell fetchmail/autostart/update530)"
+	if [ -z "$fetchmail_autostart_update530" ] ; then
 		ucr unset fetchmail/autostart >&3 2>&3
 	else
-		ucr set fetchmail/autostart="$fetchmail_autostart_update522" >&3 2>&3
+		ucr set fetchmail/autostart="$fetchmail_autostart_update530" >&3 2>&3
 	fi
-	ucr unset fetchmail/autostart/update522 >&3 2>&3
+	ucr unset fetchmail/autostart/update530 >&3 2>&3
 	echo "Please note:" >&3
 	echo "The following fetchmail restart might fail if fetchmail is unconfigured." >&3
 	echo "This is usually no error." >&3
@@ -125,8 +125,8 @@ if [ -n "$(ucr search "^fetchmail/autostart/update522$")" ] ; then
 fi
 
 # remove backup packages sources
-rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade522.bak
-rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade522.bak
+rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade530.bak
+rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade530.bak
 
 echo "
 
