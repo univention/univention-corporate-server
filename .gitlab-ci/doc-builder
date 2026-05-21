@@ -60,8 +60,8 @@ TARGETS = ["html", "pdf", "linkcheck", "spelling"]
 # Documents that use a patch-level version string in their public URL path.
 # By default, documents are published at $DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language.
 # Documents listed here override DOC_TARGET_PATH to use $CHANGELOG_TARGET_VERSION,
-# which corresponds to the `release` variable in their conf.py (e.g. "5.2-5")
-# rather than the minor `version` (e.g. "5.2").
+# which corresponds to the `release` variable in their conf.py (e.g. "5.3-0")
+# rather than the minor `version` (e.g. "5.3").
 DOC_TARGET_PATHS: dict[str, dict[str, object]] = {
     "changelog": {
         "DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language",
