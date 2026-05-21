@@ -164,7 +164,7 @@ to the UCS domain fully automated using :program:`Univention AD Takeover`.
 References
 ==========
 
-* :external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual <index>`
+* :external+uv-ucs-operation:doc:`Nubus for UCS 5.3 - Operation Manual <index>`
 
 * :external+uv-manual:ref:`windows-ad-takeover`
 
