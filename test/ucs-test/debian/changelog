@@ -1,3 +1,15 @@
+ucs-test (13.0.1) unstable; urgency=medium
+
+  * Bug #59409: UCS 5.3-0 version bump
+
+ -- Florian Best <best@univention.de>  Thu, 15 Oct 2026 10:58:26 +0200
+
+ucs-test (12.7.10) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 15 Oct 2026 10:58:26 +0200
+
 ucs-test (12.7.9) unstable; urgency=medium
 
   * Bug 60006: fix OIDC audience mapper tests
