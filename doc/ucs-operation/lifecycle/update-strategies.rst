@@ -157,7 +157,7 @@ configure the following settings:
 #. Activate the *Activate release updates* field to enable release updates.
 
 #. Enter a version number in the *Update to this UCS version* field,
-   for example ``5.2-4``.
+   for example ``5.3-4``.
    If you leave this blank, systems update to the highest available version.
 
 #. Set the update schedule using a *Maintenance* policy,

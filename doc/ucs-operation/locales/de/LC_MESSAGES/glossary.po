@@ -1,229 +1,182 @@
-# SPDX-FileCopyrightText: 2021-2026 Univention GmbH
-#
-# SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
-"Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 13:11+0000\n"
-"PO-Revision-Date: 2026-08-20 15:12+0200\n"
-"Last-Translator: Univention GmbH <packages@univention.de>\n"
-"Language: de\n"
-"Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../../glossary.rst:9
-msgid "Glossary"
-msgstr "Glossar"
+msgid ""
+"A Univention Configuration Registry (UCR) variable is a named setting that "
+"stores system configuration in a central registry. Instead of editing "
+"configuration files directly, you use UCR variables to manage local system "
+"configuration. When you change a UCR variable, the system automatically "
+"regenerates all configuration files that depend on it."
+msgstr ""
+"Eine Univention Configuration Registry (UCR) Variable ist eine benannte "
+"Einstellung, die Systemkonfiguration in einer zentralen Registry speichert. "
+"Anstatt Konfigurationsdateien direkt zu bearbeiten, verwenden Sie UCR-"
+"Variablen, um lokale Systemkonfiguration zu verwalten. Wenn Sie eine UCR-"
+"Variable ändern, regeneriert das System automatisch alle "
+"Konfigurationsdateien, die von ihr abhängen."
 
-#: ../../glossary.rst:13
 msgid "Backup Directory Node"
 msgstr "Backup Directory Node"
 
-#: ../../glossary.rst:14
-msgid "UCS Backup Directory Node"
-msgstr "UCS Backup Directory Node"
-
-#: ../../glossary.rst:16
 msgid ""
-"The Backup Directory Node is a system role in Nubus for UCS. For its "
-"description, see :ref:`domain-infrastructure-system-roles-backup-"
-"directory-node`."
+"For more information about UCR variables, see :ref:`computers-administration-"
+"of-local-system-configuration-with-univention-configuration-registry` in the "
+"*Univention Configuration Registry* section."
 msgstr ""
-"Der :spelling:word:`Backup Directory Node` ist eine Systemrolle in Nubus "
-"für UCS. Für die Beschreibung, siehe :ref:`domain-infrastructure-system-"
-"roles-backup-directory-node`."
+"Weitere Informationen zu UCR-Variablen finden Sie unter :ref:`computers-"
+"administration-of-local-system-configuration-with-univention-configuration-"
+"registry` im Abschnitt *Univention Configuration Registry*."
 
-#: ../../glossary.rst:20 ../../glossary.rst:30 ../../glossary.rst:40
-#: ../../glossary.rst:50
 msgid ""
-"For more information about the role concept in Nubus for UCS, see "
-":external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
+"For more information about the role concept in Nubus for UCS, "
+"see :external+uv-architecture:ref:`concept-role` in :cite:t:`ucs-"
 "architecture`."
 msgstr ""
-"Weitere Informationen zum Rollenkonzept in Nubus für UCS finden Sie unter"
-" :external+uv-architecture:ref:`concept-role` im :cite:t:`ucs-"
+"Weitere Informationen zum Rollenkonzept in Nubus für UCS finden Sie "
+"unter :external+uv-architecture:ref:`concept-role` im :cite:t:`ucs-"
 "architecture`."
 
-#: ../../glossary.rst:23
+msgid ""
+"For more information, see :ref:`component-domain-management` in :cite:t:`ucs-"
+"architecture`."
+msgstr ""
+"Weitere Informationen finden Sie unter :ref:`component-domain-management` "
+"im :cite:t:`ucs-architecture`."
+
+msgid "For more information, see :ref:`iam-authorization-engine`."
+msgstr "Für weitere Informationen, siehe :ref:`iam-authorization-engine`."
+
+msgid "Glossary"
+msgstr "Glossar"
+
 msgid "Managed Node"
 msgstr "Managed Node"
 
-#: ../../glossary.rst:24
-msgid "UCS Managed Node"
-msgstr "UCS Managed Node"
+msgid "PDP"
+msgstr "PDP"
 
-#: ../../glossary.rst:26
+msgid "PEP"
+msgstr "PEP"
+
+msgid "Policy Decision Point"
+msgstr "Policy Decision Point"
+
+msgid "Policy Enforcement Point"
+msgstr "Policy Enforcement Point"
+
+msgid "Primary Directory Node"
+msgstr "Primary Directory Node"
+
+msgid "Replica Directory Node"
+msgstr "Replica Directory Node"
+
+msgid ""
+"The Backup Directory Node is a system role in Nubus for UCS. For its "
+"description, see :ref:`domain-infrastructure-system-roles-backup-directory-"
+"node`."
+msgstr ""
+"Der :spelling:word:`Backup Directory Node` ist eine Systemrolle in Nubus für "
+"UCS. Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-"
+"backup-directory-node`."
+
 msgid ""
 "The Managed Node is a system role in Nubus for UCS. For its description, "
 "see :ref:`domain-infrastructure-system-roles-managed-node`."
 msgstr ""
-"Der :spelling:word:`Managed Node` ist eine Systemrolle in Nubus für UCS. "
-"Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-"
-"managed-node`."
+"Der :spelling:word:`Managed Node` ist eine Systemrolle in Nubus für UCS. Für "
+"die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-managed-"
+"node`."
 
-#: ../../glossary.rst:85
-msgid "Policy Decision Point"
-msgstr "Policy Decision Point"
-
-#: ../../glossary.rst:86
-msgid "policy decision point"
-msgstr "policy decision point"
-
-#: ../../glossary.rst:87
-msgid "PDP"
-msgstr "PDP"
-
-#: ../../glossary.rst:89
-msgid ""
-"The policy decision point is the service in an authorization process that"
-" makes the decision. An authorization engine, such as :program:`Cerbos`, "
-"provide the policy decision point."
-msgstr ""
-"Der *Policy Decision Point* ist der Dienst in einem "
-"Autorisierungsprozess, der die Entscheidung trifft. Eine Engine für die "
-"Autorisierung wie :program:`Cerbos` stellt den *Policy Decision Point* "
-"bereit."
-
-#: ../../glossary.rst:94 ../../glossary.rst:104
-msgid "For more information, see :ref:`iam-authorization-engine`."
-msgstr "Für weitere Informationen, siehe :ref:`iam-authorization-engine`."
-
-#: ../../glossary.rst:96
-msgid "Policy Enforcement Point"
-msgstr "Policy Enforcement Point"
-
-#: ../../glossary.rst:97
-msgid "policy enforcement point"
-msgstr "policy enforcement point"
-
-#: ../../glossary.rst:98
-msgid "PEP"
-msgstr "PEP"
-
-#: ../../glossary.rst:100
-msgid ""
-"The policy enforcement point is the service in an authorization process "
-"that takes the decision from a :term:`policy decision point` and enforces"
-" the decision."
-msgstr ""
-"Der *Policy Enforcement Point* ist der Dienst in einem "
-"Autorisierungsprozess, der die Entscheidung von einem :term:`Policy "
-"Decision Point` entgegennimmt und durchsetzt."
-
-#: ../../glossary.rst:33
-msgid "Primary Directory Node"
-msgstr "Primary Directory Node"
-
-#: ../../glossary.rst:34
-msgid "UCS Primary Directory Node"
-msgstr "UCS Primary Directory Node"
-
-#: ../../glossary.rst:36
 msgid ""
 "The Primary Directory Node is a system role in Nubus for UCS. For its "
-"description, see :ref:`domain-infrastructure-system-roles-primary-"
-"directory-node`."
+"description, see :ref:`domain-infrastructure-system-roles-primary-directory-"
+"node`."
 msgstr ""
-"Der :spelling:word:`Primary Directory Node` ist eine Systemrolle in Nubus"
-" für UCS. Für die Beschreibung, siehe :ref:`domain-infrastructure-system-"
-"roles-primary-directory-node`."
+"Der :spelling:word:`Primary Directory Node` ist eine Systemrolle in Nubus für "
+"UCS. Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-"
+"primary-directory-node`."
 
-#: ../../glossary.rst:43
-msgid "Replica Directory Node"
-msgstr "Replica Directory Node"
-
-#: ../../glossary.rst:44
-msgid "UCS Replica Directory Node"
-msgstr "UCS Replica Directory Node"
-
-#: ../../glossary.rst:46
 msgid ""
 "The Replica Directory Node is a system role in Nubus for UCS. For its "
-"description, see :ref:`domain-infrastructure-system-roles-replica-"
-"directory-node`."
+"description, see :ref:`domain-infrastructure-system-roles-replica-directory-"
+"node`."
 msgstr ""
-"Der :spelling:word:`Replica Directory Node` ist eine Systemrolle in Nubus"
-" für UCS. Für die Beschreibung, siehe :ref:`domain-infrastructure-system-"
-"roles-replica-directory-node`."
+"Der :spelling:word:`Replica Directory Node` ist eine Systemrolle in Nubus für "
+"UCS. Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-"
+"replica-directory-node`."
 
-#: ../../glossary.rst:53
-msgid "Univention Configuration Registry variable"
-msgstr "Univention Configuration Registry-Variable"
+msgid ""
+"The policy decision point is the service in an authorization process that "
+"makes the decision. An authorization engine, such as :program:`Cerbos`, "
+"provide the policy decision point."
+msgstr ""
+"Der *Policy Decision Point* ist der Dienst in einem Autorisierungsprozess, "
+"der die Entscheidung trifft. Eine Engine für die Autorisierung "
+"wie :program:`Cerbos` stellt den *Policy Decision Point* bereit."
 
-#: ../../glossary.rst:54
+msgid ""
+"The policy enforcement point is the service in an authorization process that "
+"takes the decision from a :term:`policy decision point` and enforces the "
+"decision."
+msgstr ""
+"Der *Policy Enforcement Point* ist der Dienst in einem Autorisierungsprozess, "
+"der die Entscheidung von einem :term:`Policy Decision Point` entgegennimmt "
+"und durchsetzt."
+
 msgid "UCR variable"
 msgstr "UCR-Variable"
 
-#: ../../glossary.rst:56
-msgid ""
-"A Univention Configuration Registry (UCR) variable is a named setting "
-"that stores system configuration in a central registry. Instead of "
-"editing configuration files directly, you use UCR variables to manage "
-"local system configuration. When you change a UCR variable, the system "
-"automatically regenerates all configuration files that depend on it."
-msgstr ""
-"Eine Univention Configuration Registry (UCR) Variable ist eine benannte "
-"Einstellung, die Systemkonfiguration in einer zentralen Registry "
-"speichert. Anstatt Konfigurationsdateien direkt zu bearbeiten, verwenden "
-"Sie UCR-Variablen, um lokale Systemkonfiguration zu verwalten. Wenn Sie "
-"eine UCR-Variable ändern, regeneriert das System automatisch alle "
-"Konfigurationsdateien, die von ihr abhängen."
+msgid "UCS Backup Directory Node"
+msgstr "UCS Backup Directory Node"
 
-#: ../../glossary.rst:63
-msgid ""
-"For more information about UCR variables, see :ref:`computers-"
-"administration-of-local-system-configuration-with-univention-"
-"configuration-registry` in the *Univention Configuration Registry* "
-"section."
-msgstr ""
-"Weitere Informationen zu UCR-Variablen finden Sie unter :ref:`computers-"
-"administration-of-local-system-configuration-with-univention-"
-"configuration-registry` im Abschnitt *Univention Configuration Registry*."
+msgid "UCS Managed Node"
+msgstr "UCS Managed Node"
 
-#: ../../glossary.rst:66
-msgid "Univention Directory Manager"
-msgstr "Univention Directory Manager"
+msgid "UCS Primary Directory Node"
+msgstr "UCS Primary Directory Node"
 
-#: ../../glossary.rst:67
+msgid "UCS Replica Directory Node"
+msgstr "UCS Replica Directory Node"
+
 msgid "UDM"
 msgstr "UDM"
 
-#: ../../glossary.rst:69
-msgid ""
-"Univention Directory Manager (UDM) is the abstraction layer between the "
-"domain database and the administrator. It's responsible for domain "
-"management in Nubus for UCS, covering identities, devices, and services "
-"across the domain."
-msgstr ""
-"Der Univention Directory Manager (UDM) ist die Abstraktionsschicht "
-"zwischen der Domänendatenbank und dem Administrator. Er ist für das "
-"Domänen-Management in Nubus für UCS verantwortlich und umfasst "
-"Identitäten, Geräte und Dienste in der Domäne."
-
-#: ../../glossary.rst:74
 msgid ""
 "UDM provides data aggregation, data consistency, input validation, and "
 "process logic on top of the LDAP directory. Administrators can use UDM "
 "through the web interface in the *Management UI*, the command line "
-"(:command:`univention-directory-manager` or :command:`udm`), or the HTTP "
-"REST API."
+"(:command:`univention-directory-manager` or :command:`udm`), or the HTTP REST "
+"API."
 msgstr ""
-"UDM bietet Datenaggregation, Datenkonsistenz, Validierung von Eingaben "
-"und Prozesslogik auf Basis des LDAP-Verzeichnisses. Administratoren "
-"können UDM über die Weboberfläche in der *Management UI*, die "
-"Befehlszeile (:command:`univention-directory-manager` oder "
-":command:`udm`) oder die HTTP REST API verwenden."
+"UDM bietet Datenaggregation, Datenkonsistenz, Validierung von Eingaben und "
+"Prozesslogik auf Basis des LDAP-Verzeichnisses. Administratoren können UDM "
+"über die Weboberfläche in der *Management UI*, die Befehlszeile "
+"(:command:`univention-directory-manager` oder :command:`udm`) oder die HTTP "
+"REST API verwenden."
 
-#: ../../glossary.rst:82
+msgid "Univention Configuration Registry variable"
+msgstr "Univention Configuration Registry-Variable"
+
+msgid "Univention Directory Manager"
+msgstr "Univention Directory Manager"
+
 msgid ""
-"For more information, see :ref:`component-domain-management` in :cite:t"
-":`ucs-architecture`."
+"Univention Directory Manager (UDM) is the abstraction layer between the "
+"domain database and the administrator. It's responsible for domain management "
+"in Nubus for UCS, covering identities, devices, and services across the "
+"domain."
 msgstr ""
-"Weitere Informationen finden Sie unter :ref:`component-domain-management`"
-" im :cite:t:`ucs-architecture`."
+"Der Univention Directory Manager (UDM) ist die Abstraktionsschicht zwischen "
+"der Domänendatenbank und dem Administrator. Er ist für das Domänen-Management "
+"in Nubus für UCS verantwortlich und umfasst Identitäten, Geräte und Dienste "
+"in der Domäne."
 
+msgid "policy decision point"
+msgstr "policy decision point"
+
+msgid "policy enforcement point"
+msgstr "policy enforcement point"

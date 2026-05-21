@@ -32,7 +32,7 @@ if year_range > start_year:
 copyright = f'{year_range}, Univention GmbH'
 author = ''
 
-version = '5.2'
+version = '5.3'
 # The full version, including alpha/beta/rc tags
 release = version
 project = f'Univention Corporate Server {version} - Delegative administration documentation'

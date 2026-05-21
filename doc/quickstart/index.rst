@@ -258,7 +258,7 @@ Further information
 
 |UCSUCS| provides comprehensive documentation:
 
-* The primary source of information on UCS is the :external+uv-ucs-operation:doc:`Nubus for UCS 5.2
+* The primary source of information on UCS is the :external+uv-ucs-operation:doc:`Nubus for UCS 5.3
   - Operation Manual <index>`.
 
 * Further documentation for advanced scenarios can be found in the extended

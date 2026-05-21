@@ -154,7 +154,7 @@ use the following steps for a better user experience:
 Update the default login tile in the Portal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. TODO: Clarify, if this section still makes a true statement. OIDC is the default since some UCS 5.2-x version.
+.. TODO: Clarify, if this section still makes a true statement. OIDC is the default since some UCS 5.3-x version.
 
 Restarting the *Portal server* automatically updates the *Login* link in the user menu.
 However, you need to manually update the portal tile for the *Login* to use SAML.

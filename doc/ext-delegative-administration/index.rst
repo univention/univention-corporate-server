@@ -58,7 +58,7 @@ Technical requirements
 
 The current implementation has the following technical requirements:
 
-* You need a UCS system with version 5.2-2 and the latest errata updates.
+* You need a UCS system with version 5.3-2 and the latest errata updates.
 * Delegative administration only supports the UCS system roles |UCSPRIMARYDN| and |UCSBACKUPDN|.
 
 .. _da-limits:

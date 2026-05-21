@@ -201,7 +201,7 @@ LDAP directory.
 References
 ==========
 
-* :external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual <index>`
+* :external+uv-ucs-operation:doc:`Nubus for UCS 5.3 - Operation Manual <index>`
 
 * :external+uv-ucs-operation:ref:`domain-infrastructure-ldap-directory-logger`
 

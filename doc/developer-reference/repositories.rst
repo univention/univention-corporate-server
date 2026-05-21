@@ -20,14 +20,14 @@ installed that are compatible with a UCS version.
 empty or unset or ``current``
    The current major-minor version will be used.
 
-   If for example UCS 5.2 is currently in use, only the 5.2 repository will be
+   If for example UCS 5.3 is currently in use, only the 5.3 repository will be
    used. Please note that all major and minor updates will be blocked until the
    component is available for the new release. Patch level and errata updates
    are not affected.
 
-   If for example UCS 5.1 is currently installed. When UCS 5.2 or UCS 6.0 become
+   If for example UCS 5.1 is currently installed. When UCS 5.3 or UCS 6.0 become
    available, the release updated will be postponed until the component is also
-   available for version 5.2 and 6.0 respectively.
+   available for version 5.3 and 6.0 respectively.
 
 *major.minor*
    By specifying an explicit version number only the specified version of the
@@ -35,7 +35,7 @@ empty or unset or ``current``
    of the system will not be hindered by such components. Multiple versions can
    be given using comma as delimiter.
 
-   For example ``5.1 5.2`` would only include the component with UCS 5.1 and 5.2
+   For example ``5.1 5.3`` would only include the component with UCS 5.1 and 5.3
    but not if UCS 5.0 or UCS 5.3 is in use.
 
 .. _integration-of-repository-components-through-umc:
