@@ -18,7 +18,7 @@ def test_register_app_with_old_app_installed(appcenter):
         store_data = '#!/bin/sh'
 
         # install the old version
-        old_app = App(name=name, version='1', build_package=False, call_join_scripts=False, container_version="5.2")
+        old_app = App(name=name, version='1', build_package=False, call_join_scripts=False, container_version="5.3")
         old_app.set_ini_parameter(
             DockerImage='docker-test.software-univention.de/alpine:3.6',
             DockerScriptSetup='/setup',
