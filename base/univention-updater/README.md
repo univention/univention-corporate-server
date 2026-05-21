@@ -47,7 +47,7 @@ On the server they are published as:
 | ---------------------- | ------------ |
 | `script/preup.sh` with `script/check.sh` inserted | `dists/ucs527/preup.sh` |
 | `script/postup.sh` | `dists/ucs527/postup.sh` |
-| `script/check.sh` | `download/univention-update-checks/pre-update-checks-5.2-7` |
+| `script/check.sh` | `download/univention-update-checks/pre-update-checks-5.3-0` |
 
 Each file has a detached PGP signature next to it (`*.gpg`), made with the key of the UCS release.
 The updater refuses to run a script whose signature does not match.
@@ -77,7 +77,7 @@ This is what the following steps do.
 
 ### 1. Commit the change
 
-Commit and push the modified scripts to the release branch, e.g. `5.2-7`, so the change is documented and reviewed.
+Commit and push the modified scripts to the release branch, e.g. `5.3-0`, so the change is documented and reviewed.
 
 ### 2. Prepare a UCS clone on omar
 
@@ -85,21 +85,21 @@ Log in to `omar` and start a `tmux` or `screen` session; the tool refuses to run
 Only the updater scripts are needed, so a sparse checkout is enough:
 
 ```sh
-git clone --no-checkout --depth 1 --branch 5.2-7 git@git.knut.univention.de:univention/dev/ucs.git ucs-updater-5.2-7
-cd ucs-updater-5.2-7
+git clone --no-checkout --depth 1 --branch 5.3-0 git@git.knut.univention.de:univention/dev/ucs.git ucs-updater-5.3-0
+cd ucs-updater-5.3-0
 git config core.sparseCheckout true
 echo base/univention-updater/script/ >.git/info/sparse-checkout
-git checkout 5.2-7
+git checkout 5.3-0
 cd ..
 ```
 
-For a later change just run `git -C ucs-updater-5.2-7 pull`.
+For a later change just run `git -C ucs-updater-5.3-0 pull`.
 The tool checks that the clone is on the release branch, clean and up to date.
 
 ### 3. Publish to the test mirror
 
 ```sh
-announce_update_checks -r 5.2-7 --ucs-dir ./ucs-updater-5.2-7 --test-mirror
+announce_update_checks -r 5.3-0 --ucs-dir ./ucs-updater-5.3-0 --test-mirror
 ```
 
 The tool shows the diff of every changed script and asks before signing and installing it.
@@ -109,15 +109,15 @@ Unchanged scripts are skipped, unless their signature is missing or invalid; the
 Test the new scripts on a UCS system of that release:
 
 ```sh
-curl -OOf http://apt.knut.univention.de/download/univention-update-checks/pre-update-checks-5.2-7{.gpg,}
-apt-key verify pre-update-checks-5.2-7{.gpg,}
-bash pre-update-checks-5.2-7
+curl -OOf http://apt.knut.univention.de/download/univention-update-checks/pre-update-checks-5.3-0{.gpg,}
+apt-key verify pre-update-checks-5.3-0{.gpg,}
+bash pre-update-checks-5.3-0
 ```
 
 ### 4. Publish to testing
 
 ```sh
-announce_update_checks -r 5.2-7 --copy-from-test-mirror-to-testing
+announce_update_checks -r 5.3-0 --copy-from-test-mirror-to-testing
 ```
 
 This verifies the signatures in the test mirror and copies the files to `mirror/testing/`.
@@ -129,7 +129,7 @@ Finally it checks that https://updates-test.software-univention.de/ serves the n
 ### 5. Publish to production
 
 ```sh
-announce_update_checks -r 5.2-7 --copy-from-test-mirror-to-ftp
+announce_update_checks -r 5.3-0 --copy-from-test-mirror-to-ftp
 ```
 
 The same as step 4, but for `mirror/ftp/` and https://updates.software-univention.de/.
