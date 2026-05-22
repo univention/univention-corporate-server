@@ -30,12 +30,6 @@
 #include "filter.h"
 #include "handlers.h"
 
-#if PY_MAJOR_VERSION >= 3
-#define PyString_FromString PyUnicode_FromString
-#define PyString_FromStringAndSize PyBytes_FromStringAndSize
-#define PyString_AsString PyUnicode_AsUTF8
-#endif
-
 static PyObject *handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *old);
 static PyObject *handlers_argtuple_command(const char *dn, CacheEntry *new, CacheEntry *old, char *command);
 
@@ -167,7 +161,7 @@ static char **module_get_string_list(PyObject *module, char *name) {
 	for (i = 0; i < len; i++) {
 		PyObject *var;
 		var = PyList_GetItem(list, i);
-		res[i] = strdup(PyString_AsString(var));
+		res[i] = strdup(PyUnicode_AsUTF8(var));
 		Py_XDECREF(var);
 	}
 	res[len] = NULL;
@@ -602,11 +596,23 @@ int handlers_reload_all_paths(void) {
 
 /* Initialize all handlers. */
 int handlers_init(void) {
-	/* all byte-compiled Univention Python modules are compiled optimized,
-	   so we'll better run handlers optimized as well */
-	Py_OptimizeFlag++;
-	Py_UnbufferedStdioFlag++;
-	Py_Initialize();
+	PyStatus status;
+	PyConfig config;
+
+	PyConfig_InitPythonConfig(&config);
+
+	/* Run optimized, like the byte-compiled Univention Python modules. */
+	config.optimization_level++;
+
+	/* Equivalent to Py_UnbufferedStdioFlag++. */
+	config.buffered_stdio = 0;
+
+	status = Py_InitializeFromConfig(&config);
+	PyConfig_Clear(&config);
+
+	if (PyStatus_Exception(status))
+		Py_ExitStatusException(status);
+
 	handlers_load_all_paths();
 	return 0;
 }
@@ -630,10 +636,10 @@ static PyObject *handlers_entrydict(CacheEntry *entry) {
 			Py_XDECREF(entrydict);
 			return NULL;
 		}
-		s = PyString_FromString(entry->attributes[i]->name);
+		s = PyUnicode_FromString(entry->attributes[i]->name);
 
 		for (j = 0; j < entry->attributes[i]->value_count; j++) {
-			PyList_SetItem(valuelist, j, PyString_FromStringAndSize(entry->attributes[i]->values[j], entry->attributes[i]->length[j] - 1));
+			PyList_SetItem(valuelist, j, PyBytes_FromStringAndSize(entry->attributes[i]->values[j], entry->attributes[i]->length[j] - 1));
 		}
 
 		PyDict_SetItem(entrydict, s, valuelist);
@@ -659,7 +665,7 @@ static PyObject *handlers_argtuple(const char *dn, CacheEntry *new, CacheEntry *
 
 	/* PyTuple_SetItem steals a reference. Thus there's no need to
 	   DECREF the objects */
-	PyTuple_SetItem(argtuple, 0, PyString_FromString(dn));
+	PyTuple_SetItem(argtuple, 0, PyUnicode_FromString(dn));
 	PyTuple_SetItem(argtuple, 1, newdict);
 	PyTuple_SetItem(argtuple, 2, olddict);
 
@@ -681,10 +687,10 @@ static PyObject *handlers_argtuple_command(const char *dn, CacheEntry *new, Cach
 
 	/* PyTuple_SetItem steals a reference. Thus there's no need to
 	   DECREF the objects */
-	PyTuple_SetItem(argtuple, 0, PyString_FromString(dn));
+	PyTuple_SetItem(argtuple, 0, PyUnicode_FromString(dn));
 	PyTuple_SetItem(argtuple, 1, newdict);
 	PyTuple_SetItem(argtuple, 2, olddict);
-	PyTuple_SetItem(argtuple, 3, PyString_FromString(command));
+	PyTuple_SetItem(argtuple, 3, PyUnicode_FromString(command));
 
 	return argtuple;
 }
@@ -876,8 +882,8 @@ int handlers_set_data_all(char *key, char *value) {
 	if ((argtuple = PyTuple_New(2)) == NULL)
 		return -1;
 
-	PyTuple_SetItem(argtuple, 0, PyString_FromString(key));
-	PyTuple_SetItem(argtuple, 1, PyString_FromString(value));
+	PyTuple_SetItem(argtuple, 0, PyUnicode_FromString(key));
+	PyTuple_SetItem(argtuple, 1, PyUnicode_FromString(value));
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DEBUG: handlers=%p", handlers);
 	if (handlers == NULL)
