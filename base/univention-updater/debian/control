@@ -7,6 +7,7 @@ Build-Depends:
  bash-completion,
  debhelper-compat (=13),
  dh-python,
+ gpgv,
  python3-all,
  python3-lazy-object-proxy,
  python3-pytest,
@@ -17,6 +18,7 @@ Build-Depends:
  python3-univention-admin-diary,
  python3-univention-debug,
  python3-univention-lib,
+ univention-archive-key,
  univention-config-dev (>= 15.0.3),
  univention-management-console-dev (>= 12.0.2),
 
@@ -54,6 +56,7 @@ Description: UCS - system upgrading tool
 Package: python3-univention-updater
 Architecture: all
 Depends:
+ gpgv,
  python3-univention-admin-diary,
  python3-univention-config-registry,
  ${misc:Depends},

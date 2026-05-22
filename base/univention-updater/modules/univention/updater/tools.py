@@ -9,6 +9,7 @@ import base64
 import copy
 import errno
 import functools
+import glob
 import json
 import logging
 import os
@@ -54,7 +55,7 @@ MIN_GZIP = 100  # size of non-empty gzip file
 UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
 
-def verify_script(script: bytes, signature: bytes) -> bytes | None:
+def verify_script(script: bytes, signature: bytes) -> str | None:
     """
     Verify detached signature of script:
 
@@ -78,12 +79,14 @@ def verify_script(script: bytes, signature: bytes) -> bytes | None:
     os.close(sig_fd)
 
     # verify script
-    cmd = ["apt-key", "verify", sig_name, "-"]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT, close_fds=True)
+    cmd = ['gpgv']
+    for keyring in glob.glob('/usr/share/keyrings/univention-archive-key-ucs-*.gpg'):
+        cmd.extend(['--keyring', keyring])
+
+    cmd.extend([sig_name, '-'])
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
     stdout, _stderr = proc.communicate(script)
-    ret = proc.wait()
-    return stdout if ret != 0 else None
+    return stdout.decode('UTF-8', 'replace') if proc.returncode != 0 else None
 
 
 class _UCSRepo(UCS_Version):  # noqa: PLW1641
