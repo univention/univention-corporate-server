@@ -7,10 +7,12 @@
 System administration
 *********************
 
-This chapter covers low-level configuration tasks for technical administrators
-managing Nubus for UCS systems.
-It addresses the components that underpin every running system:
-the kernel, the boot process, network connectivity, and outbound proxy access.
+This chapter covers low-level configuration and operational tasks
+for technical administrators managing Nubus for UCS systems.
+It includes system configuration, administrative access, regional settings,
+service management, scheduled tasks, logging, diagnostics,
+and platform-level topics such as the kernel, boot process,
+network configuration, and proxy settings.
 
 Univention Configuration Registry
    Manage system settings through Univention Configuration Registry (UCR),
@@ -20,6 +22,42 @@ Univention Configuration Registry
    UCR automatically regenerates configuration files from templates when settings change,
    eliminating the need for manual file editing.
    See :ref:`system-administration-ucr`.
+
+Administrative access and authentication
+   Manage administrative access to Nubus for UCS systems.
+   This includes the local ``root`` account, SSH access,
+   and PAM-based authentication restrictions for selected services.
+   See :ref:`system-administration-access-authentication`.
+
+Regional settings
+   Configure language, locale, keyboard, time zone,
+   and time synchronization settings for Nubus for UCS systems.
+   See :ref:`system-administration-regional-settings`.
+
+Service management and system integration
+   Manage system services and configure service-related integration settings.
+   This includes service startup behavior, LDAP server selection,
+   print server settings, and the name service cache daemon.
+   See :ref:`system-administration-system-services`.
+
+Run recurring actions with cron
+   Schedule recurring tasks on Nubus for UCS systems.
+   This includes predefined cron directories, local cron jobs in
+   :file:`/etc/cron.d/`, and cron jobs through Univention Configuration Registry.
+   See :ref:`system-administration-cron`.
+
+Log files and log rotation
+   Find log file locations and configure log rotation on Nubus for UCS systems.
+   This includes listener module log files
+   and their dedicated log rotation settings.
+   See :ref:`system-administration-logging`.
+
+System diagnostics
+   Inspect the current state of a Nubus for UCS system
+   and diagnose common problems.
+   This includes command-line system status logging
+   and diagnostic functions in the *Management UI*.
+   See :ref:`system-administration-diagnostics`.
 
 Kernel
    Manage kernel packages, kernel versions, and kernel modules.
@@ -48,12 +86,12 @@ Proxy settings
    :caption: Contents
 
    ucr
-   logging
-   diagnostics
-   cron
    access-and-authentication
    regional-settings
    system-services
+   cron
+   logging
+   diagnostics
    kernel
    boot-manager
    network/index
