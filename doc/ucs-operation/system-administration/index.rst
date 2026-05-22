@@ -48,6 +48,7 @@ Proxy settings
    :caption: Contents
 
    ucr
+   system-services
    kernel
    boot-manager
    network/index
