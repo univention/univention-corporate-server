@@ -94,7 +94,6 @@ patches: dojo dojox dijit dijit-themes util
 	patch -d dojo.tmp -p1 -i ../fix_grid_focus.patch
 	patch -d dojo.tmp -p1 -i ../fix_standbyOpacity.patch
 	patch -d dojo.tmp -p1 -i ../fix_dojo_iframe_textarea.patch
-	patch -d dojo.tmp -p1 -i ../fix_Dialog_autofocus.patch
 	patch -d dojo.tmp -p1 -i ../fix_Dialog_resize_handling.patch
 	patch -d dojo.tmp -p1 -i ../fix_dojox_widget_Standby_scrollbar_offset.patch
 	patch -d dojo.tmp -p1 -i ../fix_dojox_widget_Standby_cntrIndicatorTop.patch
