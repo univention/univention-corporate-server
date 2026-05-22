@@ -9,6 +9,7 @@ import base64
 import copy
 import errno
 import functools
+import glob
 import json
 import logging
 import os
@@ -45,8 +46,8 @@ if TYPE_CHECKING:
     from typing import Self  # type: ignore[attr-defined]
 
 
-RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
-RE_SPLIT_MULTI = re.compile('[ ,]+')
+RE_ALLOWED_DEBIAN_PKGNAMES = re.compile(r'^[a-z0-9][a-z0-9.+-]+$')
+RE_SPLIT_MULTI = re.compile(r'[ ,]+')
 RE_COMPONENT = re.compile(r'^repository/online/component/([^/]+)$')
 RE_CREDENTIALS = re.compile(r'^repository/credentials/(?:(?P<realm>[^/]+)/)?(?P<key>[^/]+)$')
 
@@ -54,7 +55,7 @@ MIN_GZIP = 100  # size of non-empty gzip file
 UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
 
-def verify_script(script: bytes, signature: bytes) -> bytes | None:
+def verify_script(script: bytes, signature: bytes) -> str | None:
     """
     Verify detached signature of script:
 
@@ -65,25 +66,36 @@ def verify_script(script: bytes, signature: bytes) -> bytes | None:
 
     .. code-block: python
 
-        verify_script(open("script.sh", "r").read(), open("script.sh.gpg", "r").read())
+        verify_script(open("script.sh", "rb").read(), open("script.sh.gpg", "rb").read())
 
     :param str script: The script text to verify.
     :param str signature: The detached signature.
     :return: None or the error output.
     :rtype: None or str
     """
-    # write signature to temporary file
     sig_fd, sig_name = tempfile.mkstemp()
-    os.write(sig_fd, signature)
-    os.close(sig_fd)
+    script_fd, script_name = tempfile.mkstemp()
 
-    # verify script
-    cmd = ["apt-key", "verify", sig_name, "-"]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT, close_fds=True)
-    stdout, _stderr = proc.communicate(script)
-    ret = proc.wait()
-    return stdout if ret != 0 else None
+    try:
+        # write signature and script to temporary file
+        with os.fdopen(sig_fd, 'wb') as sig_file:
+            sig_file.write(signature)
+        with os.fdopen(script_fd, 'wb') as script_file:
+            script_file.write(script)
+
+        # verify script
+        cmd = ['sqv']
+        for pattern in ['/etc/apt/trusted.gpg.d/*.gpg', '/etc/apt/trusted.gpg.d/*.asc']:
+            for keyring in glob.glob(pattern):
+                cmd.extend(['--keyring', keyring])
+
+        cmd.extend(['--signature-file', sig_name, script_name])
+
+        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+        stdout, _stderr = proc.communicate(script)
+        return stdout.decode('UTF-8', 'replace') if proc.returncode else None
+    finally:
+        os.unlink(sig_name)
 
 
 class _UCSRepo(UCS_Version):  # noqa: PLW1641
@@ -982,7 +994,7 @@ class Component:
                     if not testserver:
                         continue
                     if prefix:  # append prefix if defined
-                        testserver = testserver + '%s/' % (prefix.strip('/'),)
+                        testserver += '%s/' % (prefix.strip('/'),)
                     try:
                         assert testserver.access(None, '')
                         return testserver
