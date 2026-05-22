@@ -48,6 +48,11 @@ Proxy settings
    :caption: Contents
 
    ucr
+   logging
+   diagnostics
+   cron
+   access-and-authentication
+   regional-settings
    system-services
    kernel
    boot-manager
