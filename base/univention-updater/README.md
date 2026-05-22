@@ -110,7 +110,7 @@ Test the new scripts on a UCS system of that release:
 
 ```sh
 curl -OOf http://apt.knut.univention.de/download/univention-update-checks/pre-update-checks-5.3-0{.gpg,}
-apt-key verify pre-update-checks-5.3-0{.gpg,}
+gpgv --verbose --keyring /etc/apt/trusted.gpg.d/univention-archive-key-ucs-53x.gpg pre-update-checks-5.3-0{.gpg,}
 bash pre-update-checks-5.3-0
 ```
 
