@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
- cython3-dbg,
+ cython3,
  debhelper-compat (=13),
  dh-python,
  heimdal-dev,
