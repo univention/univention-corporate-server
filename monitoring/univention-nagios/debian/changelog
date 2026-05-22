@@ -1,8 +1,12 @@
-univention-nagios (15.6.0) UNRELEASED; urgency=medium
+univention-nagios (15.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:45 +0200
+  [ Florian Best ]
+  * Bug #59469: modernize C code of suidwrapper
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jun 2026 16:10:58 +0200
 
 univention-nagios (15.5.0) UNRELEASED; urgency=medium
 
