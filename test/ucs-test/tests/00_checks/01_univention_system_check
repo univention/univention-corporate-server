@@ -10,9 +10,6 @@ tmp="$(mktemp -d)"
 trap "rm -rf '$tmp'" EXIT
 cd "$tmp"
 curl -OOs https://updates.software-univention.de/download/univention-system-check/univention-system-check.tar.gz{,.gpg}
-gpgv \
-  --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg \
-  univention-system-check.tar.gz.gpg \
-  univention-system-check.tar.gz
+sqv --keyring /usr/share/keyrings/univention-archive-key-ucs-5x.gpg --signature-file univention-system-check.tar.gz.gpg --verbose univention-system-check.tar.gz
 tar -xzf  univention-system-check.tar.gz
 python3 ./univention-system-check
