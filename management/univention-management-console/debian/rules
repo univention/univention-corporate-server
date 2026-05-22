@@ -9,7 +9,7 @@
 #export DH_VERBOSE=1
 export PYBUILD_NAME=univention-management-console
 export PYBUILD_INSTALL_ARGS_python3=--install-scripts=/usr/sbin/
-export PYBUILD_DISABLE_PYTHON2_SCRIPTS=1
+export PYBUILD_TEST_PYTEST=1
 
 override_dh_auto_build:
 	./dev/dh-umc-module-build --core

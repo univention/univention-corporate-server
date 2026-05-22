@@ -8,6 +8,7 @@ Build-Depends:
  python3,
  python3-all,
  python3-polib,
+ python3-pytest,
  python3-sdnotify,
  python3-setuptools,
  python3-univention-lib,
