@@ -6,7 +6,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 #include <unistd.h>
-#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,29 +13,26 @@
 
 #define COMMAND "/usr/lib/nagios/plugins/check_univention_slapd_mdb_maxsize"
 
-static char *const suid_envp[] = {
-	"PATH=/usr/sbin:/usr/bin:/sbin:/bin",
-	NULL
-};
+static char *const suid_envp[] = {"PATH=/usr/sbin:/usr/bin:/sbin:/bin", NULL};
 
-int main(int argc, char ** argv, char ** envp) {
+int main(int argc, char **argv, char **envp) {
 	int i = 0;
 	int listener = 0;
 	char warning[] = "75";
 	char critical[] = "90";
 	while ((i = getopt(argc, argv, "lc:w:")) != -1) {
 		switch (i) {
-			case 'l':
-				listener = 1;
-				break;
-			case 'w':
-				strncpy(warning, optarg, 2);
-				break;
-			case 'c':
-				strncpy(critical, optarg, 2);
-				break;
-			default:
-				exit(EXIT_FAILURE);
+		case 'l':
+			listener = 1;
+			break;
+		case 'w':
+			strncpy(warning, optarg, 2);
+			break;
+		case 'c':
+			strncpy(critical, optarg, 2);
+			break;
+		default:
+			exit(EXIT_FAILURE);
 		}
 	}
 	if (setgid(getegid())) {
