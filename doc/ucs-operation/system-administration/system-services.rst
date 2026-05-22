@@ -92,7 +92,7 @@ Limiting authentication to selected users
 By default only the ``root`` user and members of the ``Domain Admins`` group can
 login remotely via SSH and locally on a ``tty``.
 
-This restriction can be configured with the |UCSUCRV|
+This restriction can be configured with the :term:`UCR variable`
 :samp:`auth/{SERVICE}/restrict`. Access to this service can be authorized by
 setting the variables :samp:`auth/{SERVICE}/user/{USERNAME}` and
 :samp:`auth/{SERVICE}/group/{GROUPNAME}` to ``yes``.
@@ -117,8 +117,8 @@ Configuration of the LDAP server in use
 ---------------------------------------
 
 Several LDAP servers can be operated in a UCS domain. The primary one used is
-specified with the |UCSUCRV| :envvar:`ldap/server/name`, further servers can be
-specified via the |UCSUCRV| :envvar:`ldap/server/addition`.
+specified with the :term:`UCR variable` :envvar:`ldap/server/name`, further servers can be
+specified via the UCR variable :envvar:`ldap/server/addition`.
 
 Alternatively, the LDAP servers can also be specified via a *LDAP server*
 policy. The order of the servers determines the order of the computer's requests
@@ -136,7 +136,7 @@ network.
 Configuration of the print server in use
 ----------------------------------------
 
-The print server to be used can be specified with the |UCSUCRV|
+The print server to be used can be specified with the :term:`UCR variable`
 :envvar:`cups/server`.
 
 Alternatively, the server can also be specified via the *Print server* policy in
@@ -158,22 +158,22 @@ standard log files: for example, Apache to the file
 :file:`/var/log/apache2/error.log`.
 
 The log files are managed by :program:`logrotate`. It ensures that log files are
-named in series in intervals (can be configured in weeks using the |UCSUCRV|
+named in series in intervals (can be configured in weeks using the :term:`UCR variable`
 :envvar:`log/rotate/weeks`, with the default setting being 12) and older log
-files are then deleted. For example, the current log file for the |UCSUDL| is
+files are then deleted. For example, the current log file for the *Univention Directory Listener* is
 found in the :file:`listener.log` file; the one for the previous week in
 :file:`listener.log.1`, etc.
 
 Alternatively, log files can also be rotated only once they have reached a
 certain size. For example, if they are only to be rotated once they reach a size
-of 50 MB, the |UCSUCRV| :envvar:`logrotate/rotates` can be set to ``size 50M``.
+of 50 MB, the UCR variable :envvar:`logrotate/rotates` can be set to ``size 50M``.
 
-The |UCSUCRV| :envvar:`logrotate/compress` is used to configure whether the
+The UCR variable :envvar:`logrotate/compress` is used to configure whether the
 older log files are additionally zipped with :command:`gzip`.
 
 Log files located in the directory :file:`/var/log/univention/listener_modules`
 each have their own Logrotate configuration. These log files have global and
-specific Logrotate settings. The |UCSUCRV| :samp:`logrotate/listener-modules/{<directive>}`
+specific Logrotate settings. The UCR variable :samp:`logrotate/listener-modules/{<directive>}`
 configures the global settings.
 The `logrotate(8) <https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_
 documentation describes the functionality in detail. UCS supports the following directives:
@@ -202,7 +202,7 @@ documentation describes the functionality in detail. UCS supports the following 
 
    Default value: ``notifempty``
 
-If a configuration only applies to a specific log file, compose the |UCSUCRV| as
+If a configuration only applies to a specific log file, compose the UCR variable as
 follows: :samp:`logrotate/listener-modules/{<logfile-name>}/{<directive>}`. Use
 the log filename without the file suffix :file:`.log`.
 
@@ -236,14 +236,14 @@ values are logged:
   (:command:`smbstatus`)
 
 The runtime in which the system status should be logged can be defined in Cron
-syntax via the |UCSUCRV| :envvar:`system/stats/cron`, e.g., ``0,30 * * * *``
+syntax via the :term:`UCR variable` :envvar:`system/stats/cron`, e.g., ``0,30 * * * *``
 for logging every half and full hour. The logging is activated by setting the
-|UCSUCRV| :envvar:`system/stats` to ``yes``. This is the default since UCS 3.0.
+UCR variable :envvar:`system/stats` to ``yes``. This is the default since UCS 3.0.
 
 .. _computers-modules-top:
 
-Process overview via |UCSUMC| module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Process overview through management module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UMC module :guilabel:`Process overview` displays a table of the current
 processes on the system. The processes can be sorted based on the following
@@ -276,8 +276,8 @@ save open files.
 
 .. _computers-modules-diagnostic:
 
-System diagnostic via |UCSUMC| module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+System diagnostic through management module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The UMC module :guilabel:`System diagnostic` offers a corresponding user
 interface to analyze a UCS system for a range of known problems.
@@ -347,11 +347,11 @@ Example:
 Defining cron jobs in Univention Configuration Registry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Cron jobs can also be defined in |UCSUCR|. This is particularly useful if
-they are set via a |UCSUDM| policy and are thus used on more than one
+Cron jobs can also be defined in *Univention Configuration Registry*. This is particularly useful if
+they are set via a *UDM policy* and are thus used on more than one
 computer.
 
-Each cron job is composed of at least two |UCSUCR| variables.
+Each cron job is composed of at least two UCR variables.
 :samp:`{JOBNAME}` is a general description.
 
 * :samp:`cron/{JOBNAME}/command` specifies the command to be run (required)
@@ -383,13 +383,13 @@ stability reasons; instead they are now cached by a local group cache, see
 
 Since UCS 5.2-0, the user information (``passwd``) is no longer cached via
 NSCD. Instead the *System Security Services Daemon* (SSSD) is used to get and
-cache user information, see `SSSD documentation <sssd-docs_>`_.
+cache user information, see `SSSD documentation <https://sssd.io/docs/introduction.html>`_.
 
 The central configuration file of the (:file:`/etc/nscd.conf`) is managed by
-|UCSUCR|.
+*Univention Configuration Registry*.
 
 The access to the cache is handled via a hash table. The size of the hash table
-can be specified in |UCSUCR|, and should be higher than the number of
+can be specified in Univention Configuration Registry, and should be higher than the number of
 simultaneously used users/hosts. For technical reasons, a prime number should be
 used for the size of the table. The following table shows the standard values of
 the variables:
@@ -405,16 +405,16 @@ the variables:
      -  ``6007``
 
 With very big caches it may be necessary to increase the size of the cache
-database in the system memory. This can be configured through the |UCSUCR|
-variables :envvar:`nscd/hosts/maxdbsize`.
+database in the system memory. This can be configured through the UCR
+variable :envvar:`nscd/hosts/maxdbsize`.
 
 As standard, five threads are started by NSCD. In environments with many
-accesses it may prove necessary to increase the number via the |UCSUCRV|
+accesses it may prove necessary to increase the number via the :term:`UCR variable`
 :envvar:`nscd/threads`.
 
 In the basic setting, a resolved hostname is kept in cache for one
 hour.
-With the |UCSUCR| variable :envvar:`nscd/hosts/positive_time_to_live` this
+With the UCR variable :envvar:`nscd/hosts/positive_time_to_live` this
 period can be extended or diminished (in seconds).
 
 From time to time it might be necessary to manually invalidate the cache of the
@@ -427,7 +427,7 @@ commands:
    $ nscd -i hosts
 
 
-The verbosity of the log messages can be configured through the |UCSUCRV|
+The verbosity of the log messages can be configured through the UCR variable
 :envvar:`nscd/debug/level`.
 
 .. _computers-ssh-login-to-systems:
@@ -438,21 +438,21 @@ SSH login to systems
 When installing a UCS system, an SSH server is also installed per preselection.
 SSH is used for realizing encrypted connections to other hosts, wherein the
 identity of a host can be assured via a check sum. Essential aspects of the SSH
-server's configuration can be adjusted in |UCSUCR|.
+server's configuration can be adjusted in *Univention Configuration Registry*.
 
 By default the login of the privileged ``root`` user is permitted by SSH (e.g.
 for configuring a newly installed system where no users have been created yet,
 from a remote location).
 
-* If the |UCSUCRV| :envvar:`sshd/permitroot` is set to ``without-password``,
+* If the :term:`UCR variable` :envvar:`sshd/permitroot` is set to ``without-password``,
   then no interactive password request will be performed for the ``root`` user,
   but only a login based on a public key. By this means brute force attacks to
   passwords can be avoided.
 
 * To prohibit SSH login completely, this can be deactivated by setting the
-  |UCSUCRV| :envvar:`auth/sshd/user/root` to ``no``.
+  UCR variable :envvar:`auth/sshd/user/root` to ``no``.
 
-The |UCSUCRV| :envvar:`sshd/xforwarding` can be used to configure
+The UCR variable :envvar:`sshd/xforwarding` can be used to configure
 whether an X11 output should be passed on via SSH. This is necessary,
 for example, for allowing a user to start a program with graphic output
 on a remote computer by logging in with :command:`ssh -X
@@ -460,7 +460,7 @@ TARGETHOST`. Valid settings are ``yes`` and
 ``no``.
 
 The standard port for SSH connections is port 22 via TCP. If a different
-port is to be used, this can be arranged via the |UCSUCRV|
+port is to be used, this can be arranged via the UCR variable
 :envvar:`sshd/port`.
 
 .. _basicservices-ntp:
@@ -481,12 +481,12 @@ of a large number of errors, for example:
 
 * The correct evaluation of the validity periods of passwords can be disturbed.
 
-Usually the |UCSPRIMARYDN| functions as the time server of a domain. With the
-|UCSUCR| variables :envvar:`timeserver`, :envvar:`timeserver2` and
+Usually the :term:`Primary Directory Node` functions as the time server of a domain. With the
+UCR variables :envvar:`timeserver`, :envvar:`timeserver2` and
 :envvar:`timeserver3` external NTP servers can be included as time sources.
 
 Manual time synchronization can be started by the command :command:`ntpdate`.
 
 Windows clients joined in a Samba/AD domain only accept signed NTP time
-requests. If the |UCSUCRV| :envvar:`ntp/signed` is set to ``yes``, the NTP
+requests. If the :term:`UCR variable` :envvar:`ntp/signed` is set to ``yes``, the NTP
 replies are signed by Samba/AD.
