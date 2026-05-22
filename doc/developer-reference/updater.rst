@@ -103,7 +103,7 @@ Digital signature
 -----------------
 
 From UCS 3.2 on the scripts must be digitally signed by an PGP (Pretty Good
-Privacy) key stored in the key-ring of ``apt-key.8``. The detached
+Privacy) key stored in the key-ring. The detached
 signature must be placed in a separate file next to each updater scripts with
 the additional filename extension :file:`.gpg`, that is :file:`preup.sh.gpg`
 and :file:`postup.sh.gpg`. These extra files are downloaded as well and any
@@ -114,8 +114,8 @@ can be automated or be done manually with a command like the following:
 :samp:`gpg -a -u {key-id} --passphrase-file {key-phrase-file} -o {script}.sh.gpg
 -b {script}.sh`
 
-Signatures can be checked manually using the following command: :samp:`apt-key
-verify {script}.sh.gpg {script}.sh`
+Signatures can be checked manually using the following command:
+:samp:`sqv --verbose --keyring /etc/apt/trusted.gpg.d/univention-archive-key-ucs-53x.gpg {script}.sh.gpg {script}.sh`
 
 .. _updater-release-update:
 
