@@ -7,7 +7,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 
-from packaging import setup
+from ucs_packaging import setup
 
 
 setup(
