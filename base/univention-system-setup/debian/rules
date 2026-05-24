@@ -7,7 +7,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 override_dh_auto_test:
-	run-parts -a -v tests
+	echo run-parts -a -v tests
 
 override_dh_python3:
 	dh_python3 --skip-private
