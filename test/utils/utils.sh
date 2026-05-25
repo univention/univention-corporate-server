@@ -134,6 +134,11 @@ prepare_domain_for_ucs52_preup_checks() {
 
 }
 
+prepare_domain_for_ucs53_preup_checks() {
+	return  # enable in UCS 5.3-1
+	postgres_update '15' '17'
+}
+
 jenkins_updates () {
 	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no update50/ignore_legacy_objects=yes update50/ignore_old_packages=yes
 	local version_version version_patchlevel version_erratalevel target rc=0
@@ -1343,7 +1348,11 @@ prepare_domain_for_ucs50_postup () {
 }
 
 prepare_domain_for_ucs52_postup () {
-	postgres_update '11' '15'
+    postgres_update '11' '15'
+}
+
+prepare_domain_for_ucs53_postup () {
+	postgres_update '15' '17'
 }
 
 postgres_update () {
