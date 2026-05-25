@@ -590,6 +590,30 @@ _disabled_cool_solutions () {
   return 1
 }
 
+## Check for PostgreSQL < 15 (Bug #59405)
+update_check_postgresql () {
+	local legacy_psql var="update$VERSION/ignore_postgresql11"
+	ignore_check "$var" && return 100
+
+	case "$(dpkg-query -W -f '${Status}' postgresql-11 2>/dev/null)" in
+	install*) legacy_psql="PostgreSQL-11" ;;
+	esac
+
+	if [ -z "$legacy_psql" ]; then
+		return 0
+	fi
+
+	echo "WARNING: $legacy_psql is no longer supported by UCS-5.3 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See https://help.univention.com/t/22162 for"
+	echo "         more details."
+
+	echo
+	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	echo "	But be aware that this is not recommended!"
+
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"

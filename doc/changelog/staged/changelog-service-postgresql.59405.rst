@@ -1,0 +1,1 @@
+PostgreSQL 17 is now the default PostgreSQL version for UCS 5.3. Existing PostgreSQL 15 installations are not migrated automatically. For migration instructions, see `Updating from PostgreSQL 15 to PostgreSQL 17 <https://help.univention.com/t/updating-from-postgresql-15-to-postgresql-17/25287>`_.
