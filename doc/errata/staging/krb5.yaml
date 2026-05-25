@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: krb5
+fix: 1.20.1-2+deb12u5
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-40356, CVE-2026-40355 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59428]
+cve:
+- CVE-2026-40355
+- CVE-2026-40356
