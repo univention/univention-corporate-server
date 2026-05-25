@@ -1,0 +1,7 @@
+[postgresql17]
+Description[de]=PostgreSQL 17 Server
+Description[en]=PostgreSQL 17 Server
+icon=service/postgres
+programs=/usr/lib/postgresql/17/bin/postgres
+start_type=postgres17/autostart
+systemd=postgresql@17-main
