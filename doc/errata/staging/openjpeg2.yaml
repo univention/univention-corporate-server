@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openjpeg2
+fix: 2.1.2-1.1+deb9u9
+desc: |
+ This update addresses the following issues:
+ * CVE-2025-50952 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-6192 (CVSS score 3.3 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L/E:P/RL:O/RC:C).
+bug: [59434]
+cve:
+- CVE-2026-6192
+- CVE-2025-50952
