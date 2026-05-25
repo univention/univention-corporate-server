@@ -169,6 +169,11 @@ prepare_domain_for_ucs52_preup_checks() {
 
 }
 
+prepare_domain_for_ucs53_preup_checks() {
+	return  # enable in UCS 5.3-1
+	postgres_update '15' '17'
+}
+
 jenkins_updates () {
 	ucr set update43/checkfilesystems=no update44/checkfilesystems=no update50/checkfilesystems=no update50/ignore_legacy_objects=yes update50/ignore_old_packages=yes
 	local version_version version_patchlevel version_erratalevel target rc=0
@@ -1435,7 +1440,11 @@ prepare_domain_for_ucs50_postup () {
 }
 
 prepare_domain_for_ucs52_postup () {
-	postgres_update '11' '15'
+    postgres_update '11' '15'
+}
+
+prepare_domain_for_ucs53_postup () {
+	postgres_update '15' '17'
 }
 
 postgres_update () {
@@ -1474,7 +1483,7 @@ configure_umc_postgres () {
 	su postgres -c "/usr/bin/createuser umc"
 	su postgres -c "psql umc -c \"ALTER ROLE umc WITH ENCRYPTED PASSWORD 'univention'\""
 	su postgres -c "psql umc -c \"GRANT ALL ON SCHEMA public TO umc\""
-	ucr set postgres15/pg_hba/config/host="umc umc 0.0.0.0/0 md5"
+	ucr set postgres17/pg_hba/config/host="umc umc 0.0.0.0/0 md5"
 	service postgresql restart
 	fqdn="$(ucr get hostname).$(ucr get domainname)"
 	univention-management-console-settings set -u "postgresql+psycopg2://umc:univention@$fqdn:5432/umc"

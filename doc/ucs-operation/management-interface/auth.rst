@@ -495,7 +495,7 @@ In these cases, you must consider the following aspects:
       $ su postgres -c "/usr/bin/createuser db_user"
       $ su postgres -c "psql db_name -c \"ALTER ROLE db_user WITH ENCRYPTED PASSWORD 'db_password'\""
       $ su postgres -c "psql umc -c \"GRANT ALL ON SCHEMA public TO umc;\""
-      $ ucr set postgres15/pg_hba/config/host="umc umc 1x.2xx.0.0/16 md5"
+      $ ucr set postgres17/pg_hba/config/host="umc umc 1x.2xx.0.0/16 md5"
       $ systemctl restart postgresql
 
 #. Set the SQL connection URI on the :term:`UCS Primary Directory Node`,

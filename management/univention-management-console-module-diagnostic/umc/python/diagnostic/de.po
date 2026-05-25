@@ -1601,8 +1601,8 @@ msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
 #: umc/python/diagnostic/plugins/67_postgresql_version.py:28
-msgid "Updating from PostgreSQL 11 to PostgreSQL 15"
-msgstr "Aktualisierung von PostgreSQL 11 auf PostgreSQL 15"
+msgid "Updating from PostgreSQL 11 to PostgreSQL 17"
+msgstr "Aktualisierung von PostgreSQL 11 auf PostgreSQL 17"
 
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:26
 #, python-brace-format
