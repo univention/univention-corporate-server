@@ -6,6 +6,15 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 15.0.1; then
+	if [ "$(ucr get postgres15/password-encryption)" = "md5" ]; then
+		ucr set postgres17/password-encryption?md5
+	fi
+	if [ "$(ucr get postgres15/pg_hba/password-encryption)" = "md5" ]; then
+		ucr set postgres17/pg_hba/password-encryption?md5
+	fi
+fi
+
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 14.0.0-1
 then
 	ucr set postgres15/password-encryption=md5 postgres15/pg_hba/password-encryption=md5
