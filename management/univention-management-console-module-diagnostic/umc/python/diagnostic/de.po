@@ -1373,6 +1373,12 @@ msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 msgid "Updating from PostgreSQL 11 to PostgreSQL 15"
 msgstr "Aktualisierung von PostgreSQL 11 auf PostgreSQL 15"
 
+msgid "Updating from PostgreSQL 11 to PostgreSQL 17"
+msgstr "Aktualisierung von PostgreSQL 11 auf PostgreSQL 17"
+
+msgid "Updating from PostgreSQL 15 to PostgreSQL 17"
+msgstr "Aktualisierung von PostgreSQL 15 auf PostgreSQL 17"
+
 #, python-brace-format
 msgid "Use the module {ucr} to correct their values."
 msgstr "Benutzen Sie das Modul {ucr}, um diese Werte zu korrigieren."
