@@ -1,0 +1,25 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: rsync
+fix: 3.2.7-1+deb12u5A~5.2.5.202605260947
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-43618 (CVSS score 8.1 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H).
+ * CVE-2026-29518 (CVSS score 7.0 -
+   CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-43620 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2026-43619 (CVSS score 6.3 -
+   CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N).
+ * CVE-2026-43617 (CVSS score 4.8 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N).
+bug: [59436]
+cve:
+- CVE-2026-29518
+- CVE-2026-43617
+- CVE-2026-43618
+- CVE-2026-43619
+- CVE-2026-43620
