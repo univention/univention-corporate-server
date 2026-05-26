@@ -1,5 +1,6 @@
-univention-archive-key (12.6.0) UNRELEASED; urgency=medium
+univention-archive-key (12.6.0) unstable; urgency=medium
 
+  * Bug #59471: Add univention-archive-key-ucs-53x.gpg
   * Bug #59324: UCS 5.2-6 version bump
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:24 +0200
