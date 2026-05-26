@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: samba
-fix: 2:4.10.18-1A~4.4.0.202605261142
+fix: 2:4.10.18-1A~4.4.0.202605281751
 desc: |
  This update addresses the following issues:
  * CVE-2026-4408 (CVSS score 10.0 -
