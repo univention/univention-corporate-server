@@ -6,5 +6,28 @@ src: samba
 fix: 2:4.10.18-1A~4.4.0.202605261142
 desc: |
  This update addresses the following issues:
- * TODO
+ * CVE-2026-4408 (CVSS score 10.0 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H).
+   UCS 4.4 is not affected.
+ * CVE-2026-4480 (CVSS score 10.0 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H).
+   UCS 4.4 is not affected.
+ * CVE-2026-3012 (CVSS score 8.0 -
+   CVSS3.1/AV:A/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N).
+   UCS 4.4 is not affected.
+ * CVE-2026-3238 (CVSS score 7.5 -
+   CVSS 3.1:AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-1933 (CVSS score 7.1 -
+   CVSS:3.1AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:H).
+   UCS 4.4 is not affected.
+ * CVE-2026-2340 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N).
+   UCS 4.4 is not affected.
 bug: [59439]
+cve:
+- CVE-2026-4408
+- CVE-2026-4480
+- CVE-2026-3012
+- CVE-2026-3238
+- CVE-2026-1933
+- CVE-2026-2340
