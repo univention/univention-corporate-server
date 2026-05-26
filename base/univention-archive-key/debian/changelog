@@ -1,3 +1,9 @@
+univention-archive-key (13.0.2) unstable; urgency=medium
+
+  * Add univention-archive-key-ucs-53x.gpg
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 26 May 2026 14:21:38 +0200
+
 univention-archive-key (13.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.3-0 version bump
