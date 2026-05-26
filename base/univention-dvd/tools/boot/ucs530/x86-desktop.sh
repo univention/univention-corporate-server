@@ -1,0 +1,1 @@
+../trixie/x86-desktop.sh
