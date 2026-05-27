@@ -6,9 +6,10 @@
 Log files and log rotation
 ==========================
 
-This page describes where Nubus for UCS stores log files
+Use this page to learn which log files
+Nubus for UCS stores
 and how the system rotates them.
-It also covers the separate log rotation settings
+It also covers separate log rotation settings
 for Univention Directory Listener modules.
 
 .. _computers-log-files:
@@ -16,78 +17,116 @@ for Univention Directory Listener modules.
 Log file locations
 ------------------
 
-All UCS-specific log files (e.g., for the listener/notifier replication) are
-stored in the :file:`/var/log/univention/` directory. Services write log messages their own
-standard log files: for example, Apache to the file
-:file:`/var/log/apache2/error.log`.
+Nubus for UCS stores its product-specific log files
+in the :file:`/var/log/univention/` directory,
+for example log files for listener and notifier replication.
+Services write their log messages
+to their own standard log files.
+For example,
+Apache writes log messages to the :file:`/var/log/apache2/error.log` file.
 
 .. _computers-log-rotation:
 
 Log rotation
 ------------
 
-The log files are managed by :program:`logrotate`. It ensures that log files are
-named in series in intervals (can be configured in weeks using the :term:`UCR variable`
-:envvar:`log/rotate/weeks`, with the default setting being 12) and older log
-files are then deleted. For example, the current log file for the *Univention Directory Listener* is
-found in the :file:`listener.log` file; the one for the previous week in
-:file:`listener.log.1`, etc.
+:program:`logrotate` manages the log files.
+It creates numbered log file archives at configured intervals
+and deletes older archives.
+The :term:`UCR variables <UCR variable>` :envvar:`logrotate/rotate`
+and :envvar:`logrotate/rotate/count`
+control log rotation.
+The :envvar:`logrotate/rotate` variable
+specifies the rotation criterion,
+for example ``weekly`` or :samp:`size 50M`.
+The :envvar:`logrotate/rotate/count` variable
+specifies how many rotated log file archives the system keeps.
+By default,
+the system rotates log files weekly
+and keeps ``12`` archives.
 
-Alternatively, log files can also be rotated only once they have reached a
-certain size. For example, if they are only to be rotated once they reach a size
-of 50 MB, the UCR variable :envvar:`logrotate/rotates` can be set to ``size 50M``.
+For example,
+the current log file for *Univention Directory Listener*
+is the :file:`listener.log` file.
+The archive for the previous rotation
+is the :file:`listener.log.1` file.
 
-The UCR variable :envvar:`logrotate/compress` is used to configure whether the
-older log files are additionally zipped with :command:`gzip`.
+Use the :envvar:`logrotate/compress` UCR variable
+to control whether :command:`gzip` compresses older log files.
 
 .. _computers-log-listener-module:
 
 Listener module log files
 -------------------------
 
-Log files located in the directory :file:`/var/log/univention/listener_modules`
-each have their own Logrotate configuration. These log files have global and
-specific Logrotate settings. The UCR variable :samp:`logrotate/listener-modules/{<directive>}`
+Each log file in the :file:`/var/log/univention/listener_modules` directory
+has its own :program:`logrotate` configuration.
+Listener module log files use global settings by default
+and can also use per-log-file overrides.
+The :samp:`logrotate/listener-modules/{DIRECTIVE}` UCR variable
 configures the global settings.
-The `logrotate(8) <https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_
-documentation describes the functionality in detail.
+For a complete list of supported directives,
+see the `logrotate manual page <https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_.
 
 .. _computers-log-listener-module-rotation-settings:
 
 Global listener module logrotate settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-UCS supports the following directives:
+Use these settings
+when you want to apply the same logrotate behavior
+to all listener module log files.
+Nubus for UCS supports the following directives
+for listener module log files:
 
 .. envvar:: logrotate/listener-modules/rotate
 
-   Default value: ``weekly``
+   Defines how often the system rotates listener module log files.
+
+   :Default value: ``weekly``
 
 .. envvar:: logrotate/listener-modules/rotate/count
 
-   Default value: ``12``
+   Defines how many rotated log files the system keeps.
+
+   :Default value: ``12``
 
 .. envvar:: logrotate/listener-modules/create
 
-   Default value: ``640 listener adm``
+   Defines the permissions and ownership for newly created log files.
+
+   :Default value: ``640 listener adm``
 
 .. envvar:: logrotate/listener-modules/missingok
 
-   Default value: ``missingok``
+   Defines whether logrotate continues
+   when a log file is missing.
+
+   :Default value: ``missingok``
 
 .. envvar:: logrotate/listener-modules/compress
 
-   Default value: ``compress``
+   Defines whether logrotate compresses rotated log files.
+
+   :Default value: ``compress``
 
 .. envvar:: logrotate/listener-modules/notifempty
 
-   Default value: ``notifempty``
+   Defines whether logrotate skips empty log files.
+
+   :Default value: ``notifempty``
 
 .. _computers-log-listener-module-rotation-settings-overrides:
 
-Per-logfile overrides
-~~~~~~~~~~~~~~~~~~~~~
+Per-log-file overrides
+~~~~~~~~~~~~~~~~~~~~~~
 
-If a configuration only applies to a specific log file, compose the UCR variable as
-follows: :samp:`logrotate/listener-modules/{<logfile-name>}/{<directive>}`. Use
-the log filename without the file suffix :file:`.log`.
+Use the following UCR variable pattern
+to configure settings for a specific log file:
+:samp:`logrotate/listener-modules/{LOG_FILE_NAME}/{DIRECTIVE}`.
+Use the log filename without the :file:`.log` filename extension.
+You can override the same directives
+that the global settings section lists.
+For example,
+to configure the rotation interval for :file:`example.log`,
+use :samp:`logrotate/listener-modules/example/rotate`.
