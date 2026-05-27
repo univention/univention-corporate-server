@@ -17,12 +17,12 @@ import pytest
 # python3 -c 'import ctypes; ctypes.string_at(0)'
 #
 # analyse with:
-# apt install libc6-dbg libldap-2.5-0-dbgsym python3-dbg univention-directory-listener-dbgsym univention-directory-notifier-dbgsym
+# apt install libc6-dbg libldap2-dbgsym python3-dbg univention-directory-listener-dbgsym univention-directory-notifier-dbgsym
 # coredumpctl debug "$ID" will open gdb interactively
 
 DBGSYMBOLS = [
     'libc6-dbg',
-    'libldap-2.5-0-dbgsym',
+    'libldap2-dbgsym',
     'python3-dbg',
     'univention-directory-listener-dbgsym',
     'univention-directory-notifier-dbgsym',
