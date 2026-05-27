@@ -6,96 +6,110 @@
 System diagnostics
 ==================
 
-This page describes the tools that help you inspect the current state of a Nubus for UCS system
+This page describes tools that help you inspect the current state
+of a system running Nubus for UCS
 and identify common problems.
 It covers command-line system status logging
-and diagnostic functions in Univention Management Console.
+and diagnostic functions in the *Management UI*.
 
 .. _system-administration-diagnostics-cli:
 
 Command-line diagnostics
 ------------------------
 
-:command:`univention-system-stats` can be used to document the current system
-status in the :file:`/var/log/univention/system-stats.log` file. The following
-values are logged:
+Run :command:`univention-system-stats`
+to write the current system status
+to the :file:`/var/log/univention/system-stats.log` file.
+The command logs the following values:
 
-* The free disk space on the system partitions (:command:`df
-  -lhT`)
+* The free disk space on the system partitions: :command:`df -lhT`.
 
-* The current process list (:command:`ps auxf`)
+* The current process list: :command:`ps auxf`.
 
-* Two :command:`top` lists of the current processes and
-  system load (:command:`top -b -n2`)
+* Two :command:`top` lists of the current processes and system load,
+  :command:`top -b -n2`.
 
-* The current free system memory (:command:`free`)
+* The current free system memory: :command:`free`.
 
-* The time elapsed since the system was started
-  (:command:`uptime`)
+* The time elapsed since the system started: :command:`uptime`.
 
-* Temperature, fan and voltage indexes from
-  :program:`lm-sensors`
-  (:command:`sensors`)
+* Temperature, fan, and voltage indexes from :program:`lm-sensors` with the command
+  :command:`sensors`.
 
-* A list of the current Samba connections
-  (:command:`smbstatus`)
+* A list of the current Samba connections: :command:`smbstatus`.
 
-The runtime in which the system status should be logged can be defined in Cron
-syntax via the :term:`UCR variable` :envvar:`system/stats/cron`, e.g., ``0,30 * * * *``
-for logging every half and full hour. The logging is activated by setting the
-UCR variable :envvar:`system/stats` to ``yes``. This is the default since UCS 3.0.
+To configure system status logging:
+
+#. Set the :term:`UCR variable` :envvar:`system/stats/cron`
+   to the required cron expression.
+   For example, use ``0,30 * * * *``
+   to log the status every 30 minutes.
+
+#. Set the :term:`UCR variable` :envvar:`system/stats` to ``yes``.
 
 .. _system-administration-diagnostics-umc:
 
-Diagnostics in Management UI
-----------------------------
+Diagnostics in the Management UI
+--------------------------------
 
-The Management UI provides modules for inspecting running processes
-and diagnosing known system problems.
+The *Management UI* provides modules
+to inspect running processes
+and diagnose known system problems.
 
-.. _system-administration-diagnostics-processes:
+View processes in the Management UI
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Process overview through management module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The UMC module :guilabel:`Process overview` displays a table of the current
-processes on the system. The processes can be sorted based on the following
-properties by clicking on the corresponding table header:
+Open the :guilabel:`Process overview` management module
+to view the current processes on the system.
+To sort the processes,
+click the corresponding table header
+for one of the following properties:
 
 * CPU utilization in percent
 
-* The username under which the process is running
+* The username under which the process runs
 
 * Memory consumption in percent
 
 * The process ID
 
-The menu item *more* can be used to terminate processes. Two different types of
-termination are possible:
+To terminate a process,
+open the :guilabel:`More` menu
+and choose one of the following actions:
 
 Terminate
-   The action :guilabel:`Terminate` sends the process a ``SIGTERM`` signal; this
-   is the standard method for the controlled termination of programs.
+   The :guilabel:`Terminate` action sends the process the ``SIGTERM`` signal.
+   Use this action for controlled program termination.
 
 Force terminate
-   Sometimes, it may be the case that a program - e.g., after crashing - can no
-   longer be terminated with this procedure. In this case, the action
-   :guilabel:`Force terminate` can be used to send the signal ``SIGKILL`` and
-   force the process to terminate.
+   A program can sometimes stop responding,
+   for example after a crash.
+   In this case,
+   use :guilabel:`Force terminate`
+   to send the ``SIGKILL`` signal
+   and force the process to stop.
 
-As a general rule, terminating the program with ``SIGTERM`` is preferable as
-many programs then stop the program in a controlled manner and, for example,
-save open files.
+In general,
+use ``SIGTERM`` first
+because many programs can then shut down in a controlled way
+and save open files.
+
+.. seealso::
+
+   `POSIX signals in Signal (IPC) - Wikipedia <https://en.wikipedia.org/wiki/Signal_(IPC)#POSIX_signals>`_
+      for information about POSIX signals for inter-process communication.
 
 .. _system-administration-diagnostics-management-module:
 
-System diagnostic through management module
+Run system diagnostics in the Management UI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The UMC module :guilabel:`System diagnostic` offers a corresponding user
-interface to analyze a UCS system for a range of known problems.
+Open the :guilabel:`System diagnostics` management module
+to analyze a system running Nubus for UCS
+for known problems.
 
-The module evaluates a range of problem scenarios known to it and suggests
-solutions if it is able to resolve the identified solutions automatically. This
-function is displayed via ancillary buttons. In addition, links are shown to
-further articles and corresponding UMC modules.
+The module checks known problem scenarios.
+If the module can fix a detected problem automatically,
+it shows an additional button for that action.
+It also links to related articles
+and corresponding management modules.
