@@ -26,3 +26,6 @@ cve:
 - CVE-2026-42013
 - CVE-2026-42014
 - CVE-2026-42015
+erratum: 1436
+announced: 2026-05-27
+support: lts
