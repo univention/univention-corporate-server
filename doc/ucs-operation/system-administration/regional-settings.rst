@@ -7,55 +7,64 @@ Regional settings
 =================
 
 This page describes system settings that affect language, keyboard layout,
-time zone, and time synchronization on a Nubus for UCS system.
+time zone, and time synchronization on a system running
+Nubus for UCS.
 
 .. _system-administration-language-locale-keyboard-settings:
 
 Language, locale, and keyboard settings
 ---------------------------------------
 
-In Linux, localization properties for software are defined in so-called
-*locales*. Configuration includes, among other things, settings for date and
-currency format, the set of characters in use and the language used for
-internationalized programs. The installed locales can be changed in the UMC
-module :guilabel:`Language settings` under :menuselection:`Language settings -->
-Installed system locales`. The standard locale is set under *Default system
-locale*.
+On Linux, *locales* define localization properties for software.
+Locales include settings for date formats, currency formats,
+character sets, and the language for internationalized programs.
+To change the installed locales:
+
+#. To open the :guilabel:`Language settings` management module,
+   in the *Univention Portal* go to :menuselection:`System --> Language settings --> Language settings`.
+   :numref:`system-administration-language-settings-figure`
+   shows the management module.
+
+#. Set the default locale in :guilabel:`Default system locale`.
 
 .. _system-administration-language-settings-figure:
 
 .. figure:: /images/computers_timezone.*
-   :alt: Configuring the language settings
+   :alt: The Language settings management module shows locale, keyboard layout, and time zone settings.
 
    Configuring the language settings
-
-The *Keyboard layout* in the menu entry *Time zone and keyboard settings* is
-applied during local logins to the system.
 
 .. _system-administration-time-zone-synchronization:
 
 Time zone and time synchronization
 ----------------------------------
 
-The time zone in which a system is located can be changed in the UMC module
-:guilabel:`Language settings` under :menuselection:`Time zone and keyboard
-settings --> Time zone`.
+To change the system time zone:
 
-Asynchronous system times between individual hosts of a domain can be the source
-of a large number of errors, for example:
+#. To open the :guilabel:`Language settings` management module,
+   in the *Univention Portal* go to :menuselection:`System --> Language settings`.
 
-* The reliability of log files is impaired.
+#. Go to :menuselection:`Time zone and keyboard settings --> Time zone`.
 
-* Kerberos operation is disrupted.
+Inconsistent system time between hosts in a domain
+can cause many errors.
+For example, it can affect the following components:
 
-* The correct evaluation of the validity periods of passwords can be disturbed.
+* Log file reliability.
 
-Usually the :term:`Primary Directory Node` functions as the time server of a domain. With the
-UCR variables :envvar:`timeserver`, :envvar:`timeserver2` and
-:envvar:`timeserver3` external NTP servers can be included as time sources.
+* Kerberos operation.
 
-Manual time synchronization can be started by the command :command:`ntpdate`.
+* Evaluation of password validity periods.
 
-Windows clients joined in a Samba/AD domain only accept signed NTP time
-requests. If the :term:`UCR variable` :envvar:`ntp/signed` is set to ``yes``, the NTP
-replies are signed by Samba/AD.
+The :term:`Primary Directory Node` usually acts as the timeserver for a domain.
+To include external NTP servers as time sources,
+set the :term:`UCR variables <UCR variable>` :envvar:`timeserver`,
+:envvar:`timeserver2`, and :envvar:`timeserver3`.
+
+To synchronize the time manually,
+run :command:`ntpdate`.
+
+Windows clients in a Samba domain
+accept only signed NTP time requests.
+If you set the :term:`UCR variable` :envvar:`ntp/signed` to ``yes``,
+Samba signs NTP replies.
