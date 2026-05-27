@@ -379,21 +379,6 @@ UDM provides some default roles, which are using some builtin capabilities:
 - `udm:default-roles:computer-join-administrator` allows to join computers into the domain, and set their corresponding password
 - `udm:default-roles:self-service-profile` allows to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`
 
-## Wildcard permissions
-
-Wildcard permissions allow to not be required to specify a whitelist of all allowed properties to have access to.
-UDM is a dynamically extensible framework, where new properties can be added 1) via additional schema extensions and 2) on the fly via UDM "extended attributes".
-
-Supporting wildcard permissions adds a security risk.
-If customers need to copy our default capability definitions for an example role and in some errata update we introduce new security-relevant properties e.g. another service specific password, customers need to adjust their access definitions prior to the software upgrade.
-Otherwise a vulnerability time window exists, where access is allowed to these attributes, even if the customer references (in a currently impossible way) our default policies.
-
-Alternative concept to wildcard permissions would be something like a "permission bundle", where we group certain properties, e.g. default-users-user-properties, custom-users-user-properties, sensitive-users-user-properties.
-
-The conflicting issue: We have to offer security by default and usability and maintainability of rules for the customers.
-
-**Related issue:** univention/dev/projects/authorization-engine/guardian#280
-
 ## Define the role of the tree structure / Comparison with LDAP ACLs
 
 In the whole concept we ignore that a directory service is a tree-based directory.
@@ -476,7 +461,11 @@ We could learn from FreeIPA how to design this very simple (KISS principle), the
 
 It doesn't feel correct, that permissions create a API. Managing single permissions to a UDM properties can't evolve. Only pre-defined permission sets by use can do this.
 
+Capabilities provide use-cases. Apps should pre-define valid use-cases for customers. It shouldn't be necessary in most cases to inspect the concrete given permissions, if the capabilities provide even fine-grained permissions for use-cases.
+
 **Change request:** Guardian should throw away the concept of capabilities and provide *Privileges*. which are the external API and referenced by customers. Apps provide these privileges. Permissions should be nearly opaque - implementation details which might be changed by the app at any time.
+
+**Change request:**: Capabilities should have a flag, indicating it to be marked as a API, where the App guarantuees its stability.
 
 ### Restricted charset
 
@@ -550,7 +539,7 @@ If we want to use the `context` Guardian concept we want to extend permissions s
 A concept of named context would be good, so that the value is freely chosen but the context name is registered in guardian.
 One could name a context `udm:contexts:ou` and it's value would be `ou=My school 1,dc=example,dc=org` so that the resulting role string would be `udm:udm:organisatzional-unit-administrator&udm:contexts:ou=ou=My school 1,dc=example,dc=org`.
 
-It would allow be nice if multiple contexts could be given per role, not just only one. This could be realized by separating them by `&`.
+~It would allow be nice if multiple contexts could be given per role, not just only one. This could be realized by separating them by `&`~
 
 → Values for contexts should be free-form strings, without having to be registered in Guardian.
 
@@ -558,7 +547,7 @@ It would allow be nice if multiple contexts could be given per role, not just on
 
 **Change request:** The Guardian should allow to register contexts and allows assigning free-from string values for them in the role string by separating them via the first `=` (e.g. `udm:default-roles:organisatzional-unit-administrator&udm:general:ou=ou=My school 1,dc=example,dc=org`).
 
-**Change request:** The Guardian should allow to specify multiple contexts in a role string, separated via `&` (e.g. `udm:roles:foo-role&context1&context2`).
+~**Change request:** The Guardian should allow to specify multiple contexts in a role string, separated via `&` (e.g. `udm:roles:foo-role&context1&context2`).~
 
 **Related issue:** univention/dev/projects/authorization-engine/guardian#272
 
@@ -604,24 +593,94 @@ permission_check(
 )
 ```
 
+## Wildcard permissions
+
+Wildcard permissions would allow us to not be required to specify a whitelist of all allowed properties to have access to.
+UDM is a dynamically extensible framework, where new properties can be added 1) via packaged additional schema extensions and 2) on the fly via UDM "extended attributes".
+
+Supporting wildcard permissions
+1. adds a security risk:
+If customers need to copy our default capability definitions for an example role and in some errata update we introduce new security-relevant properties e.g. another service specific password, fetchmailPassword, (or whatever already happened in the past) customers need to adjust their access definitions prior to the software upgrade.
+Otherwise a vulnerability time window exists, where access is allowed to these attributes, even if the customer references (in a currently impossible way) our default policies: but most likely these data don't exists yet in LDAP. But maybe the time-window would be for write-actions.
+2. allows us to define a stable permission lifecycle, where no breakage happens when introducing new properties
+
+**The conflicting issue**: We have to offer security by default and usability and maintainability of rules for the customers.
+
+UDM currently implements some kind of wildcard permissions, at least for the domain administrators.
+It would be much more maintainable if this manual and error prone implementation could be moved into Guardian's core concepts.
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#280
+
 ### Permission lifecycle
 As pointed out before, UDM is a evolving system over time. From time to time, we add new UDM properties or new UDM modules. Or customers do it via extended attributes.
 Or apps do it via their joinscript / app installation.
 We most recently had the problem, that the existing LDAP ACL's prevented us from doing certain changes in UDM regarding the `univentionObjectIdentifier`.
 
 UCS development takes place in erratum-updates, even for new features. We don't have a way to signal customers that they need to change their existing role set,
-after we added a new property.
-Not having the permission to write this attribute will cause the object creation to fail.
-UDM REST API and UMC require the full data representation of the new object to be send.
+after we added a new property:
+* Not having the permission to read this attribute will silently remove it during object modification.
+* Not having the permission to write this attribute will cause the object creation to fail.
+→ UDM REST API and UMC require the full data representation of the new object to be send.
 Customers will also not see the reason for it. The error message will just be `permission denied` without the information which attributes are not writeable.
 Guardian will not provide this information. Maybe when looking up the log files. This should not end in a support case.
-UCS cannot change the defined roles of customers.
+UCS (joinscript/apps) cannot change the roles and privileges which were manually defined by our customers.
 
 Guardian has no concept for the permission lifecycle.
 
 **Implementation idea:** If Guardian would provide a feature for re-useable sets of permission and capabilitiy bundles (privileges), which serve as an API, UDM could provide useful defaults.
 
 **Related issue:** univention/dev/projects/authorization-engine/guardian#280
+
+### Alternative: "Privilege" (bundle) concept
+
+An alternative concept to wildcard permissions would be something like a re-useable set of permissions+capabilites
+i.e. a bundle of `privileges`, where we can group certain property-permissions,
+e.g. `default-users-user-properties`, `custom-users-user-properties`, `sensitive-users-user-properties`
+and update this during every UDM attribute change, app installation, etc.
+
+This would serve as a stable API which App ISV extend with their extensions for users.
+UDM could provide useful defaults for that, so that operators never face any problems after upgrades.
+
+To reduce congnitive load, and because there is simply no need for multiple concepts, these bundles can just be realized via a single `Privilege` concept.
+Define privilege as: a named set of permissions, and referenced underling privileges optionally constrains by conditions.
+Conditions are inherited down to all sub-privileges with a `AND` condition.
+
+This allows to create a nested structure from coarse-graned to fine-grained privileges:
+* Role: `domin-admin`:
+ * P: `udm:domain-admin`
+  * P: `udm:users-user-write-all`
+   * P: `udm:users-user:modify-action`, …
+   * P: `udm:users-user:general-properties`
+    * P: `udm:user-user:write-property-description`
+     * grants permission: `udm:user-user:write-property-description` (can be named differently)
+    * P: `udm:user-user:write-property-lastname`, …
+   * P: `udm:users-user:extended-properties`
+   * P: `udm:users-user:sensitive-properties`
+    * P: `udm:user-user:write-property-password`
+    * P: `udm:user-user:write-property-pwhistory`
+    * P: `udm:user-user:write-property-guardianRoles`
+     * grants permission: `udm:user-user:write-property-description` (can be named differently)
+     * if condition: `value != "guardan:builtin:super-admin"`
+
+Each privilege should be probably be wrapped into a privilege, so that later on a constraining condition can be added (e.g. for security purposes, if a `shares/share:sambaCreateMode` permission allowed to set sticky-bit and this needs to be restricted later on). Also we should not expose permissions as public API, as they are implementation detail which the App should be allowed to change and extend at any time (see `Capabilities vs Permissions: What is API, what is opaque?` for details).
+
+Apps could just start with a flat-hierarchy, defining all permissions in one privilege.
+From that on, they could evolve in a backwards-compatible way by grouping these permissions into logical groups, providing suitable privileges which can be documented and marked as API for reuse/reference.
+
+Because conditions also apply to sub-privileges, they allow easy customization by customers / PS.
+Customers could copy just the `udm:users-user-write-all` priviledge, into a `custom-user-write-all`, add a condition which e.g. checks `if context == OU_BREMEN` and reference the original `udm:users-user-write-all`.
+Instead of copying a whole structure of hundrets permission which change over time!
+
+**Change request:** The `capability` concept should be replaced with a `privilege` concept having a nested inherited structure.
+
+**Related issue:** univention/dev/projects/authorization-engine/guardian#280
+
+### Everybody can overwrite settings in App delivered objects
+
+Apps provide default capabilities and privileges, and other objects.
+At least for capabilities, which will be created by joinscripts/provisioning mechanisms, and overwritten on updates, it should be the possibility to make them readonly.
+
+**Change request:**: A flag whould indicated that the object is readonly, so it's at least not modifyable in the Management UI.
 
 ### No language to describe rules: just HTTP API endpoints with JSON payloads
 
@@ -879,11 +938,24 @@ access by role="udm:default-roles:self-service-profile"
 **Workaround:** We are currently going with the second approach and transform this into the required Guardian objects.
 This also helps us to abstract away the Guardian interface implementation details, so that customers won't see it.
 
-### No Caching possible: Capabilities are bound to targets
-The API design of Guardian is to either fetch a "access granted (for given target): yes/no" request or a "give me all permission strings granted to the given target".
+### General permission vs target permissions: Not changeable in the future
 
-It differentiates between "target permissions" and "general permissions".
-But in practice most often only target permissions are suitable to be used, otherwise one cannot use any conditions.
+The API design of Guardian is to either fetch a "access granted (for given target): yes/no" request or a "give me all permission strings granted to the given target".
+The endpoint for check permissions has the parameters `targeted_permissions_to_check` and `general_permissions_to_check` and the endpoint for get permissions has the parameter `include_general_permissions`.
+
+So the endpoints differentiate between "target permissions" and "general permissions" but the capabilities or permissions itself doesn't.
+As soon as a capability has a condition it cannot be treated as general permission anymore, the condition always returns false as no target is given to the evaluation logic.
+The opposite is also true.
+That causes trouble for clients, as they have to know which kind of permission they are requesting. And if that changes, the code is broken.
+It's also very intransparent: The capabilities itself don't have a flag indicating what kind of permission they grant.
+
+In practice most often only target permissions are suitable to be used, otherwise one cannot use any conditions.
+
+#### No way to retrieve the theoretical possible permissions for a user
+If Guardian would offer a endpoint which allows to receive all permissions which (the roles of) a user could theoretically receive (by assuming all conditions match), it would be possible for UDM to query those information.and react opon them:
+* It can mark certain GUI elements as disabled, e.g. Create, Modify, Remove options from the grid for a certain object type.
+
+#### No Caching possible: Capabilities are bound to targets
 
 If Guardian would be able to give the whole permissions which are poossible by an actor, this result would be cacheable.
 Then we could eliminate a lot of request e.g. when a search is performed twice.
@@ -907,6 +979,35 @@ so that an Administrator can click on "Is allowed to create/modify" objects of t
 **Related issue:** univention/dev/projects/authorization-engine/guardian#277
 
 ## Security Impacts
+
+### Contexts aren't bound to roles in a additive permission-granting system
+
+A user object could have the following roles, with contexts:
+* `udm:domain-user`
+* `udm:ou-admin & udm:contexts:ou={BREMEN}`
+* `udm:helpdesk & udm:contexts:ou={LEIPZIG}`
+
+which reads as, it gets OU-Administrator permissions for OU=BREMEN and Helpdesk permissions for OU=LEIPZIG.
+but actually it builds the cartesian-product OU-Administrator and Helpdesk permissions for both OU=BREMEN and OU=LEIPZIG.
+
+### Roles are not hierarchical, so who grants assigning which roles to whom?
+
+In other systems, roles are designed hierarchical, e.g. `Guest`, `Reporter`, `Developer`, `Maintainer`, `Owner` in GitLab.
+A user can only add the roles to other users upon to the level of the role he has.
+
+Guardian differs here by allowing to define arbitrary roles which grant arbitrary permissions.
+There is no way to know, if a user should be restricted to set a certain role, which would grant permissions to overtake the domain.
+Currently UDM hardcodes to disallow setting a role `udm:builtins:super-amdin`, but this is far away from being a solution.
+
+## Authorization API itself does no authorization
+
+The Authoriation API authenticates user before they can use the endpoints.
+But there is no authorization, which endpoints or user-information are allowed to be processed.
+The informations leaked are:
+* User enumaration, as response differ for non-existing and existing users
+* All permisions for arbitrary users, as you can construct arbitrary fake actors and targets
+* Further information via the endpoints which are using UDM REST API(?!)
+* DoS of UDM REST API via the UDM REST API endpoints(?!)
 
 ### Availability of UDM
 Currently, UDM's only dependencies are the OpenLDAP server and UCR DB (local file) availability.
