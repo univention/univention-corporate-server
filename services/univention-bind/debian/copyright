@@ -6,6 +6,23 @@ Source: https://updates.software-univention.de/
 Files: *
 Copyright: 2001-2026 Univention GmbH
 License: AGPL-3.0-only
+
+Files: dlz/dlz_minimal.h
+Copyright: Internet Systems Consortium, Inc. ("ISC")
+License: ISC
+ Permission to use, copy, modify, and distribute this software for any purpose
+ with or without fee is hereby granted, provided that the above copyright
+ notice and this permission notice appear in all copies.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+ REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+ AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+ PERFORMANCE OF THIS SOFTWARE.
+
+License: AGPL-3.0-only
  The source code of the software contained in this package
  as well as the source package itself are made available
  under the terms of the GNU Affero General Public License version 3
