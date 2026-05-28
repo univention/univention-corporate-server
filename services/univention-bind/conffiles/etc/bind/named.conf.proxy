@@ -64,22 +64,9 @@ else:
     print('\tfile "/etc/bind/db.root";')
     print('};')
 @!@
-zone "localhost" {
-	type master;
-	file "/etc/bind/db.local";
-};
-zone "127.in-addr.arpa" {
-	type master;
-	file "/etc/bind/db.127";
-};
-zone "0.in-addr.arpa" {
-	type master;
-	file "/etc/bind/db.0";
-};
-zone "255.in-addr.arpa" {
-	type master;
-	file "/etc/bind/db.255";
-};
+// localhost / 127.in-addr.arpa / 0.in-addr.arpa / 255.in-addr.arpa are served
+// by BIND's built-in "empty-zones yes" (default on since BIND 9.9). Debian
+// stopped shipping the matching db.* files in bind9 1:9.20.5-1.
 
 include "/etc/bind/univention.conf.proxy";
 include "/etc/bind/local.conf.proxy";
