@@ -6,7 +6,8 @@
 Service management and system integration
 =========================================
 
-This page describes service-related configuration tasks on Nubus for UCS systems.
+This page describes service-related configuration tasks
+on systems running Nubus for UCS.
 It covers service startup behavior, selected integration settings,
 and the name service cache daemon.
 
@@ -15,116 +16,138 @@ and the name service cache daemon.
 Manage system services
 ----------------------
 
-The UMC module :guilabel:`System services` can be used to check the current
-status of a system service and to start or stop it as required.
+To manage system services:
 
-.. _system-administration-system-services-figure:
+#. To open the :guilabel:`System services` management module,
+   in the *Univention Portal* go to :menuselection:`System --> System services`.
+
+#. Check the current status of a system service.
+
+#. Start or stop the service when needed.
 
 .. figure:: /images/umc-systemservices.*
-   :alt: Overview of system services
+   :alt: The System services management module shows installed services, their status, and available actions.
 
    Overview of system services
 
-In this list of all the services installed on the system, the current running
-runtime status and a *Description* are displayed under *Status*. The service can
-be started, stopped or restarted under :guilabel:`more`.
+The list shows all services installed on the system.
+Under :guilabel:`Status`,
+you can see the current status and a description.
+Select one or more services
+and use the :guilabel:`More` menu
+to start, stop, or restart a service.
 
-By default every service is started automatically when the system is started. In
-some situations, it can be useful not to have the service start directly, but
-instead only after further configuration. The action *Start manually* is used so
-that the service is not started automatically when the system is started, but
-can still be started subsequently. The action *Start never* also prevents
-subsequent service starts.
+By default, the system starts every service automatically.
+Sometimes,
+you may want to prevent a service from starting automatically
+until you complete additional configuration.
+
+* Use :guilabel:`Start manually`
+  to prevent automatic startup
+  while still allowing you to start the service later.
+
+* Use :guilabel:`Start never`
+  to prevent automatic and manual service starts.
 
 .. _system-administration-ldap-server:
 
-Configuration of the LDAP server in use
----------------------------------------
+Configure the LDAP server
+-------------------------
 
-Several LDAP servers can be operated in a UCS domain. The primary one used is
-specified with the :term:`UCR variable` :envvar:`ldap/server/name`, further servers can be
-specified via the UCR variable :envvar:`ldap/server/addition`.
+You can operate several LDAP servers in a Nubus for UCS domain.
+Set the primary server
+with the :term:`UCR variable` :envvar:`ldap/server/name`.
+Set additional servers
+through the :term:`UCR variable` :envvar:`ldap/server/addition`.
 
-Alternatively, the LDAP servers can also be specified via a *LDAP server*
-policy. The order of the servers determines the order of the computer's requests
-to the server if a LDAP server cannot be reached.
+Alternatively, specify LDAP servers
+through the *LDAP server* policy.
+If a system can't reach one LDAP server,
+it contacts the servers in the configured order.
 
-By default only :envvar:`ldap/server/name` is set following the installation or
-the domain join. If there is more than one LDAP server available, it is
-advisable to assign at least two LDAP servers using the *LDAP server* policy in
-order to improve redundancy. In cases of an environment distributed over
-several locations, preference should be given to LDAP servers from the local
-network.
+By default, the installation or the domain join only sets :envvar:`ldap/server/name`.
+If more than one LDAP server is available,
+assign at least two LDAP servers
+through the *LDAP server* policy
+to improve redundancy.
+In environments that span several locations,
+prefer LDAP servers in the local network.
 
 .. _system-administration-print-server:
 
-Configuration of the print server in use
-----------------------------------------
+Configure the print server
+--------------------------
 
-The print server to be used can be specified with the :term:`UCR variable`
-:envvar:`cups/server`.
+Specify the print server
+with the :term:`UCR variable` :envvar:`cups/server`.
 
-Alternatively, the server can also be specified via the *Print server* policy in
-the UMC module :guilabel:`Computers`.
+Alternatively, specify the server
+through the *Print server* policy
+in the :guilabel:`Computers` management module.
+
+.. seealso::
+
+   :external+uv-nubus-manual:ref:`nubus-computer-management`
+      in :cite:t:`uv-nubus-manual`
+      for information about the :guilabel:`Computers` management module
 
 .. _system-administration-nscd:
 
 Name service cache daemon
 -------------------------
 
-Data of the NSS service is cached by the *Name Server Cache Daemon* (NSCD) in
-order to speed up frequently recurring requests for unchanged data. Thus, if a
-repeated request occurs, instead of a complete LDAP request to be processed, the
-data are simply drawn directly from the cache.
+The *Name Service Cache Daemon* (NSCD) caches
+Name Service Switch (NSS) data
+to speed up repeated requests for unchanged data.
+If the same request occurs again,
+the system reads the data from the cache
+instead of processing a complete LDAP request.
 
-Since UCS 3.1, the groups are no longer cached via the NSCD for performance and
-stability reasons; instead they are now cached by a local group cache, see
-:ref:`groups-cache`.
+Groups are no longer cached through NSCD
+for performance and stability reasons.
+Instead, a local group cache stores them.
+For more information, see :ref:`ucs-operation-groups-management-cache`.
 
-Since UCS 5.2-0, the user information (``passwd``) is no longer cached via
-NSCD. Instead the *System Security Services Daemon* (SSSD) is used to get and
-cache user information, see `SSSD documentation <https://sssd.io/docs/introduction.html>`_.
+Since UCS 5.2-0,
+the system no longer caches user information (``passwd``) through NSCD.
+Instead, the *System Security Services Daemon* (SSSD)
+retrieves and caches user information.
+For more information, see the `SSSD documentation <https://sssd.io/docs/introduction.html>`_.
 
-The central configuration file of the (:file:`/etc/nscd.conf`) is managed by
-*Univention Configuration Registry*.
+*Univention Configuration Registry*
+manages the :file:`/etc/nscd.conf` configuration file.
 
-The access to the cache is handled via a hash table. The size of the hash table
-can be specified in Univention Configuration Registry, and should be higher than the number of
-simultaneously used users/hosts. For technical reasons, a prime number should be
-used for the size of the table. The following table shows the standard values of
-the variables:
+A hash table handles access to the cache.
+Specify the hash table size
+with the UCR variable :envvar:`nscd/hosts/size`.
+Set the value higher than the number
+of users and hosts that access the cache at the same time.
+For technical reasons,
+use a prime number.
 
-.. list-table:: Default size of the hash table
-   :header-rows: 1
-   :widths: 30 70
+With large caches,
+increase the cache database size in system memory
+through the UCR variable :envvar:`nscd/hosts/maxdbsize`.
 
-   * - Variable
-     - Default size of the hash table
+By default, NSCD starts five threads.
+If the system handles many accesses,
+increase the number
+through the :term:`UCR variable` :envvar:`nscd/threads`.
 
-   * - :envvar:`nscd/hosts/size`
-     -  ``6007``
+By default, the system caches a resolved hostname
+for one hour.
+Use the :envvar:`nscd/hosts/positive_time_to_live` UCR variable
+to increase or decrease the cache period in seconds.
 
-With very big caches it may be necessary to increase the size of the cache
-database in the system memory. This can be configured through the UCR
-variable :envvar:`nscd/hosts/maxdbsize`.
-
-As standard, five threads are started by NSCD. In environments with many
-accesses it may prove necessary to increase the number via the :term:`UCR variable`
-:envvar:`nscd/threads`.
-
-In the basic setting, a resolved hostname is kept in cache for one
-hour.
-With the UCR variable :envvar:`nscd/hosts/positive_time_to_live` this
-period can be extended or diminished (in seconds).
-
-From time to time it might be necessary to manually invalidate the cache of the
-NSCD. This can be done individually for each cache table with the following
-commands:
+You may need to invalidate the NSCD cache manually.
+Run the commands in :numref:`system-administration-nscd-invalidate-cache-listing`
+for the relevant cache table.
+Use the :term:`UCR variable` :envvar:`nscd/debug/level`
+to set the verbosity of log messages.
 
 .. code-block:: console
+   :caption: Commands to manually invalidate the NSCD cache
+   :name: system-administration-nscd-invalidate-cache-listing
 
    $ sss_cache -U
    $ nscd -i hosts
-
-The verbosity of the log messages can be configured through the UCR variable
-:envvar:`nscd/debug/level`.
