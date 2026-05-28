@@ -10,7 +10,7 @@ eval "$(univention-config-registry shell)"
 
 univention-config-registry set \
 	bootsplash/theme?"ucs" \
-	grub/bootsplash?splash
+	grub/bootsplash?nosplash
 
 #DEBHELPER#
 
