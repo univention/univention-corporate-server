@@ -1,6 +1,7 @@
 05univention-bind.inst	usr/lib/univention-install/
 90univention-bind-post.inst	usr/lib/univention-install/
 bind.py	usr/lib/univention-directory-listener/system/
+dlz/ucs-ldapdb.so	usr/lib/bind9/
 etc/bind/db.root.fake	etc/bind/
 usr/lib/univention-bind
 usr/lib/univention-server/server_password_change.d/univention-bind	usr/lib/univention-server/server_password_change.d/
