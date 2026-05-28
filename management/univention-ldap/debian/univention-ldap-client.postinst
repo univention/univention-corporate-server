@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Univention LDAP Client
+#  postinst script for the debian package
+#
+# SPDX-FileCopyrightText: 2001-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+#DEBHELPER#
+
+# 5.3 bootstrap hack: we ship our own slapd.service/sssd.service overrides in
+# /etc/systemd/system (Debian trixie changed these units). Reload so the
+# drop-ins take effect.
+systemctl daemon-reload || true
+
+exit 0
