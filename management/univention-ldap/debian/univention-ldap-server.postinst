@@ -67,6 +67,8 @@ esac
 
 #DEBHELPER#
 
+systemctl daemon-reload || true
+
 eval "$(univention-config-registry shell)"
 
 if [ "$server_role" = "domaincontroller_master" ]; then

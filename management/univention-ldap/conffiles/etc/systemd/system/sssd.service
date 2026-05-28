@@ -1,0 +1,22 @@
+[Unit]
+Description=System Security Services Daemon
+# SSSD must be running before we permit user sessions
+Before=systemd-user-sessions.service nss-user-lookup.target
+Wants=nss-user-lookup.target
+StartLimitIntervalSec=50s
+StartLimitBurst=5
+ConditionPathExists=|/etc/sssd/sssd.conf
+ConditionDirectoryNotEmpty=|/etc/sssd/conf.d/
+
+[Service]
+Environment=DEBUG_LOGGER=--logger=files
+EnvironmentFile=-/etc/default/sssd
+ExecStart=/usr/sbin/sssd -i ${DEBUG_LOGGER}
+Type=notify
+NotifyAccess=main
+PIDFile=/run/sssd.pid
+CapabilityBoundingSet=  CAP_IPC_LOCK CAP_CHOWN CAP_DAC_READ_SEARCH CAP_KILL CAP_NET_ADMIN CAP_SYS_NICE CAP_FOWNER CAP_SETGID CAP_SETUID CAP_SYS_ADMIN CAP_SYS_RESOURCE CAP_BLOCK_SUSPEND
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target

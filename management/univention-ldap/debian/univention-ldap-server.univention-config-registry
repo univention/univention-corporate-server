@@ -7,6 +7,12 @@ Variables: ldap/database/type
 Variables: ldap/schema/export
 Variables: ldap/maxopenfiles
 
+Type: file
+File: etc/systemd/system/slapd.service
+
+Type: file
+File: etc/systemd/system/sssd.service
+
 Type: multifile
 User: root
 Group: root
