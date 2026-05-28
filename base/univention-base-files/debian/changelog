@@ -1,3 +1,9 @@
+univention-base-files (11.5.1) unstable; urgency=low
+
+  * Bug #59440: add univention-provisioning-api-client
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 28 May 2026 18:39:38 +0200
+
 univention-base-files (11.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
