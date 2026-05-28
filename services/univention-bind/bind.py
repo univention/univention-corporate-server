@@ -17,7 +17,6 @@ import os
 import signal
 import subprocess
 import time
-from urllib.parse import quote
 
 import univention.debug as ud  # pylint: disable-msg=E0611
 
@@ -120,7 +119,7 @@ def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -
     try:
         if new and not old:
             # Add
-            _new_zone(listener.configRegistry, new['zoneName'][0].decode('UTF-8'), dn)
+            _new_zone(listener.configRegistry, new['zoneName'][0].decode('UTF-8'))
         elif old and not new:
             # Remove
             _remove_zone(old['zoneName'][0].decode('UTF-8'))
@@ -140,16 +139,7 @@ def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -
         listener.unsetuid()
 
 
-def _ldap_auth_string(ucr: dict[str, str]) -> str:
-    """Build extended LDAP query URI part containing bind credentials."""
-    account = ucr.get('bind/binddn', ucr['ldap/hostdn'])
-
-    pwdfile = ucr.get('bind/bindpw', '/etc/machine.secret')
-    with open(pwdfile) as fd:
-        return '????!bindname=%s,!x-bindpw=%s,x-tls' % (quote(account), quote(fd.readline().rstrip()))
-
-
-def _new_zone(ucr: dict[str, str], zonename: str, dn: str) -> None:
+def _new_zone(ucr: dict[str, str], zonename: str) -> None:
     """Handle addition of zone."""
     ud.debug(ud.LISTENER, ud.INFO, 'DNS: Creating zone %s' % (zonename,))
     if not os.path.exists(NAMED_CONF_DIR):
@@ -157,28 +147,6 @@ def _new_zone(ucr: dict[str, str], zonename: str, dn: str) -> None:
         os.chmod(NAMED_CONF_DIR, 0o755)
 
     validate_zonename(zonename)
-    zonefile = safe_path_join(NAMED_CONF_DIR, zonename)
-
-    # Create empty file and restrict permission
-    named_zone = open(zonefile, 'w')
-    named_zone.close()
-    os.chmod(zonefile, 0o640)
-    chgrp_bind(zonefile)
-
-    # Now fill zone file
-    ldap_uri = "ldap://%s:%s/%s%s" % (
-        ucr.get('bind/ldap/server/ip', '127.0.0.1'),
-        ucr.get('ldap/server/port', '7389'),
-        dn,
-        _ldap_auth_string(ucr),
-    )
-    named_zone = open(zonefile, 'w+')
-    named_zone.write('zone "%s" {\n' % (_quote_config_parameter(zonename),))
-    named_zone.write('\ttype master;\n')
-    named_zone.write('\tnotify yes;\n')
-    named_zone.write('\tdatabase "ldap %s 172800";\n' % (_quote_config_parameter(ldap_uri),))
-    named_zone.write('};\n')
-    named_zone.close()
 
     # Create proxy configuration file
     proxy_file = safe_path_join(NAMED_CONF_DIR, zonename + '.proxy')
