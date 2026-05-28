@@ -1,1 +1,2 @@
 04univention-ldap-client.inst	usr/lib/univention-install/
+systemd/slapd.service	etc/systemd/system/
