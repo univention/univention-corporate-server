@@ -1,6 +1,15 @@
 Type: file
 File: etc/bind/named.conf
 Variables: dns/ipv6
+Variables: dns/backend
+Variables: bind/ldap/server/ip
+Variables: ldap/server/port
+Variables: ldap/base
+Variables: ldap/hostdn
+Variables: dns/ldap/base
+Variables: bind/binddn
+Variables: bind/bindpw
+Variables: dns/ldap/dlz/ttl
 
 Type: file
 File: etc/systemd/system/named.service.d/10-configure-backend.conf

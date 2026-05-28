@@ -980,6 +980,12 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
 
 [[annotations]]
+path = "services/univention-bind/dlz/dlz_minimal.h"
+precedence = "override"
+SPDX-License-Identifier = "ISC"
+SPDX-FileCopyrightText = "Internet Systems Consortium, Inc. (\"ISC\")"
+
+[[annotations]]
 path = "services/univention-dhcp/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
