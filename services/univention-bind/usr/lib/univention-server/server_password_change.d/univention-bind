@@ -21,8 +21,7 @@ fi
 
 if [ "$1" = "postchange" ] ; then
 	echowithtimestamp "updating named zone files after server password change"
-	# update zone files
-	sed -i "s|\!x-bindpw=\(.*\),x-tls|\!x-bindpw=$(cat /etc/machine.secret),x-tls|" /etc/bind/univention.conf.d/*
+	ucr commit /etc/bind/named.conf
 	# Reload or restart LDAP-BIND (if running)
 	if [ "$dns_backend" = "ldap" ]; then
 		echowithtimestamp "reload or restart named after server password change"
