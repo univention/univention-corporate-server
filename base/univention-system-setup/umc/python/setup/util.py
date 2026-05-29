@@ -55,6 +55,7 @@ if TYPE_CHECKING:
 try:
     from univention.appcenter.actions import get_action
     from univention.appcenter.app_cache import AppCache, Apps
+    from univention.appcenter.ucr import ucr_load as appcenter_ucr_load
 except ImportError as exc:
     MODULE.warning('Ignoring import error: %s', exc)
 _ = Translation('univention-management-console-module-setup').translate
@@ -165,6 +166,10 @@ def load_values(lang: str | None = None) -> dict[str, str]:
 
 
 def auto_complete_values_for_join(newValues: dict[str, str], current_locale: Locale | None = None) -> dict[str, str]:
+    # 5.3 preview: apps (e.g. the AD Connector) are only published on the test App Center
+    subprocess.call(['univention-app', 'dev-use-test-appcenter'])
+    appcenter_ucr_load()
+
     # try to automatically determine the domain, except on a dcmaster
     if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
         ucr.load()
