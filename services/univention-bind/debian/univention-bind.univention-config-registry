@@ -1,5 +1,8 @@
 Type: file
 File: etc/bind/named.conf
+User: root
+Group: bind
+Mode: 0660
 Variables: bind/binddn
 Variables: bind/bindpw
 Variables: bind/ldap/server/ip
