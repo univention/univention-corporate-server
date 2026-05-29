@@ -309,9 +309,9 @@ keycloak_migration() {
 
 configure_umc_keycloak() {
 	# shellcheck source=/dev/null
-	. utils-keycloak.sh && keycloak_saml_idp_setup
+	. utils-keycloak.sh && keycloak_saml_idp_setup || true
 	# shellcheck source=/dev/null
-	. utils-keycloak.sh && keycloak_umc_oidc_idp_setup
+	. utils-keycloak.sh && keycloak_umc_oidc_idp_setup || true
 	domainname="$(ucr get domainname)"
 }
 
