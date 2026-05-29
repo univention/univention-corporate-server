@@ -537,6 +537,17 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: string
 
+.. envvar:: cups/server
+
+   Specifies the CUPS print server
+   to which this system forwards print jobs.
+   A *Print server* policy can override this value.
+
+   For information about configuring the print server,
+   see :ref:`system-administration-print-server`.
+
+   :Default value: not set; ``localhost`` on print server installations
+   :Type: string
 
 .. envvar:: dns/forwarder1
 
@@ -885,6 +896,32 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
+.. envvar:: ldap/server/name
+
+   Specifies the primary LDAP server
+   that the system uses in the domain.
+   Configure additional LDAP servers with
+   :envvar:`ldap/server/addition`.
+
+   For information about LDAP server selection,
+   see :ref:`system-administration-ldap-server`.
+
+   :Default value: set automatically during installation or domain join
+   :Type: string
+
+
+.. envvar:: ldap/server/addition
+
+   Specifies additional LDAP servers
+   that the system can use in the domain.
+   System configure the primary LDAP server through
+   :envvar:`ldap/server/name`.
+
+   For information about LDAP server selection,
+   see :ref:`system-administration-ldap-server`.
+
+   :Default value: not set
+   :Type: string
 
 .. envvar:: ldap/overlay/lastbind
 
@@ -983,6 +1020,42 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+.. envvar:: logrotate/compress
+
+   Controls whether rotated log files are compressed with :command:`gzip`.
+
+   For information about log rotation,
+   see :ref:`system-administration-logging`.
+
+   :Default value: ``yes``
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: logrotate/rotate
+
+   Specifies the criterion that :program:`logrotate` uses
+   to rotate log files.
+   You can use time-based values such as ``daily``, ``weekly``, or ``monthly``,
+   or a size-based value such as :samp:`size 50M`.
+
+   For information about log rotation,
+   see :ref:`system-administration-logging`.
+
+   :Default value: ``weekly``
+   :Type: string
+
+
+.. envvar:: logrotate/rotate/count
+
+   Specifies how many rotated log files the system keeps
+   before removing older archives.
+
+   For information about log rotation,
+   see :ref:`system-administration-logging`.
+
+   :Default value: ``12``
+   :Type: positive integer
 
 .. envvar:: local/repository
 
@@ -1164,6 +1237,18 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
+.. envvar:: ntp/signed
+
+   Controls whether Samba signs NTP replies.
+   Windows clients joined to a Samba domain
+   require signed NTP time replies.
+
+   For information about time synchronization,
+   see :ref:`system-administration-time-zone-synchronization`.
+
+   :Default value: ``yes``
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
 
 .. envvar:: notifier/debug/level
 
@@ -1184,6 +1269,69 @@ This section provides a reference for UCR variables.
    :Possible values: ``0`` to ``5``
    :Type: integer
 
+.. envvar:: nscd/debug/level
+
+   Sets the verbosity of NSCD log messages.
+   When set to a value greater than ``0``,
+   NSCD writes debug output to :file:`/var/log/nscd.log`.
+
+   For information about NSCD configuration,
+   see :ref:`system-administration-system-services`.
+
+   :Default value: ``0``
+   :Type: integer
+
+
+.. envvar:: nscd/hosts/size
+
+   Sets the size of the NSCD cache for host entries.
+   The value should be at least as large
+   as the number of hosts registered in DNS.
+
+   For information about NSCD configuration,
+   see :ref:`system-administration-system-services`.
+
+   :Default value: ``6007``
+   :Type: positive integer
+
+
+.. envvar:: nscd/hosts/maxdbsize
+
+   Sets the size in bytes of the NSCD host cache database.
+   Increase this value when
+   :envvar:`nscd/hosts/size` is set to a high value.
+
+   For information about NSCD configuration,
+   see :ref:`system-administration-system-services`.
+
+   :Default value: not set
+   :Type: positive integer
+
+
+.. envvar:: nscd/hosts/positive_time_to_live
+
+   Sets how long, in seconds,
+   NSCD keeps successful host lookup results in the cache.
+
+   For information about NSCD configuration,
+   see :ref:`system-administration-system-services`.
+
+   :Default value: ``3600``
+   :Type: integer
+
+
+.. envvar:: nscd/threads
+
+   Sets the number of threads
+   that NSCD starts to process requests.
+   When unset,
+   NSCD uses five threads.
+
+   For information about NSCD configuration,
+   see :ref:`system-administration-system-services`.
+
+   :Default value: ``5``
+   :Type: positive integer
 
 .. envvar:: nss/group/cachefile
 
@@ -1830,6 +1978,75 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
+.. envvar:: system/stats
+
+   Controls whether the system regularly logs system statistics
+   to :file:`/var/log/univention/system-stats.log`.
+   The logged data includes information such as active processes,
+   free disk space, free memory, uptime, and active Samba connections.
+
+   Configure the interval with
+   :envvar:`system/stats/cron`.
+
+   For information about system status logging,
+   see :ref:`system-administration-diagnostics-cli`.
+
+   :Default value: ``yes``
+   :Possible values: ``yes``, ``no``
+   :Type: boolean
+
+
+.. envvar:: system/stats/cron
+
+   Specifies the interval
+   for collecting system statistics in cron syntax.
+
+   For information about system status logging,
+   see :ref:`system-administration-diagnostics-cli`.
+
+   :Default value: ``0,30 * * * *``
+   :Type: cron
+
+
+.. envvar:: timeserver
+
+   Specifies an external NTP server
+   that the system uses as a time source.
+   In a Nubus for UCS domain,
+   the Primary Directory Node usually acts as the default time server.
+
+   Additional external time sources can be configured with
+   :envvar:`timeserver2` and :envvar:`timeserver3`.
+
+   For information about time synchronization,
+   see :ref:`system-administration-time-zone-synchronization`.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: timeserver2
+
+   Specifies a second external NTP server
+   that the system uses as a time source.
+
+   For details about external time sources,
+   see :envvar:`timeserver`.
+
+   :Default value: not set
+   :Type: string
+
+
+.. envvar:: timeserver3
+
+   Specifies a third external NTP server
+   that the system uses as a time source.
+
+   For details about external time sources,
+   see :envvar:`timeserver`.
+
+   :Default value: not set
+   :Type: string
 
 .. envvar:: ucs/web/theme
 
