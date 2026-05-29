@@ -29,6 +29,11 @@ The ``root`` and ``Administrator`` users can sign in to the *Portal*,
 see :external+uv-nubus-manual:ref:`nubus-portal`
 in :cite:t:`uv-nubus-manual`.
 
+.. seealso::
+
+   :ref:`system-administration-access-authentication`
+      for information about administrative access with the ``root`` account.
+
 .. _deployment-after-installation-license-import:
 
 License import after installation
