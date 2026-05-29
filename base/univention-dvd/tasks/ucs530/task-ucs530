@@ -22,7 +22,6 @@ firefox-esr-l10n-de
 firefox-esr
 
 univention-appcenter-docker
-cgroupfs-mount
 
 /* Kernel Packages */
 linux-image-amd64
