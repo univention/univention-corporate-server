@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Betriebshandbuch 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-16 10:37+0000\n"
+"POT-Creation-Date: 2026-05-29 10:26+0000\n"
 "PO-Revision-Date: 2026-04-16 12:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -63,11 +63,19 @@ msgstr ""
 "anmelden, siehe :external+uv-nubus-manual:ref:`nubus-portal` in :cite:t"
 ":`uv-nubus-manual`."
 
+#: ../../deployment/after-installation.rst:34
+msgid ":ref:`system-administration-access-authentication`"
+msgstr ":ref:`system-administration-access-authentication`"
+
 #: ../../deployment/after-installation.rst:35
+msgid "for information about administrative access with the ``root`` account."
+msgstr "für Informationen über den administrativen Zugriff mit dem ``root``-Konto."
+
+#: ../../deployment/after-installation.rst:40
 msgid "License import after installation"
 msgstr "Lizenzimport nach der Installation"
 
-#: ../../deployment/after-installation.rst:37
+#: ../../deployment/after-installation.rst:42
 msgid ""
 "If you installed the system as the first system in the Nubus for UCS "
 "domain in the :term:`UCS Primary Directory Node` role, you can import the"
@@ -225,12 +233,12 @@ msgid ""
 "``company.intranet``. Windows truncates labels longer than 15 characters,"
 " which can cause sign-in errors for Windows clients joining the domain."
 msgstr ""
-"Für Windows-Kompatibilität darf die linke Bezeichnung des DNS-Domänennamens "
-"15 Zeichen nicht überschreiten. Windows leitet einen NetBIOS-Domänennamen "
-"von der linken Bezeichnung des DNS-Domänennamens ab, zum Beispiel "
-"``company`` von ``company.intranet``. Windows kürzt Bezeichnungen, die länger "
-"als 15 Zeichen sind, was zu Anmeldefehlern für Windows-Clients bei dem Beitritt "
-"zur Domäne führen kann."
+"Für Windows-Kompatibilität darf die linke Bezeichnung des DNS-"
+"Domänennamens 15 Zeichen nicht überschreiten. Windows leitet einen "
+"NetBIOS-Domänennamen von der linken Bezeichnung des DNS-Domänennamens ab,"
+" zum Beispiel ``company`` von ``company.intranet``. Windows kürzt "
+"Bezeichnungen, die länger als 15 Zeichen sind, was zu Anmeldefehlern für "
+"Windows-Clients bei dem Beitritt zur Domäne führen kann."
 
 #: ../../deployment/domain-setup.rst:104
 msgid "Mode: Create a new UCS domain"

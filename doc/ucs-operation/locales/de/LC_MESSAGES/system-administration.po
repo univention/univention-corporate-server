@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-19 14:44+0000\n"
-"PO-Revision-Date: 2026-05-19 16:44+0200\n"
+"POT-Creation-Date: 2026-06-01 09:42+0000\n"
+"PO-Revision-Date: 2026-06-01 11:43+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -16,8 +16,391 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
+#: ../../system-administration/access-and-authentication.rst:7
+#: ../../system-administration/index.rst:26
+msgid "Administrative access and authentication"
+msgstr "Administrativer Zugriff und Authentifizierung"
+
+#: ../../system-administration/access-and-authentication.rst:9
+msgid ""
+"This page describes how administrators access a Nubus for UCS system. It "
+"also describes how to control authentication for selected services. It "
+"covers the local ``root`` account, SSH access, and PAM authentication "
+"restrictions."
+msgstr ""
+"Diese Seite beschreibt, wie Administratoren auf ein Nubus für UCS-System "
+"zugreifen. Sie beschreibt außerdem, wie Sie die Authentifizierung für "
+"ausgewählte Dienste steuern. Sie behandelt das lokale ``root``-Konto, den"
+" SSH-Zugriff und Beschränkungen für ausgewählte Dienste basierend auf "
+"PAM."
+
+#: ../../system-administration/access-and-authentication.rst:17
+msgid "Administrative access with the root account"
+msgstr "Administrativer Zugriff mit dem Root-Konto"
+
+#: ../../system-administration/access-and-authentication.rst:19
+msgid ""
+"Every Nubus for UCS system has a ``root`` account for complete "
+"administrative access. The installer sets the password during "
+"installation. Nubus for UCS doesn't store the root user in the LDAP "
+"directory, but in the local account database."
+msgstr ""
+"Jedes Nubus für UCS-System hat ein ``root``-Konto für den vollständigen "
+"administrativen Zugriff. Der Installer setzt das Passwort während der "
+"Installation. Nubus für UCS speichert den Benutzer ``root`` nicht im "
+"LDAP-Verzeichnis, sondern in der lokalen Kontendatenbank."
+
+#: ../../system-administration/access-and-authentication.rst:25
+msgid ""
+"To change the password for the ``root`` user, run the :command:`passwd` "
+"command. The command doesn't check the password length or compare the new"
+" password with previously set passwords."
+msgstr ""
+"Um das Passwort für den Benutzer ``root`` zu ändern, führen Sie den "
+":command:`passwd`-Befehl aus. Der Befehl prüft weder die Passwortlänge "
+"noch vergleicht er das neue Passwort mit zuvor gesetzten Passwörtern."
+
+#: ../../system-administration/access-and-authentication.rst:32
+msgid ":ref:`deployment-initial-system-configuration-password`"
+msgstr ":ref:`deployment-initial-system-configuration-password`"
+
+#: ../../system-administration/access-and-authentication.rst:33
+msgid "for information about setting the root password during installation."
+msgstr ""
+"für Informationen zum Setzen des Passworts für den Benutzer ``root`` "
+"während der Installation."
+
+#: ../../system-administration/access-and-authentication.rst:38
+msgid "SSH sign-in to systems"
+msgstr "SSH-Anmeldung an Systemen"
+
+#: ../../system-administration/access-and-authentication.rst:40
+msgid ""
+"Nubus for UCS installs an SSH server by default. SSH provides encrypted "
+"connections to remote hosts. It verifies host identities with "
+"cryptographic host keys. You can configure SSH root sign-in, X11 "
+"forwarding, and the SSH port in the *Univention Configuration Registry*."
+msgstr ""
+"Nubus für UCS installiert standardmäßig einen SSH-Server. SSH stellt "
+"verschlüsselte Verbindungen zu entfernten Rechnern bereit. Es überprüft "
+"die Identität von Rechnern mit kryptografischen Rechnerschlüsseln. Sie "
+"können die Anmeldung per SSH mit dem Benutzer ``root``, X11-Forwarding "
+"und den Port für SSH über die *Univention Configuration Registry* "
+"konfigurieren."
+
+#: ../../system-administration/access-and-authentication.rst:47
+msgid ""
+"By default, SSH permits the privileged ``root`` user to sign in. For "
+"example, you can configure a newly installed system from a remote "
+"location when no users exist yet."
+msgstr ""
+"Standardmäßig erlaubt SSH dem privilegierten Benutzer ``root`` die "
+"Anmeldung. Sie können zum Beispiel ein neu installiertes System von einem"
+" entfernten Standort aus konfigurieren, wenn noch keine Benutzer "
+"vorhanden sind."
+
+#: ../../system-administration/access-and-authentication.rst:53
+msgid ""
+"To allow only SSH key-based sign-in for the ``root`` user, place the "
+"public key on the remote system and run the command in :numref:`ssh-root-"
+"public-key-sign-in`."
+msgstr ""
+"Um für den Benutzer ``root`` nur die :spelling:word:`schlüsselbasierte` "
+"SSH-Anmeldung zuzulassen, hinterlegen Sie den öffentlichen Schlüssel auf "
+"dem entfernten System und führen Sie den Befehl in :numref:`ssh-root-"
+"public-key-sign-in` aus."
+
+#: ../../system-administration/access-and-authentication.rst:57
+msgid "Allow only public-key SSH sign-in for root"
+msgstr "Nur SSH-Anmeldung mit öffentlichem Schlüssel für Root zulassen"
+
+#: ../../system-administration/access-and-authentication.rst:57
+msgid "$ ucr set sshd/permitroot=without-password"
+msgstr "$ ucr set sshd/permitroot=without-password"
+
+#: ../../system-administration/access-and-authentication.rst:63
+msgid ""
+"To prohibit SSH sign-in for the ``root`` user, run the command in :numref"
+":`ssh-root-disable-sign-in`."
+msgstr ""
+"Um die SSH-Anmeldung für den Benutzer ``root`` zu verbieten, führen Sie "
+"den Befehl in :numref:`ssh-root-disable-sign-in` aus."
+
+#: ../../system-administration/access-and-authentication.rst:66
+msgid "Prohibit SSH sign-in for root"
+msgstr "SSH-Anmeldung für Root verbieten"
+
+#: ../../system-administration/access-and-authentication.rst:66
+msgid "$ ucr set auth/sshd/user/root=no"
+msgstr "$ ucr set auth/sshd/user/root=no"
+
+#: ../../system-administration/access-and-authentication.rst:72
+#: ../../system-administration/access-and-authentication.rst:109
+#: ../../system-administration/access-and-authentication.rst:134
+msgid ""
+"To apply the SSH configuration changes, restart the SSH service as shown "
+"in :numref:`ssh-service-restart`."
+msgstr ""
+"Um die Konfigurationsänderungen an SSH anzuwenden, starten Sie den SSH-"
+"Dienst wie in :numref:`ssh-service-restart` gezeigt neu."
+
+#: ../../system-administration/access-and-authentication.rst:75
+msgid "Restart the SSH service after configuration changes"
+msgstr "Den SSH-Dienst nach Konfigurationsänderungen neu starten"
+
+#: ../../system-administration/access-and-authentication.rst:75
+msgid "$ systemctl restart ssh"
+msgstr "$ systemctl restart ssh"
+
+#: ../../system-administration/access-and-authentication.rst:84
+msgid "X11 forwarding"
+msgstr "X11-Forwarding"
+
+#: ../../system-administration/access-and-authentication.rst:86
+msgid ""
+"With X11 forwarding enabled, users can run graphical programs on a remote"
+" computer. They connect with the :command:`ssh -X TARGETHOST` command. "
+"Replace ``TARGETHOST`` with the hostname of the remote system."
+msgstr ""
+"Wenn X11-Forwarding aktiviert ist, können Benutzer grafische Programme "
+"auf einem entfernten Computer ausführen. Sie verbinden sich mit dem "
+"Befehl :command:`ssh -X TARGETHOST`. Ersetzen Sie ``TARGETHOST`` durch "
+"den Rechnernamen des entfernten Systems."
+
+#: ../../system-administration/access-and-authentication.rst:91
+msgid ""
+"To enable X11 forwarding over SSH, run the command in :numref:`ssh-x11"
+"-forwarding-enable`."
+msgstr ""
+"Um X11-Forwarding über SSH zu aktivieren, führen Sie den Befehl in "
+":numref:`ssh-x11-forwarding-enable` aus."
+
+#: ../../system-administration/access-and-authentication.rst:94
+msgid "Enable X11 forwarding over SSH"
+msgstr "X11-Forwarding über SSH aktivieren"
+
+#: ../../system-administration/access-and-authentication.rst:94
+msgid "$ ucr set sshd/xforwarding=yes"
+msgstr "$ ucr set sshd/xforwarding=yes"
+
+#: ../../system-administration/access-and-authentication.rst:100
+msgid ""
+"To turn off X11 forwarding over SSH, run the command in :numref:`ssh-x11"
+"-forwarding-disable`."
+msgstr ""
+"Um X11-Forwarding über SSH auszuschalten, führen Sie den Befehl in "
+":numref:`ssh-x11-forwarding-disable` aus."
+
+#: ../../system-administration/access-and-authentication.rst:103
+msgid "Turn off X11 forwarding over SSH"
+msgstr "X11-Forwarding über SSH ausschalten"
+
+#: ../../system-administration/access-and-authentication.rst:103
+msgid "$ ucr set sshd/xforwarding=no"
+msgstr "$ ucr set sshd/xforwarding=no"
+
+#: ../../system-administration/access-and-authentication.rst:115
+msgid "Change the standard SSH port"
+msgstr "Den Standardport für SSH ändern"
+
+#: ../../system-administration/access-and-authentication.rst:117
+msgid ""
+"The standard SSH port is 22 over TCP. Before you change the port, make "
+"sure that the firewall allows connections to the new port. Keep the "
+"current SSH session open until you verify access through the new port."
+msgstr ""
+"Der Standardport für SSH ist TCP-Port 22. Stellen Sie vor dem Ändern des "
+"Ports sicher, dass die Firewall Verbindungen zum neuen Port zulässt. "
+"Lassen Sie die aktuelle SSH-Sitzung geöffnet, bis Sie den Zugriff über "
+"den neuen Port überprüft haben."
+
+#: ../../system-administration/access-and-authentication.rst:123
+msgid ""
+"To use a different port, run the command in :numref:`ssh-port-change`. "
+"Replace ``PORT`` with the TCP port number that the SSH server uses for "
+"incoming connections."
+msgstr ""
+"Um einen anderen Port zu verwenden, führen Sie den Befehl in :numref"
+":`ssh-port-change` aus. Ersetzen Sie ``PORT`` durch die Nummer für den "
+"TCP-Port, die der SSH-Server für eingehende Verbindungen verwendet."
+
+#: ../../system-administration/access-and-authentication.rst:128
+msgid "Change the SSH port"
+msgstr "Den Port für SSH ändern"
+
+#: ../../system-administration/access-and-authentication.rst:128
+msgid "$ ucr set sshd/port=PORT"
+msgstr "$ ucr set sshd/port=PORT"
+
+#: ../../system-administration/access-and-authentication.rst:137
+msgid ""
+"To verify access through the new port, open a new SSH session with the "
+"command in :numref:`ssh-port-verify`. Replace ``USERNAME`` with your "
+"username and ``HOSTNAME`` with the hostname of the remote system."
+msgstr ""
+"Um den Zugriff über den neuen Port zu überprüfen, öffnen Sie mit dem "
+"Befehl in :numref:`ssh-port-verify` eine neue SSH-Sitzung. Ersetzen Sie "
+"``USERNAME`` durch Ihren Benutzernamen und ``HOSTNAME`` durch den "
+"Hostnamen des entfernten Systems."
+
+#: ../../system-administration/access-and-authentication.rst:142
+msgid "Verify SSH access through a custom port"
+msgstr "SSH-Zugriff über einen benutzerdefinierten Port überprüfen"
+
+#: ../../system-administration/access-and-authentication.rst:142
+msgid "$ ssh -p PORT USERNAME@HOSTNAME"
+msgstr "$ ssh -p PORT USERNAME@HOSTNAME"
+
+#: ../../system-administration/access-and-authentication.rst:151
+msgid "Authentication with PAM"
+msgstr "Authentifizierung mit PAM"
+
+#: ../../system-administration/access-and-authentication.rst:153
+msgid ""
+"Nubus for UCS uses *Pluggable Authentication Modules* (PAM) for "
+"authentication services. PAM provides a common interface for sign-in "
+"methods. Applications don't need changes for each method."
+msgstr ""
+"Nubus für UCS verwendet *Pluggable Authentication Modules* (PAM) für "
+"Authentifizierungsdienste. PAM stellt eine gemeinsame Schnittstelle für "
+"Anmeldemethoden bereit. Anwendungen müssen nicht für jede Methode "
+"geändert werden."
+
+#: ../../system-administration/access-and-authentication.rst:158
+msgid ""
+"By default, only the ``root`` user and members of the ``Domain Admins`` "
+"group can sign in remotely through SSH and locally on a ``tty``."
+msgstr ""
+"Standardmäßig können sich nur der Benutzer ``root`` und Mitglieder der "
+"Gruppe ``Domain Admins`` per SSH aus der Ferne und lokal an einem ``tty``"
+" anmelden."
+
+#: ../../system-administration/access-and-authentication.rst:162
+msgid ""
+"To restrict access to a PAM service, choose a service identifier from the"
+" list. Replace the following placeholders:"
+msgstr ""
+"Um den Zugriff auf einen PAM-Dienst zu beschränken, wählen Sie einen "
+"Dienstbezeichner aus der Liste aus. Ersetzen Sie die folgenden "
+"Platzhalter:"
+
+#: ../../system-administration/access-and-authentication.rst:166
+#, python-brace-format
+msgid ":samp:`{SERVICE}` with the service identifier."
+msgstr ":samp:`{SERVICE}` durch den Dienstbezeichner."
+
+#: ../../system-administration/access-and-authentication.rst:167
+#, python-brace-format
+msgid ":samp:`{USERNAME}` with the username."
+msgstr ":samp:`{USERNAME}` durch den Benutzernamen."
+
+#: ../../system-administration/access-and-authentication.rst:168
+#, python-brace-format
+msgid ":samp:`{GROUPNAME}` with the group name."
+msgstr ":samp:`{GROUPNAME}` durch den Gruppennamen."
+
+#: ../../system-administration/access-and-authentication.rst:170
+msgid "You can restrict access to these services:"
+msgstr "Sie können den Zugriff auf diese Dienste beschränken:"
+
+#: ../../system-administration/access-and-authentication.rst:172
+msgid "SSH with ``sshd``"
+msgstr "SSH mit ``sshd``"
+
+#: ../../system-administration/access-and-authentication.rst:173
+msgid "Sign-in on a ``tty`` with ``login``"
+msgstr "Anmeldung an einem ``tty`` mit ``login``"
+
+#: ../../system-administration/access-and-authentication.rst:174
+msgid "Remote sign-in with ``rlogin``"
+msgstr "Entfernte Anmeldung mit ``rlogin``"
+
+#: ../../system-administration/access-and-authentication.rst:175
+msgid "PPP with ``ppp``"
+msgstr "PPP mit ``ppp``"
+
+#: ../../system-administration/access-and-authentication.rst:176
+msgid "Other services with ``other``"
+msgstr "Andere Dienste mit ``other``"
+
+#: ../../system-administration/access-and-authentication.rst:178
+msgid ""
+"To restrict access to a service, run the command in :numref:`pam-enable-"
+"service-restriction`."
+msgstr ""
+"Um den Zugriff auf einen Dienst zu beschränken, führen Sie den Befehl in "
+":numref:`pam-enable-service-restriction` aus."
+
+#: ../../system-administration/access-and-authentication.rst:181
+msgid "Restrict access to a PAM service"
+msgstr "Zugriff auf einen PAM-Dienst beschränken"
+
+#: ../../system-administration/access-and-authentication.rst:181
+msgid "$ ucr set auth/SERVICE/restrict=yes"
+msgstr "$ ucr set auth/SERVICE/restrict=yes"
+
+#: ../../system-administration/access-and-authentication.rst:187
+msgid ""
+"To grant access to a user, run the command in :numref:`pam-grant-user-"
+"access`."
+msgstr ""
+"Um einem Benutzer Zugriff zu gewähren, führen Sie den Befehl in :numref"
+":`pam-grant-user-access` aus."
+
+#: ../../system-administration/access-and-authentication.rst:190
+msgid "Grant user access to a PAM service"
+msgstr "Einem Benutzer Zugriff auf einen PAM-Dienst gewähren"
+
+#: ../../system-administration/access-and-authentication.rst:190
+msgid "$ ucr set auth/SERVICE/user/USERNAME=yes"
+msgstr "$ ucr set auth/SERVICE/user/USERNAME=yes"
+
+#: ../../system-administration/access-and-authentication.rst:196
+msgid ""
+"To grant access to a group, run the command in :numref:`pam-grant-group-"
+"access`."
+msgstr ""
+"Um einer Gruppe Zugriff zu gewähren, führen Sie den Befehl in :numref"
+":`pam-grant-group-access` aus."
+
+#: ../../system-administration/access-and-authentication.rst:199
+msgid "Grant group access to a PAM service"
+msgstr "Einer Gruppe Zugriff auf einen PAM-Dienst gewähren"
+
+#: ../../system-administration/access-and-authentication.rst:199
+msgid "$ ucr set auth/SERVICE/group/GROUPNAME=yes"
+msgstr "$ ucr set auth/SERVICE/group/GROUPNAME=yes"
+
+#: ../../system-administration/access-and-authentication.rst:205
+msgid ""
+"The commands in :numref:`pam-ssh-access-restrictions` restrict SSH access"
+" to selected groups."
+msgstr ""
+"Die Befehle in :numref:`pam-ssh-access-restrictions` beschränken den SSH-"
+"Zugriff auf ausgewählte Gruppen."
+
+#: ../../system-administration/access-and-authentication.rst:208
+msgid "Restrict SSH access to selected groups"
+msgstr "SSH-Zugriff auf ausgewählte Gruppen beschränken"
+
+#: ../../system-administration/access-and-authentication.rst:208
+msgid ""
+"$ ucr set \"auth/sshd/group/Administrators=yes\"\n"
+"$ ucr set \"auth/sshd/group/Computers=yes\"\n"
+"$ ucr set \"auth/sshd/group/DC Backup Hosts=yes\"\n"
+"$ ucr set \"auth/sshd/group/DC Slave Hosts=yes\"\n"
+"$ ucr set \"auth/sshd/group/Domain Admins=yes\"\n"
+"$ ucr set \"auth/sshd/restrict=yes\""
+msgstr ""
+"$ ucr set \"auth/sshd/group/Administrators=yes\"\n"
+"$ ucr set \"auth/sshd/group/Computers=yes\"\n"
+"$ ucr set \"auth/sshd/group/DC Backup Hosts=yes\"\n"
+"$ ucr set \"auth/sshd/group/DC Slave Hosts=yes\"\n"
+"$ ucr set \"auth/sshd/group/Domain Admins=yes\"\n"
+"$ ucr set \"auth/sshd/restrict=yes\""
+
 #: ../../system-administration/boot-manager.rst:7
-#: ../../system-administration/index.rst:30
+#: ../../system-administration/index.rst:68
 msgid "Boot manager"
 msgstr "Boot-Manager"
 
@@ -196,7 +579,408 @@ msgstr ""
 "Prozesses – deaktivieren, indem Sie die UCR-Variable "
 ":envvar:`grub/bootsplash` auf ``nosplash`` setzen."
 
-#: ../../system-administration/index.rst:47
+#: ../../system-administration/cron.rst:7
+#: ../../system-administration/index.rst:43
+msgid "Run recurring actions with cron"
+msgstr "Wiederkehrende Aktionen mit Cron ausführen"
+
+#: ../../system-administration/cron.rst:9
+msgid ""
+"Use the cron service to start recurring actions such as processing log "
+"files at a defined time. This page refers to such an action as a cron job"
+" and describes three ways to define cron jobs:"
+msgstr ""
+"Verwenden Sie den Cron-Dienst, um wiederkehrende Aktionen wie die "
+"Verarbeitung von Log-Dateien zu einer festgelegten Zeit zu starten. Auf "
+"dieser Seite wird eine solche Aktion als Cron-Job bezeichnet. Es werden "
+"drei Möglichkeiten beschrieben, Cron-Jobs zu definieren:"
+
+#: ../../system-administration/cron.rst:14
+#: ../../system-administration/cron.rst:21
+msgid "Predefined cron directories"
+msgstr "Vordefinierte Verzeichnisse für Cron"
+
+#: ../../system-administration/cron.rst:15
+msgid "Local cron jobs in :file:`/etc/cron.d/`"
+msgstr "Lokale Cron-Jobs in :file:`/etc/cron.d/`"
+
+#: ../../system-administration/cron.rst:16
+msgid "Cron jobs through Univention Configuration Registry"
+msgstr "Cron-Jobs über die Univention Configuration Registry"
+
+#: ../../system-administration/cron.rst:23
+msgid "Each Nubus for UCS system includes these directories:"
+msgstr "Jedes System mit Nubus für UCS enthält diese Verzeichnisse:"
+
+#: ../../system-administration/cron.rst:25
+msgid ":file:`/etc/cron.hourly/`"
+msgstr ":file:`/etc/cron.hourly/`"
+
+#: ../../system-administration/cron.rst:26
+msgid ":file:`/etc/cron.daily/`"
+msgstr ":file:`/etc/cron.daily/`"
+
+#: ../../system-administration/cron.rst:27
+msgid ":file:`/etc/cron.weekly/`"
+msgstr ":file:`/etc/cron.weekly/`"
+
+#: ../../system-administration/cron.rst:28
+msgid ":file:`/etc/cron.monthly/`"
+msgstr ":file:`/etc/cron.monthly/`"
+
+#: ../../system-administration/cron.rst:30
+msgid ""
+"Executable shell scripts in these directories run hourly, daily, weekly, "
+"or monthly."
+msgstr ""
+"Ausführbare Shell-Skripte in diesen Verzeichnissen werden stündlich, "
+"täglich, wöchentlich oder monatlich ausgeführt."
+
+#: ../../system-administration/cron.rst:36
+msgid "Define local cron jobs in :file:`/etc/cron.d/`"
+msgstr "Lokale Cron-Jobs in :file:`/etc/cron.d/` definieren"
+
+#: ../../system-administration/cron.rst:41
+msgid "Use one line with seven columns to define a cron job:"
+msgstr ""
+"Verwenden Sie eine Zeile mit sieben Spalten, um einen Cron-Job zu "
+"definieren:"
+
+#: ../../system-administration/cron.rst:43
+msgid "Minute (0-59)"
+msgstr "Minute (0-59)"
+
+#: ../../system-administration/cron.rst:45
+msgid "Hour (0-23)"
+msgstr "Stunde (0-23)"
+
+#: ../../system-administration/cron.rst:47
+msgid "Day (1-31)"
+msgstr "Tag (1-31)"
+
+#: ../../system-administration/cron.rst:49
+msgid "Month (1-12)"
+msgstr "Monat (1-12)"
+
+#: ../../system-administration/cron.rst:51
+msgid "Weekday (0-7); 0 and 7 both mean Sunday"
+msgstr "Wochentag (0-7); 0 und 7 stehen beide für Sonntag"
+
+#: ../../system-administration/cron.rst:53
+msgid "Name of the user who runs the job, for example ``root``"
+msgstr "Name des Benutzers, der den Job ausführt, zum Beispiel ``root``"
+
+#: ../../system-administration/cron.rst:55
+msgid "Command to run"
+msgstr "Auszuführender Befehl"
+
+#: ../../system-administration/cron.rst:57
+msgid ""
+"Specify the time in different ways. Enter a particular minute, hour, or "
+"other value, or use ``*`` to run an action every minute, hour, or other "
+"interval. You can also define intervals. For example, :samp:`*/2` in the "
+"minute field runs an action every two minutes."
+msgstr ""
+"Geben Sie die Zeit auf verschiedene Arten an. Geben Sie einen bestimmten "
+"Wert für Minute, Stunde oder ein anderes Feld an, oder verwenden Sie "
+"``*``, um eine Aktion jede Minute, jede Stunde oder in jedem anderen "
+"Intervall auszuführen. Sie können auch Intervalle definieren. Zum "
+"Beispiel führt :samp:`*/2` im Minutenfeld eine Aktion alle zwei Minuten "
+"aus."
+
+#: ../../system-administration/cron.rst:63
+msgid "Example:"
+msgstr "Beispiel:"
+
+#: ../../system-administration/cron.rst:65
+msgid ""
+"30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-"
+"sync"
+msgstr ""
+"30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-"
+"sync"
+
+#: ../../system-administration/cron.rst:72
+msgid "Define cron jobs in Univention Configuration Registry"
+msgstr "Cron-Jobs in der Univention Configuration Registry definieren"
+
+#: ../../system-administration/cron.rst:74
+msgid ""
+"You can also define cron jobs in *Univention Configuration Registry*. Use"
+" this approach when you set cron jobs through a *UDM policy* and apply "
+"them to multiple computers."
+msgstr ""
+"Sie können Cron-Jobs auch in der *Univention Configuration Registry* "
+"definieren. Verwenden Sie diesen Ansatz, wenn Sie Cron-Jobs über eine "
+"*UDM-Richtlinie* festlegen und auf mehrere Computer anwenden."
+
+#: ../../system-administration/cron.rst:78
+#, python-brace-format
+msgid ""
+"Each cron job uses at least two UCR variables. Replace :samp:`{JOBNAME}` "
+"with a unique identifier for the cron job. This placeholder appears in "
+"the variable names in the following lists."
+msgstr ""
+"Jeder Cron-Job verwendet mindestens zwei UCR-Variablen. Ersetzen Sie "
+":samp:`{JOBNAME}` durch eine eindeutige Kennung für den Cron-Job. Dieser "
+"Platzhalter erscheint in den Variablennamen in den folgenden Listen."
+
+#: ../../system-administration/cron.rst:82
+msgid "Required variables:"
+msgstr "Erforderliche Variablen:"
+
+#: ../../system-administration/cron.rst:84
+#, python-brace-format
+msgid ":samp:`cron/{JOBNAME}/command` specifies the command."
+msgstr ":samp:`cron/{JOBNAME}/command` gibt den Befehl an."
+
+#: ../../system-administration/cron.rst:86
+#, python-brace-format
+msgid ""
+":samp:`cron/{JOBNAME}/time` specifies the execution time. For the time "
+"format, see :ref:`system-administration-cron-local`."
+msgstr ""
+":samp:`cron/{JOBNAME}/time` gibt die Ausführungszeit an. Informationen "
+"zum Zeitformat finden Sie unter :ref:`system-administration-cron-local`."
+
+#: ../../system-administration/cron.rst:89
+msgid "Optional variables and defaults:"
+msgstr "Optionale Variablen und Standardwerte:"
+
+#: ../../system-administration/cron.rst:91
+#, python-brace-format
+msgid ""
+"By default, cron runs the job as root. Use :samp:`cron/{JOBNAME}/user` to"
+" specify a different user."
+msgstr ""
+"Standardmäßig führt Cron den Job als ``root`` aus. Verwenden Sie "
+":samp:`cron/{JOBNAME}/user`, um einen anderen Benutzer anzugeben."
+
+#: ../../system-administration/cron.rst:94
+#, python-brace-format
+msgid "Use :samp:`cron/{JOBNAME}/mailto` to send command output by email."
+msgstr ""
+"Verwenden Sie :samp:`cron/{JOBNAME}/mailto`, um die Ausgabe des Befehls "
+"per E-Mail zu senden."
+
+#: ../../system-administration/cron.rst:96
+#, python-brace-format
+msgid "Use :samp:`cron/{JOBNAME}/description` to add a description."
+msgstr ""
+"Verwenden Sie :samp:`cron/{JOBNAME}/description`, um eine Beschreibung "
+"hinzuzufügen."
+
+#: ../../system-administration/diagnostics.rst:7
+#: ../../system-administration/index.rst:55
+msgid "System diagnostics"
+msgstr "Systemdiagnose"
+
+#: ../../system-administration/diagnostics.rst:9
+msgid ""
+"This page describes tools that help you inspect the current state of a "
+"system running Nubus for UCS and identify common problems. It covers "
+"command-line system status logging and diagnostic functions in the "
+"*Management UI*."
+msgstr ""
+"Diese Seite beschreibt Werkzeuge, mit denen Sie den aktuellen Zustand "
+"eines Systems mit Nubus für UCS prüfen und häufige Probleme erkennen "
+"können. Sie behandelt die Protokollierung des Systemstatus über die "
+"Befehlszeile und Diagnosefunktionen in der *Management UI*."
+
+#: ../../system-administration/diagnostics.rst:18
+msgid "Command-line diagnostics"
+msgstr "Diagnose über die Befehlszeile"
+
+#: ../../system-administration/diagnostics.rst:20
+msgid ""
+"Run :command:`univention-system-stats` to write the current system status"
+" to the :file:`/var/log/univention/system-stats.log` file. The command "
+"logs the following values:"
+msgstr ""
+"Führen Sie :command:`univention-system-stats` aus, um den aktuellen "
+"Systemstatus in die Datei :file:`/var/log/univention/system-stats.log` zu"
+" schreiben. Der Befehl protokolliert die folgenden Werte:"
+
+#: ../../system-administration/diagnostics.rst:25
+msgid "The free disk space on the system partitions: :command:`df -lhT`."
+msgstr "Der freie Speicherplatz auf den Systempartitionen: :command:`df -lhT`."
+
+#: ../../system-administration/diagnostics.rst:27
+msgid "The current process list: :command:`ps auxf`."
+msgstr "Die aktuelle Prozessliste: :command:`ps auxf`."
+
+#: ../../system-administration/diagnostics.rst:29
+msgid ""
+"Two :command:`top` lists of the current processes and system load, "
+":command:`top -b -n2`."
+msgstr ""
+"Zwei :command:`top`-Listen der aktuellen Prozesse und der Systemlast, "
+":command:`top -b -n2`."
+
+#: ../../system-administration/diagnostics.rst:32
+msgid "The current free system memory: :command:`free`."
+msgstr "Der aktuell freie Systemspeicher: :command:`free`."
+
+#: ../../system-administration/diagnostics.rst:34
+msgid "The time elapsed since the system started: :command:`uptime`."
+msgstr "Die seit dem Systemstart vergangene Zeit: :command:`uptime`."
+
+#: ../../system-administration/diagnostics.rst:36
+msgid ""
+"Temperature, fan, and voltage indexes from :program:`lm-sensors` with the"
+" command :command:`sensors`."
+msgstr ""
+"Temperatur-, Lüfter- und Spannungswerte aus :program:`lm-sensors` mit dem"
+" Befehl :command:`sensors`."
+
+#: ../../system-administration/diagnostics.rst:39
+msgid "A list of the current Samba connections: :command:`smbstatus`."
+msgstr "Eine Liste der aktuellen Samba-Verbindungen: :command:`smbstatus`."
+
+#: ../../system-administration/diagnostics.rst:41
+msgid "To configure system status logging:"
+msgstr "So konfigurieren Sie die Protokollierung des Systemstatus:"
+
+#: ../../system-administration/diagnostics.rst:43
+msgid ""
+"Set the :term:`UCR variable` :envvar:`system/stats/cron` to the required "
+"cron expression. For example, use ``0,30 * * * *`` to log the status "
+"every 30 minutes."
+msgstr ""
+"Setzen Sie die :term:`UCR-Variable <UCR variable>` "
+":envvar:`system/stats/cron` auf den gewünschten Ausdruck für Cron. "
+"Verwenden Sie zum Beispiel ``0,30 * * * *``, um den Status alle 30 "
+"Minuten zu protokollieren."
+
+#: ../../system-administration/diagnostics.rst:48
+msgid "Set the :term:`UCR variable` :envvar:`system/stats` to ``yes``."
+msgstr ""
+"Setzen Sie die :term:`UCR-Variable <UCR variable>` :envvar:`system/stats`"
+" auf ``yes``."
+
+#: ../../system-administration/diagnostics.rst:53
+msgid "Diagnostics in the Management UI"
+msgstr "Diagnose in der Management UI"
+
+#: ../../system-administration/diagnostics.rst:55
+msgid ""
+"The *Management UI* provides modules to inspect running processes and "
+"diagnose known system problems."
+msgstr ""
+"Die *Management UI* stellt Module bereit, mit denen Sie laufende Prozesse"
+" prüfen und bekannte Systemprobleme diagnostizieren können."
+
+#: ../../system-administration/diagnostics.rst:60
+msgid "View processes in the Management UI"
+msgstr "Prozesse in der Management UI anzeigen"
+
+#: ../../system-administration/diagnostics.rst:62
+msgid ""
+"Open the :guilabel:`Process overview` management module to view the "
+"current processes on the system. To sort the processes, click the "
+"corresponding table header for one of the following properties:"
+msgstr ""
+"Öffnen Sie das Verwaltungsmodul :guilabel:`Process overview`, um die "
+"aktuellen Prozesse auf dem System anzuzeigen. Um die Prozesse zu "
+"sortieren, klicken Sie auf die entsprechende Tabellenüberschrift für eine"
+" der folgenden Eigenschaften:"
+
+#: ../../system-administration/diagnostics.rst:68
+msgid "CPU utilization in percent"
+msgstr "CPU-Auslastung in Prozent"
+
+#: ../../system-administration/diagnostics.rst:70
+msgid "The username under which the process runs"
+msgstr "Der Benutzername, unter dem der Prozess läuft"
+
+#: ../../system-administration/diagnostics.rst:72
+msgid "Memory consumption in percent"
+msgstr "Speicherverbrauch in Prozent"
+
+#: ../../system-administration/diagnostics.rst:74
+msgid "The process ID"
+msgstr "Die Prozess-ID"
+
+#: ../../system-administration/diagnostics.rst:76
+msgid ""
+"To terminate a process, open the :guilabel:`More` menu and choose one of "
+"the following actions:"
+msgstr ""
+"Um einen Prozess zu beenden, öffnen Sie das Menü :guilabel:`More` und "
+"wählen Sie eine der folgenden Aktionen:"
+
+#: ../../system-administration/diagnostics.rst:80
+msgid "Terminate"
+msgstr "Beenden"
+
+#: ../../system-administration/diagnostics.rst:81
+msgid ""
+"The :guilabel:`Terminate` action sends the process the ``SIGTERM`` "
+"signal. Use this action for controlled program termination."
+msgstr ""
+"Die Aktion :guilabel:`Terminate` sendet dem Prozess das Signal "
+"``SIGTERM``. Verwenden Sie diese Aktion für eine kontrollierte Beendigung"
+" des Programms."
+
+#: ../../system-administration/diagnostics.rst:84
+msgid "Force terminate"
+msgstr "Sofort beenden"
+
+#: ../../system-administration/diagnostics.rst:85
+msgid ""
+"A program can sometimes stop responding, for example after a crash. In "
+"this case, use :guilabel:`Force terminate` to send the ``SIGKILL`` signal"
+" and force the process to stop."
+msgstr ""
+"Ein Programm kann manchmal nicht mehr reagieren, zum Beispiel nach einem "
+"Absturz. Verwenden Sie in diesem Fall :guilabel:`Force terminate`, um das"
+" Signal ``SIGKILL`` zu senden und das Beenden des Prozesses zu erzwingen."
+
+#: ../../system-administration/diagnostics.rst:92
+msgid ""
+"In general, use ``SIGTERM`` first because many programs can then shut "
+"down in a controlled way and save open files."
+msgstr ""
+"Verwenden Sie im Allgemeinen zuerst ``SIGTERM``, weil viele Programme "
+"dann kontrolliert beendet werden können und geöffnete Dateien speichern."
+
+#: ../../system-administration/diagnostics.rst:99
+msgid ""
+"`POSIX signals in Signal (IPC) - Wikipedia "
+"<https://en.wikipedia.org/wiki/Signal_(IPC)#POSIX_signals>`_"
+msgstr ""
+"`POSIX signals in Signal (IPC) - Wikipedia "
+"<https://en.wikipedia.org/wiki/Signal_(IPC)#POSIX_signals>`_"
+
+#: ../../system-administration/diagnostics.rst:100
+msgid "for information about POSIX signals for inter-process communication."
+msgstr "für Informationen über POSIX-Signale für die Interprozesskommunikation."
+
+#: ../../system-administration/diagnostics.rst:105
+msgid "Run system diagnostics in the Management UI"
+msgstr "Systemdiagnose in der Management UI ausführen"
+
+#: ../../system-administration/diagnostics.rst:107
+msgid ""
+"Open the :guilabel:`System diagnostics` management module to analyze a "
+"system running Nubus for UCS for known problems."
+msgstr ""
+"Öffnen Sie das Verwaltungsmodul :guilabel:`System diagnostics`, um ein "
+"System mit Nubus für UCS auf bekannte Probleme zu analysieren."
+
+#: ../../system-administration/diagnostics.rst:111
+msgid ""
+"The module checks known problem scenarios. If the module can fix a "
+"detected problem automatically, it shows an additional button for that "
+"action. It also links to related articles and corresponding management "
+"modules."
+msgstr ""
+"Das Modul prüft bekannte Problemszenarien. Wenn das Modul ein erkanntes "
+"Problem automatisch beheben kann, zeigt es dafür eine zusätzliche "
+"Schaltfläche an. Es verlinkt außerdem auf zugehörige Artikel und passende"
+" Verwaltungsmodule."
+
+#: ../../system-administration/index.rst:85
 #: ../../system-administration/network/index.rst:62
 msgid "Contents"
 msgstr "Inhalt"
@@ -207,22 +991,25 @@ msgstr "Systemadministration"
 
 #: ../../system-administration/index.rst:10
 msgid ""
-"This chapter covers low-level configuration tasks for technical "
-"administrators managing Nubus for UCS systems. It addresses the "
-"components that underpin every running system: the kernel, the boot "
-"process, network connectivity, and outbound proxy access."
+"This chapter covers low-level configuration and operational tasks for "
+"technical administrators managing Nubus for UCS systems. It includes "
+"system configuration, administrative access, regional settings, service "
+"management, scheduled tasks, logging, diagnostics, and platform-level "
+"topics such as the kernel, boot process, network configuration, and proxy"
+" settings."
 msgstr ""
-"Dieses Kapitel behandelt grundlegende Konfigurationsaufgaben für "
-"technische Administratoren, die Nubus für UCS-Systeme verwalten. Es "
-"behandelt die Komponenten, die jedem laufenden System zugrunde liegen: "
-"den Kernel, den Boot-Prozess, die Netzwerkkonnektivität und den "
-"ausgehenden Proxy-Zugriff."
+"Dieses Kapitel behandelt systemnahe Konfigurations- und Betriebsaufgaben "
+"für technische Administratoren, die Nubus für UCS-Systeme verwalten. Es "
+"umfasst Systemkonfiguration, administrativen Zugriff, regionale "
+"Einstellungen, Dienstverwaltung, geplante Aufgaben, Protokollierung, "
+"Diagnose und :spelling:word:`plattformbezogene` Themen wie Kernel, Boot-"
+"Prozess, Netzwerkkonfiguration und Proxy-Einstellungen."
 
-#: ../../system-administration/index.rst:15
+#: ../../system-administration/index.rst:17
 msgid "Univention Configuration Registry"
 msgstr "Univention Configuration Registry"
 
-#: ../../system-administration/index.rst:16
+#: ../../system-administration/index.rst:18
 msgid ""
 "Manage system settings through Univention Configuration Registry (UCR), "
 "the central tool for managing configuration on Nubus for UCS systems. "
@@ -241,12 +1028,97 @@ msgstr ""
 "Einstellungen ändern, sodass keine manuelle Dateibearbeitung erforderlich"
 " ist. Siehe :ref:`system-administration-ucr`."
 
-#: ../../system-administration/index.rst:24
+#: ../../system-administration/index.rst:27
+msgid ""
+"Manage administrative access to Nubus for UCS systems. This includes the "
+"local ``root`` account, SSH access, and PAM-based authentication "
+"restrictions for selected services. See :ref:`system-administration-"
+"access-authentication`."
+msgstr ""
+"Verwalten Sie den administrativen Zugriff auf Nubus für UCS-Systeme. Dazu"
+" gehören das lokale ``root``-Konto, der SSH-Zugriff und "
+"Authentifizierungsbeschränkungen für ausgewählte Dienste basierend auf "
+"PAM. Siehe :ref:`system-administration-access-authentication`."
+
+#: ../../system-administration/index.rst:32
+#: ../../system-administration/regional-settings.rst:7
+msgid "Regional settings"
+msgstr "Regionale Einstellungen"
+
+#: ../../system-administration/index.rst:33
+msgid ""
+"Configure language, locale, keyboard, time zone, and time synchronization"
+" settings for Nubus for UCS systems. See :ref:`system-administration-"
+"regional-settings`."
+msgstr ""
+"Konfigurieren Sie Sprach-, Locale-, Tastatur-, Zeitzonen- und "
+"Zeitsynchronisationseinstellungen für Nubus für UCS-Systeme. Siehe :ref"
+":`system-administration-regional-settings`."
+
+#: ../../system-administration/index.rst:37
+#: ../../system-administration/system-services.rst:7
+msgid "Service management and system integration"
+msgstr "Dienstverwaltung und Systemintegration"
+
+#: ../../system-administration/index.rst:38
+msgid ""
+"Manage system services and configure service-related integration "
+"settings. This includes service startup behavior, LDAP server selection, "
+"print server settings, and the name service cache daemon. See :ref"
+":`system-administration-system-services`."
+msgstr ""
+"Verwalten Sie Systemdienste und konfigurieren Sie auf Dienste bezogene "
+"Integrationseinstellungen. Dazu gehören das Startverhalten von Diensten, "
+"die Auswahl des LDAP-Servers, Einstellungen für den Druckserver und der "
+"Name Service Cache Daemon. Siehe :ref:`system-administration-system-"
+"services`."
+
+#: ../../system-administration/index.rst:44
+msgid ""
+"Schedule recurring tasks on Nubus for UCS systems. This includes "
+"predefined cron directories, local cron jobs in :file:`/etc/cron.d/`, and"
+" cron jobs through Univention Configuration Registry. See :ref:`system-"
+"administration-cron`."
+msgstr ""
+"Planen Sie wiederkehrende Aufgaben auf Nubus für UCS-Systemen. Dazu "
+"gehören vordefinierte Verzeichnisse für Cron, lokale Cron-Jobs in "
+":file:`/etc/cron.d/` und Cron-Jobs über die Univention Configuration "
+"Registry. Siehe :ref:`system-administration-cron`."
+
+#: ../../system-administration/index.rst:49
+#: ../../system-administration/logging.rst:7
+msgid "Log files and log rotation"
+msgstr "Log-Dateien und Log-Rotation"
+
+#: ../../system-administration/index.rst:50
+msgid ""
+"Find log file locations and configure log rotation on Nubus for UCS "
+"systems. This includes listener module log files and their dedicated log "
+"rotation settings. See :ref:`system-administration-logging`."
+msgstr ""
+"Finden Sie Speicherorte von Log-Dateien und konfigurieren Sie die Log-"
+"Rotation auf Nubus für UCS-Systemen. Dazu gehören Log-Dateien von "
+"Listener-Modulen und deren eigene Einstellungen für die Log-Rotation. "
+"Siehe :ref:`system-administration-logging`."
+
+#: ../../system-administration/index.rst:56
+msgid ""
+"Inspect the current state of a Nubus for UCS system and diagnose common "
+"problems. This includes command-line system status logging and diagnostic"
+" functions in the *Management UI*. See :ref:`system-administration-"
+"diagnostics`."
+msgstr ""
+"Prüfen Sie den aktuellen Zustand eines Nubus für UCS-Systems und "
+"diagnostizieren Sie häufige Probleme. Dazu gehören die Protokollierung "
+"des Systemstatus über die Befehlszeile und Diagnosefunktionen in der "
+"*Management UI*. Siehe :ref:`system-administration-diagnostics`."
+
+#: ../../system-administration/index.rst:62
 #: ../../system-administration/kernel.rst:7
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../../system-administration/index.rst:25
+#: ../../system-administration/index.rst:63
 msgid ""
 "Manage kernel packages, kernel versions, and kernel modules. This "
 "includes loading additional drivers, blacklisting unwanted modules, and "
@@ -258,7 +1130,7 @@ msgstr ""
 "und die Integration externer Treiber über Dynamic Kernel Module Support "
 "(DKMS). Siehe :ref:`system-administration-kernel`."
 
-#: ../../system-administration/index.rst:31
+#: ../../system-administration/index.rst:69
 msgid ""
 "Configure GRUB, the boot manager in Nubus for UCS. Control the boot "
 "timeout, screen resolution, kernel options, and which kernel the system "
@@ -269,12 +1141,12 @@ msgstr ""
 " und welchen Kernel das System standardmäßig startet. Siehe :ref:`system-"
 "administration-boot-manager`."
 
-#: ../../system-administration/index.rst:36
+#: ../../system-administration/index.rst:74
 #: ../../system-administration/network/index.rst:7
 msgid "Network configuration"
 msgstr "Netzwerkkonfiguration"
 
-#: ../../system-administration/index.rst:37
+#: ../../system-administration/index.rst:75
 msgid ""
 "Configure network interfaces and advanced network setups such as bridging"
 " for virtual machines, bonding for failover redundancy, and VLANs for "
@@ -285,11 +1157,11 @@ msgstr ""
 "VLANs zur logischen Trennung des Datenverkehrs. Siehe :ref:`system-"
 "administration-network`."
 
-#: ../../system-administration/index.rst:42
+#: ../../system-administration/index.rst:80
 msgid "Proxy settings"
 msgstr "Proxy-Einstellungen"
 
-#: ../../system-administration/index.rst:43
+#: ../../system-administration/index.rst:81
 msgid ""
 "Route outbound traffic from command-line tools and Nubus for UCS update "
 "utilities through a proxy server using UCR variables. See :ref:`system-"
@@ -546,6 +1418,195 @@ msgid ""
 msgstr ""
 "Einen C-Compiler und Build-Tools, normalerweise automatisch als "
 "Abhängigkeiten installiert."
+
+#: ../../system-administration/logging.rst:9
+msgid ""
+"Use this page to learn which log files Nubus for UCS stores and how the "
+"system rotates them. It also covers separate log rotation settings for "
+"Univention Directory Listener modules."
+msgstr ""
+"Auf dieser Seite erfahren Sie, welche Log-Dateien Nubus für UCS speichert"
+" und wie das System sie rotiert. Sie behandelt außerdem separate "
+"Einstellungen für die Log-Rotation von Univention Directory Listener-"
+"Modulen."
+
+#: ../../system-administration/logging.rst:18
+msgid "Log file locations"
+msgstr "Speicherorte von Log-Dateien"
+
+#: ../../system-administration/logging.rst:20
+msgid ""
+"Nubus for UCS stores its product-specific log files in the "
+":file:`/var/log/univention/` directory, for example log files for "
+"listener and notifier replication. Services write their log messages to "
+"their own standard log files. For example, Apache writes log messages to "
+"the :file:`/var/log/apache2/error.log` file."
+msgstr ""
+"Nubus für UCS speichert seine produktspezifischen Log-Dateien im "
+"Verzeichnis :file:`/var/log/univention/`, zum Beispiel Log-Dateien für "
+"die Replikation von Listener und Notifier. Dienste schreiben ihre Log-"
+"Meldungen in ihre eigenen Standard-Log-Dateien. Apache schreibt zum "
+"Beispiel Log-Meldungen in die Datei :file:`/var/log/apache2/error.log`."
+
+#: ../../system-administration/logging.rst:31
+msgid "Log rotation"
+msgstr "Log-Rotation"
+
+#: ../../system-administration/logging.rst:33
+msgid ""
+":program:`logrotate` manages the log files. It creates numbered log file "
+"archives at configured intervals and deletes older archives. The "
+":term:`UCR variables <UCR variable>` :envvar:`logrotate/rotate` and "
+":envvar:`logrotate/rotate/count` control log rotation. The "
+":envvar:`logrotate/rotate` variable specifies the rotation criterion, for"
+" example ``weekly`` or :samp:`size 50M`. The "
+":envvar:`logrotate/rotate/count` variable specifies how many rotated log "
+"file archives the system keeps. By default, the system rotates log files "
+"weekly and keeps ``12`` archives."
+msgstr ""
+":program:`logrotate` verwaltet die Log-Dateien. Es erstellt in "
+"konfigurierten Intervallen nummerierte Log-Datei-Archive und löscht "
+"ältere Archive. Die :term:`UCR-Variablen <UCR variable>` "
+":envvar:`logrotate/rotate` und :envvar:`logrotate/rotate/count` steuern "
+"die Log-Rotation. Die Variable :envvar:`logrotate/rotate` gibt das "
+"Rotationskriterium an, zum Beispiel ``weekly`` oder :samp:`size 50M`. Die"
+" Variable :envvar:`logrotate/rotate/count` gibt an, wie viele rotierte "
+"Log-Datei-Archive das System aufbewahrt. Standardmäßig rotiert das System"
+" Log-Dateien wöchentlich und bewahrt ``12`` Archive auf."
+
+#: ../../system-administration/logging.rst:48
+msgid ""
+"For example, the current log file for *Univention Directory Listener* is "
+"the :file:`listener.log` file. The archive for the previous rotation is "
+"the :file:`listener.log.1` file."
+msgstr ""
+"Zum Beispiel ist die aktuelle Log-Datei für *Univention Directory "
+"Listener* die Datei :file:`listener.log`. Das Archiv der vorherigen "
+"Rotation ist die Datei :file:`listener.log.1`."
+
+#: ../../system-administration/logging.rst:54
+msgid ""
+"Use the :envvar:`logrotate/compress` UCR variable to control whether "
+":command:`gzip` compresses older log files."
+msgstr ""
+"Verwenden Sie die UCR-Variable :envvar:`logrotate/compress`, um zu "
+"steuern, ob :command:`gzip` ältere Log-Dateien komprimiert."
+
+#: ../../system-administration/logging.rst:60
+msgid "Listener module log files"
+msgstr "Log-Dateien von Listener-Modulen"
+
+#: ../../system-administration/logging.rst:62
+#, python-brace-format
+msgid ""
+"Each log file in the :file:`/var/log/univention/listener_modules` "
+"directory has its own :program:`logrotate` configuration. Listener module"
+" log files use global settings by default and can also use per-log-file "
+"overrides. The :samp:`logrotate/listener-modules/{DIRECTIVE}` UCR "
+"variable configures the global settings. For a complete list of supported"
+" directives, see the `logrotate manual page "
+"<https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_."
+msgstr ""
+"Jede Log-Datei im Verzeichnis "
+":file:`/var/log/univention/listener_modules` hat ihre eigene "
+":program:`logrotate`-Konfiguration. Log-Dateien von Listener-Modulen "
+"verwenden standardmäßig globale Einstellungen und können auch pro Log-"
+"Datei abweichende Einstellungen verwenden. Die UCR-Variable "
+":samp:`logrotate/listener-modules/{DIRECTIVE}` konfiguriert die globalen "
+"Einstellungen. Eine vollständige Liste der unterstützten Direktiven "
+"finden Sie in der `logrotate-Handbuchseite "
+"<https://manpages.debian.org/bookworm/logrotate/logrotate.8.en.html>`_."
+
+#: ../../system-administration/logging.rst:74
+msgid "Global listener module logrotate settings"
+msgstr "Globale Einstellungen von logrotate für Listener-Module"
+
+#: ../../system-administration/logging.rst:76
+msgid ""
+"Use these settings when you want to apply the same logrotate behavior to "
+"all listener module log files. Nubus for UCS supports the following "
+"directives for listener module log files:"
+msgstr ""
+"Verwenden Sie diese Einstellungen, wenn Sie dasselbe Rotationsverhalten "
+"auf alle Log-Dateien von Listener-Modulen anwenden möchten. Nubus für UCS"
+" unterstützt die folgenden Direktiven für Log-Dateien von Listener-"
+"Modulen:"
+
+#: ../../system-administration/logging.rst:84
+msgid "Defines how often the system rotates listener module log files."
+msgstr "Legt fest, wie oft das System Log-Dateien von Listener-Modulen rotiert."
+
+#: ../../system-administration/logging.rst
+msgid "Default value"
+msgstr "Standardwert"
+
+#: ../../system-administration/logging.rst:86
+msgid "``weekly``"
+msgstr "``weekly``"
+
+#: ../../system-administration/logging.rst:90
+msgid "Defines how many rotated log files the system keeps."
+msgstr "Legt fest, wie viele rotierte Log-Dateien das System behält."
+
+#: ../../system-administration/logging.rst:92
+msgid "``12``"
+msgstr "``12``"
+
+#: ../../system-administration/logging.rst:96
+msgid "Defines the permissions and ownership for newly created log files."
+msgstr "Legt Berechtigungen und Eigentümer für neu erstellte Log-Dateien fest."
+
+#: ../../system-administration/logging.rst:98
+msgid "``640 listener adm``"
+msgstr "``640 listener adm``"
+
+#: ../../system-administration/logging.rst:102
+msgid "Defines whether logrotate continues when a log file is missing."
+msgstr "Legt fest, ob logrotate fortfährt, wenn eine Log-Datei fehlt."
+
+#: ../../system-administration/logging.rst:105
+msgid "``missingok``"
+msgstr "``missingok``"
+
+#: ../../system-administration/logging.rst:109
+msgid "Defines whether logrotate compresses rotated log files."
+msgstr "Legt fest, ob logrotate rotierte Log-Dateien komprimiert."
+
+#: ../../system-administration/logging.rst:111
+msgid "``compress``"
+msgstr "``compress``"
+
+#: ../../system-administration/logging.rst:115
+msgid "Defines whether logrotate skips empty log files."
+msgstr "Legt fest, ob logrotate leere Log-Dateien überspringt."
+
+#: ../../system-administration/logging.rst:117
+msgid "``notifempty``"
+msgstr "``notifempty``"
+
+#: ../../system-administration/logging.rst:122
+msgid "Per-log-file overrides"
+msgstr "Abweichende Einstellungen pro Log-Datei"
+
+#: ../../system-administration/logging.rst:124
+#, python-brace-format
+msgid ""
+"Use the following UCR variable pattern to configure settings for a "
+"specific log file: :samp:`logrotate/listener-"
+"modules/{LOG_FILE_NAME}/{DIRECTIVE}`. Use the log filename without the "
+":file:`.log` filename extension. You can override the same directives "
+"that the global settings section lists. For example, to configure the "
+"rotation interval for :file:`example.log`, use :samp:`logrotate/listener-"
+"modules/example/rotate`."
+msgstr ""
+"Verwenden Sie das folgende Muster für UCR-Variablen, um Einstellungen für"
+" eine bestimmte Log-Datei zu konfigurieren: :samp:`logrotate/listener-"
+"modules/{LOG_FILE_NAME}/{DIRECTIVE}`. Verwenden Sie den Namen der Log-"
+"Datei ohne die Dateiendung :file:`.log`. Sie können dieselben Direktiven "
+"überschreiben, die im Abschnitt über globale Einstellungen aufgeführt "
+"sind. Um zum Beispiel das Rotationsintervall für :file:`example.log` zu "
+"konfigurieren, verwenden Sie :samp:`logrotate/listener-"
+"modules/example/rotate`."
 
 #: ../../system-administration/network/advanced.rst:7
 msgid "Advanced network configurations"
@@ -1657,6 +2718,406 @@ msgstr ":ref:`lifecycle-update-strategies`"
 msgid ":ref:`lifecycle-package-installation-management`"
 msgstr ":ref:`lifecycle-package-installation-management`"
 
+#: ../../system-administration/regional-settings.rst:9
+msgid ""
+"This page describes system settings that affect language, keyboard "
+"layout, time zone, and time synchronization on a system running Nubus for"
+" UCS."
+msgstr ""
+"Diese Seite beschreibt Systemeinstellungen, die Sprache, "
+"Tastaturbelegung, Zeitzone und Zeitsynchronisation auf einem System mit "
+"Nubus für UCS betreffen."
+
+#: ../../system-administration/regional-settings.rst:16
+msgid "Language, locale, and keyboard settings"
+msgstr "Sprach-, Locale- und Tastatureinstellungen"
+
+#: ../../system-administration/regional-settings.rst:18
+msgid ""
+"On Linux, *locales* define localization properties for software. Locales "
+"include settings for date formats, currency formats, character sets, and "
+"the language for internationalized programs. To change the installed "
+"locales:"
+msgstr ""
+"Unter Linux definieren *Locales* Lokalisierungseigenschaften für "
+"Software. Locales umfassen Einstellungen für Datumsformate, "
+"Währungsformate, Zeichensätze und die Sprache für internationalisierte "
+"Programme. So ändern Sie die installierten Locales:"
+
+#: ../../system-administration/regional-settings.rst:23
+msgid ""
+"To open the :guilabel:`Language settings` management module, in the "
+"*Univention Portal* go to :menuselection:`System --> Language settings "
+"--> Language settings`. :numref:`system-administration-language-settings-"
+"figure` shows the management module."
+msgstr ""
+"Um das Verwaltungsmodul :guilabel:`Sprach-Einstellungen` zu öffnen, gehen"
+" Sie im *Univention Portal* zu :menuselection:`System --> Sprach-"
+"Einstellungen --> Spracheinstellungen`. :numref:`system-administration-"
+"language-settings-figure` zeigt das Verwaltungsmodul."
+
+#: ../../system-administration/regional-settings.rst:28
+msgid "Set the default locale in :guilabel:`Default system locale`."
+msgstr ""
+"Setzen Sie die Standard-Locale in :guilabel:`Standard-System-"
+"Sprachdefinition`."
+
+#: ../../system-administration/regional-settings.rst:32
+msgid ""
+"The Language settings management module shows locale, keyboard layout, "
+"and time zone settings."
+msgstr ""
+"Das Verwaltungsmodul Sprach-Einstellungen zeigt Einstellungen für Locale,"
+" Tastaturbelegung und Zeitzone an."
+
+#: ../../system-administration/regional-settings.rst:35
+msgid "Configuring the language settings"
+msgstr "Spracheinstellungen konfigurieren"
+
+#: ../../system-administration/regional-settings.rst:40
+msgid "Time zone and time synchronization"
+msgstr "Zeitzone und Zeitsynchronisation"
+
+#: ../../system-administration/regional-settings.rst:42
+msgid "To change the system time zone:"
+msgstr "So ändern Sie die Systemzeitzone:"
+
+#: ../../system-administration/regional-settings.rst:44
+msgid ""
+"To open the :guilabel:`Language settings` management module, in the "
+"*Univention Portal* go to :menuselection:`System --> Language settings`."
+msgstr ""
+"Um das Verwaltungsmodul :guilabel:`Sprach-Einstellungen` zu öffnen, gehen"
+" Sie im *Univention Portal* zu :menuselection:`System --> Sprach-"
+"Einstellungen`."
+
+#: ../../system-administration/regional-settings.rst:47
+msgid "Go to :menuselection:`Time zone and keyboard settings --> Time zone`."
+msgstr ""
+"Gehen Sie zu :menuselection:`Zeitzonen- und Tastatureinstellungen --> "
+"Zeitzone`."
+
+#: ../../system-administration/regional-settings.rst:49
+msgid ""
+"Inconsistent system time between hosts in a domain can cause many errors."
+" For example, it can affect the following components:"
+msgstr ""
+"Eine nicht synchronisierte Systemzeit zwischen Rechnern in einer Domäne "
+"kann viele Fehler verursachen. Sie kann sich zum Beispiel auf die "
+"folgenden Komponenten auswirken:"
+
+#: ../../system-administration/regional-settings.rst:53
+msgid "Log file reliability."
+msgstr "Zuverlässigkeit von Log-Dateien."
+
+#: ../../system-administration/regional-settings.rst:55
+msgid "Kerberos operation."
+msgstr "Betrieb von Kerberos."
+
+#: ../../system-administration/regional-settings.rst:57
+msgid "Evaluation of password validity periods."
+msgstr "Auswertung von Zeiträumen für die Passwortgültigkeit."
+
+#: ../../system-administration/regional-settings.rst:59
+msgid ""
+"The :term:`Primary Directory Node` usually acts as the timeserver for a "
+"domain. To include external NTP servers as time sources, set the "
+":term:`UCR variables <UCR variable>` :envvar:`timeserver`, "
+":envvar:`timeserver2`, and :envvar:`timeserver3`."
+msgstr ""
+"Der :term:`Primary Directory Node` dient normalerweise als Zeitserver für"
+" eine Domäne. Um externe NTP-Server als Zeitquellen einzubinden, setzen "
+"Sie die :term:`UCR-Variablen <UCR variable>` :envvar:`timeserver`, "
+":envvar:`timeserver2` und :envvar:`timeserver3`."
+
+#: ../../system-administration/regional-settings.rst:64
+msgid "To synchronize the time manually, run :command:`ntpdate`."
+msgstr "Um die Zeit manuell zu synchronisieren, führen Sie :command:`ntpdate` aus."
+
+#: ../../system-administration/regional-settings.rst:67
+msgid ""
+"Windows clients in a Samba domain accept only signed NTP time requests. "
+"If you set the :term:`UCR variable` :envvar:`ntp/signed` to ``yes``, "
+"Samba signs NTP replies."
+msgstr ""
+"Windows-Clients in einer Samba-Domäne akzeptieren nur signierte NTP-"
+"Zeitanfragen. Wenn Sie die :term:`UCR-Variable <UCR variable>` "
+":envvar:`ntp/signed` auf ``yes`` setzen, signiert Samba NTP-Antworten."
+
+#: ../../system-administration/system-services.rst:9
+msgid ""
+"This page describes service-related configuration tasks on systems "
+"running Nubus for UCS. It covers service startup behavior, selected "
+"integration settings, and the name service cache daemon."
+msgstr ""
+"Diese Seite beschreibt auf Dienste bezogene Konfigurationsaufgaben auf "
+"Systemen mit Nubus für UCS. Sie behandelt das Startverhalten von "
+"Diensten, ausgewählte Integrationseinstellungen und den Name Service "
+"Cache Daemon."
+
+#: ../../system-administration/system-services.rst:17
+msgid "Manage system services"
+msgstr "Systemdienste verwalten"
+
+#: ../../system-administration/system-services.rst:19
+msgid "To manage system services:"
+msgstr "So verwalten Sie Systemdienste:"
+
+#: ../../system-administration/system-services.rst:21
+msgid ""
+"To open the :guilabel:`System services` management module, in the "
+"*Univention Portal* go to :menuselection:`System --> System services`."
+msgstr ""
+"Um das Verwaltungsmodul :guilabel:`Systemdienste` zu öffnen, gehen Sie im"
+" *Univention Portal* zu :menuselection:`System --> Systemdienste`."
+
+#: ../../system-administration/system-services.rst:24
+msgid "Check the current status of a system service."
+msgstr "Prüfen Sie den aktuellen Status eines Systemdienstes."
+
+#: ../../system-administration/system-services.rst:26
+msgid "Start or stop the service when needed."
+msgstr "Starten oder stoppen Sie den Dienst bei Bedarf."
+
+#: ../../system-administration/system-services.rst:28
+msgid ""
+"The System services management module shows installed services, their "
+"status, and available actions."
+msgstr ""
+"Das Verwaltungsmodul System services zeigt installierte Dienste, ihren "
+"Status und verfügbare Aktionen an."
+
+#: ../../system-administration/system-services.rst:31
+msgid "Overview of system services"
+msgstr "Übersicht über Systemdienste"
+
+#: ../../system-administration/system-services.rst:33
+msgid ""
+"The list shows all services installed on the system. Under "
+":guilabel:`Status`, you can see the current status and a description. "
+"Select one or more services and use the :guilabel:`More` menu to start, "
+"stop, or restart a service."
+msgstr ""
+"Die Liste zeigt alle auf dem System installierten Dienste. Unter "
+":guilabel:`Status` sehen Sie den aktuellen Status und eine Beschreibung. "
+"Wählen Sie einen oder mehrere Dienste aus und verwenden Sie das Menü "
+":guilabel:`Mehr`, um einen Dienst zu starten, zu stoppen oder neu zu "
+"starten."
+
+#: ../../system-administration/system-services.rst:40
+msgid ""
+"By default, the system starts every service automatically. Sometimes, you"
+" may want to prevent a service from starting automatically until you "
+"complete additional configuration."
+msgstr ""
+"Standardmäßig startet das System jeden Dienst automatisch. Manchmal "
+"möchten Sie möglicherweise verhindern, dass ein Dienst automatisch "
+"startet, bis Sie zusätzliche Konfigurationsschritte abgeschlossen haben."
+
+#: ../../system-administration/system-services.rst:45
+msgid ""
+"Use :guilabel:`Start manually` to prevent automatic startup while still "
+"allowing you to start the service later."
+msgstr ""
+"Verwenden Sie :guilabel:`Manuell Starten`, um den automatischen Start zu "
+"verhindern und den Dienst trotzdem später starten zu können."
+
+#: ../../system-administration/system-services.rst:49
+msgid ""
+"Use :guilabel:`Start never` to prevent automatic and manual service "
+"starts."
+msgstr ""
+"Verwenden Sie :guilabel:`Niemals starten`, um automatische und manuelle "
+"Dienststarts zu verhindern."
+
+#: ../../system-administration/system-services.rst:55
+msgid "Configure the LDAP server"
+msgstr "Den LDAP-Server konfigurieren"
+
+#: ../../system-administration/system-services.rst:57
+msgid ""
+"You can operate several LDAP servers in a Nubus for UCS domain. Set the "
+"primary server with the :term:`UCR variable` :envvar:`ldap/server/name`. "
+"Set additional servers through the :term:`UCR variable` "
+":envvar:`ldap/server/addition`."
+msgstr ""
+"Sie können mehrere LDAP-Server in einer Nubus für UCS-Domäne betreiben. "
+"Setzen Sie den primären Server mit der :term:`UCR-Variable <UCR "
+"variable>` :envvar:`ldap/server/name`. Zusätzliche Server setzen Sie über"
+" die :term:`UCR-Variable <UCR variable>` :envvar:`ldap/server/addition`."
+
+#: ../../system-administration/system-services.rst:63
+msgid ""
+"Alternatively, specify LDAP servers through the *LDAP server* policy. If "
+"a system can't reach one LDAP server, it contacts the servers in the "
+"configured order."
+msgstr ""
+"Alternativ geben Sie LDAP-Server über die Richtlinie *LDAP Server* an. "
+"Wenn ein System einen LDAP-Server nicht erreichen kann, kontaktiert es "
+"die Server in der konfigurierten Reihenfolge."
+
+#: ../../system-administration/system-services.rst:68
+msgid ""
+"By default, the installation or the domain join only sets "
+":envvar:`ldap/server/name`. If more than one LDAP server is available, "
+"assign at least two LDAP servers through the *LDAP server* policy to "
+"improve redundancy. In environments that span several locations, prefer "
+"LDAP servers in the local network."
+msgstr ""
+"Standardmäßig setzt die Installation oder der Domänenbeitritt nur "
+":envvar:`ldap/server/name`. Wenn mehr als ein LDAP-Server verfügbar ist, "
+"weisen Sie über die Richtlinie *LDAP Server* mindestens zwei LDAP-Server "
+"zu, um die Redundanz zu verbessern. In Umgebungen, die sich über mehrere "
+"Standorte erstrecken, bevorzugen Sie LDAP-Server im lokalen Netzwerk."
+
+#: ../../system-administration/system-services.rst:79
+msgid "Configure the print server"
+msgstr "Den Druckserver konfigurieren"
+
+#: ../../system-administration/system-services.rst:81
+msgid ""
+"Specify the print server with the :term:`UCR variable` "
+":envvar:`cups/server`."
+msgstr ""
+"Geben Sie den Druckserver mit der :term:`UCR-Variable <UCR variable>` "
+":envvar:`cups/server` an."
+
+#: ../../system-administration/system-services.rst:84
+msgid ""
+"Alternatively, specify the server through the *Print server* policy in "
+"the :guilabel:`Computers` management module."
+msgstr ""
+"Alternativ geben Sie den Server über die Richtlinie *Druckserver* im "
+"Verwaltungsmodul :guilabel:`Computers` an."
+
+#: ../../system-administration/system-services.rst:90
+msgid ":external+uv-nubus-manual:ref:`nubus-computer-management`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-computer-management`"
+
+#: ../../system-administration/system-services.rst:91
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the "
+":guilabel:`Computers` management module"
+msgstr ""
+"in :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+":guilabel:`Computers`"
+
+#: ../../system-administration/system-services.rst:97
+msgid "Name service cache daemon"
+msgstr "Name Service Cache Daemon"
+
+#: ../../system-administration/system-services.rst:99
+msgid ""
+"The *Name Service Cache Daemon* (NSCD) caches Name Service Switch (NSS) "
+"data to speed up repeated requests for unchanged data. If the same "
+"request occurs again, the system reads the data from the cache instead of"
+" processing a complete LDAP request."
+msgstr ""
+"Der *Name Service Cache Daemon* (NSCD) speichert Daten des Name Service "
+"Switch (NSS) im Cache, um wiederholte Anfragen nach unveränderten Daten "
+"zu beschleunigen. Wenn dieselbe Anfrage erneut auftritt, liest das System"
+" die Daten aus dem Cache, statt eine vollständige LDAP-Anfrage zu "
+"verarbeiten."
+
+#: ../../system-administration/system-services.rst:106
+msgid ""
+"Groups are no longer cached through NSCD for performance and stability "
+"reasons. Instead, a local group cache stores them. For more information, "
+"see :ref:`ucs-operation-groups-management-cache`."
+msgstr ""
+"Gruppen werden aus Gründen der Leistung und Stabilität nicht mehr über "
+"NSCD zwischengespeichert. Stattdessen speichert ein lokaler Gruppen-Cache"
+" sie. Weitere Informationen finden Sie unter :ref:`ucs-operation-groups-"
+"management-cache`."
+
+#: ../../system-administration/system-services.rst:111
+msgid ""
+"Since UCS 5.2-0, the system no longer caches user information "
+"(``passwd``) through NSCD. Instead, the *System Security Services Daemon*"
+" (SSSD) retrieves and caches user information. For more information, see "
+"the `SSSD documentation <https://sssd.io/docs/introduction.html>`_."
+msgstr ""
+"Seit UCS 5.2-0 speichert das System Benutzerinformationen (``passwd``) "
+"nicht mehr über NSCD im Cache. Stattdessen ruft der *System Security "
+"Services Daemon* (SSSD) Benutzerinformationen ab und speichert sie im "
+"Cache. Weitere Informationen finden Sie in der `SSSD-Dokumentation "
+"<https://sssd.io/docs/introduction.html>`_."
+
+#: ../../system-administration/system-services.rst:117
+msgid ""
+"*Univention Configuration Registry* manages the :file:`/etc/nscd.conf` "
+"configuration file."
+msgstr ""
+"Die *Univention Configuration Registry* verwaltet die Konfigurationsdatei"
+" :file:`/etc/nscd.conf`."
+
+#: ../../system-administration/system-services.rst:120
+msgid ""
+"A hash table handles access to the cache. Specify the hash table size "
+"with the UCR variable :envvar:`nscd/hosts/size`. Set the value higher "
+"than the number of users and hosts that access the cache at the same "
+"time. For technical reasons, use a prime number."
+msgstr ""
+"Eine Hash-Tabelle verarbeitet den Zugriff auf den Cache. Geben Sie die "
+"Größe der Hash-Tabelle mit der UCR-Variable :envvar:`nscd/hosts/size` an."
+" Setzen Sie den Wert höher als die Anzahl der Benutzer und Rechner, die "
+"gleichzeitig auf den Cache zugreifen. Verwenden Sie aus technischen "
+"Gründen eine Primzahl."
+
+#: ../../system-administration/system-services.rst:128
+msgid ""
+"With large caches, increase the cache database size in system memory "
+"through the UCR variable :envvar:`nscd/hosts/maxdbsize`."
+msgstr ""
+"Vergrößern Sie bei großen Caches die Größe der Cache-Datenbank im "
+"Systemspeicher über die UCR-Variable :envvar:`nscd/hosts/maxdbsize`."
+
+#: ../../system-administration/system-services.rst:132
+msgid ""
+"By default, NSCD starts five threads. If the system handles many "
+"accesses, increase the number through the :term:`UCR variable` "
+":envvar:`nscd/threads`."
+msgstr ""
+"Standardmäßig startet NSCD fünf Threads. Wenn das System viele Zugriffe "
+"verarbeitet, erhöhen Sie die Anzahl über die :term:`UCR-Variable <UCR "
+"variable>` :envvar:`nscd/threads`."
+
+#: ../../system-administration/system-services.rst:137
+msgid ""
+"By default, the system caches a resolved hostname for one hour. Use the "
+":envvar:`nscd/hosts/positive_time_to_live` UCR variable to increase or "
+"decrease the cache period in seconds."
+msgstr ""
+"Standardmäßig speichert das System einen aufgelösten Rechnernamen für "
+"eine Stunde im Cache. Verwenden Sie die UCR-Variable "
+":envvar:`nscd/hosts/positive_time_to_live`, um die Cache-Dauer in "
+"Sekunden zu erhöhen oder zu verringern."
+
+#: ../../system-administration/system-services.rst:142
+msgid ""
+"You may need to invalidate the NSCD cache manually. Run the commands in "
+":numref:`system-administration-nscd-invalidate-cache-listing` for the "
+"relevant cache table. Use the :term:`UCR variable` "
+":envvar:`nscd/debug/level` to set the verbosity of log messages."
+msgstr ""
+"Möglicherweise müssen Sie den NSCD-Cache manuell invalidieren. Führen Sie"
+" für die betreffende Cache-Tabelle die Befehle in :numref:`system-"
+"administration-nscd-invalidate-cache-listing` aus. Verwenden Sie die "
+":term:`UCR-Variable <UCR variable>` :envvar:`nscd/debug/level`, um die "
+"Ausführlichkeit der Log-Meldungen festzulegen."
+
+#: ../../system-administration/system-services.rst:148
+msgid "Commands to manually invalidate the NSCD cache"
+msgstr "Befehle zum manuellen Invalidieren des NSCD-Cache"
+
+#: ../../system-administration/system-services.rst:148
+msgid ""
+"$ sss_cache -U\n"
+"$ nscd -i hosts"
+msgstr ""
+"$ sss_cache -U\n"
+"$ nscd -i hosts"
+
 #: ../../system-administration/ucr.rst:7
 msgid "Configure the local system with Univention Configuration Registry"
 msgstr "Das lokale System mit der Univention Configuration Registry konfigurieren"
@@ -2301,7 +3762,7 @@ msgid ""
 msgstr ""
 "Variablen, die nur für einen bestimmten Zeitraum gültig sind. Setzen Sie "
 "sie mit ``--schedule``. Nubus für UCS verwendet die zeitgesteuerte Ebene "
-"für :spelling:word:`zeitbasierte` Automatisierung."
+"für zeitbasierte Automatisierung."
 
 #: ../../system-administration/ucr.rst:378
 msgid "Force-level variables"
@@ -2641,7 +4102,9 @@ msgstr ""
 
 #: ../../system-administration/ucr.rst:559
 msgid "Verify a policy-applied UCR variable with :option:`ucr dump`"
-msgstr "Eine per Richtlinie gesetzte UCR-Variable mit :option:`ucr dump` überprüfen"
+msgstr ""
+"Eine per Richtlinie gesetzte UCR-Variable mit :option:`ucr dump` "
+"überprüfen"
 
 #: ../../system-administration/ucr.rst:559
 msgid "$ univention-config-registry dump | grep VARIABLENAME"
@@ -2668,7 +4131,4 @@ msgid "in :cite:t:`uv-nubus-manual` for information about how to assign policies
 msgstr ""
 "in :cite:t:`uv-nubus-manual` für Informationen zum Zuweisen von "
 "Richtlinien."
-
-#~ msgid "Click :guilabel:`Add new variable`."
-#~ msgstr "Klicken Sie auf :guilabel:`Hinzufügen`."
 

@@ -42,7 +42,9 @@ Mirror
 Mirror-Server
 Mirrors
 Multiprocessing
+NTP-Antworten
 Notifier-Dienste
+PAM-Dienst
 Partitionierungsschemata
 Partitionierungsstrategien
 Partitionierungsversion
@@ -61,6 +63,8 @@ Remote-Servern
 Repository-Mirror
 Richtlinienvariablen
 Root-Berechtigungen
+SSH-Dienst
+SSH-Sitzung
 SSO-Servers
 Scripting
 Shell-Scripting
@@ -88,9 +92,12 @@ cloudbasierte
 containerisierte
 domänenweiter
 gruppenbasierte
+größenbasierten
 hasht
 plattformspezifischen
 rekonfigurieren
 rollenspezifischen
 schreibbar
 systemspezifische
+zeitbasierte
+zeitbasierten
