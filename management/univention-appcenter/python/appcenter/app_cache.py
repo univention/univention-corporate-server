@@ -592,7 +592,7 @@ def default_locale() -> str:
 
 
 def default_server() -> str:
-    server = ucr_get('repository/app_center/server', 'https://appcenter.software-univention.de')
+    server = ucr_get('repository/app_center/server', 'https://appcenter-test.software-univention.de')
     if not server.startswith('http'):
         server = 'https://%s' % server
     return server
