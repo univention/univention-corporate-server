@@ -1,8 +1,9 @@
-univention-directory-replication (15.6.0) UNRELEASED; urgency=medium
+univention-directory-replication (15.6.0) unstable; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
+  * Bug #59532: Add missing builtin OIDs from OpenLDAP 2.6
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:02 +0200
+ -- Florian Best <best@univention.de>  Thu, 02 Jul 2026 11:35:12 +0200
 
 univention-directory-replication (15.5.0) UNRELEASED; urgency=medium
 

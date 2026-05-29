@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-directory-replication
+fix: 15.6.0
+desc: |
+ This update addresses the following issue:
+ * The directory replication OID skip list has been extended for OpenLDAP 2.6
+   to allow mixed environements with UCS 5.3.
+bug: [59532]
