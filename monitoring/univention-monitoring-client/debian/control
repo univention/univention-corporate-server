@@ -37,7 +37,6 @@ Depends:
  bind9-dnsutils,
  cron,
  cups-bsd,
- dpt-i2o-raidutils,
  lmdb-utils,
  monitoring-plugins,
  nagios-nrpe-server,
