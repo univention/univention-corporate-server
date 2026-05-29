@@ -150,6 +150,9 @@
 1.3.6.1.4.1.4203.1.12.2.3.0.99       1.3.6.1.4.1.4203.666.11.1.3.0.99     # attributeType.olcTLSCertificateKey
 1.3.6.1.4.1.4203.1.12.2.3.0.100      1.3.6.1.4.1.4203.666.11.1.3.0.100    # attributeType.olcSaslCBinding
 1.3.6.1.4.1.4203.1.12.2.3.0.101      1.3.6.1.4.1.4203.666.11.1.3.0.101    # attributeType.olcMaxFilterDepth
+1.3.6.1.4.1.4203.1.12.2.3.0.102      1.3.6.1.4.1.4203.666.11.1.3.0.102    # attributeType.olcLogFileOnly
+1.3.6.1.4.1.4203.1.12.2.3.0.103      1.3.6.1.4.1.4203.666.11.1.3.0.103    # attributeType.olcLogFileRotate
+1.3.6.1.4.1.4203.1.12.2.3.0.104      1.3.6.1.4.1.4203.666.11.1.3.0.104    # attributeType.olcLogFileFormat
 1.3.6.1.4.1.4203.1.12.2.3.1.12.1     1.3.6.1.4.1.4203.666.11.1.3.1.12.1   # back_mdb: attributeType.olcBkMdbIdlExp
 1.3.6.1.4.1.4203.1.12.2.3.2.0.1      1.3.6.1.4.1.4203.666.11.1.3.2.0.1    # attributeType.olcDbDirectory
 1.3.6.1.4.1.4203.1.12.2.3.2.0.2      1.3.6.1.4.1.4203.666.11.1.3.2.0.2    # back_mdb: attributeType.olcDbIndex
@@ -173,6 +176,7 @@
 1.3.6.1.4.1.4203.1.12.2.3.2.0.20     1.3.6.1.4.1.4203.666.11.1.3.2.0.20   # attributeType.olcExtraAttrs
 1.3.6.1.4.1.4203.1.12.2.3.2.0.21     1.3.6.1.4.1.4203.666.11.1.3.2.0.21   # attributeType.olcDisabled
 1.3.6.1.4.1.4203.1.12.2.3.2.0.22     1.3.6.1.4.1.4203.666.11.1.3.2.0.22   # attributeType.olcLastBind
+1.3.6.1.4.1.4203.1.12.2.3.2.0.23     1.3.6.1.4.1.4203.666.11.1.3.2.0.23   # attributeType.olcLastBindPrecision
 1.3.6.1.4.1.4203.1.12.2.3.2.1.1      1.3.6.1.4.1.4203.666.11.1.3.2.1.1    # attributeType.olcDbCacheSize
 1.3.6.1.4.1.4203.1.12.2.3.2.1.2      1.3.6.1.4.1.4203.666.11.1.3.2.1.2    # back_mdb: attributeType.olcDbCheckpoint
 1.3.6.1.4.1.4203.1.12.2.3.2.1.3      1.3.6.1.4.1.4203.666.11.1.3.2.1.3    # attributeType.olcDbConfig
@@ -330,6 +334,7 @@
 1.3.6.1.4.1.4203.1.12.2.3.3.12.4     1.3.6.1.4.1.4203.666.11.1.3.3.12.4   # ppolicy: attributeType.olcPPolicyForwardUpdates
 1.3.6.1.4.1.4203.1.12.2.3.3.12.5     1.3.6.1.4.1.4203.666.11.1.3.3.12.5   # ppolicy: attributeType.olcPPolicyDisableWrite
 1.3.6.1.4.1.4203.1.12.2.3.3.12.6     1.3.6.1.4.1.4203.666.11.1.3.3.12.6   # ppolicy: attributeType.olcPPolicySendNetscapeControls
+1.3.6.1.4.1.4203.1.12.2.3.3.12.7     1.3.6.1.4.1.4203.666.11.1.3.3.12.7   # ppolicy: attributeType.olcPPolicyCheckModule
 1.3.6.1.4.1.4203.1.12.2.3.3.13.1     1.3.6.1.4.1.4203.666.11.1.3.3.13.1   # constraint: attributeType.olcConstraintAttribute
 1.3.6.1.4.1.4203.1.12.2.3.3.14.1     1.3.6.1.4.1.4203.666.11.1.3.3.14.1   # translucent: attributeType.olcTranslucentStrict
 1.3.6.1.4.1.4203.1.12.2.3.3.14.2     1.3.6.1.4.1.4203.666.11.1.3.3.14.2   # translucent: attributeType.olcTranslucentNoGlue
@@ -351,6 +356,7 @@
 1.3.6.1.4.1.4203.1.12.2.3.3.18.4     1.3.6.1.4.1.4203.666.11.1.3.3.18.4   # memberof: attributeType.olcMemberOfMemberAD
 1.3.6.1.4.1.4203.1.12.2.3.3.18.5     1.3.6.1.4.1.4203.666.11.1.3.3.18.5   # memberof: attributeType.olcMemberOfMemberOfAD
 1.3.6.1.4.1.4203.1.12.2.3.3.18.7     1.3.6.1.4.1.4203.666.11.1.3.3.18.7   # memberof: attributeType.olcMemberOfDanglingError
+1.3.6.1.4.1.4203.1.12.2.3.3.18.8     1.3.6.1.4.1.4203.666.11.1.3.3.18.8   # memberof: attributeType.olcMemberOfAddCheck
 1.3.6.1.4.1.4203.1.12.2.3.3.19.1     1.3.6.1.4.1.4203.666.11.1.3.3.19.1   # collect: attributeType.olcCollectInfo
 1.3.6.1.4.1.4203.1.12.2.3.3.20.1     1.3.6.1.4.1.4203.666.11.1.3.3.20.1   # retcode: attributeType.olcRetcodeParent
 1.3.6.1.4.1.4203.1.12.2.3.3.20.2     1.3.6.1.4.1.4203.666.11.1.3.3.20.2   # retcode: attributeType.olcRetcodeItem
@@ -498,6 +504,7 @@
 1.3.6.1.4.1.4203.666.11.5.2.12       # accesslog: objectClass.auditExtended
 1.3.6.1.4.1.4754.1.99.1              # ppolicy: attributeType.pwdCheckModule
 1.3.6.1.4.1.4754.1.99.2              # ppolicy: attributeType.pwdCheckModuleArg
+1.3.6.1.4.1.4754.1.99.3              # ppolicy: attributeType.pwdUseCheckModule
 1.3.6.1.4.1.4754.2.99.1              # ppolicy: objectClass.pwdPolicyChecker
 1.3.6.1.4.1.5427.1.389.4226.4.1      # otp: attributeType.oathSecret
 1.3.6.1.4.1.5427.1.389.4226.4.2      # otp: attributeType.oathTokenSerialNumber
