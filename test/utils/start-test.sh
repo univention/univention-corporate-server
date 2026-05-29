@@ -8,10 +8,10 @@
 
 # defaults for release
 release='5.3-0'
-export CURRENT_AMI="${CURRENT_AMI:=ami-TODO}"
+export CURRENT_AMI="${CURRENT_AMI:=ami-0e33df04696753158}"  # AMI: Univention Corporate Server (UCS) 5.3 (testing image) rev. 0
 old_release='5.2-7'
 export OLD_AMI="${OLD_AMI:=ami-0878344441a36a0c0}"  # AMI: Univention Corporate Server (UCS) 5.2 (official image) rev. 8
-export KVM_UCSVERSION="${KVM_UCSVERSION:=5.3-0-preview}"
+export KVM_UCSVERSION="${KVM_UCSVERSION:=5.3-0+2026-07-21}"
 export OPENSTACK_IMAGE_VERSION="${OPENSTACK_IMAGE_VERSION:=5.3-0}"  # version for the openstack image
 export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS $OPENSTACK_IMAGE_VERSION}"  # name of the default openstack image
 export OPENSTACK_IMAGE_NAME_OLD="UCS $old_release"
@@ -20,7 +20,7 @@ export RANDOM_UCS_ROOT_PASSWORD="${RANDOM_UCS_ROOT_PASSWORD:=$(shuf -zern32 {A..
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export OLD_VERSION="${OLD_VERSION:=$old_release}"
-export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=UCS}"
+export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=Others}"
 export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$old_release}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=tross.knut.univention.de}"
@@ -42,9 +42,8 @@ export UCS_TEST_RUN="${UCS_TEST_RUN:=$(_jenkins)}"
 export TERMINATE="${TERMINATE:=$(_jenkins)}"
 export OS_CLOUD="${OS_CLOUD:=univention-development}"
 export PROXMOX_BRIDGE="${PROXMOX_BRIDGE:=Deploy - 10.150.12.0/22}" # e150012
-export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=181}" # template-generic-ucs-5.2-7-e606 2026-10-16 11:34:26  dev, template (packer)
-export PROXMOX_TEMPLATE_ID_OLD="${PROXMOX_TEMPLATE_ID_OLD:=175}" # template-generic-ucs-5.0-10-e1220 2026-10-16 11:32:39  dev, template (packer)
-
+export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=182}" # template-generic-ucs-5.3-0-2026-10-16  2026-10-16 11:34:46  dev, template (packer)
+export PROXMOX_TEMPLATE_ID_OLD="${PROXMOX_TEMPLATE_ID_OLD:=181}" # template-generic-ucs-5.2-7-e606 2026-10-16 11:34:26  dev, template (packer)
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
 : "${DEBUG:=false}"
@@ -279,7 +278,7 @@ KVM|*)
 	;;
 esac
 
-export DNS_FORWARDER="${DNS_FORWARDER:=10.208.1.6}"
+export DNS_FORWARDER="${DNS_FORWARDER:=192.168.0.3}"
 
 # start the test
 declare -a cmd=()
