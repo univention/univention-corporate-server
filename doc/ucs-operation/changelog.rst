@@ -21,6 +21,30 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 29. May 2026
+     - :ref:`system-administration-cron`
+     - Add section about recurring actions with cron.
+
+   * - 28. May 2026
+     - :ref:`system-administration-system-services`
+     - Add section about service management.
+
+   * - 28. May 2026
+     - :ref:`system-administration-regional-settings`
+     - Add section about regional settings.
+
+   * - 27. May 2026
+     - :ref:`system-administration-logging`
+     - Add section about log files and log rotation.
+
+   * - 27. May 2026
+     - :ref:`system-administration-diagnostics`
+     - Add section about system diagnostics.
+
+   * - 26. May 2026
+     - :ref:`system-administration-access-authentication`
+     - Add section about administrative access and authentication.
+
    * - 18. May 2026
      - :ref:`system-administration-ucr`
      - Add section about local system configuration with Univention Configuration Registry.
