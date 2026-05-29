@@ -980,6 +980,12 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
 
 [[annotations]]
+path = "services/univention-bind/dlz/ldapdb_dlz.c"
+precedence = "override"
+SPDX-License-Identifier = "ISC"
+SPDX-FileCopyrightText = [ "2002, 2004, 2005 Stig Venaas", "2007 Turbo Fredriksson", "2007-2026 Univention GmbH",]
+
+[[annotations]]
 path = "services/univention-dhcp/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
