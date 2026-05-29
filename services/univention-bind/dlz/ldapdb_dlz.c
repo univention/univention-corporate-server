@@ -1,4 +1,5 @@
 /*
+ * DLZ/dlopen rewrite of the historical SDB ldapdb.c driver:
  * ldapdb.c version 1.1.1 (beta)
  *
  * Copyright (C) 2002, 2004, 2005 Stig Venaas
@@ -11,501 +12,151 @@
  * Contributors: Jeremy C. McDermond, Turbo Fredriksson
  *
  * $Id: ldapdb.c,v 1.15 2008-12-05 18:09:54 turbo Exp $
+ *
+ * This is intentionally not a 1:1 SDB port: it removes dependencies on
+ * <dns/sdb.h>, <named/globals.h>, <named/log.h>, <isc/thread.h>, and
+ * <isc/print.h>.  It is designed as an external DLZ module loaded by named via:
+ *   dlz "ldap" {
+ *       database "dlopen /path/to/ldapdb_dlz.so ldap://host/base????x-bindpw=secret 3600";
+ *       search yes;
+ *   };
+ *
+ * Needs dlz_minimal.h from ISC's dlz-modules repository.  Do not include
+ * BIND internal headers from /usr/include/dns or /usr/include/named.
  */
 
-/* If you want to use TLS and not OpenLDAP library, uncomment the define below */
-/* #define LDAPDB_TLS */
-#ifdef LDAP_API_FEATURE_X_OPENLDAP
-#define LDAPDB_TLS
-#endif
+#define _GNU_SOURCE
 
-/* If you are using an old LDAP API uncomment the define below. Only do this
- * if you know what you're doing or get compilation errors on ldap_memfree().
- * This also forces LDAPv2.
- */
-/* #define LDAPDB_RFC1823API */
+#include <ctype.h>
+#include <errno.h>
+#include <ldap.h>
+#include <pthread.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 
-/* Using LDAPv3 by default, change this if you want v2 */
+#include "dlz_minimal.h"
+
 #ifndef LDAPDB_LDAP_VERSION
 #define LDAPDB_LDAP_VERSION 3
 #endif
 
-#include <config.h>
+#ifndef LDAPDB_MAXNAMELEN
+#define LDAPDB_MAXNAMELEN 519
+#endif
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-
-#include <isc/mem.h>
-#include <isc/result.h>
-#include <isc/util.h>
-#include <isc/thread.h>
-
-#include <dns/sdb.h>
-
-#include <named/globals.h>
-#include <named/log.h>
-
-#include <ldap.h>
-#include "include/ldapdb.h"
-
-#include <unistd.h>
+#define LDAPDB_WILDCARD_EXT "*"
+#define LDAPDB_WILDCARD_INT "~"
 
 /*
- * A simple database driver for LDAP
+ * dlz_minimal.h provides the isc_result_t values and DNS_SDLZFLAG_THREADSAFE.
+ * It also exposes dlz_putrr/dlz_putnamedrr in current ISC examples.  Some older
+ * copies expose putrr/putnamedrr instead.  Keep this indirection in one place.
  */
+#ifndef LDAPDB_PUTRR
+#ifdef dlz_putrr
+#define LDAPDB_PUTRR dlz_putrr
+#else
+#define LDAPDB_PUTRR putrr
+#endif
+#endif
 
-/* enough for name with 8 labels of max length */
-#define MAXNAMELEN 519
+#ifndef LDAPDB_PUTNAMEDRR
+#ifdef dlz_putnamedrr
+#define LDAPDB_PUTNAMEDRR dlz_putnamedrr
+#else
+#define LDAPDB_PUTNAMEDRR putnamedrr
+#endif
+#endif
 
-const char *WILDCARD_EXT = "*"; /* External host wildcard character */
-const char *WILDCARD_INT = "~"; /* Internal wildcard, change to taste */
+#ifndef LDAPDB_LOG
+#ifdef dlz_log
+#define LDAPDB_LOG dlz_log
+#else
+#define LDAPDB_LOG log
+#endif
+#endif
 
-#define LDAPDB_FAILURE(msg)                                                                                                                       \
-	{                                                                                                                                         \
-		isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': %s", zone, msg); \
-		return (ISC_R_FAILURE);                                                                                                           \
-	}
+typedef struct ldapdb_rrset {
+	char *owner;
+	char *type;
+	unsigned int ttl;
+	char *rdata;
+	struct ldapdb_rrset *next;
+} ldapdb_rrset_t;
 
-static dns_sdbimplementation_t *ldapdb = NULL;
-
-struct ldapdb_data {
+typedef struct ldapdb_conn {
 	char *url;
-	char *hostname;
-	int portno;
+	LDAP *ld;
+	struct ldapdb_conn *next;
+} ldapdb_conn_t;
+
+typedef struct ldapdb_thread_state {
+	pthread_t tid;
+	ldapdb_conn_t *connections;
+	struct ldapdb_thread_state *next;
+} ldapdb_thread_state_t;
+
+typedef struct ldapdb_data {
+	char *url;
 	char *base;
 	char **attrs;
 	int scope;
-	int defaultttl;
+	unsigned int defaultttl;
 	char *filterall;
-	int filteralllen;
+	size_t filteralllen;
 	char *filterone;
-	int filteronelen;
+	size_t filteronelen;
 	char *filtername;
 	char *bindname;
 	char *bindpw;
-#ifdef LDAPDB_TLS
-	int tls;
-#endif
-	int wildcard;
-};
+	bool tls;
+	bool wildcard;
+	bool allow_xfr;
 
-/* used by ldapdb_getconn */
+	pthread_mutex_t lock;
+	ldapdb_thread_state_t *threads;
+} ldapdb_data_t;
 
-struct ldapdb_entry {
-	void *index;
-	size_t size;
-	void *data;
-	struct ldapdb_entry *next;
-};
+static void ldapdb_log(int level, const char *fmt, ...) {
+	char buf[2048];
+	va_list ap;
 
-static struct ldapdb_entry *ldapdb_find(struct ldapdb_entry *stack, const void *index, size_t size) {
-	while (stack != NULL) {
-		if (stack->size == size && !memcmp(stack->index, index, size))
-			return stack;
-		stack = stack->next;
+	va_start(ap, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+
+	LDAPDB_LOG(level, "%s", buf);
+}
+
+static char *xstrdup(const char *s) {
+	if (s == NULL) {
+		return NULL;
 	}
-	return NULL;
+	char *copy = strdup(s);
+	return copy;
 }
 
-static void ldapdb_insert(struct ldapdb_entry **stack, struct ldapdb_entry *item) {
-	item->next = *stack;
-	*stack = item;
-}
-
-static void ldapdb_lock(int what) {
-	static isc_mutex_t lock;
-
-	switch (what) {
-	case 0:
-		isc_mutex_init(&lock);
-		break;
-	case 1:
-		LOCK(&lock);
-		break;
-	case -1:
-		UNLOCK(&lock);
-		break;
+static void free_strv(char **v) {
+	if (v != NULL) {
+		free(v);
 	}
 }
 
-/* data == NULL means cleanup */
-static LDAP **ldapdb_getconn(struct ldapdb_data *data) {
-	static struct ldapdb_entry *allthreadsdata = NULL;
-	struct ldapdb_entry *threaddata, *conndata;
-	unsigned long threadid;
-
-	if (data == NULL) {
-		/* cleanup */
-		/* lock out other threads */
-		ldapdb_lock(1);
-		while (allthreadsdata != NULL) {
-			threaddata = allthreadsdata;
-			free(threaddata->index);
-			while (threaddata->data != NULL) {
-				conndata = threaddata->data;
-				free(conndata->index);
-				if (conndata->data != NULL)
-					ldap_unbind_ext((LDAP *)conndata->data, NULL, NULL);
-				threaddata->data = conndata->next;
-				free(conndata);
-			}
-			allthreadsdata = threaddata->next;
-			free(threaddata);
-		}
-		ldapdb_lock(-1);
-		return (NULL);
+static void rrset_free(ldapdb_rrset_t *rr) {
+	while (rr != NULL) {
+		ldapdb_rrset_t *next = rr->next;
+		free(rr->owner);
+		free(rr->type);
+		free(rr->rdata);
+		free(rr);
+		rr = next;
 	}
-
-	/* look for connection data for current thread */
-	threadid = isc_thread_self();
-	threaddata = ldapdb_find(allthreadsdata, &threadid, sizeof(threadid));
-	if (threaddata == NULL) {
-		/* no data for this thread, create empty connection list */
-		threaddata = malloc(sizeof(*threaddata));
-		if (threaddata == NULL)
-			return (NULL);
-		threaddata->index = malloc(sizeof(threadid));
-		if (threaddata->index == NULL) {
-			free(threaddata);
-			return (NULL);
-		}
-		*(unsigned long *)threaddata->index = threadid;
-		threaddata->size = sizeof(threadid);
-		threaddata->data = NULL;
-
-		/* need to lock out other threads here */
-		ldapdb_lock(1);
-		ldapdb_insert(&allthreadsdata, threaddata);
-		ldapdb_lock(-1);
-	}
-
-	/* threaddata points at the connection list for current thread */
-	/* look for existing connection to our server */
-	conndata = ldapdb_find((struct ldapdb_entry *)threaddata->data, data->url, strlen(data->url));
-	if (conndata == NULL) {
-		/* no connection data structure for this server, create one */
-		conndata = malloc(sizeof(*conndata));
-		if (conndata == NULL)
-			return (NULL);
-		conndata->index = strdup(data->url);
-		conndata->size = strlen(data->url);
-		conndata->data = NULL;
-		ldapdb_insert((struct ldapdb_entry **)&threaddata->data, conndata);
-	}
-
-	return (LDAP **)&conndata->data;
-}
-
-static void ldapdb_bind(const char *zone, struct ldapdb_data *data, LDAP **ldp) {
-#ifndef LDAPDB_RFC1823API
-	const int ver = LDAPDB_LDAP_VERSION;
-	const struct timeval timeout = {
-	    .tv_sec = 60,
-	};
-#endif
-	int failure = 1, counter = 1, rc;
-	struct berval cred;
-
-	if (data->bindpw == NULL) {
-		cred.bv_val = NULL;
-		cred.bv_len = 0;
-	} else {
-		cred.bv_val = data->bindpw;
-		cred.bv_len = strlen(data->bindpw);
-	}
-
-	/* Make sure we try at least three times to connect+bind
-	 * to the LDAP server. Sleep five seconds between each
-	 * attempt => 25 seconds before timeout! */
-	while ((failure == 1) && (counter <= 3)) {
-		if (*ldp != NULL)
-			ldap_unbind_ext(*ldp, NULL, NULL);
-
-		/* ----------------------------- */
-		/* -- Connect to LDAP server. -- */
-#ifdef LDAP_API_FEATURE_X_OPENLDAP
-		isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_CONTROL, ISC_LOG_DEBUG(2), "LDAP sdb zone '%s': ldap_initialize(%s)", zone, data->url);
-
-		/* Connect to LDAP server using URL */
-		rc = ldap_initialize(ldp, data->url);
-		if (rc != LDAP_SUCCESS) {
-#else
-		*ldp = ldap_open(data->hostname, data->portno);
-		if (*ldp == NULL) {
-#endif
-
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR,
-#ifdef LDAP_API_FEATURE_X_OPENLDAP
-			              "LDAP sdb zone '%s': ldapdb_bind(): ldap_initialize() failed. LDAP URL: %s", zone, data->url);
-#else
-			              "LDAP sdb zone '%s': ldapdb_bind(): ldap_open() failed.", zone);
-#endif
-
-			/* Failed - wait five seconds, then try again. */
-			goto try_bind_again;
-		} else
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_CONTROL, ISC_LOG_DEBUG(2),
-#ifdef LDAP_API_FEATURE_X_OPENLDAP
-			              "LDAP sdb zone '%s': ldapdb_bind(): Connected to ldapserver '%s'", zone, data->url);
-#else
-			              "LDAP sdb zone '%s': ldapdb_bind(): Connected to ldapserver '%s:%d'", zone, data->hostname, data->portno);
-#endif
-
-		/* ----------------- */
-		/* -- Set option. -- */
-#ifndef LDAPDB_RFC1823API
-		ldap_set_option(*ldp, LDAP_OPT_PROTOCOL_VERSION, (const void *)&ver);
-
-		/* Allow referrals */
-		ldap_set_option(*ldp, LDAP_OPT_REFERRALS, LDAP_OPT_ON);
-
-		/* Default timeout */
-		ldap_set_option(*ldp, LDAP_OPT_TIMEOUT, &timeout);
-
-		isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_CONTROL, ISC_LOG_DEBUG(2), "LDAP sdb zone '%s': ldapdb_bind(): Set option PROTOCOL_VERSION to '%d' and allow referrals.", zone, ver);
-#endif
-
-		/* ---------------- */
-		/* -- Start TLS. -- */
-#ifdef LDAPDB_TLS
-		if (data->tls) {
-			ldap_start_tls_s(*ldp, NULL, NULL);
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_CONTROL, ISC_LOG_DEBUG(2), "LDAP sdb zone '%s': ldapdb_bind(): Started TLS", zone);
-		}
-#endif
-
-		/* ------------------------------ */
-		/* -- Bind to the LDAP server. -- */
-		if ((rc = ldap_sasl_bind_s(*ldp, data->bindname, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL)) != LDAP_SUCCESS) {
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': ldapdb_bind(): ldap_sasl_bind_s(ldp, '%s', '<secret>') failed: %s", zone,
-			              data->bindname, ldap_err2string(rc));
-
-			ldap_unbind_ext(*ldp, NULL, NULL);
-			*ldp = NULL;
-
-		try_bind_again:
-			sleep(5);
-			counter++;
-		} else {
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_CONTROL, ISC_LOG_DEBUG(2), "LDAP sdb zone '%s': ldapdb_bind(): Bound to ldapserver as '%s'", zone, data->bindname);
-			failure = 0;
-		}
-	}
-}
-
-static isc_result_t ldapdb_search(const char *zone, const char *name, void *dbdata, void *retdata) {
-	struct ldapdb_data *data = dbdata;
-	isc_result_t result = ISC_R_NOTFOUND;
-	LDAP **ldp;
-	LDAPMessage *res, *e;
-	char *fltr, *a;
-	struct berval **vals = NULL;
-	struct berval **names = NULL;
-	char type[64];
-#ifdef LDAPDB_RFC1823API
-	void *ptr;
-#else
-	BerElement *ptr;
-#endif
-	int i, j, rc, msgid, search_retry_count = 2;
-
-try_search_again:
-	ldp = ldapdb_getconn(data);
-	if (ldp == NULL)
-		return (ISC_R_NOMEMORY);
-
-	if (*ldp == NULL) {
-		ldapdb_bind(zone, data, ldp);
-		if (*ldp == NULL)
-			LDAPDB_FAILURE("bind failed");
-	}
-
-	if (name == NULL)
-		fltr = data->filterall;
-	else {
-		if (strlen(name) > MAXNAMELEN) {
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': name %s too long", zone, name);
-			return (ISC_R_FAILURE);
-		}
-
-		sprintf(data->filtername, "%s))", name);
-		fltr = data->filterone;
-	}
-
-	/* debug when starting `named -g -d 1 ...' on console */
-	isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_DEBUG(1), "base='%s', zone='%s', name='%s', filter='%s'", (data->base) ? data->base : "<NULL>", (zone) ? zone : "<NULL>",
-	              (name) ? name : "<NULL>", (fltr) ? fltr : "<NULL>");
-
-	ldap_search_ext(*ldp, data->base, LDAP_SCOPE_SUBTREE, fltr, NULL, 0, NULL, NULL, NULL /*timeout*/, 0, &msgid);
-	if (msgid == -1) {
-		ldapdb_bind(zone, data, ldp);
-		if (*ldp != NULL)
-			ldap_search_ext(*ldp, data->base, LDAP_SCOPE_SUBTREE, fltr, NULL, 0, NULL, NULL, NULL /*timeout*/, 0, &msgid);
-	}
-
-	if (*ldp == NULL || msgid == -1) {
-		if (name != NULL)
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': search failed, filter %s", zone, fltr);
-		return (ISC_R_FAILURE);
-	}
-
-	/* Get the records one by one as they arrive and return them to bind */
-	while ((rc = ldap_result(*ldp, msgid, 0, NULL, &res)) != LDAP_RES_SEARCH_RESULT) {
-		LDAP *ld = *ldp;
-		int ttl = data->defaultttl;
-		int err;
-
-		ldap_get_option(ld, LDAP_OPT_RESULT_CODE, &err);
-		/* not supporting continuation references at present */
-		switch (rc) {
-		case LDAP_RES_SEARCH_ENTRY:
-			break;
-		case -1: /* error */
-		case 0:  /* timeout */
-			switch (err) {
-			case LDAP_SERVER_DOWN:
-			case LDAP_TIMEOUT:
-				if (--search_retry_count)
-					goto try_search_again;
-			}
-			/* fall through */
-		default:
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': ldap_result returned %d %s", zone, rc, ldap_err2string(err));
-			ldap_msgfree(res);
-			return (ISC_R_FAILURE);
-		}
-
-		/* only one entry per result message */
-		e = ldap_first_entry(ld, res);
-		if (e == NULL) {
-			ldap_msgfree(res);
-			LDAPDB_FAILURE("ldap_first_entry failed");
-		}
-
-		if (name == NULL) {
-			names = ldap_get_values_len(ld, e, "relativeDomainName");
-			if (names == NULL)
-				continue;
-		}
-
-		vals = ldap_get_values_len(ld, e, "dNSTTL");
-		if (vals != NULL && vals[0] != NULL) {
-			ttl = atoi(vals[0]->bv_val);
-			ldap_value_free_len(vals);
-		}
-
-		for (a = ldap_first_attribute(ld, e, &ptr); a != NULL; a = ldap_next_attribute(ld, e, ptr)) {
-			char *s;
-
-			for (s = a; *s; s++)
-				*s = toupper(*s);
-			s = strstr(a, "RECORD");
-			if ((s == NULL) || (s == a) || (s - a >= (signed int)sizeof(type))) {
-#ifndef LDAPDB_RFC1823API
-				ldap_memfree(a);
-#endif
-				continue;
-			}
-
-			strncpy(type, a, s - a);
-			type[s - a] = '\0';
-
-			isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_DEBUG(3), "Retreiving values for attribute '%s' with ldap_get_values()", a);
-
-			vals = ldap_get_values_len(ld, e, a);
-			if (vals != NULL) {
-				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
-					isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_DEBUG(3), "vals[%d]: %s", i, vals[i]->bv_val);
-
-					if (name != NULL) {
-						isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_DEBUG(3), "name: %s (%s)", name, vals[i]->bv_val);
-
-						result = dns_sdb_putrr(retdata, type, ttl, vals[i]->bv_val);
-					} else {
-						for (j = 0; (names[j] != NULL && names[j]->bv_val != NULL); j++) {
-							isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_DEBUG(3), "names[%d]: %s (%s)", j, names[j]->bv_val, vals[i]->bv_val);
-
-							if (names[j]->bv_val[0] == WILDCARD_INT[0]) {
-								names[j]->bv_val[0] = WILDCARD_EXT[0];
-							}
-
-							result = dns_sdb_putnamedrr(retdata, names[j]->bv_val, type, ttl, vals[i]->bv_val);
-							if (result != ISC_R_SUCCESS)
-								break;
-						}
-					}
-
-					if (result != ISC_R_SUCCESS) {
-						isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': dns_sdb_put... failed for '%s'", zone, vals[i]->bv_val);
-
-						break;
-					}
-				}
-				ldap_value_free_len(vals);
-			}
-#ifndef LDAPDB_RFC1823API
-			ldap_memfree(a);
-#endif
-		}
-
-#ifndef LDAPDB_RFC1823API
-		if (ptr != NULL)
-			ber_free(ptr, 0);
-#endif
-
-		if (name == NULL)
-			ldap_value_free_len(names);
-
-		/* free this result */
-		ldap_msgfree(res);
-	}
-
-	/* free final result */
-	if ((rc = ldap_parse_result(*ldp, res, &msgid, NULL, NULL, NULL, NULL, 1)) != LDAP_SUCCESS) {
-		isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': ldap_parse_result failed: %s", zone, ldap_err2string(rc));
-	} else if (msgid != LDAP_SUCCESS) {
-		isc_log_write(named_g_lctx, DNS_LOGCATEGORY_GENERAL, NAMED_LOGMODULE_SERVER, ISC_LOG_ERROR, "LDAP sdb zone '%s': ldap_search_ex failed: %s", zone, ldap_err2string(msgid));
-		if (msgid == LDAP_SERVER_DOWN && --search_retry_count)
-			goto try_search_again;
-	}
-
-	return (result);
-}
-
-
-/* callback routines */
-static isc_result_t ldapdb_lookup(const char *zone, const char *name, void *dbdata, dns_sdblookup_t *lookup, dns_clientinfomethods_t *methods, dns_clientinfo_t *clientinfo) {
-	struct ldapdb_data *data = dbdata;
-	isc_result_t result;                                               /* Result for bind */
-	const char *np = name;                                             /* Point at parts of name */
-	char *srch_name = malloc(strlen(name) + strlen(WILDCARD_INT) + 1); /* Name for searching */
-	if (srch_name == NULL)
-		return ISC_R_NOMEMORY;
-
-	UNUSED(methods);
-	UNUSED(clientinfo);
-
-	/* search for original name */
-	if ((result = ldapdb_search(zone, name, dbdata, lookup)) == ISC_R_NOTFOUND && strcmp(name, "@") && data->wildcard) {
-		/* if full name not found,  and wildcard searches enabled,
-		 * break name into labels and search for WILDCARD.label from the left */
-		while ((result == ISC_R_NOTFOUND) && ((np = strpbrk(np + 1, ".")) != NULL)) {
-			sprintf(srch_name, "%s%s", WILDCARD_INT, np);
-			result = ldapdb_search(zone, srch_name, dbdata, lookup);
-		}
-		/* the above loop won't search for the wildcard on it's own as
-		 * the relativeDomainName, so we should check that too... */
-		if (result == ISC_R_NOTFOUND)
-			result = ldapdb_search(zone, WILDCARD_INT, dbdata, lookup);
-	}
-	free(srch_name);
-	return (result);
-}
-
-static isc_result_t ldapdb_allnodes(const char *zone, void *dbdata, dns_sdballnodes_t *allnodes) {
-	return ldapdb_search(zone, NULL, dbdata, allnodes);
 }
 
 static char *unhex(char *in) {
@@ -513,17 +164,22 @@ static char *unhex(char *in) {
 	char *p, *s = in;
 	int d1, d2;
 
-	while ((s = strchr(s, '%'))) {
-		if (!(s[1] && s[2]))
+	while ((s = strchr(s, '%')) != NULL) {
+		if (!(s[1] && s[2])) {
 			return NULL;
-		if ((p = strchr(hexdigits, tolower(s[1]))) == NULL)
+		}
+		p = strchr(hexdigits, tolower((unsigned char)s[1]));
+		if (p == NULL) {
 			return NULL;
-		d1 = p - hexdigits;
-		if ((p = strchr(hexdigits, tolower(s[2]))) == NULL)
+		}
+		d1 = (int)(p - hexdigits);
+		p = strchr(hexdigits, tolower((unsigned char)s[2]));
+		if (p == NULL) {
 			return NULL;
-		d2 = p - hexdigits;
-		*s++ = d1 << 4 | d2;
-		memmove(s, s + 2, strlen(s) - 1);
+		}
+		d2 = (int)(p - hexdigits);
+		*s++ = (char)((d1 << 4) | d2);
+		memmove(s, s + 2, strlen(s + 2) + 1);
 	}
 	return in;
 }
@@ -532,52 +188,56 @@ static char **parseattrs(char *a) {
 	char **attrs, *s;
 	int i;
 
-	/* find number of commas */
-	for (i = 0, s = a; *s && *s != '?'; s++)
-		if (*s == ',')
+	for (i = 0, s = a; *s && *s != '?'; s++) {
+		if (*s == ',') {
 			i++;
+		}
+	}
 
-	/* two more than # of commas, need room for NULL terminator */
-	attrs = malloc(sizeof(char *) * (i + 2));
-	if (!attrs)
+	attrs = calloc((size_t)i + 2, sizeof(char *));
+	if (attrs == NULL) {
 		return NULL;
+	}
 
 	for (i = 0, s = a;; i++) {
 		attrs[i] = s;
-		if (!(s = strchr(s, ',')))
+		s = strchr(s, ',');
+		if (s == NULL) {
 			break;
+		}
 		*s++ = '\0';
-		if (!*attrs[i])
-			break;
+		if (!*attrs[i]) {
+			free(attrs);
+			return NULL;
+		}
 	}
+
 	if (!*attrs[i]) {
 		free(attrs);
 		return NULL;
 	}
+
 	attrs[i + 1] = NULL;
 	return attrs;
 }
 
-/* returns 0 for ok, -1 for bad syntax */
 static int parsescope(int *scope, char *s) {
-	if (!s || !strcmp(s, "sub")) {
+	if (s == NULL || strcmp(s, "sub") == 0) {
 		*scope = LDAP_SCOPE_SUBTREE;
 		return 0;
 	}
-	if (!strcmp(s, "one")) {
+	if (strcmp(s, "one") == 0) {
 		*scope = LDAP_SCOPE_ONELEVEL;
 		return 0;
 	}
-	if (!strcmp(s, "base")) {
+	if (strcmp(s, "base") == 0) {
 		*scope = LDAP_SCOPE_BASE;
 		return 0;
 	}
-
 	return -1;
 }
 
-/* returns 0 for ok, -1 for bad syntax, -2 for unknown critical extension */
-static int parseextensions(char *extensions, struct ldapdb_data *data) {
+static int parseextensions(char *extensions, ldapdb_data_t *data) {
 	char *s, *next, *name, *value;
 	int critical;
 
@@ -586,265 +246,675 @@ static int parseextensions(char *extensions, struct ldapdb_data *data) {
 		if (s != NULL) {
 			*s++ = '\0';
 			next = s;
-		} else
+		} else {
 			next = NULL;
+		}
 
 		if (*extensions != '\0') {
 			s = strchr(extensions, '=');
 			if (s != NULL) {
 				*s++ = '\0';
 				value = *s != '\0' ? s : NULL;
-			} else
+			} else {
 				value = NULL;
+			}
 			name = extensions;
 
 			critical = *name == '!';
-			if (critical)
+			if (critical) {
 				name++;
-
-			if (*name == '\0')
+			}
+			if (*name == '\0') {
 				return -1;
+			}
 
-			if (!strcasecmp(name, "bindname")) {
-				data->bindname = isc_mem_strdup(named_g_mctx, value);
-				if (data->bindname == NULL)
-					return (ISC_R_NOMEMORY);
-			} else if (!strcasecmp(name, "x-bindpw")) {
-				data->bindpw = isc_mem_strdup(named_g_mctx, value);
-				if (data->bindpw == NULL)
-					return (ISC_R_NOMEMORY);
-			} else if (!strcasecmp(name, "x-wildcard"))
-				data->wildcard = value == NULL || !strcasecmp(value, "true");
-#ifdef LDAPDB_TLS
-			else if (!strcasecmp(name, "x-tls"))
-				data->tls = value == NULL || !strcasecmp(value, "true");
-#endif
-			else if (critical)
+			if (strcasecmp(name, "bindname") == 0) {
+				data->bindname = xstrdup(value);
+				if (value != NULL && data->bindname == NULL) {
+					return -3;
+				}
+			} else if (strcasecmp(name, "x-bindpw") == 0) {
+				data->bindpw = xstrdup(value);
+				if (value != NULL && data->bindpw == NULL) {
+					return -3;
+				}
+			} else if (strcasecmp(name, "x-wildcard") == 0) {
+				data->wildcard = value == NULL || strcasecmp(value, "true") == 0;
+			} else if (strcasecmp(name, "x-tls") == 0) {
+				data->tls = value == NULL || strcasecmp(value, "true") == 0;
+			} else if (strcasecmp(name, "x-allow-xfr") == 0) {
+				data->allow_xfr = value == NULL || strcasecmp(value, "true") == 0;
+			} else if (critical) {
 				return -2;
+			}
 		}
 		extensions = next;
 	}
 	return 0;
 }
 
-static void free_data(struct ldapdb_data *data) {
-	if (data->hostname)
-		isc_mem_free(named_g_mctx, data->hostname);
-	if (data->url)
-		isc_mem_free(named_g_mctx, data->url);
-	if (data->attrs)
-		free(data->attrs);
-	if (data->filterall)
-		isc_mem_put(named_g_mctx, data->filterall, data->filteralllen);
-	if (data->filterone)
-		isc_mem_put(named_g_mctx, data->filterone, data->filteronelen);
-	if (data->bindname)
-		isc_mem_free(named_g_mctx, data->bindname);
-	if (data->bindpw)
-		isc_mem_free(named_g_mctx, data->bindpw);
-	isc_mem_put(named_g_mctx, data, sizeof(struct ldapdb_data));
+static void ldapdb_free_data(ldapdb_data_t *data) {
+	if (data == NULL) {
+		return;
+	}
+
+	pthread_mutex_lock(&data->lock);
+	while (data->threads != NULL) {
+		ldapdb_thread_state_t *t = data->threads;
+		data->threads = t->next;
+		while (t->connections != NULL) {
+			ldapdb_conn_t *c = t->connections;
+			t->connections = c->next;
+			if (c->ld != NULL) {
+				ldap_unbind_ext(c->ld, NULL, NULL);
+			}
+			free(c->url);
+			free(c);
+		}
+		free(t);
+	}
+	pthread_mutex_unlock(&data->lock);
+	pthread_mutex_destroy(&data->lock);
+
+	free(data->url);
+	free(data->base);
+	free_strv(data->attrs);
+	free(data->filterall);
+	free(data->filterone);
+	free(data->bindname);
+	free(data->bindpw);
+	free(data);
 }
 
+static ldapdb_thread_state_t *find_thread_state(ldapdb_data_t *data, pthread_t tid) {
+	ldapdb_thread_state_t *t;
 
-static isc_result_t ldapdb_create(const char *zone, int argc, char **argv, void *driverdata, void **dbdata) {
-	struct ldapdb_data *data;
-	char *s, *hostport, *filter = NULL, *attrs = NULL, *scope = NULL, *extensions = NULL;
-	int defaultttl;
-
-	UNUSED(driverdata);
-
-	/* we assume that only one thread will call create at a time */
-	/* want to do this only once for all instances */
-
-	if (argc < 2)
-		LDAPDB_FAILURE("ldapdb_create(): Both URL and TTL value must be specified");
-
-	if ((argv[0] == strstr(argv[0], "ldaps://")) || (argv[0] == strstr(argv[0], "ldapi://"))) {
-#ifndef LDAP_API_FEATURE_X_OPENLDAP
-		LDAPDB_FAILURE("ldapdb_create(): ldapi and ldaps schemes are only supported with OpenLDAP library for now");
-#endif
-	} else if (argv[0] != strstr(argv[0], "ldap://"))
-		LDAPDB_FAILURE("ldapdb_create(): First argument must be an LDAP URL");
-
-	if ((defaultttl = atoi(argv[1])) < 1)
-		LDAPDB_FAILURE("ldapdb_create(): Default TTL must be a positive integer");
-
-	data = isc_mem_get(named_g_mctx, sizeof(struct ldapdb_data));
-	if (data == NULL)
-		return (ISC_R_NOMEMORY);
-	memset(data, 0, sizeof(struct ldapdb_data));
-
-	/* Save data so it doesn't get overwritten - fix reload/restart problems. */
-	data->url = isc_mem_strdup(named_g_mctx, argv[0]);
-	if (data->url == NULL) {
-		free_data(data);
-		return (ISC_R_NOMEMORY);
-	}
-
-	data->defaultttl = defaultttl;
-
-	/* we know data->url starts with "ldap://", "ldaps://" or "ldapi://" */
-	hostport = data->url + strlen(strstr(data->url, "ldap://") ? "ldap://" : "ldap.://");
-
-	s = strchr(hostport, '/');
-	if (s) {
-		*s++ = '\0';
-		data->base = s;
-		/* attrs, scope, filter etc? */
-		s = strchr(s, '?');
-		if (s) {
-			*s++ = '\0';
-			attrs = s;
-			s = strchr(s, '?');
-			if (s) {
-				*s++ = '\0';
-				/* scope */
-				scope = s;
-				s = strchr(s, '?');
-				if (s) {
-					*s++ = '\0';
-					/* filter */
-					filter = s;
-					s = strchr(s, '?');
-					if (s) {
-						*s++ = '\0';
-						/* extensions */
-						extensions = s;
-						s = strchr(s, '?');
-						if (s)
-							*s++ = '\0';
-						if (!*extensions)
-							extensions = NULL;
-					}
-					if (!*filter)
-						filter = NULL;
-				}
-				if (!*scope)
-					scope = NULL;
-			}
-			if (!*attrs)
-				attrs = NULL;
+	for (t = data->threads; t != NULL; t = t->next) {
+		if (pthread_equal(t->tid, tid)) {
+			return t;
 		}
-		if (!*data->base)
-			data->base = NULL;
+	}
+	return NULL;
+}
+
+static LDAP **ldapdb_getconn(ldapdb_data_t *data) {
+	pthread_t tid = pthread_self();
+	ldapdb_thread_state_t *t;
+	ldapdb_conn_t *c;
+
+	pthread_mutex_lock(&data->lock);
+
+	t = find_thread_state(data, tid);
+	if (t == NULL) {
+		t = calloc(1, sizeof(*t));
+		if (t == NULL) {
+			pthread_mutex_unlock(&data->lock);
+			return NULL;
+		}
+		t->tid = tid;
+		t->next = data->threads;
+		data->threads = t;
 	}
 
-	if (attrs && !(data->attrs = parseattrs(attrs)))
-		LDAPDB_FAILURE("URL: Error parsing attributes");
+	for (c = t->connections; c != NULL; c = c->next) {
+		if (strcmp(c->url, data->url) == 0) {
+			pthread_mutex_unlock(&data->lock);
+			return &c->ld;
+		}
+	}
 
-	if (parsescope(&data->scope, scope))
-		LDAPDB_FAILURE("URL: Scope must be base, one or sub");
+	c = calloc(1, sizeof(*c));
+	if (c == NULL) {
+		pthread_mutex_unlock(&data->lock);
+		return NULL;
+	}
+	c->url = xstrdup(data->url);
+	if (c->url == NULL) {
+		free(c);
+		pthread_mutex_unlock(&data->lock);
+		return NULL;
+	}
+	c->next = t->connections;
+	t->connections = c;
 
-	/* parse extensions */
-	if (extensions) {
-		int err;
+	pthread_mutex_unlock(&data->lock);
+	return &c->ld;
+}
 
-		err = parseextensions(extensions, data);
+static bool ldapdb_bind(ldapdb_data_t *data, LDAP **ldp) {
+	const int ver = LDAPDB_LDAP_VERSION;
+	const struct timeval timeout = {.tv_sec = 60, .tv_usec = 0};
+	struct berval cred;
+	int rc;
+
+	cred.bv_val = data->bindpw;
+	cred.bv_len = data->bindpw == NULL ? 0 : strlen(data->bindpw);
+
+	for (int attempt = 1; attempt <= 3; attempt++) {
+		if (*ldp != NULL) {
+			ldap_unbind_ext(*ldp, NULL, NULL);
+			*ldp = NULL;
+		}
+
+		rc = ldap_initialize(ldp, data->url);
+		if (rc != LDAP_SUCCESS) {
+			ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: ldap_initialize(%s) failed: %s", data->url, ldap_err2string(rc));
+			sleep(5);
+			continue;
+		}
+
+		ldap_set_option(*ldp, LDAP_OPT_PROTOCOL_VERSION, &ver);
+		ldap_set_option(*ldp, LDAP_OPT_REFERRALS, LDAP_OPT_ON);
+		ldap_set_option(*ldp, LDAP_OPT_TIMEOUT, &timeout);
+
+		if (data->tls) {
+			rc = ldap_start_tls_s(*ldp, NULL, NULL);
+			if (rc != LDAP_SUCCESS) {
+				ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: ldap_start_tls_s() failed: %s", ldap_err2string(rc));
+				sleep(5);
+				continue;
+			}
+		}
+
+		rc = ldap_sasl_bind_s(*ldp, data->bindname, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL);
+		if (rc == LDAP_SUCCESS) {
+			return true;
+		}
+
+		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: bind as '%s' failed: %s", data->bindname != NULL ? data->bindname : "<anonymous>", ldap_err2string(rc));
+		sleep(5);
+	}
+
+	if (*ldp != NULL) {
+		ldap_unbind_ext(*ldp, NULL, NULL);
+		*ldp = NULL;
+	}
+	return false;
+}
+
+static isc_result_t append_rr(ldapdb_rrset_t **head, const char *owner, const char *type, unsigned int ttl, const char *rdata) {
+	ldapdb_rrset_t *rr = calloc(1, sizeof(*rr));
+	if (rr == NULL) {
+		return ISC_R_NOMEMORY;
+	}
+
+	rr->owner = xstrdup(owner);
+	rr->type = xstrdup(type);
+	rr->rdata = xstrdup(rdata);
+	rr->ttl = ttl;
+	if (rr->owner == NULL || rr->type == NULL || rr->rdata == NULL) {
+		rrset_free(rr);
+		return ISC_R_NOMEMORY;
+	}
+
+	rr->next = *head;
+	*head = rr;
+	return ISC_R_SUCCESS;
+}
+
+static isc_result_t ldapdb_collect(const char *zone, const char *name, ldapdb_data_t *data, ldapdb_rrset_t **out) {
+	isc_result_t result = ISC_R_NOTFOUND;
+	LDAP **ldp;
+	LDAPMessage *res = NULL, *e;
+	struct berval **vals = NULL, **names = NULL;
+	BerElement *ptr = NULL;
+	char *fltr;
+	char type[64];
+	int rc;
+
+	*out = NULL;
+
+	ldp = ldapdb_getconn(data);
+	if (ldp == NULL) {
+		return ISC_R_NOMEMORY;
+	}
+
+	if (*ldp == NULL && !ldapdb_bind(data, ldp)) {
+		return ISC_R_FAILURE;
+	}
+
+	if (name == NULL) {
+		fltr = data->filterall;
+	} else {
+		if (strlen(name) > LDAPDB_MAXNAMELEN) {
+			return ISC_R_FAILURE;
+		}
+		snprintf(data->filtername, data->filteronelen - (size_t)(data->filtername - data->filterone), "%s))", name);
+		fltr = data->filterone;
+	}
+
+	for (int retry = 0; retry < 2; retry++) {
+		rc = ldap_search_ext_s(*ldp, data->base, data->scope, fltr, data->attrs, 0, NULL, NULL, NULL, 0, &res);
+		if (rc == LDAP_SUCCESS) {
+			break;
+		}
+		if (rc == LDAP_SERVER_DOWN || rc == LDAP_TIMEOUT) {
+			ldapdb_bind(data, ldp);
+			continue;
+		}
+		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: ldap_search_ext_s zone=%s name=%s filter=%s failed: %s", zone, name != NULL ? name : "<allnodes>", fltr, ldap_err2string(rc));
+		return ISC_R_FAILURE;
+	}
+
+	if (res == NULL) {
+		return ISC_R_FAILURE;
+	}
+
+	for (e = ldap_first_entry(*ldp, res); e != NULL; e = ldap_next_entry(*ldp, e)) {
+		unsigned int ttl = data->defaultttl;
+
+		if (name == NULL) {
+			names = ldap_get_values_len(*ldp, e, "relativeDomainName");
+			if (names == NULL) {
+				continue;
+			}
+		}
+
+		vals = ldap_get_values_len(*ldp, e, "dNSTTL");
+		if (vals != NULL && vals[0] != NULL && vals[0]->bv_val != NULL) {
+			ttl = (unsigned int)strtoul(vals[0]->bv_val, NULL, 10);
+			ldap_value_free_len(vals);
+			vals = NULL;
+		}
+
+		for (char *a = ldap_first_attribute(*ldp, e, &ptr); a != NULL; a = ldap_next_attribute(*ldp, e, ptr)) {
+			char *record_suffix;
+			size_t typelen;
+
+			for (char *s = a; *s != '\0'; s++) {
+				*s = (char)toupper((unsigned char)*s);
+			}
+
+			record_suffix = strstr(a, "RECORD");
+			if (record_suffix == NULL || record_suffix == a) {
+				ldap_memfree(a);
+				continue;
+			}
+
+			typelen = (size_t)(record_suffix - a);
+			if (typelen >= sizeof(type)) {
+				ldap_memfree(a);
+				continue;
+			}
+			memcpy(type, a, typelen);
+			type[typelen] = '\0';
+
+			vals = ldap_get_values_len(*ldp, e, a);
+			if (vals != NULL) {
+				for (int i = 0; vals[i] != NULL && vals[i]->bv_val != NULL; i++) {
+					if (name != NULL) {
+						result = append_rr(out, name, type, ttl, vals[i]->bv_val);
+					} else {
+						for (int j = 0; names[j] != NULL && names[j]->bv_val != NULL; j++) {
+							char ownerbuf[LDAPDB_MAXNAMELEN + 2];
+							const char *owner = names[j]->bv_val;
+
+							if (owner[0] == LDAPDB_WILDCARD_INT[0]) {
+								snprintf(ownerbuf, sizeof(ownerbuf), "%s%s", LDAPDB_WILDCARD_EXT, owner + 1);
+								owner = ownerbuf;
+							}
+							result = append_rr(out, owner, type, ttl, vals[i]->bv_val);
+							if (result != ISC_R_SUCCESS) {
+								break;
+							}
+						}
+					}
+					if (result != ISC_R_SUCCESS) {
+						break;
+					}
+				}
+				ldap_value_free_len(vals);
+				vals = NULL;
+			}
+			ldap_memfree(a);
+			if (result != ISC_R_SUCCESS && result != ISC_R_NOTFOUND) {
+				break;
+			}
+		}
+
+		if (ptr != NULL) {
+			ber_free(ptr, 0);
+			ptr = NULL;
+		}
+		if (names != NULL) {
+			ldap_value_free_len(names);
+			names = NULL;
+		}
+	}
+
+	ldap_msgfree(res);
+	return result;
+}
+
+static isc_result_t ldapdb_lookup_name(const char *zone, const char *name, ldapdb_data_t *data, dns_sdlzlookup_t *lookup) {
+	ldapdb_rrset_t *rrs = NULL, *rr;
+	isc_result_t result = ldapdb_collect(zone, name, data, &rrs);
+
+	if (result != ISC_R_SUCCESS) {
+		rrset_free(rrs);
+		return result;
+	}
+
+	for (rr = rrs; rr != NULL; rr = rr->next) {
+		result = LDAPDB_PUTRR(lookup, rr->type, rr->ttl, rr->rdata);
+		if (result != ISC_R_SUCCESS) {
+			break;
+		}
+	}
+	rrset_free(rrs);
+	return result;
+}
+
+static isc_result_t ldapdb_allnodes_emit(const char *zone, ldapdb_data_t *data, dns_sdlzallnodes_t *allnodes) {
+	ldapdb_rrset_t *rrs = NULL, *rr;
+	isc_result_t result = ldapdb_collect(zone, NULL, data, &rrs);
+
+	if (result != ISC_R_SUCCESS) {
+		rrset_free(rrs);
+		return result;
+	}
+
+	for (rr = rrs; rr != NULL; rr = rr->next) {
+		result = LDAPDB_PUTNAMEDRR(allnodes, rr->owner, rr->type, rr->ttl, rr->rdata);
+		if (result != ISC_R_SUCCESS) {
+			break;
+		}
+	}
+	rrset_free(rrs);
+	return result;
+}
+
+static bool name_is_in_zone(const char *name, const char *zone) {
+	size_t nl = strlen(name), zl = strlen(zone);
+
+	if (strcasecmp(name, zone) == 0) {
+		return true;
+	}
+	if (nl <= zl) {
+		return false;
+	}
+	return name[nl - zl - 1] == '.' && strcasecmp(name + nl - zl, zone) == 0;
+}
+
+static isc_result_t parse_url_config(char *url, ldapdb_data_t *data) {
+	char *s, *attrs = NULL, *scope = NULL, *filter = NULL, *extensions = NULL;
+
+	data->url = xstrdup(url);
+	if (data->url == NULL) {
+		return ISC_R_NOMEMORY;
+	}
+
+	s = strstr(data->url, "://");
+	if (s == NULL) {
+		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: first argument must be an LDAP URL");
+		return ISC_R_FAILURE;
+	}
+
+	s = strchr(s + 3, '/');
+	if (s == NULL) {
+		data->base = NULL;
+		return ISC_R_SUCCESS;
+	}
+
+	*s++ = '\0';
+	data->base = xstrdup(s);
+	if (data->base == NULL && *s != '\0') {
+		return ISC_R_NOMEMORY;
+	}
+
+	s = strchr(data->base, '?');
+	if (s != NULL) {
+		*s++ = '\0';
+		attrs = s;
+		s = strchr(s, '?');
+		if (s != NULL) {
+			*s++ = '\0';
+			scope = s;
+			s = strchr(s, '?');
+			if (s != NULL) {
+				*s++ = '\0';
+				filter = s;
+				s = strchr(s, '?');
+				if (s != NULL) {
+					*s++ = '\0';
+					extensions = s;
+					s = strchr(s, '?');
+					if (s != NULL) {
+						*s = '\0';
+					}
+				}
+			}
+		}
+	}
+
+	if (data->base != NULL && *data->base == '\0') {
+		free(data->base);
+		data->base = NULL;
+	}
+	if (attrs != NULL && *attrs == '\0') {
+		attrs = NULL;
+	}
+	if (scope != NULL && *scope == '\0') {
+		scope = NULL;
+	}
+	if (filter != NULL && *filter == '\0') {
+		filter = NULL;
+	}
+	if (extensions != NULL && *extensions == '\0') {
+		extensions = NULL;
+	}
+
+	if (attrs != NULL) {
+		data->attrs = parseattrs(attrs);
+		if (data->attrs == NULL) {
+			ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: URL attribute parse error");
+			return ISC_R_FAILURE;
+		}
+	}
+
+	if (parsescope(&data->scope, scope) != 0) {
+		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: URL scope must be base, one, or sub");
+		return ISC_R_FAILURE;
+	}
+
+	if (extensions != NULL) {
+		int err = parseextensions(extensions, data);
+		if (err == -3) {
+			return ISC_R_NOMEMORY;
+		}
 		if (err < 0) {
-			/* err should be -1 or -2 */
-			free_data(data);
-			if (err == -1)
-				LDAPDB_FAILURE("URL: extension syntax error")
-			else if (err == -2)
-				LDAPDB_FAILURE("URL: unknown critical extension");
+			ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: URL extension parse error %d", err);
+			return ISC_R_FAILURE;
 		}
 	}
 
 	if ((data->base != NULL && unhex(data->base) == NULL) || (filter != NULL && unhex(filter) == NULL) || (data->bindname != NULL && unhex(data->bindname) == NULL) ||
 	    (data->bindpw != NULL && unhex(data->bindpw) == NULL)) {
-		free_data(data);
-		LDAPDB_FAILURE("URL: bad hex values");
+		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: URL contains bad hex escapes");
+		return ISC_R_FAILURE;
 	}
 
-	/* compute filterall and filterone once and for all */
+	/* The zone is not known until lookup time, so keep %z as a placeholder. */
 	if (filter == NULL) {
-		data->filteralllen = strlen(zone) + strlen("(zoneName=)") + 1;
-		data->filteronelen = strlen(zone) + strlen("(&(zoneName=)(relativeDomainName=))") + MAXNAMELEN + 1;
+		data->filteralllen = strlen("(zoneName=%z)") + 256;
+		data->filteronelen = strlen("(&(zoneName=%z)(relativeDomainName=))") + LDAPDB_MAXNAMELEN + 256;
+		data->filterall = calloc(1, data->filteralllen);
+		data->filterone = calloc(1, data->filteronelen);
+		if (data->filterall == NULL || data->filterone == NULL) {
+			return ISC_R_NOMEMORY;
+		}
+		snprintf(data->filterall, data->filteralllen, "(zoneName=%%z)");
+		snprintf(data->filterone, data->filteronelen, "(&(zoneName=%%z)(relativeDomainName=");
 	} else {
-		data->filteralllen = strlen(filter) + strlen(zone) + strlen("(&(zoneName=))") + 1;
-		data->filteronelen = strlen(filter) + strlen(zone) + strlen("(&(zoneName=)(relativeDomainName=))") + MAXNAMELEN + 1;
+		data->filteralllen = strlen(filter) + strlen("(&(zoneName=%z))") + 256;
+		data->filteronelen = strlen(filter) + strlen("(&(zoneName=%z)(relativeDomainName=))") + LDAPDB_MAXNAMELEN + 256;
+		data->filterall = calloc(1, data->filteralllen);
+		data->filterone = calloc(1, data->filteronelen);
+		if (data->filterall == NULL || data->filterone == NULL) {
+			return ISC_R_NOMEMORY;
+		}
+		snprintf(data->filterall, data->filteralllen, "(&%s(zoneName=%%z))", filter);
+		snprintf(data->filterone, data->filteronelen, "(&%s(zoneName=%%z)(relativeDomainName=", filter);
 	}
 
-	data->filterall = isc_mem_get(named_g_mctx, data->filteralllen);
-	if (data->filterall == NULL) {
-		free_data(data);
-		return (ISC_R_NOMEMORY);
-	}
-	data->filterone = isc_mem_get(named_g_mctx, data->filteronelen);
-	if (data->filterone == NULL) {
-		free_data(data);
-		return (ISC_R_NOMEMORY);
+	return ISC_R_SUCCESS;
+}
+
+static isc_result_t set_zone_filters(ldapdb_data_t *data, const char *zone) {
+	char *p;
+
+	p = strstr(data->filterall, "%z");
+	if (p != NULL) {
+		char *old = data->filterall;
+		if (asprintf(&data->filterall, "%.*s%s%s", (int)(p - old), old, zone, p + 2) < 0) {
+			data->filterall = old;
+			return ISC_R_NOMEMORY;
+		}
+		free(old);
+		data->filteralllen = strlen(data->filterall) + 1;
 	}
 
-	if (filter == NULL) {
-		sprintf(data->filterall, "(zoneName=%s)", zone);
-		sprintf(data->filterone, "(&(zoneName=%s)(relativeDomainName=", zone);
-	} else {
-		sprintf(data->filterall, "(&%s(zoneName=%s))", filter, zone);
-		sprintf(data->filterone, "(&%s(zoneName=%s)(relativeDomainName=", filter, zone);
+	p = strstr(data->filterone, "%z");
+	if (p != NULL) {
+		char *old = data->filterone;
+		if (asprintf(&data->filterone, "%.*s%s%s", (int)(p - old), old, zone, p + 2) < 0) {
+			data->filterone = old;
+			return ISC_R_NOMEMORY;
+		}
+		free(old);
+		data->filteronelen = strlen(data->filterone) + LDAPDB_MAXNAMELEN + 4;
+		data->filterone = realloc(data->filterone, data->filteronelen);
+		if (data->filterone == NULL) {
+			return ISC_R_NOMEMORY;
+		}
 	}
+
 	data->filtername = data->filterone + strlen(data->filterone);
+	return ISC_R_SUCCESS;
+}
 
-#ifndef LDAP_API_FEATURE_X_OPENLDAP
-	/* support URLs with literal IPv6 addresses */
-	data->hostname = isc_mem_strdup(named_g_mctx, hostport + (*hostport == '[' ? 1 : 0));
-	if (data->hostname == NULL) {
-		free_data(data);
-		return (ISC_R_NOMEMORY);
+/* Required by DLZ dlopen. */
+int dlz_version(unsigned int *flags) {
+	if (flags != NULL) {
+		*flags |= DNS_SDLZFLAG_THREADSAFE;
 	}
-
-	if (*hostport == '[' && (s = strchr(data->hostname, ']')) != NULL)
-		*s++ = '\0';
-	else
-		s = data->hostname;
-	s = strchr(s, ':');
-	if (s != NULL) {
-		*s++ = '\0';
-		data->portno = atoi(s);
-	} else
-		data->portno = LDAP_PORT;
-#endif
-
-	*dbdata = data;
-	return (ISC_R_SUCCESS);
-}
-
-static void ldapdb_destroy(const char *zone, void *driverdata, void **dbdata) {
-	struct ldapdb_data *data = *dbdata;
-
-	UNUSED(zone);
-	UNUSED(driverdata);
-
-	free_data(data);
-}
-
-static dns_sdbmethods_t ldapdb_methods = {
-    .lookup = ldapdb_lookup,
-    .allnodes = ldapdb_allnodes,
-    .create = ldapdb_create,
-    .destroy = ldapdb_destroy,
-};
-
-/* Wrapper around dns_sdb_register() */
-isc_result_t ldapdb_init(void) {
-	unsigned int flags = DNS_SDBFLAG_RELATIVEOWNER | DNS_SDBFLAG_RELATIVERDATA | DNS_SDBFLAG_THREADSAFE;
-
-	ldapdb_lock(0);
-	return (dns_sdb_register("ldap", &ldapdb_methods, NULL, flags, named_g_mctx, &ldapdb));
-}
-
-/* Wrapper around dns_sdb_unregister() */
-void ldapdb_clear(void) {
-	if (ldapdb != NULL) {
-		/* clean up thread data */
-		ldapdb_getconn(NULL);
-		dns_sdb_unregister(&ldapdb);
-	}
+	return DLZ_DLOPEN_VERSION;
 }
 
 /*
- * Local variables:
- * mode: c
- * tab-width: 4
- * End:
+ * Required by DLZ dlopen.
+ * argv[0] is the LDAP URL.
+ * argv[1] is the default TTL.
  */
+isc_result_t dlz_create(const char *dlzname, unsigned int argc, char *argv[], void **dbdata, ...) {
+	ldapdb_data_t *data;
+	isc_result_t result;
+
+	(void)dlzname;
+
+	if (argc < 2) {
+		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: expected LDAP URL and default TTL");
+		return ISC_R_FAILURE;
+	}
+
+	data = calloc(1, sizeof(*data));
+	if (data == NULL) {
+		return ISC_R_NOMEMORY;
+	}
+
+	pthread_mutex_init(&data->lock, NULL);
+	data->defaultttl = (unsigned int)strtoul(argv[1], NULL, 10);
+	if (data->defaultttl == 0) {
+		ldapdb_free_data(data);
+		return ISC_R_FAILURE;
+	}
+
+	result = parse_url_config(argv[0], data);
+	if (result != ISC_R_SUCCESS) {
+		ldapdb_free_data(data);
+		return result;
+	}
+
+	*dbdata = data;
+	return ISC_R_SUCCESS;
+}
+
+void dlz_destroy(void *dbdata) {
+	ldapdb_free_data((ldapdb_data_t *)dbdata);
+}
+
+/*
+ * DLZ asks whether this driver can serve the zone containing 'name'.  This
+ * implementation probes LDAP for zoneName=<name> and lets named walk upward.
+ */
+isc_result_t dlz_findzonedb(void *dbdata, const char *name) {
+	ldapdb_data_t *data = (ldapdb_data_t *)dbdata;
+	ldapdb_rrset_t *rrs = NULL;
+	isc_result_t result;
+
+	result = set_zone_filters(data, name);
+	if (result != ISC_R_SUCCESS) {
+		return result;
+	}
+
+	result = ldapdb_collect(name, NULL, data, &rrs);
+	rrset_free(rrs);
+	return result == ISC_R_SUCCESS ? ISC_R_SUCCESS : ISC_R_NOTFOUND;
+}
+
+isc_result_t dlz_lookup(const char *zone, const char *name, void *dbdata, dns_sdlzlookup_t *lookup, dns_clientinfomethods_t *methods, dns_clientinfo_t *clientinfo) {
+	ldapdb_data_t *data = (ldapdb_data_t *)dbdata;
+	isc_result_t result;
+
+	(void)methods;
+	(void)clientinfo;
+
+	if (!name_is_in_zone(name, zone) && strcmp(name, "@") != 0) {
+		return ISC_R_NOTFOUND;
+	}
+
+	result = set_zone_filters(data, zone);
+	if (result != ISC_R_SUCCESS) {
+		return result;
+	}
+
+	result = ldapdb_lookup_name(zone, name, data, lookup);
+	if (result == ISC_R_NOTFOUND && strcmp(name, "@") != 0 && data->wildcard) {
+		const char *np = name;
+		char *srch_name = malloc(strlen(name) + strlen(LDAPDB_WILDCARD_INT) + 1);
+		if (srch_name == NULL) {
+			return ISC_R_NOMEMORY;
+		}
+
+		while (result == ISC_R_NOTFOUND && (np = strchr(np + 1, '.')) != NULL) {
+			snprintf(srch_name, strlen(name) + strlen(LDAPDB_WILDCARD_INT) + 1, "%s%s", LDAPDB_WILDCARD_INT, np);
+			result = ldapdb_lookup_name(zone, srch_name, data, lookup);
+		}
+		if (result == ISC_R_NOTFOUND) {
+			result = ldapdb_lookup_name(zone, LDAPDB_WILDCARD_INT, data, lookup);
+		}
+		free(srch_name);
+	}
+
+	return result;
+}
+
+isc_result_t dlz_allowzonexfr(void *dbdata, const char *name, const char *client) {
+	ldapdb_data_t *data = (ldapdb_data_t *)dbdata;
+
+	(void)client;
+	(void)name;
+
+	return data->allow_xfr ? ISC_R_SUCCESS : ISC_R_NOPERM;
+}
+
+isc_result_t dlz_allnodes(const char *zone, void *dbdata, dns_sdlzallnodes_t *allnodes) {
+	ldapdb_data_t *data = (ldapdb_data_t *)dbdata;
+	isc_result_t result;
+
+	result = set_zone_filters(data, zone);
+	if (result != ISC_R_SUCCESS) {
+		return result;
+	}
+	return ldapdb_allnodes_emit(zone, data, allnodes);
+}
