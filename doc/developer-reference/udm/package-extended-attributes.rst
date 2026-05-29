@@ -733,9 +733,11 @@ Examples
 
   .. versionadded:: 5.2-6
 
-    The corresponding ``map```and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
+    The corresponding ``map`` and ``unmap`` methods are available since :uv:erratum:`5.2x416`.
 
   .. code-block:: python
+
+     import datetime
 
      from univention.admin.hook import simpleHook
 
