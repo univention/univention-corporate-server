@@ -12,7 +12,6 @@ Architecture: any
 Depends:
  bind9-dnsutils,
  cron,
- dpt-i2o-raidutils,
  lmdb-utils,
  monitoring-plugins,
  nagios-nrpe-server,
