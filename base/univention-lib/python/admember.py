@@ -19,6 +19,7 @@ from shlex import quote
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
 
+import dns.exception
 import dns.resolver
 import ldap
 import ldap.sasl
@@ -1280,7 +1281,7 @@ def add_host_record_in_ad(uid: str | None = None, binddn: str | None = None, bin
         resolver = dns.resolver.Resolver()
         resolver.lifetime = 10
         resolver.nameservers = [ad_ip]
-        response = resolver.query(fqdn, 'A')
+        response = resolver.resolve(fqdn, 'A')
         for data in response:
             if str(data) == str(ip):
                 found = True
@@ -1337,7 +1338,7 @@ def get_domaincontroller_srv_record(domain: str, nameserver: str | None = None) 
 
     # perform a SRV lookup
     try:
-        response = resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
+        response = resolver.resolve('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
         if len(response) != 1:
             ud.debug(ud.MODULE, ud.ERROR, 'Non-unique SRV record: %s!' % (response.rrset,))
             return None
