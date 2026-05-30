@@ -30,6 +30,6 @@ fqdn = urlparse(sso_uri).netloc
 resolver = dns.resolver.Resolver()
 resolver.nameservers = [ad_ip]
 resolver.lifetime = 10
-response = resolver.query(fqdn, 'A')
+response = resolver.resolve(fqdn, 'A')
 ret_val = Reason.OKAY if any(str(data) == str(my_ip) for data in response) else Reason.FAIL
 sys.exit(int(ret_val))

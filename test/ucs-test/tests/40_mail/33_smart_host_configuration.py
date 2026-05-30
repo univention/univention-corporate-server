@@ -42,12 +42,13 @@ def wait_for_dns(hosts):
         found = None
         for _i in range(TIMEOUT):
             try:
-                found = dns.resolver.query(host, 'A')[0].address
+                found = dns.resolver.resolve(host, 'A', search=True)[0].address
                 break
             except dns.resolver.NXDOMAIN:
+                print('.', end='')
                 time.sleep(1)
         if found != ip:
-            utils.fail('DNS query answer address found = %s, expected = %s' % (found, ip))
+            utils.fail('DNS query for host=%r answer address found = %s, expected = %s' % (host, found, ip))
 
 
 def main():

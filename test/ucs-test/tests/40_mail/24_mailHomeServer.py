@@ -40,13 +40,15 @@ def check_delivery_mailsink(token, mailsink_file, should_be_delivered):
 
 def wait_for_dns(hosts):
     for host, ip in hosts:
+        answer = None
         for _i in range(TIMEOUT):
             try:
-                dns.resolver.query(host, 'A')
+                answer = dns.resolver.resolve(host, 'A')
                 break
             except dns.resolver.NXDOMAIN:
                 time.sleep(1)
-        found = dns.resolver.query(host, 'A')[0].address
+        assert answer
+        found = answer[0].address
         if found != ip:
             utils.fail('DNS query answer address found = %s, expected = %s' % (found, ip))
 

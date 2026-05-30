@@ -15,7 +15,7 @@ def _check_record_type(record_type, ucr):
     dns_entries = set()
     sso_name = ucr.get('keycloak/server/sso/fqdn', f'ucs-sso-ng.{ucr["domainname"]}')
     try:
-        dns_entries.update(addr.address for addr in dns.resolver.query(sso_name, record_type))
+        dns_entries.update(addr.address for addr in dns.resolver.resolve(sso_name, record_type))
     except dns.resolver.NoAnswer:
         pass
     print('DNS entries: {}'.format('; '.join(dns_entries)))

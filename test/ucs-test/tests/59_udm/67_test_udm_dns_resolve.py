@@ -28,7 +28,7 @@ def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):
 
     while True:
         try:
-            answers = resolver.query(zoneName, resourceRecord)
+            answers = resolver.resolve(zoneName, resourceRecord)
             return answers
         except Timeout:
             tries -= 1

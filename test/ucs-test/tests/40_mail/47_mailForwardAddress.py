@@ -96,8 +96,8 @@ def test_mail_forward(mail_copy_to_self):
         # get IP addresses of the MX of "univention.de"
         # FIXME: perform a dynamic lookup
         mx_addresses = [
-            dns.resolver.query('mx00.kundenserver.de', 'A')[0].address,
-            dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
+            dns.resolver.resolve('mx00.kundenserver.de', 'A')[0].address,
+            dns.resolver.resolve('mx01.kundenserver.de', 'A')[0].address,
         ]
         # setup mailsink and network redirector
         port = random.randint(60000, 61000)

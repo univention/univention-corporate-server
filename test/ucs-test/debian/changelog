@@ -1,3 +1,9 @@
+ucs-test (12.6.15) unstable; urgency=medium
+
+  * Bug #59418: fix DNS deprecation warning
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jun 2026 10:21:36 +0200
+
 ucs-test (12.6.14) unstable; urgency=medium
 
   * Bug #59418: create UCS releases list automatically
