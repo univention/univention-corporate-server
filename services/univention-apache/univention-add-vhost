@@ -145,11 +145,11 @@ def main(fqdn: str, port: int, aliases: list[str], conffile: list[str], binddn: 
                 click.echo(click.style("$ service named reload", bold=True))
 
 
-def resolve_host(hostname, timeout):
+def resolve_host(fqdn, timeout):
     resolver = Resolver()
     resolver.lifetime = timeout
     try:
-        resolver.query(hostname)
+        resolver.resolve(fqdn)
     except NXDOMAIN:
         return False
     except Exception as exc:
