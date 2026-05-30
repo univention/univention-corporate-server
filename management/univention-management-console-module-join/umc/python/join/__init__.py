@@ -46,7 +46,7 @@ def get_master_dns_lookup() -> dict:
         query = f'_domaincontroller_master._tcp.{domainname}.'
         resolver = dns.resolver.Resolver()
         resolver.lifetime = 3.0  # max. 3 seconds
-        result = resolver.query(query, 'SRV')
+        result = resolver.resolve(query, 'SRV')
         if result:
             fqdn = result[0].target.canonicalize().split(1)[0].to_text()
     except dns.resolver.NXDOMAIN:
