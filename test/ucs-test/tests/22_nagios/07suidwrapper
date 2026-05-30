@@ -9,34 +9,76 @@
 set -e -u
 
 have () {
-	command -v "$1" >/dev/null 2>&2
+	command -v "$1" >/dev/null 2>&1
 }
 
 cond_check_univention_winbind_suidwrapper () {
 	have wbinfo && have univention-s4search
 }
+
 cond_check_univention_ldap_suidwrapper () {
 	have slapd
 }
+
 eval_check_univention_s4_connector_suidwrapper () {
-	local rc=0
-	"$@" || rc="$?"
-	case "$rc" in
-	0|1|2|3) rc=0 ;;
+	case "$1" in
+		0|1|2|3) return 0 ;;
+		*) return "$1" ;;
 	esac
+}
+
+run_check () {
+	local cmd="$1"
+	local name="${cmd##*/}"
+	local output rc eval
+
+	echo "=== ${name} ==="
+	echo "Command: ${cmd}"
+
+	set +e
+	output="$("$cmd" 2>&1)"
+	rc="$?"
+	set -e
+
+	eval="eval_${name}"
+	if have "$eval"; then
+		"$eval" "$rc"
+		rc="$?"
+	fi
+
+	case "$rc" in
+		0) echo "Status: OK rc=${rc}" ;;
+		1) echo "Status: WARNING rc=${rc}" ;;
+		2) echo "Status: CRITICAL rc=${rc}" ;;
+		3) echo "Status: UNKNOWN rc=${rc}" ;;
+		*) echo "Status: FAILED rc=${rc}" ;;
+	esac
+
+	if [ -n "$output" ]; then
+		echo "Output:"
+		printf '%s\n' "$output" | sed 's/^/  /'
+	else
+		echo "Output: <none>"
+	fi
+
+	echo
+
 	return "$rc"
 }
 
 rc=0
+
 for cmd in /usr/lib/nagios/plugins/check_univention_*_suidwrapper
 do
 	[ -x "$cmd" ] || continue
+
 	cond="cond_${cmd##*/}"
-	! have "$cond" || "$cond" || continue
-	echo "$cmd"
-	eval="eval_${cmd##*/}"
-	have "$eval" || eval=
-	${eval:+"$eval"} "$cmd" || rc="$?"
+	if have "$cond" && ! "$cond"; then
+		continue
+	fi
+
+	run_check "$cmd" || rc="$?"
 done
+
 exit "$rc"
 # vim:set filetype=sh ts=4:
