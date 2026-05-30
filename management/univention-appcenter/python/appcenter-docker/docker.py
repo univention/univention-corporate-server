@@ -26,6 +26,7 @@ from tempfile import NamedTemporaryFile
 
 import docker
 from ruamel import yaml
+from ruamel.yaml import YAML
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.exceptions import DockerCouldNotStartContainer, DockerImagePullFailed
@@ -43,6 +44,13 @@ DOCKER_READ_USER_CRED = {
     'username': 'ucs',
     'password': 'readonly',
 }
+
+
+def yaml_rt():
+    yaml_rt = YAML(typ='rt')
+    yaml_rt.preserve_quotes = True
+    yaml_rt.allow_unicode = True
+    return yaml_rt
 
 
 class DockerImageVerificationFailedChecksum(Exception):
@@ -518,7 +526,9 @@ class MultiDocker(Docker):
         with open(yml_file, 'w') as fd:
             os.chmod(yml_file, 0o600)
             fd.write(content)
-        content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+        _yaml = yaml_rt()
+        with open(yml_file) as fd:
+            content = _yaml.load(ucr_run_filter(fd.read()))
         container_def = content['services'][self.app.docker_main_service]
         volumes = container_def.get('volumes', [])
         for volume in self._app_volumes():
@@ -600,8 +610,9 @@ class MultiDocker(Docker):
                     else:
                         service['env_file'] = []
                         service['env_file'].append(self.env_file_created)
+        _yaml = yaml_rt()
         with open(yml_file, 'w') as fd:
-            yaml.dump(content, fd, Dumper=yaml.RoundTripDumper, encoding='utf-8', allow_unicode=True)
+            _yaml.dump(content, fd)
         shutil.copy2(yml_file, yml_run_file)  # "backup"
 
     def _setup_env(self, env=None):
@@ -626,7 +637,8 @@ class MultiDocker(Docker):
     def get_container_id(self, service_name=None):
         name = None
         yml_file = self.app.get_compose_file('docker-compose.yml')
-        content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+        _yaml = yaml_rt()
+        content = _yaml.load(open(yml_file))
         # name from yaml
         service_name = service_name or self.app.docker_main_service
         if service_name in content['services'] and content['services'][service_name].get('container_name'):
@@ -709,7 +721,8 @@ class MultiDocker(Docker):
     def rmi(self):
         images = []
         yml_file = self.app.get_compose_file('docker-compose.yml.bak')
-        content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+        _yaml = yaml_rt()
+        content = _yaml.load(open(yml_file))
         services = content.get('services', {})
         for service in services.values():
             image = service.get('image')
