@@ -58,9 +58,9 @@ IGNORE = {
 
 counts: Dict[str, Tuple[int, Set[str]]] = {}
 
-with open(LOG) as fd:
+with open(LOG, 'rb') as fd:
     for line in fd:
-        m = RE.search(line)
+        m = RE.search(line.decode('UTF-8', 'ignore'))
         if m:
             typ, attr = m.groups()
             count, types = counts.get(attr, (0, set()))
