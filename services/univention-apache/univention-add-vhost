@@ -149,7 +149,7 @@ def resolve_host(hostname, timeout):
     resolver = Resolver()
     resolver.lifetime = timeout
     try:
-        resolver.query(hostname)
+        resolver.resolve(hostname)
     except NXDOMAIN:
         return False
     except Exception as exc:
