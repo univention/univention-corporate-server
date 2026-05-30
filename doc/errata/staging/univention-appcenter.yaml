@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-appcenter
+fix: 11.6.0
+desc: |
+ This update addresses the following issue:
+ * The App Center has been adapted to be compatible with future `ruamel.yaml`
+   API deprecations.
+bug: [59521]
