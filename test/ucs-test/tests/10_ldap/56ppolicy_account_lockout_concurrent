@@ -203,7 +203,7 @@ for ((i=0;i<num_testusers;i++)); do
 		ldiff ldif.1 ldif.2
 		echo 'DEBUG: object'
 		cat ldif.2
-		python3 -c "import crypt, univention.uldap; lo = univention.uldap.getMachineConnection(); password = lo.getAttr('${test_userdn}', 'userPassword')[0].decode('ASCII').replace('{crypt}', ''); print('Password valid?:', crypt.crypt('univention', password.rsplit('\$', 1)[0]) == password)"
+		python3 -c "import ctypes, ctypes.util, hmac, univention.uldap; lib=ctypes.CDLL(ctypes.util.find_library('crypt') or 'libcrypt.so.1'); lib.crypt.argtypes=(ctypes.c_char_p, ctypes.c_char_p); lib.crypt.restype=ctypes.c_char_p; lo=univention.uldap.getMachineConnection(); password=lo.getAttr('${test_userdn}', 'userPassword')[0].decode('ASCII'); password=password.removeprefix('{crypt}'); result=lib.crypt(b'univention', password.encode('ASCII')); print('Password valid?:', result is not None and hmac.compare_digest(result.decode('ASCII'), password))"
 
 		fail_test 1 "Authentication of account '$test_username' failed after unlock"
 	fi
