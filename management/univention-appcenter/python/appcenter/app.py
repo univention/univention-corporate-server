@@ -1126,12 +1126,15 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
     def get_docker_image_name(self):
         if self.uses_docker_compose():
             try:
-                from ruamel import yaml
+                from ruamel.yaml import YAML
             except ImportError:
                 # appcenter-docker is not installed
                 return None
             yml_file = self.get_cache_file('compose')
-            content = yaml.load(ucr_run_filter(open(yml_file).read()), yaml.RoundTripLoader, preserve_quotes=True)
+            _yaml = YAML(typ="rt")
+            _yaml.preserve_quotes = True
+            with open(yml_file) as fd:
+                content = _yaml.load(ucr_run_filter(fd.read()))
             image = content['services'][self.docker_main_service]['image']
             return image
         else:
