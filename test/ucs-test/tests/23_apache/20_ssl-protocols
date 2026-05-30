@@ -38,7 +38,25 @@ check () {
 	done
 }
 check1 () { "$@" 2>&1 | grep -q -F -x "DONE" || fail_test 1 "$*"; }
-check2 () { "$@" 2>&1 | grep -q -F "SSL alert number 80" || fail_test 1 "$*"; }
+
+check2 () {
+	local output
+	output=$("$@" 2>&1 </dev/null) && {
+		echo "$output" | grep -q -F -x "DONE" &&
+			fail_test 1 "unexpected successful TLS handshake: $*"
+	}
+
+	echo "$output" >&2
+
+	if echo "$output" | grep -q -F "tls_setup_handshake:no protocols available"; then
+		return 0
+	fi
+	if echo "$output" | grep -q -F "SSL alert number 80"; then
+		return 0
+	fi
+
+	fail_test 1 "expected TLS protocol rejection, got: $*"
+}
 
 ucr unset apache2/ssl/tlsv11 apache2/ssl/tlsv12 apache2/ssl/tlsv13
 check tls1=2 tls1_1=2 tls1_2=1 tls1_3=1
