@@ -149,7 +149,7 @@ def get_dbservername(domainname: str) -> str | None:
     log(f'get dbservername for {name!r}')
     resolver = dns.resolver.Resolver()
     try:
-        answer = resolver.query(name, "SRV")
+        answer = resolver.resolve(name, "SRV")
         for item in answer.response.answer[0].items:
             return item.target.to_text()
     except dns.exception.DNSException:

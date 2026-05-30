@@ -906,7 +906,7 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
 
     # perform a SRV lookup
     try:
-        return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
+        return resolver.resolve('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
     except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
         MODULE.warning('No valid UCS domain (%s) at nameserver %s!', domain, nameserver)
     except dns.exception.Timeout as exc:
@@ -965,7 +965,7 @@ def get_fqdn(nameserver: str) -> str | None:
     try:
         reverse_address = dns.reversename.from_address(nameserver)
         MODULE.info('Found reverse address: %s', reverse_address)
-        reverse_lookup = resolver.query(reverse_address, 'PTR')
+        reverse_lookup = resolver.resolve(reverse_address, 'PTR')
         if not len(reverse_lookup):
             return None
 
