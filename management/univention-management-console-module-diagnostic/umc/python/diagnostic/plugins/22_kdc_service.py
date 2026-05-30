@@ -271,7 +271,7 @@ def probe_kdc(kdc: str, port: int, protocol: str, target_realm: str, user_name: 
 def resolve_kdc_record(protocol: str, domainname: str) -> Iterator[tuple[str, int, str]]:
     kerberos_dns_fqdn = f'_kerberos._{protocol}.{domainname}'
     try:
-        result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
+        result = dns.resolver.resolve(kerberos_dns_fqdn, 'SRV')
     except dns.exception.DNSException:
         result = []
 
