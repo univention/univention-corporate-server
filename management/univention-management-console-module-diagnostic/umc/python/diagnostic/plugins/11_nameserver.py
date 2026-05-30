@@ -64,7 +64,7 @@ def query_dns_server(nameserver: str, hostname: str) -> None:
 
     # perform a reverse lookup
     try:
-        resolver.query(hostname)
+        resolver.resolve(hostname)
     except dns.resolver.NXDOMAIN:
         # it's not a problem
         pass
