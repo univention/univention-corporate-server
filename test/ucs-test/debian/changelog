@@ -1,3 +1,9 @@
+ucs-test (12.6.9) unstable; urgency=medium
+
+  * Bug #59418: adjust to ruamel.yaml API changes
+
+ -- Florian Best <best@univention.de>  Fri, 19 Jun 2026 13:37:55 +0200
+
 ucs-test (12.6.8) unstable; urgency=medium
 
   * Bug #59418: add test case to check for coredumps

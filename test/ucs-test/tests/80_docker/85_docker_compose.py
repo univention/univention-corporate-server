@@ -9,7 +9,7 @@ import subprocess
 from ipaddress import IPv4Address, IPv4Network
 
 import pytest
-from ruamel import yaml
+from ruamel.yaml import YAML
 
 from univention.appcenter.docker import docker_get_existing_subnets
 from univention.config_registry import ConfigRegistry
@@ -112,7 +112,10 @@ def test_docker_compose(appcenter):
 
         assert network == target_subnet.exploded
         yml_file = f'/var/lib/univention-appcenter/apps/{name}/compose/docker-compose.yml'
-        content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+        yaml = YAML(typ='rt')
+        yaml.preserve_quotes = True
+        with open(yml_file) as fd:
+            content = yaml.load(fd)
         assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == target_subnet.exploded
         # assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
         assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == target_subnet[2].exploded
