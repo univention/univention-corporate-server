@@ -226,7 +226,7 @@ def docker_get_existing_subnets():
                 except ValueError:  # IPv6 subnet
                     continue
         return subnets
-    except docker.errors.APIError as exc:
+    except (docker.errors.APIError, TypeError) as exc:
         _logger.warning('Could not get existing subnets: %s', exc)
         return []
 
