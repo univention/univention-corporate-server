@@ -10,6 +10,7 @@ Standards-Version: 3.5.2
 Package: univention-docker
 Architecture: all
 Depends:
+ docker-cli,
  docker.io (>= 1.12),
  shell-univention-lib,
  univention-base-files,
