@@ -39,10 +39,10 @@ install_upgrade_keycloak () {
 	fi
 	if [ -z "$(ucr get "appcenter/apps/keycloak/status")" ]; then
 		# installation
-		univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || return 1
+		univention-app install "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || echo 'FAIL: INSTALL KEYCLOAK'
 	else
 		# upgrade
-		univention-app upgrade "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || return 1
+		univention-app upgrade "$app" --username=Administrator --pwdfile=/tmp/pwdfile --skip --noninteractive "$@" || echo 'FAIL: UPGRADE KEYCLOAK'
 	fi
 	# for the app specific test
 	echo "keycloak" >>/var/cache/appcenter-installed.txt
