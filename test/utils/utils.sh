@@ -122,7 +122,7 @@ rotate_logfiles () {
 }
 
 prepare_domain_for_ucs52_preup_checks() {
-	postgres_update '15' '17'
+	postgres_update '15' '17' || true
 }
 
 jenkins_updates () {
@@ -1307,7 +1307,7 @@ prepare_domain_for_ucs50_postup () {
 }
 
 prepare_domain_for_ucs52_postup () {
-	postgres_update '15' '17'
+	postgres_update '15' '17' || true
 }
 
 postgres_update () {
