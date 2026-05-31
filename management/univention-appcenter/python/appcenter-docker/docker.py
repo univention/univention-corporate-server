@@ -218,7 +218,7 @@ def docker_get_existing_subnets():
             for config in network.attrs['IPAM']['Config']:
                 subnets.append(IPv4Network(config['Subnet'], False))
         return subnets
-    except docker.errors.APIError as exc:
+    except (docker.errors.APIError, TypeError) as exc:
         _logger.warning('Could not get existing subnets: %s', exc)
         return []
 
