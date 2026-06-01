@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [4, 5]
+scope: ucs_5.2-0-errata5.2-5
+src: linux-signed-amd64
+fix: 6.1.174+1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-43503 (CVSS score 8.8 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H).
+ * CVE-2026-46300 (CVSS score 7.8 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+bug: [59449]
+cve:
+- CVE-2026-46300
+- CVE-2026-43503
