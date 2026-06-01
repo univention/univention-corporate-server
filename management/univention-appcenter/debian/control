@@ -55,7 +55,6 @@ Description: Tools for Univention App Center
 Package: python3-univention-appcenter
 Architecture: all
 Depends:
- gnupg,
  python3-docker,
  python3-mysqldb,
  python3-univention,
@@ -63,6 +62,7 @@ Depends:
  python3-univention-config-registry,
  python3-univention-debug (>= 12.0.3-1),
  python3-univention-directory-manager,
+ sqv,
  univention-directory-manager-tools,
  univention-join,
  univention-ssh,
