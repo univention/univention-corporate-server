@@ -499,7 +499,7 @@ def main() -> None:
 def run_compare(ldif1: Ldif, ldif2: Ldif, options: Values) -> NoReturn:
     """
     UNIX correct error handling.
-    Termination by signal is propagaed as signal.
+    Termination by signal is propagated as signal.
 
     :param ldif1: first LDIF to compare.
     :param ldif2: second LDIF to compare.
