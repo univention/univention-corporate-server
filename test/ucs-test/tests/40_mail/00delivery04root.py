@@ -34,7 +34,7 @@ def reload_postfix():
 
 
 def main():
-    TIMEOUT = 60
+    TIMEOUT = 10
     with udm_test.UCSTestUDM() as udm:
         try:
             with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -59,7 +59,7 @@ def main():
                         break
                     else:
                         print("Mail sent to root has not been delivered yet")
-                        time.sleep(1)
+                        time.sleep(0.5)
                 if not delivery_OK:
                     utils.fail('Mail sent to root was not delivered')
 
@@ -75,7 +75,7 @@ def main():
                         break
                     else:
                         print("Mail sent to %s has not been delivered yet" % mail)
-                        time.sleep(1)
+                        time.sleep(0.5)
                 if not delivery_OK:
                     utils.fail('Mail sent to %s was not delivered' % mail)
         finally:
