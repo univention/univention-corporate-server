@@ -6,6 +6,7 @@ set -x
 set -e
 
 install_upgrade_keycloak () {
+	ucr commit /etc/resolv.conf
 	echo "univention" > /tmp/pwdfile
 	local app location image_name
 	local project=600
