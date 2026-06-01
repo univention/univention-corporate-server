@@ -6,33 +6,39 @@
 Run recurring actions with cron
 ===============================
 
-Regularly recurring actions (e.g., the processing of log files) can be
-started at a defined time with the Cron service. Such an action is known
-as a cron job.
-This page describes three ways to define cron jobs:
-predefined cron directories,
-local cron jobs in :file:`/etc/cron.d/`,
-and cron jobs through Univention Configuration Registry.
+Use the cron service to start recurring actions such as processing log files
+at a defined time.
+This page refers to such an action as a cron job
+and describes three ways to define cron jobs:
+
+* Predefined cron directories
+* Local cron jobs in :file:`/etc/cron.d/`
+* Cron jobs through Univention Configuration Registry
 
 .. _system-administration-cron-predefined-dirs:
 
 Predefined cron directories
 ---------------------------
 
-Four directories are predefined on every UCS system, :file:`/etc/cron.hourly/`,
-:file:`/etc/cron.daily/`, :file:`/etc/cron.weekly/` and
-:file:`/etc/cron.monthly/`. Shell scripts which are placed in these directories
-and marked as executable are run automatically every hour, day, week or month.
+Each Nubus for UCS system includes these directories:
+
+* :file:`/etc/cron.hourly/`
+* :file:`/etc/cron.daily/`
+* :file:`/etc/cron.weekly/`
+* :file:`/etc/cron.monthly/`
+
+Executable shell scripts in these directories
+run hourly, daily, weekly, or monthly.
 
 .. _system-administration-cron-local:
 
-Defining local cron jobs in :file:`/etc/cron.d/`
-------------------------------------------------
+Define local cron jobs in :file:`/etc/cron.d/`
+----------------------------------------------
 
 .. index:: cron; syntax
    :name: cron-syntax
 
-A cron job is defined in a line, which is composed of a total of seven columns:
+Use one line with seven columns to define a cron job:
 
 * Minute (0-59)
 
@@ -42,16 +48,17 @@ A cron job is defined in a line, which is composed of a total of seven columns:
 
 * Month (1-12)
 
-* Weekday (0-7) (0 and 7 both stand for Sunday)
+* Weekday (0-7); 0 and 7 both mean Sunday
 
-* Name of user executing the job (e.g., ``root``)
+* Name of the user who runs the job, for example ``root``
 
-* The command to be run
+* Command to run
 
-The time specifications can be set in different ways. One can specify a specific
-minute/hour/etc. or run an action every minute/hour/etc. with a ``*``. Intervals
-can also be defined, for example :samp:`*/2` as a minute specification runs an
-action every two minutes.
+Specify the time in different ways.
+Enter a particular minute, hour, or other value,
+or use ``*`` to run an action every minute, hour, or other interval.
+You can also define intervals.
+For example, :samp:`*/2` in the minute field runs an action every two minutes.
 
 Example:
 
@@ -61,25 +68,29 @@ Example:
 
 .. _system-administration-cron-ucr:
 
-Defining cron jobs in Univention Configuration Registry
--------------------------------------------------------
+Define cron jobs in Univention Configuration Registry
+-----------------------------------------------------
 
-Cron jobs can also be defined in *Univention Configuration Registry*. This is particularly useful if
-they are set via a *UDM policy* and are thus used on more than one
-computer.
+You can also define cron jobs in *Univention Configuration Registry*.
+Use this approach when you set cron jobs through a *UDM policy*
+and apply them to multiple computers.
 
-Each cron job is composed of at least two UCR variables.
-:samp:`{JOBNAME}` is a general description.
+Each cron job uses at least two UCR variables.
+Replace :samp:`{JOBNAME}` with a unique identifier for the cron job.
+This placeholder appears in the variable names in the following lists.
 
-* :samp:`cron/{JOBNAME}/command` specifies the command to be run (required)
+Required variables:
 
-* :samp:`cron/{JOBNAME}/time` specifies the execution time (see
-  :ref:`cron-local`) (required)
+* :samp:`cron/{JOBNAME}/command` specifies the command.
 
-* As standard, the cron job is run as a user ``root``.
-  :samp:`cron/{JOBNAME}/user` can be used to specify a different user.
+* :samp:`cron/{JOBNAME}/time` specifies the execution time.
+  For the time format, see :ref:`system-administration-cron-local`.
 
-* If an email address is specified under :samp:`cron/{JOBNAME}/mailto`, the
-  output of the cron job is sent there per email.
+Optional variables and defaults:
 
-* :samp:`cron/{JOBNAME}/description` can be used to provide a description.
+* By default, cron runs the job as root.
+  Use :samp:`cron/{JOBNAME}/user` to specify a different user.
+
+* Use :samp:`cron/{JOBNAME}/mailto` to send command output by email.
+
+* Use :samp:`cron/{JOBNAME}/description` to add a description.
