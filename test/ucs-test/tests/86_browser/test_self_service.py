@@ -1,10 +1,8 @@
-import asyncore
 import contextlib
-import fcntl
 import subprocess
 import time
-from smtpd import SMTPServer
-from threading import Thread
+
+from aiosmtpd.controller import Controller
 
 from univention.testing.browser import logger
 
@@ -12,41 +10,47 @@ from univention.testing.browser import logger
 # copy pasted from 83_self_service/test_self_service.py
 @contextlib.contextmanager
 def capture_mails(timeout=5):
-    class Mail(SMTPServer):
-        def __init__(self, *args, **kwargs):
-            SMTPServer.__init__(self, *args, **kwargs)
-            self.set_reuse_addr()
-            fcntl.fcntl(self.socket.fileno(), fcntl.F_SETFD, fcntl.fcntl(self.socket.fileno(), fcntl.F_GETFD) | fcntl.FD_CLOEXEC)
+    class MailHandler:
+        def __init__(self):
             self.data = []
 
-        def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
-            logger.info("receiving email with length=%d" % len(data))
-            self.data.append(data)
+        async def handle_DATA(self, server, session, envelope):
+            content = envelope.content
+            logger.info('receiving email with length=%d' % len(content))
+            text = content.decode('utf-8', errors='replace')
+            text = text.replace('\r\n', '\n').rstrip('\n')
+            self.data.append(text)
+            return '250 OK'
 
     class MailServer:
         def __init__(self):
-            logger.info("Starting mail server")
-            self.smtp = Mail(("localhost", 25), "")
-            self.thread = Thread(target=asyncore.loop, kwargs={"timeout": timeout})
-            self.thread.start()
+            logger.info('Starting mail server')
+            self.handler = MailHandler()
+            self.controller = Controller(
+                self.handler,
+                hostname='localhost',
+                port=25,
+                ready_timeout=timeout,
+            )
+            self.controller.start()
 
         def stop(self):
-            logger.info("Stopping mail server")
-            self.smtp.close()
-            self.thread.join()
+            logger.info('Stopping mail server')
+            self.controller.stop()
 
-    subprocess.call(["invoke-rc.d", "postfix", "stop"], close_fds=True)
+    subprocess.call(['invoke-rc.d', 'postfix', 'stop'], close_fds=True)
     time.sleep(3)
+
+    server = None
     try:
         server = MailServer()
-        try:
-            yield server.smtp
-        finally:
-            try:
-                server.smtp.close()
-            except Exception:
-                logger.warn("Warn: Could not close SMTP socket")
-            server.stop()
+        yield server.handler
     finally:
-        logger.info("(re)starting postfix")
-        subprocess.call(["invoke-rc.d", "postfix", "start"], close_fds=True)
+        if server is not None:
+            try:
+                server.stop()
+            except Exception:
+                logger.warning('Could not close SMTP socket')
+
+        logger.info('(re)starting postfix')
+        subprocess.call(['invoke-rc.d', 'postfix', 'start'], close_fds=True)

@@ -386,7 +386,7 @@ Provides:
  ucs-test-module,
 Depends:
  chromium,
- python3-pyasyncore,
+ python3-aiosmtpd,
  python3-pytest-playwright,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
@@ -637,7 +637,7 @@ Description: Test scripts to test the RADIUS integration
 Package: ucs-test-self-service
 Architecture: all
 Depends:
- python3-pyasyncore,
+ python3-aiosmtpd,
  python3-pytest-playwright,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
