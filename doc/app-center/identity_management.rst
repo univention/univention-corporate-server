@@ -375,6 +375,46 @@ JSON example for ``ListenerUDMVersion`` 1
    }
 
 
+.. _provisioning-api:
+
+Automatically via Provisioning Service (Event Queue)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Provisioning Service is an event and messaging service that notifies
+subscribed services about changes in the LDAP directory.
+When data changes in the LDAP directory on the Primary Directory Node,
+the Provisioning Service receives a notification and forwards it to all
+subscribed services.
+In contrast to the Univention Directory Listener,
+it provides the |UDMUCS| representation of changed objects instead of the
+LDAP representation.
+
+An app subscribes to events for specific topics — that is, specific UDM object
+types such as ``users/user`` or ``groups/group``.
+The Provisioning Service then creates a queue for the app and stores incoming
+events there.
+The app can fetch and acknowledge events from its queue at its own pace.
+
+Topic subscription should happen in the app's join script (:file:`.inst`),
+which the App Center runs on the UCS host during app installation and updates.
+To avoid every app having to ship its own Provisioning API client,
+UCS provides :program:`univention-provisioning-api-client`.
+The join script calls this tool to register the subscription:
+
+.. code-block:: console
+
+   $ univention-provisioning-api-client subscribe \
+       --topics '[{"realm": "udm", "topic": "users/user"}]' \
+       --subscription-file /var/lib/univention-appcenter/apps/app-example/provisioning-secret.json \
+       --force \
+       --request-prefill \
+       --provisioning-server $(hostname -f)
+   Subscription sub-f5e10d16-d7d9-4fd7-9f94-48e6efcb4030 with prefill request has been created successfully.
+
+For a full description of all options and unjoin script examples,
+see :external+uv-dev-ref:ref:`chap-provisioning` in the
+:external+uv-dev-ref:doc:`Univention Developer Reference <index>`.
+
 .. _authentication:
 
 Authentication
