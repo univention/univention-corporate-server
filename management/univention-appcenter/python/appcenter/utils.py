@@ -9,6 +9,7 @@
 
 from __future__ import annotations
 
+import glob
 import http.client
 import ipaddress
 import os
@@ -430,16 +431,21 @@ def get_locale() -> str | None:
 def gpg_verify(filename: str, signature: str | None = None) -> tuple[int, str]:
     if signature is None:
         signature = filename + '.gpg'
-    cmd = (
-        'apt-key',
-        'verify',
+
+    cmd = ['gpgv']
+
+    for keyring in glob.glob('/usr/share/keyrings/univention-archive-key-ucs-*.gpg'):
+        cmd.extend(['--keyring', keyring])
+
+    cmd.extend([
         '--verbose',
         signature,
         filename,
-    )
-    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
-    _stdout, stderr = p.communicate()
-    return (p.returncode, stderr.decode('utf-8'))
+    ])
+
+    p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    stdout, _stderr = p.communicate()
+    return (p.returncode, stdout.decode('utf-8'))
 
 
 def get_local_fqdn() -> str:
