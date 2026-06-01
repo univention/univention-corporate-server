@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Test Extended Attributes integration
 ## tags: [docker]
+## timeout: 900
 ## exposure: dangerous
 ## packages:
 ##   - docker.io

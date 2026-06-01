@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python3
 ## desc: |
 ##  Check basic App-Center Operations via UMC commands within a local testing appcenter.
+## timeout: 900
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-management-console-module-appcenter

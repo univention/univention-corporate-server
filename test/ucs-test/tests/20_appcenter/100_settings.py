@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: App Settings
 ## tags: [basic, coverage, skip_admember]
+## timeout: 900
 ## packages:
 ##   - univention-appcenter-dev
 ## exposure: dangerous

@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Check Docker App mod_proxy configuration
 ## tags: [docker]
+## timeout: 300
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
