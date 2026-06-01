@@ -12,6 +12,7 @@
 import subprocess
 import time
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import pytest
 
@@ -23,6 +24,17 @@ from univention.testing import utils
 
 ucrv = "directory/manager/user/accountactivation/cron"
 expected_default_ucr_value = "*/15 * * * *"
+
+
+def get_timezone():
+    localtime = Path('/etc/localtime')
+    zoneinfo = Path('/usr/share/zoneinfo')
+
+    try:
+        target = localtime.resolve(strict=True)
+        return target.relative_to(zoneinfo).as_posix()
+    except Exception:
+        return 'UTC'
 
 
 def run_activation_script():
@@ -49,8 +61,7 @@ def test_default_ucr_value(udm, ucr):
 def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
     """Check cron based activation of users/user with accountActivationDate"""
     now = datetime.now()
-    with open("/etc/timezone") as tzfile:
-        timezone = tzfile.read().strip()
+    timezone = get_timezone()
     ts_later = (now + timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M " + timezone)
     userdn, _username = udm.create_user(accountActivationDate=ts_later)
     try:
@@ -80,8 +91,7 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
 def test_disabled_user_creation(disabled_cronjob, udm, ucr):
     """Create users/user with accountActivationDate"""
     now = datetime.now()
-    with open("/etc/timezone") as tzfile:
-        timezone = tzfile.read().strip()
+    timezone = get_timezone()
     ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
     ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
     userdn, _username = udm.create_user(accountActivationDate=ts_later)
@@ -120,8 +130,7 @@ def test_disabled_user_creation(disabled_cronjob, udm, ucr):
 def test_disabled_and_expired_user_creation(disabled_cronjob, udm, ucr):
     """Create users/user with accountActivationDate and userexpiry"""
     now = datetime.now()
-    with open("/etc/timezone") as tzfile:
-        timezone = tzfile.read().strip()
+    timezone = get_timezone()
     ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
     ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
 
@@ -180,8 +189,7 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm, ucr):
 def test_access_to_accountActivationDate(disabled_cronjob, udm):
     """Check access to accountActivationDate"""
     now = datetime.now()
-    with open("/etc/timezone") as tzfile:
-        timezone = tzfile.read().strip()
+    timezone = get_timezone()
     ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
     ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
     userdn, _username = udm.create_user(accountActivationDate=ts_later, password="univention")
