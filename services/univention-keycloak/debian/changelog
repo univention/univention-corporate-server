@@ -1,3 +1,11 @@
+univention-keycloak (1.0.17) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+  * Bug #59517: add compatibility for Python3 Keycloak Client API
+    changes
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 15 Oct 2026 13:18:46 +0200
+
 univention-keycloak (1.0.16) unstable; urgency=medium
 
   * Bug #59257: Drop providerId query parameter from modify_component filter

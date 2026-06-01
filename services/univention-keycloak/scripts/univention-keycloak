@@ -65,6 +65,28 @@ LOGIN_LINKS = 12
 #  * entryUUID -> entryUUID
 
 
+def change_current_realm(connection, realm_name: str) -> None:
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'change_current_realm'):
+        connection.change_current_realm(realm_name)
+        return
+    connection.realm_name = realm_name
+
+
+def get_current_realm(connection) -> str:
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'get_current_realm'):
+        return connection.get_current_realm()
+    return connection.realm_name
+
+
+def get_connection(connection):
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'connection'):
+        return connection.connection
+    return connection
+
+
 # create a keyvalue class
 class ArgparseKeyvalueAction(Action):
     # Constructor calling
@@ -206,8 +228,8 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         client = self.get_client(_id)
         for mapper in client.get('protocolMappers'):
             if mapper['name'] == name:
-                url = f'admin/realms/{quote(self.realm_name, safe="")}/clients/{quote(_id, safe="")}/protocol-mappers/models/{quote(mapper["id"], safe="")}'
-                self.raw_delete(url)
+                url = f'admin/realms/{quote(get_current_realm(self), safe="")}/clients/{quote(_id, safe="")}/protocol-mappers/models/{quote(mapper["id"], safe="")}'
+                get_connection(self).raw_delete(url)
                 break
         else:
             print(f'No mapper found with name {name}.')
@@ -250,7 +272,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
                 raise
 
     def get_message_bundles(self, language: str) -> dict:
-        res = self.raw_get(f'admin/realms/{self.realm_name}/localization/{language}')
+        res = get_connection(self).raw_get(f'admin/realms/{get_current_realm(self)}/localization/{language}')
         raise_error_from_response(res, KeycloakGetError, expected_codes=[200])
         return res.json()
 
@@ -259,13 +281,13 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         content_type = self._connection.headers['Content-Type']
         try:
             self._connection.headers['Content-Type'] = 'text/plain'
-            res = self.raw_put(f'admin/realms/{self.realm_name}/localization/{language}/{key}', data=value)
+            res = get_connection(self).raw_put(f'admin/realms/{get_current_realm(self)}/localization/{language}/{key}', data=value)
             raise_error_from_response(res, KeycloakError, expected_codes=[204])
         finally:
             self._connection.headers['Content-Type'] = content_type
 
     def delete_message_bundle(self, language: str, key: str) -> None:
-        res = self.raw_delete(f'admin/realms/{self.realm_name}/localization/{language}/{key}')
+        res = get_connection(self).raw_delete(f'admin/realms/{get_current_realm(self)}/localization/{language}/{key}')
         raise_error_from_response(res, KeycloakError, expected_codes=[204, 404])
 
 
@@ -325,7 +347,7 @@ class ExtService(object):
 
     def _realm_components(self, realm: str, query: dict = {}):
         params_path = {'realm-name': realm}
-        data_raw = self._kc_admin.raw_get(URL_ADMIN_COMPONENTS.format(**params_path), data=None, **query)
+        data_raw = get_connection(self._kc_admin).raw_get(URL_ADMIN_COMPONENTS.format(**params_path), data=None, **query)
 
         return raise_error_from_response(data_raw, KeycloakGetError)
 
@@ -333,12 +355,12 @@ class ExtService(object):
         params = {'realm-name': realm}
         payload = {'providerId': provider_id, 'name': name, 'enabled': enabled}
 
-        data_raw = self._kc_admin.raw_post(URL_ADMIN_REQUIRED_ACTION_REGISTER.format(**params), data=json.dumps(payload))
+        data_raw = get_connection(self._kc_admin).raw_post(URL_ADMIN_REQUIRED_ACTION_REGISTER.format(**params), data=json.dumps(payload))
         return raise_error_from_response(data_raw, KeycloakError)
 
     def _get_required_actions(self, realm: str):
         params_path = {'realm-name': realm}
-        data_raw = self._kc_admin.raw_get(URL_ADMIN_REQUIRED_ACTIONS.format(**params_path))
+        data_raw = get_connection(self._kc_admin).raw_get(URL_ADMIN_REQUIRED_ACTIONS.format(**params_path))
 
         return raise_error_from_response(data_raw, KeycloakGetError)
 
@@ -354,7 +376,7 @@ class ExtService(object):
         params = {'realm-name': realm}
         url = URL_ADMIN_REQUIRED_ACTIONS.format(**params) + f'/{alias}'
 
-        data_raw = self._kc_admin.raw_delete(url)
+        data_raw = get_connection(self._kc_admin).raw_delete(url)
         return raise_error_from_response(data_raw, KeycloakGetError)
 
 
@@ -598,7 +620,7 @@ def _create_proxy_realm_oidc_client(session: UniventionKeycloakAdmin) -> str:
 
 
 def _create_proxy_realm(session: UniventionKeycloakAdmin, name: str, secret: str) -> str:
-    default_realm = f'{session.server_url}realms/{session.realm_name}'
+    default_realm = f'{session.server_url}realms/{get_current_realm(session)}'
     payload = {
         'id': name,
         'realm': name,
@@ -727,21 +749,21 @@ def __create_proxy_realm_update_flows(session: UniventionKeycloakAdmin) -> None:
     # set default IDP in browser flow
     redirector_execution_id = next(x['id'] for x in session.get_authentication_flow_executions('browser') if x['displayName'] == 'Identity Provider Redirector')
     payload = {'alias': 'ucs-oidc', 'config': {'defaultProvider': 'ucs-oidc'}}
-    url = f'admin/realms/{session.realm_name}/authentication/executions/{redirector_execution_id}/config'
-    resp = session.raw_post(url, json.dumps(payload))
+    url = f'admin/realms/{get_current_realm(session)}/authentication/executions/{redirector_execution_id}/config'
+    resp = get_connection(session).raw_post(url, json.dumps(payload))
     raise_error_from_response(resp, KeycloakGetError)
     # disable profile review for first broker login
     review_profile_id = next(x['id'] for x in session.get_authentication_flow_executions('first broker login') if x['displayName'] == 'Review Profile')
     payload = {'alias': 'review profile config', 'config': {'update.profile.on.first.login': 'off'}}
-    url = f'admin/realms/{session.realm_name}/authentication/executions/{review_profile_id}/config'
-    resp = session.raw_post(url, json.dumps(payload))
+    url = f'admin/realms/{get_current_realm(session)}/authentication/executions/{review_profile_id}/config'
+    resp = get_connection(session).raw_post(url, json.dumps(payload))
     raise_error_from_response(resp, KeycloakGetError)
 
 
 def create_proxy_realm(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
 
-    if session.realm_name == opt.name:
+    if get_current_realm(session) == opt.name:
         print(f'ERROR: can not create a proxy realm with the same name "{opt.name}" as the default realm', file=sys.stderr)
         sys.exit(1)
 
@@ -752,7 +774,7 @@ def create_proxy_realm(opt: Namespace) -> None:
     _create_proxy_realm(session, opt.name, client_secret)
 
     # switch to realm
-    session.realm_name = opt.name
+    change_current_realm(session, opt.name)
 
     # update auth flows
     __create_proxy_realm_update_flows(session)
@@ -763,7 +785,7 @@ def create_proxy_realm(opt: Namespace) -> None:
 
 def update_proxy_realm(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
-    if session.realm_name == opt.name:
+    if get_current_realm(session) == opt.name:
         print(f'ERROR: can not update proxy realm with the same name "{opt.name}" as the default realm', file=sys.stderr)
         sys.exit(1)
     realms = _get_proxy_realm(session)
@@ -776,7 +798,7 @@ def update_proxy_realm(opt: Namespace) -> None:
 
 def delete_proxy_realm(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
-    if session.realm_name == opt.name:
+    if get_current_realm(session) == opt.name:
         print(f'ERROR: can not update proxy realm with the same name "{opt.name}" as the default realm', file=sys.stderr)
         sys.exit(1)
     realms = _get_proxy_realm(session)
@@ -1176,7 +1198,7 @@ def modify_client_scope_mapper(opt):
     id_role_list = [scope['id'] for scope in scopes if scope['name'] == 'role_list'][0]  # noqa: RUF015
 
     scope_id = id_role_list
-    data_raw = kc_admin.raw_get(
+    data_raw = get_connection(kc_admin).raw_get(
         f'admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models',
     )
     mappers = data_raw.json()
@@ -1187,7 +1209,7 @@ def modify_client_scope_mapper(opt):
     mapper_test['config']['single'] = True
 
     protocol_mapper_id = id_mapper_role_list
-    data_raw = kc_admin.raw_put(
+    data_raw = get_connection(kc_admin).raw_put(
         f'admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models/{protocol_mapper_id}',
         data=json.dumps(mapper_test),
     )
@@ -2036,7 +2058,7 @@ def delete_legacy_authentication_flow(opt: Namespace) -> None:
                         client['authenticationFlowBindingOverrides']['browser'] = ''
                         session.update_client(client['id'], client)
         # remove flow
-        session.raw_delete(f'admin/realms/{session.realm_name}/authentication/flows/{flow["id"]}')
+        get_connection(session).raw_delete(f'admin/realms/{get_current_realm(session)}/authentication/flows/{flow["id"]}')
 
 
 def get_base_url(opt: Namespace) -> None:
@@ -2485,7 +2507,7 @@ def enable_2fa(opt):
     mapper_id = add_or_replace_ldap_group_mapper(opt, kc_admin, provider, 'univention-groups', ldap_2fa_group)
 
     # Synchronize LDAP groups to Keycloak
-    kc_admin.raw_post(
+    get_connection(kc_admin).raw_post(
         f'/admin/realms/{quote(opt.realm, safe="")}/user-storage/{quote(provider_id, safe="")}/mappers/{quote(mapper_id, safe="")}/sync?direction=fedToKeycloak', data={}
     )
 
@@ -2525,7 +2547,7 @@ def create_or_replace_realm_role(kc_admin, realm, role):
     # payload["containerId"] = role
 
     url = f'admin/realms/{realm}/roles'
-    data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
+    data_raw = get_connection(kc_admin).raw_post(url, data=json.dumps(payload))
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
@@ -2550,7 +2572,7 @@ def create_realm_role(kc_admin, realm, role):
     payload['name'] = role
 
     url = f'admin/realms/{realm}/roles'
-    data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
+    data_raw = get_connection(kc_admin).raw_post(url, data=json.dumps(payload))
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
@@ -2617,7 +2639,7 @@ def assign_group_realm_role_by_group_name(kc_admin, realm, group_name, role):
         },
     ]
 
-    data_raw = kc_admin.raw_post(f'admin/realms/{realm}/groups/{group_id}/role-mappings/realm', data=json.dumps(payload))
+    data_raw = get_connection(kc_admin).raw_post(f'admin/realms/{realm}/groups/{group_id}/role-mappings/realm', data=json.dumps(payload))
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204])
 
 
@@ -2809,13 +2831,13 @@ def create_config_for_execution(kc_admin, config, execution_id):
     :param execution_id: String
     :return: Keycloak server response (RealmRepresentation)
     """
-    url = f'admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/config'
-    data_raw = kc_admin.raw_post(url, data=json.dumps(config))
+    url = f'admin/realms/{get_current_realm(kc_admin)}/authentication/executions/{execution_id}/config'
+    data_raw = get_connection(kc_admin).raw_post(url, data=json.dumps(config))
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
 def delete_authentication_flow(kc_admin, flow_id):
-    data_raw = kc_admin.raw_delete(f'admin/realms/{kc_admin.realm_name}/authentication/flows/{flow_id}')
+    data_raw = get_connection(kc_admin).raw_delete(f'admin/realms/{get_current_realm(kc_admin)}/authentication/flows/{flow_id}')
     return raise_error_from_response(data_raw, KeycloakError, expected_codes=[204])
 
 
@@ -2827,10 +2849,10 @@ def execution_raise_priority(kc_admin, execution_id):
     :param execution_id: String
     :return: Keycloak server response (RealmRepresentation)
     """
-    payload = {'realm': kc_admin.realm_name, 'execution': execution_id}
+    payload = {'realm': get_current_realm(kc_admin), 'execution': execution_id}
 
-    url = f'admin/realms/{kc_admin.realm_name}/authentication/executions/{execution_id}/raise-priority'
-    data_raw = kc_admin.raw_post(url, data=json.dumps(payload))
+    url = f'admin/realms/{get_current_realm(kc_admin)}/authentication/executions/{execution_id}/raise-priority'
+    data_raw = get_connection(kc_admin).raw_post(url, data=json.dumps(payload))
     return raise_error_from_response(data_raw, KeycloakGetError, expected_codes=[204, 201])
 
 
@@ -2886,7 +2908,9 @@ def create_adhoc_flow(opt):
     }
 
     #  check raise error
-    data_raw = kc_admin.raw_post('admin/realms/{}/authentication/executions/{}/config'.format(kc_admin.realm_name, ua_execution['id']), json.dumps(config_ua))
+    data_raw = get_connection(kc_admin).raw_post(
+        'admin/realms/{}/authentication/executions/{}/config'.format(get_current_realm(kc_admin), ua_execution['id']), json.dumps(config_ua)
+    )
     print('Response code from config Univention-Authenticator: ', data_raw.status_code)
 
 
@@ -3170,7 +3194,7 @@ def init_keycloak_ucs(opt):
 
     # Setting admin level to all Domain Admins
     # Change realm to master
-    kc_admin.realm_name = DEFAULT_REALM
+    change_current_realm(kc_admin, DEFAULT_REALM)
 
     # Admins federation ldap provider payload
     ldap_federation_payload['name'] = 'ldap-master-admin'
