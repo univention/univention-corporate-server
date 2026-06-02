@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: memcached
+fix: 1.4.33-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-47784, CVE-2026-47783 (CVSS score 8.1 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+bug: [59461]
+cve:
+- CVE-2026-47783
+- CVE-2026-47784
