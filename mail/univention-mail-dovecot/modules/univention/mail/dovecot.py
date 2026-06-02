@@ -156,9 +156,14 @@ class DovecotListener:
 
     def get_maillocation(self) -> str:
         try:
-            return self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_location"], r"\S+:(\S+)/Maildir")
+            # Dovecot 2.4 replaced mail_location with separate mail_home/mail_path settings.
+            mail_home = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_home"])
+            # Convert Dovecot 2.4 variable syntax to the legacy %Ld/%Ln style expected by callers.
+            mail_home = mail_home.replace("%{user | domain | lower}", "%Ld")
+            mail_home = mail_home.replace("%{user | username | lower}", "%Ln")
+            return mail_home
         except Exception:
-            self.log_e("Failed to get mail_location from Dovecot configuration.\n%s" % traceback.format_exc())
+            self.log_e("Failed to get mail_home from Dovecot configuration.\n%s" % traceback.format_exc())
             raise
 
     def upload_activate_sieve_script(self, email: str, file: str) -> None:
