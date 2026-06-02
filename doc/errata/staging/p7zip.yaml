@@ -1,0 +1,33 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: p7zip
+fix: 16.02+really25.01+dfsg-0+deb9u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2023-52168 (CVSS score 8.4 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2023-52169 (CVSS score 8.2 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:H).
+ * CVE-2025-11002, CVE-2025-11001, CVE-2023-31102, CVE-2022-47069 (CVSS score
+   7.8 - CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2025-53817 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2017-17969 (CVSS score 6.8 - AV:N/AC:M/Au:N/C:P/I:P/A:P).
+ * CVE-2025-55188 (CVSS score 3.6 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:N/I:L/A:N).
+ * CVE-2024-11612, CVE-2023-40481 (CVSS score unknown).
+bug: [59460]
+cve:
+- CVE-2022-47069
+- CVE-2023-31102
+- CVE-2023-40481
+- CVE-2023-52168
+- CVE-2023-52169
+- CVE-2024-11612
+- CVE-2025-11001
+- CVE-2025-11002
+- CVE-2025-53817
+- CVE-2025-55188
+- CVE-2017-17969
