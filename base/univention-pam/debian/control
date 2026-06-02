@@ -10,8 +10,10 @@ Build-Depends:
 Package: univention-pam
 Architecture: all
 Depends:
+ lastlog2,
  libnss-extrausers,
  libpam-heimdal,
+ libpam-lastlog2,
  libpam-modules (>= 1.1.8),
  libpam-pwquality,
  nscd,
