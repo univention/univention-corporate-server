@@ -10,9 +10,12 @@
 
 eval "$(ucr shell ldap/master)"
 
-if ! wget "https://$ldap_master" -O /dev/null -o /dev/null; then
-	echo "HTTPS connection to system FQDN doesn't work"
+if ! output=$(wget "https://$ldap_master" -O /dev/null 2>&1)
+then
+	echo "HTTPS connection to system FQDN '$ldap_master' doesn't work"
+	echo "$output"
+	echo
+	getent hosts "$ldap_master" || true
 	exit 1
 fi
-
 # vim: set ft=sh :
