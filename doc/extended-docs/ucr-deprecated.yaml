@@ -604,3 +604,9 @@
   desc: univention-management-console
   vars:
     - umc/server/disable-security-restrictions
+
+- git: TBD
+  obsolete: "5.3-0"
+  desc: univention-mail-dovecot
+  vars:
+    - mail/dovecot/ssl/prefer_server_ciphers
