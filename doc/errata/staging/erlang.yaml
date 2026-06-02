@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: erlang
+fix: 1:19.2.1+dfsg-2+really23.3.4.18-0+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-23941 (CVSS score 9.4 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L).
+ * CVE-2026-23942 (CVSS score 5.4 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-23943 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-21620 (CVSS score unknown).
+bug: [59462]
+cve:
+- CVE-2026-23941
+- CVE-2026-23942
+- CVE-2026-23943
+- CVE-2026-21620
