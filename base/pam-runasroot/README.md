@@ -44,5 +44,5 @@ Here is a sample /etc/pam.d/login file for Debian GNU/Linux 3.0:
     session    required   pam_mkhomedir.so skel=/etc/skel/ umask=0022
     session    required   pam_runasroot.so export_pass program=/usr/bin/mountdrives.sh
     session    required   pam_pwdb.so
-    session    optional   pam_lastlog.so
+    session    optional   pam_lastlog2.so
     password   required   pam_pwdb.so
