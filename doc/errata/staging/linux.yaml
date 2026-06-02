@@ -14,3 +14,4 @@ bug: [59447]
 cve:
 - CVE-2026-46300
 - CVE-2026-43503
+note: This is the 2nd of two parts.
