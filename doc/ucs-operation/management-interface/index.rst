@@ -43,6 +43,11 @@ Delegated administration
    by creating and assigning *UMC* policies with selected operation sets.
    See :ref:`management-interface-delegated-administration`.
 
+UDM command-line interface
+   Manage directory objects from the command line with Univention Directory Manager (UDM).
+   Use it to list modules, inspect parameters, and create, modify, move, or remove objects in the directory.
+   See :ref:`management-interface-udm-command`.
+
 Directory reports
    Create predefined reports for users, groups, and computers
    directly from the management modules or the command line.
