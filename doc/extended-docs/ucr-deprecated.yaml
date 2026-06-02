@@ -598,3 +598,9 @@
   desc: univention-ldap
   vars:
     - ldap/shadowbind
+
+- git: TBD
+  obsolete: "5.3-0"
+  desc: univention-mail-dovecot
+  vars:
+    - mail/dovecot/ssl/prefer_server_ciphers

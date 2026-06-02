@@ -1,0 +1,1 @@
+The Dovecot mail server configuration has been adapted for Dovecot 2.4. This includes compatibility fixes for mail delivery, LDAP user lookups, quotas, shared folders, public folders and ACL handling.
