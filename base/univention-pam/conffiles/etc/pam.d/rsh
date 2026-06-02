@@ -20,7 +20,7 @@ if configRegistry.is_true(accessfileFlag, False):
 @!@
 @include common-account
 @include common-session
-session    optional   pam_lastlog.so
+session    optional   pam_lastlog2.so
 session    optional   pam_mail.so standard noenv
 session    optional   pam_motd.so
 @include common-password
