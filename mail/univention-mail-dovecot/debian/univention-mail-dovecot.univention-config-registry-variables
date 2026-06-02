@@ -517,13 +517,6 @@ Description[en]=The full path name of SSL key file that is used by Dovecot to es
 Type=str
 Categories=service-mail
 
-[mail/dovecot/ssl/prefer_server_ciphers]
-Description[de]=Definiert, ob Dovecot die Reihenfolge der SSL-Verfahren des Servers gegenüber der Reihenfolge der SSL-Verfahren des Clients bevorzugt.
-Description[en]=Prefer the server's order of ciphers over client's.
-Type=bool
-Categories=service-mail
-Default=yes
-
 [mail/dovecot/ssl/min_protocol]
 Description[de]=Die niedrigste SSL-Protokoll-Version, die Dovecot akzeptieren soll.
 Description[en]=The minimum SSL protocol version Dovecot accepts.

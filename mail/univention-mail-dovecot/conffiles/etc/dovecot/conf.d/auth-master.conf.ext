@@ -4,15 +4,16 @@
 
 # By adding master=yes setting inside a passdb you make the passdb a list
 # of "master users", who can log in as anyone else.
-# <doc/wiki/Authentication.MasterUsers.txt>
+# <https://doc.dovecot.org/latest/core/config/auth/master_users.html>
 
 # Example master user passdb using passwd-file. You can use any passdb though.
-passdb {
+passdb master-passwd-file {
   driver = passwd-file
   master = yes
-  args = /etc/dovecot/master-users
+  passwd_file_path = /etc/dovecot/master-users
 
   # Unless you're using PAM, you probably still want the destination user to
   # be looked up from passdb that it really exists. pass=yes does that.
-  pass = no
+  # Verify that the destination/login user exists in the following passdb.
+  result_success = continue
 }
