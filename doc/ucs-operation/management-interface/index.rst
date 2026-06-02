@@ -62,5 +62,6 @@ Hardware information
    theme
    cookie-consent
    delegated-administration
+   udm-command
    directory-reports
    hardware-information
