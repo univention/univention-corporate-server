@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libexif
+fix: 0.6.21-2+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVE-2020-0452 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-32775 (CVSS score 7.4 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-40386, CVE-2026-40385 (CVSS score 4.0 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:L).
+bug: [59463]
+cve:
+- CVE-2026-40386
+- CVE-2026-40385
+- CVE-2026-32775
+- CVE-2020-0452
