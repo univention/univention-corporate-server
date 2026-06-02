@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nghttp2
+fix: 1.18.1-1+deb9u5
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-27135 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59457]
+cve:
+- CVE-2026-27135
