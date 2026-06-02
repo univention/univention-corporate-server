@@ -592,3 +592,9 @@
   desc: univention-ad-connector
   vars:
     - connector/password/service/encoding
+
+- git: TBD
+  obsolete: "5.3-0"
+  desc: univention-mail-dovecot
+  vars:
+    - mail/dovecot/ssl/prefer_server_ciphers
