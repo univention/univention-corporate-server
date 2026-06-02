@@ -105,22 +105,56 @@ static PyObject *module_import(char *filename) {
 	return m;
 }
 
+static int get_optional_attr_string(PyObject *obj, const char *name, PyObject **result)
+{
+#if PY_VERSION_HEX >= 0x030D0000
+	return PyObject_GetOptionalAttrString(obj, name, result);
+#else
+	*result = PyObject_GetAttrString(obj, name);
+	if (*result != NULL)
+		return 1;
+
+	if (PyErr_ExceptionMatches(PyExc_AttributeError)) {
+		PyErr_Clear();
+		return 0;
+	}
+
+	return -1;
+#endif
+}
 
 /* Retrieve object from Python module.  */
-static PyObject *module_get_object(PyObject *module, char *name) {
-	if (!PyObject_HasAttrString(module, name))
+static PyObject *module_get_object(PyObject *module, const char *name) {
+	PyObject *attr = NULL;
+	int rc = get_optional_attr_string(module, name, &attr);
+	if (rc < 0)
 		return NULL;
-	return PyObject_GetAttrString(module, name);
+	return attr;  /* new reference or NULL */
 }
 
 
-/* Retrieve bool(name) from Python module.  */
-static bool module_get_bool(PyObject *module, char *name) {
+/* Retrieve bool(name) from Python module. */
+static bool module_get_bool(PyObject *module, const char *name)
+{
 	PyObject *attr;
 	int result;
+
 	attr = module_get_object(module, name);
+	if (attr == NULL) {
+		if (PyErr_Occurred()) {
+			PyErr_Clear();
+		}
+		return false;
+	}
+
 	result = PyObject_IsTrue(attr);
-	Py_XDECREF(attr);
+	Py_DECREF(attr);
+
+	if (result < 0) {
+		PyErr_Clear();
+		return false;
+	}
+
 	return result == 1;
 }
 
@@ -161,8 +195,12 @@ static char **module_get_string_list(PyObject *module, char *name) {
 	for (i = 0; i < len; i++) {
 		PyObject *var;
 		var = PyList_GetItem(list, i);
-		res[i] = strdup(PyUnicode_AsUTF8(var));
-		Py_XDECREF(var);
+		const char *s = PyUnicode_AsUTF8(var);
+		if (s == NULL)
+			goto error1;
+		res[i] = strdup(s);
+		if (res[i] == NULL)
+			goto error1;
 	}
 	res[len] = NULL;
 error1:
@@ -217,10 +255,7 @@ static int handler_import(char *filename) {
 		handler->name = strndup(basename, dot - slash - 1);
 	}
 
-	if (PyObject_HasAttrString(handler->module, "modrdn")) { /* optional */
-		handler->modrdn = module_get_bool(handler->module, "modrdn");
-	}
-	PyErr_Clear();  // Silent error when attribute is not set
+	handler->modrdn = module_get_bool(handler->module, "modrdn");
 
 	do { /* optional */
 		handler->priority = PRIORITY_DEFAULT;
