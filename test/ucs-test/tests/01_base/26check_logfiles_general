@@ -92,6 +92,7 @@ find /var/log \
 		-o -path "/var/log/freeradius/radius.log" \
 		-o -path "/var/log/freeradius/radwtmp" \
 		-o -path "/var/log/lastlog" \
+		-o -path "/var/log/lastlog.migrated" \
 	\) -print0 >"$tmpfile"
 if [ -s "$tmpfile" ]
 then
@@ -112,6 +113,7 @@ exit $RETVAL
 # "/var/log/apache2"             : Only the directory itself is world-readable, the files within have stricter permissions
 # "/var/log/wtmp"                : Records logins, the information is accessible through the last command anyway
 # "/var/log/lastlog"             : Records logins, the information is accessible through the lastlog command anyway
+# "/var/log/lastlog.migrated"    : Records logins, the information is accessible through the lastlog command anyway
 # "/var/log/btmp"                : Records logins, the information is accessible through the lastb command anyway
 # "/var/log/news/*"              : Logfiles for Usenet news servers, doesn't contain sensitive information, not present in UCS anyway
 # "/var/log/clamav"              : Only the directory itself is world-readable, the files within have stricter permissions
