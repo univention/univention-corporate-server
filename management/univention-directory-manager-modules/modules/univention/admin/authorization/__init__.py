@@ -6,13 +6,17 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Authorization for UDM access."""
 
+from dataclasses import asdict, dataclass, field
+from typing import Any
+
 import univention.admin.modules
 import univention.admin.types
 from univention.admin import configRegistry
+from univention.admin.authorization.authorization_client import CerbosAuthorizationClient, Principal, Resource
+from univention.admin.authorization.utils import udm_object_action, udm_property_action, udm_resource_kind
 from univention.admin.guardian_roles import get_roles_from_ldap
 from univention.admin.log import log
 from univention.admin.uexceptions import permissionDenied
-from univention.authorization.authorization import LocalGuardianAuthorizationClient
 
 
 __all__ = ('Authorization',)
@@ -24,7 +28,7 @@ ROLE_CACHE_SIZE = 1000
 
 
 def auth_log(action, actor, target, **kwargs):
-    log.debug('%s by %s to %s not allowed', action, actor["id"], target.get("id"), **kwargs)
+    log.debug('%s by %s to %s not allowed', action, actor.id, target.get('id'), **kwargs)
 
 
 def get_user(lo, user_dn: str):
@@ -52,12 +56,16 @@ def get_user_roles(obj) -> list[str]:
     return role_set
 
 
-def _san_module(module):
-    return module.replace('/', '-')
-
-
-def _san_property(prop):
-    return prop.lower()
+@dataclass
+class UDMObject:
+    dn: str
+    objectType: str
+    position: str
+    roles: set | None = None
+    properties: dict[str, Any] = field(default_factory=dict)
+    options: dict[str, Any] = field(default_factory=dict)
+    policies: Any = None  # TODO: add policies? what for...
+    uuid: str | None = None  # TODO: add univentionObjectIdentifier ?
 
 
 class Authorization:
@@ -95,12 +103,10 @@ class Authorization:
     def __init__(self):
         self.enabled = False
         if self.engine is None:
-            self.__class__.engine = LocalGuardianAuthorizationClient('/var/lib/univention-directory-manager-modules/guardian/')
+            self.__class__.engine = CerbosAuthorizationClient()
 
     @classmethod
     def clear_caches(cls):
-        if cls.engine:
-            cls.engine.reload()
         cls._user_roles_cache.clear()
 
     @classmethod
@@ -124,16 +130,11 @@ class Authorization:
         if not self.enabled:
             return True
 
-        mod = _san_module(obj.module)
-        actor, targets = self._get_actor_and_targets(obj.lo, obj)
-        allowed = self._check_permissions(
-            actor,
-            targets,
-            *self._get_extras({mod}),
-            targeted_permissions_to_check=[f'udm:{mod}:read'],
-        )
+        actor = self._get_actor(obj.lo)
+        target = self._get_target(obj, old=True)
+        allowed = self._check_actions(actor, target, [udm_object_action('read')])
         if not allowed:
-            auth_log('read', actor, targets[0])
+            auth_log('read', actor, target)
             if raise_exception:
                 raise permissionDenied()
 
@@ -160,6 +161,8 @@ class Authorization:
         # 2. the search attrs could only include a small subset, which wouldn't allow to pass all attributes to the authorization engine - breaking some conditions
         # 3. there could be attributes in the resultset which are not mapped by the UDM object - so there can't be a trueish result for "is readable" - should they be added (information leak) or removed (broken logic afterwards)?
 
+        # TODO: complement with PlanResources
+        # FIXME: needs to be chunked in 50er
         targets = []
         results_ext = []
         for result in results:
@@ -172,21 +175,17 @@ class Authorization:
                 prop = mapping.unmapName(attr)
                 if prop:
                     props[prop] = mapping.unmapValue(attr, attrs[attr])
-            target = {
-                'id': dn,
-                'roles': self._get_target_roles(module, dn),
-                'attributes': {
-                    'dn': dn,
-                    'id': dn,
-                    'objectType': module,
-                    'position': self.lo.parentDn(dn) or LDAP_BASE,
-                    'properties': props,  # FIXME: this is in raw UDM format, not UDM REST API
-                    # 'options': ...,
-                    'policies': None,
-                    'uuid': None,
-                },
-            }
-            targets.append({'old_target': target, 'new_target': self._empty_target()})
+
+            attr = asdict(UDMObject(
+                dn=dn,
+                objectType=module,
+                position=lo.parentDn(dn) or LDAP_BASE,
+                roles=self._get_target_roles(module, dn),
+                properties=props,  # FIXME: this is in raw UDM format, not UDM REST API
+                options={},
+            ))
+            target = Resource(dn, udm_resource_kind(module), attr=attr)
+            targets.append(target)
             results_ext.append((
                 module, dn, result, set(mod.property_descriptions),
 
@@ -212,7 +211,7 @@ class Authorization:
                 (dn, context.get('module') or get_object_type(lo, dn)) for dn in results
             ]
             targets = [
-                self._get_dn_targets(dn, module, lo)
+                self._get_dn_target(dn, module, lo)
                 for dn, module in results
             ]
             results_ext = [
@@ -221,7 +220,7 @@ class Authorization:
             ]
         else:
             targets = [
-                self._get_targets(lo, None, target_obj)
+                self._get_target(target_obj)
                 for target_obj in results
             ]
             results_ext = [
@@ -248,29 +247,21 @@ class Authorization:
             return results  # FIXME: less error prone but allows side channel timing attacks
 
         actor = self._get_actor(lo)
-        allowed, permissions_result = self._get_and_check_permissions(
-            actor,
-            targets,
-            *self._get_extras({x[0] for x in results}),
-            # general_permissions_to_check=[f'udm:{mod}:read'],  # FIXME: no general permission can be granted, as the object type might differ
-        )
-        if not permissions_result['actor_has_all_general_permissions']:
-            auth_log('search', actor, {'id': 'multiple targets'}, general=allowed)
-            return []
-            # raise permissionDenied()
+        actions = {udm_object_action('read'), udm_object_action('search')}
+        for _, _, _, all_properties in results:
+            actions.update(self._property_actions_for(all_properties, ('read', 'write', 'none', 'writeonly')))
+        permissions_result = self._check_actions_by_targets(actor, targets, actions)
 
         filtered = []
         for i, (module, dn, result, all_properties) in enumerate(results):
-            target_permissions = permissions_result['target_permissions'][i]
+            target_permissions = permissions_result[i]
             assert target_permissions['target_id'] == dn, (target_permissions['target_id'], dn)  # TODO: replace with UUID
 
-            mod = _san_module(module)
-
-            if not {f'udm:{mod}:read', f'udm:{mod}:search'} & target_permissions['permissions']:
+            if not {udm_object_action('read'), udm_object_action('search')} & target_permissions['actions']:
                 auth_log('search', actor, {'id': target_permissions['target_id']})
                 continue
 
-            readable_attributes = self._get_readable_properties(target_permissions['permissions'], mod, all_properties)
+            readable_attributes = self._get_readable_properties(target_permissions['actions'], all_properties)
             filtered.append((result, module, readable_attributes))
 
         return filtered
@@ -301,15 +292,10 @@ class Authorization:
         moved_obj = copy.deepcopy(obj)
         moved_obj.dn = dest
 
-        mod = _san_module(obj.module)
-        actor, targets = self._get_actor_and_targets(obj.lo, obj, moved_obj)
-        if not self._check_permissions(
-            actor,
-            targets,
-            *self._get_extras({mod}),
-            targeted_permissions_to_check=[f'udm:{mod}:move'],
-        ):
-            auth_log('move', actor, targets[0])
+        actor = self._get_actor(obj.lo)
+        target = self._get_target_new(obj.lo, obj, moved_obj)
+        if not self._check_actions(actor, target, [udm_object_action('move')]):
+            auth_log('move', actor, target)
             if raise_exception:
                 raise permissionDenied()
             return False
@@ -318,15 +304,10 @@ class Authorization:
     def is_remove_allowed(self, obj, raise_exception=True):
         if not self.enabled:
             return
-        mod = _san_module(obj.module)
-        actor, targets = self._get_actor_and_targets(obj.lo, obj, None)
-        if not self._check_permissions(
-            actor,
-            targets,
-            *self._get_extras({mod}),
-            targeted_permissions_to_check=[f'udm:{mod}:remove'],
-        ):
-            auth_log('remove', actor, targets[0])
+        actor = self._get_actor(obj.lo)
+        target = self._get_target(obj, old=True)
+        if not self._check_actions(actor, target, [udm_object_action('remove')]):
+            auth_log('remove', actor, target)
             if raise_exception:
                 raise permissionDenied()
             return False
@@ -339,206 +320,164 @@ class Authorization:
     def is_report_create_allowed(self, lo, module, report_type, raise_exception=True):
         if not self.enabled:
             return True
-        mod = _san_module(module)
         actor = self._get_actor(lo)
-        if not self._check_permissions(
-            actor,
-            [{
-                'old_target': {
-                    'id': report_type,
-                    'roles': [],
-                    'attributes': {
-                        'objectType': module,
-                        # 'position': obj.lo.parentDn(obj.old_dn) or LDAP_BASE if old else obj.lo.parentDn(obj.dn) or LDAP_BASE,
-                    },
-                },
-                'new_target': self._empty_target(),
-            }],
-            *self._get_extras({mod}),
-            targeted_permissions_to_check=[f'udm:{mod}:report-create'],
-        ):
+        attr = asdict(UDMObject(dn=report_type, objectType=module, position='', properties={'objectType': module}))
+        target = Resource(report_type, udm_resource_kind(module), attr=attr)
+        if not self._check_actions(actor, target, [udm_object_action('report-create')]):
             auth_log('report-create', actor, {})
             if raise_exception:
                 raise permissionDenied()
             return False
         return True
 
-    def _get_and_check_permissions(self, *args, **kwargs):
-        with log.timing('Authorization operation', operation='get_and_check', checking=kwargs.get('targeted_permissions_to_check', []) + kwargs.get('general_permissions_to_check', [])):
-            result = self.engine.get_and_check_permissions(*args, **kwargs)
-        if not kwargs.get('general_permissions_to_check'):
-            result['actor_has_all_general_permissions'] = True
-        if not kwargs.get('targeted_permissions_to_check'):
-            result['actor_has_all_targeted_permissions'] = True
-        return result['actor_has_all_general_permissions'] and result['actor_has_all_targeted_permissions'], result
+    def _check_actions_by_targets(self, actor, targets, actions):
+        actions = sorted(set(actions))
+        with log.timing('Authorization operation', operation='check_actions_bulk', checking=actions):
+            result = self.engine.check_actions_bulk(actor, targets, actions)
+        return [
+            {
+                'target_id': item.target_id,
+                'actions': set(item.actions),
+            }
+            for item in result
+        ]
 
-    def _check_permissions(self, *args, **kwargs):
-        with log.timing('Authorization operation', operation='check', checking=kwargs.get('targeted_permissions_to_check', []) + kwargs.get('general_permissions_to_check', [])):
-            result = self.engine.check_permissions(*args, **kwargs)
-        if not kwargs.get('general_permissions_to_check'):
-            result['actor_has_all_general_permissions'] = True
-        if not kwargs.get('targeted_permissions_to_check'):
-            result['actor_has_all_targeted_permissions'] = True
-        return result['actor_has_all_general_permissions'] and result['actor_has_all_targeted_permissions']
+    def _check_actions(self, actor, target, actions):
+        allowed_actions = self._check_actions_by_target(actor, target, actions)
+        wanted = set(actions)
+        return wanted <= allowed_actions
+
+    def _check_actions_by_target(self, actor, target, actions):
+        actions = sorted(set(actions))
+        with log.timing('Authorization operation', operation='check_actions', checking=actions):
+            return self.engine.check_actions(actor, target, actions).actions
 
     def _is_write_action_allowed(self, action, obj, raise_exception=True):
         if not self.enabled:
             return
-        mod = _san_module(obj.module)
         changed_properties = [
             prop
             for prop in obj.descriptions
             if obj.has_property(prop) and obj.hasChanged(prop)
-        ]
+        ]  # FIXME: we have a vulnerability if the logic of hasChanged is wrong. Then everyone can just change that property. but hasChanged might be overridden by single modules.
 
-        actor, targets = self._get_actor_and_targets(obj.lo, obj, obj)
-        allowed, permissions_result = self._get_and_check_permissions(
-            actor,
-            targets,
-            *self._get_extras({mod}),
-            targeted_permissions_to_check=[f'udm:{mod}:{action}'],
-        )
+        actor = self._get_actor(obj.lo)
+        target = self._get_target_new(obj.lo, obj, obj)
+        actions = {udm_object_action(action)}
+        actions.update(self._property_actions_for(changed_properties, ('write', 'none', 'readonly')))
+        allowed_actions = self._check_actions_by_target(actor, target, actions)
 
-        writeable_attributes = self._get_writeable_properties(
-            permissions_result['general_permissions'] | permissions_result['target_permissions'][0]['permissions'], mod, set(obj.descriptions),
-        )
-        all_allowed = allowed and self._is_all_writeable(writeable_attributes, obj.module, changed_properties)
+        object_allowed = udm_object_action(action) in allowed_actions
+        writeable_attributes = self._get_writeable_properties(allowed_actions, changed_properties)
+        all_allowed = object_allowed and self._is_all_writeable(writeable_attributes, obj.module, changed_properties)
         if not all_allowed:
-            auth_log(action, actor, targets[0], general=allowed, changed_properties=changed_properties)
+            auth_log(action, actor, target, general=object_allowed, changed_properties=changed_properties)
             if raise_exception:
                 raise permissionDenied()
         return all_allowed
 
     def _is_readable(self, readable_attributes, module, prop):
-        return _san_property(prop) in readable_attributes
+        return prop in readable_attributes
 
     def _is_writable(self, writeable_attributes, module, prop):
-        return _san_property(prop) in writeable_attributes
+        return prop in writeable_attributes
 
     def _is_all_writeable(self, writeable_attributes, module, changed_props):
         return all(self._is_writable(writeable_attributes, module, prop) for prop in changed_props)
 
-    def _get_readable_properties(self, permissions, module, all_properties):
-        readable = {}
-        unreadable = {}
-        for mod, perms in self._parse_permissions(permissions).items():
-            for action in ('write', 'read'):
-                readable.setdefault(mod, set()).update(perms.get(action, set()))
-            for action in ('none', 'writeonly'):
-                unreadable.setdefault(mod, set()).update(perms.get(action, set()))
+    def _get_readable_properties(self, allowed_actions, all_properties):
+        props = set()
+        blocked = set()
+        for prop in all_properties:
+            if udm_property_action(prop, 'read') in allowed_actions or udm_property_action(prop, 'write') in allowed_actions:
+                props.add(prop)
+            if udm_property_action(prop, 'none') in allowed_actions or udm_property_action(prop, 'writeonly') in allowed_actions:
+                blocked.add(prop)
+        return props - blocked
 
-        props = readable.get(module, set())
-        if '*' in props:
-            props |= {_san_property(p) for p in all_properties}
-            props -= {'*'}
-        props -= unreadable.get(module, set())
-        return props
+    def _get_writeable_properties(self, allowed_actions, all_properties):
+        props = set()
+        blocked = set()
+        for prop in all_properties:
+            if udm_property_action(prop, 'write') in allowed_actions:
+                props.add(prop)
+            if udm_property_action(prop, 'none') in allowed_actions or udm_property_action(prop, 'readonly') in allowed_actions:
+                blocked.add(prop)
+        return props - blocked
 
-    def _get_writeable_properties(self, permissions, module, all_properties):
-        writeable = {}
-        unwriteable = {}
-        for mod, perms in self._parse_permissions(permissions).items():
-            for action in ('write',):
-                writeable.setdefault(mod, set()).update(perms.get(action, set()))
-            for action in ('none', 'readonly'):
-                unwriteable.setdefault(mod, set()).update(perms.get(action, set()))
-
-        props = writeable.get(module, set())
-        if '*' in props:
-            props |= {_san_property(p) for p in all_properties}
-            props -= {'*'}
-        props -= unwriteable.get(module, set())
-        return props
-
-    def _parse_permissions(self, permissions):
-        parsed = {}
-        for permission in permissions:
-            app_name, mod, perm = permission.split(':', 2)
-            if app_name != 'udm' or not mod:
-                continue
-            action, _, prop = perm.partition('-property-')
-            if not _:
-                continue
-            if action in ('write', 'writeonly', 'read', 'readonly', 'none'):
-                parsed.setdefault(mod, {}).setdefault(action, set()).add(prop)
-        return parsed
-
-    def _get_targets(self, lo, old_target, new_target=None):
+    def _property_actions_for(self, properties, actions):
         return {
-            'old_target': self._get_target(old_target, old=True) if old_target is not None and old_target.exists() else self._empty_target(),
-            'new_target': self._get_target(new_target) if new_target is not None else self._empty_target(),
+            udm_property_action(prop, action)
+            for prop in properties
+            for action in actions
         }
-
-    def _get_dn_targets(self, dn, module, lo):
-        return {
-            'old_target': self._empty_target(),
-            'new_target': self._get_dn_target(dn, module, lo),
-        }
-
-    def _get_actor_and_targets(self, lo, old_target, new_target=None):
-        return self._get_actor(lo), [self._get_targets(lo, old_target, new_target)]
-
-    def _get_extras(self, modules):
-        contexts = []
-        namespaces = [f'udm:{_san_module(mod)}' for mod in modules]
-        extra_request_data = {
-            'ldap_base': LDAP_BASE,
-        }
-        return contexts, namespaces, extra_request_data
 
     def _get_actor(self, lo):
         actor, actor_roles = self._get_cached_actor(lo)()
-        return {
-            'id': actor.dn,
-            'roles': actor_roles,
-            'attributes': self._get_representation(actor),
-        }
+        roles, role_contexts = self._normalize_actor_roles(actor_roles)
+        attributes = self._get_representation(actor)
+        if role_contexts:
+            attributes['contextRoles'] = role_contexts
+        return Principal(actor.dn, roles=set(roles), attr=attributes)
+
+    def _normalize_actor_roles(self, actor_roles):
+        roles = set()
+        context_roles = []
+        for raw_role in actor_roles:
+            role, *context_parts = str(raw_role).split('&')
+            roles.add(role)
+            context_role = {'role': role}
+            for context_part in context_parts:
+                key, sep, value = context_part.partition('=')
+                if not sep:
+                    continue
+                short_key = key.rsplit(':', 1)[-1]
+                # Keep the compact key used by generated CEL expressions.
+                # Additional context types can be exposed here later.
+                context_role[short_key] = value
+            if len(context_role) > 1:
+                context_roles.append(context_role)
+        return roles, context_roles
+
+    def _get_target_new(self, lo, obj, new_target=None):
+        attr = self._get_representation(obj, True)
+        attr['roles'] = self._get_target_roles(obj.module, obj.old_dn)
+        attr['new'] = self._get_representation(new_target, False)
+        return Resource(obj.old_dn, udm_resource_kind(obj.module), attr=attr)
 
     def _get_target(self, obj, old=False):
-        return {
-            'id': obj.old_dn if old else obj.dn,
-            'roles': self._get_target_roles(obj.module, obj.old_dn),
-            'attributes': self._get_representation(obj, old),
-        }
+        attr = self._get_representation(obj, old)
+        attr['roles'] = self._get_target_roles(obj.module, obj.old_dn)
+        return Resource(obj.old_dn if old else obj.dn, udm_resource_kind(obj.module), attr=attr)
 
     def _get_dn_target(self, dn, module, lo):
-        return {
-            'id': dn,
-            'roles': self._get_target_roles(module, dn),
-            'attributes': {
-                'dn': dn,
-                'id': None,
-                'objectType': module,
-                'position': lo.parentDn(dn) or LDAP_BASE,
-                'properties': {},
-                'options': {},
-                'policies': None,
-                'uuid': None,
-            },
-        }
+        attr = asdict(UDMObject(
+            dn=dn,
+            objectType=module,
+            position=lo.parentDn(dn) or LDAP_BASE,
+            roles=self._get_target_roles(module, dn),
+            properties={},
+            options={},
+        ))
+        return Resource(dn, udm_resource_kind(module), attr=attr)
 
     def _get_target_roles(self, module, dn):
         if module != 'users/user':
             return []
         return self._get_cached_roles(self.lo, dn)
 
-    def _empty_target(self):
-        return {'id': '', 'roles': [], 'attributes': {}}
-
     def _get_representation(self, obj, old=False):
         """Get a represenation of the object like UDM REST API would serve it"""
-        return {
-            'dn': obj.old_dn if old else obj.dn,
-            'id': None,
-            'objectType': obj.module,
-            'position': obj.lo.parentDn(obj.old_dn) or LDAP_BASE if old else obj.lo.parentDn(obj.dn) or LDAP_BASE,
-            'properties': self._decode_properties(obj, obj.oldinfo) if old else self._decode_properties(obj, obj.info),
-            'options': self._decode_options(obj, obj.old_options) if old else self._decode_options(obj, obj.options),
-            'policies': None,
-            'uuid': None,
-        }
+        return asdict(UDMObject(
+            dn=obj.old_dn if old else obj.dn,
+            objectType=obj.module,
+            position=obj.lo.parentDn(obj.old_dn) or LDAP_BASE if old else obj.lo.parentDn(obj.dn) or LDAP_BASE,
+            properties=self._decode_properties(obj, obj.oldinfo) if old else self._decode_properties(obj, obj.info),
+            options=self._decode_options(obj, obj.old_options) if old else self._decode_options(obj, obj.options),
+        ))
 
     def _decode_properties(self, obj, props):
+        # FYI: this contains also the password hashes of users!
         props = {}
         for key, value in props.items():
             try:

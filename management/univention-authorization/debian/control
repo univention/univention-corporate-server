@@ -11,17 +11,9 @@ Build-Depends:
 Package: python3-univention-authorization
 Architecture: all
 Depends:
- python3,
- python3-lark,
- python3-requests,
- python3-univention,
- python3-univention-config-registry,
- python3-yaml,
  ${misc:Depends},
  ${python3:Depends},
-Description: Auhtorization utilities
- This package contains the Python 3 modules that implement the
- authorization utilities of UCS.
+Description: Transitional dummy package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
