@@ -207,10 +207,7 @@ def _reload(zones: list[str], restart: bool = False, dns_backend: str = 'ldap') 
         if dns_backend == 'ldap':
             if zones:
                 for zone in zones:
-                    ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
-                    cmd = ['rndc', '-p', '55555', 'reload', zone]
-                    pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
-                    pids[pid] = cmd
+                    ud.debug(ud.LISTENER, ud.INFO, 'DNS: Retransferring zone %s' % (zone,))
                     cmd = ['rndc', '-p', '953', 'retransfer', zone]
                     pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
                     pids[pid] = cmd
