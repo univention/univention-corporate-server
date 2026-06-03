@@ -55,6 +55,9 @@ class TestLdapChanged(unittest.TestCase):
         self.cs = ChangeSet(ucr, profile, options)
         self.phase = LdapSelf.PhaseLdapSelf(self.cs)
 
+    def test_ldap(self):
+        print('Test skipped as it requires LDAP connection.')
+
     def disabed_test_ldap(self):
         self.phase.check()
         self.phase.post()
