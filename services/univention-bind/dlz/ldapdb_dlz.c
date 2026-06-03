@@ -103,15 +103,13 @@ typedef struct ldapdb_data {
 	char **attrs;
 	int scope;
 	unsigned int defaultttl;
-	/* Templates contain the literal "%z" placeholder; set once in parse_url_config. */
+	/*
+	 * Filter templates with a literal "%z" placeholder for the zone name;
+	 * set once in parse_url_config. build_filter() instantiates them per
+	 * query.
+	 */
 	char *filterall_template;
 	char *filterone_template;
-	/* Substituted per-call by set_zone_filters; freed and rebuilt each invocation. */
-	char *filterall;
-	size_t filteralllen;
-	char *filterone;
-	size_t filteronelen;
-	char *filtername;
 	char *bindname;
 	char *bindpw;
 	bool tls;
@@ -188,7 +186,8 @@ static void rrset_free(ldapdb_rrset_t *rr) {
 
 static char *unhex(char *in) {
 	static const char hexdigits[] = "0123456789abcdef";
-	char *p, *s = in;
+	const char *p;
+	char *s = in;
 	int d1, d2;
 
 	while ((s = strchr(s, '%')) != NULL) {
@@ -348,8 +347,6 @@ static void ldapdb_free_data(ldapdb_data_t *data) {
 	free_strv(data->attrs);
 	free(data->filterall_template);
 	free(data->filterone_template);
-	free(data->filterall);
-	free(data->filterone);
 	free(data->bindname);
 	free(data->bindpw);
 	free(data);
@@ -481,6 +478,30 @@ static isc_result_t append_rr(ldapdb_rrset_t **head, const char *owner, const ch
 	return ISC_R_SUCCESS;
 }
 
+/*
+ * Build the LDAP search filter for a zone from the configured templates,
+ * substituting "%z" with the zone name. With name == NULL the all-nodes
+ * filter is returned, otherwise the exact-match filter for that
+ * relativeDomainName. Returns a malloc'd string the caller must free.
+ */
+static char *build_filter(ldapdb_data_t *data, const char *zone, const char *name) {
+	const char *tmpl = name == NULL ? data->filterall_template : data->filterone_template;
+	const char *p = strstr(tmpl, "%z");
+	char *fltr = NULL;
+	int rc;
+
+	if (p == NULL) {
+		return NULL;
+	}
+	if (name == NULL) {
+		rc = asprintf(&fltr, "%.*s%s%s", (int)(p - tmpl), tmpl, zone, p + 2);
+	} else {
+		/* filterone_template ends with "...(relativeDomainName=" */
+		rc = asprintf(&fltr, "%.*s%s%s%s))", (int)(p - tmpl), tmpl, zone, p + 2, name);
+	}
+	return rc < 0 ? NULL : fltr;
+}
+
 static isc_result_t ldapdb_collect(const char *zone, const char *name, ldapdb_data_t *data, ldapdb_rrset_t **out) {
 	isc_result_t result = ISC_R_NOTFOUND;
 	LDAP **ldp;
@@ -502,14 +523,12 @@ static isc_result_t ldapdb_collect(const char *zone, const char *name, ldapdb_da
 		return ISC_R_FAILURE;
 	}
 
-	if (name == NULL) {
-		fltr = data->filterall;
-	} else {
-		if (strlen(name) > LDAPDB_MAXNAMELEN) {
-			return ISC_R_FAILURE;
-		}
-		snprintf(data->filtername, data->filteronelen - (size_t)(data->filtername - data->filterone), "%s))", name);
-		fltr = data->filterone;
+	if (name != NULL && strlen(name) > LDAPDB_MAXNAMELEN) {
+		return ISC_R_FAILURE;
+	}
+	fltr = build_filter(data, zone, name);
+	if (fltr == NULL) {
+		return ISC_R_NOMEMORY;
 	}
 
 	{
@@ -528,14 +547,18 @@ static isc_result_t ldapdb_collect(const char *zone, const char *name, ldapdb_da
 			continue;
 		}
 		ldapdb_log(ISC_LOG_ERROR, "ldapdb_dlz: ldap_search_ext_s zone=%s name=%s filter=%s failed: %s", zone, name != NULL ? name : "<allnodes>", fltr, ldap_err2string(rc));
+		free(fltr);
 		return ISC_R_FAILURE;
 	}
 
 	if (res == NULL) {
+		free(fltr);
 		return ISC_R_FAILURE;
 	}
 
 	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: ldap_search filter='%s' -> %d entries", fltr, ldap_count_entries(*ldp, res));
+	free(fltr);
+	fltr = NULL;
 
 	for (e = ldap_first_entry(*ldp, res); e != NULL; e = ldap_next_entry(*ldp, e)) {
 		unsigned int ttl = data->defaultttl;
@@ -670,15 +693,13 @@ static isc_result_t ldapdb_allnodes_emit(const char *zone, ldapdb_data_t *data, 
  * ISC_R_SUCCESS without calling putrr -- "this node exists, walk deeper".
  *
  * has_descendants() runs a sizelimit-1 LDAP probe for any entry whose
- * relativeDomainName ends in ".<name>" inside the current zone. Caller must
- * have already invoked set_zone_filters() for the zone so data->filterone
- * holds the "(&(zoneName=<zone>)(relativeDomainName=" prefix and
- * data->filtername points at the slot after it.
+ * relativeDomainName ends in ".<name>" inside the given zone.
  */
-static bool has_descendants(ldapdb_data_t *data, const char *name) {
+static bool has_descendants(ldapdb_data_t *data, const char *zone, const char *name) {
 	LDAP **ldp;
 	LDAPMessage *res = NULL;
 	char namebuf[LDAPDB_MAXNAMELEN + 3];
+	char *fltr;
 	char *no_attrs[] = {(char *)"1.1", NULL};
 	int rc, count = 0;
 	size_t name_len = strlen(name);
@@ -689,28 +710,34 @@ static bool has_descendants(ldapdb_data_t *data, const char *name) {
 	if (snprintf(namebuf, sizeof(namebuf), "*.%s", name) >= (int)sizeof(namebuf)) {
 		return false;
 	}
-	snprintf(data->filtername, data->filteronelen - (size_t)(data->filtername - data->filterone), "%s))", namebuf);
+	fltr = build_filter(data, zone, namebuf);
+	if (fltr == NULL) {
+		return false;
+	}
 
 	ldp = ldapdb_getconn(data);
 	if (ldp == NULL) {
+		free(fltr);
 		return false;
 	}
 	if (*ldp == NULL && !ldapdb_bind(data, ldp)) {
+		free(fltr);
 		return false;
 	}
 
-	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: ldap_search base='%s' scope=%s filter='%s' attrs=1.1 sizelimit=1 (descendant-probe)", data->base != NULL ? data->base : "", scope_str(data->scope), data->filterone);
+	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: ldap_search base='%s' scope=%s filter='%s' attrs=1.1 sizelimit=1 (descendant-probe)", data->base != NULL ? data->base : "", scope_str(data->scope), fltr);
 
-	rc = ldap_search_ext_s(*ldp, data->base, data->scope, data->filterone, no_attrs, 1, NULL, NULL, NULL, 1 /* sizelimit */, &res);
+	rc = ldap_search_ext_s(*ldp, data->base, data->scope, fltr, no_attrs, 1, NULL, NULL, NULL, 1 /* sizelimit */, &res);
 	if (rc == LDAP_SUCCESS || rc == LDAP_SIZELIMIT_EXCEEDED) {
 		count = ldap_count_entries(*ldp, res);
 	} else {
-		ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: descendant-probe filter='%s' failed: %s", data->filterone, ldap_err2string(rc));
+		ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: descendant-probe filter='%s' failed: %s", fltr, ldap_err2string(rc));
 	}
 	if (res != NULL) {
 		ldap_msgfree(res);
 	}
-	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: ldap_search filter='%s' -> %d match (descendant-probe)", data->filterone, count);
+	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: ldap_search filter='%s' -> %d match (descendant-probe)", fltr, count);
+	free(fltr);
 	return count > 0;
 }
 
@@ -814,9 +841,7 @@ static isc_result_t parse_url_config(char *url, ldapdb_data_t *data) {
 
 	/*
 	 * Save the filter as a template with "%z" as a placeholder for the zone
-	 * name. set_zone_filters() rebuilds data->filterall / filterone on every
-	 * lookup by substituting the zone into the template, so the original
-	 * template is preserved for re-use.
+	 * name; build_filter() instantiates it per query.
 	 */
 	if (filter == NULL) {
 		data->filterall_template = xstrdup("(zoneName=%z)");
@@ -833,51 +858,6 @@ static isc_result_t parse_url_config(char *url, ldapdb_data_t *data) {
 		return ISC_R_NOMEMORY;
 	}
 
-	return ISC_R_SUCCESS;
-}
-
-static isc_result_t set_zone_filters(ldapdb_data_t *data, const char *zone) {
-	char *new_all = NULL, *new_one_prefix = NULL, *new_one = NULL;
-	char *p;
-	size_t one_buflen;
-
-	/* Rebuild filterall from filterall_template by substituting %z -> zone. */
-	p = strstr(data->filterall_template, "%z");
-	if (p == NULL) {
-		return ISC_R_FAILURE;
-	}
-	if (asprintf(&new_all, "%.*s%s%s", (int)(p - data->filterall_template), data->filterall_template, zone, p + 2) < 0) {
-		return ISC_R_NOMEMORY;
-	}
-
-	/* Rebuild filterone the same way, then leave room for the relativeDomainName
-	 * tail that ldapdb_collect snprintf's in just before searching. */
-	p = strstr(data->filterone_template, "%z");
-	if (p == NULL) {
-		free(new_all);
-		return ISC_R_FAILURE;
-	}
-	if (asprintf(&new_one_prefix, "%.*s%s%s", (int)(p - data->filterone_template), data->filterone_template, zone, p + 2) < 0) {
-		free(new_all);
-		return ISC_R_NOMEMORY;
-	}
-	one_buflen = strlen(new_one_prefix) + LDAPDB_MAXNAMELEN + 4;
-	new_one = calloc(1, one_buflen);
-	if (new_one == NULL) {
-		free(new_all);
-		free(new_one_prefix);
-		return ISC_R_NOMEMORY;
-	}
-	memcpy(new_one, new_one_prefix, strlen(new_one_prefix));
-	free(new_one_prefix);
-
-	free(data->filterall);
-	free(data->filterone);
-	data->filterall = new_all;
-	data->filteralllen = strlen(new_all) + 1;
-	data->filterone = new_one;
-	data->filteronelen = one_buflen;
-	data->filtername = data->filterone + strlen(data->filterone);
 	return ISC_R_SUCCESS;
 }
 
@@ -971,15 +951,9 @@ isc_result_t dlz_findzonedb(void *dbdata, const char *name, dns_clientinfomethod
 	(void)methods;
 	(void)clientinfo;
 
-	result = set_zone_filters(data, name);
-	if (result != ISC_R_SUCCESS) {
-		ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: findzonedb(%s): set_zone_filters failed (%u)", name, result);
-		return result;
-	}
-
 	result = ldapdb_collect(name, NULL, data, &rrs);
 	rrset_free(rrs);
-	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: findzonedb(%s) filter=%s -> %s", name, data->filterall, result == ISC_R_SUCCESS ? "FOUND" : "NOTFOUND");
+	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: findzonedb(%s) -> %s", name, result == ISC_R_SUCCESS ? "FOUND" : "NOTFOUND");
 	return result == ISC_R_SUCCESS ? ISC_R_SUCCESS : ISC_R_NOTFOUND;
 }
 
@@ -1000,11 +974,6 @@ isc_result_t dlz_lookup(const char *zone, const char *name, void *dbdata, dns_sd
 	 */
 	ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: lookup(zone=%s relativeDomainName=%s)", zone, name);
 
-	result = set_zone_filters(data, zone);
-	if (result != ISC_R_SUCCESS) {
-		return result;
-	}
-
 	result = ldapdb_lookup_name(zone, name, data, lookup);
 
 	/*
@@ -1012,7 +981,7 @@ isc_result_t dlz_lookup(const char *zone, const char *name, void *dbdata, dns_sd
 	 * any deeper relativeDomainName ends in ".<name>". If so, return SUCCESS
 	 * with no records so BIND descends the tree to the leaf.
 	 */
-	if (result == ISC_R_NOTFOUND && strcmp(name, "@") != 0 && strcmp(name, "*") != 0 && has_descendants(data, name)) {
+	if (result == ISC_R_NOTFOUND && strcmp(name, "@") != 0 && strcmp(name, "*") != 0 && has_descendants(data, zone, name)) {
 		ldapdb_log(ISC_LOG_INFO, "ldapdb_dlz: lookup(zone=%s name=%s) intermediate node, descending", zone, name);
 		return ISC_R_SUCCESS;
 	}
@@ -1048,11 +1017,6 @@ isc_result_t dlz_allowzonexfr(void *dbdata, const char *name, const char *client
 
 isc_result_t dlz_allnodes(const char *zone, void *dbdata, dns_sdlzallnodes_t *allnodes) {
 	ldapdb_data_t *data = (ldapdb_data_t *)dbdata;
-	isc_result_t result;
 
-	result = set_zone_filters(data, zone);
-	if (result != ISC_R_SUCCESS) {
-		return result;
-	}
 	return ldapdb_allnodes_emit(zone, data, allnodes);
 }
