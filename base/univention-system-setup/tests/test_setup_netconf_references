@@ -55,6 +55,9 @@ class Testpolicyhanged(unittest.TestCase):
         self.cs = ChangeSet(ucr, profile, options)
         self.phase = LdapReferences.PhaseLdapReferences(self.cs)
 
+    def test_ldap(self):
+        print('Test skipped as it requires LDAP connection.')
+
     def disabled_test_ldap(self):
         self.phase.check()
         self.phase.post()
