@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # Default configuration file for granting access to roles in UDM.
-# Realized with a (DSL domain specific language) using extended BNF grammar and a LALR (Look-Ahead Left <- Right) parser.
+# Realized with a DSL (domain specific language) using extended BNF grammar and a LALR (Look-Ahead Left <- Right) parser.
 # Comments (#) are everywhere allowed.
 # This rule file must be converted into Guardian rules
 # via the script "/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization".
@@ -34,25 +34,13 @@
 #     Example: `grant actions="create"` and `grant properties="..." permission="write"`.
 
 condition "is-self"
-  condition="guardian:builtin:target_is_self"
+  expr="request.principal.id == request.resource.id"
 
-# unused examples for "conditions", which can be used as if="$name"
-# these allow every possible guardian condition
-# we abstracted commonly used conditions away, like position="cn=users,{ldap/base}"
-
-#condition "in-global-users-container"  # unused example
-#  condition="udm:conditions:target_position_in"  # the guardian condition name
-#  parameters position.subtree="cn=users"  # any key value pair which the guardian condition requires
-
-# Domain Administrators
-access by role="udm:default-roles:domain-administrator"
-  description="Domain Admins are allowed to do anything in the whole domain"
-
-  to objecttype="*"
-    name="allow-everything" description="Allow everything"
-
-    grant actions="*"
-    grant properties="*" permission="write"
+# access by role="*"
+#   to objecttype="*"
+#     grant properties="guardianRoles" permission="readonly"
+#       if-values='!("udm:default-roles:domain-admin" in $value$)'
+##       if-values='!("udm:default-roles:domain-user" in request.resource.attr.guardianRoles)'
 
 # Domain Users
 access by role="udm:default-roles:domain-user"

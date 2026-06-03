@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # SPDX-FileCopyrightText: 2024-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-"""create setup for environment with delegated administration"""
+"""Create setup for environment with delegated administration."""
 
 import argparse
 from subprocess import check_call
@@ -64,9 +64,8 @@ def main():
 def create_permissions_and_privileges():
     check_call(
         ['bash', '-c', '''
-time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local prune
-time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-permissions
-time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-default-roles
+time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization generate
+systemctl restart univention-guardian-server.service
 '''])
 
 
