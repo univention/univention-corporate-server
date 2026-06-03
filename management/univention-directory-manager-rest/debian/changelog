@@ -1,8 +1,13 @@
-univention-directory-manager-rest (12.6.0) UNRELEASED; urgency=medium
+univention-directory-manager-rest (12.6.1) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:00 +0200
+  [ Jürn Brodersen ]
+  * Bug #59466: fix empty results when requesting a page number that isn't
+    larger than the previous one
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 19 Jun 2026 13:45:00 +0200
 
 univention-directory-manager-rest (12.5.11) unstable; urgency=medium
 

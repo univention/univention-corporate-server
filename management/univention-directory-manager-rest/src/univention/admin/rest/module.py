@@ -1646,6 +1646,10 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         session = shared_memory.search_sessions.get(hashed, {})
         last_cookie = session.get('last_cookie', '')
         current_page = session.get('page', 0)
+        if current_page >= page:
+            # LDAP can't rewind, we need to start fresh
+            current_page = 0
+            last_cookie = ''
         page_ctrl = SimplePagedResultsControl(True, size=items_per_page, cookie=last_cookie)  # TODO: replace with VirtualListViewRequest
         if module.supports_pagination:
             if items_per_page:
