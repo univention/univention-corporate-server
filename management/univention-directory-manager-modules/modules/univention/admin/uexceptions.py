@@ -65,6 +65,10 @@ class permissionDenied(base):
     message = _('Permission denied.')
 
 
+class permissionUnavailable(base):
+    message = _('Permission system unavailable.')
+
+
 class ldapError(base):
     message = _('LDAP Error')
 

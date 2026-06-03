@@ -2,7 +2,7 @@
 
 This document describes various details about the integration of ABAC (attribute based access control) in UDM.
 It describes the current released status, implementation details, requirements and use cases we got from
-Product Management and the challenged of integration Guardian and Guardian concepts into it.
+Product Management and the challenges of integration Guardian and Guardian concepts into it.
 
 # Documentation
 
@@ -58,9 +58,7 @@ Via `directory/manager/rest/delegative-administration/excluded-users/.*` one can
 
 Configuration is still locally and not distributed somewhere. Can be configured via:
 
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local prune`
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-permissions`
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-default-roles`
+`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization generate`
 
 A language to describe the policy rules has been implemented: a UDM domain specific language (DSL) following an extended BNF grammar.
 This is parsed by a LALR (Look-Ahead Left <- Right) parser.
@@ -80,7 +78,7 @@ access by role="udm:default-roles:domain-administrator"
 ```
 
 Further policies can be activated via:
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-roles --config /etc/….policy`
+`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization create-roles --config /etc/….policy`
 
 UDM delivers the following default roles:
 
