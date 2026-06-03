@@ -1,222 +1,239 @@
 #!/usr/bin/python3
 # SPDX-FileCopyrightText: 2025-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
+"""
+Generate Cerbos policies for UDM authorization.
 
-"""Script to create the necessary Guardian objects for UDM."""
+The script writes Cerbos policy files below /usr/share/univention-guardian-server/policies/udm/:
+
+* resources/**.yaml are technical resource policies derived from UDM
+  module introspection.
+* roles/**.yaml are role policies compiled from the UDM authorization
+  DSL by config.py.
+"""
 
 import argparse
-import base64
-import json
 import logging
 from pathlib import Path
 
-import ldap.dn
-import requests
+import yaml
 
 import univention.admin.modules
+import univention.admin.uldap
 import univention.logging
 from univention.admin.authorization.config import UDMAuthorizationConfig
-from univention.authorization.config import AuthorizationConfig
-from univention.authorization.management import GuardianManagementClient, GuardianManagementClientLocal
+from univention.admin.authorization.utils import (
+    udm_object_action, udm_property_action, udm_property_action_wildcards, udm_resource_kind,
+)
 from univention.config_registry import ucr
 
 
 log = logging.getLogger('ACL').getChild(__name__)
 
-APP_NAME = 'udm'
-DEFAULT_ROLES_NAMESPACE = 'default-roles'
-CONDITIONS_NAMESPACE_NAME = 'conditions'
-CONTEXTS_NAMESPACE_NAME = 'contexts'
-LOCAL_PATH = '/var/lib/univention-directory-manager-modules/guardian'
+POLICY_ROOT = Path('/usr/share/univention-guardian-server/policies/udm')
+# TODO: store in /var/lib/univention-directory-manager-modules/guardian and register from there
+REPORT_MODULES = {'users/user', 'groups/group'}
+PROPERTY_PERMISSIONS = ('read', 'search', 'write', 'readonly', 'writeonly', 'none')
 
 
-class UniventionDirectoryManagerRoles:
-    """Management of roles, permissions, etc for UDM"""
+class _NoAliasDumper(yaml.SafeDumper):
+    def ignore_aliases(self, data):
+        return True
+
+
+def sanitize_filename(name):
+    return ''.join(ch if ch.isalnum() or ch in '._-' else '-' for ch in name.replace('/', '-')).strip('-') or 'policy'
+
+
+class UniventionDirectoryManagerPolicies:
+    """Generate Cerbos resource and role policies for UDM."""
 
     @classmethod
     def main(cls, args=None):
         univention.admin.modules.update()
-
-        roles = cls(args)
-        roles.execute()
+        cls(args).execute()
 
     def __init__(self, args):
-        self.args = args = self.parse_args(args)
-        if args.store_local:
-            self.client = GuardianManagementClientLocal(LOCAL_PATH, args.management_url.rstrip('/'), args.username, args.password, args.keycloak_url, args.keycloak_client)
-        else:
-            self.client = GuardianManagementClient(args.management_url.rstrip('/'), args.username, args.password, args.keycloak_url, args.keycloak_client)
+        self.args = self.parse_args(args)
 
     def execute(self):
         self.args.func()
 
     def parse_args(self, args=None):
         parser = argparse.ArgumentParser(description=__doc__)
-        parser.add_argument('--store-local', action='store_true')
-        parser.add_argument("--management-url", help="Guardian management URL", default=f'https://{ucr["hostname"]}.{ucr["domainname"]}/guardian/management/')
-        parser.add_argument("--binddn", help="Guardian management username", default=ucr['ldap/hostdn'])
-        parser.add_argument("--bindpwdfile", help="Guardian management password")
-        parser.add_argument("--keycloak-url", help="Keycloak token endpoint URL", default=f'https://{ucr["keycloak/server/sso/fqdn"]}/realms/ucs/protocol/openid-connect/token')
-        parser.add_argument("--keycloak-client", help="Keycloak client ID", default='guardian-scripts')
-        parser.add_argument("--condition-dir", help="Path to the condition directory", default='/usr/share/univention-directory-manager-modules/conditions/')
-        subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions', required=True)
+        parser.add_argument("--binddn", help="username", default=ucr['ldap/hostdn'])
+        parser.add_argument("--bindpwdfile", help="password file")
 
-        subparser = subparsers.add_parser('create-permissions')
-        subparser.set_defaults(func=self.create_udm_permissions)
+        parser.add_argument('--output-dir', default=str(POLICY_ROOT), help='Root directory for Cerbos UDM policies')
+        subparsers = parser.add_subparsers(dest='action', title='actions', required=True)
 
-        subparser = subparsers.add_parser('create-roles')
-        subparser.set_defaults(func=self.create_roles_from_acl)
+        subparser = subparsers.add_parser('generate-resources', aliases=['create-permissions'])
+        subparser.set_defaults(func=self.generate_resource_policies)
+
+        subparser = subparsers.add_parser('generate-roles', aliases=['create-roles'])
+        subparser.set_defaults(func=self.generate_roles_from_acl)
         subparser.add_argument('--config', required=True, type=argparse.FileType('r'))
-        subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
 
-        subparser = subparsers.add_parser('create-roles-from-yaml', usage=argparse.SUPPRESS)
-        subparser.set_defaults(func=self.create_roles_from_yaml)
-        subparser.add_argument('--config', required=True, type=argparse.FileType('r'))
-        subparser.add_argument('--remove', action='store_true')
-
-        subparser = subparsers.add_parser('create-default-roles')
-        subparser.set_defaults(func=self.create_default_roles)
+        subparser = subparsers.add_parser('generate-default-roles', aliases=['create-default-roles'])
+        subparser.set_defaults(func=self.generate_default_roles)
         subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy', type=argparse.FileType('r'))
-        subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
 
         subparser = subparsers.add_parser('prune')
         subparser.set_defaults(func=self.prune)
-        subparser.add_argument('--apps', action='store_true')
-        subparser.add_argument('--contexts', action='store_true')
-        subparser.add_argument('--namespaces', action='store_true')
-        subparser.add_argument('--permissions', action='store_true')
-        subparser.add_argument('--capabilities', action='store_true')
-        subparser.add_argument('--roles', action='store_true')
+        subparser.add_argument('--resources', action='store_true')
+        subparser.add_argument('--all', action='store_true')
+        subparser.add_argument('--default-roles', action='store_true')
+        subparser.add_argument('--name')
 
-        args = parser.parse_args(args)
+        return parser.parse_args(args)
 
-        args.username = ldap.dn.str2dn(args.binddn)[0][0][1]
-        args.password = None
-        if args.bindpwdfile:
-            with open(args.bindpwdfile) as fd:
-                args.password = fd.read().strip()
-
-        return args
+    @property
+    def output_root(self):
+        return Path(self.args.output_dir)
 
     def prune(self):
-        """Clear the existing namespaces, to restart from beginning"""
-        self.client.prune(apps=self.args.apps, contexts=self.args.contexts, namespaces=self.args.namespaces, roles=self.args.roles, capabilities=self.args.capabilities)
+        generated = self.output_root
+        if self.args.resources:
+            generated = generated / 'resources'
+        elif self.args.name:
+            generated = generated / self.args.name
+        elif self.args.default_roles:
+            generated = generated / 'udm-default-authorization-roles'
+        elif not self.args.all:
+            raise SystemExit('error: no option given')
 
-    def create_udm_permissions(self):
-        """Create everything required for make UDM permissions available"""
-        self.create_app()
-        self.create_namespaces()
-        self.create_conditions()
-        self.create_contexts()
-        self.create_all_modules_permissions()
+        if not generated.exists():
+            return
+        for path in sorted(generated.rglob('*'), reverse=True):
+            if path.is_file():
+                path.unlink()
+            elif path.is_dir():
+                path.rmdir()
 
-    def create_roles_from_acl(self):
-        cfg = Path(LOCAL_PATH) / f'temp-{Path(self.args.config.name).stem}.yaml'
-        with open(cfg, 'w') as fd:
-            conf = UDMAuthorizationConfig(self.args.config.name, strict=self.args.strict)
-            conf.parse()
-            yaml_content = conf.to_yaml()
-            fd.write(yaml_content)
-        log.info('Wrote temporary YAML to %s:\n%s', cfg, yaml_content)
-        self.args.config = fd
-        self.create_roles_from_yaml()
+    def generate_resource_policies(self):
+        resource_dir = self.output_root / 'resources'
+        resource_dir.mkdir(parents=True, exist_ok=True)
+        for dirname in ('tests', 'roles', 'derived_roles', 'variables', 'customer'):
+            (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
 
-    def create_roles_from_yaml(self):
-        conf = AuthorizationConfig(self.args.config.name)
-        conf.parse()
-        conf.create(self.client)
-
-    def create_default_roles(self):
-        """Create default roles"""
-        self.create_roles_from_acl()
-
-    def create_app(self):
-        log.info("Creating App")
-        self.client.create_app(APP_NAME, "Univention Directory Manager")
-
-    def create_namespaces(self):
-        log.info("Creating Namespaces")
-        self.client.create_namespace(APP_NAME, DEFAULT_ROLES_NAMESPACE)
-        self.client.create_namespace(APP_NAME, CONDITIONS_NAMESPACE_NAME)
-        self.client.create_namespace(APP_NAME, CONTEXTS_NAMESPACE_NAME)
-        # self.client.create_namespace(APP_NAME, 'umc')
-        # self.client.create_namespace(APP_NAME, 'udm-rest')
-
-    def create_conditions(self):
-        log.info("Creating Conditions")
-        path_list = Path(self.args.condition_dir).glob("*.json")
-        for data_file in path_list:
-            with open(data_file) as fd:
-                cond_info = json.load(fd)
-            cond_name = data_file.stem
-            with open(Path(self.args.condition_dir) / f"{cond_name}.rego", "rb") as fd:
-                code_raw = fd.read()
-            self.client.create_condition(
-                APP_NAME,
-                CONDITIONS_NAMESPACE_NAME,
-                cond_name,
-                cond_info["display_name"],
-                cond_info["documentation"],
-                base64.b64encode(code_raw).decode(),
-                cond_info["parameters"],
-            )
-
-    def create_contexts(self):
-        self.client.create_context(APP_NAME, CONTEXTS_NAMESPACE_NAME, 'position', 'Position based context e.g. Organizational Unit membership')
-
-    def create_all_modules_permissions(self):
-        log.info("Creating Permissions")
         lo, po = univention.admin.uldap.getAdminConnection()
-        for modname, module in univention.admin.modules.modules.items():
+        written = []
+        for modname, module in sorted(univention.admin.modules.modules.items()):
             univention.admin.modules.init(lo, po, module)
+            policy = self._resource_policy(modname, module)
+            path = resource_dir / f'{sanitize_filename(modname)}.yaml'
+            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
+            written.append(path)
+            log.info('Wrote Cerbos resource policy %s', path)
+        return written
 
-            permissions = []
-            if univention.admin.modules.supports(modname, 'add') or modname == 'settings/license':
-                permissions.append(("create", f"Allow to create {module.short_description}"))
-            if univention.admin.modules.supports(modname, 'edit'):
-                permissions.append(("modify", f"Allow to modify {module.short_description}"))
-                permissions.append(("rename", f"Allow to rename {module.short_description}"))
-            if univention.admin.modules.supports(modname, 'remove'):
-                permissions.append(("remove", f"Allow to remove {module.short_description}"))
-            if univention.admin.modules.supports(modname, 'move') or univention.admin.modules.supports(modname, 'subtree_move'):
-                permissions.append(("move", f"Allow to move {module.short_description}"))
-            if univention.admin.modules.supports(modname, 'search'):
-                permissions.append(("search", f"Allow to search {module.short_description}"))
-                permissions.append(("read", f"Allow to read {module.short_description}"))
-            if univention.admin.modules.supports(modname, 'restore'):
-                permissions.append(("restore", f"Allow to restore {module.short_description}"))
-            # TODO: only if module provides reports?
-            permissions.append(("report-create", f"Allow to create report for {module.short_description}"))
+    def generate_roles_from_acl(self):
+        conf = UDMAuthorizationConfig(self.args.config.name, strict=self.args.strict)
+        conf.parse()
+        for path in conf.write_files(self.output_root):
+            log.info('Wrote Cerbos role policy %s', path)
 
-            all_properties = {self._sanitize_property_name(propname): prop for propname, prop in module.property_descriptions.items()}
-            for propname, prop in all_properties.items():
-                propname = self._sanitize_property_name(propname)
-                permissions.extend([
-                    (f'read-property-{propname}', f'Allow to read {module.short_description}: {prop.short_description}'),
-                    (f'search-property-{propname}', f'Allow to search for {module.short_description}: {prop.short_description}'),
-                    (f'write-property-{propname}', f'Allow to write {module.short_description}: {prop.short_description}'),
-                    (f'readonly-property-{propname}', f'Prevent write permission on {module.short_description}: {prop.short_description}'),
-                    (f'writeonly-property-{propname}', f'Allows write but prevents read permission on {module.short_description}: {prop.short_description}'),
-                    (f'none-property-{propname}', f'Prevent read and write permissions on {module.short_description}: {prop.short_description}'),
-                ])
+    def generate_default_roles(self):
+        self.generate_roles_from_acl()
 
-            MOD_NAMESPACE = self._sanitize_module_name(modname)
-            self.client.create_namespace(APP_NAME, MOD_NAMESPACE, f'UDM {module.short_description} ({modname}) permissions')
-            for permission_name, display_name in permissions:
-                self.client.create_permission(APP_NAME, MOD_NAMESPACE, permission_name, display_name)
+    def _resource_policy(self, modname, module):
+        object_actions = self._object_actions(modname, module)
+        property_actions = self._property_actions(modname, module)
+        rules = []
+        rules.extend(self._global_deny_rules(modname))
+        rules.append({
+            'name': 'allow-role-policy-actions',
+            'actions': object_actions + property_actions,
+            'effect': 'EFFECT_ALLOW',
+            'roles': ['*'],
+        })
+        return {
+            'apiVersion': 'api.cerbos.dev/v1',
+            'resourcePolicy': {
+                'version': 'default',
+                'resource': udm_resource_kind(modname),
+                'rules': rules,
+            },
+        }
 
-    def _sanitize_module_name(self, module_name):
-        return module_name.replace('/', '-')
+    def _object_actions(self, modname, module):
+        mod = univention.admin.modules.get(modname)
+        actions = []
+        if univention.admin.modules.supports(modname, 'add') or modname == 'settings/license':
+            # f"Allow to create {module.short_description}"
+            actions.append(udm_object_action('create'))
+        if univention.admin.modules.supports(modname, 'edit'):
+            # f"Allow to modify {module.short_description}"
+            actions.append(udm_object_action('modify'))
+            if all(prop.may_change for prop in mod.property_descriptions.values() if prop.identifies):
+                # f"Allow to rename {module.short_description}"
+                actions.append(udm_object_action('rename'))
+        if univention.admin.modules.supports(modname, 'remove'):
+            # f"Allow to remove {module.short_description}"
+            actions.append(udm_object_action('remove'))
+        if univention.admin.modules.supports(modname, 'move') or univention.admin.modules.supports(modname, 'subtree_move'):
+            # f"Allow to move {module.short_description}"
+            actions.append(udm_object_action('move'))
+        if univention.admin.modules.supports(modname, 'search'):
+            # f"Allow to search {module.short_description}"
+            # f"Allow to read {module.short_description}"
+            actions.extend([udm_object_action('search'), udm_object_action('read')])
+        if univention.admin.modules.supports(modname, 'restore'):
+            # f"Allow to restore {module.short_description}"
+            actions.append(udm_object_action('restore'))
+        if modname in REPORT_MODULES:  # FIXME: detect dynamically if module supports it
+            # f"Allow to create report for {module.short_description}"
+            actions.append(udm_object_action('report-create'))
+        return sorted(set(actions), key=self._action_sort_key)
 
-    def _sanitize_property_name(self, property_name):
-        return property_name.lower()
+    def _property_actions(self, modname, module):
+        permissions = [udm_property_action_wildcards('*', perm) for perm in PROPERTY_PERMISSIONS]
+        for propname in module.property_descriptions:
+            permissions.extend(udm_property_action(propname, perm) for perm in PROPERTY_PERMISSIONS)
+            # TODO: check if the property support the permissions at all?
+            # f'Allow to read {module.short_description}: {prop.short_description}'
+            # f'Allow to search for {module.short_description}: {prop.short_description}'
+            # f'Allow to write {module.short_description}: {prop.short_description}'
+            # f'Prevent write permission on {module.short_description}: {prop.short_description}'
+            # f'Allows write but prevents read permission on {module.short_description}: {prop.short_description}'
+            # f'Prevent read and write permissions on {module.short_description}: {prop.short_description}'
+        return permissions
+
+    def _global_deny_rules(self, modname):
+        if modname != 'users/user':
+            return []
+        return [{
+            # 'name': 'deny-uid-number-zero',
+            'actions': ['udm:*'],
+            'roles': ['*'],
+            'effect': 'EFFECT_DENY',
+            'condition': {
+                'match': {
+                    'expr': 'request.resource.attr.properties.new.uidNumber == 0 || request.resource.attr.properties.uidNumber == 0',
+                },
+            },
+        }]
+
+    @staticmethod
+    def _action_sort_key(action):
+        order = {
+            'create': 0,
+            'search': 1,
+            'read': 2,
+            'modify': 3,
+            'rename': 4,
+            'move': 5,
+            'remove': 6,
+            'restore': 7,
+            'report-create': 8,
+        }
+        if action.startswith('udm:object:'):
+            return (0, order.get(action.rsplit(':', 1)[-1], 99), action)
+        return (1, action)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     univention.logging.basicConfig(level=logging.INFO)
-    try:
-        UniventionDirectoryManagerRoles.main()
-    except requests.HTTPError as exc:
-        log.exception('ERROR: %s', exc.response.json())
+    UniventionDirectoryManagerPolicies.main()
