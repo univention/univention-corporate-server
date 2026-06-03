@@ -7,6 +7,11 @@ set -e
 
 install_upgrade_keycloak () {
 	ucr commit /etc/resolv.conf
+	. /usr/share/univention-lib/base.sh
+	ucr set "hosts/static/$(get_default_ipv4_address)=ucs-sso-ng.$(hostname -d)"
+	ucr commit /etc/bind/named.conf
+	systemctl restart named
+
 	echo "univention" > /tmp/pwdfile
 	local app location image_name
 	local project=600
