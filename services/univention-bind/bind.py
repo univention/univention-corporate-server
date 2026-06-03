@@ -211,7 +211,7 @@ def _reload(zones: list[str], restart: bool = False, dns_backend: str = 'ldap') 
                     cmd = ['rndc', '-p', '55555', 'reload', zone]
                     pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
                     pids[pid] = cmd
-                    cmd = ['rndc', '-p', '953', 'reload', zone]
+                    cmd = ['rndc', '-p', '953', 'retransfer', zone]
                     pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)  # noqa: S606
                     pids[pid] = cmd
         elif dns_backend == 'samba4':
