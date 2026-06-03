@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # Default configuration file for granting access to roles in UDM.
-# Realized with a (DSL domain specific language) using extended BNF grammar and a LALR (Look-Ahead Left <- Right) parser.
+# Realized with a DSL (domain specific language) using extended BNF grammar and a LALR (Look-Ahead Left <- Right) parser.
 # Comments (#) are everywhere allowed.
 # This rule file must be converted into Guardian rules
 # via the script "/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization".
@@ -34,15 +34,7 @@
 #     Example: `grant actions="create"` and `grant properties="..." permission="write"`.
 
 condition "is-self"
-  condition="guardian:builtin:target_is_self"
-
-# unused examples for "conditions", which can be used as if="$name"
-# these allow every possible guardian condition
-# we abstracted commonly used conditions away, like position="cn=users,{ldap/base}"
-
-#condition "in-global-users-container"  # unused example
-#  condition="udm:conditions:target_position_in"  # the guardian condition name
-#  parameters position.subtree="cn=users"  # any key value pair which the guardian condition requires
+  expr="request.principal.id == request.resource.id"
 
 # Domain Administrators
 access by role="udm:default-roles:domain-administrator"
