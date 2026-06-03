@@ -2,8 +2,8 @@ product: ucs
 release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
-src: linux-5.10
-fix: 5.10.257-1~deb9u1
+src: univention-kernel-image
+fix: 12.0.0-19
 desc: |
  This update addresses the following issues:
  * CVE-2026-43038, CVE-2026-43037, CVE-2026-43011, CVE-2026-31668,
@@ -471,4 +471,4 @@ cve:
 - CVE-2026-45985
 - CVE-2026-46028
 - CVE-2026-46174
-note: This is the 1st of two parts.
+note: This is the 2nd of two parts.
