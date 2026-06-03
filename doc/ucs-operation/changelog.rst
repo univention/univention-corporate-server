@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 3. Jun 2026
+     - :ref:`management-interface-udm-command`
+     - Add section about the :program:`udm` command-line interface.
+
    * - 29. May 2026
      - :ref:`system-administration-cron`
      - Add section about recurring actions with cron.
