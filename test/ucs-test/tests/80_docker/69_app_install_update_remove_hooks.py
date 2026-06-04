@@ -105,7 +105,7 @@ def app_install(appcenter, app_name):
     print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app = tiny_app(app_name, '3.6')
-    app.set_ini_parameter(DockerImage='docker-test.software-univention.de/alpine:3.6')
+    app.set_ini_parameter(DockerImage='artifacts.software-univention.de/library/alpine:3.23')
 
     app.add_to_local_appcenter()
     appcenter.update()
@@ -119,7 +119,7 @@ def app_upgrade(appcenter, app_name):
     print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app = tiny_app(app_name, '3.7')
-    app.set_ini_parameter(DockerImage='docker-test.software-univention.de/alpine:3.7')
+    app.set_ini_parameter(DockerImage='artifacts.software-univention.de/library/alpine:3.23')
 
     app.add_to_local_appcenter()
     appcenter.update()

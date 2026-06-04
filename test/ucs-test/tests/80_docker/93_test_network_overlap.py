@@ -20,7 +20,7 @@ version: '2.0'
 
 services:
     test1:
-        image: docker-test.software-univention.de/alpine:3.6
+        image: artifacts.software-univention.de/library/alpine:3.23
         command: /sbin/init
         restart: always
 '''.replace('\t', '  ')
