@@ -70,12 +70,7 @@ typedef struct {
 
 static oauth_glob_context_t server_glob_context;
 
-void oauth_log(
-	const void *utils,
-	int pri,
-	const char *fmt,
-	...
-) {
+void oauth_log(const void *utils, int pri, const char *fmt, ...) {
 	sasl_utils_t *sasl_utils;
 	char msg[4096];
 	va_list ap;
@@ -99,12 +94,7 @@ void oauth_log(
 	va_end(ap);
 }
 
-void oauth_error(
-	const void *utils,
-	int pri,
-	const char *fmt,
-	...
-) {
+void oauth_error(const void *utils, int pri, const char *fmt, ...) {
 	UNUSED(pri);
 
 	sasl_utils_t *sasl_utils;
@@ -119,22 +109,15 @@ void oauth_error(
 	va_end(ap);
 }
 
-int oauth_strdup(
-	const void *utils,
-	const char *src,
-	char **dst,
-	int *len
-) {
+int oauth_strdup(const void *utils, const char *src, char **dst, int *len) {
 	sasl_utils_t *sasl_utils;
 
 	sasl_utils = (sasl_utils_t *)utils;
 	return _plug_strdup(sasl_utils, src, dst, len);
 }
 
-int oauth_retcode(
-	enum OAuthError code
-) {
-	switch(code) {
+int oauth_retcode(enum OAuthError code) {
+	switch (code) {
 	case OK:
 		return SASL_OK;
 	case MISSING_UID_CLAIM:
@@ -154,9 +137,7 @@ int oauth_retcode(
 
 /* Convert saslname = 1*(value-safe-char / "=2C" / "=3D") in place.
    Returns SASL_FAIL if the encoding is invalid, otherwise SASL_OK */
-static int decode_saslname(
-	char *buf
-) {
+static int decode_saslname(char *buf) {
 	char *inp;
 	char *outp;
 
@@ -194,13 +175,9 @@ static int decode_saslname(
    "freeme" contains pointer to the allocated output, or NULL,
    if encoded_saslname just points to saslname.
    Returns SASL_NOMEM if can't allocate memory for the output, otherwise SASL_OK */
-static int encode_saslname(
-	const char *saslname,
-	const char **encoded_saslname,
-	char **freeme
-) {
-	const char * inp;
-	char * outp;
+static int encode_saslname(const char *saslname, const char **encoded_saslname, char **freeme) {
+	const char *inp;
+	char *outp;
 	int special_chars = 0;
 
 	/* Found out if anything needs encoding */
@@ -225,20 +202,20 @@ static int encode_saslname(
 
 	for (inp = saslname; *inp; inp++) {
 		switch (*inp) {
-			case ',':
-				*outp++ = '=';
-				*outp++ = '2';
-				*outp++ = 'C';
-				break;
+		case ',':
+			*outp++ = '=';
+			*outp++ = '2';
+			*outp++ = 'C';
+			break;
 
-			case '=':
-				*outp++ = '=';
-				*outp++ = '3';
-				*outp++ = 'D';
-				break;
+		case '=':
+			*outp++ = '=';
+			*outp++ = '3';
+			*outp++ = 'D';
+			break;
 
-			default:
-				*outp++ = *inp;
+		default:
+			*outp++ = *inp;
 		}
 	}
 
@@ -247,9 +224,7 @@ static int encode_saslname(
 	return SASL_OK;
 }
 
-char * oauthbearer_error_as_json(
-	enum OAuthError code
-) {
+char *oauthbearer_error_as_json(enum OAuthError code) {
 	UNUSED(code);
 
 	/* RFC 7628: 3.2.2 Server Response to Failed Authentication
@@ -267,13 +242,7 @@ char * oauthbearer_error_as_json(
 	return tmp;
 }
 
-static int oauth_server_mech_new(
-	void *glob_context,
-	sasl_server_params_t *params,
-	const char *challenge,
-	unsigned int challen,
-	void **conn_context
-) {
+static int oauth_server_mech_new(void *glob_context, sasl_server_params_t *params, const char *challenge, unsigned int challen, void **conn_context) {
 	UNUSED(challen);
 	UNUSED(challenge);
 
@@ -296,13 +265,7 @@ static int oauth_server_mech_new(
 	return SASL_OK;
 }
 
-static int get_client_response_key(
-	const sasl_utils_t *utils,
-	const char *searchkey,
-	const char *client_response,
-	char **authzid,
-	char **value
-) {
+static int get_client_response_key(const sasl_utils_t *utils, const char *searchkey, const char *client_response, char **authzid, char **value) {
 	/* GS2 header rule ABNF:
 
 	kvsep          = %x01
@@ -312,7 +275,7 @@ static int get_client_response_key(
 	;;gs2-header   = See RFC 5801
 	client-resp    = (gs2-header kvsep *kvpair kvsep) / kvsep
 	*/
-	const int kvsep = 0x01; // client_response separator
+	const int kvsep = 0x01;  // client_response separator
 	const size_t kvsep_length = 1;
 	const size_t searchkey_length = strlen(searchkey);
 	const char *current_pos = NULL;
@@ -383,15 +346,7 @@ static int get_client_response_key(
 }
 
 
-static int oauth_server_mech_step(
-	void *conn_context,
-	sasl_server_params_t *params,
-	const char *clientin,
-	unsigned int clientinlen,
-	const char **serverout,
-	unsigned int *serveroutlen,
-	sasl_out_params_t *oparams
-) {
+static int oauth_server_mech_step(void *conn_context, sasl_server_params_t *params, const char *clientin, unsigned int clientinlen, const char **serverout, unsigned int *serveroutlen, sasl_out_params_t *oparams) {
 	oauth_serv_context_t *ctx = (oauth_serv_context_t *)conn_context;
 	oauth_glob_context_t *gctx;
 	char *authzid = NULL;
@@ -402,14 +357,7 @@ static int oauth_server_mech_step(
 	enum OAuthError oauth_errno;
 
 	/* Sanity checks */
-	if ((ctx == NULL) ||
-		(params == NULL) ||
-		(params->utils == NULL) ||
-		(params->utils->conn == NULL) ||
-		(params->utils->getcallback == NULL) ||
-		(serverout == NULL) ||
-		(serveroutlen == NULL) ||
-		(oparams == NULL)) {
+	if ((ctx == NULL) || (params == NULL) || (params->utils == NULL) || (params->utils->conn == NULL) || (params->utils->getcallback == NULL) || (serverout == NULL) || (serveroutlen == NULL) || (oparams == NULL)) {
 		params->utils->seterror(params->utils->conn, 0, "Bad parameters");
 		return SASL_BADPARAM;
 	}
@@ -466,7 +414,7 @@ static int oauth_server_mech_step(
 	if ((oauth_errno = oauth_check_jwt(ctx, params->utils, &authcid, jwt_msg)) != OK) {
 		ctx->serverout_buf = oauthbearer_error_as_json(oauth_errno);
 		*serverout = ctx->serverout_buf;
-		*serveroutlen = (unsigned int) strlen(*serverout);
+		*serveroutlen = (unsigned int)strlen(*serverout);
 		error = SASL_CONTINUE;  // RFC 7628
 		goto out;
 	}
@@ -487,7 +435,7 @@ static int oauth_server_mech_step(
 			goto out;
 		}
 	} else {
-		if ((error = params->canon_user(params->utils->conn, authcid, 0, SASL_CU_AUTHID|SASL_CU_AUTHZID, oparams)) != SASL_OK) {
+		if ((error = params->canon_user(params->utils->conn, authcid, 0, SASL_CU_AUTHID | SASL_CU_AUTHZID, oparams)) != SASL_OK) {
 			params->utils->seterror(params->utils->conn, 0, "canon_user failed for userid (both) (error=%d)", error);
 			goto out;
 		}
@@ -516,10 +464,7 @@ out:
 	return error;
 }
 
-static void oauth_server_mech_dispose(
-	void *conn_context,
-	const sasl_utils_t *utils
-) {
+static void oauth_server_mech_dispose(void *conn_context, const sasl_utils_t *utils) {
 	oauth_serv_context_t *ctx = (oauth_serv_context_t *)conn_context;
 
 	if (ctx != NULL) {
@@ -535,10 +480,7 @@ static void oauth_server_mech_dispose(
 	return;
 }
 
-static void oauth_server_mech_free(
-	void *glob_context,
-	const sasl_utils_t *utils
-) {
+static void oauth_server_mech_free(void *glob_context, const sasl_utils_t *utils) {
 	UNUSED(utils);
 
 	struct oauth_list *item;
@@ -585,30 +527,24 @@ static void oauth_server_mech_free(
 
 
 static sasl_server_plug_t oauth_server_plugin = {
-	"OAUTHBEARER",  /* mech_name */
-	0,  /* max_ssf */
-	// setting SASL_SEC_NOPLAINTEXT allows non-TLS connections. We check TLS encryption in oauth_server_mech_step() based on configuration.
-	SASL_SEC_NOPLAINTEXT | SASL_SEC_NOANONYMOUS, /* security_flags */
-	SASL_FEAT_WANT_CLIENT_FIRST | SASL_FEAT_ALLOWS_PROXY, /* features */
-	&server_glob_context,  /* glob_context */
-	&oauth_server_mech_new,  /* mech_new */
-	&oauth_server_mech_step,  /* mech_step */
-	&oauth_server_mech_dispose,  /* mech_dispose */
-	&oauth_server_mech_free,  /* mech_free */
-	NULL,  /* setpass */
-	NULL,  /* user_query */
-	NULL,  /* idle */
-	NULL,  /* mech_avail */
-	NULL  /* spare */
+    "OAUTHBEARER", /* mech_name */
+    0,             /* max_ssf */
+    // setting SASL_SEC_NOPLAINTEXT allows non-TLS connections. We check TLS encryption in oauth_server_mech_step() based on configuration.
+    SASL_SEC_NOPLAINTEXT | SASL_SEC_NOANONYMOUS,          /* security_flags */
+    SASL_FEAT_WANT_CLIENT_FIRST | SASL_FEAT_ALLOWS_PROXY, /* features */
+    &server_glob_context,                                 /* glob_context */
+    &oauth_server_mech_new,                               /* mech_new */
+    &oauth_server_mech_step,                              /* mech_step */
+    &oauth_server_mech_dispose,                           /* mech_dispose */
+    &oauth_server_mech_free,                              /* mech_free */
+    NULL,                                                 /* setpass */
+    NULL,                                                 /* user_query */
+    NULL,                                                 /* idle */
+    NULL,                                                 /* mech_avail */
+    NULL                                                  /* spare */
 };
 
-int sasl_server_plug_init(
-	const sasl_utils_t *utils,
-	int maxvers,
-	int *outvers,
-	sasl_server_plug_t **pluglist,
-	int *plugcount
-) {
+int sasl_server_plug_init(const sasl_utils_t *utils, int maxvers, int *outvers, sasl_server_plug_t **pluglist, int *plugcount) {
 	oauth_glob_context_t *gctx;
 	int r;
 	const char *val;
@@ -645,11 +581,11 @@ int sasl_server_plug_init(
 	 */
 	r = utils->getopt(utils->getopt_context, "OAUTHBEARER", "oauthbearer_userid", &val, NULL);
 	if ((r != 0) || (val == NULL) || (*val == '\0')) {
-		if((gctx->uid_attr = strdup("preferred_username")) == NULL) {
+		if ((gctx->uid_attr = strdup("preferred_username")) == NULL) {
 			utils->log(NULL, SASL_LOG_ERR, "cannot allocate memory");
 			return SASL_NOMEM;
 		}
-	} else if((gctx->uid_attr = strdup(val)) == NULL) {
+	} else if ((gctx->uid_attr = strdup(val)) == NULL) {
 		utils->log(NULL, SASL_LOG_ERR, "cannot allocate memory");
 		return SASL_NOMEM;
 	}
@@ -860,11 +796,7 @@ int sasl_server_plug_init(
 }
 
 
-static int oauth_client_mech_new(
-	void *glob_context,
-	sasl_client_params_t *params,
-	void **conn_context
-) {
+static int oauth_client_mech_new(void *glob_context, sasl_client_params_t *params, void **conn_context) {
 	UNUSED(glob_context);
 
 	oauth_client_context *text;
@@ -880,16 +812,8 @@ static int oauth_client_mech_new(
 	return SASL_OK;
 }
 
-static int oauth_client_mech_step(
-	void *conn_context,
-	sasl_client_params_t *params,
-	const char *serverin,
-	unsigned serverinlen,
-	sasl_interact_t **prompt_need,
-	const char **clientout,
-	unsigned *clientoutlen,
-	sasl_out_params_t *oparams
-) {
+static int oauth_client_mech_step(void *conn_context, sasl_client_params_t *params, const char *serverin, unsigned serverinlen, sasl_interact_t **prompt_need, const char **clientout, unsigned *clientoutlen,
+                                  sasl_out_params_t *oparams) {
 	oauth_client_context *text = (oauth_client_context *)conn_context;
 	sasl_secret_t *pass = NULL;
 	unsigned int free_pass = 0;
@@ -901,13 +825,7 @@ static int oauth_client_mech_step(
 	char *encoded_authorization_id = NULL;
 
 	/* Sanity checks */
-	if ((params == NULL) ||
-		(params->utils == NULL) ||
-		(params->utils->conn == NULL) ||
-		(params->utils->getcallback == NULL) ||
-		(clientout == NULL) ||
-		(clientoutlen == NULL) ||
-		(oparams == NULL)) {
+	if ((params == NULL) || (params->utils == NULL) || (params->utils->conn == NULL) || (params->utils->getcallback == NULL) || (clientout == NULL) || (clientoutlen == NULL) || (oparams == NULL)) {
 		params->utils->seterror(params->utils->conn, 0, "Bad parameters");
 		return SASL_BADPARAM;
 	}
@@ -926,16 +844,16 @@ static int oauth_client_mech_step(
 		json_error_t json_error;
 		json_t *j_response = json_loads(serverin, 0, &json_error);
 		if (!j_response) {
-			params->utils->seterror(params->utils->conn, 0, "Failed parsing json error message (%s)", json_error.text);
-			return SASL_BADPROT;
+		        params->utils->seterror(params->utils->conn, 0, "Failed parsing json error message (%s)", json_error.text);
+		        return SASL_BADPROT;
 		}
 
 		char *status = NULL;
 		char *scope = NULL;
 		char *openid_configuration = NULL;
 		if(json_unpack_ex(j_response, &json_error, 0, "{ss s?s s?s!}", "status", &status, "scope", &scope, "openid-configuration", &openid_configuration)) {
-			params->utils->seterror(params->utils->conn, 0, "Failed unpacking json error message (%s)", json_error.text);
-			return SASL_BADPROT;
+		        params->utils->seterror(params->utils->conn, 0, "Failed unpacking json error message (%s)", json_error.text);
+		        return SASL_BADPROT;
 		}
 		json_decref(j_response);
 		*/
@@ -983,11 +901,8 @@ static int oauth_client_mech_step(
 
 	if ((user_result == SASL_INTERACT) || (pass_result == SASL_INTERACT)) {
 		/* make the prompt list */
-		result = _plug_make_prompts(params->utils, prompt_need,
-			user_result == SASL_INTERACT ?  "Please enter an authorization name" : NULL,
-			NULL, NULL, NULL,
-			pass_result == SASL_INTERACT ?  "Please enter Access Token (as JWT)" : NULL,
-			NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+		result = _plug_make_prompts(params->utils, prompt_need, user_result == SASL_INTERACT ? "Please enter an authorization name" : NULL, NULL, NULL, NULL,
+		                            pass_result == SASL_INTERACT ? "Please enter Access Token (as JWT)" : NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 		if (result != SASL_OK)
 			goto out;
@@ -1014,7 +929,7 @@ static int oauth_client_mech_step(
 	}
 
 	if (authzid != NULL && *authzid != '\0') {
-		result = encode_saslname(oparams->user, (const char **) &encoded_authorization_id, &freeme);
+		result = encode_saslname(oparams->user, (const char **)&encoded_authorization_id, &freeme);
 		if (result != SASL_OK) {
 			goto out;
 		}
@@ -1058,10 +973,7 @@ out:
 	return result;
 }
 
-static void oauth_client_mech_dispose(
-	void *conn_context,
-	const sasl_utils_t *utils
-) {
+static void oauth_client_mech_dispose(void *conn_context, const sasl_utils_t *utils) {
 	oauth_client_context *text = (oauth_client_context *)conn_context;
 
 	if (text == NULL)
@@ -1073,29 +985,23 @@ static void oauth_client_mech_dispose(
 }
 
 static sasl_client_plug_t oauth_client_plugin = {
-	"OAUTHBEARER", /* mech_name */
-	0, /* max_ssf */
-	// setting SASL_SEC_NOPLAINTEXT allows non-TLS connections. We check TLS encryption in oauth_server_mech_step() based on configuration.
-	SASL_SEC_NOPLAINTEXT | SASL_SEC_NOANONYMOUS, /* security_flags */
-	SASL_FEAT_WANT_CLIENT_FIRST | SASL_FEAT_ALLOWS_PROXY, /* features */
-	NULL, /* required_prompts */
-	NULL, /* glob_context */
-	&oauth_client_mech_new, /* mech_new */
-	&oauth_client_mech_step, /* mech_step */
-	&oauth_client_mech_dispose,/* mech_dispose */
-	NULL, /* mech_free */
-	NULL, /* idle */
-	NULL, /* spare */
-	NULL /* spare */
+    "OAUTHBEARER", /* mech_name */
+    0,             /* max_ssf */
+    // setting SASL_SEC_NOPLAINTEXT allows non-TLS connections. We check TLS encryption in oauth_server_mech_step() based on configuration.
+    SASL_SEC_NOPLAINTEXT | SASL_SEC_NOANONYMOUS,          /* security_flags */
+    SASL_FEAT_WANT_CLIENT_FIRST | SASL_FEAT_ALLOWS_PROXY, /* features */
+    NULL,                                                 /* required_prompts */
+    NULL,                                                 /* glob_context */
+    &oauth_client_mech_new,                               /* mech_new */
+    &oauth_client_mech_step,                              /* mech_step */
+    &oauth_client_mech_dispose,                           /* mech_dispose */
+    NULL,                                                 /* mech_free */
+    NULL,                                                 /* idle */
+    NULL,                                                 /* spare */
+    NULL                                                  /* spare */
 };
 
-int sasl_client_plug_init(
-	const sasl_utils_t *utils,
-	int maxvers,
-	int *outvers,
-	sasl_client_plug_t **pluglist,
-	int *plugcount
-) {
+int sasl_client_plug_init(const sasl_utils_t *utils, int maxvers, int *outvers, sasl_client_plug_t **pluglist, int *plugcount) {
 	if (maxvers < SASL_CLIENT_PLUG_VERSION) {
 		utils->log(NULL, SASL_LOG_ERR, "OAUTHBEARER version mismatch");
 		return SASL_BADVERS;

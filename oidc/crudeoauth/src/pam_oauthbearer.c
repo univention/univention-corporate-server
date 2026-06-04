@@ -53,12 +53,7 @@
 
 #define GCTX_DATA "CRUDEOAUTH-GCTX"
 
-void oauth_log(
-	const void *utils,
-	int pri,
-	const char *fmt,
-	...
-) {
+void oauth_log(const void *utils, int pri, const char *fmt, ...) {
 	UNUSED(utils);
 
 	va_list ap;
@@ -68,12 +63,7 @@ void oauth_log(
 	va_end(ap);
 }
 
-void oauth_error(
-	const void *utils,
-	int pri,
-	const char *fmt,
-	...
-) {
+void oauth_error(const void *utils, int pri, const char *fmt, ...) {
 	UNUSED(utils);
 
 	va_list ap;
@@ -86,12 +76,7 @@ void oauth_error(
 	va_end(ap);
 }
 
-int oauth_strdup(
-	const void *utils,
-	const char *src,
-	char **dst,
-	int *len
-) {
+int oauth_strdup(const void *utils, const char *src, char **dst, int *len) {
 	UNUSED(utils);
 
 	*dst = strdup(src);
@@ -104,10 +89,8 @@ int oauth_strdup(
 	return 0;
 }
 
-int oauth_retcode(
-	enum OAuthError code
-) {
-	switch(code) {
+int oauth_retcode(enum OAuthError code) {
+	switch (code) {
 	case OK:
 		return PAM_SUCCESS;
 	case MISSING_UID_CLAIM:
@@ -125,11 +108,7 @@ int oauth_retcode(
 	}
 }
 
-static void gctx_cleanup(
-	pam_handle_t *pamh,
-	void *data,
-	int error
-) {
+static void gctx_cleanup(pam_handle_t *pamh, void *data, int error) {
 	UNUSED(pamh);
 	UNUSED(error);
 
@@ -178,11 +157,7 @@ static void gctx_cleanup(
 	}
 }
 
-static oauth_glob_context_t * pam_global_context_init(
-	pam_handle_t *pamh,
-	int ac,
-	const char **av
-) {
+static oauth_glob_context_t *pam_global_context_init(pam_handle_t *pamh, int ac, const char **av) {
 	int error = 0;
 	const void *data;
 	oauth_glob_context_t *gctx;
@@ -212,7 +187,7 @@ static oauth_glob_context_t * pam_global_context_init(
 	/*
 	 * Get options
 	 */
-#define SETARG(argv,prop) (strncmp((argv), (prop "="), strlen(prop "=")) == 0) ?  (argv) + strlen(prop "=") : NULL
+#define SETARG(argv, prop) (strncmp((argv), (prop "="), strlen(prop "=")) == 0) ? (argv) + strlen(prop "=") : NULL
 
 	int num_of_iss = 0;
 	int num_of_jwks = 0;
@@ -290,7 +265,7 @@ static oauth_glob_context_t * pam_global_context_init(
 		}
 
 		if ((data = SETARG(av[i], "iss")) != NULL) {
-			if (num_of_iss > 0) { // TODO: support multiple issuers
+			if (num_of_iss > 0) {  // TODO: support multiple issuers
 				error = PAM_SYSTEM_ERR;
 				syslog(LOG_ERR, "multiple iss given");
 				goto cleanup;
@@ -307,7 +282,7 @@ static oauth_glob_context_t * pam_global_context_init(
 		}
 
 		if ((data = SETARG(av[i], "jwks")) != NULL) {
-			if (num_of_jwks > 0) { // TODO: support multiple jwks
+			if (num_of_jwks > 0) {  // TODO: support multiple jwks
 				error = PAM_SYSTEM_ERR;
 				syslog(LOG_ERR, "multiple jwks given");
 				goto cleanup;
@@ -399,12 +374,7 @@ cleanup:
 	return NULL;
 }
 
-PAM_EXTERN int pam_sm_authenticate(
-	pam_handle_t *pamh,
-	int flags,
-	int ac,
-	const char **av
-) {
+PAM_EXTERN int pam_sm_authenticate(pam_handle_t *pamh, int flags, int ac, const char **av) {
 	UNUSED(flags);
 
 	oauth_serv_context_t ctx;
@@ -543,12 +513,7 @@ out:
 }
 
 /* ARGSUSED0 */
-PAM_EXTERN int pam_sm_setcred(
-	pam_handle_t *pamh,
-	int flags,
-	int ac,
-	const char **av
-) {
+PAM_EXTERN int pam_sm_setcred(pam_handle_t *pamh, int flags, int ac, const char **av) {
 	UNUSED(pamh);
 	UNUSED(flags);
 	UNUSED(ac);
@@ -557,12 +522,7 @@ PAM_EXTERN int pam_sm_setcred(
 }
 
 /* ARGSUSED0 */
-PAM_EXTERN int pam_sm_acct_mgmt(
-	pam_handle_t *pamh,
-	int flags,
-	int ac,
-	const char **av
-) {
+PAM_EXTERN int pam_sm_acct_mgmt(pam_handle_t *pamh, int flags, int ac, const char **av) {
 	UNUSED(pamh);
 	UNUSED(flags);
 	UNUSED(ac);
@@ -571,12 +531,7 @@ PAM_EXTERN int pam_sm_acct_mgmt(
 }
 
 /* ARGSUSED0 */
-PAM_EXTERN int pam_sm_open_session(
-	pam_handle_t *pamh,
-	int flags,
-	int ac,
-	const char **av
-) {
+PAM_EXTERN int pam_sm_open_session(pam_handle_t *pamh, int flags, int ac, const char **av) {
 	UNUSED(pamh);
 	UNUSED(flags);
 	UNUSED(ac);
@@ -584,12 +539,7 @@ PAM_EXTERN int pam_sm_open_session(
 	return PAM_SUCCESS;
 }
 
-PAM_EXTERN int pam_sm_close_session(
-	pam_handle_t *pamh,
-	int flags,
-	int ac,
-	const char **av
-) {
+PAM_EXTERN int pam_sm_close_session(pam_handle_t *pamh, int flags, int ac, const char **av) {
 	UNUSED(pamh);
 	UNUSED(flags);
 	UNUSED(ac);
@@ -597,12 +547,7 @@ PAM_EXTERN int pam_sm_close_session(
 	return PAM_SUCCESS;
 }
 
-PAM_EXTERN int pam_sm_chauthtok(
-	pam_handle_t *pamh,
-	int flags,
-	int ac,
-	const char **av
-) {
+PAM_EXTERN int pam_sm_chauthtok(pam_handle_t *pamh, int flags, int ac, const char **av) {
 	UNUSED(pamh);
 	UNUSED(flags);
 	UNUSED(ac);
@@ -611,13 +556,5 @@ PAM_EXTERN int pam_sm_chauthtok(
 }
 
 #ifdef PAM_STATIC
-struct pam_module _pam_oauthbearer_modstruct = {
-	"pam_oauthbearer",
-	pam_sm_authenticate,
-	pam_sm_setcred,
-	pam_sm_acct_mgmt,
-	pam_sm_open_session,
-	pam_sm_close_session,
-	pam_sm_chauthtok
-};
+struct pam_module _pam_oauthbearer_modstruct = {"pam_oauthbearer", pam_sm_authenticate, pam_sm_setcred, pam_sm_acct_mgmt, pam_sm_open_session, pam_sm_close_session, pam_sm_chauthtok};
 #endif /* PAM_STATIC */
