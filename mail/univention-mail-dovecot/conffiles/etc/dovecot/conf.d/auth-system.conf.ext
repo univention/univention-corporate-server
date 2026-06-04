@@ -23,8 +23,10 @@ passdb pam {
 #  }
 }
 
-userdb passwd {
-}
+# Do not enable: shadows the LDAP userdb and returns the user's real POSIX uid,
+# which first_valid_uid/last_valid_uid (= dovemail only) then rejects.
+#userdb passwd {
+#}
 
 # System users (NSS, /etc/passwd, or similar).
 # In many systems nowadays this uses Name Service Switch, which is
