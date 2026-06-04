@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-30 08:37+0000\n"
-"PO-Revision-Date: 2026-04-30 10:43+0200\n"
+"POT-Creation-Date: 2026-06-04 14:11+0000\n"
+"PO-Revision-Date: 2026-06-04 16:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1818,6 +1818,7 @@ msgstr ""
 "sie sich bei der *Management UI* anmelden."
 
 #: ../../management-interface/delegated-administration.rst:212
+#: ../../management-interface/udm-command.rst:641
 msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
 
@@ -1840,7 +1841,7 @@ msgstr ""
 "Zugriffskontrolllisten."
 
 #: ../../management-interface/directory-reports.rst:7
-#: ../../management-interface/index.rst:46
+#: ../../management-interface/index.rst:51
 msgid "Directory reports"
 msgstr "Verzeichnisberichte"
 
@@ -1901,14 +1902,17 @@ msgstr ""
 ":`uv-nubus-manual`:"
 
 #: ../../management-interface/directory-reports.rst:37
+#: ../../management-interface/udm-command.rst:497
 msgid ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
 
 #: ../../management-interface/directory-reports.rst:38
+#: ../../management-interface/udm-command.rst:550
 msgid ":external+uv-nubus-manual:ref:`nubus-groups-management`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-groups-management`"
 
 #: ../../management-interface/directory-reports.rst:39
+#: ../../management-interface/udm-command.rst:668
 msgid ":external+uv-nubus-manual:ref:`nubus-computer-management`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-computer-management`"
 
@@ -2064,7 +2068,7 @@ msgstr ""
 "Berichtsvorlagen erstellen."
 
 #: ../../management-interface/hardware-information.rst:7
-#: ../../management-interface/index.rst:52
+#: ../../management-interface/index.rst:57
 msgid "Hardware information"
 msgstr "Hardwareinformationen"
 
@@ -2157,7 +2161,7 @@ msgstr "Das Startdialogfeld des Verwaltungsmoduls Hardwareinformationen"
 msgid "The *Hardware information* management module start dialog"
 msgstr "Das Startdialogfeld des Verwaltungsmoduls *Hardwareinformationen*"
 
-#: ../../management-interface/index.rst:57
+#: ../../management-interface/index.rst:62
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -2172,9 +2176,9 @@ msgid ""
 ":external+uv-nubus-manual:ref:`nubus-ui` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Die *Management UI* ist die webbasierte Oberfläche zur Verwaltung von "
-"Nubus für UCS. "
-"Allgemeine Informationen zur *Management UI* in Nubus finden Sie unter "
-":external+uv-nubus-manual:ref:`nubus-ui` in :cite:t:`uv-nubus-manual`."
+"Nubus für UCS. Allgemeine Informationen zur *Management UI* in Nubus "
+"finden Sie unter :external+uv-nubus-manual:ref:`nubus-ui` im :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../management-interface/index.rst:15
 msgid ""
@@ -2183,9 +2187,8 @@ msgid ""
 "appearance of the web interfaces."
 msgstr ""
 "Dieses Kapitel behandelt Konfigurationsaufgaben für technische "
-"Administratoren, die steuern müssen, wie sich Benutzer anmelden, "
-"Lizenzen verwalten und das Erscheinungsbild der Web-Schnittstellen "
-"anpassen."
+"Administratoren, die steuern müssen, wie sich Benutzer anmelden, Lizenzen"
+" verwalten und das Erscheinungsbild der Web-Schnittstellen anpassen."
 
 #: ../../management-interface/index.rst:19
 msgid ""
@@ -2261,7 +2264,24 @@ msgstr ""
 "Operationssätzen zugreifen können. Siehe :ref:`management-interface-"
 "delegated-administration`."
 
+#: ../../management-interface/index.rst:46
+msgid "UDM command-line interface"
+msgstr "UDM Befehlszeilenschnittstelle"
+
 #: ../../management-interface/index.rst:47
+msgid ""
+"Manage directory objects from the command line with Univention Directory "
+"Manager (UDM). Use it to list modules, inspect parameters, and create, "
+"modify, move, or remove objects in the directory. See :ref:`management-"
+"interface-udm-command`."
+msgstr ""
+"Verwalten Sie Verzeichnisobjekte über die Befehlszeile mit Univention "
+"Directory Manager (UDM). Verwenden Sie UDM, um Module aufzulisten, "
+"Parameter zu prüfen und Objekte im Verzeichnis zu erstellen, zu ändern, "
+"zu verschieben oder zu entfernen. Siehe :ref:`management-interface-udm-"
+"command`."
+
+#: ../../management-interface/index.rst:52
 msgid ""
 "Create predefined reports for users, groups, and computers directly from "
 "the management modules or the command line. Customize the report output "
@@ -2273,7 +2293,7 @@ msgstr ""
 "Berichtausgabe an, indem Sie das Logo ersetzen oder neue Berichtsvorlagen"
 " registrieren. Siehe :ref:`management-interface-directory-reports`."
 
-#: ../../management-interface/index.rst:53
+#: ../../management-interface/index.rst:58
 msgid ""
 "Submit hardware and system information to Univention for compatibility "
 "tracking or as part of a support request. See :ref:`management-interface-"
@@ -2793,3 +2813,1530 @@ msgstr ""
 "Ein `CSS-Selektor <https://developer.mozilla.org/en-"
 "US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors>`_ kann"
 " bei der Installation eines Nubus für UCS-Updates fehlerhaft werden."
+
+#: ../../management-interface/udm-command.rst:7
+msgid "Command-line interface for domain management"
+msgstr "Befehlszeilenschnittstelle für die Domänenverwaltung"
+
+#: ../../management-interface/udm-command.rst:11
+msgid ""
+":program:`udm` is the command-line interface for domain management in "
+"Univention Directory Manager (UDM). Use it to automate administrative "
+"tasks in scripts and to integrate domain management into other programs. "
+"It's an alternative to the web-based *Management UI* and its management "
+"modules."
+msgstr ""
+":program:`udm` ist die Befehlszeilenschnittstelle für die "
+"Domänenverwaltung in Univention Directory Manager (UDM). Verwenden Sie "
+"UDM, um administrative Aufgaben in Skripten zu automatisieren und die "
+"Domänenverwaltung in andere Programme zu integrieren. Sie ist eine "
+"Alternative zur webbasierten *Management UI* und ihren "
+"Verwaltungsmodulen."
+
+#: ../../management-interface/udm-command.rst:18
+msgid ""
+"Run the command as the ``root`` user on the :term:`Primary Directory "
+"Node` with the :command:`univention-directory-manager` command, or use "
+"the short form :command:`udm`."
+msgstr ""
+"Führen Sie den Befehl als Benutzer ``root`` auf dem :term:`Primary "
+"Directory Node` mit dem Befehl :command:`univention-directory-manager` "
+"aus oder verwenden Sie die Kurzform :command:`udm`."
+
+#: ../../management-interface/udm-command.rst:22
+msgid ""
+"UDM and the web interface use the same domain management modules. As a "
+"result, the command-line interface provides the same functions as the web"
+" interface."
+msgstr ""
+"UDM und die Weboberfläche verwenden dieselben Module für die "
+"Domänenverwaltung. Daher bietet die Befehlszeilenschnittstelle dieselben "
+"Funktionen wie die Weboberfläche."
+
+#: ../../management-interface/udm-command.rst:28
+msgid ":external+uv-nubus-manual:ref:`nubus-management-reference`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-management-reference`"
+
+#: ../../management-interface/udm-command.rst:29
+msgid ""
+"in :cite:t:`uv-nubus-manual` for the reference to the web-based "
+"management modules of UDM in the *Management UI*."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für die Referenz der webbasierten "
+"Verwaltungsmodule von UDM in der *Management UI*."
+
+#: ../../management-interface/udm-command.rst:35
+msgid "Parameters of the command-line interface"
+msgstr "Parameter der Befehlszeilenschnittstelle"
+
+#: ../../management-interface/udm-command.rst:39
+msgid ""
+"To list all available modules, run the command shown in :numref:`udm-"
+"list-modules-listing` with the ``modules`` parameter."
+msgstr ""
+"Führen Sie den in :numref:`udm-list-modules-listing` gezeigten Befehl mit"
+" dem Parameter ``modules`` aus, um alle verfügbaren Module aufzulisten."
+
+#: ../../management-interface/udm-command.rst:43
+msgid "List available UDM modules"
+msgstr "Verfügbare UDM Module auflisten"
+
+#: ../../management-interface/udm-command.rst:43
+msgid ""
+"$ univention-directory-manager modules\n"
+"Available Modules are:\n"
+"  computers/computer\n"
+"  computers/domaincontroller_backup\n"
+"  computers/domaincontroller_master\n"
+"  computers/domaincontroller_slave\n"
+"  [...]"
+msgstr ""
+"$ univention-directory-manager modules\n"
+"Available Modules are:\n"
+"  computers/computer\n"
+"  computers/domaincontroller_backup\n"
+"  computers/domaincontroller_master\n"
+"  computers/domaincontroller_slave\n"
+"  [...]"
+
+#: ../../management-interface/udm-command.rst:55
+msgid "Every module has the following operations:"
+msgstr "Jedes Modul hat die folgenden Operationen:"
+
+#: ../../management-interface/udm-command.rst:59
+msgid "Lists all existing objects of this type."
+msgstr "Listet alle vorhandenen Objekte dieses Typs auf."
+
+#: ../../management-interface/udm-command.rst:63
+msgid "Creates a new object."
+msgstr "Erstellt ein neues Objekt."
+
+#: ../../management-interface/udm-command.rst:67
+msgid "Modifies an existing object."
+msgstr "Ändert ein vorhandenes Objekt."
+
+#: ../../management-interface/udm-command.rst:71
+msgid "Deletes an object."
+msgstr "Löscht ein Objekt."
+
+#: ../../management-interface/udm-command.rst:75
+msgid "Moves an object to another position in the LDAP directory."
+msgstr "Verschiebt ein Objekt an eine andere Position im LDAP-Verzeichnis."
+
+#: ../../management-interface/udm-command.rst:79
+msgid "Restores an object from the Recycle Bin."
+msgstr "Stellt ein Objekt aus dem Papierkorb wieder her."
+
+#: ../../management-interface/udm-command.rst:81
+msgid ""
+"To view the options and operations for a UDM module, run the command "
+"shown in :numref:`udm-module-options-listing` with the module name and "
+"the operation."
+msgstr ""
+"Führen Sie den in :numref:`udm-module-options-listing` gezeigten Befehl "
+"mit dem Modulnamen und der Operation aus, um die Optionen und Operationen"
+" für ein UDM Modul anzuzeigen."
+
+#: ../../management-interface/udm-command.rst:85
+msgid "View options and operations for a UDM module"
+msgstr "Optionen und Operationen für ein UDM Modul anzeigen"
+
+#: ../../management-interface/udm-command.rst:85
+msgid ""
+"$ univention-directory-manager users/user move\n"
+"[...]\n"
+"general options:\n"
+"  --binddn                         bind DN\n"
+"  --bindpwd                        bind password (deprecated, use "
+"--bindpwdfile instead)\n"
+"  --bindpwdfile                    file containing bind password\n"
+"[...]\n"
+"create options:\n"
+"  --position                       Set position in tree\n"
+"  --set                            Set variable to value, e.g. foo=bar\n"
+"[...]\n"
+"modify options:\n"
+"  --dn                             Edit object with DN\n"
+"  --set                            Set variable to value, e.g. foo=bar\n"
+"[...]\n"
+"remove options:\n"
+"  --dn                             Remove object with DN\n"
+"  --superordinate                  Use superordinate module\n"
+"[...]\n"
+"list options:\n"
+"  --filter                         Lookup filter\n"
+"  --position                       Search underneath of position in tree\n"
+"[...]\n"
+"move options:\n"
+"  --dn                             Move object with DN\n"
+"  --position                       Move to position in tree\n"
+"[...]"
+msgstr ""
+"$ univention-directory-manager users/user move\n"
+"[...]\n"
+"general options:\n"
+"  --binddn                         bind DN\n"
+"  --bindpwd                        bind password (deprecated, use "
+"--bindpwdfile instead)\n"
+"  --bindpwdfile                    file containing bind password\n"
+"[...]\n"
+"create options:\n"
+"  --position                       Set position in tree\n"
+"  --set                            Set variable to value, e.g. foo=bar\n"
+"[...]\n"
+"modify options:\n"
+"  --dn                             Edit object with DN\n"
+"  --set                            Set variable to value, e.g. foo=bar\n"
+"[...]\n"
+"remove options:\n"
+"  --dn                             Remove object with DN\n"
+"  --superordinate                  Use superordinate module\n"
+"[...]\n"
+"list options:\n"
+"  --filter                         Lookup filter\n"
+"  --position                       Search underneath of position in tree\n"
+"[...]\n"
+"move options:\n"
+"  --dn                             Move object with DN\n"
+"  --position                       Move to position in tree\n"
+"[...]"
+
+#: ../../management-interface/udm-command.rst:117
+msgid ""
+"To view all operations, options, and attributes for a module, run the "
+"command shown in :numref:`udm-module-attributes-listing`. Replace "
+"``category/modulename`` with the module path, for example, "
+"``users/user``."
+msgstr ""
+"Führen Sie den in :numref:`udm-module-attributes-listing` gezeigten "
+"Befehl aus, um alle Operationen, Optionen und Attribute für ein Modul "
+"anzuzeigen. Ersetzen Sie ``category/modulename`` durch den Modulpfad, zum"
+" Beispiel ``users/user``."
+
+#: ../../management-interface/udm-command.rst:122
+msgid "View all attributes for a UDM module"
+msgstr "Alle Attribute für ein UDM Modul anzeigen"
+
+#: ../../management-interface/udm-command.rst:122
+msgid "$ univention-directory-manager [category/modulename]"
+msgstr "$ univention-directory-manager [category/modulename]"
+
+#: ../../management-interface/udm-command.rst:128
+msgid ""
+"When using the :option:`udm create` operation, you must specify all "
+"attributes marked with ``*``."
+msgstr ""
+"Wenn Sie die Operation :option:`udm create` verwenden, müssen Sie alle "
+"mit ``*`` markierten Attribute angeben."
+
+#: ../../management-interface/udm-command.rst:131
+msgid ""
+"Some attributes can have more than one value, for example, email "
+"addresses for user objects. The ``[]`` marker after an attribute name "
+"identifies a multi-value field. Some attributes require specific options "
+"for the object. To set an option for an individual attribute, enter the "
+"option name, as shown in :numref:`udm-module-variables-listing`."
+msgstr ""
+"Einige Attribute können mehr als einen Wert haben, zum Beispiel "
+"E-Mailadressen für Benutzerobjekte. Die Markierung ``[]`` hinter einem "
+"Attributnamen kennzeichnet ein Feld mit mehreren Werten. Einige Attribute"
+" erfordern bestimmte Optionen für das Objekt. Geben Sie den Optionsnamen "
+"ein, um eine Option für ein einzelnes Attribut zu setzen, wie in :numref"
+":`udm-module-variables-listing` gezeigt."
+
+#: ../../management-interface/udm-command.rst:139
+msgid "View variables for a UDM module"
+msgstr "Variablen für ein UDM Modul anzeigen"
+
+#: ../../management-interface/udm-command.rst:139
+msgid ""
+"users/user variables:\n"
+"  General:\n"
+"    username (*)                             Username\n"
+"[...]\n"
+"  Contact:\n"
+"    e-mail (person,[])                       E-Mail Address"
+msgstr ""
+"users/user variables:\n"
+"  General:\n"
+"    username (*)                             Username\n"
+"[...]\n"
+"  Contact:\n"
+"    e-mail (person,[])                       E-Mail Address"
+
+#: ../../management-interface/udm-command.rst:150
+msgid ""
+"Here, ``username (*)`` means that you must always set this attribute when"
+" you create user objects. When you enable the *person* option for the "
+"user account, which is the default, you can add one or more email "
+"addresses to the contact information."
+msgstr ""
+"Hier bedeutet ``username (*)``, dass Sie dieses Attribut beim Erstellen "
+"von Benutzerobjekten immer setzen müssen. Wenn Sie die Option *person* "
+"für das Benutzerkonto aktivieren, was die Standardeinstellung ist, können"
+" Sie den Kontaktdaten eine oder mehrere E-Mailadressen hinzufügen."
+
+#: ../../management-interface/udm-command.rst:156
+msgid "The following common parameters are available, depending on the operation:"
+msgstr ""
+"Die folgenden allgemeinen Parameter sind abhängig von der Operation "
+"verfügbar:"
+
+#: ../../management-interface/udm-command.rst:161
+msgid "Use this parameter to specify the bind DN for the LDAP connection."
+msgstr ""
+"Verwenden Sie diesen Parameter, um die :spelling:word:`Bind-DN` für die "
+"LDAP-Verbindung anzugeben."
+
+#: ../../management-interface/udm-command.rst:166
+msgid ""
+"You usually don't need ``--binddn`` when you run :command:`udm` as "
+"``root`` on a Nubus for UCS system. In that case, UDM tries to use local "
+"system credentials automatically."
+msgstr ""
+"Normalerweise benötigen Sie ``--binddn`` nicht, wenn Sie :command:`udm` "
+"als ``root`` auf einem Nubus für UCS-System ausführen. In diesem Fall "
+"versucht UDM automatisch, lokale Systemanmeldedaten zu verwenden."
+
+#: ../../management-interface/udm-command.rst:171
+msgid ""
+"Provide ``--binddn`` when you want to authenticate as a different LDAP "
+"account or when the default local credentials aren't available or don't "
+"have the required permissions."
+msgstr ""
+"Geben Sie ``--binddn`` an, wenn Sie sich als ein anderes LDAP-Konto "
+"authentifizieren möchten oder wenn die lokalen Standardanmeldedaten nicht"
+" verfügbar sind oder nicht die erforderlichen Berechtigungen haben."
+
+#: ../../management-interface/udm-command.rst:178
+msgid "Use this parameter to specify the bind password for the LDAP connection."
+msgstr ""
+"Verwenden Sie diesen Parameter, um das Bind-Passwort für die LDAP-"
+"Verbindung anzugeben."
+
+#: ../../management-interface/udm-command.rst:181
+msgid "``--bindpwd`` is deprecated. Use :option:`--bindpwdfile` instead."
+msgstr ""
+"``--bindpwd`` ist veraltet. Verwenden Sie stattdessen "
+":option:`--bindpwdfile`."
+
+#: ../../management-interface/udm-command.rst:187
+msgid ""
+"Use this parameter to specify a file that contains the bind password for "
+":option:`--binddn`."
+msgstr ""
+"Verwenden Sie diesen Parameter, um eine Datei anzugeben, die das Bind-"
+"Passwort für :option:`--binddn` enthält."
+
+#: ../../management-interface/udm-command.rst:192
+msgid ""
+"You usually don't need ``--bindpwdfile`` when you run :command:`udm` as "
+"``root`` on a UCS system. If you don't enter bind credentials, UDM tries "
+"to use local system credentials, such as the administrator account or the"
+" machine account."
+msgstr ""
+"Normalerweise benötigen Sie ``--bindpwdfile`` nicht, wenn Sie "
+":command:`udm` als ``root`` auf einem UCS-System ausführen. Wenn Sie "
+"keine Bind-Anmeldedaten angeben, versucht UDM, lokale Systemanmeldedaten "
+"zu verwenden, etwa das Konto für den Administrator oder das Rechnerkonto."
+
+#: ../../management-interface/udm-command.rst:199
+msgid ""
+"Provide :option:`--bindpwdfile` together with :option:`--binddn` when you"
+" want to authenticate explicitly or when automatic local authentication "
+"isn't available."
+msgstr ""
+"Geben Sie :option:`--bindpwdfile` zusammen mit :option:`--binddn` an, "
+"wenn Sie sich ausdrücklich authentifizieren möchten oder wenn die "
+"automatische lokale Authentifizierung nicht verfügbar ist."
+
+#: ../../management-interface/udm-command.rst:206
+msgid ""
+"Use this parameter to specify the path of the log file for the command. "
+"If you don't enter ``--logfile``, UDM writes to "
+":file:`/var/log/univention/directory-manager-cmd.log`."
+msgstr ""
+"Verwenden Sie diesen Parameter, um den Pfad der Logdatei für den Befehl "
+"anzugeben. Wenn Sie ``--logfile`` nicht angeben, schreibt UDM nach "
+":file:`/var/log/univention/directory-manager-cmd.log`."
+
+#: ../../management-interface/udm-command.rst:214
+msgid "Use this parameter to control StartTLS for the LDAP connection."
+msgstr ""
+"Verwenden Sie diesen Parameter, um StartTLS für die LDAP-Verbindung zu "
+"steuern."
+
+#: ../../management-interface/udm-command.rst:216
+#: ../../management-interface/udm-command.rst:391
+msgid "``0``"
+msgstr "``0``"
+
+#: ../../management-interface/udm-command.rst:217
+msgid "Don't use StartTLS."
+msgstr "Verwendet kein StartTLS."
+
+#: ../../management-interface/udm-command.rst:219
+#: ../../management-interface/udm-command.rst:394
+msgid "``1``"
+msgstr "``1``"
+
+#: ../../management-interface/udm-command.rst:220
+msgid "Try StartTLS."
+msgstr "Versucht es mit StartTLS."
+
+#: ../../management-interface/udm-command.rst:222
+msgid "``2``"
+msgstr "``2``"
+
+#: ../../management-interface/udm-command.rst:223
+msgid ""
+"Require StartTLS. This is default behavior, if you don't provide "
+":option:`--tls`."
+msgstr ""
+"Erfordern StartTLS. Dies ist das Standardverhalten, wenn Sie "
+":option:`--tls` nicht angeben."
+
+#: ../../management-interface/udm-command.rst:228
+msgid ""
+"Use this parameter to specify the distinguished name (DN) of the object "
+"when you modify, delete, move, or restore it. Enter the complete DN, as "
+"shown in :numref:`udm-remove-object-by-dn-listing`."
+msgstr ""
+"Verwenden Sie diesen Parameter, um den Distinguished Name (DN) des "
+"Objekts anzugeben, wenn Sie es ändern, löschen, verschieben oder "
+"wiederherstellen. Geben Sie den vollständigen DN ein, wie in :numref"
+":`udm-remove-object-by-dn-listing` gezeigt."
+
+#: ../../management-interface/udm-command.rst:233
+msgid "Remove an object by DN"
+msgstr "Ein Objekt per DN entfernen"
+
+#: ../../management-interface/udm-command.rst:233
+msgid ""
+"$ univention-directory-manager users/user remove \\\n"
+"  --dn \"uid=ldapadmin,cn=users,dc=company,dc=example\""
+msgstr ""
+"$ univention-directory-manager users/user remove \\\n"
+"  --dn \"uid=ldapadmin,cn=users,dc=company,dc=example\""
+
+#: ../../management-interface/udm-command.rst:242
+msgid "Use this parameter to specify an LDAP position."
+msgstr "Verwenden Sie diesen Parameter, um eine LDAP-Position anzugeben."
+
+#: ../../management-interface/udm-command.rst:244
+msgid ""
+"In the :option:`udm create` operation, this parameter specifies where UDM"
+" creates the object. If you don't enter ``--position``, UDM creates the "
+"object under the module's default LDAP base. If you use "
+":option:`--superordinate` without ``--position``, UDM uses the "
+"superordinate DN as the position."
+msgstr ""
+"In der Operation :option:`udm create` gibt dieser Parameter an, wo UDM "
+"das Objekt erstellt. Wenn Sie ``--position`` nicht angeben, erstellt UDM "
+"das Objekt unterhalb der Standard-LDAP-Basis des Moduls. Wenn Sie "
+":option:`--superordinate` ohne ``--position`` verwenden, nutzt UDM den "
+"übergeordneten DN als Position."
+
+#: ../../management-interface/udm-command.rst:251
+msgid ""
+"In the :option:`udm list` operation, this parameter limits the search to "
+"objects below the specified LDAP position."
+msgstr ""
+"In der Operation :option:`udm list` begrenzt dieser Parameter die Suche "
+"auf Objekte unterhalb der angegebenen LDAP-Position."
+
+#: ../../management-interface/udm-command.rst:254
+msgid ""
+"In the :option:`udm move` operation, this parameter specifies the target "
+"position, as shown in :numref:`udm-move-object-by-position-listing`."
+msgstr ""
+"In der Operation :option:`udm move` gibt dieser Parameter die "
+"Zielposition an, wie in :numref:`udm-move-object-by-position-listing` "
+"gezeigt."
+
+#: ../../management-interface/udm-command.rst:258
+msgid "Move an object to another LDAP position"
+msgstr "Ein Objekt an eine andere LDAP-Position verschieben"
+
+#: ../../management-interface/udm-command.rst:258
+msgid ""
+"$ univention-directory-manager computers/ipmanagedclient move \\\n"
+"  --dn \"cn=desk01,cn=management,cn=computers,dc=company,dc=com\" \\\n"
+"  --position \"cn=finance,cn=computers,dc=company,dc=example\""
+msgstr ""
+"$ univention-directory-manager computers/ipmanagedclient move \\\n"
+"  --dn \"cn=desk01,cn=management,cn=computers,dc=company,dc=com\" \\\n"
+"  --position \"cn=finance,cn=computers,dc=company,dc=example\""
+
+#: ../../management-interface/udm-command.rst:268
+msgid ""
+"Use this parameter to assign the given value to the following attribute. "
+"Use one ``--set`` parameter for each attribute-value pair, as shown in "
+":numref:`udm-set-attribute-values-listing`."
+msgstr ""
+"Verwenden Sie diesen Parameter, um dem folgenden Attribut den angegebenen"
+" Wert zuzuweisen. Verwenden Sie einen Parameter ``--set`` für jedes "
+"Attribut-Wert-Paar, wie in :numref:`udm-set-attribute-values-listing` "
+"gezeigt."
+
+#: ../../management-interface/udm-command.rst:272
+msgid "Create a user with attribute values"
+msgstr "Einen Benutzer mit Werte für Attribute erstellen"
+
+#: ../../management-interface/udm-command.rst:272
+msgid ""
+"$ univention-directory-manager users/user create \\\n"
+"  --position \"cn=users,dc=company,dc=example\" \\\n"
+"  --set username=\"jsmith\" \\\n"
+"  --set firstname=\"John\" \\\n"
+"  --set lastname=\"Smith\" \\\n"
+"  --set password=\"12345678\""
+msgstr ""
+"$ univention-directory-manager users/user create \\\n"
+"  --position \"cn=users,dc=company,dc=example\" \\\n"
+"  --set username=\"jsmith\" \\\n"
+"  --set firstname=\"John\" \\\n"
+"  --set lastname=\"Smith\" \\\n"
+"  --set password=\"12345678\""
+
+#: ../../management-interface/udm-command.rst:285
+msgid ""
+"Use ``--append`` or ``--remove`` to add or remove a value from a multi-"
+"value field, as shown in :numref:`udm-append-remove-values-listing`."
+msgstr ""
+"Verwenden Sie ``--append`` oder ``--remove``, um einen Wert zu einem Feld"
+" mit mehreren Werten hinzuzufügen oder daraus zu entfernen, wie in "
+":numref:`udm-append-remove-values-listing` gezeigt."
+
+#: ../../management-interface/udm-command.rst:289
+msgid "Add and remove values in a multi-value field"
+msgstr "Werte in einem Feld mit mehreren Werten hinzufügen und entfernen"
+
+#: ../../management-interface/udm-command.rst:289
+msgid ""
+"$ univention-directory-manager groups/group modify \\\n"
+"  --dn \"cn=staff,cn=groups,dc=company,dc=example\" \\\n"
+"  --append users=\"uid=smith,cn=users,dc=company,dc=example\" \\\n"
+"  --remove users=\"uid=miller,cn=users,dc=company,dc=example\""
+msgstr ""
+"$ univention-directory-manager groups/group modify \\\n"
+"  --dn \"cn=staff,cn=groups,dc=company,dc=example\" \\\n"
+"  --append users=\"uid=smith,cn=users,dc=company,dc=example\" \\\n"
+"  --remove users=\"uid=miller,cn=users,dc=company,dc=example\""
+
+#: ../../management-interface/udm-command.rst:300
+msgid ""
+"Use this parameter to define the LDAP object classes for an object. For "
+"example, if you provide only the ``pki`` option for a user object, you "
+"can't specify ``mailPrimaryAddress`` because this attribute belongs to "
+"the ``mail`` option."
+msgstr ""
+"Verwenden Sie diesen Parameter, um die LDAP-Objektklassen für ein Objekt "
+"zu definieren. Wenn Sie zum Beispiel für ein Benutzerobjekt nur die "
+"Option ``pki`` angeben, können Sie ``mailPrimaryAddress`` nicht angeben, "
+"weil dieses Attribut zur Option ``mail`` gehört."
+
+#: ../../management-interface/udm-command.rst:308
+msgid "Use ``--append-option`` to add a module option to the current option set."
+msgstr ""
+"Verwenden Sie ``--append-option``, um dem aktuellen Optionssatz eine "
+"Moduloption hinzuzufügen."
+
+#: ../../management-interface/udm-command.rst:311
+msgid ""
+"Use ``--remove-option`` to remove a module option from the current option"
+" set."
+msgstr ""
+"Verwenden Sie ``--remove-option``, um eine Moduloption aus dem aktuellen "
+"Optionssatz zu entfernen."
+
+#: ../../management-interface/udm-command.rst:314
+msgid ""
+"These parameters are useful when a module provides default options, and "
+"you want to adjust them for one command."
+msgstr ""
+"Diese Parameter sind nützlich, wenn ein Modul Standardoptionen "
+"bereitstellt und Sie diese für einen Befehl anpassen möchten."
+
+#: ../../management-interface/udm-command.rst:319
+msgid ""
+"Use ``--superordinate`` when an object requires the DN of a parent "
+"object. For example, a DHCP object requires a DHCP service object. Pass "
+"the DN of that object with the ``--superordinate`` option."
+msgstr ""
+"Verwenden Sie ``--superordinate``, wenn ein Objekt den DN eines "
+"übergeordneten Objekts benötigt. Beispielsweise benötigt ein DHCP-Objekt "
+"ein DHCP-Serviceobjekt. Übergeben Sie den DN dieses Objekts mit der "
+"Option ``--superordinate``."
+
+#: ../../management-interface/udm-command.rst:324
+msgid ""
+"For list operations, you can also use ``--superordinate`` to limit the "
+"lookup context for dependent objects."
+msgstr ""
+"Für Listenoperationen können Sie ``--superordinate`` auch verwenden, um "
+"den Suchkontext für abhängige Objekte zu begrenzen."
+
+#: ../../management-interface/udm-command.rst:330
+msgid ""
+"Use the ``--policy-reference`` parameter to assign a policy to an object."
+" If you link a policy to an object, the object uses the policy settings, "
+"as shown in :numref:`udm-policy-reference-listing`. Replace "
+"``category/modulename`` with the module path, and replace ``Operation`` "
+"with the operation that you want to run."
+msgstr ""
+"Verwenden Sie den Parameter ``--policy-reference``, um einem Objekt eine "
+"Richtlinie zuzuweisen. Wenn Sie eine Richtlinie mit einem Objekt "
+"verknüpfen, verwendet das Objekt die Richtlinieneinstellungen, wie in "
+":numref:`udm-policy-reference-listing` gezeigt. Ersetzen Sie "
+"``category/modulename`` durch den Modulpfad und ersetzen Sie "
+"``Operation`` durch die Operation, die Sie ausführen möchten."
+
+#: ../../management-interface/udm-command.rst:337
+msgid "Repeat the parameter to assign more than one policy."
+msgstr "Wiederholen Sie den Parameter, um mehr als eine Richtlinie zuzuweisen."
+
+#: ../../management-interface/udm-command.rst:339
+msgid "Assign a policy to an object"
+msgstr "Einem Objekt eine Richtlinie zuweisen"
+
+#: ../../management-interface/udm-command.rst:339
+msgid ""
+"$ univention-directory-manager [category/modulename] [Operation] \\\n"
+"  --policy-reference "
+"\"cn=sales,cn=pwhistory,cn=users,cn=policies,dc=company,dc=example\""
+msgstr ""
+"$ univention-directory-manager [category/modulename] [Operation] \\\n"
+"  --policy-reference "
+"\"cn=sales,cn=pwhistory,cn=users,cn=policies,dc=company,dc=example\""
+
+#: ../../management-interface/udm-command.rst:348
+msgid ""
+"Use the ``--policy-dereference`` parameter to remove a policy from an "
+"object."
+msgstr ""
+"Verwenden Sie den Parameter ``--policy-dereference``, um eine Richtlinie "
+"von einem Objekt zu entfernen."
+
+#: ../../management-interface/udm-command.rst:350
+msgid "Repeat the parameter to remove more than one policy reference."
+msgstr ""
+"Wiederholen Sie den Parameter, um mehr als eine Richtlinienreferenz zu "
+"entfernen."
+
+#: ../../management-interface/udm-command.rst:354
+msgid ""
+"The ``--ignore_exists`` parameter skips existing objects. If the object "
+"already exists, UDM still returns the error code ``0`` for no error."
+msgstr ""
+"Der Parameter ``--ignore_exists`` überspringt vorhandene Objekte. Wenn "
+"das Objekt bereits existiert, gibt UDM trotzdem den Fehlercode ``0`` für "
+"keinen Fehler zurück."
+
+#: ../../management-interface/udm-command.rst:360
+msgid ""
+"Use this parameter with the :option:`udm modify` or :option:`udm remove` "
+"operation to ignore missing objects. If the object doesn't exist, UDM "
+"doesn't report an error."
+msgstr ""
+"Verwenden Sie diesen Parameter mit der Operation :option:`udm modify` "
+"oder :option:`udm remove`, um fehlende Objekte zu ignorieren. Wenn das "
+"Objekt nicht existiert, meldet UDM keinen Fehler."
+
+#: ../../management-interface/udm-command.rst:367
+msgid ""
+"Use this parameter with the :option:`udm remove` operation to remove "
+"referring objects during cleanup, if the module supports that cleanup."
+msgstr ""
+"Verwenden Sie diesen Parameter mit der Operation :option:`udm remove`, um"
+" referenzierende Objekte während der Bereinigung zu entfernen, wenn das "
+"Modul diese Bereinigung unterstützt."
+
+#: ../../management-interface/udm-command.rst:373
+msgid "Use this parameter to select objects with an LDAP filter."
+msgstr ""
+"Verwenden Sie diesen Parameter, um Objekte mit einem LDAP-Filter "
+"auszuwählen."
+
+#: ../../management-interface/udm-command.rst:375
+msgid "With the :option:`udm list` operation, UDM lists matching objects."
+msgstr "Mit der Operation :option:`udm list` listet UDM passende Objekte auf."
+
+#: ../../management-interface/udm-command.rst:378
+msgid ""
+"With the :option:`udm remove` operation, UDM removes the matching object "
+"in the selected context. You can combine ``--filter`` with :option:`--dn`"
+" or :option:`--position`."
+msgstr ""
+"Mit der Operation :option:`udm remove` entfernt UDM das passende Objekt "
+"im ausgewählten Kontext. Sie können ``--filter`` mit :option:`--dn` oder "
+":option:`--position` kombinieren."
+
+#: ../../management-interface/udm-command.rst:385
+msgid ""
+"Use this parameter with the :option:`udm list` operation to show policy-"
+"based settings."
+msgstr ""
+"Verwenden Sie diesen Parameter mit der Operation :option:`udm list`, um "
+"richtlinienbasierte Einstellungen anzuzeigen."
+
+#: ../../management-interface/udm-command.rst:388
+msgid "If you don't enter ``--policies``, UDM doesn't show policy-based settings."
+msgstr ""
+"Wenn Sie ``--policies`` nicht angeben, zeigt UDM keine "
+"richtlinienbasierten Einstellungen an."
+
+#: ../../management-interface/udm-command.rst:392
+msgid "Show a short form."
+msgstr "Eine Kurzform anzeigen."
+
+#: ../../management-interface/udm-command.rst:395
+msgid "Show a long form that includes the policy DN."
+msgstr "Eine Langform anzeigen, die den DN der Richtlinie enthält."
+
+#: ../../management-interface/udm-command.rst:399
+msgid ""
+"Use this parameter with the :option:`udm list` operation to limit the "
+"output to specific properties."
+msgstr ""
+"Verwenden Sie diesen Parameter mit der Operation :option:`udm list`, um "
+"die Ausgabe auf bestimmte Eigenschaften zu begrenzen."
+
+#: ../../management-interface/udm-command.rst:402
+msgid ""
+"Repeat the parameter for each property that you want to show. If you "
+"don't enter ``--properties``, UDM shows all properties that are "
+"configured for list output."
+msgstr ""
+"Wiederholen Sie den Parameter für jede Eigenschaft, die Sie anzeigen "
+"möchten. Wenn Sie ``--properties`` nicht angeben, zeigt UDM alle "
+"Eigenschaften an, die für die Listenausgabe konfiguriert sind."
+
+#: ../../management-interface/udm-command.rst:409
+msgid "Command-line interface examples"
+msgstr "Beispiele für die Befehlszeilenschnittstelle"
+
+#: ../../management-interface/udm-command.rst:411
+msgid "Use these examples as templates for your own scripts."
+msgstr "Verwenden Sie diese Beispiele als Vorlagen für Ihre eigenen Skripte."
+
+#: ../../management-interface/udm-command.rst:416
+msgid "Users"
+msgstr "Benutzer"
+
+#: ../../management-interface/udm-command.rst:418
+msgid ""
+"This section lists examples of the :command:`udm` working with the "
+":external+uv-nubus-manual:ref:`nubus-user-management-users`."
+msgstr ""
+"Dieser Abschnitt enthält Beispiele für die Verwendung von :command:`udm` "
+"mit dem :external+uv-nubus-manual:ref:`nubus-user-management-users`."
+
+#: ../../management-interface/udm-command.rst:421
+msgid ""
+"To create a user in the standard user container, run the :option:`udm "
+"create` command shown in :numref:`udm-create-user-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-user-listing` gezeigten Befehl "
+":option:`udm create` aus, um einen Benutzer im Standard-Benutzercontainer"
+" zu erstellen."
+
+#: ../../management-interface/udm-command.rst:424
+msgid "Create a user in the standard user container"
+msgstr "Einen Benutzer im Standard-Benutzercontainer erstellen"
+
+#: ../../management-interface/udm-command.rst:424
+msgid ""
+"$ univention-directory-manager users/user create \\\n"
+"  --position \"cn=users,dc=example,dc=com\" \\\n"
+"  --set username=\"user01\" \\\n"
+"  --set firstname=\"Random\" \\\n"
+"  --set lastname=\"User\" \\\n"
+"  --set organisation=\"Example company LLC\" \\\n"
+"  --set mailPrimaryAddress=\"mail@example.com\" \\\n"
+"  --set password=\"secretpassword\""
+msgstr ""
+"$ univention-directory-manager users/user create \\\n"
+"  --position \"cn=users,dc=example,dc=com\" \\\n"
+"  --set username=\"user01\" \\\n"
+"  --set firstname=\"Random\" \\\n"
+"  --set lastname=\"User\" \\\n"
+"  --set organisation=\"Example company LLC\" \\\n"
+"  --set mailPrimaryAddress=\"mail@example.com\" \\\n"
+"  --set password=\"secretpassword\""
+
+#: ../../management-interface/udm-command.rst:437
+msgid ""
+"To add a postal address for an existing user, run the :option:`udm "
+"modify` command shown in :numref:`udm-add-user-postal-address-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-add-user-postal-address-listing` gezeigten"
+" Befehl :option:`udm modify` aus, um einem vorhandenen Benutzer eine "
+"Postanschrift hinzuzufügen."
+
+#: ../../management-interface/udm-command.rst:440
+msgid "Add a postal address to an existing user"
+msgstr "Einem vorhandenen Benutzer eine Postanschrift hinzufügen"
+
+#: ../../management-interface/udm-command.rst:440
+msgid ""
+"$ univention-directory-manager users/user modify \\\n"
+"  --dn \"uid=user01,cn=users,dc=example,dc=com\" \\\n"
+"  --set street=\"Exemplary Road 42\" \\\n"
+"  --set postcode=\"28239\" \\\n"
+"  --set city=\"Bremen\""
+msgstr ""
+"$ univention-directory-manager users/user modify \\\n"
+"  --dn \"uid=user01,cn=users,dc=example,dc=com\" \\\n"
+"  --set street=\"Exemplary Road 42\" \\\n"
+"  --set postcode=\"28239\" \\\n"
+"  --set city=\"Bremen\""
+
+#: ../../management-interface/udm-command.rst:450
+msgid ""
+"To list all users whose username begins with ``user``, run the "
+":option:`udm list` command shown in :numref:`udm-list-users-by-prefix-"
+"listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-list-users-by-prefix-listing` gezeigten "
+"Befehl :option:`udm list` aus, um alle Benutzer aufzulisten, deren "
+"Benutzername mit ``user`` beginnt."
+
+#: ../../management-interface/udm-command.rst:453
+msgid "List users by username prefix"
+msgstr "Benutzer nach Präfix des Benutzernamens auflisten"
+
+#: ../../management-interface/udm-command.rst:453
+msgid ""
+"$ univention-directory-manager users/user list \\\n"
+"  --filter uid='user*'"
+msgstr ""
+"$ univention-directory-manager users/user list \\\n"
+"  --filter uid='user*'"
+
+#: ../../management-interface/udm-command.rst:460
+msgid ""
+"To limit the search to a specific LDAP position, run the :option:`udm "
+"list` command shown in :numref:`udm-list-users-by-prefix-position-"
+"listing`. This example lists all users in the "
+"``cn=bremen,cn=users,dc=example,dc=com`` container."
+msgstr ""
+"Führen Sie den in :numref:`udm-list-users-by-prefix-position-listing` "
+"gezeigten Befehl :option:`udm list` aus, um die Suche auf eine bestimmte "
+"LDAP-Position zu begrenzen. Dieses Beispiel listet alle Benutzer im "
+"Container ``cn=bremen,cn=users,dc=example,dc=com`` auf."
+
+#: ../../management-interface/udm-command.rst:464
+msgid "List users by username prefix in a specific container"
+msgstr ""
+"Benutzer nach Präfix des Benutzernamens in einem bestimmten Container "
+"auflisten"
+
+#: ../../management-interface/udm-command.rst:464
+msgid ""
+"$ univention-directory-manager users/user list \\\n"
+"  --filter uid=\"user*\" \\\n"
+"  --position \"cn=bremen,cn=users,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager users/user list \\\n"
+"  --filter uid=\"user*\" \\\n"
+"  --position \"cn=bremen,cn=users,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:472
+msgid ""
+"To remove the user ``user04``, run the :option:`udm remove` command shown"
+" in :numref:`udm-remove-user-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-remove-user-listing` gezeigten Befehl "
+":option:`udm remove` aus, um den Benutzer ``user04`` zu entfernen."
+
+#: ../../management-interface/udm-command.rst:475
+msgid "Remove a user"
+msgstr "Einen Benutzer entfernen"
+
+#: ../../management-interface/udm-command.rst:475
+msgid ""
+"$ univention-directory-manager users/user remove \\\n"
+"  --dn \"uid=user04,cn=users,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager users/user remove \\\n"
+"  --dn \"uid=user04,cn=users,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:482
+msgid ""
+"If your organization has two sites with separate containers, you can move"
+" a user from the ``Hamburg`` container to the ``Bremen`` container. Run "
+"the :option:`udm move` command shown in :numref:`udm-move-user-between-"
+"containers-listing`."
+msgstr ""
+"Wenn Ihre Organisation zwei Standorte mit getrennten Containern hat, "
+"können Sie einen Benutzer aus dem Container ``Hamburg`` in den Container "
+"``Bremen`` verschieben. Führen Sie den in :numref:`udm-move-user-between-"
+"containers-listing` gezeigten Befehl :option:`udm move` aus."
+
+#: ../../management-interface/udm-command.rst:487
+msgid "Move a user between site containers"
+msgstr "Einen Benutzer zwischen Standort-Containern verschieben"
+
+#: ../../management-interface/udm-command.rst:487
+msgid ""
+"$ univention-directory-manager users/user move \\\n"
+"  --dn \"uid=user03,cn=hamburg,cn=users,dc=example,dc=com\" \\\n"
+"  --position \"cn=bremen,cn=users,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager users/user move \\\n"
+"  --dn \"uid=user03,cn=hamburg,cn=users,dc=example,dc=com\" \\\n"
+"  --position \"cn=bremen,cn=users,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:498
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Users* management"
+" module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*Benutzer*."
+
+#: ../../management-interface/udm-command.rst:504
+msgid "Groups"
+msgstr "Gruppen"
+
+#: ../../management-interface/udm-command.rst:506
+msgid ""
+"This section lists examples of the :command:`udm` working with the "
+":external+uv-nubus-manual:ref:`nubus-groups-management`."
+msgstr ""
+"Dieser Abschnitt enthält Beispiele für die Verwendung von :command:`udm` "
+"mit dem :external+uv-nubus-manual:ref:`nubus-groups-management`."
+
+#: ../../management-interface/udm-command.rst:509
+msgid ""
+"To create the group ``Example Users`` and add the user ``user01``, run "
+"the :option:`udm create` command shown in :numref:`udm-create-group-with-"
+"user-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-group-with-user-listing` gezeigten "
+"Befehl :option:`udm create` aus, um die Gruppe ``Example Users`` zu "
+"erstellen und den Benutzer ``user01`` hinzuzufügen."
+
+#: ../../management-interface/udm-command.rst:512
+msgid "Create a group and add a user"
+msgstr "Eine Gruppe erstellen und einen Benutzer hinzufügen"
+
+#: ../../management-interface/udm-command.rst:512
+msgid ""
+"$ univention-directory-manager groups/group create \\\n"
+"  --position \"cn=groups,dc=example,dc=com\" \\\n"
+"  --set name=\"Example Users\" \\\n"
+"  --set users=\"uid=user01,cn=users,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager groups/group create \\\n"
+"  --position \"cn=groups,dc=example,dc=com\" \\\n"
+"  --set name=\"Example Users\" \\\n"
+"  --set users=\"uid=user01,cn=users,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:521
+msgid ""
+"To add the user ``user02`` to the existing group, run the :option:`udm "
+"modify` command shown in :numref:`udm-add-user-to-group-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-add-user-to-group-listing` gezeigten "
+"Befehl :option:`udm modify` aus, um den Benutzer ``user02`` zur "
+"vorhandenen Gruppe hinzuzufügen."
+
+#: ../../management-interface/udm-command.rst:524
+msgid "Add a user to an existing group"
+msgstr "Einen Benutzer zu einer vorhandenen Gruppe hinzufügen"
+
+#: ../../management-interface/udm-command.rst:524
+msgid ""
+"$ univention-directory-manager groups/group modify \\\n"
+"  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
+"  --append users=\"uid=user02,cn=users,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager groups/group modify \\\n"
+"  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
+"  --append users=\"uid=user02,cn=users,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:534
+msgid ""
+"A ``--set`` on the attribute ``users`` overwrites the list of group "
+"members in contrast to ``--append``."
+msgstr ""
+"Ein ``--set`` für das Attribut ``users`` überschreibt im Gegensatz zu "
+"``--append`` die Liste der Gruppenmitglieder."
+
+#: ../../management-interface/udm-command.rst:537
+msgid ""
+"To remove the user ``user01`` from the group, run the :option:`udm "
+"modify` command shown in :numref:`udm-remove-user-from-group-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-remove-user-from-group-listing` gezeigten "
+"Befehl :option:`udm modify` aus, um den Benutzer ``user01`` aus der "
+"Gruppe zu entfernen."
+
+#: ../../management-interface/udm-command.rst:540
+msgid "Remove a user from a group"
+msgstr "Einen Benutzer aus einer Gruppe entfernen"
+
+#: ../../management-interface/udm-command.rst:540
+msgid ""
+"$ univention-directory-manager groups/group modify \\\n"
+"  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
+"  --remove users=\"uid=user01,cn=users,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager groups/group modify \\\n"
+"  --dn \"cn=Example Users,cn=groups,dc=example,dc=com\" \\\n"
+"  --remove users=\"uid=user01,cn=users,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:551
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Groups* "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*Gruppen*."
+
+#: ../../management-interface/udm-command.rst:557
+msgid "Containers"
+msgstr "Container"
+
+#: ../../management-interface/udm-command.rst:559
+msgid ""
+"To create the ``cn=Bremen`` container under ``cn=computers`` for "
+"computers at the ``Bremen`` site, run the :option:`udm create` command "
+"shown in :numref:`udm-create-container-listing`. The ``computerPath`` "
+"option also registers this container as the standard container for "
+"computer objects. For more information, see :external+uv-nubus-manual:ref"
+":`nubus-domain-ldap-user-defined-structure` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-container-listing` gezeigten Befehl"
+" :option:`udm create` aus, um den Container ``cn=Bremen`` unterhalb von "
+"``cn=computers`` für Computer am Standort ``Bremen`` zu erstellen. Die "
+"Option ``computerPath`` registriert diesen Container außerdem als "
+"Standardcontainer für Computerobjekte. Weitere Informationen finden Sie "
+"unter :external+uv-nubus-manual:ref:`nubus-domain-ldap-user-defined-"
+"structure` im :cite:t:`uv-nubus-manual`."
+
+#: ../../management-interface/udm-command.rst:567
+msgid "Create a container for a site"
+msgstr "Einen Container für einen Standort erstellen"
+
+#: ../../management-interface/udm-command.rst:567
+msgid ""
+"$ univention-directory-manager container/cn create \\\n"
+"  --position \"cn=computers,dc=example,dc=com\" \\\n"
+"  --set name=\"bremen\" \\\n"
+"  --set computerPath=1"
+msgstr ""
+"$ univention-directory-manager container/cn create \\\n"
+"  --position \"cn=computers,dc=example,dc=com\" \\\n"
+"  --set name=\"bremen\" \\\n"
+"  --set computerPath=1"
+
+#: ../../management-interface/udm-command.rst:578
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-ldap`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-ldap`"
+
+#: ../../management-interface/udm-command.rst:579
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *LDAP directory* "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*LDAP-Verzeichnis*."
+
+#: ../../management-interface/udm-command.rst:585
+msgid "Policies"
+msgstr "Richtlinien"
+
+#: ../../management-interface/udm-command.rst:587
+msgid ""
+"This section lists examples of the :command:`udm` working with the "
+":external+uv-nubus-manual:ref:`nubus-domain-policies`."
+msgstr ""
+"Dieser Abschnitt enthält Beispiele für die Verwendung von :command:`udm` "
+"mit dem :external+uv-nubus-manual:ref:`nubus-domain-policies`."
+
+#: ../../management-interface/udm-command.rst:590
+msgid ""
+"To create a user quota policy, run the :option:`udm create` command shown"
+" in :numref:`udm-create-user-quota-policy-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-user-quota-policy-listing` "
+"gezeigten Befehl :option:`udm create` aus, um eine Benutzerquoten-"
+"Richtlinie zu erstellen."
+
+#: ../../management-interface/udm-command.rst:593
+msgid "Create a user quota policy"
+msgstr "Eine Benutzerquoten-Richtlinie erstellen"
+
+#: ../../management-interface/udm-command.rst:593
+msgid ""
+"$ univention-directory-manager policies/share_userquota create \\\n"
+"  --position \"cn=policies,dc=example,dc=com\" \\\n"
+"  --set name=\"Default quota\" \\\n"
+"  --set softLimitSpace=5GB \\\n"
+"  --set hardLimitSpace=10GB"
+msgstr ""
+"$ univention-directory-manager policies/share_userquota create \\\n"
+"  --position \"cn=policies,dc=example,dc=com\" \\\n"
+"  --set name=\"Default quota\" \\\n"
+"  --set softLimitSpace=5GB \\\n"
+"  --set hardLimitSpace=10GB"
+
+#: ../../management-interface/udm-command.rst:603
+msgid ""
+"To link this policy to the user container ``cn=users``, run the "
+":option:`udm modify` command shown in :numref:`udm-link-policy-to-user-"
+"container-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-link-policy-to-user-container-listing` "
+"gezeigten Befehl :option:`udm modify` aus, um diese Richtlinie mit dem "
+"Benutzercontainer ``cn=users`` zu verknüpfen."
+
+#: ../../management-interface/udm-command.rst:606
+msgid "Link a policy to the user container"
+msgstr "Eine Richtlinie mit dem Benutzercontainer verknüpfen"
+
+#: ../../management-interface/udm-command.rst:606
+msgid ""
+"$ univention-directory-manager container/cn modify \\\n"
+"  --dn \"cn=users,dc=example,dc=com\" \\\n"
+"  --policy-reference \"cn=Default quota,cn=policies,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager container/cn modify \\\n"
+"  --dn \"cn=users,dc=example,dc=com\" \\\n"
+"  --policy-reference \"cn=Default quota,cn=policies,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:614
+msgid ""
+"To create a *Univention Configuration Registry* policy that sets the "
+"storage time for log files to one year, run the :option:`udm create` "
+"command shown in :numref:`udm-create-ucr-policy-listing`. Use one space "
+"to separate the variable name from its value."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-ucr-policy-listing` gezeigten "
+"Befehl :option:`udm create` aus, um eine Richtlinie für die *Univention "
+"Configuration Registry* zu erstellen, die die Aufbewahrungszeit für "
+"Logdateien auf ein Jahr setzt. Verwenden Sie ein Leerzeichen, um den "
+"Variablennamen von seinem Wert zu trennen."
+
+#: ../../management-interface/udm-command.rst:619
+msgid "Create a UCR policy"
+msgstr "Eine UCR-Richtlinie erstellen"
+
+#: ../../management-interface/udm-command.rst:619
+msgid ""
+"$ univention-directory-manager policies/registry create \\\n"
+"  --position \"cn=config-registry,cn=policies,dc=example,dc=com\" \\\n"
+"  --set name=\"default UCR settings\" \\\n"
+"  --set registry=\"logrotate/rotate/count 52\""
+msgstr ""
+"$ univention-directory-manager policies/registry create \\\n"
+"  --position \"cn=config-registry,cn=policies,dc=example,dc=com\" \\\n"
+"  --set name=\"default UCR settings\" \\\n"
+"  --set registry=\"logrotate/rotate/count 52\""
+
+#: ../../management-interface/udm-command.rst:628
+msgid ""
+"To add another value to the UCR policy, run the :option:`udm modify` "
+"command shown in :numref:`udm-append-ucr-policy-value-listing`."
+msgstr ""
+"Führen Sie den in :numref:`udm-append-ucr-policy-value-listing` gezeigten"
+" Befehl :option:`udm modify` aus, um der UCR-Richtlinie einen weiteren "
+"Wert hinzuzufügen."
+
+#: ../../management-interface/udm-command.rst:631
+msgid "Add a value to a UCR policy"
+msgstr "Einer UCR-Richtlinie einen Wert hinzufügen"
+
+#: ../../management-interface/udm-command.rst:631
+msgid ""
+"$ univention-directory-manager policies/registry modify \\\n"
+"  --dn \"cn=default UCR settings,cn=config-"
+"registry,cn=policies,dc=example,dc=com\" \\\n"
+"  --append registry='\"logrotate/compress\" \"no\"'"
+msgstr ""
+"$ univention-directory-manager policies/registry modify \\\n"
+"  --dn \"cn=default UCR settings,cn=config-"
+"registry,cn=policies,dc=example,dc=com\" \\\n"
+"  --append registry='\"logrotate/compress\" \"no\"'"
+
+#: ../../management-interface/udm-command.rst:642
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Policies* "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*Richtlinien*."
+
+#: ../../management-interface/udm-command.rst:648
+msgid "Computers"
+msgstr "Computer"
+
+#: ../../management-interface/udm-command.rst:650
+msgid ""
+"To create a Windows client account, run the :option:`udm create` command "
+"shown in :numref:`udm-create-windows-client-listing`. If the client joins"
+" the Samba domain later, as described in :ref:`domain-infrastructure-"
+"join-windows`, the domain join uses this computer account automatically:"
+msgstr ""
+"Führen Sie den in :numref:`udm-create-windows-client-listing` gezeigten "
+"Befehl :option:`udm create` aus, um ein Konto für einen Windows-Client zu"
+" erstellen. Wenn der Client später der Samba-Domäne beitritt, wie in :ref"
+":`domain-infrastructure-join-windows` beschrieben, verwendet der "
+"Domänenbeitritt dieses Computerkonto automatisch:"
+
+#: ../../management-interface/udm-command.rst:656
+msgid "Create a Windows client account"
+msgstr "Ein Konto for einen Windows-Client erstellen"
+
+#: ../../management-interface/udm-command.rst:656
+msgid ""
+"$ univention-directory-manager computers/windows create \\\n"
+"  --position \"cn=computers,dc=example,dc=com\" \\\n"
+"  --set name=WinClient01 \\\n"
+"  --set mac=aa:bb:cc:aa:bb:cc \\\n"
+"  --set ip=192.0.2.10"
+msgstr ""
+"$ univention-directory-manager computers/windows create \\\n"
+"  --position \"cn=computers,dc=example,dc=com\" \\\n"
+"  --set name=WinClient01 \\\n"
+"  --set mac=aa:bb:cc:aa:bb:cc \\\n"
+"  --set ip=192.0.2.10"
+
+#: ../../management-interface/udm-command.rst:669
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Computers* "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*Computer*."
+
+#: ../../management-interface/udm-command.rst:675
+msgid "Shares"
+msgstr "Freigaben"
+
+#: ../../management-interface/udm-command.rst:677
+msgid ""
+"To create the *Documentation* share on *fileserver.example.com*, run the "
+":option:`udm create` command shown in :numref:`udm-create-share-listing`."
+" If the :file:`/var/shares/documentation/` directory doesn't exist on the"
+" server, UDM creates it automatically."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-share-listing` gezeigten Befehl "
+":option:`udm create` aus, um die Freigabe *Documentation* auf "
+"*fileserver.example.com* zu erstellen. Wenn das Verzeichnis "
+":file:`/var/shares/documentation/` auf dem Server nicht existiert, "
+"erstellt UDM es automatisch."
+
+#: ../../management-interface/udm-command.rst:682
+msgid "Create a share"
+msgstr "Eine Freigabe erstellen"
+
+#: ../../management-interface/udm-command.rst:682
+msgid ""
+"$ univention-directory-manager shares/share create \\\n"
+"  --position \"cn=shares,dc=example,dc=com\" \\\n"
+"  --set name=\"Documentation\" \\\n"
+"  --set host=\"fileserver.example.com\" \\\n"
+"  --set path=\"/var/shares/documentation\""
+msgstr ""
+"$ univention-directory-manager shares/share create \\\n"
+"  --position \"cn=shares,dc=example,dc=com\" \\\n"
+"  --set name=\"Documentation\" \\\n"
+"  --set host=\"fileserver.example.com\" \\\n"
+"  --set path=\"/var/shares/documentation\""
+
+#: ../../management-interface/udm-command.rst:694
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-shares`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-shares`"
+
+#: ../../management-interface/udm-command.rst:695
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Shares* "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*Freigaben*."
+
+#: ../../management-interface/udm-command.rst:701
+msgid "Printers"
+msgstr "Drucker"
+
+#: ../../management-interface/udm-command.rst:703
+msgid ""
+"To create the printer share *LaserPrinter01* on the print server "
+"*printserver.example.com*, run the :option:`udm create` command shown in "
+":numref:`udm-create-printer-share-listing`. The PPD file defines the "
+"printer properties. Specify the PPD filename relative to "
+":file:`/usr/share/ppd/`. Ensure the printer is reachable over the network"
+" and supports the IPP protocol."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-printer-share-listing` gezeigten "
+"Befehl :option:`udm create` aus, um die Druckerfreigabe *LaserPrinter01* "
+"auf dem Druckserver *printserver.example.com* zu erstellen. Die PPD-Datei"
+" definiert die Druckereigenschaften. Geben Sie den Namen für die PPD-"
+"Datei relativ zu :file:`/usr/share/ppd/` an. Stellen Sie sicher, dass der"
+" Drucker über das Netzwerk erreichbar ist und das IPP-Protokoll "
+"unterstützt."
+
+#: ../../management-interface/udm-command.rst:710
+msgid "Create a printer share"
+msgstr "Eine Druckerfreigabe erstellen"
+
+#: ../../management-interface/udm-command.rst:710
+msgid ""
+"$ univention-directory-manager shares/printer create \\\n"
+"  --position \"cn=printers,dc=example,dc=com\" \\\n"
+"  --set name=\"LaserPrinter01\" \\\n"
+"  --set spoolHost=\"printserver.example.com\" \\\n"
+"  --set uri=\"ipp:// 192.0.2.100\" \\\n"
+"  --set model=\"foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd\" \\\n"
+"  --set location=\"Head office\" \\\n"
+"  --set producer=\"producer: "
+"cn=HP,cn=cups,cn=univention,dc=example,dc=com\""
+msgstr ""
+"$ univention-directory-manager shares/printer create \\\n"
+"  --position \"cn=printers,dc=example,dc=com\" \\\n"
+"  --set name=\"LaserPrinter01\" \\\n"
+"  --set spoolHost=\"printserver.example.com\" \\\n"
+"  --set uri=\"ipp:// 192.0.2.100\" \\\n"
+"  --set model=\"foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd\" \\\n"
+"  --set location=\"Head office\" \\\n"
+"  --set producer=\"producer: "
+"cn=HP,cn=cups,cn=univention,dc=example,dc=com\""
+
+#: ../../management-interface/udm-command.rst:725
+msgid ""
+"Include a blank space between the print protocol and the target path in "
+"the ``uri`` parameter. For a list of print protocols, see :external+uv-"
+"nubus-manual:ref:`nubus-devices-printers-tab-general-field-protocol` in "
+":cite:t:`uv-nubus-manual`."
+msgstr ""
+"Fügen Sie im Parameter ``uri`` ein Leerzeichen zwischen dem "
+"Druckprotokoll und dem Zielpfad ein. Eine Liste der Druckprotokolle "
+"finden Sie unter :external+uv-nubus-manual:ref:`nubus-devices-printers-"
+"tab-general-field-protocol` im :cite:t:`uv-nubus-manual`."
+
+#: ../../management-interface/udm-command.rst:731
+msgid ""
+"You can group printers in a printer group to streamline administration. "
+"For more information about printer groups, see :external+uv-nubus-"
+"manual:ref:`nubus-devices-printers-groups`. Before creating a printer "
+"group, ensure the printer shares you want to add already exist. To create"
+" a printer group, run the :option:`udm create` command shown in :numref"
+":`udm-create-printer-group-listing`."
+msgstr ""
+"Sie können Drucker in einer Druckergruppe zusammenfassen, um die "
+"Verwaltung zu vereinfachen. Weitere Informationen zu Druckergruppen "
+"finden Sie unter :external+uv-nubus-manual:ref:`nubus-devices-printers-"
+"groups`. Stellen Sie vor dem Erstellen einer Druckergruppe sicher, dass "
+"die :spelling:word:`Druckerfreigaben`, die Sie hinzufügen möchten, "
+"bereits existieren. Führen Sie den in :numref:`udm-create-printer-group-"
+"listing` gezeigten Befehl :option:`udm create` aus, um eine Druckergruppe"
+" zu erstellen."
+
+#: ../../management-interface/udm-command.rst:739
+msgid "Create a printer group"
+msgstr "Eine Druckergruppe erstellen"
+
+#: ../../management-interface/udm-command.rst:739
+msgid ""
+"$ univention-directory-manager shares/printergroup create \\\n"
+"  --position \"cn=printers,dc=example,dc=com\" \\\n"
+"  --set name=LaserPrinters \\\n"
+"  --set spoolHost=\"printserver.example.com\" \\\n"
+"  --append groupMember=LaserPrinter01 \\\n"
+"  --append groupMember=LaserPrinter02"
+msgstr ""
+"$ univention-directory-manager shares/printergroup create \\\n"
+"  --position \"cn=printers,dc=example,dc=com\" \\\n"
+"  --set name=LaserPrinters \\\n"
+"  --set spoolHost=\"printserver.example.com\" \\\n"
+"  --append groupMember=LaserPrinter01 \\\n"
+"  --append groupMember=LaserPrinter02"
+
+#: ../../management-interface/udm-command.rst:752
+msgid ":external+uv-nubus-manual:ref:`nubus-devices-printers`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-devices-printers`"
+
+#: ../../management-interface/udm-command.rst:753
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *Printers* "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*Drucker*."
+
+#: ../../management-interface/udm-command.rst:759
+msgid "DNS and DHCP"
+msgstr "DNS und DHCP"
+
+#: ../../management-interface/udm-command.rst:761
+msgid ""
+"To configure an IP assignment through DHCP, register a DHCP computer "
+"entry for the MAC address, as shown in :numref:`udm-create-dhcp-host-"
+"listing`. For more information about DHCP, see :external+uv-ucs-"
+"manual:ref:`module-dhcp-dhcp`."
+msgstr ""
+"Führen Sie den in :numref:`udm-create-dhcp-host-listing` gezeigten Befehl"
+" aus, um eine IP-Zuweisung über DHCP zu konfigurieren und dafür einen "
+"DHCP-Computereintrag für die MAC-Adresse zu registrieren. Weitere "
+"Informationen über DHCP finden Sie unter :external+uv-ucs-manual:ref"
+":`module-dhcp-dhcp`."
+
+#: ../../management-interface/udm-command.rst:769
+msgid "Create a DHCP host entry"
+msgstr "Einen DHCP-Hosteintrag erstellen"
+
+#: ../../management-interface/udm-command.rst:769
+msgid ""
+"$ univention-directory-manager dhcp/host create \\\n"
+"  --superordinate \"cn=example.com,cn=dhcp,dc=example,dc=com\" \\\n"
+"  --set host=\"Client222\" \\\n"
+"  --set fixedaddress=\"192.0.2.110\" \\\n"
+"  --set hwaddress=\"ethernet 00:11:22:33:44:55\""
+msgstr ""
+"$ univention-directory-manager dhcp/host create \\\n"
+"  --superordinate \"cn=example.com,cn=dhcp,dc=example,dc=com\" \\\n"
+"  --set host=\"Client222\" \\\n"
+"  --set fixedaddress=\"192.0.2.110\" \\\n"
+"  --set hwaddress=\"ethernet 00:11:22:33:44:55\""
+
+#: ../../management-interface/udm-command.rst:779
+msgid ""
+"To resolve a computer name through DNS, use the commands shown in :numref"
+":`udm-create-dns-host-record-listing` and :numref:`udm-create-dns-ptr-"
+"record-listing` to configure forward resolution with a host record and "
+"reverse resolution with a PTR record. For more information about DNS, see"
+" :external+uv-ucs-manual:ref:`networks-dns`."
+msgstr ""
+"Verwenden Sie die in :numref:`udm-create-dns-host-record-listing` und "
+":numref:`udm-create-dns-ptr-record-listing` gezeigten Befehle, um einen "
+"Computernamen über DNS aufzulösen und dafür die Vorwärtsauflösung mit "
+"einem Rechner-Eintrag und die Rückwärtsauflösung mit einem DNS Pointer "
+"Eintrag zu konfigurieren. Weitere Informationen über DNS finden Sie unter"
+" :external+uv-ucs-manual:ref:`networks-dns`."
+
+#: ../../management-interface/udm-command.rst:789
+msgid "Create a DNS host record"
+msgstr "Einen DNS Rechner-Eintrag erstellen"
+
+#: ../../management-interface/udm-command.rst:789
+msgid ""
+"$ univention-directory-manager dns/host_record create \\\n"
+"  --superordinate \"zoneName=example.com,cn=dns,dc=example,dc=com\" \\\n"
+"  --set name=\"Client222\" \\\n"
+"  --set a=\"192.0.2.110\""
+msgstr ""
+"$ univention-directory-manager dns/host_record create \\\n"
+"  --superordinate \"zoneName=example.com,cn=dns,dc=example,dc=com\" \\\n"
+"  --set name=\"Client222\" \\\n"
+"  --set a=\"192.0.2.110\""
+
+#: ../../management-interface/udm-command.rst:798
+msgid "Create a DNS PTR record"
+msgstr "Einen DNS Pointer Eintrag erstellen"
+
+#: ../../management-interface/udm-command.rst:798
+msgid ""
+"$ univention-directory-manager dns/ptr_record create \\\n"
+"  --superordinate \"zoneName=0.168.192.in-"
+"addr.arpa,cn=dns,dc=example,dc=com\" \\\n"
+"  --set address=\"110\" \\\n"
+"  --set ptr_record=\"Client222.example.com.\""
+msgstr ""
+"$ univention-directory-manager dns/ptr_record create \\\n"
+"  --superordinate \"zoneName=0.168.192.in-"
+"addr.arpa,cn=dns,dc=example,dc=com\" \\\n"
+"  --set address=\"110\" \\\n"
+"  --set ptr_record=\"Client222.example.com.\""
+
+#: ../../management-interface/udm-command.rst:809
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dhcp`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dhcp`"
+
+#: ../../management-interface/udm-command.rst:810
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *DHCP* management "
+"module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*DHCP*."
+
+#: ../../management-interface/udm-command.rst:813
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns`"
+
+#: ../../management-interface/udm-command.rst:814
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the *DNS* management "
+"module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+"*DNS*."
+
+#: ../../management-interface/udm-command.rst:820
+msgid "Extended attributes"
+msgstr "Erweiterte Attribute"
+
+#: ../../management-interface/udm-command.rst:822
+msgid ""
+"Use extended attributes to add fields to management modules in the "
+"*Management UI*. For more information, see :external+uv-nubus-manual:ref"
+":`nubus-domain-extended-attributes`. To add a new attribute that stores "
+"the license plate number of a company car for each user, run the "
+":option:`udm create` command shown in :numref:`udm-create-extended-"
+"attribute-listing`. The object class ``univentionFreeAttributes`` stores "
+"these values."
+msgstr ""
+"Verwenden Sie erweiterte Attribute, um Felder zu Verwaltungsmodulen in "
+"der *Management UI* hinzuzufügen. Weitere Informationen finden Sie unter "
+":external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`. Führen "
+"Sie den in :numref:`udm-create-extended-attribute-listing` gezeigten "
+"Befehl :option:`udm create` aus, um ein neues Attribut hinzuzufügen, das für jeden Benutzer "
+"das Kennzeichen eines Firmenwagens speichert. Die Objektklasse "
+"``univentionFreeAttributes`` speichert diese Werte."
+
+#: ../../management-interface/udm-command.rst:828
+msgid "Create an extended attribute"
+msgstr "Ein erweitertes Attribut erstellen"
+
+#: ../../management-interface/udm-command.rst:828
+msgid ""
+"$ univention-directory-manager settings/extended_attribute create \\\n"
+"  --position \"cn=custom attributes,cn=univention,dc=example,dc=com\" \\\n"
+"  --set name=\"CarLicense\" \\\n"
+"  --set module=\"users/user\" \\\n"
+"  --set ldapMapping=\"univentionFreeAttribute1\" \\\n"
+"  --set objectClass=\"univentionFreeAttributes\" \\\n"
+"  --set longDescription=\"License plate number of the company car\" \\\n"
+"  --set tabName=\"Company car\" \\\n"
+"  --set multivalue=0 \\\n"
+"  --set syntax=\"string\" \\\n"
+"  --set shortDescription=\"Car license\""
+msgstr ""
+"$ univention-directory-manager settings/extended_attribute create \\\n"
+"  --position \"cn=custom attributes,cn=univention,dc=example,dc=com\" \\\n"
+"  --set name=\"CarLicense\" \\\n"
+"  --set module=\"users/user\" \\\n"
+"  --set ldapMapping=\"univentionFreeAttribute1\" \\\n"
+"  --set objectClass=\"univentionFreeAttributes\" \\\n"
+"  --set longDescription=\"License plate number of the company car\" \\\n"
+"  --set tabName=\"Company car\" \\\n"
+"  --set multivalue=0 \\\n"
+"  --set syntax=\"string\" \\\n"
+"  --set shortDescription=\"Car license\""
+
+#: ../../management-interface/udm-command.rst:846
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`"
+
+#: ../../management-interface/udm-command.rst:847
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about how to expand "
+"management modules."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen darüber, wie Sie "
+"Verwaltungsmodule erweitern."
