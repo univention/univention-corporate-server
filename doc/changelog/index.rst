@@ -555,6 +555,9 @@ Other system services
   which caused that several log messages were dropped in the UMC UDM modules
   (:uv:bug:`38735`).
 
+* The GPG signing key for UCS 5.3 has been added to the ``univention-archive-key``
+  package (:uv:bug:`59471`).
+
 .. _changelog-domain:
 
 ***************
