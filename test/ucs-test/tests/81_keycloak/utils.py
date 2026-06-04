@@ -326,7 +326,7 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     url = f'/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak'
     if session.path:
         url = f'{session.path}/{url}'
-    res = session.raw_post(url, data={})
+    res = session.connection.raw_post(url, data={})
     if res.status_code != 200:
         raise Exception(f'raw POST to {url} failed: {res}')
 
