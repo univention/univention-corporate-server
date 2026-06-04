@@ -1,6 +1,7 @@
-univention-ldb-modules (10.6.0) UNRELEASED; urgency=medium
+univention-ldb-modules (10.6.0) unstable; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
+  * Bug #59336: Need to rebuild against libldb2 built from samba 4.24.2
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:29 +0200
 
