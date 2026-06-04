@@ -748,6 +748,9 @@ Univention base libraries
   the license object via a cron job. The cached numbers are used to improve the
   performance during UMC startup (:uv:bug:`59060`).
 
+* The ``crudeoauth`` library has been made compatible with modern compilers
+  (:uv:bug:`59470`).
+
 .. _changelog-deployment:
 
 *******************
