@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Tests the Univention Self Service
 ## tags: [apptest]
 ## roles: [domaincontroller_master]
@@ -7,9 +7,10 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
+import codecs
 import subprocess
 import time
-from email import header
+from email import header, message_from_string
 
 import pytest
 from test_self_service import capture_mails, self_service_user
@@ -31,7 +32,7 @@ def close_all_processes():
         (True, 'Passwort zurücksetzen'),
     ],
 )
-def test_reset_via_email(ucr, login_with_mail, subject):
+def test_reset_via_email(ucr, login_with_mail, subject, close_all_processes):
     # don't explicitly set the default to test non-existant ucr variable
     if subject:
         ucr.handler_set([f"umc/self-service/passwordreset/email/subject={subject}"])
@@ -62,15 +63,18 @@ def test_reset_via_email(ucr, login_with_mail, subject):
         with capture_mails(timeout=timeout) as mails:
             user.send_token('email')
 
-        mail = mails.data and mails.data[0]
-        assert mail, f'No email has been received in {timeout} seconds'
+        raw_message = mails.data and mails.data[0]
+        assert raw_message, f'No email has been received in {timeout} seconds'
 
-        # test configurable mail header
+        # test configurable raw_message header
         # decode special characters from MIME format to utf-8
-        mail_subject = header.decode_header(mail)[1][0].decode('utf-8')
+        msg = message_from_string(raw_message)
+        text, encoding = header.decode_header(msg.get('Subject'))[0]
+        mail_subject = codecs.decode(text, encoding) if encoding else text
         assert mail_subject == subject
 
         # test password change
+        mail = msg.get_payload(decode=True).decode('utf-8')
         token = mail.split('and enter the following token manually:')[-1].split('Greetings from your password self service system.')[0].strip()
         assert token, f'Could not parse token from mail. Is there a token in it? {mail!r}'
 

@@ -1,5 +1,7 @@
 ucs-test (12.6.6) unstable; urgency=medium
 
+  * Bug #59418: enable 83_self_service/01_test_reset_via_email.py test again,
+    which was skipped since pytest migration
   * Bug #59418: use latest alpine image
 
  -- Florian Best <best@univention.de>  Wed, 17 Jun 2026 12:43:25 +0200
