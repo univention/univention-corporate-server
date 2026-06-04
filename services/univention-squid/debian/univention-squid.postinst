@@ -11,6 +11,9 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
+# use openssl variant of squid
+update-alternatives --set squid /usr/sbin/squid-openssl
+
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
 adduser proxy winbindd_priv
 
@@ -30,7 +33,7 @@ ucr set squid/transparentproxy?false \
 	squid/cache/l2_size?256 \
 	squid/basicauth/encoding_wrapper?true
 
-invoke-rc.d squid restart
+deb-systemd-invoke restart squid
 
 # configure firewall
 ucr set security/packetfilter/package/univention-squid/tcp/3128/all="ACCEPT" \
