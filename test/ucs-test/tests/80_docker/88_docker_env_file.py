@@ -46,7 +46,7 @@ def test_docker_env_file(appcenter, app_name):
             DockerMainService='test1',
             DockerInjectEnvFile='main',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.23'))
         app.add_script(env=ENV)
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)

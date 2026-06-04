@@ -57,7 +57,7 @@ exit 0
     try:
         cleanup(app)
         app.set_ini_parameter(
-            DockerImage='docker-test.software-univention.de/alpine:3.6',
+            DockerImage='artifacts.software-univention.de/library/alpine:3.22',
             DockerScriptUpdateCertificates='/certs',
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
@@ -83,7 +83,7 @@ exit 0
         app.check_dir = check_dir
         app.cert_files = check_files
         app.set_ini_parameter(
-            DockerImage='docker-test.software-univention.de/alpine:3.7',
+            DockerImage='artifacts.software-univention.de/library/alpine:3.23',
             DockerScriptSetup='/setup',
             DockerScriptUpdateCertificates='/root/certs',
             DockerScriptStoreData='/store_data',

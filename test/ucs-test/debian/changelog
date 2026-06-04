@@ -1,3 +1,9 @@
+ucs-test (12.6.6) unstable; urgency=medium
+
+  * Bug #59418: use latest alpine image
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2026 12:43:25 +0200
+
 ucs-test (12.6.5) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#263: remove obsolte test 81_keycloak.04_misc.test_keycloak_version

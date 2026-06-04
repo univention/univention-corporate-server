@@ -70,7 +70,7 @@ def test_docker_compose(appcenter):
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'
 
-    alpine_checksum = 'f80194ae2e0c'
+    alpine_checksum = '9292219a28ff'
     images = subprocess.check_output(['docker', 'images'], text=True)
     if alpine_checksum in images:
         print('CAUTION. Checksum already found in docker images... Lets see...')
@@ -80,7 +80,7 @@ def test_docker_compose(appcenter):
         app.set_ini_parameter(
             DockerMainService='test1',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.5'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.22'))
         app.add_script(settings=SETTINGS)
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
@@ -96,7 +96,7 @@ def test_docker_compose(appcenter):
         app.set_ini_parameter(
             DockerMainService='test1',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.7'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.23'))
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
         app.add_to_local_appcenter()
@@ -107,7 +107,7 @@ def test_docker_compose(appcenter):
         assert alpine_checksum not in images, images
         app.execute_command_in_container(f'ls /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
         image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
-        assert image == 'docker-test.software-univention.de/alpine:3.7'
+        assert image == 'artifacts.software-univention.de/library/alpine:3.23'
         ucr.load()
         network = ucr.get('appcenter/apps/' + name + '/ip')
         # assert network == '172.16.1.0/24', network
