@@ -2,6 +2,6 @@
 description[de]=Squid Proxyserver
 description[en]=Squid Proxyserver
 icon=service/squid
-programs=/usr/sbin/squid
+programs=/usr/sbin/squid-openssl
 start_type=squid/autostart
 systemd=squid.service
