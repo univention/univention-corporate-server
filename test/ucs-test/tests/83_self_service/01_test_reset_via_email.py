@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Tests the Univention Self Service
 ## tags: [apptest]
 ## roles: [domaincontroller_master]
