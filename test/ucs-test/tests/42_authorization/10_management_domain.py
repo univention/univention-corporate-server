@@ -132,7 +132,7 @@ def kc_ucs_with_preferred_username_mapper(kc_ucs_session: KeycloakAdmin) -> Gene
 
     idp_mappers = kc_ucs_session.get_idp_mappers(idp_alias)
     idp_mapper_id = next(iter([x['id'] for x in idp_mappers if x['name'] == 'nubus_external_username']))
-    kc_ucs_session.raw_delete(f'admin/realms/ucs/identity-provider/instances/oidc/mappers/{idp_mapper_id}')
+    kc_ucs_session.connection.raw_delete(f'admin/realms/ucs/identity-provider/instances/oidc/mappers/{idp_mapper_id}')
     mappers = kc_ucs_session.get_mappers_from_client(client_id)
     mapper_id = next(iter([x['id'] for x in mappers if x['name'] == 'nubus_external_username']))
     kc_ucs_session.remove_client_mapper(client_id, mapper_id)

@@ -23,6 +23,13 @@ from keycloak import KeycloakAdmin
 from univention.config_registry import ucr
 
 
+def get_current_realm(connection):
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'get_current_realm'):
+        return connection.get_current_realm()
+    return connection.realm_name
+
+
 class KeycloakMappingToolSettings:
     username: str
     password: str
@@ -110,7 +117,7 @@ def _create_idp_group_mapper(
     }
 
     resp = session.connection.raw_post(
-        f'admin/realms/{session.connection.realm_name}/identity-provider/instances/{idp_alias}/mappers',
+        f'admin/realms/{get_current_realm(session.connection)}/identity-provider/instances/{idp_alias}/mappers',
         data=json.dumps(idp_mapper_payload),
     )
 
@@ -127,7 +134,7 @@ def _create_idp_group_mapper(
 
 
 def _get_idp_mappers(session: KeycloakAdmin, idp_alias: str) -> Any:
-    uri = f'admin/realms/{session.connection.realm_name}/identity-provider/instances/{idp_alias}/mappers'
+    uri = f'admin/realms/{get_current_realm(session.connection)}/identity-provider/instances/{idp_alias}/mappers'
     resp = session.connection.raw_get(uri)
     assert resp.status_code == 200, resp.text
 
@@ -145,7 +152,7 @@ def _get_idp_mapper_by_name(session: KeycloakAdmin, idp_alias: str, name: str) -
 
 
 def _get_idp_mapper(session: KeycloakAdmin, idp_alias: str, mapper_id: str):
-    uri = f'admin/realms/{session.connection.realm_name}/identity-provider/instances/{idp_alias}/mappers/{mapper_id}'
+    uri = f'admin/realms/{get_current_realm(session.connection)}/identity-provider/instances/{idp_alias}/mappers/{mapper_id}'
     resp = session.connection.raw_get(uri)
     assert resp.status_code == 200, resp.text
 
@@ -241,7 +248,7 @@ def create_from_args(
     )
 
     if not mapper_id:
-        print(f'IDP mapper with the name {mapper_name} still exists in {session.connection.realm_name}/{idp_alias}!')
+        print(f'IDP mapper with the name {mapper_name} still exists in {get_current_realm(session.connection)}/{idp_alias}!')
     else:
         print(f'IDP mapper {mapper_name} with ID {mapper_id} created!')
 
