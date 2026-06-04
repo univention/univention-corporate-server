@@ -48,6 +48,28 @@ TRANSLATIONS = {
 }
 
 
+def change_current_realm(connection, realm_name):
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'change_current_realm'):
+        connection.change_current_realm(realm_name)
+        return
+    connection.realm_name = realm_name
+
+
+def get_current_realm(connection):
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'get_current_realm'):
+        return connection.get_current_realm()
+    return connection.realm_name
+
+
+def get_connection(connection):
+    # compatibility for Python3 Keycloak Client API changes (UCS 5.2: v3.3 → UCS 5.3 v5.3)
+    if hasattr(connection, 'connection'):
+        return connection.connection
+    return connection
+
+
 def host_is_alive(host: str) -> bool:
     command = ['ping', '-c', '2', host]
     return subprocess.call(command) == 0
@@ -331,7 +353,7 @@ def legacy_auth_config_create(session: KeycloakAdmin, ldap_base: str, groups: di
     url = f'/admin/realms/ucs/user-storage/{ldap_provider_id}/mappers/{mapper_id}/sync?direction=fedToKeycloak'
     if session.path:
         url = f'{session.path}/{url}'
-    res = session.raw_post(url, data={})
+    res = get_connection(session).raw_post(url, data={})
     if res.status_code != 200:
         raise Exception(f'raw POST to {url} failed: {res}')
 

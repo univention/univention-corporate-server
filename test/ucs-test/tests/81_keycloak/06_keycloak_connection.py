@@ -11,6 +11,7 @@ import pytest
 from keycloak import KeycloakAdmin
 from keycloak.connection import ConnectionManager
 from keycloak.exceptions import KeycloakPostError
+from utils import get_connection, get_current_realm
 
 
 def assert_invalid_grant(exc):
@@ -21,17 +22,17 @@ def assert_invalid_grant(exc):
 
 
 def test_admin_connection_administrator(keycloak_administrator_connection, admin_account):
-    assert keycloak_administrator_connection.realm_name == 'ucs'
-    assert isinstance(keycloak_administrator_connection.connection, ConnectionManager)
-    assert keycloak_administrator_connection.client_id == 'admin-cli'
-    assert keycloak_administrator_connection.client_secret_key is None
-    assert keycloak_administrator_connection.username == admin_account.username
+    assert get_current_realm(keycloak_administrator_connection) == 'ucs'
+    assert isinstance(get_connection(keycloak_administrator_connection), ConnectionManager)
+    assert get_connection(keycloak_administrator_connection).client_id == 'admin-cli'
+    assert get_connection(keycloak_administrator_connection).client_secret_key is None
+    assert get_connection(keycloak_administrator_connection).username == admin_account.username
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_admin_connection_admin(keycloak_admin_connection, keycloak_admin):
-    assert keycloak_admin_connection.username == keycloak_admin
-    assert keycloak_admin_connection.client_id == 'admin-cli'
+    assert get_connection(keycloak_admin_connection).username == keycloak_admin
+    assert get_connection(keycloak_admin_connection).client_id == 'admin-cli'
 
 
 def test_admin_connection_admin_fails_non_existing_user(keycloak_config):
@@ -43,7 +44,7 @@ def test_admin_connection_admin_fails_non_existing_user(keycloak_config):
             realm_name='ucs',
             user_realm_name='master',
             verify=True,
-        )
+        ).get_realm('ucs')
     assert_invalid_grant(exc_info.value)
 
 
@@ -58,7 +59,7 @@ def test_admin_connection_non_admin_fails(keycloak_config, udm):
             realm_name='ucs',
             user_realm_name='master',
             verify=True,
-        )
+        ).get_realm('ucs')
     assert_invalid_grant(exc_info.value)
 
 
@@ -73,8 +74,8 @@ def test_admin_connection_domain_admins_group(keycloak_config, domain_admins_dn,
         user_realm_name='master',
         verify=True,
     )
-    assert connection.username == username
-    assert connection.client_id == 'admin-cli'
+    assert get_connection(connection).username == username
+    assert get_connection(connection).client_id == 'admin-cli'
 
 
 def test_openid_connection_administrator(keycloak_openid_connection, admin_account):

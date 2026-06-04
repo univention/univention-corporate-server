@@ -10,7 +10,7 @@ from subprocess import CalledProcessError
 
 import pytest
 from keycloak.exceptions import KeycloakDeleteError, KeycloakGetError
-from utils import run_command
+from utils import change_current_realm, run_command
 
 from univention.testing.strings import random_int, random_string
 from univention.testing.utils import wait_for_listener_replication
@@ -154,7 +154,7 @@ def test_init_with_force(random_string, keycloak_admin_connection):
         realms = json.loads(run_command(cmd))
         realm = next(x for x in realms if x['id'] == realm_name)
         assert realm['realm'] == realm_name
-        keycloak_admin_connection.realm_name = realm_name
+        change_current_realm(keycloak_admin_connection, realm_name)
 
         cmd = ['univention-keycloak', '--realm', realm_name, 'saml/sp', 'get', '--all', '--json']
         clients = json.loads(run_command(cmd))
@@ -343,7 +343,7 @@ def test_init_with_parameters(random_string, keycloak_admin_connection):
         realms = json.loads(run_command(cmd))
         realm = next(x for x in realms if x['id'] == realm_name)
         assert realm['realm'] == realm_name
-        keycloak_admin_connection.realm_name = realm_name
+        change_current_realm(keycloak_admin_connection, realm_name)
         provider = keycloak_admin_connection.get_components(query={'type': 'org.keycloak.storage.UserStorageProvider', 'name': 'ldap-provider'})[0]
         assert provider['config']['startTls'] == ['false']
         assert provider['config']['allowKerberosAuthentication'] == ['false']

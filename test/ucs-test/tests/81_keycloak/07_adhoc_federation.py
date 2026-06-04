@@ -15,7 +15,7 @@ import pytest
 from ad_hoc import AdHocProvisioning
 from keycloak import KeycloakAdmin
 from playwright.sync_api import Page, expect
-from utils import get_portal_tile
+from utils import change_current_realm, get_portal_tile
 
 from univention.config_registry.backend import ConfigRegistry
 from univention.lib.misc import custom_username
@@ -82,14 +82,14 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, keycloak_adm
         uuid_remote = base64.b64encode(user_uuid.bytes_le).decode("utf-8")
         ad_hoc_provisioning.kc_dummy.create_user(ad_hoc_provisioning._get_test_user_payload('test_user1', 'univention', uuid_remote=uuid_remote))
         # do some tests
-        keycloak_admin_connection.realm_name = 'ucs'
+        change_current_realm(keycloak_admin_connection, 'ucs')
         _test_sso_login(tracing_page, portal_config, keycloak_config)
         _test_federated_user(keycloak_admin_connection, user_uuid)
     finally:
         udm_user = get_udm_user_obj('external-oidc-test-test_user1')
         if udm_user:
             udm_user.delete()
-        keycloak_admin_connection.realm_name = 'ucs'
+        change_current_realm(keycloak_admin_connection, 'ucs')
         time.sleep(10)
         kc_user_id = keycloak_admin_connection.get_user_id(username='external-oidc-test-test_user1')
         if kc_user_id:

@@ -1,3 +1,9 @@
+ucs-test (12.6.7) unstable; urgency=medium
+
+  * Bug #59418: adjust to Python-Keycloak API changes
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jun 2026 17:07:29 +0200
+
 ucs-test (12.6.6) unstable; urgency=medium
 
   * Bug #59418: enable 83_self_service/01_test_reset_via_email.py test again,
