@@ -1,3 +1,9 @@
+univention-samba4 (11.6.1) unstable; urgency=medium
+
+  * Bug #59336: Need to ship an update to restart listener in postup
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Jun 2026 18:40:25 +0200
+
 univention-samba4 (11.6.0) UNRELEASED; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
