@@ -23,6 +23,7 @@ import tempfile
 import time
 import traceback
 from contextlib import contextmanager
+from pathlib import Path
 from re import Pattern
 from typing import IO, TYPE_CHECKING, Any
 
@@ -135,10 +136,15 @@ def load_values(lang: str | None = None) -> dict[str, str]:
     values['memory_total'] = psutil.virtual_memory().total / 1024.0 / 1024.0  # MiB
 
     # get timezone
-    values['timezone'] = ''
-    if os.path.exists('/etc/timezone'):
-        with open('/etc/timezone') as fd:
-            values['timezone'] = fd.readline().strip()
+    try:
+        values['timezone'] = (
+            Path('/etc/localtime')
+            .resolve(strict=True)
+            .relative_to('/usr/share/zoneinfo')
+            .as_posix()
+        )
+    except (OSError, RuntimeError, ValueError):
+        values['timezone'] = ''
 
     # read license agreement for app appliance
     if lang and ucr.get('umc/web/appliance/data_path'):
