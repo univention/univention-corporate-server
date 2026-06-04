@@ -149,15 +149,14 @@ EOF
 
         rm -f "$rootfs/usr/sbin/policy-rc.d"
     fi
-
     # set initial timezone as on host
-    if [ -f /etc/timezone ]; then
-        cat /etc/timezone > "$rootfs/etc/timezone"
-        chroot "$rootfs" dpkg-reconfigure -f noninteractive tzdata
-    elif [ -f /etc/sysconfig/clock ]; then
-        # shellcheck source=/dev/null
-        . /etc/sysconfig/clock
-        echo "$ZONE" > "$rootfs/etc/timezone"
+    timezone="$(readlink -f /etc/localtime 2>/dev/null || true)"
+    timezone="${timezone#/usr/share/zoneinfo/}"
+
+    if [ -n "$timezone" ] &&
+        [ "$timezone" != /etc/localtime ] &&
+        [ -f "$rootfs/usr/share/zoneinfo/$timezone" ]; then
+        echo "$timezone" > "$rootfs/etc/timezone"
         chroot "$rootfs" dpkg-reconfigure -f noninteractive tzdata
     else
         echo "Timezone in container is not configured. Adjust it manually."
