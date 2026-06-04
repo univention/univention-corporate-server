@@ -524,18 +524,17 @@ class Instance(Base, ProgressMixin):
         """Return a list of all available locales."""
         return util.get_available_locales(pattern, category)
 
-    def lang_timezones(self, request):
+    @simple_response
+    def lang_timezones(self):
         """Return a list of all available time zones."""
         try:
-            fd = open('/usr/share/univention-system-setup/locale/timezone')
+            with open('/usr/share/univention-system-setup/locale/timezone') as fd:
+                timezones = [i.rstrip('\n') for i in fd.readlines() if not i.startswith('#')]
         except OSError:
             MODULE.error('Cannot find locale data for timezones in /usr/share/univention-system-setup/locale')
-            self.finished(request.id, None)
-            return
+            return []
 
-        timezones = [i.strip('\n') for i in fd if not i.startswith('#')]
-
-        self.finished(request.id, timezones)
+        return [tz for tz in timezones if os.path.exists(os.path.join('/usr/share/zoneinfo', tz))]
 
     @simple_response
     def lang_keyboard_model(self):
