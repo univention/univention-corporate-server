@@ -1,8 +1,12 @@
-ucs-test (12.6.0) UNRELEASED; urgency=medium
+ucs-test (12.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:39 +0200
+  [ Florian Best ]
+  * Bug #59418: add various future compatibility with UCS 5.3
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jun 2026 17:24:47 +0200
 
 ucs-test (12.5.41) unstable; urgency=medium
 
