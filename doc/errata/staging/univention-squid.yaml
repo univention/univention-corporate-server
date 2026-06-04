@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-squid
+fix: 15.6.0
+desc: |
+ This update addresses the following issue:
+ * The Squid integration now uses Debian's regular `squid-openssl` package
+   instead of a UCS-specific Squid patch for OpenSSL support.
+bug: [59324]

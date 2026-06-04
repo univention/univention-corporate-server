@@ -1,8 +1,13 @@
-univention-squid (15.6.0) UNRELEASED; urgency=medium
+univention-squid (15.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:36 +0200
+  [ Florian Best ]
+  * Bug #59530: replace patched squid with the regular squid-openssl
+    package
+
+ -- Florian Best <best@univention.de>  Thu, 02 Jul 2026 12:20:47 +0200
 
 univention-squid (15.5.0) UNRELEASED; urgency=medium
 
