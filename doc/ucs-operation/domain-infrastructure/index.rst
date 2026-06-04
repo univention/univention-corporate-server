@@ -65,6 +65,7 @@ Listener and Notifier replication
 
    system-roles
    domain-join
+   ldap-directory
    tls
    kerberos
    ha
