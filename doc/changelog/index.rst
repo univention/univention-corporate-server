@@ -751,6 +751,9 @@ Univention base libraries
 * The ``crudeoauth`` library has been made compatible with modern compilers
   (:uv:bug:`59470`).
 
+* The Nagios suidwrapper have been modernized to be compatible with modern compilers
+  (:uv:bug:`59469`).
+
 .. _changelog-deployment:
 
 *******************
