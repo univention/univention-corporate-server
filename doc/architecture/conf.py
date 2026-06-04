@@ -25,7 +25,7 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 # -- Project information -----------------------------------------------------
 
 version = '5.2'
-release = '5.2-5'
+release = '5.2-6'
 project = f'Univention Corporate Server {version} Architecture'
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'

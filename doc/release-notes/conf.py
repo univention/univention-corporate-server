@@ -26,7 +26,7 @@ from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = '5.2-5'
+release = '5.2-6'
 
 version = '5.2'
 
