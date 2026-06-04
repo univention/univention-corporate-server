@@ -61,7 +61,7 @@ fi
             DockerMainService='test1',
             DockerScriptSetup='',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.6'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.23'))
         app.add_script(settings=SETTINGS)
         app.add_script(store_data=store_data)
         app.add_script(configure_host=configure_host)

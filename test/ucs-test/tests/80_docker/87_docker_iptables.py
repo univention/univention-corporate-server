@@ -45,7 +45,7 @@ def test_docker_iptables(appcenter, app_name):
         app.set_ini_parameter(
             DockerMainService='test1',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.7'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.23'))
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
         app.add_to_local_appcenter()

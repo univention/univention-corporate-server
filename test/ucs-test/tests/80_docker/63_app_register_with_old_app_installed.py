@@ -20,7 +20,7 @@ def test_register_app_with_old_app_installed(appcenter):
         # install the old version
         old_app = App(name=name, version='1', build_package=False, call_join_scripts=False, container_version="5.3")
         old_app.set_ini_parameter(
-            DockerImage='docker-test.software-univention.de/alpine:3.6',
+            DockerImage='artifacts.software-univention.de/library/alpine:3.23',
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
             DockerScriptInit='/sbin/init',
@@ -35,7 +35,7 @@ def test_register_app_with_old_app_installed(appcenter):
         # create a new version
         new_app = App(name=name, version='2', build_package=False, call_join_scripts=False)
         new_app.set_ini_parameter(
-            DockerImage='docker-test.software-univention.de/alpine:3.7',
+            DockerImage='artifacts.software-univention.de/library/alpine:3.23',
             DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
             DockerScriptInit='/sbin/init',
