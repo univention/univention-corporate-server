@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (9.6.0) UNRELEASED; urgency=medium
+
+  * Bug #59324: UCS 5.2-6 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:06 +0200
+
 univention-management-console-module-adtakeover (9.5.0) unstable; urgency=medium
 
   [ Marius Meschter ]

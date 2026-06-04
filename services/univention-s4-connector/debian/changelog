@@ -1,3 +1,9 @@
+univention-s4-connector (16.6.0) UNRELEASED; urgency=medium
+
+  * Bug #59324: UCS 5.2-6 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:33 +0200
+
 univention-s4-connector (16.5.1) unstable; urgency=medium
 
   * Bug #57174: Remove dnsTombstone from S4 Object if DNS object is synced from UCS

@@ -1,3 +1,9 @@
+univention-nagios-smart (11.6.0) UNRELEASED; urgency=medium
+
+  * Bug #59324: UCS 5.2-6 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:44 +0200
+
 univention-nagios-smart (11.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump

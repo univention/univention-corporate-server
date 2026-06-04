@@ -1,3 +1,9 @@
+univention-fetchmail (15.6.0) UNRELEASED; urgency=medium
+
+  * Bug #59324: UCS 5.2-6 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:53 +0200
+
 univention-fetchmail (15.5.0) unstable; urgency=medium
 
   [ Marius Meschter ]

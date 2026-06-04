@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.6.0) UNRELEASED; urgency=medium
+
+  * Bug #59324: UCS 5.2-6 version bump
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:00 +0200
+
 univention-directory-manager-rest (12.5.11) unstable; urgency=medium
 
   * Bug #59217: only add univentionObjectIdentifier in object template if

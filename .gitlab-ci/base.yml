@@ -13,7 +13,7 @@ default:
       - runner_system_failure
 
 variables:
-  ucs: 525
+  ucs: 526
   UCS_VERSION: "5.2-5"
   UCS_RELEASE: "5.2"
   DOC_TARGET_VERSION: "5.2"
