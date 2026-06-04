@@ -19,13 +19,16 @@ timezone="$(get_profile_var timezone)" ||
 [ -n "$timezone" ] ||
 	exit 0
 
-[ -e /etc/timezone ] &&
-	[ "$(cat /etc/timezone)" = "$timezone" ] &&
-	exit 0
+# current_timezone="$(timedatectl show --property=Timezone --value 2>/dev/null)"
+current_timezone="$(readlink -f /etc/localtime 2>/dev/null)" ||
+    current_timezone=""
+current_timezone="${current_timezone#/usr/share/zoneinfo/}"
 
-rm -f /etc/localtime /etc/timezone
-echo "$timezone" >/etc/timezone
-install -m644 "/usr/share/zoneinfo/$timezone" /etc/localtime
+[ "$current_timezone" = "$timezone" ] &&
+    exit 0
+
+# timedatectl set-timezone "$timezone"
+ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 
 service stop ntpsec
 # shellcheck disable=SC2015
