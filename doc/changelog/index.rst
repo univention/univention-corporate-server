@@ -813,6 +813,13 @@ Services for Windows
 Samba
 =====
 
+* Samba has been updated to Version 4.24.2, including latest security patches
+  (so it's equivalent to 4.24.3) (:uv:bug:`59336`).
+  For a full list of changes see the upstream changelogs:
+  * `Samba 4.22 Features added/changed <https://wiki.samba.org/index.php/Samba_4.22_Features_added/changed#Samba_4.22.0>`_
+  * `Samba 4.23 Features added/changed <https://wiki.samba.org/index.php/Samba_4.23_Features_added/changed#Samba_4.23.0>`_
+  * `Samba 4.24 Features added/changed <https://wiki.samba.org/index.php/Samba_4.24_Features_added/changed#Samba_4.24.0>`_
+
 * The Group Policy Management Console was crashing sometimes when modifying the
   user permissions in the Security tab. Afterwards, the new created ACLs were
   malformed, which made the policy inaccessible. The code which parses the
