@@ -28,7 +28,6 @@ connector_running_on_this_host || exit 137
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
-TIMEZONE="$(cat /etc/timezone)"
 UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"
 UDM_users_user_password="U$(random_chars)123"
@@ -37,29 +36,24 @@ UDM_users_user_userexpiry="$(random_date)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 UCS_DN="uid=$UDM_users_user_username,cn=users,$(ucr get ldap/base)"
 
+TIMEZONE="$(timedatectl show --property=Timezone --value 2>/dev/null || true)"
+[ -n "$TIMEZONE" ] || TIMEZONE="Europe/Berlin"
+
 function set_timezone {
-	tmp_dir=$(mktemp -d)
-	cd "$tmp_dir" || exit 1
+    local timezone="$1"
 
-	IFS='/' read -r AREA CITY <<< "$1"
+    [ -n "$timezone" ] || return 0
+    [ -e "/usr/share/zoneinfo/$timezone" ] || return 1
 
-	echo "tzdata tzdata/Areas select $AREA" > preseed.txt
-	echo "tzdata tzdata/Zones/$AREA select $CITY" >> preseed.txt
-
-	rm /etc/localtime /etc/timezone
-
-	debconf-set-selections preseed.txt
-	dpkg-reconfigure -f noninteractive tzdata
-
-	rm preseed.txt
+    timedatectl set-timezone "$timezone"
 }
 
 function cleanup {
-	set_timezone "$TIMEZONE"
-	udm_remove 'users/user'
-	ad_wait_for_synchronization; fail_bool 0 110
-	udm_exists 'users/user'; fail_bool 1 110
-	ad_set_sync_mode "$SYNCMODE"
+    set_timezone "$TIMEZONE"
+    udm_remove 'users/user'
+    ad_wait_for_synchronization; fail_bool 0 110
+    udm_exists 'users/user'; fail_bool 1 110
+    ad_set_sync_mode "$SYNCMODE"
 }
 
 trap cleanup EXIT
