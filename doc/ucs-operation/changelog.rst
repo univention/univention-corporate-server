@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 5. Jun 2026
+     - :ref:`domain-infrastructure-ldap-directory`
+     - Add section about the LDAP directory service.
+
    * - 3. Jun 2026
      - :ref:`management-interface-udm-command`
      - Add section about the :program:`udm` command-line interface.
