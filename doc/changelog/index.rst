@@ -726,6 +726,11 @@ System diagnostic module
 LDAP directory browser
 ======================
 
+ * The underlying library dependencies to handle certificates have been updated from
+   ``M2Crypto`` and ``PyOpenSSL`` to ``python3-cryptography`` to ensure future
+   compatibility and to fix a problem for certificates validy dates after 2050
+   (:uv:bug:`55411`).
+
 * The ``univentionObjectIdentifier`` is now set for all DNS, DHCP and license
   objects (:uv:bug:`58384`).
 
