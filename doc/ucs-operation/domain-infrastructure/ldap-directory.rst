@@ -3,148 +3,208 @@
 
 .. _domain-infrastructure-ldap-directory:
 
-LDAP Directory Service
+LDAP directory service
 ======================
 
 .. highlight:: console
 
-Univention Corporate Server saves domain-wide data in a LDAP directory service
-based on OpenLDAP. This chapter describes the advanced configuration and
-coordination of OpenLDAP.
-
-Often several LDAP servers are operated in a UCS domain. The configuration of
-the server(s) used is described in :ref:`computers-configure-ldap-server`.
-
-.. note::
-
-   The LDAP directory is part of Univention Nubus in the *Identity Store and Directory Service* component.
-   For more information about Nubus, refer to :ref:`introduction-nubus`
+Nubus for UCS stores domain-wide data
+in an LDAP directory service that uses OpenLDAP.
+This chapter covers advanced OpenLDAP configuration
+and LDAP coordination.
+A Nubus for UCS domain often uses several LDAP servers.
+For information about configuring the LDAP servers in use,
+see :ref:`system-administration-ldap-server`.
 
 .. _domain-infrastructure-ldap-directory-schema-and-replication:
 
 Schema and replication
 ----------------------
 
-.. TODO: Add introductory sentence.
+This section describes LDAP schemas,
+LDAP extensions, and schema replication
+in a Nubus for UCS domain.
 
 .. _domain-infrastructure-ldap-directory-schema:
 
 LDAP schemas
 ~~~~~~~~~~~~
 
-Schema definitions specify which object classes exist and which attributes they
-include, i.e., which data can be stored in a directory service. Schema
-definitions are saved as text files and included in the OpenLDAP server's
-configuration file.
+Schema definitions specify the object classes and attributes
+that a directory service can store and manage.
+OpenLDAP stores schema definitions in text files
+and includes them in its configuration file.
 
-UCS uses standard schemas where possible in order to allow interoperability with
-other LDAP applications. Schema extensions are supplied for Univention-specific
-attributes - such as for the policy mechanism.
+Nubus for UCS uses standard schemas where possible
+to support interoperability with other LDAP applications.
+It also provides Univention-specific schema extensions
+for attributes such as the policy mechanism.
 
 .. _domain-infrastructure-ldap-directory-schema-extension:
 
 LDAP schema extensions
 ~~~~~~~~~~~~~~~~~~~~~~
 
-To keep the efforts required for small extensions in LDAP as low as possible,
-Nubus for UCS provides its own LDAP scheme for customer extensions. The LDAP object
-class ``univentionFreeAttributes`` can be used for extended attributes without
-restrictions. It offers 20 freely usable attributes
-(``univentionFreeAttribute1`` to ``univentionFreeAttribute20``) and can be used
-in connection with any LDAP object (e.g., a user object).
+For custom LDAP extensions,
+Nubus for UCS provides its own LDAP schema.
+The LDAP object class ``univentionFreeAttributes`` provides
+20 attributes, from ``univentionFreeAttribute1``
+to ``univentionFreeAttribute20``,
+for unrestricted extension attributes.
+You can use this object class with any LDAP object,
+for example, a user object.
 
-If LDAP schema extensions are to be delivered as part of software packages,
-there is also the possibility of packaging them and distributing them to all the
-:term:`Backup Directory Node` servers in the domain using a Univention Directory Listener module. Further information
-is available in :ref:`uv-dev-ref:settings-ldapschema`.
+If you deliver LDAP schema extensions as part of a software package,
+you can package them
+and distribute them to all :term:`Backup Directory Node` systems
+in the domain through a Univention Directory Listener module.
+For more information,
+see :ref:`uv-dev-ref:settings-ldapschema`
+in :cite:t:`developer-reference`.
 
 .. _domain-infrastructure-ldap-directory-schema-replication:
 
 LDAP schema replication
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The replication of the LDAP schemas is also automated via the listener/notifier
-mechanism (see :ref:`domain-listener-notifier`). This relieves the administrator
-of the need to perform all schema updates manually on all the OpenLDAP servers
-in the domain. Performing the schema replication before the replication of LDAP
-objects guarantees that this doesn't fail as a result of missing object classes
+The listener and notifier mechanism automates LDAP schema replication.
+For more information,
+see :ref:`listener-notifier`.
+Because schema replication runs before LDAP object replication,
+object replication doesn't fail because of missing object classes
 or attributes.
+This automation means that you don't need to update
+every OpenLDAP server in the domain manually.
 
-On the :term:`Primary Directory Node`, a checksum for all the directories with schema
-definitions is performed when the OpenLDAP server is started. This checksum is
-compared with the last saved checksum in the
-:file:`/var/lib/univention-ldap/schema/md5` file.
+When the OpenLDAP server starts on the :term:`Primary Directory Node`,
+it calculates a checksum for all directories
+that contain schema definitions.
+The server compares this checksum with the previously saved checksum in
+:file:`/var/lib/univention-ldap/schema/md5`.
 
-The actual replication of the schema definitions is initiated by the
-Univention Directory Listener. Prior to every request from the Univention Directory Notifier for a new transaction ID,
-its current schema ID is requested. If this is higher than the schema ID
-on the listener side, the currently used sub-schema is procured from the
-notifier system's LDAP server via an LDAP search.
+The Univention Directory Listener starts schema replication.
+Before it requests a new transaction ID
+from the Univention Directory Notifier,
+it requests the current schema ID.
+If that schema ID is higher than the schema ID
+on the listener system,
+the listener retrieves the current sub-schema
+from the notifier system's LDAP server
+through an LDAP search.
 
-The output sub-schema is included on the listener system in LDIF format in the
-:file:`/var/lib/univention-ldap/schema.conf` file and the local OpenLDAP server
-restarted. If the schema replication is completed with this step, the
-replication of the LDAP objects is continued.
+The listener writes the resulting sub-schema in LDIF format
+to :file:`/var/lib/univention-ldap/schema.conf`.
+Then it restarts the local OpenLDAP server.
+After the listener completes schema replication,
+LDAP object replication continues.
+
+.. seealso::
+
+   :ref:`listener-notifier`
+      for information about the listener and notifier mechanism.
 
 .. _domain-infrastructure-ldap-directory-operations-and-maintenance:
 
 Operations and maintenance
 --------------------------
 
-.. TODO: Add introductory sentence.
+This section describes logging, connection timeout settings,
+and LDAP backup tasks.
 
 .. _domain-infrastructure-ldap-directory-logger:
 
-Audit-proof logging of LDAP changes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Tamper-evident logging of LDAP changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :program:`univention-directory-logger` package allows the logging of all
-changes in the LDAP directory service. As each data record contains the hash
-value of the previous data record, manipulations of the log file - such as
-deleted entries - can be uncovered.
+The :program:`univention-directory-logger` package logs all changes
+to the LDAP directory.
+Because each data record includes a hash of the previous record,
+you can detect changes to the log file,
+such as deleted entries.
 
-To install the :program:`univention-directory-logger` package, follow the
-instructions for installing software packages on UCS in
-:ref:`computers-installation-removal-of-individual-packages-in-the-univention-management-console`
+To install the :program:`univention-directory-logger` package,
+follow the instructions in
+:ref:`lifecycle-package-installation-management-umc`
 or
-:ref:`computers-installation-removal-of-individual-packages-in-the-command-line`.
+:ref:`lifecycle-package-installation-management-commandline`.
 
-Individual areas of the directory service can be excluded from the logging.
-These branches can be configured using the :term:`UCR variables <UCR variable>`
-:envvar:`ldap/logging/exclude1`, :envvar:`ldap/logging/excludeN`, etc. As standard, the
-container is excluded in which the temporary objects are stored
-(``cn=temporary,cn=univention``). The LDAP changes are logged by a Univention Directory Listener
-module. The Univention Directory Listener service must be restarted if changes are made to the
-UCR variables.
+You can exclude specific directory branches from logging.
+Configure these branches with numbered :term:`UCR variables <UCR variable>`
+such as :envvar:`ldap/logging/exclude1`,
+:envvar:`ldap/logging/exclude2`,
+and :envvar:`ldap/logging/exclude3`.
+Set each variable to a DN fragment,
+for example ``cn=temporary,cn=univention,$ldap_base``.
+By default, the logger excludes the temporary object container,
+``cn=temporary,cn=univention``.
 
-The logging is made in the
-:file:`/var/log/univention/directory-logger.log` file in the following format:
+After you change these UCR variables,
+restart the Univention Directory Listener service,
+as shown in :numref:`domain-infrastructure-ldap-directory-logger-restart-listing`.
+Then verify the result in
+:file:`/var/log/univention/directory-logger.log`
+by changing an object in an excluded branch
+and confirming that the log file doesn't contain a new entry for that change.
+
+.. code-block::
+   :caption: Restart Univention Directory Listener service
+   :name: domain-infrastructure-ldap-directory-logger-restart-listing
+
+   $ systemctl restart univention-directory-listener.service
+
+The :program:`univention-directory-logger` package writes log entries to
+:file:`/var/log/univention/directory-logger.log`.
+:numref:`lst-ldap-directory-logger-format` shows the log entry format.
 
 .. code-block:: none
+   :caption: Log entry format in ``directory-logger.log``
+   :name: lst-ldap-directory-logger-format
 
    START
-   Old Hash: Hash sum of the previous data record
-   DN: DN of the LDAP object
-   ID: Listener/notifier transaction ID
-   Modifier: DN of the modifying account
-   Timestamp: Time stamp in format dd.mm.yyyy hh:mm:ss
-   Action: add, modify or delete
+   Old Hash: […]
+   DN:[…]
+   ID: […]
+   Modifier: […]
+   Timestamp: […]
+   Action: […]
 
    Old Values:
-    List of old attributes, empty when an object is added
+    […]
    New Values:
-    List of new attributes, empty when an object is deleted
+    […]
    END
 
+The fields in :numref:`lst-ldap-directory-logger-format`
+have the following meanings:
 
-A hash sum is calculated for each logged data record and also logged in the
-``daemon.info`` section of the syslog service.
+:``Old Hash``: Identifies the hash sum of the previous data record.
+:``DN``: Identifies the distinguished name (DN) of the LDAP object.
+:``ID``: Identifies the listener/notifier transaction ID.
+:``Modifier``: Identifies the distinguished name (DN) of the modifying account.
+:``Timestamp``: Shows the timestamp in the format ``dd.mm.yyyy hh:mm:ss``.
+:``Action``: Identifies whether the action adds, modifies, or deletes the object.
+:``Old Values``: Lists the previous attribute values.
+   This field is empty after Nubus adds an object.
+:``New Values``: Lists the new attribute values.
+   This field is empty after Nubus deletes an object.
 
-As of :uv:erratum:`4.4x536` the respective transaction ID of the entry is
-added to the file :file:`/var/log/univention/directory-logger.log` before each
-line as a prefix:
+Nubus calculates a hash sum for each logged data record
+and writes it to the ``daemon.info`` facility of the syslog service.
+
+:uv:erratum:`4.4x536` adds the transaction ID of the entry
+as a prefix before each line in
+:file:`/var/log/univention/directory-logger.log`,
+as shown in :numref:`lst-ldap-directory-logger-id-prefix`.
+On systems with an earlier :program:`univention-directory-logger` package version,
+the package keeps the old behavior without the prefix by default.
+Set the :term:`UCR variable` :envvar:`ldap/logging/id-prefix` value to ``yes``
+to enable the prefix.
+This transaction ID lets you correlate related lines
+for log analysis and monitoring.
 
 .. code-block:: none
+   :caption: Log entry format with transaction ID prefix
+   :name: lst-ldap-directory-logger-id-prefix
 
    ID 342: START
    ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985
@@ -165,219 +225,351 @@ line as a prefix:
    ID 342: modifyTimestamp: 20200415092040Z
    ID 342: END
 
-
-If :program:`univention-directory-logger` was installed before this UCS version,
-the old behavior (no prefix) is retained by default. By setting the :term:`UCR variable`
-:envvar:`ldap/logging/id-prefix` to ``yes`` the new behavior can be activated.
-This prefix simplifies the correlation of related lines when post-processing the
-sign in analysis and monitoring software.
-
 .. _domain-infrastructure-ldap-directory-timeout-inactive-connections:
 
 Timeout for inactive LDAP connections
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :term:`UCR variable` :envvar:`ldap/idletimeout` is used to configure a time period in
-seconds after which the LDAP connection is cut off on the server side. When the
-value is set to ``0``, no expiry period is in use. The timeout period has been set
-at six minutes as standard.
+The :term:`UCR variable` :envvar:`ldap/idletimeout`
+defines the timeout duration, in seconds, for inactive LDAP connections.
+If you set the value to ``0``,
+the server doesn't enforce a timeout.
+By default, the timeout is six minutes.
 
 .. _domain-infrastructure-ldap-directory-backup:
 
 Daily backup of LDAP data
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The content of the LDAP directory is backed up daily on the :term:`Primary Directory Node`
-and all :term:`Backup Directory Node` systems via a Cron job. If Samba 4 is used, its data
-directory is also backed up.
+A cron job backs up LDAP directory data every day
+on the :term:`Primary Directory Node`
+and all :term:`Backup Directory Node` systems.
+If you use Samba,
+the cron job also backs up its data directory.
 
-The LDAP data are stored in the :file:`/var/univention-backup/` directory in the
-naming scheme :file:`ldap-backup_DATE.ldif.gz` in LDIF
-format. They can only be read by the ``root`` user. The Samba 4 files are stored in
-the directory :file:`/var/univention-backup/samba/`.
+The system stores LDAP data in LDIF format in
+:file:`/var/univention-backup/`
+with filenames that follow the pattern
+:file:`ldap-backup_{DATE}.ldif.gz`.
+Only the ``root`` user can read these files.
+The system stores Samba files in
+:file:`/var/univention-backup/samba/`.
 
-The :term:`UCR variable` :envvar:`backup/clean/max_age` can be used to define how long old
-backup files are kept (e.g. :envvar:`backup/clean/max_age`\ ``=365``, all files older than
-``365`` days are automatically deleted). For new installations (from UCS 4.4-7
-on) the default for this variable is ``365`` (days). If the variable is not set,
-no backup files are deleted.
+Use the :term:`UCR variable` :envvar:`backup/clean/max_age`
+to define how long the system keeps old backup files.
+If you set :envvar:`backup/clean/max_age` to ``365``,
+the system deletes backup files
+that are older than 365 days.
+If you don't set the variable,
+the system doesn't delete old backup files automatically.
+After the backup runs,
+verify that a new timestamped backup file exists in
+:file:`/var/univention-backup/`.
+If you use Samba,
+also verify that a new backup file exists in
+:file:`/var/univention-backup/samba/`.
+
+.. _domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap:
+
+Restart the LDAP server
+~~~~~~~~~~~~~~~~~~~~~~~
+
+To restart the LDAP server use the command in
+:numref:`domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap-listing`.
+The LDAP server is temporarily unavailable during the restart.
+
+.. code-block:: console
+   :caption: Restart the OpenLDAP server
+   :name: domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap-listing
+
+   $ systemctl restart slapd.service
 
 .. _domain-infrastructure-ldap-directory-access-control:
 
 Access control
 --------------
 
-.. TODO: Add introductory sentence.
+This section describes LDAP access control settings,
+anonymous access,
+nested groups,
+and delegated password resets.
 
 .. _domain-infrastructure-ldap-directory-acls:
 
 LDAP access control configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Access to the information contained in the LDAP directory is controlled by
-Access Control Lists (ACLs) on the server side. The ACLs are defined in the
-central configuration file :file:`/etc/ldap/slapd.conf` and managed using
-Univention Configuration Registry.
+Server-side Access Control Lists (ACLs)
+control access to information in the LDAP directory.
+The central configuration file :file:`/etc/ldap/slapd.conf`
+defines these ACLs.
+Univention Configuration Registry manages this configuration.
 
-The :file:`slapd.conf` is managed using a multifile template; further ACL
-elements can be added below
-:file:`/etc/univention/templates/files/etc/ldap/slapd.conf.d/` between the
-:file:`60univention-ldap-server_acl-master` and
-:file:`70univention-ldap-server_acl-master-end` files or the existing templates
-expanded upon.
+A multifile template manages :file:`slapd.conf`.
+To add ACL elements,
+create or extend a template in
+:file:`/etc/univention/templates/files/etc/ldap/slapd.conf.d/`
+between
+:file:`60univention-ldap-server_acl-master`
+and
+:file:`70univention-ldap-server_acl-master-end`.
+You can also extend the existing UCR templates.
+For information about how to modify existing UCR templates,
+see :ref:`system-administration-ucr-templates`.
 
-If LDAP ACL extensions are to be delivered as part of software packages, there
-is also the possibility of packaging them and distributing them to all the LDAP
-servers in the domain using a Univention Directory Listener module. Further information is available
-in :ref:`uv-dev-ref:settings-ldapacl`.
+After you change the template,
+run ``ucr commit /etc/ldap/slapd.conf``.
+Then :ref:`domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap`.
+Verify the ACL change with one test account
+with access
+and one test account without access.
+
+If you deliver LDAP ACL extensions as part of software packages,
+you can package them
+and distribute them to all LDAP servers in the domain
+through a Univention Directory Listener module.
+For more information,
+see :ref:`uv-dev-ref:settings-ldapacl`
+in :cite:t:`developer-reference`.
 
 .. _domain-infrastructure-ldap-directory-acls-anonymous:
 
 Anonymous read access
 ~~~~~~~~~~~~~~~~~~~~~
 
-The default setting of the LDAP server after new installations with UCS
-does not allow anonymous access to the LDAP directory. This behavior is
-configured with the :term:`UCR variable` :envvar:`ldap/acl/read/anonymous`.
-Individual IP addresses can be granted anonymous read permissions via
-:term:`UCR variable` :envvar:`ldap/acl/read/ips`.
+By default, a new installation of Nubus for UCS
+doesn't allow anonymous access to the LDAP directory.
+Use the :term:`UCR variable` :envvar:`ldap/acl/read/anonymous`
+to control whether the LDAP server allows anonymous read access.
+Use the :term:`UCR variable` :envvar:`ldap/acl/read/ips`
+to allow anonymous read access only from specific IP addresses.
 
-Following successful authentication on the LDAP server, all attributes of a user
-account can be read out by this user.
+After you change these UCR variables,
+:ref:`domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap`.
+Then test anonymous access from an allowed client
+and from a disallowed client.
 
-In addition, an extra, internal account, the root DN, also has full write
-access.
+After a user authenticates on the LDAP server,
+that user can read all attributes of their own user account.
 
-In addition, UCS offers a number of further ACLs installed as standard
-which suppress access to sensitive files (e.g., the user password) and
-establish rules which are necessary for operation (e.g., necessary
-accesses to computer accounts for log-ins). The read and write access to
-this sensitive information if only intended for members of the
-``Domain Admins`` group.
+The internal root DN account also has full write access.
+
+Nubus for UCS also includes additional ACLs by default.
+These ACLs block access to sensitive attributes,
+for example, user passwords,
+and define the access rules that the system needs for operation,
+for example, access to computer accounts during sign-in.
+Only members of the ``Domain Admins`` group
+can read or write this sensitive information.
 
 .. _domain-infrastructure-ldap-directory-acls-nested-groups:
 
 Nested group handling
 ~~~~~~~~~~~~~~~~~~~~~
 
-Nested groups are also supported. The :term:`UCR variable` :envvar:`ldap/acl/nestedgroups`
-can be used to deactivate the nested groups function for LDAP ACLs, which will
-result in a speed increase for directory requests.
+Nubus for UCS supports nested groups.
+Use the :term:`UCR variable` :envvar:`ldap/acl/nestedgroups`
+to deactivate nested groups for LDAP ACLs.
+Deactivating nested groups can speed up directory requests,
+but LDAP ACLs then no longer evaluate nested group membership.
+
+After you change this UCR variable,
+:ref:`domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap`.
+Then test access with an account
+that receives permissions through a nested group.
+
+.. seealso::
+
+   :ref:`ucs-operation-groups-management-nested`
+      for more information about nested groups.
 
 .. _domain-infrastructure-ldap-directory-delegate-password-reset:
 
 Delegation of the privilege to reset user passwords
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To facilitate the delegation of the privilege to reset user passwords, the
-:program:`univention-admingrp-user-passwordreset` package can be installed. It
-uses a join script to create the ``User Password Admins`` user group, in so far
-as this does not already exist.
+To delegate password resets,
+install the :program:`univention-admingrp-user-passwordreset` package.
+For package installation instructions,
+see
+:ref:`lifecycle-package-installation-management-umc`
+or
+:ref:`lifecycle-package-installation-management-commandline`.
+Install the package on the :term:`Primary Directory Node`
+and the :term:`Backup Directory Nodes <Backup Directory Node>`.
+During installation,
+the LDAP server restarts
+and is temporarily unavailable.
+The package runs a join script
+that creates the ``User Password Admins`` group
+if the group doesn't already exist.
 
-Members of this group receive the permission via additional LDAP ACLs to reset
-the passwords of other users. These LDAP ACLs are activated automatically during
-the package installation. To use another group, or a group that already exists,
-instead of the ``User Password Admins`` group, the DN of the group to be used
-can be entered in the :term:`UCR variable`
-:envvar:`ldap/acl/user/passwordreset/accesslist/groups/dn`. The LDAP server must
-be restarted after making changes.
+Additional LDAP ACLs give members of this group permission
+to reset other users' passwords.
+The package activates these ACLs during installation.
+If you want to use another group instead of ``User Password Admins``,
+set the distinguished name (DN) of that group in the :term:`UCR variable`
+:envvar:`ldap/acl/user/passwordreset/accesslist/groups/dn`.
 
-Passwords can be reset via the UMC module :guilabel:`Users`. By default the
-module is only accessible to the ``Administrator`` user. During the installation
-a new ``default-user-password-admins`` policy is created automatically, which is
-linked to the members of the ``User Password Admins`` group and can be assigned
-to a corresponding container in the LDAP directory. Further information on the
-configuration of UMC policies can be found in :ref:`delegated-administration`.
+By default,
+only the ``Administrator`` user can access the
+:external+uv-nubus-manual:ref:`nubus-user-management-users` management module.
+During installation,
+the package creates the ``default-user-password-admins`` policy
+and links it to members of the ``User Password Admins`` group.
 
-The policy makes it possible to search for users and create an overview of all
-the attributes of a user object. If an attempt is made to modify further
-attributes in addition to the password when the user does not have sufficient
-access rights to the LDAP directory, Univention Directory Manager denies them write access with the
-message *Permission denied*.
+To allow delegated password resets:
 
-.. caution::
+#. Add each delegated administrator
+   to the configured delegation group.
 
-   The package should be installed on the :term:`Primary Directory Node` and the
-   :term:`Backup Directory Node`\ s. During the installation, the LDAP server is restarted
-   and is thus temporarily unavailable.
+#. Assign the ``default-user-password-admins`` policy,
+   or an equivalent policy,
+   to the LDAP container where you want to allow password resets.
 
-Password resets via the password group can be prevented for sensitive users or
-groups (e.g., domain administrators). The :term:`UCR variables <UCR variable>`
-:envvar:`ldap/acl/user/passwordreset/protected/uid` and
-:envvar:`ldap/acl/user/passwordreset/protected/gid` can be used to configure
-users and groups. Multiple values must be separated by commas. After changes to
-the variables, it is necessary to restart the LDAP server using the
-:command:`systemctl restart slapd` command. By default the members of the
-``Domain Admins`` group are protected against having theirs password changed.
+After you complete the configuration,
+members of the delegation group can reset passwords
+for users in the assigned container.
+This policy also lets group members search for users
+and view all attributes of a user object.
+If a user without sufficient LDAP access rights
+tries to modify attributes other than the password,
+Univention Directory Manager denies the change
+and shows the message *Permission denied*.
 
-If access to additional LDAP attributes should be necessary for changing the
-password, the attribute names can be expanded in :term:`UCR variable`
-:envvar:`ldap/acl/user/passwordreset/attributes`. After the change, the LDAP
-directory service must be restarted for the change to take effect. This variable
-is already set appropriately for a UCS standard installation.
+For more information about group membership,
+see :external+uv-nubus-manual:ref:`nubus-user-management-users-tab-groups`.
+For more information about policy assignment
+and delegated administration,
+see :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`
+and :ref:`management-interface-delegated-administration`.
+
+You can prevent password resets through this group
+for sensitive users or groups,
+for example, domain administrators.
+Use the :term:`UCR variables <UCR variable>`
+:envvar:`ldap/acl/user/passwordreset/protected/uid`
+and :envvar:`ldap/acl/user/passwordreset/protected/gid`
+to define protected users and groups.
+Separate multiple values with commas.
+
+After you change these UCR variables,
+:ref:`domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap`.
+Then verify that delegated administrators can't reset passwords
+for a protected user
+or for a member of a protected group.
+By default,
+this delegation doesn't allow group members
+to change passwords for members of the ``Domain Admins`` group.
+
+If you need access to additional LDAP attributes
+when you change a password,
+add the attribute names to the :term:`UCR variable`
+:envvar:`ldap/acl/user/passwordreset/attributes`.
+Use a comma-separated list of LDAP attribute names.
+A standard Nubus for UCS installation already sets this variable
+for the default password reset workflow.
+Add attributes only if your workflow requires additional LDAP attributes
+during password changes.
+
+After you change this UCR variable,
+:ref:`domain-infrastructure-ldap-directory-operations-and-maintenance-restart-ldap`.
+Then verify that the password reset workflow still works
+for delegated administrators.
+
+.. seealso::
+
+   :external+uv-nubus-manual:ref:`nubus-user-management-users`
+      in :cite:t:`uv-nubus-manual`
+      for information about the :guilabel:`Users` management module.
+
+   :external+uv-nubus-manual:ref:`nubus-user-management-users-tab-groups`.
+      in :cite:t:`uv-nubus-manual`
+      for reference information about the groups tab in the :guilabel:`Users` management module.
+
+   :external+uv-nubus-manual:ref:`nubus-domain-policies-assign`
+      in :cite:t:`uv-nubus-manual`
+      for information about policy assignment.
 
 .. _domain-infrastructure-ldap-directory-client-access-and-interoperability:
 
 Client access and interoperability
 ----------------------------------
 
-.. TODO: Add introductory sentence.
+This section describes LDAP command-line tools,
+Name Service Switch integration,
+and directory service behavior with Samba in Nubus for UCS.
 
 .. _domain-infrastructure-ldap-directory-cli-tools:
 
 LDAP command line tools
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to the UMC web interface, there are also a range of programs with
-which one can access the LDAP directory from the command line.
+In addition to LDAP access in the *Management UI*,
+you can access the LDAP directory from the command line
+with several programs.
 
-The :command:`univention-ldapsearch` tool simplifies the authenticated search in
-the LDAP directory. A search filter needs to be specified as an argument; in the
-following example, the administrator is searched for using the user ID:
+The :command:`univention-ldapsearch` tool
+simplifies authenticated searches in the LDAP directory.
+Specify a search filter as an argument.
+The example in :numref:`domain-infrastructure-ldap-directory-cli-tools-ldapsearch`
+searches for the ``Administrator`` user by user ID.
 
-.. code-block::
+.. code-block:: console
+   :caption: Search for the ``Administrator`` user
+   :name: domain-infrastructure-ldap-directory-cli-tools-ldapsearch
 
    $ univention-ldapsearch uid=Administrator
 
+The :command:`slapcat` command saves the current LDAP data
+to a text file in LDIF format.
+The example in :numref:`domain-infrastructure-ldap-directory-cli-tools-slapcat`
+writes the data to :file:`ldapdata.txt`.
 
-The :command:`slapcat` command makes it possible to save the current LDAP data
-in a text file in LDIF format, e.g.:
-
-.. code-block::
+.. code-block:: console
+   :caption: Export LDAP data in LDIF format
+   :name: domain-infrastructure-ldap-directory-cli-tools-slapcat
 
    $ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt
 
 .. _domain-infrastructure-ldap-directory-nss:
 
-Name Service Switch / LDAP NSS module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Name Service Switch and LDAP NSS module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With the *Name Service Switch*, the GNU C standard library (:program:`glibc`)
-used in Univention Corporate Server offers a modular interface for resolving the
-names of users, groups and hosts.
+The *Name Service Switch* in the GNU C standard library
+provides a modular interface
+to resolve the names of users,
+groups,
+and hosts.
 
-The LDAP NSS module is used on UCS systems for access to the domain data
-(e.g., users) as standard. The module queries the LDAP server specified
-in the :term:`UCR variable` :envvar:`ldap/server/name` (and if necessary the
-:envvar:`ldap/server/addition`).
+By default, Nubus for UCS uses the LDAP NSS module
+to access domain data,
+for example, user information.
+The module queries the LDAP server specified in
+the :term:`UCR variable` :envvar:`ldap/server/name`.
+If that server is unavailable,
+the module can query the server specified in
+:envvar:`ldap/server/addition`.
 
-What measures should be taken if the LDAP server cannot be reached can be
-specified by the :term:`UCR variable` :envvar:`nssldap/bindpolicy`. As standard, if the
-server cannot be reached, a new connection attempt is made. If the variable is
-set to ``soft``, then no new attempt is made to connect. This can considerably
-accelerate the boot of a system if the LDAP server cannot be reached, e.g., in
-an isolated test environment.
+The :term:`UCR variable` :envvar:`nssldap/bindpolicy`
+controls how the module behaves
+when the LDAP server is unavailable.
+By default, the module tries to connect again.
+If you set the variable to ``soft``,
+the module doesn't try again.
+This setting improves system boot performance
+in an isolated test environment.
 
 .. _domain-infrastructure-ldap-directory-samba-4:
 
 Configuration of the directory service when using Samba/AD
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As standard, the OpenLDAP server is configured in such a way that it also
-accepts requests from ports ``7389`` and ``7636`` in addition to the standard
-ports ``389`` and ``636``.
+By default, the OpenLDAP server accepts requests on ports ``7389`` and ``7636``
+in addition to the standard ports ``389`` and ``636``.
 
-If Samba/AD is used, the Samba/AD domain controller service occupies the ports
-``389`` and ``636``. In this case, OpenLDAP is automatically reconfigured so
-that only ports ``7389`` and ``7636`` are used. :command:`univention-ldapsearch` uses the
-standard port automatically.
+If you use Samba/AD,
+the Samba/AD domain controller service occupies ports ``389`` and ``636``.
+In that case, OpenLDAP uses only ports ``7389`` and ``7636``.
+:command:`univention-ldapsearch` uses the standard port automatically.

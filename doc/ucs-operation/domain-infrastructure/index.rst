@@ -30,6 +30,13 @@ Domain join
    and manage join scripts for automated system configuration.
    See :ref:`domain-infrastructure-join`.
 
+LDAP directory service
+   Understand how Nubus for UCS stores domain data in the LDAP directory service,
+   how schema replication and audit-proof logging work,
+   how daily LDAP backups are created,
+   and how to configure access control and delegated password resets.
+   See :ref:`domain-infrastructure-ldap-directory`.
+
 Certificate management
    Understand how UCS manages TLS certificates,
    the built-in CA on the Primary Directory Node,
