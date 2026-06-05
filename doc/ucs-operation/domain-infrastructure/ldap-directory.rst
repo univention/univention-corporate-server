@@ -20,10 +20,17 @@ the server(s) used is described in :ref:`computers-configure-ldap-server`.
    The LDAP directory is part of Univention Nubus in the *Identity Store and Directory Service* component.
    For more information about Nubus, refer to :ref:`introduction-nubus`
 
+.. _domain-infrastructure-ldap-directory-schema-and-replication:
+
+Schema and replication
+----------------------
+
+.. TODO: Add introductory sentence.
+
 .. _domain-infrastructure-ldap-directory-schema:
 
 LDAP schemas
-------------
+~~~~~~~~~~~~
 
 Schema definitions specify which object classes exist and which attributes they
 include, i.e., which data can be stored in a directory service. Schema
@@ -37,7 +44,7 @@ attributes - such as for the policy mechanism.
 .. _domain-infrastructure-ldap-directory-schema-extension:
 
 LDAP schema extensions
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 To keep the efforts required for small extensions in LDAP as low as possible,
 Nubus for UCS provides its own LDAP scheme for customer extensions. The LDAP object
@@ -54,7 +61,7 @@ is available in :ref:`uv-dev-ref:settings-ldapschema`.
 .. _domain-infrastructure-ldap-directory-schema-replication:
 
 LDAP schema replication
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 The replication of the LDAP schemas is also automated via the listener/notifier
 mechanism (see :ref:`domain-listener-notifier`). This relieves the administrator
@@ -79,10 +86,17 @@ The output sub-schema is included on the listener system in LDIF format in the
 restarted. If the schema replication is completed with this step, the
 replication of the LDAP objects is continued.
 
+.. _domain-infrastructure-ldap-directory-operations-and-maintenance:
+
+Operations and maintenance
+--------------------------
+
+.. TODO: Add introductory sentence.
+
 .. _domain-infrastructure-ldap-directory-logger:
 
 Audit-proof logging of LDAP changes
------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :program:`univention-directory-logger` package allows the logging of all
 changes in the LDAP directory service. As each data record contains the hash
@@ -161,42 +175,44 @@ sign in analysis and monitoring software.
 .. _domain-infrastructure-ldap-directory-timeout-inactive-connections:
 
 Timeout for inactive LDAP connections
--------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :term:`UCR variable` :envvar:`ldap/idletimeout` is used to configure a time period in
 seconds after which the LDAP connection is cut off on the server side. When the
 value is set to ``0``, no expiry period is in use. The timeout period has been set
 at six minutes as standard.
 
-.. _domain-infrastructure-ldap-directory-cli-tools:
+.. _domain-infrastructure-ldap-directory-backup:
 
-LDAP command line tools
------------------------
+Daily backup of LDAP data
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to the UMC web interface, there are also a range of programs with
-which one can access the LDAP directory from the command line.
+The content of the LDAP directory is backed up daily on the :term:`Primary Directory Node`
+and all :term:`Backup Directory Node` systems via a Cron job. If Samba 4 is used, its data
+directory is also backed up.
 
-The :command:`univention-ldapsearch` tool simplifies the authenticated search in
-the LDAP directory. A search filter needs to be specified as an argument; in the
-following example, the administrator is searched for using the user ID:
+The LDAP data are stored in the :file:`/var/univention-backup/` directory in the
+naming scheme :file:`ldap-backup_DATE.ldif.gz` in LDIF
+format. They can only be read by the ``root`` user. The Samba 4 files are stored in
+the directory :file:`/var/univention-backup/samba/`.
 
-.. code-block::
+The :term:`UCR variable` :envvar:`backup/clean/max_age` can be used to define how long old
+backup files are kept (e.g. :envvar:`backup/clean/max_age`\ ``=365``, all files older than
+``365`` days are automatically deleted). For new installations (from UCS 4.4-7
+on) the default for this variable is ``365`` (days). If the variable is not set,
+no backup files are deleted.
 
-   $ univention-ldapsearch uid=Administrator
+.. _domain-infrastructure-ldap-directory-access-control:
 
+Access control
+--------------
 
-The :command:`slapcat` command makes it possible to save the current LDAP data
-in a text file in LDIF format, e.g.:
-
-.. code-block::
-
-   $ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt
-
+.. TODO: Add introductory sentence.
 
 .. _domain-infrastructure-ldap-directory-acls:
 
-Access control for the LDAP directory
--------------------------------------
+LDAP access control configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Access to the information contained in the LDAP directory is controlled by
 Access Control Lists (ACLs) on the server side. The ACLs are defined in the
@@ -214,6 +230,11 @@ If LDAP ACL extensions are to be delivered as part of software packages, there
 is also the possibility of packaging them and distributing them to all the LDAP
 servers in the domain using a Univention Directory Listener module. Further information is available
 in :ref:`uv-dev-ref:settings-ldapacl`.
+
+.. _domain-infrastructure-ldap-directory-acls-anonymous:
+
+Anonymous read access
+~~~~~~~~~~~~~~~~~~~~~
 
 The default setting of the LDAP server after new installations with UCS
 does not allow anonymous access to the LDAP directory. This behavior is
@@ -233,6 +254,11 @@ establish rules which are necessary for operation (e.g., necessary
 accesses to computer accounts for log-ins). The read and write access to
 this sensitive information if only intended for members of the
 ``Domain Admins`` group.
+
+.. _domain-infrastructure-ldap-directory-acls-nested-groups:
+
+Nested group handling
+~~~~~~~~~~~~~~~~~~~~~
 
 Nested groups are also supported. The :term:`UCR variable` :envvar:`ldap/acl/nestedgroups`
 can be used to deactivate the nested groups function for LDAP ACLs, which will
@@ -290,10 +316,41 @@ password, the attribute names can be expanded in :term:`UCR variable`
 directory service must be restarted for the change to take effect. This variable
 is already set appropriately for a UCS standard installation.
 
+.. _domain-infrastructure-ldap-directory-client-access-and-interoperability:
+
+Client access and interoperability
+----------------------------------
+
+.. TODO: Add introductory sentence.
+
+.. _domain-infrastructure-ldap-directory-cli-tools:
+
+LDAP command line tools
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In addition to the UMC web interface, there are also a range of programs with
+which one can access the LDAP directory from the command line.
+
+The :command:`univention-ldapsearch` tool simplifies the authenticated search in
+the LDAP directory. A search filter needs to be specified as an argument; in the
+following example, the administrator is searched for using the user ID:
+
+.. code-block::
+
+   $ univention-ldapsearch uid=Administrator
+
+
+The :command:`slapcat` command makes it possible to save the current LDAP data
+in a text file in LDIF format, e.g.:
+
+.. code-block::
+
+   $ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt
+
 .. _domain-infrastructure-ldap-directory-nss:
 
 Name Service Switch / LDAP NSS module
--------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 With the *Name Service Switch*, the GNU C standard library (:program:`glibc`)
 used in Univention Corporate Server offers a modular interface for resolving the
@@ -314,7 +371,7 @@ an isolated test environment.
 .. _domain-infrastructure-ldap-directory-samba-4:
 
 Configuration of the directory service when using Samba/AD
-----------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As standard, the OpenLDAP server is configured in such a way that it also
 accepts requests from ports ``7389`` and ``7636`` in addition to the standard
@@ -324,23 +381,3 @@ If Samba/AD is used, the Samba/AD domain controller service occupies the ports
 ``389`` and ``636``. In this case, OpenLDAP is automatically reconfigured so
 that only ports ``7389`` and ``7636`` are used. :command:`univention-ldapsearch` uses the
 standard port automatically.
-
-.. _domain-infrastructure-ldap-directory-backup:
-
-Daily backup of LDAP data
--------------------------
-
-The content of the LDAP directory is backed up daily on the :term:`Primary Directory Node`
-and all :term:`Backup Directory Node` systems via a Cron job. If Samba 4 is used, its data
-directory is also backed up.
-
-The LDAP data are stored in the :file:`/var/univention-backup/` directory in the
-naming scheme :file:`ldap-backup_DATE.ldif.gz` in LDIF
-format. They can only be read by the ``root`` user. The Samba 4 files are stored in
-the directory :file:`/var/univention-backup/samba/`.
-
-The :term:`UCR variable` :envvar:`backup/clean/max_age` can be used to define how long old
-backup files are kept (e.g. :envvar:`backup/clean/max_age`\ ``=365``, all files older than
-``365`` days are automatically deleted). For new installations (from UCS 4.4-7
-on) the default for this variable is ``365`` (days). If the variable is not set,
-no backup files are deleted.
