@@ -96,7 +96,7 @@ default_user_attrs = [
     ('uid', 'dovemail'),
     ('gid', 'dovemail'),
     ('system_groups_user', '%{ldap:uid}'),
-    ('quota_rule', '*:bytes=%{ldap:univentionMailUserQuota}M'),
+    ('quota_storage_size', '%{ldap:univentionMailUserQuota}M'),
 ]
 additional_user_attrs = configRegistry.get("mail/dovecot/auth/ldap/user/attributes", "")
 for key, value in default_user_attrs:
