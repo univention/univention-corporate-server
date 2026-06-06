@@ -2,6 +2,7 @@ univention-updater (17.6.0) unstable; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
   * Bug #59325: Adapt links and components for 5.2-6
+  * Bug #59324: Fix net-installer update check matching not-installed packages
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:50 +0200
 

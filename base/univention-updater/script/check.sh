@@ -79,8 +79,8 @@ update_check_hold_packages () {
 update_check_net_installer () {
 	local var="update$VERSION/ignore_net_installer"
 	ignore_check "$var" && return 100
-	installed="$(dpkg-query -W -f='${db:Status-Status} ${Version}' univention-net-installer  2>/dev/null | grep 'installed')"
-	installed_daemon="$(dpkg-query -W -f='${db:Status-Status} ${Version}' univention-net-installer-daemon  2>/dev/null | grep 'installed')"
+	installed="$(dpkg-query -W -f='${db:Status-Status} ${Version}' univention-net-installer  2>/dev/null | grep '^installed ')"
+	installed_daemon="$(dpkg-query -W -f='${db:Status-Status} ${Version}' univention-net-installer-daemon  2>/dev/null | grep '^installed ')"
 	if [ -n "$installed" ] || [ -n "$installed_daemon" ]; then
 		echo "	The package univention-net-installer is installed on your system. This package provides"
 		echo "	PXE installation which is not supported since UCS 4.4"
