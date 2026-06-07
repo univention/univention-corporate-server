@@ -10,7 +10,7 @@ domaincontroller_master|domaincontroller_backup) ;;
 		shift 2
 		exec /usr/sbin/univention-directory-manager "$module" "$action" \
 			--binddn "$(ucr get tests/domainadmin/account)" \
-			--bindpwd "$(ucr get tests/domainadmin/pwd)" \
+			--bindpwdfile "$(ucr get tests/domainadmin/pwdfile)" \
 			"$@"
 	fi
 	;;
