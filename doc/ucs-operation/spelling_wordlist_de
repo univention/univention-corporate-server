@@ -2,6 +2,7 @@ Administratorkonten
 Administratorkontos
 App-ID
 App-IDs
+Attributwerte
 Berichtsvorlagen
 Bootloader-Menü
 Brute-Force-Angriffe
@@ -38,6 +39,9 @@ Infrastrukturdienste
 Infrastrukturumgebungen
 Integrationen
 Listener-Dienste
+Logeintrag
+Logeinträge
+Logeinträgen
 Mirror
 Mirror-Server
 Mirrors
@@ -66,6 +70,7 @@ Root-Berechtigungen
 SSH-Dienst
 SSH-Sitzung
 SSO-Servers
+Schemadefinitionen
 Scripting
 Shell-Scripting
 Skriptnamen
@@ -96,10 +101,10 @@ größenbasierten
 hasht
 plattformspezifischen
 rekonfigurieren
+richtlinienbasierte
+richtlinienbasierten
 rollenspezifischen
 schreibbar
 systemspezifische
 zeitbasierte
 zeitbasierten
-richtlinienbasierte
-richtlinienbasierten

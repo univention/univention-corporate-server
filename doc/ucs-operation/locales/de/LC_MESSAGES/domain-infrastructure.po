@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-21 14:47+0000\n"
-"PO-Revision-Date: 2026-05-22 11:11+0200\n"
+"POT-Creation-Date: 2026-06-07 18:31+0000\n"
+"PO-Revision-Date: 2026-06-07 20:49+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -14,10 +14,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: ../../domain-infrastructure/activity-logging.rst:7
-#: ../../domain-infrastructure/index.rst:55
+#: ../../domain-infrastructure/index.rst:58
 msgid "Domain activity logging"
 msgstr "Protokollierung von Aktivitäten in der Domäne"
 
@@ -61,7 +61,7 @@ msgstr "Komponenten von Admin Diary"
 msgid "The app consists of the following components:"
 msgstr "Die App besteht aus den folgenden Komponenten:"
 
-#: ../../domain-infrastructure/activity-logging.rst:36
+#: ../../domain-infrastructure/activity-logging.rst:32
 msgid "Admin Diary backend"
 msgstr "Admin Diary Backend"
 
@@ -77,7 +77,7 @@ msgstr ""
 "oder MySQL bereits auf dem Zielsystem installiert sind, verwendet das "
 "Backend diese statt PostgreSQL."
 
-#: ../../domain-infrastructure/activity-logging.rst:42
+#: ../../domain-infrastructure/activity-logging.rst:40
 msgid "Admin Diary frontend"
 msgstr "Admin Diary Frontend"
 
@@ -103,7 +103,7 @@ msgstr ""
 "Verwaltungsmodul *Admin Diary*. Standardmäßig gruppiert das Modul "
 "Einträge nach Woche. Sie können sie auch mit dem Suchfeld filtern."
 
-#: ../../domain-infrastructure/activity-logging.rst:58
+#: ../../domain-infrastructure/activity-logging.rst:55
 msgid "Events view in the Admin Diary management module"
 msgstr "Ereignisansicht im Verwaltungsmodul Admin Diary"
 
@@ -124,7 +124,7 @@ msgstr ""
 "logging-detail-figure` wird angezeigt. Sie können auch einen Kommentar zu"
 " jedem Ereignis hinzufügen."
 
-#: ../../domain-infrastructure/activity-logging.rst:70
+#: ../../domain-infrastructure/activity-logging.rst:67
 msgid "Detail view in Admin Diary management module"
 msgstr "Detailansicht im Verwaltungsmodul Admin Diary"
 
@@ -202,7 +202,7 @@ msgstr ""
 "separate frontend and backend <11331>`."
 
 #: ../../domain-infrastructure/domain-join.rst:7
-#: ../../domain-infrastructure/index.rst:31
+#: ../../domain-infrastructure/index.rst:26
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
@@ -435,7 +435,7 @@ msgstr ""
 "Das System führt Skripte während des Domänenbeitritts und während dem "
 "Entfernen von Software aus:"
 
-#: ../../domain-infrastructure/domain-join.rst:132
+#: ../../domain-infrastructure/domain-join.rst:127
 msgid "Join scripts"
 msgstr "Join-Skripte"
 
@@ -451,7 +451,7 @@ msgstr ""
 "anpassen oder andere Konfigurationsänderungen vornehmen. Das System "
 "speichert sie in :file:`/usr/lib/univention-install/`."
 
-#: ../../domain-infrastructure/domain-join.rst:137
+#: ../../domain-infrastructure/domain-join.rst:134
 msgid "Unjoin scripts"
 msgstr "Unjoin-Skripte"
 
@@ -773,17 +773,18 @@ msgid ""
 "Directory Connection` app from the :ref:`lifecycle-app-center` as an "
 "alternative."
 msgstr ""
-"Univention unterstützt kein Joinen von Microsoft Active Directory Domain Controllern "
-"in eine Nubus für UCS-Domäne. Verwenden Sie als Alternative "
-"die App :program:`Active Directory-Verbindung` aus dem :ref:`lifecycle-app-center`."
+"Univention unterstützt kein Joinen von Microsoft Active Directory Domain "
+"Controllern in eine Nubus für UCS-Domäne. Verwenden Sie als Alternative "
+"die App :program:`Active Directory-Verbindung` aus dem :ref:`lifecycle-"
+"app-center`."
 
 #: ../../domain-infrastructure/domain-join.rst:296
 msgid ""
 "For more information, see :external+uv-ucs-manual:ref:`ad-connector-"
 "general` in :cite:t:`ucs-manual`."
 msgstr ""
-"Weitere Informationen finden Sie unter :external+uv-ucs-manual:ref:`ad-connector-"
-"general` im :cite:t:`ucs-manual`."
+"Weitere Informationen finden Sie unter :external+uv-ucs-manual:ref:`ad-"
+"connector-general` im :cite:t:`ucs-manual`."
 
 #: ../../domain-infrastructure/domain-join.rst:303
 msgid "Ubuntu domain joins"
@@ -844,6 +845,7 @@ msgstr ""
 "Öffnen Sie aus dem Menü das *Directory Utility*, wie Sie in :numref"
 ":`domain-infrastructure-join-macos-gui-figure` sehen können."
 
+#: ../../domain-infrastructure/domain-join.rst:329
 #: ../../domain-infrastructure/domain-join.rst:332
 msgid "Domain join of a macOS system"
 msgstr "Domänenbeitritt eines macOS-Systems"
@@ -966,7 +968,7 @@ msgstr ""
 "nicht in der Seitenliste an."
 
 #: ../../domain-infrastructure/ha.rst:7
-#: ../../domain-infrastructure/index.rst:49
+#: ../../domain-infrastructure/index.rst:52
 msgid "Redundancy and failover for the Primary Directory Node"
 msgstr "Redundanz und Failover für den Primary Directory Node"
 
@@ -1028,7 +1030,7 @@ msgstr ""
 "Diese Seite beschreibt zwei ergänzende Strategien, um dieses Risiko zu "
 "verringern:"
 
-#: ../../domain-infrastructure/ha.rst:26
+#: ../../domain-infrastructure/ha.rst:24
 msgid "Redundancy"
 msgstr "Redundanz"
 
@@ -1041,7 +1043,7 @@ msgstr ""
 " sicherzustellen, dass der Lesezugriff fortgesetzt wird, wenn der Primary"
 " nicht verfügbar ist."
 
-#: ../../domain-infrastructure/ha.rst:30
+#: ../../domain-infrastructure/ha.rst:28
 msgid "Failover"
 msgstr "Failover"
 
@@ -1084,7 +1086,7 @@ msgstr ""
 msgid "Consider the following when planning redundancy:"
 msgstr "Beachten Sie das Folgende bei der Planung der Redundanz:"
 
-#: ../../domain-infrastructure/ha.rst:51
+#: ../../domain-infrastructure/ha.rst:49
 msgid "At least one Backup Directory Node"
 msgstr "Mindestens ein Backup Directory Node"
 
@@ -1096,7 +1098,7 @@ msgstr ""
 "Bietet vollständige Datenreplikation und die Fähigkeit zur Umwandlung in "
 "einen Primary Directory Node. Wesentlich für Produktionsumgebungen."
 
-#: ../../domain-infrastructure/ha.rst:55
+#: ../../domain-infrastructure/ha.rst:53
 msgid "Geographic distribution"
 msgstr "Geografische Verteilung"
 
@@ -1108,7 +1110,7 @@ msgstr ""
 "Platzieren Sie Backup und Replica Directory Nodes an verschiedenen Orten "
 "für Notfallwiederherstellung und lokalen Zugriff."
 
-#: ../../domain-infrastructure/ha.rst:58
+#: ../../domain-infrastructure/ha.rst:57
 msgid "Network connectivity"
 msgstr "Netzwerkkonnektivität"
 
@@ -1120,7 +1122,7 @@ msgstr ""
 "Stellen Sie sicher, dass alle Systeme zuverlässig mit dem Primary "
 "Directory Node kommunizieren können."
 
-#: ../../domain-infrastructure/ha.rst:62
+#: ../../domain-infrastructure/ha.rst:60
 msgid "Service distribution"
 msgstr "Verteilung von Diensten"
 
@@ -1174,7 +1176,7 @@ msgstr ""
 "Ihrer Backup und Replica Directory Nodes, um Ihre fehlertolerante Domain-"
 "Konfiguration abzuschließen."
 
-#: ../../domain-infrastructure/ha.rst:84
+#: ../../domain-infrastructure/ha.rst:82
 msgid "LDAP server failover"
 msgstr "LDAP-Server-Failover"
 
@@ -1188,7 +1190,7 @@ msgstr ""
 "Clients automatisch ein Failover durchführen, wenn der Primary Directory "
 "Node nicht verfügbar wird."
 
-#: ../../domain-infrastructure/ha.rst:87
+#: ../../domain-infrastructure/ha.rst:86
 msgid "Kerberos Key Distribution Centers"
 msgstr "Kerberos-Schlüsselverteilungszentren"
 
@@ -1198,7 +1200,7 @@ msgstr ""
 "Richten Sie mehrere :spelling:word:`Kerberos KDCs` für "
 "Authentifizierungsredundanz ein."
 
-#: ../../domain-infrastructure/ha.rst:91
+#: ../../domain-infrastructure/ha.rst:89
 msgid "DNS name servers"
 msgstr "DNS Nameserver"
 
@@ -1210,7 +1212,7 @@ msgstr ""
 "Konfigurieren Sie mehrere Nameserver, um sicherzustellen, dass die "
 "Namensauflösung während Wartungen oder Ausfällen fortgesetzt wird."
 
-#: ../../domain-infrastructure/ha.rst:95
+#: ../../domain-infrastructure/ha.rst:93
 msgid "DHCP redundancy"
 msgstr "DHCP-Redundanz"
 
@@ -1222,7 +1224,7 @@ msgstr ""
 "Installieren Sie die DHCP-Server-App auf zusätzlichen Systemen, um "
 "sicherzustellen, dass die Netzwerkkonfiguration verfügbar bleibt."
 
-#: ../../domain-infrastructure/ha.rst:100
+#: ../../domain-infrastructure/ha.rst:97
 msgid "Active Directory-compatible Domain Controllers"
 msgstr "Active Directory-kompatible Domain Controller"
 
@@ -1270,7 +1272,7 @@ msgstr ""
 "Sie können jeden Backup Directory Node zu einem Primary Directory Node "
 "umwandeln. Die folgenden Szenarien zur Umwandlung existieren:"
 
-#: ../../domain-infrastructure/ha.rst:122
+#: ../../domain-infrastructure/ha.rst:121
 msgid "Emergency"
 msgstr "Notfall"
 
@@ -1282,7 +1284,7 @@ msgstr ""
 "In einem Notfall, z. B. wenn die Hardware des Primary Directory Node "
 "ausfällt."
 
-#: ../../domain-infrastructure/ha.rst:125
+#: ../../domain-infrastructure/ha.rst:124
 msgid "Replacement"
 msgstr "Austausch"
 
@@ -1385,7 +1387,7 @@ msgstr ""
 "Folgen Sie diesen Schritten, um die Backup zu Primary Umwandlung "
 "vorzubereiten:"
 
-#: ../../domain-infrastructure/ha.rst:214
+#: ../../domain-infrastructure/ha.rst:162
 msgid "Synchronize LDAP schema packages"
 msgstr "LDAP-Schema-Pakete synchronisieren"
 
@@ -1499,7 +1501,7 @@ msgstr ""
 "$ dpkg --set-selections < dpkg.selection\n"
 "$ apt-get dselect-upgrade"
 
-#: ../../domain-infrastructure/ha.rst:228
+#: ../../domain-infrastructure/ha.rst:218
 msgid "Compare Univention Configuration Registry"
 msgstr "Univention Configuration Registry vergleichen"
 
@@ -1765,7 +1767,7 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
-#: ../../domain-infrastructure/index.rst:63
+#: ../../domain-infrastructure/index.rst:70
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1799,7 +1801,7 @@ msgstr ""
 "verschiedenen Systemrollen, die Sie bereitstellen können, als auch die "
 "Strategien zum Schutz vor einzelnen Ausfallpunkten verstehen."
 
-#: ../../domain-infrastructure/index.rst:24
+#: ../../domain-infrastructure/index.rst:20
 msgid "System roles"
 msgstr "Systemrollen"
 
@@ -1828,12 +1830,31 @@ msgstr ""
 "Verwaltungsmodul und verwalten Sie Join-Skripte für die automatisierte "
 "Systemkonfiguration. Siehe :ref:`domain-infrastructure-join`."
 
-#: ../../domain-infrastructure/index.rst:37
+#: ../../domain-infrastructure/index.rst:33
+#: ../../domain-infrastructure/ldap-directory.rst:7
+msgid "LDAP directory service"
+msgstr "LDAP-Verzeichnisdienst"
+
+#: ../../domain-infrastructure/index.rst:34
+msgid ""
+"Understand how Nubus for UCS stores domain data in the LDAP directory "
+"service, how schema replication and audit-proof logging work, how daily "
+"LDAP backups are created, and how to configure access control and "
+"delegated password resets. See :ref:`domain-infrastructure-ldap-"
+"directory`."
+msgstr ""
+"Erfahren Sie, wie Nubus für UCS Domänendaten im LDAP-Verzeichnisdienst "
+"speichert, wie Schema-Replikation und revisionssichere Protokollierung "
+"funktionieren, wie tägliche LDAP-Backups erstellt werden und wie Sie die "
+"Zugriffskontrolle sowie delegierte Passwortrücksetzungen konfigurieren. "
+"Siehe :ref:`domain-infrastructure-ldap-directory`."
+
+#: ../../domain-infrastructure/index.rst:40
 #: ../../domain-infrastructure/tls.rst:7
 msgid "Certificate management"
 msgstr "Zertifikatsverwaltung"
 
-#: ../../domain-infrastructure/index.rst:34
+#: ../../domain-infrastructure/index.rst:41
 msgid ""
 "Understand how UCS manages TLS certificates, the built-in CA on the "
 "Primary Directory Node, certificate validity monitoring, and renewal "
@@ -1844,11 +1865,11 @@ msgstr ""
 " Zertifikatsgültigkeit und Verlängerungsverfahren. Siehe :ref:`domain-"
 "infrastructure-tls`."
 
-#: ../../domain-infrastructure/index.rst:43
+#: ../../domain-infrastructure/index.rst:46
 msgid "Kerberos authentication"
 msgstr "Kerberos-Authentifizierung"
 
-#: ../../domain-infrastructure/index.rst:40
+#: ../../domain-infrastructure/index.rst:47
 msgid ""
 "Learn how Nubus for UCS uses Kerberos for domain authentication, how the "
 "system selects the Key Distribution Center, and how to configure the "
@@ -1860,7 +1881,7 @@ msgstr ""
 "den Kerberos-Administrations-Server konfigurieren. Siehe :ref:`domain-"
 "infrastructure-kerberos`."
 
-#: ../../domain-infrastructure/index.rst:46
+#: ../../domain-infrastructure/index.rst:53
 msgid ""
 "Protect your domain against disruption to the Primary Directory Node by "
 "distributing directory data across Backup and Replica Directory Nodes and"
@@ -1872,7 +1893,7 @@ msgstr ""
 " bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
 ":`deployment-primary-dn-resilience`."
 
-#: ../../domain-infrastructure/index.rst:52
+#: ../../domain-infrastructure/index.rst:59
 msgid ""
 "Record and monitor important domain events including user and object "
 "management, app installations and updates, server password changes, "
@@ -1885,11 +1906,11 @@ msgstr ""
 "Systemaktualisierungen mit der App :program:`Admin Diary`. Siehe :ref"
 ":`domain-activity-logging`."
 
-#: ../../domain-infrastructure/index.rst:61
+#: ../../domain-infrastructure/index.rst:64
 msgid "Listener and Notifier replication"
 msgstr "Listener- und Notifier-Replikation"
 
-#: ../../domain-infrastructure/index.rst:58
+#: ../../domain-infrastructure/index.rst:65
 msgid ""
 "Understand how the Listener and Notifier mechanism replicates directory "
 "data across your domain, how transaction-based replication ensures "
@@ -1953,7 +1974,7 @@ msgid ""
 "stores it in the :term:`UCR variable` :envvar:`kerberos/realm`."
 msgstr ""
 "Der Name des Kerberos-Realm leitet sich von Ihrem Domänennamen ab. Das "
-"Installationsprogramm speichert ihn in der :term:`UCR variable` "
+"Installationsprogramm speichert ihn in der :term:`UCR-Variable` "
 ":envvar:`kerberos/realm`."
 
 #: ../../domain-infrastructure/kerberos.rst:40
@@ -2004,7 +2025,7 @@ msgid ""
 msgstr ""
 "Standardmäßig bestimmen DNS-Service-Records, welchen KDC Ihr System "
 "nutzt. Um den KDC für ein bestimmtes System zu überschreiben, legen Sie "
-"die :term:`UCR variable` :envvar:`kerberos/kdc` fest."
+"die :term:`UCR-Variable` :envvar:`kerberos/kdc` fest."
 
 #: ../../domain-infrastructure/kerberos.rst:68
 msgid ""
@@ -2048,6 +2069,1034 @@ msgid ""
 msgstr ""
 "Um den Administrations-Server zu konfigurieren, legen Sie die :term:`UCR "
 "variable` :envvar:`kerberos/adminserver` fest."
+
+#: ../../domain-infrastructure/ldap-directory.rst:11
+msgid ""
+"Nubus for UCS stores domain-wide data in an LDAP directory service that "
+"uses OpenLDAP. This chapter covers advanced OpenLDAP configuration and "
+"LDAP coordination. A Nubus for UCS domain often uses several LDAP "
+"servers. For information about configuring the LDAP servers in use, see "
+":ref:`system-administration-ldap-server`."
+msgstr ""
+"Nubus für UCS speichert domänenweite Daten in einem LDAP-"
+"Verzeichnisdienst, der OpenLDAP verwendet. Dieses Kapitel behandelt die "
+"erweiterte OpenLDAP-Konfiguration und die LDAP-Koordination. Eine Nubus "
+"für UCS Domäne verwendet häufig mehrere LDAP-Server. Informationen zur "
+"Konfiguration der eingesetzten LDAP-Server finden Sie unter :ref:`system-"
+"administration-ldap-server`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:22
+msgid "Schema and replication"
+msgstr "Schema und Replikation"
+
+#: ../../domain-infrastructure/ldap-directory.rst:24
+msgid ""
+"This section describes LDAP schemas, LDAP extensions, and schema "
+"replication in a Nubus for UCS domain."
+msgstr ""
+"Dieser Abschnitt beschreibt LDAP-Schemata, LDAP-Erweiterungen und die "
+"Schema-Replikation in einer Nubus für UCS Domäne."
+
+#: ../../domain-infrastructure/ldap-directory.rst:31
+msgid "LDAP schemas"
+msgstr "LDAP-Schemata"
+
+#: ../../domain-infrastructure/ldap-directory.rst:33
+msgid ""
+"Schema definitions specify the object classes and attributes that a "
+"directory service can store and manage. OpenLDAP stores schema "
+"definitions in text files and includes them in its configuration file."
+msgstr ""
+"Schemadefinitionen legen die Objektklassen und Attribute fest, die ein "
+"Verzeichnisdienst speichern und verwalten kann. OpenLDAP speichert "
+"Schemadefinitionen in Textdateien und bindet sie in seine "
+"Konfigurationsdatei ein."
+
+#: ../../domain-infrastructure/ldap-directory.rst:38
+msgid ""
+"Nubus for UCS uses standard schemas where possible to support "
+"interoperability with other LDAP applications. It also provides "
+"Univention-specific schema extensions for attributes such as the policy "
+"mechanism."
+msgstr ""
+"Nubus für UCS verwendet nach Möglichkeit Standardschemata, um die "
+"Interoperabilität mit anderen LDAP-Anwendungen zu unterstützen. Außerdem "
+"stellt es Univention-spezifische Schema-Erweiterungen für Attribute wie "
+"den Richtlinienmechanismus bereit."
+
+#: ../../domain-infrastructure/ldap-directory.rst:46
+msgid "LDAP schema extensions"
+msgstr "LDAP Schema-Erweiterungen"
+
+#: ../../domain-infrastructure/ldap-directory.rst:48
+msgid ""
+"For custom LDAP extensions, Nubus for UCS provides its own LDAP schema. "
+"The LDAP object class ``univentionFreeAttributes`` provides 20 "
+"attributes, from ``univentionFreeAttribute1`` to "
+"``univentionFreeAttribute20``, for unrestricted extension attributes. You"
+" can use this object class with any LDAP object, for example, a user "
+"object."
+msgstr ""
+"Für benutzerdefinierte LDAP-Erweiterungen stellt Nubus für UCS ein "
+"eigenes LDAP-Schema bereit. Die LDAP-Objektklasse "
+"``univentionFreeAttributes`` stellt 20 Attribute von "
+"``univentionFreeAttribute1`` bis ``univentionFreeAttribute20`` für "
+"uneingeschränkte Erweiterungsattribute bereit. Sie können diese "
+"Objektklasse mit jedem LDAP-Objekt verwenden, zum Beispiel mit einem "
+"Benutzerobjekt."
+
+#: ../../domain-infrastructure/ldap-directory.rst:57
+msgid ""
+"If you deliver LDAP schema extensions as part of a software package, you "
+"can package them and distribute them to all :term:`Backup Directory Node`"
+" systems in the domain through a Univention Directory Listener module. "
+"For more information, see :ref:`uv-dev-ref:settings-ldapschema` in "
+":cite:t:`developer-reference`."
+msgstr ""
+"Wenn Sie LDAP Schema-Erweiterungen als Teil eines Softwarepakets "
+"bereitstellen, können Sie sie paketieren und über ein Univention "
+"Directory Listener-Modul an alle :term:`Backup Directory Node`-Systeme in"
+" der Domäne verteilen. Weitere Informationen finden Sie unter :ref:`uv-"
+"dev-ref:settings-ldapschema` in :cite:t:`developer-reference`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:68
+msgid "LDAP schema replication"
+msgstr "LDAP Schema-Replikation"
+
+#: ../../domain-infrastructure/ldap-directory.rst:70
+msgid ""
+"The listener and notifier mechanism automates LDAP schema replication. "
+"For more information, see :ref:`listener-notifier`. Because schema "
+"replication runs before LDAP object replication, object replication "
+"doesn't fail because of missing object classes or attributes. This "
+"automation means that you don't need to update every OpenLDAP server in "
+"the domain manually."
+msgstr ""
+"Der Listener- und Notifier-Mechanismus automatisiert die LDAP-Schema-"
+"Replikation. Weitere Informationen finden Sie unter :ref:`listener-"
+"notifier`. Da die Schema-Replikation vor der LDAP-Objektreplikation "
+"abläuft, schlägt die Objektreplikation nicht wegen fehlender "
+"Objektklassen oder Attribute fehl. Durch diese Automatisierung müssen Sie"
+" nicht jeden OpenLDAP-Server in der Domäne manuell aktualisieren."
+
+#: ../../domain-infrastructure/ldap-directory.rst:79
+msgid ""
+"When the OpenLDAP server starts on the :term:`Primary Directory Node`, it"
+" calculates a checksum for all directories that contain schema "
+"definitions. The server compares this checksum with the previously saved "
+"checksum in :file:`/var/lib/univention-ldap/schema/md5`."
+msgstr ""
+"Wenn der OpenLDAP-Server auf dem :term:`Primary Directory Node` startet, "
+"berechnet er für alle Verzeichnisse, die Schemadefinitionen enthalten, "
+"eine Prüfsumme. Der Server vergleicht diese Prüfsumme mit der zuvor in "
+":file:`/var/lib/univention-ldap/schema/md5` gespeicherten Prüfsumme."
+
+#: ../../domain-infrastructure/ldap-directory.rst:85
+msgid ""
+"The Univention Directory Listener starts schema replication. Before it "
+"requests a new transaction ID from the Univention Directory Notifier, it "
+"requests the current schema ID. If that schema ID is higher than the "
+"schema ID on the listener system, the listener retrieves the current sub-"
+"schema from the notifier system's LDAP server through an LDAP search."
+msgstr ""
+"Der Univention Directory Listener startet die Schema-Replikation. Bevor "
+"er beim Univention Directory Notifier eine neue Transaktions-ID "
+"anfordert, fragt er die aktuelle Schema-ID ab. Wenn diese Schema-ID höher"
+" ist als die Schema-ID auf dem Listener-System, ruft der Listener das "
+"aktuelle Teilschema vom LDAP-Server des Notifier-Systems durch eine LDAP-"
+"Suche ab."
+
+#: ../../domain-infrastructure/ldap-directory.rst:95
+msgid ""
+"The listener writes the resulting sub-schema in LDIF format to "
+":file:`/var/lib/univention-ldap/schema.conf`. Then it restarts the local "
+"OpenLDAP server. After the listener completes schema replication, LDAP "
+"object replication continues."
+msgstr ""
+"Der Listener schreibt das resultierende Teilschema im LDIF-Format nach "
+":file:`/var/lib/univention-ldap/schema.conf`. Anschließend startet er den"
+" lokalen OpenLDAP-Server neu. Nachdem der Listener die Schema-Replikation"
+" abgeschlossen hat, wird die LDAP-Objektreplikation fortgesetzt."
+
+#: ../../domain-infrastructure/ldap-directory.rst:103
+msgid ":ref:`listener-notifier`"
+msgstr ":ref:`listener-notifier`"
+
+#: ../../domain-infrastructure/ldap-directory.rst:104
+msgid "for information about the listener and notifier mechanism."
+msgstr "für Informationen über den Listener- und Notifier-Mechanismus."
+
+#: ../../domain-infrastructure/ldap-directory.rst:109
+msgid "Operations and maintenance"
+msgstr "Betrieb und Wartung"
+
+#: ../../domain-infrastructure/ldap-directory.rst:111
+msgid ""
+"This section describes logging, connection timeout settings, and LDAP "
+"backup tasks."
+msgstr ""
+"Dieser Abschnitt beschreibt die Protokollierung, Einstellungen für "
+"Zeitüberschreitungen der Verbindung und LDAP-Backup-Aufgaben."
+
+#: ../../domain-infrastructure/ldap-directory.rst:117
+msgid "Tamper-evident logging of LDAP changes"
+msgstr "Protokollierung von LDAP-Änderungen zur Erkennung von Manipulationen"
+
+#: ../../domain-infrastructure/ldap-directory.rst:119
+msgid ""
+"The :program:`univention-directory-logger` package logs all changes to "
+"the LDAP directory. Because each data record includes a hash of the "
+"previous record, you can detect changes to the log file, such as deleted "
+"entries."
+msgstr ""
+"Das Paket :program:`univention-directory-logger` protokolliert alle "
+"Änderungen am LDAP-Verzeichnis. Da jeder Datensatz einen Hash des "
+"vorherigen Datensatzes enthält, können Sie Änderungen an der Logdatei wie"
+" gelöschte Einträge erkennen."
+
+#: ../../domain-infrastructure/ldap-directory.rst:125
+msgid ""
+"To install the :program:`univention-directory-logger` package, follow the"
+" instructions in :ref:`lifecycle-package-installation-management-umc` or "
+":ref:`lifecycle-package-installation-management-commandline`."
+msgstr ""
+"Um das Paket :program:`univention-directory-logger` zu installieren, "
+"folgen Sie den Anweisungen unter :ref:`lifecycle-package-installation-"
+"management-umc` oder :ref:`lifecycle-package-installation-management-"
+"commandline`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:131
+msgid ""
+"You can exclude specific directory branches from logging. Configure these"
+" branches with numbered :term:`UCR variables <UCR variable>` such as "
+":envvar:`ldap/logging/exclude1`, :envvar:`ldap/logging/exclude2`, and "
+":envvar:`ldap/logging/exclude3`. Set each variable to a DN fragment, for "
+"example ``cn=temporary,cn=univention,$ldap_base``. By default, the logger"
+" excludes the temporary object container, ``cn=temporary,cn=univention``."
+msgstr ""
+"Sie können bestimmte Verzeichniszweige von der Protokollierung "
+"ausschließen. Konfigurieren Sie diese Zweige mit nummerierten :term:`UCR-"
+"Variablen <UCR variable>` wie :envvar:`ldap/logging/exclude1`, "
+":envvar:`ldap/logging/exclude2` und :envvar:`ldap/logging/exclude3`. "
+"Setzen Sie jede Variable auf ein :spelling:word:`DN-Fragment`, zum "
+"Beispiel ``cn=temporary,cn=univention,$ldap_base``. Standardmäßig "
+"schließt der Logger den temporären Objektcontainer "
+"``cn=temporary,cn=univention`` aus."
+
+#: ../../domain-infrastructure/ldap-directory.rst:141
+msgid ""
+"After you change these UCR variables, restart the Univention Directory "
+"Listener service, as shown in :numref:`domain-infrastructure-ldap-"
+"directory-logger-restart-listing`. Then verify the result in "
+":file:`/var/log/univention/directory-logger.log` by changing an object in"
+" an excluded branch and confirming that the log file doesn't contain a "
+"new entry for that change."
+msgstr ""
+"Nachdem Sie diese UCR-Variablen geändert haben, starten Sie den "
+"Univention Directory Listener-Dienst neu, wie in :numref:`domain-"
+"infrastructure-ldap-directory-logger-restart-listing` gezeigt. Prüfen Sie"
+" dann das Ergebnis in :file:`/var/log/univention/directory-logger.log`, "
+"indem Sie ein Objekt in einem ausgeschlossenen Zweig ändern und "
+"bestätigen, dass die Logdatei keinen neuen Eintrag für diese Änderung "
+"enthält."
+
+#: ../../domain-infrastructure/ldap-directory.rst:149
+msgid "Restart Univention Directory Listener service"
+msgstr "Univention Directory Listener-Dienst neu starten"
+
+#: ../../domain-infrastructure/ldap-directory.rst:149
+msgid "$ systemctl restart univention-directory-listener.service"
+msgstr "$ systemctl restart univention-directory-listener.service"
+
+#: ../../domain-infrastructure/ldap-directory.rst:155
+msgid ""
+"The :program:`univention-directory-logger` package writes log entries to "
+":file:`/var/log/univention/directory-logger.log`. :numref:`lst-ldap-"
+"directory-logger-format` shows the log entry format."
+msgstr ""
+"Das Paket :program:`univention-directory-logger` schreibt Logeinträge "
+"nach :file:`/var/log/univention/directory-logger.log`. :numref:`lst-ldap-"
+"directory-logger-format` zeigt das Format der Logeinträge."
+
+#: ../../domain-infrastructure/ldap-directory.rst:159
+msgid "Log entry format in ``directory-logger.log``"
+msgstr "Format von Logeinträgen in ``directory-logger.log``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:159
+msgid ""
+"START\n"
+"Old Hash: […]\n"
+"DN:[…]\n"
+"ID: […]\n"
+"Modifier: […]\n"
+"Timestamp: […]\n"
+"Action: […]\n"
+"\n"
+"Old Values:\n"
+" […]\n"
+"New Values:\n"
+" […]\n"
+"END"
+msgstr ""
+"START\n"
+"Old Hash: […]\n"
+"DN:[…]\n"
+"ID: […]\n"
+"Modifier: […]\n"
+"Timestamp: […]\n"
+"Action: […]\n"
+"\n"
+"Old Values:\n"
+" […]\n"
+"New Values:\n"
+" […]\n"
+"END"
+
+#: ../../domain-infrastructure/ldap-directory.rst:177
+msgid ""
+"The fields in :numref:`lst-ldap-directory-logger-format` have the "
+"following meanings:"
+msgstr ""
+"Die Felder in :numref:`lst-ldap-directory-logger-format` haben die "
+"folgenden Bedeutungen:"
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``Old Hash``"
+msgstr "``Old Hash``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:180
+msgid "Identifies the hash sum of the previous data record."
+msgstr "Kennzeichnet die Hashsumme des vorherigen Datensatzes."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``DN``"
+msgstr "``DN``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:181
+msgid "Identifies the distinguished name (DN) of the LDAP object."
+msgstr "Kennzeichnet den Distinguished Name (DN) des LDAP-Objekts."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``ID``"
+msgstr "``ID``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:182
+msgid "Identifies the listener/notifier transaction ID."
+msgstr "Kennzeichnet die Transaktions-ID für Listener/Notifier."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``Modifier``"
+msgstr "``Modifier``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:183
+msgid "Identifies the distinguished name (DN) of the modifying account."
+msgstr "Kennzeichnet den Distinguished Name (DN) des ändernden Kontos."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``Timestamp``"
+msgstr "``Timestamp``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:184
+msgid "Shows the timestamp in the format ``dd.mm.yyyy hh:mm:ss``."
+msgstr "Zeigt den Zeitstempel im Format ``dd.mm.yyyy hh:mm:ss`` an."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``Action``"
+msgstr "``Action``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:185
+msgid "Identifies whether the action adds, modifies, or deletes the object."
+msgstr "Kennzeichnet, ob die Aktion das Objekt hinzufügt, ändert oder löscht."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``Old Values``"
+msgstr "``Old Values``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:186
+msgid ""
+"Lists the previous attribute values. This field is empty after Nubus adds"
+" an object."
+msgstr ""
+"Listet die vorherigen Attributwerte auf. Dieses Feld ist leer, nachdem "
+"Nubus ein Objekt hinzugefügt hat."
+
+#: ../../domain-infrastructure/ldap-directory.rst
+msgid "``New Values``"
+msgstr "``New Values``"
+
+#: ../../domain-infrastructure/ldap-directory.rst:188
+msgid ""
+"Lists the new attribute values. This field is empty after Nubus deletes "
+"an object."
+msgstr ""
+"Listet die neuen Attributwerte auf. Dieses Feld ist leer, nachdem Nubus "
+"ein Objekt gelöscht hat."
+
+#: ../../domain-infrastructure/ldap-directory.rst:191
+msgid ""
+"Nubus calculates a hash sum for each logged data record and writes it to "
+"the ``daemon.info`` facility of the syslog service."
+msgstr ""
+"Nubus berechnet für jeden protokollierten Datensatz eine Hashsumme und "
+"schreibt sie in die ``daemon.info`` :spelling:word:`Facility` des Syslog-"
+"Dienstes."
+
+#: ../../domain-infrastructure/ldap-directory.rst:194
+msgid ""
+":uv:erratum:`4.4x536` adds the transaction ID of the entry as a prefix "
+"before each line in :file:`/var/log/univention/directory-logger.log`, as "
+"shown in :numref:`lst-ldap-directory-logger-id-prefix`. On systems with "
+"an earlier :program:`univention-directory-logger` package version, the "
+"package keeps the old behavior without the prefix by default. Set the "
+":term:`UCR variable` :envvar:`ldap/logging/id-prefix` value to ``yes`` to"
+" enable the prefix. This transaction ID lets you correlate related lines "
+"for log analysis and monitoring."
+msgstr ""
+":uv:erratum:`4.4x536` fügt die Transaktions-ID des Eintrags als Präfix "
+"vor jeder Zeile in :file:`/var/log/univention/directory-logger.log` "
+"hinzu, wie in :numref:`lst-ldap-directory-logger-id-prefix` gezeigt. Auf "
+"Systemen mit einer älteren Paketversion von :program:`univention-"
+"directory-logger` behält das Paket standardmäßig das bisherige Verhalten "
+"ohne Präfix bei. Setzen Sie den Wert der :term:`UCR-Variable` "
+":envvar:`ldap/logging/id-prefix` auf ``yes``, um das Präfix zu "
+"aktivieren. Mit dieser Transaktions-ID können Sie zusammengehörige Zeilen"
+" für Log-Analysen und Monitoring korrelieren."
+
+#: ../../domain-infrastructure/ldap-directory.rst:205
+msgid "Log entry format with transaction ID prefix"
+msgstr "Format von Logeinträgen mit Präfix aus Transaktions-ID"
+
+#: ../../domain-infrastructure/ldap-directory.rst:205
+msgid ""
+"ID 342: START\n"
+"ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985\n"
+"ID 342: DN: uid=Administrator,cn=users,dc=example,dc=com\n"
+"ID 342: ID: 342\n"
+"ID 342: Modifier: cn=admin,dc=example,dc=com\n"
+"ID 342: Timestamp: 15.04.2020 09:20:40\n"
+"ID 342: Action: modify\n"
+"ID 342:\n"
+"ID 342: Old values:\n"
+"ID 342: description: This is a description test\n"
+"ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000\n"
+"ID 342: modifyTimestamp: 20200415091936Z\n"
+"ID 342:\n"
+"ID 342: New values:\n"
+"ID 342: description: This is a description test\n"
+"ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000\n"
+"ID 342: modifyTimestamp: 20200415092040Z\n"
+"ID 342: END"
+msgstr ""
+"ID 342: START\n"
+"ID 342: Old Hash: 70069d51a7e2e168d7c7defd19349985\n"
+"ID 342: DN: uid=Administrator,cn=users,dc=example,dc=com\n"
+"ID 342: ID: 342\n"
+"ID 342: Modifier: cn=admin,dc=example,dc=com\n"
+"ID 342: Timestamp: 15.04.2020 09:20:40\n"
+"ID 342: Action: modify\n"
+"ID 342:\n"
+"ID 342: Old values:\n"
+"ID 342: description: This is a description test\n"
+"ID 342: entryCSN: 20200415091936.317108Z#000000#000#000000\n"
+"ID 342: modifyTimestamp: 20200415091936Z\n"
+"ID 342:\n"
+"ID 342: New values:\n"
+"ID 342: description: This is a description test\n"
+"ID 342: entryCSN: 20200415092040.430976Z#000000#000#000000\n"
+"ID 342: modifyTimestamp: 20200415092040Z\n"
+"ID 342: END"
+
+#: ../../domain-infrastructure/ldap-directory.rst:231
+msgid "Timeout for inactive LDAP connections"
+msgstr "Zeitüberschreitung für inaktive LDAP-Verbindungen"
+
+#: ../../domain-infrastructure/ldap-directory.rst:233
+msgid ""
+"The :term:`UCR variable` :envvar:`ldap/idletimeout` defines the timeout "
+"duration, in seconds, for inactive LDAP connections. If you set the value"
+" to ``0``, the server doesn't enforce a timeout. By default, the timeout "
+"is six minutes."
+msgstr ""
+"Die :term:`UCR-Variable` :envvar:`ldap/idletimeout` definiert die Dauer "
+"der Zeitüberschreitung für inaktive LDAP-Verbindungen in Sekunden. Wenn "
+"Sie den Wert auf ``0`` setzen, erzwingt der Server keine "
+"Zeitüberschreitung. Standardmäßig beträgt die Zeitüberschreitung sechs "
+"Minuten."
+
+#: ../../domain-infrastructure/ldap-directory.rst:242
+msgid "Daily backup of LDAP data"
+msgstr "Tägliches Backup von LDAP-Daten"
+
+#: ../../domain-infrastructure/ldap-directory.rst:244
+msgid ""
+"A cron job backs up LDAP directory data every day on the :term:`Primary "
+"Directory Node` and all :term:`Backup Directory Node` systems. If you use"
+" Samba, the cron job also backs up its data directory."
+msgstr ""
+"Ein Cron-Job sichert die LDAP-Verzeichnisdaten täglich auf dem "
+":term:`Primary Directory Node` und auf allen :term:`Backup Directory "
+"Node`-Systemen. Wenn Sie Samba verwenden, sichert der Cron-Job auch "
+"dessen Datenverzeichnis."
+
+#: ../../domain-infrastructure/ldap-directory.rst:250
+#, python-brace-format
+msgid ""
+"The system stores LDAP data in LDIF format in :file:`/var/univention-"
+"backup/` with filenames that follow the pattern :file:`ldap-"
+"backup_{DATE}.ldif.gz`. Only the ``root`` user can read these files. The "
+"system stores Samba files in :file:`/var/univention-backup/samba/`."
+msgstr ""
+"Das System speichert LDAP-Daten im LDIF-Format in :file:`/var/univention-"
+"backup/` mit Dateinamen nach dem Muster :file:`ldap-backup_{DATE}.ldif.gz`."
+" Nur der Benutzer ``root`` kann diese Dateien lesen. Samba-Dateien "
+"speichert das System in :file:`/var/univention-backup/samba/`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:258
+msgid ""
+"Use the :term:`UCR variable` :envvar:`backup/clean/max_age` to define how"
+" long the system keeps old backup files. If you set "
+":envvar:`backup/clean/max_age` to ``365``, the system deletes backup "
+"files that are older than 365 days. If you don't set the variable, the "
+"system doesn't delete old backup files automatically. After the backup "
+"runs, verify that a new timestamped backup file exists in :file:`/var"
+"/univention-backup/`. If you use Samba, also verify that a new backup "
+"file exists in :file:`/var/univention-backup/samba/`."
+msgstr ""
+"Verwenden Sie die :term:`UCR-Variable` :envvar:`backup/clean/max_age`, um"
+" festzulegen, wie lange das System alte Backup-Dateien aufbewahrt. Wenn "
+"Sie :envvar:`backup/clean/max_age` auf ``365`` setzen, löscht das System "
+"Backup-Dateien, die älter als 365 Tage sind. Wenn Sie die Variable nicht "
+"setzen, löscht das System alte Backup-Dateien nicht automatisch. Prüfen "
+"Sie nach dem Backup, dass in :file:`/var/univention-backup/` eine neue "
+"Backup-Datei mit Zeitstempel vorhanden ist. Wenn Sie Samba verwenden, "
+"prüfen Sie außerdem, dass in :file:`/var/univention-backup/samba/` eine "
+"neue Backup-Datei vorhanden ist."
+
+#: ../../domain-infrastructure/ldap-directory.rst:275
+msgid "Restart the LDAP server"
+msgstr "LDAP-Server neu starten"
+
+#: ../../domain-infrastructure/ldap-directory.rst:277
+msgid ""
+"To restart the LDAP server use the command in :numref:`domain-"
+"infrastructure-ldap-directory-operations-and-maintenance-restart-ldap-"
+"listing`. The LDAP server is temporarily unavailable during the restart."
+msgstr ""
+"Um den LDAP-Server neu zu starten, verwenden Sie den Befehl in :numref"
+":`domain-infrastructure-ldap-directory-operations-and-maintenance-"
+"restart-ldap-listing`. Während des Neustarts ist der LDAP-Server "
+"vorübergehend nicht verfügbar."
+
+#: ../../domain-infrastructure/ldap-directory.rst:281
+msgid "Restart the OpenLDAP server"
+msgstr "Den OpenLDAP-Server neu starten"
+
+#: ../../domain-infrastructure/ldap-directory.rst:281
+msgid "$ systemctl restart slapd.service"
+msgstr "$ systemctl restart slapd.service"
+
+#: ../../domain-infrastructure/ldap-directory.rst:290
+msgid "Access control"
+msgstr "Zugriffskontrolle"
+
+#: ../../domain-infrastructure/ldap-directory.rst:292
+msgid ""
+"This section describes LDAP access control settings, anonymous access, "
+"nested groups, and delegated password resets."
+msgstr ""
+"Dieser Abschnitt beschreibt Einstellungen für die LDAP-Zugriffskontrolle,"
+" anonymen Zugriff, verschachtelte Gruppen und delegierte "
+"Passwortrücksetzungen."
+
+#: ../../domain-infrastructure/ldap-directory.rst:300
+msgid "LDAP access control configuration"
+msgstr "Konfiguration der LDAP-Zugriffskontrolle"
+
+#: ../../domain-infrastructure/ldap-directory.rst:302
+msgid ""
+"Server-side Access Control Lists (ACLs) control access to information in "
+"the LDAP directory. The central configuration file "
+":file:`/etc/ldap/slapd.conf` defines these ACLs. Univention Configuration"
+" Registry manages this configuration."
+msgstr ""
+"Serverseitige Access Control Lists (ACLs) steuern den Zugriff auf "
+"Informationen im LDAP-Verzeichnis. Die zentrale Konfigurationsdatei "
+":file:`/etc/ldap/slapd.conf` definiert diese ACLs. Die Univention "
+"Configuration Registry verwaltet diese Konfiguration."
+
+#: ../../domain-infrastructure/ldap-directory.rst:308
+msgid ""
+"A multifile template manages :file:`slapd.conf`. To add ACL elements, "
+"create or extend a template in "
+":file:`/etc/univention/templates/files/etc/ldap/slapd.conf.d/` between "
+":file:`60univention-ldap-server_acl-master` and :file:`70univention-ldap-"
+"server_acl-master-end`. You can also extend the existing UCR templates. "
+"For information about how to modify existing UCR templates, see :ref"
+":`system-administration-ucr-templates`."
+msgstr ""
+"Eine Vorlage aus mehreren Dateien verwaltet :file:`slapd.conf`. Um ACL-"
+"Elemente hinzuzufügen, erstellen oder erweitern Sie eine Vorlage in "
+":file:`/etc/univention/templates/files/etc/ldap/slapd.conf.d/` zwischen "
+":file:`60univention-ldap-server_acl-master` und :file:`70univention-ldap-"
+"server_acl-master-end`. Sie können auch die vorhandenen UCR-Vorlagen "
+"erweitern. Informationen dazu, wie Sie vorhandene UCR-Vorlagen ändern, "
+"finden Sie unter :ref:`system-administration-ucr-templates`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:320
+msgid ""
+"After you change the template, run ``ucr commit /etc/ldap/slapd.conf``. "
+"Then :ref:`domain-infrastructure-ldap-directory-operations-and-"
+"maintenance-restart-ldap`. Verify the ACL change with one test account "
+"with access and one test account without access."
+msgstr ""
+"Nachdem Sie die Vorlage geändert haben, führen Sie ``ucr commit "
+"/etc/ldap/slapd.conf`` aus. Führen Sie dann :ref:`domain-infrastructure-"
+"ldap-directory-operations-and-maintenance-restart-ldap` aus. Überprüfen "
+"Sie die ACL-Änderung mit einem Testkonto mit Zugriff und einem Testkonto "
+"ohne Zugriff."
+
+#: ../../domain-infrastructure/ldap-directory.rst:327
+msgid ""
+"If you deliver LDAP ACL extensions as part of software packages, you can "
+"package them and distribute them to all LDAP servers in the domain "
+"through a Univention Directory Listener module. For more information, see"
+" :ref:`uv-dev-ref:settings-ldapacl` in :cite:t:`developer-reference`."
+msgstr ""
+"Wenn Sie LDAP-ACL-Erweiterungen als Teil von Softwarepaketen "
+"bereitstellen, können Sie sie paketieren und über ein Univention "
+"Directory Listener-Modul an alle LDAP-Server in der Domäne verteilen. "
+"Weitere Informationen finden Sie unter :ref:`uv-dev-ref:settings-ldapacl`"
+" in :cite:t:`developer-reference`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:338
+msgid "Anonymous read access"
+msgstr "Anonymer Lesezugriff"
+
+#: ../../domain-infrastructure/ldap-directory.rst:340
+msgid ""
+"By default, a new installation of Nubus for UCS doesn't allow anonymous "
+"access to the LDAP directory. Use the :term:`UCR variable` "
+":envvar:`ldap/acl/read/anonymous` to control whether the LDAP server "
+"allows anonymous read access. Use the :term:`UCR variable` "
+":envvar:`ldap/acl/read/ips` to allow anonymous read access only from "
+"specific IP addresses."
+msgstr ""
+"Standardmäßig erlaubt eine neue Installation von Nubus für UCS keinen "
+"anonymen Zugriff auf das LDAP-Verzeichnis. Verwenden Sie die :term:`UCR "
+"variable` :envvar:`ldap/acl/read/anonymous`, um zu steuern, ob der LDAP-"
+"Server anonymen Lesezugriff erlaubt. Verwenden Sie die :term:`UCR "
+"variable` :envvar:`ldap/acl/read/ips`, um anonymen Lesezugriff nur von "
+"bestimmten IP-Adressen zu erlauben."
+
+#: ../../domain-infrastructure/ldap-directory.rst:347
+msgid ""
+"After you change these UCR variables, :ref:`domain-infrastructure-ldap-"
+"directory-operations-and-maintenance-restart-ldap`. Then test anonymous "
+"access from an allowed client and from a disallowed client."
+msgstr ""
+"Nachdem Sie diese UCR-Variablen geändert haben, führen Sie :ref:`domain-"
+"infrastructure-ldap-directory-operations-and-maintenance-restart-ldap` "
+"aus. Testen Sie anschließend den anonymen Zugriff von einem erlaubten und"
+" von einem nicht erlaubten Client."
+
+#: ../../domain-infrastructure/ldap-directory.rst:352
+msgid ""
+"After a user authenticates on the LDAP server, that user can read all "
+"attributes of their own user account."
+msgstr ""
+"Nachdem sich ein Benutzer am LDAP-Server authentifiziert hat, kann dieser"
+" Benutzer alle Attribute seines eigenen Benutzerkontos lesen."
+
+#: ../../domain-infrastructure/ldap-directory.rst:355
+msgid "The internal root DN account also has full write access."
+msgstr ""
+"Das interne Konto mit der Root-DN hat ebenfalls vollständigen "
+"Schreibzugriff."
+
+#: ../../domain-infrastructure/ldap-directory.rst:357
+msgid ""
+"Nubus for UCS also includes additional ACLs by default. These ACLs block "
+"access to sensitive attributes, for example, user passwords, and define "
+"the access rules that the system needs for operation, for example, access"
+" to computer accounts during sign-in. Only members of the ``Domain "
+"Admins`` group can read or write this sensitive information."
+msgstr ""
+"Nubus für UCS enthält standardmäßig auch zusätzliche ACLs. Diese ACLs "
+"sperren den Zugriff auf sensible Attribute, zum Beispiel "
+"Benutzerpasswörter, und definieren die Zugriffsregeln, die das System für"
+" den Betrieb benötigt, zum Beispiel den Zugriff auf Computerkonten "
+"während der Anmeldung. Nur Mitglieder der Gruppe ``Domain Admins`` können"
+" diese sensiblen Informationen lesen oder schreiben."
+
+#: ../../domain-infrastructure/ldap-directory.rst:368
+msgid "Nested group handling"
+msgstr "Umgang mit verschachtelten Gruppen"
+
+#: ../../domain-infrastructure/ldap-directory.rst:370
+msgid ""
+"Nubus for UCS supports nested groups. Use the :term:`UCR variable` "
+":envvar:`ldap/acl/nestedgroups` to deactivate nested groups for LDAP "
+"ACLs. Deactivating nested groups can speed up directory requests, but "
+"LDAP ACLs then no longer evaluate nested group membership."
+msgstr ""
+"Nubus für UCS unterstützt verschachtelte Gruppen. Verwenden Sie die "
+":term:`UCR-Variable` :envvar:`ldap/acl/nestedgroups`, um verschachtelte "
+"Gruppen für LDAP-ACLs zu deaktivieren. Das Deaktivieren verschachtelter "
+"Gruppen kann Verzeichnisabfragen beschleunigen, aber LDAP-ACLs werten "
+"dann die Mitgliedschaft in verschachtelten Gruppen nicht mehr aus."
+
+#: ../../domain-infrastructure/ldap-directory.rst:376
+msgid ""
+"After you change this UCR variable, :ref:`domain-infrastructure-ldap-"
+"directory-operations-and-maintenance-restart-ldap`. Then test access with"
+" an account that receives permissions through a nested group."
+msgstr ""
+"Nachdem Sie diese UCR-Variable geändert haben, führen Sie :ref:`domain-"
+"infrastructure-ldap-directory-operations-and-maintenance-restart-ldap` "
+"aus. Testen Sie anschließend den Zugriff mit einem Konto, das "
+"Berechtigungen über eine verschachtelte Gruppe erhält."
+
+#: ../../domain-infrastructure/ldap-directory.rst:383
+msgid ":ref:`ucs-operation-groups-management-nested`"
+msgstr ":ref:`ucs-operation-groups-management-nested`"
+
+#: ../../domain-infrastructure/ldap-directory.rst:384
+msgid "for more information about nested groups."
+msgstr "für weitere Informationen über verschachtelte Gruppen."
+
+#: ../../domain-infrastructure/ldap-directory.rst:389
+msgid "Delegation of the privilege to reset user passwords"
+msgstr "Delegation des Rechts zum Zurücksetzen von Benutzerpasswörtern"
+
+#: ../../domain-infrastructure/ldap-directory.rst:391
+msgid ""
+"To delegate password resets, install the :program:`univention-admingrp-"
+"user-passwordreset` package. For package installation instructions, see "
+":ref:`lifecycle-package-installation-management-umc` or :ref:`lifecycle-"
+"package-installation-management-commandline`. Install the package on the "
+":term:`Primary Directory Node` and the :term:`Backup Directory Nodes "
+"<Backup Directory Node>`. During installation, the LDAP server restarts "
+"and is temporarily unavailable. The package runs a join script that "
+"creates the ``User Password Admins`` group if the group doesn't already "
+"exist."
+msgstr ""
+"Um das Zurücksetzen von Passwörtern zu delegieren, installieren Sie das Paket "
+":program:`univention-admingrp-user-passwordreset`. Anweisungen zur "
+"Paketinstallation finden Sie unter :ref:`lifecycle-package-installation-"
+"management-umc` oder :ref:`lifecycle-package-installation-management-"
+"commandline`. Installieren Sie das Paket auf dem :term:`Primary Directory"
+" Node` und den :term:`Backup Directory Nodes <Backup Directory Node>`. "
+"Während der Installation startet der LDAP-Server neu und ist "
+"vorübergehend nicht verfügbar. Das Paket führt ein Join-Skript aus, das "
+"die Gruppe ``User Password Admins`` erstellt, falls diese Gruppe noch "
+"nicht existiert."
+
+#: ../../domain-infrastructure/ldap-directory.rst:407
+msgid ""
+"Additional LDAP ACLs give members of this group permission to reset other"
+" users' passwords. The package activates these ACLs during installation. "
+"If you want to use another group instead of ``User Password Admins``, set"
+" the distinguished name (DN) of that group in the :term:`UCR variable` "
+":envvar:`ldap/acl/user/passwordreset/accesslist/groups/dn`."
+msgstr ""
+"Zusätzliche LDAP-ACLs geben Mitgliedern dieser Gruppe die Berechtigung, "
+"die Passwörter anderer Benutzer zurückzusetzen. Das Paket aktiviert diese"
+" ACLs während der Installation. Wenn Sie statt ``User Password Admins`` "
+"eine andere Gruppe verwenden möchten, setzen Sie den Distinguished Name "
+"(DN) dieser Gruppe in der :term:`UCR-Variable` "
+":envvar:`ldap/acl/user/passwordreset/accesslist/groups/dn`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:414
+msgid ""
+"By default, only the ``Administrator`` user can access the :external+uv-"
+"nubus-manual:ref:`nubus-user-management-users` management module. During "
+"installation, the package creates the ``default-user-password-admins`` "
+"policy and links it to members of the ``User Password Admins`` group."
+msgstr ""
+"Standardmäßig kann nur der Benutzer ``Administrator`` auf das :external"
+"+uv-nubus-manual:ref:`nubus-user-management-users` "
+"zugreifen. Während der Installation erstellt das Paket die Richtlinie "
+"``default-user-password-admins`` und verknüpft sie mit den Mitgliedern "
+"der Gruppe ``User Password Admins``."
+
+#: ../../domain-infrastructure/ldap-directory.rst:421
+msgid "To allow delegated password resets:"
+msgstr "So erlauben Sie das delegierte Zurücksetzen von Passwörtern:"
+
+#: ../../domain-infrastructure/ldap-directory.rst:423
+msgid "Add each delegated administrator to the configured delegation group."
+msgstr ""
+"Fügen Sie jeden delegierten Administrator der konfigurierten "
+"Delegationsgruppe hinzu."
+
+#: ../../domain-infrastructure/ldap-directory.rst:426
+msgid ""
+"Assign the ``default-user-password-admins`` policy, or an equivalent "
+"policy, to the LDAP container where you want to allow password resets."
+msgstr ""
+"Weisen Sie die Richtlinie ``default-user-password-admins`` oder eine "
+"gleichwertige Richtlinie dem LDAP-Container zu, in dem Sie "
+"das Zurücksetzen von Passwörtern erlauben möchten."
+
+#: ../../domain-infrastructure/ldap-directory.rst:430
+msgid ""
+"After you complete the configuration, members of the delegation group can"
+" reset passwords for users in the assigned container. This policy also "
+"lets group members search for users and view all attributes of a user "
+"object. If a user without sufficient LDAP access rights tries to modify "
+"attributes other than the password, Univention Directory Manager denies "
+"the change and shows the message *Permission denied*."
+msgstr ""
+"Nachdem Sie die Konfiguration abgeschlossen haben, können Mitglieder der "
+"Delegationsgruppe Passwörter für Benutzer im zugewiesenen Container "
+"zurücksetzen. Diese Richtlinie erlaubt Gruppenmitgliedern außerdem, nach "
+"Benutzern zu suchen und alle Attribute eines Benutzerobjekts anzuzeigen. "
+"Wenn ein Benutzer ohne ausreichende LDAP-Zugriffsrechte versucht, andere "
+"Attribute als das Passwort zu ändern, verweigert der Univention Directory"
+" Manager die Änderung und zeigt die Meldung *Zugriff verweigert* an."
+
+#: ../../domain-infrastructure/ldap-directory.rst:440
+msgid ""
+"For more information about group membership, see :external+uv-nubus-"
+"manual:ref:`nubus-user-management-users-tab-groups`. For more information"
+" about policy assignment and delegated administration, see :external+uv-"
+"nubus-manual:ref:`nubus-domain-policies-assign` and :ref:`management-"
+"interface-delegated-administration`."
+msgstr ""
+"Weitere Informationen zur Gruppenmitgliedschaft finden Sie unter "
+":external+uv-nubus-manual:ref:`nubus-user-management-users-tab-groups`. "
+"Weitere Informationen zur Richtlinienzuweisung und delegierten Verwaltung"
+" finden Sie unter :external+uv-nubus-manual:ref:`nubus-domain-policies-"
+"assign` und :ref:`management-interface-delegated-administration`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:447
+msgid ""
+"You can prevent password resets through this group for sensitive users or"
+" groups, for example, domain administrators. Use the :term:`UCR variables"
+" <UCR variable>` :envvar:`ldap/acl/user/passwordreset/protected/uid` and "
+":envvar:`ldap/acl/user/passwordreset/protected/gid` to define protected "
+"users and groups. Separate multiple values with commas."
+msgstr ""
+"Sie können das Zurücksetzen von Passwörtern über diese Gruppe für sensible Benutzer "
+"oder Gruppen verhindern, zum Beispiel für Administratoren der Domäne. "
+"Verwenden Sie die :term:`UCR-Variablen <UCR-Variable>` "
+":envvar:`ldap/acl/user/passwordreset/protected/uid` und "
+":envvar:`ldap/acl/user/passwordreset/protected/gid`, um geschützte "
+"Benutzer und Gruppen zu definieren. Trennen Sie mehrere Werte durch "
+"Kommas."
+
+#: ../../domain-infrastructure/ldap-directory.rst:456
+msgid ""
+"After you change these UCR variables, :ref:`domain-infrastructure-ldap-"
+"directory-operations-and-maintenance-restart-ldap`. Then verify that "
+"delegated administrators can't reset passwords for a protected user or "
+"for a member of a protected group. By default, this delegation doesn't "
+"allow group members to change passwords for members of the ``Domain "
+"Admins`` group."
+msgstr ""
+"Nachdem Sie diese UCR-Variablen geändert haben, führen Sie :ref:`domain-"
+"infrastructure-ldap-directory-operations-and-maintenance-restart-ldap` "
+"aus. Prüfen Sie anschließend, dass delegierte Administratoren keine "
+"Passwörter für einen geschützten Benutzer oder für ein Mitglied einer "
+"geschützten Gruppe zurücksetzen können. Standardmäßig erlaubt diese "
+"Delegation Gruppenmitgliedern nicht, Passwörter von Mitgliedern der "
+"Gruppe ``Domain Admins`` zu ändern."
+
+#: ../../domain-infrastructure/ldap-directory.rst:465
+msgid ""
+"If you need access to additional LDAP attributes when you change a "
+"password, add the attribute names to the :term:`UCR variable` "
+":envvar:`ldap/acl/user/passwordreset/attributes`. Use a comma-separated "
+"list of LDAP attribute names. A standard Nubus for UCS installation "
+"already sets this variable for the default password reset workflow. Add "
+"attributes only if your workflow requires additional LDAP attributes "
+"during password changes."
+msgstr ""
+"Wenn Sie beim Ändern eines Passworts Zugriff auf zusätzliche LDAP-"
+"Attribute benötigen, fügen Sie die Attributnamen zur :term:`UCR-Variable`"
+" :envvar:`ldap/acl/user/passwordreset/attributes` hinzu. Verwenden Sie "
+"eine kommagetrennte Liste von LDAP-Attributnamen. Eine "
+"Standardinstallation von Nubus für UCS setzt diese Variable bereits für "
+"den Standardablauf zum Zurücksetzen von Passwörtern. Fügen Sie Attribute nur "
+"hinzu, wenn Ihr Arbeitsablauf während Passwortänderungen zusätzliche "
+"LDAP-Attribute erfordert."
+
+#: ../../domain-infrastructure/ldap-directory.rst:475
+msgid ""
+"After you change this UCR variable, :ref:`domain-infrastructure-ldap-"
+"directory-operations-and-maintenance-restart-ldap`. Then verify that the "
+"password reset workflow still works for delegated administrators."
+msgstr ""
+"Nachdem Sie diese UCR-Variable geändert haben, führen Sie :ref:`domain-"
+"infrastructure-ldap-directory-operations-and-maintenance-restart-ldap` "
+"aus. Prüfen Sie anschließend, dass der Arbeitsablauf zum "
+"Zurücksetzen von Passwörtern für delegierte Administratoren weiterhin "
+"funktioniert."
+
+#: ../../domain-infrastructure/ldap-directory.rst:482
+msgid ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-user-management-users`"
+
+#: ../../domain-infrastructure/ldap-directory.rst:483
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about the :guilabel:`Users` "
+"management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen über das Verwaltungsmodul "
+":guilabel:`Users`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:486
+msgid ":external+uv-nubus-manual:ref:`nubus-user-management-users-tab-groups`."
+msgstr ":external+uv-nubus-manual:ref:`nubus-user-management-users-tab-groups`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:487
+msgid ""
+"in :cite:t:`uv-nubus-manual` for reference information about the groups "
+"tab in the :guilabel:`Users` management module."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Referenzinformationen über die "
+"Registerkarte Gruppen im Verwaltungsmodul :guilabel:`Users`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:490
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies-assign`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies-assign`"
+
+#: ../../domain-infrastructure/ldap-directory.rst:491
+msgid "in :cite:t:`uv-nubus-manual` for information about policy assignment."
+msgstr "im :cite:t:`uv-nubus-manual` für Informationen zur Richtlinienzuweisung."
+
+#: ../../domain-infrastructure/ldap-directory.rst:497
+msgid "Client access and interoperability"
+msgstr "Client-Zugriff und Interoperabilität"
+
+#: ../../domain-infrastructure/ldap-directory.rst:499
+msgid ""
+"This section describes LDAP command-line tools, Name Service Switch "
+"integration, and directory service behavior with Samba in Nubus for UCS."
+msgstr ""
+"Dieser Abschnitt beschreibt LDAP-Befehlszeilenwerkzeuge, die Integration "
+"von Name Service Switch und das Verhalten des Verzeichnisdienstes mit "
+"Samba in Nubus für UCS."
+
+#: ../../domain-infrastructure/ldap-directory.rst:506
+msgid "LDAP command line tools"
+msgstr "LDAP-Befehlszeilenwerkzeuge"
+
+#: ../../domain-infrastructure/ldap-directory.rst:508
+msgid ""
+"In addition to LDAP access in the *Management UI*, you can access the "
+"LDAP directory from the command line with several programs."
+msgstr ""
+"Zusätzlich zum LDAP-Zugriff in der *Management UI* können Sie mit "
+"mehreren Programmen über die Befehlszeile auf das LDAP-Verzeichnis "
+"zugreifen."
+
+#: ../../domain-infrastructure/ldap-directory.rst:512
+msgid ""
+"The :command:`univention-ldapsearch` tool simplifies authenticated "
+"searches in the LDAP directory. Specify a search filter as an argument. "
+"The example in :numref:`domain-infrastructure-ldap-directory-cli-tools-"
+"ldapsearch` searches for the ``Administrator`` user by user ID."
+msgstr ""
+"Das Werkzeug :command:`univention-ldapsearch` vereinfacht "
+"authentifizierte Suchen im LDAP-Verzeichnis. Geben Sie einen Suchfilter "
+"als Argument an. Das Beispiel in :numref:`domain-infrastructure-ldap-"
+"directory-cli-tools-ldapsearch` sucht nach dem Benutzer ``Administrator``"
+" anhand der Benutzer-ID."
+
+#: ../../domain-infrastructure/ldap-directory.rst:518
+msgid "Search for the ``Administrator`` user"
+msgstr "Nach dem Benutzer ``Administrator`` suchen"
+
+#: ../../domain-infrastructure/ldap-directory.rst:518
+msgid "$ univention-ldapsearch uid=Administrator"
+msgstr "$ univention-ldapsearch uid=Administrator"
+
+#: ../../domain-infrastructure/ldap-directory.rst:524
+msgid ""
+"The :command:`slapcat` command saves the current LDAP data to a text file"
+" in LDIF format. The example in :numref:`domain-infrastructure-ldap-"
+"directory-cli-tools-slapcat` writes the data to :file:`ldapdata.txt`."
+msgstr ""
+"Der Befehl :command:`slapcat` speichert die aktuellen LDAP-Daten in einer"
+" Textdatei im LDIF-Format. Das Beispiel in :numref:`domain-"
+"infrastructure-ldap-directory-cli-tools-slapcat` schreibt die Daten in "
+":file:`ldapdata.txt`."
+
+#: ../../domain-infrastructure/ldap-directory.rst:529
+msgid "Export LDAP data in LDIF format"
+msgstr "LDAP-Daten im LDIF-Format exportieren"
+
+#: ../../domain-infrastructure/ldap-directory.rst:529
+msgid "$ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt"
+msgstr "$ slapcat -f /etc/ldap/slapd.conf > ldapdata.txt"
+
+#: ../../domain-infrastructure/ldap-directory.rst:538
+msgid "Name Service Switch and LDAP NSS module"
+msgstr "Name Service Switch und LDAP-NSS-Modul"
+
+#: ../../domain-infrastructure/ldap-directory.rst:540
+msgid ""
+"The *Name Service Switch* in the GNU C standard library provides a "
+"modular interface to resolve the names of users, groups, and hosts."
+msgstr ""
+"Der *Name Service Switch* in der GNU-C-Standardbibliothek bietet eine "
+"modulare Schnittstelle zur Auflösung der Namen von Benutzern, Gruppen und"
+" Rechnern."
+
+#: ../../domain-infrastructure/ldap-directory.rst:546
+msgid ""
+"By default, Nubus for UCS uses the LDAP NSS module to access domain data,"
+" for example, user information. The module queries the LDAP server "
+"specified in the :term:`UCR variable` :envvar:`ldap/server/name`. If that"
+" server is unavailable, the module can query the server specified in "
+":envvar:`ldap/server/addition`."
+msgstr ""
+"Standardmäßig verwendet Nubus für UCS das LDAP-NSS-Modul, um auf "
+"Domänendaten wie Benutzerinformationen zuzugreifen. Das Modul fragt den "
+"in der :term:`UCR-Variable` :envvar:`ldap/server/name` angegebenen LDAP-"
+"Server ab. Wenn dieser Server nicht verfügbar ist, kann das Modul den in "
+":envvar:`ldap/server/addition` angegebenen Server abfragen."
+
+#: ../../domain-infrastructure/ldap-directory.rst:555
+msgid ""
+"The :term:`UCR variable` :envvar:`nssldap/bindpolicy` controls how the "
+"module behaves when the LDAP server is unavailable. By default, the "
+"module tries to connect again. If you set the variable to ``soft``, the "
+"module doesn't try again. This setting improves system boot performance "
+"in an isolated test environment."
+msgstr ""
+"Die :term:`UCR-Variable` :envvar:`nssldap/bindpolicy` steuert, wie sich "
+"das Modul verhält, wenn der LDAP-Server nicht verfügbar ist. "
+"Standardmäßig versucht das Modul erneut, eine Verbindung herzustellen. "
+"Wenn Sie die Variable auf ``soft`` setzen, versucht das Modul es nicht "
+"erneut. Diese Einstellung verbessert die Startleistung des Systems in "
+"einer isolierten Testumgebung."
+
+#: ../../domain-infrastructure/ldap-directory.rst:567
+msgid "Configuration of the directory service when using Samba/AD"
+msgstr "Konfiguration des Verzeichnisdienstes bei Verwendung von Samba/AD"
+
+#: ../../domain-infrastructure/ldap-directory.rst:569
+msgid ""
+"By default, the OpenLDAP server accepts requests on ports ``7389`` and "
+"``7636`` in addition to the standard ports ``389`` and ``636``."
+msgstr ""
+"Standardmäßig akzeptiert der OpenLDAP-Server Anfragen auf den Ports "
+"``7389`` und ``7636`` zusätzlich zu den Standardports ``389`` und "
+"``636``."
+
+#: ../../domain-infrastructure/ldap-directory.rst:572
+msgid ""
+"If you use Samba/AD, the Samba/AD domain controller service occupies "
+"ports ``389`` and ``636``. In that case, OpenLDAP uses only ports "
+"``7389`` and ``7636``. :command:`univention-ldapsearch` uses the standard"
+" port automatically."
+msgstr ""
+"Wenn Sie Samba/AD verwenden, belegt der Samba/AD-Domain-Controller-Dienst"
+" die Ports ``389`` und ``636``. In diesem Fall verwendet OpenLDAP nur die"
+" Ports ``7389`` und ``7636``. :command:`univention-ldapsearch` verwendet "
+"automatisch den Standardport."
 
 #: ../../domain-infrastructure/listener-notifier.rst:7
 msgid "Domain replication with Listener and Notifier"
@@ -2100,7 +3149,7 @@ msgstr ""
 "Univention Directory Notifier die Änderung und benachrichtigt die "
 "Listener-Instanzen."
 
-#: ../../domain-infrastructure/listener-notifier.rst:31
+#: ../../domain-infrastructure/listener-notifier.rst:28
 msgid ""
 "Diagram showing Univention Directory Listener instances connecting to a "
 "Univention Directory Notifier service on the Primary Directory Node, "
@@ -2221,7 +3270,7 @@ msgid ""
 msgstr ""
 "Der Listener und alle Listener-Module schreiben Statusmeldungen in "
 ":file:`/var/log/univention/listener.log`. Den Detailgrad der "
-"Protokollierung legen Sie mit der :term:`UCR variable` "
+"Protokollierung legen Sie mit der :term:`UCR-Variable` "
 ":envvar:`listener/debug/level` fest."
 
 #: ../../domain-infrastructure/listener-notifier.rst:91
@@ -2708,7 +3757,7 @@ msgstr ""
 "finden Sie unter :ref:`deployment-primary-dn-resilience-backup-primary-"
 "promotion`."
 
-#: ../../domain-infrastructure/tls.rst:69
+#: ../../domain-infrastructure/tls.rst:68
 msgid ":ref:`deployment-domain-setup-new-domain`"
 msgstr ":ref:`deployment-domain-setup-new-domain`"
 
@@ -2764,7 +3813,7 @@ msgstr ""
 "Nubus für UCS überwacht die Gültigkeit von Zertifikaten automatisch. Das "
 "Nagios-Plugin überwacht den Gültigkeitszeitraum und die *Management UI* "
 "zeigt eine Warnung an, wenn das Root-Zertifikat bald abläuft. Sie können "
-"den Warnzeitraum mit der :term:`UCR variable` "
+"den Warnzeitraum mit der :term:`UCR-Variable` "
 ":envvar:`ssl/validity/warning` konfigurieren. Der Standardwarnzeitraum "
 "beträgt 30 Tage. Sie müssen das Root-Zertifikat erneuern, bevor das Root-"
 "Zertifikat abläuft."
