@@ -12,8 +12,8 @@ passdb master-passwd-file {
   master = yes
   passwd_file_path = /etc/dovecot/master-users
 
-  # Unless you're using PAM, you probably still want the destination user to
-  # be looked up from passdb that it really exists. pass=yes does that.
-  # Verify that the destination/login user exists in the following passdb.
-  result_success = continue
+  # In Dovecot 2.4, result_success=continue after master auth causes subsequent
+  # passdbs (e.g. PAM) to attempt full password authentication for the actual
+  # user using the master user's password, which always fails. The actual user's
+  # existence is verified via userdb (LDAP), so no passdb continuation is needed.
 }
