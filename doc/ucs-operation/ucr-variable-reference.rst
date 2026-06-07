@@ -99,59 +99,21 @@ This section provides a reference for UCR variables.
    :Possible values: integer (seconds), ``0`` for immediate counter reset, not set
    :Type: integer
 
+.. envvar:: backup/clean/max_age
 
-.. envvar:: ldap/base
+   Specifies the maximum age in days of backup files in
+   :file:`/var/univention-backup/`.
+   If this variable is unset,
+   the system doesn't delete old backup files automatically.
+   If fewer than the minimum number of backup files exists,
+   the cleanup doesn't delete files even when they exceed the configured age.
 
-   Contains the base distinguished name (DN) of the LDAP directory.
-   The base DN defines the root of the directory tree
-   and serves as the search base for LDAP queries across the domain.
-   The installer sets this value during the installation of the Primary Directory Node.
-   You can't change it afterward.
-
-   .. note::
-
-      Nubus for UCS sets this variable automatically during installation.
-      Don't change it manually.
+   For the minimum number of retained backup files,
+   see :envvar:`backup/clean/min_backups`.
 
    :Default value: not set
-   :Type: string
+   :Type: integer
 
-
-.. envvar:: ldap/policy/cron
-
-   Specifies when Nubus for UCS synchronizes UCR policy variables
-   from the LDAP directory to the local system.
-   UCR policies set in the directory service take effect
-   on the local system after the next synchronization.
-   Use standard cron schedule syntax.
-   For the syntax, run :command:`man 5 crontab`.
-
-   For information about UCR policies,
-   see :ref:`system-administration-ucr-policy`.
-
-   :Default value: ``5 * * * *``
-   :Type: cron
-
-
-.. envvar:: ldap/ppolicy/enabled
-
-   Controls whether the :program:`OpenLDAP` ``ppolicy`` overlay is active
-   on the local system.
-   When set to ``yes``,
-   the LDAP server monitors bind attempts
-   according to the settings in the ``pwdPolicy`` object in the LDAP directory.
-   After you set this variable,
-   restart the ``slapd`` service for the change to take effect.
-
-   This variable is available on
-   :term:`Primary Directory Node` and :term:`Backup Directory Node` systems only.
-
-   For information about configuring the OpenLDAP lockout,
-   see :ref:`iam-user-lockout-openldap`.
-
-   :Default value: not set
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
 
 
 .. envvar:: directory/manager/blocklist/cleanup/cron
@@ -889,6 +851,189 @@ This section provides a reference for UCR variables.
    :Possible values: semicolon-separated list of module names
    :Type: list
 
+.. envvar:: ldap/acl/read/anonymous
+
+   Controls whether the LDAP server allows anonymous access
+   to the LDAP directory without authentication.
+   If this variable is unset,
+   anonymous access is denied.
+
+   :Default value: ``no``
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: ldap/acl/read/ips
+
+   Specifies IP addresses that may use anonymous read access
+   even when authenticated LDAP searches are required.
+   Separate multiple values with commas.
+
+   Example:
+
+   .. code-block:: none
+
+      127.0.0.1,192.168.0.0%255.255.255.0
+
+   For the general anonymous access setting,
+   see :envvar:`ldap/acl/read/anonymous`.
+
+   :Default value: not set
+   :Type: list
+
+.. envvar:: ldap/acl/nestedgroups
+
+   Controls whether nested groups are evaluated
+   during LDAP ACL processing.
+   If this variable is unset,
+   nested groups are evaluated.
+
+   :Default value: not set, equivalent to enabled
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: ldap/acl/user/passwordreset/accesslist/groups/dn
+
+   Specifies the distinguished name (DN) of a group
+   whose members may reset other users' passwords.
+   This variable is one concrete instance of the variable family
+   :samp:`ldap/acl/user/passwordreset/accesslist/groups/{IDENTIFIER}`.
+
+   The package sets this variable automatically during installation
+   for the default ``User Password Admins`` group.
+
+   :Default value: ``cn=User Password Admins,cn=groups,$ldap_base``
+   :Type: string
+
+.. envvar:: ldap/acl/user/passwordreset/attributes
+
+   Specifies the LDAP attributes
+   that password reset groups may modify.
+   If this variable is unset,
+   the standard password reset attribute set applies.
+
+   :Default value: ``krb5Key,userPassword,sambaPwdCanChange,sambaPwdMustChange,sambaLMPassword,sambaNTPassword,sambaPwdLastSet,pwhistory,sambaPasswordHistory,krb5KDCFlags,krb5KeyVersionNumber,krb5PasswordEnd,shadowMax,shadowLastChange``
+   :Type: list
+
+.. envvar:: ldap/acl/user/passwordreset/protected/gid
+
+   Specifies groups whose members are protected
+   against password resets by password reset groups.
+   Separate multiple group names with commas.
+
+   The package sets this variable automatically during installation
+   to protect members of the ``Domain Admins`` group.
+
+   :Default value: ``Domain Admins``
+   :Type: list
+
+.. envvar:: ldap/acl/user/passwordreset/protected/uid
+
+   Specifies user names that are protected
+   against password resets by password reset groups.
+   Separate multiple user names with commas.
+
+   :Default value: not set
+   :Type: list
+
+.. envvar:: ldap/base
+
+   Contains the base distinguished name (DN) of the LDAP directory.
+   The base DN defines the root of the directory tree
+   and serves as the search base for LDAP queries across the domain.
+   The installer sets this value during the installation of the Primary Directory Node.
+   You can't change it afterward.
+
+   .. note::
+
+      Nubus for UCS sets this variable automatically during installation.
+      Don't change it manually.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: ldap/idletimeout
+
+   Sets the time in seconds
+   after which the LDAP server closes an idle LDAP connection.
+   If you set the value to ``0``,
+   the server doesn't use an idle timeout.
+
+   :Default value: ``360``
+   :Type: integer
+
+.. envvar:: ldap/logging/exclude1
+
+   Specifies a container or organizational unit (OU)
+   to exclude from LDAP change logging.
+   Set the value to the corresponding DN.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: ldap/logging/exclude2
+
+   Specifies a container or organizational unit (OU)
+   to exclude from LDAP change logging.
+   Set the value to the corresponding DN.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: ldap/logging/exclude3
+
+   Specifies a container or organizational unit (OU)
+   to exclude from LDAP change logging.
+   Set the value to the corresponding DN.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: ldap/logging/id-prefix
+
+   Controls whether each LDAP directory logger record
+   is prefixed with its transaction ID.
+   If this variable is unset,
+   the logger keeps the old behavior without the prefix.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: ldap/policy/cron
+
+   Specifies when Nubus for UCS synchronizes UCR policy variables
+   from the LDAP directory to the local system.
+   UCR policies set in the directory service take effect
+   on the local system after the next synchronization.
+   Use standard cron schedule syntax.
+   For the syntax, run :command:`man 5 crontab`.
+
+   For information about UCR policies,
+   see :ref:`system-administration-ucr-policy`.
+
+   :Default value: ``5 * * * *``
+   :Type: cron
+
+
+.. envvar:: ldap/ppolicy/enabled
+
+   Controls whether the :program:`OpenLDAP` ``ppolicy`` overlay is active
+   on the local system.
+   When set to ``yes``,
+   the LDAP server monitors bind attempts
+   according to the settings in the ``pwdPolicy`` object in the LDAP directory.
+   After you set this variable,
+   restart the ``slapd`` service for the change to take effect.
+
+   This variable is available on
+   :term:`Primary Directory Node` and :term:`Backup Directory Node` systems only.
+
+   For information about configuring the OpenLDAP lockout,
+   see :ref:`iam-user-lockout-openldap`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
 
 .. envvar:: ldap/master
 
@@ -1332,6 +1477,19 @@ This section provides a reference for UCR variables.
 
    :Default value: ``5``
    :Type: positive integer
+
+.. envvar:: nssldap/bindpolicy
+
+   Controls how the LDAP NSS module behaves
+   when the LDAP server is unavailable.
+   By default,
+   the module tries to connect again.
+   If you set this variable to ``soft``,
+   the module doesn't try again.
+
+   :Default value: not set
+   :Possible values: ``soft``, not set
+   :Type: string
 
 .. envvar:: nss/group/cachefile
 
