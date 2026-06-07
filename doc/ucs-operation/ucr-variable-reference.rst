@@ -115,6 +115,19 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
+.. envvar:: cups/server
+
+   Specifies the CUPS print server
+   to which this system forwards print jobs.
+   A *Print server* policy can override this value.
+
+   For information about configuring the print server,
+   see :ref:`system-administration-print-server`.
+
+   :Default value: not set; ``localhost`` on print server installations
+   :Type: string
+
+
 
 .. envvar:: directory/manager/blocklist/cleanup/cron
 
@@ -192,6 +205,22 @@ This section provides a reference for UCR variables.
    For information where to this variable applies,
    see :ref:`ucs-operation-groups-management-tab-general-name`
    in :ref:`ucs-operation-groups-creation-assignment`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: directory/manager/web/modules/groups/group/checks/circular_dependency
+
+   If activated with the value ``yes``
+   or the variable isn't set,
+   Nubus automatically detects cyclic dependencies of nested groups
+   and refuses to create them.
+   To deactivate the check,
+   set it to the value ``no``.
+
+   For information about where this variable applies,
+   see :ref:`ucs-operation-groups-management-nested`.
 
    :Default value: not set
    :Possible values: ``yes``, ``no``, not set
@@ -356,22 +385,6 @@ This section provides a reference for UCR variables.
    :Possible values: ``true``, ``false``, not set
    :Type: boolean
 
-.. envvar:: directory/manager/web/modules/groups/group/checks/circular_dependency
-
-   If activated with the value ``yes``
-   or the variable isn't set,
-   Nubus automatically detects cyclic dependencies of nested groups
-   and refuses to create them.
-   To deactivate the check,
-   set it to the value ``no``.
-
-   For information about where this variable applies,
-   see :ref:`ucs-operation-groups-management-nested`.
-
-   :Default value: not set
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
-
 .. envvar:: directory/reports/cleanup/age
 
    Specifies the maximum age of a report file in seconds
@@ -497,18 +510,6 @@ This section provides a reference for UCR variables.
    see :ref:`management-interface-directory-reports-customize`.
 
    :Default value: not set
-   :Type: string
-
-.. envvar:: cups/server
-
-   Specifies the CUPS print server
-   to which this system forwards print jobs.
-   A *Print server* policy can override this value.
-
-   For information about configuring the print server,
-   see :ref:`system-administration-print-server`.
-
-   :Default value: not set; ``localhost`` on print server installations
    :Type: string
 
 .. envvar:: dns/forwarder1
@@ -851,6 +852,17 @@ This section provides a reference for UCR variables.
    :Possible values: semicolon-separated list of module names
    :Type: list
 
+.. envvar:: ldap/acl/nestedgroups
+
+   Controls whether nested groups are evaluated
+   during LDAP ACL processing.
+   If this variable is unset,
+   nested groups are evaluated.
+
+   :Default value: not set, equivalent to enabled
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
 .. envvar:: ldap/acl/read/anonymous
 
    Controls whether the LDAP server allows anonymous access
@@ -879,17 +891,6 @@ This section provides a reference for UCR variables.
 
    :Default value: not set
    :Type: list
-
-.. envvar:: ldap/acl/nestedgroups
-
-   Controls whether nested groups are evaluated
-   during LDAP ACL processing.
-   If this variable is unset,
-   nested groups are evaluated.
-
-   :Default value: not set, equivalent to enabled
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
 
 .. envvar:: ldap/acl/user/passwordreset/accesslist/groups/dn
 
@@ -999,73 +1000,10 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
-.. envvar:: ldap/policy/cron
-
-   Specifies when Nubus for UCS synchronizes UCR policy variables
-   from the LDAP directory to the local system.
-   UCR policies set in the directory service take effect
-   on the local system after the next synchronization.
-   Use standard cron schedule syntax.
-   For the syntax, run :command:`man 5 crontab`.
-
-   For information about UCR policies,
-   see :ref:`system-administration-ucr-policy`.
-
-   :Default value: ``5 * * * *``
-   :Type: cron
-
-
-.. envvar:: ldap/ppolicy/enabled
-
-   Controls whether the :program:`OpenLDAP` ``ppolicy`` overlay is active
-   on the local system.
-   When set to ``yes``,
-   the LDAP server monitors bind attempts
-   according to the settings in the ``pwdPolicy`` object in the LDAP directory.
-   After you set this variable,
-   restart the ``slapd`` service for the change to take effect.
-
-   This variable is available on
-   :term:`Primary Directory Node` and :term:`Backup Directory Node` systems only.
-
-   For information about configuring the OpenLDAP lockout,
-   see :ref:`iam-user-lockout-openldap`.
-
-   :Default value: not set
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
-
 .. envvar:: ldap/master
 
    Contains the fully qualified domain name of the domain's Primary Directory Node.
 
-   :Type: string
-
-.. envvar:: ldap/server/name
-
-   Specifies the primary LDAP server
-   that the system uses in the domain.
-   Configure additional LDAP servers with
-   :envvar:`ldap/server/addition`.
-
-   For information about LDAP server selection,
-   see :ref:`system-administration-ldap-server`.
-
-   :Default value: set automatically during installation or domain join
-   :Type: string
-
-
-.. envvar:: ldap/server/addition
-
-   Specifies additional LDAP servers
-   that the system can use in the domain.
-   System configure the primary LDAP server through
-   :envvar:`ldap/server/name`.
-
-   For information about LDAP server selection,
-   see :ref:`system-administration-ldap-server`.
-
-   :Default value: not set
    :Type: string
 
 .. envvar:: ldap/overlay/lastbind
@@ -1106,6 +1044,42 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
+.. envvar:: ldap/policy/cron
+
+   Specifies when Nubus for UCS synchronizes UCR policy variables
+   from the LDAP directory to the local system.
+   UCR policies set in the directory service take effect
+   on the local system after the next synchronization.
+   Use standard cron schedule syntax.
+   For the syntax, run :command:`man 5 crontab`.
+
+   For information about UCR policies,
+   see :ref:`system-administration-ucr-policy`.
+
+   :Default value: ``5 * * * *``
+   :Type: cron
+
+
+.. envvar:: ldap/ppolicy/enabled
+
+   Controls whether the :program:`OpenLDAP` ``ppolicy`` overlay is active
+   on the local system.
+   When set to ``yes``,
+   the LDAP server monitors bind attempts
+   according to the settings in the ``pwdPolicy`` object in the LDAP directory.
+   After you set this variable,
+   restart the ``slapd`` service for the change to take effect.
+
+   This variable is available on
+   :term:`Primary Directory Node` and :term:`Backup Directory Node` systems only.
+
+   For information about configuring the OpenLDAP lockout,
+   see :ref:`iam-user-lockout-openldap`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
 .. envvar:: ldap/pw-bcrypt
 
    Controls whether the :program:`OpenLDAP` server supports the bcrypt password hashing scheme.
@@ -1122,6 +1096,33 @@ This section provides a reference for UCR variables.
    :Default value: false
    :Possible values: ``true``, ``false``
    :Type: boolean
+
+
+.. envvar:: ldap/server/addition
+
+   Specifies additional LDAP servers
+   that the system can use in the domain.
+   System configure the primary LDAP server through
+   :envvar:`ldap/server/name`.
+
+   For information about LDAP server selection,
+   see :ref:`system-administration-ldap-server`.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: ldap/server/name
+
+   Specifies the primary LDAP server
+   that the system uses in the domain.
+   Configure additional LDAP servers with
+   :envvar:`ldap/server/addition`.
+
+   For information about LDAP server selection,
+   see :ref:`system-administration-ldap-server`.
+
+   :Default value: set automatically during installation or domain join
+   :Type: string
 
 
 .. envvar:: listener/debug/level
@@ -1165,6 +1166,21 @@ This section provides a reference for UCR variables.
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
+.. envvar:: local/repository
+
+   Activates and deactivates the local repository.
+   When activated with the value ``yes``,
+   the system uses a locally maintained repository for package updates and installations.
+   This is useful in environments with multiple systems
+   to reduce bandwidth consumption and enable offline updates.
+
+   For information about creating and maintaining a local repository,
+   see :ref:`lifecycle-local-repository-create-init`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
 .. envvar:: logrotate/compress
 
    Controls whether rotated log files are compressed with :command:`gzip`.
@@ -1201,22 +1217,6 @@ This section provides a reference for UCR variables.
 
    :Default value: ``12``
    :Type: positive integer
-
-.. envvar:: local/repository
-
-   Activates and deactivates the local repository.
-   When activated with the value ``yes``,
-   the system uses a locally maintained repository for package updates and installations.
-   This is useful in environments with multiple systems
-   to reduce bandwidth consumption and enable offline updates.
-
-   For information about creating and maintaining a local repository,
-   see :ref:`lifecycle-local-repository-create-init`.
-
-   :Default value: not set
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
-
 
 .. envvar:: mail/dovecot/auth/cache_negative_ttl
 
@@ -1382,19 +1382,6 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
-.. envvar:: ntp/signed
-
-   Controls whether Samba signs NTP replies.
-   Windows clients joined to a Samba domain
-   require signed NTP time replies.
-
-   For information about time synchronization,
-   see :ref:`system-administration-time-zone-synchronization`.
-
-   :Default value: ``yes``
-   :Possible values: ``yes``, ``no``, not set
-   :Type: boolean
-
 .. envvar:: notifier/debug/level
 
    Sets the verbosity of log messages
@@ -1427,19 +1414,6 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
-.. envvar:: nscd/hosts/size
-
-   Sets the size of the NSCD cache for host entries.
-   The value should be at least as large
-   as the number of hosts registered in DNS.
-
-   For information about NSCD configuration,
-   see :ref:`system-administration-system-services`.
-
-   :Default value: ``6007``
-   :Type: positive integer
-
-
 .. envvar:: nscd/hosts/maxdbsize
 
    Sets the size in bytes of the NSCD host cache database.
@@ -1465,6 +1439,19 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
+.. envvar:: nscd/hosts/size
+
+   Sets the size of the NSCD cache for host entries.
+   The value should be at least as large
+   as the number of hosts registered in DNS.
+
+   For information about NSCD configuration,
+   see :ref:`system-administration-system-services`.
+
+   :Default value: ``6007``
+   :Type: positive integer
+
+
 .. envvar:: nscd/threads
 
    Sets the number of threads
@@ -1477,19 +1464,6 @@ This section provides a reference for UCR variables.
 
    :Default value: ``5``
    :Type: positive integer
-
-.. envvar:: nssldap/bindpolicy
-
-   Controls how the LDAP NSS module behaves
-   when the LDAP server is unavailable.
-   By default,
-   the module tries to connect again.
-   If you set this variable to ``soft``,
-   the module doesn't try again.
-
-   :Default value: not set
-   :Possible values: ``soft``, not set
-   :Type: string
 
 .. envvar:: nss/group/cachefile
 
@@ -1543,6 +1517,32 @@ This section provides a reference for UCR variables.
    see :ref:`ucs-operation-groups-management-cache`.
 
    :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: nssldap/bindpolicy
+
+   Controls how the LDAP NSS module behaves
+   when the LDAP server is unavailable.
+   By default,
+   the module tries to connect again.
+   If you set this variable to ``soft``,
+   the module doesn't try again.
+
+   :Default value: not set
+   :Possible values: ``soft``, not set
+   :Type: string
+
+.. envvar:: ntp/signed
+
+   Controls whether Samba signs NTP replies.
+   Windows clients joined to a Samba domain
+   require signed NTP time replies.
+
+   For information about time synchronization,
+   see :ref:`system-administration-time-zone-synchronization`.
+
+   :Default value: ``yes``
    :Possible values: ``yes``, ``no``, not set
    :Type: boolean
 
@@ -1761,22 +1761,6 @@ This section provides a reference for UCR variables.
          for information about *Policy: Passwords* in the *Policies module* in the *Management UI*.
 
 
-.. envvar:: password/quality/required/chars
-
-   Defines individual characters as required for passwords.
-   A newly defined password must include the specified characters.
-
-   If the password policy has the option *Password quality check* activated,
-   Nubus runs additional checks including dictionary checks,
-   for password changes in *Management UI* (UMC), Samba, and Kerberos.
-
-   For more information,
-   see :ref:`password-management-policies`.
-
-   :Default value: not set
-   :Type: string
-
-
 .. envvar:: password/quality/mspolicy
 
    Defines the standard Microsoft password complexity criteria.
@@ -1787,6 +1771,21 @@ This section provides a reference for UCR variables.
    The value ``sufficient`` only applies the standard Microsoft password complexity criteria
    without :program:`python-cracklib`.
    The default value is unset and corresponds to the value ``false``.
+
+   For more information,
+   see :ref:`password-management-policies`.
+
+   :Default value: not set
+   :Type: string
+
+.. envvar:: password/quality/required/chars
+
+   Defines individual characters as required for passwords.
+   A newly defined password must include the specified characters.
+
+   If the password policy has the option *Password quality check* activated,
+   Nubus runs additional checks including dictionary checks,
+   for password changes in *Management UI* (UMC), Samba, and Kerberos.
 
    For more information,
    see :ref:`password-management-policies`.
@@ -2073,6 +2072,16 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+.. envvar:: server/role
+
+   Contains the system role of the system.
+   You can't change this setting after a domain join.
+
+   For information about system roles,
+   see :ref:`domain-infrastructure-system-roles`.
+
+   :Type: string
+
 
 .. envvar:: ssl/validity/host
 
@@ -2125,16 +2134,6 @@ This section provides a reference for UCR variables.
    :Default value: ``30``
    :Type: integer
 
-
-.. envvar:: server/role
-
-   Contains the system role of the system.
-   You can't change this setting after a domain join.
-
-   For information about system roles,
-   see :ref:`domain-infrastructure-system-roles`.
-
-   :Type: string
 
 .. envvar:: system/stats
 
