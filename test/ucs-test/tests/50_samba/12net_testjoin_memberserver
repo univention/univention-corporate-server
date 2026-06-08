@@ -19,7 +19,7 @@ if [ "$security" = "ads" ]; then
     # a case when it is a Samba 4 domain, use ADS:
     echo "Initiating a net ads testjoin"
 
-    if [ ! "$(net ads testjoin)" = "Join is OK" ] ; then
+    if [ ! "$(LANG=C-UTF-8 net ads testjoin)" = "Join is OK" ] ; then
        fail_fast 110 "The ADS testjoin did not report that join is OK"
     fi
 
@@ -28,7 +28,7 @@ else
     echo "Initiating a net rpc testjoin"
     win_dom="$(ucr get windows/domain)"
 
-    if [ ! "$(net rpc testjoin)" = "Join to '$win_dom' is OK" ] ; then
+    if [ ! "$(LANG=C-UTF-8 net rpc testjoin)" = "Join to '$win_dom' is OK" ] ; then
        fail_fast 110 "The RPC testjoin did not report that join to $win_dom is OK"
     fi
 

@@ -1,3 +1,9 @@
+ucs-test (12.6.1) unstable; urgency=medium
+
+  * Bug #59336: Fix locale depdency in 50_samba/12net_testjoin_memberserver
+
+ -- Arvid Requate <requate@univention.de>  Mon, 08 Jun 2026 15:21:19 +0200
+
 ucs-test (12.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
