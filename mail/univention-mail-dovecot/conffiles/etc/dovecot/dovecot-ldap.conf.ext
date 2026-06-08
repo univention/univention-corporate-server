@@ -91,12 +91,15 @@ ldap_scope = subtree
 userdb ldap {
   fields {
 @!@
+# default(...) on every %{ldap:...}: in Dovecot 2.4 a missing attribute fails
+# the expansion fatally (e.g. Administrator has no mailPrimaryAddress, shared
+# folders have no uid). "user" falls back to the login name.
 default_user_attrs = [
-    ('user', '%{ldap:mailPrimaryAddress}'),
+    ('user', '%{ldap:mailPrimaryAddress | default(user)}'),
     ('uid', 'dovemail'),
     ('gid', 'dovemail'),
-    ('system_groups_user', '%{ldap:uid}'),
-    ('quota_storage_size', '%{ldap:univentionMailUserQuota}M'),
+    ('system_groups_user', '%{ldap:uid | default("")}'),
+    ('quota_storage_size', '%{ldap:univentionMailUserQuota | default("0")}M'),
 ]
 additional_user_attrs = configRegistry.get("mail/dovecot/auth/ldap/user/attributes", "")
 for key, value in default_user_attrs:
@@ -164,7 +167,7 @@ print('  filter = (&(|%(ocs)s)(|(!(univentionMailHomeServer=*))(univentionMailHo
 @!@
 
   iterate_fields {
-    user = %{ldap:mailPrimaryAddress}
+    user = %{ldap:mailPrimaryAddress | default(user)}
   }
   iterate_filter = (&(objectClass=univentionMail)(|(!(univentionMailHomeServer=*))(univentionMailHomeServer=@%@hostname@%@.@%@domainname@%@))(mailPrimaryAddress=*))
 }
