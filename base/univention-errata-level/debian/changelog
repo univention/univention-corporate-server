@@ -1,4 +1,4 @@
-univention-errata-level (6.0.1) unstable; urgency=medium
+univention-errata-level (5.3.0-0) unstable; urgency=medium
 
   * Bug #59409: UCS 5.3-0 version bump
 
