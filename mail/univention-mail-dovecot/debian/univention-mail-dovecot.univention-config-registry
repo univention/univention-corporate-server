@@ -20,7 +20,7 @@ Variables: users/default/administrator
 Variables: hostname
 Variables: domainname
 User: root
-Group: root
+Group: dovemail
 Mode: 640
 
 Type: file
