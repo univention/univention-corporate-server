@@ -211,10 +211,12 @@ class DovecotListener:
                 uid = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_uid"])
                 gid = self.read_from_ext_proc_as_root(["/usr/bin/doveconf", "-h", "mail_gid"])
             except Exception:
-                uid = "dovemail"
-                gid = "dovemail"
-            self.dovecot_user = uid
-            self.dovecot_group = gid
+                uid = gid = None
+            # Dovecot 2.4 leaves mail_uid/mail_gid empty by default (2.3 populated
+            # them), so the lookup returns "" without raising and the except branch
+            # never fires. Fall back to the dovemail system user in both cases.
+            self.dovecot_user = uid or "dovemail"
+            self.dovecot_group = gid or "dovemail"
         return self.dovecot_user, self.dovecot_group
 
     def mkdir_p(self, dir: str) -> None:
