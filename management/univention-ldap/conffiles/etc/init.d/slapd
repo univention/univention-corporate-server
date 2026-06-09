@@ -1,12 +1,12 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
-# pidfile: /var/run/slapd/slapd.pid
+# pidfile: /run/slapd/slapd.pid
 ### BEGIN INIT INFO
-# Provides:			 slapd
-# Required-Start:	 $remote_fs $network $syslog
-# Required-Stop:	 $remote_fs $network $syslog
-# Default-Start:	 2 3 4 5
-# Default-Stop:		 0 1 6
+# Provides:          slapd
+# Required-Start:    $remote_fs $network $syslog
+# Required-Stop:     $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: OpenLDAP standalone server (Lightweight Directory Access Protocol)
 ### END INIT INFO
 #
@@ -17,7 +17,8 @@
 # Modified for UCS by Univention <packages@univention.de>
 
 
-PATH=/bin:/usr/bin:/sbin:/usr/sbin
+# Specify path variable
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DAEMON=/usr/sbin/slapd
 SLAPDCONF=/etc/ldap/slapd.conf
 
