@@ -163,3 +163,8 @@ Variables: ldap/database/internal/overlay/dds/default-ttl
 Variables: ldap/hostdn
 Variables: ldap/base
 Variables: server/role
+
+Type: file
+File: etc/default/slapd
+Variables: slapd/port
+Variables: slapd/port/ldaps
