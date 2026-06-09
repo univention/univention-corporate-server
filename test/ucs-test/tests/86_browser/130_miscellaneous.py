@@ -99,8 +99,22 @@ def test_module_process_timeout(umc_browser_test: UMCBrowserTest, module_process
     assert module_process_alive('top'), "A module's process dies before its timeout"
 
 
-def module_process_alive(module) -> bool:
-    return any({'/usr/sbin/univention-management-console-module', '-m', module}.issubset(set(process.cmdline())) for process in psutil.process_iter())
+def module_process_alive(module: str) -> bool:
+    wanted = {'/usr/sbin/univention-management-console-module', '-m', module}
+
+    for process in psutil.process_iter():
+        try:
+            if process.status() == psutil.STATUS_ZOMBIE:
+                continue
+
+            cmdline = process.cmdline()
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            continue
+
+        if wanted.issubset(cmdline):
+            return True
+
+    return False
 
 
 def test_module_visibility_for_regular_user(umc_browser_test: UMCBrowserTest, udm):
