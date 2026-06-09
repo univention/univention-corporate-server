@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Tests the Univention Self Service
 ## tags: [apptest]
 ## roles: [domaincontroller_master]
@@ -7,6 +7,7 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
+import pytest
 from test_self_service import SelfServiceUser
 
 from univention.lib.umc import HTTPError
@@ -19,29 +20,24 @@ send_token_message = 'A message containing a token has been sent to the user (if
 error_set_password = 'The token you supplied is either expired or invalid. Please request a new one.'
 
 
-def main():
+def test_blacklist():
     account = utils.UCSTestDomainAdminCredentials()
     user = SelfServiceUser(account.username, account.bindpw, language='en-US')
 
-    assert_raises(HTTPError, error_get_contact, user.get_contact)
-    assert_raises(HTTPError, error_set_contact, user.set_contact)
+    with pytest.raises(HTTPError) as exc:
+        user.get_contact()
+    assert error_get_contact in str(exc.value)
+
+    with pytest.raises(HTTPError) as exc:
+        user.set_contact()
+    assert error_set_contact in str(exc.value)
+
     # due to Bug #55346 get_reset_methods send_token always returns the same result
     assert user.get_reset_methods() == ["email"]
-    assert user.request('passwordreset/send_token', method='email').data['message'] == send_token_message
-    assert_raises(HTTPError, error_set_password, user.set_password, token='A', password='B')
 
+    message = user.request('passwordreset/send_token', method='email').data['message']
+    assert message == send_token_message
 
-def assert_raises(exc_type, message, callback, *args, **kwargs):
-    try:
-        callback(*args, **kwargs)
-    except exc_type as exc:
-        if message:
-            # TODO: check actual message
-            print(str(exc))
-            # assert str(exc) and message in str(exc), 'Exception %r does not contain %r' % (str(exc), message)
-    else:
-        raise AssertionError(f'did not raise {exc_type!r}')
-
-
-if __name__ == '__main__':
-    main()
+    with pytest.raises(HTTPError) as exc:
+        user.set_password(token='A', password='B')
+    assert error_set_password in str(exc.value)
