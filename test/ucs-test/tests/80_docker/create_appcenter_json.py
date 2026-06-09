@@ -105,29 +105,29 @@ class App:
 
         # Adding files for docker
         for docker_file in [
-                'attributes',
-                'settings',
-                'configure',
-                'configure_host',
-                'update_certificates',
-                'setup',
-                'store_data',
-                'restore_data_before_setup',
-                'restore_data_after_setup',
-                'update_available',
-                'update_packages',
-                'update_release',
-                'update_app_version',
-                'univention-config-registry-variables',
-                'schema',
-                'preinst',
-                'inst',
-                'init',
-                'prerm',
-                'uinst',
-                'env',
-                'compose',
-                'listener_trigger',
+            'attributes',
+            'settings',
+            'configure',
+            'configure_host',
+            'update_certificates',
+            'setup',
+            'store_data',
+            'restore_data_before_setup',
+            'restore_data_after_setup',
+            'update_available',
+            'update_packages',
+            'update_release',
+            'update_app_version',
+            'univention-config-registry-variables',
+            'schema',
+            'preinst',
+            'inst',
+            'init',
+            'prerm',
+            'uinst',
+            'env',
+            'compose',
+            'listener_trigger',
         ]:
             for filename in glob(self._components_dir(docker_file)):
                 basename = os.path.basename(filename)
@@ -275,10 +275,8 @@ if __name__ == '__main__':
             options.output += '.gz'
         if options.ask:
             if os.path.exists(options.output):
-                # with gzip.open() as f: is new in 2.7
-                f = gzip.open(options.output, 'rb')
-                old = f.read()
-                f.close()
+                with gzip.open(options.output, 'rb') as f:
+                    old = f.read().decode('utf-8')
             else:
                 old = ''
             old_format = ['%s\n' % line for line in old.splitlines()]
@@ -292,8 +290,7 @@ if __name__ == '__main__':
         else:
             yes = 'y'
         if yes and yes[0].lower() == 'y':
-            f = gzip.open(options.output, 'wb')
-            f.write(out.encode('utf-8'))
-            f.close()
+            with gzip.open(options.output, 'wb') as f:
+                f.write(out.encode('utf-8'))
     else:
         print(out)
