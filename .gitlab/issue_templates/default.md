@@ -21,5 +21,5 @@ Additional points:
 
 ## Acceptance criteria & steps for reproduction
 
-- [ ] [Definition of Done](https://univention.gitpages.knut.univention.de/internal/dev-handbook/dev-workflow/dod.html#definition-of-done) has been checked,
+- [ ] [Definition of Done](https://univention.gitpages.knut.univention.de/dev/internal/dev-handbook/dev-workflow/dod.html#definition-of-done) has been checked,
 - [ ] ...
