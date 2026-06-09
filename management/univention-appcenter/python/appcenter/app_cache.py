@@ -233,8 +233,8 @@ class AppCache(_AppCache):
         else:
             try:
                 cache_attributes = set(cache[0].keys())
-            except (TypeError, AttributeError, IndexError, KeyError):
-                cache_logger.debug('Cannot load cache: Getting cached attributes failed')
+            except (TypeError, AttributeError, IndexError, KeyError) as exc:
+                cache_logger.debug('Cannot load cache: Getting cached attributes failed (%s): %s', cache_file, exc)
                 return None
             else:
                 code_attributes = {attr.name for attr in self.get_app_class()._attrs}
