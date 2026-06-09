@@ -86,7 +86,7 @@ ucr commit /etc/nsswitch.conf
 
 # Set SSSD ownership
 ucr commit /etc/sssd/sssd.conf
-chmod -R 0600 /etc/sssd
+chmod -R u=rwX,go= /etc/sssd
 
 # Restart sssd
 deb-systemd-invoke restart sssd
