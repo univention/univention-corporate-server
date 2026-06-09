@@ -140,6 +140,14 @@ if [ ! -f /etc/dovecot/master-users ]; then
 	echo "dovecotadmin:{PLAIN}$(create_machine_password)::::::" > /etc/dovecot/master-users
 fi
 
+# Bug: dovecot 2.4 fatally aborts ACL backend initialization when the global ACL
+# file referenced by acl_global_path (/etc/dovecot/global-acls) is missing
+if [ ! -f /etc/dovecot/global-acls ]; then
+	touch /etc/dovecot/global-acls
+	chmod 640 /etc/dovecot/global-acls
+	chown root:dovemail /etc/dovecot/global-acls
+fi
+
 if [ -x "/etc/init.d/univention-firewall" ]; then
 	deb-systemd-invoke restart univention-firewall
 fi
