@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: apache2
+fix: 2.4.59-1~deb10u8A~5.0.10.202606091638
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-49975 (CVSS score unknown).
+bug: [59478]
+cve:
+- CVE-2026-49975
