@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apache2
+fix: 2.4.25-3+deb9u24A~4.4.9.202606091639
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-49975 (CVSS score unknown).
+bug: [59482]
+cve:
+- CVE-2026-49975
