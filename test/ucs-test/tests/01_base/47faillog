@@ -82,7 +82,7 @@ faillock --user "$NAME"
 # by default the user should be disabled
 failCount=$(( $(faillock --user "$NAME" | wc -l) - 2 ))
 if [ "$failCount" != "5" ]; then
-	fail_test 110 "E: failCount is $failCount and should be 6"
+	fail_test 110 "E: failCount is $failCount and should be 5"
 fi
 
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
@@ -107,17 +107,17 @@ if [ "$failCount" != "3" ]; then
 fi
 
 faillock --user "$NAME"
-faillog --user "$NAME"
 # reset failCount
 info "Reset counter with a success login"
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_fast 110 "E: The login wasn't successful, but the user faillog is lower than the maximum"
 fi
-failCount=$(faillog --user "$NAME" | tail -1 | awk '{print $2}')
+
+failCount=$(( $(faillock --user "$NAME" | wc -l) - 2 ))
 if [ "$failCount" != "0" ]; then
-	fail_test 110 "E: failCount should be empty"
-	faillog -u "$NAME"
+	fail_test 110 "E: failCount should be 0"
+	faillock --user "$NAME"
 	exit $RETVAL
 fi
 
