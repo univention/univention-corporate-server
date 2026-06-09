@@ -6,6 +6,8 @@
 ##   - docker.io
 
 import os
+import subprocess
+import tempfile
 from subprocess import call
 
 import pytest
@@ -43,7 +45,19 @@ class SyncedAppcenter(Appcenter):
         if not os.path.exists(d):
             os.makedirs(d)
 
-        call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmpname = tmp.name
+
+        try:
+            subprocess.check_call([
+                'wget',
+                '-O', tmpname,
+                f'{self.upstream_appcenter}/{f}',
+            ])
+            os.replace(tmpname, f'/var/www/{f}')
+        except Exception as exc:
+            os.unlink(tmpname)
+            print('## WARNING: could not download %s: %s' % (f, exc))
 
     def download_index_json(self):
         for version in self.all_versions:
