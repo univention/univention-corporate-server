@@ -113,23 +113,44 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
             self.log('Nothing to upgrade')
 
     def _upgrade_packages(self, app, args):
-        process = self._execute_container_script(app, 'update_packages', args)
-        if not process or process.returncode != 0:
-            raise UpgradePackagesFailed()
+        self._run_upgrade_script(app, 'update_packages', UpgradePackagesFailed, args)
 
     def _upgrade_release(self, app, release):
-        process = self._execute_container_script(app, 'update_release', credentials=False, cmd_kwargs={'release': release})
-        if not process or process.returncode != 0:
-            raise UpgradeReleaseFailed()
+        self._run_upgrade_script(app, 'update_release', UpgradeReleaseFailed, credentials=False, cmd_kwargs={'release': release})
 
     def _upgrade_app(self, app, args):
-        process = self._execute_container_script(app, 'update_app_version', args)
-        if not process or process.returncode != 0:
-            raise UpgradeAppFailed()
+        self._run_upgrade_script(app, 'update_app_version', UpgradeAppFailed, args)
         self._register_app(app, args)
         self._configure(app, args)
         self._call_join_script(app, args)
         self.old_app = app
+
+    def _run_upgrade_script(self, app, interface, exception_cls, args=None, **kwargs):
+        result = self._execute_container_script(
+            app,
+            interface,
+            args,
+            output=True,
+            **kwargs,
+        )
+
+        if not result:
+            raise exception_cls('%s interface missing or script not found for %s' % (interface, app.id))
+
+        process, logger = result
+
+        if process.returncode != 0:
+            output = getattr(logger, 'output', None)
+            if output is None:
+                output = getattr(logger, 'lines', None)
+            if isinstance(output, list):
+                output = ''.join(output)
+            if output is None:
+                output = ''
+
+            raise exception_cls('%s failed for %s. Exit code: %s\n\n%s' % (interface, app.id, process.returncode, output))
+
+        return process
 
     def _upgrade_image(self, app, args):
         docker = self._get_docker(app)
