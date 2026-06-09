@@ -15,7 +15,7 @@ check_perm -d /var/spool/postfix/private 0700 postfix root || RETVAL=110
 
 # /var/spool/postfix/public should only be accessible by postfix:postdrop. If not, the world-writable
 # files within the directory are exposed to arbitrary users:
-check_perm -d /var/spool/postfix/public 02710 postfix postdrop || RETVAL=110
+check_perm -d /var/spool/postfix/public 0710 postfix postdrop || RETVAL=110
 
 # /var/run/samba/winbindd_privileged/ should only be accessible by root:winbindd_priv
 # If not, the world-writable pipe within the directory is exposed to arbitrary users:
