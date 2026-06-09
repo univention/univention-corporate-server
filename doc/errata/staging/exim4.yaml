@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: exim4
+fix: 4.89-2+deb9u15A~4.4.9.202606091639
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-48840 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+bug: [59479]
+cve:
+- CVE-2026-48840
