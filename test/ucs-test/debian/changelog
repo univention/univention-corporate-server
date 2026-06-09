@@ -1,3 +1,9 @@
+ucs-test (12.6.2) unstable; urgency=medium
+
+  * Bug #55411: let pytest compare and print the whole diff
+
+ -- Florian Best <best@univention.de>  Tue, 09 Jun 2026 21:02:45 +0200
+
 ucs-test (12.6.1) unstable; urgency=medium
 
   * Bug #59336: Fix locale depdency in 50_samba/12net_testjoin_memberserver

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright -s -l -vv
 ## desc: check properties of copied users/user
 ## tags: [udm]
 ## roles: [domaincontroller_master]
@@ -113,10 +113,23 @@ def test_properties_of_copied_users(umc_browser_test: UMCBrowserTest, user_info)
     orig_user = udm_user_module.get(orig_dn)
     copied_user = udm_user_module.get_by_id(copied_username)
 
-    orig_user_props = orig_user.props.__dict__
-    copied_user_props = copied_user.props.__dict__
-    for attribute in attribute_list:
-        if attribute == 'jpegPhoto':
-            assert copied_user_props[attribute] is None
-        else:
-            assert orig_user_props[attribute] != copied_user_props[attribute], f'Original user and copied user attributes are matching {orig_user_props[attribute]} == {copied_user_props[attribute]} (attribute = {attribute})'
+    orig_props = vars(orig_user.props)
+    copied_props = vars(copied_user.props)
+
+    orig_failures = {
+        attr: orig_props[attr]
+        for attr in attribute_list
+        if attr != "jpegPhoto" and orig_props[attr] == copied_props[attr]
+    }
+
+    copied_failures = {
+        attr: copied_props[attr]
+        for attr in attribute_list
+        if attr != "jpegPhoto" and orig_props[attr] == copied_props[attr]
+    }
+
+    if copied_props["jpegPhoto"] is not None:
+        copied_failures["jpegPhoto"] = copied_props["jpegPhoto"]
+
+    assert orig_failures == copied_failures
+    assert orig_failures == {}
