@@ -171,9 +171,9 @@ def test_all():
 
     # test ratings for a few combinations
     for rating in (
-            (RATINGS[0], RATINGS[2]),
-            (RATINGS[1],),
-            (RATINGS[0], RATINGS[1], RATINGS[2]),
+        (RATINGS[0], RATINGS[2]),
+        (RATINGS[1],),
+        (RATINGS[0], RATINGS[1], RATINGS[2]),
     ):
         cache.clear_cache()
         write_ratings(app_prefix, *rating)
