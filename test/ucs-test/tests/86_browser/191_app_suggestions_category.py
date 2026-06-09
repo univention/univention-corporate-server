@@ -8,6 +8,7 @@
 ## join: true
 ## exposure: dangerous
 
+import pytest
 from playwright.sync_api import expect
 
 from univention.testing.browser.appcenter import AppCenter
@@ -16,6 +17,9 @@ from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.utils import package_installed
 
 
+# For this tests it is required that the appcenter contains the PKGDB test!
+
+@pytest.mark.skipif(package_installed('univention-pkgdb'), reason='If pkgdb itself is installed, it wont appear as suggested app.')
 def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
     app_center_cache.write(
         """
@@ -30,8 +34,6 @@ def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_cent
 }
 """,
     )
-    if package_installed('univention-pkgdb'):
-        return
     app_center = AppCenter(umc_browser_test)
     app_center.navigate()
 
