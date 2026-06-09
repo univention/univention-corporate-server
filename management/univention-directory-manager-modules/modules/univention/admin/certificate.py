@@ -236,8 +236,9 @@ def load_certificate(user_certificate):
     if not user_certificate:
         return {}
     try:
-        certificate = base64.b64decode(user_certificate)
+        certificate = base64.b64decode(user_certificate).removesuffix(b'\n')
     except base64.binascii.Error:
+        log.warning('Invalid base64 in certificate', certificate=user_certificate)
         return {}
     try:
         cert = x509.load_der_x509_certificate(certificate)
@@ -261,7 +262,8 @@ def load_certificate(user_certificate):
                 except (IndexError, AttributeError, ValueError):
                     value = None
                 values[prefix + attr] = value
-    except (ValueError, TypeError, AttributeError):
+    except (ValueError, TypeError, AttributeError) as exc:
+        log.warning('Invalid certificate', error=str(exc))
         return {}
 
     log.trace('certificate', value=values)
