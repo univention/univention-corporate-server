@@ -33,6 +33,12 @@ Type=uint
 Categories=service-misc
 Default=10
 
+[directory/manager/ldap_extension/timeout/activation]
+Description[de]=Beim Registrieren einer LDAP-Erweiterung (Schema, ACL, UDM-Modul/-Syntax/-Hook) über ucs_registerLDAPExtension wird auf die Aktivierung des Erweiterungsobjekts durch den Primary Directory Node gewartet. Diese Variable legt die maximale Wartezeit in Sekunden fest. Ist die Variable nicht gesetzt, gilt der Standardwert 180. In großen Umgebungen oder bei hoher Serverlast kann eine Erhöhung notwendig sein.
+Description[en]=When registering an LDAP extension (schema, ACL, UDM module/syntax/hook) via ucs_registerLDAPExtension, the registration waits for the extension object to be marked active by the Primary Directory Node. This variable defines the maximum wait time in seconds. If unset, the default of 180 applies. Increasing it may be necessary in large environments or under high server load.
+Type=uint
+Categories=service-misc
+
 [groups/default/.*]
 Description[de]=Übersetzung von bekannten Gruppennamen wie "Administrator" in lokalisierten Gruppennamen.
 Description[en]=Translation of well known group names like "Domain Admins" to localized group names.

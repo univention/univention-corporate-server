@@ -194,7 +194,9 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
             return False
         return True  # probably yes
 
-    def wait_for_activation(self, timeout: int = 180) -> bool:
+    def wait_for_activation(self, timeout: int | None = None) -> bool:
+        if timeout is None:
+            timeout = self.ucr.get_int('directory/manager/ldap_extension/timeout/activation', 180)
         print("Waiting for activation of the extension object %s:" % (self.objectname,), end=' ')
         t0 = time.time()
         while not self.is_local_active()[1]:
@@ -992,7 +994,7 @@ class UniventionDataExtension(UniventionLDAPExtension):
         """
         return (0, "foo")
 
-    def wait_for_activation(self, timeout: int = 180) -> bool:
+    def wait_for_activation(self, timeout: int | None = None) -> bool:
         return True
 
 
@@ -1005,7 +1007,7 @@ class UniventionUDMExtension(UniventionLDAPExtension, metaclass=ABCMeta):
         """return the most likely path where the listener will write the file to"""
         return os.path.abspath(os.path.join(os.path.dirname(udm.__file__), self.target_subdir, self.target_filename.replace('/', '')))
 
-    def wait_for_activation(self, timeout: int = 180) -> bool:
+    def wait_for_activation(self, timeout: int | None = None) -> bool:
         if not super().wait_for_activation(timeout):
             return False
 
@@ -1061,7 +1063,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 
         UniventionUDMExtension.register(self, filename, options, udm_passthrough_options, target_filename=module_name + ".py")
 
-    def wait_for_activation(self, timeout: int = 180) -> bool:
+    def wait_for_activation(self, timeout: int | None = None) -> bool:
         if not super().wait_for_activation(timeout):
             return False
 
