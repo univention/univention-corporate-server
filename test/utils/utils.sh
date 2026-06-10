@@ -1638,6 +1638,22 @@ ucs-winrm () {
 	docker run --rm -v /etc/localtime:/etc/localtime:ro -v "$HOME/.ucs-winrm.ini:/root/.ucs-winrm.ini:ro" "$IMAGE" "$@"
 }
 
+wait_for_winrm () {
+	local timeout=${1:-900}
+	local steps=${2:-30}
+	local timestamp
+	timestamp=$(date +"%s")
+	echo "Waiting for WinRM..."
+	while ! ucs-winrm run-ps --cmd ipconfig; do
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
+			echo "ERROR: WinRM not reachable."
+			return 1
+		fi
+		sleep "$steps"
+	done
+	return 0
+}
+
 add_extra_apt_scope () {
 	local repo_name REPO_SERVER="http://omar.knut.univention.de/build2/git"
 	local apt_file="/etc/apt/sources.list.d/99_extra_scope.list.disabled"
