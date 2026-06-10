@@ -141,12 +141,21 @@ case "$1" in
   start)
 	check_for_no_start
 	start_slapd ;;
-  stop)
+  stop|graceful-stop|force-stop)
 	stop_slapd ;;
-  restart|force-reload)
+  restart|force-reload|graceful-restart)
 	check_for_no_start
 	stop_slapd
 	start_slapd
+	;;
+  crestart)
+	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
+	if pidof slapd > /dev/null 2>&1
+	then
+		$0 restart
+	else
+		log_action_msg "No slapd process found, no restart needed"
+	fi
 	;;
   status)
 	status_of_proc ${SLAPD_PIDFILE:+-p "$SLAPD_PIDFILE"} $SLAPD slapd
