@@ -198,6 +198,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-certificate new -name "$hostname.$domainname"
 	ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 
+	# 40_ssl restarted slapd before this certificate existed; restart it now that it is present
+	invoke-rc.d slapd restart
 	invoke-rc.d apache2 restart
 else
 	# Other system roles require the certificate creation here only if they to not join
