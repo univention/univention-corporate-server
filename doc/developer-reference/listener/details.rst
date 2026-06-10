@@ -292,7 +292,7 @@ available there first. All other systems running LDAP replica download it from
 there using the |UCSUDN| / |UCSUDL| mechanism.
 
 #. On the |UCSPRIMARYDN| the LDAP Schema is extracted by the script
-   :file:`/etc/init.d/slapd` on each start. The MD5 hash is stored in
+   :file:`/usr/lib/univention-ldap/slapd-post-start` on each start. The MD5 hash is stored in
    :file:`/var/lib/univention-ldap/schema/md5`.
 
 #. On each change the counter in file
