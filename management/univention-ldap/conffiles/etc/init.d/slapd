@@ -80,6 +80,11 @@ check_for_no_start() {
 }
 
 start_slapd() {
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		# shellcheck source=/dev/null
+		. "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart LDAP ldap/autostart
+	fi
 
 	# Make sure /var/run/slapd exists with correct permissions
 	if [ ! -d /var/run/slapd ]; then
@@ -112,9 +117,11 @@ if configRegistry.get('ldap/maxopenfiles'):
 		[ -z "$reason" ] || log_failure_msg "$reason"
 		log_failure_msg Command line used: ${SLAPD} ${SLAPD_SERVICES:+ -h \"$SLAPD_SERVICES\"} $SLAPD_OPTIONS
 
-		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema -f /etc/ldap/slapd.conf 2>&1)
+		/usr/lib/univention-ldap/slapd-failure
+
 		return 1
 	}
+	/usr/lib/univention-ldap/slapd-post-start || return 1
 	log_end_msg 0
 }
 
