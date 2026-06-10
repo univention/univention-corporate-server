@@ -2,11 +2,7 @@
 # Default location of the slapd.conf file or slapd.d cn=config directory. If
 # empty, use the compiled-in default (/etc/ldap/slapd.d with a fallback to
 # /etc/ldap/slapd.conf).
-# UCS: MUST stay empty. The slapd maintainer scripts source this file and
-# create a new cn=config directory at $SLAPD_CONF if the path does not exist
-# (slapd.postinst create_new_configuration: mkdir -p + slapadd -F). The
-# config file is passed via SLAPD_OPTIONS instead.
-SLAPD_CONF=
+SLAPD_CONF="/etc/ldap/slapd.conf"
 
 # System account to run the slapd server under. If empty the server
 # will run as root.
