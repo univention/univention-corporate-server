@@ -1,0 +1,4 @@
+# slapd-failure.service
+[Service]
+Type=oneshot
+ExecStart=/usr/lib/univention-ldap/slapd-failure
