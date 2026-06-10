@@ -5,7 +5,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2026-03-10
+Publication date of UCS |release|: 2026-06-16
 
 .. _relnotes-highlights:
 
@@ -13,10 +13,34 @@ Publication date of UCS |release|: 2026-03-10
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-6, the fifth patch level release for |UCSUCS| 5.2 is available.
-It provides several feature improvements and extensions, properties, as well as bug fixes.
-Here is an overview of the most important changes:
+|UCSUCS| 5.2-6 is available.
+It includes feature improvements, extensions, and bug fixes.
+The following overview highlights the most important changes:
 
+* The *UDM HTTP REST API* now includes a metrics endpoint.
+  You can retrieve basic Nubus metrics,
+  such as the number of users, the software version, and the license status.
+  Use these metrics in standard tools such as *Prometheus* and *Grafana*
+  to improve observability.
+
+  For more information, see :external+uv-nubus-manual:ref:`nubus-metrics`
+  in :cite:t:`uv-nubus-manual`.
+
+* |UCSUMC| includes a new section
+  with technical details for objects in |UCSUDM|.
+  You can view and search technical identifiers
+  and the creation and modification timestamps for all objects.
+
+* Groups in Univention Nubus
+  can now have alternative email addresses in addition to a primary email address.
+  You can use them as email aliases for groups,
+  following the same concept as alternative email addresses for users.
+  The Univention mail stack supports this additional attribute
+  and delivers email sent to a group's alternative email address
+  to all members of the group.
+
+* Samba has been updated to version 4.24.2, including the latest security
+  patches, so it's equivalent to version 4.24.3.
 
 .. _relnotes-update:
 
@@ -28,7 +52,7 @@ Before updating,
 test the update in a separate test environment
 that's identical to your production environment.
 Run the update in a maintenance window,
-because some services in the domain may be unavailable temporarily.
+because some services in the domain can be unavailable temporarily.
 
 The update can take anywhere from 30 minutes to several hours,
 depending on system performance, network connection, and installed software.
@@ -41,7 +65,7 @@ Updating multiple UCS systems
 =============================
 
 In environments with multiple UCS systems,
-follow the update sequence described below.
+follow the update sequence described later.
 
 .. _relnotes-bootloader:
 
@@ -76,8 +100,8 @@ Sufficient disk space
 =====================
 
 Ensure you have sufficient disk space available for the update.
-A standard installation requires a minimum of 6-10 GB.
-The update process requires an additional 1-2 GB
+A standard installation requires a minimum of 6 to 10 GB.
+The update process requires an additional 1 to 2 GB
 to download and install packages,
 depending on your existing installation size.
 
@@ -96,7 +120,7 @@ take steps to ensure it continues if the connection is interrupted.
 Network interruptions can cancel the update,
 which severely affects the system.
 
-Use tools like :command:`tmux`, :command:`screen`, or :command:`at`
+Use tools such as :command:`tmux`, :command:`screen`, or :command:`at`
 to keep the update running through network interruptions.
 All UCS system roles have these tools installed by default.
 
@@ -141,9 +165,10 @@ Post processing of the update
 
 After the update,
 run new or updated join scripts.
-Use either the UMC module *Domain join*
+Use either the :guilabel:`Domain join` management module in the *Management UI*
 or run :command:`univention-run-join-scripts` as ``root``.
 
+Verify that the join scripts completed successfully.
 Then restart the UCS system.
 
 .. _relnotes-packages:
@@ -169,7 +194,7 @@ based on customer needs.
 
 You can verify the license status through the menu entry
 :menuselection:`License --> License information`
-in the user menu in the upper right corner of |UCSUMC|.
+in the user menu of |UCSUMC|.
 If the *License information*
 lists ``UCS Core Edition`` under *License type*,
 your UCS system is using UCS Core Edition.
@@ -187,17 +212,17 @@ set the |UCSUCRV| :envvar:`umc/web/piwik` to ``false``.
 Recommended browsers for |UCSUMC|
 =================================
 
-|UCSUMC| uses JavaScript and CSS functions to display the web interface.
+|UCSUMC| uses JavaScript and CSS features to display the web interface.
 Your web browser must support cookies.
 |UCSUMC| requires one of the following browsers:
 
-* Chrome as of version 131
+* Chrome version 131 and later
 
-* Firefox as of version 128
+* Firefox version 128 and later
 
-* Safari and Safari Mobile as of version 18
+* Safari and Safari Mobile version 18 and later
 
-* Microsoft Edge as of version 128
+* Microsoft Edge version 128 and later
 
 Older browsers may not display correctly or perform as expected.
 
@@ -207,7 +232,7 @@ Older browsers may not display correctly or perform as expected.
 Changelog
 *********
 
-You find the changes since UCS 5.2-6 in
+You can find the changes since UCS 5.2-5 in
 :external+uv-changelog-5.2-6:doc:`index`.
 
 .. _biblio:

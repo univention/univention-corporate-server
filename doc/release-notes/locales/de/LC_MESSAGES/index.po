@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 10:28+0000\n"
-"PO-Revision-Date: 2026-03-04 16:09+0100\n"
+"POT-Creation-Date: 2026-06-12 07:19+0000\n"
+"PO-Revision-Date: 2026-06-15 17:20+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -25,8 +25,8 @@ msgstr ""
 "Corporate Server (UCS) |release|"
 
 #: ../../index.rst:8
-msgid "Publication date of UCS |release|: 2026-03-10"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2026-03-10"
+msgid "Publication date of UCS |release|: 2026-06-16"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2026-06-16"
 
 #: ../../index.rst:14
 msgid "Release highlights"
@@ -34,62 +34,87 @@ msgstr "Release-Highlights"
 
 #: ../../index.rst:16
 msgid ""
-"With |UCSUCS| 5.2-6, the fifth patch level release for |UCSUCS| 5.2 is "
-"available. It provides several feature improvements and extensions, "
-"properties, as well as bug fixes. Here is an overview of the most "
+"|UCSUCS| 5.2-6 is available. It includes feature improvements, "
+"extensions, and bug fixes. The following overview highlights the most "
 "important changes:"
 msgstr ""
-"Mit |UCSUCS| 5.2-6 steht das fünfte Patchlevel-Update für |UCSUCS| 5.2 "
-"zur Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue"
-" Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
-"Die wichtigsten Änderungen im Überblick:"
+"|UCSUCS| 5.2-6 ist verfügbar. Es enthält Funktionsverbesserungen, "
+"Erweiterungen und Fehlerkorrekturen. Die folgende Übersicht hebt die "
+"wichtigsten Änderungen hervor:"
 
 #: ../../index.rst:20
 msgid ""
-"The new Provisioning API is now available on |UCSUCS|, offering a REST "
-"API to receive information about changes to users, groups, and other "
-"Nubus objects. Integrations implemented to work with Nubus on Kubernetes "
-"can now use the same API to integrate with Nubus on |UCSUCS|."
+"The *UDM HTTP REST API* now includes a metrics endpoint. You can retrieve"
+" basic Nubus metrics, such as the number of users, the software version, "
+"and the license status. Use these metrics in standard tools such as "
+"*Prometheus* and *Grafana* to improve observability."
 msgstr ""
-"Die neue Provisioning API ist nun auf |UCSUCS| verfügbar und bietet eine "
-"REST API, um über Änderungen an Benutzern, Gruppen und anderen Nubus-"
-"Objekten informiert zu werden. Bereits für Nubus auf Kubernetes "
-"entwickelte Integrationen können nun dieselbe API verwenden, um sich mit "
-"Nubus auf |UCSUCS| zu integrieren."
+"Die *UDM HTTP REST API* enthält jetzt einen Metrik-Endpunkt. Sie können "
+"grundlegende Nubus-Metriken abrufen, etwa die Anzahl der Benutzer, die "
+"Softwareversion und den Lizenzstatus. Sie können diese Metriken in "
+"Standard-Tools wie *Prometheus* und *Grafana* verwenden, um die "
+"Überwachung zu verbessern."
 
 #: ../../index.rst:26
 msgid ""
-"The *Recycle Bin* feature provides various improvements and now "
-"integrates with the :program:`Active Directory-compatible Domain "
-"Controller` and :program:`Active Directory Connection`. A restore in "
-"|UCSUDM|, :program:`Active Directory-compatible Domain Controller`, or "
-":program:`Active Directory Connection` now correctly restores the object "
-"in the other directory service implementations."
+"For more information, see :external+uv-nubus-manual:ref:`nubus-metrics` "
+"in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Das *Recycle Bin*-Feature bietet verschiedene Verbesserungen und ist nun "
-"in die :program:`Active Directory-compatible Domain Controller` und "
-":program:`Active Directory Connection` integriert. Eine Wiederherstellung"
-" in |UCSUDM|, :program:`Active Directory-compatible Domain Controller` "
-"oder :program:`Active Directory Connection` stellt das Objekt nun korrekt"
-" in den anderen Verzeichnisdienst-Implementierungen wieder her."
+"Weitere Informationen finden Sie unter :external+uv-nubus-manual:ref"
+":`nubus-metrics` im :cite:t:`uv-nubus-manual`."
 
-#: ../../index.rst:37
+#: ../../index.rst:29
+msgid ""
+"|UCSUMC| includes a new section with technical details for objects in "
+"|UCSUDM|. You can view and search technical identifiers and the creation "
+"and modification timestamps for all objects."
+msgstr ""
+"|UCSUMC| enthält einen neuen Bereich mit technischen Details für Objekte "
+"in |UCSUDM|. Sie können technische Bezeichner sowie die Erstellungs- und "
+"Änderungszeitstempel aller Objekte anzeigen und durchsuchen."
+
+#: ../../index.rst:34
+msgid ""
+"Groups in Univention Nubus can now have alternative email addresses in "
+"addition to a primary email address. You can use them as email aliases "
+"for groups, following the same concept as alternative email addresses for"
+" users. The Univention mail stack supports this additional attribute and "
+"delivers email sent to a group's alternative email address to all members"
+" of the group."
+msgstr ""
+"Gruppen in Univention Nubus können jetzt zusätzlich zu einer primären E"
+"-Mailadresse auch alternative E-Mailadressen haben. Sie können diese "
+"als E-Mail-Aliase für Gruppen verwenden, nach demselben Konzept wie "
+"alternative E-Mailadressen für Benutzer. Der Univention Mail Stack "
+"unterstützt dieses zusätzliche Attribut und stellt E-Mails, die an eine "
+"alternative E-Mailadresse einer Gruppe gesendet werden, allen "
+"Mitgliedern der Gruppe zu."
+
+#: ../../index.rst:42
+msgid ""
+"Samba has been updated to version 4.24.2, including the latest security "
+"patches, so it's equivalent to version 4.24.3."
+msgstr ""
+"Samba wurde auf Version 4.24.2 aktualisiert, einschließlich der neuesten "
+"Sicherheitspatches, sodass es Version 4.24.3 entspricht."
+
+#: ../../index.rst:49
 msgid "Notes about the update"
 msgstr "Hinweise zum Update"
 
-#: ../../index.rst:39
+#: ../../index.rst:51
 msgid ""
 "Before updating, test the update in a separate test environment that's "
 "identical to your production environment. Run the update in a maintenance"
-" window, because some services in the domain may be unavailable "
+" window, because some services in the domain can be unavailable "
 "temporarily."
 msgstr ""
-"Testen Sie das Update vor der eigentlichen Aktualisierung in einer "
-"separaten Testumgebung, die mit Ihrer Produktionsumgebung identisch ist. "
-"Führen Sie das Update in einem Wartungsfenster durch, da einige Dienste "
-"in der Domäne möglicherweise vorübergehend nicht verfügbar sind."
+"Bevor Sie aktualisieren, testen Sie das Update in einer separaten "
+"Testumgebung, die mit Ihrer Produktionsumgebung identisch ist. Führen Sie"
+" das Update in einem Wartungsfenster durch, da einige Dienste in der "
+"Domäne vorübergehend nicht verfügbar sein können."
 
-#: ../../index.rst:45
+#: ../../index.rst:57
 msgid ""
 "The update can take anywhere from 30 minutes to several hours, depending "
 "on system performance, network connection, and installed software. For "
@@ -100,23 +125,23 @@ msgstr ""
 "Für große Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-"
 "guide`."
 
-#: ../../index.rst:53
+#: ../../index.rst:65
 msgid "Updating multiple UCS systems"
 msgstr "Aktualisierung mehrerer UCS-Systeme"
 
-#: ../../index.rst:55
+#: ../../index.rst:67
 msgid ""
 "In environments with multiple UCS systems, follow the update sequence "
-"described below."
+"described later."
 msgstr ""
-"Beachten Sie in Umgebungen mit mehr als einem UCS-System die Update-"
-"Reihenfolge der UCS-Systeme."
+"Folgen Sie in Umgebungen mit mehreren UCS-Systemen der später "
+"beschriebenen Update-Reihenfolge."
 
-#: ../../index.rst:62
+#: ../../index.rst:74
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:64
+#: ../../index.rst:76
 msgid ""
 "Simultaneous operation of UCS and Debian GNU/Linux on UEFI systems isn't "
 "supported in UCS 5.0 and later."
@@ -124,53 +149,53 @@ msgstr ""
 "Der gleichzeitige Betrieb von UCS und Debian GNU/Linux auf UEFI-Systemen "
 "wird seit UCS 5.0 nicht mehr unterstützt."
 
-#: ../../index.rst:67
+#: ../../index.rst:79
 msgid ""
 "The GRUB boot loader of |UCSUCS| uses the same configuration files as "
 "Debian. If Debian is already installed, UCS can't boot after you install "
 "or update to UCS 5.0. Conversely, installing Debian after UCS 5.0 "
 "prevents UCS from booting."
 msgstr ""
-"Ursache hierfür ist der Bootloader GRUB von |UCSUCS|, der teilweise die "
-"gleichen Konfigurationsdateien wie Debian verwendet. Ein bereits "
-"installiertes Debian führt dazu, dass UCS nach der Installation von bzw. "
-"einem Update auf UCS 5.0 nicht (mehr) startet. Eine nachträgliche "
-"Installation von Debian wird ebenfalls dazu führen, dass UCS 5.0 nicht "
-"mehr startet. Mehr Informationen finden Sie unter :uv:kb:`17768`."
+"Der GRUB-Bootloader von |UCSUCS| verwendet dieselben "
+"Konfigurationsdateien wie Debian. Wenn Debian bereits installiert ist, "
+"kann UCS nach der Installation oder dem Update auf UCS 5.0 nicht starten."
+" Umgekehrt verhindert die Installation von Debian nach UCS 5.0, dass UCS "
+"startet."
 
-#: ../../index.rst:74
+#: ../../index.rst:86
 msgid "For more information, refer to :uv:kb:`17768`."
 msgstr "Weitere Informationen finden Sie in :uv:kb:`17768`."
 
-#: ../../index.rst:81
+#: ../../index.rst:93
 msgid "Prepare for update"
 msgstr "Vorbereitung des Updates"
 
-#: ../../index.rst:83
+#: ../../index.rst:95
 msgid "This section covers important considerations before you update."
 msgstr "In diesem Abschnitt finden Sie wichtige Überlegungen vor dem Update."
 
-#: ../../index.rst:88
+#: ../../index.rst:100
 msgid "Sufficient disk space"
 msgstr "Ausreichender Festplattenplatz"
 
-#: ../../index.rst:90
+#: ../../index.rst:102
 msgid ""
 "Ensure you have sufficient disk space available for the update. A "
-"standard installation requires a minimum of 6-10 GB. The update process "
-"requires an additional 1-2 GB to download and install packages, depending"
-" on your existing installation size."
+"standard installation requires a minimum of 6 to 10 GB. The update "
+"process requires an additional 1 to 2 GB to download and install "
+"packages, depending on your existing installation size."
 msgstr ""
-"Stellen Sie sicher, dass ausreichend Festplattenplatz verfügbar ist. Eine"
-" Standard-Installation benötigt mindestens 6-10 GB. Das Update benötigt "
-"zusätzlich 1-2 GB zum Herunterladen und Installieren von Paketen, je nach"
-" Größe Ihrer vorhandenen Installation."
+"Stellen Sie sicher, dass für das Update ausreichend Festplattenplatz "
+"verfügbar ist. Eine Standardinstallation benötigt mindestens 6 bis 10 GB."
+" Der Update-Prozess benötigt zusätzlich 1 bis 2 GB, um Pakete "
+"herunterzuladen und zu installieren, abhängig von der Größe Ihrer "
+"vorhandenen Installation."
 
-#: ../../index.rst:99
+#: ../../index.rst:111
 msgid "Console usage for update"
 msgstr "Nutzung der Konsole für das Update"
 
-#: ../../index.rst:101
+#: ../../index.rst:113
 msgid ""
 "Sign in to the system's local console as ``root`` and run the update. "
 "Alternatively, you can run the update using |UCSUMC|."
@@ -179,7 +204,7 @@ msgstr ""
 "dem Benutzer ``root`` an und starten Sie das Update dort. Alternativ "
 "können Sie das Update über |UCSUMC| durchführen."
 
-#: ../../index.rst:106
+#: ../../index.rst:118
 msgid ""
 "If you run the update over a network connection, take steps to ensure it "
 "continues if the connection is interrupted. Network interruptions can "
@@ -190,22 +215,22 @@ msgstr ""
 "Verbindung weiterläuft. Netzwerkunterbrechungen können das Update "
 "abbrechen, was das System erheblich beeinträchtigt."
 
-#: ../../index.rst:111
+#: ../../index.rst:123
 msgid ""
-"Use tools like :command:`tmux`, :command:`screen`, or :command:`at` to "
-"keep the update running through network interruptions. All UCS system "
+"Use tools such as :command:`tmux`, :command:`screen`, or :command:`at` to"
+" keep the update running through network interruptions. All UCS system "
 "roles have these tools installed by default."
 msgstr ""
 "Verwenden Sie Tools wie :command:`tmux`, :command:`screen` oder "
-":command:`at`, um das Update auch bei Netzwerkunterbrechungen durchführen"
-" zu lassen. Alle UCS-Systemrollen haben diese Tools standardmäßig "
+":command:`at`, damit das Update auch bei Netzwerkunterbrechungen "
+"weiterläuft. Alle UCS-Systemrollen haben diese Tools standardmäßig "
 "installiert."
 
-#: ../../index.rst:118
+#: ../../index.rst:130
 msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
-#: ../../index.rst:120
+#: ../../index.rst:132
 msgid ""
 "Univention provides a script that checks for problems that could prevent "
 "a successful update. You can download the script before the update and "
@@ -216,7 +241,7 @@ msgstr ""
 "Sie können das Skript vor dem Update manuell auf das System herunterladen"
 " und ausführen:"
 
-#: ../../index.rst:126
+#: ../../index.rst:138
 #, python-brace-format
 msgid ""
 "# download\n"
@@ -261,40 +286,44 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:152
+#: ../../index.rst:164
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:154
+#: ../../index.rst:166
 msgid ""
-"After the update, run new or updated join scripts. Use either the UMC "
-"module *Domain join* or run :command:`univention-run-join-scripts` as "
-"``root``."
+"After the update, run new or updated join scripts. Use either the "
+":guilabel:`Domain join` management module in the *Management UI* or run "
+":command:`univention-run-join-scripts` as ``root``."
 msgstr ""
-"Nach dem Update müssen Sie die neuen oder aktualisierten Join-Skripte "
-"ausführen. Sie können dafür entweder das UMC-Modul *Domänenbeitritt* "
-"verwenden oder durch Befehl :command:`univention-run-join-scripts` als "
-"Benutzer ``root`` aufrufen."
+"Führen Sie nach dem Update neue oder aktualisierte Join-Skripte aus. "
+"Verwenden Sie dazu entweder das Verwaltungsmodul :guilabel:`Domain join` "
+"in der *Management UI* oder führen Sie :command:`univention-run-join-"
+"scripts` als ``root`` aus."
 
-#: ../../index.rst:159
-msgid "Then restart the UCS system."
-msgstr "Anschließend müssen Sie das UCS-System neu starten."
+#: ../../index.rst:171
+msgid ""
+"Verify that the join scripts completed successfully. Then restart the UCS"
+" system."
+msgstr ""
+"Prüfen Sie, ob die Join-Skripte erfolgreich abgeschlossen wurden. Starten"
+" Sie dann das UCS-System neu."
 
-#: ../../index.rst:165
+#: ../../index.rst:178
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:167
+#: ../../index.rst:180
 msgid "The following sections cover selected packages for this update."
 msgstr ""
 "Die folgenden Abschnitte informieren über ausgewählte Pakete dieses "
 "Updates."
 
-#: ../../index.rst:172
+#: ../../index.rst:185
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:174
+#: ../../index.rst:187
 msgid ""
 "When using UCS Core Edition, UCS collects anonymous usage statistics for "
 "|UCSUMC|. The system logs which modules you open to a *Matomo* instance. "
@@ -307,21 +336,19 @@ msgstr ""
 "Univention, die Entwicklung von |UCSUMC| basierend auf "
 "Kundenanforderungen zu verbessern."
 
-#: ../../index.rst:182
+#: ../../index.rst:195
 msgid ""
 "You can verify the license status through the menu entry "
-":menuselection:`License --> License information` in the user menu in the "
-"upper right corner of |UCSUMC|. If the *License information* lists ``UCS "
-"Core Edition`` under *License type*, your UCS system is using UCS Core "
-"Edition."
+":menuselection:`License --> License information` in the user menu of "
+"|UCSUMC|. If the *License information* lists ``UCS Core Edition`` under "
+"*License type*, your UCS system is using UCS Core Edition."
 msgstr ""
 "Sie können den Lizenzstatus über den Menüeintrag :menuselection:`Lizenz "
-"--> Lizenzinformationen` im Benutzermenü in der oberen rechten Ecke von "
-"|UCSUMC| überprüfen. Wenn die *Lizenzinformationen* unter *Lizenztyp* "
-"``UCS Core Edition`` aufführen, nutzt Ihr UCS-System die UCS Core "
-"Edition."
+"--> Lizenzinformationen` im Benutzermenü von |UCSUMC| überprüfen. Wenn "
+"die *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
+"aufführen, verwendet Ihr UCS-System die UCS Core Edition."
 
-#: ../../index.rst:189
+#: ../../index.rst:202
 msgid ""
 "UCS doesn't collect usage statistics if you use an `Enterprise "
 "Subscription <https://www.univention.com/products/prices-and-"
@@ -333,7 +360,7 @@ msgstr ""
 "subscriptions/>`_-Lizenz wie *UCS Base Subscription* oder *UCS Standard "
 "Subscription* nutzen."
 
-#: ../../index.rst:194
+#: ../../index.rst:207
 msgid ""
 "To deactivate usage statistics collection, set the |UCSUCRV| "
 ":envvar:`umc/web/piwik` to ``false``."
@@ -342,71 +369,54 @@ msgstr ""
 "Nutzungsstatistiken deaktivieren, indem Sie die |UCSUCRV| "
 ":envvar:`umc/web/piwik` auf ``false`` setzen."
 
-#: ../../index.rst:200
+#: ../../index.rst:213
 msgid "Recommended browsers for |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:202
+#: ../../index.rst:215
 msgid ""
-"|UCSUMC| uses JavaScript and CSS functions to display the web interface. "
+"|UCSUMC| uses JavaScript and CSS features to display the web interface. "
 "Your web browser must support cookies. |UCSUMC| requires one of the "
 "following browsers:"
 msgstr ""
-"|UCSUMC| verwendet für die Darstellung der Web-Oberfläche zahlreiche "
-"JavaScript- und CSS-Funktionen. Ihr Browser muss dafür Cookies zulassen. "
-"|UCSUMC| benötigt dafür einen der folgenden Browser:"
+"|UCSUMC| verwendet JavaScript- und CSS-Funktionen, um die Web-Oberfläche "
+"darzustellen. Ihr Webbrowser muss Cookies unterstützen. |UCSUMC| benötigt"
+" einen der folgenden Browser:"
 
-#: ../../index.rst:206
-msgid "Chrome as of version 131"
-msgstr "Chrome ab Version 131"
+#: ../../index.rst:219
+msgid "Chrome version 131 and later"
+msgstr "Chrome Version 131 und höher"
 
-#: ../../index.rst:208
-msgid "Firefox as of version 128"
-msgstr "Firefox ab Version 128"
+#: ../../index.rst:221
+msgid "Firefox version 128 and later"
+msgstr "Firefox Version 128 und höher"
 
-#: ../../index.rst:210
-msgid "Safari and Safari Mobile as of version 18"
-msgstr "Safari und Safari Mobile ab Version 18"
+#: ../../index.rst:223
+msgid "Safari and Safari Mobile version 18 and later"
+msgstr "Safari und Safari Mobile Version 18 und höher"
 
-#: ../../index.rst:212
-msgid "Microsoft Edge as of version 128"
-msgstr "Microsoft Edge ab Version 128"
+#: ../../index.rst:225
+msgid "Microsoft Edge version 128 and later"
+msgstr "Microsoft Edge Version 128 und höher"
 
-#: ../../index.rst:214
+#: ../../index.rst:227
 msgid "Older browsers may not display correctly or perform as expected."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
 "auftreten."
 
-#: ../../index.rst:220
+#: ../../index.rst:233
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:222
+#: ../../index.rst:235
 msgid ""
-"You find the changes since UCS 5.2-6 in :external+uv-"
+"You can find the changes since UCS 5.2-5 in :external+uv-"
 "changelog-5.2-6:doc:`index`."
 msgstr ""
-"Die Änderungen seit UCS 5.2-6 finden Sie in :external+uv-"
+"Die Änderungen seit UCS 5.2-5 finden Sie in :external+uv-"
 "changelog-5.2-6:doc:`index`."
 
-#: ../../index.rst:229
+#: ../../index.rst:242
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
-
-#~ msgid ""
-#~ "Verify the PostgreSQL version on all "
-#~ "UCS systems upgraded to UCS 5.2. "
-#~ "UCS 5.2 includes PostgreSQL 15, which"
-#~ " may require migration from PostgreSQL "
-#~ "11."
-#~ msgstr ""
-#~ "Überprüfen Sie die PostgreSQL-Version "
-#~ "aller auf UCS 5.2 aktualisierten "
-#~ "Systeme. UCS 5.2 umfasst PostgreSQL 15,"
-#~ " was möglicherweise eine Migration von "
-#~ "PostgreSQL 11 erfordert."
-
-#~ msgid "For the recommended migration steps, see :uv:kb:`22162`."
-#~ msgstr "Für die empfohlenen Migrationsschritte siehe :uv:kb:`22162`."
-
