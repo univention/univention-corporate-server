@@ -9,6 +9,11 @@
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 19; then
+	# UCS 5.3 upgrade
+	systemctl daemon-reload
+fi
+
 # check for running slapd first
 if [ -n "$(pidof slapd)" ]; then
 	slapd_was_running=yes
@@ -16,29 +21,14 @@ fi
 
 # { # function definitions
 start_slapd () {
-	if test -x /etc/init.d/slapd; then
-		/etc/init.d/slapd start
-		sleep 1
-	fi
+	deb-systemd-invoke start slapd.service
 }
 stop_slapd () {
-	if test -x /etc/init.d/slapd; then
-		/etc/init.d/slapd stop
-		sleep 1
-	fi
+	deb-systemd-invoke stop slapd.service
 }
 restart_slapd () {
-	/etc/init.d/slapd stop
-	sleep 1
-	if [ -n "$(pidof slapd)" ]; then
-		killall slapd
-		sleep 1
-		if [ -n "$(pidof slapd)" ]; then
-			killall -9 slapd
-			sleep 1
-		fi
-	fi
-	/etc/init.d/slapd start
+	deb-systemd-invoke restart slapd.service
+	# TODO: should we be here more safe and test the processes?
 }
 # } # end of function definitions
 
@@ -123,21 +113,16 @@ fi
 
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then	## package update
-		if test -x /etc/init.d/slapd; then
-			# always start on Primary, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
-			if [ "$server_role" = "domaincontroller_master" ]; then
+		# always start on Primary, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			restart_slapd
+		else
+			if [ -n "$slapd_was_running" ]; then
 				restart_slapd
-			else
-				#/etc/init.d/slapd crestart
-				if [ -n "$slapd_was_running" ]; then
-					restart_slapd
-				fi
 			fi
 		fi
-	else					## fresh installation
-		if test -x /etc/init.d/slapd; then
-			/etc/init.d/slapd start
-		fi
+	else  ## fresh installation
+		start_slapd
 		ucr set backup/clean/max_age?365
 	fi
 
@@ -170,6 +155,5 @@ if [ "$1" = "configure" ]; then
 		fi
 	fi
 fi
-
 
 exit 0
