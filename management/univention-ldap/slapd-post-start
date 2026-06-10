@@ -1,0 +1,88 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+eval "$(ucr shell 'ldap/server/type')"
+
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh
+
+. /etc/default/slapd
+
+fail() {
+    echo "slapd-post-start: $*" >&2
+    exit 1
+}
+
+# set -eu
+
+test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
+
+check_subschema ()
+{
+	tmpfile=$(mktemp)
+	res=1
+	count=0
+	while [ $res != 0 ] ; do
+		ldapsearch -x -H ldapi:/// -s base -b cn=Subschema 'objectClass=subschema' objectClasses attributeTypes matchingRules matchingRuleUse dITStructureRules dITContentRules nameForms ldapSyntaxes >"$tmpfile"
+		res=$?
+		if [ $res != 0 ]; then
+			count=$((count+1))
+			if [ $count -ge 5 ]; then
+				fail "Failed to search schema"
+			fi
+			sleep 2
+		fi
+	done
+
+    if is_ucr_true "ldap/schema/export"; then
+        cp "$tmpfile" /var/www/ldap-schema.txt
+        chmod a+r /var/www/ldap-schema.txt
+    fi
+
+    md5=$(md5sum "$tmpfile" | awk '{print $1}')
+	rm -f "$tmpfile"
+
+	if [ ! -d /var/lib/univention-ldap/schema ]; then
+		mkdir /var/lib/univention-ldap/schema
+	fi
+	if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
+		touch /var/lib/univention-ldap/schema/md5
+	fi
+	md5_old=$(cat /var/lib/univention-ldap/schema/md5)
+	if [ "$md5" != "$md5_old" ]; then
+		if [ ! -d /var/lib/univention-ldap/schema/id ]; then
+			mkdir /var/lib/univention-ldap/schema/id
+		fi
+		if [ ! -e /var/lib/univention-ldap/schema/id/id ]; then
+			touch /var/lib/univention-ldap/schema/id/id
+		fi
+		id=$(cat /var/lib/univention-ldap/schema/id/id)
+		if [ -z "$id" ]; then
+			id=0
+		fi
+		id=$((id+1))
+		echo "$md5" >/var/lib/univention-ldap/schema/md5
+		echo "$id" >/var/lib/univention-ldap/schema/id/id
+		chown listener /var/lib/univention-ldap/schema/id/id
+	else
+		id=$(cat /var/lib/univention-ldap/schema/id/id)
+		if [ -z "$id" ]; then
+			echo "1" >/var/lib/univention-ldap/schema/id/id
+			chown listener /var/lib/univention-ldap/schema/id/id
+		fi
+	fi
+}
+
+if [ "$ldap_server_type" = "master" ]; then
+    echo "Checking Schema ID: "
+    check_subschema
+fi
+
+if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+	echo "Found failed.ldif. Importing "
+	test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
+	if [ $? != 0 ]; then
+		fail "Please check /var/log/univention/listener.log"
+	fi
+fi
