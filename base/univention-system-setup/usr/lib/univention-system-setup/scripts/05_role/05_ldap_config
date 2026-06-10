@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Univention Setup
+#  prevent LDAP cn=config directory structure creation
+#
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+. /usr/share/debconf/confmodule
+db_set slapd/no_configuration true
