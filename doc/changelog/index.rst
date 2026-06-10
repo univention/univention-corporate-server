@@ -2,6 +2,12 @@
 ..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
+.. _relnotes-changelog:
+
+#########################################################
+Changelog for Univention Corporate Server (UCS) |release|
+#########################################################
+
 .. _changelog-general:
 
 *******
@@ -414,124 +420,120 @@ General
 
 * |UCSUCS| |release| includes the following updated packages from Debian 12.14:
 
-  :program:`7zip`
-  :program:`arduino-core-avr`
-  :program:`augeas`
-  :program:`awstats`
-  :program:`bash`
-  :program:`base-files`
-  :program:`c3p0`
-  :program:`calibre`
-  :program:`cdebootstrap`
-  :program:`chkrootkit`
-  :program:`chromium`
-  :program:`chrony`
-  :program:`composer`
-  :program:`corosync`
-  :program:`dar`
-  :program:`debian-installer-netboot-images`
-  :program:`debsig-verify`
-  :program:`deets`
-  :program:`distro-info-data`
-  :program:`dnsmasq`
-  :program:`docker.io`
-  :program:`erlang`
-  :program:`evince`
-  :program:`exim4`
-  :program:`ffmpeg`
-  :program:`flatpak`
-  :program:`fonttools`
-  :program:`gimp`
-  :program:`glance`
-  :program:`gnuais`
-  :program:`golang-github-containerd-stargz-snapshotter`
-  :program:`golang-github-containers-buildah`
-  :program:`golang-github-openshift-imagebuilder`
-  :program:`gpsd`
-  :program:`gsasl`
-  :program:`gst-plugins-bad1.0`
-  :program:`gst-plugins-base1.0`
-  :program:`gst-plugins-ugly1.0`
-  :program:`gvfs`
-  :program:`jtreg7`
-  :program:`kdenlive`
-  :program:`kissfft`
-  :program:`kpackage`
-  :program:`lemonldap-ng`
-  :program:`libpod`
-  :program:`libreoffice`
-  :program:`libreoffice-texmaths`
-  :program:`libuev`
-  :program:`libvncserver`
-  :program:`libxml-security-java`
-  :program:`libxslt`
-  :program:`libyaml-syck-perl`
-  :program:`lxc`
-  :program:`lxd`
-  :program:`mapserver`
-  :program:`mediawiki`
-  :program:`modsecurity-crs`
-  :program:`mongo-c-driver`
-  :program:`mupdf`
-  :program:`nagios4`
-  :program:`netty`
-  :program:`nginx`
-  :program:`ngtcp2`
-  :program:`node-shell-quote`
-  :program:`nodejs`
-  :program:`opam`
-  :program:`openvpn`
-  :program:`p7zip`
-  :program:`p7zip-rar`
-  :program:`packagekit`
-  :program:`php-dompdf`
-  :program:`php-league-commonmark`
-  :program:`php-phpseclib`
-  :program:`php-phpseclib3`
-  :program:`php-symfony-contracts`
-  :program:`php-twig`
-  :program:`php8.2`
-  :program:`phpseclib`
-  :program:`plastimatch`
-  :program:`postorius`
-  :program:`proftpd-dfsg`
-  :program:`prosody`
-  :program:`pymupdf`
-  :program:`python-authlib`
-  :program:`qemu`
-  :program:`redis`
-  :program:`request-tracker5`
-  :program:`roundcube`
-  :program:`ruby-rack`
-  :program:`sash`
-  :program:`simpleeval`
-  :program:`sioyek`
-  :program:`skeema`
-  :program:`snapd`
-  :program:`starlette`
-  :program:`strongswan`
-  :program:`supermin`
-  :program:`swupdate`
-  :program:`symfony`
-  :program:`taglib`
-  :program:`thunderbird`
-  :program:`tor`
-  :program:`tpm2-pkcs11`
-  :program:`trafficserver`
-  :program:`tripwire`
-  :program:`tzdata`
-  :program:`user-mode-linux`
-  :program:`vips`
-  :program:`webkit2gtk`
-  :program:`wireless-regdb`
-  :program:`wireshark`
-  :program:`xdg-dbus-proxy`
-  :program:`yelp`
-  :program:`zsh`
-
-.. _maintained:
-
-* The following packages have been moved to the maintained repository of UCS:
+  * :program:`7zip`
+  * :program:`arduino-core-avr`
+  * :program:`augeas`
+  * :program:`awstats`
+  * :program:`bash`
+  * :program:`base-files`
+  * :program:`c3p0`
+  * :program:`calibre`
+  * :program:`cdebootstrap`
+  * :program:`chkrootkit`
+  * :program:`chromium`
+  * :program:`chrony`
+  * :program:`composer`
+  * :program:`corosync`
+  * :program:`dar`
+  * :program:`debian-installer-netboot-images`
+  * :program:`debsig-verify`
+  * :program:`deets`
+  * :program:`distro-info-data`
+  * :program:`dnsmasq`
+  * :program:`docker.io`
+  * :program:`erlang`
+  * :program:`evince`
+  * :program:`exim4`
+  * :program:`ffmpeg`
+  * :program:`flatpak`
+  * :program:`fonttools`
+  * :program:`gimp`
+  * :program:`glance`
+  * :program:`gnuais`
+  * :program:`golang-github-containerd-stargz-snapshotter`
+  * :program:`golang-github-containers-buildah`
+  * :program:`golang-github-openshift-imagebuilder`
+  * :program:`gpsd`
+  * :program:`gsasl`
+  * :program:`gst-plugins-bad1.0`
+  * :program:`gst-plugins-base1.0`
+  * :program:`gst-plugins-ugly1.0`
+  * :program:`gvfs`
+  * :program:`jtreg7`
+  * :program:`kdenlive`
+  * :program:`kissfft`
+  * :program:`kpackage`
+  * :program:`lemonldap-ng`
+  * :program:`libpod`
+  * :program:`libreoffice`
+  * :program:`libreoffice-texmaths`
+  * :program:`libuev`
+  * :program:`libvncserver`
+  * :program:`libxml-security-java`
+  * :program:`libxslt`
+  * :program:`libyaml-syck-perl`
+  * :program:`lxc`
+  * :program:`lxd`
+  * :program:`mapserver`
+  * :program:`mediawiki`
+  * :program:`modsecurity-crs`
+  * :program:`mongo-c-driver`
+  * :program:`mupdf`
+  * :program:`nagios4`
+  * :program:`netty`
+  * :program:`nginx`
+  * :program:`ngtcp2`
+  * :program:`node-shell-quote`
+  * :program:`nodejs`
+  * :program:`opam`
+  * :program:`openvpn`
+  * :program:`p7zip`
+  * :program:`p7zip-rar`
+  * :program:`packagekit`
+  * :program:`php-dompdf`
+  * :program:`php-league-commonmark`
+  * :program:`php-phpseclib`
+  * :program:`php-phpseclib3`
+  * :program:`php-symfony-contracts`
+  * :program:`php-twig`
+  * :program:`php8.2`
+  * :program:`phpseclib`
+  * :program:`plastimatch`
+  * :program:`postorius`
+  * :program:`proftpd-dfsg`
+  * :program:`prosody`
+  * :program:`pymupdf`
+  * :program:`python-authlib`
+  * :program:`qemu`
+  * :program:`redis`
+  * :program:`request-tracker5`
+  * :program:`roundcube`
+  * :program:`ruby-rack`
+  * :program:`sash`
+  * :program:`simpleeval`
+  * :program:`sioyek`
+  * :program:`skeema`
+  * :program:`snapd`
+  * :program:`starlette`
+  * :program:`strongswan`
+  * :program:`supermin`
+  * :program:`swupdate`
+  * :program:`symfony`
+  * :program:`taglib`
+  * :program:`thunderbird`
+  * :program:`tor`
+  * :program:`tpm2-pkcs11`
+  * :program:`trafficserver`
+  * :program:`tripwire`
+  * :program:`tzdata`
+  * :program:`user-mode-linux`
+  * :program:`vips`
+  * :program:`webkit2gtk`
+  * :program:`wireless-regdb`
+  * :program:`wireshark`
+  * :program:`xdg-dbus-proxy`
+  * :program:`yelp`
+  * :program:`zsh`
 
 .. _changelog-basic:
 
@@ -548,11 +550,11 @@ Other system services
   objects (:uv:bug:`58384`).
 
 * The counts of licensed users, servers, and managed clients are now cached on
-  the license object via a cron job. The cached numbers are used to improve the
-  performance during UMC startup (:uv:bug:`59060`).
+  the license object through a cron job.
+  The cached numbers improve the performance during UMC startup (:uv:bug:`59060`).
 
-* The license initialization will not reset the log levels to ``ERROR`` anymore,
-  which caused that several log messages were dropped in the UMC UDM modules
+* License initialization no longer resets the log level to ``ERROR``.
+  As a result, the UMC UDM modules keep their log messages
   (:uv:bug:`38735`).
 
 * The GPG signing key for UCS 5.3 has been added to the ``univention-archive-key``
@@ -565,7 +567,7 @@ Domain services
 ***************
 
 * The ``univention-telemetry`` package has been added as a recommended dependency
-  for univention-server (:uv:bug:`59235`).
+  for :program:`univention-server` (:uv:bug:`59235`).
 
 .. _changelog-domain-openldap:
 
@@ -588,20 +590,20 @@ LDAP Directory Manager
 * The ``univentionObjectIdentifier`` is now set for all DNS, DHCP and license
   objects (:uv:bug:`58384`).
 
-* A new extended attribute hook mechanism has been added, which is executed
+* A new extended attribute hook mechanism has been added, which runs
   before and after moving an object (:uv:bug:`59111`).
 
 * The counts of licensed users, servers, and managed clients are now cached on
-  the license object via a cron job. The cached numbers are used to improve the
-  performance during UMC startup. Additionally the obsolete Licence Version 1,
+  the license object through a cron job. The cached numbers improve the
+  performance during UMC startup. Additionally, the obsolete License Version 1,
   Free For Personal Use Edition, Univention Corporate Clients, GPL License,
   Desktop Virtualization Services has been removed from the license evaluation
   (:uv:bug:`59060`).
 
 * Searching in UMC modules now returns correct results regardless of whether
-  automatic substring search is enabled or disabled. Previously, when substring
-  search was disabled, the global search and the Standard properties filter did
-  not return results, due to a broken LDAP filter (:uv:bug:`59104`).
+  automatic substring search is turned on or off. Previously, when substring
+  search was deactivated, the global search and the standard properties filter didn't
+  return results, due to a broken LDAP filter (:uv:bug:`59104`).
 
 * The license interface has been extended to use the ``entryUUID`` of the license
   as fallback key ID (:uv:bug:`59176`).
@@ -609,39 +611,32 @@ LDAP Directory Manager
 * The hooks API has been extended to support ``map()`` and ``unmap()`` methods for
   extended attributes (:uv:bug:`59150`).
 
-* The license cache is not also evaluated for unlimited licenses
+* The license cache is now also evaluated for unlimited licenses
   (:uv:bug:`59215`).
 
 * The ``univentionObjectIdentifier`` and other technical information about LDAP
   operational attributes has been added to the advanced settings tab of all UDM
   modules (:uv:bug:`59217`).
 
-* The ``unixTime`` UDM syntax is now compatible with UDM REST API
+* The ``unixTime`` UDM syntax is now compatible with UDM HTTP REST API
   (:uv:bug:`58211`).
 
-* The ``users/contact`` UDM module now supports to set the ``cn`` property
-  explicitly, so that objects can be created in a deterministic fashion. The
-  UDM CLI now displayed the correct new DN of a moved object (:uv:bug:`59281`).
+* The ``users/contact`` UDM module now lets you set the ``cn`` property
+  explicitly, so you can create objects deterministically.
+  The UDM CLI now also displays the correct new DN after moving an object
+  (:uv:bug:`59281`).
 
-* The UDM REST API now returns HTTP 500 (Server Error) instead of HTTP 400 (Bad
-  Request) when concurrent modifications to the same LDAP object cause "Type or
-  value exists" or "No such attribute" errors. This makes the error transparent
+* The UDM HTTP REST API now returns HTTP 500 (Internal Server Error) instead of HTTP 400 (Bad
+  Request) when concurrent modifications to the same LDAP object cause ``Type or
+  value exists`` or ``No such attribute`` errors. This makes the error transparent
   to clients and allows them to retry the request (:uv:bug:`58804`).
 
-* The counts of licensed users, servers, and managed clients are now cached on
-  the license object via a cron job. The cached numbers are used to improve the
-  performance during UMC startup (:uv:bug:`59060`).
-
-* The UDM REST API now exposes a Prometheus-compatible metrics endpoint at
+* The UDM HTTP REST API now exposes a Prometheus-compatible metrics endpoint at
   ``/univention/udm/-/metrics``. It provides the total number of active users,
   the licensed user limit, and platform/version information for UCS and Nubus
   for Kubernetes. All metrics include a domain label and a stable domain
   identifier derived from the license key. The endpoint is restricted to
   authorized users (:uv:bug:`59176`).
-
-* Fixed a regression from erratum 410 for client authenticated via OIDC where
-  the DN of authenticated users caused a case sensitive DN comparision to fail
-  (:uv:bug:`59215`).
 
 * The Nubus Prometheus metrics are now consistently prefixed with ``nubus_``,
   ensuring clearer namespace separation and easier identification in monitoring
@@ -665,7 +660,7 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* A regression has been fixed, which was introduced by updating Dojo dgrid to
+* A regression has been fixed, which was introduced by updating Dojo ``dgrid`` to
   version 1.3.3 in UCS 5.2 Erratum 304 and caused the "Select All" checkbox in
   list views and the tree view in the LDAP directory to malfunction
   (:uv:bug:`59095`).
@@ -673,23 +668,19 @@ Univention Management Console web interface
 * The ``DateTime`` widget has been fixed to support all and empty date formats
   and respect the configured size (:uv:bug:`59217`).
 
-* A regression has been fixed, which was introduced by updating Dojo dgrid to
-  version 1.3.3 in UCS 5.2 Erratum 304 and caused the "Select All" checkbox in
-  list views and the tree view in the LDAP directory to malfunction
-  (:uv:bug:`59095`).
-
 .. _changelog-umc-server:
 
 Univention Management Console server
 ====================================
 
-* A file descriptor leak caused during PAM authentication via SSS has been
+* A file descriptor leak caused during PAM authentication through SSS has been
   fixed (:uv:bug:`59220`).
 
-* The UMC server allowed HTTP request header smuggling for the ``X-UMC-
-  Federated-Account`` and ``X-UMC-Roles`` values, which were used for interprocess
-  communication between UMC server and UMC module processes, if delegative
-  administration was enabled (:uv:bug:`59280`).
+* The UMC server no longer accepts smuggled HTTP request headers in
+  ``X-UMC-Federated-Account`` and ``X-UMC-Roles``.
+  These headers handle interprocess communication between the UMC server and UMC
+  module processes when delegative administration is enabled
+  (:uv:bug:`59280`).
 
 .. _changelog-umc-appcenter:
 
@@ -701,16 +692,16 @@ Univention App Center
   (:uv:bug:`55073`).
 
 * Links in app descriptions and license agreements now open in a new browser
-  tab instead of loading inside the App Center iFrame (:uv:bug:`57501`).
+  tab instead of loading inside the App Center iframe (:uv:bug:`57501`).
 
 .. _changelog-umc-join:
 
 Domain join module
 ==================
 
-* The version check in univention-join used string concatenation with awk
+* The version check in :program:`univention-join` used string concatenation with :program:`awk`
   numeric comparison, causing incorrect results for version numbers like 5.0-10
-  vs 5.0-9. The fix uses dpkg --compare-versions for correct Debian version
+  vs 5.0-9. The fix uses :command:`dpkg --compare-versions` for correct Debian version
   ordering (:uv:bug:`58212`).
 
 .. _changelog-umc-diagnostic:
@@ -726,22 +717,23 @@ System diagnostic module
 LDAP directory browser
 ======================
 
- * The underlying library dependencies to handle certificates have been updated from
-   ``M2Crypto`` and ``PyOpenSSL`` to ``python3-cryptography`` to ensure future
-   compatibility and to fix a problem for certificates validy dates after 2050
-   (:uv:bug:`55411`).
+* The underlying library dependencies to handle certificates have been updated from
+  ``M2Crypto`` and ``PyOpenSSL`` to ``python3-cryptography`` to ensure future
+  compatibility and to fix a problem for certificate validity dates after 2050
+  (:uv:bug:`55411`).
 
 * The ``univentionObjectIdentifier`` is now set for all DNS, DHCP and license
   objects (:uv:bug:`58384`).
 
 * The counts of licensed users, servers, and managed clients are now cached on
-  the license object via a cron job. The cached numbers are used to improve the
-  performance during UMC startup (:uv:bug:`59060`).
+  the license object through a cron job.
+  The cached numbers improve the performance during UMC startup (:uv:bug:`59060`).
 
-* It was not possible to add a property to the layout if it's default value was
-  a function call. The ``univentionObjectIdentifier`` and other technical
-  information about LDAP operational attributes has been added to the advanced
-  settings tab of all UDM modules (:uv:bug:`59217`).
+* UDM now lets you add a property to the layout even when its default value is a
+  function call.
+  All UDM modules now show ``univentionObjectIdentifier`` and other technical
+  information about LDAP operational attributes on the *Advanced settings* tab
+  (:uv:bug:`59217`).
 
 .. _changelog-lib:
 
@@ -753,13 +745,13 @@ Univention base libraries
   objects (:uv:bug:`58384`).
 
 * The counts of licensed users, servers, and managed clients are now cached on
-  the license object via a cron job. The cached numbers are used to improve the
-  performance during UMC startup (:uv:bug:`59060`).
+  the license object through a cron job.
+  The cached numbers improve the performance during UMC startup (:uv:bug:`59060`).
 
 * The ``crudeoauth`` library has been made compatible with modern compilers
   (:uv:bug:`59470`).
 
-* The Nagios suidwrapper have been modernized to be compatible with modern compilers
+* The Nagios suidwrapper has been modernized to be compatible with modern compilers
   (:uv:bug:`59469`).
 
 .. _changelog-deployment:
@@ -768,7 +760,7 @@ Univention base libraries
 Software deployment
 *******************
 
-* After a patchlevel update, UDM extensions are now automatically resynced to
+* After a patchlevel update, UDM extensions are now automatically synchronized again to
   ensure that extensions with version constraints are correctly activated or
   deactivated for the new UCS version (:uv:bug:`59229`).
 
@@ -785,7 +777,7 @@ SAML
 
 * Fixed a regression introduced in Keycloak 26.6.0 where a change in the
   component lookup API broke the Kerberos configuration update in the
-  univention-keycloak script (:uv:bug:`59212`).
+  :program:`univention-keycloak` script (:uv:bug:`59212`).
 
 * The package was rebuilt as part of an internal repository migration. This
   update contains no functional changes (:uv:bug:`59234`).
@@ -818,9 +810,10 @@ Services for Windows
 Samba
 =====
 
-* Samba has been updated to Version 4.24.2, including latest security patches
-  (so it's equivalent to 4.24.3) (:uv:bug:`59336`).
-  For a full list of changes see the upstream changelogs:
+* Samba has been updated to version 4.24.2, including the latest security
+  patches, so it's equivalent to 4.24.3 (:uv:bug:`59336`). For a full list of
+  changes, see the upstream changelogs:
+
   * `Samba 4.22 Features added/changed <https://wiki.samba.org/index.php/Samba_4.22_Features_added/changed#Samba_4.22.0>`_
   * `Samba 4.23 Features added/changed <https://wiki.samba.org/index.php/Samba_4.23_Features_added/changed#Samba_4.23.0>`_
   * `Samba 4.24 Features added/changed <https://wiki.samba.org/index.php/Samba_4.24_Features_added/changed#Samba_4.24.0>`_
@@ -831,7 +824,7 @@ Samba
   binary structures sent by the Windows client has been corrected
   (:uv:bug:`59142`).
 
-* An uninitialized filedescriptor associated with hanging ``rpcd spoolss``
+* An uninitialized file descriptor associated with hanging ``rpcd spoolss``
   processes is now initialized (:uv:bug:`59160`).
 
 .. _changelog-win-takeover:
@@ -840,24 +833,23 @@ Univention AD Takeover
 ======================
 
 * The counts of licensed users, servers, and managed clients are now cached on
-  the license object via a cron job. The cached numbers are used to improve the
-  performance during UMC startup (:uv:bug:`59060`).
+  the license object through a cron job.
+  The cached numbers improve the performance during UMC startup (:uv:bug:`59060`).
 
 .. _changelog-win-s4c:
 
 Univention S4 Connector
 =======================
 
-* The S4 Connector could incorrectly assume that an object was deleted in
-  Active Directory due to stale entries in the connector database and attempted
-  to restore it. Because the lookup did not verify that the AD object was
-  actually marked as deleted, AD rejected the operation (“Trying to restore not
-  deleted object”), causing synchronization rejects. The restore lookup now
-  only considers objects with ``isDeleted=TRUE``, preventing unnecessary restore
-  attempts (:uv:bug:`59113`).
+* The S4 Connector no longer treats stale entries in the connector database as
+  deleted objects in Active Directory.
+  It now verifies that the AD object has ``isDeleted=TRUE`` before attempting a
+  restore.
+  This change prevents unnecessary restore attempts and synchronization rejects
+  (:uv:bug:`59113`).
 
-* The S4-Connector will now remove the attribute ``dNSTombstoned`` in Samba/AD if
-  a change for the the corresponding DNS object is synchronized from
+* The S4-Connector now removes the attribute ``dNSTombstoned`` in Samba/AD if
+  a change for the corresponding DNS object is synchronized from
   OpenLDAP/UDM (:uv:bug:`57174`).
 
 .. _changelog-win-adc:
@@ -865,31 +857,30 @@ Univention S4 Connector
 Univention Active Directory Connection
 ======================================
 
-* The AD Connector could incorrectly assume that an object was deleted in
-  Active Directory due to stale entries in the connector database and attempted
-  to restore it. Because the lookup did not verify that the AD object was
-  actually marked as deleted, AD rejected the operation (“Trying to restore not
-  deleted object”), causing synchronization rejects. The restore lookup now
-  only considers objects with ``isDeleted=TRUE``, preventing unnecessary restore
-  attempts (:uv:bug:`59113`).
+* The :program:`Active Directory Connection` no longer treats stale entries in the
+  connector database as deleted objects in Active Directory.
+  It now verifies that the AD object has ``isDeleted=TRUE`` before attempting a
+  restore.
+  This change prevents unnecessary restore attempts and synchronization rejects
+  (:uv:bug:`59113`).
 
 * Documentation for the obsolete UCR variable
   ``connector/password/service/encoding.`` has been removed (:uv:bug:`59128`).
 
-* The custom position mapping function of the AD-Connector now applies to the
+* The custom position mapping function of :program:`Active Directory Connection` now applies to the
   object mentioned in the mapping as well (:uv:bug:`59200`).
 
-* As Microsoft is continuing with the deprecation of NT-hashes (see
-  https://go.microsoft.com/fwlink/?linkid=2344614 ) the Microsoft update
+* As Microsoft is continuing with the deprecation of NT-hashes, see
+  https://go.microsoft.com/fwlink/?linkid=2344614, the Microsoft update
   ``KB5082063`` changed the default value for ``DefaultDomainSupportedEncTypes`` to
   allow AES-SHA1 only, which blocks issuing Kerberos tickets with ``RC4`` hashes.
-  The AD-Connector now implements the advice by Microsoft to set ``msDS-
-  SupportedEncryptionTypes`` on a per account basis during the Sync from UCS to
-  MS AD, to allow the MS KDC to make use of the synced NT-hash. As Microsoft
-  doesn't offer a RPC call to pass stronger Kerberos hashes, this workaround is
-  currently necessary. When a password is changed on the MS AD side the AD-
-  Connector removes this setting again, to keep security as high as possible
-  (:uv:bug:`58876`).
+  The AD-Connector now implements the advice by Microsoft to set
+  ``msDS-SupportedEncryptionTypes`` on a per-account basis during the sync from
+  UCS to Microsoft Active Directory, to allow the Microsoft KDC to make use of the synced NT-hash. As
+  Microsoft doesn't offer an RPC call to pass stronger Kerberos hashes, this
+  workaround is currently necessary. When a password is changed on the Microsoft Active Directory
+  side, :program:`Active Directory Connection` removes this setting again, to keep security as high as
+  possible (:uv:bug:`58876`).
 
 .. _changelog-other:
 
@@ -897,16 +888,16 @@ Univention Active Directory Connection
 Other changes
 *************
 
-* Password changes via PAM could fail in long-running processes (e.g. UMC) with
+* Password changes through PAM could fail in long-running processes, for example in UMC, with
   high file descriptor usage. Heimdal Kerberos previously relied on the
-  ``select()`` API, which cannot handle file descriptor values >= ``FD_SETSIZE``
+  ``select()`` API, which can't handle file descriptor values ≥ ``FD_SETSIZE``
   (1024). In such situations, Kerberos communication with the KDC could fail,
-  leading to misleading errors such as "Authentication token manipulation
-  error". The implementation now uses ``poll()``, eliminating this limitation and
+  leading to misleading errors such as ``Authentication token manipulation
+  error``. The implementation now uses ``poll()``, eliminating this limitation and
   improving robustness in long-running services (:uv:bug:`59145`).
 
 * The univention-telemetry package is added, which collects telemetry metrics
-  from UDM REST API, anonymizes and transforms them to OTLP/JSON format and
-  forwards them to Univention's telemetry receiver. The feature is disabled by
+  from UDM HTTP REST API, anonymizes and transforms them to OTLP/JSON format and
+  forwards them to Univention's telemetry receiver. The feature is turned off by
   default (:uv:bug:`59235`).
 
