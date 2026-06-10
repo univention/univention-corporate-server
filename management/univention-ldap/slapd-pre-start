@@ -1,0 +1,6 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# check that no slapd is running
+# TODO: should we still check if LDAP server already running????

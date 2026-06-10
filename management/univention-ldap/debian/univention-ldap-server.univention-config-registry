@@ -168,3 +168,7 @@ Type: file
 File: etc/default/slapd
 Variables: slapd/port
 Variables: slapd/port/ldaps
+
+Type: file
+File: etc/systemd/system/slapd.service.d/limits.conf
+Variables: ldap/maxopenfiles
