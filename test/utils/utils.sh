@@ -800,6 +800,21 @@ run_keycloak_tests () {
 	run_tests -s checks -s keycloak -s end "$@"
 }
 
+run_guardian_tests () {
+	#run_tests -s checks -s guardian -s end "$@"
+	run_tests -s checks -s end "$@"
+}
+
+install_guardian () {
+	local branch
+	if [ -n "$GUARDIAN_BRANCH" ]; then
+		branch="$(echo "$GUARDIAN_BRANCH" | slugify)"
+		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/guardian $branch main" | sudo tee /etc/apt/sources.list.d/guardian-cerbos.list
+		# TODO add pin prio
+	fi
+	univention-install -y univention-guardian-server
+}
+
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 	ucr unset directory/manager/rest/authorized-groups/domain-admins
 	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
@@ -1373,15 +1388,6 @@ add_ucsschool_dev_repo () {
 	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
-EOF
-}
-
-add_guardian_dev_repo () {
-	local majorminor
-	majorminor="$(ucr get version/version)"
-	cat << EOF > /etc/apt/sources.list.d/guardian-dev-repo.list
-deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-guardian/all/
-deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-guardian/\$(ARCH)/
 EOF
 }
 
