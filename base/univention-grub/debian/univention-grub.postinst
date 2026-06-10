@@ -6,13 +6,12 @@
 # SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-db_get () {
-	RET=$(debconf-communicate <<<"get $1")
-	RET="${RET#0 }"
-}
-db_set () {
-	debconf-communicate <<<"set $1 $2"
-}
+# shellcheck source=/dev/null
+. /usr/share/debconf/confmodule
+# confmodule owns stdout: protocol commands are sent via fd 3, replies are
+# read from stdin. Move regular output to stderr so diagnostic echoes and
+# the output of external commands cannot corrupt the debconf protocol.
+exec 1>&2
 
 #DEBHELPER#
 
@@ -92,7 +91,7 @@ then # Bug 40654
 	missing_devices=0 # are any devices in grub-pc/install_devices missing/wrong?
 	have_no_devices=1 # are there no devices in grub-pc/install_devices at all?
 	boot_device_missing=1 # is the $boot_device in grub-pc/install_devices?
-	db_get "grub-pc/install_devices"
+	db_get "grub-pc/install_devices" || RET=""
 	echo "Currently grub-pc/install_devices is set to '$RET'"
 	for i in ${RET//, / }
 	do
@@ -153,7 +152,7 @@ then # Bug 40654
 			echo "The boot device IS in grub-pc/install_devices."
 		fi
 	fi
-	db_get "grub-pc/install_devices"
+	db_get "grub-pc/install_devices" || RET=""
 	echo "Currently grub-pc/install_devices is set to '$RET'"
 	if [ "$RET" = "$output_devices" ]
 	then
@@ -169,7 +168,7 @@ then # Bug 40654
 			echo "grub-pc/install_devices will be set to '$output_devices'."
 			echo "Running grub-install..."
 			db_set "grub-pc/install_devices" "$output_devices"
-			db_get "grub-pc/install_devices"
+			db_get "grub-pc/install_devices" || RET=""
 			echo "Currently grub-pc/install_devices is set to '$RET'"
 			for i in ${RET//, / }
 			do
