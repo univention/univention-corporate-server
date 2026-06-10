@@ -15,6 +15,7 @@ slapd-post-start	usr/lib/univention-ldap/
 slapd-pre-start	usr/lib/univention-ldap/
 systemd/10-univention.conf	usr/lib/systemd/system/slapd.service.d/
 systemd/slapd-failure.service	etc/systemd/system/
+systemd/slapd.service	etc/systemd/system/
 univention-backup2master	usr/lib/univention-ldap/
 univention-ldap-backup	usr/sbin/
 well-known-sid-name-mapping.d/univention-ldap-server.py	usr/lib/univention-pam/well-known-sid-name-mapping.d/

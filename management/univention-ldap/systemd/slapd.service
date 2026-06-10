@@ -1,0 +1,33 @@
+[Unit]
+Description=OpenLDAP Server Daemon
+After=network.target
+# It doesn't really need network-online. Might revisit this for trixie:
+# old initscript does have dependency on network-online.
+#After=network-online.target
+# For binding to particular IPs with systemd-networkd, use
+#After=systemd-networkd-wait-online@eth0:no-carrier.service
+# (with appropriate name for eth0)
+Documentation=man:slapd
+Documentation=man:slapd-config
+Documentation=man:slapd-mdb
+
+[Service]
+Type=notify
+# /etc/default/slapd sets:
+#  SLAPD_SERVICES SLAPD_CONF SLAPD_USER SLAPD_GROUP SLAPD_OPTIONS
+# Also can set KRB5_KTNAME
+EnvironmentFile=/etc/default/slapd
+# can use User=, but it does not accept $Variables (compatibility)
+# can use RuntimeDirectory= but it need to be owned by user anyway
+ExecStart=sh -c 'mkdir -p /run/slapd; \
+	chown "$SLAPD_USER":"$SLAPD_GROUP" /run/slapd; \
+	[ -d "$SLAPD_CONF" ] && confflag=-F || confflag=-f; \
+	exec /usr/sbin/slapd -d0 \
+		${SLAPD_SERVICES:+-h "$SLAPD_SERVICES"} \
+		${SLAPD_USER:+-u "$SLAPD_USER"} \
+		${SLAPD_GROUP:+-g "$SLAPD_GROUP"} \
+		${SLAPD_CONF:+$confflag "$SLAPD_CONF"} \
+		$SLAPD_OPTIONS'
+
+[Install]
+WantedBy=multi-user.target
