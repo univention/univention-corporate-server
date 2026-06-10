@@ -1,0 +1,39 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+eval "$(ucr shell 'ldap/autostart')"
+
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh
+
+. /etc/default/slapd
+
+fail() {
+    echo "slapd-condition: $*" >&2
+    exit 1
+}
+
+# check UCR autostart setting
+
+# We can't use the lib because it "exit 0"s
+# We can't use the lib because it checks "$INIT_VERSION"
+# if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+# 	# shellcheck source=/dev/null
+# 	. "/usr/share/univention-config-registry/init-autostart.lib"
+# 	check_autostart ldap ldap/autostart
+# fi
+
+case "$ldap_autostart" in
+# service disabled
+false|no)
+    fail "LDAP disabled by UCR variable ldap/autostart=$ldap_autostart"
+    ;;
+# manually start of service
+manually)
+    fail "LDAP disabled by UCR variable ldap/autostart=$ldap_autostart"
+    ;;
+esac
+
+# check that no slapd is running
+# TODO: should we still check if LDAP server already running????

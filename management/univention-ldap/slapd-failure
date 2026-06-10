@@ -1,0 +1,11 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# OnFailure systemd handler
+
+. /etc/default/slapd
+
+if [ -x /usr/sbin/slapschema ]; then
+    /usr/sbin/slapschema -f "$SLAPD_CONF"
+fi
