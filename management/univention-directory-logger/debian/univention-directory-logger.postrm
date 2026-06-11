@@ -19,7 +19,7 @@ case "$1" in
 			"${registrySection}"
 		systemctl try-restart univention-directory-listener
 		univention-config-registry commit /etc/ldap/slapd.conf
-		invoke-rc.d slapd crestart
+		deb-systemd-invoke try-restart slapd.service
 		;;
 	"upgrade")
 		dpkg-statoverride --force --quiet --remove "${dellog}"

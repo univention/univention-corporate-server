@@ -46,9 +46,7 @@ if [ "$1" = "remove" ]; then
 		is_port_set "$slapd_port_ldaps" 636 || univention-config-registry set slapd/port/ldaps="$slapd_port_ldaps,636"
 	fi
 
-	if [ -x /etc/init.d/slapd ]; then
-		/etc/init.d/slapd crestart
-	fi
+	deb-systemd-invoke try-restart slapd.service
 
 	# Set DNS backend to ldap
 	if [ "$dns_backend" = "samba4" ]; then

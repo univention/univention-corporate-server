@@ -17,9 +17,7 @@ if [ -x /etc/init.d/univention-ad-connector ]; then
     /etc/init.d/univention-ad-connector crestart || true
 fi
 
-if [ -x /etc/init.d/slapd ]; then
-    /etc/init.d/slapd restart || true
-fi
+deb-systemd-invoke restart slapd.service || true
 
 #DEBHELPER#
 
