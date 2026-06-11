@@ -9,8 +9,7 @@
 #DEBHELPER#
 
 # UCS 4.2-1-errata: add univentionUDMPropertyCopyable to index. Is part of joinscript and can be removed somewhen.
-if [ -x /etc/init.d/slapd ] &&
-	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+if [ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
 	[ "$1" = configure ] &&
 	[ -z "$2" ] &&
@@ -19,16 +18,15 @@ if [ -x /etc/init.d/slapd ] &&
 then
 	if pidof slapd >/dev/null 2>/dev/null
 	then
-		invoke-rc.d slapd stop
+		deb-systemd-invoke stop slapd.service
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
-		invoke-rc.d slapd start
+		deb-systemd-invoke start slapd.service
 	else
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
 	fi
 fi
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	if test -x /etc/init.d/slapd; then
 		# start on Primary, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
 		server_role=$(ucr get server/role)
 		if [ "$server_role" = "domaincontroller_master" ]
@@ -37,7 +35,6 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 		else
 			deb-systemd-invoke try-restart slapd
 		fi
-	fi
 fi
 
 exit 0

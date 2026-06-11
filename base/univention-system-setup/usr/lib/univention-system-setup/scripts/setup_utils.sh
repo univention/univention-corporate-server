@@ -123,8 +123,8 @@ service () {
 		fi
 	done
 }
-service_start () { service start "$@"; }
-service_stop () { service stop "$@"; }
+service_start () { systemctl start "$@"; }
+service_stop () { systemctl stop "$@"; }
 
 ldap_binddn () {
 	local server_role ldap_base ldap_master ldap_hostdn ldap_username

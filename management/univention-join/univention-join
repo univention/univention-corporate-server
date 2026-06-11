@@ -216,9 +216,9 @@ run_join_scripts () {
 						awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
 						rm -f /var/lib/univention-ldap/notify/transaction.index
 
-						/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+						systemctl stop --no-pager slapd.service >>/var/log/univention/join.log 2>&1
 						/usr/share/univention-ldap/setup-translog init
-						/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
+						systemctl start --no-pager slapd.service >>/var/log/univention/join.log 2>&1 || journalctl --no-pager -u slapd.service -n 25 >>/var/log/univention/join.log 2>&1
 						/usr/share/univention-directory-notifier/univention-translog --lenient import --index 2>>"$LOG" &&
 							/usr/share/univention-ldap/setup-translog check ||
 							failed_message " FAILED: failed to setup $(/usr/share/univention-ldap/setup-translog db). Please try again."
@@ -510,9 +510,9 @@ if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/univention-s4-connector ]; then
 	echo -e "\033[60Gdone"
 fi
 
-if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/slapd ]; then
+if [ "$CHECK_RUN" = "false" ]; then
 	echo -n "Stop LDAP Server: "
-	/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+	systemctl stop --no-pager slapd.service >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 fi
 
@@ -540,9 +540,9 @@ else
 	failed_message "Failed to determine ldap/base."
 fi
 
-if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/slapd ]; then
+if [ "$CHECK_RUN" = "false" ]; then
 	echo -n "Start LDAP Server: "
-	/etc/init.d/slapd start >>/var/log/univention/join.log 2>&1
+	systemctl start --no-pager slapd.service >>/var/log/univention/join.log 2>&1 || journalctl --no-pager -u slapd.service -n 25 >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 fi
 
@@ -827,12 +827,12 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -e "\033[60Gdone"
 
 	echo -n "Purging translog database: "
-	/etc/init.d/slapd stop >>/var/log/univention/join.log 2>&1
+	systemctl stop --no-pager slapd.service >>/var/log/univention/join.log 2>&1
 	rm -rf /var/lib/univention-ldap/translog
 	echo -e "\033[60Gdone"
 
 	echo -n "Restart LDAP Server: "
-	/etc/init.d/slapd restart >>/var/log/univention/join.log 2>&1
+	systemctl restart --no-pager slapd >>/var/log/univention/join.log 2>&1 || journalctl --no-pager -u slapd.service -n 25 >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
 	#TODO: implement a real sync
@@ -900,7 +900,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	setup_ssl force
 
 	echo -n "Restart LDAP Server: "
-	/etc/init.d/slapd restart >>/var/log/univention/join.log 2>&1
+	systemctl restart --no-pager slapd >>/var/log/univention/join.log 2>&1 || journalctl --no-pager -u slapd.service -n 25 >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
 	echo -n "Sync Kerberos settings: "

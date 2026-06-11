@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import os
 import subprocess
 
 import univention.debug as ud
@@ -58,12 +57,11 @@ def postrun() -> None:
     if __changed_trusted_sp:
         __changed_trusted_sp = False
         slapd_running = not subprocess.call(['pidof', 'slapd'])
-        initscript = '/etc/init.d/slapd'
-        if os.path.exists(initscript) and slapd_running:
+        if slapd_running:
             listener.setuid(0)
             try:
                 ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
-                p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
+                p = subprocess.Popen(['systemctl', 'restart', 'slapd.service'], close_fds=True)
                 p.wait()
                 if p.returncode != 0:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
