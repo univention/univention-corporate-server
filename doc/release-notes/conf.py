@@ -73,6 +73,7 @@ intersphinx_mapping = {
         name='ext-delegative-administration',
         version=version,
     ),
+    'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/1.x/en', None),
 }
 
 bibtex_bibfiles = ['../bibliography.bib']
