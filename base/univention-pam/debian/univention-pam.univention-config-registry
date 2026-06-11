@@ -34,7 +34,7 @@ Variables: ldap/server/addition
 Variables: ldap/server/port
 Variables: ldap/tls/ciphersuite
 Variables: nss/group/cachefile
-Mode: 0600
+Mode: 0640
 
 Type: file
 File: etc/security/limits.conf
