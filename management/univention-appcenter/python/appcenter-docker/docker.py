@@ -239,7 +239,7 @@ class Docker:
     def __init__(self, app, logger=None):
         self.app = app
         self.logger = logger or _logger
-        self.container = ucr_get(self.app.ucr_container_key)
+        self.container = ucr_get(self.app.ucr_container_key, '')
         self._root_dir = None
         self.env_file_created = None
 
@@ -330,7 +330,7 @@ class Docker:
         logger = kwargs.pop('_logger', self.logger)
         logger = logger.getChild('container.%s' % self.container[:4])
         tty = kwargs.pop('_tty', None)
-        logger.debug('Using container.%s for container %s', self.container[:4], self.container)
+        logger.debug('Using container.%s for container %r', self.container[:4], self.container)
         for key, value in kwargs.items():
             args.extend(['--%s' % key.replace('_', '-'), value])
         return execute_with_process(self.container, args, logger=logger, tty=tty)
