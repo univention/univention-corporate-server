@@ -53,7 +53,7 @@ wait_for_replication
 ldif_path="/var/lib/univention-directory-replication"
 ldif="$ldif_path/failed.ldif"
 
-/etc/init.d/slapd stop
+systemctl stop --no-pager slapd.service
 
 # modify $server_role to create failed.ldif file (because slapd is off)
 univention-directory-manager "computers/$server_role" modify \
@@ -79,7 +79,7 @@ else
 	testldif "$ldif"
 fi
 
-/etc/init.d/slapd start
+systemctl start --no-pager slapd.service
 
 wait_for_replication
 

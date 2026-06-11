@@ -39,12 +39,12 @@ prepare_ldif_for_ldapadd ()
 
 stop_slapd ()
 {
-	/etc/init.d/slapd stop
+	systemctl stop --no-pager slapd.service
 }
 
 start_slapd ()
 {
-	/etc/init.d/slapd start
+	systemctl start --no-pager slapd.service
 }
 
 sync_groupmemberships ()

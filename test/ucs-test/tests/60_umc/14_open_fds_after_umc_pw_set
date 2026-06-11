@@ -91,7 +91,7 @@ systemctl restart univention-management-console-server
 create_sample_users $MAX_USERS
 parallel_cycle_passwords $MAX_USERS
 sleep 60
-systemctl restart slapd
+systemctl restart slapd.service
 sleep 2
 
 close_wait=$(get_number_of_close_waits)

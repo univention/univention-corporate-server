@@ -66,7 +66,7 @@ LDAP server to accept federated accounts that the identity provider authenticate
    :name: fed-auth-setup-ldap-server
 
    $ ucr set ldap/authz-regexp/federated-accounts=yes
-   $ systemctl restart slapd
+   $ systemctl restart slapd.service
 
 .. _fed-auth-configure-nubus-keycloak:
 

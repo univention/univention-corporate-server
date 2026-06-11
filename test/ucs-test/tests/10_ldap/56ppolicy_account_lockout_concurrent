@@ -43,13 +43,13 @@ restart_slapd_if_it_hangs() {
 		fail=1
 		pkill -9 -F /var/run/slapd/slapd.pid
 		sleep 5
-		systemctl start slapd
+		systemctl start slapd.service
 	fi
 	if ! pgrep -F /var/run/slapd/slapd.pid >/dev/null 2>&1; then
 		msg="slapd died"
 		echo "ERROR: slapd died, attempting start" >&2
 		fail=1
-		systemctl start slapd
+		systemctl start slapd.service
 	fi
 	[ "$fail" -eq 0 ] ||
 		fail_fast 1 "$msg"
@@ -59,10 +59,10 @@ restart_slapd_if_it_hangs() {
 #TEST PREPARATION
 
 deactivate_ppolicy() {
-	ucr unset ldap/ppolicy/enabled; /etc/init.d/slapd restart
+	ucr unset ldap/ppolicy/enabled; systemctl restart --no-pager slapd
 }
 
-ucr set ldap/ppolicy/enabled=yes; /etc/init.d/slapd restart; undo deactivate_ppolicy
+ucr set ldap/ppolicy/enabled=yes; systemctl restart --no-pager slapd; undo deactivate_ppolicy
 
 default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
 

@@ -11,6 +11,6 @@ import subprocess
 
 def test_session_ldap_after_restart(saml_session):
     saml_session.login_with_new_session_at_IdP()
-    subprocess.call(['/etc/init.d/slapd', 'restart'])
+    subprocess.call(['systemctl', 'restart', 'slapd.service'])
     saml_session.test_logged_in_status()
     print("Success: SSO session is still working after slapd restart")

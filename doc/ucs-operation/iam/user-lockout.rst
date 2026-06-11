@@ -129,7 +129,7 @@ as shown in :numref:`openldap-enable-ppolicy`.
    :caption: Enable OpenLDAP password policy and restart the server
 
    $ ucr set ldap/ppolicy/enabled=yes
-   $ systemctl restart slapd
+   $ systemctl restart slapd.service
 
 By default, five failed LDAP sign-in attempts
 within five minutes trigger the lockout.

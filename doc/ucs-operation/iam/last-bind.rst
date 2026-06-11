@@ -47,7 +47,7 @@ This prevents excessive write operations that impair performance.
    :caption: Restart the OpenLDAP server
    :name: iam-last-bind-activate-listing
 
-   $ systemctl restart slapd
+   $ systemctl restart slapd.service
 
 .. _iam-last-bind-collect:
 

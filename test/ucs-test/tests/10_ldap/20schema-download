@@ -24,7 +24,7 @@ trap cleanup EXIT
 
 # activate ldap schema download
 univention-config-registry set ldap/schema/export=yes
-/etc/init.d/slapd restart
+systemctl restart --no-pager slapd
 
 # try to download schema file
 wget -c "$(hostname)/ldap-schema.txt" -O /dev/null

@@ -11,7 +11,7 @@
 case "$1" in
 remove)
 		test -e /etc/ldap/slapd.conf && /usr/sbin/univention-config-registry commit /etc/ldap/slapd.conf
-		test -x /etc/init.d/slapd && invoke-rc.d slapd restart
+		deb-systemd-invoke restart slapd.service
 	;;
 
 purge|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

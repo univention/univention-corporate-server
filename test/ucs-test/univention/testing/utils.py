@@ -31,7 +31,6 @@ except ImportError:
 
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
-SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 
 UCR = ConfigRegistry()
 
@@ -298,15 +297,15 @@ def restart_s4connector() -> None:
 
 
 def stop_slapd() -> None:
-    subprocess.call((SLAPD_INIT_SCRIPT, 'stop'))
+    subprocess.call(('systemctl', 'stop', 'slapd.service'))
 
 
 def start_slapd() -> None:
-    subprocess.call((SLAPD_INIT_SCRIPT, 'start'))
+    subprocess.call(('systemctl', 'start', 'slapd.service'))
 
 
 def restart_slapd() -> None:
-    subprocess.call((SLAPD_INIT_SCRIPT, 'restart'))
+    subprocess.call(('systemctl', 'restart', 'slapd.service'))
 
 
 def stop_listener() -> None:

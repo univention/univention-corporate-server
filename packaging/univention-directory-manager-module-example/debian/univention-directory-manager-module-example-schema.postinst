@@ -10,7 +10,7 @@
 
 case "$1" in
 configure)
-	test -x /etc/init.d/slapd && invoke-rc.d slapd restart
+	deb-systemd-invoke restart slapd.service
 	;;
 
 abort-upgrade|abort-remove|abort-deconfigure)
