@@ -14,12 +14,12 @@
 # shellcheck source=../../lib/ucr.sh
 . "$TESTLIBPATH/ucr.sh" || exit 137
 
-trap "ucr_restore;/etc/init.d/slapd restart" EXIT
+trap "ucr_restore;systemctl restart --no-pager slapd" EXIT
 
 search () {
 	echo "Testing $* ..."
 	ucr set "$@"
-	/etc/init.d/slapd restart
+	systemctl restart --no-pager slapd
 	sleep 3 # give LDAP a few seconds, see https://forge.univention.org/bugzilla/show_bug.cgi?id=45369
 	LC_ALL=C ldapsearch -LLLo ldif-wrap=no -H 'ldap://127.0.0.1:7389' -x -b "$_ldap_base" -s base '(objectClass=*)' dn && :
 }

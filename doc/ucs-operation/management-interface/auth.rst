@@ -379,7 +379,7 @@ Second, you need to apply the following steps to each of those nodes.
       $ rm -f \
          /etc/umc-oidc.secret \
          /usr/share/univention-management-console/oidc/http*
-      $ systemctl restart slapd univention-management-console-server
+      $ systemctl restart slapd.service univention-management-console-server
 
 #. Manually update the portal tile for *Login*,
    so that the link points to ``/univention/login/``.
@@ -437,7 +437,7 @@ as shown in :numref:`management-interface-auth-sso-oidc-non-standard-fqdn-portal
    $ ucr set umc/oidc/rp/server="portal.extern.test"
    $ univention-run-join-scripts --force \
       --run-scripts 92univention-management-console-web-server
-   $ systemctl restart slapd
+   $ systemctl restart slapd.service
 
 .. important::
 

@@ -9,7 +9,7 @@ set -e -x
 
 # LDAP-Indizes
 ucr set ldap/debug/level=257
-/etc/init.d/slapd restart
+systemctl restart --no-pager slapd
 tail -f /var/log/syslog | grep "not indexed" >> not_indexed.txt &
 pid=$!
 

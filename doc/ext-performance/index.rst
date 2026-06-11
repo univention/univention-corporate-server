@@ -112,7 +112,7 @@ file :file:`/var/log/syslog`. For example:
 .. code-block:: console
 
    $ ucr set ldap/debug/level=-1
-   $ systemctl restart slapd
+   $ systemctl restart slapd.service
    $ grep 'not indexed' /var/log/syslog
 
 .. _slapd-mdb:

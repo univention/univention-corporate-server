@@ -74,7 +74,7 @@ echo -e "\n\n***Displaying the created printer, using the account of the created
 if ! ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w univention "cn=$PRINTERNAME"
 then
 	if [ -z "$(pidof slapd)" ] ; then
-		/etc/init.d/slapd start
+		systemctl start --no-pager slapd.service
 		fail_test 1 "The slapd crashed. See Bug #9738."
 	else
 		fail_test 1 "Failed to search!"

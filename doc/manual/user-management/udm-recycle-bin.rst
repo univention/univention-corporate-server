@@ -201,7 +201,7 @@ You need to change these settings on the |UCSPRIMARYDN|.
          :caption: Restart LDAP Server
          :name: udm-recyclebin-ucr-configuration-restart-ldap-server
 
-         $ systemctl restart slapd
+         $ systemctl restart slapd.service
 
 .. _udm-recyclebin-logging:
 
