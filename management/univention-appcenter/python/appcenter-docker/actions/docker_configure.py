@@ -45,7 +45,7 @@ class Configure(Configure, DockerActionMixin):
     def _set_config_via_tool(self, app, set_vars):
         if not app.docker:
             return super()._set_config_via_tool(app, set_vars)
-        if not app_is_running(app) and False:
+        if not app_is_running(app):
             self.warn('Cannot write settings while %s is not running' % app)
             return
         logfile_logger = get_logfile_logger('docker.configure')
