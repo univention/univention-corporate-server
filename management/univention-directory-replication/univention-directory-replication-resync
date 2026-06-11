@@ -47,7 +47,7 @@ esac
 if ! pidof slapd > /dev/null 2>&1
 	then
 	echo "No slapd-process found, resync is not possible."
-	echo "run /etc/init.d/slapd start"
+	echo "run systemctl start --no-pager slapd.service"
 	exit 1
 fi
 

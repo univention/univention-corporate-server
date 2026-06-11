@@ -25,7 +25,7 @@ def postrun(modified_default_names=None):
             break
 
     if slapd_restart:
-        p1 = subprocess.Popen(['invoke-rc.d', 'slapd', 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        p1 = subprocess.Popen(['systemctl', 'restart', 'slapd.service'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         (stdout, _stderr) = p1.communicate()
         if stdout:
             ud.debug(ud.LISTENER, ud.ERROR, "%s: postrun: %s" % ('well-known-sid-name-mapping.d/univention-ldap-server.py', stdout.decode('UTF-8', 'replace')))
