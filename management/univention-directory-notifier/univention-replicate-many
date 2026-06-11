@@ -58,7 +58,7 @@ RESTART_SLAPD=0
 if pidof slapd >/dev/null ; then
 	echo -n "Stopping slapd: "
 	RESTART_SLAPD=1
-	systemctl stop slapd
+	systemctl stop slapd.service
 	sleep 1
 	if pidof slapd >/dev/null ; then
 		echo "failed"
@@ -99,7 +99,7 @@ echo -ne "$skip" >&2
 rc=0
 if [ "$RESTART_SLAPD" = 1 ]; then
 	echo -n "Starting slapd: "
-	if systemctl start slapd; then
+	if systemctl start slapd.service; then
 		echo "done"
 	else
 		echo "failed"
