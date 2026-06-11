@@ -155,7 +155,7 @@ else
 fi
 
 systemctl restart univention-management-console-server
-/etc/init.d/slapd crestart
+systemctl try-restart --no-pager slapd
 
 ucs_addServiceToLocalhost 'Univention Management Console' "$@" || die
 
