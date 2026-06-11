@@ -1,0 +1,1 @@
+The permissions for :file:`/etc/sssd` have been adjusted so that SSSD can access its configuration directory with the service hardening used in Debian Trixie. The expected diagnostic permissions for :file:`sssd.conf` have been aligned accordingly.
