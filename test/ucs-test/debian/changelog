@@ -1,3 +1,9 @@
+ucs-test (12.6.3) unstable; urgency=medium
+
+  * Bug #57467: fix playwright shutdown in case of failures
+
+ -- Florian Best <best@univention.de>  Thu, 11 Jun 2026 22:55:34 +0200
+
 ucs-test (12.6.2) unstable; urgency=medium
 
   * Bug #55411: let pytest compare and print the whole diff
