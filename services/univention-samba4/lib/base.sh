@@ -161,7 +161,7 @@ disable_slapd_on_standard_port() {
 		univention-config-registry set slapd/port/ldaps="$(remove_port "$slapd_port_ldaps" 636)"
 	fi
 
-	/etc/init.d/slapd crestart
+	systemctl try-restart --no-pager slapd
 	sleep 1
 }
 

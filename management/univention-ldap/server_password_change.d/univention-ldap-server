@@ -13,6 +13,6 @@
 if [ "$1" = "postchange" ] || [ "$1" = "nochange" ] ; then
 	if is_ucr_true ldap/database/internal/syncrepl; then
 		ucr commit /etc/ldap/slapd.conf
-		systemctl restart slapd
+		systemctl restart slapd.service
 	fi
 fi
