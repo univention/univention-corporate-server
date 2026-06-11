@@ -84,8 +84,7 @@ get_credentials () {
 
 get_credentials "$@"
 
-if [ -x /etc/init.d/slapd ] &&
-	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+if [ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
 	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionUDMPropertyCopyable &&
 	univention-ldapsearch -D "$binddn" -y "$bindpwdfile" -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionUDMPropertyCopyable'"

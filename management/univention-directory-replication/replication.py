@@ -726,5 +726,5 @@ get_password.RE_ROOTDN = re.compile(r'^rootpw[ \t]+"((?:[^"\\]|\\["\\])+)"')
 
 
 def init_slapd(arg: str) -> None:
-    listener.run('/etc/init.d/slapd', ['slapd', arg], uid=0)
+    listener.run('/usr/bin/systemctl', ['systemctl', arg, 'slapd.service'], uid=0)
     time.sleep(1)
