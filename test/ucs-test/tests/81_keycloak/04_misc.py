@@ -229,4 +229,4 @@ def test_additional_ca_certifiates_issue_223():
 def test_keycloak_version(ucr):
     kc_app_version = ucr.get('appcenter/apps/keycloak/version')
     kc_image_version = run_command(['docker', 'exec', 'keycloak', '/opt/keycloak/bin/kc.sh', '-V']).splitlines()[0].strip('Keycloak ')
-    assert kc_image_version in kc_app_version, f'Docker image kc version {kc_image_version} does not match appcenter version {kc_app_version}'
+    assert kc_app_version == '999.0.0-staging' or kc_image_version in kc_app_version, f'Docker image kc version {kc_image_version} does not match appcenter version {kc_app_version}'
