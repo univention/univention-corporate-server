@@ -200,8 +200,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 
 	# 40_ssl restarted slapd before this certificate existed; restart it now that it is present
-	invoke-rc.d slapd restart
-	invoke-rc.d apache2 restart
+	systemctl restart --no-pager slapd.service || journalctl --no-pager -u slapd.service -n 25
+	systemctl restart --no-pager apache2.service || journalctl --no-pager -u apache2.service -n 25
 else
 	# Other system roles require the certificate creation here only if they to not join
 	# Create them in any case, as apache2 will not start otherwise
@@ -311,11 +311,11 @@ ucr commit \
 	/var/www/univention/languages.json
 
 # Restart NSCD
-service restart nscd
-service restart sssd
+systemctl restart nscd.service
+systemctl restart sssd.service
 
 # Start atd as the appliance cleanup script is started as at job
-service start atd
+systemctl start atd.service
 
 # Commit PAM files, workaround for
 #   https://forge.univention.org/bugzilla/show_bug.cgi?id=26846
