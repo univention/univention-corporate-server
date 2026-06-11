@@ -1,8 +1,12 @@
-univention-mail-dovecot (8.6.0) UNRELEASED; urgency=medium
+univention-mail-dovecot (8.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:54 +0200
+  [ Florian Best ]
+  * Bug #59520: manage 90-sieve-extprograms.conf as a UCR template
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jun 2026 15:37:43 +0200
 
 univention-mail-dovecot (8.5.0) UNRELEASED; urgency=medium
 

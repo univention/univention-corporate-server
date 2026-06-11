@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-mail-dovecot
+fix: 8.6.0
+desc: |
+ This update addresses the following issue:
+ * The configuration file `/etc/dovecot/conf.d/90-sieve-extprograms.conf` has
+   been added as UCR template so that upgrades to UCS 5.3 with Dovecot 2.4
+   will write a compatible configfile.
+bug: [59520]
