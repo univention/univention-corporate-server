@@ -28,7 +28,7 @@ if [ "$1" = "configure" ]; then
 	fi
 
 	univention-config-registry commit /etc/ldap/slapd.conf
-	invoke-rc.d slapd crestart
+	deb-systemd-invoke try-restart slapd.service
 	systemctl try-restart univention-directory-listener
 fi
 
