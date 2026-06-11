@@ -243,7 +243,7 @@ trap "consider_termination" TERM EXIT QUIT INT HUP
 dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.divert --rename --add /usr/lib/univention-directory-listener/system/replication.py
 
 # stop OpenLDAP, Samba, Kerberos, listener and notifier
-systemctl stop slapd univention-directory-notifier univention-directory-listener
+systemctl stop slapd.service univention-directory-notifier univention-directory-listener
 test -x /etc/init.d/samba && /etc/init.d/samba stop
 test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc stop
 test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc stop
@@ -267,7 +267,7 @@ if [ -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
 fi
 
 # start OpenLDAP, Samba, Kerberos, Notifier and Listener
-systemctl start slapd univention-directory-notifier univention-directory-listener
+systemctl start slapd.service univention-directory-notifier univention-directory-listener
 test -x /etc/init.d/samba && /etc/init.d/samba start
 test -x /etc/init.d/samba-ad-dc && invoke-rc.d samba-ad-dc start
 test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc start
