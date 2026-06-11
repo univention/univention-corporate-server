@@ -8,7 +8,6 @@
 
 from __future__ import annotations
 
-import os
 import subprocess
 
 import univention.debug as ud
@@ -52,16 +51,14 @@ def postrun() -> None:
         acl_handler._todo_list = []
 
     slapd_running = not subprocess.call(['pidof', 'slapd'])
-    initscript = '/etc/init.d/slapd'
-    if os.path.exists(initscript) and slapd_running:
+    if slapd_running:
         listener.setuid(0)
         try:
             if schema_handler._do_reload or acl_handler._do_reload:
                 ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
                 for handler_object in (schema_handler, acl_handler):
                     handler_object._do_reload = False
-                p = subprocess.Popen(
-                    [initscript, 'graceful-restart'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                p = subprocess.Popen(['systemctl', 'restart', 'slapd.service'], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 out, err = p.communicate()
                 stdout, stderr = out.decode('UTF-8', 'replace'), err.decode('UTF-8', 'replace')
                 if p.returncode != 0:

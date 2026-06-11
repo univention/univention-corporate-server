@@ -14,8 +14,7 @@ fi
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/slapd ] &&
-	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+if [ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
 	[ "$1" = configure ] &&
 	[ -z "$2" ] &&
