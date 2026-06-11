@@ -28,7 +28,7 @@ mv "$tmp" "$paramfile"
 . /usr/share/univention-lib/ucr.sh
 if is_ucr_true ldap/tls/dh/restart
 then
-	invoke-rc.d slapd crestart || :
+	systemctl try-restart slapd.service || :
 fi
 
 : >"$log"
