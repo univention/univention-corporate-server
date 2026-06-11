@@ -462,5 +462,5 @@ ucs_registerLDAPSchema () {
 
 	/usr/sbin/univention-config-registry commit /etc/ldap/slapd.conf
 
-	test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
+	systemctl try-restart --no-pager slapd
 }

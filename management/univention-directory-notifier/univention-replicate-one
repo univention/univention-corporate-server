@@ -88,7 +88,7 @@ RESTART_SLAPD=0
 if pidof slapd >/dev/null ; then
 	echo -n "Stopping slapd: "
 	RESTART_SLAPD=1
-	/etc/init.d/slapd stop >/dev/null
+	systemctl stop --no-pager slapd.service >/dev/null
 	sleep 1
 	if pidof slapd >/dev/null ; then
 		echo "failed"
@@ -127,7 +127,7 @@ fi
 
 if [ "$RESTART_SLAPD" = 1 ]; then
 	echo -n "Starting slapd: "
-	/etc/init.d/slapd start >/dev/null || rc=1
+	systemctl start --no-pager slapd.service >/dev/null || rc=1
 	echo "done"
 fi
 

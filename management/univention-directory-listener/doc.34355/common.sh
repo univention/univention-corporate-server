@@ -72,7 +72,7 @@ access to dn.sub="cn=restricted,$BASE"
 __LDAP__
 	ucr commit /etc/ldap/slapd.conf
 	slaptest -f /etc/ldap/slapd.conf
-	/etc/init.d/slapd restart
+	systemctl restart --no-pager slapd
 }
 setup_ldap () {
 	udm container/cn create --ignore_exists --position "$BASE" --set name=restricted

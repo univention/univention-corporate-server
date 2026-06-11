@@ -383,7 +383,7 @@ apt install libpam-oauthbearer-dbgsym libsasl2-modules-oauthbearer-dbgsym liblda
 echo -e '[Service]\nLimitCORE=infinity' > /etc/systemd/system/univention-management-console-server.service.d/override.conf
 echo -e '[Service]\nLimitCORE=infinity' > /etc/systemd/system/slapd.service.d/override.conf
 systemctl daemon-reload
-systemctl restart slapd univention-management-console-server
+systemctl restart slapd.service univention-management-console-server
 ```
 
 After a `/core` is written it can be analyzed with one of:

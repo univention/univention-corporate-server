@@ -12,7 +12,7 @@ eval "$(univention-config-registry shell)"
 
 restart_slapd ()
 {
-	/etc/init.d/slapd stop
+	deb-systemd-invoke stop slapd.service
 	sleep 1
 	if [ -n "$(pidof slapd)" ]; then
 		killall slapd
@@ -22,7 +22,7 @@ restart_slapd ()
 			sleep 1
 		fi
 	fi
-	/etc/init.d/slapd start
+	deb-systemd-invoke start slapd.service
 }
 
 if [ "$1" = "configure" ]; then
