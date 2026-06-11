@@ -219,7 +219,7 @@ Older browsers may not display correctly or perform as expected.
 Changelog
 *********
 
-You find the changes since UCS 5.2-5 in
+You find the changes since UCS 5.2-4 in
 :external+uv-changelog-5.2-5:doc:`index`.
 
 .. _biblio:

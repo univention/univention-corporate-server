@@ -384,7 +384,7 @@ msgstr "Changelog"
 
 #: ../../index.rst:222
 msgid ""
-"You find the changes since UCS 5.2-5 in :external+uv-"
+"You find the changes since UCS 5.2-4 in :external+uv-"
 "changelog-5.2-5:doc:`index`."
 msgstr ""
 "Die Änderungen seit UCS 5.2-5 finden Sie in :external+uv-"
