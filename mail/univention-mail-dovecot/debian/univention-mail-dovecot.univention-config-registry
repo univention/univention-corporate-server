@@ -126,6 +126,9 @@ Type: file
 File: etc/dovecot/conf.d/90-sieve.conf
 
 Type: file
+File: etc/dovecot/conf.d/90-sieve-extprograms.conf
+
+Type: file
 File: etc/dovecot/conf.d/90-quota.conf
 Variables: mail/dovecot/quota/warning/text/.*
 Variables: mail/dovecot/internal/sharedfolders
