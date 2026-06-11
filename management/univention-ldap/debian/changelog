@@ -1,4 +1,10 @@
-univention-ldap (18.6.0) UNRELEASED; urgency=medium
+univention-ldap (18.6.1) unstable; urgency=medium
+
+  * Bug #47464: Make indexing of memberof possible
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jun 2026 11:29:50 +0200
+
+univention-ldap (18.6.0) unstable; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
 
