@@ -108,7 +108,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
         cf_type('/etc/libnss-ldap.secret', 'root', 'root', 0o600, must_exist=False),
         cf_type('/etc/bind/named.conf', 'root', 'bind', 0o660, must_exist=False),
         cf_type('/etc/idp-ldap-user.secret', 'root', 'DC Backup Hosts', 0o640, must_exist=is_primary),
-        cf_type('/etc/sssd/sssd.conf', 'root', 'root', 0o600, must_exist=True),
+        cf_type('/etc/sssd/sssd.conf', 'root', 'root', 0o640, must_exist=True),
         cf_type('/etc/dovecot/dovecot-ldap.conf.ext', 'root', 'dovemail', 0o640, must_exist=False),
         cf_type('/var/lib/sss', 'root', 'root', 0o755, must_exist=True),
         cf_type('/var/run/slapd/ldapi', 'root', 'root', 0o700, False),
