@@ -4,8 +4,6 @@
 
 """A tool to obtain licenses for the UCS test environments."""
 
-
-import cgi
 import logging
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from collections.abc import Iterable
@@ -223,9 +221,7 @@ class TestLicenseClient:
 
     def get_body(self, response: HTTPResponse) -> str:
         self.log.debug("The response status is '%s', reason is '%s', headers are '%s'", response.status, response.reason, response.getheaders())
-        content_type = response.getheader('Content-Type')
-        _mimetype, options = cgi.parse_header(content_type)
-        encoding = options.get("charset", "ascii")
+        encoding = response.headers.get_content_charset("ascii")
         return response.read().decode(encoding, "replace")
 
     def download_license_file(self, link_to_license: str) -> None:
