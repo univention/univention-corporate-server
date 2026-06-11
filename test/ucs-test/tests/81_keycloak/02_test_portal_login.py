@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright -s -l -vv
 ## desc: Test portal SSO login via keycloak
 ## tags: [keycloak, skip_admember]
 ## roles: [domaincontroller_master, domaincontroller_backup]

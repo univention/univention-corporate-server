@@ -185,7 +185,12 @@ def keycloak_login(
 
 def run_command(cmd: list) -> str:
     print(f'execute {cmd}')
-    return subprocess.run(cmd, stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
+    try:
+        return subprocess.run(cmd, stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
+    except subprocess.CalledProcessError as exc:
+        print('STDOUT', exc.stdout)
+        print('STDERR', exc.stderr)
+        raise
 
 
 def kerberos_auth(portal_login_via_keycloak, ucr, protocol, portal_config):
