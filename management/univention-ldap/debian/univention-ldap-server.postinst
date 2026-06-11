@@ -150,7 +150,7 @@ if [ "$1" = "configure" ]; then
 				elif [ "$server_role" = "domaincontroller_backup" ]; then
 					ucr set ldap/database/internal/syncrepl=true
 				fi
-				systemctl restart slapd || true
+				deb-systemd-invoke restart slapd.service || true
 			fi
 		fi
 	fi

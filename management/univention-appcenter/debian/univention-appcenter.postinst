@@ -14,7 +14,7 @@ fi
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/slapd ] &&
+if systemctl --quiet is-enabled slapd.service &&
 	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
 	[ "$1" = configure ] &&
