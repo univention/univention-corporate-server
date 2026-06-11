@@ -137,6 +137,28 @@ stop_slapd() {
 	log_end_msg 0
 }
 
+# delegate to the native slapd.service
+if [ -d /run/systemd/system ]; then
+	case "$(systemctl show -p FragmentPath --value slapd.service 2>/dev/null)" in
+	  /usr/lib/systemd/system/*|/lib/systemd/system/*|/etc/systemd/system/*)
+		case "$1" in
+		  start)
+			check_for_no_start
+			exec systemctl --no-pager start slapd.service ;;
+		  stop|graceful-stop|force-stop)
+			exec systemctl --no-pager stop slapd.service ;;
+		  restart|force-reload|graceful-restart)
+			check_for_no_start
+			exec systemctl --no-pager restart slapd.service ;;
+		  crestart)
+			exec systemctl --no-pager try-restart slapd.service ;;
+		  status)
+			exec systemctl --no-pager status slapd.service ;;
+		esac
+		;;
+	esac
+fi
+
 case "$1" in
   start)
 	check_for_no_start
