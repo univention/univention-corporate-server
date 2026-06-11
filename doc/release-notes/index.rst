@@ -17,18 +17,6 @@ With |UCSUCS| 5.2-5, the fifth patch level release for |UCSUCS| 5.2 is available
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
-* The new Provisioning API is now available on |UCSUCS|,
-  offering a REST API to receive information about changes
-  to users, groups, and other Nubus objects.
-  Integrations implemented to work with Nubus on Kubernetes
-  can now use the same API to integrate with Nubus on |UCSUCS|.
-
-* The *Recycle Bin* feature provides various improvements
-  and now integrates with the :program:`Active Directory-compatible Domain Controller`
-  and :program:`Active Directory Connection`.
-  A restore in |UCSUDM|, :program:`Active Directory-compatible Domain Controller`,
-  or :program:`Active Directory Connection`
-  now correctly restores the object in the other directory service implementations.
 
 .. _relnotes-update:
 
