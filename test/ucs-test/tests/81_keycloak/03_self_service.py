@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright -s -l -vv
 ## desc: Test portal keycloak self service features
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
