@@ -1339,6 +1339,9 @@ postgres_update () {
 	pg_dropcluster "$old" main --stop
 	DEBIAN_FRONTEND='noninteractive' apt-get purge --yes "postgresql-$old"
 	systemctl restart postgresql.service
+
+	pg_lsclusters | grep -qE "^${new}[[:space:]]+main[[:space:]]+5432[[:space:]]+online" || return 1
+	su postgres -c "psql -p 5432 -d postgres -c 'SELECT 1'" >/dev/null || return 1
 }
 
 configure_umc_postgres () {
