@@ -629,6 +629,14 @@ Description[en]=If multiple network interfaces exist on a system, this variable 
 Type=str
 Categories=system-network
 
+[interfaces/dhcp-client]
+Description[de]=Der DHCP Client. Entweder isc-dhcp oder dhcpcd.
+Description[en]=The DHCP client. Either isc-dhcp or dhcpcd.
+Type=str
+Regex=^(isc-dhcp|dhcpcd)?$
+Default=isc-dhcp
+Categories=system-network
+
 [hosts/static/.*]
 Description[de]=Mit Variablen nach dem Schema hosts/static/IPADRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'.
 Description[en]=With variables following the scheme hosts/static/IPADDRESS=HOSTNAME entries can be added to /etc/hosts. Example: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'.

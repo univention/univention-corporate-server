@@ -1,0 +1,10 @@
+Type: file
+File: etc/dhcpcd.conf
+Variables: dhcpcd/options/timeout
+Variables: dhcpcd/options/ddns
+Variables: dhcpcd/options/ddns/zone
+Variables: dhcpcd/options/ddns/serverupdate
+Variables: dhclient/.*
+Variables: hostname
+Variables: domainname
+Variables: interfaces/dhcp-client
