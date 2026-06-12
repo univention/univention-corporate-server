@@ -1,3 +1,4 @@
 etc/dhcp
+etc/dhcpcd.exit-hook
 etc/network
 univention-register-network-address	usr/sbin/
