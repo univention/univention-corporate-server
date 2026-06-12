@@ -135,6 +135,16 @@ if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
 	systemctl stop fetchmail >&3 2>&3 || :
 fi
 
+# Bug #: dovecot 2.3->2.4 removed the top-level "plugin {}" section. The
+# conf.d file 90-sieve-extprograms.conf is not UCS-templated before UCS 5.3, so
+# the obsolete UCS 5.2 file survives the upgrade and makes
+# dovecot 2.4 fail to start ("Unknown section name: plugin"), failing dovecot-core's
+# postinst and aborting the upgrade. Divert the stale file out of the way.
+dovecot_sieve_extprograms="/etc/dovecot/conf.d/90-sieve-extprograms.conf"
+if [ -e "$dovecot_sieve_extprograms" ] && [ -z "$(dpkg-divert --list "$dovecot_sieve_extprograms")" ]; then
+	dpkg-divert --rename --local --divert "${dovecot_sieve_extprograms}.debian" --add "$dovecot_sieve_extprograms" >&3 2>&3
+fi
+
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d
