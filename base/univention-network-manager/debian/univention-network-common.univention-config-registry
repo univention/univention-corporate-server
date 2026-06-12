@@ -9,3 +9,12 @@ Variables: dhclient/linklocal/fallback
 Variables: interfaces/.*/address
 Variables: hostname
 Variables: domainname
+
+Type: file
+File: etc/dhcpcd.conf
+Variables: dhclient/options/timeout
+Variables: dhclient/options/ddns
+Variables: dhclient/options/ddns/zone
+Variables: dhclient/options/ddns/serverupdate
+Variables: hostname
+Variables: domainname
