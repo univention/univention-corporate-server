@@ -1,3 +1,9 @@
+crudesaml (1:1.9.0-3) unstable; urgency=medium
+
+  * Bug #59511: increase epoch as UCS 5.2 has 3.0.0-1A~5.2.0.202401111843
+
+ -- Florian Best <best@univention.de>  Fri, 12 Jun 2026 17:50:32 +0200
+
 crudesaml (1.9.0-2) unstable; urgency=medium
 
   * Bug #51489: remove 20_fix-private-signature.patch, fixed in bug #51479.

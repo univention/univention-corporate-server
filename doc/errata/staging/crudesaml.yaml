@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: crudesaml
+fix: 1:1.9.0-3
+desc: |
+ This update addresses the following issue:
+ * The crudesaml package epoch has been increased to ensure a valid upgrade
+   path to UCS 5.3 and restore the original upstream package version.
+bug: [59511]
