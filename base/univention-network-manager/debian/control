@@ -25,6 +25,9 @@ Depends:
  python3-netifaces,
  python3-univention-lib,
  univention-config (>= 8.0.2),
+ univention-network-dhcp-client-dhcpcd,
+ univention-network-dhcp-client-isc,
+ univention-network-dhcp-client-isc | univention-network-dhcp-client-dhcpcd,
  ${misc:Depends},
  ${python3:Depends},
 Recommends:
@@ -38,6 +41,39 @@ Breaks:
  univention-bind (<< 9.0.5-2),
 Description: UCS - Network tools for network-manager (common)
  This package installs tools required by univention-network-manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-network-dhcp-client-dhcpcd
+Architecture: all
+Depends:
+ dhcpcd-base,
+ python3-netifaces,
+ python3-univention-lib,
+ univention-config,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: UCS - DHCP client configuration for dchpcd client.
+ This package installs tools required by univention-network-manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-network-dhcp-client-isc
+Architecture: all
+Depends:
+ isc-dhcp-client,
+ python3-netifaces,
+ python3-univention-lib,
+ univention-config,
+ ${misc:Depends},
+ ${python3:Depends},
+Description: UCS - DHCP client configuration for the ISC DHCP client.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
