@@ -56,6 +56,22 @@ def test_get_host_networks_invalid_address(mock_interfaces_mod):
     assert result == []
 
 
+@patch(f'{MODULE}.docker')
+def test_docker_get_existing_subnets_handles_missing_ipam_config(mock_docker):
+    from univention.appcenter.docker import docker_get_existing_subnets
+
+    net_bridge = MagicMock()
+    net_bridge.attrs = {'IPAM': {'Config': [{'Subnet': '172.17.0.0/16'}]}}
+    # the "host" and "none" networks report "Config": null
+    net_host = MagicMock()
+    net_host.attrs = {'IPAM': {'Config': None}}
+    net_v6 = MagicMock()
+    net_v6.attrs = {'IPAM': {'Config': [{'Subnet': 'fd00::/64'}]}}
+    mock_docker.from_env.return_value.networks.list.return_value = [net_bridge, net_host, net_v6]
+
+    assert docker_get_existing_subnets() == [IPv4Network('172.17.0.0/16')]
+
+
 def _make_docker_instance():
     """Create a Docker instance with a mocked app, without invoking __init__."""
     from univention.appcenter.docker import Docker
