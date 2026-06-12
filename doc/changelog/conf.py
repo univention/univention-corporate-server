@@ -139,10 +139,12 @@ figure_language_filename = '{root}-{language}{ext}'
 
 linkcheck_ignore = [
     r'https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}',
+    r'https://wiki\.samba\.org/index\.php.+',  # rate limited
 ]
 
 linkcheck_allowed_redirects = {
     r'https://help\.univention\.com/t/\d+': r'https://help\.univention\.com/t/[\w-]+/\d+',
+    r'https://go\.microsoft\.com/fwlink/\?linkid=\d+': r'https://support.microsoft.com/en-us/topic/.+',
 }
 
 univention_use_doc_base = True
