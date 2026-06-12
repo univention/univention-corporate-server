@@ -1,0 +1,27 @@
+[dhcpcd/options/timeout]
+Description[de]=Die maximale Zeit in Sekunden, die der DHCP-Client versucht eine IP-Konfiguration zu beziehen. Ist die Variable nicht gesetzt, gelten 30 Sekunden.
+Description[en]=The maximum amount of time in seconds that the DHCP clients tries to get an IP configuration. If the variable is unset, 30 seconds apply.
+Type=int
+Default=@%@dhclient/options/timeout@%@
+Categories=system-base
+
+[dhcpcd/options/ddns]
+Description[de]=Ist diese Option aktiviert, wird Dynamic DNS im Rahmen der DHCP-IP-Vergabe angefordert. Ist die Variable nicht gesetzt, wird kein DDNS verwendet.
+Description[en]=If this option is activated, Dynamic DNS is requested during DHCP IP assignment. If the variable is unset, DDNS is not used.
+Type=bool
+Default=@%@dhclient/options/ddns@%@
+Categories=system-base
+
+[dhcpcd/options/ddns/zone]
+Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns'), kann mit dieser Variable die DNS-Forward-Zone konfiguriert werden, die für DDNS verwendet werden soll.
+Description[en]=If DDNS has been activated (see 'dhclient/options/ddns'), this variable allows to configure the DNS forward zone to use with DDNS.
+Default=@%@dhclient/options/ddns/zone@%@
+Type=str
+Categories=system-base
+
+[dhcpcd/options/ddns/serverupdate]
+Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns') und diese Option aktiviert oder die Variable nicht gesetzt, aktualisiert der DHCP-Server den A-Record und PTR-Record des Clients. Ist die Option deaktiviert, wird nur der PTR-Record gesetzt.
+Description[en]=If DDNS has been activated (see 'dhclient/options/ddns') and this option is activated or the variable unset, the DHCP server updates both the A record and the PTR record of the client. If the option is deactivated, only the PTR record is set.
+Default=@%@dhclient/options/ddns/serverupdate@%@
+Type=bool
+Categories=system-base
