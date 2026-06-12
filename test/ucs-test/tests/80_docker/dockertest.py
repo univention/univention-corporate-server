@@ -546,7 +546,7 @@ Virtualization=Virtualisierung''')
             print('create_appcenter_json.py for %s' % vv)
             fqdn = '%(hostname)s.%(domainname)s' % self.ucr
             subprocess.check_call([
-                './create_appcenter_json.py',
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), 'create_appcenter_json.py'),
                 '-u', vv,
                 '-d', '/var/www',
                 '-o', f'/var/www/meta-inf/{vv}/index.json.gz',

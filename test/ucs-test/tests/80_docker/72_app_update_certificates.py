@@ -89,6 +89,9 @@ exit 0
             DockerScriptStoreData='/store_data',
             DockerScriptInit='/sbin/init',
         )
+        # both versions use the same docker image, so this is an "app only" upgrade
+        # which requires an update_app_version script inside the container
+        app.add_script(update_app_version='#!/bin/sh\nexit 0\n')
         app.add_script(update_certificates=update_certificates)
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)

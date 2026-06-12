@@ -105,7 +105,9 @@ def run_listener_tests(udm) -> None:
 
 
 def get_pid_for_name(name: str) -> str | None:
-    o = subprocess.check_output(['ps', 'aux'], text=True)
+    # "ww" for unlimited width: ps truncates the command line to 80 columns
+    # when running with pytest's output capturing
+    o = subprocess.check_output(['ps', 'auxww'], text=True)
     for line in o.split('\n'):
         if name in line:
             return line.split()[1]

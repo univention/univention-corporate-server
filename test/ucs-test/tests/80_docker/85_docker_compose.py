@@ -9,7 +9,7 @@ import subprocess
 from ipaddress import IPv4Address, IPv4Network
 
 import pytest
-from ruamel import yaml
+from ruamel.yaml import YAML
 
 from univention.appcenter.docker import docker_get_existing_subnets
 from univention.config_registry import ConfigRegistry
@@ -70,17 +70,13 @@ def test_docker_compose(appcenter):
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'
 
-    alpine_checksum = 'f80194ae2e0c'
-    images = subprocess.check_output(['docker', 'images'], text=True)
-    if alpine_checksum in images:
-        print('CAUTION. Checksum already found in docker images... Lets see...')
-        subprocess.call(['docker', 'ps', '-a'])
+    alpine_image = 'artifacts.software-univention.de/library/alpine:3.23'
     app = App(name=name, version='1', build_package=False, call_join_scripts=False)
     try:
         app.set_ini_parameter(
             DockerMainService='test1',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.23'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image=alpine_image))
         app.add_script(settings=SETTINGS)
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
@@ -88,6 +84,7 @@ def test_docker_compose(appcenter):
         appcenter.update()
         app.install()
         app.verify()
+        alpine_checksum = subprocess.check_output(['docker', 'inspect', alpine_image, '--format={{.Id}}'], text=True).strip().split(':', 1)[1][:12]
         images = subprocess.check_output(['docker', 'images'], text=True)
         assert alpine_checksum in images, images
         app.execute_command_in_container(f'touch /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
@@ -96,25 +93,29 @@ def test_docker_compose(appcenter):
         app.set_ini_parameter(
             DockerMainService='test1',
         )
-        app.add_script(compose=DOCKER_COMPOSE.format(image='artifacts.software-univention.de/library/alpine:3.23'))
+        app.add_script(compose=DOCKER_COMPOSE.format(image=alpine_image))
         app.add_script(setup=setup)
         app.add_script(store_data=store_data)
         app.add_to_local_appcenter()
         appcenter.update()
         app.upgrade()
         app.verify()
+        # both app versions use the same image, so it must still be there after the upgrade
         images = subprocess.check_output(['docker', 'images'], text=True)
-        assert alpine_checksum not in images, images
+        assert alpine_checksum in images, images
         app.execute_command_in_container(f'ls /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
         image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
-        assert image == 'artifacts.software-univention.de/library/alpine:3.23'
+        assert image == alpine_image
         ucr.load()
         network = ucr.get('appcenter/apps/' + name + '/ip')
         # assert network == '172.16.1.0/24', network
 
         assert network == target_subnet.exploded
         yml_file = f'/var/lib/univention-appcenter/apps/{name}/compose/docker-compose.yml'
-        content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+        yaml = YAML(typ='rt')
+        yaml.preserve_quotes = True
+        with open(yml_file) as fd:
+            content = yaml.load(fd)
         assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == target_subnet.exploded
         # assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
         assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == target_subnet[2].exploded

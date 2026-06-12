@@ -119,7 +119,13 @@ def app_upgrade(appcenter, app_name):
     print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app = tiny_app(app_name, '3.7')
-    app.set_ini_parameter(DockerImage='artifacts.software-univention.de/library/alpine:3.23')
+    app.set_ini_parameter(
+        DockerImage='artifacts.software-univention.de/library/alpine:3.23',
+        # both versions use the same docker image, so this is an "app only" upgrade
+        # which requires an update_app_version script inside the container
+        DockerScriptUpdateAppVersion='/usr/share/univention-docker-container-mode/update_app_version',
+    )
+    app.add_script(update_app_version='#!/bin/sh\nexit 0\n')
 
     app.add_to_local_appcenter()
     appcenter.update()

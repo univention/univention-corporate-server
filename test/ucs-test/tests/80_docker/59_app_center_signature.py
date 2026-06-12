@@ -45,7 +45,9 @@ class SyncedAppcenter(Appcenter):
         if not os.path.exists(d):
             os.makedirs(d)
 
-        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        # create the temporary file in the target directory: /tmp may be a
+        # different filesystem (tmpfs), in which case os.replace() would fail
+        with tempfile.NamedTemporaryFile(delete=False, dir=d) as tmp:
             tmpname = tmp.name
 
         try:
@@ -54,6 +56,8 @@ class SyncedAppcenter(Appcenter):
                 '-O', tmpname,
                 f'{self.upstream_appcenter}/{f}',
             ])
+            # NamedTemporaryFile creates the file with mode 0600 - apache must be able to read it
+            os.chmod(tmpname, 0o644)
             os.replace(tmpname, f'/var/www/{f}')
         except Exception as exc:
             os.unlink(tmpname)

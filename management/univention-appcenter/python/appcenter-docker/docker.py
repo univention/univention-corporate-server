@@ -215,8 +215,16 @@ def docker_get_existing_subnets():
         networks = client.networks.list()
         subnets = []
         for network in networks:
-            for config in network.attrs['IPAM']['Config']:
-                subnets.append(IPv4Network(config['Subnet'], False))
+            # networks without IPAM configuration (e.g. "host" and "none")
+            # report "Config": null
+            for config in (network.attrs.get('IPAM') or {}).get('Config') or []:
+                subnet = config.get('Subnet')
+                if not subnet:
+                    continue
+                try:
+                    subnets.append(IPv4Network(subnet, False))
+                except ValueError:  # IPv6 subnet
+                    continue
         return subnets
     except (docker.errors.APIError, TypeError) as exc:
         _logger.warning('Could not get existing subnets: %s', exc)
@@ -663,17 +671,21 @@ class MultiDocker(Docker):
                     _logger.warning("Fail: %s", e)
                     break
                 container_name = container_inspect['Name']
-                if f'_{service_name}_' in container_name:
+                # docker compose v2 names containers <project>-<service>-<n>, v1 used underscores
+                if f'_{service_name}_' in container_name or f'-{service_name}-' in container_name:
                     return container_inspect['Id']
         # default
-        if name is None:
-            name = f'{self.app.id}_{service_name}_1'
+        if name:
+            names = [name]
+        else:
+            names = [f'{self.app.id}-{service_name}-1', f'{self.app.id}_{service_name}_1']
         # get containert id
-        try:
-            insp = inspect_with_retry(name)
-            return insp['Id']
-        except DockerInspectCallFailed as e:
-            _logger.warning("Fail: %s", e)
+        for name in names:
+            try:
+                insp = inspect_with_retry(name)
+                return insp['Id']
+            except DockerInspectCallFailed as e:
+                _logger.warning("Fail: %s", e)
         return None
 
     def _get_main_service_container_id(self):
