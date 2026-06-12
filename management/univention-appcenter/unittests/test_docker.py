@@ -56,6 +56,53 @@ def test_get_host_networks_invalid_address(mock_interfaces_mod):
     assert result == []
 
 
+@patch(f'{MODULE}.docker')
+def test_docker_get_existing_subnets_handles_missing_ipam_config(mock_docker):
+    from univention.appcenter.docker import docker_get_existing_subnets
+
+    net_bridge = MagicMock()
+    net_bridge.attrs = {'IPAM': {'Config': [{'Subnet': '172.17.0.0/16'}]}}
+    # the "host" and "none" networks report "Config": null
+    net_host = MagicMock()
+    net_host.attrs = {'IPAM': {'Config': None}}
+    net_v6 = MagicMock()
+    net_v6.attrs = {'IPAM': {'Config': [{'Subnet': 'fd00::/64'}]}}
+    mock_docker.from_env.return_value.networks.list.return_value = [net_bridge, net_host, net_v6]
+
+    assert docker_get_existing_subnets() == [IPv4Network('172.17.0.0/16')]
+
+
+@patch(f'{MODULE}.inspect_with_retry')
+@patch(f'{MODULE}.check_output', return_value=b'api-container\nprovisioning-container\n')
+@patch(f'{MODULE}.yaml_rt')
+def test_get_container_id_uses_compose_service_label(mock_yaml_rt, mock_check_output, mock_inspect):
+    from univention.appcenter.docker import MultiDocker
+
+    app = MagicMock()
+    app.id = 'qa-rest-api'
+    app.docker_main_service = 'api'
+    app.get_compose_file.return_value = __file__
+    app.get_compose_dir.return_value = '/tmp'
+    mock_yaml_rt.return_value.load.return_value = {'services': {'api': {}, 'provisioning': {}}}
+    mock_inspect.side_effect = [
+        {
+            'Id': 'provisioning-id',
+            'Name': '/qa-rest-api-provisioning-1',
+            'Config': {'Labels': {'com.docker.compose.service': 'provisioning'}},
+        },
+        {
+            'Id': 'api-id',
+            'Name': '/qa-rest-api-api-1',
+            'Config': {'Labels': {'com.docker.compose.service': 'api'}},
+        },
+    ]
+
+    instance = object.__new__(MultiDocker)
+    instance.app = app
+
+    assert instance.get_container_id('api') == 'api-id'
+
+
 def _make_docker_instance():
     """Create a Docker instance with a mocked app, without invoking __init__."""
     from univention.appcenter.docker import Docker
