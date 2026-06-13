@@ -6,6 +6,8 @@
 # SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+return 0
+
 # Bug #37689: dhcpcd hooks are sourced by dhcpcd-run-hooks; do not exit.
 test -n "${interface:-}" || return 0
 
