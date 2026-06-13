@@ -8,6 +8,7 @@
 import argparse
 import logging
 import operator
+import subprocess
 import sys
 from collections.abc import Iterable, Mapping
 from time import time
@@ -232,6 +233,7 @@ def main() -> int | None:
     test_set.set_environment(test_environment)
     test_set.set_prefix(options.count)
     test_set.set_format(options.format)
+    subprocess.call(['ucr', 'commit', '/etc/resolv.conf'])
     try:
         return test_set.run_tests(options.filter, options.dry, options.hold)
     finally:

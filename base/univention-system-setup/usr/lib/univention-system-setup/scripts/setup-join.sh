@@ -186,6 +186,8 @@ eval "$(ucr shell proxy/http proxy/https proxy/no_proxy)"
 [ -n "${proxy_https:-}" ] && export https_proxy="$proxy_https"
 [ -n "${proxy_no_proxy:-}" ] && export no_proxy="$proxy_no_proxy"
 
+ucr commit /etc/resolv.conf
+
 run-parts -v /usr/lib/univention-system-setup/scripts/35_timezone
 
 # Re-create SSL certificates on Primary Directory Node even if the admin didn't change all variables
