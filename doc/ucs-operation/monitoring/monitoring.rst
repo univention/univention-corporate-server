@@ -6,51 +6,36 @@
 Monitoring
 ==========
 
-With *Prometheus*, *Prometheus Node Exporter*, and *Prometheus Alertmanager*,
-administrators can verify the correct function of complex IT structures from networks,
-computers and services continually and automatically.
+UCS monitoring collects metrics from managed systems and evaluates them against predefined alert conditions.
+This helps administrators detect system issues early and respond to them in a timely manner.
 
-Prometheus Node Exporter exports a comprehensive collection of metrics into the
-Prometheus database. Besides polling system indicators like CPU, memory usage,
-and free disk space, they test availability and operation of different services
-like SSH, SMTP, and HTTP. Operation tests generally perform program steps such
-as the delivery of a test email or the resolution of a DNS record. The
-Prometheus Node Exporter provides UCS specific alerts in addition to the start
-metrics already included, for example an alert for the listener/notifier
-replication.
+This page describes the monitoring-specific setup and administration tasks in Nubus for UCS.
+It covers the required monitoring components, the configuration of alerts,
+the assignment of alerts to computers, the available preconfigured checks, and the creation of custom alerts.
 
-When the operating status changes, the monitoring informs a contact
-person specified in advance of the possible malfunction.
-In addition to the reactive notification in case of error, administrators
-can check the current status at any time continually in the
-*Grafana UCS Dashboard* web interface displaying the status information
-in a compact manner.
-
-See UCS-Dashboard :ref:`dashboard-installation` for an overview of all involved components.
-
-Administrators define the alert configuration in the *Management UI*.
-A listener module automatically generates the configuration files from
-information stored in the LDAP directory.
-
+For information about installing and using the *UCS Dashboard*,
+see :ref:`infrastructure-monitoring-ucs-dashboard`.
 
 .. _monitoring-installation:
 
 Installation
 ------------
 
-For installation of the UCS Dashboard components, see :ref:`dashboard-installation`.
+For installation of the *UCS Dashboard* components,
+see :ref:`infrastructure-monitoring-ucs-dashboard-installation`.
 
-Additionally to the components of the UCS Dashboard you need to install the
-*Prometheus Alertmanager* app and the *univention-monitoring-client*.
+In addition to the *UCS Dashboard* components,
+you need to install the *Prometheus Alertmanager* app and the package :program:`univention-monitoring-client`.
 
-For every UCS system that the administrator wants to show system data on the
-dashboard, they must install the *UCS Dashboard Client* app. The package
-:program:`univention-monitoring-client` depends on the *UCS Dashboard Client*
-app and is installed on every UCS system by default for the alert functionality.
+For monitored Nubus for UCS systems, install the *UCS Dashboard Client* app.
+The package :program:`univention-monitoring-client`
+depends on the *UCS Dashboard Client* app
+and is installed by default for alert functionality.
 
 Prometheus Alertmanager
-   The *Prometheus Alertmanager* app to send notifications for example through email
-   for firing alerts. The Alertmanager needs some configuration to work properly.
+   The *Prometheus Alertmanager* app sends notifications for firing alerts,
+   for example by email.
+   Configure its app settings so that it can deliver notifications.
 
 .. figure:: /images/alertmanager-appsettings.*
     :alt: Alertmanager Settings
@@ -91,6 +76,127 @@ Some services already automatically setup their respective package
 during installation. For example, if administrators setup the
 :program:`UCS AD Connector`, it automatically includes the
 monitoring plugin.
+
+.. _monitoring-configuration:
+
+Configuration
+-------------
+
+Use the *Management UI* and *Prometheus Alertmanager*
+to configure alerts and alert handling.
+
+.. _monitoring-alert-configuration:
+
+Configure monitoring alerts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An alert defines the monitoring of a service or a status, for example free disk
+space. Administrators can assign any number of computers to such an alert
+object.
+
+Administrators manage monitoring alerts in the UMC module :guilabel:`Monitoring`
+with the object type *Alert*, see
+:ref:`computers-management-table-monitoring-alert`. Prometheus has no LDAP
+interface for the monitoring configuration. Instead, a listener module generates
+the configuration files when administrators add, edit, or remove alerts.
+
+.. figure:: /images/alert_umc.*
+   :alt: Configuring an alert
+
+   Configuring an alert
+
+.. list-table:: *General* tab
+   :header-rows: 1
+   :widths: 4 8
+
+   * - Attribute
+     - Description
+
+   * - ``Name``
+     - An unambiguous name for the alert.
+
+   * - ``Alert group``
+     - Defines the group that includes the alert. Multiple alarms can belong to
+       the same group.
+
+   * - ``Query expression``
+     - Prometheus query expression, which triggers the alert. The alert triggers
+       when the given query returns a non-empty vector.
+
+       For details about the syntax, see the `Prometheus documentation
+       <prometheus-query-expression_>`_.
+
+   * - ``For clause``
+     - Defines the time that the query expression result is non-empty until the
+       alert triggers.
+
+   * - ``Summary template``
+     - The title of the alert, shown in alert dashboard and alert email
+       notifications.
+
+   * - ``Description template``
+     - The description of the alert, shown in alert dashboard and alert email
+       notifications.
+
+   * - ``Labels``
+     - *Prometheus* attaches labels to alerts. Labels help in queries for
+       alerts. For example: *severity* with the value ``critical`` or
+       ``warning``.
+
+   * - ``Template Values``
+     - Query expressions, descriptions and summaries can use variable values.
+       For example: Reference ``max`` through ``%max%``.
+
+.. list-table:: *Hosts* tab
+   :header-rows: 1
+   :widths: 4 8
+
+   * - Attribute
+     - Description
+
+   * - ``Assigned hosts``
+     - *Prometheus* executes the query on the computers referenced here. The
+       listener module runs the tests for the alert. It replaces the term
+       ``%instance%`` in the query expression with a regular expression that
+       matches the assigned hosts.
+
+.. _monitoring-assign-alerts:
+
+Assign monitoring alerts to computers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Prometheus* can monitor all computers administered with the *Management UI*.
+
+Navigate in the *Management UI* to :guilabel:`Computers` and choose the computer you want
+to activate alerts on. Choose and add all alerts you like in the tab
+*Advanced settings* under *Alerts* and save your changes.
+
+.. figure:: /images/monitoring-alerts.*
+   :alt: Assigning alert to a host
+
+   Assigning alert to a host
+
+.. list-table:: *Advanced settings* tab
+   :header-rows: 1
+   :widths: 4 8
+
+   * - Attribute
+     - Description
+
+   * - ``Assigned monitoring alerts``
+     - Lists all assigned monitoring alerts for the current computer. Add or
+       remove alerts.
+
+.. _monitoring-silence-alerts:
+
+Silence alerts
+~~~~~~~~~~~~~~
+
+To silence firing alerts for a defined time,
+use the *Prometheus Alertmanager* web interface.
+
+For more information, see the `Prometheus Alertmanager documentation
+<https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_.
 
 .. _monitoring-preconfigured-checks:
 
@@ -204,11 +310,6 @@ once additional packages have been installed (see :ref:`Monitoring installation 
        Corresponding alerts exist for the hard drives :file:`sdb`,
        :file:`sdc` and :file:`sdd`.
 
-   * - ``UNIVENTION_RAID`` and ``UNIVENTION_RAID_WARNING``
-     - Tests the status of the software RAID through :file:`/proc/mdadm` and fires a *critical* alert
-       if one of the hard drives in the RAID association has failed or
-       a *warning* alert if a recovery procedure is in progress.
-
    * - ``UNIVENTION_ADCONNECTOR`` and ``UNIVENTION_ADCONNECTOR_WARNING``
      - Checks the status of the AD connector:
 
@@ -252,133 +353,13 @@ once additional packages have been installed (see :ref:`Monitoring installation 
 
    * - ``UNIVENTION_SAMBA_REPLICATION``
      - Monitors the status of the samba replication. the alert is fired if any replication failures are present.
-.. _monitoring-configuration:
 
-Configuration
--------------
+.. _monitoring-extend:
 
-The *Management UI* offers the following settings:
+Extend monitoring
+-----------------
 
-* Administrators must configure the alert
-  (see :ref:`Monitoring installation <monitoring-installation>`) and define on
-  which computers of the domain an alert shall be
-  active (see :ref:`monitoring-assign-alerts`).
-
-* To configure the contact person that the *Alertmanager* notifies in case of
-  errors or alerts, set the appropriate app setting in the :program:`Prometheus
-  Alertmanager` app
-  (see :ref:`Monitoring installation <monitoring-installation>`).
-
-* Administrators can silence firing alerts for a defined time. See the
-  `Prometheus Alertmanager documentation
-  <https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_.
-  Use the *Prometheus Alertmanager* web interface for those settings.
-
-The basic settings already define a large number of tests for each computer, for
-example an alert basic configuration without the need for any further
-adjustments.
-
-.. _monitoring-alert-configuration:
-
-Configure monitoring alerts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-An alert defines the monitoring of a service or a status, for example free disk
-space. Administrators can assign any number of computers to such an alert
-object.
-
-Administrators manage monitoring alerts in the UMC module :guilabel:`Monitoring`
-with the object type *Alert*, see
-:ref:`computers-management-table-monitoring-alert`. Prometheus has no LDAP
-interface for the monitoring configuration. Instead, a listener module generates
-the configuration files when administrators add, edit, or remove alerts.
-
-.. figure:: /images/alert_umc.*
-   :alt: Configuring an alert
-
-   Configuring an alert
-
-.. list-table:: *General* tab
-   :header-rows: 1
-   :widths: 4 8
-
-   * - Attribute
-     - Description
-
-   * - ``Name``
-     - An unambiguous name for the alert.
-
-   * - ``Alert group``
-     - Defines the group that includes the alert. Multiple alarms can belong to
-       the same group.
-
-   * - ``Query expression``
-     - Prometheus query expression, which triggers the alert. The alert triggers
-       when the given query returns a non-empty vector.
-
-       For details about the syntax, see the `Prometheus documentation
-       <prometheus-query-expression_>`_.
-
-   * - ``For clause``
-     - Defines the time that the query expression result is non-empty until the
-       alert triggers.
-
-   * - ``Summary template``
-     - The title of the alert, shown in alert dashboard and alert email
-       notifications.
-
-   * - ``Description template``
-     - The description of the alert, shown in alert dashboard and alert email
-       notifications.
-
-   * - ``Labels``
-     - *Prometheus* attaches labels to alerts. Labels help in queries for
-       alerts. For example: *severity* with the value ``critical`` or
-       ``warning``.
-
-   * - ``Template Values``
-     - Query expressions, descriptions and summaries can use variable values.
-       For example: Reference ``max`` through ``%max%``.
-
-.. list-table:: *Hosts* tab
-   :header-rows: 1
-   :widths: 4 8
-
-   * - Attribute
-     - Description
-
-   * - ``Assigned hosts``
-     - *Prometheus* executes the query on the computers referenced here. The
-       listener module runs the tests for the alert. It replaces the term
-       ``%instance%`` in the query expression with a regular expression that
-       matches the assigned hosts.
-
-.. _monitoring-assign-alerts:
-
-Assign monitoring alerts to computers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*Prometheus* can monitor all computers administered with the *Management UI*.
-
-Navigate in the *Management UI* to :guilabel:`Computers` and choose the computer you want
-to activate alerts on. Choose and add all alerts you like in the tab
-*Advanced settings* under *Alerts* and save your changes.
-
-.. figure:: /images/monitoring-alerts.*
-   :alt: Assigning alert to a host
-
-   Assigning alert to a host
-
-.. list-table:: *Advanced settings* tab
-   :header-rows: 1
-   :widths: 4 8
-
-   * - Attribute
-     - Description
-
-   * - ``Assigned monitoring alerts``
-     - Lists all assigned monitoring alerts for the current computer. Add or
-       remove alerts.
+Use custom alert checks to collect additional metrics and define alerts for them.
 
 .. _monitoring-add-alerts:
 
