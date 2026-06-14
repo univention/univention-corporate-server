@@ -18,8 +18,6 @@ from dockertest import App, get_app_name
 
 
 DOCKER_COMPOSE = '''
-version: '2.0'
-
 services:
     test1:
         image: {image}
@@ -40,7 +38,7 @@ services:
             TEST_KEY: "@%@85_docker_compose/test_key@%@"
         command: /sbin/init
         restart: always
-'''.replace('\t', '  ')
+'''
 
 SETTINGS = '''
 [85_docker_compose/test_key]

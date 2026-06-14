@@ -15,8 +15,6 @@ from dockertest import App
 
 
 DOCKER_COMPOSE = '''
-version: '2.0'
-
 services:
     test1:
         image: {image}
@@ -26,7 +24,7 @@ services:
         image: {image}
         command: /sbin/init
         restart: always
-'''.replace('\t', '  ')
+'''
 
 ENV = '''
 REDIS_PORT_6379_TCP_ADDR=test2

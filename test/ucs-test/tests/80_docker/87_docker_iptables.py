@@ -16,8 +16,6 @@ from dockertest import App
 
 
 DOCKER_COMPOSE = '''
-version: '2.0'
-
 services:
     test1:
         image: {image}
@@ -30,7 +28,7 @@ services:
         ports:
             - "9000:9000"
         command: /sbin/init
-'''.replace('\t', '  ')
+'''
 
 
 @pytest.mark.exposure('dangerous')    # cleanup remnants from previous tests

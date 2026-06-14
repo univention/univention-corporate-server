@@ -16,14 +16,12 @@ from dockertest import App
 
 
 DOCKER_COMPOSE = '''
-version: '2.0'
-
 services:
     test1:
         image: artifacts.software-univention.de/library/alpine:3.23
         command: /sbin/init
         restart: always
-'''.replace('\t', '  ')
+'''
 
 
 def _first_free_subnet():
