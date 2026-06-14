@@ -19,3 +19,4 @@ all in one place and continuously updated.
    :caption: Contents
 
    dashboard
+   monitoring
