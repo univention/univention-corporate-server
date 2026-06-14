@@ -28,7 +28,7 @@ in a compact manner.
 
 See UCS-Dashboard :ref:`dashboard-installation` for an overview of all involved components.
 
-Administrators define the alert configuration in |UCSUMC|.
+Administrators define the alert configuration in the *Management UI*.
 A listener module automatically generates the configuration files from
 information stored in the LDAP directory.
 
@@ -116,7 +116,7 @@ All alerts have label *severity* with value ``critical`` or ``warning``.
        public DNS server by querying the hostname ``www.univention.de``. If no
        DNS forwarder is defined for the UCS domain, this request fails. In this
        case, ``www.univention.de`` can be replaced with the FQDN of the
-       |UCSPRIMARYDN| for example, in the :envvar:`monitoring/dns/lookup-domain`
+       :term:`Primary Directory Node` for example, in the :envvar:`monitoring/dns/lookup-domain`
        to test the function of the name resolution.
 
    * - ``UNIVENTION_LDAP_AUTH``
@@ -135,7 +135,7 @@ All alerts have label *severity* with value ``critical`` or ``warning``.
 
    * - ``UNIVENTION_SSL`` and ``UNIVENTION_SSL_WARNING``
      - Tests the remaining validity period of the UCS SSL certificates. This
-       plugin is only suitable for |UCSPRIMARYDN| and |UCSBACKUPDN| systems.
+       plugin is only suitable for :term:`Primary Directory Node` and :term:`Backup Directory Node` systems.
 
    * - ``UNIVENTION_SWAP`` and ``UNIVENTION_SWAP_WARNING``
      - Monitors the utilization of the swap partition. An error status is raised
@@ -171,7 +171,7 @@ All alerts have label *severity* with value ``critical`` or ``warning``.
 
    * - ``UNIVENTION_KPASSWDD``
      - Tests the availability of the Kerberos password service (only available
-       on Primary/|UCSBACKUPDN|\ s). If fewer or more than one process is running,
+       on the :term:`Primary Directory Node` and :term:`Backup Directory Nodes <Backup Directory Node>`). If fewer or more than one process is running,
        an alert is fired.
 
    * - ``UNIVENTION_PACKAGE_STATUS``
@@ -257,7 +257,7 @@ once additional packages have been installed (see :ref:`Monitoring installation 
 Configuration
 -------------
 
-|UCSUMC| offers the following settings:
+The *Management UI* offers the following settings:
 
 * Administrators must configure the alert
   (see :ref:`Monitoring installation <monitoring-installation>`) and define on
@@ -358,9 +358,9 @@ the configuration files when administrators add, edit, or remove alerts.
 Assign monitoring alerts to computers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Prometheus* can monitor all computers administered with |UCSUMC|.
+*Prometheus* can monitor all computers administered with the *Management UI*.
 
-Navigate in the |UCSUMC| to :guilabel:`Computers` and choose the computer you want
+Navigate in the *Management UI* to :guilabel:`Computers` and choose the computer you want
 to activate alerts on. Choose and add all alerts you like in the tab
 *Advanced settings* under *Alerts* and save your changes.
 
@@ -410,7 +410,7 @@ file. It must write valid *Prometheus* metrics into a :file:`.prom` file in the
 :file:`/var/lib/prometheus/node-exporter/` directory. *Prometheus* imports this
 file.
 
-You need to configure the custom alert in |UCSUMC|, see
+You need to configure the custom alert in the *Management UI*, see
 :ref:`monitoring-alert-configuration`. You must enter a
 Prometheus expression for the metric of the script to the *Query
 expression* field. To assign the custom alert to UCS systems, see
@@ -425,3 +425,4 @@ expression* field. To assign the custom alert to UCS systems, see
       `Exposition formats
       <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
 
+.. _prometheus-query-expression: https://prometheus.io/docs/prometheus/latest/querying/basics/
