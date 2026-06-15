@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.6.1) unstable; urgency=medium
+
+  * Bug #59489: fix formatting of log message
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jun 2026 12:42:28 +0200
+
 univention-management-console-module-diagnostic (8.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

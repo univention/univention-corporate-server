@@ -52,8 +52,9 @@ def run(_umc_instance: Instance) -> None:
                 failed.append('\n'.join(msgs))
 
     if failed:
-        MODULE.error('%s%s', description, len(failed), '\n'.join(failed))
-        raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
+        message = '%s%s' % (description % len(failed), '\n'.join(failed))
+        MODULE.error('%s', message)
+        raise Warning(message)
 
 
 def query_dns_server(nameserver: str, hostname: str) -> None:
