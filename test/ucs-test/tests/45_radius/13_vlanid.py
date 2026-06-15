@@ -8,6 +8,7 @@
 
 import re
 import subprocess
+import tempfile
 
 import pytest
 
@@ -40,6 +41,35 @@ def find_vlanid(message):
         return search.group(1).strip()
 
 
+def eap_find_vlanid(stdout):
+    # eapol_test prints the attribute name on one line and its hex-encoded
+    # value (a colon-separated field) on the next.
+    lines = stdout.splitlines()
+    for i, line in enumerate(lines):
+        if 'Tunnel-Private-Group-Id' in line:
+            return bytes.fromhex(lines[i + 1].split(':')[1].strip()).decode('utf-8')
+
+
+def peap_auth_anonymous_outer(username, password):
+    # PEAP with a distinct anonymous outer identity. The VLAN-ID must be
+    # derived from the inner (tunnelled) identity, not from the outer
+    # "anonymous" one. See bug: outer identity used to set the VLAN.
+    testdata = f'''network={{
+        key_mgmt=WPA-EAP
+        eap=PEAP
+        identity="{username}"
+        anonymous_identity="anonymous"
+        password="{password}"
+        phase2="autheap=MSCHAPV2"
+}}
+'''
+    with tempfile.NamedTemporaryFile() as fd:
+        fd.write(testdata.encode('UTF-8'))
+        fd.flush()
+        p = subprocess.run(['/usr/sbin/eapol_test', '-c', fd.name, '-s', 'testing123'], capture_output=True, text=True, check=True)
+    return eap_find_vlanid(p.stdout)
+
+
 def radius_auth(username, password, user_type, auth_method):
     if user_type == 'computer':
         p = subprocess.run([
@@ -61,6 +91,8 @@ def radius_auth(username, password, user_type, auth_method):
             echo_username_password = subprocess.Popen(('echo', credentials), stdout=subprocess.PIPE)
             p = subprocess.run(['radeapclient', '-x', 'localhost', 'auth', 'testing123'], stdin=echo_username_password.stdout, capture_output=True, text=True, check=True)
             echo_username_password.wait()
+        elif auth_method == 'peap':
+            return peap_auth_anonymous_outer(username, password)
         else:
             raise ValueError(f"Unexpected radius authmethod '{auth_method}'")
     else:
@@ -91,8 +123,10 @@ def test_user_vlan_id(udm_session, vlan_id_group_one, vlan_id_group_two, ucr_vla
     if vlan_id_group_two:
         group_two_set['vlanId'] = vlan_id_group_two
     _groupdn_two, _groupname_two = udm_session.create_group(set=group_two_set)
-    for auth_method in ('pap', 'mschap', 'eap'):
-        assert radius_auth(username, 'univention', 'user', auth_method) == expected_vlan_id
+    # 'peap' uses an anonymous outer identity: it verifies the VLAN-ID is
+    # derived from the inner (tunnelled) user identity, not the outer one.
+    for auth_method in ('pap', 'mschap', 'eap', 'peap'):
+        assert radius_auth(username, 'univention', 'user', auth_method) == expected_vlan_id, f'wrong vlan-id for auth method {auth_method!r}'
 
 
 @pytest.mark.parametrize('vlg1, vlg2, ucr_vlan_id, expected_vlan_id, restart_freeradius', [
