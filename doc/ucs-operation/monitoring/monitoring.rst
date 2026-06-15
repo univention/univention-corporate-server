@@ -8,14 +8,12 @@ Monitoring
 
 Monitoring in Nubus for UCS collects metrics from managed systems
 and compares them with predefined alert conditions.
-This helps administrators detect system issues early
+This helps administrators detect system operation issues early
 and respond promptly.
 
-This page describes monitoring setup and administration tasks
-for Nubus for UCS.
-It covers the required monitoring components,
-how to configure alerts,
-how to assign alerts to computers,
+Use this page to set up and manage monitoring for Nubus for UCS.
+It explains the required components,
+how to configure and assign alerts,
 which preconfigured checks are available,
 and how to create custom alerts.
 
@@ -29,25 +27,24 @@ Installation
 
 To install the *UCS Dashboard* components,
 see :ref:`infrastructure-monitoring-ucs-dashboard-installation`.
-
 In addition to the *UCS Dashboard* components,
 install the *Prometheus Alertmanager* app
 on the system that sends alert notifications.
-Install the :program:`univention-monitoring-client` package
-on each monitored Nubus for UCS system.
+For information about how to install apps through the *App Center*,
+see :ref:`lifecycle-app-center-installation`.
 
 On each monitored Nubus for UCS system,
 install the *UCS Dashboard Client* app.
-The :program:`univention-monitoring-client` package
-depends on the *UCS Dashboard Client* app.
 Nubus for UCS installs the :program:`univention-monitoring-client` package
 by default for alert functionality.
+Verify that the :program:`univention-monitoring-client` package is present
+before you continue.
 
 Prometheus Alertmanager
    The *Prometheus Alertmanager* app sends notifications for firing alerts,
    for example by email.
-   Configure the app settings so it can deliver them,
-   as shown in :numref:`monitoring-installation-figure`.
+   Configure the app settings as shown in
+   :numref:`monitoring-installation-figure`.
 
    .. _monitoring-installation-figure:
 
@@ -56,49 +53,44 @@ Prometheus Alertmanager
 
       *Alertmanager* app settings for SMTP and email recipients
 
-Before you configure *Alertmanager*,
-make sure that a reachable SMTP server
-and the recipient email addresses are available.
-The settings include the recipients for email alert notifications.
-The app settings also require an SMTP server
-for sending email notifications.
-*Alertmanager* supports the SMTP authentication methods
-``PLAIN``, ``LOGIN``, and ``CRAM-MD5``,
-and it supports TLS communication.
-If you leave all authentication-related fields empty,
-*Alertmanager* doesn't use SMTP authentication.
-After you save the settings,
-send a test alert to verify that email notifications work.
+   Before you configure *Alertmanager*,
+   make sure that a reachable SMTP server is available
+   and that you have recipient email addresses.
+   *Alertmanager* supports the SMTP authentication methods
+   ``PLAIN``, ``LOGIN``, and ``CRAM-MD5``.
+   It also supports TLS communication.
+   If you leave all authentication-related fields empty,
+   *Alertmanager* doesn't use SMTP authentication.
+   After you save the settings,
+   send a test alert to verify that email notifications work.
 
 :program:`univention-monitoring-client`
    The package :program:`univention-monitoring-client` provides standard alert
-   plugins for checking the system health.
+   plugins that check system health.
 
-Administrators can install the following packages
-to add alerts beyond the standard checks from the
-:program:`univention-monitoring-client` package:
+   You can install the following packages
+   to add alerts beyond the standard checks from the
+   :program:`univention-monitoring-client` package.
+   Some services install their required package during installation.
+   For example, when you set up the
+   *Active Directory Connection*,
+   Nubus for UCS also installs the monitoring plugin.
 
-* :program:`univention-monitoring-raid`: Monitoring of the software RAID status.
+   * :program:`univention-monitoring-raid`: Monitoring of the software RAID status.
 
-* :program:`univention-monitoring-smart`: Test of the S.M.A.R.T. status of hard drives.
+   * :program:`univention-monitoring-smart`: Test of the S.M.A.R.T. status of hard drives.
 
-* :program:`univention-monitoring-opsi`: Test of software distribution OPSI.
+   * :program:`univention-monitoring-opsi`: Test of software distribution OPSI.
 
-* :program:`univention-monitoring-cups`: Test of CUPS printing system.
+   * :program:`univention-monitoring-cups`: Test of CUPS printing system.
 
-* :program:`univention-monitoring-squid`: Test of Squid proxy server.
+   * :program:`univention-monitoring-squid`: Test of Squid proxy server.
 
-* :program:`univention-monitoring-samba`: Test of the Samba 4 services.
+   * :program:`univention-monitoring-samba`: Test of the Samba services.
 
-* :program:`univention-monitoring-s4-connector`: Test of the S4 Connector.
+   * :program:`univention-monitoring-s4-connector`: Test of the S4 Connector.
 
-* :program:`univention-monitoring-ad-connector`: Test of the AD Connection.
-
-Some services already set up their required package
-during installation.
-For example, when you set up the
-:program:`AD Connection`,
-Nubus for UCS also installs the monitoring plugin.
+   * :program:`univention-monitoring-ad-connector`: Test of the *Active Directory Connection*.
 
 .. _monitoring-configuration:
 .. _monitoring-alert-configuration:
@@ -107,24 +99,23 @@ Configuration
 -------------
 
 Use the *Management UI* and *Alertmanager*
-to configure alerts and alert handling.
+to configure and handle alerts.
 
-An alert defines the monitoring of a service or status.
+You use alerts to monitor a service or status.
 For example, administrators can monitor free disk space.
-Administrators can assign any number of computers to an alert object.
-
-Administrators manage monitoring alerts
-in the *Monitoring* module of the *Management UI*
-with the object type *Alert*,
+You can assign any number of computers to an alert object.
+You manage alerts
+in the *Monitoring* module of the *Management UI*.
+Use the object type *Alert*,
 as shown in :numref:`monitoring-alert-configuration-figure`.
 For more information, see
-:ref:`computers-management-table-monitoring-alert`.
+:external+uv-nubus-manual:ref:`nubus-computer-management-section-alerts`.
 
 .. note::
 
    Prometheus doesn't provide an LDAP interface
    for monitoring configuration.
-   Instead, a listener module generates the configuration files
+   A listener module generates the configuration files
    when administrators add, edit, or remove alerts.
 
 .. _monitoring-alert-configuration-figure:
@@ -139,51 +130,60 @@ For more information, see
 General tab - Monitoring management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section provides a reference for the fields
-on the *General* tab of the *Monitoring* management module in the *Management UI*.
+This section describes the fields
+on the *General* tab
+in the *Monitoring* management module
+of the *Management UI*.
 
-``Name``
+Name
    An unambiguous name for the alert.
 
-``Alert group``
+Alert group
    Defines the group that includes the alert.
    Multiple alerts can belong to the same group.
 
-``Query expression``
+Query expression
    Defines the Prometheus query expression that triggers the alert.
    The alert triggers when the query returns a non-empty vector.
 
    For details about the syntax, see the `Prometheus documentation
    <prometheus-query-expression_>`_.
 
-``For clause``
+For clause
    Defines how long the query expression must return a non-empty result
    before the alert triggers.
 
-``Summary template``
-   Specifies the alert title for the alert dashboard
-   and for alert email notifications.
+Summary template
+   Specifies the alert title.
+   It appears on the alert dashboard
+   and in alert email notifications.
 
-``Description template``
-   Specifies the alert description for the alert dashboard
-   and for alert email notifications.
+Description template
+   Specifies the alert description.
+   It appears on the alert dashboard
+   and in alert email notifications.
 
-``Labels``
+Labels
    *Prometheus* attaches labels to alerts.
    These labels help you query alerts.
    For example, you can use the label *severity*
    with the value ``critical`` or ``warning``.
 
-``Template Values``
+Template Values
    Query expressions, descriptions, and summaries can use variables.
-   For example, use ``%max%`` to reference the value ``max``.
+   For example, ``%max%`` references the value ``max``.
 
 .. _monitoring-alert-configuration-hosts-tab:
 
 Hosts tab - Monitoring management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``Assigned hosts``
+This section describes the fields
+on the *Hosts* tab
+in the *Monitoring* management module
+of the *Management UI*.
+
+Assigned hosts
    *Prometheus* runs the query on the computers listed here.
    The listener module runs the tests for the alert.
    It replaces ``%instance%`` in the query expression
@@ -195,13 +195,13 @@ Assign monitoring alerts to computers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *Prometheus* can monitor all computers
-that you administer through the *Management UI*.
+that you manage in the *Management UI*.
 
-To assign monitoring alerts to a computer,
+To assign alerts to a computer,
 do the following:
 
 #. In the *Management UI*,
-   go to :guilabel:`Computers`
+   open the :external+uv-nubus-manual:ref:`nubus-computer-management`
    and select the computer.
 
 #. On the *Advanced settings* tab,
@@ -214,7 +214,7 @@ do the following:
 #. Verify that the assigned alerts appear
    in the *Assigned monitoring alerts* list.
 
-``Assigned monitoring alerts``
+Assigned monitoring alerts
    Lists the monitoring alerts assigned to the current computer.
    You can add or remove alerts here.
 
@@ -223,16 +223,15 @@ do the following:
 .. figure:: /images/monitoring-alerts.*
    :alt: The figure shows the assignment of monitoring alerts to a computer.
 
-   Assigning alert to a host
+   Assigning alerts to a host
 
 .. _monitoring-silence-alerts:
 
-Silence alerts
+Alert silences
 ~~~~~~~~~~~~~~
 
-To silence firing alerts for a specific period,
-use the *Alertmanager* web interface.
-
+Use the *Alertmanager* web interface
+to silence firing alerts for a specific period.
 For more information about silences,
 see the `Prometheus Alertmanager documentation
 <https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_.
@@ -263,12 +262,12 @@ with the value ``critical`` or ``warning``.
    In that case, you can use the FQDN of the
    :term:`Primary Directory Node`,
    for example, by setting the :envvar:`monitoring/dns/lookup-domain`
-   variable, to test name resolution.
+   :term:`UCR variable`, to test name resolution.
 
 .. _monitoring-preconfigured-checks-ldap-auth:
 
 ``UNIVENTION_LDAP_AUTH``
-   Monitors the LDAP server on UCS Directory Nodes.
+   Monitors the LDAP server on Nubus for UCS Directory Nodes.
 
 .. _monitoring-preconfigured-checks-load:
 
@@ -278,7 +277,7 @@ with the value ``critical`` or ``warning``.
 .. _monitoring-preconfigured-checks-ntp:
 
 ``UNIVENTION_NTP`` and ``UNIVENTION_NTP_WARNING``
-   Requests the time from the NTP service on the monitored UCS system.
+   Requests the time from the NTP service on the monitored Nubus for UCS system.
    If the time differs by more than ``60`` or ``120`` seconds,
    the alert fires.
 
@@ -307,16 +306,19 @@ with the value ``critical`` or ``warning``.
 ``UNIVENTION_REPLICATION`` and ``UNIVENTION_REPLICATION_WARNING``
    Monitors LDAP replication.
    The alert detects a :file:`failed.ldif` file,
-   replication standstills,
+   stalled replication,
    and large differences between transaction IDs.
 
 .. _monitoring-preconfigured-checks-nscd:
 
 ``UNIVENTION_NSCD`` and ``UNIVENTION_NSCD2``
-   Tests the availability of the nameserver cache daemon (NSCD).
+   Tests the availability of the name server cache daemon (NSCD).
    If no NSCD process runs, the check triggers a *critical* alert.
    If more than one process runs,
    the check triggers a *warning* alert.
+
+   For information about NSCD,
+   see :ref:`system-administration-nscd`.
 
 .. _monitoring-preconfigured-checks-winbind:
 
@@ -342,9 +344,9 @@ with the value ``critical`` or ``warning``.
 ``UNIVENTION_JOINSTATUS`` and ``UNIVENTION_JOINSTATUS_WARNING``
    Tests the join status of a system.
    If the system hasn't joined yet,
-   the check triggers a *critical* alert.
+   the check triggers a ``critical`` alert.
    If join scripts haven't run,
-   the check triggers a *warning* alert.
+   the check triggers a ``warning`` alert.
 
 .. _monitoring-preconfigured-checks-kpasswd:
 
@@ -359,24 +361,24 @@ with the value ``critical`` or ``warning``.
 
 ``UNIVENTION_PACKAGE_STATUS``
    Monitors the status of installed Debian packages.
-   If any package has the status *half-installed*,
+   If any package has the status ``half-installed``,
    the check triggers an alert.
 
 .. _monitoring-preconfigured-checks-slapd-mdb-maxsize:
 
 ``UNIVENTION_SLAPD_MDB_MAXSIZE`` and ``UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING``
-   Monitors the proportion of free memory pages
+   Monitors how many free memory pages remain
    in the *mdb* backend of SLAPD
    across multiple directories.
 
 .. _monitoring-preconfigured-checks-listener-mdb-maxsize:
 
 ``UNIVENTION_LISTENER_MDB_MAXSIZE`` and ``UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING``
-   Monitors the proportion of free memory pages
+   Monitors how many free memory pages remain
    in the *mdb* backend of SLAPD
-   across multiple directories that the Listener uses.
+   across the directories that the Listener uses.
 
-Additional monitoring alerts are available
+You can use additional monitoring alerts
 after you install the required packages.
 For installation details,
 see :ref:`monitoring-installation`.
@@ -394,17 +396,17 @@ see :ref:`monitoring-installation`.
 ``UNIVENTION_SMART_SDA``
    Tests the S.M.A.R.T. status of the hard drive :file:`/dev/sda`.
    Corresponding alerts are available for the hard drives
-   :file:`sdb`, :file:`sdc`, and :file:`sdd`.
+   :file:`/dev/sdb`, :file:`/dev/sdc`, and :file:`/dev/sdd`.
 
 .. _monitoring-preconfigured-checks-ad-connector:
 
 ``UNIVENTION_ADCONNECTOR`` and ``UNIVENTION_ADCONNECTOR_WARNING``
-   Monitors the status of the Active Directory Connection:
+   Monitors the status of the *Active Directory Connection*:
 
    * If no connector process runs, the alert fires.
    * If more than one process runs per connector instance,
-     the check triggers a *warning* alert.
-   * If rejects occur, the check triggers a *warning* alert.
+     the check triggers a ``warning`` alert.
+   * If rejects occur, the check triggers a ``warning`` alert.
    * If the AD server isn't reachable, the alert fires.
 
    You can use this plugin in multi-connector instances.
@@ -415,7 +417,7 @@ see :ref:`monitoring-installation`.
    Monitors the CUPS daemon.
    If no :program:`cupsd` process runs
    or the web interface isn't accessible,
-   the check triggers a *critical* alert.
+   the check triggers a ``critical`` alert.
 
 .. _monitoring-preconfigured-checks-squid:
 
@@ -428,8 +430,8 @@ see :ref:`monitoring-installation`.
 .. _monitoring-preconfigured-checks-raid:
 
 ``UNIVENTION_RAID`` and ``UNIVENTION_RAID_WARNING``
-   Monitors the status of existing RAID devices.
-   The check triggers a *warning* alert
+   Monitors RAID device status.
+   The check triggers a ``warning`` alert
    for the following RAID statuses:
 
    * ``Rebuilding``
@@ -451,8 +453,8 @@ see :ref:`monitoring-installation`.
 .. _monitoring-preconfigured-checks-s4-connector:
 
 ``UNIVENTION_S4CONNECTOR`` and ``UNIVENTION_S4CONNECTOR_WARNING``
-   Monitors the Samba 4 server.
-   If the server is reachable and rejects are present,
+   Monitors the Samba server.
+   If the server is reachable and rejects occur,
    the check triggers a *warning* alert.
    If the server isn't reachable,
    the check triggers a *critical* alert.
@@ -461,31 +463,25 @@ see :ref:`monitoring-installation`.
 
 ``UNIVENTION_SAMBA_REPLICATION``
    Monitors Samba replication.
-   The alert fires if replication failures occur.
+   The alert fires when replication fails.
 
-.. _monitoring-extend:
+.. _monitoring-add-alerts:
 
-Extend monitoring
------------------
+Extend monitoring with new alerts
+---------------------------------
 
 Use custom alert checks to collect additional metrics
 and define alerts for them.
 
-.. _monitoring-add-alerts:
-
-Create new alerts
-~~~~~~~~~~~~~~~~~
-
 Create a custom alert
 when you want to collect additional metrics
 and monitor them in *Prometheus*.
-
 Before you begin, make sure that:
 
-* you have administrative access to the target Nubus for UCS system
-* the target system includes the required monitoring components
-* every target system includes the external programs or libraries
-  that your custom check uses
+* You have administrative access to the target Nubus for UCS system.
+* The target system includes the required monitoring components.
+* Every target system includes the external programs or libraries
+  that your custom check uses.
 
 Custom alert checks export metrics from the local system to *Prometheus*.
 A *PromQL* query uses these metrics to define the alert.
@@ -522,21 +518,22 @@ To create a custom alert, do the following:
    For details, see :ref:`monitoring-assign-alerts`.
 
 #. Verify that *Prometheus* reads the exported metrics.
-   For example, confirm that the metric appears in Prometheus
+   For example, confirm that the metric appears in *Prometheus*
    and that the alert is available in the alert configuration.
 
-All alert checks that Nubus for UCS provides use Python.
-Custom checks can use Perl, Python, or Shell.
-They don't require external libraries or programs
-unless your script uses them.
+.. note::
+
+   All alert checks that Nubus for UCS provides use Python.
+   Custom checks can use Perl, Python, or shell scripts.
+   These checks don't require external libraries or programs
+   unless the script uses them.
 
 .. seealso::
 
-   Prometheus naming conventions
-      `Metric and label naming <https://prometheus.io/docs/practices/naming/>`_
+   `Metric and label naming <https://prometheus.io/docs/practices/naming/>`_
+      for information about *Prometheus* naming conventions.
 
-   Text-based format of a :file:`.prom` file
-      `Exposition formats
-      <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
+   `Exposition formats <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
+      for information about text-based format of a :file:`.prom` file.
 
 .. _prometheus-query-expression: https://prometheus.io/docs/prometheus/latest/querying/basics/
