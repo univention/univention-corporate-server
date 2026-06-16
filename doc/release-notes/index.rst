@@ -5,7 +5,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2026-09-22
+Publication date of UCS |release|: 2027-01-01
 
 .. _relnotes-highlights:
 
@@ -17,49 +17,7 @@ Release highlights
 It includes feature improvements, extensions, and bug fixes.
 The following overview highlights the most important changes:
 
-New RADIUS authentication helper:
-   WLAN authentication with username and password
-   through the Nubus RADIUS service uses an authentication helper plugin internally.
-   This helper has caused high CPU consumption in large environments.
-   A rewrite of the helper module in Rust reduces CPU consumption
-   and increases the number of authentications that each UCS installation can process.
-   For more information, see :uv:bug:`59042`.
-
-New Guardian backend based on :spelling:word:`Cerbos`:
-   The Nubus *Authorization Service*, called Guardian, now uses the open source solution
-   :program:`Cerbos` as its backend.
-   It replaces the Open Policy Agent (OPA) backend.
-   :program:`Cerbos` includes features that Guardian needs to make authorization decisions.
-   More information about the authorization decisions will become available
-   in the Univention public blog shortly after this release.
-   Besides the :program:`Cerbos` backend,
-   the *Authorization Service* is now available as a component of UCS,
-   packaged as a Debian package that contains a container.
-   This simplifies setup and maintenance compared with the former Docker Compose-based App Center app.
-
-Improved handling of password hashes and optional removal of weaker hashes:
-   In preparation for the removal of weaker password hashes,
-   UCS |release| integrates several improvements.
-   UDM now has more configuration options
-   to define which hashing algorithms to use during password storage.
-   These options let you remove weaker hashes that are still stored for compatibility reasons.
-   The Active Directory Connection now supports more configurations
-   in which Active Directory is configured with reduced encryption types.
-
-Keycloak Metrics:
-   The Keycloak app now lets you activate the integrated "Metrics Endpoint" in Keycloak.
-   Administrators can get detailed information about Keycloak usage and events
-   in their Prometheus and Grafana dashboards.
-   For more information, see :external+uv-keycloak-app:ref:`use-case-metrics-monitoring` in
-   :cite:t:`ucs-keycloak-doc`.
-
-Education Classes support in the Microsoft 365 Connector:
-   The *Microsoft 365 Connector* now lets you activate "educational classes"
-   in Microsoft 365.
-   Administrators of Nubus or UCS\@school can decide
-   which groups to activate automatically,
-   so that they don't need to administer the feature manually in Microsoft 365.
-   For more information, see :external+uv-manual:ref:`idmcloud-o365-education-classes` in :cite:t:`ucs-manual`.
+*
 
 .. _relnotes-update:
 
@@ -84,12 +42,7 @@ Updating multiple UCS systems
 =============================
 
 In environments with multiple UCS systems,
-the |UCSPRIMARYDN| must always be the first system in the update order
-during a release update.
-
-For more information about planning updates in multi server environments,
-see :external+uv-ucs-operation:ref:`lifecycle-update-strategies-multiple-systems-environments`
-in :cite:t:`uv-ucs-operation`.
+follow the update sequence described later.
 
 .. _relnotes-bootloader:
 
@@ -104,7 +57,7 @@ The GRUB boot loader of |UCSUCS| uses the same configuration files as Debian.
 If Debian is already installed,
 UCS can't boot after you install or update to UCS 5.0.
 Conversely,
-installing Debian after you install UCS 5.0
+installing Debian after UCS 5.0
 prevents UCS from booting.
 
 For more information,
@@ -112,9 +65,9 @@ refer to :uv:kb:`17768`.
 
 .. _relnotes-prepare:
 
-*********************
-Prepare for an update
-*********************
+******************
+Prepare for update
+******************
 
 This section covers important considerations before you update.
 
@@ -123,8 +76,8 @@ This section covers important considerations before you update.
 Sufficient disk space
 =====================
 
-Ensure you have sufficient disk space for the update.
-A standard installation requires 6 to 10 GB.
+Ensure you have sufficient disk space available for the update.
+A standard installation requires a minimum of 6 to 10 GB.
 The update process requires an additional 1 to 2 GB
 to download and install packages,
 depending on your existing installation size.
@@ -140,7 +93,7 @@ Alternatively,
 you can run the update using |UCSUMC|.
 
 If you run the update over a network connection,
-take steps to ensure that the update continues if the connection is interrupted.
+take steps to ensure it continues if the connection is interrupted.
 Network interruptions can cancel the update,
 which severely affects the system.
 
@@ -162,10 +115,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-7{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.3-0{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.2-7{.gpg,} && bash pre-update-checks-5.2-7
+   $ apt-key verify pre-update-checks-5.3-0{.gpg,} && bash pre-update-checks-5.3-0
 
    ...
 
@@ -189,7 +142,7 @@ Post processing of the update
 
 After the update,
 run new or updated join scripts.
-Either use the :guilabel:`Domain join` management module in the *Management UI*
+Use either the :guilabel:`Domain join` management module in the *Management UI*
 or run :command:`univention-run-join-scripts` as ``root``.
 
 Verify that the join scripts completed successfully.
@@ -208,7 +161,7 @@ The following sections cover selected packages for this update.
 Collection of usage statistics
 ==============================
 
-When you use UCS Core Edition,
+When using UCS Core Edition,
 UCS collects anonymous usage statistics for |UCSUMC|.
 The system logs which modules you open
 to a *Matomo* instance.
@@ -220,11 +173,12 @@ You can verify the license status through the menu entry
 :menuselection:`License --> License information`
 in the user menu of |UCSUMC|.
 If the *License information*
-lists ``UCS Core Edition`` under *License type*,
+lists ``UCS Core Edition`` under *License type*,
 your UCS system is using UCS Core Edition.
 
 UCS doesn't collect usage statistics
-if you use an `Enterprise Subscription <https://www.univention.com/products/prices-and-subscriptions/>`_
+if you use an `Enterprise Subscription
+<https://www.univention.com/products/prices-and-subscriptions/>`_
 license such as *UCS Base Subscription* or *UCS Standard Subscription*.
 
 To deactivate usage statistics collection,
@@ -247,7 +201,7 @@ Your web browser must support cookies.
 
 * Microsoft Edge version 128 and later
 
-Older browsers can display the web interface incorrectly or cause functionality issues.
+Older browsers may not display correctly or perform as expected.
 
 .. _relnotes-changelog:
 
@@ -255,8 +209,8 @@ Older browsers can display the web interface incorrectly or cause functionality 
 Changelog
 *********
 
-You can find the changes since UCS 5.2-6 in
-:external+uv-changelog-5.2-7:doc:`index`.
+You can find the changes since UCS 5.2-7 in
+:external+uv-changelog-5.3-0:doc:`index`.
 
 .. _biblio:
 
