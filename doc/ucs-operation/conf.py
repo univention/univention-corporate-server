@@ -128,7 +128,7 @@ html_theme_options = {
     'univention_matomo_tracking': True,
     'univention_docs_deployment': True,
     'announcement': "<p><i class='fa-solid fa-circle-exclamation'></i> "
-    'This document is work in progress and will replace the UCS Manual.</br> '
+    'This document replaces the UCS Manual.</br> '
     "If you don't find the content "
     'you are looking for, refer to the '
     "<a href='https://docs.software-univention.de/manual/5.2/en/' "
@@ -238,8 +238,7 @@ def adapt_settings_to_translation(app, config):
         config.numfig_format['code-block'] = 'Listing %s'
         config.html_theme_options['announcement'] = """
 <p><i class='fa-solid fa-circle-exclamation'></i>
-Dieses Dokument befindet sich in Arbeit
-und wird das UCS Handbuch ablösen.</br>
+Dieses Dokument löst das UCS Handbuch ab.</br>
 Wenn Sie den gesuchten Inhalt nicht finden,
 schauen Sie in das
 <a href='https://docs.software-univention.de/manual/5.2/de/'
