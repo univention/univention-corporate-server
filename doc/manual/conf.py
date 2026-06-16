@@ -122,7 +122,7 @@ html_theme_options = {
     'univention_matomo_tracking': True,
     'univention_docs_deployment': True,
     'announcement': (
-        '<p>Sections of this manual are being migrated to the '
+        '<p>Sections of this manual are migrated to the '
         "<a href='https://docs.software-univention.de/ucs-operation/5.2/en/' "
         "target='_blank' style='color: var(--pst-color-secondary)'>"
         'Nubus for UCS 5.2 - Operation Manual</a>. '
@@ -245,7 +245,7 @@ def adapt_settings_to_translation(app, config):
             ),
         }
         config.html_theme_options['announcement'] = (
-            '<p>Abschnitte dieses Handbuchs werden in das '
+            '<p>Abschnitte dieses Handbuchs sind in das '
             "<a href='https://docs.software-univention.de/ucs-operation/5.2/de/' "
             "target='_blank' style='color: var(--pst-color-secondary)'>"
             'Nubus for UCS 5.2 - Betriebshandbuch</a> migriert. '

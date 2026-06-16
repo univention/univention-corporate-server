@@ -9,7 +9,7 @@ Introduction
 
 .. important::
 
-   Univention is actively migrating sections of this manual to the
+   Most sections of this manual have been migrated to the
    :cite:t:`uv-ucs-operation`.
    For each moved section, you find a link to its new location
    in that document.
