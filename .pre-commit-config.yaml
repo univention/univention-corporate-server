@@ -228,6 +228,7 @@ repos:
                     |^.*[.]cvd$\
                     |^.*/debian/.*$\
                     |^doc/errata/.*[.]yaml$\
+                    |^doc/changelog/staged/.*[.]rst$\
                     |^doc/developer-reference/.*/.*/debian/.*$\
                     |^doc/.*/spelling_wordlist$\
                     |^doc/developer-reference/umc/.*[.]xml$\
