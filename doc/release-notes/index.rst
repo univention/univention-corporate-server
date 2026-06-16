@@ -5,7 +5,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2026-06-16
+Publication date of UCS |release|: 2027-01-01
 
 .. _relnotes-highlights:
 
@@ -17,30 +17,7 @@ Release highlights
 It includes feature improvements, extensions, and bug fixes.
 The following overview highlights the most important changes:
 
-* The *UDM HTTP REST API* now includes a metrics endpoint.
-  You can retrieve basic Nubus metrics,
-  such as the number of users, the software version, and the license status.
-  Use these metrics in standard tools such as *Prometheus* and *Grafana*
-  to improve observability.
-
-  For more information, see :external+uv-nubus-manual:ref:`nubus-metrics`
-  in :cite:t:`uv-nubus-manual`.
-
-* |UCSUMC| includes a new section
-  with technical details for objects in |UCSUDM|.
-  You can view and search technical identifiers
-  and the creation and modification timestamps for all objects.
-
-* Groups in Univention Nubus
-  can now have alternative email addresses in addition to a primary email address.
-  You can use them as email aliases for groups,
-  following the same concept as alternative email addresses for users.
-  The Univention mail stack supports this additional attribute
-  and delivers email sent to a group's alternative email address
-  to all members of the group.
-
-* Samba has been updated to version 4.24.2, including the latest security
-  patches, so it's equivalent to version 4.24.3.
+*
 
 .. _relnotes-update:
 
