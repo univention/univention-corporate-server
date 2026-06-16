@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS 5.2 - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-04 15:06+0000\n"
-"PO-Revision-Date: 2026-05-04 17:18+0200\n"
+"POT-Creation-Date: 2026-06-16 15:01+0000\n"
+"PO-Revision-Date: 2026-06-16 17:26+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Dashboards in einem Webbrowser aufrufen, um Live-Berichte zu bestimmten "
 "Aspekten anzuzeigen."
 
-#: ../../monitoring/dashboard.rst:17
+#: ../../monitoring/dashboard.rst:17 ../../monitoring/monitoring.rst:26
 msgid "Installation"
 msgstr "Installation"
 
@@ -238,8 +238,8 @@ msgid ""
 "add elements to it."
 msgstr ""
 "Stattdessen können Sie in Grafana eigene benutzerdefinierte Dashboards "
-"erstellen. Klicken Sie auf :guilabel:`+` im Navigationsmenü, um "
-"ein Dashboard zu erstellen und Elemente hinzuzufügen."
+"erstellen. Klicken Sie auf :guilabel:`+` im Navigationsmenü, um ein "
+"Dashboard zu erstellen und Elemente hinzuzufügen."
 
 #: ../../monitoring/index.rst:18
 msgid "Contents"
@@ -258,11 +258,1078 @@ msgid ""
 "and review the state of configured alerts, all in one place and "
 "continuously updated."
 msgstr ""
-"Nubus für UCS enthält integrierte Überwachungswerkzeuge, die Administratoren "
-"einen klaren Überblick über den Zustand und die Leistung der Domäne "
-"geben. Das *UCS Dashboard* bietet eine webbasierte Oberfläche, über die "
-"Sie Server-Metriken wie CPU-Auslastung, Arbeitsspeicher und "
+"Nubus für UCS enthält integrierte Überwachungswerkzeuge, die "
+"Administratoren einen klaren Überblick über den Zustand und die Leistung "
+"der Domäne geben. Das *UCS Dashboard* bietet eine webbasierte Oberfläche,"
+" über die Sie Server-Metriken wie CPU-Auslastung, Arbeitsspeicher und "
 "Festplattenplatz verfolgen, den LDAP-Replikationsstatus überwachen und "
 "den Status konfigurierter Warnmeldungen einsehen können – alles an einem "
 "Ort und kontinuierlich aktualisiert."
+
+#: ../../monitoring/monitoring.rst:7
+msgid "Monitoring"
+msgstr "Monitoring"
+
+#: ../../monitoring/monitoring.rst:9
+msgid ""
+"Monitoring in Nubus for UCS collects metrics from managed systems and "
+"compares them with predefined alert conditions. This helps administrators"
+" detect system operation issues early and respond promptly."
+msgstr ""
+"Das Monitoring in Nubus für UCS erfasst Metriken verwalteter Systeme und "
+"vergleicht sie mit vordefinierten Alarmbedingungen. Dies hilft "
+"Administratoren, Probleme im Systembetrieb frühzeitig zu erkennen und "
+"schnell zu reagieren."
+
+#: ../../monitoring/monitoring.rst:14
+msgid ""
+"Use this page to set up and manage monitoring for Nubus for UCS. It "
+"explains the required components, how to configure and assign alerts, "
+"which preconfigured checks are available, and how to create custom "
+"alerts."
+msgstr ""
+"Auf dieser Seite erfahren Sie, wie Sie das Monitoring für Nubus für UCS "
+"einrichten und verwalten. Außerdem erfahren Sie, welche Komponenten "
+"erforderlich sind, wie Sie Warnmeldungen konfigurieren und zuweisen, "
+"welche vorkonfigurierten Prüfungen verfügbar sind und wie Sie "
+"benutzerdefinierte Warnmeldungen erstellen."
+
+#: ../../monitoring/monitoring.rst:20
+msgid ""
+"For information about installing and using the *UCS Dashboard*, see :ref"
+":`infrastructure-monitoring-ucs-dashboard`."
+msgstr ""
+"Informationen zur Installation und Verwendung des *UCS Dashboard* finden "
+"Sie unter :ref:`infrastructure-monitoring-ucs-dashboard`."
+
+#: ../../monitoring/monitoring.rst:28
+msgid ""
+"To install the *UCS Dashboard* components, see :ref:`infrastructure-"
+"monitoring-ucs-dashboard-installation`. In addition to the *UCS "
+"Dashboard* components, install the *Prometheus Alertmanager* app on the "
+"system that sends alert notifications. For information about how to "
+"install apps through the *App Center*, see :ref:`lifecycle-app-center-"
+"installation`."
+msgstr ""
+"Informationen zur Installation der *UCS Dashboard*-Komponenten finden Sie"
+" unter :ref:`infrastructure-monitoring-ucs-dashboard-installation`. "
+"Installieren Sie zusätzlich zu den *UCS Dashboard*-Komponenten die App "
+"*Prometheus Alertmanager* auf dem System, das Warnbenachrichtigungen "
+"versendet. Informationen zur Installation von Apps über das *App Center* "
+"finden Sie unter :ref:`lifecycle-app-center-installation`."
+
+#: ../../monitoring/monitoring.rst:36
+msgid ""
+"On each monitored Nubus for UCS system, install the *UCS Dashboard "
+"Client* app. Nubus for UCS installs the :program:`univention-monitoring-"
+"client` package by default for alert functionality. Verify that the "
+":program:`univention-monitoring-client` package is present before you "
+"continue."
+msgstr ""
+"Installieren Sie die App *UCS Dashboard Client* auf jedem überwachten "
+"System mit Nubus für UCS. Nubus für UCS installiert das Paket :program"
+":`univention-monitoring-client` standardmäßig für Warnmeldungen. "
+"Vergewissern Sie sich, dass das Paket :program:`univention-monitoring-"
+"client` vorhanden ist, bevor Sie fortfahren."
+
+#: ../../monitoring/monitoring.rst:43
+msgid "Prometheus Alertmanager"
+msgstr "Prometheus Alertmanager"
+
+#: ../../monitoring/monitoring.rst:44
+msgid ""
+"The *Prometheus Alertmanager* app sends notifications for firing alerts, "
+"for example by email. Configure the app settings as shown in :numref"
+":`monitoring-installation-figure`."
+msgstr ""
+"Die App *Prometheus Alertmanager* sendet Benachrichtigungen, zum Beispiel"
+" per E-Mail, wenn ein Alarm ausgelöst wird. Konfigurieren Sie die App-"
+"Einstellungen wie in :numref:`monitoring-installation-figure` gezeigt."
+
+#: ../../monitoring/monitoring.rst:51
+msgid ""
+"The figure shows the Alertmanager app settings for SMTP and email "
+"recipients."
+msgstr ""
+"Die Abbildung zeigt die Alertmanager-App-Einstellungen für SMTP und E"
+"-Mail-Empfänger."
+
+#: ../../monitoring/monitoring.rst:54
+msgid "*Alertmanager* app settings for SMTP and email recipients"
+msgstr "*Alertmanager*-App-Einstellungen für SMTP und E-Mail-Empfänger"
+
+#: ../../monitoring/monitoring.rst:56
+msgid ""
+"Before you configure *Alertmanager*, make sure that a reachable SMTP "
+"server is available and that you have recipient email addresses. "
+"*Alertmanager* supports the SMTP authentication methods ``PLAIN``, "
+"``LOGIN``, and ``CRAM-MD5``. It also supports TLS communication. If you "
+"leave all authentication-related fields empty, *Alertmanager* doesn't use"
+" SMTP authentication. After you save the settings, send a test alert to "
+"verify that email notifications work."
+msgstr ""
+"Bevor Sie *Alertmanager* konfigurieren, stellen Sie sicher, dass ein "
+"erreichbarer SMTP-Server verfügbar ist und dass die E-Mailadressen der "
+"Empfänger vorliegen. *Alertmanager* unterstützt die SMTP-"
+"Authentifizierungsmethoden ``PLAIN``, ``LOGIN`` und ``CRAM-MD5``. Auch "
+"Kommunikation über TLS wird unterstützt. Wenn Sie alle Felder für die "
+"Authentifizierung leer lassen, verwendet *Alertmanager* keine SMTP-"
+"Authentifizierung. Senden Sie nach dem Speichern der Einstellungen eine "
+"Testwarnmeldung, um zu prüfen, ob E-Mail-Benachrichtigungen "
+"funktionieren."
+
+#: ../../monitoring/monitoring.rst:67
+msgid ":program:`univention-monitoring-client`"
+msgstr ":program:`univention-monitoring-client`"
+
+#: ../../monitoring/monitoring.rst:68
+msgid ""
+"The package :program:`univention-monitoring-client` provides standard "
+"alert plugins that check system health."
+msgstr ""
+"Das Paket :program:`univention-monitoring-client` stellt Standard-Plugins"
+" zur Überwachung des Systemzustands bereit."
+
+#: ../../monitoring/monitoring.rst:71
+msgid ""
+"You can install the following packages to add alerts beyond the standard "
+"checks from the :program:`univention-monitoring-client` package. Some "
+"services install their required package during installation. For example,"
+" when you set up the *Active Directory Connection*, Nubus for UCS also "
+"installs the monitoring plugin."
+msgstr ""
+"Mit den folgenden Paketen können Sie zusätzliche Alarme ergänzen, die "
+"über die Standardprüfungen des Pakets :program:`univention-monitoring-"
+"client` hinausgehen. Einige Dienste installieren ihr benötigtes Paket "
+"während der Installation. Wenn Sie zum Beispiel die *Active Directory "
+"Verbindung* einrichten, installiert Nubus für UCS auch das entsprechende "
+"Monitoring-Plugin."
+
+#: ../../monitoring/monitoring.rst:79
+msgid ""
+":program:`univention-monitoring-raid`: Monitoring of the software RAID "
+"status."
+msgstr ""
+":program:`univention-monitoring-raid`: Überwachung des Software-RAID-"
+"Status."
+
+#: ../../monitoring/monitoring.rst:81
+msgid ""
+":program:`univention-monitoring-smart`: Test of the S.M.A.R.T. status of "
+"hard drives."
+msgstr ""
+":program:`univention-monitoring-smart`: Prüfung des S.M.A.R.T.-Status von"
+" Festplatten."
+
+#: ../../monitoring/monitoring.rst:83
+msgid ":program:`univention-monitoring-opsi`: Test of software distribution OPSI."
+msgstr ""
+":program:`univention-monitoring-opsi`: Prüfung der Softwareverteilung "
+"OPSI."
+
+#: ../../monitoring/monitoring.rst:85
+msgid ":program:`univention-monitoring-cups`: Test of CUPS printing system."
+msgstr ":program:`univention-monitoring-cups`: Prüfung des CUPS-Drucksystems."
+
+#: ../../monitoring/monitoring.rst:87
+msgid ":program:`univention-monitoring-squid`: Test of Squid proxy server."
+msgstr ":program:`univention-monitoring-squid`: Prüfung des Squid Proxy-Servers."
+
+#: ../../monitoring/monitoring.rst:89
+msgid ":program:`univention-monitoring-samba`: Test of the Samba services."
+msgstr ":program:`univention-monitoring-samba`: Prüfung der Samba Dienste."
+
+#: ../../monitoring/monitoring.rst:91
+msgid ":program:`univention-monitoring-s4-connector`: Test of the S4 Connector."
+msgstr ":program:`univention-monitoring-s4-connector`: Prüfung des S4 Connector."
+
+#: ../../monitoring/monitoring.rst:93
+msgid ""
+":program:`univention-monitoring-ad-connector`: Test of the *Active "
+"Directory Connection*."
+msgstr ""
+":program:`univention-monitoring-ad-connector`: Prüfung der *Active "
+"Directory Verbindung*."
+
+#: ../../monitoring/monitoring.rst:99
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: ../../monitoring/monitoring.rst:101
+msgid "Use the *Management UI* and *Alertmanager* to configure and handle alerts."
+msgstr ""
+"Verwenden Sie die *Management UI* und *Alertmanager*, um Warnmeldungen zu"
+" konfigurieren und zu verwalten."
+
+#: ../../monitoring/monitoring.rst:104
+msgid ""
+"You use alerts to monitor a service or status. For example, "
+"administrators can monitor free disk space. You can assign any number of "
+"computers to an alert object. You manage alerts in the *Monitoring* "
+"module of the *Management UI*. Use the object type *Alert*, as shown in "
+":numref:`monitoring-alert-configuration-figure`. For more information, "
+"see :external+uv-nubus-manual:ref:`nubus-computer-management-section-"
+"alerts`."
+msgstr ""
+"Sie verwenden Warnmeldungen zur Überwachung eines Dienstes oder Zustands."
+" Administratoren können damit zum Beispiel den freien Festplattenplatz "
+"überwachen. Sie können einem Alert-Objekt beliebig viele Computer "
+"zuweisen. Sie verwalten Warnmeldungen im Modul *Monitoring* der "
+"*Management UI*. Verwenden Sie den Objekttyp *Alert*, wie in :numref"
+":`monitoring-alert-configuration-figure` gezeigt. Weitere Informationen "
+"finden Sie unter :external+uv-nubus-manual:ref:`nubus-computer-"
+"management-section-alerts`."
+
+#: ../../monitoring/monitoring.rst:116
+msgid ""
+"Prometheus doesn't provide an LDAP interface for monitoring "
+"configuration. A listener module generates the configuration files when "
+"administrators add, edit, or remove alerts."
+msgstr ""
+"Prometheus stellt keine LDAP-Schnittstelle für die Monitoring-"
+"Konfiguration bereit. Ein Listener-Modul erzeugt die "
+"Konfigurationsdateien, wenn Administratoren Warnmeldungen hinzufügen, "
+"bearbeiten oder entfernen."
+
+#: ../../monitoring/monitoring.rst:123
+msgid ""
+"The figure shows the Monitoring module in the Management UI with the "
+"configuration of an alert."
+msgstr ""
+"Die Abbildung zeigt das Modul Monitoring in der Management UI mit der "
+"Konfiguration einer Warnmeldung."
+
+#: ../../monitoring/monitoring.rst:126
+msgid "Configuring an alert"
+msgstr "Konfiguration einer Warnmeldung"
+
+#: ../../monitoring/monitoring.rst:131
+msgid "General tab - Monitoring management"
+msgstr "Reiter Allgemein - Monitoring-Verwaltung"
+
+#: ../../monitoring/monitoring.rst:133
+msgid ""
+"This section describes the fields on the *General* tab in the "
+"*Monitoring* management module of the *Management UI*."
+msgstr ""
+"Dieser Abschnitt beschreibt die Felder auf dem Reiter *Allgemein* im "
+"Verwaltungsmodul *Monitoring* der *Management UI*."
+
+#: ../../monitoring/monitoring.rst:138
+msgid "Name"
+msgstr "Name"
+
+#: ../../monitoring/monitoring.rst:139
+msgid "An unambiguous name for the alert."
+msgstr "Ein eindeutiger Name für die Warnmeldung."
+
+#: ../../monitoring/monitoring.rst:141
+msgid "Alert group"
+msgstr ":spelling:word:`Alarmgruppe`"
+
+#: ../../monitoring/monitoring.rst:142
+msgid ""
+"Defines the group that includes the alert. Multiple alerts can belong to "
+"the same group."
+msgstr ""
+"Definiert die Gruppe, die die Warnmeldung enthält. Mehrere Warnmeldungen "
+"können derselben Gruppe angehören."
+
+#: ../../monitoring/monitoring.rst:145
+msgid "Query expression"
+msgstr "Abfrageausdruck"
+
+#: ../../monitoring/monitoring.rst:146
+msgid ""
+"Defines the Prometheus query expression that triggers the alert. The "
+"alert triggers when the query returns a non-empty vector."
+msgstr ""
+"Definiert den Abfrageausdruck für Prometheus, der die Warnmeldung "
+"auslöst. Die Warnmeldung wird ausgelöst, wenn die Abfrage einen nicht "
+"leeren Vektor zurückgibt."
+
+#: ../../monitoring/monitoring.rst:149
+msgid ""
+"For details about the syntax, see the `Prometheus documentation "
+"<prometheus-query-expression_>`_."
+msgstr ""
+"Einzelheiten zur Syntax finden Sie in der `Prometheus-Dokumentation "
+"<prometheus-query-expression_>`_."
+
+#: ../../monitoring/monitoring.rst:152
+msgid "For clause"
+msgstr ":spelling:word:`For-Clause`"
+
+#: ../../monitoring/monitoring.rst:153
+msgid ""
+"Defines how long the query expression must return a non-empty result "
+"before the alert triggers."
+msgstr ""
+"Definiert, wie lange der Abfrageausdruck ein nicht leeres Ergebnis "
+"zurückgeben muss, bevor die Warnmeldung ausgelöst wird."
+
+#: ../../monitoring/monitoring.rst:156
+msgid "Summary template"
+msgstr "Vorlage für die Kurzbeschreibung"
+
+#: ../../monitoring/monitoring.rst:157
+msgid ""
+"Specifies the alert title. It appears on the alert dashboard and in alert"
+" email notifications."
+msgstr ""
+"Legt den Titel der Warnmeldung fest. Er erscheint auf dem Warn-Dashboard "
+"und in E-Mail-Benachrichtigungen für Warnmeldungen."
+
+#: ../../monitoring/monitoring.rst:161
+msgid "Description template"
+msgstr "Beschreibungsvorlage"
+
+#: ../../monitoring/monitoring.rst:162
+msgid ""
+"Specifies the alert description. It appears on the alert dashboard and in"
+" alert email notifications."
+msgstr ""
+"Legt die Beschreibung der Warnmeldung fest. Sie erscheint auf dem Warn-"
+"Dashboard und in E-Mail-Benachrichtigungen zu Warnmeldungen."
+
+#: ../../monitoring/monitoring.rst:166
+msgid "Labels"
+msgstr "Labels"
+
+#: ../../monitoring/monitoring.rst:167
+msgid ""
+"*Prometheus* attaches labels to alerts. These labels help you query "
+"alerts. For example, you can use the label *severity* with the value "
+"``critical`` or ``warning``."
+msgstr ""
+"*Prometheus* weist Warnmeldungen Labels zu. Diese Labels helfen Ihnen, "
+"Warnmeldungen abzufragen. Sie können zum Beispiel das Label *severity* "
+"mit dem Wert ``critical`` oder ``warning`` verwenden."
+
+#: ../../monitoring/monitoring.rst:172
+msgid "Template Values"
+msgstr "Vorlagenwerte"
+
+#: ../../monitoring/monitoring.rst:173
+msgid ""
+"Query expressions, descriptions, and summaries can use variables. For "
+"example, ``%max%`` references the value ``max``."
+msgstr ""
+"Abfrageausdrücke, Beschreibungen und Zusammenfassungen können Variablen "
+"verwenden. Zum Beispiel verweist ``%max%`` auf den Wert ``max``."
+
+#: ../../monitoring/monitoring.rst:179
+msgid "Hosts tab - Monitoring management"
+msgstr "Reiter Rechner - Monitoring-Verwaltung"
+
+#: ../../monitoring/monitoring.rst:181
+msgid ""
+"This section describes the fields on the *Hosts* tab in the *Monitoring* "
+"management module of the *Management UI*."
+msgstr ""
+"Dieser Abschnitt beschreibt die Felder auf Reiter *Rechner* im "
+"Verwaltungsmodul *Monitoring* der *Management UI*."
+
+#: ../../monitoring/monitoring.rst:186
+msgid "Assigned hosts"
+msgstr "Zugewiesene Rechner"
+
+#: ../../monitoring/monitoring.rst:187
+#, python-format
+msgid ""
+"*Prometheus* runs the query on the computers listed here. The listener "
+"module runs the tests for the alert. It replaces ``%instance%`` in the "
+"query expression with a regular expression that matches the assigned "
+"hosts."
+msgstr ""
+"*Prometheus* führt die Abfrage auf den hier aufgelisteten Computern aus. "
+"Das Listener-Modul führt die Tests für die Warnmeldung aus. Es ersetzt "
+"``%instance%`` im Abfrageausdruck durch einen regulären Ausdruck, der zu "
+"den zugewiesenen Rechnern passt."
+
+#: ../../monitoring/monitoring.rst:195
+msgid "Assign monitoring alerts to computers"
+msgstr "Monitoring-Warnmeldungen Computern zuweisen"
+
+#: ../../monitoring/monitoring.rst:197
+msgid ""
+"*Prometheus* can monitor all computers that you manage in the *Management"
+" UI*."
+msgstr ""
+"*Prometheus* kann alle Computer überwachen, die Sie in der *Management "
+"UI* verwalten."
+
+#: ../../monitoring/monitoring.rst:200
+msgid "To assign alerts to a computer, do the following:"
+msgstr "Gehen Sie wie folgt vor, um einem Computer Warnmeldungen zuzuweisen:"
+
+#: ../../monitoring/monitoring.rst:203
+msgid ""
+"In the *Management UI*, open the :external+uv-nubus-manual:ref:`nubus-"
+"computer-management` and select the computer."
+msgstr ""
+"Öffnen Sie in der *Management UI* :external+uv-nubus-manual:ref:`nubus-"
+"computer-management` und wählen Sie den Computer aus."
+
+#: ../../monitoring/monitoring.rst:207
+msgid ""
+"On the *Advanced settings* tab, under *Alerts*, add the monitoring alerts"
+" that you want to assign, as shown in :numref:`monitoring-assign-alerts-"
+"figure`."
+msgstr ""
+"Fügen Sie auf dem Reiter *Erweiterte Einstellungen* unter *Warnmeldungen*"
+" die Monitoring-Warnmeldungen hinzu, die Sie zuweisen möchten, wie in "
+":numref:`monitoring-assign-alerts-figure` gezeigt."
+
+#: ../../monitoring/monitoring.rst:212
+msgid "Save your changes."
+msgstr "Speichern Sie Ihre Änderungen."
+
+#: ../../monitoring/monitoring.rst:214
+msgid ""
+"Verify that the assigned alerts appear in the *Assigned monitoring "
+"alerts* list."
+msgstr ""
+"Prüfen Sie, ob die zugewiesenen Warnmeldungen in der Liste *Zugewiesene "
+"Monitoring-Warnmeldungen* angezeigt werden."
+
+#: ../../monitoring/monitoring.rst:217
+msgid "Assigned monitoring alerts"
+msgstr "Zugewiesene Monitoring-Warnmeldungen"
+
+#: ../../monitoring/monitoring.rst:218
+msgid ""
+"Lists the monitoring alerts assigned to the current computer. You can add"
+" or remove alerts here."
+msgstr ""
+"Listet die Monitoring-Warnmeldungen auf, die dem aktuellen Computer "
+"zugewiesen sind. Sie können hier Warnmeldungen hinzufügen oder entfernen."
+
+#: ../../monitoring/monitoring.rst:223
+msgid "The figure shows the assignment of monitoring alerts to a computer."
+msgstr ""
+"Die Abbildung zeigt die Zuweisung von Monitoring-Warnmeldungen zu einem "
+"Computer."
+
+#: ../../monitoring/monitoring.rst:226
+msgid "Assigning alerts to a host"
+msgstr "Zuweisung von Warnmeldungen zu einem Rechner"
+
+#: ../../monitoring/monitoring.rst:231
+msgid "Alert silences"
+msgstr "Stummschaltungen für Warnmeldungen"
+
+#: ../../monitoring/monitoring.rst:233
+msgid ""
+"Use the *Alertmanager* web interface to silence firing alerts for a "
+"specific period. For more information about silences, see the `Prometheus"
+" Alertmanager documentation "
+"<https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_."
+msgstr ""
+"Verwenden Sie die *Alertmanager*-Weboberfläche, um ausgelöste Alarme "
+"vorübergehend zu unterdrücken. Weitere Informationen zu Stummschaltungen "
+"finden Sie in der `Prometheus Alertmanager-Dokumentation "
+"<https://prometheus.io/docs/alerting/latest/alertmanager/#silences>`_."
+
+#: ../../monitoring/monitoring.rst:242
+msgid "Preconfigured monitoring checks"
+msgstr "Vorkonfigurierte Monitoring-Prüfungen"
+
+#: ../../monitoring/monitoring.rst:244
+msgid ""
+"Nubus for UCS sets up basic monitoring tests automatically. All alerts "
+"use the *severity* label with the value ``critical`` or ``warning``."
+msgstr ""
+"Nubus für UCS richtet grundlegende Monitoring-Prüfungen automatisch ein. "
+"Alle Warnmeldungen verwenden das Label *severity* mit dem Wert "
+"``critical`` oder ``warning``."
+
+#: ../../monitoring/monitoring.rst:250
+msgid "``UNIVENTION_DISK_ROOT`` and ``UNIVENTION_DISK_ROOT_WARNING``"
+msgstr "``UNIVENTION_DISK_ROOT`` und ``UNIVENTION_DISK_ROOT_WARNING``"
+
+#: ../../monitoring/monitoring.rst:251
+#, python-format
+msgid ""
+"Monitors how full the :file:`/` partition is. The alert fires if the "
+"remaining free space falls below 25% or 10% by default."
+msgstr ""
+"Überwacht, wie voll die Partition :file:`/` ist. Die Warnmeldung wird "
+"standardmäßig ausgelöst, wenn der verbleibende freie Speicherplatz unter "
+"25% oder 10% fällt."
+
+#: ../../monitoring/monitoring.rst:257
+msgid "``UNIVENTION_DNS``"
+msgstr "``UNIVENTION_DNS``"
+
+#: ../../monitoring/monitoring.rst:258
+msgid ""
+"Tests the local DNS server and checks whether the public DNS server "
+"resolves the hostname ``www.univention.de``. If the UCS domain has no DNS"
+" forwarder, the request fails. In that case, you can use the FQDN of the "
+":term:`Primary Directory Node`, for example, by setting the "
+":envvar:`monitoring/dns/lookup-domain` :term:`UCR variable`, to test name"
+" resolution."
+msgstr ""
+"Prüft den lokalen DNS-Server und kontrolliert, ob der öffentliche DNS-"
+"Server den Rechnernamen ``www.univention.de`` auflöst. Wenn die UCS-"
+"Domäne keinen DNS-Forwarder hat, schlägt die Anfrage fehl. In diesem Fall"
+" können Sie den FQDN des :term:`Primary Directory Node` verwenden, zum "
+"Beispiel indem Sie die :term:`UCR-Variable` :envvar:`monitoring/dns"
+"/lookup-domain` setzen, um die Namensauflösung zu prüfen."
+
+#: ../../monitoring/monitoring.rst:269
+msgid "``UNIVENTION_LDAP_AUTH``"
+msgstr "``UNIVENTION_LDAP_AUTH``"
+
+#: ../../monitoring/monitoring.rst:270
+msgid "Monitors the LDAP server on Nubus for UCS Directory Nodes."
+msgstr "Überwacht den LDAP-Server auf Directory Nodes in Nubus für UCS."
+
+#: ../../monitoring/monitoring.rst:274
+msgid "``UNIVENTION_LOAD`` and ``UNIVENTION_LOAD_WARNING``"
+msgstr "``UNIVENTION_LOAD`` und ``UNIVENTION_LOAD_WARNING``"
+
+#: ../../monitoring/monitoring.rst:275
+msgid "Monitors the system load."
+msgstr "Überwacht die Systemlast."
+
+#: ../../monitoring/monitoring.rst:279
+msgid "``UNIVENTION_NTP`` and ``UNIVENTION_NTP_WARNING``"
+msgstr "``UNIVENTION_NTP`` und ``UNIVENTION_NTP_WARNING``"
+
+#: ../../monitoring/monitoring.rst:280
+msgid ""
+"Requests the time from the NTP service on the monitored Nubus for UCS "
+"system. If the time differs by more than ``60`` or ``120`` seconds, the "
+"alert fires."
+msgstr ""
+"Fragt die Uhrzeit beim NTP-Dienst auf dem überwachten Nubus für UCS "
+"System ab. Wenn die Zeit um mehr als ``60`` oder ``120`` Sekunden "
+"abweicht, wird die Warnmeldung ausgelöst."
+
+#: ../../monitoring/monitoring.rst:286
+msgid "``UNIVENTION_SMTP``"
+msgstr "``UNIVENTION_SMTP``"
+
+#: ../../monitoring/monitoring.rst:287
+msgid ""
+"Tests whether the SMTP server is reachable. The alert fires if the server"
+" isn't reachable."
+msgstr ""
+"Prüft, ob der SMTP-Server erreichbar ist. Die Warnmeldung wird ausgelöst,"
+" wenn der Server nicht erreichbar ist."
+
+#: ../../monitoring/monitoring.rst:292
+msgid "``UNIVENTION_SSL`` and ``UNIVENTION_SSL_WARNING``"
+msgstr "``UNIVENTION_SSL`` und ``UNIVENTION_SSL_WARNING``"
+
+#: ../../monitoring/monitoring.rst:293
+msgid ""
+"Tests how long the Nubus for UCS TLS certificates remain valid. Use this "
+"plugin only on :term:`Primary Directory Node` and :term:`Backup Directory"
+" Node` systems."
+msgstr ""
+"Prüft, wie lange die TLS-Zertifikate von Nubus für UCS noch gültig sind. "
+"Verwenden Sie dieses Plugin nur auf Systemen vom Typ :term:`Primary "
+"Directory Node` und :term:`Backup Directory Node`."
+
+#: ../../monitoring/monitoring.rst:299
+msgid "``UNIVENTION_SWAP`` and ``UNIVENTION_SWAP_WARNING``"
+msgstr "``UNIVENTION_SWAP`` und ``UNIVENTION_SWAP_WARNING``"
+
+#: ../../monitoring/monitoring.rst:300
+#, python-format
+msgid ""
+"Monitors the utilization of the swap partition. The alert fires if the "
+"remaining free space falls below the threshold of 40% or 20% by default."
+msgstr ""
+"Überwacht die Auslastung der Swap-Partition. Die Warnmeldung wird "
+"standardmäßig ausgelöst, wenn der verbleibende freie Speicherplatz unter "
+"den Schwellenwert von 40% oder 20% fällt."
+
+#: ../../monitoring/monitoring.rst:306
+msgid "``UNIVENTION_REPLICATION`` and ``UNIVENTION_REPLICATION_WARNING``"
+msgstr "``UNIVENTION_REPLICATION`` und ``UNIVENTION_REPLICATION_WARNING``"
+
+#: ../../monitoring/monitoring.rst:307
+msgid ""
+"Monitors LDAP replication. The alert detects a :file:`failed.ldif` file, "
+"stalled replication, and large differences between transaction IDs."
+msgstr ""
+"Überwacht die LDAP-Replikation. Die Warnmeldung erkennt eine Datei "
+":file:`failed.ldif`, eine ins Stocken geratene Replikation und große "
+"Unterschiede zwischen Transaktions-IDs."
+
+#: ../../monitoring/monitoring.rst:314
+msgid "``UNIVENTION_NSCD`` and ``UNIVENTION_NSCD2``"
+msgstr "``UNIVENTION_NSCD`` und ``UNIVENTION_NSCD2``"
+
+#: ../../monitoring/monitoring.rst:315
+msgid ""
+"Tests the availability of the name server cache daemon (NSCD). If no NSCD"
+" process runs, the check triggers a *critical* alert. If more than one "
+"process runs, the check triggers a *warning* alert."
+msgstr ""
+"Prüft die Verfügbarkeit des Name Server Cache Daemon (NSCD). Wenn kein "
+"NSCD-Prozess läuft, löst die Prüfung eine Warnmeldung vom Typ *critical* "
+"aus. Wenn mehr als ein Prozess läuft, löst die Prüfung eine Warnmeldung "
+"vom Typ *warning* aus."
+
+#: ../../monitoring/monitoring.rst:320
+msgid "For information about NSCD, see :ref:`system-administration-nscd`."
+msgstr "Informationen zu NSCD finden Sie unter :ref:`system-administration-nscd`."
+
+#: ../../monitoring/monitoring.rst:325
+msgid "``UNIVENTION_WINBIND``"
+msgstr "``UNIVENTION_WINBIND``"
+
+#: ../../monitoring/monitoring.rst:326
+msgid ""
+"Tests the availability of the Winbind service. If no process runs, the "
+"check triggers a *critical* alert."
+msgstr ""
+"Prüft die Verfügbarkeit des Winbind-Dienstes. Wenn kein Prozess läuft, "
+"löst die Prüfung eine Warnmeldung vom Typ *critical* aus."
+
+#: ../../monitoring/monitoring.rst:331
+msgid "``UNIVENTION_SMBD``"
+msgstr "``UNIVENTION_SMBD``"
+
+#: ../../monitoring/monitoring.rst:332
+msgid ""
+"Tests the availability of the Samba service. If no process runs, the "
+"check triggers an alert."
+msgstr ""
+"Prüft die Verfügbarkeit des Samba-Dienstes. Wenn kein Prozess läuft, löst"
+" die Prüfung eine Warnmeldung aus."
+
+#: ../../monitoring/monitoring.rst:337
+msgid "``UNIVENTION_NMBD``"
+msgstr "``UNIVENTION_NMBD``"
+
+#: ../../monitoring/monitoring.rst:338
+msgid ""
+"Tests the availability of the NMBD service, which handles the NetBIOS "
+"service in Samba. If no process runs, the check triggers an alert."
+msgstr ""
+"Prüft die Verfügbarkeit des NMBD-Dienstes, der den NetBIOS-Dienst in "
+"Samba verarbeitet. Wenn kein Prozess läuft, löst die Prüfung eine "
+"Warnmeldung aus."
+
+#: ../../monitoring/monitoring.rst:344
+msgid "``UNIVENTION_JOINSTATUS`` and ``UNIVENTION_JOINSTATUS_WARNING``"
+msgstr "``UNIVENTION_JOINSTATUS`` und ``UNIVENTION_JOINSTATUS_WARNING``"
+
+#: ../../monitoring/monitoring.rst:345
+msgid ""
+"Tests the join status of a system. If the system hasn't joined yet, the "
+"check triggers a ``critical`` alert. If join scripts haven't run, the "
+"check triggers a ``warning`` alert."
+msgstr ""
+"Prüft den Join-Status eines Systems. Wenn das System noch nicht in die "
+"Domäne aufgenommen wurde, löst die Prüfung eine Warnmeldung vom Typ "
+"``critical`` aus. Wurden Join-Skripte nicht ausgeführt, löst die Prüfung "
+"eine Warnmeldung vom Typ ``warning`` aus."
+
+#: ../../monitoring/monitoring.rst:353
+msgid "``UNIVENTION_KPASSWDD``"
+msgstr "``UNIVENTION_KPASSWDD``"
+
+#: ../../monitoring/monitoring.rst:354
+msgid ""
+"Tests the availability of the Kerberos password service. Use this check "
+"only on :term:`Primary Directory Node` and :term:`Backup Directory Nodes "
+"<Backup Directory Node>`. If the service doesn't run exactly one process,"
+" the check triggers an alert."
+msgstr ""
+"Prüft die Verfügbarkeit des Kerberos-Passwortdienstes. Verwenden Sie "
+"diese Prüfung nur auf :term:`Primary Directory Node` und :term:`Backup "
+"Directory Nodes <Backup Directory Node>`. Wenn nicht genau ein Prozess "
+"für den Dienst läuft, löst die Prüfung eine Warnmeldung aus."
+
+#: ../../monitoring/monitoring.rst:362
+msgid "``UNIVENTION_PACKAGE_STATUS``"
+msgstr "``UNIVENTION_PACKAGE_STATUS``"
+
+#: ../../monitoring/monitoring.rst:363
+msgid ""
+"Monitors the status of installed Debian packages. If any package has the "
+"status ``half-installed``, the check triggers an alert."
+msgstr ""
+"Überwacht den Status installierter Debian-Pakete. Wenn ein Paket den "
+"Status ``half-installed`` hat, löst die Prüfung eine Warnmeldung aus."
+
+#: ../../monitoring/monitoring.rst:369
+msgid ""
+"``UNIVENTION_SLAPD_MDB_MAXSIZE`` and "
+"``UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING``"
+msgstr ""
+"``UNIVENTION_SLAPD_MDB_MAXSIZE`` und "
+"``UNIVENTION_SLAPD_MDB_MAXSIZE_WARNING``"
+
+#: ../../monitoring/monitoring.rst:370
+msgid ""
+"Monitors how many free memory pages remain in the *mdb* backend of SLAPD "
+"across multiple directories."
+msgstr ""
+"Überwacht, wie viele freie Speicherseiten im *mdb*-Backend von SLAPD über"
+" mehrere Verzeichnisse hinweg verbleiben."
+
+#: ../../monitoring/monitoring.rst:376
+msgid ""
+"``UNIVENTION_LISTENER_MDB_MAXSIZE`` and "
+"``UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING``"
+msgstr ""
+"``UNIVENTION_LISTENER_MDB_MAXSIZE`` und "
+"``UNIVENTION_LISTENER_MDB_MAXSIZE_WARNING``"
+
+#: ../../monitoring/monitoring.rst:377
+msgid ""
+"Monitors how many free memory pages remain in the *mdb* backend of SLAPD "
+"across the directories that the Listener uses."
+msgstr ""
+"Überwacht, wie viele freie Speicherseiten im *mdb*-Backend von SLAPD über"
+" die Verzeichnisse hinweg verbleiben, die der Listener verwendet."
+
+#: ../../monitoring/monitoring.rst:381
+msgid ""
+"You can use additional monitoring alerts after you install the required "
+"packages. For installation details, see :ref:`monitoring-installation`."
+msgstr ""
+"Sie können zusätzliche Monitoring-Warnmeldungen verwenden, nachdem Sie "
+"die erforderlichen Pakete installiert haben. Einzelheiten zur "
+"Installation finden Sie unter :ref:`monitoring-installation`."
+
+#: ../../monitoring/monitoring.rst:388
+msgid "``UNIVENTION_OPSI``"
+msgstr "``UNIVENTION_OPSI``"
+
+#: ../../monitoring/monitoring.rst:389
+msgid ""
+"Monitors the OPSI daemon. If no OPSI process runs or the OPSI proxy isn't"
+" accessible, the alert fires."
+msgstr ""
+"Überwacht den OPSI-Daemon. Wenn kein OPSI-Prozess läuft oder der OPSI-"
+"Proxy nicht erreichbar ist, wird die Warnmeldung ausgelöst."
+
+#: ../../monitoring/monitoring.rst:396
+msgid "``UNIVENTION_SMART_SDA``"
+msgstr "``UNIVENTION_SMART_SDA``"
+
+#: ../../monitoring/monitoring.rst:397
+msgid ""
+"Tests the S.M.A.R.T. status of the hard drive :file:`/dev/sda`. "
+"Corresponding alerts are available for the hard drives :file:`/dev/sdb`, "
+":file:`/dev/sdc`, and :file:`/dev/sdd`."
+msgstr ""
+"Prüft den S.M.A.R.T.-Status der Festplatte :file:`/dev/sda`. "
+"Entsprechende Warnmeldungen sind für die Festplatten :file:`/dev/sdb`, "
+":file:`/dev/sdc` und :file:`/dev/sdd` verfügbar."
+
+#: ../../monitoring/monitoring.rst:403
+msgid "``UNIVENTION_ADCONNECTOR`` and ``UNIVENTION_ADCONNECTOR_WARNING``"
+msgstr "``UNIVENTION_ADCONNECTOR`` und ``UNIVENTION_ADCONNECTOR_WARNING``"
+
+#: ../../monitoring/monitoring.rst:404
+msgid "Monitors the status of the *Active Directory Connection*:"
+msgstr "Überwacht den Status der *Active Directory Verbindung*:"
+
+#: ../../monitoring/monitoring.rst:406
+msgid "If no connector process runs, the alert fires."
+msgstr "Wenn kein Connector-Prozess läuft, wird die Warnmeldung ausgelöst."
+
+#: ../../monitoring/monitoring.rst:407
+msgid ""
+"If more than one process runs per connector instance, the check triggers "
+"a ``warning`` alert."
+msgstr ""
+"Wenn pro Connector-Instanz mehr als ein Prozess läuft, löst die Prüfung "
+"eine Warnmeldung vom Typ ``warning`` aus."
+
+#: ../../monitoring/monitoring.rst:409
+msgid "If rejects occur, the check triggers a ``warning`` alert."
+msgstr ""
+"Wenn Rejects auftreten, löst die Prüfung eine Warnmeldung vom Typ "
+"``warning`` aus."
+
+#: ../../monitoring/monitoring.rst:410
+msgid "If the AD server isn't reachable, the alert fires."
+msgstr "Wenn der AD-Server nicht erreichbar ist, wird die Warnmeldung ausgelöst."
+
+#: ../../monitoring/monitoring.rst:412
+msgid "You can use this plugin in multi-connector instances."
+msgstr "Sie können dieses Plugin in Multi-Connector-Instanzen verwenden."
+
+#: ../../monitoring/monitoring.rst:416
+msgid "``UNIVENTION_CUPS``"
+msgstr "``UNIVENTION_CUPS``"
+
+#: ../../monitoring/monitoring.rst:417
+msgid ""
+"Monitors the CUPS daemon. If no :program:`cupsd` process runs or the web "
+"interface isn't accessible, the check triggers a ``critical`` alert."
+msgstr ""
+"Überwacht den CUPS-Daemon. Wenn kein :program:`cupsd`-Prozess läuft oder "
+"die Weboberfläche nicht erreichbar ist, löst die Prüfung eine Warnmeldung"
+" vom Typ ``critical`` aus."
+
+#: ../../monitoring/monitoring.rst:424
+msgid "``UNIVENTION_SQUID``"
+msgstr "``UNIVENTION_SQUID``"
+
+#: ../../monitoring/monitoring.rst:425
+msgid ""
+"Monitors the Squid proxy. If no Squid process runs or the Squid proxy "
+"isn't accessible, the alert fires."
+msgstr ""
+"Überwacht den Squid-Proxy. Wenn kein Squid-Prozess läuft oder der Squid-"
+"Proxy nicht erreichbar ist, wird die Warnmeldung ausgelöst."
+
+#: ../../monitoring/monitoring.rst:432
+msgid "``UNIVENTION_RAID`` and ``UNIVENTION_RAID_WARNING``"
+msgstr "``UNIVENTION_RAID`` und ``UNIVENTION_RAID_WARNING``"
+
+#: ../../monitoring/monitoring.rst:433
+msgid ""
+"Monitors RAID device status. The check triggers a ``warning`` alert for the"
+" following RAID statuses:"
+msgstr ""
+"Überwacht den Status von RAID-Geräten. Die Prüfung löst für die folgenden"
+" RAID-Status eine Warnmeldung vom Typ ``warning`` aus:"
+
+#: ../../monitoring/monitoring.rst:437
+msgid "``Rebuilding``"
+msgstr "``Rebuilding``"
+
+#: ../../monitoring/monitoring.rst:438
+msgid "``Reconstruct``"
+msgstr "``Reconstruct``"
+
+#: ../../monitoring/monitoring.rst:439
+msgid "``Replaced Drive``"
+msgstr "``Replaced Drive``"
+
+#: ../../monitoring/monitoring.rst:440
+msgid "``Expanding``"
+msgstr "``Expanding``"
+
+#: ../../monitoring/monitoring.rst:441
+msgid "``Warning``"
+msgstr "``Warning``"
+
+#: ../../monitoring/monitoring.rst:442
+msgid "``Verify``"
+msgstr "``Verify``"
+
+#: ../../monitoring/monitoring.rst:444
+msgid "The check triggers a *critical* alert for the following RAID statuses:"
+msgstr ""
+"Die Prüfung löst für die folgenden RAID-Status eine Warnmeldung vom Typ "
+"*critical* aus:"
+
+#: ../../monitoring/monitoring.rst:447
+msgid "``Degraded``"
+msgstr "``Degraded``"
+
+#: ../../monitoring/monitoring.rst:448
+msgid "``Dead``"
+msgstr "``Dead``"
+
+#: ../../monitoring/monitoring.rst:449
+msgid "``Failed``"
+msgstr "``Failed``"
+
+#: ../../monitoring/monitoring.rst:450
+msgid "``Error``"
+msgstr "``Error``"
+
+#: ../../monitoring/monitoring.rst:451
+msgid "``Missing``"
+msgstr "``Missing``"
+
+#: ../../monitoring/monitoring.rst:455
+msgid "``UNIVENTION_S4CONNECTOR`` and ``UNIVENTION_S4CONNECTOR_WARNING``"
+msgstr "``UNIVENTION_S4CONNECTOR`` und ``UNIVENTION_S4CONNECTOR_WARNING``"
+
+#: ../../monitoring/monitoring.rst:456
+msgid ""
+"Monitors the Samba server. If the server is reachable and rejects "
+"occur, the check triggers a *warning* alert. If the server isn't "
+"reachable, the check triggers a *critical* alert."
+msgstr ""
+"Überwacht den Samba-Server. Wenn der Server erreichbar ist und Rejects "
+"auftreten, löst die Prüfung eine Warnmeldung vom Typ *warning* aus. Wenn "
+"der Server nicht erreichbar ist, löst die Prüfung eine Warnmeldung vom "
+"Typ *critical* aus."
+
+#: ../../monitoring/monitoring.rst:464
+msgid "``UNIVENTION_SAMBA_REPLICATION``"
+msgstr "``UNIVENTION_SAMBA_REPLICATION``"
+
+#: ../../monitoring/monitoring.rst:465
+msgid "Monitors Samba replication. The alert fires when replication fails."
+msgstr ""
+"Überwacht die Samba-Replikation. Die Warnmeldung wird ausgelöst, wenn die"
+" Replikation fehlschlägt."
+
+#: ../../monitoring/monitoring.rst:471
+msgid "Extend monitoring with new alerts"
+msgstr "Monitoring mit neuen Warnmeldungen erweitern"
+
+#: ../../monitoring/monitoring.rst:473
+msgid ""
+"Use custom alert checks to collect additional metrics and define alerts "
+"for them."
+msgstr ""
+"Verwenden Sie benutzerdefinierte Warnprüfungen, um zusätzliche Metriken "
+"zu erfassen und dafür Warnmeldungen zu definieren."
+
+#: ../../monitoring/monitoring.rst:476
+msgid ""
+"Create a custom alert when you want to collect additional metrics and "
+"monitor them in *Prometheus*. Before you begin, make sure that:"
+msgstr ""
+"Erstellen Sie eine benutzerdefinierte Warnmeldung, wenn Sie zusätzliche "
+"Metriken erfassen und in *Prometheus* überwachen möchten. Bevor Sie "
+"beginnen, stellen Sie sicher, dass:"
+
+#: ../../monitoring/monitoring.rst:481
+msgid "You have administrative access to the target Nubus for UCS system."
+msgstr ""
+"Sie über administrativen Zugriff auf das Zielsystem mit Nubus für UCS "
+"verfügen."
+
+#: ../../monitoring/monitoring.rst:482
+msgid "The target system includes the required monitoring components."
+msgstr "Das Zielsystem enthält die erforderlichen Monitoring-Komponenten."
+
+#: ../../monitoring/monitoring.rst:483
+msgid ""
+"Every target system includes the external programs or libraries that your"
+" custom check uses."
+msgstr ""
+"Jedes Zielsystem enthält die externen Programme oder Bibliotheken, die "
+"die benutzerdefinierte Prüfung verwendet."
+
+#: ../../monitoring/monitoring.rst:486
+msgid ""
+"Custom alert checks export metrics from the local system to *Prometheus*."
+" A *PromQL* query uses these metrics to define the alert. For more "
+"information about writing custom checks, see the `Prometheus "
+"documentation <prometheus-query-expression_>`_."
+msgstr ""
+"Benutzerdefinierte Warnprüfungen exportieren Metriken vom lokalen System "
+"nach *Prometheus*. Eine *PromQL*-Abfrage verwendet diese Metriken, um die"
+" Warnmeldung zu definieren. Weitere Informationen zum Schreiben "
+"benutzerdefinierter Prüfungen finden Sie in der `Prometheus-Dokumentation"
+" <prometheus-query-expression_>`_."
+
+#: ../../monitoring/monitoring.rst:491
+msgid "To create a custom alert, do the following:"
+msgstr ""
+"Gehen Sie wie folgt vor, um eine benutzerdefinierte Warnmeldung zu "
+"erstellen:"
+
+#: ../../monitoring/monitoring.rst:493
+msgid ""
+"Copy the custom alert check script to :file:`/usr/share/univention-"
+"monitoring-client/scripts/` on the target Nubus for UCS system."
+msgstr ""
+"Kopieren Sie das Skript für die benutzerdefinierte Warnprüfung auf dem "
+"Zielsystem mit Nubus für UCS nach :file:`/usr/share/univention-"
+"monitoring-client/scripts/`."
+
+#: ../../monitoring/monitoring.rst:497
+msgid ""
+"Replace ``PLUGIN`` with the filename of your custom alert check script. "
+"Then make the script executable with the command in :numref:`monitoring-"
+"add-alerts-listing`."
+msgstr ""
+"Ersetzen Sie ``PLUGIN`` durch den Dateinamen Ihres Skripts für die "
+"benutzerdefinierte Warnprüfung. Machen Sie das Skript anschließend mit "
+"dem Befehl in :numref:`monitoring-add-alerts-listing` ausführbar."
+
+#: ../../monitoring/monitoring.rst:500
+msgid "Make ``PLUGIN`` script executable"
+msgstr "Skript ``PLUGIN`` ausführbar machen"
+
+#: ../../monitoring/monitoring.rst:500
+msgid "$ chmod a+x PLUGIN"
+msgstr "$ chmod a+x PLUGIN"
+
+#: ../../monitoring/monitoring.rst:506
+msgid ""
+"Write valid *Prometheus* metrics to a :file:`.prom` file in "
+":file:`/var/lib/prometheus/node-exporter/`."
+msgstr ""
+"Schreiben Sie gültige *Prometheus*-Metriken in eine :file:`.prom`-Datei "
+"in :file:`/var/lib/prometheus/node-exporter/`."
+
+#: ../../monitoring/monitoring.rst:510
+msgid ""
+"In the *Management UI*, configure the custom alert. For details, see :ref"
+":`monitoring-alert-configuration`."
+msgstr ""
+"Konfigurieren Sie die benutzerdefinierte Warnmeldung in der *Management "
+"UI*. Einzelheiten finden Sie unter :ref:`monitoring-alert-configuration`."
+
+#: ../../monitoring/monitoring.rst:514
+msgid ""
+"Enter the Prometheus expression for the script metric in the *Query "
+"expression* field."
+msgstr ""
+"Geben Sie den Ausdruck für Prometheus für die "
+":spelling:word:`Skriptmetrik` in das Feld *Abfrageausdruck* ein."
+
+#: ../../monitoring/monitoring.rst:517
+msgid ""
+"Assign the custom alert to the required systems. For details, see :ref"
+":`monitoring-assign-alerts`."
+msgstr ""
+"Weisen Sie die benutzerdefinierte Warnmeldung den erforderlichen Systemen"
+" zu. Einzelheiten finden Sie unter :ref:`monitoring-assign-alerts`."
+
+#: ../../monitoring/monitoring.rst:520
+msgid ""
+"Verify that *Prometheus* reads the exported metrics. For example, confirm"
+" that the metric appears in *Prometheus* and that the alert is available "
+"in the alert configuration."
+msgstr ""
+"Prüfen Sie, ob *Prometheus* die exportierten Metriken liest. Bestätigen "
+"Sie zum Beispiel, dass die Metrik in *Prometheus* erscheint und dass die "
+"Warnmeldung in der :spelling:word:`Warnmeldungskonfiguration` verfügbar ist."
+
+#: ../../monitoring/monitoring.rst:526
+msgid ""
+"All alert checks that Nubus for UCS provides use Python. Custom checks "
+"can use Perl, Python, or shell scripts. These checks don't require "
+"external libraries or programs unless the script uses them."
+msgstr ""
+"Alle Warnprüfungen, die Nubus für UCS bereitstellt, verwenden Python. "
+"Benutzerdefinierte Prüfungen können Perl, Python oder Shell-Skripte "
+"verwenden. Diese Prüfungen benötigen keine externen Bibliotheken oder "
+"Programme, sofern das Skript sie nicht verwendet."
+
+#: ../../monitoring/monitoring.rst:533
+msgid "`Metric and label naming <https://prometheus.io/docs/practices/naming/>`_"
+msgstr ""
+"`Benennung von Metriken und Labels "
+"<https://prometheus.io/docs/practices/naming/>`_"
+
+#: ../../monitoring/monitoring.rst:534
+msgid "for information about *Prometheus* naming conventions."
+msgstr "für Informationen zu den :spelling:word:`Benennungskonventionen` in *Prometheus*."
+
+#: ../../monitoring/monitoring.rst:536
+msgid ""
+"`Exposition formats "
+"<https://prometheus.io/docs/instrumenting/exposition_formats/>`_"
+msgstr ""
+"`Expositionsformate "
+"<https://prometheus.io/docs/instrumenting/exposition_formats/>`_"
+
+#: ../../monitoring/monitoring.rst:537
+msgid "for information about text-based format of a :file:`.prom` file."
+msgstr "für Informationen über das textbasierte Format einer :file:`.prom`-Datei."
 

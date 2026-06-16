@@ -38,6 +38,8 @@ Hypervisor-Umgebungen
 Infrastrukturdienste
 Infrastrukturumgebungen
 Integrationen
+Label
+Labels
 Listener-Dienste
 Logeintrag
 Logeinträge
@@ -45,6 +47,10 @@ Logeinträgen
 Mirror
 Mirror-Server
 Mirrors
+Monitoring-Komponenten
+Monitoring-Prüfungen
+Monitoring-Verwaltung
+Monitoring-Warnmeldungen
 Multiprocessing
 NTP-Antworten
 Notifier-Dienste
@@ -75,6 +81,7 @@ Scripting
 Shell-Scripting
 Skriptnamen
 Skriptversion
+Stummschaltungen
 TLS-Zertifikate
 Treiberanforderungen
 UCR-Befehle
@@ -89,6 +96,7 @@ Upstream-Servers
 Verifizierungsprozess
 Versionierung
 Versionierungsstrategie
+Warn-Dashboard
 Widerrufsliste
 Ziel-App
 aufgabenorientierte
@@ -96,6 +104,7 @@ bcrypt
 cloudbasierte
 containerisierte
 domänenweiter
+festhängende
 gruppenbasierte
 größenbasierten
 hasht
@@ -106,5 +115,7 @@ richtlinienbasierten
 rollenspezifischen
 schreibbar
 systemspezifische
+textbasierte
 zeitbasierte
 zeitbasierten
+zurückgibt
