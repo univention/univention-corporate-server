@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 15. Jun 2026
+     - :ref:`monitoring`
+     - Add section about monitoring of Nubus for UCS systems and their services.
+
    * - 5. Jun 2026
      - :ref:`domain-infrastructure-ldap-directory`
      - Add section about the LDAP directory service.
