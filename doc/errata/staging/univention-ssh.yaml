@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue:
  * `univention-ssh` now disables SSH public key authentication when
    authenticating with machine account credentials. This avoids authentication
-   failures caused by excessive SSH authentication attempts. Furhter
+   failures caused by excessive SSH authentication attempts. Further
    security-related configuration options for joined systems have been added.
 bug: [59144]
