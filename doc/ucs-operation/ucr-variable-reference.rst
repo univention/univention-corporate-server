@@ -1354,6 +1354,79 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: string
 
+.. envvar:: monitoring/dns/lookup-domain
+
+   Specifies the domain name that the DNS monitoring check uses
+   to test DNS resolution.
+   The :program:`univention-monitoring-client` package uses this variable
+   for the ``UNIVENTION_DNS`` check.
+   When unset,
+   the check uses ``www.univention.de``.
+
+   If the UCS domain has no DNS forwarder,
+   you can set this variable to the fully qualified domain name (FQDN)
+   of the :term:`Primary Directory Node`.
+
+   For information about the DNS monitoring check,
+   see :ref:`monitoring-preconfigured-checks-dns`.
+
+   :Default value: ``www.univention.de``
+   :Type: string
+
+.. envvar:: monitoring/nfs/allnfs
+
+   Controls which NFS mounts the NFS monitoring check includes.
+   When set to ``true``,
+   the check includes all NFS mounts from :file:`/etc/fstab`.
+   When unset or set to ``false``,
+   the check includes only NFS mounts
+   that aren't marked with the ``noauto`` option.
+
+   The :program:`univention-monitoring-client` package uses this variable
+   for the NFS status check.
+
+   :Default value: ``true``
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
+.. envvar:: monitoring/nmbd/query-wins-hosts
+
+   Specifies which host pairs the NMBD monitoring check uses
+   for NetBIOS name resolution tests.
+   The variable must contain a comma-separated list of entries.
+   Each entry consists of two hostnames separated by a blank.
+
+   For each entry,
+   the check sends a unicast query to the second hostname
+   to resolve the first hostname.
+
+   If this variable is unset,
+   the check uses the local hostname for both values.
+
+   Example:
+
+   .. code-block:: none
+
+      host1 wins1,host2 wins2
+
+   The :program:`univention-monitoring-client` package uses this variable
+   for the ``UNIVENTION_NMBD`` check.
+
+   :Default value: not set
+   :Type: list
+
+.. envvar:: monitoring/printerqueue/printers
+
+   Specifies the printers whose queues the printer queue monitoring check monitors.
+   Set the value to one or more printer names separated by blanks.
+   If a printer name contains blanks,
+   quote it accordingly.
+
+   The :program:`univention-monitoring-client` package uses this variable
+   for the printer queue monitoring check.
+
+   :Default value: not set
+   :Type: string
 
 .. envvar:: nameserver1
 
