@@ -10,3 +10,6 @@ desc: |
    ucs_registerLDAPExtension is now configurable via the UCR variable
    `directory/manager/ldap_extension/timeout/activation`.
 bug: [59474]
+erratum: 490
+announced: 2026-06-17
+support: core
