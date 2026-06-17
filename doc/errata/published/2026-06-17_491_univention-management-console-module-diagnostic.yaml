@@ -9,3 +9,6 @@ desc: |
  * The error message for the `11_nameserver` check was broken and has been
    corrected.
 bug: [59489]
+erratum: 491
+announced: 2026-06-17
+support: core
