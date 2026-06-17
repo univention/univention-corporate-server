@@ -11,3 +11,6 @@ desc: |
    failures caused by excessive SSH authentication attempts. Further
    security-related configuration options for joined systems have been added.
 bug: [59144]
+erratum: 492
+announced: 2026-06-17
+support: core
