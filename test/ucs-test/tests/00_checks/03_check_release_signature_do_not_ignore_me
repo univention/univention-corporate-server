@@ -33,10 +33,14 @@ detect_lib
 apt_update () {
 	local faketime="${1:?}"
 	shift
+
+	# Specify gpgv instead of the UCS 5.3 default sqv
+	# since sqv ignores libfaketime
 	LC_ALL=C \
 	LD_PRELOAD="$libfaketime" \
 	FAKETIME="$faketime" \
 		apt-get \
+		-o 'APT::Key::gpgvcommand=/usr/bin/gpgv' \
 		-o 'Acquire::https::Verify-Peer=false' \
 		-o 'Acquire::https::Verify-Host=false' \
 		-q update 2>&1 |
@@ -54,7 +58,7 @@ esac
 # check if apt-get update in now+2y works
 if apt_update '+2y'
 then
-	apt-key list
+	ls /etc/apt/trusted.gpg.d/
 	fail_fast 110 "warnings/error during apt-get update"  # FAIL
 fi
 
