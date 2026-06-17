@@ -1,6 +1,7 @@
 ucs-test (12.6.9) unstable; urgency=medium
 
   * Bug #59418: adjust to ruamel.yaml API changes
+  * Bug #59418: reset the restart failure count in restart_docker
 
  -- Florian Best <best@univention.de>  Fri, 19 Jun 2026 13:37:55 +0200
 

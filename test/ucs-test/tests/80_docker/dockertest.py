@@ -138,6 +138,10 @@ def pull_docker_image(imgname):
 
 
 def restart_docker():
+    # reset-failed clears systemd's StartLimitBurst counter
+    # since exessive calls to restart_docker can cause the docker daemon
+    # to not start
+    subprocess.call(['systemctl', 'reset-failed', 'docker'])
     cmd = ['systemctl', 'restart', 'docker']
     return subprocess.call(cmd) == 0
 
