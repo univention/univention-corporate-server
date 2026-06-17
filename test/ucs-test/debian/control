@@ -74,6 +74,7 @@ Architecture: all
 Recommends:
  ucs-test-framework,
 Depends:
+ gpgv,
  libfaketime,
  python3-apt,
  python3-lxml,
