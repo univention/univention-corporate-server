@@ -37,6 +37,9 @@ apt_update () {
 	LD_PRELOAD="$libfaketime" \
 	FAKETIME="$faketime" \
 		apt-get \
+        # Specify gpgv instead of the UCS 5.3 default sqv
+        # since sqv ignores libfaketime
+		-o 'APT::Key::gpgvcommand=/usr/bin/gpgv' \
 		-o 'Acquire::https::Verify-Peer=false' \
 		-o 'Acquire::https::Verify-Host=false' \
 		-q update 2>&1 |
