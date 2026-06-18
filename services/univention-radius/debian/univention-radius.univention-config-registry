@@ -103,3 +103,10 @@ User: root
 Group: freerad
 Mode: 640
 Variables: freeradius/conf/mac-addr-regexp
+
+Type: file
+File: etc/freeradius/3.0/dictionary
+User: root
+Group: freerad
+Mode: 640
+Variables: domainname

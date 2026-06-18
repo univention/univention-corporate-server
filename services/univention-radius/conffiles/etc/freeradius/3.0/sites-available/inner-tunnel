@@ -330,9 +330,9 @@ post-auth {
 	#  If you want the Access-Accept to contain the inner
 	#  User-Name, uncomment the following lines.
 	#
-#	update outer.session-state {
-#	       User-Name := &User-Name
-#	}
+	update outer.session-state {
+	       univention-inner-username := &User-Name
+	}
 
 	#
 	#  If you want to have a log of authentication replies,
