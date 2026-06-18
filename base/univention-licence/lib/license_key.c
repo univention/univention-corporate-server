@@ -258,7 +258,7 @@ int univention_license_verify(const char *data, const char *signature) {
 	if (univention_license_key_public_key_installed()) {
 		if (signature != NULL && data != NULL) {
 			unsigned char hash[SHA_DIGEST_LENGTH];
-			int signaturelen = 0;
+			unsigned int signaturelen = 0;
 			unsigned char *rawsignature = NULL;
 			int i = 0;
 
@@ -268,11 +268,16 @@ int univention_license_verify(const char *data, const char *signature) {
 			// convert base64signature to rawsignature
 			signaturelen = univention_license_base64_to_raw(signature, &rawsignature);
 
-			// verify
-			while (i < NUM_PUBLIC_KEYS && !ret) {
-				ret = RSA_verify(NID_sha1, hash, SHA_DIGEST_LENGTH, rawsignature, signaturelen, rsa_public[i]);
-				i++;
+			if (signaturelen > 0 && rawsignature != NULL) {
+				// verify
+				while (i < NUM_PUBLIC_KEYS && !ret) {
+					ret = RSA_verify(NID_sha1, hash, SHA_DIGEST_LENGTH, rawsignature, signaturelen, rsa_public[i]);
+					i++;
+				}
+			} else {
+				univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_WARN, "Invalid base64 signature.");
 			}
+
 			free(rawsignature);
 		} else {
 			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Can't veriy Data(%s) with Signature(%s).", data ? data : "", signature ? signature : "");
