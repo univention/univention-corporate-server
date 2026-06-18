@@ -52,7 +52,7 @@ def cleanup(hook_name):
 
 
 @pytest.fixture
-def fn_hook():
+def fn_hook(hook_name):
     return '%s%s.py' % (HOOKSPATH, hook_name)
 
 
