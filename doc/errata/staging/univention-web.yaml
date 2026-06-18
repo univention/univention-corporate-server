@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-web
+fix: 6.6.1
+desc: |
+ This update addresses the following issues:
+ * The grid header "select all" checkbox switched to the unselected
+   state instead of the indeterminate state when a single item was
+   deselected from the all-selected state.
+bug: [59147]

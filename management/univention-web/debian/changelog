@@ -1,8 +1,12 @@
-univention-web (6.6.0) UNRELEASED; urgency=medium
+univention-web (6.6.1) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:17 +0200
+  [ Jürn Brodersen ]
+  * Bug #59147: fix grid header staying in subset/none state when deselecting an item from the all-selected state
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 18 Jun 2026 16:38:14 +0200
 
 univention-web (6.5.2) unstable; urgency=medium
 

@@ -120,8 +120,8 @@ define([
 						}
 					}
 
-					selectorHeaderCheckbox.$checkbox.set('indeterminate', mixed);
 					selectorHeaderCheckbox.$checkbox.set('checked', this.allSelected);
+					selectorHeaderCheckbox.$checkbox.set('indeterminate', mixed);
 
 					// selectorHeaderCheckbox.indeterminate = mixed;
 					// selectorHeaderCheckbox.checked = this.allSelected;
