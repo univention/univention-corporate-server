@@ -125,18 +125,22 @@ char *univention_license_sign_license(const char *licenseDN) {
         @retval len	the amount of chars in returned rawdata
 */
 unsigned int univention_license_base64_to_raw(const char *base64data, unsigned char **rawdata) {
-	unsigned int rawlen, ret = 0;
+	unsigned int ret = 0;
 	char *temp = NULL;
 	int templen;
+	int rawlen;
 	AUTOPTR(BIO) b64 = NULL;
 	AUTOPTR(BIO) mem = NULL;
 
-	b64 = BIO_new(BIO_f_base64());               // base64 encode BIO
+	if (!base64data || !rawdata)
+		goto out;
+
+	b64 = BIO_new(BIO_f_base64());
 	if (!b64)
 		goto out;
 	BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);  // no newline
 
-	mem = BIO_new_mem_buf((char *)base64data, -1);  // BIO to read from mem
+	mem = BIO_new_mem_buf(base64data, -1);
 	if (!mem)
 		goto out;
 	BIO_set_close(mem, BIO_NOCLOSE);                // So BIO_free() leaves BUF_MEM alone
@@ -145,25 +149,29 @@ unsigned int univention_license_base64_to_raw(const char *base64data, unsigned c
 
 	// create temp memory
 	templen = strlen(base64data);
-	temp = malloc((templen + 1) * sizeof(char));
+	temp = malloc((size_t)templen + 1);
 	if (!temp)
 		goto out;
 
 	// convert from base64
-	rawlen = BIO_read(b64, (void *)temp, templen);
+	rawlen = BIO_read(b64, temp, templen);
+	if (rawlen <= 0)
+		goto out;
 
 	// allocate signature data buffer
 	if (*rawdata != NULL) {
 		univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_WARN, "RawData is not NULL! I free it.");
 		free(*rawdata);
+		*rawdata = NULL;
 	}
-	*rawdata = malloc(rawlen * sizeof(char));
+
+	*rawdata = malloc((size_t)rawlen);
 	if (!*rawdata)
 		goto out;
 
 	// copy data to return string
-	memcpy(*rawdata, temp, rawlen * sizeof(char));
-	ret = rawlen;
+	memcpy(*rawdata, temp, (size_t)rawlen);
+	ret = (unsigned int)rawlen;
 
 out:
 	free(temp);
