@@ -33,6 +33,7 @@
 #include "common.h"
 #include "network.h"
 #include "utils.h"
+#include "signals.h"
 
 #define NOTIFIER_PORT_PROTOCOL1 6668
 #define NOTIFIER_PORT_PROTOCOL2 6669
@@ -526,10 +527,10 @@ int notifier_wait(NotifierClient *client, time_t timeout) {
 		client = &global_client;
 	assert(client->fd > -1);
 
-	FD_ZERO(&fds);
-	FD_SET(client->fd, &fds);
-
 	do {
+		FD_ZERO(&fds);
+		FD_SET(client->fd, &fds);
+
 		if (timeout >= 0) {
 			tv.tv_sec = timeout;
 			tv.tv_usec = 0;
@@ -537,8 +538,9 @@ int notifier_wait(NotifierClient *client, time_t timeout) {
 		} else {
 			rv = select(client->fd + 1, &fds, NULL, NULL, NULL);
 		}
-	} while (rv == -1 && errno == EINTR);
-	if (rv == -1) {
+	} while (rv == -1 && errno == EINTR && !check_exit_signal());
+
+	if (rv == -1 && !(errno == EINTR && check_exit_signal())) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "select: %s", strerror(errno));
 	}
 
