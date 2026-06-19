@@ -34,6 +34,7 @@
 #include "network.h"
 #include "transfile.h"
 #include "utils.h"
+#include "signals.h"
 
 #define DELAY_LDAP_CLOSE 15               /* 15 seconds */
 #define DELAY_ALIVE 5 * 60                /* 5 minutes */
@@ -122,6 +123,10 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 		int msgid;
 		time_t timeout = DELAY_LDAP_CLOSE;
 
+		if (check_exit_signal()) {
+			goto out;
+		}
+
 		check_free_space();
 
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Last Notifier ID: %lu", id);
@@ -132,8 +137,15 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 		   such as closing the LDAP connection or running postrun
 		   handlers */
 		while (notifier_get_msg(NULL, msgid) == NULL) {
+			if (check_exit_signal()) {
+				goto out;
+			}
+
 			/* timeout */
 			if ((rv = notifier_wait(NULL, timeout)) == 0) {
+				if (check_exit_signal()) {
+					goto out;
+				}
 				if (timeout == DELAY_ALIVE) {
 					if (NOTIFIER_RETRY(notifier_alive_s(NULL)) == 1) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get alive answer");
@@ -158,6 +170,14 @@ int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_fil
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to recv result");
 				return 1;
 			} else if (rv < 0) {
+				if (check_exit_signal()) {
+					/* A pending termination signal can interrupt notifier_wait().
+					 * In that case leave the notifier loop and perform cleanup via the
+					 * regular shutdown path instead of reporting a listener error.
+					 */
+					rv = 0;
+					goto out;
+				}
 				return 1;
 			}
 		}

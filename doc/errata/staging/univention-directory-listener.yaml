@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-directory-listener
+fix: 16.6.0
+desc: |
+ This update addresses the following issue:
+ * The Univention Directory Listener shutdown handling has been made
+   signal-safe to avoid segmentation faults when terminating while embedded
+   Python handler code is active.
+bug: [59541]

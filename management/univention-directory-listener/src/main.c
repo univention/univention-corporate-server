@@ -597,8 +597,5 @@ int main(int argc, char *argv[]) {
 	if (rv != 0)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "listener: %d", rv);
 
-	univention_ldap_close(lp);
-	univention_ldap_close(lp_local);
-
-	exit_handler(0);
+	exit_handler_cleanup(get_exit_signal(), lp, lp_local);
 }

@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 #include <univention/debug.h>
+#include <univention/ldap.h>
 
 #include "handlers.h"
 #include "cache.h"
@@ -24,6 +25,20 @@ extern char *pidfile;
 
 int sig_block_count = 0;
 sigset_t block_mask;
+
+static volatile sig_atomic_t exit_signal = 0;
+
+void exit_handler(int sig) {
+	exit_signal = sig;
+}
+
+bool check_exit_signal(void) {
+	return exit_signal != 0;
+}
+
+int get_exit_signal(void) {
+	return exit_signal;
+}
 
 void signals_block(void) {
 	static int init_done = 0;
@@ -75,14 +90,16 @@ void sig_usr2_handler(int sig) {
 	}
 }
 
-void exit_handler(int sig) {
-	char **c;
+void exit_handler_cleanup(int sig, univention_ldap_parameters_t *lp, univention_ldap_parameters_t *lp_local)
+{
 	static bool exit_handler_running = false;
+	char **c;
 
 	if (exit_handler_running) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "received another signal %d, ignoring", sig);
-		return;
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "ignoring already running cleanup");
+		_exit(128 + sig);
 	}
+
 	exit_handler_running = true;
 
 	if (sig)
@@ -97,6 +114,9 @@ void exit_handler(int sig) {
 
 	handlers_postrun_all();
 	handlers_free_all();
+
+	univention_ldap_close(lp);
+	univention_ldap_close(lp_local);
 
 	if (sig) {
 		signal(sig, SIG_DFL);
