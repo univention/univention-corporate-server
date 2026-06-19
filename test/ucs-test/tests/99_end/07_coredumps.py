@@ -34,6 +34,9 @@ def coredumpctl_json():
 
 # provoke a coredump, to test this via:
 # python3 -c 'import ctypes; ctypes.string_at(0)'
+
+# analyse with: apt install univention-directory-listener-dbgsym univention-directory-notifier-dbgsym libc6-dbg libldap2-dbgsym python3-dbg
+# coredumpctl debug "$ID" will open gdb
 def test_no_coredumps():
     subprocess.call(['coredumpctl', 'list'])
     dumps = coredumpctl_json()
