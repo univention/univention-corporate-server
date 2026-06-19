@@ -143,6 +143,9 @@ linkcheck_ignore = [
     r'https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}',
     # FIXME : Reactivate, once the expired certificate is replaced and works.
     r'https://www\.zytrax\.com/books/ldap/',
+    r'https://github\.com/univention/univention-corporate-server',  # rate limited
+    r'https://www\.gnu\.org/software/gettext/',
+    r'https://www\.gnu\.org/software/make/manual/',
 ]
 
 linkcheck_allowed_redirects = {
