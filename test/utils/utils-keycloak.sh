@@ -5,7 +5,28 @@
 set -x
 set -e
 
+
+slugify () {
+	iconv -t ascii//TRANSLIT |
+		sed "s/'//g;s/[^a-zA-Z0-9]\\+/-/g;s/^-//;s/-\$//;s/.*/\\L&/"
+}
+
 install_upgrade_keycloak () {
+
+	if [[ -n "$KEYCLOAK_BRANCH" ]]; then
+		branch="$(echo "$KEYCLOAK_BRANCH" | slugify)"
+		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/keycloak-app $branch main" | tee /etc/apt/sources.list.d/guardian.list
+		# pin the branch repo above the regular UCS repos so its packages win
+		cat >/etc/apt/preferences.d/99keycloak.pref <<__PREF__
+Package: *
+Pin: release o=Univention,n=$branch
+Pin-Priority: 1002
+__PREF__
+		echo 'APT::Get::allow-downgrades "true";' >/etc/apt/apt.conf.d/99allow-downgrade
+		apt-get -qq update
+		univention-install -y univention-keycloak-client
+	fi
+
 	echo "univention" > /tmp/pwdfile
 	if [ -n "$KEYCLOAK_APPVERSION" ]; then
 		app="keycloak=$KEYCLOAK_APPVERSION"
