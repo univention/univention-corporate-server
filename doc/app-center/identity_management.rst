@@ -393,7 +393,7 @@ An app subscribes to events for specific topics—specific UDM object types
 such as ``users/user`` or ``groups/group``.
 The *Provisioning Service* then creates a queue for the app
 and stores incoming events there.
-The app can fetch and acknowledge events from its queue at its own pace.
+The app can fetch events from its queue and process them at its own pace.
 
 Topic subscription should happen in the app's join script, the :file:`.inst` file,
 which the App Center runs on the UCS host during app installation and updates.
