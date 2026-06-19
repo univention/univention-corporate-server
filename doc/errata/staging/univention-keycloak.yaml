@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-keycloak
+fix: 3.6.1
+desc: |
+ This update addresses the following issue:
+ * Future compatibility for API changes in more recent ``python-keycloak``
+   versions has been added.
+bug: [59517]
