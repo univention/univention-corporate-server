@@ -53,12 +53,19 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx_inline_tabs',
     'sphinxcontrib.inkscapeconverter',
+    'sphinxcontrib.bibtex',
 ]
+
+bibtex_bibfiles = ['../bibliography.bib']
+bibtex_encoding = 'utf-8'
+bibtex_default_style = 'unsrt'
+bibtex_reference_style = 'label'
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
     'uv-manual': reference_inventory('manual', version=version),
     'uv-dev-ref': reference_inventory('developer-reference', version=version),
 }
