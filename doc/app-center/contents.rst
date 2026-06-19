@@ -18,3 +18,4 @@ Univention App Center for App Providers' documentation!
    configurations
    appliances
    command-univention-app
+   bibliography
