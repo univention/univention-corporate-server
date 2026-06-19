@@ -16,7 +16,7 @@
 .. _open-suse-build-service: https://build.opensuse.org/
 .. _openldap: https://www.openldap.org/
 .. _pip-install: https://pip.pypa.io/en/stable/installation/
-.. _poedit: https://poedit.net/
+.. _poedit: https://poedit.com/
 .. _python-download: https://www.python.org/downloads/
 .. _univention-bugzilla: https://forge.univention.org/bugzilla/index.cgi
 .. _univention-help: https://help.univention.com/
