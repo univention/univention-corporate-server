@@ -386,7 +386,7 @@ When data changes in the LDAP directory on the Primary Directory Node,
 the Provisioning Service receives a notification and forwards it to all
 subscribed services.
 In contrast to the Univention Directory Listener,
-it provides the |UDMUCS| representation of changed objects instead of the
+it provides the |UCSUCS| representation of changed objects instead of the
 LDAP representation.
 
 An app subscribes to events for specific topics — that is, specific UDM object
