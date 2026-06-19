@@ -397,10 +397,9 @@ The app can fetch events from its queue and process them at its own pace.
 
 Topic subscription should happen in the app's join script, the :file:`.inst` file,
 which the App Center runs on the UCS host during app installation and updates.
-To avoid every app having to ship its own *Provisioning API* client,
-UCS provides :program:`univention-provisioning-api-client`.
-The join script calls this tool to register the subscription,
-for example :numref:`provisioning-api-listing`.
+UCS provides :program:`univention-provisioning-api-client`
+to register subscriptions in a join script,
+see the example in :numref:`provisioning-api-listing`.
 
 For a full description of all options and unjoin script examples,
 see :external+uv-dev-ref:ref:`chap-provisioning` in the
