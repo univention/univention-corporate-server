@@ -91,9 +91,6 @@ basic_setup () {
 	# set strict mode for UDM so that the tests detect broken occurrences
 	# but customers / PS scripts aren't affected immediately
 	ucr set 'directory/manager/type-checking/strict=true'
-
-	# enable storage of coredumps so that 99_end/07_coredumps.py lists them
-	enable_core_dumps
 }
 
 stop_uss_and_restore_profile () {
@@ -344,6 +341,9 @@ run_setup_join () {
 	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
 	ucr unset --forced update/available
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
+
+	# enable storage of coredumps so that 99_end/07_coredumps.py lists them
+	enable_core_dumps
 
 	return $rv
 }
