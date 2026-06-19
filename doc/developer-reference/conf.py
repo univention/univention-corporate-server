@@ -64,6 +64,7 @@ bibtex_reference_style = 'label'
 
 intersphinx_mapping = {
     'uv-architecture': reference_inventory('architecture', version=version),
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
     'uv-manual': reference_inventory('manual', version=version),
     'uv-nubus-kubernetes-customization': (
         'https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/',
