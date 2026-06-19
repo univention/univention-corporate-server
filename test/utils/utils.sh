@@ -803,6 +803,36 @@ run_keycloak_tests () {
 	run_tests -s checks -s keycloak -s end "$@"
 }
 
+run_guardian_tests () {
+	run_tests -s checks -s guardian -s end "$@"
+}
+
+setup_guardian_repo () {
+	# configure the guardian branch repo + apt pin (idempotent, safe to call more than once)
+	local branch
+	[ -n "$GUARDIAN_BRANCH" ] || return 0
+	branch="$(echo "$GUARDIAN_BRANCH" | slugify)"
+	echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/guardian $branch main" | tee /etc/apt/sources.list.d/guardian.list
+	# pin the branch repo above the regular UCS repos so its packages win
+	cat >/etc/apt/preferences.d/99guardian.pref <<__PREF__
+Package: *
+Pin: release o=Univention,n=$branch
+Pin-Priority: 1002
+__PREF__
+	echo 'APT::Get::allow-downgrades "true";' >/etc/apt/apt.conf.d/99allow-downgrade
+	apt-get -qq update
+}
+
+install_guardian () {
+	setup_guardian_repo
+	univention-install -y univention-guardian-server
+}
+
+install_guardian_tests () {
+	setup_guardian_repo
+	univention-install -y ucs-test-guardian
+}
+
 ad_member_fix_udm_rest_api () {  # workaround for Bug #50527
 	ucr unset directory/manager/rest/authorized-groups/domain-admins
 	univention-run-join-scripts --force --run-scripts 22univention-directory-manager-rest.inst
@@ -1379,15 +1409,6 @@ add_ucsschool_dev_repo () {
 	cat << EOF > /etc/apt/sources.list.d/ucsschool-dev-repo.list
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/all/
 deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-ucs-school-${majorminor}/\$(ARCH)/
-EOF
-}
-
-add_guardian_dev_repo () {
-	local majorminor
-	majorminor="$(ucr get version/version)"
-	cat << EOF > /etc/apt/sources.list.d/guardian-dev-repo.list
-deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-guardian/all/
-deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_${majorminor}-0-guardian/\$(ARCH)/
 EOF
 }
 
