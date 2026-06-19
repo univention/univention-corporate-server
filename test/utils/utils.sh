@@ -84,13 +84,16 @@ basic_setup () {
 	basic_setup_allow_uss
 	stop_uss_and_restore_profile
 
-	# ssh setting to migitiate ssh connection failures during test runs
+	# ssh setting to mitigate ssh connection failures during test runs
 	ucr set sshd/ClientAliveCountMax=10
 	service sshd restart
 
 	# set strict mode for UDM so that the tests detect broken occurrences
 	# but customers / PS scripts aren't affected immediately
 	ucr set 'directory/manager/type-checking/strict=true'
+
+	# enable storage of coredumps so that 99_end/07_coredumps.py lists them
+	enable_core_dumps
 }
 
 stop_uss_and_restore_profile () {
@@ -2121,5 +2124,20 @@ remove_net_installer () {
 }
 
 # trap log_execution_time EXIT
+
+enable_core_dumps () {
+	univention-install -y systemd-coredump
+	mkdir -p /etc/systemd/coredump.conf.d
+	cat >/etc/systemd/coredump.conf.d/ucs-test.conf <<EOF
+[Coredump]
+Storage=external
+Compress=yes
+ProcessSizeMax=8G
+ExternalSizeMax=8G
+EOF
+
+	systemctl daemon-reload
+	systemctl restart systemd-coredump.socket
+}
 
 # vim:set filetype=sh ts=4:
