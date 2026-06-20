@@ -283,7 +283,7 @@ Variables: xorg/keyboard/options/XkbVariant
 Variables: xorg/keyboard/options/XkbOptions
 
 Type: file
-File: etc/default/locale
+File: etc/locale.conf
 Variables: locale/default
 
 Type: file
