@@ -1,0 +1,74 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/networks/network.py:98
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/networks/network.py:108
+msgid "DHCP preferences"
+msgstr "DHCP 偏好設定"
+
+#: modules/univention/admin/handlers/networks/network.py:90
+msgid "DHCP service"
+msgstr "DHCP 服務"
+
+#: modules/univention/admin/handlers/networks/network.py:78
+msgid "DNS forward lookup zone"
+msgstr "DNS 正向對應區域"
+
+#: modules/univention/admin/handlers/networks/network.py:104
+msgid "DNS preferences"
+msgstr "DNS 偏好設定"
+
+#: modules/univention/admin/handlers/networks/network.py:84
+msgid "DNS reverse lookup zone"
+msgstr "DNS 反向對應區域"
+
+#: modules/univention/admin/handlers/networks/network.py:98
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/networks/network.py:99
+msgid "General network settings"
+msgstr "一般網路設定"
+
+#: modules/univention/admin/handlers/networks/network.py:71
+msgid "IP address range"
+msgstr "IP 位址範圍"
+
+#: modules/univention/admin/handlers/networks/network.py:40
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/networks/network.py:57
+msgid "Netmask"
+msgstr "網路遮罩"
+
+#: modules/univention/admin/handlers/networks/network.py:26
+msgid "Network"
+msgstr "網路"
+
+#: modules/univention/admin/handlers/networks/network.py:27 modules/univention/admin/handlers/networks/network.py:49
+msgid "Networks"
+msgstr "網路"
+
+#: modules/univention/admin/handlers/networks/network.py:25
+msgid "Networks: Network"
+msgstr "網路: 網路"
+
+#: modules/univention/admin/handlers/networks/network.py:65
+msgid "Next IP address"
+msgstr "下一個 IP 位址"

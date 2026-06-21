@@ -1,0 +1,513 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-setup package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/setup/InterfaceWizard.js:71 umc/js/setup/InterfaceWizard.js:369
+msgid "<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled."
+msgstr "<i>Bond</i> 介面可將兩個或多個實體網路介面結合在一起。"
+
+#: umc/js/setup/InterfaceWizard.js:70 umc/js/setup/InterfaceWizard.js:334
+msgid "<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments."
+msgstr "<i>Bridge</i> 介面可讓實體網路介面共用，以連接一個或多個網段。"
+
+#: umc/js/setup/InterfaceWizard.js:68
+msgid "<i>Ethernet</i> is a standard physical interface."
+msgstr "<i>Ethernet</i> 是標準的實體介面。"
+
+#: umc/js/setup/InterfaceWizard.js:69
+msgid "<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces."
+msgstr "<i>VLAN</i> 介面可在僅使用一個或多個實體網路介面的情況下，於邏輯上區隔網路流量。"
+
+#: umc/js/setup/InterfaceGrid.js:66
+msgid "Add"
+msgstr "新增"
+
+#: umc/js/setup/InterfaceWizard.js:426
+msgid "Additional bonding options"
+msgstr "其他 bonding 選項"
+
+#: umc/js/setup/InterfaceWizard.js:352
+msgid "Additional bridge options"
+msgstr "其他 bridge 選項"
+
+#: umc/js/setup/InterfaceWizard.js:353 umc/js/setup/InterfaceWizard.js:427
+msgid "Additional options for this network interface"
+msgstr "此網路介面的其他選項"
+
+#: umc/js/setup/InterfaceWizard.js:440
+msgid "Advanced configuration"
+msgstr "進階設定"
+
+#: umc/js/setup.js:114 umc/js/setup.js:334
+msgid "Apply changes"
+msgstr "套用變更"
+
+#: umc/js/setup/Interfaces.js:96 umc/js/setup/InterfaceWizard.js:293
+msgid "Autoconfiguration (SLAAC)"
+msgstr "自動設定 (SLAAC)"
+
+#: umc/js/setup/InterfaceGrid.js:327
+msgid "Back to overview"
+msgstr "返回總覽"
+
+#: umc/js/setup/InterfaceWizard.js:368
+msgid "Bond configuration"
+msgstr "Bond 設定"
+
+#: umc/js/setup/InterfaceWizard.js:437
+msgid "Bond interface configuration"
+msgstr "Bond 介面設定"
+
+#: umc/js/setup/InterfaceWizard.js:385
+msgid "Bond primary"
+msgstr "Bond 主要介面"
+
+#: umc/js/setup/Interfaces.js:144 umc/js/setup/InterfaceWizard.js:372
+msgid "Bond slaves"
+msgstr "Bond 從屬介面"
+
+#: umc/js/setup/types.js:32
+msgid "Bonding"
+msgstr "Bonding"
+
+#: umc/js/setup/types.js:33
+msgid "Bridge"
+msgstr "Bridge"
+
+#: umc/js/setup/InterfaceWizard.js:333
+msgid "Bridge configuration"
+msgstr "Bridge 設定"
+
+#: umc/js/setup/InterfaceWizard.js:363
+msgid "Bridge interface configuration"
+msgstr "Bridge 介面設定"
+
+#: umc/js/setup/Interfaces.js:166 umc/js/setup/InterfaceWizard.js:337
+msgid "Bridge ports"
+msgstr "Bridge 通訊埠"
+
+#: umc/js/setup/CertificatePage.js:83
+msgid "Business unit"
+msgstr "事業單位"
+
+#: umc/js/setup.js:331 umc/js/setup/InterfaceGrid.js:106
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/setup/LanguagePage.js:96
+msgid "Category"
+msgstr "類別"
+
+#: umc/js/setup/CertificatePage.js:129
+msgid "Changes in the SSL certificate settings will result in generating new root SSL certificates. Note that this will require an update of all host certificates in the domain as the old root certificate is no longer valid. Additional information can be found in the <a href=\"http://sdb.univention.de/1183\" target=\"_blank\">Univention Support Database</a>."
+msgstr "變更 SSL 憑證設定將會產生新的 SSL 根憑證。請注意，由於舊的根憑證將不再有效，這會需要更新網域中所有主機的憑證。其他資訊請參閱 <a href=\"http://sdb.univention.de/1183\" target=\"_blank\">Univention Support Database</a>。"
+
+#: umc/js/setup/NetworkPage.js:210
+msgid "Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment."
+msgstr "變更 IP 位址設定可能會導致服務重新啟動或停止。若系統目前正在實際運作中，這可能會造成嚴重的副作用。"
+
+#: umc/js/setup/InterfaceWizard.js:66
+msgid "Choose interface type"
+msgstr "選擇介面類型"
+
+#: umc/js/setup/CertificatePage.js:52
+msgid "Common name for the root SSL certificate"
+msgstr "SSL 根憑證的一般名稱"
+
+#: umc/js/setup/InterfaceGrid.js:49
+msgid "Configuration"
+msgstr "設定"
+
+#: umc/js/setup.js:404
+msgid "Configuration finished"
+msgstr "設定完成"
+
+#: umc/js/setup/InterfaceWizard.js:231
+msgid "Configuration of IPv4 and IPv6 addresses"
+msgstr "IPv4 與 IPv6 位址的設定"
+
+#: umc/js/setup/CertificatePage.js:58
+msgid "Country"
+msgstr "國家/地區"
+
+#: umc/js/setup/LanguagePage.js:102
+msgid "Country code"
+msgstr "國家/地區代碼"
+
+#: umc/js/setup/NetworkPage.js:316
+msgid "Created:"
+msgstr "建立時間:"
+
+#: umc/js/setup/InterfaceWizard.js:598 umc/js/setup/InterfaceWizard.js:624
+msgid "DHCP query failed."
+msgstr "DHCP 查詢失敗。"
+
+#: umc/js/setup/InterfaceWizard.js:320
+msgid "DHCP-Query"
+msgstr "DHCP 查詢"
+
+#: umc/js/setup/LanguagePage.js:128 umc/js/setup/LanguagePage.js:208
+msgid "Default system locale"
+msgstr "預設系統地區設定"
+
+#: umc/js/setup/InterfaceGrid.js:72 umc/js/setup/InterfaceGrid.js:110
+msgid "Delete"
+msgstr "刪除"
+
+#: umc/js/setup/NetworkPage.js:265
+msgid "Domain name server"
+msgstr "網域名稱伺服器"
+
+#: umc/js/setup/NetworkPage.js:92
+msgid "Domain name server (max. 3)"
+msgstr "網域名稱伺服器 (最多 3 個)"
+
+#: umc/js/setup/Interfaces.js:93 umc/js/setup/InterfaceWizard.js:261
+msgid "Dynamic (DHCP)"
+msgstr "動態 (DHCP)"
+
+#: umc/js/setup/InterfaceWizard.js:512
+msgid "Each IPv6 interface must have an identifier"
+msgstr "每個 IPv6 介面都必須有一個識別碼"
+
+#: umc/js/setup/InterfaceGrid.js:58
+msgid "Edit"
+msgstr "編輯"
+
+#: umc/js/setup/CertificatePage.js:90
+msgid "Email address"
+msgstr "電子郵件位址"
+
+#: umc/js/setup/types.js:30
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: umc/js/setup/NetworkPage.js:269
+msgid "External name server"
+msgstr "外部名稱伺服器"
+
+#: umc/js/setup/NetworkPage.js:98
+msgid "External name server (max. 3)"
+msgstr "外部名稱伺服器 (最多 3 個)"
+
+#: umc/js/setup/CertificatePage.js:39
+msgid "Following the <i>certificate settings</i>, a new root certificate will be created for the domain."
+msgstr "依據<i>憑證設定</i>，系統將為網域建立新的根憑證。"
+
+#: umc/js/setup/InterfaceWizard.js:345
+msgid "Forwarding delay"
+msgstr "轉送延遲"
+
+#: umc/js/setup/InterfaceWizard.js:72
+#, javascript-format
+msgid "Further information can be found in the <a href=\"https://docs.software-univention.de/manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS documentation</a>."
+msgstr "其他資訊請參閱 <a href=\"https://docs.software-univention.de/manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS 說明文件</a>。"
+
+#: umc/js/setup/InterfaceWizard.js:609
+msgid "Gateway"
+msgstr "閘道"
+
+#: umc/js/setup/NetworkPage.js:83 umc/js/setup/NetworkPage.js:257
+msgid "Gateway (IPv4)"
+msgstr "閘道 (IPv4)"
+
+#: umc/js/setup/NetworkPage.js:87 umc/js/setup/NetworkPage.js:261
+msgid "Gateway (IPv6)"
+msgstr "閘道 (IPv6)"
+
+#: umc/js/setup/CertificatePage.js:94
+msgid "General settings"
+msgstr "一般設定"
+
+#: umc/js/setup/NetworkPage.js:110
+msgid "Global network settings"
+msgstr "全域網路設定"
+
+#: umc/js/setup/NetworkPage.js:103 umc/js/setup/NetworkPage.js:273
+msgid "HTTP proxy"
+msgstr "HTTP 代理伺服器"
+
+#: umc/js/setup/NetworkPage.js:107
+msgid "IP network interfaces"
+msgstr "IP 網路介面"
+
+#: umc/js/setup/InterfaceWizard.js:240
+msgid "IPv4 address"
+msgstr "IPv4 位址"
+
+#: umc/js/setup/InterfaceWizard.js:324
+msgid "IPv4 network interface configuration"
+msgstr "IPv4 網路介面設定"
+
+#: umc/js/setup/InterfaceWizard.js:269
+msgid "IPv6 address"
+msgstr "IPv6 位址"
+
+#: umc/js/setup/InterfaceWizard.js:327
+msgid "IPv6 network interface configuration"
+msgstr "IPv6 網路介面設定"
+
+#: umc/js/setup/InterfaceWizard.js:276
+msgid "IPv6 prefix"
+msgstr "IPv6 前置碼"
+
+#: umc/js/setup/InterfaceWizard.js:284
+msgid "Identifier"
+msgstr "識別碼"
+
+#: umc/js/setup.js:392
+msgid "Initialize the configuration process ..."
+msgstr "正在初始化設定程序 ..."
+
+#: umc/js/setup/LanguagePage.js:87 umc/js/setup/LanguagePage.js:204
+msgid "Installed system locales"
+msgstr "已安裝的系統地區設定"
+
+#: umc/js/setup/InterfaceWizard.js:172
+msgid "Interface"
+msgstr "介面"
+
+#: umc/js/setup/InterfaceGrid.js:265
+#, javascript-format
+msgid "Interface \"%s\" already exists."
+msgstr "介面 \"%s\" 已存在。"
+
+#: umc/js/setup/InterfaceWizard.js:82
+msgid "Interface type"
+msgstr "介面類型"
+
+#: umc/js/setup/LanguagePage.js:67 umc/js/setup/LanguagePage.js:196
+msgid "Keyboard layout"
+msgstr "鍵盤配置"
+
+#: umc/js/setup/LanguagePage.js:61 umc/js/setup/LanguagePage.js:192
+msgid "Keyboard model"
+msgstr "鍵盤型號"
+
+#: umc/js/setup/LanguagePage.js:73 umc/js/setup/LanguagePage.js:200
+msgid "Keyboard variant"
+msgstr "鍵盤變體"
+
+#: umc/js/setup/LanguagePage.js:100
+msgid "Language"
+msgstr "語言"
+
+#: umc/js/setup/LanguagePage.js:99
+msgid "Language (english)"
+msgstr "語言 (英文)"
+
+#: umc/js/setup/LanguagePage.js:101
+msgid "Language code"
+msgstr "語言代碼"
+
+#: umc/js/setup/LanguagePage.js:140
+msgid "Language settings"
+msgstr "語言設定"
+
+#: umc/js/setup/CertificatePage.js:72
+msgid "Location"
+msgstr "位置"
+
+#: umc/js/setup/CertificatePage.js:97
+msgid "Location settings"
+msgstr "位置設定"
+
+#: umc/js/setup/InterfaceWizard.js:419
+msgid "MII link monitoring frequency"
+msgstr "MII 連結監控頻率"
+
+#: umc/js/setup/InterfaceWizard.js:393
+msgid "Mode"
+msgstr "模式"
+
+#: umc/js/setup/NetworkPage.js:326
+msgid "Modified:"
+msgstr "修改時間:"
+
+#: umc/js/setup/LanguagePage.js:108
+msgid "Name"
+msgstr "名稱"
+
+#: umc/js/setup/InterfaceWizard.js:135
+msgid "Name of new bonding interface"
+msgstr "新 bonding 介面的名稱"
+
+#: umc/js/setup/InterfaceWizard.js:133
+msgid "Name of new bridge interface"
+msgstr "新 bridge 介面的名稱"
+
+#: umc/js/setup/InterfaceWizard.js:609
+msgid "Nameserver"
+msgstr "名稱伺服器"
+
+#: umc/js/setup/InterfaceWizard.js:247
+msgid "Netmask"
+msgstr "網路遮罩"
+
+#: umc/js/setup/InterfaceGrid.js:38
+msgid "Network interface"
+msgstr "網路介面"
+
+#: umc/js/setup/InterfaceWizard.js:230
+msgid "Network interface configuration"
+msgstr "網路介面設定"
+
+#: umc/js/setup/NetworkPage.js:277
+msgid "Network interfaces"
+msgstr "網路介面"
+
+#: umc/js/setup.js:267
+msgid "No changes have been made."
+msgstr "未進行任何變更。"
+
+#: umc/js/setup/CertificatePage.js:89
+msgid "No valid e-mail address."
+msgstr "不是有效的電子郵件位址。"
+
+#: umc/js/setup/NetworkPage.js:76 umc/js/setup/InterfaceWizard.js:609
+msgid "None"
+msgstr "無"
+
+#: umc/js/setup.js:425
+msgid "Not all changes could be applied successfully:"
+msgstr "並非所有變更皆已成功套用:"
+
+#: umc/js/setup.js:429
+msgid "Ok"
+msgstr "確定"
+
+#: umc/js/setup/CertificatePage.js:78
+msgid "Organization"
+msgstr "組織"
+
+#: umc/js/setup/CertificatePage.js:100
+msgid "Organization settings"
+msgstr "組織設定"
+
+#: umc/js/setup/InterfaceWizard.js:186
+msgid "Parent interface"
+msgstr "父介面"
+
+#: umc/js/setup/InterfaceWizard.js:586
+msgid "Please choose a network interface before querying a DHCP address."
+msgstr "查詢 DHCP 位址前，請先選擇一個網路介面。"
+
+#: umc/js/setup.js:326
+msgid "Please confirm to apply these changes to the system. This may take some time."
+msgstr "請確認要將這些變更套用至系統。這可能需要一些時間。"
+
+#: umc/js/setup/InterfaceGrid.js:114
+msgid "Please confirm to delete the following interfaces:"
+msgstr "請確認要刪除下列介面:"
+
+#: umc/js/setup/InterfaceWizard.js:338
+msgid "Please specify the ports which will be added to the bridge."
+msgstr "請指定要加入 bridge 的通訊埠。"
+
+#: umc/js/setup/NetworkPage.js:79 umc/js/setup/NetworkPage.js:282
+msgid "Primary network interface"
+msgstr "主要網路介面"
+
+#: umc/js/setup/NetworkPage.js:336
+msgid "Removed:"
+msgstr "移除時間:"
+
+#: umc/js/setup/CertificatePage.js:153
+msgid "SSL root certificate"
+msgstr "SSL 根憑證"
+
+#: umc/js/setup/InterfaceWizard.js:67
+msgid "Several network types can be chosen."
+msgstr "可選擇多種網路類型。"
+
+#: umc/js/setup/InterfaceWizard.js:611
+#, javascript-format
+msgid "Should the nameserver and gateway be set: %s"
+msgstr "是否應設定名稱伺服器與閘道: %s"
+
+#: umc/js/setup/CertificatePage.js:67
+msgid "State"
+msgstr "州/省"
+
+#: umc/js/setup/Interfaces.js:100
+msgid "Static"
+msgstr "靜態"
+
+#: umc/js/setup/Interfaces.js:103
+msgid "Static (IPv6)"
+msgstr "靜態 (IPv6)"
+
+#: umc/js/setup.js:413 umc/js/setup.js:419
+msgid "The changes have been applied successfully."
+msgstr "變更已成功套用。"
+
+#: umc/js/setup.js:399
+msgid "The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}."
+msgstr "在 {time} 秒後仍無法與伺服器建立連線。此問題可能是因 IP 位址變更所致。若是如此，請於 {linkStart}新位址{linkEnd} 重新登入 Univention Management Console。"
+
+#: umc/js/setup.js:316
+msgid "The following changes will be applied to the system:"
+msgstr "下列變更將套用至系統:"
+
+#: umc/js/setup.js:289 umc/js/setup.js:369
+msgid "The following entries could not be validated:"
+msgstr "下列項目無法通過驗證:"
+
+#: umc/js/setup/InterfaceGrid.js:118
+msgid "The following interfaces are already used by other interfaces and can not be deleted:"
+msgstr "下列介面已被其他介面使用，因此無法刪除:"
+
+#: umc/js/setup/InterfaceGrid.js:283
+msgid "There are no more physical interfaces to create."
+msgstr "沒有更多可供建立的實體介面。"
+
+#: umc/js/setup/LanguagePage.js:55 umc/js/setup/LanguagePage.js:188
+msgid "Time zone"
+msgstr "時區"
+
+#: umc/js/setup/LanguagePage.js:137
+msgid "Time zone and keyboard settings"
+msgstr "時區與鍵盤設定"
+
+#: umc/js/setup/InterfaceGrid.js:42
+msgid "Type"
+msgstr "類型"
+
+#: umc/js/setup/Interfaces.js:113
+msgid "Unconfigured"
+msgstr "未設定"
+
+#: umc/js/setup/InterfaceWizard.js:208
+msgid "VLAN ID"
+msgstr "VLAN ID"
+
+#: umc/js/setup.js:35
+msgid "Validation error"
+msgstr "驗證錯誤"
+
+#: umc/js/setup/types.js:31
+msgid "Virtual LAN"
+msgstr "虛擬 LAN"
+
+#: umc/js/setup/InterfaceWizard.js:612
+msgid "don't set"
+msgstr "不設定"
+
+#: umc/js/setup/InterfaceWizard.js:613
+msgid "set"
+msgstr "設定"

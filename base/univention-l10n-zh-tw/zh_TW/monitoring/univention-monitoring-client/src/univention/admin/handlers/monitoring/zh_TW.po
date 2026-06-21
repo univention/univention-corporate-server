@@ -1,0 +1,110 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-monitoring-client\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/univention/admin/handlers/monitoring/alert.py:21 src/univention/admin/handlers/monitoring/alert.py:22
+msgid "Alert"
+msgstr "警報"
+
+#: src/univention/admin/handlers/monitoring/alert.py:49
+msgid "Alert description, shown in alert dashboard and alert e-mail notifications."
+msgstr "警報說明，顯示於警報資訊看板與警報電子郵件通知中。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:76
+msgid "Alert group"
+msgstr "警報群組"
+
+#: src/univention/admin/handlers/monitoring/alert.py:40
+msgid "Alert name"
+msgstr "警報名稱"
+
+#: src/univention/admin/handlers/monitoring/alert.py:56
+msgid "Alert summary, shown in alert dashboard and alert e-mail notifications."
+msgstr "警報摘要，顯示於警報資訊看板與警報電子郵件通知中。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:23
+msgid "Alerts"
+msgstr "警報"
+
+#: src/univention/admin/handlers/monitoring/alert.py:88 src/univention/admin/handlers/monitoring/alert.py:113 src/univention/admin/handlers/monitoring/alert.py:114
+msgid "Assigned hosts"
+msgstr "已指派的主機"
+
+#: src/univention/admin/handlers/monitoring/alert.py:103
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: src/univention/admin/handlers/monitoring/alert.py:48
+msgid "Description template"
+msgstr "說明範本"
+
+#: src/univention/admin/handlers/monitoring/alert.py:69
+msgid "For clause"
+msgstr "For 子句"
+
+#: src/univention/admin/handlers/monitoring/alert.py:103
+msgid "General"
+msgstr "一般"
+
+#: src/univention/admin/handlers/monitoring/alert.py:104
+msgid "General monitoring settings"
+msgstr "一般監控設定"
+
+#: src/univention/admin/handlers/monitoring/alert.py:113
+msgid "Hosts"
+msgstr "主機"
+
+#: src/univention/admin/handlers/monitoring/alert.py:89
+msgid "Hosts where this alert is activated for."
+msgstr "此警報所啟用的主機。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:82
+msgid "Labels"
+msgstr "標籤"
+
+#: src/univention/admin/handlers/monitoring/alert.py:83
+msgid "Labels will be attached to alerts. They can be used for querying alerts."
+msgstr "標籤會附加至警報，可用於查詢警報。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:39
+msgid "Name"
+msgstr "名稱"
+
+#: src/univention/admin/handlers/monitoring/alert.py:63
+msgid "Prometheus query expression, which causes the alert to fire. Alert fires when the given query returns a non-empty vector."
+msgstr "觸發警報的 Prometheus 查詢運算式。當指定的查詢傳回非空向量時，警報便會觸發。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:62
+msgid "Query expression"
+msgstr "查詢運算式"
+
+#: src/univention/admin/handlers/monitoring/alert.py:55
+msgid "Summary template"
+msgstr "摘要範本"
+
+#: src/univention/admin/handlers/monitoring/alert.py:94
+msgid "Template Values"
+msgstr "範本值"
+
+#: src/univention/admin/handlers/monitoring/alert.py:70
+msgid "The amount of time the result of the query expression must be non-empty until the alert fires."
+msgstr "查詢運算式的結果必須維持非空多久時間，警報才會觸發。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:77
+msgid "The group into which an alarm is inserted. Multiple alarms can belong to the same group."
+msgstr "警示要插入的群組。多個警示可以屬於同一個群組。"
+
+#: src/univention/admin/handlers/monitoring/alert.py:95
+msgid "Values inserted into the query expression, description and summary. References can be done like %name%."
+msgstr "插入查詢運算式、說明與摘要中的值。可使用如 %name% 的方式進行參照。"

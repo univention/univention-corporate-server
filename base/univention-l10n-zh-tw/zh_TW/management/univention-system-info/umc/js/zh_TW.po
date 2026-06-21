@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-sysinfo package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-sysinfo\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/sysinfo.js:120
+msgid "<p>Additionally to the information listed above some more details about the system has been collected. The whole set of collected data that will be transmitted to Univention can be downloaded at the following URL:</p>"
+msgstr "<p>除了上方列出的資訊之外，系統還收集了一些更詳細的資料。將傳送給 Univention 的完整收集資料集，可從以下 URL 下載:</p>"
+
+#: umc/js/sysinfo.js:70
+msgid "<p>If a Univention Support Engineer has asked you to provide this information, then please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.</p>"
+msgstr "<p>如果 Univention 支援工程師要求您提供此資訊，請在以下文字欄位中輸入相關支援案件的單號。單號可在該案件支援郵件的主旨中找到。此資訊將加快案件的處理速度。</p>"
+
+#: umc/js/sysinfo.js:79
+msgid "<p>In the next step the information about the hardware of your system will be collected and a summary will be shown. During this step, no information will be sent to Univention.</p>"
+msgstr "<p>在下一個步驟中，將收集您系統的硬體資訊並顯示摘要。在此步驟中，不會有任何資訊傳送給 Univention。</p>"
+
+#: umc/js/sysinfo.js:145
+msgid "<p>The collected information can be transferred to Univention by uploading the data or by sending it via mail. Please select the corresponding option.</p>"
+msgstr "<p>收集到的資訊可透過上傳資料或以郵件寄送的方式傳送給 Univention。請選擇對應的選項。</p>"
+
+#: umc/js/sysinfo.js:91
+msgid "<p>The following information has been collected and will be transferred to Univention with your acceptance.</p>"
+msgstr "<p>已收集以下資訊，並將在您同意後傳送給 Univention。</p>"
+
+#: umc/js/sysinfo.js:240
+msgid "<p>The information could not be transferred to Univention.</p><p>You can send them as email!</p>"
+msgstr "<p>無法將資訊傳送給 Univention。</p><p>您可以改用電子郵件寄送！</p>"
+
+#: umc/js/sysinfo.js:165
+msgid "<p>The information were transferred to Univention successfully.</p><p>Thank you very much for your support!</p>"
+msgstr "<p>資訊已成功傳送給 Univention。</p><p>非常感謝您的支援！</p>"
+
+#: umc/js/sysinfo.js:37
+msgid "<p>This module collects information about the hardware of your system. This might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. In the following procedure you will be informed in detail about the each step.</p><p>No information is transmitted without your acceptance</p>"
+msgstr "<p>此模組會收集您系統的硬體資訊。這在處理支援案件時可能會有幫助。透過將資料傳送給 Univention，您提供了 UCS 目前使用於哪些平台的資訊，以便較新版本能夠支援這些平台。在以下程序中，將詳細說明每個步驟的內容。</p><p>未經您同意，不會傳送任何資訊</p>"
+
+#: umc/js/sysinfo.js:124 umc/js/sysinfo.js:179 umc/js/sysinfo.js:297
+msgid "Archive with system information"
+msgstr "包含系統資訊的封存檔"
+
+#: umc/js/sysinfo.js:95
+msgid "CPU"
+msgstr "CPU"
+
+#: umc/js/sysinfo.js:86
+msgid "Collected data"
+msgstr "收集到的資料"
+
+#: umc/js/sysinfo.js:49
+msgid "Comment"
+msgstr "註解"
+
+#: umc/js/sysinfo.js:36
+msgid "General information"
+msgstr "一般資訊"
+
+#: umc/js/sysinfo.js:116
+msgid "Graphics card"
+msgstr "顯示卡"
+
+#: umc/js/sysinfo.js:57
+msgid "If this is related to a support case the next step will be to enter the ticket number. Otherwise the information about your system will be collected and a summary is shown."
+msgstr "如果這與支援案件相關，下一個步驟將是輸入單號。否則將收集您系統的資訊並顯示摘要。"
+
+#: umc/js/sysinfo.js:128
+msgid "In the following step two possibilities to transmit the information to Univention will be described."
+msgstr "在以下步驟中，將說明兩種將資訊傳送給 Univention 的方式。"
+
+#: umc/js/sysinfo.js:41
+msgid "Manufacturer"
+msgstr "製造商"
+
+#: umc/js/sysinfo.js:106
+msgid "Memory"
+msgstr "記憶體"
+
+#: umc/js/sysinfo.js:150
+msgid "Method"
+msgstr "方式"
+
+#: umc/js/sysinfo.js:45
+msgid "Model"
+msgstr "型號"
+
+#: umc/js/sysinfo.js:111
+msgid "Network adapter"
+msgstr "網路卡"
+
+#: umc/js/sysinfo.js:101
+msgid "Number of CPUs"
+msgstr "CPU 數量"
+
+#: umc/js/sysinfo.js:153 umc/js/sysinfo.js:314
+msgid "Send mail"
+msgstr "寄送郵件"
+
+#: umc/js/sysinfo.js:65
+msgid "Support information"
+msgstr "支援資訊"
+
+#: umc/js/sysinfo.js:53
+msgid "This is related to a support case"
+msgstr "這與支援案件相關"
+
+#: umc/js/sysinfo.js:74
+msgid "Ticket"
+msgstr "單號"
+
+#: umc/js/sysinfo.js:175
+msgid "To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system</li><li>Click on link <i>Send mail</i> to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button <i>Finish</i></li></ol>"
+msgstr "若要透過郵件傳送資訊，請依照下列步驟操作:<ol><li>下載包含收集資訊的封存檔並儲存到您的本機系統</li><li>按一下 <i>寄送郵件</i> 連結以開啟您的郵件程式</li><li>將下載的封存檔附加到郵件中並寄送給 Univention</li><li>按一下 <i>完成</i> 按鈕以結束此精靈</li></ol>"
+
+#: umc/js/sysinfo.js:140
+msgid "Transfer the information"
+msgstr "傳送資訊"
+
+#: umc/js/sysinfo.js:170
+msgid "Transfer via mail"
+msgstr "透過郵件傳送"
+
+#: umc/js/sysinfo.js:160
+msgid "Transferred successfully"
+msgstr "傳送成功"
+
+#: umc/js/sysinfo.js:152
+msgid "Upload"
+msgstr "上傳"
+
+#: umc/js/sysinfo.js:239
+msgid "Uploading failed"
+msgstr "上傳失敗"

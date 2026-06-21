@@ -1,0 +1,606 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-rest\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/univention/admin/rest/module.py:1785 src/univention/admin/rest/module.py:1946
+#, python-format
+msgid "%s module"
+msgstr "%s 模組"
+
+#: src/univention/admin/rest/module.py:3108
+msgid "A new license has been requested and sent to your email address."
+msgstr "已要求新的授權，並已寄送至您的電子郵件地址。"
+
+#: src/univention/admin/rest/module.py:2563
+#, python-format
+msgid "Add %s"
+msgstr "新增 %s"
+
+#: src/univention/admin/rest/module.py:1606
+msgid "Advanced options"
+msgstr "進階選項"
+
+#: src/univention/admin/rest/module.py:1256
+msgid "Advanced settings"
+msgstr "進階設定"
+
+#: src/univention/admin/rest/module.py:673
+#, python-format
+msgid "All %s types"
+msgstr "所有 %s 類型"
+
+#: src/univention/admin/rest/module.py:897 src/univention/admin/rest/module.py:2862
+msgid "All containers"
+msgstr "所有容器"
+
+#: src/univention/admin/rest/module.py:687
+msgid "All link relations"
+msgstr "所有連結關係"
+
+#: src/univention/admin/rest/module.py:671 src/univention/admin/rest/module.py:813 src/univention/admin/rest/module.py:1098 src/univention/admin/rest/module.py:1103 src/univention/admin/rest/module.py:1140 src/univention/admin/rest/module.py:1165 src/univention/admin/rest/module.py:1171 src/univention/admin/rest/module.py:1229 src/univention/admin/rest/module.py:1235 src/univention/admin/rest/module.py:1782 src/univention/admin/rest/module.py:1940 src/univention/admin/rest/module.py:2587 src/univention/admin/rest/module.py:2710 src/univention/admin/rest/module.py:2858 src/univention/admin/rest/module.py:2915 src/univention/admin/rest/module.py:2921 src/univention/admin/rest/openapi.py:159
+msgid "All modules"
+msgstr "所有模組"
+
+#: src/univention/admin/rest/module.py:802
+msgid "All object types"
+msgstr "所有物件類型"
+
+#: src/univention/admin/rest/module.py:897
+msgid "All types"
+msgstr "所有類型"
+
+#: src/univention/admin/rest/module.py:1255
+msgid "Apps & Options"
+msgstr "應用程式與選項"
+
+#: src/univention/admin/rest/module.py:1967
+#, python-format
+msgid "Are you sure you want to delete this %s?"
+msgstr "您確定要刪除這個 %s 嗎？"
+
+#: src/univention/admin/rest/module.py:1626
+msgid "Ascending"
+msgstr "遞增"
+
+#: src/univention/admin/rest/module.py:472
+#, python-format
+msgid "Body data \"%s\": %s\n"
+msgstr "主體資料 \"%s\"：%s\n"
+
+#: src/univention/admin/rest/module.py:1299
+msgid "CSV Report"
+msgstr "CSV 報表"
+
+#: src/univention/admin/rest/module.py:3085
+msgid "Cannot parse License from LDAP"
+msgstr "無法從 LDAP 解析授權"
+
+#: src/univention/admin/rest/module.py:3129
+msgid "Check license status"
+msgstr "檢查授權狀態"
+
+#: src/univention/admin/rest/module.py:2993
+msgid "Click to edit the inherited properties of the policy"
+msgstr "按一下以編輯此原則所繼承的屬性"
+
+#: src/univention/admin/rest/module.py:2651
+msgid "Container"
+msgstr "容器"
+
+#: src/univention/admin/rest/module.py:2680
+#, python-format
+msgid "Copy %s"
+msgstr "複製 %s"
+
+#: src/univention/admin/rest/module.py:3103
+#, python-format
+msgid "Could not request a license from Univention: %s"
+msgstr "無法向 Univention 要求授權：%s"
+
+#: src/univention/admin/rest/module.py:2646
+#, python-format
+msgid "Create %s"
+msgstr "建立 %s"
+
+#: src/univention/admin/rest/module.py:1592 src/univention/admin/rest/module.py:1593 src/univention/admin/rest/module.py:1600
+#, python-format
+msgid "Create %s report"
+msgstr "建立 %s 報表"
+
+#: src/univention/admin/rest/module.py:1795 src/univention/admin/rest/module.py:1796
+#, python-format
+msgid "Create a %s"
+msgstr "建立 %s"
+
+#: src/univention/admin/rest/module.py:2856
+#, python-format
+msgid "Default containers for %s"
+msgstr "%s 的預設容器"
+
+#: src/univention/admin/rest/module.py:1616
+msgid "Defaults"
+msgstr "預設值"
+
+#: src/univention/admin/rest/module.py:1596
+msgid "Delete"
+msgstr "刪除"
+
+#: src/univention/admin/rest/module.py:1596
+#, python-format
+msgid "Delete %s"
+msgstr "刪除 %s"
+
+#: src/univention/admin/rest/module.py:1626
+msgid "Descending"
+msgstr "遞減"
+
+#: src/univention/admin/rest/module.py:1626
+msgid "Direction"
+msgstr "方向"
+
+#: src/univention/admin/rest/module.py:3134
+msgid "E-Mail address"
+msgstr "電子郵件地址"
+
+#: src/univention/admin/rest/module.py:1637 src/univention/admin/rest/module.py:1930
+#, python-format
+msgid "Evaluate referenced %s policies"
+msgstr "評估參照的 %s 原則"
+
+#: src/univention/admin/rest/module.py:2579
+msgid "Fill template values"
+msgstr "填入範本值"
+
+#: src/univention/admin/rest/module.py:1582
+msgid "First page"
+msgstr "第一頁"
+
+#: src/univention/admin/rest/module.py:1926
+msgid "Generate a new service specific password"
+msgstr "產生新的服務專用密碼"
+
+#: src/univention/admin/rest/module.py:976
+msgid "Get UDM object by DN or UUID"
+msgstr "依 DN 或 UUID 取得 UDM 物件"
+
+#: src/univention/admin/rest/module.py:1182
+#, python-format
+msgid "Get choices for property %s"
+msgstr "取得屬性 %s 的選項"
+
+#: src/univention/admin/rest/html_ui.py:160
+msgid "HTTP redirection"
+msgstr "HTTP 重新導向"
+
+#: src/univention/admin/rest/module.py:491 src/univention/admin/rest/html_ui.py:147
+#, python-format
+msgid "HTTP-Error %d: %s"
+msgstr "HTTP 錯誤 %d：%s"
+
+#: src/univention/admin/rest/sanitizer.py:254
+msgid "Has more than the allowed keys"
+msgstr "含有超過允許的鍵"
+
+#: src/univention/admin/rest/module.py:1255
+msgid "Here you can activate the user for one of the installed apps. The user can then log on to the app and use it."
+msgstr "您可以在此啟用使用者以使用其中一個已安裝的應用程式。接著使用者即可登入該應用程式並加以使用。"
+
+#: src/univention/admin/rest/http_conditional.py:88
+msgid "If-Unmodified-Since does not match Last-Modified."
+msgstr "If-Unmodified-Since 與 Last-Modified 不相符。"
+
+#: src/univention/admin/rest/module.py:3139
+msgid "Import license"
+msgstr "匯入授權"
+
+#: src/univention/admin/rest/module.py:3186
+#, python-format
+msgid "Importing the license failed: %s."
+msgstr "匯入授權失敗：%s。"
+
+#: src/univention/admin/rest/module.py:3182
+#, python-format
+msgid "Importing the license failed: LDAP error: %s."
+msgstr "匯入授權失敗：LDAP 錯誤：%s。"
+
+#: src/univention/admin/rest/module.py:1620
+msgid "Include hidden objects"
+msgstr "包含隱藏物件"
+
+#: src/univention/admin/rest/module.py:336
+#, python-format
+msgid "Invalid JSON document: %r"
+msgstr "無效的 JSON 文件：%r"
+
+#: src/univention/admin/rest/module.py:2780
+msgid "LDAP Distinguished Name (DN)"
+msgstr "LDAP 辨別名稱 (DN)"
+
+#: src/univention/admin/rest/module.py:686 src/univention/admin/rest/module.py:917
+msgid "LDAP base"
+msgstr "LDAP base"
+
+#: src/univention/admin/rest/module.py:707
+msgid "LDAP directory"
+msgstr "LDAP 目錄"
+
+#: src/univention/admin/rest/module.py:1588
+msgid "Last page"
+msgstr "最後一頁"
+
+#: src/univention/admin/rest/module.py:1226
+#, python-format
+msgid "Layout for %s"
+msgstr "%s 的版面配置"
+
+#: src/univention/admin/rest/module.py:3138
+msgid "License file (ldif format)"
+msgstr "授權檔 (ldif 格式)"
+
+#: src/univention/admin/rest/module.py:1623
+msgid "Limit"
+msgstr "限制"
+
+#: src/univention/admin/rest/openapi.py:158
+msgid "Link relations"
+msgstr "連結關係"
+
+#: src/univention/admin/rest/module.py:1269
+msgid "List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on \"Create new policy\", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the \"edit\" link."
+msgstr "由原則繼承的所有物件屬性清單。這些值無法直接編輯。按一下「建立新原則」會開啟含有新原則的新分頁。如果某個屬性已設定，可按一下「編輯」連結在新分頁中編輯對應的原則。"
+
+#: src/univention/admin/rest/module.py:1250
+msgid "Meta information"
+msgstr "中繼資訊"
+
+#: src/univention/admin/rest/module.py:2714
+msgid "Modify"
+msgstr "修改"
+
+#: src/univention/admin/rest/module.py:2813
+#, python-format
+msgid "Modify %s"
+msgstr "修改 %s"
+
+#: src/univention/admin/rest/module.py:1595
+#, python-format
+msgid "Modify %s (multi edit)"
+msgstr "修改 %s (多重編輯)"
+
+#: src/univention/admin/rest/module.py:1595
+msgid "Modify (multi edit)"
+msgstr "修改 (多重編輯)"
+
+#: src/univention/admin/rest/module.py:1968
+#, python-format
+msgid "Modify, move or remove this %s"
+msgstr "修改、移動或移除這個 %s"
+
+#: src/univention/admin/rest/module.py:1633 src/univention/admin/rest/module.py:1927
+msgid "Module layout"
+msgstr "模組版面配置"
+
+#: src/univention/admin/rest/module.py:1634 src/univention/admin/rest/module.py:1928
+msgid "Module properties"
+msgstr "模組屬性"
+
+#: src/univention/admin/rest/module.py:2733 src/univention/admin/rest/module.py:2736
+msgid "Move"
+msgstr "移動"
+
+#: src/univention/admin/rest/module.py:1597
+#, python-format
+msgid "Move %s"
+msgstr "移動 %s"
+
+#: src/univention/admin/rest/module.py:2733
+msgid "Move the object"
+msgstr "移動物件"
+
+#: src/univention/admin/rest/module.py:1597
+msgid "Move to"
+msgstr "移動至"
+
+#: src/univention/admin/rest/module.py:1849
+#, python-format
+msgid "Moved %d of %d objects. Last object was: %s."
+msgstr "已移動 %d 個物件，共 %d 個。最後一個物件為：%s。"
+
+#: src/univention/admin/rest/module.py:757
+msgid "Name"
+msgstr "名稱"
+
+#: src/univention/admin/rest/sanitizer.py:94
+msgid "Needs to have proper base64 encoding."
+msgstr "需要正確的 base64 編碼。"
+
+#: src/univention/admin/rest/module.py:1917
+msgid "Next free IP address"
+msgstr "下一個可用的 IP 位址"
+
+#: src/univention/admin/rest/module.py:1586
+msgid "Next page"
+msgstr "下一頁"
+
+#: src/univention/admin/rest/module.py:955
+msgid "No module found."
+msgstr "找不到模組。"
+
+#: src/univention/admin/rest/module.py:2798
+msgid "No photo set"
+msgstr "未設定相片"
+
+#: src/univention/admin/rest/sanitizer.py:251
+msgid "Not a \"dict\""
+msgstr "不是 \"dict\""
+
+#: src/univention/admin/rest/module.py:574
+#, python-format
+msgid "Object exists: %s: %s"
+msgstr "物件已存在：%s：%s"
+
+#: src/univention/admin/rest/module.py:1801
+msgid "Object type tree"
+msgstr "物件類型樹狀結構"
+
+#. i18n: translation for univention-directory-reports
+#: src/univention/admin/rest/module.py:1298
+msgid "PDF Document"
+msgstr "PDF 文件"
+
+#: src/univention/admin/rest/module.py:759
+msgid "Path"
+msgstr "路徑"
+
+#: src/univention/admin/rest/module.py:2727
+msgid "Perform a cleanup"
+msgstr "執行清理"
+
+#: src/univention/admin/rest/module.py:2732
+#, python-format
+msgid "Please confirm the move of the selected %s"
+msgstr "請確認移動所選的 %s"
+
+#: src/univention/admin/rest/module.py:2724
+#, python-format
+msgid "Please confirm the removal of the selected %s"
+msgstr "請確認移除所選的 %s"
+
+#: src/univention/admin/rest/module.py:2717
+#, python-format
+msgid "Please confirm the restoration of the selected %s"
+msgstr "請確認還原所選的 %s"
+
+#: src/univention/admin/rest/module.py:1267
+msgid "Policies"
+msgstr "原則"
+
+#: src/univention/admin/rest/module.py:2745 src/univention/admin/rest/module.py:2803
+msgid "Policy DN"
+msgstr "原則 DN"
+
+#: src/univention/admin/rest/module.py:2607 src/univention/admin/rest/module.py:2746
+msgid "Policy result"
+msgstr "原則結果"
+
+#: src/univention/admin/rest/module.py:1584
+msgid "Previous page"
+msgstr "上一頁"
+
+#: src/univention/admin/rest/module.py:1162 src/univention/admin/rest/module.py:2597 src/univention/admin/rest/module.py:2759
+#, python-format
+msgid "Properties for %s"
+msgstr "%s 的屬性"
+
+#: src/univention/admin/rest/module.py:1266
+msgid "Properties inherited from policies"
+msgstr "從原則繼承的屬性"
+
+#: src/univention/admin/rest/module.py:1617
+msgid "Property"
+msgstr "屬性"
+
+#: src/univention/admin/rest/module.py:2912
+#, python-format
+msgid "Property choices for %s property %s"
+msgstr "%s 屬性 %s 的屬性選項"
+
+#: src/univention/admin/rest/module.py:469
+#, python-format
+msgid "Query string \"%s\": %s\n"
+msgstr "查詢字串 \"%s\"：%s\n"
+
+#: src/univention/admin/rest/module.py:2725 src/univention/admin/rest/module.py:2729
+msgid "Remove"
+msgstr "移除"
+
+#: src/univention/admin/rest/module.py:2728
+msgid "Remove referring objects"
+msgstr "移除參照的物件"
+
+#: src/univention/admin/rest/module.py:2725
+msgid "Remove the object"
+msgstr "移除物件"
+
+#: src/univention/admin/rest/module.py:1967
+#, python-format
+msgid "Remove this %s"
+msgstr "移除這個 %s"
+
+#: src/univention/admin/rest/module.py:466
+#, python-format
+msgid "Request argument \"%s\" %s\n"
+msgstr "要求引數 \"%s\" %s\n"
+
+#: src/univention/admin/rest/module.py:3135
+msgid "Request new license"
+msgstr "要求新授權"
+
+#: src/univention/admin/rest/module.py:2718 src/univention/admin/rest/module.py:2720
+msgid "Restore"
+msgstr "還原"
+
+#: src/univention/admin/rest/module.py:1923
+msgid "Restore object"
+msgstr "還原物件"
+
+#: src/univention/admin/rest/module.py:2718
+msgid "Restore the object from the Recycle Bin"
+msgstr "從資源回收筒還原物件"
+
+#: src/univention/admin/rest/module.py:711 src/univention/admin/rest/module.py:716 src/univention/admin/rest/module.py:1628
+msgid "Search"
+msgstr "搜尋"
+
+#: src/univention/admin/rest/module.py:1618
+msgid "Search for"
+msgstr "搜尋"
+
+#: src/univention/admin/rest/module.py:1604 src/univention/admin/rest/module.py:1792
+#, python-format
+msgid "Search for %s"
+msgstr "搜尋 %s"
+
+#: src/univention/admin/rest/module.py:1611
+msgid "Search in"
+msgstr "搜尋於"
+
+#: src/univention/admin/rest/module.py:1619
+msgid "Search scope"
+msgstr "搜尋範圍"
+
+#: src/univention/admin/rest/module.py:1618
+msgid "Search value (e.g. *)"
+msgstr "搜尋值 (例如 *)"
+
+#: src/univention/admin/rest/module.py:2650
+msgid "Select position"
+msgstr "選取位置"
+
+#: src/univention/admin/rest/module.py:1624
+msgid "Selected page"
+msgstr "所選頁面"
+
+#: src/univention/admin/rest/module.py:1625
+msgid "Sort by"
+msgstr "排序依據"
+
+#: src/univention/admin/rest/module.py:1958
+#, python-format
+msgid "Sub object types of %s"
+msgstr "%s 的子物件類型"
+
+#: src/univention/admin/rest/module.py:1614
+msgid "Superordinate"
+msgstr "上層"
+
+#: src/univention/admin/rest/module.py:2576
+msgid "Template"
+msgstr "範本"
+
+#: src/univention/admin/rest/sanitizer.py:338
+#, python-format
+msgid "The %(module)s module has no property %(name)s."
+msgstr "%(module)s 模組沒有屬性 %(name)s。"
+
+#: src/univention/admin/rest/module.py:2764 src/univention/admin/rest/module.py:2765
+#, python-format
+msgid "The %s \"%s\" is part of the Active Directory domain."
+msgstr "%s「%s」屬於 Active Directory 網域的一部分。"
+
+#: src/univention/admin/rest/module.py:2605
+msgid "The container where the object is going to be created in"
+msgstr "物件將建立於其中的容器"
+
+#: src/univention/admin/rest/sanitizer.py:387
+#, python-format
+msgid "The ldap base is invalid. Use %(details)s."
+msgstr "LDAP base 無效。請使用 %(details)s。"
+
+#: src/univention/admin/rest/module.py:3115
+msgid "The license is valid."
+msgstr "此授權有效。"
+
+#: src/univention/admin/rest/module.py:3189
+msgid "The license was imported successfully."
+msgstr "已成功匯入授權。"
+
+#: src/univention/admin/rest/module.py:955
+#, python-format
+msgid "The object could not be identified: %s"
+msgstr "無法識別物件：%s"
+
+#: src/univention/admin/rest/module.py:609
+msgid "The object was modified by another request at the same time. Please retry the request."
+msgstr "此物件同時被另一個要求修改。請重新嘗試此要求。"
+
+#: src/univention/admin/rest/module.py:581
+#, python-format
+msgid "The property \"%(name)s\" is required."
+msgstr "屬性「%(name)s」為必填。"
+
+#: src/univention/admin/rest/module.py:2292 src/univention/admin/rest/sanitizer.py:348
+#, python-format
+msgid "The property %(name)s has an invalid value: %(details)s"
+msgstr "屬性 %(name)s 的值無效：%(details)s"
+
+#: src/univention/admin/rest/http_conditional.py:119
+#, python-format
+msgid "The resource has meanwhile been changed. If-Match %s does not match entity tag %s."
+msgstr "此資源在此期間已變更。If-Match %s 與實體標籤 %s 不相符。"
+
+#: src/univention/admin/rest/http_conditional.py:109
+#, python-format
+msgid "The resource has meanwhile been changed. If-None-Match %s does not match entity tag %s."
+msgstr "此資源在此期間已變更。If-None-Match %s 與實體標籤 %s 不相符。"
+
+#: src/univention/admin/rest/html_ui.py:231
+msgid "This form requires JavaScript enabled!"
+msgstr "此表單需要啟用 JavaScript！"
+
+#: src/univention/admin/rest/module.py:3098
+msgid "This seems to be a problem with the license server. Please try again later."
+msgstr "這似乎是授權伺服器的問題。請稍後再試。"
+
+#: src/univention/admin/rest/module.py:2204
+msgid "Trying to create an object with wrong RDN."
+msgstr "嘗試以錯誤的 RDN 建立物件。"
+
+#: src/univention/admin/rest/module.py:715 src/univention/admin/rest/module.py:758
+msgid "Type"
+msgstr "類型"
+
+#: src/univention/admin/rest/module.py:906
+msgid "Types"
+msgstr "類型"
+
+#: src/univention/admin/rest/module.py:685
+msgid "UCS license"
+msgstr "UCS 授權"
+
+#: src/univention/admin/rest/module.py:2775
+msgid "Upload user photo"
+msgstr "上傳使用者相片"
+
+#: src/univention/admin/rest/module.py:1920 src/univention/admin/rest/module.py:2776
+msgid "User photo"
+msgstr "使用者相片"
+
+#: src/univention/admin/rest/module.py:2728
+msgid "e.g. DNS or DHCP references of a computer"
+msgstr "例如電腦的 DNS 或 DHCP 參照"
+
+#: src/univention/admin/rest/module.py:2727
+msgid "e.g. temporary objects, locks, etc."
+msgstr "例如暫存物件、鎖定等"

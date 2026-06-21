@@ -1,0 +1,1215 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-appcenter package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/appcenter/requirements.js:317
+msgid "%(minimum)d MB of free RAM are required but only %(current)d MB are available."
+msgstr "需要 %(minimum)d MB 的可用 RAM,但只有 %(current)d MB 可用。"
+
+#: umc/js/appcenter/requirements.js:322
+msgid "%(minimum)d MB of free disk space are required but only %(current)d MB are available."
+msgstr "需要 %(minimum)d MB 的可用磁碟空間，但只有 %(current)d MB 可用。"
+
+#: umc/js/appcenter/requirements.js:179
+msgid "%(name)s cannot be installed on the current server role (%(current_role)s). In order to install the App, one of the following roles is necessary: %(allowed_roles)s"
+msgstr "%(name)s 無法安裝在目前的伺服器角色 (%(current_role)s) 上。若要安裝此應用程式，需要下列其中一種角色: %(allowed_roles)s"
+
+#: umc/js/appcenter/requirements.js:159
+msgid "%(name)s only supports %(supported)s as architecture. %(msg)s"
+msgstr "%(name)s 只支援 %(supported)s 架構。%(msg)s"
+
+#: umc/js/appcenter/requirements.js:292 umc/js/appcenter/AppDetailsPage.js:739
+msgid "%(name)s uses a container technology for enhanced security and compatibility."
+msgstr "%(name)s 使用容器技術以提升安全性與相容性。"
+
+#: umc/js/appcenter/PackagesPage.js:399
+msgid "%(verb)s %(ids)s"
+msgstr "%(verb)s %(ids)s"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:179
+#, javascript-format
+msgid "%d hosts were removed from the list because the App is installed there."
+msgstr "已從清單中移除 %d 台主機，因為這些主機上已安裝此應用程式。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:184
+#, javascript-format
+msgid "%d hosts were removed from the list because the App requires a different server role than these hosts have."
+msgstr "已從清單中移除 %d 台主機，因為此應用程式所需的伺服器角色與這些主機不同。"
+
+#: umc/js/appcenter/requirements.js:144
+#, javascript-format
+msgid "%s cannot be updated. The App is either not installed or no newer version is available."
+msgstr "無法更新 %s。此應用程式可能未安裝，或沒有更新的版本可用。"
+
+#: umc/js/appcenter/requirements.js:226
+#, javascript-format
+msgid "%s conflicts with the following Apps."
+msgstr "%s 與下列應用程式衝突。"
+
+#: umc/js/appcenter/requirements.js:210
+#, javascript-format
+msgid "%s conflicts with the following packages."
+msgstr "%s 與下列套件衝突。"
+
+#: umc/js/appcenter/App.js:386 umc/js/appcenter/App.js:407
+#, javascript-format
+msgid "%s installed"
+msgstr "已安裝 %s"
+
+#: umc/js/appcenter/requirements.js:149
+#, javascript-format
+msgid "%s is already installed."
+msgstr "%s 已安裝。"
+
+#: umc/js/appcenter/requirements.js:247
+#, javascript-format
+msgid "%s is required for the following Apps to work."
+msgstr "下列應用程式的運作需要 %s。"
+
+#: umc/js/appcenter/Tiles.js:126
+#, javascript-format
+msgid "%s of %s Apps selected"
+msgstr "已選取 %s 個應用程式，共 %s 個"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:71
+#, javascript-format
+msgid "%s on %s"
+msgstr "%s 於 %s"
+
+#: umc/js/appcenter/requirements.js:184
+#, javascript-format
+msgid "%s requires the following Apps."
+msgstr "%s 需要下列應用程式。"
+
+#: umc/js/appcenter/requirements.js:154
+#, javascript-format
+msgid "%s was discontinued and may not be installed anymore."
+msgstr "%s 已停止提供，無法再安裝。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:177
+#, javascript-format
+msgid "%s was removed from the list because the App is installed on this host."
+msgstr "已從清單中移除 %s,因為此主機上已安裝該應用程式。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:182
+#, javascript-format
+msgid "%s was removed from the list because the App requires a different server role than the one this host has."
+msgstr "已從清單中移除 %s,因為該應用程式所需的伺服器角色與此主機不同。"
+
+#: umc/js/appcenter/AppConfigDialog.js:149
+#, javascript-format
+msgid "%s: Configuring"
+msgstr "%s: 設定中"
+
+#: umc/js/appcenter/SearchForm.js:29
+msgid "--- all ---"
+msgstr "--- 全部 ---"
+
+#: umc/js/appcenter/PackagesPage.js:193
+#, javascript-format
+msgid "...<br>[%d more chars]"
+msgstr "...<br>[還有 %d 個字元]"
+
+#: umc/js/appcenter/AppDetailsContainer.js:216
+msgid "1 package is erroneous"
+msgstr "1 個套件發生錯誤"
+
+#: umc/js/appcenter/AppDetailsContainer.js:214
+msgid "1 package will be installed / upgraded"
+msgstr "將安裝 / 升級 1 個套件"
+
+#: umc/js/appcenter/AppDetailsContainer.js:215
+msgid "1 package will be removed"
+msgstr "將移除 1 個套件"
+
+#: umc/js/appcenter/AppDetailsPage.js:64
+msgid "<p><b>Note:</b> This information has been updated. Please read it again.</p>"
+msgstr "<p><b>注意:</b> 此資訊已更新。請再次閱讀。</p>"
+
+#: umc/js/appcenter/AppDetailsPage.js:63
+msgid "<p>Univention App Center is designed for easy and comfortable administration of Apps. It uses online services provided by Univention, for example, for downloading Apps, descriptions or graphics, or for the search function.</p><p>By using Univention App Center, you agree that originating user data may be stored and evaluated by Univention for product improvements as well as market research purposes. Usage data consists of information such as installing / uninstalling Apps or search queries. These will be transmitted to Univention together with a unique identification of the UCS system.</p><p>When installing and uninstalling some Apps, the App provider will be notified of the operation. The e-mail address used to activate the system is transferred to the provider. Other than that, no transfer of personal or individually assignable data is made to third parties.</p><p>"
+msgstr "<p>Univention App Center 旨在讓您輕鬆舒適地管理應用程式。它使用 Univention 提供的線上服務，例如下載應用程式、說明或圖片，或搜尋功能。</p><p>使用 Univention App Center 即表示您同意 Univention 可儲存並分析所產生的使用者資料，以用於產品改善及市場研究目的。使用資料包含諸如安裝 / 解除安裝應用程式或搜尋查詢等資訊。這些資料會連同 UCS 系統的唯一識別一併傳送給 Univention。</p><p>在安裝與解除安裝某些應用程式時，會將該操作通知應用程式提供者。用於啟用系統的電子郵件地址會傳送給提供者。除此之外，不會向第三方傳送任何個人或可個別識別的資料。</p><p>"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:48
+msgid "A file is present."
+msgstr "已有一個檔案。"
+
+#: umc/js/appcenter/AppDetailsPage.js:732
+#, javascript-format
+msgid "A module for the administration of the app is available: %s."
+msgstr "有一個用於管理此應用程式的模組: %s。"
+
+#: umc/js/appcenter/requirements.js:292
+msgid "A version without a container technology is or was installed."
+msgstr "已安裝或曾安裝未使用容器技術的版本。"
+
+#: umc/js/appcenter/AppInstallWizard.js:275
+msgid "Accept license"
+msgstr "接受授權"
+
+#: umc/js/appcenter/AppInstallWizard.js:103
+msgid "Accept license and start installation"
+msgstr "接受授權並開始安裝"
+
+#: umc/js/appcenter/AppInstallWizard.js:99
+msgid "Accept license and start removal"
+msgstr "接受授權並開始移除"
+
+#: umc/js/appcenter/AppInstallWizard.js:101
+msgid "Accept license and start upgrade"
+msgstr "接受授權並開始升級"
+
+#: umc/js/appcenter/requirements.js:135
+msgid "Activate UCS now"
+msgstr "立即啟用 UCS"
+
+#: umc/js/appcenter.js:36
+msgid "Activation is not possible. Please login as Administrator on the Primary Directory Node."
+msgstr "無法啟用。請以 Administrator 身分登入主要目錄節點。"
+
+#: umc/js/appcenter/SettingsPage.js:90
+msgid "Add"
+msgstr "新增"
+
+#: umc/js/appcenter/DetailsPage.js:136
+msgid "Add a new component"
+msgstr "新增元件"
+
+#: umc/js/appcenter/SettingsPage.js:91
+msgid "Add a new component definition"
+msgstr "新增元件定義"
+
+#: umc/js/appcenter/SettingsPage.js:222
+msgid "Additional repositories"
+msgstr "其他軟體庫"
+
+#: umc/js/appcenter/DetailsPage.js:103
+msgid "Advanced settings"
+msgstr "進階設定"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:58
+msgid "After saving, the file will be deleted."
+msgstr "儲存後，此檔案將被刪除。"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:54
+msgid "After saving, the new file will be uploaded."
+msgstr "儲存後，新檔案將被上傳。"
+
+#: umc/js/appcenter/DetailsPage.js:179 umc/js/appcenter/SettingsPage.js:311
+#, javascript-format
+msgid "An unknown error with code %d occurred."
+msgstr "發生代碼為 %d 的不明錯誤。"
+
+#: umc/js/appcenter/requirements.js:62
+msgid "Another package operation is in progress."
+msgstr "另一項套件操作正在進行中。"
+
+#: umc/js/appcenter/Badges.js:25
+msgid "App Center Badges"
+msgstr "App Center 徽章"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:111
+msgid "App License"
+msgstr "應用程式授權"
+
+#: umc/js/appcenter/AppConfigDialog.js:27 umc/js/appcenter/AppCenterPage.js:44 umc/js/appcenter/AppDetailsDialog.js:30 umc/js/appcenter/AppDetailsPage.js:49
+msgid "App management"
+msgstr "應用程式管理"
+
+#: umc/js/appcenter/AppInstallWizardAppSettingsPage.js:26 umc/js/appcenter/AppDetailsPage.js:272 umc/js/appcenter/AppDetailsPage.js:545
+msgid "App settings"
+msgstr "應用程式設定"
+
+#: umc/js/appcenter/AppConfigDialog.js:50 umc/js/appcenter/DetailsPage.js:44 umc/js/appcenter/SettingsPage.js:62
+msgid "Apply changes"
+msgstr "套用變更"
+
+#: umc/js/appcenter/SettingsPage.js:267
+msgid "Are you sure you want to delete the following components: [{ids}]"
+msgstr "您確定要刪除下列元件嗎: [{ids}]"
+
+#: umc/js/appcenter/AppDetailsContainer.js:169
+msgid "Attention!"
+msgstr "注意！"
+
+#: umc/js/appcenter/requirements.js:296
+msgid "Automatically migrating the App and data (where required) is not supported; however, a document exists, which guides through the manual steps to do so."
+msgstr "不支援自動遷移應用程式與資料 (若有需要);不過有一份文件會引導您完成手動遷移的步驟。"
+
+#: umc/js/appcenter/AppConfigDialog.js:90
+msgid "Autostart"
+msgstr "自動啟動"
+
+#: umc/js/appcenter/SettingsPage.js:203 umc/js/appcenter/AppCenterPage.js:222 umc/js/appcenter/AppDetailsPage.js:604
+msgid "Available"
+msgstr "可用"
+
+#: umc/js/appcenter/AppDetailsPage.js:802
+msgid "Available support options"
+msgstr "可用的技術支援選項"
+
+#: umc/js/appcenter/AppInstallDialog.js:304
+msgid "Back"
+msgstr "返回"
+
+#: umc/js/appcenter/DetailsPage.js:33 umc/js/appcenter/AppDetailsPage.js:56
+msgid "Back to overview"
+msgstr "返回總覽"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:107
+msgid "Badges"
+msgstr "徽章"
+
+#: umc/js/appcenter/DetailsPage.js:94
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: umc/js/appcenter/AppDetailsContainer.js:169
+msgid "Be sure to execute the following command as root on all of these Backup Nodes <em>after</em> installing the App."
+msgstr "請務必在安裝此應用程式<em>之後</em>,以 root 身分在所有這些備份節點上執行下列指令。"
+
+#: umc/js/appcenter/requirements.js:73 umc/js/appcenter/AppDetailsPage.js:178
+msgid "Buy"
+msgstr "購買"
+
+#: umc/js/appcenter/AppDetailsPage.js:584
+msgid "Buy %(appName)s to install version %(candidateVersion)s."
+msgstr "購買 %(appName)s 以安裝版本 %(candidateVersion)s。"
+
+#: umc/js/appcenter/Buy.js:19
+msgid "Buy in App Center"
+msgstr "在 App Center 購買"
+
+#: umc/js/appcenter/Buy.js:20
+msgid "Buy now"
+msgstr "立即購買"
+
+#: umc/js/appcenter/requirements.js:70
+msgid "Buy the App before the installation."
+msgstr "安裝前先購買此應用程式。"
+
+#: umc/js/appcenter/AppInstallDialog.js:32 umc/js/appcenter/AppInstallDialog.js:304 umc/js/appcenter/SettingsPage.js:273 umc/js/appcenter/PackagesPage.js:394 umc/js/appcenter/PackagesPage.js:403 umc/js/appcenter/AppDetailsDialog.js:36 umc/js/appcenter/AppDetailsPage.js:660
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/appcenter/AppConfigDialog.js:71
+msgid "Cancel configuration"
+msgstr "取消設定"
+
+#: umc/js/appcenter/AppDetailsDialog.js:71
+msgid "Cancel installation"
+msgstr "取消安裝"
+
+#: umc/js/appcenter/PackagesPage.js:298
+msgid "Candidate version"
+msgstr "候選版本"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:103
+msgid "Category"
+msgstr "分類"
+
+#: umc/js/appcenter/AppDetailsPage.js:854
+msgid "Click on \"%(button)s\" if you want to continue running this App at your own risk."
+msgstr "若您願意自行承擔風險繼續執行此應用程式，請按一下「%(button)s」。"
+
+#: umc/js/appcenter/PackagesPage.js:211 umc/js/appcenter/AppDetailsPage.js:709
+msgid "Close"
+msgstr "關閉"
+
+#: umc/js/appcenter/DetailsPage.js:65 umc/js/appcenter/SettingsPage.js:172
+msgid "Component name"
+msgstr "元件名稱"
+
+#: umc/js/appcenter/DetailsPage.js:30
+msgid "Components"
+msgstr "元件"
+
+#: umc/js/appcenter/AppConfigDialog.js:45
+#, javascript-format
+msgid "Configure %s"
+msgstr "設定 %s"
+
+#: umc/js/appcenter/AppDetailsPage.js:600
+msgid "Contact"
+msgstr "連絡"
+
+#: umc/js/appcenter/AppCenterPage.js:123 umc/js/appcenter/AppChooseHostWizard.js:250 umc/js/appcenter/AppDetailsPage.js:683
+msgid "Continue"
+msgstr "繼續"
+
+#: umc/js/appcenter/AppInstallWizard.js:266
+msgid "Continue anyway"
+msgstr "仍要繼續"
+
+#: umc/js/appcenter/AppDetailsPage.js:256 umc/js/appcenter/AppDetailsPage.js:536 umc/js/appcenter/AppDetailsPage.js:854
+msgid "Continue using"
+msgstr "繼續使用"
+
+#: umc/js/appcenter/SettingsPage.js:157 umc/js/appcenter/SettingsPage.js:276
+msgid "Delete"
+msgstr "刪除"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:18
+msgid "Delete file"
+msgstr "刪除檔案"
+
+#: umc/js/appcenter/SettingsPage.js:158
+msgid "Delete the selected component definition"
+msgstr "刪除所選的元件定義"
+
+#: umc/js/appcenter/DetailsPage.js:70 umc/js/appcenter/PackagesPage.js:292
+msgid "Description"
+msgstr "說明"
+
+#: umc/js/appcenter/AppDetailsPage.js:431
+msgid "Details"
+msgstr "詳細資料"
+
+#: umc/js/appcenter/PackagesPage.js:176
+msgid "Details for package '%(package)s'"
+msgstr "套件 '%(package)s' 的詳細資料"
+
+#: umc/js/appcenter/App.js:398
+msgid "Different UCS Version. Limited manageability"
+msgstr "UCS 版本不同。可管理性受限"
+
+#: umc/js/appcenter/SettingsPage.js:122
+msgid "Disable"
+msgstr "停用"
+
+#: umc/js/appcenter/SettingsPage.js:121
+msgid "Disable this component"
+msgstr "停用此元件"
+
+#: umc/js/appcenter/SettingsPage.js:202
+msgid "Disabled"
+msgstr "已停用"
+
+#: umc/js/appcenter/AppCenterPage.js:117
+msgid "Do not show this message again"
+msgstr "不再顯示此訊息"
+
+#: umc/js/appcenter/PackagesPage.js:398
+msgid "Do you really want to %(verb)s %(ids)s?"
+msgstr "您確定要%(verb)s %(ids)s 嗎？"
+
+#: umc/js/appcenter/AppDetailsPage.js:724
+msgid "Domain administration"
+msgstr "網域管理"
+
+#: umc/js/appcenter/SettingsPage.js:147
+msgid "Edit"
+msgstr "編輯"
+
+#: umc/js/appcenter/DetailsPage.js:149
+msgid "Edit component details [{component}]"
+msgstr "編輯元件詳細資料 [{component}]"
+
+#: umc/js/appcenter/SettingsPage.js:148
+msgid "Edit the detail information about this component"
+msgstr "編輯此元件的詳細資訊"
+
+#: umc/js/appcenter/SettingsPage.js:111
+msgid "Enable"
+msgstr "啟用"
+
+#: umc/js/appcenter/DetailsPage.js:60 umc/js/appcenter/SettingsPage.js:110
+msgid "Enable this component"
+msgstr "啟用此元件"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:61
+#, javascript-format
+msgid "File will be uploaded to %s."
+msgstr "檔案將上傳至 %s。"
+
+#: umc/js/appcenter/AppDetailsPage.js:385
+msgid "First steps"
+msgstr "第一步"
+
+#: umc/js/appcenter/requirements.js:129
+msgid "For the installation of this App, a UCS license key with a key identification (Key ID) is required."
+msgstr "安裝此應用程式需要一組具金鑰識別碼 (Key ID) 的 UCS 授權金鑰。"
+
+#: umc/js/appcenter/SettingsPage.js:80
+msgid "General repository settings"
+msgstr "一般軟體庫設定"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:198
+msgid "Host for installation of App"
+msgstr "安裝應用程式的主機"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:133
+#, javascript-format
+msgid "In order to proceed with the installation of %s, please select the host on which the App is going to be installed."
+msgstr "若要繼續安裝 %s,請選取要安裝此應用程式的主機。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:134
+msgid "In order to proceed with the installation, please select the hosts on which the Apps are going to be installed."
+msgstr "若要繼續安裝，請選取要安裝這些應用程式的主機。"
+
+#: umc/js/appcenter/AppInstallWizardReadmeInstallPage.js:23
+msgid "Information"
+msgstr "資訊"
+
+#: umc/js/appcenter/SettingsPage.js:132 umc/js/appcenter/PackagesPage.js:62 umc/js/appcenter/PackagesPage.js:217 umc/js/appcenter/Tiles.js:128 umc/js/appcenter/AppDetailsPage.js:169 umc/js/appcenter/AppDetailsPage.js:227 umc/js/appcenter/AppDetailsPage.js:477 umc/js/appcenter/AppDetailsPage.js:488
+msgid "Install"
+msgstr "安裝"
+
+#: umc/js/appcenter/SettingsPage.js:133
+msgid "Install the component's default package(s)"
+msgstr "安裝此元件的預設套件"
+
+#: umc/js/appcenter/requirements.js:199
+msgid "Install them first."
+msgstr "請先安裝它們。"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:116 umc/js/appcenter/AppChooseHostWizard.js:224 umc/js/appcenter/AppInstallWizard.js:208
+#, javascript-format
+msgid "Installation of %s"
+msgstr "安裝 %s"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:117 umc/js/appcenter/AppChooseHostWizard.js:225 umc/js/appcenter/AppInstallWizard.js:209
+msgid "Installation of multiple apps"
+msgstr "安裝多個應用程式"
+
+#: umc/js/appcenter/PackagesPage.js:119
+msgid "Installation status"
+msgstr "安裝狀態"
+
+#: umc/js/appcenter/SettingsPage.js:207 umc/js/appcenter/AppCenterPage.js:182
+msgid "Installed"
+msgstr "已安裝"
+
+#: umc/js/appcenter/AppCenterPage.js:197
+msgid "Installed in domain"
+msgstr "已在網域中安裝"
+
+#: umc/js/appcenter/PackagesPage.js:297
+msgid "Installed version"
+msgstr "已安裝版本"
+
+#: umc/js/appcenter/PackagesPage.js:353
+msgid "Installing"
+msgstr "安裝中"
+
+#: umc/js/appcenter/PackagesPage.js:293
+msgid "Is installed"
+msgstr "已安裝"
+
+#: umc/js/appcenter/PackagesPage.js:294
+msgid "Is upgradable"
+msgstr "可升級"
+
+#: umc/js/appcenter/AppConfigDialog.js:79
+msgid "It can only be configured while it is running."
+msgstr "只有在執行時才能設定。"
+
+#: umc/js/appcenter/requirements.js:242
+#, javascript-format
+msgid "It is currently impossible to remove a plugin once it is installed. Remove %s instead."
+msgstr "外掛程式一旦安裝，目前無法移除。請改為移除 %s。"
+
+#: umc/js/appcenter/AppDetailsContainer.js:143
+msgid "It is not possible to continue"
+msgstr "無法繼續"
+
+#: umc/js/appcenter/AppDetailsContainer.js:147
+msgid "It is not recommended to continue"
+msgstr "不建議繼續"
+
+#: umc/js/appcenter/AppCenterPage.js:74
+msgid "Let us know if you you miss any App in Univention App Center!"
+msgstr "若您在 Univention App Center 找不到想要的應用程式，歡迎告訴我們！"
+
+#: umc/js/appcenter/AppDetailsPage.js:601
+msgid "License"
+msgstr "授權"
+
+#: umc/js/appcenter/AppDetailsPage.js:709
+msgid "License agreement"
+msgstr "授權合約"
+
+#: umc/js/appcenter/AppInstallWizardLicenseAgreementPage.js:23
+msgid "License agreements"
+msgstr "授權合約"
+
+#: umc/js/appcenter/AppDetailsPage.js:480 umc/js/appcenter/AppDetailsPage.js:563
+msgid "Manage installation"
+msgstr "管理安裝"
+
+#: umc/js/appcenter/Badges.js:23 umc/js/appcenter/AppDetailsPage.js:485 umc/js/appcenter/AppDetailsPage.js:569
+msgid "Manage installations"
+msgstr "管理安裝"
+
+#: umc/js/appcenter/AppMoreInfo.js:23
+msgid "More information"
+msgstr "更多資訊"
+
+#: umc/js/appcenter/AppDetailsContainer.js:235
+msgid "More information..."
+msgstr "更多資訊..."
+
+#: umc/js/appcenter/AppDetailsPage.js:212
+msgid "Next app"
+msgstr "下一個應用程式"
+
+#: umc/js/appcenter/PackagesPage.js:321
+msgid "No"
+msgstr "否"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:50
+msgid "No file was uploaded yet."
+msgstr "尚未上傳任何檔案。"
+
+#: umc/js/appcenter/AppDetailsContainer.js:231
+msgid "No software changes necessary."
+msgstr "不需要任何軟體變更。"
+
+#: umc/js/appcenter/AppDetailsContainer.js:218
+#, javascript-format
+msgid "No software changes on %s necessary."
+msgstr "%s 不需要任何軟體變更。"
+
+#: umc/js/appcenter/AppDetailsPage.js:800
+msgid "No support option provided"
+msgstr "未提供技術支援選項"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:187
+msgid "Not all hosts are listed above"
+msgstr "並非所有主機都列在上方"
+
+#: umc/js/appcenter/SettingsPage.js:204
+msgid "Not found"
+msgstr "找不到"
+
+#: umc/js/appcenter/AppDetailsPage.js:609
+msgid "Notification"
+msgstr "通知"
+
+#: umc/js/appcenter/PackagesPage.js:31
+msgid "On this page, you see all software packages available on your system, and you can install, uninstall or update them."
+msgstr "在此頁面您可以看到系統上所有可用的軟體套件，並可安裝、解除安裝或更新它們。"
+
+#: umc/js/appcenter/App.js:371 umc/js/appcenter/AppDetailsPage.js:526
+msgid "Open"
+msgstr "開啟"
+
+#: umc/js/appcenter/requirements.js:170
+msgid "Open \"Domain join\" module"
+msgstr "開啟「網域加入」模組"
+
+#: umc/js/appcenter/requirements.js:88
+msgid "Open \"Software update\" module"
+msgstr "開啟「軟體更新」模組"
+
+#: umc/js/appcenter/requirements.js:202 umc/js/appcenter/requirements.js:234 umc/js/appcenter/requirements.js:255
+#, javascript-format
+msgid "Open %s"
+msgstr "開啟 %s"
+
+#: umc/js/appcenter/requirements.js:284
+msgid "Open the documentation"
+msgstr "開啟說明文件"
+
+#: umc/js/appcenter/requirements.js:301
+msgid "Open the migration guide"
+msgstr "開啟遷移指南"
+
+#: umc/js/appcenter/SearchForm.js:26
+msgid "Package categories"
+msgstr "套件分類"
+
+#: umc/js/appcenter/AppInstallWizard.js:55
+msgid "Package changes"
+msgstr "套件變更"
+
+#: umc/js/appcenter/SearchForm.js:48 umc/js/appcenter/PackagesPage.js:114
+msgid "Package description"
+msgstr "套件說明"
+
+#: umc/js/appcenter/PackagesPage.js:243
+msgid "Package details"
+msgstr "套件詳細資料"
+
+#: umc/js/appcenter/SearchForm.js:47 umc/js/appcenter/PackagesPage.js:104 umc/js/appcenter/PackagesPage.js:289
+msgid "Package name"
+msgstr "套件名稱"
+
+#: umc/js/appcenter/PackagesPage.js:295
+msgid "Package size"
+msgstr "套件大小"
+
+#: umc/js/appcenter/PackagesPage.js:425
+msgid "Packages not found: "
+msgstr "找不到套件: "
+
+#: umc/js/appcenter/AppInstallDialog.js:59
+msgid "Performing dependency checks"
+msgstr "正在執行相依性檢查"
+
+#: umc/js/appcenter/SettingsPage.js:205
+msgid "Permission denied"
+msgstr "權限遭拒"
+
+#: umc/js/appcenter/AppDetailsPage.js:804
+msgid "Please contact the provider of the App"
+msgstr "請聯絡此應用程式的提供者"
+
+#: umc/js/appcenter/DetailsPage.js:181 umc/js/appcenter/SettingsPage.js:313
+msgid "Please correct the corresponding input fields."
+msgstr "請修正對應的輸入欄位。"
+
+#: umc/js/appcenter/DetailsPage.js:137
+msgid "Please enter the details for the new component."
+msgstr "請輸入新元件的詳細資料。"
+
+#: umc/js/appcenter/requirements.js:266
+msgid "Please revert this state before upgrading or removing."
+msgstr "升級或移除前請先還原此狀態。"
+
+#: umc/js/appcenter/AppDetailsPage.js:205
+msgid "Previous app"
+msgstr "上一個應用程式"
+
+#: umc/js/appcenter/PackagesPage.js:296
+msgid "Priority"
+msgstr "優先順序"
+
+#: umc/js/appcenter/AppDetailsPage.js:599
+msgid "Provider"
+msgstr "提供者"
+
+#: umc/js/appcenter/AppDetailsPage.js:140
+msgid "Quick and easy – your ballot has been cast."
+msgstr "快速又簡單 – 您的投票已送出。"
+
+#: umc/js/appcenter/AppDetailsPage.js:772 umc/js/appcenter/AppDetailsPage.js:778
+msgid "Read license agreement"
+msgstr "閱讀授權合約"
+
+#: umc/js/appcenter/requirements.js:102
+msgid "Reboot now"
+msgstr "立即重新開機"
+
+#: umc/js/appcenter/SettingsPage.js:100
+msgid "Refresh"
+msgstr "重新整理"
+
+#: umc/js/appcenter/SettingsPage.js:101
+msgid "Refresh display to see current values"
+msgstr "重新整理畫面以查看目前的值"
+
+#: umc/js/appcenter/AppCenterPage.js:270
+msgid "Registration of the Apps in the domain failed. It will be retried when opening this module again. This may also cause problems when installing Apps."
+msgstr "在網域中註冊應用程式失敗。下次再次開啟此模組時將會重試。這也可能在安裝應用程式時造成問題。"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:130 umc/js/appcenter/AppInstallWizard.js:222
+#, javascript-format
+msgid "Removal of %s"
+msgstr "移除 %s"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:131 umc/js/appcenter/AppInstallWizard.js:223
+msgid "Removal of multiple apps"
+msgstr "移除多個應用程式"
+
+#: umc/js/appcenter/Tiles.js:130
+msgid "Remove"
+msgstr "移除"
+
+#: umc/js/appcenter/AppDetailsContainer.js:151
+msgid "Repository Settings"
+msgstr "軟體庫設定"
+
+#: umc/js/appcenter/DetailsPage.js:75
+msgid "Repository server"
+msgstr "軟體庫伺服器"
+
+#: umc/js/appcenter/SettingsPage.js:41
+msgid "Repository server URL"
+msgstr "軟體庫伺服器 URL"
+
+#: umc/js/appcenter/requirements.js:269
+msgid "Revert the pinned App state now"
+msgstr "立即還原應用程式的釘選狀態"
+
+#: umc/js/appcenter/AppInstallDialog.js:131
+msgid "Running tests"
+msgstr "正在執行測試"
+
+#: umc/js/appcenter/AppCenterPage.js:61
+msgid "Search Apps"
+msgstr "搜尋應用程式"
+
+#: umc/js/appcenter/SearchForm.js:43
+msgid "Search key"
+msgstr "搜尋鍵"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:28
+msgid "Search term"
+msgstr "搜尋關鍵字"
+
+#: umc/js/appcenter/SearchForm.js:58
+msgid "Search..."
+msgstr "搜尋..."
+
+#: umc/js/appcenter/PackagesPage.js:290
+msgid "Section"
+msgstr "區段"
+
+#: umc/js/appcenter/Tiles.js:123
+msgid "Select"
+msgstr "選取"
+
+#: umc/js/appcenter/AppDetailsPage.js:408
+msgid "Server"
+msgstr "伺服器"
+
+#: umc/js/appcenter/AppSettings.js:39 umc/js/appcenter/AppSettings.js:114
+msgid "Settings"
+msgstr "設定"
+
+#: umc/js/appcenter/PackagesPage.js:52
+msgid "Show details"
+msgstr "顯示詳細資料"
+
+#: umc/js/appcenter/AppInstallWizard.js:81
+msgid "Start installation"
+msgstr "開始安裝"
+
+#: umc/js/appcenter/AppInstallWizard.js:92
+msgid "Start installation anyway"
+msgstr "仍要開始安裝"
+
+#: umc/js/appcenter/AppInstallWizard.js:77
+msgid "Start removal"
+msgstr "開始移除"
+
+#: umc/js/appcenter/AppInstallWizard.js:88
+msgid "Start removal anyway"
+msgstr "仍要開始移除"
+
+#: umc/js/appcenter/AppConfigDialog.js:107
+msgid "Start the App"
+msgstr "啟動此應用程式"
+
+#: umc/js/appcenter/AppInstallWizard.js:79
+msgid "Start upgrade"
+msgstr "開始升級"
+
+#: umc/js/appcenter/AppInstallWizard.js:90
+msgid "Start upgrade anyway"
+msgstr "仍要開始升級"
+
+#: umc/js/appcenter/AppConfigDialog.js:95
+msgid "Started automatically"
+msgstr "自動啟動"
+
+#: umc/js/appcenter/AppConfigDialog.js:98
+msgid "Started manually"
+msgstr "手動啟動"
+
+#: umc/js/appcenter/AppConfigDialog.js:101
+msgid "Starting is prevented"
+msgstr "已禁止啟動"
+
+#: umc/js/appcenter/SettingsPage.js:194 umc/js/appcenter/AppDetailsPage.js:411
+msgid "Status"
+msgstr "狀態"
+
+#: umc/js/appcenter/AppConfigDialog.js:114
+msgid "Stop the App"
+msgstr "停止此應用程式"
+
+#: umc/js/appcenter/AppCenterPage.js:75
+msgid "Suggest new app"
+msgstr "建議新的應用程式"
+
+#: umc/js/appcenter/AppCenterPage.js:212
+msgid "Suggestions based on installed apps"
+msgstr "根據已安裝應用程式提供的建議"
+
+#: umc/js/appcenter/PackagesPage.js:291
+msgid "Summary"
+msgstr "摘要"
+
+#: umc/js/appcenter/AppDetailsPage.js:608
+msgid "Support"
+msgstr "技術支援"
+
+#: umc/js/appcenter/requirements.js:116
+msgid "Support Docker Apps"
+msgstr "支援 Docker 應用程式"
+
+#: umc/js/appcenter/AppDetailsPage.js:782
+msgid "The App does not provide any information about the license. Please contact the App provider for further details."
+msgstr "此應用程式未提供任何授權相關資訊。詳情請聯絡應用程式提供者。"
+
+#: umc/js/appcenter/AppConfigDialog.js:79
+msgid "The App is currently not running."
+msgstr "此應用程式目前未在執行。"
+
+#: umc/js/appcenter/AppConfigDialog.js:81
+msgid "The App is currently running."
+msgstr "此應用程式目前正在執行。"
+
+#: umc/js/appcenter/requirements.js:263
+msgid "The App is pinned to the currently installed version."
+msgstr "此應用程式已釘選至目前已安裝的版本。"
+
+#: umc/js/appcenter/requirements.js:82
+msgid "The App requires UCS version %(required_version)s or later."
+msgstr "此應用程式需要 UCS 版本 %(required_version)s 或更新版本。"
+
+#: umc/js/appcenter/requirements.js:96
+msgid "The App requires a newer kernel than your system is currently using (at least kernel 4.9 is required)."
+msgstr "此應用程式需要比您系統目前使用的更新的核心 (至少需要核心 4.9)。"
+
+#: umc/js/appcenter/requirements.js:278
+msgid "The App requires the password service to be set up on the Active Directory domain controller server."
+msgstr "此應用程式需要在 Active Directory 網域控制站伺服器上設定密碼服務。"
+
+#: umc/js/appcenter/requirements.js:110
+msgid "The App uses a container technology while the App Center is configured to not not support it."
+msgstr "此應用程式使用容器技術，但 App Center 目前設定為不支援容器技術。"
+
+#: umc/js/appcenter/requirements.js:124
+msgid "The App uses a container technology while the system itself runs in a container. Using the App is not supported on this host."
+msgstr "此應用程式使用容器技術，但系統本身就執行在容器中。此主機不支援使用此應用程式。"
+
+#: umc/js/appcenter/AppDetailsPage.js:736
+#, javascript-format
+msgid "The app provides a web interface: %s."
+msgstr "此應用程式提供 Web 介面: %s。"
+
+#: umc/js/appcenter/DetailsPage.js:184 umc/js/appcenter/SettingsPage.js:316
+msgid "The data you entered could not be saved correctly."
+msgstr "您輸入的資料無法正確儲存。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:62
+#, javascript-format
+msgid "The following App will be additionally installed because it is a required dependency for %s."
+msgstr "下列應用程式將會額外安裝，因為它是 %s 的必要相依項目。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:68
+msgid "The following App will be additionally installed because it is a required dependency for the selected Apps."
+msgstr "下列應用程式將會額外安裝，因為它是所選應用程式的必要相依項目。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:101
+msgid "The following Apps are going to be installed."
+msgstr "即將安裝下列應用程式。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:103
+msgid "The following Apps where initially selected."
+msgstr "下列應用程式為一開始選取的項目。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:64
+#, javascript-format
+msgid "The following Apps will be additionally installed because they are required dependencies for %s."
+msgstr "下列應用程式將會額外安裝，因為它們是 %s 的必要相依項目。"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:70
+msgid "The following Apps will be additionally installed because they are required dependencies for the selected Apps."
+msgstr "下列應用程式將會額外安裝，因為它們是所選應用程式的必要相依項目。"
+
+#: umc/js/appcenter/AppDetailsContainer.js:163
+msgid "The following hosts cannot be reached or do not have access to the App Center server:"
+msgstr "下列主機無法連線，或無法存取 App Center 伺服器:"
+
+#: umc/js/appcenter/PackagesPage.js:375 umc/js/appcenter/AppDetailsContainer.js:227
+msgid "The following packages will be installed or upgraded:"
+msgstr "將安裝或升級下列套件:"
+
+#: umc/js/appcenter/PackagesPage.js:379 umc/js/appcenter/AppDetailsContainer.js:228
+msgid "The following packages will be removed:"
+msgstr "將移除下列套件:"
+
+#: umc/js/appcenter/AppDetailsContainer.js:220
+#, javascript-format
+msgid "The following software changes on %s will be applied: "
+msgstr "將在 %s 上套用下列軟體變更: "
+
+#: umc/js/appcenter/requirements.js:67
+msgid "The installation of version %(version)s is not permitted."
+msgstr "不允許安裝版本 %(version)s。"
+
+#: umc/js/appcenter/requirements.js:221
+msgid "The server did not respond properly. Please make sure it is reachable and updated."
+msgstr "伺服器未正確回應。請確認它可連線且為最新狀態。"
+
+#: umc/js/appcenter/AppDetailsContainer.js:163
+msgid "The server tried to connect to the involved systems."
+msgstr "伺服器嘗試連線至相關的系統。"
+
+#: umc/js/appcenter/requirements.js:281
+msgid "The steps how to install the service on that machine are described in the online documentation."
+msgstr "線上說明文件中說明了如何在該機器上安裝此服務的步驟。"
+
+#: umc/js/appcenter/requirements.js:85
+msgid "The system has to be updated."
+msgstr "系統必須更新。"
+
+#: umc/js/appcenter/requirements.js:167
+msgid "The system has to join a domain before the App can be installed!"
+msgstr "系統必須先加入網域，才能安裝此應用程式！"
+
+#: umc/js/appcenter/AppDetailsContainer.js:209
+msgid "The version of the remote App Center is <strong>incompatible</strong> with the local one. Please update your hosts."
+msgstr "遠端 App Center 的版本與本機<strong>不相容</strong>。請更新您的主機。"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:81
+msgid "These are the error messages from the server. More information might be available on the system's logfile <em>/var/log/univention/appcenter.log</em>"
+msgstr "這些是來自伺服器的錯誤訊息。更多資訊可能可在系統的記錄檔 <em>/var/log/univention/appcenter.log</em> 中找到"
+
+#: umc/js/appcenter/AppDetailsContainer.js:153
+#, javascript-format
+msgid "These changes contain <strong>all package upgrades available</strong> and thus may <strong>include errata updates</strong>. If this is not intended, the corresponding components have to be temporarily deactivated first using the tab \"%s\" in the App Center."
+msgstr "這些變更包含<strong>所有可用的套件升級</strong>,因此可能<strong>包含勘誤更新</strong>。若非您所願，必須先使用 App Center 中的「%s」分頁暫時停用對應的元件。"
+
+#: umc/js/appcenter/requirements.js:164 umc/js/appcenter/AppDetailsContainer.js:169
+msgid "This App requires an extension of the LDAP schema."
+msgstr "此應用程式需要擴充 LDAP schema。"
+
+#: umc/js/appcenter/AppDetailsPage.js:844
+msgid "This App will inform the App provider about an (un)installation. The app provider may contact you."
+msgstr "此應用程式會將(解除)安裝的情況通知應用程式提供者。提供者可能會與您聯絡。"
+
+#: umc/js/appcenter/AppDetailsPage.js:852
+msgid "This App will not get any further updates. We suggest to uninstall %(app)s and search for an alternative App."
+msgstr "此應用程式將不會再有任何更新。我們建議解除安裝 %(app)s 並尋找替代的應用程式。"
+
+#: umc/js/appcenter/AppDetailsPage.js:846
+msgid "This App will not inform the App provider about an (un)installation directly."
+msgstr "此應用程式不會直接將(解除)安裝的情況通知應用程式提供者。"
+
+#: umc/js/appcenter/Tile.js:53
+msgid "This application will not get any further updates."
+msgstr "此應用程式將不會再有任何更新。"
+
+#: umc/js/appcenter/Tile.js:51
+msgid "This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application."
+msgstr "此應用程式將不會再有任何更新。我們建議解除安裝 %(app)s 並尋找替代的應用程式。"
+
+#: umc/js/appcenter/requirements.js:99
+msgid "This is probably due to a missing reboot after an UCS upgrade. After a reboot, a newer kernel may be used."
+msgstr "這可能是因為 UCS 升級後未重新開機。重新開機後可能會使用較新的核心。"
+
+#: umc/js/appcenter/SettingsPage.js:30
+msgid "This module shows all repositories settings defined for this system."
+msgstr "此模組顯示為此系統定義的所有軟體庫設定。"
+
+#: umc/js/appcenter/PackagesPage.js:383 umc/js/appcenter/AppDetailsContainer.js:229
+msgid "This operation causes problems in the following packages that cannot be resolved:"
+msgstr "此操作在下列套件中造成無法解決的問題:"
+
+#: umc/js/appcenter/PackagesPage.js:75 umc/js/appcenter/PackagesPage.js:226 umc/js/appcenter/AppDetailsPage.js:293 umc/js/appcenter/AppDetailsPage.js:554
+msgid "Uninstall"
+msgstr "解除安裝"
+
+#: umc/js/appcenter/requirements.js:215 umc/js/appcenter/requirements.js:231 umc/js/appcenter/requirements.js:252
+msgid "Uninstall them first."
+msgstr "請先解除安裝它們。"
+
+#: umc/js/appcenter/PackagesPage.js:357
+msgid "Uninstalling"
+msgstr "解除安裝中"
+
+#: umc/js/appcenter/requirements.js:310
+#, javascript-format
+msgid "Uninstalling %s will also remove the following plugins:"
+msgstr "解除安裝 %s 也會移除下列外掛程式:"
+
+#: umc/js/appcenter/AppCenterPage.js:107
+msgid "Univention App Center"
+msgstr "Univention App Center"
+
+#: umc/js/appcenter/SettingsPage.js:206 umc/js/appcenter/AppDetailsContainer.js:184
+msgid "Unknown"
+msgstr "未知"
+
+#: umc/js/appcenter/Tile.js:56
+msgid "Update available"
+msgstr "有可用的更新"
+
+#: umc/js/appcenter/PackagesPage.js:463 umc/js/appcenter/run.js:75
+msgid "Updating session and module data..."
+msgstr "正在更新工作階段與模組資料..."
+
+#: umc/js/appcenter/PackagesPage.js:88 umc/js/appcenter/PackagesPage.js:235 umc/js/appcenter/Tiles.js:129 umc/js/appcenter/AppDetailsPage.js:311 umc/js/appcenter/AppDetailsPage.js:510
+msgid "Upgrade"
+msgstr "升級"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:123 umc/js/appcenter/AppInstallWizard.js:215
+#, javascript-format
+msgid "Upgrade of %s"
+msgstr "升級 %s"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:124 umc/js/appcenter/AppInstallWizard.js:216
+msgid "Upgrade of multiple apps"
+msgstr "升級多個應用程式"
+
+#: umc/js/appcenter/App.js:388 umc/js/appcenter/App.js:409
+#, javascript-format
+msgid "Upgrade to %s available"
+msgstr "有可升級至 %s 的版本"
+
+#: umc/js/appcenter/PackagesPage.js:361
+msgid "Upgrading"
+msgstr "升級中"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:17
+msgid "Upload file"
+msgstr "上傳檔案"
+
+#: umc/js/appcenter/DetailsPage.js:87
+msgid "Use unmaintained repositories"
+msgstr "使用未維護的軟體庫"
+
+#: umc/js/appcenter/AppDetailsPage.js:728
+#, javascript-format
+msgid "Users need to be modified in the %s in order to use this service."
+msgstr "使用者必須在 %s 中修改才能使用此服務。"
+
+#: umc/js/appcenter/DetailsPage.js:186 umc/js/appcenter/SettingsPage.js:318
+msgid "Using the data you entered, no valid repository could be found.<br/>Since this may be a temporary server problem as well, your data was saved though.<br/>The problem was:"
+msgstr "使用您輸入的資料找不到有效的軟體庫。<br/>由於這也可能只是暫時的伺服器問題，您的資料仍已儲存。<br/>問題為:"
+
+#: umc/js/appcenter/AppInstallDialog.js:262
+msgid "Validating input..."
+msgstr "正在驗證輸入..."
+
+#: umc/js/appcenter/AppDetailsPage.js:598
+msgid "Vendor"
+msgstr "廠商"
+
+#: umc/js/appcenter/DetailsPage.js:81 umc/js/appcenter/AppDetailsPage.js:603 umc/js/appcenter/AppDetailsPage.js:606
+msgid "Version"
+msgstr "版本"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:119
+msgid "Vote Apps"
+msgstr "為應用程式投票"
+
+#: umc/js/appcenter/Vote.js:20 umc/js/appcenter/AppDetailsPage.js:140
+msgid "Vote for App"
+msgstr "為應用程式投票"
+
+#: umc/js/appcenter/Tile.js:58
+msgid "Vote for this app now and bring your favorite faster to the Univention App Center"
+msgstr "立即為此應用程式投票，讓您喜愛的應用程式更快進入 Univention App Center"
+
+#: umc/js/appcenter/Vote.js:22
+msgid "Vote now"
+msgstr "立即投票"
+
+#: umc/js/appcenter/Vote.js:21
+msgid "We are currently reviewing the admission of this app in the Univention App Center. Vote now and show us how relevant the availability of this app is for you."
+msgstr "我們目前正在審核此應用程式是否納入 Univention App Center。立即投票，讓我們了解此應用程式的提供對您有多重要。"
+
+#: umc/js/appcenter/AppInstallWizard.js:231
+msgid "We cannot continue. Please refer to the information below to solve the problem and try again."
+msgstr "我們無法繼續。請參考以下資訊以解決問題後再試一次。"
+
+#: umc/js/appcenter/AppInstallWizard.js:233
+msgid "We detected some problems that may lead to a errors later. Please consider the information below before continuing."
+msgstr "我們偵測到一些問題，可能在稍後導致錯誤。請在繼續前參考以下資訊。"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:75
+#, javascript-format
+msgid "We tried to do as requested but failed for %s"
+msgstr "我們已嘗試依要求執行，但 %s 失敗"
+
+#: umc/js/appcenter/DetailsPage.js:188 umc/js/appcenter/SettingsPage.js:320
+msgid "With the current (already changed) settings, the following problem was encountered:"
+msgstr "使用目前 (已變更的) 設定時，遇到下列問題:"
+
+#: umc/js/appcenter/PackagesPage.js:319
+msgid "Yes"
+msgstr "是"
+
+#: umc/js/appcenter/requirements.js:113
+msgid "You can configure the App Center to support it now. The service \"docker\" will be started."
+msgstr "您現在可以將 App Center 設定為支援它。服務「docker」將會啟動。"
+
+#: umc/js/appcenter/PackagesPage.js:389
+msgid "You cannot continue"
+msgstr "您無法繼續"
+
+#: umc/js/appcenter/requirements.js:132
+msgid "You receive such a license key within a couple of minutes via email after a free activation."
+msgstr "完成免費啟用後，您會在幾分鐘內透過電子郵件收到這樣的授權金鑰。"
+
+#: umc/js/appcenter/DetailsPage.js:150
+msgid "You're editing the details of the component definition."
+msgstr "您正在編輯此元件定義的詳細資料。"
+
+#: umc/js/appcenter/AppDetailsContainer.js:195
+msgid "an unknown amount of"
+msgstr "不明數量的"
+
+#: umc/js/appcenter/requirements.js:76
+msgid "https://appcenter.univention.com/"
+msgstr ""
+
+#: umc/js/appcenter/requirements.js:287
+#, javascript-format
+msgid "https://docs.software-univention.de/manual-%s.html#ad-connector:password-dienst"
+msgstr ""
+
+#: umc/js/appcenter/AppCenterPage.js:71
+msgid "https://www.univention.com/products/univention-app-center/vote-for-app/"
+msgstr ""
+
+#: umc/js/appcenter/PackagesPage.js:352
+msgid "install"
+msgstr "安裝"
+
+#: umc/js/appcenter/requirements.js:189
+msgid "this App may be installed on any computer in the domain"
+msgstr "此應用程式可安裝在網域中的任何電腦上"
+
+#: umc/js/appcenter/requirements.js:191
+msgid "this App must be installed on another computer in the domain"
+msgstr "此應用程式必須安裝在網域中的另一台電腦上"
+
+#: umc/js/appcenter/App.js:26
+msgid "this computer"
+msgstr "這台電腦"
+
+#: umc/js/appcenter/AppDetailsContainer.js:218 umc/js/appcenter/AppDetailsContainer.js:220
+msgid "this host"
+msgstr "這台主機"
+
+#: umc/js/appcenter/PackagesPage.js:356
+msgid "uninstall"
+msgstr "解除安裝"
+
+#: umc/js/appcenter/PackagesPage.js:360
+msgid "upgrade"
+msgstr "升級"
+
+#: umc/js/appcenter/AppDetailsContainer.js:216
+msgid "{0} packages are erroneous"
+msgstr "{0} 個套件發生錯誤"
+
+#: umc/js/appcenter/AppDetailsContainer.js:214
+msgid "{0} packages will be installed / upgraded"
+msgstr "將安裝 / 升級 {0} 個套件"
+
+#: umc/js/appcenter/AppDetailsContainer.js:215
+msgid "{0} packages will be removed"
+msgstr "將移除 {0} 個套件"

@@ -1,0 +1,398 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:70
+msgid "App schema version"
+msgstr "App 結構描述版本"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:152
+msgid "Authentication options"
+msgstr "認證選項"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:208 modules/univention/admin/handlers/ms/gpwl-wireless.py:62 modules/univention/admin/handlers/ms/gpipsec-filter.py:73 modules/univention/admin/handlers/ms/domainpolicy.py:159 modules/univention/admin/handlers/ms/gpsi-class-store.py:77 modules/univention/admin/handlers/ms/gpsi-category-registration.py:68 modules/univention/admin/handlers/ms/gpipsec-nfa.py:84 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:73 modules/univention/admin/handlers/ms/gpipsec-policy.py:84 modules/univention/admin/handlers/ms/gpwl-wired.py:62 modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:62 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:83
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:239
+msgid "COM"
+msgstr "COM"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:188
+msgid "COM class ID"
+msgstr "COM 類別 ID"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:182
+msgid "COM interface ID"
+msgstr "COM 介面 ID"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:176
+msgid "COM prog ID"
+msgstr "COM 程式 ID"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:170
+msgid "COM type lib ID"
+msgstr "COM 型別程式庫 ID"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:200
+msgid "Can upgrade script"
+msgstr "可升級指令碼"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:194
+msgid "Category"
+msgstr "類別"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:54
+msgid "Data"
+msgstr "資料"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:49
+msgid "Data type"
+msgstr "資料型別"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:147
+msgid "Default local policy object"
+msgstr "預設本機原則物件"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:44 modules/univention/admin/handlers/ms/gpwl-wireless.py:39 modules/univention/admin/handlers/ms/gpipsec-filter.py:39 modules/univention/admin/handlers/ms/gpsi-class-store.py:44 modules/univention/admin/handlers/ms/gpsi-category-registration.py:39 modules/univention/admin/handlers/ms/gpipsec-nfa.py:39 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:39 modules/univention/admin/handlers/ms/gpipsec-policy.py:39 modules/univention/admin/handlers/ms/gpwl-wired.py:39 modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:39 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:39
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:39 modules/univention/admin/handlers/ms/gpsi-class-store.py:39
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:141
+msgid "Domain CAs"
+msgstr "網域 CA"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:136
+msgid "Domain policy reference"
+msgstr "網域原則參照"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:130
+msgid "Domain wide policy"
+msgstr "網域全域原則"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:124
+msgid "EFS policy"
+msgstr "EFS 原則"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:64
+msgid "Extension name"
+msgstr "擴充名稱"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:119
+msgid "Force logoff"
+msgstr "強制登出"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:208 modules/univention/admin/handlers/ms/gpsi-package-registration.py:209 modules/univention/admin/handlers/ms/gpwl-wireless.py:62 modules/univention/admin/handlers/ms/gpwl-wireless.py:63 modules/univention/admin/handlers/ms/gpipsec-filter.py:73 modules/univention/admin/handlers/ms/gpipsec-filter.py:74 modules/univention/admin/handlers/ms/domainpolicy.py:159 modules/univention/admin/handlers/ms/domainpolicy.py:160 modules/univention/admin/handlers/ms/gpsi-class-store.py:77 modules/univention/admin/handlers/ms/gpsi-class-store.py:78 modules/univention/admin/handlers/ms/gpsi-category-registration.py:68 modules/univention/admin/handlers/ms/gpsi-category-registration.py:69 modules/univention/admin/handlers/ms/gpipsec-nfa.py:84 modules/univention/admin/handlers/ms/gpipsec-nfa.py:85 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:73 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:74 modules/univention/admin/handlers/ms/gpipsec-policy.py:84 modules/univention/admin/handlers/ms/gpipsec-policy.py:85 modules/univention/admin/handlers/ms/gpwl-wired.py:62 modules/univention/admin/handlers/ms/gpwl-wired.py:63 modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:62 modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:63 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:83 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:84
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:44
+msgid "ID"
+msgstr "ID"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:114
+msgid "IP-security policy reference"
+msgstr "IP 安全性原則參照"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:66 modules/univention/admin/handlers/ms/gpipsec-nfa.py:66 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:66 modules/univention/admin/handlers/ms/gpipsec-policy.py:66 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:66
+msgid "IPsec Data"
+msgstr "IPsec 資料"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:61 modules/univention/admin/handlers/ms/gpipsec-nfa.py:61 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:61 modules/univention/admin/handlers/ms/gpipsec-policy.py:61 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:61
+msgid "IPsec Data Type"
+msgstr "IPsec 資料型別"
+
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:76
+msgid "IPsec Filter reference"
+msgstr "IPsec 篩選器參照"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:56 modules/univention/admin/handlers/ms/gpipsec-nfa.py:56 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:56 modules/univention/admin/handlers/ms/gpipsec-policy.py:56 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:56
+msgid "IPsec ID"
+msgstr "IPsec ID"
+
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:77
+msgid "IPsec ISAKMP Reference"
+msgstr "IPsec ISAKMP 參照"
+
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:71
+msgid "IPsec NFA Reference"
+msgstr "IPsec NFA 參照"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:51 modules/univention/admin/handlers/ms/gpipsec-nfa.py:51 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:51 modules/univention/admin/handlers/ms/gpipsec-policy.py:51 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:51
+msgid "IPsec Name"
+msgstr "IPsec 名稱"
+
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:71
+msgid "IPsec Negotiation Policy Reference"
+msgstr "IPsec 交涉原則參照"
+
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:76
+msgid "IPsec Negotiation Policy action"
+msgstr "IPsec 交涉原則動作"
+
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:71
+msgid "IPsec Negotiation Policy type"
+msgstr "IPsec 交涉原則型別"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:45 modules/univention/admin/handlers/ms/gpipsec-nfa.py:45 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:45 modules/univention/admin/handlers/ms/gpipsec-policy.py:45 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:45
+msgid "IPsec Owners reference"
+msgstr "IPsec 擁有者參照"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:148 modules/univention/admin/handlers/ms/gpsi-class-store.py:59
+msgid "Last update sequence"
+msgstr "上次更新序號"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:142
+msgid "Locale ID"
+msgstr "地區設定 ID"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:104
+msgid "Lockout duration"
+msgstr "鎖定持續時間"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:109
+msgid "Lockout observation window"
+msgstr "鎖定觀察期間"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:99
+msgid "Lockout threshold"
+msgstr "鎖定閾值"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:20
+msgid "MS Domain Policy"
+msgstr "MS 網域原則"
+
+#: modules/univention/admin/handlers/ms/gpipsec-policy.py:20
+msgid "MS IPsec policy"
+msgstr "MS IPsec 原則"
+
+#: modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:20
+msgid "MS IPsec policy: ISAKMP Policy"
+msgstr "MS IPsec 原則: ISAKMP 原則"
+
+#: modules/univention/admin/handlers/ms/gpipsec-nfa.py:20
+msgid "MS IPsec policy: NFA"
+msgstr "MS IPsec 原則: NFA"
+
+#: modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:20
+msgid "MS IPsec policy: Negotiation Policy"
+msgstr "MS IPsec 原則: 交涉原則"
+
+#: modules/univention/admin/handlers/ms/gpipsec-filter.py:20
+msgid "MS IPsec policy: filter"
+msgstr "MS IPsec 原則: 篩選器"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:20
+msgid "MS Software Installation Group Policy: Category Registration"
+msgstr "MS 軟體安裝群組原則: 類別註冊"
+
+#: modules/univention/admin/handlers/ms/gpwl-wired.py:20
+msgid "MS wired Group Policy"
+msgstr "MS 有線群組原則"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:20
+msgid "MS wireless Group Policy"
+msgstr "MS 無線群組原則"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:20
+msgid "MS wireless Group Policy blob"
+msgstr "MS 無線群組原則 blob"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:232
+msgid "MSI"
+msgstr "MSI"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:125
+msgid "MSI file list"
+msgstr "MSI 檔案清單"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:120
+msgid "MSI script"
+msgstr "MSI 指令碼"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:115
+msgid "MSI script name"
+msgstr "MSI 指令碼名稱"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:110
+msgid "MSI script path"
+msgstr "MSI 指令碼路徑"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:105
+msgid "MSI script size"
+msgstr "MSI 指令碼大小"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:94
+msgid "Managed by"
+msgstr "管理者"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:89
+msgid "Maximum password age"
+msgstr "密碼最長使用期限"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:84
+msgid "Maximum renew age"
+msgstr "最長更新期限"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:79
+msgid "Maximum ticket age"
+msgstr "票證最長有效期限"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:74
+msgid "Minimum password age"
+msgstr "密碼最短使用期限"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:69
+msgid "Minimum password length"
+msgstr "密碼最短長度"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:64
+msgid "Minimum ticket age"
+msgstr "票證最短有效期限"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:32 modules/univention/admin/handlers/ms/gpwl-wireless.py:32 modules/univention/admin/handlers/ms/gpipsec-filter.py:32 modules/univention/admin/handlers/ms/domainpolicy.py:32 modules/univention/admin/handlers/ms/gpsi-class-store.py:32 modules/univention/admin/handlers/ms/gpsi-category-registration.py:32 modules/univention/admin/handlers/ms/gpipsec-nfa.py:32 modules/univention/admin/handlers/ms/gpipsec-isakmp-policy.py:32 modules/univention/admin/handlers/ms/gpipsec-policy.py:32 modules/univention/admin/handlers/ms/gpwl-wired.py:32 modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:32 modules/univention/admin/handlers/ms/gpipsec-negotiation-policy.py:32
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:54
+msgid "Next level store"
+msgstr "下一層存放區"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:49
+msgid "Password history length"
+msgstr "密碼歷程長度"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:44
+msgid "Password properties"
+msgstr "密碼內容"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:49 modules/univention/admin/handlers/ms/gpwl-wired.py:49
+msgid "Policy Data"
+msgstr "原則資料"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:55 modules/univention/admin/handlers/ms/gpwl-wired.py:55
+msgid "Policy GUID"
+msgstr "原則 GUID"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:44 modules/univention/admin/handlers/ms/gpwl-wired.py:44
+msgid "Policy Reserved"
+msgstr "原則保留"
+
+#: modules/univention/admin/handlers/ms/gpwl-wireless.py:66 modules/univention/admin/handlers/ms/gpwl-wired.py:66 modules/univention/admin/handlers/ms/gpwl-wireless-blob.py:66
+msgid "Policy settings"
+msgstr "原則設定"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:59
+msgid "Proxy lifetime"
+msgstr "Proxy 存留時間"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:54
+msgid "Publickey policy"
+msgstr "公開金鑰原則"
+
+#: modules/univention/admin/handlers/ms/domainpolicy.py:39
+msgid "Quality of service"
+msgstr "服務品質"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:69
+msgid "Revision"
+msgstr "修訂版本"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:80
+msgid "Setup command"
+msgstr "安裝命令"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:20
+msgid "Software Installation Group Policy: Class Store"
+msgstr "軟體安裝群組原則: 類別存放區"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:20
+msgid "Software Installation Group Policy: Package Registration"
+msgstr "軟體安裝群組原則: 套件註冊"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:64
+msgid "URL"
+msgstr "URL"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:74
+msgid "Upgrade product code"
+msgstr "升級產品代碼"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:59
+msgid "Vendor"
+msgstr "廠商"
+
+#: modules/univention/admin/handlers/ms/gpsi-class-store.py:49
+msgid "Version number"
+msgstr "版本號碼"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:54
+msgid "Version number high"
+msgstr "版本號碼高位"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:49
+msgid "Version number low"
+msgstr "版本號碼低位"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:61
+msgid "category ID"
+msgstr "類別 ID"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:164
+msgid "file ext priority"
+msgstr "檔案副檔名優先順序"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:158
+msgid "icon path"
+msgstr "圖示路徑"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:153
+msgid "install UI level"
+msgstr "安裝 UI 層級"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:55
+msgid "locale ID"
+msgstr "地區設定 ID"
+
+#: modules/univention/admin/handlers/ms/gpsi-category-registration.py:49
+msgid "localized description"
+msgstr "在地化說明"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:136
+msgid "machine architecture"
+msgstr "機器架構"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:131 modules/univention/admin/handlers/ms/gpsi-category-registration.py:44
+msgid "managed by"
+msgstr "管理者"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:100
+msgid "package flags"
+msgstr "套件旗標"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:95
+msgid "package name"
+msgstr "套件名稱"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:90
+msgid "package type"
+msgstr "套件型別"
+
+#: modules/univention/admin/handlers/ms/gpsi-package-registration.py:85
+msgid "product code"
+msgstr "產品代碼"

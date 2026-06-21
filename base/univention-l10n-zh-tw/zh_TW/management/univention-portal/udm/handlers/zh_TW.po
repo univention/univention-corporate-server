@@ -1,0 +1,422 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-portal\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: udm/handlers/announcement.py:63
+msgid "A color theme the announcement should appear in."
+msgstr "公告顯示時所使用的色彩主題。"
+
+#: udm/handlers/entry.py:74
+msgid "Activated"
+msgstr "已啟用"
+
+#: udm/handlers/entry.py:130
+msgid "Advanced"
+msgstr "進階"
+
+#: udm/handlers/announcement.py:99
+msgid "Announcement options"
+msgstr "公告選項"
+
+#: udm/handlers/portal.py:89
+msgid "Announcements"
+msgstr "公告"
+
+#: udm/handlers/portal.py:121
+msgid "Appearance"
+msgstr "外觀"
+
+#: udm/handlers/portal.py:54
+msgid "Background"
+msgstr "背景"
+
+#: udm/handlers/entry.py:103
+msgid "Background color"
+msgstr "背景顏色"
+
+#: udm/handlers/portal.py:55
+msgid "Background image of the Portal"
+msgstr "入口網站的背景圖片"
+
+#: udm/handlers/all.py:49
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: udm/syntax/univention-portal.py:70
+msgid "Black"
+msgstr "黑色"
+
+#: udm/handlers/entry.py:92
+msgid "Browser tab when opening link"
+msgstr "開啟連結時的瀏覽器分頁"
+
+#: udm/handlers/portal.py:84 udm/handlers/portal.py:108
+msgid "Categories"
+msgstr "類別"
+
+#: udm/handlers/category.py:58
+msgid "Category options"
+msgstr "類別選項"
+
+#: udm/handlers/announcement.py:103
+msgid "Content"
+msgstr "內容"
+
+#: udm/syntax/univention-portal.py:98
+msgid "Danger"
+msgstr "危險"
+
+#: udm/handlers/portal.py:95
+msgid "Default browser tab for portal entries"
+msgstr "入口網站項目的預設瀏覽器分頁"
+
+#: udm/handlers/entry.py:48 udm/handlers/entry.py:119
+msgid "Description"
+msgstr "說明"
+
+#: udm/handlers/entry.py:49
+msgid "Description of the entry. At least one entry; strongly encouraged to have one for en_US"
+msgstr "項目的說明。至少需要一個；強烈建議為 en_US 提供一個"
+
+#: udm/handlers/category.py:43 udm/handlers/folder.py:43 udm/handlers/folder.py:62 udm/handlers/all.py:42 udm/handlers/portal.py:42 udm/handlers/entry.py:41 udm/handlers/entry.py:116
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: udm/handlers/category.py:44
+msgid "Display name of the category. At least one entry; strongly encouraged to have one for en_US"
+msgstr "類別的顯示名稱。至少需要一個；強烈建議為 en_US 提供一個"
+
+#: udm/syntax/univention-portal.py:78 udm/syntax/univention-portal.py:87
+msgid "Embedded"
+msgstr "內嵌"
+
+#: udm/handlers/announcement.py:90
+msgid "End date"
+msgstr "結束日期"
+
+#: udm/handlers/folder.py:65
+msgid "Entries"
+msgstr "項目"
+
+#: udm/handlers/portal.py:78
+msgid "Entries in the menu"
+msgstr "選單中的項目"
+
+#: udm/handlers/portal.py:72
+msgid "Entries in the user menu"
+msgstr "使用者選單中的項目"
+
+#: udm/handlers/category.py:50 udm/handlers/folder.py:50
+msgid "Entry"
+msgstr "項目"
+
+#: udm/handlers/folder.py:58 udm/handlers/entry.py:110
+msgid "Entry options"
+msgstr "項目選項"
+
+#: udm/handlers/category.py:58 udm/handlers/category.py:62 udm/handlers/announcement.py:99 udm/handlers/announcement.py:100 udm/handlers/folder.py:58 udm/handlers/folder.py:59 udm/handlers/all.py:49 udm/handlers/portal.py:103 udm/handlers/entry.py:110 udm/handlers/entry.py:111
+msgid "General"
+msgstr "一般"
+
+#: udm/handlers/entry.py:42
+msgid "Headline of the entry. At least one entry; strongly encouraged to have one for en_US"
+msgstr "項目的標題。至少需要一個；強烈建議為 en_US 提供一個"
+
+#: udm/handlers/folder.py:44
+msgid "Headline of the folder. At least one entry; strongly encouraged to have one for en_US"
+msgstr "資料夾的標題。至少需要一個；強烈建議為 en_US 提供一個"
+
+#: udm/handlers/portal.py:43
+msgid "Headline of the portal. At least one entry; strongly encouraged to have one for en_US"
+msgstr "入口網站的標題。至少需要一個；強烈建議為 en_US 提供一個"
+
+#: udm/handlers/entry.py:86
+msgid "Icon"
+msgstr "圖示"
+
+#: udm/handlers/announcement.py:55
+msgid "If enabled, the announcement can't be closed and will persist until the time ends (or never)."
+msgstr "如果啟用，公告將無法關閉，並會持續顯示直到時間結束 (或永不結束)。"
+
+#: udm/handlers/announcement.py:47
+msgid "If enabled, the user will see a \"Confirm\" button and the announcement will persist until it is clicked."
+msgstr "如果啟用，使用者會看到一個「確認」按鈕，公告將持續顯示直到該按鈕被按下。"
+
+#: udm/handlers/announcement.py:40
+msgid "If one or more groups are selected then the portal announcement will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible."
+msgstr "如果選取了一個或多個群組，則入口網站公告只會對屬於任一選取群組的已登入使用者顯示。如果未選取任何群組，則入口網站項目永遠顯示。"
+
+#: udm/handlers/entry.py:69
+msgid "If one or more groups are selected then the portal entry will only be visible to logged in users that are in any of the selected groups. If no groups are selected then the portal entry is always visible."
+msgstr "如果選取了一個或多個群組，則入口網站項目只會對屬於任一選取群組的已登入使用者顯示。如果未選取任何群組，則入口網站項目永遠顯示。"
+
+#: udm/syntax/univention-portal.py:95
+msgid "Info"
+msgstr "資訊"
+
+#: udm/handlers/category.py:34 udm/handlers/announcement.py:30 udm/handlers/folder.py:34 udm/handlers/all.py:34 udm/handlers/portal.py:33 udm/handlers/entry.py:32
+msgid "Internal name"
+msgstr "內部名稱"
+
+#: udm/syntax/univention-portal.py:110 udm/handlers/entry.py:55 udm/handlers/entry.py:122
+msgid "Keywords"
+msgstr "關鍵字"
+
+#: udm/handlers/entry.py:56
+msgid "Keywords of the entry used during search."
+msgstr "搜尋時使用的項目關鍵字。"
+
+#: udm/syntax/univention-portal.py:103 udm/syntax/univention-portal.py:110
+msgid "Language code (e.g. en_US)"
+msgstr "語言代碼 (例如 en_US)"
+
+#: udm/syntax/univention-portal.py:103 udm/handlers/entry.py:125
+msgid "Link"
+msgstr "連結"
+
+#: udm/handlers/portal.py:112
+msgid "Link behaviour"
+msgstr "連結行為"
+
+#: udm/handlers/entry.py:98
+msgid "Link target name"
+msgstr "連結目標名稱"
+
+#: udm/handlers/entry.py:61
+msgid "Links (best pick based on locale / protocol / hostname)"
+msgstr "連結 (依語言環境 / 通訊協定 / 主機名稱挑選最適者)"
+
+#: udm/handlers/portal.py:90
+msgid "List of announcements that are shown in the portal"
+msgstr "顯示於入口網站的公告清單"
+
+#: udm/handlers/category.py:51
+msgid "List of portal entries and/or portal folders shown in this category"
+msgstr "顯示於此類別的入口網站項目與 / 或入口網站資料夾清單"
+
+#: udm/handlers/folder.py:51
+msgid "List of portal entries and/or portal folders shown in this folder"
+msgstr "顯示於此資料夾的入口網站項目與 / 或入口網站資料夾清單"
+
+#: udm/handlers/portal.py:73
+msgid "List of portal entries that are shown in the menu for the logged in user"
+msgstr "顯示於選單中供已登入使用者使用的入口網站項目清單"
+
+#: udm/handlers/portal.py:79
+msgid "List of portal entries that are shown in the menu of the portal"
+msgstr "顯示於入口網站選單中的入口網站項目清單"
+
+#: udm/handlers/portal.py:125
+msgid "Login"
+msgstr "登入"
+
+#: udm/handlers/portal.py:61
+msgid "Logo image for the portal."
+msgstr "入口網站的標誌圖片。"
+
+#: udm/handlers/all.py:14
+msgid "Management of portals and their entries"
+msgstr "入口網站及其項目的管理"
+
+#: udm/handlers/portal.py:118
+msgid "Menu"
+msgstr "選單"
+
+#: udm/handlers/announcement.py:76
+msgid "Message"
+msgstr "訊息"
+
+#: udm/handlers/category.py:59 udm/handlers/portal.py:104
+msgid "Name"
+msgstr "名稱"
+
+#: udm/handlers/announcement.py:46
+msgid "Needs Confirmation (not yet implemented!)"
+msgstr "需要確認 (尚未實作！)"
+
+#: udm/syntax/univention-portal.py:77 udm/syntax/univention-portal.py:86
+msgid "New tab"
+msgstr "新分頁"
+
+#: udm/handlers/portal.py:23
+msgid "Object that feeds everything in https://fqdn/univention/portal"
+msgstr "提供 https://fqdn/univention/portal 中所有內容的物件"
+
+#: udm/handlers/category.py:24
+msgid "Object under which portals/entry objects can be displayed. Belongs to one or more portals/portal objects"
+msgstr "可在其下顯示 portals/entry 物件的物件。隸屬於一個或多個 portals/portal 物件"
+
+#: udm/handlers/folder.py:24
+msgid "One folder in https://fqdn/univention/portal which holds one or more portals/entry objects. Belongs to one or more portals/category objects, which belong to one or more portals/portal objects"
+msgstr "https://fqdn/univention/portal 中的一個資料夾，內含一個或多個 portals/entry 物件。隸屬於一個或多個 portals/category 物件，而這些物件又隸屬於一個或多個 portals/portal 物件"
+
+#: udm/handlers/announcement.py:20
+msgid "One folder in https://fqhn/univention/portal which holds one or more portals/announcement objects. Belongs to one or more portals/portal objects"
+msgstr "https://fqhn/univention/portal 中的一個資料夾，內含一個或多個 portals/announcement 物件。隸屬於一個或多個 portals/portal 物件"
+
+#: udm/handlers/entry.py:22
+msgid "One link in https://fqdn/univention/portal. Belongs to one or more portals/category objects, which belong to one or more portals/portal objects"
+msgstr "https://fqdn/univention/portal 中的一個連結。隸屬於一個或多個 portals/category 物件，而這些物件又隸屬於一個或多個 portals/portal 物件"
+
+#: udm/handlers/entry.py:80
+msgid "Only visible if not logged in"
+msgstr "僅在未登入時顯示"
+
+#: udm/handlers/announcement.py:110
+msgid "Options"
+msgstr "選項"
+
+#: udm/handlers/portal.py:21
+msgid "Portal"
+msgstr "入口網站"
+
+#: udm/handlers/announcement.py:18
+msgid "Portal announcement"
+msgstr "入口網站公告"
+
+#: udm/handlers/announcement.py:19
+msgid "Portal announcements"
+msgstr "入口網站公告"
+
+#: udm/handlers/category.py:23
+msgid "Portal categories"
+msgstr "入口網站類別"
+
+#: udm/handlers/category.py:22
+msgid "Portal category"
+msgstr "入口網站類別"
+
+#: udm/handlers/entry.py:21
+msgid "Portal entries"
+msgstr "入口網站項目"
+
+#: udm/handlers/entry.py:20
+msgid "Portal entry"
+msgstr "入口網站項目"
+
+#: udm/handlers/folder.py:22
+msgid "Portal folder"
+msgstr "入口網站資料夾"
+
+#: udm/handlers/folder.py:23
+msgid "Portal folders"
+msgstr "入口網站資料夾"
+
+#: udm/handlers/portal.py:60
+msgid "Portal logo"
+msgstr "入口網站標誌"
+
+#: udm/handlers/portal.py:103
+msgid "Portal options"
+msgstr "入口網站選項"
+
+#: udm/handlers/announcement.py:17
+msgid "Portal: Announcement"
+msgstr "入口網站: 公告"
+
+#: udm/handlers/category.py:21
+msgid "Portal: Category"
+msgstr "入口網站: 類別"
+
+#: udm/handlers/entry.py:19
+msgid "Portal: Entry"
+msgstr "入口網站: 項目"
+
+#: udm/handlers/folder.py:21
+msgid "Portal: Folder"
+msgstr "入口網站: 資料夾"
+
+#: udm/handlers/portal.py:20
+msgid "Portal: Portal"
+msgstr "入口網站: 入口網站"
+
+#: udm/handlers/all.py:13
+msgid "Portal: Settings"
+msgstr "入口網站: 設定"
+
+#: udm/handlers/portal.py:22
+msgid "Portals"
+msgstr "入口網站"
+
+#: udm/handlers/portal.py:66
+msgid "Redirect anonymous visitors to the login"
+msgstr "將匿名訪客重新導向至登入頁面"
+
+#: udm/handlers/announcement.py:39 udm/handlers/entry.py:68
+msgid "Restrict visibility to groups"
+msgstr "限制只對群組顯示"
+
+#: udm/syntax/univention-portal.py:76 udm/syntax/univention-portal.py:85
+msgid "Same tab"
+msgstr "同一分頁"
+
+#: udm/handlers/announcement.py:62
+msgid "Severity"
+msgstr "嚴重程度"
+
+#: udm/handlers/portal.py:49
+msgid "Show UMC categories and modules"
+msgstr "顯示 UMC 類別與模組"
+
+#: udm/handlers/announcement.py:83
+msgid "Start date"
+msgstr "開始日期"
+
+#: udm/handlers/announcement.py:54
+msgid "Sticky"
+msgstr "釘選"
+
+#: udm/syntax/univention-portal.py:97
+msgid "Success"
+msgstr "成功"
+
+#: udm/handlers/announcement.py:84
+msgid "The date when the announcement will first appear."
+msgstr "公告首次顯示的日期。"
+
+#: udm/handlers/announcement.py:91
+msgid "The date when the announcement will last appear."
+msgstr "公告最後顯示的日期。"
+
+#: udm/handlers/announcement.py:77
+msgid "The message of the announcement, usually written in normal text below the title."
+msgstr "公告的訊息，通常以一般文字寫在標題下方。"
+
+#: udm/handlers/announcement.py:70
+msgid "The title of the announcement, usually written in bold above the message."
+msgstr "公告的標題，通常以粗體寫在訊息上方。"
+
+#: udm/handlers/announcement.py:107
+msgid "Time"
+msgstr "時間"
+
+#: udm/handlers/announcement.py:69
+msgid "Title"
+msgstr "標題"
+
+#: udm/syntax/univention-portal.py:84
+msgid "Use default of portal"
+msgstr "使用入口網站的預設值"
+
+#: udm/handlers/portal.py:115
+msgid "User menu"
+msgstr "使用者選單"
+
+#: udm/syntax/univention-portal.py:96
+msgid "Warning"
+msgstr "警告"
+
+#: udm/syntax/univention-portal.py:69
+msgid "White"
+msgstr "白色"

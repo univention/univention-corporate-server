@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-appcenter package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/python/appcenter/__init__.py:340
+#, python-format
+msgid "%d Apps: Connecting to %s"
+msgstr "%d 個 App: 正在連線到 %s"
+
+#: umc/python/appcenter/__init__.py:284
+#, python-format
+msgid "%d Apps: Running tests"
+msgstr "%d 個 App: 正在執行測試"
+
+#: umc/python/appcenter/__init__.py:338
+#, python-format
+msgid "%s: Connecting to %s"
+msgstr "%s: 正在連線到 %s"
+
+#: umc/python/appcenter/__init__.py:282
+#, python-format
+msgid "%s: Running tests"
+msgstr "%s: 正在執行測試"
+
+#: umc/python/appcenter/__init__.py:379
+msgid "A conflict between the system network settings and the docker bridge default network has been detected."
+msgstr "偵測到系統網路設定與 Docker 橋接預設網路之間發生衝突。"
+
+#: umc/python/appcenter/__init__.py:518 umc/python/appcenter/__init__.py:659
+msgid "Another package operation is in progress"
+msgstr "另一項套件操作正在進行中"
+
+#: umc/python/appcenter/sanitizers.py:29 umc/python/appcenter/sanitizers.py:33 umc/python/appcenter/sanitizers.py:37
+msgid "Cannot connect to the LDAP service."
+msgstr "無法連線到 LDAP 服務。"
+
+#: umc/python/appcenter/sanitizers.py:52 umc/python/appcenter/__init__.py:431 umc/python/appcenter/__init__.py:452
+#, python-format
+msgid "Could not find an application for %s"
+msgstr "找不到 %s 對應的應用程式"
+
+#: umc/python/appcenter/__init__.py:398
+msgid "Could not load suggestions."
+msgstr "無法載入建議。"
+
+#: umc/python/appcenter/__init__.py:309
+#, python-format
+msgid "Installing %s"
+msgstr "正在安裝 %s"
+
+#: umc/python/appcenter/__init__.py:808 umc/python/appcenter/__init__.py:867
+#, python-format
+msgid "Invalid scheme, use http or https: %(base)r/%(key)r: %(value)r"
+msgstr "無效的配置方式，請使用 http 或 https: %(base)r/%(key)r: %(value)r"
+
+#: umc/python/appcenter/__init__.py:363 umc/python/appcenter/__init__.py:410
+msgid "Make sure docker.io is installed, try starting the service with \"service docker start\"."
+msgstr "請確認已安裝 docker.io，並嘗試以 \"service docker start\" 啟動服務。"
+
+#: umc/python/appcenter/sanitizers.py:37
+msgid "Maybe the machine password changed during the session."
+msgstr "可能在工作階段期間電腦密碼已變更。"
+
+#: umc/python/appcenter/sanitizers.py:33
+msgid "Maybe your password changed during the session."
+msgstr "可能在工作階段期間您的密碼已變更。"
+
+#: umc/python/appcenter/__init__.py:64
+msgid "Package not found in repository"
+msgstr "在軟體庫中找不到套件"
+
+#: umc/python/appcenter/sanitizers.py:29
+msgid "Please check the join state of the machine."
+msgstr "請檢查電腦的加入狀態。"
+
+#: umc/python/appcenter/__init__.py:380
+msgid "Please either configure a different network for the docker bridge by setting the UCR variable docker/daemon/default/opts/bip to a different network and restart the system,"
+msgstr "請將 UCR 變數 docker/daemon/default/opts/bip 設定為不同的網路，為 Docker 橋接設定另一個網路並重新啟動系統，"
+
+#: umc/python/appcenter/__init__.py:204
+#, python-brace-format
+msgid "Problems connecting to {0} ({1}). Please update {0}!"
+msgstr "連線到 {0} ({1}) 時發生問題。請更新 {0}！"
+
+#: umc/python/appcenter/__init__.py:206
+msgid "Problems connecting to {} ({})."
+msgstr "連線到 {} ({}) 時發生問題。"
+
+#: umc/python/appcenter/__init__.py:207
+msgid "The App Center version of the this host ({}) is not compatible with the version of {} ({})"
+msgstr "此主機的 App Center 版本 ({}) 與 {} 的版本 ({}) 不相容"
+
+#: umc/python/appcenter/sanitizers.py:33 umc/python/appcenter/sanitizers.py:37
+msgid "The credentials provided were not accepted."
+msgstr "提供的認證憑證未被接受。"
+
+#: umc/python/appcenter/__init__.py:363
+msgid "The docker service is not running! The App Center will not work properly."
+msgstr "Docker 服務未在執行！App Center 將無法正常運作。"
+
+#: umc/python/appcenter/sanitizers.py:29
+msgid "The server seems to be lacking a proper password file."
+msgstr "伺服器似乎缺少適當的密碼檔案。"
+
+#: umc/python/appcenter/sanitizers.py:74
+msgid "There already is a component with this name"
+msgstr "已經有一個使用此名稱的元件"
+
+#: umc/python/appcenter/sanitizers.py:33 umc/python/appcenter/sanitizers.py:37
+msgid "This may be solved by simply logging out and in again."
+msgstr "只要登出後再重新登入，可能即可解決此問題。"
+
+#: umc/python/appcenter/__init__.py:410
+msgid "Unable to start the docker service!"
+msgstr "無法啟動 Docker 服務！"
+
+#: umc/python/appcenter/__init__.py:403
+msgid "Unexpected suggestions data."
+msgstr "非預期的建議資料。"
+
+#: umc/python/appcenter/__init__.py:311
+#, python-format
+msgid "Uninstalling %s"
+msgstr "正在解除安裝 %s"
+
+#: umc/python/appcenter/__init__.py:313
+#, python-format
+msgid "Upgrading %s"
+msgstr "正在升級 %s"
+
+#: umc/python/appcenter/__init__.py:712
+msgid "installed"
+msgstr "已安裝"
+
+#: umc/python/appcenter/__init__.py:714
+msgid "not installed"
+msgstr "未安裝"
+
+#: umc/python/appcenter/__init__.py:381
+msgid "or disable the docker support in the AppCenter by setting appcenter/docker to false."
+msgstr "或將 appcenter/docker 設定為 false 以停用 AppCenter 中的 Docker 支援。"
+
+#: umc/python/appcenter/__init__.py:710
+msgid "upgradable"
+msgstr "可升級"
