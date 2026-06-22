@@ -8,7 +8,6 @@
 
 REPOSITORY="https://updates.software-univention.de/"
 REPOSITORY="https://updates-test.software-univention.de/"
-ucr set repository/online/verify=false
 
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
