@@ -1443,6 +1443,13 @@ define([
 				this.layout();
 			}
 
+			var propValWidget = this._searchForm._widgets.objectPropertyValue;
+			var autoSubstringSearch = this._ucr['directory/manager/web/auto_substring_search'] === undefined || tools.isTrue(this._ucr['directory/manager/web/auto_substring_search'])
+			var wildcardSearch = this._ucr['directory/manager/web/allow_wildcard_search'] === undefined  || tools.isTrue(this._ucr['directory/manager/web/allow_wildcard_search'])
+			if (!propValWidget.get('value') && !autoSubstringSearch && wildcardSearch) {
+				propValWidget.set('value', '*');
+			}
+
 			// GUI setup is done when this method has been called for the first time
 			if (!this._finishedDeferred.isFulfilled()) {
 				this._finishedDeferred.resolve();
