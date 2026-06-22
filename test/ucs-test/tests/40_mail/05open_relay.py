@@ -83,10 +83,11 @@ def create_bad_mailheader(fqdn: str, sender_ip: str, mailfrom: str, rcptto: str)
         else:
             raise ConnectionRefusedError()
 
-        s.settimeout(0.2)
+        s.settimeout(10)
         reply = get_reply(s)
         r = get_return_code(reply)
         print(f'IN : {reply!r} (return code: {r!r})')
+        s.settimeout(0.2)
         send_and_receive(s, 'EHLO %s' % fqdn)
         if mailfrom:
             send_and_receive(s, 'MAIL FROM: %s' % mailfrom)
