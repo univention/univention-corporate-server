@@ -432,14 +432,14 @@ def gpg_verify(filename: str, signature: str | None = None) -> tuple[int, str]:
     if signature is None:
         signature = filename + '.gpg'
 
-    cmd = ['gpgv']
+    cmd = ['sqv', '--policy-as-of', '2020-06-26T00:00:00Z']  # we need to support univention-archive-key-ucs-4x.gpg!?!
 
     for keyring in glob.glob('/usr/share/keyrings/univention-archive-key-ucs-*.gpg'):
         cmd.extend(['--keyring', keyring])
 
     cmd.extend([
-        '--verbose',
-        signature,
+        # '--verbose',
+        '--signature-file', signature,
         filename,
     ])
 
