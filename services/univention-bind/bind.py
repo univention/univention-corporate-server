@@ -26,7 +26,6 @@ import listener
 description = 'Update BIND zones'
 filter = '(&(objectClass=dNSZone)(sOARecord=*)(zoneName=*))'
 
-NAMED_CONF_FILE = "/etc/bind/univention.conf"
 NAMED_CONF_DIR = "/etc/bind/univention.conf.d"
 PROXY_CONF_FILE = "/etc/bind/univention.conf.proxy"
 NAMED_CACHE_DIR = "/var/cache/bind"
@@ -187,10 +186,6 @@ def clean() -> None:
     """Reset listener state."""
     listener.setuid(0)
     try:
-        if os.path.exists(NAMED_CONF_FILE):
-            os.unlink(NAMED_CONF_FILE)
-        open(NAMED_CONF_FILE, 'w').close()
-
         if os.path.isdir(NAMED_CONF_DIR):
             for f in os.listdir(NAMED_CONF_DIR):
                 os.unlink(os.path.join(NAMED_CONF_DIR, f))
@@ -288,21 +283,15 @@ def postrun() -> None:
 
     listener.setuid(0)
     try:
-        # Re-create named and proxy inclusion file
-        named_conf = open(NAMED_CONF_FILE, 'w')
+        # Re-create the proxy inclusion file. The DLZ block in named.conf serves
+        # every zone from LDAP directly, so the backend needs no per-zone includes
         proxy_conf = open(PROXY_CONF_FILE, 'w')
         if os.path.isdir(NAMED_CONF_DIR):
             for f in os.listdir(NAMED_CONF_DIR):
-                if f.startswith("."):
-                    continue
-                elif f.endswith(".proxy"):
+                if not f.startswith(".") and f.endswith(".proxy"):
                     proxy_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
-                elif not f.endswith(("~", ".bak")):
-                    named_conf.write('include "%s";\n' % _quote_config_parameter(os.path.join(NAMED_CONF_DIR, f)))
-        named_conf.close()
         proxy_conf.close()
 
-        os.chmod(NAMED_CONF_FILE, 0o644)
         os.chmod(PROXY_CONF_FILE, 0o644)
 
         # Restart is needed when new zones are added or old zones removed.
