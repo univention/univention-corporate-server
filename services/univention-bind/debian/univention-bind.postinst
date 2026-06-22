@@ -10,8 +10,21 @@
 . /usr/share/univention-lib/all.sh
 
 if [ "$1" = "configure" ]; then
-	# touch config files just in case the listener module bind.py has not created them yet
-	touch /etc/bind/univention.conf /etc/bind/univention.conf.proxy
+	# touch config file just in case the listener module bind.py has not created it yet
+	touch /etc/bind/univention.conf.proxy
+fi
+
+# Bug #59441: UCS 5.2 used the per-zone SDB 'database "ldap"' driver, configured
+# via /etc/bind/univention.conf.d/<zone> included from /etc/bind/univention.conf.
+# UCS 5.3 serves every zone from the global DLZ block in named.conf, where those
+# leftovers register a zone that shadows the DLZ and breaks zone transfer. Drop
+# them on upgrade. named.conf no longer includes univention.conf
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 17.0.0; then
+	ucr commit /etc/bind/named.conf
+	if [ -d /etc/bind/univention.conf.d ]; then
+		find /etc/bind/univention.conf.d -maxdepth 1 -type f ! -name '*.proxy' -delete
+	fi
+	rm -f /etc/bind/univention.conf
 fi
 
 # Remove service diversion before any service is restarted through debhelper
