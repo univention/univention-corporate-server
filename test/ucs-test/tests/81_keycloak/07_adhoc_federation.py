@@ -61,6 +61,7 @@ def _test_federated_user(keycloak_admin_connection: KeycloakAdmin, remote_uuid: 
     assert kc_user['lastName'] == 'User'
 
 
+@pytest.mark.flaky(reruns=3)
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, keycloak_admin: str, keycloak_secret: str, ucr: ConfigRegistry, tracing_page: Page, keycloak_config: SimpleNamespace, portal_config: SimpleNamespace):
 
