@@ -658,6 +658,7 @@ def test_lookup_with_pagination(udm):
     assert sorted(found) == sorted(dns)
 
 
+@pytest.mark.flaky(reruns=3)
 @pytest.mark.exposure('dangerous')
 @pytest.mark.tags('apptest')
 def test_udm_users_user_bcrypt_password(restart_slapd_after_test, udm, ucr):

@@ -1,3 +1,9 @@
+ucs-test (12.6.11) unstable; urgency=medium
+
+  * Bug #59418: add python3-pytest-rerunfailures
+
+ -- Florian Best <best@univention.de>  Mon, 22 Jun 2026 23:53:47 +0200
+
 ucs-test (12.6.10) unstable; urgency=medium
 
   * Bug #59466: Tests for UDM REST API pagination

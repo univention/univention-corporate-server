@@ -49,6 +49,7 @@ Depends:
  python3-pydantic,
  python3-pytest,
  python3-pytest-repeat,
+ python3-pytest-rerunfailures,
  python3-pytest-subtests,
  python3-retrying,
  python3-selenium,

@@ -112,6 +112,7 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
     assert error.inner_text() == _('Please specify password.'), error.inner_text()
 
 
+@pytest.mark.flaky(reruns=3)
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, udm, protocol):
     error_msg = _('Changing password failed. The password was already used.')

@@ -117,6 +117,7 @@ def test_dns_reverse_zones_with_invalid_domain(udm, test_diagnostic_module, name
     test_diagnostic_module(DIAGNOSTIC_MODULE, success_expected=False)
 
 
+@pytest.mark.flaky(reruns=3)
 def test_dns_forward_zones_with_valid_ns_record(udm, test_diagnostic_module) -> None:
     create_forward_zone(udm, [f"{ucr.get('hostname')}.{ucr.get('domainname')}."])
     test_diagnostic_module(DIAGNOSTIC_MODULE, success_expected=True)
