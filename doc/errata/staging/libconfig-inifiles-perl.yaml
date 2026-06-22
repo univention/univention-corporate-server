@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [5, 6]
+scope: ucs_5.2-0-errata5.2-6
+src: libconfig-inifiles-perl
+fix: 3.000003-2+deb12u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-11527 (CVSS score 8.6 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H).
+bug: [59527]
+cve:
+- CVE-2026-11527
