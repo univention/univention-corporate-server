@@ -244,9 +244,12 @@ reopen:
 			abort();
 		}
 
-		unsigned long version = LDAP_VERSION3;
+		int version = LDAP_VERSION3;
 		if ((rc = ldap_set_option(ld, LDAP_OPT_PROTOCOL_VERSION, &version)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_set_option(): %s", ldap_err2string(rc));
+			int actual_version = -1;
+			ldap_get_option(ld, LDAP_OPT_PROTOCOL_VERSION, &actual_version);
+
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "ldap_set_option(PROTOCOL_VERSION=%d) failed: rc=%d (%s), current=%d, ld=%p", version, rc, ldap_err2string(rc), actual_version, (void *)ld);
 			abort();
 		}
 
@@ -260,8 +263,8 @@ reopen:
 		}
 	}
 
-	char dn[44]; // strlen("reqSession=%ld,cn=translog") + strlen(ULONG_MAX)
-	snprintf(dn, sizeof(dn), "reqSession=%ld,cn=translog", trans->notify_id.id);
+	char dn[44]; // strlen("reqSession=%lu,cn=translog") + strlen(ULONG_MAX)
+	snprintf(dn, sizeof(dn), "reqSession=%lu,cn=translog", trans->notify_id.id);
 
 	char *oc_values[] = { "auditObject", NULL };
 	LDAPMod oc_mod = {
@@ -270,7 +273,7 @@ reopen:
 		.mod_values = oc_values,
 	};
 
-	char start[16]; // strlen('YYYYmmddHHMMSSZ')
+	char start[16]; // strlen('YYYYmmddHHMMSSZ') + 1
 	time_t t = time(NULL);
 	struct tm tm ;
 	gmtime_r(&t, &tm);
@@ -283,7 +286,7 @@ reopen:
 	};
 
 	char id[21];  // strlen(ULONG_MAX)
-	snprintf(id, sizeof(id), "%ld", trans->notify_id.id);
+	snprintf(id, sizeof(id), "%lu", trans->notify_id.id);
 	char *index_values[] = { id, NULL };
 	LDAPMod index_mod = {
 		.mod_op = LDAP_MOD_ADD,
@@ -327,14 +330,14 @@ reopen:
 			break;
 		case LDAP_SERVER_DOWN:
 			if ((rc = ldap_unbind_ext_s(ld, serverctrls, clientctrls)) != LDAP_SUCCESS)
-				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%ld ldap_unbind_ext_s(): %s", trans->notify_id.id, ldap_err2string(rc));
+				univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_PROCESS, "%lu ldap_unbind_ext_s(): %s", trans->notify_id.id, ldap_err2string(rc));
 			ld = NULL;
 			goto reopen;
 		case LDAP_ALREADY_EXISTS:
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%ld ldap_add() already exists", trans->notify_id.id);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_WARN, "%lu ldap_add() already exists", trans->notify_id.id);
 			break;
 		default:
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%ld ldap_add(): %s", trans->notify_id.id, ldap_err2string(rc));
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "%lu ldap_add(): %s", trans->notify_id.id, ldap_err2string(rc));
 			abort();
 	}
 
