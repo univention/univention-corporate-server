@@ -594,6 +594,7 @@ Description: Test scripts to test the web server Apache
 Package: ucs-test-docker
 Architecture: all
 Depends:
+ python3-packaging,
  python3-pytest,
  ucs-test-libs (= ${source:Version}),
  zsync,

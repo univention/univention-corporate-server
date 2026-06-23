@@ -10,6 +10,7 @@ import subprocess
 import threading
 
 import requests
+from packaging.version import Version
 
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.testing import umc
@@ -72,6 +73,20 @@ class UCTTest_DockerApp_UMCInstallFailed(Exception):
 
 class UCSTest_DockerApp_RegisterFailed(Exception):
     pass
+
+
+def ucs_versions_for_appcenter(version):
+    version = Version(version)
+
+    versions = ['4.4']
+
+    if version.major == 5:
+        versions.extend(f'5.{minor}' for minor in range(version.minor + 1))
+    elif version.major >= 6:
+        versions.extend(f'5.{minor}' for minor in range(4))  # put in the lastest UCS 5 release here: UCS 5.3
+        versions.extend(f'{version.major}.{minor}' for minor in range(version.minor + 1))
+
+    return versions
 
 
 def tiny_app(name=None, version=None):
@@ -462,20 +477,29 @@ class Appcenter:
             raise AppcenterRepositoryAlreadyExists()
 
         if not version:
-            self.add_ucs_version_to_appcenter('4.4')
-            self.add_ucs_version_to_appcenter('5.0')
-            self.add_ucs_version_to_appcenter('5.1')
-            self.add_ucs_version_to_appcenter('5.2')
-            self.add_ucs_version_to_appcenter('5.3')
-            self.versions = ['4.4', '5.0', '5.1', '5.2', '5.3']
-            self._write_ucs_ini('[5.3]\nSupportedUCSVersions=5.3, 5.2, 5.1, 5.0, 4.4\n[5.2]\nSupportedUCSVersions=5.2, 5.1, 5.0, 4.4\n[5.1]\nSupportedUCSVersions=5.1, 5.0, 4.4\n[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
-            self._write_suggestions_json()
+            self.versions = ucs_versions_for_appcenter(self.ucr['version/version'])
+
+            for ucs_version in self.versions:
+                self.add_ucs_version_to_appcenter(ucs_version)
+
+            supported = {}
+            for ucs_version in self.versions:
+                supported[ucs_version] = [
+                    v for v in reversed(self.versions)
+                    if Version(v) <= Version(ucs_version)
+                ]
+
+            self._write_ucs_ini(''.join(
+                f'[{ucs_version}]\n'
+                f'SupportedUCSVersions={", ".join(supported[ucs_version])}\n'
+                for ucs_version in reversed(self.versions)
+            ))
         else:
             self.add_ucs_version_to_appcenter(version)
             self.versions = [version]
             self._write_ucs_ini('[%s]\nSupportedUCSVersions=%s\n' % (version, version))
-            self._write_suggestions_json()
 
+        self._write_suggestions_json()
         print(repr(self))
 
     def _write_suggestions_json(self):

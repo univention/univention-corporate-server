@@ -15,14 +15,14 @@ import pytest
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.testing.utils import fail
 
-from dockertest import Appcenter
+from dockertest import Appcenter, ucs_versions_for_appcenter
 
 
 class SyncedAppcenter(Appcenter):
     def __init__(self):
         Appcenter.__init__(self)
         self.vv = self.ucr.get('version/version')
-        self.all_versions = ['4.4', '5.0', '5.1', '5.2', '5.3']
+        self.all_versions = ucs_versions_for_appcenter(self.vv)
         self.upstream_appcenter = 'https://appcenter.software-univention.de'
         handler_set([
             'appcenter/index/verify=true',
