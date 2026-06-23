@@ -306,7 +306,6 @@ def create_po_file(po_file: str, package: str, files: str | Iterable[str], langu
         '--force-po',
         '--add-comments=i18n',
         '--from-code=UTF-8',
-        '--sort-output',
         '--package-name=%s' % package,
         '--msgid-bugs-address=packages@univention.de',
         '--copyright-holder=Univention GmbH',
