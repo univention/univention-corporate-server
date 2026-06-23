@@ -1689,14 +1689,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
         shadowLastChange = shadowLastChange.encode('ASCII')
         if shadowLastChange:  # FIXME: this check causes, that the value is not unset. Is this correct?
-            ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [b''])[0], shadowLastChange))
+            ml.append(('shadowLastChange', self.oldattr.get('shadowLastChange', [b'__UDM_FORCE_REPLACE__'])[0], shadowLastChange))
 
         # if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
         # OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
         sambaPwdLastSetValue = '0' if pwd_change_next_login else str(int(time.time()))
         self.log.debug('Setting sambaPwdLastSet', value=sambaPwdLastSetValue)
         sambaPwdLastSetValue = sambaPwdLastSetValue.encode('UTF-8')
-        ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue))
+        ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b'__UDM_FORCE_REPLACE__'])[0], sambaPwdLastSetValue))
 
         krb5PasswordEnd = ''
         if pwhistoryPolicy.expiryInterval or pwd_change_next_login:
