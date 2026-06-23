@@ -20,14 +20,15 @@ In contrast to the |UCSUDL|,
 the *Provisioning Service* provides the |UCSUDM| representation of changed objects
 instead of their LDAP representation.
 
-Applications and apps from the *App Center* can subscribe to events for topics,
+Apps from the *App Center* can subscribe to topics,
 such as specific UDM object types,
 for example ``users/user`` or ``groups/group``.
 The *Provisioning Service* creates a queue for each app
 and stores incoming events there.
 The app can fetch and acknowledge events from its queue at its own pace,
 rather than relying on LDAP polling
-or the :external+uv-app-center:ref:`file-based listener mechanism <provisioning-push>` in UCS.
+or the :external+uv-app-center:ref:`file-based listener mechanism <provisioning-push>`
+in Univention Corporate Server (UCS).
 
 .. _provisioning-api-client:
 
@@ -39,15 +40,20 @@ Manage subscriptions through CLI commands
 
 .. versionadded:: 5.2-6
 
-UCS provides the command-line tool :file:`/usr/sbin/univention-provisioning-api-client`.
+Univention Corporate Server (UCS) provides the command-line tool
+:file:`/usr/sbin/univention-provisioning-api-client`.
 The tool manages subscriptions with the *Provisioning API*.
-Run the tool on a UCS host
-that has the *Provisioning API* installed
-and access to the required credential files.
+Run the tool on a UCS host that:
+
+* has the *Provisioning API* installed
+* has access to the required credential files
+
 You can run it manually or automatically,
-for example from join scripts for apps.
+for example from app join scripts.
 
 The tool uses two distinct sets of credentials:
+
+.. _provisioning-api-client-administrator-credentials:
 
 Administrator credentials
    You can find the administrator credentials in :file:`/etc/provisioning-secrets.json`
@@ -103,8 +109,13 @@ Subscribe to topics in the Provisioning Service
 The ``subscribe`` sub-command registers a subscription with the *Provisioning API*.
 If the subscription file already exists and contains valid credentials,
 the sub-command uses those credentials.
-Otherwise, the tool generates new credentials, saves them to the file,
+Otherwise, the tool generates new credentials,
+saves them to the file,
 and registers the subscription.
+
+After the command succeeds,
+the subscription file exists
+and contains the subscription name and password.
 
 :numref:`provisioning-subscribe-example` shows how to subscribe
 to the *Provisioning Service*.
@@ -129,58 +140,63 @@ This section provides a reference for the ``subscribe`` sub-command.
    the topic matches the UDM module name,
    for example ``"users/user"`` or ``"groups/group"``.
 
-   The following example shows a value:
+   The following example shows an example value:
    ``'[{"realm": "udm", "topic": "users/user"}, {"realm": "udm", "topic": "groups/group"}]'``
 
 .. option:: --subscription-file <path>
 
    :option:`--subscription-file` is a required parameter.
-   It provides the path to the file with the :ref:`provisioning-api-client-subscription-credentials`.
-   The tool creates the file if it doesn't exist yet.
-   It uses the credentials,
-   if the file exists and contains valid credentials,
+   It specifies the path to the file with the
+   :ref:`provisioning-api-client-subscription-credentials`.
+   If the file exists and contains valid credentials,
+   then the tool uses them,
    for example to update an existing subscription.
+   If the file doesn't exist,
+   then the tool creates it.
 
-   The tool writes the file with the file mode bits ``0600``
-   and uses the format in :numref:`provisioning-api-client-subscription-credentials-format-listing`.
+   The tool writes the file with the mode ``0600``
+   and uses the format in
+   :numref:`provisioning-api-client-subscription-credentials-format-listing`.
 
-   You need to store the subscription credentials file in the app's data directory,
-   for example :file:`/var/lib/univention-appcenter/apps/{appid}/data/`,
-   so the containerized app can read the credentials to consume events.
+   Store the subscription credentials file in the app's data directory,
+   for example :file:`/var/lib/univention-appcenter/apps/APP_ID/data/`,
+   so the containerized app can read the credentials and consume events.
+   Replace ``APP_ID`` with the app ID.
 
 .. option:: --subscription-name <name>
 
-   Defines a unique name for the subscription within the *Provisioning API* server
-   to identify the subscription.
+   Defines a unique name for the subscription on the *Provisioning API* server.
    If you omit this parameter, the tool reads the name from the subscription file.
    If the file doesn't exist yet,
    the tool automatically generates a name in the format ``sub-<uuid>``.
 
 .. option:: --force
 
-   The :option:`--force` lets the tool overwrite an existing subscription.
-   It deletes and recreates the subscription.
-   Without the :option:`--force` parameter,
+   Use :option:`--force` to overwrite an existing subscription.
+   The tool deletes and recreates the subscription.
+   Without :option:`--force`,
    the command exits with an error
    if a subscription with the same name already exists on the server.
 
 .. option:: --request-prefill
 
-   The :option:`--request-prefill` parameter requests the tool
-   to pre-fill the subscription queue with the current state of all matching objects at registration time.
+   Use :option:`--request-prefill` to prefill the subscription queue
+   with the current state of all matching objects at registration time.
    Use this option when the app needs the full current dataset on first startup,
    not only changes going forward.
-   Overwriting a subscription with ``--request-prefill`` set triggers a new prefill.
+   If you overwrite a subscription with :option:`--request-prefill`,
+   then the tool triggers a new prefill.
 
 .. option:: --admin-credential-file <path>
 
-   The :option:`--admin-credential-file` provides the path
-   to the file with the :ref:`provisioning-api-client-administrator-credentials` for the *Provisioning API*.
+   The :option:`--admin-credential-file` option provides the path
+   to the file with the :ref:`provisioning-api-client-administrator-credentials`
+   for the *Provisioning API*.
    It defaults to :file:`/etc/provisioning-secrets.json`.
    The file in the default path only exists
    if the *Provisioning API* is available on the system.
 
-   For the format and the required content of the administrator credentials file,
+   For the format and required content of the administrator credentials file,
    see :ref:`provisioning-api-client-administrator-credentials`.
 
 .. option:: --provisioning-server <fqdn>
@@ -203,9 +219,9 @@ The ``unsubscribe`` sub-command removes an existing subscription from the *Provi
 It reads the subscription credentials from the subscription file
 and uses the administrator credentials to delete the subscription.
 It doesn't remove the subscription file.
-Use this action in the unjoin script,
+Use this subcommand in the unjoin script,
 as shown in :numref:`provisioning-unsubscribe-example`.
-The *App Center* then calls it when it removes the app.
+The *App Center* calls the unjoin script when it removes the app.
 
 .. code-block:: bash
    :caption: Unsubscribe in an unjoin script
@@ -223,8 +239,9 @@ The *App Center* then calls it when it removes the app.
 
 .. option:: --admin-credential-file <path>
 
-   The :option:`--admin-credential-file` provides the path
-   to the file with the :ref:`provisioning-api-client-administrator-credentials` for the *Provisioning API*.
+   The :option:`--admin-credential-file` option provides the path
+   to the file with the :ref:`provisioning-api-client-administrator-credentials`
+   for the *Provisioning API*.
    The default path is :file:`/etc/provisioning-secrets.json`.
 
 .. option:: --provisioning-server <fqdn>
@@ -248,6 +265,7 @@ to register the subscription in the join script
 and remove it in the unjoin script.
 Set :option:`--subscription-file` to a path inside the app's data directory
 so that the containerized app can read the credentials and consume events.
+Make sure that the app's data directory exists before you run the command.
 Use :option:`--force` so that re-running the join script during an app update
 overwrites the existing subscription rather than failing.
 
