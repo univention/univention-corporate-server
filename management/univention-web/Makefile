@@ -116,7 +116,7 @@ $(TMP_I18N_DIR)/%/app.json: js/%.po
 	mv $(<D)/$*.json $@
 
 js/%.po: $(JS_FILES)
-	xgettext --force-po --add-comments=i18n --from-code=UTF-8 --sort-output --language JavaScript -o $@.temp $^
+	xgettext --force-po --add-comments=i18n --from-code=UTF-8 --language JavaScript -o $@.temp $^
 	msgmerge $@ $@.temp > $@.new
 	mv $@.new $@
 	rm -f $@.temp
