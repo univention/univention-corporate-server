@@ -53,7 +53,6 @@ def create_empty_po(binary_pkg_name: str, new_po_path: str) -> None:
         '--force-po',
         '--add-comments=i18n',
         '--from-code=UTF-8',
-        '--sort-output',
         f'--package-name={binary_pkg_name}',
         '--msgid-bugs-address=packages@univention.de',
         '--copyright-holder=Univention GmbH',
@@ -74,7 +73,6 @@ def merge_po(template: str, translation: str) -> None:
     call(
         'msgmerge',
         '--update',
-        '--sort-output',
         '--backup=off',
         translation,
         template)
