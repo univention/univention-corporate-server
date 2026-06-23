@@ -18,7 +18,7 @@ import pytest
 import univention.admin.license as udm_license
 import univention.admin.uldap as udm_uldap
 from univention import uldap
-from univention.testing.license_client import TestLicenseClient
+from univention.testing.license_client import TestLicenseClient as LicenseClient
 from univention.testing.strings import random_username
 from univention.udm import UDM
 
@@ -151,7 +151,7 @@ class UDMLicenseManagement(UDMModule):
 
     def __init__(self):
         super().__init__()
-        self.LicenseClient = None
+        self.license_client = None
         self.ldap_base = self.ucr.get('ldap/base')
         self.license_dn = "cn=admin,cn=license,cn=univention," + self.ldap_base
         self.test_network_dn = "cn=default,cn=networks," + self.ldap_base
@@ -372,34 +372,34 @@ class UDMLicenseManagement(UDMModule):
     def get_valid_license(self):
         """
         Gets a 'ValidTest.license' by ordering and downloading it
-        from the licensing server via LicenseClient tool
+        from the licensing server via client tool
         """
         print("\nObtaining a valid license for the test:")
         end_date = time()
         end_date += 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
 
-        if self.LicenseClient is None:
-            self.LicenseClient = TestLicenseClient()
+        if self.license_client is None:
+            self.license_client = LicenseClient()
         valid_license_file = self.temp_license_folder + '/ValidTest.license'
         if not path.exists(valid_license_file):
-            self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=valid_license_file)
+            self.license_client.main(base_dn=self.ldap_base, end_date=end_date, license_file=valid_license_file)
 
     def get_expired_license(self):
         """
         Gets an 'ExpiredTest.license' by ordering and downloading it
-        from the licensing server via LicenseClient tool
+        from the licensing server via client tool
         """
         print("\nObtaining an expired license for the test:")
-        if self.LicenseClient is None:
-            self.LicenseClient = TestLicenseClient()
+        if self.license_client is None:
+            self.license_client = LicenseClient()
         end_date = time()
         end_date -= 2630000  # approx. amount of seconds in 1 month
         end_date = strftime('%d.%m.%Y', localtime(end_date))
 
         expired_license_file = (self.temp_license_folder + '/ExpiredTest.license')
         if not path.exists(expired_license_file):
-            self.LicenseClient.main(base_dn=self.ldap_base, end_date=end_date, license_file=expired_license_file)
+            self.license_client.main(base_dn=self.ldap_base, end_date=end_date, license_file=expired_license_file)
 
     def generate_junk_license(self):
         """
