@@ -1,3 +1,4 @@
+univention/pytest_assert_rewrites.py univention
 univention/testing/*.py univention.testing
 univention/testing/format/*.py univention.testing.format
 univention/testing/selenium/*.py univention.testing.selenium

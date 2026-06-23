@@ -8,11 +8,12 @@ from collections.abc import Callable, Iterator
 
 import pytest
 
+from univention import pytest_assert_rewrites  # noqa: F401
+
 
 pytest_plugins = ["univention.testing.conftest"]
-pytest.register_assert_rewrite('univention.testing')
 
-import univention.lib.umc  # noqa: E402
+import univention  # noqa: E402
 from univention.appcenter.actions import get_action  # noqa: E402
 from univention.appcenter.app_cache import Apps  # noqa: E402
 from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _udm, umc, utils  # noqa: E402
