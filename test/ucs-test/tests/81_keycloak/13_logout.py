@@ -5,6 +5,7 @@
 ## exposure: dangerous
 
 import json
+import subprocess
 import time
 from urllib.parse import urlparse
 
@@ -86,8 +87,15 @@ def test_logout_refresh_sso(multi_tab_context: BrowserContext, portal_login_via_
 
 
 def umc_db_is_postgres():
-    umc_settings = json.loads(run_command(['univention-management-console-settings', '-j', 'get']))
-    return 'sqlURI' in umc_settings and umc_settings['sqlURI'] is not None and 'postgresql+psycopg2' in umc_settings['sqlURI']
+    try:
+        umc_settings = json.loads(run_command(['univention-management-console-settings', '-j', 'get']))
+    except subprocess.CalledProcessError as exc:
+        pytest.fail(
+            "Could not determine UMC database backend: "
+            f"{exc.cmd!r} exited with {exc.returncode}\n"
+            f"{exc.output.decode('utf-8', errors='replace')}",
+        )
+    return 'postgresql+psycopg2' in umc_settings.get('sqlURI', [])
 
 
 def do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, needs_manual_refresh):
@@ -120,11 +128,12 @@ def test_oidc_backchannel_login_logout_with_automatic_refresh(udm, portal_login_
     do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, False)
 
 
-@pytest.mark.skipif(umc_db_is_postgres(), reason='Configured database for UMC is postgres')
 @pytest.mark.repeat(5)
 @pytest.mark.usefixtures('oidc_client_logout_meachanism')
 @pytest.mark.parametrize('oidc_client_logout_meachanism', ['backchannel', 'frontchannel'], indirect=True)
 def test_oidc_backchannel_login_logout_with_manual_refresh(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, ucr_proper):
+    if umc_db_is_postgres():
+        pytest.skip('Configured database for UMC is postgres')
     if int(ucr_proper.get('umc/http/processes')) == 1:
         pytest.skip('No need to test manual refresh when multiprocessing disabled.')
     do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, True)
