@@ -170,7 +170,7 @@ This section provides a reference for the ``subscribe`` sub-command.
 .. option:: --admin-credential-file <path>
 
    The :option:`--admin-credential-file` provides the path
-   to the :ref:`provisioning-api-client-administrator-credentials` for the *Provisioning API*.
+   to the file with the :ref:`provisioning-api-client-administrator-credentials` for the *Provisioning API*.
    It defaults to :file:`/etc/provisioning-secrets.json`.
    The file in the default path only exists
    if the *Provisioning API* is available on the system.
@@ -193,11 +193,12 @@ Unsubscribe from the Provisioning Service
 
 .. program:: univention-provisioning-api-client unsubscribe
 
-The ``unsubscribe`` sub-command removes an existing subscription from the Provisioning API.
+The ``unsubscribe`` sub-command removes an existing subscription from the *Provisioning API*.
 It reads the subscription credentials from the subscription file
-and uses the admin credentials to delete the subscription.
+and uses the administrator credentials to delete the subscription.
 It doesn't remove the subscription file.
-Use this action in the unjoin script.
+Use this action in the unjoin script,
+as shown in :numref:`provisioning-unsubscribe-example`.
 The App Center then calls it upon removing the app.
 
 .. code-block:: bash
@@ -209,37 +210,50 @@ The App Center then calls it upon removing the app.
 
 .. option:: --subscription-file <path>
 
-   This is a required option.
-   Path to the subscription credential file created during ``subscribe``.
+   :option:`--subscription-file` is a required parameter.
+   It provides the path to the subscription credential file created during ``unsubscribe``.
    The tool reads the subscription name and password from this file.
    The command exits with an error if the file doesn't exist.
 
 .. option:: --admin-credential-file <path>
 
-   Path to the admin credential file for the Provisioning API.
-   Defaults to :file:`/etc/provisioning-secrets.json`.
+   The :option:`--admin-credential-file` provides the path
+   to the file with the :ref:`provisioning-api-client-administrator-credentials` for the *Provisioning API*.
+   The default path setting is :file:`/etc/provisioning-secrets.json`.
 
 .. option:: --provisioning-server <fqdn>
 
-   You have to specify the fully qualified domain name of the Provisioning API server,
-   if you do not want to use the local system or if the automatically assigned FQDN is incorrect.
+   You have to specify the fully qualified domain name (FQDN) of the *Provisioning API* server,
+   if you don't want to use the local system,
+   or if the automatically assigned FQDN is incorrect.
    If the *Provisioning API* server isn't the local system,
-   you must provide its admin credentials using :option:`--admin-credential-file`.
-   Defaults to the FQDN of the local host.
+   you must provide its :ref:`provisioning-api-client-administrator-credentials` using :option:`--admin-credential-file`.
+   The default value is the FQDN of the local host.
 
 .. _provisioning-join-script:
 
-Using in join and unjoin scripts
-================================
+Use the tool in join and unjoin scripts
+=======================================
 
-Register the subscription in the join script and remove it in the unjoin script.
-Set ``--subscription-file`` to a path inside the app's data directory
-so the Dockerized app can read the credentials to consume events.
-Use ``--force`` so that re-running the join script during an app update overwrites the existing subscription rather than failing.
-Please note that overwriting a subscription with ``--request-prefill`` set will trigger a new prefill.
+.. program:: univention-provisioning-api-client subscribe
+
+You can use the :command:`univention-provisioning-api-client` tool
+to register the subscription in the join script and remove it in the unjoin script.
+Set :option:`--subscription-file` to a path inside the app's data directory
+so that the dockerized app can read the credentials to consume events.
+Use :option:`--force` so that re-running the join script during an app update
+overwrites the existing subscription rather than failing.
+
+.. important::
+
+   If you overwrite a subscription with :option:`--request-prefill`,
+   the tool triggers a new prefill of the subscription.
+
+For a join script fragment example, see :numref:`provisioning-join-example`.
+For an unjoin script fragment example, see :numref:`provisioning-unjoin-example`.
 
 .. code-block:: bash
-   :caption: Join script fragment — register a Provisioning Service subscription
+   :caption: Join script fragment — register a *Provisioning Service* subscription
    :name: provisioning-join-example
 
    APP_ID="myapp"
