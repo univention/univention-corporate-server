@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-radius
+fix: 7.0.10-2
+desc: |
+ This update addresses the following issues:
+ * The username of the inner tunnel is now passed to the
+   default connection. This allows e.g. assigning a VLAN
+   based on this authenticated username instead of inheriting
+   unverified settings from the outer tunnel ("anonymous login").
+
+   This update will overwrite any custom attribute defined on
+   the radius dictionary in `/etc/freeradius/3.0/dictionary`.
+bug: [59543]
