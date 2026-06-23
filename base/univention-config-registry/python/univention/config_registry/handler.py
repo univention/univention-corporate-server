@@ -320,6 +320,24 @@ class ConfigHandlerDiverting(ConfigHandler):
         filename = '.%s__ucr__commit__%s' % (basename, random.random())
         return os.path.join(dirname, filename)
 
+    def _install_file(self, tmp_to_file: str) -> None:
+        """
+        Atomically move the generated temporary file to its destination.
+
+        :param tmp_to_file: Path of the temporary file to move into place.
+        :raises OSError: when the destination cannot be written, e.g. when a directory exists at the destination path.
+        """
+        try:
+            os.rename(tmp_to_file, self.to_file)
+        except OSError as ex:
+            if ex.errno == errno.EBUSY:
+                with open(self.to_file, 'w+', encoding='utf-8') as fd:
+                    fd.write(open(tmp_to_file, encoding='utf-8').read())
+                os.unlink(tmp_to_file)
+            else:
+                print('E: failed to write %s: %s' % (self.to_file, ex.strerror), file=sys.stderr)
+                raise
+
 
 class ConfigHandlerMultifile(ConfigHandlerDiverting):
     """
@@ -398,13 +416,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
                     except OSError:
                         continue
 
-            try:
-                os.rename(tmp_to_file, self.to_file)
-            except OSError as ex:
-                if ex.errno == errno.EBUSY:
-                    with open(self.to_file, 'w+', encoding='utf-8') as fd:
-                        fd.write(open(tmp_to_file, encoding='utf-8').read())
-                    os.unlink(tmp_to_file)
+            self._install_file(tmp_to_file)
         except Exception:
             if os.path.exists(tmp_to_file):
                 os.unlink(tmp_to_file)
@@ -480,13 +492,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
                 to_fp.write(run_filter(from_fp.read(), ucr, srcfiles=[self.from_file], opts=filter_opts))
 
-            try:
-                os.rename(tmp_to_file, self.to_file)
-            except OSError as ex:
-                if ex.errno == errno.EBUSY:
-                    with open(self.to_file, 'w+', encoding='utf-8') as fd:
-                        fd.write(open(tmp_to_file, encoding='utf-8').read())
-                    os.unlink(tmp_to_file)
+            self._install_file(tmp_to_file)
         except Exception:
             if os.path.exists(tmp_to_file):
                 os.unlink(tmp_to_file)
