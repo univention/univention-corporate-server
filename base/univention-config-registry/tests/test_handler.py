@@ -5,6 +5,7 @@
 
 """Unit test for univention.config_registry.backend."""
 
+import errno
 import sys
 from argparse import Namespace
 from os import stat_result
@@ -191,6 +192,28 @@ class TestConfigHandlerDiverting:
         tmp = h._temp_file_name()
         assert tmp != PATH
         assert dirname(tmp) == dirname(PATH)
+
+    def test_install_file(self, hdivert, mocker):
+        m_rename = mocker.patch("os.rename")
+        hdivert._install_file("/tmp/divert")
+        m_rename.assert_called_once_with("/tmp/divert", "/divert")
+
+    def test_install_file_busy(self, hdivert, mocker):
+        mocker.patch("os.rename", side_effect=OSError(errno.EBUSY, "Device or resource busy"))
+        m_open = mocker.patch("univention.config_registry.handler.open", mocker.mock_open(read_data="data"), create=True)
+        m_unlink = mocker.patch("os.unlink")
+        hdivert._install_file("/tmp/divert")
+        m_open.assert_any_call("/divert", "w+", encoding="utf-8")
+        m_unlink.assert_called_once_with("/tmp/divert")
+
+    def test_install_file_is_directory(self, hdivert, mocker, capfd):
+        # Bug #59545: a directory at the destination must abort with a clear error
+        mocker.patch("os.rename", side_effect=OSError(errno.EISDIR, "Is a directory"))
+        with pytest.raises(OSError) as exc_info:
+            hdivert._install_file("/tmp/divert")
+        assert exc_info.value.errno == errno.EISDIR
+        _out, err = capfd.readouterr()
+        assert "/divert" in err
 
 
 def test_ConfigHandlerMultifile(mocker):
