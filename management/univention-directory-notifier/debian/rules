@@ -6,6 +6,8 @@
 # SPDX-FileCopyrightText: 2004-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+export DEB_CFLAGS_MAINT_APPEND = -O0 -ggdb3 -fno-omit-frame-pointer
+
 override_dh_auto_clean:
 	$(MAKE) -C src clean
 	dh_auto_clean
