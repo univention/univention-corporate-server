@@ -10,3 +10,6 @@ desc: |
    state instead of the indeterminate state when a single item was
    deselected from the all-selected state.
 bug: [59147]
+erratum: 499
+announced: 2026-06-24
+support: core
