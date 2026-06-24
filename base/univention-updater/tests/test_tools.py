@@ -91,5 +91,8 @@ fvl8NfdA3uDrr2eCBnjLBKuqqj66RKtDkSvEzdRqqivls+ZF5yM=
 
 class TestSignatures:
     def test_verify_script(self):
-        for signature in (SIGNATURE_4, SIGNATURE_5X, SIGNATURE_52, SIGNATURE_53):
+        for signature in (SIGNATURE_5X, SIGNATURE_52, SIGNATURE_53):
             assert U.verify_script(SCRIPT, signature) is None
+
+    def test_signature_invalid(self):
+        assert U.verify_script(SCRIPT, SIGNATURE_4) is not None
