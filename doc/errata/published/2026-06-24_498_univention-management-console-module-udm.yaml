@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Set * as default search value when automatic substring search is disabled.
 bug: [59444]
+erratum: 498
+announced: 2026-06-24
+support: core
