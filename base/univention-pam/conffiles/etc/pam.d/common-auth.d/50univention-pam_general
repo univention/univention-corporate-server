@@ -1,6 +1,7 @@
 @!@
 krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
+auth     [success=1 default=ignore]   pam_succeed_if.so quiet service = cups
 auth     [success=<succ> new_authtok_reqd=ok \\
          user_unknown=<unknown> \\
          service_err=<unavail> authinfo_unavail=<unavail> \\
