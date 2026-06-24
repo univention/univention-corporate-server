@@ -5,7 +5,6 @@ dangling_error = configRegistry.get('ldap/overlay/memberof/dangling/errorcode')
 modifiersname = configRegistry.get('ldap/overlay/memberof/modifiersname')
 refint = configRegistry.is_true('ldap/overlay/memberof/refint')
 
-print('moduleload			 memberof.so')
 print('overlay				 memberof')
 print('memberof-group-oc	 posixGroup')
 print('memberof-member-ad	 uniqueMember')

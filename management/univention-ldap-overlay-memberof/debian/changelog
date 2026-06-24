@@ -1,8 +1,12 @@
-univention-ldap-overlay-memberof (14.6.0) UNRELEASED; urgency=medium
+univention-ldap-overlay-memberof (14.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:05 +0200
+  [ Christian Castens ]
+  * Bug #47464: Make indexing memberOf possible
+
+ -- Christian Castens <castens@univention.de>  Wed, 24 Jun 2026 08:53:59 +0200
 
 univention-ldap-overlay-memberof (14.5.0) UNRELEASED; urgency=medium
 
