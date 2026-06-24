@@ -135,7 +135,6 @@ latex_elements = {
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    'uv-manual': reference_inventory('manual', version=version),
     'guardian-doc': (
         'https://docs.software-univention.de/guardian-manual/latest/',
         None,

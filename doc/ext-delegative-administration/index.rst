@@ -94,8 +94,8 @@ Beware the following limitations:
   You must configure which modules users can see and use separately.
 
   For information about *UMC*,
-  see :external+uv-manual:ref:`delegated-administration`
-  in :cite:t:`ucs-manual`.
+  see :external+uv-ucs-operation:ref:`management-interface-delegated-administration`
+  in :cite:t:`uv-ucs-operation`.
 
   For information about the *UDM HTTP REST API*,
   see :external+uv-nubus-kubernetes-customization:ref:`customization-api-udm-rest`
