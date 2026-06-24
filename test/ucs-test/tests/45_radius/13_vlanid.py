@@ -66,7 +66,7 @@ def peap_auth_anonymous_outer(username, password):
     with tempfile.NamedTemporaryFile() as fd:
         fd.write(testdata.encode('UTF-8'))
         fd.flush()
-        p = subprocess.run(['/usr/sbin/eapol_test', '-c', fd.name, '-s', 'testing123'], capture_output=True, text=True, check=True)
+        p = subprocess.run(['/usr/bin/eapol_test', '-c', fd.name, '-s', 'testing123'], capture_output=True, text=True, check=True)
     return eap_find_vlanid(p.stdout)
 
 

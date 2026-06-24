@@ -1,3 +1,9 @@
+ucs-test (10.0.24-41) unstable; urgency=medium
+
+  * Bug #59456: fix path to eapol_test in new vlan test
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 24 Jun 2026 12:27:48 +0200
+
 ucs-test (10.0.24-40) unstable; urgency=medium
 
   * Bug #59456: check vlanid with anonymous user
