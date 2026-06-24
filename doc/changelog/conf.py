@@ -20,8 +20,6 @@ import os
 import sys
 from datetime import date
 
-from univention_sphinx_conf_helper.inventory_resolver import reference_inventory
-
 
 # -- Project information -----------------------------------------------------
 
@@ -54,9 +52,7 @@ extensions = [
     'sphinx.ext.intersphinx',
 ]
 
-intersphinx_mapping = {
-    'uv-manual': reference_inventory('manual', version=version),
-}
+intersphinx_mapping = {}
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
