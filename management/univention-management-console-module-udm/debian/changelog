@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.6.1) unstable; urgency=medium
+
+  * Bug #59444: set '*' as default search value when auto_substring_search is disabled
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Jun 2026 13:26:20 +0200
+
 univention-management-console-module-udm (12.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
