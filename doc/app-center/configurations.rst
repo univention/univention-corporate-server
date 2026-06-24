@@ -660,9 +660,8 @@ Certificates
 ------------
 
 UCS provides a certificate infrastructure for secure communication
-protocols. See :ref:`SSL certificate
-management <uv-manual:domain-ssl>`
-in the UCS manual.
+protocols. See :external+uv-ucs-operation:ref:`domain-infrastructure-tls`
+in :cite:t:`uv-ucs-operation`.
 
 Apps may need access to the UCS certificate infrastructure or need to be
 aware of changes to the certificates. The |UCSAPPC|

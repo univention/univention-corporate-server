@@ -66,7 +66,6 @@ suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
     'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
-    'uv-manual': reference_inventory('manual', version=version),
     'uv-dev-ref': reference_inventory('developer-reference', version=version),
 }
 

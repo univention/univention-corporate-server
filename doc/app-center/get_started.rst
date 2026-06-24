@@ -342,7 +342,7 @@ inside a container or files listing environment variables.
 
 |UCSUCR|, UCR for short, is the central tool for managing the local system
 configuration of UCS (see
-:ref:`uv-manual:computers-administration-of-local-system-configuration-with-univention-configuration-registry`).
+:external+uv-ucs-operation:ref:`system-administration-ucr` in :cite:t:`uv-ucs-operation`).
 Settings from UCR can be used in the Docker compose file to parameterize the
 Docker setup. This comes in very handy when settings like for example the local
 LDAP server should be passed to a container via its environment variables.
