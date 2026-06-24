@@ -28,10 +28,10 @@ domain provides domain services to systems and users.
    * :ref:`uv-architecture:concept-permission` about the different permissions
      of default user groups.
 
-   For more information in :cite:t:`ucs-manual`:
+   For more information in :cite:t:`uv-ucs-operation`:
 
-   * :ref:`uv-manual:system-roles`
-   * :ref:`uv-manual:domain-ldap-primary-directory-node`
+   * :external+uv-ucs-operation:ref:`domain-infrastructure-system-roles`
+   * :external+uv-ucs-operation:ref:`domain-infrastructure-system-roles-primary-directory-node`
 
 .. _domain-join:
 
@@ -39,7 +39,7 @@ Join UCS systems
 ================
 
 To join a |UCS| system to an existing UCS domain, use the possibilities outlined
-in :ref:`uv-manual:linux-domain-join`.
+in :external+uv-ucs-operation:ref:`domain-infrastructure-join-ucs`.
 
 .. _principle-5:
 
@@ -72,11 +72,11 @@ administrator must run them manually afterwards.
 .. seealso::
 
    For more information about join scripts, see the following resources in
-   :cite:t:`ucs-manual`:
+   :cite:t:`uv-ucs-operation`:
 
-   * :ref:`uv-manual:linux-domain-join`
-   * :ref:`uv-manual:linux-domain-join-umc`
-   * :ref:`uv-manual:domain-ldap-joinscripts`
+   * :external+uv-ucs-operation:ref:`domain-infrastructure-join-ucs`
+   * :external+uv-ucs-operation:ref:`domain-infrastructure-join-ucs-umc`
+   * :external+uv-ucs-operation:ref:`domain-infrastructure-join-ucs-joinscripts`
 
 Consequences of unfinished join scripts
 =======================================
@@ -99,7 +99,7 @@ To verify status and version of join scripts, run the command
 
 To run pending join scripts, use the command
 :command:`univention-run-join-scripts` as described in
-:ref:`uv-manual:domain-ldap-joinscripts-execlater`. However, be careful with the
+:external+uv-ucs-operation:ref:`domain-infrastructure-join-ucs-joinscripts`. However, be careful with the
 ``--force`` option and the |UCS| server role on which you run the command.
 
 .. _principle-8:

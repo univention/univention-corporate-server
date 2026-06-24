@@ -49,6 +49,7 @@ extensions = [
 
 intersphinx_mapping = {
     'uv-manual': reference_inventory('manual', version=version),
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
     'uv-architecture': reference_inventory('architecture', version=version),
     'uv-navigation': ('https://docs.software-univention.de/n/en', None),
     'python': ('https://docs.python.org/3.11/', None),

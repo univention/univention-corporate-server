@@ -18,8 +18,8 @@ such as *errata updates* or *patch level releases*.
 
 .. seealso::
 
-   * :ref:`uv-manual:computers-differentiation-of-update-variants-ucs-versions`
-     in :cite:t:`ucs-manual`.
+   * :external+uv-ucs-operation:ref:`lifecycle-versioning`
+     in :cite:t:`uv-ucs-operation`.
 
    * :ref:`Maintenance lifecycle of UCS <uv-navigation:maintenance-ucs>`
 
@@ -61,7 +61,7 @@ packages have two different maintenance statuses: *maintained* and
 
    * :ref:`uv-architecture:positioning-packages` in :cite:t:`ucs-architecture`.
 
-   * :ref:`uv-manual:software-config-repo` in :cite:t:`ucs-manual`.
+   * :external+uv-ucs-operation:ref:`lifecycle-local-repository-servers` in :cite:t:`uv-ucs-operation`.
 
 .. _software-commands:
 
@@ -126,11 +126,11 @@ UCS:
 .. seealso::
 
    For further information about the mentioned commands, see the following
-   sections in :cite:t:`ucs-manual`:
+   sections in :cite:t:`uv-ucs-operation`:
 
-   * :ref:`uv-manual:computers-installation-removal-of-individual-packages-in-the-command-line`
+   * :external+uv-ucs-operation:ref:`lifecycle-package-installation-management-commandline`
 
-   * :ref:`uv-manual:software-appcenter`
+   * :external+uv-ucs-operation:ref:`lifecycle-app-center`
 
 .. _software-updates:
 
@@ -143,11 +143,11 @@ domain.
 .. seealso::
 
    For more information, see the following sections in
-   :cite:t:`ucs-manual`:
+   :cite:t:`uv-ucs-operation`:
 
-   * :ref:`uv-manual:computers-softwaremanagement-release-policy`
+   * :external+uv-ucs-operation:ref:`lifecycle-update-strategies-methods-policy`
 
-   * :ref:`uv-manual:computers-softwaremanagement-maintenance-policy`
+   * :external+uv-ucs-operation:ref:`lifecycle-package-maintenance-policy`
 
 Beyond software packages
 ========================
@@ -166,8 +166,8 @@ UCS.
 
    For more information, see the following resources:
 
-   * :ref:`uv-manual:software-appcenter` in :cite:t:`ucs-manual`:
-   * :ref:`uv-architecture:univention-app-ecosystem` in :cite:t:`ucs-architecture`:
+   * :external+uv-ucs-operation:ref:`lifecycle-app-center` in :cite:t:`uv-ucs-operation`
+   * :ref:`uv-architecture:univention-app-ecosystem` in :cite:t:`ucs-architecture`
    * `Univention App Center Catalog <https://www.univention.com/products/app-catalog/>`_
 
 .. _software-third-party:

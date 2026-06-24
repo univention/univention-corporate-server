@@ -84,13 +84,13 @@ header lists the template file used to generate the configuration file:
 .. seealso::
 
    For detailed information about how to use |UCR|, see the following sections
-   in :cite:t:`ucs-manual`:
+   in :cite:t:`uv-ucs-operation`:
 
-   * :ref:`uv-manual:computers-administration-of-local-system-configuration-with-univention-configuration-registry`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr`
 
-   * :ref:`uv-manual:computers-using-the-command-line-front-end`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr-command-line`
 
-   * :ref:`uv-manual:ucr-templates-extend`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr-templates`
 
 .. _system-listener:
 
@@ -113,11 +113,11 @@ as well as, the command to re-synchronize a listener module.
 
 .. seealso::
 
-   For more information, see the following resources in :cite:t:`ucs-manual`:
+   For more information, see the following resources in :cite:t:`uv-ucs-operation`:
 
-   * :ref:`uv-manual:domain-listener-notifier`
+   * :external+uv-ucs-operation:ref:`listener-notifier`
 
-   * :ref:`uv-manual:domain-listener-notifier-erroranalysis-reinit`
+   * :external+uv-ucs-operation:ref:`listener-notifier-troubleshooting-init-modules`
 
    For more information about the concepts, see the following resources in
    :cite:t:`ucs-architecture`:
@@ -174,7 +174,7 @@ to your advantage.
 To add a custom configuration, not covered by existing UCR variables, use one of
 the following possibilities:
 
-2. :ref:`ucr-templates-extend` and customize them to your needs.
+2. :external+uv-ucs-operation:ref:`system-administration-ucr-templates` and customize them to your needs.
 
    However, keep in mind that the template file is under the control of a
    software package. After a package update you may need to manually merge your
@@ -191,7 +191,9 @@ the following possibilities:
 
    * The Apache web server
 
-   * The print service offers a local configuration, see :ref:`uv-manual:print-services-configuration`.
+   * The print service offers a local configuration, see :external+uv-manual:ref:`print-services-configuration`.
+
+     .. TODO: Replace this cross-reference to the UCS Manual above with one to the UCS Operation Manual, after it's migrated.
 
    * The :program:`Samba` domain services
 
@@ -201,8 +203,8 @@ the following possibilities:
 
 .. seealso::
 
-   See the following resources in :cite:t:`ucs-manual`
+   See the following resources in :cite:t:`uv-ucs-operation`
 
-   * :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr`
 
-   * :ref:`ucr-templates-extend`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr-templates`
