@@ -73,6 +73,11 @@ if [ "$1" = "configure" ] && [ -z "$2" ] ; then
 	cp /usr/share/univention-mail-postfix/dh_*.pem /etc/postfix
 fi
 
+# Upgrade to 5.3
+if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl 17.0.1; then
+	# Since Trixie newinstallation the permissions are not 02710 anymore
+	chmod g-s /var/spool/postfix/public
+fi
 # Upgrade to 5.2, defaults are set in config files
 if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl 16.0.7; then
 	# Check and unset TLS protocol variables if set to "!SSLv2,!SSLv3" from 5.0 installation
