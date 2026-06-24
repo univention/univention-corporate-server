@@ -219,7 +219,7 @@ The ``unsubscribe`` sub-command removes an existing subscription from the *Provi
 It reads the subscription credentials from the subscription file
 and uses the administrator credentials to delete the subscription.
 It doesn't remove the subscription file.
-Use this subcommand in the unjoin script,
+Use this sub-command in the unjoin script,
 as shown in :numref:`provisioning-unsubscribe-example`.
 The *App Center* calls the unjoin script when it removes the app.
 
