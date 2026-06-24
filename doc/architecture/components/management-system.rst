@@ -136,11 +136,11 @@ Usability
 
 .. seealso::
 
-   Administrators refer to :cite:t:`ucs-manual`:
+   Administrators refer to :cite:t:`uv-nubus-manual`:
 
-   * :ref:`users-general` for identity management of users
+   * :external+uv-nubus-manual:ref:`nubus-user-management` for identity management of users
 
-   * :ref:`groups` for identity management of user groups
+   * :external+uv-nubus-manual:ref:`nubus-groups` for identity management of user groups
 
 .. seealso::
 
@@ -203,11 +203,11 @@ involves a web frontend and a backend as shown in
 
 .. seealso::
 
-   System administrators refer to :cite:t:`ucs-manual`:
+   System administrators refer to :cite:t:`uv-nubus-manual`:
 
-   * :ref:`central-user-interface` for details about |UMC| modules
+   * :external+uv-nubus-manual:ref:`nubus-ui` for details about |UMC| modules
 
-   * :ref:`central-extended-attrs` for details about how to enhance with
+   * :external+uv-nubus-manual:ref:`nubus-domain-extended-attributes` for details about how to enhance with
      *extended attributes*
 
    Software developers and system engineers refer to
@@ -257,8 +257,8 @@ provides many templates for service configuration files.
 
 .. seealso::
 
-   :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
-      For information about how to use UCR in :cite:t:`ucs-manual`
+   :external+uv-ucs-operation:ref:`system-administration-ucr`
+      For information about how to use UCR in :cite:t:`uv-ucs-operation`
 
    :ref:`uv-dev-ref:chap-umc`
       For detailed information about UCR in :cite:t:`developer-reference`

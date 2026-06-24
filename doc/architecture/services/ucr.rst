@@ -69,11 +69,10 @@ variables.
 
 .. seealso::
 
-   Administrators, refer to :cite:t:`ucs-manual`:
+   Administrators refer to :cite:t:`uv-ucs-operation`:
 
-   * :ref:`computers-using-the-univention-management-console-web-interface`
-
-   * :ref:`computers-using-the-command-line-front-end`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr-umc`
+   * :external+uv-ucs-operation:ref:`system-administration-ucr-command-line`
 
 .. seealso::
 
@@ -192,8 +191,8 @@ and the *UCR templates* to write and update the *System configuration*. After
 
 .. seealso::
 
-   :ref:`computers-administration-of-local-system-configuration-with-univention-configuration-registry`
-      for more information about using UCR in :cite:t:`ucs-manual`.
+   :external+uv-ucs-operation:ref:`system-administration-ucr`
+      for more information about using UCR in :cite:t:`uv-ucs-operation`.
 
 .. seealso::
 
@@ -288,12 +287,13 @@ Custom
 
 .. seealso::
 
-   System administrators refer to :cite:t:`ucs-manual`:
+   System administrators refer to:
 
-   * :ref:`ucr-templates-policy` for more information about how to set UCR
-     variables with a policy
+   * :external+uv-ucs-operation:ref:`system-administration-ucr-policy` in :cite:t:`uv-ucs-operation`
+     for more information about how to set UCR variables with a policy
 
-   * :ref:`central-policies` for more information about *Policies* in UCS
+   * :external+uv-nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`
+     for more information about *Policies* in UCS
 
 .. seealso::
 
@@ -359,10 +359,10 @@ UCR limitations
          Don't access UCR variables directly from the files. Always use the
          interfaces such as:
 
-         * For administrators, see :cite:t:`ucs-manual`:
+         * For administrators, see :cite:t:`uv-ucs-operation`:
 
-           * :ref:`web interface <computers-using-the-univention-management-console-web-interface>`
-           * :ref:`command line interface <computers-using-the-command-line-front-end>`
+           * :external+uv-ucs-operation:ref:`web interface <system-administration-ucr-umc>`
+           * :external+uv-ucs-operation:ref:`command line interface <system-administration-ucr-command-line>`
 
          * For developers, see :cite:t:`developer-reference`:
 

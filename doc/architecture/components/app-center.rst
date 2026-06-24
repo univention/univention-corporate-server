@@ -58,9 +58,9 @@ app.
    :ref:`univention-app-ecosystem`
       for information about the Univention app ecosystem.
 
-   :ref:`software-appcenter`
+   :external+uv-ucs-operation:ref:`lifecycle-app-center`
       for information for administrators about the App Center in
-      :cite:t:`ucs-manual`
+      :cite:t:`uv-ucs-operation`
 
    :external+uv-app-center:doc:`Univention App Center for App Providers <index>`
       for information about how to develop apps for Univention App Center in

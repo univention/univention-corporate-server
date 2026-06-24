@@ -38,9 +38,9 @@ Primary Directory Node. The promotion can't be reversed.
 
 .. seealso::
 
-   :ref:`uv-manual:domain-backup2master`
+   :external+uv-ucs-operation:ref:`deployment-primary-dn-resilience`
       for details on the promotion process of a UCS Backup Directory Node in
-      :cite:t:`ucs-manual`.
+      :cite:t:`uv-ucs-operation`.
 
 Replica Directory Node
 ----------------------
@@ -97,6 +97,6 @@ Account*, *Windows Domaincontroller* and *Windows Workstation / Server*.
 
 .. seealso::
 
-   :ref:`uv-manual:system-roles`
+   :external+uv-ucs-operation:ref:`domain-infrastructure-system-roles`
       For more information about the differences of these roles in
-      :cite:t:`ucs-manual`
+      :cite:t:`uv-ucs-operation`.

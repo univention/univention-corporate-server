@@ -11,7 +11,7 @@ Welcome to the architecture documentation of |UCS|.
 
 This document doesn't cover installation, the usage of UCS or parts of the
 product. For instructions about how to install and use UCS, see
-:cite:t:`ucs-manual`.
+:external+uv-ucs-operation:ref:`deployment` in :cite:t:`uv-ucs-operation`.
 
 .. TODO Remove this sentence once the whole document is done.
 

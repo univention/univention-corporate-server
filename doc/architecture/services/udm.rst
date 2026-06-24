@@ -171,11 +171,13 @@ offer different possibilities for the customization of UDM.
 
 .. seealso::
 
-   Administrators, refer to :cite:t:`ucs-manual`:
+   :external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`
+      in :cite:t:`uv-nubus-manual`
+      for information about how to expand management modules.
 
-   * :ref:`central-extended-attrs`
-
-   * :ref:`central-udm`
+   :external+uv-ucs-operation:ref:`management-interface-udm-command`
+      in :cite:t:`uv-ucs-operation`
+      for information about the command-line interface for UDM.
 
 .. seealso::
 
@@ -325,5 +327,5 @@ Extended attributes provide the capability to add and customize properties in
 
 .. seealso::
 
-   :ref:`central-extended-attrs`
-      How to use extended attributes, :cite:t:`ucs-manual`
+   :external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`
+      How to use extended attributes, :cite:t:`uv-nubus-manual`

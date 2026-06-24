@@ -370,9 +370,9 @@ Administrator
 
 .. seealso::
 
-   :ref:`software-appcenter`
+   :external+uv-ucs-operation:ref:`lifecycle-app-center`
       for more information for administrators about how to use the App
-      Center in :cite:t:`ucs-manual`.
+      Center in :cite:t:`uv-ucs-operation`.
 
    :external+uv-app-center:doc:`Univention App Center for App Providers <index>`
       for more information for app developers about how to develop apps for
@@ -380,4 +380,3 @@ Administrator
 
    `App Catalog <https://www.univention.com/products/app-catalog/>`_ on the Univention website
       for an overview about available apps in the App Center.
-

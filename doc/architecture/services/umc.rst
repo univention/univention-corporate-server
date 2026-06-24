@@ -209,14 +209,14 @@ expired password during sign-in.
 
 .. seealso::
 
-   Administrators, refer to :cite:t:`ucs-manual`:
+   :external+uv-nubus-manual:ref:`nubus-user-management-users-tab-account`
+      in :cite:t:`uv-nubus-manual`
+      for information about deactivated and expired user accounts.
 
-   :ref:`users-management-table-account`
-      for information about deactivated and expired user accounts
-
-   :ref:`users-faillog`
+   :external+uv-ucs-operation:ref:`iam-user-lockout`
+      in :cite:t:`uv-ucs-operation`
       for information about failed login attempts and how UCS handles them in
-      Samba, PAM and OpenLDAP
+      Samba, PAM and OpenLDAP.
 
 .. _services-umc-back-end:
 

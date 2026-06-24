@@ -512,9 +512,9 @@ attributes.
 
 .. seealso::
 
-   Administrators refer to the following content in :cite:t:`ucs-manual`:
+   Administrators refer to the following content in :cite:t:`uv-nubus-manual`:
 
-   :ref:`central-extended-attrs`
+   :external+uv-nubus-manual:ref:`nubus-domain-extended-attributes`
       How to use extended attributes
 
 .. seealso::

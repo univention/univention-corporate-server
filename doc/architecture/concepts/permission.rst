@@ -90,8 +90,8 @@ Domain Admins
 
    .. seealso::
 
-      :ref:`uv-manual:domain-ldap-subsequent-domain-joins-with-univention-join`
-         For more information about subsequent domain joins in :cite:`ucs-manual`
+      :external+uv-ucs-operation:ref:`domain-infrastructure-join-univention-join`
+         For more information about subsequent domain joins in :cite:`uv-ucs-operation`.
 
 Machine account
 ---------------

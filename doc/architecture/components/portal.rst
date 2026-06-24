@@ -33,9 +33,9 @@ individually to specific user groups.
 
 .. seealso::
 
-   :ref:`central-portal`
+   :external+uv-nubus-manual:ref:`nubus-portal`
       for instructions about how to configure and customize the UCS portal page
-      in :cite:t:`ucs-manual`
+      in :cite:t:`uv-nubus-manual`
 
 .. _component-portal-benefits:
 
