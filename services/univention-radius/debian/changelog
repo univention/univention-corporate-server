@@ -1,3 +1,11 @@
+univention-radius (9.6.2) unstable; urgency=medium
+
+  * Bug #59456: only update outer.session-state when an outer request
+    exists, so direct inner-tunnel authentication (e.g. radtest) no
+    longer fails with an invalid mapping
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 24 Jun 2026 00:00:00 +0200
+
 univention-radius (9.6.1) unstable; urgency=medium
 
   * Bug #59456: update template to pass User-Name to inner tunnel authentication
