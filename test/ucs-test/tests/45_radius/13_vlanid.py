@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 
 import pytest
+from pytest_subtests import SubTests
 
 from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset
 
@@ -106,7 +107,7 @@ def radius_auth(username, password, user_type, auth_method):
     (None, None, '8', '8', False),
     (None, None, None, None, True),
 ])
-def test_user_vlan_id(udm_session, vlan_id_group_one, vlan_id_group_two, ucr_vlan_id, expected_vlan_id, restart_freeradius, subtests: pytest.Subtests):
+def test_user_vlan_id(udm_session, vlan_id_group_one, vlan_id_group_two, ucr_vlan_id, expected_vlan_id, restart_freeradius, subtests: SubTests):
     default_vlan_id(ucr_vlan_id, restart_freeradius)
     userdn, username = udm_session.create_user(set={'networkAccess': 1})
     group_one_set = {
