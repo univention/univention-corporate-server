@@ -1,0 +1,50 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: memberOf is indexed after a fresh installation and absent after an upgrade of univention-ldap
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## packages:
+##  - univention-ldap-server
+##  - univention-ldap-overlay-memberof
+## exposure: safe
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
+set -x
+
+PKG="univention-ldap-server"
+
+# TODO: Starting with UCS 5.2-7 and UCS 5.3, memberOf will always be indexed by default,
+# also on upgrades from older versions. So, this test must be adjusted to assert that memberOf
+# is always indexed from 5.2-7 / 5.3 onwards!
+
+# memberOf should only be indexed for fresh installations; upgrades must not add it until 5.2-7 / 5.3.
+# The test derives from dpkg history whether univention-ldap is a fresh installation or was upgraded:
+# "install <pkg>:<arch> <none> <ver>" (for a fresh install)
+# "upgrade <pkg>:<arch> <oldver> <newver>" (for an upgrade)
+# Sorting by timestamp, last entry is used.
+action="$(zgrep -hE "^[0-9-]+ [0-9:]+ (install|upgrade) ${PKG}:" /var/log/dpkg.log* 2>/dev/null | sort | tail -1 | awk '{print $3}')"
+case "$action" in
+    install) fresh=true ;;
+    upgrade) fresh=false ;;
+    *) echo "Cannot determine install/upgrade history of $PKG from dpkg logs"; exit 77 ;;
+esac
+
+command -v mdb_stat >/dev/null || { echo "mdb_stat not available"; exit 77; }
+
+# Output of "mdb_stat -a" has to contain "Status of memberOf" if memberOf is indexed.
+if mdb_stat -a /var/lib/univention-ldap/ldap 2>/dev/null | grep -qi '^Status of memberOf$'; then
+    indexed=true
+else
+    indexed=false
+fi
+
+if "$fresh"; then
+    "$indexed" || fail_fast 1 "memberOf is not indexed after a fresh installation"
+else
+    ! "$indexed" || fail_fast 1 "memberOf is indexed after an upgrade"
+fi
+
+exit "$RETVAL"

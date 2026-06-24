@@ -260,6 +260,7 @@ RECOMMENDED_LDAP_INDEX = {
         'mail',
         'mailAlternativeAddress',
         'mailPrimaryAddress',
+        'memberOf',
         'memberUid',
         'objectClass',
         'ou',
