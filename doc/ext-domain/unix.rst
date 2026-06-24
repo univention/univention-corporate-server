@@ -14,11 +14,11 @@ in the trust context of the UCS domain.
 For the integration of Ubuntu clients,
 Univention offers a dedicated tool.
 For more information,
-see :external+uv-manual:ref:`ubuntu-domain-join`.
+see :external+uv-ucs-operation:ref:`domain-infrastructure-join-ubuntu`.
 
-The integration of macOS clients is documented with :ref:`example step-by-step
-instructions <uv-manual:macos-domain-join>` in the UCS manual. macOS systems use
-a deviating domain integration based on Samba 4.
+The integration of macOS clients is documented with
+:external+uv-ucs-operation:ref:`example step-by-step instructions <domain-infrastructure-join-macos>` in the UCS Operation manual.
+macOS systems use a deviating domain integration based on Samba 4.
 
 Not all integration steps need to be performed. In this way, for
 example, a Unix system can merely be integrated in the IP management and
