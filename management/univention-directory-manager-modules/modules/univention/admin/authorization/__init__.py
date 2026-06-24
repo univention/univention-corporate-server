@@ -533,10 +533,15 @@ class Authorization:
         }
 
     def _decode_properties(self, obj, props):
-        return {
-            key: univention.admin.types.TypeHint.detect(obj.descriptions[key], key).decode_json(value)
-            for key, value in props.items()
-        }
+        props = {}
+        for key, value in props.items():
+            try:
+                props[key] = univention.admin.types.TypeHint.detect(obj.descriptions[key], key).decode_json(value)
+            except univention.admin.uexceptions.valueError as exc:
+                log.error('Invalid user data', dn=obj.dn, error=exc)
+            except Exception:
+                log.exception('Invalid user data', dn=obj.dn)
+        return props
 
     def _decode_options(self, obj, options):
         mod = univention.admin.modules.get(obj.module)

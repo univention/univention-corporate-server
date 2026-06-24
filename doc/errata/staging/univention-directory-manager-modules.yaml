@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-directory-manager-modules
+fix: 17.6.2
+desc: |
+ This update addresses the following issue:
+ * Invalid data in LDAP may lead to crashing functionality in UDM if the
+   experimental feature for delegative administration is enabled. Those
+   properties are now ignored from being evaludated in delegative
+   administation.
+bug: [59560]
