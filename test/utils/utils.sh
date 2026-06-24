@@ -343,7 +343,7 @@ run_setup_join () {
 	# No this breaks univention-check-templates -> 00_checks.81_diagnostic_checks.test _fix_ssh47233  # temp. remove me
 
 	# enable storage of coredumps so that 99_end/07_coredumps.py lists them
-	enable_core_dumps
+	[ "$IS_SETUP_JOB" != "true" ] && enable_core_dumps
 
 	return $rv
 }
