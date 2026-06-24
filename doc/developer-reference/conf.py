@@ -70,6 +70,7 @@ intersphinx_mapping = {
         None,
     ),
     'uv-app-center': reference_inventory('app-center', version=version),
+    'uv-nubus-manual': ("https://docs.software-univention.de/nubus-manual/1.x/en/", None),
     'python': (
         'https://docs.python.org/3.11/',
         ('/usr/share/doc/python3/html/objects.inv', None),

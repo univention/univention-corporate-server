@@ -38,7 +38,7 @@ the attribute may be called on multiple hosts, it is a good idea to add the
 object already exists in LDAP.
 
 The module ``settings/extended_attribute`` requires many parameters. They are
-described in :ref:`uv-manual:central-extended-attrs` in :cite:t:`ucs-manual`.
+described in :external+uv-nubus-manual:ref:`nubus-domain-extended-attributes` in :cite:t:`uv-nubus-manual`.
 
 ``name`` (required)
    Name of the attribute.
