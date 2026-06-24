@@ -24,6 +24,7 @@ from __future__ import annotations
 import copy
 import http.client
 import time
+import warnings
 from typing import TYPE_CHECKING, Any, Self
 
 import requests
@@ -407,25 +408,68 @@ class Module(Client):
         # TODO: Needed?
         raise NotImplementedError()
 
-    def search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> Iterator[Any]:
+    def search(
+        self,
+        filter: dict[str, str] | str | None = None,
+        position: str | None = None,
+        scope: str | None = 'sub',
+        hidden: bool = False,
+        superordinate: str | None = None,
+        opened: bool = False,
+        properties: list[str] | None = None,
+    ) -> Iterator[Any]:
+        """Search objects."""
         if opened:
             return self._search_opened(filter, position, scope, hidden, superordinate, properties)
-        else:
-            return self._search_closed(filter, position, scope, hidden, superordinate, properties)
+        return self._search_closed(filter, position, scope, hidden, superordinate, properties)
 
-    def _search_opened(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> Iterator[Object]:
+    def _search_opened(self, filter: dict[str, str] | str | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> Iterator[Object]:
         for obj in self._search(filter, position, scope, hidden, superordinate, True, properties):
             yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 
-    def _search_closed(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> Iterator[ShallowObject]:
+    def _search_closed(self, filter: dict[str, str] | str | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> Iterator[ShallowObject]:
         for obj in self._search(filter, position, scope, hidden, superordinate, False, properties):
-            objself = self.client.get_relation(obj, 'self')
-            uri = objself['href']
-            dn = objself['name']
-            yield ShallowObject(self.udm, dn, uri)
+            yield self._shallow_object_from_entry(obj)
 
-    def _search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> Iterator[Any]:
-        data = {
+    def _search(self, filter: dict[str, str] | str | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> Iterator[Any]:
+        entries = self._search_response(filter, position, scope, hidden, superordinate, opened, properties)
+        yield from self.client.resolve_relations(entries, 'udm:object')
+
+    def _search_response(
+        self,
+        filter: dict[str, str] | str | None = None,
+        position: str | None = None,
+        scope: str | None = 'sub',
+        hidden: bool = False,
+        superordinate: str | None = None,
+        opened: bool = False,
+        properties: list[str] | None = None,
+        page_size: int | None = None,
+        page: int | None = None,
+        sort_by: str | list[str] | None = None,
+        reverse: bool = False,
+        pagination: bool = False,
+    ) -> dict:
+        data = self._search_template(filter, position, scope, hidden, superordinate, opened, properties, page_size, page, sort_by, reverse, pagination)
+        self.load_relations()
+        return self.client.resolve_relation(self.relations, 'search', template=data)
+
+    def _search_template(
+        self,
+        filter: dict[str, str] | str | None = None,
+        position: str | None = None,
+        scope: str | None = 'sub',
+        hidden: bool = False,
+        superordinate: str | None = None,
+        opened: bool = False,
+        properties: list[str] | None = None,
+        page_size: int | None = None,
+        page: int | None = None,
+        sort_by: str | list[str] | None = None,
+        reverse: bool = False,
+        pagination: bool = False,
+    ) -> dict[str, Any]:
+        data: dict[str, Any] = {
             'position': position,
             'scope': scope,
             'hidden': '1' if hidden else '0',
@@ -442,9 +486,79 @@ class Module(Client):
             data['properties'] = ['dn']
         if properties:
             data['properties'] = properties
-        self.load_relations()
-        entries = self.client.resolve_relation(self.relations, 'search', template=data)
-        yield from self.client.resolve_relations(entries, 'udm:object')
+        if page_size is not None:
+            if page_size < 0:
+                raise ValueError('page_size must not be negative')
+            data['page_size'] = str(page_size)
+        if page is not None:
+            if page < 1:
+                raise ValueError('page must be greater than zero')
+            data['page'] = str(page)
+        if sort_by:
+            data['sort'] = sort_by
+        if page_size is not None or page is not None or sort_by:
+            data['dir'] = 'DESC' if reverse else 'ASC'
+        if pagination:
+            data['pagination'] = '1'
+        return data
+
+    def search_paginated(
+        self,
+        filter: dict[str, str] | str | None = None,
+        position: str | None = None,
+        scope: str | None = 'sub',
+        hidden: bool = False,
+        superordinate: str | None = None,
+        opened: bool = False,
+        properties: list[str] | None = None,
+        page_size: int = 50,
+        sort_by: str | list[str] | None = None,
+        reverse: bool = False,
+        pagination: bool = False,
+    ) -> Iterator[Any]:
+        """Yield all search results by following server-provided page links."""
+        page = self.search_page(filter, position, scope, hidden, superordinate, opened, properties, page_size, 1, sort_by, reverse, pagination)
+        while True:
+            yield from page.items
+            next_page = page.next()
+            if next_page is None:
+                break
+            page = next_page
+
+    def search_page(
+        self,
+        filter: dict[str, str] | str | None = None,
+        position: str | None = None,
+        scope: str | None = 'sub',
+        hidden: bool = False,
+        superordinate: str | None = None,
+        opened: bool = False,
+        properties: list[str] | None = None,
+        page_size: int | None = 50,
+        page: int = 1,
+        sort_by: str | list[str] | None = None,
+        reverse: bool = False,
+        pagination: bool = False,
+    ) -> _SearchPage:
+        """Return one paginated search result page including navigation metadata."""
+        warnings.warn('UDM REST API Pagination is unsupported, broken, experimental and the methods may change in the future. ', DeprecationWarning, stacklevel=3)
+        entry = self._search_response(filter, position, scope, hidden, superordinate, opened, properties, page_size, page, sort_by, reverse, pagination)
+        return self._page_from_entry(entry, opened, page_size, pagination)
+
+    def _page_from_entry(self, entry: dict, opened: bool = False, page_size: int | None = None, pagination: bool = False) -> _SearchPage:
+        if opened:
+            items = [Object.from_data(self.udm, obj) for obj in self.client.resolve_relations(entry, 'udm:object')]
+        else:
+            items = [self._shallow_object_from_entry(obj) for obj in self.client.resolve_relations(entry, 'udm:object')]
+        if pagination:
+            return _SearchPage(self, entry, items, opened, page_size)
+        return _SimpleSearchPage(self, entry, items, opened, page_size)
+
+    def _shallow_object_from_entry(self, entry: dict) -> ShallowObject:
+        objself = self.client.get_relation(entry, 'self')
+        uri = objself['href']
+        dn = objself['name']
+        return ShallowObject(self.udm, dn, uri)
 
     def get_layout(self) -> Any | None:
         self.load_relations()
@@ -713,6 +827,96 @@ class Object(Client):
         policy_result.pop('_links', None)
         policy_result.pop('_embedded', None)
         return policy_result
+
+
+class _SimpleSearchPage:
+    """A single paged UDM search result page."""
+
+    __slots__ = ('entry', 'items', 'module', 'opened', 'page_size', 'pagination')
+
+    def __init__(
+        self,
+        module: Module,
+        entry: dict,
+        items: list[Any],
+        opened: bool = False,
+        page_size: int | None = None,
+    ) -> None:
+        self.module = module
+        self.entry = entry
+        self.items = items
+        self.opened = opened
+        self.page_size = page_size
+        self.pagination = False
+
+    def __repr__(self) -> str:
+        return f'SimpleSearchPage(page_size={self.page_size}, items={len(self.items)}, has_next={self.has_next})'
+
+    def __iter__(self) -> Iterator[Any]:
+        return iter(self.items)
+
+    def __len__(self) -> int:
+        return len(self.items)
+
+    def _follow(self, relation: str) -> Self | None:
+        try:
+            entry = self.module.client.resolve_relation(self.entry, relation)
+        except _NoRelation:
+            return None
+        return self.module._page_from_entry(entry, opened=self.opened, page_size=self.page_size, pagination=self.pagination)
+
+    @property
+    def has_next(self) -> bool:
+        return self.module.client.has_relation(self.entry, 'next')
+
+    def next(self) -> Self | None:
+        return self._follow('next')
+
+
+class _SearchPage(_SimpleSearchPage):
+    """A single paginated UDM search result page."""
+
+    __slots__ = ('page', 'total')
+
+    def __init__(
+        self,
+        module: Module,
+        entry: dict,
+        items: list[Any],
+        opened: bool = False,
+        page_size: int | None = None,
+    ) -> None:
+        super().__init__(module, entry, items, opened, page_size)
+        try:
+            self.page = int(self.module.client.get_relation(entry, 'current')['page'])
+        except _NoRelation:  # module doesn't provide pagination
+            self.page = 0
+        self.total = entry.get('results')
+        self.pagination = True
+
+    def __repr__(self) -> str:
+        return f'SearchPage(page={self.page}, page_size={self.page_size}, items={len(self.items)}, total={self.total}, has_prev={self.has_prev}, has_next={self.has_next}, last_page={self.last_page})'
+
+    @property
+    def last_page(self) -> int | None:
+        try:
+            last = self.module.client.get_relation(self.entry, 'last')
+        except _NoRelation:
+            return None
+        return int(last['page'])
+
+    @property
+    def has_prev(self) -> bool:
+        return self.module.client.has_relation(self.entry, 'prev')
+
+    def first(self) -> Self:
+        return self._follow('first') or self
+
+    def prev(self) -> Self | None:
+        return self._follow('prev')
+
+    def last(self) -> Self | None:
+        return self._follow('last')
 
 
 class PatchDocument:
