@@ -13,3 +13,6 @@ desc: |
    Please note that pagination remains an experimental feature that is
    provided without official support and may change in future releases.
 bug: [59466]
+erratum: 496
+announced: 2026-06-24
+support: core
