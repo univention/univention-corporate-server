@@ -7,7 +7,7 @@ Policies
 ========
 
 The content of this section moved to
-:external+uv-nubus-manual:ref:`nubus-authentication-sign-in`
+:external+uv-nubus-manual:ref:`nubus-domain-policies`
 in :cite:t:`uv-nubus-manual`.
 
 .. _central-management-umc-create-policy:
