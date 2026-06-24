@@ -196,7 +196,7 @@ def adapt_settings_to_translation(app, config):
     See https://github.com/sphinx-doc/sphinx/issues/10282
     """
     if config.language == 'de':
-        config.project = 'Nubus für UCS - Betriebshandbuch'
+        config.project = f'Nubus für UCS {version} - Betriebshandbuch'
         config.html_title = config.project
         config.tokenizer_lang = 'de_DE'
 
