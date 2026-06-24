@@ -5,4 +5,10 @@
 # SPDX-FileCopyrightText: 2013-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-exec systemctl try-restart univention-directory-notifier univention-directory-listener
+eval "$(univention-config-registry shell server/role)"
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	systemctl try-restart univention-directory-notifier
+fi
+
+exec systemctl try-restart univention-directory-listener
