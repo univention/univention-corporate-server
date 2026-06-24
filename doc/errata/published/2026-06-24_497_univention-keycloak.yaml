@@ -9,3 +9,6 @@ desc: |
  * Future compatibility for API changes in more recent ``python-keycloak``
    versions has been added.
 bug: [59517]
+erratum: 497
+announced: 2026-06-24
+support: core
