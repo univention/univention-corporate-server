@@ -18,8 +18,8 @@ from struct import pack
 import heimdal
 import ldap
 import samba.dcerpc.samr
+from cryptography.hazmat.decrepit.ciphers.algorithms import ARC4, TripleDES
 from cryptography.hazmat.primitives.ciphers import Cipher
-from cryptography.hazmat.primitives.ciphers.algorithms import ARC4, TripleDES
 from cryptography.hazmat.primitives.ciphers.modes import ECB
 from samba import NTSTATUSError
 from samba.dcerpc import drsblobs, drsuapi, lsa, misc, security
