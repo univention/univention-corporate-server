@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Scenarios for Univention Corporate Server \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-19 11:45+0000\n"
-"PO-Revision-Date: 2024-11-05 17:28+0100\n"
+"POT-Creation-Date: 2026-06-25 09:12+0000\n"
+"PO-Revision-Date: 2026-06-25 11:40+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -14,13 +14,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.16.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../small.rst:10
+#: ../../small.rst:9
 msgid "Lawyer's office"
 msgstr "Anwaltskanzlei"
 
-#: ../../small.rst:12
+#: ../../small.rst:11
 msgid ""
 "Hemmerlein & Sons lawyer's office has a total of ten employees. The "
 "employees work predominantly with office applications and a legal "
@@ -45,7 +45,7 @@ msgstr ""
 "Erstinstallation komplett durch einfach zu bedienende webbasierte "
 "Schnittstellen konfiguriert werden."
 
-#: ../../small.rst:22
+#: ../../small.rst:21
 msgid ""
 "The company has a total of three laser printers (two identical "
 "black/white models and one color laser printer), which are all installed "
@@ -56,11 +56,11 @@ msgstr ""
 "zentralen Büro aufgebaut sind. Es werden häufig sehr große Schriftsätze "
 "mit hohem Volumen gedruckt."
 
-#: ../../small.rst:29
+#: ../../small.rst:28
 msgid "Systems and services"
 msgstr "Systeme und Dienste"
 
-#: ../../small.rst:31
+#: ../../small.rst:30
 msgid ""
 "UCS offers the required services and applications out of the box as a "
 "complete solution. A single UCS system is used, which provides the logon "
@@ -73,15 +73,15 @@ msgstr ""
 " bereitstellt, die Drucker verwaltet und das Backup der Daten "
 "automatisiert."
 
-#: ../../small.rst:41
+#: ../../small.rst:37 ../../small.rst:40
 msgid "System overview of the lawyer's office Hemmerlein and Sons"
 msgstr "Systemübersicht der Kanzlei Hemmerlein und Söhne"
 
-#: ../../small.rst:46
+#: ../../small.rst:45
 msgid "Management of user accounts"
 msgstr "Verwaltung der Benutzerdaten"
 
-#: ../../small.rst:48
+#: ../../small.rst:47
 msgid ""
 "User accounts for the ten employees are created in the |UCSUMC| web "
 "interface. Each employee can set the password with the :program:`Self "
@@ -95,15 +95,15 @@ msgstr ""
 " wie alle Benutzerdaten — in einem LDAP-Verzeichnisdienst gespeichert und"
 " bei der Anmeldung am Windows-Client abgefragt wird."
 
-#: ../../small.rst:58
+#: ../../small.rst:54 ../../small.rst:57
 msgid "Creating a user in Univention Directory Manager"
 msgstr "Anlegen eines Benutzers in der Univention Management Console"
 
-#: ../../small.rst:63
+#: ../../small.rst:62
 msgid "Managing the Windows computers"
 msgstr "Verwaltung der Microsoft Windows-Rechner"
 
-#: ../../small.rst:65
+#: ../../small.rst:64
 msgid ""
 "Samba 4 is used on the UCS system for the integration of Microsoft "
 "Windows clients. Samba 4 offers domain, directory and authentication "
@@ -118,7 +118,7 @@ msgstr ""
 "bereitgestellten Werkzeuge für die Verwaltung von Gruppenrichtlinien "
 "(GPOs)."
 
-#: ../../small.rst:70
+#: ../../small.rst:69
 msgid ""
 "Microsoft Windows clients can join the Active Directory-compatible domain"
 " provided by UCS and can be centrally configured through group policies. "
@@ -130,11 +130,11 @@ msgstr ""
 "zentral konfiguriert werden. Der Domänen-Join ist aus Client-Sicht "
 "identisch mit dem Beitritt zu einer Windows-basierten Domäne."
 
-#: ../../small.rst:78
+#: ../../small.rst:77
 msgid "Storage management"
 msgstr "Datenverwaltung"
 
-#: ../../small.rst:80
+#: ../../small.rst:79
 msgid ""
 "Samba provides every user with a home directory on the UCS system as a "
 "file share through the CIFS protocol. The users thus always receive the "
@@ -147,7 +147,7 @@ msgstr ""
 "Datenhaltung auf einer Freigabe ermöglicht außerdem eine zentrale "
 "Datensicherung."
 
-#: ../../small.rst:85
+#: ../../small.rst:84
 msgid ""
 "Moreover, there is a central share with legal literature, which is "
 "mounted on every client."
@@ -155,7 +155,7 @@ msgstr ""
 "Darüberhinaus existiert ein zentrale Freigabe mit juristischer "
 "Fachliteratur im PDF-Format, die auf jedem Client eingebunden wird."
 
-#: ../../small.rst:88
+#: ../../small.rst:87
 msgid ""
 "Similar to users, shares can also be created and managed web-based in the"
 " |UCSUMC|."
@@ -163,11 +163,11 @@ msgstr ""
 "Freigaben können wie Benutzer ebenfalls webbasiert in der |UCSUMC| "
 "angelegt werden."
 
-#: ../../small.rst:94
+#: ../../small.rst:93
 msgid "Single sign-on with a specialist legal application"
 msgstr "Single Sign-On mit einer juristischen Fachanwendung"
 
-#: ../../small.rst:96
+#: ../../small.rst:95
 msgid ""
 "The chambers connect to a web-based legal service. This service has its "
 "own user administration system. To avoid having to take care of the user "
@@ -193,11 +193,11 @@ msgstr ""
 "Authentifizierung nutzen. Der SAML Identity Provider kann über das "
 "Univention App Center installiert werden."
 
-#: ../../small.rst:110
+#: ../../small.rst:109
 msgid "Printer services"
 msgstr "Druckdienste"
 
-#: ../../small.rst:112
+#: ../../small.rst:111
 msgid ""
 "The UCS system provides print services through the CUPS software. Both "
 "network-capable printers and printers connected locally to a computer can"
@@ -211,7 +211,7 @@ msgstr ""
 "können bequem über die |UCSUMC| konfiguriert werden und stehen den "
 "Benutzern auf ihren Windows-Clients direkt zur Verfügung."
 
-#: ../../small.rst:119
+#: ../../small.rst:118
 msgid ""
 "The two black and white laser printers are grouped together in a printer "
 "group: this means that, in addition to the targeted selection of a "
@@ -227,11 +227,11 @@ msgstr ""
 "beiden Drucker der Druckergruppe verteilt. Bei belegten Druckern wird auf"
 " einen freien Drucker ausgewichen, sodass Wartezeiten vermieden werden."
 
-#: ../../small.rst:129
+#: ../../small.rst:128
 msgid "Groupware"
 msgstr "Groupware"
 
-#: ../../small.rst:131
+#: ../../small.rst:130
 msgid ""
 "On the UCS system the groupware solution :program:`OX App Suite` is "
 "installed as app from the App Center. OX App Suite accesses the user data"
@@ -243,7 +243,7 @@ msgstr ""
 "dabei auf die Benutzerkontoinformationen des UCS-Verzeichnisdienstes zu. "
 "Die Verwaltung integriert sich nahtlos in die |UCSUMC|."
 
-#: ../../small.rst:136
+#: ../../small.rst:135
 msgid ""
 "Virus detection including signature updates and spam filters are "
 "integrated at no additional cost."
@@ -251,11 +251,11 @@ msgstr ""
 "Virenerkennung inklusive Signaturen-Updates und Spamfilterung sind ohne "
 "weitere Folgekosten integriert."
 
-#: ../../small.rst:141
+#: ../../small.rst:140
 msgid "Web proxy and web cache"
 msgstr "Web Proxy und Webcache"
 
-#: ../../small.rst:143
+#: ../../small.rst:142
 msgid ""
 "A web proxy server and web cache based on Squid is available with the app"
 " :program:`Proxy server` in UCS. Response times for regular calling the "
@@ -272,11 +272,11 @@ msgstr ""
 "Internetinhalte ermöglicht. So kann beispielsweise festgelegt werden, "
 "welche Benutzer oder Benutzergruppen auf welche Webseiten zugreifen."
 
-#: ../../small.rst:153
+#: ../../small.rst:152
 msgid "Outlook"
 msgstr "Ausblick"
 
-#: ../../small.rst:155
+#: ../../small.rst:154
 msgid ""
 "With regard to a planned merger of another office in Munich, it will be "
 "simple to install a further UCS system in this branch. All LDAP data is "
@@ -290,7 +290,7 @@ msgstr ""
 "Standortserver übertragen, sodass Mitarbeiter sich bei Vorort-Terminen am"
 " Münchner Standort mit ihren gewohnten Benutzerkennungen anmelden."
 
-#: ../../small.rst:160
+#: ../../small.rst:159
 msgid ""
 "The existing Active Directory installation at the Munich office can be "
 "migrated to the UCS domain fully automated using :program:`Univention AD "
@@ -300,19 +300,23 @@ msgstr ""
 ":program:`Univention AD Takeover` automatisiert in die UCS-Domäne "
 "migriert werden."
 
-#: ../../small.rst:166
+#: ../../small.rst:165
 msgid "References"
 msgstr "Referenzen"
 
-#: ../../small.rst:168
-msgid ":ref:`UCS Manual <uv-manual:introduction>`"
-msgstr ":ref:`UCS Handbuch <uv-handbuch:introduction>`"
+#: ../../small.rst:167
+msgid ""
+":external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual "
+"<index>`"
+msgstr ""
+":external+uv-ucs-operation:doc:`Nubus für UCS 5.2 - Betriebshandbuch "
+"<index>`"
 
-#: ../../small.rst:170
-msgid ":ref:`uv-manual:windows-ad-takeover`"
-msgstr ":ref:`uv-handbuch:windows-ad-takeover`"
+#: ../../small.rst:169
+msgid ":external+uv-manual:ref:`windows-ad-takeover`"
+msgstr ":external+uv-manual:ref:`windows-ad-takeover`"
 
-#: ../../small.rst:172
+#: ../../small.rst:171
 msgid ""
 "`OX App Suite <https://www.univention.com/products/app-"
 "catalog/oxseforucs/>`_"
@@ -320,7 +324,7 @@ msgstr ""
 "`OX App Suite <https://www.univention.de/produkte/app-"
 "katalog/oxseforucs/>`_"
 
-#: ../../small.rst:175
+#: ../../small.rst:174
 msgid ""
 "`Proxyserver / Webcache (Squid) <https://www.univention.com/products/app-"
 "catalog/squid/>`_"
@@ -328,12 +332,9 @@ msgstr ""
 "`Proxyserver / Webcache (Squid) <https://www.univention.de/produkte/app-"
 "katalog/squid/>`_"
 
-#: ../../small.rst:178
-#, fuzzy
+#: ../../small.rst:177
 msgid ""
 "`Self Service <https://www.univention.com/products/app-catalog/self-"
 "service/>`_"
 msgstr ""
-"`Self Service <https://www.univention.de/produkte/univention-app-center"
-"/app-katalog/self-service/>`_"
-
+"`Self Service <https://www.univention.de/produkte/app-katalog/self-service/>`_"
