@@ -136,6 +136,67 @@ The following API clients implemented in Python exist for the |UCSREST|:
   * `Package at PyPI <https://pypi.org/project/udm-rest-api-client/>`_
   * :external+python-udm-rest-client:doc:`Documentation <index>`
 
+Experimental Pagination
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The Python |UCSREST| client supports server-side pagination for
+iteration over large search results.
+
+.. warning::
+
+   Server-side pagination is currently considered **experimental**.
+   Depending on the LDAP server configuration and the size of the search
+   result, paginated searches may perform significantly worse than regular
+   searches. Use this feature with care, especially for large directories.
+
+Retrieve a single page of search results:
+
+.. code-block:: python
+
+   page = module.search_page(
+       filter={'lastname': 'Smith'},
+       limit=50,
+       page=1,
+       sort_by='username',
+   )
+
+   print(f'Found {page.total} users')
+
+   for obj in page:
+       print(obj.dn)
+
+A :class:`SearchPage` provides metadata about the current result page:
+
+.. code-block:: python
+
+   print(page.page)        # current page number
+   print(page.limit)       # page size
+   print(page.total)       # total number of matching objects
+   print(page.last_page)   # last available page
+
+Navigate between pages:
+
+.. code-block:: python
+
+   page = module.search_page(limit=100, sort_by='username')
+
+   while page:
+       for obj in page:
+           print(obj.dn)
+
+       page = page.next()
+
+Alternatively, iterate transparently over all pages without handling page
+navigation yourself:
+
+.. code-block:: python
+
+   for obj in module.search_paginated(
+       limit=100,
+       sort_by='username',
+   ):
+       print(obj.dn)
+
 .. spelling:word-list::
 
    Unprocessable
