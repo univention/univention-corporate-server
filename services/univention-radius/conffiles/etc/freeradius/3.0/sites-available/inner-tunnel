@@ -333,8 +333,14 @@ post-auth {
 	#  If you want the Access-Accept to contain the inner
 	#  User-Name, uncomment the following lines.
 	#
-	update outer.session-state {
-	       univention-inner-username := &User-Name
+	#  Only valid when this virtual server is called from within an
+	#  EAP tunnel (EAP-TTLS/PEAP). When the inner-tunnel is queried
+	#  directly (e.g. radtest against port 18120) there is no outer
+	#  request, so guard the update to avoid a runtime mapping error.
+	if ("%{outer.request:User-Name}") {
+		update outer.session-state {
+		       univention-inner-username := &User-Name
+		}
 	}
 
 	#
