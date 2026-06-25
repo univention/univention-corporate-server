@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 12:30+0000\n"
-"PO-Revision-Date: 2026-05-07 14:32+0200\n"
+"POT-Creation-Date: 2026-06-25 09:24+0000\n"
+"PO-Revision-Date: 2026-06-25 11:25+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -775,8 +775,8 @@ msgid "Restart LDAP Server"
 msgstr "LDAP-Server neu starten"
 
 #: ../../user-management/udm-recycle-bin.rst:200
-msgid "$ systemctl restart slapd"
-msgstr "$ systemctl restart slapd"
+msgid "$ systemctl restart slapd.service"
+msgstr "$ systemctl restart slapd.service"
 
 #: ../../user-management/udm-recycle-bin.rst:209
 msgid "Logging information"
