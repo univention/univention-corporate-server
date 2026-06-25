@@ -71,9 +71,8 @@ can only be configured at this point in the setup process.
 
 - All other systems are joining the UCS domain when they are installed.
 
-An overview of the other different system roles can be found in :ref:`UCS Manual -
-System roles
-<uv-manual:system-roles>`.
+An overview of the other different system roles can be found in
+:external+uv-ucs-operation:ref:`domain-infrastructure-system-roles`.
 
 With UCS and the *Active Directory Takeover* app an
 existing Active Directory domain can be migrated completely to UCS. For
@@ -120,10 +119,9 @@ address (:samp:`https://{server_ip}` or :samp:`http://{server_ip}`, HTTPS is
 recommended). By default, a portal page is configured on the
 |UCSPRIMARYDN| where all applications are listed that are installed in the
 domain. For all other system roles, the start site consists of an
-overview of all locally installed applications. (View as well as the
+overview of all locally installed applications. View as well as the
 partitioning of entries can be customized in a very flexible manner, see also
-:ref:`UCS manual - Portal page as central view on the UCS domain
-<uv-manual:central-portal>`.)
+:external+uv-nubus-manual:ref:`nubus-portal`.
 
 .. _quickstart-ucs-portal:
 
@@ -148,9 +146,8 @@ information is replicated to the other Directory Nodes in the domain
 either completely or selectively. The UMC modules which edit the LDAP
 directory directly can be accessed only on the |UCSPRIMARYDN| via |UCSUMC|.
 Furthermore, they can also be controlled using the command line
-interface |UCSUDM|, see :ref:`UCS manual - Command line interface of domain
-management (Univention Directory Manager)
-<uv-manual:central-udm>`.
+interface |UCSUDM|, see
+:external+uv-ucs-operation:ref:`management-interface-udm-command`.
 
 .. _quickstart-umc-overview:
 
@@ -203,7 +200,7 @@ updated when the UCR variables registered on them are changed.
 
 .. _quickstart-ucr-image:
 
-.. figure:: ../manual/images/ucr.png
+.. figure:: ../ucs-operation/images/ucr.png
 
    Managing |UCSUCR| variables
 
@@ -219,18 +216,16 @@ different clients. The following clients are supported:
 - Microsoft Windows clients can join an AD-compatible Windows domain provided by
   the *Active Directory compatible domain controller* component (implemented
   using the software Samba). Further information on setting up Samba and the
-  domain join of Windows clients can be found in :ref:`UCS Manual - Windows domain
-  joins
-  <uv-manual:windows-domain-join>`.
+  domain join of Windows clients can be found in
+  :external+uv-ucs-operation:ref:`domain-infrastructure-join-windows`.
 
 - macOS systems are also integrated via a Samba-based, AD-compatible Windows
   domain. Further information on setting up Samba and the domain join can be
-  found in :ref:`UCS Manual - Mac OS X domain joins
-  <uv-manual:macos-domain-join>`.
+  found in :external+uv-ucs-operation:ref:`domain-infrastructure-join-macos`.
 
 - You can also integrate Ubuntu systems and other Linux distributions
   like Debian, SUSE, or Red Hat into the domain.
-  For Ubuntu, see :external+uv-manual:ref:`ubuntu-domain-join`.
+  For Ubuntu, see :external+uv-ucs-operation:ref:`domain-infrastructure-join-ubuntu`.
   For other Linux distributions, see :external+uv-ext-domain:ref:`ext-dom-unix`.
 
 .. _quickstart-extend:
@@ -241,19 +236,17 @@ Further expansion of the domain
 
 This quickstart guide only provides an entry into UCS. UCS is very
 scalable, additional services can simply be installed on additional systems.
-This domain join is described in :ref:`UCS Manual - How UCS systems join domains
-<uv-manual:linux-domain-join>`.
+This domain join is described in :external+uv-ucs-operation:ref:`domain-infrastructure-join-ucs`.
 
 UCS offers various additional services which are covered by the UCS
 license and which can be integrated at a later point in time:
 
-- Single-sign-on with web services, see :external+uv-manual:ref:`domain-single-sign-on`.
+- Single-sign-on with web services, see :external+uv-ucs-operation:ref:`management-interface-auth`.
 
-- :ref:`UCS manual - IP assignment via DHCP
-  <uv-manual:module-dhcp-dhcp>`.
+- :external+uv-nubus-manual:ref:`IP assignment through DHCP
+  <nubus-domain-dhcp>`.
 
-- :ref:`UCS manual - Web proxy for caching and policy management / virus scan
-  <uv-manual:ip-config-web-proxy-for-caching-and-policy-management-virus-scan>`.
+- :external+uv-manual:ref:`ip-config-web-proxy-for-caching-and-policy-management-virus-scan`.
 
 - Hybrid cloud setups
 
@@ -265,8 +258,8 @@ Further information
 
 |UCSUCS| provides comprehensive documentation:
 
-* The primary source of information on UCS is the :external+uv-manual:doc:`UCS
-  Manual for users and administrators <index>`.
+* The primary source of information on UCS is the :external+uv-ucs-operation:doc:`Nubus for UCS 5.2
+  - Operation Manual <index>`.
 
 * Further documentation for advanced scenarios can be found in the extended
   documentation. The various documents are linked at

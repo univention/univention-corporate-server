@@ -121,8 +121,10 @@ univention_use_doc_base = True
 
 intersphinx_mapping = {
     'uv-manual': reference_inventory('manual', version=version),
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
     'uv-ext-domain': reference_inventory('ext-domain', version=version),
     'uv-ext-inst': reference_inventory('ext-installation', version=version),
+    'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/latest/en/', None),
 }
 
 # See Univention Sphinx Extension for its options.
