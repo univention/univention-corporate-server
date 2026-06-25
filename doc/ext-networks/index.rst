@@ -18,6 +18,8 @@ This section describes some scenarios for using the web proxy.
 For information about the installation of the proxy server,
 see :external+uv-manual:ref:`ip-config-installation`.
 
+.. TODO: Replace the link after the content is migrated away from the UCS Manual.
+
 .. _proxy-cascading:
 
 Cascading of proxies
