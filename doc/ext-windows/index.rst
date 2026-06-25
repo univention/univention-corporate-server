@@ -76,8 +76,8 @@ For example:
 The Univention S4 connector must be run on the |UCSPRIMARYDN| or a |UCSBACKUPDN|
 in the domain. After Samba/AD was uninstalled, the |UCSS4C| join script
 :file:`97univention-s4-connector` should be re-executed on the |UCSPRIMARYDN| or
-any |UCSBACKUPDN|. This can be done via the |UCSUMC| module :ref:`Domain join
-<uv-manual:linux-domain-join-umc>`:
+any |UCSBACKUPDN|. This can be done via the |UCSUMC| module
+:external+uv-ucs-operation:ref:`Domain join <domain-infrastructure-join-ucs-umc>`:
 
 .. _s4connector-rejoin:
 
