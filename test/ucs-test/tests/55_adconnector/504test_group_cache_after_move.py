@@ -463,11 +463,11 @@ def test_move_plus_one_ou_in_ad(udm, mode, lo):
         ad.rename(setup.ou1_dn_ad, rdn=f'ou={ou1_name}', position=setup.ou2_dn_ad)
         assert not ad.get(user_dn_ad)
         assert not lo.get(user_dn)
-        user_dn_ad = f'cn={username},ou=\+1,ou={ou1_name},{setup.ou2_dn_ad}'  # noqa: W605
+        user_dn_ad = fr'cn={username},ou=\+1,ou={ou1_name},{setup.ou2_dn_ad}'
         user_dn = ad.ucs_dn(user_dn_ad)
         assert ad.get(user_dn_ad)
         assert lo.get(user_dn)
-        assert user_dn == f'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()  # noqa: W605
+        assert user_dn == fr'uid={username},ou=\+1,ou={ou1_name},{setup.ou2_dn}'.casefold()
         verify_groups(ad, lo, user_dn, user_dn_ad, {setup.group1_dn}, {setup.group1_dn_ad})
         # and another change, just to be sure
         group3_dn, group3_dn_ad = add_user_to_new_group_ad(ad, user_dn_ad)
