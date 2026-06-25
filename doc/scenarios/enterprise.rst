@@ -201,12 +201,11 @@ LDAP directory.
 References
 ==========
 
-* :ref:`UCS Manual <uv-manual:introduction>`
+* :external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual <index>`
 
-* :ref:`uv-manual:domain-ldap-directory-logger`
+* :external+uv-ucs-operation:ref:`domain-infrastructure-ldap-directory-logger`
 
-* `Extended installation documentation
-  <https://docs.software-univention.de/ext-installation/5.2/en/index.html>`_
+* :external+uv-navigation:ref:`ext-docs`
 
 * `opsi
   <https://www.univention.com/products/app-catalog/opsi/>`_

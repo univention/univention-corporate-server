@@ -57,8 +57,9 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version, language=language),
+    'uv-navigation': (f'https://docs.software-univention.de/n/{language}/', None),
     'uv-manual': reference_inventory('manual', version=version),
-    'uv-handbuch': reference_inventory('manual', language='de', version=version),
 }
 
 bibtex_bibfiles = ['../bibliography.bib']
@@ -157,6 +158,11 @@ def adapt_settings_to_translation(app, config):
         config.rst_epilog = """
 .. include:: /../substitutions-de.txt
 """
+        config.intersphinx_mapping = {
+            'uv-ucs-operation': reference_inventory('ucs-operation', version=version, language=config.language),
+            'uv-navigation': (f'https://docs.software-univention.de/n/{config.language}/', None),
+            'uv-manual': reference_inventory('manual', version=version, language=config.language),
+        }
 
 
 def setup(app):

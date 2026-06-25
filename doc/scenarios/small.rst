@@ -164,9 +164,9 @@ to the UCS domain fully automated using :program:`Univention AD Takeover`.
 References
 ==========
 
-* :ref:`UCS Manual <uv-manual:introduction>`
+* :external+uv-ucs-operation:doc:`Nubus for UCS 5.2 - Operation Manual <index>`
 
-* :ref:`uv-manual:windows-ad-takeover`
+* :external+uv-manual:ref:`windows-ad-takeover`
 
 * `OX App Suite
   <https://www.univention.com/products/app-catalog/oxseforucs/>`_
