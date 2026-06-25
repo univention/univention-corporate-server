@@ -73,11 +73,7 @@ class SideMenuLicense:
                 self.page.get_by_role('button', name=_('Import from text field')).click()
 
         else:
-            with self.page.expect_file_chooser() as fc_info:
-                self.page.get_by_role('button', name=_('Import from file...')).click(force=True)
-
-            file_chooser = fc_info.value
-            file_chooser.set_files(license_file_path)
+            self.page.get_by_role('dialog').locator('input[type="file"]').set_input_files(license_file_path)
 
         success_text = self.page.get_by_text(_('The license has been imported successfully.'))
         expect(success_text).to_be_visible()

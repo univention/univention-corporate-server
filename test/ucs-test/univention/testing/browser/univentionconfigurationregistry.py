@@ -41,14 +41,12 @@ class UniventionConfigurationRegistry:
         :returns: A dict with the key and value of the variable
         """
         self.search(query)
-        # the number of rows - 1 since the header row also gets counted here
-        rows = self.page.locator('.dgrid-row').get_by_role('row')
-        logger.info("query '%s' returned %d results", query, rows.count())
+        rows = self.page.locator('.dgrid-row')
         keys = rows.locator('.field-key').all()
         values = rows.locator('.field-value').all()
 
         result = {key.inner_text(): value.inner_text() for (key, value) in zip(keys, values)}
-        # ucr_module.page.pause()
+        logger.info("query '%s' returned %d results", query, len(result))
         return result
 
     def set_variable(self, key: str, value: str):

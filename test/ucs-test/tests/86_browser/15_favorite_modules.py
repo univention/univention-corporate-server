@@ -61,7 +61,7 @@ def check_removing_default_favorites(page: Page):
 
         locator.locator('.umcGalleryContextIcon').click()
         time.sleep(0.5)
-        page.get_by_role('cell', name=_('Remove from favorites')).click()
+        page.get_by_role('menuitem', name=_('Remove from favorites')).click()
         time.sleep(0.5)
         locators = page.locator('.umcGalleryWrapperItem')
 
@@ -78,7 +78,7 @@ def check_add_to_favorites(page: Page):
     moduleid = normalize_moduleid(moduleid)
 
     module.click(button='right')
-    page.get_by_role('cell', name=_('Add to favorites')).click()
+    page.get_by_role('menuitem', name=_('Add to favorites')).click()
 
     page.get_by_role('button', name=_('Favorites')).click()
     check_module_is_visible(page, moduleid)
@@ -119,7 +119,7 @@ def re_add_default_favorites(page: Page, ucr):
     for favorite in get_default_favorites(ucr):
         locator = get_locator_for_module_by_moduleid(page, favorite)
         locator.click(button='right')
-        page.get_by_role('cell', name=_('Add to favorites')).click()
+        page.get_by_role('menuitem', name=_('Add to favorites')).click()
 
     verify_default_favorites_are_restored(ucr)
 

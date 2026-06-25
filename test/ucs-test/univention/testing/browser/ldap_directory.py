@@ -48,6 +48,6 @@ class LDAPDirectory:
     def edit_container(self, name: str, exact=True):
         directory = self._get_directory_locator(name, exact=exact)
         directory.click(button='right')
-        edit_button = self.page.get_by_role('region').get_by_role('cell', name='Edit')
+        edit_button = self.page.get_by_role('region').get_by_role('menuitem', name='Edit')
         expect(edit_button, 'edit button not visible').to_be_visible()
         edit_button.click()

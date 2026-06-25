@@ -101,7 +101,7 @@ class AppCenter:
         if grid.is_visible():
             self.tester.check_checkbox_in_grid_by_name(_('this computer'))
             self.page.get_by_role('button', name=_('More')).click()
-            self.page.get_by_role('cell', name=_('Uninstall')).click()
+            self.page.get_by_role('menuitem', name=_('Uninstall')).click()
         else:
             uninstall_button.click()
 

@@ -46,7 +46,7 @@ def test_move_user_into_container_and_out_again(user_module: UserModule, test_us
 def move_user(user_module: UserModule, test_user: User, container_name: str, udm) -> str:
     user_module.tester.check_checkbox_in_grid_by_name(test_user.username)
     user_module.page.get_by_role('button', name=_('More')).click()
-    user_module.page.get_by_role('cell', name=_('Move to...')).click()
+    user_module.page.get_by_role('menuitem', name=_('Move to...')).click()
     user_module.page.get_by_role('gridcell', name=container_name, exact=True).click()
     user_module.page.get_by_role('button', name=_('Move User')).click()
     time.sleep(3)

@@ -2,6 +2,7 @@ ucs-test (12.6.19) unstable; urgency=medium
 
   * Bug #59418: log ISO 8601 timestamps with microsecond precision
   * Bug #59558: escape bash injected python strings
+  * Bug #59418: make browser tests compatbile with playwright 1.60
 
  -- Florian Best <best@univention.de>  Thu, 02 Jul 2026 11:28:29 +0200
 

@@ -66,17 +66,10 @@ class DetailsView:
         self.page.get_by_role('button', name=name).click()
 
     def upload_picture(self, img_path: str) -> Locator:
-        # for some reason this button is a textbox and not a button
-        upload_profile_picture_button = self.page.get_by_role('textbox', name=_('Upload profile image'))
-        expect(upload_profile_picture_button).to_be_visible()
-
         self.page.screenshot(path=img_path)
 
-        with self.page.expect_file_chooser() as file_chooser_info:
-            upload_profile_picture_button.click()
-
-        file_chooser = file_chooser_info.value
-        file_chooser.set_files(img_path)
+        file_input = self.page.get_by_role('button', name=_('Upload profile image')).and_(self.page.locator('input[type="file"]'))
+        file_input.set_input_files(img_path)
 
         # very ugly locator for this but the image isn't even in an <img> tag
         image_locator = self.page.locator('.umcUDMUsersModule__jpegPhoto .umcImage__img')
@@ -250,7 +243,7 @@ class UserModule(GenericUDMModule):
         self.tester.check_checkbox_in_grid_by_name(original_name)
 
         self.page.get_by_role('button', name=_('more')).click()
-        self.page.get_by_role('cell', name=_('copy')).click()
+        self.page.get_by_role('menuitem', name=_('copy')).click()
         add_object = AddObjectDialog(self.tester, self.page.get_by_role('dialog'))
         self.handle_comboboxes(add_object, None)
 
