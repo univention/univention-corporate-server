@@ -58,21 +58,7 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    'uv-manual': reference_inventory('manual', version=version),
-    'uv-ext-windows': reference_inventory('ext-windows', version=version),
-    'uv-keycloak-mig': (
-        'https://docs.software-univention.de/keycloak-migration/',
-        None,
-    ),
-    'uv-keycloak-app': (
-        'https://docs.software-univention.de/keycloak-app/latest/',
-        None,
-    ),
     f'uv-changelog-{release}': reference_inventory('changelog', version=release),
-    'uv-ext-delegative-administration': reference_inventory(
-        name='ext-delegative-administration',
-        version=version,
-    ),
     'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/1.x/en', None),
 }
 
