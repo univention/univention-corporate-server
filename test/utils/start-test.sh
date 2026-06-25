@@ -323,11 +323,25 @@ echo "${BLUE}Starting test"
 sort -s -t= -k1 <"$docker_env_file"
 echo "${cmd[*]}${NORM}"
 
+logfile=$(
+python3 - "$CFG" <<PY
+import configparser
+import sys
+import urllib.request
+
+c = configparser.ConfigParser(interpolation=None)
+c.read(sys.argv[1])
+print(urllib.request.quote(c.get("Global", "logfile")))
+PY
+)
+
+
 if [ -n "$JOB_URL" ]; then
 	header="$JOB_URL+++++++++++++++++++++++++++++++++++"
 	printf "%${#header}s\n" | tr " " "+"
 	echo "+ Jenkins Workspace: ${JOB_URL}ws           +"
 	echo "+ Jenkins Workspace/test: ${JOB_URL}ws/test +"
+	echo "+ Jenkins Logfile: ${JOB_URL}ws/test/${logfile} +"
 	printf "%${#header}s\n" | tr " " "+"
 fi
 
