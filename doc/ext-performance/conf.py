@@ -139,7 +139,7 @@ linkcheck_ignore = [
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    'uv-manual': reference_inventory('manual', version=version),
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
     'uv-dev-ref': reference_inventory('developer-reference', version=version),
     'ucs-keycloak-doc': (
         'https://docs.software-univention.de/keycloak-app/latest/',

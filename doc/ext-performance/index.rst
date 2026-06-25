@@ -165,8 +165,8 @@ OpenLDAP ACLs
 
 Access to the information contained in the LDAP directory is controlled by
 access control lists (ACLs) on the server side. General information on the
-configuration of ACLs in UCS can be found in :ref:`uv-manual:domain-ldap-acls`
-in :cite:t:`ucs-manual`.
+configuration of ACLs in UCS can be found in :external+uv-ucs-operation:ref:`domain-infrastructure-ldap-directory-acls`
+in :cite:t:`uv-ucs-operation`.
 
 Nested groups are also supported. The |UCSUCRV| :envvar:`ldap/acl/nestedgroups`
 can be used to deactivate the nested groups function for LDAP ACLs, which will
