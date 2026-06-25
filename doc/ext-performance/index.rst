@@ -47,7 +47,11 @@ search attributes to the LDAP index.
    `Can more indexes improve performance? <https://www.openldap.org/faq/data/cache/42.html>`_ in the *OpenLDAP Faq-O-Matic*
       for more information about indexes influence the performance in OpenLDAP
 
-To add LDAP attributes to an index, use the following steps:
+To add LDAP attributes to an index,
+use the script :command:`/usr/share/univention-ldap/ldap_setup_index`.
+For more information, see :ref:`slapd-index-setup-command`.
+
+To manually add LDAP attributes to an index, use the following steps:
 
 #. Stop the OpenLDAP server.
 
@@ -114,6 +118,177 @@ file :file:`/var/log/syslog`. For example:
    $ ucr set ldap/debug/level=-1
    $ systemctl restart slapd.service
    $ grep 'not indexed' /var/log/syslog
+
+.. _slapd-index-setup-command:
+
+Manage indexes with the index setup script
+==========================================
+
+.. program:: /usr/share/univention-ldap/ldap_setup_index
+
+Instead of editing the UCR variables manually to configure indexes,
+UCS provides the :command:`/usr/share/univention-ldap/ldap_setup_index` script
+that runs all the steps from the manual procedure.
+Use this script because it updates the UCR variable,
+validates the resulting configuration,
+and rebuilds the index database
+so that the UCR configuration and the on-disk index remain aligned.
+
+The script does the following:
+
+#. It reads the current index configuration from the following UCR variables:
+
+   * :envvar:`ldap/index/eq`
+   * :envvar:`ldap/index/pres`
+   * :envvar:`ldap/index/sub`
+   * :envvar:`ldap/index/approx`
+
+#. It adds or removes the attributes that you pass to the script.
+
+#. It writes the changed UCR variables
+   and lets UCR rewrite the OpenLDAP server configuration file
+   :file:`/etc/ldap/slapd.conf`.
+
+#. It validates the new configuration with :command:`slaptest`.
+
+#. It runs :command:`slapindex` to re-index the existing entries in the LDAP database.
+
+.. _slapd-index-setup-command-usage:
+
+Use :command:`ldap_setup_index`
+-------------------------------
+
+To add an attribute, use one of the options
+:option:`--add-eq`, :option:`--add-pres`,
+:option:`--add-sub`, or :option:`--add-approx` with the attribute name.
+
+To remove an attribute, use the corresponding
+:option:`--rm-eq`, :option:`--rm-pres`, :option:`--rm-sub`, or :option:`--rm-approx` option.
+You can pass an option more than once and combine
+several index types in a single call.
+
+Example
+   The example in :numref:`slapd-index-setup-command-example-listing`
+   adds the ``memberOf`` attribute to the equality index.
+
+   .. important::
+
+      Stop the OpenLDAP server with the
+      :command:`systemctl stop slapd.service` command
+      before you run the script.
+      :command:`slapindex` doesn't run while the OpenLDAP server is running.
+      Otherwise, the script aborts before it rebuilds the index.
+      Start the server again afterwards.
+
+      The example in :numref:`slapd-index-setup-command-example-listing`
+      shows this order.
+
+   .. code-block:: console
+      :caption: Example for adding ``memberOf`` to the LDAP index
+      :name: slapd-index-setup-command-example-listing
+
+      $ systemctl stop slapd.service
+      $ /usr/share/univention-ldap/ldap_setup_index --add-eq memberOf
+      $ systemctl start slapd.service
+
+The script rebuilds the index only when
+:envvar:`ldap/index/autorebuild` has the value ``yes``.
+``yes`` is the default.
+The variable controls the rebuild behavior as follows:
+
+Value is ``yes``
+   If :envvar:`ldap/index/autorebuild` has the value ``yes``,
+   the script writes the UCR variables
+   and runs :command:`slapindex` to rebuild the index.
+
+Value is ``no``
+   If :envvar:`ldap/index/autorebuild` has the value ``no``
+   and the UCR variable already contains that value,
+   the script doesn't change anything.
+
+   To update only the UCR variables without rebuilding the index,
+   use the option :option:`--only-update-ucr`.
+   In this case, run :command:`slapindex` later,
+   for example during a maintenance window,
+   so that :command:`slapindex` indexes the existing LDAP entries.
+
+.. note::
+
+   If you manually change any of the UCR variables
+   :envvar:`ldap/index/eq`,
+   :envvar:`ldap/index/pres`,
+   :envvar:`ldap/index/sub`,
+   or :envvar:`ldap/index/approx`
+   instead of using the :command:`ldap_setup_index` script,
+   UCR rewrites the OpenLDAP server configuration,
+   but it doesn't rebuild the index database.
+   In this case, existing entries stay unindexed until
+   you run :command:`slapindex`.
+   The script triggers the index rebuild for you.
+
+.. _slapd-index-setup-command-reference:
+
+Option reference for :command:`ldap_setup_index`
+------------------------------------------------
+
+:command:`ldap_setup_index` offers the following options:
+
+.. option:: --add-eq
+
+   Add an LDAP attribute to the equality index.
+
+.. option:: --add-pres
+
+   Add an LDAP attribute to the presence index.
+
+.. option:: --add-sub
+
+   Add an LDAP attribute to the sub-string index.
+
+.. option:: --add-approx
+
+   Add an LDAP attribute to the approximate-match index.
+
+.. option:: --rm-eq
+
+   Remove an LDAP attribute from the equality index.
+
+.. option:: --rm-pres
+
+   Remove an LDAP attribute from the presence index.
+
+.. option:: --rm-sub
+
+   Remove an LDAP attribute from the sub-string index.
+
+.. option:: --rm-approx
+
+   Remove an LDAP attribute from the approximate-match index.
+
+.. option:: --add-defaults
+
+   Adds the attributes that Univention recommends for indexing to the existing
+   configuration.
+
+.. option:: --only-update-ucr
+
+   Only updates the UCR configuration for the indexes,
+   but doesn't rebuild the index.
+   You need to manually rebuild the index with the :command:`slapindex` command.
+
+.. option:: --force-defaults
+
+   Resets the index configuration to the recommended attributes and discards any
+   custom additions.
+
+.. option:: --remove-unknown
+
+   Removes attributes that :command:`slaptest` reports as undefined,
+   for example because of a typo or because the attribute no longer exists.
+
+.. option:: --verbose
+
+   Increases the output verbosity. You can repeat the option for more output.
 
 .. _slapd-mdb:
 
