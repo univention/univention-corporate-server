@@ -9,26 +9,30 @@ eval "$(univention-config-registry shell)"
 
 # shellcheck disable=SC2015
 tty <&2 >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N
-error () { #DEBUGLEVEL 0
-	echo -e "${_B:-}error${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
+timestamp() {
+    date +"%Y-%m-%dT%H:%M:%S.%6N%:z"
 }
-warning () { #DEBUGLEVEL 1
-	if [ "$DEBUGLEVEL" -ge 1 ]
-	then
-		echo -e "${_B:-}warning${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
-	fi
+
+error () { # DEBUGLEVEL 0
+    echo -e "${_B:-}error${_N:-} $(timestamp)\t$*" >&2
 }
-info () { #DEBUGLEVEL 2
-	if [ "$DEBUGLEVEL" -ge 2 ]
-	then
-		echo -e "${_B:-}info${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
-	fi
+
+warning () { # DEBUGLEVEL 1
+    if [ "$DEBUGLEVEL" -ge 1 ]; then
+        echo -e "${_B:-}warning${_N:-} $(timestamp)\t$*" >&2
+    fi
 }
-debug () { #DEBUGLEVEL 3
-	if [ "$DEBUGLEVEL" -ge 3 ]
-	then
-		echo -e "${_B:-}debug${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
-	fi
+
+info () { # DEBUGLEVEL 2
+    if [ "$DEBUGLEVEL" -ge 2 ]; then
+        echo -e "${_B:-}info${_N:-} $(timestamp)\t$*" >&2
+    fi
+}
+
+debug () { # DEBUGLEVEL 3
+    if [ "$DEBUGLEVEL" -ge 3 ]; then
+        echo -e "${_B:-}debug${_N:-} $(timestamp)\t$*" >&2
+    fi
 }
 section () { # This is intended to make life easier for readers of test-logs with a lot of content. If your testcase performs multiple similar checks each producing a lot of output visually dividing these checks into sections will help a lot. You should use this function only on the top level, i.e. directly in the test-script and not in any library functions.
 	local sectionname="$1"
