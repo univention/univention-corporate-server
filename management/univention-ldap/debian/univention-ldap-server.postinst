@@ -95,6 +95,12 @@ if [ "$1" = "configure" ]; then
 		## See block below.
 		/usr/share/univention-ldap/ldap_setup_index --add-defaults
 		start_slapd
+	elif dpkg --compare-versions "$2" lt-nl 19.0.1; then
+		stop_slapd
+		/usr/share/univention-ldap/ldap_setup_index --add-defaults --only-update-ucr
+		output=$(/usr/sbin/slapindex -f /etc/ldap/slapd.conf memberOf 2>&1) ||
+			echo "$output"
+		start_slapd
 	elif dpkg --compare-versions "$2" lt-nl 18.2.3; then
 		stop_slapd
 		/usr/share/univention-ldap/ldap_setup_index --add-defaults --only-update-ucr
