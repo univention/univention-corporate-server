@@ -14,6 +14,14 @@
 
 setup_apache "${repoprefix}"
 
+# An installed app with a newer candidate in the test App Center (e.g. keycloak
+# *-staging build) makes univention-updater-check/net/-actualise report an app
+# update and set update/available=yes, breaking these package-only checks. Point
+# the App Center at the production server for the run
+# pool.sh's ucr wrapper restores it on cleanup.
+ucr set repository/app_center/server=appcenter.software-univention.de
+univention-app update || true
+
 UPDATE_AVAILABLE=$(ucr get update/available)
 
 FIXED_31733=false

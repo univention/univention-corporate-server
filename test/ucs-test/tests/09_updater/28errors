@@ -87,7 +87,7 @@ run_tests () { # execute all updater programs
 	# NOTE: the following tests for update/available have been disabled, see also Bug #23510
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 
-	univention-upgrade 2>&1 | grep -F "$msg"
+	univention-upgrade --disable-app-updates 2>&1 | grep -F "$msg"
 	grep -F "status=FAILED" /var/lib/univention-updater/univention-upgrade.status
 	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-upgrade.status
 	ucr search --brief ^update/available
@@ -119,7 +119,7 @@ run_tests () { # execute all updater programs
 	rm /var/lib/univention-updater/update-failed
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
-	univention-upgrade 2>&1 | grep -F "$msg"
+	univention-upgrade --disable-app-updates 2>&1 | grep -F "$msg"
 	grep -F "status=FAILED" /var/lib/univention-updater/univention-upgrade.status
 	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-upgrade.status
 	ucr search --brief ^update/available
@@ -159,7 +159,7 @@ run_tests () { # execute all updater programs
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
-	univention-upgrade 2>&1
+	univention-upgrade --disable-app-updates 2>&1
 	grep -F "status=DONE" /var/lib/univention-updater/univention-upgrade.status
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched

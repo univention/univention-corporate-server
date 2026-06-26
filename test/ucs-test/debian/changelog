@@ -1,3 +1,9 @@
+ucs-test (12.6.32) unstable; urgency=medium
+
+  * Bug #59418: keep 28errors/34updater-check robust against app updates
+
+ -- Florian Best <best@univention.de>  Fri, 10 Jul 2026 12:52:38 +0200
+
 ucs-test (12.6.31) unstable; urgency=medium
 
   * Bug #53337: fix 'ur' strings in adconnector helpers
