@@ -21,9 +21,6 @@ IGNORE_EXE = {
 def coredumpctl_json():
     proc = subprocess.run(['coredumpctl', '--json=short', 'list'], capture_output=True, text=True, check=False)
 
-    if proc.returncode != 0:
-        pytest.fail('coredumpctl failed with exit code %s\nSTDOUT:\n%s\nSTDERR:\n%s' % (proc.returncode, proc.stdout, proc.stderr))
-
     if not proc.stdout.strip():
         return []
 
@@ -31,6 +28,10 @@ def coredumpctl_json():
         return json.loads(proc.stdout)
     except json.JSONDecodeError as exc:
         pytest.fail('Could not parse coredumpctl JSON output: %s\n%s' % (exc, proc.stdout))
+
+    # coredumpctl returns 1 if no cores are found. but stdout is empty then. so we already returned.
+    if proc.returncode != 0:
+        pytest.fail('coredumpctl failed with exit code %s\nSTDOUT:\n%s\nSTDERR:\n%s' % (proc.returncode, proc.stdout, proc.stderr))
 
 
 # provoke a coredump, to test this via:

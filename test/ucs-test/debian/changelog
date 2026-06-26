@@ -1,3 +1,9 @@
+ucs-test (12.6.16) unstable; urgency=medium
+
+  * Bug #59418: don't let 07_coredumps fail if no coredumps exists
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jun 2026 13:20:34 +0200
+
 ucs-test (12.6.15) unstable; urgency=medium
 
   * Bug #59418: fix DNS deprecation warning
