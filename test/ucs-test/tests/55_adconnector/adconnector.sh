@@ -178,10 +178,10 @@ function ad_exists () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-if adconnection.exists('$dn'):
+adconnection = adconnector.ADConnection(r'$configbase')
+if adconnection.exists(r'$dn'):
 	sys.exit(42)
 else:
 	sys.exit(43)
@@ -220,10 +220,10 @@ function ad_delete () {
 
 		python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.delete('$dn')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.delete(r'$dn')
 sys.exit(42)
 "
 		local retval="$?"
@@ -244,10 +244,10 @@ function ad_move () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.move('$dn', '$newdn')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.move(r'$dn', r'$newdn')
 sys.exit(42)
 "
 	local retval="$?"
@@ -270,15 +270,15 @@ function ad_set_attribute () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
+adconnection = adconnector.ADConnection(r'$configbase')
 if $treat_value_as_base64:
 	import base64
-	value = base64.b64decode(u'$value'.encode('$encoding'))
+	value = base64.b64decode(ur'$value'.encode(r'$encoding'))
 else:
-	value = u'$value'.encode('$encoding')
-adconnection.set_attribute('$dn', '$name', value)
+	value = ur'$value'.encode(r'$encoding')
+adconnection.set_attribute(r'$dn', r'$name', value)
 sys.exit(42)
 "
 	local retval="$?"
@@ -298,10 +298,10 @@ function ad_delete_attribute () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.delete_attribute('$dn', '$name')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.delete_attribute(r'$dn', r'$name')
 sys.exit(42)
 "
 	local retval="$?"
@@ -322,10 +322,10 @@ function ad_append_to_attribute () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.append_to_attribute('$dn', '$name', b'$value')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.append_to_attribute(r'$dn', r'$name', rb'$$value')
 sys.exit(42)
 "
 	local retval="$?"
@@ -346,10 +346,10 @@ function ad_remove_from_attribute () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.remove_from_attribute('$dn', '$name', b'$value')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.remove_from_attribute(r'$dn', r'$name', rb'$$value')
 sys.exit(42)
 "
 	local retval="$?"
@@ -370,10 +370,10 @@ function ad_createuser () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.createuser('$username', description=b'$description', position='$position')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.createuser(r'$username', description=rb'$$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -394,10 +394,10 @@ function ad_group_create () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.group_create('$groupname', description=b'$description', position='$position')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.group_create(r'$groupname', description=rb'$$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -418,10 +418,10 @@ function ad_container_create () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.container_create('$containername', description=b'$description', position='$position')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.container_create(r'$containername', description=rb'$$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -442,10 +442,10 @@ function ad_createou () {
 
 	python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.createou('$ouname', description=b'$description', position='$position')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.createou(r'$ouname', description=rb'$$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -466,15 +466,15 @@ function ad_get_attribute () {
 
 python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-for value in adconnection.get_attribute('$dn', '$attribute'):
-	if '$encoding' == 'base64':
+adconnection = adconnector.ADConnection(r'$configbase')
+for value in adconnection.get_attribute(r'$dn', r'$attribute'):
+	if r'$encoding' == 'base64':
 		import base64
 		print(base64.b64encode(value).decode('ASCII'))
 		continue
-	print(value.decode('$encoding'))
+	print(value.decode(r'$encoding'))
 sys.exit(42)
 "
 	local retval="$?"
@@ -549,10 +549,10 @@ function ad_get_primary_group () {
 
 python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-group = adconnection.getprimarygroup('$user_dn')
+adconnection = adconnector.ADConnection(r'$configbase')
+group = adconnection.getprimarygroup(r'$user_dn')
 if group:
 	print(group)
 sys.exit(42)
@@ -573,10 +573,10 @@ function ad_set_primary_group () {
 
 python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
-adconnection = adconnector.ADConnection('$configbase')
-adconnection.setprimarygroup('$user_dn', '$group_dn')
+adconnection = adconnector.ADConnection(r'$configbase')
+adconnection.setprimarygroup(r'$user_dn', r'$group_dn')
 sys.exit(42)
 "
 	local retval="$?"
@@ -602,10 +602,10 @@ function ad_get_dn () {
 	local filter="$1"
 python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.getdn('$filter')
+adconnection.getdn(r'$filter')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then
@@ -622,10 +622,10 @@ function ad_add_to_group () {
 	local member="$2"
 python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.add_to_group('$dn', b'$member')
+adconnection.add_to_group(r'$dn', rb'$$member')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then
@@ -642,10 +642,10 @@ function ad_remove_from_group () {
 	local member="$2"
 python3 -c "
 import sys
-sys.path.append('$TESTLIBPATH')
+sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.remove_from_group('$dn', b'$member')
+adconnection.remove_from_group(r'$dn', rb'$$member')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then
@@ -709,16 +709,16 @@ function connector_mapping_adjust ()
 	if [ -n "$3" ]; then
 		cat > /etc/univention/connector/ad/localmapping.py <<EOF
 def mapping_hook(ad_mapping):
-	ucs_test_filter = ad_mapping['$1'].ignore_filter
+	ucs_test_filter = ad_mapping[r'$1'].ignore_filter
 	ucs_test_filter = ucs_test_filter[0:len(ucs_test_filter) - 1]
 	ucs_test_filter = ucs_test_filter + '(uid=$2))'
-	ad_mapping['$1'].ignore_filter = ucs_test_filter
+	ad_mapping[r'$1'].ignore_filter = ucs_test_filter
 	return ad_mapping
 EOF
 	else
 		cat > /etc/univention/connector/ad/localmapping.py <<EOF
 def mapping_hook(ad_mapping):
-	ad_mapping['$1'].ignore_subtree = ad_mapping['$1'].ignore_subtree + ['$2']
+	ad_mapping[r'$1'].ignore_subtree = ad_mapping[r'$1'].ignore_subtree + [r'$2']
 	return ad_mapping
 EOF
 	fi
@@ -739,7 +739,7 @@ def mapping_hook(ad_mapping):
 	source_position = 'ou=IAM-AD,%(ldap/base)s' % ucr
 	target_position = 'OU=IAM-UCS,%(connector/ad/ldap/base)s' % ucr
 	custom_position_mapping = [(source_position, target_position)]
-	ad_mapping['$1'].position_mapping = custom_position_mapping
+	ad_mapping[r'$1'].position_mapping = custom_position_mapping
 	return ad_mapping
 EOF
 }
