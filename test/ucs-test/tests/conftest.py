@@ -169,7 +169,7 @@ def change_app_setting():
 
     def _func(app_id: str, changes: dict, revert: bool = True) -> None:
         apps_cache = Apps()
-        app = apps_cache.find(app_id, latest=True)
+        app = apps_cache.find(app_id)
         data['app'] = app
         configure = get_action('configure')
         data['configure'] = configure
