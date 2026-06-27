@@ -1,3 +1,9 @@
+univention-ldap (18.6.1) unstable; urgency=medium
+
+  * Bug #47464: Ensure safe upgrade path
+
+ -- Florian Best <best@univention.de>  Sat, 27 Jun 2026 10:26:07 +0200
+
 univention-ldap (18.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

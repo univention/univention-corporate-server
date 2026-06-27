@@ -31,6 +31,10 @@ Depends:
  ${misc:Depends},
 Conflicts:
  univention-5250 (<< 0.5),
+Breaks:
+ univention-ldap-overlay-memberof (<< 14.6.0),
+Replaces:
+ univention-ldap-overlay-memberof (<< 14.6.0),
 Description: UCS - LDAP server configuration
  This package contains the configuration for the OpenLDAP
  server.
