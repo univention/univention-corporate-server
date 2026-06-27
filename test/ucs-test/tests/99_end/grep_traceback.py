@@ -34,7 +34,7 @@ def getfile(filename, mode):
     else:
         name = getattr(filename, 'name', repr(filename))
         if isinstance(name, int):
-            name = repr(filename)
+            name = 'journalctl.log'
         if name.endswith('.gz'):
             with gzip.open(name, mode) as fd:
                 yield fd, name
