@@ -144,6 +144,8 @@ class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bu
 
 
 COMMON_EXCEPTIONS = (
+    # UCS 5.3
+    E('SysV service.*lacks a native systemd unit file'),
     # Errors from UCS Jenkins runs:
     E(r'^(ldap\.)?SERVER_DOWN: .*'),
     E(r'^(ldap\.)?NO_SUCH_OBJECT: .*'),
