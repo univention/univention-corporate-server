@@ -1,3 +1,9 @@
+univention-ldap (18.6.2) unstable; urgency=medium
+
+  * Bug #47464: pre-depend on univention-ldap-overlay-memberof
+
+ -- Florian Best <best@univention.de>  Sun, 28 Jun 2026 11:09:30 +0200
+
 univention-ldap (18.6.1) unstable; urgency=medium
 
   * Bug #47464: Ensure safe upgrade path

@@ -12,6 +12,7 @@ Architecture: all
 Pre-Depends:
  slapd (>= 2.4.47+dfsg-3+deb10u7A~5.0.7.202405171616),
  univention-ldap-client,
+ univention-ldap-overlay-memberof (>= 14.6.0),
 Depends:
  bind9-host,
  db5.3-util,
