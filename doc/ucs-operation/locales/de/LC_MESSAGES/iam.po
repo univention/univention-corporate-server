@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-08 10:58+0000\n"
-"PO-Revision-Date: 2026-05-08 12:58+0200\n"
+"POT-Creation-Date: 2026-06-28 19:16+0000\n"
+"PO-Revision-Date: 2026-06-28 21:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -769,8 +769,8 @@ msgid "Restart the OpenLDAP server"
 msgstr "OpenLDAP-Server neu starten"
 
 #: ../../iam/last-bind.rst:46
-msgid "$ systemctl restart slapd"
-msgstr "$ systemctl restart slapd"
+msgid "$ systemctl restart slapd.service"
+msgstr "$ systemctl restart slapd.service"
 
 #: ../../iam/last-bind.rst:55
 msgid "Collect and store the timestamp"
@@ -3268,10 +3268,10 @@ msgstr "OpenLDAP-Passwortrichtlinie aktivieren und Server neu starten"
 #: ../../iam/user-lockout.rst:127
 msgid ""
 "$ ucr set ldap/ppolicy/enabled=yes\n"
-"$ systemctl restart slapd"
+"$ systemctl restart slapd.service"
 msgstr ""
 "$ ucr set ldap/ppolicy/enabled=yes\n"
-"$ systemctl restart slapd"
+"$ systemctl restart slapd.service"
 
 #: ../../iam/user-lockout.rst:134
 msgid ""
@@ -3402,4 +3402,3 @@ msgstr ""
 #: ../../iam/user-lockout.rst:195
 msgid "Clear the :guilabel:`Account is deactivated` checkbox."
 msgstr "Deaktivieren Sie das Kontrollkästchen :guilabel:`Konto ist deaktiviert`."
-
