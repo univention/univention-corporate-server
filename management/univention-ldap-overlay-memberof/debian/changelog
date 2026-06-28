@@ -1,3 +1,10 @@
+univention-ldap-overlay-memberof (14.6.1) unstable; urgency=medium
+
+  * Bug #47464: remove dependency on univention-ldap-server as that depends on
+  	this package
+
+ -- Florian Best <best@univention.de>  Sun, 28 Jun 2026 14:03:38 +0200
+
 univention-ldap-overlay-memberof (14.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
