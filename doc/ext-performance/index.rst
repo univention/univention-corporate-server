@@ -109,6 +109,14 @@ The following UCR variables control the LDAP index:
    to the index, it corresponds to the LDAP filter :samp:`uid={value}*` and
    finds all objects that match with the filter including the wildcard.
 
+.. envvar:: ldap/index/autorebuild
+
+   Controls whether Nubus for UCS updates automatically add and update LDAP indices.
+
+   :Default value: ``yes``
+   :Possible values: ``yes``, ``no``
+   :Type: boolean
+
 To determine whether OpenLDAP uses not-indexed variables, you can activate
 OpenLDAP debug level ``-1`` and search for the string ``not indexed`` in the log
 file :file:`/var/log/syslog`. For example:
@@ -333,6 +341,15 @@ by spaces):
    to random access read performance if the system's memory is full and the DB
    is larger than RAM.
 
+.. envvar:: ldap/database/mdb/envflags
+
+   Specifies additional flags for the ``mdb`` database backend.
+   Separate multiple flags with spaces.
+
+   :Default value: not set
+   :Possible values: ``nosync``, ``nometasync``, ``writemap``, ``mapasync``, ``nordahead``
+   :Type: list
+
 .. _slapd-acl:
 
 OpenLDAP ACLs
@@ -357,6 +374,28 @@ group twice. These checks add some overhead to replication and can be
 deactivated by setting the |UCSUCR| variables :envvar:`listener/memberuid/skip`
 and :envvar:`listener/uniquemember/skip` to ``no``. Starting with UCS 3.1 the
 variables are not set and the checks are not activated any longer by default.
+
+.. envvar:: listener/memberuid/skip
+
+   Controls whether the *Univention Directory Listener* performs additional
+   consistency checks to prevent a user from being added to a group multiple times.
+   To deactivate these checks,
+   set this variable and :envvar:`listener/uniquemember/skip` to ``no``.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+.. envvar:: listener/uniquemember/skip
+
+   Controls whether the *Univention Directory Listener* performs additional
+   consistency checks to prevent a user from being added to a group multiple times.
+   To deactivate these checks,
+   set this variable and :envvar:`listener/memberuid/skip` to ``no``.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
 
 .. _initial-user-provisioning:
 
@@ -386,6 +425,17 @@ numbers of users and adding them to groups:
    deactivate the automatic update of the primary group, typically ``Domain Users``,
    when you create or remove a user.
    Set the |UCSUCR| variable :envvar:`directory/manager/user/primarygroup/update` to ``false``.
+
+.. envvar:: directory/manager/user/primarygroup/update
+
+   Controls whether Nubus updates a user's primary group
+   when adding or removing a user.
+   When set to ``false``,
+   Nubus doesn't update the primary group.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
 
 You can use the following example as a guide for using the *UDM Python library*:
 
@@ -533,6 +583,46 @@ use the following commands:
    $ ucr commit /etc/samba/smb.conf
    $ /etc/init.d/samba restart
 
+The following is a short reference for the UCR variables mentioned before:
+
+.. envvar:: create/spn/account/timeout
+
+   Sets how long in seconds the system waits for SPN account synchronization
+   between the Nubus for UCS system and Samba during a domain join.
+   In large environments,
+   you may need to increase this value.
+
+   :Default value: ``10800``
+   :Type: integer
+
+.. envvar:: join/samba/dns/replication/timeout
+
+   Sets how long in seconds a domain join waits
+   for the initial replication of the DNS host record.
+
+   :Default value: ``600``
+   :Type: integer
+
+.. envvar:: samba/database/backend/store
+
+   Specifies the database backend for Samba.
+   Changing this value requires re-joining ``univention-samba4``.
+
+   :Default value: ``mdb``
+   :Possible values: ``mdb``, ``tdb``
+   :Type: string
+
+.. envvar:: samba/database/backend/store/size
+
+   Sets the maximum database size for the Samba ``mdb`` backend.
+   This variable only applies when :envvar:`samba/database/backend/store`
+   is set to ``mdb``.
+
+   :Default value: ``8Gb``
+   :Type: string
+
+
+
 .. _group-cache:
 
 *****************
@@ -568,6 +658,16 @@ By default all objects are automatically searched for in the domain management
 modules of the |UCSUMC|. This behavior can be disabled by setting the |UCSUCRV|
 :envvar:`directory/manager/web/modules/autosearch` to ``0``.
 
+.. envvar:: directory/manager/web/modules/autosearch
+
+   Controls whether the domain management modules in the *Management UI*
+   run an automatic search for all objects when opened.
+   You can override this behavior per module.
+
+   :Default value: not set
+   :Possible values: ``true``, ``false``, not set
+   :Type: boolean
+
 .. _umc-search-limit:
 
 Imposing a size limit for searches
@@ -578,6 +678,17 @@ upper limit for search results. If, e.g., this variable is set to ``2000`` (as i
 the default), searching for more than 2000 users would not be performed and
 instead the user is asked to refine the search.
 
+.. envvar:: directory/manager/web/sizelimit
+
+   Sets the upper limit for search results in the *Management UI*.
+   If a search returns more results,
+   the system aborts it and asks you to refine the search.
+   When unset,
+   the limit is ``2000``.
+
+   :Default value: not set
+   :Type: integer
+
 .. _umc-open-file-limit:
 
 Adjusting the limit on open file descriptors
@@ -586,6 +697,14 @@ Adjusting the limit on open file descriptors
 The |UCSUCRV| :envvar:`umc/http/max-open-file-descriptors` is used to impose an
 upper limit on open file descriptors of the
 :program:`univention-management-console-web-server`. The default is ``65535``.
+
+.. envvar:: umc/http/max-open-file-descriptors
+
+   Defines the maximum number of open file descriptors
+   for the UMC web server.
+
+   :Default value: ``65535``
+   :Type: integer
 
 .. _umc-performance-multiprocessing:
 
@@ -642,6 +761,33 @@ Detailed information about useful values for the UCR variables can be found at
 <https://httpd.apache.org/docs/2.4/en/mod/mpm_common.html#startservers>`_ in
 :cite:t:`apache-httpd-2.4-docs`.
 
+.. envvar:: apache2/max-spare-servers
+
+   Defines the Apache `MaxSpareServers <https://httpd.apache.org/docs/current/en/mod/prefork.html#maxspareservers>`_ setting.
+
+   :Type: integer
+
+
+.. envvar:: apache2/min-spare-servers
+
+   Defines the Apache `MinSpareServers <https://httpd.apache.org/docs/current/en/mod/prefork.html#minspareservers>`_ setting.
+
+   :Type: integer
+
+
+.. envvar:: apache2/server-limit
+
+   Defines the Apache `ServerLimit <https://httpd.apache.org/docs/current/en/mod/mpm_common.html#serverlimit>`_ setting.
+
+   :Type: integer
+
+
+.. envvar:: apache2/start-servers
+
+   Defines the Apache `StartServers <https://httpd.apache.org/docs/current/en/mod/mpm_common.html#startservers>`_ setting.
+
+   :Type: integer
+
 SAML
 ====
 
@@ -665,6 +811,14 @@ in parallel, the Squid user may occasionally receive an authentication error.
 The number of parallel NTLM authentication processes can be configured with the
 |UCSUCRV| :envvar:`squid/ntlmauth/children`.
 
+.. envvar:: squid/ntlmauth/children
+
+   Sets the maximum number of authentication processes
+   for NTLM authentication in :program:`Squid`.
+
+   :Default value: ``10``
+   :Type: integer
+
 BIND
 ====
 
@@ -677,6 +831,16 @@ When using the Samba backend, a search is performed in the LDAP for every DNS
 request. With the OpenLDAP backend, a search is only performed in the directory
 service if the DNS data has changed. For this reason, using the OpenLDAP backend
 can reduce the load on a Samba/AD domain controller.
+
+.. envvar:: dns/backend
+
+   Specifies whether :program:`Bind` uses the OpenLDAP directory or the Samba LDB database
+   as backend for its configuration.
+   On Directory Nodes running Samba,
+   you must not set this variable to ``ldap``.
+
+   :Possible values: ``ldap``, ``samba4``
+   :Type: string
 
 Kernel
 ======
@@ -702,29 +866,56 @@ basis. The default for all users can be set through the following |UCSUCRVs|:
 A similar problem exists with the Inotify sub-system of the kernel, which can be
 used by all users and applications to monitor changes in file systems.
 
-:envvar:`kernel/fs/inotify/max_user_instances`
-   The upper limit of inotify services per user ID. The default is ``511``.
+.. envvar:: kernel/fs/inotify/max_queued_events
 
-:envvar:`kernel/fs/inotify/max_user_watches`
-   The upper limit of files per user which can be watched by the inotify
-   service. The default is ``32767``.
+   Sets the upper limit of queued events per inotify instance.
 
-:envvar:`kernel/fs/inotify/max_queued_events`
-   The upper limit of queued events per inotify instance. The default is
-   ``16384``.
+   :Default value: ``16384``
+   :Type: integer
+
+.. envvar:: kernel/fs/inotify/max_user_instances
+
+   Sets the upper limit of inotify instances per user ID.
+
+   :Default value: ``512``
+   :Type: integer
+
+.. envvar:: kernel/fs/inotify/max_user_watches
+
+   Sets the upper limit of watched files per user ID.
+
+   :Default value: ``32768``
+   :Type: integer
 
 When the UCS system is part of a network of a very large number of devices,
 it is possible that the ARP garbage collector thresholds are insufficient.
 For those scenarios, raise the following thresholds:
 
-:envvar:`kernel/net/ipv4/neigh/default/gc_thresh1`
-   The threshold of ARP cache entries below which the garbage collector will not run. The default is 1024.
+.. envvar:: kernel/net/ipv4/neigh/default/gc_thresh1
 
-:envvar:`kernel/net/ipv4/neigh/default/gc_thresh2/`
-   The threshold when garbage collector purges ARP cache entries that are older than 5 seconds. The default is 2048.
+   Sets the threshold of ARP cache entries
+   below which the kernel garbage collector doesn't run.
 
-:envvar:`kernel/net/ipv4/neigh/default/gc_thresh3/`
-   The maximum number of ARP cache entries that are non-permanent. The default is 4096.
+   :Default value: ``1024``
+   :Type: integer
+
+
+.. envvar:: kernel/net/ipv4/neigh/default/gc_thresh2
+
+   Sets the threshold at which the kernel garbage collector starts removing
+   ARP cache entries older than 5 seconds.
+
+   :Default value: ``2048``
+   :Type: integer
+
+
+.. envvar:: kernel/net/ipv4/neigh/default/gc_thresh3
+
+   Sets the maximum number of non-permanent ARP cache entries.
+
+   :Default value: ``4096``
+   :Type: integer
+
 
 Samba
 =====
@@ -736,6 +927,14 @@ default is ``32808``.
 If the log file :file:`/var/log/samba/log.smbd` contains errors like ``Failed to
 init inotify - Too many open files``, the kernel and Samba limits should be
 increased and the services should be restarted.
+
+.. envvar:: samba/max_open_files
+
+   Sets the maximum number of files that the Samba service can open.
+   If you increase this value,
+   you may also need to increase the Unix process limits.
+
+   :Type: integer
 
 .. _systemstats:
 
@@ -776,6 +975,14 @@ To distribute the load of the login processes evenly between CPU cores,
 :envvar:`mail/dovecot/limits/imap-login/process_min_avail` should be set to the
 number of CPU cores in the system.
 
+.. envvar:: mail/dovecot/limits/imap-login/process_min_avail
+
+   Sets the minimum number of ``imap-login`` processes
+   that should always be available to accept new client connections.
+
+   :Default value: ``0``
+   :Type: integer
+
 .. _udm-rest-api:
 
 |UCSREST| performance scaling
@@ -794,6 +1001,15 @@ The number of instances to configure depends on the workload and the server
 system. As a general rule of thumb these should not be higher than the machines
 CPU cores. With :envvar:`directory/manager/rest/processes`\ ``=0`` all available CPU cores
 are used.
+
+.. envvar:: directory/manager/rest/processes
+
+   Sets how many *UDM HTTP REST API* processes the system starts in parallel.
+   When set to ``0``,
+   the service starts one process per CPU core.
+
+   :Default value: ``1``
+   :Type: integer
 
 .. _biblio:
 
