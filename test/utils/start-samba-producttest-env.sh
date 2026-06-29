@@ -16,4 +16,4 @@ export KVM_OWNER="${BUILD_USER_ID:=$USER}"
 export JOB_BASE_NAME="${JOB_BASE_NAME:=product-test-samba-multi-server-setup}"
 
 
-exec ./utils/start-test.sh product-tests/samba/multi-server-setup.cfg
+exec ./utils/start-test.sh scenarios/base/multi-server-setup.cfg
