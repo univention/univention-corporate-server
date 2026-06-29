@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: giflib
+fix: 5.1.4-3+deb10u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-26740 (CVSS score 8.2 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H).
+ * CVE-2026-23868 (CVSS score 5.1 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59562]
+cve:
+- CVE-2026-23868
+- CVE-2026-26740
