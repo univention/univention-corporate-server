@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libdbi-perl
+fix: 1.636-1+deb9u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-10879 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-9698 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59567]
+cve:
+- CVE-2026-9698
+- CVE-2026-10879
