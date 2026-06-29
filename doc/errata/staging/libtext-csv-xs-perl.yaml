@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libtext-csv-xs-perl
+fix: 1.26-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-7111 (CVSS score 8.4 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+bug: [59574]
+cve:
+- CVE-2026-7111
