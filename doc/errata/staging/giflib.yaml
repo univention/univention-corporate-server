@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: giflib
+fix: 5.1.4-0.4+deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-26740 (CVSS score 8.2 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H).
+ * CVE-2026-23868 (CVSS score 5.1 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59568]
+cve:
+- CVE-2026-23868
+- CVE-2026-26740
