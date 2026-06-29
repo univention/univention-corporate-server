@@ -825,6 +825,7 @@ class _OpenAPIBase:
                         {'$ref': '#/components/parameters/objects.get.query.scope'},
                         {'$ref': '#/components/parameters/objects.get.query.query'},
                         {'$ref': '#/components/parameters/objects.get.query.hidden'},
+                        {'$ref': '#/components/parameters/objects.get.query.opened'},
                         {'$ref': '#/components/parameters/objects.get.query.properties'},
                         *pagination_parameters,
                         *global_parameters,

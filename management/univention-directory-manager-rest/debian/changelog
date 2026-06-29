@@ -1,3 +1,10 @@
+univention-directory-manager-rest (12.6.5) unstable; urgency=medium
+
+  * Bug #59575: add missing `opened` query parameter to the OpenAPI/Swagger
+    schema of the object search
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 15 Jul 2026 12:21:58 +0200
+
 univention-directory-manager-rest (12.6.4) unstable; urgency=medium
 
   * Bug #59634: ignore system accounts in user metrics total count
