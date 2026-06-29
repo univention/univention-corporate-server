@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openvpn
+fix: 2.4.0-6+deb9u6
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-40215 (CVSS score unknown).
+bug: [59573]
+cve:
+- CVE-2026-40215
