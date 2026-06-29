@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libhttp-daemon-perl
+fix: 6.01-3+deb10u2
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-8450 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N).
+bug: [59565]
+cve:
+- CVE-2026-8450
