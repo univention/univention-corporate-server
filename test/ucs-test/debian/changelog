@@ -1,3 +1,11 @@
+ucs-test (12.6.18) unstable; urgency=medium
+
+  * Bug #47464: Require univention-ldap-server instead of
+    univention-ldap-overlay-memberof in the memberOf tests, as the overlay
+    configuration was merged into univention-ldap-server.
+
+ -- Christian Castens <castens@univention.de>  Tue, 30 Jun 2026 12:00:00 +0200
+
 ucs-test (12.6.17) unstable; urgency=medium
 
   * Bug #47464: add test to check memberOf indexing

@@ -131,7 +131,6 @@ Variables: server/role
 Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/41univention-ldap-overlay-memberof
-Variables: ldap/overlay/memberof
 Variables: ldap/overlay/memberof/.*
 
 Type: subfile

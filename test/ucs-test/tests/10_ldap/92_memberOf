@@ -6,7 +6,7 @@
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ## packages:
-##  - univention-ldap-overlay-memberof
+##  - univention-ldap-server
 ## exposure: safe
 
 # shellcheck source=../../lib/base.sh

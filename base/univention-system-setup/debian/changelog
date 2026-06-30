@@ -1,6 +1,8 @@
-univention-system-setup (15.6.0) UNRELEASED; urgency=medium
+univention-system-setup (15.6.0) unstable; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump
+  * Bug #47464: Stop selecting the univention-ldap-overlay-memberof package
+    during setup. The memberOf overlay is now part of univention-ldap-server.
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:49 +0200
 

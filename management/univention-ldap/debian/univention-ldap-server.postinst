@@ -92,8 +92,7 @@ ucr set \
 	ldap/debug/level?none \
 	ldap/acl/user/password/change?no \
 	ldap/acl/slavepdc?yes \
-	ldap/acl/nestedgroups?yes \
-	ldap/overlay/memberof?true
+	ldap/acl/nestedgroups?yes
 
 eval "$(univention-config-registry shell)"
 
