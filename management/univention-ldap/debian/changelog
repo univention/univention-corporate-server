@@ -1,3 +1,12 @@
+univention-ldap (18.6.4) unstable; urgency=medium
+
+  * Bug #47464: Merge univention-ldap-overlay-memberof into univention-ldap-server.
+    The memberOf overlay configuration, UCR variables and the
+    univention-update-memberof script are now shipped by univention-ldap-server;
+    univention-ldap-overlay-memberof becomes a transitional package.
+
+ -- Christian Castens <castens@univention.de>  Tue, 30 Jun 2026 12:00:00 +0200
+
 univention-ldap (18.6.3) unstable; urgency=medium
 
   * Bug #47464: Drop Pre-Depends univention-ldap-overlay-memberof from debian/control.

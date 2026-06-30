@@ -3,9 +3,13 @@ release: "5.2"
 version: [6]
 scope: ucs_5.2-0-errata5.2-6
 src: univention-ldap
-fix: 18.6.3
+fix: 18.6.4
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
+ * The configuration of the OpenLDAP "memberof" overlay has been merged into
+   the `univention-ldap-server` package. The
+   `univention-ldap-overlay-memberof` package is now an empty transitional
+   package.
  * It is now possible to create an LDAP index for the "memberOf" attribute.
    Additionally, on new installations the "memberOf" attribute is now indexed
    by default (equality index). Existing installations are intentionally left

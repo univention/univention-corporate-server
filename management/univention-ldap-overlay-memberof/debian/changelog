@@ -1,3 +1,10 @@
+univention-ldap-overlay-memberof (14.6.3) unstable; urgency=medium
+
+  * Bug #47464: Turn into a transitional package. The OpenLDAP memberOf overlay
+    configuration has been merged into univention-ldap-server.
+
+ -- Christian Castens <castens@univention.de>  Tue, 30 Jun 2026 12:00:00 +0200
+
 univention-ldap-overlay-memberof (14.6.2) unstable; urgency=medium
 
   * Bug #47464: Add "Breaks:" for univention-ldap-server (<< 18.6.0) to debian/control

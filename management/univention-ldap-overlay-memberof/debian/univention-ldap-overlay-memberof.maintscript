@@ -1,0 +1,2 @@
+rm_conffile /etc/univention/templates/info/univention-ldap-overlay-memberof.info 14.6.3~
+rm_conffile /etc/univention/registry.info/variables/univention-ldap-overlay-memberof.cfg 14.6.3~
