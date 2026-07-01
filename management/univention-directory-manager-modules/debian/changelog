@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.6.3) unstable; urgency=medium
+
+  * Bug #59578: cache encoding argument introspection of mapping
+    functions
+
+ -- Florian Best <best@univention.de>  Wed, 01 Jul 2026 16:23:09 +0200
+
 univention-directory-manager-modules (17.6.2) unstable; urgency=medium
 
   * univention/dev/internal/dev-issues/dev-incidents#222: be robust for invalid data

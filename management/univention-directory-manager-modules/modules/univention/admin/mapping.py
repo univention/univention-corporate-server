@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import base64
 import datetime
+import functools
 import inspect
 from typing import TYPE_CHECKING, TypeVar
 
@@ -451,6 +452,11 @@ class dontMap:
     """'Do nothing' mapping."""
 
 
+@functools.lru_cache
+def supports_encoding(func):
+    return 'encoding' in inspect.getfullargspec(func).args
+
+
 class mapping:
     """Map |LDAP| attribute names and values to |UDM| property names and values and back."""
 
@@ -577,12 +583,12 @@ class mapping:
             # sambaLogonHours might be [0], see Bug #33703
             return b''
 
-        encoding, strictness = self._map_encoding.get(map_name, ('UTF-8', 'strict'))
-        strictness = encoding_errors or strictness
         if not map_value:
             map_value = MapToBytes
         kwargs = {}
-        if 'encoding' in inspect.getfullargspec(map_value).args:
+        if supports_encoding(map_value):
+            encoding, strictness = self._map_encoding.get(map_name, ('UTF-8', 'strict'))
+            strictness = encoding_errors or strictness
             kwargs['encoding'] = (encoding, strictness)
 
         try:
@@ -627,10 +633,9 @@ class mapping:
         if not unmap_value:
             unmap_value = UnmapToUnicode
 
-        encoding, strictness = self._unmap_encoding.get(unmap_name, ('UTF-8', 'strict'))
         kwargs = {}
-        if 'encoding' in inspect.getfullargspec(unmap_value).args:
-            kwargs['encoding'] = (encoding, strictness)
+        if supports_encoding(unmap_value):
+            kwargs['encoding'] = self._unmap_encoding.get(unmap_name, ('UTF-8', 'strict'))
 
         try:
             return unmap_value(value, **kwargs)
@@ -642,7 +647,7 @@ class mapping:
         info = mapDict(self, oldattr)
         for key, func in self._unmap_func.items():
             kwargs = {}
-            if 'encoding' in inspect.getfullargspec(func).args:
+            if supports_encoding(func):
                 kwargs['encoding'] = self._unmap_encoding.get(key, ('UTF-8', 'strict'))
             info[key] = func(oldattr, **kwargs)
         return info
