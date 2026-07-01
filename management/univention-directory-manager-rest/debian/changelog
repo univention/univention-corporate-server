@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.6.2) unstable; urgency=medium
+
+  * Bug #59579: use simple LDAP search for unopened objects
+
+ -- Florian Best <best@univention.de>  Wed, 01 Jul 2026 18:13:58 +0200
+
 univention-directory-manager-rest (12.6.1) unstable; urgency=medium
 
   [ Marius Meschter ]

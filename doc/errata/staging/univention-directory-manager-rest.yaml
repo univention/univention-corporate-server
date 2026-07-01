@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-directory-manager-rest
+fix: 12.6.2
+desc: |
+ This update addresses the following issue:
+ * The performance of object searches using `opened=0` has been improved. The
+   API now avoids loading and decoding full UDM objects when only object
+   metadata is requested. This significantly speeds up large search result
+   sets.
+bug: [59579]

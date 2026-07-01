@@ -1569,10 +1569,15 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         for obj in objects or []:
             if obj is None:
                 continue
-            objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+            if isinstance(obj, tuple):
+                dn, attrs = obj
+                entry = Object.get_dn_representation(module, dn, attrs, self.ldap_connection)
+                uri = entry['uri'] = self.abspath(entry['objectType'], quote_dn(dn))
+            else:
+                objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
+                entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection, opened=opened)
+                uri = entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
 
-            entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection, opened=opened)
-            uri = entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
             if not opened and props and props != ['*']:
                 uri = uri + f"?{urlencode({'properties': props}, True)}"
             self.add_link(entry, 'self', uri, name=entry['dn'], title=entry['id'], dont_set_http_header=True)
@@ -1663,8 +1668,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
         last_page = page
         for _i in range(current_page, page or 1):
-            # TODO: if we want to improve performance one day for `opened == False` pass `simple=True`
-            objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
+            objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, simple=not opened, simple_attrs=['entryUUID', 'univentionObjectType'], serverctrls=serverctrls, response=ctrls)
             for control in ctrls.get('ctrls', []):
                 if control.controlType == SimplePagedResultsControl.controlType:
                     page_ctrl.cookie = control.cookie
@@ -1971,6 +1975,19 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         if 'PATCH' in methods:
             self.set_header('Accept-Patch', 'application/json-patch+json, application/json')
         return props
+
+    @classmethod
+    def get_dn_representation(cls, module, dn, attrs, ldap_connection):
+        # FIXME: it's not ensured that every object has univentionObjectType (domains upgraded from < UCS 3)
+        # we are fallbacking here to the module, which might also be wrong, e.g. for virtual computers/computer module
+        return {
+            'dn': dn,
+            'objectType': attrs.get('univentionObjectType', [module.name.encode()])[0].decode('UTF-8'),
+            'id': '+'.join(explode_rdn(dn, True)),
+            'position': ldap_connection.parentDn(dn),
+            'properties': {},
+            'uuid': attrs['entryUUID'][0].decode('ASCII'),
+        }
 
     @classmethod
     def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False, opened=True):
