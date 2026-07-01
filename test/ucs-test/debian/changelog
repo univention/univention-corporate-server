@@ -1,3 +1,10 @@
+ucs-test (12.6.19) unstable; urgency=medium
+
+  * Make the provisioning e2e-tests docker image tag configurable via the
+    PROVISIONING_E2E_TESTS_IMAGE_TAG environment variable
+
+ -- Jaime Conde <conde-segovia@univention.de>  Wed, 01 Jul 2026 12:00:00 +0200
+
 ucs-test (12.6.18) unstable; urgency=medium
 
   * Bug #47464: Require univention-ldap-server instead of
