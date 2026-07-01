@@ -578,12 +578,6 @@ SPDX-License-Identifier = "LicenseRef-RFC-Document"
 SPDX-FileCopyrightText = "2003 The Internet Society"
 
 [[annotations]]
-path = "management/univention-ldap-overlay-memberof/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2008-2026 Univention GmbH"
-
-[[annotations]]
 path = "management/univention-management-console/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
