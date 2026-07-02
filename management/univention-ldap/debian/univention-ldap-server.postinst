@@ -139,12 +139,6 @@ if [ "$1" = "configure" ]; then
 			/etc/init.d/slapd start
 		fi
 		ucr set backup/clean/max_age?365
-
-		# Bug #47464: update the reverse group membership (memberOf) once on
-		# fresh installations (merged from univention-ldap-overlay-memberof)
-		if pidof slapd >/dev/null && [ -e /var/univention-join/joined ]; then
-			/usr/share/univention-ldap-overlay-memberof/univention-update-memberof || true
-		fi
 	fi
 
 	## load the listener module
