@@ -12,6 +12,7 @@ script/univention-remove	usr/sbin/
 script/univention-updater-check	usr/share/univention-updater/
 script/univention-updater-umc-dist-upgrade	usr/share/univention-updater/
 script/univention-updater-umc-univention-install	usr/share/univention-updater/
+univention-maintenance	usr/share/univention-updater/
 usr/bin/univention-actualise	usr/share/univention-updater/
 usr/bin/univention-list-installed-unmaintained-packages	usr/sbin/
 usr/bin/univention-policy-maintenance	usr/lib/univention-directory-policy/
