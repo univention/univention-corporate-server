@@ -9,5 +9,8 @@
 override_dh_installinit:
 	dh_installinit -r -u"defaults 05 99"
 
+override_dh_installsystemd:
+	dh_installsystemd --restart-after-upgrade
+
 %:
 	dh $@ --with ucr

@@ -18,10 +18,7 @@ case "$1" in
 			# configure firewall
 			ucr set security/packetfilter/package/univention-postgresql-17/tcp/5432/all="ACCEPT" \
 				security/packetfilter/package/univention-postgresql-17/tcp/5432/all/en="postgresql"
-			if [ -x "/etc/init.d/univention-firewall" ]
-			then
-				invoke-rc.d univention-firewall restart
-			fi
+			deb-systemd-invoke restart univention-firewall.service || true
 		fi
 
 		# restart postgresql to load correct configfiles (Bug #27786)

@@ -148,9 +148,7 @@ if [ ! -f /etc/dovecot/global-acls ]; then
 	chown root:dovemail /etc/dovecot/global-acls
 fi
 
-if [ -x "/etc/init.d/univention-firewall" ]; then
-	deb-systemd-invoke restart univention-firewall
-fi
+deb-systemd-invoke restart univention-firewall.service || true
 
 if [ "$(ucr get mail/dovecot/logging/log_path)" = "syslog" -a -x /etc/init.d/rsyslog ]; then
 	deb-systemd-invoke force-reload rsyslog
