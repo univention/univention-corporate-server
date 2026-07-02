@@ -45,7 +45,7 @@ systemctl restart univention-directory-listener
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 12.0.20-1; then
 	ucr unset security/packetfilter/package/univention-management-console-server/tcp/6670/all \
 		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en
-	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+	deb-systemd-invoke restart univention-firewall.service || true
 fi
 
 # protect secret contents!

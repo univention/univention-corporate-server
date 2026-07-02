@@ -134,7 +134,7 @@ ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/749/all="ACCEPT" \
 		security/packetfilter/package/univention-samba4/tcp/749/all/en="Kerberos admin"
 
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 divert_univention_heimdal_service_cfg() {
 	univention_heimdal_service_cfg='/etc/univention/service.info/services/univention-heimdal-kdc.cfg'
