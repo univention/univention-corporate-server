@@ -22,6 +22,8 @@ RESUME_DEBUG () {
     trap "debug_info" DEBUG
 }
 
+# redirect FD 4 to stderr, if it's not opened yet
+test -e /proc/self/fd/4 || exec 4>&2
 
 set -o functrace
 trap "debug_info" DEBUG

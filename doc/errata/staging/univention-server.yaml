@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-server
+fix: 17.6.0
+desc: |
+ This update addresses the following issue:
+ * The `server_password_change` utilities no longer print "Bad file
+   descriptor" error messages when invoked via Debian post installation
+   scripts. In this case, debug output is written to standard error instead.
+bug: [56630]
