@@ -47,7 +47,7 @@ case "$1" in
 			ucr commit /etc/freeradius/3.0/radiusd.conf
 		fi
 
-		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+		deb-systemd-invoke restart univention-firewall.service || true
 		systemctl try-restart univention-directory-listener
 
 		# Bug #58132: make sure that a freeradius.secret exists as early as possible

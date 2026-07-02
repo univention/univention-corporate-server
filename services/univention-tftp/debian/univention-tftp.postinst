@@ -16,7 +16,7 @@ update-inetd --group BOOT --add "tftp               dgram   udp     wait \
 # configure firewall
 ucr set security/packetfilter/package/univention-tftp/udp/69/all=ACCEPT \
 		security/packetfilter/package/univention-tftp/udp/69/all/en="TFTP"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 ;;
 esac
 

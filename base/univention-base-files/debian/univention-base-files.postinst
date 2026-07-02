@@ -78,7 +78,7 @@ univention-config-registry set \
 	security/packetfilter/package/univention-base-files/udp/123/all=ACCEPT \
 	security/packetfilter/package/univention-base-files/udp/123/all/en="ntp"
 
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 # The nouveau driver from Linux 3.10 is incompatible with the UCS xorg userland (Bug #31701)
 univention-config-registry set kernel/blacklist?"nouveau"

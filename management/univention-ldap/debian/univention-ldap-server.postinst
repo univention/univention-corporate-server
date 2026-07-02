@@ -74,7 +74,7 @@ ucr set \
 	security/packetfilter/package/univention-ldap-server/tcp/7389/all/en="LDAP" \
 	security/packetfilter/package/univention-ldap-server/tcp/7636/all="ACCEPT" \
 	security/packetfilter/package/univention-ldap-server/tcp/7636/all/en="LDAPS"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 [ -s /etc/ldap/dh_2048.pem ] || cp /usr/share/univention-ldap/dh_2048.pem /etc/ldap/
 
