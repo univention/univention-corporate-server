@@ -54,13 +54,13 @@ class TokenDB:
 
     def insert_token(self, username, method, token):
         sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
-        data = {"username": username, "method": method, "ts": datetime.datetime.now(datetime.UTC).replace(tzinfo=None), "token": token}
+        data = {"username": username, "method": method, "ts": datetime.datetime.now(datetime.UTC), "token": token}
         with self.cursor() as cur:
             cur.execute(sql, data)
 
     def update_token(self, username, method, token):
         sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
-        data = {"username": username, "method": method, "ts": datetime.datetime.now(datetime.UTC).replace(tzinfo=None), "token": token}
+        data = {"username": username, "method": method, "ts": datetime.datetime.now(datetime.UTC), "token": token}
         with self.cursor() as cur:
             cur.execute(sql, data)
 
@@ -94,10 +94,21 @@ class TokenDB:
 (id SERIAL PRIMARY KEY NOT NULL,
 username VARCHAR(255) NOT NULL,
 method VARCHAR(255) NOT NULL,
-timestamp TIMESTAMP NOT NULL,
+timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
 token VARCHAR(255) NOT NULL);""")
             cur.execute("ALTER TABLE tokens ADD CONSTRAINT unique_id UNIQUE (id);")
             cur.execute("ALTER TABLE tokens ADD CONSTRAINT unique_username UNIQUE (username);")
+
+    def migrate_timestamp_to_timestamptz(self):
+        """UCS 5.3 migration"""
+        self.logger.info("Migrating tokens.timestamp to TIMESTAMP WITH TIME ZONE...")
+        with self.cursor() as cur:
+            cur.execute("""
+                ALTER TABLE tokens
+                ALTER COLUMN timestamp
+                TYPE TIMESTAMP WITH TIME ZONE
+                USING timestamp AT TIME ZONE 'UTC';
+            """)
 
     def open_db(self):
         password = os.getenv("SELF_SERVICE_DB_SECRET")
