@@ -11,6 +11,24 @@
 systemctl try-restart univention-directory-listener
 
 
+if [ "$1" = configure ] && dpkg --compare-versions "$2" lt 8.0.1~; then
+    python3 - <<EOF
+from univention.management.console.log import MODULE
+from univention.management.console.modules.passwordreset.tokendb import TokenDB
+from univention.config_registry import ucr
+
+
+SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+IS_SELFSERVICE_MASTER = '%(hostname)s.%(domainname)s' % ucr == SELFSERVICE_MASTER
+
+if IS_SELFSERVICE_MASTER:
+    db = TokenDB(MODULE)
+    try:
+        db.migrate_timestamp_to_timestamptz()
+    finally:
+        db.close_db()
+EOF
+fi
 if [ "$1" = configure ] && dpkg --compare-versions "$2" lt 7.1.0~; then
     if (ucr get self-service/ldap_attributes | grep -qE '(^st,|,st,|st$)' && ! ucr get self-service/ldap_attributes | grep -qE '(^c,|,c,|c$)'); then
         ucr set self-service/ldap_attributes="$(ucr get self-service/ldap_attributes),c"
