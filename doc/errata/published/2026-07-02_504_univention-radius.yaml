@@ -14,3 +14,6 @@ desc: |
    This update will overwrite any custom attribute defined on
    the radius dictionary in `/etc/freeradius/3.0/dictionary`.
 bug: [59456]
+erratum: 504
+announced: 2026-07-02
+support: core
