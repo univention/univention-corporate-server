@@ -19,7 +19,7 @@ if [ "$1" = "remove" ]; then
 		security/packetfilter/package/univention-squid/tcp/3128/all/en \
 		security/packetfilter/package/univention-squid/tcp/3128/all
 
-	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+	deb-systemd-invoke restart univention-firewall.service || true
 
 	[ -e "/etc/squid.secret" ] && rm -f /etc/squid.secret
 

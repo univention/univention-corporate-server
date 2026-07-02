@@ -1,1 +1,3 @@
 etc/security/packetfilter.d/50_local.sh	etc/security/packetfilter.d/
+univention-firewall-start	usr/share/univention-firewall/
+univention-firewall-stop	usr/share/univention-firewall/

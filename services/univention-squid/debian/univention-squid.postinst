@@ -38,7 +38,7 @@ deb-systemd-invoke restart squid
 # configure firewall
 ucr set security/packetfilter/package/univention-squid/tcp/3128/all="ACCEPT" \
 		security/packetfilter/package/univention-squid/tcp/3128/all/en="HTTP proxy"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/60univention-squid.uinst

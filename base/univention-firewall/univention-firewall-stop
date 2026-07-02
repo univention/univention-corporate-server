@@ -1,0 +1,34 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# Flush univention-firewall iptables rules to a permissive state.
+
+# shellcheck source=/dev/null
+. /usr/share/univention-lib/ucr.sh
+
+apply_docker_rules() {
+	rule="/etc/security/packetfilter.d/20_docker.sh"
+	if [ -x "$rule" ]; then
+		if ! is_ucr_true security/packetfilter/docker/disabled; then
+			$rule
+		fi
+	fi
+}
+
+if ! iptables --wait -t filter -L 2>/dev/null >/dev/null; then
+	echo "univention-firewall: iptables --wait seems to be unsupported." >&2
+	exit 0
+fi
+
+iptables --wait -P INPUT ACCEPT
+iptables --wait -P OUTPUT ACCEPT
+iptables --wait -F
+iptables --wait -F -t nat
+iptables --wait -F -t mangle
+# always apply docker rules during stop
+apply_docker_rules
+ip6tables --wait -P INPUT ACCEPT
+ip6tables --wait -P OUTPUT ACCEPT
+ip6tables --wait -F
+ip6tables --wait -F -t mangle
