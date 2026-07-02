@@ -11,3 +11,6 @@ desc: |
    properties are now ignored from being evaludated in delegative
    administation.
 bug: [59560]
+erratum: 502
+announced: 2026-07-02
+support: core
