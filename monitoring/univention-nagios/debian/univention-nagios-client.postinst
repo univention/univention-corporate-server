@@ -32,7 +32,7 @@ fi
 # configure firewall
 ucr set security/packetfilter/package/univention-nagios-client/tcp/5666/all="ACCEPT" \
 		security/packetfilter/package/univention-nagios-client/tcp/5666/all/en="Nagios NRPE"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 if [ "$1" = "configure" ]; then
 	systemctl try-restart univention-directory-listener
