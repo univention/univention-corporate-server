@@ -21,7 +21,7 @@ if [ "$1" = "remove" ]; then
 			security/packetfilter/package/univention-samba/tcp/445/all/en \
 			security/packetfilter/package/univention-samba/udp/445/all \
 			security/packetfilter/package/univention-samba/udp/445/all/en
-	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+	deb-systemd-invoke restart univention-firewall.service || true
 
 	ucr unset samba/share/home \
 			samba/share/groups \
