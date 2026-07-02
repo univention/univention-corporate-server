@@ -1,0 +1,130 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# Run Univention system maintenance (updater/actualise) if permitted by LDAP policy.
+
+# shellcheck source=/dev/null
+
+check_policy() {
+	eval "$(univention_policy_result -D "${ldap_hostdn:?}" -y /etc/machine.secret -s "${ldap_hostdn:?}")"
+	case "$1" in
+	start) [ "${univentionInstallationStartup:-}" = 1 ] ;;
+	*) return 2 ;;
+	esac
+}
+
+dmesg -n 1
+eval "$(univention-config-registry shell)"
+
+# clean up updater settings
+if [ -n "${update_reboot_required:-}" ]; then
+	univention-config-registry unset update/reboot/required >/dev/null 2>&1
+fi
+
+# check LDAP connectivity
+if ! netcat -q0 -w4 "${ldap_server_name:-}" "${ldap_server_port:=7389}" </dev/null >/dev/null 2>&1; then
+	echo "univention-maintenance: cannot reach LDAP server ${ldap_server_name:-} on port ${ldap_server_port}" >&2
+	exit 1
+fi
+
+if ! check_policy start; then
+	echo "univention-maintenance: LDAP policy does not permit startup update."
+	exit 0
+fi
+
+# determine repository server for connectivity check
+# shellcheck disable=SC2154
+repository_protocol="${repository_online_server%://*}"
+[ "$repository_protocol" = "$repository_online_server" ] && repository_protocol="http"
+[ -z "${proxy_https:-}" ] && [ -n "${proxy_http:-}" ] && proxy_https="$proxy_http"
+
+if [ -n "$proxy_http" ] && [ "$repository_protocol" = "http" ]; then
+	repository_server="${proxy_http}"
+elif [ -n "$proxy_https" ] && [ "$repository_protocol" = "https" ]; then
+	repository_server="${proxy_https}"
+else
+	repository_server="$repository_online_server"
+fi
+repository_server="${repository_server#*://}"
+repository_server="${repository_server%:*}" # strip port
+repository_server="${repository_server##*@}" # strip login information
+repository_server="${repository_server%/*}" # strip path
+
+if ! ping -c 1 "$repository_server" >/dev/null 2>&1; then
+	echo "univention-maintenance: cannot reach repository server ${repository_server}" >&2
+	exit 1
+fi
+
+upd_local=0
+if [ "${local_repository:-}" = "yes" ] || [ "${local_repository:-}" = "true" ]; then
+	mode="local"
+	/usr/share/univention-updater/univention-updater local --silent --check >/dev/null 2>&1 ||
+		upd_local=$?
+else
+	mode="net"
+fi
+upd_net=0
+if [ "${univentionUpdateActivate:-}" = "TRUE" ]; then
+	/usr/share/univention-updater/univention-updater net --silent --check >/dev/null 2>&1 ||
+		upd_net=$?
+fi
+actualise=0
+/usr/share/univention-updater/univention-actualise --dist-upgrade --silent --check >/dev/null 2>&1 ||
+	actualise=$?
+
+if [ "$upd_local$upd_net$actualise" = 000 ]; then
+	echo "univention-maintenance: nothing to do."
+	exit 0
+fi
+
+if echo "${update_warning:-}" | grep -E -q -i 'yes|true'; then
+	if echo "${update_warning_coloured:-}" | grep -E -q -i 'yes|true'; then
+		cred=$'\033[31;1m'
+		cend=$'\033[0m'
+	else
+		cred=''
+		cend=''
+	fi
+
+	if echo "${update_warning_lang:-}" | grep -E -q -i '^de$|^ger'; then
+		wall <<-EOF
+		${cred}!!!!!!!!!! Achtung
+		!!!!!!!!!! die Aktualisierung des Systems kann je nach
+		!!!!!!!!!! Umfang der Pakete eine lange Zeit in Anspruch
+		!!!!!!!!!! nehmen.
+		!!!!!!!!!!
+		!!!!!!!!!! Das System setzt den Startvorgang nach
+		!!!!!!!!!! der Aktualisierung fort.
+		!!!!!!!!!! Schalten Sie das System erst aus, wenn die
+		!!!!!!!!!! Aktualisierung abgeschlossen ist.${cend}
+		EOF
+	else
+		wall <<-EOF
+		${cred}!!!!!!!!!! Warning
+		!!!!!!!!!! The update process might take a
+		!!!!!!!!!! considerable amount of time depending on the
+		!!!!!!!!!! number and size of installed packages.
+		!!!!!!!!!!
+		!!!!!!!!!! Do not switch off the system before
+		!!!!!!!!!! the update is completely finished.${cend}
+		EOF
+	fi
+fi
+
+if [ "$univentionUpdateActivate" = "TRUE" ]; then
+	if [ -n "${univentionUpdateVersion:-}" ]; then
+		echo "Starting Univention Updater [$univentionUpdateVersion]"
+		/usr/share/univention-updater/univention-updater "$mode" --noninteractive --updateto "$univentionUpdateVersion"
+	else
+		echo "Starting Univention Updater"
+		/usr/share/univention-updater/univention-updater "$mode" --noninteractive
+	fi
+	echo " Univention Actualise"
+else
+	echo "Starting Univention Actualise"
+fi
+
+/usr/share/univention-updater/univention-actualise --dist-upgrade --silent
+
+dmesg -n 8
