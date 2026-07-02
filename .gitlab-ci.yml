@@ -215,6 +215,7 @@ errata validation:
 
 sonarqube:
   stage: test
+  needs: []
   tags:
     - dm-m
   image:
