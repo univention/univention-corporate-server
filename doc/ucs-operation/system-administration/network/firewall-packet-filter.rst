@@ -63,7 +63,7 @@ Verify the resulting network access from a suitable host.
    :caption: Remove existing firewall rules
    :name: system-administration-network-firewall-remove-rules-listing
 
-   $ service univention-firewall flush
+   $ systemctl start univention-firewall-flush.service
 
 .. seealso::
 
