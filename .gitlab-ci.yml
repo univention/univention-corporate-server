@@ -218,7 +218,7 @@ sonarqube:
   tags:
     - dm-m
   image:
-    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/sonarsource/sonar-scanner-cli:11
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/sonarsource/sonar-scanner-cli:12.1.0.3233_8.0.1@sha256:23ca0f137965d9dff2198074043fd48d386280bc5d0ccac8c8349cea4cf096a9
     entrypoint: [""]
 
   variables:
