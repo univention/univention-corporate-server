@@ -12,3 +12,6 @@ desc: |
    reached. The retry logic now performs a limited number of authentication
    attempts before reporting the authentication failure to the caller.
 bug: [58380]
+erratum: 503
+announced: 2026-07-02
+support: core
