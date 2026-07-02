@@ -59,7 +59,7 @@ if [ "$1" = "remove" ]; then
 			security/packetfilter/package/univention-samba4/udp/464/all/en \
 			security/packetfilter/package/univention-samba4/tcp/749/all \
 			security/packetfilter/package/univention-samba4/tcp/749/all/en
-	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+	deb-systemd-invoke restart univention-firewall.service || true
 
 	systemctl try-restart univention-directory-listener
 fi
