@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Univention package maintenance
+After=network.target remote-fs.target nss-lookup.target slapd.service univention-directory-policy.service
+Wants=nss-lookup.target slapd.service univention-directory-policy.service
+ConditionPathExists=/var/univention-join/joined
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/share/univention-updater/univention-maintenance
+TimeoutStartSec=infinity
+Restart=no
+KillMode=control-group
+IgnoreSIGPIPE=no
+StandardOutput=append:/var/log/univention/updater.log
+StandardError=append:/var/log/univention/updater.log
+
+[Install]
+WantedBy=multi-user.target
