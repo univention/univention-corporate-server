@@ -67,6 +67,13 @@ if [ -f /etc/timezone ]; then
 	rm -f /etc/timezone
 fi
 
+if [ "$server_role" = domaincontroller_master ] && have univention-self-service-migrate-passwordreset-db; then
+	if ! univention-self-service-migrate-passwordreset-db >&3 2>&3; then
+		echo "Warning: Could not migrate password reset token timestamps; legacy timestamps will be treated as UTC." >&3
+	fi
+
+fi
+
 if is_installed univention-ldap-overlay-memberof; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages purge univention-ldap-overlay-memberof >&3 2>&3
 fi
