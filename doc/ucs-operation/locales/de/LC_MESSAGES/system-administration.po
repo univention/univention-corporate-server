@@ -24,8 +24,8 @@ msgstr ""
 "$ echo \"$ldap_server_name\"\n"
 "primary.example.com"
 
-msgid "$ service univention-firewall flush"
-msgstr "$ service univention-firewall flush"
+msgid "$ systemctl start univention-firewall-flush.service"
+msgstr "$ systemctl start univention-firewall-flush.service"
 
 msgid "$ ssh -p PORT USERNAME@HOSTNAME"
 msgstr "$ ssh -p PORT USERNAME@HOSTNAME"

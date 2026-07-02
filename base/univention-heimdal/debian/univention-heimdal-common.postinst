@@ -11,7 +11,7 @@
 # configure firewall
 ucr set security/packetfilter/package/univention-heimdal-common/tcp/544/all=ACCEPT \
         security/packetfilter/package/univention-heimdal-common/tcp/544/all/en="krsh"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 
 eval "$(univention-config-registry shell domainname)"
