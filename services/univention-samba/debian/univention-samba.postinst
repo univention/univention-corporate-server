@@ -134,6 +134,6 @@ ucr set \
 	security/packetfilter/package/univention-samba/tcp/445/all/en="microsoft-ds (Samba)" \
 	security/packetfilter/package/univention-samba/udp/445/all="ACCEPT" \
 	security/packetfilter/package/univention-samba/udp/445/all/en="microsoft-ds (Samba)"
-[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+deb-systemd-invoke restart univention-firewall.service || true
 
 exit 0
