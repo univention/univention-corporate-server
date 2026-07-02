@@ -30,7 +30,6 @@ except ImportError:
     access = None
 
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
-FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
 
 UCR = ConfigRegistry()
 
@@ -342,7 +341,7 @@ def adconnector_stopped():
 
 
 def restart_firewall() -> None:
-    subprocess.call((FIREWALL_INIT_SCRIPT, 'restart'))
+    subprocess.call(('systemctl', 'restart', 'univention-firewall.service'))
 
 
 class AutomaticListenerRestart:
