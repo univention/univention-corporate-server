@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Univention iptables firewall configuration
+After=network.target remote-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/share/univention-firewall/univention-firewall-start
+ExecStop=/usr/share/univention-firewall/univention-firewall-stop
+ExecReload=/usr/share/univention-firewall/univention-firewall-start
+
+[Install]
+WantedBy=multi-user.target

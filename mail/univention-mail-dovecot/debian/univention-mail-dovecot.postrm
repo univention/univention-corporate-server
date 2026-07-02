@@ -33,9 +33,7 @@ case "$1" in
 	;;
 esac
 
-if [ -x "/etc/init.d/univention-firewall" ]; then
-	deb-systemd-invoke restart univention-firewall
-fi
+deb-systemd-invoke restart univention-firewall.service || true
 
 if [ "$1" = "remove" ]
 then

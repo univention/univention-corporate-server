@@ -17,7 +17,7 @@ case "$1" in
 			security/packetfilter/package/univention-radius/udp/1813/all/en \
 			security/packetfilter/package/univention-radius/udp/1814/all \
 			security/packetfilter/package/univention-radius/udp/1814/all/en
-		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+		deb-systemd-invoke restart univention-firewall.service || true
 
 		# shellcheck source=/dev/null
 		. /usr/share/univention-lib/all.sh
