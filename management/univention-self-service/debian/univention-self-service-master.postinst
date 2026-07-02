@@ -11,6 +11,9 @@
 systemctl try-restart univention-directory-listener
 
 
+if [ "$1" = configure ]; then
+    /usr/sbin/univention-self-service-migrate-passwordreset-db || echo "Warning: Could not migrate password reset token timestamps." >&2
+fi
 if [ "$1" = configure ] && dpkg --compare-versions "$2" lt 7.1.0~; then
     if (ucr get self-service/ldap_attributes | grep -qE '(^st,|,st,|st$)' && ! ucr get self-service/ldap_attributes | grep -qE '(^c,|,c,|c$)'); then
         ucr set self-service/ldap_attributes="$(ucr get self-service/ldap_attributes),c"
