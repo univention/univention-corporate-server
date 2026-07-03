@@ -320,15 +320,15 @@ def restart_listener() -> None:
 
 
 def stop_adconnector() -> None:
-    subprocess.check_call(['systemctl', 'stop', 'univention-ad-connector'])
+    subprocess.check_call(['systemctl', 'stop', 'univention-ad-connector@connector.service'])
 
 
 def start_adconnector() -> None:
-    subprocess.check_call(['systemctl', 'start', 'univention-ad-connector'])
+    subprocess.check_call(['systemctl', 'start', 'univention-ad-connector@connector.service'])
 
 
 def restart_adconnector() -> None:
-    subprocess.check_call(['systemctl', 'restart', 'univention-ad-connector'])
+    subprocess.check_call(['systemctl', 'restart', 'univention-ad-connector@connector.service'])
 
 
 @contextlib.contextmanager
