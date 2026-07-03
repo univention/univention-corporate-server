@@ -82,7 +82,7 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 . /usr/share/univention-lib/ucr.sh
 
 ad_is_connector_running () {
-	/etc/init.d/univention-ad-connector status >/dev/null 2>&1
+	systemctl is-active --quiet univention-ad-connector@connector.service
 }
 
 function ad_wait_for_synchronization () {
@@ -90,7 +90,7 @@ function ad_wait_for_synchronization () {
 	local configbase="${2:-connector}"
 
 	if ! ad_is_connector_running; then
-		/etc/init.d/univention-ad-connector start
+		systemctl start univention-ad-connector@connector.service
 	fi
 
 	#maybe there are ways be more sure whether synchronisation is
@@ -161,11 +161,11 @@ function ad_set_sync_mode () {
 	info "Setting AD-Connector '$configbase' to ${mode}-mode"
 	if [ "$mode" != "$(ad_get_sync_mode $configbase)" ]; then
 		ucr set $configbase/ad/mapping/syncmode=$mode
-		invoke-rc.d univention-ad-connector restart
+		systemctl restart univention-ad-connector@connector.service
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-ad-connector restart
+			systemctl restart univention-ad-connector@connector.service
 		fi
 	else
 		info "Already in ${mode}-mode"
@@ -688,18 +688,18 @@ function ad_set_retry_rejected ()
 	local retry_old="$(ucr get connector/ad/retryrejected)"
 	if [ "$retry" != "$retry_old" ]; then
 		ucr set connector/ad/retryrejected="$retry"
-		invoke-rc.d univention-ad-connector restart
+		systemctl restart univention-ad-connector@connector.service
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-ad-connector restart
+			systemctl restart univention-ad-connector@connector.service
 		fi
 	fi
 }
 
 function ad_connector_restart ()
 {
-	invoke-rc.d univention-ad-connector restart
+	systemctl restart univention-ad-connector@connector.service
 	sleep 3 # wait a few seconds
 }
 
