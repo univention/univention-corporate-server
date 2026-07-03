@@ -48,7 +48,7 @@ def daemon(lock_file, options):
             os.chdir("/")
             os.umask(0o027)
         else:
-            pf = open(f'/var/run/univention-ad-{options.configbasename}', 'w+')
+            pf = open(f'/run/univention-ad-{options.configbasename}', 'w+')
             pf.write(str(pid))
             pf.close()
             os._exit(0)

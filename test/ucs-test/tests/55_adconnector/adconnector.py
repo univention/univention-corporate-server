@@ -55,7 +55,7 @@ def connector_running_on_this_host():
 
 def restart_adconnector():
     print("Restarting AD-Connector")
-    subprocess.check_call(["service", "univention-ad-connector", "restart"])
+    subprocess.check_call(["systemctl", "restart", "univention-ad-connector@connector.service"])
 
 
 def ad_in_sync_mode(sync_mode, configbase='connector'):
