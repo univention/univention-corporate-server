@@ -1,4 +1,5 @@
 data	usr/share/univention-demo-configuration/
+demo-upgrade	usr/share/univention-demo-configuration/
 portal/*.css	usr/share/univention-demo-configuration/portal/
 portal/*.html	var/www/apps/
 portal/*.jpg.b64	usr/share/univention-demo-configuration/portal/
