@@ -4,4 +4,4 @@ Description[en]=Univention AD Connector
 programs=/usr/bin/python3 -W ignore -m univention.connector.ad.main
 icon=service/ad-connector
 start_type=connector/ad/autostart
-systemd=univention-ad-connector.service
+systemd=univention-ad-connector@connector.service
