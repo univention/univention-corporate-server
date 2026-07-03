@@ -483,8 +483,9 @@ Starting/Stopping the Active Directory Connection
 
 The connector can be started using *Start Active Directory connection service*
 and stopped using *Stop Active Directory connection service*. Alternatively,
-the starting/stopping can also be performed with the
-:file:`/etc/init.d/univention-ad-connector` init-script.
+the starting/stopping can also be performed with
+:command:`systemctl start univention-ad-connector@connector` and
+:command:`systemctl stop univention-ad-connector@connector`.
 
 .. _windows-functional-test-of-basic-settings:
 

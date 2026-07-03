@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Univention AD Connector (%i)
+After=network.target remote-fs.target slapd.service
+Wants=slapd.service
+
+[Service]
+Type=forking
+PIDFile=/run/univention-ad-%i
+ExecCondition=/bin/sh -c 'test -n "$(/usr/sbin/univention-config-registry get %i/ad/ldap/host 2>/dev/null)"'
+ExecStart=/usr/sbin/univention-ad-connector --configbasename %i
+TimeoutStopSec=305
+
+[Install]
+DefaultInstance=connector
+WantedBy=multi-user.target
