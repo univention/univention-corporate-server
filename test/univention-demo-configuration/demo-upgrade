@@ -1,0 +1,32 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2012-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# Boot-time demo system upgrade: update packages and reset demo state.
+
+# make sure listener is running before updating as some join scripts
+# will depend on the listener running ... shut down UMC server during the update
+deb-systemd-invoke stop univention-management-console-server.service
+ucr set --force \
+	listener/autostart=yes \
+	umc/server/autostart=no
+deb-systemd-invoke restart univention-directory-listener.service
+
+# update system to latest package status
+ucr commit /etc/apt/sources.list.d/*
+while [ -e /var/lock/univention-updater ]; do
+	# make sure that there is no other updater process running (Bug #45070)
+	sleep 1
+done
+univention-upgrade --noninteractive
+univention-config-registry set update/reboot/required=false
+
+# disable the listener after an update to make sure that LDAP changes
+# do not affect the actual system ... re-enable the UMC server
+deb-systemd-invoke stop univention-directory-listener.service
+ucr set --force listener/autostart=no
+ucr unset --force umc/server/autostart
+deb-systemd-invoke start univention-management-console-server.service
+
+# update list of apps
+univention-app update
