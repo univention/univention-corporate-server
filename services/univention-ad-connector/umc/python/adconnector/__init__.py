@@ -8,7 +8,6 @@
 
 import functools
 import os.path
-import re
 import subprocess
 import time
 from contextlib import contextmanager
@@ -16,7 +15,6 @@ from contextlib import contextmanager
 import ldap.dn
 import ldap.filter
 import ldb
-import psutil
 import tornado.process
 from ldap import explode_rdn
 from samba.auth import system_session
@@ -305,7 +303,7 @@ class Instance(Base, ProgressMixin):
             return {'success': True, 'message': message}
 
         def _run_it(self, request):
-            result = subprocess.call(('service', 'univention-ad-connector', action))
+            result = subprocess.call(('systemctl', action, 'univention-ad-connector@connector.service'))
             success = not result
             if result:
                 message = _('Switching running state of Active Directory Connector failed.')
@@ -326,20 +324,9 @@ class Instance(Base, ProgressMixin):
         self.status_ssl = ucr.is_true('connector/ad/ldap/ssl')
         self.status_password_sync = ucr.is_true('connector/ad/mapping/user/password/kinit')
         self.status_certificate = bool(fn and os.path.exists(fn))
-        self.status_running = self.__is_process_running('^([^ ]+)?python3.*univention.connector.ad.main$')
+        self.status_running = subprocess.call(('systemctl', 'is-active', '--quiet', 'univention-ad-connector@connector.service')) == 0
         self.status_mode_admember = admember.is_localhost_in_admember_mode(ucr)
         self.status_mode_adconnector = admember.is_localhost_in_adconnector_mode(ucr)
-
-    def __is_process_running(self, command_pattern):
-        pattern = re.compile(command_pattern)
-        for proc in psutil.process_iter():
-            try:
-                cmdline = proc.cmdline() if callable(proc.cmdline) else proc.cmdline
-            except psutil.NoSuchProcess:
-                continue
-            if cmdline and pattern.match(' '.join(cmdline)):
-                return True
-        return False
 
     @sanitize(
         username=StringSanitizer(required=True),
@@ -481,7 +468,7 @@ class Instance(Base, ProgressMixin):
             admember.synchronize_account_position(ad_domain_info, username, password)
 
             _progress(90, _('Starting Active Directory connection service...'))
-            admember.start_service('univention-ad-connector')
+            admember.start_service('univention-ad-connector@connector')
 
             _progress(95, _('Registering LDAP service entry...'))
             admember.add_admember_service_to_localhost()
@@ -549,7 +536,7 @@ class Instance(Base, ProgressMixin):
     @simple_response
     def enable_ssl(self):
         self._enable_ssl_and_test_connection()
-        return subprocess.call(['service', 'univention-ad-connector', 'restart'])
+        return subprocess.call(['systemctl', 'restart', 'univention-ad-connector@connector.service'])
 
     @simple_response
     def password_sync_service(self, enable=True):
@@ -557,7 +544,7 @@ class Instance(Base, ProgressMixin):
         # kinit=false -> sync passwords
         value = str(not enable).lower()
         univention.config_registry.handler_set([f'connector/ad/mapping/user/password/kinit={value}'])
-        return subprocess.call(['service', 'univention-ad-connector', 'restart'])
+        return subprocess.call(['systemctl', 'restart', 'univention-ad-connector@connector.service'])
 
     @simple_response
     def check_dcmaster_srv_rec(self):

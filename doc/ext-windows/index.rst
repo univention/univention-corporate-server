@@ -141,8 +141,8 @@ instance is operated with a self-contained configuration base. The
    $ /usr/share/univention-ad-connector/scripts/prepare-new-instance \
      -a create -c connector2
 
-This script creates an additional init script for the second connector instance
-:file:`/etc/init.d/univention-ad-connector2`, a configuration directory
+This script registers a systemd template instance
+:file:`univention-ad-connector@connector2.service`, creates a configuration directory
 :file:`/etc/univention/connector2` with a copy of the mapping settings of the
 main connector instance (this can be adapted if necessary) and an array of
 internal runtime directories.
