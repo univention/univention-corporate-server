@@ -7,4 +7,4 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 umask 027
-/usr/bin/python3 -W ignore -m univention.connector.ad.main "$@"
+exec /usr/bin/python3 -W ignore -m univention.connector.ad.main --no-daemon "$@"
