@@ -29,7 +29,6 @@ RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2,3}_?(.+)')
 RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|jpeg|xml|csv|inst|uinst))$')
 LOG_BASE = '/var/log/univention/test_%d.log'
-S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 INF = sys.maxsize
 
 

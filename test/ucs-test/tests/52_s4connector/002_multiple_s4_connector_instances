@@ -24,7 +24,7 @@ echo "Try to start a second connector instance"
 
 if [ "$RETVAL" = 110 ]; then
 	pkill -f "/usr/bin/python3 -W ignore -m univention.s4connector.s4.main"
-	/etc/init.d/univention-s4-connector restart
+	systemctl restart univention-s4-connector
 fi
 
 exit $RETVAL
