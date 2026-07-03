@@ -114,7 +114,7 @@ class Testclass_GPO_Security_Descriptor:
         self.admin_samdb_sdutil = SDUtils(self.admin_samdb)
 
     def restart_s4_connector(self):
-        cmd = ("/etc/init.d/univention-s4-connector", "restart")
+        cmd = ("systemctl", "restart", "univention-s4-connector")
         p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
         stdout, _stderr = p1.communicate()
         if p1.returncode != 0:

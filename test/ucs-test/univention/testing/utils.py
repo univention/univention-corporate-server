@@ -1,8 +1,6 @@
 # SPDX-FileCopyrightText: 2013-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-
 """Common functions used by tests."""
-
 
 import contextlib
 import functools
@@ -28,8 +26,6 @@ try:
     from univention.admin.uldap import access
 except ImportError:
     access = None
-
-S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 
 UCR = ConfigRegistry()
 
@@ -282,12 +278,12 @@ def s4connector_present() -> bool:
 
 def stop_s4connector() -> None:
     if package_installed('univention-s4-connector'):
-        subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'stop'))
+        subprocess.call(["systemctl", "stop", "univention-s4-connector"])
 
 
 def start_s4connector() -> None:
     if package_installed('univention-s4-connector'):
-        subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
+        subprocess.call(["systemctl", "start", "univention-s4-connector"])
 
 
 def restart_s4connector() -> None:
