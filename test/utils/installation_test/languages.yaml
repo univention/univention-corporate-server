@@ -67,8 +67,8 @@ name_server:
   fra: Les serveurs deu noms
   deu: um Rechnernamen im Internet aufzulösen
 user_and_password:
-  eng: You need to set a password
-  fra: Un bon met deu passe est composé
+  eng: Set up users and passwords
+  fra: Créer les utilisateurs et choisir les mots de passe
   deu: Benutzer und Passwörter einrichten
 configure_clock:
   eng: Configure the clock
