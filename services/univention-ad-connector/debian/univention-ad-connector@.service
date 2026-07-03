@@ -7,11 +7,12 @@ After=network.target remote-fs.target slapd.service
 Wants=slapd.service
 
 [Service]
-Type=forking
-PIDFile=/run/univention-ad-%i
+Type=exec
 ExecCondition=/bin/sh -c 'test -n "$(/usr/sbin/univention-config-registry get %i/ad/ldap/host 2>/dev/null)"'
 ExecStart=/usr/sbin/univention-ad-connector --configbasename %i
 TimeoutStopSec=305
+StandardOutput=append:/var/log/univention/%i-ad-status.log
+StandardError=append:/var/log/univention/%i-ad-status.log
 
 [Install]
 DefaultInstance=connector
