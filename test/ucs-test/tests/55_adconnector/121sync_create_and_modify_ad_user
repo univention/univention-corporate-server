@@ -29,7 +29,7 @@ UDM_users_user_scriptpath="$(random_chars)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 
 connector_some_custom_position_mapping "user"
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector@connector.service
 
 SYNCMODE="$(ad_get_sync_mode)"
 
@@ -86,7 +86,7 @@ udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110
 
 connector_mapping_restore
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector@connector.service
 
 ad_set_sync_mode "$SYNCMODE"
 

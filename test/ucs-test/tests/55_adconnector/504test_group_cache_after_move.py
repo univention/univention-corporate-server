@@ -249,7 +249,7 @@ def test_move_parent_in_ucs(udm, lo, ldap_base, mode):
 def test_rename_user_with_umlauts(udm, lo, ldap_base, mode):
     '''
     ucr set connector/ad/mapping/syncmode=read
-    systemctl restart univention-ad-connector.service
+    systemctl restart univention-ad-connector@connector.service
     # Create group g1 in AD
     # Create User "rÖto 1" but with samAccountName "röto.1"! in AD
     # Add "rÖto 1" to g1 in AD
@@ -485,7 +485,7 @@ def test_rename_ou_rename_group(mode, udm, lo):
     """
     https://git.knut.univention.de/univention/dev/internal/dev-issues/dev-incidents/-/issues/172
     ucr set connector/ad/mapping/syncmode=read
-    systemctl restart univention-ad-connector.service
+    systemctl restart univention-ad-connector@connector.service
     # Create the following tree in AD ou1->ou1.1->ou1.1.1
     # Create a group in AD ou1->ou1.1->ou1.1.1->group1
     # Add some members to the group in AD
