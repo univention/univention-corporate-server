@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2012-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Restricted configuration for demo.univention.de
+After=network.target remote-fs.target
+Wants=named.service univention-directory-listener.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/share/univention-demo-configuration/demo-upgrade
+TimeoutStartSec=3600
+
+[Install]
+WantedBy=multi-user.target
