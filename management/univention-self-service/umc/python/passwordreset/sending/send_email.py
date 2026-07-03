@@ -47,7 +47,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
     @staticmethod
     def send_method_label():
-        return _("Email")
+        return _('Recovery email address')
 
     @staticmethod
     def is_enabled():

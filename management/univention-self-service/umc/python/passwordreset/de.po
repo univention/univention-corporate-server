@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-passwordreset\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-10-14 22:17+0200\n"
+"POT-Creation-Date: 2026-07-03 12:02+0200\n"
 "PO-Revision-Date: 2015-09-22 09:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -43,7 +43,16 @@ msgstr ""
 msgid "Email"
 msgstr "E-Mail"
 
-#: umc/python/passwordreset/__init__.py:1061
+#: umc/python/passwordreset/__init__.py:464
+msgid ""
+"Enter an email address that you can access if you lose access to this "
+"account. We will use it to help you recover your account if you forget your "
+"password."
+msgstr ""
+"Geben Sie eine E-Mail-Adresse ein, auf die Sie zugreifen können, falls Sie den Zugriff auf dieses "
+"Konto verlieren sollten. Wir verwenden diese Adresse, um Ihnen bei der Wiederherstellung Ihres Kontos zu helfen, falls Sie Ihr "
+"Passwort vergessen haben."
+
 msgid "Error sending token: {}"
 msgstr "Fehler beim Versenden des Tokens: {}"
 
@@ -67,7 +76,11 @@ msgstr ""
 "Für diesen Benutzer wurden keine Kontaktinformationen hinterlegt. Das "
 "Zurücksetzen des Passworts ist daher nicht möglich."
 
-#: umc/python/passwordreset/__init__.py:333
+#: umc/python/passwordreset/__init__.py:463
+msgid "Recovery email address"
+msgstr "E-Mail-Adresse für die Konto-Wiederherstellung"
+
+#: umc/python/passwordreset/__init__.py:330
 #, python-format
 msgid "Service specific passwords were disabled for \"%s\"."
 msgstr "Applikationsspezifische Passwörter wurden für \"%s\" deaktiviert."

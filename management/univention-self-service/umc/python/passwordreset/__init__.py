@@ -460,8 +460,8 @@ class Instance(Base):
         properties = {k: v for (k, v) in properties.items() if 'dynamicValues' not in v and 'udm' not in v['type']}  # filter out not supported props
         not_supported = set(property_ids) - set(properties.keys()) - not_existing
         if 'PasswordRecoveryEmail' in properties:
-            properties['PasswordRecoveryEmail']['label'] = _('Email')
-            properties['PasswordRecoveryEmail']['description'] = ''
+            properties['PasswordRecoveryEmail']['label'] = _('Recovery email address')
+            properties['PasswordRecoveryEmail']['description'] = _('Enter an email address that you can access if you lose access to this account. We will use it to help you recover your account if you forget your password.')
         self._update_required_attr_of_props_for_registration(properties)
         properties = [properties[id_] for id_ in property_ids if id_ in properties]
         if not_existing:

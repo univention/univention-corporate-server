@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-self-service
+fix: 7.6.0
+desc: |
+ This update addresses the following issue:
+ * The Self Service now uses clearer wording for the email address used for
+   account recovery.
+bug: [59583]

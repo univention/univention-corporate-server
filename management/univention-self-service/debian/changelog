@@ -1,8 +1,12 @@
-univention-self-service (7.6.0) UNRELEASED; urgency=medium
+univention-self-service (7.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:14 +0200
+  [ Florian Best ]
+  * Bug #59583: clarify recovery email field label and help text
+
+ -- Florian Best <best@univention.de>  Fri, 03 Jul 2026 12:06:29 +0200
 
 univention-self-service (7.5.0) UNRELEASED; urgency=medium
 
