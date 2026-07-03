@@ -1,3 +1,10 @@
+ucs-test (12.6.20) unstable; urgency=medium
+
+  * Bug #59418: add test script which checks if all systemd services are
+    working
+
+ -- Florian Best <best@univention.de>  Fri, 03 Jul 2026 14:01:11 +0200
+
 ucs-test (12.6.19) unstable; urgency=medium
 
   * Bug #59418: log ISO 8601 timestamps with microsecond precision
