@@ -13,9 +13,7 @@ univention-config-registry set	connector/ad/mapping/user/primarymail?true \
 				connector/ad/mapping/user/exchange?true \
 				connector/ad/mapping/group/exchange?true
 
-if [ -x /etc/init.d/univention-ad-connector ]; then
-    /etc/init.d/univention-ad-connector crestart || true
-fi
+systemctl try-restart univention-ad-connector@connector.service || true
 
 deb-systemd-invoke restart slapd.service || true
 

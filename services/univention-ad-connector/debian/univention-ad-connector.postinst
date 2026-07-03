@@ -48,7 +48,7 @@ sqlite3 "/etc/univention/connector/internal.sqlite" "ALTER TABLE 'AD rejected' A
 
 # Bug #54587
 if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.13-5; then
-	systemctl stop univention-ad-connector
+	systemctl stop univention-ad-connector@connector.service
 	python3 - <<EOF
 #!/usr/bin/python3
 import sqlite3
@@ -68,12 +68,86 @@ for key, value in new_entries.items():
     cursor.execute('insert into "AD rejected" (key, value) VALUES (?, ?)', (key, value))
 db.commit()
 EOF
-	systemctl start univention-ad-connector
+	systemctl start univention-ad-connector@connector.service
 	skip_final_restart=true
 fi
 
+migrate_default_instance() {
+	# Hand the default connector over from the old SysV service to the systemd template instance
+	# (univention-ad-connector@connector). The init script is a dpkg conffile that rm_conffile
+	# already removed in preinst, and the old prerm does not stop on upgrade, so the pre-upgrade
+	# process is still running; stop it via its pidfile and start the template instance if it ran.
+	pidfile=/var/run/univention-ad-connector
+	pid="$(cat "$pidfile" 2>/dev/null || true)"
+	[ -n "$pid" ] && kill -0 "$pid" 2>/dev/null || return 0
+
+	start-stop-daemon --stop --oknodo --retry TERM/300/KILL/5 --quiet --pidfile "$pidfile" || true
+	update-rc.d -f univention-ad-connector remove || true
+	systemctl enable --now univention-ad-connector@connector.service || true
+}
+
+migrate_additional_instances() {
+	# Collect instance names from two sources:
+	# 1. init scripts left behind by the old prepare-new-instance (primary)
+	# 2. UCR connector/listener/additionalbasenames (catches any already-deleted scripts)
+	seen=""
+
+	# source 1: existing init scripts
+	for init_script in /etc/init.d/univention-ad-*; do
+		[ -f "$init_script" ] || continue
+		instance="${init_script#/etc/init.d/univention-ad-}"
+		[ "$instance" = "connector" ] && continue
+		seen="$seen $instance"
+
+		# preserve running state before stopping
+		pidfile="/run/univention-ad-$instance"
+		was_running=false
+		if [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+			was_running=true
+		fi
+
+		# stop and deregister the SysV service
+		"$init_script" stop || true
+		update-rc.d -f "univention-ad-$instance" remove || true
+		rm -f "$init_script"
+		rm -f "/usr/sbin/univention-ad-$instance"
+
+		# enable and conditionally start the systemd template instance
+		systemctl enable "univention-ad-connector@${instance}.service" || true
+		if [ "$was_running" = true ]; then
+			systemctl start "univention-ad-connector@${instance}.service" || true
+		fi
+	done
+
+	# source 2: UCR-listed instances whose init scripts are already gone
+	eval "$(univention-config-registry shell connector/listener/additionalbasenames 2>/dev/null)" || true
+	for instance in ${connector_listener_additionalbasenames:-}; do
+		# skip any already handled via the init script scan above
+		echo "$seen" | grep -qw "$instance" && continue
+		# init script gone, just ensure the systemd unit is enabled
+		systemctl enable "univention-ad-connector@${instance}.service" 2>/dev/null || true
+	done
+}
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.0.1"; then
+	# UCS 5.3 upgrade
+	# The autostart.py UCR module acted on the old unit name; drop its stale mask and
+	# re-set connector/ad/autostart so it applies the state to the template instance.
+	systemctl unmask univention-ad-connector.service 2>/dev/null || true
+	connector_ad_autostart="$(univention-config-registry get connector/ad/autostart)"
+	if [ -n "$connector_ad_autostart" ]; then
+		univention-config-registry set connector/ad/autostart="$connector_ad_autostart"
+	fi
+	migrate_default_instance
+	migrate_additional_instances
+fi
+
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
+	systemctl enable univention-ad-connector@connector.service || true
+fi
+
 if [ "$skip_final_restart" != "true" ]; then
-	/etc/init.d/univention-ad-connector crestart || true
+	systemctl try-restart univention-ad-connector@connector.service || true
 fi
 systemctl try-restart univention-directory-listener || true
 

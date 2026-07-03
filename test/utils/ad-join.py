@@ -142,7 +142,7 @@ def prepare_new_instance() -> None:
         "%s/ad/ldap/ssl=false" % (options.prepare_new_instance,),
     ])
     copy("/etc/univention/connector/ad/bindpw", "/etc/univention/%s/ad/" % options.prepare_new_instance)
-    run(["systemctl", "start", "univention-ad-%s" % options.prepare_new_instance], check=True)
+    run(["systemctl", "start", "univention-ad-connector@%s.service" % options.prepare_new_instance], check=True)
     print('=== AD-PREPARE-NEW-INSTANCE FINISHED ===')
 
 

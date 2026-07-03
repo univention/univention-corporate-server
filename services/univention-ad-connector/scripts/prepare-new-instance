@@ -117,17 +117,8 @@ then
     echo "-- initialise UCR"
     univention-config-registry set "$CONFIGBASENAME"/ad/ldap/port?389 "$CONFIGBASENAME"/ad/ldap/ssl?yes "$CONFIGBASENAME"/ad/listener/dir?/var/lib/univention-"$CONFIGBASENAME"/ad "$CONFIGBASENAME"/ad/mapping/group/language?de "$CONFIGBASENAME"/ad/mapping/group/primarymail?false "$CONFIGBASENAME"/ad/mapping/syncmode?sync "$CONFIGBASENAME"/ad/mapping/user/primarymail?false "$CONFIGBASENAME"/ad/poll/sleep?5 "$CONFIGBASENAME"/ad/retryrejected?10 "$CONFIGBASENAME"/debug/function?0 "$CONFIGBASENAME"/debug/level?1
 
-    echo "-- copy startup script"
-    cp /usr/sbin/univention-ad-connector /usr/sbin/univention-ad-"$CONFIGBASENAME"
-    sed -i "s|/usr/bin/python3 -W ignore -m univention.connector.ad.main.*|/usr/bin/python3 -W ignore -m univention.connector.ad.main --configbase \"$CONFIGBASENAME\" \"\$@\"|" /usr/sbin/univention-ad-"$CONFIGBASENAME"
-
-
-    echo "-- copy init script"
-    cp /etc/init.d/univention-ad-connector /etc/init.d/univention-ad-"$CONFIGBASENAME"
-    sed -i "s|univention-ad-connector|univention-ad-$CONFIGBASENAME|" /etc/init.d/univention-ad-"$CONFIGBASENAME"
-
-    echo "-- register initscript"
-    update-rc.d univention-ad-"$CONFIGBASENAME" defaults 97
+    echo "-- enable systemd instance"
+    systemctl enable univention-ad-connector@"$CONFIGBASENAME".service
 
     echo "-- prepare second listener-instance"
     mkdir -p /var/lib/univention-"$CONFIGBASENAME"/ad/tmp
@@ -139,8 +130,8 @@ then
 
     echo ""
     echo "Finished preparation. You'll need to restart univention-directory-listener and maybe resync the listener-plugin."
-    echo "You can start the new connector instance after configuration using \"/etc/init.d/univention-ad-$CONFIGBASENAME start\"."
-    echo "Remember to remove additional instances manually before deinstallation of the univention-ad-connector debian package."
+    echo "You can start the new connector instance after configuration using \"systemctl start univention-ad-connector@$CONFIGBASENAME\"."
+    echo "Remember to disable additional instances before deinstallation: systemctl disable univention-ad-connector@$CONFIGBASENAME"
     echo ""
 
 fi
@@ -148,20 +139,11 @@ fi
 if [ "$deleteflag" = "1" ]
 then
 
-    echo "-- stop connector"
-    /etc/init.d/univention-ad-"$CONFIGBASENAME" stop
+    echo "-- stop and disable systemd instance"
+    systemctl disable --now univention-ad-connector@"$CONFIGBASENAME".service
 
     echo "-- stop listener"
     systemctl stop univention-directory-listener
-
-    echo "-- unregister initscript"
-    update-rc.d -f univention-ad-"$CONFIGBASENAME" remove
-
-    echo "-- remove init script"
-    rm /etc/init.d/univention-ad-"$CONFIGBASENAME"
-
-    echo "-- remove startup script"
-    rm /usr/sbin/univention-ad-"$CONFIGBASENAME"
 
     echo "-- unset known UCR variables"
 	univention-config-registry unset "$CONFIGBASENAME"/ad/ldap/base \

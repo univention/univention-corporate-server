@@ -8,7 +8,23 @@
 
 
 if [ "$1" = "remove" ]; then
-    test -x /etc/init.d/univention-ad-connector && /etc/init.d/univention-ad-connector stop
+    systemctl stop univention-ad-connector@connector.service 2>/dev/null || true
+
+    # stop and disable any additional instances
+    for init_script in /etc/init.d/univention-ad-con*; do
+        [ -f "$init_script" ] || continue
+        instance="${init_script#/etc/init.d/univention-ad-}"
+        [ "$instance" = "connector" ] && continue
+        "$init_script" stop 2>/dev/null || true
+        update-rc.d -f "univention-ad-$instance" remove 2>/dev/null || true
+        rm -f "$init_script"
+        rm -f "/usr/sbin/univention-ad-$instance"
+    done
+
+    eval "$(univention-config-registry shell connector/listener/additionalbasenames 2>/dev/null)" || true
+    for instance in ${connector_listener_additionalbasenames:-}; do
+        systemctl disable --now "univention-ad-connector@${instance}.service" 2>/dev/null || true
+    done
 fi
 
 #DEBHELPER#

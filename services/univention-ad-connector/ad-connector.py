@@ -85,7 +85,7 @@ def _restart_connector() -> None:
     try:
         if not subprocess.call(['pgrep', '-f', 'python3.*connector.ad.main']):
             log.process("ad-connector: restarting connector ...")
-            subprocess.call(('service', 'univention-ad-connector', 'restart'))
+            subprocess.call(('systemctl', 'restart', 'univention-ad-connector@connector.service'))
             log.process("ad-connector: ... done")
     finally:
         listener.unsetuid()

@@ -816,7 +816,7 @@ class AD_Takeover:
                 "connector/s4/autostart=yes",
                 "samba4/ignore/mixsetup=yes",
             ], log.debug)
-            run_and_output_to_log(["/etc/init.d/univention-ad-connector", "stop"], log.debug)
+            run_and_output_to_log(["systemctl", "stop", "univention-ad-connector@connector.service"], log.debug)
             run_and_output_to_log(["systemctl", "try-restart", "univention-directory-listener"], log.debug)
             # And now run 96univention-samba4.inst pre-provision setup (.adtakeover status is "start"), to disable slapd on port 389, and 97uinvention-s4-connector.inst
             # Due to Bug #35561 the script needs to be run directly to determine its exit status.
