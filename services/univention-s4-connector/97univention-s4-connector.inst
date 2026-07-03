@@ -40,7 +40,7 @@ this_host_is_not_registered_as_s4_connector() {
 if is_domain_in_admember_mode; then
 	echo "ERROR: The domain is in AD Member Mode."
 	## Don't autostart S4 Connector
-	/etc/init.d/univention-s4-connector stop
+	systemctl stop univention-s4-connector
 	univention-config-registry set	connector/s4/autostart?no \
 						connector/s4/listener/disabled=true
 	systemctl try-restart univention-directory-listener
@@ -257,7 +257,7 @@ if [ -z "$s4connector_dc" ] \
 	univention-config-registry set connector/s4/poll/sleep=1 connector/s4/retryrejected=2
 
 	if [ $JS_LAST_EXECUTED_VERSION -le 0 ] && is_ucr_true connector/s4/mapping/gpo; then
-		/etc/init.d/univention-s4-connector stop
+		systemctl stop univention-s4-connector
 
 		# If OpenLDAP msgpo link is empty, it can be overwritten by the Samba 4 value. This
 		# is important in case the S4 connector is installed on a School Directory Node. Anyway, before
@@ -297,7 +297,7 @@ if [ -z "$s4connector_dc" ] \
 #		fi
 	fi
 
-	/etc/init.d/univention-s4-connector restart
+	systemctl restart univention-s4-connector
 
 	univention-config-registry set dns/backend=samba4
 	if [ -x /etc/init.d/named ]; then
@@ -340,7 +340,7 @@ if [ -z "$s4connector_dc" ] \
 	fi
 
 	# Restart the connector to use the new values for connector/s4/poll/sleep and connector/s4/retryrejected
-	/etc/init.d/univention-s4-connector restart
+	systemctl restart univention-s4-connector
 
 	# fix samba SID in case to ucs SID takes precedence
 	if is_ucr_true 'connector/s4/mapping/sid_to_s4'; then
@@ -351,7 +351,7 @@ else
 	if this_is_initial_or_rejoin \
 		&& this_host_is_not_registered_as_s4_connector; then
 		## Don't autostart S4 Connector on Backup Directory Nodes.
-		/etc/init.d/univention-s4-connector stop
+		systemctl stop univention-s4-connector
 		univention-config-registry set	connector/s4/autostart?no \
 						connector/s4/listener/disabled=true
 		systemctl try-restart univention-directory-listener

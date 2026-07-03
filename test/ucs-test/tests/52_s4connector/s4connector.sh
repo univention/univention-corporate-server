@@ -82,7 +82,7 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 . /usr/share/univention-lib/all.sh
 
 ad_is_connector_running () {
-	/etc/init.d/univention-s4-connector status >/dev/null 2>&1
+	systemctl is-active --quiet univention-s4-connector
 }
 
 function ad_wait_for_synchronization () {
@@ -90,7 +90,7 @@ function ad_wait_for_synchronization () {
 	local configbase="${2:-connector}"
 
 	if ! ad_is_connector_running; then
-		/etc/init.d/univention-s4-connector start
+		systemctl start univention-s4-connector
 	fi
 
 	#maybe there are ways be more sure whether synchronisation is
@@ -166,11 +166,11 @@ function ad_set_sync_mode () {
 	info "Setting S4 connector '$configbase' to ${mode}-mode"
 	if [ "$mode" != "$(ad_get_sync_mode $configbase)" ]; then
 		ucr set $configbase/s4/mapping/syncmode=$mode
-		invoke-rc.d univention-s4-connector restart
+		systemctl restart univention-s4-connector
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-s4-connector restart
+			systemctl restart univention-s4-connector
 		fi
 	else
 		info "Already in ${mode}-mode"
@@ -646,11 +646,11 @@ function ad_set_retry_rejected ()
 	local retry_old="$(ucr get connector/s4/retryrejected)"
 	if [ "$retry" != "$retry_old" ]; then
 		ucr set connector/s4/retryrejected="$retry"
-		invoke-rc.d univention-s4-connector restart
+		systemctl restart univention-s4-connector
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-s4-connector restart
+			systemctl restart univention-s4-connector
 		fi
 	fi
 }
@@ -681,19 +681,19 @@ function connector_running_on_this_host ()
 
 function ad_connector_start ()
 {
-	invoke-rc.d univention-s4-connector start
+	systemctl start univention-s4-connector
 	sleep 3 # wait a few seconds
 }
 
 function ad_connector_stop ()
 {
-	invoke-rc.d univention-s4-connector stop
+	systemctl stop univention-s4-connector
 	sleep 3 # wait a few seconds
 }
 
 function ad_connector_restart ()
 {
-	invoke-rc.d univention-s4-connector restart
+	systemctl restart univention-s4-connector
 	sleep 3 # wait a few seconds
 }
 
