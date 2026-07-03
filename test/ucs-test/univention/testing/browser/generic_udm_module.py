@@ -68,7 +68,7 @@ class DetailsView:
     def upload_picture(self, img_path: str) -> Locator:
         self.page.screenshot(path=img_path)
 
-        file_input = self.page.get_by_role('button', name=_('Upload profile image')).and_(self.page.locator('input[type="file"]'))
+        file_input = self.page.locator('.umcUDMUsersModule__jpegPhoto input[type="file"]')
         file_input.set_input_files(img_path)
 
         # very ugly locator for this but the image isn't even in an <img> tag
