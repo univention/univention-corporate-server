@@ -24,15 +24,15 @@ UOID2GUID_SCRIPT = '/usr/share/univention-ad-connector/uoid2guid.py'
 
 # TODO: after merge of fbotner/ad-con-pullcord-changes import adconnector_stopped from utils
 def stop_adconnector() -> None:
-    subprocess.check_call(['systemctl', 'stop', 'univention-ad-connector'])
+    subprocess.check_call(['systemctl', 'stop', 'univention-ad-connector@connector.service'])
 
 
 def start_adconnector() -> None:
-    subprocess.check_call(['systemctl', 'start', 'univention-ad-connector'])
+    subprocess.check_call(['systemctl', 'start', 'univention-ad-connector@connector.service'])
 
 
 def restart_adconnector() -> None:
-    subprocess.check_call(['systemctl', 'restart', 'univention-ad-connector'])
+    subprocess.check_call(['systemctl', 'restart', 'univention-ad-connector@connector.service'])
 
 
 @contextlib.contextmanager

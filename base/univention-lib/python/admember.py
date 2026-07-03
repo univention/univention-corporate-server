@@ -825,21 +825,20 @@ def restart_service(service: str) -> None:
 
 
 def invoke_service(service: str, cmd: str) -> None:
-    init_script = '/etc/init.d/%s' % service  # FIXME: SysV-init → systemd.service
-    if not os.path.exists(init_script):
-        return
+    init_script = '/etc/init.d/%s' % service
+    args = [init_script, cmd] if os.path.exists(init_script) else ['systemctl', cmd, service]
     try:
-        p1 = subprocess.Popen([init_script, cmd], close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        p1 = subprocess.Popen(args, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _ = p1.communicate()
     except OSError as ex:
-        ud.debug(ud.MODULE, ud.ERROR, "%s %s failed: %s" % (init_script, cmd, ex.args[1]))
+        ud.debug(ud.MODULE, ud.ERROR, "%s failed: %s" % (' '.join(args), ex.args[1]))
         return
 
     if p1.returncode:
-        ud.debug(ud.MODULE, ud.ERROR, "%s %s failed (%d)" % (init_script, cmd, p1.returncode))
+        ud.debug(ud.MODULE, ud.ERROR, "%s failed (%d)" % (' '.join(args), p1.returncode))
         return
 
-    ud.debug(ud.MODULE, ud.PROCESS, "%s %s: %s" % (init_script, cmd, stdout.decode('UTF-8', 'replace')))
+    ud.debug(ud.MODULE, ud.PROCESS, "%s: %s" % (' '.join(args), stdout.decode('UTF-8', 'replace')))
 
 
 def do_time_sync(ad_ip: str) -> bool:
@@ -1485,7 +1484,7 @@ def configure_ad_member(ad_server_ip: str, username: str, password: str) -> None
         ud.debug(ud.MODULE, ud.WARN, "WARNING: ssl is not supported")
         disable_ssl()
 
-    start_service('univention-ad-connector')
+    start_service('univention-ad-connector@connector')
 
 
 def configure_backup_as_ad_member() -> None:

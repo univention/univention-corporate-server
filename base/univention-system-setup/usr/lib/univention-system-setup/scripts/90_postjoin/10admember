@@ -99,7 +99,7 @@ class AdMemberScript(SetupScript):
             admember.synchronize_account_position(ad_domain_info, username, password)
 
             _progress(90, _('Starting Active Directory connection service...'))
-            admember.start_service('univention-ad-connector')
+            admember.start_service('univention-ad-connector@connector')
 
             _progress(95, _('Registering LDAP service entry...'))
             admember.add_admember_service_to_localhost()
