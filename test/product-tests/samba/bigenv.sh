@@ -6,7 +6,7 @@ set -e -x
 
 revert_to_samba47 () {
 	set -e -x
-	/etc/init.d/univention-s4-connector stop
+	systemctl stop univention-s4-connector
 	ucr set dns/backend='ldap'
 	/etc/init.d/named restart
 	/etc/init.d/samba stop
@@ -37,7 +37,7 @@ revert_to_samba47 () {
 		python-talloc="$OLD_PKG_VERSION_TALLOC" \
 		libtevent0="$OLD_PKG_VERSION_TEVENT"
 	/etc/init.d/samba start
-	/etc/init.d/univention-s4-connector start
+	systemctl start univention-s4-connector
 	ucr set dns/backend='samba4'
 	/etc/init.d/named restart
 }
@@ -101,7 +101,7 @@ rIDPreviousAllocationPool: $prevpool" | ldbmodify -H /var/lib/samba/private/sam.
 }
 
 restart_connector_and_bind () {
-	/etc/init.d/univention-s4-connector start
+	systemctl start univention-s4-connector
 	ucr set dns/backend='samba4'
 	/etc/init.d/named restart
 }
