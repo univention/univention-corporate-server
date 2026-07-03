@@ -833,7 +833,7 @@ class AD_Takeover:
         # OK, we are quite sure that we have the basics right, note the AD server IP and FQDN in UCR for phase II
         run_and_output_to_log(["univention-config-registry", "set", "hosts/static/%s=%s %s" % (self.ad_server_ip, self.ad_server_fqdn, self.ad_server_name)], log.debug)
 
-        run_and_output_to_log(["/etc/init.d/univention-s4-connector", "stop"], log.debug)
+        run_and_output_to_log(["systemctl", "stop", "univention-s4-connector"], log.debug)
         run_and_output_to_log(["/etc/init.d/samba-ad-dc", "stop"], log.debug)
         progress.percentage_increment_scaled(1.0 / 32)
 
@@ -957,7 +957,7 @@ class AD_Takeover:
         run_and_output_to_log(["/etc/init.d/samba-ad-dc", "start"], log.debug)
 
         # Start S4 Connector again
-        run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
+        run_and_output_to_log(["systemctl", "start", "univention-s4-connector"], log.debug)
 
         # Adjust some UCR settings back
         if "nameserver1/local" in self.ucr:
@@ -1387,7 +1387,7 @@ class AD_Takeover:
 
         # Just in case, start the Connector explicitly
         log.info("Starting S4 Connector")
-        returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "start"], log.debug)
+        returncode = run_and_output_to_log(["systemctl", "start", "univention-s4-connector"], log.debug)
         if returncode != 0:
             log.error("Start of univention-s4-connector failed. See %s for details.", LOGFILE_NAME)
 
@@ -1395,7 +1395,7 @@ class AD_Takeover:
         wait_for_s4_connector_replication(self.ucr, self.lp, progress)
         # Reset normal relication intervals
         run_and_output_to_log(["univention-config-registry", "set", "connector/s4/poll/sleep=%s" % old_sleep, "connector/s4/retryrejected=%s" % old_retry], log.debug)
-        returncode = run_and_output_to_log(["/etc/init.d/univention-s4-connector", "restart"], log.debug)
+        returncode = run_and_output_to_log(["systemctl", "restart", "univention-s4-connector"], log.debug)
         if returncode != 0:
             log.error("Restart of univention-s4-connector failed. See %s for details.", LOGFILE_NAME)
 

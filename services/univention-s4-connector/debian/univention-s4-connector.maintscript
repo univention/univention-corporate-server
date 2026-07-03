@@ -1,0 +1,1 @@
+rm_conffile /etc/init.d/univention-s4-connector 17.0.1~
