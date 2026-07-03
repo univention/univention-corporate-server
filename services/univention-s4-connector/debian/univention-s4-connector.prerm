@@ -9,7 +9,7 @@
 #DEBHELPER#
 
 if [ "$1" = "remove" ]; then
-	invoke-rc.d univention-s4-connector stop
+	deb-systemd-invoke stop univention-s4-connector || true
 	cp /usr/lib/univention-uninstall/03univention-s4-connector.uinst /usr/lib/univention-install/
 fi
 
