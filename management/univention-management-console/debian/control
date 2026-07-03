@@ -186,10 +186,6 @@ Description: UCS Management Console - Web server
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
 
-Package: univention-management-console-web-server-fix
-Architecture: all
-Description: Transitional package
-
 Package: univention-management-console-login
 Architecture: all
 Depends:
