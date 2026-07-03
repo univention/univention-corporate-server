@@ -3,7 +3,7 @@ release: "5.2"
 version: [6]
 scope: ucs_5.2-0-errata5.2-6
 src: univention-system-setup
-fix: 15.6.0
+fix: 15.6.1
 desc: |
  This update addresses the following issue:
  * The system setup no longer selects the `univention-ldap-overlay-memberof`
