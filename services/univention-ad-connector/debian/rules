@@ -8,8 +8,8 @@
 
 AD_TOOLS_DEST=$(CURDIR)/debian/univention-ad-connector
 
-override_dh_installinit:
-	dh_installinit --no-start -u"defaults 97"
+override_dh_installsystemd:
+	dh_installsystemd --no-start --name=univention-ad-connector@
 
 override_dh_fixperms:
 	chmod 755 debian/univention-ad-connector/usr/share/univention-ad-connector/scripts/prepare-new-instance
