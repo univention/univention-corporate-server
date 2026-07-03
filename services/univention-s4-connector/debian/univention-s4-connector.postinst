@@ -35,6 +35,16 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"_ldap._tcp.Default-First-Site-Name._site"
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "17.0.1"; then
+	# UCS 5.3 upgrade: re-set connector/s4/autostart so the autostart.py UCR
+	# module applies the current state (disable+mask/enable) to the native unit
+	connector_s4_autostart="$(univention-config-registry get connector/s4/autostart)"
+	if [ -n "$connector_s4_autostart" ]; then
+		univention-config-registry set connector/s4/autostart="$connector_s4_autostart"
+	fi
+	update-rc.d univention-s4-connector remove >/dev/null || true
+fi
+
 if [ ! -d /var/lib/univention-connector/s4 ]; then
 	mkdir -p /var/lib/univention-connector/s4
 	chown 0.0 /var/lib/univention-connector/s4
@@ -44,7 +54,7 @@ touch /etc/univention/connector/s4internal.sqlite
 touch /etc/univention/connector/s4cache.sqlite
 chmod 640 /etc/univention/connector/*.sqlite
 
-systemctl try-restart univention-directory-listener || true
+deb-systemd-invoke try-restart univention-directory-listener || true
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/03univention-s4-connector.uinst
@@ -55,7 +65,7 @@ call_joinscript 97univention-s4-connector.inst
 
 stop_udm_cli_server
 
-if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join/.joined ]; then
+if [ -f /usr/share/univention-join/.joined ]; then
 	## This would be the location for errata bugfixes
 
 	# Bug #53882
@@ -74,7 +84,7 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 
 	# Bug #54586
 	if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions "$2" lt 14.0.13-5; then
-		systemctl stop univention-s4-connector
+		deb-systemd-invoke stop univention-s4-connector.service
 		python3 - <<EOF
 #!/usr/bin/python3
 import sqlite3
@@ -94,12 +104,12 @@ for key, value in new_entries.items():
     cursor.execute('insert into "S4 rejected" (key, value) VALUES (?, ?)', (key, value))
 db.commit()
 EOF
-		/etc/init.d/univention-s4-connector start
+		deb-systemd-invoke start univention-s4-connector.service || true
 		skip_final_restart=true
 	 fi
 
 	if [ "$skip_final_restart" != "true" ]; then
-		/etc/init.d/univention-s4-connector restart
+		deb-systemd-invoke restart univention-s4-connector.service || true
 	fi
 fi
 
