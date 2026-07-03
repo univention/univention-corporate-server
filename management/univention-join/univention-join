@@ -504,9 +504,9 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "domaincontro
 	fi
 fi
 
-if [ "$CHECK_RUN" = "false" -a -x /etc/init.d/univention-s4-connector ]; then
+if [ "$CHECK_RUN" = "false" ] && systemctl cat univention-s4-connector.service >/dev/null 2>&1; then
 	echo -n "Stop S4-Connector: "
-	/etc/init.d/univention-s4-connector stop >>/var/log/univention/join.log 2>&1
+	systemctl stop univention-s4-connector >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 fi
 

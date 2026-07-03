@@ -66,7 +66,7 @@ for((i=0;i<10;i++)); do
 
 	ad_wait_for_synchronization; fail_bool 0 110
 
-	/etc/init.d/univention-s4-connector restart
+	systemctl restart univention-s4-connector
 	ad_wait_for_synchronization; fail_bool 0 110
 
 	udm_exists "groups/group" && fail_test 110

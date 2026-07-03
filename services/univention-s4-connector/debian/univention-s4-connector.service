@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Univention S4 Connector
+After=network.target remote-fs.target slapd.service samba-ad-dc.service
+Wants=slapd.service samba-ad-dc.service
+
+[Service]
+Type=exec
+ExecCondition=/bin/sh -c 'test -n "$(/usr/sbin/univention-config-registry get connector/s4/ldap/host 2>/dev/null)"'
+ExecStart=/usr/sbin/univention-s4-connector
+TimeoutStopSec=305
+StandardOutput=append:/var/log/univention/connector-s4-status.log
+StandardError=append:/var/log/univention/connector-s4-status.log
+
+[Install]
+WantedBy=multi-user.target

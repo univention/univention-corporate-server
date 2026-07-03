@@ -82,7 +82,7 @@ test_run () {
 }
 
 # Ignore connector side effects
-[ -x /etc/init.d/univention-s4-connector ] && /etc/init.d/univention-s4-connector stop
+systemctl stop univention-s4-connector 2>/dev/null || true
 
 ucr set --force ldap/master="${ldap_master:?}"
 for m in "${!MAP[@]}"
@@ -91,7 +91,7 @@ do
 done
 
 # Ignore connector side effects
-[ -x /etc/init.d/univention-s4-connector ] && /etc/init.d/univention-s4-connector start
+systemctl start univention-s4-connector 2>/dev/null || true
 
 ucr unset --force ldap/master
 ucr set ldap/master="$ldap_master"
