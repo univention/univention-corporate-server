@@ -75,12 +75,12 @@ def check_labels(page: Page, labels: dict[str, str], retries=4):
         (
             UCSLanguage.EN_US,
             'createaccount',
-            {'Email': 'PasswordRecoveryEmail', 'Password (retype)': 'password--retype', 'First name': 'firstname', 'Last name': 'lastname', 'User name': 'username'},
+            {'Recovery email address': 'PasswordRecoveryEmail', 'Password (retype)': 'password--retype', 'First name': 'firstname', 'Last name': 'lastname', 'User name': 'username'},
         ),
         (
             UCSLanguage.DE_DE,
             'createaccount',
-            {'E-Mail': 'PasswordRecoveryEmail', 'Passwort (Wiederholung)': 'password--retype', 'Vorname': 'firstname', 'Nachname': 'lastname', 'Benutzername': 'username'},
+            {'E-Mail-Adresse für die Konto-Wiederherstellung': 'PasswordRecoveryEmail', 'Passwort (Wiederholung)': 'password--retype', 'Vorname': 'firstname', 'Nachname': 'lastname', 'Benutzername': 'username'},
         ),
         (UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}),
         (UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}),
