@@ -633,3 +633,6 @@ msgstr "Passwort wurde bereits genutzt"
 #: tests/86_browser/111_product_test_execute_join_script.py:91
 msgid "restart of the UMC server"
 msgstr ""
+
+msgid "Recovery email address"
+msgstr "E-Mail-Adresse für die Konto-Wiederherstellung"

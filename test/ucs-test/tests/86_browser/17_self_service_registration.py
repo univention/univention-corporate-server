@@ -64,7 +64,7 @@ def get_registration_info(ucr):
             'username': UserCreationAttribute(_('User name'), username),
             'lastname': UserCreationAttribute(_('Last name'), username),
             'password': UserCreationAttribute(_('Password'), 'univention'),
-            'PasswordRecoveryEmail': UserCreationAttribute(_('Email'), 'root@localhost'),
+            'PasswordRecoveryEmail': UserCreationAttribute(_('Recovery email address'), 'root@localhost'),
         }
 
         dn = f"uid={attributes['username'].value},{container_dn}"
