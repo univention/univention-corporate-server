@@ -636,3 +636,6 @@ msgstr ""
 
 msgid "Recovery email address"
 msgstr "E-Mail-Adresse für die Konto-Wiederherstellung"
+
+msgid "Recovery email address (retype)"
+msgstr "E-Mail-Adresse für die Konto-Wiederherstellung (Wiederholung)"

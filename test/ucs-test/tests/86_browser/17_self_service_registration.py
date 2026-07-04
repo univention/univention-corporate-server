@@ -267,8 +267,8 @@ def test_email_change(self_service: SelfService, mails, get_registration_info, c
     text = self_service.page.get_by_text(_('Your account recovery options have been updated.. Your account has to be verified again'))
     if change_email:
         new_email = 'foo@bar.com'
-        self_service.page.get_by_role('textbox', name=_('Email'), exact=True).fill(new_email)
-        self_service.page.get_by_role('textbox', name=_('Email (retype)'), exact=True).fill(new_email)
+        self_service.page.get_by_role('textbox', name=_('Recovery email address'), exact=True).fill(new_email)
+        self_service.page.get_by_role('textbox', name=_('Recovery email address (retype)'), exact=True).fill(new_email)
 
         self_service.page.get_by_role('button', name=_('Submit'), exact=True).click()
         expect(text).to_be_visible()
