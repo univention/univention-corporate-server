@@ -715,7 +715,7 @@ Package: ucs-test-udm-rest
 Architecture: all
 Depends:
  git,
- python3-pip,
+ python3-openapi-spec-validator,
  python3-prometheus-client,
  python3-pytest,
  python3-pytest-asyncio,
