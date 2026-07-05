@@ -32,6 +32,7 @@ repos:
     - id: check-added-large-files
       exclude: "^test/ucs-test/debian/changelog$\
                |^services/univention-printserver/79univention-printserver.inst$\
+               |^management/univention-directory-manager-rest/var/www/univention/udm/swaggerui/swagger-ui.*$\
                "
     - id: check-json
       exclude: "/conffiles/.*[.]json$"
