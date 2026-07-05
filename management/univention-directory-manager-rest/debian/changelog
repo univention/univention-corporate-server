@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.7.3) unstable; urgency=medium
+
+  * Bug #59642: upgrade swaggerui to 5.32.15
+
+ -- Florian Best <best@univention.de>  Mon, 16 Nov 2026 16:22:45 +0100
+
 univention-directory-manager-rest (12.7.2) unstable; urgency=medium
 
   * Bug #59114: restrict object classes for license upload

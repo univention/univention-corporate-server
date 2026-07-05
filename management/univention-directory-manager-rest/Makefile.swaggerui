@@ -1,0 +1,29 @@
+#!/usr/bin/make -f
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+VERSION ?= 5.32.15
+
+URL := https://codeload.github.com/swagger-api/swagger-ui/tar.gz/v$(VERSION)
+TARBALL := swagger-ui-$(VERSION).tar.gz
+DESTDIR := var/www/univention/udm/swaggerui
+
+.PHONY: all clean
+
+all: $(DESTDIR)/.version-$(VERSION)
+
+$(TARBALL):
+	curl -fL --retry 3 -o $@ $(URL)
+
+$(DESTDIR)/.version-$(VERSION): $(TARBALL)
+	mkdir -p $(DESTDIR)
+	tar -xzf $< -C $(DESTDIR) \
+		--strip-components=2 \
+		--wildcards 'swagger-ui-$(VERSION)/dist/*' \
+		--exclude='index.html' \
+		--exclude='swagger-initializer.js' \
+		--exclude='*.LICENSE.txt'
+	touch $@
+
+clean:
+	rm -rf $(DESTDIR) swagger-ui-*.tar.gz
