@@ -5,37 +5,16 @@
     <meta charset="UTF-8">
     <title>Univention Directory Manager JSON-HTTP interface</title>
     <link rel="stylesheet" type="text/css" href="../swaggerui/swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="../swaggerui/index.css" />
     <link rel="icon" type="image/png" href="../swaggerui/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="../swaggerui/favicon-16x16.png" sizes="16x16" />
-    <style>
-      html
-      {
-        box-sizing: border-box;
-        overflow: -moz-scrollbars-vertical;
-        overflow-y: scroll;
-      }
-
-      *,
-      *:before,
-      *:after
-      {
-        box-sizing: inherit;
-      }
-
-      body
-      {
-        margin:0;
-        background: #fafafa;
-      }
-    </style>
   </head>
 
   <body>
     <div id="swagger-ui"></div>
-
     <script src="../swaggerui/swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="../swaggerui/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
-    <script>
+    <script charset="UTF-8">
 
     const objectType = new URLSearchParams(window.location.search).get('module');
     let openapi = "../openapi.json";
@@ -44,8 +23,10 @@
     }
 
     window.onload = function() {
-      // Begin Swagger UI call region
-      const ui = SwaggerUIBundle({
+      //<editor-fold desc="Changeable Configuration Block">
+
+      // the following lines will be replaced by docker/configurator, when it runs in a docker-container
+      window.ui = SwaggerUIBundle({
         url: openapi,
         dom_id: '#swagger-ui',
         deepLinking: true,
@@ -58,10 +39,9 @@
         ],
         layout: "StandaloneLayout"
       });
-      // End Swagger UI call region
 
-      window.ui = ui;
+      //</editor-fold>
     };
-  </script>
+    </script>
   </body>
 </html>
