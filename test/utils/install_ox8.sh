@@ -57,6 +57,7 @@ external_tls_termination: true
 core_mw_extra_properties:
   # enable shared accounts
   com.openexchange.sharedaccount.enabled: "true"
+  com.openexchange.mail.secondary.passwordSource: "global"
   # Additional configuration related to the deputy feature
   com.openexchange.dovecot.doveadm.enabled: "true"
   com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"
