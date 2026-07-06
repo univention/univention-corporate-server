@@ -1,0 +1,36 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apache2
+fix: 2.4.25-3+deb9u25A~4.4.9.202607060932
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-44631, CVE-2026-29167 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-42535 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H).
+ * CVE-2026-42536, CVE-2026-34356, CVE-2026-34355 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-48913, CVE-2026-44186, CVE-2026-44185 (CVSS score 7.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-43951 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-29170 (CVSS score 6.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N).
+ * CVE-2026-44119 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N).
+bug: [59592]
+cve:
+- CVE-2026-29167
+- CVE-2026-29170
+- CVE-2026-34355
+- CVE-2026-34356
+- CVE-2026-42535
+- CVE-2026-42536
+- CVE-2026-43951
+- CVE-2026-44119
+- CVE-2026-44185
+- CVE-2026-44186
+- CVE-2026-44631
+- CVE-2026-48913
