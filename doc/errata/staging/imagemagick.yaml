@@ -1,0 +1,40 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: imagemagick
+fix: 8:6.9.10.23+dfsg-2.1+deb10u19
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-53460, CVE-2026-49218 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-48994 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-48734 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2026-56371 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-48733 (CVSS score 4.7 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2026-53463 (CVSS score 4.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L).
+ * CVE-2026-56376, CVE-2026-56368 (CVSS score 3.7 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-56378, CVE-2026-56367 (CVSS score 3.7 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+ * CVE-2026-56370 (CVSS score 3.3 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L).
+bug: [59590]
+cve:
+- CVE-2026-48733
+- CVE-2026-48734
+- CVE-2026-48994
+- CVE-2026-49218
+- CVE-2026-53460
+- CVE-2026-53463
+- CVE-2026-56367
+- CVE-2026-56368
+- CVE-2026-56370
+- CVE-2026-56371
+- CVE-2026-56376
+- CVE-2026-56378
