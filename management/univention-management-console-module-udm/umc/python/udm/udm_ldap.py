@@ -668,6 +668,7 @@ class UDM_Module:
         MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s', container, filter_s, superordinate)
         result = None
         try:
+            container = container or self.ldap_base
             sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
             if simple and self.allows_simple_lookup():
                 lookup_filter = self.lookup_filter(filter, ldap_connection)
@@ -700,7 +701,7 @@ class UDM_Module:
             if superordinate:  # and not ldap_connection.authz_connection.get(superordinate):  # TODO: information disclosure!
                 raise SuperordinateDoesNotExist(superordinate)
             # if container and not ldap_connection.authz_connection.get(container):  # TODO: information disclosure!
-            raise ObjectDoesNotExist(container or self.module.object.ldap_base)
+            raise ObjectDoesNotExist(container)
         except udm_errors.base as e:
             UDM_Error(e).reraise()
 
