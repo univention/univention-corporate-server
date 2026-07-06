@@ -11,9 +11,14 @@ import json
 import subprocess
 
 import pytest
-from pytest_subtests import SubTests
 
 
+# provoke a coredump to test this via:
+# python3 -c 'import ctypes; ctypes.string_at(0)'
+#
+# analyse with:
+# apt install libc6-dbg libldap2-dbgsym python3-dbg univention-directory-listener-dbgsym univention-directory-notifier-dbgsym
+# coredumpctl debug "$ID" will open gdb interactively
 IGNORE_EXE = {
     '/usr/sbin/rsyslogd',
     '/usr/libexec/samba/rpcd_spoolss',  # Bug #59550: triggered by 59_udm.64_test_udm_printers function test_create_printer_and_check_printing_works
@@ -65,25 +70,25 @@ def group_by_exe(dumps):
     return dict(sorted(grouped.items()))
 
 
-# provoke a coredump to test this via:
-# python3 -c 'import ctypes; ctypes.string_at(0)'
-#
-# analyse with:
-# apt install univention-directory-listener-dbgsym univention-directory-notifier-dbgsym libc6-dbg libldap2-dbgsym python3-dbg
-# coredumpctl debug "$ID" will open gdb interactively
-def test_no_coredumps(subtests: SubTests):
-    subprocess.call(['coredumpctl', 'list'])
-    dumps = coredumpctl_json()
+def pytest_generate_tests(metafunc):
+    if {'exe', 'exe_dumps'} <= set(metafunc.fixturenames):
+        subprocess.call(['coredumpctl', 'list'])
+        dumps = coredumpctl_json()
+        grouped = group_by_exe(dumps)
 
-    grouped = group_by_exe(dumps)
+        metafunc.parametrize(
+            ('exe', 'exe_dumps'),
+            grouped.items(),
+            ids=list(grouped),
+        )
 
-    for exe, exe_dumps in grouped.items():
-        with subtests.test(exe=exe):
-            for dump in exe_dumps:
-                print('  %s' % dump_summary(dump))
-                print_coredump_info(dump)
 
-            if exe in IGNORE_EXE:
-                pytest.skip('Ignored coredumps for EXE=%s' % exe)
+def test_no_coredumps(exe, exe_dumps):
+    for dump in exe_dumps:
+        print('  %s' % dump_summary(dump))
+        print_coredump_info(dump)
 
-            pytest.fail('\n'.join(['Unexpected coredumps found for EXE=%s:' % exe] + ['  %s' % dump_summary(dump) for dump in exe_dumps]))
+    if exe in IGNORE_EXE:
+        pytest.skip('Ignored coredumps for EXE=%s' % exe)
+
+    pytest.fail('\n'.join(['Unexpected coredumps found for EXE=%s:' % exe] + ['  %s' % dump_summary(dump) for dump in exe_dumps]))
