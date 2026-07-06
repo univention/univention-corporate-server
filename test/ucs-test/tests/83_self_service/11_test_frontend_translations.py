@@ -47,23 +47,27 @@ def find_label(page: Page, label_display_text: str) -> Locator | None:
     return next((label_display_locator for label_display_locator in label_display_locators if label_display_locator.evaluate('(element) => element.tagName') == 'LABEL'), None)
 
 
-def check_labels(page: Page, labels: dict[str, str], retries=4):
+def check_labels(page: Page, labels: dict[str, str]):
     for label_display, label_tag in labels.items():
-        for i in range(retries):
-            logger.info("checking for label with text %r and with attribute 'for=%r' (%d/%d)", label_display, label_tag, i + 1, retries)
-            found_label = find_label(page, label_display)
-            try:
-                assert found_label is not None, f'A label with the text {label_display} has not been found.'
-                expect(found_label).to_be_visible()
-                expect(found_label, f"Expected locator to have tag {label_tag}--\\d\\d, but found {found_label.get_attribute('for')}").to_have_attribute(
-                    'for',
-                    re.compile(rf'{label_tag}--\d\d'),
-                )
-                return
-            except AssertionError:
-                if i + 1 == retries:
-                    raise
-                time.sleep(3)
+        logger.info("checking for label %r (for=%r)", label_display, label_tag)
+
+        if label_tag:
+            label = page.locator(f'label.form-label[for^="{label_tag}--"]')
+            expect(label).to_have_attribute(
+                'for',
+                re.compile(rf'^{re.escape(label_tag)}--\d+$'),
+            )
+        else:
+            label = page.locator('label.form-label').filter(
+                has_text=re.compile(rf'^{re.escape(label_display)}\b'),
+            )
+
+        expect(label).to_be_visible()
+        expect(label).to_contain_text(label_display)
+        if label_tag:
+            expect(label).to_have_attribute('aria-label', label_display)
+            # expect(label).to_have_text(re.compile(rf'^{re.escape(label_display)}\s*(?:\*)?$'))  # fails for attributes also offering a tooltip
+            expect(label).to_have_attribute('for', re.compile(rf'^{re.escape(label_tag)}--\d+$'))
 
 
 @pytest.mark.close_browser
@@ -111,8 +115,8 @@ def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, has
             UCSLanguage.EN_US,
             'profile',
             {
-                'Your picture Y': 'jpegPhoto',
-                'E-mail address E': 'e-mail',
+                'Your picture': 'jpegPhoto',
+                'E-mail address': 'e-mail',
                 'Telephone number': 'phone',
                 'Department number': 'departmentNumber',
                 'Country': 'country',
@@ -128,8 +132,8 @@ def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, has
             UCSLanguage.DE_DE,
             'profile',
             {
-                'Ihr Foto I': 'jpegPhoto',
-                'E-Mail-Adresse E': 'e-mail',
+                'Ihr Foto': 'jpegPhoto',
+                'E-Mail-Adresse': 'e-mail',
                 'Telefonnummer': 'phone',
                 'Abteilungsnummer': 'departmentNumber',
                 'Land': 'country',
