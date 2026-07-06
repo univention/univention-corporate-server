@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: librabbitmq
+fix: 0.9.0-0.2+deb10u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-44236, CVE-2026-44235 (CVSS score unknown).
+bug: [59589]
+cve:
+- CVE-2026-44235
+- CVE-2026-44236
