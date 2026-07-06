@@ -1668,7 +1668,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
         last_page = page
         for _i in range(current_page, page or 1):
-            objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, simple=not opened, simple_attrs=['entryUUID', 'univentionObjectType'], serverctrls=serverctrls, response=ctrls)
+            objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, simple=not opened, opened=opened, simple_attrs=['entryUUID', 'univentionObjectType'], serverctrls=serverctrls, response=ctrls)
             for control in ctrls.get('ctrls', []):
                 if control.controlType == SimplePagedResultsControl.controlType:
                     page_ctrl.cookie = control.cookie
@@ -1678,10 +1678,6 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         else:
             shared_memory.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
             last_page = 0
-        # TODO: move into module.search(opened=True) and then into object.lookup()! because that does error handling.
-        if opened and objects:
-            for obj in objects:
-                obj.open()
         return (objects, last_page)
 
     def get_html(self, response):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.6.4) unstable; urgency=medium
+
+  * Bug #59579: add lookup(opened: bool = False) parameter
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2026 18:07:00 +0200
+
 univention-directory-manager-modules (17.6.3) unstable; urgency=medium
 
   * Bug #59578: cache encoding argument introspection of mapping

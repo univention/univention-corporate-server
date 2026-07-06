@@ -2113,9 +2113,11 @@ class simpleLdap:
         required: bool = False,
         timeout: int = -1,
         sizelimit: int = 0,
+        *,
         serverctrls: list | None = None,
         response: dict | None = None,
         authz: bool = True,
+        opened: bool = False,
     ) -> list[Self]:
         """
         Perform a LDAP search and return a list of instances.
@@ -2133,7 +2135,12 @@ class simpleLdap:
         :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
         :param response: An optional dictionary to receive the server controls of the result.
         :param authz: ignore authorization checks (**dangerous!**)
+        :param opened: open all found objects.
         :return: A list of UDM objects.
+
+        .. warning::
+            This is not the canonical method to lookup UDM objects. Historically UDM modules defined their lookup methods on Python module level. To unify code, we introduced this method, which is used as fallback.
+            But as long as not all UDM modules and clients are migrated to it, it must not be extended backwards/third-party-module incompatible nor directly used.
         """
         if isinstance(lo, univention.uldap.access):
             log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
@@ -2154,9 +2161,16 @@ class simpleLdap:
 
         for dn, attrs in lo.authz_connection.search(filter_str, search_base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
             try:
-                result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
+                obj = cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)
             except univention.admin.uexceptions.base as exc:
                 log.error('lookup() of object failed', dn=dn, error=exc)
+                continue
+            result.append(obj)
+            if opened:
+                try:
+                    obj.open()
+                except univention.admin.uexceptions.base as exc:
+                    log.error('open() of object failed', dn=dn, error=exc)
 
         if authz:
             result = lo.filter_lookup_results(result, {'module': cls.module, 'filter': filter_str, 'base': base or cls.ldap_base, 'scope': scope, 'attr': attr})

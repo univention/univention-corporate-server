@@ -663,9 +663,12 @@ class mapping:
 
     def __repr__(self):
         items = list(self._map.items())
-        max_key_len = max(len(str(k)) for k, _ in items) + 1
-        max_val_len = max(len(str(v[0])) for _, v in items) + 1
-        friendly = '\n'.join(f'{k:>{max_key_len}} {v[0]:<{max_val_len}}' for k, v in sorted(items))
+        if not items:
+            friendly = ''
+        else:
+            max_key_len = max(len(str(k)) for k, _ in items) + 1
+            max_val_len = max(len(str(v[0])) for _, v in items) + 1
+            friendly = '\n'.join(f'{k:>{max_key_len}} {v[0]:<{max_val_len}}' for k, v in sorted(items))
         return f'{super().__repr__()}\n{friendly}'
 
 

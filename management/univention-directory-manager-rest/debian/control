@@ -43,7 +43,7 @@ Depends:
  python3-univention-directory-reports,
  python3-univention-lib (>= 9.0.12-2),
  python3-univention-management-console (>= 14.3.2),
- univention-management-console-module-udm (>= 12.5.3),
+ univention-management-console-module-udm (>= 12.6.2),
  ${misc:Depends},
  ${python3:Depends},
 Description: REST service for UCS Directory Manager

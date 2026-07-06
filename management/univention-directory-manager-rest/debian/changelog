@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.6.3) unstable; urgency=medium
+
+  * Bug #59579: add lookup(opened: bool = False) parameter
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2026 18:15:12 +0200
+
 univention-directory-manager-rest (12.6.2) unstable; urgency=medium
 
   * Bug #59579: use simple LDAP search for unopened objects

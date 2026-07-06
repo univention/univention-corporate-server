@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.6.2) unstable; urgency=medium
+
+  * Bug #59579: add lookup(opened: bool = False) parameter
+
+ -- Florian Best <best@univention.de>  Mon, 06 Jul 2026 18:08:29 +0200
+
 univention-management-console-module-udm (12.6.1) unstable; urgency=medium
 
   * Bug #59444: set '*' as default search value when auto_substring_search is disabled

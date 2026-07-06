@@ -653,7 +653,7 @@ class UDM_Module:
             MODULE.warning('Failed to modify LDAP object %s: %s: %s', obj.dn, e.__class__.__name__, e)
             UDM_Error(e).reraise()
 
-    def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
+    def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True, opened=False):
         """Searches for LDAP objects based on a search pattern"""
         ldap_connection, ldap_position = self.get_ldap_connection()
         if container == 'all':
@@ -665,7 +665,7 @@ class UDM_Module:
         else:
             filter_s = self._object_property_filter(attribute, value, hidden, allow_asterisks)
 
-        MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s', container, filter_s, superordinate)
+        MODULE.info('Searching for LDAP objects', type=self.name, container=container, filter=filter_s, superordinate=superordinate, opened=opened, simple=simple)
         result = None
         try:
             container = container or self.ldap_base
@@ -683,10 +683,16 @@ class UDM_Module:
             else:
                 if self.module:
                     kwargs = {}
-                    if serverctrls and 'serverctrls' in inspect.getfullargspec(self.module.lookup).args:  # not every UDM handler supports serverctrls
+                    args = inspect.getfullargspec(self.module.lookup).args
+                    if serverctrls and 'serverctrls' in args:  # not every UDM handler supports serverctrls
                         kwargs['serverctrls'] = serverctrls
                         kwargs['response'] = response
+                    if opened and 'opened' in args:
+                        kwargs['opened'] = opened
                     result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit, **kwargs)
+                    if opened and 'opened' not in args:  # backwards compatible: not every UDM handler supports opened
+                        for obj in result:
+                            obj.open()
                 else:
                     result = None
         except udm_errors.insufficientInformation:
