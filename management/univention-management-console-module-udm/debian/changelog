@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.6.3) unstable; urgency=medium
+
+  * Bug #59579: inspect also keyword-only arguments
+
+ -- Florian Best <best@univention.de>  Tue, 07 Jul 2026 11:43:35 +0200
+
 univention-management-console-module-udm (12.6.2) unstable; urgency=medium
 
   * Bug #59579: add lookup(opened: bool = False) parameter

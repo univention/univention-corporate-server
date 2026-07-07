@@ -683,7 +683,8 @@ class UDM_Module:
             else:
                 if self.module:
                     kwargs = {}
-                    args = inspect.getfullargspec(self.module.lookup).args
+                    args = inspect.getfullargspec(self.module.lookup)
+                    args = args.args + args.kwonlyargs
                     if serverctrls and 'serverctrls' in args:  # not every UDM handler supports serverctrls
                         kwargs['serverctrls'] = serverctrls
                         kwargs['response'] = response
