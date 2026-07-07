@@ -8,8 +8,9 @@ Build-Depends:
 
 Package: univention-ldap-overlay-memberof
 Architecture: all
+Pre-Depends:
+ univention-ldap-server (>= 18.6.6),
 Depends:
- univention-ldap-server (>= 18.6.4),
  ${misc:Depends},
 Description: transitional package for the OpenLDAP memberOf overlay configuration
  This is a transitional dummy package. The configuration of the OpenLDAP

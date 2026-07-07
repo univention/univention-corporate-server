@@ -3,7 +3,7 @@ release: "5.2"
 version: [6]
 scope: ucs_5.2-0-errata5.2-6
 src: univention-ldap-overlay-memberof
-fix: 14.6.3
+fix: 14.6.4
 desc: |
  This update addresses the following issue:
  * The configuration of the OpenLDAP "memberof" overlay has been merged into

@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Univention LDAP Server
+#  preinst script for the debian package
+#
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Bug #47464: The memberOf overlay configuration was merged from the former
+# univention-ldap-overlay-memberof package into univention-ldap-server and the
+# slapd.conf subfile was renamed from "41univention-ldap-overlay-memberof" to
+# "42univention-ldap-overlay-memberof".
+#
+# The transitional univention-ldap-overlay-memberof package Pre-Depends on this
+# version, so its maintscript (which drops the old UCR registration conffiles)
+# only runs *after* univention-ldap-server has been configured and slapd.conf
+# has been rebuilt. To avoid a duplicate "overlay memberof" stanza in slapd.conf
+# we have to remove the stale subfile, its template and the old UCR registration
+# here in the preinst, i.e. before slapd.conf is (re)constructed in the postinst.
+#
+# This script can safely be removed in UCS 5.2-7 and 5.3-0
+
+remove_old_memberof_overlay_files () {
+    rm -f /etc/univention/templates/files/etc/ldap/slapd.conf.d/41univention-ldap-overlay-memberof
+    rm -f /etc/univention/registry.info/variables/univention-ldap-overlay-memberof.cfg
+    rm -f /etc/univention/templates/info/univention-ldap-overlay-memberof.info
+}
+
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 18.6.6; then
+    remove_old_memberof_overlay_files
+fi
+
+#DEBHELPER#
+
+exit 0

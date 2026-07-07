@@ -1,4 +1,4 @@
-univention-ldap-overlay-memberof (14.6.3) unstable; urgency=medium
+univention-ldap-overlay-memberof (14.6.4) unstable; urgency=medium
 
   * Bug #47464: Turn into a transitional package. The OpenLDAP memberOf overlay
     configuration has been merged into univention-ldap-server.
