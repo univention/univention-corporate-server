@@ -1,0 +1,17 @@
+moduleload inchain.so
+overlay inchain
+
+@!@
+max_depth = configRegistry.get_int('ldap/overlay/inchain/max-depth', 16)
+max_nodes = configRegistry.get_int('ldap/overlay/inchain/max-nodes', 1024)
+max_searches = configRegistry.get_int('ldap/overlay/inchain/max-depth', 256)
+ignore_acls = str(configRegistry.is_true('ldap/overlay/inchain/ignore-acls', False)).upper()
+attrs = configRegistry.get('ldap/overlay/inchain/attrs', 'uniqueMember').split(',')
+
+print('inchain-max-depth %d' % (max_depth,))
+print('inchain-max-nodes %d' % (max_nodes,))
+print('inchain-max-searches %d' % (max_searches,))
+print('inchain-ignore-acls %s' % (ignore_acls,))
+for attr in attrs:
+    print('inchain-attr %s' % (attr,))
+@!@

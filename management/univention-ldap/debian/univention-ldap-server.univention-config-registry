@@ -135,6 +135,11 @@ Variables: ldap/overlay/memberof/.*
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/42univention-ldap-overlay-inchain
+Variables: ldap/overlay/inchain/.*
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/99translog
 
 Type: file
