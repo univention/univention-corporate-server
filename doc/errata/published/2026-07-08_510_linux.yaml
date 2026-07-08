@@ -701,3 +701,6 @@ cve:
 - CVE-2026-52909
 - CVE-2026-46331
 note: This is the 1st of two parts.
+erratum: 510
+announced: 2026-07-08
+support: core
