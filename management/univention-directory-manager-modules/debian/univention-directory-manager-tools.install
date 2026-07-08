@@ -24,7 +24,7 @@ scripts/univention-blocklist-clean-expired-entries	usr/share/univention-director
 scripts/univention-configure-udm-authorization	usr/share/univention-directory-manager-tools/
 scripts/univention-delayed-account-activation	usr/share/univention-directory-manager-tools/
 scripts/univention-update-license-cache	usr/share/univention-directory-manager-tools/
-udm-default-authorization-roles.policy usr/share/univention-directory-manager-modules/
+udm-default-authorization-roles.policy usr/share/univention-directory-manager-modules/policies/
 univention-cli-client	usr/share/univention-directory-manager-tools/
 univention-cli-server	usr/share/univention-directory-manager-tools/
 univention-dnsedit	usr/share/univention-directory-manager-tools/

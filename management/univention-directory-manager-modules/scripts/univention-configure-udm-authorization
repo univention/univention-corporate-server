@@ -72,12 +72,12 @@ class UniventionDirectoryManagerPolicies:
 
         subparser = subparsers.add_parser('generate-roles', aliases=['create-roles'])
         subparser.set_defaults(func=self.generate_roles_from_acl)
-        subparser.add_argument('--config', required=True, type=argparse.FileType('r'))
+        subparser.add_argument('--config-dir', required=True)
         subparser.add_argument('--strict', action='store_true')
 
         subparser = subparsers.add_parser('generate-default-roles', aliases=['create-default-roles'])
         subparser.set_defaults(func=self.generate_default_roles)
-        subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy', type=argparse.FileType('r'))
+        subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
         subparser.add_argument('--strict', action='store_true')
 
         subparser = subparsers.add_parser('prune')
@@ -130,10 +130,11 @@ class UniventionDirectoryManagerPolicies:
         return written
 
     def generate_roles_from_acl(self):
-        conf = UDMAuthorizationConfig(self.args.config.name, strict=self.args.strict)
-        conf.parse()
-        for path in conf.write_files(self.output_root):
-            log.info('Wrote Cerbos role policy %s', path)
+        for config in Path(self.args.config_dir).glob('*.policy'):
+            conf = UDMAuthorizationConfig(config, strict=self.args.strict)
+            conf.parse()
+            for path in conf.write_files(self.output_root):
+                log.info('Wrote Cerbos role policy %s', path)
 
     def generate_default_roles(self):
         self.generate_roles_from_acl()
