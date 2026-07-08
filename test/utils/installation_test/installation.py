@@ -12,6 +12,7 @@ from contextlib import suppress
 from datetime import datetime
 
 from helper import trace_calls, verbose
+from proxmox_vnc import ProxmoxVNCBridge, load_credentials
 from twisted.internet import reactor
 from vncautomate import VNCAutomateFactory, init_logger
 from vncautomate.config import OCRConfig
@@ -74,8 +75,37 @@ def build_parser() -> ArgumentParser:
     group = parser.add_argument_group("Virtual machine settings")
     group.add_argument(
         '--vnc',
-        required=True,
-        help="VNC screen to connect to",
+        help="VNC screen to connect to directly (e.g. HOST::PORT). "
+             "Mutually exclusive with the Proxmox VNC bridge options below.",
+    )
+
+    group = parser.add_argument_group(
+        "Proxmox VNC bridge",
+        "Connect through Proxmox instead of a direct VNC screen. "
+        "Activated by giving --proxmox-node and --proxmox-vmid.",
+    )
+    group.add_argument(
+        '--proxmox-node',
+        help="Proxmox node the VM runs on",
+        metavar="NODE",
+    )
+    group.add_argument(
+        '--proxmox-vmid',
+        help="Proxmox VM ID",
+        metavar="VMID",
+    )
+    group.add_argument(
+        '--proxmox-credentials',
+        help="Path to a JSON file with proxmox_host, proxmox_api_user, "
+             "proxmox_api_token_name and proxmox_api_token_secret",
+        metavar="FILE",
+    )
+    group.add_argument(
+        '--proxmox-port',
+        default=443,
+        type=int,
+        help="Proxmox API port",
+        metavar="PORT",
     )
 
     group = parser.add_argument_group("Host settings")
@@ -132,6 +162,39 @@ class VNCInstallation:
         self.translations = self.load_translation(self.args.language)
         self._client: ThreadedVNCClientProxy | None = None
         self._stopping = False
+        self._bridge: ProxmoxVNCBridge | None = None
+        self._vnc_server, self._vnc_password = self._resolve_vnc_target(args)
+
+    def _resolve_vnc_target(self, args: Namespace) -> tuple[str | None, str | None]:
+        """
+        Pick the VNC target: either a direct ``--vnc`` screen or the Proxmox bridge.
+
+        Bridge mode is activated by ``--proxmox-node`` + ``--proxmox-vmid``. For the
+        bridge, the actual server address is only known once it is started, so this
+        just prepares the (unstarted) bridge and defers connecting to :attr:`client`.
+        """
+        proxmox = bool(args.proxmox_node or args.proxmox_vmid)
+        if args.vnc and proxmox:
+            raise SystemExit("error: use either --vnc or the --proxmox-* options, not both")
+        if not args.vnc and not proxmox:
+            raise SystemExit("error: specify --vnc or --proxmox-node together with --proxmox-vmid")
+
+        if not proxmox:
+            return args.vnc, None
+
+        if not (args.proxmox_node and args.proxmox_vmid):
+            raise SystemExit("error: --proxmox-node and --proxmox-vmid must both be given")
+        if not args.proxmox_credentials:
+            raise SystemExit("error: --proxmox-credentials is required for the Proxmox VNC bridge")
+
+        credentials = load_credentials(args.proxmox_credentials)
+        self._bridge = ProxmoxVNCBridge.from_credentials(
+            credentials,
+            node=args.proxmox_node,
+            vmid=args.proxmox_vmid,
+            port=args.proxmox_port,
+        )
+        return None, None
 
     def load_translation(self, language: str) -> dict[str, str]:
         return {}
@@ -142,8 +205,16 @@ class VNCInstallation:
     @property
     def client(self) -> ThreadedVNCClientProxy:
         if self._client is None:
+            server, password = self._vnc_server, self._vnc_password
+            if self._bridge is not None:
+                # Start the bridge here (not in __init__): the Proxmox VNC ticket is
+                # short-lived and doubles as the RFB password, so fetch it right
+                # before connecting.
+                host, port, password = self._bridge.start()
+                server = f"{host}::{port}"
             self._client = connect(
-                self.args.vnc,
+                server,
+                password=password,
                 factory_class=VNCAutomateFactory,
                 timeout=self.timeout,
             )

@@ -4,11 +4,15 @@
 
 """UCS installation via VNC"""
 
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, RawDescriptionHelpFormatter
 from os.path import dirname, join
 
 from installation import VNCInstallation, build_parser, sleep, verbose
 from yaml import safe_load
+
+
+class _HelpFormatter(ArgumentDefaultsHelpFormatter, RawDescriptionHelpFormatter):
+    """Show argument defaults and keep the epilog's raw formatting."""
 
 
 class UCSInstallation(VNCInstallation):
@@ -850,7 +854,16 @@ def main() -> None:
     parser = ArgumentParser(
         description=__doc__,
         parents=[build_parser()],
-        formatter_class=ArgumentDefaultsHelpFormatter,
+        formatter_class=_HelpFormatter,
+        epilog="""
+Examples:
+  # Direct VNC screen
+  %(prog)s --vnc 10.0.0.5::5901 --role master
+
+  # Through the Proxmox VNC bridge (--proxmox-node + --proxmox-vmid enable it)
+  %(prog)s --proxmox-node uni-pve-02 --proxmox-vmid 5402 \\
+      --proxmox-credentials ./ucs-ec2-tools.json --role master
+""",
     )
     parser.add_argument(
         '--language',
