@@ -2,7 +2,7 @@
 
 This document describes various details about the integration of ABAC (attribute based access control) in UDM.
 It describes the current released status, implementation details, requirements and use cases we got from
-Product Management and the challenged of integration Guardian and Guardian concepts into it.
+Product Management and the challenges of integration Guardian and Guardian concepts into it.
 
 # Documentation
 
