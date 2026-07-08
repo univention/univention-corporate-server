@@ -23,6 +23,7 @@ IGNORE_EXE = {
     '/usr/sbin/rsyslogd',
     '/usr/libexec/samba/rpcd_spoolss',  # Bug #59550: triggered by 59_udm.64_test_udm_printers function test_create_printer_and_check_printing_works
     '/usr/sbin/sssd',  # Bug #59597
+    '/usr/sbin/inetd',  # Bug #59598
 }
 
 
