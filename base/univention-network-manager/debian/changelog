@@ -1,8 +1,12 @@
-univention-network-manager (14.6.0) UNRELEASED; urgency=medium
+univention-network-manager (14.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:38 +0200
+  [ Florian Best ]
+  * Bug #53252: retry ip registration on transient errors at boot
+
+ -- Florian Best <best@univention.de>  Fri, 10 Jul 2026 13:54:25 +0200
 
 univention-network-manager (14.5.0) UNRELEASED; urgency=medium
 

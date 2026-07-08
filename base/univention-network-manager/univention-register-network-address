@@ -14,7 +14,7 @@ import time
 import netifaces
 
 from univention.config_registry import ucr
-from univention.lib.umc import Client, ConnectionError, HTTPError, ServiceUnavailable  # noqa: A004
+from univention.lib.umc import Client, ConnectionError, HTTPError  # noqa: A004
 
 
 ATTEMPTS = 5
@@ -34,17 +34,16 @@ def register_iface(iface: str, verbose: bool) -> bool:
                 'role': ucr.get('server/role'),
             })
             return True
-        except ServiceUnavailable as exc:
+        except (HTTPError, ConnectionError) as exc:
+            # UMC may not be reachable/ready yet while starting up at boot, retry
             if verbose:
                 print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
+            if isinstance(exc, HTTPError) and exc.status < 500:
+                return False
             if retry + 1 < ATTEMPTS:
                 print('INFO: Retry (%s/%s) in %s seconds.' % (retry + 1, ATTEMPTS - 1, RETRY_DELAY))
                 time.sleep(RETRY_DELAY)
-        except (HTTPError, ConnectionError) as exc:
-            if verbose:
-                print('%s: %s' % (type(exc).__name__, exc), file=sys.stderr)
-            return False
-    return True
+    return False
 
 
 def parse_args() -> argparse.Namespace:
