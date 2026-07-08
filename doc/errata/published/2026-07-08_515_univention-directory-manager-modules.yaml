@@ -13,3 +13,6 @@ desc: |
  * The UDM module search API has been extended to allow passing `opened=True`
    for UDM modules which support it.
 bug: [59578, 59579]
+erratum: 515
+announced: 2026-07-08
+support: core
