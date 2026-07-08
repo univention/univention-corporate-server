@@ -409,6 +409,24 @@ wait_for_process () {
 	return 0
 }
 
+wait_for_dns () {
+	local name=${1:?Missing name to resolve}
+	local timeout=${2:-120}
+	local steps=${3:-3}
+	local timestamp
+	timestamp=$(date +"%s")
+	echo "Waiting for DNS to resolve '$name'..."
+	while ! getent hosts "$name" >/dev/null 2>&1; do
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
+			echo "ERROR: DNS cannot resolve '$name' after ${timeout}s."
+			return 1
+		fi
+		nscd -i hosts
+		sleep "$steps"
+	done
+	return 0
+}
+
 wait_for_slapd () {
 	wait_for_process 600 1 /usr/sbin/slapd -f /etc/ldap/slapd.conf
 }
@@ -438,6 +456,7 @@ switch_app_center () {
 switch_to_test_app_center () {
 	local app rv=0
 	have univention-app || return 1
+	wait_for_dns appcenter-test.software-univention.de || return 1
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
 	if [ -e /var/cache/appcenter-installed.txt ]; then
