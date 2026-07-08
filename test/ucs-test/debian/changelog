@@ -1,3 +1,9 @@
+ucs-test (12.6.33) unstable; urgency=medium
+
+  * Bug #59418: use system chromedriver instead of Selenium Manager
+
+ -- Florian Best <best@univention.de>  Fri, 10 Jul 2026 13:08:16 +0200
+
 ucs-test (12.6.32) unstable; urgency=medium
 
   * Bug #59418: keep 28errors/34updater-check robust against app updates

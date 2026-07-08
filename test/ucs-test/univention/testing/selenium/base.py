@@ -18,6 +18,7 @@ from typing import Self
 import selenium.common.exceptions as selenium_exceptions
 from PIL import Image
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 
@@ -81,7 +82,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
                 if self.selenium_user_agent:
                     chrome_options.add_argument('--user-agent=%s' % self.selenium_user_agent)
                 chrome_options.add_argument('ignore-certificate-errors')
-                self.driver = webdriver.Chrome(options=chrome_options)
+                self.driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=chrome_options)
             else:
                 self.driver = webdriver.Firefox()
 
