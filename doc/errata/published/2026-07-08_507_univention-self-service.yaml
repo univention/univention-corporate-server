@@ -9,3 +9,6 @@ desc: |
  * The Self Service now uses clearer wording for the email address used for
    account recovery.
 bug: [59583]
+erratum: 507
+announced: 2026-07-08
+support: core
