@@ -20,7 +20,7 @@ import pytest
 # apt install libc6-dbg libldap2-dbgsym python3-dbg univention-directory-listener-dbgsym univention-directory-notifier-dbgsym
 # coredumpctl debug "$ID" will open gdb interactively
 IGNORE_EXE = {
-    '/usr/sbin/rsyslogd',
+    '/usr/sbin/rsyslogd',  # Bug #59600
     '/usr/libexec/samba/rpcd_spoolss',  # Bug #59550: triggered by 59_udm.64_test_udm_printers function test_create_printer_and_check_printing_works
     '/usr/sbin/sssd',  # Bug #59597
     '/usr/sbin/inetd',  # Bug #59598
