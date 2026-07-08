@@ -1254,7 +1254,9 @@ class UDM_Module:
     def _object_property_filter(self, object_property, object_property_value, show_hidden=True, allow_asterisks=True):
         if object_property in [None, 'None']:
             ret = ''
-            if object_property_value not in [None, '*']:
+            # only if we have a proper value, we create a filter,
+            # otherwise search for everything
+            if object_property_value not in [None, '*', '']:
                 ret = '(|%s)' % ''.join(udm_syntax.ISyntax.get_object_property_filter(attr, object_property_value, allow_asterisks) for attr in self.default_search_attrs)
         else:
             prop = self.module.property_descriptions.get(object_property)

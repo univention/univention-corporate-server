@@ -3,7 +3,7 @@ release: "5.2"
 version: [6]
 scope: ucs_5.2-0-errata5.2-6
 src: univention-management-console-module-udm
-fix: 12.6.4
+fix: 12.6.5
 desc: |
  This update addresses the following issue:
  * The experimental paginated object search has been enhanced by using LDAP
@@ -13,4 +13,5 @@ desc: |
    regarding scalability, process-local pagination state, recovery after LDAP
    server restarts, and VLV additionally requires the LDAP SSSVLV overlay to
    be enabled and configured appropriately.
-bug: [50240]
+ * Empty search queries now always return all results.
+bug: [50240, 59595]

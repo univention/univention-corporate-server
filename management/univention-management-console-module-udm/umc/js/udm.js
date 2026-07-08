@@ -520,16 +520,7 @@ define([
 			}));
 
 			// register event to update hiding/showing of form fields
-			this._searchForm.ready().then(lang.hitch(this, function() {
-				this._updateSearch();
-				// initialize search filter with * in case auto substring search is disabled
-				var propValWidget = this._searchForm._widgets.objectPropertyValue;
-				var autoSubstringSearch = this._ucr['directory/manager/web/auto_substring_search'] === undefined || tools.isTrue(this._ucr['directory/manager/web/auto_substring_search'])
-				var wildcardSearch = this._ucr['directory/manager/web/allow_wildcard_search'] === undefined  || tools.isTrue(this._ucr['directory/manager/web/allow_wildcard_search'])
-				if (!propValWidget.get('value') && !autoSubstringSearch && wildcardSearch) {
-					propValWidget.set('value', '*');
-				}
-			}));
+			this._searchForm.ready().then(lang.hitch(this, '_updateSearch'));
 			this._grid.on('filterDone', lang.hitch(this, '_updateSearch'));
 
 			// focus and select text when the objectPropertyValue has been loaded
