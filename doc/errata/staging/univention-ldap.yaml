@@ -10,18 +10,14 @@ desc: |
    the `univention-ldap-server` package. The
    `univention-ldap-overlay-memberof` package is now an empty transitional
    package.
- * It is now possible to create an LDAP index for the "memberOf" attribute.
-   Additionally, on new installations the "memberOf" attribute is now indexed
-   by default (equality index). Existing installations are intentionally left
-   unchanged. Future UCS releases will also index "memberOf" on upgrades.
-
-   Administrators who want to index "memberOf" on an already installed system
-   can add it with the following commands:
-
-       systemctl stop slapd.service
-       /usr/share/univention-ldap/ldap_setup_index --add-eq memberOf
-       systemctl start slapd.service
-
-   Rebuilding the index re-indexes the existing directory entries and may take
-   a considerable amount of time on large databases.
+ * It is now possible to create an LDAP index for the "memberOf"
+   attribute.  Additionally, on new installations the "memberOf" attribute
+   is now indexed by default (equality index). Existing installations are
+   intentionally left unchanged. Future UCS releases will also index
+   "memberOf" on upgrades.  Administrators who want to index "memberOf" on
+   an already installed system can add it with the commands `systemctl stop
+   slapd.service`, `/usr/share/univention-ldap/ldap_setup_index --add-eq
+   memberOf`, `systemctl start slapd.service`.  Rebuilding the index
+   re-indexes the existing directory entries and may take a considerable
+   amount of time on large databases.
 bug: [47464]
