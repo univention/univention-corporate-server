@@ -10,3 +10,6 @@ desc: |
    been added as UCR template so that upgrades to UCS 5.3 with Dovecot 2.4
    will write a compatible configfile.
 bug: [59520]
+erratum: 506
+announced: 2026-07-08
+support: core
