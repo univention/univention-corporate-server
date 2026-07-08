@@ -10,3 +10,6 @@ desc: |
    descriptor" error messages when invoked via Debian post installation
    scripts. In this case, debug output is written to standard error instead.
 bug: [56630]
+erratum: 508
+announced: 2026-07-08
+support: core
