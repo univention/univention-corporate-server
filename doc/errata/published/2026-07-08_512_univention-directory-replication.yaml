@@ -9,3 +9,6 @@ desc: |
  * The directory replication OID skip list has been extended for OpenLDAP 2.6
    to allow mixed environements with UCS 5.3.
 bug: [59532]
+erratum: 512
+announced: 2026-07-08
+support: core
