@@ -25,6 +25,7 @@ IGNORE_EXE = {
     '/usr/sbin/sssd',  # Bug #59597
     '/usr/sbin/inetd',  # Bug #59598
     '/usr/bin/python3.11',  # Bug #58375
+    '/usr/sbin/univention-directory-notifier',  # Bug #59599
 }
 
 
