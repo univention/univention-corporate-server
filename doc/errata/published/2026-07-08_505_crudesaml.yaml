@@ -9,3 +9,6 @@ desc: |
  * The crudesaml package epoch has been increased to ensure a valid upgrade
    path to UCS 5.3 and restore the original upstream package version.
 bug: [59511]
+erratum: 505
+announced: 2026-07-08
+support: core
