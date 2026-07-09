@@ -325,7 +325,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
-adconnection.append_to_attribute(r'$dn', r'$name', rb'$$value')
+adconnection.append_to_attribute(r'$dn', r'$name', rb'$value')
 sys.exit(42)
 "
 	local retval="$?"
@@ -349,7 +349,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
-adconnection.remove_from_attribute(r'$dn', r'$name', rb'$$value')
+adconnection.remove_from_attribute(r'$dn', r'$name', rb'$value')
 sys.exit(42)
 "
 	local retval="$?"
@@ -373,7 +373,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
-adconnection.createuser(r'$username', description=rb'$$description', position=r'$position')
+adconnection.createuser(r'$username', description=rb'$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -397,7 +397,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
-adconnection.group_create(r'$groupname', description=rb'$$description', position=r'$position')
+adconnection.group_create(r'$groupname', description=rb'$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -421,7 +421,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
-adconnection.container_create(r'$containername', description=rb'$$description', position=r'$position')
+adconnection.container_create(r'$containername', description=rb'$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -445,7 +445,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
-adconnection.createou(r'$ouname', description=rb'$$description', position=r'$position')
+adconnection.createou(r'$ouname', description=rb'$description', position=r'$position')
 sys.exit(42)
 "
 	local retval="$?"
@@ -625,7 +625,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.add_to_group(r'$dn', rb'$$member')
+adconnection.add_to_group(r'$dn', rb'$member')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then
@@ -645,7 +645,7 @@ import sys
 sys.path.append(r'$TESTLIBPATH')
 import adconnector
 adconnection = adconnector.ADConnection()
-adconnection.remove_from_group(r'$dn', rb'$$member')
+adconnection.remove_from_group(r'$dn', rb'$member')
 sys.exit(42)
 "
 	if [ $? == 42 ]; then

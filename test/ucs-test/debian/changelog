@@ -1,3 +1,9 @@
+ucs-test (12.6.29) unstable; urgency=medium
+
+  * Bug #53337: fix PID expansion in adconnector helpers
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 09 Jul 2026 17:31:03 +0200
+
 ucs-test (12.6.28) unstable; urgency=medium
 
   * Bug #59599: ignore coredump /usr/sbin/univention-directory-notifier
