@@ -7191,15 +7191,6 @@ class VFSObjects(combobox):
 class GuardianRole(simple):
     size = 'Two'
 
-    # FIXME: why don't we allow LDAP DNs in the last part of context? That would be case insensitive UTF-8,
-    # see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
-    regex = re.compile(r'^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$')
-    error_message = _(
-        'Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, '
-        "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'."
-        'The final part of context additionally allows equal and comma.',
-    )
-
 
 class _EscapedDict(dict):
     """A dictionary wrapper which returns values as LDAP filter escaped values"""
