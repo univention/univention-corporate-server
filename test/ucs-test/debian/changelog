@@ -1,3 +1,9 @@
+ucs-test (12.6.31) unstable; urgency=medium
+
+  * Bug #53337: fix 'ur' strings in adconnector helpers
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 10 Jul 2026 12:45:16 +0200
+
 ucs-test (12.6.30) unstable; urgency=medium
 
   * Issue univention/dev/internal/team-nubus#1666: fix tests for keycloak

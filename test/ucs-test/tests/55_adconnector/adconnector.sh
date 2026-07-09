@@ -275,9 +275,9 @@ import adconnector
 adconnection = adconnector.ADConnection(r'$configbase')
 if $treat_value_as_base64:
 	import base64
-	value = base64.b64decode(ur'$value'.encode(r'$encoding'))
+	value = base64.b64decode(r'$value'.encode(r'$encoding'))
 else:
-	value = ur'$value'.encode(r'$encoding')
+	value = r'$value'.encode(r'$encoding')
 adconnection.set_attribute(r'$dn', r'$name', value)
 sys.exit(42)
 "
