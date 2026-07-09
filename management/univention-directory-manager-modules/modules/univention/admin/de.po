@@ -514,17 +514,8 @@ msgid "Guardian"
 msgstr "Guardian"
 
 #: modules/univention/admin/syntax.py:7151
-msgid ""
-"Guardian role strings must be lowercase ASCII alphanumeric with hyphens and "
-"underscores, in the format 'app:namespace:role' or "
-"'app:namespace:role&app:namespace:context'.The final part of context "
-"additionally allows equal and comma."
-msgstr ""
-"Guardian Rollenstrings dürfen ausschließlich aus alphanumerischen ASCII-"
-"Kleinbuchstaben mit Bindestrichen und Unterstrichen im Format "
-"„app:namespace:role“ oder „app:namespace:role&app:namespace:context“ "
-"bestehen.Der hintere Teil context erlaubt zusätzlich Gleichheitszeichen und "
-"Komma."
+msgid "Role names must not contain any of the following characters: ! * ? [ ] { }"
+msgstr "Rollennamen dürfen die folgenden Zeichen nicht enthalten: ! * ? [ ] { }"
 
 #: modules/univention/admin/syntax.py:6408
 #: modules/univention/admin/syntax.py:6421

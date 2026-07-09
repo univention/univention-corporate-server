@@ -7191,6 +7191,9 @@ class VFSObjects(combobox):
 class GuardianRole(simple):
     size = 'Two'
 
+    regex = re.compile(r'^[^!*?\[\]{}]+$')
+    error_message = _('Role names must not contain any of the following characters: ! * ? [ ] { }')
+
 
 class _EscapedDict(dict):
     """A dictionary wrapper which returns values as LDAP filter escaped values"""
