@@ -145,17 +145,32 @@ class UniventionDirectoryManagerPolicies:
         rules = []
         rules.extend(self._global_deny_rules(modname))
         rules.append({
-            'name': 'allow-role-policy-actions',
+            'name': f'allow-role-policy-actions-{modname.replace("/", "-")}',
             'actions': object_actions + property_actions,
             'effect': 'EFFECT_ALLOW',
             'roles': ['*'],
         })
         return {
             'apiVersion': 'api.cerbos.dev/v1',
+            'description': f'Defines the possible actions of the UDM module "{modname}" resource',
+            'disabled': False,
             'resourcePolicy': {
-                'version': 'default',
                 'resource': udm_resource_kind(modname),
+                'version': 'default',
+                # 'scope': '',
+                # 'scopePermissions': '',
+                # 'importDerivedRoles': [],
+                # 'constants':
+                # 'variables':
                 'rules': rules,
+                # 'schemas': {
+                #     'principalSchema': {'ref' 'cerbos:///principal.json'},
+                #     'resourceSchema':: {'ref': 'cerbos:///album/object.json'},
+                # }
+            },
+            'metadata': {
+                'sourceFile': 'univention-configure-udm-authorization',
+                'annotations': {},
             },
         }
 

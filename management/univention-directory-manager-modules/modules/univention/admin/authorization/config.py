@@ -454,11 +454,19 @@ class UDMAuthorizationConfig:
                 for role in roles:
                     rules = policies.setdefault(role, _policy_map({
                         'apiVersion': 'api.cerbos.dev/v1',
+                        'description': 'Automatically generated rule from %r.' % self.filename.stem,
+                        'disabled': False,
                         'rolePolicy': _policy_map({
-                            'version': 'default',
                             'role': role,
+                            'version': 'default',
+                            # 'scope': '',
+                            # 'parentRoles': [],
                             'rules': _policy_seq([], commented),
                         }, commented),
+                        'metadata': {
+                            'sourceFile': str(self.filename),
+                            'annotations': {},
+                        },
                     }, commented))['rolePolicy']['rules']
 
                     used = used_names.setdefault(role, set())
