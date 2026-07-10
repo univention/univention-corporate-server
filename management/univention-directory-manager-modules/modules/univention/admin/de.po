@@ -723,15 +723,6 @@ msgstr "Nachschlage-Attribut"
 msgid "Lookup value"
 msgstr "Nachschlage-Wert"
 
-#: modules/univention/admin/guardian_roles.py:28
-#: modules/univention/admin/guardian_roles.py:40
-msgid ""
-"Lowercase ASCII alphanumeric string with underscores or dashes, in the "
-"format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"
-msgstr ""
-"ASCII alphanumerischer Text in Kleinschrift mit Unter- und Bindestrichen im "
-"Format 'app:namespace:role' oder 'app:namespace:role&app:namespace:context'"
-
 #: modules/univention/admin/syntax.py:4731
 msgid "MAC address"
 msgstr "MAC-Adresse"

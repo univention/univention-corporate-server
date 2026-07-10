@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.6.7) unstable; urgency=medium
+
+  * Bug #59603: drop obsolete long description
+
+ -- Florian Best <best@univention.de>  Fri, 10 Jul 2026 12:50:16 +0200
+
 univention-directory-manager-modules (17.6.6) unstable; urgency=medium
 
   * Bug #59603: restrict role names to valid cerbos role names

@@ -25,7 +25,6 @@ def member_role_properties():
     return {
         'guardianMemberRoles': univention.admin.property(
             short_description=_('Roles used by Guardian for access permissions, these roles are passed to the members of this group'),
-            long_description=_("Lowercase ASCII alphanumeric string with underscores or dashes, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"),
             syntax=GuardianRole,
             size='Two',
             multivalue=True,
@@ -37,7 +36,6 @@ def role_properties():
     return {
         'guardianRoles': univention.admin.property(
             short_description=_('Roles used by Guardian for access permissions'),
-            long_description=_("Lowercase ASCII alphanumeric string with underscores or dashes, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"),
             syntax=GuardianRole,
             size='Two',
             multivalue=True,
