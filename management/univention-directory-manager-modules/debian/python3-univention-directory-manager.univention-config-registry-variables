@@ -170,6 +170,13 @@ Type=pint
 Default=12
 Categories=management-udm
 
+[password/samba/nthash]
+Description[de]=Erzeugung des Samba-NT-Passworthashs (sambaNTPassword) aktivieren. Ist diese Option deaktiviert, erzeugt UDM bei Passwortänderungen keinen NT-Hash und entfernt vorhandene Werte automatisch. Das Deaktivieren dieser Option kann Dienste beeinträchtigen, die NT-Passworthashes verwenden, darunter die Passwortsynchronisierung des S4/AD-Connectors, die NTLM-Authentifizierung von Squid sowie die MS-CHAP-/NTLM-Authentifizierung über RADIUS.
+Description[en]=Enable generation of the Samba NT password hash (sambaNTPassword). If disabled, UDM will not generate the NT hash during password changes and will automatically remove any existing value. Disabling this option may break services that depend on NT password hashes, including including the S4/AD Connector password synchronization, Squid NTLM authentication, and RADIUS MS-CHAP/NTLM authentication.
+Type=bool
+Default=true
+Categories=management-udm
+
 [directory/manager/license-cache/ttl]
 Description[de]=TTL in Sekunden für den Cache zur Lizenzanzahl. Standard: 3600, Maximum: 86400. Bei einem Wert von 0 ist der Cache deaktiviert und die Objekte werden bei jeder Lizenzprüfung gezählt.
 Description[en]=TTL in seconds for the license count cache. Default: 3600, Maximum: 86400. If set to 0, the cache is disabled and objects are counted on every license check.

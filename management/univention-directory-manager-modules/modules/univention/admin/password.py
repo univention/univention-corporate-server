@@ -85,12 +85,13 @@ def ntlm(password: str) -> tuple[str, str]:
     :param password: password string.
     :returns: 2-tuple (NT, LanMan)
     """
-    nt = passlib.hash.nthash.hash(password).upper()
+    nt = ''
+    if configRegistry.is_true('password/samba/nthash', True):
+        nt = passlib.hash.nthash.hash(password).upper()
 
+    lm = ''
     if configRegistry.is_true('password/samba/lmhash', False):
         lm = passlib.hash.lmhash.hash(password).upper()
-    else:
-        lm = ''
 
     return (nt, lm)
 

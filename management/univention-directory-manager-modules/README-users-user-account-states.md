@@ -142,7 +142,7 @@ The password of a user account is stored in different attributes. UDM keeps them
   - `userPassword`: POSIX crypt (or bcrypt) hash
   - `pwhistory`: History of set `userPassword` crypt hashes
   - `krb5Key` + `krb5KeyVersionNumber`: Kerberos Keys (ASN.1 DER-encoded EncryptionKey structure): multi valued password hash with different encryption types
-  - `sambaNTPassword`: NT hash (16 bytes) (can be converted to a `arcfour-hmac-md5` Kerberos Key)
+  - `sambaNTPassword`: NT hash (16 bytes): unsafe (can be converted to a `arcfour-hmac-md5` Kerberos Key), can be disabled via UCR `password/samba/nthash=false` but S4/AD Connector password synchronization, Squid NTLM authentication, and RADIUS MS-CHAP/NTLM authentication depends on it.
   - `sambaLMPassword`: LM hash: unsafe, disabled via UCR `password/samba/lmhash=false`
   - `sambaPasswordHistory`: History of salted `sambaNTPassword` hash as MD5sum-Hexdigest. Not set by UDM anymore, but present in historic environments. ([Bug #52230](https://forge.univention.org/bugzilla/show_bug.cgi?id=52230))
 - **Related UDM properties**:

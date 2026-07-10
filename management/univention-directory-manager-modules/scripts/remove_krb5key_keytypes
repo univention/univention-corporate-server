@@ -1,0 +1,146 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""Remove selected Kerberos key types from the krb5Key attribute."""
+
+from argparse import ArgumentParser, ArgumentTypeError
+
+import heimdal
+
+import univention.uldap
+
+
+WARNING = """
+Warning: Removing Kerberos keys can prevent principals from authenticating with
+clients or services that only support the removed encryption types.
+
+This cannot be undone without setting the affected account passwords again.
+""".strip()
+
+ALIASES = {
+    # common alternative spelling for enctype 16
+    'des3-hmac-sha1': 'des3-cbc-sha1',
+    # Kerberos commonly calls enctype 23 rc4-hmac
+    'rc4-hmac': 'arcfour-hmac-md5',
+}
+
+DEFAULT_LEGACY_KEYTYPES = (
+    'arcfour-hmac-md5',
+    'des-cbc-crc',
+    'des-cbc-md5',
+    'des-cbc-md4',
+    'des3-hmac-sha1',
+)
+
+
+def parse_keytype(value: str) -> int:
+    """Resolve a Kerberos key type name or numeric enctype ID."""
+    try:
+        return int(value, 0)
+    except ValueError:
+        return enctype_id_from_name(value)
+
+
+def enctype_id_from_name(name: str) -> int:
+    normalized = name.strip().lower().replace('_', '-')
+    normalized = ALIASES.get(normalized, normalized)
+
+    constant_name = f'ETYPE_{normalized.replace("-", "_").upper()}'
+
+    try:
+        value = getattr(heimdal, constant_name)
+    except AttributeError as exc:
+        raise ArgumentTypeError(f'Unknown Kerberos enctype: {name!r}') from exc
+
+    if not isinstance(value, int):
+        raise ArgumentTypeError(f'{constant_name} exists but is not an integer enctype constant')
+
+    return value
+
+
+def main():
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument('-n', '--dry-run', action='store_true')
+    parser.add_argument(
+        '-k',
+        '--keytype',
+        action='append',
+        type=parse_keytype,
+        dest='keytypes',
+        metavar='NAME_OR_ID',
+        help=('key type to remove; may be specified multiple times. Defaults to: %s' % ', '.join(DEFAULT_LEGACY_KEYTYPES)),
+    )
+    args = parser.parse_args()
+
+    keytype_ids = set(args.keytypes or map(parse_keytype, DEFAULT_LEGACY_KEYTYPES))
+
+    lo = univention.uldap.getAdminConnection()
+    res = lo.search('krb5Key=*', attr=['krb5Key', 'krb5KeyVersionNumber'])
+
+    print(WARNING)
+    print('Key types selected for removal: %s' % keytype_ids)
+
+    if not res:
+        print('No object with krb5Key was found.')
+        return
+
+    changed = 0
+    removed = 0
+    failed = 0
+
+    for dn, attrs in res:
+        old_values = attrs.get('krb5Key', [])
+        new_values = []
+        removed_from_object = []
+
+        try:
+            for value in old_values:
+                keyblock, _salt, _kvno = heimdal.asn1_decode_key(value)
+                enctype_id = keyblock.keytype().toint()
+                if enctype_id in keytype_ids:
+                    removed_from_object.append(enctype_id)
+                else:
+                    new_values.append(value)
+        except Exception as exc:
+            # Do not modify an object if one of its key values cannot be decoded.
+            print('Skip %s: cannot decode krb5Key: %s' % (dn, exc))
+            failed += 1
+            continue
+
+        if not removed_from_object:
+            continue
+
+        print(
+            'Remove %d krb5Key value(s) [%s] for %s'
+            % (
+                len(removed_from_object),
+                ', '.join(map(str, removed_from_object)),
+                dn,
+            ),
+            end=' ',
+        )
+        if args.dry_run:
+            print('(dry run!)')
+        else:
+            krb_key_version = str(int(attrs.get('krb5KeyVersionNumber', ['0'])[0]) + 1).encode('ASCII')
+            lo.modify(dn, [('krb5Key', old_values, new_values), ('krb5KeyVersionNumber', attrs.get('krb5KeyVersionNumber', []), krb_key_version)])
+            print('done')
+
+        changed += 1
+        removed += len(removed_from_object)
+
+    print(
+        'Summary: %d object(s) affected, %d key value(s) removed, '
+        '%d object(s) skipped due to decoding errors%s.'
+        % (
+            changed,
+            removed,
+            failed,
+            ' (dry run)' if args.dry_run else '',
+        ),
+    )
+
+
+if __name__ == '__main__':
+    main()

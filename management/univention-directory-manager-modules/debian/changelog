@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.6.8) unstable; urgency=medium
+
+  * Bug #59607: make Samba NT hash generation configurable
+
+ -- Florian Best <best@univention.de>  Sat, 11 Jul 2026 01:30:18 +0200
+
 univention-directory-manager-modules (17.6.7) unstable; urgency=medium
 
   * Bug #59603: drop obsolete long description
