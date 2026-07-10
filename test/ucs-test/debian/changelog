@@ -1,3 +1,10 @@
+ucs-test (12.6.30) unstable; urgency=medium
+
+  * Issue univention/dev/internal/team-nubus#1666: fix tests for keycloak
+    26.7.0
+
+ -- Rehema Owino <rehema.owino@univention.de>  Fri, 10 Jul 2026 11:28:27 +0300
+
 ucs-test (12.6.29) unstable; urgency=medium
 
   * Bug #53337: fix PID expansion in adconnector helpers
