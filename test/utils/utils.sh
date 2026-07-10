@@ -753,10 +753,9 @@ install_ucsschool () {
 
 	activate_ucsschool_repositories || rv=$?
 
-	printf univention >/tmp/univention
 	echo "ucsschool" >>/var/cache/appcenter-installed.txt
 	univention-install -y ucs-school-umc-installer || rv=$?
-	univention-app install ucsschool='5.3 v1' --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
+	install_apps ucsschool='5.3 v1' || rv=$?
 	return $rv
 
 	local admin_password="${1:-univention}"
