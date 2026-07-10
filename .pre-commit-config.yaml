@@ -94,7 +94,7 @@ repos:
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.35.0
+    rev: 0.37.4
     hooks:
       - id: check-gitlab-ci
       - id: check-jsonschema
@@ -103,7 +103,7 @@ repos:
         files: ^doc/errata/staging/[^0].*[.]yaml$
         args: ["--schemafile", "doc/errata/erratum.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.10
+    rev: v0.15.21
     hooks:
       - id: ruff-check
         alias: "ruff"
@@ -148,7 +148,7 @@ repos:
                   |^packaging/ucslint/testframework/\
                  "
   - repo: https://github.com/pycqa/isort
-    rev: 7.0.0
+    rev: 9.0.0a3
     hooks:
       - id: isort
         entry: isort -c

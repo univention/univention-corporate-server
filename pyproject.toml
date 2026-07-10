@@ -66,6 +66,7 @@ ignore = [
  "D214", "D215", "D405", "D406", "D407", "D408", "D409", "D410", "D411", "D412", "D413", "D414", "D416", # we don't have sections
  "D400",  # first line should end with period
  "D415",  # first line should end with period, question, exclamation: maybe somewhen?!
+ "D421",  # property-docstring-starts-with-verb
  "DOC201",  # docstring-missing-returns
  "DOC501",  # docstring-missing-exception
  "DOC402",  # docstring-missing-yields
@@ -155,6 +156,8 @@ ignore = [
 
  # should be done/autofixes soon
  "PLR6104",  # non-augmented-assignment
+ "RUF075",  # fallible-context-manager
+ "PLW0717",  # too-many-statements-in-try-clause
 
  # should be done but no autofix available
  "LOG015",  # root-logger-call
