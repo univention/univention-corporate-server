@@ -18,7 +18,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 from copy import copy
 from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values
 from typing import TYPE_CHECKING
@@ -146,19 +146,23 @@ def get_handler_message(name: str, binddn: str, bindpw: str) -> dict:
 
 class UniventionLDAPExtension(metaclass=ABCMeta):
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def udm_module_name(self) -> str:
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def target_container_name(self) -> str:
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def active_flag_attribute(self) -> str:
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def filesuffix(self) -> str:
         pass
 
