@@ -797,7 +797,7 @@ def test_oidc_client_defaults(random_string, keycloak_admin_connection):
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_oidc_client_options(random_string, keycloak_admin_connection):
     client_id = random_string()
-    admin_url = random_string()
+    admin_url = f'https://{random_string()}'
     app_url = f'https://{random_string()}'
     args = [
         'univention-keycloak', 'oidc/rp', 'create',
