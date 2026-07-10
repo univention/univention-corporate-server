@@ -85,7 +85,7 @@ def get_html_tag_value(page: str, tag: str, condition: tuple[str, str], value_na
     htmlParser = GetHtmlTagValue(tag, condition, value_name)
     htmlParser.feed(page)
     htmlParser.close()
-    assert htmlParser.value is not None
+    assert htmlParser.value is not None, page
     return htmlParser.value
 
 
