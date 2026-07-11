@@ -1,3 +1,9 @@
+univention-ldap (18.6.8) unstable; urgency=medium
+
+  * Bug #54786: fix comment and ordering matching rule
+
+ -- Florian Best <best@univention.de>  Sat, 11 Jul 2026 12:49:23 +0200
+
 univention-ldap (18.6.7) unstable; urgency=medium
 
   * Bug #54786: make enabling of sssvlv overlay module configurable
