@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: rsync
-fix: 3.1.2-1+deb9u6A~4.4.9.202607060932
+fix: 3.1.2-1+deb9u6A~4.4.9.202607111417
 desc: |
  This update addresses the following issues:
  * CVE-2026-43618 (CVSS score 8.1 -
