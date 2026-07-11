@@ -8,6 +8,8 @@
 ## packages:
 ##  - univention-directory-manager-tools
 ##  - univention-management-console
+## tags:
+##  - skip_admember
 ## exposure: dangerous
 
 import math
