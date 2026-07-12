@@ -288,6 +288,7 @@ COMMON_EXCEPTIONS = (
     # E('^KeyError$', ['in find_rrset'], 53775),
 
     # Tracebacks caused by specific UCS bugs:
+    E('ldap.NOT_ALLOWED_ON_RDN:.*Operation not allowed on RDN.*UpdErr: DSID-030F136F', 'connector/__init__.py".*in __sync_file_from_ucs', 59559),
     E('ldap.OTHER:.*0000055B: SysErr: DSID-031A1262, problem 22', ['connector/ad/__init__.py.*in disable_user_from_ucs'], 56816),
     E(r'ldap.ALREADY_EXISTS:.*00000526: UpdErr: DSID-031A119B, problem 6005 \(ENTRY_EXISTS\)', 'connector/__init__.py".*in __sync_file_from_ucs', 58676),
     E(r'ldap.ALREADY_EXISTS:.*00000524: UpdErr: DSID-031A11DA, problem 6005 \(ENTRY_EXISTS\)', 'connector/__init__.py".*in __sync_file_from_ucs', 58676),
