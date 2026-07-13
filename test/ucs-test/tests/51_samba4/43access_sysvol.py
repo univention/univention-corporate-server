@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: "Accessing sysvol with smbclient"
 ## exposure: safe
 ## tags: [SKIP-UCSSCHOOL,apptest]

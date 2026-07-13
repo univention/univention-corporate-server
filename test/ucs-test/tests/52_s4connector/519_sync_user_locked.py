@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: "Test the UCS <-> Samba user locked out sync"
 ## exposure: dangerous
 ## packages:
