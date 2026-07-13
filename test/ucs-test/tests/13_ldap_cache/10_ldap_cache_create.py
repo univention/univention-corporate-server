@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Create a group with users and look at the LDAP cache
 ## roles-not: [basesystem]
 ## exposure: dangerous

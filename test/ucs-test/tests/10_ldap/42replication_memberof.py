@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: memberOf replication tests
 ## tags:
 ##  - replication
