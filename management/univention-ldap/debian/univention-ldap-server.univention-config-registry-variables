@@ -498,7 +498,6 @@ Categories=service-ldap
 Description[de]=Konfiguriert die maximale Anzahl gleichzeitiger Sortieranfragen über alle Verbindungen hinweg. Der Wert -1 entspricht der Hälfte der Anzahl der Server-Threads.
 Description[en]=Configures the maximum number of concurrent sort requests allowed across all connections. A value of -1 corresponds to half the number of server threads.
 Type=int
-Default=200
 Categories=service-ldap
 
 [ldap/overlay/sssvlv/maxkeys]
