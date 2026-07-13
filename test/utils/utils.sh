@@ -1913,6 +1913,7 @@ basic_setup_ucs_joined () {
 		ucr unset nameserver2
 		deb-systemd-invoke restart univention-directory-listener || rv=1
 		register_network_address || rv=1
+		systemctl try-restart univention-bind-ldap.service || rv=1
 		systemctl restart nscd.service || rv=1
 		;;
 	esac
