@@ -21,12 +21,18 @@
 # This script can safely be removed in UCS 5.2-7 and 5.3-0
 
 remove_old_memberof_overlay_files () {
-    rm -f /etc/univention/templates/files/etc/ldap/slapd.conf.d/41univention-ldap-overlay-memberof
+    # The old template may have been adjusted locally by the customer. Instead of
+    # deleting it, back it up to /etc/univention/templates/removed/
+    local old_template="/etc/univention/templates/files/etc/ldap/slapd.conf.d/41univention-ldap-overlay-memberof"
+    if [ -e "$old_template" ]; then
+        mkdir -p /etc/univention/templates/removed
+        mv "$old_template" "/etc/univention/templates/removed/$(basename "$old_template").template.$(date +%Y%m%d_%H%M%S_%N)"
+    fi
     rm -f /etc/univention/registry.info/variables/univention-ldap-overlay-memberof.cfg
     rm -f /etc/univention/templates/info/univention-ldap-overlay-memberof.info
 }
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 18.6.6; then
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 18.6.9; then
     remove_old_memberof_overlay_files
 fi
 
