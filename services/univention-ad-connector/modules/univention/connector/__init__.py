@@ -2009,16 +2009,17 @@ class ucs:
                     log.debug("The dn %s is already converted to the AD base, don't do additional ldap base mapping.", dn_mapped)
                 else:
                     for mapping in MAPPING.position_mapping:  # note: position_mapping == [] by default
-                        replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[0].lower(), mapping[1])
-                        if replaced_dn_mapped_lower != dn_mapped.lower():
+                        replaced_dn_mapped = self._subtree_replace(dn_mapped, mapping[0], mapping[1])
+                        if replaced_dn_mapped.lower() != dn_mapped.lower():
                             # explanation: only change dn_mapped if _subtree_replace actually changed anything and not only MixedCase.lower()
-                            dn_mapped = replaced_dn_mapped_lower
+                            dn_mapped = replaced_dn_mapped
                     if dn_mapped == object[dntype]:
                         if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
                             # Introduced via Bug #13745#c14 : avoid default _subtree_replace in case position_mapping was applied
                             log.debug("The dn %s is already converted to the AD base, don't do this again.", dn_mapped)
                         else:
-                            dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
+                            dn_mapped = self._subtree_replace(object[dntype], self.lo.base, self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
+
                 object[dntype] = dn_mapped
 
         self._map_rdn_name(object)
@@ -2087,17 +2088,18 @@ class ucs:
             if dntype in object and dntype not in dn_mapping_stored:
                 dn_mapped = object[dntype]
                 for mapping in MAPPING.position_mapping:  # note: position_mapping == [] by default
-                    replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
-                    if replaced_dn_mapped_lower != dn_mapped.lower():
-                        # explanation: only change dn_mapped if _subtree_replace actually changed anything and not only MixedCase.lower()
-                        dn_mapped = replaced_dn_mapped_lower
+                    replaced_dn_mapped = self._subtree_replace(dn_mapped, mapping[1], mapping[0])
+                    if replaced_dn_mapped.lower() != dn_mapped.lower():
+                        # exlanation: only change dn_mapped if _subtree_replace actually changed anything and not only MixedCase.lower()
+                        dn_mapped = replaced_dn_mapped
 
                 if dn_mapped == object[dntype]:
                     if self.lo.base == dn_mapped[-len(self.lo.base):] and len(self.lo.base) > len(self.lo_ad.base):
                         # Introduced via Bug #13745#c14 : avoid default _subtree_replace in case position_mapping was applied
                         log.debug("The dn %s is already converted to the UCS base, don't do this again.", dn_mapped)
                     else:
-                        dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
+                        dn_mapped = self._subtree_replace(dn_mapped, self.lo_ad.base, self.lo.base)  # FIXME: lo_ad may change with other connectors
+
                 # group_members_sync_to_ucs uses _object_mapping to map AD group
                 # member DNs to OpenLDAP group member DNs. To avoid cache
                 # inconsistencies between the use of AD DN escaping (using '\+')
