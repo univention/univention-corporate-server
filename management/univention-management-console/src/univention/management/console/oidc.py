@@ -32,7 +32,6 @@ from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import CORE
 from univention.management.console.resource import Resource
 from univention.management.console.session import Session
-from univention.management.console.session_db import DBDisabledException, get_session
 from univention.management.console.shared_memory import shared_memory
 
 
@@ -573,24 +572,17 @@ class OIDCBackchannelLogout(OIDCResource):
         except Unauthorized as exception:
             self.add_header('Content-Type', 'application/json')
             self.set_status(400)
-            self.finish({'error': 'invalid_request', 'error_description': str(exception)})
+            self.content_negotiation({'error': 'invalid_request', 'error_description': str(exception)}, wrap=False)
             return
 
-        for session in Session.sessions.get_oidc_sessions(claims):
-            if session.session_id in Session.sessions.sessions:
-                Session.sessions[session.session_id].logout()
-            else:
-                try:
-                    with get_session() as db_session:
-                        session.delete(db_session, session.session_id, True)
-                except exc.DBAPIError as err:
-                    CORE.error('Deleting the session from the database during OIDC backchannel logout failed: %s', err)
-                except exc.TimeoutError as err:
-                    CORE.error('Deleting the session from the database during OIDC backchannel logout timed out: %s', err)
-                except DBDisabledException:
-                    pass
+        for session_wrap in Session.sessions.get_oidc_sessions(claims):
+            session = Session.sessions.get(session_wrap.session_id)
+            if session:  # exists locally
+                session.logout()
+            else:  # might exist remote
+                Session.sessions.delete(session_wrap.session_id, False, skip_logoout_notifier=True)
 
-        self.finish()
+        self.content_negotiation({}, wrap=False)
 
 
 class OIDCMetadata(OIDCResource):
