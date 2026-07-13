@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test LDAP recyclebin functionality
 ## tags: [ldap, udm, recyclebin]
 ## roles: [domaincontroller_master, domaincontroller_backup]

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Check the service info files for ucr and the umc services module
 ## exposure: careful
 ## tags: [apptest]
