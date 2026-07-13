@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: "Test the recyclebin restore sync"
 ## exposure: dangerous
 ## packages:
