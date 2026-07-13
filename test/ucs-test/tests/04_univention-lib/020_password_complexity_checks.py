@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test univention.password.Check()
 ## exposure: dangerous
 ## roles: [domaincontroller_master]

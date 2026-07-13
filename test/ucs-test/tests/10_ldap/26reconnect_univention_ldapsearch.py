@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 # ## desc: Test the reconnect mechanism of univention-ldapsearch
 ## tags: [apptest,reconnect]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
