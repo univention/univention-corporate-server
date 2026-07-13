@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: "Test that renaming a container won't delete the subobjects"
 ## exposure: dangerous
 ## packages:
