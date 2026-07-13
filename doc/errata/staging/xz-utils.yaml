@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [5, 6]
+scope: ucs_5.2-0-errata5.2-6
+src: xz-utils
+fix: 5.4.1-1+deb12u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-34743 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+bug: [59619]
+cve:
+- CVE-2026-34743
