@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Check linux-client-manager role in UMC
 ## roles:
 ##  - domaincontroller_master

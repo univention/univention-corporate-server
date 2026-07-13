@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -v
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: "Test the UCS<->S4 NT password history sync"
 ## exposure: dangerous
 ## packages:
