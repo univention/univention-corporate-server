@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Integration test for DDS overlay with entryTtl automatic purging
 ## tags: [ldap, dds, recyclebin_bin, integration]
 ## roles: [domaincontroller_master, domaincontroller_backup]
