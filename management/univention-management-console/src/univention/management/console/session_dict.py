@@ -80,13 +80,15 @@ class SessionDict(MutableMapping):
             if user.oidc.claims['sub'] == logout_token_claims.get('sub'):
                 yield user
 
-    def delete(self, session_id, reload=True):
+    def delete(self, session_id, reload=True, skip_logoout_notifier=False):
         CORE.debug('session deletion in session dict')
-        logout_notifier = logout_notifiers.get(session_id)
-        if logout_notifier is not None:
-            CORE.debug('We have locally found a logout notifier')
-            if reload:
-                logout_notifier.set()
+        logout_notifier = None
+        if not skip_logoout_notifier:
+            logout_notifier = logout_notifiers.get(session_id)
+            if logout_notifier is not None:
+                CORE.debug('We have locally found a logout notifier')
+                if reload:
+                    logout_notifier.set()
         try:
             with get_session() as db_session:
                 if logout_notifier is None:
@@ -94,7 +96,9 @@ class SessionDict(MutableMapping):
                 DBSession.delete(db_session, session_id, logout_notifier is None)
         except exc.DBAPIError as err:
             CORE.debug('Deleting the session from the database failed\n%s', err)
+        except exc.TimeoutError as err:
+            CORE.error('Deleting the session from the database during OIDC backchannel logout timed out: %s', err)
         except DBDisabledException:
             pass
 
-        del self.sessions[session_id]
+        self.sessions.pop(session_id, None)
