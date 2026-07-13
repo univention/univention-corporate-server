@@ -427,6 +427,25 @@ wait_for_dns () {
 	return 0
 }
 
+wait_for_dns_value () {
+	local name=${1:?Missing name to resolve}
+	local expected=${2:?Missing expected IP}
+	local timeout=${3:-120}
+	local steps=${4:-3}
+	local timestamp
+	timestamp=$(date +"%s")
+	echo "Waiting for DNS to resolve '$name' to '$expected'..."
+	while [ "$(getent hosts "$name" | awk '{print $1; exit}')" != "$expected" ]; do
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
+			echo "ERROR: '$name' did not resolve to '$expected' after ${timeout}s (got: $(getent hosts "$name"))."
+			return 1
+		fi
+		nscd -i hosts
+		sleep "$steps"
+	done
+	return 0
+}
+
 wait_for_slapd () {
 	wait_for_process 600 1 /usr/sbin/slapd -f /etc/ldap/slapd.conf
 }
@@ -1915,6 +1934,8 @@ basic_setup_ucs_joined () {
 		register_network_address || rv=1
 		systemctl try-restart univention-bind-ldap.service || rv=1
 		systemctl restart nscd.service || rv=1
+		# wait until the master fqdn actually resolves to the new IP
+		wait_for_dns_value "$(ucr get ldap/master)" "$masterip" || rv=1
 		;;
 	esac
 
@@ -1978,8 +1999,24 @@ basic_setup_ucs_joined () {
 	fi
 	case "$server_role" in
 	domaincontroller_master|domaincontroller_backup)
-		# Flush old ip's from bind
-		/usr/sbin/rndc retransfer "$(hostname -d)."
+		# Flush old ip's from bind. The proxy (port 53) slaves the zone from the
+		# local ldap backend (port 7777), which in turn reads the master's A
+		# record from the local slapd replica. Replication of the master's new
+		# IP may lag, so a single retransfer can re-cache the old IP. Retry the
+		# retransfer until bind resolves the master to the new IP.
+		local master timestamp
+		master="$(ucr get ldap/master)"
+		timestamp=$(date +"%s")
+		echo "Retransferring '$(hostname -d).' until bind resolves '$master' to '$masterip'..."
+		while [ "$(dig +short "$master" | tail -1)" != "$masterip" ]; do
+			if [ "$((timestamp+120))" -lt "$(date +"%s")" ]; then
+				echo "ERROR: bind still does not resolve '$master' to '$masterip' after 120s (got: $(dig +short "$master"))."
+				rv=1
+				break
+			fi
+			/usr/sbin/rndc retransfer "$(hostname -d)."
+			sleep 3
+		done
 		;;
 	esac
 
