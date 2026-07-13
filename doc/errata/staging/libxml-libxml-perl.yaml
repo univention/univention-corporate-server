@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [5, 6]
+scope: ucs_5.2-0-errata5.2-6
+src: libxml-libxml-perl
+fix: 2.0207+dfsg+really+2.0134-1+deb12u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-8177 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59611]
+cve:
+- CVE-2026-8177
