@@ -846,7 +846,7 @@ __EOF__
 
 	# resize2fs
 	cat > /etc/init.d/resize2fs <<__EOF__
-#!/bin/sh
+#!/bin/bash
 ### BEGIN INIT INFO
 # Provides:          resize2fs
 # Required-Start:    \$local_fs
