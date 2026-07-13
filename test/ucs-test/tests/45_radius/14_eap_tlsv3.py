@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: check if client with PEAP is working
 ## tags: [apptest, radius]
 ## bugs: [55247]
