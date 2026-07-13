@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test the management/univention-ldap/scripts/univention_lastbind.py script
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
