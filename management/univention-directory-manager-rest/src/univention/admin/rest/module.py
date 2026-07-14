@@ -3234,7 +3234,7 @@ class Metrics(Resource):
 
     ucs_version = Info('nubus_ucs_version', 'UCS version information', ['license_uuid', 'domain'], registry=registry)
     n4k_version = Info('nubus_n4k_version', 'Nubus for Kubernetes version information', ['license_uuid', 'domain'], registry=registry)
-    domain_users = Gauge('nubus_users_user_total', 'Total number of UDM objects of type users/user', ['domain', 'platform', 'license_uuid'], registry=registry)
+    domain_users = Gauge('nubus_users_user_total', 'Total number of UDM objects of type users/user (excluding system accounts)', ['domain', 'platform', 'license_uuid'], registry=registry)
     license_limit_users = Gauge('nubus_settings_license_users_limit_total', 'Number of active users permitted by the installed license', ['domain', 'platform', 'license_uuid'], registry=registry)
 
     def get(self):
@@ -3268,7 +3268,7 @@ class Metrics(Resource):
         limit = udm_license.license.get_user_limit()
         actual = udm_license.license.get_user_total()
         limit = float('inf') if limit is None else limit
-        actual = -1 if actual is None else int(actual)
+        actual = -1 if actual is None else int(actual) - udm_license.license.get_system_accounts()
 
         platform = data.get('nubus/platform', 'k8s')
         self.domain_users.labels(domain=domain, platform=platform, license_uuid=license_key).set(actual)

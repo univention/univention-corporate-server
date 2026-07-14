@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.6.4) unstable; urgency=medium
+
+  * Bug #59634: ignore system accounts in user metrics total count
+
+ -- Florian Best <best@univention.de>  Tue, 14 Jul 2026 12:00:42 +0200
+
 univention-directory-manager-rest (12.6.3) unstable; urgency=medium
 
   * Bug #59579: add lookup(opened: bool = False) parameter

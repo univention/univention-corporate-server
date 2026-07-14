@@ -425,7 +425,7 @@ class LicenseWrapper:
     def get_client_total(self) -> int:
         return _license.real[_license.version][License.MANAGEDCLIENTS]
 
-    def get_system_accounts(self):
+    def get_system_accounts(self) -> int:
         return _license.sysAccountsFound
 
     def get_key_id(self, lo):
