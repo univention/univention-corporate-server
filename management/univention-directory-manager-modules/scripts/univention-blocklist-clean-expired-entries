@@ -5,15 +5,15 @@
 """This tool lists expired blocklist entries."""
 
 from argparse import ArgumentParser
-from datetime import datetime
+from datetime import UTC, datetime
 
 from univention.admin.blocklist import BLOCKLIST_BASE
 from univention.udm import UDM
 
 
 def is_expired(blockedUntil):
-    expired_time = datetime.strptime(blockedUntil, "%Y%m%d%H%M%SZ")
-    current_time = datetime.utcnow()
+    expired_time = datetime.strptime(blockedUntil, "%Y%m%d%H%M%SZ").replace(tzinfo=UTC)
+    current_time = datetime.now(UTC)
     return current_time > expired_time
 
 
