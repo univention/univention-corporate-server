@@ -6,7 +6,8 @@
 
 
 import re
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, FileType, Namespace
+import sys
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from pathlib import Path
 
 
@@ -37,7 +38,6 @@ def parse_options() -> Namespace:
     parser.add_argument(
         "-s",
         "--source",
-        type=FileType("rb"),
         help="source image",
         required=True,
         metavar="PATH",
@@ -179,7 +179,8 @@ def main() -> None:
     setup_logging(options.verbose)
     with TemporaryDirectory(dir=options.tempdir.as_posix()) as tmpdir:
         Lazy.BASEDIR = Path(tmpdir)
-        source_image = Raw(options.source)
+        source = sys.stdin.buffer if options.source == "-" else open(options.source, "rb")
+        source_image = Raw(source)
         for choice in options.choices:
             print("Creating", choice.__doc__)
             choice.create(source_image)
