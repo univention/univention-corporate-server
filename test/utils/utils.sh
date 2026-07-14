@@ -753,16 +753,19 @@ install_ucsschool () {
 
 	activate_ucsschool_repositories || rv=$?
 
-	echo "ucsschool" >>/var/cache/appcenter-installed.txt
-	univention-install -y ucs-school-umc-installer || rv=$?
-	install_apps ucsschool='5.3 v1' || rv=$?
-	return $rv
+	# TODO: drop me after UCS 5.3 stabelization
+	UCSSCHOOL_RELEASE=preview
 
 	local admin_password="${1:-univention}"
 
 	printf '%s' "$admin_password" >/tmp/univention
 
 	case "${UCSSCHOOL_RELEASE:-scope}" in
+		preview)
+			echo "ucsschool" >>/var/cache/appcenter-installed.txt
+			univention-install -y ucs-school-umc-installer || rv=$?
+			install_apps ucsschool='5.3 v1' || rv=$?
+			;;
 		appcenter.test)
 			install_apps ucsschool || rv=$?
 			;;
