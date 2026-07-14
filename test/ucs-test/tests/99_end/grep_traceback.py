@@ -175,7 +175,7 @@ COMMON_EXCEPTIONS = (
     # during upgrade to UCS 5.0-2
     # E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
     # E("ImportError: cannot import name '_ldap_cache' from 'univention.admin'", ['in update'], (54853,)),
-    # E(r'ConnectionResetError: \[Errno 104\] Connection reset by peer', ['urllib3']),
+    E(r'ConnectionResetError: \[Errno 104\] Connection reset by peer', ['univention/lib/umc.py']),
     # E(r"urllib3.exceptions.ProtocolError: \('Connection aborted.', ConnectionResetError\(104, 'Connection reset by peer'\)\)", "urllib3"),
     # E(r"requests.exceptions.ConnectionError: \('Connection aborted.', ConnectionResetError\(104, 'Connection reset by peer'\)\)", ['univention-directory-listener/system/monitoring-client.py']),
 
@@ -208,6 +208,7 @@ COMMON_EXCEPTIONS = (
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation', 'urllib/request.py'], 53670),
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
     E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
+    E("univention.lib.umc.ConnectionError: .*Could not send request.*ConnectionResetError.*Connection reset by peer", ['univention-self-service-invitation'], 53670),
     E("ssl.SSLCertVerificationError.*self.signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670),
     E("univention.lib.umc.ConnectionError: .*Could not send request.*SSLCertVerificationError", ['univention-self-service-invitation'], 53670),
     E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670),
@@ -437,6 +438,10 @@ COMMON_EXCEPTIONS = (
     E('urllib3.exceptions.MaxRetryError:.*Max retries exceeded.* /univention/saml/metadata.*', ['urllib']),
     E('requests.exceptions.ConnectionError:.*Max retries exceeded.* /univention/saml/metadata.*', ['requests']),
     # E(r'.*', ['File "/usr/share/ucs-test/']),
+
+
+    # DROPME soon:
+    E('RecursionError: maximum recursion depth exceeded', ['univention/lib/umc.py.*in reauthenticate']),
 )
 
 
