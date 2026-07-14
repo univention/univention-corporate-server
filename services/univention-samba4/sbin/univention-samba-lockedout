@@ -103,7 +103,7 @@ def get_remaining_locktime(lockout_duration, lockout_time):
         return -1
     if lockout_time == 0:
         return 0
-    delta = datetime.datetime.utcnow() - datetime.datetime.utcfromtimestamp(lockout_time)
+    delta = datetime.datetime.now(datetime.UTC) - datetime.datetime.fromtimestamp(lockout_time, tz=datetime.UTC)
     locked_out_seconds = delta.total_seconds()
     remaining = int(lockout_duration * 60 - locked_out_seconds)
     return max(0, remaining)
