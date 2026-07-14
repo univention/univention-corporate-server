@@ -283,7 +283,7 @@ class VmCreator:
         parser.add_argument('--ucs-iso', dest='ucs_iso', required=True, help='Path to the ISO file of the UCS-DVD to create the virtual machine with, on the kvm server.')
         parser.add_argument('--interfaces', dest='interface_count', default=1, type=int, help='The amount of network interfaces the virtual machine should get.')
         parser.add_argument('--disks', dest='disk_count', default=1, type=int, help='The amount of hard disks the virtual machine should get.')
-        parser.add_argument('--resultfile', dest='resultfile', type=argparse.FileType('w'), help='Store details about the created virtual machine as JSON in the given file.')
+        parser.add_argument('--resultfile', dest='resultfile', help='Store details about the created virtual machine as JSON in the given file.')
         return parser.parse_args(args)
 
     def create_vm_if_possible(self):
@@ -375,7 +375,7 @@ def main():
                 'name': vm_name,
                 'vncport': (port - 5900),
             }]
-            with created_test_vm.args.resultfile as resultfile:
+            with open(created_test_vm.args.resultfile, 'w') as resultfile:
                 json.dump(results, resultfile)
 
 
