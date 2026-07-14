@@ -11,3 +11,4 @@ desc: |
 bug: [59616]
 cve:
 - CVE-2024-2312
+note: This is the 1st of three parts.
