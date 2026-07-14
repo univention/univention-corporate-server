@@ -7,7 +7,7 @@
 from __future__ import annotations
 
 import json
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 from typing import Any
 
 import _util
@@ -15,7 +15,7 @@ import _util
 
 def main() -> None:
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("outfile", type=FileType("w"))
+    parser.add_argument("outfile")
     parser.add_argument("locales", nargs="+")
     opt = parser.parse_args()
 
@@ -44,8 +44,9 @@ def main() -> None:
             if ilabel:
                 data_set.setdefault('label', {})[ilocale] = ilabel
 
-    json.dump(country_data, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
-    opt.outfile.write("\n")
+    with open(opt.outfile, "w") as outfile:
+        json.dump(country_data, outfile, ensure_ascii=False, indent=2, sort_keys=True)
+        outfile.write("\n")
 
     print('... done :)')
 

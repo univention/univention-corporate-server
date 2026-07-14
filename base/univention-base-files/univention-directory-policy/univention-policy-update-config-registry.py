@@ -32,7 +32,7 @@ def parse_cmdline() -> argparse.Namespace:
     parser.add_argument('-s', '--simulate', action='store_true', help='simulate update and show values to be set')
     parser.add_argument('-v', '--verbose', action='store_true', help='print verbose information')
     parser.add_argument('-l', '--ldap-server', dest='server', help='connect to this ldap host')
-    parser.add_argument('-y', '--password-file', type=argparse.FileType('r'), default='/etc/machine.secret', help='password file to connect to ldap host')
+    parser.add_argument('-y', '--password-file', default='/etc/machine.secret', help='password file to connect to ldap host')
     parser.add_argument('hostdn', nargs='?', default=ucr.get('ldap/hostdn'), help='distinguished LDAP name of the host')
     args = parser.parse_args()
 
@@ -55,7 +55,7 @@ def main() -> None:
     confregfn = os.path.join(confreg.ConfigRegistry.PREFIX, confreg.ConfigRegistry.BASES[confreg.ConfigRegistry.LDAP])
     ucr_ldap = confreg.ConfigRegistry(filename=confregfn)
     ucr_ldap.load()
-    set_list = get_policy(args.hostdn, args.server, args.password_file.name, verbose=args.verbose)
+    set_list = get_policy(args.hostdn, args.server, args.password_file, verbose=args.verbose)
     if set_list:
         new_set_list = []
         for key, values in set_list.items():

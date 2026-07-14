@@ -8,7 +8,7 @@ client roles and group role mappings
 Just a helper to manually create a test env.
 """
 
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 
 from keycloak import KeycloakAdmin
 from utils import legacy_auth_config_create, legacy_auth_config_remove, run_command
@@ -23,10 +23,11 @@ def main() -> None:
     parser.add_argument('--group-clients', help='group client mapping', action='append', metavar='GROUPNAME CLIENT_ID', nargs=2, required=True)
     parser.add_argument('--keycloak-url', help='keycloak url', default=keycloak_url)
     parser.add_argument('--keycloak-admin', help='keycloak admin', default='admin')
-    parser.add_argument('--keycloak-password-file', help='keycloak password file', default='/etc/keycloak.secret', metavar='FILE', type=FileType('r', encoding='UTF-8'))
+    parser.add_argument('--keycloak-password-file', help='keycloak password file', default='/etc/keycloak.secret', metavar='FILE')
     opt = parser.parse_args()
     opt.group_clients = {x[0]: x[1] for x in opt.group_clients}
-    opt.keycloak_secret = opt.keycloak_password_file.read().strip()
+    with open(opt.keycloak_password_file, encoding='UTF-8') as fd:
+        opt.keycloak_secret = fd.read().strip()
     session = KeycloakAdmin(
         server_url=opt.keycloak_url,
         username=opt.keycloak_admin,
