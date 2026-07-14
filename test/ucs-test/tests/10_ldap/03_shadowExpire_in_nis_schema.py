@@ -8,7 +8,7 @@
 ##  4.0-2: skip
 
 import re
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
@@ -34,7 +34,7 @@ def ldap_search(filter_):
 def run():
     with udm_test.UCSTestUDM() as udm:
         def create_users(date_diff):
-            current_time = datetime.utcnow()
+            current_time = datetime.now(UTC)
             chosen_time = current_time + timedelta(days=date_diff)
 
             expiry_date = chosen_time.strftime("%Y-%m-%d")
