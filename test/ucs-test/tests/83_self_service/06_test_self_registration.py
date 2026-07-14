@@ -335,7 +335,7 @@ def test_deregistration(umc_client, mails, udm, readudm):
         'univentionDeregisteredThroughSelfService': [],
         'univentionDeregistrationTimestamp': [],
     })
-    timestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), '%Y%m%d%H%M%SZ')
+    timestamp = datetime.datetime.strftime(datetime.datetime.now(datetime.UTC), '%Y%m%d%H%M%SZ')
     umc_client.umc_command('passwordreset/deregister_account', {
         'username': username,
         'password': password,
