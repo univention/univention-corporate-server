@@ -12,7 +12,7 @@
 import subprocess
 import sys
 from collections.abc import Iterator, Sequence
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from time import sleep
 
 from univention.config_registry import ucr
@@ -157,7 +157,7 @@ def dump_account() -> None:
         for line in out.splitlines()
         if line
     )
-    print(f"  {'now':20}\t{datetime.utcnow()}Z")
+    print(f"  {'now':20}\t{datetime.now(UTC)}Z")
     for key in ("badPasswordTime", "lockoutTime"):  # "lastLogonTimestamp", "lastLogon"
         try:
             val = vals[key]  # 100ns since ANSI/MS Epoch
