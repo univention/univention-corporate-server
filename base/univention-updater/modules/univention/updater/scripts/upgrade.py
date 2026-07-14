@@ -13,7 +13,7 @@ import subprocess
 import sys
 import time
 import traceback
-from argparse import ArgumentParser, FileType, Namespace
+from argparse import ArgumentParser, Namespace
 from typing import TYPE_CHECKING, NoReturn
 
 from univention.admindiary.client import write_event
@@ -285,7 +285,7 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> b
             app=[app],
             noninteractive=not interactive,
             username=options.username,
-            pwdfile=options.pwdfile.name if options.pwdfile else None,
+            pwdfile=options.pwdfile or None,
         ))
 
     if not success:
@@ -338,7 +338,6 @@ def parse_args(argv: list[str] | None = None) -> Namespace:
         help="Name of the user used for registering the app")
     group.add_argument(
         "--pwdfile",
-        type=FileType("r"),
         help="Name of the file containing the user password")
 
     parser.set_defaults(app_updates=True)

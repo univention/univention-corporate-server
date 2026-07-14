@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import re
 import sys
-from argparse import ArgumentParser, FileType, Namespace
+from argparse import ArgumentParser, Namespace
 from errno import ENOENT
 from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
@@ -360,12 +360,14 @@ def parse_args(parser: ArgumentParser) -> Namespace:
     parser.add_argument(
         '--junit-xml',
         '-j',
-        type=FileType('w'),
         help='generate JUnit-XML output',
         metavar='FILE',
     )
 
     args = parser.parse_args()
+
+    if args.junit_xml:
+        args.junit_xml = open(args.junit_xml, 'w')
 
     if args.junit_xml and not uub.JUNIT:
         parser.error("Missing Python support for JUNIT_XML")
