@@ -10,7 +10,6 @@ import pytest
 
 IGNORE_UNITS = {
     # 'some-known-broken.service',
-    'resize2fs.service',
 }
 
 
