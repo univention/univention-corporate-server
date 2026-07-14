@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 import ldap
@@ -71,7 +71,7 @@ def get_blockeduntil(dn: str, lo: univention.admin.uldap.access) -> str:
     config = get_blocklist_config(lo)
     retention = config.get(dn, '30d')
     blocking_duration = parse_timedelta(retention)
-    blocked_until = datetime.utcnow() + blocking_duration
+    blocked_until = datetime.now(UTC) + blocking_duration
     return datetime.strftime(blocked_until, '%Y%m%d%H%M%SZ')
 
 
