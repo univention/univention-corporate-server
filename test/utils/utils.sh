@@ -1999,18 +1999,29 @@ basic_setup_ucs_joined () {
 	fi
 	case "$server_role" in
 	domaincontroller_master|domaincontroller_backup)
+		# Make sure the local ldap replica has caught up with all pending
+		# changes (the master's new IP and this host's own newly registered
+		# record) before pulling the zone into bind. Otherwise the retransfer
+		# below caches a zone that is still missing this host's own new IP.
+		wait_for_replication || rv=1
+		# reload the ldap backend (port 7777) so it re-reads the fresh records
+		# from the local replica instead of serving records it cached during
+		# the earlier restart, before replication had completed
+		systemctl try-restart univention-bind-ldap.service || rv=1
 		# Flush old ip's from bind. The proxy (port 53) slaves the zone from the
-		# local ldap backend (port 7777), which in turn reads the master's A
-		# record from the local slapd replica. Replication of the master's new
-		# IP may lag, so a single retransfer can re-cache the old IP. Retry the
-		# retransfer until bind resolves the master to the new IP.
-		local master timestamp
+		# local ldap backend (port 7777), which in turn reads the records from
+		# the local slapd replica. A single retransfer can re-cache an old IP,
+		# so retry until bind resolves both the master and this host itself to
+		# their new IPs.
+		local master myfqdn myip timestamp
 		master="$(ucr get ldap/master)"
+		myfqdn="$(hostname -f)"
+		myip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
 		timestamp=$(date +"%s")
-		echo "Retransferring '$(hostname -d).' until bind resolves '$master' to '$masterip'..."
-		while [ "$(dig +short "$master" | tail -1)" != "$masterip" ]; do
+		echo "Retransferring '$(hostname -d).' until bind resolves '$master' to '$masterip' and '$myfqdn' to '$myip'..."
+		while [ "$(dig +short "$master" | tail -1)" != "$masterip" ] || [ "$(dig +short "$myfqdn" | tail -1)" != "$myip" ]; do
 			if [ "$((timestamp+120))" -lt "$(date +"%s")" ]; then
-				echo "ERROR: bind still does not resolve '$master' to '$masterip' after 120s (got: $(dig +short "$master"))."
+				echo "ERROR: bind did not resolve to the new IPs after 120s ('$master' -> $(dig +short "$master"), '$myfqdn' -> $(dig +short "$myfqdn"))."
 				rv=1
 				break
 			fi
