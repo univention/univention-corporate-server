@@ -13,7 +13,7 @@ import pprint
 import random
 import subprocess
 import time
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -133,7 +133,7 @@ class Test_UserModification:
         user = udm.create_user()[0]
         udm.modify_object('users/user', dn=user, pwdChangeNextLogin='1')
 
-        utils.verify_ldap_object(user, {'krb5PasswordEnd': [f"{datetime.utcnow():%Y%m%d}000000Z"]})
+        utils.verify_ldap_object(user, {'krb5PasswordEnd': [f"{datetime.now(UTC):%Y%m%d}000000Z"]})
 
     @pytest.mark.tags('apptest')
     def test_user_modification_set_birthday(self, udm):
@@ -268,7 +268,7 @@ def test_script_lock_expired_accounts(delta, initial_state, expected_state, stop
     udm_modules.init(lo, position, udm_modules.get('users/user'))
 
     def create_user(expiry_days_delta, locked_status):
-        expiry_time = datetime.utcnow() + timedelta(days=expiry_days_delta)
+        expiry_time = datetime.now(UTC) + timedelta(days=expiry_days_delta)
         userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), check_for_drs_replication=False, wait_for=False)
         if locked_status == '1':
             locktime = time.strftime("%Y%m%d%H%M%SZ", time.gmtime())
