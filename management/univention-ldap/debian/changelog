@@ -1,3 +1,9 @@
+univention-ldap (18.6.11) unstable; urgency=medium
+
+  * Bug #54786: remove default value for ldap/overlay/sssvlv/maxperconn
+
+ -- Florian Best <best@univention.de>  Tue, 14 Jul 2026 16:14:51 +0200
+
 univention-ldap (18.6.10) unstable; urgency=medium
 
   * Bug #54786: remove default value for ldap/overlay/sssvlv/max

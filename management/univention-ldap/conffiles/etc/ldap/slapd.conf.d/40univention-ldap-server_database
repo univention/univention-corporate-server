@@ -44,10 +44,15 @@ else:
 
 if configRegistry.is_true('ldap/overlay/sssvlv', False):
     print('overlay sssvlv')
-    if configRegistry.get_int('ldap/overlay/sssvlv/max', -1) >= 0:
-        print('sssvlv-max %d' % (configRegistry.get_int('ldap/overlay/sssvlv/max'),))
-    print('sssvlv-maxkeys %d' % (configRegistry.get_int('ldap/overlay/sssvlv/maxkeys', 2),))
-    print('sssvlv-maxperconn %d' % (configRegistry.get_int('ldap/overlay/sssvlv/maxperconn', 200),))
+    max_concurrent = configRegistry.get_int('ldap/overlay/sssvlv/max', -1)
+    max_keys = configRegistry.get_int('ldap/overlay/sssvlv/maxkeys', 2)
+    max_per_conn = configRegistry.get_int('ldap/overlay/sssvlv/maxperconn', -1)
+    if max_concurrent > 0:
+        print('sssvlv-max %d' % (max_concurrent,))
+    if max_keys > 0:
+        print('sssvlv-maxkeys %d' % (max_keys,))
+    if max_per_conn > 0:
+        print('sssvlv-maxperconn %d' % (max_per_conn,))
 
 print('\n')
 if configRegistry['ldap/database/type'] == "mdb":
