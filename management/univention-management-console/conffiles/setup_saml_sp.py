@@ -13,10 +13,17 @@ from subprocess import call
 from time import sleep
 from urllib.parse import urlparse
 
-from defusedxml import ElementTree, lxml
+from defusedxml import ElementTree
+from lxml import etree
 from saml2 import BINDING_SOAP
 from saml2.md import NAMESPACE
 
+
+XML_PARSER = etree.XMLParser(
+    resolve_entities=False,
+    load_dtd=False,
+    no_network=True,
+)
 
 workaround = set()
 
@@ -57,7 +64,7 @@ def remove_saml_logout_soap_binding(config_registry, saml_idp):
     idp = str(urlparse(saml_idp).netloc)
     filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
     with open(filename) as xmlfile:
-        dom_xml = lxml.fromstring(xmlfile.read())
+        dom_xml = etree.fromstring(xmlfile.read(), parser=XML_PARSER)
     slo_endpoints = dom_xml.findall('.//{%s}SingleLogoutService' % NAMESPACE)
     modified = False
     for endpoint in slo_endpoints:
@@ -66,7 +73,7 @@ def remove_saml_logout_soap_binding(config_registry, saml_idp):
             modified = True
     if modified:
         with open(filename, 'wb') as xmlfile:
-            xmlfile.write(lxml.tostring(dom_xml))
+            xmlfile.write(etree.tostring(dom_xml))
 
 
 def cleanup():
