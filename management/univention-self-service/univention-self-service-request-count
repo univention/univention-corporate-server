@@ -55,7 +55,7 @@ for line in lines:
             key = key.decode('ASCII')
             if key not in entries:
                 ts = int(tsstr)
-                expdate = datetime.datetime.utcfromtimestamp(ts)
+                expdate = datetime.datetime.fromtimestamp(ts, tz=datetime.UTC)
                 so.sendall(b"get %s\r\n" % (key.encode('ASCII'),))
                 data = so.recv(1024)
                 text = data.split(b"\r\n")
@@ -93,6 +93,6 @@ for key in keys:
     else:
         raise ValueError(f"key '{key}' not recognized")
 
-    expdiff = entries[key][1] - datetime.datetime.utcnow()
+    expdiff = entries[key][1] - datetime.datetime.now(datetime.UTC)
     exp = "in {:>5} seconds (at {})".format(expdiff.total_seconds(), entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
     print("{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp))
