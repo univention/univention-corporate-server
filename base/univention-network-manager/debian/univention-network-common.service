@@ -10,7 +10,7 @@ ConditionVirtualization=!container
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/univention-register-network-address
+ExecStart=/usr/sbin/univention-register-network-address --verbose
 
 [Install]
 WantedBy=multi-user.target
