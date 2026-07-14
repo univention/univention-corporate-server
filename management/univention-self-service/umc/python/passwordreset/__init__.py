@@ -104,7 +104,7 @@ def prevent_denial_of_service(func):
 
     def _check_limits(memcache, limits):
         limit_reached = False
-        _max_wait = datetime.datetime.utcnow()
+        _max_wait = datetime.datetime.now(datetime.UTC)
         for key, decay, limit in limits:
             # Not really a "decay", as for that we'd have to store the date for
             # each request. Then a moving window could be implemented. But
@@ -121,7 +121,7 @@ def prevent_denial_of_service(func):
                 memcache.set_multi(
                     {
                         key: count,
-                        f"{key}:exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=decay),
+                        f"{key}:exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(seconds=decay),
                     },
                     decay,
                 )
@@ -176,7 +176,7 @@ def prevent_denial_of_service(func):
         user_limit_reached, user_max_wait = _check_limits(self.memcache, user_limits)
 
         if total_limit_reached or user_limit_reached:
-            time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.utcnow()).total_seconds())
+            time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.now(datetime.UTC)).total_seconds())
             raise ConnectionLimitReached(time_s)
 
         return func(self, *args, **kwargs)
@@ -897,7 +897,7 @@ class Instance(Base):
         try:
             user = UDM.admin().version(2).get('users/user').get_by_id(username)
             user.props.DeregisteredThroughSelfService = 'TRUE'
-            user.props.DeregistrationTimestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), DEREGISTRATION_TIMESTAMP_FORMATTING)
+            user.props.DeregistrationTimestamp = datetime.datetime.strftime(datetime.datetime.now(datetime.UTC), DEREGISTRATION_TIMESTAMP_FORMATTING)
             user.props.disabled = True
             user.save()
             try:
@@ -976,7 +976,7 @@ class Instance(Base):
             MODULE.info("Token not found in DB for user '%s'.", username)
             raise TokenNotFound()
 
-        if (datetime.datetime.utcnow() - token_from_db["timestamp"]).total_seconds() >= self.token_validity_period:
+        if (datetime.datetime.now(datetime.UTC).replace(tzinfo=None) - token_from_db["timestamp"]).total_seconds() >= self.token_validity_period:
             # token is correct but expired
             MODULE.info("Receive correct but expired token for '%s'.", username)
             self.db.delete_tokens(token=token, username=username)
