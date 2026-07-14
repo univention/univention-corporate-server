@@ -5,7 +5,7 @@
 """Create DHCP subnet."""
 
 
-from argparse import ArgumentParser, FileType, Namespace
+from argparse import ArgumentParser, Namespace
 from collections.abc import Iterator
 from sys import exit, stderr
 
@@ -37,14 +37,15 @@ def parse_args() -> Namespace:
     parser.add_argument("--binddn", metavar="DN", help="LDAP simple BIND DN")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--bindpwd", metavar="PW", help="LDAP simple BIND password")
-    group.add_argument("--bindpwdfile", metavar="PWFILE", type=FileType("r"), help="LDAP simple BIND password file")
+    group.add_argument("--bindpwdfile", metavar="PWFILE", help="LDAP simple BIND password file")
     parser.add_argument("--service", metavar="SERVICE-DN", required=True, help="LDAP service base DN")
     parser.add_argument("--policy-reference", metavar="POLICY-DN", action="append", default=[], help="UMC policy references")
 
     opt = parser.parse_args()
 
     if opt.bindpwdfile:
-        opt.bindpwd = opt.bindpwdfile.read()
+        with open(opt.bindpwdfile) as fd:
+            opt.bindpwd = fd.read()
 
     return opt
 
