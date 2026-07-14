@@ -4,7 +4,7 @@
 
 """This script lists all currently installed packages that are not maintained by Univention."""
 
-from argparse import ArgumentParser, FileType, Namespace
+from argparse import ArgumentParser, Namespace
 from os import get_terminal_size
 from sys import exit, stdout
 from textwrap import TextWrapper
@@ -29,15 +29,15 @@ def parse_args() -> Namespace:
     parser.add_argument(
         "--maintained", "-m",
         default=MAINTAINED_PACKAGES,
-        type=FileType("r"),
         help="List of maintained packages [%(default)s]")
 
     return parser.parse_args()
 
 
-def get_unmaintained_packages(maintained: IO[str]) -> set[str]:
+def get_unmaintained_packages(maintained: str) -> set[str]:
     installed_packages, installed_from_maintained_repo = get_installed_packages()
-    maintained_packages = get_maintained_packages(maintained)
+    with open(maintained) as fd:
+        maintained_packages = get_maintained_packages(fd)
     return installed_packages - maintained_packages - installed_from_maintained_repo
 
 

@@ -52,11 +52,13 @@ CHECKS: dict[str, tuple[str, ...]] = {
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binddn', metavar="DN", help="LDAP simple BIND DN")
-    parser.add_argument('--bindpwdfile', metavar="PWFILE", type=argparse.FileType('r'), help="LDAP simple BIND password file")
+    parser.add_argument('--bindpwdfile', metavar="PWFILE", help="LDAP simple BIND password file")
     args = parser.parse_args()
 
     if args.binddn and args.bindpwdfile:
-        udm = UDM.credentials(args.binddn, args.bindpwdfile.read().strip(), server=ucr['ldap/master'], port=ucr.get_int('ldap/master/port', 7389)).version(2)
+        with open(args.bindpwdfile) as fd:
+            bindpwd = fd.read().strip()
+        udm = UDM.credentials(args.binddn, bindpwd, server=ucr['ldap/master'], port=ucr.get_int('ldap/master/port', 7389)).version(2)
     elif ucr['server/role'] == 'domaincontroller_master':
         udm = UDM.admin().version(2)
     else:

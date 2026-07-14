@@ -7,7 +7,7 @@
 
 import re
 import sys
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 from base64 import b64decode
 from collections.abc import Iterable, Iterator
 from typing import IO
@@ -80,8 +80,8 @@ def ldif_normalize(src: IO[str] = sys.stdin, dst: IO[bytes] = sys.stdout.buffer)
 
 def main() -> None:
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--src", "-s", type=FileType("r"), default="-", help="Source input")
-    parser.add_argument("--dst", "-d", type=FileType("w"), default="-", help="Destination output")
+    parser.add_argument("--src", "-s", default="-", help="Source input")
+    parser.add_argument("--dst", "-d", default="-", help="Destination output")
 
     parser.set_defaults(func=ldif_normalize)
     subparsers = parser.add_subparsers(help="Sub-command help")
@@ -93,7 +93,9 @@ def main() -> None:
     parser_unwrap.set_defaults(func=ldif_unwrap)
 
     args = parser.parse_args()
-    args.func(args.src, args.dst.buffer)
+    src = sys.stdin if args.src == "-" else open(args.src)
+    dst = sys.stdout if args.dst == "-" else open(args.dst, "w")
+    args.func(src, dst.buffer)
 
 
 if __name__ == "__main__":
