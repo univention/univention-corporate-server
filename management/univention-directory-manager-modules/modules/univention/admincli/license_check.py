@@ -98,10 +98,14 @@ def check_license(lo: univention.admin.uldap.access, dn: str | None, list_dns: b
                     n = 0
             ln = _license.names[v][i]
             if m:
+                if list_dns:
+                    out.append("")
                 ignored = v == '2' and i == License.SERVERS  # Ignore the server count
                 out.append(format(ln, n, m, False, _license.compare, ignored))
-                if list_dns and i == License.USERS:
-                    out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
+                if list_dns:
+                    out.extend("  %s" % dnout for dnout in lo.searchDn(filter=_license.filters[v][i]))
+                    if i == License.USERS:
+                        out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 
     def check_time() -> None:
         now = datetime.date.today()
