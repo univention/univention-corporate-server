@@ -96,8 +96,10 @@ def build_parser() -> ArgumentParser:
     )
     group.add_argument(
         '--proxmox-credentials',
+        default=os.environ.get("UCS_PROXMOX_CREDENTIALS") or os.path.expanduser("~/.ucs-ec2-tools.json"),
         help="Path to a JSON file with proxmox_host, proxmox_api_user, "
-             "proxmox_api_token_name and proxmox_api_token_secret",
+             "proxmox_api_token_name and proxmox_api_token_secret "
+             "(default: $UCS_PROXMOX_CREDENTIALS, else ~/.ucs-ec2-tools.json)",
         metavar="FILE",
     )
     group.add_argument(
