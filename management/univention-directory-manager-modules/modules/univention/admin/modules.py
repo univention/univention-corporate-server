@@ -402,25 +402,25 @@ class EA_Layout(dict):
         return self.get('is_app_tab', False)
 
     def __lt__(self, other):
-        return (self.groupName, self.position) < (other.groupName, other.position)
+        return (self.groupName, self.position, self.name) < (other.groupName, other.position, other.name)
 
     def __gt__(self, other):
-        return (self.groupName, self.position) > (other.groupName, other.position)
+        return (self.groupName, self.position, self.name) > (other.groupName, other.position, other.name)
 
     def __eq__(self, other):
-        return (self.groupName, self.position) == (other.groupName, other.position)
+        return (self.groupName, self.position, self.name) == (other.groupName, other.position, other.name)
 
     def __le__(self, other):
-        return (self.groupName, self.position) <= (other.groupName, other.position)
+        return (self.groupName, self.position, self.name) <= (other.groupName, other.position, other.name)
 
     def __ge__(self, other):
-        return (self.groupName, self.position) >= (other.groupName, other.position)
+        return (self.groupName, self.position, self.name) >= (other.groupName, other.position, other.name)
 
     def __ne__(self, other):
-        return (self.groupName, self.position) != (other.groupName, other.position)
+        return (self.groupName, self.position, self.name) != (other.groupName, other.position, other.name)
 
     def __hash__(self):
-        return hash((self.groupName, self.position))
+        return hash((self.groupName, self.position, self.name))
 
 
 def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmModule, position: univention.admin.uldap.position) -> None:
@@ -431,8 +431,28 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
 
     # append UDM extended attributes
     properties4tabs: dict[str, list[EA_Layout]] = {}
+    tab_positions: dict[str, int] = {}
+    group_positions: dict[tuple[str, str], int] = {}
     overwriteTabList: list[str] = []
     module.extended_udm_attributes = []
+    lang = locale.getlocale(locale.LC_MESSAGES)[0]
+
+    def merge_position(current: int | None, candidate: int, *, label: str, _log) -> int:
+        if candidate < 1:
+            return current if current is not None else -1
+        if current is None or current < 1:
+            return candidate
+        if current != candidate:
+            _log.warning(
+                'Conflicting extended attribute layout positions; using the lowest position',
+                label=label,
+                positions=sorted({current, candidate}),
+            )
+        return min(current, candidate)
+
+    def layout_sort_key(position: int, label: str) -> tuple[bool, int, str]:
+        """Sort positioned layout elements first and use their label as a stable tie-breaker."""
+        return position < 1, position if position > 0 else 0, label
 
     modname = name(module)
     module_filter = filter_format('(univentionUDMPropertyModule=%s)', [modname])
@@ -514,8 +534,6 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         else:
             layoutDisabled = False
 
-        # get current language
-        lang = locale.getlocale(locale.LC_MESSAGES)[0]
         _log.trace('update extended_attributes', lang=str(lang))
 
         # get descriptions
@@ -559,10 +577,20 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             tabAdvanced = attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'])[0].upper() in [b'1', b'TRUE']
 
             groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
+            # This number specifies the position on which this group is placed on the tab. The numbering starts at 1
             try:
                 groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', [b'-1'])[0])
-            except TypeError:
-                groupPosition = 0
+            except ValueError:
+                groupPosition = -1
+
+            # This number specifies the position on which this extended attributes is placed on the tab or in the group. The numeration starts at 1
+            try:
+                prop_position = int(attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0])
+            except ValueError:
+                _log.warning('modules update_extended_attributes: custom field for tab: failed to convert tabNumber to int', tab=tabname)
+                prop_position = -1
+
+            tabPosition = -1  # one day, could be specifyable
 
             _log.trace('update extended_attributes: extended attribute (LDAP)', attributes=attrs)
 
@@ -580,25 +608,26 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                 overwriteTabList.append(tabname)
 
             if not layoutDisabled:
-                # get position on tab
-                # -1 == append on top
-                plp = attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0].decode('UTF-8', 'replace')
-                try:
-                    priority = int(plp)
-                    if priority < 1:
-                        priority = -1
-                except ValueError:
-                    _log.warning('modules update_extended_attributes: custom field for tab: failed to convert tabNumber to int', tab=tabname)
-                    priority = -1
-
-                if priority == -1 and properties4tabs[tabname]:
-                    priority = max([-1, min(ea_layout.position for ea_layout in properties4tabs[tabname]) - 1])
+                tab_positions[tabname] = merge_position(
+                    tab_positions.get(tabname),
+                    tabPosition,
+                    label=tabname,
+                    _log=_log,
+                )
+                if groupname:
+                    group_key = (tabname, groupname)
+                    group_positions[group_key] = merge_position(
+                        group_positions.get(group_key),
+                        groupPosition,
+                        label='%s/%s' % group_key,
+                        _log=_log,
+                    )
 
                 properties4tabs[tabname].append(
                     EA_Layout(
                         name=pname,
                         tabName=tabname,
-                        position=priority,
+                        position=max(prop_position, -1),
                         advanced=tabAdvanced,
                         overwrite=overwriteProp,
                         fullWidth=fullWidth,
@@ -641,8 +670,20 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             if tab.label in overwriteTabList:
                 tab.layout = []
 
-        for tabname, priofields in properties4tabs.items():
-            priofields = sorted(priofields)
+        sorted_tabnames = sorted(
+            properties4tabs,
+            key=lambda tabname: layout_sort_key(tab_positions.get(tabname, -1), tabname),
+        )
+        next_tab_index = 0
+
+        for tabname in sorted_tabnames:
+            priofields = sorted(
+                properties4tabs[tabname],
+                key=lambda ea_layout: (
+                    layout_sort_key(group_positions.get((tabname, ea_layout.groupName), -1), ea_layout.groupName),
+                    layout_sort_key(ea_layout.position, ea_layout.name),
+                ),
+            )
             currentTab = None
             # get existing fields if tab has not been overwritten
             for tab in module.layout:
@@ -652,9 +693,17 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                     # tab found ==> leave loop
                     break
             else:
-                # tab not found in current layout, so add it
+                # tab not found in current layout, so add it at its configured position
                 currentTab = Tab(tabname, tabname, advanced=True)
-                module.layout.append(currentTab)
+                tab_position = tab_positions.get(tabname, -1)
+                if tab_position > 0:
+                    # keep positioned EA tabs in sorted order when their requested
+                    # insertion positions overlap due to earlier insertions.
+                    index = min(max(tab_position - 1, next_tab_index), len(module.layout))
+                    module.layout.insert(index, currentTab)
+                    next_tab_index = index + 1
+                else:
+                    module.layout.append(currentTab)
                 # remember tabs that have been added by UDM extended attributes
                 if tabname not in module.extended_attribute_tabnames:
                     module.extended_attribute_tabnames.append(tabname)
@@ -664,21 +713,30 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             # check if tab is empty ==> overwritePosition is impossible
             freshTab = not currentTab.layout
 
+            # create every group exactly once
+            groupnames = sorted(
+                {ea_layout.groupName for ea_layout in priofields if ea_layout.groupName},
+                key=lambda groupname: layout_sort_key(group_positions.get((tabname, groupname), -1), groupname),
+            )
+            next_group_index = 0
+            for groupname in groupnames:
+                if any(isinstance(item, ILayoutElement) and item.label == groupname for item in currentTab.layout):
+                    continue
+
+                grp = Group(groupname)
+                group_position = group_positions.get((tabname, groupname), -1)
+                if group_position > 0:
+                    # keep positioned EA groups in sorted order when their requested
+                    # insertion positions overlap due to earlier insertions.
+                    index = min(max(group_position - 1, next_group_index), len(currentTab.layout))
+                    currentTab.layout.insert(index, grp)
+                    next_group_index = index + 1
+                else:
+                    currentTab.layout.append(grp)
+
             for ea_layout in priofields:
                 if currentTab.advanced and not ea_layout.advanced:
                     currentTab.advanced = False
-
-                # if groupName is set check if it exists, otherwise create it
-                if ea_layout.groupName:
-                    for item in currentTab.layout:
-                        if isinstance(item, ILayoutElement) and item.label == ea_layout.groupName:
-                            break
-                    else:  # group does not exist
-                        grp = Group(ea_layout.groupName)
-                        if ea_layout.groupPosition > 0:
-                            currentTab.layout.insert(ea_layout.groupPosition - 1, grp)
-                        else:
-                            currentTab.layout.append(grp)
 
                 # - existing property shall be overwritten AND
                 # - tab is not new and has not been cleaned before AND
@@ -699,6 +757,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                                 replaced, _layout = item.replace(ea_layout.overwrite, ea_layout.name)
                                 if not replaced:  # the property was not found so we'll append it
                                     item.layout.append(ea_layout.name)
+                                break
                 else:
                     if not ea_layout.groupName:
                         currentTab.insert(ea_layout.position, ea_layout.name)
