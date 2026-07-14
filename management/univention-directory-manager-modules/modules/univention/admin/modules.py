@@ -425,7 +425,7 @@ class EA_Layout(dict):
 
 def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmModule, position: univention.admin.uldap.position) -> None:
     """Load extended attribute from |LDAP| and modify |UDM| handler."""
-    # add list of tabnames created by extended attributes
+    # add list of tabnames created by extended attributes (in case module is initialized a second time and EAs were removed)
     if not hasattr(module, 'extended_attribute_tabnames'):
         module.extended_attribute_tabnames = []
 
@@ -433,9 +433,18 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
     properties4tabs: dict[str, list[EA_Layout]] = {}
     tab_positions: dict[str, int] = {}
     group_positions: dict[tuple[str, str], int] = {}
-    overwriteTabList: list[str] = []
+    overwrite_tabs: set[str] = set()
     module.extended_udm_attributes = []
     lang = locale.getlocale(locale.LC_MESSAGES)[0]
+
+    def ldap_true(attrs, attribute_name: str) -> bool:
+        return attrs.get(attribute_name, [b'0'])[0].upper() in {b'1', b'TRUE'}
+
+    def ldap_int(attrs, attribute_name, default=0):
+        try:
+            return int(attrs.get(attribute_name, [default])[0])
+        except ValueError:
+            return default
 
     def merge_position(current: int | None, candidate: int, *, label: str, _log) -> int:
         if candidate < 1:
@@ -464,12 +473,15 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,),
     ):
         _log = log.bind(dn=_dn, type=modname)
+
         # get CLI name
         pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
         object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
         ldap_attribute_name = attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace')
         if modname == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
             continue  # since "mail" is a default option, creating a usertemplate with any mail attribute would raise Object class violation: object class 'univentionMail' requires attribute 'uid'
+
+        _log.trace('update extended_attributes', lang=str(lang), attributes=attrs)
 
         # get syntax
         propertySyntaxString = attrs.get('univentionUDMPropertySyntax', [b''])[0].decode('utf-8', 'replace')
@@ -491,32 +503,24 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         propertyDefault = [x.decode('UTF-8') if x is not None else x for x in attrs.get('univentionUDMPropertyDefault', [None])]
 
         # value may change
-        try:
-            mayChange = bool(int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0]))
-        except ValueError:
-            _log.error('univentionUDMPropertyValueMayChange non numeric- assuming mayChange=0')
-            mayChange = False
+        mayChange = ldap_true(attrs, 'univentionUDMPropertyValueMayChange')
 
         # prevent UMC default popup
-        preventUmcDefaultPopup = bool(int(attrs.get('univentionUDMPropertyPreventUmcDefaultPopup', [b'0'])[0]))
+        preventUmcDefaultPopup = ldap_true(attrs, 'univentionUDMPropertyPreventUmcDefaultPopup')
 
         # value is editable (only via hooks or direkt module.info[] access)
-        editable = attrs.get('univentionUDMPropertyValueNotEditable', [b'0'])[0] not in [b'1', b'TRUE']
+        editable = not ldap_true(attrs, 'univentionUDMPropertyValueNotEditable')
 
-        copyable = attrs.get('univentionUDMPropertyCopyable', [b'0'])[0] not in [b'1', b'TRUE']
+        copyable = not ldap_true(attrs, 'univentionUDMPropertyCopyable')  # yes, broken inverted logic, Bug #56172
 
         # value is required
-        valueRequired = attrs.get('univentionUDMPropertyValueRequired', [b'0'])[0].upper() in [b'1', b'TRUE']
+        valueRequired = ldap_true(attrs, 'univentionUDMPropertyValueRequired')
 
         # value not available for searching
-        try:
-            doNotSearch = bool(int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0]))
-        except ValueError:
-            _log.error('univentionUDMPropertyDoNotSearch non numeric - assuming doNotSearch=0')
-            doNotSearch = False
+        doNotSearch = ldap_true(attrs, 'univentionUDMPropertyDoNotSearch')
 
         # check if EA is multivalue property
-        multivalue = attrs.get('univentionUDMPropertyMultivalue', [b''])[0] == b'1'
+        multivalue = ldap_true(attrs, 'univentionUDMPropertyMultivalue')
         map_method = propertyHook.map if propertyHook else None
         unmap_method = propertyHook.unmap if propertyHook else None
         if not multivalue:
@@ -529,19 +533,14 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             propertyDefault = propertyDefault[0]
 
         # Show this attribute in UDM/UMC?
-        if attrs.get('univentionUDMPropertyLayoutDisable', [b''])[0] == b'1':
-            layoutDisabled = True
-        else:
-            layoutDisabled = False
-
-        _log.trace('update extended_attributes', lang=str(lang))
+        layoutDisabled = ldap_true(attrs, 'univentionUDMPropertyLayoutDisable')
 
         # get descriptions
         shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
         longdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationLongDescription;entry-%s', 'univentionUDMPropertyLongDescription')
 
         # create property
-        fullWidth = attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE']
+        fullWidth = ldap_true(attrs, 'univentionUDMPropertyLayoutFullWidth')
         new_property_descriptions[pname] = univention.admin.property(
             short_description=shortdesc,
             long_description=longdesc,
@@ -564,110 +563,101 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         else:
             module.mapping.register(pname, ldap_attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 
-        if hasattr(module, 'layout'):
-            tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
-            overwriteTab = attrs.get('univentionUDMPropertyLayoutOverwriteTab', [b'0'])[0].upper() in [b'1', b'TRUE']
-            # in the first generation of extended attributes of version 2
-            # this field was a position defining the attribute to
-            # overwrite. now it is the name of the attribute to overwrite
-            overwriteProp: str | None = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')
-            if overwriteProp == '0':
-                overwriteProp = None
-            deleteObjectClass = attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE']
-            tabAdvanced = attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'])[0].upper() in [b'1', b'TRUE']
+        deleteObjectClass = ldap_true(attrs, 'univentionUDMPropertyDeleteObjectClass')
+        module.extended_udm_attributes.append(
+            univention.admin.extended_attribute(
+                name=pname,
+                objClass=object_class,
+                ldapMapping=ldap_attribute_name,
+                deleteObjClass=deleteObjectClass,
+                syntax=propertySyntaxString,
+                hook=propertyHook,
+            ),
+        )
 
-            groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
-            # This number specifies the position on which this group is placed on the tab. The numbering starts at 1
-            try:
-                groupPosition = int(attrs.get('univentionUDMPropertyLayoutGroupPosition', [b'-1'])[0])
-            except ValueError:
-                groupPosition = -1
+        if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):
+            module.object._static_ldap_attributes.add(ldap_attribute_name)
 
-            # This number specifies the position on which this extended attributes is placed on the tab or in the group. The numeration starts at 1
-            try:
-                prop_position = int(attrs.get('univentionUDMPropertyLayoutPosition', [b'-1'])[0])
-            except ValueError:
-                _log.warning('modules update_extended_attributes: custom field for tab: failed to convert tabNumber to int', tab=tabname)
-                prop_position = -1
+        if layoutDisabled:
+            for tab in getattr(module, 'layout', []):
+                tab.remove(pname)
 
-            tabPosition = -1  # one day, could be specifyable
+        if layoutDisabled or not hasattr(module, 'layout'):
+            continue
 
-            _log.trace('update extended_attributes: extended attribute (LDAP)', attributes=attrs)
+        tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
+        overwriteTab = ldap_true(attrs, 'univentionUDMPropertyLayoutOverwriteTab')
+        # in the first generation of extended attributes of version 2
+        # this field was a position defining the attribute to
+        # overwrite. now it is the name of the attribute to overwrite
+        overwriteProp: str | None = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')
+        if overwriteProp == '0':
+            overwriteProp = None
+        tabAdvanced = ldap_true(attrs, 'univentionUDMPropertyLayoutTabAdvanced')
 
-            # only one is possible ==> overwriteTab wins
-            if overwriteTab and overwriteProp:
-                overwriteProp = None
+        groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
+        # This number specifies the position on which this group is placed on the tab. The numbering starts at 1
+        groupPosition = ldap_int(attrs, 'univentionUDMPropertyLayoutGroupPosition', -1)
 
-            # add tab name to list if missing
-            if tabname not in properties4tabs and not layoutDisabled:
-                properties4tabs[tabname] = []
-                _log.trace('update extended_attributes: custom fields init for tab', tab=tabname)
+        # This number specifies the position on which this extended attributes is placed on the tab or in the group. The numeration starts at 1
+        prop_position = ldap_int(attrs, 'univentionUDMPropertyLayoutPosition', -1)
 
-            # remember tab for purging if required
-            if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
-                overwriteTabList.append(tabname)
+        tabPosition = -1  # one day, could be specifyable
 
-            if not layoutDisabled:
-                tab_positions[tabname] = merge_position(
-                    tab_positions.get(tabname),
-                    tabPosition,
-                    label=tabname,
-                    _log=_log,
-                )
-                if groupname:
-                    group_key = (tabname, groupname)
-                    group_positions[group_key] = merge_position(
-                        group_positions.get(group_key),
-                        groupPosition,
-                        label='%s/%s' % group_key,
-                        _log=_log,
-                    )
+        # only one is possible ==> overwriteTab wins
+        if overwriteTab and overwriteProp:
+            overwriteProp = None
 
-                properties4tabs[tabname].append(
-                    EA_Layout(
-                        name=pname,
-                        tabName=tabname,
-                        position=max(prop_position, -1),
-                        advanced=tabAdvanced,
-                        overwrite=overwriteProp,
-                        fullWidth=fullWidth,
-                        groupName=groupname,
-                        groupPosition=groupPosition,
-                        is_app_tab=any(
-                            option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option]
-                            for option in attrs.get('univentionUDMPropertyOptions', [])
-                        ),
-                    ),
-                )
-            else:
-                for tab in getattr(module, 'layout', []):
-                    tab.remove(pname)
+        # add tab name to list if missing
+        if tabname not in properties4tabs:
+            properties4tabs[tabname] = []
+            _log.trace('update extended_attributes: custom fields init for tab', tab=tabname)
 
-            module.extended_udm_attributes.append(
-                univention.admin.extended_attribute(
-                    name=pname,
-                    objClass=object_class,
-                    ldapMapping=ldap_attribute_name,
-                    deleteObjClass=deleteObjectClass,
-                    syntax=propertySyntaxString,
-                    hook=propertyHook,
-                ),
+        # remember tab for purging if required
+        if overwriteTab:
+            overwrite_tabs.add(tabname)
+
+        tab_positions[tabname] = merge_position(
+            tab_positions.get(tabname),
+            tabPosition,
+            label=tabname,
+            _log=_log,
+        )
+        if groupname:
+            group_key = (tabname, groupname)
+            group_positions[group_key] = merge_position(
+                group_positions.get(group_key),
+                groupPosition,
+                label='%s/%s' % group_key,
+                _log=_log,
             )
 
-            if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):
-                module.object._static_ldap_attributes.add(ldap_attribute_name)
+        properties4tabs[tabname].append(
+            EA_Layout(
+                name=pname,
+                tabName=tabname,
+                position=max(prop_position, -1),
+                advanced=tabAdvanced,
+                overwrite=overwriteProp,
+                fullWidth=fullWidth,
+                groupName=groupname,
+                groupPosition=groupPosition,
+                is_app_tab=any(
+                    option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option]
+                    for option in attrs.get('univentionUDMPropertyOptions', [])
+                ),
+            ),
+        )
 
     module.property_descriptions = new_property_descriptions
 
     # overwrite tabs that have been added by UDM extended attributes
-    for tab in module.extended_attribute_tabnames:
-        if tab not in overwriteTabList:
-            overwriteTabList.append(tab)
+    tabs_to_clear = overwrite_tabs | set(module.extended_attribute_tabnames)
 
     if properties4tabs:
         # remove layout of tabs that have been marked for replacement
         for tab in module.layout:
-            if tab.label in overwriteTabList:
+            if tab.label in tabs_to_clear:
                 tab.layout = []
 
         sorted_tabnames = sorted(
@@ -690,7 +680,6 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                 if tab.label == tabname:
                     # found tab in layout
                     currentTab = tab
-                    # tab found ==> leave loop
                     break
             else:
                 # tab not found in current layout, so add it at its configured position
