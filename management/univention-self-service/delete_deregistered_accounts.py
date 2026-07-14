@@ -67,7 +67,7 @@ def setup_logging(filename: str | None = None) -> None:
 
 def main(args: argparse.Namespace) -> None:
     setup_logging(args.logfile)
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.UTC)
     dt = datetime.timedelta(
         days=args.timedelta_days,
         hours=args.timedelta_hours,
