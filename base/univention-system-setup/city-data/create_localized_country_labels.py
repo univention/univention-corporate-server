@@ -6,7 +6,7 @@
 
 
 import json
-from argparse import ArgumentParser, FileType
+from argparse import ArgumentParser
 
 import _util
 
@@ -14,7 +14,7 @@ import _util
 def main() -> None:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("languageCode", nargs="+")
-    parser.add_argument("outfile", type=FileType("w"))
+    parser.add_argument("outfile")
     opt = parser.parse_args()
 
     print('generating country label data...')
@@ -22,8 +22,9 @@ def main() -> None:
     country_ids = set(countries.values())
     labels = _util.get_localized_names(country_ids, opt.languageCode)
     final_lables = {icountry: labels.get(igeonameid, '') for icountry, igeonameid in countries.items()}
-    json.dump(final_lables, opt.outfile, ensure_ascii=False, indent=2, sort_keys=True)
-    opt.outfile.write("\n")
+    with open(opt.outfile, "w") as outfile:
+        json.dump(final_lables, outfile, ensure_ascii=False, indent=2, sort_keys=True)
+        outfile.write("\n")
 
     print('... done :)')
 
