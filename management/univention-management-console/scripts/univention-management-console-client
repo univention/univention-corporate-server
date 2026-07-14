@@ -11,7 +11,7 @@ import locale
 import os
 import pprint
 import sys
-from argparse import ArgumentParser, FileType, Namespace
+from argparse import ArgumentParser, Namespace
 from collections.abc import Sequence
 from datetime import datetime
 from getpass import getpass
@@ -40,7 +40,8 @@ class CLIClient:
         if arguments.list_options and not arguments.eval_option:
             options = arguments.options
         elif arguments.filename:
-            body = arguments.filename.read()
+            with open(arguments.filename, 'rb') as fd:
+                body = fd.read()
             mimetype = arguments.mimetype
             if mimetype == 'application/json':
                 options = json.loads(body).get('options', {})
@@ -163,7 +164,7 @@ def parse_args(argv: Sequence[str] = sys.argv) -> Namespace:
         '-P', '--password',
         help='set password for authentication')
     group.add_argument(
-        '-y', '--password_file', type=FileType("r"),
+        '-y', '--password_file',
         help='read password for authentication from given file')
     group.add_argument(
         '-s', '--server',
@@ -187,7 +188,7 @@ def parse_args(argv: Sequence[str] = sys.argv) -> Namespace:
         '-f', '--flavor',
         help='set the required flavor')
     group.add_argument(
-        '-F', '--filename', type=FileType("rb"),
+        '-F', '--filename',
         help='Deprecated')
     group.add_argument(
         '-l', '--list-options', action='store_true',
@@ -225,7 +226,8 @@ def main() -> None:
         if not arguments.username:
             arguments.username = input('Username: ')
         if arguments.password_file:
-            arguments.password = arguments.password_file.read().strip()
+            with open(arguments.password_file) as fd:
+                arguments.password = fd.read().strip()
         if not arguments.password:
             arguments.password = getpass('Password: ')
 

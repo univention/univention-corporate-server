@@ -500,7 +500,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--ignore-exception', '-i', action='append', type=E, default=[E('^$')])
     parser.add_argument('-d', '--default-exceptions', action='store_true')
-    parser.add_argument('files', type=argparse.FileType('rb'), nargs='+')
+    parser.add_argument('files', nargs='+')
     args = parser.parse_args()
     ignore_exceptions = COMMON_EXCEPTIONS if args.default_exceptions else args.ignore_exception
-    sys.exit(int(not main(args.files, ignore_exceptions=ignore_exceptions)))
+    files = [open(fn, 'rb') for fn in args.files]
+    sys.exit(int(not main(files, ignore_exceptions=ignore_exceptions)))
