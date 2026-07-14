@@ -64,7 +64,11 @@ class CLIClient:
             if not username:
                 username = args.username or DEFAULT_USERNAME
 
-            password = args.bindpwdfile.read().strip() if args.bindpwdfile else args.bindpwd
+            if args.bindpwdfile:
+                with open(args.bindpwdfile) as fd:
+                    password = fd.read().strip()
+            else:
+                password = args.bindpwd
             if not password:
                 password = DEFAULT_PASSWORD
 
@@ -349,7 +353,11 @@ class CLIClient:
     def create_report(self, args):
         module = self.get_module(args.object_type)
         report = module.create_report(args.report_type, args.dns)
-        args.output.write(report)
+        if args.output == '-':
+            sys.stdout.write(report)
+        else:
+            with open(args.output, 'w') as fd:
+                fd.write(report)
 
     def print_line(self, key, value='', prefix='', stream=sys.stdout):
         # prints and makes sure that no ANSI escape sequences or binary data is printed
@@ -504,7 +512,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
     parser.add_argument('--username', help='username to authenticate with')
     parser.add_argument('--binddn', help='binddn where username can be extracted from')
     parser.add_argument('--bindpwd', help='password to authenticate with (deprecated, use --bindpwdfile instead)')
-    parser.add_argument('--bindpwdfile', help='file containing password', type=argparse.FileType('r'))
+    parser.add_argument('--bindpwdfile', help='file containing password')
     parser.add_argument('--bearertoken', help='bearer token (Access Token) as JWT')
     parser.add_argument('--logfile', help='path and name of the logfile to be used')
     parser.add_argument('--language', default=(locale.getlocale(locale.LC_MESSAGES)[0] or 'en_US').replace('_', '-'), help=argparse.SUPPRESS)
@@ -633,7 +641,7 @@ def add_object_action_arguments(parser, client):
 
     reports = add_subparser('create-report', help='Create report for selected objects', usage=argparse.SUPPRESS)
     reports.set_defaults(func=client.create_report)
-    reports.add_argument('-o', '--output', type=argparse.FileType('w'), default='-', help='Filename to write report to')
+    reports.add_argument('-o', '--output', default='-', help='Filename to write report to')
     reports.add_argument('report_type')
     reports.add_argument('dns', nargs='*')
 
