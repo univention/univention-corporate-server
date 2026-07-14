@@ -11,7 +11,7 @@
 
 import subprocess
 import time
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -134,7 +134,7 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm, ucr):
     ts_earlier = now.strftime("%Y-%m-%d %H:%M " + timezone)
     ts_later = (now + timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M " + timezone)
 
-    date_today_in_utc = datetime.utcnow().strftime("%Y-%m-%d")
+    date_today_in_utc = datetime.now(UTC).strftime("%Y-%m-%d")
     """
     Note: If you ask date to show the "now" in localtime (default, without --utc), and you are in Europe/Berlin,
     for example, then at time "2021-08-17 23:30 UTC" it will output "2021-08-18", because it's already 0:30 (or 1:30 in summertime) in the local (Europe/Berlin) timezone.
