@@ -6,7 +6,7 @@
 ##   - univention-directory-manager-tools
 
 import subprocess
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 
 import pytest
@@ -204,7 +204,7 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
 
 @pytest.mark.roles('domaincontroller_master')
 def test_clean_expired_entries(ucr, udm, mail_domain_name, enable_blocklists):
-    current_time = datetime.utcnow()
+    current_time = datetime.now(UTC)
 
     bl_name = uts.random_name()
     data = {
