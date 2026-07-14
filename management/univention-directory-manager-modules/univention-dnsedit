@@ -9,7 +9,7 @@
 
 import sys
 import time
-from argparse import REMAINDER, ArgumentParser, FileType, Namespace, RawTextHelpFormatter
+from argparse import REMAINDER, ArgumentParser, Namespace, RawTextHelpFormatter
 from logging import getLogger
 
 import univention.logging
@@ -84,7 +84,6 @@ def parse() -> Namespace:
         help='LDAP bind password')
     group_pwd.add_argument(
         '--bindpwdfile',
-        type=FileType("r"),
         help='LDAP bind password file')
 
     parser.add_argument(
@@ -109,7 +108,7 @@ def parse() -> Namespace:
 
     options = parser.parse_args()
     if options.bindpwdfile:
-        with options.bindpwdfile as fd:
+        with open(options.bindpwdfile) as fd:
             options.bindpwd = fd.read().strip()
     if options.binddn and not options.bindpwd:
         parser.error('authentication error: missing any of --bindpwdfile or --bindpwd')
