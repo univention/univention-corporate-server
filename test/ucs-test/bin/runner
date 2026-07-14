@@ -7,7 +7,7 @@
 
 import os
 import sys
-from argparse import REMAINDER, ArgumentParser, FileType, Namespace
+from argparse import REMAINDER, ArgumentParser, Namespace
 from collections.abc import Sequence
 
 import univention.testing.format
@@ -25,12 +25,12 @@ def parse_args(args: Sequence[str] | None = None) -> Namespace:
     > /usr/share/ucs-test/runner "bash -e" ./00_foo -v -f
     "-v -f" are collected in `args` and must be passed again to get applied to `runner` itself.
 
-    >>> parse_args(["bash", "/dev/null"]) #doctest: +ELLIPSIS
-    Namespace(args=[], force=False, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=None)
-    >>> parse_args(["--verbose", "--force", "--format=text", "bash", "/dev/null"]) #doctest: +ELLIPSIS
-    Namespace(args=[], force=True, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=1)
-    >>> parse_args(["bash", "/dev/null", "--verbose", "--force", "--format=text"]) #doctest: +ELLIPSIS
-    Namespace(args=[], force=True, format='text', interpreter='bash', test=<open file '/dev/null', mode 'r' at ...>, verbose=1)
+    >>> parse_args(["bash", "/dev/null"])
+    Namespace(args=[], force=False, format='text', interpreter='bash', test='/dev/null', verbose=None)
+    >>> parse_args(["--verbose", "--force", "--format=text", "bash", "/dev/null"])
+    Namespace(args=[], force=True, format='text', interpreter='bash', test='/dev/null', verbose=1)
+    >>> parse_args(["bash", "/dev/null", "--verbose", "--force", "--format=text"])
+    Namespace(args=[], force=True, format='text', interpreter='bash', test='/dev/null', verbose=1)
     """
     common = ArgumentParser(add_help=False)
     common.add_argument("--verbose", "-v", action="count", help="Increase verbosity")
@@ -45,7 +45,7 @@ def parse_args(args: Sequence[str] | None = None) -> Namespace:
 
     parser = ArgumentParser(parents=[common])
     parser.add_argument("interpreter", help="Command interpreter")
-    parser.add_argument("test", type=FileType("r"), help="ucs-test filename")
+    parser.add_argument("test", help="ucs-test filename")
     parser.add_argument('args', nargs=REMAINDER, help="Additional arguments")
 
     options = parser.parse_args(args)
@@ -70,7 +70,7 @@ def main() -> int:
     test_env = TestEnvironment(interactive=options.interactive)
     if options.force:
         test_env.set_exposure('dangerous')
-    test_case = TestCase(options.test.name).load()
+    test_case = TestCase(options.test).load()
     test_result = TestResult(test_case, test_env).run()
     format.format(test_result)
     return 0 if test_result.reason.eofs in {'O', 'S'} else 1
