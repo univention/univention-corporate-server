@@ -10,7 +10,7 @@ import calendar
 import subprocess
 import sys
 import time
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from cryptography import x509
@@ -48,12 +48,12 @@ class TestUsers:
         ('0', '', '1', []),
         ('0', '0', '1', ['1970-01-02']),
         ('0', '1', '1', ['1970-01-03']),
-        ('0', utc_days_since_epoch(2), '1', (datetime.utcnow() + timedelta(days=3)).strftime('%Y-%m-%d')),
+        ('0', utc_days_since_epoch(2), '1', (datetime.now(UTC) + timedelta(days=3)).strftime('%Y-%m-%d')),
         ('', utc_days_since_epoch(2), '0', []),
         ('', '', '0', []),
         ('', utc_days_since_epoch(-2), '0', []),
-        ('1', utc_days_since_epoch(-2), '1', datetime.utcnow().strftime('%Y-%m-%d')),
-        ('0', utc_days_since_epoch(-2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
+        ('1', utc_days_since_epoch(-2), '1', datetime.now(UTC).strftime('%Y-%m-%d')),
+        ('0', utc_days_since_epoch(-2), '1', (datetime.now(UTC) - timedelta(days=1)).strftime('%Y-%m-%d')),
 
     ])
     def test_unmap_pwd_change_next_login_and_password_expiry(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login, password_expiry):
@@ -417,7 +417,7 @@ class TestUsers:
         expiry_interval = 7
         pwhistory = udm.create_object('policies/pwhistory', name='pw-test', expiryInterval=expiry_interval)
         cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
-        password_end = f"{datetime.utcnow():%Y%m%d}000000Z"
+        password_end = f"{datetime.now(UTC):%Y%m%d}000000Z"
         # password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
         self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'krb5PasswordEnd': [password_end]})
         self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2'}, {'krb5PasswordEnd': []})
