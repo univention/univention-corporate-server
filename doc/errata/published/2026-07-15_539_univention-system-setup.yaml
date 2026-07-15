@@ -10,3 +10,6 @@ desc: |
    package for installation, as the OpenLDAP "memberof" overlay configuration
    is now part of the `univention-ldap-server` package.
 bug: [47464]
+erratum: 539
+announced: 2026-07-15
+support: core
