@@ -1487,7 +1487,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ),
         scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
         hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
-        opened: bool = Query(BoolSanitizer(default=True), description="Wheather to open the object in case certain properties are requested.", example=True),
+        opened: bool = Query(BoolSanitizer(default=True), description="If set to false, the response contains only the LDAP distinguished names (DNs) of matching objects instead of fully opened objects. This can significantly improve performance for searches where only object identities are required.", example=True),
         properties: list[str] = Query(
             ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
             style="form",
