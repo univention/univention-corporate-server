@@ -23,3 +23,6 @@ cve:
 - CVE-2026-3784
 - CVE-2026-5773
 - CVE-2026-7168
+erratum: 517
+announced: 2026-07-15
+support: core
