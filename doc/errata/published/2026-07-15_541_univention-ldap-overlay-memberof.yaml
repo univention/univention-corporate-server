@@ -10,3 +10,6 @@ desc: |
    the `univention-ldap-server` package. This package is now an empty
    transitional package and can be safely removed.
 bug: [47464]
+erratum: 541
+announced: 2026-07-15
+support: core
