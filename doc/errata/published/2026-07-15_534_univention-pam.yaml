@@ -11,3 +11,6 @@ desc: |
    the PAM auth stack when the service is `cups`, preventing unnecessary
    Kerberos lookups during CUPS authentication.
 bug: [59552]
+erratum: 534
+announced: 2026-07-15
+support: core
