@@ -11,3 +11,6 @@ desc: |
    possible with the MS AD (e.g. if `Require NTLMv2 session security`
    was activated there).
 bug: [59601]
+erratum: 531
+announced: 2026-07-15
+support: core
