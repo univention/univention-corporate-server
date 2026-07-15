@@ -16,3 +16,6 @@ desc: |
    password synchronization, Squid NTLM authentication, and RADIUS
    MS-CHAP/NTLM authentication.
 bug: [59603, 59607]
+erratum: 533
+announced: 2026-07-15
+support: core
