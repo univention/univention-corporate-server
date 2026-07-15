@@ -26,3 +26,6 @@ desc: |
    defined using the new UCR variables `ldap/overlay/sssvlv/max`,
    `ldap/overlay/sssvlv/maxkeys`, and `ldap/overlay/sssvlv/maxperconn`.
 bug: [47464, 54786]
+erratum: 540
+announced: 2026-07-15
+support: core
