@@ -332,7 +332,7 @@ COMMON_EXCEPTIONS = (
     # E('pg.InternalError: could not connect to server: No such file or directory', ['univention-pkgdb-scan'], 52795),
     # E("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist'], 47440),
     E(r'\[ WARNING\]:   File "/usr/sbin/univention-pkgdb-scan'),
-    E("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs'], (52788, 51809)),
+    E("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs'], 51809),
     E(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string'], 52789),
     # E('dbm.error: db type could not be determined', ['univention-management-console-web-server'], 52764),
     # E('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir'], 43171),

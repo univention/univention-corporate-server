@@ -1,0 +1,154 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: "Retry primary group synchronization after the S4 group becomes available"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+## - 52788
+
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/udm.sh
+. "$TESTLIBPATH/udm.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+
+function ucs_rejected_contains () {
+	local dn="$1"
+	univention-s4connector-list-rejected 2>/dev/null | grep -Fq "UCS DN: $dn"
+}
+
+
+function wait_for_ucs_rejected_state () {
+	local dn="$1"
+	local expected="$2"
+	local attempt
+
+	for attempt in $(seq 1 30); do
+		if ucs_rejected_contains "$dn"; then
+			[ "$expected" = present ] && return 0
+		else
+			[ "$expected" = absent ] && return 0
+		fi
+		sleep 1
+	done
+	return 1
+}
+
+
+SYNCMODE="$(ad_get_sync_mode)"
+RETRYREJECTED="$(ucr get connector/s4/retryrejected)"
+
+function restore_connector_configuration () {
+	ad_set_retry_rejected "$RETRYREJECTED"
+	ad_set_sync_mode "$SYNCMODE"
+}
+
+trap restore_connector_configuration EXIT
+
+ad_set_sync_mode "write"
+ad_set_retry_rejected 1
+
+USER="$(random_chars)"
+GROUP1="$(random_chars)"
+GROUP2="$(random_chars)"
+
+UDM_users_user_username="$USER"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_password="U$(random_chars)123"
+
+UCS_USER_DN="uid=$USER,cn=users,$ldap_base"
+UCS_GROUP1_DN="cn=$GROUP1,cn=groups,$ldap_base"
+UCS_GROUP2_DN="cn=$GROUP2,cn=groups,$ldap_base"
+AD_USER_DN="CN=$USER,CN=Users,$(ad_get_base)"
+AD_GROUP1_DN="CN=$GROUP1,CN=groups,$(ad_get_base)"
+AD_GROUP2_DN="CN=$GROUP2,CN=groups,$(ad_get_base)"
+
+section "Create a user and two groups"
+
+UDM_groups_group_name="$GROUP1"
+udm_create "groups/group" || fail_test 110
+UDM_groups_group_name="$GROUP2"
+udm_create "groups/group" || fail_test 110
+udm_create "users/user" || fail_test 110
+
+udm_modify "users/user" "" "" "" "" \
+	--append groups="$UCS_GROUP1_DN" \
+	--append groups="$UCS_GROUP2_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Use the first group as the initial primary group"
+
+udm_modify "users/user" "" "" "" "" \
+	--set primaryGroup="$UCS_GROUP1_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_user_primary_group_attribute "$AD_GROUP1_DN" "$AD_USER_DN"; fail_bool 0 110
+
+section "Remove only the Samba copy of the second group"
+
+ad_delete "$AD_GROUP2_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP2_DN"; fail_bool 1 110
+UDM_groups_group_name="$GROUP2"
+udm_exists "groups/group"; fail_bool 0 110
+
+section "Synchronize the missing group as the user's primary group"
+
+udm_modify "users/user" "" "" "" "" \
+	--set primaryGroup="$UCS_GROUP2_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+wait_for_ucs_rejected_state "$UCS_USER_DN" present; fail_bool 0 110
+ad_verify_user_primary_group_attribute "$AD_GROUP1_DN" "$AD_USER_DN"; fail_bool 0 110
+
+section "Restore the group through normal UCS to Samba synchronization"
+
+UDM_groups_group_name="$GROUP2"
+UDM_groups_group_description="$(random_chars)"
+udm_modify "groups/group" "" "" "" "" \
+	--set description="$UDM_groups_group_description" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP2_DN"; fail_bool 0 110
+wait_for_ucs_rejected_state "$UCS_USER_DN" absent; fail_bool 0 110
+
+section "Verify the primary group and memberships after the retry"
+
+ad_verify_user_primary_group_attribute "$AD_GROUP2_DN" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP1_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP1_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP2_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP2_DN"; fail_bool 1 110
+
+UDM_groups_group_name="$GROUP1"
+udm_verify_multi_value_udm_attribute_contains "users" "$UCS_USER_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UCS_GROUP1_DN" "users/user"; fail_bool 0 110
+UDM_groups_group_name="$GROUP2"
+udm_verify_udm_attribute "primaryGroup" "$UCS_GROUP2_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UCS_USER_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UCS_GROUP2_DN" "users/user"; fail_bool 0 110
+
+section "Clean up"
+
+udm_remove "users/user" || fail_test 110
+UDM_groups_group_name="$GROUP1"
+udm_remove "groups/group" || fail_test 110
+UDM_groups_group_name="$GROUP2"
+udm_remove "groups/group" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+ad_exists "$AD_GROUP1_DN"; fail_bool 1 110
+ad_exists "$AD_GROUP2_DN"; fail_bool 1 110
+
+exit "$RETVAL"

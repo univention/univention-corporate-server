@@ -1092,13 +1092,17 @@ class s4(univention.s4connector.ucs):
         ucs_group_filter = format_escaped('(&(objectClass=univentionGroup)(gidNumber={0!e}))', ucs_group_id)
         ucs_group_ldap = self.search_ucs(filter=ucs_group_filter)  # is empty !?
 
-        if ucs_group_ldap == []:
+        if not ucs_group_ldap:
             log.warning("primary_group_sync_from_ucs: failed to get UCS-Group with gid %s, can't sync to S4", ucs_group_id)
             return
 
         member_key = 'group'  # FIXME: generate by identify-function ?
         s4_group_object = self._object_mapping(member_key, {'dn': ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
         ldap_object_s4_group = self.get_object(s4_group_object['dn'])
+        if ldap_object_s4_group is None:
+            log.warning("primary_group_sync_from_ucs: failed to get S4-Group with gid %s, can't sync to S4", ucs_group_id)
+            return False
+
         # FIXME: default value "513" should be configurable
         rid = b'513'
         if 'objectSid' in ldap_object_s4_group:
@@ -1951,6 +1955,16 @@ class s4(univention.s4connector.ucs):
                 log.debug("_update_group_member_cache: add %s to ucs cache for group %s", add_ucs_dn, group)
                 self.group_members_cache_ucs[group].add(add_ucs_dn)
 
+    def _run_post_con_modify_functions(self, property_type, object):
+        """Run post-modify callbacks and honor an explicit failure result."""
+        result = True
+        for post_con_modify_function in getattr(self.property[property_type], 'post_con_modify_functions', []):
+            log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
+            if post_con_modify_function(self, property_type, object) is False:
+                result = False
+            log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+        return result
+
     def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None, restored=False):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
@@ -2005,6 +2019,7 @@ class s4(univention.s4connector.ucs):
 
         addlist = []
         modlist = []
+        sync_successful = True
 
         # get current object
         ad_object = self.get_object(object['dn'])
@@ -2170,11 +2185,7 @@ class s4(univention.s4connector.ucs):
                         log.error("sync_from_ucs: traceback due to modlist: %s", modlist)
                         raise
 
-                if hasattr(self.property[property_type], "post_con_modify_functions"):
-                    for post_con_modify_function in self.property[property_type].post_con_modify_functions:
-                        log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
-                        post_con_modify_function(self, property_type, object)
-                        log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+                sync_successful = self._run_post_con_modify_functions(property_type, object)
 
             if uoid:
                 self.uoid2guid_add_mapping(dn=object["dn"], uoid=uoid)
@@ -2337,11 +2348,7 @@ class s4(univention.s4connector.ucs):
                         log.error("sync_from_ucs: traceback due to modlist: %s", modlist)
                         raise
 
-                if hasattr(self.property[property_type], "post_con_modify_functions"):
-                    for post_con_modify_function in self.property[property_type].post_con_modify_functions:
-                        log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
-                        post_con_modify_function(self, property_type, object)
-                        log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+                sync_successful = self._run_post_con_modify_functions(property_type, object)
 
             # TODO: Remove after 5.2-5, because the DB would be initialized before.
             if uoid:
@@ -2373,8 +2380,8 @@ class s4(univention.s4connector.ucs):
 
         self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-        log.trace("sync from ucs return True")
-        return True  # FIXME: return correct False if sync fails
+        log.trace("sync from ucs return %s", sync_successful)
+        return sync_successful
 
     def _get_objectGUID(self, dn):
         try:
