@@ -1932,7 +1932,6 @@ basic_setup_ucs_joined () {
 		ucr unset nameserver2
 		deb-systemd-invoke restart univention-directory-listener || rv=1
 		register_network_address || rv=1
-		systemctl try-restart univention-bind-ldap.service || rv=1
 		systemctl restart nscd.service || rv=1
 		# wait until the master fqdn actually resolves to the new IP
 		wait_for_dns_value "$(ucr get ldap/master)" "$masterip" || rv=1
@@ -1998,7 +1997,7 @@ basic_setup_ucs_joined () {
 		fi
 	fi
 	case "$server_role" in
-	domaincontroller_master|domaincontroller_backup)
+	domaincontroller_master|domaincontroller_backup|domaincontroller_slave)
 		# Make sure the local ldap replica has caught up with all pending
 		# changes (the master's new IP and this host's own newly registered
 		# record) before pulling the zone into bind. Otherwise the retransfer
