@@ -15,6 +15,10 @@ import univention.testing.udm as udm_test
 from univention.testing import utils
 
 
+def license_check(*args):
+    return subprocess.run(['univention-license-check', *args], capture_output=True, text=True, check=False).stdout
+
+
 def get_license_count(key):
     for line in subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0].decode('UTF-8').split('\n'):
         if line.startswith('%s:' % key):
@@ -68,13 +72,26 @@ if __name__ == '__main__':
         base='cn=admin,cn=license,cn=univention,%s' % ucr['ldap/base'],
         attr=['univentionLicenseVersion'])[0][1].get('univentionLicenseVersion', [b'1'])[0].decode('ASCII')
     with udm_test.UCSTestUDM() as udm:
+        created_dn = None
         for asset, counting_object_types in license_mapping[license_version].items():
             license_count = get_license_count(asset)
             for object_type in counting_object_types:
                 for module, attributes in object_type.items():
-                    udm.create_object(module, **attributes)
+                    dn = udm.create_object(module, **attributes)
+                    if created_dn is None:
+                        created_dn = dn
                     new_license_count = get_license_count(asset)
                     if new_license_count != license_count + 1:
                         utils.fail(f'License count for {asset!r} did not raise from {license_count} to {license_count + 1} after creating a object of type {module}')
 
                     license_count = new_license_count
+
+        # --list-dns must list the counted objects' DNs; a plain run must not (Bug #59633)
+        default_output = license_check()
+        list_dns_output = license_check('--list-dns')
+        if default_output == list_dns_output:
+            utils.fail('univention-license-check produced identical output with and without --list-dns')
+        if created_dn in default_output:
+            utils.fail(f'univention-license-check listed {created_dn!r} without --list-dns')
+        if created_dn not in list_dns_output:
+            utils.fail(f'univention-license-check --list-dns did not list {created_dn!r}')

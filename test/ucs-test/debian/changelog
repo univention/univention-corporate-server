@@ -1,3 +1,10 @@
+ucs-test (12.6.35) unstable; urgency=medium
+
+  * Bug #59633: Verify that univention-license-check lists the DNs of
+    counted objects when --list-dns is passed and does not otherwise
+
+ -- Florian Best <best@univention.de>  Wed, 15 Jul 2026 12:03:38 +0200
+
 ucs-test (12.6.34) unstable; urgency=medium
 
   * Bug #59220: skip test in AD member mode
