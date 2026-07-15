@@ -10,3 +10,6 @@ desc: |
    signal-safe to avoid segmentation faults when terminating while embedded
    Python handler code is active.
 bug: [59541]
+erratum: 532
+announced: 2026-07-15
+support: core
