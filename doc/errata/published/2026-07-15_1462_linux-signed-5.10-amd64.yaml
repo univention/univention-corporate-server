@@ -505,3 +505,6 @@ cve:
 - CVE-2026-46091
 - CVE-2026-52909
 note: This is the 2nd of two parts.
+erratum: 1462
+announced: 2026-07-15
+support: lts
