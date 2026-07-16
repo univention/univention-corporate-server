@@ -33,7 +33,7 @@ from __future__ import annotations
 
 import asyncio
 import copy
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Self
 
 import aiohttp
 import uritemplate
@@ -41,6 +41,8 @@ import uritemplate
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable, Iterator, Mapping
+
+_ResponseType = aiohttp.ClientResponse
 
 try:
     aiter  # noqa: B018
@@ -65,54 +67,66 @@ MAX_HEADER = 1000
 
 
 class HTTPError(Exception):
+    """Generic HTTP Error."""
 
     __slots__ = ('code', 'error_details', 'response')
 
-    def __init__(self, code: int, message: str, response: aiohttp.ClientResponse | None, error_details: dict | None = None) -> None:
+    errors = {}
+
+    def __init__(self, code: int, message: str, response: _ResponseType | None, error_details: dict | None = None) -> None:
         self.code = code
         self.response = response
         self.error_details = error_details
         super().__init__(message)
 
-
-class BadRequest(HTTPError):
-    pass
-
-
-class Unauthorized(HTTPError):
-    pass
+    def __init_subclass__(cls, code=None, **kwargs):
+        if code:
+            HTTPError.errors[code] = cls
+        super().__init_subclass__(**kwargs)
 
 
-class Forbidden(HTTPError):
-    pass
+class BadRequest(HTTPError, code=400):
+    """A 400 Bad Request error."""
 
 
-class NotFound(HTTPError):
-    pass
+class Unauthorized(HTTPError, code=401):
+    """A 401 Unauthorized error."""
 
 
-class PreconditionFailed(HTTPError):
-    pass
+class Forbidden(HTTPError, code=403):
+    """A 403 Forbidden error."""
 
 
-class UnprocessableEntity(HTTPError):
-    pass
+class NotFound(HTTPError, code=404):
+    """A 404 Not Found error."""
 
 
-class ServerError(HTTPError):
-    pass
+class PreconditionFailed(HTTPError, code=412):
+    """A 412 Precondition Failed error."""
 
 
-class ServiceUnavailable(HTTPError):
-    pass
+class UnprocessableEntity(HTTPError, code=422):
+    """A 422 Unprocessable Entity error."""
+
+
+class TooManyRequests(HTTPError, code=429):
+    """A 429 Too Many Requests error."""
+
+
+class ServerError(HTTPError, code=500):
+    """A 500 Internal Server error."""
+
+
+class ServiceUnavailable(HTTPError, code=503):
+    """A 503 Service Unavailable error."""
 
 
 class ConnectionError(Exception):
-    pass
+    """A HTTP Connection error."""
 
 
 class UnexpectedResponse(ConnectionError):
-    pass
+    """A unexpected response payload error (e.g. not JSON)."""
 
 
 class _NoRelation(Exception):
@@ -120,16 +134,18 @@ class _NoRelation(Exception):
 
 
 class Response:  # noqa: B903
+    """Response wrapper."""
 
     __slots__ = ('data', 'response', 'uri')
 
-    def __init__(self, response: aiohttp.ClientResponse, data: Any, uri: str) -> None:
+    def __init__(self, response: _ResponseType, data: Any, uri: str) -> None:
         self.response = response
         self.data = data
         self.uri = uri
 
 
 class Session:
+    """A session holding credentials and language settings for a client."""
 
     __slots__ = ('credentials', 'default_headers', 'enable_caching', 'language', 'reconnect', 'session', 'user_agent')
 
@@ -159,7 +175,7 @@ class Session:
         auth = aiohttp.BasicAuth(self.credentials.username, self.credentials.password)
         return aiohttp.ClientSession(connector=connector, auth=auth)
 
-    def get_method(self, method: str) -> Callable[..., aiohttp.ClientResponse]:
+    def get_method(self, method: str) -> Callable[..., _ResponseType]:
         sess = self.session
         return {
             'GET': sess.get,
@@ -226,7 +242,7 @@ class Session:
             return 'GET'
         return response.request_info.method  # pragma: no cover
 
-    async def eval_response(self, response: aiohttp.ClientResponse, expect_json: bool = False) -> Any:
+    async def eval_response(self, response: _ResponseType, expect_json: bool = False) -> Any:
         if response.status >= 399:
             msg = f'{response.request_info.method} {response.url}: {response.status}'
             error_details = None
@@ -246,14 +262,14 @@ class Session:
                         # traceback = error_details.get('traceback')
                         if server_message:
                             msg += f'\n{server_message}'
-            errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
-            cls = HTTPError
-            cls = errors.get(response.status, cls)
+            cls = HTTPError.errors.get(response.status, HTTPError)
             raise cls(response.status, msg, response, error_details=error_details)
         if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
             return await response.json()
         elif expect_json:  # pragma: no cover
             raise UnexpectedResponse(await response.text())
+        if response.status == 204:
+            return {}
         return await response.text()
 
     def get_relations(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> Iterator[dict[str, str]]:
@@ -267,6 +283,10 @@ class Session:
             if link.get('templated'):
                 link['href'] = uritemplate.expand(link['href'], template)
             yield link
+
+    def has_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> bool:
+        rel = next(self.get_relations(entry, relation, name, template), None)
+        return rel is not None
 
     def get_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> dict[str, str]:
         rel = next(self.get_relations(entry, relation, name, template), None)
@@ -293,6 +313,7 @@ class Session:
 
 
 class Client:  # noqa: B903
+    """Abstract client base class."""
 
     __slots__ = ('client',)
 
@@ -301,15 +322,16 @@ class Client:  # noqa: B903
 
 
 class UDM(Client):
+    """Univention Directory Manager client."""
 
     __slots__ = ('bearer_token', 'entry', 'password', 'uri', 'username')
 
     @classmethod
-    def http(cls, uri: str, username: str, password: str) -> UDM:
+    def http(cls, uri: str, username: str, password: str) -> Self:
         return cls(uri, username, password)
 
     @classmethod  # pragma: no cover
-    def bearer(cls, uri: str, bearer_token: str) -> UDM:
+    def bearer(cls, uri: str, bearer_token: str) -> Self:
         return cls(uri, None, None, bearer_token=bearer_token)
 
     def __init__(self, uri: str, username: str | None, password: str | None, *args: Any, **kwargs: Any) -> None:
@@ -370,6 +392,7 @@ class UDM(Client):
 
 
 class Module(Client):
+    """A UDM module representation."""
 
     __slots__ = ('name', 'password', 'relations', 'title', 'udm', 'uri', 'username')
 
@@ -487,6 +510,7 @@ class Module(Client):
 
 
 class ShallowObject(Client):
+    """A reference to an UDM object, which is not recevied from server yet."""
 
     __slots__ = ('dn', 'udm', 'uri')
 
@@ -504,6 +528,7 @@ class ShallowObject(Client):
 
 
 class References:
+    # """Descriptor that provides access to related UDM objects."""
 
     __slots__ = ('obj', 'udm')
 
@@ -526,12 +551,15 @@ class References:
             return self[key]
 
     def __get__(self, obj: Any, cls: type | None = None) -> References:
+        """Return a new References bound to the given object."""
         return type(self)(obj)
 
 
 class Object(Client):
+    """A UDM object with related references."""
 
     objects = References()
+    """Descriptor that provides access to related UDM objects."""
 
     @property
     def module(self):
@@ -657,7 +685,6 @@ class Object(Client):
             'If-Unmodified-Since': self.last_modified,
             'If-Match': self.etag,
         }.items() if value}
-
         return await self._request('PUT', self.uri, self.representation, headers, reload=reload)
 
     async def _patch(self, data: dict, reload: bool = True) -> Response:

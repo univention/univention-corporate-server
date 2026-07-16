@@ -33,49 +33,62 @@ import uritemplate
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator, Mapping
 
-
+_ResponseType = requests.Response
 http.client._MAXHEADERS = 1000
 
 
 class HTTPError(Exception):
     """Generic HTTP Error."""
 
-    def __init__(self, code: int, message: str, response: requests.Response | None, error_details: dict | None = None) -> None:
+    __slots__ = ('code', 'error_details', 'response')
+
+    errors = {}
+
+    def __init__(self, code: int, message: str, response: _ResponseType | None, error_details: dict | None = None) -> None:
         self.code = code
         self.response = response
         self.error_details = error_details
         super().__init__(message)
 
+    def __init_subclass__(cls, code=None, **kwargs):
+        if code:
+            HTTPError.errors[code] = cls
+        super().__init_subclass__(**kwargs)
 
-class BadRequest(HTTPError):
+
+class BadRequest(HTTPError, code=400):
     """A 400 Bad Request error."""
 
 
-class Unauthorized(HTTPError):
+class Unauthorized(HTTPError, code=401):
     """A 401 Unauthorized error."""
 
 
-class Forbidden(HTTPError):
+class Forbidden(HTTPError, code=403):
     """A 403 Forbidden error."""
 
 
-class NotFound(HTTPError):
+class NotFound(HTTPError, code=404):
     """A 404 Not Found error."""
 
 
-class PreconditionFailed(HTTPError):
+class PreconditionFailed(HTTPError, code=412):
     """A 412 Precondition Failed error."""
 
 
-class UnprocessableEntity(HTTPError):
+class UnprocessableEntity(HTTPError, code=422):
     """A 422 Unprocessable Entity error."""
 
 
-class ServerError(HTTPError):
+class TooManyRequests(HTTPError, code=429):
+    """A 429 Too Many Requests error."""
+
+
+class ServerError(HTTPError, code=500):
     """A 500 Internal Server error."""
 
 
-class ServiceUnavailable(HTTPError):
+class ServiceUnavailable(HTTPError, code=503):
     """A 503 Service Unavailable error."""
 
 
@@ -94,7 +107,9 @@ class _NoRelation(Exception):
 class Response:  # noqa: B903
     """Response wrapper."""
 
-    def __init__(self, response: requests.Response, data: Any, uri: str) -> None:
+    __slots__ = ('data', 'response', 'uri')
+
+    def __init__(self, response: _ResponseType, data: Any, uri: str) -> None:
         self.response = response
         self.data = data
         self.uri = uri
@@ -102,6 +117,8 @@ class Response:  # noqa: B903
 
 class Session:
     """A session holding credentials and language settings for a client."""
+
+    __slots__ = ('credentials', 'default_headers', 'enable_caching', 'language', 'reconnect', 'session', 'user_agent')
 
     def __init__(self, credentials: UDM, language: str = 'en-US', reconnect: bool = True, user_agent: str = 'univention.lib/1.0', enable_caching: bool = False) -> None:
         self.language = language
@@ -132,7 +149,7 @@ class Session:
             sess = CacheControl(sess)
         return sess
 
-    def get_method(self, method: str) -> Callable[..., requests.Response]:
+    def get_method(self, method: str) -> Callable[..., _ResponseType]:
         sess = self.session
         return {
             'GET': sess.get,
@@ -199,7 +216,7 @@ class Session:
             return 'GET'
         return response.request.method
 
-    def eval_response(self, response: requests.Response, expect_json: bool = False) -> Any:
+    def eval_response(self, response: _ResponseType, expect_json: bool = False) -> Any:
         if response.status_code >= 399:
             msg = f'{response.request.method} {response.url}: {response.status_code}'
             error_details = None
@@ -219,9 +236,7 @@ class Session:
                         # traceback = error_details.get('traceback')
                         if server_message:
                             msg += f'\n{server_message}'
-            errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
-            cls = HTTPError
-            cls = errors.get(response.status_code, cls)
+            cls = HTTPError.errors.get(response.status_code, HTTPError)
             raise cls(response.status_code, msg, response, error_details=error_details)
         if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
             return response.json()
@@ -242,6 +257,10 @@ class Session:
             if link.get('templated'):
                 link['href'] = uritemplate.expand(link['href'], template)
             yield link
+
+    def has_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> bool:
+        rel = next(self.get_relations(entry, relation, name, template), None)
+        return rel is not None
 
     def get_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> dict[str, str]:
         rel = next(self.get_relations(entry, relation, name, template), None)
@@ -268,12 +287,16 @@ class Session:
 class Client:  # noqa: B903
     """Abstract client base class."""
 
+    __slots__ = ('client',)
+
     def __init__(self, client: Session) -> None:
         self.client = client
 
 
 class UDM(Client):
     """Univention Directory Manager client."""
+
+    __slots__ = ('_api_version', 'bearer_token', 'entry', 'password', 'uri', 'username')
 
     @classmethod
     def http(cls, uri: str, username: str, password: str) -> Self:
@@ -310,10 +333,6 @@ class UDM(Client):
             for module_info in self.client.get_relations(module, 'udm:object-types', name):
                 yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
-    def version(self, api_version: str) -> Self:
-        self._api_version = api_version
-        return self
-
     def obj_by_dn(self, dn: str) -> Object:
         self.load()
         return Object.from_data(self, self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
@@ -334,12 +353,18 @@ class UDM(Client):
         obj = mod.get(dn)
         return obj
 
+    def version(self, api_version: str) -> Self:
+        self._api_version = api_version
+        return self
+
     def __repr__(self) -> str:
         return f'UDM(uri={self.uri!r}, username={self.username!r}, password=***)'
 
 
 class Module(Client):
     """A UDM module representation."""
+
+    __slots__ = ('name', 'password', 'relations', 'title', 'udm', 'uri', 'username')
 
     def __init__(self, udm: UDM, uri: str, name: str, title: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
@@ -453,6 +478,8 @@ class Module(Client):
 class ShallowObject(Client):
     """A reference to an UDM object, which is not recevied from server yet."""
 
+    __slots__ = ('dn', 'udm', 'uri')
+
     def __init__(self, udm: UDM, dn: str | None, uri: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.dn = dn
@@ -468,6 +495,8 @@ class ShallowObject(Client):
 
 class References:
     # """Descriptor that provides access to related UDM objects."""
+
+    __slots__ = ('obj', 'udm')
 
     def __init__(self, obj: Object | None = None) -> None:
         self.obj = obj
@@ -559,6 +588,8 @@ class Object(Client):
         headers = headers or {}
         return cls(udm, entry, etag=headers.get('Etag'), last_modified=headers.get('Last-Modified'))
 
+    __slots__ = ('etag', 'hal', 'last_modified', 'representation', 'udm')
+
     def __init__(self, udm: UDM, representation: dict, etag: str | None = None, last_modified: str | None = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.udm = udm
@@ -574,7 +605,10 @@ class Object(Client):
         return f'Object(module={self.object_type!r}, dn={self.dn!r}, uri={self.uri!r})'
 
     def reload(self) -> None:
-        uri = self.client.get_relation(self.hal, 'self')
+        try:
+            uri = self.client.get_relation(self.hal, 'self')
+        except _NoRelation:
+            uri = None
         if uri:
             obj = ShallowObject(self.udm, self.dn, uri['href']).open()
         else:
@@ -603,7 +637,7 @@ class Object(Client):
         return self.client.request('DELETE', self.uri, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
     def restore(self, reload: bool = True) -> Response:
-        """Restore an object from the recyclebin."""
+        """Restore an object from the Recycle Bin."""
         uri = self.client.get_relation(self.hal, 'udm:restore')['href']
         return self._request('POST', uri, {}, {}, reload=reload)
 
@@ -683,6 +717,8 @@ class Object(Client):
 
 class PatchDocument:
     """application/json-patch+json representation"""
+
+    __slots__ = ('patch',)
 
     def __init__(self):
         self.patch = []
