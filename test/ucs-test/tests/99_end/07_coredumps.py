@@ -4,7 +4,7 @@
 ## packages:
 ##  - systemd-coredump
 ## tags: []
-## exposure: safe
+## exposure: careful
 
 import collections
 import json
@@ -17,8 +17,17 @@ import pytest
 # python3 -c 'import ctypes; ctypes.string_at(0)'
 #
 # analyse with:
-# apt install libc6-dbg libldap2-dbgsym python3-dbg univention-directory-listener-dbgsym univention-directory-notifier-dbgsym
+# apt install libc6-dbg libldap-2.5-0-dbgsym python3-dbg univention-directory-listener-dbgsym univention-directory-notifier-dbgsym
 # coredumpctl debug "$ID" will open gdb interactively
+
+DBGSYMBOLS = [
+    'libc6-dbg',
+    'libldap-2.5-0-dbgsym',
+    'python3-dbg',
+    'univention-directory-listener-dbgsym',
+    'univention-directory-notifier-dbgsym',
+]
+
 IGNORE_EXE = {
     '/usr/sbin/rsyslogd',  # Bug #59600
     '/usr/libexec/samba/rpcd_spoolss',  # Bug #59550: triggered by 59_udm.64_test_udm_printers function test_create_printer_and_check_printing_works
@@ -76,7 +85,9 @@ def group_by_exe(dumps):
 
 def pytest_generate_tests(metafunc):
     if {'exe', 'exe_dumps'} <= set(metafunc.fixturenames):
-        subprocess.call(['coredumpctl', 'list'])
+        if subprocess.call(['coredumpctl', 'list']) == 0:
+            # install debugging symbols before listing the stacktraces
+            subprocess.call(['univention-install', '-y', *DBGSYMBOLS])
         dumps = coredumpctl_json()
         grouped = group_by_exe(dumps)
 
