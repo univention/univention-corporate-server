@@ -11,9 +11,6 @@ File: etc/heimdal-kdc/kadmind.acl
 Variables: kerberos/adminusers
 
 Type: file
-File: etc/init.d/heimdal-kdc
-
-Type: file
 File: etc/logrotate.d/heimdal-kdc
 Variables: logrotate/.*
 
