@@ -191,6 +191,7 @@ external_keycloak_fqdn_config () {
 		keycloak/server/sso/fqdn="${fqdn}"
 	# to not create a certificate for external name in univention-saml/91univention-saml.inst
 	#ucr set keycloak/server/sso/certificate/generation=false
+	systemctl reload apache2
 }
 
 external_portal_config_saml () {
