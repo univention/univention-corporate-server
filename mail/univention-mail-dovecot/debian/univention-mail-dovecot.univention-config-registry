@@ -148,10 +148,6 @@ Type: file
 File: etc/dovecot/conf.d/auth-system.conf.ext
 
 Type: file
-File: etc/init.d/dovecot
-Mode: 755
-
-Type: file
 File: etc/logrotate.d/dovecot
 Variables: mail/dovecot/logging/log_path
 Variables: mail/dovecot/logging/syslog_facility
