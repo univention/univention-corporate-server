@@ -6,10 +6,10 @@ Generate Cerbos policies for UDM authorization.
 
 The script writes Cerbos policy files below /usr/share/univention-guardian-server/policies/udm/:
 
-* resources/**.yaml are technical resource policies derived from UDM
+* resource_policies/**.yaml are technical resource policies derived from UDM
   module introspection.
-* roles/**.yaml are role policies compiled from the UDM authorization
-  DSL by config.py.
+* resource_policies/**.yaml combine technical module capabilities with all DSL grants.
+* derived_roles/**.yaml contain reusable positional context predicates.
 """
 
 import argparse
@@ -36,6 +36,7 @@ POLICY_ROOT = Path('/usr/share/univention-guardian-server/policies/udm')
 POLICY_TMP = Path('/var/lib/univention-directory-manager-modules/policies/')
 REPORT_MODULES = {'users/user', 'groups/group'}
 PROPERTY_PERMISSIONS = ('read', 'search', 'write', 'readonly', 'writeonly', 'none')
+PROPERTY_PERMISSIONS_WO_DENY = ('read', 'search', 'write')
 
 
 class _NoAliasDumper(yaml.SafeDumper):
@@ -48,7 +49,7 @@ def sanitize_filename(name):
 
 
 class UniventionDirectoryManagerPolicies:
-    """Generate Cerbos resource and role policies for UDM."""
+    """Generate the complete Cerbos policy tree for UDM atomically."""
 
     @classmethod
     def main(cls, args=None):
@@ -67,6 +68,7 @@ class UniventionDirectoryManagerPolicies:
         ) as tmp:
             self.output_root = Path(tmp)
             self.output_root.chmod(0o755)
+            # TODO: copy a pre-defined structure to the temp directory so that customers could hook in directly
             self.args.func()
 
             log.info('Replace policy tree: %s -> %s', self.output_root, output_dir)
@@ -81,19 +83,6 @@ class UniventionDirectoryManagerPolicies:
 
         parser.add_argument('--output-dir', default=str(POLICY_ROOT), help='Root directory for Cerbos UDM policies')
         subparsers = parser.add_subparsers(dest='action', title='actions', required=True)
-
-        subparser = subparsers.add_parser('generate-resources', aliases=['create-permissions'])
-        subparser.set_defaults(func=self.generate_resource_policies)
-
-        subparser = subparsers.add_parser('generate-roles', aliases=['create-roles'])
-        subparser.set_defaults(func=self.generate_roles_from_acl)
-        subparser.add_argument('--config-dir', required=True)
-        subparser.add_argument('--strict', action='store_true')
-
-        subparser = subparsers.add_parser('generate-default-roles', aliases=['create-default-roles'])
-        subparser.set_defaults(func=self.generate_default_roles)
-        subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
-        subparser.add_argument('--strict', action='store_true')
 
         subparser = subparsers.add_parser('generate')
         subparser.set_defaults(func=self.generate_all)
@@ -129,47 +118,89 @@ class UniventionDirectoryManagerPolicies:
                 path.rmdir()
 
     def generate_all(self):
-        self.generate_resource_policies()
-        self.generate_roles_from_acl()
+        self.generate_principal_schema()
+        self.generate_resource_schemas()
+        compiled = self.generate_roles_from_acl()
+        self.generate_resource_policies(compiled)
 
-    def generate_resource_policies(self):
-        resource_dir = self.output_root / 'resources'
-        resource_dir.mkdir(parents=True, exist_ok=True)
-        for dirname in ('_schemas', 'tests', 'roles', 'derived_roles', 'variables', 'customer'):
+    def generate_principal_schema(self):
+        pass  # TODO: write to _schemas/principal.json
+
+    def generate_resource_schemas(self):
+        pass  # TODO: write to _schemas/resources/<resource>.json
+
+    def generate_roles_from_acl(self):
+        """
+        Compile all DSL files and write derived-role definitions.
+
+        Resource-policy rules are returned and merged with module introspection
+        later, so the final policy tree is produced in one atomic replacement.
+        """
+        compiled = {'imports': {}, 'resourceRules': {}, 'configs': []}
+        derived_dir = self.output_root / 'derived_roles'
+        derived_dir.mkdir(parents=True, exist_ok=True)
+
+        for config in sorted(Path(self.args.config_dir).glob('*.policy')):
+            conf = UDMAuthorizationConfig(config, strict=self.args.strict)
+            conf.parse()
+            data = conf.to_resource_policy_data(commented=False)  # TODO: enable comments again
+
+            if data['derivedRoles']:
+                document = conf._derived_roles_document(data['derivedRoles'])
+                path = derived_dir / f'{sanitize_filename(data["derivedRoleSet"])}.yaml'
+                path.write_text(yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
+                log.info('Wrote Cerbos derived roles: %s', path.relative_to(self.output_root))
+
+            for resource, rules in data['resources'].items():
+                compiled['resourceRules'].setdefault(resource, []).extend(rules)
+                if data['derivedRoles'] and any(rule.get('derivedRoles') for rule in rules):
+                    compiled['imports'].setdefault(resource, set()).add(data['derivedRoleSet'])
+
+            compiled['configs'].append(config.stem)
+
+        return compiled
+
+    def generate_resource_policies(self, compiled):
+        # derived_roles/common_roles.yaml
+        # derived_roles/common_vars.yaml
+        # resource_policies/<domain>/<resource>.yaml
+        # resource_policies/<domain>/<resource>_test.yaml
+        # resource_policies/<domain>/testdata/principals.yaml
+        # resource_policies/<domain>/testdata/resources.yaml
+        # role_policies/<role>.yaml
+        # role_policies/<tenant>/<role>.yaml
+        resource_dir = self.output_root / 'resource_policies' / 'udm'
+        (resource_dir / 'testdata').mkdir(parents=True, exist_ok=True)
+        for dirname in ('derived_roles', 'role_policies', 'variables'):
             (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
 
         lo, po = univention.admin.uldap.getAdminConnection()
         written = []
         for modname, module in sorted(univention.admin.modules.modules.items()):
             univention.admin.modules.init(lo, po, module)
-            policy = self._resource_policy(modname, module)
+            resource = udm_resource_kind(modname)
+
+            imported_derived_roles = sorted(compiled['imports'].get(resource, set()))
+            resource_rules = compiled['resourceRules'].get(resource, [])
+            policy = self._resource_policy(modname, module, imported_derived_roles, resource_rules, compiled['configs'])
+
             path = resource_dir / f'{sanitize_filename(modname)}.yaml'
-            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
+            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
             written.append(path)
             log.info('Wrote Cerbos resource policy: %s', path.relative_to(self.output_root))
         return written
 
-    def generate_roles_from_acl(self):
-        for config in Path(self.args.config_dir).glob('*.policy'):
-            conf = UDMAuthorizationConfig(config, strict=self.args.strict)
-            conf.parse()
-            for path in conf.write_files(self.output_root):
-                log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
-
-    def generate_default_roles(self):
-        self.generate_roles_from_acl()
-
-    def _resource_policy(self, modname, module):
-        object_actions = self._object_actions(modname, module)
-        property_actions = self._property_actions(modname, module)
+    def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
+        # object_actions = self._object_actions(modname, module)
+        # property_actions = self._property_actions(modname, module, exclude_deny_actions=True)
         rules = []
         rules.extend(self._global_deny_rules(modname))
-        rules.append({
-            'name': f'allow-role-policy-actions-{modname.replace("/", "-")}',
-            'actions': object_actions + property_actions,
-            'effect': 'EFFECT_ALLOW',
-            'roles': ['*'],
-        })
+        # rules.append({
+        #     'name': f'allow-super-admin-{modname.replace("/", "-")}',
+        #     'actions': object_actions + property_actions,
+        #     'effect': 'EFFECT_ALLOW',
+        #     'roles': ['super-admin'],
+        # })
         return {
             'apiVersion': 'api.cerbos.dev/v1',
             'description': f'Defines the possible actions of the UDM module "{modname}" resource',
@@ -179,10 +210,10 @@ class UniventionDirectoryManagerPolicies:
                 'version': 'default',
                 # 'scope': '',
                 # 'scopePermissions': '',
-                # 'importDerivedRoles': [],
+                'importDerivedRoles': imported_derived_roles,
                 # 'constants':
                 # 'variables':
-                'rules': rules,
+                'rules': rules + resource_rules,
                 # 'schemas': {
                 #     'principalSchema': {'ref' 'cerbos:///principal.json'},
                 #     'resourceSchema':: {'ref': 'cerbos:///album/object.json'},
@@ -190,7 +221,9 @@ class UniventionDirectoryManagerPolicies:
             },
             'metadata': {
                 'sourceFile': 'univention-configure-udm-authorization',
-                'annotations': {},
+                'annotations': {
+                    'configs': ', '.join(configs),
+                },
             },
         }
 
@@ -224,10 +257,11 @@ class UniventionDirectoryManagerPolicies:
             actions.append(udm_object_action('report-create'))
         return sorted(set(actions), key=self._action_sort_key)
 
-    def _property_actions(self, modname, module):
-        permissions = [udm_property_action_wildcards('*', perm) for perm in PROPERTY_PERMISSIONS]
+    def _property_actions(self, modname, module, exclude_deny_actions=False):
+        all_perms = PROPERTY_PERMISSIONS_WO_DENY if exclude_deny_actions else PROPERTY_PERMISSIONS
+        permissions = [udm_property_action_wildcards('*', perm) for perm in all_perms]
         for propname in module.property_descriptions:
-            permissions.extend(udm_property_action(propname, perm) for perm in PROPERTY_PERMISSIONS)
+            permissions.extend(udm_property_action(propname, perm) for perm in all_perms)
             # TODO: check if the property support the permissions at all?
             # f'Allow to read {module.short_description}: {prop.short_description}'
             # f'Allow to search for {module.short_description}: {prop.short_description}'
@@ -241,7 +275,7 @@ class UniventionDirectoryManagerPolicies:
         if modname != 'users/user':
             return []
         return [{
-            # 'name': 'deny-uid-number-zero',
+            'name': 'deny-uid-number-zero',
             'actions': ['udm:*'],
             'roles': ['*'],
             'effect': 'EFFECT_DENY',
