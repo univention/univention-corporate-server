@@ -27,10 +27,7 @@ univention-config-registry set "mail/postfix/greylisting?enabled" \
                                "mail/postfix/greylisting/client/whitelist?/etc/postgrey/whitelist_clients /etc/postgrey/whitelist_clients.local" \
                                "mail/postfix/greylisting/recipient/whitelist?/etc/postgrey/whitelist_recipients /etc/postgrey/whitelist_recipients.local"
 
-univention-config-registry commit "/etc/init.d/postgrey"
-
-
-invoke-rc.d postgrey restart
-invoke-rc.d postfix restart
+deb-systemd-invoke restart postgrey.service || true
+deb-systemd-invoke restart postfix.service || true
 
 exit 0
