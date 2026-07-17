@@ -38,7 +38,7 @@ if [ "$1" = "configure" ]; then
 	systemctl try-restart univention-directory-listener
 fi
 
-/etc/init.d/nagios-nrpe-server restart
+deb-systemd-invoke restart nagios-nrpe-server.service || true
 
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/base.sh
