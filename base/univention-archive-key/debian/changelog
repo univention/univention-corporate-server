@@ -1,6 +1,7 @@
 univention-archive-key (9.0.0-5) unstable; urgency=low
 
   * Bug #59644: Add univention-archive-key-ucs-52x.gpg
+  * Bug #59644: Add univention-archive-key-ucs-53x.gpg
 
  -- Marius Meschter <marius.meschter@univention.de>  Fri, 17 Jul 2026 11:36:33 +0200
 

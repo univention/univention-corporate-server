@@ -45,9 +45,10 @@ then
     UCS4='6B6E 7E32 59A9 F44F 1452  D1BE 3660 2BA8 6B8B FD3C'
     UCS5='8321 745B B32A 82C7 5BBD  4BC2 D293 E501 A055 F562'
     UCS52='92E5 7AE6 8A79 88BD 9651  C222 C882 B6F1 F722 9D9A'
+    UCS53='44CC 95BA ED79 137F F50D  EE25 C630 F083 F81A 0B50'
     if [ -e "$TRUSTEDFILE" ]
     then
-        for KEY in "$UCS2" "$UCS3" "$UCS4" "$UCS5" "$UCS52"
+        for KEY in "$UCS2" "$UCS3" "$UCS4" "$UCS5" "$UCS52" "$UCS53"
         do
             apt-key --keyring "$TRUSTEDFILE" del "$KEY" > /dev/null 2>&1 || :
         done

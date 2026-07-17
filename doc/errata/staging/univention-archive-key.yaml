@@ -7,4 +7,5 @@ fix: 9.0.0-5
 desc: |
  This update addresses the following issue:
  * Add univention-archive-key-ucs-52x.gpg
+ * Add univention-archive-key-ucs-53x.gpg
 bug: [59644]
