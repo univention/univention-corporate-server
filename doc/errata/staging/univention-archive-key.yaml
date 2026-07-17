@@ -1,0 +1,10 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: univention-archive-key
+fix: 9.0.0-5
+desc: |
+ This update addresses the following issue:
+ * Add univention-archive-key-ucs-52x.gpg
+bug: [59644]
