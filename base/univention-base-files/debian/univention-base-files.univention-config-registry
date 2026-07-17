@@ -99,10 +99,6 @@ Type: file
 File: etc/default/ssh
 
 Type: file
-File: etc/init.d/networking
-Mode: 0755
-
-Type: file
 File: etc/networks
 Variables: interfaces/.*/network
 Variables: interfaces/primary
