@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Heimdal Kerberos Key Distribution Center
+Documentation=man:kdc(8)
+After=network.target slapd.service
+Wants=slapd.service heimdal-kpasswdd.service
+
+[Service]
+Type=exec
+EnvironmentFile=/etc/default/heimdal-kdc
+ExecCondition=/bin/sh -c '[ "$KDC_ENABLED" = yes ]'
+ExecStart=/usr/lib/heimdal-servers/kdc $KDC_PARAMS
+
+[Install]
+WantedBy=multi-user.target
