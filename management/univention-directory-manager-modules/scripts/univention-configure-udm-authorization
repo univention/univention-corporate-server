@@ -14,7 +14,9 @@ The script writes Cerbos policy files below /usr/share/univention-guardian-serve
 
 import argparse
 import logging
+import shutil
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import yaml
 
@@ -31,7 +33,7 @@ from univention.config_registry import ucr
 log = logging.getLogger('ACL').getChild(__name__)
 
 POLICY_ROOT = Path('/usr/share/univention-guardian-server/policies/udm')
-# TODO: store in /var/lib/univention-directory-manager-modules/guardian and register from there
+POLICY_TMP = Path('/var/lib/univention-directory-manager-modules/policies/')
 REPORT_MODULES = {'users/user', 'groups/group'}
 PROPERTY_PERMISSIONS = ('read', 'search', 'write', 'readonly', 'writeonly', 'none')
 
@@ -57,7 +59,20 @@ class UniventionDirectoryManagerPolicies:
         self.args = self.parse_args(args)
 
     def execute(self):
-        self.args.func()
+        output_dir = Path(self.args.output_dir)
+        POLICY_TMP.mkdir(exist_ok=True)
+        with TemporaryDirectory(
+            dir=POLICY_TMP,  # output_dir.parent,
+            prefix=f".{output_dir.name}.tmp-",
+        ) as tmp:
+            self.output_root = Path(tmp)
+            self.output_root.chmod(0o755)
+            self.args.func()
+
+            log.info('Replace policy tree: %s -> %s', self.output_root, output_dir)
+            if output_dir.exists():
+                shutil.rmtree(output_dir)
+            shutil.move(self.output_root, output_dir)
 
     def parse_args(self, args=None):
         parser = argparse.ArgumentParser(description=__doc__)
@@ -80,6 +95,11 @@ class UniventionDirectoryManagerPolicies:
         subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
         subparser.add_argument('--strict', action='store_true')
 
+        subparser = subparsers.add_parser('generate')
+        subparser.set_defaults(func=self.generate_all)
+        subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
+        subparser.add_argument('--strict', action='store_true')
+
         subparser = subparsers.add_parser('prune')
         subparser.set_defaults(func=self.prune)
         subparser.add_argument('--resources', action='store_true')
@@ -88,10 +108,6 @@ class UniventionDirectoryManagerPolicies:
         subparser.add_argument('--name')
 
         return parser.parse_args(args)
-
-    @property
-    def output_root(self):
-        return Path(self.args.output_dir)
 
     def prune(self):
         generated = self.output_root
@@ -112,10 +128,14 @@ class UniventionDirectoryManagerPolicies:
             elif path.is_dir():
                 path.rmdir()
 
+    def generate_all(self):
+        self.generate_resource_policies()
+        self.generate_roles_from_acl()
+
     def generate_resource_policies(self):
         resource_dir = self.output_root / 'resources'
         resource_dir.mkdir(parents=True, exist_ok=True)
-        for dirname in ('tests', 'roles', 'derived_roles', 'variables', 'customer'):
+        for dirname in ('_schemas', 'tests', 'roles', 'derived_roles', 'variables', 'customer'):
             (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
 
         lo, po = univention.admin.uldap.getAdminConnection()
@@ -126,7 +146,7 @@ class UniventionDirectoryManagerPolicies:
             path = resource_dir / f'{sanitize_filename(modname)}.yaml'
             path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
             written.append(path)
-            log.info('Wrote Cerbos resource policy %s', path)
+            log.info('Wrote Cerbos resource policy: %s', path.relative_to(self.output_root))
         return written
 
     def generate_roles_from_acl(self):
@@ -134,7 +154,7 @@ class UniventionDirectoryManagerPolicies:
             conf = UDMAuthorizationConfig(config, strict=self.args.strict)
             conf.parse()
             for path in conf.write_files(self.output_root):
-                log.info('Wrote Cerbos role policy %s', path)
+                log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
 
     def generate_default_roles(self):
         self.generate_roles_from_acl()
