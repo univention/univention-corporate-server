@@ -19,7 +19,6 @@ from listener import SetUID, configRegistry, run
 description = 'Create configuration for Nagios nrpe server'
 filter = '(objectClass=univentionNagiosServiceClass)'
 
-__initscript = '/etc/init.d/nagios-nrpe-server'
 __confdir = '/etc/nagios/nrpe.univention.d/'
 __pluginconfdir = '/etc/nagios-plugins/config/'
 
@@ -162,7 +161,6 @@ def clean() -> None:
 
 
 def postrun() -> None:
-    initscript = __initscript
     if configRegistry.is_true("nagios/client/autostart"):
         ud.debug(ud.LISTENER, ud.INFO, 'NRPED: Restarting server')
-        run(initscript, ['nagios-nrpe-server', 'restart'], uid=0)
+        run('/bin/systemctl', ['systemctl', 'try-restart', 'nagios-nrpe-server.service'], uid=0)
