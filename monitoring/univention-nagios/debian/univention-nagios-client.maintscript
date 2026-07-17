@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/etc/init.d/nagios-nrpe-server 16.0.2~
