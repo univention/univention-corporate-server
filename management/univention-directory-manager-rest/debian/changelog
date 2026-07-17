@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.6.7) unstable; urgency=medium
+
+  * Bug #50240: adjust OpenAPI schema for pagination
+
+ -- Florian Best <best@univention.de>  Fri, 17 Jul 2026 10:51:06 +0200
+
 univention-directory-manager-rest (12.6.6) unstable; urgency=medium
 
   * Bug #50240: support pagination in UDM REST API

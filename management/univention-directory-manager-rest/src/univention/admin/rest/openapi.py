@@ -381,13 +381,15 @@ class _OpenAPIBase:
             },
             'objects.get.query.properties': {
             },
-            'objects.get.query.limit': {
+            'objects.get.query.page_size': {
             },
             'objects.get.query.page': {
             },
             'objects.get.query.dir': {
             },
-            'objects.get.query.by': {
+            'objects.get.query.sort': {
+            },
+            'objects.get.query.pagination': {
             },
             'object.get.query.properties': {
             },
@@ -806,13 +808,14 @@ class _OpenAPIBase:
                 if 'add' not in module.operations:
                     _search_links.pop('create-form')
                 pagination_parameters = []
-                if not module.virtual:
+                if module.supports_pagination:
                     pagination_parameters = [
                         # currently not supported by all modules:
-                        {'$ref': '#/components/parameters/objects.get.query.limit'},
-                        {'$ref': '#/components/parameters/objects.get.query.page'},
+                        {'$ref': '#/components/parameters/objects.get.query.sort'},
                         {'$ref': '#/components/parameters/objects.get.query.dir'},
-                        {'$ref': '#/components/parameters/objects.get.query.by'},
+                        {'$ref': '#/components/parameters/objects.get.query.page_size'},
+                        {'$ref': '#/components/parameters/objects.get.query.page'},
+                        {'$ref': '#/components/parameters/objects.get.query.pagination'},
                     ]
 
                 openapi_paths[objects_path]['get'] = {
