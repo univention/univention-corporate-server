@@ -70,7 +70,7 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
         assert sample is not None
         assert sample.value == 1
 
-    # # no samples expected in UCS
+    # no samples expected in UCS
     with subtests.test("nubus_n4k_version_info"):
         family = _get_family(metrics, 'nubus_n4k_version_info')
         assert family is not None
@@ -89,7 +89,7 @@ def test_metrics_endpoint(udm_rest_client, ucr, subtests):
             },
         )
         assert sample is not None
-        assert sample.value > 1 or sample.value == -1
+        assert sample.value > 0
 
     with subtests.test("nubus_settings_license_users_limit_total"):
         family = _get_family(metrics, 'nubus_settings_license_users_limit_total')
