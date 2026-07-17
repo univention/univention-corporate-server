@@ -58,7 +58,6 @@ Via `directory/manager/rest/delegative-administration/excluded-users/.*` one can
 
 Configuration is still locally and not distributed somewhere. Can be configured via:
 
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local prune`
 `/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-permissions`
 `/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-default-roles`
 
