@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Heimdal Kerberos password server
+Documentation=man:kpasswdd(8)
+After=network.target slapd.service heimdal-kdc.service
+PartOf=heimdal-kdc.service
+
+[Service]
+Type=exec
+EnvironmentFile=/etc/default/heimdal-kdc
+ExecCondition=/bin/sh -c '[ "$KPASSWDD_ENABLED" = yes ]'
+ExecStart=/usr/lib/heimdal-servers/kpasswdd $KPASSWDD_PARAMS

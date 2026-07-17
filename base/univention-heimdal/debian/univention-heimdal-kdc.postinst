@@ -15,6 +15,15 @@ eval "$(univention-config-registry shell)"
 univention-config-registry set kerberos/autostart?yes \
 	kerberos/password/quality/check?yes
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 16.0.2; then
+	# UCS 5.3 upgrade: re-set kerberos/autostart so the autostart.py UCR
+	# module applies the current state (disable+mask/enable) to the native unit
+	kerberos_autostart="$(univention-config-registry get kerberos/autostart)"
+	if [ -n "$kerberos_autostart" ]; then
+		univention-config-registry set kerberos/autostart="$kerberos_autostart"
+	fi
+fi
+
 call_joinscript 11univention-heimdal-init.inst
 call_joinscript 15univention-heimdal-kdc.inst
 
@@ -47,7 +56,7 @@ done
 
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then
-		invoke-rc.d heimdal-kdc restart
+		deb-systemd-invoke restart heimdal-kdc.service || true
 	fi
 
 	systemctl try-restart univention-directory-listener

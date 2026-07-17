@@ -8,3 +8,7 @@
 
 %:
 	dh $@ --with ucr
+
+override_dh_installsystemd:
+	dh_installsystemd --no-start --name=heimdal-kdc
+	dh_installsystemd --no-start --name=heimdal-kpasswdd
