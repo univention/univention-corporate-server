@@ -149,10 +149,6 @@ File: etc/aliases
 Variables: mail/alias/.*
 
 Type: file
-File: etc/init.d/postfix
-Variables: postfix/autostart
-
-Type: file
 File: etc/pam.d/smtp
 Variables: ldap/base
 Variables: ldap/server/name
