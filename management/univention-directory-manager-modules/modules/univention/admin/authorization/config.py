@@ -5,7 +5,7 @@
 A domain specific language (DSL) for UDM access rules
 inspired by LDAP ACLs
 realized with extended BNF grammar and a LALR (Look-Ahead Left <- Right) Parser
-and compiled to Cerbos role policies.
+and compiled to Cerbos derived roles and resource-policy rules.
 """
 
 import ast
@@ -15,6 +15,7 @@ import logging
 import re
 import sys
 from pathlib import Path
+from typing import ClassVar
 
 import lark
 import yaml
@@ -98,6 +99,7 @@ SORT_PRIO = {
     'actions': {v: k for k, v in [*list(enumerate(ACTIONS)), [len(ACTIONS), '*']]},
     'permission': {v: k for k, v in [*list(enumerate(PERMISSIONS)), [len(PERMISSIONS), '*']]},
 }
+RE_ROLE = re.compile(r'^[^!*?\[\]{}]+$')
 
 RESOURCE_DN = 'request.resource.attr.dn'
 RESOURCE_POSITION = 'request.resource.attr.position'
@@ -227,8 +229,8 @@ class _DSLTransformer(Transformer):
         by = {'role': meta.pop('role')}
         self._assert_names('by', meta, {'description'})
         self._assert_names('by', by, {'role'})
-        if by['role'].count(':') != 2:
-            raise DSLSyntaxError('role: must contain two ":"', (self.__filename, 0, 0, by['role']))
+        if by['role'] != '*' and not RE_ROLE.match(by['role']):
+            raise DSLSyntaxError('role: must not contain any of the following characters: ! * ? [ ] { }', (self.__filename, 0, 0, by['role']))
 
         return {
             'type': 'by',
@@ -395,7 +397,9 @@ class _DSLTransformer(Transformer):
 
 
 class UDMAuthorizationConfig:
-    """UDM DSL compiler that emits Cerbos rolePolicy documents."""
+    """Compile the UDM DSL into Cerbos resource-policy (and derived roles) rules."""
+
+    USED_NAMES: ClassVar = {}
 
     def __init__(self, filename, *, strict=False):
         self.filename = Path(filename)
@@ -413,96 +417,175 @@ class UDMAuthorizationConfig:
         return _DSLTransformer.compose(copy.deepcopy(self.parsed))
 
     def to_yaml(self):
-        """Return all generated Cerbos role policies as a multi-document YAML stream."""
-        documents = self.to_role_policies(commented=True)
-        if not documents:
-            return ''
-        return _dump_yaml_all(documents, commented=True)
+        """Return resource policies (and derived roles) as YAML."""
+        compiled = self.to_resource_policy_data(commented=True)
+
+        documents = []
+        if compiled['derivedRoles']:
+            documents.append(self._derived_roles_document(compiled['derivedRoles'], commented=True))
+
+        for resource in sorted(compiled['resources']):
+            documents.append(_policy_map({
+                'apiVersion': 'api.cerbos.dev/v1',
+                'description': f'Automatically generated rules from {self.filename.name}.',
+                'disabled': False,
+                'resourcePolicy': _policy_map({
+                    'resource': resource,
+                    'version': 'default',
+                    'importDerivedRoles': ([compiled['derivedRoleSet']] if any(rule.get('derivedRoles') for rule in compiled['resources'][resource]) else []),
+                    'rules': compiled['resources'][resource],
+                }, True),
+                'metadata': {'sourceFile': str(self.filename), 'annotations': {}},
+            }, True))
+
+        return _dump_yaml_all(documents, commented=True) if documents else ''
 
     def write_files(self, output_dir=None):
-        """
-        Write generated role policies to ``generated/roles`` below ``output_dir``.
-
-        Returns the written file paths. The default output root is the Cerbos/UDM
-        policy directory used by the bootstrap script.
-        """
+        """Write standalone generated resource-policy and derived-role files."""
         root = Path(output_dir or POLICY_ROOT)
-        role_dir = root / 'generated' / self.filename.stem / 'roles'
-        role_dir.mkdir(parents=True, exist_ok=True)
+        compiled = self.to_resource_policy_data(commented=True)
+
         paths = []
-        for doc in self.to_role_policies(commented=True):
-            role = doc['rolePolicy']['role']
-            path = role_dir / f'{sanitize_filename(role)}.yaml'
+        if compiled['derivedRoles']:
+            derived_dir = root / 'derived_roles'
+            derived_dir.mkdir(parents=True, exist_ok=True)
+            path = derived_dir / f'{sanitize_filename(compiled["derivedRoleSet"])}.yaml'
+            path.write_text(_dump_yaml(self._derived_roles_document(compiled['derivedRoles'], commented=True), commented=True))
+            paths.append(path)
+
+        resource_dir = root / 'resources'
+        resource_dir.mkdir(parents=True, exist_ok=True)
+        for resource, rules in sorted(compiled['resources'].items()):
+            path = resource_dir / f'{sanitize_filename(resource)}.yaml'
+            doc = {
+                'apiVersion': 'api.cerbos.dev/v1',
+                'description': f'Automatically generated rules from {self.filename.name}.',
+                'disabled': False,
+                'resourcePolicy': {
+                    'resource': resource,
+                    'version': 'default',
+                    'importDerivedRoles': ([compiled['derivedRoleSet']] if any(rule.get('derivedRoles') for rule in rules) else []),
+                    'rules': rules,
+                },
+                'metadata': {'sourceFile': str(self.filename), 'annotations': {}},
+            }
             path.write_text(_dump_yaml(doc, commented=True))
             paths.append(path)
+
         return paths
 
-    def to_role_policies(self, *, commented=False):
-        # if self.parsed.get('conditions'):
-        #     names = ', '.join(cond['name'] for cond in self.parsed['conditions'])
-        #     print(f'Warning: Deprecated condition blocks are ignored for Cerbos output: {names}', file=sys.stderr)
+    def to_resource_policy_data(self, *, commented=False):
+        """
+        Compile DSL data.
 
-        named_conditions = {}
-        for cond in self.parsed['conditions']:
-            named_conditions[cond['name']] = cond['expr']
+        Positional role contexts become derived roles.
+        Named ``if`` and grant-specific ``values`` expressions remain conditions on the exact resource-policy rule whose actions they guard.
+        """
+        named_conditions = {cond['name']: cond['expr'] for cond in self.parsed['conditions']}
+        resources = {}
+        derived_by_key = {}
 
-        policies = {}
-        used_names = {}
         for access_block in self.parsed['rules']:
-            roles = sorted({role['role'] for role in access_block.get('by', [])})
+            roles = sorted({entry['role'] for entry in access_block.get('by', [])})
             for to_clause in access_block.get('to', []):
-                for role in roles:
-                    rules = policies.setdefault(role, _policy_map({
-                        'apiVersion': 'api.cerbos.dev/v1',
-                        'description': 'Automatically generated rule from %r.' % self.filename.stem,
-                        'disabled': False,
-                        'rolePolicy': _policy_map({
-                            'role': role,
-                            'version': 'default',
-                            # 'scope': '',
-                            # 'parentRoles': [],
-                            'rules': _policy_seq([], commented),
-                        }, commented),
-                        'metadata': {
-                            'sourceFile': str(self.filename),
-                            'annotations': {},
-                        },
-                    }, commented))['rolePolicy']['rules']
+                for object_type in self._expand_object_types(to_clause['objecttype']):
+                    resource = udm_resource_kind(object_type) if object_type != '*' else '*'
+                    rules = resources.setdefault(resource, _policy_seq([], commented))
+                    used = self.USED_NAMES.setdefault(resource, set())
 
-                    used = used_names.setdefault(role, set())
-                    for object_type in self._expand_object_types(to_clause['objecttype']):
-                        conditions = []
-                        if to_clause.get('position'):
-                            conditions.append(self._position_to_cel(role, *to_clause['position']))
+                    for grant in to_clause.get('grant', []):
+                        actions = self._grant_to_actions(grant)
+                        static_roles = []
+                        derived_roles = []
+                        rule_conditions = []
+
+                        position = to_clause.get('position')
+                        if position and not self._is_context_position(position[1]):
+                            rule_conditions.append(self._position_to_cel(roles[0], *position))
+
+                        for role in roles:
+                            if position and self._is_context_position(position[1]):
+                                expr = self._position_to_cel(role, *position)
+                                key = (role, expr)
+                                name = derived_by_key.get(key)
+                                if name is None:
+                                    name = self._derived_role_name(role, position, set(derived_by_key.values()))
+                                    derived_by_key[key] = name
+                            else:
+                                static_roles.append(role)
+
+                            if position and self._is_context_position(position[1]):
+                                derived_roles.append(name)
+
                         if_cond = to_clause.get('if')
                         if if_cond:
-                            conditions.append(named_conditions.get(if_cond, if_cond))
+                            rule_conditions.append(named_conditions.get(if_cond, if_cond))
+                        if grant.get('values'):
+                            rule_conditions.append(self._values_to_cel(grant['values'], grant['properties'][0]))
 
-                        actions = []
-                        for grant in to_clause.get('grant', []):
-                            actions.extend(self._grant_to_actions(grant))
-                            if grant.get('values'):
-                                prop = grant['properties'][0]
-                                conditions.append(self._values_to_cel(grant['values'], prop))
-
+                        base_name = to_clause.get('name')
+                        if base_name:
+                            base_name += '-actions' if grant.get('actions') else '-properties'
+                        rule_name = self._unique_rule_name(base_name, used, actions, object_type)
                         rule = _policy_map({
-                            'resource': udm_resource_kind(object_type) if object_type != '*' else '*',  # TODO: check if '*' or 'udm:*' is allowed
-                            'allowActions': actions,
+                            'name': rule_name,
+                            'roles': sorted(set(static_roles)),
+                            'derivedRoles': sorted(set(derived_roles)),
+                            'actions': actions,
+                            'effect': 'EFFECT_ALLOW',
                         }, commented)
-
-                        condition = self._condition(conditions)
+                        if not static_roles:
+                            rule.pop('roles')
+                        if not derived_roles:
+                            rule.pop('derivedRoles')
+                        condition = self._condition(rule_conditions)
                         if condition:
                             rule['condition'] = condition
 
                         rules.append(rule)
-
-                        rule_name = self._unique_rule_name(used, to_clause, actions, object_type)
                         description = to_clause.get('description') or access_block.get('description')
-                        # rule.yaml_set_start_comment(description, indent=0)
-                        # _add_rule_comment(rule, 0, rule_name, description)
                         _add_rule_comment(rules, len(rules) - 1, rule_name, description)
 
-        return [policies[role] for role in sorted(policies)]
+        definitions = []
+        for (role, expr), name in sorted(derived_by_key.items(), key=lambda item: item[1]):
+            definitions.append(_policy_map({
+                'name': name,
+                'parentRoles': [role],
+                'condition': self._condition([expr]),
+            }, commented))
+
+        return {
+            'derivedRoleSet': f'udm_{sanitize_filename(self.filename.stem).replace("-", "_")}_contexts',
+            'derivedRoles': _policy_seq(definitions, commented),
+            'resources': resources,
+        }
+
+    def _derived_roles_document(self, definitions, *, commented=False):
+        return _policy_map({
+            'apiVersion': 'api.cerbos.dev/v1',
+            'description': f'Automatically generated context roles from {self.filename.name}.',
+            'derivedRoles': _policy_map({
+                'name': f'udm_{sanitize_filename(self.filename.stem).replace("-", "_")}_contexts',
+                'definitions': definitions,
+            }, commented),
+            'metadata': {'sourceFile': str(self.filename), 'annotations': {}},
+        }, commented)
+
+    @staticmethod
+    def _is_context_position(position):
+        return isinstance(position, str) and position.startswith('context=')
+
+    def _derived_role_name(self, role, position, used_names):
+        scope = _SCOPES.get(position[0], 'base')
+        source = sanitize_filename(self.filename.stem).replace('-', '_')
+        role_name = sanitize_filename(role).replace('-', '_')
+        base = f'{source}_{role_name}_position_{scope}'
+        name = base
+        counter = 2
+        while name in used_names:
+            name = f'{base}_{counter}'
+            counter += 1
+        return name
 
     def _expand_object_types(self, object_type):
         if object_type != '*':
@@ -600,7 +683,8 @@ class UDMAuthorizationConfig:
             '$new$': 'request.resource.attr.new.properties',
         }
         for name, replacement in replacements.items():
-            expr = re.sub(rf'\b{re.escape(name)}\b', replacement, expr)
+            # expr = re.sub(rf'\b{re.escape(name)}\b', replacement, expr)
+            expr = expr.replace(name, replacement)
         return expr
 
     @staticmethod
@@ -612,13 +696,13 @@ class UDMAuthorizationConfig:
             return {'match': {'expr': exprs[0]}}
         return {'match': {'all': {'of': [{'expr': expr} for expr in exprs]}}}
 
-    @staticmethod
-    def _unique_rule_name(used_names, to_clause, actions, object_type):
-        base = to_clause.get('name')
+    def _unique_rule_name(self, base, used_names, actions, object_type):
+        # FIXME: this is not unique accross multiple filenames/configurations
         if not base:
+            prefix = self.filename.stem
             suffix = '-'.join(actions)
             ot = 'all-udm-modules' if object_type == '*' else object_type.replace('/', '-')
-            base = f'{ot}-{suffix}'
+            base = f'{prefix}-{ot}-{suffix}'
         base = re.sub(r'[^a-zA-Z0-9_-]+', '-', base).strip('-') or 'rule'
         name = base
         counter = 2
