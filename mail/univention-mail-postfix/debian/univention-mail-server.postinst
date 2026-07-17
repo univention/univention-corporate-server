@@ -32,7 +32,7 @@ done
 call_joinscript 67univention-mail-server.inst
 
 if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
-	/etc/init.d/postfix restart
+	deb-systemd-invoke restart postfix.service || true
 fi
 
 # configure firewall
@@ -50,7 +50,7 @@ if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then
 		ucr set mail/postfix/activate_unionmap_in_virtual_alias_maps=yes
 		ucr set mail/postfix/activate_ldap_attribute_mailForwardCopyToSelf_in_virtual_alias_maps=yes
-		/etc/init.d/postfix reload && /etc/init.d/postfix restart
+		deb-systemd-invoke restart postfix.service || true
 	fi
 fi
 
