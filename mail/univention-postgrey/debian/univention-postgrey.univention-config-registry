@@ -9,6 +9,3 @@ Variables: mail/postfix/greylisting/client/whitelist/auto
 Variables: mail/postfix/greylisting/client/whitelist
 Variables: mail/postfix/greylisting/recipient/whitelist
 Variables: mail/postfix/greylisting/privacy
-
-Type: file
-File: etc/init.d/postgrey
