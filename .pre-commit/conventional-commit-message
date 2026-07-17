@@ -167,17 +167,14 @@ type_package_mapping = {
     'ucs-test-tools': 'test',
     'ucslint': 'ci',
 }
-type_path_mapping = {
-    'doc': 'docs',
-    'LICENCES': 'chore',
-    '.pre-commit': 'ci',
-    '.reuse': 'chore',
-    'test': 'ci',
-}
-scope_path_mapping = {
-    'LICENCES': 'REUSE',
-    '.pre-commit': 'pre-commit',
-    '.reuse': 'REUSE',
+type_path_glob_scope_mapping = {
+    'doc': ('docs', None),
+    'LICENCES': ('chore', 'REUSE'),
+    '.pre-commit': ('ci', 'pre-commit'),
+    '.reuse': ('chore', 'REUSE'),
+    'test/ucs-test/tests/*/**': ('test', None),
+    'test/*/**.cfg': ('ci', 'jenkins'),
+    'test': ('ci', None),
 }
 
 
@@ -255,6 +252,10 @@ def parse_git(args):
 
     packages = list(repo_root.rglob("debian/changelog"))
     staged_files = [repo_root / (item.a_path or item.b_path) for item in repo.index.diff("HEAD")]
+    staged_relative = {
+        staged_file: staged_file.relative_to(repo_root)
+        for staged_file in staged_files
+    }
 
     changed_packages = {
         find_matching_root(p.parent.parent, staged_files)
@@ -274,21 +275,44 @@ def parse_git(args):
         print(f'{type_}({scope}): {changes}')
 
     prefix = '#' if changed_packages else ''
-    for root, type_ in type_path_mapping.items():
-        section = repo_root / root
-        if find_matching_root(section, staged_files):
-            scope = scope_path_mapping.get(root, '')
-            scopes = [scope] if scope else []
-            if not scopes:
-                if root in ('doc', 'tests'):
-                    scopes = {st.relative_to(section).parts[0] for st in staged_files if st.is_relative_to(section)}
-            for scope in scopes:
-                print(f'{prefix}{type_}({scope}): {changes}')
+    for pattern, (type_, scope) in type_path_glob_scope_mapping.items():
+        scopes = set()
+        is_glob = any(character in pattern for character in '*?[')
+
+        for relative_path in staged_relative.values():
+            if is_glob:
+                matches = relative_path.match(pattern)
+            else:
+                matches = (
+                    relative_path == Path(pattern)
+                    or relative_path.is_relative_to(pattern)
+                )
+
+            if not matches:
+                continue
+
+            if scope:
+                scopes.add(scope)
+
+            if pattern in ('doc', 'test'):
+                relative_to_section = relative_path.relative_to(pattern)
+                if relative_to_section.parts:
+                    scopes.add(relative_to_section.parts[0])
+            elif pattern == 'test/ucs-test/tests/*/**':
+                relative_to_tests = relative_path.relative_to(
+                    'test/ucs-test/tests',
+                )
+                if relative_to_tests.parts:
+                    scopes.add(relative_to_tests.parts[0].split('_', 1)[-1])
+
+        for scope in scopes:
+            print(f'{prefix}{type_}({scope}): {changes}')
 
     issue = 'Bug #\n#Issue univention/dev/ucs#'
     print(f'\n{issue}')
     if args.show_hint:
         print(HINT)
+    print('\n# Co-Authored-By: ')
 
 
 def find_matching_root(root: Path, file_pathes: list[Path]) -> Path | None:
