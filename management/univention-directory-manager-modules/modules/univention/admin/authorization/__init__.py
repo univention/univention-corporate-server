@@ -28,7 +28,7 @@ ROLE_CACHE_SIZE = 1000
 
 
 def auth_log(action, actor, target, **kwargs):
-    log.debug('%s by %s to %s not allowed', action, actor.id, target.get('id'), **kwargs)
+    log.debug('%s by %s to %s not allowed', action, actor.id, getattr(target, 'id', None) or target.get('id'), **kwargs)
 
 
 def get_user(lo, user_dn: str):
