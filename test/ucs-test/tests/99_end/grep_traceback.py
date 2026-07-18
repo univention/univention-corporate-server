@@ -383,6 +383,7 @@ COMMON_EXCEPTIONS = (
 
     # UCS@school test cases:
     # ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import'], 53564),
+    E('ldap.ALREADY_EXISTS.*Refusing to delete CN=Domain Users testou.*as it is still the primaryGroupID for', ['delete_in_s4'], 53278),
     E("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input'], 53564),
     E("ValueError: time data '.*' does not match format '%Y-%m-%d'", ['import_user.py.* in validate'], 53564),
     E("ucsschool.importer.exceptions.InitialisationError: Recursion detected when resolving formatting dependencies for 'email'.", ['user_import.py.* in read_input'], 53564),
