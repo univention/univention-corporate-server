@@ -366,7 +366,8 @@ COMMON_EXCEPTIONS = (
     E('modify/delete: uniqueMember: no such attribute.', ['__set_membership_attributes', 'ldap/ldapobject.py'], 58400),
     E('tornado.curl_httpclient.CurlError: HTTP 599: Failed to connect to.*', ['management/console/resources.py'], 58675),
     E('univention.management.console.resources.CouldNotConnect: HTTP 599: Failed to connect to', ['console/resources.py".*in cb'], 58675),
-    E(r'RuntimeError: fetch\(\) called on closed AsyncHTTPClient', ['console/resources.py".*in do_request'], 58873),
+    E(r'RuntimeError: fetch\(\) called on closed AsyncHTTPClient', ['console/resources.py".*in cancel_request'], 58873),
+    E(r'BrokenPipeError: \[Errno 32\].* [bB]roken pipe', ['rest/__main__.py.*in signal_handler_reload'], 59577),
 
     # Tracebacks caused by specific UCS@school bugs:
     # E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
