@@ -845,22 +845,23 @@ __EOF__
 	update-initramfs -uk all
 
 	# resize2fs
-	cat > /etc/init.d/resize2fs <<__EOF__
-#!/bin/bash
-### BEGIN INIT INFO
-# Provides:          resize2fs
-# Required-Start:    \$local_fs
-# Required-Stop:
-# Default-Start:     2
-# Default-Stop:
-# Short-Description: resize filesystem upon boot
-### END INIT INFO
+	cat > /etc/systemd/system/resize2fs.service <<'EOF'
+[Unit]
+Description=Resize filesystem upon boot
+After=local-fs.target
+ConditionPathExists=!/var/lib/resize2fs.done
 
-resize2fs /dev/xvda1 &
-disown
-__EOF__
-	chmod +x /etc/init.d/resize2fs
-	update-rc.d resize2fs defaults
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'exec /usr/sbin/resize2fs "$(findmnt -nvo SOURCE /)"'
+ExecStartPost=/usr/bin/touch /var/lib/resize2fs.done
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+	systemctl daemon-reload
+	systemctl enable resize2fs.service
 }
 
 install_appreport () {
