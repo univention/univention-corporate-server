@@ -23,14 +23,31 @@ def test_ipchange_basic(udm, ucr):
     lo = utils.get_ldap_connection()
     computer_object = lo.get(computer)
     print(computer_object)
+
+    iface = ucr.get('interfaces/primary', 'eth0')
+
+    # Test change IPv4 address
     ip = computer_object['aRecord']
     utils.verify_ldap_object(computer, {'aRecord': ip})
 
     new_ip = '1.2.3.4'
 
-    iface = ucr.get('interfaces/primary', 'eth0')
     client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
     client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
 
     utils.wait_for_replication()
     utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)
+
+    # Test change IPv6 address
+    if ucr.get('interfaces/%s/ipv6/default/prefix' % iface):
+        ip = computer_object['aAAARecord']
+        utils.verify_ldap_object(computer, {'aAAARecord': ip})
+
+        new_ip = 'fdff:1:2:3::4'
+        new_ip = 'fdff:0001:0002:0003:0000:0000:0000:0004'
+
+        client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
+        client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/ipv6/default/prefix' % iface), 'role': role})
+
+        utils.wait_for_replication()
+        utils.verify_ldap_object(computer, {'aAAARecord': [new_ip]}, strict=True)

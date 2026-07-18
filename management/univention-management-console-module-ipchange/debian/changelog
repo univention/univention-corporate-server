@@ -1,3 +1,10 @@
+univention-management-console-module-ipchange (10.6.1) unstable; urgency=medium
+
+  * Bug #55391: allow IPv6 addresses and support known records like
+    ucs-sso-ng, gc._msdcs, DomainDnsZones, ForestDnsZones
+
+ -- Florian Best <best@univention.de>  Mon, 20 Jul 2026 12:27:50 +0200
+
 univention-management-console-module-ipchange (10.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

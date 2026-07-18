@@ -27,11 +27,33 @@ class Instance(Base):
 
     @simple_response
     def change(self, role: str, ip: str, netmask: str, oldip: str | None = None) -> None:
-        # ignore link local addresses (no DHCP address received)
-        network = ipaddress.IPv4Network(f'{ip}/{netmask}', False)
-        if network.is_link_local:
-            MODULE.error('Ignore link local address change.')
+        try:
+            network = ipaddress.ip_network(f'{ip}/{netmask}', False)
+            old_ip = ipaddress.ip_address(oldip) if oldip else None
+            old_address = old_ip.exploded if old_ip else None
+
+            new_ip = ipaddress.ip_address(ip)
+            new_address = new_ip.exploded
+        except ValueError as exc:
+            raise BadRequest(f'The IP address is invalid: {exc}')
+
+        if old_ip is not None and old_ip.version != new_ip.version:
+            raise BadRequest('The old and new IP addresses use different address families.')
+
+        # ignore link local or loopback addresses (no DHCP address received)
+        if new_ip.is_link_local or new_ip.is_loopback:
+            MODULE.error('Ignore link local or loopback address change.')
             return
+
+        # set attribute aRecord(<split>.|<trim>0) or aAAARecord(<split>:|<trim>0000) for IP version 4 or 6
+        if network.version == 4:
+            attribute = 'aRecord'
+            ip_delimiter = '.'
+            ip_trim = '0'
+        elif network.version == 6:
+            attribute = 'aAAARecord'
+            ip_delimiter = ':'
+            ip_trim = '0000'
 
         lo, position = univention.admin.uldap.getAdminConnection()
         host_mod = univention.admin.modules.get('dns/host_record')
@@ -42,74 +64,118 @@ class Instance(Base):
         server = comp_mod.object(None, lo, position, self.user_dn)
         server.open()
 
-        if ip in server['ip']:
+        current_ips = set(server['ip'])
+
+        if new_address in current_ips and (not oldip or old_address == new_address):
             return
 
-        ucr.load()
-        sso_uri = ucr.get('ucs/server/sso/uri', '').lower()
-        sso_fqdn = urlparse(sso_uri).hostname
-        fqdn = f"{server.get('name')}.{server.get('domain')}".lower()
+        # get the current server status filtered by IP version
+        source_addresses = {
+            entry for entry in server['ip']
+            if ipaddress.ip_address(entry).version == network.version
+        }
+        if oldip:
+            source_addresses |= {old_address, oldip}
 
-        # check if already used
-        host_recs = univention.admin.modules.lookup(host_mod, None, lo, scope='sub', filter=filter_format('aRecord=%s', (ip,)))
+        ucr.load()
+        server_domain = server.get('domain', '').lower()
+        fqdn = server.get('fqdn', '').lower()
+        fqdns = {fqdn}
+
+        sso_fqdn = urlparse(ucr.get('ucs/server/sso/uri', '').lower()).hostname
+        if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
+            fqdns.add(sso_fqdn)
+
+        if ucr.get('dns/backend') == 'samba4':
+            # FIXED? Works, but it isn't stable!
+            # (Sometimes the S4 connector resyncs old adresses. Do we have to wait for a replication?)
+            fqdns |= {f'{host}.{server_domain}' for host in ['gc._msdcs', 'DomainDnsZones', 'ForestDnsZones']}
+
+        fqdns.discard('')
+        fqdns.discard(None)
+
+        # check if already used by host record
+        # FIXME: what about further A records for this server, which are just manually added by customers?
+        # TODO: replace the check by a search for computers/computer ip={new_address} ?
+        host_recs = univention.admin.modules.lookup(host_mod, None, lo, scope='sub', filter=filter_format('(|(%s=%s)(%s=%s))', (attribute, new_address, attribute, ip)))
         used_by = {
             f"{host_rec['name']}.{host_rec.superordinate['zone']}".lower()
             for host_rec in host_recs
             if 'name' in host_rec
-        } - {sso_fqdn, fqdn}
+        } - {managed_fqdn.lower() for managed_fqdn in fqdns}
         if used_by:
             raise BadRequest(f'The IP address is already in use by host record(s) for: {", ".join(used_by)}')
 
-        # do we have a forward zone for this IP address?
-        if oldip and oldip != ip:
-            for fwd_zone in univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub', superordinate=None, filter=filter_format('(aRecord=%s)', (oldip,))):
+        # do we have a forward zone for the IP addresses?
+        for address in source_addresses:
+            for fwd_zone in univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub', filter=filter_format('(%s=%s)', (attribute, address))):
                 fwd_zone.open()
-                fwd_zone['a'].remove(oldip)
-                fwd_zone['a'].append(ip)
+                if address in fwd_zone['a']:
+                    fwd_zone['a'].remove(address)
+                if new_address not in fwd_zone['a']:
+                    fwd_zone['a'].append(new_address)
                 fwd_zone.modify()
 
-            server = comp_mod.object(None, lo, position, self.user_dn)
-            server.open()
+        # add the new A records for all known DNS names
+        # this must be done before modifying the server, as that would cleanup the old IP addresses and we wouldn't find any records anymore
+        # FIXME: this should be done for UCS-in-AD domains as well!
+        for fwd_zone in univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub'):
+            zone = fwd_zone.get('zone')
+            for host_fqdns in fqdns:
+                # check case insensitive. Mostly necessary for Keycloak
+                if not host_fqdns.lower().endswith('.' + zone.lower()):
+                    continue
+                name = host_fqdns[:-(len(zone) + 1)]
+                for host_rec in univention.admin.modules.lookup(host_mod, None, lo, scope='sub', superordinate=fwd_zone, filter=filter_format('(&(relativeDomainName=%s))', (name,))):
+                    host_rec.open()
+                    host_rec['a'] = [
+                        address
+                        for address in host_rec['a']
+                        if address not in source_addresses
+                    ]
+                    if new_address not in host_rec['a']:
+                        host_rec['a'].append(new_address)
+                    host_rec.modify()
 
-        # remove old DNS reverse entries with old IP
-        current_ips = server['ip']
+        server = comp_mod.object(None, lo, position, self.user_dn)
+        server.open()
+
+        # change/append server address and cleanup any old ip addresses
+        server['ip'] = list(current_ips - source_addresses | {new_address})
+        # TODO: from security perspective we should only do:
+        # server['ip'] = list(set(server['ip']) | {new_address})
+
+        # remove old DNS reverse entries with current IP address(es)
         for zone_ip in server['dnsEntryZoneReverse']:
-            if zone_ip[1] in current_ips:
+            if zone_ip[1] in source_addresses:
                 server['dnsEntryZoneReverse'].remove(zone_ip)
 
-        # change IP
-        server['ip'] = ip
-        MODULE.info("Change IP to %s", ip)
-
         # do we have a new reverse zone for this IP address?
-        parts = network.network_address.exploded.split('.')
-        while parts[-1] == '0':
+        parts = network.network_address.exploded.split(ip_delimiter)
+        while parts[-1] == ip_trim:
             parts.pop()
 
         while parts:
-            subnet = '.'.join(parts)
-            filterstr = filter_format('(subnet=%s)', (subnet,))
-            rev_recs = univention.admin.modules.lookup(rev_mod, None, lo, scope='sub', superordinate=None, filter=filterstr)
+            subnet = ip_delimiter.join(parts)
+            rev_recs = univention.admin.modules.lookup(rev_mod, None, lo, scope='sub', filter=filter_format('(subnet=%s)', (subnet,)))
             if rev_recs:
-                server['dnsEntryZoneReverse'].append([rev_recs[0].dn, ip])
+                entry = [rev_recs[0].dn, new_address]
+                if entry not in server['dnsEntryZoneReverse']:
+                    server['dnsEntryZoneReverse'].append(entry)
                 break
             parts.pop()
 
-        server.modify()
+        # add IP address to new A record in forward zone
+        parts = fqdn.split('.')
+        while len(parts) > 1:
+            zone_name = '.'.join(parts)
+            zones = univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub', filter=filter_format('(zone=%s)', (zone_name,)))
+            if zones:
+                entry = [zones[0].dn, new_address]
+                if entry not in server['dnsEntryZoneForward']:
+                    server['dnsEntryZoneForward'].append(entry)
+                break
+            parts.pop(0)
 
-        # Change ucs-sso entry
-        # FIXME: this should be done for UCS-in-AD domains as well!
-        if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
-            for fwd_zone in univention.admin.modules.lookup(fwd_mod, None, lo, scope='sub', superordinate=None, filter=None):
-                zone = fwd_zone.get('zone')
-                # check case insenstive. Mostly necessary for keycloak
-                if not sso_fqdn.endswith(zone.lower()):
-                    continue
-                sso_name = sso_fqdn[:-(len(zone) + 1)]
-                for current_ip in current_ips:
-                    for host_rec in univention.admin.modules.lookup(host_mod, None, lo, scope='sub', superordinate=fwd_zone, filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (sso_name, current_ip))):
-                        host_rec.open()
-                        if oldip in host_rec['a']:
-                            host_rec['a'].remove(oldip)
-                        host_rec['a'].append(ip)
-                        host_rec.modify()
+        MODULE.process('Change IP address %s for %s', ip, fqdn)
+        server.modify()

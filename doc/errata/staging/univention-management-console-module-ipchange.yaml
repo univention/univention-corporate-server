@@ -3,7 +3,7 @@ release: "5.2"
 version: [6]
 scope: ucs_5.2-0-errata5.2-6
 src: univention-management-console-module-ipchange
-fix: 10.6.0
+fix: 10.6.1
 desc: |
  This update addresses the following issue:
  * The IP address registration during system startup no longer incorrectly

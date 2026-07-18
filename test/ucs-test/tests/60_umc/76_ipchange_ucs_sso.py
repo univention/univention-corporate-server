@@ -49,6 +49,10 @@ if __name__ == '__main__':
         lo = utils.get_ldap_connection()
         computer_object = lo.get(computer)
         print(computer_object)
+
+        iface = ucr.get('interfaces/primary', 'eth0')
+
+        # Test change IPv4 address
         ip = computer_object['aRecord']
         utils.verify_ldap_object(computer, {'aRecord': ip})
 
@@ -62,7 +66,6 @@ if __name__ == '__main__':
         try:
             new_ip = '1.2.3.10'
 
-            iface = ucr.get('interfaces/primary', 'eth0')
             client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
             client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
 
@@ -71,3 +74,28 @@ if __name__ == '__main__':
             utils.verify_ldap_object(ucs_sso_dn, {'aRecord': [*ips, new_ip]}, strict=True)
         finally:
             lo.modify(ucs_sso_dn, [('aRecord', lo.get(ucs_sso_dn).get('aRecord'), ips)])
+
+        # Test change IPv6 address
+        if ucr.get('interfaces/%s/ipv6/default/prefix' % iface):
+            ip = computer_object['aAAARecord']
+            utils.verify_ldap_object(computer, {'aAAARecord': ip})
+
+            for ucs_sso_dn, ucs_sso_object in lo.search(filter_format('relativeDomainName=%s', [sso_prefix]), unique=True, required=True):
+                ips = ucs_sso_object.get('aAAARecord')
+                break
+            else:
+                raise ValueError('no ucs-sso host found.')
+
+            lo.modify(ucs_sso_dn, [('aAAARecord', ips, ips + ip)])
+            try:
+                new_ip = 'fdff:1:2:3:10'
+                new_ip = 'fdff:0001:0002:0003:0000:0000:0000:0010'
+
+                client = Client(ucr.get('ldap/master'), '%s$' % computerName, 'univention')
+                client.umc_command('ip/change', {'ip': new_ip, 'oldip': ip[0].decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/ipv6/default/prefix' % iface), 'role': role})
+
+                utils.wait_for_replication()
+                utils.verify_ldap_object(computer, {'aAAARecord': [new_ip]}, strict=True)
+                utils.verify_ldap_object(ucs_sso_dn, {'aAAARecord': [*ips, new_ip]}, strict=True)
+            finally:
+                lo.modify(ucs_sso_dn, [('aAAARecord', lo.get(ucs_sso_dn).get('aAAARecord'), ips)])
