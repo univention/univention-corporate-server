@@ -1,0 +1,1 @@
+Fixed firewall rule generation for Docker containers on newer Docker versions. Changes in Docker's port binding output could previously cause invalid iptables rules to be generated. The parser now uses structured port binding information from docker inspect, avoiding these failures.
