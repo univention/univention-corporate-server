@@ -54,10 +54,19 @@ nat_container_rule() {
 	NETID=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.NetworkID}}{{end}}' "$1")
 	IF=$(docker network inspect $NETID --format='{{with index .Options "com.docker.network.bridge.name"}}{{.}}{{else}}{{.Id | printf "br-%.12s"}}{{end}}')
 
-	# convert "443/tcp -> 0.0.0.0:40001" to "443 tcp 0.0.0.0 40001"
-	docker port "$1" | sed -re 's#[/>: -]+# #g' | \
-		while read localport proto addr containerport ; do
-			if [ "$addr" != "0.0.0.0" ] ; then
+	docker inspect --format='{{range $port, $bindings := .NetworkSettings.Ports}}{{range $binding := $bindings}}{{printf "%s|%s|%s\n" $port $binding.HostIp $binding.HostPort}}{{end}}{{end}}' "$1" | \
+		while IFS='|' read -r port_binding addr containerport; do
+			[ -n "$port_binding" ] || continue
+			localport=${port_binding%/*}
+			proto=${port_binding#*/}
+
+			# the existing rule generation is IPv4-only. Docker may also report
+			# IPv6 host bindings (for example ::); skip those
+			case "$addr" in
+				*:* ) continue ;;
+			esac
+
+			if [ -n "$addr" ] && [ "$addr" != "0.0.0.0" ] ; then
 				iptables --wait -t nat -A DOCKER ! -i "$IF" -p "$proto" --destination "$addr/32" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
 			else
 				iptables --wait -t nat -A DOCKER ! -i "$IF" -p "$proto" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
