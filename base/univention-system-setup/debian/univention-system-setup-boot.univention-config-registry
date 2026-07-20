@@ -1,6 +1,7 @@
 Type: file
 File: etc/motd.setup
 Variables: interfaces/.*
+Variables: version/beta
 Variables: server/amazon
 
 Type: subfile

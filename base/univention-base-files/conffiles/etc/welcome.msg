@@ -6,6 +6,31 @@ ROLES = {
     "memberserver": "Univention Managed Node",
 }
 
+
+def beta_warning(details: bool = True) -> str:
+    version = configRegistry.get('version/beta')
+    if not version:
+        return ''
+    title = '!!!  UCS %s BETA  DO NOT USE IN PRODUCTION  !!!' % (version,)
+    box = ['#' * 78, '##%s##' % (' ' * 74,), '##%s##' % (title.center(74),), '##%s##' % (' ' * 74,), '#' * 78]
+    text = '%s\n' % ('\n'.join(box),)
+    if details:
+        text += '''
+This is an early Beta version of Univention Corporate Server (UCS) 5.3, meant
+exclusively for evaluation and early testing:
+
+ - Do NOT use this system in production.
+ - There is NO upgrade path from this Beta version to the final release. A
+   reinstallation will be required.
+ - This system uses UCS testing repositories. Updates may temporarily or
+   permanently render the system unusable.
+ - No support is provided for Beta installations.
+'''
+    return text + '\n'
+
+
+print(beta_warning(), end='')
+
 role = configRegistry.get('server/role')
 menutitle = ROLES.get(role, "Univention Corporate Server")
 
@@ -42,4 +67,3 @@ if role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontrol
     print('users, groups, etc. - using the "Administrator" account and the password selected ')
     print('for the root user on the Primary Directory Node.')
 @!@
-
