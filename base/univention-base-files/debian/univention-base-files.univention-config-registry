@@ -237,6 +237,7 @@ Variables: locale/default
 
 Type: file
 File: etc/issue
+Variables: version/alpha
 Variables: version/version
 Variables: version/patchlevel
 Variables: server/role
@@ -247,12 +248,14 @@ Variables: interfaces/primary
 
 Type: file
 File: etc/issue.net
+Variables: version/alpha
 Variables: version/version
 Variables: version/patchlevel
 Variables: server/role
 
 Type: file
 File: etc/welcome.msg
+Variables: version/alpha
 Variables: version/version
 Variables: version/patchlevel
 Variables: server/role

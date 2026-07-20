@@ -6,6 +6,31 @@ ROLES = {
     "memberserver": "Univention Managed Node",
 }
 
+
+def alpha_warning(details: bool = True) -> str:
+    version = configRegistry.get('version/alpha')
+    if not version:
+        return ''
+    title = '!!!  UCS %s ALPHA  DO NOT USE IN PRODUCTION  !!!' % (version,)
+    box = ['#' * 78, '##%s##' % (' ' * 74,), '##%s##' % (title.center(74),), '##%s##' % (' ' * 74,), '#' * 78]
+    text = '%s\n' % ('\n'.join(box),)
+    if details:
+        text += '''
+This is an early Alpha version of Univention Corporate Server (UCS) 5.3, meant
+exclusively for evaluation and early testing:
+
+ - Do NOT use this system in production.
+ - There is NO upgrade path from this Alpha version to the final release. A
+   reinstallation will be required.
+ - This system uses UCS testing repositories. Updates may temporarily or
+   permanently render the system unusable.
+ - No support is provided for Alpha installations.
+'''
+    return text + '\n'
+
+
+print(alpha_warning(), end='')
+
 role = configRegistry.get('server/role')
 menutitle = ROLES.get(role, "Univention Corporate Server")
 

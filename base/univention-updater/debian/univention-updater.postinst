@@ -35,6 +35,8 @@ if [ "$1" = "configure" ]; then
 		version/erratalevel?0
 fi
 
+univention-config-registry set version/alpha=5.3
+
 #DEBHELPER#
 
 # force the listener module license_uuid to be executed
