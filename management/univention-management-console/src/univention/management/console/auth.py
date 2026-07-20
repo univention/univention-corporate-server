@@ -13,6 +13,7 @@ from ldap.filter import filter_format
 
 import univention.admin.handlers.users.user as udm_user
 import univention.admin.uexceptions as udm_errors
+import univention.admin.uldap
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.log import AUTH
@@ -122,7 +123,8 @@ class AuthHandler:
         AUTH.info('User dn: %s', user_dn)
         AUTH.info('Authenticating user: %s', username)
         try:
-            machine_lo.lo.bind(user_dn, password)
+            user_lo = univention.admin.uldap.access(host=machine_lo.host, port=machine_lo.port, base=machine_lo.base, start_tls=machine_lo.start_tls)
+            user_lo.lo.bind(user_dn, password)
             # expect ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 2, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': [], 'info': 'password expired'}, but that's ok
         except (ldap.LDAPError, udm_errors.base) as exc:
             if isinstance(exc, ldap.INVALID_CREDENTIALS):
