@@ -1,0 +1,26 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openssl
+fix: 1.1.0l-1~deb9u13
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-45447, CVE-2026-28387, CVE-2026-7383 (CVSS score 8.1 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-34180, CVE-2026-28390, CVE-2026-28389, CVE-2026-28388,
+   CVE-2026-9076 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-42766 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59660]
+cve:
+- CVE-2026-7383
+- CVE-2026-9076
+- CVE-2026-28387
+- CVE-2026-28388
+- CVE-2026-28389
+- CVE-2026-28390
+- CVE-2026-34180
+- CVE-2026-42766
+- CVE-2026-45447
