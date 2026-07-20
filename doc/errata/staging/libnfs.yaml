@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libnfs
+fix: 1.11.0-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-53689 (CVSS score 7.1 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:L).
+bug: [59661]
+cve:
+- CVE-2026-53689
