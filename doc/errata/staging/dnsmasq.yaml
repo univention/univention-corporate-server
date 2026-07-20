@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: dnsmasq
+fix: 2.76-5+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-4892 (CVSS score 8.8 -
+   CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-2291 (CVSS score 7.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-4893 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+bug: [59658]
+cve:
+- CVE-2026-2291
+- CVE-2026-4892
+- CVE-2026-4893
