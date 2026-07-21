@@ -40,7 +40,7 @@ Systems with the Backup Directory Node role automatically receive copies of this
 Backup Directory Node
 ---------------------
 
-The Primary Directory Node stores a read-only copy of all the domain data and TLS security certificates.
+The Backup Directory Node stores a read-only copy of all the domain data and TLS security certificates.
 It can't write changes to the domain data.
 
 The Backup Directory Node is the fallback system for the Primary Directory Node.
