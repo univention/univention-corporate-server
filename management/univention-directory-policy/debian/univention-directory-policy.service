@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[Unit]
+Description=Univention Directory Policy
+After=network-online.target remote-fs.target slapd.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/share/univention-directory-policy/univention-directory-policy
+TimeoutStartSec=3600
+StandardOutput=append:/var/log/univention/ldap-policy.log
+StandardError=append:/var/log/univention/ldap-policy.log
+
+[Install]
+WantedBy=multi-user.target

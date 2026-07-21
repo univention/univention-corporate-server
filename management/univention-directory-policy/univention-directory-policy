@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Univention Directory Policy
+#  apply LDAP policies if an LDAP server is reachable
+#
+# SPDX-FileCopyrightText: 2004-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+eval "$(univention-config-registry shell ldap/server/port ldap/server/addition ldap/server/name)"
+
+IFS="${IFS:- 	},"
+# shellcheck disable=SC2086
+set -- $ldap_server_name $ldap_server_addition
+[ $# -eq 0 ] && exit 0
+for host in "$@"
+do
+	netcat -q0 -w4 "$host" "${ldap_server_port:-7389}" </dev/null >/dev/null 2>&1 ||
+		continue
+	run-parts /usr/lib/univention-directory-policy
+	break
+done
+exit 0
