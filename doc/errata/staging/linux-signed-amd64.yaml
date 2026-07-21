@@ -18,7 +18,7 @@ desc: |
  * CVE-2026-23302 (CVSS score 4.7 -
    CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H).
  * CVE-2026-53157, CVE-2026-53139 (CVSS score unknown).
-bug: [59656]
+bug: [59662]
 cve:
 - CVE-2026-53167
 - CVE-2026-53138
