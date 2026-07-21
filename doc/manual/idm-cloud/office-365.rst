@@ -262,11 +262,11 @@ attributes such as class code, grade level, and term information.
      SDS processes the education roster data and makes
      it available through the ``Education Roster API``.
 
-   * The ``EduRoster.ReadWrite.All`` application permission must be added
+   * The ``Microsoft Graph`` application permission ``EduRoster.ReadWrite.All`` must be added
      to the Azure AD application used by the Microsoft 365 Connector.
 
-     Note that changes to the Permissions of the Application may only be active
-     after up to 15 Minutes.
+     Note that changes to the Permissions of the Application will need admin consent confirmation
+     and may only be active after up to 15 Minutes.
 
    * The education feature must be enabled in the |UCSUCRV|
      :envvar:`office365/education/enabled` to ``yes``.
@@ -309,7 +309,7 @@ The following education-specific attributes can be configured on the
 .. note::
 
    The ``HiddenMembership`` visibility option is only available for education
-   class groups. It is not permitted for ``Security Group`` or
+   class groups. It will be rejected for ``Security Group`` or
    ``Microsoft 365 Group`` types.
 
 When an education class group is created, the connector first provisions the
@@ -318,7 +318,7 @@ fails (for example, because the tenant does not have an education license or
 the required permissions are missing), the connector falls back to creating a
 regular Microsoft 365 group instead.
 
-.. caution::
+.. note::
 
    Education class attributes can only be used with the ``Education Class``
    group type. A UDM hook prevents setting education attributes on other
