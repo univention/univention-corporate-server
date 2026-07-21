@@ -69,6 +69,7 @@ IAM-Daten
 UDM-Objekte
 UDM-Objekten
 UDM-Darstellung
+UDM-Hook
 UDM-Ebene
 UDM-REST-API-Hosts
 Event-Streaming
@@ -88,3 +89,11 @@ Kerberos-Passwort-Hashes
 Kerberostickets
 Passwort-Hashes
 substring
+Semesterinformationen
+Education
+Roster
+Education-Lizenz
+Bildungsrosterdaten
+UDM-Gruppe
+bildungsspezifischen
+Sichtbarkeitsoption

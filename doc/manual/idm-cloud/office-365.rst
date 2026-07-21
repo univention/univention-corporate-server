@@ -167,6 +167,7 @@ The following group types are available:
 
 * ``Security``
 * ``Microsoft 365 Group``
+* ``Education Class``
 
 To change the group type,
 you need to modify the default value
@@ -231,6 +232,98 @@ Microsoft 365 can take a few minutes.
 Ensure that users of a team in Azure are provided with a license that includes
 the use of Teams.
 
+.. _idmcloud-o365-education-classes:
+
+Education Classes
+~~~~~~~~~~~~~~~~~
+
+The :program:`Microsoft 365 Connector` supports provisioning education classes
+via the `Microsoft Graph Education Roster API
+<https://learn.microsoft.com/en-us/graph/api/resources/educationclass>`_.
+
+An education class is a special group type that represents a class in a school
+environment, with associated teachers (owners), students (members), and
+attributes such as class code, grade level, and term information.
+
+.. important::
+
+   To use education classes, the following prerequisites must be met:
+
+   * An **Azure Education License** must be assigned to the
+     Microsoft 365 tenant.
+
+     The ``Education Roster API`` is not available without
+     an education license.
+
+   * `School Data Sync <microsoft-sds-setup_>`_
+     (SDS) must be installed in the
+     Microsoft 365 tenant.
+
+     SDS processes the education roster data and makes
+     it available through the ``Education Roster API``.
+
+   * The ``EduRoster.ReadWrite.All`` application permission must be added
+     to the Azure AD application used by the Microsoft 365 Connector.
+
+     Note that changes to the Permissions of the Application may only be active
+     after up to 15 Minutes.
+
+   * The education feature must be enabled in the |UCSUCRV|
+     :envvar:`office365/education/enabled` to ``yes``.
+
+     By default, the education class group type and its attributes are hidden
+     in the UMC.
+
+.. _idmcloud-o365-education-setup:
+
+Enabling the education feature
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``Education Class`` group type and its associated attributes
+(class code, grade, term) are hidden in the UMC by default.
+To make them visible, enable the education feature through the
+App Settings of the :program:`Microsoft 365 Connector` in the App Center,
+or by setting the |UCSUCRV| :envvar:`office365/education/enabled` to ``yes``:
+
+.. code-block:: console
+
+    $ ucr set office365/education/enabled=yes
+
+After enabling the feature, restart the |UCSUMC| for the changes to take effect.
+
+To create an education class, enable group synchronization with the |UCSUCRV|
+:envvar:`office365/groups/sync` set to ``yes`` and restart the |UCSUDL|.
+Then create a UDM group of type ``Education Class`` on the *Microsoft 365* tab.
+
+The following education-specific attributes can be configured on the
+*Microsoft 365* tab of a group object:
+
+:``Class Code``: An identifier for the class (e.g. ``CS101``).
+:``Grade``: The grade level of the class (e.g. ``Grade 10``).
+:``Term Display Name``: A human-readable name for the academic term
+   (e.g. ``Fall 2026``).
+:``Term External ID``: An external identifier for the term.
+:``Term Start Date``: The start date of the academic term (``YYYY-MM-DD``).
+:``Term End Date``: The end date of the academic term (``YYYY-MM-DD``).
+
+.. note::
+
+   The ``HiddenMembership`` visibility option is only available for education
+   class groups. It is not permitted for ``Security Group`` or
+   ``Microsoft 365 Group`` types.
+
+When an education class group is created, the connector first provisions the
+education class via the Education Roster API. If the Education Roster API call
+fails (for example, because the tenant does not have an education license or
+the required permissions are missing), the connector falls back to creating a
+regular Microsoft 365 group instead.
+
+.. caution::
+
+   Education class attributes can only be used with the ``Education Class``
+   group type. A UDM hook prevents setting education attributes on other
+   group types.
+
 .. _idmcloud-o365-multipleconnections:
 
 Synchronization of Users in multiple Azure Active Directories
@@ -242,7 +335,7 @@ assigned, where an account should be created. A user gets a distinct username
 (*Userprincipalname* or *UPN*) for every assigned Azure AD.
 
 An alias is assigned to each additional Azure AD connection by the
-administrator. To manage these aliases the program
+Administrator. To manage these aliases the program
 :command:`/usr/share/univention-office365/scripts/manage_adconnections` can be
 used. A new alias is created by calling
 :samp:`/usr/share/univention-office365/scripts/manage_adconnections create
