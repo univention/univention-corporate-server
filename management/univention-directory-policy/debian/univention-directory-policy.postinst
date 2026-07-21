@@ -12,6 +12,10 @@ univention-config-registry set ldap/policy/cron?"5 * * * *"
 
 #DEBHELPER#
 
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 14.0.2; then
+	update-rc.d univention-directory-policy remove >/dev/null || true
+fi
+
 create_logfile /var/log/univention/ldap-policy.log "root:adm" 640
 
 call_joinscript 20univention-directory-policy.inst
