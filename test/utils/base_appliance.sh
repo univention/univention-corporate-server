@@ -905,6 +905,7 @@ appliance_poweroff () {
 	rm -rf /root/*
 	rm -f /root/.ssh/authorized_keys
 	rm -f /root/.bash_history
+	rm -f /var/lib/dhcp/dhclient*.leases
 	history -c
 	echo "halt -p" | at now || true
 }
