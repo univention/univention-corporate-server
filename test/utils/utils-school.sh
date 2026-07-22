@@ -26,6 +26,26 @@ install_kelvin_in_version() {
   fi
 }
 
+install_kelvin_prod_version_from_test() {
+  # UPGRADE_FROM_PROD: install the latest *released* (prod) kelvin version, but
+  # from the test appcenter. The test appcenter is a superset of prod, so the
+  # released version is available there too. Installing from test (instead of
+  # switching the whole appcenter to prod) keeps already-installed test versions
+  # of dependencies (e.g. ucsschool) known, so dependency resolution does not
+  # pull them into the transaction and abort ("Automatically added App ...").
+  local -i rv=0
+  local prod_version
+  printf '%s' univention > /tmp/univention
+  # peek at prod only to read the released version list (listing does not touch installed apps)
+  UCS_TEST_APPCENTER=false switch_app_center
+  prod_version="$(univention-app list ucsschool-kelvin-rest-api | tail -n 1 | tr -d '[:space:]')"
+  # back to the test appcenter (superset of prod) for the actual install
+  switch_app_center
+  echo "Installing released kelvin version $prod_version from test appcenter"
+  univention-app install "ucsschool-kelvin-rest-api=$prod_version" --noninteractive --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
+  return $rv
+}
+
 upgrade_kelvin_to_version() {
   # Upgrade Kelvin to a specified version
   local -i rv=0
