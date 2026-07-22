@@ -215,9 +215,13 @@ class Client:
     def add_event(self, name: str) -> Event:
         obj = self._session.query(Event).filter(Event.name == name).one_or_none()
         if obj is None:
-            obj = Event(name=name)
-            self._session.add(obj)
-            self._session.flush()
+            try:
+                with self._session.begin_nested():
+                    obj = Event(name=name)
+                    self._session.add(obj)
+                    self._session.flush()
+            except sqlalchemy.exc.IntegrityError:
+                obj = self._session.query(Event).filter(Event.name == name).one()
         return obj
 
     def add_event_message(self, event_id: int, locale: str, message: str, force: bool) -> bool:
