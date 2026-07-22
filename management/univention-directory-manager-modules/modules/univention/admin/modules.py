@@ -10,7 +10,6 @@ import copy
 import importlib
 import locale
 import os
-import warnings
 from importlib import reload as reload_module
 from typing import TYPE_CHECKING, Any, Protocol, overload
 
@@ -269,9 +268,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
     """
     if isinstance(lo, univention.uldap.access):
         log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', stack_info=True)
-        warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
-        if configRegistry.is_true('directory/manager/type-checking/strict'):
-            raise TypeError('Expect univention.admin.uldap.access!')
+        raise TypeError('Expect univention.admin.uldap.access!')
 
     # you better do a reload if init is called a second time
     # especially because update_extended_attributes
