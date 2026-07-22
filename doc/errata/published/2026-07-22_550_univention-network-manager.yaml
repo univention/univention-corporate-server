@@ -11,3 +11,6 @@ desc: |
    services are still starting are now retried automatically instead of
    causing the registration to fail.
 bug: [53252]
+erratum: 550
+announced: 2026-07-22
+support: core
