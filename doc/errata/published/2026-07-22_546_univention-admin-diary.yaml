@@ -10,3 +10,6 @@ desc: |
    Python tracebacks during system installation. The failures are now logged
    as concise error messages.
 bug: [51671]
+erratum: 546
+announced: 2026-07-22
+support: core
