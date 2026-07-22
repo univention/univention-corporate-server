@@ -7,6 +7,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 
+import functools
 import os
 import subprocess
 import time
@@ -83,12 +84,19 @@ def main():
 
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))
+                # sssd resolves the mail address to the old username for a few
+                # seconds after the modrdn, failing the IMAP login -> retry
                 try:
-                    if not imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=userbase[i][2], imap_folder='INBOX', use_ssl=True):
-                        utils.fail('Test %d: msgid not found unexpectedly' % (i,))
+                    found = utils.retry_on_error(
+                        functools.partial(imap_search_mail, messageid=userbase[i][3], server=fqdn, imap_user=userbase[i][2], imap_folder='INBOX', use_ssl=True),
+                        exceptions=(Exception, ),
+                        retry_count=30,
+                        delay=1)
                 except Exception as ex:
                     print('EXCEPTION in imap_search_mail: %r' % (ex,))
                     utils.fail('Test %d: login to IMAP mailbox %r is not possible' % (i, userbase[i][2]))
+                if not found:
+                    utils.fail('Test %d: msgid not found unexpectedly' % (i,))
 
 
 if __name__ == '__main__':
