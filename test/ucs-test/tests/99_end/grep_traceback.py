@@ -348,7 +348,7 @@ COMMON_EXCEPTIONS = (
     E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'mailPrimaryAddress' could not get locked.", ['in _ldap_pre_ready']),
     E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: .*', ['in sync_to_ucs']),
     E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'groupName' could not get locked.", ['in _ldap_pre_ready']),
-    # E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
+    E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
     # E(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs'], 53334),
     E("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist'], 53276),
     # E("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['sync_from_ucs'], (53720, 53752)),
