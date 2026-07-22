@@ -21,7 +21,6 @@ import sys
 import time
 import traceback
 import uuid
-import warnings
 from collections.abc import Iterable
 from ipaddress import IPv4Address, IPv6Address, ip_address, ip_network
 from typing import TYPE_CHECKING, Any, Self, overload
@@ -171,10 +170,7 @@ class simpleLdap:
             self.lo: univention.admin.uldap.access = lo
         elif isinstance(lo, univention.uldap.access):
             log.error('using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.')
-            warnings.warn('using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.', DeprecationWarning, stacklevel=3)
-            self.lo = univention.admin.uldap.access(lo=lo)
-            if configRegistry.is_true('directory/manager/type-checking/strict'):
-                raise TypeError('Expect univention.admin.uldap.access!')
+            raise TypeError('Expect univention.admin.uldap.access!')
         else:
             raise TypeError('lo must be instance of univention.admin.uldap.access.')
 
@@ -2144,9 +2140,7 @@ class simpleLdap:
         """
         if isinstance(lo, univention.uldap.access):
             log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
-            warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
-            if configRegistry.is_true('directory/manager/type-checking/strict'):
-                raise TypeError('Expect univention.admin.uldap.access!')
+            raise TypeError('Expect univention.admin.uldap.access!')
 
         filter_e = cls.lookup_filter(filter_s, lo)
         if superordinate:
