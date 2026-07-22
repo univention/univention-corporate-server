@@ -46,7 +46,7 @@ because they're just normal portal entries.
    Defines the UCS system
    that has the :program:`Self Service Backend` app installed.
 
-   :Default value: not defined
+   :Default value: Installation initializes it to the value in :envvar:`ldap/master`.
    :Type: string
 
 .. envvar:: umc/self-service/passwordreset/backend/enabled
@@ -117,7 +117,7 @@ use the following UCR variables:
    This variable configures the *LDAP* attributes
    that users can modify on their own user account.
    You need to set the variable on the
-   :term:`UCS Primary Directory Node` and the :term:`UCS Backup Directory Node`
+   :term:`UCS Primary Directory Node`
    in your Nubus for UCS domain.
    On the Primary Directory Node,
    the UCR module generates and activates the ACL definition list
@@ -136,7 +136,7 @@ use the following UCR variables:
    where you have installed the :program:`Self Service` app,
    and on the :term:`UCS Primary Directory Node`.
 
-   :Default value: not defined
+   :Default value: ``jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress``
    :Type: List of strings, separated by commas
 
 .. envvar:: self-service/udm_attributes/read-only
@@ -256,7 +256,7 @@ with the following Univention Configuration Registry (UCR) variables.
    see :external+uv-nubus-manual:ref:`nubus-user-templates`
    in :cite:t:`uv-nubus-manual`.
 
-   :Default value: not defined
+   :Default value: ``cn=selfserviceregistrationtemplate,cn=templates,cn=univention,$ldap_base``.
    :Type: string
 
 .. envvar:: umc/self-service/account-registration/usercontainer
@@ -265,14 +265,11 @@ with the following Univention Configuration Registry (UCR) variables.
    where the *Self Service* stores the user account objects
    created through the *Create an account* page.
 
-   .. TODO: Clarify. What is the default container for user account objects?
-
    If the variable has no value,
-   the *Self Service* uses the default container
-   ``cn=self registered users,$ldap_base``
+   the *Self Service* uses the default user containers from UDM
    for user account objects.
 
-   :Default value: not defined
+   :Default value: ``cn=self registered users,$ldap_base``
    :Type: string
 
 .. envvar:: umc/self-service/account-registration/udm_attributes
@@ -280,7 +277,7 @@ with the following Univention Configuration Registry (UCR) variables.
    Defines a comma-separated list of UDM attributes
    that the *Self Service* shows on the *Create an account* page.
 
-   :Default value: not defined
+   :Default value: ``firstname,lastname,username``.
    :Type: List of strings, separated by commas
 
 .. envvar:: umc/self-service/account-registration/udm_attributes/required
@@ -291,7 +288,7 @@ with the following Univention Configuration Registry (UCR) variables.
    :envvar:`umc/self-service/account-registration/udm_attributes`
    must include the UDM attributes.
 
-   :Default value: not defined
+   :Default value: ``lastname,username``
    :Type: List of strings, separated by commas
 
 .. _end-user-self-service-registration-email-verification:
@@ -470,7 +467,7 @@ Use the following UCR variables to configure user self-deregistration.
    or IP address of the mail server
    for sending the notification email about a user account deletion request.
 
-   :Default value: not defined
+   :Default value: ``localhost``
    :Type: string
 
 .. envvar:: umc/self-service/account-deregistration/email/text_file
