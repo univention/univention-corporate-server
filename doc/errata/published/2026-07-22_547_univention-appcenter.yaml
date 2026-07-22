@@ -9,3 +9,6 @@ desc: |
  * The App Center has been adapted to be compatible with future `ruamel.yaml`
    API deprecations.
 bug: [59521]
+erratum: 547
+announced: 2026-07-22
+support: core
