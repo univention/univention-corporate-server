@@ -364,6 +364,31 @@ configure_umc_keycloak() {
 	domainname="$(ucr get domainname)"
 }
 
+assert_apt_sources () {
+	# a transient DNS or network error during a ucr commit leaves the sources.list
+	# snippets without any deb entries
+	local f attempt rv=0
+	for f in /etc/apt/sources.list.d/15_ucs-online-version.list /etc/apt/sources.list.d/20_ucs-online-component.list
+	do
+		for attempt in 1 2 3
+		do
+			grep -q '^# An error occurred during the repository check' "$f" || break
+			echo "WARNING: repository check failed while rendering $f (attempt $attempt), retrying:"
+			grep '^#' "$f" | tail -n 15
+			sleep 10
+			ucr commit "$f"
+		done
+
+		if grep -q '^# An error occurred during the repository check' "$f"
+		then
+			echo "ERROR: repository check failed while rendering $f, apt cannot install UCS packages:"
+			cat "$f"
+			rv=1
+		fi
+	done
+	return $rv
+}
+
 run_setup_join () {
 	local rv=0
 	patch_setup_join # temp. remove me
@@ -377,6 +402,7 @@ run_setup_join () {
 		ping -4 -c 3 "${repository_online_server#*:\/\/}"
 	fi
 	set +o pipefail
+	assert_apt_sources || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
 	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
 	ucr unset --forced update/available
