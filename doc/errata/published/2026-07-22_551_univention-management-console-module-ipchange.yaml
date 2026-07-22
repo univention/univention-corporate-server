@@ -9,3 +9,6 @@ desc: |
  * The IP address registration during system startup no longer incorrectly
    reports a host's existing IP address as already in use.
 bug: [53252]
+erratum: 551
+announced: 2026-07-22
+support: core
