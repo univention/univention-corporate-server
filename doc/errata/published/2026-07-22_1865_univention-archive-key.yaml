@@ -9,3 +9,6 @@ desc: |
  * Add univention-archive-key-ucs-52x.gpg
  * Add univention-archive-key-ucs-53x.gpg
 bug: [59644]
+erratum: 1865
+announced: 2026-07-22
+support: lts
