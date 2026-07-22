@@ -81,11 +81,18 @@ because they're just normal portal entries.
 
    Activates the service-specific passwords in the *End User Self Service*.
 
+   You need to provide this setting on the Nubus for UCS node
+   that you defined as :program:`Self Service Backend`
+   through the UCR variable
+   :envvar:`self-service/backend-server`,
+   because the *End User Self Service* forwards requests for service-specific passwords
+   to the configured backend.
+
    Nubus supports only the RADIUS service.
    For more information,
    see :external+uv-ucs-manual:ref:`ip-config-radius-configuration-service-specific-password`.
 
-   :Default value: ``true``
+   :Default value: ``false``
    :Type: boolean
 
 .. seealso::
