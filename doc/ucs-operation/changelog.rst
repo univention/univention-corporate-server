@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 22. Jul 2026
+     - :ref:`end-user-self-service`
+     - Adjust default value documentation for some UCR variables.
+
    * - 21. Jul 2026
      - :ref:`domain-infrastructure-system-roles-backup-directory-node`
      - Fix naming issue for the Backup Directory node system role.
