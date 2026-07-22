@@ -528,7 +528,7 @@ class MultiDocker(Docker):
             fd.write(content)
         _yaml = yaml_rt()
         with open(yml_file) as fd:
-            content = _yaml.load(ucr_run_filter(fd.read()))
+            content = _yaml.load(fd.read())
         container_def = content['services'][self.app.docker_main_service]
         volumes = container_def.get('volumes', [])
         for volume in self._app_volumes():

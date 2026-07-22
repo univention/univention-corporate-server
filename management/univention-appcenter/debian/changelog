@@ -1,3 +1,9 @@
+univention-appcenter (11.6.1) unstable; urgency=medium
+
+  * Bug #59521: don't run UCR template filtering twice
+
+ -- Florian Best <best@univention.de>  Wed, 22 Jul 2026 09:45:03 +0200
+
 univention-appcenter (11.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]
