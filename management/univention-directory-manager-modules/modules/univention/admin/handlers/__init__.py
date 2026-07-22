@@ -171,10 +171,7 @@ class simpleLdap:
             self.lo: univention.admin.uldap.access = lo
         elif isinstance(lo, univention.uldap.access):
             log.error('using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.')
-            warnings.warn('using univention.uldap.access instance is deprecated. Use univention.admin.uldap.access instead.', DeprecationWarning, stacklevel=3)
-            self.lo = univention.admin.uldap.access(lo=lo)
-            if configRegistry.is_true('directory/manager/type-checking/strict'):
-                raise TypeError('Expect univention.admin.uldap.access!')
+            raise TypeError('Expect univention.admin.uldap.access!')
         else:
             raise TypeError('lo must be instance of univention.admin.uldap.access.')
 
