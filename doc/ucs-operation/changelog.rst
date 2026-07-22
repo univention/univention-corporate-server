@@ -22,6 +22,10 @@ Year 2026
      - Change
 
    * - 22. Jul 2026
+     - :envvar:`backup/clean/min_backups`
+     - Add missing documentation for the UCR variable.
+
+   * - 22. Jul 2026
      - :ref:`end-user-self-service`
      - Adjust default value documentation for some UCR variables.
 
