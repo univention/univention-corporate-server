@@ -115,6 +115,25 @@ This section provides a reference for UCR variables.
    :Type: integer
 
 
+.. envvar:: backup/clean/min_backups
+
+   Specifies the minimum number of backup files to retain in
+   :file:`/var/univention-backup/`
+   when the automatic cleanup deletes old backup files.
+
+   This variable only takes effect together with
+   :envvar:`backup/clean/max_age`.
+   If fewer backup files than the configured minimum exist,
+   the cleanup doesn't delete files automatically,
+   even when they exceed the configured maximum age.
+
+   For information about configuring the maximum file age,
+   see :envvar:`backup/clean/max_age`.
+
+   :Default value: ``10``
+   :Type: unsigned integer
+
+
 .. envvar:: cups/server
 
    Specifies the CUPS print server
