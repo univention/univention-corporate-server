@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-guardian
+fix: 1.0.0
+desc: |
+ This update addresses the following issues:
+ * The `univention-guardian-server` package is added. It provides the
+   Guardian by running Cerbos as a local policy decision point (PDP)
+   in a systemd-managed container bound to localhost and ships a set
+   of Cerbos policies. It replaces the previous OPA-based Guardian
+   as the policy engine.
+bug: [59669]
