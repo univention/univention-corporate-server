@@ -18,3 +18,6 @@ desc: |
    server restarts, and VLV additionally requires the LDAP SSSVLV overlay to
    be enabled and configured appropriately.
 bug: [59634, 59575, 50240]
+erratum: 555
+announced: 2026-07-23
+support: core
