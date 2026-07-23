@@ -20,3 +20,6 @@ desc: |
    displays custom groups and properties in a consistent and predictable
    order.
 bug: [59633, 50240, 48612]
+erratum: 554
+announced: 2026-07-23
+support: core
