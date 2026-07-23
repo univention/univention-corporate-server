@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: python-ldap
+fix: 3.4.5-1A~5.2.0.202607222002
+desc: |
+ This update addresses the following issue:
+ * The Python LDAP client now correctly preserves the LDAP Virtual List View
+   (VLV) search context between requests. This significantly improves the
+   performance of repeated VLV requests and reduces server load when
+   applications use VLV-based pagination, such as the experimental pagination
+   feature of the UDM REST API.
+bug: [59666]
