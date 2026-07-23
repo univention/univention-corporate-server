@@ -36,9 +36,9 @@ install_kelvin_prod_version_from_test() {
   local -i rv=0
   local prod_version
   printf '%s' univention > /tmp/univention
-  # peek at prod only to read the released version list (listing does not touch installed apps)
+  # peek at prod only to read the latest installable version (reading does not touch installed apps)
   UCS_TEST_APPCENTER=false switch_app_center
-  prod_version="$(univention-app list ucsschool-kelvin-rest-api | tail -n 1 | tr -d '[:space:]')"
+  prod_version="$(univention-app get ucsschool-kelvin-rest-api version | sed -n 's/^Version: //p')"
   # back to the test appcenter (superset of prod) for the actual install
   switch_app_center
   echo "Installing released kelvin version $prod_version from test appcenter"
