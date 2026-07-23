@@ -216,6 +216,7 @@ prepare_domain_for_ucs52_preup_checks() {
 }
 
 prepare_domain_for_ucs53_preup_checks() {
+	rabbitmq_reset_for_ucs53
 	return  # enable in UCS 5.3-1
 	postgres_update '15' '17'
 }
@@ -1517,6 +1518,22 @@ prepare_domain_for_ucs52_postup () {
 
 prepare_domain_for_ucs53_postup () {
 	postgres_update '15' '17'
+	rabbitmq_import_definitions_after_ucs53
+}
+
+rabbitmq_reset_for_ucs53 () {
+	# RabbitMQ 4 (UCS 5.3) doesn't start from 3.x (UCS 5.2) data
+	command -v rabbitmqctl >/dev/null || { echo "rabbitmq not installed"; return 0; }
+	rabbitmqctl export_definitions /var/lib/rabbitmq/definitions-pre-ucs53.json || return $?
+	deb-systemd-invoke stop rabbitmq-server.service || return $?
+	mv /var/lib/rabbitmq/mnesia "/var/lib/rabbitmq/mnesia.pre-ucs53"
+}
+
+rabbitmq_import_definitions_after_ucs53 () {
+	[ -f /var/lib/rabbitmq/definitions-pre-ucs53.json ] || return 0
+	deb-systemd-invoke start rabbitmq-server.service || return $?
+	rabbitmqctl await_startup || return $?
+	rabbitmqctl import_definitions /var/lib/rabbitmq/definitions-pre-ucs53.json || return $?
 }
 
 postgres_update () {
