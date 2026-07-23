@@ -1,3 +1,9 @@
+ucs-test (12.6.41) unstable; urgency=medium
+
+  * Bug #59673: browser test for helpdesk-operator role
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Jul 2026 15:10:34 +0200
+
 ucs-test (12.6.40) unstable; urgency=medium
 
   * Bug #53252: extend test for IPv6 addresses if configured

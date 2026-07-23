@@ -50,8 +50,8 @@ class DetailsView:
         self.tester = tester
         self.page = tester.page
 
-    def fill_field(self, label: str, value: str) -> None:
-        self.page.get_by_label(label).fill(value)
+    def fill_field(self, label: str, value: str, exact: bool = False) -> None:
+        self.page.get_by_label(label, exact=exact).fill(value)
 
     def check_checkbox(self, label: str) -> None:
         self.page.get_by_role('checkbox', name=label).check()
