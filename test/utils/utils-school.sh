@@ -56,6 +56,7 @@ upgrade_kelvin_to_version() {
   if [ -n "$KELVIN_UPGRADE_VERSION" ]; then
     univention-app dev-set ucsschool-kelvin-rest-api="$KELVIN_UPGRADE_VERSION" Version="1000-$KELVIN_UPGRADE_VERSION"
     univention-app upgrade ucsschool-kelvin-rest-api="1000-$KELVIN_UPGRADE_VERSION" --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
+    univention-app dev-set ucsschool-kelvin-rest-api="$KELVIN_UPGRADE_VERSION" Version="1000-$KELVIN_UPGRADE_VERSION"
     return $rv
   else
     upgrade_kelvin
