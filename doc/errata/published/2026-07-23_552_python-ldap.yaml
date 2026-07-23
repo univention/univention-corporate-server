@@ -12,3 +12,6 @@ desc: |
    applications use VLV-based pagination, such as the experimental pagination
    feature of the UDM REST API.
 bug: [59666]
+erratum: 552
+announced: 2026-07-23
+support: core
