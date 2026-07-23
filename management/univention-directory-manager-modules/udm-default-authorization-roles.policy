@@ -188,7 +188,7 @@ access by role="udm:default-roles:helpdesk-operator"
     grant properties="overridePWHistory,overridePWLength,password,unlock" permission="write"
     grant properties="password" permission="writeonly"
     grant properties="homeSharePath" permission="write"  # UDM in UMC always set a default value from the template
-    grant properties="primaryGroup,mailForwardCopyToSelf,username,lastname,unixhome" permission="read"
+    grant properties="primaryGroup,mailForwardCopyToSelf,username,lastname,unixhome,entryUUID" permission="read"
 
   # group permissions in OU
   to objecttype="groups/group" position.subtree="context=udm:contexts:position"

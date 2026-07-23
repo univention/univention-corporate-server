@@ -155,6 +155,11 @@ class Authorization:
         if not self.enabled:
             return results
 
+        # FIXME: this is a best effort way which is very broken
+        # 1. there could be any object in the result list, not just UDM representable objects
+        # 2. the search attrs could only include a small subset, which wouldn't allow to pass all attributes to the authorization engine - breaking some conditions
+        # 3. there could be attributes in the resultset which are not mapped by the UDM object - so there can't be a trueish result for "is readable" - should they be added (information leak) or removed (broken logic afterwards)?
+
         targets = []
         results_ext = []
         for result in results:
@@ -165,7 +170,8 @@ class Authorization:
             props = {}
             for attr in list(attrs):
                 prop = mapping.unmapName(attr)
-                props[prop] = attrs[attr]
+                if prop:
+                    props[prop] = mapping.unmapValue(attr, attrs[attr])
             target = {
                 'id': dn,
                 'roles': self._get_target_roles(module, dn),
@@ -174,7 +180,7 @@ class Authorization:
                     'id': dn,
                     'objectType': module,
                     'position': self.lo.parentDn(dn) or LDAP_BASE,
-                    'properties': props,
+                    'properties': props,  # FIXME: this is in raw UDM format, not UDM REST API
                     # 'options': ...,
                     'policies': None,
                     'uuid': None,
@@ -192,7 +198,7 @@ class Authorization:
             _, attrs = result
             for attr in list(attrs):
                 prop = univention.admin.modules.get(module).mapping.unmapName(attr)
-                if not self._is_readable(readable_attributes, module, prop):  # FIXME: is module correct?
+                if prop and not self._is_readable(readable_attributes, module, prop):  # FIXME: is module correct?
                     attrs.pop(attr)
             response.append(result)
 
