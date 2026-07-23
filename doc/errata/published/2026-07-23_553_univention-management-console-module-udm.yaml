@@ -15,3 +15,6 @@ desc: |
    be enabled and configured appropriately.
  * Empty search queries now always return all results.
 bug: [50240, 59595]
+erratum: 553
+announced: 2026-07-23
+support: core
