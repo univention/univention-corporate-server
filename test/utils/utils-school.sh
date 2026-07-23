@@ -49,11 +49,35 @@ install_kelvin_prod_version_from_test() {
   return $rv
 }
 
+install_kelvin_version_join_script() {
+  # The synthetic "1000-<version>" only lives in the appcenter cache
+  # (/var/cache/univention-appcenter/...). That cache is authoritative and gets
+  # rebuilt from the server on every "univention-app update"; a ucsschool
+  # pre-join hook triggers such a reset via "univention-app upgrade", which
+  # drops the 1000-<version> entry and orphans the installed kelvin app, so its
+  # own join script (/usr/lib/univention-install/50ucsschool-kelvin-rest-api.inst)
+  # then fails. Install a join script numbered below 50 so it re-applies the
+  # dev-set and restores the entry *before* kelvin's join script runs.
+  [ -n "$KELVIN_UPGRADE_VERSION" ] || return 0
+  cat >/usr/lib/univention-install/49reset_kelvin_dev_version.inst <<EOF
+#!/bin/bash
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+univention-app dev-set ucsschool-kelvin-rest-api="$KELVIN_UPGRADE_VERSION" Version="1000-$KELVIN_UPGRADE_VERSION"
+joinscript_save_current_version
+exit 0
+EOF
+  chmod +x /usr/lib/univention-install/49reset_kelvin_dev_version.inst
+}
+
 upgrade_kelvin_to_version() {
   # Upgrade Kelvin to a specified version
   local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$KELVIN_UPGRADE_VERSION" ]; then
+    # restore the cache entry before kelvin's own join script runs (see helper)
+    install_kelvin_version_join_script
     univention-app dev-set ucsschool-kelvin-rest-api="$KELVIN_UPGRADE_VERSION" Version="1000-$KELVIN_UPGRADE_VERSION"
     univention-app upgrade ucsschool-kelvin-rest-api="1000-$KELVIN_UPGRADE_VERSION" --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
     univention-app dev-set ucsschool-kelvin-rest-api="$KELVIN_UPGRADE_VERSION" Version="1000-$KELVIN_UPGRADE_VERSION"
