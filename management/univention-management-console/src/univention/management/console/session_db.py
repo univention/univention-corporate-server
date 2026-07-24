@@ -107,7 +107,7 @@ class PostgresListener:
     def listen(self):
         self.verify_postgres()
         CORE.debug("Executing 'LISTEN logout'")
-        self.conn.execution_options(autocommit=True).execute(text("LISTEN logout"))
+        self.conn.execution_options(isolation_level="AUTOCOMMIT").execute(text("LISTEN logout"))
         ioloop.IOLoop.current().asyncio_loop.add_reader(self.conn.connection, self.handle_postgres_notify)
 
     def handle_postgres_notify(self):
@@ -130,7 +130,7 @@ class PostgresListener:
             connection = conn
 
         cls.verify_postgres(connection.engine)
-        connection.execution_options(autocommit=True).execute(text("NOTIFY logout, :session_id;").bindparams(session_id=session_id))
+        connection.execute(text("NOTIFY logout, :session_id;").bindparams(session_id=session_id))
 
 
 @contextmanager
