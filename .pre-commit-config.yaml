@@ -182,7 +182,7 @@ repos:
                   |^packaging/ucslint/testframework/\
                   "
   - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-hooks/pre-commit-copyright
-    rev: 0.2.0
+    rev: 0.2.1
     hooks:
       - id: update-copyright-year
         args: ["-y", "2026"]
