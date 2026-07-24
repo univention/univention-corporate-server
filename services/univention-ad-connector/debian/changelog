@@ -1,3 +1,10 @@
+univention-ad-connector (16.7.2) unstable; urgency=medium
+
+  * Bug #59694, Issue univention/dev/ucs#3712: Retry primary group
+    synchronization when the AD group is temporarily unavailable
+
+ -- Yannik Strittmatter <yannik.strittmatter@univention.de>  Thu, 30 Jul 2026 16:10:42 +0200
+
 univention-ad-connector (16.7.1) unstable; urgency=medium
 
   * Bug #59692: Fix bidirectional sync of msds-supportedencryptiontype
@@ -4197,4 +4204,3 @@ univention-ad-connector (0.1-1) unstable; urgency=low
   * initial release
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Jan 2005 15:40:07 +0100
-

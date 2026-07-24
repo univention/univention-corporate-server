@@ -1,3 +1,9 @@
+ucs-test (12.6.43) unstable; urgency=medium
+
+  * Bug #59694: added ad connector test for primary group retry
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Fri, 31 Jul 2026 12:22:01 +0200
+
 ucs-test (12.6.42) unstable; urgency=medium
 
   * Bug #52788: added s4 connector test for primary group retry
