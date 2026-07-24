@@ -98,13 +98,13 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
-path = "base/univention-debug/**"
+path = "base/univention-debug-python/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
-path = "base/univention-debug-python/**"
+path = "base/univention-debug/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
@@ -176,28 +176,28 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
-path = "base/univention-licence/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only AND LicenseRef-OpenSSL-exception"
-SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
-
-[[annotations]]
 path = "base/univention-licence-python/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only AND LicenseRef-OpenSSL-exception"
 SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
 
 [[annotations]]
-path = "base/univention-maintenance/**"
+path = "base/univention-licence/**"
 precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
+SPDX-License-Identifier = "AGPL-3.0-only AND LicenseRef-OpenSSL-exception"
+SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
 
 [[annotations]]
 path = "base/univention-maintenance-mode/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2018-2026 Univention GmbH"
+
+[[annotations]]
+path = "base/univention-maintenance/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
 path = "base/univention-network-manager/**"
@@ -236,12 +236,6 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
 
 [[annotations]]
-path = "base/univention-python/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
-
-[[annotations]]
 path = "base/univention-python-heimdal/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
@@ -252,6 +246,12 @@ path = [ "base/univention-python-heimdal/keytab.c", "base/univention-python-heim
 precedence = "override"
 SPDX-License-Identifier = "BSD-3-Clause and AGPL-3.0-only"
 SPDX-FileCopyrightText = [ "2003-2026 Univention GmbH", "1996-2001 Kungliga Tekniska Högskolan (Royal Institute of Technology, Stockholm, Sweden)",]
+
+[[annotations]]
+path = "base/univention-python/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
 path = "base/univention-quota/**"
@@ -326,13 +326,13 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2015-2026 Univention GmbH"
 
 [[annotations]]
-path = "container/univention-docker/**"
+path = "container/univention-docker-container-mode/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2015-2026 Univention GmbH"
 
 [[annotations]]
-path = "container/univention-docker-container-mode/**"
+path = "container/univention-docker/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2015-2026 Univention GmbH"
@@ -560,6 +560,12 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2001-2026 Univention GmbH"
 
 [[annotations]]
+path = "management/univention-ldap-overlay-memberof/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2008-2026 Univention GmbH"
+
+[[annotations]]
 path = "management/univention-ldap/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
@@ -576,30 +582,6 @@ path = "management/univention-ldap/dh_2048.pem"
 precedence = "override"
 SPDX-License-Identifier = "LicenseRef-RFC-Document"
 SPDX-FileCopyrightText = "2003 The Internet Society"
-
-[[annotations]]
-path = "management/univention-ldap-overlay-memberof/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2008-2026 Univention GmbH"
-
-[[annotations]]
-path = "management/univention-management-console/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2012-2026 Univention GmbH"
-
-[[annotations]]
-path = [ "management/univention-management-console/data/categories/icon/**.svg", "management/univention-management-console/www/management/widgets/**.svg",]
-precedence = "override"
-SPDX-License-Identifier = "LicenseRef-Univention-Proprietary"
-SPDX-FileCopyrightText = "2024-2026 Univention GmbH"
-
-[[annotations]]
-path = "management/univention-management-console/umc-module-templates/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "YEAR Univention GmbH"
 
 [[annotations]]
 path = "management/univention-management-console-module-adtakeover/**"
@@ -678,6 +660,24 @@ path = "management/univention-management-console-module-welcome/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2021-2026 Univention GmbH"
+
+[[annotations]]
+path = "management/univention-management-console/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2012-2026 Univention GmbH"
+
+[[annotations]]
+path = [ "management/univention-management-console/data/categories/icon/**.svg", "management/univention-management-console/www/management/widgets/**.svg",]
+precedence = "override"
+SPDX-License-Identifier = "LicenseRef-Univention-Proprietary"
+SPDX-FileCopyrightText = "2024-2026 Univention GmbH"
+
+[[annotations]]
+path = "management/univention-management-console/umc-module-templates/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "YEAR Univention GmbH"
 
 [[annotations]]
 path = "management/univention-portal/**"
@@ -770,12 +770,6 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2022-2026 Univention GmbH"
 
 [[annotations]]
-path = "monitoring/univention-nagios/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
-
-[[annotations]]
 path = "monitoring/univention-nagios-ad-connector/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
@@ -810,6 +804,12 @@ path = "monitoring/univention-nagios-smart/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2010-2026 Univention GmbH"
+
+[[annotations]]
+path = "monitoring/univention-nagios/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
 path = [ "oidc/crudeoauth/src/Makefile.in", "oidc/crudeoauth/src/aclocal.m4", "oidc/crudeoauth/src/compile", "oidc/crudeoauth/src/config.guess", "oidc/crudeoauth/src/config.sub", "oidc/crudeoauth/src/depcomp", "oidc/crudeoauth/src/ltmain.sh", "oidc/crudeoauth/src/missing", "oidc/crudeoauth/src/config.h.in",]
@@ -920,16 +920,16 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2013-2026 Univention GmbH"
 
 [[annotations]]
-path = "packaging/univention-package-template/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2010-2026 Univention GmbH"
-
-[[annotations]]
 path = "packaging/univention-package-template-python/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2011-2026 Univention GmbH"
+
+[[annotations]]
+path = "packaging/univention-package-template/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2010-2026 Univention GmbH"
 
 [[annotations]]
 path = "packaging/univention-unittests/**"
@@ -1382,13 +1382,13 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2011-2026 Univention GmbH"
 
 [[annotations]]
-path = "services/univention-squid/**"
+path = "services/univention-squid-kerberos/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
-path = "services/univention-squid-kerberos/**"
+path = "services/univention-squid/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
@@ -1406,16 +1406,16 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2014-2026 Univention GmbH"
 
 [[annotations]]
-path = "test/ucs-test/**"
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
-
-[[annotations]]
 path = "test/ucs-test-tools/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2010-2026 Univention GmbH"
+
+[[annotations]]
+path = "test/ucs-test/**"
+precedence = "override"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
 path = "test/univention-demo-configuration/**"
