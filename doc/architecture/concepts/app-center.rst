@@ -3,22 +3,23 @@
 
 .. _univention-app-ecosystem:
 
-========================
-Univention app ecosystem
-========================
+=============================
+Univention App Center context
+=============================
 
-Univention App Center is one of the most important parts of |UCS|. This section
-describes the Univention app ecosystem, where UCS is just one part. The
-Univention app ecosystem consists of actors, an infrastructure, and artifacts.
+Univention App Center is one of the most important parts of |UCS|.
+This section describes the App Center as a UCS-specific component in a broader
+integrations context.
+It explains the actors, infrastructure, artifacts, and relationships around the
+App Center.
 
 This section provides information about the following aspects around the App
 Center:
 
-* :ref:`app-center-purpose` about the why of the App Center for administrators
-  and app providers.
+* :ref:`app-center-purpose` about the purpose of the App Center for
+  administrators and app providers.
 
-* :ref:`app-center-ecosystem-actors` in the context of the App Center
-  ecosystem.
+* :ref:`app-center-ecosystem-actors` for the actors around the App Center.
 
 * :ref:`app-center-ecosystem-apps` for an overview of the content in
   the App repository.
@@ -84,33 +85,32 @@ can rely on the offered interfaces such as LDAP, SAML, and OpenID Connect.
 
 .. _app-center-ecosystem:
 
-App ecosystem
--------------
+App Center relationships
+------------------------
 
 On the one hand, the App Center is a user-facing product component in |UCS|. The
 :ref:`services-app-center` covers the architecture and technology in more
-detail. On the other hand, the App Center is also an ecosystem with services,
-actors, artifacts, and infrastructure.
-
-This section provides an overview of the ecosystem.
+detail.
+This section describes the services, actors, artifacts, infrastructure, and
+relationships around the App Center.
 
 .. _app-center-ecosystem-actors:
 
-App ecosystem actors
-~~~~~~~~~~~~~~~~~~~~
+App Center actors
+~~~~~~~~~~~~~~~~~
 
 .. index::
    see: app center role; role
 
-:numref:`app-center-actors` shows the actors involved in the Univention App
-Center ecosystem. For the sake of brevity, the figure shows a subset of the
+:numref:`app-center-actors` shows the actors around Univention App
+Center. For the sake of brevity, the figure shows a subset of the
 responsibilities.
 
 .. _app-center-actors:
 
 .. figure:: /images/App-Center-actors.*
 
-   Actors in the App Center ecosystem
+   Actors around the App Center
 
 .. _app-center-ecosystem-infrastructure-maintainer:
 
@@ -141,7 +141,7 @@ App provider
    pair: actor; app vendor
    see: app center actor; actor
 
-The next actor in the App Center ecosystem is the *App provider* in the
+The next actor around the App Center is the *App provider* in the
 following specializations:
 
 App maintainer
@@ -284,9 +284,9 @@ an *App* into *Package based app* and *Docker based app* and handles both.
 .. _app-center-apps-model:
 
 .. figure:: /images/App-Center-apps.*
-   :width: 600 px
+   :width: 700 px
 
-   Apps as content in the App Center ecosystem
+   Apps as content in the App Center
 
 .. _app-center-infrastructure:
 

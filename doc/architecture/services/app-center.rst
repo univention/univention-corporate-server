@@ -14,7 +14,7 @@ App Center service
 This section describes the architecture of the App Center service focused solely
 on |UCS|.
 
-For a general overview of the App Center, its ecosystem, the participating
+For a general overview of the App Center, the participating
 actors, and the infrastructure, see :ref:`univention-app-ecosystem`. For the
 overview of the App Center as product component, see
 :ref:`component-app-center`.

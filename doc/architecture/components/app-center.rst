@@ -56,7 +56,7 @@ app.
 .. seealso::
 
    :ref:`univention-app-ecosystem`
-      for information about the Univention app ecosystem.
+      for information about the Univention App Center context.
 
    :external+uv-ucs-operation:ref:`lifecycle-app-center`
       for information for administrators about the App Center in
