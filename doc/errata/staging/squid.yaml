@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: squid
+fix: 4.13-10+deb11u7~deb10u1A~5.0.10.202607271151
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-33526 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-33515 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2026-47729 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-50012 (CVSS score 5.5 -
+   CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:L/A:H).
+bug: [58807]
+cve:
+- CVE-2026-50012
+- CVE-2026-47729
+- CVE-2026-33526
+- CVE-2026-33515
