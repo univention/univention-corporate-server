@@ -1,0 +1,20 @@
+product: ucs
+release: "5.2"
+version: [5, 6]
+scope: ucs_5.2-0-errata5.2-6
+src: nss
+fix: 2:3.87.1-1+deb12u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-6772, CVE-2026-6766 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-12318 (CVSS score 7.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-6767 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+bug: [59688]
+cve:
+- CVE-2026-6766
+- CVE-2026-6767
+- CVE-2026-6772
+- CVE-2026-12318
