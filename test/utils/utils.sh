@@ -1083,6 +1083,8 @@ _run_tests () {
 		return 0
 	fi
 
+	nscd -i hosts || true
+
 	# shellcheck disable=SC2086
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" $GENERATE_COVERAGE_REPORT "$@"
 }
