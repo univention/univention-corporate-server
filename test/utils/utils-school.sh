@@ -38,6 +38,8 @@ install_kelvin_prod_version_from_test() {
   printf '%s' univention > /tmp/univention
   if [ -n "$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")" ]; then
     univention-app remove ucsschool-kelvin-rest-api
+    systemctl stop docker-app-ucsschool-kelvin-rest-api.service
+    systemctl daemon-reload
   fi
   # peek at prod only to read the latest installable version (reading does not touch installed apps)
   UCS_TEST_APPCENTER=false switch_app_center
