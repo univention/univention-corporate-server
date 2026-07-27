@@ -378,5 +378,5 @@ Administrator
       for more information for app developers about how to develop apps for
       Univention App Center in :cite:t:`ucs-app-center`
 
-   `App Catalog <https://www.univention.com/products/app-catalog/>`_ on the Univention website
+   `Integrations Catalog <https://www.univention.com/products/integration-catalog/>`_ on the Univention website
       for an overview about available apps in the App Center.

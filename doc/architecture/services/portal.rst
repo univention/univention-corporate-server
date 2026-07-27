@@ -193,8 +193,7 @@ Structured data for portal content
 
 The structured data in :file:`portal.json` for the portal frontend has
 information for example about folders in the menu, categories in the portal main
-area, portal design, the entries for the menu and the portal tiles. For example,
-the `anonymous portal data <ucs-demo-portal-json_>`_ from the `UCS demo system <ucs-demo-portal_>`_.
+area, portal design, the entries for the menu and the portal tiles.
 
 The content depends on the user login status:
 

@@ -114,8 +114,17 @@ git_last_updated_timezone = 'Europe/Berlin'
 numfig = True
 
 linkcheck_ignore = [
-    f'https://github.com/univention/univention-corporate-server/blob/{release}/base/univention-config-registry/python/univention/config_registry/misc.py',
+    r'https://github\.com/univention/univention-corporate-server/blob/.+/base/univention-config-registry/python/univention/config_registry/misc\.py',
 ]
+
+linkcheck_anchors_ignore_for_url = [
+    r'https://pubs\.opengroup\.org/architecture/archimate32-doc/.+\.html$',
+    r'https://github\.com/univention/univention-corporate-server/(blob|tree)/.+',  # Github rate limit
+]
+
+linkcheck_allowed_redirects = {
+    r'https://pubs\.opengroup\.org/architecture/archimate32-doc/.*': r'https://identity\.opengroup\.org/authenticationendpoint/login.do\?.+',
+}
 
 # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed to
 # avoid the warnings from failing the pipeline.
