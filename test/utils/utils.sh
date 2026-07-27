@@ -713,6 +713,21 @@ install_docker_app_from_branch () {
 	echo "Docker image built from commit: '$commit'"
 }
 
+wait_for_atd () {
+	local timeout=${1:-600}
+	local timestamp
+	timestamp=$(date +"%s")
+	echo "Waiting for atd queue to drain..."
+	while atq 2>/dev/null | grep -q .; do
+		if [ "$((timestamp+timeout))" -lt "$(date +"%s")" ]; then
+			echo "WARNING: at jobs still queued after ${timeout}s, continuing."
+			return 0
+		fi
+		sleep 5
+	done
+	return 0
+}
+
 wait_for_repo_server () {
 	local i repository_online_server
 	eval "$(ucr shell 'repository/online/server')"
@@ -1082,6 +1097,7 @@ _run_tests () {
 		return 0
 	fi
 
+	wait_for_atd 600
 	nscd -i hosts || true
 
 	# shellcheck disable=SC2086
