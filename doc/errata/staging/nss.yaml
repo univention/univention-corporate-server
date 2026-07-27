@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nss
+fix: 2:3.26.2-1.1+deb9u10
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-6772 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+bug: [59685]
+cve:
+- CVE-2026-6772
