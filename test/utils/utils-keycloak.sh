@@ -13,6 +13,8 @@ slugify () {
 
 install_upgrade_keycloak () {
 
+	local app="keycloak"
+
 	if [[ -n "$KEYCLOAK_BRANCH" ]]; then
 		branch="$(echo "$KEYCLOAK_BRANCH" | slugify)"
 		echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/keycloak-app $branch main" | tee /etc/apt/sources.list.d/guardian.list
@@ -25,13 +27,15 @@ __PREF__
 		echo 'APT::Get::allow-downgrades "true";' >/etc/apt/apt.conf.d/99allow-downgrade
 		apt-get -qq update
 		univention-install -y univention-keycloak-client
+		# the keycloak-app pipeline names the test app version after the branch,
+		# just like the package repository above
+		app="keycloak=0.0.0-$branch"
 	fi
 
 	echo "univention" > /tmp/pwdfile
+	# an explicit app version wins, e.g. to test a released version with branch packages
 	if [ -n "$KEYCLOAK_APPVERSION" ]; then
 		app="keycloak=$KEYCLOAK_APPVERSION"
-	else
-		app="keycloak"
 	fi
 	if [ -z "$(ucr get "appcenter/apps/keycloak/status")" ]; then
 		# installation
