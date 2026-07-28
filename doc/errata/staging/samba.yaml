@@ -3,8 +3,26 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: samba
-fix: 4.18.3-1A~5.0.0.202607231800
+fix: 2:4.18.3-1A~5.0.0.202607231800
 desc: |
  This update addresses the following issues:
- * TODO
+ * CVE-2026-58221 (CVSS score 8.8 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-58222 (CVSS score 8.8 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-6949 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+ * CVE-2026-58224 (CVSS score 7.1 -
+   CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:H).
+ * CVE-2026-58216 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-58218 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
 bug: [59667]
+cve:
+ - CVE-2026-6949
+ - CVE-2026-58216
+ - CVE-2026-58218
+ - CVE-2026-58221
+ - CVE-2026-58222
+ - CVE-2026-58224
