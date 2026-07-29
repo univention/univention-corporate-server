@@ -53,3 +53,6 @@ cve:
 - CVE-2025-1118
 - CVE-2025-1125
 note: This is the 1st of two parts.
+erratum: 1471
+announced: 2026-07-29
+support: lts
