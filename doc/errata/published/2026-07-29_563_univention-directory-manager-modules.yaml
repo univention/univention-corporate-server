@@ -12,3 +12,6 @@ desc: |
    primaryGroup, unixhome, mailForwardCopyToSelf). This caused errors when
    opening or saving user objects in UMC as a helpdesk operator.
 bug: [59673]
+erratum: 563
+announced: 2026-07-29
+support: core
