@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-ad-connector
+fix: 16.7.1
+desc: |
+ This update addresses the following issues:
+ * The `univention-ad-connector` sets the attribute
+   `msDS-SupportedEncryptionTypes` in Active Directory
+   during the password synchronization to UCS.
+   While this is necessary in environments which use
+   bidirectional synchronization,
+   this is now disabled for all other synchronization
+   configurations.
+bug: [59692]

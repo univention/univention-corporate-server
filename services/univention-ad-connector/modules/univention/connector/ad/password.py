@@ -566,7 +566,10 @@ def password_sync(connector, key, ucs_object):
                 krb5Key_ucs = ucs_result[0][1]['krb5Key'][0]
                 modlist.append(('krb5Key', krb5Key_ucs, krb5Key))
             # if we changed the password in UCS before, we allowed arc4, we need to fall back to default then.
-            if supp_enctypes_old != supp_enctypes_new:
+
+            is_sync_mode = connector.configRegistry.get(f'{connector.CONFIGBASENAME}/ad/mapping/syncmode') == 'sync'
+
+            if is_sync_mode and (supp_enctypes_old != supp_enctypes_new):
                 connector.lo_ad.lo.modify_s(object['dn'], [(ldap.MOD_DELETE, 'msds-SupportedEncryptionTypes', [str(supp_enctypes_old).encode('utf-8')])])
             connector.lo.lo.modify_s(ucs_object['dn'], [(ldap.MOD_REPLACE, 'userPassword', b'{K5KEY}')])
 
