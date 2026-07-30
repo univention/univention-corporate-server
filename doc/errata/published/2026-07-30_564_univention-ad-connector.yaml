@@ -14,3 +14,6 @@ desc: |
    this is now disabled for all other synchronization
    configurations.
 bug: [59692]
+erratum: 564
+announced: 2026-07-30
+support: core
