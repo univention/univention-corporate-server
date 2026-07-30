@@ -897,6 +897,20 @@ disable_root_login_and_poweroff () {  # <rootlogin> <require_activation>
 }
 
 appliance_poweroff () {
+	# A pinned DHCP lease must not reach the image. ucs-ec2-tools writes the current
+	# address into UCR, so that a changing lease cannot kill the connection of a
+	# running command, and every clone of the image would otherwise claim the address
+	# of the VM the image was built from. Only a pin is undone, an address configured
+	# on purpose stays.
+	if [ "$(ucr get tests/proxmox/ip-pinned)" = true ]
+	then
+		echo "Undoing the pinned static IP"
+		# do not restart the interface while the variables change
+		ucr set --forced interfaces/restart/auto=false
+		ucr unset interfaces/eth0/address interfaces/eth0/netmask gateway tests/proxmox/ip-pinned
+		ucr set interfaces/eth0/type=dhcp
+		ucr unset --forced interfaces/restart/auto
+	fi
 	rm -rf /root/*
 	rm -f /root/.ssh/authorized_keys
 	rm -f /root/.bash_history
