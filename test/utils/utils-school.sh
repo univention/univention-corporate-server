@@ -27,27 +27,31 @@ install_kelvin_in_version() {
 }
 
 install_kelvin_prod_version_from_test() {
-  # UPGRADE_FROM_PROD: install the latest *released* (prod) kelvin version, but
-  # from the test appcenter. The test appcenter is a superset of prod, so the
-  # released version is available there too. Installing from test (instead of
-  # switching the whole appcenter to prod) keeps already-installed test versions
-  # of dependencies (e.g. ucsschool) known, so dependency resolution does not
-  # pull them into the transaction and abort ("Automatically added App ...").
+  # UPGRADE_FROM_PROD: install a *released* (prod) kelvin version to upgrade from.
+  # KELVIN_VERSION pins that version, otherwise the latest released one is used.
+  # When the scenario runs with the test appcenter, the install is done from
+  # there: the test appcenter is a superset of prod, so released versions are
+  # available there too, and installing from test (instead of switching the whole
+  # appcenter to prod) keeps already-installed test versions of dependencies
+  # (e.g. ucsschool) known, so dependency resolution does not pull them into the
+  # transaction and abort ("Automatically added App ...").
   local -i rv=0
-  local prod_version
+  local version="$KELVIN_VERSION"
   printf '%s' univention > /tmp/univention
   if [ -n "$(ucr get "appcenter/apps/ucsschool-kelvin-rest-api/version")" ]; then
     univention-app remove ucsschool-kelvin-rest-api
     systemctl stop docker-app-ucsschool-kelvin-rest-api.service
     systemctl daemon-reload
   fi
-  # peek at prod only to read the latest installable version (reading does not touch installed apps)
-  UCS_TEST_APPCENTER=false switch_app_center
-  prod_version="$(univention-app get ucsschool-kelvin-rest-api version | sed -n 's/^Version: //p')"
-  # back to the test appcenter (superset of prod) for the actual install
-  switch_app_center
-  echo "Installing released kelvin version $prod_version from test appcenter"
-  univention-app install "ucsschool-kelvin-rest-api=$prod_version" --noninteractive --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
+  if [ -z "$version" ]; then
+    # peek at prod only to read the latest installable version (reading does not touch installed apps)
+    UCS_TEST_APPCENTER=false switch_app_center
+    version="$(univention-app get ucsschool-kelvin-rest-api version | sed -n 's/^Version: //p')"
+    # back to the appcenter the scenario runs with
+    switch_app_center
+  fi
+  echo "Installing released kelvin version $version"
+  univention-app install "ucsschool-kelvin-rest-api=$version" --noninteractive --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
   return $rv
 }
 
