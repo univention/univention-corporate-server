@@ -446,6 +446,17 @@ wait_for_dns_value () {
 	return 0
 }
 
+# Check that a name resolves to exactly the given set of IP addresses. Needed
+# for records with more than one address (e.g. ucs-sso-ng), where comparing a
+# single address is not enough and the order is irrelevant, as bind rotates the
+# addresses of such a record.
+dns_resolves_to () {
+	local name=${1:?Missing name to resolve}
+	shift
+	local expected=("${@:?Missing expected IPs}")
+	[ "$(dig +short "$name" | sort | tr '\n' ' ')" = "$(printf '%s\n' "${expected[@]}" | sort | tr '\n' ' ')" ]
+}
+
 wait_for_slapd () {
 	wait_for_process 600 1 /usr/sbin/slapd -f /etc/ldap/slapd.conf
 }
@@ -1897,10 +1908,60 @@ register_network_address () {
 	return $rv
 }
 
+keycloak_sso_fqdn () {
+	local fqdn
+	fqdn="$(ucr get keycloak/server/sso/fqdn)"
+	# the app falls back to this default if the variable is unset
+	[ -n "$fqdn" ] || fqdn="ucs-sso-ng.$(ucr get domainname)"
+	echo "$fqdn"
+}
+
+# the current IP addresses of all keycloak servers, as registered in LDAP
+keycloak_sso_ips () {
+	univention-ldapsearch -LLL univentionService=keycloak aRecord | sed -n 's/^aRecord: //p'
+}
+
+update_keycloak_sso_dns_record () {
+	# Rebuild the DNS record of the keycloak SSO fqdn (usually ucs-sso-ng) from
+	# LDAP. In a machine created from a KVM template the record still holds the
+	# IP addresses the keycloak servers had when the template was created, and
+	# nothing updates it afterwards (the keycloak join script only adds the
+	# local IP at install time).
+	# The IP addresses of the keycloak servers themselves have already been
+	# fixed at this point by univention-register-network-address, so LDAP is the
+	# authoritative source here. Deriving the record from it is idempotent and
+	# does not depend on finding the old IP address anywhere.
+	local rv=0 sso_fqdn sso_hostname sso_domain ldap_base ip
+	local -a ips=() values=()
+
+	sso_fqdn="$(keycloak_sso_fqdn)"
+	sso_hostname="${sso_fqdn%%.*}"
+	sso_domain="${sso_fqdn#*.}"
+	ldap_base="$(ucr get ldap/base)"
+
+	while read -r ip; do
+		[ -n "$ip" ] || continue
+		ips+=("$ip")
+		values+=("--set" "a=$ip")
+	done < <(keycloak_sso_ips)
+
+	if [ "${#ips[@]}" -eq 0 ]; then
+		echo "no keycloak server found in LDAP, not updating '$sso_fqdn'"
+		return 0
+	fi
+
+	echo "updating '$sso_fqdn' to ${ips[*]}"
+	udm dns/host_record modify \
+		--dn "relativeDomainName=$sso_hostname,zoneName=$sso_domain,cn=dns,$ldap_base" \
+		"${values[@]}" || rv=1
+
+	return $rv
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0 server_role ldap_base domain old_ip current_ip
+	local rv=0 server_role ldap_base domain current_ip
 
 	admin_password_file=$(mktemp)
 	echo "$admin_password" > "$admin_password_file"
@@ -1938,21 +1999,10 @@ basic_setup_ucs_joined () {
 		;;
 	esac
 
-	# get old ip TODO how to do it correctly?
-	old_ip="$(grep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog | tail -1 | awk -F 'old:' '{print $2}')"
-	if [ -z "$old_ip" ]; then
-		old_ip="$(zgrep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog.1.gz | tail -1 | awk -F 'old:' '{print $2}')"
-	fi
-
-	# fix ucs-sso
+	# fix the keycloak SSO record (ucs-sso-ng)
 	case "$server_role" in
 	domaincontroller_master|domaincontroller_backup)
-		local sso_fqdn sso_hostname
-		sso_fqdn="$(ucr get keycloak/server/sso/fqdn)"
-		sso_hostname="${sso_fqdn%%.*}"
-		[ -n "$old_ip" ] && [ -n "$sso_hostname" ] && udm dns/host_record modify \
-			--dn "relativeDomainName=$sso_hostname,zoneName=$domain,cn=dns,$ldap_base" \
-			--remove a="$old_ip"
+		update_keycloak_sso_dns_record || rv=1
 		;;
 	esac
 
@@ -2010,17 +2060,32 @@ basic_setup_ucs_joined () {
 		# Flush old ip's from bind. The proxy (port 53) slaves the zone from the
 		# local ldap backend (port 7777), which in turn reads the records from
 		# the local slapd replica. A single retransfer can re-cache an old IP,
-		# so retry until bind resolves both the master and this host itself to
-		# their new IPs.
-		local master myfqdn myip timestamp
+		# so retry until bind resolves the master, this host itself and the
+		# keycloak SSO fqdn to their new IPs.
+		local master myfqdn myip timestamp resolved sso_fqdn=""
+		local -a sso_ips=()
 		master="$(ucr get ldap/master)"
 		myfqdn="$(hostname -f)"
 		myip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
+		# the SSO record has just been rewritten above, wait for it as well.
+		# Only on the roles that update it, on a replica it may not have been
+		# fixed by the primary yet.
+		case "$server_role" in
+		domaincontroller_master|domaincontroller_backup)
+			readarray -t sso_ips < <(keycloak_sso_ips)
+			[ "${#sso_ips[@]}" -eq 0 ] || sso_fqdn="$(keycloak_sso_fqdn)"
+			;;
+		esac
 		timestamp=$(date +"%s")
-		echo "Retransferring '$(hostname -d).' until bind resolves '$master' to '$masterip' and '$myfqdn' to '$myip'..."
-		while [ "$(dig +short "$master" | tail -1)" != "$masterip" ] || [ "$(dig +short "$myfqdn" | tail -1)" != "$myip" ]; do
+		echo "Retransferring '$(hostname -d).' until bind resolves '$master' to '$masterip', '$myfqdn' to '$myip'${sso_fqdn:+ and '$sso_fqdn' to ${sso_ips[*]}}..."
+		while :; do
+			resolved=true
+			[ "$(dig +short "$master" | tail -1)" = "$masterip" ] || resolved=false
+			[ "$(dig +short "$myfqdn" | tail -1)" = "$myip" ] || resolved=false
+			[ -z "$sso_fqdn" ] || dns_resolves_to "$sso_fqdn" "${sso_ips[@]}" || resolved=false
+			"$resolved" && break
 			if [ "$((timestamp+120))" -lt "$(date +"%s")" ]; then
-				echo "ERROR: bind did not resolve to the new IPs after 120s ('$master' -> $(dig +short "$master"), '$myfqdn' -> $(dig +short "$myfqdn"))."
+				echo "ERROR: bind did not resolve to the new IPs after 120s ('$master' -> $(dig +short "$master"), '$myfqdn' -> $(dig +short "$myfqdn")${sso_fqdn:+, '$sso_fqdn' -> $(dig +short "$sso_fqdn" | tr '\n' ' ')})."
 				rv=1
 				break
 			fi
