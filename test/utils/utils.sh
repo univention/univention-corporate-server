@@ -1544,7 +1544,7 @@ fix_certificates53013 () { # <ip>
 	[ -f /var/univention-join/joined ] || return 0
 
 	# Overwrite IP address from KVM template with current IP
-	univention-register-network-address --verbose --interface "$(ucr get interfaces/primary)"
+	univention-register-network-address --verbose --force --interface "$(ucr get interfaces/primary)"
 	udm "computers/${server_role}" modify --dn "${ldap_hostdn}" --set ip="${ip}"
 	udm dns/host_record modify --dn relativeDomainName="${ucs_server_sso_fqdn%%.*},zoneName=${ucs_server_sso_fqdn#*.},cn=dns,${ldap_base:?}" --set a="${ip}"
 	nscd -i hosts || :
@@ -1883,7 +1883,7 @@ register_network_address () {
 	local rv=0 i
 	systemctl is-failed univention-management-console-server && systemctl restart univention-management-console-server
 	for ((i=1; i<=5; i++)); do
-		univention-register-network-address --verbose --interface "$(ucr get interfaces/primary)" 2>/tmp/univention-register-network-address.stderr.$$ && rv=0 && break
+		univention-register-network-address --verbose --force --interface "$(ucr get interfaces/primary)" 2>/tmp/univention-register-network-address.stderr.$$ && rv=0 && break
 		if [ -e /tmp/univention-register-network-address.stderr.$$ ]; then
 			cat /tmp/univention-register-network-address.stderr.$$
 			# sometimes univention-network-common.service works during boot,
