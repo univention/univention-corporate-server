@@ -901,6 +901,18 @@ appliance_poweroff () {
 	# recorded, and a server which still has that lease hands it out again, so every
 	# clone of the image ends up on the address of the VM the image was built from.
 	rm -f /var/lib/dhcp/*.leases*
+	# Same for a pinned address. ucs-ec2-tools writes the current one into UCR, so
+	# that a changing lease cannot kill the connection of a running command. Only a
+	# pin is undone, an address configured on purpose stays.
+	if [ "$(ucr get tests/proxmox/ip-pinned)" = true ]
+	then
+		echo "Undoing the pinned static IP"
+		# do not restart the interface while the variables change
+		ucr set --forced interfaces/restart/auto=false
+		ucr unset interfaces/eth0/address interfaces/eth0/netmask gateway tests/proxmox/ip-pinned
+		ucr set interfaces/eth0/type=dhcp
+		ucr unset --forced interfaces/restart/auto
+	fi
 	rm -rf /root/*
 	rm -f /root/.ssh/authorized_keys
 	rm -f /root/.bash_history
