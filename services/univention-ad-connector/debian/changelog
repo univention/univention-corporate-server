@@ -1,3 +1,9 @@
+univention-ad-connector (16.7.3) unstable; urgency=medium
+
+  * Bug #59701: Allow substring search for the ad-connector
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 03 Aug 2026 12:09:22 +0200
+
 univention-ad-connector (16.7.2) unstable; urgency=medium
 
   * Bug #59694, Issue univention/dev/ucs#3712: Retry primary group

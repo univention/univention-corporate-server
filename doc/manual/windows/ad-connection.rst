@@ -815,7 +815,7 @@ the connector also deletes the corresponding object on the other side.
 
       However, this filter doesn't support the full LDAP filter syntax.
       It's always case-sensitive.
-      You can only use the placeholder ``*`` as a single value without any other characters.
+      You can use ``*`` as a single placeholder or for substring matching like ``*abc``.
 
 .. important::
 
@@ -925,7 +925,7 @@ Use the following |UCSUCRV|:
 
       However, this filter doesn't support the full LDAP filter syntax.
       It's always case-sensitive.
-      You can only use the placeholder ``*`` as a single value without any other characters.
+      You can use ``*`` as a single placeholder or for substring matching like ``*abc``.
 
 After changing these settings, you must restart the :program:`Active Directory Connection`.
 

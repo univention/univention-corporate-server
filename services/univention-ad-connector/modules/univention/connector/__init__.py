@@ -1840,6 +1840,20 @@ class ucs:
 
             if value == '*':
                 return attribute in list_lower(attributes.keys())
+            elif '*' in value:
+                attribute_values = attributes.get(attribute)
+                if not attribute_values:
+                    return False
+                if not isinstance(attribute_values, list):
+                    attribute_values = [attribute_values]
+                regex = '^' + re.escape(value).replace(r"\*", ".*") + '$'
+                pattern = re.compile(regex)
+                for attribute_value in attribute_values:
+                    if isinstance(attribute_value, bytes):
+                        attribute_value = attribute_value.decode('UTF-8')
+                    if pattern.search(attribute_value):
+                        return True
+                return False
             elif attribute in attributes:
                 return value.lower().encode('UTF-8') in list_lower(attributes[attribute])
             else:
