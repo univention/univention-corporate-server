@@ -7,8 +7,11 @@ set -e
 
 
 slugify () {
-	iconv -t ascii//TRANSLIT |
-		sed "s/'//g;s/[^a-zA-Z0-9]\\+/-/g;s/^-//;s/-\$//;s/.*/\\L&/"
+	local -x LC_ALL=C
+	tr '[:upper:]' '[:lower:]' |
+		sed 's/[^a-z0-9]/-/g' |
+		cut -b1-63 |
+		sed 's/^-*//;s/-*$//'
 }
 
 install_upgrade_keycloak () {
