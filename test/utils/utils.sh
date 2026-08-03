@@ -1939,6 +1939,14 @@ update_keycloak_sso_dns_record () {
 	sso_domain="${sso_fqdn#*.}"
 	ldap_base="$(ucr get ldap/base)"
 
+	# The search below reads from the local LDAP. On a backup that is a replica,
+	# which may not have seen the IP addresses just registered by
+	# univention-register-network-address yet - neither the ones of the other
+	# keycloak servers nor the one of this host itself. Wait for the local
+	# listener to catch up, otherwise the record gets rebuilt from stale
+	# addresses.
+	wait_for_replication || rv=1
+
 	while read -r ip; do
 		[ -n "$ip" ] || continue
 		ips+=("$ip")
