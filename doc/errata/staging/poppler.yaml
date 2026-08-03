@@ -1,0 +1,22 @@
+product: ucs
+release: "5.2"
+version: [5, 6]
+scope: ucs_5.2-0-errata5.2-6
+src: poppler
+fix: 22.12.0-2+deb12u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2024-6239 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2025-50420 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2025-52886 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2025-43903 (CVSS score 4.3 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:N).
+bug: [59698]
+cve:
+- CVE-2025-43903
+- CVE-2025-50420
+- CVE-2025-52886
+- CVE-2024-6239
