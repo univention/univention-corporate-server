@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libxfont1
+fix: 1:1.5.2-4+deb9u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-56003, CVE-2026-56002, CVE-2026-56001 (CVSS score 8.5 -
+   CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H).
+bug: [59700]
+cve:
+- CVE-2026-56001
+- CVE-2026-56002
+- CVE-2026-56003
