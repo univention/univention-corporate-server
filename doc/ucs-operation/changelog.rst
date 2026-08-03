@@ -21,6 +21,11 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 3. Aug 2026
+     - :ref:`iam-authorization-engine`
+     - Add section about the authorization engine,
+       covering installation, configuration, policy management, and diagnosis.
+
    * - 22. Jul 2026
      - :envvar:`backup/clean/min_backups`
      - Add missing documentation for the UCR variable.
