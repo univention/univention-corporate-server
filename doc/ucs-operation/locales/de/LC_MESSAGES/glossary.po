@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 16:54+0000\n"
-"PO-Revision-Date: 2026-03-23 16:25+0100\n"
+"POT-Creation-Date: 2026-08-20 13:11+0000\n"
+"PO-Revision-Date: 2026-08-20 15:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -65,6 +65,55 @@ msgstr ""
 "Der :spelling:word:`Managed Node` ist eine Systemrolle in Nubus für UCS. "
 "Für die Beschreibung, siehe :ref:`domain-infrastructure-system-roles-"
 "managed-node`."
+
+#: ../../glossary.rst:85
+msgid "Policy Decision Point"
+msgstr "Policy Decision Point"
+
+#: ../../glossary.rst:86
+msgid "policy decision point"
+msgstr "policy decision point"
+
+#: ../../glossary.rst:87
+msgid "PDP"
+msgstr "PDP"
+
+#: ../../glossary.rst:89
+msgid ""
+"The policy decision point is the service in an authorization process that"
+" makes the decision. An authorization engine, such as :program:`Cerbos`, "
+"provide the policy decision point."
+msgstr ""
+"Der *Policy Decision Point* ist der Dienst in einem "
+"Autorisierungsprozess, der die Entscheidung trifft. Eine Engine für die "
+"Autorisierung wie :program:`Cerbos` stellt den *Policy Decision Point* "
+"bereit."
+
+#: ../../glossary.rst:94 ../../glossary.rst:104
+msgid "For more information, see :ref:`iam-authorization-engine`."
+msgstr "Für weitere Informationen, siehe :ref:`iam-authorization-engine`."
+
+#: ../../glossary.rst:96
+msgid "Policy Enforcement Point"
+msgstr "Policy Enforcement Point"
+
+#: ../../glossary.rst:97
+msgid "policy enforcement point"
+msgstr "policy enforcement point"
+
+#: ../../glossary.rst:98
+msgid "PEP"
+msgstr "PEP"
+
+#: ../../glossary.rst:100
+msgid ""
+"The policy enforcement point is the service in an authorization process "
+"that takes the decision from a :term:`policy decision point` and enforces"
+" the decision."
+msgstr ""
+"Der *Policy Enforcement Point* ist der Dienst in einem "
+"Autorisierungsprozess, der die Entscheidung von einem :term:`Policy "
+"Decision Point` entgegennimmt und durchsetzt."
 
 #: ../../glossary.rst:33
 msgid "Primary Directory Node"
@@ -164,15 +213,17 @@ msgid ""
 "(:command:`univention-directory-manager` or :command:`udm`), or the HTTP "
 "REST API."
 msgstr ""
-"UDM bietet Datenaggregation, Datenkonsistenz, Validierung von Eingaben und "
-"Prozesslogik auf Basis des LDAP-Verzeichnisses. Administratoren können "
-"UDM über die Weboberfläche in der *Management UI*, die Befehlszeile "
-"(:command:`univention-directory-manager` oder :command:`udm`) oder die "
-"HTTP REST API verwenden."
+"UDM bietet Datenaggregation, Datenkonsistenz, Validierung von Eingaben "
+"und Prozesslogik auf Basis des LDAP-Verzeichnisses. Administratoren "
+"können UDM über die Weboberfläche in der *Management UI*, die "
+"Befehlszeile (:command:`univention-directory-manager` oder "
+":command:`udm`) oder die HTTP REST API verwenden."
 
 #: ../../glossary.rst:82
 msgid ""
 "For more information, see :ref:`component-domain-management` in :cite:t"
 ":`ucs-architecture`."
 msgstr ""
-"Weitere Informationen finden Sie unter :ref:`component-domain-management` im :cite:t:`ucs-architecture`."
+"Weitere Informationen finden Sie unter :ref:`component-domain-management`"
+" im :cite:t:`ucs-architecture`."
+

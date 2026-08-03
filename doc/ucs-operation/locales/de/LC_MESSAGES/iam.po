@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-22 08:07+0000\n"
-"PO-Revision-Date: 2026-07-22 10:15+0200\n"
+"POT-Creation-Date: 2026-08-25 08:47+0000\n"
+"PO-Revision-Date: 2026-08-25 10:50+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -15,6 +15,889 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: ../../iam/authorization-engine.rst:7 ../../iam/index.rst:29
+msgid "Authorization engine"
+msgstr "Engine für die Autorisierung"
+
+#: ../../iam/authorization-engine.rst:9
+msgid ""
+"*Guardian* is the authorization engine in Nubus for UCS. This page "
+"explains how to install, configure, and operate it."
+msgstr ""
+"*Guardian* ist die Engine für die Autorisierung in Nubus für UCS. Diese "
+"Seite erklärt, wie Sie sie installieren, konfigurieren und betreiben."
+
+#: ../../iam/authorization-engine.rst:12
+msgid "This page covers:"
+msgstr "Diese Seite behandelt:"
+
+#: ../../iam/authorization-engine.rst:14
+msgid ":ref:`iam-authorization-engine-endpoints`"
+msgstr ":ref:`iam-authorization-engine-endpoints`"
+
+#: ../../iam/authorization-engine.rst:15
+msgid ":ref:`iam-authorization-engine-system-roles`"
+msgstr ":ref:`iam-authorization-engine-system-roles`"
+
+#: ../../iam/authorization-engine.rst:16
+msgid ":ref:`iam-authorization-engine-install`"
+msgstr ":ref:`iam-authorization-engine-install`"
+
+#: ../../iam/authorization-engine.rst:17
+msgid ":ref:`iam-authorization-engine-verify`"
+msgstr ":ref:`iam-authorization-engine-verify`"
+
+#: ../../iam/authorization-engine.rst:18
+msgid ":ref:`iam-authorization-engine-configure`"
+msgstr ":ref:`iam-authorization-engine-configure`"
+
+#: ../../iam/authorization-engine.rst:19
+msgid ":ref:`iam-authorization-engine-policies`"
+msgstr ":ref:`iam-authorization-engine-policies`"
+
+#: ../../iam/authorization-engine.rst:20
+msgid ":ref:`iam-authorization-engine-troubleshooting`"
+msgstr ":ref:`iam-authorization-engine-troubleshooting`"
+
+#: ../../iam/authorization-engine.rst:24
+msgid ""
+"For reference documentation about the decision engine, see `Cerbos "
+"documentation <https://docs.cerbos.dev/cerbos/latest/index.html>`_."
+msgstr ""
+"Referenzdokumentation zur Engine finden Sie in der `Cerbos-Dokumentation "
+"<https://docs.cerbos.dev/cerbos/latest/index.html>`_."
+
+#: ../../iam/authorization-engine.rst:29
+msgid ""
+"The authorization engine replaces the earlier Guardian apps *Guardian "
+"Management API*, *Guardian Authorization API*, and *Guardian Management "
+"UI*. No upgrade path exists from these apps. The installation migrates no"
+" policies, no roles, and no other data from them."
+msgstr ""
+"Die Engine für die Autorisierung ersetzt die früheren "
+":spelling:word:`Guardian` Apps *Guardian Management API*, *Guardian "
+"Authorization API* und *Guardian Management UI*. Für diese Apps existiert"
+" kein Upgrade-Pfad. Die Installation migriert keine Richtlinien, keine "
+"Rollen und keine anderen Daten aus ihnen."
+
+#: ../../iam/authorization-engine.rst:39
+msgid "Authorization engine endpoints"
+msgstr "Endpunkte der Engine"
+
+#: ../../iam/authorization-engine.rst:41
+msgid "The engine uses these ``localhost`` ports:"
+msgstr "Die Engine verwendet diese ``localhost``-Ports:"
+
+#: ../../iam/authorization-engine.rst:43
+msgid "An HTTP interface on port ``3592``."
+msgstr "Eine HTTP-Schnittstelle auf Port ``3592``."
+
+#: ../../iam/authorization-engine.rst:44
+msgid "A gRPC interface on port ``3593``."
+msgstr "Eine gRPC-Schnittstelle auf Port ``3593``."
+
+#: ../../iam/authorization-engine.rst:46
+msgid ""
+"Services on the same system use these ports. Containers on the system "
+"reach the engine through the shared ``guardian`` Docker network, under "
+"the hostname ``cerbos``."
+msgstr ""
+"Dienste auf demselben System verwenden diese Ports. Container auf dem "
+"System erreichen die Engine über das gemeinsame Docker-Netzwerk "
+"``guardian`` unter dem Rechnernamen ``cerbos``."
+
+#: ../../iam/authorization-engine.rst:53
+msgid ""
+"The engine accepts every request from the local system. It has no "
+"transport authentication. Install it only on Nubus for UCS systems where "
+"you trust all local services."
+msgstr ""
+"Die Engine akzeptiert jede Anfrage vom lokalen System. Sie verfügt über "
+"keine Transportauthentifizierung. Installieren Sie sie nur auf Nubus for "
+"UCS-Systemen, deren lokalen Diensten Sie vertrauen."
+
+#: ../../iam/authorization-engine.rst:60
+msgid "Supported system roles for the authorization engine"
+msgstr "Unterstützte Systemrollen für die Engine"
+
+#: ../../iam/authorization-engine.rst:62
+msgid ""
+"Install the authorization engine on a :term:`Primary Directory Node` or a"
+" :term:`Backup Directory Node`. The *Univention App Center* offers it "
+"only on these roles. A :term:`Replica Directory Node` and a "
+":term:`Managed Node` can't run it."
+msgstr ""
+"Installieren Sie die Engine zur Autorisierung auf einem :term:`Primary "
+"Directory Node` oder einem :term:`Backup Directory Node`. Das *Univention"
+" App Center* bietet sie nur für diese Rollen an. Ein :term:`Replica "
+"Directory Node` und ein :term:`Managed Node` können die Engine zur "
+"Autorisierung nicht ausführen."
+
+#: ../../iam/authorization-engine.rst:68
+msgid "The following applies:"
+msgstr "Folgendes gilt:"
+
+#: ../../iam/authorization-engine.rst:70
+msgid "Local access only"
+msgstr "Nur lokaler Zugriff"
+
+#: ../../iam/authorization-engine.rst:71
+msgid ""
+"Install the engine next to the service that needs decisions. The engine "
+"answers local callers only. A service on another system can't reach it. "
+"Install the engine on each Nubus for UCS system whose services ask for "
+"decisions."
+msgstr ""
+"Installieren Sie die Engine neben dem Dienst, der Entscheidungen "
+"benötigt. Die Engine antwortet nur lokalen Aufrufern. Ein Dienst auf "
+"einem anderen System kann sie nicht erreichen. Installieren Sie die "
+"Engine auf jedem Nubus for UCS-System, dessen Dienste Entscheidungen "
+"anfragen."
+
+#: ../../iam/authorization-engine.rst:77
+msgid "Independent installations"
+msgstr "Unabhängige Installationen"
+
+#: ../../iam/authorization-engine.rst:78
+msgid ""
+"Each installation operates independently. Each engine keeps its own copy "
+"of the policies and answers from that copy. The engines share no state "
+"and don't forward requests to each other. The listener module "
+"synchronizes the policy copies because every Nubus for UCS system reads "
+"the same policy bundles from the LDAP directory."
+msgstr ""
+"Jede Installation arbeitet unabhängig. Jede Engine behält ihre eigene "
+"Kopie der Richtlinien und beantwortet Anfragen anhand dieser Kopie. Die "
+"Engines teilen keinen Zustand und leiten keine Anfragen aneinander "
+"weiter. Das Listener-Modul synchronisiert die Richtlinienkopien, weil "
+"jedes Nubus for UCS-System dieselben Richtlinienpakete aus dem LDAP-"
+"Verzeichnis liest."
+
+#: ../../iam/authorization-engine.rst:87
+msgid ""
+"The :program:`univention-guardian-server` package doesn't check the "
+"system role. Install the *Univention Guardian* app through the *App "
+"Center*. The App Center restricts the authorization engine to Primary and"
+" Backup Directory Nodes. Direct package installation bypasses this "
+"restriction. It can install the authorization engine and *Directory "
+"Listener* integration on an unsupported system role."
+msgstr ""
+"Das Paket :program:`univention-guardian-server` prüft die Systemrolle "
+"nicht. Installieren Sie die *Univention Guardian* App über das *App "
+"Center*. Das App Center beschränkt die Engine zur Autorisierung auf "
+"Primary und Backup Directory Nodes. Eine direkte Paketinstallation umgeht"
+" diese Beschränkung. Sie kann die Engine zur Autorisierung und die "
+"*Directory Listener*-Integration auf einer nicht unterstützten "
+"Systemrolle installieren."
+
+#: ../../iam/authorization-engine.rst:97 ../../iam/authorization-engine.rst:110
+msgid "Install the authorization engine"
+msgstr "Die Engine installieren"
+
+#: ../../iam/authorization-engine.rst:99
+msgid ""
+"You need domain administrator permissions and a root account on the "
+"target system to install the authorization engine. For information about "
+"the domain administrator account, see :external+uv-nubus-manual:ref"
+":`nubus-authentication-sign-in-choose-user-account` in :cite:t:`uv-nubus-"
+"manual`."
+msgstr ""
+"Sie benötigen die Berechtigungen eines Domänen-Administrators und ein "
+"Root-Konto auf dem Zielsystem, um die Engine zur Autorisierung zu "
+"installieren. Informationen zum Administrator-Konto für die Domäne finden"
+" Sie unter :external+uv-nubus-manual:ref:`nubus-authentication-sign-in-"
+"choose-user-account` im :cite:t:`uv-nubus-manual`."
+
+#: ../../iam/authorization-engine.rst:105
+msgid ""
+"Install the *Univention Guardian* app from the *App Center*, or run the "
+"command in :numref:`iam-authorization-engine-install-listing`. For "
+"information about installing apps through the App Center, see :ref"
+":`lifecycle-app-center`."
+msgstr ""
+"Installieren Sie die *Univention Guardian* App über das *App Center* oder"
+" führen Sie den Befehl in :numref:`iam-authorization-engine-install-"
+"listing` aus. Informationen zur Installation von Apps über das App Center"
+" finden Sie unter :ref:`lifecycle-app-center`."
+
+#: ../../iam/authorization-engine.rst:110
+msgid "$ univention-app install univention-guardian"
+msgstr "$ univention-app install univention-guardian"
+
+#: ../../iam/authorization-engine.rst:116
+msgid "The installation makes the following changes to the system:"
+msgstr "Die Installation nimmt folgende Änderungen am System vor:"
+
+#: ../../iam/authorization-engine.rst:118
+msgid "It installs the :program:`univention-guardian-server` package."
+msgstr "Sie installiert das Paket :program:`univention-guardian-server`."
+
+#: ../../iam/authorization-engine.rst:120
+msgid ""
+"It creates the ``guardian-server`` system user and group with the fixed "
+"ID ``64110``. :program:`Cerbos` runs under this account."
+msgstr ""
+"Sie erstellt den Systembenutzer und die Systemgruppe ``guardian-server`` "
+"mit der festen ID ``64110``. :program:`Cerbos` läuft unter diesem Konto."
+
+#: ../../iam/authorization-engine.rst:124
+msgid ""
+"It installs the :program:`systemd` service ``univention-guardian-"
+"server.service``. The service runs :program:`Cerbos` as a container and "
+"starts the container after installation. If the container exits, "
+":program:`systemd` restarts it."
+msgstr ""
+"Sie installiert den :program:`systemd`-Dienst ``univention-guardian-"
+"server.service``. Der Dienst führt :program:`Cerbos` als Container aus "
+"und startet den Container nach der Installation. Wenn der Container "
+"endet, startet :program:`systemd` ihn neu."
+
+#: ../../iam/authorization-engine.rst:130
+msgid ""
+"It installs the ``cerbos-policies`` listener module. The module installs "
+"policy bundles from the LDAP directory. For more information, see :ref"
+":`iam-authorization-engine-policies`."
+msgstr ""
+"Sie installiert das Listener-Modul ``cerbos-policies``. Das Modul "
+"installiert Richtlinienpakete aus dem LDAP-Verzeichnis. Weitere "
+"Informationen finden Sie unter :ref:`iam-authorization-engine-policies`."
+
+#: ../../iam/authorization-engine.rst:135
+msgid ""
+"To verify that the service is active, run the command in :numref:`iam-"
+"authorization-engine-status-listing`. The output must show ``active "
+"(running)``. If it doesn't, see :ref:`iam-authorization-engine-"
+"troubleshooting`."
+msgstr ""
+"Um zu prüfen, ob der Dienst aktiv ist, führen Sie den Befehl in :numref"
+":`iam-authorization-engine-status-listing` aus. Die Ausgabe muss ``active"
+" (running)`` anzeigen. Ist das nicht der Fall, lesen Sie :ref:`iam-"
+"authorization-engine-troubleshooting`."
+
+#: ../../iam/authorization-engine.rst:141
+msgid "Show the state of the authorization engine"
+msgstr "Den Zustand der Engine anzeigen"
+
+#: ../../iam/authorization-engine.rst:141
+msgid "$ systemctl status univention-guardian-server.service"
+msgstr "$ systemctl status univention-guardian-server.service"
+
+#: ../../iam/authorization-engine.rst:150
+msgid "Verify that the engine returns decisions"
+msgstr "Prüfen, ob die Engine Entscheidungen zurückgibt"
+
+#: ../../iam/authorization-engine.rst:152
+msgid ""
+"The installation includes a set of example policies. One of them allows "
+"the administrator of an application to read a resource of that same "
+"application. The two requests in this section use this policy to verify "
+"that the engine loads policies and returns decisions."
+msgstr ""
+"Die Installation enthält eine Reihe von Beispielrichtlinien. Eine davon "
+"erlaubt dem Administrator einer Anwendung, eine Ressource derselben "
+"Anwendung zu lesen. Die zwei Anfragen in diesem Abschnitt verwenden diese"
+" Richtlinie, um zu prüfen, ob die Engine Richtlinien lädt und "
+"Entscheidungen zurückgibt."
+
+#: ../../iam/authorization-engine.rst:158
+msgid ""
+"Both examples show the response fields that contain the decision. The "
+"engine returns additional fields."
+msgstr ""
+"Beide Beispiele zeigen die Antwortfelder, die die Entscheidung enthalten."
+" Die Engine gibt weitere Felder zurück."
+
+#: ../../iam/authorization-engine.rst:163
+msgid ""
+"The example policies demonstrate the policy format. Don't use the example"
+" policies to define your production authorization policies. Univention "
+"can change or remove the example policies."
+msgstr ""
+"Die Beispielrichtlinien veranschaulichen das Richtlinienformat. Verwenden"
+" Sie keine Beispielrichtlinien, um Ihre Richtlinien zur Autorisierung"
+" für Produktiveinsatz zu definieren. Univention "
+"kann die Beispielrichtlinien ändern oder entfernen."
+
+#: ../../iam/authorization-engine.rst:170
+msgid "Example: Allow decision"
+msgstr "Beispiel: Zugriff erlauben"
+
+#: ../../iam/authorization-engine.rst:172
+msgid ""
+"The request in :numref:`iam-authorization-engine-verify-allow-listing` "
+"asks whether the actor ``alice``, who holds the role ``guardian:myapp-"
+"admin``, can read a resource of the application ``myapp``. The role and "
+"the resource belong to the same application, so the engine returns "
+"``EFFECT_ALLOW``, as shown in :numref:`iam-authorization-engine-verify-"
+"allow-response-listing`."
+msgstr ""
+"Die Anfrage in :numref:`iam-authorization-engine-verify-allow-listing` "
+"fragt, ob der Akteur ``alice``, der die Rolle ``guardian:myapp-admin`` "
+"besitzt, eine Ressource der Anwendung ``myapp`` lesen kann. Die Rolle und"
+" die Ressource gehören zur gleichen Anwendung, daher gibt die Engine "
+"``EFFECT_ALLOW`` zurück, wie in :numref:`iam-authorization-engine-verify-"
+"allow-response-listing` gezeigt."
+
+#: ../../iam/authorization-engine.rst:180
+msgid "Ask for a decision about a resource of the same application"
+msgstr "Eine Entscheidung über eine Ressource derselben Anwendung anfragen"
+
+#: ../../iam/authorization-engine.rst:180
+#, python-brace-format
+msgid ""
+"$ curl -sS http://127.0.0.1:3592/api/check/resources \\\n"
+"    -H 'Content-Type: application/json' \\\n"
+"    -d '{\n"
+"  \"requestId\": \"r1\",\n"
+"  \"principal\": {\"id\": \"alice\", \"roles\": [\"guardian:myapp-"
+"admin\"]},\n"
+"  \"resources\": [{\n"
+"    \"resource\": {\"id\": \"x\", \"kind\": \"guardian.management_api\",\n"
+"                 \"attr\": {\"app_name\": \"myapp\"}},\n"
+"    \"actions\": [\"read_resource\"]\n"
+"  }]\n"
+"}'"
+msgstr ""
+"$ curl -sS http://127.0.0.1:3592/api/check/resources \\\n"
+"    -H 'Content-Type: application/json' \\\n"
+"    -d '{\n"
+"  \"requestId\": \"r1\",\n"
+"  \"principal\": {\"id\": \"alice\", \"roles\": [\"guardian:myapp-"
+"admin\"]},\n"
+"  \"resources\": [{\n"
+"    \"resource\": {\"id\": \"x\", \"kind\": \"guardian.management_api\",\n"
+"                 \"attr\": {\"app_name\": \"myapp\"}},\n"
+"    \"actions\": [\"read_resource\"]\n"
+"  }]\n"
+"}'"
+
+#: ../../iam/authorization-engine.rst:196
+msgid "Decision for a resource of the same application"
+msgstr "Entscheidung für eine Ressource derselben Anwendung"
+
+#: ../../iam/authorization-engine.rst:196
+#, python-brace-format
+msgid ""
+"{\n"
+"  \"requestId\": \"r1\",\n"
+"  \"results\": [\n"
+"    {\n"
+"      \"resource\": {\"id\": \"x\", \"kind\": "
+"\"guardian.management_api\"},\n"
+"      \"actions\": {\n"
+"        \"read_resource\": \"EFFECT_ALLOW\"\n"
+"      }\n"
+"    }\n"
+"  ]\n"
+"}"
+msgstr ""
+"{\n"
+"  \"requestId\": \"r1\",\n"
+"  \"results\": [\n"
+"    {\n"
+"      \"resource\": {\"id\": \"x\", \"kind\": "
+"\"guardian.management_api\"},\n"
+"      \"actions\": {\n"
+"        \"read_resource\": \"EFFECT_ALLOW\"\n"
+"      }\n"
+"    }\n"
+"  ]\n"
+"}"
+
+#: ../../iam/authorization-engine.rst:215
+msgid "Example: Deny decision"
+msgstr "Beispiel: Zugriff verweigern"
+
+#: ../../iam/authorization-engine.rst:217
+msgid ""
+"The request in :numref:`iam-authorization-engine-verify-deny-listing` "
+"uses the same actor to request access to a resource of the application "
+"``otherapp``. The role and the resource belong to different applications,"
+" so the engine returns ``EFFECT_DENY``, as shown in :numref:`iam-"
+"authorization-engine-verify-deny-response-listing`."
+msgstr ""
+"Die Anfrage in :numref:`iam-authorization-engine-verify-deny-listing` "
+"verwendet denselben Akteur, um Zugriff auf eine Ressource der Anwendung "
+"``otherapp`` anzufordern. Die Rolle und die Ressource gehören zu "
+"unterschiedlichen Anwendungen, daher gibt die Engine ``EFFECT_DENY`` "
+"zurück, wie in :numref:`iam-authorization-engine-verify-deny-response-"
+"listing` gezeigt."
+
+#: ../../iam/authorization-engine.rst:224
+msgid "Ask for a decision about a resource of another application"
+msgstr "Eine Entscheidung über eine Ressource einer anderen Anwendung anfragen"
+
+#: ../../iam/authorization-engine.rst:224
+#, python-brace-format
+msgid ""
+"$ curl -sS http://127.0.0.1:3592/api/check/resources \\\n"
+"    -H 'Content-Type: application/json' \\\n"
+"    -d '{\n"
+"  \"requestId\": \"r2\",\n"
+"  \"principal\": {\"id\": \"alice\", \"roles\": [\"guardian:myapp-"
+"admin\"]},\n"
+"  \"resources\": [{\n"
+"    \"resource\": {\"id\": \"y\", \"kind\": \"guardian.management_api\",\n"
+"                 \"attr\": {\"app_name\": \"otherapp\"}},\n"
+"    \"actions\": [\"read_resource\"]\n"
+"  }]\n"
+"}'"
+msgstr ""
+"$ curl -sS http://127.0.0.1:3592/api/check/resources \\\n"
+"    -H 'Content-Type: application/json' \\\n"
+"    -d '{\n"
+"  \"requestId\": \"r2\",\n"
+"  \"principal\": {\"id\": \"alice\", \"roles\": [\"guardian:myapp-"
+"admin\"]},\n"
+"  \"resources\": [{\n"
+"    \"resource\": {\"id\": \"y\", \"kind\": \"guardian.management_api\",\n"
+"                 \"attr\": {\"app_name\": \"otherapp\"}},\n"
+"    \"actions\": [\"read_resource\"]\n"
+"  }]\n"
+"}'"
+
+#: ../../iam/authorization-engine.rst:240
+msgid "Decision for a resource of another application"
+msgstr "Entscheidung für eine Ressource einer anderen Anwendung"
+
+#: ../../iam/authorization-engine.rst:240
+#, python-brace-format
+msgid ""
+"{\n"
+"  \"requestId\": \"r2\",\n"
+"  \"results\": [\n"
+"    {\n"
+"      \"resource\": {\"id\": \"y\", \"kind\": "
+"\"guardian.management_api\"},\n"
+"      \"actions\": {\n"
+"        \"read_resource\": \"EFFECT_DENY\"\n"
+"      }\n"
+"    }\n"
+"  ]\n"
+"}"
+msgstr ""
+"{\n"
+"  \"requestId\": \"r2\",\n"
+"  \"results\": [\n"
+"    {\n"
+"      \"resource\": {\"id\": \"y\", \"kind\": "
+"\"guardian.management_api\"},\n"
+"      \"actions\": {\n"
+"        \"read_resource\": \"EFFECT_DENY\"\n"
+"      }\n"
+"    }\n"
+"  ]\n"
+"}"
+
+#: ../../iam/authorization-engine.rst:259
+msgid "Configure the authorization engine"
+msgstr "Die Engine konfigurieren"
+
+#: ../../iam/authorization-engine.rst:261
+msgid ""
+"The :program:`univention-guardian-server` package manages these "
+":term:`UCR variables <UCR variable>`:"
+msgstr ""
+"Das Paket :program:`univention-guardian-server` verwaltet diese :term"
+":`UCR-Variablen <UCR variable>`:"
+
+#: ../../iam/authorization-engine.rst:264
+msgid ":envvar:`guardian/cerbos/log-level`"
+msgstr ":envvar:`guardian/cerbos/log-level`"
+
+#: ../../iam/authorization-engine.rst:265
+msgid ":envvar:`guardian/cerbos/audit-logging/enabled`"
+msgstr ":envvar:`guardian/cerbos/audit-logging/enabled`"
+
+#: ../../iam/authorization-engine.rst:267
+msgid ""
+"Changing either variable restarts the authorization engine. Requests fail"
+" while the service restarts. For the procedure that uses these variables "
+"to diagnose a policy evaluation, see :ref:`iam-authorization-engine-"
+"troubleshooting`."
+msgstr ""
+"Das Ändern einer der beiden Variablen startet die Engine für die "
+"Autorisierung neu. Während der Dienst neu startet, schlagen Anfragen "
+"fehl. Das Verfahren, das diese Variablen zur Diagnose einer "
+"Richtlinienauswertung verwendet, finden Sie unter :ref:`iam-"
+"authorization-engine-troubleshooting`."
+
+#: ../../iam/authorization-engine.rst:272
+msgid ""
+"The remaining settings of the engine are static. Nubus for UCS generates "
+"the files :file:`/usr/share/univention-guardian-server/docker-"
+"compose.yaml` and :file:`/usr/share/univention-guardian-"
+"server/config/cerbos.yaml` from UCR templates. Don't edit these files. A "
+"UCR update overwrites your changes."
+msgstr ""
+"Die übrigen Einstellungen der Engine sind statisch. Nubus for UCS erzeugt"
+" die Dateien :file:`/usr/share/univention-guardian-server/docker-"
+"compose.yaml` und :file:`/usr/share/univention-guardian-"
+"server/config/cerbos.yaml` aus UCR-Vorlagen. Bearbeiten Sie diese Dateien"
+" nicht. Ein UCR-Update überschreibt Ihre Änderungen."
+
+#: ../../iam/authorization-engine.rst:282
+msgid ":ref:`system-administration-ucr`"
+msgstr ":ref:`system-administration-ucr`"
+
+#: ../../iam/authorization-engine.rst:283
+msgid "for information about local system configuration with UCR."
+msgstr "für Informationen zur lokalen Systemkonfiguration mit UCR."
+
+#: ../../iam/authorization-engine.rst:288
+msgid "Manage the policies of the authorization engine"
+msgstr "Die Richtlinien der Engine verwalten"
+
+#: ../../iam/authorization-engine.rst:290
+msgid ""
+"A policy defines the actions that an actor can perform on a resource. The"
+" engine loads every policy file in :file:`/usr/share/univention-guardian-"
+"server/policies/` and its subdirectories. Each subdirectory holds the "
+"policies of one source."
+msgstr ""
+"Eine Richtlinie definiert die Aktionen, die ein Akteur auf einer "
+"Ressource ausführen kann. Die Engine lädt jede Richtliniendatei in "
+":file:`/usr/share/univention-guardian-server/policies/` und seinen "
+"Unterverzeichnissen. Jedes Unterverzeichnis enthält die Richtlinien einer"
+" Quelle."
+
+#: ../../iam/authorization-engine.rst:296
+#, python-brace-format
+msgid ""
+"An application or a package registers its policies as a *policy bundle* "
+"in the LDAP directory. The listener module ``cerbos-policies`` installs "
+"each bundle into the subdirectory :samp:`policies/{APPLICATION}/` on "
+"every Nubus for UCS system that runs the engine. The module validates "
+"each bundle before applying it. If the bundle doesn't compile, the module"
+" keeps the previous policies and discards the bundle."
+msgstr ""
+"Eine Anwendung oder ein Paket registriert seine Richtlinien als "
+"*Richtlinienpaket* im LDAP-Verzeichnis. Das Listener-Modul ``cerbos-"
+"policies`` installiert jedes Paket im Unterverzeichnis "
+":samp:`policies/{APPLICATION}/` auf jedem Nubus for UCS-System, das die "
+"Engine ausführt. Das Modul validiert das Paket, bevor es es anwendet. "
+"Wenn das Paket nicht kompiliert, behält das Modul die vorherigen "
+"Richtlinien und verwirft das Paket."
+
+#: ../../iam/authorization-engine.rst:305
+msgid ""
+"To list the policy files in the local policy directory, run the command "
+"in :numref:`iam-authorization-engine-policies-listing`."
+msgstr ""
+"Um die Richtliniendateien im lokalen Richtlinienverzeichnis aufzulisten, "
+"führen Sie den Befehl in :numref:`iam-authorization-engine-policies-"
+"listing` aus."
+
+#: ../../iam/authorization-engine.rst:308
+msgid "List the policy files in the local policy directory"
+msgstr "Richtliniendateien im lokalen Richtlinienverzeichnis auflisten"
+
+#: ../../iam/authorization-engine.rst:308
+msgid "$ ls -R /usr/share/univention-guardian-server/policies/"
+msgstr "$ ls -R /usr/share/univention-guardian-server/policies/"
+
+#: ../../iam/authorization-engine.rst:314
+msgid ""
+"The engine doesn't reload policies while it runs. Every policy change "
+"requires a service restart. After the listener module installs a policy "
+"bundle, it automatically restarts the service. If you copy a policy file "
+"to the Nubus for UCS system yourself, restart the authorization engine "
+"service with the command in :numref:`iam-authorization-engine-restart-"
+"listing`."
+msgstr ""
+"Die Engine lädt Richtlinien während der Laufzeit nicht neu. Jede Änderung"
+" einer Richtlinie erfordert einen Neustart des Dienstes. Das Listener-"
+"Modul startet den Dienst neu, nachdem es ein Paket installiert hat. Wenn "
+"Sie selbst eine Richtliniendatei auf das Nubus for UCS-System kopieren, "
+"starten Sie den Dienst der Engine für die Autorisierung mit dem Befehl in"
+" :numref:`iam-authorization-engine-restart-listing` neu."
+
+#: ../../iam/authorization-engine.rst:322
+msgid "Restart the authorization engine"
+msgstr "Die Engine neu starten"
+
+#: ../../iam/authorization-engine.rst:322
+msgid "$ systemctl restart univention-guardian-server.service"
+msgstr "$ systemctl restart univention-guardian-server.service"
+
+#: ../../iam/authorization-engine.rst:330
+msgid ""
+"Copy a policy file to a Nubus for UCS system only for local testing. The "
+"next package update removes the file, and no other authorization engine "
+"in the domain receives it."
+msgstr ""
+"Kopieren Sie eine Richtliniendatei nur für lokale Tests auf ein Nubus for"
+" UCS-System. Das nächste Paketupdate entfernt die Datei, und keine andere"
+" Engine für die Autorisierung in der Domäne erhält sie."
+
+#: ../../iam/authorization-engine.rst:336
+msgid "`Cerbos | Policies <https://docs.cerbos.dev/cerbos/latest/policies/>`_"
+msgstr "`Cerbos | Policies <https://docs.cerbos.dev/cerbos/latest/policies/>`_"
+
+#: ../../iam/authorization-engine.rst:337
+msgid "for information about the policy format."
+msgstr "für Informationen zum Format der Richtlinien."
+
+#: ../../iam/authorization-engine.rst:342
+msgid "Diagnose the authorization engine"
+msgstr "Fehler in der Engine diagnostizieren"
+
+#: ../../iam/authorization-engine.rst:344
+msgid ""
+"This section describes the authorization engine logs and common causes of"
+" problems."
+msgstr ""
+"Dieser Abschnitt beschreibt die Protokolle der Engine für die "
+"Autorisierung und häufige Problemursachen."
+
+#: ../../iam/authorization-engine.rst:347
+msgid ""
+"To see which policies the engine loaded and why it skipped a policy, read"
+" the log of the service with the command in :numref:`iam-authorization-"
+"engine-log-listing`."
+msgstr ""
+"Um zu sehen, welche Richtlinien die Engine geladen hat und warum sie eine"
+" Richtlinie übersprungen hat, lesen Sie das Dienstprotokoll mit dem "
+"Befehl in :numref:`iam-authorization-engine-log-listing`."
+
+#: ../../iam/authorization-engine.rst:352
+msgid "Read the log of the authorization engine"
+msgstr "Das Protokoll der Engine lesen"
+
+#: ../../iam/authorization-engine.rst:352
+msgid "$ journalctl -u univention-guardian-server.service"
+msgstr "$ journalctl -u univention-guardian-server.service"
+
+#: ../../iam/authorization-engine.rst:358
+msgid ""
+"Check the listener log with the command in :numref:`iam-authorization-"
+"engine-listener-log-listing`. It shows whether the listener module "
+"installed or rejected a policy bundle."
+msgstr ""
+"Prüfen Sie das Listener-Protokoll mit dem Befehl in :numref:`iam-"
+"authorization-engine-listener-log-listing`. Es zeigt, ob das Listener-"
+"Modul ein Richtlinienpaket installiert oder abgelehnt hat."
+
+#: ../../iam/authorization-engine.rst:362
+msgid "Read the listener log for policy bundles"
+msgstr "Das Listener-Log für Richtlinienpakete lesen"
+
+#: ../../iam/authorization-engine.rst:362
+msgid "$ grep cerbos-policies /var/log/univention/listener.log"
+msgstr "$ grep cerbos-policies /var/log/univention/listener.log"
+
+#: ../../iam/authorization-engine.rst:368
+msgid "To diagnose a policy evaluation, do the following as root:"
+msgstr ""
+"Führen Sie als Root zur Diagnose einer Richtlinienauswertung Folgendes "
+"aus:"
+
+#: ../../iam/authorization-engine.rst:371
+msgid ""
+"Run the command in :numref:`iam-authorization-engine-enable-diagnostics-"
+"listing` to set the log level and enable audit logging. If you stop "
+"diagnosing or can't complete the diagnosis, immediately run the command "
+"in :numref:`iam-authorization-engine-reset-diagnostics-listing` to reset "
+"the variables to their default values."
+msgstr ""
+"Führen Sie den Befehl in :numref:`iam-authorization-engine-enable-"
+"diagnostics-listing` aus, um die Protokollstufe festzulegen und die "
+"Audit-Protokollierung zu aktivieren. Wenn Sie die Diagnose beenden oder "
+"nicht abschließen können, führen Sie sofort den Befehl in :numref:`iam-"
+"authorization-engine-reset-diagnostics-listing` aus, um die Variablen auf"
+" ihre Standardwerte zurückzusetzen."
+
+#: ../../iam/authorization-engine.rst:381
+msgid ""
+"Debug and audit logs contain request payloads, which can include personal"
+" data. Enable these settings only for as long as you need them."
+msgstr ""
+"Debug- und Audit-Protokolle enthalten Anfrageinhalte, die "
+"personenbezogene Daten enthalten können. Aktivieren Sie diese "
+"Einstellungen nur so lange, wie Sie sie benötigen."
+
+#: ../../iam/authorization-engine.rst:385
+msgid "Enable diagnostic logging for policy evaluation"
+msgstr "Diagnoseprotokollierung für die Richtlinienauswertung aktivieren"
+
+#: ../../iam/authorization-engine.rst:385
+msgid ""
+"$ ucr set \\\n"
+"  guardian/cerbos/log-level=DEBUG \\\n"
+"  guardian/cerbos/audit-logging/enabled=true"
+msgstr ""
+"$ ucr set \\\n"
+"  guardian/cerbos/log-level=DEBUG \\\n"
+"  guardian/cerbos/audit-logging/enabled=true"
+
+#: ../../iam/authorization-engine.rst:393
+msgid "Wait until the authorization engine has restarted."
+msgstr "Warten Sie, bis die Engine für die Autorisierung neu gestartet ist."
+
+#: ../../iam/authorization-engine.rst:395
+msgid "Reproduce the policy evaluation that you want to diagnose."
+msgstr ""
+"Reproduzieren Sie die Richtlinienauswertung, die Sie diagnostizieren "
+"möchten."
+
+#: ../../iam/authorization-engine.rst:397
+msgid ""
+"Read the service log with the command in :numref:`iam-authorization-"
+"engine-log-listing`."
+msgstr ""
+"Lesen Sie das Dienstprotokoll mit dem Befehl in :numref:`iam-"
+"authorization-engine-log-listing`."
+
+#: ../../iam/authorization-engine.rst:400
+msgid ""
+"Run the command in :numref:`iam-authorization-engine-reset-diagnostics-"
+"listing` to reset the variables to their default values."
+msgstr ""
+"Führen Sie den Befehl in :numref:`iam-authorization-engine-reset-"
+"diagnostics-listing` aus, um die Variablen auf ihre Standardwerte "
+"zurückzusetzen."
+
+#: ../../iam/authorization-engine.rst:404
+msgid "Reset diagnostic logging for policy evaluation"
+msgstr "Diagnoseprotokollierung für die Richtlinienauswertung zurücksetzen"
+
+#: ../../iam/authorization-engine.rst:404
+msgid ""
+"$ ucr set \\\n"
+"  guardian/cerbos/log-level=WARN \\\n"
+"  guardian/cerbos/audit-logging/enabled=false"
+msgstr ""
+"$ ucr set \\\n"
+"  guardian/cerbos/log-level=WARN \\\n"
+"  guardian/cerbos/audit-logging/enabled=false"
+
+#: ../../iam/authorization-engine.rst:412
+msgid ""
+"Run the command in :numref:`iam-authorization-engine-verify-diagnostics-"
+"listing` to verify the default values."
+msgstr ""
+"Führen Sie den Befehl in :numref:`iam-authorization-engine-verify-"
+"diagnostics-listing` aus, um die Standardwerte zu prüfen."
+
+#: ../../iam/authorization-engine.rst:416
+msgid "Verify diagnostic logging defaults"
+msgstr "Standardwerte der Diagnoseprotokollierung prüfen"
+
+#: ../../iam/authorization-engine.rst:416
+msgid ""
+"$ ucr get guardian/cerbos/log-level\n"
+"WARN\n"
+"$ ucr get guardian/cerbos/audit-logging/enabled\n"
+"false"
+msgstr ""
+"$ ucr get guardian/cerbos/log-level\n"
+"WARN\n"
+"$ ucr get guardian/cerbos/audit-logging/enabled\n"
+"false"
+
+#: ../../iam/authorization-engine.rst:425
+msgid "The following list describes common symptoms and their causes:"
+msgstr "Die folgende Liste beschreibt häufige Symptome und ihre Ursachen:"
+
+#: ../../iam/authorization-engine.rst:427
+msgid "The engine denies an action that a policy allows."
+msgstr "Die Engine verweigert eine Aktion, die eine Richtlinie erlaubt."
+
+#: ../../iam/authorization-engine.rst:428
+msgid ""
+"The engine bases its decision on the request content. Enable "
+":envvar:`guardian/cerbos/audit-logging/enabled` and compare the logged "
+"request with the condition in the policy. In most cases, the calling "
+"service didn't send an expected attribute or role."
+msgstr ""
+"Die Engine trifft ihre Entscheidung anhand des Anfrageinhalts. Aktivieren"
+" Sie :envvar:`guardian/cerbos/audit-logging/enabled` und vergleichen Sie "
+"die protokollierte Anfrage mit der Bedingung in der Richtlinie. In den "
+"meisten Fällen hat der aufrufende Dienst ein erwartetes Attribut oder "
+"eine erwartete Rolle nicht gesendet."
+
+#: ../../iam/authorization-engine.rst:434
+msgid "A policy change has no effect."
+msgstr "Eine Richtlinienänderung hat keine Wirkung."
+
+#: ../../iam/authorization-engine.rst:435
+msgid ""
+"The engine doesn't reload policies while it runs. Restart the service as "
+"shown in :numref:`iam-authorization-engine-restart-listing`. If you "
+"registered a policy bundle, read the listener log. The module rejects a "
+"bundle that doesn't compile."
+msgstr ""
+"Die Engine lädt Richtlinien während der Laufzeit nicht neu. Starten Sie "
+"den Dienst wie in :numref:`iam-authorization-engine-restart-listing` "
+"gezeigt neu. Wenn Sie ein Richtlinienpaket registriert haben, lesen Sie "
+"das Listener-Protokoll. Das Modul lehnt ein Paket ab, das nicht "
+"kompiliert."
+
+#: ../../iam/authorization-engine.rst:441
+msgid "The engine ignores a policy file."
+msgstr "Die Engine ignoriert eine Richtliniendatei."
+
+#: ../../iam/authorization-engine.rst:442
+msgid ""
+":program:`Cerbos` treats a file whose name ends in ``_test.yaml`` as a "
+"test file, not as a policy. Rename the file."
+msgstr ""
+":program:`Cerbos` behandelt eine Datei, deren Name auf ``_test.yaml`` "
+"endet, als Testdatei und nicht als Richtlinie. Benennen Sie die Datei um."
+
+#: ../../iam/authorization-engine.rst:446
+msgid "The engine doesn't start."
+msgstr "Die Engine startet nicht."
+
+#: ../../iam/authorization-engine.rst:447
+msgid ""
+"The authorization engine :program:`Cerbos` runs as a container. Run the "
+"commands in :numref:`iam-authorization-engine-container-state-listing` to"
+" check the service, the container runtime, and the container."
+msgstr ""
+"Die Engine für die Autorisierung :program:`Cerbos` läuft als Container. "
+"Führen Sie die Befehle in :numref:`iam-authorization-engine-container-"
+"state-listing` aus, um den Dienst, die Container-Laufzeitumgebung und den"
+" Container zu prüfen."
+
+#: ../../iam/authorization-engine.rst:452
+msgid ""
+"If ``docker.service`` doesn't run, start it, then restart the "
+"authorization engine as shown in :numref:`iam-authorization-engine-"
+"restart-listing`. If the service starts but the container exits, the "
+"container log identifies the cause."
+msgstr ""
+"Wenn ``docker.service`` nicht läuft, starten Sie ihn und starten Sie dann"
+" die Engine für die Autorisierung wie in :numref:`iam-authorization-"
+"engine-restart-listing` gezeigt neu. Wenn der Dienst startet, der "
+"Container aber beendet wird, nennt das Container-Protokoll die Ursache."
+
+#: ../../iam/authorization-engine.rst:458
+msgid ""
+"A policy file with invalid content is a common cause. If the log doesn't "
+"identify a cause, contact Univention support and include the output of "
+"these commands."
+msgstr ""
+"Eine Richtliniendatei mit ungültigem Inhalt ist eine häufige Ursache. "
+"Wenn das Protokoll keine Ursache nennt, wenden Sie sich an den Univention"
+" Support und fügen Sie die Ausgabe dieser Befehle bei."
+
+#: ../../iam/authorization-engine.rst:463
+msgid "Check the state of the authorization engine container"
+msgstr "Den Zustand des Containers der Engine für die Autorisierung prüfen"
+
+#: ../../iam/authorization-engine.rst:463
+msgid ""
+"$ systemctl status univention-guardian-server.service\n"
+"$ systemctl status docker.service\n"
+"$ docker ps -a --filter name=cerbos\n"
+"$ docker logs cerbos"
+msgstr ""
+"$ systemctl status univention-guardian-server.service\n"
+"$ systemctl status docker.service\n"
+"$ docker ps -a --filter name=cerbos\n"
+"$ docker logs cerbos"
 
 #: ../../iam/group-management.rst:8 ../../iam/index.rst:24
 msgid "Group management"
@@ -563,7 +1446,7 @@ msgstr ""
 "customization:ref:`customization-api-udm-rest` :cite:t:`uv-nubus-"
 "kubernetes-customization`."
 
-#: ../../iam/index.rst:56 ../../iam/password-management/index.rst:43
+#: ../../iam/index.rst:65 ../../iam/password-management/index.rst:43
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -616,11 +1499,26 @@ msgstr ""
 "Synchronisation von Gruppen mit Active Directory. Siehe :ref:`ucs-"
 "operation-groups`."
 
-#: ../../iam/index.rst:29 ../../iam/user-create-wizard.rst:7
+#: ../../iam/index.rst:30
+msgid ""
+"Install and operate the authorization engine, which answers authorization"
+" requests from other services with a decision. This section covers the "
+"installation, the log settings, the management of the policies that a "
+"server loads, and the diagnosis of a service or a policy that doesn't "
+"work. See :ref:`iam-authorization-engine`."
+msgstr ""
+"Installieren und betreiben Sie die Engine für die Autorisierung, die "
+"Autorisierungsanfragen anderer Dienste mit einer Entscheidung "
+"beantwortet. Dieser Abschnitt behandelt die Installation, die Log-"
+"Einstellungen, die Verwaltung der Richtlinien, die ein Server lädt, und "
+"die Diagnose eines Dienstes oder einer Richtlinie, die nicht "
+"funktioniert. Siehe :ref:`iam-authorization-engine`."
+
+#: ../../iam/index.rst:38 ../../iam/user-create-wizard.rst:7
 msgid "User creation wizard"
 msgstr "Assistent zum Erstellen von Benutzern"
 
-#: ../../iam/index.rst:30
+#: ../../iam/index.rst:39
 msgid ""
 "Configure the user creation wizard for functional administrators, "
 "including requiring a primary email address, controlling which account "
@@ -633,11 +1531,11 @@ msgstr ""
 "angezeigt werden, und der Deaktivierung des Assistenten, wenn Sie ihn "
 "nicht benötigen. Siehe :ref:`iam-user-create-wizard`."
 
-#: ../../iam/index.rst:35 ../../iam/user-activation-apps.rst:7
+#: ../../iam/index.rst:44 ../../iam/user-activation-apps.rst:7
 msgid "User activation for apps"
 msgstr "Benutzeraktivierung für Apps"
 
-#: ../../iam/index.rst:36
+#: ../../iam/index.rst:45
 msgid ""
 "Activate and deactivate users or groups for *App Center* apps directly "
 "from the user account in the *Management UI*, including app-specific "
@@ -648,11 +1546,11 @@ msgstr ""
 "einschließlich spezifischer Einstellung für Apps pro Benutzer. Siehe :ref"
 ":`iam-user-activation-apps`."
 
-#: ../../iam/index.rst:41
+#: ../../iam/index.rst:50
 msgid "User lockout after failed sign-in attempts"
 msgstr "Kontosperrung nach fehlgeschlagenen Anmeldeversuchen"
 
-#: ../../iam/index.rst:42
+#: ../../iam/index.rst:51
 msgid ""
 "Automatically lock user accounts after too many failed sign-in attempts "
 "to prevent brute force attacks on passwords. Nubus for UCS supports three"
@@ -667,11 +1565,11 @@ msgstr ""
 " Konfiguration und eigenem Geltungsbereich. Siehe :ref:`iam-user-"
 "lockout`."
 
-#: ../../iam/index.rst:49 ../../iam/last-bind.rst:7
+#: ../../iam/index.rst:58 ../../iam/last-bind.rst:7
 msgid "Track last sign-in time to detect inactive accounts"
 msgstr "Zeitpunkt der letzten Anmeldung erfassen, um inaktive Konten zu erkennen"
 
-#: ../../iam/index.rst:50
+#: ../../iam/index.rst:59
 msgid ""
 "Identify inactive user accounts by recording when each account last "
 "signed in. Activate the OpenLDAP ``lastbind`` overlay module, collect "
@@ -1766,8 +2664,8 @@ msgstr ""
 "Sie müssen diese Einstellung auf dem Nubus für UCS Node bereitstellen, "
 "den Sie über die UCR-Variable :envvar:`self-service/backend-server` als "
 ":program:`Self Service Backend` definiert haben, da der *End User Self "
-"Service* Anfragen für :spelling:word:`dienstspezifische` Passwörter an das konfigurierte "
-"Backend weiterleitet."
+"Service* Anfragen für :spelling:word:`dienstspezifische` Passwörter an "
+"das konfigurierte Backend weiterleitet."
 
 #: ../../iam/password-management/user-self-service.rst:91
 msgid ""
@@ -1829,10 +2727,9 @@ msgid ""
 msgstr ""
 "Diese Variable konfiguriert die *LDAP*-Attribute, die Benutzer in ihrem "
 "eigenen Benutzerkonto ändern können. Sie müssen die Variable auf dem "
-":term:`UCS Primary Directory Node` in Ihrer Nubus für UCS Domäne setzen."
-" Auf dem Primary Directory Node generiert und aktiviert das UCR Modul die"
-" ACL-Definitionsliste im "
-"Verzeichnisdienst."
+":term:`UCS Primary Directory Node` in Ihrer Nubus für UCS Domäne setzen. "
+"Auf dem Primary Directory Node generiert und aktiviert das UCR Modul die "
+"ACL-Definitionsliste im Verzeichnisdienst."
 
 #: ../../iam/password-management/user-self-service.rst:126
 msgid "``jpegPhoto,mail,telephoneNumber,roomNumber,departmentNumber,st,c,homePhone,mobile,homePostalAddress``"
@@ -2123,7 +3020,6 @@ msgstr ""
 "registration/udm_attributes` muss die UDM Attribute enthalten."
 
 #: ../../iam/password-management/user-self-service.rst:291
-#, python-brace-format
 msgid "``lastname,username``"
 msgstr "``lastname,username``"
 
