@@ -26,6 +26,15 @@ Group management
    including nested groups, group caching, and Active Directory group synchronization.
    See :ref:`ucs-operation-groups`.
 
+Authorization engine
+   Install and operate the authorization engine,
+   which answers authorization requests from other services
+   with a decision.
+   This section covers the installation, the log settings,
+   the management of the policies that a server loads,
+   and the diagnosis of a service or a policy that doesn't work.
+   See :ref:`iam-authorization-engine`.
+
 User creation wizard
    Configure the user creation wizard for functional administrators,
    including requiring a primary email address, controlling which account properties appear,
@@ -58,6 +67,7 @@ Track last sign-in time to detect inactive accounts
 
    password-management/index
    group-management
+   authorization-engine
    user-create-wizard
    http-api
    user-activation-apps
