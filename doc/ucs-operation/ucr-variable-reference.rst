@@ -637,6 +637,50 @@ This section provides a reference for UCR variables.
    :Possible values: integer, ``0`` for immediate boot, ``-1`` for manual selection
    :Type: integer
 
+.. envvar:: guardian/cerbos/audit-logging/enabled
+
+   Controls whether the authorization engine writes access
+   and decision audit logs.
+   When set to ``true``,
+   the engine logs every request that it receives
+   and every decision that it returns.
+   The engine writes the logs to its standard output.
+
+   Changing this variable regenerates its configuration file
+   and restarts the authorization engine.
+   Requests fail during the restart.
+
+   The audit logs contain request payloads,
+   which can include personal data.
+   Activate audit logging only as long as you need it.
+
+   For more information about the authorization engine,
+   see :ref:`iam-authorization-engine-configure`.
+
+   :Default value: ``false``
+   :Possible values: ``true``, ``false``
+   :Type: boolean
+
+
+.. envvar:: guardian/cerbos/log-level
+
+   Sets the log level for :program:`Cerbos`.
+
+   Changing this variable regenerates its configuration file
+   and restarts the authorization engine.
+   Requests fail during the restart.
+
+   The ``DEBUG`` value logs request payloads,
+   which can include personal data.
+   Use ``DEBUG`` only as long as you need it.
+
+   For more information about the authorization engine,
+   see :ref:`iam-authorization-engine-configure`.
+
+   :Default value: ``WARN``
+   :Possible values: ``DEBUG``, ``INFO``, ``WARN``, ``ERROR``
+   :Type: string
+
 .. envvar:: interfaces/*/address
 
    Configure the IPv4 address for a network interface.
