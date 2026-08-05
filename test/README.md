@@ -162,7 +162,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/base/ucs-master-slave-joined.cfg](scenarios/base/ucs-master-slave-joined.cfg): Setup Master and Slave
 * [scenarios/base/ucs-primary-with-200000-users.cfg](scenarios/base/ucs-primary-with-200000-users.cfg): Setup Master with 200k users
 * [scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg](scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg) UCS@School primary with school replica
-* [scenarios/base/ucs-school-performance-env1.cfg](scenarios/base/ucs-school-performance-env1.cfg): UCS@School primary from school performance template
 
 -----
 
@@ -283,7 +282,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/autotest-245-ucsschool-apple-school-manager.cfg](scenarios/autotest-245-ucsschool-apple-school-manager.cfg): UCS@School apple school manager tests
 * [scenarios/autotest-247-ucsschool-id-broker.cfg](scenarios/autotest-247-ucsschool-id-broker.cfg) UCS@School ID Broker tests
 * [scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg](scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg)
-* [scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg): ID Broker Performance (EC2)
 * [scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg): ID Broker Performance (KVM)
 * [scenarios/autotest-248-ram-rankine.cfg](scenarios/autotest-248-ram-rankine.cfg): UCS@School RAM tests
 * [scenarios/autotest-248-ram-rankine-performance.cfg](scenarios/autotest-248-ram-rankine-performance.cfg): UCS@School RAM performance tests
