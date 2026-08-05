@@ -9,3 +9,6 @@ desc: |
  * The S4-Connector now retries primary group synchronization after the
    corresponding group becomes available in Samba/AD.
 bug: [52788]
+erratum: 569
+announced: 2026-08-05
+support: core
