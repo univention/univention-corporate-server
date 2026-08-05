@@ -137,7 +137,6 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/kvm-templates/role-kvm-templates.cfg](scenarios/kvm-templates/role-kvm-templates.cfg): Create `ucs-kt-get` templates for UCS roles
 * [scenarios/kvm-templates/w2k19-ad-template.cfg](scenarios/kvm-templates/w2k19-ad-template.cfg): Create `ucs-kt-get` template for provisioned w2k19 ad
 * [scenarios/kvm-templates/ucs-school-multiserver-joined.cfg](scenarios/kvm-templates/ucs-school-multiserver-joined.cfg): Create `ucs-kt-get` templates for UCS@School environment
-* [scenarios/kvm-templates/ucs-school-performance-env1.cfg](scenarios/kvm-templates/ucs-school-performance-env1.cfg): Create `ucs-kt-get` templates for UCS@School performance environment
 * [scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg](scenarios/kvm-templates/primary-with-200000-users-kvm-template.cfg) Create `ucs-kt-get` templates for UCS performance environment
 * [scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg](scenarios/kvm-templates/samba-primary-replica-kvm-templates.cfg): Create `ucs-kt-get` templates for UCS samba environment
 

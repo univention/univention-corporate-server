@@ -56,11 +56,6 @@ _[TOC]_
 - **Example:** [scenarios/base/ucs-primary-with-200000-users.cfg](../base/ucs-primary-with-200000-users.cfg)
 - **Base template:** generic-unsafe
 - **Template cfg:** [primary-with-200000-users-kvm-template.cfg](./primary-with-200000-users-kvm-template.cfg)
-### ucs-school-performance-env1-primary|ucs-school-performance-env1-backup1
-- **Description:** School primary and backup with 250000 school users (see utils/utils-school.sh::create_users_in_template_job for details), domain: school.test
-- **Example:** TODO
-- **Base template:** generic-unsafe
-- **Template cfg:** [ucs-school-performance-env1.cfg](./ucs-school-performance-env1.cfg)
 
 ## Usage
 The normal use case is to start templates with start-test.sh. Some example cfg files can be found in [test/scenarios/base](../base/README.md)
