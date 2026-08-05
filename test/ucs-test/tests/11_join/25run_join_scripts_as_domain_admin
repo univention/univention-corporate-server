@@ -1,0 +1,83 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Run a join script with a delegated Domain Admin account
+## packages:
+##  - univention-join
+## roles:
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## exposure: dangerous
+
+eval "$(ucr shell)"
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/master.sh
+. "$TESTLIBPATH/master.sh" || exit 137
+# shellcheck source=../../lib/random.sh
+. "$TESTLIBPATH/random.sh" || exit 137
+
+username="join-admin-$(random_chars)"
+password="$(random_chars 24)"
+user_dn="uid=${username},cn=users,${ldap_base}"
+domain_admins="${groups_default_domainadmins:-Domain Admins}"
+password_file="$(mktemp)"
+join_script_name=99ucs-test-domain-admin.inst
+join_script="/usr/lib/univention-install/${join_script_name}"
+join_script_flag=/tmp/ucs-test-domain-admin.flag
+
+cleanup() {
+	rm -f "$join_script" "$join_script_flag" "$password_file"
+	sed -i '/^ucs-test-domain-admin v/d' /var/univention-join/status
+	on_master_escaped udm users/user remove --dn "$user_dn" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
+on_master_escaped \
+	udm users/user create \
+	--position "cn=users,${ldap_base}" \
+	--set "username=${username}" \
+	--set "password=${password}" \
+	--set "lastname=Join Script Test" \
+	--set "primaryGroup=cn=${domain_admins},cn=groups,${ldap_base}" \
+	|| fail_fast 1 "Failed to create delegated Domain Admin"
+
+# Wait until the Primary can resolve the new account for SSH authentication.
+for _ in $(seq 1 60); do
+	if on_master_escaped getent passwd "$username" >/dev/null; then
+		break
+	fi
+	sleep 1
+done
+on_master_escaped getent passwd "$username" >/dev/null \
+	|| fail_fast 1 "Delegated Domain Admin did not become available on the Primary"
+
+if on_master_escaped id -Gn "$username" | grep -Fq 'DC Backup Hosts'; then
+	fail_fast 1 "Test account unexpectedly belongs to DC Backup Hosts"
+fi
+
+printf '%s' "$password" >"$password_file"
+chmod 600 "$password_file"
+
+cat >"$join_script" <<-EOF
+	#!/bin/bash
+	VERSION=1
+	. /usr/share/univention-join/joinscripthelper.lib
+	joinscript_init
+	touch "$join_script_flag"
+	joinscript_save_current_version
+	EOF
+chmod 755 "$join_script"
+
+univention-run-join-scripts \
+	-dcaccount "$username" \
+	-dcpwd "$password_file" \
+	--force \
+	--run-scripts "$join_script_name" \
+	|| fail_test 1 "Running the join script as a delegated Domain Admin failed"
+
+test -e "$join_script_flag" \
+	|| fail_test 1 "The selected join script was not executed"
+
+exit "$RETVAL"
