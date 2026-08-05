@@ -11,3 +11,6 @@ desc: |
  * The allowfilter and ignorefilter settings from the AD Connector now support
    basic substring matching for values e.g `*string*`.
 bug: [59694, 59701]
+erratum: 568
+announced: 2026-08-05
+support: core
