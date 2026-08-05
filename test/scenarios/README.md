@@ -88,11 +88,11 @@ Altough every scenario can be started on the local computer via the docker tool 
 
 Personal environments just means, that the name of the instance starts with the uid of the user that started the job.
 
-To create a such a job, add the job to the appropriate seed script in univention/dist/jenkins>, e.g.
+To create a such a job, add the job to the appropriate seed script in univention/infrastructure/private/jenkins>, e.g.
 ```
-def ram_kvm = job("${cuas.jenkins_folder_name}/RAM-environment") {
-    displayName('Create RAM Environment in KVM')
-    description('Create an school env with a primary and a backup with the rankine APIs.')
+def school_multiserver_kvm = job("${cuas.jenkins_folder_name}/SchoolMultiserverEnvironment") {
+    displayName('Create school environment in KVM')
+    description('Creates school environment with primary and school replica (joined) for school1 in KVM.')
     logRotator(28, 3, -1, -1)
     label(label_agents)
     wrappers {
@@ -103,11 +103,11 @@ def ram_kvm = job("${cuas.jenkins_folder_name}/RAM-environment") {
         configure EC2Tools.extensibleChoice('KVM_BUILD_SERVER', 'KVM_BUILD_SERVER', 'ranarp.knut.univention.de')
     }
     steps {
-        shell('cd test && exec ./utils/ram/start-kvm.sh')
+        shell('cd test && exec ./utils/start-ucs-school-multiserver-joined-kvm.sh')
     }
 }
-EC2Tools.addUpdateParameters(ram_kvm, false, false)
-EC2Tools.addUcsGit(ram_kvm, cucs.mmm, '/test/scenarios', '/test/utils')
+EC2Tools.addUpdateParameters(school_multiserver_kvm, false, false)
+EC2Tools.addUcsGit(school_multiserver_kvm, cucs.mmm, '/test/scenarios', '/test/utils')
 ```
 
 and a start wrapper somewhere in univention/dev/ucs>test/utils
@@ -126,9 +126,9 @@ export UCS_TEST_RUN=false  # don't execte use-test
 
 # user specific instances "username_..."
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
-export JOB_BASE_NAME="${JOB_BASE_NAME:=ram-env}"
+export JOB_BASE_NAME="${JOB_BASE_NAME:=ucs-school-multiserver-joined}"
 
-exec ./utils/start-test.sh scenarios/autotest-248-ram-rankine.cfg
+exec ./utils/start-test.sh scenarios/base/ucs-school-multiserver-joined-primary-school1.cfg
 ```
 
 `BUILD_USER_ID` is set by jenkins to the uid of current logged in user and `KVM_OWNER` instructs ec2-kvm-create to create an instance with this "name" (pmueller_master-ucsschool-env) -> So this creates instances with YOUR uid in the name.
