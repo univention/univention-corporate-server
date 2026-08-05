@@ -1,3 +1,9 @@
+ucs-test (12.6.44) unstable; urgency=medium
+
+  * Bug #59701: Test substring search in AD-Connctor allow-/ignorefilter
+
+ -- Arvid Requate <requate@univention.de>  Wed, 05 Aug 2026 11:40:16 +0200
+
 ucs-test (12.6.43) unstable; urgency=medium
 
   * Bug #59694: added ad connector test for primary group retry
