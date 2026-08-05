@@ -463,3 +463,77 @@ set_udm_properties_for_kelvin_api_tests () {
 }
 EOF
 }
+
+# UCS@school performance test helpers
+
+udm_rest_setup () {
+	ucr set directory/manager/rest/processes=0
+	systemctl restart univention-directory-manager-rest
+}
+
+kelvin_setup () {
+	univention-app configure ucsschool-kelvin-rest-api --set ucsschool/kelvin/processes=0 --set ucsschool/kelvin/log_level=DEBUG && univention-app restart ucsschool-kelvin-rest-api
+}
+
+register_cpu_count () {
+    # Register the CPU-Count so the system that does the performance test can check
+    # that the right amount of CPUs is set.
+    ucr set test/kelvin-performance/cpu-count="$(lscpu --online --parse | grep -v ^# | wc -l)"
+}
+
+performance_test_settings () {
+	ucr set \
+		nss/group/cachefile/invalidate_on_changes=no \
+		listener/module/portal_groups/deactivate=yes
+	service univention-directory-listener restart
+}
+
+performance_test_setup () {
+	ucr set security/limits/user/root/soft/nofile=10240
+	ucr set security/limits/user/root/hard/nofile=10240
+	echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
+	sysctl -p
+}
+
+performance_test_checkout_build_install () {
+	local branch="$1"
+	local gitlab="git.knut.univention.de"
+	[ -z "$branch" ] && echo "ERROR: performance_test_checkout_build_install: specified branch name is empty string" && exit 1
+	univention-install -y git
+	git clone -b "$branch" "https://$gitlab/univention/dev/education/ucsschool-kelvin-rest-api.git" /var/tmp/kelvin
+	cd /var/tmp/kelvin/ucs-test-ucsschool-kelvin
+	DEBIAN_FRONTEND=noninteractive apt-get build-dep --yes . && \
+		dpkg-buildpackage -b && \
+		DEBIAN_FRONTEND=noninteractive apt-get install --yes -f ../ucs-test-ucsschool-kelvin-performance_*.deb || \
+			{ echo "ERROR: BUILD OF ucs-test-ucsschool-kelvin-performance FAILED" ; return 1; }
+	echo "INFO: ucs-test-ucsschool-kelvin-performance built and installed"
+	dpkg -l ucs-test-ucsschool-kelvin-performance
+}
+
+SAR_ARGS=( -b -n DEV,IP,TCP,UDP -P ALL -q -r ALL -S -u ALL )
+DATA_DIR=/var/log/perfstats
+
+start_system_stats_collection () {
+ local host="${1:?missing hostname}"
+
+ apt-get install -y scour sysstat
+ mkdir -pv "$DATA_DIR"
+ touch "$DATA_DIR/empty-$host"
+ # Starting the next two commands in the background has proven to be unreliable. Retrying in a loop.
+ count=0; while ! pgrep -f 'ram.sar' > /dev/null && test $count -lt 100; do (nohup sar "${SAR_ARGS[@]}" -o "$DATA_DIR/ram.sar" 1 >/dev/null &); count=$(( count + 1 )); sleep 1; done
+ # When not looked at every day anymore, reduce size with: ... | bzip2 -9c > $DATA_DIR/stats-$host.top.txt.bz2 &
+ count=0; while ! pgrep -f 'top -bci' > /dev/null && test $count -lt 100; do (nohup top -bci -w512 -d 1 > "$DATA_DIR/stats-$host.top.txt" &); count=$(( count + 1 )); sleep 1; done
+ pgrep -af 'top|sar'
+}
+
+end_system_stats_collection () {
+ local host="${1:?missing hostname}"
+
+ pgrep -af 'top|sar'
+ pkill -f ram.sar -SIGINT || true
+ pkill -f 'top -bci' || true
+ ls -la "$DATA_DIR"
+ [ -e "$DATA_DIR/ram.sar" ] && sadf -g "$DATA_DIR/ram.sar" -- "${SAR_ARGS[@]}" | scour -o "$DATA_DIR/stats-$host.sar.svg" || echo "Not found: $DATA_DIR/ram.sar"
+ # stats.sar.txt (decompressed) can be uploaded to https://sarchart.dotsuresh.com/ for interactive graphs
+ [ -e "$DATA_DIR/ram.sar" ] && sar "${SAR_ARGS[@]}" -f "$DATA_DIR/ram.sar" | bzip2 -9c > "$DATA_DIR/stats-$host.sar.txt.bz2" || echo "Not found: $DATA_DIR/ram.sar"
+}
