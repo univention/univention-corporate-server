@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 
+import sys
+
 import pytest
 
 
@@ -10,7 +12,7 @@ ANYTHING = object()
 
 
 @pytest.fixture
-def custom_apps_umc(custom_apps):
+def custom_apps_umc(custom_apps, mocked_ucr_appcenter):
     custom_apps.load('unittests/inis/umc/')
     return custom_apps
 
@@ -158,4 +160,247 @@ class TestUCSSchool:
             mock,
             [(custom_apps_umc.find('ucsschool'), 'install', settings_ucsschool, ANYTHING), {}],
             [(custom_apps_umc.find('ucsschool-kelvin-rest-api'), 'install', settings_kelvin, ANYTHING), {}],
+        )
+
+
+def test_run_validates_required_hosts_server_side(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    provisioning = custom_apps_umc.find('kopano-webapp')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([provisioning, connector], {provisioning.id: [primary]}),
+    )
+
+    appcenter_umc_instance._validate_required_hosts(
+        [provisioning, connector],
+        [provisioning.id],
+        'install',
+        {primary: [provisioning.id], member: [connector.id]},
+    )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='must be installed on'):
+        appcenter_umc_instance._validate_required_hosts(
+            [provisioning, connector],
+            [provisioning.id],
+            'install',
+            {primary: [connector.id], member: [provisioning.id]},
+        )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='exactly one target host'):
+        appcenter_umc_instance._validate_required_hosts(
+            [provisioning, connector],
+            [provisioning.id],
+            'install',
+            {primary: [provisioning.id], member: [provisioning.id, connector.id]},
+        )
+
+
+def test_run_rejects_incomplete_or_inconsistent_plan(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    provisioning = custom_apps_umc.find('kopano-webapp')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([provisioning, connector], {provisioning.id: [primary]}),
+    )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='now also requires'):
+        appcenter_umc_instance._validate_required_hosts(
+            [connector], [], 'install', {member: [connector.id]},
+        )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='now also requires'):
+        appcenter_umc_instance._validate_required_hosts(
+            [connector], [provisioning.id], 'install', {member: [connector.id]},
+        )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='duplicate Apps'):
+        appcenter_umc_instance._validate_required_hosts(
+            [connector, connector], [], 'install', {member: [connector.id]},
+        )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='unknown Apps'):
+        appcenter_umc_instance._validate_required_hosts(
+            [provisioning, connector],
+            [provisioning.id],
+            'install',
+            {primary: [provisioning.id, 'unknown'], member: [connector.id]},
+        )
+
+
+def test_run_rejects_newly_satisfied_automatic_dependency(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    provisioning = custom_apps_umc.find('kopano-webapp')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([connector], {}),
+    )
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='inconsistent'):
+        appcenter_umc_instance._validate_required_hosts(
+            [provisioning, connector],
+            [provisioning.id],
+            'install',
+            {primary: [provisioning.id], member: [connector.id]},
+        )
+
+
+def test_run_rejects_unrelated_app_marked_as_automatic(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    unrelated = custom_apps_umc.find('kopano-webapp')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([connector], {}),
+    )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='inconsistent'):
+        appcenter_umc_instance._validate_required_hosts(
+            [connector, unrelated],
+            [unrelated.id],
+            'install',
+            {member: [connector.id], primary: [unrelated.id]},
+        )
+
+
+def test_run_rejects_full_plan_with_only_automatic_apps(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    provisioning = custom_apps_umc.find('kopano-webapp')
+    primary = 'master.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([], {}),
+    )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='inconsistent'):
+        appcenter_umc_instance._validate_required_hosts(
+            [provisioning],
+            [provisioning.id],
+            'install',
+            {primary: [provisioning.id]},
+        )
+
+
+def test_remote_auto_dependency_subsets_keep_auto_installed_semantics(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    provisioning = custom_apps_umc.find('kopano-webapp')
+    backend = custom_apps_umc.find('kopano-core')
+    primary = 'master.intranet.example.de'
+    resolver = mocker.patch.object(appcenter_module, 'resolve_domain_dependencies')
+    auto_installed = [backend.id, provisioning.id]
+
+    resolver.return_value = ([provisioning], {})
+    apps, hosts = appcenter_umc_instance._validate_required_hosts(
+        [provisioning], auto_installed, 'install', {primary: [provisioning.id]},
+        plan_is_subset=True,
+    )
+    assert apps == [provisioning]
+    assert hosts == {primary: [provisioning.id]}
+    assert auto_installed == [backend.id, provisioning.id]
+    assert resolver.call_args.args[0] == [provisioning]
+
+    resolver.return_value = ([backend, provisioning], {})
+    apps, hosts = appcenter_umc_instance._validate_required_hosts(
+        [backend, provisioning],
+        auto_installed,
+        'install',
+        {primary: [backend.id, provisioning.id]},
+        plan_is_subset=True,
+    )
+    assert apps == [backend, provisioning]
+    assert hosts == {primary: [backend.id, provisioning.id]}
+    assert auto_installed == [backend.id, provisioning.id]
+    assert resolver.call_args.args[0] == [backend, provisioning]
+
+
+def test_remote_root_subset_accepts_dependency_assigned_to_another_host(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    provisioning = custom_apps_umc.find('kopano-webapp')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([provisioning, connector], {provisioning.id: [primary]}),
+    )
+    auto_installed = [provisioning.id]
+
+    apps, hosts = appcenter_umc_instance._validate_required_hosts(
+        [connector], auto_installed, 'install', {member: [connector.id]},
+        plan_is_subset=True,
+        dry_run=True,
+    )
+
+    assert apps == [connector]
+    assert hosts == {member: [connector.id]}
+    assert auto_installed == [provisioning.id]
+
+
+@pytest.mark.parametrize('action', ['remove', 'upgrade'])
+def test_run_allows_same_app_on_multiple_hosts(
+    action, custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([connector], {}),
+    )
+
+    apps, hosts = appcenter_umc_instance._validate_required_hosts(
+        [connector], [], action, {primary: [connector.id], member: [connector.id]},
+    )
+
+    assert apps == [connector]
+    assert hosts == {primary: [connector.id], member: [connector.id]}
+
+
+def test_run_rejects_installing_same_app_on_multiple_hosts(
+    custom_apps_umc, appcenter_umc_instance, mocked_ucr_appcenter, mocker,
+):
+    appcenter_module = sys.modules[appcenter_umc_instance.__class__.__module__]
+    connector = custom_apps_umc.find('riot')
+    primary = 'master.intranet.example.de'
+    member = 'member.intranet.example.de'
+    mocker.patch.object(
+        appcenter_module,
+        'resolve_domain_dependencies',
+        return_value=([connector], {}),
+    )
+
+    with pytest.raises(appcenter_module.umcm.UMC_Error, match='exactly one target host'):
+        appcenter_umc_instance._validate_required_hosts(
+            [connector], [], 'install', {primary: [connector.id], member: [connector.id]},
         )

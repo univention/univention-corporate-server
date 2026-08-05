@@ -28,6 +28,7 @@ define([
 		// these need to be provided
 		apps: null,
 		auto_installed: null,
+		required_hosts: null,
 		// these need to be provided
 		//
 		selectedApps: null,
@@ -39,8 +40,20 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this.required_hosts = this.required_hosts || {};
 			this.selectedApps = this.apps.filter(app => !this.auto_installed.includes(app.id));
 			this.pages = this._getPages();
+		},
+
+		_getRequiredHost: function(appId) {
+			if (!Object.prototype.hasOwnProperty.call(this.required_hosts, appId)) {
+				return null;
+			}
+			const hosts = this.required_hosts[appId];
+			if (!Array.isArray(hosts) || hosts.length !== 1 || typeof hosts[0] !== 'string' || !hosts[0]) {
+				throw new Error(`Invalid required host mapping for App ${appId}`);
+			}
+			return hosts[0];
 		},
 
 		buildRendering: function() {
@@ -145,6 +158,8 @@ define([
 				]
 			};
 			for (const app of this.apps) {
+				const requiredHost = this._getRequiredHost(app.id);
+				let requiredHostData = null;
 				var hosts = [];
 				var removedDueToInstalled = [];
 				var removedDueToRole = [];
@@ -171,8 +186,15 @@ define([
 						}
 					});
 				}
+				if (requiredHost) {
+					requiredHostData = hosts.find(host => host.id === requiredHost);
+					hosts = requiredHostData ? [requiredHostData] : [];
+				}
 
 				var removeExplanation = '';
+				if (requiredHost && !requiredHostData) {
+					removeExplanation += '<p>' + _('The required host %s is not available for this App.', entities.encode(requiredHost)) + '</p>';
+				}
 				if (removedDueToInstalled.length === 1) {
 					removeExplanation += '<p>' + _('%s was removed from the list because the App is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
 				} else if (removedDueToInstalled.length > 1) {
@@ -199,7 +221,9 @@ define([
 					name: app.id,
 					required: true,
 					size: 'One',
-					staticValues: hosts
+					staticValues: hosts,
+					value: requiredHostData ? requiredHost : undefined,
+					disabled: !!requiredHostData,
 				});
 				page.layout.push([`chooseHosts_appText_${app.id}`, app.id]);
 				if (removeExplanation) {
@@ -213,6 +237,7 @@ define([
 				}
 
 				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown
+					|| !!requiredHost
 					|| (hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length);
 			}
 			return page;
@@ -254,6 +279,3 @@ define([
 		}
 	});
 });
-
-
-

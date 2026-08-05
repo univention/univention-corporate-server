@@ -181,3 +181,45 @@ msgstr ""
 #: umc/python/appcenter/__init__.py:746
 msgid "upgradable"
 msgstr "aktualisierbar"
+
+#: umc/python/appcenter/__init__.py:282
+msgid "The App installation plan contains duplicate Apps. Please refresh it."
+msgstr "Der App-Installationsplan enthält doppelte Apps. Bitte aktualisieren Sie ihn."
+
+#: umc/python/appcenter/__init__.py:293
+#, python-brace-format
+msgid "The App installation plan contains unknown Apps: {apps}. Please refresh it."
+msgstr "Der App-Installationsplan enthält unbekannte Apps: {apps}. Bitte aktualisieren Sie ihn."
+
+#: umc/python/appcenter/__init__.py:311
+#, python-brace-format
+msgid "The App installation plan changed and now also requires: {apps}. Please refresh it."
+msgstr "Der App-Installationsplan hat sich geändert und benötigt nun zusätzlich: {apps}. Bitte aktualisieren Sie ihn."
+
+#: umc/python/appcenter/__init__.py:318
+msgid "The App installation plan is inconsistent. Please refresh it."
+msgstr "Der App-Installationsplan ist inkonsistent. Bitte aktualisieren Sie ihn."
+
+#: umc/python/appcenter/__init__.py:353
+#, python-brace-format
+msgid "Every App must have exactly one target host. Invalid Apps: {apps}."
+msgstr "Jede App muss genau einen Zielrechner haben. Ungültige Apps: {apps}."
+
+#: umc/python/appcenter/__init__.py:349
+#, python-brace-format
+msgid "Every App must have a target host. Invalid Apps: {apps}."
+msgstr "Jede App muss einen Zielrechner haben. Ungültige Apps: {apps}."
+
+#: umc/python/appcenter/__init__.py:362
+#, python-brace-format
+msgid "Every automatically placed dependency must have exactly one target host. Invalid Apps: {apps}."
+msgstr "Jede automatisch platzierte Abhängigkeit muss genau einen Zielrechner haben. Ungültige Apps: {apps}."
+
+#: umc/python/appcenter/__init__.py:345
+msgid "The App installation plan contains an invalid dependency target."
+msgstr "Der App-Installationsplan enthält ein ungültiges Abhängigkeitsziel."
+
+#: umc/python/appcenter/__init__.py:348
+#, python-brace-format
+msgid "The App {app} must be installed on {hosts}."
+msgstr "Die App {app} muss auf {hosts} installiert werden."

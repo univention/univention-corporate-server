@@ -185,3 +185,146 @@ def test_must_not_be_depended_on_in_list(custom_apps, import_appcenter_module, m
     assert result == {}
     result = requirement(apps, 'remove').test()
     assert result == {}
+
+
+def test_must_have_primary_dependency_on_primary(
+    custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker,
+):
+    custom_apps.load('unittests/inis/install_checks/')
+    install_checks = import_appcenter_module('install_checks')
+    primary = 'master.intranet.example.de'
+    mocked_ucr_appcenter['ldap/master'] = primary
+
+    connector = custom_apps.find('self-service')
+    provisioning = custom_apps.find('self-service-backend')
+    connector.required_apps_in_domain = []
+    connector.required_apps_in_domain_on_primary = [provisioning.id]
+    domain = mocker.Mock()
+    domain.to_dict.return_value = []
+    mocker.patch.object(install_checks, 'get_action', return_value=domain)
+    mocker.patch.object(install_checks, 'app_is_installed_on_server', return_value=False)
+
+    requirement = install_checks.get_requirement('must_have_no_unmet_dependencies')
+    result = requirement([connector], 'install').test()
+
+    assert result == {
+        connector.id: [{
+            'id': provisioning.id,
+            'name': provisioning.name,
+            'in_domain': True,
+            'local_allowed': True,
+            'required_host': primary,
+        }],
+    }
+
+
+def test_primary_dependency_check_uses_primary_for_transitive_dependencies(
+    custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker,
+):
+    custom_apps.load('unittests/inis/install_checks/')
+    install_checks = import_appcenter_module('install_checks')
+    primary = 'master.intranet.example.de'
+    mocked_ucr_appcenter['ldap/master'] = primary
+
+    connector = custom_apps.find('self-service')
+    provisioning = custom_apps.find('kopano-webapp')
+    backend = custom_apps.find('kopano-core')
+    connector.required_apps_in_domain = []
+    connector.required_apps_in_domain_on_primary = [provisioning.id]
+    provisioning.required_apps_in_domain = []
+    provisioning.required_apps = [backend.id]
+    domain = mocker.Mock()
+    domain.to_dict.return_value = []
+    mocker.patch.object(install_checks, 'get_action', return_value=domain)
+    mocker.patch.object(
+        install_checks,
+        'app_is_installed_on_server',
+        side_effect=lambda app_id, _host: app_id == backend.id,
+    )
+
+    requirement = install_checks.get_requirement('must_have_no_unmet_dependencies')
+
+    assert requirement([connector, provisioning], 'install').test() == {}
+
+
+def test_removing_primary_dependency_is_blocked_only_on_primary(
+    custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker,
+):
+    custom_apps.load('unittests/inis/install_checks/')
+    install_checks = import_appcenter_module('install_checks')
+    primary = 'master.intranet.example.de'
+    mocked_ucr_appcenter['ldap/master'] = primary
+
+    connector = custom_apps.find('self-service')
+    provisioning = custom_apps.find('self-service-backend')
+    connector.required_apps_in_domain = []
+    connector.required_apps_in_domain_on_primary = [provisioning.id]
+    domain = mocker.Mock()
+    domain.to_dict.return_value = [{
+        'id': connector.id,
+        'name': connector.name,
+        'is_installed_anywhere': True,
+        'installations': {'master': {'version': connector.version}},
+    }]
+    mocker.patch.object(install_checks, 'get_action', return_value=domain)
+    requirement = install_checks.get_requirement('must_not_be_depended_on')
+
+    assert requirement([provisioning], 'remove').test() == {
+        provisioning.id: [{'id': connector.id, 'name': connector.name}],
+    }
+
+    mocked_ucr_appcenter['hostname'] = 'member'
+    assert requirement([provisioning], 'remove').test() == {}
+
+
+def test_removing_primary_dependency_and_depending_app_together_is_allowed(
+    custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker,
+):
+    custom_apps.load('unittests/inis/install_checks/')
+    install_checks = import_appcenter_module('install_checks')
+    mocked_ucr_appcenter['ldap/master'] = 'master.intranet.example.de'
+
+    connector = custom_apps.find('self-service')
+    provisioning = custom_apps.find('self-service-backend')
+    connector.required_apps_in_domain = []
+    connector.required_apps_in_domain_on_primary = [provisioning.id]
+    domain = mocker.Mock()
+    domain.to_dict.return_value = [{
+        'id': connector.id,
+        'name': connector.name,
+        'is_installed_anywhere': True,
+        'installations': {'master': {'version': connector.version}},
+    }]
+    mocker.patch.object(install_checks, 'get_action', return_value=domain)
+    requirement = install_checks.get_requirement('must_not_be_depended_on')
+
+    assert requirement([provisioning, connector], 'remove').test() == {}
+
+
+def test_removing_primary_dependency_stays_blocked_when_depending_app_remains_elsewhere(
+    custom_apps, import_appcenter_module, mocked_ucr_appcenter, mocker,
+):
+    custom_apps.load('unittests/inis/install_checks/')
+    install_checks = import_appcenter_module('install_checks')
+    mocked_ucr_appcenter['ldap/master'] = 'master.intranet.example.de'
+
+    connector = custom_apps.find('self-service')
+    provisioning = custom_apps.find('self-service-backend')
+    connector.required_apps_in_domain = []
+    connector.required_apps_in_domain_on_primary = [provisioning.id]
+    domain = mocker.Mock()
+    domain.to_dict.return_value = [{
+        'id': connector.id,
+        'name': connector.name,
+        'is_installed_anywhere': True,
+        'installations': {
+            'master': {'version': connector.version},
+            'member': {'version': connector.version},
+        },
+    }]
+    mocker.patch.object(install_checks, 'get_action', return_value=domain)
+    requirement = install_checks.get_requirement('must_not_be_depended_on')
+
+    assert requirement([provisioning, connector], 'remove').test() == {
+        provisioning.id: [{'id': connector.id, 'name': connector.name}],
+    }

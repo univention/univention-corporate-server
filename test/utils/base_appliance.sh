@@ -459,7 +459,7 @@ prepare_apps () {  # <app_id>
 
 	register_app_components "$main_app"
 
-	for app in $(get_app_attr "$main_app" RequiredAppsInDomain) $(get_app_attr "$main_app" RequiredApps) "$main_app" $(get_app_attr "$main_app" ApplianceAdditionalApps)
+	for app in $(get_app_attr "$main_app" RequiredAppsInDomain) $(get_app_attr "$main_app" RequiredAppsInDomainOnPrimary) $(get_app_attr "$main_app" RequiredApps) "$main_app" $(get_app_attr "$main_app" ApplianceAdditionalApps)
 	do
 		[ -z "${applist[$app]}" ] ||
 			continue

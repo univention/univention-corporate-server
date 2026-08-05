@@ -29,7 +29,7 @@ from univention.appcenter.ucr import ucr_instance, ucr_save
 from univention.appcenter.udm import _update_modules
 from univention.appcenter.utils import (
     app_is_running, call_process, docker_bridge_network_conflict, docker_is_running, get_local_fqdn,
-    resolve_dependencies, send_information,
+    resolve_domain_dependencies, send_information,
 )
 from univention.lib.package_manager import LockError, PackageManager
 from univention.lib.umc import Client, ConnectionError, HTTPError  # noqa: A004
@@ -223,7 +223,7 @@ class Instance(umcm.Base, ProgressMixin):
     @simple_response
     def resolve(self, apps, action):
         ret = {}
-        ret['apps'] = resolve_dependencies(apps, action)
+        ret['apps'], ret['required_hosts'] = resolve_domain_dependencies(apps, action)
         ret['auto_installed'] = [app.id for app in ret['apps'] if app.id not in [a.id for a in apps]]
         apps = ret['apps']
         ret['errors'], ret['warnings'] = check(apps, action)
@@ -244,11 +244,17 @@ class Instance(umcm.Base, ProgressMixin):
         hosts=DictSanitizer({}, required=True),
         settings=DictSanitizer({}, required=True),
         dry_run=BooleanSanitizer(),
+        plan_is_subset=BooleanSanitizer(),
     )
     @simple_response(with_progress=True, with_request=True)
-    def run(self, request, progress, apps, auto_installed, action, hosts, settings, dry_run):
+    def run(self, request, progress, apps, auto_installed, action, hosts, settings, dry_run, plan_is_subset):
         localhost = get_local_fqdn()
         ret = {}
+        apps, hosts = self._validate_required_hosts(
+            apps, auto_installed, action, hosts,
+            plan_is_subset=plan_is_subset,
+            dry_run=dry_run,
+        )
         if dry_run:
             for host in hosts:
                 _apps = [next(app for app in apps if app.id == _app) for _app in hosts[host]]
@@ -274,6 +280,98 @@ class Instance(umcm.Base, ProgressMixin):
                     if not host_result[app.id]['success']:
                         break
         return ret
+
+    def _validate_required_hosts(
+        self, apps, auto_installed, action, hosts, *, plan_is_subset=False, dry_run=False,
+    ):
+        app_ids = [app.id for app in apps]
+        if len(app_ids) != len(set(app_ids)):
+            raise umcm.UMC_Error(_('The App installation plan contains duplicate Apps. Please refresh it.'))
+
+        submitted_app_ids = set(app_ids)
+        unknown_host_apps = {
+            app_id
+            for host_apps in hosts.values()
+            for app_id in host_apps
+            if app_id not in submitted_app_ids
+        }
+        if unknown_host_apps:
+            raise umcm.UMC_Error(
+                _('The App installation plan contains unknown Apps: {apps}. Please refresh it.').format(
+                    apps=', '.join(sorted(unknown_host_apps)),
+                ),
+            )
+
+        auto_installed_ids = set(auto_installed)
+        root_apps = [app for app in apps if app.id not in auto_installed_ids]
+        remote_auto_subset = plan_is_subset and bool(apps) and not root_apps
+        if remote_auto_subset:
+            # Coordinator dispatches contain only the Apps for one target,
+            # while auto_installed still describes the full domain plan.
+            root_apps = apps[:]
+        resolved_apps, required_hosts = resolve_domain_dependencies(root_apps, action)
+        resolved_app_ids = {app.id for app in resolved_apps}
+        missing_apps = resolved_app_ids - submitted_app_ids
+        allow_missing_auto_dependencies = plan_is_subset and dry_run
+        unexpected_missing_apps = missing_apps
+        if allow_missing_auto_dependencies:
+            unexpected_missing_apps -= auto_installed_ids
+        if unexpected_missing_apps:
+            raise umcm.UMC_Error(
+                _('The App installation plan changed and now also requires: {apps}. Please refresh it.').format(
+                    apps=', '.join(sorted(unexpected_missing_apps)),
+                ),
+            )
+
+        stale_apps = submitted_app_ids - resolved_app_ids
+        if stale_apps:
+            raise umcm.UMC_Error(_('The App installation plan is inconsistent. Please refresh it.'))
+
+        actual_hosts = {
+            app.id: [host for host, host_apps in hosts.items() if app.id in host_apps]
+            for app in apps
+        }
+        invalid_install_targets = [
+            app_id for app_id, app_hosts in actual_hosts.items()
+            if action == 'install' and len(app_hosts) != 1
+        ]
+        if invalid_install_targets:
+            raise umcm.UMC_Error(
+                _('Every App must have exactly one target host. Invalid Apps: {apps}.').format(
+                    apps=', '.join(sorted(invalid_install_targets)),
+                ),
+            )
+
+        missing_targets = [
+            app_id for app_id, app_hosts in actual_hosts.items()
+            if action != 'install' and not app_hosts
+        ]
+        if missing_targets:
+            raise umcm.UMC_Error(
+                _('Every App must have a target host. Invalid Apps: {apps}.').format(
+                    apps=', '.join(sorted(missing_targets)),
+                ),
+            )
+
+        for app_id, expected_hosts in required_hosts.items():
+            if app_id not in actual_hosts:
+                continue
+            if len(expected_hosts) != 1:
+                raise umcm.UMC_Error(_('The App installation plan contains an invalid dependency target.'))
+            if len(actual_hosts[app_id]) != 1:
+                raise umcm.UMC_Error(
+                    _('Every automatically placed dependency must have exactly one target host. Invalid Apps: {apps}.').format(
+                        apps=app_id,
+                    ),
+                )
+            if actual_hosts[app_id] != expected_hosts:
+                raise umcm.UMC_Error(
+                    _('The App {app} must be installed on {hosts}.').format(
+                        app=app_id,
+                        hosts=', '.join(expected_hosts),
+                    ),
+                )
+        return apps, hosts
 
     def _run_local_dry_run(self, apps, action, settings, progress):
         if action == 'upgrade':
@@ -339,7 +437,15 @@ class Instance(umcm.Base, ProgressMixin):
         else:
             progress.title = _('%d Apps: Connecting to %s') % (len(apps), host)
         client = self._remote_appcenter(request, host, function='appcenter/run')
-        opts = {'apps': [str(app) for app in apps], 'auto_installed': auto_installed, 'action': action, 'hosts': {host: [app.id for app in apps]}, 'settings': settings, 'dry_run': dry_run}
+        opts = {
+            'apps': [str(app) for app in apps],
+            'auto_installed': auto_installed,
+            'action': action,
+            'hosts': {host: [app.id for app in apps]},
+            'settings': settings,
+            'dry_run': dry_run,
+            'plan_is_subset': True,
+        }
         progress_id = client.umc_command('appcenter/run', opts).result['id']
         while True:
             result = client.umc_command('appcenter/progress', {'progress_id': progress_id}).result

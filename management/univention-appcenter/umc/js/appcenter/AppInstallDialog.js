@@ -52,8 +52,6 @@ define([
 		},
 
 		_resolveApps: function(backpack) {
-			var deferred = new Deferred();
-
 			var progressBar = new ProgressBar({});
 			progressBar.reset();
 			progressBar.setInfo(_('Performing dependency checks'), '', Infinity);
@@ -62,55 +60,84 @@ define([
 				apps: backpack.apps,
 				action: backpack.action,
 			}).then(function(data) {
-				// TODO error handling
 				backpack.apps = data.result.apps.map(app => new App(app));
 				backpack.auto_installed = data.result.auto_installed;
+				backpack.required_hosts = data.result.required_hosts || {};
 				backpack.settings = data.result.settings;
-				deferred.resolve(backpack);
+				return backpack;
 			});
 
 			this.standbyDuring(command, progressBar);
-			return deferred;
+			return command;
 		},
 
 		_getHosts: function(backpack) {
 			var deferred = new Deferred();
 			if (backpack.hosts) {
+				this._addRequiredHosts(backpack);
 				deferred.resolve(backpack);
 				return deferred;
 			}
 			var appChooseHostWizard = new AppChooseHostWizard({
 				apps: backpack.apps,
 				auto_installed: backpack.auto_installed,
+				required_hosts: backpack.required_hosts,
 			});
 			// lang.mixin(backpack, {
 				// chooseHostWizardWasVisible: appChooseHostWizard.needsToBeShown
 			// });
 			appChooseHostWizard.startup(); // is normally called by addChild but we need it for getValues
 			if (!appChooseHostWizard.needsToBeShown) {
-				backpack.hosts = {};
-				for (const [appId, host] of Object.entries(appChooseHostWizard.getValues())) {
-					const apps = backpack.hosts[host] || [];
-					apps.push(appId);
-					backpack.hosts[host] = apps;
-				}
+				this._setHosts(backpack, appChooseHostWizard.getValues());
 				deferred.resolve(backpack);
 			} else {
 				on(appChooseHostWizard, 'cancel', function() {
 					deferred.reject();
 				});
-				on(appChooseHostWizard, 'finished', function(values) {
-					backpack.hosts = {};
-					for (const [appId, host] of Object.entries(values)) {
-						const apps = backpack.hosts[host] || [];
-						apps.push(appId);
-						backpack.hosts[host] = apps;
-					}
+				on(appChooseHostWizard, 'finished', (values) => {
+					this._setHosts(backpack, values);
 					deferred.resolve(backpack);
 				});
 				this._show(appChooseHostWizard);
 			}
 			return deferred;
+		},
+
+		_setHosts: function(backpack, values) {
+			backpack.hosts = {};
+			const addHost = function(appId, host) {
+				const apps = backpack.hosts[host] || [];
+				if (!apps.includes(appId)) {
+					apps.push(appId);
+				}
+				backpack.hosts[host] = apps;
+			};
+			for (const [appId, host] of Object.entries(values)) {
+				if (Object.prototype.hasOwnProperty.call(backpack.required_hosts || {}, appId)) {
+					continue;
+				}
+				addHost(appId, host);
+			}
+			this._addRequiredHosts(backpack);
+		},
+
+		_addRequiredHosts: function(backpack) {
+			for (const [appId, hosts] of Object.entries(backpack.required_hosts || {})) {
+				if (!Array.isArray(hosts) || hosts.length !== 1 || typeof hosts[0] !== 'string' || !hosts[0]) {
+					throw new Error(`Invalid required host mapping for App ${appId}`);
+				}
+				for (const host of Object.keys(backpack.hosts)) {
+					backpack.hosts[host] = backpack.hosts[host].filter(id => id !== appId);
+					if (!backpack.hosts[host].length) {
+						delete backpack.hosts[host];
+					}
+				}
+				const apps = backpack.hosts[hosts[0]] || [];
+				if (!apps.includes(appId)) {
+					apps.push(appId);
+				}
+				backpack.hosts[hosts[0]] = apps;
+			}
 		},
 
 		_performDryRun: function(backpack) {
@@ -273,9 +300,7 @@ define([
 					backpack.errors = progressBar.getErrors().errors;
 					return backpack;
 				},
-				function(errors) {
-					deferred.resolve();
-				},
+				null,
 				function(updates) {
 					var errors = array.map(updates.intermediate, function(res) {
 						if (res.level == 'ERROR' || res.level == 'CRITICAL') {
@@ -341,5 +366,3 @@ define([
 		}
 	});
 });
-
-
