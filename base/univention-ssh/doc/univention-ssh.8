@@ -1,5 +1,5 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.TH UNIVENTION-SSH 8 2011-05-16 UCS
+.TH UNIVENTION-SSH 8 2026-08-05 UCS
 
 .SH NAME
 univention\-ssh \- OpenSSH password wrapper
@@ -43,6 +43,11 @@ Enabling this option disables this backward compatible processing and directly p
 .br
 Note:
 Using \fBssh\fP still invokes a shell at the remote host using its \fB\-c\fP option, so arguments must be properly quoted to not be expanded by the remote shell!
+.TP
+.BR \-\-strict\-host\-key\-checking
+Require the remote host key to be present and unchanged in the OpenSSH known-hosts files.
+Unknown or changed host keys cause the connection to fail.
+Without this option, the legacy behavior uses \fBStrictHostKeyChecking=no\fP.
 
 .SH EXAMPLES
 Without the \fB\-\-no\-split\fP option, the arguments are first locally split, and then again by the remote shell:

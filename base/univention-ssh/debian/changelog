@@ -1,6 +1,7 @@
 univention-ssh (13.5.0) UNRELEASED; urgency=medium
 
   * Bug #59082: UCS 5.2-5 version bump
+  * Issue #3545: Add per-invocation strict SSH host key checking.
 
  -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Mar 2026 10:20:11 +0100
 

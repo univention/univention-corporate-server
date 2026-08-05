@@ -144,6 +144,7 @@ Depends:
  univention-network-common,
  univention-nfs-server,
  univention-quota,
+ univention-provisioning-service-client,
  univention-role-common (= ${source:Version}),
  ${misc:Depends},
 Recommends:
@@ -172,6 +173,7 @@ Depends:
  univention-ldap-client,
  univention-mail-postfix,
  univention-network-common,
+ univention-provisioning-service-client,
  ${misc:Depends},
 Conflicts:
  univention-role-server-common (>= 12.0.0-10),

@@ -22,7 +22,7 @@ def display_help(out=sys.stdout):
         Copyright (c) 2001-2026 Univention GmbH, Germany
 
         Syntax:
-          %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [ssh-options] [user@]<host> <command> [<arguments>...]
+          %(cmd)s [-timeout <seconds>] [--no-split] [--strict-host-key-checking] <pwd_file> [ssh-options] [user@]<host> <command> [<arguments>...]
           %(cmd)s [--help] [--version]
 
         Parameters:
@@ -38,6 +38,7 @@ def display_help(out=sys.stdout):
           -timeout SECONDS:                Specify a timeout in seconds, after
                                            which the ssh connection is forcefully terminated.
           --no-split:                      don't word-split command
+          --strict-host-key-checking:      reject unknown or changed SSH host keys
           -h | --help | -?:                print this usage message
           --version:                       print version information
 
@@ -52,7 +53,7 @@ def display_help(out=sys.stdout):
         Copyright (c) 2001-2026 Univention GmbH, Germany
 
         Syntax:
-          %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [scp-options] files [user@]host:[path]
+          %(cmd)s [-timeout <seconds>] [--no-split] [--strict-host-key-checking] <pwd_file> [scp-options] files [user@]host:[path]
           %(cmd)s [--help] [--version]
 
         Parameters:
@@ -67,6 +68,7 @@ def display_help(out=sys.stdout):
           -timeout SECONDS:                Specify a timeout in seconds, after
                                            which the ssh connection is forcefully terminated.
           --no-split:                      don't word-split command
+          --strict-host-key-checking:      reject unknown or changed SSH host keys
           -h | --help | -?:                print this usage message
           --version:                       print version information
 
@@ -81,7 +83,7 @@ def display_help(out=sys.stdout):
         Copyright (c) 2001-2026 Univention GmbH, Germany
 
         Syntax:
-          %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [rsync-options] files [user@]host:[path]
+          %(cmd)s [-timeout <seconds>] [--no-split] [--strict-host-key-checking] <pwd_file> [rsync-options] files [user@]host:[path]
           %(cmd)s [--help] [--version]
 
         Parameters:
@@ -96,6 +98,7 @@ def display_help(out=sys.stdout):
           -timeout SECONDS:                Specify a timeout in seconds, after
                                            which the ssh connection is forcefully terminated.
           --no-split:                      don't word-split command
+          --strict-host-key-checking:      reject unknown or changed SSH host keys
           -h | --help | -?:                print this usage message
           --version:                       print version information
 
@@ -125,6 +128,7 @@ try:
             sys.exit(1)
     cmd = os.path.basename(program)
     split = True
+    strict_host_key_checking = False
     timeout = 3600
 
     while True:
@@ -140,6 +144,8 @@ try:
             timeout = int(arg)
         elif arg == '--no-split':
             split = False
+        elif arg == '--strict-host-key-checking':
+            strict_host_key_checking = True
         elif arg.startswith('-'):
             raise IndexError()
         else:
@@ -147,10 +153,27 @@ try:
             with open(arg) as pw_filehandle:
                 password = pw_filehandle.readline().rstrip('\n')
 
+            host_key_checking = 'yes' if strict_host_key_checking else 'no'
             command = {
-                'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
-                'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
-                'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no -o ControlPath=none'],
+                'univention-ssh': [
+                    'ssh',
+                    '-o',
+                    f'StrictHostKeyChecking={host_key_checking}',
+                    '-o',
+                    'ControlPath=none',
+                ],
+                'univention-scp': [
+                    'scp',
+                    '-o',
+                    f'StrictHostKeyChecking={host_key_checking}',
+                    '-o',
+                    'ControlPath=none',
+                ],
+                'univention-ssh-rsync': [
+                    'rsync',
+                    '-e',
+                    f'ssh -o StrictHostKeyChecking={host_key_checking} -o ControlPath=none',
+                ],
             }[cmd]
             if split:
                 sys.argv = shlex.split(' '.join(sys.argv))

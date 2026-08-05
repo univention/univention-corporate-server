@@ -12,20 +12,46 @@ then
 fi
 
 . "${TESTLIBPATH}/base.sh" || exit 137
+tmpdir="$(mktemp -d)" || exit 137
 my_mv () {
 	test -f "$1" && /bin/mv -f "$1" "$2"
 }
 restore () {
 	my_mv /etc/ssh/ssh_known_hosts{.$$,}
 	my_mv "${HOME}/.ssh/known_hosts"{.$$,}
+	rm -f "$tmpdir/wrong_host_key" "$tmpdir/wrong_host_key.pub"
+	rmdir "$tmpdir"
 }
 trap restore EXIT
 
 my_mv /etc/ssh/ssh_known_hosts{,.$$}
 my_mv "${HOME}/.ssh/known_hosts"{,.$$}
 
+if univention-ssh --strict-host-key-checking "$tests_root_pwdfile" "root@${hostname}.${domainname}" true
+then
+	exit 110 # ERROR: strict mode must reject an unknown host key
+fi
+
+if [ -n "$(ssh-keygen -F "${hostname,,}.${domainname,,}" 2>/dev/null)" ]
+then
+	exit 110 # ERROR: strict mode must not trust an unknown key
+fi
+
+mkdir -p -m 0700 "${HOME}/.ssh"
+ssh-keygen -q -t rsa -b 2048 -N '' -f "$tmpdir/wrong_host_key" || exit 137
+read -r key_type key_data _ < "$tmpdir/wrong_host_key.pub"
+printf '%s %s %s\n' "${hostname,,}.${domainname,,}" "$key_type" "$key_data" > "${HOME}/.ssh/known_hosts"
+chmod 0600 "${HOME}/.ssh/known_hosts"
+
+if univention-ssh --strict-host-key-checking "$tests_root_pwdfile" "root@${hostname}.${domainname}" true
+then
+	exit 110 # ERROR: strict mode must reject a changed host key
+fi
+rm -f "${HOME}/.ssh/known_hosts"
+
 if univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" true && \
-	[ -n "$(ssh-keygen -F "${hostname,,}.${domainname,,}")" ]
+	[ -n "$(ssh-keygen -F "${hostname,,}.${domainname,,}")" ] && \
+	univention-ssh --strict-host-key-checking "$tests_root_pwdfile" "root@${hostname}.${domainname}" true
 then
 	exit 100 # OK
 else
