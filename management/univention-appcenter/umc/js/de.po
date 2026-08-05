@@ -132,6 +132,11 @@ msgstr ""
 
 #: umc/js/appcenter/AppChooseHostWizard.js:204
 #, javascript-format
+msgid "The required host %s is not available for this App."
+msgstr "Der erforderliche Rechner %s ist für diese App nicht verfügbar."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:204
+#, javascript-format
 msgid "%s was removed from the list because the App is installed on this host."
 msgstr ""
 "%s wurde aus der Auswahl ausgeschlossen, weil die App dort installiert ist."
@@ -809,6 +814,30 @@ msgstr ""
 "Diese Fehlermeldungen kommen vom Server. Weitere Informationen können in der "
 "Logdatei des Systems enthalten sein: <em>/var/log/univention/appcenter.log</"
 "em>"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:101
+msgid "The following App was upgraded successfully:"
+msgstr "Die folgende App wurde erfolgreich aktualisiert:"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:102
+msgid "The following Apps were upgraded successfully:"
+msgstr "Die folgenden Apps wurden erfolgreich aktualisiert:"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:105
+msgid "The following App was removed successfully:"
+msgstr "Die folgende App wurde erfolgreich deinstalliert:"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:106
+msgid "The following Apps were removed successfully:"
+msgstr "Die folgenden Apps wurden erfolgreich deinstalliert:"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:109
+msgid "The following App was installed successfully:"
+msgstr "Die folgende App wurde erfolgreich installiert:"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:110
+msgid "The following Apps were installed successfully:"
+msgstr "Die folgenden Apps wurden erfolgreich installiert:"
 
 #: umc/js/appcenter/AppSettingsFileUploader.js:44
 msgid "Upload file"

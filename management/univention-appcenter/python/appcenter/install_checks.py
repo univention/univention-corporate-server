@@ -18,7 +18,8 @@ from univention.appcenter.meta import UniventionMetaClass
 from univention.appcenter.packages import get_package_manager, packages_are_installed
 from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_load
 from univention.appcenter.utils import (
-    _, app_ports, container_mode, get_current_ram_available, get_free_disk_space, underscore,
+    _, app_is_installed_on_server, app_ports, container_mode, get_current_ram_available, get_free_disk_space,
+    get_local_fqdn, underscore,
 )
 
 
@@ -62,6 +63,25 @@ class Requirement(metaclass=RequirementMetaClass):
 
     def other_apps(self, app):
         return [_app for _app in self.apps if app != _app]
+
+    def apps_required_on_primary(self):
+        """Return transitive local dependencies of Primary-bound Apps."""
+        apps_cache = Apps()
+        pending = [
+            app_id
+            for app in self.apps
+            for app_id in app.required_apps_in_domain_on_primary
+        ]
+        required = set()
+        while pending:
+            app_id = pending.pop()
+            if app_id in required:
+                continue
+            required.add(app_id)
+            app = apps_cache.find(app_id)
+            if app is not None:
+                pending.extend(app.required_apps)
+        return required
 
 
 class SingleRequirement(Requirement):
@@ -299,9 +319,24 @@ class MustHaveNoUnmetDependencies(SingleRequirement, HardRequirement):
 
         apps_cache = Apps()
         # RequiredApps
+        required_host = None
+        if app.id in self.apps_required_on_primary():
+            required_host = ucr_get('ldap/master')
         for _app in apps_cache.get_all_apps():
-            if _app.id in app.required_apps and not _app.is_installed():
-                unmet_apps.append({'id': _app.id, 'name': _app.name, 'in_domain': False})
+            if _app.id not in app.required_apps:
+                continue
+            installed = (
+                app_is_installed_on_server(_app.id, required_host)
+                if required_host else _app.is_installed()
+            )
+            if not installed:
+                unmet_app = {'id': _app.id, 'name': _app.name, 'in_domain': bool(required_host)}
+                if required_host:
+                    unmet_app.update({
+                        'local_allowed': get_local_fqdn() == required_host,
+                        'required_host': required_host,
+                    })
+                unmet_apps.append(unmet_app)
 
         # RequiredAppsInDomain
         domain = get_action('domain')
@@ -313,6 +348,21 @@ class MustHaveNoUnmetDependencies(SingleRequirement, HardRequirement):
             if not _app['is_installed_anywhere']:
                 local_allowed = _app['id'] not in app.conflicted_apps
                 unmet_apps.append({'id': _app['id'], 'name': _app['name'], 'in_domain': True, 'local_allowed': local_allowed})
+
+        # RequiredAppsInDomainOnPrimary
+        primary = ucr_get('ldap/master')
+        apps = [apps_cache.find(app_id) for app_id in app.required_apps_in_domain_on_primary]
+        for _app in apps:
+            if not _app:
+                continue
+            if not app_is_installed_on_server(_app.id, primary):
+                unmet_apps.append({
+                    'id': _app.id,
+                    'name': _app.name,
+                    'in_domain': True,
+                    'local_allowed': get_local_fqdn() == primary,
+                    'required_host': primary,
+                })
         unmet_apps = [unmet_app for unmet_app in unmet_apps if unmet_app['id'] not in (_app.id for _app in self.other_apps(app))]
         if unmet_apps:
             return unmet_apps
@@ -379,6 +429,7 @@ class MustNotBeDependedOn(SingleRequirement, HardRequirement):
 
     def test_remove(self, app):
         depending_apps = []
+        primary_depending_apps = []
 
         apps_cache = Apps()
         # RequiredApps
@@ -399,7 +450,29 @@ class MustNotBeDependedOn(SingleRequirement, HardRequirement):
                     if _app['is_installed_anywhere']:
                         depending_apps.append({'id': _app['id'], 'name': _app['name']})
 
+        # RequiredAppsInDomainOnPrimary
+        if get_local_fqdn() == ucr_get('ldap/master'):
+            apps = [
+                _app for _app in apps_cache.get_all_apps()
+                if app.id in _app.required_apps_in_domain_on_primary
+            ]
+            if apps:
+                domain = get_action('domain')
+                apps_info = domain.to_dict(apps)
+                for _app in apps_info:
+                    if not _app['is_installed_anywhere']:
+                        continue
+                    is_removed_locally = _app['id'] in (_other.id for _other in self.other_apps(app))
+                    remains_elsewhere = any(
+                        installation['version']
+                        for host, installation in _app['installations'].items()
+                        if host != ucr_get('hostname')
+                    )
+                    if not is_removed_locally or remains_elsewhere:
+                        primary_depending_apps.append({'id': _app['id'], 'name': _app['name']})
+
         depending_apps = [depending_app for depending_app in depending_apps if depending_app['id'] not in (_app.id for _app in self.other_apps(app))]
+        depending_apps.extend(primary_depending_apps)
         if depending_apps:
             return depending_apps
 

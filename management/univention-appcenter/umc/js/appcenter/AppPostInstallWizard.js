@@ -40,6 +40,7 @@ define([
 			this.inherited(arguments);
 			this.pages = [];
 			this._successApps = [];
+			this._successfulAppHosts = [];
 			this.hasErrors = false;
 			this._addPages();
 		},
@@ -47,6 +48,7 @@ define([
 		_addPages: function() {
 			this._addErrorPage();
 			this._addReadmeInstallPages();
+			this._addSuccessPage();
 		},
 
 		_addErrorPage() {
@@ -63,6 +65,7 @@ define([
 						brokenApps.push([hostname, appId]);
 					} else {
 						this._successApps.push(appId);
+						this._successfulAppHosts.push([appId, hostname]);
 					}
 				}
 			}
@@ -84,6 +87,45 @@ define([
 				this.pages.push(pageConf);
 				this.hasErrors = true;
 			}
+		},
+
+		_addSuccessPage: function() {
+			if (!this._successfulAppHosts.length) {
+				return;
+			}
+
+			const plural = this._successfulAppHosts.length !== 1;
+			let helpText;
+			if (this.action === 'upgrade') {
+				helpText = plural
+					? _('The following Apps were upgraded successfully:')
+					: _('The following App was upgraded successfully:');
+			} else if (this.action === 'remove') {
+				helpText = plural
+					? _('The following Apps were removed successfully:')
+					: _('The following App was removed successfully:');
+			} else {
+				helpText = plural
+					? _('The following Apps were installed successfully:')
+					: _('The following App was installed successfully:');
+			}
+
+			const successfulApps = this._successfulAppHosts.map(([appId, hostname]) => {
+				const app = this.apps.find(app => app.id === appId);
+				const appName = app ? app.name : appId;
+				const description = hostname ? _('%s on %s', appName, hostname) : appName;
+				return `<li>${entities.encode(description)}</li>`;
+			}).join('');
+			this.pages.push({
+				name: 'success',
+				helpText,
+				widgets: [{
+					type: Text,
+					style: 'display: block;',
+					name: 'successSummary',
+					content: `<ul>${successfulApps}</ul>`,
+				}],
+			});
 		},
 
 		_addReadmeInstallPages: function() {
@@ -159,6 +201,5 @@ define([
 		},
 	});
 });
-
 
 

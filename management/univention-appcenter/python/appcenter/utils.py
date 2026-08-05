@@ -512,6 +512,20 @@ def find_hosts_for_master_packages() -> list[tuple[str, bool]]:
     return hosts
 
 
+def app_is_installed_on_server(app_id: str, server: str, lo=None) -> bool:
+    """Return whether *app_id* is registered as installed on *server*."""
+    if not server:
+        return False
+    if lo is None:
+        from univention.appcenter.udm import get_machine_connection
+        lo, _pos = get_machine_connection()
+    ldap_filter = filter_format(
+        '(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=%s)(univentionAppID=%s_*))',
+        [server, app_id],
+    )
+    return bool(lo.search(ldap_filter))
+
+
 def resolve_dependencies(apps: list[App], action: str) -> list[App]:
     from univention.appcenter.app_cache import Apps
     from univention.appcenter.udm import get_machine_connection
@@ -536,6 +550,10 @@ def resolve_dependencies(apps: list[App], action: str) -> list[App]:
                     continue
                 depends[app.id].append(app_id)
             for app_id in app.required_apps_in_domain:
+                if app_id not in original_app_ids:
+                    continue
+                depends[app.id].append(app_id)
+            for app_id in app.required_apps_in_domain_on_primary:
                 if app_id not in original_app_ids:
                     continue
                 depends[app.id].append(app_id)
@@ -567,6 +585,21 @@ def resolve_dependencies(apps: list[App], action: str) -> list[App]:
             utils_logger.info('Adding %s to the list of Apps', required_app.id)
             apps.append(required_app)
             dependencies.append(app_id)
+        for app_id in app.required_apps_in_domain_on_primary:
+            required_app = Apps().find(app_id)
+            if required_app is None:
+                utils_logger.warning('Could not find required App %s', app_id)
+                continue
+            primary = ucr_get('ldap/master')
+            if app_is_installed_on_server(required_app.id, primary, lo):
+                continue
+            if get_local_fqdn() != primary:
+                # CLI installations cannot dispatch an App to another host.
+                # The hard dependency check reports the missing Primary App.
+                continue
+            utils_logger.info('Adding %s to the list of Apps', required_app.id)
+            apps.append(required_app)
+            dependencies.append(app_id)
     max_loop = len(checked) ** 2
     i = 0
     while checked:
@@ -590,3 +623,164 @@ def resolve_dependencies(apps: list[App], action: str) -> list[App]:
         # removed first
         apps_with_their_dependencies.reverse()
     return apps_with_their_dependencies
+
+
+def resolve_domain_dependencies(apps: list[App], action: str) -> tuple[list[App], dict[str, list[str]]]:
+    """Resolve dependencies together with mandatory target hosts.
+
+    ``RequiredApps`` normally refers to the host selected for its requiring
+    App.  If that App itself has a mandatory target, the target is propagated
+    to its ``RequiredApps``.  ``RequiredAppsInDomainOnPrimary`` creates such a
+    mandatory target for the Primary Directory Node.
+
+    The second return value maps App IDs to hosts on which those Apps must be
+    installed by the current operation.
+    """
+    from univention.appcenter.app_cache import Apps
+    from univention.appcenter.udm import get_machine_connection
+
+    if action == 'remove':
+        return resolve_dependencies(apps, action), {}
+
+    lo, _pos = get_machine_connection()
+    primary = ucr_get('ldap/master')
+    utils_logger.info('Resolving domain dependencies for %s', ', '.join(app.id for app in apps))
+
+    pending = apps[:]
+    checked: list[App] = []
+    checked_ids: set[str] = set()
+    depends: dict[str, list[str]] = {}
+    required_hosts: dict[str, set[str]] = {}
+    processed_unforced: set[str] = set()
+    processed_forced: dict[str, set[str]] = {}
+    processed_domain: set[str] = set()
+
+    def _remember(app: App) -> None:
+        if app.id not in checked_ids:
+            checked_ids.add(app.id)
+            checked.insert(0, app)
+            depends[app.id] = []
+
+    def _find(app_id: str) -> App | None:
+        required_app = Apps().find(app_id)
+        if required_app is None:
+            utils_logger.warning('Could not find required App %s', app_id)
+        return required_app
+
+    def _queue(parent: App, required_app: App, hosts: set[str] | None = None) -> None:
+        if required_app.id not in depends[parent.id]:
+            depends[parent.id].append(required_app.id)
+        if hosts:
+            required_hosts.setdefault(required_app.id, set()).update(hosts)
+        utils_logger.info('Adding %s to the list of Apps', required_app.id)
+        pending.append(required_app)
+
+    # Seed mandatory targets before processing any explicitly selected App.
+    # Otherwise an explicitly selected Primary-bound dependency could first be
+    # traversed with local RequiredApps semantics, depending on input order.
+    forced_to_expand: list[App] = []
+    for app in apps:
+        if app.required_apps_in_domain_on_primary and not primary:
+            raise RuntimeError('Cannot resolve Primary dependency: UCR variable ldap/master is unset')
+        for app_id in app.required_apps_in_domain_on_primary:
+            required_app = _find(app_id)
+            if required_app is None or app_is_installed_on_server(required_app.id, primary, lo):
+                continue
+            required_hosts.setdefault(required_app.id, set()).add(primary)
+            forced_to_expand.append(required_app)
+
+    expanded_forced: set[str] = set()
+    while forced_to_expand:
+        app = forced_to_expand.pop()
+        if app.id in expanded_forced:
+            continue
+        expanded_forced.add(app.id)
+        for app_id in app.required_apps:
+            required_app = _find(app_id)
+            if required_app is None or app_is_installed_on_server(required_app.id, primary, lo):
+                continue
+            required_hosts.setdefault(required_app.id, set()).add(primary)
+            forced_to_expand.append(required_app)
+        for app_id in app.required_apps_in_domain_on_primary:
+            required_app = _find(app_id)
+            if required_app is None or app_is_installed_on_server(required_app.id, primary, lo):
+                continue
+            required_hosts.setdefault(required_app.id, set()).add(primary)
+            forced_to_expand.append(required_app)
+
+    while pending:
+        app = pending.pop()
+        _remember(app)
+
+        all_forced_targets = required_hosts.get(app.id, set())
+        already_processed_targets = processed_forced.setdefault(app.id, set())
+        new_forced_targets = all_forced_targets - already_processed_targets
+        process_unforced = not all_forced_targets and app.id not in processed_unforced
+        process_domain = app.id not in processed_domain
+        if not process_unforced and not new_forced_targets and not process_domain:
+            continue
+
+        if process_unforced:
+            processed_unforced.add(app.id)
+            for app_id in app.required_apps:
+                required_app = _find(app_id)
+                if required_app is not None and not required_app.is_installed():
+                    _queue(app, required_app)
+
+        if new_forced_targets:
+            already_processed_targets.update(new_forced_targets)
+            for app_id in app.required_apps:
+                required_app = _find(app_id)
+                if required_app is None:
+                    continue
+                missing_targets = {
+                    target for target in new_forced_targets
+                    if not app_is_installed_on_server(required_app.id, target, lo)
+                }
+                if missing_targets:
+                    _queue(app, required_app, missing_targets)
+
+        if process_domain:
+            processed_domain.add(app.id)
+            for app_id in app.required_apps_in_domain:
+                required_app = _find(app_id)
+                if required_app is None or required_app.is_installed():
+                    continue
+                ldap_filter = filter_format(
+                    '(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)'
+                    '(univentionAppID=%s_*))',
+                    [required_app.id],
+                )
+                if not lo.search(ldap_filter):
+                    _queue(app, required_app)
+
+            for app_id in app.required_apps_in_domain_on_primary:
+                required_app = _find(app_id)
+                if required_app is None:
+                    continue
+                if not primary:
+                    raise RuntimeError('Cannot resolve Primary dependency: UCR variable ldap/master is unset')
+                if not app_is_installed_on_server(required_app.id, primary, lo):
+                    _queue(app, required_app, {primary})
+
+    apps_with_their_dependencies = []
+    max_loop = len(checked) ** 2
+    i = 0
+    while checked:
+        app = checked.pop(0)
+        if not depends[app.id]:
+            apps_with_their_dependencies.append(app)
+            for required_apps in depends.values():
+                try:
+                    required_apps.remove(app.id)
+                except ValueError:
+                    pass
+        else:
+            checked.append(app)
+        i += 1
+        if i > max_loop:
+            raise RuntimeError('Cannot resolve dependency cycle!')
+
+    return apps_with_their_dependencies, {
+        app_id: sorted(hosts) for app_id, hosts in required_hosts.items()
+    }

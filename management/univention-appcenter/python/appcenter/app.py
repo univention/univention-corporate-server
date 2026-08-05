@@ -745,6 +745,9 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
     :ivar required_apps_in_domain: Like *required_apps*, but the Apps may
         be installed anywhere in the domain, not necessarily
         on this very server.
+    :ivar required_apps_in_domain_on_primary: Like
+        *required_apps_in_domain*, but the Apps have to be installed on
+        the Primary Directory Node.
     :ivar conflicted_system_packages: List of debian package names that
         cannot be installed along with the App.
     :ivar required_ucs_version: The UCS version that is required for the
@@ -1003,6 +1006,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
     conflicted_apps = AppListAttribute()
     required_apps = AppListAttribute()
     required_apps_in_domain = AppListAttribute()
+    required_apps_in_domain_on_primary = AppListAttribute()
     conflicted_system_packages = AppListAttribute()
     required_ucs_version = AppAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
     supported_ucs_versions = AppListAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
@@ -1659,6 +1663,22 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
             if not app['is_installed_anywhere']:
                 local_allowed = app['id'] not in self.conflicted_apps
                 unmet_apps.append({'id': app['id'], 'name': app['name'], 'in_domain': True, 'local_allowed': local_allowed})
+
+        # RequiredAppsInDomainOnPrimary
+        from univention.appcenter.utils import app_is_installed_on_server, get_local_fqdn
+        primary = ucr_get('ldap/master')
+        apps = [apps_cache.find(app_id) for app_id in self.required_apps_in_domain_on_primary]
+        for app in apps:
+            if not app:
+                continue
+            if not app_is_installed_on_server(app.id, primary):
+                unmet_apps.append({
+                    'id': app.id,
+                    'name': app.name,
+                    'in_domain': True,
+                    'local_allowed': get_local_fqdn() == primary,
+                    'required_host': primary,
+                })
         if unmet_apps:
             return unmet_apps
         return True
@@ -1694,6 +1714,21 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
             hostname = ucr_get('hostname')
             if not any(inst['version'] for host, inst in self_info['installations'].items() if host != hostname):
                 # this is the only installation
+                apps_info = domain.to_dict(apps)
+                for app in apps_info:
+                    if app['is_installed_anywhere']:
+                        depending_apps.append({'id': app['id'], 'name': app['name']})
+
+        # RequiredAppsInDomainOnPrimary
+        from univention.appcenter.utils import get_local_fqdn
+        if get_local_fqdn() == ucr_get('ldap/master'):
+            apps = [
+                app for app in apps_cache.get_all_apps()
+                if self.id in app.required_apps_in_domain_on_primary
+            ]
+            if apps:
+                from univention.appcenter.actions import get_action
+                domain = get_action('domain')
                 apps_info = domain.to_dict(apps)
                 for app in apps_info:
                     if app['is_installed_anywhere']:
