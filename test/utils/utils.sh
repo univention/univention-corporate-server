@@ -1976,7 +1976,7 @@ update_keycloak_sso_dns_record () {
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0 server_role ldap_base domain current_ip
+	local rv=0 server_role ldap_base domain current_ip master_fqdn static_key
 
 	admin_password_file=$(mktemp)
 	echo "$admin_password" > "$admin_password_file"
@@ -1984,6 +1984,7 @@ basic_setup_ucs_joined () {
 	server_role="$(ucr get server/role)"
 	ldap_base="$(ucr get ldap/base)"
 	domain="$(ucr get domainname)"
+	master_fqdn="$(ucr get ldap/master)"
 
 	case "$server_role" in
 	domaincontroller_master)
@@ -1999,7 +2000,9 @@ basic_setup_ucs_joined () {
 		# TODO
 		#  ... recreate ssh keys ...
 		# fix ip on non-master systems
-		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
+		# reach the primary by name until its dns record has been fixed, the
+		# entry is removed again at the end of this function
+		ucr set "hosts/static/${masterip}=$master_fqdn"
 		if [ "$(ucr get server/role)" = "memberserver" ]; then
 			ucr set nameserver1="$masterip"
 		else
@@ -2010,7 +2013,7 @@ basic_setup_ucs_joined () {
 		register_network_address || rv=1
 		systemctl restart nscd.service || rv=1
 		# wait until the master fqdn actually resolves to the new IP
-		wait_for_dns_value "$(ucr get ldap/master)" "$masterip" || rv=1
+		wait_for_dns_value "$master_fqdn" "$masterip" || rv=1
 		;;
 	esac
 
@@ -2109,6 +2112,25 @@ basic_setup_ucs_joined () {
 		done
 		;;
 	esac
+
+	# The static entry for the primary was only needed while dns still served
+	# the old address. Drop it once dns answers on its own, it must not survive
+	# into a template built by a scenario which runs this function: the next
+	# clone of that template gets a different address and adds a second entry,
+	# and /etc/hosts, which is consulted before dns and lists the entries
+	# sorted by variable name, then keeps answering with the address of the
+	# environment the template was built in.
+	if [ "$server_role" != "domaincontroller_master" ] && dns_resolves_to "$master_fqdn" "$masterip"; then
+		while read -r static_key; do
+			echo "removing static entry '$static_key' for '$master_fqdn'"
+			ucr unset "$static_key"
+		done < <(ucr search --brief --non-empty '^hosts/static/' |
+			awk -F ': ' -v fqdn="$master_fqdn" '{
+				split($2, names, " ")
+				for (i in names) if (names[i] == fqdn) { print $1; next }
+			}')
+		nscd -i hosts || true
+	fi
 
 	return $rv
 }
