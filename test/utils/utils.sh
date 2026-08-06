@@ -1902,7 +1902,7 @@ register_network_address () {
 			cat /tmp/univention-register-network-address.stderr.$$
 			# sometimes univention-network-common.service works during boot,
 			# in this case the ip is already changed, ignore this error here
-			grep "The IP address is already in use by host record.*$(hostname)" /tmp/univention-register-network-address.stderr.$$  && rv=0 && break
+			grep "The IP address is already in use by host record.*$(ucr get hostname)" /tmp/univention-register-network-address.stderr.$$  && rv=0 && break
 		fi
 		rv=1
 		sleep 20
@@ -1986,7 +1986,7 @@ basic_setup_ucs_joined () {
 		# sometimes univention-network-common.service fails on the
 		# primary for yet unknown reasons, make sure to update the ip address
 		local current_ip
-		current_ip="$(udm dns/host_record list --filter name="$(hostname)" | sed -n 's/^\W*a: //p')"
+		current_ip="$(udm dns/host_record list --filter name="$(ucr get hostname)" | sed -n 's/^\W*a: //p')"
 		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ]; then
 			register_network_address || rv=1
 		fi
