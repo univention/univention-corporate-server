@@ -2076,7 +2076,7 @@ basic_setup_ucs_joined () {
 		local master myfqdn myip timestamp resolved sso_fqdn=""
 		local -a sso_ips=()
 		master="$(ucr get ldap/master)"
-		myfqdn="$(hostname -f)"
+		myfqdn="$(ucr get hostname).$domain"
 		myip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
 		# the SSO record has just been rewritten above, wait for it as well.
 		# Only on the roles that update it, on a replica it may not have been
@@ -2088,7 +2088,7 @@ basic_setup_ucs_joined () {
 			;;
 		esac
 		timestamp=$(date +"%s")
-		echo "Retransferring '$(hostname -d).' until bind resolves '$master' to '$masterip', '$myfqdn' to '$myip'${sso_fqdn:+ and '$sso_fqdn' to ${sso_ips[*]}}..."
+		echo "Retransferring '$domain.' until bind resolves '$master' to '$masterip', '$myfqdn' to '$myip'${sso_fqdn:+ and '$sso_fqdn' to ${sso_ips[*]}}..."
 		while :; do
 			resolved=true
 			[ "$(dig +short "$master" | tail -1)" = "$masterip" ] || resolved=false
@@ -2100,7 +2100,7 @@ basic_setup_ucs_joined () {
 				rv=1
 				break
 			fi
-			/usr/sbin/rndc retransfer "$(hostname -d)."
+			/usr/sbin/rndc retransfer "$domain."
 			sleep 3
 		done
 		;;
