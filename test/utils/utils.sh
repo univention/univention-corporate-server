@@ -81,6 +81,10 @@ _disable_apt () {
 }
 
 basic_setup () {
+	# dhcp may have renamed the transient hostname to the section name,
+	# while ucr, /etc/hosts and dns keep the real one (Bug #59418)
+	[ "$(hostname)" = "$(ucr get hostname)" ] || hostnamectl set-hostname "$(ucr get hostname)"
+
 	basic_setup_allow_uss
 	stop_uss_and_restore_profile
 
