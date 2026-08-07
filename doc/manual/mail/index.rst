@@ -31,6 +31,15 @@ POP3 can be deactivated by setting the |UCSUCRV| :envvar:`mail/dovecot/pop3` to
 The further configuration of the mail server is performed via |UCSUCR|, as well,
 see :ref:`mail-serverconfig-general`.
 
+The :program:`Dovecot Connector` app in the App Center
+connects Nubus for UCS to Dovecot.
+The app doesn't install Dovecot
+and requires an existing external Dovecot installation.
+
+When you delete a user account in the directory service
+the connector removes the corresponding mailbox
+from the external Dovecot server through the :command:`doveadm` HTTP API.
+
 The management of the user data of the mail server (e.g., email addresses or
 mailing list) is performed via UMC modules and is documented in
 :ref:`mail-management-general`. User data are stored in LDAP. The authentication
