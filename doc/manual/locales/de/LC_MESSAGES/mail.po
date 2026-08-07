@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 16:33+0000\n"
-"PO-Revision-Date: 2026-03-27 16:08+0100\n"
+"POT-Creation-Date: 2026-08-20 08:37+0000\n"
+"PO-Revision-Date: 2026-08-20 10:37+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1406,7 +1406,7 @@ msgstr ""
 "*Envelope-Adresse* erwartet. Fetchmail verwendet diesen zur Umleitung von"
 " E-Mails."
 
-#: ../../mail/index.rst:60
+#: ../../mail/index.rst:69
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
@@ -1478,6 +1478,26 @@ msgstr ""
 
 #: ../../mail/index.rst:34
 msgid ""
+"The :program:`Dovecot Connector` app in the App Center connects Nubus for"
+" UCS to Dovecot. The app doesn't install Dovecot and requires an existing"
+" external Dovecot installation."
+msgstr ""
+"Die App :program:`Dovecot Connector` im App Center verbindet Nubus für "
+"UCS mit Dovecot. Die App installiert kein Dovecot und erfordert "
+"eine vorhandene externe Installation von Dovecot."
+
+#: ../../mail/index.rst:39
+msgid ""
+"When you delete a user account in the directory service the connector "
+"removes the corresponding mailbox from the external Dovecot server "
+"through the :command:`doveadm` HTTP API."
+msgstr ""
+"Wenn Sie ein Benutzerkonto im Verzeichnisdienst löschen, entfernt der "
+"Connector das zugehörige Postfach vom externen Dovecot Server über die "
+":command:`doveadm` HTTP-API."
+
+#: ../../mail/index.rst:43
+msgid ""
 "The management of the user data of the mail server (e.g., email addresses"
 " or mailing list) is performed via UMC modules and is documented in :ref"
 ":`mail-management-general`. User data are stored in LDAP. The "
@@ -1499,7 +1519,7 @@ msgstr ""
 "Servers können E-Mail-Konten der Benutzer auch auf mehrere Mailserver "
 "verteilt werden (siehe :ref:`mail-homeserver`)."
 
-#: ../../mail/index.rst:44
+#: ../../mail/index.rst:53
 msgid ""
 "Optionally, emails received via Postfix can be checked for spam content "
 "and viruses before further processing by Dovecot. Spam emails are "
@@ -1514,7 +1534,7 @@ msgstr ""
 " Viren und anderer Malware wird :program:`ClamAV` eingesetzt (:ref:`mail-"
 "virus`)."
 
-#: ../../mail/index.rst:50
+#: ../../mail/index.rst:59
 msgid ""
 "By default emails to external domains are delivered directly to the "
 "responsible SMTP server of that domain. Its location is performed via the"
@@ -1528,7 +1548,7 @@ msgstr ""
 "auch von einem Relay-Host z.B. beim Internet-Provider übernommen werden "
 "(siehe :ref:`mail-serverconfig-relay`)."
 
-#: ../../mail/index.rst:55
+#: ../../mail/index.rst:64
 msgid ""
 "The UCS mail system does not offer any groupware functionality such as "
 "shared calendars or invitations to appointments. However, there are "
@@ -1587,8 +1607,8 @@ msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-domain-mail-management` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-management` in :cite:t:`uv-nubus-manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-management` in :cite:t:`uv-nubus-manual`."
 
 #: ../../mail/management.rst:21
 msgid "Assignment of email addresses to users"
@@ -1599,8 +1619,8 @@ msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-domain-mail-users` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-users` in :cite:t:`uv-nubus-manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-users` in :cite:t:`uv-nubus-manual`."
 
 #: ../../mail/management.rst:30
 msgid "Management of mailing lists"
@@ -1611,8 +1631,8 @@ msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-domain-mail-mailinglists` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-mailinglists` in :cite:t:`uv-nubus-manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-mailinglists` in :cite:t:`uv-nubus-manual`."
 
 #: ../../mail/management.rst:39
 msgid "Management of mail groups"
@@ -1623,8 +1643,8 @@ msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-domain-mail-groups` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-groups` in :cite:t:`uv-nubus-manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-groups` in :cite:t:`uv-nubus-manual`."
 
 #: ../../mail/management.rst:48
 msgid "Management of shared IMAP folders"
@@ -1635,8 +1655,9 @@ msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-domain-mail-shared-folders` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-shared-folders` in :cite:t:`uv-nubus-manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-shared-folders` in :cite:t:`uv-nubus-"
+"manual`."
 
 #: ../../mail/management.rst:57
 msgid "Shared IMAP folder - General tab"
@@ -1648,9 +1669,9 @@ msgid ""
 ":`nubus-domain-mail-shared-folders-general-tab` in :cite:t:`uv-nubus-"
 "manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-shared-folders-general-tab` in :cite:t:`uv-nubus-"
-"manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-shared-folders-general-tab` in :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../mail/management.rst:66
 msgid "Shared IMAP folder - Access rights tab"
@@ -1662,9 +1683,9 @@ msgid ""
 ":`nubus-domain-mail-shared-folders-access-rights-tab` in :cite:t:`uv-"
 "nubus-manual`."
 msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-manual:ref"
-":`nubus-domain-mail-shared-folders-access-rights-tab` in :cite:t:`uv-"
-"nubus-manual`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-domain-mail-shared-folders-access-rights-tab` in "
+":cite:t:`uv-nubus-manual`."
 
 #: ../../mail/management.rst:75
 msgid "Mail quota"
@@ -2009,3 +2030,4 @@ msgstr ""
 "Alternativ oder zusätzlich können andere Virenscanner in AMaViS "
 "eingebunden werden. Nach Änderungen an der AMaViS- oder ClamAV-"
 "Konfiguration müssen Postfix und AMaViS neu gestartet werden."
+
