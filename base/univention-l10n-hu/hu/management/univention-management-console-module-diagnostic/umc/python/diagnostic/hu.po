@@ -1,0 +1,1758 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-diagnostic package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-diagnostic\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-10 00:20+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:17
+msgid ""
+"\n"
+"LMDB (https://www.symas.com/mdb) is a key value store with B+-tree structure "
+"and MVCC.\n"
+"During normal oparation, the on disk file may get fragmented and it can be "
+"beneficial\n"
+"for performance to defragment the file by running \"mdb_copy -c\".\n"
+"This step has to be performed manually as described in"
+msgstr ""
+"\n"
+"Az LMDB (https://www.symas.com/mdb) egy kulcsérték-tároló B+-fa struktúrával "
+"és MVCC-vel.\n"
+"Normál működés közben a lemezen lévő fájl töredezetté válhat, ezért a "
+"teljesítmény szempontjából előnyös lehet\n"
+"a fájl töredezettségmentesítése az \"mdb_copy -c\" paranccsal.\n"
+"Ezt a lépést manuálisan kell végrehajtani a leírásban leírtak szerint"
+
+#: umc/python/diagnostic/plugins/21_check_join_status.py:28
+msgid "\"univention-check-join-status\" returned a problem with the domain join."
+msgstr ""
+"Az „univention-check-join-status” hibaüzenetet adott vissza a tartományhoz "
+"való csatlakozással kapcsolatban."
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:61
+#, python-format
+msgid "%(num_objs)d objects should be \"%(module_name)s\""
+msgstr "%(num_objs)d objektumnak \"%(module_name)s\" kell lennie"
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:17
+#, python-format
+msgid "%d of the configured nameservers are not responding to DNS queries."
+msgstr "%d a konfigurált névszerverek nem válaszolnak a DNS lekérdezésekre."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:100
+#, python-format
+msgid "- Disk for mountpoint %(mp)s is %(pc)s%% full."
+msgstr "- A(z) %(mp)s csatolási pont lemeze %(pc)s%% megtelt."
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:49
+msgid "A timeout occurred while reaching the nameserver (is it online?)."
+msgstr "Időtúllépés történt a névszerver elérésekor (online a szerver?)."
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:69
+msgid "ACL right for group {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
+msgstr ""
+"A(z) {id!r} csoport ACL-jogosultsága UDM-ben {udm!r}, IMAP-ban pedig {imap!r}."
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:63
+msgid "ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
+msgstr ""
+"A(z) {id!r} felhasználó ACL-jogosultsága UDM-ben {udm!r}, IMAP-ban pedig {imap!"
+"r}."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:86
+msgid "Add \"Authenticated Users\" to \"Pre-Windows 2000 Compatible Access\""
+msgstr ""
+"Add hozzá a „Hitelesített felhasználók” elemet a „Windows 2000 előtti "
+"rendszerrel kompatibilis hozzáférés” elemhez."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:90
+msgid ""
+"Add \"Enterprise Domain Controllers\" to \"Pre-Windows 2000 Compatible Access\""
+msgstr ""
+"Add hozzá a „Vállalati tartományvezérlők” elemet a „Windows 2000 előtti "
+"rendszerekkel kompatibilis hozzáférés” elemhez."
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:330
+msgid "Add lo to samba/interfaces"
+msgstr "Loopback (lo) hozzáadása a samba/interfaces-hez"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:97
+msgid "Adjust all components"
+msgstr "Összes összetevő beállítása"
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:31
+msgid "Adjust to suggested limits"
+msgstr "A javasolt határértékek módosítása"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:73
+msgid ""
+"After fixing the problem please use the Repository Settings module to check "
+"the changes made"
+msgstr ""
+"A probléma megoldása után kérjük, használd a Tároló beállítások modult a "
+"végrehajtott módosítások ellenőrzéséhez"
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:20
+msgid "All SIDs exist and names are consistent."
+msgstr "Minden SID létezik, és a nevek konzisztensek."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:26
+msgid "All SSL certificates valid."
+msgstr "Minden SSL tanúsítvány érvényes."
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:21
+msgid "All checked SRV record entries are ok."
+msgstr "Minden ellenőrzött SRV rekordbejegyzés rendben van."
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:23
+msgid "All checked portals/entry objects are ok."
+msgstr "Minden ellenőrzött portál/bejegyzés objektum rendben van."
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:23
+msgid "All checked shares/* objects are ok."
+msgstr "Minden bejelölt share/* objektum rendben van."
+
+#: umc/python/diagnostic/plugins/31_file_permissions.py:24
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:17
+msgid "All files ok."
+msgstr "Minden fájl rendben."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:25
+msgid "All nameserver entries are ok."
+msgstr "Minden névszerver bejegyzés rendben van."
+
+#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:16
+msgid ""
+"All objects of class \"univentionObject\" should have the attribute "
+"\"univentionObjectIdentifier\" in OpenLDAP."
+msgstr ""
+"Az „univentionObject” osztály összes objektumának rendelkeznie kell az "
+"„univentionObjectIdentifier” attribútummal az OpenLDAP-ban."
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:22
+msgid "All shared folder ACLs are in sync with UDM."
+msgstr "Minden megosztott mappa ACL szinkronban van az UDM-mel."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:110
+msgid ""
+"As an alternative, depending on the use case, one can make \"Enterprise Domain "
+"Controllers\" (S-1-5-9) member of \"Pre-Windows 2000 Compatible Access\", "
+"which makes the \"memberOf\" attribute only visible for domain controllers "
+"(e.g. for univention-s4search)."
+msgstr ""
+"Alternatív megoldásként, a felhasználási esettől függően, a „Vállalati "
+"tartományvezérlők” (S-1-5-9) a „Windows 2000 előtti kompatibilis hozzáférés” "
+"tagjává tehetők, ami a „memberOf” attribútumot csak a tartományvezérlők "
+"számára teszi láthatóvá (pl. univention-s4search)."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:19
+#, python-brace-format
+msgid ""
+"As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be "
+"used.\n"
+"This step has to be performed manually as described in"
+msgstr ""
+"Az UCS {ucs[0]}.{ucs[1]} verziótól kezdve a PostgreSQL {postgresql_version[0]}-"
+"t kell használni.\n"
+"Ezt a lépést manuálisan kell végrehajtani a leírásban leírtak szerint"
+
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:16
+#, python-brace-format
+msgid ""
+"As of UCS {ucs[0]}.{ucs[1]}, Samba should use mdb as for its database.\n"
+"The steps to migrate the Samba database from tdb to mdb can be found in:"
+msgstr ""
+"Az UCS {ucs[0]}.{ucs[1]} verziótól kezdve a Sambának az mdb-t kell használnia "
+"adatbázisként.\n"
+"\n"
+"A Samba adatbázis tdb-ből mdb-be migrálásának lépései a következő helyen "
+"találhatók:"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:37
+msgid ""
+"As these variables should be no longer used, this check has been added to "
+"check for the existence of these variables."
+msgstr ""
+"Mivel ezeket a változókat a továbbiakban nem szabad használni, ez az "
+"ellenőrzés hozzáadva a változók meglétének ellenőrzéséhez."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:124
+msgid "Authentication against the Primary LDAP failed with the machine password."
+msgstr "A gép jelszavával sikertelen volt a hitelesítés az elsődleges LDAP-on."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:120
+msgid "Authentication against the local LDAP failed with the machine password."
+msgstr "A helyi LDAP-on történő hitelesítés sikertelen volt a gép jelszavával."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:22
+msgid "Authentication with machine password against LDAP successful."
+msgstr "Sikeres hitelesítés a gép jelszavával az LDAP-on."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:105
+msgid ""
+"But here neither of these groups is member of \"Pre-Windows 2000 Compatible "
+"Access\". This is probably the cause of this behavior."
+msgstr ""
+"De itt egyik csoport sem tagja a „Windows 2000 előtti rendszerekkel "
+"kompatibilis hozzáférés” csoportnak. Valószínűleg ez okozza ezt a viselkedést."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:107
+msgid ""
+"By default Active Directory has \"Authenticated Users\" (S-1-5-11) in \"Pre-"
+"Windows 2000 Compatible Access\", but this can also pose some security issue."
+msgstr ""
+"Alapértelmezés szerint az Active Directory tartalmazza a „Hitelesített "
+"felhasználók” (S-1-5-11) hozzáférését a „Windows 2000 előtti rendszerekkel "
+"kompatibilis hozzáférés”-hez, de ez biztonsági problémát is okozhat."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:82
+msgid "Calling /usr/lib/univention-server/server_password_change failed."
+msgstr "A /usr/lib/univention-server/server_password_change hívása sikertelen."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:49
+msgid "Certificate {path!r} will expire in {days} days."
+msgstr "A(z) {path!r} tanúsítvány {days} nap múlva lejár."
+
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:14
+msgid "Check Heimdal KDC on Samba 4 DC"
+msgstr "Heimdal KDC ellenőrzése a Samba 4 DC-n"
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:21
+msgid "Check IMAP shared folder ACLs"
+msgstr "IMAP megosztott mappák ACL-jeinek ellenőrzése"
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:15
+msgid "Check LDAP database for inconsistencies in group memberships."
+msgstr ""
+"Az LDAP adatbázis ellenőrzése a csoporttagságok eltéréseinek szempontjából."
+
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:27
+msgid "Check Samba replication status for errors"
+msgstr "Samba replikációs állapotának ellenőrzése hibák szempontjából"
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:21
+msgid "Check UCR variable values for correctness"
+msgstr "UCR változók értékeinek helyességének ellenőrzése"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:18
+msgid "Check currently installed PostgreSQL version"
+msgstr "A jelenleg telepített PostgreSQL verzió ellenőrzése"
+
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:16
+msgid "Check errors in sources.list files"
+msgstr "Hibák ellenőrzése a sources.list fájlokban"
+
+#: umc/python/diagnostic/plugins/31_file_permissions.py:23
+msgid "Check file permissions"
+msgstr "Fájl jogosultságok ellenőrzése"
+
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:14
+msgid "Check for modified UCR templates"
+msgstr "Módosított UCR sablonok ellenőrzése"
+
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:14
+msgid "Check for problems with UDN replication"
+msgstr "UDN replikációval kapcsolatos problémák ellenőrzése"
+
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:16
+msgid "Check fragmentation of LMDB databases"
+msgstr "Az LMDB adatbázisok töredezettségének ellenőrzése"
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:16
+msgid "Check free disk space"
+msgstr "A szabad lemezterület ellenőrzése"
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:15
+msgid "Check hostname RFC compliance"
+msgstr "A gazdagép nevének RFC-megfelelőségi ellenőrzése"
+
+#: umc/python/diagnostic/plugins/21_check_join_status.py:13
+msgid "Check join status"
+msgstr "Csatlakozási állapot ellenőrzése"
+
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:17
+msgid "Check kerberos authenticated DNS updates"
+msgstr "A Kerberos hitelesítésű DNS frissítések ellenőrzése"
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:11
+msgid "Check local AD database for errors"
+msgstr "A helyi AD adatbázis a hibák ellenőrzése"
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:21
+msgid "Check machine password"
+msgstr "A gép jelszavának ellenőrzése"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:24
+msgid "Check nameserver entries on DNS zones"
+msgstr "Névszerver bejegyzések ellenőrzése a DNS zónákban"
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:23
+msgid "Check of the protocol version of the Univention Directory Notifier"
+msgstr "Az Univention Directory Notifier protokoll verziójának ellenőrzése"
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:22
+msgid "Check portals/entry objects for unresolvable host names"
+msgstr "Portálok/bejegyzés objektumok ellenőrzése feloldhatatlan gazdanevek után"
+
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:15
+msgid "Check primary LDAP server"
+msgstr "Elsődleges LDAP kiszolgáló ellenőrzése"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:34
+msgid "Check repository configuration for correctness"
+msgstr "A tároló konfiguráció helyességének ellenőrzése"
+
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:16
+msgid "Check resolving repository servers"
+msgstr "A tárolószerverek feloldásának ellenőrzése"
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:22
+msgid "Check shares/* objects for dangling host references"
+msgstr ""
+"A shares/* objektumok ellenőrzése a függő gazda hivatkozásokra vonatkozóan"
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:20
+msgid "Check target entries in DNS SRV records"
+msgstr "A DNS SRV-rekordok célbejegyzéseinek ellenőrzése"
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:16
+msgid ""
+"Check the LDAP database for inconsistencies in group membership attributes."
+msgstr ""
+"Az LDAP adatbázis ellenőrzése a csoporttagsági attribútumok eltérőségei "
+"szempontjából."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:25
+msgid "Check validity of SSL certificates"
+msgstr "SSL tanúsítványok érvényességének ellenőrzése"
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:18
+msgid "Check visibility of the memberOf attribute in Samba/AD"
+msgstr "A memberOf attribútum láthatóságának ellenőrzése Samba/AD-ben"
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:19
+msgid "Check well known SIDs"
+msgstr "A jól ismert SID-ek ellenőrzése"
+
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:15
+msgid "Checking Samba database type"
+msgstr "Samba adatbázis típusának ellenőrzése"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:31
+msgid "Checks nameserver entries on DNS zones"
+msgstr "A névszerver bejegyzések ellenőrzése a DNS zónákban"
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:24
+msgid "Checks portals/entry objects for unresolvable host names"
+msgstr "Portálok/bejegyzés objektumok ellenőrzése feloldhatatlan gazdanevek után"
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:24
+msgid "Checks shares/* objects for dangling host references"
+msgstr ""
+"A shares/* objektumok ellenőrzése a függő gazda hivatkozásokra vonatkozóan"
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:22
+msgid "Checks target entries in DNS SRV records"
+msgstr "A DNS SRV-rekordok célbejegyzéseinek ellenőrzése"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:55
+msgid "Cleanup of deprecated variables is executed !"
+msgstr "Az elavult változók tisztítása végrehajtva!"
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:19
+msgid "Currently, there are unprocessed files in these directories. "
+msgstr "Jelenleg feldolgozatlan fájlok találhatók ezekben a könyvtárakban. "
+
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:56
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:55
+msgid "Deactivate test"
+msgstr "Teszt kikapcsolása"
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:82
+msgid "Deactivate test permanently"
+msgstr "Teszt végleges kikapcsolása"
+
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:27
+msgid "Defragmentation of LMDB databases"
+msgstr "LMDB adatbázisok töredezettségmentesítése"
+
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:42
+msgid "Deprecated Samba database type tdb."
+msgstr "Elavult Samba adatbázistípus: tdb."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:17
+msgid "Enough free disk space available."
+msgstr "Elegendő szabad lemezterület áll rendelkezésre."
+
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:42
+msgid "Error retrieving notifier ID from the UDN."
+msgstr "Hiba történt az értesítő azonosítójának lekérésekor az UDN-ből."
+
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:25
+msgid "Errors found by `univention-check-templates`."
+msgstr "Az `univention-check-templates` által talált hibák."
+
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:131
+msgid "Errors occurred while running `kinit` or `nsupdate`."
+msgstr "Hiba történt a `kinit` vagy `nsupdate` futtatása közben."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:139
+msgid "Failed to find any certificate in {cert!r}"
+msgstr "Nem található tanúsítvány a következő címen: {cert!r}"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:210
+#, python-brace-format
+msgid "Failed to find any certificate in {{{link}}}"
+msgstr "Nem található tanúsítvány a következő címen: {{{link}}}"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:131
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:151
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:186
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:195
+msgid "Failed to load certificate {cert!r}: {exc}"
+msgstr "Nem sikerült betölteni a(z) {cert!r} tanúsítványt: {exc}"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:108
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:120
+#, python-brace-format
+msgid "Failed to load certificate {{idp}}: {exc}"
+msgstr "Nem sikerült betölteni a(z) {{idp}} tanúsítványt: {exc}"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:223
+#, python-brace-format
+msgid "Failed to load certificate {{{link}}}: {exc}"
+msgstr "Nem sikerült betölteni a(z) {{{link}}} tanúsítványt: {exc}"
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:20
+msgid "Fetchmail attributes were not migrated"
+msgstr "A Fetchmail attribútumok nem kerültek átvitelre"
+
+#: umc/python/diagnostic/plugins/31_file_permissions.py:35
+msgid "File {path!r} does not exist."
+msgstr "A(z) {path!r} fájl nem létezik."
+
+#: umc/python/diagnostic/plugins/31_file_permissions.py:56
+msgid "File {path!r} has mode {actual:o}, {expected:o} was expected."
+msgstr "A(z) {path!r} fájl módja {actual:o}, a várt mód {expected:o}."
+
+#: umc/python/diagnostic/plugins/31_file_permissions.py:45
+msgid "File {path!r} has owner {actual!r} while {expected!r} was expected."
+msgstr ""
+"A(z) {path!r} fájl tulajdonosa {actual!r}, miközben a várt tulajdonos "
+"{expected!r} lett volna."
+
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:52
+msgid "Fix Primary LDAP server configuration"
+msgstr "Elsődleges LDAP kiszolgáló konfigurációjának javítása"
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:115
+msgid "Fix machine password"
+msgstr "Gép jelszavának javítása"
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:209
+msgid ""
+"Found differences in the ACLs for IMAP shared folders between UDM and IMAP."
+msgstr ""
+"Különbségeket találhatók az IMAP megosztott mappák ACL-jeiben az UDM és az "
+"IMAP között."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:193
+msgid "Found errors in the nameserver entries of the following zones."
+msgstr "Hibákat található a következő zónák névszerver bejegyzéseiben."
+
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:48
+msgid "Found exception in {path!r}: {exception}"
+msgstr "Kivétel található {path!r}: {exception}"
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:66
+msgid "Found expired certificate {path!r}."
+msgstr "Lejárt tanúsítvány található {path!r}."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:55
+msgid ""
+"Found illegal alias record (CNAME record) for nameserver {ns!r} (resp. "
+"{ns_fqdn})."
+msgstr ""
+"Érvénytelen alias rekord (CNAME rekordot) található a(z) {ns!r} (vagy "
+"{ns_fqdn}) névszerverhez."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:79
+msgid "Found invalid certificate {path!r}."
+msgstr "Érvénytelen tanúsítvány található: {path!r}."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:77
+msgid ""
+"Found invalid certificate {path!r}:\n"
+"{message}"
+msgstr ""
+"Érvénytelen tanúsítvány található: {path!r}:\n"
+"{message}"
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:102
+msgid "Found invalid host entries in the following share/* objects."
+msgstr ""
+"Érvénytelen gazdagép bejegyzések találhatók a következő share/* objektumokban."
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:82
+msgid "Found invalid target entries in the following SRV records."
+msgstr "Érvénytelen célbejegyzések találhatók a következő SRV rekordokban."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:88
+msgid "Found malformed certificate {path!r}."
+msgstr "Hibás formátumú tanúsítvány található: {path!r}."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:49
+msgid ""
+"Found no host record (A/AAAA record) for nameserver {ns!r} (resp. {ns_fqdn})."
+msgstr ""
+"Nem található gazdagép bejegyzés (A/AAAA bejegyzés) a névszerverhez {ns!r} "
+"(illetve {ns_fqdn})."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:60
+msgid "Found not yet valid certificate {path!r}."
+msgstr "Még nem található érvényes tanúsítvány: {path!r}."
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:96
+msgid "Found possibly invalid portal entries in the following objects."
+msgstr ""
+"Feltehetően érvénytelen portálbejegyzések találhatók a következő objektumokban."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:79
+#, python-brace-format
+msgid ""
+"Found {ucs} UCS rejects and {s4} S4 rejects. See {{sdb}} for more information."
+msgstr ""
+"{ucs} UCS elutasítás és {s4} S4 elutasítás található. További információkért "
+"lásd {{sdb}}."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:41
+msgid ""
+"Furthermore, it is checked if the scheme of the server variable is either http "
+"or https"
+msgstr "Továbbá ellenőrzi, hogy a szerverváltozó sémája http vagy https-e"
+
+#: umc/python/diagnostic/plugins/10_gateway.py:14
+msgid "Gateway is not reachable"
+msgstr "Az átjáró nem érhető el"
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:67
+msgid "Host key for server does not match"
+msgstr "A szerver gazdagép kulcsa nem egyezik"
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:19
+msgid ""
+"If the problem persists make sure the nameserver is connected to the network "
+"and the forwarders are able to reach the internet (www.univention.de)."
+msgstr ""
+"Ha a probléma továbbra is fennáll, ellenőrizd, hogy a névszerver csatlakozik-e "
+"a hálózathoz, és a továbbítók el tudják-e érni az internetet "
+"(www.univention.de)."
+
+#: umc/python/diagnostic/plugins/10_gateway.py:17
+msgid "If these settings are correct the problem relies in the gateway itself:"
+msgstr "Ha ezek a beállítások helyesek, akkor a probléma az átjáróban van:"
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:88
+#, python-brace-format
+msgid "In SRV record {name} is an invalid target \"{target}\" (see {{{link}}}):"
+msgstr ""
+"Az SRV rekordban a(z) {name} érvénytelen célpont van: \"{target}\" (lásd: "
+"{{{link}}}):"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:197
+#, python-brace-format
+msgid "In forward zone {name} (see {{{link}}}):"
+msgstr "Előre keresési zónában {name} (lásd: {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:217
+#, python-brace-format
+msgid "In mail folder {name} (see {{udm:mail/mail}}):"
+msgstr "A(z) {name} levelezési mappában (lásd: {{udm:mail/mail}}):"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:198
+#, python-brace-format
+msgid "In reverse zone {name} (see {{{link}}}):"
+msgstr "Fordított zónában {name} (lásd {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:105
+msgid "Inbound {nc!r}: error during DRS replication from {source} ({estring})"
+msgstr ""
+"Bejövő {nc!r}: hiba a DRS replikációja során a következőről: {source} "
+"({estring})"
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:51
+#, python-format
+msgid "Invalid type %(type)r defined for variable %(variable)r."
+msgstr "Érvénytelen típus (%(type)r) definiálva a(z) %(variable)r változóhoz."
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:26
+msgid ""
+"It is not possible to automatically fix the problem when 'univention-"
+"fetchmail' is running on a non-master server."
+msgstr ""
+"A probléma automatikus javítása nem lehetséges, ha az „univention-fetchmail” "
+"nem fő szerveren fut."
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:21
+#, python-brace-format
+msgid ""
+"It is suggested to increase the security limits either manually by using {ucr} "
+"or to automatically adjust them to the suggested limits:"
+msgstr ""
+"Javasolt a biztonsági korlátok manuális növelése a {ucr} használatával, vagy "
+"az automatikus beállítás a javasolt korlátokhoz:"
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:27
+msgid "KDC service check"
+msgstr "KDC szolgáltatás ellenőrzése"
+
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:15
+msgid "LDAP configuration files are valid."
+msgstr "Az LDAP konfigurációs fájlok érvényesek."
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:16
+msgid "LDAP objects"
+msgstr "LDAP objektumok"
+
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:17
+msgid "LDAP schema files are not properly registered"
+msgstr "Az LDAP sémafájlok nincsenek megfelelően regisztrálva"
+
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:52
+msgid "LMDB fragmentation above threshold."
+msgstr "Az LMDB fragmentációja meghaladja a küszöbértéket."
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:72
+#, python-format
+msgid ""
+"Login to the remote server with the uid %(uid)s and the password from /etc/"
+"machine.secret failed. "
+msgstr ""
+"Nem sikerült bejelentkezni a távoli szerverre a(z) %(uid)s uid-vel és a /etc/"
+"machine.secret fájlból származó jelszóval. "
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:71
+msgid "Machine authentication failed"
+msgstr "A gép hitelesítése sikertelen volt"
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:38
+msgid "Mail folder {folder!r} does not exist in IMAP."
+msgstr "A(z) {folder!r} levelezési mappa nem létezik IMAP-ban."
+
+#: umc/python/diagnostic/plugins/10_gateway.py:18
+msgid "Make sure the hardware of the gateway device is working properly."
+msgstr "Győződj meg arról, hogy az átjáró eszköz hardvere megfelelően működik."
+
+#: umc/python/diagnostic/plugins/21_check_join_status.py:18
+msgid "Manual: Analysis of listener/notifier problems"
+msgstr "Kézikönyv: Figyelő/értesítő problémák elemzése"
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:68
+#: umc/python/diagnostic/plugins/56_univention_types.py:64
+#, python-format
+msgid "Migrate %d LDAP objects"
+msgstr "%d LDAP objektum migrálása"
+
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:23
+msgid "Migrate Samba database from tdb to mdb"
+msgstr "Samba adatbázis migrálása tdb-ből mdb-be"
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:69
+msgid "Migrate configurations"
+msgstr "Konfigurációk migrálása"
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:34
+msgid "Migrate user objects"
+msgstr "Felhasználói objektumok migrálása"
+
+#: umc/python/diagnostic/plugins/53_package_status.py:17
+msgid ""
+"More information about the cause can be gained by executing \"dpkg --audit\"."
+msgstr ""
+"További információ az okról a „dpkg --audit” parancs futtatásával szerezhető."
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:21
+msgid ""
+"More information can be found in the app log files under /var/log/univention/."
+msgstr ""
+"További információ az alkalmazás naplófájljaiban található a /var/log/"
+"univention/ könyvtárban."
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:50
+msgid "Multiple ACL entries for {id!r} in UDM."
+msgstr "Több ACL bejegyzés a(z) {id!r} kifejezéshez az UDM-ben."
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:15
+msgid "Nameserver(s) are not responsive"
+msgstr "A névszerver(ek) nem válaszolnak"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:55
+msgid "No PostgreSQL version found."
+msgstr "Nem található PostgreSQL verzió."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:16
+msgid "No S4 Connector rejects were found."
+msgstr "Nem található elutasított S4 csatlakozó."
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:12
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:19
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:28
+msgid "No errors found."
+msgstr "Nem található hiba."
+
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:18
+msgid "No errors occurred."
+msgstr "Nem történt hiba."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:117
+#, python-format
+msgid "No http/https used as scheme in %(name)r: %(value)r."
+msgstr "Nincs http/https séma használatban a következőben: %(name)r: %(value)r."
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:16
+msgid "No non-compliant hostnames found."
+msgstr "Nem találhatók nem megfelelő hostnevek."
+
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:15
+msgid "No problems found with UDN replication."
+msgstr "Nem található probléma az UDN replikációval."
+
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:15
+msgid "No problems found with modified UCR templates"
+msgstr "Nem találhatók problémák a módosított UCR sablonokkal"
+
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:17
+msgid "No problems were found while resolving update repositories."
+msgstr "A frissítési tárolók feloldása során nem található probléma."
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:337
+msgid "No reachable KDCs were found."
+msgstr "Nem található elérhető KDC."
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:40
+msgid "No user or group with SID {sid} found, expected {expected!r}."
+msgstr ""
+"Nincs SID {sid} azonosítóval rendelkező felhasználó vagy csoport, a várt "
+"{expected!r} volt."
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:22
+msgid ""
+"Not all old LDAP fetchmail configurations have been migrated or incomplete "
+"configurations remain in some objects."
+msgstr ""
+"Nem minden régi LDAP fetchmail konfiguráció került migrálásra, vagy hiányos "
+"konfigurációk maradtak néhány objektumban."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:130
+msgid ""
+"Note that password rotation is disabled via the UCR variable server/password/"
+"change."
+msgstr ""
+"Vedd figyelembe, hogy a jelszóváltás le van tiltva a server/password/change "
+"UCR változón keresztül."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:131
+msgid "Note that server/password/interval is set to {}."
+msgstr "Vedd figyelembe, hogy a szerver/jelszó/intervallum beállítása {}."
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:61
+#, python-format
+msgid ""
+"Number of objects that should be marked as \"%(server_role)s\": %(num_objs)d"
+msgstr ""
+"A \"%(server_role)s\" jelöléssel ellátandó objektumok száma: %(num_objs)d"
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:63
+#, python-format
+msgid ""
+"Number of unspecific Windows computer objects with inconsistent "
+"univentionObjectType: %d (Can't fix this automatically)"
+msgstr ""
+"Nem specifikus Windows számítógép objektumok száma, amelyek következetlen "
+"univentionObjectType típussal rendelkeznek: %d (Ez nem javítható automatikusan)"
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:120
+#, python-format
+msgid ""
+"OK, fix worked, \"univention-s4search sAMAccountName=%s memberOf\" shows group "
+"memberships."
+msgstr ""
+"OK, a javítás működött, az „univention-s4search sAMAccountName=%s memberOf” a "
+"csoporttagságokat mutatja."
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:17
+msgid ""
+"Objects that implicitly satisfy the criteria of a Univention Object but lack "
+"this attribute should be migrated."
+msgstr ""
+"Azokat az objektumokat, amelyek implicit módon megfelelnek egy Univention "
+"objektum kritériumainak, de hiányzik belőlük ez az attribútum, migrálni kell."
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:19
+msgid ""
+"Objects that implicitly satisfy the standards of a Univention Object but lack "
+"this attribute should be migrated."
+msgstr ""
+"Azokat az objektumokat, amelyek implicit módon megfelelnek egy Univention "
+"objektum szabványainak, de hiányzik belőlük ez az attribútum, migrálni kell."
+
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:19
+msgid ""
+"Old packages and Apps registered schema files by copying the files locally "
+"into a certain directory."
+msgstr ""
+"A régi csomagok és alkalmazások a sémafájlokat úgy regisztrálták, hogy azokat "
+"helyileg egy adott könyvtárba kerültek."
+
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:112
+msgid "Outbound {nc!r}: error during DRS replication to {source} ({estring})"
+msgstr ""
+"Kimenő {nc!r}: hiba a DRS replikációja során a következőre: {source} "
+"({estring})"
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:25
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:39
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:54
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:26
+#, python-brace-format
+msgid "Output of `{cmd}`:"
+msgstr "A `{cmd}` kimenete:"
+
+#: umc/python/diagnostic/plugins/53_package_status.py:13
+msgid "Package status corrupt"
+msgstr "Csomag állapota sérült"
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:73
+msgid ""
+"Please check /var/log/auth.log on the remote server for further information."
+msgstr ""
+"További információk elérhetők a távoli szerveren található /var/log/auth.log "
+"fájlban."
+
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:74
+msgid "Please check the files for more details."
+msgstr "Kérjük, ellenőrizd a fájlokat további részletekért."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:115
+msgid "Please chose an action."
+msgstr "Kérjük, válassz egy műveletet."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:25
+msgid "Please investigate them if you experience any problems on this system."
+msgstr ""
+"Kérjük, vizsgáld meg őket, ha bármilyen problémát tapasztal a rendszerrel "
+"kapcsolatban."
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:83
+msgid ""
+"Please make sure that only A or AAAA records are present and the given FQDN "
+"has to end with a dot."
+msgstr ""
+"Kérjük, győződj meg arról, hogy csak A vagy AAAA rekordok vannak jelen, és a "
+"megadott FQDN-nek ponttal kell végződnie."
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:104
+msgid ""
+"Please make sure that only hosts are specified that exist as a suitable "
+"computer object in LDAP."
+msgstr ""
+"Győződj meg arról, hogy csak olyan gazdagépek vannak megadva, amelyek "
+"megfelelő számítógépobjektumként léteznek az LDAP-ben."
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:97
+msgid "Please make sure that the host part of all URLs is resolvable via DNS."
+msgstr ""
+"Kérjük, győződj meg arról, hogy az összes URL-cím gazdagépe DNS-en keresztül "
+"feloldható."
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:18
+msgid ""
+"Please make sure the DNS settings in the {setup:network} are correctly set up."
+msgstr ""
+"Kérjük, győződj meg arról, hogy a(z) {setup:network} DNS beállításai helyesen "
+"vannak beállítva."
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:50
+#, python-brace-format
+msgid "Please refer to {rfc1123} for the syntax of host names."
+msgstr "A gazdagépnevek szintaxisát lásd a {rfc1123} pontban."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:194
+#, python-brace-format
+msgid "Please refer to {sdb} for further information."
+msgstr "További információk elérhetők a(z) {sdb} oldalon."
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:69
+#, python-format
+msgid ""
+"Please repair the host key of the remote server in /root/.ssh/known_hosts on "
+"%(fqdn)s."
+msgstr ""
+"Kérjük, javítsd ki a távoli szerver host kulcsát a /root/.ssh/known_hosts "
+"fájlban a %(fqdn)s címen."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:83
+#, python-brace-format
+msgid "Please see {sdb} for more information."
+msgstr "További információért lásd: {sdb}"
+
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:55
+#, python-brace-format
+msgid "Please see {sdb} for troubleshooting DNS problems."
+msgstr "A DNS problémák elhárításához lásd: {sdb}"
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:263
+#, python-brace-format
+msgid "Please see {sdb} on how to renew certificates."
+msgstr "A tanúsítványok megújításával kapcsolatban lásd: {sdb}."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:59
+#, python-brace-format
+msgid "PostgreSQL version is {current}, should be {desired}."
+msgstr "A PostgreSQL verziója {current}, {desired} kellene lennie."
+
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:15
+msgid "Primary LDAP server check"
+msgstr "Elsődleges LDAP kiszolgáló ellenőrzése"
+
+#: umc/python/diagnostic/plugins/12_proxy.py:17
+msgid "Proxy server failure"
+msgstr "Proxy szerver hiba"
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:20
+msgid "RFC 1123 - 2.1 Host Names and Numbers"
+msgstr "RFC 1123 - 2.1 Gazdagépnevek és -számok"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:61
+#, python-brace-format
+msgid ""
+"Re-execute the join-script <tt>92univention-management-console-web-server</tt> "
+"via {join} or execute <tt>univention-run-join-scripts --force --run-scripts "
+"92univention-management-console-web-server</tt> on the command line as user "
+"<i>root</i>."
+msgstr ""
+"Futtassa újra a <tt>92univention-management-console-web-server</tt> join-"
+"script parancsfájlt a {join} címen keresztül, vagy futtassa <tt>a univention-"
+"run-join-scripts --force --run-scripts 92univention-management-console-web-"
+"server parancsot</tt> a parancssorban <i>root</i> felhasználóként."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:66
+msgid "Re-run join script"
+msgstr "Csatlakozási szkript újrafuttatása"
+
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:70
+msgid "Regenerate sources.list"
+msgstr "Újra generálás sources.list"
+
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:86
+msgid "Register Schema files"
+msgstr "Regisztrálja a sémafájlokat"
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:333
+msgid "Reset kerberos/kdc to 127.0.0.1"
+msgstr "Kerberos/kdc visszaállítása 127.0.0.1-re"
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:46
+msgid "Run `/usr/share/univention-directory-manager-tools/proof_uniqueMembers`"
+msgstr ""
+"Futtasd a `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` "
+"parancsot"
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:46
+msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
+msgstr "Futtasd a `samba-tool dbcheck --fix --cross-ncs --yes` parancsot"
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:27
+msgid ""
+"Run the script '/usr/share/univention-fetchmail/migrate-fetchmail.py --binddn "
+"$DN --bindpwdfile $PWDFILE' to migrate the complete configurations."
+msgstr ""
+"Futtasd a következő szkriptet: '/usr/share/univention-fetchmail/migrate-"
+"fetchmail.py --binddn $DN --bindpwdfile $PWDFILE' a teljes konfiguráció "
+"migrálásához."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:15
+msgid "S4 Connector rejects"
+msgstr "S4 csatlakozó elutasít"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:93
+#, python-brace-format
+msgid "S4 DN: {s4}, UCS DN: {ucs}"
+msgstr "S4 DN: {s4}, UCS DN: {ucs}"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:90
+msgid "S4 rejected:"
+msgstr "S4 elutasítva:"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:28
+msgid "SAML certificate verification failed!"
+msgstr "A SAML tanúsítvány ellenőrzése sikertelen!"
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:19
+msgid "SSH connection to UCS server failed!"
+msgstr "Az SSH kapcsolat az UCS szerverrel sikertelen!"
+
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:15
+msgid "Samba 4 KDC running."
+msgstr "Samba 4 KDC fut."
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:28
+msgid "Samba4 max open files - Univention Help"
+msgstr "Samba4 maximális nyitott fájlok száma - Univention Súgó"
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:16
+msgid "Security limits exceeded"
+msgstr "Biztonsági korlátok túllépése"
+
+#: umc/python/diagnostic/plugins/21_check_join_status.py:33
+#, python-brace-format
+msgid "See {erroranalysis} or run the join-scripts via {join}."
+msgstr ""
+"Lásd {erroranalysis} vagy futtasd a csatlakozási szkripteket a {join} "
+"segítségével."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:134
+#, python-brace-format
+msgid "See {sdb} for information on manual server password change."
+msgstr ""
+"A szerver jelszavának kézi megváltoztatásával kapcsolatos információkat lásd a "
+"{sdb} pontban."
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:14
+msgid "Server Role Windows"
+msgstr "Kiszolgálói szerepkör Windows"
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:141
+msgid "Set server/password/change=True"
+msgstr "Állítsa be a szerver/jelszó/módosítás=Igaz értéket"
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:147
+msgid "Set server/password/interval=21"
+msgstr "Állítsa be a szerver/jelszó/intervallum=21 értéket"
+
+#: umc/python/diagnostic/plugins/56_univention_types.py:18
+msgid ""
+"Several services rely on the attribute \"univentionObjectType\" to search and "
+"identify objects in LDAP."
+msgstr ""
+"Számos szolgáltatás az „univentionObjectType” attribútumot használja az LDAP-"
+"ban található objektumok kereséséhez és azonosításához."
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:16
+msgid ""
+"Several services rely on the attribute \"univentionServerRole\" to search and "
+"identify objects in OpenLDAP."
+msgstr ""
+"Számos szolgáltatás az „univentionServerRole” attribútumot használja az "
+"OpenLDAP-ban található objektumok kereséséhez és azonosításához."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:23
+msgid "Some UCR variables currently have invalid values."
+msgstr "Néhány UCR változó jelenleg érvénytelen értékeket tartalmaz."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:36
+msgid "Some UCR variables for the repository configuration are deprecated."
+msgstr "A tároló konfigurációjának néhány UCR változója elavult."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:109
+msgid "Some disks are nearly full:"
+msgstr "Néhány lemez majdnem tele van:"
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:24
+#, python-brace-format
+msgid ""
+"Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum "
+"protocol version should be set to {udn}."
+msgstr ""
+"Az UCS {ucs[0]}.{ucs[1]}-{ucs[2]} hibajavítástól {ucs[3]} kezdve a minimális "
+"protokollverziót {udn}-re kell állítani."
+
+#: umc/python/diagnostic/__init__.py:267
+msgid "Test again"
+msgstr "Teszteld újra"
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:35
+#, python-format
+msgid "The %(name)s Listener Converter has %(length)d unprocessed files."
+msgstr ""
+"A(z) %(name)s Listener Converter %(length)d feldolgozatlan fájlt tartalmaz."
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:40
+#, python-format
+msgid "The %(name)s Listener has %(length)d unprocessed files."
+msgstr "A(z) %(name)s Listener %(length)d feldolgozatlan fájlt tartalmaz."
+
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:27
+msgid ""
+"The LDAP schema validation failed with the following errors or warnings:\n"
+msgstr ""
+"Az LDAP séma érvényesítése a következő hibákkal vagy figyelmeztetésekkel "
+"sikertelen volt:\n"
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:159
+msgid "The SAML identity provider certificate {cert!r} is missing in {{idp}}."
+msgstr ""
+"A(z) {cert!r} SAML identitásszolgáltatói tanúsítvány hiányzik a(z) {{idp}} "
+"mappából."
+
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:232
+msgid ""
+"The SAML identity provider certificate {{{link}}} does not match the local "
+"certificate {loc!r}."
+msgstr ""
+"A(z) {{{link}}} SAML identitásszolgáltatói tanúsítvány nem egyezik meg a(z) "
+"{loc!r} helyi tanúsítvánnyal."
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:28
+#, python-brace-format
+msgid "The UCR variable <tt>{ucr}</tt> is not configured or invalid."
+msgstr "A(z) <tt>) {ucr}</tt> UCR változó nincs konfigurálva vagy érvénytelen."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:71
+msgid ""
+"The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
+msgstr ""
+"A(z) {variable!r} UCR változó nincs beállítva, de szükséges az S4 "
+"csatlakozóhoz."
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:16
+msgid "The app listener queues contain unprocessed files"
+msgstr "Az alkalmazásfigyelő sorok feldolgozatlan fájlokat tartalmaznak"
+
+#: umc/python/diagnostic/plugins/21_check_join_status.py:14
+msgid "The check for the join status was succsesful."
+msgstr "A csatlakozási állapot ellenőrzése sikeres volt."
+
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:76
+msgid "The error might be fixable by regenerating the sources.list."
+msgstr "A hiba esetleg javítható a sources.list újragenerálásával."
+
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:28
+msgid "The files should be checked for differences."
+msgstr "Ellenőrizni kell a fájlokat az eltérések szempontjából."
+
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:51
+msgid "The following FQDNs were not resolvable:"
+msgstr "A következő FQDN-ek nem voltak feloldhatók:"
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:307
+msgid "The following KDCs were unreachable: {}"
+msgstr "A következő KDC-k nem voltak elérhetők: {}"
+
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:26
+msgid "The following UCR files are modified locally."
+msgstr "A következő UCR fájlok lokálisan módosultak."
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:64
+msgid "The following complete configurations were found: "
+msgstr "A következő teljes konfigurációk érhetők el: "
+
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:84
+msgid "The following files seem to be registered in the old way:"
+msgstr "Úgy tűnik, hogy a következő fájlok a régi módon vannak regisztrálva:"
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:73
+msgid ""
+"The following incomplete configurations have been found. Manual action is "
+"required to fix it. Attributes still present from past configurations can be "
+"deleted."
+msgstr ""
+"A következő hiányos konfigurációkat találtuk. Manuális beavatkozás szükséges a "
+"javításhoz. A korábbi konfigurációkból még meglévő attribútumok törölhetők."
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:65
+msgid ""
+"The following list shows the affected remote servers and the reason for the "
+"failed ssh connection:"
+msgstr ""
+"Az alábbi lista az érintett távoli szervereket és a sikertelen ssh-kapcsolat "
+"okát mutatja:"
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:48
+#, python-brace-format
+msgid "The following non-compliant hostnames have been found: {hostnames}."
+msgstr "A következő, nem szabványos gazdaneveket találtuk: {hostnames}."
+
+#: umc/python/diagnostic/plugins/10_gateway.py:16
+#, python-format
+msgid ""
+"The gateway %r could not be reached. Please make sure the gateway and related "
+"network settings are correctly configured by using the {setup:network}."
+msgstr ""
+"A(z) %r átjáró nem érhető el. Kérjük, ellenőrizd, hogy az átjáró és a "
+"kapcsolódó hálózati beállítások megfelelően vannak-e konfigurálva a(z) "
+"{setup:network} segítségével."
+
+#: umc/python/diagnostic/plugins/12_proxy.py:71
+msgid ""
+"The hostname of the proxy could not be resolved. May check your DNS "
+"configuration."
+msgstr "A proxy gazdagép neve nem oldható meg. Ellenőrizd a DNS-beállításokat."
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:59
+msgid "The limits have been adjusted to the suggested value."
+msgstr "A határértékeket a javasolt értékre módosultak."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:44
+#, python-format
+msgid "The migration failed: %s"
+msgstr "A migráció sikertelen: %s"
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:31
+msgid "The migration status can be checked by executing: pg_lsclusters -h."
+msgstr ""
+"A migráció állapota a következő parancs futtatásával ellenőrizhető: "
+"pg_lsclusters -h."
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:46
+#, python-format
+msgid "The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:"
+msgstr "A(z) %(nameserver)s névszerver (UCR változó: %(var)r) nem reagál:"
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:103
+#, python-brace-format
+msgid ""
+"The object {dn} contains an unresolvable host in the \"{lang}\" URL: \"{url}\" "
+"(see {{{link}}}):"
+msgstr ""
+"A(z) {dn} objektum feloldhatatlan gazdagépet tartalmaz a(z) \"{lang}\" URL-"
+"ben: \"{url}\" (lásd: {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/53_package_status.py:15
+#, python-format
+msgid "The package status of %s packages is corrupt."
+msgstr "A(z) %s csomag csomagállapota sérült."
+
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:20
+msgid ""
+"The preferred way now is to register them in LDAP; this is less error prone in "
+"situations like backup2master."
+msgstr ""
+"Az előnyben részesített módszer most az LDAP-ban történő regisztrálás; ez "
+"kevésbé hajlamos a hibákra olyan helyzetekben, mint a backup2master."
+
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:62
+#, python-format
+msgid ""
+"The primary LDAP Server of this System (UCR ldap/master) is not set to the "
+"Primary Directory Node of this UCS domain (%s)."
+msgstr ""
+"A rendszer elsődleges LDAP kiszolgálója (UCR ldap/master) nincs beállítva az "
+"UCS-tartomány (%s) elsődleges könyvtárcsomópontjára."
+
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:57
+#, python-format, python-brace-format
+msgid ""
+"The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
+"Primary Directory Node of this UCS domain (%s).\n"
+"Since this environment provides further LDAP Servers, we recommend a different "
+"configuration to reduce the load on the Primary Directory Node.\n"
+"Please see {sdb} for further information."
+msgstr ""
+"A rendszer elsődleges LDAP kiszolgálója (UCR ldap/server/name) az UCS-"
+"tartomány (%s) elsődleges könyvtárcsomópontjára van beállítva.\n"
+"Mivel ez a környezet további LDAP kiszolgálókat biztosít, az elsődleges "
+"könyvtárcsomópont terhelésének csökkentése érdekében javasolt eltérő "
+"konfiguráció használata.\n"
+"További információkért lásd: {sdb}."
+
+#: umc/python/diagnostic/plugins/12_proxy.py:69
+#, python-format
+msgid ""
+"The proxy host could not be reached. Make sure that hostname (%(hostname)r) "
+"and port (%(port)r) are correctly set up."
+msgstr ""
+"A proxy gazdagép nem érhető el. Győződj meg arról, hogy a gazdagép neve "
+"(%(hostname)r) és a port (%(port)r) helyesen van beállítva."
+
+#: umc/python/diagnostic/plugins/12_proxy.py:87
+#, python-format
+msgid ""
+"The proxy server is reachable but the HTTP response status code (%d) does not "
+"indicate success."
+msgstr ""
+"A proxy szerver elérhető, de a HTTP válaszállapot kód (%d) nem jelzi a sikeres "
+"kapcsolatot."
+
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:99
+#, python-format
+msgid "The registration failed: %s"
+msgstr "A regisztráció sikertelen: %s"
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:19
+msgid ""
+"The security limits (e.g. for max_open_files) are currently not configured "
+"properly."
+msgstr ""
+"A biztonsági korlátok (pl. a max_open_files) jelenleg nincsenek megfelelően "
+"konfigurálva."
+
+#: umc/python/diagnostic/plugins/12_proxy.py:73
+#, python-format
+msgid ""
+"The server did not respond within %d seconds. Please check your network "
+"configuration."
+msgstr ""
+"A szerver nem válaszolt %d másodpercen belül. Kérjük, ellenőrizd a hálózati "
+"konfigurációt."
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:64
+msgid "The ssh connection to at least one other UCS server failed. "
+msgstr "Az SSH kapcsolat legalább egy másik UCS kiszolgálóval meghiúsult. "
+
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:68
+msgid ""
+"The ssh host key of the remote server has changed (maybe the host was "
+"reinstalled). "
+msgstr ""
+"A távoli szerver ssh gazdagép kulcsa megváltozott (lehet, hogy a gazdagépet "
+"újratelepítették). "
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:110
+#, python-format
+msgid "The variable %(name)r is deprecated and should no longer be used."
+msgstr "A(z) %(name)r változó elavult, és a továbbiakban nem szabad használni."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:57
+#, python-format
+msgid "The variable %(variable)r has the invalid value %(value)r."
+msgstr "A(z) %(variable)r változó érvénytelen értéket tartalmaz: %(value)r."
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:111
+#, python-brace-format
+msgid ""
+"The {udm_module} object {dn} contains an invalid \"host\" resp. \"spoolHost\" "
+"entry: \"{host}\" (see {{{link}}}):"
+msgstr ""
+"A(z) {udm_module} {dn} objektum érvénytelen „host” vagy „spoolHost” bejegyzést "
+"tartalmaz: „{host}” (lásd: {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/10_gateway.py:33
+msgid "There is no gateway configured."
+msgstr "Nincs konfigurált átjáró."
+
+#: umc/python/diagnostic/plugins/12_proxy.py:18
+msgid ""
+"There was an error using the proxy server. The {setup:network} can be used to "
+"change the proxy configuration.\n"
+msgstr ""
+"Hiba történt a proxykiszolgáló használatakor. A(z) {setup:network} paranccsal "
+"módosítható a proxy konfigurációja.\n"
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:51
+#: umc/python/diagnostic/plugins/56_univention_types.py:54
+msgid "These objects were found:"
+msgstr "Ezek az objektumok találhatók:"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:118
+msgid ""
+"This can be fixed only manually using the Repository Settings module or the "
+"UCR module."
+msgstr ""
+"Ez csak manuálisan javítható a Repository Settings modul vagy az UCR modul "
+"segítségével."
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:20
+msgid ""
+"This can cause several different serious problems (e.g. the login at samba "
+"servers may be impossible, file operations (copy, move) on shares can fail, "
+"etc.)"
+msgstr ""
+"Ez számos komoly problémát okozhat (pl. a Samba szerverekre való bejelentkezés "
+"lehetetlenné válhat, a megosztott mappákon végzett fájlműveletek (másolás, "
+"áthelyezés) sikertelenek lehetnek stb.)."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:24
+msgid "This check has been added recently; some warning may be unproblematic."
+msgstr ""
+"Ez az ellenőrzés nemrég lett hozzáadva; egyes figyelmeztetések nem jelentenek "
+"problémát."
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:20
+msgid ""
+"This could either mean that the affected app is currently processing these "
+"files or that there is some issue with the app queues. "
+msgstr ""
+"Ez azt jelentheti, hogy az érintett alkalmazás jelenleg feldolgozza ezeket a "
+"fájlokat, vagy hogy valamilyen probléma van az alkalmazás várólistáival. "
+
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:44
+msgid "This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`."
+msgstr "Ez egy Samba 4 DC, de a `samba-tool processes` nem jelez `kdc_server`-t."
+
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:210
+msgid "This is not necessarily a problem, if the the ACL got changed via IMAP."
+msgstr ""
+"Ez nem feltétlenül jelent problémát, ha az ACL az IMAP-on keresztül módosult."
+
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:45
+msgid "This may be, because Heimdal KDC seems to be running."
+msgstr "Ez azért lehet, mert úgy tűnik, hogy a Heimdal KDC fut."
+
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:46
+msgid "This may be, because `kerberos/autostart` is not disabled."
+msgstr "Ez azért lehet, mert a `kerberos/autostart` nincs letiltva."
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:49
+msgid "This may lead to DNS problems."
+msgstr "Ez DNS problémákhoz vezethet."
+
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:50
+msgid "This might indicate an error or still processing transactions."
+msgstr "Ez hibára vagy még folyamatban lévő tranzakciókra utalhat."
+
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:18
+msgid ""
+"This test checks whether there are unprocessed files in the App Listener "
+"directory /var/lib/univention-appcenter/listener/$AppName/ and Listener "
+"Converter directory /var/lib/univention-appcenter/apps/$AppName/data/listener/ "
+"of installed apps. "
+msgstr ""
+"Ez a teszt azt ellenőrzi, hogy vannak-e feldolgozatlan fájlok a telepített "
+"alkalmazások App Listener könyvtárában (/var/lib/univention-appcenter/listener/"
+"$AppName/) és Listener Converter könyvtárában (/var/lib/univention-appcenter/"
+"apps/$AppName/data/listener/). "
+
+#: umc/python/diagnostic/plugins/12_proxy.py:88
+#, python-format
+msgid ""
+"This warning might be harmless. Nevertheless make sure the authentication "
+"credentials (if any) are correct and the proxy server ACLs do not forbid "
+"requests to %s."
+msgstr ""
+"Ez a figyelmeztetés ártalmatlan lehet. Mindazonáltal győződj meg arról, hogy a "
+"hitelesítési adatok (ha vannak ilyenek) helyesek, és a proxykiszolgáló ACL-jei "
+"nem tiltják a(z) %s címre irányuló kéréseket."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:103
+msgid ""
+"Typically either \"Authenticated Users\" or \"Enterprise Domain Controllers\" "
+"are member of \"Pre-Windows 2000 Compatible Access\"."
+msgstr ""
+"Általában vagy a „Hitelesített felhasználók”, vagy a „Vállalati "
+"tartományvezérlők” tagjai a „Windows 2000 előtti rendszerrel kompatibilis "
+"hozzáférés” csoportnak."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:86
+#, python-brace-format
+msgid "UCS DN: {ucs}, S4 DN: {s4}, Filename: {fn}"
+msgstr "UCS DN: {ucs}, S4 DN: {s4}, Fájlnév: {fn}"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:83
+msgid "UCS rejected:"
+msgstr "UCS elutasítva:"
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:40
+msgid "Unable to fix machine password on {}"
+msgstr "Nem sikerült kijavítani a gép jelszavát a(z) {} gépen"
+
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:49
+msgid "Univention Directory Notifier ID and the locally stored version differ."
+msgstr ""
+"Az Univention Directory Notifier azonosítója és a helyben tárolt verzió eltérő."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:65
+msgid "Univention S4 Connector is not installed."
+msgstr "Az Univention S4 csatlakozó nincs telepítve."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:29
+msgid "Univention Support Database - Bind: zone transfer failed"
+msgstr "Univention támogatási adatbázis - Kötés: zónaátvitel sikertelen"
+
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:23
+msgid ""
+"Univention Support Database - Change the primary LDAP Server to redistribute "
+"the server load"
+msgstr ""
+"Univention támogatási adatbázis – Az elsődleges LDAP kiszolgáló "
+"megváltoztatása a kiszolgáló terhelésének újraelosztása érdekében"
+
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:21
+msgid ""
+"Univention Support Database - DNS Server on Directory Node does not resolve "
+"external names"
+msgstr ""
+"Univention támogatási adatbázis - A címtárcsomóponton lévő DNS kiszolgáló nem "
+"oldja fel a külső neveket"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:20
+msgid "Univention Support Database - How to deal with s4-connector rejects"
+msgstr ""
+"Univention támogatási adatbázis - Hogyan kezeljük az s4-csatlakozó "
+"elutasításait"
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:26
+msgid "Univention Support Database - Manually trigger server password change"
+msgstr ""
+"Univention támogatási adatbázis – A szerver jelszavának kézi megváltoztatása"
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:30
+msgid "Univention Support Database - Renewing the TLS/SSL certificates"
+msgstr "Univention támogatási adatbázis – A TLS/SSL tanúsítványok megújítása"
+
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:20
+msgid "Univention Support Database - Troubleshooting: Listener-/Notifier"
+msgstr "Univention támogatási adatbázis - Hibaelhárítás: Figyelő/Értesítő"
+
+#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:33
+msgid "Update LDAP objects"
+msgstr "LDAP objektumok frissítése"
+
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:19
+msgid "Update protocol version"
+msgstr "Protokoll verziójának frissítése"
+
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:27
+msgid "Updated versions will be named FILENAME.dpkg-*."
+msgstr "A frissített verziók neve FÁJLNÉV.dpkg-* lesz."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:28
+msgid "Updating from PostgreSQL 11 to PostgreSQL 15"
+msgstr "Frissítés PostgreSQL 11-ről PostgreSQL 15-re"
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:26
+#, python-brace-format
+msgid "Use the module {ucr} to correct their values."
+msgstr "A {ucr} modul segítségével javíthatók ki az értékek."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:38
+msgid ""
+"Use the {appcenter:components} to correct these values by once saving the "
+"General repository settings "
+msgstr ""
+"A(z) {appcenter:components} használatával javíthatók ki ezeket az értékek az "
+"Általános tároló beállítások mentése után. "
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:15
+msgid "User objects which are not migrated"
+msgstr "Nem migrált felhasználói objektumok"
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:60
+msgid ""
+"User or group with SID {sid} has name {actual!r}, but should be {expected!r}."
+msgstr ""
+"A(z) {sid} SID-vel rendelkező felhasználó vagy csoport neve {actual!r}, de "
+"ennek {expected!r}-nek kell lennie."
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:50
+msgid ""
+"User or group with name {name!r} has sid {actual_sid}, but should be {sid}."
+msgstr ""
+"A(z) {name!r} nevű felhasználó vagy csoport azonosítója {actual_sid}, de ennek "
+"{sid}-nek kell lennie."
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:54
+#, python-format
+msgid "User: %r\n"
+msgstr "Felhasználó: %r\n"
+
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:56
+#, python-format
+msgid "User: %r - remaining fetchmail attributes: %s.\n"
+msgstr "Felhasználó: %r - fennmaradó fetchmail attribútumok: %s.\n"
+
+#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:14
+msgid "Validate all objects have Univention Object Identifier set"
+msgstr ""
+"Ellenőrizd, hogy minden objektum rendelkezik-e Univention objektumazonosítóval"
+
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:14
+msgid "Validating the LDAP configuration and schema files."
+msgstr "Az LDAP konfigurációs és sémafájlok érvényesítése."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:18
+msgid ""
+"When a user object is created by a system which is not yet on UCS 4.3 it will "
+"have the old format. These user objects need to migrated again."
+msgstr ""
+"Amikor egy felhasználói objektumot egy olyan rendszer hoz létre, amely még nem "
+"az UCS 4.3-at használja, akkor az a régi formátumot fogja használni. Ezeket a "
+"felhasználói objektumokat újra kell migrálni."
+
+#: umc/python/diagnostic/plugins/55_user_migration.py:17
+msgid ""
+"With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
+"Primary Directory Node all user objects are migrated into the new format."
+msgstr ""
+"Az UCS 4.3 verzióval megváltozott a felhasználói objektumok LDAP formátuma. Az "
+"elsődleges könyvtárcsomópont frissítése után az összes felhasználói objektum "
+"átkerül az új formátumba."
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:56
+msgid ""
+"You can run `/usr/share/univention-directory-manager-tools/"
+"proof_uniqueMembers` to fix the issue."
+msgstr ""
+"A probléma megoldásához futtathatod a `/usr/share/univention-directory-manager-"
+"tools/proof_uniqueMembers` parancsot."
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:56
+msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
+msgstr ""
+"A probléma megoldásához futtathatod a `samba-tool dbcheck --fix` parancsot."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:116
+msgid "You have configured some high log levels."
+msgstr "Néhány magas naplózási szintet konfiguráltál."
+
+#: umc/python/diagnostic/plugins/53_package_status.py:16
+msgid ""
+"You may log in to the system as root via ssh and run the command \"dpkg --"
+"configure -a\" as an attempt to correct the packages status."
+msgstr ""
+"Bejelentkezhetsz a rendszerbe root felhasználóként ssh-n keresztül, és "
+"futtathatod a \"dpkg --configure -a\" parancsot a csomagok állapotának "
+"javítására."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:93
+msgid "You may want to move /var/log to another disk or storage."
+msgstr ""
+"Érdemes lehet a /var/log fájlt egy másik lemezre vagy tárhelyre áthelyezni."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:95
+msgid "You may want to move the local repository to another server."
+msgstr "Érdemes lehet áthelyezni a helyi adattárat egy másik szerverre."
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:116
+#, python-brace-format
+msgid "You may want to reset them via {ucr}."
+msgstr "Érdemes lehet visszaállítani őket a következőn keresztül: {ucr}."
+
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:47
+#, python-brace-format
+msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
+msgstr ""
+"Érdemes lehet leállítani a Heimdal KDC-t, és újraindítani a Sambát a "
+"következőn keresztül: {services}"
+
+#: umc/python/diagnostic/plugins/30_disk_usage.py:91
+msgid "You may want to uninstall software via {appcenter:appcenter}."
+msgstr ""
+"Érdemes lehet szoftvert eltávolítani a következőn keresztül: "
+"{appcenter:appcenter}."
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:52
+msgid ""
+"`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found "
+"an error with the LDAP database group membership attributes."
+msgstr ""
+"A `/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` "
+"parancs hibát talált az LDAP adatbázis csoporttagsági attribútumaiban."
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:61
+msgid ""
+"`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found "
+"no errors with the LDAP database group membership attributes."
+msgstr ""
+"A `/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` "
+"parancs nem talált hibákat az LDAP adatbázis csoporttagsági attribútumaiban."
+
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:35
+#, python-brace-format
+msgid "`kinit` for principal {princ} with keytab {tab} failed."
+msgstr ""
+"A(z) {princ} azonosítóhoz és a(z) {tab} keytabhoz tartozó `kinit` művelet "
+"sikertelen volt."
+
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:37
+#, python-brace-format
+msgid "`kinit` for principal {princ} with password file {file} failed."
+msgstr ""
+"A(z) {princ} azonosítóhoz tartozó `kinit` művelet a(z) {file} jelszófájlhoz "
+"sikertelen."
+
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:48
+#, python-brace-format
+msgid "`nsupdate` check for domain {domain} failed ({details})."
+msgstr ""
+"Az `nsupdate` ellenőrzése a(z) {domain} domainhez sikertelen ({details})."
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:52
+msgid "`samba-tool dbcheck` found an error in the local AD database."
+msgstr "A `samba-tool dbcheck` hibát talált a helyi AD adatbázisban."
+
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:61
+msgid "`samba-tool dbcheck` found no errors in the local AD database."
+msgstr "A `samba-tool dbcheck` nem talált hibákat a helyi AD adatbázisban."
+
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:124
+msgid "`samba-tool drs showrepl` returned a problem with the replication."
+msgstr "A `samba-tool drs showrepl` parancs replikációs problémát jelezett."
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:39
+msgid ""
+"as well as saving the settings for all Additional repositories or press the "
+"Button ADJUST ALL COMPONENTS "
+msgstr ""
+"valamint az összes további tároló beállításainak mentése vagy nyomja meg az "
+"ÖSSZES ÖSSZETEVŐ BEÁLLÍTÁSA gombot "
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:29
+msgid "http://sdb.univention.de/1183"
+msgstr "http://sdb.univention.de/1183"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:28
+msgid "http://sdb.univention.de/1273"
+msgstr "http://sdb.univention.de/1273"
+
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:20
+msgid "http://sdb.univention.de/1298"
+msgstr "http://sdb.univention.de/1298"
+
+#: umc/python/diagnostic/plugins/21_check_join_status.py:17
+msgid ""
+"https://docs.software-univention.de/"
+"manual-5.2.html#domain:listenernotifier:erroranalysis"
+msgstr ""
+"https://docs.software-univention.de/"
+"manual-5.2.html#domain:listenernotifier:erroranalysis"
+
+#: umc/python/diagnostic/plugins/32_security_limits.py:27
+msgid "https://help.univention.com/t/samba4-max-open-files/1758"
+msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
+
+#: umc/python/diagnostic/plugins/51_hostname_check.py:19
+msgid "https://tools.ietf.org/html/rfc1123#section-2"
+msgstr "https://tools.ietf.org/html/rfc1123#section-2"
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:85
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:92
+msgid "not found"
+msgstr "nem található"
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:72
+msgid "ph "
+msgstr "ph "
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:324
+msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
+msgstr ""
+"a samba/interfaces nem tartalmazza az lo, a 127.0.0.1 vagy a 0.0.0.0 értékeket."
+
+#: umc/python/diagnostic/plugins/53_package_status.py:33
+msgid "some"
+msgstr "néhány"
+
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:40
+msgid "to correct these settings and delete the obsolete variables."
+msgstr "hogy javítsa ezeket a beállításokat és törölje az elavult változókat."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:97
+#, python-format
+msgid ""
+"univention-s4search did not show any memberOf values for sAMAccountName=%s."
+msgstr ""
+"az univention-s4search nem mutatott memberOf értékeket a következőhöz: "
+"sAMAccountName=%s."

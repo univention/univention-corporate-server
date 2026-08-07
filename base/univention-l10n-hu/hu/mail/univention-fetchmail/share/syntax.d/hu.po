@@ -1,0 +1,50 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-fetchmail-schema\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-11-25 18:39+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: share/syntax.d/fetchmail.py:55
+msgid "Envelope Header"
+msgstr "Boríték fejléc"
+
+#: share/syntax.d/fetchmail.py:17 share/syntax.d/fetchmail.py:55
+msgid "Keep on remote server"
+msgstr "Tartsa meg a távoli szerveren"
+
+#: share/syntax.d/fetchmail.py:54
+msgid "Local Domain Names"
+msgstr "Helyi domainnevek"
+
+#: share/syntax.d/fetchmail.py:16 share/syntax.d/fetchmail.py:53
+msgid "Password"
+msgstr "Jelszó"
+
+#: share/syntax.d/fetchmail.py:15 share/syntax.d/fetchmail.py:52
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: share/syntax.d/fetchmail.py:15 share/syntax.d/fetchmail.py:52
+msgid "Remote Server"
+msgstr "Távoli szerver"
+
+#: share/syntax.d/fetchmail.py:16 share/syntax.d/fetchmail.py:53
+msgid "Remote Username"
+msgstr "Távoli felhasználónév"
+
+#: share/syntax.d/fetchmail.py:17 share/syntax.d/fetchmail.py:55
+msgid "Use SSL"
+msgstr "SSL használata"
+
+#: share/syntax.d/fetchmail.py:54
+msgid "Virtual Qmail Prefix"
+msgstr "Virtuális Qmail előtag"

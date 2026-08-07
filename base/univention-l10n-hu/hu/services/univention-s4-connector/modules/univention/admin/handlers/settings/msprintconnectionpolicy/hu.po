@@ -1,0 +1,74 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-26 20:08+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:50
+msgid "A bitmask of printer attributes."
+msgstr "A nyomtató tulajdonságainak bitmaszkja."
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:71
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:39
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:44
+msgid "Display name"
+msgstr "Megjelenő név"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:71
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:32
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:49
+msgid "Print attributes"
+msgstr "Nyomtatási beállítások"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:76
+msgid "Printer connection settings"
+msgstr "Nyomtató csatlakozási beállítások"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:54
+msgid "Printer name"
+msgstr "Nyomtató neve"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:59
+msgid "Server name"
+msgstr "Szerver neve"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:20
+msgid "Settings: MS Print Connection Policy"
+msgstr "Beállítások: MS nyomtatási kapcsolati házirend"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:55
+msgid "The display name of an attached printer."
+msgstr "A csatlakoztatott nyomtató megjelenített neve."
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:60
+msgid "The name of a server."
+msgstr "A szerver neve."
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:65
+msgid "The universal naming convention name for shared volumes and printers."
+msgstr "A megosztott kötetek és nyomtatók univerzális névadási konvenciója."
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:64
+msgid "UNC name"
+msgstr "UNC név"

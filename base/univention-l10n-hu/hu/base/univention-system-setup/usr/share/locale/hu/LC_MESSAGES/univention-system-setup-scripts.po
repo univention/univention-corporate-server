@@ -1,0 +1,119 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:33+0100\n"
+"PO-Revision-Date: 2025-11-22 23:35+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:52
+msgid "Backing up old SSL certificate"
+msgstr "Régi SSL-tanúsítvány biztonsági mentése"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:279
+msgid "Configure"
+msgstr "Beállítás"
+
+#: usr/lib/univention-system-setup/scripts/35_timezone/10timezone:12
+msgid "Configuring time zones"
+msgstr "Időzónák beállítása"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:102
+msgid "Could not recreate SSL certificate for %s."
+msgstr "Nem sikerült újra létrehozni az SSL-tanúsítványt a %s számára."
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:235
+msgid "Domain setup (this might take a while)"
+msgstr "Domain beállítás (eltarthat egy ideig)"
+
+#: umc/python/setup/setup_script.py:438
+#, python-format
+msgid "Failed to get package for Role %s"
+msgstr "Nem sikerült letölteni a %s szerepkör csomagját"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:80
+msgid "Generating SSL CA certificate."
+msgstr "SSL CA tanúsítvány generálása."
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:35
+msgid "Generating SSL certificate"
+msgstr "SSL tanúsítvány létrehozása"
+
+#: usr/lib/univention-system-setup/scripts/10_basis/50uuid:28
+msgid "Generating UUID"
+msgstr "UUID generálása"
+
+#: usr/lib/univention-system-setup/scripts/20_language/10language:12
+msgid "Generating locales"
+msgstr "Helyi beállítások létrehozása"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:241
+msgid "Preparing domain join"
+msgstr "Domain csatlakozás előkészítése"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:99
+msgid "Recreate SSL certificate for %s"
+msgstr "SSL-tanúsítvány újbóli létrehozása %s számára"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:145
+msgid "Recreating SSH keys"
+msgstr "SSH-kulcsok újra létrehozása"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:326
+msgid "Running appliance scripts"
+msgstr "Készülék szkriptek futtatása"
+
+#: usr/lib/univention-system-setup/scripts/30_net/12gateway:12
+msgid "Setting IPv4 gateway"
+msgstr "IPv4 átjáró beállítása"
+
+#: usr/lib/univention-system-setup/scripts/30_net/13ipv6gateway:12
+msgid "Setting IPv6 gateway"
+msgstr "IPv6 átjáró beállítása"
+
+#: usr/lib/univention-system-setup/scripts/30_net/16forwarder:12
+msgid "Setting external name servers"
+msgstr "Külső névszerverek beállítása"
+
+#: usr/lib/univention-system-setup/scripts/15_keyboard/10keyboard:12
+msgid "Setting keyboard layout"
+msgstr "Billentyűzetkiosztás beállítása"
+
+#: usr/lib/univention-system-setup/scripts/30_net/14nameserver:12
+msgid "Setting name server"
+msgstr "Névszerver beállítása"
+
+#: usr/lib/univention-system-setup/scripts/30_net/18proxy:12
+msgid "Setting proxy"
+msgstr "Proxy beállítása"
+
+#: usr/lib/univention-system-setup/scripts/10_basis/18root_password:12
+msgid "Setting root password"
+msgstr "A root jelszó beállítása"
+
+#: usr/lib/univention-system-setup/scripts/20_language/11default_locale:12
+msgid "Setting the default locale"
+msgstr "Az alapértelmezett nyelvi beállítások megadása"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:74
+msgid "The SSL certificate creation failed. The old certificates have been restored."
+msgstr "Az SSL-tanúsítvány létrehozása sikertelen volt. A régi tanúsítványok visszaállítva."
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:146
+msgid "This might take a moment..."
+msgstr "Egy kis ideig tarthat..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:20
+msgid "This might take a while depending on the number of pending updates."
+msgstr "Ez a függőben lévő frissítések számától függően eltarthat egy ideig."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:12
+msgid "Upgrading the system"
+msgstr "A rendszer frissítése"

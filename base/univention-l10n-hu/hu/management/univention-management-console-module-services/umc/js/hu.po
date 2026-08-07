@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-services package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-services\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-01 11:18+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/services.js:147
+msgid "Automatically"
+msgstr "Automatikus"
+
+#: umc/js/services.js:221
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/services.js:152
+msgid "Description"
+msgstr "Leírás"
+
+#: umc/js/services.js:145
+msgid "Manually"
+msgstr "Manuálisan"
+
+#: umc/js/services.js:123
+msgid "Name"
+msgstr "Név"
+
+#: umc/js/services.js:143
+msgid "Never"
+msgstr "Soha"
+
+#: umc/js/services.js:223
+msgid "OK"
+msgstr "OK"
+
+#: umc/js/services.js:88
+msgid "Please confirm to automatically start the following services: "
+msgstr ""
+"Kérjük, erősítsd meg a következő szolgáltatások automatikus indítását: "
+
+#: umc/js/services.js:100
+msgid "Please confirm to manually start the following services: "
+msgstr "Kérjük, erősítsd meg a következő szolgáltatások manuális indítását: "
+
+#: umc/js/services.js:112
+msgid "Please confirm to never start the following services: "
+msgstr ""
+"Kérjük, erősítsd meg, hogy soha ne indítsa el a következő szolgáltatásokat: "
+
+#: umc/js/services.js:75
+msgid "Please confirm to restart the following services: "
+msgstr "Kérjük, erősítsd meg a következő szolgáltatások újraindítását: "
+
+#: umc/js/services.js:45
+msgid "Please confirm to start the following services: "
+msgstr "Kérjük, erősítsd meg a következő szolgáltatások elindítását: "
+
+#: umc/js/services.js:60
+msgid "Please confirm to stop the following services: "
+msgstr "Kérjük, erősítsd meg a következő szolgáltatások leállítását: "
+
+#: umc/js/services.js:70
+msgid "Restart"
+msgstr "Újraindítás"
+
+#: umc/js/services.js:176
+msgid "Search..."
+msgstr "Keresés..."
+
+#: umc/js/services.js:40
+msgid "Start"
+msgstr "Indítás"
+
+#: umc/js/services.js:85
+msgid "Start automatically"
+msgstr "Automatikus indítás"
+
+#: umc/js/services.js:97
+msgid "Start manually"
+msgstr "Manuális indítás"
+
+#: umc/js/services.js:109
+msgid "Start never"
+msgstr "Soha ne induljon el"
+
+#: umc/js/services.js:138
+msgid "Start type"
+msgstr "Indítás típusa"
+
+#: umc/js/services.js:126
+msgid "Status"
+msgstr "Állapot"
+
+#: umc/js/services.js:55
+msgid "Stop"
+msgstr "Leállítás"
+
+#: umc/js/services.js:33
+msgid ""
+"This module shows the system services and their current status. Specified "
+"services can be configured, started and stopped."
+msgstr ""
+"Ez a modul a rendszerszolgáltatásokat és azok aktuális állapotát mutatja. A "
+"megadott szolgáltatások konfigurálhatók, elindíthatók és leállíthatók."
+
+#: umc/js/services.js:216
+msgid ""
+"Warning: Stopping apache or UMC services will interrupt all current "
+"connections to the Univention Management Console. It might be necessary for "
+"all users to login again."
+msgstr ""
+"Figyelmeztetés: Az apache vagy az UMC szolgáltatások leállítása megszakítja "
+"az Univention Management Console összes aktuális kapcsolatát. Előfordulhat, "
+"hogy minden felhasználónak újra be kell jelentkeznie."
+
+#: umc/js/services.js:131
+msgid "running"
+msgstr "folyamatban"
+
+#: umc/js/services.js:133
+msgid "stopped"
+msgstr "leállított"

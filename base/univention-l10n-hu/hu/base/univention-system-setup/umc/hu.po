@@ -1,0 +1,41 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 16 Nov 2025 22:33:24 +0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+msgid "All language-related settings"
+msgstr "Minden nyelvi beállítás"
+
+msgid "Certificate settings"
+msgstr "Tanúsítvány beállítások"
+
+msgid "Create a new root certificate"
+msgstr "Új gyökér tanúsítvány létrehozása"
+
+msgid "Language settings"
+msgstr "Nyelvi beállítások"
+
+msgid "Network settings"
+msgstr "Hálózati beállítások"
+
+msgid "SSL,organization"
+msgstr "SSL, szervezet"
+
+msgid "Specify IP addresses, name servers, gateways and HTTP proxies"
+msgstr "Add meg az IP-címeket, névkiszolgálókat, átjárókat és HTTP-proxykat"
+
+msgid "ip,dhcp,dns,nameserver,forwarder,gateway,interface"
+msgstr "ip,dhcp,dns,névszerver,továbbító,átjáró,interfész"
+
+msgid "timezone,locale,keyboard"
+msgstr "időzóna,helyi beállítások,billentyűzet"

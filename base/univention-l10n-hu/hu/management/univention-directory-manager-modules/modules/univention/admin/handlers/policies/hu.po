@@ -1,0 +1,1247 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 01:17+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: modules/univention/admin/handlers/policies/policy.py:28
+msgid ""
+"<p>Policies are objects that can be connected with other objects in the "
+"directory tree. Connected policies allow to define object properties in a "
+"unified manner. Policies that are connected with containers or "
+"organizational units are inherited by all objects located below.</p><p>More "
+"information can be found in the <a href=\"https://docs.software-"
+"univention.de/manual-5.2.html#central:policies\" target=\"_blank\">online "
+"documentation for UCS</a>.</p>"
+msgstr ""
+"<p>A házirendek olyan objektumok, amelyek összekapcsolhatók a könyvtárfa "
+"más objektumaival. Az összekapcsolt házirendek lehetővé teszik az "
+"objektumok tulajdonságainak egységes meghatározását. A konténerekhez vagy "
+"szervezeti egységekhez kapcsolódó házirendeket az alattuk található összes "
+"objektum örökli.</p><p>További információk <a href=\"https://docs.software-"
+"univention.de/manual-5.2.html#central:policies\" target=\"_blank\">az UCS "
+"online dokumentációjában</a> találhatók.</p>"
+
+#: modules/univention/admin/handlers/policies/release.py:60
+msgid "Activate release updates (Errata updates are activated by default)."
+msgstr ""
+"Kiadási frissítések aktiválása (a Hibajegyzék frissítései alapértelmezés "
+"szerint aktiválva vannak)."
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:27
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:80
+msgid "Add hostnames to leases"
+msgstr "Gazdagépnevek hozzáadása a bérletekhez"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:43
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:97
+msgid "Allow/Deny"
+msgstr "Engedélyezés/Tiltás"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:97
+msgid "Allow/Deny/Ignore statements"
+msgstr "Engedélyezés/Tiltás/Figyelmen kívül hagyás utasítások"
+
+#: modules/univention/admin/handlers/policies/umc.py:23
+msgid "Allowed UMC operation sets"
+msgstr "Engedélyezett UMC műveletkészletek"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:84
+msgid "Attempt to do a DNS update when a DHCP lease is confirmed"
+msgstr ""
+"Próbáljon meg DNS-frissítést végrehajtani, amikor a DHCP bérlet "
+"megerősítésre kerül"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:94
+msgid ""
+"Attempt to update a DHCP client's A record when the client acquires or "
+"renews a lease"
+msgstr ""
+"DHCP kliens A rekordjának frissítésére tett kísérlet, amikor a kliens "
+"bérletet szerez vagy megújít"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:24
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:65
+msgid "Authoritative"
+msgstr "Hiteles"
+
+#: modules/univention/admin/handlers/policies/release.py:39
+#: modules/univention/admin/handlers/policies/release.py:79
+msgid "Automatic updates"
+msgstr "Automatikus frissítések"
+
+#: modules/univention/admin/handlers/policies/release.py:38
+msgid "Automatic updates policies"
+msgstr "Automatikus frissítési házirendek"
+
+#: modules/univention/admin/handlers/policies/release.py:37
+msgid "Automatic updates policy"
+msgstr "Automatikus frissítési házirend"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:60
+msgid "Available Univention Directory Manager modules"
+msgstr "Elérhető Univention Directory Manager modulok"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:25
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:69
+msgid "BOOTP"
+msgstr "BOOTP"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:81
+msgid "Basic DNS settings"
+msgstr "Alapvető DNS-beállítások"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:75
+#: modules/univention/admin/handlers/policies/policy.py:46
+#: modules/univention/admin/handlers/policies/nfsmounts.py:75
+#: modules/univention/admin/handlers/policies/printserver.py:74
+#: modules/univention/admin/handlers/policies/umc.py:82
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:80
+msgid "Boot"
+msgstr "Boot"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:25
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:67
+msgid "Boot filename"
+msgstr "Boot fájlnév"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:40
+msgid "Boot parameters"
+msgstr "Boot paraméterek"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:24
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:61
+msgid "Boot server"
+msgstr "Boot szerver"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:80
+msgid "Boot settings"
+msgstr "Boot beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:25
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:70
+msgid "Boot unknown clients"
+msgstr "Ismeretlen kliensek indítása"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:26
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:74
+msgid "Booting"
+msgstr "Indítás"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:31
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:103
+msgid "Client updates"
+msgstr "Ügyfélfrissítések"
+
+#: modules/univention/admin/handlers/policies/registry.py:66
+msgid "Configuration Registry"
+msgstr "Konfigurációs rendszerleíró adatbázis"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:25
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:73
+msgid "DDNS domain name"
+msgstr "DDNS domain név"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:29
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:93
+msgid "DDNS forward update"
+msgstr "DDNS előrefrissítés"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:24
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:67
+msgid "DDNS hostname"
+msgstr "DDNS gazdagép név"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:26
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:78
+msgid "DDNS reverse domain name"
+msgstr "DDNS fordított domain név"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:28
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:88
+msgid "DDNS update style"
+msgstr "DDNS frissítési stílus"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:27
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:83
+msgid "DDNS updates"
+msgstr "DDNS frissítések"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:42
+msgid "DHCP Allow/Deny policies"
+msgstr "DHCP engedélyezési/tiltási házirendek"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:41
+msgid "DHCP Allow/Deny policy"
+msgstr "DHCP engedélyezési/tiltási házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:39
+msgid "DHCP Boot policies"
+msgstr "DHCP boot házirendek"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:38
+msgid "DHCP Boot policy"
+msgstr "DHCP boot házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:39
+msgid "DHCP DNS policies"
+msgstr "DHCP DNS házirendek"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:38
+msgid "DHCP DNS policy"
+msgstr "DHCP DNS házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:45
+msgid "DHCP Dynamic DNS policies"
+msgstr "DHCP dinamikus DNS házirendek"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:44
+msgid "DHCP Dynamic DNS policy"
+msgstr "DHCP dinamikus DNS házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:40
+msgid "DHCP NetBIOS policies"
+msgstr "DHCP NetBIOS házirendek"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:39
+msgid "DHCP NetBIOS policy"
+msgstr "DHCP NetBIOS házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:85
+msgid "DHCP lease time"
+msgstr "DHCP bérleti idő"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:40
+msgid "DHCP lease time policies"
+msgstr "DHCP bérleti időre házirendjei"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:39
+msgid "DHCP lease time policy"
+msgstr "DHCP bérleti időre házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:74
+msgid "DHCP routing"
+msgstr "DHCP útválasztás"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:38
+msgid "DHCP routing policies"
+msgstr "DHCP útválasztási házirendek"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:37
+msgid "DHCP routing policy"
+msgstr "DHCP útválasztási házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:44
+msgid "DHCP statement"
+msgstr "DHCP utasítás"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:103
+msgid "DHCP statements"
+msgstr "DHCP utasítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:43
+msgid "DHCP statements policies"
+msgstr "DHCP utasítások hárendjei"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:42
+msgid "DHCP statements policy"
+msgstr "DHCP utasítások házirendje"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:40
+msgid "DNS"
+msgstr "DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:116
+msgid "DNS Update"
+msgstr "DNS frissítés"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:67
+#: modules/univention/admin/handlers/policies/maintenance.py:87
+msgid "Day"
+msgstr "Nap"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:73
+#: modules/univention/admin/handlers/policies/maintenance.py:93
+msgid "Day of week"
+msgstr "A hét napja"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:28
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:84
+msgid "Declines"
+msgstr "Elutasítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:24
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:62
+msgid "Default lease time"
+msgstr "Alapértelmezett bérleti idő"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:44
+msgid "Default quota for each user on a share"
+msgstr "Alapértelmezett kvóta minden felhasználó számára egy megosztáson"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:91
+msgid "Define the name of the DHCP server"
+msgstr "Add meg a DHCP szerver nevét"
+
+#: modules/univention/admin/handlers/policies/umc.py:46
+msgid "Defines a set of allowed UMC operations"
+msgstr "Az engedélyezett UMC-műveletek halmazának meghatározása"
+
+#: modules/univention/admin/handlers/policies/desktop.py:24
+#: modules/univention/admin/handlers/policies/desktop.py:60
+msgid "Desktop language"
+msgstr "Asztal nyelve"
+
+#: modules/univention/admin/handlers/policies/desktop.py:38
+msgid "Desktop policies"
+msgstr "Asztali házirendek"
+
+#: modules/univention/admin/handlers/policies/desktop.py:37
+msgid "Desktop policy"
+msgstr "Asztali házirend"
+
+#: modules/univention/admin/handlers/policies/desktop.py:25
+#: modules/univention/admin/handlers/policies/desktop.py:65
+msgid "Desktop profile"
+msgstr "Asztali profil"
+
+#: modules/univention/admin/handlers/policies/desktop.py:39
+#: modules/univention/admin/handlers/policies/desktop.py:93
+msgid "Desktop settings"
+msgstr "Asztali beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:99
+msgid ""
+"Do DNS updates for clients even if their IP addresses are assigned using "
+"fixed addresses"
+msgstr ""
+"DNS-frissítések elvégzése a kliensek számára, még akkor is, ha az IP-címeik "
+"fix címekkel vannak hozzárendelve"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:24
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:61
+msgid "Domain name"
+msgstr "Domainnév"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:25
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:67
+msgid "Domain name servers"
+msgstr "Domain névszerverek"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:74
+msgid ""
+"Domain name that will be appended to the client's hostname to form a fully-"
+"qualified domain-name (FQDN)"
+msgstr ""
+"A kliens hosztnevéhez hozzáfűzendő domainnév, amely egy teljesen minősített "
+"domainnevet (FQDN) alkot."
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:79
+msgid ""
+"Domain name that will be appended to the client's hostname to produce a "
+"name for use in the client's PTR record"
+msgstr ""
+"A kliens hostnevéhez hozzáfűzendő domainnév, amelyből a kliens PTR "
+"rekordjában használandó név jön létre"
+
+#: modules/univention/admin/handlers/policies/registry.py:114
+#, python-format
+msgid "Duplicated variables not allowed: %s"
+msgstr "A duplikált változók nem engedélyezettek: %s"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:27
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:79
+msgid "Duplicates"
+msgstr "Duplikátumok"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:46
+msgid "Dynamic DNS"
+msgstr "Dinamikus DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:116
+msgid "Dynamic DNS update"
+msgstr "Dinamikus DNS frissítés"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:65
+msgid ""
+"Dynamically assign addresses to unknown clients. Allowed by default. This "
+"option should not be used anymore."
+msgstr ""
+"Dinamikus címek hozzárendelése ismeretlen kliensekhez. Alapértelmezés "
+"szerint engedélyezett. Ezt a beállítást a továbbiakban ne használjuk."
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:71
+msgid ""
+"Enable clients for which there is no host declaration to obtain IP "
+"addresses. Allow and deny statements within pool declarations will still be "
+"respected."
+msgstr ""
+"Lehetővé teszi azoknak az ügyfeleknek, amelyeknek nincs gazdagép-"
+"deklarációja, hogy IP-címeket szerezzenek. A készlet deklarációkon belüli "
+"Engedélyez és Tilt utasítások továbbra is érvényben maradnak."
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:77
+msgid ""
+"Enables/disables password quality checks for example dictionary entries"
+msgstr ""
+"Engedélyezi/letiltja a jelszó erősségének ellenőrzését például "
+"szótárbejegyzésekhez"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:76
+msgid ""
+"First send an ICMP Echo request (a ping) when considering dynamically "
+"allocating an IP address. Should only be disabled if the delay of one "
+"second introduced by this is a problem for a client."
+msgstr ""
+"Először küldjön egy ICMP Echo kérést (egy pinget), amikor dinamikusan "
+"kívánja kiosztani az IP-címet. Csak akkor szabad letiltani, ha az általa "
+"okozott egy másodperces késleltetés problémát jelent a kliens számára."
+
+#: modules/univention/admin/handlers/policies/registry.py:81
+#: modules/univention/admin/handlers/policies/ldapserver.py:75
+#: modules/univention/admin/handlers/policies/policy.py:46
+#: modules/univention/admin/handlers/policies/memberpackages.py:82
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:81
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:74
+#: modules/univention/admin/handlers/policies/nfsmounts.py:75
+#: modules/univention/admin/handlers/policies/desktop.py:93
+#: modules/univention/admin/handlers/policies/pwhistory.py:90
+#: modules/univention/admin/handlers/policies/release.py:79
+#: modules/univention/admin/handlers/policies/printserver.py:74
+#: modules/univention/admin/handlers/policies/umc.py:82
+#: modules/univention/admin/handlers/policies/share_userquota.py:99
+#: modules/univention/admin/handlers/policies/repositorysync.py:100
+#: modules/univention/admin/handlers/policies/slavepackages.py:82
+#: modules/univention/admin/handlers/policies/maintenance.py:120
+#: modules/univention/admin/handlers/policies/repositoryserver.py:75
+#: modules/univention/admin/handlers/policies/masterpackages.py:82
+#: modules/univention/admin/handlers/policies/admin_container.py:74
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:82
+msgid "General DHCP DNS settings"
+msgstr "Általános DHCP DNS beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:87
+msgid "General DHCP NetBIOS settings"
+msgstr "Általános DHCP NetBIOS beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:98
+msgid "General DHCP allow/deny settings"
+msgstr "Általános DHCP engedélyezési/tiltási beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:81
+msgid "General DHCP boot settings"
+msgstr "Általános DHCP boot beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:117
+msgid "General DHCP dynamic DNS settings"
+msgstr "Általános DHCP dinamikus DNS beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:86
+msgid "General DHCP lease time settings"
+msgstr "Általános DHCP bérleti idő beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:75
+msgid "General DHCP routing settings"
+msgstr "Általános DHCP útválasztási beállítások"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:104
+msgid "General DHCP statements settings"
+msgstr "Általános DHCP utasítások beállításai"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:76
+msgid "General LDAP server settings"
+msgstr "Általános LDAP szerver beállítások"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:83
+msgid "General Managed Node packages settings"
+msgstr "Általános felügyelt csomópont-csomagok beállításai"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:76
+msgid "General NFS mounts settings"
+msgstr "Általános NFS csatolási beállítások"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:83
+msgid "General Primary/Backup Node packages settings"
+msgstr "Általános elsődleges/tartalék csomópont csomagbeállítások"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:83
+msgid "General Replica Node packages settings"
+msgstr "Általános replikacsomópont-csomagbeállítások"
+
+#: modules/univention/admin/handlers/policies/umc.py:83
+msgid "General UMC settings"
+msgstr "Általános UMC beállítások"
+
+#: modules/univention/admin/handlers/policies/registry.py:82
+msgid "General Univention Configuration Registry settings"
+msgstr ""
+"Általános Univention konfigurációs rendszerleíró adatbázis beállítások"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:75
+msgid "General Univention Directory Manager container settings"
+msgstr "Általános Univention Directory Manager konténerbeállítások"
+
+#: modules/univention/admin/handlers/policies/release.py:80
+msgid "General automatic updates settings"
+msgstr "Általános automatikus frissítési beállítások"
+
+#: modules/univention/admin/handlers/policies/desktop.py:94
+msgid "General desktop settings"
+msgstr "Általános asztali beállítások"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:121
+msgid "General maintenance settings"
+msgstr "Általános karbantartási beállítások"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:91
+msgid "General passwords settings"
+msgstr "Általános jelszóbeállítások"
+
+#: modules/univention/admin/handlers/policies/printserver.py:75
+msgid "General print server settings"
+msgstr "Általános nyomtatószerver beállítások"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:76
+msgid "General repository server settings"
+msgstr "Általános tároló szerver beállítások"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:101
+msgid "General repository synchronisation settings"
+msgstr "Általános tároló szinkronizálási beállítások"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:100
+msgid "General user quota settings"
+msgstr "Általános felhasználói kvóta beállítások"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:25
+#: modules/univention/admin/handlers/policies/share_userquota.py:69
+msgid "Hard limit"
+msgstr "Szigorú korlát"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:27
+#: modules/univention/admin/handlers/policies/share_userquota.py:79
+msgid "Hard limit (Files)"
+msgstr "Szigorú korlát (Fájlok)"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:80
+msgid "Hard limit. Can not be exceeded."
+msgstr "Szigorú korlát. Nem léphető túl."
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:70
+msgid ""
+"Hard limit. Can not be exceeded. Values may be entered with one of the "
+"following units as postfix: B (default), kB, MB, GB"
+msgstr ""
+"Szigorú korlát. Nem léphető túl. Az értékek a következő mértékegységek "
+"egyikével adhatók meg utótagként: B (alapértelmezett), kB, MB, GB"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:24
+#: modules/univention/admin/handlers/policies/pwhistory.py:61
+msgid "History length"
+msgstr "Előzmény hossza"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:85
+msgid ""
+"Honor DHCPDECLINE messages. deny/ignore will prevent malicious or buggy "
+"clients from completely exhausting the DHCP server's allocation pool."
+msgstr ""
+"A DHCPDECLINE üzenetek figyelembevétele. A engedélyez/tilt megakadályozza, "
+"hogy a rosszindulatú vagy hibás kliensek teljesen kimerítsék a DHCP-"
+"kiszolgáló lefoglalási készletét."
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:104
+msgid "Honor the client's intention to do its own update of its A record"
+msgstr ""
+"Tartsa tiszteletben az ügyfél azon szándékát, hogy saját maga frissítse az "
+"A-rekordját"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:68
+msgid "Hostname that will be used for the client's A and PTR records"
+msgstr "Az ügyfél A és PTR rekordjaihoz használt állomásnév"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:79
+#: modules/univention/admin/handlers/policies/maintenance.py:99
+msgid "Hour"
+msgstr "Óra"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:80
+msgid ""
+"If a request is received from a client that matches the MAC address of a "
+"host declaration, any other leases matching that MAC address will be "
+"discarded by the server, if this is set to deny. Allowed by default. "
+"Setting this to deny violates the DHCP protocol."
+msgstr ""
+"Ha egy kliens olyan kérést küld, amely megegyezik egy gazdagép rögzített "
+"MAC címével, akkor a szerver elutasítja az összes többi MAC címmel "
+"megegyező bérleti szerződést, ha ez az érték „elutasításra” van állítva. "
+"Alapértelmezés szerint engedélyezett. Ha ezt az értéket „elutasításra” "
+"állítja, az megsérti a DHCP protokollt."
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:68
+msgid "Initial boot file to be loaded by a client"
+msgstr "A kliens által betöltendő kezdeti rendszerindító fájl"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:24
+msgid "LDAP Server"
+msgstr "LDAP Szerver"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:39
+#: modules/univention/admin/handlers/policies/ldapserver.py:60
+msgid "LDAP server"
+msgstr "LDAP szerver"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:38
+msgid "LDAP server policies"
+msgstr "LDAP szerver házirendek"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:37
+msgid "LDAP server policy"
+msgstr "LDAP szerver házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:85
+msgid "Lease Time"
+msgstr "Bérleti Idő"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:41
+msgid "Lease time"
+msgstr "Bérleti idő"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:63
+msgid ""
+"Lease time used if the client does not request a specific expiration time"
+msgstr "A felhasznált bérleti idő, ha az ügyfél nem kér konkrét lejárati időt"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:24
+msgid "List of Univention Directory Manager modules"
+msgstr "Az Univention Directory Manager modulok listája"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:63
+msgid "List of WINS servers listed in order of preference"
+msgstr "A WINS kiszolgálók listája preferencia sorrendben"
+
+#: modules/univention/admin/handlers/policies/umc.py:68
+msgid "List of allowed UMC operation sets"
+msgstr "A megengedett UMC műveletsorok listája"
+
+#: modules/univention/admin/handlers/policies/desktop.py:72
+msgid "Logon scripts"
+msgstr "Bejelentkezési szkriptek"
+
+#: modules/univention/admin/handlers/policies/desktop.py:78
+msgid "Logout scripts"
+msgstr "Kijelentkezési szkriptek"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:81
+msgid ""
+"Look up the domain name corresponding to the IP address of each address in "
+"the lease pool and use that address for the DHCP hostname option. Disabled "
+"by default."
+msgstr ""
+"Keresse meg a bérleti készletben lévő egyes címek IP címnek megfelelő "
+"domainnevet, és ezt a címet használja DHCP hostname-ként. Alapértelmezés "
+"szerint letiltva."
+
+#: modules/univention/admin/handlers/policies/maintenance.py:25
+#: modules/univention/admin/handlers/policies/maintenance.py:40
+msgid "Maintenance"
+msgstr "Karbantartás"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:39
+msgid "Maintenance policies"
+msgstr "Karbantartási házirendek"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:38
+msgid "Maintenance policy"
+msgstr "Karbantartási házirend"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:120
+msgid "Maintenance settings"
+msgstr "Karbantartási beállítások"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:39
+msgid "Managed Node packages policies"
+msgstr "Felügyelt csomópont-csomagok házirendjei"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:38
+msgid "Managed Node packages policy"
+msgstr "Felügyelt csomópont-csomagok házirend"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:25
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:67
+msgid "Maximum lease time"
+msgstr "Maximális bérleti idő"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:68
+msgid "Maximum lease time that the server will accept if asked for"
+msgstr "A szerver által elfogadott maximális bérleti idő, ha kérik"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:72
+msgid "Minimal amount of characters"
+msgstr "Minimális karakterszám"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:73
+msgid "Minimum granted lease time"
+msgstr "Minimálisan megadott bérleti idő"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:26
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:72
+msgid "Minimum lease time"
+msgstr "Minimális bérleti idő"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:85
+#: modules/univention/admin/handlers/policies/maintenance.py:105
+msgid "Minute"
+msgstr "Perc"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:103
+msgid "Miscellaneous DHCP statements"
+msgstr "Egyéb DHCP utasítások"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:61
+#: modules/univention/admin/handlers/policies/maintenance.py:81
+msgid "Month"
+msgstr "Hónap"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:24
+msgid "Mount NFS shares"
+msgstr "NFS megosztások csatlakoztatása"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:39
+msgid "NFS mounts"
+msgstr "NFS csatolások"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:38
+msgid "NFS mounts policies"
+msgstr "NFS csatolási házirendek"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:37
+msgid "NFS mounts policy"
+msgstr "NFS csatolási házirend"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:60
+msgid "NFS shares to mount"
+msgstr "NFS-megosztások csatlakoztatása"
+
+#: modules/univention/admin/handlers/policies/registry.py:57
+#: modules/univention/admin/handlers/policies/ldapserver.py:51
+#: modules/univention/admin/handlers/policies/policy.py:38
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:58
+#: modules/univention/admin/handlers/policies/memberpackages.py:52
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:52
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:51
+#: modules/univention/admin/handlers/policies/nfsmounts.py:51
+#: modules/univention/admin/handlers/policies/desktop.py:51
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:52
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:56
+#: modules/univention/admin/handlers/policies/pwhistory.py:52
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:53
+#: modules/univention/admin/handlers/policies/release.py:51
+#: modules/univention/admin/handlers/policies/printserver.py:50
+#: modules/univention/admin/handlers/policies/umc.py:59
+#: modules/univention/admin/handlers/policies/share_userquota.py:55
+#: modules/univention/admin/handlers/policies/repositorysync.py:52
+#: modules/univention/admin/handlers/policies/slavepackages.py:52
+#: modules/univention/admin/handlers/policies/maintenance.py:52
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:55
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:53
+#: modules/univention/admin/handlers/policies/repositoryserver.py:51
+#: modules/univention/admin/handlers/policies/masterpackages.py:52
+#: modules/univention/admin/handlers/policies/admin_container.py:51
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:41
+msgid "NetBIOS"
+msgstr "NetBIOS"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:24
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:62
+msgid "NetBIOS name servers"
+msgstr "NetBIOS névszerverek"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:26
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:73
+msgid "NetBIOS node type"
+msgstr "NetBIOS csomópont típusa"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:69
+msgid "NetBIOS over TCP/IP scope parameter"
+msgstr "NetBIOS TCP/IP feletti hatókör paraméter"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:25
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:68
+msgid "NetBIOS scope"
+msgstr "NetBIOS hatókör"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:86
+msgid "Netbios"
+msgstr "Netbios"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:67
+msgid "Number of days after which the password has to be changed"
+msgstr "Napok száma, amennyi után a jelszót meg kell változtatni"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:62
+msgid ""
+"Numeric IP address or name of the server from which the initial boot file "
+"is retrieved."
+msgstr ""
+"Annak a szervernek az IP címe vagy neve, amelyről a kezdeti rendszerindító "
+"fájlt lekérik."
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:24
+#: modules/univention/admin/handlers/policies/memberpackages.py:61
+#: modules/univention/admin/handlers/policies/slavepackages.py:24
+#: modules/univention/admin/handlers/policies/slavepackages.py:61
+#: modules/univention/admin/handlers/policies/masterpackages.py:24
+#: modules/univention/admin/handlers/policies/masterpackages.py:61
+msgid "Package installation list"
+msgstr "Csomagtelepítési lista"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:25
+#: modules/univention/admin/handlers/policies/memberpackages.py:67
+#: modules/univention/admin/handlers/policies/slavepackages.py:25
+#: modules/univention/admin/handlers/policies/slavepackages.py:67
+#: modules/univention/admin/handlers/policies/masterpackages.py:25
+#: modules/univention/admin/handlers/policies/masterpackages.py:67
+msgid "Package removal list"
+msgstr "Csomag eltávolítási lista"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:40
+msgid "Packages for Managed Nodes"
+msgstr "Csomagok felügyelt csomópontokhoz"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:40
+msgid "Packages for Primary/Backup Nodes"
+msgstr "Elsődleges/tartalék csomópontok csomagjai"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:40
+msgid "Packages for Replica Nodes"
+msgstr "Csomagok a replika csomópontokhoz"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:25
+#: modules/univention/admin/handlers/policies/pwhistory.py:66
+msgid "Password expiry interval"
+msgstr "Jelszó lejárati intervallum"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:26
+#: modules/univention/admin/handlers/policies/pwhistory.py:71
+msgid "Password length"
+msgstr "Jelszó hossz"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:76
+msgid "Password quality check"
+msgstr "Jelszó erősség ellenőrzése"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:40
+#: modules/univention/admin/handlers/policies/pwhistory.py:90
+msgid "Passwords"
+msgstr "Jelszavak"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:39
+msgid "Passwords policies"
+msgstr "Jelszó házirendek"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:38
+msgid "Passwords policy"
+msgstr "Jelszavak házirendje"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:61
+msgid "Perform maintenance after system startup"
+msgstr "Karbantartás elvégzése a rendszerindítás után"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:66
+msgid "Perform maintenance before system shutdown"
+msgstr "Végezzen karbantartást a rendszer leállítása előtt"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:26
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:75
+msgid "Ping check"
+msgstr "Ping ellenőrzés"
+
+#: modules/univention/admin/handlers/policies/policy.py:24
+msgid "Policies"
+msgstr "Házirendek"
+
+#: modules/univention/admin/handlers/policies/policy.py:22
+#: modules/univention/admin/handlers/policies/policy.py:23
+msgid "Policy"
+msgstr "Házirend"
+
+#: modules/univention/admin/handlers/policies/release.py:36
+msgid "Policy: Automatic updates"
+msgstr "Házirend: Automatikus frissítések"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:40
+msgid "Policy: DHCP Allow/Deny"
+msgstr "Házirend: DHCP engedélyezés/tiltás"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:37
+msgid "Policy: DHCP Boot"
+msgstr "Házirend: DHCP Boot"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:37
+msgid "Policy: DHCP DNS"
+msgstr "Házirend: DHCP DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:43
+msgid "Policy: DHCP Dynamic DNS"
+msgstr "Házirend: DHCP dinamikus DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:38
+msgid "Policy: DHCP NetBIOS"
+msgstr "Házirend: DHCP NetBIOS"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:38
+msgid "Policy: DHCP lease time"
+msgstr "Házirend: DHCP-bérlési idő"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:36
+msgid "Policy: DHCP routing"
+msgstr "Házirend: DHCP útválasztás"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:41
+msgid "Policy: DHCP statements"
+msgstr "Házirend: DHCP utasítások"
+
+#: modules/univention/admin/handlers/policies/desktop.py:36
+msgid "Policy: Desktop"
+msgstr "Házirend: Asztali számítógép"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:36
+msgid "Policy: LDAP server"
+msgstr "Házirend: LDAP szerver"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:37
+msgid "Policy: Maintenance"
+msgstr "Házirend: Karbantartás"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:36
+msgid "Policy: NFS mounts"
+msgstr "Házirend: NFS csatolások"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:37
+msgid "Policy: Packages for Managed Nodes"
+msgstr "Házirend: Csomagok felügyelt csomópontokhoz"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:37
+msgid "Policy: Packages for Primary/Backup Nodes"
+msgstr "Házirend: Elsődleges/Tartalék csomópontok csomagjai"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:37
+msgid "Policy: Packages for Replica Nodes"
+msgstr "Házirend: Csomagok replikacsomópontokhoz"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:37
+msgid "Policy: Passwords"
+msgstr "Házirend: Jelszavak"
+
+#: modules/univention/admin/handlers/policies/printserver.py:35
+msgid "Policy: Print server"
+msgstr "Házirend: Nyomtatókiszolgáló"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:36
+msgid "Policy: Repository server"
+msgstr "Házirend: tároló szerver"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:37
+msgid "Policy: Repository synchronisation"
+msgstr "Házirend: Tároló szinkronizálása"
+
+#: modules/univention/admin/handlers/policies/umc.py:43
+msgid "Policy: UMC"
+msgstr "Házirend: UMC"
+
+#: modules/univention/admin/handlers/policies/registry.py:42
+msgid "Policy: Univention Configuration Registry"
+msgstr "Házirend: Univention konfiguráció regisztrációs adatbázisa"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:36
+msgid "Policy: Univention Directory Manager container settings"
+msgstr "Házirend: Univention Directory Manager konténerbeállítások"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:40
+msgid "Policy: User quota"
+msgstr "Házirend: Felhasználói kvóta"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:39
+msgid "Primary/Backup Node packages policies"
+msgstr "Elsődleges/Tartalék csomópont csomag házirendek"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:38
+msgid "Primary/Backup Node packages policy"
+msgstr "Elsődleges/Tartalék csomópont csomag házirend"
+
+#: modules/univention/admin/handlers/policies/printserver.py:23
+#: modules/univention/admin/handlers/policies/printserver.py:38
+#: modules/univention/admin/handlers/policies/printserver.py:59
+msgid "Print server"
+msgstr "Nyomtatószerver"
+
+#: modules/univention/admin/handlers/policies/printserver.py:37
+msgid "Print server policies"
+msgstr "Nyomtatószerver házirendek"
+
+#: modules/univention/admin/handlers/policies/printserver.py:36
+msgid "Print server policy"
+msgstr "Nyomtatószerver házirend"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:99
+msgid "Quota"
+msgstr "Kvóta"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:28
+#: modules/univention/admin/handlers/policies/share_userquota.py:84
+msgid "Reapply settings on every login"
+msgstr "Beállítások újbóli alkalmazása minden bejelentkezéskor"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:85
+msgid ""
+"Reapply the mountpoint specific user quota policies on each user login. If "
+"not set, the initially configured quota settings will not be overwritten."
+msgstr ""
+"Minden felhasználó bejelentkezésekor alkalmazza újra a csatolási pontra "
+"vonatkozó felhasználói kvóta házirendeket. Ha nincsenek beállítva, a "
+"kezdetben konfigurált kvótabeállítások nem íródnak felül."
+
+#: modules/univention/admin/handlers/policies/maintenance.py:71
+msgid "Reboot after maintenance"
+msgstr "Karbantartás utáni újraindítás"
+
+#: modules/univention/admin/handlers/policies/release.py:24
+msgid "Release Version"
+msgstr "Kiadási verzió"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:39
+msgid "Replica Node packages policies"
+msgstr "Replikacsomópont csomagok házirendjei"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:38
+msgid "Replica Node packages policy"
+msgstr "Replikacsomópont csomagok házirendje"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:24
+#: modules/univention/admin/handlers/policies/repositoryserver.py:39
+#: modules/univention/admin/handlers/policies/repositoryserver.py:60
+msgid "Repository server"
+msgstr "Tároló kiszolgáló"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:38
+msgid "Repository server policies"
+msgstr "Tároló kiszolgáló házirendjei"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:37
+msgid "Repository server policy"
+msgstr "Tároló kiszolgáló házirendje"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:25
+#: modules/univention/admin/handlers/policies/repositorysync.py:40
+msgid "Repository synchronisation"
+msgstr "Tároló szinkronizálása"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:39
+msgid "Repository synchronisation policies"
+msgstr "Tároló szinkronizálási házirendek"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:38
+msgid "Repository synchronisation policy"
+msgstr "Tároló szinkronizálási házirend"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:100
+msgid "Repository synchronisation settings"
+msgstr "Tároló szinkronizálási beállításai"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:70
+msgid "Respond to BOOTP queries. Allowed by default."
+msgstr ""
+"Válaszol a BOOTP lekérdezésekre. Alapértelmezés szerint engedélyezett."
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:75
+msgid ""
+"Respond to queries from a particular client. Has meaning only when it "
+"appears in a host declaration. Allowed by default."
+msgstr ""
+"Válasz egy adott kliens lekérdezéseire. Csak akkor van értelme, ha szerepel "
+"egy gazdagép deklarációban. Alapértelmezés szerint engedélyezett."
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:24
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:60
+msgid "Routers"
+msgstr "Útválasztók"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:39
+msgid "Routing"
+msgstr "Útválasztás"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:86
+msgid "SMB/CIFS name resolution"
+msgstr "SMB/CIFS névfeloldás"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:66
+msgid "Send DHCPNAK messages to misconfigured clients. Disabled by default."
+msgstr ""
+"DHCPNAK üzenetek küldése rosszul konfigurált klienseknek. Alapértelmezés "
+"szerint letiltva."
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:28
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:85
+msgid "Server identifier"
+msgstr "Szerver azonosító"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:29
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:90
+msgid "Server name"
+msgstr "Szerver neve"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:24
+#: modules/univention/admin/handlers/policies/share_userquota.py:64
+msgid "Soft limit"
+msgstr "Enyhe korlát"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:26
+#: modules/univention/admin/handlers/policies/share_userquota.py:74
+msgid "Soft limit (Files)"
+msgstr "Enyhe korlát (Fájlok)"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:75
+msgid "Soft limit. If exceeded users can be warned."
+msgstr "Enyhe korlát. Ha túllépik, a felhasználók figyelmeztetést kaphatnak."
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:65
+msgid ""
+"Soft limit. If exceeded users can be warned. Values may be entered with one "
+"of the following units as postfix: B (default), kB, MB, GB"
+msgstr ""
+"Enyhe korlát. Ha túllépik a felhasználók figyelmeztetést kaphatnak. Az "
+"értékek a következő mértékegységek egyikével adhatók meg utótagként: B "
+"(alapértelmezett), kB, MB, GB"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:89
+msgid "Specify the DDNS Update Style to use for a DHCP Service"
+msgstr "Add meg a DHCP szolgáltatáshoz használandó DDNS frissítési stílust"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:86
+msgid ""
+"The IP address identifying the DHCP server that should be used by the "
+"clients. Use this only if auto-detection fails for servers with multiple IP "
+"addresses."
+msgstr ""
+"Az ügyfelek által használandó DHCP szerver IP címe. Csak akkor használja "
+"ezt, ha a több IP címmel rendelkező szerverek automatikus észlelése "
+"sikertelen."
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:74
+msgid "The node type of clients for NetBIOS over TCP/IP"
+msgstr "A NetBIOS klienseinek csomóponttípusa TCP/IP felett"
+
+#: modules/univention/admin/handlers/policies/registry.py:81
+msgid "These configuration settings will be set on the local UCS system."
+msgstr ""
+"Ezek a konfigurációs beállítások a helyi UCS rendszeren lesznek beállítva."
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:62
+msgid ""
+"This number indicates after how many changes the user may reuse the old "
+"password again"
+msgstr ""
+"Ez a szám azt jelzi, hogy hány módosítás után használhatja újra a "
+"felhasználó a régi jelszavát"
+
+#: modules/univention/admin/handlers/policies/registry.py:30
+msgid "UCR Variables"
+msgstr "UCR változók"
+
+#: modules/univention/admin/handlers/policies/umc.py:45
+msgid "UMC policies"
+msgstr "UMC házirendek"
+
+#: modules/univention/admin/handlers/policies/umc.py:44
+msgid "UMC policy"
+msgstr "UMC házirend"
+
+#: modules/univention/admin/handlers/policies/registry.py:45
+msgid "Univention Configuration Registry"
+msgstr "Univention konfiguráció regisztrációs adatbázisa"
+
+#: modules/univention/admin/handlers/policies/registry.py:44
+msgid "Univention Configuration Registry policies"
+msgstr "Univention konfiguráció regisztrációs adatbázis házirendjei"
+
+#: modules/univention/admin/handlers/policies/registry.py:43
+msgid "Univention Configuration Registry policy"
+msgstr "Univention konfiguráció regisztrációs adatbázis házirendje"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:39
+msgid "Univention Directory Manager container settings"
+msgstr "Univention Directory Manager konténer beállítások"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:38
+msgid "Univention Directory Manager container settings policies"
+msgstr "Univention Directory Manager konténerbeállítások házirendjei"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:37
+msgid "Univention Directory Manager container settings policy"
+msgstr "Univention Directory Manager konténerbeállítások házirendje"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:74
+msgid "Univention Directory Manager settings"
+msgstr "Univention Directory Manager beállításai"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:24
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:64
+msgid "Unknown clients"
+msgstr "Ismeretlen ügyfelek"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:75
+msgid "Update"
+msgstr "Frissítés"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:30
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:98
+msgid "Update static leases"
+msgstr "Statikus bérletek frissítése"
+
+#: modules/univention/admin/handlers/policies/release.py:65
+msgid "Update to this UCS version"
+msgstr "Frissítés erre az UCS verzióra"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:76
+msgid "Use Cron settings"
+msgstr "Cron beállítások használata"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:43
+msgid "User quota"
+msgstr "Felhasználói kvóta"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:42
+msgid "User quota policies"
+msgstr "Felhasználói kvóta házirendek"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:41
+msgid "User quota policy"
+msgstr "Felhasználói kvóta házirend"
+
+#: modules/univention/admin/handlers/policies/release.py:66
+msgid "Without specifying the most recent version will be used"
+msgstr ""
+"A legfrissebb verzió megadása nélkül a rendszer a legfrissebb verziót "
+"használja"
+
+#: modules/univention/admin/handlers/policies/policy.py:26
+msgid "https://docs.software-univention.de/manual-5.2.html#central:policies"
+msgstr "https://docs.software-univention.de/manual-5.2.html#central:policies"

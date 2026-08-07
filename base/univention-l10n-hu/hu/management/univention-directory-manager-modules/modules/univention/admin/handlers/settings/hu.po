@@ -1,0 +1,2035 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 01:23+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:153
+msgid "A bitfield to indicate complexity and storage restrictions."
+msgstr "A komplexitást és a tárolási korlátozásokat jelző bitmező."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:57
+msgid "A longer descriptive text, which is shown as a bubble-help in the UMC"
+msgstr "Hosszabb leíró szöveg, amely buborék-súgóként jelenik meg az UMC-ben"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:50
+msgid "A short descriptive text which is used as label in the UMC"
+msgstr "Az UMC-ben címkének használt rövid leíró szöveg"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:174
+msgid "A value for this extended attribute is required and must be given"
+msgstr "Ennek a kiterjesztett attribútumnak értéke kötelező, és meg kell adni"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:50
+msgid "ACL data"
+msgstr "ACL adat"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:43
+msgid "ACL file name"
+msgstr "ACL fájlnév"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:35
+msgid "ACL name"
+msgstr "ACL név"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:272
+msgid "Account"
+msgstr "Fiók"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:79
+msgid "Account deactivation"
+msgstr "Fiók deaktiválása"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:272
+msgid "Account settings"
+msgstr "Fiókbeállítások"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:135
+#: modules/univention/admin/handlers/settings/udm_syntax.py:114
+#: modules/univention/admin/handlers/settings/udm_hook.py:114
+#: modules/univention/admin/handlers/settings/ldapacl.py:105
+#: modules/univention/admin/handlers/settings/ldapschema.py:91
+msgid "Activated"
+msgstr "Aktiválva"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:59
+#: modules/univention/admin/handlers/settings/udm_syntax.py:58
+#: modules/univention/admin/handlers/settings/udm_hook.py:58
+#: modules/univention/admin/handlers/settings/ldapacl.py:56
+#: modules/univention/admin/handlers/settings/ldapschema.py:56
+msgid "Active"
+msgstr "Aktív"
+
+#: modules/univention/admin/handlers/settings/syntax.py:77
+msgid "Add an empty value to choice list"
+msgstr "Üres értéket ad hozzá a választási listához"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:215
+msgid ""
+"Additional e-mail addresses for which e-mails will be delivered to the "
+"\"Primary e-mail address\". The domain must be one of the UCS hosted e-mail "
+"domains."
+msgstr ""
+"További e-mail címek, amelyekre az e-mailek az „Elsődleges e-mail cím” "
+"címre kerülnek kézbesítésre. A domainnek az UCS által üzemeltetett e-mail "
+"domainek egyikének kell lennie."
+
+#: modules/univention/admin/handlers/settings/syntax.py:128
+msgid "An LDAP attribute is required of which the information will be stored."
+msgstr ""
+"Szükséges egy LDAP attribútum, amelynek információi tárolásra kerülnek."
+
+#: modules/univention/admin/handlers/settings/udm_module.py:65
+#: modules/univention/admin/handlers/settings/udm_syntax.py:64
+#: modules/univention/admin/handlers/settings/udm_hook.py:64
+#: modules/univention/admin/handlers/settings/ldapacl.py:62
+#: modules/univention/admin/handlers/settings/ldapschema.py:62
+msgid "App identifier"
+msgstr "Alkalmazás azonosító"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:99
+msgid "Application"
+msgstr "Alkalmazás"
+
+#: modules/univention/admin/handlers/settings/data.py:22
+msgid "Arbitrary data files"
+msgstr "Tetszőleges adatfájlok"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:263
+msgid "Attribute layout"
+msgstr "Attribútum elrendezés"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:75
+msgid "Bad Lockout Attempts"
+msgstr "Rossz zárolási kísérletek"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:107
+msgid "Bad lockout attempts"
+msgstr "Rossz zárási kísérletek"
+
+#: modules/univention/admin/handlers/settings/license.py:69
+msgid "Base DN"
+msgstr "Alap DN"
+
+#: modules/univention/admin/handlers/settings/license.py:70
+msgid "Base DN the license is valid for"
+msgstr "Alap DN licenc érvényessége"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:116
+#: modules/univention/admin/handlers/settings/sambaconfig.py:112
+#: modules/univention/admin/handlers/settings/udm_syntax.py:98
+#: modules/univention/admin/handlers/settings/sambadomain.py:159
+#: modules/univention/admin/handlers/settings/cn.py:46
+#: modules/univention/admin/handlers/settings/service.py:43
+#: modules/univention/admin/handlers/settings/directory.py:119
+#: modules/univention/admin/handlers/settings/udm_hook.py:98
+#: modules/univention/admin/handlers/settings/syntax.py:96
+#: modules/univention/admin/handlers/settings/default.py:92
+#: modules/univention/admin/handlers/settings/extended_options.py:106
+#: modules/univention/admin/handlers/settings/usertemplate.py:247
+#: modules/univention/admin/handlers/settings/ldapacl.py:90
+#: modules/univention/admin/handlers/settings/ldapschema.py:80
+msgid "Basic values"
+msgstr "Alap értékek"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:286
+msgid "Business"
+msgstr "Üzleti"
+
+#: modules/univention/admin/handlers/settings/data.py:91
+msgid "Category options"
+msgstr "Kategória opciók"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:73
+#: modules/univention/admin/handlers/settings/usertemplate.py:74
+msgid "Change password on next login"
+msgstr "Jelszó megváltoztatása a következő bejelentkezéskor"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:145
+msgid "City"
+msgstr "Város"
+
+#: modules/univention/admin/handlers/settings/directory.py:75
+msgid "Computer Link"
+msgstr "Számítógép kapcsolat"
+
+#: modules/univention/admin/handlers/settings/directory.py:129
+msgid "Computer Links"
+msgstr "Számítógép linkek"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:52
+msgid "Configuration Name"
+msgstr "Konfiguráció neve"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:254
+msgid "Configuration of LDAP object class and LDAP attribute"
+msgstr "LDAP objektumosztály és LDAP attribútum konfigurálása"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:249
+msgid "Configuration of the modules to be extended"
+msgstr "A bővíteni kívánt modulok konfigurálása"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:171
+msgid "Connection"
+msgstr "Kapcsolódás"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:285
+msgid "Contact"
+msgstr "Kapcsolat"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:285
+msgid "Contact Information"
+msgstr "Kapcsolati információk"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:222
+msgid "Copyable"
+msgstr "Másolható"
+
+#: modules/univention/admin/handlers/settings/license.py:190
+msgid "Corporate clients"
+msgstr "Vállalati ügyfelek"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:150
+msgid "Country"
+msgstr "Ország"
+
+#: modules/univention/admin/handlers/settings/directory.py:57
+msgid "DHCP Link"
+msgstr "DHCP Linkek"
+
+#: modules/univention/admin/handlers/settings/directory.py:141
+msgid "DHCP Links"
+msgstr "DHCP linkek"
+
+#: modules/univention/admin/handlers/settings/directory.py:51
+msgid "DNS Link"
+msgstr "DNS Link"
+
+#: modules/univention/admin/handlers/settings/directory.py:138
+msgid "DNS Links"
+msgstr "DNS Linkek"
+
+#: modules/univention/admin/handlers/settings/license.py:183
+msgid "DVS clients"
+msgstr "DVS ügyfelek"
+
+#: modules/univention/admin/handlers/settings/license.py:176
+msgid "DVS users"
+msgstr "DVS felhasználók"
+
+#: modules/univention/admin/handlers/settings/data.py:19
+#: modules/univention/admin/handlers/settings/data.py:20
+#: modules/univention/admin/handlers/settings/data.py:21
+msgid "Data"
+msgstr "Adat"
+
+#: modules/univention/admin/handlers/settings/data.py:57
+msgid "Data Type"
+msgstr "Adattípus"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:278
+msgid "Data type"
+msgstr "Adattípus"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:278
+msgid "Data type definition"
+msgstr "Adattípus definíciója"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:76
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: modules/univention/admin/handlers/settings/default.py:77
+msgid "Default Group for Client Computers"
+msgstr "Alapértelmezett csoport az ügyfélszámítógépekhez"
+
+#: modules/univention/admin/handlers/settings/default.py:49
+msgid "Default Group for Computers"
+msgstr "Alapértelmezett csoport a számítógépekhez"
+
+#: modules/univention/admin/handlers/settings/default.py:70
+msgid "Default Group for Managed Nodes"
+msgstr "Alapértelmezett csoport a kezelt csomópontokhoz"
+
+#: modules/univention/admin/handlers/settings/default.py:63
+msgid "Default Group for Primary and Backup Directory Nodes"
+msgstr ""
+"Alapértelmezett csoport az elsődleges és a biztonsági mentési "
+"könyvtárcsomópontokhoz"
+
+#: modules/univention/admin/handlers/settings/default.py:56
+msgid "Default Group for Replica Directory Nodes"
+msgstr "Alapértelmezett csoport a replika könyvtárcsomópontokhoz"
+
+#: modules/univention/admin/handlers/settings/default.py:84
+msgid "Default KDE Profiles"
+msgstr "Alapértelmezett KDE profilok"
+
+#: modules/univention/admin/handlers/settings/default.py:42
+msgid "Default Primary Group"
+msgstr "Alapértelmezett elsődleges csoport"
+
+#: modules/univention/admin/handlers/settings/directory.py:22
+msgid "Default container"
+msgstr "Alapértelmezett konténer"
+
+#: modules/univention/admin/handlers/settings/directory.py:120
+msgid "Default container description"
+msgstr "Alapértelmezett konténer leírása"
+
+#: modules/univention/admin/handlers/settings/directory.py:23
+msgid "Default containers"
+msgstr "Alapértelmezett konténerek"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:56
+msgid "Default long description"
+msgstr "Alapértelmezett hosszú leírás"
+
+#: modules/univention/admin/handlers/settings/default.py:19
+msgid "Default preference"
+msgstr "Alapértelmezett beállítás"
+
+#: modules/univention/admin/handlers/settings/default.py:20
+msgid "Default preferences"
+msgstr "Alapértelmezett beállítások"
+
+#: modules/univention/admin/handlers/settings/default.py:93
+msgid "Default settings description"
+msgstr "Alapértelmezett beállítások leírása"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:49
+msgid "Default short description"
+msgstr "Alapértelmezett rövid leírás"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:104
+msgid "Default value"
+msgstr "Alapértelmezett érték"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:105
+msgid ""
+"Default value which is set for this extended attribute when a new object is "
+"created"
+msgstr ""
+"Az új objektum létrehozásakor ehhez a kiterjesztett attribútumhoz "
+"beállított alapértelmezett érték"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:63
+msgid ""
+"Defines a specific flavor of the UMC module. If given the operations are "
+"permitted only if the flavor matches."
+msgstr ""
+"Meghatározza az UMC modul egy adott változatát. Ha megadva van, akkor a "
+"műveletek csak akkor engedélyezettek, ha a változat megegyezik."
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:70
+msgid ""
+"Defines on which hosts this operations are permitted on. The value can be "
+"either a host name (as filename pattern e.g. server1*), a server role (e.g. "
+"serverrole:domaincontroller_slave) or a service, which must run on the "
+"host, (e.g. service:LDAP). Leaving this empty causes all hosts to be "
+"allowed."
+msgstr ""
+"Meghatározza, hogy melyik gazdagépen engedélyezettek ezek a műveletek. Az "
+"érték lehet gazdagépnév (fájlnév-minta, pl. server1*), szerver szerepkör "
+"(pl. serverrole:domaincontroller_slave) vagy szolgáltatás, amelynek a "
+"gazdagépen kell futnia (pl. service:LDAP). Ha ezt üresen hagyod, akkor "
+"minden gazdagép engedélyezett lesz."
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:220
+msgid "Delivery office name"
+msgstr "Szállítási iroda neve"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:184
+msgid "Department number"
+msgstr "Osztály száma"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:47
+#: modules/univention/admin/handlers/settings/usertemplate.py:56
+#: modules/univention/admin/handlers/settings/data.py:41
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/settings/directory.py:81
+msgid "Directory Node Computer Link"
+msgstr "Könyvtárcsomópont számítógépes link"
+
+#: modules/univention/admin/handlers/settings/directory.py:132
+msgid "Directory Node Computer Links"
+msgstr "Könyvtárcsomópont számítógépes linkek"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:100
+msgid "Disconnect Time"
+msgstr "Kapcsolat bontási idő"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:132
+msgid "Disconnect time"
+msgstr "Kapcsolat bontási idő"
+
+#: modules/univention/admin/handlers/settings/syntax.py:100
+msgid "Display"
+msgstr "Kijelző"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:62
+msgid "Display name"
+msgstr "Megjelenő név"
+
+#: modules/univention/admin/handlers/settings/syntax.py:58
+msgid "Displayed Attributes"
+msgstr "Megjelenített attribútumok"
+
+#: modules/univention/admin/handlers/settings/syntax.py:66
+msgid "Displayed LDAP Attributes"
+msgstr "Megjelenített LDAP attribútumok"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:109
+msgid "Do not show this extended attribute in the UMC"
+msgstr "Ne mutassa ezt a kiterjesztett attribútumot az UMC-ben"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:85
+msgid "E-mail address"
+msgstr "E-mail cím"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:210
+msgid ""
+"E-mail address that will be used to create the IMAP/POP3 mailbox and that "
+"can be used as login for SMTP/IMAP/POP3 connections. The domain must be one "
+"of the UCS hosted e-mail domains."
+msgstr ""
+"Az IMAP/POP3 postafiók létrehozásához használt e-mail cím, amely SMTP/IMAP/"
+"POP3 kapcsolatokhoz való bejelentkezéshez is használható. A domainnek az "
+"UCS által üzemeltetett e-mail domainek egyikének kell lennie."
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:214
+msgid "E-mail alias address"
+msgstr "E-mail álnév cím"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:81
+msgid "Editable"
+msgstr "Szerkeszthető"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:162
+msgid "Editable after creation"
+msgstr "Létrehozás után szerkeszthető"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:168
+msgid "Employee number"
+msgstr "Alkalmazotti szám"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:190
+msgid "Employee type"
+msgstr "Alkalmazott típusa"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:77
+msgid "Enable option by default."
+msgstr "Alapértelmezés szerint engedélyezze az opciót."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:216
+msgid "Exclude from UMC search"
+msgstr "Kizárás az UMC keresésből"
+
+#: modules/univention/admin/handlers/settings/license.py:54
+msgid "Expiry date"
+msgstr "Lejárati dátum"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:25
+msgid "Extended attribute"
+msgstr "Kiterjesztett attribútum"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:237
+msgid "Extended attribute description"
+msgstr "Kiterjesztett attribútum leírása"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:26
+msgid "Extended attributes"
+msgstr "Kiterjesztett attribútumok"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:25
+msgid "Extended option"
+msgstr "Kiterjesztett opció"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:26
+msgid "Extended options"
+msgstr "Kiterjesztett beállítások"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:328
+msgid ""
+"Extending the users module is only possible if a default value for a "
+"required value is given."
+msgstr ""
+"A felhasználói modul kiterjesztése csak akkor lehetséges, ha megadják a "
+"kötelező érték alapértelmezett értékét."
+
+#: modules/univention/admin/handlers/settings/data.py:46
+msgid "File name of file to store data in."
+msgstr "Az adatok tárolására szolgáló fájl neve."
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:62
+msgid "Flavor"
+msgstr "Változat"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:97
+msgid "GNU message catalog for UMC translations"
+msgstr "GNU üzenetkatalógus az UMC fordításokhoz"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:91
+#: modules/univention/admin/handlers/settings/udm_syntax.py:90
+#: modules/univention/admin/handlers/settings/udm_hook.py:90
+msgid "GNU message catalog for translations"
+msgstr "GNU üzenetkatalógus fordításokhoz"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:116
+#: modules/univention/admin/handlers/settings/sambaconfig.py:112
+#: modules/univention/admin/handlers/settings/udm_syntax.py:98
+#: modules/univention/admin/handlers/settings/sambadomain.py:159
+#: modules/univention/admin/handlers/settings/cn.py:46
+#: modules/univention/admin/handlers/settings/service.py:43
+#: modules/univention/admin/handlers/settings/directory.py:119
+#: modules/univention/admin/handlers/settings/udm_hook.py:98
+#: modules/univention/admin/handlers/settings/syntax.py:96
+#: modules/univention/admin/handlers/settings/umc_operationset.py:78
+#: modules/univention/admin/handlers/settings/printermodel.py:56
+#: modules/univention/admin/handlers/settings/lock.py:53
+#: modules/univention/admin/handlers/settings/default.py:92
+#: modules/univention/admin/handlers/settings/extended_options.py:106
+#: modules/univention/admin/handlers/settings/packages.py:52
+#: modules/univention/admin/handlers/settings/usertemplate.py:247
+#: modules/univention/admin/handlers/settings/extended_attribute.py:236
+#: modules/univention/admin/handlers/settings/prohibited_username.py:52
+#: modules/univention/admin/handlers/settings/ldapacl.py:90
+#: modules/univention/admin/handlers/settings/ldapschema.py:80
+#: modules/univention/admin/handlers/settings/printeruri.py:53
+#: modules/univention/admin/handlers/settings/data.py:91
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:91
+msgid "General LDAP ACL extension settings"
+msgstr "Általános LDAP ACL kiterjesztés beállítások"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:81
+msgid "General LDAP schema extension settings"
+msgstr "Általános LDAP sémakiterjesztés beállítások"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:113
+msgid "General Samba configuration settings"
+msgstr "Általános Samba konfigurációs beállítások"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:160
+msgid "General Samba domain settings"
+msgstr "Általános Samba tartomány beállítások"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:99
+msgid "General UDM hook settings"
+msgstr "Általános UDM hook beállítások"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:117
+msgid "General UDM module settings"
+msgstr "Általános UDM modul beállítások"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:99
+msgid "General UDM syntax settings"
+msgstr "Általános UDM szintaxis beállítások"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:79
+msgid "General UMC operation set settings"
+msgstr "Általános UMC működési beállítások"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:259
+msgid "General extended attribute settings"
+msgstr "Általános kiterjesztett attribútum beállítások"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:107
+msgid "General extended options settings"
+msgstr "Általános kiterjesztett beállítások"
+
+#: modules/univention/admin/handlers/settings/license.py:208
+msgid "General license settings"
+msgstr "Általános licencbeállítások"
+
+#: modules/univention/admin/handlers/settings/lock.py:54
+msgid "General lock settings"
+msgstr "Általános zárolási beállítások"
+
+#: modules/univention/admin/handlers/settings/packages.py:53
+msgid "General package list settings"
+msgstr "Általános csomaglista beállítások"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:54
+msgid "General printer URI list settings"
+msgstr "Általános nyomtató URI lista beállításai"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:57
+msgid "General printer driver list settings"
+msgstr "Általános nyomtató illesztőprogram lista beállításai"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:53
+msgid "General prohibited user names settings"
+msgstr "Általános tiltott felhasználónév beállítások"
+
+#: modules/univention/admin/handlers/settings/service.py:44
+msgid "General service settings"
+msgstr "Általános szolgáltatás beállításai"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:236
+#: modules/univention/admin/handlers/settings/data.py:92
+msgid "General settings"
+msgstr "Általános beállítások"
+
+#: modules/univention/admin/handlers/settings/syntax.py:97
+msgid "General syntax definition settings"
+msgstr "Általános szintaxisdefiníció beállításai"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:248
+msgid "General user template settings"
+msgstr "Általános felhasználói sablonbeállítások"
+
+#: modules/univention/admin/handlers/settings/directory.py:69
+msgid "Group Link"
+msgstr "Csoport link"
+
+#: modules/univention/admin/handlers/settings/directory.py:126
+msgid "Group Links"
+msgstr "Csoport linkek"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:266
+msgid "Group Memberships"
+msgstr "Csoporttagság"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:272
+msgid "Group layout"
+msgstr "Csoport elrendezés"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:125
+msgid "Group name"
+msgstr "Csoport neve"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:130
+msgid "Group ordering number"
+msgstr "Csoportrendezési szám"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:195
+#: modules/univention/admin/handlers/settings/usertemplate.py:266
+#: modules/univention/admin/handlers/settings/usertemplate.py:267
+msgid "Groups"
+msgstr "Csoportok"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:97
+msgid "Home share"
+msgstr "Saját mappa megosztás"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:103
+msgid "Home share path"
+msgstr "Saját mappa megosztás útvonala"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:93
+msgid "Hook class"
+msgstr "Horog osztály"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:141
+msgid ""
+"If a tab with the given name already exists, it is replaced by a new tab "
+"only containing extended attributes"
+msgstr ""
+"Ha már létezik egy adott nevű lap, akkor azt egy új lap váltja fel, amely "
+"csak kiterjesztett attribútumokat tartalmaz"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:185
+msgid ""
+"If possible, the LDAP object class is removed when this extended attribute "
+"gets unset"
+msgstr ""
+"Ha lehetséges, az LDAP objektumosztály eltávolításra kerül, amikor ez a "
+"kiterjesztett attribútum törlésre kerül"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:146
+msgid ""
+"In some cases it is useful to overwrite predefined input fields with "
+"extended attributes. If the internal UDM name of an attribute is configured "
+"here, its  input field is overwritten by this extended attribute. The UDM "
+"attribute name can only be determined by searching within /usr/lib/python3/"
+"dist-packages/univention/admin/handlers directory. It is the name which "
+"comes before the colon in the declarations of univention.admin.property "
+"objects, e.g., roomNumber for a  user's room number"
+msgstr ""
+"Bizonyos esetekben hasznos lehet az előre definiált beviteli mezőket "
+"kiterjesztett attribútumokkal felülírni. Ha egy attribútum belső UDM neve "
+"itt van konfigurálva, akkor a beviteli mezőjét ez a kiterjesztett "
+"attribútum felülírja. Az UDM attribútum neve csak a /usr/lib/python3/dist-"
+"packages/univention/admin/handlers könyvtárban történő kereséssel "
+"határozható meg. Ez az a név, amely az univention.admin.property objektumok "
+"deklarációiban a kettőspont előtt áll, pl. roomNumber a felhasználó "
+"szobaszáma esetén"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:46
+msgid "Initials"
+msgstr "Kezdőbetűk"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:143
+msgid ""
+"Is not based on the user's account name. Contains at least six characters. "
+"Contains characters from three of the following four categories: Uppercase "
+"alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic "
+"numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"
+msgstr ""
+"Nem alapul a felhasználó fióknevére. Legalább hat karaktert tartalmaz. A "
+"következő négy kategória közül háromból tartalmaz karaktereket: nagybetűk "
+"(A-Z), kisbetűk (a-z), arab számok (0-9), nem alfanumerikus karakterek "
+"(például !$#,%)."
+
+#: modules/univention/admin/handlers/settings/default.py:107
+#: modules/univention/admin/handlers/settings/default.py:108
+msgid "KDE Profiles"
+msgstr "KDE profilok"
+
+#: modules/univention/admin/handlers/settings/license.py:134
+msgid "Key ID"
+msgstr "Kulcs azonosító"
+
+#: modules/univention/admin/handlers/settings/license.py:135
+msgid "Key ID of this license."
+msgstr "A licenc kulcsazonosítója."
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:22
+msgid "LDAP ACL Extension"
+msgstr "LDAP ACL kiterjesztés"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:23
+msgid "LDAP ACL Extensions"
+msgstr "LDAP ACL kiterjesztések"
+
+#: modules/univention/admin/handlers/settings/syntax.py:53
+msgid "LDAP Base"
+msgstr "LDAP alap"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:22
+msgid "LDAP Schema Extension"
+msgstr "LDAP sémakiterjesztés"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:23
+msgid "LDAP Schema Extensions"
+msgstr "LDAP sémakiterjesztések"
+
+#: modules/univention/admin/handlers/settings/syntax.py:47
+msgid "LDAP Search Filter"
+msgstr "LDAP keresési szűrő"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:156
+msgid "LDAP attribute"
+msgstr "LDAP attribútum"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:254
+msgid "LDAP mapping"
+msgstr "LDAP megfeleltetés"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:93
+#: modules/univention/admin/handlers/settings/extended_attribute.py:178
+msgid "LDAP object class"
+msgstr "LDAP objektumosztály"
+
+#: modules/univention/admin/handlers/settings/license.py:22
+#: modules/univention/admin/handlers/settings/license.py:207
+msgid "License"
+msgstr "Licenc"
+
+#: modules/univention/admin/handlers/settings/license.py:55
+msgid "License Expiration Date"
+msgstr "Licenc lejárati dátuma"
+
+#: modules/univention/admin/handlers/settings/directory.py:111
+msgid "License Link"
+msgstr "Licenc link"
+
+#: modules/univention/admin/handlers/settings/directory.py:156
+msgid "License Links"
+msgstr "Licenc linkek"
+
+#: modules/univention/admin/handlers/settings/license.py:23
+msgid "Licenses"
+msgstr "Licencek"
+
+#: modules/univention/admin/handlers/settings/license.py:207
+msgid "Licensing Information"
+msgstr "Licencinformációk"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:27
+msgid "List of Operations for UMC"
+msgstr "UMC műveletek listája"
+
+#: modules/univention/admin/handlers/settings/packages.py:24
+msgid "List of Packages for UCS Systems"
+msgstr "Csomagok listája UCS rendszerekhez"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:56
+msgid "List of UMC command names or patterns"
+msgstr "UMC parancsnevek vagy minták listája"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:24
+msgid "List of URIs for printers"
+msgstr "Nyomtató URI-k listája"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:28
+msgid "List of drivers for printers"
+msgstr "Nyomtató illesztőprogramok listája"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:87
+msgid "List of modules this option applies to."
+msgstr "Az opció által érintett modulok listája."
+
+#: modules/univention/admin/handlers/settings/lock.py:22
+msgid "Lock"
+msgstr "Zárolás"
+
+#: modules/univention/admin/handlers/settings/lock.py:53
+msgid "Lock Information"
+msgstr "Zárolási információk"
+
+#: modules/univention/admin/handlers/settings/lock.py:44
+msgid "Lock Time"
+msgstr "Zárolási idő"
+
+#: modules/univention/admin/handlers/settings/lock.py:24
+msgid "Lock objects"
+msgstr "Objektumok zárolása"
+
+#: modules/univention/admin/handlers/settings/lock.py:45
+msgid "Locked until"
+msgstr "Zárolt eddig"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:273
+msgid "Locking and deactivation"
+msgstr "Zárolás és deaktiválás"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:90
+msgid "Lockout Duration Minutes"
+msgstr "Zárolás időtartama percben"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:122
+msgid "Lockout duration minutes"
+msgstr "Zárolás időtartama percben"
+
+#: modules/univention/admin/handlers/settings/lock.py:23
+msgid "Locks"
+msgstr "Zárolások"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:109
+msgid "Login shell"
+msgstr "Bejelentkezési shell"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:244
+msgid "Long Description"
+msgstr "Hosszú Leírás"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:56
+msgid "Long description"
+msgstr "Hosszú leírás"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:57
+msgid "Long description for the option as shown on the Option tab."
+msgstr "Az opció részletes leírása, ahogyan az az Opciók lapon megjelenik."
+
+#: modules/univention/admin/handlers/settings/directory.py:105
+msgid "Mail Link"
+msgstr "Mail Link"
+
+#: modules/univention/admin/handlers/settings/directory.py:153
+msgid "Mail Links"
+msgstr "Mail Linkek"
+
+#: modules/univention/admin/handlers/settings/license.py:162
+msgid "Managed Clients"
+msgstr "Kezelett ügyfelek"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:94
+msgid "Mapping to LDAP objectClasses"
+msgstr "LDAP objektumosztályokhoz való megfeleltetés"
+
+#: modules/univention/admin/handlers/settings/license.py:91
+msgid "Max. clients"
+msgstr "Max. kliensek"
+
+#: modules/univention/admin/handlers/settings/license.py:105
+msgid "Max. desktops"
+msgstr "Max. asztali számítógépek"
+
+#: modules/univention/admin/handlers/settings/license.py:98
+msgid "Max. groupware accounts"
+msgstr "Max. csoportmunka-fiókok"
+
+#: modules/univention/admin/handlers/settings/license.py:84
+msgid "Max. user accounts"
+msgstr "Max. felhasználói fiókok"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:86
+#: modules/univention/admin/handlers/settings/udm_syntax.py:85
+#: modules/univention/admin/handlers/settings/udm_hook.py:85
+#: modules/univention/admin/handlers/settings/ldapacl.py:83
+#: modules/univention/admin/handlers/settings/data.py:68
+msgid "Maximal UCS version"
+msgstr "Maximális UCS verzió"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:85
+msgid "Maximum Password Age"
+msgstr "A jelszó maximális élettartama"
+
+#: modules/univention/admin/handlers/settings/license.py:184
+msgid "Maximum number of DVS clients this license allows."
+msgstr "A licenc által engedélyezett DVS kliensek maximális száma."
+
+#: modules/univention/admin/handlers/settings/license.py:177
+msgid "Maximum number of DVS users this license allows."
+msgstr "A licenc által engedélyezett DVS felhasználók maximális száma."
+
+#: modules/univention/admin/handlers/settings/license.py:106
+msgid ""
+"Maximum number of Univention desktop accounts managed with the UCS "
+"infrastructure"
+msgstr ""
+"Az UCS infrastruktúrával kezelt Univention asztali fiókok maximális száma"
+
+#: modules/univention/admin/handlers/settings/license.py:92
+msgid "Maximum number of client hosts managed with the UCS infrastructure"
+msgstr "Az UCS infrastruktúrával kezelt kliens gazdagépek maximális száma"
+
+#: modules/univention/admin/handlers/settings/license.py:191
+msgid "Maximum number of corporate clients this license allows."
+msgstr "A licenc által engedélyezett vállalati kliensek maximális száma."
+
+#: modules/univention/admin/handlers/settings/license.py:99
+msgid ""
+"Maximum number of groupware accounts managed with the UCS infrastructure"
+msgstr "Az UCS infrastruktúrával kezelt csoportmunka fiókok maximális száma"
+
+#: modules/univention/admin/handlers/settings/license.py:163
+msgid "Maximum number of managed clients this license allows."
+msgstr "A licenc által engedélyezett maximális kliensszám."
+
+#: modules/univention/admin/handlers/settings/license.py:142
+msgid "Maximum number of servers this license allows."
+msgstr "A licenc által engedélyezett maximális szerver szám."
+
+#: modules/univention/admin/handlers/settings/license.py:85
+msgid "Maximum number of user accounts managed with the UCS infrastructure"
+msgstr "Az UCS infrastruktúrával kezelt felhasználói fiókok maximális száma"
+
+#: modules/univention/admin/handlers/settings/license.py:170
+msgid "Maximum number of users this license allows."
+msgstr "A licenc által engedélyezett maximális felhasználói szám."
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:117
+msgid "Maximum password age"
+msgstr "A jelszó maximális élettartama"
+
+#: modules/univention/admin/handlers/settings/data.py:73
+msgid "Meta information"
+msgstr "Meta információk"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:126
+#: modules/univention/admin/handlers/settings/udm_syntax.py:105
+#: modules/univention/admin/handlers/settings/udm_hook.py:105
+#: modules/univention/admin/handlers/settings/ldapacl.py:96
+#: modules/univention/admin/handlers/settings/ldapschema.py:86
+#: modules/univention/admin/handlers/settings/data.py:99
+msgid "Metadata"
+msgstr "Metaadatok"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:81
+#: modules/univention/admin/handlers/settings/udm_syntax.py:80
+#: modules/univention/admin/handlers/settings/udm_hook.py:80
+#: modules/univention/admin/handlers/settings/ldapacl.py:78
+#: modules/univention/admin/handlers/settings/data.py:63
+msgid "Minimal UCS version"
+msgstr "Minimális UCS verzió"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:70
+msgid "Minimum Password Age"
+msgstr "Minimális jelszóélettartam"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:102
+msgid "Minimum password age"
+msgstr "Minimális jelszóélettartam"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:249
+#: modules/univention/admin/handlers/settings/license.py:61
+msgid "Module"
+msgstr "Modul"
+
+#: modules/univention/admin/handlers/settings/license.py:62
+msgid "Module the license is valid for"
+msgstr "A modul, amelyre a licenc érvényes"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:191
+msgid ""
+"Modules this extended attribute is added to, e.g. \"users/user\" or "
+"\"computers/windows\""
+msgstr ""
+"Modulok, amelyekhez ez a kiterjesztett attribútum hozzáadódik, pl. „users/"
+"user” vagy „computers/windows”"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:190
+msgid "Modules to be extended"
+msgstr "Bővíthető modulok"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:98
+msgid "Multi value"
+msgstr "Több érték"
+
+#: modules/univention/admin/handlers/settings/cn.py:35
+#: modules/univention/admin/handlers/settings/directory.py:35
+#: modules/univention/admin/handlers/settings/umc_operationset.py:39
+#: modules/univention/admin/handlers/settings/printermodel.py:39
+#: modules/univention/admin/handlers/settings/printermodel.py:40
+#: modules/univention/admin/handlers/settings/lock.py:35
+#: modules/univention/admin/handlers/settings/lock.py:36
+#: modules/univention/admin/handlers/settings/default.py:32
+#: modules/univention/admin/handlers/settings/extended_options.py:40
+#: modules/univention/admin/handlers/settings/extended_options.py:41
+#: modules/univention/admin/handlers/settings/packages.py:35
+#: modules/univention/admin/handlers/settings/packages.py:36
+#: modules/univention/admin/handlers/settings/prohibited_username.py:35
+#: modules/univention/admin/handlers/settings/prohibited_username.py:36
+#: modules/univention/admin/handlers/settings/printeruri.py:35
+#: modules/univention/admin/handlers/settings/printeruri.py:36
+#: modules/univention/admin/handlers/settings/license.py:45
+#: modules/univention/admin/handlers/settings/license.py:46
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:94
+msgid ""
+"Name of a Python class implementing the univention.admin.hook interface, "
+"which can be used to execute additional actions when an object is created, "
+"modified or deleted"
+msgstr ""
+"Az univention.admin.hook interfészt megvalósító Python osztály neve, amely "
+"objektumok létrehozásakor, módosításakor vagy törléskor további műveletek "
+"végrehajtására használható"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:116
+msgid ""
+"Name of the tab in the UMC on which this extended attribute is be placed. A "
+"new tab is created automatically if no tab with the name exists"
+msgstr ""
+"Az UMC-ben található lap neve, amelyen ez a kiterjesztett attribútum "
+"elhelyezésre kerül. Ha még nem létezik ilyen nevű lap, akkor automatikusan "
+"létrehozásra kerül egy új lap"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:41
+msgid ""
+"Name which by default is used by UDM CLI and internally to identify the "
+"extended attribute"
+msgstr ""
+"Az UDM CLI által alapértelmezés szerint használt név, amelyet belsőleg a "
+"kiterjesztett attribútum azonosítására használnak"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:86
+msgid "Needed module"
+msgstr "Szükséges modul"
+
+#: modules/univention/admin/handlers/settings/directory.py:87
+msgid "Network Link"
+msgstr "Hálózati link"
+
+#: modules/univention/admin/handlers/settings/directory.py:144
+msgid "Network Links"
+msgstr "Hálózati linkek"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:86
+msgid "Next RID"
+msgstr "Következő RID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:80
+msgid "Next group RID"
+msgstr "Következő csoport RID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:74
+msgid "Next user RID"
+msgstr "Következő felhasználói RID"
+
+#: modules/univention/admin/handlers/settings/license.py:121
+msgid "OEM Product types this license allows."
+msgstr "Az OEM termék típusok, amelyekre ez a licenc érvényes."
+
+#: modules/univention/admin/handlers/settings/extended_options.py:82
+msgid "Option may be repeatedly turned on and off."
+msgstr "Az opció többször is be- és kikapcsolható."
+
+#: modules/univention/admin/handlers/settings/syntax.py:106
+#: modules/univention/admin/handlers/settings/usertemplate.py:238
+msgid "Options"
+msgstr "Opciók"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:27
+msgid "Options for extended attributes"
+msgstr "Kiterjesztett attribútumok opciói"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:120
+msgid "Ordering number"
+msgstr "Rendelési szám"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:68
+#: modules/univention/admin/handlers/settings/usertemplate.py:260
+msgid "Organisation"
+msgstr "Szervezet"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:140
+msgid "Overwrite existing tab"
+msgstr "A meglévő lap felülírása"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:145
+msgid "Overwrite existing widget"
+msgstr "A meglévő widget felülírása"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:280
+msgid "POSIX (Linux/UNIX)"
+msgstr "POSIX (Linux/UNIX)"
+
+#: modules/univention/admin/handlers/settings/packages.py:22
+#: modules/univention/admin/handlers/settings/packages.py:43
+#: modules/univention/admin/handlers/settings/packages.py:44
+#: modules/univention/admin/handlers/settings/packages.py:52
+msgid "Package List"
+msgstr "Csomag lista"
+
+#: modules/univention/admin/handlers/settings/packages.py:23
+msgid "Package Lists"
+msgstr "Csomaglisták"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:164
+msgid "Password"
+msgstr "Jelszó"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:65
+msgid "Password History"
+msgstr "Jelszó előzmény"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:60
+msgid "Password Length"
+msgstr "Jelszó hossz"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:97
+msgid "Password history"
+msgstr "Jelszó előzmény"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:92
+msgid "Password length"
+msgstr "Jelszó hossz"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:152
+msgid "Password properties"
+msgstr "Jelszó tulajdonságok"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:142
+msgid "Passwords must meet complexity requirements"
+msgstr "A jelszavaknak meg kell felelniük a komplexitási követelményeknek"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:104
+msgid "Path to the home directory on the home share"
+msgstr "Elérési út a saját mappa megosztás útvonalához"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:257
+msgid "Personal information"
+msgstr "Személyes adat"
+
+#: modules/univention/admin/handlers/settings/directory.py:45
+msgid "Policy Link"
+msgstr "Házirend Link"
+
+#: modules/univention/admin/handlers/settings/directory.py:135
+msgid "Policy Links"
+msgstr "Házirend Linkek"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:225
+msgid "Post office box"
+msgstr "Postafiók"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:140
+msgid "Postal code"
+msgstr "Irányítószám"
+
+#: modules/univention/admin/handlers/settings/settings.py:25
+msgid "Preference"
+msgstr "Preferencia"
+
+#: modules/univention/admin/handlers/settings/settings.py:24
+#: modules/univention/admin/handlers/settings/settings.py:26
+msgid "Preferences"
+msgstr "Beállítások"
+
+#: modules/univention/admin/handlers/settings/default.py:18
+msgid "Preferences: Default"
+msgstr "Beállítások: Alapértelmezett"
+
+#: modules/univention/admin/handlers/settings/directory.py:21
+msgid "Preferences: Default Container"
+msgstr "Beállítások: Alapértelmezett konténer"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:51
+msgid "Preferred delivery method"
+msgstr "Előnyben részesített átviteli mód"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:232
+msgid "Preferred language"
+msgstr "Előnyben részesített nyelv"
+
+#: modules/univention/admin/handlers/settings/license.py:155
+msgid "Premium Support"
+msgstr "Prémium támogatás"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:228
+msgid "Prevent default popup"
+msgstr "Alapértelmezett felugró ablak tiltása"
+
+#: modules/univention/admin/handlers/settings/default.py:97
+#: modules/univention/admin/handlers/settings/default.py:98
+msgid "Primary Groups"
+msgstr "Elsődleges csoportok"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:209
+msgid "Primary e-mail address (mailbox)"
+msgstr "Elsődleges e-mail cím (postafiók)"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:201
+msgid "Primary group"
+msgstr "Elsődleges csoport"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:26
+msgid "Printer Driver List"
+msgstr "Nyomtató illesztőprogramok listája"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:27
+msgid "Printer Driver Lists"
+msgstr "Nyomtató illesztőprogramok listája"
+
+#: modules/univention/admin/handlers/settings/directory.py:99
+msgid "Printer Link"
+msgstr "Nyomtató link"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:56
+msgid "Printer List"
+msgstr "Nyomtató lista"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:47
+#: modules/univention/admin/handlers/settings/printermodel.py:48
+msgid "Printer Model"
+msgstr "Nyomtató modell"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:43
+#: modules/univention/admin/handlers/settings/printeruri.py:44
+#: modules/univention/admin/handlers/settings/printeruri.py:53
+msgid "Printer URI"
+msgstr "Nyomtató URI"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:22
+msgid "Printer URI List"
+msgstr "Nyomtató URI lista"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:23
+msgid "Printer URI Lists"
+msgstr "Nyomtató URI listák"
+
+#: modules/univention/admin/handlers/settings/directory.py:150
+msgid "Printers Links"
+msgstr "Nyomtatók Linkek"
+
+#: modules/univention/admin/handlers/settings/license.py:127
+msgid "Product type"
+msgstr "Típus"
+
+#: modules/univention/admin/handlers/settings/license.py:128
+msgid "Product type this license allows."
+msgstr "A licenc által engedélyezett terméktípus."
+
+#: modules/univention/admin/handlers/settings/license.py:113
+msgid "Product types this license allows."
+msgstr "A licenc által engedélyezett terméktípusok."
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:22
+#: modules/univention/admin/handlers/settings/prohibited_username.py:43
+#: modules/univention/admin/handlers/settings/prohibited_username.py:44
+msgid "Prohibited user name"
+msgstr "Tiltott felhasználónév"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:23
+#: modules/univention/admin/handlers/settings/prohibited_username.py:52
+msgid "Prohibited user names"
+msgstr "Tiltott felhasználónevek"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:136
+msgid ""
+"Put this extended attribute under \"Advanced settings\". No autonomous tab "
+"will be created"
+msgstr ""
+"Helyezze ezt a kiterjesztett attribútumot a „Speciális beállítások” alá. "
+"Nem lesz létrehozva önálló fül"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:105
+msgid "Refuse Machine Password Change"
+msgstr "Gépjelszó módosítás elutasítása"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:137
+msgid "Refuse machine password change"
+msgstr "Gépjelszó módosítás elutasítása"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:126
+msgid ""
+"Related properties can be grouped. This field specifies the name of the "
+"group in which this extended attribute is put in. If no name is given, no "
+"group is used"
+msgstr ""
+"A kapcsolódó tulajdonságok csoportosíthatók. Ez a mező határozza meg annak "
+"a csoportnak a nevét, amelybe ez a kiterjesztett attribútum kerül. Ha nincs "
+"megadva név, akkor nem kerül felhasználásra csoport"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:184
+msgid "Remove object class if the attribute is removed"
+msgstr "Távolítsa el az objektum osztályt, ha az attribútumot eltávolítják"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:210
+msgid "Required options"
+msgstr "Kötelező opciók"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:95
+msgid "Reset Count Minutes"
+msgstr "Visszaállítás Szám Percek"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:127
+msgid "Reset count minutes"
+msgstr "Visszaállítási idő percben"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:69
+msgid "Restrict to host"
+msgstr "Korlátozás a gazdagépre"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:173
+msgid "Room number"
+msgstr "Szobaszám"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:39
+msgid "Samba Configuration"
+msgstr "Samba konfiguráció"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:40
+msgid "Samba Configuration settings"
+msgstr "Samba konfigurációs beállítások"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:45
+msgid "Samba Domain"
+msgstr "Samba tartomány"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:46
+msgid "Samba Domains"
+msgstr "Samba tartományok"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:66
+msgid "Samba SID"
+msgstr "Samba SID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:58
+msgid "Samba domain name"
+msgstr "Samba tartomány név"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:50
+msgid "Schema data"
+msgstr "Sémaadat"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:43
+msgid "Schema file name"
+msgstr "Sémafájl neve"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:35
+msgid "Schema name"
+msgstr "Séma neve"
+
+#: modules/univention/admin/handlers/settings/license.py:141
+msgid "Servers"
+msgstr "Szerverek"
+
+#: modules/univention/admin/handlers/settings/license.py:156
+msgid "Servers with premium support."
+msgstr "Prémium támogatással rendelkező szerverek."
+
+#: modules/univention/admin/handlers/settings/license.py:148
+msgid "Servers with standard support"
+msgstr "Szerverek standard támogatással"
+
+#: modules/univention/admin/handlers/settings/license.py:149
+msgid "Servers with standard support."
+msgstr "Szerverek standard támogatással."
+
+#: modules/univention/admin/handlers/settings/service.py:20
+msgid "Service"
+msgstr "Szolgáltatás"
+
+#: modules/univention/admin/handlers/settings/service.py:33
+msgid "Service Name"
+msgstr "Szolgáltatás neve"
+
+#: modules/univention/admin/handlers/settings/service.py:21
+msgid "Services"
+msgstr "Szolgáltatások"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:258
+msgid "Settings for UMC"
+msgstr "UMC beállítások"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:24
+msgid "Settings: Extended attribute"
+msgstr "Beállítások: Kiterjesztett attribútum"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:24
+msgid "Settings: Extended option"
+msgstr "Beállítások: Kiterjesztett opció"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:21
+msgid "Settings: LDAP ACL Extension"
+msgstr "Beállítások: LDAP ACL kiterjesztés"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:21
+msgid "Settings: LDAP Schema Extension"
+msgstr "Beállítások: LDAP sémakiterjesztés"
+
+#: modules/univention/admin/handlers/settings/license.py:21
+msgid "Settings: License"
+msgstr "Beállítások: Licenc"
+
+#: modules/univention/admin/handlers/settings/lock.py:21
+msgid "Settings: Lock"
+msgstr "Beállítások: Zárolás"
+
+#: modules/univention/admin/handlers/settings/packages.py:21
+msgid "Settings: Package List"
+msgstr "Beállítások: Csomag lista"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:25
+msgid "Settings: Printer Driver List"
+msgstr "Beállítások: Nyomtató illesztőprogram lista"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:21
+msgid "Settings: Printer URI List"
+msgstr "Beállítások: Nyomtató URI lista"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:21
+msgid "Settings: Prohibited user names"
+msgstr "Beállítások: Tiltott felhasználónevek"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:38
+msgid "Settings: Samba Configuration"
+msgstr "Beállítások: Samba konfiguráció"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:44
+msgid "Settings: Samba Domain"
+msgstr "Beállítások: Samba tartomány"
+
+#: modules/univention/admin/handlers/settings/service.py:19
+msgid "Settings: Service"
+msgstr "Beállítások: Szolgáltatás"
+
+#: modules/univention/admin/handlers/settings/syntax.py:19
+msgid "Settings: Syntax Definition"
+msgstr "Beállítások: Szintaxis meghatározás"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:23
+msgid "Settings: UDM Hook"
+msgstr "Beállítások: UDM Hook"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:24
+msgid "Settings: UDM Module"
+msgstr "Beállítások: UDM modul"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:23
+msgid "Settings: UDM Syntax"
+msgstr "Beállítások: UDM szintaxis"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:24
+msgid "Settings: UMC operation set"
+msgstr "Beállítások: UMC működési beállítások"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:19
+msgid "Settings: User Template"
+msgstr "Beállítások: Felhasználói sablon"
+
+#: modules/univention/admin/handlers/settings/directory.py:93
+msgid "Share Link"
+msgstr "Megosztás Link"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:98
+msgid "Share, the user's home directory resides on"
+msgstr "Megosztás, a felhasználó saját könyvtára a következő helyen található"
+
+#: modules/univention/admin/handlers/settings/directory.py:147
+msgid "Shares Links"
+msgstr "Megosztások Linkek"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:49
+#: modules/univention/admin/handlers/settings/extended_attribute.py:240
+msgid "Short description"
+msgstr "Rövid leírás"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:50
+msgid "Short description for the option as shown on the Option tab."
+msgstr "Az opció rövid leírása, ahogyan az az Opciók lapon megjelenik."
+
+#: modules/univention/admin/handlers/settings/syntax.py:72
+msgid "Show Only"
+msgstr "Megjelenítés csak a következő(k) számára"
+
+#: modules/univention/admin/handlers/settings/license.py:77
+msgid "Signature"
+msgstr "Aláírás"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:71
+#: modules/univention/admin/handlers/settings/udm_syntax.py:70
+#: modules/univention/admin/handlers/settings/udm_hook.py:70
+#: modules/univention/admin/handlers/settings/ldapacl.py:68
+#: modules/univention/admin/handlers/settings/ldapschema.py:68
+#: modules/univention/admin/handlers/settings/data.py:79
+msgid "Software package"
+msgstr "Szoftvercsomag"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:76
+#: modules/univention/admin/handlers/settings/udm_syntax.py:75
+#: modules/univention/admin/handlers/settings/udm_hook.py:75
+#: modules/univention/admin/handlers/settings/ldapacl.py:73
+#: modules/univention/admin/handlers/settings/ldapschema.py:73
+#: modules/univention/admin/handlers/settings/data.py:84
+msgid "Software package version"
+msgstr "Szoftvercsomag verzió"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:150
+msgid "Span both columns"
+msgstr "Mindkét oszlop átfogása"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:100
+msgid "Specifies that the option belongs to a UCS Application"
+msgstr "Meghatározza, hogy az opció egy UCS alkalmazáshoz tartozik"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:155
+msgid "State"
+msgstr "Állam/megye"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:156
+msgid "State (province)"
+msgstr "Állam/megye"
+
+#: modules/univention/admin/handlers/settings/syntax.py:103
+msgid "Storage"
+msgstr "Tárolás"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:147
+msgid "Store plaintext passwords"
+msgstr "Jelszavak tárolása egyszerű szövegként"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:148
+msgid ""
+"Store plaintext passwords where account have \"store passwords with "
+"reversible encryption\" set."
+msgstr ""
+"A jelszavakat tárolja egyszerű szövegként, ha a fiókban be van állítva a "
+"„jelszavak visszafordítható titkosítással történő tárolása” opció."
+
+#: modules/univention/admin/handlers/settings/syntax.py:82
+msgid "Stored Attribute"
+msgstr "Tárolt attribútum"
+
+#: modules/univention/admin/handlers/settings/syntax.py:89
+msgid "Stored LDAP Attribute"
+msgstr "Tárolt LDAP attribútum"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:135
+msgid "Street"
+msgstr "Utca"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:178
+msgid "Superior"
+msgstr "Kiváló"
+
+#: modules/univention/admin/handlers/settings/syntax.py:20
+msgid "Syntax Definition"
+msgstr "Szintaxis meghatározás"
+
+#: modules/univention/admin/handlers/settings/syntax.py:21
+msgid "Syntax Definitions"
+msgstr "Szintaxis definíciók"
+
+#: modules/univention/admin/handlers/settings/syntax.py:41
+msgid "Syntax Description"
+msgstr "Szintaxis leírása"
+
+#: modules/univention/admin/handlers/settings/syntax.py:33
+msgid "Syntax Name"
+msgstr "Szintaxis neve"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:88
+msgid "Syntax class"
+msgstr "Szintaxis osztály"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:267
+msgid "Tab layout"
+msgstr "Fül elrendezés"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:115
+msgid "Tab name"
+msgstr "Fül neve"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:135
+msgid "Tab with advanced settings"
+msgstr "Fül speciális beállításai"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:162
+msgid "Telephone number"
+msgstr "Telefonszám"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:33
+msgid "Template name"
+msgstr "Sablon neve"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:198
+msgid "The ABI number used by this extended attribute"
+msgstr "Az ABI szám, amelyet ez a kiterjesztett attribútum használ"
+
+#: modules/univention/admin/handlers/settings/data.py:53
+msgid "The actual data, bzipped and base64 encoded"
+msgstr "A tényleges adatok, bzip-elt és base64-kódolt"
+
+#: modules/univention/admin/handlers/settings/data.py:52
+msgid "The data"
+msgstr "Az adat"
+
+#: modules/univention/admin/handlers/settings/data.py:42
+msgid "The description"
+msgstr "A leírás"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:110
+msgid ""
+"The extended attribute is not shown in the UMC. It can only be used from "
+"the UDM CLI or the Python interface"
+msgstr ""
+"A kiterjesztett attribútum nem jelenik meg az UMC-ben. Csak az UDM CLI-ből "
+"vagy a Python interfészből használható"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:151
+msgid ""
+"The layout element used to represent this extended attribute in the UMC "
+"spans both columns"
+msgstr ""
+"Az UMC-ben ezt a kiterjesztett attribútumot ábrázoló elrendezési elem "
+"mindkét oszlopot átfogja"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:205
+msgid "The name for the extended attribute as used by UDM CLI"
+msgstr "Az UDM CLI által használt kiterjesztett attribútum neve"
+
+#: modules/univention/admin/handlers/settings/data.py:34
+msgid "The name of the data object"
+msgstr "Az adatelem neve"
+
+#: modules/univention/admin/handlers/settings/data.py:58
+msgid "The type of the data"
+msgstr "Az adatok típusa"
+
+#: modules/univention/admin/handlers/settings/license.py:78
+msgid "This Signature is used to verify the authenticity of the license."
+msgstr "Ez az aláírás a licenc hitelességének ellenőrzésére szolgál."
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:86
+msgid ""
+"This e-mail address serves only as contact information. This address has no "
+"effect on the UCS mail stack and is not related to a local mailbox."
+msgstr ""
+"Ez az e-mail cím kizárólag kapcsolattartási célokat szolgál. Ez a cím nincs "
+"hatással az UCS levelezési rendszerére, és nem kapcsolódik helyi "
+"postafiókhoz."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:168
+msgid ""
+"This extended attribute can not be changed through UMC or UDM CLI, but only "
+"through the Python API or by hooks"
+msgstr ""
+"Ez a kiterjesztett attribútum nem módosítható az UMC vagy az UDM CLI "
+"segítségével, csak a Python API vagy hook segítségével"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:163
+msgid ""
+"This extended attribute can still be modified after the object has been "
+"created"
+msgstr ""
+"Ez a kiterjesztett attribútum az objektum létrehozása után is módosítható"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:99
+msgid ""
+"This extended attribute can store multiple values instead of only a single "
+"value"
+msgstr ""
+"Ez a kiterjesztett attribútum egyetlen érték helyett több értéket is "
+"tárolhat"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:211
+msgid ""
+"This extended attribute is only used when at least one of these options is "
+"enabled, e.g. \"posix\" or \"samba\""
+msgstr ""
+"Ez a kiterjesztett attribútum csak akkor használatos, ha legalább az egyik "
+"opció engedélyezve van, pl. „posix” vagy „samba”."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:121
+msgid ""
+"This number specifies the position on which this extended attributes is "
+"placed on the tab or in the group. The numeration starts at 1"
+msgstr ""
+"Ez a szám meghatározza, hogy a kiterjesztett attribútumok hol helyezkednek "
+"el a fülön vagy a csoportban. A számozás 1-től kezdődik"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:131
+msgid ""
+"This number specifies the position on which this group is placed on the "
+"tab. The numbering starts at 1"
+msgstr "Ez a szám jelöli a csoport helyét a lapon. A számozás 1-től kezdődik"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:229
+msgid ""
+"This setting will prevent a pop-up dialog in the UMC when the default value "
+"of a property is not set."
+msgstr ""
+"Ez a beállítás megakadályozza, hogy az UMC-ben felugró párbeszédpanel "
+"jelenjen meg, ha egy tulajdonság alapértelmezett értéke nincs beállítva."
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:41
+msgid "Title"
+msgstr "Cím"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:82
+msgid "Translations of group name"
+msgstr "Csoportnév fordítása"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:69
+#: modules/univention/admin/handlers/settings/extended_attribute.py:69
+msgid "Translations of long description"
+msgstr "Hosszú leírás fordítása"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:62
+#: modules/univention/admin/handlers/settings/extended_attribute.py:62
+msgid "Translations of short description"
+msgstr "Rövid leírás fordítása"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:76
+msgid "Translations of tab name"
+msgstr "A lapnév fordítása"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:83
+msgid "Translations of the group name for other languages"
+msgstr "A csoport nevének fordításai más nyelvekre"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:70
+msgid ""
+"Translations of the long description for the option as shown on the Option "
+"tab"
+msgstr ""
+"Az opció hosszú leírásának fordításai, ahogyan azok az Opciók lapon "
+"megjelennek"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:70
+msgid "Translations of the long descriptive text for other languages"
+msgstr "A hosszú leíró szöveg fordításai más nyelvekre"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:77
+msgid "Translations of the name of the tab for other languages"
+msgstr "A fül nevének fordításai más nyelvekre"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:63
+msgid "Translations of the short description for other languages"
+msgstr "A rövid leírás fordításai más nyelvekre"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:63
+msgid ""
+"Translations of the short description for the option as shown on the Option "
+"tab"
+msgstr ""
+"Az opció rövid leírásának fordításai, ahogyan azok az Opciók lapon "
+"megjelennek"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:131
+#: modules/univention/admin/handlers/settings/udm_syntax.py:110
+#: modules/univention/admin/handlers/settings/udm_hook.py:110
+#: modules/univention/admin/handlers/settings/ldapacl.py:101
+msgid "UCS Version Dependencies"
+msgstr "UCS verziófüggőségek"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:204
+msgid "UDM CLI name"
+msgstr "UDM CLI név"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:24
+msgid "UDM Hook"
+msgstr "UDM horog"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:25
+msgid "UDM Hooks"
+msgstr "UDM horgok"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:25
+msgid "UDM Module"
+msgstr "UDM modul"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:26
+msgid "UDM Modules"
+msgstr "UDM modulok"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:24
+msgid "UDM Syntax"
+msgstr "UDM szintaxis"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:25
+msgid "UDM Syntaxes"
+msgstr "UDM szintaxisok"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:52
+msgid "UDM hook data"
+msgstr "UDM horog adat"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:45
+msgid "UDM hook file name"
+msgstr "UDM horog fájl neve"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:37
+msgid "UDM hook name"
+msgstr "UDM horog neve"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:53
+msgid "UDM module data"
+msgstr "UDM modul adat"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:46
+msgid "UDM module file name"
+msgstr "UDM modul fájl neve"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:38
+msgid "UDM module name"
+msgstr "UDM modul neve"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:52
+msgid "UDM syntax data"
+msgstr "UDM szintaxis adat"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:45
+msgid "UDM syntax file name"
+msgstr "UDM szintaxis fájl neve"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:37
+msgid "UDM syntax name"
+msgstr "UDM szintaxis neve"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:258
+msgid "UMC"
+msgstr "UMC"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:78
+msgid "UMC Operation Set"
+msgstr "UMC műveleti készlet"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:55
+msgid "UMC commands"
+msgstr "UMC parancsok"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:108
+msgid "UMC icon"
+msgstr "UMC ikon"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:25
+msgid "UMC operation set"
+msgstr "UMC műveleti készlet"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:26
+msgid "UMC operation sets"
+msgstr "UMC műveleti készletek"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:103
+msgid "UMC registration data"
+msgstr "UMC regisztrációs adat"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:40
+msgid "Unique name"
+msgstr "Egyedi név"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:157
+#: modules/univention/admin/handlers/settings/extended_attribute.py:179
+msgid ""
+"Univention Corporate Server provides its own LDAP scheme for customer "
+"extensions. The LDAP object class univentionFreeAttributes can be used for "
+"extended attributes without restrictions. It offers 20 freely usable "
+"attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can "
+"be used in connection with any LDAP object (e.g., a user object)"
+msgstr ""
+"Az Univention Corporate Server saját LDAP-sémát biztosít az "
+"ügyfélkiterjesztésekhez. Az univentionFreeAttributes LDAP-objektumosztály "
+"korlátozás nélkül használható kiterjesztett attribútumokhoz. 20 szabadon "
+"használható attribútumot kínál (univentionFreeAttribute1-től "
+"univentionFreeAttribute20-ig), és bármely LDAP-objektummal (pl. "
+"felhasználói objektummal) együtt használható."
+
+#: modules/univention/admin/handlers/settings/license.py:24
+msgid "Univention License"
+msgstr "Univention licenc"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:24
+msgid "Univention Prohibited user names"
+msgstr "Univention Tiltott felhasználónevek"
+
+#: modules/univention/admin/handlers/settings/cn.py:22
+msgid "Univention Setting"
+msgstr "Univention beállítás"
+
+#: modules/univention/admin/handlers/settings/cn.py:21
+#: modules/univention/admin/handlers/settings/cn.py:23
+msgid "Univention Settings"
+msgstr "Univention beállítások"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:91
+msgid "Unix home directory"
+msgstr "Unix home könyvtár"
+
+#: modules/univention/admin/handlers/settings/directory.py:63
+msgid "User Link"
+msgstr "Felhasználóra link"
+
+#: modules/univention/admin/handlers/settings/directory.py:123
+msgid "User Links"
+msgstr "Felhasználói linkek"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:20
+msgid "User Template"
+msgstr "Felhasználói sablon"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:21
+msgid "User Templates"
+msgstr "Felhasználói sablonok"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:251
+msgid "User account"
+msgstr "Felhasználói fiók"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:80
+msgid "User must Logon to Change Password"
+msgstr "A felhasználónak be kell jelentkeznie a jelszó megváltoztatásához"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:112
+msgid "User must logon to change password"
+msgstr "A felhasználónak be kell jelentkeznie a jelszó megváltoztatásához"
+
+#: modules/univention/admin/handlers/settings/license.py:169
+msgid "Users"
+msgstr "Felhasználók"
+
+#: modules/univention/admin/handlers/settings/license.py:120
+msgid "Valid OEM product types"
+msgstr "Érvényes OEM terméktípusok"
+
+#: modules/univention/admin/handlers/settings/license.py:112
+msgid "Valid product types"
+msgstr "Érvényes terméktípusok"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:167
+msgid "Value is only managed internally"
+msgstr "Az érték csak belsőleg kezelhető"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:173
+msgid "Value required"
+msgstr "Szükséges érték"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:223
+msgid ""
+"Values of this extended attribute are automatically filled into the form "
+"when copying a object."
+msgstr ""
+"Az objektum másolásakor az űrlap automatikusan kitölti ennek a "
+"kiterjesztett attribútumnak az értékeit."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:217
+msgid ""
+"Values of this extended attribute are not available for searching in the UMC"
+msgstr ""
+"Ennek a kiterjesztett attribútumnak az értékei nem kereshetők az UMC-ben"
+
+#: modules/univention/admin/handlers/settings/license.py:197
+msgid "Version"
+msgstr "Verzió"
+
+#: modules/univention/admin/handlers/settings/license.py:33
+msgid "Version 1 license"
+msgstr "1. verzió licenc"
+
+#: modules/univention/admin/handlers/settings/license.py:216
+msgid "Version 1 license informations"
+msgstr "1. verzió licencinformációk"
+
+#: modules/univention/admin/handlers/settings/license.py:38
+msgid "Version 2 license"
+msgstr "2. verzió licenc"
+
+#: modules/univention/admin/handlers/settings/license.py:221
+msgid "Version 2 license informations"
+msgstr "2. verzió licencinformációk"
+
+#: modules/univention/admin/handlers/settings/license.py:198
+msgid "Version format of this license."
+msgstr "A licenc verzióformátuma."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:197
+msgid "Version of extended attribute"
+msgstr "Kiterjesztett attribútum verziója"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:89
+msgid ""
+"When values are entered, the UMC performs a syntax check. Apart from "
+"standard syntax definitions (string) and (integer), there are three "
+"possibilities for expressing a binary condition. The syntax TrueFalse is "
+"represented at LDAP level using the strings true and false, the syntax "
+"TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE "
+"and the syntax boolean does not save any value or the string 1"
+msgstr ""
+"Az értékek beírásakor az UMC szintaxisellenőrzést hajt végre. A standard "
+"szintaxisdefiníciók (string) és (integer) mellett három lehetőség van a "
+"bináris feltétel kifejezésére. A TrueFalse szintaxis LDAP szinten a true és "
+"false karakterláncokkal kerül kifejezésre, a TrueFalseUpper szintaxis az "
+"OpenLDAP TRUE és FALSE boolean értékeknek felel meg, míg a boolean "
+"szintaxis nem ment semmilyen értéket vagy a 1 karakterláncot"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:276
+msgid "Windows"
+msgstr "Windows"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:130
+msgid "Windows home drive"
+msgstr "Windows saját meghajtó"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:115
+msgid "Windows home path"
+msgstr "Windows saját mappa elérési út"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:120
+msgid "Windows logon path"
+msgstr "Windows bejelentkezési útvonal"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:125
+msgid "Windows profile directory"
+msgstr "Windows profil könyvtár"
+
+#: modules/univention/admin/handlers/settings/data.py:33
+msgid "name"
+msgstr "név"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:173
+#: modules/univention/admin/handlers/settings/udm_syntax.py:145
+#: modules/univention/admin/handlers/settings/udm_hook.py:145
+#: modules/univention/admin/handlers/settings/ldapacl.py:135
+#: modules/univention/admin/handlers/settings/ldapschema.py:119
+msgid "packageversion: Version must not be lower than the current one."
+msgstr "packageversion: A verzió nem lehet alacsonyabb a jelenleginél."

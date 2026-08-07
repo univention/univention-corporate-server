@@ -1,0 +1,100 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-26 20:10+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:118
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:40
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:45
+msgid "Display name"
+msgstr "Megjelenő név"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:118
+#: modules/univention/admin/handlers/settings/mswmifilter.py:119
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:56
+msgid "MS WMI Author"
+msgstr "MS WMI szerző"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:66
+msgid "MS WMI Change Date"
+msgstr "MS WMI változás dátuma"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:61
+msgid "MS WMI Creation Date"
+msgstr "MS WMI létrehozási dátuma"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:91
+msgid "MS WMI Flags1"
+msgstr "MS WMI jelölők1"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:96
+msgid "MS WMI Flags2"
+msgstr "MS WMI jelölők2"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:101
+msgid "MS WMI Flags3"
+msgstr "MS WMI jelölők3"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:106
+msgid "MS WMI Flags4"
+msgstr "MS WMI jelölők4"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:50
+msgid "MS WMI ID"
+msgstr "MS WMI azonosító"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:71
+msgid "MS WMI Parameter1"
+msgstr "MS WMI paraméter1"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:76
+msgid "MS WMI Parameter2"
+msgstr "MS WMI paraméter2"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:81
+msgid "MS WMI Parameter3"
+msgstr "MS WMI paraméter3"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:86
+msgid "MS WMI Parameter4"
+msgstr "MS WMI paraméter4"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:111
+msgid "MS WMI Source Organization"
+msgstr "MS WMI forrás szervezet"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:124
+msgid "MS WMI filter"
+msgstr "MS WMI szűrő"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:34
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:22
+msgid "Settings: MS WMI Filter"
+msgstr "Beállítások: MS WMI szűrő"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:124
+#: modules/univention/admin/handlers/settings/mswmifilter.py:125
+msgid "WMI filter"
+msgstr "WMI szűrő"

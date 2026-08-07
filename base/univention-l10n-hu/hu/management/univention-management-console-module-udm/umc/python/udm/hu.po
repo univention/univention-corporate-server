@@ -1,0 +1,411 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-udm package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-udm\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-13 00:30+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/udm/__init__.py:383
+#, python-format
+msgid "%($dn$)s moved"
+msgstr "%($dn$)s áthelyezve"
+
+#: umc/python/udm/udm_ldap.py:321
+#, python-format
+msgid "All IP addresses in the specified network \"%s\" are already in use."
+msgstr "A megadott hálózat \"%s\" összes IP-címe már használatban van."
+
+#: umc/python/udm/__init__.py:1352
+#, python-format
+msgid "An error occurred while contacting the license server: %s"
+msgstr "Hiba történt a licenckiszolgálóval való kapcsolatfelvétel során: %s"
+
+#: umc/python/udm/udm_ldap.py:272
+msgid "Authentication failed"
+msgstr "A hitelesítés nem sikerült"
+
+#: umc/python/udm/__init__.py:1313
+msgid "Cannot parse License from LDAP"
+msgstr "Nem lehet elemezni a licencet az LDAP-ból"
+
+#: umc/python/udm/udm_ldap.py:257
+msgid ""
+"Check the join status of this system by using the domain join UMC module"
+msgstr ""
+"Ellenőrizd a rendszer csatlakozási állapotát a domain csatlakozás UMC modul "
+"használatával"
+
+#: umc/python/udm/udm_ldap.py:292
+#, python-format
+msgid "Could not identify the LDAP object type for %s."
+msgstr "Nem sikerült azonosítani a(z) %s LDAP objektumtípusát."
+
+#: umc/python/udm/__init__.py:391
+msgid "Could not identify the given LDAP object"
+msgstr "Nem sikerült azonosítani a megadott LDAP objektumot"
+
+#: umc/python/udm/udm_ldap.py:303
+#, python-format
+msgid "Could not identify the superordinate %s."
+msgstr "Nem sikerült azonosítani a fölérendelt %s elemet."
+
+#: umc/python/udm/udm_ldap.py:254
+msgid "Ensure that the LDAP server on this system is running and responsive"
+msgstr ""
+"Győződj meg arról, hogy az LDAP-kiszolgáló ezen a rendszeren fut és reagál"
+
+#: umc/python/udm/udm_ldap.py:320
+msgid "Failed to automatically assign an IP address."
+msgstr "Nem sikerült automatikusan IP-címet kiosztani."
+
+#: umc/python/udm/udm_ldap.py:261
+msgid ""
+"If the problem persists additional hints about the cause can be found in "
+"the following log file(s):"
+msgstr ""
+"Ha a probléma továbbra is fennáll, további információk az okról a következő "
+"naplófájlokban található:"
+
+#: umc/python/udm/udm_ldap.py:293 umc/python/udm/udm_ldap.py:304
+msgid ""
+"If the problem persists please try to relogin into Univention Management "
+"Console."
+msgstr ""
+"Ha a probléma továbbra is fennáll, kérjük, próbálj meg újra bejelentkezni "
+"az Univention Management Console-ba."
+
+#: umc/python/udm/udm_ldap.py:260
+msgid "Install the latest software updates"
+msgstr "Telepítsd a legújabb szoftverfrissítéseket"
+
+#: umc/python/udm/udm_ldap.py:296 umc/python/udm/udm_ldap.py:307
+msgid ""
+"It possibly has been deleted or moved. Please update your search results "
+"and open the object again."
+msgstr ""
+"Lehetséges, hogy törölték vagy áthelyezték. Kérjük, frissítsd a keresési "
+"eredményeket, és nyisd meg újra az objektumot."
+
+#: umc/python/udm/__init__.py:370
+#, python-format
+msgid "LDAP error: %s."
+msgstr "LDAP hiba: %s."
+
+#: umc/python/udm/udm_ldap.py:295
+#, python-format
+msgid "LDAP object %s could not be found."
+msgstr "A(z) %s LDAP objektum nem található."
+
+#: umc/python/udm/__init__.py:481
+msgid "LDAP object could not be identified"
+msgstr "Az LDAP objektum nem azonosítható"
+
+#: umc/python/udm/__init__.py:454
+msgid "LDAP object does not exist."
+msgstr "Az LDAP objektum nem létezik."
+
+#: umc/python/udm/__init__.py:372
+msgid "License import failed: malformed LDIF."
+msgstr "Licencimportálás sikertelen: hibásan formázott LDIF."
+
+#: umc/python/udm/tools.py:111
+msgid "License not found. During this session add and modify are disabled."
+msgstr ""
+"Licenc nem található. A munkamenet során a hozzáadás és módosítás le van "
+"tiltva."
+
+#: umc/python/udm/udm_ldap.py:258
+msgid "Make sure all join scripts were successfully executed"
+msgstr ""
+"Győződj meg arról, hogy az összes csatlakozási szkript sikeresen "
+"végrehajtódott"
+
+#: umc/python/udm/udm_ldap.py:255
+msgid ""
+"Make sure the DNS settings of this server are correctly set up and the DNS "
+"server is responsive"
+msgstr ""
+"Győződj meg arról, hogy a szerver DNS beállításai helyesen vannak "
+"beállítva, és a DNS szerver reagál"
+
+#: umc/python/udm/tools.py:52
+msgid "More than one object has been found."
+msgstr "Több mint egy objektum található."
+
+#: umc/python/udm/__init__.py:383
+#, python-format
+msgid "Moving %d object(s)"
+msgstr "%d objektum mozgatása"
+
+#: umc/python/udm/__init__.py:266
+msgid "No flavor or valid UDM module name specified"
+msgstr "Nincs megadva változat vagy érvényes UDM modulnév"
+
+#: umc/python/udm/tools.py:46 umc/python/udm/tools.py:50
+msgid "No license has been found."
+msgstr "Nem található licenc."
+
+#: umc/python/udm/udm_ldap.py:875
+msgid "Objects referencing this policy object"
+msgstr "Erre a házirend objektumra hivatkozó objektumok"
+
+#. i18n: translation for univention-directory-reports
+#: umc/python/udm/__init__.py:677
+msgid "PDF Document"
+msgstr "PDF dokumentum"
+
+#: umc/python/udm/udm_ldap.py:322
+msgid ""
+"Please specify a different network or make sure that free IP addresses are "
+"available for the chosen network."
+msgstr ""
+"Kérjük, adj meg egy másik hálózatot, vagy győződj meg arról, hogy vannak "
+"szabad IP-címek a kiválasztott hálózathoz."
+
+#: umc/python/udm/udm_ldap.py:469 umc/python/udm/__init__.py:951
+#, python-format
+msgid "Property %s not found"
+msgstr "A(z) %s tulajdonság nem található"
+
+#: umc/python/udm/udm_ldap.py:875
+msgid "Referencing objects"
+msgstr "Objektumok hivatkozása"
+
+#: umc/python/udm/udm_ldap.py:306
+#, python-format
+msgid "Superordinate %s could not be found."
+msgstr "A felsőbb szintű %s nem található."
+
+#: umc/python/udm/udm_ldap.py:252
+#, python-format
+msgid "The LDAP DN of the user %s could not be determined."
+msgstr "A(z) %s felhasználó LDAP DN-je nem határozható meg."
+
+#: umc/python/udm/tools.py:61
+#, python-format
+msgid ""
+"The LDAP base of the license does not match the LDAP base of the UCS domain "
+"(%s)."
+msgstr ""
+"A licenc LDAP bázisa nem egyezik meg az UCS-tartomány (%s) LDAP bázisával."
+
+#: umc/python/udm/__init__.py:387
+msgid "The destination is missing"
+msgstr "A célpont hiányzik"
+
+#: umc/python/udm/udm_ldap.py:253
+msgid "The following steps can help to solve this problem:"
+msgstr "A következő lépések segíthetnek megoldani ezt a problémát:"
+
+#: umc/python/udm/tools.py:65
+#, python-format
+msgid ""
+"The license can not be applied. The LDAP base does not match (expected "
+"%(expected)s, found: %(found)s)."
+msgstr ""
+"A licenc nem alkalmazható. Az LDAP bázis nem egyezik (várt: %(expected)s, "
+"talált: %(found)s)."
+
+#: umc/python/udm/udm_ldap.py:483 umc/python/udm/udm_ldap.py:497
+#, python-format
+msgid "The property %(property)s has an invalid value: %(value)s"
+msgstr ""
+"A(z) %(property)s tulajdonság érvénytelen értéket tartalmaz: %(value)s"
+
+#: umc/python/udm/udm_ldap.py:328
+msgid ""
+"The query you have entered timed out. Please narrow down your search by "
+"specifying more query parameters"
+msgstr ""
+"A megadott lekérdezés időtúllépést jelentett. Kérjük, szűkítsd a keresést "
+"további lekérdezési paraméterek megadásával"
+
+#: umc/python/udm/udm_ldap.py:334
+#, python-format
+msgid ""
+"The query you have entered yields too many matching entries. Please narrow "
+"down your search by specifying more query parameters. The current size "
+"limit of %s can be configured with the UCR variable directory/manager/web/"
+"sizelimit."
+msgstr ""
+"A megadott lekérdezés túl sok egyező bejegyzést eredményez. Kérjük, "
+"szűkítsd a keresést további lekérdezési paraméterek megadásával. A "
+"jelenlegi %s méretkorlát a directory/manager/web/sizelimit UCR változóval "
+"konfigurálható."
+
+#: umc/python/udm/__init__.py:724
+msgid "The report does not exists. Please create a new one."
+msgstr "A jelentés nem létezik. Kérjük, hozz létre egy újat."
+
+#: umc/python/udm/__init__.py:1349
+#, python-format
+msgid ""
+"This is probably due to the DNS settings of your server. You may find help "
+"at %s."
+msgstr ""
+"Ez valószínűleg a szervered DNS beállításainak köszönhető. Segítséget "
+"találhatsz a(z) %s címen."
+
+#: umc/python/udm/__init__.py:1346
+#, python-format
+msgid ""
+"This may be a problem with the proxy of your system. You may find help at "
+"%s."
+msgstr ""
+"A rendszered proxyjával lehet probléma. Segítséget találhatsz a %s címen."
+
+#: umc/python/udm/__init__.py:393
+msgid "This object can not be moved"
+msgstr "Ez az objektum nem mozgatható"
+
+#: umc/python/udm/__init__.py:1337
+msgid ""
+"This seems to be a problem with the license server. Please try again later."
+msgstr ""
+"Úgy tűnik, ezzel a licenc szerverrel van probléma. Kérjük, próbáld meg "
+"később."
+
+#: umc/python/udm/tools.py:141
+msgid ""
+"You are currently using the \"Free for personal use\" edition of Univention "
+"Corporate Server."
+msgstr ""
+"Jelenleg az Univention Corporate Server „Személyes használatra ingyenes” "
+"kiadását használod."
+
+#: umc/python/udm/tools.py:131
+msgid ""
+"You have too many DVS client accounts for your license. During this session "
+"add and modify are disabled."
+msgstr ""
+"Túl sok DVS ügyfélfiók van a licenchez. Ebben a munkamenetben a hozzáadás "
+"és a módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:129
+msgid ""
+"You have too many DVS user accounts for your license. During this session "
+"add and modify are disabled."
+msgstr ""
+"Túl sok DVS felhasználói fiók van a licenchez. Ebben a munkamenetben a "
+"hozzáadás és a módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:117
+msgid ""
+"You have too many client accounts for your license. During this session add "
+"and modify are disabled."
+msgstr ""
+"Túl sok ügyfélfiók van a licenchez. Ebben a munkamenetben a hozzáadás és a "
+"módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:123
+msgid ""
+"You have too many corporate client accounts for your license. During this "
+"session add and modify are disabled."
+msgstr ""
+"Túl sok vállalati ügyfélfiók van a licenchez. Ebben a munkamenetben a "
+"hozzáadás és módosítás le van tiltva."
+
+#: umc/python/udm/tools.py:125
+msgid ""
+"You have too many desktop accounts for your license. During this session "
+"add and modify are disabled."
+msgstr ""
+"Túl sok asztali fiók van a licenchez. Ebben a munkamenetben a hozzáadás és "
+"a módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:127
+msgid ""
+"You have too many groupware accounts for your license. During this session "
+"add and modify are disabled."
+msgstr ""
+"Túl sok csoportmunka fiók van a licenchez. Ebben munkamenetben a hozzáadás "
+"és módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:121
+msgid ""
+"You have too many managed client accounts for your license. During this "
+"session add and modify are disabled."
+msgstr ""
+"Túl sok felügyelt ügyfélfiók van a licenchez. Ebben munkamenetben a "
+"hozzáadás és módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:119
+msgid ""
+"You have too many server accounts for your license. During this session add "
+"and modify are disabled."
+msgstr ""
+"Túl sok szerverfiók van a licenchez. Ebben a munkamenetben a hozzáadás és a "
+"módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:113 umc/python/udm/tools.py:115
+msgid ""
+"You have too many user accounts for your license. Add and modify are "
+"disabled. Disable or delete <a href=\"javascript:void(0)\" "
+"onclick=\"require('umc/app').openModule('udm', 'users/user', {})\"> user "
+"accounts</a> to re-enable editing."
+msgstr ""
+"Túl sok felhasználói fiók van a licenchez. A hozzáadás és a módosítás "
+"funkciók le vannak tiltva. Tiltsd le vagy töröld <a "
+"href=\"javascript:void(0)\" onclick=\"require('umc/app').openModule('udm', "
+"'users/user', {})\"> a felhasználói fiókokat</a>, hogy újra engedélyezze a "
+"szerkesztést."
+
+#: umc/python/udm/tools.py:139
+msgid ""
+"Your license does not allow modifications. During this session add and "
+"modify are disabled."
+msgstr ""
+"A licenced nem engedélyezi a módosításokat. Ebben munkamenetben a hozzáadás "
+"és módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:133
+msgid ""
+"Your license is expired. During this session add and modify are disabled."
+msgstr ""
+"A licenced lejárt. Ebben munkamenetben a hozzáadás és módosítás funkciók le "
+"vannak tiltva."
+
+#: umc/python/udm/tools.py:135
+msgid ""
+"Your license is not valid for your LDAP-Base. During this session add and "
+"modify are disabled."
+msgstr ""
+"A licenced nem érvényes az LDAP bázisodhoz. Ebben munkamenetben a hozzáadás "
+"és módosítás funkciók le vannak tiltva."
+
+#: umc/python/udm/tools.py:137
+msgid ""
+"Your license is not valid. During this session add and modify are disabled."
+msgstr ""
+"A licenced nem érvényes. Ebben munkamenetben a hozzáadás és módosítás "
+"funkciók le vannak tiltva."
+
+#: umc/python/udm/__init__.py:1345
+#, python-format
+msgid ""
+"https://docs.software-univention.de/manual-%s.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan"
+msgstr ""
+"https://docs.software-univention.de/manual-%s.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan"
+
+#: umc/python/udm/__init__.py:1348
+#, python-format
+msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
+msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"
+
+#: umc/python/udm/udm_ldap.py:724
+msgid "manual"
+msgstr "kézikönyv"

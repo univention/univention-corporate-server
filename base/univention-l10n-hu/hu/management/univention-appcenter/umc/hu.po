@@ -1,0 +1,38 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 16 Nov 2025 22:33:24 +0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "App Center"
+msgstr "Alkalmazásközpont"
+
+msgid "Install or remove applications"
+msgstr "Alkalmazások telepítése vagy eltávolítása"
+
+msgid "Installation of software packages"
+msgstr "Szoftvercsomagok telepítése"
+
+msgid "Package Management"
+msgstr "Csomagkezelés"
+
+msgid "Repository Settings"
+msgstr "Tároló beállításai"
+
+msgid "Repository server configuration"
+msgstr "Tároló szerver konfigurációja"
+
+msgid "install,uninstall,software,update"
+msgstr "telepítés, eltávolítás, szoftver, frissítés"
+
+msgid "update,install,uninstall"
+msgstr "frissítés, telepítés, eltávolítás"

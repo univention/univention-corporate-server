@@ -1,0 +1,123 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-12-03 19:14+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/nagios/service.py:72
+msgid "Arguments of used Nagios plugin"
+msgstr "A használt Nagios bővítmény argumentumai"
+
+#: modules/univention/admin/handlers/nagios/service.py:81
+#: modules/univention/admin/handlers/nagios/service.py:97
+#: modules/univention/admin/handlers/nagios/service.py:98
+msgid "Assigned hosts"
+msgstr "Hozzárendelt gazdagépek"
+
+#: modules/univention/admin/handlers/nagios/service.py:90
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/nagios/service.py:82
+msgid "Check services on these hosts"
+msgstr "A szolgáltatások ellenőrzése ezeken a gazdagépeken"
+
+#: modules/univention/admin/handlers/nagios/service.py:66
+msgid "Command name of Nagios plugin"
+msgstr "A Nagios bővítmény parancs neve"
+
+#: modules/univention/admin/handlers/nagios/service.py:59
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/nagios/service.py:90
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/nagios/service.py:91
+msgid "General Nagios service settings"
+msgstr "Általános Nagios szolgáltatás beállítások"
+
+#: modules/univention/admin/handlers/nagios/service.py:97
+msgid "Hosts"
+msgstr "Gazdagépek"
+
+#: modules/univention/admin/handlers/nagios/nagios.py:25
+#: modules/univention/admin/handlers/nagios/nagios.py:26
+msgid "Nagios object"
+msgstr "Nagios objektum"
+
+#: modules/univention/admin/handlers/nagios/nagios.py:36
+msgid "Nagios object name"
+msgstr "Nagios objektum neve"
+
+#: modules/univention/admin/handlers/nagios/nagios.py:27
+msgid "Nagios objects"
+msgstr "Nagios objektumok"
+
+#: modules/univention/admin/handlers/nagios/service.py:32
+#: modules/univention/admin/handlers/nagios/service.py:33
+msgid "Nagios service"
+msgstr "Nagios szolgáltatás"
+
+#: modules/univention/admin/handlers/nagios/service.py:34
+msgid "Nagios services"
+msgstr "Nagios szolgáltatások"
+
+#: modules/univention/admin/handlers/nagios/service.py:50
+#: modules/univention/admin/handlers/nagios/nagios.py:35
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/nagios/service.py:65
+msgid "Plugin command"
+msgstr "Bővítmény parancs"
+
+#: modules/univention/admin/handlers/nagios/service.py:71
+msgid "Plugin command arguments"
+msgstr "Bővítmény parancs argumentumai"
+
+#: modules/univention/admin/handlers/nagios/service.py:60
+msgid "Service description"
+msgstr "Szolgáltatás leírása"
+
+#: modules/univention/admin/handlers/nagios/service.py:51
+msgid "Service name"
+msgstr "Szolgáltatás neve"
+
+#: modules/univention/admin/handlers/nagios/service.py:159
+#, python-format
+msgid "The host \"%s\" does not exists."
+msgstr "A(z) „%s” gazdagép nem létezik."
+
+#: modules/univention/admin/handlers/nagios/service.py:161
+#, python-format
+msgid "The host \"%s\" is invalid, it has no \"cn\" attribute."
+msgstr ""
+"A(z) „%s” gazdagép érvénytelen, nincs hozzá „cn” attribútum."
+
+#: modules/univention/admin/handlers/nagios/service.py:76
+msgid "Use NRPE"
+msgstr "NRPE használata"
+
+#: modules/univention/admin/handlers/nagios/service.py:77
+msgid "Use NRPE to check remote services"
+msgstr "NRPE használata távoli szolgáltatások ellenőrzéséhez"
+
+#: modules/univention/admin/handlers/nagios/service.py:28
+#: modules/univention/admin/handlers/nagios/nagios.py:19
+msgid ""
+"https://docs.software-univention.de/manual/5.0/en/monitoring/"
+"nagios.html#nagios-general"
+msgstr ""
+"https://docs.software-univention.de/manual/5.0/en/monitoring/"
+"nagios.html#nagios-general"

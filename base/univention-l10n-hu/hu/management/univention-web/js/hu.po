@@ -1,0 +1,652 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-web-js\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-07 01:17+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: js/widgets/MultiInput.js:679
+msgid " (required)"
+msgstr " (szükséges)"
+
+#: js/tools.js:1926
+msgid "\"${moduleName}\" module"
+msgstr "„${moduleName}” modul"
+
+#: js/widgets/PasswordInputBox.js:47
+msgid "%(label)s (retype)"
+msgstr "%(label)s (gépeld be újra)"
+
+#: js/widgets/Form.js:648
+msgid "%(label)s: %(message)s"
+msgstr "%(label)s: %(message)s"
+
+#: js/widgets/Grid.js:1166
+msgid "%(num)d entries of %(total)d selected"
+msgstr "%(num)d bejegyzés a(z) %(total)d közül kiválaszva"
+
+#: js/widgets/Grid.js:1171
+#, javascript-format
+msgid "%d entries found"
+msgstr "%d bejegyzés található"
+
+#: js/widgets/Form.js:640
+msgid "%s (%.1f%)"
+msgstr "%s (%.1f%)"
+
+#: js/widgets/Form.js:628 js/widgets/Form.js:644
+#, javascript-format
+msgid "%s loaded"
+msgstr "%s betöltve"
+
+#: js/widgets/Grid.js:1168
+#, javascript-format
+msgid "1 entry of %d selected"
+msgstr "1 bejegyzés a(z) %d közül kiválasztva"
+
+#: js/hooks/default_menu_entries.js:133
+msgid ""
+"<b>Warning</b>: The current session with all opened modules and unsaved "
+"settings gets lost and a page reload is done when switching the language."
+msgstr ""
+"<b>Figyelem</b>: A nyelvváltáskor az aktuális munkamenet, az összes "
+"megnyitott modul és a nem mentett beállítások elvesznek, és az oldal újra "
+"betöltődik."
+
+#: js/tools.js:289
+msgid ""
+"A reload of the Univention Management Console is required to use new "
+"modules.<br>Currently opened modules may not work properly.<br>Do you want "
+"to reload the page?"
+msgstr ""
+"Az új modulok használatához újra kell tölteni az Univention Management "
+"Console-t.<br> A jelenleg megnyitott modulok esetleg nem működnek "
+"megfelelően.<br> Újra szeretnéd tölteni az oldalt?"
+
+#: js/widgets/CookieBanner.js:35
+msgid "Accept"
+msgstr "Elfogad"
+
+#: js/widgets/UnixAccessRightsExtended.js:74 js/widgets/UnixAccessRights.js:74
+msgid "Access"
+msgstr "Hozzáférés"
+
+#: js/widgets/Calendar.js:181
+msgid "Action"
+msgstr "Művelet"
+
+#: js/widgets/Grid.js:947
+msgid "Actions"
+msgstr "Műveletek"
+
+#: js/widgets/MultiObjectSelect.js:74 js/widgets/MultiObjectSelect.js:301
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: js/widgets/MultiObjectSelect.js:234
+msgid "Add objects"
+msgstr "Objektumok hozzáadása"
+
+#: js/hooks/default_menu_entries.js:350
+msgid "Advantages of the Enterprise Edition"
+msgstr "A vállalati kiadás előnyei"
+
+#: js/tools.js:1176
+msgid "An assert statement failed"
+msgstr "Egy ellenőrző feltétel nem teljesült"
+
+#: js/tools.js:671 js/tools.js:974
+msgid "An error occurred"
+msgstr "Hiba történt"
+
+#: js/tools.js:677
+msgid ""
+"An error occurred while connecting to the server, please try again later."
+msgstr ""
+"Hiba történt a szerverhez való csatlakozás során, kérjük, próbáld meg "
+"később."
+
+#: js/widgets/ProgressBar.js:158
+msgid "An error occurred: "
+msgstr "Hiba történt "
+
+#: js/tools.js:674
+#, javascript-format
+msgid ""
+"An unknown error with status code %s occurred while connecting to the "
+"server, please try again later."
+msgstr ""
+"Ismeretlen hiba történt %s állapotkóddal a szerverhez való csatlakozás "
+"során, kérjük, próbáld meg később."
+
+#: js/widgets/Wizard.js:139
+msgid "Back"
+msgstr "Vissza"
+
+#: js/hooks/default_menu_entries.js:243
+msgid "Back to start site"
+msgstr "Vissza a kezdőlapra"
+
+#: js/hooks/default_menu_entries.js:329
+msgid "Buy support package"
+msgstr "Támogatási csomag vásárlása"
+
+#: js/tools.js:291 js/dialog.js:278 js/widgets/MultiObjectSelect.js:62
+#: js/widgets/Wizard.js:154 js/hooks/default_menu_entries.js:135
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: js/hooks/default_menu_entries.js:83
+msgid "Certificate revocation list"
+msgstr "Tanúsítvány visszavonási lista"
+
+#: js/hooks/default_menu_entries.js:57
+msgid "Certificates"
+msgstr "Tanúsítványok"
+
+#: js/hooks/default_menu_entries.js:142
+msgid "Changing language"
+msgstr "Nyelvváltás"
+
+#: js/tools.js:943 js/widgets/Module.js:160
+#: js/hooks/default_menu_entries.js:360
+msgid "Close"
+msgstr "Bezár"
+
+#: js/dialog.js:231 js/dialog.js:287
+msgid "Confirmation"
+msgstr "Megerősítés"
+
+#: js/widgets/CookieBanner.js:31
+msgid "Cookie Settings"
+msgstr "Süti (cookie) beállítások"
+
+#: js/tools.js:777
+msgid "Could not fulfill the request."
+msgstr "Nem sikerült teljesíteni a kérést."
+
+#: js/widgets/Grid.js:1273
+msgid "Could not load search results"
+msgstr "Nem sikerült betölteni a keresési eredményeket"
+
+#: js/tools.js:787
+msgid "Could not process the request."
+msgstr "Nem sikerült feldolgozni a kérést."
+
+#: js/hooks/default_menu_entries.js:372
+msgid "Do not show this notification again"
+msgstr "Ne jelenjen meg újra ez az értesítés"
+
+#: js/widgets/Calendar.js:162
+msgid "End"
+msgstr "Vége"
+
+#: js/widgets/Calendar.js:165
+msgid "Enter"
+msgstr "Enter"
+
+#: js/hooks/default_menu_entries.js:206
+msgid "Feedback"
+msgstr "Visszajelzés"
+
+#: js/widgets/ProgressBar.js:130
+msgid "Fetching information from the server failed!"
+msgstr "Nem sikerült információkat lekérni a szerverről!"
+
+#: js/widgets/Wizard.js:150
+msgid "Finish"
+msgstr "Befejezés"
+
+#: js/widgets/UnixAccessRightsExtended.js:54 js/widgets/UnixAccessRights.js:54
+msgid "Group"
+msgstr "Csoport"
+
+#: js/tools.js:885
+#, javascript-format
+msgid "HTTP Error %s"
+msgstr "HTTP hiba %s"
+
+#: js/hooks/default_menu_entries.js:345
+msgid "Hard- and software certifications"
+msgstr "Hardver- és szoftver tanúsítások"
+
+#: js/hooks/default_menu_entries.js:161
+msgid "Help"
+msgstr "Segítség"
+
+#: js/tools.js:922
+msgid "Hide server error message"
+msgstr "Szerver hibaüzenet elrejtése"
+
+#: js/widgets/Calendar.js:159
+msgid "Home"
+msgstr "Főoldal"
+
+#: js/tools.js:964
+msgid "Inform vendor"
+msgstr "Értesítsd a szállítót"
+
+#: js/tools.js:397
+msgid "Information"
+msgstr "Információ"
+
+#: js/tools.js:985
+msgid ""
+"Information about the error will be sent to the vendor along with some data "
+"about the operating system."
+msgstr ""
+"A hibáról szóló információkat, valamint az operációs rendszerrel "
+"kapcsolatos néhány adatot elküldjük a szállítónak."
+
+#: js/tools.js:788
+msgid ""
+"Internal module error: The initialization of the module caused a fatal "
+"error."
+msgstr "Belső modulhiba: A modul inicializálása végzetes hibát okozott."
+
+#: js/tools.js:784
+msgid "Internal server error."
+msgstr "Belső szerverhiba történt."
+
+#: js/tools.js:785
+msgid "Internal server error: The service is temporarily not available."
+msgstr "Belső szerverhiba: A szolgáltatás átmenetileg nem érhető el."
+
+#: js/widgets/Calendar.js:180
+msgid "Key"
+msgstr "Kulcs"
+
+#: js/menu/Menu.js:93 js/widgets/LoginButton.js:17
+#: js/widgets/LoginButton.js:30 js/hooks/default_menu_entries.js:259
+msgid "Login"
+msgstr "Belépés"
+
+#: js/tools.js:121
+msgid ""
+"Login call lasted too long. Please visit the <a href=\"https://"
+"help.univention.com/t/draft-login-call-lasted-too-long/19031\", "
+"target=\"_blank\">Help</a> to check for possible causes."
+msgstr ""
+"A bejelentkezés túl sokáig tartott. Kérjük, látogass el a <a href=\"https://"
+"help.univention.com/t/draft-login-call-lasted-too-long/19031\", "
+"target=\"_blank\">Súgóba</a>, hogy megnézd a lehetséges okokat."
+
+#: js/menu/Menu.js:94 js/widgets/LoginButton.js:30
+#: js/hooks/default_menu_entries.js:271
+msgid "Logout"
+msgstr "Kijelentkezés"
+
+#: js/hooks/default_menu_entries.js:346
+msgid "Manufacturer warranty with product liability"
+msgstr "Gyártói garancia termékszavatossági kötelezettséggel"
+
+#: js/menu/Menu.js:178
+msgid "Menu"
+msgstr "Menü"
+
+#: js/widgets/Calendar.js:145
+msgid "Move between date cells"
+msgstr "Dátumcellák közötti mozgás"
+
+#: js/widgets/Calendar.js:160
+msgid "Move to first day in month"
+msgstr "Ugrás a hónap első napjára"
+
+#: js/widgets/Calendar.js:163
+msgid "Move to last day in month"
+msgstr "Ugrás a hónap utolsó napjára"
+
+#: js/widgets/Calendar.js:148
+msgid "Move to same day in next month"
+msgstr "Ugrás ugyanarra a napra a következő hónapban"
+
+#: js/widgets/Calendar.js:154
+msgid "Move to same day in next year"
+msgstr "Ugrás ugyanarra a napra a következő évben"
+
+#: js/widgets/Calendar.js:151
+msgid "Move to same day in previous month"
+msgstr "Ugrás az előző hónap ugyanazon napjára"
+
+#: js/widgets/Calendar.js:157
+msgid "Move to same day in previous year"
+msgstr "Ugrás az előző év azonos napjára"
+
+#: js/widgets/MultiInput.js:54
+msgid "New entry"
+msgstr "Új bejegyzés"
+
+#: js/widgets/Wizard.js:145
+msgid "Next"
+msgstr "Következő"
+
+#: js/widgets/Grid.js:1175
+msgid "No entries could be found"
+msgstr "Nem található bejegyzés"
+
+#: js/widgets/NotificationsButton.js:237
+msgid "No notifications"
+msgstr "Nincsenek értesítések"
+
+#: js/dialog.js:74 js/dialog.js:121 js/dialog.js:147
+msgid "Notification"
+msgstr "Értesítés"
+
+#: js/widgets/NotificationsButton.js:214 js/widgets/NotificationsButton.js:239
+msgid "Notifications"
+msgstr "Értesítések"
+
+#: js/dialog.js:124
+msgid "Ok"
+msgstr "OK"
+
+#: js/widgets/UnixAccessRightsExtended.js:55 js/widgets/UnixAccessRights.js:55
+msgid "Others"
+msgstr "Egyéb"
+
+#: js/widgets/UnixAccessRightsExtended.js:53 js/widgets/UnixAccessRights.js:53
+msgid "Owner"
+msgstr "Tulajdonos"
+
+#: js/widgets/Calendar.js:147 js/widgets/Calendar.js:150
+#: js/widgets/Calendar.js:153 js/widgets/Calendar.js:156
+msgid "Page"
+msgstr "Oldal"
+
+#: js/widgets/Grid.js:226
+msgid "Please perform a search"
+msgstr "Kérjük, végezz keresést"
+
+#: js/tools.js:905
+msgid "Please take a second to provide the following information:"
+msgstr "Kérjük, szánj egy percet a következő információk megadására:"
+
+#: js/hooks/default_menu_entries.js:351
+msgid "Prices and support"
+msgstr "Árak és támogatás"
+
+#: js/widgets/UnixAccessRightsExtended.js:66 js/widgets/UnixAccessRights.js:66
+msgid "Read"
+msgstr "Olvasás"
+
+#: js/tools.js:297
+msgid "Reload"
+msgstr "Újratöltés"
+
+#: js/tools.js:997
+msgid "Remarks (e.g. steps to reproduce) (optional)"
+msgstr "Megjegyzések (pl. a reprodukálás lépései) (opcionális)"
+
+#: js/widgets/MultiUploader.js:42 js/widgets/MultiObjectSelect.js:329
+#: js/widgets/Uploader.js:91
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: js/widgets/MultiInput.js:537
+msgid "Remove entry"
+msgstr "Bejegyzés eltávolítása"
+
+#: js/hooks/default_menu_entries.js:69
+msgid "Root certificate"
+msgstr "Gyökér tanúsítvány"
+
+#: js/widgets/MultiObjectSelect.js:141
+msgid "Search results:"
+msgstr "Keresési eredmények:"
+
+#: js/widgets/LiveSearch.js:21
+msgid "Search term"
+msgstr "Keresési kifejezés"
+
+#: js/widgets/MultiSelect.js:44
+msgid "Select all"
+msgstr "Összes kijelölése"
+
+#: js/widgets/ImageUploader.js:42
+msgid "Select file"
+msgstr "Fájl kiválasztása"
+
+#: js/widgets/Calendar.js:166
+msgid "Select the date"
+msgstr "Válaszd ki a dátumot"
+
+#: js/tools.js:918
+msgid "Send as email"
+msgstr "Küldés e-mailben"
+
+#: js/tools.js:981
+msgid "Send to vendor"
+msgstr "Elküldés a szállítónak"
+
+#: js/tools.js:1008
+msgid "Sending the information to the vendor failed"
+msgstr "Az információ elküldése a szállítónak sikertelen"
+
+#: js/tools.js:671
+msgid "Server error message:"
+msgstr "Szerver hibaüzenet:"
+
+#: js/widgets/UnixAccessRightsExtended.js:80
+msgid "Setgid"
+msgstr "Setgid"
+
+#: js/tools.js:989
+msgid "Show error message"
+msgstr "Hibaüzenet mutatása"
+
+#: js/tools.js:923
+msgid "Show server error message"
+msgstr "Szerver hibaüzenet megjelenítése"
+
+#: js/tools.js:382
+msgid ""
+"So far, the connection to the server could not be established after {time} "
+"seconds. This can be a normal behavior. In any case, the process will "
+"continue to establish the connection."
+msgstr ""
+"Eddig {time} másodperc elteltével sem sikerült kapcsolatot létesíteni a "
+"szerverrel. Ez normális viselkedés lehet. Mindenesetre a folyamat folytatja "
+"a kapcsolat létrehozását."
+
+#: js/widgets/Calendar.js:165
+msgid "Space"
+msgstr "Szóköz"
+
+#: js/hooks/default_menu_entries.js:348
+msgid ""
+"Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise "
+"Edition. This license allows you to benefit from basic support services as "
+"well as individually bookable, additional support and professional services."
+msgstr ""
+"Már <b>290 €/év ártól</b> megvásárolható az UCS Enterprise Edition. Ez a "
+"licenc lehetővé teszi az alapvető támogatási szolgáltatások, valamint az "
+"egyénileg foglalható, kiegészítő támogatási és professzionális "
+"szolgáltatások igénybevételét."
+
+#: js/widgets/UnixAccessRightsExtended.js:81
+msgid "Sticky bit"
+msgstr "Ragadós bit"
+
+#: js/dialog.js:282
+msgid "Submit"
+msgstr "Küldés"
+
+#: js/hooks/default_menu_entries.js:343
+msgid "Support and Professional Services"
+msgstr "Támogatás és professzionális szolgáltatások"
+
+#: js/hooks/default_menu_entries.js:115 js/hooks/default_menu_entries.js:138
+msgid "Switch language"
+msgstr "Nyelvváltás"
+
+#: js/tools.js:1006
+msgid "Thank you for your help"
+msgstr "Köszönöm a segítségedet"
+
+#: js/widgets/Uploader.js:210
+msgid ""
+"The following files cannot be uploaded because they exceed the maximum file "
+"size:"
+msgstr ""
+"A következő fájlok nem tölthetők fel, mert meghaladják a maximális "
+"fájlméretet:"
+
+#: js/widgets/Uploader.js:212
+#, javascript-format
+msgid "The maximum size of a file is %.1f MB."
+msgstr "A fájl maximális mérete %.1f MB."
+
+#: js/widgets/PasswordInputBox.js:98
+msgid "The passwords do not match, please retype again."
+msgstr "A jelszavak nem egyeznek, kérjük, írd be újra."
+
+#: js/tools.js:288
+msgid "UMC reload required"
+msgstr "UMC újratöltése szükséges"
+
+#: js/hooks/default_menu_entries.js:228
+msgid "Univention Blog"
+msgstr "Univention Blog"
+
+#: js/hooks/default_menu_entries.js:193
+msgid "Univention Forum \"Help\""
+msgstr "Univention Fórum „Súgó”"
+
+#: js/hooks/default_menu_entries.js:180
+msgid "Univention Website"
+msgstr "Univention Weboldal"
+
+#: js/hooks/default_menu_entries.js:344
+msgid "Up to 7 years of maintenance (LTS)"
+msgstr "Akár 7 év karbantartás (LTS)"
+
+#: js/widgets/InfoUploader.js:19 js/widgets/MultiUploader.js:39
+#: js/widgets/Uploader.js:75
+msgid "Upload"
+msgstr "Feltöltés"
+
+#: js/widgets/Uploader.js:348
+msgid "Uploading..."
+msgstr "Feltöltés..."
+
+#: js/widgets/MultiUploader.js:217
+msgid "Uploading... %(current)d of %(total)d files remaining."
+msgstr "Feltöltés... %(current)d fájl van hátra a(z) %(total)d fájlból."
+
+#: js/hooks/default_menu_entries.js:40
+msgid "User settings"
+msgstr "Felhasználói beállítások"
+
+#: js/tools.js:782
+msgid "Validation error"
+msgstr "Ellenörzési hiba"
+
+#: js/dialog.js:89
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+#: js/widgets/CookieBanner.js:32
+msgid ""
+"We use cookies in order to provide you with certain functions and to be "
+"able to guarantee an unrestricted service. By clicking on \"Accept\", you "
+"consent to the collection of information on this portal."
+msgstr ""
+"Sütiket használunk bizonyos funkciók biztosításához és a korlátlan "
+"szolgáltatás garantálásához. Az „Elfogadom” gombra kattintva hozzájárulsz "
+"az információk gyűjtéséhez ezen a portálon."
+
+#: js/tools.js:781
+msgid "Webfrontend error: The specified request is unknown."
+msgstr "Webfrontend hiba: A megadott kérés ismeretlen."
+
+#: js/widgets/UnixAccessRightsExtended.js:70 js/widgets/UnixAccessRights.js:70
+msgid "Write"
+msgstr "Írás"
+
+#: js/tools.js:779
+msgid "You are not authorized to perform this action."
+msgstr "Nem vagy jogosult ennek a műveletnek a végrehajtására."
+
+#: js/tools.js:1010
+msgid "You can also send the information via mail:"
+msgstr "Az információkat postai úton is elküldheted:"
+
+#: js/hooks/default_menu_entries.js:349
+msgid ""
+"You can extend the maintenance for your UCS version to up to 7 years and "
+"thanks to certifications and manufacturer warranty you are legally secured "
+"when operating your IT infrastructure."
+msgstr ""
+"Az UCS verzió karbantartása akár 7 évre is meghosszabbítható, a "
+"tanúsítványoknak és a gyártói garanciának köszönhetően jogi biztonságban "
+"van az informatikai infrastruktúra az üzemeltetés során."
+
+#: js/tools.js:2139
+msgid ""
+"Your browser is outdated! You may experience performance issues and other "
+"problems when using this site. The supported Browsers are Firefox (>=60), "
+"Chrome (>=71), Edge (>=18), Safari (>=12)."
+msgstr ""
+"A böngésződ elavult! Előfordulhat, hogy teljesítmény és egyéb problémákat "
+"tapasztalsz a webhely használata során. A támogatott böngészők a Firefox "
+"(>=60), Chrome (>=71), Edge (>=18) és Safari (>=12)."
+
+#: js/tools.js:1001
+msgid "Your email address (optional)"
+msgstr "Az e-mail címed (opcionális)"
+
+#: js/tools.js:778
+msgid "Your session has expired, please login again."
+msgstr "A munkameneted lejárt, kérjük, jelentkezz be újra."
+
+#: js/tools.js:908
+msgid "actual result"
+msgstr "tényleges eredmény"
+
+#: js/tools.js:907
+msgid "expected result"
+msgstr "várható eredmény"
+
+#: js/hooks/default_menu_entries.js:194
+msgid "https://help.univention.com/"
+msgstr "https://help.univention.com/"
+
+#: js/hooks/default_menu_entries.js:181
+msgid "https://www.univention.com/"
+msgstr "https://www.univention.com/"
+
+#: js/hooks/default_menu_entries.js:215
+msgid "https://www.univention.com/feedback/"
+msgstr "https://www.univention.com/feedback/"
+
+#: js/hooks/default_menu_entries.js:229
+msgid "https://www.univention.com/news/blog-en/"
+msgstr "https://www.univention.com/news/blog-en/"
+
+#: js/hooks/default_menu_entries.js:333 js/hooks/default_menu_entries.js:377
+msgid "https://www.univention.com/products/prices-and-subscriptions/"
+msgstr "https://www.univention.com/products/prices-and-subscriptions/"
+
+#: js/widgets/MailBox.js:24
+msgid "mail@example.org"
+msgstr "mail@example.org"
+
+#: js/widgets/Grid.js:900
+msgid "more"
+msgstr "több"
+
+#: js/tools.js:906
+msgid "steps to reproduce the failure"
+msgstr "a hiba reprodukálásához szükséges lépések"
+
+#: js/widgets/ProgressBar.js:160
+msgid "{number} errors occurred: "
+msgstr "{number} hiba történt: "

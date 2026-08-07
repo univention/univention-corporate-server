@@ -1,0 +1,145 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-login\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 23:56+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: www/login/main.js:454
+msgid "Authentication required"
+msgstr "Azonosítás szükséges"
+
+#: www/login/main.js:511
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: www/login/LoginDialog.js:201
+msgid ""
+"Changing password failed. The passwords do not match, please retype again."
+msgstr ""
+"A jelszó módosítása sikertelen. A jelszavak nem egyeznek, kérjük, írjd be "
+"újra."
+
+#: www/login/main.js:510
+msgid "Do you really want to logout?"
+msgstr "Biztosan kijelentkezni szeretnél?"
+
+#: www/login/dialog.js:103
+msgid "How do I login?"
+msgstr "Hogyan tudok bejelentkezni?"
+
+#: www/login/main.js:169 www/login/main.js:474 www/login/LoginDialog.js:41
+#: www/login/LoginDialog.js:214
+msgid "Login"
+msgstr "Belépés"
+
+#: www/login/config.js:29
+msgid "Login at %(domainname)s"
+msgstr "Bejelentkezés: %(domainname)s"
+
+#: www/login/main.js:516
+msgid "Logout"
+msgstr "Kilépés"
+
+#: www/login/LoginDialog.js:39
+msgid "New Password"
+msgstr "Új jelszó"
+
+#: www/login/LoginDialog.js:40 www/login/LoginDialog.js:221
+msgid "New Password (retype)"
+msgstr "Új jelszó (ismételd meg)"
+
+#: www/login/LoginDialog.js:220
+msgid "New password"
+msgstr "Új jelszó"
+
+#: www/login/LoginDialog.js:42 www/login/LoginDialog.js:222
+msgid "One time password"
+msgstr "Egyszer használatos jelszó"
+
+#: www/login/main.js:469 www/login/LoginDialog.js:38
+#: www/login/LoginDialog.js:219
+msgid "Password"
+msgstr "Jelszó"
+
+#: www/login/dialog.js:181
+msgid ""
+"Please enable your browser cookies which are necessary for using Univention "
+"Services."
+msgstr ""
+"Kérjük, engedélyezd böngészőben a sütiket, amelyek szükségesek az "
+"Univention szolgáltatásainak használatához."
+
+#: www/login/dialog.js:96
+msgid "Please login with a valid username and password."
+msgstr "Kérjük, jelentkezz be érvényes felhasználónévvel és jelszóval."
+
+#: www/login/LoginDialog.js:215
+msgid "Set password"
+msgstr "Jelszó beállítása"
+
+#: www/login/main.js:366
+msgid "So far the authentication failed. Continuing nevertheless."
+msgstr "Eddig a hitelesítés sikertelen. Ennek ellenére folytatjuk."
+
+#: www/login/dialog.js:151
+msgid ""
+"The <i>root</i> user neither has access to the domain administration nor to "
+"the App Center."
+msgstr ""
+"A <i>root</i> felhasználónak nincs hozzáférése sem a domain "
+"adminisztrációhoz, sem az App Centerhez."
+
+#: www/login/main.js:169
+msgid "The current session timed out. Please login again."
+msgstr ""
+"A jelenlegi munkamenet időtúllépés miatt lezárult. Kérjük, jelentkezz be "
+"újra."
+
+#: www/login/dialog.js:100 www/login/dialog.js:151
+#, javascript-format
+msgid ""
+"The default user to manage the domain is %s which has the same initial "
+"password as the <i>root</i> account."
+msgstr ""
+"A domain kezelésére alapértelmezett felhasználó a(z) %s, amelynek kezdeti "
+"jelszava megegyezik a <i>root</i> fiók jelszavával."
+
+#: www/login/main.js:449
+msgid "This action requires you to supply your password."
+msgstr "Ehhez a művelethez jelszót kell megadni."
+
+#: www/login/dialog.js:133
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"such as passwords will be transmitted in plain text. Please follow this "
+"link to use a secure SSL connection."
+msgstr ""
+"Ez a hálózati kapcsolat nincs titkosítva. Minden személyes vagy érzékeny "
+"adat, például jelszó, egyszerű szövegként kerül átvitelre. Kérjük, kövesd "
+"ezt a linket biztonságos SSL kapcsolat használatához."
+
+#: www/login/dialog.js:134
+msgid ""
+"This network connection is not encrypted.<br/>Click here for an HTTPS "
+"connection."
+msgstr ""
+"Ez a hálózati kapcsolat nincs titkosítva.<br/> HTTPS kapcsolathoz kattints "
+"ide."
+
+#: www/login/dialog.js:98
+#, javascript-format
+msgid "Use the %s user for the initial system configuration."
+msgstr "Használd a(z) %s felhasználót a kezdeti rendszerkonfigurációhoz."
+
+#: www/login/LoginDialog.js:37 www/login/LoginDialog.js:218
+msgid "Username"
+msgstr "Felhasználónév"

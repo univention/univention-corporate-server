@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-ucr package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-ucr\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-05 21:56+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/ucr/__init__.py:51
+msgid ""
+"A valid UCR variable name must contain at least one character and can only "
+"contain letters, numerals, \"/\", \".\", \":\", \"_\" and \"-\"."
+msgstr ""
+"Egy érvényes UCR változónévnek legalább egy karaktert kell tartalmaznia, "
+"és csak betűket, számokat, \"/\", \".\", \":\", \"_\" és \"-\" jeleket "
+"tartalmazhat."
+
+#: umc/python/ucr/__init__.py:141
+#, python-format
+msgid "Invalid UCR type definition for type %r of %r, value %r not set"
+msgstr ""
+"Érvénytelen UCR típusdefiníció a(z) %r típushoz (%r), a(z) %r érték nincs "
+"beállítva"
+
+#: umc/python/ucr/__init__.py:177
+#, python-format
+msgid "The UCR variable %(key)s could not be found"
+msgstr "A(z) %(key)s UCR változó nem található."
+
+#: umc/python/ucr/__init__.py:115
+#, python-format
+msgid "The UCR variable %s is already set."
+msgstr "A(z) %s UCR változó már be van állítva."
+
+#: umc/python/ucr/__init__.py:131
+#, python-format
+msgid "The UCR variable %s is read-only and can not be changed!"
+msgstr "Az %s UCR változó csak olvasható és nem módosítható!"
+
+#: umc/python/ucr/__init__.py:152
+#, python-format
+msgid "The UCR variable %s is read-only and can not be removed!"
+msgstr "Az %s UCR változó csak olvasható és nem távolítható el!"
+
+#: umc/python/ucr/__init__.py:138
+#, python-format
+msgid "The value %s is not valid for the UCR variable %s!"
+msgstr "A(z) %s érték nem érvényes az %s UCR változóhoz!"

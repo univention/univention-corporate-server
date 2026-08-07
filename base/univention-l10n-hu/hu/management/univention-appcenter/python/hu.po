@@ -1,0 +1,116 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-08 23:04+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: python/appcenter/utils.py:277
+#, python-format
+msgid ""
+"%s could not be downloaded. This seems to be a problem with the App Center "
+"server. Please try again later."
+msgstr ""
+"A(z) %s letöltése sikertelen volt. Úgy tűnik, az App Center szerverrel van "
+"probléma. Kérjük, próbáld újra később."
+
+#: python/appcenter/exceptions.py:317
+msgid "An error occurred!"
+msgstr "Egy hiba történt!"
+
+#: python/appcenter/exceptions.py:328
+msgid "An unexpected error occured before the installation started!"
+msgstr "Váratlan hiba történt a telepítés megkezdése előtt!"
+
+#: python/appcenter/exceptions.py:264
+msgid ""
+"LDAP connection refused. There may be an issue with the certificate of the "
+"LDAP server. Please also check the proxy and firewall settings, if any."
+msgstr ""
+"LDAP kapcsolat elutasítva. Probléma lehet az LDAP szerver tanúsítványával. "
+"Kérjük, ellenőrizd a proxy és a tűzfal beállításait is, ha vannak ilyenek."
+
+#: python/appcenter/settings.py:232
+msgid "Password"
+msgstr "Jelszó"
+
+#: python/appcenter/app.py:1559 python/appcenter/install_checks.py:351
+#, python-format
+msgid ""
+"The application needs a %(needs)s-bit operating system. This server is "
+"running a %(has)s-bit operating system."
+msgstr ""
+"Az alkalmazáshoz %(needs)s bites operációs rendszer szükséges. Ez a szerver "
+"egy %(has)s bites operációs rendszert futtat."
+
+#: python/appcenter/exceptions.py:323
+msgid "The docker container could not be started!"
+msgstr "A docker konténer nem indítható el!"
+
+#: python/appcenter/utils.py:283 python/appcenter/utils.py:304
+#, python-format
+msgid "There is a problem with the certificate of the App Center server %s."
+msgstr "Probléma van az App Center szerver (%s) tanúsítványával."
+
+#: python/appcenter/utils.py:306
+msgid ""
+"There was a problem with the HTTP response of the server (BadStatusLine). "
+"Please try again later."
+msgstr ""
+"Probléma merült fel a szerver HTTP-válaszával (BadStatusLine). Kérjük, "
+"próbáld meg később."
+
+#: python/appcenter/utils.py:279
+msgid "This is a problem with the App Center server. Please try again later."
+msgstr ""
+"Ez az App Center szerverrel kapcsolatos probléma. Kérjük, próbáld meg "
+"később."
+
+#: python/appcenter/utils.py:299
+#, python-format
+msgid ""
+"This is probably due to the DNS settings of your server. You may find help "
+"at %s."
+msgstr ""
+"Ez valószínűleg a szervered DNS-beállításainak köszönhető. Segítséget "
+"találhatsz a %s címen."
+
+#: python/appcenter/utils.py:296
+#, python-format
+msgid ""
+"This may be a problem with the firewall or proxy of your system. You may "
+"find help at %s."
+msgstr ""
+"Ez a rendszered tűzfalával vagy proxyjával lehet a probléma. Segítséget "
+"találhatsz a %s címen."
+
+#: python/appcenter/exceptions.py:318
+msgid ""
+"We are sorry for the inconvenience. Please help us to improve the App "
+"Center and the Apps by sending us the information below."
+msgstr ""
+"Elnézést kérünk a kellemetlenségért. Kérjük, segíts nekünk az "
+"Alkalmazásközpont és az alkalmazások fejlesztésében az alábbi információk "
+"elküldésével."
+
+#: python/appcenter/utils.py:295
+#, python-format
+msgid ""
+"https://docs.software-univention.de/manual-%s.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan"
+msgstr ""
+"https://docs.software-univention.de/manual-%s.html#ip-"
+"config:Web_proxy_for_caching_and_policy_management__virus_scan"
+
+#: python/appcenter/utils.py:298
+#, python-format
+msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
+msgstr "https://docs.software-univention.de/manual-%s.html#networks:dns"

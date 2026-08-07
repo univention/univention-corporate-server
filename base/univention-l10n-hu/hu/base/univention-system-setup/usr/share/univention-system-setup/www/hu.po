@@ -1,0 +1,1245 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-08 22:59+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:303
+#, javascript-format
+msgid "%s Appliance"
+msgstr "a(z) %s készülék"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2002
+#, javascript-format
+msgid "%s Appliance has been successfully set up."
+msgstr "%s A készülék beállítása sikeresen megtörtént."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1142
+#, javascript-format
+msgid "%s GiB"
+msgstr "%s GiB"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1140
+#, javascript-format
+msgid "%s MiB"
+msgstr "%s MiB"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:440
+msgid "(Request address again)"
+msgstr "(Kérje újra a címet)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:549
+msgid "(configure proxy settings)"
+msgstr "(proxy beállítása)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1551
+msgid "<b>Unknown</b>"
+msgstr "<b>Ismeretlen</b>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:404
+msgid "<b>Warning:</b> Not enough available memory"
+msgstr "<b>Figyelem:</b> Nincs elegendő memória"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2018
+msgid "<p>Click on <i>Finish</i> for putting UCS into operation.</p>"
+msgstr "<p>Kattints a <i>Befejezés</i> gombra az UCS üzembe helyezéséhez.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2009
+msgid "<p>Click on <i>Finish</i> for putting this system into operation.</p>"
+msgstr ""
+"<p>Kattints a <i>Befejezés</i> gombra a rendszer üzembe helyezéséhez.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2007
+msgid ""
+"<p>Click on <i>Finish</i> to conclude the installation. The system will be "
+"prepared for the first boot procedure and will be rebooted afterwards.</p>"
+msgstr ""
+"<p>Kattints a <i>Befejezés</i> gombra a telepítés befejezéséhez. A rendszer "
+"felkészül az első indításra, majd újraindul.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:952
+msgid ""
+"<p>Enter the name of your organization and an e-mail address to activate "
+"UCS.</p>"
+msgstr "<p>Írd be szervezeted nevét és e-mail címét az UCS aktiválásához.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:309
+#, javascript-format
+msgid ""
+"<p>Enter the name of your organization, an e-mail address to activate %s "
+"Appliance and a password for your <i>Administrator</i> account.</p><p>The "
+"password is mandatory, it will be used for the domain Administrator as well "
+"as for the local superuser <i>root</i>.</p>"
+msgstr ""
+"<p>Írd be a szervezet nevét, a(z) %s készülék aktiválásához szükséges e-"
+"mail címet és az <i>adminisztrátori</i> fiók jelszavát.</p><p>A jelszó "
+"megadása kötelező, azt a domain rendszergazdája és a helyi <i>root "
+"felhasználó</i> is használni fogja.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:299
+msgid ""
+"<p>Enter the name of your organization, an e-mail address to activate UCS "
+"and a password for your <i>Administrator</i> account.</p><p>The password is "
+"mandatory, it will be used for the domain Administrator as well as for the "
+"local superuser <i>root</i>.</p>"
+msgstr ""
+"<p>Írd be a szervezet nevét, az UCS aktiválásához szükséges e-mail címet és "
+"az <i>adminisztrátori</i> fiók jelszavát.</p><p>A jelszó megadása kötelező, "
+"ezt fogja használni a domain rendszergazda és a helyi superuser <i>root</i> "
+"is.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2639
+#, javascript-format
+msgid ""
+"<p>One or more network interfaces could not obtain an IP address via DHCP. "
+"These interfaces will use automatic generated private addresses instead "
+"(APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm "
+"use of private address(es).</p>"
+msgstr ""
+"<p>Egy vagy több hálózati interfész nem tudott IP-címet szerezni a DHCP-n "
+"keresztül. Ezek az interfészek automatikusan generált privát címeket "
+"(APIPA) fognak használni.</p> <ul> %s </ul> <p>Kérjük, módosítsd a DHCP "
+"beállításait, vagy erősítsd meg a privát cím(ek) használatát.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:827
+msgid ""
+"<p>Select UCS software components for installation on this system. This "
+"step can be skipped; the components are also available in the Univention "
+"App Center in the category <i>UCS components</i>.</p><p>Third-party "
+"software (e.g., groupware) is also available through the Univention App "
+"Center.</p>"
+msgstr ""
+"<p>Válaszd ki a rendszerre telepítendő UCS szoftverkomponenseket. Ez a "
+"lépés kihagyható; a komponensek az Univention App Centerben is elérhetők az "
+"<i>UCS komponensek</i> kategóriában.</p><p>Harmadik féltől származó "
+"szoftverek (pl. csoportmunka-szoftverek) szintén elérhetők az Univention "
+"App Centerben.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2964
+#, javascript-format
+msgid ""
+"<p>The hostname <i>%s</i> is longer than 15 characters.</p><p>It will not "
+"be possible to install an Active Directory compatible Domaincontroller "
+"(Samba 4) or UCS@school. The hostname cannot be changed after the "
+"installation of %s. It is recommended to shorten the hostname to maximal 15 "
+"characters.</p>"
+msgstr ""
+"<p>A gazdagépnév <i>%s</i> hosszabb, mint 15 karakter.</p><p>Nem lehet "
+"Active Directory kompatibilis Domaincontroller (Samba 4) vagy UCS@school "
+"szoftvereket telepíteni. A gazdagép neve a(z) %s telepítése után nem "
+"módosítható. Javasoljuk, hogy a gazdagép nevét legfeljebb 15 karakterre "
+"rövidítsd.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2014
+msgid ""
+"<p>When accessing the system for the first time, you will be asked to "
+"request and upload a new license.</p>"
+msgstr ""
+"<p>Amikor először lépsz be a rendszerbe, a rendszer kéri, hogy igényelj és "
+"tölts fel egy új licencet.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2012
+msgid ""
+"<p>When accessing the system for the first time, you will be asked to "
+"upload a new license that has been sent to your email account.</p>"
+msgstr ""
+"<p>Amikor először lépsz be a rendszerbe, a rendszer kéri, hogy töltsd fel "
+"az e-mail fiókodba elküldött új licencet.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2647
+msgid ""
+"<p>With the current settings <b> no </b> internet access is available.</"
+"p><p>Because of this some functions like the App Center or software-updates "
+"will not be accessible</p>"
+msgstr ""
+"<p>A jelenlegi beállítások mellett <b> nincs  internet </b> -hozzáférés.</"
+"p><p>Emiatt egyes funkciók, például az App Center vagy a "
+"szoftverfrissítések nem lesznek elérhetők.</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1549
+#, javascript-format
+msgid "<tr><td>City:</td><td>%s</td></tr>"
+msgstr "<tr><td>Város:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1569
+#, javascript-format
+msgid "<tr><td>Default locale:</td><td>%s</td></tr>"
+msgstr "<tr><td>Alapértelmezett nyelv:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1598
+#, javascript-format
+msgid "<tr><td>Keyboard layout:</td><td>%s</td></tr>"
+msgstr "<tr><td>Billentyűzetkiosztás:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1552
+#, javascript-format
+msgid "<tr><td>Timezone:</td><td>%s</td></tr>"
+msgstr "<tr><td>Időzóna:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:608
+msgid ""
+"A Backup Directory Node is the fallback system for the UCS Primary "
+"Directory Node and can take over the role of the Primary Directory Node "
+"permanently. It is recommended to use at least one Backup Directory Node in "
+"the domain."
+msgstr ""
+"A biztonsági másolat könyvtárcsomópont az UCS elsődleges könyvtárcsomópont "
+"tartalék rendszere, és véglegesen átveheti az elsődleges könyvtárcsomópont "
+"szerepét. Javasolt legalább egy biztonsági másolat könyvtárcsomópont "
+"használata a tartományban."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:311
+msgid "A few questions are needed to complete the configuration process."
+msgstr ""
+"A konfigurációs folyamat befejezéséhez néhány kérdés megválaszolása "
+"szükséges."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1752
+msgid "A new UCS domain will be created."
+msgstr "Új UCS domain jön létre."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:307
+msgid ""
+"A new domain directory is created on this system. User and management data "
+"are stored locally."
+msgstr ""
+"Ezen a rendszeren új tartománykönyvtár jön létre. A felhasználói és "
+"kezelési adatok helyileg kerülnek tárolásra."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1754
+msgid "A preconfigured test domain will be instantiated."
+msgstr "Egy előre konfigurált tesztdomain lesz létrehozva."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2820
+msgid ""
+"A previous UCS system has already joined into the Active Directory domain. "
+"Please make sure the system \"%(ucs_master_fqdn)s\" is reachable via SSH. "
+"If you continue with \"Replace system\" the registration of the previous "
+"UCS system will be removed."
+msgstr ""
+"Egy korábbi UCS rendszer már csatlakozott az Active Directory tartományhoz. "
+"Győződj meg arról, hogy a \"%(ucs_master_fqdn)s\" rendszer SSH-n keresztül "
+"elérhető. Ha a „Rendszer cseréje” gombra kattintasz, a korábbi UCS rendszer "
+"regisztrációja törlődik."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1116
+msgid ""
+"A proxy address needs to be specified in the format: <i>http://"
+"proxy.mydomain.intranet:3128</i><br/>Proxy access with username and "
+"password may be specified via the format: <i>http://"
+"username:password@proxy.mydomain.intranet:3128</i>"
+msgstr ""
+"A proxy címet a következő formátumban kell megadni: <i>http://"
+"proxy.mydomain.intranet:3128</i><br/>A felhasználónévvel és jelszóval "
+"történő proxy hozzáférés a következő formátumban adható meg: <i>http://"
+"username:password@proxy.mydomain.intranet:3128</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1109
+msgid ""
+"A valid e-mail address allows to activate the UCS system for using the "
+"Univention App Center. The address can be specified now or also at a later "
+"point in time. An e-mail with a personalized license key will then be sent "
+"to your e-mail address. This license can be uploaded via the license dialog "
+"in Univention Management Console."
+msgstr ""
+"Egy érvényes e-mail cím lehetővé teszi az UCS rendszer aktiválását az "
+"Univention App Center használatához. A címet most vagy később is "
+"megadhatod. Ezután egy személyre szabott licenckulccsal ellátott e-mailt "
+"küldünk az e-mail címedre. Ezt a licencet az Univention Management Console "
+"licenc párbeszédablakán keresztül lehet feltölteni."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1107
+#, javascript-format
+msgid ""
+"A valid e-mail address is required to activate %s Appliance. The address "
+"can be specified now or also at a later point in time. An e-mail with a "
+"personalized license key will then be sent to your e-mail address. This "
+"license can be uploaded after the setup process."
+msgstr ""
+"A %s készülék aktiválásához érvényes e-mail cím szükséges. A címet most "
+"vagy később is megadhatod. Ezután egy személyre szabott licenckulccsal "
+"ellátott e-mailt küldünk az e-mail címedre. Ezt a licencet a telepítési "
+"folyamat után tölthető fel."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:627
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1786
+msgid "Account information"
+msgstr "Hesap bilgisi"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:663
+msgid "Active Directory join information"
+msgstr "Active Directory csatlakozási információk"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1608
+msgid "Adapt settings"
+msgstr "Beállítások módosítása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1817
+msgid "Address configuration"
+msgstr "Cím beállítása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1826
+#, javascript-format
+msgid "Address for %s"
+msgstr "Cím %s"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:668
+msgid ""
+"Address of Active Directory domain controller or name of Active Directory "
+"domain"
+msgstr ""
+"Az Active Directory tartományvezérlő címe vagy az Active Directory "
+"tartomány neve"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2967
+msgid "Adjust hostname"
+msgstr "A gazdagép nevének beállítása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1666
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2669
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2695
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2807
+msgid "Adjust settings"
+msgstr "Beállítások módosítása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:542
+msgid "Alternate DNS server"
+msgstr "Alternatív DNS-kiszolgáló"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1930
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1938
+msgid ""
+"Alternatively, you may click on the button <i>Finish</i> to exit the wizard "
+"and resolve the described problems via Univention Management Console."
+msgstr ""
+"Alternatív megoldásként kattints a <i>Befejezés</i> gombra a varázsló "
+"bezárásához, és oldd meg a leírt problémákat az Univention Management "
+"Console segítségével."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2314
+msgid "At least one network device needs to be properly configured."
+msgstr "Legalább egy hálózati eszköznek megfelelően konfigurálva kell lennie."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1145
+msgid ""
+"At least {memory_min} RAM is required for the installation of "
+"{product_name}."
+msgstr ""
+"A8z) {product_name} telepítéséhez legalább {memory_min} RAM szükséges."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:607
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1757
+msgid "Backup Directory Node"
+msgstr "Biztonsági mentési könyvtár csomópont"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2653
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2821
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2991
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:821
+msgid "Central server"
+msgstr "Központi szerver"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:800
+msgid ""
+"Choose which role this server is supposed to take in your UCS@school domain."
+msgstr ""
+"Válaszd ki, hogy ez a szerver milyen szerepet tölt be az UCS@school domain-"
+"ben."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:345
+msgid "Choose your language"
+msgstr "Válaszd ki a nyelvet"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:373
+msgid "Choose your system's localization settings."
+msgstr "Válaszd ki a rendszer lokalizációs beállításait."
+
+#: usr/share/univention-system-setup/www/main.js:193
+msgid "Close"
+msgstr "Bezár"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1316
+msgid "Configure system"
+msgstr "Rendszer beállítása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:297
+msgid ""
+"Configure this system as first system for the new domain. Additional "
+"systems can join the domain later."
+msgstr ""
+"Konfiguráld ezt a rendszert az új tartomány első rendszerének. További "
+"rendszerek később csatlakozhatnak a tartományhoz."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:839
+msgid "Confirm configuration settings"
+msgstr "A konfigurációs beállítások megerősítése"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1934
+msgid ""
+"Connect to Univention Management Console on this system either as user "
+"<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
+"created a new UCS domain:"
+msgstr ""
+"Csatlakozz az Univention Management Console-hoz ezen a rendszeren vagy "
+"<b>administrator</b>, vagy <b>root</b> felhasználóként, ha a rendszer még "
+"nem hozott létre új UCS domain-t:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1942
+msgid ""
+"Connect to Univention Management Console on this system either as user "
+"<b>Administrator</b> or as user <b>root</b> in case the system has not yet "
+"joined the domain:"
+msgstr ""
+"Csatlakozz az Univention Management Console-hoz ezen a rendszeren vagy "
+"<b>administrator</b>, vagy <b>root</b> felhasználóként, ha a rendszer még "
+"nem csatlakozott a tartományhoz:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2970
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2994
+msgid "Continue"
+msgstr "Folytatás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2644
+msgid "Continue with 169.254.*.* addresse(s)"
+msgstr "Folytassa a 169.254.*.* címmel/címekkel"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1669
+msgid "Continue with duplicate hostname"
+msgstr "Folytasd a duplikált gazdagépnévvel"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2810
+msgid "Continue with incomplete settings"
+msgstr "Folytasd a befejezetlen beállításokkal"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2699
+msgid "Continue without access to the repository servers"
+msgstr "Folytasd a tárolószerverekhez való hozzáférés nélkül"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2650
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2672
+msgid "Continue without internet access"
+msgstr "Folytatás internet-hozzáférés nélkül"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1146
+msgid "Continuing the installation might lead to a non-functional system."
+msgstr "A telepítés folytatása a rendszer működésképtelenségéhez vezethet."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:296
+msgid "Create a new UCS domain"
+msgstr "Új UCS-tartomány létrehozása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1079
+msgid "DHCP query failed."
+msgstr "A DHCP-lekérdezés sikertelen volt."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1836
+msgid "DNS server"
+msgstr "DNS-kiszolgáló"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:377
+msgid "Default system locale"
+msgstr "Alapértelmezett nyelvi beállítások"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1794
+msgid "Domain and host configuration"
+msgstr "Domain és host beállítás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:424
+msgid "Domain and network configuration"
+msgstr "Domain és hálózati beállítás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:684
+msgid "Domain join information"
+msgstr "Domain csatlakozási információk"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:747
+msgid "Domain name"
+msgstr "Domainnév"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:563
+msgid "Domain setup"
+msgstr "Domain beállítás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:308
+#, javascript-format
+msgid "E-mail address to activate %s Appliance"
+msgstr "E-mail cím a(z) %s Készülék aktiváláshoz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:298
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1690
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1789
+msgid "E-mail address to activate UCS"
+msgstr "E-mail cím az UCS aktiváláshoz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:358
+msgid ""
+"Enter a city nearby to preconfigure settings such as timezone, system "
+"language, keyboard layout."
+msgstr ""
+"Adj meg egy közeli várost, hogy előre beállítsa az időzónát, a rendszer "
+"nyelvét, a billentyűzetkiosztást és egyéb beállításokat."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:664
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:685
+msgid ""
+"Enter name and password of a user account which is authorised to join a "
+"system into this domain."
+msgstr ""
+"Írd be annak a felhasználói fióknak a nevét és jelszavát, amely jogosult "
+"csatlakozni a rendszerhez ebben a tartományban."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1931
+msgid ""
+"Failed join scripts can be executed via the UMC module <i>Domain join</i>."
+msgstr ""
+"A sikertelen csatlakozási szkriptek az UMC modul <i>Domain join</"
+"i>(Doméncsatlakozás) funkcióján keresztül hajthatóak végre."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1939
+msgid ""
+"Failed join scripts or a new join of the system can be executed via the UMC "
+"module <i>Domain join</i>."
+msgstr ""
+"A sikertelen csatlakozási szkriptek vagy a rendszer új csatlakozása az UMC "
+"modul <i>Domain join</i>(Domén csatlakozás) funkcióján keresztül hajtható "
+"végre."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:570
+msgid "Fast demo configuration"
+msgstr "Gyors demo beállítás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:654
+msgid ""
+"Fill in the password for the system administrator user <b>root</b> and the "
+"domain administrative user account <b>Administrator</b>."
+msgstr ""
+"Írd be a rendszergazda felhasználó <b>root</b> és a tartományi "
+"rendszergazda felhasználói fiók <b>Administrator</b> jelszavát."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1319
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1322
+msgid "Finish"
+msgstr "Befejezés"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1113
+msgid ""
+"For a specified host name, the domain name is automatically derived from "
+"the domain name server. A fully qualified domain may be necessary for mail "
+"server setups with differing domains.<br/>Note that the domain name "
+"<b>cannot</b> be changed after the UCS setup wizard has been completed."
+msgstr ""
+"Egy megadott gazdanév esetén a domainnév automatikusan a domainnév-"
+"kiszolgálóból származik. Különböző domainekkel rendelkező "
+"levelezőkiszolgálók beállításához teljes domainnév szükséges lehet.<br/>Ne "
+"feledd, hogy a domainnév az UCS beállítási varázsló befejezése után <b>nem</"
+"b> módosítható."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1147
+msgid ""
+"For further information please look at https://help.univention.com/t/13595."
+msgstr ""
+"További információkért kérjük, látogass el a https://help.univention.com/t/"
+"13595 weboldalra."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2258
+msgid ""
+"For this system, a computer object already exists in the LDAP directory "
+"that has been configured for the role &quot;<i>school server in the "
+"administration network</i>&quot; and thus contradicts your selection. "
+"Please check and correct this before proceeding."
+msgstr ""
+"Ehhez a rendszerhez már létezik egy számítógép-objektum az LDAP-"
+"könyvtárban, amely<i>az „adminisztrációs hálózat iskolai szerverének”</i> "
+"szerepkörére van konfigurálva, és így ellentmond a kiválasztottnak. Kérjük, "
+"ellenőrizd és javítsd ki ezt, a továbbhaladás előtt."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2261
+msgid ""
+"For this system, a computer object already exists in the LDAP directory "
+"that was configured for the role &quot;<i>school server in the educational "
+"network</i>&quot; and thus contradicts your selection. Please check and "
+"correct this before proceeding."
+msgstr ""
+"Ehhez a rendszerhez már létezik egy számítógép-objektum az LDAP-"
+"könyvtárban, amely<i>az „oktatási hálózat iskolai szerverének”</i> "
+"szerepkörére lett konfigurálva, és így ellentmond a kiválasztottnak. "
+"Kérjük, ellenőrizd és javítsd ki ezt, mielőtt a továbbhaladás előtt."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:760
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1708
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1801
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1805
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1809
+msgid "Fully qualified domain name"
+msgstr "Teljesen minősített domain név"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:530
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1828
+msgid "Gateway"
+msgstr "Átjáró"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:555
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1840
+msgid "HTTP proxy"
+msgstr "HTTP proxy"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1912
+msgid "Help us improve UCS by sending the occurred errors as feedback."
+msgstr ""
+"Segíts nekünk az UCS fejlesztésében azzal, hogy visszajelzésként elküldöd a "
+"felmerült hibákat."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:730
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:775
+msgid "Host settings"
+msgstr "Hoszt beállítások"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1710
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1809
+msgid "Hostname"
+msgstr "Hosztnév"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:739
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1508
+msgid "Hostname (unchangeable. Was set while creating the container)"
+msgstr "Hosztnév (nem módosítható. A konténer létrehozásakor lett beállítva)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:711
+msgid "Hostname of the Primary Directory Node"
+msgstr "Az elsődleges könyvtárcsomópont gazdanevének megadása"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:784
+msgid "Hostname or fully qualified domain name"
+msgstr "Hosztnév vagy teljes domainnév"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1817
+msgid "IP address is obtained dynamically via DHCP"
+msgstr "Az IP-cím dinamikusan, DHCP-n keresztül kerül megszerzésre"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:469
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:486
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:504
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:522
+msgid "IPv4 net mask/IPv6 prefix {interface}"
+msgstr "IPv4 hálózati maszk/IPv6 előtag {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:460
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:476
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:494
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:512
+msgid "IPv4/IPv6 address {interface}"
+msgstr "IPv4/IPv6 cím {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2267
+msgid ""
+"If this system is to become a school server in the administration network, "
+"please first check whether a corresponding school exists and whether the "
+"computer name of this system has been specified as the <i>school server for "
+"the administration network</i>."
+msgstr ""
+"Ha ez a rendszer az adminisztrációs hálózat iskolai szerverévé válik, "
+"először ellenőrizd, hogy létezik-e megfelelő iskola, és hogy a rendszer "
+"számítógépneve <i>az adminisztrációs hálózat iskolai szerverének</i> lett-e "
+"megadva."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2264
+msgid ""
+"If this system is to become a school server in the educational network, "
+"please first check whether a corresponding school exists and whether the "
+"computer name of this system was specified as the <i>school server for the "
+"educational network</i>."
+msgstr ""
+"Ha ez a rendszer az oktatási hálózat iskolai szerverévé válik, először "
+"ellenőrizd, hogy létezik-e megfelelő iskola, és hogy a rendszer "
+"számítógépének neve <i>az oktatási hálózat iskolai szerverének</i> lett-e "
+"megadva."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1321
+msgid "Ignore"
+msgstr "Kihagyás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2324
+msgid "Initialize the configuration process ..."
+msgstr "A konfigurációs folyamat inicializálása ..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1119
+msgid "Install the latest errata and app updates after the setup."
+msgstr ""
+"A telepítés után telepítsd a legújabb javításokat és "
+"alkalmazásfrissítéseket."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1121
+msgid ""
+"Install the latest patch level, errata and app updates after the setup."
+msgstr ""
+"A telepítés után telepítsd a legújabb javításokat, javításokat és "
+"alkalmazásfrissítéseket."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1242
+#, javascript-format
+msgid "Installation of %d additional software components."
+msgstr "%d további szoftverkomponens telepítése."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1240
+msgid "Installation of one additional software component."
+msgstr "Egy további szoftverkomponens telepítése."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:117
+msgid "Invalid IP address!<br/>Expected format is IPv4 or IPv6."
+msgstr "Érvénytelen IP-cím!<br/>A várt formátum IPv4 vagy IPv6."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:128
+msgid ""
+"Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number "
+"between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected "
+"format for IPv6 is a number between 0 and 128."
+msgstr ""
+"Érvénytelen IPv4 hálózati maszk vagy IPv6 előtag!<br/>Az IPv4 esetében 0 és "
+"32 közötti szám vagy <i>255.255.255.0</i>-hoz hasonló formátum várható.<br/"
+">Az IPv6 esetében 0 és 128 közötti szám várható."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:194
+msgid ""
+"Invalid LDAP base!<br/>The LDAP base may neither contain blanks nor any "
+"special characters. Its structure needs to consist of at least two relative "
+"distinguished names (RDN) with attribute tags 'dc', 'cn', 'c', 'o', or 'l' "
+"(e.g., dc=test,dc=net)."
+msgstr ""
+"Érvénytelen LDAP-alap!<br/>Az LDAP-alap nem tartalmazhat szóközöket vagy "
+"speciális karaktereket. Felépítésének legalább két relatív megkülönböztető "
+"névből (RDN) kell állnia, amelyek attribútumcímkéi „dc”, „cn”, „c”, „o” "
+"vagy „l” (pl. dc=test,dc=net)."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:171
+msgid "Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>"
+msgstr ""
+"Érvénytelen domain név!<br/>Várható formátum: <i>mydomain.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:109
+msgid "Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>"
+msgstr "Érvénytelen e-mail cím!<br/>Várható formátum:<i>mail@example.com</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:178
+msgid ""
+"Invalid fully qualified domain name!<br/>Expected format: "
+"<i>hostname.mydomain.intranet</i>"
+msgstr ""
+"Érvénytelen teljes domainnév!<br/>Várható formátum: "
+"<i>hostname.mydomain.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:186
+msgid ""
+"Invalid hostname or fully qualified domain name!<br/>Expected format: "
+"<i>myhost</i> or <i>hostname.mydomain.intranet</i>"
+msgstr ""
+"Érvénytelen gazdagépnév vagy teljes domainnév!<br/>Várható formátum: "
+"<i>myhost</i> vagy <i>hostname.mydomain.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2211
+msgid ""
+"It is not possible to install Samba 3 and Samba 4 on one system. Please "
+"select only one of these components."
+msgstr ""
+"A Samba 3 és a Samba 4 nem telepíthető egy rendszerre. Kérjük, válaszd ki "
+"csak az egyik komponenst."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2843
+msgid ""
+"It seems that a UCS Primary Directory Node system has already joined into "
+"the Windows AD domain. Please choose a different option as other system "
+"roles for joining an AD domain are not available."
+msgstr ""
+"Úgy tűnik, hogy egy UCS elsődleges könyvtárcsomópont rendszer már "
+"csatlakozott a Windows AD tartományhoz. Kérjük, válassz egy másik "
+"lehetőséget, mivel az AD tartományhoz való csatlakozáshoz más rendszer "
+"szerepkörök nem állnak rendelkezésre."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:595
+msgid "Join into an existing Microsoft Active Directory domain"
+msgstr "Csatlakozz egy meglévő Microsoft Active Directory tartományhoz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:588
+msgid "Join into an existing UCS domain"
+msgstr "Csatlakozás egy meglévő UCS-tartományhoz"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:392
+msgid "Keyboard layout"
+msgstr "Billentyűzetkiosztás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:768
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1813
+msgid "LDAP base"
+msgstr "LDAP-alap"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:414
+msgid "License agreement"
+msgstr "Licencszerződés"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:794
+msgid "Local root password"
+msgstr "Helyi root jelszó"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:366
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:372
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1774
+msgid "Localization settings"
+msgstr "Helyi beállítások"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:306
+msgid "Manage users and permissions directly on this system"
+msgstr ""
+"A felhasználók és jogosultságok kezelése közvetlenül ezen a rendszeren"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:622
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1759
+msgid "Managed Node"
+msgstr "Kezelt csomópont"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:623
+msgid ""
+"Managed Nodes should be used for services which do not need a local "
+"authentication database, for example for file or print servers."
+msgstr ""
+"A kezelt csomópontokat olyan szolgáltatásokhoz kell használni, amelyek nem "
+"igényelnek helyi hitelesítési adatbázist, például fájl- vagy "
+"nyomtatókiszolgálókhoz."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1701
+msgid "Network interfaces"
+msgstr "Hálózati interfészek"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1237
+msgid "No additional software component will be installed."
+msgstr "Nincs szükség további szoftverkomponensek telepítésére."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2806
+msgid ""
+"No domain controller was found at the address of the name server. It is "
+"recommended to verify that the network settings are correct."
+msgstr ""
+"A névkiszolgáló címén nem található domain-vezérlő. Javasoljuk, hogy "
+"ellenőrizd a hálózati beállítások helyességét."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2838
+msgid ""
+"No domain controller was found at the address of the name server. Please "
+"adjust your network settings."
+msgstr ""
+"A névkiszolgáló címén nem található domain-vezérlő. Kérjük, módosítsd a "
+"hálózati beállításokat."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2665
+msgid ""
+"No gateway has been specified and thus no access to the internet is "
+"possible. As UCS requires internet access for its functionality, certain "
+"services (e.g., software updates, installation of further software "
+"components) will not be able to operate as expected."
+msgstr ""
+"Nem lett megadva átjáró, ezért nem lehetséges az internethez való "
+"hozzáférés. Mivel az UCS működéséhez internet-hozzáférés szükséges, "
+"bizonyos szolgáltatások (pl. szoftverfrissítések, további "
+"szoftverkomponensek telepítése) nem fognak a várt módon működni."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:446
+msgid "Obtain IP address automatically (DHCP)"
+msgstr "IP-cím automatikus beszerzése (DHCP)"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:638
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1788
+msgid "Organization name"
+msgstr "Szervezet száma"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:659
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:679
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:725
+msgid "Password"
+msgstr "Jelszó"
+
+#: usr/share/univention-system-setup/www/VirtualKeyboardBox.js:43
+msgid "Please click on the required character."
+msgstr "Kérjük, kattints a kívánt karakterre."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:840
+msgid ""
+"Please confirm the chosen configuration settings which are summarized in "
+"the following."
+msgstr ""
+"Kérjük, erősítsd meg a következőben összefoglalt választott konfigurációs "
+"beállításokat."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:415
+#, javascript-format
+msgid "Please read carefully the license agreement for %s Appliance."
+msgstr "Kérjük, figyelmesen olvasd el a(z) %s készülék licencszerződését."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:564
+msgid "Please select your domain settings."
+msgstr "Kérjük, válaszd ki a domain beállításait."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:536
+msgid "Preferred DNS server"
+msgstr "Előnyben részesített DNS-kiszolgáló"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1763
+msgid "Primary Directory Node"
+msgstr "Elsődleges könyvtárcsomópont"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1704
+msgid "Primary network interface"
+msgstr "Elsődleges hálózati csatoló"
+
+#: usr/share/univention-system-setup/www/main.js:181
+msgid "Privacy Statement"
+msgstr "Adatvédelmi nyilatkozat"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:571
+msgid ""
+"Quick setup of a system for testing purposes. Several system configurations "
+"are predefined and cannot be changed at a later point."
+msgstr ""
+"A rendszer gyors beállítása tesztelési célokra. Számos rendszerkonfiguráció "
+"előre meghatározott, és később nem módosítható."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:581
+msgid "Recommended"
+msgstr "Ajánlott"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1318
+msgid "Reconfigure"
+msgstr "Újrakonfigurálás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2824
+msgid "Replace system"
+msgstr "Rendszer cseréje"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:615
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1758
+msgid "Replica Directory Node"
+msgstr "Replika könyvtárcsomópont"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:616
+msgid ""
+"Replica Directory Node systems are ideal for site servers, they provide "
+"authentication services for the domain. Local services running on a Replica "
+"Directory Node can access the local LDAP database."
+msgstr ""
+"A Replica Directory Node rendszerek ideálisak webhelykiszolgálókhoz, "
+"hitelesítési szolgáltatásokat nyújtanak a domain számára. A Replica "
+"Directory Node-on futó helyi szolgáltatások hozzáférhetnek a helyi LDAP "
+"adatbázishoz."
+
+#: usr/share/univention-system-setup/www/main.js:254
+msgid "Restarting server components..."
+msgstr "A szerverkomponensek újraindítása..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2990
+msgid "Root password empty. Continue?"
+msgstr "A root jelszó üres. Folytatás?"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:814
+msgid "School server of the administrative network"
+msgstr "Az adminisztratív hálózat iskolai szervere"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:807
+msgid "School server of the educational network"
+msgstr "Az oktatási hálózat iskolai szervere"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:702
+msgid "Search Primary Directory Node in DNS"
+msgstr "Keresés az elsődleges könyvtárcsomópontban a DNS-ben"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1951
+msgid "Send feedback"
+msgstr "Visszajelzés küldése"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1958
+msgid "Send to vendor"
+msgstr "Elküldés a szállítónak"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:799
+msgid "Server role inside the UCS@school domain"
+msgstr "Szerver szerepkör az UCS@school tartományon belül"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:305
+msgid "Setup - An error occurred"
+msgstr "Beállítás - Hiba történt"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:304
+msgid "Setup successful"
+msgstr "A beállítás sikeres volt"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1227
+msgid "Software component"
+msgstr "Szoftverkomponens"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:826
+msgid "Software configuration"
+msgstr "Szoftverkonfiguráció"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:731
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:776
+msgid "Specify the name of this system."
+msgstr "Add meg a rendszer nevét."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:425
+msgid "Specify the network settings for this system."
+msgstr "Add meg a rendszer hálózati beállításait."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:601
+msgid "Specify the type of this system."
+msgstr "Add meg a rendszer típusát."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:689
+msgid "Start join at the end of the installation"
+msgstr "Csatlakozás a telepítés végén"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:600
+msgid "System role"
+msgstr "Rendszer szerepe"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:406
+msgid "The available memory is not sufficient."
+msgstr "A rendelkezésre álló memória nem elegendő."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:831
+msgid "The following entries could not be validated:"
+msgstr "A következő bejegyzések nem érvényesíthetők:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1985
+msgid "The following errors occurred while applying the settings."
+msgstr "A beállítások alkalmazása során a következő hibák történtek."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1661
+#, javascript-format
+msgid ""
+"The hostname '%s' is already used for a computer with a different role, in "
+"the UCS domain. It is recommended to change the hostname for UCS to work "
+"properly."
+msgstr ""
+"A „%s” gazdagépnév már használatban van egy másik szerepkörű számítógépen "
+"az UCS tartományban. Az UCS megfelelő működése érdekében ajánlott "
+"megváltoztatni a gazdagépnevet."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2239
+msgid ""
+"The root password is too short. For security reasons, your password must "
+"contain at least 8 characters."
+msgstr ""
+"A root jelszó túl rövid. Biztonsági okokból a jelszónak legalább 8 "
+"karaktert kell tartalmaznia."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2686
+#, javascript-format
+msgid ""
+"The server <b>%s</b> cannot be reached. For UCS to work properly, please "
+"configure the network, any proxy and firewall to allow UCS to access this "
+"server."
+msgid_plural ""
+"These servers cannot be reached: <ul><li>%s</li></ul>For UCS to work "
+"properly, please configure the network, any proxy and firewall to allow UCS "
+"to access these servers."
+msgstr[0] ""
+"A <b>%s</b> szerver nem érhető el. Az UCS megfelelő működéséhez konfiguráld "
+"a hálózatot, a proxy szervert és a tűzfalat úgy, hogy az UCS hozzáférhessen "
+"ehhez a szerverhez."
+msgstr[1] ""
+"Ezek a szerverek nem érhetők el: <ul><li>%s</li></ul>Az UCS megfelelő "
+"működéséhez konfigurálja a hálózatot, a proxy szervert és a tűzfalat úgy, "
+"hogy az UCS hozzáférhessen ezekhez a szerverekhez."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:822
+msgid ""
+"The server will not be assigned to a specific school and will not provide "
+"UCS@school services."
+msgstr ""
+"A szerver nem lesz hozzárendelve egy adott iskolához, és nem fog UCS@school "
+"szolgáltatásokat nyújtani."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:815
+msgid ""
+"The server will only provide domain services to a school's administrative "
+"network, not educational UCS@school services."
+msgstr ""
+"A szerver csak domain szolgáltatásokat nyújt az iskola adminisztratív "
+"hálózatának, nem pedig oktatási UCS@school szolgáltatásokat."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:808
+msgid ""
+"The server will provide educational UCS@school services for a school, e.g. "
+"exam mode."
+msgstr ""
+"A szerver oktatási UCS@school szolgáltatásokat nyújt egy iskolának, pl. "
+"vizsga mód."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1984
+msgid ""
+"The system configuration could not be completed. Please choose to retry the "
+"configuration process or finish the wizard."
+msgstr ""
+"A rendszer konfigurálása nem sikerült. Kérjük, próbáld meg újra a "
+"konfigurálási folyamatot, vagy fejezd be a varázslót."
+
+#: usr/share/univention-system-setup/www/main.js:254
+msgid "This may take a few seconds..."
+msgstr "Ez néhány másodpercig tarthat..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1146
+msgid "This system only has {memory_total} RAM."
+msgstr "Ez a rendszer csak {memory_total} RAM-mal rendelkezik."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:596
+msgid ""
+"This system will become part of an existing non-UCS Active Directory domain."
+msgstr ""
+"Ez a rendszer egy meglévő, nem UCS Active Directory tartomány részévé válik."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1765
+#, javascript-format
+msgid "This system will join an existing AD domain with the role <i>%s</i>."
+msgstr ""
+"Ez a rendszer csatlakozik egy meglévő AD-tartományhoz a <i>%s</i> "
+"szerepkörrel."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1767
+#, javascript-format
+msgid "This system will join an existing UCS domain with the role <i>%s</i>."
+msgstr ""
+"Ez a rendszer csatlakozik egy meglévő UCS-tartományhoz a <i>%s</i> "
+"szerepkörrel."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:385
+msgid "Time zone"
+msgstr "Időzóna"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1749
+msgid "UCS configuration"
+msgstr "UCS konfiguráció"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2004
+msgid "UCS has been successfully set up."
+msgstr "Az UCS sikeresen be lett állítva."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:293
+msgid "UCS setup"
+msgstr "UCS beállítás"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:295
+msgid "UCS setup - An error occurred"
+msgstr "UCS beállítás - Hiba történt"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:294
+msgid "UCS setup successful"
+msgstr "Az UCS beállítása sikeres volt"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1150
+msgid "Univention Corporate Server"
+msgstr "Univention Vállalati Szerver"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:850
+msgid "Update system after setup"
+msgstr "A rendszer frissítése a telepítés után"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1123
+msgid ""
+"Update system to the UCS release version of the Primary Directory Node and "
+"install all available errata and app updates after the setup."
+msgstr ""
+"Frissítsd a rendszert az elsődleges könyvtárcsomópont UCS kiadására, és a "
+"telepítés után telepítsd az összes elérhető javítást és "
+"alkalmazásfrissítést."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:589
+msgid "Use this option if you already have one or more UCS systems."
+msgstr ""
+"Használd ezt az opciót, ha már rendelkezel egy vagy több UCS rendszerrel."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:673
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:719
+msgid "Username"
+msgstr "Felhasználónév"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:240
+msgid "Validation error"
+msgstr "Ellenörzési hiba"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:830
+msgid "Validation failed"
+msgstr "Érvényesítés nem sikerült"
+
+#: usr/share/univention-system-setup/www/VirtualKeyboardBox.js:30
+msgid "Virtual keyboard"
+msgstr "Virtuális billentyűzet"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1459
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2445
+msgid "Waiting for restart of server components..."
+msgstr "Várjuk a szerverkomponensek újraindítását..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1672
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1799
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2659
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2675
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2703
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2813
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2826
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2973
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2997
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:292
+msgid "Welcome to Univention Corporate Server (UCS)."
+msgstr "Üdvözöljük az Univention Vállalati Szerver (UCS) rendszerben."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:302
+#, javascript-format
+msgid "Welcome to the setup of %s Appliance."
+msgstr "Üdvözöljük a %s készülék beállításában."
+
+#: usr/share/univention-system-setup/www/main.js:211
+#, javascript-format
+msgid "With the activation of UCS you agree to our %s."
+msgstr "Az UCS aktiválásával elfogadod a %s feltételeinket."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1925
+msgid ""
+"You may restart the configuration process again with modified settings."
+msgstr ""
+"A módosított beállításokkal újraindíthatod a konfigurációs folyamatot."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:359
+msgid "e.g., Boston..."
+msgstr "pl. Boston..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:557
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:646
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:786
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:852
+msgid "more information"
+msgstr "további információk"
+
+#: usr/share/univention-system-setup/www/main.js:210
+msgid "privacy statement"
+msgstr "adatvédelmi nyilatkozat"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2962
+#, javascript-format
+msgid "the %s Appliance"
+msgstr "a(z) %s készülék"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2960
+msgid "the UCS system"
+msgstr "az UCS rendszer"

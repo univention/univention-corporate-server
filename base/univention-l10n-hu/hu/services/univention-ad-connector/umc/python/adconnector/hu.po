@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-adconnector package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-adconnector\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-22 00:45+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/python/adconnector/__init__.py:300
+msgid "Active Directory Connector is already running. Nothing to do."
+msgstr "Az Active Directory Connector már fut. Nincs tennivaló."
+
+#: umc/python/adconnector/__init__.py:302
+msgid "Active Directory Connector is already stopped. Nothing to do."
+msgstr "Az Active Directory Connector már le van állítva. Nincs tennivaló."
+
+#: umc/python/adconnector/__init__.py:315
+msgid "Active Directory connection service has been started."
+msgstr "Az Active Directory kapcsolatszolgáltatás elindult."
+
+#: umc/python/adconnector/__init__.py:317
+msgid "Active Directory connection service has been stopped."
+msgstr "Az Active Directory kapcsolatszolgáltatás leállt."
+
+#: umc/python/adconnector/__init__.py:253
+msgid ""
+"Active Directory connection settings have been saved and a new certificate "
+"for the Active Directory server has been created."
+msgstr ""
+"Az Active Directory kapcsolat beállításai mentésre kerültek, és létrejött "
+"egy új tanúsítvány az Active Directory kiszolgálóhoz."
+
+#: umc/python/adconnector/__init__.py:244
+msgid "Active Directory connection settings have been saved."
+msgstr "Az Active Directory kapcsolat beállításai mentésre kerültek."
+
+#: umc/python/adconnector/__init__.py:461
+msgid "An error occurred while installing necessary software components."
+msgstr "Hiba történt a szükséges szoftverösszetevők telepítésekor."
+
+#: umc/python/adconnector/__init__.py:417
+#, python-format
+msgid "An unexpected error occurred: %s"
+msgstr "Váratlan hiba történt: %s"
+
+#: umc/python/adconnector/__init__.py:266
+msgid "Certificate has been uploaded successfully."
+msgstr "A tanúsítvány feltöltése sikeresen megtörtént."
+
+#: umc/python/adconnector/__init__.py:275
+msgid "Certificate upload or conversion failed."
+msgstr "A tanúsítvány feltöltése vagy konvertálása sikertelen."
+
+#: umc/python/adconnector/__init__.py:470
+msgid "Configuring Administrator account..."
+msgstr "Rendszergazdai fiók konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:476
+msgid "Configuring DNS entries..."
+msgstr "DNS bejegyzések konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:435
+msgid "Configuring DNS server..."
+msgstr "DNS kiszolgáló konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:439
+msgid "Configuring Kerberos settings..."
+msgstr "Kerberos beállítások konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:443
+msgid "Configuring reverse DNS settings..."
+msgstr "Fordított DNS beállítások konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:446
+msgid "Configuring software components..."
+msgstr "Szoftverösszetevők konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:463
+msgid "Configuring synchronization from AD..."
+msgstr "Szinkronizálás beállítása az AD-ből..."
+
+#: umc/python/adconnector/__init__.py:431
+msgid "Configuring time synchronization..."
+msgstr "Időszinkronizálás konfigurálása..."
+
+#: umc/python/adconnector/__init__.py:368
+#: umc/python/adconnector/__init__.py:496
+#, python-format
+msgid ""
+"Could not connect to AD Server %s. Please verify that the specified address "
+"is correct. (%s)"
+msgstr ""
+"Nem sikerült csatlakozni a(z) %s AD szerverhez. Kérjük, ellenőrizd, hogy a "
+"megadott cím helyes-e. (%s)"
+
+#: umc/python/adconnector/__init__.py:374
+#: umc/python/adconnector/__init__.py:500
+#, python-format
+msgid ""
+"Could not connect to AD Server %s. Please verify that username and password "
+"are correct. (Details:\n"
+"%s)"
+msgstr ""
+"Nem sikerült csatlakozni a(z) %s AD szerverhez. Kérjük, ellenőrizd, hogy a "
+"felhasználónév és a jelszó helyes-e. (Részletek:\n"
+"%s)"
+
+#: umc/python/adconnector/__init__.py:545
+#, python-format
+msgid ""
+"Could not establish an encrypted connection. Either \"%r\" is not reachable "
+"or does not support encryption."
+msgstr ""
+"Nem sikerült titkosított kapcsolatot létrehozni. A(z) „%r” cím vagy nem "
+"érhető el, vagy nem támogatja a titkosítást."
+
+#: umc/python/adconnector/__init__.py:271
+msgid ""
+"Could not establish connection. Either the certificate is wrong, the Active "
+"Directory server is unreachable or it does not support SSL."
+msgstr ""
+"Nem sikerült kapcsolatot létesíteni. Vagy a tanúsítvány hibás, vagy az "
+"Active Directory kiszolgáló nem érhető el, vagy nem támogatja az SSL-t."
+
+#: umc/python/adconnector/__init__.py:512
+#, python-format
+msgid ""
+"Could not synchronize the time between the UCS system and the Active "
+"Directory domain controller: %s"
+msgstr ""
+"Nem sikerült szinkronizálni az időt az UCS rendszer és az Active Directory "
+"tartományvezérlő között: %s"
+
+#: umc/python/adconnector/__init__.py:252
+#, python-format
+msgid "Creation of certificate failed (%s)"
+msgstr "A tanúsítvány létrehozása sikertelen (%s)"
+
+#: umc/python/adconnector/__init__.py:510
+msgid "Failed to add the Administrator account to the Domain Admins group."
+msgstr ""
+"Nem sikerült hozzáadni a rendszergazdai fiókot a Domain Admins csoporthoz."
+
+#: umc/python/adconnector/__init__.py:504
+msgid "Failed to create the Administrator account in UCS."
+msgstr "Nem sikerült létrehozni a rendszergazdai fiókot az UCS-ben."
+
+#: umc/python/adconnector/__init__.py:508
+msgid "Failed to search for the well known SID."
+msgstr "A jól ismert SID keresése sikertelen."
+
+#: umc/python/adconnector/__init__.py:502
+msgid ""
+"Failed to set the password of the UCS Administrator to the Active Directory "
+"Administrator password."
+msgstr ""
+"Nem sikerült az UCS rendszergazda jelszavát az Active Directory "
+"rendszergazda jelszavára állítani."
+
+#: umc/python/adconnector/__init__.py:490
+msgid "Join has been finished successfully."
+msgstr "A csatlakozás sikeresen befejeződött."
+
+#: umc/python/adconnector/__init__.py:521
+msgid "Join has been finished with errors."
+msgstr "A csatlakozás hibákkal fejeződött be."
+
+#: umc/python/adconnector/__init__.py:395
+msgid "Joining UCS into Active Directory domain"
+msgstr "UCS csatlakoztatása az Active Directory tartományhoz"
+
+#: umc/python/adconnector/__init__.py:486
+msgid "Registering LDAP service entry..."
+msgstr "LDAP szolgáltatás bejegyzés regisztrálása..."
+
+#: umc/python/adconnector/__init__.py:467
+msgid "Renaming well known SID objects..."
+msgstr "A jó ismert SID objektumok átnevezése..."
+
+#: umc/python/adconnector/__init__.py:473
+msgid "Running Samba join script..."
+msgstr "Samba csatlakozási szkript futtatása..."
+
+#: umc/python/adconnector/__init__.py:220
+#, python-format
+msgid ""
+"Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
+msgstr ""
+"A kötési jelszó mentése sikertelen (fájlnév=%(fn)s ; kivétel=%(exception)s)"
+
+#: umc/python/adconnector/__init__.py:483
+msgid "Starting Active Directory connection service..."
+msgstr "Active Directory kapcsolati szolgáltatás indítása..."
+
+#: umc/python/adconnector/__init__.py:311
+msgid "Switching running state of Active Directory Connector failed."
+msgstr "Az Active Directory Connector futási állapotának váltása sikertelen."
+
+#: umc/python/adconnector/__init__.py:365
+#: umc/python/adconnector/__init__.py:494
+msgid "The AD member mode can only be configured on a Primary Directory Node."
+msgstr ""
+"Az AD tagsági mód csak egy elsődleges címtárcsomóponton konfigurálható."
+
+#: umc/python/adconnector/__init__.py:371
+#: umc/python/adconnector/__init__.py:498
+#, python-format
+msgid ""
+"The domain name of the AD Server (%(ad_domain)s) does not match the local "
+"UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary "
+"to setup a UCS system with the same domain name as the AD Server."
+msgstr ""
+"Az AD kiszolgáló domain neve (%(ad_domain)s) nem egyezik meg a helyi UCS "
+"domain névvel (%(ucs_domain)s). Az AD-tag módhoz be kell állítani egy olyan "
+"UCS rendszert, amelynek domain neve megegyezik az AD-kiszolgálóéval."
+
+#: umc/python/adconnector/__init__.py:377
+msgid ""
+"The given user is not member of the Domain Admins group in Active "
+"Directory. This is a requirement for the Active Directory domain join."
+msgstr ""
+"Az adott felhasználó nem tagja az Active Directory Domain Admins "
+"csoportjának. Ez az Active Directory domain csatlakozáshoz szükséges."
+
+#: umc/python/adconnector/__init__.py:506
+msgid "The sambaSID could not set for the Administrator account in UCS."
+msgstr ""
+"A sambaSID azonosító nem állítható be az UCS rendszergazdai fiókjához."

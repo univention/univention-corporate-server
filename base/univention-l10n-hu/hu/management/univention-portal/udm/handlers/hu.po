@@ -1,0 +1,506 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-portal\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-16 18:57+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: udm/handlers/announcement.py:63
+msgid "A color theme the announcement should appear in."
+msgstr "A bejelentés megjelenítésének színsémája."
+
+#: udm/handlers/entry.py:74
+msgid "Activated"
+msgstr "Bekapcsolva"
+
+#: udm/handlers/entry.py:130
+msgid "Advanced"
+msgstr "Haladó"
+
+#: udm/handlers/announcement.py:99
+msgid "Announcement options"
+msgstr "Közlemény beállítások"
+
+#: udm/handlers/portal.py:89
+msgid "Announcements"
+msgstr "Közlemények"
+
+#: udm/handlers/portal.py:121
+msgid "Appearance"
+msgstr "Megjelenés"
+
+#: udm/handlers/portal.py:54
+msgid "Background"
+msgstr "Háttér"
+
+#: udm/handlers/entry.py:103
+msgid "Background color"
+msgstr "Háttérszín"
+
+#: udm/handlers/portal.py:55
+msgid "Background image of the Portal"
+msgstr "A portál háttérképe"
+
+#: udm/handlers/all.py:49
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: udm/syntax/univention-portal.py:70
+msgid "Black"
+msgstr "Fekete"
+
+#: udm/handlers/entry.py:92
+msgid "Browser tab when opening link"
+msgstr "Böngészőfül a link megnyitásakor"
+
+#: udm/handlers/portal.py:84 udm/handlers/portal.py:108
+msgid "Categories"
+msgstr "Kategóriák"
+
+#: udm/handlers/category.py:58
+msgid "Category options"
+msgstr "Kategória beállítások"
+
+#: udm/handlers/announcement.py:103
+msgid "Content"
+msgstr "Tartalom"
+
+#: udm/syntax/univention-portal.py:98
+msgid "Danger"
+msgstr "Veszély"
+
+#: udm/handlers/portal.py:95
+msgid "Default browser tab for portal entries"
+msgstr "Alapértelmezett böngészőfül a portálbejegyzésekhez"
+
+#: udm/handlers/entry.py:48 udm/handlers/entry.py:119
+msgid "Description"
+msgstr "Leírás"
+
+#: udm/handlers/entry.py:49
+msgid ""
+"Description of the entry. At least one entry; strongly encouraged to have "
+"one for en_US"
+msgstr ""
+"A bejegyzés leírása. Legalább egy bejegyzés; erősen ajánlott egy en_US "
+"karakterlánchoz"
+
+#: udm/handlers/category.py:43 udm/handlers/all.py:42
+#: udm/handlers/portal.py:42 udm/handlers/folder.py:43
+#: udm/handlers/folder.py:62 udm/handlers/entry.py:41
+#: udm/handlers/entry.py:116
+msgid "Display name"
+msgstr "Megjelenő név"
+
+#: udm/handlers/category.py:44
+msgid ""
+"Display name of the category. At least one entry; strongly encouraged to "
+"have one for en_US"
+msgstr ""
+"A kategória megjelenített neve. Legalább egy bejegyzés; erősen ajánlott egy "
+"en_US kategóriára"
+
+#: udm/syntax/univention-portal.py:78 udm/syntax/univention-portal.py:87
+msgid "Embedded"
+msgstr "Beágyazott"
+
+#: udm/handlers/announcement.py:90
+msgid "End date"
+msgstr "Befejezés dátuma"
+
+#: udm/handlers/folder.py:65
+msgid "Entries"
+msgstr "Bejegyzések"
+
+#: udm/handlers/portal.py:78
+msgid "Entries in the menu"
+msgstr "Bejegyzések a menüben"
+
+#: udm/handlers/portal.py:72
+msgid "Entries in the user menu"
+msgstr "Bejegyzések a felhasználói menüben"
+
+#: udm/handlers/category.py:50 udm/handlers/folder.py:50
+msgid "Entry"
+msgstr "Bejegyzés"
+
+#: udm/handlers/folder.py:58 udm/handlers/entry.py:110
+msgid "Entry options"
+msgstr "Belépési beállítások"
+
+#: udm/handlers/category.py:58 udm/handlers/category.py:62
+#: udm/handlers/all.py:49 udm/handlers/portal.py:103 udm/handlers/folder.py:58
+#: udm/handlers/folder.py:59 udm/handlers/announcement.py:99
+#: udm/handlers/announcement.py:100 udm/handlers/entry.py:110
+#: udm/handlers/entry.py:111
+msgid "General"
+msgstr "Általános"
+
+#: udm/handlers/entry.py:42
+msgid ""
+"Headline of the entry. At least one entry; strongly encouraged to have one "
+"for en_US"
+msgstr ""
+"A bejegyzés címsora. Legalább egy bejegyzés; erősen ajánlott egy en_US "
+"karakterlánchoz"
+
+#: udm/handlers/folder.py:44
+msgid ""
+"Headline of the folder. At least one entry; strongly encouraged to have one "
+"for en_US"
+msgstr ""
+"A mappa címsora. Legalább egy bejegyzés; erősen ajánlott egy en_US "
+"kiterjesztésű bejegyzés létrehozása"
+
+#: udm/handlers/portal.py:43
+msgid ""
+"Headline of the portal. At least one entry; strongly encouraged to have one "
+"for en_US"
+msgstr ""
+"A portál címsora. Legalább egy bejegyzés; erősen ajánlott egy en_US "
+"címsorral"
+
+#: udm/handlers/entry.py:86
+msgid "Icon"
+msgstr "Ikon"
+
+#: udm/handlers/announcement.py:55
+msgid ""
+"If enabled, the announcement can't be closed and will persist until the "
+"time ends (or never)."
+msgstr ""
+"Ha engedélyezve van, a bejelentés nem zárható be, és a megadott idő végéig "
+"(vagy soha) látható marad."
+
+#: udm/handlers/announcement.py:47
+msgid ""
+"If enabled, the user will see a \"Confirm\" button and the announcement "
+"will persist until it is clicked."
+msgstr ""
+"Ha engedélyezve van, a felhasználó egy „Megerősítés” gombot lát, és a "
+"bejelentés addig látható, amíg rá nem kattint."
+
+#: udm/handlers/announcement.py:40
+msgid ""
+"If one or more groups are selected then the portal announcement will only "
+"be visible to logged in users that are in any of the selected groups. If no "
+"groups are selected then the portal entry is always visible."
+msgstr ""
+"Ha egy vagy több csoport van kiválasztva, akkor a portálbejelentés csak a "
+"kiválasztott csoportok bármelyikében szereplő bejelentkezett felhasználók "
+"számára lesz látható. Ha nincsenek kiválasztva csoportok, akkor a "
+"portálbejegyzés mindig látható."
+
+#: udm/handlers/entry.py:69
+msgid ""
+"If one or more groups are selected then the portal entry will only be "
+"visible to logged in users that are in any of the selected groups. If no "
+"groups are selected then the portal entry is always visible."
+msgstr ""
+"Ha egy vagy több csoport van kiválasztva, akkor a portálbejegyzés csak a "
+"kiválasztott csoportok bármelyikében szereplő bejelentkezett felhasználók "
+"számára lesz látható. Ha nincsenek kiválasztva csoportok, akkor a "
+"portálbejegyzés mindig látható."
+
+#: udm/syntax/univention-portal.py:95
+msgid "Info"
+msgstr "Információ"
+
+#: udm/handlers/category.py:34 udm/handlers/all.py:34
+#: udm/handlers/portal.py:33 udm/handlers/folder.py:34
+#: udm/handlers/announcement.py:30 udm/handlers/entry.py:32
+msgid "Internal name"
+msgstr "Belső név"
+
+#: udm/syntax/univention-portal.py:110 udm/handlers/entry.py:55
+#: udm/handlers/entry.py:122
+msgid "Keywords"
+msgstr "Kulcsszavak"
+
+#: udm/handlers/entry.py:56
+msgid "Keywords of the entry used during search."
+msgstr "A keresés során használt bejegyzés kulcsszavai."
+
+#: udm/syntax/univention-portal.py:103 udm/syntax/univention-portal.py:110
+msgid "Language code (e.g. en_US)"
+msgstr "Nyelvkód (pl. en_US)"
+
+#: udm/syntax/univention-portal.py:103 udm/handlers/entry.py:125
+msgid "Link"
+msgstr "Hivatkozás"
+
+#: udm/handlers/portal.py:112
+msgid "Link behaviour"
+msgstr "Hivatkozás viselkedése"
+
+#: udm/handlers/entry.py:98
+msgid "Link target name"
+msgstr "A hivatkozás célpont neve"
+
+#: udm/handlers/entry.py:61
+msgid "Links (best pick based on locale / protocol / hostname)"
+msgstr ""
+"Hivatkozások (legjobb választás a területi beállítások / protokoll / "
+"hostnév alapján)"
+
+#: udm/handlers/portal.py:90
+msgid "List of announcements that are shown in the portal"
+msgstr "A portálon megjelenő hirdetmények listája"
+
+#: udm/handlers/category.py:51
+msgid "List of portal entries and/or portal folders shown in this category"
+msgstr ""
+"A portál bejegyzéseinek és/vagy mappáinak listája ebben a kategóriában"
+
+#: udm/handlers/folder.py:51
+msgid "List of portal entries and/or portal folders shown in this folder"
+msgstr ""
+"A mappában megjelenített portálbejegyzések és/vagy portálmappák listája"
+
+#: udm/handlers/portal.py:73
+msgid ""
+"List of portal entries that are shown in the menu for the logged in user"
+msgstr ""
+"A bejelentkezett felhasználó menüjében megjelenő portálbejegyzések listája"
+
+#: udm/handlers/portal.py:79
+msgid "List of portal entries that are shown in the menu of the portal"
+msgstr "A portál menüjében megjelenő portálbejegyzések listája"
+
+#: udm/handlers/portal.py:125
+msgid "Login"
+msgstr "Belépés"
+
+#: udm/handlers/portal.py:61
+msgid "Logo image for the portal."
+msgstr "A portál logója."
+
+#: udm/handlers/all.py:14
+msgid "Management of portals and their entries"
+msgstr "Portálok és bejegyzéseik kezelése"
+
+#: udm/handlers/portal.py:118
+msgid "Menu"
+msgstr "Menü"
+
+#: udm/handlers/announcement.py:76
+msgid "Message"
+msgstr "Üzenet"
+
+#: udm/handlers/category.py:59 udm/handlers/portal.py:104
+msgid "Name"
+msgstr "Név"
+
+#: udm/handlers/announcement.py:46
+msgid "Needs Confirmation (not yet implemented!)"
+msgstr "Megerősítés szükséges (még nem valósult meg!)"
+
+#: udm/syntax/univention-portal.py:77 udm/syntax/univention-portal.py:86
+msgid "New tab"
+msgstr "Új lap"
+
+#: udm/handlers/portal.py:23
+msgid "Object that feeds everything in https://fqdn/univention/portal"
+msgstr ""
+"A portál tartalmát meghatározó objektum: https://fqdn/univention/portal"
+
+#: udm/handlers/category.py:24
+msgid ""
+"Object under which portals/entry objects can be displayed. Belongs to one "
+"or more portals/portal objects"
+msgstr ""
+"Objektum, amely alatt portálok/bejelentkezési objektumok jeleníthetők meg. "
+"Egy vagy több portálhoz/portálobjektumhoz tartozik"
+
+#: udm/handlers/folder.py:24
+msgid ""
+"One folder in https://fqdn/univention/portal which holds one or more "
+"portals/entry objects. Belongs to one or more portals/category objects, "
+"which belong to one or more portals/portal objects"
+msgstr ""
+"Egy mappa a https://fqdn/univention/portal címen, amely egy vagy több "
+"portál/belépési objektumot tartalmaz. Egy vagy több portál/kategória "
+"objektumhoz tartozik, amelyek egy vagy több portálok/portál objektumhoz "
+"tartoznak"
+
+#: udm/handlers/announcement.py:20
+msgid ""
+"One folder in https://fqhn/univention/portal which holds one or more "
+"portals/announcement objects. Belongs to one or more portals/portal objects"
+msgstr ""
+"Egy mappa a https://fqhn/univention/portal címen, amely egy vagy több "
+"portál/közlemény objektumot tartalmaz. Egy vagy több portálok/portál "
+"objektumhoz tartozik"
+
+#: udm/handlers/entry.py:22
+msgid ""
+"One link in https://fqdn/univention/portal. Belongs to one or more portals/"
+"category objects, which belong to one or more portals/portal objects"
+msgstr ""
+"Egy hivatkozás a https://fqdn/univention/portal címen. Egy vagy több "
+"portálok/kategória objektumhoz tartozik, amelyek egy vagy több portálok/"
+"portál objektumhoz tartoznak"
+
+#: udm/handlers/entry.py:80
+msgid "Only visible if not logged in"
+msgstr "Csak bejelentkezés nélkül látható"
+
+#: udm/handlers/announcement.py:110
+msgid "Options"
+msgstr "Opciók"
+
+#: udm/handlers/portal.py:21
+msgid "Portal"
+msgstr "Portál"
+
+#: udm/handlers/announcement.py:18
+msgid "Portal announcement"
+msgstr "Portál bejelentés"
+
+#: udm/handlers/announcement.py:19
+msgid "Portal announcements"
+msgstr "Portál bejelentések"
+
+#: udm/handlers/category.py:23
+msgid "Portal categories"
+msgstr "Portál kategóriák"
+
+#: udm/handlers/category.py:22
+msgid "Portal category"
+msgstr "Portál kategória"
+
+#: udm/handlers/entry.py:21
+msgid "Portal entries"
+msgstr "Portál bejegyzések"
+
+#: udm/handlers/entry.py:20
+msgid "Portal entry"
+msgstr "Portál belépés"
+
+#: udm/handlers/folder.py:22
+msgid "Portal folder"
+msgstr "Portál mappa"
+
+#: udm/handlers/folder.py:23
+msgid "Portal folders"
+msgstr "Portál mappák"
+
+#: udm/handlers/portal.py:60
+msgid "Portal logo"
+msgstr "Portál logó"
+
+#: udm/handlers/portal.py:103
+msgid "Portal options"
+msgstr "Portál beállítások"
+
+#: udm/handlers/announcement.py:17
+msgid "Portal: Announcement"
+msgstr "Portál: Közlemény"
+
+#: udm/handlers/category.py:21
+msgid "Portal: Category"
+msgstr "Portál: Kategória"
+
+#: udm/handlers/entry.py:19
+msgid "Portal: Entry"
+msgstr "Portál: Belépés"
+
+#: udm/handlers/folder.py:21
+msgid "Portal: Folder"
+msgstr "Portál: Mappa"
+
+#: udm/handlers/portal.py:20
+msgid "Portal: Portal"
+msgstr "Portál: Portál"
+
+#: udm/handlers/all.py:13
+msgid "Portal: Settings"
+msgstr "Portál: Beállítások"
+
+#: udm/handlers/portal.py:22
+msgid "Portals"
+msgstr "Portálok"
+
+#: udm/handlers/portal.py:66
+msgid "Redirect anonymous visitors to the login"
+msgstr "Névtelen látogatók átirányítása a bejelentkezési oldalra"
+
+#: udm/handlers/announcement.py:39 udm/handlers/entry.py:68
+msgid "Restrict visibility to groups"
+msgstr "Láthatóság korlátozása csoportokra"
+
+#: udm/syntax/univention-portal.py:76 udm/syntax/univention-portal.py:85
+msgid "Same tab"
+msgstr "Ugyanazon a lapon"
+
+#: udm/handlers/announcement.py:62
+msgid "Severity"
+msgstr "Gyakoriság"
+
+#: udm/handlers/portal.py:49
+msgid "Show UMC categories and modules"
+msgstr "UMC kategóriák és modulok megjelenítése"
+
+#: udm/handlers/announcement.py:83
+msgid "Start date"
+msgstr "Kezdő dátum"
+
+#: udm/handlers/announcement.py:54
+msgid "Sticky"
+msgstr "Ragadós"
+
+#: udm/syntax/univention-portal.py:97
+msgid "Success"
+msgstr "Sikeres"
+
+#: udm/handlers/announcement.py:84
+msgid "The date when the announcement will first appear."
+msgstr "A bejelentés első megjelenésének dátuma."
+
+#: udm/handlers/announcement.py:91
+msgid "The date when the announcement will last appear."
+msgstr "A dátum, amikor a bejelentés utoljára megjelenik."
+
+#: udm/handlers/announcement.py:77
+msgid ""
+"The message of the announcement, usually written in normal text below the "
+"title."
+msgstr ""
+"A bejelentés üzenete, amelyet általában a cím alatt normál szöveggel írnak."
+
+#: udm/handlers/announcement.py:70
+msgid ""
+"The title of the announcement, usually written in bold above the message."
+msgstr "A bejelentés címe, általában félkövéren szedve, az üzenet felett."
+
+#: udm/handlers/announcement.py:107
+msgid "Time"
+msgstr "Idő"
+
+#: udm/handlers/announcement.py:69
+msgid "Title"
+msgstr "Cím"
+
+#: udm/syntax/univention-portal.py:84
+msgid "Use default of portal"
+msgstr "A portál alapértelmezett beállításainak használata"
+
+#: udm/handlers/portal.py:115
+msgid "User menu"
+msgstr "Felhasználói menü"
+
+#: udm/syntax/univention-portal.py:96
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+#: udm/syntax/univention-portal.py:69
+msgid "White"
+msgstr "Fehér"

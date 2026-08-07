@@ -1,0 +1,1166 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-09 01:27+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: modules/univention/admin/handlers/shares/share.py:703
+#, python-format
+msgid " and %s more"
+msgstr " és még %s"
+
+#: modules/univention/admin/handlers/shares/share.py:718
+#, python-format
+msgid "%(name)s (%(path)s on %(host)s)"
+msgstr "%(name)s (%(path)s %(host)s-n)"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:120
+#, python-format
+msgid "%(name)s is not a valid printer on Spoolhost %(host)s."
+msgstr ""
+"A(z) %(name)s nem érvényes nyomtató a(z) %(host)s Spoolhost szerveren."
+
+#: modules/univention/admin/handlers/shares/printergroup.py:106
+#: modules/univention/admin/handlers/shares/printer.py:251
+#, python-format
+msgid "%(name)s is the last member of the printer group %(group)s. "
+msgstr "%(name)s a nyomtatócsoport %(group)s utolsó tagja. "
+
+#: modules/univention/admin/handlers/shares/share.py:65
+msgid "A comment e.g. shown in the file browser."
+msgstr "Egy megjegyzés, pl. a fájlböngészőben látható."
+
+#: modules/univention/admin/handlers/shares/share.py:337
+msgid ""
+"A name beginning with the character + will be exclusively considered as a "
+"UNIX group, a name beginning with the character & will be exclusively "
+"considered as a NIS net-group."
+msgstr ""
+"A + karakterrel kezdődő név kizárólag UNIX csoportnak, az & karakterrel "
+"kezdődő név pedig kizárólag NIS hálózati csoportnak lesz tekintve."
+
+#: modules/univention/admin/handlers/shares/share.py:336
+msgid ""
+"A name beginning with the character @ will first be interpreted as a NIS "
+"net-group. Should no NIS net-group of this name be found, the name will be "
+"considered as a UNIX group."
+msgstr ""
+"A @ karakterrel kezdődő nevet a rendszer először NIS hálózati csoportként "
+"értelmezi. Ha nem talál ilyen nevű NIS hálózati csoportot, akkor a nevet "
+"UNIX csoportként kezeli."
+
+#: modules/univention/admin/handlers/shares/share.py:338
+msgid ""
+"A name beginning with the characters +&, will first be interpreted as a "
+"UNIX group. Should no UNIX group of this name be found, the name will be "
+"considered as a NIS net-group. The characters &+ as the beginning of a name "
+"correspond to the character @."
+msgstr ""
+"A +& karakterekkel kezdődő név először UNIX csoportként lesz értelmezve. Ha "
+"nem található ilyen nevű UNIX csoport, akkor a nevet NIS hálózati "
+"csoportként fogja értelmezni. A név elején szereplő &+ karakterek a @ "
+"karakternek felelnek meg."
+
+#: modules/univention/admin/handlers/shares/printer.py:107
+#: modules/univention/admin/handlers/shares/printer.py:136
+#: modules/univention/admin/handlers/shares/printer.py:137
+msgid "Access control"
+msgstr "Hozzáférés vezérlés"
+
+#: modules/univention/admin/handlers/shares/printer.py:136
+msgid "Access control for users and groups"
+msgstr "Hozzáférés vezérlés felhasználók és csoportok számára"
+
+#: modules/univention/admin/handlers/shares/printer.py:108
+msgid "Access list can allow or deny listed users and groups."
+msgstr ""
+"A hozzáférési lista engedélyezheti vagy tilthatja a listán szereplő "
+"felhasználókat és csoportokat."
+
+#: modules/univention/admin/handlers/shares/share.py:458
+msgid "Additional NTACL elements for the base directory of Samba file shares."
+msgstr "További NTACL elemek a Samba fájlmegosztások alapkönyvtárához."
+
+#: modules/univention/admin/handlers/shares/share.py:147
+msgid "Allow Samba write access"
+msgstr "Samba írási hozzáférés engedélyezése"
+
+#: modules/univention/admin/handlers/shares/printer.py:28
+msgid "Allow all users."
+msgstr "Minden felhasználó engedélyezése."
+
+#: modules/univention/admin/handlers/shares/share.py:170
+msgid "Allow anonymous read-only access with a guest user"
+msgstr ""
+"Névtelen, csak olvasási hozzáférés engedélyezése vendégfelhasználó számára"
+
+#: modules/univention/admin/handlers/shares/share.py:171
+msgid "Allow guest access"
+msgstr "Engedélyezze a vendégfelhasználó hozzáférését"
+
+#: modules/univention/admin/handlers/shares/printer.py:29
+msgid "Allow only chosen users/groups."
+msgstr "Csak a kiválasztott felhasználók/csoportok engedélyezése."
+
+#: modules/univention/admin/handlers/shares/share.py:318
+msgid "Allowed host/network"
+msgstr "Engedélyezett gazdagép/hálózat"
+
+#: modules/univention/admin/handlers/shares/printer.py:119
+msgid "Allowed/denied groups"
+msgstr "Engedélyezett/tiltott csoportok"
+
+#: modules/univention/admin/handlers/shares/printer.py:113
+msgid "Allowed/denied users"
+msgstr "Engedélyezett/tiltott felhasználók"
+
+#: modules/univention/admin/handlers/shares/share.py:457
+msgid "Append NTACLs for Samba file shares"
+msgstr "NTACL elemek hozzáfűzése Samba megosztásokhoz"
+
+#: modules/univention/admin/handlers/shares/share.py:305
+msgid "Block size"
+msgstr "Blokk méret"
+
+#: modules/univention/admin/handlers/shares/share.py:266
+msgid "Blocking locks"
+msgstr "Zárolás blokkolása"
+
+#: modules/univention/admin/handlers/shares/share.py:311
+msgid "Client-side caching policy"
+msgstr "Kliensoldali gyorsítótár házirend"
+
+#: modules/univention/admin/handlers/shares/share.py:64
+msgid "Comment"
+msgstr "Hozzászólás"
+
+#: modules/univention/admin/handlers/shares/share.py:451
+msgid ""
+"Configure additional settings for this share which are added to the /etc/"
+"exports file."
+msgstr ""
+"További beállításokat adhatsz meg ehhez a megosztáshoz, amelyek az /etc/"
+"exports fájlba kerülnek."
+
+#: modules/univention/admin/handlers/shares/share.py:444
+msgid ""
+"Configure additional smb.conf settings for this share, which are added in "
+"the form key = value"
+msgstr ""
+"További smb.conf beállítások konfigurálása ehhez a megosztáshoz, amelyek "
+"kulcs = érték formában adhatók hozzá"
+
+#: modules/univention/admin/handlers/shares/printer.py:82
+msgid "Connection"
+msgstr "Kapcsolódás"
+
+#: modules/univention/admin/handlers/shares/share.py:435
+msgid "Create files/directories with permissions of the parent directory"
+msgstr "Fájlok/könyvtárak létrehozása a szülőkönyvtár jogosultságaival"
+
+#: modules/univention/admin/handlers/shares/share.py:427
+msgid "Create files/directories with the owner of the parent directory"
+msgstr "Fájlok/könyvtárak létrehozása a szülőkönyvtár tulajdonosával"
+
+#: modules/univention/admin/handlers/shares/share.py:109
+msgid "Define if the share is writable when accessed via NFS."
+msgstr ""
+"Adja meg, hogy a megosztás írható-e NFS-en keresztüli hozzáférés esetén."
+
+#: modules/univention/admin/handlers/shares/share.py:148
+msgid ""
+"Define if the share is writable when accessed via Samba. If this is "
+"deactivated users still can have write access via the \"Restrict write "
+"access to these users/groups\" list."
+msgstr ""
+"Adja meg, hogy a megosztás írható-e, ha Sambán keresztül érik el. Ha ez ki "
+"van kapcsolva, a felhasználók továbbra is kaphatnak írási hozzáférést az "
+"„Írás korlátozása ezekre a felhasználókra/csoportokra” listán keresztül."
+
+#: modules/univention/admin/handlers/shares/share.py:325
+msgid "Denied host/network"
+msgstr "Letiltott gazdagép/hálózat"
+
+#: modules/univention/admin/handlers/shares/printer.py:30
+msgid "Deny chosen users/groups."
+msgstr "Kiválasztott felhasználók/csoportok tiltása."
+
+#: modules/univention/admin/handlers/shares/printer.py:69
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/shares/share.py:82
+msgid "Directory"
+msgstr "Könyvtár"
+
+#: modules/univention/admin/handlers/shares/share.py:202
+msgid "Directory mode"
+msgstr "Könyvtár mód"
+
+#: modules/univention/admin/handlers/shares/share.py:94
+msgid "Directory owner group of the share's root directory"
+msgstr "A megosztás gyökérkönyvtárának tulajdonoscsoportja"
+
+#: modules/univention/admin/handlers/shares/share.py:88
+msgid "Directory owner of the share's root directory"
+msgstr "A megosztás gyökérkönyvtárának tulajdonosa"
+
+#: modules/univention/admin/handlers/shares/share.py:234
+msgid "Directory security mode"
+msgstr "Könyvtárbiztonsági mód"
+
+#: modules/univention/admin/handlers/shares/share.py:83
+msgid "Directory that is exported."
+msgstr "Exportált könyvtár."
+
+#: modules/univention/admin/handlers/shares/share.py:48
+msgid "Export for NFS clients (NFSv3 and NFSv4)"
+msgstr "Exportálás NFS kliensek számára (NFSv3 és NFSv4)"
+
+#: modules/univention/admin/handlers/shares/share.py:42
+msgid "Export for Samba clients"
+msgstr "Exportálás Samba kliensek számára"
+
+#: modules/univention/admin/handlers/shares/share.py:419
+msgid "Export share as MSDFS root"
+msgstr "Megosztás exportálása MSDFS gyökérként"
+
+#: modules/univention/admin/handlers/shares/share.py:297
+msgid "Fake oplocks"
+msgstr "Hamis oplock-ok"
+
+#: modules/univention/admin/handlers/shares/share.py:194
+msgid "File mode"
+msgstr "Fájl mód"
+
+#: modules/univention/admin/handlers/shares/share.py:187
+msgid ""
+"Files and directories with no read access are hidden. New files and "
+"directories receive permissions of the superordinate directory."
+msgstr ""
+"Az olvasási hozzáféréssel nem rendelkező fájlok és könyvtárak rejtve "
+"vannak. Az új fájlok és könyvtárak a fölérendelt könyvtár jogosultságait "
+"kapják meg."
+
+#: modules/univention/admin/handlers/shares/printer.py:135
+msgid ""
+"For information about how to manage Windows printer drivers and "
+"troubleshooting, see <a href=\"https://help.univention.com/t/overview-"
+"windows-printer-driver-distribution-known-issues-and-workarounds/13387\" "
+"target=\"_blank\" rel=\"noreferrer noopener\">here</a>."
+msgstr ""
+"A Windows nyomtató-illesztőprogramok kezelésével és a hibaelhárítással "
+"kapcsolatos információkért kattints <a href=\"https://help.univention.com/t/"
+"overview-windows-printer-driver-distribution-known-issues-and-workarounds/"
+"13387\" target=\"_blank\" rel=\"noreferrer noopener\">ide</a> ."
+
+#: modules/univention/admin/handlers/shares/printer.py:120
+msgid "For the given groups printing is explicitly allowed or denied."
+msgstr ""
+"Az adott csoportok számára a nyomtatás kifejezetten engedélyezett vagy "
+"tiltott."
+
+#: modules/univention/admin/handlers/shares/printer.py:114
+msgid "For the given users printing is explicitly allowed or denied."
+msgstr ""
+"Az adott felhasználók számára a nyomtatás kifejezetten engedélyezett vagy "
+"tiltott."
+
+#: modules/univention/admin/handlers/shares/share.py:218
+msgid "Force directory mode"
+msgstr "Könyvtármód kényszerítése"
+
+#: modules/univention/admin/handlers/shares/share.py:250
+msgid "Force directory security mode"
+msgstr "Könyvtárbiztonsági mód kényszerítése"
+
+#: modules/univention/admin/handlers/shares/share.py:210
+msgid "Force file mode"
+msgstr "Fájlmód kényszerítése"
+
+#: modules/univention/admin/handlers/shares/share.py:358
+msgid "Force group"
+msgstr "Kényszerítő csoport"
+
+#: modules/univention/admin/handlers/shares/share.py:242
+msgid "Force security mode"
+msgstr "Biztonsági mód kényszerítése"
+
+#: modules/univention/admin/handlers/shares/share.py:352
+msgid "Force user"
+msgstr "Felhasználó kényszerítése"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:66
+#: modules/univention/admin/handlers/shares/share.py:466
+#: modules/univention/admin/handlers/shares/printer.py:127
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/shares/share.py:474
+msgid "General NFS settings"
+msgstr "Általános NFS-beállítások"
+
+#: modules/univention/admin/handlers/shares/share.py:486
+msgid "General Samba settings"
+msgstr "Általános Samba beállítások"
+
+#: modules/univention/admin/handlers/shares/share.py:467
+msgid "General directory share settings"
+msgstr "Általános könyvtár megosztási beállítások"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:67
+msgid "General printer group share settings"
+msgstr "Általános nyomtatócsoport megosztási beállítások"
+
+#: modules/univention/admin/handlers/shares/printer.py:128
+msgid "General printer share settings"
+msgstr "Általános nyomtatómegosztási beállítások"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:66
+#: modules/univention/admin/handlers/shares/share.py:466
+#: modules/univention/admin/handlers/shares/printer.py:127
+msgid "General settings"
+msgstr "Általános beállítások"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:51
+msgid "Group members"
+msgstr "Csoporttagok"
+
+#: modules/univention/admin/handlers/shares/share.py:364
+msgid "Hidden files"
+msgstr "Rejtett fájlok"
+
+#: modules/univention/admin/handlers/shares/share.py:186
+msgid "Hide unreadable files/directories"
+msgstr "Olvashatatlan fájlok/könyvtárak elrejtése"
+
+#: modules/univention/admin/handlers/shares/share.py:75
+msgid "Host"
+msgstr "Gazdagép"
+
+#: modules/univention/admin/handlers/shares/share.py:326
+msgid ""
+"Hosts listed here are not permitted access to the share. If a host appears "
+"also in the allowed list, it is permitted to access the share. The syntax "
+"is identical to he one for allowed hosts."
+msgstr ""
+"Az itt felsorolt gazdagépek nem férhetnek hozzá a megosztáshoz. Ha egy "
+"gazdagép a megengedett listán is szerepel, akkor hozzáférhet a "
+"megosztáshoz. A szintaxis megegyezik a megengedett gazdagépek szintaxisával."
+
+#: modules/univention/admin/handlers/shares/share.py:319
+msgid ""
+"Hosts, IP or network addresses which are permitted to access the share "
+"(e.g. 150.203.5.6, myhost.mynet.edu.au, 150.203.15.0/255.255.255.0, "
+"150.203. EXCEPT 150.203.6.66)."
+msgstr ""
+"A megosztáshoz hozzáféréssel rendelkező gazdagépek, IP- vagy hálózati címek "
+"(pl. 150.203.5.6, myhost.mynet.edu.au, 150.203.15.0/255.255.255.0, 150.203. "
+"KIVÉVE 150.203.6.66)."
+
+#: modules/univention/admin/handlers/shares/share.py:406
+msgid ""
+"If (and only if) \"Allow Samba write access\" is deactivated only the users "
+"and groups listed here have write permission for this share. Groups can be "
+"assigned with the same syntax as \"Valid users or groups\". If the "
+"connecting user is in this list then they will be given write access, no "
+"matter what the read only option is set to."
+msgstr ""
+"Ha (és csak akkor, ha) a „Samba írási hozzáférés engedélyezése” opció "
+"deaktiválva van, akkor csak az itt felsorolt felhasználók és csoportok "
+"rendelkeznek írási jogosultsággal ehhez a megosztáshoz. A csoportok "
+"ugyanazzal a szintaxissal rendelhetők hozzá, mint az „Érvényes felhasználók "
+"vagy csoportok”. Ha a csatlakozó felhasználó szerepel ebben a listában, "
+"akkor írási hozzáférést kap, függetlenül attól, hogy az olvasási opció "
+"milyen beállítású."
+
+#: modules/univention/admin/handlers/shares/share.py:378
+msgid "Inherit ACLs"
+msgstr "ACL-ek öröklése"
+
+#: modules/univention/admin/handlers/shares/share.py:345
+msgid "Invalid users or groups"
+msgstr "Érvénytelen felhasználók vagy csoportok"
+
+#: modules/univention/admin/handlers/shares/share.py:675
+#, python-format
+msgid "It is not valid to set %s as a share."
+msgstr "A(z) %s megadása megosztásként nem érvényes."
+
+#: modules/univention/admin/handlers/shares/share.py:289
+msgid "Level 2 oplocks"
+msgstr "2. szintű oplock-ok"
+
+#: modules/univention/admin/handlers/shares/share.py:365
+msgid ""
+"List of files or directories that are not visible but are accessible. "
+"Entries must be separated by \"/\" (e.g. /.*/DesktopFolderDB/TrashFor%m/"
+"resource.frk/)."
+msgstr ""
+"A nem látható, de elérhető fájlok vagy könyvtárak listája. A bejegyzéseket "
+"\"/\" karakterrel kell elválasztani (pl. /.*/DesktopFolderDB/TrashFor%m/"
+"resource.frk/)."
+
+#: modules/univention/admin/handlers/shares/share.py:399
+msgid "List of users or groups that are given read-only access to the share."
+msgstr ""
+"A megosztáshoz olvasási hozzáféréssel rendelkező felhasználók vagy "
+"csoportok listája."
+
+#: modules/univention/admin/handlers/shares/printer.py:63
+msgid "Location"
+msgstr "Hely"
+
+#: modules/univention/admin/handlers/shares/share.py:258
+msgid "Locking"
+msgstr "Zárolás"
+
+#: modules/univention/admin/handlers/shares/share.py:141
+msgid ""
+"May contain hostnames, IP addresses or networks (e.g. 10.1.1.1/24 or "
+"10.1.1.1/255.255.255.0"
+msgstr ""
+"Tartalmazhat gazdagépneveket, IP-címeket vagy hálózatokat (pl. 10.1.1.1/24 "
+"vagy 10.1.1.1/255.255.255.0)"
+
+#: modules/univention/admin/handlers/shares/share.py:132
+msgid "Modify user ID for root user (root squashing)"
+msgstr "Root felhasználó azonosítójának módosítása (root squashing)"
+
+#: modules/univention/admin/handlers/shares/share.py:474
+#: modules/univention/admin/handlers/shares/share.py:475
+msgid "NFS"
+msgstr "NFS"
+
+#: modules/univention/admin/handlers/shares/share.py:482
+msgid "NFS custom settings"
+msgstr "NFS egyéni beállítások"
+
+#: modules/univention/admin/handlers/shares/share.py:116
+msgid "NFS synchronisation"
+msgstr "NFS szinkronizáció"
+
+#: modules/univention/admin/handlers/shares/share.py:108
+msgid "NFS write access"
+msgstr "NFS írási hozzáférés"
+
+#: modules/univention/admin/handlers/shares/share.py:370
+msgid "NT ACL support"
+msgstr "NT ACL támogatás"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:35
+#: modules/univention/admin/handlers/shares/share.py:56
+#: modules/univention/admin/handlers/shares/print.py:29
+#: modules/univention/admin/handlers/shares/printer.py:54
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/shares/share.py:57
+msgid "Name of the share"
+msgstr "A megosztás neve"
+
+#: modules/univention/admin/handlers/shares/share.py:334
+msgid ""
+"Names of users or groups which are authorized to access this Samba share. "
+"To all other users, access is denied. If the field is empty, all users may "
+"access the share - if necessary after entering a password. This option is "
+"useful for securing access to a share at file server level beyond the file "
+"permissions."
+msgstr ""
+"Azoknak a felhasználóknak vagy csoportoknak a neve, akik jogosultak "
+"hozzáférni ehhez a Samba megosztáshoz. Minden más felhasználó számára a "
+"hozzáférés megtagadva van. Ha a mező üres, minden felhasználó hozzáférhet a "
+"megosztáshoz – szükség esetén jelszó megadása után. Ez a beállítás hasznos "
+"a megosztáshoz való hozzáférés fájlszerver szintű, a fájlengedélyeken "
+"túlmutató biztosításához."
+
+#: modules/univention/admin/handlers/shares/share.py:723
+#, python-format
+msgid "Need %(samba)s or %(nfs)s in options to create a share."
+msgstr ""
+"Megosztás létrehozásához a(z) %(samba)s vagy %(nfs)s paraméter szükséges a "
+"beállításokban."
+
+#: modules/univention/admin/handlers/shares/share.py:436
+msgid "New files and directories inherit the mode of the parent directory."
+msgstr "Az új fájlok és könyvtárak öröklik a szülőkönyvtár módját."
+
+#: modules/univention/admin/handlers/shares/share.py:140
+msgid "Only allow access for this host, IP address or network"
+msgstr ""
+"Csak ehhez a gazdagéphez, IP-címhez vagy hálózathoz engedélyezze a "
+"hozzáférést"
+
+#: modules/univention/admin/handlers/shares/share.py:281
+msgid "Oplocks"
+msgstr "Oplock-ok"
+
+#: modules/univention/admin/handlers/shares/share.py:298
+msgid ""
+"Oplocks are the way that Samba clients get permission from a server to "
+"locally cache file operations.  If a server grants an oplock (opportunistic "
+"lock) then the client is free to assume that it is the only one accessing "
+"the file and it will aggressively cache file data. With some  oplock  types "
+"the client may even cache file open/close operations. This can give "
+"enormous performance benefits. When you activate this parameter, Samba will "
+"always grant oplock requests no matter how many clients are using the file. "
+"It is generally much better to use the real oplocks support rather than "
+"this parameter. If you enable this option on all read-only shares or shares "
+"that you know will only be accessed from one client at a time such as "
+"physically read-only media like CDROMs, you will see a big performance "
+"improvement on many operations. If you enable this option on shares where "
+"multiple clients may be accessing the files read-write at the same  time "
+"you can get data corruption. Use this option carefully!"
+msgstr ""
+"Az oplock-ok segítségével a Samba kliensek engedélyt kapnak a szervertől a "
+"fájlműveletek helyi gyorsítótárazására. Ha egy szerver oplock-ot ad, akkor "
+"a kliens szabadon feltételezheti, hogy ő az egyetlen, aki hozzáfér a "
+"fájlhoz, és agresszívan gyorsítótárazza a fájladatokat. Egyes oplock "
+"típusoknál a kliens akár a fájlmegnyitási/bezárási műveleteket is "
+"gyorsítótárazhatja. Ez hatalmas teljesítménybeli előnyöket biztosíthat. Ha "
+"aktiválja ezt a paramétert, a Samba mindig engedélyezi az oplock kéréseket, "
+"függetlenül attól, hogy hány kliens használja a fájlt. Általában sokkal "
+"jobb a valódi oplock támogatást használni, mint ezt a paramétert. Ha ezt a "
+"beállítást minden írásvédett megosztáson vagy olyan megosztáson "
+"engedélyezi, amelyről tudja, hogy egyszerre csak egy kliens férhet hozzá, "
+"például a fizikailag írásvédett adathordozókon, mint a CD-ROM-ok, akkor "
+"számos műveletnél jelentős teljesítményjavulást tapasztalhat. Ha ezt a "
+"beállítást olyan megosztásokon engedélyezi, ahol több kliens is hozzáférhet "
+"a fájlokhoz egyszerre írás-olvasás céljából, akkor adatsérülés léphet fel. "
+"Használja ezt a beállítást óvatosan!"
+
+#: modules/univention/admin/handlers/shares/share.py:450
+msgid "Option name in exports file"
+msgstr "Opció neve az exportfájlban"
+
+#: modules/univention/admin/handlers/shares/share.py:443
+msgid "Option name in smb.conf and its value"
+msgstr "Az smb.conf fájlban található opció neve és értéke"
+
+#: modules/univention/admin/handlers/shares/share.py:428
+msgid ""
+"Ownership for new files and directories is controlled by the ownership of "
+"the parent directory."
+msgstr ""
+"Az új fájlok és könyvtárak tulajdonjogát a szülőkönyvtár tulajdonjoga "
+"szabályozza."
+
+#: modules/univention/admin/handlers/shares/share.py:100
+msgid "Permissions for the share's root directory"
+msgstr "A megosztás gyökérkönyvtárához tartozó engedélyek"
+
+#: modules/univention/admin/handlers/shares/share.py:420
+msgid ""
+"Please consult the \"Fileshare management\" chapter in the manual for more "
+"information"
+msgstr ""
+"További információkért kérjük, tekintsd meg a kézikönyv „Fájlmegosztás "
+"kezelése” fejezetét"
+
+#: modules/univention/admin/handlers/shares/share.py:386
+msgid "Postexec script"
+msgstr "Futtatás utáni szkript"
+
+#: modules/univention/admin/handlers/shares/share.py:392
+msgid "Preexec script"
+msgstr "Futtatás előtti szkript"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:44
+#: modules/univention/admin/handlers/shares/print.py:38
+#: modules/univention/admin/handlers/shares/printer.py:75
+msgid "Print server"
+msgstr "Nyomtatószerver"
+
+#: modules/univention/admin/handlers/shares/share.py:69
+#: modules/univention/admin/handlers/shares/share.py:70
+msgid "Printable name"
+msgstr "Nyomtatható név"
+
+#: modules/univention/admin/handlers/shares/printer.py:41
+msgid "Printer"
+msgstr "Nyomtató"
+
+#: modules/univention/admin/handlers/shares/printer.py:89
+msgid "Printer model"
+msgstr "Nyomtató modell"
+
+#: modules/univention/admin/handlers/shares/printer.py:96
+msgid "Printer producer"
+msgstr "Nyomtatógyártó"
+
+#: modules/univention/admin/handlers/shares/print.py:20
+#: modules/univention/admin/handlers/shares/print.py:21
+msgid "Printer share"
+msgstr "Nyomtató megosztás"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:22
+msgid "Printer share group"
+msgstr "Nyomtató megosztási csoport"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:23
+msgid "Printer share groups"
+msgstr "Nyomtató megosztási csoportok"
+
+#: modules/univention/admin/handlers/shares/printer.py:40
+msgid "Printer share: Printer"
+msgstr "Nyomtatómegosztás: Nyomtató"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:21
+msgid "Printer share: Printer group"
+msgstr "Nyomtatómegosztás: Nyomtatócsoport"
+
+#: modules/univention/admin/handlers/shares/print.py:22
+msgid "Printer shares"
+msgstr "Nyomtatómegosztások"
+
+#: modules/univention/admin/handlers/shares/printer.py:42
+msgid "Printers"
+msgstr "Nyomtatók"
+
+#: modules/univention/admin/handlers/shares/printer.py:233
+msgid "Protocol and destination parts can not be parsed."
+msgstr "A protokoll és a cél részei nem elemezhetők."
+
+#: modules/univention/admin/handlers/shares/share.py:133
+msgid "Redirect root user access to a non-privileged uid."
+msgstr ""
+"A root felhasználói hozzáférés átirányítása egy nem privilegizált UID-ra."
+
+#: modules/univention/admin/handlers/shares/share.py:398
+msgid "Restrict read access to these users/groups"
+msgstr ""
+"Korlátozza az olvasási hozzáférést ezekre a felhasználókra/csoportokra"
+
+#: modules/univention/admin/handlers/shares/share.py:405
+msgid "Restrict write access to these users/groups"
+msgstr "Korlátozza az írási hozzáférést ezekre a felhasználókra/csoportokra"
+
+#: modules/univention/admin/handlers/shares/share.py:486
+#: modules/univention/admin/handlers/shares/share.py:487
+msgid "Samba"
+msgstr "Samba"
+
+#: modules/univention/admin/handlers/shares/share.py:513
+msgid "Samba custom settings"
+msgstr "Samba egyéni beállítások"
+
+#: modules/univention/admin/handlers/shares/share.py:503
+msgid "Samba extended permissions"
+msgstr "Samba kiterjesztett jogosultságok"
+
+#: modules/univention/admin/handlers/shares/share.py:507
+msgid "Samba options"
+msgstr "Samba beállítások"
+
+#: modules/univention/admin/handlers/shares/share.py:494
+msgid "Samba permissions"
+msgstr "Samba jogosultságok"
+
+#: modules/univention/admin/handlers/shares/share.py:226
+msgid "Security mode"
+msgstr "Biztonsági mód"
+
+#: modules/univention/admin/handlers/shares/share.py:32
+msgid "Share directories"
+msgstr "Könyvtárak megosztása"
+
+#: modules/univention/admin/handlers/shares/share.py:31
+msgid "Share directory"
+msgstr "Könyvtár megosztása"
+
+#: modules/univention/admin/handlers/shares/share.py:163
+msgid ""
+"Share is browseable, i.e. it is listed in the Windows network environment"
+msgstr ""
+"A megosztás böngészhető, azaz szerepel a Windows hálózati környezetben"
+
+#: modules/univention/admin/handlers/shares/share.py:30
+msgid "Share: Directory"
+msgstr "Megosztás: Könyvtár"
+
+#: modules/univention/admin/handlers/shares/share.py:162
+msgid "Show share in Windows network environment"
+msgstr "Megosztás megjelenítése Windows hálózati környezetben"
+
+#: modules/univention/admin/handlers/shares/share.py:413
+msgid "Specifies which VFS Objects to use."
+msgstr "Meghatározza, hogy mely VFS objektumokat kell használni."
+
+#: modules/univention/admin/handlers/shares/share.py:274
+msgid "Strict locking"
+msgstr "Szigorú zárolás"
+
+#: modules/univention/admin/handlers/shares/share.py:124
+msgid "Subtree checking"
+msgstr "Alfa-fa ellenőrzése"
+
+#: modules/univention/admin/handlers/shares/share.py:714
+#, python-format
+msgid "The %(plural)s %(user)s%(num)s %(use)s this share as home share!"
+msgstr ""
+"A(z) %(plural)s %(user)s%(num)s %(use)s megosztás a saját könyvtár "
+"megosztásként használható!"
+
+#: modules/univention/admin/handlers/shares/share.py:76
+msgid "The computer that exports this share"
+msgstr "A megosztást exportáló számítógép"
+
+#: modules/univention/admin/handlers/shares/share.py:335
+msgid ""
+"The entries are to be separated by spaces. The special characters @, + and "
+"& can be used in connection with the group name for assigning certain "
+"permissions to the users of the stated group for accessing the Samba share:"
+msgstr ""
+"A bejegyzéseket szóközökkel kell elválasztani. A @, + és & speciális "
+"karakterek a csoportnévvel együtt használhatók bizonyos jogosultságok "
+"hozzárendeléséhez a megadott csoport felhasználóihoz a Samba megosztás "
+"eléréséhez:"
+
+#: modules/univention/admin/handlers/shares/share.py:89
+msgid ""
+"The owner of the exported root directory. If none is given root will be "
+"owner."
+msgstr ""
+"Az exportált gyökérkönyvtár tulajdonosa. Ha nincs megadva, a root lesz a "
+"tulajdonos."
+
+#: modules/univention/admin/handlers/shares/share.py:95
+msgid ""
+"The primary group of the exported root directory, if none is given group 0 "
+"will be used."
+msgstr ""
+"Az exportált gyökérkönyvtár elsődleges csoportja lesz használva. Ha nincs "
+"megadva, a 0. csoport lesz használva."
+
+#: modules/univention/admin/handlers/shares/share.py:346
+msgid ""
+"The users or groups listed here cannot access the Samba share. The syntax "
+"is identical to the one for valid users. If a user or group is included in "
+"the list of valid users and unauthorized users, access is denied."
+msgstr ""
+"Az itt felsorolt felhasználók vagy csoportok nem férhetnek hozzá a Samba "
+"megosztáshoz. A szintaxis megegyezik az érvényes felhasználók "
+"szintaxisával. Ha egy felhasználó vagy csoport szerepel az érvényes "
+"felhasználók és a jogosulatlan felhasználók listáján, akkor a hozzáférés "
+"megtagadva."
+
+#: modules/univention/admin/handlers/shares/share.py:312
+msgid ""
+"The way clients capable of offline caching will cache the files in the "
+"share."
+msgstr ""
+"Az offline gyorsítótárazásra képes kliensek gyorsítótárazzák a megosztott "
+"fájlokat."
+
+#: modules/univention/admin/handlers/shares/share.py:282
+#, python-format
+msgid ""
+"This boolean option tells Samba whether to issue oplocks (opportunistic "
+"locks) to file open requests on this share. The oplock code can "
+"dramatically (approx. 30% or more) improve the speed of access to files on "
+"Samba servers. It allows the clients to aggressively cache files locally "
+"and you may want to disable this option for unreliable network environments "
+"(it is turned on by default in Windows Servers)."
+msgstr ""
+"Ez a logikai beállítás megadja a Sambának, hogy adjon-e ki oplockokat "
+"(opportunista zárolás) a megosztáson lévő fájlok megnyitására vonatkozó "
+"kérésekhez. Az oplock kód jelentősen (kb. 30% or-rel) javíthatja a Samba "
+"szervereken lévő fájlokhoz való hozzáférés sebességét. Lehetővé teszi a "
+"kliensek számára, hogy agresszíven tárolják a fájlokat a helyi "
+"gyorsítótárban, ezért megbízhatatlan hálózati környezetekben érdemes ezt az "
+"opciót letiltani (Windows szervereken alapértelmezés szerint be van "
+"kapcsolva)."
+
+#: modules/univention/admin/handlers/shares/share.py:371
+msgid ""
+"This boolean parameter controls whether Samba will attempt to map UNIX "
+"permissions into Windows NT access control lists."
+msgstr ""
+"Ez a logikai paraméter szabályozza, hogy a Samba megpróbálja-e leképezni a "
+"UNIX jogosultságokat a Windows NT hozzáférés-vezérlési listáiba."
+
+#: modules/univention/admin/handlers/shares/share.py:259
+msgid ""
+"This controls whether or not locking will be performed by the server in "
+"response to lock requests from the client. Be careful about disabling "
+"locking, as lack of locking may result in data corruption."
+msgstr ""
+"Ez szabályozza, hogy a szerver végrehajt-e zárolást a kliens zárolási "
+"kérelmeire válaszul. Legyen óvatos a zárolás letiltásával, mivel a zárolás "
+"hiánya adatsérülést okozhat."
+
+#: modules/univention/admin/handlers/shares/share.py:156
+msgid ""
+"This is the NetBIOS name. Among other places, it appears in the Windows "
+"Network Neighborhood."
+msgstr ""
+"Ez a NetBIOS név. Többek között a Windows hálózati környezetében is "
+"megjelenik."
+
+#: modules/univention/admin/handlers/shares/share.py:393
+msgid ""
+"This option specifies a command to be run whenever the service is connected "
+"to. It takes the usual substitutions."
+msgstr ""
+"Ez az opció meghatározza a szolgáltatáshoz való csatlakozáskor futtatandó "
+"parancsot. A szokásos helyettesítéseket alkalmazza."
+
+#: modules/univention/admin/handlers/shares/share.py:387
+msgid ""
+"This option specifies a command to be run whenever the service is "
+"disconnected. It takes the usual substitutions."
+msgstr ""
+"Ez a beállítás egy parancsot határoz meg, amely a szolgáltatás "
+"leválasztásakor fut le. A szokásos helyettesítéseket alkalmazza."
+
+#: modules/univention/admin/handlers/shares/share.py:379
+msgid ""
+"This parameter can be used to ensure that if default ACLs exist on parent "
+"directories, they are always honored when creating a subdirectory. The "
+"default behavior is to use the mode specified when creating the directory. "
+"Enabling this option sets the mode to 0777, thus guaranteeing that default "
+"directory ACLs are propagated."
+msgstr ""
+"Ez a paraméter biztosítja, hogy ha az alapkönyvtárakban alapértelmezett ACL-"
+"ek vannak, azok mindig érvényesek legyenek az alkönyvtárak létrehozásakor. "
+"Az alapértelmezett viselkedés az, hogy a könyvtár létrehozásakor megadott "
+"módot használja. Ennek az opciónak az engedélyezésével a mód 0777-re áll, "
+"így garantálva az alapértelmezett könyvtár ACL-ek továbbítását."
+
+#: modules/univention/admin/handlers/shares/share.py:267
+msgid ""
+"This parameter controls the behavior of Samba when given a request by a "
+"client to obtain a byte range lock on a region of an open file, and the "
+"request has a time limit associated with it. If this parameter is set and "
+"the lock range requested cannot be immediately satisfied, samba will "
+"internally queue the lock request, and periodically attempt to obtain the "
+"lock until the timeout period expires."
+msgstr ""
+"Ez a paraméter szabályozza a Samba viselkedését, amikor egy kliens egy "
+"nyitott fájl egy részére byte-tartomány zárolást kér, és a kéréshez "
+"időkorlát is társul. Ha ez a paraméter be van állítva, és a kért zárolási "
+"tartomány nem tud azonnal teljesülni, a Samba belsőleg sorba állítja a "
+"zárolási kérést, és rendszeresen megpróbálja megszerezni a zárolást, amíg a "
+"várakozási idő le nem jár."
+
+#: modules/univention/admin/handlers/shares/share.py:235
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when an "
+"SMB client is manipulating the UNIX permission on a directory using the "
+"native Windows security dialog box. This parameter is applied as a mask "
+"(AND'ed with) to the changed permission bits, thus preventing any bits not "
+"in this mask from being modified. Essentially, zero bits in this mask may "
+"be treated as a set of bits the user is not allowed to change."
+msgstr ""
+"Ez a paraméter szabályozza, hogy mely UNIX jogosultsági bitek módosíthatók, "
+"amikor egy SMB-ügyfél a natív Windows biztonsági párbeszédpanelen keresztül "
+"módosítja a könyvtár UNIX jogosultságait. Ez a paraméter maszk formájában "
+"(AND művelettel) kerül alkalmazásra a megváltozott jogosultsági bitekre, "
+"így megakadályozva, hogy a maszkban nem szereplő bitek módosuljanak. "
+"Lényegében a maszkban szereplő nulla bitek olyan bitekként kezelhetők, "
+"amelyeket a felhasználó nem módosíthat."
+
+#: modules/univention/admin/handlers/shares/share.py:251
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when an "
+"SMB client is manipulating the UNIX permission on a directory using the "
+"native Windows security dialog box. This parameter is applied as a mask "
+"(OR'ed with) to the changed permission bits, thus forcing any bits in this "
+"mask that the user may have modified to be on. Essentially, one bits in "
+"this mask may be treated as a set of bits that, when modifying security on "
+"a directory, the user has always set to be 'on'."
+msgstr ""
+"Ez a paraméter szabályozza, hogy mely UNIX jogosultsági bitek módosíthatók, "
+"amikor egy SMB-ügyfél a natív Windows biztonsági párbeszédpanelen keresztül "
+"módosítja egy könyvtár UNIX jogosultságait. Ez a paraméter maszk formájában "
+"(OR művelettel) kerül alkalmazásra a módosított jogosultsági bitekre, így a "
+"maszkban lévő, a felhasználó által esetlegesen módosított bitek "
+"kényszerítve lesznek bekapcsolásra. Lényegében a maszkban lévő bitek egy "
+"bitkészletként kezelhetők, amelyeket a felhasználó a könyvtár biztonsági "
+"beállításainak módosításakor mindig „be” állított."
+
+#: modules/univention/admin/handlers/shares/share.py:227
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when an "
+"SMB client is manipulating the UNIX permission on a file using the native "
+"Windows security dialog box. This parameter is applied as a mask (AND'ed "
+"with) to the changed permission bits, thus preventing any bits not in this "
+"mask from being modified. Essentially, zero bits in this mask may be "
+"treated as a set of bits the user is not allowed to change."
+msgstr ""
+"Ez a paraméter szabályozza, hogy mely UNIX jogosultsági bitek módosíthatók, "
+"amikor egy SMB-ügyfél a natív Windows biztonsági párbeszédpanelen keresztül "
+"módosítja egy fájl UNIX jogosultságait. Ez a paraméter maszk formájában "
+"(AND művelettel) kerül alkalmazásra a módosított jogosultsági bitekre, így "
+"megakadályozva, hogy a maszkban nem szereplő bitek módosításra kerüljenek. "
+"Lényegében a maszkban szereplő nulla bitek olyan bitekként kezelhetők, "
+"amelyeket a felhasználó nem módosíthat."
+
+#: modules/univention/admin/handlers/shares/share.py:243
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when an "
+"SMB client is manipulating the UNIX permission on a file using the native "
+"Windows security dialog box. This parameter is applied as a mask (OR'ed "
+"with) to the changed permission bits, thus forcing any bits in this mask "
+"that the user may have modified to be on. Essentially, one bits in this "
+"mask may be treated as a set of bits that, when modifying security on a "
+"file, the user has always set to be 'on'."
+msgstr ""
+"Ez a paraméter szabályozza, hogy mely UNIX jogosultsági bitek módosíthatók, "
+"amikor egy SMB-ügyfél a natív Windows biztonsági párbeszédpanelen keresztül "
+"módosítja egy fájl UNIX jogosultságait. Ez a paraméter maszk formájában (OR "
+"művelettel) kerül alkalmazásra a megváltozott jogosultsági bitekre, így a "
+"maszkban lévő, a felhasználó által esetlegesen módosított bitek "
+"kényszerítve vannak bekapcsolásra. Lényegében a maszkban lévő bitek egy "
+"sorozatként kezelhetők, amelyeket a felhasználó a fájl biztonsági "
+"beállításainak módosításakor mindig „be” állított."
+
+#: modules/univention/admin/handlers/shares/share.py:290
+msgid ""
+"This parameter controls whether Samba supports level2 (read-only) oplocks "
+"on a share. Level2, or read-only oplocks allow SMB clients that have an "
+"oplock on a file to downgrade from a read-write oplock to a read-only "
+"oplock once a second client opens the file (instead of releasing all "
+"oplocks on a second open, as in traditional, exclusive oplocks). This "
+"allows all openers of the file that support level2 oplocks to cache the "
+"file for read-ahead only (ie. they may not cache writes or lock requests) "
+"and increases performance for many accesses of files that are not commonly "
+"written (such as application .EXE files). Once one of the clients which "
+"have a read-only oplock writes to the file all clients are notified (no  "
+"reply  is  needed or waited for) and told to break their oplocks to "
+"\"none\" and delete any read-ahead caches. It is recommended that this "
+"parameter be turned on to speed access to shared executables."
+msgstr ""
+"Ez a paraméter szabályozza, hogy a Samba támogatja-e a 2. szintű (csak "
+"olvasható) oplockokat egy megosztott fájlon. A 2. szintű, vagy csak "
+"olvasható oplockok lehetővé teszik az SMB-kliensek számára, amelyek "
+"oplockkal rendelkeznek egy fájlon, hogy írásvédett oplockról csak olvasható "
+"oplockra váltsanak, amint egy második kliens megnyitja a fájlt (ahelyett, "
+"hogy az összes oplockot feloldaná egy második megnyitáskor, mint a "
+"hagyományos, kizárólagos oplockok esetében). Ez lehetővé teszi a fájl "
+"összes megnyitója számára, amely támogatja a 2. szintű oplockokat, hogy a "
+"fájlt csak előre olvasásra gyorsítótárazzák (azaz nem gyorsítótárazzák az "
+"írási vagy zárolási kérelmeket), és növeli a teljesítményt a nem gyakran "
+"írt fájlok (például az alkalmazás .EXE fájljai) elérésénél. Amint az egyik "
+"csak olvasható oplockkal rendelkező kliens ír a fájlba, az összes kliens "
+"értesítést kap (nincs szükség válaszra, és nem is várnak rá), és arra "
+"utasítják, hogy törjék fel az oplockjaikat „nincs” értékre, és töröljék az "
+"előre olvasott gyorsítótárakat. A megosztott végrehajtható fájlokhoz való "
+"hozzáférés felgyorsítása érdekében ajánlott ezt a paramétert bekapcsolni."
+
+#: modules/univention/admin/handlers/shares/share.py:219
+msgid ""
+"This parameter specifies a set of UNIX mode bit permissions that will "
+"always be set on a directory created by Samba. This is done by bitwise "
+"'OR'ing these bits onto the mode bits of a directory that is being created "
+"or having its permissions changed. The modes in this parameter are bitwise "
+"'OR'ed onto the directory mode after the mask set in the create mask "
+"parameter is applied."
+msgstr ""
+"Ez a paraméter UNIX mód bitengedélyeket határoz meg, amelyek mindig be "
+"lesznek állítva a Samba által létrehozott könyvtárakra. Ez úgy történik, "
+"hogy ezeket a biteket bitenként 'VAGY' művelettel rákapcsoljuk a "
+"létrehozandó vagy módosítandó könyvtár engedélyeit tartalmazó könyvtár "
+"módbitjeire. A paraméterben található módok bitenként 'VAGY' művelettel "
+"rákapcsolódnak a könyvtár módjára, miután a create mask paraméterben "
+"beállított maszkot alkalmaztuk."
+
+#: modules/univention/admin/handlers/shares/share.py:211
+msgid ""
+"This parameter specifies a set of UNIX mode bit permissions that will "
+"always be set on a file created by Samba. This is done by bitwise 'OR'ing "
+"these bits onto the mode bits of a file that is being created or having its "
+"permissions changed. The modes in this parameter are bitwise 'OR'ed onto "
+"the file mode after the mask set in the create mask parameter is applied."
+msgstr ""
+"Ez a paraméter egy sor UNIX mód bitengedélyt határoz meg, amelyek mindig be "
+"lesznek állítva a Samba által létrehozott fájlokon. Ez úgy történik, hogy "
+"ezeket a biteket bitenként 'VAGY' művelettel rákapcsoljuk a létrehozandó "
+"vagy módosítandó engedélyű fájl módbitjeire. A paraméterben található módok "
+"bitenként 'VAGY' művelettel rákapcsolódnak a fájlmódra, miután a create "
+"mask paraméterben beállított maszkot alkalmaztuk."
+
+#: modules/univention/admin/handlers/shares/share.py:359
+msgid ""
+"This specifies a UNIX group name that will be assigned as the default "
+"primary group for all users connecting to this service. This is useful for "
+"sharing files by ensuring that all access to files on the service will use "
+"the named group for their permissions checking. Thus, by assigning "
+"permissions for this group to the files and directories within this service "
+"the Samba administrator can restrict or allow sharing of these files."
+msgstr ""
+"Ez egy UNIX csoportnevet ad meg, amely alapértelmezett elsődleges "
+"csoportként lesz hozzárendelve az ehhez a szolgáltatáshoz csatlakozó összes "
+"felhasználó számára. Ez hasznos fájlok megosztásakor, mivel biztosítja, "
+"hogy a szolgáltatáson belüli összes fájlhoz való hozzáférés a megnevezett "
+"csoportot használja az engedélyek ellenőrzéséhez. Így a Samba rendszergazda "
+"a csoporthoz tartozó engedélyek hozzárendelésével a szolgáltatáson belüli "
+"fájlokhoz és könyvtárakhoz korlátozhatja vagy engedélyezheti ezen fájlok "
+"megosztását."
+
+#: modules/univention/admin/handlers/shares/share.py:353
+msgid ""
+"This specifies a UNIX user name that will be assigned as the default user "
+"for all users connecting to this service. This is useful for sharing files. "
+"You should also use it carefully as using it incorrectly can cause security "
+"problems."
+msgstr ""
+"Ez egy UNIX felhasználónevet ad meg, amely alapértelmezett felhasználóként "
+"lesz hozzárendelve az ehhez a szolgáltatáshoz csatlakozó összes felhasználó "
+"számára. Ez hasznos fájlok megosztásához. Óvatosan kell használni, mivel a "
+"helytelen használat biztonsági problémákat okozhat."
+
+#: modules/univention/admin/handlers/shares/share.py:275
+msgid ""
+"This value controls the handling of file locking in the server. If strict "
+"locking is set to Auto (the default), the server performs file lock checks "
+"only on non-oplocked files. As most Windows redirectors perform file "
+"locking checks locally on oplocked files this is a good trade-off for "
+"improved performance. If set to yes, the server will check every read and "
+"write access for file locks, and deny access if locks exist. This can be "
+"slow on some systems. If strict locking is disabled, the server performs "
+"file lock checks only if the client explicitly asks for them."
+msgstr ""
+"Ez az érték szabályozza a fájlzárolás kezelését a szerveren. Ha a szigorú "
+"zárolás Automatikus értékre van állítva (alapértelmezett), a szerver csak a "
+"nem zárolt fájlokon végez fájlzárolási ellenőrzéseket. Mivel a legtöbb "
+"Windows átirányító helyben végez fájlzárolási ellenőrzéseket a zárolt "
+"fájlokon, ez egy jó kompromisszum a jobb teljesítmény érdekében. Ha igen "
+"értékre van állítva, a szerver minden olvasási és írási hozzáférést "
+"ellenőriz a fájlzárolások szempontjából, és megtagadja a hozzáférést, ha "
+"vannak zárolások. Ez egyes rendszereken lassú lehet. Ha a szigorú zárolás "
+"le van tiltva, a szerver csak akkor végez fájlzárolási ellenőrzéseket, ha "
+"az ügyfél kifejezetten kéri azokat."
+
+#: modules/univention/admin/handlers/shares/share.py:101
+msgid ""
+"UNIX Access rights to the exported root directory. If the setgid option is "
+"set for a directory, files saved there inherit the directories owner group. "
+"If further directories are created, they also inherit the option. If the "
+"sticky bit option is enabled for a directory, files in this directory can "
+"only be deleted by the owner of the file or the root user."
+msgstr ""
+"UNIX Hozzáférési jogok az exportált gyökérkönyvtárhoz. Ha a setgid opció be "
+"van állítva egy könyvtárhoz, az ott mentett fájlok öröklik a könyvtárak "
+"tulajdonoscsoportját. Ha további könyvtárak jönnek létre, azok is öröklik "
+"az opciót. Ha a ragadós bit opció engedélyezve van egy könyvtárhoz, az "
+"ebben a könyvtárban található fájlokat csak a fájl tulajdonosa vagy a root "
+"felhasználó törölheti."
+
+#: modules/univention/admin/handlers/shares/share.py:117
+msgid "Use synchronous or asynchronous mode for the NFS share."
+msgstr "Használjon szinkron vagy aszinkron módot az NFS megosztáshoz."
+
+#: modules/univention/admin/handlers/shares/share.py:179
+msgid ""
+"Users who have write access to a file or directory are able to change the "
+"permissions "
+msgstr ""
+"Azok a felhasználók, akik írási hozzáféréssel rendelkeznek egy fájlhoz vagy "
+"könyvtárhoz, módosíthatják az engedélyeket "
+
+#: modules/univention/admin/handlers/shares/share.py:178
+msgid "Users with write access may modify permissions"
+msgstr ""
+"Írási hozzáféréssel rendelkező felhasználók módosíthatják az engedélyeket"
+
+#: modules/univention/admin/handlers/shares/share.py:412
+msgid "VFS objects"
+msgstr "VFS objektumok"
+
+#: modules/univention/admin/handlers/shares/share.py:332
+msgid "Valid users or groups"
+msgstr "Érvényes felhasználók vagy csoportok"
+
+#: modules/univention/admin/handlers/shares/share.py:203
+msgid ""
+"When a directory is created, the necessary permissions are calculated  "
+"according to the mapping from DOS modes to UNIX permissions, and the "
+"resulting UNIX mode is then bit-wise 'AND'ed with this parameter. This "
+"parameter may be thought of as a bit-wise MASK for the UNIX modes of a "
+"directory. Any bit not set here will be removed from the modes set on a "
+"directory when it is created."
+msgstr ""
+"Egy könyvtár létrehozásakor a szükséges jogosultságokat a DOS módok és a "
+"UNIX jogosultságok közötti leképezés alapján számítja ki a rendszer, majd "
+"az így létrejövő UNIX módot bitenként 'ÉS' művelettel köti össze ezzel a "
+"paraméterrel. Ez a paraméter tekinthető egy könyvtár UNIX módjainak "
+"bitenkénti MASZKjának. Minden itt be nem állított bit eltávolításra kerül a "
+"könyvtár létrehozásakor beállított módokból."
+
+#: modules/univention/admin/handlers/shares/share.py:195
+msgid ""
+"When a file is created, the necessary permissions are calculated according "
+"to the mapping from DOS modes to UNIX permissions, and the resulting UNIX "
+"mode is then bit-wise 'AND'ed with this parameter. This parameter may be "
+"thought of as a bit-wise MASK for the UNIX modes of a file. Any bit not set "
+"here will be removed from the modes set on a file when it is created."
+msgstr ""
+"Egy fájl létrehozásakor a szükséges jogosultságokat a DOS módok és a UNIX "
+"jogosultságok közötti leképezés alapján számítja ki a rendszer, majd az így "
+"létrejövő UNIX módot bitenként 'ÉS' művelettel köti össze ezzel a "
+"paraméterrel. Ez a paraméter tekinthető egy bitenkénti MASZK-nak a fájl "
+"UNIX módjaihoz. Minden itt be nem állított bit eltávolításra kerül a fájl "
+"létrehozásakor beállított módokból."
+
+#: modules/univention/admin/handlers/shares/share.py:125
+msgid ""
+"When only a subtree of a mounted filesystem is exported this option ensures "
+"that an accessed file really is in that subtree. (May cause complications "
+"with renamed files.)"
+msgstr ""
+"Ha egy csatolt fájlrendszernek csak egy részfáját exportáljuk, ez a "
+"beállítás biztosítja, hogy a hozzáfért fájl valóban abban a részfában "
+"legyen. (Átnevezett fájlok esetén bonyodalmakat okozhat.)"
+
+#: modules/univention/admin/handlers/shares/printergroup.py:58
+#: modules/univention/admin/handlers/shares/share.py:155
+#: modules/univention/admin/handlers/shares/print.py:45
+#: modules/univention/admin/handlers/shares/printer.py:101
+msgid "Windows name"
+msgstr "Windows név"
+
+#: modules/univention/admin/handlers/shares/share.py:23
+msgid "disable"
+msgstr "letiltás"
+
+#: modules/univention/admin/handlers/shares/share.py:23
+msgid "documents"
+msgstr "dokumentumok"
+
+#: modules/univention/admin/handlers/shares/printer.py:34
+msgid "https://docs.software-univention.de/manual-5.2.html#print::shares"
+msgstr "https://docs.software-univention.de/manual-5.2.html#print::shares"
+
+#: modules/univention/admin/handlers/shares/share.py:23
+msgid "manual"
+msgstr "kézikönyv"
+
+#: modules/univention/admin/handlers/shares/share.py:23
+msgid "programs"
+msgstr "programok"
+
+#: modules/univention/admin/handlers/shares/share.py:699
+msgid "use"
+msgstr "használat"
+
+#: modules/univention/admin/handlers/shares/share.py:696
+msgid "user"
+msgstr "felhasználó"
+
+#: modules/univention/admin/handlers/shares/share.py:698
+msgid "users"
+msgstr "felhasználók"
+
+#: modules/univention/admin/handlers/shares/share.py:695
+msgid "uses"
+msgstr "használja"

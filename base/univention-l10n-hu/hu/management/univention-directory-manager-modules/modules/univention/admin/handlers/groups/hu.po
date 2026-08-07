@@ -1,0 +1,155 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-12-02 22:51+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/groups/group.py:95
+msgid "AD group type"
+msgstr "AD csoport típus"
+
+#: modules/univention/admin/handlers/groups/group.py:96
+msgid "Active Directory group type"
+msgstr "Active Directory csoporttípus"
+
+#: modules/univention/admin/handlers/groups/group.py:192
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/groups/group.py:105
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/groups/group.py:192
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/groups/group.py:31
+#: modules/univention/admin/handlers/groups/group.py:32
+msgid "Group"
+msgstr "Csoport"
+
+#: modules/univention/admin/handlers/groups/group.py:65
+#: modules/univention/admin/handlers/groups/group.py:212
+msgid "Group ID"
+msgstr "Csoport ID"
+
+#: modules/univention/admin/handlers/groups/group.py:193
+msgid "Group account"
+msgstr "Csoportfiók"
+
+#: modules/univention/admin/handlers/groups/group.py:33
+#: modules/univention/admin/handlers/groups/group.py:153
+msgid "Groups"
+msgstr "Csoportok"
+
+#: modules/univention/admin/handlers/groups/group.py:172
+msgid "Groups that are allowed to send e-mails to the group"
+msgstr "Csoportok, amelyek e-maileket küldhetnek a csoportnak"
+
+#: modules/univention/admin/handlers/groups/group.py:206
+msgid "Host members"
+msgstr "Gazdagép tagok"
+
+#: modules/univention/admin/handlers/groups/group.py:206
+msgid "Host members of this group"
+msgstr "Gazdagép tagok"
+
+#: modules/univention/admin/handlers/groups/group.py:124
+msgid "Hosts"
+msgstr "Gazdagépek"
+
+#: modules/univention/admin/handlers/groups/group.py:212
+msgid "ID of this group"
+msgstr "A csoport azonosítója"
+
+#: modules/univention/admin/handlers/groups/group.py:181
+msgid "Immutable Identifier of the source IAM"
+msgstr "A forrás IAM megváltoztathatatlan azonosítója"
+
+#: modules/univention/admin/handlers/groups/group.py:182
+msgid "Immutable attribute referencing the name of the source IAM"
+msgstr "A forrás IAM nevére hivatkozó megváltoztathatatlan attribútum"
+
+#: modules/univention/admin/handlers/groups/group.py:573
+#, python-format
+msgid "It is used as %s."
+msgstr "%s-ként használatos."
+
+#: modules/univention/admin/handlers/groups/group.py:201
+msgid "Mail"
+msgstr "E-mail"
+
+#: modules/univention/admin/handlers/groups/group.py:135
+msgid "Mail address"
+msgstr "E-mail cím"
+
+#: modules/univention/admin/handlers/groups/group.py:201
+msgid "Mail settings of this group"
+msgstr "A csoport levelezési beállításai"
+
+#: modules/univention/admin/handlers/groups/group.py:88
+msgid "Manage samba privileges"
+msgstr "Samba jogosultságok kezelése"
+
+#: modules/univention/admin/handlers/groups/group.py:143
+#: modules/univention/admin/handlers/groups/group.py:209
+msgid "Member of"
+msgstr "A következő tagja"
+
+#: modules/univention/admin/handlers/groups/group.py:196
+msgid "Members of this group"
+msgstr "A csoport tagjai"
+
+#: modules/univention/admin/handlers/groups/group.py:209
+msgid "Membership in other groups"
+msgstr "Tagság más csoportokban"
+
+#: modules/univention/admin/handlers/groups/group.py:56
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/groups/group.py:43
+msgid "Posix group"
+msgstr "Posix csoport"
+
+#: modules/univention/admin/handlers/groups/group.py:72
+msgid "Relative ID"
+msgstr "Relatív azonosító"
+
+#: modules/univention/admin/handlers/groups/group.py:48
+msgid "Samba group"
+msgstr "Szamba csoport"
+
+#: modules/univention/admin/handlers/groups/group.py:87
+msgid "Samba privilege"
+msgstr "Samba jogosultság"
+
+#: modules/univention/admin/handlers/groups/group.py:114
+msgid "Users"
+msgstr "Felhasználók"
+
+#: modules/univention/admin/handlers/groups/group.py:163
+msgid "Users that are allowed to send e-mails to the group"
+msgstr "Felhasználók, akik jogosultak e-maileket küldeni a csoportnak"
+
+#: modules/univention/admin/handlers/groups/group.py:215
+msgid "Windows"
+msgstr "Windows"
+
+#: modules/univention/admin/handlers/groups/group.py:215
+msgid "Windows account settings"
+msgstr "Windows fiókbeállítások"
+
+#: modules/univention/admin/handlers/groups/group.py:79
+msgid "Windows group type"
+msgstr "Windows csoport típusa"

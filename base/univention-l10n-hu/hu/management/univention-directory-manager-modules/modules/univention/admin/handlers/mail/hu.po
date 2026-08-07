@@ -1,0 +1,160 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-12-03 19:09+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/mail/folder.py:101
+#: modules/univention/admin/handlers/mail/folder.py:102
+msgid "Access Rights"
+msgstr "Hozzáférési jogok"
+
+#: modules/univention/admin/handlers/mail/folder.py:101
+msgid "Access rights for shared folder"
+msgstr "Hozzáférési jogok a megosztott mappához"
+
+#: modules/univention/admin/handlers/mail/lists.py:85
+msgid "Authorized groups"
+msgstr "Engedélyezett csoportok"
+
+#: modules/univention/admin/handlers/mail/lists.py:82
+msgid "Authorized users"
+msgstr "Jogosult felhasználók"
+
+#: modules/univention/admin/handlers/mail/mail.py:40
+#: modules/univention/admin/handlers/mail/folder.py:93
+#: modules/univention/admin/handlers/mail/domain.py:47
+#: modules/univention/admin/handlers/mail/lists.py:75
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/mail/lists.py:40
+msgid "Description"
+msgstr "Leírás"
+
+#: modules/univention/admin/handlers/mail/folder.py:85
+msgid "E-Mail address"
+msgstr "E-mail cím"
+
+#: modules/univention/admin/handlers/mail/mail.py:40
+#: modules/univention/admin/handlers/mail/folder.py:93
+#: modules/univention/admin/handlers/mail/domain.py:47
+#: modules/univention/admin/handlers/mail/lists.py:75
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/mail/folder.py:94
+msgid "General IMAP mail folder settings"
+msgstr "Általános IMAP levelezési mappa beállítások"
+
+#: modules/univention/admin/handlers/mail/lists.py:76
+msgid "General mailing list settings"
+msgstr "Általános levelezőlista beállítások"
+
+#: modules/univention/admin/handlers/mail/folder.py:67
+msgid "Group ACL"
+msgstr "Csoport ACL"
+
+#: modules/univention/admin/handlers/mail/lists.py:66
+#: modules/univention/admin/handlers/mail/lists.py:85
+msgid "Groups that are allowed to send e-mails to the list"
+msgstr "Csoportok, amelyek e-mailt küldhetnek a listára"
+
+#: modules/univention/admin/handlers/mail/folder.py:74
+msgid ""
+"How many MB of emails can be stored in the shared folder (independent of "
+"the users that stored them)."
+msgstr ""
+"Hány MB e-mail tárolható a megosztott mappában (függetlenül attól, hogy "
+"mely felhasználók tárolták azokat)."
+
+#: modules/univention/admin/handlers/mail/folder.py:22
+msgid "IMAP mail folder"
+msgstr "IMAP levelezési mappa"
+
+#: modules/univention/admin/handlers/mail/folder.py:23
+msgid "IMAP mail folders"
+msgstr "IMAP levelezési mappák"
+
+#: modules/univention/admin/handlers/mail/mail.py:22
+msgid "Mail"
+msgstr "E-mail"
+
+#: modules/univention/admin/handlers/mail/lists.py:53
+msgid "Mail address"
+msgstr "E-mail cím"
+
+#: modules/univention/admin/handlers/mail/folder.py:52
+#: modules/univention/admin/handlers/mail/domain.py:21
+#: modules/univention/admin/handlers/mail/domain.py:22
+msgid "Mail domain"
+msgstr "Levelezési domain"
+
+#: modules/univention/admin/handlers/mail/domain.py:48
+msgid "Mail domain description"
+msgstr "Levelezési domain leírása"
+
+#: modules/univention/admin/handlers/mail/domain.py:37
+msgid "Mail domain name"
+msgstr "Levelezési domain név"
+
+#: modules/univention/admin/handlers/mail/domain.py:23
+msgid "Mail domains"
+msgstr "Levelezési domainek"
+
+#: modules/univention/admin/handlers/mail/folder.py:21
+msgid "Mail folder (IMAP)"
+msgstr "Levelezési mappa (IMAP)"
+
+#: modules/univention/admin/handlers/mail/folder.py:78
+msgid "Mail home server"
+msgstr "Saját levelezési szerver"
+
+#: modules/univention/admin/handlers/mail/mail.py:23
+msgid "Mail object"
+msgstr "Levelezési objektum"
+
+#: modules/univention/admin/handlers/mail/mail.py:24
+msgid "Mail objects"
+msgstr "Levelezési objektumok"
+
+#: modules/univention/admin/handlers/mail/lists.py:17
+#: modules/univention/admin/handlers/mail/lists.py:18
+msgid "Mailing list"
+msgstr "Levelezőlista"
+
+#: modules/univention/admin/handlers/mail/lists.py:19
+msgid "Mailing lists"
+msgstr "Levelezőlisták"
+
+#: modules/univention/admin/handlers/mail/lists.py:46
+msgid "Members"
+msgstr "Tagok"
+
+#: modules/univention/admin/handlers/mail/mail.py:32
+#: modules/univention/admin/handlers/mail/folder.py:43
+#: modules/univention/admin/handlers/mail/lists.py:32
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/mail/folder.py:73
+msgid "Quota in MB"
+msgstr "Kvóta MB-ban"
+
+#: modules/univention/admin/handlers/mail/folder.py:61
+msgid "User ACL"
+msgstr "Felhasználói ACL"
+
+#: modules/univention/admin/handlers/mail/lists.py:59
+#: modules/univention/admin/handlers/mail/lists.py:82
+msgid "Users that are allowed to send e-mails to the list"
+msgstr "Felhasználók, akik jogosultak e-maileket küldeni a listára"

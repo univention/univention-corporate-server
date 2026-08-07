@@ -1,0 +1,493 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-updater package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-updater\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-11-26 16:24+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/updater/UpdatesPage.js:484
+msgid "%(name)s: Version %(old)s can be updated to %(new)s"
+msgstr "%(name)s: A(z) %(old)s verzió frissíthető a(z) %(new)s verzióra"
+
+#: umc/js/updater/UpdatesPage.js:252 umc/js/updater/UpdatesPage.js:275
+msgid "... loading data ..."
+msgstr "... adatok betöltése ..."
+
+#: umc/js/updater/_LogViewer.js:51 umc/js/updater/_LogViewer.js:189
+#: umc/js/updater/_LogViewer.js:215
+msgid "... loading log file ..."
+msgstr "... naplófájl betöltése ..."
+
+#: umc/js/updater.js:219
+msgid "1 package to be REMOVED"
+msgstr "1 csomag ELTÁVOLÍTÁSRA kerül"
+
+#: umc/js/updater.js:249
+msgid "1 package to be installed"
+msgstr "1 csomag telepítése"
+
+#: umc/js/updater.js:234
+msgid "1 package to be updated"
+msgstr "1 csomag frissítésre kerül"
+
+#: umc/js/updater.js:309 umc/js/updater.js:442
+#: umc/js/updater/ProgressPage.js:299
+msgid ""
+"<b>Leave the system up and running</b> at any moment during the update!"
+msgstr ""
+"A frissítés során bármikor <b>hagyd működőképes állapotban a rendszert</b> !"
+
+#: umc/js/updater/UpdatesPage.js:577
+msgid ""
+"<b>Warning</b>: You are currently using UCS {0}. No more regular security "
+"updates will be released for this version!<br>Update the system to a newer "
+"UCS version or, alternatively, request an extended maintenance for this "
+"version. <a target='_blank' href='https://www.univention.com/contact/'>Feel "
+"free to contact us if you want to know more</a>."
+msgstr ""
+"<b>Figyelmeztetés</b> : Jelenleg az UCS {0}-et használod. Ehhez a verzióhoz "
+"nem adunk ki több rendszeres biztonsági frissítést!<br> Frissítsd a "
+"rendszert egy újabb UCS verzióra, vagy kérj hosszabb karbantartást ehhez a "
+"verzióhoz. <a target='_blank' href='https://www.univention.com/"
+"contact/'>Fordulj hozzánk bizalommal, ha többet szeretne megtudni</a> ."
+
+#: umc/js/updater/UpdatesPage.js:575
+msgid ""
+"<b>Warning</b>: You are currently using UCS {0}. No more security updates "
+"will be released for this version. Please update the system to a newer UCS "
+"version!"
+msgstr ""
+"<b>Figyelmeztetés</b> : Jelenleg az UCS {0} verzióját használod. Ehhez a "
+"verzióhoz nem adnak ki több biztonsági frissítést. Kérjük, frissítsd a "
+"rendszert egy újabb UCS verzióra!"
+
+#: umc/js/updater/UpdatesPage.js:576
+msgid ""
+"<br>Enterprise subscriptions offer extended maintenance for some UCS "
+"versions. Detailed information can be found at the <a target='_blank' "
+"href='https://www.univention.com/products/prices-and-"
+"subscriptions/'>Univention Website</a>."
+msgstr ""
+"<br>A vállalati előfizetések kiterjesztett karbantartást kínálnak egyes UCS "
+"verziókhoz. Részletes információkért látogass el az <a target='_blank' "
+"href='https://www.univention.com/products/prices-and-"
+"subscriptions/'>Univention weboldalára</a> ."
+
+#: umc/js/updater.js:30
+msgid "<p><b>Caution!</b> Currently a release update is performed!</p>"
+msgstr "<p><b>Figyelem!</b> Jelenleg egy kiadásfrissítés van folyamatban!</p>"
+
+#: umc/js/updater.js:30
+msgid "<p>Leave the system up and running until the update is completed!</p>"
+msgstr ""
+"<p>Hagyd a rendszert folyamatosan működni, amíg a frissítés be nem "
+"fejeződik!</p>"
+
+#: umc/js/updater.js:38
+#, javascript-format
+msgid ""
+"An update for UCS is available. Please visit the %s to install the updates."
+msgstr ""
+"Elérhető egy frissítés az UCS-hez. Kérjük, látogasd meg a %s webhelyet a "
+"frissítések telepítéséhez."
+
+#: umc/js/updater/UpdatesPage.js:175
+msgid "An update for the app is available which may solve this issue."
+msgstr ""
+"Elérhető egy frissítés az alkalmazáshoz, amely megoldhatja ezt a problémát."
+
+#: umc/js/updater.js:186
+msgid "An update of the system is being executed."
+msgstr "A rendszer frissítése folyamatban van."
+
+#: umc/js/updater/UpdatesPage.js:356
+msgid "App Center updates"
+msgstr "App Center frissítések"
+
+#: umc/js/updater.js:187
+msgid "Are you sure to close the updater log view?"
+msgstr "Biztosan bezárod a frissítőnapló nézetet?"
+
+#: umc/js/updater/UpdatesPage.js:52
+msgid "Available system updates"
+msgstr "Elérhető rendszerfrissítések"
+
+#: umc/js/updater/ProgressPage.js:51 umc/js/updater/ProgressPage.js:60
+msgid "Back"
+msgstr "Vissza"
+
+#: umc/js/updater.js:268 umc/js/updater.js:322
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/updater/UpdatesPage.js:304 umc/js/updater/UpdatesPage.js:464
+msgid "Check for package updates"
+msgstr "Csomagfrissítések keresése"
+
+#: umc/js/updater/ProgressPage.js:85
+msgid "Closing not possible while running a update."
+msgstr "A bezárás nem lehetséges frissítés futtatása közben."
+
+#: umc/js/updater/UpdatesPage.js:199
+msgid ""
+"Component '%(component)s' is not yet available for newer release versions."
+msgstr ""
+"A(z) „%(component)s” komponens még nem érhető el az újabb kiadású "
+"verziókhoz."
+
+#: umc/js/updater.js:316
+msgid ""
+"Consider <a href=\"https://docs.software-univention.de/\" "
+"target=\"_blank\">release notes and changelogs</a> as well as references "
+"posted in the <a href=\"https://help.univention.com/\" "
+"target=\"_blank\">Univention Help</a>."
+msgstr ""
+"Vedd figyelembe <a href=\"https://docs.software-univention.de/\" "
+"target=\"_blank\">a kiadási megjegyzéseket és a változásnaplókat,</a> "
+"valamint az <a href=\"https://help.univention.com/\" "
+"target=\"_blank\">Univention Súgójában</a> közzétett hivatkozásokat."
+
+#: umc/js/updater.js:313
+#, javascript-format
+msgid ""
+"Consider <a href=\"https://docs.software-univention.de/release-notes/%s/en/"
+"index.html\" target=\"_blank\">release notes and changelogs</a> as well as "
+"references posted in the <a href=\"https://help.univention.com/\" "
+"target=\"_blank\">Univention Help</a>."
+msgstr ""
+"Vedd figyelembe <a href=\"https://docs.software-univention.de/release-notes/"
+"%s/en/index.html\" target=\"_blank\">a kiadási megjegyzéseket és a "
+"változásnaplókat,</a> valamint az <a href=\"https://help.univention.com/\" "
+"target=\"_blank\">Univention Súgójában</a> közzétett hivatkozásokat."
+
+#: umc/js/updater.js:319
+msgid ""
+"Depending on the system performance, network connection and the installed "
+"software the update may take from 30 minutes up to several hours."
+msgstr ""
+"A rendszer teljesítményétől, a hálózati kapcsolattól és a telepített "
+"szoftvertől függően a frissítés 30 perctől akár több óráig is eltarthat."
+
+#: umc/js/updater/UpdatesPage.js:452
+msgid "Detailed information about the updates."
+msgstr "Részletes információk a frissítésekről."
+
+#: umc/js/updater.js:262
+msgid ""
+"Do you really want to perform the update/install/remove of the above "
+"packages?"
+msgstr ""
+"Biztosan végrehajtod a fenti csomagok frissítését/telepítését/eltávolítását?"
+
+#: umc/js/updater/ProgressPage.js:234
+msgid "Finish updates"
+msgstr "Frissítések befejezése"
+
+#: umc/js/updater/ProgressPage.js:98
+msgid ""
+"For the changes to take effect, it is recommended to perform a restart of "
+"the UMC server components."
+msgstr ""
+"A módosítások érvénybe léptetéséhez ajánlott az UMC szerver összetevőinek "
+"újraindítása."
+
+#: umc/js/updater/UpdatesPage.js:148
+msgid "Further release updates are available but cannot be installed."
+msgstr "További kiadási frissítések érhetők el, de nem telepíthetők."
+
+#: umc/js/updater/UpdatesPage.js:90 umc/js/updater/ProgressPage.js:91
+msgid ""
+"In order to complete the recently executed action, it is required to reboot "
+"the system."
+msgstr ""
+"A nemrég végrehajtott művelet befejezéséhez újra kell indítani a rendszert."
+
+#: umc/js/updater.js:271
+msgid "Install"
+msgstr "Telepítés"
+
+#: umc/js/updater/UpdatesPage.js:463
+msgid "Install package updates"
+msgstr "Csomag frissítés telepítése"
+
+#: umc/js/updater/UpdatesPage.js:292
+msgid "Install release update"
+msgstr "Kiadási frissítés telepítése"
+
+#: umc/js/updater/ProgressPage.js:230
+msgid "Investigate log further"
+msgstr "Ellenőrizd a naplót"
+
+#: umc/js/updater.js:188 umc/js/updater.js:309 umc/js/updater.js:443
+#: umc/js/updater/ProgressPage.js:300
+msgid ""
+"It is expected that the system may not respond (via web browser, SSH, etc.) "
+"during a period of up to several minutes during the update as services are "
+"stopped, updated, and restarted."
+msgstr ""
+"A frissítés során a szolgáltatások leállítása, frissítése és újraindítása "
+"miatt előfordulhat, hogy a rendszer akár több percig sem fog válaszolni "
+"(webböngészőn, SSH-n stb. keresztül)."
+
+#: umc/js/updater.js:311
+msgid ""
+"It is recommended to <b>test the update</b> in a separate test environment "
+"prior to the actual update."
+msgstr ""
+"Javasoljuk, hogy <b>a frissítést egy külön tesztkörnyezetben próbáld ki</b> "
+"a tényleges frissítés előtt."
+
+#: umc/js/updater/UpdatesPage.js:53
+msgid "Overview of all updates that affect the system as a whole."
+msgstr "Az összes frissítés áttekintése, amelyek a rendszer egészét érintik."
+
+#: umc/js/updater/UpdatesPage.js:221 umc/js/updater/UpdatesPage.js:268
+msgid "Package update status not yet checked"
+msgstr "A csomagfrissítés állapota még nincs ellenőrizve"
+
+#: umc/js/updater/UpdatesPage.js:351
+msgid "Package updates"
+msgstr "Csomagfrissítések"
+
+#: umc/js/updater/UpdatesPage.js:513
+msgid "Package updates are available. %(link)s"
+msgstr "Csomagfrissítések érhetők el. %(link)s"
+
+#: umc/js/updater.js:307
+msgid "Please respect the following guidelines for UCS updates:"
+msgstr ""
+"Kérjük, tartsd be az alábbi irányelveket az UCS frissítéseivel kapcsolatban:"
+
+#: umc/js/updater/UpdatesPage.js:315
+msgid "Reboot"
+msgstr "Újraindítás"
+
+#: umc/js/updater/UpdatesPage.js:334
+msgid "Reboot required"
+msgstr "Újraindítás szükséges"
+
+#: umc/js/updater.js:30
+msgid "Release update"
+msgstr "Kiadási frissítés"
+
+#: umc/js/updater/UpdatesPage.js:344
+msgid "Release updates"
+msgstr "Kiadási frissítések"
+
+#: umc/js/updater.js:264
+msgid "Start Upgrade?"
+msgstr "Frissítés indítása?"
+
+#: umc/js/updater/UpdatesPage.js:494
+msgid "The App Center is not available or currently unreachable"
+msgstr "Az Alkalmazásközpont nem érhető el, vagy jelenleg nem elérhető"
+
+#: umc/js/updater.js:343
+msgid ""
+"The Univention Updater action could not be started [Error {status}]: "
+"{message}"
+msgstr ""
+"A Univention Updater művelet nem indítható el [Hiba: {status}]: {message}"
+
+#: umc/js/updater/UpdatesPage.js:201
+msgid ""
+"The components '%(components)s' are not yet available for newer release "
+"versions."
+msgstr ""
+"A(z) „%(components)s” komponensek még nem érhetők el az újabb kiadású "
+"verziókhoz."
+
+#: umc/js/updater/UpdatesPage.js:397
+msgid ""
+"The currently installed release version is {ucs_version} "
+"errata{erratalevel}."
+msgstr ""
+"A jelenleg telepített kiadási verzió a következő: {ucs_version} "
+"errata{erratalevel}."
+
+#: umc/js/updater/UpdatesPage.js:399
+msgid "The currently installed release version is {ucs_version}."
+msgstr "A jelenleg telepített kiadási verzió a {ucs_version}."
+
+#: umc/js/updater/UpdatesPage.js:173
+msgid ""
+"The currently installed version of the application %(name)s is not "
+"available for all newer UCS releases."
+msgstr ""
+"Az alkalmazás jelenleg telepített verziója (%(name)s) nem érhető el az "
+"összes újabb UCS kiadáshoz."
+
+#: umc/js/updater.js:61
+#, javascript-format
+msgid ""
+"The currently used UCS version is out of maintenance. Please visit the %s "
+"for more information."
+msgstr ""
+"A jelenleg használt UCS verzió karbantartás alatt áll. További "
+"információkért látogasd meg a(z) %s oldalt."
+
+#: umc/js/updater/_LogViewer.js:135
+msgid ""
+"The log file exceeded {max} lines by {exceeded}. Please see the full "
+"logfile."
+msgstr ""
+"A naplófájl mérete {exceeded} sorral meghaladta a8z) {max} sort. Kérjük, "
+"tekintsd meg a teljes naplófájlt."
+
+#: umc/js/updater/ProgressPage.js:308
+msgid ""
+"The update failed, please examine the log file for the exact cause. Press "
+"the \"back\" button to close this view."
+msgstr ""
+"A frissítés sikertelen volt, kérjük, ellenőrizd a naplófájlt a pontos ok "
+"kiderítéséhez. Nyomja meg a „vissza” gombot a nézet bezárásához."
+
+#: umc/js/updater/ProgressPage.js:304
+msgid ""
+"The update has been successfully finished. Press the \"back\" button to "
+"close this view."
+msgstr ""
+"A frissítés sikeresen befejeződött. Nyomd meg a „vissza” gombot a nézet "
+"bezárásához."
+
+#: umc/js/updater.js:441 umc/js/updater/ProgressPage.js:298
+msgid "The update is being executed."
+msgstr "A frissítés végrehajtása folyamatban van."
+
+#: umc/js/updater.js:310
+msgid ""
+"The update should occur in a <b>maintenance window</b> as some services in "
+"the domain may not be available during the update."
+msgstr ""
+"A frissítésnek <b>karbantartási időszakban</b> kell történnie, mivel a "
+"frissítés alatt előfordulhat, hogy egyes szolgáltatások a domainben nem "
+"érhetők el."
+
+#: umc/js/updater.js:52
+#, javascript-format
+msgid "The update to %s failed. Please visit the %s for more information."
+msgstr ""
+"A(z) %s frissítése sikertelen. További információért látogassd meg a(z) %s "
+"oldalt."
+
+#: umc/js/updater/UpdatesPage.js:97 umc/js/updater/UpdatesPage.js:563
+#, javascript-format
+msgid ""
+"The update to %s failed. The log file /var/log/univention/updater.log may "
+"contain more information about this."
+msgstr ""
+"A(z) %s frissítése sikertelen volt. A /var/log/univention/updater.log "
+"naplófájl további információkat tartalmazhat erről."
+
+#: umc/js/updater/UpdatesPage.js:481
+msgid "There are App Center updates available."
+msgstr "Vannak elérhető App Center frissítések."
+
+#: umc/js/updater/UpdatesPage.js:489
+msgid "There are no App Center updates available."
+msgstr "Nincsenek elérhető App Center frissítések."
+
+#: umc/js/updater/UpdatesPage.js:514
+msgid "There are no package updates available."
+msgstr "Nincsenek elérhető csomagfrissítések."
+
+#: umc/js/updater/UpdatesPage.js:127 umc/js/updater/UpdatesPage.js:258
+msgid "There are no release updates available."
+msgstr "Nincsenek elérhető kiadási frissítések."
+
+#: umc/js/updater/UpdatesPage.js:181
+msgid "This also holds for:"
+msgstr "Ez a következőkre is vonatkozik:"
+
+#: umc/js/updater/ProgressPage.js:297
+msgid "UCS is being updated"
+msgstr "Az UCS frissítés alatt áll"
+
+#: umc/js/updater/ProgressPage.js:307
+msgid "UCS update failed"
+msgstr "UCS frissítése sikertelen"
+
+#: umc/js/updater/ProgressPage.js:303
+msgid "UCS update successful"
+msgstr "UCS frissítés sikeres"
+
+#: umc/js/updater/UpdatesPage.js:517
+msgid "Update availability could not be checked."
+msgstr "A frissítés elérhetőségét nem sikerült ellenőrizni."
+
+#: umc/js/updater/UpdatesPage.js:339
+msgid "Update failed"
+msgstr "Frissítés sikertelen"
+
+#: umc/js/updater.js:331 umc/js/updater.js:436
+msgid "Update notes"
+msgstr "Frissítési jegyzetek"
+
+#: umc/js/updater/ProgressPage.js:64
+msgid "Update progress"
+msgstr "Frissítési folyamat"
+
+#: umc/js/updater/UpdatesPage.js:112
+msgid "Update system up to release"
+msgstr "Frissítsd a rendszert a kiadásig"
+
+#: umc/js/updater.js:154
+msgid "Update to {release}"
+msgstr "Frissítés erre: {release}"
+
+#: umc/js/updater/UpdatesPage.js:51
+msgid "Updates"
+msgstr "Frissítések"
+
+#: umc/js/updater/UpdatesPage.js:179
+msgid ""
+"Using the %(app_center)s, you may also search for alternative apps or "
+"uninstall the application."
+msgstr ""
+"A %(app_center)s segítségével alternatív alkalmazásokat is kereshetsz, vagy "
+"eltávolíthattod az alkalmazást."
+
+#: umc/js/updater/UpdatesPage.js:323
+msgid "View log file"
+msgstr "Naplófájl megtekintése"
+
+#: umc/js/updater/UpdatesPage.js:177
+msgid "You may wait for the app to be released for the new UCS version."
+msgstr "Várd meg, amíg az alkalmazás megjelenik az új UCS verzióban."
+
+#: umc/js/updater.js:48 umc/js/updater/UpdatesPage.js:97
+#: umc/js/updater/UpdatesPage.js:559
+msgid "a new UCS version"
+msgstr "egy új UCS verzió"
+
+#: umc/js/updater/UpdatesPage.js:187
+msgid "no update available yet"
+msgstr "még nincs elérhető frissítés"
+
+#: umc/js/updater/UpdatesPage.js:185
+msgid "update available"
+msgstr "frissítés elérhető"
+
+#: umc/js/updater.js:221
+msgid "{count} packages to be REMOVED"
+msgstr "{count} csomag ELTÁVOLÍTÁSRA kerül"
+
+#: umc/js/updater.js:251
+msgid "{count} packages to be installed"
+msgstr "{count} csomag telepítése"
+
+#: umc/js/updater.js:236
+msgid "{count} packages to be updated"
+msgstr "{count} frissítendő csomag"

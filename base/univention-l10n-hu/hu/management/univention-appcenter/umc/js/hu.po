@@ -1,0 +1,1508 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-appcenter package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-08 23:16+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+
+#: umc/js/appcenter/requirements.js:317
+msgid ""
+"%(minimum)d MB of free RAM are required but only %(current)d MB are "
+"available."
+msgstr ""
+"%(minimum)d MB szabad RAM szükséges, de csak %(current)d MB áll "
+"rendelkezésre."
+
+#: umc/js/appcenter/requirements.js:322
+msgid ""
+"%(minimum)d MB of free disk space are required but only %(current)d MB are "
+"available."
+msgstr ""
+"%(minimum)d MB szabad lemezterület szükséges, de csak %(current)d MB áll "
+"rendelkezésre."
+
+#: umc/js/appcenter/requirements.js:179
+msgid ""
+"%(name)s cannot be installed on the current server role (%(current_role)s). "
+"In order to install the App, one of the following roles is necessary: %"
+"(allowed_roles)s"
+msgstr ""
+"A(z) %(name)s nem telepíthető a jelenlegi kiszolgálói szerepkörre (%"
+"(current_role)s). Az alkalmazás telepítéséhez a következő szerepkörök "
+"egyike szükséges: %(allowed_roles)s"
+
+#: umc/js/appcenter/requirements.js:159
+msgid "%(name)s only supports %(supported)s as architecture. %(msg)s"
+msgstr ""
+"A(z) %(name)s csak a(z) %(supported)s architektúrát támogatja. %(msg)s"
+
+#: umc/js/appcenter/AppDetailsPage.js:727 umc/js/appcenter/requirements.js:292
+msgid ""
+"%(name)s uses a container technology for enhanced security and "
+"compatibility."
+msgstr ""
+"A %(name)s konténertechnológiát használ a fokozott biztonság és "
+"kompatibilitás érdekében."
+
+#: umc/js/appcenter/PackagesPage.js:399
+msgid "%(verb)s %(ids)s"
+msgstr "%(verb)s %(ids)s"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:179
+#, javascript-format
+msgid ""
+"%d hosts were removed from the list because the App is installed there."
+msgstr ""
+"%d gazdagép eltávolítva a listáról, mert az alkalmazás telepítve van oda."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:184
+#, javascript-format
+msgid ""
+"%d hosts were removed from the list because the App requires a different "
+"server role than these hosts have."
+msgstr ""
+"%d gazdagép eltávolítva a listáról, mert az alkalmazás más kiszolgálói "
+"szerepkört igényel, mint ezek a gazdagépek."
+
+#: umc/js/appcenter/requirements.js:144
+#, javascript-format
+msgid ""
+"%s cannot be updated. The App is either not installed or no newer version "
+"is available."
+msgstr ""
+"A(z) %s nem frissíthető. Az alkalmazás vagy nincs telepítve, vagy nem "
+"érhető el újabb verzió."
+
+#: umc/js/appcenter/requirements.js:226
+#, javascript-format
+msgid "%s conflicts with the following Apps."
+msgstr "A(z) %s ütközik a következő alkalmazásokkal."
+
+#: umc/js/appcenter/requirements.js:210
+#, javascript-format
+msgid "%s conflicts with the following packages."
+msgstr "A(z) %s a következő csomagokkal ütközik."
+
+#: umc/js/appcenter/App.js:386 umc/js/appcenter/App.js:407
+#, javascript-format
+msgid "%s installed"
+msgstr "%s telepítve"
+
+#: umc/js/appcenter/requirements.js:149
+#, javascript-format
+msgid "%s is already installed."
+msgstr "A(z) %s már telepítve van."
+
+#: umc/js/appcenter/requirements.js:247
+#, javascript-format
+msgid "%s is required for the following Apps to work."
+msgstr "A következő alkalmazások működéséhez a(z) %s szükséges."
+
+#: umc/js/appcenter/Tiles.js:126
+#, javascript-format
+msgid "%s of %s Apps selected"
+msgstr "%s/%s alkalmazás kiválasztva"
+
+#: umc/js/appcenter/AppPostInstallWizard.js:71
+#, javascript-format
+msgid "%s on %s"
+msgstr "%s - %s"
+
+#: umc/js/appcenter/requirements.js:184
+#, javascript-format
+msgid "%s requires the following Apps."
+msgstr "A(z) %s a következő alkalmazásokat igényli."
+
+#: umc/js/appcenter/requirements.js:154
+#, javascript-format
+msgid "%s was discontinued and may not be installed anymore."
+msgstr ""
+"A(z) %s már nem támogatott, és előfordulhat, hogy már nem telepíthető."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:177
+#, javascript-format
+msgid ""
+"%s was removed from the list because the App is installed on this host."
+msgstr ""
+"A(z) %s alkalmazás eltávolítva a listáról, mert telepítve van ezen a "
+"gazdagépen."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:182
+#, javascript-format
+msgid ""
+"%s was removed from the list because the App requires a different server "
+"role than the one this host has."
+msgstr ""
+"A(z) %s eltávolítva a listáról, mert más kiszolgálói szerepkört igényel, "
+"mint amelyik ehhez a gazdagéphez tartozik."
+
+#: umc/js/appcenter/AppConfigDialog.js:149
+#, javascript-format
+msgid "%s: Configuring"
+msgstr "%s: beállítása"
+
+#: umc/js/appcenter/SearchForm.js:29
+msgid "--- all ---"
+msgstr "--- mind ---"
+
+#: umc/js/appcenter/PackagesPage.js:193
+#, javascript-format
+msgid "...<br>[%d more chars]"
+msgstr "...<br> [%d további karakterek]"
+
+#: umc/js/appcenter/AppDetailsContainer.js:216
+msgid "1 package is erroneous"
+msgstr "1 csomag hibás"
+
+#: umc/js/appcenter/AppDetailsContainer.js:214
+msgid "1 package will be installed / upgraded"
+msgstr "1 csomag telepítése/frissítése"
+
+#: umc/js/appcenter/AppDetailsContainer.js:215
+msgid "1 package will be removed"
+msgstr "1 csomag eltávolítása"
+
+#: umc/js/appcenter/AppDetailsPage.js:64
+msgid ""
+"<p><b>Note:</b> This information has been updated. Please read it again.</p>"
+msgstr ""
+"<p><b>Megjegyzés:</b> Ez az információ frissült. Kérjük, olvasd el újra.</p>"
+
+#: umc/js/appcenter/AppDetailsPage.js:63
+msgid ""
+"<p>Univention App Center is designed for easy and comfortable "
+"administration of Apps. It uses online services provided by Univention, for "
+"example, for downloading Apps, descriptions or graphics, or for the search "
+"function.</p><p>By using Univention App Center, you agree that originating "
+"user data may be stored and evaluated by Univention for product "
+"improvements as well as market research purposes. Usage data consists of "
+"information such as installing / uninstalling Apps or search queries. These "
+"will be transmitted to Univention together with a unique identification of "
+"the UCS system.</p><p>When installing and uninstalling some Apps, the App "
+"provider will be notified of the operation. The e-mail address used to "
+"activate the system is transferred to the provider. Other than that, no "
+"transfer of personal or individually assignable data is made to third "
+"parties.</p><p>"
+msgstr ""
+"<p>Az Univention App Center az alkalmazások egyszerű és kényelmes kezelését "
+"szolgálja. Az Univention által biztosított online szolgáltatásokat "
+"használja, például alkalmazások letöltéséhez, leírásokhoz vagy grafikákhoz, "
+"illetve a keresési funkcióhoz.</p><p> Az Univention App Center "
+"használatával hozzájárulsz ahhoz, hogy a felhasználói adatokat az "
+"Univention tárolja és kiértékelje termékfejlesztési, valamint piackutatási "
+"célokból. A használati adatok olyan információkat tartalmaznak, mint az "
+"alkalmazások telepítése/eltávolítása vagy a keresési lekérdezések. Ezeket "
+"az UCS rendszer egyedi azonosítójával együtt továbbítják az Univention-nek."
+"</p><p> Egyes alkalmazások telepítésekor és eltávolításakor az alkalmazás "
+"szolgáltatója értesítést kap a műveletről. A rendszer aktiválásához "
+"használt e-mail címet továbbítják a szolgáltatónak. Ezen túlmenően "
+"személyes vagy egyénileg hozzárendelhető adatokat nem továbbítanak harmadik "
+"félnek.</p><p>"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:48
+msgid "A file is present."
+msgstr "Egy fájl elérhető."
+
+#: umc/js/appcenter/AppDetailsPage.js:720
+#, javascript-format
+msgid "A module for the administration of the app is available: %s."
+msgstr "Az alkalmazás adminisztrációjához elérhető egy modul: %s."
+
+#: umc/js/appcenter/requirements.js:292
+msgid "A version without a container technology is or was installed."
+msgstr "Konténertechnológia nélküli verzió van vagy volt telepítve."
+
+#: umc/js/appcenter/AppInstallWizard.js:275
+msgid "Accept license"
+msgstr "Licenc elfogadása"
+
+#: umc/js/appcenter/AppInstallWizard.js:103
+msgid "Accept license and start installation"
+msgstr "Licenc elfogadása és a telepítés megkezdése"
+
+#: umc/js/appcenter/AppInstallWizard.js:99
+msgid "Accept license and start removal"
+msgstr "Licenc elfogadása és eltávolítás megkezdése"
+
+#: umc/js/appcenter/AppInstallWizard.js:101
+msgid "Accept license and start upgrade"
+msgstr "Licenc elfogadása és frissítés indítása"
+
+#: umc/js/appcenter/requirements.js:135
+msgid "Activate UCS now"
+msgstr "Aktiválja az UCS-t most"
+
+#: umc/js/appcenter.js:36
+msgid ""
+"Activation is not possible. Please login as Administrator on the Primary "
+"Directory Node."
+msgstr ""
+"Az aktiválás nem lehetséges. Kérjük, jelentkezz be rendszergazdaként az "
+"elsődleges könyvtárcsomóponton."
+
+#: umc/js/appcenter/SettingsPage.js:90
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: umc/js/appcenter/DetailsPage.js:136
+msgid "Add a new component"
+msgstr "Új komponens hozzáadása"
+
+#: umc/js/appcenter/SettingsPage.js:91
+msgid "Add a new component definition"
+msgstr "Új összetevődefiníció hozzáadása"
+
+#: umc/js/appcenter/SettingsPage.js:222
+msgid "Additional repositories"
+msgstr "További tárolók"
+
+#: umc/js/appcenter/DetailsPage.js:103
+msgid "Advanced settings"
+msgstr "Haladó beállítások"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:58
+msgid "After saving, the file will be deleted."
+msgstr "A mentés után a fájl törlődik."
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:54
+msgid "After saving, the new file will be uploaded."
+msgstr "Mentés után az új fájl feltöltődik."
+
+#: umc/js/appcenter/DetailsPage.js:179 umc/js/appcenter/SettingsPage.js:311
+#, javascript-format
+msgid "An unknown error with code %d occurred."
+msgstr "Ismeretlen hiba történt a következő kóddal: %d."
+
+#: umc/js/appcenter/requirements.js:62
+msgid "Another package operation is in progress."
+msgstr "Egy másik csomagkezelő művelet folyamatban van."
+
+#: umc/js/appcenter/Badges.js:25
+msgid "App Center Badges"
+msgstr "App Center jelvények"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:111
+msgid "App License"
+msgstr "Alkalmazáslicenc"
+
+#: umc/js/appcenter/AppDetailsPage.js:49
+#: umc/js/appcenter/AppConfigDialog.js:27 umc/js/appcenter/AppCenterPage.js:44
+#: umc/js/appcenter/AppDetailsDialog.js:30
+msgid "App management"
+msgstr "Alkalmazáskezelés"
+
+#: umc/js/appcenter/AppDetailsPage.js:272
+#: umc/js/appcenter/AppDetailsPage.js:540
+#: umc/js/appcenter/AppInstallWizardAppSettingsPage.js:26
+msgid "App settings"
+msgstr "Alkalmazás beállításai"
+
+#: umc/js/appcenter/AppConfigDialog.js:50 umc/js/appcenter/DetailsPage.js:44
+#: umc/js/appcenter/SettingsPage.js:62
+msgid "Apply changes"
+msgstr "A változtatások elfogadása"
+
+#: umc/js/appcenter/SettingsPage.js:267
+msgid "Are you sure you want to delete the following components: [{ids}]"
+msgstr "Biztosan törölni szeretnéd a következő összetevőket: [{ids}]"
+
+#: umc/js/appcenter/AppDetailsContainer.js:169
+msgid "Attention!"
+msgstr "Figyelem!"
+
+#: umc/js/appcenter/requirements.js:296
+msgid ""
+"Automatically migrating the App and data (where required) is not supported; "
+"however, a document exists, which guides through the manual steps to do so."
+msgstr ""
+"Az alkalmazás és az adatok automatikus migrálása (ahol szükséges) nem "
+"támogatott; azonban létezik egy dokumentum, amely végigvezet a manuális "
+"lépéseken."
+
+#: umc/js/appcenter/AppConfigDialog.js:90
+msgid "Autostart"
+msgstr "Automatikus indítás"
+
+#: umc/js/appcenter/AppDetailsPage.js:599
+#: umc/js/appcenter/AppCenterPage.js:222 umc/js/appcenter/SettingsPage.js:203
+msgid "Available"
+msgstr "Elérhető"
+
+#: umc/js/appcenter/AppDetailsPage.js:790
+msgid "Available support options"
+msgstr "Elérhető támogatási lehetőségek"
+
+#: umc/js/appcenter/AppInstallDialog.js:304
+msgid "Back"
+msgstr "Vissza"
+
+#: umc/js/appcenter/AppDetailsPage.js:56 umc/js/appcenter/DetailsPage.js:33
+msgid "Back to overview"
+msgstr "Vissza az áttekintéshez"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:107
+msgid "Badges"
+msgstr "Jelvények"
+
+#: umc/js/appcenter/DetailsPage.js:94
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: umc/js/appcenter/AppDetailsContainer.js:169
+msgid ""
+"Be sure to execute the following command as root on all of these Backup "
+"Nodes <em>after</em> installing the App."
+msgstr ""
+"Az alkalmazás telepítése <em>után</em> mindenképpen futtassa a következő "
+"parancsot root felhasználóként az összes biztonsági mentési csomóponton."
+
+#: umc/js/appcenter/AppDetailsPage.js:178 umc/js/appcenter/requirements.js:73
+msgid "Buy"
+msgstr "Vásárlás"
+
+#: umc/js/appcenter/AppDetailsPage.js:579
+msgid "Buy %(appName)s to install version %(candidateVersion)s."
+msgstr ""
+"Vásárold meg a(z) %(appName)s terméket a(z) %(candidateVersion)s verzió "
+"telepítéséhez."
+
+#: umc/js/appcenter/Buy.js:19
+msgid "Buy in App Center"
+msgstr "Vásárlás az App Centerben"
+
+#: umc/js/appcenter/Buy.js:20
+msgid "Buy now"
+msgstr "Vásárlás most"
+
+#: umc/js/appcenter/requirements.js:70
+msgid "Buy the App before the installation."
+msgstr "Vásárold meg az alkalmazást a telepítés előtt."
+
+#: umc/js/appcenter/AppDetailsPage.js:655 umc/js/appcenter/SettingsPage.js:273
+#: umc/js/appcenter/PackagesPage.js:394 umc/js/appcenter/PackagesPage.js:403
+#: umc/js/appcenter/AppInstallDialog.js:32
+#: umc/js/appcenter/AppInstallDialog.js:304
+#: umc/js/appcenter/AppDetailsDialog.js:36
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/appcenter/AppConfigDialog.js:71
+msgid "Cancel configuration"
+msgstr "Beállítás megszakítása"
+
+#: umc/js/appcenter/AppDetailsDialog.js:71
+msgid "Cancel installation"
+msgstr "Telepítés megszakítása"
+
+#: umc/js/appcenter/PackagesPage.js:298
+msgid "Candidate version"
+msgstr "Jelölt verzió"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:103
+msgid "Category"
+msgstr "Kategória"
+
+#: umc/js/appcenter/AppDetailsPage.js:842
+msgid ""
+"Click on \"%(button)s\" if you want to continue running this App at your "
+"own risk."
+msgstr ""
+"Kattints a(z) „%(button)s” gombra, ha saját felelősségedre szeretnéd "
+"folytatni az alkalmazás futtatását."
+
+#: umc/js/appcenter/AppDetailsPage.js:697 umc/js/appcenter/PackagesPage.js:211
+msgid "Close"
+msgstr "Bezár"
+
+#: umc/js/appcenter/DetailsPage.js:65 umc/js/appcenter/SettingsPage.js:172
+msgid "Component name"
+msgstr "Komponens neve"
+
+#: umc/js/appcenter/DetailsPage.js:30
+msgid "Components"
+msgstr "Összetevők"
+
+#: umc/js/appcenter/AppConfigDialog.js:45
+#, javascript-format
+msgid "Configure %s"
+msgstr "%s konfigurálása"
+
+#: umc/js/appcenter/AppDetailsPage.js:595
+msgid "Contact"
+msgstr "Kapcsolat"
+
+#: umc/js/appcenter/AppDetailsPage.js:678
+#: umc/js/appcenter/AppChooseHostWizard.js:250
+#: umc/js/appcenter/AppCenterPage.js:123
+msgid "Continue"
+msgstr "Folytatás"
+
+#: umc/js/appcenter/AppInstallWizard.js:266
+msgid "Continue anyway"
+msgstr "Folytatás mindenképpen"
+
+#: umc/js/appcenter/AppDetailsPage.js:256
+#: umc/js/appcenter/AppDetailsPage.js:531
+#: umc/js/appcenter/AppDetailsPage.js:842
+msgid "Continue using"
+msgstr "Használat folytatása"
+
+#: umc/js/appcenter/SettingsPage.js:157 umc/js/appcenter/SettingsPage.js:276
+msgid "Delete"
+msgstr "Törlés"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:18
+msgid "Delete file"
+msgstr "Fájl törlése"
+
+#: umc/js/appcenter/SettingsPage.js:158
+msgid "Delete the selected component definition"
+msgstr "A kiválasztott összetevő definíciójának törlése"
+
+#: umc/js/appcenter/DetailsPage.js:70 umc/js/appcenter/PackagesPage.js:292
+msgid "Description"
+msgstr "Leírás"
+
+#: umc/js/appcenter/AppDetailsPage.js:431
+msgid "Details"
+msgstr "Részletek"
+
+#: umc/js/appcenter/PackagesPage.js:176
+msgid "Details for package '%(package)s'"
+msgstr "A(z) „%(package)s” csomag részletei"
+
+#: umc/js/appcenter/App.js:398
+msgid "Different UCS Version. Limited manageability"
+msgstr "Eltérő UCS verzió. Korlátozott kezelhetőség"
+
+#: umc/js/appcenter/SettingsPage.js:122
+msgid "Disable"
+msgstr "Letiltás"
+
+#: umc/js/appcenter/SettingsPage.js:121
+msgid "Disable this component"
+msgstr "Komponens letiltása"
+
+#: umc/js/appcenter/SettingsPage.js:202
+msgid "Disabled"
+msgstr "Kikapcsolva"
+
+#: umc/js/appcenter/AppCenterPage.js:117
+msgid "Do not show this message again"
+msgstr "Ne jelenítse meg ezt az üzenetet újra"
+
+#: umc/js/appcenter/PackagesPage.js:398
+msgid "Do you really want to %(verb)s %(ids)s?"
+msgstr "Biztosan ezt akarod %(verb)s %(ids)s?"
+
+#: umc/js/appcenter/AppDetailsPage.js:712
+msgid "Domain administration"
+msgstr "Domain adminisztráció"
+
+#: umc/js/appcenter/SettingsPage.js:147
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: umc/js/appcenter/DetailsPage.js:149
+msgid "Edit component details [{component}]"
+msgstr "Komponens részleteinek szerkesztése [{component}]"
+
+#: umc/js/appcenter/SettingsPage.js:148
+msgid "Edit the detail information about this component"
+msgstr "Komponens részletes adatainak szerkesztése"
+
+#: umc/js/appcenter/SettingsPage.js:111
+msgid "Enable"
+msgstr "Engedélyezés"
+
+#: umc/js/appcenter/DetailsPage.js:60 umc/js/appcenter/SettingsPage.js:110
+msgid "Enable this component"
+msgstr "Komponens engedélyezése"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:61
+#, javascript-format
+msgid "File will be uploaded to %s."
+msgstr "A fájl feltöltésre kerül: %s."
+
+#: umc/js/appcenter/AppDetailsPage.js:385
+msgid "First steps"
+msgstr "Első lépések"
+
+#: umc/js/appcenter/requirements.js:129
+msgid ""
+"For the installation of this App, a UCS license key with a key "
+"identification (Key ID) is required."
+msgstr ""
+"Az alkalmazás telepítéséhez UCS licenckulcs szükséges kulcsazonosítóval "
+"(Key ID)."
+
+#: umc/js/appcenter/SettingsPage.js:80
+msgid "General repository settings"
+msgstr "Általános tároló beállítások"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:198
+msgid "Host for installation of App"
+msgstr "Alkalmazások telepítése gazdagépre"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:133
+#, javascript-format
+msgid ""
+"In order to proceed with the installation of %s, please select the host on "
+"which the App is going to be installed."
+msgstr ""
+"A(z) %s telepítésének folytatásához kérjük, válaszd ki azt a gazdagépet, "
+"amelyre az alkalmazást telepíteni szeretnéd."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:134
+msgid ""
+"In order to proceed with the installation, please select the hosts on which "
+"the Apps are going to be installed."
+msgstr ""
+"A telepítés folytatásához kérjük, válaszd ki azokat a gazdagépeket, "
+"amelyekre az alkalmazásokat telepíteni szeretnéd."
+
+#: umc/js/appcenter/AppInstallWizardReadmeInstallPage.js:23
+msgid "Information"
+msgstr "Információ"
+
+#: umc/js/appcenter/AppDetailsPage.js:169
+#: umc/js/appcenter/AppDetailsPage.js:227
+#: umc/js/appcenter/AppDetailsPage.js:472
+#: umc/js/appcenter/AppDetailsPage.js:483 umc/js/appcenter/Tiles.js:128
+#: umc/js/appcenter/SettingsPage.js:132 umc/js/appcenter/PackagesPage.js:62
+#: umc/js/appcenter/PackagesPage.js:217
+msgid "Install"
+msgstr "Telepítés"
+
+#: umc/js/appcenter/SettingsPage.js:133
+msgid "Install the component's default package(s)"
+msgstr "Telepítse a komponens alapértelmezett csomagját/csomagjait"
+
+#: umc/js/appcenter/requirements.js:199
+msgid "Install them first."
+msgstr "Először telepítsd őket."
+
+#: umc/js/appcenter/AppInstallWizard.js:208
+#: umc/js/appcenter/AppChooseHostWizard.js:224
+#: umc/js/appcenter/AppPostInstallWizard.js:116
+#, javascript-format
+msgid "Installation of %s"
+msgstr "A(z) %s telepítése"
+
+#: umc/js/appcenter/AppInstallWizard.js:209
+#: umc/js/appcenter/AppChooseHostWizard.js:225
+#: umc/js/appcenter/AppPostInstallWizard.js:117
+msgid "Installation of multiple apps"
+msgstr "Több alkalmazás telepítése"
+
+#: umc/js/appcenter/PackagesPage.js:119
+msgid "Installation status"
+msgstr "Telepítés állapota"
+
+#: umc/js/appcenter/AppCenterPage.js:182 umc/js/appcenter/SettingsPage.js:207
+msgid "Installed"
+msgstr "Telepítve"
+
+#: umc/js/appcenter/AppCenterPage.js:197
+msgid "Installed in domain"
+msgstr "Telepítve a domain-ben"
+
+#: umc/js/appcenter/PackagesPage.js:297
+msgid "Installed version"
+msgstr "Telepített verzió"
+
+#: umc/js/appcenter/PackagesPage.js:353
+msgid "Installing"
+msgstr "Telepítés"
+
+#: umc/js/appcenter/PackagesPage.js:293
+msgid "Is installed"
+msgstr "Telepítve van"
+
+#: umc/js/appcenter/PackagesPage.js:294
+msgid "Is upgradable"
+msgstr "Frissíthető"
+
+#: umc/js/appcenter/AppConfigDialog.js:79
+msgid "It can only be configured while it is running."
+msgstr "Csak futás közben konfigurálható."
+
+#: umc/js/appcenter/requirements.js:242
+#, javascript-format
+msgid ""
+"It is currently impossible to remove a plugin once it is installed. Remove "
+"%s instead."
+msgstr ""
+"Jelenleg nem lehet eltávolítani egy bővítményt a telepítés után. Távolítsd "
+"el helyette a(z) %s bővítményt."
+
+#: umc/js/appcenter/AppDetailsContainer.js:143
+msgid "It is not possible to continue"
+msgstr "Nem lehet folytatni"
+
+#: umc/js/appcenter/AppDetailsContainer.js:147
+msgid "It is not recommended to continue"
+msgstr "Nem ajánlott folytatni"
+
+#: umc/js/appcenter/AppCenterPage.js:74
+msgid "Let us know if you you miss any App in Univention App Center!"
+msgstr ""
+"Tudasd velünk, ha kihagysz egy alkalmazást az Univention App Centerben!"
+
+#: umc/js/appcenter/AppDetailsPage.js:596
+msgid "License"
+msgstr "Licensz"
+
+#: umc/js/appcenter/AppDetailsPage.js:697
+msgid "License agreement"
+msgstr "Licencszerződés"
+
+#: umc/js/appcenter/AppInstallWizardLicenseAgreementPage.js:23
+msgid "License agreements"
+msgstr "Licencszerződések"
+
+#: umc/js/appcenter/AppDetailsPage.js:475
+#: umc/js/appcenter/AppDetailsPage.js:558
+msgid "Manage installation"
+msgstr "Telepítés kezelése"
+
+#: umc/js/appcenter/AppDetailsPage.js:480
+#: umc/js/appcenter/AppDetailsPage.js:564 umc/js/appcenter/Badges.js:23
+msgid "Manage installations"
+msgstr "Telepítések kezelése"
+
+#: umc/js/appcenter/AppMoreInfo.js:23
+msgid "More information"
+msgstr "További információk"
+
+#: umc/js/appcenter/AppDetailsContainer.js:235
+msgid "More information..."
+msgstr "További információ..."
+
+#: umc/js/appcenter/AppDetailsPage.js:212
+msgid "Next app"
+msgstr "Következő alkalmazás"
+
+#: umc/js/appcenter/PackagesPage.js:321
+msgid "No"
+msgstr "Nem"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:50
+msgid "No file was uploaded yet."
+msgstr "Még nem töltöttek fel fájlt."
+
+#: umc/js/appcenter/AppDetailsContainer.js:231
+msgid "No software changes necessary."
+msgstr "Nincs szükség szoftvermódosításra."
+
+#: umc/js/appcenter/AppDetailsContainer.js:218
+#, javascript-format
+msgid "No software changes on %s necessary."
+msgstr "Nincs szükség szoftvermódosításra a(z) %s címen."
+
+#: umc/js/appcenter/AppDetailsPage.js:788
+msgid "No support option provided"
+msgstr "Nincs támogatási lehetőség"
+
+#: umc/js/appcenter/AppChooseHostWizard.js:187
+msgid "Not all hosts are listed above"
+msgstr "Nem minden gazdagép szerepel a fenti listában"
+
+#: umc/js/appcenter/SettingsPage.js:204
+msgid "Not found"
+msgstr "Nem található"
+
+#: umc/js/appcenter/AppDetailsPage.js:604
+msgid "Notification"
+msgstr "Értesítő"
+
+#: umc/js/appcenter/PackagesPage.js:31
+msgid ""
+"On this page, you see all software packages available on your system, and "
+"you can install, uninstall or update them."
+msgstr ""
+"Ezen az oldalon láthatod a rendszeren elérhető összes szoftvercsomagot, és "
+"telepítheted, eltávolíthatod vagy frissítheted azokat."
+
+#: umc/js/appcenter/AppDetailsPage.js:521 umc/js/appcenter/App.js:371
+msgid "Open"
+msgstr "Megnyitás"
+
+#: umc/js/appcenter/requirements.js:170
+msgid "Open \"Domain join\" module"
+msgstr "A „Domain csatlakozás” modul megnyitása"
+
+#: umc/js/appcenter/requirements.js:88
+msgid "Open \"Software update\" module"
+msgstr "A „Szoftverfrissítés” modul megnyitása"
+
+#: umc/js/appcenter/requirements.js:202 umc/js/appcenter/requirements.js:234
+#: umc/js/appcenter/requirements.js:255
+#, javascript-format
+msgid "Open %s"
+msgstr "%s megnyitása"
+
+#: umc/js/appcenter/requirements.js:284
+msgid "Open the documentation"
+msgstr "A dokumentáció megnyitása"
+
+#: umc/js/appcenter/requirements.js:301
+msgid "Open the migration guide"
+msgstr "A migráció útmutatójának megnyitása"
+
+#: umc/js/appcenter/SearchForm.js:26
+msgid "Package categories"
+msgstr "Csomag kategóriák"
+
+#: umc/js/appcenter/AppInstallWizard.js:55
+msgid "Package changes"
+msgstr "Csomagváltozások"
+
+#: umc/js/appcenter/SearchForm.js:48 umc/js/appcenter/PackagesPage.js:114
+msgid "Package description"
+msgstr "A csomag leírása"
+
+#: umc/js/appcenter/PackagesPage.js:243
+msgid "Package details"
+msgstr "Csomag részletei"
+
+#: umc/js/appcenter/SearchForm.js:47 umc/js/appcenter/PackagesPage.js:104
+#: umc/js/appcenter/PackagesPage.js:289
+msgid "Package name"
+msgstr "Csomag neve"
+
+#: umc/js/appcenter/PackagesPage.js:295
+msgid "Package size"
+msgstr "Csomag mérete"
+
+#: umc/js/appcenter/PackagesPage.js:425
+msgid "Packages not found: "
+msgstr "Nem találhatók csomagok: "
+
+#: umc/js/appcenter/AppInstallDialog.js:59
+msgid "Performing dependency checks"
+msgstr "Függőségi ellenőrzések végrehajtása"
+
+#: umc/js/appcenter/SettingsPage.js:205
+msgid "Permission denied"
+msgstr "Hozzáférés megtagadva"
+
+#: umc/js/appcenter/AppDetailsPage.js:792
+msgid "Please contact the provider of the App"
+msgstr "Kérjük, vedd fel a kapcsolatot az alkalmazás szolgáltatójával"
+
+#: umc/js/appcenter/DetailsPage.js:181 umc/js/appcenter/SettingsPage.js:313
+msgid "Please correct the corresponding input fields."
+msgstr "Kérjük, javítsd ki a megfelelő beviteli mezőket."
+
+#: umc/js/appcenter/DetailsPage.js:137
+msgid "Please enter the details for the new component."
+msgstr "Kérjük, add meg az új komponens adatait."
+
+#: umc/js/appcenter/requirements.js:266
+msgid "Please revert this state before upgrading or removing."
+msgstr ""
+"Kérjük, frissítés vagy eltávolítás előtt állítsd vissza ezt az állapotot."
+
+#: umc/js/appcenter/AppDetailsPage.js:205
+msgid "Previous app"
+msgstr "Előző alkalmazás"
+
+#: umc/js/appcenter/PackagesPage.js:296
+msgid "Priority"
+msgstr "Prioritás"
+
+#: umc/js/appcenter/AppDetailsPage.js:594
+msgid "Provider"
+msgstr "Szolgáltató"
+
+#: umc/js/appcenter/AppDetailsPage.js:140
+msgid "Quick and easy – your ballot has been cast."
+msgstr "Gyors és egyszerű – a szavazólap leadva."
+
+#: umc/js/appcenter/AppDetailsPage.js:760
+#: umc/js/appcenter/AppDetailsPage.js:766
+msgid "Read license agreement"
+msgstr "Olvasd el a licencszerződést"
+
+#: umc/js/appcenter/requirements.js:102
+msgid "Reboot now"
+msgstr "Újraindítás most"
+
+#: umc/js/appcenter/SettingsPage.js:100
+msgid "Refresh"
+msgstr "Frissítés"
+
+#: umc/js/appcenter/SettingsPage.js:101
+msgid "Refresh display to see current values"
+msgstr "Frissítsd a kijelzőt az aktuális értékek megtekintéséhez"
+
+#: umc/js/appcenter/AppCenterPage.js:270
+msgid ""
+"Registration of the Apps in the domain failed. It will be retried when "
+"opening this module again. This may also cause problems when installing "
+"Apps."
+msgstr ""
+"Az alkalmazások domainben való regisztrációja sikertelen. A modul újbóli "
+"megnyitásakor újra megtörténik a folyamat. Ez problémákat okozhat az "
+"alkalmazások telepítésekor is."
+
+#: umc/js/appcenter/AppInstallWizard.js:222
+#: umc/js/appcenter/AppPostInstallWizard.js:130
+#, javascript-format
+msgid "Removal of %s"
+msgstr "%s eltávolítása"
+
+#: umc/js/appcenter/AppInstallWizard.js:223
+#: umc/js/appcenter/AppPostInstallWizard.js:131
+msgid "Removal of multiple apps"
+msgstr "Több alkalmazás eltávolítása"
+
+#: umc/js/appcenter/Tiles.js:130
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: umc/js/appcenter/AppDetailsContainer.js:151
+msgid "Repository Settings"
+msgstr "Tároló beállításai"
+
+#: umc/js/appcenter/DetailsPage.js:75
+msgid "Repository server"
+msgstr "Tároló kiszolgáló"
+
+#: umc/js/appcenter/SettingsPage.js:41
+msgid "Repository server URL"
+msgstr "Tároló szerver URL-címe"
+
+#: umc/js/appcenter/requirements.js:269
+msgid "Revert the pinned App state now"
+msgstr "A rögzített alkalmazás állapotának visszaállítása most"
+
+#: umc/js/appcenter/AppInstallDialog.js:131
+msgid "Running tests"
+msgstr "Tesztek futtatása"
+
+#: umc/js/appcenter/AppCenterPage.js:61
+msgid "Search Apps"
+msgstr "Alkalmazások keresése"
+
+#: umc/js/appcenter/SearchForm.js:43
+msgid "Search key"
+msgstr "Kulcs keresése"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:28
+msgid "Search term"
+msgstr "Keresési kifejezés"
+
+#: umc/js/appcenter/SearchForm.js:58
+msgid "Search..."
+msgstr "Keresés..."
+
+#: umc/js/appcenter/PackagesPage.js:290
+msgid "Section"
+msgstr "Szekció"
+
+#: umc/js/appcenter/Tiles.js:123
+msgid "Select"
+msgstr "Kiválasztás"
+
+#: umc/js/appcenter/AppDetailsPage.js:408
+msgid "Server"
+msgstr "Szerver"
+
+#: umc/js/appcenter/AppSettings.js:39 umc/js/appcenter/AppSettings.js:114
+msgid "Settings"
+msgstr "Beállítások"
+
+#: umc/js/appcenter/PackagesPage.js:52
+msgid "Show details"
+msgstr "Részletek"
+
+#: umc/js/appcenter/AppInstallWizard.js:81
+msgid "Start installation"
+msgstr "Telepítés indítása"
+
+#: umc/js/appcenter/AppInstallWizard.js:92
+msgid "Start installation anyway"
+msgstr "Telepítés indítása mindenképpen"
+
+#: umc/js/appcenter/AppInstallWizard.js:77
+msgid "Start removal"
+msgstr "Eltávolítás indítása"
+
+#: umc/js/appcenter/AppInstallWizard.js:88
+msgid "Start removal anyway"
+msgstr "Eltávolítás indítása mindenképpen"
+
+#: umc/js/appcenter/AppConfigDialog.js:107
+msgid "Start the App"
+msgstr "Alkalmazás indítása"
+
+#: umc/js/appcenter/AppInstallWizard.js:79
+msgid "Start upgrade"
+msgstr "Frissítés indítása"
+
+#: umc/js/appcenter/AppInstallWizard.js:90
+msgid "Start upgrade anyway"
+msgstr "Frissítés indítása mindenképpen"
+
+#: umc/js/appcenter/AppConfigDialog.js:95
+msgid "Started automatically"
+msgstr "Automatikusan elindult"
+
+#: umc/js/appcenter/AppConfigDialog.js:98
+msgid "Started manually"
+msgstr "Kézzel indított"
+
+#: umc/js/appcenter/AppConfigDialog.js:101
+msgid "Starting is prevented"
+msgstr "Indítás megakadályozva"
+
+#: umc/js/appcenter/AppDetailsPage.js:411 umc/js/appcenter/SettingsPage.js:194
+msgid "Status"
+msgstr "Állapot"
+
+#: umc/js/appcenter/AppConfigDialog.js:114
+msgid "Stop the App"
+msgstr "Alkalmazás leállítása"
+
+#: umc/js/appcenter/AppCenterPage.js:75
+msgid "Suggest new app"
+msgstr "Javaslat új alkalmazásra"
+
+#: umc/js/appcenter/AppCenterPage.js:212
+msgid "Suggestions based on installed apps"
+msgstr "Javaslatok a telepített alkalmazások alapján"
+
+#: umc/js/appcenter/PackagesPage.js:291
+msgid "Summary"
+msgstr "Összefoglalás"
+
+#: umc/js/appcenter/AppDetailsPage.js:603
+msgid "Support"
+msgstr "Támogatás"
+
+#: umc/js/appcenter/requirements.js:116
+msgid "Support Docker Apps"
+msgstr "Docker alkalmazások támogatása"
+
+#: umc/js/appcenter/AppDetailsPage.js:770
+msgid ""
+"The App does not provide any information about the license. Please contact "
+"the App provider for further details."
+msgstr ""
+"Az alkalmazás nem nyújt információt a licencről. További részletekért "
+"kérjük, vedd fel a kapcsolatot az alkalmazás szolgáltatójával."
+
+#: umc/js/appcenter/AppConfigDialog.js:79
+msgid "The App is currently not running."
+msgstr "Az alkalmazás jelenleg nem fut."
+
+#: umc/js/appcenter/AppConfigDialog.js:81
+msgid "The App is currently running."
+msgstr "Az alkalmazás jelenleg fut."
+
+#: umc/js/appcenter/requirements.js:263
+msgid "The App is pinned to the currently installed version."
+msgstr "Az alkalmazás a jelenleg telepített verzióhoz van rögzítve."
+
+#: umc/js/appcenter/requirements.js:82
+msgid "The App requires UCS version %(required_version)s or later."
+msgstr ""
+"Az alkalmazáshoz UCS %(required_version)s vagy újabb verzió szükséges."
+
+#: umc/js/appcenter/requirements.js:96
+msgid ""
+"The App requires a newer kernel than your system is currently using (at "
+"least kernel 4.9 is required)."
+msgstr ""
+"Az alkalmazáshoz újabb kernelre van szükség, mint amit a rendszered "
+"jelenleg használ (legalább 4.9-es kernel szükséges)."
+
+#: umc/js/appcenter/requirements.js:278
+msgid ""
+"The App requires the password service to be set up on the Active Directory "
+"domain controller server."
+msgstr ""
+"Az alkalmazáshoz be kell állítani a jelszószolgáltatást az Active Directory "
+"tartományvezérlő-kiszolgálón."
+
+#: umc/js/appcenter/requirements.js:110
+msgid ""
+"The App uses a container technology while the App Center is configured to "
+"not not support it."
+msgstr ""
+"Az alkalmazás konténertechnológiát használ, míg az App Center úgy van "
+"konfigurálva, hogy ne támogassa azt."
+
+#: umc/js/appcenter/requirements.js:124
+msgid ""
+"The App uses a container technology while the system itself runs in a "
+"container. Using the App is not supported on this host."
+msgstr ""
+"Az alkalmazás konténertechnológiát használ, míg maga a rendszer egy "
+"konténerben fut. Az alkalmazás használata nem támogatott ezen a gazdagépen."
+
+#: umc/js/appcenter/AppDetailsPage.js:724
+#, javascript-format
+msgid "The app provides a web interface: %s."
+msgstr "Az alkalmazás webes felületet biztosít: %s."
+
+#: umc/js/appcenter/DetailsPage.js:184 umc/js/appcenter/SettingsPage.js:316
+msgid "The data you entered could not be saved correctly."
+msgstr "A megadott adatokat nem sikerült megfelelően menteni."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:62
+#, javascript-format
+msgid ""
+"The following App will be additionally installed because it is a required "
+"dependency for %s."
+msgstr ""
+"A következő alkalmazás is telepítésre kerül, mivel ez a(z) %s szükséges "
+"függősége."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:68
+msgid ""
+"The following App will be additionally installed because it is a required "
+"dependency for the selected Apps."
+msgstr ""
+"A következő alkalmazás is telepítésre kerül, mivel a kiválasztott "
+"alkalmazások kötelező függősége."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:101
+msgid "The following Apps are going to be installed."
+msgstr "A következő alkalmazások telepítésre kerülnek."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:103
+msgid "The following Apps where initially selected."
+msgstr "A következő alkalmazások lettek kezdetben kiválasztva."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:64
+#, javascript-format
+msgid ""
+"The following Apps will be additionally installed because they are required "
+"dependencies for %s."
+msgstr ""
+"A következő alkalmazások telepítése további lépésként történik, mivel ezek "
+"a(z) %s szükséges függőségei."
+
+#: umc/js/appcenter/AppChooseHostWizard.js:70
+msgid ""
+"The following Apps will be additionally installed because they are required "
+"dependencies for the selected Apps."
+msgstr ""
+"A következő alkalmazások telepítése további lépésként történik, mivel ezek "
+"a kiválasztott alkalmazások kötelező függőségei."
+
+#: umc/js/appcenter/AppDetailsContainer.js:163
+msgid ""
+"The following hosts cannot be reached or do not have access to the App "
+"Center server:"
+msgstr ""
+"A következő gazdagépek nem érhetők el, vagy nem férnek hozzá az App Center "
+"szerverhez:"
+
+#: umc/js/appcenter/PackagesPage.js:375
+#: umc/js/appcenter/AppDetailsContainer.js:227
+msgid "The following packages will be installed or upgraded:"
+msgstr "A következő csomagok kerülnek telepítésre vagy frissítésre:"
+
+#: umc/js/appcenter/PackagesPage.js:379
+#: umc/js/appcenter/AppDetailsContainer.js:228
+msgid "The following packages will be removed:"
+msgstr "A következő csomagok kerülnek eltávolításra:"
+
+#: umc/js/appcenter/AppDetailsContainer.js:220
+#, javascript-format
+msgid "The following software changes on %s will be applied: "
+msgstr "A következő szoftvermódosítások kerülnek alkalmazásra %s dátumon: "
+
+#: umc/js/appcenter/requirements.js:67
+msgid "The installation of version %(version)s is not permitted."
+msgstr "A(z) %(version)s verzió telepítése nem engedélyezett."
+
+#: umc/js/appcenter/requirements.js:221
+msgid ""
+"The server did not respond properly. Please make sure it is reachable and "
+"updated."
+msgstr ""
+"A szerver nem válaszolt megfelelően. Kérjük, ellenőrizd, hogy elérhető és "
+"naprakész."
+
+#: umc/js/appcenter/AppDetailsContainer.js:163
+msgid "The server tried to connect to the involved systems."
+msgstr "A szerver megpróbált csatlakozni az érintett rendszerekhez."
+
+#: umc/js/appcenter/requirements.js:281
+msgid ""
+"The steps how to install the service on that machine are described in the "
+"online documentation."
+msgstr ""
+"A szolgáltatás telepítésének lépései az adott gépen az online "
+"dokumentációban találhatók."
+
+#: umc/js/appcenter/requirements.js:85
+msgid "The system has to be updated."
+msgstr "A rendszert frissíteni kell."
+
+#: umc/js/appcenter/requirements.js:167
+msgid "The system has to join a domain before the App can be installed!"
+msgstr ""
+"A rendszernek csatlakoznia kell egy domainhez, mielőtt az alkalmazás "
+"telepíthető lenne!"
+
+#: umc/js/appcenter/AppDetailsContainer.js:209
+msgid ""
+"The version of the remote App Center is <strong>incompatible</strong> with "
+"the local one. Please update your hosts."
+msgstr ""
+"A távoli App Center verziója <strong>nem kompatibilis</strong> a helyivel. "
+"Kérjük, frissítsd a gazdagépeket."
+
+#: umc/js/appcenter/AppPostInstallWizard.js:81
+msgid ""
+"These are the error messages from the server. More information might be "
+"available on the system's logfile <em>/var/log/univention/appcenter.log</em>"
+msgstr ""
+"Ezek a szerverről érkező hibaüzenetek. További információ a rendszer "
+"naplófájljában, <em>a /var/log/univention/appcenter.log</em> fájlban "
+"található"
+
+#: umc/js/appcenter/AppDetailsContainer.js:153
+#, javascript-format
+msgid ""
+"These changes contain <strong>all package upgrades available</strong> and "
+"thus may <strong>include errata updates</strong>. If this is not intended, "
+"the corresponding components have to be temporarily deactivated first using "
+"the tab \"%s\" in the App Center."
+msgstr ""
+"Ezek a változtatások tartalmazzák <strong>az összes elérhető "
+"csomagfrissítést</strong> , így <strong>tartalmazhatnak hibajavításokat is</"
+"strong> . Ha ez nem szándékos, akkor a megfelelő komponenseket először "
+"ideiglenesen deaktiválni kell az Alkalmazásközpont \"%s\" lapján."
+
+#: umc/js/appcenter/requirements.js:164
+#: umc/js/appcenter/AppDetailsContainer.js:169
+msgid "This App requires an extension of the LDAP schema."
+msgstr "Ehhez az alkalmazáshoz az LDAP séma kiterjesztése szükséges."
+
+#: umc/js/appcenter/AppDetailsPage.js:832
+msgid ""
+"This App will inform the App provider about an (un)installation. The app "
+"provider may contact you."
+msgstr ""
+"Ez az alkalmazás tájékoztatja az alkalmazás szolgáltatóját a telepítésről/"
+"eltávolításról. Az alkalmazás szolgáltatója felveheti veled a kapcsolatot."
+
+#: umc/js/appcenter/AppDetailsPage.js:840
+msgid ""
+"This App will not get any further updates. We suggest to uninstall %(app)s "
+"and search for an alternative App."
+msgstr ""
+"Ez az alkalmazás nem kap további frissítéseket. Javasoljuk, hogy távolítsd "
+"el a(z) %(app)s alkalmazást, és keress egy másik alkalmazást."
+
+#: umc/js/appcenter/AppDetailsPage.js:834
+msgid ""
+"This App will not inform the App provider about an (un)installation "
+"directly."
+msgstr ""
+"Ez az alkalmazás nem tájékoztatja közvetlenül az alkalmazás szolgáltatóját "
+"a telepítésről/eltávolításról."
+
+#: umc/js/appcenter/Tile.js:53
+msgid "This application will not get any further updates."
+msgstr "Ez az alkalmazás nem kap további frissítéseket."
+
+#: umc/js/appcenter/Tile.js:51
+msgid ""
+"This application will not get any further updates. We suggest to uninstall %"
+"(app)s and search for an alternative application."
+msgstr ""
+"Ez az alkalmazás nem kap további frissítéseket. Javasoljuk, hogy távolítsd "
+"el a(z) %(app)s alkalmazást, és keress egy másik alkalmazást."
+
+#: umc/js/appcenter/requirements.js:99
+msgid ""
+"This is probably due to a missing reboot after an UCS upgrade. After a "
+"reboot, a newer kernel may be used."
+msgstr ""
+"Ez valószínűleg az UCS frissítés utáni újraindítás elmulasztásának tudható "
+"be. Az újraindítás után egy újabb kernel használható."
+
+#: umc/js/appcenter/SettingsPage.js:30
+msgid "This module shows all repositories settings defined for this system."
+msgstr ""
+"Ez a modul megjeleníti a rendszerhez definiált összes tároló beállítást."
+
+#: umc/js/appcenter/PackagesPage.js:383
+#: umc/js/appcenter/AppDetailsContainer.js:229
+msgid ""
+"This operation causes problems in the following packages that cannot be "
+"resolved:"
+msgstr "Ez a művelet a következő csomagokban okoz megoldhatatlan problémákat:"
+
+#: umc/js/appcenter/AppDetailsPage.js:293
+#: umc/js/appcenter/AppDetailsPage.js:549 umc/js/appcenter/PackagesPage.js:75
+#: umc/js/appcenter/PackagesPage.js:226
+msgid "Uninstall"
+msgstr "Eltávolítás"
+
+#: umc/js/appcenter/requirements.js:215 umc/js/appcenter/requirements.js:231
+#: umc/js/appcenter/requirements.js:252
+msgid "Uninstall them first."
+msgstr "Először távolítsd el őket."
+
+#: umc/js/appcenter/PackagesPage.js:357
+msgid "Uninstalling"
+msgstr "Eltávolítás"
+
+#: umc/js/appcenter/requirements.js:310
+#, javascript-format
+msgid "Uninstalling %s will also remove the following plugins:"
+msgstr "A(z) %s eltávolítása a következő bővítményeket is eltávolítja:"
+
+#: umc/js/appcenter/AppCenterPage.js:107
+msgid "Univention App Center"
+msgstr "Univention Alkalmazásközpont"
+
+#: umc/js/appcenter/SettingsPage.js:206
+#: umc/js/appcenter/AppDetailsContainer.js:184
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: umc/js/appcenter/Tile.js:56
+msgid "Update available"
+msgstr "Frissítés elérhető"
+
+#: umc/js/appcenter/run.js:75 umc/js/appcenter/PackagesPage.js:463
+msgid "Updating session and module data..."
+msgstr "Munkamenet- és moduladatok frissítése..."
+
+#: umc/js/appcenter/AppDetailsPage.js:311
+#: umc/js/appcenter/AppDetailsPage.js:505 umc/js/appcenter/Tiles.js:129
+#: umc/js/appcenter/PackagesPage.js:88 umc/js/appcenter/PackagesPage.js:235
+msgid "Upgrade"
+msgstr "Frissítés"
+
+#: umc/js/appcenter/AppInstallWizard.js:215
+#: umc/js/appcenter/AppPostInstallWizard.js:123
+#, javascript-format
+msgid "Upgrade of %s"
+msgstr "%s frissítése"
+
+#: umc/js/appcenter/AppInstallWizard.js:216
+#: umc/js/appcenter/AppPostInstallWizard.js:124
+msgid "Upgrade of multiple apps"
+msgstr "Több alkalmazás frissítése"
+
+#: umc/js/appcenter/App.js:388 umc/js/appcenter/App.js:409
+#, javascript-format
+msgid "Upgrade to %s available"
+msgstr "Frissítés %s-ra elérhető"
+
+#: umc/js/appcenter/PackagesPage.js:361
+msgid "Upgrading"
+msgstr "Csomagváltás folyamatban"
+
+#: umc/js/appcenter/AppSettingsFileUploader.js:17
+msgid "Upload file"
+msgstr "Fájl feltöltése"
+
+#: umc/js/appcenter/DetailsPage.js:87
+msgid "Use unmaintained repositories"
+msgstr "Használj nem karbantartott tárolókat"
+
+#: umc/js/appcenter/AppDetailsPage.js:716
+#, javascript-format
+msgid "Users need to be modified in the %s in order to use this service."
+msgstr ""
+"A szolgáltatás használatához módosítani kell a felhasználókat a(z) %s "
+"részben."
+
+#: umc/js/appcenter/DetailsPage.js:186 umc/js/appcenter/SettingsPage.js:318
+msgid ""
+"Using the data you entered, no valid repository could be found.<br/>Since "
+"this may be a temporary server problem as well, your data was saved though."
+"<br/>The problem was:"
+msgstr ""
+"A megadott adatok alapján nem található érvényes tároló.<br/> Mivel ez egy "
+"átmeneti szerverprobléma is lehet, az adataid mentésre kerültek.<br/> A "
+"probléma a következő volt:"
+
+#: umc/js/appcenter/AppInstallDialog.js:262
+msgid "Validating input..."
+msgstr "Bevitel érvényesítése..."
+
+#: umc/js/appcenter/AppDetailsPage.js:593
+msgid "Vendor"
+msgstr "Partner"
+
+#: umc/js/appcenter/AppDetailsPage.js:598
+#: umc/js/appcenter/AppDetailsPage.js:601 umc/js/appcenter/DetailsPage.js:81
+msgid "Version"
+msgstr "Verzió"
+
+#: umc/js/appcenter/AppLiveSearchSidebar.js:119
+msgid "Vote Apps"
+msgstr "Szavazási alkalmazások"
+
+#: umc/js/appcenter/AppDetailsPage.js:140 umc/js/appcenter/Vote.js:20
+msgid "Vote for App"
+msgstr "Szavazás az alkalmazásra"
+
+#: umc/js/appcenter/Tile.js:58
+msgid ""
+"Vote for this app now and bring your favorite faster to the Univention App "
+"Center"
+msgstr ""
+"Szavazz erre az alkalmazásra most, és vidd be kedvencedet gyorsabban az "
+"Univention App Centerbe"
+
+#: umc/js/appcenter/Vote.js:22
+msgid "Vote now"
+msgstr "Szavazz most"
+
+#: umc/js/appcenter/Vote.js:21
+msgid ""
+"We are currently reviewing the admission of this app in the Univention App "
+"Center. Vote now and show us how relevant the availability of this app is "
+"for you."
+msgstr ""
+"Jelenleg felülvizsgáljuk az alkalmazás Univention App Centerbe való "
+"felvételét. Szavazz most, és mutasd meg, mennyire releváns számodra az "
+"alkalmazás elérhetősége."
+
+#: umc/js/appcenter/AppInstallWizard.js:231
+msgid ""
+"We cannot continue. Please refer to the information below to solve the "
+"problem and try again."
+msgstr ""
+"Nem folytathatjuk. Kérjük, tekintsd meg az alábbi információkat a probléma "
+"megoldásához, és próbáld újra."
+
+#: umc/js/appcenter/AppInstallWizard.js:233
+msgid ""
+"We detected some problems that may lead to a errors later. Please consider "
+"the information below before continuing."
+msgstr ""
+"Olyan problémákat észleltünk, amelyek később hibákhoz vezethetnek. Kérjük, "
+"a folytatás előtt vedd figyelembe az alábbi információkat."
+
+#: umc/js/appcenter/AppPostInstallWizard.js:75
+#, javascript-format
+msgid "We tried to do as requested but failed for %s"
+msgstr ""
+"Megpróbáltuk a kérésnek megfelelően eljárni, de nem sikerült %s számára"
+
+#: umc/js/appcenter/DetailsPage.js:188 umc/js/appcenter/SettingsPage.js:320
+msgid ""
+"With the current (already changed) settings, the following problem was "
+"encountered:"
+msgstr ""
+"A jelenlegi (már módosított) beállításokkal a következő probléma merült fel:"
+
+#: umc/js/appcenter/PackagesPage.js:319
+msgid "Yes"
+msgstr "Igen"
+
+#: umc/js/appcenter/requirements.js:113
+msgid ""
+"You can configure the App Center to support it now. The service \"docker\" "
+"will be started."
+msgstr ""
+"Most már beállíthatod az App Centert, hogy támogassa. A \"docker\" "
+"szolgáltatás elindul."
+
+#: umc/js/appcenter/PackagesPage.js:389
+msgid "You cannot continue"
+msgstr "Nem folytathatod"
+
+#: umc/js/appcenter/requirements.js:132
+msgid ""
+"You receive such a license key within a couple of minutes via email after a "
+"free activation."
+msgstr ""
+"Az ingyenes aktiválást követően néhány percen belül e-mailben megkapod a "
+"licenckulcsot."
+
+#: umc/js/appcenter/DetailsPage.js:150
+msgid "You're editing the details of the component definition."
+msgstr "A komponens definíciójának részleteit szerkeszted."
+
+#: umc/js/appcenter/AppDetailsContainer.js:195
+msgid "an unknown amount of"
+msgstr "ismeretlen mennyiségű"
+
+#: umc/js/appcenter/requirements.js:76
+msgid "https://appcenter.univention.com/"
+msgstr "https://appcenter.univention.com/"
+
+#: umc/js/appcenter/requirements.js:287
+#, javascript-format
+msgid ""
+"https://docs.software-univention.de/manual-%s.html#ad-connector:password-"
+"dienst"
+msgstr ""
+"https://docs.software-univention.de/manual-%s.html#ad-connector:password-"
+"dienst"
+
+#: umc/js/appcenter/AppCenterPage.js:71
+msgid ""
+"https://www.univention.com/products/univention-app-center/vote-for-app/"
+msgstr ""
+"https://www.univention.com/products/univention-app-center/vote-for-app/"
+
+#: umc/js/appcenter/PackagesPage.js:352
+msgid "install"
+msgstr "telepítés"
+
+#: umc/js/appcenter/requirements.js:189
+msgid "this App may be installed on any computer in the domain"
+msgstr "ez az alkalmazás telepíthető a domain bármely számítógépére"
+
+#: umc/js/appcenter/requirements.js:191
+msgid "this App must be installed on another computer in the domain"
+msgstr ""
+"ezt az alkalmazást telepíteni kell egy másik számítógépre a tartományban"
+
+#: umc/js/appcenter/App.js:26
+msgid "this computer"
+msgstr "ez a számítógép"
+
+#: umc/js/appcenter/AppDetailsContainer.js:218
+#: umc/js/appcenter/AppDetailsContainer.js:220
+msgid "this host"
+msgstr "ez a gazdagép"
+
+#: umc/js/appcenter/PackagesPage.js:356
+msgid "uninstall"
+msgstr "eltávolítás"
+
+#: umc/js/appcenter/PackagesPage.js:360
+msgid "upgrade"
+msgstr "frissítés"
+
+#: umc/js/appcenter/AppDetailsContainer.js:216
+msgid "{0} packages are erroneous"
+msgstr "{0} csomag hibás"
+
+#: umc/js/appcenter/AppDetailsContainer.js:214
+msgid "{0} packages will be installed / upgraded"
+msgstr "{0} csomag telepítésre / frissítésre kerül"
+
+#: umc/js/appcenter/AppDetailsContainer.js:215
+msgid "{0} packages will be removed"
+msgstr "{0} csomag eltávolításra kerül"

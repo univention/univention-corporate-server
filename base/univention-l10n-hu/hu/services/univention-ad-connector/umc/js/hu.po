@@ -1,0 +1,453 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-adconnector package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-adconnector\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-22 00:36+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/adconnector.js:22
+msgid ""
+"<p><b>Caution!</b> The DNS service record for the UCS Primary was not found "
+"in the DNS server.</p>"
+msgstr ""
+"<p><b>Figyelem!</b> Az UCS Primary DNS szolgáltatásrekordja nem található a "
+"DNS-kiszolgálón.</p>"
+
+#: umc/js/adconnector/SetupWizard.js:324
+msgid ""
+"<p>An encrypted connection to the Active Directory domain could still not "
+"be established.</p><p>Confirm if you want to proceed with an unsecure "
+"connection.</p>"
+msgstr ""
+"<p>Továbbra sem sikerült titkosított kapcsolatot létrehozni az Active "
+"Directory tartománnyal.</p><p> Erősítsd meg, ha nem biztonságos "
+"kapcsolattal szeretnéd folytatni.</p>"
+
+#: umc/js/adconnector.js:22
+msgid ""
+"<p>Details are explained in the <a href=\"http://sdb.univention.de/"
+"1299\">Support Database</a>.</p>"
+msgstr ""
+"<p>A részleteket a <a href=\"http://sdb.univention.de/1299\">támogatási "
+"adatbázis</a> tartalmazza.</p>"
+
+#: umc/js/adconnector/SetupWizard.js:62
+msgid ""
+"<p>This wizards guides the configuration of the connection with an existing "
+"Active Directory domain.</p><p>There are two exclusive options:</p>"
+msgstr ""
+"<p>Ez a varázsló segíti a meglévő Active Directory tartományhoz való "
+"csatlakozás konfigurálását.</p><p>Két kizárólagos lehetőség áll "
+"rendelkezésre:</p>"
+
+#: umc/js/adconnector/SetupWizard.js:183
+#, javascript-format
+msgid ""
+"<p>To achieve a higher level of security, the Active Directory root "
+"certificate should be exported and uploaded here. The Active Directory "
+"certificate service creates that certificate. The necessary steps depend on "
+"the actual Microsoft Windows version and are described in the <a "
+"href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-"
+"zertifikat\" target=\"_blank\">UCS manual</a>. Alternatively, you may "
+"proceed without this configuration.</p>"
+msgstr ""
+"<p>A magasabb szintű biztonság elérése érdekében az Active Directory "
+"gyökértanúsítványát exportálni és ide feltölteni kell. Az Active Directory "
+"tanúsítványszolgáltatás hozza létre ezt a tanúsítványt. A szükséges lépések "
+"az aktuális Microsoft Windows verziótól függenek, és az <a href=\"https://"
+"docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" "
+"target=\"_blank\">UCS kézikönyvében</a> vannak leírva. Alternatív "
+"megoldásként folytatható a konfiguráció enélkül is.</p>"
+
+#: umc/js/adconnector/SetupWizard.js:110
+msgid "AD Connection - An error occurred"
+msgstr "AD kapcsolat - Hiba történt"
+
+#: umc/js/adconnector/ConfigPage.js:103
+msgid "Activate encrypted connection"
+msgstr "Titkosított kapcsolat aktiválása"
+
+#: umc/js/adconnector/SetupWizard.js:57
+msgid "Active Directory Connection"
+msgstr "Active Directory kapcsolat"
+
+#: umc/js/adconnector/SetupWizard.js:100 umc/js/adconnector/SetupWizard.js:151
+msgid "Active Directory account"
+msgstr "Active Directory fiók"
+
+#: umc/js/adconnector/ConfigPage.js:122
+msgid "Active Directory connection SSL configuration"
+msgstr "Active Directory kapcsolat SSL konfigurációja"
+
+#: umc/js/adconnector/ConfigPage.js:119
+msgid "Active Directory connection service"
+msgstr "Active Directory kapcsolati szolgáltatás"
+
+#: umc/js/adconnector/ConfigPage.js:155
+msgid "Active Directory connection service is currently running."
+msgstr "Az Active Directory kapcsolatszolgáltatás jelenleg fut."
+
+#: umc/js/adconnector/ConfigPage.js:159
+msgid "Active Directory connection service is not running."
+msgstr "Az Active Directory kapcsolatszolgáltatás nem fut."
+
+#: umc/js/adconnector/SetupWizard.js:84 umc/js/adconnector/SetupWizard.js:135
+msgid "Active Directory domain credentials"
+msgstr "Active Directory tartományi hitelesítő adatok"
+
+#: umc/js/adconnector/SetupWizard.js:106 umc/js/adconnector/SetupWizard.js:157
+msgid "Active Directory password"
+msgstr "Active Directory jelszó"
+
+#: umc/js/adconnector/SetupWizard.js:146
+msgid "Address of Active Directory domain controller"
+msgstr "Az Active Directory tartományvezérlő címe"
+
+#: umc/js/adconnector/SetupWizard.js:95
+msgid ""
+"Address of Active Directory domain controller or name of Active Directory "
+"domain"
+msgstr ""
+"Az Active Directory tartományvezérlő címe vagy az Active Directory "
+"tartomány neve"
+
+#: umc/js/adconnector/SetupWizard.js:171
+msgid ""
+"After the certification authority has been set up, press <i>Next</i> to "
+"proceed."
+msgstr ""
+"Miután beállítottad a hitelesítés szolgáltatót, kattints a <i>Tovább</i> "
+"gombra a folytatáshoz."
+
+#: umc/js/adconnector/SetupWizard.js:169
+msgid ""
+"An encrypted connection to the Active Directory domain could not be "
+"established. As a consequence authentication data is submitted in plaintext."
+msgstr ""
+"Nem sikerült titkosított kapcsolatot létesíteni az Active Directory "
+"tartományhoz. Ennek következtében a hitelesítési adatok egyszerű szövegként "
+"kerülnek továbbításra."
+
+#: umc/js/adconnector/SetupWizard.js:111
+msgid ""
+"An error occurred during the join process of UCS into the Active Directory "
+"domain. The following information will give you some more details on which "
+"problems occurred during the join process."
+msgstr ""
+"Hiba történt az UCS Active Directory tartományhoz való csatlakozási "
+"folyamat során. Az alábbiakban további részletek találhatók arról, hogy "
+"milyen problémák merültek fel a csatlakozási folyamat során."
+
+#: umc/js/adconnector/SetupWizard.js:307
+msgid ""
+"An unexpected error occurred. More information about the cause of the error "
+"can be found in the log file /var/log/univention/management-console-module-"
+"adconnector.log. Please retry the join process after resolving any "
+"conflicting issues."
+msgstr ""
+"Váratlan hiba történt. A hiba okáról további információ a /var/log/"
+"univention/management-console-module-adconnector.log naplófájlban "
+"található. Kérjük, próbáld újra a csatlakozási folyamatot az esetleges "
+"ütköző problémák megoldása után."
+
+#: umc/js/adconnector/SetupWizard.js:230
+msgid "Bidirectional synchronisation of UCS and Active Directory."
+msgstr "Az UCS és az Active Directory kétirányú szinkronizálása."
+
+#: umc/js/adconnector/ConfigPage.js:88
+msgid ""
+"By default the Active Directory connection does not transfer encrypted "
+"password data into the UCS directory service. The system uses the Active "
+"Directory Kerberos infrastructure for authentication."
+msgstr ""
+"Alapértelmezés szerint az Active Directory kapcsolat nem továbbít "
+"titkosított jelszóadatokat az UCS címtárszolgáltatásba. A rendszer az "
+"Active Directory Kerberos infrastruktúráját használja a hitelesítéshez."
+
+#: umc/js/adconnector/SetupWizard.js:326
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/adconnector/SetupWizard.js:122 umc/js/adconnector/SetupWizard.js:251
+msgid "Completion of Active Directory Connection"
+msgstr "Az Active Directory kapcsolat befejezése"
+
+#: umc/js/adconnector/SetupWizard.js:208
+msgid "Configuration of Active Directory domain synchronisation"
+msgstr "Az Active Directory tartomány szinkronizálásának konfigurálása"
+
+#: umc/js/adconnector/ConfigPage.js:32
+msgid "Configuration of the Active Directory connection"
+msgstr "Az Active Directory kapcsolat konfigurálása"
+
+#: umc/js/adconnector/SetupWizard.js:68
+msgid "Configure UCS as part of an Active Directory domain (recommended)."
+msgstr ""
+"Konfigurálja az UCS-t egy Active Directory tartomány részeként (ajánlott)."
+
+#: umc/js/adconnector/SetupWizard.js:330
+msgid "Continue without encryption"
+msgstr "Folytatás titkosítás nélkül"
+
+#: umc/js/adconnector/ConfigPage.js:184
+msgid ""
+"Currently, a secured connection between UCS and the Active Directory domain "
+"is used."
+msgstr ""
+"Jelenleg biztonságos kapcsolatot használsz az UCS és az Active Directory "
+"tartomány között."
+
+#: umc/js/adconnector/ConfigPage.js:177
+msgid ""
+"Currently, an encrypted connection between UCS and the Active Directory "
+"domain is used."
+msgstr ""
+"Jelenleg titkosított kapcsolatot használsz az UCS és az Active Directory "
+"tartomány között."
+
+#: umc/js/adconnector/ConfigPage.js:171
+msgid ""
+"Currently, an unencrypted connection to the Active Directory domain is used."
+msgstr ""
+"Jelenleg titkosítatlan kapcsolatot használsz az Active Directory "
+"tartományhoz."
+
+#: umc/js/adconnector.js:22
+msgid "DNS Check"
+msgstr "DNS ellenőrzés"
+
+#: umc/js/adconnector/SetupWizard.js:141
+msgid ""
+"Enter the Active Directory domain information to establish the connection."
+msgstr ""
+"Add meg az Active Directory tartományinformációit a kapcsolat "
+"létrehozásához."
+
+#: umc/js/adconnector/SetupWizard.js:90
+msgid "Enter the Active Directory domain information to join the domain."
+msgstr ""
+"Add meg az Active Directory domain adatait a tartományhoz való "
+"csatlakozáshoz."
+
+#: umc/js/adconnector/ConfigPage.js:80 umc/js/adconnector/SetupWizard.js:201
+msgid "Failed to import the certificate"
+msgstr "Nem sikerült importálni a tanúsítványt"
+
+#: umc/js/adconnector/ConfigPage.js:89
+msgid ""
+"However, in some scenarios it may be reasonable to transfer encrypted "
+"password hashes. Please refer the UCS manual in order to activate the "
+"password synchronization."
+msgstr ""
+"Bizonyos esetekben azonban célszerű lehet titkosított jelszó-hash-eket "
+"továbbítani. A jelszó szinkronizálás aktiválásához kérjük, tekintsd meg az "
+"UCS kézikönyvét."
+
+#: umc/js/adconnector/ConfigPage.js:185
+msgid ""
+"If there is a need for adjustment, you may upload a new root certificate of "
+"the Active Directory domain."
+msgstr ""
+"Ha módosításra van szükség, feltölthetsz egy új Active Directory domain "
+"gyökértanúsítványt."
+
+#: umc/js/adconnector/ConfigPage.js:66
+msgid ""
+"It is also possible to just activate the encrypted connection without "
+"certificate verification."
+msgstr ""
+"Lehetőség van a titkosított kapcsolat egyszerű aktiválására is, tanúsítvány-"
+"ellenőrzés nélkül."
+
+#: umc/js/adconnector/SetupWizard.js:129
+msgid ""
+"It is necessary for already joined UCS systems to re-join the domain. This "
+"should be done via the UMC module <i>Domain join</i> separately on each "
+"system."
+msgstr ""
+"A már csatlakozott UCS rendszereknek újra csatlakozniuk kell a "
+"tartományhoz. Ezt az UMC <i>Tartományhoz csatlakozás</i> modulján keresztül "
+"kell elvégezni minden rendszeren külön-külön."
+
+#: umc/js/adconnector/SetupWizard.js:267
+msgid "Join AD domain"
+msgstr "Csatlakozás az AD tartományhoz"
+
+#: umc/js/adconnector/SetupWizard.js:338
+msgid "Joining UCS into Active Directory domain"
+msgstr "UCS csatlakoztatása az Active Directory tartományhoz"
+
+#: umc/js/adconnector/ConfigPage.js:127
+msgid "Password sync"
+msgstr "Jelszó szinkronizálás"
+
+#: umc/js/adconnector/SetupWizard.js:518
+msgid "Please confirm to carry out a restart of the UMC server components."
+msgstr "Kérjük, erősítsd meg az UMC szerver összetevőinek újraindítását."
+
+#: umc/js/adconnector/SetupWizard.js:269
+msgid "Retry to join"
+msgstr "Csatlakozás újrapróbálása"
+
+#: umc/js/adconnector/SetupWizard.js:162
+msgid "Security settings"
+msgstr "Biztonsági beállítások"
+
+#: umc/js/adconnector/SetupWizard.js:331
+msgid "Security warning"
+msgstr "Biztonsági figyelmeztetés"
+
+#: umc/js/adconnector/SetupWizard.js:218
+msgid ""
+"Select the synchronisation direction between the UCS domain and the given "
+"Active Directory domain."
+msgstr ""
+"Válaszd ki a szinkronizáció irányát az UCS tartomány és az adott Active "
+"Directory tartomány között."
+
+#: umc/js/adconnector/ConfigPage.js:95
+msgid "Start Active Directory connection service"
+msgstr "Az Active Directory kapcsolatszolgáltatás indítása"
+
+#: umc/js/adconnector/ConfigPage.js:99
+msgid "Stop Active Directory connection service"
+msgstr "Az Active Directory kapcsolatszolgáltatás leállítása"
+
+#: umc/js/adconnector/SetupWizard.js:71
+msgid ""
+"Synchronisation of account data between an Active Directory and this UCS "
+"domain."
+msgstr ""
+"Fiókadatok szinkronizálása egy Active Directory és ezen UCS-tartomány "
+"között."
+
+#: umc/js/adconnector/ConfigPage.js:49
+msgid "The UCS domain exists in parallel to an Active Directory domain."
+msgstr ""
+"Az UCS tartomány párhuzamosan létezik egy Active Directory tartománnyal."
+
+#: umc/js/adconnector/SetupWizard.js:258
+msgid ""
+"The UCS server is now ready for usage, and domain account data is now "
+"available."
+msgstr ""
+"Az UCS szerver most már használatra kész, és a domain fiókadatok is "
+"elérhetőek."
+
+#: umc/js/adconnector/ConfigPage.js:78 umc/js/adconnector/SetupWizard.js:198
+msgid "The certificate was imported successfully"
+msgstr "A tanúsítvány importálása sikeresen megtörtént"
+
+#: umc/js/adconnector/SetupWizard.js:128
+msgid ""
+"The connection to the Active Directory domain has been configured "
+"successfully."
+msgstr ""
+"Az Active Directory tartományhoz való kapcsolódás sikeresen konfigurálva "
+"lett."
+
+#: umc/js/adconnector/ConfigPage.js:173 umc/js/adconnector/ConfigPage.js:179
+#, javascript-format
+msgid ""
+"The necessary steps depend on the actual Microsoft Windows version and are "
+"described in the <a href=\"https://docs.software-univention.de/manual-"
+"%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>."
+msgstr ""
+"A szükséges lépések az aktuális Microsoft Windows verziótól függenek, és az "
+"<a href=\"https://docs.software-univention.de/manual-%s.html#ad-"
+"connector:ad-zertifikat\" target=\"_blank\">UCS kézikönyvében</a> vannak "
+"leírva."
+
+#: umc/js/adconnector/SetupWizard.js:301
+msgid ""
+"The server <i>%(_hostname)s (%(DC_IP)s)</i> is used as Active Directory "
+"Domain Controller for the domain <i>%(Domain)s</i>."
+msgstr ""
+"A szerver <i>%(_hostname)s (%(DC_IP)s)</i> a(z) <i>%(Domain)s</i> tartomány "
+"Active Directory tartományvezérlőjeként működik."
+
+#: umc/js/adconnector/SetupWizard.js:257
+msgid ""
+"The synchronisation of Univention Corporate Server and Active Directory has "
+"been successfully initiated."
+msgstr ""
+"Az Univention Corporate Server és az Active Directory szinkronizálása "
+"sikeresen elindult."
+
+#: umc/js/adconnector/ConfigPage.js:47
+msgid "The system is part of an Active Directory domain."
+msgstr "A rendszer egy Active Directory tartomány része."
+
+#: umc/js/adconnector/ConfigPage.js:51
+msgid ""
+"This module configures the connection between the Univention Corporate "
+"Server and Active Directory."
+msgstr ""
+"Ez a modul konfigurálja a Univention Corporate Server és az Active "
+"Directory közötti kapcsolatot."
+
+#: umc/js/adconnector/ConfigPage.js:172 umc/js/adconnector/ConfigPage.js:178
+msgid ""
+"To achieve a higher level of security, the Active Directory root "
+"certificate should be exported and uploaded here. The Active Directory "
+"certificate service creates that certificate."
+msgstr ""
+"A magasabb szintű biztonság elérése érdekében az Active Directory "
+"gyökértanúsítványát exportálni és ide feltölteni kell. Az Active Directory "
+"tanúsítványszolgáltatás hozza létre ezt a tanúsítványt."
+
+#: umc/js/adconnector/SetupWizard.js:170
+#, javascript-format
+msgid ""
+"To enable an encrypted connection, a certification authority needs to be "
+"configured on the Active Directory server. All steps necessary are "
+"described in the <a href=\"https://docs.software-univention.de/manual-"
+"%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>."
+msgstr ""
+"Titkosított kapcsolat engedélyezéséhez hitelesítésszolgáltatót kell "
+"konfigurálni az Active Directory kiszolgálón. Az összes szükséges lépést az "
+"<a href=\"https://docs.software-univention.de/manual-%s.html#ad-"
+"connector:ad-zertifikat\" target=\"_blank\">UCS kézikönyve</a> ismerteti."
+
+#: umc/js/adconnector/SetupWizard.js:224
+msgid "Unidirectional synchronisation of Active Directory to UCS."
+msgstr "Az Active Directory és az UCS egyirányú szinkronizálása."
+
+#: umc/js/adconnector/SetupWizard.js:227
+msgid "Unidirectional synchronisation of UCS to Active Directory."
+msgstr "Az UCS egyirányú szinkronizálása az Active Directoryval."
+
+#: umc/js/adconnector/SetupWizard.js:177
+msgid "Upload AD root certificate"
+msgstr "AD gyökér tanúsítvány feltöltése"
+
+#: umc/js/adconnector/SetupWizard.js:77
+msgid ""
+"Use the recommended first option if Active Directory will be the principal "
+"domain. Domain users can directly access applications that are installed on "
+"UCS."
+msgstr ""
+"Használd az ajánlott első opciót, ha az Active Directory lesz a fő "
+"tartomány. A tartomány felhasználói közvetlenül hozzáférhetnek az UCS-re "
+"telepített alkalmazásokhoz."
+
+#: umc/js/adconnector/SetupWizard.js:78
+msgid ""
+"Use the second option for more complex scenarios which necessitate that "
+"Active Directory and UCS domains exist in parallel."
+msgstr ""
+"A második lehetőséget összetettebb forgatókönyvekhez használd, amelyek "
+"megkövetelik, hogy az Active Directory és az UCS tartományok párhuzamosan "
+"létezzenek."

@@ -1,0 +1,144 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2025-11-29 23:24+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: modules/univention/admin/handlers/blocklists/all.py:23
+msgid "All blocklist objects"
+msgstr "A tiltólista minden objektuma"
+
+#: modules/univention/admin/handlers/blocklists/all.py:41
+msgid "Basic settings"
+msgstr "Alapbeállítások"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:46
+msgid "Blocked until"
+msgstr "Tiltott eddig"
+
+#: modules/univention/admin/handlers/blocklists/all.py:24
+#: modules/univention/admin/handlers/blocklists/list.py:21
+#: modules/univention/admin/handlers/blocklists/list.py:22
+msgid "Blocklist"
+msgstr "Blokklista"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:61
+msgid "Blocklist entry settings"
+msgstr "Tiltólista bejegyzés beállításai"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:37
+msgid "Blocklist entry value"
+msgstr "Tiltólista bejegyzés értéke"
+
+#: modules/univention/admin/handlers/blocklists/list.py:24
+msgid "Blocklist for certain UDM properties"
+msgstr "Bizonyos UDM-tulajdonságok tiltólistája"
+
+#: modules/univention/admin/handlers/blocklists/list.py:57
+msgid "Blocklist settings"
+msgstr "Tiltólista beállításai"
+
+#: modules/univention/admin/handlers/blocklists/all.py:25
+#: modules/univention/admin/handlers/blocklists/list.py:23
+msgid "Blocklists"
+msgstr "Tiltólisták"
+
+#: modules/univention/admin/handlers/blocklists/all.py:41
+#: modules/univention/admin/handlers/blocklists/list.py:57
+#: modules/univention/admin/handlers/blocklists/entry.py:61
+msgid "General"
+msgstr "Általános"
+
+#: modules/univention/admin/handlers/blocklists/list.py:58
+#: modules/univention/admin/handlers/blocklists/entry.py:62
+msgid "General settings"
+msgstr "Általános beállítások"
+
+#: modules/univention/admin/handlers/blocklists/all.py:26
+msgid "Manage the blocklists"
+msgstr "A tiltólisták kezelése"
+
+#: modules/univention/admin/handlers/blocklists/all.py:33
+#: modules/univention/admin/handlers/blocklists/list.py:35
+msgid "Name"
+msgstr "Név"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:52
+msgid "Origin ID"
+msgstr "Eredet azonosító"
+
+#: modules/univention/admin/handlers/blocklists/list.py:43
+msgid "Properties to block"
+msgstr "Blokkolandó tulajdonságok"
+
+#: modules/univention/admin/handlers/blocklists/list.py:51
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. Each blocklist can be assigned a retention period. Once this "
+"retention period has elapsed, the blocking object is automatically deleted, "
+"and the property value can be reassigned. The retention period is set using "
+"the following schema \"1y6m3d\" (which equals one year, six months and "
+"three days)."
+msgstr ""
+"Az UDM objektumból eltávolított tulajdonságértékek automatikusan "
+"blokkolhatók későbbi felhasználás céljából. Minden tiltólistához "
+"hozzárendelhető egy megőrzési időszak. Miután ez a megőrzési időszak "
+"lejárt, a blokkoló objektum automatikusan törlődik, és a tulajdonságérték "
+"újra hozzárendelhető. A megőrzési időszak a következő \"1y6m3d\" séma "
+"szerint van beállítva (ami egy évnek, hat hónapnak és három napnak felel "
+"meg)."
+
+#: modules/univention/admin/handlers/blocklists/list.py:44
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. This is achieved by adding the properties to a blocklist. The "
+"properties must be specified according to the following schema: \"udm/"
+"module property\". An example configuration would be \"users/user "
+"mailPrimaryAddress\". If multiple properties are assigned to the same "
+"blocklist, the blocking value applies for multiple properties."
+msgstr ""
+"Az UDM objektumból eltávolított tulajdonságértékek automatikusan "
+"blokkolhatók a jövőbeni használatra. Ez úgy érhető el, hogy a "
+"tulajdonságokat hozzáadjuk egy tiltólistához. A tulajdonságokat a következő "
+"séma szerint kell megadni: \"udm/module property\". Egy példa erre a "
+"konfiguráció: \"users/user mailPrimaryAddress\". Ha több tulajdonság van "
+"hozzárendelve ugyanahhoz a tiltólistához, a blokkoló érték több "
+"tulajdonságra is vonatkozik."
+
+#: modules/univention/admin/handlers/blocklists/list.py:50
+msgid "Retention time for objects in this blocklist"
+msgstr "A tiltólistában szereplő objektumok megőrzési ideje"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:53
+msgid ""
+"The ID of the UDM object that lead to this blocklist entry. The value of "
+"this blocklist entry can still be used on that UDM object."
+msgstr ""
+"Az ehhez a tiltólista-bejegyzéshez vezető UDM-objektum azonosítója. A "
+"tiltólista-bejegyzés értéke továbbra is használható az adott UDM-objektumon."
+
+#: modules/univention/admin/handlers/blocklists/entry.py:47
+msgid ""
+"This blocklist entry is valid until timestamp (generalized time in LDAP-"
+"Syntax -> 21241212000000Z). Expired entries are deleted."
+msgstr ""
+"Ez a tiltólista-bejegyzés érvényességi ideje: időbélyeg (általánosított idő "
+"LDAP-szintaxisban -> 21241212000000Z). A lejárt bejegyzések törlődnek."
+
+#: modules/univention/admin/handlers/blocklists/entry.py:23
+#: modules/univention/admin/handlers/blocklists/entry.py:25
+msgid "Univention blocklist entries"
+msgstr "Univention blokklista bejegyzések"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:24
+msgid "Univention blocklist entry"
+msgstr "Univention blokklista bejegyzés"

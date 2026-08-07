@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-reboot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-reboot\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-03 23:44+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/reboot.js:35
+msgid "Reboot server"
+msgstr "Kiszolgáló újraindítása"
+
+#: umc/js/reboot.js:20
+msgid "Server"
+msgstr "Szerver"
+
+#: umc/js/reboot.js:26
+msgid "Shutdown server"
+msgstr "Szerver leállítása"
+
+#: umc/js/reboot.js:46
+msgid ""
+"This system has been updated recently. Please reboot this system to finish "
+"the update."
+msgstr ""
+"Ez a rendszer nemrégiben frissült. Kérjük, indítsd újra a rendszert a "
+"frissítés befejezéséhez."

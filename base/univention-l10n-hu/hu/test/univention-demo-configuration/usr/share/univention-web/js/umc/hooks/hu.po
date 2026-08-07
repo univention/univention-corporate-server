@@ -1,0 +1,44 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-demo-configuration\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-02-26 22:48+0100\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:229
+msgid "Demo help"
+msgstr "Demó súgó"
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:193
+msgid "Dummy entries to apps that could be installed on UCS"
+msgstr "Az UCS-re telepíthető alkalmazásokhoz tartozó álbejegyzések"
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:188
+msgid "The UCS web interface for administrating users, computers, etc."
+msgstr ""
+"Az UCS webes felülete felhasználók, számítógépek stb. adminisztrálásához."
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:198
+msgid ""
+"This help screen can be displayed again via <i>Help</i> in the user menu"
+msgstr ""
+"Ez a súgóképernyő ismét megjeleníthető a felhasználói menü <i>Súgó</i> "
+"menüpontjából"
+
+#: usr/share/univention-web/js/umc/hooks/univention_demo.js:240
+msgid ""
+"Welcome to the online demo of Univention Corporate Server (UCS). You are "
+"now on the start site of the UCS system. Click on \"System and domain "
+"settings\" to start exploring the possibilities UCS offers."
+msgstr ""
+"Üdvözölünk az Univention Corporate Server (UCS) online demójában. Most az "
+"UCS rendszer kezdőlapján vagy. Kattints a \"Rendszer- és "
+"tartománybeállítások\"-ra az UCS által kínált lehetőségek felfedezéséhez."

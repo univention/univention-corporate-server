@@ -1,0 +1,215 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-quota package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-quota\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-01 11:49+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/quota/DetailPage.js:153
+msgid "A username needs to be specified."
+msgstr "Felhasználónév megadása szükséges."
+
+#: umc/js/quota.js:59
+msgid "Activate"
+msgstr "Aktiválás"
+
+#: umc/js/quota.js:106
+msgid "Activated"
+msgstr "Aktiválva"
+
+#: umc/js/quota/PartitionPage.js:91
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: umc/js/quota/DetailPage.js:138
+msgid "Add quota"
+msgstr "Kvóta hozzáadása"
+
+#: umc/js/quota/DetailPage.js:139
+#, javascript-format
+msgid "Add quota settings for a new user on partition <i>%s</i>."
+msgstr ""
+"Kvóta beállítások az új felhasználók számára a(z) <i>%s</i> partíción."
+
+#: umc/js/quota/PartitionPage.js:47
+msgid "Back to overview"
+msgstr "Vissza az áttekintéshez"
+
+#: umc/js/quota/DetailPage.js:43
+msgid "Back to partition"
+msgstr "Vissza a partícióhoz"
+
+#: umc/js/quota.js:179 umc/js/quota/PartitionPage.js:191
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/quota.js:71 umc/js/quota/PartitionPage.js:101
+msgid "Configure"
+msgstr "Beállítás"
+
+#: umc/js/quota/DetailPage.js:88
+msgid "Data size hard limit (MB)"
+msgstr "Szigorú kvóta (MB)"
+
+#: umc/js/quota/DetailPage.js:78
+msgid "Data size soft limit (MB)"
+msgstr "Enyhe kvóta (MB)"
+
+#: umc/js/quota.js:65
+msgid "Deactivate"
+msgstr "Kikapcsolás"
+
+#: umc/js/quota.js:108
+msgid "Deactivated"
+msgstr "Kikapcsolva"
+
+#: umc/js/quota/PartitionPage.js:136
+msgid "Files (used/soft/hard)"
+msgstr "Fájlok (használt/enyhe/szigorú)"
+
+#: umc/js/quota/DetailPage.js:108
+msgid "Files hard limit"
+msgstr "Fájlok szigorú limitje"
+
+#: umc/js/quota/DetailPage.js:98
+msgid "Files soft limit"
+msgstr "Fájlok enyhe limitje"
+
+#: umc/js/quota/PartitionPage.js:35
+msgid "Filesystem: "
+msgstr "Fájlrendszer "
+
+#: umc/js/quota.js:124
+msgid "Free (GB)"
+msgstr "Szabad (GB)"
+
+#: umc/js/quota/PartitionPage.js:132 umc/js/quota/PartitionPage.js:143
+msgid "Grace"
+msgstr "Türelmi idő"
+
+#: umc/js/quota/DetailPage.js:144
+msgid "Modify quota"
+msgstr "Kvóta módosítása"
+
+#: umc/js/quota/DetailPage.js:145
+msgid ""
+"Modify the quota settings for user <i>%(user)s</i> on partition <i>%"
+"(partition)s</i>."
+msgstr ""
+"Kvóta beállítások módosítása <i>%(user)s</i> felhasználó számára a(z) <i>%"
+"(partition)s</i> partíción."
+
+#: umc/js/quota.js:96
+msgid "Mount point"
+msgstr "Csatolási pont"
+
+#: umc/js/quota/PartitionPage.js:34
+msgid "Mount point: "
+msgstr "Csatolási pont: "
+
+#: umc/js/quota/DetailPage.js:163
+msgid "Not all limits can be set to zero."
+msgstr "Nem állítható minden nullára."
+
+#: umc/js/quota.js:182 umc/js/quota/PartitionPage.js:194
+msgid "OK"
+msgstr "OK"
+
+#: umc/js/quota/PartitionPage.js:36
+msgid "Options: "
+msgstr "Beállítások: "
+
+#: umc/js/quota.js:92 umc/js/quota/DetailPage.js:72
+msgid "Partition"
+msgstr "Partíció"
+
+#: umc/js/quota.js:207
+#, javascript-format
+msgid "Partition: %s"
+msgstr "Partíció: %s"
+
+#: umc/js/quota.js:49
+msgid "Partitions"
+msgstr "Partíciók"
+
+#: umc/js/quota.js:174
+#, javascript-format
+msgid "Please confirm quota support activation on device: %s"
+msgstr "Kérjük, erősítsd meg a kvóta támogatás aktiválását az eszközön: %s"
+
+#: umc/js/quota.js:176
+#, javascript-format
+msgid "Please confirm quota support deactivation on device: %s"
+msgstr "Kérjük, erősítsd meg a kvóta támogatás deaktiválását az eszközön: %s"
+
+#: umc/js/quota/PartitionPage.js:188
+msgid "Please confirm to remove the following %(length)s users: %(usernames)s"
+msgstr ""
+"Kérjük, erősítsd meg a következő %(length)s felhasználó eltávolítását: %"
+"(usernames)s"
+
+#: umc/js/quota/PartitionPage.js:186
+#, javascript-format
+msgid "Please confirm to remove the following user: %s"
+msgstr "Kérjük, erősítsd meg a következő felhasználó eltávolítását: %s"
+
+#: umc/js/quota.js:100
+msgid "Quota"
+msgstr "Kvóta"
+
+#: umc/js/quota.js:81
+msgid "Refresh"
+msgstr "Frissítés"
+
+#: umc/js/quota/PartitionPage.js:110
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: umc/js/quota/DetailPage.js:48
+msgid "Save changes"
+msgstr "Módosítások mentése"
+
+#: umc/js/quota/PartitionPage.js:72
+msgid "Search..."
+msgstr "Keresés..."
+
+#: umc/js/quota.js:51
+msgid "Set, unset and modify filesystem quota"
+msgstr "Fájlrendszer kvóta beállítása, törlése és módosítása"
+
+#: umc/js/quota.js:113
+msgid "Size (GB)"
+msgstr "Méret (GB)"
+
+#: umc/js/quota/PartitionPage.js:125
+msgid "Size (MB) (used/soft/hard)"
+msgstr "Méret (MB) (felhasznált/enyhe/szigorú)"
+
+#: umc/js/quota/DetailPage.js:172
+msgid "The soft limit needs to be less than or equal to the hard limit"
+msgstr ""
+"Az enyhe limitnek kisebbnek vagy egyenlőnek kell lennie a szigorú limitnél"
+
+#: umc/js/quota.js:104
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: umc/js/quota/PartitionPage.js:121 umc/js/quota/DetailPage.js:67
+msgid "User"
+msgstr "Felhasználó"
+
+#: umc/js/quota/PartitionPage.js:50
+msgid "loading..."
+msgstr "betöltés..."

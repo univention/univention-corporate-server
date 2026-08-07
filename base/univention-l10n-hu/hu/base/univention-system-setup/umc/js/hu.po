@@ -1,0 +1,569 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-setup package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-11-16 22:25+0100\n"
+"PO-Revision-Date: 2026-04-01 11:48+0200\n"
+"Last-Translator: Szűcs Imre <szucsi@jmgk.edu.hu>\n"
+"Language-Team: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: umc/js/setup/InterfaceWizard.js:71 umc/js/setup/InterfaceWizard.js:369
+msgid ""
+"<i>Bond</i> interfaces allows two or more physical network interfaces to be "
+"coupled."
+msgstr ""
+"A <i>Bond</i> interfészek lehetővé teszik két vagy több fizikai hálózati "
+"interfész összekapcsolását."
+
+#: umc/js/setup/InterfaceWizard.js:70 umc/js/setup/InterfaceWizard.js:334
+msgid ""
+"<i>Bridge</i> interfaces allows a physical network interface to be shared "
+"to connect one or more network segments."
+msgstr ""
+"A <i>Bridge</i> interfészek lehetővé teszik egy fizikai hálózati interfész "
+"megosztását egy vagy több hálózati szegmens összekapcsolása érdekében."
+
+#: umc/js/setup/InterfaceWizard.js:68
+msgid "<i>Ethernet</i> is a standard physical interface."
+msgstr "<i>Az Ethernet</i> egy szabványos fizikai interfész."
+
+#: umc/js/setup/InterfaceWizard.js:69
+msgid ""
+"<i>VLAN</i> interfaces can be used to separate network traffic logically "
+"while using only one or more physical network interfaces."
+msgstr ""
+"A <i>VLAN</i> interfészek segítségével logikailag el lehet különíteni a "
+"hálózati forgalmat, miközben csak egy vagy több fizikai hálózati interfészt "
+"használunk."
+
+#: umc/js/setup/InterfaceGrid.js:66
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: umc/js/setup/InterfaceWizard.js:426
+msgid "Additional bonding options"
+msgstr "További kötési lehetőségek"
+
+#: umc/js/setup/InterfaceWizard.js:352
+msgid "Additional bridge options"
+msgstr "További híd opciók"
+
+#: umc/js/setup/InterfaceWizard.js:353 umc/js/setup/InterfaceWizard.js:427
+msgid "Additional options for this network interface"
+msgstr "További beállítások ehhez a hálózati interfészhez"
+
+#: umc/js/setup/InterfaceWizard.js:440
+msgid "Advanced configuration"
+msgstr "Speciális beállítások"
+
+#: umc/js/setup.js:114 umc/js/setup.js:334
+msgid "Apply changes"
+msgstr "Változások alkalmazása"
+
+#: umc/js/setup/Interfaces.js:96 umc/js/setup/InterfaceWizard.js:293
+msgid "Autoconfiguration (SLAAC)"
+msgstr "Automatikus konfigurálás (SLAAC)"
+
+#: umc/js/setup/InterfaceGrid.js:327
+msgid "Back to overview"
+msgstr "Vissza az áttekintéshez"
+
+#: umc/js/setup/InterfaceWizard.js:368
+msgid "Bond configuration"
+msgstr "Kötés konfigurációja"
+
+#: umc/js/setup/InterfaceWizard.js:437
+msgid "Bond interface configuration"
+msgstr "Kötés interfész konfiguráció"
+
+#: umc/js/setup/InterfaceWizard.js:385
+msgid "Bond primary"
+msgstr "Elsődleges kötés"
+
+#: umc/js/setup/Interfaces.js:144 umc/js/setup/InterfaceWizard.js:372
+msgid "Bond slaves"
+msgstr "Szolga kötés"
+
+#: umc/js/setup/types.js:32
+msgid "Bonding"
+msgstr "Kötés"
+
+#: umc/js/setup/types.js:33
+msgid "Bridge"
+msgstr "Híd"
+
+#: umc/js/setup/InterfaceWizard.js:333
+msgid "Bridge configuration"
+msgstr "Híd konfiguráció"
+
+#: umc/js/setup/InterfaceWizard.js:363
+msgid "Bridge interface configuration"
+msgstr "Híd interfész konfigurációja"
+
+#: umc/js/setup/Interfaces.js:166 umc/js/setup/InterfaceWizard.js:337
+msgid "Bridge ports"
+msgstr "Híd portok"
+
+#: umc/js/setup/CertificatePage.js:83
+msgid "Business unit"
+msgstr "Üzleti egység"
+
+#: umc/js/setup.js:331 umc/js/setup/InterfaceGrid.js:106
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: umc/js/setup/LanguagePage.js:96
+msgid "Category"
+msgstr "Kategória"
+
+#: umc/js/setup/CertificatePage.js:129
+msgid ""
+"Changes in the SSL certificate settings will result in generating new root "
+"SSL certificates. Note that this will require an update of all host "
+"certificates in the domain as the old root certificate is no longer valid. "
+"Additional information can be found in the <a href=\"http://"
+"sdb.univention.de/1183\" target=\"_blank\">Univention Support Database</a>."
+msgstr ""
+"Az SSL-tanúsítvány beállításainak módosítása új gyökér SSL-tanúsítványok "
+"létrehozását eredményezi. Vegye figyelembe, hogy ez a domain összes "
+"gazdagép-tanúsítványának frissítését igényli, mivel a régi gyökér "
+"tanúsítvány már nem érvényes. További információk az <a href=\"http://"
+"sdb.univention.de/1183\" target=\"_blank\"> Univention támogatási "
+"adatbázisában</a> találhatók."
+
+#: umc/js/setup/NetworkPage.js:210
+msgid ""
+"Changing IP address configurations may result in restarting or stopping "
+"services. This can have severe side-effects when the system is in "
+"productive use at the moment."
+msgstr ""
+"Az IP-cím konfigurációjának megváltoztatása a szolgáltatások újraindítását "
+"vagy leállítását eredményezheti. Ez súlyos mellékhatásokkal járhat, ha a "
+"rendszer éppen élesben működő üzemmódban van."
+
+#: umc/js/setup/InterfaceWizard.js:66
+msgid "Choose interface type"
+msgstr "Válassza ki az interfész típusát"
+
+#: umc/js/setup/CertificatePage.js:52
+msgid "Common name for the root SSL certificate"
+msgstr "A gyökér SSL-tanúsítvány általános neve"
+
+#: umc/js/setup/InterfaceGrid.js:49
+msgid "Configuration"
+msgstr "Beállítások"
+
+#: umc/js/setup.js:404
+msgid "Configuration finished"
+msgstr "A konfigurálás befejeződött"
+
+#: umc/js/setup/InterfaceWizard.js:231
+msgid "Configuration of IPv4 and IPv6 addresses"
+msgstr "IPv4 és IPv6 címek beállítása"
+
+#: umc/js/setup/CertificatePage.js:58
+msgid "Country"
+msgstr "Ország"
+
+#: umc/js/setup/LanguagePage.js:102
+msgid "Country code"
+msgstr "Ország kód"
+
+#: umc/js/setup/NetworkPage.js:316
+msgid "Created:"
+msgstr "Létrehozva:"
+
+#: umc/js/setup/InterfaceWizard.js:598 umc/js/setup/InterfaceWizard.js:624
+msgid "DHCP query failed."
+msgstr "A DHCP-lekérdezés sikertelen volt."
+
+#: umc/js/setup/InterfaceWizard.js:320
+msgid "DHCP-Query"
+msgstr "DHCP-lekérdezés"
+
+#: umc/js/setup/LanguagePage.js:128 umc/js/setup/LanguagePage.js:208
+msgid "Default system locale"
+msgstr "Alapértelmezett nyelvi beállítások"
+
+#: umc/js/setup/InterfaceGrid.js:72 umc/js/setup/InterfaceGrid.js:110
+msgid "Delete"
+msgstr "Törlés"
+
+#: umc/js/setup/NetworkPage.js:265
+msgid "Domain name server"
+msgstr "Domain név szerver"
+
+#: umc/js/setup/NetworkPage.js:92
+msgid "Domain name server (max. 3)"
+msgstr "Domain név szerver (max. 3)"
+
+#: umc/js/setup/Interfaces.js:93 umc/js/setup/InterfaceWizard.js:261
+msgid "Dynamic (DHCP)"
+msgstr "Dinamikus (DHCP)"
+
+#: umc/js/setup/InterfaceWizard.js:512
+msgid "Each IPv6 interface must have an identifier"
+msgstr "Minden IPv6 interfésznek rendelkeznie kell azonosítóval"
+
+#: umc/js/setup/InterfaceGrid.js:58
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: umc/js/setup/CertificatePage.js:90
+msgid "Email address"
+msgstr "Email cím"
+
+#: umc/js/setup/types.js:30
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: umc/js/setup/NetworkPage.js:269
+msgid "External name server"
+msgstr "Külső névszerver"
+
+#: umc/js/setup/NetworkPage.js:98
+msgid "External name server (max. 3)"
+msgstr "Külső névkiszolgáló (max. 3)"
+
+#: umc/js/setup/CertificatePage.js:39
+msgid ""
+"Following the <i>certificate settings</i>, a new root certificate will be "
+"created for the domain."
+msgstr ""
+"A <i>tanúsítvány beállításait</i> követően egy új gyökértanúsítvány jön "
+"létre a domain-hez."
+
+#: umc/js/setup/InterfaceWizard.js:345
+msgid "Forwarding delay"
+msgstr "Továbbítási késleltetés"
+
+#: umc/js/setup/InterfaceWizard.js:72
+#, javascript-format
+msgid ""
+"Further information can be found in the <a href=\"https://docs.software-"
+"univention.de/manual-%s.html#computers:networkcomplex\" "
+"target=\"_blank\">UCS documentation</a>."
+msgstr ""
+"További információk az <a href=\"https://docs.software-univention.de/manual-"
+"%s.html#computers:networkcomplex\" target=\"_blank\"> címen UCS "
+"dokumentációjában</a> találhatók."
+
+#: umc/js/setup/InterfaceWizard.js:609
+msgid "Gateway"
+msgstr "Átjáró"
+
+#: umc/js/setup/NetworkPage.js:83 umc/js/setup/NetworkPage.js:257
+msgid "Gateway (IPv4)"
+msgstr "Átjáró (IPv4)"
+
+#: umc/js/setup/NetworkPage.js:87 umc/js/setup/NetworkPage.js:261
+msgid "Gateway (IPv6)"
+msgstr "Átjáró (IPv6)"
+
+#: umc/js/setup/CertificatePage.js:94
+msgid "General settings"
+msgstr "Általános beállítások"
+
+#: umc/js/setup/NetworkPage.js:110
+msgid "Global network settings"
+msgstr "Globális hálózati beállítások"
+
+#: umc/js/setup/NetworkPage.js:103 umc/js/setup/NetworkPage.js:273
+msgid "HTTP proxy"
+msgstr "HTTP proxy"
+
+#: umc/js/setup/NetworkPage.js:107
+msgid "IP network interfaces"
+msgstr "IP hálózati interfészek"
+
+#: umc/js/setup/InterfaceWizard.js:240
+msgid "IPv4 address"
+msgstr "IPv4-cím"
+
+#: umc/js/setup/InterfaceWizard.js:324
+msgid "IPv4 network interface configuration"
+msgstr "IPv4 hálózati interfész konfigurációja"
+
+#: umc/js/setup/InterfaceWizard.js:269
+msgid "IPv6 address"
+msgstr "IPv6-cím"
+
+#: umc/js/setup/InterfaceWizard.js:327
+msgid "IPv6 network interface configuration"
+msgstr "IPv6 hálózati interfész konfiguráció"
+
+#: umc/js/setup/InterfaceWizard.js:276
+msgid "IPv6 prefix"
+msgstr "IPv6 előtag"
+
+#: umc/js/setup/InterfaceWizard.js:284
+msgid "Identifier"
+msgstr "Azonosító"
+
+#: umc/js/setup.js:392
+msgid "Initialize the configuration process ..."
+msgstr "A konfigurációs folyamat inicializálása ..."
+
+#: umc/js/setup/LanguagePage.js:87 umc/js/setup/LanguagePage.js:204
+msgid "Installed system locales"
+msgstr "Telepített rendszer helyi beállításai"
+
+#: umc/js/setup/InterfaceWizard.js:172
+msgid "Interface"
+msgstr "Interfész"
+
+#: umc/js/setup/InterfaceGrid.js:265
+#, javascript-format
+msgid "Interface \"%s\" already exists."
+msgstr "A(z) \"%s\" interfész már létezik."
+
+#: umc/js/setup/InterfaceWizard.js:82
+msgid "Interface type"
+msgstr "Interfész típus"
+
+#: umc/js/setup/LanguagePage.js:67 umc/js/setup/LanguagePage.js:196
+msgid "Keyboard layout"
+msgstr "Billentyűzetkiosztás"
+
+#: umc/js/setup/LanguagePage.js:61 umc/js/setup/LanguagePage.js:192
+msgid "Keyboard model"
+msgstr "Billentyűzet modell"
+
+#: umc/js/setup/LanguagePage.js:73 umc/js/setup/LanguagePage.js:200
+msgid "Keyboard variant"
+msgstr "Billentyűzet változat"
+
+#: umc/js/setup/LanguagePage.js:100
+msgid "Language"
+msgstr "Nyelv"
+
+#: umc/js/setup/LanguagePage.js:99
+msgid "Language (english)"
+msgstr "Nyelv (angol)"
+
+#: umc/js/setup/LanguagePage.js:101
+msgid "Language code"
+msgstr "Nyelvi kód"
+
+#: umc/js/setup/LanguagePage.js:140
+msgid "Language settings"
+msgstr "Nyelvi beállítások"
+
+#: umc/js/setup/CertificatePage.js:72
+msgid "Location"
+msgstr "Hely"
+
+#: umc/js/setup/CertificatePage.js:97
+msgid "Location settings"
+msgstr "Hely beállítások"
+
+#: umc/js/setup/InterfaceWizard.js:419
+msgid "MII link monitoring frequency"
+msgstr "MII link figyelési gyakoriság"
+
+#: umc/js/setup/InterfaceWizard.js:393
+msgid "Mode"
+msgstr "Mód"
+
+#: umc/js/setup/NetworkPage.js:326
+msgid "Modified:"
+msgstr "Módosítva:"
+
+#: umc/js/setup/LanguagePage.js:108
+msgid "Name"
+msgstr "Név"
+
+#: umc/js/setup/InterfaceWizard.js:135
+msgid "Name of new bonding interface"
+msgstr "Az új kapcsolódási felület neve"
+
+#: umc/js/setup/InterfaceWizard.js:133
+msgid "Name of new bridge interface"
+msgstr "Az új híd interfész neve"
+
+#: umc/js/setup/InterfaceWizard.js:609
+msgid "Nameserver"
+msgstr "Névszerver"
+
+#: umc/js/setup/InterfaceWizard.js:247
+msgid "Netmask"
+msgstr "Alhálózati maszk"
+
+#: umc/js/setup/InterfaceGrid.js:38
+msgid "Network interface"
+msgstr "Hálózati interfész"
+
+#: umc/js/setup/InterfaceWizard.js:230
+msgid "Network interface configuration"
+msgstr "Hálózati interfész beállítás"
+
+#: umc/js/setup/NetworkPage.js:277
+msgid "Network interfaces"
+msgstr "Hálózati interfészek"
+
+#: umc/js/setup.js:267
+msgid "No changes have been made."
+msgstr "Nincs változás."
+
+#: umc/js/setup/CertificatePage.js:89
+msgid "No valid e-mail address."
+msgstr "Nincs érvényes e-mail cím."
+
+#: umc/js/setup/NetworkPage.js:76 umc/js/setup/InterfaceWizard.js:609
+msgid "None"
+msgstr "Nincs"
+
+#: umc/js/setup.js:425
+msgid "Not all changes could be applied successfully:"
+msgstr "Nem minden változtatás volt sikeresen alkalmazható:"
+
+#: umc/js/setup.js:429
+msgid "Ok"
+msgstr "OK"
+
+#: umc/js/setup/CertificatePage.js:78
+msgid "Organization"
+msgstr "Szervezet"
+
+#: umc/js/setup/CertificatePage.js:100
+msgid "Organization settings"
+msgstr "Szervezeti beállítások"
+
+#: umc/js/setup/InterfaceWizard.js:186
+msgid "Parent interface"
+msgstr "Szülő felület"
+
+#: umc/js/setup/InterfaceWizard.js:586
+msgid "Please choose a network interface before querying a DHCP address."
+msgstr "Kérjük, válassz hálózati interfészt, mielőtt lekérdezi a DHCP-címet."
+
+#: umc/js/setup.js:326
+msgid ""
+"Please confirm to apply these changes to the system. This may take some "
+"time."
+msgstr ""
+"Kérjük, erősítsd meg, hogy ezeket a változásokat alkalmazza a rendszerben. "
+"Ez eltarthat ideig."
+
+#: umc/js/setup/InterfaceGrid.js:114
+msgid "Please confirm to delete the following interfaces:"
+msgstr "Kérjük, erősítsd meg a következő interfészek törlését:"
+
+#: umc/js/setup/InterfaceWizard.js:338
+msgid "Please specify the ports which will be added to the bridge."
+msgstr "Kérjük, add meg a hídhoz hozzáadandó portokat."
+
+#: umc/js/setup/NetworkPage.js:79 umc/js/setup/NetworkPage.js:282
+msgid "Primary network interface"
+msgstr "Elsődleges hálózati interfész"
+
+#: umc/js/setup/NetworkPage.js:336
+msgid "Removed:"
+msgstr "Eltávolítva:"
+
+#: umc/js/setup/CertificatePage.js:153
+msgid "SSL root certificate"
+msgstr "SSL gyökér tanúsítvány"
+
+#: umc/js/setup/InterfaceWizard.js:67
+msgid "Several network types can be chosen."
+msgstr "Többféle hálózati típus közül lehet választani."
+
+#: umc/js/setup/InterfaceWizard.js:611
+#, javascript-format
+msgid "Should the nameserver and gateway be set: %s"
+msgstr "Be kell állítani a névszerver és az átjáró beállításait: %s"
+
+#: umc/js/setup/CertificatePage.js:67
+msgid "State"
+msgstr "Megye"
+
+#: umc/js/setup/Interfaces.js:100
+msgid "Static"
+msgstr "Statikus"
+
+#: umc/js/setup/Interfaces.js:103
+msgid "Static (IPv6)"
+msgstr "Statikus (IPv6)"
+
+#: umc/js/setup.js:413 umc/js/setup.js:419
+msgid "The changes have been applied successfully."
+msgstr "A változtatások sikeresen végrehajtva."
+
+#: umc/js/setup.js:399
+msgid ""
+"The connection to the server could not be established after {time} seconds. "
+"This problem can occur due to a change of the IP address. In this case, "
+"please login to Univention Management Console again at the {linkStart}new "
+"address{linkEnd}."
+msgstr ""
+"A szerverhez való kapcsolat {time} másodperc után sem jött létre. Ez a "
+"probléma az IP-cím megváltozása miatt fordulhat elő. Ebben az esetben "
+"kérjük, jelentkezzen be újra az Univention Management Console-ba az "
+"{linkStart}új címen{linkEnd}."
+
+#: umc/js/setup.js:316
+msgid "The following changes will be applied to the system:"
+msgstr "A következő változások kerülnek végrehajtásra a rendszerben:"
+
+#: umc/js/setup.js:289 umc/js/setup.js:369
+msgid "The following entries could not be validated:"
+msgstr "A következő bejegyzések nem érvényesíthetők:"
+
+#: umc/js/setup/InterfaceGrid.js:118
+msgid ""
+"The following interfaces are already used by other interfaces and can not "
+"be deleted:"
+msgstr ""
+"A következő interfészeket már más interfészek használják, ezért nem "
+"törölhetők:"
+
+#: umc/js/setup/InterfaceGrid.js:283
+msgid "There are no more physical interfaces to create."
+msgstr "Nem lehet több fizikai interfészt létrehozni."
+
+#: umc/js/setup/LanguagePage.js:55 umc/js/setup/LanguagePage.js:188
+msgid "Time zone"
+msgstr "Időzóna"
+
+#: umc/js/setup/LanguagePage.js:137
+msgid "Time zone and keyboard settings"
+msgstr "Időzóna és billentyűzet beállítások"
+
+#: umc/js/setup/InterfaceGrid.js:42
+msgid "Type"
+msgstr "Típus"
+
+#: umc/js/setup/Interfaces.js:113
+msgid "Unconfigured"
+msgstr "Nem konfigurált"
+
+#: umc/js/setup/InterfaceWizard.js:208
+msgid "VLAN ID"
+msgstr "VLAN azonosító"
+
+#: umc/js/setup.js:35
+msgid "Validation error"
+msgstr "Ellenörzési hiba"
+
+#: umc/js/setup/types.js:31
+msgid "Virtual LAN"
+msgstr "Virtuális LAN"
+
+#: umc/js/setup/InterfaceWizard.js:612
+msgid "don't set"
+msgstr "ne állítsd be"
+
+#: umc/js/setup/InterfaceWizard.js:613
+msgid "set"
+msgstr "beállítva"
