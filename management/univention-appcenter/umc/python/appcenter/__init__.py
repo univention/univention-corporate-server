@@ -223,6 +223,8 @@ class Instance(umcm.Base, ProgressMixin):
     @simple_response
     def resolve(self, apps, action):
         ret = {}
+        if action == 'upgrade':
+            apps = [Apps().find_candidate(app) or app for app in apps]
         ret['apps'] = resolve_dependencies(apps, action)
         ret['auto_installed'] = [app.id for app in ret['apps'] if app.id not in [a.id for a in apps]]
         apps = ret['apps']
@@ -232,7 +234,11 @@ class Instance(umcm.Base, ProgressMixin):
         ret['settings'] = {}
         self.ucr.load()
         for app in apps:
-            ret['settings'][app.id] = self._get_config(app, action.title())
+            if action == 'upgrade' and app.id in ret['auto_installed']:
+                settings_action = 'install'
+            else:
+                settings_action = action
+            ret['settings'][app.id] = self._get_config(app, settings_action.title())
         return ret
 
     @require_apps_update
@@ -253,7 +259,7 @@ class Instance(umcm.Base, ProgressMixin):
             for host in hosts:
                 _apps = [next(app for app in apps if app.id == _app) for _app in hosts[host]]
                 if host == localhost:
-                    ret[host] = self._run_local_dry_run(_apps, action, {}, progress)
+                    ret[host] = self._run_local_dry_run(_apps, action, {}, progress, auto_installed)
                 else:
                     try:
                         ret[host] = self._run_remote_dry_run(request, host, _apps, action, auto_installed, {}, progress)
@@ -267,6 +273,8 @@ class Instance(umcm.Base, ProgressMixin):
                     host_result = ret.get(host, {})
                     ret[host] = host_result
                     _settings = {app.id: settings[app.id]}
+                    if action == 'upgrade' and app.id in auto_installed:
+                        action = 'install'
                     if host == localhost:
                         host_result[app.id] = self._run_local(app, action, _settings, auto_installed, progress)
                     else:
@@ -275,7 +283,7 @@ class Instance(umcm.Base, ProgressMixin):
                         break
         return ret
 
-    def _run_local_dry_run(self, apps, action, settings, progress):
+    def _run_local_dry_run(self, apps, action, settings, progress, auto_installed=()):
         if action == 'upgrade':
             apps = [Apps().find_candidate(app) or app for app in apps]
         if len(apps) == 1:
@@ -283,16 +291,38 @@ class Instance(umcm.Base, ProgressMixin):
         else:
             progress.title = _('%d Apps: Running tests') % len(apps)
         ret = {}
-        ret['errors'], ret['warnings'] = check(apps, action)
-        ret['errors'].pop('must_have_no_unmet_dependencies', None)  # has to be resolved prior to this call!
-        action = get_action(action)()
-        ret['packages'] = {}
-        for app in apps:
-            args = action._build_namespace(app=[app], dry_run=True, install_master_packages_remotely=False, only_master_packages=False)
-            result = action.dry_run(app, args)
-            if result is not None:
-                ret['packages'][app.id] = result
+        errors = {}
+        warnings = {}
+        packages = {}
+        for group, group_action in self._group_apps_by_action(apps, action, auto_installed):
+            _errors, _warnings = check(group, group_action)
+            _errors.pop('must_have_no_unmet_dependencies', None)  # has to be resolved prior to this call!
+            for requirement, details in _errors.items():
+                errors.setdefault(requirement, {}).update(details)
+            for requirement, details in _warnings.items():
+                warnings.setdefault(requirement, {}).update(details)
+            app_action = get_action(group_action)()
+            for app in group:
+                args = app_action._build_namespace(app=[app], dry_run=True, install_master_packages_remotely=False, only_master_packages=False)
+                result = app_action.dry_run(app, args)
+                if result is not None:
+                    packages[app.id] = result
+        ret['errors'] = errors
+        ret['warnings'] = warnings
+        ret['packages'] = packages
         return ret
+
+    def _group_apps_by_action(self, apps, action, auto_installed):
+        if action == 'upgrade':
+            auto_installed = set(auto_installed)
+            install_apps = [app for app in apps if app.id in auto_installed]
+            if install_apps:
+                yield install_apps, 'install'
+            upgrade_apps = [app for app in apps if app.id not in auto_installed]
+            if upgrade_apps:
+                yield upgrade_apps, 'upgrade'
+        elif apps:
+            yield apps, action
 
     def _run_local(self, app, action, settings, auto_installed, progress):
         for setting in app.get_settings():
