@@ -75,42 +75,48 @@ define([
 
 		_getHosts: function(backpack) {
 			var deferred = new Deferred();
-			if (backpack.hosts) {
+			const hasUpgradeDependencies = backpack.action === 'upgrade'
+				&& !!backpack.auto_installed && !!backpack.auto_installed.length;
+			if (backpack.hosts && !hasUpgradeDependencies) {
 				deferred.resolve(backpack);
 				return deferred;
 			}
 			var appChooseHostWizard = new AppChooseHostWizard({
 				apps: backpack.apps,
 				auto_installed: backpack.auto_installed,
+				action: backpack.action,
 			});
 			// lang.mixin(backpack, {
 				// chooseHostWizardWasVisible: appChooseHostWizard.needsToBeShown
 			// });
 			appChooseHostWizard.startup(); // is normally called by addChild but we need it for getValues
 			if (!appChooseHostWizard.needsToBeShown) {
-				backpack.hosts = {};
-				for (const [appId, host] of Object.entries(appChooseHostWizard.getValues())) {
-					const apps = backpack.hosts[host] || [];
-					apps.push(appId);
-					backpack.hosts[host] = apps;
-				}
+				this._mergeHosts(backpack, appChooseHostWizard.getValues());
 				deferred.resolve(backpack);
 			} else {
 				on(appChooseHostWizard, 'cancel', function() {
 					deferred.reject();
 				});
-				on(appChooseHostWizard, 'finished', function(values) {
-					backpack.hosts = {};
-					for (const [appId, host] of Object.entries(values)) {
-						const apps = backpack.hosts[host] || [];
-						apps.push(appId);
-						backpack.hosts[host] = apps;
-					}
+				on(appChooseHostWizard, 'finished', (values) => {
+					this._mergeHosts(backpack, values);
 					deferred.resolve(backpack);
 				});
 				this._show(appChooseHostWizard);
 			}
 			return deferred;
+		},
+
+		_mergeHosts: function(backpack, values) {
+			backpack.hosts = backpack.hosts || {};
+			for (const [appId, host] of Object.entries(values)) {
+				if (!host) {
+					continue;
+				}
+				const apps = backpack.hosts[host] = backpack.hosts[host] || [];
+				if (!apps.includes(appId)) {
+					apps.push(appId);
+				}
+			}
 		},
 
 		_performDryRun: function(backpack) {

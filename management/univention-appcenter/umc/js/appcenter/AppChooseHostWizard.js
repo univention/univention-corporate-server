@@ -28,6 +28,7 @@ define([
 		// these need to be provided
 		apps: null,
 		auto_installed: null,
+		action: 'install',
 		// these need to be provided
 		//
 		selectedApps: null,
@@ -128,9 +129,19 @@ define([
 			return page;
 		},
 
+		_getAppsToChooseHost: function() {
+			if (this.action === 'upgrade') {
+				// during an upgrade the installed Apps stay on their hosts;
+				// only the additionally installed dependencies need a host
+				return this.apps.filter(app => this.auto_installed.includes(app.id));
+			}
+			return this.apps;
+		},
+
 		_getChooseHostPage: function(headerText) {
-			const infoText = this.selectedApps.length === 1
-				? _('In order to proceed with the installation of %s, please select the host on which the App is going to be installed.', this.selectedApps[0].name)
+			const appsToChoose = this._getAppsToChooseHost();
+			const infoText = appsToChoose.length === 1
+				? _('In order to proceed with the installation of %s, please select the host on which the App is going to be installed.', appsToChoose[0].name)
 				: _('In order to proceed with the installation, please select the hosts on which the Apps are going to be installed.');
 			const page = {
 				name: 'chooseHosts',
@@ -144,7 +155,7 @@ define([
 					'chooseHosts_infoText'
 				]
 			};
-			for (const app of this.apps) {
+			for (const app of appsToChoose) {
 				var hosts = [];
 				var removedDueToInstalled = [];
 				var removedDueToRole = [];
@@ -220,9 +231,13 @@ define([
 
 		_getPages: function() {
 			const pages = [];
-			const headerText = this.selectedApps.length === 1
-				? _('Installation of %s', this.selectedApps[0].name)
-				: _('Installation of multiple apps');
+			const headerText = this.action === 'upgrade'
+				? (this.selectedApps.length === 1
+					? _('Upgrade of %s', this.selectedApps[0].name)
+					: _('Upgrade of multiple apps'))
+				: (this.selectedApps.length === 1
+					? _('Installation of %s', this.selectedApps[0].name)
+					: _('Installation of multiple apps'));
 			pages.push(this._getAppsPage(headerText));
 			pages.push(this._getChooseHostPage(headerText));
 			this._showToBeInstalledApps = !!this.auto_installed.length;
