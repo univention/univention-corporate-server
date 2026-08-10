@@ -277,8 +277,9 @@ Type=bool
 Categories=service-adcon
 
 [con.*/ad/mapping/user/password/kerberos/enabled]
-Description[de]=Wenn die Kerberos Hashes von dem Active Directory zum UCS LDAP-Server synchronisiert werden sollen, so kann diese Variable auf true gesetzt werden. Ist die Variable nicht gesetzt, so werden die Kerberos Hashes nicht synchronisiert.
-Description[en]=If the Kerberos hashes should be synced from Active Directory to the UCS LDAP server, this variable can be set to true. If the variable is not set, these hashes will not be synchronized.
+Description[de]=Wenn die Kerberos Hashes nicht von dem Active Directory zum UCS LDAP-Server synchronisiert werden sollen, so kann diese Variable auf false gesetzt werden. Ist die Variable nicht gesetzt, so werden die Kerberos Hashes synchronisiert.
+Description[en]=If the Kerberos hashes should not be synced from Active Directory to the UCS LDAP server, this variable can be set to false. If the variable is not set, these hashes will be synchronized.
+Default=True
 Type=bool
 Categories=service-adcon
 

@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-ad-connector
+fix: 16.7.4
+desc: |
+ This update addresses the following issues:
+ * During password synchroization from Active Directory towards
+   UCS, the Kerberos keys will now be synchronized by the
+   AD-Connector per default. This results in securer Keytypes
+   to be usable in UCS when the password of a user has been
+   changed in Active Directory.
+bug: [57689]

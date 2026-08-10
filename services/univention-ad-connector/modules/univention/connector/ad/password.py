@@ -319,7 +319,7 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
                     log.debug("get_password_from_ad: Found ntPwdHistory blob")
                     history_blob = j.blob
             if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.configRegistry.is_true(
-                f'{connector.CONFIGBASENAME}/ad/mapping/user/password/kerberos/enabled', False,
+                f'{connector.CONFIGBASENAME}/ad/mapping/user/password/kerberos/enabled', True,
             ):
                 if i.value_ctr.values:
                     for j in i.value_ctr.values:
