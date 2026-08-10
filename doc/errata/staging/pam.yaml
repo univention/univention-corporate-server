@@ -1,9 +1,9 @@
 product: ucs
 release: "5.2"
-version: [3, 4, 5, 6]
+version: [5, 6]
 scope: ucs_5.2-0-errata5.2-6
 src: pam
-fix: 1.5.2-6+deb12u2A~5.2.6.202608100917
+fix: 1.5.2-6+deb12u2A~5.2.6.202608101020
 desc: |
  This update addresses the following issues:
  * CVE-2025-6020 (CVSS score 7.8 -
