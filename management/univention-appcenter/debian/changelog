@@ -1,3 +1,9 @@
+univention-appcenter (11.6.2) unstable; urgency=medium
+
+  * Bug #59717: Fix appcenter upgrade behaviour when new dependencies are added.
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 11 Aug 2026 12:31:04 +0200
+
 univention-appcenter (11.6.1) unstable; urgency=medium
 
   * Bug #59521: don't run UCR template filtering twice
