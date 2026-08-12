@@ -12,3 +12,6 @@ desc: |
    to be usable in UCS when the password of a user has been
    changed in Active Directory.
 bug: [57689]
+erratum: 574
+announced: 2026-08-12
+support: core
