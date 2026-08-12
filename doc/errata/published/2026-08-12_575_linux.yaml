@@ -296,3 +296,6 @@ cve:
 - CVE-2026-64602
 - CVE-2026-64604
 note: This is the 1st of two parts.
+erratum: 575
+announced: 2026-08-12
+support: core
