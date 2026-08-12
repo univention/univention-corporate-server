@@ -9,3 +9,6 @@ desc: |
  * Windows clients had issues opening symlinks with Samba 4.24.
    This has been fixed.
 bug: [59706]
+erratum: 573
+announced: 2026-08-12
+support: core
