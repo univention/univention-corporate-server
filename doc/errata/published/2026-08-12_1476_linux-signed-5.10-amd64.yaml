@@ -240,3 +240,6 @@ cve:
 - CVE-2026-64304
 - CVE-2026-64560
 note: This is the 2nd of two parts.
+erratum: 1476
+announced: 2026-08-12
+support: lts
