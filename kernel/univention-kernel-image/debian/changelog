@@ -2,7 +2,7 @@ univention-kernel-image (12.0.0-21) unstable; urgency=medium
 
   * Bug #59709: Update to 5.10.262-1~deb9u1
 
- -- Stanimir Mihov <stanimir.mihov@univention.de>  Mon Aug 10 09:10:35 2026 +0200
+ -- Stanimir Mihov <stanimir.mihov@univention.de>  Mon, Aug 10 09:10:35 2026 +0200
 
 univention-kernel-image (12.0.0-20) unstable; urgency=medium
 
