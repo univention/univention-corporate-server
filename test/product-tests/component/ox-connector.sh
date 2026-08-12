@@ -136,3 +136,90 @@ create_000_default_conf () {
 </VirtualHost>
 EOF
 }
+
+assert_ox_connector_provisioning_setup () {
+  local app_id="ox-connector"
+  local app_root="/var/lib/univention-appcenter/apps/${app_id}"
+  local subscription_file="${app_root}/runtime-secrets/provisioning-subscription.json"
+  local container
+
+  test "$(ucr get "appcenter/apps/${app_id}/status")" = "installed" || {
+    echo "ERROR: ${app_id} is not marked as installed." >&2
+    return 1
+  }
+  container="$(ucr get "appcenter/apps/${app_id}/container")"
+  test -n "${container}" && test "$(docker inspect --format '{{.State.Running}}' "${container}")" = "true" || {
+    echo "ERROR: ${app_id} container is not running." >&2
+    return 1
+  }
+  test -f "${subscription_file}" &&
+    test ! -L "${subscription_file}" &&
+    test "$(stat -c '%U:%G:%a' -- "${subscription_file}")" = "root:root:600" || {
+    echo "ERROR: managed Provisioning subscription file has unsafe ownership or permissions." >&2
+    return 1
+  }
+
+  python3 - "${subscription_file}" "$(ucr get hostname)" "$(ucr get ldap/master)" <<'PY'
+import importlib
+import json
+import sys
+from urllib.parse import quote, urlsplit
+
+import requests
+import univention.admin.modules
+import univention.admin.syntax
+
+subscription_file, hostname, primary = sys.argv[1:]
+with open(subscription_file, encoding="utf-8") as stream:
+    record = json.load(stream)
+
+assert record["state"] == "active"
+subscription = record["subscription"]
+assert subscription["name"] == f"ox-connector-{hostname}"
+assert record["password"]
+
+base_url = record["provisioning_api_base_url"].rstrip("/")
+parsed_url = urlsplit(base_url)
+assert parsed_url.scheme == "https"
+assert parsed_url.hostname.casefold() == primary.casefold()
+name = subscription["name"]
+try:
+    response = requests.get(
+        f"{base_url}/v1/subscriptions/{quote(name, safe='')}",
+        auth=(name, record["password"]),
+        verify="/usr/local/share/ca-certificates/ucsCA.crt",
+        allow_redirects=False,
+        timeout=(2, 15),
+    )
+except requests.RequestException:
+    raise SystemExit("limited subscriber authentication against Provisioning failed") from None
+if response.status_code != 200:
+    raise SystemExit("limited subscriber authentication against Provisioning failed")
+
+remote = response.json()
+for field in ("name", "realms_topics", "request_prefill"):
+    assert remote[field] == subscription[field]
+
+univention.admin.modules.update()
+assert hasattr(univention.admin.syntax, "oxContextSelect")
+importlib.import_module("univention.admin.handlers.oxmail.shared_account")
+importlib.import_module("univention.admin.handlers.oxresources.oxresources")
+print("Validated automatic OX Provisioning setup and UDM extensions.")
+PY
+}
+
+assert_ox_connector_provisioning_cleanup () {
+  local app_root="/var/lib/univention-appcenter/apps/ox-connector"
+
+  test ! -e "${app_root}/runtime-secrets/provisioning-subscription.json" &&
+    test ! -L "${app_root}/runtime-secrets/provisioning-subscription.json" || {
+      echo "ERROR: managed Provisioning subscription credential remains after uninstall." >&2
+      return 1
+    }
+  test ! -e "${app_root}/local/univention-provisioning-service-client" &&
+    test ! -L "${app_root}/local/univention-provisioning-service-client" || {
+      echo "ERROR: private Provisioning lifecycle client remains after uninstall." >&2
+      return 1
+    }
+  echo "Validated OX Connector Provisioning cleanup."
+}
