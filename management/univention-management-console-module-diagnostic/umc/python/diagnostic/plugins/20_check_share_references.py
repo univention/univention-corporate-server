@@ -96,6 +96,13 @@ class ShareReferenceChecker:
 
 
 def run(_umc_instance: Instance) -> None:
+    # The check binds as the machine account, so it can only tell "this host object does not
+    # exist" from "I am not allowed to read it" where that account may read the whole
+    # directory. On a UCS@school school replica it may not: the ACLs isolate the schools from
+    # each other, so every share referencing a server of another school looks dangling.
+    if ucr.get("server/role") != "domaincontroller_master":
+        return
+
     errortext = [
         " ".join(
             [

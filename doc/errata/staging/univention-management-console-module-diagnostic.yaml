@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-management-console-module-diagnostic
+fix: 8.6.2
+desc: |
+ This update addresses the following issue:
+ * The `20_check_share_references` check now only runs on the Primary
+   Directory Node. It binds as the machine account, which on a UCS@school
+   school replica may not read the objects of other schools, so shares
+   referencing a server of another school were incorrectly reported as
+   dangling references.
+bug: [59718]

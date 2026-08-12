@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.6.2) unstable; urgency=medium
+
+  * Bug #59718: only run 20_check_share_references on the Primary Directory Node
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 12 Aug 2026 11:46:07 +0200
+
 univention-management-console-module-diagnostic (8.6.1) unstable; urgency=medium
 
   * Bug #59489: fix formatting of log message
