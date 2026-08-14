@@ -20,6 +20,6 @@ fi
 
 call_joinscript 71univention-quota.inst
 
-systemctl restart univention-directory-listener
+systemctl try-restart univention-directory-listener
 
 exit 0

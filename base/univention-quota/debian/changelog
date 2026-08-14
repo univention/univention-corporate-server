@@ -1,6 +1,10 @@
-univention-quota (16.6.0) UNRELEASED; urgency=medium
+univention-quota (16.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
+
+  [ Jürn Brodersen ]
+  * Bug #59736: only try-restart univention-directory-listener
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:43 +0200
 
