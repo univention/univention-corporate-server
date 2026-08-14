@@ -5,6 +5,7 @@ univention-quota (16.6.0) UNRELEASED; urgency=medium
 
   [ Jürn Brodersen ]
   * Bug #53550: handle a failing policy result in the quota listener
+  * Bug #53550: add unit tests for the quota listener postrun
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:43 +0200
 
