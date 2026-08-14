@@ -207,12 +207,25 @@ def postrun() -> None:
             attrs = lo.get(dn)
             ud.debug(ud.LISTENER, ud.INFO, '%r: attrs: %r' % (dn, attrs))
 
-            if not attrs or _get_fqdn().encode('ASCII') not in attrs.get('univentionShareHost'):
+            if not attrs or _get_fqdn().encode('ASCII') not in attrs.get('univentionShareHost', []):
                 os.remove(filename)
                 _remove_cache_for_share(dn)
                 continue
 
-            policy_result = univention.lib.policy_result.policy_result(dn)[0]
+            try:
+                policy_result = univention.lib.policy_result.policy_result(dn)[0]
+            except univention.lib.policy_result.PolicyResultFailed as exc:
+                if lo.get(dn):
+                    # The share still exists, so this is a transient failure.
+                    # Keep the todo entry, it is retried in the next postrun.
+                    ud.debug(ud.LISTENER, ud.ERROR, 'Failed to get the policy result for %r, retrying later: %s' % (dn, exc))
+                else:
+                    # The share has been removed in the meantime, the todo entry is obsolete.
+                    ud.debug(ud.LISTENER, ud.WARN, '%r has been removed while getting the policy result, dropping it' % (dn,))
+                    os.remove(filename)
+                    _remove_cache_for_share(dn)
+                continue
+
             ud.debug(ud.LISTENER, ud.INFO, '%r: policy_result: %r' % (dn, policy_result))
             _dump_share_and_policy_result(dn, attrs, policy_result)
 

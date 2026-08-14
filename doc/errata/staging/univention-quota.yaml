@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-quota
+fix: 16.6.0
+desc: |
+ This update addresses the following issue:
+ * The quota listener module aborted with a traceback when the policies of a
+   share could not be evaluated, for example because the share had been
+   removed in the meantime. The quota cache was then no longer updated for
+   the remaining shares. Such a failure is now logged, and the cache of a
+   removed share is discarded.
+bug: [53550]
