@@ -1,3 +1,9 @@
+univention-management-console (14.6.1) unstable; urgency=medium
+
+  * Bug #59736: only try-restart univention-directory-listener
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 14 Aug 2026 09:52:27 +0200
+
 univention-management-console (14.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

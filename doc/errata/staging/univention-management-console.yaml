@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-management-console
+fix: 14.6.1
+desc: |
+ This update addresses the following issue:
+ * Installing or updating the package restarted the Univention Directory
+   Listener even when it was not running. During the domain join of a Replica
+   Directory Node this started the listener before the join had set up the
+   LDAP schema, which could abort the join with the error message
+   `FAILED: failed.ldif exists`. The listener is now only restarted if it is
+   already running.
+bug: [59736]
