@@ -126,6 +126,8 @@ Use Cron settings
 Reboot after maintenance
    This option triggers an automatic restart after release updates
    either immediately or after a specified number of hours.
+   Errata updates, including those that install a new kernel,
+   do not trigger an automatic restart.
 
 .. _lifecycle-package-maintenance-policy-related:
 

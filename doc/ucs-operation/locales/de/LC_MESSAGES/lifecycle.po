@@ -3248,9 +3248,13 @@ msgstr "Nach Paketpflege neu starten"
 msgid ""
 "This option triggers an automatic restart after release updates either "
 "immediately or after a specified number of hours."
+"Errata updates, including those that install a new kernel,"
+"do not trigger an automatic restart."
 msgstr ""
 "Diese Option löst einen automatischen Neustart nach Release-Updates "
 "entweder sofort oder nach einer angegebenen Anzahl von Stunden aus."
+"Errata-Updates, einschließlich solcher, die einen neuen Kernel installieren,"
+"lösen keinen automatischen Neustart aus."
 
 #: ../../lifecycle/package-maintenance-policy.rst:133
 msgid "Related policies"
