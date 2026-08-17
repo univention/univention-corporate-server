@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libgd2
+fix: 2.2.5-5.2+deb10u2
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-9672 (CVSS score unknown).
+bug: [59746]
+cve:
+- CVE-2026-9672
