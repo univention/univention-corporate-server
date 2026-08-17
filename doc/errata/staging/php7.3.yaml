@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: php7.3
+fix: 7.3.31-1~deb10u14
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-17543 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-14355 (CVSS score 5.6 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-7260 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2026-9672 (CVSS score unknown).
+bug: [59744]
+cve:
+- CVE-2026-7260
+- CVE-2026-17543
+- CVE-2026-9672
+- CVE-2026-14355
