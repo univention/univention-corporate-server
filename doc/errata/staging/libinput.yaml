@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libinput
+fix: 1.12.6-2+deb10u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2022-1215 (CVSS score 7.8 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-50292 (CVSS score 7.4 -
+   CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+bug: [59743]
+cve:
+- CVE-2022-1215
+- CVE-2026-50292
