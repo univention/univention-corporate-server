@@ -77,8 +77,37 @@ Glossary
       the command line (:command:`univention-directory-manager` or :command:`udm`),
       or the HTTP REST API.
 
-      .. TODO: Replace the reference after UDM conctent is available. See univention/dev/ucs#2592.
+      .. TODO: Replace the reference after UDM content is available. See univention/dev/ucs#2592.
 
       For more information,
       see :ref:`component-domain-management`
       in :cite:t:`ucs-architecture`.
+
+   Policy Decision Point
+   policy decision point
+   PDP
+      The policy decision point is the service in an authorization process
+      that makes the decision.
+      An authorization engine, such as :program:`Cerbos`,
+      provide the policy decision point.
+
+      For more information,
+      see :ref:`iam-authorization-engine`.
+
+   Policy Enforcement Point
+   policy enforcement point
+   PEP
+      The policy enforcement point is the service in an authorization process
+      that takes the decision from a :term:`policy decision point`
+      and enforces the decision.
+
+      For more information,
+      see :ref:`iam-authorization-engine`.
+
+.. spelling:word-list::
+   Decision
+   decision
+   Enforcement
+   enforcement
+   Point
+   point
