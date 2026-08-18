@@ -1,8 +1,12 @@
-univention-config-registry (17.6.0) UNRELEASED; urgency=medium
+univention-config-registry (17.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:12:26 +0200
+  [ Florian Best ]
+  * Bug #51864: support arbitrary line lengths
+
+ -- Florian Best <best@univention.de>  Fri, 28 Aug 2026 16:05:57 +0200
 
 univention-config-registry (17.5.0) UNRELEASED; urgency=medium
 

@@ -21,7 +21,6 @@
 #include <univention/config.h>
 #include <univention/debug.h>
 
-#define BASECONFIG_MAX_LINE 1024
 #define MAX_RECURSION 10
 
 #define VARIABLE_TOKEN "@%@"
@@ -43,11 +42,12 @@ static char *replace_variable_patterns(char *key, int recursion);
 static char *_get_variable(const char *key, int recursion)
 {
 	FILE *file;
-	char line[BASECONFIG_MAX_LINE];
+	char *line = NULL;
 	char *nvalue;
 	int len;
 	char *ret = NULL;
 	enum SCOPE i;
+	size_t line_capacity = 0;
 
 	len = asprintf(&nvalue, "%s: ", key);
 	if (len < 0)
@@ -64,7 +64,7 @@ static char *_get_variable(const char *key, int recursion)
 			continue;
 		}
 
-		while (fgets(line, BASECONFIG_MAX_LINE, file) != NULL)
+		while (getline(&line, &line_capacity, file) != -1)
 		{
 			if (!strncmp(line, nvalue, len))
 			{
@@ -82,8 +82,10 @@ static char *_get_variable(const char *key, int recursion)
 					}
 					break;
 				}
+
 				ret = strndup(value, vlen);
 				fclose(file);
+
 				if (recursion > 0 && i == DEFAULT)
 					ret = replace_variable_patterns(ret, recursion);
 
@@ -96,6 +98,7 @@ static char *_get_variable(const char *key, int recursion)
 
 	univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
 done:
+	free(line);
 	free(nvalue);
 	return ret;
 }
