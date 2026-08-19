@@ -83,7 +83,7 @@ class Instance(Base):
         fqdns = {fqdn}
 
         sso_fqdn = urlparse(ucr.get('ucs/server/sso/uri', '').lower()).hostname
-        if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
+        if ucr.is_true('keycloak/server/sso/autoregistration', True) and sso_fqdn:
             fqdns.add(sso_fqdn)
 
         if ucr.get('dns/backend') == 'samba4':
@@ -128,14 +128,15 @@ class Instance(Base):
                 name = host_fqdns[:-(len(zone) + 1)]
                 for host_rec in univention.admin.modules.lookup(host_mod, None, lo, scope='sub', superordinate=fwd_zone, filter=filter_format('(&(relativeDomainName=%s))', (name,))):
                     host_rec.open()
-                    host_rec['a'] = [
-                        address
-                        for address in host_rec['a']
-                        if address not in source_addresses
-                    ]
-                    if new_address not in host_rec['a']:
-                        host_rec['a'].append(new_address)
-                    host_rec.modify()
+                    if set(host_rec['a']) & current_ips:
+                        host_rec['a'] = [
+                            address
+                            for address in host_rec['a']
+                            if address not in source_addresses
+                        ]
+                        if new_address not in host_rec['a']:
+                            host_rec['a'].append(new_address)
+                        host_rec.modify()
 
         server = comp_mod.object(None, lo, position, self.user_dn)
         server.open()
