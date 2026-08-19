@@ -12,3 +12,6 @@ desc: |
    referencing a server of another school were incorrectly reported as
    dangling references.
 bug: [59718]
+erratum: 581
+announced: 2026-08-19
+support: core
