@@ -34,10 +34,10 @@ class LicenseImport(ldif.LDIFParser):
     """Import license from LDIF."""
 
     dn = None
-    mod_list = []
     dncount = 0
     base = None
     entry = None
+    addlist = None
 
     def check(self, base):
         """Validate given license."""
@@ -48,7 +48,7 @@ class LicenseImport(ldif.LDIFParser):
             raise LicenseError(_("No license has been found."))
 
         # there should be exactly one object in the ldif file
-        if self.dncount == 0:
+        if self.dncount == 0 or not self.dn:
             raise LicenseError(_("No license has been found."))
         elif self.dncount > 1:
             raise LicenseError(_("More than one object has been found."))
@@ -72,6 +72,12 @@ class LicenseImport(ldif.LDIFParser):
             return
 
         self.dncount += 1
+        self.dn = dn
+
+        if set(entry.get('objectClass', [])) != {'top', 'univentionObject', 'univentionLicense'}:
+            # security check: could be tricked with extensibleObject to create arbitrary objects
+            # we allowlist only, because "OBJECTLCASS", "objectClass" and "2.5.4.0" and other variants are possible
+            return
 
         entry['univentionObjectIdentifier'] = [str(uuid.uuid4()).encode('ASCII')]
         if 'univentionLicenseBaseDN' in entry:
@@ -79,13 +85,8 @@ class LicenseImport(ldif.LDIFParser):
         else:
             return
 
-        self.dn = dn
-
-        # create modification list
         self.entry = entry
         self.addlist = ldap.modlist.addModlist(entry)
-        # for atr in entry:
-        #     self.mod_list.insert(0, (ldap.MOD_REPLACE, atr, entry[atr]))
 
     def write(self, ldap_connection):
         """Add the license object."""

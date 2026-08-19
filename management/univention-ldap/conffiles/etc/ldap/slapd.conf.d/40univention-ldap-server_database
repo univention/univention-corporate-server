@@ -105,7 +105,14 @@ elif configRegistry['ldap/server/type'] == "slave":
 directory	"/var/lib/univention-ldap/ldap"
 lastmod		on
 
+# security settings
 add_content_acl on
+
+ditcontentrule ( 1.3.6.1.4.1.10176.1799
+    NAME 'univentionLicenseContentRule'
+    DESC 'Allow only univentionObject as auxiliary object class for univentionLicense entries'
+    AUX univentionObject
+    )
 
 @!@
 if configRegistry['ldap/server/type'] == "master":
