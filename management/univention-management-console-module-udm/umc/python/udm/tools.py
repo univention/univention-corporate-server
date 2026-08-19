@@ -6,17 +6,12 @@
 # SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import binascii
 import urllib.request
-import uuid
 from urllib.request import ProxyHandler, build_opener
 
-import ldap
-import ldap.modlist
 import ldif
 
 import univention.admin.license as udm_license
-import univention.admin.modules
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap
 from univention.lib.i18n import Translation
@@ -28,92 +23,6 @@ _ = Translation('univention-management-console-module-udm').translate
 
 class LicenseError(Exception):
     pass
-
-
-class LicenseImport(ldif.LDIFParser):
-    """Import license from LDIF."""
-
-    dn = None
-    mod_list = []
-    dncount = 0
-    base = None
-    entry = None
-
-    def check(self, base):
-        """Validate given license."""
-        # call parse from ldif.LDIFParser
-        try:
-            self.parse()
-        except binascii.Error:
-            raise LicenseError(_("No license has been found."))
-
-        # there should be exactly one object in the ldif file
-        if self.dncount == 0:
-            raise LicenseError(_("No license has been found."))
-        elif self.dncount > 1:
-            raise LicenseError(_("More than one object has been found."))
-
-        # a free license does not have the ldap base in its dn
-        if not self.dn.endswith(base) and self.base.lower() in ('free for personal use edition', 'ucs core edition'):
-            self.dn = '%s,%s' % (self.dn, base)
-
-        # check whether DN matches the LDAP base
-        dnWithoutBase = self.dn[:-len(base)]
-        if not self.dn.endswith(base) or not dnWithoutBase.endswith('cn=univention,'):
-            raise LicenseError(_('The LDAP base of the license does not match the LDAP base of the UCS domain (%s).') % base)
-
-        # check LDAP base
-        if self.base.lower() not in [base.lower(), 'free for personal use edition', 'ucs core edition']:
-            raise LicenseError(_("The license can not be applied. The LDAP base does not match (expected %(expected)s, found: %(found)s).") % {'expected': base, 'found': self.base})
-
-    def handle(self, dn, entry):
-        """This method is invoked by LDIFParser.parse for each object in the LDIF file."""
-        if dn is None or dn == "":
-            return
-
-        self.dncount += 1
-
-        entry['univentionObjectIdentifier'] = [str(uuid.uuid4()).encode('ASCII')]
-        if 'univentionLicenseBaseDN' in entry:
-            self.base = entry['univentionLicenseBaseDN'][0].decode('UTF-8')
-        else:
-            return
-
-        self.dn = dn
-
-        # create modification list
-        self.entry = entry
-        self.addlist = ldap.modlist.addModlist(entry)
-        # for atr in entry:
-        #     self.mod_list.insert(0, (ldap.MOD_REPLACE, atr, entry[atr]))
-
-    def write(self, ldap_connection):
-        """Add the license object."""
-        if ldap_connection.authz.enabled:
-            obj = univention.admin.modules.get('settings/license').object(None, ldap_connection, None, None, None, self.entry)
-            obj.position.setDn(ldap_connection.parentDn(self.dn))
-            obj._exists = False
-            ldap_connection.authz.is_create_allowed(obj)
-
-        ldap_con = ldap_connection.authz_connection.lo.lo
-        try:
-            ldap_con.add_s(self.dn, self.addlist)
-        except ldap.ALREADY_EXISTS:
-            ldap_con.delete_s(self.dn)
-            ldap_con.add_s(self.dn, self.addlist)
-
-        # Update license count cache after successful import
-        self._update_license_cache()
-
-    def _update_license_cache(self):
-        """Update license count cache using admin credentials."""
-        try:
-            admin_lo, _ = univention.admin.uldap.getAdminConnection()
-            udm_license.license.initialize(admin_lo)
-            counts = udm_license.license.update_cache(admin_lo)
-            MODULE.info('License cache updated after import: %s', counts)
-        except Exception as exc:
-            MODULE.warning('Failed to update license cache after import: %s', exc)
 
 
 def check_license(ldap_connection):

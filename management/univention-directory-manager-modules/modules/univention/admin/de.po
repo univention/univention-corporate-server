@@ -2093,3 +2093,44 @@ msgstr "Beschäftigt"
 
 msgid "Pagination Error"
 msgstr "Paginierungsfehler"
+
+msgid "License file contains more than one DN."
+msgstr "Die Lizenzdatei enthält mehr als einen DN."
+
+msgid "License file does not contain DN."
+msgstr "Die Lizenzdatei enthält keinen DN."
+
+#, python-format
+msgid "Malformed license: %s"
+msgstr "Fehlerhafte Lizenz: %s"
+
+msgid "No license has been found."
+msgstr "Es wurde keine Lizenz gefunden."
+
+#, python-format
+msgid "The LDAP base of the license does not match the LDAP base of the UCS domain (%s)."
+msgstr "Die LDAP-Basis der Lizenz stimmt nicht mit der LDAP-Basis der UCS-Domäne (%s) überein."
+
+msgid "The LDAP license object contains invalid object classes."
+msgstr "Das LDAP-Lizenzobjekt enthält ungültige Objektklassen."
+
+msgid "The LDAP license object is missing the univentionLicenseBaseDN attribute."
+msgstr "Dem LDAP-Lizenzobjekt fehlt das Attribut univentionLicenseBaseDN."
+
+#, python-format
+msgid "The LDAP license object must be underneath of \"%s\"."
+msgstr "Das LDAP-Lizenzobjekt muss sich unterhalb von \"%s\" befinden."
+
+#, python-format
+msgid "The license can not be applied. The LDAP base does not match (expected %(expected)s, found: %(found)s)."
+msgstr "Die Lizenz kann nicht importiert werden. Die LDAP-Basis stimmt nicht überein (erwartet: %(expected)s, gefunden: %(found)s)."
+
+#, python-format
+msgid "Importing the license failed: %s"
+msgstr "Importieren der Lizenz fehlgeschlagen: %s"
+
+msgid "LDAP error: %s."
+msgstr "LDAP-Fehler: %s."
+
+msgid "The LDAP license object contains invalid attributes."
+msgstr "Das LDAP-Lizenzobjekt enthält ungültige Attribute."

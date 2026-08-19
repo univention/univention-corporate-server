@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.4) unstable; urgency=medium
+
+  * Bug #59114: restrict object classes for license upload
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2026 15:49:43 +0100
+
 univention-directory-manager-modules (17.7.3) unstable; urgency=medium
 
   * Bug #60078: don't mark accounts with a disabled password hash (!) as

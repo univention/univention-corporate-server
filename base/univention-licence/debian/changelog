@@ -1,8 +1,12 @@
-univention-licence (13.7.0) UNRELEASED; urgency=medium
+univention-licence (13.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:54 +0300
+  [ Florian Best ]
+  * Bug #59114: restrict object classes for license upload
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2026 15:49:02 +0100
 
 univention-licence (13.6.0) UNRELEASED; urgency=medium
 

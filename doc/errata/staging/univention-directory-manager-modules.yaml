@@ -3,9 +3,9 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-directory-manager-modules
-fix: 17.7.3
+fix: 17.7.4
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * User accounts disabled before UCS 5.2-7 could still contain a disabled
    password hash, which was restored during subsequent account modifications.
    Since detecting this state could trigger misleading notifications in the
@@ -13,4 +13,17 @@ desc: |
    the user account is explicitly re-enabled. As a consequence, affected
    disabled users now receive a generic authentication failure instead of an
    account-disabled message when attempting to log in via Keycloak.
-bug: [60078]
+ * The license import functionality insufficiently validated imported LDIF
+   files, allowing arbitrary LDAP objects to be created, modified, or
+   replaced. Users with permission to import licenses could exploit this
+   vulnerability to bypass LDAP access restrictions, create privileged
+   administrator accounts, and potentially gain root access to UCS systems.
+   The vulnerability affected license imports through the Univention
+   Management Console (UMC), UDM REST API, and command-line interface. The
+   license import functionality has been hardened to accept only valid license
+   objects, preventing unauthorized LDAP modifications (GHSA-v99c-3wcr-2r5x)
+   (CVSS score: 9.4 -
+   CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H).
+bug: [60078, 59114]
+cve:
+- GHSA-v99c-3wcr-2r5x

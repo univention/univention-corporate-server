@@ -47,6 +47,7 @@ import univention.admin.objects as udm_objects
 import univention.admin.types as udm_types
 import univention.admin.uexceptions as udm_errors
 import univention.directory.reports as udr
+from univention.admin.license_import import LicenseImport as LicenseImporter, LicenseImportError
 from univention.admin.rest.hal import HAL
 from univention.admin.rest.html_ui import HTML
 from univention.admin.rest.http_conditional import ConditionalResource, last_modified
@@ -67,15 +68,14 @@ from univention.admin.rest.utils import (
     superordinate_names, unquote_dn,
 )
 from univention.config_registry import handler_set, ucr_live
+from univention.dn import DN
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import (
     LDAP_ConnectionFailed, LDAP_ServerDown, ServerError, ServiceNotImplemented, TooManyRequests, UMC_Error,
     UnprocessableEntity,
 )
-from univention.management.console.modules.udm.tools import (
-    LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
-)
+from univention.management.console.modules.udm.tools import LicenseError, check_license, dump_license
 from univention.management.console.modules.udm.udm_ldap import (
     NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module, container_modules, get_module,
     ldap_dn2path, list_objects,
@@ -3218,16 +3218,10 @@ univentionObjectType: settings/license
         try:
             # check license and write it to LDAP
             importer = LicenseImporter(fd)
-            importer.check(ucr.get('ldap/base', ''))
+            importer.check(DN(ucr.get('ldap/base', '')))
             importer.write(self.ldap_write_connection)
-        except ldap.LDAPError as exc:
-            # LDAPError e.g. LDIF contained non existing attributes
-            raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'))
-        except (ValueError, AttributeError) as exc:
-            # AttributeError: missing univentionLicenseBaseDN
-            # ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
-            raise HTTPError(400, _('Importing the license failed: %s.') % (exc,))
-        except LicenseError as exc:
+        except LicenseImportError as exc:
+            log.warning('LicenseImport failed: %r', exc)
             raise HTTPError(400, str(exc))
         self.content_negotiation({'message': _('The license was imported successfully.')})
 

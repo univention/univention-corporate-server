@@ -39,7 +39,7 @@ Depends:
  python3-setproctitle,
  python3-tornado,
  python3-univention-debug (>= 14.3.0),
- python3-univention-directory-manager (>= 12.6.6),
+ python3-univention-directory-manager (>= 17.7.4),
  python3-univention-directory-reports,
  python3-univention-lib (>= 9.0.12-2),
  python3-univention-management-console (>= 14.6.0),

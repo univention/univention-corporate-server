@@ -126,9 +126,9 @@ def application(environ, start_response):
 
     content = environ['wsgi.input'].read(request_body_size)
     message = email.message_from_bytes(b'Content-Type: %s\r\nContent-Length: %d\r\n\r\n%s' % (environ["CONTENT_TYPE"].encode('iso8859-1'), request_body_size, content), policy=email.policy.HTTP)
-    license = next((part.get_payload() for part in message.walk() if part.get_param('name', header='Content-Disposition') == 'license'), None)
+    license_ldif = next((part.get_payload() for part in message.walk() if part.get_param('name', header='Content-Disposition') == 'license'), None)
 
-    if not license:
+    if not license_ldif:
         # no license has been uploaded :(
         return _finish('400 Bad Request', {
             'success': False,
@@ -140,7 +140,7 @@ def application(environ, start_response):
     with open(LICENSE_UPLOAD_PATH, 'w') as license_file:
         # Replace non-breaking space with a normal space
         # https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-        license_data = license.replace(chr(160), ' ')
+        license_data = license_ldif.replace(chr(160), ' ')
         license_file.write(license_data)
 
     # import the uploaded license file

@@ -45,6 +45,7 @@ Package: univention-license-import
 Architecture: all
 Depends:
  ldap-utils,
+ python3-univention-directory-manager (>= 17.7.4),
  univention-config (>= 1.20),
  ${misc:Depends},
  ${shlibs:Depends},

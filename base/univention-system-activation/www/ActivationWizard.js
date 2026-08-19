@@ -16,6 +16,7 @@ define([
 	"dojo/request/xhr",
 	"dojo/request/script",
 	"dojox/form/Uploader",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Wizard",
@@ -23,7 +24,7 @@ define([
 	"umc/widgets/TextBox",
 	"put-selector/put",
 	"umc/i18n!systemactivation"
-], function(declare, lang, array, Deferred, ioQuery, domQuery, domClass, request, xhr, script, Uploader, dialog, tools, Wizard, Text, TextBox, put, _) {
+], function(declare, lang, array, Deferred, ioQuery, domQuery, domClass, request, xhr, script, Uploader, entities, dialog, tools, Wizard, Text, TextBox, put, _) {
 	return declare("ActivationWizard", [ Wizard ], {
 		autoFocus: true,
 		entries: null,
@@ -238,17 +239,23 @@ define([
 		_showEmailError: function(err) {
 			var status_code = err.response.status;
 			var error_details = null;
-			if (err.response.data) {
-				// error from local server (univention-system-activation)
-				tools.status('feedbackSubject', _('[%(appliance_name)s Appliance] Activation Error', this.entries));
-				tools.handleErrorStatus(err, {hideInformVendor: true});
-				return;
-			} else if (status_code >= 400) {
-				// error from license server
-				error_details = put('html');
-				error_details.innerHTML = err.response.data;
-				error_details = error_details.getElementsByTagName('span')[0].innerText;
-			} else {
+			if (status_code >= 400) {
+				try {
+					// error from license server
+					error_details = put('html');
+					error_details.innerHTML = err.response.data;
+					error_details = error_details.getElementsByTagName('span')[0].innerText;
+				} catch (exc) {
+					if (err.response.data) {
+						// error from local server (univention-system-activation)
+						tools.status('feedbackSubject', _('[%(appliance_name)s Appliance] Activation Error', this.entries));
+						tools.handleErrorStatus(err, {hideInformVendor: true});
+						return;
+					}
+					error_details = null;
+				}
+			}
+			if (!error_details) {
 				error_details = _('An unknown error occurred. It is possible that a browser addon blocks sending the request to "license.univention.de". More information how to avoid this error can be found <a href="https://help.univention.com/t/7698" target="_blank" rel="noreferrer noopener">in our support database</a>.');
 			}
 			var error_msg = _('Error ') + status_code + ': ' + error_details;
@@ -256,7 +263,7 @@ define([
 		},
 
 		_showError: function(error_msg) {
-			error_msg = error_msg.replace(/\n/g, '<br/>');
+			error_msg = entities.encode(error_msg).replace(/\n/g, '<br/>');
 			var title = _('The following error occurred:');
 			var footer = _('An error has occurred. More information on how to avoid this error can be found <a href="https://help.univention.com/t/14544" target="_blank" rel="noreferrer noopener">in our support database</a>.');
 			var msg = lang.replace('<p>{error_msg}</p><p>{footer}</p>', {error_msg: error_msg, footer: footer});

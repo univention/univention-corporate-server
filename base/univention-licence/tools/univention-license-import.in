@@ -58,68 +58,12 @@ else
 	esac
 fi
 
-# extract DN and check that only one DN has been found
-file="$1"
-for i in $(fromdos <"$file" | \
-		ldapsearch-wrapper | sed -n "s/^dn: //p"); do
-	if [ "$dn" ]; then
-		echo "E: License file contains more than one DN." >&2
-		exit 1
-	fi
-	dn="$i"
-done
-if [ -z "$dn" ]; then
-	echo "E: License file does not contain DN." >&2
-	exit 1
-fi
+orgfile="$1"
+file=$(mktemp) || exit 1
+trap 'rm -f -- "$file"' EXIT
 
-eval "$(univention-config-registry shell ldap/base ldap/master ldap/master/port)"
-if [ -z "$ldap_master_port" ]; then
-	ldap_master_port=7389
-fi
+fromdos < "$orgfile" > "$file" || exit 1
 
-if ! echo "$dn" | grep -i -q "$ldap_base\$"; then
-	echo "E: Your system is configured to use the LDAP base DN" >&2
-	echo "E:   $ldap_base" >&2
-	echo "E: but the given license file was created for" >&2
-	dn_base=$(echo "$dn" | sed 's/^.*,cn=license,cn=univention,//')
-	echo "E:   $dn_base" >&2
-	echo >&2
-	echo "Please reinstall your system with the LDAP base DN" >&2
-	echo "matching your license file or get in contact with" >&2
-	echo "Univention to request a new license file matching your" >&2
-	echo "system's LDAP base DN." >&2
-	exit 1
-fi
-
-# ldapadd and ldapmodify work correctly with DOS linebreaks
-err=$(ldapadd -x -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$file" 2>&1)
-rv=$?
-if [ "$rv" = "68" ]; then
-	mkdir -p "/var/univention-backup"
-	backupfile="/var/univention-backup/univention_license_replaced_at_$(date +%Y_%m_%d_%H_%M_%S)"
-	echo "Backing up old license to $backupfile"
-
-	umask 0077
-	touch "$backupfile"
-	chmod 0600 "$backupfile"
-
-	ldapsearch -xLLL -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret cn=admin -b "cn=license,cn=univention,$ldap_base" | ldapsearch-wrapper > "$backupfile"
-
-	ldapdelete -x -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret "cn=admin,cn=license,cn=univention,$ldap_base"
-
-	ldapadd -x -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret -f "$file"
-	ldapmodify -H "ldap://$ldap_master:$ldap_master_port" -ZZ -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<__EOF__
-dn: cn=admin,cn=license,cn=univention,$ldap_base
-changetype: modify
-add: univentionObjectIdentifier
-univentionObjectIdentifier: $(python3 -c "import uuid; print(uuid.uuid4())")
-__EOF__
-
-	echo "Replaced license."
-elif [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
-	echo "$err" >&2
-	exit 1
-else
-	echo "Added license."
-fi
+# check if license is valid!
+# use tempfile to prevent TOCTOU attacks!
+python3 -m univention.admin.license_import license-import --ldif "$file" || exit $?

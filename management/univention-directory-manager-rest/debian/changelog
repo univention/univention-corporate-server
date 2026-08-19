@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.7.2) unstable; urgency=medium
+
+  * Bug #59114: restrict object classes for license upload
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2026 15:49:25 +0100
+
 univention-directory-manager-rest (12.7.1) unstable; urgency=medium
 
   * Bug #59702: handle malformed auth cache entries gracefully

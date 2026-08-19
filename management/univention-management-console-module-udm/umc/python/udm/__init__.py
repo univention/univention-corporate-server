@@ -28,7 +28,9 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap as udm_uldap
 import univention.directory.reports as udr
+from univention.admin.license_import import LicenseImport, LicenseImportError
 from univention.config_registry import handler_set
+from univention.dn import DN
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import Forbidden
@@ -46,7 +48,7 @@ from univention.management.console.modules.sanitizers import (
     SearchSanitizer, StringSanitizer,
 )
 
-from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
+from .tools import LicenseError, check_license, dump_license, install_opener, urlopen
 from .udm_ldap import (
     LDAP_AuthenticationFailed, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module,
     UserWithoutDN, _get_syntax, calculate_bind_hash, container_modules, get_bind_hash, get_module, get_obj_module,
@@ -323,20 +325,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             with open(filename, 'rb') as fd:
                 # check license and write it to LDAP
                 importer = LicenseImport(fd)
-                importer.check(ucr.get('ldap/base', ''))
+                importer.check(DN(ucr.get('ldap/base', '')))
                 importer.write(self.get_ldap_connection()[0])
-        except (ValueError, AttributeError, LDAPError) as exc:
-            MODULE.error('License import failed (malformed LDIF): %r', exc)
-            # AttributeError: missing univentionLicenseBaseDN
-            # ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
-            # LDAPError e.g. LDIF contained non existing attributes
-            if isinstance(exc, LDAPError) and len(exc.args) and isinstance(exc.args[0], dict) and exc.args[0].get('info'):
-                _error(_('LDAP error: %s.') % exc.args[0].get('info'))
-            else:
-                _error(_('License import failed: malformed LDIF.'))
-            return
-        except LicenseError as exc:
-            MODULE.error('LicenseImport check failed: %r', exc)
+        except LicenseImportError as exc:
+            MODULE.warning('LicenseImport failed: %r', exc)
             _error(str(exc))
             return
         finally:
