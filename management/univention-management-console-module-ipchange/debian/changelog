@@ -1,3 +1,10 @@
+univention-management-console-module-ipchange (10.6.2) unstable; urgency=medium
+
+  * Bug #59759: fix adding IP address to Keycloak and Samba 4 records if
+  	services don't belong to the host
+
+ -- Florian Best <best@univention.de>  Wed, 19 Aug 2026 16:24:29 +0200
+
 univention-management-console-module-ipchange (10.6.1) unstable; urgency=medium
 
   * Bug #55391: allow IPv6 addresses and support known records like
