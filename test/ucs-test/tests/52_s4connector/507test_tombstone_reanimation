@@ -30,12 +30,18 @@ UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"
 UDM_users_user_password="U$(random_chars)123"
 UDM_users_user_firstname="$(random_chars)"
-UDM_users_user_sambaRID="$(( RANDOM % 10000 + 10000 ))"
+# Pick RIDs outside the range UDM derives from uid-/gidNumber
+# (2*number+1000 for users, 2*number+1001 for groups, so up to 111001 for
+# the 1000-55000 range). The objects below are deleted again at the end and
+# their Samba tombstones keep owning the objectSid, so a RID that UDM can
+# hand out later collides with "unique index violation on objectSid" and
+# rejects that sync permanently.
+UDM_users_user_sambaRID="$(( RANDOM % 10000 + 500000 ))"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 UCS_DN="uid=$UDM_users_user_username,cn=users,$(ucr get ldap/base)"
 
 UDM_groups_group_name="$(random_chars)"
-UDM_groups_group_sambaRID="$(( RANDOM % 10000 + 10000 ))"
+UDM_groups_group_sambaRID="$(( RANDOM % 10000 + 500000 ))"
 GROUP_AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
 
 function cleanup {

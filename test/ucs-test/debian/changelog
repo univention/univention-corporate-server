@@ -1,3 +1,10 @@
+ucs-test (12.6.47) unstable; urgency=medium
+
+  * Issue univention/dev/education/ucsschool#278: keep tombstone reanimation
+    RIDs out of UDM's algorithmic range
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Aug 2026 18:11:55 +0200
+
 ucs-test (12.6.46) unstable; urgency=medium
 
   * Bug #58175: test keycloak metrics
