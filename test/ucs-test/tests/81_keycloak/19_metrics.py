@@ -12,7 +12,7 @@ import requests
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_metrics_settings(ucr, admin_account, portal_login_via_keycloak, change_app_setting):
+def test_metrics_settings(ucr, admin_account, portal_login_via_keycloak, change_app_setting, is_keycloak):
     """Test keycloak metrics"""
     change_app_setting('keycloak', {
         'keycloak/management/port': '9000',
