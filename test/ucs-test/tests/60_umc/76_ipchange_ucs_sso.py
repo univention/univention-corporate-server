@@ -2,9 +2,6 @@
 ## desc: Check if ip_change also changes the ucs-sso entry
 ## roles-not: [basesystem]
 ## exposure: dangerous
-## apps: [keycloak]
-
-import sys
 
 import atexit
 from ldap.filter import filter_format
@@ -24,11 +21,9 @@ if __name__ == '__main__':
     # it is a problem to change the same object in short intervals,
     # see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
     if utils.s4connector_present():
-        if ucr.get('server/role') == 'domaincontroller_master':
-            atexit.register(utils.start_s4connector)
-            utils.stop_s4connector()
-        else:
-            sys.exit(134)
+        # stopping is a no-op if the connector doesn't run on this host
+        atexit.register(utils.start_s4connector)
+        utils.stop_s4connector()
 
     with udm_test.UCSTestUDM() as udm:
         role = ucr.get('server/role')
@@ -51,6 +46,44 @@ if __name__ == '__main__':
         print(computer_object)
 
         iface = ucr.get('interfaces/primary', 'eth0')
+
+        # Bug #59759: the host records of the Keycloak and Samba 4 services must not be
+        # modified for a server they don't belong to, i.e. if they don't contain its
+        # current IP address. This uses its own computer object with a freshly allocated
+        # IP address, and runs before the tests below, which put the IP address of their
+        # computer object into the ucs-sso record on purpose.
+        foreignName = uts.random_string()
+        foreign_computer = udm.create_object(
+            'computers/%s' % role, name=foreignName,
+            password='univention',
+            network='cn=default,cn=networks,%s' % ucr.get('ldap/base'),
+            check_for_drs_replication=False,
+        )
+        foreign_records = {
+            record_dn: record.get('aRecord', [])
+            for name in [sso_prefix, 'gc._msdcs', 'DomainDnsZones', 'ForestDnsZones']
+            for record_dn, record in lo.search(filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s))', [name]))
+        }
+        assert foreign_records, 'no host record found which could be modified erroneously.'
+
+        foreign_ip = lo.get(foreign_computer)['aRecord'][0]
+        for record_dn, addresses in foreign_records.items():
+            assert foreign_ip not in addresses, f'{record_dn} already contains {foreign_ip!r}, the just allocated IP address of {foreign_computer}.'
+
+        try:
+            new_ip = '1.2.3.11'
+
+            client = Client(ucr.get('ldap/master'), '%s$' % foreignName, 'univention')
+            client.umc_command('ip/change', {'ip': new_ip, 'oldip': foreign_ip.decode('UTF-8'), 'netmask': ucr.get('interfaces/%s/netmask' % iface), 'role': role})
+
+            utils.wait_for_replication()
+            utils.verify_ldap_object(foreign_computer, {'aRecord': [new_ip]}, strict=True)
+            # the host records are modified before the computer object, so no further waiting is required
+            for record_dn, addresses in foreign_records.items():
+                utils.verify_ldap_object(record_dn, {'aRecord': addresses}, strict=True, retry_count=0)
+        finally:
+            for record_dn, addresses in foreign_records.items():
+                lo.modify(record_dn, [('aRecord', lo.get(record_dn).get('aRecord', []), addresses)])
 
         # Test change IPv4 address
         ip = computer_object['aRecord']
