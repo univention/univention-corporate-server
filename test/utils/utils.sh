@@ -121,8 +121,39 @@ stop_uss_and_restore_profile () {
 }
 
 rotate_logfiles () {
-	have logrotate &&
-		logrotate -f /etc/logrotate.conf
+	have logrotate || return 0
+
+	# Do not race the periodic rotation: logrotate.timer runs daily with
+	# Persistent=true, so the rotation missed while the appliance image sat in
+	# the image store is caught up after boot, smeared over a window
+	# (AccuracySec=12h on UCS 5.0, RandomizedDelaySec=1h on UCS 5.2) - i.e.
+	# possibly right while this forced run is active. Two concurrent instances
+	# then fight over the same rotation targets and both fail with
+	# "destination /var/log/syslog already exists". logrotate only locks its
+	# state file since 3.16, so on UCS 5.0 (3.14) nothing stops them. The
+	# timer is left stopped on purpose: a rotation in the middle of a test run
+	# would only truncate the logs collected afterwards.
+	systemctl stop logrotate.timer 2>/dev/null
+
+	local i
+	for i in $(seq 30)
+	do
+		pgrep -x logrotate >/dev/null || break
+		echo "rotate_logfiles: waiting for a running logrotate to finish ($i)" >&2
+		sleep 2
+	done
+
+	# --wait-for-state-lock exists since logrotate 3.16 (UCS 5.2), it closes
+	# the remaining window against an instance started by something else
+	local opts=()
+	logrotate --help 2>&1 | grep -q -e '--wait-for-state-lock' &&
+		opts+=('--wait-for-state-lock')
+
+	# Rotating is only housekeeping to keep the logs of this test run small,
+	# never fail the whole test because of it.
+	logrotate -f "${opts[@]}" /etc/logrotate.conf ||
+		echo "WARNING: rotate_logfiles: logrotate failed with $?, ignoring" >&2
+	return 0
 }
 
 prepare_domain_for_ucs52_preup_checks() {
