@@ -12,7 +12,7 @@ import requests
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_metrics_settings(ucr, admin_account, portal_login_via_keycloak, change_app_setting, is_keycloak):
+def test_metrics_settings(ucr, admin_account, portal_login_via_keycloak, change_app_setting, is_keycloak, keycloak_config):
     """Test keycloak metrics"""
     change_app_setting('keycloak', {
         'keycloak/management/port': '9000',
@@ -20,7 +20,8 @@ def test_metrics_settings(ucr, admin_account, portal_login_via_keycloak, change_
         'keycloak/http/metrics/histograms/enabled': 'True',
     })
     portal_login_via_keycloak(admin_account.username, admin_account.bindpw, protocol='oidc')
-    resp = requests.get(f'http://{ucr["hostname"]}:9000/metrics')
+    url = f'http://{ucr["hostname"]}:9000{keycloak_config.path}/metrics'
+    resp = requests.get(url)
     assert resp.status_code == 200
     assert re.search(r'keycloak_user_events_total\{.*event="login"', resp.text) is not None
     resp = requests.get(f'http://{ucr["hostname"]}:9000/health')

@@ -1,3 +1,9 @@
+ucs-test (12.6.48) unstable; urgency=medium
+
+  * Bug #58175: test keycloak metrics
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Aug 2026 14:51:14 +0200
+
 ucs-test (12.6.47) unstable; urgency=medium
 
   * Issue univention/dev/education/ucsschool#278: keep tombstone reanimation
