@@ -9,6 +9,10 @@ Authorization engine
 *Guardian* is the authorization engine in Nubus for UCS.
 This page explains how to install, configure, and operate it.
 
+For information about authorization and policies,
+see :external+uv-nubus-manual:ref:`nubus-authorization`
+in :cite:t:`uv-nubus-manual`.
+
 This page covers:
 
 * :ref:`iam-authorization-engine-endpoints`
