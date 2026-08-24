@@ -1,0 +1,39 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: bind9
+fix: 1:9.11.37+git20260722.018aa2e+dfsg-0~deb10u1~deb9u1A~4.4.9.202608241721
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-13321, CVE-2025-40778 (CVSS score 8.6 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N).
+ * CVE-2026-11721 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+ * CVE-2026-13204, CVE-2026-11622, CVE-2026-5946, CVE-2026-3039,
+   CVE-2026-1519, CVE-2025-8677, CVE-2023-4408 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-10723 (CVSS score 6.8 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N).
+ * CVE-2016-6170 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-5950, CVE-2026-3592 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2018-5741 (CVSS score 4.0 - AV:N/AC:L/Au:S/C:N/I:P/A:N).
+bug: [59770]
+cve:
+- CVE-2016-6170
+- CVE-2018-5741
+- CVE-2023-4408
+- CVE-2025-8677
+- CVE-2025-40778
+- CVE-2026-1519
+- CVE-2026-3039
+- CVE-2026-3592
+- CVE-2026-5946
+- CVE-2026-5950
+- CVE-2026-10723
+- CVE-2026-11622
+- CVE-2026-11721
+- CVE-2026-13204
+- CVE-2026-13321
