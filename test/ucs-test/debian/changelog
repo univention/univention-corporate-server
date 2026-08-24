@@ -1,3 +1,11 @@
+ucs-test (12.6.52) unstable; urgency=medium
+
+  * Issue univention/dev/internal/team-nubus#1673: Adjust Keycloak test
+    15_conditional_kerberos to make it compatible with current App Center
+    workflow (0.0.0-<branch-name> test apps)
+
+ -- Christian Castens <castens@univention.de>  Mon, 24 Aug 2026 18:45:00 +0200
+
 ucs-test (12.6.51) unstable; urgency=medium
 
   * Issue univention/dev/internal/team-nubus#1673: Adjust Keycloak test to

@@ -337,7 +337,12 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
             if 'authenticationConfig' in e:
                 del e['authenticationConfig']
         sorted_executions = sorted(executions, key=lambda ele: sorted(ele.items()))
-        sorted_expected_executions = sorted(EXPECTED_EXECUTIONS if Version(kc_app_version) >= Version("26.3.1") else OLD_EXPECTED_EXECUTIONS, key=lambda ele: sorted(ele.items()))
+        # Special case for current App Center workflow for Keycloak app releases.
+        # The GitLab pipeline for Branches/MRs creates the keycloak app as a temporary "0.0.0-<branch>" version for
+        # testing purposes. With '0.0.0' the version comparison would pick the outdated expected flow, thus breaking
+        # this test. Treat that specific case as the current (newest) version.
+        use_new = kc_app_version.startswith('0.0.0') or Version(kc_app_version) >= Version("26.3.1")
+        sorted_expected_executions = sorted(EXPECTED_EXECUTIONS if use_new else OLD_EXPECTED_EXECUTIONS, key=lambda ele: sorted(ele.items()))
         print(sorted_executions)
         assert sorted_executions == sorted_expected_executions
     finally:
