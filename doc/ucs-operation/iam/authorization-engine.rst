@@ -14,8 +14,8 @@ This page covers:
 * :ref:`iam-authorization-engine-endpoints`
 * :ref:`iam-authorization-engine-system-roles`
 * :ref:`iam-authorization-engine-install`
+* :ref:`iam-authorization-engine-verify`
 * :ref:`iam-authorization-engine-configure`
-* :ref:`iam-authorization-engine-verify-return-decisions`
 * :ref:`iam-authorization-engine-policies`
 * :ref:`iam-authorization-engine-troubleshooting`
 
@@ -23,6 +23,15 @@ This page covers:
 
    For reference documentation about the decision engine,
    see `Cerbos documentation <https://docs.cerbos.dev/cerbos/latest/index.html>`_.
+
+.. note::
+
+   The authorization engine replaces the earlier Guardian apps
+   *Guardian Management API*, *Guardian Authorization API*,
+   and *Guardian Management UI*.
+   No upgrade path exists from these apps.
+   The installation migrates no policies, no roles, and no other data
+   from them.
 
 .. _iam-authorization-engine-endpoints:
 
@@ -140,17 +149,37 @@ see :ref:`iam-authorization-engine-troubleshooting`.
 Verify that the engine returns decisions
 ----------------------------------------
 
-The default installation contains no policies,
-but you can verify that the engine returns a decision.
-The request in :numref:`iam-authorization-engine-verify-return-decisions`
-asks whether the actor may read a resource of the application ``myapp``.
-Without a matching policy,
-the engine returns ``EFFECT_DENY``,
-as shown in :numref:`iam-authorization-engine-verify-response-listing`.
+The installation includes a set of example policies.
+One of them allows the administrator of an application
+to read a resource of that same application.
+The two requests in this section use this policy
+to verify that the engine loads policies and returns decisions.
+
+Both examples show the response fields that contain the decision.
+The engine returns additional fields.
+
+.. note::
+
+   The example policies demonstrate the policy format.
+   Don't use the example policies to define your production authorization policies.
+   Univention can change or remove the example policies.
+
+.. _iam-authorization-engine-verify-example-allow:
+
+Example: Allow decision
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The request in :numref:`iam-authorization-engine-verify-allow-listing`
+asks whether the actor ``alice``,
+who holds the role ``guardian:myapp-admin``,
+can read a resource of the application ``myapp``.
+The role and the resource belong to the same application,
+so the engine returns ``EFFECT_ALLOW``,
+as shown in :numref:`iam-authorization-engine-verify-allow-response-listing`.
 
 .. code-block:: bash
-   :caption: Verify that the engine returns decisions
-   :name: iam-authorization-engine-verify-return-decisions
+   :caption: Ask for a decision about a resource of the same application
+   :name: iam-authorization-engine-verify-allow-listing
 
    $ curl -sS http://127.0.0.1:3592/api/check/resources \
        -H 'Content-Type: application/json' \
@@ -165,12 +194,58 @@ as shown in :numref:`iam-authorization-engine-verify-response-listing`.
    }'
 
 .. code-block:: json
-   :caption: Expected decision from the authorization engine
-   :name: iam-authorization-engine-verify-response-listing
+   :caption: Decision for a resource of the same application
+   :name: iam-authorization-engine-verify-allow-response-listing
 
    {
+     "requestId": "r1",
      "results": [
        {
+         "resource": {"id": "x", "kind": "guardian.management_api"},
+         "actions": {
+           "read_resource": "EFFECT_ALLOW"
+         }
+       }
+     ]
+   }
+
+.. _iam-authorization-engine-verify-example-deny:
+
+Example: Deny decision
+~~~~~~~~~~~~~~~~~~~~~~
+
+The request in :numref:`iam-authorization-engine-verify-deny-listing`
+uses the same actor to request access
+to a resource of the application ``otherapp``.
+The role and the resource belong to different applications,
+so the engine returns ``EFFECT_DENY``,
+as shown in :numref:`iam-authorization-engine-verify-deny-response-listing`.
+
+.. code-block:: bash
+   :caption: Ask for a decision about a resource of another application
+   :name: iam-authorization-engine-verify-deny-listing
+
+   $ curl -sS http://127.0.0.1:3592/api/check/resources \
+       -H 'Content-Type: application/json' \
+       -d '{
+     "requestId": "r2",
+     "principal": {"id": "alice", "roles": ["guardian:myapp-admin"]},
+     "resources": [{
+       "resource": {"id": "y", "kind": "guardian.management_api",
+                    "attr": {"app_name": "otherapp"}},
+       "actions": ["read_resource"]
+     }]
+   }'
+
+.. code-block:: json
+   :caption: Decision for a resource of another application
+   :name: iam-authorization-engine-verify-deny-response-listing
+
+   {
+     "requestId": "r2",
+     "results": [
+       {
+         "resource": {"id": "y", "kind": "guardian.management_api"},
          "actions": {
            "read_resource": "EFFECT_DENY"
          }
@@ -191,61 +266,8 @@ The :program:`univention-guardian-server` package manages these
 
 Changing either variable restarts the authorization engine.
 Requests fail while the service restarts.
-
-To diagnose a policy evaluation,
-do the following as root:
-
-#. Run the command in
-   :numref:`iam-authorization-engine-enable-diagnostics-listing`
-   to set the log level and enable audit logging.
-   If you stop the diagnosis or can't complete it,
-   immediately run the command in
-   :numref:`iam-authorization-engine-reset-diagnostics-listing`
-   to reset the variables to their default values.
-
-   .. code-block:: console
-      :caption: Enable diagnostic logging for policy evaluation
-      :name: iam-authorization-engine-enable-diagnostics-listing
-
-      $ ucr set \
-        guardian/cerbos/log-level=DEBUG \
-        guardian/cerbos/audit-logging/enabled=true
-
-#. Reproduce the policy evaluation that you want to diagnose.
-
-#. Read the service log with the command in
-   :numref:`iam-authorization-engine-log-listing`.
-
-#. Run the command in
-   :numref:`iam-authorization-engine-reset-diagnostics-listing`
-   to reset the variables to their default values.
-
-   .. code-block:: console
-      :caption: Reset diagnostic logging for policy evaluation
-      :name: iam-authorization-engine-reset-diagnostics-listing
-
-      $ ucr set \
-        guardian/cerbos/log-level=WARN \
-        guardian/cerbos/audit-logging/enabled=false
-
-#. Run the command in
-   :numref:`iam-authorization-engine-verify-diagnostics-listing`
-   to verify the default values.
-
-   .. code-block:: console
-      :caption: Verify diagnostic logging defaults
-      :name: iam-authorization-engine-verify-diagnostics-listing
-
-      $ ucr get guardian/cerbos/log-level
-      WARN
-      $ ucr get guardian/cerbos/audit-logging/enabled
-      false
-
-.. caution::
-
-   Debug and audit logs contain request payloads,
-   which can include personal data.
-   Enable these settings only for as long as you need them.
+For the procedure that uses these variables to diagnose a policy evaluation,
+see :ref:`iam-authorization-engine-troubleshooting`.
 
 The remaining settings of the engine are static.
 Nubus for UCS generates the files
@@ -343,6 +365,63 @@ It shows whether the listener module installed or rejected a policy bundle.
 
    $ grep cerbos-policies /var/log/univention/listener.log
 
+To diagnose a policy evaluation,
+do the following as root:
+
+#. Run the command in
+   :numref:`iam-authorization-engine-enable-diagnostics-listing`
+   to set the log level and enable audit logging.
+   If you stop diagnosing or can't complete the diagnosis,
+   immediately run the command in
+   :numref:`iam-authorization-engine-reset-diagnostics-listing`
+   to reset the variables to their default values.
+
+   .. caution::
+
+      Debug and audit logs contain request payloads,
+      which can include personal data.
+      Enable these settings only for as long as you need them.
+
+   .. code-block:: console
+      :caption: Enable diagnostic logging for policy evaluation
+      :name: iam-authorization-engine-enable-diagnostics-listing
+
+      $ ucr set \
+        guardian/cerbos/log-level=DEBUG \
+        guardian/cerbos/audit-logging/enabled=true
+
+#. Wait until the authorization engine has restarted.
+
+#. Reproduce the policy evaluation that you want to diagnose.
+
+#. Read the service log with the command in
+   :numref:`iam-authorization-engine-log-listing`.
+
+#. Run the command in
+   :numref:`iam-authorization-engine-reset-diagnostics-listing`
+   to reset the variables to their default values.
+
+   .. code-block:: console
+      :caption: Reset diagnostic logging for policy evaluation
+      :name: iam-authorization-engine-reset-diagnostics-listing
+
+      $ ucr set \
+        guardian/cerbos/log-level=WARN \
+        guardian/cerbos/audit-logging/enabled=false
+
+#. Run the command in
+   :numref:`iam-authorization-engine-verify-diagnostics-listing`
+   to verify the default values.
+
+   .. code-block:: console
+      :caption: Verify diagnostic logging defaults
+      :name: iam-authorization-engine-verify-diagnostics-listing
+
+      $ ucr get guardian/cerbos/log-level
+      WARN
+      $ ucr get guardian/cerbos/audit-logging/enabled
+      false
+
 The following list describes common symptoms and their causes:
 
 The engine denies an action that a policy allows.
@@ -364,13 +443,28 @@ The engine ignores a policy file.
    not as a policy.
    Rename the file.
 
-A request fails with a connection error.
-   The :program:`Cerbos` service restarts when you change a UCR variable
-   and when the listener module applies a policy bundle.
-   Requests fail during the restart.
-   The calling service retries failed requests.
-
 The engine doesn't start.
    The authorization engine :program:`Cerbos` runs as a container.
-   Read the log of the service.
-   Verify that ``docker.service`` runs.
+   Run the commands in
+   :numref:`iam-authorization-engine-container-state-listing`
+   to check the service, the container runtime, and the container.
+
+   If ``docker.service`` doesn't run, start it,
+   then restart the authorization engine as shown in
+   :numref:`iam-authorization-engine-restart-listing`.
+   If the service starts but the container exits,
+   the container log identifies the cause.
+
+   A policy file with invalid content is a common cause.
+   If the log doesn't identify a cause,
+   contact Univention support
+   and include the output of these commands.
+
+   .. code-block:: console
+      :caption: Check the state of the authorization engine container
+      :name: iam-authorization-engine-container-state-listing
+
+      $ systemctl status univention-guardian-server.service
+      $ systemctl status docker.service
+      $ docker ps -a --filter name=cerbos
+      $ docker logs cerbos
