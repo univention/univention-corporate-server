@@ -12,6 +12,7 @@ import pytest
 from keycloak.exceptions import KeycloakDeleteError, KeycloakGetError
 from utils import change_current_realm, run_command
 
+from univention.appcenter.app_cache import Apps
 from univention.testing.strings import random_int, random_string
 from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
@@ -199,6 +200,14 @@ def test_upgrade_config_pending_upgrades(upgrade_status_obj):
     remove domain config version and checks for updates
     there should be at least one update
     """
+    # Special case for current App Center workflow for Keycloak app releases.
+    # The GitLab pipeline for Branches/MRs creates the Keycloak app as a temporary "0.0.0-<branch>" version for
+    # testing purposes. With "0.0.0" upgrade-config never reports a pending upgrade, thus breaking this test.
+    # Skip this test for that specific case.
+    versions = [app.version for app in Apps().get_all_locally_installed_apps() if app.id == 'keycloak']
+    if versions and versions[0].startswith('0.0.0'):
+        pytest.skip(f'temporary branch/MR keycloak app build ({versions[0]}); no config upgrades apply')
+
     data = json.loads(upgrade_status_obj.props.data.raw)
     del data['domain_config_version']
     raw_value = json.dumps(data).encode('ascii')
