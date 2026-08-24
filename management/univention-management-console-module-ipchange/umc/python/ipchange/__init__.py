@@ -83,7 +83,7 @@ class Instance(Base):
         fqdns = {fqdn}
 
         sso_fqdn = urlparse(ucr.get('ucs/server/sso/uri', '').lower()).hostname
-        if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
+        if ucr.is_true('keycloak/server/sso/autoregistration', True) and sso_fqdn:
             fqdns.add(sso_fqdn)
 
         if ucr.get('dns/backend') == 'samba4':

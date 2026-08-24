@@ -24,7 +24,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
 
     def post(self) -> None:
         try:
-            if self.changeset.ucr.is_true('ucs/server/sso/autoregistraton', True):
+            if self.changeset.ucr.is_true('keycloak/server/sso/autoregistration', True):
                 self.open_ldap()
                 self._update_sso()
         except (LDAPError, UniventionBaseException) as ex:

@@ -11,5 +11,7 @@ desc: |
    "DomainDnsZones" and "ForestDnsZones" even if the corresponding services
    weren't installed on that host. The automatic IP registration now checks
    again that the records are only changed if the current IP address of the
-   server is part of the record.
+   server is part of the record. Additionally, automatic updates of the SSO
+   DNS record now correctly honor the UCR variable
+   `keycloak/server/sso/autoregistration`.
 bug: [59759]

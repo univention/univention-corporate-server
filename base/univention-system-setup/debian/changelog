@@ -1,3 +1,9 @@
+univention-system-setup (15.6.2) unstable; urgency=medium
+
+  * Bug #59759: honor SSO autoregistration UCR variable
+
+ -- Florian Best <best@univention.de>  Mon, 24 Aug 2026 13:17:17 +0200
+
 univention-system-setup (15.6.1) unstable; urgency=medium
 
   * Bug #51626: Simplify component package collection in system setup
