@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 25. Aug 2026
+     - :ref:`references-ucr-variables`
+     - Add :envvar:`ldap/limits` reference documentation.
+
    * - 3. Aug 2026
      - :ref:`iam-authorization-engine`
      - Add section about the authorization engine,

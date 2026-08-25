@@ -1025,6 +1025,24 @@ This section provides a reference for UCR variables.
    :Default value: ``360``
    :Type: integer
 
+.. envvar:: ldap/limits
+
+   Configures OpenLDAP server limits based on the operation initiator
+   or base DN.
+   Separate multiple limit definitions with semicolons.
+   Nubus for UCS writes each definition as an OpenLDAP ``limits`` directive
+   in :file:`/etc/ldap/slapd.conf`.
+
+   For syntax and semantics,
+   see `per-database limits <https://www.openldap.org/doc/admin24/limits.html#Per-Database%20Limits>`_
+   in :cite:t:`openldap-admin-guide-2.4`.
+
+   For more information about the LDAP directory service,
+   see :ref:`domain-infrastructure-ldap-directory`.
+
+   :Default value: ``users time.soft=-1 time.hard=-1``
+   :Type: string
+
 .. envvar:: ldap/logging/exclude1
 
    Specifies a container or organizational unit (OU)
