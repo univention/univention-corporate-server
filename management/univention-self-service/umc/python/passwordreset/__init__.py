@@ -820,7 +820,7 @@ class Instance(Base):
             user_info = self._extract_user_properties(user)
             self.send_message(username, method, user[plugin.udm_property], user_info)
         else:
-            MODULE.info("send_token() property '%s' not set for username '%s'.", plugin.udm_property, username)
+            MODULE.info("send_token(): property '%s' not set for username '%s'.", plugin.udm_property, username)
 
         raise TokenSendMessage()
 
