@@ -9,5 +9,3 @@ desc: |
  * With delegative administration enabled, the UDM REST API allowed to upload
    licenses and remove arbitrary objects underneath of "cn=univention".
 bug: [59761]
-cve:
- - CVE-TMP1
