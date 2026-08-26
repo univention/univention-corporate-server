@@ -7,5 +7,8 @@ fix: 12.6.8
 desc: |
  This update addresses the following issue:
  * With delegative administration enabled, the UDM REST API allowed to upload
-   licenses and remove arbitrary objects underneath of "cn=univention".
+   licenses and remove arbitrary objects underneath of "cn=univention"
+   (CVE-TMP1).
 bug: [59761]
+cve:
+- CVE-TMP1
