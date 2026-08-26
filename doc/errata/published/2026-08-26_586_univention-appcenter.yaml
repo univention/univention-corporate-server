@@ -9,3 +9,6 @@ desc: |
  * The appcenter UMC module is now able to handle the
    installation of new dependencies during the upgrade of an app.
 bug: [59717]
+erratum: 586
+announced: 2026-08-26
+support: core
