@@ -1,8 +1,12 @@
-univention-dojo (15.6.0) UNRELEASED; urgency=medium
+univention-dojo (15.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
 
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:04 +0200
+  [ Florian Best ]
+  * Bug #59808: upgrade to dompurify 2.5.9
+
+ -- Florian Best <best@univention.de>  Wed, 26 Aug 2026 14:49:01 +0200
 
 univention-dojo (15.5.1) unstable; urgency=medium
 

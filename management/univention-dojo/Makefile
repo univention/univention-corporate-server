@@ -14,8 +14,8 @@ LIBDIR := $(CURDIR)/libs
 DOJO := 1.17.3
 DGRID := 1.3.3
 DSTORE := 1.2.1
-DOMPURIFY := 2.5.8
-# DOMPURIFY := 3.3.0
+DOMPURIFY := 2.5.9
+# DOMPURIFY := 3.4.14
 PUTSELECTOR := 0.3.6
 XSTYLE := 0.3.3
 
@@ -65,8 +65,8 @@ xstyle-$(XSTYLE).tar.gz:
 
 dompurify-$(DOMPURIFY).tar.gz:
 	wget -N "https://updates.software-univention.de/download/large-build-files/dojo/$@"
-	echo "23f02a867b94352bd9f104783951f29467a00b2e6fce05314d7992ec5fa8c73289470818ec2ce711272976735f058be238fe7051680949e90bd5ebb01a39c20a $@" | sha512sum -c
-	# echo "19636687f62e1e8b2ce1b8dc0db9413b5651feeed85c8eb927201a11c60ee5eb6294ef7dd573ef2a4f3f5197a7bc02d3263a6558af3225e8b455614e8c573c2d $@" | sha512sum -c
+	echo "9b139efc43913d6399871097f786a51d71df7e76662f1abbcdecc86ef223367db83a75b5fdfc220196cdd746a807a8097f8b1daea3f60e4684003f3ac0796b54 $@" | sha512sum -c
+	# echo "cd97ec2ef6fd50e3adfab49ebf73706d057a94d8151381a3a290964f4e485251 $@" | sha512sum -c
 
 put-selector-$(PUTSELECTOR).tar.gz:
 	wget -N "https://updates.software-univention.de/download/large-build-files/dojo/$@"

@@ -1,3 +1,9 @@
+univention-web (6.6.2) unstable; urgency=medium
+
+  * Bug #59808: upgrade to dompurify 2.5.9
+
+ -- Florian Best <best@univention.de>  Wed, 26 Aug 2026 14:49:35 +0200
+
 univention-web (6.6.1) unstable; urgency=medium
 
   [ Marius Meschter ]
