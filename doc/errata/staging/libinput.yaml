@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issues:
  * CVE-2026-50292 (CVSS score 7.4 -
    CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
-bug: [59754, 59764]
+bug: [59764]
 cve:
 - CVE-2026-50292
