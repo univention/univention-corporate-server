@@ -9,3 +9,6 @@ desc: |
  * Automatic DNS updates of the SSO record during IP address changes now
    correctly honor the UCR variable `keycloak/server/sso/autoregistration`.
 bug: [59759]
+erratum: 588
+announced: 2026-08-26
+support: core
