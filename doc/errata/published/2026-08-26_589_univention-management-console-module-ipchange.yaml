@@ -15,3 +15,6 @@ desc: |
    DNS record now correctly honor the UCR variable
    `keycloak/server/sso/autoregistration`.
 bug: [59759]
+erratum: 589
+announced: 2026-08-26
+support: core
