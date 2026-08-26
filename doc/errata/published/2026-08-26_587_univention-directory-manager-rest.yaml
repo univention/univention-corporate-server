@@ -12,3 +12,6 @@ desc: |
 bug: [59761]
 cve:
 - CVE-TMP1
+erratum: 587
+announced: 2026-08-26
+support: core
