@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-directory-manager-rest
+fix: 12.6.9
+desc: |
+ This update addresses the following issue:
+ * The UDM REST API command line doesn't depend on the UCR default layer
+   anymore for compatibility with Nubus 4 Kubernetes.
+bug: [59837]
