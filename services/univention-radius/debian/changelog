@@ -1,6 +1,6 @@
 univention-radius (9.6.3) unstable; urgency=medium
 
-  * Bug #59042: univention-radius-ntlm-auth rewrite in rust
+  * Bug #59042: univention-radius-ntlm-auth rewrite in rust XXX
 
  -- Florian Best <best@univention.de>  Fri, 28 Aug 2026 17:10:39 +0200
 

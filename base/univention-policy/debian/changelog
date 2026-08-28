@@ -4,7 +4,7 @@ univention-policy (13.6.0) unstable; urgency=medium
   * Bug #59324: UCS 5.2-6 version bump
 
   [ Florian Best ]
-  * Bug #59042: add rust library
+  * Bug #59042: add rust library XXX
 
  -- Florian Best <best@univention.de>  Fri, 28 Aug 2026 17:08:58 +0200
 
