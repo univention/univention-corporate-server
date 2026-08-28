@@ -71,7 +71,7 @@ fn main() {
         process::exit(2);
     }
 
-    let mut na: Box<dyn NtlmAuth> = if ucr.is_true("radius/use-school-extension", false) {
+    let mut na: Box<dyn NtlmAuth> = if ucr.is_true("freeradius/auth/helper/ntlm/enable-proxy-filter-rules", false) {
         Box::new(SchoolNetworkAccess::new(&args.username, args.station_id.as_deref(), ucr))
     } else {
         Box::new(NetworkAccess::new(&args.username, args.station_id.as_deref(), ucr))
