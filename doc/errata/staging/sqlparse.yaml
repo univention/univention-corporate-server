@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: sqlparse
+fix: 0.2.2-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2024-4340 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2023-30608 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+bug: [59879]
+cve:
+- CVE-2023-30608
+- CVE-2024-4340
