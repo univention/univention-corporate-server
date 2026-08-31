@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libmicrohttpd
+fix: 0.9.51-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2023-27371 (CVSS score 5.9 -
+   CVSS:3.1/AC:H/AV:N/A:H/C:N/I:N/PR:N/S:U/UI:N).
+bug: [59885]
+cve:
+- CVE-2023-27371
