@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: openjdk-11
+fix: 11.0.32.1+1-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-61308 (CVSS score 6.8 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:N/A:N).
+ * CVE-2026-70907 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-60589 (CVSS score 3.7 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+bug: [59857]
+cve:
+- CVE-2026-60589
+- CVE-2026-61308
+- CVE-2026-70907
