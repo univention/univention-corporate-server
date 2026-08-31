@@ -20,6 +20,7 @@ Nubus for UCS - Operation Manual
    iam/index
    system-administration/index
    monitoring/index
+   security-hardening/index
 
 .. toctree::
 
