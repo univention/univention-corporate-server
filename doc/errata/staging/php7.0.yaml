@@ -1,0 +1,51 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: php7.0
+fix: 7.0.33-0+deb9u24
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-17543, CVE-2026-7261, CVE-2025-1861 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-6722 (CVSS score 7.7 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:L).
+ * CVE-2026-7568, CVE-2026-7262, CVE-2026-7258 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2025-1736 (CVSS score 7.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-6735 (CVSS score 6.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N).
+ * CVE-2025-6491, CVE-2025-1735 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-14355 (CVSS score 5.6 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-7260 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2025-1734, CVE-2025-1219 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N).
+ * CVE-2025-1220 (CVSS score 3.7 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+ * CVE-2025-1217 (CVSS score 3.1 -
+   CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N).
+ * CVE-2026-9672 (CVSS score unknown).
+bug: [59876]
+cve:
+- CVE-2025-1217
+- CVE-2025-1219
+- CVE-2025-1220
+- CVE-2025-1734
+- CVE-2025-1735
+- CVE-2025-1736
+- CVE-2025-1861
+- CVE-2025-6491
+- CVE-2026-6722
+- CVE-2026-6735
+- CVE-2026-7258
+- CVE-2026-7260
+- CVE-2026-7261
+- CVE-2026-7262
+- CVE-2026-7568
+- CVE-2026-9672
+- CVE-2026-14355
+- CVE-2026-17543
