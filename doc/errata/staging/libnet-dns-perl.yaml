@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libnet-dns-perl
+fix: 1.19-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-64194 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59856]
+cve:
+- CVE-2026-64194
