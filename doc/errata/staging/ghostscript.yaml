@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ghostscript
+fix: 9.26a~dfsg-0+deb9u15
+desc: |
+ This update addresses the following issues:
+ * CVE-2025-27836, CVE-2025-27832, CVE-2025-27831 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2025-27835, CVE-2025-27830 (CVSS score 7.8 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2025-59799, CVE-2025-59798 (CVSS score 4.3 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:N).
+bug: [59886]
+cve:
+- CVE-2025-27830
+- CVE-2025-27831
+- CVE-2025-27832
+- CVE-2025-27835
+- CVE-2025-27836
+- CVE-2025-59798
+- CVE-2025-59799
