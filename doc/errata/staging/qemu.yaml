@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u20A~4.4.9.202608311106
+desc: |
+ This update addresses the following issues:
+ * CVE-2024-3447, CVE-2023-3019 (CVSS score 6.0 -
+   CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:C/C:N/I:N/A:H).
+bug: [59863]
+cve:
+- CVE-2023-3019
+- CVE-2024-3447
