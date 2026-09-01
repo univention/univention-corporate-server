@@ -29,6 +29,7 @@ Build-Depends:
 
 Package: univention-radius
 Architecture: any
+Static-Built-Using: ${cargo:X-Cargo-Built-Using}
 Depends:
  freeradius,
  freeradius-ldap,
