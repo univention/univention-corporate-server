@@ -95,7 +95,15 @@ define([
 			this.installationData = null;
 			this.isSuggested = false;
 			this.fullyLoaded = props.fully_loaded;
+			this.isInstalledInDomainValue = !!props.is_installed_in_domain;
 			if (this.installations) {
+				this.isInstalledInDomainValue = false;
+				tools.forIn(this.installations, function(hostName, info) {
+					if (info.version) {
+						this.isInstalledInDomainValue = true;
+						return false;
+					}
+				}, this);
 				this.installationData = [];
 				tools.forIn(this.installations, lang.hitch(this, function(hostName, info) {
 					var newProps = lang.clone(props);
@@ -121,6 +129,7 @@ define([
 					newProps.ip_address = info.ip[0];
 					newProps.is_installed = !!info.version;
 					newProps.update_available = info.update_available;
+					newProps.is_installed_in_domain = this.isInstalledInDomainValue;
 					var installation = new App(newProps, hostName);
 					this.installationData.push(installation);
 				}));
@@ -336,9 +345,7 @@ define([
 		},
 
 		isInstalledInDomain: function() {
-			return array.some(this.installationData, function(app) {
-				return app.isInstalled;
-			});
+			return this.isInstalledInDomainValue;
 		},
 
 		open: function() {

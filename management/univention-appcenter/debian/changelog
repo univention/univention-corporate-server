@@ -1,4 +1,10 @@
-univention-appcenter (11.6.2) unstable; urgency=medium
+univention-appcenter (11.6.9) unstable; urgency=medium
+
+  * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 01 Sep 2026 12:33:08 +0200
+
+univention-appcenter (11.6.8) unstable; urgency=medium
 
   * Bug #59717: Fix appcenter upgrade behaviour when new dependencies are added.
 
