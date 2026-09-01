@@ -37,6 +37,7 @@ The following pages cover the main components:
 * :ref:`security-hardening-samba` covers SMB, NetBIOS, and Samba services.
 * :ref:`security-hardening-web` covers Apache and UMC web security.
 * :ref:`security-hardening-ldap` covers LDAP transport encryption.
+* :ref:`security-hardening-ssh` covers remote administration through SSH.
 
 For account password policies and account lockout, see
 :ref:`password-management-policies` and
@@ -49,3 +50,4 @@ For account password policies and account lockout, see
    samba
    web
    ldap
+   ssh
