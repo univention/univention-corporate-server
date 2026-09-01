@@ -40,9 +40,11 @@ The following pages cover the main components:
 * :ref:`security-hardening-kerberos` covers password attributes and Kerberos
   encryption types.
 * :ref:`security-hardening-samba` covers SMB, NetBIOS, and Samba services.
+* :ref:`security-hardening-web` covers Apache and UMC web security.
 
 .. toctree::
    :caption: Contents
 
    kerberos
    samba
+   web
