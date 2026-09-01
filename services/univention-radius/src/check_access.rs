@@ -33,7 +33,7 @@ fn main() {
     // information verbosely
     let _ = logger::init_with_writer(std::io::stdout(), logger::DebugLevel::Debug);
 
-    let mut na: Box<dyn NtlmAuth> = if ucr.is_true("freeradius/auth/helper/ntlm/enable-proxy-filter-rules", false) {
+    let mut na: Box<dyn NtlmAuth> = if ucr.is_true("freeradius/auth/helper/ntlm/network-access/use-internet-rules", false) {
         Box::new(SchoolNetworkAccess::new(&args.username, args.station_id.as_deref(), ucr))
     } else {
         Box::new(NetworkAccess::new(&args.username, args.station_id.as_deref(), ucr))

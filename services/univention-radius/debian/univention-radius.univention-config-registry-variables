@@ -246,7 +246,7 @@ Type=str
 Default=DEFAULT
 Categories=service-radius
 
-[freeradius/auth/helper/ntlm/enable-proxy-filter-rules]
+[freeradius/auth/helper/ntlm/network-access/use-internet-rules]
 Description[de]=Steuert den WLAN-Zugang über die Internetregeln von UCS@school. Bei Aktivierung erhalten Benutzer nur dann Zugriff, wenn die ihnen zugewiesene Internetregel mit der höchsten Priorität die WLAN-Authentifizierung zulässt.
 Description[en]=Controls WLAN access through UCS@school internet rules. When enabled, users are granted access only if their highest-priority assigned internet rule allows WLAN authentication.
 Type=bool
