@@ -34,6 +34,7 @@ The following pages cover the main components:
 
 * :ref:`security-hardening-kerberos` covers password attributes and Kerberos
   encryption types.
+* :ref:`security-hardening-samba` covers SMB, NetBIOS, and Samba services.
 
 For account password policies and account lockout, see
 :ref:`password-management-policies` and
@@ -43,3 +44,4 @@ For account password policies and account lockout, see
    :caption: Contents
 
    kerberos
+   samba
