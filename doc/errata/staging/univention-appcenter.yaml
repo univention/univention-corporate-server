@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-appcenter
+fix: 11.6.9
+desc: |
+ This update addresses the following issues:
+ * An Appcenter setting has been added which
+   allows an App to specify whether it should
+   be installed on primary first. This is
+   only valueable for Apps that can be installed
+   multiple times in the domain.
+bug: [59895]
