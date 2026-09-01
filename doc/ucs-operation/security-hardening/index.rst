@@ -41,6 +41,7 @@ The following pages cover the main components:
   encryption types.
 * :ref:`security-hardening-samba` covers SMB, NetBIOS, and Samba services.
 * :ref:`security-hardening-web` covers Apache and UMC web security.
+* :ref:`security-hardening-ldap` covers LDAP transport encryption.
 
 .. toctree::
    :caption: Contents
@@ -48,3 +49,4 @@ The following pages cover the main components:
    kerberos
    samba
    web
+   ldap
