@@ -45,6 +45,8 @@ The following pages cover the main components:
 * :ref:`security-hardening-ssh` covers remote administration through SSH.
 * :ref:`security-hardening-mail` covers Postfix and Dovecot transport security.
 * :ref:`security-hardening-dns` covers DNS queries and zone transfers.
+* :ref:`security-hardening-operations` covers updates, time synchronization,
+  monitoring, and database exposure.
 
 .. toctree::
    :caption: Contents
@@ -56,3 +58,4 @@ The following pages cover the main components:
    ssh
    mail
    dns
+   operations
