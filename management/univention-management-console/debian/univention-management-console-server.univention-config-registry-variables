@@ -71,12 +71,6 @@ Description[en]=This variable deactivates the security related restrictions agai
 Type=bool
 Categories=management-umc
 
-[umc/server/ssl/ciphers]
-Description[de]=Diese Variable spezifiziert die SSL Cipher Liste, die für SSL Verbindungen akzeptiert und genutzt wird.
-Description[en]=This variable specifies the SSL cipher list which is accepted and used for ssl connections.
-Type=str
-Categories=management-umc
-
 [umc/login/links/.*/enabled]
 Description[de]=Ist eine Variable der Form 'umc/login/links/.*/enabled' deaktiviert, wird der gegebene Link nicht mehr auf der Login-Seite angezeigt. Z.B. 'umc/login/links/how_do_i_login/enabled=false'.
 Description[en]=If a variable in the format 'umc/login/links/.*/enabled' is deactivated, then the given link is no longer shown on the login page. E.g. 'umc/login/links/how_do_i_login/enabled=false'.
