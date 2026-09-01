@@ -39,6 +39,7 @@ The following pages cover the main components:
 * :ref:`security-hardening-ldap` covers LDAP transport encryption.
 * :ref:`security-hardening-ssh` covers remote administration through SSH.
 * :ref:`security-hardening-mail` covers Postfix and Dovecot transport security.
+* :ref:`security-hardening-dns` covers DNS queries and zone transfers.
 
 For account password policies and account lockout, see
 :ref:`password-management-policies` and
@@ -53,3 +54,4 @@ For account password policies and account lockout, see
    ldap
    ssh
    mail
+   dns
