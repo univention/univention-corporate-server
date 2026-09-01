@@ -40,6 +40,8 @@ The following pages cover the main components:
 * :ref:`security-hardening-ssh` covers remote administration through SSH.
 * :ref:`security-hardening-mail` covers Postfix and Dovecot transport security.
 * :ref:`security-hardening-dns` covers DNS queries and zone transfers.
+* :ref:`security-hardening-operations` covers updates, time synchronization,
+  monitoring, and database exposure.
 
 For account password policies and account lockout, see
 :ref:`password-management-policies` and
@@ -55,3 +57,4 @@ For account password policies and account lockout, see
    ssh
    mail
    dns
+   operations
