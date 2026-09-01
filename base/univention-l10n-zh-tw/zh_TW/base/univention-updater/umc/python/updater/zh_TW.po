@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-updater package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-updater\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/python/updater/__init__.py:362
+msgid "Error checking if installed apps are available for next UCS version."
+msgstr "檢查已安裝的應用程式是否適用於下一個 UCS 版本時發生錯誤。"
+
+#: umc/python/updater/__init__.py:381
+msgid "Error contacting the update server. Please check your proxy or firewall settings, if any. Or it may be a problem with your configured DNS server."
+msgstr "聯絡更新伺服器時發生錯誤。如有設定，請檢查您的 proxy 或防火牆設定。也可能是您所設定的 DNS 伺服器有問題。"
+
+#: umc/python/updater/__init__.py:57
+msgid "Package update"
+msgstr "套件更新"
+
+#: umc/python/updater/__init__.py:49
+#, python-format
+msgid "Release update to version %s"
+msgstr "版本更新至 %s"
+
+#: umc/python/updater/__init__.py:382
+msgid "This is the error message:"
+msgstr "這是錯誤訊息:"
+
+#: umc/python/updater/__init__.py:242
+msgid "latest version"
+msgstr "最新版本"

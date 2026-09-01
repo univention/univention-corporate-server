@@ -1,0 +1,1997 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-udm package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-udm\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/udm/DetailPage.js:843
+msgid " UCS can only change certain attributes."
+msgstr " UCS 只能變更特定屬性。"
+
+#: umc/js/udm.js:427
+msgid " You can install the application using the %(link)s"
+msgstr " 您可以使用 %(link)s 安裝此應用程式"
+
+#: umc/js/udm/DetailPage.js:2027
+msgid "%(attribute)s: %(message)s\n"
+msgstr "%(attribute)s: %(message)s\n"
+
+#: umc/js/udm/LicenseDialog.js:142
+msgid "%(limit)s (used: %(used)s)"
+msgstr "%(limit)s (已使用: %(used)s)"
+
+#: umc/js/udm/DetailPage.js:993
+msgid "(multi-edit)"
+msgstr "(多筆編輯)"
+
+#: umc/js/udm/DetailPage.js:843
+msgid "<b>Attention:</b> "
+msgstr "<b>注意:</b> "
+
+#: umc/js/udm/DetailPage.js:344
+msgid "<b>Position</b>: <i>%(path)s</i>"
+msgstr "<b>位置</b>: <i>%(path)s</i>"
+
+#: umc/js/udm/DetailPage.js:343
+msgid "<b>Type</b>: <i>%(type)s</i>"
+msgstr "<b>類型</b>: <i>%(type)s</i>"
+
+#: umc/js/udm.js:491 umc/js/udm/wizards/FirstPageWizard.js:267 umc/js/udm/wizards/FirstPageWizard.js:273
+msgid "<b>Warning!</b>"
+msgstr "<b>警告！</b>"
+
+#: umc/js/udm/UsernameMaxLengthChecker.js:21
+msgid "<b>Warning:</b> The user name is longer than {length} characters which makes a login on Windows clients impossible. Please consider shortening the user name."
+msgstr "<b>警告:</b> 使用者名稱超過 {length} 個字元，將導致無法在 Windows 用戶端登入。請考慮縮短使用者名稱。"
+
+#: umc/js/udm.js:490
+msgid "<p><b>Add and modify are disabled in this session.</b></p><p>You have too many user accounts for your license. Carry out the following steps to re-enable editing:</p><ol><li>Disable or delete user accounts</li><li>Re-login to UMC for changes to take effect</li></ol><p>If a new license is needed, contact your UCS partner.</p>"
+msgstr "<p><b>此工作階段中已停用新增與修改。</b></p><p>您的使用者帳號數量超過授權允許的上限。請執行下列步驟以重新啟用編輯:</p><ol><li>停用或刪除使用者帳號</li><li>重新登入 UMC 以使變更生效</li></ol><p>若需要新授權，請聯絡您的 UCS 合作夥伴。</p>"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:339
+#, javascript-format
+msgid "<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>"
+msgstr "<p>LDAP 物件將建立於容器:</p><p><i>%s</i></p>"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:322
+#, javascript-format
+msgid "<p>The LDAP object will be created underneath of <i>%s</i>.</p>"
+msgstr "<p>LDAP 物件將建立於 <i>%s</i> 之下。</p>"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:407
+msgid "A template defines rules for default object properties."
+msgstr "範本定義預設物件屬性的規則。"
+
+#: umc/js/udm/wizards/users/user.js:77
+msgid "Account disabled"
+msgstr "帳號已停用"
+
+#: umc/js/udm/DetailPage.js:945
+msgid "Activate apps and options"
+msgstr "啟用應用程式與選項"
+
+#: umc/js/udm/DetailPage.js:938
+msgid "Activated Apps"
+msgstr "已啟用的應用程式"
+
+#: umc/js/udm/startup.js:42
+msgid "Activation of UCS"
+msgstr "啟用 UCS"
+
+#: umc/js/udm.js:706
+msgid "Add"
+msgstr "新增"
+
+#: umc/js/udm.js:573 umc/js/udm/NewObjectDialog.js:74
+msgid "Add a new DHCP object."
+msgstr "新增 DHCP 物件。"
+
+#: umc/js/udm.js:572 umc/js/udm/NewObjectDialog.js:73
+msgid "Add a new DNS object."
+msgstr "新增 DNS 物件。"
+
+#: umc/js/udm.js:583 umc/js/udm/NewObjectDialog.js:84
+msgid "Add a new LDAP object."
+msgstr "新增 LDAP 物件。"
+
+#: umc/js/udm.js:577 umc/js/udm/NewObjectDialog.js:78
+msgid "Add a new Nagios object."
+msgstr "新增 Nagios 物件。"
+
+#: umc/js/udm.js:578 umc/js/udm/NewObjectDialog.js:79
+msgid "Add a new alert."
+msgstr "新增警報。"
+
+#: umc/js/udm.js:570 umc/js/udm/NewObjectDialog.js:71
+msgid "Add a new computer."
+msgstr "新增電腦。"
+
+#: umc/js/udm.js:569 umc/js/udm/NewObjectDialog.js:70
+msgid "Add a new group."
+msgstr "新增群組。"
+
+#: umc/js/udm.js:576 umc/js/udm/NewObjectDialog.js:77
+msgid "Add a new mail object."
+msgstr "新增郵件物件。"
+
+#: umc/js/udm.js:571 umc/js/udm/NewObjectDialog.js:72
+msgid "Add a new network object."
+msgstr "新增網路物件。"
+
+#: umc/js/udm.js:579 umc/js/udm/NewObjectDialog.js:80
+msgid "Add a new policy."
+msgstr "新增原則。"
+
+#: umc/js/udm.js:580 umc/js/udm/NewObjectDialog.js:81
+msgid "Add a new portal object."
+msgstr "新增入口物件。"
+
+#: umc/js/udm.js:575 umc/js/udm/NewObjectDialog.js:76
+msgid "Add a new printer."
+msgstr "新增印表機。"
+
+#: umc/js/udm.js:574 umc/js/udm/NewObjectDialog.js:75
+msgid "Add a new share."
+msgstr "新增共用。"
+
+#: umc/js/udm.js:568 umc/js/udm/NewObjectDialog.js:69
+msgid "Add a new user."
+msgstr "新增使用者。"
+
+#: umc/js/udm/wizards/CreateWizard.js:171
+msgid "Advanced"
+msgstr "進階"
+
+#: umc/js/udm/ComboBox.js:316
+msgid "Advanced Search"
+msgstr "進階搜尋"
+
+#: umc/js/udm.js:1441
+msgid "Advanced options"
+msgstr "進階選項"
+
+#: umc/js/udm/DetailPage.js:734 umc/js/udm/DetailPage.js:735
+msgid "Advanced settings"
+msgstr "進階設定"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:464
+msgid "Alert"
+msgstr "警報"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:301
+msgid "Alert template"
+msgstr "警報範本"
+
+#: umc/js/udm.js:1223 umc/js/udm/wizards/FirstPageWizard.js:221
+msgid "Alerts"
+msgstr "警報"
+
+#: umc/js/udm.js:421
+msgid "Alerts managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的警報供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm.js:960 umc/js/udm.js:978
+msgid "All containers"
+msgstr "所有容器"
+
+#: umc/js/udm.js:959 umc/js/udm.js:962 umc/js/udm.js:974 umc/js/udm.js:994
+msgid "All types"
+msgstr "所有類型"
+
+#: umc/js/udm/DetailPage.js:944
+msgid "Apps"
+msgstr "應用程式"
+
+#: umc/js/udm/DetailPage.js:1390 umc/js/udm/wizards/CreateWizard.js:162
+msgid "Back"
+msgstr "返回"
+
+#: umc/js/udm.js:396
+#, javascript-format
+msgid "Blocklists are not enabled. To enable this functionality, set the UCR variable \"%s\" to \"true\" on each Domain Controller in the domain."
+msgstr "封鎖清單未啟用。若要啟用此功能，請在網域中的每一台網域控制站上，將 UCR 變數 \"%s\" 設為 \"true\"。"
+
+#: umc/js/udm.js:1578 umc/js/udm.js:1847 umc/js/udm.js:2021 umc/js/udm/DetailPage.js:1392 umc/js/udm/CreateReportDialog.js:71
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/udm/DetailPage.js:1520
+msgid "Click to edit the inherited properties of the policy"
+msgstr "按一下以編輯此原則繼承的屬性"
+
+#: umc/js/udm/LicenseImportDialog.js:99 umc/js/udm/LicenseDialog.js:44
+msgid "Close"
+msgstr "關閉"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:293
+msgid "Computer template"
+msgstr "電腦範本"
+
+#: umc/js/udm.js:1215
+msgid "Computers"
+msgstr "電腦"
+
+#: umc/js/udm.js:413
+msgid "Computers managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的電腦供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:350
+msgid "Container"
+msgstr "容器"
+
+#: umc/js/udm/DetailPage.js:2174
+msgid "Continue editing"
+msgstr "繼續編輯"
+
+#: umc/js/udm.js:783
+msgid "Copy"
+msgstr "複製"
+
+#: umc/js/udm/CreateReportDialog.js:77
+msgid "Create"
+msgstr "建立"
+
+#: umc/js/udm/DetailPage.js:1363
+msgid "Create DHCP object"
+msgstr "建立 DHCP 物件"
+
+#: umc/js/udm/DetailPage.js:1362
+msgid "Create DNS object"
+msgstr "建立 DNS 物件"
+
+#: umc/js/udm/DetailPage.js:1379
+msgid "Create LDAP object"
+msgstr "建立 LDAP 物件"
+
+#: umc/js/udm/DetailPage.js:1367
+msgid "Create Nagios object"
+msgstr "建立 Nagios 物件"
+
+#: umc/js/udm.js:784
+msgid "Create a copy of the LDAP object."
+msgstr "建立 LDAP 物件的複本。"
+
+#: umc/js/udm/DetailPage.js:1368
+msgid "Create alert"
+msgstr "建立警報"
+
+#: umc/js/udm/DetailPage.js:1360
+msgid "Create computer"
+msgstr "建立電腦"
+
+#: umc/js/udm/DetailPage.js:1359
+msgid "Create group"
+msgstr "建立群組"
+
+#: umc/js/udm/DetailPage.js:1366
+msgid "Create mail object"
+msgstr "建立郵件物件"
+
+#: umc/js/udm/DetailPage.js:1361
+msgid "Create network object"
+msgstr "建立網路物件"
+
+#: umc/js/udm/DetailPage.js:632
+msgid "Create new policy"
+msgstr "建立新原則"
+
+#: umc/js/udm/DetailPage.js:1369
+msgid "Create policy"
+msgstr "建立原則"
+
+#: umc/js/udm/DetailPage.js:1373
+msgid "Create portal"
+msgstr "建立入口網站"
+
+#: umc/js/udm/DetailPage.js:1375
+msgid "Create portal category"
+msgstr "建立入口分類"
+
+#: umc/js/udm/DetailPage.js:1374
+msgid "Create portal entry"
+msgstr "建立入口項目"
+
+#: umc/js/udm/DetailPage.js:1365
+msgid "Create printer"
+msgstr "建立印表機"
+
+#: umc/js/udm.js:845
+msgid "Create report"
+msgstr "建立報表"
+
+#: umc/js/udm/DetailPage.js:1364
+msgid "Create share"
+msgstr "建立共用"
+
+#: umc/js/udm/DetailPage.js:1358
+msgid "Create user"
+msgstr "建立使用者"
+
+#: umc/js/udm/CreateReportDialog.js:150
+msgid "Creating the report..."
+msgstr "正在建立報表..."
+
+#: umc/js/udm/DetailPage.js:1431
+msgid "Customize this page"
+msgstr "自訂此頁面"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:459
+msgid "DHCP object"
+msgstr "DHCP 物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:296
+msgid "DHCP object template"
+msgstr "DHCP 物件範本"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:216
+msgid "DHCP objects"
+msgstr "DHCP 物件"
+
+#: umc/js/udm.js:416
+msgid "DHCP objects managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的 DHCP 物件供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm.js:1218
+msgid "DHCP services"
+msgstr "DHCP 服務"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:458
+msgid "DNS object"
+msgstr "DNS 物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:295
+msgid "DNS object template"
+msgstr "DNS 物件範本"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:215
+msgid "DNS objects"
+msgstr "DNS 物件"
+
+#: umc/js/udm.js:415
+msgid "DNS objects managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的 DNS 物件供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm.js:1217
+msgid "DNS zones"
+msgstr "DNS 區域"
+
+#: umc/js/udm.js:981
+msgid "Default containers"
+msgstr "預設容器"
+
+#: umc/js/udm.js:996 umc/js/udm/MultiObjectSelect.js:85
+msgid "Default properties"
+msgstr "預設屬性"
+
+#: umc/js/udm.js:763 umc/js/udm.js:827 umc/js/udm.js:1285 umc/js/udm.js:2025
+msgid "Delete"
+msgstr "刪除"
+
+#: umc/js/udm.js:2032
+msgid "Delete objects"
+msgstr "刪除物件"
+
+#: umc/js/udm.js:2015
+msgid "Delete referring objects."
+msgstr "刪除參照的物件。"
+
+#: umc/js/udm.js:619
+msgid "Delete the selected DHCP objects."
+msgstr "刪除所選的 DHCP 物件。"
+
+#: umc/js/udm.js:618
+msgid "Delete the selected DNS objects."
+msgstr "刪除所選的 DNS 物件。"
+
+#: umc/js/udm.js:629
+msgid "Delete the selected LDAP objects."
+msgstr "刪除所選的 LDAP 物件。"
+
+#: umc/js/udm.js:623
+msgid "Delete the selected Nagios objects."
+msgstr "刪除所選的 Nagios 物件。"
+
+#: umc/js/udm.js:624
+msgid "Delete the selected alerts."
+msgstr "刪除所選的警報。"
+
+#: umc/js/udm.js:616
+msgid "Delete the selected computers."
+msgstr "刪除所選的電腦。"
+
+#: umc/js/udm.js:615
+msgid "Delete the selected groups."
+msgstr "刪除所選的群組。"
+
+#: umc/js/udm.js:622
+msgid "Delete the selected mail objects."
+msgstr "刪除所選的郵件物件。"
+
+#: umc/js/udm.js:617
+msgid "Delete the selected network objects."
+msgstr "刪除所選的網路物件。"
+
+#: umc/js/udm.js:625
+msgid "Delete the selected policies."
+msgstr "刪除所選的原則。"
+
+#: umc/js/udm.js:626
+msgid "Delete the selected portal object."
+msgstr "刪除所選的入口物件。"
+
+#: umc/js/udm.js:621
+msgid "Delete the selected printers."
+msgstr "刪除所選的印表機。"
+
+#: umc/js/udm.js:620
+msgid "Delete the selected shares."
+msgstr "刪除所選的共用。"
+
+#: umc/js/udm.js:614
+msgid "Delete the selected users."
+msgstr "刪除所選的使用者。"
+
+#: umc/js/udm/DetailPage.js:2177
+msgid "Discard changes"
+msgstr "捨棄變更"
+
+#: umc/js/udm.js:715 umc/js/udm.js:1278
+msgid "Edit"
+msgstr "編輯"
+
+#: umc/js/udm.js:742
+msgid "Edit in new tab"
+msgstr "在新分頁中編輯"
+
+#: umc/js/udm/DetailPage.js:620
+msgid "Edit policy"
+msgstr "編輯原則"
+
+#: umc/js/udm.js:594
+msgid "Edit the DHCP object."
+msgstr "編輯 DHCP 物件。"
+
+#: umc/js/udm.js:593
+msgid "Edit the DNS object."
+msgstr "編輯 DNS 物件。"
+
+#: umc/js/udm.js:604
+msgid "Edit the LDAP object."
+msgstr "編輯 LDAP 物件。"
+
+#: umc/js/udm.js:598
+msgid "Edit the Nagios object."
+msgstr "編輯 Nagios 物件。"
+
+#: umc/js/udm.js:599
+msgid "Edit the alert."
+msgstr "編輯警報。"
+
+#: umc/js/udm.js:591
+msgid "Edit the computer."
+msgstr "編輯電腦。"
+
+#: umc/js/udm.js:590
+msgid "Edit the group."
+msgstr "編輯群組。"
+
+#: umc/js/udm.js:597
+msgid "Edit the mail object."
+msgstr "編輯郵件物件。"
+
+#: umc/js/udm.js:592
+msgid "Edit the network object."
+msgstr "編輯網路物件。"
+
+#: umc/js/udm.js:600
+msgid "Edit the policy."
+msgstr "編輯原則。"
+
+#: umc/js/udm.js:601
+msgid "Edit the portal object."
+msgstr "編輯入口物件。"
+
+#: umc/js/udm.js:596
+msgid "Edit the printer."
+msgstr "編輯印表機。"
+
+#: umc/js/udm.js:595
+msgid "Edit the share."
+msgstr "編輯共用。"
+
+#: umc/js/udm.js:589
+msgid "Edit the user."
+msgstr "編輯使用者。"
+
+#: umc/js/udm/DetailPage.js:2021
+msgid "Error"
+msgstr "錯誤"
+
+#: umc/js/udm/LicenseDialog.js:119
+msgid "Expiry date"
+msgstr "到期日"
+
+#: umc/js/udm.js:1615
+msgid "Failed to move the following objects:"
+msgstr "下列物件移動失敗:"
+
+#: umc/js/udm/DetailPage.js:2067
+msgid "Failed to retrieve the DHCP object from the server."
+msgstr "無法從伺服器取得 DHCP 物件。"
+
+#: umc/js/udm/DetailPage.js:2066
+msgid "Failed to retrieve the DNS object from the server."
+msgstr "無法從伺服器取得 DNS 物件。"
+
+#: umc/js/udm/DetailPage.js:2077
+msgid "Failed to retrieve the LDAP object from the server."
+msgstr "無法從伺服器取得 LDAP 物件。"
+
+#: umc/js/udm/DetailPage.js:2071
+msgid "Failed to retrieve the Nagios object from the server."
+msgstr "無法從伺服器取得 Nagios 物件。"
+
+#: umc/js/udm/DetailPage.js:2072
+msgid "Failed to retrieve the alert from the server."
+msgstr "無法從伺服器取得警報。"
+
+#: umc/js/udm/DetailPage.js:2064
+msgid "Failed to retrieve the computer from the server."
+msgstr "無法從伺服器取得電腦。"
+
+#: umc/js/udm/DetailPage.js:2063
+msgid "Failed to retrieve the group from the server."
+msgstr "無法從伺服器取得群組。"
+
+#: umc/js/udm/DetailPage.js:2070
+msgid "Failed to retrieve the mail object from the server."
+msgstr "無法從伺服器取得郵件物件。"
+
+#: umc/js/udm/DetailPage.js:2065
+msgid "Failed to retrieve the network object from the server."
+msgstr "無法從伺服器取得網路物件。"
+
+#: umc/js/udm/DetailPage.js:2073
+msgid "Failed to retrieve the policy from the server."
+msgstr "無法從伺服器取得原則。"
+
+#: umc/js/udm/DetailPage.js:2074
+msgid "Failed to retrieve the portal object from the server."
+msgstr "無法從伺服器取得入口物件。"
+
+#: umc/js/udm/DetailPage.js:2069
+msgid "Failed to retrieve the printer from the server."
+msgstr "無法從伺服器取得印表機。"
+
+#: umc/js/udm/DetailPage.js:2068
+msgid "Failed to retrieve the share from the server."
+msgstr "無法從伺服器取得共用。"
+
+#: umc/js/udm/DetailPage.js:2062
+msgid "Failed to retrieve the user from the server."
+msgstr "無法從伺服器取得使用者。"
+
+#: umc/js/udm/CertificateUploader.js:48
+msgid "Failed to upload certificate"
+msgstr "上傳憑證失敗"
+
+#: umc/js/udm/DetailPage.js:1292
+msgid "Further settings"
+msgstr "其他設定"
+
+#: umc/js/udm/CreateReportDialog.js:127
+#, javascript-format
+msgid "Generating DHCP object report for one object."
+msgid_plural "Generating DHCP object report for %d objects."
+msgstr[0] "正在為 %d 個物件產生DHCP 物件報表。"
+msgstr[1] "正在為 %d 個物件產生DHCP 物件報表。"
+
+#: umc/js/udm/CreateReportDialog.js:125
+#, javascript-format
+msgid "Generating DNS object report for one object."
+msgid_plural "Generating DNS object report for %d objects."
+msgstr[0] "正在為 %d 個物件產生DNS 物件報表。"
+msgstr[1] "正在為 %d 個物件產生DNS 物件報表。"
+
+#: umc/js/udm/CreateReportDialog.js:141
+#, javascript-format
+msgid "Generating LDAP object report for one object."
+msgid_plural "Generating LDAP object report for %d objects."
+msgstr[0] "正在為 %d 個物件產生LDAP 物件報表。"
+msgstr[1] "正在為 %d 個物件產生LDAP 物件報表。"
+
+#: umc/js/udm/CreateReportDialog.js:135
+#, javascript-format
+msgid "Generating Nagios object report for one object."
+msgid_plural "Generating Nagios object report for %d objects."
+msgstr[0] "正在為 %d 個物件產生Nagios 物件報表。"
+msgstr[1] "正在為 %d 個物件產生Nagios 物件報表。"
+
+#: umc/js/udm/CreateReportDialog.js:121
+#, javascript-format
+msgid "Generating computer report for one object."
+msgid_plural "Generating computer report for %d objects."
+msgstr[0] "正在為 %d 個物件產生電腦報表。"
+msgstr[1] "正在為 %d 個物件產生電腦報表。"
+
+#: umc/js/udm/CreateReportDialog.js:119
+#, javascript-format
+msgid "Generating group report for one object."
+msgid_plural "Generating group report for %d objects."
+msgstr[0] "正在為 %d 個物件產生群組報表。"
+msgstr[1] "正在為 %d 個物件產生群組報表。"
+
+#: umc/js/udm/CreateReportDialog.js:133
+#, javascript-format
+msgid "Generating mail object report for one object."
+msgid_plural "Generating mail object report for %d objects."
+msgstr[0] "正在為 %d 個物件產生郵件物件報表。"
+msgstr[1] "正在為 %d 個物件產生郵件物件報表。"
+
+#: umc/js/udm/CreateReportDialog.js:123
+#, javascript-format
+msgid "Generating network object report for one object."
+msgid_plural "Generating network object report for %d objects."
+msgstr[0] "正在為 %d 個物件產生網路物件報表。"
+msgstr[1] "正在為 %d 個物件產生網路物件報表。"
+
+#: umc/js/udm/CreateReportDialog.js:137
+#, javascript-format
+msgid "Generating policy report for one object."
+msgid_plural "Generating policy report for %d objects."
+msgstr[0] "正在為 %d 個物件產生原則報表。"
+msgstr[1] "正在為 %d 個物件產生原則報表。"
+
+#: umc/js/udm/CreateReportDialog.js:131
+#, javascript-format
+msgid "Generating printer report for one object."
+msgid_plural "Generating printer report for %d objects."
+msgstr[0] "正在為 %d 個物件產生印表機報表。"
+msgstr[1] "正在為 %d 個物件產生印表機報表。"
+
+#: umc/js/udm/CreateReportDialog.js:129
+#, javascript-format
+msgid "Generating share report for one object."
+msgid_plural "Generating share report for %d objects."
+msgstr[0] "正在為 %d 個物件產生共用報表。"
+msgstr[1] "正在為 %d 個物件產生共用報表。"
+
+#: umc/js/udm/CreateReportDialog.js:117
+#, javascript-format
+msgid "Generating user report for one object."
+msgid_plural "Generating user report for %d objects."
+msgstr[0] "正在為 %d 個物件產生使用者報表。"
+msgstr[1] "正在為 %d 個物件產生使用者報表。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:292
+msgid "Group template"
+msgstr "群組範本"
+
+#: umc/js/udm.js:1214
+msgid "Groups"
+msgstr "群組"
+
+#: umc/js/udm.js:412
+msgid "Groups managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的群組供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm.js:470 umc/js/udm/DetailPage.js:1410
+msgid "Help"
+msgstr "說明"
+
+#: umc/js/udm/DetailPage.js:941
+msgid "Here you can activate the user for one of the installed apps. The user can then log on to the app and use it."
+msgstr "您可以在此為使用者啟用其中一個已安裝的應用程式。啟用後，使用者即可登入並使用該應用程式。"
+
+#: umc/js/udm/LicenseImportDialog.js:68
+msgid "Import from file..."
+msgstr "從檔案匯入..."
+
+#: umc/js/udm/LicenseImportDialog.js:80
+msgid "Import from text field"
+msgstr "從文字欄位匯入"
+
+#: umc/js/udm/license.js:35
+msgid "Import new license"
+msgstr "匯入新授權"
+
+#: umc/js/udm/LicenseImportDialog.js:87
+msgid "Importing license data..."
+msgstr "正在匯入授權資料..."
+
+#: umc/js/udm.js:1003 umc/js/udm/MultiObjectSelect.js:130
+msgid "Include hidden objects"
+msgstr "包含隱藏的物件"
+
+#: umc/js/udm/LicenseDialog.js:97
+msgid "Information about the <a href=\"https://www.univention.com/downloads/license-models/ucs-core-edition\" target=\"_blank\">terms of use</a> for this free license can be found on the Univention website. Information about the <a href=\"https://www.univention.com/enterprise-subscriptions\" target=\"_blank\">UCS Enterprise Subscriptions</a> can also be found there."
+msgstr "關於此免費授權的<a href=\"https://www.univention.com/downloads/license-models/ucs-core-edition\" target=\"_blank\">使用條款</a>,可在 Univention 網站上找到。關於 <a href=\"https://www.univention.com/enterprise-subscriptions\" target=\"_blank\">UCS Enterprise Subscriptions</a> 的資訊也可在該處找到。"
+
+#: umc/js/udm/LicenseDialog.js:40
+msgid "Information about the current UCS license"
+msgstr "目前 UCS 授權的相關資訊"
+
+#: umc/js/udm/wizards/users/user.js:85
+msgid "Invite user via e-mail. Password will be set by the user"
+msgstr "透過電子郵件邀請使用者。密碼將由使用者自行設定"
+
+#: umc/js/udm/LicenseDialog.js:118
+msgid "Key ID"
+msgstr "金鑰 ID"
+
+#: umc/js/udm.js:1227
+msgid "LDAP Objects"
+msgstr "LDAP 物件"
+
+#: umc/js/udm/LicenseDialog.js:114
+msgid "LDAP base"
+msgstr "LDAP base"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:468
+msgid "LDAP object"
+msgstr "LDAP 物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:305
+msgid "LDAP object template"
+msgstr "LDAP 物件範本"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:225
+msgid "LDAP objects"
+msgstr "LDAP 物件"
+
+#: umc/js/udm.js:425
+msgid "LDAP objects managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的 LDAP 物件供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/license.js:29
+msgid "License"
+msgstr "授權"
+
+#: umc/js/udm/license.js:41
+msgid "License information"
+msgstr "授權資訊"
+
+#: umc/js/udm/LicenseDialog.js:113
+msgid "License type"
+msgstr "授權類型"
+
+#: umc/js/udm/DetailPage.js:449
+msgid "List of all object properties that are inherited by policies. The values cannot be edited directly. By clicking on \"Create new policy\", a new tab with a new policy will be opened. If an attribute is already set, the corresponding policy can be edited in a new tab by clicking on the \"edit\" link."
+msgstr "所有由原則繼承的物件屬性清單。這些值無法直接編輯。按一下「建立新原則」會在新分頁中開啟一個新原則。若某屬性已設定，可按一下「編輯」連結，在新分頁中編輯對應的原則。"
+
+#: umc/js/udm/wizards/CreateWizard.js:116
+msgid "Loading DHCP object..."
+msgstr "正在載入 DHCP 物件..."
+
+#: umc/js/udm/wizards/CreateWizard.js:115
+msgid "Loading DNS object..."
+msgstr "正在載入 DNS 物件..."
+
+#: umc/js/udm/wizards/CreateWizard.js:125
+msgid "Loading LDAP object..."
+msgstr "正在載入 LDAP 物件..."
+
+#: umc/js/udm/wizards/CreateWizard.js:120
+msgid "Loading Nagios object..."
+msgstr "正在載入 Nagios 物件..."
+
+#: umc/js/udm/wizards/CreateWizard.js:121
+msgid "Loading alert..."
+msgstr "正在載入警報..."
+
+#: umc/js/udm/wizards/CreateWizard.js:113
+msgid "Loading computer..."
+msgstr "正在載入電腦..."
+
+#: umc/js/udm/wizards/CreateWizard.js:112
+msgid "Loading group..."
+msgstr "正在載入群組..."
+
+#: umc/js/udm/wizards/CreateWizard.js:119
+msgid "Loading mail object..."
+msgstr "正在載入郵件物件..."
+
+#: umc/js/udm/wizards/CreateWizard.js:114
+msgid "Loading network object..."
+msgstr "正在載入網路物件..."
+
+#: umc/js/udm/wizards/CreateWizard.js:122
+msgid "Loading policy..."
+msgstr "正在載入原則..."
+
+#: umc/js/udm/wizards/CreateWizard.js:118
+msgid "Loading printer..."
+msgstr "正在載入印表機..."
+
+#: umc/js/udm/wizards/CreateWizard.js:117
+msgid "Loading share..."
+msgstr "正在載入共用..."
+
+#: umc/js/udm/wizards/CreateWizard.js:111
+msgid "Loading user..."
+msgstr "正在載入使用者..."
+
+#: umc/js/udm/wizards/users/user.js:105
+msgid "Mail address to which the invitation link is sent to"
+msgstr "邀請連結要寄送至的郵件地址"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:299
+msgid "Mail object template"
+msgstr "郵件物件範本"
+
+#: umc/js/udm.js:1221
+msgid "Mail objects"
+msgstr "郵件物件"
+
+#: umc/js/udm.js:419
+msgid "Mail objects managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的郵件物件供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/LicenseDialog.js:117
+msgid "Managed Clients"
+msgstr "受管用戶端"
+
+#: umc/js/udm.js:1510
+msgid "Move DHCP object"
+msgid_plural "Move DHCP objects"
+msgstr[0] "移動DHCP 物件"
+msgstr[1] "移動DHCP 物件"
+
+#: umc/js/udm.js:1509
+msgid "Move DNS object"
+msgid_plural "Move DNS objects"
+msgstr[0] "移動DNS 物件"
+msgstr[1] "移動DNS 物件"
+
+#: umc/js/udm.js:1520
+msgid "Move LDAP object"
+msgid_plural "Move LDAP objects"
+msgstr[0] "移動LDAP 物件"
+msgstr[1] "移動LDAP 物件"
+
+#: umc/js/udm.js:1514
+msgid "Move Nagios object"
+msgid_plural "Move Nagios objects"
+msgstr[0] "移動Nagios 物件"
+msgstr[1] "移動Nagios 物件"
+
+#: umc/js/udm.js:1515
+msgid "Move alert"
+msgid_plural "Move alerts"
+msgstr[0] "移動警報"
+msgstr[1] "移動警報"
+
+#: umc/js/udm.js:1507
+msgid "Move computer"
+msgid_plural "Move computers"
+msgstr[0] "移動電腦"
+msgstr[1] "移動電腦"
+
+#: umc/js/udm.js:1506
+msgid "Move group"
+msgid_plural "Move groups"
+msgstr[0] "移動群組"
+msgstr[1] "移動群組"
+
+#: umc/js/udm.js:1513
+msgid "Move mail object"
+msgid_plural "Move mail objects"
+msgstr[0] "移動郵件物件"
+msgstr[1] "移動郵件物件"
+
+#: umc/js/udm.js:1508
+msgid "Move network object"
+msgid_plural "Move network objects"
+msgstr[0] "移動網路物件"
+msgstr[1] "移動網路物件"
+
+#: umc/js/udm.js:775
+msgid "Move objects to a different LDAP position."
+msgstr "將物件移至不同的 LDAP 位置。"
+
+#: umc/js/udm.js:1516
+msgid "Move policy"
+msgid_plural "Move policies"
+msgstr[0] "移動原則"
+msgstr[1] "移動原則"
+
+#: umc/js/udm.js:1517
+msgid "Move portal object"
+msgid_plural "Move portal objects"
+msgstr[0] "移動入口物件"
+msgstr[1] "移動入口物件"
+
+#: umc/js/udm.js:1512
+msgid "Move printer"
+msgid_plural "Move printers"
+msgstr[0] "移動印表機"
+msgstr[1] "移動印表機"
+
+#: umc/js/udm.js:1511
+msgid "Move share"
+msgid_plural "Move shares"
+msgstr[0] "移動共用"
+msgstr[1] "移動共用"
+
+#: umc/js/udm.js:774 umc/js/udm.js:1292
+msgid "Move to..."
+msgstr "移至..."
+
+#: umc/js/udm.js:1505
+msgid "Move user"
+msgid_plural "Move users"
+msgstr[0] "移動使用者"
+msgstr[1] "移動使用者"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:463
+msgid "Nagios object"
+msgstr "Nagios 物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:300
+msgid "Nagios object template"
+msgstr "Nagios 物件範本"
+
+#: umc/js/udm.js:1222 umc/js/udm/wizards/FirstPageWizard.js:220
+msgid "Nagios objects"
+msgstr "Nagios 物件"
+
+#: umc/js/udm.js:420
+msgid "Nagios objects managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的 Nagios 物件供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm.js:1730
+msgid "Name"
+msgstr "名稱"
+
+#: umc/js/udm.js:1731
+msgid "Name of the LDAP object."
+msgstr "LDAP 物件的名稱。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:294
+msgid "Network object template"
+msgstr "網路物件範本"
+
+#: umc/js/udm.js:1216
+msgid "Network objects"
+msgstr "網路物件"
+
+#: umc/js/udm.js:414
+msgid "Network objects managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的網路物件供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/LicenseImportDialog.js:60
+msgid "New license keys can be imported here. You receive these keys after the activation of UCS or after a license purchase. The key can either be uploaded directly as file or it can be imported via copy and paste into the text field."
+msgstr "您可以在此匯入新的授權金鑰。您會在啟用 UCS 後或購買授權後取得這些金鑰。金鑰可直接以檔案上傳，或透過複製貼上的方式匯入文字欄位。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:274
+#, javascript-format
+msgid "Newly created %s will only be available on UCS systems and not in the Active Directory domain."
+msgstr "新建立的 %s 只會在 UCS 系統上提供，不會出現在 Active Directory 網域中。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:268
+msgid "Newly created LDAP objects of this type will only be available on UCS systems and not in the Active Directory domain."
+msgstr "此類型新建立的 LDAP 物件只會在 UCS 系統上提供，不會出現在 Active Directory 網域中。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:502
+msgid "Next"
+msgstr "下一步"
+
+#: umc/js/udm.js:643
+msgid "No DHCP objects could be found."
+msgstr "找不到任何 DHCP 物件。"
+
+#: umc/js/udm.js:642
+msgid "No DNS objects could be found."
+msgstr "找不到任何 DNS 物件。"
+
+#: umc/js/udm.js:653
+msgid "No LDAP objects could be found."
+msgstr "找不到任何 LDAP 物件。"
+
+#: umc/js/udm.js:1591
+msgid "No LDAP position has been selected."
+msgstr "尚未選取 LDAP 位置。"
+
+#: umc/js/udm.js:647
+msgid "No Nagios objects could be found."
+msgstr "找不到任何 Nagios 物件。"
+
+#: umc/js/udm.js:648
+msgid "No alerts could be found."
+msgstr "找不到任何警報。"
+
+#: umc/js/udm.js:640
+msgid "No computers could be found."
+msgstr "找不到任何電腦。"
+
+#: umc/js/udm.js:639
+msgid "No groups could be found."
+msgstr "找不到任何群組。"
+
+#: umc/js/udm.js:646
+msgid "No mail objects could be found."
+msgstr "找不到任何郵件物件。"
+
+#: umc/js/udm.js:641
+msgid "No network objects could be found."
+msgstr "找不到任何網路物件。"
+
+#: umc/js/udm.js:649
+msgid "No policies could be found."
+msgstr "找不到任何原則。"
+
+#: umc/js/udm.js:650
+msgid "No portal object could be found."
+msgstr "找不到任何入口物件。"
+
+#: umc/js/udm.js:645
+msgid "No printers could be found."
+msgstr "找不到任何印表機。"
+
+#: umc/js/udm/ReferencingObjects.js:43
+msgid "No referencing objects"
+msgstr "沒有參照中的物件"
+
+#: umc/js/udm.js:644
+msgid "No shares could be found."
+msgstr "找不到任何共用。"
+
+#: umc/js/udm.js:638
+msgid "No users could be found."
+msgstr "找不到任何使用者。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:419
+msgid "None"
+msgstr "無"
+
+#: umc/js/udm.js:1564
+msgid "Note that moving a container can take some time."
+msgstr "請注意，移動容器可能需要一些時間。"
+
+#: umc/js/udm/MultiObjectSelect.js:84
+msgid "Object property"
+msgstr "物件屬性"
+
+#: umc/js/udm.js:1760
+msgid "Object type"
+msgstr "物件類型"
+
+#: umc/js/udm.js:662
+#, javascript-format
+msgid "One DHCP object of %d selected."
+msgid_plural "%d DHCP objects of %d selected."
+msgstr[0] "已選取 %d 個DHCP 物件，共 %d 個。"
+msgstr[1] "已選取 %d 個DHCP 物件，共 %d 個。"
+
+#: umc/js/udm.js:661
+#, javascript-format
+msgid "One DNS object of %d selected."
+msgid_plural "%d DNS objects of %d selected."
+msgstr[0] "已選取 %d 個DNS 物件，共 %d 個。"
+msgstr[1] "已選取 %d 個DNS 物件，共 %d 個。"
+
+#: umc/js/udm.js:672
+#, javascript-format
+msgid "One LDAP object of %d selected."
+msgid_plural "%d LDAP objects of %d selected."
+msgstr[0] "已選取 %d 個LDAP 物件，共 %d 個。"
+msgstr[1] "已選取 %d 個LDAP 物件，共 %d 個。"
+
+#: umc/js/udm.js:666
+#, javascript-format
+msgid "One Nagios object of %d selected."
+msgid_plural "%d Nagios objects of %d selected."
+msgstr[0] "已選取 %d 個Nagios 物件，共 %d 個。"
+msgstr[1] "已選取 %d 個Nagios 物件，共 %d 個。"
+
+#: umc/js/udm.js:667
+#, javascript-format
+msgid "One alert of %d selected."
+msgid_plural "%d alerts of %d selected."
+msgstr[0] "已選取 %d 個警報，共 %d 個。"
+msgstr[1] "已選取 %d 個警報，共 %d 個。"
+
+#: umc/js/udm.js:659
+#, javascript-format
+msgid "One computer of %d selected."
+msgid_plural "%d computers of %d selected."
+msgstr[0] "已選取 %d 個電腦，共 %d 個。"
+msgstr[1] "已選取 %d 個電腦，共 %d 個。"
+
+#: umc/js/udm.js:658
+#, javascript-format
+msgid "One group of %d selected."
+msgid_plural "%d groups of %d selected."
+msgstr[0] "已選取 %d 個群組，共 %d 個。"
+msgstr[1] "已選取 %d 個群組，共 %d 個。"
+
+#: umc/js/udm.js:665
+#, javascript-format
+msgid "One mail object of %d selected."
+msgid_plural "%d mail objects of %d selected."
+msgstr[0] "已選取 %d 個郵件物件，共 %d 個。"
+msgstr[1] "已選取 %d 個郵件物件，共 %d 個。"
+
+#: umc/js/udm.js:660
+#, javascript-format
+msgid "One network object of %d selected."
+msgid_plural "%d network objects of %d selected."
+msgstr[0] "已選取 %d 個網路物件，共 %d 個。"
+msgstr[1] "已選取 %d 個網路物件，共 %d 個。"
+
+#: umc/js/udm.js:668
+#, javascript-format
+msgid "One policy of %d selected."
+msgid_plural "%d policies of %d selected."
+msgstr[0] "已選取 %d 個原則，共 %d 個。"
+msgstr[1] "已選取 %d 個原則，共 %d 個。"
+
+#: umc/js/udm.js:669
+#, javascript-format
+msgid "One portal object of %d selected."
+msgid_plural "%d portal objects of %d selected."
+msgstr[0] "已選取 %d 個入口物件，共 %d 個。"
+msgstr[1] "已選取 %d 個入口物件，共 %d 個。"
+
+#: umc/js/udm.js:664
+#, javascript-format
+msgid "One printer of %d selected."
+msgid_plural "%d printers of %d selected."
+msgstr[0] "已選取 %d 個印表機，共 %d 個。"
+msgstr[1] "已選取 %d 個印表機，共 %d 個。"
+
+#: umc/js/udm.js:663
+#, javascript-format
+msgid "One share of %d selected."
+msgid_plural "%d shares of %d selected."
+msgstr[0] "已選取 %d 個共用，共 %d 個。"
+msgstr[1] "已選取 %d 個共用，共 %d 個。"
+
+#: umc/js/udm.js:657
+#, javascript-format
+msgid "One user of %d selected."
+msgid_plural "%d users of %d selected."
+msgstr[0] "已選取 %d 個使用者，共 %d 個。"
+msgstr[1] "已選取 %d 個使用者，共 %d 個。"
+
+#: umc/js/udm.js:732
+msgid "Only objects of the same type can be edited together"
+msgstr "只有相同類型的物件才能一起編輯"
+
+#: umc/js/udm.js:743
+msgid "Open a new tab in order to edit the UDM-object"
+msgstr "開啟新分頁以編輯此 UDM 物件"
+
+#: umc/js/udm/DetailPage.js:929 umc/js/udm/DetailPage.js:951
+msgid "Options"
+msgstr "選項"
+
+#: umc/js/udm/DetailPage.js:930
+msgid "Options describing the basic features of the LDAP object"
+msgstr "描述 LDAP 物件基本功能的選項"
+
+#: umc/js/udm.js:1761
+msgid "Original object type of the removed object."
+msgstr "已移除物件的原始物件類型。"
+
+#: umc/js/udm/OverwriteLabel.js:21
+msgid "Overwrite"
+msgstr "覆寫"
+
+#: umc/js/udm.js:690 umc/js/udm.js:1234
+msgid "Parent container"
+msgstr "上層容器"
+
+#: umc/js/udm.js:1741
+msgid "Path"
+msgstr "路徑"
+
+#: umc/js/udm.js:1742
+msgid "Path of the LDAP object."
+msgstr "LDAP 物件的路徑。"
+
+#: umc/js/udm.js:1902
+#, javascript-format
+msgid "Please confirm the removal of the DHCP object:"
+msgid_plural "Please confirm the removal of the %d selected DHCP objects"
+msgstr[0] "請確認要移除所選的 %d 個DHCP 物件"
+msgstr[1] "請確認要移除所選的 %d 個DHCP 物件"
+
+#: umc/js/udm.js:1900
+#, javascript-format
+msgid "Please confirm the removal of the DNS object:"
+msgid_plural "Please confirm the removal of the %d selected DNS objects"
+msgstr[0] "請確認要移除所選的 %d 個DNS 物件"
+msgstr[1] "請確認要移除所選的 %d 個DNS 物件"
+
+#: umc/js/udm.js:1920
+#, javascript-format
+msgid "Please confirm the removal of the LDAP object:"
+msgid_plural "Please confirm the removal of the %d selected LDAP objects"
+msgstr[0] "請確認要移除所選的 %d 個LDAP 物件"
+msgstr[1] "請確認要移除所選的 %d 個LDAP 物件"
+
+#: umc/js/udm.js:1910
+#, javascript-format
+msgid "Please confirm the removal of the Nagios object:"
+msgid_plural "Please confirm the removal of the %d selected Nagios objects"
+msgstr[0] "請確認要移除所選的 %d 個Nagios 物件"
+msgstr[1] "請確認要移除所選的 %d 個Nagios 物件"
+
+#: umc/js/udm.js:1912
+#, javascript-format
+msgid "Please confirm the removal of the alert:"
+msgid_plural "Please confirm the removal of the %d selected alerts"
+msgstr[0] "請確認要移除所選的 %d 個警報"
+msgstr[1] "請確認要移除所選的 %d 個警報"
+
+#: umc/js/udm.js:1896
+#, javascript-format
+msgid "Please confirm the removal of the computer:"
+msgid_plural "Please confirm the removal of the %d selected computers"
+msgstr[0] "請確認要移除所選的 %d 個電腦"
+msgstr[1] "請確認要移除所選的 %d 個電腦"
+
+#: umc/js/udm.js:1894
+#, javascript-format
+msgid "Please confirm the removal of the group:"
+msgid_plural "Please confirm the removal of the %d selected groups"
+msgstr[0] "請確認要移除所選的 %d 個群組"
+msgstr[1] "請確認要移除所選的 %d 個群組"
+
+#: umc/js/udm.js:1908
+#, javascript-format
+msgid "Please confirm the removal of the mail object:"
+msgid_plural "Please confirm the removal of the %d selected mail objects"
+msgstr[0] "請確認要移除所選的 %d 個郵件物件"
+msgstr[1] "請確認要移除所選的 %d 個郵件物件"
+
+#: umc/js/udm.js:1898
+#, javascript-format
+msgid "Please confirm the removal of the network object:"
+msgid_plural "Please confirm the removal of the %d selected network objects"
+msgstr[0] "請確認要移除所選的 %d 個網路物件"
+msgstr[1] "請確認要移除所選的 %d 個網路物件"
+
+#: umc/js/udm.js:1914
+#, javascript-format
+msgid "Please confirm the removal of the policy:"
+msgid_plural "Please confirm the removal of the %d selected ploicies"
+msgstr[0] "請確認要移除所選的 %d 個原則"
+msgstr[1] "請確認要移除所選的 %d 個原則"
+
+#: umc/js/udm.js:1916
+#, javascript-format
+msgid "Please confirm the removal of the portal object:"
+msgid_plural "Please confirm the removal of the %d selected portal objects"
+msgstr[0] "請確認要移除所選的 %d 個入口物件"
+msgstr[1] "請確認要移除所選的 %d 個入口物件"
+
+#: umc/js/udm.js:1906
+#, javascript-format
+msgid "Please confirm the removal of the printer:"
+msgid_plural "Please confirm the removal of the %d selected printers"
+msgstr[0] "請確認要移除所選的 %d 個印表機"
+msgstr[1] "請確認要移除所選的 %d 個印表機"
+
+#: umc/js/udm.js:1904
+#, javascript-format
+msgid "Please confirm the removal of the share:"
+msgid_plural "Please confirm the removal of the %d selected shares"
+msgstr[0] "請確認要移除所選的 %d 個共用"
+msgstr[1] "請確認要移除所選的 %d 個共用"
+
+#: umc/js/udm.js:1892
+#, javascript-format
+msgid "Please confirm the removal of the user:"
+msgid_plural "Please confirm the removal of the %d selected users"
+msgstr[0] "請確認要移除所選的 %d 個使用者"
+msgstr[1] "請確認要移除所選的 %d 個使用者"
+
+#: umc/js/udm.js:1833
+#, javascript-format
+msgid "Please confirm the restore of the deleted object:"
+msgid_plural "Please confirm the restore of the %d selected deleted objects:"
+msgstr[0] "請確認要還原所選的 %d 個已刪除物件:"
+msgstr[1] "請確認要還原所選的 %d 個已刪除物件:"
+
+#: umc/js/udm.js:2058
+msgid "Please select a container in the LDAP directory tree. The new object will be placed at this location."
+msgstr "請在 LDAP 目錄樹中選取一個容器。新物件將放置於此位置。"
+
+#: umc/js/udm.js:1480
+#, javascript-format
+msgid "Please select an LDAP destination for the DHCP object:"
+msgid_plural "Please select an LDAP destination for the %d selected DHCP objects:"
+msgstr[0] "請為所選的 %d 個DHCP 物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個DHCP 物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1478
+#, javascript-format
+msgid "Please select an LDAP destination for the DNS object:"
+msgid_plural "Please select an LDAP destination for the %d selected DNS objects:"
+msgstr[0] "請為所選的 %d 個DNS 物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個DNS 物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1498
+#, javascript-format
+msgid "Please select an LDAP destination for the LDAP object:"
+msgid_plural "Please select an LDAP destination for the %d selected LDAP objects:"
+msgstr[0] "請為所選的 %d 個LDAP 物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個LDAP 物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1488
+#, javascript-format
+msgid "Please select an LDAP destination for the Nagios object:"
+msgid_plural "Please select an LDAP destination for the %d selected Nagios objects:"
+msgstr[0] "請為所選的 %d 個Nagios 物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個Nagios 物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1490
+#, javascript-format
+msgid "Please select an LDAP destination for the alert:"
+msgid_plural "Please select an LDAP destination for the %d selected alerts:"
+msgstr[0] "請為所選的 %d 個警報選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個警報選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1474
+#, javascript-format
+msgid "Please select an LDAP destination for the computer:"
+msgid_plural "Please select an LDAP destination for the %d selected computers:"
+msgstr[0] "請為所選的 %d 個電腦選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個電腦選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1472
+#, javascript-format
+msgid "Please select an LDAP destination for the group:"
+msgid_plural "Please select an LDAP destination for the %d selected groups:"
+msgstr[0] "請為所選的 %d 個群組選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個群組選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1486
+#, javascript-format
+msgid "Please select an LDAP destination for the mail object:"
+msgid_plural "Please select an LDAP destination for the %d selected mail objects:"
+msgstr[0] "請為所選的 %d 個郵件物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個郵件物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1476
+#, javascript-format
+msgid "Please select an LDAP destination for the network object:"
+msgid_plural "Please select an LDAP destination for the %d selected network objects:"
+msgstr[0] "請為所選的 %d 個網路物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個網路物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1492
+#, javascript-format
+msgid "Please select an LDAP destination for the policy:"
+msgid_plural "Please select an LDAP destination for the %d selected policies:"
+msgstr[0] "請為所選的 %d 個原則選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個原則選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1494
+#, javascript-format
+msgid "Please select an LDAP destination for the portal object:"
+msgid_plural "Please select an LDAP destination for the %d selected portal objects:"
+msgstr[0] "請為所選的 %d 個入口物件選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個入口物件選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1484
+#, javascript-format
+msgid "Please select an LDAP destination for the printer:"
+msgid_plural "Please select an LDAP destination for the %d selected printers:"
+msgstr[0] "請為所選的 %d 個印表機選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個印表機選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1482
+#, javascript-format
+msgid "Please select an LDAP destination for the share:"
+msgid_plural "Please select an LDAP destination for the %d selected shares:"
+msgstr[0] "請為所選的 %d 個共用選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個共用選取 LDAP 目的地:"
+
+#: umc/js/udm.js:1470
+#, javascript-format
+msgid "Please select an LDAP destination for the user:"
+msgid_plural "Please select an LDAP destination for the %d selected users:"
+msgstr[0] "請為所選的 %d 個使用者選取 LDAP 目的地:"
+msgstr[1] "請為所選的 %d 個使用者選取 LDAP 目的地:"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:275
+#, javascript-format
+msgid "Please use the Active Directory administration utilities to create new domain %s."
+msgstr "請使用 Active Directory 管理工具建立新的網域 %s。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:269
+msgid "Please use the Active Directory administration utilities to create new domain LDAP objects of this type."
+msgstr "請使用 Active Directory 管理工具建立此類型的新網域 LDAP 物件。"
+
+#: umc/js/udm.js:1224 umc/js/udm/DetailPage.js:446
+msgid "Policies"
+msgstr "原則"
+
+#: umc/js/udm.js:422
+msgid "Policies managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的原則供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:302
+msgid "Policy template"
+msgstr "原則範本"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:276
+#, javascript-format
+msgid "Press <i>Next</i> to create %s only available on UCS systems."
+msgstr "按 <i>下一步</i> 以建立僅在 UCS 系統上提供的 %s。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:270
+msgid "Press <i>Next</i> to create an LDAP object of this type only available on UCS systems."
+msgstr "按 <i>下一步</i> 以建立僅在 UCS 系統上提供的此類型 LDAP 物件。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:298
+msgid "Printer template"
+msgstr "印表機範本"
+
+#: umc/js/udm.js:1220
+msgid "Printers"
+msgstr "印表機"
+
+#: umc/js/udm.js:418
+msgid "Printers managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的印表機供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/DetailPage.js:448
+msgid "Properties inherited from policies"
+msgstr "從原則繼承的屬性"
+
+#: umc/js/udm.js:1051
+msgid "Property"
+msgstr "屬性"
+
+#: umc/js/udm.js:1074 umc/js/udm/MultiObjectSelect.js:93 umc/js/udm/MultiObjectSelect.js:108
+msgid "Property value"
+msgstr "屬性值"
+
+#: umc/js/udm.js:1298
+msgid "Reload"
+msgstr "重新載入"
+
+#: umc/js/udm/CertificateUploader.js:22
+msgid "Remove certificate"
+msgstr "移除憑證"
+
+#: umc/js/udm/CreateReportDialog.js:101
+#, javascript-format
+msgid "Report for DHCP object"
+msgid_plural "Report for %d DHCP objects"
+msgstr[0] "%d 個DHCP 物件的報表"
+msgstr[1] "%d 個DHCP 物件的報表"
+
+#: umc/js/udm/CreateReportDialog.js:100
+#, javascript-format
+msgid "Report for DNS object"
+msgid_plural "Report for %d DNS objects"
+msgstr[0] "%d 個DNS 物件的報表"
+msgstr[1] "%d 個DNS 物件的報表"
+
+#: umc/js/udm/CreateReportDialog.js:109
+#, javascript-format
+msgid "Report for LDAP object"
+msgid_plural "Report for %d LDAP objects"
+msgstr[0] "%d 個LDAP 物件的報表"
+msgstr[1] "%d 個LDAP 物件的報表"
+
+#: umc/js/udm/CreateReportDialog.js:105
+#, javascript-format
+msgid "Report for Nagios object"
+msgid_plural "Report for %d Nagios objects"
+msgstr[0] "%d 個Nagios 物件的報表"
+msgstr[1] "%d 個Nagios 物件的報表"
+
+#: umc/js/udm/CreateReportDialog.js:98
+#, javascript-format
+msgid "Report for computer"
+msgid_plural "Report for %d computers"
+msgstr[0] "%d 個電腦的報表"
+msgstr[1] "%d 個電腦的報表"
+
+#: umc/js/udm/CreateReportDialog.js:97
+#, javascript-format
+msgid "Report for group"
+msgid_plural "Report for %d groups"
+msgstr[0] "%d 個群組的報表"
+msgstr[1] "%d 個群組的報表"
+
+#: umc/js/udm/CreateReportDialog.js:104
+#, javascript-format
+msgid "Report for mail object"
+msgid_plural "Report for %d mail objects"
+msgstr[0] "%d 個郵件物件的報表"
+msgstr[1] "%d 個郵件物件的報表"
+
+#: umc/js/udm/CreateReportDialog.js:99
+#, javascript-format
+msgid "Report for network object"
+msgid_plural "Report for %d network objects"
+msgstr[0] "%d 個網路物件的報表"
+msgstr[1] "%d 個網路物件的報表"
+
+#: umc/js/udm/CreateReportDialog.js:106
+#, javascript-format
+msgid "Report for policy"
+msgid_plural "Report for %d policies"
+msgstr[0] "%d 個原則的報表"
+msgstr[1] "%d 個原則的報表"
+
+#: umc/js/udm/CreateReportDialog.js:103
+#, javascript-format
+msgid "Report for printer"
+msgid_plural "Report for %d printers"
+msgstr[0] "%d 個印表機的報表"
+msgstr[1] "%d 個印表機的報表"
+
+#: umc/js/udm/CreateReportDialog.js:102
+#, javascript-format
+msgid "Report for share"
+msgid_plural "Report for %d shares"
+msgstr[0] "%d 個共用的報表"
+msgstr[1] "%d 個共用的報表"
+
+#: umc/js/udm/CreateReportDialog.js:96
+#, javascript-format
+msgid "Report for user"
+msgid_plural "Report for %d users"
+msgstr[0] "%d 個使用者的報表"
+msgstr[1] "%d 個使用者的報表"
+
+#: umc/js/udm.js:817 umc/js/udm.js:1850
+msgid "Restore"
+msgstr "還原"
+
+#: umc/js/udm.js:818
+msgid "Restore deleted objects from Recycle Bin."
+msgstr "從資源回收筒還原已刪除的物件。"
+
+#: umc/js/udm/DetailPage.js:1388
+msgid "Save"
+msgstr "儲存"
+
+#: umc/js/udm.js:916
+msgid "Search DHCP objects..."
+msgstr "搜尋 DHCP 物件..."
+
+#: umc/js/udm.js:915
+msgid "Search DNS objects..."
+msgstr "搜尋 DNS 物件..."
+
+#: umc/js/udm.js:926
+msgid "Search LDAP objects..."
+msgstr "搜尋 LDAP 物件..."
+
+#: umc/js/udm.js:920
+msgid "Search Nagios objects..."
+msgstr "搜尋 Nagios 物件..."
+
+#: umc/js/udm.js:921
+msgid "Search alerts..."
+msgstr "搜尋警報..."
+
+#: umc/js/udm.js:913
+msgid "Search computers..."
+msgstr "搜尋電腦..."
+
+#: umc/js/udm.js:912
+msgid "Search groups..."
+msgstr "搜尋群組..."
+
+#: umc/js/udm.js:988
+msgid "Search in:"
+msgstr "搜尋範圍:"
+
+#: umc/js/udm.js:919
+msgid "Search mail objects..."
+msgstr "搜尋郵件物件..."
+
+#: umc/js/udm.js:914
+msgid "Search network objects..."
+msgstr "搜尋網路物件..."
+
+#: umc/js/udm.js:922
+msgid "Search policies..."
+msgstr "搜尋原則..."
+
+#: umc/js/udm.js:923
+msgid "Search portal objects..."
+msgstr "搜尋入口物件..."
+
+#: umc/js/udm.js:918
+msgid "Search printers..."
+msgstr "搜尋印表機..."
+
+#: umc/js/udm.js:917
+msgid "Search shares..."
+msgstr "搜尋共用..."
+
+#: umc/js/udm.js:911
+msgid "Search users..."
+msgstr "搜尋使用者..."
+
+#: umc/js/udm/DetailPage.js:601
+msgid "Select policies that should be directly linked to the current LDAP object"
+msgstr "選取應直接連結至目前 LDAP 物件的原則"
+
+#: umc/js/udm/DetailPage.js:600
+msgid "Select policy configuration"
+msgstr "選取原則組態"
+
+#: umc/js/udm/LicenseImportDialog.js:128
+msgid "Server error message:"
+msgstr "伺服器錯誤訊息:"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:297
+msgid "Share template"
+msgstr "共用範本"
+
+#: umc/js/udm.js:1219
+msgid "Shares"
+msgstr "共用"
+
+#: umc/js/udm.js:417
+msgid "Shares managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的共用供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm.js:1433
+msgid "Simplified options"
+msgstr "簡化選項"
+
+#: umc/js/udm.js:969
+msgid "Superordinate"
+msgstr "上層物件"
+
+#: umc/js/udm/NewObjectDialog.js:227
+#, javascript-format
+msgid "The %s has been created."
+msgstr "%s 已建立。"
+
+#: umc/js/udm/DetailPage.js:822
+#, javascript-format
+msgid "The DHCP object \"%s\" is part of the Active Directory domain."
+msgid_plural "The DHCP objects are part of the Active Directory domain."
+msgstr[0] "這些DHCP 物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些DHCP 物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:820
+#, javascript-format
+msgid "The DNS object \"%s\" is part of the Active Directory domain."
+msgid_plural "The DNS objects are part of the Active Directory domain."
+msgstr[0] "這些DNS 物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些DNS 物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:840
+#, javascript-format
+msgid "The LDAP object \"%s\" is part of the Active Directory domain."
+msgid_plural "The LDAP objects are part of the Active Directory domain."
+msgstr[0] "這些LDAP 物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些LDAP 物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:1939
+msgid "The LDAP object could not be saved: %(details)s"
+msgstr "無法儲存 LDAP 物件: %(details)s"
+
+#: umc/js/udm/DetailPage.js:830
+#, javascript-format
+msgid "The Nagios object \"%s\" is part of the Active Directory domain."
+msgid_plural "The Nagios objects are part of the Active Directory domain."
+msgstr[0] "這些Nagios 物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些Nagios 物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:832
+#, javascript-format
+msgid "The alert \"%s\" is part of the Active Directory domain."
+msgid_plural "The alerts are part of the Active Directory domain."
+msgstr[0] "這些警報屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些警報屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:1947
+msgid "The changes have been successfully applied."
+msgstr "變更已成功套用。"
+
+#: umc/js/udm/DetailPage.js:816
+#, javascript-format
+msgid "The computer \"%s\" is part of the Active Directory domain."
+msgid_plural "The computers are part of the Active Directory domain."
+msgstr[0] "這些電腦屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些電腦屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:351
+msgid "The container in which the LDAP object shall be created."
+msgstr "要建立 LDAP 物件的容器。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:380
+msgid "The exact object type of the new LDAP object."
+msgstr "新 LDAP 物件的確切物件類型。"
+
+#: umc/js/udm/DetailPage.js:1928
+msgid "The following LDAP objects could not be saved:"
+msgstr "下列 LDAP 物件無法儲存:"
+
+#: umc/js/udm/DetailPage.js:434
+msgid "The following empty properties were set to default values in the form. These values will be applied when saving."
+msgstr "下列空白屬性已在表單中設為預設值。這些值將在儲存時套用。"
+
+#: umc/js/udm.js:1984
+msgid "The following object(s) could not be deleted:"
+msgstr "下列物件無法刪除:"
+
+#: umc/js/udm.js:1872
+msgid "The following object(s) could not be restored:"
+msgstr "下列物件無法還原:"
+
+#: umc/js/udm/DetailPage.js:1996
+msgid "The following properties could not be validated:"
+msgstr "下列屬性無法驗證:"
+
+#: umc/js/udm/DetailPage.js:1838
+msgid "The following properties need to be specified or are invalid:"
+msgstr "下列屬性必須指定，或其值無效:"
+
+#: umc/js/udm/DetailPage.js:814
+#, javascript-format
+msgid "The group \"%s\" is part of the Active Directory domain."
+msgid_plural "The groups are part of the Active Directory domain."
+msgstr[0] "這些群組屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些群組屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/LicenseImportDialog.js:126
+msgid "The import of the license failed. Check the integrity of the original file given to you. If this error persists, please contact Univention or your Univention partner."
+msgstr "授權匯入失敗。請檢查您所取得原始檔案的完整性。若此錯誤持續發生，請聯絡 Univention 或您的 Univention 合作夥伴。"
+
+#: umc/js/udm/startup.js:29
+msgid "The license has already been activated."
+msgstr "此授權已啟用。"
+
+#: umc/js/udm/LicenseImportDialog.js:122
+msgid "The license has been imported successfully."
+msgstr "授權已成功匯入。"
+
+#: umc/js/udm/DetailPage.js:828
+#, javascript-format
+msgid "The mail object \"%s\" is part of the Active Directory domain."
+msgid_plural "The mail objects are part of the Active Directory domain."
+msgstr[0] "這些郵件物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些郵件物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:818
+#, javascript-format
+msgid "The network object \"%s\" is part of the Active Directory domain."
+msgid_plural "The network objects are part of the Active Directory domain."
+msgstr[0] "這些網路物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些網路物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:834
+#, javascript-format
+msgid "The policy \"%s\" is part of the Active Directory domain."
+msgid_plural "The policies are part of the Active Directory domain."
+msgstr[0] "這些原則屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些原則屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:836
+#, javascript-format
+msgid "The portal object \"%s\" is part of the Active Directory domain."
+msgid_plural "The portal objects are part of the Active Directory domain."
+msgstr[0] "這些入口物件屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些入口物件屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:826
+#, javascript-format
+msgid "The printer \"%s\" is part of the Active Directory domain."
+msgid_plural "The printers are part of the Active Directory domain."
+msgstr[0] "這些印表機屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些印表機屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/CreateReportDialog.js:63
+msgid "The report template that should be used for the report."
+msgstr "報表所要使用的報表範本。"
+
+#: umc/js/udm/DetailPage.js:824
+#, javascript-format
+msgid "The share \"%s\" is part of the Active Directory domain."
+msgid_plural "The shares are part of the Active Directory domain."
+msgstr[0] "這些共用屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些共用屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/LicenseImportDialog.js:84
+msgid "The text field is empty. Please copy all lines of the license file into the text field and retry to import the data."
+msgstr "文字欄位是空的。請將授權檔的所有行複製到文字欄位後，重新嘗試匯入資料。"
+
+#: umc/js/udm/DetailPage.js:812
+#, javascript-format
+msgid "The user \"%s\" is part of the Active Directory domain."
+msgid_plural "The users are part of the Active Directory domain."
+msgstr[0] "這些使用者屬於 Active Directory 網域的一部分。"
+msgstr[1] "這些使用者屬於 Active Directory 網域的一部分。"
+
+#: umc/js/udm/DetailPage.js:2173
+msgid "There are unsaved changes. Are you sure to cancel?"
+msgstr "有未儲存的變更。您確定要取消嗎？"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:253
+msgid "This UCS system is part of an Active Directory domain"
+msgstr "此 UCS 系統屬於 Active Directory 網域的一部分"
+
+#: umc/js/udm/CreateReportDialog.js:144
+msgid "This may take a while."
+msgstr "這可能需要一些時間。"
+
+#: umc/js/udm.js:1164
+msgid "Toggle visual presentation"
+msgstr "切換視覺呈現"
+
+#: umc/js/udm.js:1010 umc/js/udm.js:1737 umc/js/udm/wizards/FirstPageWizard.js:379
+msgid "Type"
+msgstr "類型"
+
+#: umc/js/udm/LicenseDialog.js:104
+msgid "UCS License"
+msgstr "UCS 授權"
+
+#: umc/js/udm/LicenseImportDialog.js:38
+msgid "UCS license import"
+msgstr "UCS 授權匯入"
+
+#: umc/js/udm/LicenseImportDialog.js:119
+msgid "Updating session data..."
+msgstr "正在更新工作階段資料..."
+
+#: umc/js/udm/LicenseDialog.js:78
+msgid "Updating the license information has failed"
+msgstr "更新授權資訊失敗"
+
+#: umc/js/udm/CertificateUploader.js:21
+msgid "Upload certificate"
+msgstr "上傳憑證"
+
+#: umc/js/udm/DetailPage.js:667
+msgid "Upload profile image"
+msgstr "上傳個人檔案圖片"
+
+#: umc/js/udm/LicenseDialog.js:116
+msgid "User accounts"
+msgstr "使用者帳號"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:291
+msgid "User template"
+msgstr "使用者範本"
+
+#: umc/js/udm.js:1213
+msgid "Users"
+msgstr "使用者"
+
+#: umc/js/udm.js:411
+msgid "Users managed here are used by the application \"%(name)s\" which is currently not installed."
+msgstr "此處管理的使用者供應用程式 \"%(name)s\" 使用，但該應用程式目前未安裝。"
+
+#: umc/js/udm/LicenseDialog.js:120
+msgid "Valid product types"
+msgstr "有效的產品類型"
+
+#: umc/js/udm.js:1746
+msgid "Value"
+msgstr "值"
+
+#: umc/js/udm.js:1756
+msgid "Value of the LDAP object."
+msgstr "LDAP 物件的值。"
+
+#: umc/js/udm.js:807
+msgid "View"
+msgstr "檢視"
+
+#: umc/js/udm.js:609
+msgid "View the deleted object."
+msgstr "檢視已刪除的物件。"
+
+#: umc/js/udm/DetailPage.js:1650
+msgid "You are currently editing a policy. Changing its properties affects all referenced objects and may affect your system globally."
+msgstr "您目前正在編輯一個原則。變更其屬性會影響所有參照的物件，並可能對您的系統造成全域影響。"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:456
+msgid "computer"
+msgstr "電腦"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:213
+msgid "computers"
+msgstr "電腦"
+
+#: umc/js/udm/DetailPage.js:1521
+msgid "edit"
+msgstr "編輯"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:455
+msgid "group"
+msgstr "群組"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:212
+msgid "groups"
+msgstr "群組"
+
+#: umc/js/udm/DetailPage.js:1434
+#, javascript-format
+msgid "https://docs.software-univention.de/manual-%s.html#central:extendedattrs"
+msgstr ""
+
+#: umc/js/udm/ComboBox.js:314
+msgid "in {size} objects"
+msgstr "在 {size} 個物件中"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:462
+msgid "mail object"
+msgstr "郵件物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:219
+msgid "mail objects"
+msgstr "郵件物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:457
+msgid "network object"
+msgstr "網路物件"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:214
+msgid "network objects"
+msgstr "網路物件"
+
+#: umc/js/udm/DetailPage.js:1529
+msgid "not defined"
+msgstr "未定義"
+
+#: umc/js/udm/ComboBox.js:312
+msgid "number exceeded configured limit"
+msgstr "數量超過設定的上限"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:222
+msgid "policies"
+msgstr "原則"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:465
+msgid "policy"
+msgstr "原則"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:461
+msgid "printer"
+msgstr "印表機"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:218
+msgid "printers"
+msgstr "印表機"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:460
+msgid "share"
+msgstr "共用"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:217
+msgid "shares"
+msgstr "共用"
+
+#: umc/js/udm/LicenseDialog.js:140
+msgid "unlimited"
+msgstr "無限制"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:454
+msgid "user"
+msgstr "使用者"
+
+#: umc/js/udm/wizards/FirstPageWizard.js:211
+msgid "users"
+msgstr "使用者"

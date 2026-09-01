@@ -1,0 +1,193 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-frontend\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: www/management/widgets/LicenseImportPage.js:24
+msgid "<p><b>You have got mail!</b></p><p>A license file should have been sent to your email address. Upload the license file from the email to activate your UCS instance.</p>"
+msgstr "<p><b>您收到一封郵件！</b></p><p>授權檔應已寄送至您的電子郵件地址。請從郵件上傳該授權檔，以啟用您的 UCS 執行個體。</p>"
+
+#: www/management/widgets/HelpPage.js:20
+msgid "<p>Detailed usage information on Univention Management Console can be found in the UCS manual. The manual as well as further important information are available via the following links:</p>"
+msgstr "<p>關於 Univention Management Console 的詳細使用說明，請參閱 UCS 手冊。您可以透過下列連結取得手冊及其他重要資訊:</p>"
+
+#: www/management/widgets/ActivationPage.js:41
+msgid "<p>Details about the activation of a UCS license can be found in the <a href=\"https://docs.software-univention.de/manual-%(version)s.html#central:license\" target=\"_blank\">UCS manual</a>.</p>"
+msgstr "<p>關於 UCS 授權啟用的詳細說明，請參閱 <a href=\"https://docs.software-univention.de/manual-%(version)s.html#central:license\" target=\"_blank\">UCS 手冊</a>。</p>"
+
+#: www/management/widgets/ActivationPage.js:37
+msgid "<p>Leave the field empty to perform the activation at a later point in time via the user menu in top right corner.</p>"
+msgstr "<p>將此欄位留空，即可稍後透過右上角的使用者選單進行啟用。</p>"
+
+#: www/management/widgets/FeedbackPage.js:23
+msgid "<p>On UCS evaluation systems, anonymous usage statistics are created by default and sent to Univention. This allows to continuously adapt UCS to suit the practical needs of its users.</p><p>The information consists of UMC usage statistics and a one-time statistic on the hardware configuration. Details about the usage statistics and about its deactivation can be found in the <a href=\"https://docs.software-univention.de/manual-%(version)s.html#central-management-umc:piwik\" target=\"_blank\">UCS manual</a>.</p><p>Usage statistics are automatically deactivated when importing a commercial license.</p>"
+msgstr "<p>在 UCS 評估系統上，預設會建立匿名使用統計並傳送給 Univention。這讓 UCS 能持續調整，以符合使用者的實際需求。</p><p>這些資訊包含 UMC 使用統計，以及一次性的硬體組態統計。關於使用統計及如何停用的詳細說明，請參閱 <a href=\"https://docs.software-univention.de/manual-%(version)s.html#central-management-umc:piwik\" target=\"_blank\">UCS 手冊</a>。</p><p>匯入商業授權時，使用統計會自動停用。</p>"
+
+#: www/management/widgets/FinishedActivationPage.js:20
+msgid "<p>The license has been updated successfully.</p><p>You can now continue to use UMC, all applications in the Univention App Center are now available for installation on this system.</p>"
+msgstr "<p>授權已成功更新。</p><p>您現在可以繼續使用 UMC,Univention App Center 中的所有應用程式現在都可以安裝到此系統上。</p>"
+
+#: www/management/widgets/ActivationPage.js:23
+msgid "<p>You may now enter a valid e-mail address in order to activate the UCS system to use the App Center. In the next step you can upload the license file that has been sent to your email address.</p>"
+msgstr "<p>您現在可以輸入有效的電子郵件地址，以啟用 UCS 系統來使用 App Center。下一步您可以上傳已寄送至您電子郵件地址的授權檔。</p>"
+
+#: www/management/widgets/HelpPage.js:24
+msgid "<ul><li><a href=\"https://docs.software-univention.de/\" target=\"_blank\">Online documentation</a></li><li><a href=\"https://www.univention.com/products/support/community-support/\" target=\"_blank\">Community and support</a></li></ul>"
+msgstr "<ul><li><a href=\"https://docs.software-univention.de/\" target=\"_blank\">線上說明文件</a></li><li><a href=\"https://www.univention.com/products/support/community-support/\" target=\"_blank\">社群與技術支援</a></li></ul>"
+
+#: www/management/main.js:672
+msgid "About UMC"
+msgstr "關於 UMC"
+
+#: www/management/widgets/ActivationPage.js:16 www/management/widgets/ActivationDialog.js:32
+msgid "Activation of Univention Corporate Server"
+msgstr "啟用 Univention Corporate Server"
+
+#: www/management/main.js:1345
+msgid "Add to favorites"
+msgstr "加入我的最愛"
+
+#: www/management/main.js:698
+msgid "Close"
+msgstr "關閉"
+
+#: www/management/main.js:1119
+#, javascript-format
+msgid "Could not load module \"%s\"."
+msgstr "無法載入模組 \"%s\"。"
+
+#: www/management/widgets/AboutPage.js:35
+msgid "Date of expiry of the SSL certificate for this system"
+msgstr "此系統 SSL 憑證的到期日"
+
+#: www/management/widgets/AboutPage.js:32
+msgid "Date of expiry of the SSL root certificate"
+msgstr "SSL 根憑證的到期日"
+
+#: www/management/main.js:665
+msgid "Documentation and Support"
+msgstr "說明文件與技術支援"
+
+#: www/management/widgets/ActivationPage.js:27
+msgid "E-mail address"
+msgstr "電子郵件地址"
+
+#: www/management/widgets/FeedbackPage.js:30
+msgid "Enable one-time statistic on hardware configuration."
+msgstr "啟用一次性的硬體組態統計。"
+
+#: www/management/widgets/FeedbackPage.js:16
+msgid "Feedback via usage statistics"
+msgstr "透過使用統計提供意見回饋"
+
+#: www/management/widgets/HelpPage.js:13
+msgid "Further Information"
+msgstr "更多資訊"
+
+#: www/management/widgets/LicenseImportPage.js:33 www/management/widgets/ActivationDialog.js:115
+msgid "Importing license data..."
+msgstr "正在匯入授權資料..."
+
+#: www/management/widgets/LicenseImportPage.js:17
+msgid "License import"
+msgstr "授權匯入"
+
+#: www/management/widgets/ActivationPage.js:29
+msgid "No valid e-mail address."
+msgstr "不是有效的電子郵件地址。"
+
+#: www/management/main.js:1335
+msgid "Open module"
+msgstr "開啟模組"
+
+#: www/management/main.js:1345
+msgid "Remove from favorites"
+msgstr "從我的最愛移除"
+
+#: www/management/main.js:410
+msgid "SSL host certificate"
+msgstr "SSL 主機憑證"
+
+#: www/management/main.js:407
+msgid "SSL root certificate"
+msgstr "SSL 根憑證"
+
+#: www/management/main.js:604
+msgid "Search"
+msgstr "搜尋"
+
+#: www/management/main.js:1481
+#, javascript-format
+msgid "Search query ›%s‹"
+msgstr "搜尋查詢 ›%s‹"
+
+#: www/management/widgets/ActivationDialog.js:109
+msgid "Send license"
+msgstr "傳送授權"
+
+#: www/management/widgets/ActivationDialog.js:77
+msgid "Sending activation email..."
+msgstr "正在傳送啟用郵件..."
+
+#: www/management/widgets/AboutPage.js:23
+msgid "Server"
+msgstr "伺服器"
+
+#: www/management/widgets/ActivationDialog.js:126
+msgid "Server error message:"
+msgstr "伺服器錯誤訊息:"
+
+#: www/management/main.js:415
+msgid "The %(certificate)s will expire in %(days)d days and should be renewed!"
+msgstr "%(certificate)s 將在 %(days)d 天後到期，應予以更新！"
+
+#: www/management/widgets/ActivationDialog.js:164
+msgid "The activation of UCS failed. Please re-try to perform the activation again via the user menu in the top right."
+msgstr "UCS 啟用失敗。請透過右上角的使用者選單重新嘗試啟用。"
+
+#: www/management/widgets/ActivationDialog.js:124
+msgid "The import of the license failed. Check the integrity of the original file given to you."
+msgstr "授權匯入失敗。請檢查您所取得原始檔案的完整性。"
+
+#: www/management/main.js:1183
+#, javascript-format
+msgid "There is no module available for the authenticated user %s."
+msgstr "沒有可供已認證使用者 %s 使用的模組。"
+
+#: www/management/widgets/AboutPage.js:26
+msgid "UCS Version"
+msgstr "UCS 版本"
+
+#: www/management/widgets/AboutPage.js:29
+msgid "UMC Version"
+msgstr "UMC 版本"
+
+#: www/management/widgets/AboutPage.js:20
+msgid "Univention Management Console"
+msgstr ""
+
+#: www/management/widgets/LicenseImportPage.js:38
+msgid "Updating session data..."
+msgstr "正在更新工作階段資料..."
+
+#: www/management/widgets/LicenseImportPage.js:28
+msgid "Upload license file..."
+msgstr "上傳授權檔..."
+
+#: www/management/main.js:685
+msgid "Usage statistics"
+msgstr "使用統計"
+
+#: www/management/widgets/LicenseImportPage.js:54
+msgid "You may as well import the license file at a later point in time via the user menu in the top right."
+msgstr "您也可以稍後透過右上角的使用者選單匯入授權檔。"

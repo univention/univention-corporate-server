@@ -1,0 +1,130 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-appcenter\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: udm/handlers/appcenter/app.py:182
+msgid "About"
+msgstr "關於"
+
+#: udm/handlers/appcenter/app.py:174
+msgid "App Definition"
+msgstr "App 定義"
+
+#: udm/handlers/appcenter/app.py:36
+msgid "App ID"
+msgstr "App ID"
+
+#: udm/handlers/appcenter/app.py:24 udm/handlers/appcenter/app.py:25
+msgid "App Metadata"
+msgstr "App 中繼資料"
+
+#: udm/handlers/appcenter/app.py:23
+msgid "Appcenter: App Metadata"
+msgstr "App Center: App 中繼資料"
+
+#: udm/handlers/appcenter/app.py:109
+msgid "Category"
+msgstr "類別"
+
+#: udm/handlers/appcenter/app.py:125
+msgid "Conflicting Apps"
+msgstr "衝突的 App"
+
+#: udm/handlers/appcenter/app.py:131
+msgid "Conflicting System Packages"
+msgstr "衝突的系統套件"
+
+#: udm/handlers/appcenter/app.py:75
+msgid "Contact"
+msgstr "聯絡方式"
+
+#: udm/handlers/appcenter/app.py:137
+msgid "Default Packages"
+msgstr "預設套件"
+
+#: udm/handlers/appcenter/app.py:143
+msgid "Default Primary Node Packages"
+msgstr "預設主要節點套件"
+
+#: udm/handlers/appcenter/app.py:174 udm/handlers/appcenter/app.py:175
+msgid "General"
+msgstr "一般"
+
+#: udm/handlers/appcenter/app.py:103
+msgid "Icon"
+msgstr "圖示"
+
+#: udm/handlers/appcenter/app.py:159
+msgid "Installable on Server Roles"
+msgstr "可安裝的伺服器角色"
+
+#: udm/handlers/appcenter/app.py:165
+msgid "Installed On Server"
+msgstr "已安裝於伺服器"
+
+#: udm/handlers/appcenter/app.py:64
+msgid "Long description"
+msgstr "詳細說明"
+
+#: udm/handlers/appcenter/app.py:80
+msgid "Maintainer"
+msgstr "維護者"
+
+#: udm/handlers/appcenter/app.py:190
+msgid "Metadata"
+msgstr "中繼資料"
+
+#: udm/handlers/appcenter/app.py:44
+msgid "Name"
+msgstr "名稱"
+
+#: udm/handlers/appcenter/app.py:58
+msgid "Short description"
+msgstr "簡短說明"
+
+#: udm/handlers/appcenter/app.py:154
+msgid "UMC Module Flavor"
+msgstr "UMC 模組變體"
+
+#: udm/handlers/appcenter/app.py:149
+msgid "UMC Module Name"
+msgstr "UMC 模組名稱"
+
+#: udm/handlers/appcenter/app.py:70
+msgid "Vendor"
+msgstr "供應商"
+
+#: udm/handlers/appcenter/app.py:52
+msgid "Version"
+msgstr "版本"
+
+#: udm/handlers/appcenter/app.py:115
+msgid "Web Interface"
+msgstr "Web 介面"
+
+#: udm/handlers/appcenter/app.py:120
+msgid "Web Interface Name"
+msgstr "Web 介面名稱"
+
+#: udm/handlers/appcenter/app.py:85
+msgid "Website"
+msgstr "網站"
+
+#: udm/handlers/appcenter/app.py:97
+msgid "Website Maintainer"
+msgstr "網站維護者"
+
+#: udm/handlers/appcenter/app.py:91
+msgid "Website Vendor"
+msgstr "網站供應商"

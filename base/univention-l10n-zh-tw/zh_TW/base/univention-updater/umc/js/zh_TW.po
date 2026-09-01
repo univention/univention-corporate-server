@@ -1,0 +1,367 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-updater package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-updater\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/updater/UpdatesPage.js:484
+msgid "%(name)s: Version %(old)s can be updated to %(new)s"
+msgstr "%(name)s: 版本 %(old)s 可更新至 %(new)s"
+
+#: umc/js/updater/UpdatesPage.js:252 umc/js/updater/UpdatesPage.js:275
+msgid "... loading data ..."
+msgstr "... 正在載入資料 ..."
+
+#: umc/js/updater/_LogViewer.js:51 umc/js/updater/_LogViewer.js:189 umc/js/updater/_LogViewer.js:215
+msgid "... loading log file ..."
+msgstr "... 正在載入記錄檔 ..."
+
+#: umc/js/updater.js:219
+msgid "1 package to be REMOVED"
+msgstr "將移除 1 個套件"
+
+#: umc/js/updater.js:249
+msgid "1 package to be installed"
+msgstr "將安裝 1 個套件"
+
+#: umc/js/updater.js:234
+msgid "1 package to be updated"
+msgstr "將更新 1 個套件"
+
+#: umc/js/updater.js:309 umc/js/updater.js:442 umc/js/updater/ProgressPage.js:299
+msgid "<b>Leave the system up and running</b> at any moment during the update!"
+msgstr "更新期間請<b>務必讓系統保持開機運作</b>!"
+
+#: umc/js/updater/UpdatesPage.js:577
+msgid "<b>Warning</b>: You are currently using UCS {0}. No more regular security updates will be released for this version!<br>Update the system to a newer UCS version or, alternatively, request an extended maintenance for this version. <a target='_blank' href='https://www.univention.com/contact/'>Feel free to contact us if you want to know more</a>."
+msgstr "<b>警告</b>: 您目前使用的是 UCS {0}。此版本將不再發布常規安全性更新！<br>請將系統更新至較新的 UCS 版本，或為此版本申請延長維護。<a target='_blank' href='https://www.univention.com/contact/'>若想了解更多，歡迎與我們聯絡</a>。"
+
+#: umc/js/updater/UpdatesPage.js:575
+msgid "<b>Warning</b>: You are currently using UCS {0}. No more security updates will be released for this version. Please update the system to a newer UCS version!"
+msgstr "<b>警告</b>: 您目前使用的是 UCS {0}。此版本將不再發布安全性更新。請將系統更新至較新的 UCS 版本！"
+
+#: umc/js/updater/UpdatesPage.js:576
+msgid "<br>Enterprise subscriptions offer extended maintenance for some UCS versions. Detailed information can be found at the <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention Website</a>."
+msgstr "<br>Enterprise 訂閱為部分 UCS 版本提供延長維護。詳細資訊請參閱 <a target='_blank' href='https://www.univention.com/products/prices-and-subscriptions/'>Univention 網站</a>。"
+
+#: umc/js/updater.js:30
+msgid "<p><b>Caution!</b> Currently a release update is performed!</p>"
+msgstr "<p><b>注意！</b> 目前正在執行版本更新！</p>"
+
+#: umc/js/updater.js:30
+msgid "<p>Leave the system up and running until the update is completed!</p>"
+msgstr "<p>請讓系統保持開機運作，直到更新完成！</p>"
+
+#: umc/js/updater.js:38
+#, javascript-format
+msgid "An update for UCS is available. Please visit the %s to install the updates."
+msgstr "UCS 有可用的更新。請前往 %s 安裝更新。"
+
+#: umc/js/updater/UpdatesPage.js:175
+msgid "An update for the app is available which may solve this issue."
+msgstr "此應用程式有可用的更新，或許能解決此問題。"
+
+#: umc/js/updater.js:186
+msgid "An update of the system is being executed."
+msgstr "正在執行系統更新。"
+
+#: umc/js/updater/UpdatesPage.js:356
+msgid "App Center updates"
+msgstr "App Center 更新"
+
+#: umc/js/updater.js:187
+msgid "Are you sure to close the updater log view?"
+msgstr "您確定要關閉更新程式記錄檢視嗎？"
+
+#: umc/js/updater/UpdatesPage.js:52
+msgid "Available system updates"
+msgstr "可用的系統更新"
+
+#: umc/js/updater/ProgressPage.js:51 umc/js/updater/ProgressPage.js:60
+msgid "Back"
+msgstr "返回"
+
+#: umc/js/updater.js:268 umc/js/updater.js:322
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/updater/UpdatesPage.js:304 umc/js/updater/UpdatesPage.js:464
+msgid "Check for package updates"
+msgstr "檢查套件更新"
+
+#: umc/js/updater/ProgressPage.js:85
+msgid "Closing not possible while running a update."
+msgstr "更新執行期間無法關閉。"
+
+#: umc/js/updater/UpdatesPage.js:199
+msgid "Component '%(component)s' is not yet available for newer release versions."
+msgstr "元件 '%(component)s' 尚未提供給較新的版本。"
+
+#: umc/js/updater.js:316
+msgid "Consider <a href=\"https://docs.software-univention.de/\" target=\"_blank\">release notes and changelogs</a> as well as references posted in the <a href=\"https://help.univention.com/\" target=\"_blank\">Univention Help</a>."
+msgstr "請參考<a href=\"https://docs.software-univention.de/\" target=\"_blank\">版本資訊與變更記錄</a>,以及 <a href=\"https://help.univention.com/\" target=\"_blank\">Univention Help</a> 中發布的參考資料。"
+
+#: umc/js/updater.js:313
+#, javascript-format
+msgid "Consider <a href=\"https://docs.software-univention.de/release-notes/%s/en/index.html\" target=\"_blank\">release notes and changelogs</a> as well as references posted in the <a href=\"https://help.univention.com/\" target=\"_blank\">Univention Help</a>."
+msgstr "請參考<a href=\"https://docs.software-univention.de/release-notes/%s/en/index.html\" target=\"_blank\">版本資訊與變更記錄</a>,以及 <a href=\"https://help.univention.com/\" target=\"_blank\">Univention Help</a> 中發布的參考資料。"
+
+#: umc/js/updater.js:319
+msgid "Depending on the system performance, network connection and the installed software the update may take from 30 minutes up to several hours."
+msgstr "視系統效能、網路連線與已安裝的軟體而定，更新可能需要 30 分鐘至數小時。"
+
+#: umc/js/updater/UpdatesPage.js:452
+msgid "Detailed information about the updates."
+msgstr "更新的詳細資訊。"
+
+#: umc/js/updater.js:262
+msgid "Do you really want to perform the update/install/remove of the above packages?"
+msgstr "您確定要對上述套件執行更新/安裝/移除嗎？"
+
+#: umc/js/updater/ProgressPage.js:234
+msgid "Finish updates"
+msgstr "完成更新"
+
+#: umc/js/updater/ProgressPage.js:98
+msgid "For the changes to take effect, it is recommended to perform a restart of the UMC server components."
+msgstr "為使變更生效，建議重新啟動 UMC 伺服器元件。"
+
+#: umc/js/updater/UpdatesPage.js:148
+msgid "Further release updates are available but cannot be installed."
+msgstr "還有其他版本更新可用，但無法安裝。"
+
+#: umc/js/updater/UpdatesPage.js:90 umc/js/updater/ProgressPage.js:91
+msgid "In order to complete the recently executed action, it is required to reboot the system."
+msgstr "為完成最近執行的動作，必須重新啟動系統。"
+
+#: umc/js/updater.js:271
+msgid "Install"
+msgstr "安裝"
+
+#: umc/js/updater/UpdatesPage.js:463
+msgid "Install package updates"
+msgstr "安裝套件更新"
+
+#: umc/js/updater/UpdatesPage.js:292
+msgid "Install release update"
+msgstr "安裝版本更新"
+
+#: umc/js/updater/ProgressPage.js:230
+msgid "Investigate log further"
+msgstr "進一步檢視記錄"
+
+#: umc/js/updater.js:188 umc/js/updater.js:309 umc/js/updater.js:443 umc/js/updater/ProgressPage.js:300
+msgid "It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted."
+msgstr "更新期間由於服務會停止、更新並重新啟動，預期系統在最長數分鐘內可能無法回應 (透過網頁瀏覽器、SSH 等)。"
+
+#: umc/js/updater.js:311
+msgid "It is recommended to <b>test the update</b> in a separate test environment prior to the actual update."
+msgstr "建議在實際更新前，先於獨立的測試環境中<b>測試更新</b>。"
+
+#: umc/js/updater/UpdatesPage.js:53
+msgid "Overview of all updates that affect the system as a whole."
+msgstr "影響整個系統的所有更新總覽。"
+
+#: umc/js/updater/UpdatesPage.js:221 umc/js/updater/UpdatesPage.js:268
+msgid "Package update status not yet checked"
+msgstr "尚未檢查套件更新狀態"
+
+#: umc/js/updater/UpdatesPage.js:351
+msgid "Package updates"
+msgstr "套件更新"
+
+#: umc/js/updater/UpdatesPage.js:513
+msgid "Package updates are available. %(link)s"
+msgstr "有可用的套件更新。%(link)s"
+
+#: umc/js/updater.js:307
+msgid "Please respect the following guidelines for UCS updates:"
+msgstr "進行 UCS 更新時請遵守下列準則:"
+
+#: umc/js/updater/UpdatesPage.js:315
+msgid "Reboot"
+msgstr "重新開機"
+
+#: umc/js/updater/UpdatesPage.js:334
+msgid "Reboot required"
+msgstr "需要重新開機"
+
+#: umc/js/updater.js:30
+msgid "Release update"
+msgstr "版本更新"
+
+#: umc/js/updater/UpdatesPage.js:344
+msgid "Release updates"
+msgstr "版本更新"
+
+#: umc/js/updater.js:264
+msgid "Start Upgrade?"
+msgstr "開始升級？"
+
+#: umc/js/updater/UpdatesPage.js:494
+msgid "The App Center is not available or currently unreachable"
+msgstr "App Center 無法使用或目前無法連線"
+
+#: umc/js/updater.js:343
+msgid "The Univention Updater action could not be started [Error {status}]: {message}"
+msgstr "無法啟動 Univention Updater 動作 [錯誤 {status}]: {message}"
+
+#: umc/js/updater/UpdatesPage.js:201
+msgid "The components '%(components)s' are not yet available for newer release versions."
+msgstr "元件 '%(components)s' 尚未提供給較新的版本。"
+
+#: umc/js/updater/UpdatesPage.js:397
+msgid "The currently installed release version is {ucs_version} errata{erratalevel}."
+msgstr "目前安裝的版本為 {ucs_version} errata{erratalevel}。"
+
+#: umc/js/updater/UpdatesPage.js:399
+msgid "The currently installed release version is {ucs_version}."
+msgstr "目前安裝的版本為 {ucs_version}。"
+
+#: umc/js/updater/UpdatesPage.js:173
+msgid "The currently installed version of the application %(name)s is not available for all newer UCS releases."
+msgstr "應用程式 %(name)s 目前安裝的版本並非在所有較新的 UCS 版本都有提供。"
+
+#: umc/js/updater.js:61
+#, javascript-format
+msgid "The currently used UCS version is out of maintenance. Please visit the %s for more information."
+msgstr "目前使用的 UCS 版本已超出維護期。請前往 %s 了解更多資訊。"
+
+#: umc/js/updater/_LogViewer.js:135
+msgid "The log file exceeded {max} lines by {exceeded}. Please see the full logfile."
+msgstr "記錄檔超過 {max} 行達 {exceeded} 行。請查看完整記錄檔。"
+
+#: umc/js/updater/ProgressPage.js:308
+msgid "The update failed, please examine the log file for the exact cause. Press the \"back\" button to close this view."
+msgstr "更新失敗，請查看記錄檔以了解確切原因。按「返回」按鈕關閉此檢視。"
+
+#: umc/js/updater/ProgressPage.js:304
+msgid "The update has been successfully finished. Press the \"back\" button to close this view."
+msgstr "更新已成功完成。按「返回」按鈕關閉此檢視。"
+
+#: umc/js/updater.js:441 umc/js/updater/ProgressPage.js:298
+msgid "The update is being executed."
+msgstr "正在執行更新。"
+
+#: umc/js/updater.js:310
+msgid "The update should occur in a <b>maintenance window</b> as some services in the domain may not be available during the update."
+msgstr "更新應在<b>維護時段</b>內進行，因為更新期間網域中的部分服務可能無法使用。"
+
+#: umc/js/updater.js:52
+#, javascript-format
+msgid "The update to %s failed. Please visit the %s for more information."
+msgstr "更新至 %s 失敗。請前往 %s 了解更多資訊。"
+
+#: umc/js/updater/UpdatesPage.js:97 umc/js/updater/UpdatesPage.js:563
+#, javascript-format
+msgid "The update to %s failed. The log file /var/log/univention/updater.log may contain more information about this."
+msgstr "更新至 %s 失敗。記錄檔 /var/log/univention/updater.log 可能包含更多相關資訊。"
+
+#: umc/js/updater/UpdatesPage.js:481
+msgid "There are App Center updates available."
+msgstr "有可用的 App Center 更新。"
+
+#: umc/js/updater/UpdatesPage.js:489
+msgid "There are no App Center updates available."
+msgstr "沒有可用的 App Center 更新。"
+
+#: umc/js/updater/UpdatesPage.js:514
+msgid "There are no package updates available."
+msgstr "沒有可用的套件更新。"
+
+#: umc/js/updater/UpdatesPage.js:127 umc/js/updater/UpdatesPage.js:258
+msgid "There are no release updates available."
+msgstr "沒有可用的版本更新。"
+
+#: umc/js/updater/UpdatesPage.js:181
+msgid "This also holds for:"
+msgstr "這也適用於:"
+
+#: umc/js/updater/ProgressPage.js:297
+msgid "UCS is being updated"
+msgstr "正在更新 UCS"
+
+#: umc/js/updater/ProgressPage.js:307
+msgid "UCS update failed"
+msgstr "UCS 更新失敗"
+
+#: umc/js/updater/ProgressPage.js:303
+msgid "UCS update successful"
+msgstr "UCS 更新成功"
+
+#: umc/js/updater/UpdatesPage.js:517
+msgid "Update availability could not be checked."
+msgstr "無法檢查是否有可用的更新。"
+
+#: umc/js/updater/UpdatesPage.js:339
+msgid "Update failed"
+msgstr "更新失敗"
+
+#: umc/js/updater.js:331 umc/js/updater.js:436
+msgid "Update notes"
+msgstr "更新注意事項"
+
+#: umc/js/updater/ProgressPage.js:64
+msgid "Update progress"
+msgstr "更新進度"
+
+#: umc/js/updater/UpdatesPage.js:112
+msgid "Update system up to release"
+msgstr "將系統更新至版本"
+
+#: umc/js/updater.js:154
+msgid "Update to {release}"
+msgstr "更新至 {release}"
+
+#: umc/js/updater/UpdatesPage.js:51
+msgid "Updates"
+msgstr "更新"
+
+#: umc/js/updater/UpdatesPage.js:179
+msgid "Using the %(app_center)s, you may also search for alternative apps or uninstall the application."
+msgstr "透過 %(app_center)s,您也可以搜尋替代的應用程式或解除安裝此應用程式。"
+
+#: umc/js/updater/UpdatesPage.js:323
+msgid "View log file"
+msgstr "檢視記錄檔"
+
+#: umc/js/updater/UpdatesPage.js:177
+msgid "You may wait for the app to be released for the new UCS version."
+msgstr "您可以等待此應用程式針對新 UCS 版本發布。"
+
+#: umc/js/updater.js:48 umc/js/updater/UpdatesPage.js:97 umc/js/updater/UpdatesPage.js:559
+msgid "a new UCS version"
+msgstr "新的 UCS 版本"
+
+#: umc/js/updater/UpdatesPage.js:187
+msgid "no update available yet"
+msgstr "尚無可用的更新"
+
+#: umc/js/updater/UpdatesPage.js:185
+msgid "update available"
+msgstr "有可用的更新"
+
+#: umc/js/updater.js:221
+msgid "{count} packages to be REMOVED"
+msgstr "將移除 {count} 個套件"
+
+#: umc/js/updater.js:251
+msgid "{count} packages to be installed"
+msgstr "將安裝 {count} 個套件"
+
+#: umc/js/updater.js:236
+msgid "{count} packages to be updated"
+msgstr "將更新 {count} 個套件"

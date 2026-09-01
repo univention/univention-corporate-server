@@ -1,0 +1,259 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-join package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-join\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/join/Grid.js:148
+#, javascript-format
+msgid "%d scripts are pending to be run."
+msgstr "有 %d 個指令稿待執行。"
+
+#: umc/js/join/Grid.js:140
+#, javascript-format
+msgid "%d scripts selected"
+msgstr "已選取 %d 個指令稿"
+
+#: umc/js/join.js:135
+msgid "... loading log ..."
+msgstr "... 正在載入記錄 ..."
+
+#: umc/js/join/Grid.js:140
+msgid "1 script selected"
+msgstr "已選取 1 個指令稿"
+
+#: umc/js/join.js:419
+msgid "<p>Please enter credentials of a user account with administrator rights to run the selected join scripts.</p>"
+msgstr "<p>請輸入具有管理員權限的使用者帳號認證資訊，以執行所選的加入指令稿。</p>"
+
+#. i18n: %s is the "XXX module".
+#: umc/js/join.js:287
+#, javascript-format
+msgid "A Primary Directory Node should be joined by the %s."
+msgstr "主要目錄節點應透過 %s 加入。"
+
+#: umc/js/join.js:282
+msgid "A join process is already running..."
+msgstr "加入程序已在執行中 ..."
+
+#: umc/js/join.js:382
+msgid "A reboot of the server is recommended after joining the system."
+msgstr "在系統加入後，建議重新啟動伺服器。"
+
+#: umc/js/join.js:384
+msgid "A restart of the UMC server components may be necessary for changes to take effect."
+msgstr "可能需要重新啟動 UMC 伺服器元件，變更才會生效。"
+
+#: umc/js/join.js:37
+msgid "As %(root)s you do not have access to the App Center. For this you need to log in as %(administrator)s."
+msgstr "您以 %(root)s 身分時無法存取 App Center。若要存取，您必須以 %(administrator)s 身分登入。"
+
+#: umc/js/join.js:39
+msgid "As %(root)s you have neither access to the domain administration nor to the App Center. For this you need to log in as %(administrator)s."
+msgstr "您以 %(root)s 身分時，既無法存取網域管理，也無法存取 App Center。若要存取，您必須以 %(administrator)s 身分登入。"
+
+#. i18n: %s is the "XXX module".
+#: umc/js/join.js:287
+msgid "Basic settings module"
+msgstr "基本設定模組"
+
+#: umc/js/join.js:247
+msgid "Currently, software is being installed or uninstalled. Join scripts should not be run right now."
+msgstr "目前正在安裝或解除安裝軟體。現在不應執行加入指令稿。"
+
+#: umc/js/join/Grid.js:28
+msgid "Execute"
+msgstr "執行"
+
+#: umc/js/join/Grid.js:56
+msgid "Execute all pending join scripts"
+msgstr "執行所有待處理的加入指令稿"
+
+#: umc/js/join/Grid.js:57
+msgid "Executes join scripts which are not properly configured."
+msgstr "執行尚未正確設定的加入指令稿。"
+
+#: umc/js/join/Grid.js:29
+msgid "Executes this join script"
+msgstr "執行此加入指令稿"
+
+#: umc/js/join/Grid.js:46
+msgid "Force execute"
+msgstr "強制執行"
+
+#: umc/js/join/Grid.js:47
+msgid "Forces execution of selected join scripts"
+msgstr "強制執行所選的加入指令稿"
+
+#: umc/js/join/Form.js:41
+msgid "Hostname of Primary Directory Node"
+msgstr "主要目錄節點的主機名稱"
+
+#: umc/js/join.js:347 umc/js/join.js:350
+msgid "Join error"
+msgstr "加入錯誤"
+
+#: umc/js/join.js:114
+msgid "Join log"
+msgstr "加入記錄"
+
+#: umc/js/join/Grid.js:145
+msgid "Join status ok, nothing to do."
+msgstr "加入狀態正常，無須處理。"
+
+#: umc/js/join/Form.js:22
+msgid "Join system"
+msgstr "加入系統"
+
+#. i18n: %s is the "Domain join module".
+#: umc/js/join.js:64
+#, javascript-format
+msgid "Not all installed components have been registered. Please visit the %s to register the remaining components."
+msgstr "並非所有已安裝的元件都已註冊。請前往 %s 註冊剩餘的元件。"
+
+#: umc/js/join/Grid.js:148
+msgid "One script is pending to be run."
+msgstr "有 1 個指令稿待執行。"
+
+#: umc/js/join/Grid.js:39
+msgid "Only join scripts which are not successfully configured can be executed. To execute the selected scripts anyway the force execution option have to be used."
+msgstr "只有尚未成功設定的加入指令稿才能執行。若仍要執行所選的指令稿，必須使用強制執行選項。"
+
+#: umc/js/join.js:433 umc/js/join/Form.js:35
+msgid "Password"
+msgstr "密碼"
+
+#: umc/js/join.js:441
+msgid "Password invalid"
+msgstr "密碼無效"
+
+#: umc/js/join/Form.js:36
+msgid "Password of the domain administrator"
+msgstr "網域管理員的密碼"
+
+#: umc/js/join.js:83
+msgid "Please enter credentials of a user account with administrator rights to join the system."
+msgstr "請輸入具有管理員權限的使用者帳號認證資訊，以將系統加入。"
+
+#: umc/js/join/Grid.js:67
+msgid "Rejoin"
+msgstr "重新加入"
+
+#: umc/js/join.js:259
+msgid "Rejoin system"
+msgstr "重新加入系統"
+
+#: umc/js/join/Grid.js:68
+msgid "Rejoins the system"
+msgstr "重新加入系統"
+
+#: umc/js/join.js:437
+msgid "Run"
+msgstr "執行"
+
+#: umc/js/join.js:233 umc/js/join.js:436
+msgid "Run join scripts"
+msgstr "執行加入指令稿"
+
+#: umc/js/join/Grid.js:89
+msgid "Script (package)"
+msgstr "指令稿 ( 套件 )"
+
+#: umc/js/join/Grid.js:90
+msgid "Script name (the same as the package it belongs to)"
+msgstr "指令稿名稱 ( 與其所屬的套件相同 )"
+
+#: umc/js/join.js:124
+msgid "Show Join status"
+msgstr "顯示加入狀態"
+
+#: umc/js/join/Grid.js:74
+msgid "Shows the join log"
+msgstr "顯示加入記錄"
+
+#: umc/js/join.js:338
+msgid "Starting the join process..."
+msgstr "正在啟動加入程序 ..."
+
+#: umc/js/join/Grid.js:95
+msgid "State"
+msgstr "狀態"
+
+#: umc/js/join/Grid.js:96
+msgid "Status of this package"
+msgstr "此套件的狀態"
+
+#. i18n: %s is the "Network settings module".
+#: umc/js/join/Form.js:66
+#, javascript-format
+msgid "The DNS settings can be adjusted in the %s."
+msgstr "DNS 設定可在 %s 中調整。"
+
+#: umc/js/join.js:227
+msgid "The following join scripts will be executed: "
+msgstr "將執行下列加入指令稿: "
+
+#: umc/js/join/Form.js:42
+msgid "The hostname of the Primary Directory Node of the domain"
+msgstr "網域的主要目錄節點的主機名稱"
+
+#: umc/js/join.js:355
+msgid "The join process was successful."
+msgstr "加入程序已成功。"
+
+#: umc/js/join.js:282
+msgid "The join scripts have successfully been executed."
+msgstr "加入指令稿已成功執行。"
+
+#: umc/js/join.js:441
+msgid "The password may not be empty."
+msgstr "密碼不可為空白。"
+
+#: umc/js/join.js:445
+msgid "The username may not be empty."
+msgstr "使用者名稱不可為空白。"
+
+#: umc/js/join/Form.js:30
+msgid "The username of the domain administrator"
+msgstr "網域管理員的使用者名稱"
+
+#: umc/js/join.js:98
+msgid "This page shows the status of all available join scripts on this system, along with all join-related actions."
+msgstr "此頁面顯示此系統上所有可用的加入指令稿狀態，以及所有與加入相關的動作。"
+
+#: umc/js/join.js:428 umc/js/join/Form.js:29
+msgid "Username"
+msgstr "使用者名稱"
+
+#: umc/js/join.js:445
+msgid "Username invalid"
+msgstr "使用者名稱無效"
+
+#: umc/js/join/Grid.js:73
+msgid "View join log"
+msgstr "檢視加入記錄"
+
+#: umc/js/join/Form.js:64
+msgid "Warning: "
+msgstr "警告: "
+
+#: umc/js/join/Grid.js:99
+msgid "pending"
+msgstr "待處理"
+
+#: umc/js/join/Grid.js:99
+msgid "successful"
+msgstr "成功"

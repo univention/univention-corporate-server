@@ -1,0 +1,119 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/python/setup/setup_script.py:438
+#, python-format
+msgid "Failed to get package for Role %s"
+msgstr "無法取得角色 %s 的套件"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:52
+msgid "Backing up old SSL certificate"
+msgstr "正在備份舊的 SSL 憑證"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:279
+msgid "Configure"
+msgstr "設定"
+
+#: usr/lib/univention-system-setup/scripts/35_timezone/10timezone:12
+msgid "Configuring time zones"
+msgstr "正在設定時區"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:102
+msgid "Could not recreate SSL certificate for %s."
+msgstr "無法重新建立 %s 的 SSL 憑證。"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:235
+msgid "Domain setup (this might take a while)"
+msgstr "網域設定 (這可能需要一些時間)"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:80
+msgid "Generating SSL CA certificate."
+msgstr "正在產生 SSL CA 憑證。"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:35
+msgid "Generating SSL certificate"
+msgstr "正在產生 SSL 憑證"
+
+#: usr/lib/univention-system-setup/scripts/10_basis/50uuid:28
+msgid "Generating UUID"
+msgstr "正在產生 UUID"
+
+#: usr/lib/univention-system-setup/scripts/20_language/10language:12
+msgid "Generating locales"
+msgstr "正在產生語系"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:241
+msgid "Preparing domain join"
+msgstr "正在準備加入網域"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:99
+msgid "Recreate SSL certificate for %s"
+msgstr "重新建立 %s 的 SSL 憑證"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:145
+msgid "Recreating SSH keys"
+msgstr "正在重新建立 SSH 金鑰"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:326
+msgid "Running appliance scripts"
+msgstr "正在執行設備指令碼"
+
+#: usr/lib/univention-system-setup/scripts/30_net/12gateway:12
+msgid "Setting IPv4 gateway"
+msgstr "正在設定 IPv4 閘道"
+
+#: usr/lib/univention-system-setup/scripts/30_net/13ipv6gateway:12
+msgid "Setting IPv6 gateway"
+msgstr "正在設定 IPv6 閘道"
+
+#: usr/lib/univention-system-setup/scripts/30_net/16forwarder:12
+msgid "Setting external name servers"
+msgstr "正在設定外部名稱伺服器"
+
+#: usr/lib/univention-system-setup/scripts/15_keyboard/10keyboard:12
+msgid "Setting keyboard layout"
+msgstr "正在設定鍵盤配置"
+
+#: usr/lib/univention-system-setup/scripts/30_net/14nameserver:12
+msgid "Setting name server"
+msgstr "正在設定名稱伺服器"
+
+#: usr/lib/univention-system-setup/scripts/30_net/18proxy:12
+msgid "Setting proxy"
+msgstr "正在設定 proxy"
+
+#: usr/lib/univention-system-setup/scripts/10_basis/18root_password:12
+msgid "Setting root password"
+msgstr "正在設定 root 密碼"
+
+#: usr/lib/univention-system-setup/scripts/20_language/11default_locale:12
+msgid "Setting the default locale"
+msgstr "正在設定預設語系"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:74
+msgid "The SSL certificate creation failed. The old certificates have been restored."
+msgstr "SSL 憑證建立失敗。已還原舊的憑證。"
+
+#: usr/lib/univention-system-setup/scripts/setup-join.sh:146
+msgid "This might take a moment..."
+msgstr "這可能需要一點時間..."
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:20
+msgid "This might take a while depending on the number of pending updates."
+msgstr "這可能需要一些時間，取決於待處理的更新數量。"
+
+#: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:12
+msgid "Upgrading the system"
+msgstr "正在升級系統"
