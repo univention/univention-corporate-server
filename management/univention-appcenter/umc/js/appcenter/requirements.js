@@ -179,6 +179,12 @@ define([
 				return _('%(name)s cannot be installed on the current server role (%(current_role)s). In order to install the App, one of the following roles is necessary: %(allowed_roles)s', details);
 			}
 		}),
+		must_be_installed_on_primary_first: new Requirement({
+			reasonDescription: function(details) {
+				details = {name: entities.encode(details.name), current_role: entities.encode(details.current_role)};
+				return _('%(name)s must be installed on the Primary Directory Node (domaincontroller_master) first. It can only be installed on this server (%(current_role)s) once it has been installed there.', details);
+			}
+		}),
 		must_have_no_unmet_dependencies: new Requirement({
 			reasonDescription: function(details) {
 				var txt = _('%s requires the following Apps.', entities.encode(details.name));

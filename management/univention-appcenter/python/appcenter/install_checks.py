@@ -159,6 +159,34 @@ class MustHaveCorrectServerRole(SingleRequirement, HardRequirement):
     test_upgrade = test_install
 
 
+class MustBeInstalledOnPrimaryFirst(SingleRequirement, HardRequirement):
+    """
+    The application must be installed on the Primary Directory Node
+    (domaincontroller_master) first. It can only be installed on this
+    server (%(current_role)s) once it has been installed there.
+    """
+
+    def test_install(self, app):
+        if not app.must_be_installed_on_primary_first:
+            return
+        current_role = ucr_get('server/role')
+        if current_role == 'domaincontroller_master':
+            return
+        if self._is_installed_in_domain(app):
+            return
+        return {
+            'current_role': current_role,
+        }
+
+    test_upgrade = test_install
+
+    def _is_installed_in_domain(self, app):
+        _app = Apps().find(app.id)
+        domain = get_action('domain')
+        app_info = domain.to_dict([_app])[0]
+        return app_info['is_installed_anywhere']
+
+
 class MustHaveFittingAppVersion(SingleRequirement, HardRequirement):
     """
     To upgrade, at least version %(required_version)s needs to

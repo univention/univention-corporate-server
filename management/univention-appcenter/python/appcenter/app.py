@@ -818,6 +818,10 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
         UDP ports. Can be combined with the same
         *ports_redirection* if needed.
     :ivar server_role: List of UCS roles the App may be installed on.
+    :ivar must_be_installed_on_primary_first: If True, the App must be
+        installed on the Primary Directory Node (domaincontroller_master)
+        first. Only after it has been installed there, it may be installed
+        on the other supported server roles.
     :ivar supported_architectures: Non-Docker Apps only. List of
         architectures the App supports. Docker Apps always
         require amd64.
@@ -1036,6 +1040,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
     ports_redirection_udp = AppListAttribute(regex=r'^\d+:\d+$')
 
     server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
+    must_be_installed_on_primary_first = AppBooleanAttribute()
     supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
     min_physical_ram = AppIntAttribute(default=0)
     min_free_disk_space = AppIntAttribute(default=None)

@@ -64,6 +64,7 @@ define([
 			this.ucsVersion = props.ucs_version;
 			this.isCurrent = props.is_current;
 			this.allowedRoles = props.server_role;
+			this.mustBeInstalledOnPrimaryFirst = !!props.must_be_installed_on_primary_first;
 			this.role = props.local_role;
 			this.componentID = props.component_id;
 			this.candidateComponentID = props.candidate_component_id;
@@ -305,6 +306,13 @@ define([
 			if (this.voteForApp) {
 				// never install a 'Vote for App' app
 				return false;
+			}
+			if (this.mustBeInstalledOnPrimaryFirst) {
+				// the App must be installed on the Primary Directory Node first;
+				// only afterwards it may be installed on the other server roles
+				if (this.role !== 'domaincontroller_master' && !this.isInstalledInDomain()) {
+					return false;
+				}
 			}
 			if (this.installations && this.installations.length > 1) {
 				// always allow within the domain

@@ -159,10 +159,14 @@ define([
 				var hosts = [];
 				var removedDueToInstalled = [];
 				var removedDueToRole = [];
+				var removedDueToPrimaryFirst = [];
 				if (app.installationData) {
 					array.forEach(app.installationData, function(item) {
+						var requiresPrimaryFirst = app.mustBeInstalledOnPrimaryFirst && !app.isInstalledInDomain();
 						if (item.canInstall()) {
-							if (item.isLocal()) {
+							if (requiresPrimaryFirst && item.role !== 'domaincontroller_master') {
+								removedDueToPrimaryFirst.push(item.displayName);
+							} else if (item.isLocal()) {
 								hosts.unshift({
 									label: item.displayName,
 									id: item.fqdn
@@ -194,6 +198,11 @@ define([
 				} else if (removedDueToRole.length > 1) {
 					removeExplanation += '<p>' + _('%d hosts were removed from the list because the App requires a different server role than these hosts have.', removedDueToRole.length) + '</p>';
 				}
+				if (removedDueToPrimaryFirst.length === 1) {
+					removeExplanation += '<p>' + _('%s was removed from the list because the App must be installed on the Primary Directory Node first.', entities.encode(removedDueToPrimaryFirst[0])) + '</p>';
+				} else if (removedDueToPrimaryFirst.length > 1) {
+					removeExplanation += '<p>' + _('%d hosts were removed from the list because the App must be installed on the Primary Directory Node first.', removedDueToPrimaryFirst.length) + '</p>';
+				}
 				if (removeExplanation) {
 					removeExplanation = '<strong>' + _('Not all hosts are listed above') + '</strong>' + removeExplanation;
 				}
@@ -224,7 +233,7 @@ define([
 				}
 
 				this._chooseHostsNeedsToBeShown = this._chooseHostsNeedsToBeShown
-					|| (hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length);
+					|| (hosts.length > 1 || !!removedDueToInstalled.length || !!removedDueToRole.length || !!removedDueToPrimaryFirst.length);
 			}
 			return page;
 		},
