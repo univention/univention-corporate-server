@@ -36,6 +36,7 @@ The following pages cover the main components:
   encryption types.
 * :ref:`security-hardening-samba` covers SMB, NetBIOS, and Samba services.
 * :ref:`security-hardening-web` covers Apache and UMC web security.
+* :ref:`security-hardening-ldap` covers LDAP transport encryption.
 
 For account password policies and account lockout, see
 :ref:`password-management-policies` and
@@ -47,3 +48,4 @@ For account password policies and account lockout, see
    kerberos
    samba
    web
+   ldap
