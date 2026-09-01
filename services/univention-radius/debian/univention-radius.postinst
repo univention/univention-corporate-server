@@ -18,7 +18,7 @@ if [ "$1" = "configure" ] \
 	&& { [ -z "${2:-}" ] || dpkg --compare-versions "$2" lt 9.6.3; } \
 	&& { dpkg-query -W -f='${db:Status-Status}\n' ucs-school-radius-802.1x 2>/dev/null | grep -qx installed; }
 then
-	ucr set freeradius/auth/helper/ntlm/network-access/use-internet-rules=true
+	ucr set freeradius/auth/helper/ntlm/network-access/internet-rules/enabled=true
 fi
 
 case "$1" in

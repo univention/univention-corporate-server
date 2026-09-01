@@ -246,9 +246,9 @@ Type=str
 Default=DEFAULT
 Categories=service-radius
 
-[freeradius/auth/helper/ntlm/network-access/use-internet-rules]
-Description[de]=Steuert den WLAN-Zugang über die Internetregeln von UCS@school. Bei Aktivierung erhalten Benutzer nur dann Zugriff, wenn die ihnen zugewiesene Internetregel mit der höchsten Priorität die WLAN-Authentifizierung zulässt.
-Description[en]=Controls WLAN access through UCS@school internet rules. When enabled, users are granted access only if their highest-priority assigned internet rule allows WLAN authentication.
+[freeradius/auth/helper/ntlm/network-access/internet-rules/enabled]
+Description[de]=Steuert, ob die Internetregeln von UCS@school bei der WLAN-Zugangsentscheidung berücksichtigt werden. Wenn aktiviert, werden die Internetregeln zuerst ausgewertet. Erlaubt keine der zugewiesenen Regeln mit der höchsten Priorität die WLAN-Authentifizierung, wird ersatzweise die reguläre Netzwerkzugriffsprüfung verwendet.
+Description[en]=Controls whether UCS@school internet rules are considered for WLAN access decisions. When enabled, the internet rules are evaluated first. If none of the highest-priority assigned rules permits WLAN authentication, the regular network-access check is used as a fallback.
 Type=bool
 Default=false
 Categories=service-radius
