@@ -9,3 +9,6 @@ desc: |
  * The C library of UCR now supports arbitrary variable value lengths instead
    of cutting the values at 1024 chars.
 bug: [51864]
+erratum: 593
+announced: 2026-09-02
+support: core
