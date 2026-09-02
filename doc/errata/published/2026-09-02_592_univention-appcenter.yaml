@@ -10,3 +10,6 @@ desc: |
    it should be installed on primary first. This is only valueable for Apps
    that can be installed multiple times in the domain.
 bug: [59895]
+erratum: 592
+announced: 2026-09-02
+support: core
