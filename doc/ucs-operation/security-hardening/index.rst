@@ -7,6 +7,39 @@
 Security hardening
 ******************
 
+Security hardening reduces the likelihood and impact of attacks
+against a Nubus for UCS environment.
+It doesn't replace a risk assessment, network segmentation, backups,
+patch management, monitoring, or physical security.
+
+This chapter groups security-hardening recommendations by component.
+Apply recommendations that match the services and clients in your environment.
+Settings that improve security might also reduce compatibility or availability,
+particularly when they deactivate legacy protocols.
+
+Before you change a setting:
+
+#. Record its current value.
+#. Verify that you can restore the previous configuration.
+#. Test the change with the clients and integrations that you operate.
+#. Apply changes consistently to all systems that provide the affected service.
+
+Use different passwords for the local ``root`` account
+and domain administrator accounts.
+Use a different local ``root`` password on each system
+to limit lateral movement after an attacker compromises a system.
+Use unprivileged, personal accounts for daily work
+and privileged accounts only for administrative tasks.
+
+For password policies and account lockout, see
+:ref:`password-management-policies` and
+:ref:`iam-user-lockout`.
+
+The following pages cover the main components:
+
+* :ref:`security-hardening-kerberos` covers password attributes and Kerberos
+  encryption types.
+
 .. toctree::
    :caption: Contents
 
