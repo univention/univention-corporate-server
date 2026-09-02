@@ -9,3 +9,6 @@ desc: |
  * The UDM REST API command line doesn't depend on the UCR default layer
    anymore for compatibility with Nubus 4 Kubernetes.
 bug: [59837]
+erratum: 594
+announced: 2026-09-02
+support: core
