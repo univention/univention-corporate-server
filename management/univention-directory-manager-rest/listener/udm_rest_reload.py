@@ -51,9 +51,9 @@ def handler(dn, new, old):
             passwd = secret.read().rstrip('\n')
     username = f'{configRegistry["hostname"]}$'
     basic = requests.auth.HTTPBasicAuth(username, passwd)
-    # TODO: not sure about this. subprocess.call(['systemctl', 'reload', 'univention-directory-manager-rest']) worked for me too
+    # TODO: not sure about this. subprocess.call(['systemctl', 'reload', '--no-block', 'univention-directory-manager-rest']) worked for me too
     try:
         ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading UDM REST API' % name)
-        requests.get(uri, headers={'Accept': 'application/json'}, auth=basic)
-    except requests.exceptions.ConnectionError as exc:
-        ud.debug(ud.LISTENER, ud.ERROR, '%s: Failed to reload UDM-REST service - %s.' % (name, exc))
+        requests.get(uri, headers={'Accept': 'application/json'}, auth=basic, timeout=5)
+    except requests.exceptions.RequestException as exc:
+        ud.debug(ud.LISTENER, ud.ERROR, '%s: Failed to reload UDM-REST service: %s.' % (name, exc))
