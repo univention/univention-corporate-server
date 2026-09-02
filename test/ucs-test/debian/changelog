@@ -1,3 +1,10 @@
+ucs-test (12.6.54) unstable; urgency=medium
+
+  * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst (test all
+    roles)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Sep 2026 15:32:44 +0200
+
 ucs-test (12.6.53) unstable; urgency=medium
 
   * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst

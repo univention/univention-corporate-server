@@ -4,13 +4,14 @@
 ##  is rejected on a backup node, as long as it is not installed in the
 ##  domain yet. A local testing appcenter is used.
 ## timeout: 900
-## roles: [domaincontroller_backup]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ##   - univention-appcenter-dev
 ## tags: [appcenter]
 
 import logging
+
+from univention.testing.ucr import UCSTestConfigRegistry as UCR
 
 import appcentertest as app_test
 
@@ -36,15 +37,23 @@ def test_backup_install_rejected(app_center, application):
     test = app_test.TestOperations(app_center, app.app_id)
 
     dry_run = app_center.install_dry_run([app.app_id])
-    if test.dry_run_successful(dry_run):
-        app_test.fail("Dry-install of app on backup node did not fail.")
+    _ucr = UCR()
+    _ucr.load()
+    is_primary = _ucr.get("server/role") == "domaincontroller_master"
+    if test.dry_run_successful(dry_run) != is_primary:
+        app_test.fail("Dry-install did not yield expected result.")
 
     try:
         test.test_install(test_installed=False)
     except app_test.AppCenterCheckError:
-        pass
+        if is_primary:
+            app_test.fail("Install did not yield expected result.")
     else:
-        error = "Install of app on backup node did not fail."
+        if is_primary:
+            app_center.remove([app.app_id])
+            return
+
+        error = "Install did not yield expected result."
 
         info = app_center.get(app.app_id)
         if not app_test.CheckOperations.uninstalled(app.app_id, info):
