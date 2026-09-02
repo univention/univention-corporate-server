@@ -37,3 +37,6 @@ cve:
 - CVE-2026-11721
 - CVE-2026-13204
 - CVE-2026-13321
+erratum: 1889
+announced: 2026-09-02
+support: lts
