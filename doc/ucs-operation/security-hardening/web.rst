@@ -56,7 +56,7 @@ On environments where all clients support TLS 1.3, enable TLS 1.3-only mode:
 
 .. code-block:: console
 
-   $ ucr set apache2/ssl/tlsv13=yes
+   $ ucr set apache2/ssl/tlsv13=true apache2/ssl/tlsv11=false apache2/ssl/tlsv12=false
 
 This setting excludes clients that support only TLS 1.2.
 Test browsers, integrations, monitoring systems, and API clients before
@@ -109,11 +109,13 @@ default ``/var/www/html/`` content, when the system doesn't provide it.
 Review enabled Apache modules and UserDir configuration as part of the same
 service inventory.
 
-The Apache UserDir module publishes user-controlled content through URLs such
-as ``/~USERNAME``.
-Disable the module when no use case requires it.
-Also remove the default Apache icons alias and unused document-root content
-when they aren't required by an installed application.
+Remove the default Apache icons alias and unused document-root content:
+when they aren't required by an installed application:
+
+.. code-block:: console
+
+   $ rm -f /var/www/html/index.html
+   $ rmdir /var/www/html/
 
 UMC and UDM REST API error responses can disclose implementation details.
 Keep traceback and identity-provider error reporting disabled on production
@@ -135,6 +137,6 @@ This value is in seconds.
 Short-lived tokens reduce the exposure if a reset token is disclosed, but a
 value that is too short can prevent users from completing the reset process.
 
-Keep the UMC ``Server`` response header and reverse-proxy ``Via`` header from
+Keep the UMC-Server response header and reverse-proxy ``Via`` header from
 exposing internal product, version, or hostname details where your proxy
 configuration permits it.
