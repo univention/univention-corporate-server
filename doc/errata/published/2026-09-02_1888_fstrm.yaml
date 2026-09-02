@@ -9,3 +9,6 @@ desc: |
  `bind9`.
 bug: [59770]
 maintained: true
+erratum: 1888
+announced: 2026-09-02
+support: lts
