@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: python-cerbos
+fix: 0.16.0
+desc: |
+ This update addresses the following issues:
+ * Cerbos Python SDK - Python clients for accessing Cerbos.
+   Only supports HTTP client (not gRPC) for UCS.
+bug: [59901]
