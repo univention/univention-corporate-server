@@ -583,12 +583,19 @@ than one value which must be separated by comma.
 The attribute ``ShowReadOnly`` can be used in the same way as ``Show``. The
 difference is that the value is not changeable.
 
-The attribute ``InitialValue`` can be used during the installation. If no
-value for this attribute was given during the installation, the defined
-value is set.
+The attribute ``InitialValue`` defines the value that a setting receives when
+it first exists on a system: during the installation of the app, or during
+the upgrade to the app version that introduces the setting. A value that the
+user enters in the dialog takes precedence. During an upgrade, a new setting
+receives the initial value only if a fresh installation also sets it. For
+Docker apps, this applies to every new setting. For apps without Docker, it
+applies to settings that list ``Install`` in ``Show``. The initial value is
+not a default. If you remove the value later, for example with
+:command:`univention-app configure --unset`, the setting stays empty.
 
-The attribute ``Required`` can be used to define if this setting has to be
-set or not.
+The attribute ``Required`` defines whether the setting must have a value. A
+required setting can't be unset or set to an empty value. Use it for settings
+that the app can't work without.
 
 The attribute ``Scope`` is used to specify if the value is set inside the
 Docker container (``inside``), on the Docker host (``outside``) or on
