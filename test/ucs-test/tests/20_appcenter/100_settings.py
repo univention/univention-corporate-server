@@ -643,3 +643,86 @@ def test_outside_settings_in_preinst(outside_test_app):
         is_installed = app.is_installed()
     univention.config_registry.handler_unset(settings_unset)
     assert is_installed
+
+
+UPGRADE_TEST_SETTINGS_V1 = '''[test_upgrade/existing]
+Type = String
+InitialValue = existing-initial
+Show = Settings
+Description = A setting both versions have
+'''
+
+UPGRADE_TEST_SETTINGS_V2 = UPGRADE_TEST_SETTINGS_V1 + '''
+[test_upgrade/new_install]
+Type = String
+InitialValue = new-install-initial
+Show = Install
+Description = A new setting a fresh installation would set
+
+[test_upgrade/new_settings]
+Type = String
+InitialValue = new-settings-initial
+Show = Settings
+Description = A new setting only shown in the settings dialog
+'''
+
+
+def publish_upgrade_test_app(app_id, version, settings_content, docker):
+    ini = f'''[Application]
+ID = {app_id}
+Code = TU
+Name = Upgrade Test
+Version = {version}
+'''
+    if docker:
+        ini += '''DockerImage = docker-test.software-univention.de/httpd:2.4.23-alpine
+DockerScriptInit = httpd-foreground
+DockerScriptStoreData =
+DockerScriptRestoreDataBeforeSetup =
+DockerScriptRestoreDataAfterSetup =
+DockerScriptSetup =
+DockerScriptUpdateAvailable =
+DockerScriptUpdateAppVersion = /bin/true
+PortsRedirection = 8080:80
+WebInterface = /
+WebInterfacePortHTTP = 8080
+WebInterfacePortHTTPS = 0
+AutoModProxy = False
+UCSOverviewCategory = False
+'''
+    else:
+        ini += '''License = free
+WithoutRepository = True
+DefaultPackages = libcurl4-doc
+'''
+    with open('/tmp/app.ini', 'w') as fd:
+        fd.write(ini)
+    with open('/tmp/app.settings', 'w') as fd:
+        fd.write(settings_content)
+    populate = get_action('dev-populate-appcenter')
+    populate.call(new=True, ini='/tmp/app.ini', settings='/tmp/app.settings', component_id='%s_%s' % (app_id, version.replace('.', '_')))
+    return Apps().find(app_id)
+
+
+@pytest.mark.parametrize('docker', [False, True])
+def test_new_settings_get_initial_value_on_upgrade(local_appcenter, docker):
+    app_id = 'test-upgrade-docker' if docker else 'test-upgrade'
+    username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
+    password = ucr_get('tests/domainadmin/pwd')
+    app = publish_upgrade_test_app(app_id, '1.0', UPGRADE_TEST_SETTINGS_V1, docker)
+    subprocess.run(['apt-get', 'update'], check=True)
+    get_action('install').call(app=[app], username=username, password=password, noninteractive=True)
+    try:
+        get_action('configure').call(app=app, set_vars={'test_upgrade/existing': None}, run_script='no')
+        publish_upgrade_test_app(app_id, '2.0', UPGRADE_TEST_SETTINGS_V2, docker)
+        get_action('upgrade').call(app=[app], username=username, password=password, noninteractive=True)
+        Apps().clear_cache()
+        assert ucr_get(app.ucr_version_key) == '2.0'
+        app = Apps().find(app_id, app_version='2.0')
+        values = {setting.name: setting.get_value(app) for setting in app.get_settings()}
+        assert values['test_upgrade/existing'] is None
+        assert values['test_upgrade/new_install'] == 'new-install-initial'
+        assert values['test_upgrade/new_settings'] == ('new-settings-initial' if docker else None)
+    finally:
+        Apps().clear_cache()
+        get_action('remove').call(app=[Apps().find(app_id)], username=username, password=password, noninteractive=True)

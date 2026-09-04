@@ -492,10 +492,15 @@ class Instance(umcm.Base, ProgressMixin):
     def _get_config(self, app, phase):
         autostart = self.ucr.get('%s/autostart' % app.id, 'yes')
         is_running = app_is_running(app)
+        new_values = {}
+        if phase == 'Upgrade':
+            new_values = get_action('upgrade').initial_values_of_new_settings(app, Apps().find(app.id))
         values = {}
         for setting in app.get_settings():
             if phase in setting.show or phase in setting.show_read_only:
                 value = setting.get_value(app, phase)
+                if value is None:
+                    value = new_values.get(setting.name)
                 if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and value:
                     value = b64encode(value.encode('utf-8')).decode('ascii')
                 values[setting.name] = value

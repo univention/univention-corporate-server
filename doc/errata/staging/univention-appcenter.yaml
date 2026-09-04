@@ -5,8 +5,19 @@ scope: ucs_5.2-0-errata5.2-6
 src: univention-appcenter
 fix: 11.6.10
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * "univention-app configure --list" reported the initial value of an app
-   setting when the setting was not set at all. The command now reports such
-   settings as unset and shows the initial value separately.
+   setting when the setting was not set at all. The command now reports
+   such settings as unset and shows the initial value separately.
+ * Settings that a new app version introduces did not receive their
+   initial value during the upgrade unless the app declared them for the
+   upgrade stage. They now receive it if a fresh installation also sets
+   them. Settings that already exist keep their value, and an unset
+   setting stays unset.
+ * An image upgrade or a reinitialization of a Docker app read empty
+   settings from the old container when the container was not running,
+   and wrote them into the new container. The upgrade now stops with an
+   error message instead. Start the app and run the upgrade again.
+ * Configuring an app failed with the message "None is not a valid
+   option" when the app has an optional list setting without a value.
 bug: [59781]

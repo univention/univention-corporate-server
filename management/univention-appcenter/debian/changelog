@@ -1,6 +1,10 @@
 univention-appcenter (11.6.10) unstable; urgency=medium
 
   * Bug #59781: Report unset app settings as unset in "configure --list"
+  * Bug #59781: Apply the initial value of settings a new app version introduces
+    during the upgrade, and abort image upgrades if the old container cannot be
+    read
+  * Bug #59781: Accept an unset optional list setting when configuring an app
 
  -- Marius Meschter <marius.meschter@univention.de>  Fri, 04 Sep 2026 11:32:28 +0200
 

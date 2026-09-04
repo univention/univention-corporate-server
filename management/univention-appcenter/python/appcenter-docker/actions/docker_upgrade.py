@@ -19,6 +19,7 @@ from univention.appcenter.exceptions import (
 )
 from univention.appcenter.packages import update_packages
 from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.appcenter.utils import app_is_running
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
@@ -139,13 +140,20 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
             docker.pull()
         else:
             docker.setup_docker_files()
-        self.log('Saving data from old container (%s)' % self.old_app)
-        Start.call(app=self.old_app)
-        settings = self._get_configure_settings(self.old_app, filter_action=False)
+        old_docker = self._get_docker(self.old_app)
+        if old_docker.exists():
+            self.log('Saving data from old container (%s)' % self.old_app)
+            if not Start.call(app=self.old_app) or not app_is_running(self.old_app):
+                raise UpgradeStartContainerFailed()
+            settings = self._get_configure_settings(self.old_app, filter_action=False)
+            if not app_is_running(self.old_app):
+                raise UpgradeStartContainerFailed()
+            old_docker.cp_from_container('/etc/machine.secret', app.secret_on_host)
+        else:
+            self.warn('The container of %s does not exist. Its settings cannot be preserved.' % self.old_app)
+            settings = {}
         settings.update(args.set_vars or {})
         args.set_vars = settings
-        old_docker = self._get_docker(self.old_app)
-        old_docker.cp_from_container('/etc/machine.secret', app.secret_on_host)
         if self._backup_container(self.old_app) is False:
             raise UpgradeBackupFailed()
         self.log('Removing old container')

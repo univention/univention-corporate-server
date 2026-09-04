@@ -12,6 +12,7 @@ from univention.admindiary.events import APP_UPGRADE_FAILURE, APP_UPGRADE_START,
 from univention.appcenter.actions.install import Install
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.packages import dist_upgrade, install_packages
+from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_is_true
 
 
@@ -95,6 +96,33 @@ class Upgrade(Install):
         old_app = Apps().find(app.id)
         if app.license_agreement != old_app.license_agreement:
             return super()._show_license(app, args)
+
+    @classmethod
+    def initial_values_of_new_settings(cls, app, old_app):
+        """Initial values for the settings that old_app did not have, limited to those that a fresh installation of app sets."""
+        if old_app is None or app == old_app:
+            return {}
+        old_names = {setting.name for setting in old_app.get_settings()}
+        values = {}
+        for setting in app.get_settings():
+            if setting.name in old_names:
+                continue
+            if not app.docker and 'Install' not in setting.show:
+                continue
+            try:
+                value = setting.get_initial_value(app)
+            except SettingValueError:
+                continue
+            if value is not None:
+                values[setting.name] = value
+        return values
+
+    def _get_configure_settings(self, app, filter_action=True):
+        set_vars = super()._get_configure_settings(app, filter_action)
+        for name, value in self.initial_values_of_new_settings(app, self.old_app).items():
+            if set_vars.get(name) is None:
+                set_vars[name] = value
+        return set_vars
 
     def _call_prescript(self, app, args):
         return super()._call_prescript(app, args, old_version=self.old_app.version)
