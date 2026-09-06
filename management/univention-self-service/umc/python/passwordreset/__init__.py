@@ -183,6 +183,25 @@ def prevent_denial_of_service(func):
     return _decorated
 
 
+def require_machine_account(func):
+    @wraps(func)
+    def _decorator(self, *args, **kwargs):
+        request = self._current_request
+
+        if not request.user_dn:
+            raise ServiceForbidden()
+
+        lo, _ = get_machine_connection()
+        attrs = lo.get(request.user_dn, attr=['objectClass'])
+        if b'univentionHost' not in attrs.get('objectClass', []):
+            MODULE.warning("Rejected invitation request from unauthorized account %r", request.user_dn)
+            raise ServiceForbidden()
+
+        return func(self, *args, **kwargs)
+
+    return _decorator
+
+
 class ConnectionLimitReached(UMC_Error):
     status = 503
 
@@ -236,7 +255,8 @@ class Instance(Base):
         ]
         MODULE.info("Added trusted host for rate limit bypass: %r", self.trusted_hosts)
 
-        self.token_validity_period = ucr.get_int("umc/self-service/passwordreset/token_validity_period", 3600)
+        self.invitation_token_validity_period = ucr.get_int("umc/self-service/invitation/token_validity_period", 604800)
+        self.password_reset_token_validity_period = ucr.get_int("umc/self-service/passwordreset/token_validity_period", 3600)
         limit_total_minute = ucr.get_int("umc/self-service/passwordreset/limit/total/minute", 0)
         limit_total_hour = ucr.get_int("umc/self-service/passwordreset/limit/total/hour", 0)
         limit_total_day = ucr.get_int("umc/self-service/passwordreset/limit/total/day", 0)
@@ -797,15 +817,28 @@ class Instance(Base):
         method=StringSanitizer(required=True))
     @simple_response
     def send_token(self, username, method):
+        self._send_token(username, method, "password_reset")
+
+    @forward_to_master
+    @require_machine_account
+    @prevent_denial_of_service
+    @sanitize(
+        username=StringSanitizer(required=True),
+        method=StringSanitizer(required=True))
+    @simple_response
+    def send_invitation_token(self, username, method):
+        self._send_token(username, method, "invitation")
+
+    def _send_token(self, username, method, token_type):
         if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
             msg = _('The password reset was disabled via the Univention Configuration Registry.')
-            MODULE.error("send_token(): %s", msg)
+            MODULE.error("_send_token(): %s", msg)
             raise UMC_Error(msg)
-        MODULE.info("send_token(): username: '%s' method: '%s'.", username, method)
+        MODULE.info("_send_token(): username: '%s' method: '%s' token_type: '%s'.", username, method, token_type)
         try:
             plugin = self.password_reset_plugins[method]
         except KeyError:
-            MODULE.error("send_token() method '%s' not in %s.", method, self.password_reset_plugins.keys())
+            MODULE.error("_send_token() method '%s' not in %s.", method, self.password_reset_plugins.keys())
             raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 
         if self.is_blacklisted(username, 'passwordreset'):
@@ -818,7 +851,7 @@ class Instance(Base):
         if len(user[plugin.udm_property]) > 0:
             # found contact info
             user_info = self._extract_user_properties(user)
-            self.send_message(username, method, user[plugin.udm_property], user_info)
+            self.send_message(username, method, user[plugin.udm_property], user_info, token_type)
 
         raise TokenSendMessage()
 
@@ -976,7 +1009,9 @@ class Instance(Base):
             MODULE.info("Token not found in DB for user '%s'.", username)
             raise TokenNotFound()
 
-        if (datetime.datetime.utcnow() - token_from_db["timestamp"]).total_seconds() >= self.token_validity_period:
+        validity = self.invitation_token_validity_period if token_from_db["token_type"] == "invitation" else self.password_reset_token_validity_period
+
+        if (datetime.datetime.utcnow() - token_from_db["timestamp"]).total_seconds() >= validity:
             # token is correct but expired
             MODULE.info("Receive correct but expired token for '%s'.", username)
             self.db.delete_tokens(token=token, username=username)
@@ -1012,7 +1047,7 @@ class Instance(Base):
         rand = random.SystemRandom()
         return ''.join(rand.choice(chars) for _ in range(length))
 
-    def send_message(self, username, method, address, user_properties):
+    def send_message(self, username, method, address, user_properties, token_type="password_reset"):
         plugin = self._get_send_plugin(method)
         try:
             token_from_db = self.db.get_one(username=username)
@@ -1026,11 +1061,11 @@ class Instance(Base):
         if token_from_db:
             # replace with fresh token
             MODULE.info("send_token(): Updating token for user '%s'...", username)
-            self.db.update_token(username, method, token)
+            self.db.update_token(username, method, token, token_type)
         else:
             # store a new token
             MODULE.info("send_token(): Adding new token for user '%s'...", username)
-            self.db.insert_token(username, method, token)
+            self.db.insert_token(username, method, token, token_type)
         try:
             self._call_send_msg_plugin(username, method, address, token, user_properties)
         except Exception:
