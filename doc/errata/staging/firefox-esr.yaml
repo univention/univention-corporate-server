@@ -1,0 +1,33 @@
+product: ucs
+release: "5.2"
+version: [5, 6]
+scope: ucs_5.2-0-errata5.2-6
+src: firefox-esr
+fix: 140.15.0esr-1~deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-75874 (CVSS score 10.0 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H).
+ * CVE-2026-84143 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-84121, CVE-2026-84119 (CVSS score 9.6 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H).
+ * CVE-2026-84131, CVE-2026-16371, CVE-2026-16365 (CVSS score 8.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2026-84145 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2026-84124, CVE-2026-84122, CVE-2026-84120 (CVSS score 5.4 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N).
+bug: [59913]
+cve:
+- CVE-2026-75874
+- CVE-2026-16365
+- CVE-2026-84119
+- CVE-2026-84120
+- CVE-2026-84121
+- CVE-2026-84122
+- CVE-2026-84124
+- CVE-2026-16371
+- CVE-2026-84131
+- CVE-2026-84143
+- CVE-2026-84145
