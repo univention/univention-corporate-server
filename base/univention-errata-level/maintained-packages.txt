@@ -1951,6 +1951,10 @@ libgraphite2-3
 libgraphite2-dev
 libgraphite2-doc
 libgraphite2-utils
+libgrpc++-dev
+libgrpc++1.51
+libgrpc-dev
+libgrpc29
 libgs-common
 libgs-dev
 libgs10
@@ -3435,6 +3439,11 @@ linux-headers-6.1.0-49-cloud-amd64
 linux-headers-6.1.0-49-common
 linux-headers-6.1.0-49-common-rt
 linux-headers-6.1.0-49-rt-amd64
+linux-headers-6.1.0-52-amd64
+linux-headers-6.1.0-52-cloud-amd64
+linux-headers-6.1.0-52-common
+linux-headers-6.1.0-52-common-rt
+linux-headers-6.1.0-52-rt-amd64
 linux-headers-amd64
 linux-headers-cloud-amd64
 linux-headers-rt-amd64
@@ -3510,6 +3519,12 @@ linux-image-6.1.0-49-cloud-amd64
 linux-image-6.1.0-49-cloud-amd64-unsigned
 linux-image-6.1.0-49-rt-amd64
 linux-image-6.1.0-49-rt-amd64-unsigned
+linux-image-6.1.0-52-amd64
+linux-image-6.1.0-52-amd64-unsigned
+linux-image-6.1.0-52-cloud-amd64
+linux-image-6.1.0-52-cloud-amd64-unsigned
+linux-image-6.1.0-52-rt-amd64
+linux-image-6.1.0-52-rt-amd64-unsigned
 linux-image-amd64
 linux-image-amd64-signed-template
 linux-image-cloud-amd64
@@ -3531,6 +3546,7 @@ linux-support-6.1.0-38
 linux-support-6.1.0-41
 linux-support-6.1.0-43
 linux-support-6.1.0-49
+linux-support-6.1.0-52
 lld-14
 lld-15
 lldb-14
@@ -3668,7 +3684,6 @@ nagios-nrpe-server
 nagios-plugins-contrib
 nano
 nano-tiny
-nats-py
 nbd-client
 nbd-server
 ncat
@@ -3938,6 +3953,7 @@ pristine-tar
 procps
 protobuf-c-compiler
 protobuf-compiler
+protobuf-compiler-grpc
 psl
 psl-make-dafsa
 psmisc
@@ -3985,6 +4001,7 @@ python-markdown-doc
 python-nacl-doc
 python-openssl-doc
 python-paste-doc
+python-pbr-doc
 python-pexpect-doc
 python-pil-doc
 python-ply-doc
@@ -4006,6 +4023,7 @@ python-requests-toolbelt-doc
 python-setuptools-doc
 python-six-doc
 python-sqlalchemy-doc
+python-tenacity-doc
 python-tornado-doc
 python-webob-doc
 python-xmlschema-doc
@@ -4034,11 +4052,13 @@ python3-ceph
 python3-ceph-argparse
 python3-ceph-common
 python3-cephfs
+python3-cerbos
 python3-certifi
 python3-cffi
 python3-cffi-backend
 python3-chardet
 python3-charset-normalizer
+python3-circuitbreaker
 python3-clang-14
 python3-clang-15
 python3-click
@@ -4047,6 +4067,7 @@ python3-configobj
 python3-cracklib
 python3-cryptography
 python3-cssselect
+python3-dataclasses-json
 python3-dateutil
 python3-debconf
 python3-debian
@@ -4079,6 +4100,8 @@ python3-gpg
 python3-graphite2
 python3-greenlet
 python3-gridfs
+python3-grpc-tools
+python3-grpcio
 python3-h11
 python3-h2
 python3-hpack
@@ -4126,12 +4149,16 @@ python3-mako
 python3-markdown
 python3-markdown-it
 python3-markupsafe
+python3-marshmallow
+python3-marshmallow-doc
+python3-marshmallow-enum
 python3-mdurl
 python3-memcache
 python3-mimeparse
 python3-minimal
 python3-more-itertools
 python3-msgpack
+python3-mypy-extensions
 python3-mysqldb
 python3-nacl
 python3-nats
@@ -4149,6 +4176,7 @@ python3-pam
 python3-paramiko
 python3-passlib
 python3-paste
+python3-pbr
 python3-pexpect
 python3-pil
 python3-pil.imagetk
@@ -4220,11 +4248,14 @@ python3-talloc
 python3-talloc-dev
 python3-tdb
 python3-tempita
+python3-tenacity
 python3-texttable
 python3-tk
 python3-tornado
 python3-trml2pdf
+python3-typeshed
 python3-typing-extensions
+python3-typing-inspect
 python3-tz
 python3-tzlocal
 python3-unbound
@@ -4356,6 +4387,8 @@ ruby-bundler
 ruby-dev
 ruby-full
 ruby-google-protobuf
+ruby-grpc
+ruby-grpc-tools
 ruby-net-telnet
 ruby-rubygems
 ruby-sdbm
@@ -4797,6 +4830,7 @@ univention-fetchmail-schema
 univention-firewall
 univention-group-membership-cache
 univention-grub
+univention-guardian-server
 univention-heimdal-common
 univention-heimdal-kdc
 univention-heimdal-member
