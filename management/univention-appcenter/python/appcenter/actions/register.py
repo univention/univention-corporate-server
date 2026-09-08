@@ -11,6 +11,7 @@ import os.path
 import re
 import shutil
 import time
+from argparse import SUPPRESS
 from optparse import Values
 
 from ldap.dn import dn2str, str2dn
@@ -54,6 +55,7 @@ class Register(CredentialsAction):
         parser.add_argument('--listener', dest='register_task', action='append_const', const='listener', help='Adding listener for App')
         parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
         parser.add_argument('--undo-it', dest='do_it', action='store_false', default=None, help='Undo any registrations, disregarding installation status')
+        parser.add_argument('--force-undo-listener', dest='force_undo_listener', action='store_true', default=False, help=SUPPRESS)
         parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the App that shall be registered')
 
     def main(self, args):
@@ -253,7 +255,7 @@ class Register(CredentialsAction):
             if self._do_register(app, args):
                 restart = self._register_listener(app, delay=True) or restart
             else:
-                meta_file = self._unregister_listener(app, delay=True)
+                meta_file = self._unregister_listener(app, delay=True, force=args.force_undo_listener)
                 if meta_file:
                     restart = True
                     meta_files.append(meta_file)
@@ -306,8 +308,8 @@ class AppListener(AppListener):
             self._subprocess(['systemctl', 'stop', 'univention-appcenter-listener-converter@%s.service' % app.id])
             self._subprocess(['systemctl', 'disable', 'univention-appcenter-listener-converter@%s.service' % app.id])
 
-    def _unregister_listener(self, app, delay=False):
-        if app.listener_udm_modules:
+    def _unregister_listener(self, app, delay=False, force=False):
+        if app.listener_udm_modules or force:
             listener_file = '/usr/lib/univention-directory-listener/system/%s.py' % app.id
             listener_meta_file = '/var/lib/univention-directory-listener/handlers/%s' % app.id
             if os.path.exists(listener_file):
