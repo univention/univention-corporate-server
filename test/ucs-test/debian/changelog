@@ -1,3 +1,10 @@
+ucs-test (12.6.55) unstable; urgency=medium
+
+  * Bug #59781: Test the "configure --list" output for unset, set, and
+    unreadable settings
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 04 Sep 2026 13:05:00 +0200
+
 ucs-test (12.6.54) unstable; urgency=medium
 
   * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst (test all

@@ -1,3 +1,9 @@
+univention-appcenter (11.6.10) unstable; urgency=medium
+
+  * Bug #59781: Report unset app settings as unset in "configure --list"
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 04 Sep 2026 11:32:28 +0200
+
 univention-appcenter (11.6.9) unstable; urgency=medium
 
   * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst

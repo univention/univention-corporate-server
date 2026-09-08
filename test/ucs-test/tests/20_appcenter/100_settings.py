@@ -12,6 +12,7 @@ import re
 import stat
 import subprocess
 from contextlib import contextmanager
+from types import SimpleNamespace
 
 import pytest
 
@@ -20,7 +21,7 @@ from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.docker import Docker
 from univention.appcenter.log import log_to_logfile, log_to_stream
-from univention.appcenter.settings import SettingValueError
+from univention.appcenter.settings import BoolSetting, FileSetting, SettingValueError, StringSetting
 from univention.appcenter.ucr import ucr_get, ucr_save
 
 import appcentertest as app_test
@@ -643,3 +644,45 @@ def test_outside_settings_in_preinst(outside_test_app):
         is_installed = app.is_installed()
     univention.config_registry.handler_unset(settings_unset)
     assert is_installed
+
+
+@pytest.mark.parametrize('setting_class', [StringSetting, BoolSetting, FileSetting])
+@pytest.mark.parametrize('state', ['unset', 'set', 'stopped'])
+def test_list_setting_storage_state(monkeypatch, tmp_path, setting_class, state):
+    configure = get_action('configure')()
+    import univention.appcenter.actions.configure as configure_module
+    import univention.appcenter.settings as settings_module
+
+    filename = tmp_path / 'setting.conf'
+    setting = setting_class(name='test/list', description='QA', initial_value='true', filename=str(filename))
+    if state == 'set':
+        filename.write_text('')
+    monkeypatch.setattr(settings_module, 'ucr_get', lambda name: 'false' if state == 'set' else None)
+    monkeypatch.setattr(configure_module, 'app_is_running', lambda app: False)
+    app = SimpleNamespace(docker=state == 'stopped', is_installed=lambda: True, get_settings=lambda: [setting])
+    lines = []
+    monkeypatch.setattr(configure, 'log', lines.append)
+    configure.main(SimpleNamespace(app=app, list=True))
+    if state == 'stopped':
+        assert 'test/list: <unknown>' in lines[-1]
+    elif state == 'unset':
+        assert 'test/list: <unset> [initial value:' in lines[-1]
+        if setting_class is FileSetting:
+            assert '4 bytes' in lines[-1]
+            assert 'true' not in lines[-1]
+    elif setting_class is FileSetting:
+        assert 'contains 0 bytes' in lines[-1]
+    elif setting_class is BoolSetting:
+        assert 'test/list: False' in lines[-1]
+    else:
+        assert "test/list: 'false'" in lines[-1]
+
+
+def test_preserve_unset_bool_read(monkeypatch):
+    import univention.appcenter.settings as settings_module
+
+    monkeypatch.setattr(settings_module, 'ucr_get', lambda name: None)
+    setting = BoolSetting(name='test/missing-bool')
+    app = SimpleNamespace(docker=False)
+    assert setting.get_value(app, preserve_unset=True) is None
+    assert setting.get_value(app) is False

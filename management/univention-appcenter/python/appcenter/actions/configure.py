@@ -15,7 +15,7 @@ from univention.appcenter.actions.install_base import StoreConfigAction
 from univention.appcenter.exceptions import ConfigureFailed
 from univention.appcenter.settings import FileSetting, SettingValueError
 from univention.appcenter.ucr import ucr_save
-from univention.appcenter.utils import get_locale
+from univention.appcenter.utils import app_is_running, get_locale
 
 
 class Configure(UniventionAppAction):
@@ -34,15 +34,30 @@ class Configure(UniventionAppAction):
 
     def main(self, args):
         if args.list:
+            inside_readable = not args.app.docker or app_is_running(args.app)
+            if args.app.is_installed() and not inside_readable:
+                self.warn('%s is not running. Settings stored inside the container cannot be read.' % args.app)
             for setting in args.app.get_settings():
-                phase = 'Settings'
-                if args.app.is_installed():
-                    phase = 'Install'
-                value = setting.get_value(args.app, phase)
-                if isinstance(setting, FileSetting):
-                    value = 'File %s contains %s bytes' % (setting.filename, len(value or ''))
+                if args.app.is_installed() and not inside_readable and not setting.is_outside(args.app):
+                    value = '<unknown>'
                 else:
-                    value = repr(value)
+                    value = setting.get_value(args.app, preserve_unset=True)
+                    if value is not None:
+                        if isinstance(setting, FileSetting):
+                            value = 'File %s contains %s bytes' % (setting.filename, len(value))
+                        else:
+                            value = repr(value)
+                    else:
+                        value = '<unset>'
+                        try:
+                            initial_value = setting.get_initial_value(args.app)
+                        except SettingValueError:
+                            initial_value = None
+                        if initial_value is not None:
+                            if isinstance(setting, FileSetting):
+                                value = '%s [initial value: %s bytes]' % (value, len(initial_value))
+                            else:
+                                value = '%s [initial value: %r]' % (value, initial_value)
                 self.log('%s: %s (%s)' % (setting.name, value, setting.description))
         else:
             self.log('Configuring %s' % args.app)
