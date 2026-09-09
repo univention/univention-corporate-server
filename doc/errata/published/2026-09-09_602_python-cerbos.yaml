@@ -9,3 +9,6 @@ desc: |
  * Cerbos Python SDK - Python clients for accessing Cerbos.
    Only supports HTTP client (not gRPC) for UCS.
 bug: [59901]
+erratum: 602
+announced: 2026-09-09
+support: core
