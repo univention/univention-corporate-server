@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * The DOMpurify library has been upgraded to the latest version (2.5.9).
 bug: [59808]
+erratum: 606
+announced: 2026-09-09
+support: core
