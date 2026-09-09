@@ -10,3 +10,6 @@ desc: |
    replacing the OPA-based Guardian entirely.
    This component is intended for internal use with Univention software only.
 bug: [59669]
+erratum: 604
+announced: 2026-09-09
+support: core
