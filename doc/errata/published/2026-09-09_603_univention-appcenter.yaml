@@ -10,3 +10,6 @@ desc: |
    been added. This allows the forced removal of a listener
    module and the listener-trigger service.
 bug: [59919]
+erratum: 603
+announced: 2026-09-09
+support: core
