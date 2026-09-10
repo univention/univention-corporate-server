@@ -1094,6 +1094,11 @@ RADIUS
   instead of inheriting unverified settings from the outer tunnel ("anonymous
   login", :uv:bug:`59456`).
 
+* The performance of NTLM authentication with RADIUS has been significantly
+  improved, reducing authentication times and CPU load under high request
+  volumes. The ``univention-radius-ntlm-auth`` helper has been rewritten in
+  Rust for this purpose (:uv:bug:`59042`).
+
 .. _changelog-service-pam:
 
 PAM / Local group cache
