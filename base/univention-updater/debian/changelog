@@ -1,8 +1,9 @@
-univention-updater (17.7.0) UNRELEASED; urgency=medium
+univention-updater (17.7.0) unstable; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump
+  * Bug #59723: Adapt links and components for 5.2-7
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:53 +0300
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 17:35:07 +0300
 
 univention-updater (17.6.1) unstable; urgency=medium
 
