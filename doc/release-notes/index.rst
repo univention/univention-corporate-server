@@ -13,7 +13,7 @@ Publication date of UCS |release|: 2026-06-16
 Release highlights
 ******************
 
-|UCSUCS| 5.2-6 is available.
+|UCSUCS| 5.2-7 is available.
 It includes feature improvements, extensions, and bug fixes.
 The following overview highlights the most important changes:
 
@@ -138,10 +138,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-6{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-7{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.2-6{.gpg,} && bash pre-update-checks-5.2-6
+   $ apt-key verify pre-update-checks-5.2-7{.gpg,} && bash pre-update-checks-5.2-7
 
    ...
 
@@ -233,7 +233,7 @@ Changelog
 *********
 
 You can find the changes since UCS 5.2-5 in
-:external+uv-changelog-5.2-6:doc:`index`.
+:external+uv-changelog-5.2-7:doc:`index`.
 
 .. _biblio:
 
