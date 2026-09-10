@@ -1,3 +1,9 @@
+univention-authorization (1.5.0) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:47 +0300
+
 univention-authorization (1.4.0) UNRELEASED; urgency=medium
 
   * Bug #59324: UCS 5.2-6 version bump

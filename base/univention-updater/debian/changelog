@@ -1,3 +1,9 @@
+univention-updater (17.7.0) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:53 +0300
+
 univention-updater (17.6.1) unstable; urgency=medium
 
   * Bug #59324: Fix net-installer update check matching not-installed packages

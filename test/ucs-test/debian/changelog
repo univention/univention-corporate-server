@@ -1,3 +1,9 @@
+ucs-test (12.7.0) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:37 +0300
+
 ucs-test (12.6.54) unstable; urgency=medium
 
   * Bug #59895: Add appcenter flag MustBeInstalledOnPrimaryFirst (test all

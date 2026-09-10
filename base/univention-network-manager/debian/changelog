@@ -1,3 +1,9 @@
+univention-network-manager (14.7.0) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:54 +0300
+
 univention-network-manager (14.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

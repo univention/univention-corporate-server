@@ -1,3 +1,9 @@
+univention-radius (9.7.0) UNRELEASED; urgency=medium
+
+  * Bug #59722: UCS 5.2-7 version bump
+
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:48 +0300
+
 univention-radius (9.6.2) unstable; urgency=medium
 
   * Bug #59456: only update outer.session-state when an outer request
