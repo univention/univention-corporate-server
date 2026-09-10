@@ -1,8 +1,9 @@
-univention-dvd (7.7.0) UNRELEASED; urgency=medium
+univention-dvd (7.7.0) unstable; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump
+  * Bug #59729: UCS-5.2-7 ISO
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:55 +0300
+ -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 17:41:57 +0300
 
 univention-dvd (7.6.0) unstable; urgency=medium
 
