@@ -168,11 +168,22 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     def authenticate(self, authorization: str) -> bool:
         """Parse HTTP Authorization header and authenticates with it"""
-        if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
-            auth_type, username, userdn, password = shared_memory.authenticated[authorization]
-            already_authenticated = True
-        else:
-            already_authenticated = False
+        already_authenticated = False
+        if authorization in shared_memory.authenticated:
+            try:
+                auth_type, username, userdn, password = shared_memory.authenticated[
+                    authorization
+                ]
+                already_authenticated = True
+            except KeyError:
+                # guard against concurrent cache entry removal between membership check and item read
+                pass
+            except (TypeError, ValueError):
+                log.warning(
+                    "Discarding malformed auth cache entry for this Authorization header.",
+                )
+                shared_memory.authenticated.pop(authorization, None)
+        if not already_authenticated:
             username = userdn = password = None
             auth_type = None
             if authorization.lower().startswith('basic '):

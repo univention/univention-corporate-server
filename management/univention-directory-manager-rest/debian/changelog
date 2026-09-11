@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.7.1) UNRELEASED; urgency=medium
+
+  * Bug #59702: handle malformed auth cache entries gracefully
+
+ -- Oliver Gondring <oliver.gondring@univention.de>  Fri, 11 Sep 2026 13:31:16 +0200
+
 univention-directory-manager-rest (12.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump
