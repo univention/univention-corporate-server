@@ -980,16 +980,8 @@ Modules for system settings / setup wizard
   (:uv:bug:`59759`).
 
 * The IP address registration during system startup no longer incorrectly
-  reports a host's existing IP address as already in use (:uv:bug:`53252`).
-
-* A regression from erratum 551 caused that the IP address of servers managed
-  via DHCP were registered in the host records for ``ucs-sso-ng``, ``gc._msdcs``,
-  "DomainDnsZones" and "ForestDnsZones" even if the corresponding services
-  weren't installed on that host. The automatic IP registration now checks
-  again that the records are only changed if the current IP address of the
-  server is part of the record. Additionally, automatic updates of the SSO DNS
-  record now correctly honor the UCR variable
-  ``keycloak/server/sso/autoregistration`` (:uv:bug:`59759`).
+  reports a host's existing IP address as already in use (:uv:bug:`53252`,
+  :uv:bug:`59759`).
 
 .. _changelog-umc-user:
 
