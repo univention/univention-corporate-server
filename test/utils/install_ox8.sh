@@ -17,30 +17,28 @@ LDAP_BASE="$(ucr get ldap/base)"
 
 # install OX 8 (kubernetes)
 # see https://git.knut.univention.de/univention/prof-services/team-enterprise/zit-sh/-/issues/56
-curl -LO https://dl.k8s.io/release/v1.36.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
 curl -LO https://get.helm.sh/helm-v3.16.2-linux-amd64.tar.gz && tar -zxvf helm-v3.16.2-linux-amd64.tar.gz && mv linux-amd64/helm /usr/local/bin/helm
-curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.24.0/kind-linux-amd64 && chmod +x ./kind && mv ./kind /usr/local/bin/kind
 
 # for debugging only
 curl -LO https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
 
-apt install --yes docker.io
-kind create cluster
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik" sh -
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+mkdir -p /root/.kube && ln -sf /etc/rancher/k3s/k3s.yaml /root/.kube/config
+ln -sf /usr/local/bin/k3s /usr/local/bin/kubectl
 kubectl create namespace as8
 apt update
 apt install --yes jq
 apt install --yes git
-helm plugin install https://github.com/databus23/helm-diff --version 3.12.5
-helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
-helm repo update
-helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
+helm plugin install https://github.com/databus23/helm-diff --version 3.12.5 || true
 curl -Lo ./yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && chmod +x ./yq && mv ./yq /usr/local/bin/yq
 apt install --yes python3-venv
 # Use operations-guide mirrored by Nautilus team instead of upstream
 # Parametrize this clone can be a future improvement
-git clone --depth 1 --branch "ci-0.0.2" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+#git clone --depth 1 --branch "ci-0.0.2" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+git clone --depth 1 https://gitlab.open-xchange.com/appsuite/operation-guides.git
 
-cd ox-operations-guide-mirror
+cd operation-guides
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
 v/bin/pip install -r requirements.txt
@@ -127,13 +125,10 @@ v/bin/python vault.py -c -v "./rendered/values/vault.json" -s "ldap.readpw.appsu
 # ldap.readpw.dovecot (password of oxSystemUser is used for authentication)
 v/bin/python vault.py -c -v "./rendered/values/vault.json" -s "ldap.readpw.dovecot=univention"
 
-v/bin/python render.py --values values.yaml
+v/bin/python render.py --rendered rendered/values --values values.yaml
 
 # mail_server variable is used in appsuite and postfix but postfix does not support port so remove it manually
 yq -i ".postconf.lmtp_target = \"dovecot-ce\"" rendered/values/values.postfix.yaml
-
-# workaround for bitnami moving their images
-yq -i ".image.repository = \"bitnamilegacy/redis\"" rendered/values/values.bitnami-redis.yaml
 
 # more cpu for middleware -> not needed features
 yq -i ".core-guidedtours.enabled = false" rendered/values/values.yaml
@@ -147,7 +142,7 @@ cd rendered/values
 # run install in a subshell it might change environment, sometimes kubectl is no longer found after calling it
 (./install.sh)
 
-cluster_ip="$(kubectl get nodes -o wide | awk '/kind-control-plane/ {print $6}')"
+cluster_ip="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')"
 ucr set "hosts/static/$cluster_ip=as8.lab.test"
 
 # certs
