@@ -818,9 +818,9 @@ OpenLDAP
 ========
 
 * The directory replication OID skip list has been extended for OpenLDAP 2.6 to
-  allow mixed environements with UCS 5.3 (:uv:bug:`59532`).
+  allow mixed environments with UCS 5.3 (:uv:bug:`59532`).
 
-* The configuration of the OpenLDAP "memberof" overlay has been merged into the
+* The configuration of the OpenLDAP ``memberof`` overlay has been merged into the
   ``univention-ldap-server`` package. This package is now an empty transitional
   package and can be safely removed (:uv:bug:`47464`).
 
@@ -830,7 +830,7 @@ Listener/Notifier domain replication
 ------------------------------------
 
 * The directory replication OID skip list has been extended for OpenLDAP 2.6 to
-  allow mixed environements with UCS 5.3 (:uv:bug:`59532`).
+  allow mixed environments with UCS 5.3 (:uv:bug:`59532`).
 
 * The Univention Directory Listener shutdown handling has been made signal-safe
   to avoid segmentation faults when terminating while embedded Python handler
@@ -869,7 +869,7 @@ LDAP Directory Manager
 
 * Invalid data in LDAP may lead to crashing functionality in UDM if the
   experimental feature for delegative administration is enabled. Those
-  properties are now ignored from being evaludated in delegative administation
+  properties are now ignored from being evaluated in delegative administration
   (:uv:bug:`59560`).
 
 * The performance of object processing has been improved by reducing the
@@ -909,8 +909,8 @@ LDAP Directory Manager
 
 * The default authorization role ``udm:default-roles:helpdesk-operator`` for the
   experimental delegative administration feature was missing read permissions
-  for mandatory user properties (username, lastname, primaryGroup, unixhome,
-  mailForwardCopyToSelf). This caused errors when opening or saving user
+  for mandatory user properties (``username``, ``lastname``, ``primaryGroup``, ``unixhome``,
+  ``mailForwardCopyToSelf``). This caused errors when opening or saving user
   objects in UMC as a helpdesk operator (:uv:bug:`59673`).
 
 .. _changelog-umc:
@@ -955,11 +955,11 @@ Univention App Center
 * The App Center has been adapted to be compatible with future ``ruamel.yaml``
   API deprecations (:uv:bug:`59521`).
 
-* The appcenter UMC module is now able to handle the installation of new
+* The App Center UMC module is now able to handle the installation of new
   dependencies during the upgrade of an app (:uv:bug:`59717`).
 
-* An Appcenter setting has been added which allows an App to specify whether it
-  should be installed on primary first. This is only valueable for Apps that
+* An App Center setting has been added which allows an App to specify whether it
+  should be installed on primary first. This is only valuable for Apps that
   can be installed multiple times in the domain (:uv:bug:`59895`).
 
 * An internal flag for ``univention-app register listener`` has been added. This
@@ -972,7 +972,7 @@ Modules for system settings / setup wizard
 ==========================================
 
 * The system setup no longer selects the ``univention-ldap-overlay-memberof``
-  package for installation, as the OpenLDAP "memberof" overlay configuration is
+  package for installation, as the OpenLDAP ``memberof`` overlay configuration is
   now part of the ``univention-ldap-server`` package (:uv:bug:`47464`).
 
 * Automatic DNS updates of the SSO record during IP address changes now
@@ -983,7 +983,7 @@ Modules for system settings / setup wizard
   reports a host's existing IP address as already in use (:uv:bug:`53252`).
 
 * A regression from erratum 551 caused that the IP address of servers managed
-  via DHCP were registered in the host records for "ucs-sso-ng", "gc._msdcs",
+  via DHCP were registered in the host records for ``ucs-sso-ng``, ``gc._msdcs``,
   "DomainDnsZones" and "ForestDnsZones" even if the corresponding services
   weren't installed on that host. The automatic IP registration now checks
   again that the records are only changed if the current IP address of the
@@ -1066,7 +1066,7 @@ SAML
 * Future compatibility for API changes in more recent ``python-keycloak``
   versions has been added (:uv:bug:`59517`).
 
-* The crudesaml package epoch has been increased to ensure a valid upgrade path
+* The :program:`crudesaml` package epoch has been increased to ensure a valid upgrade path
   to UCS 5.3 and restore the original upstream package version
   (:uv:bug:`59511`).
 
@@ -1082,7 +1082,7 @@ IMAP services
 
 * The configuration file ``/etc/dovecot/conf.d/90-sieve-extprograms.conf`` has
   been added as UCR template so that upgrades to UCS 5.3 with Dovecot 2.4 will
-  write a compatible configfile (:uv:bug:`59520`).
+  write a compatible configuration file (:uv:bug:`59520`).
 
 .. _changelog-service-radius:
 
@@ -1125,12 +1125,12 @@ Services for Windows
 Samba
 =====
 
-* Windows domain trust validation could fail due to winbindd getting stuck
-  attemting an SMB connection even when that was neither necessary nor possible
+* Windows domain trust validation could fail due to ``winbindd`` getting stuck
+  attempting an SMB connection even when that was neither necessary nor possible
   with the MS AD (e.g. if ``Require NTLMv2 session security`` was activated
   there, :uv:bug:`59601`).
 
-* Windows clients had issues opening symlinks with Samba 4.24. This has been
+* Windows clients had issues opening symbolic links with Samba 4.24. This has been
   fixed (:uv:bug:`59706`).
 
 .. _changelog-win-s4c:
@@ -1155,12 +1155,12 @@ Univention Active Directory Connection
 * The AD Connector now retries primary group synchronization after the
   corresponding group becomes available in AD (:uv:bug:`59694`).
 
-* The allowfilter and ignorefilter settings from the AD Connector now support
+* The ``allowfilter`` and ``ignorefilter`` settings from the AD Connector now support
   basic substring matching for values e.g ``*string*`` (:uv:bug:`59701`).
 
-* During password synchroization from Active Directory towards UCS, the
+* During password synchronization from Active Directory towards UCS, the
   Kerberos keys will now be synchronized by the AD-Connector per default. This
-  results in securer Keytypes to be usable in UCS when the password of a user
+  results in securer key types to be usable in UCS when the password of a user
   has been changed in Active Directory (:uv:bug:`57689`).
 
 .. _changelog-other:
