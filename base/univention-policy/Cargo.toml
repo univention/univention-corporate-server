@@ -1,7 +1,7 @@
 [package]
 name = "univentionpolicy"
 links = "univentionpolicy"
-version = "13.5.0"
+version = "14.0.1"
 edition = "2021"
 
 [lib]
@@ -12,7 +12,7 @@ crate-type = ["lib"]
 [dependencies]
 libc = "0.2"
 log = "0.4"
-univentionconfig = "17"
+univentionconfig = "18"
 
 [build-dependencies]
-bindgen = "0.60.1"
+bindgen = "0.71.1"
