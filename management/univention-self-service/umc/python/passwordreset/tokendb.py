@@ -52,15 +52,15 @@ class TokenDB:
         self.conn.commit()
         cur.close()
 
-    def insert_token(self, username, method, token):
-        sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
-        data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
+    def insert_token(self, username, method, token, token_type="password_reset"):
+        sql = "INSERT INTO tokens (username, method, timestamp, token, token_type) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s, %(token_type)s);"
+        data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token, "token_type": token_type}
         with self.cursor() as cur:
             cur.execute(sql, data)
 
-    def update_token(self, username, method, token):
-        sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
-        data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
+    def update_token(self, username, method, token, token_type="password_reset"):
+        sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s, token_type=%(token_type)s WHERE username=%(username)s;"
+        data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token, "token_type": token_type}
         with self.cursor() as cur:
             cur.execute(sql, data)
 
@@ -95,6 +95,7 @@ class TokenDB:
 username VARCHAR(255) NOT NULL,
 method VARCHAR(255) NOT NULL,
 timestamp TIMESTAMP NOT NULL,
+token_type VARCHAR(255) NOT NULL DEFAULT 'password_reset',
 token VARCHAR(255) NOT NULL);""")
             cur.execute("ALTER TABLE tokens ADD CONSTRAINT unique_id UNIQUE (id);")
             cur.execute("ALTER TABLE tokens ADD CONSTRAINT unique_username UNIQUE (username);")
