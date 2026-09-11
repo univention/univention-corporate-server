@@ -58,7 +58,7 @@ fn main() {
         // .allowlist_var("LDAP_SCOPE_ONELEVEL")
         // .allowlist_var("LDAP_SCOPE_SUBTREE")
         // .default_macro_constant_type(bindgen::MacroTypeVariation::Signed)
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()
         .expect("Unable to generate UCR bindings");
 
