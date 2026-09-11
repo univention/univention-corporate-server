@@ -6,14 +6,28 @@
 # SPDX-FileCopyrightText: 2003-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+# read /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm and /usr/share/cargo/bin/cargo !
+export CARGO_HOME=$(CURDIR)/debian/cargo_home
+export PATH := /usr/share/cargo/bin:$(PATH)
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/buildflags.mk
+include /usr/share/rustc/architecture.mk
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+export DEB_HOST_RUST_TYPE DEB_HOST_GNU_TYPE
+
 %:
-	dh $@ --with 'python3'
+	dh $@ --with 'python3,cargo'
 
 override_dh_auto_clean:
 	dh_auto_clean
 	$(RM) Makefile.in lib/Makefile.in include/Makefile.in include/univention/Makefile.in tools/Makefile.in
 	$(RM) configure
 	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
+	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "libunivention-policy0";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
+	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "libunivention-policy-dev";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
+	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "univention-policy-tools";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
+	dh_auto_clean --buildsystem cargo
 
 override_dh_auto_configure:
 	libtoolize
@@ -21,3 +35,48 @@ override_dh_auto_configure:
 	autoconf
 	automake --add-missing
 	dh_auto_configure
+	dh_auto_configure --buildsystem cargo
+
+override_dh_auto_build:
+	dh_auto_build
+	dh_auto_build --buildsystem cargo
+
+override_dh_auto_test-arch:
+	dh_auto_test
+	dh_auto_test --buildsystem cargo
+
+override_dh_auto_install:
+	dh_auto_install
+	dh_auto_install --buildsystem cargo
+	$(RM) rm -rf \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/.pybuild \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/.pytest_cache \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/autom4te.cache \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/doc \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/etc \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/include \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/lib \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/python \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/python-lib \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/scripts \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/tools \
+		debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-*/tests
+	find debian/librust-univentionpolicy-dev/usr/share/cargo/registry/univentionpolicy-* \
+		-type f \( \
+			-name 'Makefile*' -o \
+			-name '*.swp' -o \
+			-name '*.pyc' -o \
+			-name 'aclocal.m4' -o \
+			-name 'config*' -o \
+			-name 'compile' -o \
+			-name 'depcomp*' -o \
+			-name 'missing' -o \
+			-name 'install-sh' -o \
+			-name 'libtool' -o \
+			-name 'ltmain.sh' -o \
+			-name '*.pm' -o \
+			-name 'setup.py' -o \
+			-name 'setup.cfg' -o \
+			-name '.coverage' -o \
+			-name 'pytest.xml' \
+		\) -delete

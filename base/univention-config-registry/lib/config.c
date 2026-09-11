@@ -39,19 +39,15 @@ static const char *LAYERS[] = {
 
 static char *replace_variable_patterns(char *key, int recursion);
 
-static char *_get_variable(const char *key, int recursion)
+typedef int (*_layer_cb)(const char *key, const char *value, enum SCOPE scope, int recursion, void *userdata);
+
+static void _iter_all_layers(const char *prefix, _layer_cb cb, int recursion, void *userdata)
 {
 	FILE *file;
 	char *line = NULL;
-	char *nvalue;
-	int len;
-	char *ret = NULL;
+	size_t prefix_len = prefix ? strlen(prefix) : 0;
 	enum SCOPE i;
 	size_t line_capacity = 0;
-
-	len = asprintf(&nvalue, "%s: ", key);
-	if (len < 0)
-		return ret;
 
 	for (i = 0; i < ARRAY_SIZE(LAYERS); i++) {
 		const char *name = i ? LAYERS[i] : getenv("UNIVENTION_BASECONF");
@@ -66,41 +62,74 @@ static char *_get_variable(const char *key, int recursion)
 
 		while (getline(&line, &line_capacity, file) != -1)
 		{
-			if (!strncmp(line, nvalue, len))
-			{
-				char *value;
-				size_t vlen;
+			char *colon;
+			char *value;
+			size_t vlen;
 
-				value = line + len; // skip key
-				vlen = strlen(value);
-				while (vlen > 0) {
-					switch (value[vlen - 1]) {
+			/* prefix filter - NULL or empty string means match all */
+			if (prefix_len && strncmp(line, prefix, prefix_len) != 0)
+				continue;
+
+			colon = strstr(line, ": ");
+			if (!colon)
+				continue;
+
+			*colon = '\0';
+			value = colon + 2;  /* skip ": " */
+
+			/* trim trailing newline */
+			vlen = strlen(value);
+			while (vlen > 0) {
+				switch (value[vlen - 1]) {
 					case '\n':
 					case '\r':
 						value[--vlen] = '\0';
 						continue;
-					}
-					break;
 				}
+				break;
+			}
 
-				ret = strndup(value, vlen);
+			if (cb(line, value, i, recursion, userdata)) {
+				free(line);
 				fclose(file);
-
-				if (recursion > 0 && i == DEFAULT)
-					ret = replace_variable_patterns(ret, recursion);
-
-				goto done;
+				return;
 			}
 		}
 
 		fclose(file);
 	}
-
-	univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
-done:
 	free(line);
-	free(nvalue);
-	return ret;
+}
+
+static int _get_variable_cb(const char *key, const char *value, enum SCOPE scope, int recursion, void *userdata)
+{
+	char **result = userdata;
+
+	*result = strndup(value, strlen(value));
+	if (scope == DEFAULT && *result)
+		*result = replace_variable_patterns(*result, recursion);
+
+	return 1;  /* stop after first match */
+}
+
+static char *_get_variable(const char *key, int recursion)
+{
+	char *result = NULL;
+	int len;
+	char *prefix;
+
+	len = asprintf(&prefix, "%s: ", key);
+	if (len < 0)
+		return NULL;
+
+	_iter_all_layers(prefix, _get_variable_cb, recursion, &result);
+
+	if (!result)
+		univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
+
+	free(prefix);
+
+	return result;
 }
 
 char *univention_config_get_string(const char *key)
@@ -199,7 +228,88 @@ bool univention_config_is_true(const char *key, bool default_value)
 {
 	char *s = univention_config_get_string(key);
 	if (s == NULL) {
-	    return default_value;
+		return default_value;
 	}
 	return !strcasecmp(s, "yes") || !strcasecmp(s, "true") || !strcmp(s, "1") || !strcasecmp(s, "enable") || !strcasecmp(s, "enabled") || !strcasecmp(s, "on");
+}
+
+/* State for univention_config_iterate_prefix callback */
+struct _prefix_iter_state {
+	const char *prefix;
+	size_t prefix_len;
+	void (*callback)(const char *key, const char *value, void *userdata);
+	void *userdata;
+	char **seen;
+	size_t seen_count;
+	size_t seen_cap;
+	int recursion;
+};
+
+static int _prefix_iter_seen(struct _prefix_iter_state *state, const char *key)
+{
+	size_t i;
+	for (i = 0; i < state->seen_count; i++) {
+		if (strcmp(state->seen[i], key) == 0)
+			return 1;
+	}
+	return 0;
+}
+
+static void _prefix_iter_mark_seen(struct _prefix_iter_state *state, const char *key)
+{
+	if (state->seen_count >= state->seen_cap) {
+		state->seen_cap = state->seen_cap ? state->seen_cap * 2 : 16;
+		state->seen = realloc(state->seen, state->seen_cap * sizeof(char *));
+	}
+	state->seen[state->seen_count++] = strdup(key);
+}
+
+static int _prefix_iter_cb(const char *key, const char *value, enum SCOPE scope, int recursion, void *userdata)
+{
+	struct _prefix_iter_state *state = userdata;
+
+	if (_prefix_iter_seen(state, key))
+		return 0;  /* skip but continue - more keys may follow */
+
+	_prefix_iter_mark_seen(state, key);
+
+	char *result = strndup(value, strlen(value));
+	if (scope == DEFAULT && result)
+		result = replace_variable_patterns(result, recursion);
+
+	state->callback(key, result, state->userdata);
+	free(result);
+
+	return 0;  /* always continue - we want all matching keys */
+}
+
+void univention_config_iterate_prefix(
+	const char *prefix,
+	void (*callback)(const char *key, const char *value, void *userdata),
+	void *userdata
+) {
+	struct _prefix_iter_state state = {
+		.prefix = prefix,
+		.prefix_len = prefix ? strlen(prefix) : 0,
+		.callback = callback,
+		.userdata = userdata,
+		.seen = NULL,
+		.seen_count = 0,
+		.seen_cap = 0,
+		.recursion = MAX_RECURSION,
+	};
+
+	_iter_all_layers(prefix, _prefix_iter_cb, MAX_RECURSION, &state);
+
+	size_t i;
+	for (i = 0; i < state.seen_count; i++)
+		free(state.seen[i]);
+	free(state.seen);
+}
+
+void univention_config_iterate(
+    void (*callback)(const char *key, const char *value, void *userdata),
+    void *userdata
+) {
+    univention_config_iterate_prefix("", callback, userdata);
 }

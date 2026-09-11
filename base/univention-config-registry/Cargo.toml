@@ -1,0 +1,16 @@
+[package]
+name = "univentionconfig"
+links = "univentionconfig"
+version = "17.5.0"
+edition = "2021"
+
+[lib]
+name = "univentionconfig"
+path = "src/lib.rs"
+crate-type = ["lib"]
+
+[dependencies]
+libc = "0.2"
+
+[build-dependencies]
+bindgen = "0.60.1"

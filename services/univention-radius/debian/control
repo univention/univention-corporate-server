@@ -4,23 +4,37 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
+ cargo,
+ clang,
  debhelper-compat (=13),
- dh-python,
- python3-all,
- python3-debian,
- python3-passlib,
- python3-pytest,
- python3-samba,
- python3-setuptools,
- univention-config-dev (>= 15.0.3),
+ dh-cargo,
+ libldap-dev,
+ librust-chrono-0.4+clock-dev,
+ librust-cipher-dev,
+ librust-clap-3-dev,
+ librust-des-dev,
+ librust-digest-dev,
+ librust-hex-dev,
+ librust-libc-dev,
+ librust-log-dev,
+ librust-md4-dev,
+ librust-once-cell-dev,
+ librust-univentionconfig-dev,
+ librust-univentionpolicy-dev,
+ libunivention-config-dev (>= 17.7.1),
+ libunivention-policy-dev (>= 13.7.1),
+ rustc,
+ univention-config-dev (>= 17.7.1),
 
 Package: univention-radius
 Architecture: any
+Static-Built-Using: ${cargo:X-Cargo-Built-Using}
 Depends:
  freeradius,
  freeradius-ldap,
  freeradius-utils,
- python3-univention-radius,
+ libldap-2.5-0,
+ libssl3,
  shell-univention-lib (>= 9.0.11-9),
  univention-config,
  univention-directory-listener (>= 13.0.0-2),
@@ -39,18 +53,4 @@ Description: FreeRADIUS 802.1X integration package for Univention Corporate Serv
 
 Package: python3-univention-radius
 Architecture: all
-Depends:
- python3-ldap,
- python3-passlib,
- python3-samba,
- python3-univention,
- ${misc:Depends},
- ${python3:Depends},
-Description: UCS - RADIUS Python 3 modules
- This package contains Python 3 modules for the RADIUS
- integration.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: https://www.univention.de/
+Description: Transitional package

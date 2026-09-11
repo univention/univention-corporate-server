@@ -10,8 +10,22 @@ export PYBUILD_NAME=univention-config-registry
 export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
 export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
 
+# read /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm and /usr/share/cargo/bin/cargo !
+export CARGO_HOME=$(CURDIR)/debian/cargo_home
+export PATH := /usr/share/cargo/bin:$(PATH)
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/buildflags.mk
+include /usr/share/rustc/architecture.mk
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+export DEB_HOST_RUST_TYPE DEB_HOST_GNU_TYPE
+
 %:
-	dh $@ --with 'python3' --buildsystem=pybuild
+	dh $@ --with 'python3,cargo' --buildsystem=pybuild
+
+override_dh_auto_clean:
+	dh_auto_clean
+	dh_auto_clean --buildsystem cargo
 
 override_dh_auto_clean-arch:
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
@@ -25,12 +39,16 @@ override_dh_auto_configure-arch:
 	autoconf
 	automake --add-missing
 	dh_auto_configure --buildsystem autoconf
+	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "libunivention-config-dev";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
+	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "libunivention-config0";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
+	dh_auto_configure --buildsystem cargo
 
 override_dh_auto_configure-indep:
 	dh_auto_configure --buildsystem pybuild
 
 override_dh_auto_build-arch:
 	dh_auto_build --buildsystem autoconf
+	dh_auto_build --buildsystem cargo
 
 override_dh_auto_build-indep:
 	dh_auto_build --buildsystem pybuild
@@ -41,9 +59,40 @@ override_dh_auto_test-indep:
 
 override_dh_auto_test-arch:
 	$(MAKE) -C tests check
+	dh_auto_test --buildsystem cargo
 
 override_dh_auto_install-arch:
 	dh_auto_install --buildsystem autoconf
+	dh_auto_install --buildsystem cargo
+	$(RM) rm -rf \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/.pybuild \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/.pytest_cache \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/autom4te.cache \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/doc \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/etc \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/include \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/lib \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/python \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/scripts \
+		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/tests
+	find debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-* \
+		-type f \( \
+			-name 'Makefile*' -o \
+			-name '*.swp' -o \
+			-name '*.pyc' -o \
+			-name 'aclocal.m4' -o \
+			-name 'config*' -o \
+			-name 'depcomp*' -o \
+			-name 'missing' -o \
+			-name 'install-sh' -o \
+			-name 'libtool' -o \
+			-name 'ltmain.sh' -o \
+			-name '*.pm' -o \
+			-name 'setup.py' -o \
+			-name 'setup.cfg' -o \
+			-name '.coverage' -o \
+			-name 'pytest.xml' \
+		\) -delete
 
 override_dh_auto_install-indep:
 	dh_auto_install --buildsystem pybuild
