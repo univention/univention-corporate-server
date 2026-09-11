@@ -34,7 +34,7 @@ fn main() {
         .clang_arg(format!("-Iinclude"))
         .clang_arg(format!("-I/usr/include"))
         .allowlist_function("univention_config.*")
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()
         .expect("Unable to generate UCR bindings");
 
