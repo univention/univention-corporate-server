@@ -1,4 +1,4 @@
-univention-directory-manager-rest (12.7.1) UNRELEASED; urgency=medium
+univention-directory-manager-rest (12.7.1) unstable; urgency=medium
 
   * Bug #59702: handle malformed auth cache entries gracefully
 
