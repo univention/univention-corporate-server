@@ -10,22 +10,49 @@ export PYBUILD_NAME=univention-config-registry
 export PYBUILD_INSTALL_ARGS=--install-scripts=../univention-config/usr/bin/
 export PYBUILD_AFTER_INSTALL=$(RM) '{destdir}/{install_dir}/univention/__init__.py'
 
-# read /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm and /usr/share/cargo/bin/cargo !
-export CARGO_HOME=$(CURDIR)/debian/cargo_home
-export PATH := /usr/share/cargo/bin:$(PATH)
-
 include /usr/share/dpkg/architecture.mk
 include /usr/share/dpkg/buildflags.mk
 include /usr/share/rustc/architecture.mk
+
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 export DEB_HOST_RUST_TYPE DEB_HOST_GNU_TYPE
 
+# Use Debian's cargo wrapper. It makes crates installed by Debian available
+# through debian/cargo_registry and passes the Debian build flags to rustc.
+export CARGO_HOME=$(CURDIR)/debian/cargo_home
+export PATH := /usr/share/cargo/bin:$(PATH)
+
+CARGO := /usr/share/cargo/bin/cargo
+
+# The Rust bindings link against libuniventionconfig, which is built by
+# Autotools as part of the same source package. During build/test the library
+# has not been installed yet and lives in lib/.libs.
+CARGO_ENV = \
+	LIBRARY_PATH="$(CURDIR)/lib/.libs" \
+	LD_LIBRARY_PATH="$(CURDIR)/lib/.libs"
+
+# dh-cargo derives the crate installation version from debian/changelog.
+# Do the same for the manually installed librust-*-dev package.
+DEB_VERSION := $(shell dpkg-parsechangelog -SVersion)
+
+DEB_UPSTREAM_VERSION := $(shell dpkg-parsechangelog -SVersion | sed 's/-[^-]*$$//')
+CRATE_NAME := univentionconfig
+CRATE_DIR := debian/librust-univentionconfig-dev/usr/share/cargo/registry/$(CRATE_NAME)-$(DEB_UPSTREAM_VERSION)
+
+export DEB_CARGO_CRATE=$(CRATE_NAME)_$(DEB_UPSTREAM_VERSION)
+
+
 %:
-	dh $@ --with 'python3,cargo' --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild
+
 
 override_dh_auto_clean:
 	dh_auto_clean
-	dh_auto_clean --buildsystem cargo
+	$(CARGO) clean
+	$(RM) -r debian/cargo_home
+	$(RM) -r debian/cargo_registry
+	$(RM) .cargo-checksum.json
+
 
 override_dh_auto_clean-arch:
 	[ ! -f Makefile ] || $(MAKE) maintainer-clean
@@ -33,49 +60,91 @@ override_dh_auto_clean-arch:
 	$(RM) configure
 	$(RM) aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs depcomp
 
+
 override_dh_auto_configure-arch:
 	libtoolize
 	aclocal
 	autoconf
 	automake --add-missing
+
 	dh_auto_configure --buildsystem autoconf
-	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "libunivention-config-dev";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
-	sed -i '/elsif ($$package->{Architecture} ne '"'"'all'"'"')/a             next if $$package->{Package} eq "libunivention-config0";' /usr/share/perl5/Debian/Debhelper/Buildsystem/cargo.pm
-	dh_auto_configure --buildsystem cargo
+
+	# This is what the dh-cargo buildsystem normally does during configure.
+	# Keep using Debian's cargo registry instead of accessing crates.io.
+	cp debian/cargo-checksum.json .cargo-checksum.json
+	$(RM) Cargo.lock
+	$(CARGO) prepare-debian debian/cargo_registry --link-from-system
+
 
 override_dh_auto_configure-indep:
 	dh_auto_configure --buildsystem pybuild
 
+
 override_dh_auto_build-arch:
+	# Build the C library first. The Rust crate links against it.
 	dh_auto_build --buildsystem autoconf
-	dh_auto_build --buildsystem cargo
+
+	# LIBRARY_PATH makes lib/.libs/libuniventionconfig.so available to the
+	# linker while building the Rust crate.
+	$(CARGO_ENV) $(CARGO) build
+
 
 override_dh_auto_build-indep:
 	dh_auto_build --buildsystem pybuild
+
 
 override_dh_auto_test-indep:
 	pytest-3
 	tests/unwrap/test.sh
 
+
 override_dh_auto_test-arch:
 	$(MAKE) -C tests check
-	dh_auto_test --buildsystem cargo
+
+	# LIBRARY_PATH is needed while linking the Rust test executable.
+	# LD_LIBRARY_PATH is needed when cargo executes it.
+	$(CARGO_ENV) $(CARGO) test
+
 
 override_dh_auto_install-arch:
 	dh_auto_install --buildsystem autoconf
-	dh_auto_install --buildsystem cargo
-	$(RM) rm -rf \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/.pybuild \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/.pytest_cache \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/autom4te.cache \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/doc \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/etc \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/include \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/lib \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/python \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/scripts \
-		debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-*/tests
-	find debian/librust-univentionconfig-dev/usr/share/cargo/registry/univentionconfig-* \
+
+	# Install the Rust crate source.
+	#
+	# dh-cargo normally copies the complete source tree into
+	# /usr/share/cargo/registry/<crate>-<version> and then the packaging
+	# below removes files unrelated to the Rust crate. Reproduce that here
+	# without invoking Debhelper's cargo buildsystem.
+	#
+	mkdir -p $(CRATE_DIR)
+
+	find . -mindepth 1 -maxdepth 1 \
+		! -name .git \
+		! -name .pc \
+		! -name debian \
+		! -name target \
+		-exec cp -a --parents {} $(CRATE_DIR)/ \;
+
+	cp debian/cargo-checksum.json $(CRATE_DIR)/.cargo-checksum.json
+
+	# Normalize Cargo.toml as dh-cargo does for reproducible builds.
+	touch -d@$(SOURCE_DATE_EPOCH) $(CRATE_DIR)/Cargo.toml
+
+	# The source package contains C, Python and Rust code. Only retain the
+	# files belonging to the Rust crate in librust-univentionconfig-dev.
+	$(RM) -r \
+		$(CRATE_DIR)/.pybuild \
+		$(CRATE_DIR)/.pytest_cache \
+		$(CRATE_DIR)/autom4te.cache \
+		$(CRATE_DIR)/doc \
+		$(CRATE_DIR)/etc \
+		$(CRATE_DIR)/include \
+		$(CRATE_DIR)/lib \
+		$(CRATE_DIR)/python \
+		$(CRATE_DIR)/scripts \
+		$(CRATE_DIR)/tests
+
+	find $(CRATE_DIR) \
 		-type f \( \
 			-name 'Makefile*' -o \
 			-name '*.swp' -o \
@@ -94,12 +163,16 @@ override_dh_auto_install-arch:
 			-name 'pytest.xml' \
 		\) -delete
 
+
 override_dh_auto_install-indep:
 	dh_auto_install --buildsystem pybuild
 
-version := $(shell dpkg-parsechangelog -SVersion)
+
 override_dh_installinit-indep:
 	dh_installinit -i
-	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python3-univention-config-registry/usr/lib/python3/dist-packages/univention/config_registry/frontend.py
+	sed -i -e 's/@%@package_version@%@/$(DEB_VERSION)/' debian/python3-univention-config-registry/usr/lib/python3/dist-packages/univention/config_registry/frontend.py
 
-override_dh_installinit-dep: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
+
+override_dh_installinit-dep: ;
+# BUG: install -p -m755 debian/univention-config-registry.univention-config-registry \
+#      debian/univention-config-registry/etc/init.d/univention-config-registry

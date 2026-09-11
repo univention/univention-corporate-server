@@ -1,3 +1,9 @@
+univention-config-registry (17.7.2) unstable; urgency=medium
+
+  * Bug #59042: stop using dh-cargo for mixed-language package
+
+ -- Florian Best <best@univention.de>  Fri, 11 Sep 2026 12:57:58 +0200
+
 univention-config-registry (17.7.1) unstable; urgency=medium
 
   * Bug #59042: add rust library

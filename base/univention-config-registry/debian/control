@@ -8,7 +8,6 @@ Build-Depends:
  cargo:native,
  clang,
  debhelper-compat (=13),
- dh-cargo (>= 25),
  dh-python,
  libclang-dev,
  librust-bindgen+clap-dev,
