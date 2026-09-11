@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Univention GmbH
 // SPDX-License-Identifier: AGPL-3.0-only
 
-use log::{debug, info};
+use log;
 use std::collections::HashMap;
 
 use crate::utils::{decode_station_id, parse_username};
@@ -55,8 +55,8 @@ impl NetworkAccess {
         let use_ssp = ucr.is_true("radius/use-service-specific-password", false);
         let whitelisting = ucr.is_true("radius/mac/whitelisting", false);
 
-        debug!("Given username: {:?}", username);
-        debug!("Given stationId: {:?}", station_id);
+        log::debug!("Given username: {:?}", username);
+        log::debug!("Given stationId: {:?}", station_id);
 
         NetworkAccess {
             username,
@@ -164,7 +164,7 @@ impl NetworkAccess {
 
 
     pub fn check_proxy_filter_policy(&self) -> bool {
-        debug!("UCS@school RADIUS support is not installed");
+        log::debug!("UCS@school RADIUS support is not installed");
         false
     }
 
