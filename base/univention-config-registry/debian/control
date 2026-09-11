@@ -10,7 +10,6 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  libclang-dev,
- librust-bindgen+clap-dev,
  librust-bindgen-dev,
  librust-env-logger+humantime-dev,
  librust-env-logger-dev,
@@ -91,7 +90,6 @@ Package: librust-univentionconfig-dev
 Architecture: any
 Multi-Arch: same
 Depends:
- librust-bindgen+clap-dev,
  librust-bindgen-dev,
  librust-env-logger+humantime-dev,
  librust-env-logger-dev,
