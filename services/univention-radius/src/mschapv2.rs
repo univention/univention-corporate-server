@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 use des::cipher::generic_array::GenericArray;
-use des::cipher::{BlockCipher, NewBlockCipher};
+use des::cipher::{BlockEncrypt, KeyInit};
 use des::Des;
 use md4::{Digest, Md4};
 
