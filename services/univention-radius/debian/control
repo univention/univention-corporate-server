@@ -33,7 +33,7 @@ Depends:
  freeradius,
  freeradius-ldap,
  freeradius-utils,
- libldap-2.5-0,
+ libldap2,
  libssl3,
  shell-univention-lib (>= 9.0.11-9),
  univention-config,
@@ -50,7 +50,3 @@ Description: FreeRADIUS 802.1X integration package for Univention Corporate Serv
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: https://www.univention.de/
-
-Package: python3-univention-radius
-Architecture: all
-Description: Transitional package

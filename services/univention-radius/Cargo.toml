@@ -1,6 +1,6 @@
 [package]
 name = "univention-radius"
-version = "9.7.1"
+version = "10.0.1"
 edition = "2021"
 
 [[bin]]
@@ -12,17 +12,16 @@ name = "univention-radius-check-access"
 path = "src/check_access.rs"
 
 [dependencies]
-univentionpolicy = "13"
-univentionconfig = "17"
+univentionpolicy = "14"
+univentionconfig = "18"
 hex = "0.4"
-des = "0.6"
+des = "0.8"
 md4 = "0.10"
 digest = "0.10"
-# cipher = { version = "0.2", features = ["block-padding"] }
-cipher = "0.2"
+cipher = "0.4"
 libc = "0.2"
 log = "0.4"
-once_cell = "1"
+once_cell = "1.20"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
-clap = { version = "3.2", features = ["derive"] }
+clap = { version = "4.5", features = ["derive"] }
 subtle = "2"
