@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.9.8
 Build-Depends:
- cargo,
+ cargo:native,
  clang,
  debhelper-compat (=13),
  dh-cargo,
@@ -23,7 +23,7 @@ Build-Depends:
  librust-univentionpolicy-dev,
  libunivention-config-dev (>= 17.7.1),
  libunivention-policy-dev (>= 13.7.1),
- rustc,
+ rustc:native,
  univention-config-dev (>= 17.7.1),
 
 Package: univention-radius
