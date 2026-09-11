@@ -3,13 +3,10 @@
 ## Rust development
 
 The packages use the Rust crates provided and packaged by Debian, with the
-following exceptions:
+following exception:
 
 * [`rust-md4`](https://git.knut.univention.de/univention/dev/libraries/rust-md4)
   is maintained by Univention because it is not available in Debian.
-* [`rust-des`](https://git.knut.univention.de/univention/dev/libraries/rust-des)
-  is maintained by Univention because it is not available in Debian Bookworm.
-  The Debian package will be used with UCS 5.3.
 
 For information about packaging Rust crates as Debian packages and how Rust
 packages are built in Debian, refer to:
