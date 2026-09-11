@@ -1,4 +1,4 @@
-use log::{Level, Log, Metadata, Record, SetLoggerError};
+use log::{Level, Log, Metadata, Record};
 use once_cell::sync::OnceCell;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
