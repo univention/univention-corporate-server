@@ -67,8 +67,7 @@ Building a fault-tolerant domain requires two steps:
 
    Add Backup and Replica Directory Nodes to your domain.
    For more information,
-   see :external+uv-ucs-manual:ref:`domain-join`
-   in :cite:t:`ucs-manual`.
+   see :ref:`domain-infrastructure-join`.
 
 #. Configure service redundancy
 

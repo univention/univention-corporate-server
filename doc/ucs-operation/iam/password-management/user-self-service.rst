@@ -540,6 +540,6 @@ Scheduled deletion of de-registered user accounts
 
 For more information about how to set cron jobs through UCR variables,
 see
-:external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-univention-configuration-registry`.
+:ref:`system-administration-cron-ucr`.
 
 .. _ldap-generalized-time: https://ldapwiki.com/wiki/Wiki.jsp?page=GeneralizedTime
