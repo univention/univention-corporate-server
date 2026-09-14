@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apr-util
+fix: 1.5.4-3+deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-34191 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N).
+ * CVE-2026-32327 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+ * CVE-2025-49506 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-34502 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59929]
+cve:
+- CVE-2025-49506
+- CVE-2026-32327
+- CVE-2026-34191
+- CVE-2026-34502
