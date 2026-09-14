@@ -46,7 +46,7 @@ def test_login_wrong_password_fails(portal_login_via_keycloak, udm, protocol):
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_login_disabled_fails(portal_login_via_keycloak, udm, protocol):
     username = udm.create_user(disabled=1)[1]
-    assert portal_login_via_keycloak(username, 'univention', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
+    assert portal_login_via_keycloak(username, 'univention', fails_with=_('The account is disabled.'), protocol=protocol)
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])

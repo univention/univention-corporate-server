@@ -159,7 +159,7 @@ def test_udm_users_password_expire_date(udm, lo):
         'krb5KDCFlags': [KRB5KDCFLAGS_REQUIRE_AS_REQ],
         'krb5ValidEnd': [b'20150202000000Z'],
         'shadowExpire': [b'1'],
-        'userPassword': [univention.admin.password.lock_password(expected_before['userPassword'][0].decode('ASCII')).encode('ASCII')],
+        'userPassword': [expected_before['userPassword'][0]],
     })
     expected_diff = dictdiff(expected_before, expected_after)
     modify_and_check_expectation(udm, lo, expected_diff, dn=userdn, userexpiry="", disabled="1")
@@ -198,7 +198,7 @@ def test_udm_users_password_expire_date(udm, lo):
         'krb5ValidEnd': [b'20140101000000Z'],
         'krb5KDCFlags': [KRB5KDCFLAGS_REQUIRE_AS_REQ],
         'shadowExpire': [b'1'],
-        'userPassword': [univention.admin.password.lock_password(expected_before['userPassword'][0].decode('ASCII')).encode('ASCII')],
+        'userPassword': [expected_before['userPassword'][0]],
     })
     expected_diff = dictdiff(expected_before, expected_after)
     modify_and_check_expectation(udm, lo, expected_diff, dn=userdn, disabled="1")

@@ -836,7 +836,7 @@ def unmapDisabled(oldattr: dict[str, list[bytes]]) -> str:
         [
             unmapSambaDisabled(oldattr),
             unmapKerberosDisabled(oldattr),
-            unmapPosixDisabled(oldattr) or isPosixLocked(oldattr),
+            unmapPosixDisabled(oldattr),
         ],
     ):
         return '1'
@@ -844,11 +844,15 @@ def unmapDisabled(oldattr: dict[str, list[bytes]]) -> str:
 
 
 def inconsistentDisabledState(oldattr: dict[str, list[bytes]]) -> bool:
+    if isPosixLocked(oldattr):
+        # the password hash is not locked anymore since UCS 5.2-7
+        # therefore old accounts which still have it set should count as inconsistent
+        # so that the next modification will re-write the password hash
+        return True
     disabled = [
         unmapSambaDisabled(oldattr),
         unmapKerberosDisabled(oldattr),
         unmapPosixDisabled(oldattr),
-        isPosixLocked(oldattr),
     ]
     return len(set(map(bool, disabled))) > 1
 
@@ -877,7 +881,7 @@ def unmapPosixDisabled(oldattr: dict[str, list[bytes]]) -> bool:
         shadowExpire = int(oldattr['shadowExpire'][0])
     except (KeyError, ValueError):
         return False
-    return shadowExpire == 1 or shadowExpire < int(time.time() / 3600 / 24)
+    return shadowExpire == 1 or shadowExpire <= int(time.time() // 86400)
 
 
 def unmapLocked(oldattr: dict[str, list[bytes]]) -> str:
@@ -1257,45 +1261,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if key == 'locked' and inconsistentLockedState(self.oldattr):
             return True
         return super().hasChanged(key)
-
-        # if key == 'disabled':
-        #     acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
-        #     krb5Flags = self.oldattr.get('krb5KDCFlags', [])
-        #     shadowExpire = self.oldattr.get('shadowExpire', [])
-        #
-        #     if not acctFlags and not krb5Flags and not shadowExpire:
-        #         return False
-        #     if self['disabled'] == 'all':
-        #         return 'D' not in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
-        #     elif self['disabled'] == 'windows':
-        #         return 'D' not in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
-        #     elif self['disabled'] == 'kerberos':
-        #         return 'D' in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
-        #     elif self['disabled'] == 'posix':
-        #         return 'D' in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
-        #     elif self['disabled'] == 'windows_kerberos':
-        #         return 'D' not in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
-        #     elif self['disabled'] == 'windows_posix':
-        #         return 'D' not in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
-        #     elif self['disabled'] == 'posix_kerberos':
-        #         return 'D' in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
-        #     else:  # enabled
-        #         return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
-        # elif key == 'locked':
-        #     password = self['password']
-        #     acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
-        #     if not password and not acctFlags:
-        #         return False
-        #     if self['locked'] == 'all':
-        #         return not univention.admin.password.is_locked(password) or 'L' not in acctFlags
-        #     elif self['locked'] == 'windows':
-        #         return univention.admin.password.is_locked(password) or 'L' not in acctFlags
-        #     elif self['locked'] == 'posix':
-        #         return not univention.admin.password.is_locked(password) or 'L' in acctFlags
-        #     else:
-        #         return univention.admin.password.is_locked(password) or 'L' in acctFlags
-        #
-        # return super(object, self).hasChanged(key)
 
     def __update_groups(self) -> None:
         if self.exists():
@@ -1774,7 +1739,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 # do not change {SASL} password, but lock it if necessary
                 password = old_password
 
-            password_hash = univention.admin.password.lock_password(password)  # TODO: decode to let lock_password() and unlock_passowrd() return bytestring?!
+            password_hash = univention.admin.password.hash_password(password)
             if self['disabled'] != '1':
                 password_hash = univention.admin.password.unlock_password(password_hash)
             ml.append(('userPassword', old_password.encode('ASCII'), password_hash.encode('ASCII')))
@@ -2138,14 +2103,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             elif filter.value in ['posix', 'windows', 'all', 'none']:
                 if filter.value == 'all':
                     filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
-                    # filter.transform_to_conjunction(univention.admin.filter.parse(u'(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword={crypt}!*))'))
                 elif filter.value == 'windows':
                     filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
-                # elif filter.value == u'posix':
-                #    filter.variable = u'userPassword'
-                #    filter.value = u'{crypt}!*'
                 elif filter.value == 'none':
-                    # filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword={crypt}!*)))'))
                     filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'))
             elif filter.value == '*':
                 filter.variable = 'uid'

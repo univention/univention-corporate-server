@@ -1,8 +1,12 @@
-univention-directory-manager-modules (17.7.0) UNRELEASED; urgency=medium
+univention-directory-manager-modules (17.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:42 +0300
+  [ Florian Best ]
+  * Bug #59898: don't disable userPassword hash during disabling
+
+ -- Florian Best <best@univention.de>  Thu, 17 Sep 2026 17:11:23 +0200
 
 univention-directory-manager-modules (17.6.12) unstable; urgency=medium
 

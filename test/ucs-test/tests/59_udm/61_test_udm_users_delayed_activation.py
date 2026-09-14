@@ -67,9 +67,9 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
-        utils.fail("User creation failed")
+        pytest.fail("User creation failed")
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is not disabled, despite setting future accountActivationDate")
+        pytest.fail("User is not disabled, despite setting future accountActivationDate")
 
     # verify that account can't bind
     with pytest.raises(univention.admin.uexceptions.authFail):
@@ -83,7 +83,7 @@ def test_disabled_user_creation_activation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "0"})
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is still disabled, after accountActivationDate")
+        pytest.fail("User is still disabled, after accountActivationDate")
 
 
 @pytest.mark.roles('domaincontroller_master')
@@ -98,9 +98,9 @@ def test_disabled_user_creation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
-        utils.fail("User creation failed")
+        pytest.fail("User creation failed")
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is not disabled, despite setting future accountActivationDate")
+        pytest.fail("User is not disabled, despite setting future accountActivationDate")
 
     # verify that account can't bind
     with pytest.raises(univention.admin.uexceptions.authFail):
@@ -111,7 +111,7 @@ def test_disabled_user_creation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is not disabled any longer, after running univention-delayed-account-activation despite future accountActivationDate")
+        pytest.fail("User is not disabled any longer, after running univention-delayed-account-activation despite future accountActivationDate")
 
     # Now set the accountActivationDate a bit back, so the date has passed
     udm.modify_object('users/user', dn=userdn, accountActivationDate=ts_earlier)
@@ -119,7 +119,7 @@ def test_disabled_user_creation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "0"})
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is still disabled, after running univention-delayed-account-activation after accountActivationDate")
+        pytest.fail("User is still disabled, after running univention-delayed-account-activation after accountActivationDate")
 
     # verify that account can bind
     univention.admin.uldap.access(binddn=userdn, bindpw="univention", base=ucr['ldap/base'])
@@ -153,12 +153,12 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
-        utils.fail("User creation failed")
+        pytest.fail("User creation failed")
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is not disabled, despite setting future accountActivationDate")
-    except AssertionError:
+        pytest.fail("User is not disabled, despite setting future accountActivationDate")
+    except AssertionError as exc:
         print("User is not disabled, despite setting future accountActivationDate")
-        utils.fail("User is not disabled, despite setting future accountActivationDate")
+        pytest.fail("User is not disabled, despite setting future accountActivationDate: %s" % exc)
 
     # verify that account can't bind
     with pytest.raises(univention.admin.uexceptions.authFail):
@@ -168,20 +168,20 @@ def test_disabled_and_expired_user_creation(disabled_cronjob, udm, ucr):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is not disabled any longer, after running univention-delayed-account-activation despite future accountActivationDate")
+        pytest.fail("User is not disabled any longer, after running univention-delayed-account-activation despite future accountActivationDate")
 
     udm.modify_object('users/user', dn=userdn, accountActivationDate=ts_earlier)
     run_activation_script()
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User has been activated, even though it is set to expired")
+        pytest.fail("User has been activated, even though it is set to expired")
 
     # Check expectation: accountActivationDate should be cleaned up
     try:
         utils.verify_ldap_object(userdn, {'accountActivationDate': []})
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("accountActivationDate has not been cleaned up on expired account")
+        pytest.fail("accountActivationDate has not been cleaned up on expired account")
 
 
 @pytest.mark.roles('domaincontroller_master')
@@ -196,9 +196,9 @@ def test_access_to_accountActivationDate(disabled_cronjob, udm):
     try:
         udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
     except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound):
-        utils.fail("User creation failed")
+        pytest.fail("User creation failed")
     except (utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue):
-        utils.fail("User is not disabled, despite setting future accountActivationDate")
+        pytest.fail("User is not disabled, despite setting future accountActivationDate")
 
     with pytest.raises(udm_test.UCSTestUDM_ModifyUDMObjectFailed):
         udm.modify_object('users/user', dn=userdn, accountActivationDate=ts_earlier, binddn=userdn, bindpwd="univention")

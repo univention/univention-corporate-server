@@ -295,7 +295,7 @@ class TestUsers:
         assert password.startswith(b'{crypt}')
         udm.modify_object('users/user', dn=user, disabled='1')
         wait_for_connector_replication()
-        udm.verify_ldap_object(user, {'userPassword': [password.replace(b'{crypt}', b'{crypt}!')]})
+        udm.verify_ldap_object(user, {'userPassword': [password]})
         udm.modify_object('users/user', dn=user, disabled='0')
         wait_for_connector_replication()
         udm.verify_ldap_object(user, {'userPassword': [password]})
@@ -306,7 +306,7 @@ class TestUsers:
         password = lo.getAttr(user, 'userPassword')[0]
         udm.modify_object('users/user', dn=user, disabled='1')
         wait_for_connector_replication()
-        udm.verify_ldap_object(user, {'userPassword': [password.replace(b'{crypt}', b'{crypt}!')]})
+        udm.verify_ldap_object(user, {'userPassword': [password]})
         udm.modify_object('users/user', dn=user, disabled='0')
         wait_for_connector_replication()
         udm.verify_ldap_object(user, {'userPassword': [password]})
@@ -515,3 +515,26 @@ class TestUsers:
 
     def test_modlist_samba_sid(self, udm):
         pass
+
+    def test_legacy_disabled_mixed_environments(self, udm, ucr, lo):
+        """Create users/user with disabled state and ! in crypt hash"""
+        userdn, _username = udm.create_user(disabled='1')
+        password = lo.getAttr(userdn, 'userPassword')[0]
+        lo.modify(userdn, [('userPassword', [password], [password.replace(b'{crypt}', b'{crypt}!')])])
+
+        udm.verify_udm_object("users/user", userdn, {"disabled": "1"})
+
+        udm.modify_object('users/user', dn=userdn, description='test')
+        assert lo.getAttr(userdn, 'userPassword')[0].startswith(b'{crypt}!')
+
+        udm.modify_object('users/user', dn=userdn, disabled='0')
+        assert not lo.getAttr(userdn, 'userPassword')[0].startswith(b'{crypt}!')
+
+        userdn, _username = udm.create_user(disabled='0')
+        password = lo.getAttr(userdn, 'userPassword')[0]
+        lo.modify(userdn, [('userPassword', [password], [password.replace(b'{crypt}', b'{crypt}!')])])
+
+        udm.verify_udm_object("users/user", userdn, {"disabled": "0"})
+
+        udm.modify_object('users/user', dn=userdn, description='test')
+        assert not lo.getAttr(userdn, 'userPassword')[0].startswith(b'{crypt}!')
