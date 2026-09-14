@@ -284,7 +284,7 @@ Configuration through management module
 
 Configuration through Univention Configuration Registry
    You can specify the repository server URL in the UCR variable
-   :external+uv-ucs-manual:envvar:`repository/online/server`.
+   :envvar:`repository/online/server`.
    Use this approach for individual system configuration from the command line.
 
 .. _lifecycle-local-repository-policy:

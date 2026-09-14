@@ -24,10 +24,8 @@ When you update multiple UCS systems,
 you need to plan your update order carefully.
 The Primary Directory Node holds the authoritative LDAP directory service
 and replicates it to all other LDAP servers in your domain.
-Because :external+uv-ucs-manual:ref:`domain-ldap-schema` can change during release updates,
+Because :ref:`domain-infrastructure-ldap-directory-schema` can change during release updates,
 you **must always update the Primary Directory Node first**.
-
-.. TODO: Replace reference to LDAP schema after it's available in the document.
 
 Whenever possible, update all your Nubus for UCS systems in a single maintenance window.
 If you can't do this,

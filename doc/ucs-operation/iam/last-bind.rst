@@ -74,8 +74,7 @@ Schedule automatic updates
 To keep the ``lastbind`` extended attribute up to date,
 create a cron job using UCR as shown in :numref:`iam-last-bind-schedule-listing`.
 
-For more information, see :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-univention-configuration-registry`
-in :cite:t:`ucs-manual`.
+For more information, see :ref:`system-administration-cron-ucr`.
 
 .. code-block:: console
    :caption: Create cron job to regularly update the ``lastbind`` extended attribute

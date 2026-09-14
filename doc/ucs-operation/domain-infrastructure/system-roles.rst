@@ -79,8 +79,8 @@ Ubuntu
 
 You can manage Ubuntu clients in Nubus with the *Ubuntu* system role.
 For more information, see
-:external+uv-ucs-manual:ref:`computers-ubuntu`
-in :cite:t:`ucs-manual`.
+:external+uv-nubus-manual:ref:`computers-ubuntu`
+in :cite:t:`uv-nubus-manual`.
 
 .. _domain-infrastructure-system-roles-linux:
 

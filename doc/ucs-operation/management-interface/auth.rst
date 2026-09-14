@@ -56,10 +56,8 @@ To sign in, enter the *Username* and *Password* of the corresponding domain acco
 
 ``root``
    In some cases, it might be necessary to sign in with the system's local ``root`` account.
-   For more information, refer to :external+uv-ucs-manual:ref:`computers-rootaccount`.
+   For more information, refer to :ref:`system-administration-root-account`.
    The ``root`` account only enables access to management modules for the administration and configuration of the local system.
-
-   .. TODO: Replace reference to the UCS Manual, as soon as the referred section becomes available.
 
 .. _management-interface-auth-sign-in-choose-account-others:
 
@@ -212,8 +210,7 @@ Before you can use OIDC for single sign-on, you must meet the following requirem
 #. You must at least have :uv:erratum:`5.0x1118` installed throughout your Nubus for UCS domain.
 
    For information about how to upgrade, refer to
-   :external+uv-ucs-manual:ref:`software-ucs-updates`
-   in :cite:t:`ucs-manual`.
+   :ref:`lifecycle-update-strategies`.
 
 #. You must have the :program:`Keycloak` app installed in your Nubus for UCS domain.
 

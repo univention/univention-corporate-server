@@ -127,11 +127,8 @@ If a user can open a module through a *UMC policy*
 but doesn't have the necessary LDAP access rights,
 the module displays a *Permission denied* error and blocks the changes.
 
-.. TODO: Update cross-reference here after LDAP access control section has been migrated to UCS Operation Manual
-
 For information about configuring LDAP access rights,
-see :external+uv-ucs-manual:ref:`domain-ldap-acls`
-in :cite:t:`ucs-manual`.
+see :ref:`domain-infrastructure-ldap-directory-acls`.
 
 .. _management-interface-delegated-administration-configure:
 
@@ -213,6 +210,5 @@ when they sign in to the *Management UI*.
       in :cite:t:`uv-nubus-manual`
       for information about how policies work and how to manage them.
 
-   :external+uv-ucs-manual:ref:`domain-ldap-acls`
-      in :cite:t:`ucs-manual`
+   :ref:`domain-infrastructure-ldap-directory-acls`
       for information about LDAP access control lists.

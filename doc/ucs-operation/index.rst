@@ -159,11 +159,8 @@ domain-wide administrative tasks through scripts or automated processes.
 Management modules also let you configure individual computers,
 including software installation and service monitoring.
 
-.. TODO: Add cross-reference after Management UI and UDM content is available in the document. See univention/dev/ucs#2591.
-
 For detailed information about the *Management UI* and UDM commands,
-see :external+uv-ucs-manual:ref:`central-general`
-in :cite:t:`ucs-manual`.
+see :ref:`management-interface`.
 
 .. _intro-ldap-directory-service:
 
@@ -175,13 +172,10 @@ including user accounts and service configurations such as DHCP.
 Central data management in the LDAP directory eliminates duplicate data entry
 and reduces errors and inconsistencies.
 
-.. TODO: Replace this cross-reference after LDAP directory content is available in the document. See univention/dev/ucs#3326.
-
 For detailed information about LDAP schema management,
 replication topology,
 and directory node roles,
-see :external+uv-ucs-manual:ref:`domain-ldap`
-in :cite:t:`ucs-manual`.
+see :ref:`domain-infrastructure-ldap-directory`.
 
 .. _intro-policy-concept:
 
@@ -242,11 +236,8 @@ and creates the directory on the selected server.
 You can extend the listener/notifier mechanism with custom modules
 to integrate third-party products with the LDAP directory service.
 
-.. TODO: Replace this cross-reference after Listener/Notifier content is available in the document. See univention/dev/ucs#3327.
-
 For detailed information about the listener/notifier mechanism,
-see :external+uv-ucs-manual:ref:`domain-listener-notifier`
-in :cite:t:`ucs-manual`.
+see :ref:`listener-notifier`.
 
 .. _feedback:
 

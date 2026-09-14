@@ -101,8 +101,7 @@ You can configure the interval for the cron-based cache updates
 in cron syntax using the
 :envvar:`nss/group/cachefile/invalidate_interval`
 UCR variable.
-For the cron syntax, see :external+uv-ucs-manual:ref:`cron-local`
-in :cite:t:`ucs-manual`.
+For the cron syntax, see :ref:`system-administration-cron-local`.
 You can activate or deactivate the update of the group cache file
 through the *Univention Directory Listener* with the
 :envvar:`nss/group/cachefile/invalidate_on_changes`
