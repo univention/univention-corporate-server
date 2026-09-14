@@ -1,0 +1,25 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: libssh2
+fix: 1.8.0-2.1+deb10u2
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-7598 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H).
+ * CVE-2026-66032 (CVSS score 8.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2026-66034 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2025-15661 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:H).
+ * CVE-2026-58051 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H).
+bug: [59928]
+cve:
+- CVE-2025-15661
+- CVE-2026-7598
+- CVE-2026-66032
+- CVE-2026-66034
+- CVE-2026-58051
