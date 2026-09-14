@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 09:13+0000\n"
-"PO-Revision-Date: 2026-08-25 11:15+0200\n"
+"POT-Creation-Date: 2026-09-14 14:17+0000\n"
+"PO-Revision-Date: 2026-09-14 16:25+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -33,8 +33,8 @@ msgid ""
 "For information about authorization and policies, see :external+uv-nubus-"
 "manual:ref:`nubus-authorization` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Für Informationen zu Autorisierung und Richtlinien, siehe :external+uv-nubus-"
-"manual:ref:`nubus-authorization` im :cite:t:`uv-nubus-manual`."
+"Für Informationen zu Autorisierung und Richtlinien, siehe :external+uv-"
+"nubus-manual:ref:`nubus-authorization` im :cite:t:`uv-nubus-manual`."
 
 #: ../../iam/authorization-engine.rst:16
 msgid "This page covers:"
@@ -1080,9 +1080,9 @@ msgid ""
 "Directory Listener* has been inactive for 15 seconds. You can configure "
 "the interval for the cron-based cache updates in cron syntax using the "
 ":envvar:`nss/group/cachefile/invalidate_interval` UCR variable. For the "
-"cron syntax, see :external+uv-ucs-manual:ref:`cron-local` in :cite:t"
-":`ucs-manual`. You can activate or deactivate the update of the group "
-"cache file through the *Univention Directory Listener* with the "
+"cron syntax, see :ref:`system-administration-cron-local`. You can "
+"activate or deactivate the update of the group cache file through the "
+"*Univention Directory Listener* with the "
 ":envvar:`nss/group/cachefile/invalidate_on_changes` UCR variable."
 msgstr ""
 "Standardmäßig führt ein Cron-Job den Export einmal täglich aus. "
@@ -1091,13 +1091,13 @@ msgstr ""
 " Sie können das Intervall für die :spelling:word:`Cron-basierten` Cache-"
 "Aktualisierungen in Cron-Syntax mit der UCR-Variable "
 ":envvar:`nss/group/cachefile/invalidate_interval` konfigurieren. Für die "
-"Cron-Syntax siehe :external+uv-ucs-manual:ref:`cron-local` im :cite:t"
-":`ucs-manual`. Sie können die Aktualisierung der Gruppen-Cache-Datei über"
+"Cron-Syntax siehe :ref:`system-administration-cron-local`. "
+"Sie können die Aktualisierung der Gruppen-Cache-Datei über"
 " den *Univention Directory Listener* mit der UCR-Variable "
 ":envvar:`nss/group/cachefile/invalidate_on_changes` aktivieren oder "
 "deaktivieren."
 
-#: ../../iam/group-management.rst:113
+#: ../../iam/group-management.rst:112
 msgid ""
 "When the :program:`ldap-group-to-file.py` script generates the group "
 "cache file, it can verify whether the group members still exist in the "
@@ -1114,11 +1114,11 @@ msgstr ""
 "Variable :envvar:`nss/group/cachefile/check_member` auf den Wert ``true``"
 " setzen."
 
-#: ../../iam/group-management.rst:125
+#: ../../iam/group-management.rst:124
 msgid "Active Directory group synchronization"
 msgstr "Synchronisation von Gruppen mit Active Directory"
 
-#: ../../iam/group-management.rst:127
+#: ../../iam/group-management.rst:126
 msgid ""
 "If you have Samba installed in your domain of Nubus for UCS, Nubus "
 "synchronizes the group memberships between the Samba directory service "
@@ -1136,7 +1136,7 @@ msgstr ""
 "Informationen über den :program:`S4 Connector` siehe :external+uv-ucs-"
 "manual:ref:`windows-s4-connector` im :cite:t:`ucs-manual`."
 
-#: ../../iam/group-management.rst:141
+#: ../../iam/group-management.rst:140
 msgid ""
 "Samba provides Active Directory compatible functionality. It operates a "
 "dedicated LDAP directory service. The :program:`S4 Connector` "
@@ -1148,7 +1148,7 @@ msgstr ""
 "synchronisiert den LDAP-Verzeichnisdienst in Samba mit dem OpenLDAP-"
 "Verzeichnisdienst in Nubus für UCS."
 
-#: ../../iam/group-management.rst:146
+#: ../../iam/group-management.rst:145
 msgid ""
 "*Pseudo groups*, also called system groups, are exceptions to this "
 "synchronization. Only Active Directory and Samba manage such *pseudo "
@@ -1167,123 +1167,123 @@ msgstr ""
 " diese Gruppen nicht. Das Verhalten gilt für die folgenden "
 "*Pseudogruppen*:"
 
-#: ../../iam/group-management.rst:156
+#: ../../iam/group-management.rst:155
 msgid "``Anonymous Logon``"
 msgstr "``Anonymous Logon``"
 
-#: ../../iam/group-management.rst:157
+#: ../../iam/group-management.rst:156
 msgid "``Authenticated Users``"
 msgstr "``Authenticated Users``"
 
-#: ../../iam/group-management.rst:158
+#: ../../iam/group-management.rst:157
 msgid "``Batch``"
 msgstr "``Batch``"
 
-#: ../../iam/group-management.rst:159
+#: ../../iam/group-management.rst:158
 msgid "``Creator Group``"
 msgstr "``Creator Group``"
 
-#: ../../iam/group-management.rst:160
+#: ../../iam/group-management.rst:159
 msgid "``Creator Owner``"
 msgstr "``Creator Owner``"
 
-#: ../../iam/group-management.rst:161
+#: ../../iam/group-management.rst:160
 msgid "``Dialup``"
 msgstr "``Dialup``"
 
-#: ../../iam/group-management.rst:162
+#: ../../iam/group-management.rst:161
 msgid "``Digest Authentication``"
 msgstr "``Digest Authentication``"
 
-#: ../../iam/group-management.rst:163
+#: ../../iam/group-management.rst:162
 msgid "``Enterprise Domain Controllers``"
 msgstr "``Enterprise Domain Controllers``"
 
-#: ../../iam/group-management.rst:164
+#: ../../iam/group-management.rst:163
 msgid "``Everyone``"
 msgstr "``Everyone``"
 
-#: ../../iam/group-management.rst:165
+#: ../../iam/group-management.rst:164
 msgid "``IUSR``"
 msgstr "``IUSR``"
 
-#: ../../iam/group-management.rst:166
+#: ../../iam/group-management.rst:165
 msgid "``Interactive``"
 msgstr "``Interactive``"
 
-#: ../../iam/group-management.rst:167
+#: ../../iam/group-management.rst:166
 msgid "``Local Service``"
 msgstr "``Local Service``"
 
-#: ../../iam/group-management.rst:168
+#: ../../iam/group-management.rst:167
 msgid "``NTLM Authentication``"
 msgstr "``NTLM Authentication``"
 
-#: ../../iam/group-management.rst:169
+#: ../../iam/group-management.rst:168
 msgid "``Network Service``"
 msgstr "``Network Service``"
 
-#: ../../iam/group-management.rst:170
+#: ../../iam/group-management.rst:169
 msgid "``Network``"
 msgstr "``Network``"
 
-#: ../../iam/group-management.rst:171
+#: ../../iam/group-management.rst:170
 msgid "``Nobody``"
 msgstr "``Nobody``"
 
-#: ../../iam/group-management.rst:172
+#: ../../iam/group-management.rst:171
 msgid "``Null Authority``"
 msgstr "``Null Authority``"
 
-#: ../../iam/group-management.rst:173
+#: ../../iam/group-management.rst:172
 msgid "``Other Organization``"
 msgstr "``Other Organization``"
 
-#: ../../iam/group-management.rst:174
+#: ../../iam/group-management.rst:173
 msgid "``Owner Rights``"
 msgstr "``Owner Rights``"
 
-#: ../../iam/group-management.rst:175
+#: ../../iam/group-management.rst:174
 msgid "``Proxy``"
 msgstr "``Proxy``"
 
-#: ../../iam/group-management.rst:176
+#: ../../iam/group-management.rst:175
 msgid "``Remote Interactive Logon``"
 msgstr "``Remote Interactive Logon``"
 
-#: ../../iam/group-management.rst:177
+#: ../../iam/group-management.rst:176
 msgid "``Restricted``"
 msgstr "``Restricted``"
 
-#: ../../iam/group-management.rst:178
+#: ../../iam/group-management.rst:177
 msgid "``SChannel Authentication``"
 msgstr "``SChannel Authentication``"
 
-#: ../../iam/group-management.rst:179
+#: ../../iam/group-management.rst:178
 msgid "``Self``"
 msgstr "``Self``"
 
-#: ../../iam/group-management.rst:180
+#: ../../iam/group-management.rst:179
 msgid "``Service``"
 msgstr "``Service``"
 
-#: ../../iam/group-management.rst:181
+#: ../../iam/group-management.rst:180
 msgid "``System``"
 msgstr "``System``"
 
-#: ../../iam/group-management.rst:182
+#: ../../iam/group-management.rst:181
 msgid "``Terminal Server User``"
 msgstr "``Terminal Server User``"
 
-#: ../../iam/group-management.rst:183
+#: ../../iam/group-management.rst:182
 msgid "``This Organization``"
 msgstr "``This Organization``"
 
-#: ../../iam/group-management.rst:184
+#: ../../iam/group-management.rst:183
 msgid "``World Authority``"
 msgstr "``World Authority``"
 
-#: ../../iam/group-management.rst:186
+#: ../../iam/group-management.rst:185
 msgid ""
 "Active Directory and Samba distinguish between the following group types."
 " The :program:`S4 Connector` synchronizes these groups. In the LDAP "
@@ -1297,11 +1297,11 @@ msgstr ""
 "der Gruppentypen. Allerdings haben die Gruppentypen nur eine Bedeutung in"
 " Active Directory. Nubus wertet die Gruppentypen nicht aus."
 
-#: ../../iam/group-management.rst:192
+#: ../../iam/group-management.rst:191
 msgid "Local"
 msgstr "Lokal"
 
-#: ../../iam/group-management.rst:193
+#: ../../iam/group-management.rst:192
 msgid ""
 "*Local* groups exist only on a single host. The :program:`S4 Connector` "
 "synchronizes local groups created in Samba. Therefore, they also appear "
@@ -1314,11 +1314,11 @@ msgstr ""
 "*Management UI*. Es ist nicht erforderlich, lokale Gruppen im "
 "*Gruppen*-Verwaltungsmodul zu erstellen."
 
-#: ../../iam/group-management.rst:198
+#: ../../iam/group-management.rst:197
 msgid "Global"
 msgstr "Global"
 
-#: ../../iam/group-management.rst:199
+#: ../../iam/group-management.rst:198
 msgid ""
 "*Global* groups are the default type when you create groups in the "
 "*Groups* management module. A global group applies to one domain but can "
@@ -1333,7 +1333,7 @@ msgstr ""
 "*Gruppen*-Verwaltungsmodul die Gruppen aus anderen vertrauenswürdigen "
 "Domänen an und Sie können ihnen Berechtigungen zuweisen."
 
-#: ../../iam/group-management.rst:209 ../../iam/group-management.rst:218
+#: ../../iam/group-management.rst:208 ../../iam/group-management.rst:217
 msgid ""
 "Nubus for UCS doesn't support multiple domains or forests or outgoing "
 "trust relationships."
@@ -1341,11 +1341,11 @@ msgstr ""
 "Nubus für UCS unterstützt keine mehrfachen Domänen oder Forests oder "
 "ausgehende Vertrauensbeziehungen."
 
-#: ../../iam/group-management.rst:211
+#: ../../iam/group-management.rst:210
 msgid "Domain local"
 msgstr ":spelling:word:`Domain local`"
 
-#: ../../iam/group-management.rst:212
+#: ../../iam/group-management.rst:211
 msgid ""
 "*Domain local* groups can also include members from other domains if "
 "there's a trust relationship or if they're part of a forest. The *Groups*"
@@ -1357,11 +1357,11 @@ msgstr ""
 "eines Forests sind. Das *Gruppen*-Verwaltungsmodul zeigt die *domain "
 "local* Gruppen nur in ihrer eigenen Domäne an."
 
-#: ../../iam/group-management.rst:220
+#: ../../iam/group-management.rst:219
 msgid "Universal"
 msgstr "Universal"
 
-#: ../../iam/group-management.rst:221
+#: ../../iam/group-management.rst:220
 msgid ""
 "*Universal* groups can adopt members from all domains and these members "
 "are visible across all domains in a forest. The *global catalog* is a "
@@ -1375,21 +1375,21 @@ msgstr ""
 "Verzeichnisdienstes und speichert *universal* Gruppen. Der :program:`S4 "
 "Connector` synchronisiert den *globalen Katalog* nicht mit OpenLDAP."
 
-#: ../../iam/group-management.rst:227
+#: ../../iam/group-management.rst:226
 msgid "The Active Directory capability in Samba doesn't support domain forests."
 msgstr ""
 "Die Funktionalität für Active Directory in Samba unterstützt keine "
 "Domänen-Forests."
 
-#: ../../iam/group-management.rst:229
+#: ../../iam/group-management.rst:228
 msgid "You can apply the group types to the following kind of groups:"
 msgstr "Sie können die Gruppentypen auf die folgenden Arten von Gruppen anwenden:"
 
-#: ../../iam/group-management.rst:231
+#: ../../iam/group-management.rst:230
 msgid "Security groups"
 msgstr ":spelling:word:`Security Groups`"
 
-#: ../../iam/group-management.rst:232
+#: ../../iam/group-management.rst:231
 msgid ""
 "Administrators use them to assign permissions, similar to user groups in "
 "Nubus."
@@ -1397,19 +1397,19 @@ msgstr ""
 "Administratoren verwenden sie, um Berechtigungen zuzuweisen, ähnlich wie "
 "Benutzergruppen in Nubus."
 
-#: ../../iam/group-management.rst:235
+#: ../../iam/group-management.rst:234
 msgid "Distribution groups"
 msgstr ":spelling:word:`Distribution Groups`"
 
-#: ../../iam/group-management.rst:236
+#: ../../iam/group-management.rst:235
 msgid "Active Directory uses them for mailing lists."
 msgstr "Active Directory verwendet sie für Mailinglisten."
 
-#: ../../iam/group-management.rst:241
+#: ../../iam/group-management.rst:240
 msgid "Group overlay module"
 msgstr "Overlay-Modul für Gruppen"
 
-#: ../../iam/group-management.rst:243
+#: ../../iam/group-management.rst:242
 msgid ""
 "Nubus only saves group membership properties in the group objects and not"
 " in the respective user objects in the directory service. However, some "
@@ -1723,22 +1723,16 @@ msgstr ""
 "gezeigt."
 
 #: ../../iam/last-bind.rst:77
-msgid ""
-"For more information, see :external+uv-ucs-manual:ref:`computers-"
-"defining-cron-jobs-in-univention-configuration-registry` in :cite:t:`ucs-"
-"manual`."
-msgstr ""
-"Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
-" siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
-"univention-configuration-registry` in :cite:t:`ucs-manual`."
+msgid "For more information, see :ref:`system-administration-cron-ucr`."
+msgstr "Für weitere Informationen, siehe :ref:`system-administration-cron-ucr`."
 
-#: ../../iam/last-bind.rst:80
+#: ../../iam/last-bind.rst:79
 msgid "Create cron job to regularly update the ``lastbind`` extended attribute"
 msgstr ""
 "Cron-Job erstellen, um das erweiterte Attribut ``lastbind`` regelmäßig zu"
 " aktualisieren"
 
-#: ../../iam/last-bind.rst:80
+#: ../../iam/last-bind.rst:79
 msgid ""
 "$ ucr set cron/update_lastbind_attribute/command='\\\n"
 "/usr/share/univention-ldap/univention_lastbind.py --allusers'\\\n"
@@ -3471,12 +3465,10 @@ msgstr ""
 #: ../../iam/password-management/user-self-service.rst:541
 msgid ""
 "For more information about how to set cron jobs through UCR variables, "
-"see :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
-"univention-configuration-registry`."
+"see :ref:`system-administration-cron-ucr`."
 msgstr ""
 "Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
-" siehe :external+uv-ucs-manual:ref:`computers-defining-cron-jobs-in-"
-"univention-configuration-registry`."
+" siehe :ref:`system-administration-cron-ucr`."
 
 #: ../../iam/user-activation-apps.rst:9
 msgid ""
