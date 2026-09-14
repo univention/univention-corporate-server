@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 11:05+0000\n"
-"PO-Revision-Date: 2026-03-19 12:06+0100\n"
+"POT-Creation-Date: 2026-09-14 14:17+0000\n"
+"PO-Revision-Date: 2026-09-14 16:22+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -307,20 +307,19 @@ msgstr ""
 "Konfiguration einzelner Computer, einschließlich Softwareinstallation und"
 " Dienstüberwachung."
 
-#: ../../index.rst:164
+#: ../../index.rst:162
 msgid ""
 "For detailed information about the *Management UI* and UDM commands, see "
-":external+uv-ucs-manual:ref:`central-general` in :cite:t:`ucs-manual`."
+":ref:`management-interface`."
 msgstr ""
 "Detaillierte Informationen zur *Management UI* und zu UDM Befehlen finden"
-" Sie unter :external+uv-ucs-manual:ref:`central-general` im :cite:t:`ucs-"
-"manual`."
+" Sie unter :ref:`management-interface`."
 
-#: ../../index.rst:171
+#: ../../index.rst:168
 msgid "LDAP directory service"
 msgstr "LDAP-Verzeichnisdienst"
 
-#: ../../index.rst:173
+#: ../../index.rst:170
 msgid ""
 "An LDAP directory stores the data you need across the domain, including "
 "user accounts and service configurations such as DHCP. Central data "
@@ -332,22 +331,22 @@ msgstr ""
 "zentrale Datenverwaltung im LDAP-Verzeichnis vermeidet doppelte "
 "Dateneingaben und reduziert Fehler und Inkonsistenzen."
 
-#: ../../index.rst:180
+#: ../../index.rst:175
 msgid ""
 "For detailed information about LDAP schema management, replication "
-"topology, and directory node roles, see :external+uv-ucs-manual:ref"
-":`domain-ldap` in :cite:t:`ucs-manual`."
+"topology, and directory node roles, see :ref:`domain-infrastructure-ldap-"
+"directory`."
 msgstr ""
 "Detaillierte Informationen zur LDAP-Schemaverwaltung, "
 ":spelling:word:`Replikationstopologie` und Rollen für Verzeichnisknoten "
-"finden Sie unter :external+uv-ucs-manual:ref:`domain-ldap` im :cite:t"
-":`ucs-manual`."
+"finden Sie unter :ref:`domain-infrastructure-ldap-"
+"directory`."
 
-#: ../../index.rst:189
+#: ../../index.rst:183
 msgid "Policy concept"
 msgstr "Richtlinienkonzept"
 
-#: ../../index.rst:191
+#: ../../index.rst:185
 msgid ""
 "LDAP directories have a hierarchical structure. Objects such as users and"
 " computers exist in containers, and containers can contain other "
@@ -358,7 +357,7 @@ msgstr ""
 "andere Container enthalten. Der Stammcontainer bildet das LDAP-"
 "Basisobjekt."
 
-#: ../../index.rst:196
+#: ../../index.rst:190
 msgid ""
 "Policies describe settings that apply to multiple objects. When you link "
 "policies to containers, they apply to all objects in that container and "
@@ -370,13 +369,13 @@ msgstr ""
 "Objekte in diesem Container und seinen Untercontainern, ohne dass Sie "
 "jedes Objekt einzeln konfigurieren müssen."
 
-#: ../../index.rst:201
+#: ../../index.rst:195
 msgid "Nubus for UCS uses policies for various administrative tasks, including:"
 msgstr ""
 "Nubus für UCS verwendet Richtlinien für verschiedene Verwaltungsaufgaben,"
 " darunter:"
 
-#: ../../index.rst:204
+#: ../../index.rst:198
 msgid ""
 "Maintenance policies that control when systems install or remove "
 "packages, see :ref:`lifecycle-package-maintenance-policy`."
@@ -384,7 +383,7 @@ msgstr ""
 "Wartungsrichtlinien, die steuern, wann Systeme Pakete installieren oder "
 "entfernen, siehe :ref:`lifecycle-package-maintenance-policy`."
 
-#: ../../index.rst:207
+#: ../../index.rst:201
 msgid ""
 "Password policies that enforce security requirements for user accounts, "
 "see :ref:`password-management-policies`."
@@ -392,7 +391,7 @@ msgstr ""
 "Kennwortrichtlinien, die Sicherheitsanforderungen für Benutzerkonten "
 "durchsetzen, siehe :ref:`password-management-policies`."
 
-#: ../../index.rst:210
+#: ../../index.rst:204
 msgid ""
 "Repository server policies that specify which update server the systems "
 "use, see :ref:`lifecycle-local-repository-policy`."
@@ -400,7 +399,7 @@ msgstr ""
 "Richtlinien für Repository-Server, die festlegen, welchen Update-Server "
 "die Systeme verwenden, siehe :ref:`lifecycle-local-repository-policy`."
 
-#: ../../index.rst:213
+#: ../../index.rst:207
 msgid ""
 "For information about creating and managing policies, see :external+uv-"
 "nubus-manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
@@ -409,11 +408,11 @@ msgstr ""
 "unter :external+uv-nubus-manual:ref:`nubus-domain-policies` im :cite:t"
 ":`uv-nubus-manual`."
 
-#: ../../index.rst:220
+#: ../../index.rst:214
 msgid "Univention App Center"
 msgstr "Univention App Center"
 
-#: ../../index.rst:222
+#: ../../index.rst:216
 msgid ""
 "Univention App Center is a centralized platform for discovering, "
 "installing, and managing applications in your Nubus for UCS domain. It "
@@ -428,19 +427,19 @@ msgstr ""
 "Deinstallation—sowohl für herkömmliche Pakete als auch für Docker-"
 "Anwendungen."
 
-#: ../../index.rst:227
+#: ../../index.rst:221
 msgid ""
 "The chapter :ref:`lifecycle-app-center` covers App Center installation "
 "and management in detail."
 msgstr ""
-"Das Kapitel :ref:`lifecycle-app-center` behandelt die Installation und Verwaltung "
-"von Apps im Detail."
+"Das Kapitel :ref:`lifecycle-app-center` behandelt die Installation und "
+"Verwaltung von Apps im Detail."
 
-#: ../../index.rst:232
+#: ../../index.rst:226
 msgid "Listener/notifier replication"
 msgstr "Listener/Notifier-Replikation"
 
-#: ../../index.rst:234
+#: ../../index.rst:228
 msgid ""
 "The listener/notifier mechanism propagates changes across the domain. "
 "When you create, edit, or delete entries in the LDAP directory, the "
@@ -456,7 +455,7 @@ msgstr ""
 "aktualisiert der Mechanismus die NFS- und Samba-Konfigurationsdateien und"
 " erstellt das Verzeichnis auf dem ausgewählten Server."
 
-#: ../../index.rst:242
+#: ../../index.rst:236
 msgid ""
 "You can extend the listener/notifier mechanism with custom modules to "
 "integrate third-party products with the LDAP directory service."
@@ -465,21 +464,19 @@ msgstr ""
 "Modulen erweitern, um Produkte von Drittanbietern in den LDAP-"
 "Verzeichnisdienst zu integrieren."
 
-#: ../../index.rst:247
+#: ../../index.rst:239
 msgid ""
-"For detailed information about the listener/notifier mechanism, see "
-":external+uv-ucs-manual:ref:`domain-listener-notifier` in :cite:t:`ucs-"
-"manual`."
+"For detailed information about the listener/notifier mechanism, see :ref"
+":`listener-notifier`."
 msgstr ""
 "Detaillierte Informationen zum Listener/Notifier-Mechanismus finden Sie "
-"unter :external+uv-ucs-manual:ref:`domain-listener-notifier` im :cite:t"
-":`ucs-manual`."
+"unter :ref:`listener-notifier`."
 
-#: ../../index.rst:254
+#: ../../index.rst:245
 msgid "Feedback"
 msgstr "Feedback"
 
-#: ../../index.rst:256
+#: ../../index.rst:247
 msgid ""
 "Your feedback on this documentation is welcome. If you have any comments,"
 " suggestions, or corrections, `submit your feedback "

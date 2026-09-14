@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-21 14:36+0000\n"
-"PO-Revision-Date: 2026-07-21 16:39+0200\n"
+"POT-Creation-Date: 2026-09-14 14:17+0000\n"
+"PO-Revision-Date: 2026-09-14 16:18+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1145,24 +1145,22 @@ msgstr "Redundante Directory Nodes installieren"
 #: ../../domain-infrastructure/ha.rst:68
 msgid ""
 "Add Backup and Replica Directory Nodes to your domain. For more "
-"information, see :external+uv-ucs-manual:ref:`domain-join` in :cite:t"
-":`ucs-manual`."
+"information, see :ref:`domain-infrastructure-join`."
 msgstr ""
 "Fügen Sie Backup und Replica Directory Nodes zu Ihrer Domäne hinzu. "
-"Weitere Informationen finden Sie unter :external+uv-ucs-manual:ref"
-":`domain-join` im :cite:t:`ucs-manual`."
+"Weitere Informationen finden Sie unter :ref:`domain-infrastructure-join`."
 
-#: ../../domain-infrastructure/ha.rst:73
+#: ../../domain-infrastructure/ha.rst:72
 msgid "Configure service redundancy"
 msgstr "Dienst-Redundanz konfigurieren"
 
-#: ../../domain-infrastructure/ha.rst:75
+#: ../../domain-infrastructure/ha.rst:74
 msgid "Configure LDAP, Kerberos, DNS, DHCP, and Samba to use multiple servers."
 msgstr ""
 "Konfigurieren Sie LDAP, Kerberos, DNS, DHCP und Samba, um mehrere Server "
 "zu verwenden."
 
-#: ../../domain-infrastructure/ha.rst:77
+#: ../../domain-infrastructure/ha.rst:76
 msgid ""
 "The article :uv:kb:`Fail-safe domain setup <6682>` in the Univention "
 "Support database provides detailed configuration instructions for each "
@@ -1176,11 +1174,11 @@ msgstr ""
 "Ihrer Backup und Replica Directory Nodes, um Ihre fehlertolerante Domain-"
 "Konfiguration abzuschließen."
 
-#: ../../domain-infrastructure/ha.rst:82
+#: ../../domain-infrastructure/ha.rst:81
 msgid "LDAP server failover"
 msgstr "LDAP-Server-Failover"
 
-#: ../../domain-infrastructure/ha.rst:83
+#: ../../domain-infrastructure/ha.rst:82
 msgid ""
 "Configure additional LDAP servers with UCR variables, so clients "
 "automatically fail over if the Primary Directory Node becomes "
@@ -1190,21 +1188,21 @@ msgstr ""
 "Clients automatisch ein Failover durchführen, wenn der Primary Directory "
 "Node nicht verfügbar wird."
 
-#: ../../domain-infrastructure/ha.rst:86
+#: ../../domain-infrastructure/ha.rst:85
 msgid "Kerberos Key Distribution Centers"
 msgstr "Kerberos-Schlüsselverteilungszentren"
 
-#: ../../domain-infrastructure/ha.rst:87
+#: ../../domain-infrastructure/ha.rst:86
 msgid "Set up multiple Kerberos KDCs for authentication redundancy."
 msgstr ""
 "Richten Sie mehrere :spelling:word:`Kerberos KDCs` für "
 "Authentifizierungsredundanz ein."
 
-#: ../../domain-infrastructure/ha.rst:89
+#: ../../domain-infrastructure/ha.rst:88
 msgid "DNS name servers"
 msgstr "DNS Nameserver"
 
-#: ../../domain-infrastructure/ha.rst:90
+#: ../../domain-infrastructure/ha.rst:89
 msgid ""
 "Configure multiple name servers to ensure name resolution continues "
 "during maintenance or failures."
@@ -1212,11 +1210,11 @@ msgstr ""
 "Konfigurieren Sie mehrere Nameserver, um sicherzustellen, dass die "
 "Namensauflösung während Wartungen oder Ausfällen fortgesetzt wird."
 
-#: ../../domain-infrastructure/ha.rst:93
+#: ../../domain-infrastructure/ha.rst:92
 msgid "DHCP redundancy"
 msgstr "DHCP-Redundanz"
 
-#: ../../domain-infrastructure/ha.rst:94
+#: ../../domain-infrastructure/ha.rst:93
 msgid ""
 "Install the DHCP server app on additional systems to ensure network "
 "configuration remains available."
@@ -1224,11 +1222,11 @@ msgstr ""
 "Installieren Sie die DHCP-Server-App auf zusätzlichen Systemen, um "
 "sicherzustellen, dass die Netzwerkkonfiguration verfügbar bleibt."
 
-#: ../../domain-infrastructure/ha.rst:97
+#: ../../domain-infrastructure/ha.rst:96
 msgid "Active Directory-compatible Domain Controllers"
 msgstr "Active Directory-kompatible Domain Controller"
 
-#: ../../domain-infrastructure/ha.rst:98
+#: ../../domain-infrastructure/ha.rst:97
 msgid ""
 "If you need Active Directory functionality, deploy the Samba component on"
 " Backup and Replica Directory Nodes to provide redundant domain "
@@ -1238,11 +1236,11 @@ msgstr ""
 "Samba-Komponente auf Backup und Replica Directory Nodes bereit, um "
 "redundante Domain-Controller-Funktionalität zu bieten."
 
-#: ../../domain-infrastructure/ha.rst:105
+#: ../../domain-infrastructure/ha.rst:104
 msgid "Backup to Primary promotion"
 msgstr "Umwandlung von Backup zu Primary"
 
-#: ../../domain-infrastructure/ha.rst:109
+#: ../../domain-infrastructure/ha.rst:108
 msgid ""
 "A Nubus for UCS domain consists of only one Primary Directory Node, but "
 "has no limit in the number of Backup Directory Nodes. In contrast to the "
@@ -1256,15 +1254,15 @@ msgstr ""
 "Änderungen an den Domänendaten nicht schreiben. Für Beschreibungen der "
 "Systemrollen siehe die folgenden Abschnitte:"
 
-#: ../../domain-infrastructure/ha.rst:115
+#: ../../domain-infrastructure/ha.rst:114
 msgid ":ref:`domain-infrastructure-system-roles-primary-directory-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-primary-directory-node`"
 
-#: ../../domain-infrastructure/ha.rst:116
+#: ../../domain-infrastructure/ha.rst:115
 msgid ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
 msgstr ":ref:`domain-infrastructure-system-roles-backup-directory-node`"
 
-#: ../../domain-infrastructure/ha.rst:118
+#: ../../domain-infrastructure/ha.rst:117
 msgid ""
 "You can promote any Backup Directory Node to a Primary Directory Node. "
 "The following promotion scenarios exist:"
@@ -1272,11 +1270,11 @@ msgstr ""
 "Sie können jeden Backup Directory Node zu einem Primary Directory Node "
 "umwandeln. Die folgenden Szenarien zur Umwandlung existieren:"
 
-#: ../../domain-infrastructure/ha.rst:121
+#: ../../domain-infrastructure/ha.rst:120
 msgid "Emergency"
 msgstr "Notfall"
 
-#: ../../domain-infrastructure/ha.rst:122
+#: ../../domain-infrastructure/ha.rst:121
 msgid ""
 "In an emergency, for example if the hardware of the Primary Directory "
 "Node fails."
@@ -1284,21 +1282,21 @@ msgstr ""
 "In einem Notfall, z. B. wenn die Hardware des Primary Directory Node "
 "ausfällt."
 
-#: ../../domain-infrastructure/ha.rst:124
+#: ../../domain-infrastructure/ha.rst:123
 msgid "Replacement"
 msgstr "Austausch"
 
-#: ../../domain-infrastructure/ha.rst:125
+#: ../../domain-infrastructure/ha.rst:124
 msgid "To replace a fully functional Primary Directory Node with modern hardware."
 msgstr ""
 "Um einen vollständig funktionierenden Primary Directory Node durch "
 "moderne Hardware zu ersetzen."
 
-#: ../../domain-infrastructure/ha.rst:130
+#: ../../domain-infrastructure/ha.rst:129
 msgid "Prepare backup to primary promotion"
 msgstr "Backup zu Primary Umwandlung vorbereiten"
 
-#: ../../domain-infrastructure/ha.rst:132
+#: ../../domain-infrastructure/ha.rst:131
 msgid ""
 "The promotion primarily involves transferring authentication-related "
 "services such as LDAP, DNS, Kerberos, and Samba. You need to manually "
@@ -1310,7 +1308,7 @@ msgstr ""
 " müssen die installierte Software manuell über die Verwaltungsmodule *App"
 " Center* und *Paketverwaltung* anpassen."
 
-#: ../../domain-infrastructure/ha.rst:137
+#: ../../domain-infrastructure/ha.rst:136
 msgid ""
 "For example, if the previous Primary Directory Node has the mail "
 "component installed, the promotion process doesn't install the app on the"
@@ -1324,7 +1322,7 @@ msgstr ""
 " der Umwandlung zu minimieren, beachten Sie :ref:`deployment-primary-dn-"
 "resilience-fault-tolerant-setup`."
 
-#: ../../domain-infrastructure/ha.rst:145
+#: ../../domain-infrastructure/ha.rst:144
 msgid ""
 "The promotion of a Backup Directory Node to a Primary Directory Node is a"
 " serious and **irreversible** configuration change."
@@ -1332,11 +1330,11 @@ msgstr ""
 "Die Umwandlung eines Backup Directory Node zu einem Primary Directory "
 "Node ist eine ernsthafte und **irreversible** Konfigurationsänderung."
 
-#: ../../domain-infrastructure/ha.rst:148
+#: ../../domain-infrastructure/ha.rst:147
 msgid "Before promoting:"
 msgstr "Vor der Umwandlung:"
 
-#: ../../domain-infrastructure/ha.rst:150
+#: ../../domain-infrastructure/ha.rst:149
 msgid ""
 "Shut down the Primary Directory Node and keep it powered off during and "
 "after the promotion."
@@ -1344,7 +1342,7 @@ msgstr ""
 "Fahren Sie den Primary Directory Node herunter und halten Sie ihn während"
 " und nach der Umwandlung ausgeschaltet."
 
-#: ../../domain-infrastructure/ha.rst:151
+#: ../../domain-infrastructure/ha.rst:150
 msgid ""
 "Compare installed packages, see :ref:`deployment-primary-dn-resilience-"
 "backup-primary-promotion-prepare-sync-ldap-schema`, and configuration, "
@@ -1357,7 +1355,7 @@ msgstr ""
 "primary-promotion-prepare-compare-ucr`, zwischen Primary und Backup "
 "Directory Nodes."
 
-#: ../../domain-infrastructure/ha.rst:152
+#: ../../domain-infrastructure/ha.rst:151
 msgid ""
 "If the Primary is unavailable in an emergency, use a file backup for "
 "comparison."
@@ -1365,7 +1363,7 @@ msgstr ""
 "Wenn der Primary in einem Notfall nicht verfügbar ist, verwenden Sie ein "
 "Datei-Backup zum Vergleich."
 
-#: ../../domain-infrastructure/ha.rst:154
+#: ../../domain-infrastructure/ha.rst:153
 msgid ""
 "After promoting, see :ref:`deployment-primary-dn-resilience-backup-"
 "primary-promotion-validate`:"
@@ -1373,7 +1371,7 @@ msgstr ""
 "Nach der Umwandlung, siehe :ref:`deployment-primary-dn-resilience-backup-"
 "primary-promotion-validate`:"
 
-#: ../../domain-infrastructure/ha.rst:156
+#: ../../domain-infrastructure/ha.rst:155
 msgid ""
 "Remove or update all references to the old Primary Directory Node across "
 "the domain."
@@ -1381,17 +1379,17 @@ msgstr ""
 "Entfernen oder aktualisieren Sie alle Verweise auf den alten Primary "
 "Directory Node in der gesamten Domäne."
 
-#: ../../domain-infrastructure/ha.rst:158
+#: ../../domain-infrastructure/ha.rst:157
 msgid "To prepare the backup to primary promotion, follow these steps:"
 msgstr ""
 "Folgen Sie diesen Schritten, um die Backup zu Primary Umwandlung "
 "vorzubereiten:"
 
-#: ../../domain-infrastructure/ha.rst:162
+#: ../../domain-infrastructure/ha.rst:161
 msgid "Synchronize LDAP schema packages"
 msgstr "LDAP-Schema-Pakete synchronisieren"
 
-#: ../../domain-infrastructure/ha.rst:163
+#: ../../domain-infrastructure/ha.rst:162
 msgid ""
 "If the Primary Directory Node has additional LDAP schema packages "
 "installed, you need to install them on the Backup Directory Node before "
@@ -1401,11 +1399,11 @@ msgstr ""
 "installiert hat, müssen Sie diese vor der Umwandlung auf dem Backup "
 "Directory Node installieren."
 
-#: ../../domain-infrastructure/ha.rst:166
+#: ../../domain-infrastructure/ha.rst:165
 msgid "Save the package list from the Primary Directory Node"
 msgstr "Speichern Sie die Paketliste vom Primary Directory Node"
 
-#: ../../domain-infrastructure/ha.rst:168
+#: ../../domain-infrastructure/ha.rst:167
 msgid ""
 "To create the package list, run the command in :numref:`deployment-"
 "primary-dn-resilience-backup-primary-promotion-package-listing`."
@@ -1414,19 +1412,19 @@ msgstr ""
 ":`deployment-primary-dn-resilience-backup-primary-promotion-package-"
 "listing` aus."
 
-#: ../../domain-infrastructure/ha.rst:171
+#: ../../domain-infrastructure/ha.rst:170
 msgid "Save the package list"
 msgstr "Speichern Sie die Paketliste"
 
-#: ../../domain-infrastructure/ha.rst:171
+#: ../../domain-infrastructure/ha.rst:170
 msgid "$ dpkg --get-selections \\* > dpkg.selection"
 msgstr "$ dpkg --get-selections \\* > dpkg.selection"
 
-#: ../../domain-infrastructure/ha.rst:177
+#: ../../domain-infrastructure/ha.rst:176
 msgid "List packages with LDAP schema on the Primary Directory Node"
 msgstr "Pakete mit LDAP-Schema auf dem Primary Directory Node auflisten"
 
-#: ../../domain-infrastructure/ha.rst:179
+#: ../../domain-infrastructure/ha.rst:178
 msgid ""
 "To list all packages on the Primary Directory Node with an LDAP schema, "
 "run the command in :numref:`deployment-primary-dn-resilience-backup-"
@@ -1436,11 +1434,11 @@ msgstr ""
 "aufzulisten, führen Sie den Befehl in :numref:`deployment-primary-dn-"
 "resilience-backup-primary-promotion-package-ldap-schema-listing` aus."
 
-#: ../../domain-infrastructure/ha.rst:183
+#: ../../domain-infrastructure/ha.rst:182
 msgid "List of packages with an LDAP schema"
 msgstr "Liste von Paketen mit LDAP-Schema"
 
-#: ../../domain-infrastructure/ha.rst:183
+#: ../../domain-infrastructure/ha.rst:182
 msgid ""
 "$ dpkg -S /etc/ldap/schema/*.schema \\\n"
 "  /usr/share/univention-ldap/schema/*.schema"
@@ -1448,11 +1446,11 @@ msgstr ""
 "$ dpkg -S /etc/ldap/schema/*.schema \\\n"
 "  /usr/share/univention-ldap/schema/*.schema"
 
-#: ../../domain-infrastructure/ha.rst:190
+#: ../../domain-infrastructure/ha.rst:189
 msgid "Compare the package lists on the Backup Directory Node"
 msgstr "Vergleichen Sie die Paketlisten auf dem Backup Directory Node"
 
-#: ../../domain-infrastructure/ha.rst:192
+#: ../../domain-infrastructure/ha.rst:191
 msgid ""
 "Compare the :file:`dpkg.selection` file with the output from the same "
 "command on the Backup Directory Node. Ensure that the package list only "
@@ -1464,7 +1462,7 @@ msgstr ""
 " sich die Paketliste nur in den Paketen :program:`univention-server-"
 "master` und :program:`univention-server-backup` unterscheidet."
 
-#: ../../domain-infrastructure/ha.rst:196
+#: ../../domain-infrastructure/ha.rst:195
 msgid ""
 "If the comparison reveals other missing packages, you need to install "
 "them on the Backup Directory Node. Packages that install an LDAP schema "
@@ -1474,12 +1472,12 @@ msgstr ""
 "dem Backup Directory Node installieren. Besonders wichtig sind Pakete, "
 "die ein LDAP-Schema installieren."
 
-#: ../../domain-infrastructure/ha.rst:200
-#: ../../domain-infrastructure/ha.rst:209
+#: ../../domain-infrastructure/ha.rst:199
+#: ../../domain-infrastructure/ha.rst:208
 msgid "Install the same packages on the Backup Directory Node"
 msgstr "Installieren Sie dieselben Pakete auf dem Backup Directory Node"
 
-#: ../../domain-infrastructure/ha.rst:202
+#: ../../domain-infrastructure/ha.rst:201
 msgid ""
 "Use the :file:`dpkg.selection` file created on the Primary Directory Node"
 " in :numref:`deployment-primary-dn-resilience-backup-primary-promotion-"
@@ -1493,7 +1491,7 @@ msgstr ""
 ":numref:`deployment-primary-dn-resilience-backup-primary-promotion-"
 "package-install-same-listing` auf dem Backup Directory Node aus."
 
-#: ../../domain-infrastructure/ha.rst:209
+#: ../../domain-infrastructure/ha.rst:208
 msgid ""
 "$ dpkg --set-selections < dpkg.selection\n"
 "$ apt-get dselect-upgrade"
@@ -1501,11 +1499,11 @@ msgstr ""
 "$ dpkg --set-selections < dpkg.selection\n"
 "$ apt-get dselect-upgrade"
 
-#: ../../domain-infrastructure/ha.rst:218
+#: ../../domain-infrastructure/ha.rst:217
 msgid "Compare Univention Configuration Registry"
 msgstr "Univention Configuration Registry vergleichen"
 
-#: ../../domain-infrastructure/ha.rst:219
+#: ../../domain-infrastructure/ha.rst:218
 msgid ""
 "You need to save the Univention Configuration Registry inventory so that "
 "you can compare the configuration adjustments on the promoted Primary "
@@ -1515,7 +1513,7 @@ msgstr ""
 "damit Sie die Konfigurationsanpassungen auf dem umgewandelten Primary "
 "Directory Node vergleichen können."
 
-#: ../../domain-infrastructure/ha.rst:222
+#: ../../domain-infrastructure/ha.rst:221
 msgid ""
 "Compare the following files on the Primary Directory Node with those on "
 "the Backup Directory Node:"
@@ -1523,15 +1521,15 @@ msgstr ""
 "Vergleichen Sie die folgenden Dateien auf dem Primary Directory Node mit "
 "denen auf dem Backup Directory Node:"
 
-#: ../../domain-infrastructure/ha.rst:224
+#: ../../domain-infrastructure/ha.rst:223
 msgid ":file:`/etc/univention/base.conf`"
 msgstr ":file:`/etc/univention/base.conf`"
 
-#: ../../domain-infrastructure/ha.rst:225
+#: ../../domain-infrastructure/ha.rst:224
 msgid ":file:`/etc/univention/base-forced.conf`"
 msgstr ":file:`/etc/univention/base-forced.conf`"
 
-#: ../../domain-infrastructure/ha.rst:227
+#: ../../domain-infrastructure/ha.rst:226
 #, python-brace-format, python-format
 msgid ""
 "UCS saves a copy of those files every night to :file:`/var/univention-"
@@ -1540,11 +1538,11 @@ msgstr ""
 "UCS speichert jede Nacht eine Kopie dieser Dateien unter :file:`/var"
 "/univention-backup/ucr-backup_{%Y%m%d}.tgz`."
 
-#: ../../domain-infrastructure/ha.rst:233
+#: ../../domain-infrastructure/ha.rst:232
 msgid "Run the backup to primary promotion"
 msgstr "Führen Sie die Backup zu Primary Umwandlung aus"
 
-#: ../../domain-infrastructure/ha.rst:235
+#: ../../domain-infrastructure/ha.rst:234
 msgid ""
 "To promote a Backup Directory Node to the Primary Directory Node, run the"
 " :command:`/usr/lib/univention-ldap/univention-backup2master` command on "
@@ -1559,17 +1557,17 @@ msgstr ""
 "Umwandlungsprozess protokolliert in der Log-Datei "
 ":file:`/var/log/univention/backup2master.log`."
 
-#: ../../domain-infrastructure/ha.rst:240
+#: ../../domain-infrastructure/ha.rst:239
 msgid "The :command:`univention-backup2master` command runs the following steps:"
 msgstr ""
 "Der Befehl :command:`univention-backup2master` führt die folgenden "
 "Schritte aus:"
 
-#: ../../domain-infrastructure/ha.rst:242
+#: ../../domain-infrastructure/ha.rst:241
 msgid "Verify the environment:"
 msgstr "Überprüfen der Umgebung:"
 
-#: ../../domain-infrastructure/ha.rst:244
+#: ../../domain-infrastructure/ha.rst:243
 msgid ""
 "The system must be a Backup Directory Node that has already joined the "
 "domain."
@@ -1577,7 +1575,7 @@ msgstr ""
 "Das System muss ein Backup Directory Node sein, der bereits der Domäne "
 "beigetreten ist."
 
-#: ../../domain-infrastructure/ha.rst:247
+#: ../../domain-infrastructure/ha.rst:246
 msgid ""
 "The Backup Directory Node can resolve the Primary Directory Node through "
 "DNS and reaches the repository server."
@@ -1585,11 +1583,11 @@ msgstr ""
 "Der Backup Directory Node kann den Primary Directory Node über DNS "
 "auflösen und den Repository-Server erreichen."
 
-#: ../../domain-infrastructure/ha.rst:250
+#: ../../domain-infrastructure/ha.rst:249
 msgid "The Primary Directory Node is offline and not reachable anymore."
 msgstr "Der Primary Directory Node ist offline und nicht mehr erreichbar."
 
-#: ../../domain-infrastructure/ha.rst:254
+#: ../../domain-infrastructure/ha.rst:253
 msgid ""
 "Run component scripts in the :file:`/usr/lib/univention-"
 "backup2master/pre` directory **before** the promotion begins. The "
@@ -1601,11 +1599,11 @@ msgstr ""
 "Verzeichnis enthält ausführbare Skripte für Komponenten, die eine "
 "benutzerdefinierte Behandlung für den Primary Directory Node erfordern."
 
-#: ../../domain-infrastructure/ha.rst:258
+#: ../../domain-infrastructure/ha.rst:257
 msgid "Reconfigure the critical services:"
 msgstr "Rekonfigurieren der kritischen Dienste:"
 
-#: ../../domain-infrastructure/ha.rst:260
+#: ../../domain-infrastructure/ha.rst:259
 msgid ""
 "Stop the most important services OpenLDAP, Samba, Kerberos, Univention "
 "Directory Notifier, and Directory Listener."
@@ -1613,7 +1611,7 @@ msgstr ""
 "Beenden der wichtigsten Dienste OpenLDAP, Samba, Kerberos, Univention "
 "Directory Notifier und Directory Listener."
 
-#: ../../domain-infrastructure/ha.rst:263
+#: ../../domain-infrastructure/ha.rst:262
 msgid ""
 "Change important UCR variables, such as :envvar:`ldap/master` and "
 ":envvar:`server/role`."
@@ -1621,7 +1619,7 @@ msgstr ""
 "Ändern wichtiger UCR-Variablen wie :envvar:`ldap/master` und "
 ":envvar:`server/role`."
 
-#: ../../domain-infrastructure/ha.rst:266
+#: ../../domain-infrastructure/ha.rst:265
 msgid ""
 "Make the UCS Root CA certificate available through the web server on the "
 "Backup Directory Node."
@@ -1629,7 +1627,7 @@ msgstr ""
 "Bereitstellen des UCS Root CA Zertifikat über den Webserver auf dem "
 "Backup Directory Node."
 
-#: ../../domain-infrastructure/ha.rst:268
+#: ../../domain-infrastructure/ha.rst:267
 msgid ""
 "Start the services OpenLDAP, Samba, Kerberos, Univention Directory "
 "Notifier, and Listener."
@@ -1637,7 +1635,7 @@ msgstr ""
 "Starten der Dienste OpenLDAP, Samba, Kerberos, Univention Directory "
 "Notifier und Listener."
 
-#: ../../domain-infrastructure/ha.rst:271
+#: ../../domain-infrastructure/ha.rst:270
 msgid ""
 "Update the DNS service record ``kerberos-adm`` from the old Primary "
 "Directory Node to the promoted Primary Directory Node."
@@ -1645,7 +1643,7 @@ msgstr ""
 "Aktualisieren des DNS-Service-Record ``kerberos-adm`` vom alten Primary "
 "Directory Node zum umgewandelten Primary Directory Node."
 
-#: ../../domain-infrastructure/ha.rst:274
+#: ../../domain-infrastructure/ha.rst:273
 msgid ""
 "If present, remove the Univention :external+uv-ucs-"
 "manual:ref:`windows-s4-connector` from the computer object of the old "
@@ -1657,7 +1655,7 @@ msgstr ""
 "Primary Directory Node und Einplanen für die Neukonfiguration auf dem "
 "umgewandelten Primary Directory Node."
 
-#: ../../domain-infrastructure/ha.rst:282
+#: ../../domain-infrastructure/ha.rst:281
 msgid ""
 "Change the server role of the promoted Primary Directory Node to "
 "``domaincontroller_master`` in the OpenLDAP directory service. Adjust the"
@@ -1667,7 +1665,7 @@ msgstr ""
 "``domaincontroller_master`` im OpenLDAP-Verzeichnisdienst. Entsprechendes"
 " Anpassen des DNS-Service-Record ``_domaincontroller_master._tcp``."
 
-#: ../../domain-infrastructure/ha.rst:286
+#: ../../domain-infrastructure/ha.rst:285
 msgid ""
 "If present, remove all entries of the old Primary Directory Node from the"
 " local Samba directory service. Additionally, transfer the FSMO roles to "
@@ -1677,7 +1675,7 @@ msgstr ""
 "Node aus dem lokalen Samba-Verzeichnisdienst. Zusätzliche Übertragung der"
 " FSMO-Rollen auf den umgewandelten Primary Directory Node."
 
-#: ../../domain-infrastructure/ha.rst:291
+#: ../../domain-infrastructure/ha.rst:290
 msgid ""
 "Delete the computer object of the old Primary Directory Node from the "
 "OpenLDAP directory."
@@ -1685,7 +1683,7 @@ msgstr ""
 "Löschen des Computerobjekts des alten Primary Directory Node aus dem "
 "OpenLDAP-Verzeichnis."
 
-#: ../../domain-infrastructure/ha.rst:293
+#: ../../domain-infrastructure/ha.rst:292
 msgid ""
 "Search the OpenLDAP directory service for any remaining references to the"
 " old Primary Directory Node. Show all found references, such as DNS "
@@ -1695,13 +1693,13 @@ msgstr ""
 " auf den alten Primary Directory Node. Anzeigen aller gefundenen Verweise"
 " wie DNS-Records und Vorschlag von Korrekturen vor."
 
-#: ../../domain-infrastructure/ha.rst:298
+#: ../../domain-infrastructure/ha.rst:297
 msgid "You need to verify and confirm the suggested fixes one by one."
 msgstr ""
 "Sie müssen die vorgeschlagenen Korrekturen einzeln überprüfen und "
 "bestätigen."
 
-#: ../../domain-infrastructure/ha.rst:300
+#: ../../domain-infrastructure/ha.rst:299
 msgid ""
 "Finally, replace the package :program:`univention-server-backup` with "
 ":program:`univention-server-master`."
@@ -1709,7 +1707,7 @@ msgstr ""
 "Zum Abschluss, Ersetzen des Pakets :program:`univention-server-backup` "
 "durch :program:`univention-server-master`."
 
-#: ../../domain-infrastructure/ha.rst:303
+#: ../../domain-infrastructure/ha.rst:302
 msgid ""
 "Run component scripts in the :file:`/usr/lib/univention-"
 "backup2master/post` directory **after** the promotion completed. The "
@@ -1721,11 +1719,11 @@ msgstr ""
 "Das Verzeichnis enthält ausführbare Skripte für Komponenten, die eine "
 "benutzerdefinierte Behandlung für den Primary Directory Node erfordern."
 
-#: ../../domain-infrastructure/ha.rst:310
+#: ../../domain-infrastructure/ha.rst:309
 msgid "Validate the promotion"
 msgstr "Validieren Sie die Umwandlung"
 
-#: ../../domain-infrastructure/ha.rst:312
+#: ../../domain-infrastructure/ha.rst:311
 msgid ""
 "After the promotion completes, remove or update all references to the old"
 " Primary Directory Node across the domain."
@@ -1733,7 +1731,7 @@ msgstr ""
 "Entfernen oder aktualisieren Sie nach Abschluss der Umwandlung alle "
 "Verweise auf den alten Primary Directory Node in der gesamten Domäne."
 
-#: ../../domain-infrastructure/ha.rst:315
+#: ../../domain-infrastructure/ha.rst:314
 msgid ""
 "The article :uv:help:`How To: backup2master <19514>` provides detailed "
 "validation procedures for:"
@@ -1741,7 +1739,7 @@ msgstr ""
 "Der Artikel :uv:help:`How To: backup2master <19514>` bietet detaillierte "
 "Verfahren zur Validierung für:"
 
-#: ../../domain-infrastructure/ha.rst:317
+#: ../../domain-infrastructure/ha.rst:316
 msgid ""
 "Checking UCR variables on all domain systems for old hostname and IP "
 "references."
@@ -1749,17 +1747,17 @@ msgstr ""
 "Überprüfung von UCR-Variablen auf allen Systemen der Domänen auf alte "
 "Rechnernamen- und IP-Verweise."
 
-#: ../../domain-infrastructure/ha.rst:318
+#: ../../domain-infrastructure/ha.rst:317
 msgid "Verifying and updating DNS host entries in LDAP."
 msgstr "Überprüfung und Aktualisierung von DNS-Einträgen für Rechnernamen in LDAP."
 
-#: ../../domain-infrastructure/ha.rst:319
+#: ../../domain-infrastructure/ha.rst:318
 msgid "Reviewing and updating domain policies in the *Managment UI*."
 msgstr ""
 "Überprüfung und Aktualisierung von Domänen-Richtlinien in der *Management"
 " UI*."
 
-#: ../../domain-infrastructure/ha.rst:321
+#: ../../domain-infrastructure/ha.rst:320
 msgid ""
 "Test regular domain operations after validation to ensure correct "
 "functionality."
@@ -3549,12 +3547,13 @@ msgstr "Ubuntu"
 #: ../../domain-infrastructure/system-roles.rst:80
 msgid ""
 "You can manage Ubuntu clients in Nubus with the *Ubuntu* system role. For"
-" more information, see :external+uv-ucs-manual:ref:`computers-ubuntu` in "
-":cite:t:`ucs-manual`."
+" more information, see :external+uv-nubus-manual:ref:`computers-ubuntu` "
+"in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Sie können Ubuntu-Clients in Nubus mit der Systemrolle *Ubuntu* "
-"verwalten. Weitere Informationen finden Sie unter :external+uv-ucs-"
-"manual:ref:`computers-ubuntu` im :cite:t:`ucs-manual`."
+"verwalten. Weitere Informationen finden Sie unter "
+":external+uv-nubus-manual:ref:`computers-ubuntu` "
+"im :cite:t:`uv-nubus-manual`."
 
 #: ../../domain-infrastructure/system-roles.rst:88
 msgid "Linux"
