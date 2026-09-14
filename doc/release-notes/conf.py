@@ -59,6 +59,12 @@ suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
     f'uv-changelog-{release}': reference_inventory('changelog', version=release),
+    'uv-manual': reference_inventory('manual', version=version),
+    'uv-ucs-operation': reference_inventory('ucs-operation', version=version),
+    'uv-keycloak-app': (
+        'https://docs.software-univention.de/keycloak-app/latest/',
+        None,
+    ),
     'uv-nubus-manual': ('https://docs.software-univention.de/nubus-manual/1.x/en', None),
 }
 
