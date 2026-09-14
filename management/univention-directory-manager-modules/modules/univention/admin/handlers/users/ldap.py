@@ -230,7 +230,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 # do not change {SASL} password, but lock it if necessary
                 password = old_password
 
-            password_hash = univention.admin.password.lock_password(password)
+            password_hash = univention.admin.password.hash_password(password)
             if self['disabled'] != '1':
                 password_hash = univention.admin.password.unlock_password(password_hash)
             ml.append(('userPassword', old_password.encode('ASCII'), password_hash.encode('ASCII')))

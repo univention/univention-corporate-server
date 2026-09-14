@@ -1774,7 +1774,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 # do not change {SASL} password, but lock it if necessary
                 password = old_password
 
-            password_hash = univention.admin.password.lock_password(password)  # TODO: decode to let lock_password() and unlock_passowrd() return bytestring?!
+            password_hash = univention.admin.password.hash_password(password)
             if self['disabled'] != '1':
                 password_hash = univention.admin.password.unlock_password(password_hash)
             ml.append(('userPassword', old_password.encode('ASCII'), password_hash.encode('ASCII')))
@@ -2138,14 +2138,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             elif filter.value in ['posix', 'windows', 'all', 'none']:
                 if filter.value == 'all':
                     filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
-                    # filter.transform_to_conjunction(univention.admin.filter.parse(u'(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ])(userPassword={crypt}!*))'))
                 elif filter.value == 'windows':
                     filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
-                # elif filter.value == u'posix':
-                #    filter.variable = u'userPassword'
-                #    filter.value = u'{crypt}!*'
                 elif filter.value == 'none':
-                    # filter.transform_to_conjunction(univention.admin.filter.parse(u'(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ]))(!(userPassword={crypt}!*)))'))
                     filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'))
             elif filter.value == '*':
                 filter.variable = 'uid'

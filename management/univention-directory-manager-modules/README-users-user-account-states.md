@@ -91,7 +91,7 @@ Indicates the user account is deactivated. This affects authentication for Windo
 
   - `sambaAcctFlags` contains `D`
   - `krb5KDCFlags` bitmask includes the `KRB5_KDB_REQUIRES_PRE_AUTH` bit (aka: `1 << 7`, `0x80`).
-  - `shadowExpire == 1` or `shadowExpire < current time` or `userPassword` hash starts with `!`
+  - `shadowExpire == 1` or `shadowExpire < current time` ~or `userPassword` hash starts with `!`~
 - **Property UDM search filter**:
 
   - `disabled=` `1` | `0` | `posix` | `windows` | `all` | `none` | `kerberos` | `windows_kerberos` | `windows_posix` | `posix_kerberos` | `*`
@@ -110,7 +110,7 @@ Defines a point in time after which the account is considered expired (i.e., dis
 
   - `sambaKickoffTime`: UNIX timestamp
   - `krb5ValidEnd`: GeneralizedTime (currently when stored via UDM time is set to `00:00:00` o'clock: `YYYYMMDD000000Z`)
-  - `shadowExpire`: UNIX timestamp when the account is considered expired
+  - `shadowExpire`: UNIX timestamp when the account is considered expired (or `1` for general disabled)
 - **Property UDM search filter**:
 
   - `userexpiry=` `2025-06-20` | `*`

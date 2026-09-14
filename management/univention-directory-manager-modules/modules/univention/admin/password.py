@@ -164,9 +164,40 @@ def unlock_password(password: str) -> str:
     return password
 
 
+def hash_password(password: str) -> str:
+    """
+    Hash password if not already.
+
+    :param password: password
+    :returns: the password hash.
+
+    >>> hash_password('{crypt}$1$foo')
+    '{crypt}$1$foo'
+    >>> hash_password('{crypt}!$1$foo')
+    '{crypt}!$1$foo'
+    >>> hash_password('{LANMAN}')
+    '{LANMAN}'
+    >>> hash_password('{SASL}')
+    '{SASL}'
+    >>> hash_password('{KINIT}')
+    '{KINIT}'
+    >>> hash_password('{BCRYPT}')
+    '{BCRYPT}'
+    >>> hash_password('foo').startswith('{crypt}$')
+    True
+    """
+    # cleartext password?
+    if not RE_PASSWORD_SCHEME.match(password):
+        if configRegistry.is_true('password/hashing/bcrypt'):
+            return '{BCRYPT}%s' % (bcrypt_hash(password))
+        return '{crypt}%s' % (crypt(password))
+
+    return password
+
+
 def lock_password(password: str) -> str:
     """
-    Add prefix to password used for locking.
+    Add prefix to password used for disabling.
 
     :param password: password hash.
     :returns: the locked password hash.
@@ -184,12 +215,7 @@ def lock_password(password: str) -> str:
     >>> lock_password('foo').startswith('{crypt}!$')
     True
     """
-    # cleartext password?
-    if not RE_PASSWORD_SCHEME.match(password):
-        if configRegistry.is_true('password/hashing/bcrypt'):
-            return '{BCRYPT}!%s' % (bcrypt_hash(password))
-        return '{crypt}!%s' % (crypt(password))
-
+    password = hash_password(password)
     if not is_locked(password):
         match = RE_PASSWORD_SCHEME.match(password).groups()
         password = '{%s}!%s' % (match[0], match[2])
