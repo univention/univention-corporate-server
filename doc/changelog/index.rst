@@ -715,8 +715,7 @@ General
   * :program:`squid` (:uv:cve:`2026-33515`, :uv:cve:`2026-33526`,
     :uv:cve:`2026-47729`, :uv:cve:`2026-50012`) (:uv:bug:`59682`)
 
-  * :program:`univention-directory-manager-rest` (:uv:cve:`TMP1`)
-    (:uv:bug:`59761`)
+  * :program:`univention-directory-manager-rest` (:uv:bug:`59761`)
 
   * :program:`xorg-server` (:uv:cve:`2022-49737`,
     :uv:cve:`2026-50256`, :uv:cve:`2026-50257`, :uv:cve:`2026-50258`,
@@ -729,7 +728,7 @@ General
 
 .. _debian:
 
-* |UCSUCS| |release| includes the following updated packages from Debian 0.0:
+* |UCSUCS| |release| includes the following updated packages from Debian 12.15:
 
   * :program:`appstream`
   * :program:`beets`
@@ -814,8 +813,9 @@ Domain services
 OpenLDAP
 ========
 
-* The directory replication OID skip list now contains the built-in schema definitions from OpenLDAP 2.6 to
-  allow mixed environments with UCS 5.3 (:uv:bug:`59532`).
+* The directory replication OID skip list now contains the built-in schema
+  definitions from OpenLDAP 2.6 to allow mixed environments with UCS 5.3
+  (:uv:bug:`59532`).
 
 * The configuration of the OpenLDAP ``memberof`` overlay moved into the
   ``univention-ldap-server`` package.
@@ -827,8 +827,9 @@ OpenLDAP
 Listener/Notifier domain replication
 ------------------------------------
 
-* The directory replication OID skip list now contains the built-in schema definitions from OpenLDAP 2.6 to
-  allow mixed environments with UCS 5.3 (:uv:bug:`59532`).
+* The directory replication OID skip list now contains the built-in schema
+  definitions from OpenLDAP 2.6 to allow mixed environments with UCS 5.3
+  (:uv:bug:`59532`).
 
 * The Univention Directory Listener shutdown handling is now signal-safe
   to avoid segmentation faults when terminating while embedded Python handler
