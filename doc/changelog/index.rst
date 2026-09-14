@@ -769,10 +769,6 @@ General
   * :program:`u-boot`
   * :program:`wolfssl`
 
-.. _maintained:
-
-* The following packages have been moved to the maintained repository of UCS:
-
 .. _changelog-basic:
 
 *********************
@@ -792,10 +788,10 @@ Univention Configuration Registry
 Other system services
 =====================
 
-* ``univention-ssh`` now disables SSH public key authentication when
+* ``univention-ssh`` now deactivates SSH public key authentication when
   authenticating with machine account credentials. This avoids authentication
-  failures caused by excessive SSH authentication attempts. Further security-
-  related configuration options for joined systems have been added
+  failures caused by excessive SSH authentication attempts. Further
+  security-related configuration options for joined systems have been added
   (:uv:bug:`59144`).
 
 .. _changelog-domain:
@@ -804,9 +800,10 @@ Other system services
 Domain services
 ***************
 
-* The ``server_password_change`` utilities no longer print "Bad file descriptor"
-  error messages when invoked via Debian post installation scripts. In this
-  case, debug output is written to standard error instead (:uv:bug:`56630`).
+* The ``server_password_change`` utilities no longer print
+  ``Bad file descriptor`` error messages when invoked through Debian post-installation scripts.
+  In this case, the utilities write debug output to standard error instead
+  (:uv:bug:`56630`).
 
 * Database connection and authentication failures no longer produce repeated
   Python tracebacks during system installation. The failures are now logged as
@@ -817,22 +814,23 @@ Domain services
 OpenLDAP
 ========
 
-* The directory replication OID skip list has been extended for OpenLDAP 2.6 to
+* The directory replication OID skip list now contains the built-in schema definitions from OpenLDAP 2.6 to
   allow mixed environments with UCS 5.3 (:uv:bug:`59532`).
 
-* The configuration of the OpenLDAP ``memberof`` overlay has been merged into the
-  ``univention-ldap-server`` package. This package is now an empty transitional
-  package and can be safely removed (:uv:bug:`47464`).
+* The configuration of the OpenLDAP ``memberof`` overlay moved into the
+  ``univention-ldap-server`` package.
+  The ``univention-ldap-overlay-memberof`` package is now an empty transitional package.
+  You can safely remove it (:uv:bug:`47464`).
 
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
 ------------------------------------
 
-* The directory replication OID skip list has been extended for OpenLDAP 2.6 to
+* The directory replication OID skip list now contains the built-in schema definitions from OpenLDAP 2.6 to
   allow mixed environments with UCS 5.3 (:uv:bug:`59532`).
 
-* The Univention Directory Listener shutdown handling has been made signal-safe
+* The Univention Directory Listener shutdown handling is now signal-safe
   to avoid segmentation faults when terminating while embedded Python handler
   code is active (:uv:bug:`59541`).
 
@@ -842,39 +840,39 @@ LDAP Directory Manager
 ======================
 
 * Paginated searches returned an empty result when requesting a page number
-  that isn't larger than the previously requested one, e.g. when navigating
+  that isn't larger than the previously requested one, for example when navigating
   back to a previous page (:uv:bug:`59466`).
 
 * The performance of object searches using ``opened=0`` has been improved. The
-  API now avoids loading and decoding full UDM objects when only object
-  metadata is requested. This significantly speeds up large search result sets
+  API now avoids loading and decoding full UDM objects when it only requests object
+  metadata. This significantly speeds up large search result sets
   (:uv:bug:`59579`).
 
-* The numbers of system accounts for the total user counts are now ignored in
-  the metrics (:uv:bug:`59634`).
+* Total user-count metrics now exclude system accounts
+  (:uv:bug:`59634`).
 
 * The ``opened`` query parameter of the object search was missing from the
   OpenAPI/Swagger schema and is now included (:uv:bug:`59575`).
 
-* The experimental paginated object search has been enhanced by using LDAP
-  Server Side Sorting (SSS) together with either Simple Paged Results (SPR) or
-  Virtual List View (VLV). This functionality is intended for evaluation only
-  and is not yet supported for production use. It has known limitations
-  regarding scalability, process-local pagination state, recovery after LDAP
-  server restarts, and VLV additionally requires the LDAP SSSVLV overlay to be
-  enabled and configured appropriately (:uv:bug:`50240`).
+* The experimental paginated object search supports LDAP Server Side Sorting
+  (SSS) with either Simple Paged Results (SPR) or Virtual List View (VLV).
+  Use this feature for evaluation only.
+  Univention doesn't support it for production use yet.
+  Known limitations affect scalability, process-local pagination state, and
+  recovery after LDAP server restarts. To use VLV, enable the LDAP SSSVLV
+  overlay and configure it correctly (:uv:bug:`50240`).
 
-* The UDM REST API command line doesn't depend on the UCR default layer anymore
-  for compatibility with Nubus 4 Kubernetes (:uv:bug:`59837`).
+* The UDM HTTP REST API command line doesn't depend on the UCR default layer anymore
+  for compatibility with Nubus for Kubernetes (:uv:bug:`59837`).
 
-* Invalid data in LDAP may lead to crashing functionality in UDM if the
-  experimental feature for delegative administration is enabled. Those
-  properties are now ignored from being evaluated in delegative administration
+* The experimental delegative administration feature can cause UDM functionality
+  to crash when it processes invalid LDAP data.
+  UDM now ignores affected properties during delegative administration evaluation
   (:uv:bug:`59560`).
 
 * The performance of object processing has been improved by reducing the
   overhead of mapping LDAP attributes to UDM properties. In environments with
-  many objects, such as when retrieving large result sets through the UDM REST
+  many objects, such as when retrieving large result sets through the UDM HTTP REST
   API, this noticeably speeds up object retrieval (:uv:bug:`59578`).
 
 * The UDM module search API has been extended to allow passing ``opened=True``
@@ -884,8 +882,8 @@ LDAP Directory Manager
   identifiers are no longer restricted to the previous ``app:namespace:role``
   format, allowing arbitrary role strings to be used (:uv:bug:`59603`).
 
-* The generation of the ``sambaNTPassword`` LDAP attribute can now be disabled
-  via the UCR variable ``password/samba/nthash``. When disabled, existing NT
+* The generation of the ``sambaNTPassword`` LDAP attribute can now be deactivated
+  through the UCR variable :envvar:`password/samba/nthash`. When deactivated, existing NT
   hashes are removed during the next password change. Be aware that this breaks
   services relying on NT password hashes, including S4/AD Connector password
   synchronization, Squid NTLM authentication, and RADIUS MS-CHAP/NTLM
@@ -894,16 +892,8 @@ LDAP Directory Manager
 * The ``--list-dns`` option of ``univention-license-check`` was broken by erratum
   394 and has been repaired (:uv:bug:`59633`).
 
-* The experimental paginated object search has been enhanced by using LDAP
-  Server Side Sorting (SSS) together with either Simple Paged Results (SPR) or
-  Virtual List View (VLV). This functionality is intended for evaluation only
-  and is not yet supported for production use. It has known limitations
-  regarding scalability, process-local pagination state, recovery after LDAP
-  server restarts, and VLV additionally requires the LDAP SSSVLV overlay to be
-  enabled and configured appropriately (:uv:bug:`50240`).
-
 * The order of extended attributes in the layout has been corrected in cases
-  where where no built-in layout elements exist for a custom tab. UDM now
+  where no built-in layout elements exist for a custom tab. UDM now
   displays custom groups and properties in a consistent and predictable order
   (:uv:bug:`48612`).
 
@@ -924,12 +914,9 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* The grid header "select all" checkbox switched to the unselected state
-  instead of the indeterminate state when a single item was deselected from the
-  all-selected state (:uv:bug:`59147`).
-
-* The DOMpurify library has been upgraded to the latest version (2.5.9,
-  :uv:bug:`59808`).
+* When users deselect a single item from an all-selected state, the grid header
+  :guilabel:`select all` checkbox now displays the unselected state instead of
+  the indeterminate state (:uv:bug:`59147`).
 
 * The DOMpurify library has been upgraded to the latest version (2.5.9,
   :uv:bug:`59808`).
@@ -939,13 +926,14 @@ Univention Management Console web interface
 Univention Management Console server
 ====================================
 
-* The experimental paginated object search has been enhanced by using LDAP
-  Server Side Sorting (SSS) together with either Simple Paged Results (SPR) or
-  Virtual List View (VLV). This functionality is intended for evaluation only
-  and is not yet supported for production use. It has known limitations
-  regarding scalability, process-local pagination state, recovery after LDAP
-  server restarts, and VLV additionally requires the LDAP SSSVLV overlay to be
-  enabled and configured appropriately (:uv:bug:`50240`).
+* The experimental paginated object search supports LDAP Server Side Sorting
+  (SSS) with either Simple Paged Results (SPR) or Virtual List View (VLV).
+  Use this feature for evaluation only.
+  Univention doesn't support it for production use yet.
+  Known limitations affect scalability, process-local pagination state, and
+  recovery after LDAP server restarts. To use VLV, enable the LDAP SSSVLV
+  overlay and configure it correctly (:uv:bug:`50240`).
+
 
 .. _changelog-umc-appcenter:
 
@@ -958,9 +946,9 @@ Univention App Center
 * The App Center UMC module is now able to handle the installation of new
   dependencies during the upgrade of an app (:uv:bug:`59717`).
 
-* An App Center setting has been added which allows an App to specify whether it
-  should be installed on primary first. This is only valuable for Apps that
-  can be installed multiple times in the domain (:uv:bug:`59895`).
+* Apps that can be installed multiple times in the domain can now specify
+  whether to install first on the *Primary Directory Node*
+  (:uv:bug:`59895`).
 
 * An internal flag for ``univention-app register listener`` has been added. This
   allows the forced removal of a listener module and the listener-trigger
@@ -976,7 +964,7 @@ Modules for system settings / setup wizard
   now part of the ``univention-ldap-server`` package (:uv:bug:`47464`).
 
 * Automatic DNS updates of the SSO record during IP address changes now
-  correctly honor the UCR variable ``keycloak/server/sso/autoregistration``
+  correctly honor the UCR variable :envvar:`keycloak/server/sso/autoregistration`
   (:uv:bug:`59759`).
 
 * The IP address registration during system startup no longer incorrectly
@@ -999,8 +987,8 @@ System diagnostic module
 * The error message for the ``11_nameserver`` check was broken and has been
   corrected (:uv:bug:`59489`).
 
-* The ``20_check_share_references`` check now only runs on the Primary Directory
-  Node. It binds as the machine account, which on a UCS@school school replica
+* The ``20_check_share_references`` check now only runs on the *Primary Directory
+  Node*. It binds as the machine account, which on a UCS\@school school replica
   may not read the objects of other schools, so shares referencing a server of
   another school were incorrectly reported as dangling references
   (:uv:bug:`59718`).
@@ -1010,21 +998,22 @@ System diagnostic module
 LDAP directory browser
 ======================
 
-* Set * as default search value when automatic substring search is disabled
+* Set ``*`` as default search value when automatic substring search is deactivated
   (:uv:bug:`59444`).
 
 * The performance of object searches using ``opened=0`` has been improved. The
-  API now avoids loading and decoding full UDM objects when only object
-  metadata is requested. This significantly speeds up large search result sets
+  API now avoids loading and decoding full UDM objects when it only requests object
+  metadata. This significantly speeds up large search result sets
   (:uv:bug:`59579`).
 
-* The experimental paginated object search has been enhanced by using LDAP
-  Server Side Sorting (SSS) together with either Simple Paged Results (SPR) or
-  Virtual List View (VLV). This functionality is intended for evaluation only
-  and is not yet supported for production use. It has known limitations
-  regarding scalability, process-local pagination state, recovery after LDAP
-  server restarts, and VLV additionally requires the LDAP SSSVLV overlay to be
-  enabled and configured appropriately (:uv:bug:`50240`).
+* The experimental paginated object search supports LDAP Server Side Sorting
+  (SSS) with either Simple Paged Results (SPR) or Virtual List View (VLV).
+  Use this feature for evaluation only.
+  Univention doesn't support it for production use yet.
+  Known limitations affect scalability, process-local pagination state, and
+  recovery after LDAP server restarts. To use VLV, enable the LDAP SSSVLV
+  overlay and configure it correctly (:uv:bug:`50240`).
+
 
 * Empty search queries now always return all results (:uv:bug:`59595`).
 
@@ -1034,13 +1023,13 @@ LDAP directory browser
 Univention base libraries
 *************************
 
-* The timeout for LDAP extension activation in ucs_registerLDAPExtension is now
-  configurable via the UCR variable
-  ``directory/manager/ldap_extension/timeout/activation`` (:uv:bug:`59474`).
+* You can configure the timeout for LDAP extension activation in ``ucs_registerLDAPExtension``
+  through the UCR variable
+  :envvar:`directory/manager/ldap_extension/timeout/activation` (:uv:bug:`59474`).
 
 * Authentication retry handling in the UMC client has been corrected.
   Previously, under certain authentication failures, the client could
-  repeatedly retry authentication until the Python recursion limit was reached.
+  repeatedly retry authentication until it reached the Python recursion limit.
   The retry logic now performs a limited number of authentication attempts
   before reporting the authentication failure to the caller (:uv:bug:`58380`).
 
@@ -1055,8 +1044,8 @@ System services
 SAML
 ====
 
-* Future compatibility for API changes in more recent ``python-keycloak``
-  versions has been added (:uv:bug:`59517`).
+* The SAML integration now supports API changes in newer ``python-keycloak``
+  versions (:uv:bug:`59517`).
 
 * The :program:`crudesaml` package epoch has been increased to ensure a valid upgrade path
   to UCS 5.3 and restore the original upstream package version
@@ -1072,9 +1061,9 @@ Mail services
 IMAP services
 -------------
 
-* The configuration file ``/etc/dovecot/conf.d/90-sieve-extprograms.conf`` has
-  been added as UCR template so that upgrades to UCS 5.3 with Dovecot 2.4 will
-  write a compatible configuration file (:uv:bug:`59520`).
+* UCS 5.3 upgrades with Dovecot 2.4 now use the UCR template
+  :file:`/etc/dovecot/conf.d/90-sieve-extprograms.conf`
+  to write a compatible configuration file (:uv:bug:`59520`).
 
 .. _changelog-service-radius:
 
@@ -1082,7 +1071,7 @@ RADIUS
 ======
 
 * The username of the inner tunnel is now passed to the default connection.
-  This allows e.g. assigning a VLAN based on this authenticated username
+  For example, this allows assigning a VLAN based on this authenticated username
   instead of inheriting unverified settings from the outer tunnel ("anonymous
   login", :uv:bug:`59456`).
 
@@ -1106,10 +1095,9 @@ PAM / Local group cache
 Networking services
 ===================
 
-* Improved the reliability of IP address registration during system startup.
-  Temporary communication failures while the Univention Management Console
-  services are still starting are now retried automatically instead of causing
-  the registration to fail (:uv:bug:`53252`).
+* During system startup, IP address registration now retries temporary
+  communication failures while Univention Management Console services are still
+  starting instead of failing (:uv:bug:`53252`).
 
 .. _changelog-win:
 
@@ -1122,20 +1110,21 @@ Services for Windows
 Samba
 =====
 
-* Windows domain trust validation could fail due to ``winbindd`` getting stuck
-  attempting an SMB connection even when that was neither necessary nor possible
-  with the MS AD (e.g. if ``Require NTLMv2 session security`` was activated
-  there, :uv:bug:`59601`).
+* Windows domain trust validation could fail
+  because ``winbindd`` got stuck attempting an SMB connection
+  that Microsoft Active Directory neither required nor permitted.
+  For example, this occurred when Active Directory enabled
+  ``Require NTLMv2 session security`` (:uv:bug:`59601`).
 
-* Windows clients had issues opening symbolic links with Samba 4.24. This has been
-  fixed (:uv:bug:`59706`).
+* Samba 4.24 now lets Windows clients open symbolic links
+  (:uv:bug:`59706`).
 
 .. _changelog-win-s4c:
 
 Univention S4 Connector
 =======================
 
-* The S4-Connector now retries primary group synchronization after the
+* The S4 Connector now retries primary group synchronization after the
   corresponding group becomes available in Samba/AD (:uv:bug:`52788`).
 
 .. _changelog-win-adc:
@@ -1143,22 +1132,19 @@ Univention S4 Connector
 Univention Active Directory Connection
 ======================================
 
-* The ``univention-ad-connector`` sets the attribute ``msDS-
-  SupportedEncryptionTypes`` in Active Directory during the password
-  synchronization to UCS. While this is necessary in environments which use
-  bidirectional synchronization, this is now disabled for all other
-  synchronization configurations (:uv:bug:`59692`).
+* During password synchronization to UCS, the ``univention-ad-connector`` now
+  sets the ``msDS-SupportedEncryptionTypes`` attribute in Active Directory only
+  for bidirectional synchronization configurations (:uv:bug:`59692`).
 
 * The AD Connector now retries primary group synchronization after the
   corresponding group becomes available in AD (:uv:bug:`59694`).
 
 * The ``allowfilter`` and ``ignorefilter`` settings from the AD Connector now support
-  basic substring matching for values e.g ``*string*`` (:uv:bug:`59701`).
+  basic substring matching for values, for example ``*string*`` (:uv:bug:`59701`).
 
-* During password synchronization from Active Directory towards UCS, the
-  Kerberos keys will now be synchronized by the AD-Connector per default. This
-  results in securer key types to be usable in UCS when the password of a user
-  has been changed in Active Directory (:uv:bug:`57689`).
+* During password synchronization from Active Directory to UCS, the AD Connector
+  now synchronizes Kerberos keys by default. This lets UCS use more secure key
+  types after a password change in Active Directory (:uv:bug:`57689`).
 
 .. _changelog-other:
 
@@ -1170,12 +1156,11 @@ Other changes
   (VLV) search context between requests. This significantly improves the
   performance of repeated VLV requests and reduces server load when
   applications use VLV-based pagination, such as the experimental pagination
-  feature of the UDM REST API (:uv:bug:`59666`).
+  feature of the UDM HTTP REST API (:uv:bug:`59666`).
 
-* Cerbos Python SDK - Python clients for accessing Cerbos. Only supports HTTP
-  client (not gRPC) for UCS (:uv:bug:`59901`).
+* The Cerbos Python SDK provides Python clients for accessing Cerbos. In UCS,
+  it supports HTTP only, not gRPC (:uv:bug:`59901`).
 
-* This is the first release of the Cerbos-based Guardian component for UCS,
-  replacing the OPA-based Guardian entirely. This component is intended for
-  internal use with Univention software only (:uv:bug:`59669`).
-
+* This is the first release of the Cerbos-based Guardian component for UCS.
+  It replaces the OPA-based Guardian and is intended for use only with
+  Univention software (:uv:bug:`59669`).
