@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 14. Sep 2026
+     - Document
+     - Replace external UCS Manual references with internal links.
+
    * - 25. Aug 2026
      - :ref:`references-ucr-variables`
      - Add :envvar:`ldap/limits` reference documentation.
