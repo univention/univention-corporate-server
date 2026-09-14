@@ -1,7 +1,9 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test the UMC modules access for restricted users
 ## bugs: [34621]
 ## exposure: dangerous
+
+import pytest
 
 import univention.testing.udm as udm_test
 from univention.testing import utils
@@ -11,7 +13,7 @@ from univention.testing.umc import Client
 from umc import UMCBase
 
 
-class TestUMCUserModules(UMCBase):
+class _UMCUserModules(UMCBase):
 
     def main(self):
         """Method to test the UMC modules access restrictions for regular users"""
@@ -57,5 +59,6 @@ class TestUMCUserModules(UMCBase):
         return modules
 
 
-if __name__ == '__main__':
-    TestUMCUserModules().main()
+@pytest.mark.exposure('dangerous')
+def test_umc_core_user_modules():
+    _UMCUserModules().main()

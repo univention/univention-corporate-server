@@ -1,12 +1,13 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Test the UMC file quota module
 ## bugs: [34625]
+## tags: [udm]
 ## exposure: dangerous
 ## versions:
 ##  3.0-0: skip
 ##  3.2-3: fixed
 
-import sys
+import pytest
 
 import univention.testing.udm as udm_test
 from univention.testing import utils
@@ -47,7 +48,7 @@ class TestUMCQuotasManagement(UMCBase):
                 self.partition_dev = quota['partitionDevice']
                 return
         print("Failed to select a partition for the test, skipping")
-        return self.return_code_result_skip()
+        pytest.skip("Failed to select a partition for the test")
 
     def is_dev_quota_active(self):
         """
@@ -148,6 +149,10 @@ class TestUMCQuotasManagement(UMCBase):
                         self.activate_deactivate_quota('deactivate')
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCQuotasManagement()
-    sys.exit(TestUMC.main())
+@pytest.fixture
+def quota_management():
+    return TestUMCQuotasManagement()
+
+
+def test_quota_management(quota_management):
+    quota_management.main()

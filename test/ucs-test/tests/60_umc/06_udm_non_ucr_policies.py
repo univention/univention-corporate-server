@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test UMC object policies with non-UCR-policies
 ## bugs: [35314]
 ## roles:
@@ -6,7 +6,7 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
-from sys import exit
+import pytest
 
 from univention.testing import utils
 from univention.testing.strings import random_username
@@ -15,7 +15,7 @@ from univention.testing.udm import UCSTestUDM
 from umc import UMCBase
 
 
-class TestUMCnonUCRpolicies(UMCBase):
+class _UMCNonUCRPolicies(UMCBase):
 
     def __init__(self):
         super().__init__()
@@ -243,6 +243,7 @@ class TestUMCnonUCRpolicies(UMCBase):
             self.check_required_excluded_object_classes()
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCnonUCRpolicies()
-    exit(TestUMC.main())
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
+@pytest.mark.exposure('dangerous')
+def test_udm_non_ucr_policies():
+    _UMCNonUCRPolicies().main()

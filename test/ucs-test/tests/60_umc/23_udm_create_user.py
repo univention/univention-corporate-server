@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test the UMC user creation, modification and deletion
 ## bugs: [34791]
 ## roles:
@@ -7,7 +7,7 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
-import sys
+import pytest
 
 from univention.testing import utils
 from univention.testing.strings import random_username
@@ -15,7 +15,7 @@ from univention.testing.strings import random_username
 from umc import UDMModule
 
 
-class TestUMCUserCreation(UDMModule):
+class _UMCUserCreation(UDMModule):
 
     def __init__(self):
         """Test Class constructor"""
@@ -163,6 +163,8 @@ class TestUMCUserCreation(UDMModule):
                 self.delete_obj(test_username_admin, "users/user", "users/user")
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCUserCreation()
-    sys.exit(TestUMC.main())
+@pytest.mark.tags('skip_admember')
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
+@pytest.mark.exposure('dangerous')
+def test_udm_create_user():
+    _UMCUserCreation().main()

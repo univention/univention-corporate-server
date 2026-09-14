@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test setting of user photo via UMC
 ## bugs: [36273]
 ## roles:
@@ -7,8 +7,9 @@
 
 import base64
 import subprocess
-import sys
 from tempfile import NamedTemporaryFile
+
+import pytest
 
 from univention.admin.syntax import jpegPhoto as jpegPhotoSyntaxClass
 from univention.testing import utils
@@ -91,6 +92,7 @@ class TestUMCUserAuthentication(UMCBase):
             self.unset_image()
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCUserAuthentication()
-    sys.exit(TestUMC.main())
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_umc_users_user_png_photo():
+    TestUMCUserAuthentication().main()

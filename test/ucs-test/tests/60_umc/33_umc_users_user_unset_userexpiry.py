@@ -1,11 +1,11 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test unsetting userexpiry attribute via UMC
 ## bugs: [25279]
 ## roles:
 ##  - domaincontroller_master
 ## exposure: dangerous
 
-import sys
+import pytest
 
 from univention.testing import utils
 from univention.testing.strings import random_username
@@ -86,6 +86,7 @@ class TestUMCUserAuthentication(UMCBase):
             print("OK: unset of userexpiry via None succeeded")
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCUserAuthentication()
-    sys.exit(TestUMC.main())
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_umc_users_user_unset_userexpiry():
+    TestUMCUserAuthentication().main()

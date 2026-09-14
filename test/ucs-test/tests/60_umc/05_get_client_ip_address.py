@@ -1,11 +1,12 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Check if UMC is able to return correct IP address
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 
 from http.client import HTTPConnection
 
-from univention.config_registry import ConfigRegistry
+import pytest
+
 from univention.testing import network, utils
 from univention.testing.umc import Client
 
@@ -20,12 +21,8 @@ def get_ip_address(host, username, password):
     return client.umc_get('ipaddress').data
 
 
-def main():
-    ucr = ConfigRegistry()
-    ucr.load()
-
-    account = utils.UCSTestDomainAdminCredentials()
-
+@pytest.mark.exposure('dangerous')
+def test_get_client_ip_address(account):
     with network.NetworkRedirector() as nethelper:
         print('*** Check with different remote addresses')
         for addr2 in ('4.3.2.1', '1.1.1.1', '2.2.2.2'):
@@ -42,7 +39,3 @@ def main():
         result = get_ip_address('localhost', account.username, account.bindpw)
         if result:
             utils.fails('Response is expected to be empty')
-
-
-if __name__ == '__main__':
-    main()

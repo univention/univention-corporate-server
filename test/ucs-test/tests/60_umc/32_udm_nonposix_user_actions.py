@@ -1,11 +1,9 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test querying UDM with a non-posix UMC user
 ## bugs: [37178]
 ## roles:
 ##  - domaincontroller_master
 ## exposure: dangerous
-
-import sys
 
 import pytest
 
@@ -76,6 +74,7 @@ class TestUMCUserAuthentication(UMCBase):
             self.query_udm()
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCUserAuthentication()
-    sys.exit(TestUMC.main())
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_umc_nonposix_user_actions():
+    TestUMCUserAuthentication().main()

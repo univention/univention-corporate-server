@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Check if the webserver is responding after sending many unanswered requests
 ## bugs: [37487]
 ## versions:
@@ -17,10 +17,10 @@
 
 import ssl
 import subprocess
+from http import client as httplib
 
-import httplib
+import pytest
 
-from univention.management.console.modules.ucstest import joinscript, unjoinscript
 from univention.testing import utils
 from univention.testing.umc import Client
 
@@ -31,7 +31,7 @@ NUMBER_OF_NOT_RESPONDING_REQUESTS = 100
 class AsyncClient(Client):
 
     def async_request(self, path):
-        cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+        cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
         headers = dict(self._headers, **{'Cookie': cookie, 'Content-Type': 'application/json'})
         connection = httplib.HTTPSConnection(self.hostname, timeout=10)
         connection.request('POST', '/univention/command/%s' % path, '{}', headers=headers)
@@ -56,9 +56,8 @@ def main():
         subprocess.Popen(['systemctl', 'restart', 'univention-management-console-server'])
 
 
-if __name__ == '__main__':
-    joinscript()
-    try:
-        main()
-    finally:
-        unjoinscript()
+@pytest.mark.tags('SKIP')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_webserver_response_many_requests(umc_allow_ucstest):
+    main()

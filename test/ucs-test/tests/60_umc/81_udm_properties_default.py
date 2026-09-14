@@ -1,12 +1,12 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Test the default values of properties
 ## bugs: [43395]
 ## roles:
 ##  - domaincontroller_master
+## tags: [udm]
 ## packages: [python3-univention-directory-manager]
 ## exposure: safe
 
-import unittest
 from argparse import Namespace as N
 
 from univention.admin import property  # noqa: A004
@@ -17,7 +17,7 @@ class FakeObject(dict):
     has_property = dict.__contains__
 
 
-class TestProperty(unittest.TestCase):
+class TestProperty:
 
     def test_default_sv(self):
         p = property()
@@ -110,7 +110,3 @@ class TestProperty(unittest.TestCase):
         o = FakeObject()
         p = property(multivalue=True, default=(None,))
         assert p.default(o) == []
-
-
-if __name__ == '__main__':
-    unittest.main()

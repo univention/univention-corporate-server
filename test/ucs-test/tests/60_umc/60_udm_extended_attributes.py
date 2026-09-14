@@ -1,14 +1,13 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Test the UMC extended attributes
 ## bugs: [34623]
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+## tags: [udm]
 ## exposure: dangerous
 
-import sys
-
-import atexit
+import pytest
 
 import univention.testing.udm as udm_test
 from univention.testing import utils
@@ -344,13 +343,22 @@ class TestUMCExtendedAttributes(UDMModule):
             self.remove_attribute_if_exists(test_attribute_name)
 
 
-if __name__ == '__main__':
-    # Since the S4 connector uses a object based synchronization,
-    # it is a problem to change the same object in short intervals,
-    # see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
+@pytest.fixture(autouse=True)
+def stop_s4connector():
+    # Since the S4 connector uses object-based synchronization, changing the
+    # same object in short intervals is unreliable (Bug #35336).
     if utils.s4connector_present():
-        atexit.register(utils.start_s4connector)
         utils.stop_s4connector()
+        yield
+        utils.start_s4connector()
+    else:
+        yield
 
-    TestUMC = TestUMCExtendedAttributes()
-    sys.exit(TestUMC.main())
+
+@pytest.fixture
+def extended_attributes():
+    return TestUMCExtendedAttributes()
+
+
+def test_extended_attributes(extended_attributes):
+    extended_attributes.main()

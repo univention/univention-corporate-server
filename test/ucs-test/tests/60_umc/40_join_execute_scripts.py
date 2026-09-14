@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test the UMC domain join module
 ## bugs: [34624]
 ## roles:
@@ -10,7 +10,8 @@
 ##  4.0-2: skip
 
 import os
-import sys
+
+import pytest
 
 from univention.testing import utils
 
@@ -139,6 +140,7 @@ class TestUMCDomainJoinModule(JoinModule):
             self.delete_file(join_status_file + '.bak')
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCDomainJoinModule()
-    sys.exit(TestUMC.main())
+@pytest.mark.roles('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+@pytest.mark.exposure('dangerous')
+def test_join_execute_scripts():
+    TestUMCDomainJoinModule().main()

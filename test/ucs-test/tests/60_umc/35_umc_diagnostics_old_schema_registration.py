@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test basic schema registration
 ## tags:
 ##  - ldapextensions
@@ -20,6 +20,7 @@ from shlex import quote
 from tempfile import mkdtemp
 
 import ldap
+import pytest
 from retrying import retry
 
 from univention.config_registry import ucr
@@ -77,7 +78,11 @@ def fetch_schema_from_ldap_master():
     return __fetch_schema_from_uri(ldap_uri)
 
 
-def test() -> None:
+@pytest.mark.tags('ldapextensions', 'apptest')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.roles_not('basesystem')
+@pytest.mark.exposure('dangerous')
+def test_old_schema_registration() -> None:
     with schema_file() as sfile, register_schema(sfile):
         # start the diagnostic check
         old_schema_registration = diagnostic.Plugin(DIAGNOSTIC_PLUGIN)
@@ -103,7 +108,5 @@ def test() -> None:
         finally:
             subprocess.check_call(['sh', '-x', '-c', f'. /usr/share/univention-lib/ldap.sh && ucs_unregisterLDAPExtension --schema {quote(sfile.stem)}'])
 
-
-test()
 
 # vim: set ft=python :

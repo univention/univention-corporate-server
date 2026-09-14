@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test the UMC domain complete rejoin
 ## bugs: [34624]
 ## roles:
@@ -8,8 +8,9 @@
 ## tags: [SKIP, producttest]
 ## exposure: dangerous
 
-import sys
 from os import path
+
+import pytest
 
 from univention.testing import utils
 
@@ -64,6 +65,8 @@ class TestUMCDomainRejoin(JoinModule):
             self.delete_file(join_status_file + '.bak')
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCDomainRejoin()
-    sys.exit(TestUMC.main())
+@pytest.mark.tags('SKIP', 'producttest')
+@pytest.mark.roles('domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+@pytest.mark.exposure('dangerous')
+def test_join_domain_rejoin():
+    TestUMCDomainRejoin().main()

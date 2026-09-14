@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test UMC policy result
 ## bugs: [32271]
 ## roles:
@@ -8,6 +8,8 @@
 ## packages:
 ##  - univention-management-console-module-udm
 ## exposure: careful
+
+import pytest
 
 from univention.testing.strings import random_name
 from univention.testing.udm import UCSTestUDM
@@ -214,5 +216,8 @@ def _assert(first, second, name):
         print('OK: %s' % name)
 
 
-if __name__ == '__main__':
+@pytest.mark.tags('SKIP')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('careful')
+def test_udm_policies():
     main()

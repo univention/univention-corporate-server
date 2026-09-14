@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: Test the UMC group creation, modification and deletion
 ## bugs: [34792]
 ## roles:
@@ -6,7 +6,7 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
-import sys
+import pytest
 
 from univention.testing import utils
 from univention.testing.strings import random_username
@@ -14,7 +14,7 @@ from univention.testing.strings import random_username
 from umc import UMCBase
 
 
-class TestUMCGroupsCreation(UMCBase):
+class _UMCGroupsCreation(UMCBase):
 
     def __init__(self):
         """Test Class constructor"""
@@ -111,6 +111,7 @@ class TestUMCGroupsCreation(UMCBase):
                 self.delete_obj(test_groupname, "groups", "groups/group")
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCGroupsCreation()
-    sys.exit(TestUMC.main())
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
+@pytest.mark.exposure('dangerous')
+def test_udm_create_group():
+    _UMCGroupsCreation().main()

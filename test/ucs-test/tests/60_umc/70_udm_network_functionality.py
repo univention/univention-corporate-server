@@ -1,12 +1,11 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Test the UMC network functionality
 ## bugs: [34622]
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+## tags: [udm]
 ## exposure: dangerous
-
-import sys
 
 import pytest
 
@@ -369,6 +368,10 @@ class TestUMCNetworkFunctionality(UDMModule):
                                 "networks/network")
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCNetworkFunctionality()
-    sys.exit(TestUMC.main())
+@pytest.fixture
+def network_functionality():
+    return TestUMCNetworkFunctionality()
+
+
+def test_network_functionality(network_functionality):
+    network_functionality.main()

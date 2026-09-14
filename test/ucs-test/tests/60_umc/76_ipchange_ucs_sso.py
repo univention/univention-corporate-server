@@ -1,9 +1,10 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3
 ## desc: Check if ip_change also changes the ucs-sso entry
 ## roles-not: [basesystem]
+## tags: [udm]
 ## exposure: dangerous
 
-import atexit
+import pytest
 from ldap.filter import filter_format
 
 import univention.testing.strings as uts
@@ -13,17 +14,21 @@ from univention.testing import utils
 from univention.testing.umc import Client
 
 
-if __name__ == '__main__':
+@pytest.fixture(autouse=True)
+def stop_s4connector():
+    # Since the S4 connector uses object-based synchronization, changing the
+    # same object in short intervals is unreliable (Bug #35336).
+    if utils.s4connector_present():
+        utils.stop_s4connector()
+        yield
+        utils.start_s4connector()
+    else:
+        yield
+
+
+def test_ipchange_ucs_sso():
     ucr = ConfigRegistry()
     ucr.load()
-
-    # Since the S4 connector uses a object based synchronization,
-    # it is a problem to change the same object in short intervals,
-    # see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
-    if utils.s4connector_present():
-        # stopping is a no-op if the connector doesn't run on this host
-        atexit.register(utils.start_s4connector)
-        utils.stop_s4connector()
 
     with udm_test.UCSTestUDM() as udm:
         role = ucr.get('server/role')

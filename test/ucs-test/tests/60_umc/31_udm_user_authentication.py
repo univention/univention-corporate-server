@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test the UMC user authentication and password change
 ## bugs: [34369, 36901]
 ## roles:
@@ -6,9 +6,9 @@
 ## tags: [skip_admember]
 ## exposure: dangerous
 
-import sys
 from time import localtime, sleep, strftime, time
 
+import pytest
 from ldap.filter import filter_format
 
 from univention.lib.umc import Unauthorized
@@ -173,6 +173,8 @@ class TestUMCUserAuthentication(UDMModule):
             self.check_expired_deactivated_removed_account()
 
 
-if __name__ == '__main__':
-    TestUMC = TestUMCUserAuthentication()
-    sys.exit(TestUMC.main())
+@pytest.mark.tags('skip_admember')
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_umc_user_authentication():
+    TestUMCUserAuthentication().main()
