@@ -6,54 +6,64 @@
 Protect password attributes and Kerberos keys
 =============================================
 
-Nubus stores password-related attributes for different authentication protocols
-and services.
-The ``sambaNTPassword`` attribute contains an unsalted NT hash.
-The ``krb5Key`` attribute can contain keys that use encryption types that are
-insecure or deprecated.
-The ``userPassword`` attribute contains a crypt hash using a configurable
-hashing method (see :ref:`password-management-hashes`).
+Nubus stores password-related attributes for different authentication protocols and services.
 
-You can reduce the amount of legacy credential material in the directory by
-disabling NT hash generation and restricting the Kerberos encryption types.
+``sambaNTPassword``
+   The attribute contains an unsalted NT hash.
+
+``krb5Key``
+   The attribute can contain keys that use encryption types
+   that are insecure or deprecated.
+
+``userPassword``
+   The attribute contains a crypt hash
+   that uses a configurable hashing method.
+   For more information,
+   see :ref:`password-management-hashes`.
+
+You can reduce the amount of legacy credential material in the directory service
+by deactivating NT hash generation and restricting the Kerberos encryption types.
 This page describes the required checks, configuration, and cleanup.
 
 .. warning::
 
-   Do not apply these settings before checking the integrations in your
-   environment.
-   Existing users and service accounts can continue to contain the affected
-   values until you run the cleanup commands.
-   After cleanup, you can't restore the removed values without resetting the
-   affected passwords.
+   Don't apply these settings before checking the integrations in your environment.
+
+   Existing users and service accounts can continue to contain the affected values
+   until you run the cleanup commands.
+
+   After cleanup, you can't restore the removed values
+   without resetting the affected passwords.
 
 .. _security-hardening-kerberos-attributes:
 
 Understand the attributes
 -------------------------
 
-The directory can contain several password representations because different
-services use different authentication protocols.
+The directory service contain several password representations
+because different services use different authentication protocols.
+The following password representations are relevant for Kerberos:
 
 ``sambaNTPassword``
    An unsalted NT hash that supports legacy NTLM-based authentication.
-   The hash is not required for Kerberos authentication.
+   The hash isn't required for Kerberos authentication.
 
 ``krb5Key``
    Kerberos keys for a principal.
-   A principal can have several keys so that clients and services using
-   different encryption types can authenticate during a migration.
+   A principal can have several keys so that clients and services
+   that use different encryption types can authenticate during a migration.
 
 The controls are independent:
 
 * :envvar:`password/samba/nthash` controls whether Univention Directory
   Manager (UDM) generates ``sambaNTPassword`` when a password changes.
+
 * :envvar:`kerberos/defaults/enctypes/permitted` controls the encryption types
   that UCS permits for Kerberos keys.
 
 Changing either UCR variable doesn't remove values that already exist.
-Use the cleanup procedures in :ref:`security-hardening-kerberos-cleanup` for
-existing environments.
+Use the cleanup procedures in :ref:`security-hardening-kerberos-cleanup`
+for existing environments.
 
 .. _security-hardening-kerberos-compatibility:
 
