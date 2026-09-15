@@ -8,15 +8,32 @@
 # The portal CLI ships inside the portal server image. This wrapper keeps
 # /usr/sbin/univention-portal available on the host so that the listener
 # modules and the maintainer scripts do not have to know about containers.
+#
+# Set UNIVENTION_PORTAL_WAIT to the number of seconds to wait for the container
+# to become usable. Callers that must not block, such as the listener modules,
+# leave it at 0 and are skipped while the container is down.
 
 set -e
 
 CONTAINER="univention-portal-server"
+CONFIG="/usr/lib/univention-portal/config/config.json"
+WAIT="${UNIVENTION_PORTAL_WAIT:-0}"
 
-if ! docker inspect --format '{{.State.Running}}' "$CONTAINER" 2>/dev/null | grep -qx true
-then
-	echo "univention-portal: $CONTAINER is not running, skipping: $*" >&2
-	exit 0
-fi
+ready () {
+	# The entrypoint writes the config, so its presence means the CLI can run.
+	docker exec "$CONTAINER" test -f "$CONFIG" 2>/dev/null
+}
+
+waited=0
+while ! ready
+do
+	if [ "$waited" -ge "$WAIT" ]
+	then
+		echo "univention-portal: $CONTAINER is not ready, skipping: $*" >&2
+		exit 0
+	fi
+	sleep 1
+	waited=$((waited + 1))
+done
 
 exec docker exec "$CONTAINER" /app/univention-portal "$@"

@@ -9,5 +9,10 @@ WantedBy=multi-user.target
 Type=simple
 EnvironmentFile=/etc/univention-portal/server.env
 ExecStart=docker-compose -f /usr/share/univention-portal/docker-compose.yaml -p univention-portal up --no-build
+# The listener drops events while the container is down, so rebuild the caches
+# whenever the service comes up.
+ExecStartPost=/usr/sbin/univention-portal update --reason force
 ExecStop=docker-compose -p univention-portal down --remove-orphans
+# Stay below the default TimeoutStartSec of 90s.
+Environment=UNIVENTION_PORTAL_WAIT=60
 Restart=on-failure
