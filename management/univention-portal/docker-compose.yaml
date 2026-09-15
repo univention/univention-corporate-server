@@ -19,6 +19,9 @@ services:
       - /usr/share/univention-portal:/usr/share/univention-portal
       # TODO: There is a listener module in UCS, we just need to mount the files
       - /var/cache/univention-portal:/var/cache/univention-portal
+      # GroupsContentFetcher reads this through univention.ldap_cache, which
+      # opens the gdbm files for writing even on a pure read. It cannot be :ro.
+      - /usr/share/univention-group-membership-cache/caches:/usr/share/univention-group-membership-cache/caches
       - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
       - /etc/machine.secret:/etc/machine.secret:ro
     ports:
