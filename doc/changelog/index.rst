@@ -822,6 +822,13 @@ OpenLDAP
   The ``univention-ldap-overlay-memberof`` package is now an empty transitional package.
   You can safely remove it (:uv:bug:`47464`).
 
+* The LDAP server could crash during a simple bind when an account using the
+  ``{KINIT}`` password scheme had no ``krb5PrincipalName`` attribute or when a
+  Kerberos lookup failed.  Repeated bind attempts could also leak memory, and
+  temporary password data was not always completely cleared.  The LDAP overlay
+  module now handles these cases safely, releases Kerberos resources correctly,
+  and clears the complete temporary password buffer (:uv:bug:`59920`).
+
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
