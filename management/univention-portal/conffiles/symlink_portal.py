@@ -7,45 +7,23 @@
 
 import os
 import os.path
-from errno import EEXIST
 
 
 portal_path = "/usr/share/univention-portal"
 
 
 def handler(config_registry, changes):
+    """
+    Remove the old document root links under /var/www.
+
+    The portal is served by containers behind apache proxy rules. A real
+    directory under /var/www takes precedence over those rules, so apache
+    would answer with a 403 autoindex error instead of proxying.
+    """
     old, new = changes['portal/paths']
-    old = [o.strip() for o in old.split(",")] if old else []
-    new = [n.strip() for n in new.split(",")] if new else []
-    for path in old:
-        if path in new:
-            continue
+    paths = {path.strip() for value in (old, new) for path in (value or "").split(",") if path.strip()}
+    for path in paths:
         path = os.path.normpath("/var/www" + path)
-        if not os.path.islink(path) or os.path.realpath(path) != portal_path:
-            print(f"{path} does not link to the portal contents. Skipping...")
-        else:
-            print(f"Removing portal link to {path}...")
+        if os.path.islink(path) and os.path.realpath(path) == portal_path:
+            print(f"Removing portal link {path}...")
             os.unlink(path)
-    for path in new:
-        if path in old:
-            continue
-        path = os.path.normpath("/var/www" + path)
-        if os.path.islink(path):
-            link_target = os.path.realpath(path)
-            print(f"{path} already links (to {link_target}). Skipping...")
-        else:
-            print(f"Linking {path} to portal content...")
-            try:
-                dirname = os.path.dirname(path)
-                try:
-                    os.makedirs(dirname)
-                except OSError as exc:
-                    if exc.errno != EEXIST:
-                        raise
-            except OSError as exc:
-                print(f"Error creating {dirname}: {exc}!")
-            else:
-                try:
-                    os.symlink(portal_path, path)
-                except OSError as exc:
-                    print(f"Error creating a link from {path} to {portal_path}: {exc}!")

@@ -10,7 +10,15 @@
 
 # TODO:
 ucr set umc/http/allowed-session-overtake/ranges?172.18.0.0/16
-rm /var/www/univention/portal
+
+# The portal is proxied to the containers. A document root under /var/www
+# shadows the apache proxy rules, so drop the links this package used to create.
+for portal_path in $(ucr get portal/paths | tr ',' ' '); do
+	link="/var/www/${portal_path#/}"
+	if [ -L "$link" ] && [ "$(readlink -f "$link")" = "/usr/share/univention-portal" ]; then
+		rm -f "$link"
+	fi
+done
 
 a2ensite univention-portal.conf
 
@@ -26,7 +34,6 @@ if [ "$1" = "configure" ]; then
 	systemctl reload apache2
 	systemctl enable univention-portal-server.service
 	systemctl restart univention-directory-listener
-	[ -e /var/www/univention/portal/portal.json ] && rm /var/www/univention/portal/portal.json
 fi
 
 # we do not ship a custom.css, nor do we alter it
