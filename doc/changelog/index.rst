@@ -1164,4 +1164,6 @@ Other changes
 
 * This is the first release of the Cerbos-based Guardian component for UCS.
   It replaces the OPA-based Guardian and is intended for use only with
-  Univention software (:uv:bug:`59669`).
+  Univention software. There is no upgrade path from the OPA-based Guardian
+  to the new component. This update removes the OPA-based Guardian, so you
+  don't need to take any action (:uv:bug:`59669`).
