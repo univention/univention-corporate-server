@@ -22,35 +22,71 @@ This page describes the required checks, configuration, and cleanup.
    After cleanup, you can't restore the removed values
    without resetting the affected passwords.
 
+.. _security-hardening-kerberos-attributes:
+
+Credential attributes
+---------------------
+
+The directory service contains several password representations
+because different services use different authentication protocols.
+The following password representations are relevant for Kerberos:
+
+.. _security-hardening-kerberos-attributes-sambantpassword:
+
+``sambaNTPassword``
+   An unsalted password hash that supports legacy NTLM-based authentication.
+   The hash isn't required for Kerberos authentication.
+
+.. _security-hardening-kerberos-attributes-krb5key:
+
+``krb5Key``
+   Stores Kerberos keys for a principal.
+   A principal can have several keys with different encryption types.
+   This supports authentication by clients and services during a migration.
+   The attribute can contain insecure or deprecated keys.
+
+.. _security-hardening-kerberos-attributes-userpassword:
+
+``userPassword``
+   Stores a crypt hash that uses a configurable hashing method.
+   For more information about password hashes,
+   see :ref:`password-management-hashes`.
+
 .. _security-hardening-kerberos-compatibility:
 
 Choose hardening measures
 -------------------------
 
-The controls are independent:
+Before choosing a hardening measure,
+identify the services in your environment that depend on NT hashes
+or specific Kerberos encryption types.
+You can apply the following controls independently:
 
-* :envvar:`password/samba/nthash` controls whether Univention Directory
-  Manager (UDM) generates ``sambaNTPassword`` when a password changes.
+:envvar:`password/samba/nthash`
+   Controls whether :term:`Univention Directory Manager (UDM)` generates
+   :ref:`security-hardening-kerberos-attributes-sambantpassword`
+   when a password changes.
 
-* :envvar:`kerberos/defaults/enctypes/permitted` controls the encryption types
-  that UCS permits for Kerberos keys.
+:envvar:`kerberos/defaults/enctypes/permitted`
+   controls the encryption types
+   that Univention Corporate Server (UCS) permits for Kerberos keys.
 
-Changing either UCR variable doesn't remove values that already exist.
-Use the cleanup procedures in :ref:`security-hardening-kerberos-cleanup`
-for existing environments.
+Changing either :term:`UCR variable` doesn't remove values that already exist.
+For existing environments, use :ref:`security-hardening-kerberos-remove-nt-hashes`
+or :ref:`security-hardening-kerberos-remove-weak-keys`.
 
-Disabling ``sambaNTPassword`` isn't possible in environments where one of the
+You can't deactivate :ref:`security-hardening-kerberos-attributes-sambantpassword` in environments where one of the
 following services uses NT hashes for core functionality:
 
-S4/AD Connector
+Active Directory Connection
    Password synchronization between UCS and Active Directory requires the NT
    hash.
 
-``univention-squid``
+:program:`univention-squid`
    The ``squid_ldap_ntlm_auth`` authentication backend requires the NT hash
    for transparent proxy authentication.
 
-``univention-radius``
+:program:`univention-radius`
    The ``univention-radius-ntlm-auth`` helper requires the NT hash for
    MS-CHAP and NTLM authentication.
 
@@ -59,117 +95,108 @@ If one of these services is active, keep
 Removing existing NT hashes breaks the affected authentication or
 synchronization function and isn't reversible without resetting passwords.
 
-Removing weak or deprecated encryption types from ``krb5Key`` can prevent a
-principal from authenticating when a client or service supports only a
-removed type.
-This includes legacy Windows clients, old trusts, and service accounts that
-haven't been migrated to AES encryption.
+Removing weak or deprecated encryption types from
+:ref:`security-hardening-kerberos-attributes-krb5key`
+can prevent a principal from authenticating
+when a client or service supports only a removed type.
+This includes legacy Windows clients,
+service accounts that haven't migrated to AES encryption,
+and trusts that support only removed encryption types.
 Check the encryption types used by domain integrations before proceeding.
-
-.. _security-hardening-kerberos-attributes:
-
-Credential attributes
----------------------
-
-The directory service contain several password representations
-because different services use different authentication protocols.
-The following password representations are relevant for Kerberos:
-
-``sambaNTPassword``
-   An unsalted NT hash that supports legacy NTLM-based authentication.
-   The hash isn't required for Kerberos authentication.
-
-``krb5Key``
-   Kerberos keys for a principal.
-   A principal can have several keys so that clients and services
-   that use different encryption types can authenticate during a migration.
-   The attribute can contain keys that use encryption types
-   that are insecure or deprecated.
-
-``userPassword``
-   The attribute contains a crypt hash
-   that uses a configurable hashing method.
-   For more information,
-   see :ref:`password-management-hashes`.
 
 .. _security-hardening-kerberos-configure:
 
 Deactivate NT hash generation
 -----------------------------
 
-The following settings reduce legacy credential storage while preserving the
-current UCS default behavior for services that need it.
+To stop :term:`UDM` from generating
+:ref:`security-hardening-kerberos-attributes-sambantpassword`
+for future password changes,
+change the :envvar:`password/samba/nthash` UCR variable.
 
-If no active service requires NTLM-based authentication or password
-synchronization, set the UCR variable on every system that runs UDM password
-changes:
-
-.. code-block:: console
-
-   $ ucr set password/samba/nthash=false
-
-UDM then stops generating ``sambaNTPassword`` during password changes and
+If no active service requires NTLM-based authentication or password synchronization,
+as outlined in :ref:`security-hardening-kerberos-compatibility`,
+set the UCR variable on every system
+that performs password changes through UDM.
+Use the command in :numref:`security-hardening-kerberos-configure-listing`.
+UDM then stops generating :ref:`security-hardening-kerberos-attributes-sambantpassword` during password changes and
 removes the value when the password changes next.
 The setting doesn't remove existing values immediately.
 
-The cleanup scripts remove values from all matching directory objects.
-Always create and verify a directory backup before running them.
-Run the dry-run mode first to see which objects the command would change.
+.. code-block:: console
+   :caption: Deactivate NT hash generation
+   :name: security-hardening-kerberos-configure-listing
+
+   $ ucr set password/samba/nthash=false
 
 .. _security-hardening-kerberos-remove-nt-hashes:
-.. _security-hardening-kerberos-cleanup:
 
 Remove existing NT hashes
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First verify that :envvar:`password/samba/nthash` is set to ``false`` on the
-system from which you run the command.
-Then run:
+The cleanup script remove values from all matching directory objects.
+Before running it, create, and verify a directory backup as described in
+:ref:`domain-infrastructure-ldap-directory-backup`.
+Run the dry-run mode first to see which objects the command would change.
+
+On the system from which you run the command,
+verify that :envvar:`password/samba/nthash` has the value ``false``.
+Then run the command in :numref:`security-hardening-kerberos-remove-nt-hashes-dry-run-remove-password-listing`.
 
 .. code-block:: console
+   :caption: Verify the accounts for removal of NT hashes
+   :name: security-hardening-kerberos-remove-nt-hashes-dry-run-remove-password-listing
 
    $ /usr/share/univention-directory-manager-tools/remove_sambantpassword --dry-run
 
-If the output contains only accounts that you have approved for cleanup, run
-the command without ``--dry-run``:
+If the dry-run output lists only affected user accounts,
+and you have approved them for cleanup,
+run the command without ``--dry-run``,
+as shown in :numref:`security-hardening-kerberos-remove-nt-hashes-remove-password-listing`.
+The command removes :ref:`security-hardening-kerberos-attributes-sambantpassword` from all affected user accounts.
+It prints a warning when the UCR variable isn't set to ``false``.
 
 .. code-block:: console
+   :caption: Remove NT hashes from matching accounts.
+   :name: security-hardening-kerberos-remove-nt-hashes-remove-password-listing
 
    $ /usr/share/univention-directory-manager-tools/remove_sambantpassword
-
-The command removes ``sambaNTPassword`` from all matching accounts.
-It prints a warning when the UCR variable isn't set to ``false``.
 
 .. _security-hardening-kerberos-restrict-encryption-types:
 
 Restrict Kerberos encryption types
 ----------------------------------
 
-To permit only AES-256 and AES-128 keys, set the following UCR variable on
-each UCS system that provides or manages Kerberos credentials:
+To permit only AES-256 and AES-128 keys,
+set the :envvar:`kerberos/defaults/enctypes/permitted` UCR variable on each UCS system
+that provides or manages Kerberos credentials,
+as shown in :numref:`security-hardening-kerberos-restrict-encryption-types-listing`.
 
 .. code-block:: console
+   :caption: Restrict permitted Kerberos encryption types
+   :name: security-hardening-kerberos-restrict-encryption-types-listing
 
    $ ucr set kerberos/defaults/enctypes/permitted='aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96'
 
-This setting excludes the following types that are insecure or deprecated in
-the default key set:
+This setting excludes the following types
+that are insecure or deprecated in the default key set:
 
-* ``arcfour-hmac-md5`` (also known as ``rc4-hmac``).
-* ``des-cbc-crc``.
-* ``des-cbc-md5``.
-* ``des-cbc-md4``.
-* ``des3-hmac-sha1`` and ``des3-cbc-sha1``.
+* ``arcfour-hmac-md5``, also known as ``rc4-hmac``
+* ``des-cbc-crc``
+* ``des-cbc-md5``
+* ``des-cbc-md4``
+* ``des3-hmac-sha1`` and ``des3-cbc-sha1``
 
 The setting affects newly generated keys and Kerberos negotiation.
-It doesn't remove weak keys that are already stored in ``krb5Key``.
+It doesn't remove weak keys that are already stored in
+:ref:`security-hardening-kerberos-attributes-krb5key`.
 
 .. caution::
 
-   Test domain joins, trusts, service accounts, and applications after
-   changing the permitted encryption types.
-   If a required principal has no mutually supported encryption type, its
-   authentication fails.
+   After changing the permitted encryption types,
+   test domain joins, trusts, service accounts, and applications.
+   If a required principal has no mutually supported encryption type,
+   its authentication fails.
 
 .. _security-hardening-kerberos-remove-weak-keys:
 
@@ -177,56 +204,70 @@ Remove weak Kerberos keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Kerberos cleanup command removes the default set of weak and deprecated
-key types listed in the preceding section.
-Run the dry-run mode first:
+key types listed in :ref:`security-hardening-kerberos-restrict-encryption-types`.
+Run the dry-run mode first,
+as shown in :numref:`security-hardening-kerberos-remove-weak-keys-dry-run-listing`.
 
 .. code-block:: console
+   :caption: Identify weak Kerberos keys
+   :name: security-hardening-kerberos-remove-weak-keys-dry-run-listing
 
    $ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes --dry-run
 
-If the result is compatible with your environment, run:
+If no client, service, or domain integration requires the key types
+in the dry-run output,
+run the command shown in :numref:`security-hardening-kerberos-remove-weak-keys-listing`.
+The command increments ``krb5KeyVersionNumber``
+on each object that it changes.
+If a :ref:`security-hardening-kerberos-attributes-krb5key` value can't be decoded,
+the command skips that object instead of modifying it.
 
 .. code-block:: console
+   :caption: Remove weak Kerberos keys
+   :name: security-hardening-kerberos-remove-weak-keys-listing
 
    $ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes
 
-The command increments ``krb5KeyVersionNumber`` for changed objects.
-If a ``krb5Key`` value can't be decoded, the command skips that object instead
-of modifying it.
-
-To remove a specific key type, use ``--keytype``.
-You can specify the option multiple times.
+To remove a specific key type, use the command in
+:numref:`security-hardening-kerberos-remove-weak-keys-key-type-listing`.
+You can specify the ``--keytype`` option multiple times.
 The argument accepts a Kerberos key type name or an enctype ID.
-For example, the following command removes RC4-HMAC keys only:
+For example, specify ``rc4-hmac`` to remove only RC4-HMAC keys,
+as shown in :numref:`security-hardening-kerberos-remove-weak-keys-key-type-listing`.
+
+You can't reverse this cleanup
+without resetting the affected account passwords.
 
 .. code-block:: console
+   :caption: Remove a specific Kerberos key type
+   :name: security-hardening-kerberos-remove-weak-keys-key-type-listing
 
    $ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes --keytype rc4-hmac
-
-The cleanup is irreversible without resetting the affected account
-passwords.
 
 .. _security-hardening-kerberos-verify:
 
 Verify the result
 -----------------
 
-After cleanup, verify authentication for:
+After cleanup, verify the following authentication paths:
 
-* A regular user through the services that the user accesses.
-* Every service account that runs an application or scheduled task.
-* Domain joins, trusts, and Active Directory integrations, if configured.
-* Proxy and RADIUS authentication, if those services are configured.
+* A regular user's access to the services that they use.
+* Each service account that runs an application or scheduled task.
+* Each configured domain join, trust, and Active Directory integration.
+* Each configured proxy or RADIUS authentication service.
 
-Read the relevant service log files for authentication failures.
-If a required account can no longer authenticate, restore the affected
-service from the backup or reset the account password to generate supported
-keys again.
+UDM then stops generating :ref:`security-hardening-kerberos-attributes-sambantpassword` during password changes.
+The next time a password changes,
+UDM removes :ref:`security-hardening-kerberos-attributes-sambantpassword`.
+The setting doesn't remove existing values immediately.
+
+.. _security-hardening-kerberos-related-information:
 
 Related information
 -------------------
 
-For more information about Kerberos architecture in Nubus for UCS, see
-:ref:`domain-infrastructure-kerberos`.
-For information about password hashes, see
-:ref:`password-management-hashes`.
+For more information about Kerberos architecture in Nubus for UCS,
+see :ref:`domain-infrastructure-kerberos`.
+
+For information about password hashes,
+see :ref:`password-management-hashes`.
