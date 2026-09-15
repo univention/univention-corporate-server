@@ -3,23 +3,10 @@
 
 .. _security-hardening-kerberos:
 
-Protect password attributes and Kerberos keys
-=============================================
+Harden password attributes and Kerberos keys
+============================================
 
 Nubus stores password-related attributes for different authentication protocols and services.
-
-``sambaNTPassword``
-   The attribute contains an unsalted NT hash.
-
-``krb5Key``
-   The attribute can contain keys that use encryption types
-   that are insecure or deprecated.
-
-``userPassword``
-   The attribute contains a crypt hash
-   that uses a configurable hashing method.
-   For more information,
-   see :ref:`password-management-hashes`.
 
 You can reduce the amount of legacy credential material in the directory service
 by deactivating NT hash generation and restricting the Kerberos encryption types.
@@ -35,23 +22,10 @@ This page describes the required checks, configuration, and cleanup.
    After cleanup, you can't restore the removed values
    without resetting the affected passwords.
 
-.. _security-hardening-kerberos-attributes:
+.. _security-hardening-kerberos-compatibility:
 
-Understand the attributes
+Choose hardening measures
 -------------------------
-
-The directory service contain several password representations
-because different services use different authentication protocols.
-The following password representations are relevant for Kerberos:
-
-``sambaNTPassword``
-   An unsalted NT hash that supports legacy NTLM-based authentication.
-   The hash isn't required for Kerberos authentication.
-
-``krb5Key``
-   Kerberos keys for a principal.
-   A principal can have several keys so that clients and services
-   that use different encryption types can authenticate during a migration.
 
 The controls are independent:
 
@@ -64,11 +38,6 @@ The controls are independent:
 Changing either UCR variable doesn't remove values that already exist.
 Use the cleanup procedures in :ref:`security-hardening-kerberos-cleanup`
 for existing environments.
-
-.. _security-hardening-kerberos-compatibility:
-
-Check compatibility before hardening
--------------------------------------
 
 Disabling ``sambaNTPassword`` isn't possible in environments where one of the
 following services uses NT hashes for core functionality:
@@ -97,16 +66,39 @@ This includes legacy Windows clients, old trusts, and service accounts that
 haven't been migrated to AES encryption.
 Check the encryption types used by domain integrations before proceeding.
 
+.. _security-hardening-kerberos-attributes:
+
+Credential attributes
+---------------------
+
+The directory service contain several password representations
+because different services use different authentication protocols.
+The following password representations are relevant for Kerberos:
+
+``sambaNTPassword``
+   An unsalted NT hash that supports legacy NTLM-based authentication.
+   The hash isn't required for Kerberos authentication.
+
+``krb5Key``
+   Kerberos keys for a principal.
+   A principal can have several keys so that clients and services
+   that use different encryption types can authenticate during a migration.
+   The attribute can contain keys that use encryption types
+   that are insecure or deprecated.
+
+``userPassword``
+   The attribute contains a crypt hash
+   that uses a configurable hashing method.
+   For more information,
+   see :ref:`password-management-hashes`.
+
 .. _security-hardening-kerberos-configure:
 
-Configure the controls
-----------------------
+Deactivate NT hash generation
+-----------------------------
 
 The following settings reduce legacy credential storage while preserving the
 current UCS default behavior for services that need it.
-
-Disable NT hash generation
-~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If no active service requires NTLM-based authentication or password
 synchronization, set the UCR variable on every system that runs UDM password
@@ -120,8 +112,38 @@ UDM then stops generating ``sambaNTPassword`` during password changes and
 removes the value when the password changes next.
 The setting doesn't remove existing values immediately.
 
+The cleanup scripts remove values from all matching directory objects.
+Always create and verify a directory backup before running them.
+Run the dry-run mode first to see which objects the command would change.
+
+.. _security-hardening-kerberos-remove-nt-hashes:
+.. _security-hardening-kerberos-cleanup:
+
+Remove existing NT hashes
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First verify that :envvar:`password/samba/nthash` is set to ``false`` on the
+system from which you run the command.
+Then run:
+
+.. code-block:: console
+
+   $ /usr/share/univention-directory-manager-tools/remove_sambantpassword --dry-run
+
+If the output contains only accounts that you have approved for cleanup, run
+the command without ``--dry-run``:
+
+.. code-block:: console
+
+   $ /usr/share/univention-directory-manager-tools/remove_sambantpassword
+
+The command removes ``sambaNTPassword`` from all matching accounts.
+It prints a warning when the UCR variable isn't set to ``false``.
+
+.. _security-hardening-kerberos-restrict-encryption-types:
+
 Restrict Kerberos encryption types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
 To permit only AES-256 and AES-128 keys, set the following UCR variable on
 each UCS system that provides or manages Kerberos credentials:
@@ -149,35 +171,7 @@ It doesn't remove weak keys that are already stored in ``krb5Key``.
    If a required principal has no mutually supported encryption type, its
    authentication fails.
 
-.. _security-hardening-kerberos-cleanup:
-
-Clean up existing environments
-------------------------------
-
-The cleanup scripts remove values from all matching directory objects.
-Always create and verify a directory backup before running them.
-Run the dry-run mode first to see which objects the command would change.
-
-Remove existing NT hashes
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-First verify that :envvar:`password/samba/nthash` is set to ``false`` on the
-system from which you run the command.
-Then run:
-
-.. code-block:: console
-
-   $ /usr/share/univention-directory-manager-tools/remove_sambantpassword --dry-run
-
-If the output contains only accounts that you have approved for cleanup, run
-the command without ``--dry-run``:
-
-.. code-block:: console
-
-   $ /usr/share/univention-directory-manager-tools/remove_sambantpassword
-
-The command removes ``sambaNTPassword`` from all matching accounts.
-It prints a warning when the UCR variable isn't set to ``false``.
+.. _security-hardening-kerberos-remove-weak-keys:
 
 Remove weak Kerberos keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -228,6 +222,9 @@ Read the relevant service log files for authentication failures.
 If a required account can no longer authenticate, restore the affected
 service from the backup or reset the account password to generate supported
 keys again.
+
+Related information
+-------------------
 
 For more information about Kerberos architecture in Nubus for UCS, see
 :ref:`domain-infrastructure-kerberos`.
