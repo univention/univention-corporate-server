@@ -840,6 +840,23 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
+.. envvar:: kerberos/defaults/enctypes/permitted
+
+   Specifies the Kerberos encryption types
+   that the system permits during session-key negotiation.
+   The system writes the value to :file:`/etc/krb5.conf`
+   for Heimdal and MIT Kerberos clients.
+
+   Enter Kerberos encryption type names separated by blanks.
+   When unset,
+   the system permits AES, RC4, DES, and Triple DES encryption types.
+
+   For information about restricting the permitted encryption types,
+   see :ref:`security-hardening-kerberos-restrict-encryption-types`.
+
+   :Default value: ``aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5 des-cbc-crc des-cbc-md5 des-cbc-md4 des3-hmac-sha1 des3-cbc-sha1``
+   :Type: string
+
 .. envvar:: kerberos/defaults/dns_lookup_kdc
 
    Control whether the system queries DNS service records for Kerberos KDC servers.
@@ -1946,6 +1963,27 @@ This section provides a reference for UCR variables.
 
    :Default value: not set
    :Type: string
+
+.. envvar:: password/samba/nthash
+
+   Controls whether Univention Directory Manager (UDM) generates
+   the ``sambaNTPassword`` attribute when a password changes.
+   When set to ``true``,
+   UDM generates the NT hash.
+   When set to ``false``,
+   UDM doesn't generate the NT hash
+   and removes an existing value when the password next changes.
+
+   Disabling this variable can disrupt services that require NT hashes,
+   including Active Directory Connection password synchronization,
+   Squid NTLM authentication, and RADIUS MS-CHAP or NTLM authentication.
+
+   For information about removing existing NT hashes,
+   see :ref:`security-hardening-kerberos-remove-nt-hashes`.
+
+   :Default value: ``true``
+   :Possible values: ``true``, ``false``
+   :Type: boolean
 
 .. envvar:: pkgdb/scan
 
