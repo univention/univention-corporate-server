@@ -22,6 +22,9 @@ services:
       # GroupsContentFetcher reads this through univention.ldap_cache, which
       # opens the gdbm files for writing even on a pure read. It cannot be :ro.
       - /usr/share/univention-group-membership-cache/caches:/usr/share/univention-group-membership-cache/caches
+      # PORTAL_SERVER_UMC_CHECK_ICONS makes the server stat every UMC module
+      # icon. Without these the check fails and every UMC tile loses its icon.
+      - /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons:/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons:ro
       - /etc/univention/ssl/ucsCA/CAcert.pem:/etc/univention/ssl/ucsCA/CAcert.pem:ro
       - /etc/machine.secret:/etc/machine.secret:ro
     ports:
