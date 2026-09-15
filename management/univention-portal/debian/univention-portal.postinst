@@ -32,7 +32,7 @@ if [ "$1" = "configure" ]; then
 	chmod 700 /var/cache/univention-portal
 	systemctl daemon-reload
 	systemctl reload apache2
-	systemctl enable univention-portal-server.service
+	systemctl enable --now univention-portal-server.service
 	systemctl restart univention-directory-listener
 fi
 
@@ -41,9 +41,9 @@ fi
 # try to keep the DOM stable. but this is only best effort
 touch /usr/share/univention-portal/css/custom.css
 
+systemctl restart univention-portal-server
 univention-portal add-umc-default
 univention-portal update
-systemctl restart univention-portal-server
 
 #configuration for portal when apache2/force_https is setting true
 ucr set apache2/force_https/exclude/request_uri/univention-portal?/univention/get
