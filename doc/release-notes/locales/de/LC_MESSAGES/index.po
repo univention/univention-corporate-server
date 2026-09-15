@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 07:33+0000\n"
-"PO-Revision-Date: 2026-06-15 17:20+0200\n"
+"POT-Creation-Date: 2026-09-15 10:12+0000\n"
+"PO-Revision-Date: 2026-09-15 12:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -34,117 +34,134 @@ msgstr "Release-Highlights"
 
 #: ../../index.rst:16
 msgid ""
-"|UCSUCS| 5.2-7 is available. It includes feature improvements, "
+"|UCSUCS| |release| is available. It includes feature improvements, "
 "extensions, and bug fixes. The following overview highlights the most "
 "important changes:"
 msgstr ""
-"|UCSUCS| 5.2-7 ist verfügbar. Es enthält Funktionsverbesserungen, "
+"|UCSUCS| |release| ist verfügbar. Es enthält Funktionsverbesserungen, "
 "Erweiterungen und Fehlerkorrekturen. Die folgende Übersicht hebt die "
 "wichtigsten Änderungen hervor:"
 
 #: ../../index.rst:20
+msgid "New RADIUS authentication helper:"
+msgstr "Neues RADIUS-Authentifizierungshilfsmodul:"
+
+#: ../../index.rst:21
 msgid ""
-"New Radius authentication helper: WLAN authentication with username and "
-"password with the Nubus Radius service uses an authentication helper "
-"plugin internally. This helper has caused high CPU consumption in very "
-"large environments. A rewrite of the helper module in Rust reduces CPU "
-"consumption significantly and therefore increases the possible number of "
-"authentications processed per UCS installation. Details can be found in "
-":uv:bug:`59042`."
+"WLAN authentication with username and password through the Nubus RADIUS "
+"service uses an authentication helper plugin internally. This helper has "
+"caused high CPU consumption in large environments. A rewrite of the "
+"helper module in Rust reduces CPU consumption and increases the number of"
+" authentications that each UCS installation can process. For more "
+"information, see :uv:bug:`59042`."
 msgstr ""
-"Neues Hilfsmodul für die Radius-Authentifizierung: Die "
-"WLAN-Authentifizierung mit Benutzername und Passwort über den "
-"Radius-Dienst von Nubus verwendet intern ein Plugin als Hilfsmodul für "
-"die Authentifizierung. Dieses Hilfsmodul hat in sehr großen Umgebungen "
-"eine hohe CPU-Auslastung verursacht. Eine Neuimplementierung des "
-"Hilfsmoduls in Rust verringert die CPU-Auslastung deutlich und erhöht "
-"dadurch die mögliche Anzahl der Authentifizierungen, die pro "
-"UCS-Installation verarbeitet werden. Details finden Sie in "
-":uv:bug:`59042`."
+"Die WLAN-Authentifizierung mit Benutzername und Passwort über den Nubus "
+"RADIUS-Dienst verwendet intern ein "
+":spelling:word:`Authentifizierungshilfsmodul`. Dieses Hilfsmodul hat in "
+"großen Umgebungen eine hohe CPU-Auslastung verursacht. Eine "
+"Neuimplementierung des Hilfsmoduls in Rust verringert die CPU-Auslastung "
+"und erhöht die Anzahl der Authentifizierungen, die jede UCS-Installation "
+"verarbeiten kann. Weitere Informationen finden Sie in :uv:bug:`59042`."
+
+#: ../../index.rst:28
+msgid "New Guardian backend based on :spelling:word:`Cerbos`:"
+msgstr "Neues Guardian-Backend auf Basis von :spelling:word:`Cerbos`:"
 
 #: ../../index.rst:29
 msgid ""
-"New Guardian backend based on Cerbos: The Nubus Authorization service "
-"Guardian now comes with the Open Source Solution Cerbos as a backend, "
-"which replaces the old OPA backend. Cerbos includes features relevant to "
-"the authorization decisions Guardian needs. More information about the "
-"decision will be available in Univention's public blog shortly after this"
-" release. Besides the new backend, the Authorization service now comes as"
-" \"component\" of UCS build as a Debian package containing a Docker "
-"container. This simplifies setup and upgrades over the former Docker "
-"Compose App Center App."
+"The Nubus *Authorization Service*, called Guardian, now uses the open "
+"source solution :program:`Cerbos` as its backend. It replaces the Open "
+"Policy Agent (OPA) backend. :program:`Cerbos` includes features that "
+"Guardian needs to make authorization decisions. More information about "
+"the authorization decisions will become available in the Univention "
+"public blog shortly after this release. Besides the :program:`Cerbos` "
+"backend, the *Authorization Service* is now available as a component of "
+"UCS, packaged as a Debian package that contains a container. This "
+"simplifies setup and upgrades compared with the former Docker Compose-"
+"based App Center app."
 msgstr ""
-"Neues Guardian-Backend auf Basis von Cerbos: Der "
-"Nubus-Autorisierungsdienst Guardian nutzt jetzt die Open-Source-Lösung "
-"Cerbos als Backend, die das bisherige OPA-Backend ablöst. Cerbos bietet "
-"Funktionen, die für die Autorisierungsentscheidungen von Guardian "
-"relevant sind. Weitere Informationen zu dieser Entscheidung finden Sie "
-"kurz nach diesem Release im öffentlichen Blog von Univention. Neben dem "
-"neuen Backend wird der Autorisierungsdienst jetzt als \"Komponente\" von "
-"UCS ausgeliefert und als Debian-Paket gebaut, das einen Docker-Container "
-"enthält. Das vereinfacht die Einrichtung und Updates gegenüber der "
-"bisherigen Docker-Compose-App im App Center."
+"Der Nubus *Autorisierungsdienst* Guardian verwendet jetzt die Open Source"
+" Lösung :program:`Cerbos` als Backend. Es ersetzt das Open Policy Agent "
+"(OPA)-Backend. :program:`Cerbos` enthält Funktionen, die Guardian für "
+"Autorisierungsentscheidungen benötigt. Weitere Informationen über die "
+"Autorisierungsentscheidungen werden kurz nach diesem Release im "
+"öffentlichen :spelling:word:`Univention-Blog` verfügbar sein. Neben dem "
+":program:`Cerbos`-Backend ist der *Autorisierungsdienst* jetzt als "
+"Komponente von UCS verfügbar, die als Debian-Paket gepackt ist und einen "
+"Container enthält. Dies vereinfacht die Einrichtung und Updates gegenüber"
+" der bisherigen Docker :spelling:word:`Compose` basierten App Center App."
 
 #: ../../index.rst:40
 msgid ""
 "Improved handling of password hashes and optional removal of weaker "
-"hashes: In preparation of the removal of weaker password hashes, several "
-"improvements have been integrated. UDM now has more configuration options"
-" to define which hashing algorithms to use during password storage, "
-"offering options to remove weaker hashes still stored for compatibility "
-"reasons. The Active Directory Connector has been adapted to support more "
-"situations in which Active Directory is configured with reduced "
+"hashes:"
+msgstr ""
+"Verbesserte Behandlung von Passwort-Hashes und optionales Entfernen "
+"schwächerer Hashes:"
+
+#: ../../index.rst:41
+msgid ""
+"In preparation for the removal of weaker password hashes, UCS |release| "
+"integrates several improvements. UDM now has more configuration options "
+"to define which hashing algorithms to use during password storage. These "
+"options let you remove weaker hashes that are still stored for "
+"compatibility reasons. The Active Directory Connection now supports more "
+"configurations in which Active Directory is configured with reduced "
 "encryption types."
 msgstr ""
-"Verbesserter Umgang mit Passwort-Hashes und optionales Entfernen "
-"schwächerer Hashes: Zur Vorbereitung auf die Abschaffung schwächerer "
-"Passwort-Hashes wurden mehrere Verbesserungen integriert. UDM bietet "
-"jetzt mehr Konfigurationsoptionen, um festzulegen, welche "
-"Hash-Algorithmen beim Speichern von Passwörtern verwendet werden, "
-"einschließlich Optionen zum Entfernen schwächerer Hashes, die aus "
-"Kompatibilitätsgründen noch gespeichert sind. Der Active Directory "
-"Connector wurde angepasst, um mehr Situationen zu unterstützen, in denen "
-"Active Directory mit eingeschränkten Verschlüsselungstypen konfiguriert "
-"ist."
+"Zur Vorbereitung auf die Entfernung schwächerer Passwort-Hashes enthält "
+"UCS |release| mehrere Verbesserungen. UDM bietet jetzt mehr "
+"Konfigurationsoptionen, um festzulegen, welche Hash-Algorithmen beim "
+"Speichern von Passwörtern verwendet werden. Mit diesen Optionen können "
+"Sie schwächere Hashes entfernen, die aus Kompatibilitätsgründen weiterhin"
+" gespeichert werden. Die Active Directory Verbindung unterstützt jetzt "
+"mehr Konfigurationen, bei denen Active Directory mit reduzierten "
+"Verschlüsselungstypen konfiguriert ist."
 
 #: ../../index.rst:49
+msgid "Keycloak Metrics:"
+msgstr "Keycloak-Metriken:"
+
+#: ../../index.rst:50
 msgid ""
-"Keycloak Metrics: The Keycloak App now allows activation of the "
-"integrated \"Metrics Endpoint\" of Keycloak. Administrators can get "
-"detailed information about usage and events in Keycloak in their "
-"Prometheus/Grafana Dashboards. More information can be found in :external"
-"+uv-keycloak-app:ref:`use-case-metrics-monitoring`."
+"The Keycloak app now lets you activate the integrated \"Metrics "
+"Endpoint\" in Keycloak. Administrators can get detailed information about"
+" Keycloak usage and events in their Prometheus and Grafana dashboards. "
+"For more information, see :external+uv-keycloak-app:ref:`use-case-"
+"metrics-monitoring` in :cite:t:`ucs-keycloak-doc`."
 msgstr ""
-"Keycloak-Metriken: Die Keycloak App erlaubt jetzt die Aktivierung des "
-"integrierten \"Metrics Endpoint\" von Keycloak. Administratoren erhalten "
-"damit detaillierte Informationen über Nutzung und Ereignisse in Keycloak "
-"in ihren Prometheus/Grafana-Dashboards. Weitere Informationen finden Sie "
-"unter :external+uv-keycloak-app:ref:`use-case-metrics-monitoring`."
+"Die Keycloak App ermöglicht jetzt die Aktivierung des integrierten "
+"\"Metrics Endpoint\" in Keycloak. Administratoren erhalten detaillierte "
+"Informationen über die Nutzung von Keycloak und Ereignisse in ihren "
+"Prometheus- und Grafana-Dashboards. Weitere Informationen finden Sie in "
+":external+uv-keycloak-app:ref:`use-case-metrics-monitoring` in :cite:t"
+":`ucs-keycloak-doc`."
 
 #: ../../index.rst:56
-msgid ""
-"Education Classes support in the MS365 connector: To simplify usage of "
-"educational features in Microsoft 365, the MS365 connector can now "
-"activate \"educational classes\" in MS365. Administrators of Nubus or "
-"UCS@school can decide, which groups are automatically activated in this "
-"way so that no manual administration of the feature in MS365 is needed. "
-"More information can be found at :external+uv-manual:ref:`idmcloud-o365"
-"-education-classes`."
-msgstr ""
-"Unterstützung für Bildungsklassen im MS365-Connector: Um die Nutzung der "
-"Bildungsfunktionen in Microsoft 365 zu vereinfachen, kann der "
-"MS365-Connector jetzt \"Bildungsklassen\" in MS365 aktivieren. "
-"Administratoren von Nubus oder UCS@school können festlegen, welche "
-"Gruppen auf diese Weise automatisch aktiviert werden, sodass keine "
-"manuelle Verwaltung der Funktion in MS365 erforderlich ist. Weitere "
-"Informationen finden Sie unter "
-":external+uv-manual:ref:`idmcloud-o365-education-classes`."
+msgid "Education Classes support in the Microsoft 365 Connector:"
+msgstr "Unterstützung für Bildungsklassen im Microsoft 365 Connector:"
 
-#: ../../index.rst:69
+#: ../../index.rst:57
+msgid ""
+"The *Microsoft 365 Connector* now lets you activate \"educational "
+"classes\" in Microsoft 365. Administrators of Nubus or UCS\\@school can "
+"decide which groups to activate automatically, so that they don't need to"
+" administer the feature manually in Microsoft 365. For more information, "
+"see :external+uv-manual:ref:`idmcloud-o365-education-classes` in :cite:t"
+":`ucs-manual`."
+msgstr ""
+"Der *Microsoft 365 Connector* ermöglicht jetzt die Aktivierung von "
+"\"Bildungsklassen\" in Microsoft 365. Administratoren von Nubus oder "
+"UCS\\@school können festlegen, welche Gruppen automatisch aktiviert "
+"werden, sodass sie die Funktion nicht manuell in Microsoft 365 verwalten "
+"müssen. Weitere Informationen finden Sie in :external+uv-"
+"manual:ref:`idmcloud-o365-education-classes` im :cite:t:`ucs-manual`."
+
+#: ../../index.rst:68
 msgid "Notes about the update"
 msgstr "Hinweise zum Update"
 
-#: ../../index.rst:71
+#: ../../index.rst:70
 msgid ""
 "Before updating, test the update in a separate test environment that's "
 "identical to your production environment. Run the update in a maintenance"
@@ -156,7 +173,7 @@ msgstr ""
 " das Update in einem Wartungsfenster durch, da einige Dienste in der "
 "Domäne vorübergehend nicht verfügbar sein können."
 
-#: ../../index.rst:77
+#: ../../index.rst:76
 msgid ""
 "The update can take anywhere from 30 minutes to several hours, depending "
 "on system performance, network connection, and installed software. For "
@@ -167,23 +184,35 @@ msgstr ""
 "Für große Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-"
 "guide`."
 
-#: ../../index.rst:85
+#: ../../index.rst:84
 msgid "Updating multiple UCS systems"
 msgstr "Aktualisierung mehrerer UCS-Systeme"
 
-#: ../../index.rst:87
+#: ../../index.rst:86
 msgid ""
-"In environments with multiple UCS systems, follow the update sequence "
-"described later."
+"In environments with multiple UCS systems, the |UCSPRIMARYDN| must always"
+" be the first system in the update order during a release update."
 msgstr ""
-"Folgen Sie in Umgebungen mit mehreren UCS-Systemen der später "
-"beschriebenen Update-Reihenfolge."
+"In Umgebungen mit mehreren UCS-Systemen muss der |UCSPRIMARYDN| bei einem"
+" Release-Update immer das erste System in der Aktualisierungsreihenfolge "
+"sein."
 
-#: ../../index.rst:94
+#: ../../index.rst:90
+msgid ""
+"For more information about planning updates in multi server environments,"
+" see :external+uv-ucs-operation:ref:`lifecycle-update-strategies-"
+"multiple-systems-environments` in :cite:t:`uv-ucs-operation`."
+msgstr ""
+"Weitere Informationen zur Planung von Updates in "
+":spelling:word:`Multiserver` Umgebungen finden Sie unter :external+uv-"
+"ucs-operation:ref:`lifecycle-update-strategies-multiple-systems-"
+"environments` im :cite:t:`uv-ucs-operation`."
+
+#: ../../index.rst:98
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:96
+#: ../../index.rst:100
 msgid ""
 "Simultaneous operation of UCS and Debian GNU/Linux on UEFI systems isn't "
 "supported in UCS 5.0 and later."
@@ -191,53 +220,52 @@ msgstr ""
 "Der gleichzeitige Betrieb von UCS und Debian GNU/Linux auf UEFI-Systemen "
 "wird seit UCS 5.0 nicht mehr unterstützt."
 
-#: ../../index.rst:99
+#: ../../index.rst:103
 msgid ""
 "The GRUB boot loader of |UCSUCS| uses the same configuration files as "
 "Debian. If Debian is already installed, UCS can't boot after you install "
-"or update to UCS 5.0. Conversely, installing Debian after UCS 5.0 "
-"prevents UCS from booting."
+"or update to UCS 5.0. Conversely, installing Debian after you install UCS"
+" 5.0 prevents UCS from booting."
 msgstr ""
 "Der GRUB-Bootloader von |UCSUCS| verwendet dieselben "
 "Konfigurationsdateien wie Debian. Wenn Debian bereits installiert ist, "
 "kann UCS nach der Installation oder dem Update auf UCS 5.0 nicht starten."
-" Umgekehrt verhindert die Installation von Debian nach UCS 5.0, dass UCS "
-"startet."
+" Umgekehrt verhindert die Installation von Debian nach der Installation "
+"von UCS 5.0, dass UCS startet."
 
-#: ../../index.rst:106
+#: ../../index.rst:110
 msgid "For more information, refer to :uv:kb:`17768`."
 msgstr "Weitere Informationen finden Sie in :uv:kb:`17768`."
 
-#: ../../index.rst:113
-msgid "Prepare for update"
-msgstr "Vorbereitung des Updates"
+#: ../../index.rst:117
+msgid "Prepare for an update"
+msgstr "Vorbereitung auf ein Update"
 
-#: ../../index.rst:115
+#: ../../index.rst:119
 msgid "This section covers important considerations before you update."
 msgstr "In diesem Abschnitt finden Sie wichtige Überlegungen vor dem Update."
 
-#: ../../index.rst:120
+#: ../../index.rst:124
 msgid "Sufficient disk space"
 msgstr "Ausreichender Festplattenplatz"
 
-#: ../../index.rst:122
+#: ../../index.rst:126
 msgid ""
-"Ensure you have sufficient disk space available for the update. A "
-"standard installation requires a minimum of 6 to 10 GB. The update "
-"process requires an additional 1 to 2 GB to download and install "
-"packages, depending on your existing installation size."
+"Ensure you have sufficient disk space for the update. A standard "
+"installation requires 6 to 10 GB. The update process requires an "
+"additional 1 to 2 GB to download and install packages, depending on your "
+"existing installation size."
 msgstr ""
-"Stellen Sie sicher, dass für das Update ausreichend Festplattenplatz "
-"verfügbar ist. Eine Standardinstallation benötigt mindestens 6 bis 10 GB."
-" Der Update-Prozess benötigt zusätzlich 1 bis 2 GB, um Pakete "
-"herunterzuladen und zu installieren, abhängig von der Größe Ihrer "
-"vorhandenen Installation."
+"Stellen Sie sicher, dass Sie ausreichend Festplattenplatz für das Update "
+"haben. Eine Standardinstallation benötigt 6 bis 10 GB. Der Update-Prozess"
+" benötigt zusätzlich 1 bis 2 GB, um Pakete herunterzuladen und zu "
+"installieren, abhängig von der Größe Ihrer vorhandenen Installation."
 
-#: ../../index.rst:131
+#: ../../index.rst:135
 msgid "Console usage for update"
 msgstr "Nutzung der Konsole für das Update"
 
-#: ../../index.rst:133
+#: ../../index.rst:137
 msgid ""
 "Sign in to the system's local console as ``root`` and run the update. "
 "Alternatively, you can run the update using |UCSUMC|."
@@ -246,18 +274,18 @@ msgstr ""
 "dem Benutzer ``root`` an und starten Sie das Update dort. Alternativ "
 "können Sie das Update über |UCSUMC| durchführen."
 
-#: ../../index.rst:138
+#: ../../index.rst:142
 msgid ""
-"If you run the update over a network connection, take steps to ensure it "
-"continues if the connection is interrupted. Network interruptions can "
-"cancel the update, which severely affects the system."
+"If you run the update over a network connection, take steps to ensure "
+"that the update continues if the connection is interrupted. Network "
+"interruptions can cancel the update, which severely affects the system."
 msgstr ""
 "Wenn Sie das Update über eine Netzwerkverbindung durchführen, ergreifen "
 "Sie Maßnahmen, um sicherzustellen, dass es bei einer Unterbrechung der "
 "Verbindung weiterläuft. Netzwerkunterbrechungen können das Update "
 "abbrechen, was das System erheblich beeinträchtigt."
 
-#: ../../index.rst:143
+#: ../../index.rst:147
 msgid ""
 "Use tools such as :command:`tmux`, :command:`screen`, or :command:`at` to"
 " keep the update running through network interruptions. All UCS system "
@@ -268,11 +296,11 @@ msgstr ""
 "weiterläuft. Alle UCS-Systemrollen haben diese Tools standardmäßig "
 "installiert."
 
-#: ../../index.rst:150
+#: ../../index.rst:154
 msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
-#: ../../index.rst:152
+#: ../../index.rst:156
 msgid ""
 "Univention provides a script that checks for problems that could prevent "
 "a successful update. You can download the script before the update and "
@@ -283,7 +311,7 @@ msgstr ""
 "Sie können das Skript vor dem Update manuell auf das System herunterladen"
 " und ausführen:"
 
-#: ../../index.rst:158
+#: ../../index.rst:162
 #, python-brace-format
 msgid ""
 "# download\n"
@@ -328,13 +356,13 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:184
+#: ../../index.rst:188
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:186
+#: ../../index.rst:190
 msgid ""
-"After the update, run new or updated join scripts. Use either the "
+"After the update, run new or updated join scripts. Either use the "
 ":guilabel:`Domain join` management module in the *Management UI* or run "
 ":command:`univention-run-join-scripts` as ``root``."
 msgstr ""
@@ -343,7 +371,7 @@ msgstr ""
 "in der *Management UI* oder führen Sie :command:`univention-run-join-"
 "scripts` als ``root`` aus."
 
-#: ../../index.rst:191
+#: ../../index.rst:195
 msgid ""
 "Verify that the join scripts completed successfully. Then restart the UCS"
 " system."
@@ -351,46 +379,46 @@ msgstr ""
 "Prüfen Sie, ob die Join-Skripte erfolgreich abgeschlossen wurden. Starten"
 " Sie dann das UCS-System neu."
 
-#: ../../index.rst:198
+#: ../../index.rst:202
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:200
+#: ../../index.rst:204
 msgid "The following sections cover selected packages for this update."
 msgstr ""
 "Die folgenden Abschnitte informieren über ausgewählte Pakete dieses "
 "Updates."
 
-#: ../../index.rst:205
+#: ../../index.rst:209
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:207
+#: ../../index.rst:211
 msgid ""
-"When using UCS Core Edition, UCS collects anonymous usage statistics for "
-"|UCSUMC|. The system logs which modules you open to a *Matomo* instance. "
-"These statistics help Univention improve |UCSUMC| development based on "
-"customer needs."
+"When you use UCS Core Edition, UCS collects anonymous usage statistics "
+"for |UCSUMC|. The system logs which modules you open to a *Matomo* "
+"instance. These statistics help Univention improve |UCSUMC| development "
+"based on customer needs."
 msgstr ""
-"Bei Verwendung der UCS Core Edition erfasst UCS anonyme "
-"Nutzungsstatistiken für |UCSUMC|. Das System protokolliert, welche Module"
-" Sie öffnen, in einer *Matomo*-Instanz. Diese Statistiken helfen "
-"Univention, die Entwicklung von |UCSUMC| basierend auf "
-"Kundenanforderungen zu verbessern."
+"Wenn Sie UCS Core Edition verwenden, erfasst UCS anonyme "
+"Nutzungsstatistiken für |UCSUMC|. Das System protokolliert die Module, "
+"die Sie öffnen, in einer *Matomo*-Instanz. Diese Statistiken helfen "
+"Univention, die Entwicklung von |UCSUMC| anhand der Kundenanforderungen "
+"zu verbessern."
 
-#: ../../index.rst:215
+#: ../../index.rst:219
 msgid ""
 "You can verify the license status through the menu entry "
 ":menuselection:`License --> License information` in the user menu of "
-"|UCSUMC|. If the *License information* lists ``UCS Core Edition`` under "
+"|UCSUMC|. If the *License information* lists ``UCS Core Edition`` under "
 "*License type*, your UCS system is using UCS Core Edition."
 msgstr ""
 "Sie können den Lizenzstatus über den Menüeintrag :menuselection:`Lizenz "
 "--> Lizenzinformationen` im Benutzermenü von |UCSUMC| überprüfen. Wenn "
-"die *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
+"die *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
 "aufführen, verwendet Ihr UCS-System die UCS Core Edition."
 
-#: ../../index.rst:222
+#: ../../index.rst:226
 msgid ""
 "UCS doesn't collect usage statistics if you use an `Enterprise "
 "Subscription <https://www.univention.com/products/prices-and-"
@@ -402,7 +430,7 @@ msgstr ""
 "subscriptions/>`_-Lizenz wie *UCS Base Subscription* oder *UCS Standard "
 "Subscription* nutzen."
 
-#: ../../index.rst:227
+#: ../../index.rst:230
 msgid ""
 "To deactivate usage statistics collection, set the |UCSUCRV| "
 ":envvar:`umc/web/piwik` to ``false``."
@@ -411,11 +439,11 @@ msgstr ""
 "Nutzungsstatistiken deaktivieren, indem Sie die |UCSUCRV| "
 ":envvar:`umc/web/piwik` auf ``false`` setzen."
 
-#: ../../index.rst:233
+#: ../../index.rst:236
 msgid "Recommended browsers for |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:235
+#: ../../index.rst:238
 msgid ""
 "|UCSUMC| uses JavaScript and CSS features to display the web interface. "
 "Your web browser must support cookies. |UCSUMC| requires one of the "
@@ -425,33 +453,35 @@ msgstr ""
 "darzustellen. Ihr Webbrowser muss Cookies unterstützen. |UCSUMC| benötigt"
 " einen der folgenden Browser:"
 
-#: ../../index.rst:239
+#: ../../index.rst:242
 msgid "Chrome version 131 and later"
 msgstr "Chrome Version 131 und höher"
 
-#: ../../index.rst:241
+#: ../../index.rst:244
 msgid "Firefox version 128 and later"
 msgstr "Firefox Version 128 und höher"
 
-#: ../../index.rst:243
+#: ../../index.rst:246
 msgid "Safari and Safari Mobile version 18 and later"
 msgstr "Safari und Safari Mobile Version 18 und höher"
 
-#: ../../index.rst:245
+#: ../../index.rst:248
 msgid "Microsoft Edge version 128 and later"
 msgstr "Microsoft Edge Version 128 und höher"
 
-#: ../../index.rst:247
-msgid "Older browsers may not display correctly or perform as expected."
+#: ../../index.rst:250
+msgid ""
+"Older browsers can display the web interface incorrectly or cause "
+"functionality issues."
 msgstr ""
-"Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
-"auftreten."
+"Ältere Browser können die Web-Oberfläche fehlerhaft darstellen oder "
+"Funktionsstörungen verursachen."
 
-#: ../../index.rst:253
+#: ../../index.rst:256
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:255
+#: ../../index.rst:258
 msgid ""
 "You can find the changes since UCS 5.2-6 in :external+uv-"
 "changelog-5.2-7:doc:`index`."
@@ -459,108 +489,7 @@ msgstr ""
 "Die Änderungen seit UCS 5.2-6 finden Sie in :external+uv-"
 "changelog-5.2-7:doc:`index`."
 
-#: ../../index.rst:262
+#: ../../index.rst:265
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
-
-#~ msgid ""
-#~ "New Guardian backend based on Cerbos:"
-#~ " The Nubus authentication service Guardian"
-#~ " now comes with the Open Source "
-#~ "Solution Cerbos as a backend, which "
-#~ "replaces the old OPA backend. Cerbos "
-#~ "includes features relevant to the "
-#~ "authorization decisions Guardian needs. More"
-#~ " information about the decision can "
-#~ "be found in the public Blog of "
-#~ "Univention shortly after this release. "
-#~ "Besides the new backend, the "
-#~ "Authorization service now comes as "
-#~ "\"component\" of UCS build as a "
-#~ "Debian package containing a Docker "
-#~ "container. This simplifies setup and "
-#~ "upgrades over the former Docker Compose"
-#~ " App Center App."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Improved handling of password hashes and"
-#~ " optional removal of weaker hashes: "
-#~ "In preparation of the removal of "
-#~ "weaker password hashes, several improvements"
-#~ " have been integrated. UDM has now"
-#~ " more configuration options to define "
-#~ "which hashing algorithms to use during"
-#~ " password storage, offering options to "
-#~ "remove weaker hashes still stored for"
-#~ " compatibility reasons. The Active "
-#~ "Directory Connector has been adopted to"
-#~ " support more situations in which "
-#~ "Active Directory is configured with "
-#~ "reduced encryption types."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Keycloak Metrics: The Keycloak App now"
-#~ " allows to activate the integrated "
-#~ "\"Metrics Endpoint\" of Keycloak. "
-#~ "Administrators can get detailed information"
-#~ " about usage and events in Keycloak"
-#~ " in their Prometheus/Grafana Dashboards. "
-#~ "More information can be found in "
-#~ ":external+uv-keycloak-app:ref:`use-case-"
-#~ "metrics-monitoring`."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Education Classes support in the MS365"
-#~ " connector: To simplify usage of "
-#~ "educational features in Microsoft 365, "
-#~ "the MS365 connector can now activate "
-#~ "\"educational classes\" in MS365. "
-#~ "Administrators of Nubus or UCS@school "
-#~ "can decide, which groups are "
-#~ "automatically activated in this way so"
-#~ " that no manual administration of the"
-#~ " feature in MS365 is needed. More "
-#~ "information can be found in :external"
-#~ "+uv-manual:ref:`idmcloud-o365-education-classes`."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "New Guardian backend based on Cerbos:"
-#~ " The Nubus authentication service Guardian"
-#~ " now comes with the Open Source "
-#~ "Solution Cerbos as a backend, which "
-#~ "replaces the old OPA backend. Cerbos "
-#~ "includes features relevant to the "
-#~ "authorization decisions Guardian needs. More"
-#~ " information about the decision will "
-#~ "be available in the public Univention's"
-#~ " public blog shortly after this "
-#~ "release. Besides the new backend, the"
-#~ " Authorization service now comes as "
-#~ "\"component\" of UCS build as a "
-#~ "Debian package containing a Docker "
-#~ "container. This simplifies setup and "
-#~ "upgrades over the former Docker Compose"
-#~ " App Center App."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Improved handling of password hashes and"
-#~ " optional removal of weaker hashes: "
-#~ "In preparation of the removal of "
-#~ "weaker password hashes, several improvements"
-#~ " have been integrated. UDM now has"
-#~ " more configuration options to define "
-#~ "which hashing algorithms to use during"
-#~ " password storage, offering options to "
-#~ "remove weaker hashes still stored for"
-#~ " compatibility reasons. The Active "
-#~ "Directory Connector has been adopted to"
-#~ " support more situations in which "
-#~ "Active Directory is configured with "
-#~ "reduced encryption types."
-#~ msgstr ""
 
