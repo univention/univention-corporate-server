@@ -4,7 +4,10 @@ services:
   portal-server:
     container_name: univention-portal-server
     # TODO: Merge Florian's MR: univention/dev/ucs!263
-    image: gitregistry.knut.univention.de/univention/dev/projects/portal/portal-server:0.86.1-pre-fbest-fix-assets-root-path
+    # TODO: move to nubus/images once univention/dev/projects/portal!623 is
+    #       released. Released images up to 0.95.1 crash with
+    #       KeyError: 'assets_root'.
+    image: artifacts.software-univention.de/nubus-dev/images/portal-server:0.95.2-pre-fbest-fix-assets-root-path
     # command: /usr/bin/python3 /usr/sbin/univention-portal-server
     # entrypoint: /bin/bash -c sleep infinity
     security_opt:
@@ -22,7 +25,7 @@ services:
       - "8095:80"
   portal-frontend:
     container_name: univention-portal-frontend
-    image: gitregistry.knut.univention.de/univention/dev/projects/portal/portal-frontend:latest
+    image: artifacts.software-univention.de/nubus/images/portal-frontend:0.95.1
     # command: yarn serve --port 80 mode production
     security_opt:
       - seccomp:/etc/docker/seccomp-systemd.json
