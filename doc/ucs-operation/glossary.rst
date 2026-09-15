@@ -65,6 +65,7 @@ Glossary
       in the *Univention Configuration Registry* section.
 
    Univention Directory Manager
+   Univention Directory Manager (UDM)
    UDM
       Univention Directory Manager (UDM) is the abstraction layer
       between the domain database and the administrator.
