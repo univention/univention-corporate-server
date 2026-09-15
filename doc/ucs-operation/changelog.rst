@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 31. Aug 2026
+     - :ref:`security-hardening-kerberos`
+     - Add section about hardening password attributes and Kerberos keys.
+
    * - 25. Aug 2026
      - :ref:`references-ucr-variables`
      - Add :envvar:`ldap/limits` reference documentation.
