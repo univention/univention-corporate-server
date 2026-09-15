@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 16. Sep 2026
+     - :ref:`security-hardening-kerberos`
+     - Add section about hardening password attributes and Kerberos keys.
+
    * - 14. Sep 2026
      - Document
      - Replace external UCS Manual references with internal links.
