@@ -829,6 +829,12 @@ OpenLDAP
   module now handles these cases safely, releases Kerberos resources correctly,
   and clears the complete temporary password buffer (:uv:bug:`59920`).
 
+* The LDAP server could crash during concurrent simple binds using the
+  ``{KINIT}`` password scheme because authentication requests shared Kerberos
+  state. Each bind now uses an isolated Kerberos context, preventing memory
+  corruption and ensuring that authentication resources are released safely
+  (:uv:bug:`59921`).
+
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
