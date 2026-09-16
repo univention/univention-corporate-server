@@ -317,11 +317,9 @@ def test_script_lock_expired_accounts(delta, initial_state, expected_state, stop
     [2, '1', 1],
     [3, '1', 1],
 ])
-def test_script_lock_expired_passwords(udm, ucr, delta, disabled, expected):
+def test_script_lock_expired_passwords(udm, delta, disabled, expected):
     """Check if ldap auth is denied for expired passwords"""
     # bugs: [35088]
-    assert ucr.is_true('ldap/shadowbind', True), 'UCR variable ldap/shadowbind is disabled (%s), test will not work' % ucr['ldap/shadowbind']
-
     print(time.ctime())
     lo, _position = univention.admin.uldap.getAdminConnection()
     today = int(time.time() / 24 / 3600)

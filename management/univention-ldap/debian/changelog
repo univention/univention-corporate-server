@@ -1,8 +1,12 @@
-univention-ldap (18.7.0) UNRELEASED; urgency=medium
+univention-ldap (18.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:46 +0300
+  [ Florian Best ]
+  * Bug #59898: require `shadowbind` LDAP overlay always to be activated
+
+ -- Florian Best <best@univention.de>  Thu, 17 Sep 2026 17:14:34 +0200
 
 univention-ldap (18.6.11) unstable; urgency=medium
 

@@ -32,8 +32,6 @@ Variables: ldap/database/mdb/checkpoint
 Variables: ldap/database/mdb/envflags
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
-Variables: ldap/shadowbind
-Variables: ldap/shadowbind/ignorefilter
 Variables: ldap/database/internal/envflags
 Variables: ldap/database/internal/checkpoint
 Variables: ldap/database/internal/syncprov
@@ -78,7 +76,6 @@ Variables: ldap/database/type
 Variables: ldap/translogfile
 Variables: ldap/k5pwd
 Variables: ldap/pwd_scheme_kinit
-Variables: ldap/shadowbind
 Variables: ldap/overlay/lastbind
 Variables: ldap/overlay/sock
 Variables: ldap/pw-bcrypt

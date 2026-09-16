@@ -287,13 +287,6 @@ Type=str
 Regex=^[0-7]{3,5}$
 Categories=service-ldap
 
-[ldap/shadowbind]
-Description[de]=Aktiviert/Deaktiviert das Overlay-Modul shadowbind (diese Overlay prüft shadowExpire und shadowMax/shadowLastChange am Objekt der Bind-DN und verbietet den Login ggf.)
-Description[en]=To enable/disable the shadowbind overlay module (shadowbind checks shadowExpire and shadowMax/shadowLastChange of the bind DN object during bind and denies the login possibly)
-Default=true
-Type=bool
-Categories=service-ldap
-
 [ldap/shadowbind/ignorefilter]
 Description[de]=Dieser LDAP-Filter wird auf das Objekt der Bind-DN angewendet. Trifft er zu, prüft das shadowbind Overlay-Modul die shadow-Attribute nicht.
 Description[en]=This LDAP filter is applied to the bind DN object during bind. If it matches, the shadowbind overlay does not check the shadow attributes for this object.

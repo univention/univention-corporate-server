@@ -55,8 +55,7 @@ if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
     print("moduleload\tpwd_scheme_kinit.so")
 if configRegistry.get('ldap/database/type') == "mdb":
     print("moduleload\tppolicy.so")
-if configRegistry.is_true('ldap/shadowbind', True):
-    print('moduleload\tshadowbind.so')
+print('moduleload\tshadowbind.so')
 if configRegistry.is_true('ldap/overlay/lastbind', False):
     print('moduleload\tlastbind.la')
 if configRegistry.is_true('ldap/refint', True) and configRegistry.get('server/role') == 'domaincontroller_master':
