@@ -2792,6 +2792,8 @@ librtmp1
 libruby
 libruby3.1
 librust-rav1e-dev
+librust-univentionconfig-dev
+librust-univentionpolicy-dev
 libsamplerate0
 libsamplerate0-dev
 libsane
@@ -3995,7 +3997,6 @@ python-jsonschema-doc
 python-lark-doc
 python-ldap-doc
 python-lxml-doc
-python-cryptography-doc
 python-mako-doc
 python-markdown-doc
 python-nacl-doc
@@ -4142,7 +4143,6 @@ python3-lmdb
 python3-logfmter
 python3-louis
 python3-lxml
-python3-cryptography
 python3-magic
 python3-mailutils
 python3-mako
@@ -4848,7 +4848,6 @@ univention-ldap-acl-slave
 univention-ldap-client
 univention-ldap-config
 univention-ldap-config-master
-univention-ldap-overlay-memberof
 univention-ldap-server
 univention-license-import
 univention-mail-canonical-maps
