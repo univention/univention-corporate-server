@@ -164,3 +164,5 @@ libvte-2.90-9-udeb
 mii-diag-udeb
 ntfsprogs-udeb
 syslinux-udeb
+# Bug #58875: retire univention-net-installer udeb from installer
+di-univention-net-installer

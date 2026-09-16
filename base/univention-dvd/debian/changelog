@@ -1,3 +1,9 @@
+univention-dvd (7.7.1) unstable; urgency=medium
+
+  * Bug #58875: retire di-univention-net-installer from ISO
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 16 Sep 2026 11:47:44 +0200
+
 univention-dvd (7.7.0) unstable; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump
