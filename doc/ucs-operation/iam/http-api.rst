@@ -12,3 +12,9 @@ that you can use to inspect, modify, create, and delete directory objects throug
 For more information on the API, see
 :external+uv-nubus-customization:ref:`customization-api-udm-rest`
 :cite:t:`uv-nubus-kubernetes-customization`.
+
+.. seealso::
+
+   :ref:`iam-rate-limiting`
+      for information about rate limiting this API,
+      if you expose it to external networks or third-party software.

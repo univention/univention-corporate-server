@@ -55,6 +55,12 @@ User lockout after failed sign-in attempts
    each with its own configuration and scope.
    See :ref:`iam-user-lockout`.
 
+Rate limiting for exposed APIs
+   Add rate limiting in front of Nubus for UCS APIs and services
+   that you expose to external networks or third-party software,
+   as a compliance measure against unauthorized automated use.
+   See :ref:`iam-rate-limiting`.
+
 Track last sign-in time to detect inactive accounts
    Identify inactive user accounts by recording when each account last signed in.
    Activate the OpenLDAP ``lastbind`` overlay module,
@@ -72,4 +78,5 @@ Track last sign-in time to detect inactive accounts
    http-api
    user-activation-apps
    user-lockout
+   rate-limiting
    last-bind

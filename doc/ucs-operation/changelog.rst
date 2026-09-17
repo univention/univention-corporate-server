@@ -21,6 +21,11 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 17. Sep 2026
+     - :ref:`iam-rate-limiting`
+     - Add a generic implementation guide for rate limiting in front of exposed
+       Nubus for UCS APIs and services.
+
    * - 14. Sep 2026
      - Document
      - Replace external UCS Manual references with internal links.
