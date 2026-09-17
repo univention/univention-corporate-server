@@ -831,6 +831,13 @@ OpenLDAP
   corruption and ensuring that authentication resources are released safely
   (:uv:bug:`59921`).
 
+* Disabling a user account no longer invalidates the password hash stored in the
+  LDAP attribute ``userPassword``. This allows the Keycloak Identity Provider to
+  distinguish a disabled account from invalid credentials and report the
+  appropriate authentication error. The ``shadowbind`` LDAP overlay is now
+  mandatory to ensure that disabled user accounts cannot authenticate using
+  LDAP bind (:uv:bug:`59898`).
+
 .. _changelog-domain-openldap-replication:
 
 Listener/Notifier domain replication
@@ -1001,7 +1008,6 @@ LDAP directory browser
   Known limitations affect scalability, process-local pagination state, and
   recovery after LDAP server restarts. To use VLV, enable the LDAP SSSVLV
   overlay and configure it correctly (:uv:bug:`50240`).
-
 
 * Empty search queries now always return all results (:uv:bug:`59595`).
 
