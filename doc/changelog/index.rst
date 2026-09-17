@@ -813,10 +813,6 @@ Domain services
 OpenLDAP
 ========
 
-* The directory replication OID skip list now contains the built-in schema
-  definitions from OpenLDAP 2.6 to allow mixed environments with UCS 5.3
-  (:uv:bug:`59532`).
-
 * The configuration of the OpenLDAP ``memberof`` overlay moved into the
   ``univention-ldap-server`` package.
   The ``univention-ldap-overlay-memberof`` package is now an empty transitional package.
@@ -862,19 +858,14 @@ LDAP Directory Manager
   metadata. This significantly speeds up large search result sets
   (:uv:bug:`59579`).
 
+* The UDM module search API has been extended to allow passing ``opened=True``
+  for UDM modules which support it (:uv:bug:`59579`).
+
 * Total user-count metrics now exclude system accounts
   (:uv:bug:`59634`).
 
 * The ``opened`` query parameter of the object search was missing from the
   OpenAPI/Swagger schema and is now included (:uv:bug:`59575`).
-
-* The experimental paginated object search supports LDAP Server Side Sorting
-  (SSS) with either Simple Paged Results (SPR) or Virtual List View (VLV).
-  Use this feature for evaluation only.
-  Univention doesn't support it for production use yet.
-  Known limitations affect scalability, process-local pagination state, and
-  recovery after LDAP server restarts. To use VLV, enable the LDAP SSSVLV
-  overlay and configure it correctly (:uv:bug:`50240`).
 
 * The UDM HTTP REST API command line doesn't depend on the UCR default layer anymore
   for compatibility with Nubus for Kubernetes (:uv:bug:`59837`).
@@ -888,9 +879,6 @@ LDAP Directory Manager
   overhead of mapping LDAP attributes to UDM properties. In environments with
   many objects, such as when retrieving large result sets through the UDM HTTP REST
   API, this noticeably speeds up object retrieval (:uv:bug:`59578`).
-
-* The UDM module search API has been extended to allow passing ``opened=True``
-  for UDM modules which support it (:uv:bug:`59579`).
 
 * The syntax validation for Guardian role values has been relaxed. Role
   identifiers are no longer restricted to the previous ``app:namespace:role``
@@ -934,20 +922,6 @@ Univention Management Console web interface
 
 * The DOMpurify library has been upgraded to the latest version (2.5.9,
   :uv:bug:`59808`).
-
-.. _changelog-umc-server:
-
-Univention Management Console server
-====================================
-
-* The experimental paginated object search supports LDAP Server Side Sorting
-  (SSS) with either Simple Paged Results (SPR) or Virtual List View (VLV).
-  Use this feature for evaluation only.
-  Univention doesn't support it for production use yet.
-  Known limitations affect scalability, process-local pagination state, and
-  recovery after LDAP server restarts. To use VLV, enable the LDAP SSSVLV
-  overlay and configure it correctly (:uv:bug:`50240`).
-
 
 .. _changelog-umc-appcenter:
 
