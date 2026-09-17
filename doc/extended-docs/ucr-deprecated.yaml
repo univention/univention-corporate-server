@@ -592,3 +592,9 @@
   desc: univention-ad-connector
   vars:
     - connector/password/service/encoding
+
+- git: abd084c1ff0103f42f8adcabe10aa71ddf16f258
+  obsolete: "5.2-7"
+  desc: univention-ldap
+  vars:
+    - ldap/shadowbind
