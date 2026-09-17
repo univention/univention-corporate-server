@@ -21,6 +21,12 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 22. Sep 2026
+     - :ref:`iam-rate-limiting`
+     - Add a generic implementation guide for rate limiting in front of exposed
+       Nubus for UCS APIs and services.
+
+
    * - 16. Sep 2026
      - :ref:`security-hardening-kerberos`
      - Add section about hardening password attributes and Kerberos keys.
