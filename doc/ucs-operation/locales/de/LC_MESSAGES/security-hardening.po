@@ -1,0 +1,720 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+msgid ""
+msgstr ""
+"Project-Id-Version: Nubus for UCS 5.2 - Operation Manual 5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-17 08:59+0000\n"
+"PO-Revision-Date: 2026-09-17 11:20+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../security-hardening/index.rst:43
+msgid "Contents"
+msgstr "Inhalt"
+
+#: ../../security-hardening/index.rst:8
+msgid "Security hardening"
+msgstr "Sicherheitshärtung"
+
+#: ../../security-hardening/index.rst:10
+msgid ""
+"Security hardening reduces the likelihood and impact of attacks against a"
+" Nubus for UCS environment. It doesn't replace a risk assessment, network"
+" segmentation, backups, patch management, monitoring, or physical "
+"security."
+msgstr ""
+"Sicherheitshärtung verringert die Wahrscheinlichkeit und die Auswirkungen"
+" von Angriffen auf eine Nubus für UCS-Umgebung. Sie ersetzt keine "
+"Risikobewertung, Netzwerksegmentierung, Backups, Patch-Management, "
+"Überwachung oder physische Sicherheit."
+
+#: ../../security-hardening/index.rst:15
+msgid ""
+"This chapter groups security-hardening recommendations by component. "
+"Apply recommendations that match the services and clients in your "
+"environment. Settings that improve security might also reduce "
+"compatibility or availability, particularly when they deactivate legacy "
+"protocols."
+msgstr ""
+"Dieses Kapitel gruppiert Empfehlungen zur Sicherheitshärtung nach "
+"Komponenten. Wenden Sie Empfehlungen an, die zu den Diensten und Clients "
+"in Ihrer Umgebung passen. Einstellungen, die die Sicherheit verbessern, "
+"können auch die Kompatibilität oder Verfügbarkeit verringern, "
+"insbesondere wenn sie veraltete Protokolle deaktivieren."
+
+#: ../../security-hardening/index.rst:20
+msgid "Before you change a setting:"
+msgstr "Bevor Sie eine Einstellung ändern:"
+
+#: ../../security-hardening/index.rst:22
+msgid "Record its current value."
+msgstr "Notieren Sie den aktuellen Wert."
+
+#: ../../security-hardening/index.rst:23
+msgid "Verify that you can restore the previous configuration."
+msgstr ""
+"Vergewissern Sie sich, dass Sie die vorherige Konfiguration "
+"wiederherstellen können."
+
+#: ../../security-hardening/index.rst:24
+msgid "Test the change with the clients and integrations that you operate."
+msgstr ""
+"Testen Sie die Änderung mit den Clients und Integrationen, die Sie "
+"betreiben."
+
+#: ../../security-hardening/index.rst:25
+msgid ""
+"Apply changes consistently to all systems that provide the affected "
+"service."
+msgstr ""
+"Wenden Sie Änderungen einheitlich auf alle Systeme an, die den "
+"betroffenen Dienst bereitstellen."
+
+#: ../../security-hardening/index.rst:27
+msgid ""
+"Use different passwords for the local ``root`` account and domain "
+"administrator accounts. Use a different local ``root`` password on each "
+"system to limit lateral movement after an attacker compromises a system. "
+"Use unprivileged, personal accounts for daily work and privileged "
+"accounts only for administrative tasks."
+msgstr ""
+"Verwenden Sie unterschiedliche Passwörter für das lokale Konto ``root`` "
+"und Administratorkonten für die Domäne. Verwenden Sie auf jedem System "
+"ein anderes lokales ``root``-Passwort, um seitliche Bewegungen nach der "
+"Kompromittierung eines Systems durch einen Angreifer einzuschränken. "
+"Verwenden Sie für die tägliche Arbeit nicht privilegierte, persönliche "
+"Konten und privilegierte Konten nur für administrative Aufgaben."
+
+#: ../../security-hardening/index.rst:34
+msgid ""
+"For password policies and account lockout, see :ref:`password-management-"
+"policies` and :ref:`iam-user-lockout`."
+msgstr ""
+"Informationen zu Passwortrichtlinien und Kontosperrungen finden Sie unter"
+" :ref:`password-management-policies` und :ref:`iam-user-lockout`."
+
+#: ../../security-hardening/index.rst:38
+msgid "The following pages cover the main components:"
+msgstr "Die folgenden Seiten behandeln die Hauptkomponenten:"
+
+#: ../../security-hardening/index.rst:40
+msgid ""
+":ref:`security-hardening-kerberos` covers password attributes and "
+"Kerberos encryption types."
+msgstr ""
+":ref:`security-hardening-kerberos` behandelt Passwortattribute und "
+"Kerberos-Verschlüsselungstypen."
+
+#: ../../security-hardening/kerberos.rst:7
+msgid "Harden password attributes and Kerberos keys"
+msgstr "Passwortattribute und Kerberos-Schlüssel härten"
+
+#: ../../security-hardening/kerberos.rst:9
+msgid ""
+"Nubus stores password-related attributes for different authentication "
+"protocols and services."
+msgstr ""
+"Nubus speichert :spelling:word:`passwortbezogene` Attribute für "
+"verschiedene Authentifizierungsprotokolle und Dienste."
+
+#: ../../security-hardening/kerberos.rst:11
+msgid ""
+"You can reduce the amount of legacy credential material in the directory "
+"service by deactivating NT hash generation and restricting the Kerberos "
+"encryption types. This page describes the required checks, configuration,"
+" and cleanup."
+msgstr ""
+"Sie können die Menge an veraltetem Anmeldeinformationsmaterial im "
+"Verzeichnisdienst verringern, indem Sie die Generierung des NT-Hash "
+"deaktivieren und die Kerberos-Verschlüsselungstypen einschränken. Diese "
+"Seite beschreibt die erforderlichen Prüfungen, die Konfiguration und die "
+"Bereinigung."
+
+#: ../../security-hardening/kerberos.rst:17
+msgid ""
+"Don't apply these settings before checking the integrations in your "
+"environment."
+msgstr ""
+"Wenden Sie diese Einstellungen erst an, nachdem Sie die Integrationen in "
+"Ihrer Umgebung überprüft haben."
+
+#: ../../security-hardening/kerberos.rst:19
+msgid ""
+"Existing users and service accounts can continue to contain the affected "
+"values until you run the cleanup commands."
+msgstr ""
+"Bestehende Benutzer- und Dienstkonten können die betroffenen Werte "
+"weiterhin enthalten, bis Sie die Bereinigungsbefehle ausführen."
+
+#: ../../security-hardening/kerberos.rst:22
+msgid ""
+"After cleanup, you can't restore the removed values without resetting the"
+" affected passwords."
+msgstr ""
+"Nach der Bereinigung können Sie die entfernten Werte nicht "
+"wiederherstellen, ohne die betroffenen Passwörter zurückzusetzen."
+
+#: ../../security-hardening/kerberos.rst:28
+msgid "Credential attributes"
+msgstr "Attribute für Anmeldeinformationen"
+
+#: ../../security-hardening/kerberos.rst:30
+msgid ""
+"The directory service contains several password representations because "
+"different services use different authentication protocols. The following "
+"password representations are relevant for Kerberos:"
+msgstr ""
+"Der Verzeichnisdienst enthält mehrere Passwortdarstellungen, weil "
+"verschiedene Dienste unterschiedliche Authentifizierungsprotokolle "
+"verwenden. Die folgenden Passwortdarstellungen sind für Kerberos "
+"relevant:"
+
+#: ../../security-hardening/kerberos.rst:36
+msgid "``sambaNTPassword``"
+msgstr "``sambaNTPassword``"
+
+#: ../../security-hardening/kerberos.rst:37
+msgid ""
+"An unsalted password hash that supports legacy NTLM-based authentication."
+" The hash isn't required for Kerberos authentication."
+msgstr ""
+"Ein nicht gesalzener Passwort-Hash, der die veraltete NTLM-basierte "
+"Authentifizierung unterstützt. Der Hash ist für die Kerberos-"
+"Authentifizierung nicht erforderlich."
+
+#: ../../security-hardening/kerberos.rst:42
+msgid "``krb5Key``"
+msgstr "``krb5Key``"
+
+#: ../../security-hardening/kerberos.rst:43
+msgid ""
+"Stores Kerberos keys for a principal. A principal can have several keys "
+"with different encryption types. This supports authentication by clients "
+"and services during a migration. The attribute can contain insecure or "
+"deprecated keys."
+msgstr ""
+"Speichert Kerberos-Schlüssel für einen Principal. Ein Principal kann "
+"mehrere Schlüssel mit unterschiedlichen Verschlüsselungstypen haben. Dies"
+" unterstützt die Authentifizierung durch Clients und Dienste während "
+"einer Migration. Das Attribut kann unsichere oder veraltete Schlüssel "
+"enthalten."
+
+#: ../../security-hardening/kerberos.rst:50
+msgid "``userPassword``"
+msgstr "``userPassword``"
+
+#: ../../security-hardening/kerberos.rst:51
+msgid ""
+"Stores a crypt hash that uses a configurable hashing method. For more "
+"information about password hashes, see :ref:`password-management-hashes`."
+msgstr ""
+"Speichert einen Crypt-Hash, der eine konfigurierbare Hash-Methode "
+"verwendet. Weitere Informationen zu Passwort-Hashes finden Sie unter :ref"
+":`password-management-hashes`."
+
+#: ../../security-hardening/kerberos.rst:58
+msgid "Choose hardening measures"
+msgstr "Härtungsmaßnahmen auswählen"
+
+#: ../../security-hardening/kerberos.rst:60
+msgid ""
+"Before choosing a hardening measure, identify the services in your "
+"environment that depend on NT hashes or specific Kerberos encryption "
+"types. You can apply the following controls independently:"
+msgstr ""
+"Bevor Sie eine Härtungsmaßnahme auswählen, ermitteln Sie die Dienste in "
+"Ihrer Umgebung, die von NT-Hashes oder bestimmten Kerberos-"
+"Verschlüsselungstypen abhängen. Sie können die folgenden Maßnahmen "
+"unabhängig voneinander anwenden:"
+
+#: ../../security-hardening/kerberos.rst:65
+msgid ":envvar:`password/samba/nthash`"
+msgstr ":envvar:`password/samba/nthash`"
+
+#: ../../security-hardening/kerberos.rst:66
+msgid ""
+"Controls whether :term:`Univention Directory Manager (UDM)` generates "
+":ref:`security-hardening-kerberos-attributes-sambantpassword` when a "
+"password changes."
+msgstr ""
+"Steuert, ob :term:`Univention Directory Manager (UDM)` bei einer "
+"Passwortänderung :ref:`security-hardening-kerberos-attributes-"
+"sambantpassword` generiert."
+
+#: ../../security-hardening/kerberos.rst:70
+msgid ":envvar:`kerberos/defaults/enctypes/permitted`"
+msgstr ":envvar:`kerberos/defaults/enctypes/permitted`"
+
+#: ../../security-hardening/kerberos.rst:71
+msgid ""
+"controls the encryption types that Univention Corporate Server (UCS) "
+"permits for Kerberos keys."
+msgstr ""
+"Steuert die Verschlüsselungstypen, die Univention Corporate Server (UCS) "
+"für Kerberos-Schlüssel zulässt."
+
+#: ../../security-hardening/kerberos.rst:74
+msgid ""
+"Changing either :term:`UCR variable` doesn't remove values that already "
+"exist. For existing environments, use :ref:`security-hardening-kerberos-"
+"remove-nt-hashes` or :ref:`security-hardening-kerberos-remove-weak-keys`."
+msgstr ""
+"Das Ändern einer der beiden :term:`UCR Variablen <UCR variable>` entfernt keine bereits "
+"vorhandenen Werte. Verwenden Sie für bestehende Umgebungen :ref"
+":`security-hardening-kerberos-remove-nt-hashes` oder :ref:`security-"
+"hardening-kerberos-remove-weak-keys`."
+
+#: ../../security-hardening/kerberos.rst:78
+msgid ""
+"You can't deactivate :ref:`security-hardening-kerberos-attributes-"
+"sambantpassword` in environments where one of the following services uses"
+" NT hashes for core functionality:"
+msgstr ""
+"Sie können :ref:`security-hardening-kerberos-attributes-sambantpassword` "
+"in Umgebungen nicht deaktivieren, in denen einer der folgenden Dienste "
+"NT-Hashes für Kernfunktionen verwendet:"
+
+#: ../../security-hardening/kerberos.rst:81
+msgid "Samba and Active Directory"
+msgstr "Samba und Active Directory"
+
+#: ../../security-hardening/kerberos.rst:82
+msgid ""
+"UCS can operate a Samba domain based Active Directory that offers "
+"authentication and file services compatible to Active Directory. To keep "
+"Samba synchronized with the directory service in UCS, it uses :ref"
+":`security-hardening-kerberos-attributes-krb5key`."
+msgstr ""
+"UCS kann ein :spelling:word:`Samba-domänenbasiertes` Active Directory "
+"betreiben, das mit Active Directory kompatible "
+":spelling:word:`Authentifizierungs`- und Dateidienste bereitstellt. Um "
+"Samba mit dem Verzeichnisdienst in UCS synchron zu halten, verwendet es "
+":ref:`security-hardening-kerberos-attributes-krb5key`."
+
+#: ../../security-hardening/kerberos.rst:88
+msgid "Active Directory Connection"
+msgstr "Active Directory Verbindung"
+
+#: ../../security-hardening/kerberos.rst:89
+msgid ""
+"Password synchronization between UCS and Active Directory requires the NT"
+" hash :ref:`security-hardening-kerberos-attributes-sambantpassword`."
+msgstr ""
+"Die Passwortsynchronisierung zwischen UCS und Active Directory erfordert "
+"den NT-Hash :ref:`security-hardening-kerberos-attributes-"
+"sambantpassword`."
+
+#: ../../security-hardening/kerberos.rst:92
+msgid ":program:`univention-squid`"
+msgstr ":program:`univention-squid`"
+
+#: ../../security-hardening/kerberos.rst:93
+msgid ""
+"The ``squid_ldap_ntlm_auth`` authentication backend requires the NT hash "
+"for transparent proxy authentication."
+msgstr ""
+"Das ``squid_ldap_ntlm_auth`` Backend für die Authentifizierung benötigt "
+"den NT-Hash für die transparente Proxy-Authentifizierung."
+
+#: ../../security-hardening/kerberos.rst:96
+msgid ":program:`univention-radius`"
+msgstr ":program:`univention-radius`"
+
+#: ../../security-hardening/kerberos.rst:97
+msgid ""
+"The ``univention-radius-ntlm-auth`` helper requires the NT hash for MS-"
+"CHAP and NTLM authentication."
+msgstr ""
+"Das Hilfsprogramm ``univention-radius-ntlm-auth`` benötigt den NT-Hash "
+"für die MS-CHAP- und NTLM-Authentifizierung."
+
+#: ../../security-hardening/kerberos.rst:100
+msgid ""
+"If one of these services is active, keep :envvar:`password/samba/nthash` "
+"enabled. Removing existing NT hashes breaks the affected authentication "
+"or synchronization function and isn't reversible without resetting "
+"passwords."
+msgstr ""
+"Wenn einer dieser Dienste aktiv ist, lassen Sie "
+":envvar:`password/samba/nthash` aktiviert. Das Entfernen vorhandener NT-"
+"Hashes unterbricht die betroffene Authentifizierungs- oder "
+"Synchronisierungsfunktion und kann ohne Zurücksetzen der Passwörter nicht"
+" rückgängig gemacht werden."
+
+#: ../../security-hardening/kerberos.rst:105
+msgid ""
+"Removing weak or deprecated encryption types from :ref:`security-"
+"hardening-kerberos-attributes-krb5key` can prevent a principal from "
+"authenticating when a client or service supports only a removed type. "
+"This includes legacy Windows clients, service accounts that haven't "
+"migrated to AES encryption, and trusts that support only removed "
+"encryption types. Check the encryption types used by domain integrations "
+"before proceeding."
+msgstr ""
+"Das Entfernen schwacher oder veralteter Verschlüsselungstypen aus :ref"
+":`security-hardening-kerberos-attributes-krb5key` kann verhindern, dass "
+"sich ein Principal authentifiziert, wenn ein Client oder Dienst nur einen"
+" entfernten Typ unterstützt. Dies betrifft auch veraltete Windows-"
+"Clients, Dienstkonten, die nicht zu :spelling:word:`AES`-Verschlüsselung "
+"migriert wurden, und Vertrauensstellungen, die nur entfernte "
+"Verschlüsselungstypen unterstützen. Prüfen Sie die Verschlüsselungstypen,"
+" die :spelling:word:`Domänenintegrationen` verwenden, bevor Sie "
+"fortfahren."
+
+#: ../../security-hardening/kerberos.rst:117
+#: ../../security-hardening/kerberos.rst:138
+msgid "Deactivate NT hash generation"
+msgstr "Generierung des NT-Hash deaktivieren"
+
+#: ../../security-hardening/kerberos.rst:119
+msgid ""
+"To stop :term:`UDM` from generating :ref:`security-hardening-kerberos-"
+"attributes-sambantpassword` for future password changes, change the "
+":envvar:`password/samba/nthash` UCR variable."
+msgstr ""
+"Um :term:`UDM` daran zu hindern, :ref:`security-hardening-kerberos-"
+"attributes-sambantpassword` bei zukünftigen Passwortänderungen zu "
+"generieren, ändern Sie die UCR-Variable :envvar:`password/samba/nthash`."
+
+#: ../../security-hardening/kerberos.rst:124
+msgid ""
+"If no active service requires NTLM-based authentication or password "
+"synchronization, as outlined in :ref:`security-hardening-kerberos-"
+"compatibility`, set the UCR variable on **every** UCS system that "
+"performs password changes through UDM. Use the command in :numref"
+":`security-hardening-kerberos-configure-listing`."
+msgstr ""
+"Wenn kein aktiver Dienst die NTLM-basierte Authentifizierung oder "
+"Passwortsynchronisierung benötigt, wie unter :ref:`security-hardening-"
+"kerberos-compatibility` beschrieben, setzen Sie die UCR-Variable auf "
+"**jedem** UCS-System, das Passwortänderungen über UDM durchführt. "
+"Verwenden Sie den Befehl in :numref:`security-hardening-kerberos-"
+"configure-listing`."
+
+#: ../../security-hardening/kerberos.rst:130
+msgid ""
+"To configure the UCR variable on multiple systems, consider a UCR policy."
+" For more information, see :ref:`system-administration-ucr-policy`."
+msgstr ""
+"Wenn Sie die UCR-Variable auf mehreren Systemen konfigurieren möchten, "
+"ziehen Sie eine UCR-Richtlinie in Betracht. Weitere Informationen finden "
+"Sie unter :ref:`system-administration-ucr-policy`."
+
+#: ../../security-hardening/kerberos.rst:134
+msgid ""
+"UDM then stops generating :ref:`security-hardening-kerberos-attributes-"
+"sambantpassword` during password changes and removes the value when the "
+"password changes next. The setting doesn't remove existing values "
+"immediately."
+msgstr ""
+"UDM beendet dann die Generierung von :ref:`security-hardening-kerberos-"
+"attributes-sambantpassword` bei Passwortänderungen und entfernt den Wert "
+"bei der nächsten Passwortänderung. Die Einstellung entfernt keine vorhandenen "
+"Werte sofort."
+
+#: ../../security-hardening/kerberos.rst:138
+msgid "$ ucr set password/samba/nthash=false"
+msgstr "$ ucr set password/samba/nthash=false"
+
+#: ../../security-hardening/kerberos.rst:147
+msgid "Remove existing NT hashes"
+msgstr "Vorhandene NT-Hashes entfernen"
+
+#: ../../security-hardening/kerberos.rst:149
+msgid ""
+"The cleanup script remove values from all matching directory objects. "
+"Before running it, create, and verify a directory backup as described in "
+":ref:`domain-infrastructure-ldap-directory-backup`. Run the dry-run mode "
+"first to see which objects the command would change."
+msgstr ""
+"Das Bereinigungsskript entfernt Werte aus allen passenden "
+"Verzeichnisobjekten. Erstellen und überprüfen Sie vor dem Ausführen ein "
+"Verzeichnis-Backup, wie unter :ref:`domain-infrastructure-ldap-directory-"
+"backup` beschrieben. Führen Sie zuerst den Testlaufmodus aus, um zu "
+"sehen, welche Objekte der Befehl ändern würde."
+
+#: ../../security-hardening/kerberos.rst:154
+msgid ""
+"On the :term:`Primary Directory Node` verify that "
+":envvar:`password/samba/nthash` has the value ``false``. Then run the "
+"command in :numref:`security-hardening-kerberos-remove-nt-hashes-dry-run-"
+"remove-password-listing` only on the Primary Directory Node."
+msgstr ""
+"Überprüfen Sie auf dem :term:`Primary Directory Node`, ob "
+":envvar:`password/samba/nthash` den Wert ``false`` hat. Führen Sie "
+"anschließend den Befehl in :numref:`security-hardening-kerberos-remove-"
+"nt-hashes-dry-run-remove-password-listing` nur auf dem Primary Directory "
+"Node aus."
+
+#: ../../security-hardening/kerberos.rst:159
+msgid "Verify the accounts for removal of NT hashes on the Primary Directory Node"
+msgstr ""
+"Konten zum Entfernen von NT-Hashes auf dem Primary Directory Node "
+"überprüfen"
+
+#: ../../security-hardening/kerberos.rst:159
+msgid ""
+"$ /usr/share/univention-directory-manager-tools/remove_sambantpassword "
+"--dry-run"
+msgstr ""
+"$ /usr/share/univention-directory-manager-tools/remove_sambantpassword "
+"--dry-run"
+
+#: ../../security-hardening/kerberos.rst:165
+msgid ""
+"If the dry-run output lists only affected user accounts, and you have "
+"approved them for cleanup, run the command without ``--dry-run`` on the "
+":term:`Primary Directory Node`, as shown in :numref:`security-hardening-"
+"kerberos-remove-nt-hashes-remove-password-listing`. The command removes "
+":ref:`security-hardening-kerberos-attributes-sambantpassword` from all "
+"affected user accounts. It prints a warning when the UCR variable isn't "
+"set to ``false``."
+msgstr ""
+"Wenn die Ausgabe des Testlaufs nur betroffene Benutzerkonten aufführt und"
+" Sie diese zur Bereinigung freigegeben haben, führen Sie den Befehl ohne "
+"``--dry-run`` auf dem :term:`Primary Directory Node` aus, wie in :numref"
+":`security-hardening-kerberos-remove-nt-hashes-remove-password-listing` "
+"gezeigt. Der Befehl entfernt :ref:`security-hardening-kerberos-"
+"attributes-sambantpassword` aus allen betroffenen Benutzerkonten. Er gibt"
+" eine Warnung aus, wenn die UCR-Variable nicht auf ``false`` gesetzt ist."
+
+#: ../../security-hardening/kerberos.rst:172
+msgid "Remove NT hashes from matching accounts Primary Directory Node"
+msgstr "NT-Hashes aus passenden Konten auf dem Primary Directory Node entfernen"
+
+#: ../../security-hardening/kerberos.rst:172
+msgid "$ /usr/share/univention-directory-manager-tools/remove_sambantpassword"
+msgstr "$ /usr/share/univention-directory-manager-tools/remove_sambantpassword"
+
+#: ../../security-hardening/kerberos.rst:181
+msgid "Restrict Kerberos encryption types"
+msgstr "Kerberos-Verschlüsselungstypen einschränken"
+
+#: ../../security-hardening/kerberos.rst:183
+msgid ""
+"To permit only AES-256 and AES-128 keys, set the "
+":envvar:`kerberos/defaults/enctypes/permitted` UCR variable on each UCS "
+"system that provides or manages Kerberos credentials, as shown in :numref"
+":`security-hardening-kerberos-restrict-encryption-types-listing`."
+msgstr ""
+"Um nur AES-256- und AES-128-Schlüssel zuzulassen, setzen Sie die UCR-"
+"Variable :envvar:`kerberos/defaults/enctypes/permitted` auf jedem UCS-"
+"System, das Kerberos-Anmeldeinformationen bereitstellt oder verwaltet, "
+"wie in :numref:`security-hardening-kerberos-restrict-encryption-types-"
+"listing` gezeigt."
+
+#: ../../security-hardening/kerberos.rst:188
+msgid "Restrict permitted Kerberos encryption types"
+msgstr "Zulässige Kerberos-Verschlüsselungstypen einschränken"
+
+#: ../../security-hardening/kerberos.rst:188
+msgid ""
+"$ ucr set kerberos/defaults/enctypes/permitted='aes256-cts-hmac-sha1-96 "
+"aes128-cts-hmac-sha1-96'"
+msgstr ""
+"$ ucr set kerberos/defaults/enctypes/permitted='aes256-cts-hmac-sha1-96 "
+"aes128-cts-hmac-sha1-96'"
+
+#: ../../security-hardening/kerberos.rst:194
+msgid ""
+"This setting excludes the following types that are insecure or deprecated"
+" in the default key set:"
+msgstr ""
+"Diese Einstellung schließt die folgenden unsicheren oder veralteten Typen"
+" aus dem Standardschlüsselsatz aus:"
+
+#: ../../security-hardening/kerberos.rst:197
+msgid "``arcfour-hmac-md5``, also known as ``rc4-hmac``"
+msgstr "``arcfour-hmac-md5``, auch als ``rc4-hmac`` bekannt"
+
+#: ../../security-hardening/kerberos.rst:198
+msgid "``des-cbc-crc``"
+msgstr "``des-cbc-crc``"
+
+#: ../../security-hardening/kerberos.rst:199
+msgid "``des-cbc-md5``"
+msgstr "``des-cbc-md5``"
+
+#: ../../security-hardening/kerberos.rst:200
+msgid "``des-cbc-md4``"
+msgstr "``des-cbc-md4``"
+
+#: ../../security-hardening/kerberos.rst:201
+msgid "``des3-hmac-sha1`` and ``des3-cbc-sha1``"
+msgstr "``des3-hmac-sha1`` und ``des3-cbc-sha1``"
+
+#: ../../security-hardening/kerberos.rst:203
+msgid ""
+"The setting affects newly generated keys and Kerberos negotiation. It "
+"doesn't remove weak keys that are already stored in :ref:`security-"
+"hardening-kerberos-attributes-krb5key`."
+msgstr ""
+"Die Einstellung wirkt sich auf neu generierte Schlüssel und die Kerberos-"
+"Aushandlung aus. Sie entfernt keine schwachen Schlüssel, die bereits in "
+":ref:`security-hardening-kerberos-attributes-krb5key` gespeichert sind."
+
+#: ../../security-hardening/kerberos.rst:209
+msgid ""
+"After changing the permitted encryption types, test domain joins, trusts,"
+" service accounts, and applications. If a required principal has no "
+"mutually supported encryption type, its authentication fails."
+msgstr ""
+"Testen Sie nach dem Ändern der zulässigen Verschlüsselungstypen "
+"Domänenbeitritte, Vertrauensstellungen, Dienstkonten und Anwendungen. "
+"Wenn ein erforderlicher Principal keinen gemeinsam unterstützten "
+"Verschlüsselungstyp hat, schlägt seine Authentifizierung fehl."
+
+#: ../../security-hardening/kerberos.rst:217
+#: ../../security-hardening/kerberos.rst:238
+msgid "Remove weak Kerberos keys"
+msgstr "Schwache Kerberos-Schlüssel entfernen"
+
+#: ../../security-hardening/kerberos.rst:219
+msgid ""
+"The Kerberos cleanup command removes the default set of weak and "
+"deprecated key types listed in :ref:`security-hardening-kerberos-"
+"restrict-encryption-types`. Run the dry-run mode first, as shown in "
+":numref:`security-hardening-kerberos-remove-weak-keys-dry-run-listing`."
+msgstr ""
+"Der Kerberos-Bereinigungsbefehl entfernt die unter :ref:`security-"
+"hardening-kerberos-restrict-encryption-types` aufgeführte Standardmenge "
+"schwacher und veralteter Schlüsseltypen. Führen Sie zuerst den "
+"Testlaufmodus aus, wie in :numref:`security-hardening-kerberos-remove-"
+"weak-keys-dry-run-listing` gezeigt."
+
+#: ../../security-hardening/kerberos.rst:224
+msgid "Identify weak Kerberos keys"
+msgstr "Schwache Kerberos-Schlüssel ermitteln"
+
+#: ../../security-hardening/kerberos.rst:224
+msgid ""
+"$ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes "
+"--dry-run"
+msgstr ""
+"$ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes "
+"--dry-run"
+
+#: ../../security-hardening/kerberos.rst:230
+msgid ""
+"If no client, service, or domain integration requires the key types in "
+"the dry-run output, run the command shown in :numref:`security-hardening-"
+"kerberos-remove-weak-keys-listing`. The command increments "
+"``krb5KeyVersionNumber`` on each object that it changes. If a :ref"
+":`security-hardening-kerberos-attributes-krb5key` value can't be decoded,"
+" the command skips that object instead of modifying it."
+msgstr ""
+"Wenn kein Client, Dienst oder keine Integration in die Domäne die "
+"Schlüsseltypen in der Ausgabe des Testlaufs benötigt, führen Sie den in "
+":numref:`security-hardening-kerberos-remove-weak-keys-listing` gezeigten "
+"Befehl aus. Der Befehl erhöht ``krb5KeyVersionNumber`` für jedes Objekt, "
+"das er ändert. Wenn ein Wert von :ref:`security-hardening-kerberos-"
+"attributes-krb5key` nicht dekodiert werden kann, überspringt der Befehl "
+"dieses Objekt, statt es zu ändern."
+
+#: ../../security-hardening/kerberos.rst:238
+msgid "$ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes"
+msgstr "$ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes"
+
+#: ../../security-hardening/kerberos.rst:244
+msgid ""
+"To remove a specific key type, use the command in :numref:`security-"
+"hardening-kerberos-remove-weak-keys-key-type-listing`. You can specify "
+"the ``--keytype`` option multiple times. The argument accepts a Kerberos "
+"key type name or an encryption type ID. For example, specify ``rc4-hmac``"
+" to remove only RC4-HMAC keys, as shown in :numref:`security-hardening-"
+"kerberos-remove-weak-keys-key-type-listing`."
+msgstr ""
+"Um einen bestimmten Schlüsseltyp zu entfernen, verwenden Sie den Befehl "
+"in :numref:`security-hardening-kerberos-remove-weak-keys-key-type-"
+"listing`. Sie können die Option ``--keytype`` mehrfach angeben. Das "
+"Argument akzeptiert einen Namen für Schlüsseltypen für Kerberos oder eine"
+" ID für den Verschlüsselungstyp. Geben Sie beispielsweise ``rc4-hmac`` an, "
+"um nur RC4-:spelling:word:`HMAC-Schlüssel` zu entfernen, wie in :numref"
+":`security-hardening-kerberos-remove-weak-keys-key-type-listing` gezeigt."
+
+#: ../../security-hardening/kerberos.rst:251
+msgid ""
+"You can't reverse this cleanup without resetting the affected account "
+"passwords."
+msgstr ""
+"Sie können diese Bereinigung nicht rückgängig machen, ohne die Passwörter"
+" der betroffenen Konten zurückzusetzen."
+
+#: ../../security-hardening/kerberos.rst:254
+msgid "Remove a specific Kerberos key type"
+msgstr "Einen bestimmten Kerberos-Schlüsseltyp entfernen"
+
+#: ../../security-hardening/kerberos.rst:254
+msgid ""
+"$ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes "
+"--keytype rc4-hmac"
+msgstr ""
+"$ /usr/share/univention-directory-manager-tools/remove_krb5key_keytypes "
+"--keytype rc4-hmac"
+
+#: ../../security-hardening/kerberos.rst:263
+msgid "Verify the result"
+msgstr "Ergebnis überprüfen"
+
+#: ../../security-hardening/kerberos.rst:265
+msgid "After cleanup, verify the following authentication paths:"
+msgstr "Überprüfen Sie nach der Bereinigung die folgenden Authentifizierungspfade:"
+
+#: ../../security-hardening/kerberos.rst:267
+msgid "A regular user's access to the services that they use."
+msgstr "Den Zugriff eines regulären Benutzers auf die Dienste, die er verwendet."
+
+#: ../../security-hardening/kerberos.rst:268
+msgid "Each service account that runs an application or scheduled task."
+msgstr "Jedes Dienstkonto, das eine Anwendung oder geplante Aufgabe ausführt."
+
+#: ../../security-hardening/kerberos.rst:269
+msgid "Each configured domain join, trust, and Active Directory integration."
+msgstr ""
+"Jeden konfigurierten Domänenbeitritt, jede Vertrauensstellung und jede "
+"Integration mit Active Directory."
+
+#: ../../security-hardening/kerberos.rst:270
+msgid "Each configured proxy or RADIUS authentication service."
+msgstr "Jeden konfigurierten Proxy- oder RADIUS-Authentifizierungsdienst."
+
+#: ../../security-hardening/kerberos.rst:272
+msgid ""
+"UDM then stops generating :ref:`security-hardening-kerberos-attributes-"
+"sambantpassword` during password changes. The next time a password "
+"changes, UDM removes :ref:`security-hardening-kerberos-attributes-"
+"sambantpassword`. The setting doesn't remove existing values immediately."
+msgstr ""
+"UDM beendet dann die Generierung von :ref:`security-hardening-kerberos-"
+"attributes-sambantpassword` bei Passwortänderungen. Bei der nächsten "
+"Passwortänderung entfernt UDM :ref:`security-hardening-kerberos-"
+"attributes-sambantpassword`. Die Einstellung entfernt keine vorhandenen Werte "
+"sofort."
+
+#: ../../security-hardening/kerberos.rst:280
+msgid "Related information"
+msgstr "Weiterführende Informationen"
+
+#: ../../security-hardening/kerberos.rst:282
+msgid ""
+"For more information about Kerberos architecture in Nubus for UCS, see "
+":ref:`domain-infrastructure-kerberos`."
+msgstr ""
+"Weitere Informationen zur Kerberos-Architektur in Nubus for UCS finden "
+"Sie unter :ref:`domain-infrastructure-kerberos`."
+
+#: ../../security-hardening/kerberos.rst:285
+msgid ""
+"For information about password hashes, see :ref:`password-management-"
+"hashes`."
+msgstr ""
+"Informationen zu Passwort-Hashes finden Sie unter :ref:`password-"
+"management-hashes`."

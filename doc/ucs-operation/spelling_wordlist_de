@@ -28,6 +28,7 @@ Cloud-native
 Containerisierung
 Cron
 Cron-Format
+Crypt-Hash
 DNS-Domänennamens
 Debug-Ebenen
 Debug-Logs
@@ -52,6 +53,8 @@ Hashing
 Hashings
 Hexadezimalform
 Hypervisor-Umgebungen
+Härtungsmaßnahme
+Härtungsmaßnahmen
 Infrastrukturdienste
 Infrastrukturumgebungen
 Integrationen
@@ -74,6 +77,8 @@ Monitoring-Prüfungen
 Monitoring-Verwaltung
 Monitoring-Warnmeldungen
 Multiprocessing
+NT-Hash
+NT-Hashes
 NTP-Antworten
 Notifier-Dienste
 PAM-Dienst
@@ -88,6 +93,8 @@ Patchlevel-Version
 Patchlevel-Versionen
 Plattformspezifische
 Pre-Update
+Principal
+RC
 Registrierungsformular
 Release-Informationen
 Release-Typen
