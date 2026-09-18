@@ -227,7 +227,7 @@ class UniventionDirectoryManagerPolicies:
     def _global_deny_rules(self, modname):
         global_rules = [{
             'name': 'domain-admin-allow-everything',
-            'actions': ['udm:*'],
+            'actions': ['*'],
             'roles': ['domain-administrator'],
             'effect': 'EFFECT_ALLOW',
         }]
