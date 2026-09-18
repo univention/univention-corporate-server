@@ -36,15 +36,11 @@
 condition "is-self"
   expr="request.principal.id == request.resource.id"
 
-# Domain Administrators
-access by role="domain-administrator"
-  description="Domain Admins are allowed to do anything in the whole domain"
-
-  to objecttype="*"
-    name="allow-everything" description="Allow everything"
-
-    grant actions="*"
-    grant properties="*" permission="write"
+# access by role="*"
+#   to objecttype="*"
+#     grant properties="guardianRoles" permission="readonly"
+#       if-values='!("udm:default-roles:domain-admin" in $value$)'
+##       if-values='!("udm:default-roles:domain-user" in request.resource.attr.guardianRoles)'
 
 # Domain Users
 access by role="domain-user"
