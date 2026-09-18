@@ -396,7 +396,7 @@ class _DSLTransformer(Transformer):
 
 
 class UDMAuthorizationConfig:
-    """UDM DSL compiler that emits Cerbos rolePolicy documents."""
+    """Compile the UDM DSL into Cerbos policy (and derived roles) rules."""
 
     def __init__(self, filename, *, strict=False):
         self.filename = Path(filename)
@@ -504,6 +504,33 @@ class UDMAuthorizationConfig:
                         _add_rule_comment(rules, len(rules) - 1, rule_name, description)
 
         return [policies[role] for role in sorted(policies)]
+
+    def _derived_roles_document(self, definitions, *, commented=False):
+        return _policy_map({
+            'apiVersion': 'api.cerbos.dev/v1',
+            'description': f'Automatically generated context roles from {self.filename.name}.',
+            'derivedRoles': _policy_map({
+                'name': f'udm_{sanitize_filename(self.filename.stem).replace("-", "_")}_contexts',
+                'definitions': definitions,
+            }, commented),
+            'metadata': {'sourceFile': str(self.filename), 'annotations': {}},
+        }, commented)
+
+    @staticmethod
+    def _is_context_position(position):
+        return isinstance(position, str) and position.startswith('context=')
+
+    def _derived_role_name(self, role, position, used_names):
+        scope = _SCOPES.get(position[0], 'base')
+        source = sanitize_filename(self.filename.stem).replace('-', '_')
+        role_name = sanitize_filename(role).replace('-', '_')
+        base = f'{source}_{role_name}_position_{scope}'
+        name = base
+        counter = 2
+        while name in used_names:
+            name = f'{base}_{counter}'
+            counter += 1
+        return name
 
     def _expand_object_types(self, object_type):
         if object_type != '*':
