@@ -421,12 +421,7 @@ class UDMAuthorizationConfig:
         return _dump_yaml_all(documents, commented=True)
 
     def write_files(self, output_dir=None):
-        """
-        Write generated role policies to ``generated/roles`` below ``output_dir``.
-
-        Returns the written file paths. The default output root is the Cerbos/UDM
-        policy directory used by the bootstrap script.
-        """
+        """Write standalone generated role policies."""
         root = Path(output_dir or POLICY_ROOT)
         role_dir = root / 'generated' / self.filename.stem / 'roles'
         role_dir.mkdir(parents=True, exist_ok=True)
@@ -438,11 +433,13 @@ class UDMAuthorizationConfig:
             paths.append(path)
         return paths
 
-    def to_role_policies(self, *, commented=False):
-        # if self.parsed.get('conditions'):
-        #     names = ', '.join(cond['name'] for cond in self.parsed['conditions'])
-        #     print(f'Warning: Deprecated condition blocks are ignored for Cerbos output: {names}', file=sys.stderr)
+    def to_role_policy_data(self, *, commented=False):
+        """
+        Compile DSL data.
 
+        Positional role contexts become derived roles.
+        Named ``if`` and grant-specific ``values`` expressions remain conditions on the exact resource-policy rule whose actions they guard.
+        """
         named_conditions = {cond['name']: cond['expr'] for cond in self.parsed['conditions']}
 
         policies = {}
