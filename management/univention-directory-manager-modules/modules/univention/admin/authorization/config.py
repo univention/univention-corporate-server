@@ -450,7 +450,7 @@ class UDMAuthorizationConfig:
         policies = {}
         used_names = {}
         for access_block in self.parsed['rules']:
-            roles = sorted({role['role'] for role in access_block.get('by', [])})
+            roles = sorted({entry['role'] for entry in access_block.get('by', [])})
             for to_clause in access_block.get('to', []):
                 for role in roles:
                     rules = policies.setdefault(role, _policy_map({
