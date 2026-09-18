@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
+import httpx
 from cerbos.sdk.client import CerbosClient
 from cerbos.sdk.model import Principal, Resource, ResourceList
 
@@ -15,7 +16,7 @@ from cerbos.sdk.model import Principal, Resource, ResourceList
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-__all__ = ('CerbosAuthorizationClient', 'Principal', 'Resource')
+__all__ = ('CerbosAuthorizationClient', 'CerbosError', 'Principal', 'Resource')
 
 
 @dataclass(frozen=True)
@@ -24,6 +25,10 @@ class CerbosCheckResult:
 
     target_id: str
     actions: frozenset[str]
+
+
+class CerbosError(Exception):
+    pass
 
 
 class CerbosAuthorizationClient:
@@ -49,7 +54,10 @@ class CerbosAuthorizationClient:
         batch_resources = ResourceList()
         batch_resources.add(resource, actions)
 
-        response = self.client.check_resources(principal=principal, resources=batch_resources)
+        try:
+            response = self.client.check_resources(principal=principal, resources=batch_resources)
+        except httpx.ReadTimeout:
+            raise CerbosError('Read timeout')
         return CerbosCheckResult(resource.id, frozenset(self._allowed_actions(response, resource, actions)))
 
     def check_actions_bulk(self, principal: Principal, resources: Iterable[Resource], actions: Iterable[str]) -> list[CerbosCheckResult]:
@@ -63,7 +71,10 @@ class CerbosAuthorizationClient:
         for resource in resources:
             batch_resources.add(resource, actions)
 
-        response = self.client.check_resources(principal=principal, resources=batch_resources)
+        try:
+            response = self.client.check_resources(principal=principal, resources=batch_resources)
+        except httpx.ReadTimeout:
+            raise CerbosError('Read timeout')
         return [
             CerbosCheckResult(resource.id, frozenset(self._allowed_actions(response, resource, actions)))
             for resource in resources
