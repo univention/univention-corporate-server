@@ -443,7 +443,6 @@ class UDMAuthorizationConfig:
         derived_by_key = {}
 
         policies = {}
-        used_names = {}
         for access_block in self.parsed['rules']:
             roles = sorted({entry['role'] for entry in access_block.get('by', [])})
             for to_clause in access_block.get('to', []):
@@ -451,7 +450,7 @@ class UDMAuthorizationConfig:
                     rules = policies.setdefault(role, _policy_seq([], commented))
                     used = self.USED_NAMES.setdefault(role, set())
 
-                    # TODO/FIXME: iterate over grants first: 1 role policy for each grant!?
+                    # TODO: iterate over grants first: 1 role policy for each grant!?
                     for object_type in self._expand_object_types(to_clause['objecttype']):
                         resource = udm_resource_kind(object_type) if object_type != '*' else '*'  # TODO: check if '*' or 'udm:*' is allowed
                         rule_conditions = []
