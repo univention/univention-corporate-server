@@ -120,8 +120,8 @@ class UniventionDirectoryManagerPolicies:
     def generate_all(self):
         self.generate_principal_schema()
         self.generate_resource_schemas()
-        self.generate_resource_policies()
-        self.generate_roles_from_acl()
+        compiled = self.generate_roles_from_acl()
+        self.generate_resource_policies(compiled)
 
     def generate_principal_schema(self):
         pass  # TODO: write to _schemas/principal.json
@@ -129,7 +129,15 @@ class UniventionDirectoryManagerPolicies:
     def generate_resource_schemas(self):
         pass  # TODO: write to _schemas/resources/<resource>.json
 
-    def generate_resource_policies(self):
+    def generate_resource_policies(self, compiled):
+        # derived_roles/common_roles.yaml
+        # derived_roles/common_vars.yaml
+        # resource_policies/<domain>/<resource>.yaml
+        # resource_policies/<domain>/<resource>_test.yaml
+        # resource_policies/<domain>/testdata/principals.yaml
+        # resource_policies/<domain>/testdata/resources.yaml
+        # role_policies/<role>.yaml
+        # role_policies/<tenant>/<role>.yaml
         resource_dir = self.output_root / 'resources'
         resource_dir.mkdir(parents=True, exist_ok=True)
         for dirname in ('tests', 'roles', 'derived_roles', 'variables', 'customer'):
