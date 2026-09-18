@@ -171,7 +171,7 @@ class UniventionDirectoryManagerPolicies:
             'name': f'allow-role-policy-actions-{modname.replace("/", "-")}',
             'actions': object_actions + property_actions,
             'effect': 'EFFECT_ALLOW',
-            'roles': [f'role-allow-role-policy-actions']
+            'roles': ['role-allow-role-policy-actions'],
         })
         # rules.append({
         #     'name': f'allow-super-admin-{modname.replace("/", "-")}',
