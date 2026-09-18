@@ -498,6 +498,24 @@ class UDMAuthorizationConfig:
 
         return [policies[role] for role in sorted(policies)]
 
+    def _role_policy_document(self, role, rules, *, commented=False):
+        return _policy_map({
+            'apiVersion': 'api.cerbos.dev/v1',
+            'description': 'Automatically generated rule from %r.' % self.filename.stem,
+            'disabled': False,
+            'rolePolicy': _policy_map({
+                'role': role,
+                'version': 'default',
+                # 'scope': '',
+                'parentRoles': ['role-allow-role-policy-actions'],
+                'rules': _policy_seq(rules, commented),
+            }, commented),
+            'metadata': {
+                'sourceFile': str(self.filename),
+                'annotations': {},
+            },
+        }, commented)
+
     def _derived_roles_document(self, definitions, *, commented=False):
         return _policy_map({
             'apiVersion': 'api.cerbos.dev/v1',
