@@ -98,6 +98,7 @@ SORT_PRIO = {
     'actions': {v: k for k, v in [*list(enumerate(ACTIONS)), [len(ACTIONS), '*']]},
     'permission': {v: k for k, v in [*list(enumerate(PERMISSIONS)), [len(PERMISSIONS), '*']]},
 }
+RE_ROLE = re.compile(r'^[^!*?\[\]{}]+$')
 
 RESOURCE_DN = 'request.resource.attr.dn'
 RESOURCE_POSITION = 'request.resource.attr.position'
@@ -227,6 +228,8 @@ class _DSLTransformer(Transformer):
         by = {'role': meta.pop('role')}
         self._assert_names('by', meta, {'description'})
         self._assert_names('by', by, {'role'})
+        if by['role'] != '*' and not RE_ROLE.match(by['role']):
+            raise DSLSyntaxError('role: must not contain any of the following characters: ! * ? [ ] { }', (self.__filename, 0, 0, by['role']))
 
         return {
             'type': 'by',
