@@ -82,19 +82,6 @@ class UniventionDirectoryManagerPolicies:
         parser.add_argument('--output-dir', default=str(POLICY_ROOT), help='Root directory for Cerbos UDM policies')
         subparsers = parser.add_subparsers(dest='action', title='actions', required=True)
 
-        subparser = subparsers.add_parser('generate-resources', aliases=['create-permissions'])
-        subparser.set_defaults(func=self.generate_resource_policies)
-
-        subparser = subparsers.add_parser('generate-roles', aliases=['create-roles'])
-        subparser.set_defaults(func=self.generate_roles_from_acl)
-        subparser.add_argument('--config-dir', required=True)
-        subparser.add_argument('--strict', action='store_true')
-
-        subparser = subparsers.add_parser('generate-default-roles', aliases=['create-default-roles'])
-        subparser.set_defaults(func=self.generate_default_roles)
-        subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')
-        subparser.add_argument('--strict', action='store_true')
-
         subparser = subparsers.add_parser('generate')
         subparser.set_defaults(func=self.generate_all)
         subparser.add_argument('--config-dir', default='/usr/share/univention-directory-manager-modules/policies/')

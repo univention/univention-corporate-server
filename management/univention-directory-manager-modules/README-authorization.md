@@ -58,9 +58,7 @@ Via `directory/manager/rest/delegative-administration/excluded-users/.*` one can
 
 Configuration is still locally and not distributed somewhere. Can be configured via:
 
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local prune`
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-permissions`
-`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-default-roles`
+`/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local generate`
 
 A language to describe the policy rules has been implemented: a UDM domain specific language (DSL) following an extended BNF grammar.
 This is parsed by a LALR (Look-Ahead Left <- Right) parser.
