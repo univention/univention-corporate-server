@@ -12,11 +12,13 @@ from typing import Any
 import univention.admin.modules
 import univention.admin.types
 from univention.admin import configRegistry
-from univention.admin.authorization.authorization_client import CerbosAuthorizationClient, Principal, Resource
+from univention.admin.authorization.authorization_client import (
+    CerbosAuthorizationClient, CerbosError, Principal, Resource,
+)
 from univention.admin.authorization.utils import udm_object_action, udm_property_action, udm_resource_kind
 from univention.admin.guardian_roles import get_roles_from_ldap
 from univention.admin.log import log
-from univention.admin.uexceptions import permissionDenied
+from univention.admin.uexceptions import permissionDenied, permissionUnavailable
 
 
 __all__ = ('Authorization',)
@@ -333,7 +335,10 @@ class Authorization:
     def _check_actions_by_targets(self, actor, targets, actions):
         actions = sorted(set(actions))
         with log.timing('Authorization operation', operation='check_actions_bulk', checking=actions):
-            result = self.engine.check_actions_bulk(actor, targets, actions)
+            try:
+                result = self.engine.check_actions_bulk(actor, targets, actions)
+            except CerbosError as exc:
+                raise permissionUnavailable(str(exc))
         return [
             {
                 'target_id': item.target_id,
@@ -350,7 +355,10 @@ class Authorization:
     def _check_actions_by_target(self, actor, target, actions):
         actions = sorted(set(actions))
         with log.timing('Authorization operation', operation='check_actions', checking=actions):
-            return self.engine.check_actions(actor, target, actions).actions
+            try:
+                return self.engine.check_actions(actor, target, actions).actions
+            except CerbosError as exc:
+                raise permissionUnavailable(str(exc))
 
     def _is_write_action_allowed(self, action, obj, raise_exception=True):
         if not self.enabled:
