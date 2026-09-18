@@ -5,7 +5,7 @@
 
 def udm_resource_kind(object_type: str) -> str:
     object_type = object_type.replace(':', '-')
-    return f'udm:module:{object_type}'
+    return f'udm:module:{object_type}'.replace('/', '').replace(':', '').replace('-', '')  # FIXME: cerbos doesn't allowe special chars in resource names
 
 
 def udm_property_action(prop: str, action: str) -> str:
