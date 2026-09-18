@@ -171,8 +171,6 @@ class UniventionDirectoryManagerPolicies:
             for path in conf.write_files(self.output_root):
                 log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
 
-    def generate_default_roles(self):
-        self.generate_roles_from_acl()
 
     def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
         object_actions = self._object_actions(modname, module)
