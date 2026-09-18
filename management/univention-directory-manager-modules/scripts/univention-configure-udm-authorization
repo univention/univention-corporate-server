@@ -238,19 +238,25 @@ class UniventionDirectoryManagerPolicies:
         return permissions
 
     def _global_deny_rules(self, modname):
-        if modname != 'users/user':
-            return []
-        return [{
-            # 'name': 'deny-uid-number-zero',
+        global_rules = [{
+            'name': 'domain-admin-allow-everything',
             'actions': ['udm:*'],
-            'roles': ['*'],
-            'effect': 'EFFECT_DENY',
-            'condition': {
-                'match': {
-                    'expr': 'request.resource.attr.properties.new.uidNumber == 0 || request.resource.attr.properties.uidNumber == 0',
-                },
-            },
+            'roles': ['domain-administrator'],
+            'effect': 'EFFECT_ALLOW',
         }]
+        if modname == 'users/user':
+            global_rules.extend([{
+                'name': 'deny-uid-number-zero',
+                'actions': ['udm:*'],
+                'roles': ['*'],
+                'effect': 'EFFECT_DENY',
+                'condition': {
+                    'match': {
+                        'expr': 'request.resource.attr.properties.new.uidNumber == 0 || request.resource.attr.properties.uidNumber == 0',
+                    },
+                },
+            }])
+        return global_rules
 
     @staticmethod
     def _action_sort_key(action):
