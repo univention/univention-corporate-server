@@ -443,9 +443,7 @@ class UDMAuthorizationConfig:
         #     names = ', '.join(cond['name'] for cond in self.parsed['conditions'])
         #     print(f'Warning: Deprecated condition blocks are ignored for Cerbos output: {names}', file=sys.stderr)
 
-        named_conditions = {}
-        for cond in self.parsed['conditions']:
-            named_conditions[cond['name']] = cond['expr']
+        named_conditions = {cond['name']: cond['expr'] for cond in self.parsed['conditions']}
 
         policies = {}
         used_names = {}
