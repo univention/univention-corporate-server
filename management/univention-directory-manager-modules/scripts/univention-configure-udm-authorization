@@ -8,7 +8,7 @@ The script writes Cerbos policy files below /usr/share/univention-guardian-serve
 
 * resource_policies/**.yaml are technical resource policies derived from UDM
   module introspection.
-* roles/**.yaml are role policies compiled from the UDM authorization
+* derived_roles/**.yaml are role policies compiled from the UDM authorization
   DSL by config.py.
 * derived_roles/**.yaml contain reusable positional context predicates.
 """
@@ -141,7 +141,7 @@ class UniventionDirectoryManagerPolicies:
         # role_policies/<tenant>/<role>.yaml
         resource_dir = self.output_root / 'resource_policies' / 'udm'
         (resource_dir / 'testdata').mkdir(parents=True, exist_ok=True)
-        for dirname in ('tests', 'roles', 'derived_roles', 'variables', 'customer'):
+        for dirname in ('derived_roles', 'role_policies', 'variables'):
             (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
 
         lo, po = univention.admin.uldap.getAdminConnection()
