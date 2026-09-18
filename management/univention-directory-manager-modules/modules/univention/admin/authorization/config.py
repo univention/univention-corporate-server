@@ -601,7 +601,8 @@ class UDMAuthorizationConfig:
             '$new$': 'request.resource.attr.new.properties',
         }
         for name, replacement in replacements.items():
-            expr = re.sub(rf'\b{re.escape(name)}\b', replacement, expr)
+            # expr = re.sub(rf'\b{re.escape(name)}\b', replacement, expr)
+            expr = expr.replace(name, replacement)
         return expr
 
     @staticmethod
