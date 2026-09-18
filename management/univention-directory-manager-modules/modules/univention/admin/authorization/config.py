@@ -415,7 +415,7 @@ class UDMAuthorizationConfig:
 
     def to_yaml(self):
         """Return all generated Cerbos role policies as a multi-document YAML stream."""
-        documents = self.to_role_policies(commented=True)
+        documents = self.to_role_policy_data(commented=True)
         return _dump_yaml_all(documents, commented=True) if documents else ''
 
     def write_files(self, output_dir=None):
