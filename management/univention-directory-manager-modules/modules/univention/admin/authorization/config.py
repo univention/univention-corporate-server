@@ -15,6 +15,7 @@ import logging
 import re
 import sys
 from pathlib import Path
+from typing import ClassVar
 
 import lark
 import yaml
@@ -398,6 +399,8 @@ class _DSLTransformer(Transformer):
 class UDMAuthorizationConfig:
     """Compile the UDM DSL into Cerbos policy (and derived roles) rules."""
 
+    USED_NAMES: ClassVar = {}
+
     def __init__(self, filename, *, strict=False):
         self.filename = Path(filename)
         self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(str(self.filename), strict=strict))
@@ -431,7 +434,7 @@ class UDMAuthorizationConfig:
             paths.append(path)
         return paths
 
-    def to_role_policy_data(self, *, commented=False):
+    def to_policy_data(self, *, commented=False):
         """
         Compile DSL data.
 
