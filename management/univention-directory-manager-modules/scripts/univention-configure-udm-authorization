@@ -152,6 +152,7 @@ class UniventionDirectoryManagerPolicies:
             resource_rules = []
             config_files = []
             policy = self._resource_policy(modname, module, imported_derived_roles, resource_rules, config_files)
+
             path = resource_dir / f'{sanitize_filename(modname)}.yaml'
             path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
             written.append(path)
