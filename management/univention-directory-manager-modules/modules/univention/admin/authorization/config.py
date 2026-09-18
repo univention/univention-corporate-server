@@ -439,6 +439,8 @@ class UDMAuthorizationConfig:
         Named ``if`` and grant-specific ``values`` expressions remain conditions on the exact resource-policy rule whose actions they guard.
         """
         named_conditions = {cond['name']: cond['expr'] for cond in self.parsed['conditions']}
+        resources = {}
+        derived_by_key = {}
 
         policies = {}
         used_names = {}
@@ -446,57 +448,71 @@ class UDMAuthorizationConfig:
             roles = sorted({entry['role'] for entry in access_block.get('by', [])})
             for to_clause in access_block.get('to', []):
                 for role in roles:
-                    rules = policies.setdefault(role, _policy_map({
-                        'apiVersion': 'api.cerbos.dev/v1',
-                        'description': 'Automatically generated rule from %r.' % self.filename.stem,
-                        'disabled': False,
-                        'rolePolicy': _policy_map({
-                            'role': role,
-                            'version': 'default',
-                            # 'scope': '',
-                            'parentRoles': ['role-allow-role-policy-actions'],
-                            'rules': _policy_seq([], commented),
-                        }, commented),
-                        'metadata': {
-                            'sourceFile': str(self.filename),
-                            'annotations': {},
-                        },
-                    }, commented))['rolePolicy']['rules']
+                    rules = policies.setdefault(role, _policy_seq([], commented))
+                    used = self.USED_NAMES.setdefault(role, set())
 
-                    used = used_names.setdefault(role, set())
+                    # TODO/FIXME: iterate over grants first: 1 role policy for each grant!?
                     for object_type in self._expand_object_types(to_clause['objecttype']):
-                        conditions = []
-                        if to_clause.get('position'):
-                            conditions.append(self._position_to_cel(role, *to_clause['position']))
+                        resource = udm_resource_kind(object_type) if object_type != '*' else '*'  # TODO: check if '*' or 'udm:*' is allowed
+                        rule_conditions = []
+                        position = to_clause.get('position')
+                        if position:
+                            expr = self._position_to_cel(role, *position)
+                            rule_conditions.append(expr)
+                            if self._is_context_position(position[1]):
+                                key = (role, expr)
+                                name = derived_by_key.get(key)
+                                if name is None:
+                                    name = self._derived_role_name(role, position, set(derived_by_key.values()))
+                                    derived_by_key[key] = name
+
                         if_cond = to_clause.get('if')
                         if if_cond:
-                            conditions.append(named_conditions.get(if_cond, if_cond))
+                            rule_conditions.append(named_conditions.get(if_cond, if_cond))
 
                         actions = []
                         for grant in to_clause.get('grant', []):
                             actions.extend(self._grant_to_actions(grant))
                             if grant.get('values'):
                                 prop = grant['properties'][0]
-                                conditions.append(self._values_to_cel(grant['values'], prop))
+                                rule_conditions.append(self._values_to_cel(grant['values'], prop))
 
                         rule = _policy_map({
-                            'resource': udm_resource_kind(object_type) if object_type != '*' else '*',  # TODO: check if '*' or 'udm:*' is allowed
+                            'resource': resource,
                             'allowActions': actions,
                         }, commented)
 
-                        condition = self._condition(conditions)
+                        condition = self._condition(rule_conditions)
                         if condition:
                             rule['condition'] = condition
 
                         rules.append(rule)
 
-                        rule_name = self._unique_rule_name(used, to_clause, actions, object_type)
+                        base_name = to_clause.get('name')
+                        if base_name:
+                            base_name += '-actions' if grant.get('actions') else '-properties'
+                        rule_name = self._unique_rule_name(base_name, used, actions, object_type)
+                        # rule_name = self._unique_rule_name(used, to_clause, actions, object_type)
                         description = to_clause.get('description') or access_block.get('description')
                         # rule.yaml_set_start_comment(description, indent=0)
                         # _add_rule_comment(rule, 0, rule_name, description)
                         _add_rule_comment(rules, len(rules) - 1, rule_name, description)
 
-        return [policies[role] for role in sorted(policies)]
+
+        definitions = []
+        for (role, expr), name in sorted(derived_by_key.items(), key=lambda item: item[1]):
+            definitions.append(_policy_map({
+                'name': name,
+                'parentRoles': [role],
+                'condition': self._condition([expr]),
+            }, commented))
+
+        return {
+            'roles': policies,
+            'derivedRoleSet': f'udm_{sanitize_filename(self.filename.stem).replace("-", "_")}_contexts',
+            'derivedRoles': _policy_seq(definitions, commented),
+            'resources': resources,
+        }
 
     def _role_policy_document(self, role, rules, *, commented=False):
         return _policy_map({
