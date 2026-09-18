@@ -614,13 +614,13 @@ class UDMAuthorizationConfig:
             return {'match': {'expr': exprs[0]}}
         return {'match': {'all': {'of': [{'expr': expr} for expr in exprs]}}}
 
-    @staticmethod
-    def _unique_rule_name(used_names, to_clause, actions, object_type):
-        base = to_clause.get('name')
+    def _unique_rule_name(self, base, used_names, actions, object_type):
+        # FIXME: this is not unique accross multiple filenames/configurations
         if not base:
+            prefix = self.filename.stem
             suffix = '-'.join(actions)
             ot = 'all-udm-modules' if object_type == '*' else object_type.replace('/', '-')
-            base = f'{ot}-{suffix}'
+            base = f'{prefix}-{ot}-{suffix}'
         base = re.sub(r'[^a-zA-Z0-9_-]+', '-', base).strip('-') or 'rule'
         name = base
         counter = 2
