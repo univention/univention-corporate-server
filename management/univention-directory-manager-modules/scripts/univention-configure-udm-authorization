@@ -148,9 +148,9 @@ class UniventionDirectoryManagerPolicies:
         written = []
         for modname, module in sorted(univention.admin.modules.modules.items()):
             univention.admin.modules.init(lo, po, module)
+            config_files = compiled['configs']
             imported_derived_roles = []
             resource_rules = []
-            config_files = []
             policy = self._resource_policy(modname, module, imported_derived_roles, resource_rules, config_files)
 
             path = resource_dir / f'{sanitize_filename(modname)}.yaml'
@@ -166,12 +166,18 @@ class UniventionDirectoryManagerPolicies:
         Resource-policy rules are returned and merged with module introspection
         later, so the final policy tree is produced in one atomic replacement.
         """
-        for config in Path(self.args.config_dir).glob('*.policy'):
+        compiled = {'imports': {}, 'resourceRules': {}, 'configs': []}
+        derived_dir = self.output_root / 'derived_roles'
+        derived_dir.mkdir(parents=True, exist_ok=True)
+
+        for config in sorted(Path(self.args.config_dir).glob('*.policy')):
             conf = UDMAuthorizationConfig(config, strict=self.args.strict)
             conf.parse()
             for path in conf.write_files(self.output_root):
                 log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
+            compiled['configs'].append(config.stem)
 
+        return compiled
 
     def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
         object_actions = self._object_actions(modname, module)
