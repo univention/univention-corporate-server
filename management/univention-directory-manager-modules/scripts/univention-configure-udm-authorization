@@ -168,7 +168,7 @@ class UniventionDirectoryManagerPolicies:
             'name': f'allow-role-policy-actions-{modname.replace("/", "-")}',
             'actions': object_actions + property_actions,
             'effect': 'EFFECT_ALLOW',
-            'roles': ['*'],
+            'roles': [f'role-allow-role-policy-actions']
         })
         return {
             'apiVersion': 'api.cerbos.dev/v1',
