@@ -227,8 +227,6 @@ class _DSLTransformer(Transformer):
         by = {'role': meta.pop('role')}
         self._assert_names('by', meta, {'description'})
         self._assert_names('by', by, {'role'})
-        if by['role'].count(':') != 2:
-            raise DSLSyntaxError('role: must contain two ":"', (self.__filename, 0, 0, by['role']))
 
         return {
             'type': 'by',
