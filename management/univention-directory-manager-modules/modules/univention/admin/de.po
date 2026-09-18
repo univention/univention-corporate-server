@@ -2093,3 +2093,6 @@ msgstr "Beschäftigt"
 
 msgid "Pagination Error"
 msgstr "Paginierungsfehler"
+
+msgid "Permission system unavailable."
+msgstr "Zugriffsprüfungssystem nicht verfügbar."
