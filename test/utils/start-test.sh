@@ -43,7 +43,7 @@ export TERMINATE="${TERMINATE:=$(_jenkins)}"
 export OS_CLOUD="${OS_CLOUD:=univention-development}"
 
 # some internal stuff
-image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
+image="gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:branch-smihov-master-patch-10600"
 : "${DEBUG:=false}"
 : "${DOCKER:=true}"
 
