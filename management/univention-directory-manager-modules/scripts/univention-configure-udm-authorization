@@ -130,37 +130,6 @@ class UniventionDirectoryManagerPolicies:
     def generate_resource_schemas(self):
         pass  # TODO: write to _schemas/resources/<resource>.json
 
-    def generate_resource_policies(self, compiled):
-        # derived_roles/common_roles.yaml
-        # derived_roles/common_vars.yaml
-        # resource_policies/<domain>/<resource>.yaml
-        # resource_policies/<domain>/<resource>_test.yaml
-        # resource_policies/<domain>/testdata/principals.yaml
-        # resource_policies/<domain>/testdata/resources.yaml
-        # role_policies/<role>.yaml
-        # role_policies/<tenant>/<role>.yaml
-        resource_dir = self.output_root / 'resource_policies' / 'udm'
-        (resource_dir / 'testdata').mkdir(parents=True, exist_ok=True)
-        for dirname in ('derived_roles', 'role_policies', 'variables'):
-            (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
-
-        lo, po = univention.admin.uldap.getAdminConnection()
-        written = []
-        for modname, module in sorted(univention.admin.modules.modules.items()):
-            univention.admin.modules.init(lo, po, module)
-            resource = udm_resource_kind(modname)
-
-            imported_derived_roles = sorted(compiled['imports'].get(resource, set()))
-            resource_rules = compiled['resourceRules'].get(resource, [])
-            config_files = compiled['configs']
-            policy = self._resource_policy(modname, module, imported_derived_roles, resource_rules, config_files)
-
-            path = resource_dir / f'{sanitize_filename(modname)}.yaml'
-            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
-            written.append(path)
-            log.info('Wrote Cerbos resource policy: %s', path.relative_to(self.output_root))
-        return written
-
     def generate_roles_from_acl(self):
         """
         Compile all DSL files and write derived-role definitions.
@@ -197,6 +166,37 @@ class UniventionDirectoryManagerPolicies:
             compiled['configs'].append(config.stem)
 
         return compiled
+
+    def generate_resource_policies(self, compiled):
+        # derived_roles/common_roles.yaml
+        # derived_roles/common_vars.yaml
+        # resource_policies/<domain>/<resource>.yaml
+        # resource_policies/<domain>/<resource>_test.yaml
+        # resource_policies/<domain>/testdata/principals.yaml
+        # resource_policies/<domain>/testdata/resources.yaml
+        # role_policies/<role>.yaml
+        # role_policies/<tenant>/<role>.yaml
+        resource_dir = self.output_root / 'resource_policies' / 'udm'
+        (resource_dir / 'testdata').mkdir(parents=True, exist_ok=True)
+        for dirname in ('derived_roles', 'role_policies', 'variables'):
+            (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
+
+        lo, po = univention.admin.uldap.getAdminConnection()
+        written = []
+        for modname, module in sorted(univention.admin.modules.modules.items()):
+            univention.admin.modules.init(lo, po, module)
+            resource = udm_resource_kind(modname)
+
+            imported_derived_roles = sorted(compiled['imports'].get(resource, set()))
+            resource_rules = compiled['resourceRules'].get(resource, [])
+            config_files = compiled['configs']
+            policy = self._resource_policy(modname, module, imported_derived_roles, resource_rules, config_files)
+
+            path = resource_dir / f'{sanitize_filename(modname)}.yaml'
+            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
+            written.append(path)
+            log.info('Wrote Cerbos resource policy: %s', path.relative_to(self.output_root))
+        return written
 
     def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
         object_actions = self._object_actions(modname, module)
