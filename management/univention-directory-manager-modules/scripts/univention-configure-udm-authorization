@@ -148,7 +148,10 @@ class UniventionDirectoryManagerPolicies:
         written = []
         for modname, module in sorted(univention.admin.modules.modules.items()):
             univention.admin.modules.init(lo, po, module)
-            policy = self._resource_policy(modname, module)
+            imported_derived_roles = []
+            resource_rules = []
+            config_files = []
+            policy = self._resource_policy(modname, module, imported_derived_roles, resource_rules, config_files)
             path = resource_dir / f'{sanitize_filename(modname)}.yaml'
             path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
             written.append(path)
@@ -171,7 +174,7 @@ class UniventionDirectoryManagerPolicies:
     def generate_default_roles(self):
         self.generate_roles_from_acl()
 
-    def _resource_policy(self, modname, module):
+    def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
         object_actions = self._object_actions(modname, module)
         property_actions = self._property_actions(modname, module)
         rules = []
@@ -197,10 +200,10 @@ class UniventionDirectoryManagerPolicies:
                 'version': 'default',
                 # 'scope': '',
                 # 'scopePermissions': '',
-                # 'importDerivedRoles': [],
+                'importDerivedRoles': imported_derived_roles,
                 # 'constants':
                 # 'variables':
-                'rules': rules,
+                'rules': rules + resource_rules,
                 # 'schemas': {
                 #     'principalSchema': {'ref' 'cerbos:///principal.json'},
                 #     'resourceSchema':: {'ref': 'cerbos:///album/object.json'},
@@ -208,7 +211,9 @@ class UniventionDirectoryManagerPolicies:
             },
             'metadata': {
                 'sourceFile': 'univention-configure-udm-authorization',
-                'annotations': {},
+                'annotations': {
+                    'configs': ', '.join(configs),
+                },
             },
         }
 
