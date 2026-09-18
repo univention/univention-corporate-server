@@ -36,6 +36,7 @@ POLICY_ROOT = Path('/usr/share/univention-guardian-server/policies/udm')
 POLICY_TMP = Path('/var/lib/univention-directory-manager-modules/policies/')
 REPORT_MODULES = {'users/user', 'groups/group'}
 PROPERTY_PERMISSIONS = ('read', 'search', 'write', 'readonly', 'writeonly', 'none')
+PROPERTY_PERMISSIONS_WO_DENY = ('read', 'search', 'write')
 
 
 class _NoAliasDumper(yaml.SafeDumper):
@@ -219,10 +220,11 @@ class UniventionDirectoryManagerPolicies:
             actions.append(udm_object_action('report-create'))
         return sorted(set(actions), key=self._action_sort_key)
 
-    def _property_actions(self, modname, module):
-        permissions = [udm_property_action_wildcards('*', perm) for perm in PROPERTY_PERMISSIONS]
+    def _property_actions(self, modname, module, exclude_deny_actions=False):
+        all_perms = PROPERTY_PERMISSIONS_WO_DENY if exclude_deny_actions else PROPERTY_PERMISSIONS
+        permissions = [udm_property_action_wildcards('*', perm) for perm in all_perms]
         for propname in module.property_descriptions:
-            permissions.extend(udm_property_action(propname, perm) for perm in PROPERTY_PERMISSIONS)
+            permissions.extend(udm_property_action(propname, perm) for perm in all_perms)
             # TODO: check if the property support the permissions at all?
             # f'Allow to read {module.short_description}: {prop.short_description}'
             # f'Allow to search for {module.short_description}: {prop.short_description}'
