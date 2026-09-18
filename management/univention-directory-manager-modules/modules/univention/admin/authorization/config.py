@@ -461,7 +461,7 @@ class UDMAuthorizationConfig:
                             'role': role,
                             'version': 'default',
                             # 'scope': '',
-                            'parentRoles': [f'role-allow-role-policy-actions'],
+                            'parentRoles': ['role-allow-role-policy-actions'],
                             'rules': _policy_seq([], commented),
                         }, commented),
                         'metadata': {
