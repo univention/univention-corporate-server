@@ -135,7 +135,7 @@ class UniventionDirectoryManagerPolicies:
     def generate_resource_policies(self):
         resource_dir = self.output_root / 'resources'
         resource_dir.mkdir(parents=True, exist_ok=True)
-        for dirname in ('_schemas', 'tests', 'roles', 'derived_roles', 'variables', 'customer'):
+        for dirname in ('tests', 'roles', 'derived_roles', 'variables', 'customer'):
             (self.output_root / dirname).mkdir(parents=True, exist_ok=True)
 
         lo, po = univention.admin.uldap.getAdminConnection()
