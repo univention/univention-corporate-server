@@ -116,8 +116,16 @@ class UniventionDirectoryManagerPolicies:
                 path.rmdir()
 
     def generate_all(self):
+        self.generate_principal_schema()
+        self.generate_resource_schemas()
         self.generate_resource_policies()
         self.generate_roles_from_acl()
+
+    def generate_principal_schema(self):
+        pass  # TODO: write to _schemas/principal.json
+
+    def generate_resource_schemas(self):
+        pass  # TODO: write to _schemas/resources/<resource>.json
 
     def generate_resource_policies(self):
         resource_dir = self.output_root / 'resources'
