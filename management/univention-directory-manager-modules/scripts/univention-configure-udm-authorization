@@ -146,9 +146,9 @@ class UniventionDirectoryManagerPolicies:
             conf.parse()
             data = conf.to_policy_data(commented=False)  # TODO: enable comments again
 
-            for role_policy in data['roles']:
-                document = conf._role_policy_document(role_policy['role'], role_policy['rules'])
-                path = self.output_root / 'role_policies' / f'{sanitize_filename(role_policy["role"])}.yaml'
+            for role, role_policy in sorted(data['roles'].items()):
+                document = conf._role_policy_document(role, role_policy)
+                path = self.output_root / 'role_policies' / f'{sanitize_filename(role)}.yaml'
                 path.write_text(yaml.dump(document, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
                 log.info('Wrote Cerbos role policy: %s', path.relative_to(self.output_root))
 
