@@ -16,7 +16,7 @@
 # `access by <who>` clause
 #     `access by` clauses describe the actor roles which permissions are granted to. Multiple can be specified.
 #      A optional `description` can describe the achievement of the rule for a human operator.
-#      Example: `access by role="udm:default-roles:..." context="udm:contexts:..." description="Role may do xyz"`
+#      Example: `access by role="..." context="udm:contexts:..." description="Role may do xyz"`
 #
 # `to <what>` clause
 #     `to` clauses describe the target object and the the granted permissions based on UDM object types and is effectively transformed into a capability.
@@ -37,7 +37,7 @@ condition "is-self"
   expr="request.principal.id == request.resource.id"
 
 # Domain Administrators
-access by role="udm:default-roles:domain-administrator"
+access by role="domain-administrator"
   description="Domain Admins are allowed to do anything in the whole domain"
 
   to objecttype="*"
@@ -47,7 +47,7 @@ access by role="udm:default-roles:domain-administrator"
     grant properties="*" permission="write"
 
 # Domain Users
-access by role="udm:default-roles:domain-user"
+access by role="domain-user"
   description="Domain Users are allowed to read everything non-sensible"
 
   to objecttype="users/user" if="is-self"
@@ -57,7 +57,7 @@ access by role="udm:default-roles:domain-user"
     grant properties="*" permission="read"
 
 # Self service permissions
-access by role="udm:default-roles:self-service-profile"
+access by role="self-service-profile"
   description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
 
   to objecttype="users/user" if="is-self"
@@ -68,12 +68,12 @@ access by role="udm:default-roles:self-service-profile"
 
 # Every role
 access
-  by role="udm:default-roles:domain-user"
-  by role="udm:default-roles:helpdesk-operator"
-  by role="udm:default-roles:linux-ou-client-manager"
-  by role="udm:default-roles:organizational-unit-admin"
-  by role="udm:default-roles:self-service-profile"
-  # by role="udm:default-roles:domain-administrator"
+  by role="domain-user"
+  by role="helpdesk-operator"
+  by role="linux-ou-client-manager"
+  by role="organizational-unit-admin"
+  by role="self-service-profile"
+  # by role="domain-administrator"
   description="Everyone is allowed to read the LDAP base and certain internal objects"
 
   # LDAP Base
@@ -85,9 +85,9 @@ access
 
 # Every context role
 access
-  by role="udm:default-roles:helpdesk-operator"
-  by role="udm:default-roles:linux-ou-client-manager"
-  by role="udm:default-roles:organizational-unit-admin"
+  by role="helpdesk-operator"
+  by role="linux-ou-client-manager"
+  by role="organizational-unit-admin"
   description="Every context role is allowed to read containers underneath of context position"
 
   to objecttype="container/ou" position.subtree="context=udm:contexts:position"
@@ -103,8 +103,8 @@ access
     grant properties="*" permission="read"
 
 access
-  by role="udm:default-roles:helpdesk-operator"
-  by role="udm:default-roles:organizational-unit-admin"
+  by role="helpdesk-operator"
+  by role="organizational-unit-admin"
   description="User management requires to read user policies"
 
   # for handling of users and groups we need to grant permissions on policies applying to them
@@ -127,7 +127,7 @@ access
     grant properties="*" permission="read"
 
 # Organizational Unit Administrators
-access by role="udm:default-roles:organizational-unit-admin"
+access by role="organizational-unit-admin"
   description="Organizational Unit Adminstrators can administrate users and groups in their OU"
 
   to objecttype="mail/domain" position.subtree="cn=domain,cn=mail,{ldap/base}"
@@ -165,11 +165,11 @@ access by role="udm:default-roles:organizational-unit-admin"
   # to objecttype="groups/group" position.subtree="context=udm:contexts:position"
   #   grant properties="guardianMemberRoles" permission="write"
   # to objecttype="groups/group" position.subtree="context=udm:contexts:position"
-  #   grant properties="guardianMemberRoles" values.not-equals=["udm:default-roles:domain-user"] permission="none"
+  #   grant properties="guardianMemberRoles" values.not-equals=["domain-user"] permission="none"
   # to objecttype="groups/group" position.subtree="context=udm:contexts:position"
-  #   grant properties="guardianMemberRoles" values.equals=["udm:default-roles:domain-administrator"] permission="none"
+  #   grant properties="guardianMemberRoles" values.equals=["domain-administrator"] permission="none"
 
-access by role="udm:default-roles:helpdesk-operator"
+access by role="helpdesk-operator"
   description="Helpdesk Operators are only allowed to set passwords of users underneath of a certain OU specified in the context udm:contexts:position"
 
   # user permissions in OU
@@ -189,7 +189,7 @@ access by role="udm:default-roles:helpdesk-operator"
     grant actions="search,read"
     grant properties="name" permission="read"
 
-access by role="udm:default-roles:linux-ou-client-manager"
+access by role="linux-ou-client-manager"
   description="Join Clients Administrators are allowed to create/join linux computers into the domain, and set their corresponding password."
 
   # linux computer permissions in context OU
@@ -213,7 +213,7 @@ access by role="udm:default-roles:linux-ou-client-manager"
     grant actions="create,modify,rename,remove,move"
     grant properties="hosts" permission="write"
 
-access by role="udm:default-roles:linux-ou-client-manager"
+access by role="linux-ou-client-manager"
   description="Join Clients Administrators are allowed to manage networks, DNS records, and DHCP settings for client joining"
 
   to objecttype="container/cn" position.subtree="cn=networks,{ldap/base}"

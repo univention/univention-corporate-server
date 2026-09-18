@@ -12,8 +12,8 @@ from univention.udm import UDM
 from univention.udm.exceptions import NoObject
 
 
-USER_ROLE = 'udm:default-roles:domain-user'
-ADMIN_ROLE = 'udm:default-roles:domain-administrator'
+USER_ROLE = 'domain-user'
+ADMIN_ROLE = 'domain-administrator'
 LDAP_BASE = ucr['ldap/base']
 GLOBAL_GROUPS = f'cn=groups,{LDAP_BASE}'
 
@@ -169,7 +169,7 @@ def create_ou_structure(position, ouname, api_access_group, umc_policy):
         f'cn=users,{LDAP_BASE}',
         policy=umc_policy,
         groups=[api_access_group.dn],
-        guardianRoles=[f'udm:default-roles:organizational-unit-admin&udm:contexts:position={ou.dn}'],
+        guardianRoles=[f'organizational-unit-admin&udm:contexts:position={ou.dn}'],
     ).dn)
     # Helpdesk Operator (helpdesk-operator)
     register_ldap_deny_user(create_user(
@@ -177,7 +177,7 @@ def create_ou_structure(position, ouname, api_access_group, umc_policy):
         f'cn=users,{LDAP_BASE}',
         policy=umc_policy,
         groups=[api_access_group.dn],
-        guardianRoles=[f'udm:default-roles:helpdesk-operator&udm:contexts:position={ou.dn}'],
+        guardianRoles=[f'helpdesk-operator&udm:contexts:position={ou.dn}'],
     ).dn)
     # linux client manager user
     register_ldap_deny_user(create_user(
@@ -185,13 +185,13 @@ def create_ou_structure(position, ouname, api_access_group, umc_policy):
         f'cn=users,{LDAP_BASE}',
         policy=umc_policy,
         groups=[api_access_group.dn],
-        guardianRoles=[f'udm:default-roles:linux-ou-client-manager&udm:contexts:position={ou.dn}'],
+        guardianRoles=[f'linux-ou-client-manager&udm:contexts:position={ou.dn}'],
     ).dn)
 
     # user objects in ou
     user_dns = []
     for i in range(1, NUMBER_OF_USERS + 1):
-        user = create_user(f'user{i}-{ouname}', cn_users.dn, guardianRoles=['udm:default-roles:dummyrole'])
+        user = create_user(f'user{i}-{ouname}', cn_users.dn, guardianRoles=['dummyrole'])
         user_dns.append(user.dn)
     # group objects
     for i in range(1, NUMBER_OF_GROUPS + 1):
