@@ -6,7 +6,7 @@ Generate Cerbos policies for UDM authorization.
 
 The script writes Cerbos policy files below /usr/share/univention-guardian-server/policies/udm/:
 
-* resources/**.yaml are technical resource policies derived from UDM
+* resource_policies/**.yaml are technical resource policies derived from UDM
   module introspection.
 * roles/**.yaml are role policies compiled from the UDM authorization
   DSL by config.py.
@@ -68,6 +68,7 @@ class UniventionDirectoryManagerPolicies:
         ) as tmp:
             self.output_root = Path(tmp)
             self.output_root.chmod(0o755)
+            # TODO: copy a pre-defined structure to the temp directory so that customers could hook in directly
             self.args.func()
 
             log.info('Replace policy tree: %s -> %s', self.output_root, output_dir)
@@ -140,7 +141,7 @@ class UniventionDirectoryManagerPolicies:
             univention.admin.modules.init(lo, po, module)
             policy = self._resource_policy(modname, module)
             path = resource_dir / f'{sanitize_filename(modname)}.yaml'
-            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))
+            path.write_text(yaml.dump(policy, Dumper=_NoAliasDumper, sort_keys=False, allow_unicode=True))  # TODO: use upstream YAML writers with comments
             written.append(path)
             log.info('Wrote Cerbos resource policy: %s', path.relative_to(self.output_root))
         return written
@@ -166,6 +167,12 @@ class UniventionDirectoryManagerPolicies:
             'effect': 'EFFECT_ALLOW',
             'roles': [f'role-allow-role-policy-actions']
         })
+        # rules.append({
+        #     'name': f'allow-super-admin-{modname.replace("/", "-")}',
+        #     'actions': object_actions + property_actions,
+        #     'effect': 'EFFECT_ALLOW',
+        #     'roles': ['super-admin'],
+        # })
         return {
             'apiVersion': 'api.cerbos.dev/v1',
             'description': f'Defines the possible actions of the UDM module "{modname}" resource',
