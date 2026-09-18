@@ -182,6 +182,7 @@ class UniventionDirectoryManagerPolicies:
     def _resource_policy(self, modname, module, imported_derived_roles, resource_rules, configs):
         object_actions = self._object_actions(modname, module)
         property_actions = self._property_actions(modname, module)
+        # property_actions = self._property_actions(modname, module, exclude_deny_actions=True)
         rules = []
         rules.extend(self._global_deny_rules(modname))
         rules.append({
