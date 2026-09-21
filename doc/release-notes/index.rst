@@ -78,6 +78,44 @@ depending on system performance, network connection, and installed software.
 For large environments,
 consult :cite:t:`ucs-performance-guide`.
 
+.. _relnotes-update-deactivated-accounts:
+
+Password authentication for deactivated accounts
+================================================
+
+As of UCS |release|,
+deactivating a user account no longer invalidates its password hash.
+UCS enforces account deactivation during an LDAP bind.
+A server-side check rejects deactivated accounts.
+
+.. warning::
+
+   Services that use password-lookup mode can still authenticate deactivated accounts.
+   To prevent access, update their authentication configuration.
+
+The following UCS-supported services and apps aren't affected
+and require no operator changes:
+
+* Services that authenticate through an LDAP bind.
+* Services that use token- or OIDC-based authentication.
+* OX App Suite on UCS.
+* Standard UCS mail services.
+
+Password-lookup services read the ``userPassword`` hash
+and verify it locally instead of performing a user bind.
+For example, Dovecot uses password-lookup mode
+without ``auth_bind = yes``.
+
+If you operate a service that uses password-lookup mode,
+do one of the following:
+
+#. Switch to LDAP bind authentication.
+   For example for Dovecot, set ``auth_bind = yes``.
+
+#. Update the LDAP lookup filter to exclude deactivated accounts,
+   for example, by using
+   ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``.
+
 .. _relnotes-sequence:
 
 Updating multiple UCS systems
