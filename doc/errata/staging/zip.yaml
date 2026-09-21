@@ -1,0 +1,12 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: zip
+fix: 3.0-11+deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2018-13410 (CVSS score 7.5 - AV:N/AC:L/Au:N/C:P/I:P/A:P).
+bug: [59948]
+cve:
+- CVE-2018-13410
