@@ -27,12 +27,20 @@ export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=tross.knut.univention.de}"
 export KVM_MEMORY="${KVM_MEMORY:=4096M}"
 export KVM_CPUS="${KVM_CPUS:=1}"
 export KVM_LABEL_SUFFIX="${KVM_LABEL_SUFFIX:=}"
+# A Proxmox template is identified by one flat name, where KVM needs
+# kvm_template + kvm_ucsversion. Default is the packer-built base from
+# packer-scripts; scenarios cloning a generic template override it with
+# template-generic-<ucsver>, built by scenarios/kvm-templates/generic-proxmox-template.cfg.
+export PROXMOX_TEMPLATE="${PROXMOX_TEMPLATE:=template-ucs-appliance-$UCS_VERSION-generic}"
+# VMs are spread over these unless PROXMOX_NODE pins one.
+: "${PROXMOX_NODES:=uni-pve-01 uni-pve-02 uni-pve-03}"
 export EXACT_MATCH="${EXACT_MATCH:=false}"
 export SHUTDOWN="${SHUTDOWN:=false}"
 export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
 export RELEASE_UPDATE="${release_update:=public}"
 export ERRATA_UPDATE="${errata_update:=testing}"
 export COMPONENT_VERSION="${COMPONENT_VERSION:=testing}"
+export TESTING="${TESTING:=false}"
 export UCSSCHOOL_RELEASE=${UCSSCHOOL_RELEASE:=scope}
 export SOURCE_ISO="${SOURCE_ISO:=/var/univention/buildsystem2/isotests/ucs_${release}-latest-amd64.iso}"
 _jenkins () { if [ -n "${JENKINS_HOME:-}" ]; then echo "${1:-true}"; else echo "${2:-false}"; fi; }
@@ -109,6 +117,12 @@ usage () {
 	echo "    | ${BOLD}KVM_KEYPAIR_PASSPHRASE${NORM} - ssh key passphrase and/or password for ssh VM connection"
 	echo "    <>${BOLD}SOURCE_ISO${NORM}           - an ISO to mount [${BOLD}$SOURCE_ISO${NORM}]"
 	echo ""
+	echo "  Proxmox"
+	echo "    <>${BOLD}PROXMOX_TEMPLATE${NORM}     - Proxmox template to clone [${BOLD}$PROXMOX_TEMPLATE${NORM}]"
+	echo "    | ${BOLD}PROXMOX_NODES${NORM}        - nodes to spread VMs over [${BOLD}$PROXMOX_NODES${NORM}]"
+	echo "    | ${BOLD}PROXMOX_NODE${NORM}         - pin VMs to a single node instead"
+	echo "    | ${BOLD}UCS_PROXMOX_CREDENTIALS${NORM} - API credentials [${BOLD}~/.ucs-ec2-tools.json${NORM}]"
+	echo ""
 	echo "  OpenStack"
 	echo "    <>${BOLD}OPENSTACK_IMAGE_NAME${NORM} - OS template name [${BOLD}$OPENSTACK_IMAGE_NAME${NORM}]"
 	echo ""
@@ -129,7 +143,7 @@ usage () {
 	echo "    <>${BOLD}UCSSCHOOL_RELEASE${NORM}    - U@S release [${BOLD}$UCSSCHOOL_RELEASE${NORM}]"
 	echo "    <>${BOLD}COMPONENT_VERSION${NORM}    - update component? should indicate dev/released version of non UCS component (app, ...) [${BOLD}$COMPONENT_VERSION${NORM}]"
 	echo "    | ${BOLD}SCOPE${NORM}                - extra APT repo/scope that can be included during test"
-	echo "    | ${BOLD}TESTING${NORM}              - indicates unreleased UCS (e.g. testing)"
+	echo "    <>${BOLD}TESTING${NORM}              - indicates unreleased UCS (e.g. testing) [${BOLD}$TESTING${NORM}]"
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    <>${BOLD}UCS_TEST_RUN${NORM}         - start 'ucs-test' in 'utils/utils.sh::run_tests' and copy log files from VM"
@@ -258,8 +272,6 @@ Proxmox|PROXMOX|PVE)
 	# KVM resolver 192.168.0.3 is unreachable from the Proxmox VM network;
 	# hardcode a resolver reachable there for now
 	: "${DNS_FORWARDER:=10.208.1.16}"
-	# spread VMs across nodes
-	: "${PROXMOX_NODES:=uni-pve-01 uni-pve-02 uni-pve-03}"
 	if [ -z "${PROXMOX_NODE:-}" ]; then
 		read -ra _pve_nodes <<<"$PROXMOX_NODES"
 		PROXMOX_NODE="${_pve_nodes[RANDOM % ${#_pve_nodes[@]}]}"
