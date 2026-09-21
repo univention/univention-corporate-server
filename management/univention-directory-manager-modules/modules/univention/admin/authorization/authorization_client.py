@@ -42,7 +42,7 @@ class CerbosAuthorizationClient:
     @property
     def client(self):
         if self._client is None:
-            self._client = CerbosClient(self.endpoint, tls_verify=self.tls_verify)
+            self._client = CerbosClient(self.endpoint, tls_verify=self.tls_verify, timeout_secs=61.0)
         return self._client
 
     def check_actions(self, principal: Principal, resource: Resource, actions: Iterable[str]) -> list[CerbosCheckResult]:
