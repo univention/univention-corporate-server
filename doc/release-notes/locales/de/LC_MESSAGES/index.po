@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-22 06:57+0000\n"
-"PO-Revision-Date: 2026-09-15 12:12+0200\n"
+"POT-Creation-Date: 2026-09-22 08:28+0000\n"
+"PO-Revision-Date: 2026-09-22 10:28+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -184,86 +184,96 @@ msgstr ""
 "Für große Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-"
 "guide`."
 
-#: ../../index.rst:83
-msgid ""
-"As of this release, disabling a user account no longer invalidates its "
-"password hash. Instead, account deactivation is enforced during LDAP "
-"bind, where a server-side check rejects disabled accounts."
-msgstr ""
-"Ab dieser Version wird beim Deaktivieren eines Benutzerkontos dessen "
-"Passwort-Hash nicht mehr ungültig gemacht. Die Kontodeaktivierung wird "
-"stattdessen beim LDAP-Bind durchgesetzt, wo eine serverseitige Prüfung "
-"deaktivierte Konten ablehnt."
+#: ../../index.rst:84
+msgid "Password authentication for deactivated accounts"
+msgstr "Passwortauthentifizierung für deaktivierte Konten"
 
 #: ../../index.rst:86
-msgid "All services and Apps available for UCS support, including"
-msgstr "Alle für UCS verfügbaren und unterstützte Dienste und Apps, einschließlich"
-
-#: ../../index.rst:88
-msgid "services that authenticate via LDAP bind,"
-msgstr "Diensten, die sich per LDAP-Bind authentifizieren,"
-
-#: ../../index.rst:89
-msgid "services using token- or OIDC-based authentication,"
-msgstr "Diensten, die Token- oder OIDC-basierte Authentifizierung nutzen,"
-
-#: ../../index.rst:90
-msgid "OX App Suite on UCS and"
-msgstr "OX App Suite auf UCS sowie"
-
-#: ../../index.rst:91
-msgid "standard UCS mail services"
-msgstr "Standard UCS Maildiensten"
+msgid ""
+"As of UCS |release|, deactivating a user account no longer invalidates "
+"its password hash. UCS enforces account deactivation during an LDAP bind."
+" A server-side check rejects deactivated accounts."
+msgstr ""
+"Seit UCS |release| macht das Deaktivieren eines Benutzerkontos dessen "
+"Passwort-Hash nicht mehr ungültig. UCS setzt die Kontodeaktivierung "
+"während eines LDAP-Binds durch. Eine serverseitige Prüfung weist "
+"deaktivierte Konten zurück."
 
 #: ../../index.rst:93
-msgid "are not affected and require no changes by the operator."
-msgstr "sind nicht betroffen und erfordern keine Änderungen durch den Betreiber."
-
-#: ../../index.rst:95
 msgid ""
-"However, services that use password-lookup mode, where the service reads "
-"the ``userPassword`` hash and verifies it locally instead of performing a"
-" user bind (for example, Dovecot without ``auth_bind = yes``), will "
-"bypass this check. As a result, a disabled user providing the correct "
-"password would still be authenticated."
+"Services that use password-lookup mode can still authenticate deactivated"
+" accounts. To prevent access, update their authentication configuration."
 msgstr ""
-"Dienste, die den ``passwort-lookup``-Modus verwenden, bei dem der Dienst "
-"den ``userPassword``-Hash liest und das Passwort selbst prüft, anstatt "
-"einen Benutzer-Bind durchzuführen (z. B. Dovecot ohne ``auth_bind = "
-"yes``), umgehen diese Prüfung. Das bedeutet, dass ein deaktivierter "
-"Benutzer mit dem richtigen Passwort weiterhin authentifiziert würde."
+"Dienste, die den Passwortabrufmodus verwenden, können deaktivierte Konten"
+" weiterhin authentifizieren. Aktualisieren Sie ihre "
+"Authentifizierungskonfiguration, um den Zugriff zu verhindern."
+
+#: ../../index.rst:96
+msgid ""
+"Password-lookup services read the ``userPassword`` hash and verify it "
+"locally instead of performing a user bind. For example, Dovecot uses "
+"password-lookup mode without ``auth_bind = yes``."
+msgstr ""
+"Dienste im Passwortabrufmodus lesen den ``userPassword``-Hash und prüfen "
+"ihn lokal, anstatt einen Benutzer-Bind durchzuführen. Beispielsweise "
+"verwendet Dovecot den Passwortabrufmodus ohne ``auth_bind = yes``."
 
 #: ../../index.rst:101
-msgid "If you operate such a service, you must either:"
-msgstr "Wenn Sie einen solchen Dienst betreiben, müssen Sie entweder:"
-
-#: ../../index.rst:103
 msgid ""
-"Switch to LDAP bind authentication (e.g., set ``auth_bind = yes`` in "
-"Dovecot), or"
+"The following UCS-supported services and apps aren't affected and require"
+" no operator changes:"
 msgstr ""
-"auf LDAP-Bind-Authentifizierung umstellen (z. B. indem Sie ``auth_bind = "
-"yes`` setzen) oder"
+"Die folgenden von UCS unterstützten Dienste und Apps sind nicht betroffen"
+" und erfordern keine Änderungen durch den Betreiber:"
 
 #: ../../index.rst:104
-msgid ""
-"Update your LDAP lookup filter to exclude disabled accounts (e.g., using "
-"``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``)."
+msgid "Services that authenticate through an LDAP bind."
+msgstr "Dienste, die sich über einen LDAP-Bind authentifizieren."
+
+#: ../../index.rst:105
+msgid "Services that use token- or OIDC-based authentication."
 msgstr ""
-"den LDAP-Suchfilter um eine Bedingung ergänzen, die deaktivierte Konten "
-"ausschließt (z.B. ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``)."
+"Dienste, die :spelling:word:`token`- oder OIDC-basierte Authentifizierung"
+" verwenden."
 
 #: ../../index.rst:106
-msgid "Otherwise, disabled accounts will retain access through these services."
-msgstr ""
-"Andernfalls behalten deaktivierte Konten über diese Dienste weiterhin "
-"Zugriff."
+msgid "OX App Suite on UCS."
+msgstr "OX App Suite auf UCS."
 
-#: ../../index.rst:111
+#: ../../index.rst:107
+msgid "Standard UCS mail services."
+msgstr "Standard UCS-Maildienste."
+
+#: ../../index.rst:109
+msgid ""
+"If you operate a service that uses password-lookup mode, do one of the "
+"following:"
+msgstr ""
+"Wenn Sie einen Dienst betreiben, der den Passwortabrufmodus verwendet, "
+"führen Sie einen der folgenden Schritte durch:"
+
+#: ../../index.rst:112
+msgid ""
+"Switch to LDAP bind authentication. For example for Dovecot, set "
+"``auth_bind = yes``."
+msgstr ""
+"Wechseln Sie zur LDAP-Bind-Authentifizierung. Zum Beispiel für Dovecot, setzen Sie "
+"``auth_bind = yes``."
+
+#: ../../index.rst:115
+msgid ""
+"Update the LDAP lookup filter to exclude deactivated accounts, for "
+"example, by using ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``."
+msgstr ""
+"Aktualisieren Sie den LDAP-Suchfilter, um deaktivierte Konten "
+"auszuschließen, beispielsweise mit "
+"``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``."
+
+#: ../../index.rst:122
 msgid "Updating multiple UCS systems"
 msgstr "Aktualisierung mehrerer UCS-Systeme"
 
-#: ../../index.rst:113
+#: ../../index.rst:124
 msgid ""
 "In environments with multiple UCS systems, the |UCSPRIMARYDN| must always"
 " be the first system in the update order during a release update."
@@ -272,7 +282,7 @@ msgstr ""
 " Release-Update immer das erste System in der Aktualisierungsreihenfolge "
 "sein."
 
-#: ../../index.rst:117
+#: ../../index.rst:128
 msgid ""
 "For more information about planning updates in multi server environments,"
 " see :external+uv-ucs-operation:ref:`lifecycle-update-strategies-"
@@ -283,11 +293,11 @@ msgstr ""
 "ucs-operation:ref:`lifecycle-update-strategies-multiple-systems-"
 "environments` im :cite:t:`uv-ucs-operation`."
 
-#: ../../index.rst:125
+#: ../../index.rst:136
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:127
+#: ../../index.rst:138
 msgid ""
 "Simultaneous operation of UCS and Debian GNU/Linux on UEFI systems isn't "
 "supported in UCS 5.0 and later."
@@ -295,7 +305,7 @@ msgstr ""
 "Der gleichzeitige Betrieb von UCS und Debian GNU/Linux auf UEFI-Systemen "
 "wird seit UCS 5.0 nicht mehr unterstützt."
 
-#: ../../index.rst:130
+#: ../../index.rst:141
 msgid ""
 "The GRUB boot loader of |UCSUCS| uses the same configuration files as "
 "Debian. If Debian is already installed, UCS can't boot after you install "
@@ -308,23 +318,23 @@ msgstr ""
 " Umgekehrt verhindert die Installation von Debian nach der Installation "
 "von UCS 5.0, dass UCS startet."
 
-#: ../../index.rst:137
+#: ../../index.rst:148
 msgid "For more information, refer to :uv:kb:`17768`."
 msgstr "Weitere Informationen finden Sie in :uv:kb:`17768`."
 
-#: ../../index.rst:144
+#: ../../index.rst:155
 msgid "Prepare for an update"
 msgstr "Vorbereitung auf ein Update"
 
-#: ../../index.rst:146
+#: ../../index.rst:157
 msgid "This section covers important considerations before you update."
 msgstr "In diesem Abschnitt finden Sie wichtige Überlegungen vor dem Update."
 
-#: ../../index.rst:151
+#: ../../index.rst:162
 msgid "Sufficient disk space"
 msgstr "Ausreichender Festplattenplatz"
 
-#: ../../index.rst:153
+#: ../../index.rst:164
 msgid ""
 "Ensure you have sufficient disk space for the update. A standard "
 "installation requires 6 to 10 GB. The update process requires an "
@@ -336,11 +346,11 @@ msgstr ""
 " benötigt zusätzlich 1 bis 2 GB, um Pakete herunterzuladen und zu "
 "installieren, abhängig von der Größe Ihrer vorhandenen Installation."
 
-#: ../../index.rst:162
+#: ../../index.rst:173
 msgid "Console usage for update"
 msgstr "Nutzung der Konsole für das Update"
 
-#: ../../index.rst:164
+#: ../../index.rst:175
 msgid ""
 "Sign in to the system's local console as ``root`` and run the update. "
 "Alternatively, you can run the update using |UCSUMC|."
@@ -349,7 +359,7 @@ msgstr ""
 "dem Benutzer ``root`` an und starten Sie das Update dort. Alternativ "
 "können Sie das Update über |UCSUMC| durchführen."
 
-#: ../../index.rst:169
+#: ../../index.rst:180
 msgid ""
 "If you run the update over a network connection, take steps to ensure "
 "that the update continues if the connection is interrupted. Network "
@@ -360,7 +370,7 @@ msgstr ""
 "Verbindung weiterläuft. Netzwerkunterbrechungen können das Update "
 "abbrechen, was das System erheblich beeinträchtigt."
 
-#: ../../index.rst:174
+#: ../../index.rst:185
 msgid ""
 "Use tools such as :command:`tmux`, :command:`screen`, or :command:`at` to"
 " keep the update running through network interruptions. All UCS system "
@@ -371,11 +381,11 @@ msgstr ""
 "weiterläuft. Alle UCS-Systemrollen haben diese Tools standardmäßig "
 "installiert."
 
-#: ../../index.rst:181
+#: ../../index.rst:192
 msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
-#: ../../index.rst:183
+#: ../../index.rst:194
 msgid ""
 "Univention provides a script that checks for problems that could prevent "
 "a successful update. You can download the script before the update and "
@@ -386,7 +396,7 @@ msgstr ""
 "Sie können das Skript vor dem Update manuell auf das System herunterladen"
 " und ausführen:"
 
-#: ../../index.rst:189
+#: ../../index.rst:200
 #, python-brace-format
 msgid ""
 "# download\n"
@@ -431,11 +441,11 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:215
+#: ../../index.rst:226
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:217
+#: ../../index.rst:228
 msgid ""
 "After the update, run new or updated join scripts. Either use the "
 ":guilabel:`Domain join` management module in the *Management UI* or run "
@@ -446,7 +456,7 @@ msgstr ""
 "in der *Management UI* oder führen Sie :command:`univention-run-join-"
 "scripts` als ``root`` aus."
 
-#: ../../index.rst:222
+#: ../../index.rst:233
 msgid ""
 "Verify that the join scripts completed successfully. Then restart the UCS"
 " system."
@@ -454,21 +464,21 @@ msgstr ""
 "Prüfen Sie, ob die Join-Skripte erfolgreich abgeschlossen wurden. Starten"
 " Sie dann das UCS-System neu."
 
-#: ../../index.rst:229
+#: ../../index.rst:240
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:231
+#: ../../index.rst:242
 msgid "The following sections cover selected packages for this update."
 msgstr ""
 "Die folgenden Abschnitte informieren über ausgewählte Pakete dieses "
 "Updates."
 
-#: ../../index.rst:236
+#: ../../index.rst:247
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:238
+#: ../../index.rst:249
 msgid ""
 "When you use UCS Core Edition, UCS collects anonymous usage statistics "
 "for |UCSUMC|. The system logs which modules you open to a *Matomo* "
@@ -481,7 +491,7 @@ msgstr ""
 "Univention, die Entwicklung von |UCSUMC| anhand der Kundenanforderungen "
 "zu verbessern."
 
-#: ../../index.rst:246
+#: ../../index.rst:257
 msgid ""
 "You can verify the license status through the menu entry "
 ":menuselection:`License --> License information` in the user menu of "
@@ -493,7 +503,7 @@ msgstr ""
 "die *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
 "aufführen, verwendet Ihr UCS-System die UCS Core Edition."
 
-#: ../../index.rst:253
+#: ../../index.rst:264
 msgid ""
 "UCS doesn't collect usage statistics if you use an `Enterprise "
 "Subscription <https://www.univention.com/products/prices-and-"
@@ -505,7 +515,7 @@ msgstr ""
 "subscriptions/>`_-Lizenz wie *UCS Base Subscription* oder *UCS Standard "
 "Subscription* nutzen."
 
-#: ../../index.rst:257
+#: ../../index.rst:268
 msgid ""
 "To deactivate usage statistics collection, set the |UCSUCRV| "
 ":envvar:`umc/web/piwik` to ``false``."
@@ -514,11 +524,11 @@ msgstr ""
 "Nutzungsstatistiken deaktivieren, indem Sie die |UCSUCRV| "
 ":envvar:`umc/web/piwik` auf ``false`` setzen."
 
-#: ../../index.rst:263
+#: ../../index.rst:274
 msgid "Recommended browsers for |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:265
+#: ../../index.rst:276
 msgid ""
 "|UCSUMC| uses JavaScript and CSS features to display the web interface. "
 "Your web browser must support cookies. |UCSUMC| requires one of the "
@@ -528,23 +538,23 @@ msgstr ""
 "darzustellen. Ihr Webbrowser muss Cookies unterstützen. |UCSUMC| benötigt"
 " einen der folgenden Browser:"
 
-#: ../../index.rst:269
+#: ../../index.rst:280
 msgid "Chrome version 131 and later"
 msgstr "Chrome Version 131 und höher"
 
-#: ../../index.rst:271
+#: ../../index.rst:282
 msgid "Firefox version 128 and later"
 msgstr "Firefox Version 128 und höher"
 
-#: ../../index.rst:273
+#: ../../index.rst:284
 msgid "Safari and Safari Mobile version 18 and later"
 msgstr "Safari und Safari Mobile Version 18 und höher"
 
-#: ../../index.rst:275
+#: ../../index.rst:286
 msgid "Microsoft Edge version 128 and later"
 msgstr "Microsoft Edge Version 128 und höher"
 
-#: ../../index.rst:277
+#: ../../index.rst:288
 msgid ""
 "Older browsers can display the web interface incorrectly or cause "
 "functionality issues."
@@ -552,11 +562,11 @@ msgstr ""
 "Ältere Browser können die Web-Oberfläche fehlerhaft darstellen oder "
 "Funktionsstörungen verursachen."
 
-#: ../../index.rst:283
+#: ../../index.rst:294
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:285
+#: ../../index.rst:296
 msgid ""
 "You can find the changes since UCS 5.2-6 in :external+uv-"
 "changelog-5.2-7:doc:`index`."
@@ -564,6 +574,25 @@ msgstr ""
 "Die Änderungen seit UCS 5.2-6 finden Sie in :external+uv-"
 "changelog-5.2-7:doc:`index`."
 
-#: ../../index.rst:292
+#: ../../index.rst:303
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
+
+#~ msgid "All services and Apps available for UCS support, including"
+#~ msgstr ""
+#~ "Alle für UCS verfügbaren und "
+#~ "unterstützte Dienste und Apps, einschließlich"
+
+#~ msgid "are not affected and require no changes by the operator."
+#~ msgstr ""
+#~ "sind nicht betroffen und erfordern keine"
+#~ " Änderungen durch den Betreiber."
+
+#~ msgid "If you operate such a service, you must either:"
+#~ msgstr "Wenn Sie einen solchen Dienst betreiben, müssen Sie entweder:"
+
+#~ msgid "Otherwise, disabled accounts will retain access through these services."
+#~ msgstr ""
+#~ "Andernfalls behalten deaktivierte Konten über"
+#~ " diese Dienste weiterhin Zugriff."
+
