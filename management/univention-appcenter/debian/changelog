@@ -5,6 +5,8 @@ univention-appcenter (11.7.0) unstable; urgency=medium
 
   [ Marius Meschter ]
   * Bug #59781: Show unset app settings as unset in "configure --list"
+  * Bug #59781: Set initial values for new settings on app upgrade, keep
+    existing values, abort image upgrades of stopped containers
 
  -- Marius Meschter <marius.meschter@univention.de>  Tue, 22 Sep 2026 15:13:08 +0200
 

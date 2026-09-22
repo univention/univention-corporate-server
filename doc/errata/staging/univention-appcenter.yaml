@@ -6,7 +6,11 @@ src: univention-appcenter
 fix: 11.7.0
 desc: |
  This update addresses the following issues:
- * "univention-app configure --list" showed the initial value for settings
+ * `univention-app configure --list` showed the initial value for settings
    that had no value. It now shows them as unset, together with the
    initial value.
+ * App upgrades now set the initial value of settings that the new app
+   version introduces, unless a value already exists. An image upgrade
+   stops with an error if the old container is not running, instead of
+   losing its settings.
 bug: [59781]

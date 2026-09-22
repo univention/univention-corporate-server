@@ -646,6 +646,147 @@ def test_outside_settings_in_preinst(outside_test_app):
     assert is_installed
 
 
+UPGRADE_TEST_SETTINGS_V1 = '''[test_upgrade/existing]
+Type = String
+InitialValue = existing-initial
+Show = Settings
+Description = A setting both versions have
+'''
+
+UPGRADE_TEST_SETTINGS_V2 = UPGRADE_TEST_SETTINGS_V1 + '''
+[test_upgrade/new_install]
+Type = String
+InitialValue = new-install-initial
+Show = Install
+Description = A new setting a fresh installation would set
+
+[test_upgrade/new_settings]
+Type = String
+InitialValue = new-settings-initial
+Show = Settings
+Description = A new setting only shown in the settings dialog
+
+[test_upgrade/new_bool]
+Type = Bool
+InitialValue = true
+Show = Install, Upgrade
+Description = A new optional Boolean with a true initial value
+
+[test_upgrade/preexisting]
+Type = String
+InitialValue = factory-value
+Show = Install
+Description = A newly declared setting with an existing stored value
+
+[test_upgrade/preexisting_bool]
+Type = Bool
+InitialValue = true
+Show = Install, Upgrade
+Description = A newly declared Boolean that was already explicitly false
+'''
+
+
+def publish_upgrade_test_app(app_id, version, settings_content, docker, docker_image='docker-test.software-univention.de/httpd:2.4.23-alpine'):
+    ini = f'''[Application]
+ID = {app_id}
+Code = TU
+Name = Upgrade Test
+Version = {version}
+'''
+    if docker:
+        ini += f'''DockerImage = {docker_image}
+DockerScriptInit = httpd-foreground
+DockerScriptStoreData =
+DockerScriptRestoreDataBeforeSetup =
+DockerScriptRestoreDataAfterSetup =
+DockerScriptSetup =
+DockerScriptUpdateAvailable =
+DockerScriptUpdateAppVersion = /bin/true
+PortsRedirection = 8080:80
+WebInterface = /
+WebInterfacePortHTTP = 8080
+WebInterfacePortHTTPS = 0
+AutoModProxy = False
+UCSOverviewCategory = False
+'''
+    else:
+        ini += '''License = free
+WithoutRepository = True
+DefaultPackages = libcurl4-doc
+'''
+    with open('/tmp/app.ini', 'w') as fd:
+        fd.write(ini)
+    with open('/tmp/app.settings', 'w') as fd:
+        fd.write(settings_content)
+    populate = get_action('dev-populate-appcenter')
+    populate.call(new=True, ini='/tmp/app.ini', settings='/tmp/app.settings', component_id='%s_%s' % (app_id, version.replace('.', '_')))
+    return Apps().find(app_id)
+
+
+@pytest.mark.parametrize('docker,image_upgrade', [(False, False), (True, False), (True, True)], ids=['package', 'app', 'image'])
+def test_new_settings_get_initial_value_on_upgrade(local_appcenter, docker, image_upgrade, tmp_path):
+    app_id = 'test-upgrade-docker' if docker else 'test-upgrade'
+    if image_upgrade:
+        app_id = 'test-upgrade-image'
+    username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
+    password = ucr_get('tests/domainadmin/pwd')
+    app = publish_upgrade_test_app(app_id, '1.0', UPGRADE_TEST_SETTINGS_V1, docker)
+    subprocess.run(['apt-get', 'update'], check=True)
+    get_action('install').call(app=[app], username=username, password=password, noninteractive=True)
+    upgrade_image = None
+    try:
+        get_action('configure').call(app=app, set_vars={'test_upgrade/existing': None}, run_script='no')
+        get_action('configure').call(app=app, set_vars={
+            'test_upgrade/preexisting': 'custom-value',
+            'test_upgrade/preexisting_bool': 'false',
+        }, run_script='no')
+        config_file = tmp_path / 'existing.conf'
+        config_file.write_text('custom-file-content')
+        settings_v2 = UPGRADE_TEST_SETTINGS_V2 + f'''
+[test_upgrade/preexisting_file]
+Type = File
+Filename = {config_file}
+Scope = outside
+InitialValue = factory-file-content
+Show = Install
+Description = A newly declared setting for an existing file
+'''
+        image_args = {}
+        if image_upgrade:
+            # A local tag of the same image exercises container replacement without another download.
+            upgrade_image = f'ucs-test-settings-upgrade:{os.path.basename(tmp_path)}'
+            subprocess.run(['docker', 'tag', app.get_docker_image_name(), upgrade_image], check=True)
+            image_args['docker_image'] = upgrade_image
+        publish_upgrade_test_app(app_id, '2.0', settings_v2, docker, **image_args)
+        old_container = ucr_get(app.ucr_container_key) if docker else None
+        get_action('upgrade').call(app=[app], username=username, password=password, noninteractive=True, pull_image=not image_upgrade, remove_image=False)
+        Apps().clear_cache()
+        assert ucr_get(app.ucr_version_key) == '2.0'
+        app = Apps().find(app_id, app_version='2.0')
+        values = {setting.name: setting.get_value(app) for setting in app.get_settings()}
+        assert values['test_upgrade/existing'] is None
+        assert values['test_upgrade/new_install'] == 'new-install-initial'
+        assert values['test_upgrade/new_settings'] == ('new-settings-initial' if docker else None)
+        assert values['test_upgrade/new_bool'] is True
+        assert values['test_upgrade/preexisting'] == 'custom-value'
+        assert values['test_upgrade/preexisting_bool'] is False
+        assert config_file.read_text() == 'custom-file-content'
+        if image_upgrade:
+            assert ucr_get(app.ucr_container_key) != old_container
+            assert docker_shell(app, 'printenv TEST_UPGRADE_PREEXISTING').strip() == 'custom-value'
+            assert docker_shell(app, 'printenv TEST_UPGRADE_PREEXISTING_BOOL').strip().lower() == 'false'
+    finally:
+        Apps().clear_cache()
+        get_action('remove').call(app=[Apps().find(app_id)], username=username, password=password, noninteractive=True)
+        if upgrade_image:
+            subprocess.run(['docker', 'rmi', upgrade_image], check=True)
+        if not docker:
+            ucr_save(dict.fromkeys([
+                'test_upgrade/new_install', 'test_upgrade/new_settings', 'test_upgrade/new_bool',
+                'test_upgrade/preexisting', 'test_upgrade/preexisting_bool',
+            ]))
+
+
 @pytest.mark.parametrize('setting_class', [StringSetting, BoolSetting, FileSetting])
 @pytest.mark.parametrize('state', ['unset', 'set', 'stopped'])
 def test_list_setting_storage_state(monkeypatch, tmp_path, setting_class, state):
@@ -686,3 +827,23 @@ def test_preserve_unset_bool_read(monkeypatch):
     app = SimpleNamespace(docker=False)
     assert setting.get_value(app, preserve_unset=True) is None
     assert setting.get_value(app) is False
+
+
+@pytest.mark.parametrize('scope', ['inside', 'outside'])
+@pytest.mark.parametrize('stored', [None, 'false', 'true'])
+def test_upgrade_dialog_new_bool(monkeypatch, scope, stored):
+    configure = get_action('configure')
+    import univention.appcenter.settings as settings_module
+    import univention.management.console.modules.appcenter as umc_appcenter
+
+    setting = BoolSetting(name='test/dialog-bool', initial_value='true', scope=[scope], show=['Install', 'Upgrade'])
+    old_app = SimpleNamespace(docker=True, is_installed=lambda: True, get_settings=list)
+    app = SimpleNamespace(id='test-dialog', docker=True, is_installed=lambda: False, get_settings=lambda: [setting])
+    monkeypatch.setattr(umc_appcenter, 'Apps', lambda: SimpleNamespace(find=lambda app_id: old_app))
+    monkeypatch.setattr(umc_appcenter, 'app_is_running', lambda candidate: candidate is old_app)
+    monkeypatch.setattr(settings_module, 'app_is_running', lambda candidate: candidate is old_app)
+    monkeypatch.setattr(settings_module, 'ucr_get', lambda name: stored)
+    monkeypatch.setattr(configure, '_get_app_ucr', lambda candidate: {setting.name: stored})
+    result = umc_appcenter.Instance._get_config(SimpleNamespace(ucr={}), app, 'Upgrade')
+    expected = 'true' if stored is None else stored == 'true'
+    assert result['values'][setting.name] == expected

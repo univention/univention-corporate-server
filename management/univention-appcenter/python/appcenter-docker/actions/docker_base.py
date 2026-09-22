@@ -127,11 +127,6 @@ class DockerActionMixin:
         if not docker:
             return
 
-        if args.pull_image:
-            docker.pull()
-
-        self.log('Initializing app image')
-        hostname = explode_dn(hostdn, 1)[0]
         set_vars = (args.set_vars or {}).copy()
         after_image_configuration = {}
         for setting in app.get_settings():
@@ -143,6 +138,14 @@ class DockerActionMixin:
                     after_image_configuration[setting.name] = set_vars.pop(setting.name)
                 except KeyError:
                     after_image_configuration[setting.name] = setting.get_initial_value(app)
+        configure = get_action('configure')
+        configure.call(app=app, run_script='no', scope='outside', set_vars=after_image_configuration)
+
+        if args.pull_image:
+            docker.pull()
+
+        self.log('Initializing app image')
+        hostname = explode_dn(hostdn, 1)[0]
         set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
         set_vars['ldap/hostdn'] = hostdn
         if app.docker_env_ldap_user:
@@ -242,5 +245,4 @@ docker inspect:
         docker.cp_to_container('/etc/localtime', '/etc/localtime', _logger=logfile_logger)
         # configure app
         after_image_configuration.update(set_vars)
-        configure = get_action('configure')
         configure.call(app=app, autostart=autostart, run_script='no', set_vars=after_image_configuration)

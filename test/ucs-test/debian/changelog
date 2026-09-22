@@ -14,6 +14,7 @@ ucs-test (12.7.0) unstable; urgency=medium
 
   [ Marius Meschter ]
   * Bug #59781: Test "configure --list" output for unset settings
+  * Bug #59781: Test initial values of new settings on app upgrade
 
  -- Marius Meschter <marius.meschter@univention.de>  Tue, 22 Sep 2026 15:13:08 +0200
 
