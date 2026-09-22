@@ -812,24 +812,6 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 SPDX-FileCopyrightText = "2002-2026 Univention GmbH"
 
 [[annotations]]
-path = [ "oidc/crudeoauth/src/Makefile.in", "oidc/crudeoauth/src/aclocal.m4", "oidc/crudeoauth/src/compile", "oidc/crudeoauth/src/config.guess", "oidc/crudeoauth/src/config.sub", "oidc/crudeoauth/src/depcomp", "oidc/crudeoauth/src/ltmain.sh", "oidc/crudeoauth/src/missing", "oidc/crudeoauth/src/config.h.in",]
-precedence = "override"
-SPDX-License-Identifier = "GPL-2.0-only"
-SPDX-FileCopyrightText = "1992-2018 Free Software Foundation, Inc."
-
-[[annotations]]
-path = [ "oidc/crudeoauth/src/oauthbearer.h", "oidc/crudeoauth/src/pam_oauthbearer.c", "oidc/crudeoauth/src/plugin_common.c", "oidc/crudeoauth/src/plugin_common.h", "oidc/crudeoauth/src/sasl_oauthbearer.c",]
-precedence = "override"
-SPDX-License-Identifier = "BSD-3-Clause"
-SPDX-FileCopyrightText = "2009-2015 Emmanuel Dreyfus <manu@netbsd.org>"
-
-[[annotations]]
-path = [ "oidc/crudeoauth/debian/**", "oidc/crudeoauth/src/oauthbearer.c", "oidc/crudeoauth/src/pam_oauthbearer.5", "oidc/crudeoauth/src/sasl_oauthbearer.5", "oidc/crudeoauth/README.md",]
-precedence = "override"
-SPDX-License-Identifier = "AGPL-3.0-only"
-SPDX-FileCopyrightText = "2022-2026 Univention GmbH"
-
-[[annotations]]
 path = "packaging/ucslint/**"
 precedence = "override"
 SPDX-License-Identifier = "AGPL-3.0-only"
