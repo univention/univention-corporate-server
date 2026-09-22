@@ -596,6 +596,17 @@ install_apps_master_packages () {
 	return $rv
 }
 
+install_nubus_portal () {
+	local repo="${NUBUS_PORTAL_REPO:-http://omar.knut.univention.de/build2/git/portal jconde-debian-package-in-portal-repo main}"
+	echo "deb [trusted=yes] $repo" >/etc/apt/sources.list.d/99_nubus_portal.list
+	apt-get -q update
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nubus-portal ||
+		die "failed to install nubus-portal"
+	dpkg-query -W -f='${Package} ${Version} ${Status}\n' nubus-portal
+	dpkg-query -W -f='${Package} ${Status}\n' univention-portal
+	systemctl is-active univention-portal-server
+}
+
 install_with_unmaintained () {
 	local rv=0
 	wait_for_repo_server || rv=$?
