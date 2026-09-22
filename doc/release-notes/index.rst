@@ -93,11 +93,6 @@ A server-side check rejects deactivated accounts.
    Services that use password-lookup mode can still authenticate deactivated accounts.
    To prevent access, update their authentication configuration.
 
-Password-lookup services read the ``userPassword`` hash
-and verify it locally instead of performing a user bind.
-For example, Dovecot uses password-lookup mode
-without ``auth_bind = yes``.
-
 The following UCS-supported services and apps aren't affected
 and require no operator changes:
 
@@ -105,6 +100,11 @@ and require no operator changes:
 * Services that use token- or OIDC-based authentication.
 * OX App Suite on UCS.
 * Standard UCS mail services.
+
+Password-lookup services read the ``userPassword`` hash
+and verify it locally instead of performing a user bind.
+For example, Dovecot uses password-lookup mode
+without ``auth_bind = yes``.
 
 If you operate a service that uses password-lookup mode,
 do one of the following:
