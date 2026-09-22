@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-7
+src: crudeoauth
+fix: 2.0.1
+desc: |
+ This update addresses the following issue:
+ * The `crudeoauth` library has been rewritten in Rust, significantly
+   hardening the validation of OAuth/OIDC tokens. The new implementation fixes
+   several security vulnerabilities that could be exposed by insecure or
+   unexpected configurations. The default UCS configuration was not affected
+   by these vulnerabilities (GHSA-8rpx-56j9-49jr, GHSA-vh2f-mp9g-qccg,
+   GHSA-v8q8-8r5x-5m5j, GHSA-gqjq-8jxh-m3pq).
+bug: [59931]
