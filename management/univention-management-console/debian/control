@@ -55,8 +55,8 @@ Package: univention-management-console-server
 Architecture: all
 Depends:
  cy2-saml,
- libpam-oauthbearer,
- libsasl2-modules-oauthbearer,
+ libpam-oauthbearer (>= 2),
+ libsasl2-modules-oauthbearer (>= 2),
  pam-saml,
  python3-univention-lib,
  python3-univention-management-console (= ${source:Version}),

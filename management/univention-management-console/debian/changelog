@@ -1,8 +1,12 @@
-univention-management-console (14.7.0) UNRELEASED; urgency=medium
+univention-management-console (14.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:45 +0300
+  [ Florian Best ]
+  * Bug #59917: load OIDC PAM settings from SASL config
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2026 22:17:56 +0200
 
 univention-management-console (14.6.0) unstable; urgency=medium
 
