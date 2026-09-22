@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: zip
+fix: 3.0-13+deb12u1
+desc: |
+ This update addresses the following issue:
+ * CVE-2018-13410 (CVSS score 7.5 - AV:N/AC:L/Au:N/C:P/I:P/A:P).
+bug: [59952]
+cve:
+- CVE-2018-13410
