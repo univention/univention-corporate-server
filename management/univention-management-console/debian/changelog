@@ -1,3 +1,9 @@
+univention-management-console (14.7.4) unstable; urgency=medium
+
+  * Bug #59917: load OIDC PAM settings from SASL config
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2026 15:03:05 +0100
+
 univention-management-console (14.7.3) unstable; urgency=medium
 
   * Bug #59852: prevent open redirects after login
