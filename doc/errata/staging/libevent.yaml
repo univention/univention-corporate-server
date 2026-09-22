@@ -1,0 +1,24 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: libevent
+fix: 2.1.12-stable-8+deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-63388 (CVSS score 8.4 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-63387 (CVSS score 7.0 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:H).
+ * CVE-2026-63385, CVE-2026-63384, CVE-2026-63383, CVE-2026-63382,
+   CVE-2026-63381, CVE-2026-63379 (CVSS score unknown).
+bug: [59956]
+cve:
+- CVE-2026-63379
+- CVE-2026-63381
+- CVE-2026-63382
+- CVE-2026-63383
+- CVE-2026-63384
+- CVE-2026-63385
+- CVE-2026-63387
+- CVE-2026-63388
