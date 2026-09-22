@@ -83,7 +83,7 @@ consult :cite:t:`ucs-performance-guide`.
 Password authentication for deactivated accounts
 ================================================
 
-As of this release,
+As of UCS |release|,
 deactivating a user account no longer invalidates its password hash.
 UCS enforces account deactivation during an LDAP bind.
 A server-side check rejects deactivated accounts.
@@ -110,7 +110,7 @@ If you operate a service that uses password-lookup mode,
 do one of the following:
 
 #. Switch to LDAP bind authentication.
-   For Dovecot, set ``auth_bind = yes``.
+   For example for Dovecot, set ``auth_bind = yes``.
 
 #. Update the LDAP lookup filter to exclude deactivated accounts,
    for example, by using
