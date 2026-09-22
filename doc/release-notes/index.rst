@@ -80,32 +80,38 @@ consult :cite:t:`ucs-performance-guide`.
 
 .. warning::
 
-   As of this release, deactivating a user account no longer invalidates its password hash.
-   Instead, UCS enforces account deactivation during LDAP bind,
-   where a server-side check rejects deactivated accounts.
+   As of this release,
+   deactivating a user account no longer invalidates its password hash.
+   Instead, UCS enforces account deactivation during an LDAP bind.
+   A server-side check rejects deactivated accounts.
 
-   All services and apps available for UCS support, including
+   The following UCS-supported services and apps aren't affected.
+   They require no operator changes:
 
-   * services that authenticate through LDAP bind
-   * services using token- or OIDC-based authentication
-   * OX App Suite on UCS and
-   * standard UCS mail services
+   * Services that authenticate through an LDAP bind.
+   * Services that use token- or OIDC-based authentication.
+   * OX App Suite on UCS.
+   * Standard UCS mail services.
 
-   aren't affected and require no changes by the operator.
+   However, services that use password-lookup mode bypass this check.
+   In this mode, the service reads the ``userPassword`` hash.
+   It verifies the hash locally instead of performing a user bind.
+   For example, Dovecot bypasses this check without ``auth_bind = yes``.
+   As a result,
+   the service can still authenticate a deactivated user account
+   if the user provides the correct password.
 
-   However, services that use password-lookup mode,
-   where the service reads the ``userPassword`` hash and verifies it locally
-   instead of performing a user bind, for example, Dovecot without ``auth_bind = yes``,
-   bypass this check.
-   As a result, UCS would still authenticate a deactivated user account
-   where the user provides the correct password.
+   If you operate such a service,
+   you must do one of the following:
 
-   If you operate such a service, you must either:
+   #. Switch to LDAP bind authentication.
+      For example, set ``auth_bind = yes`` in Dovecot.
 
-   1. Switch to LDAP bind authentication, for example you need to set ``auth_bind = yes`` in Dovecot, or
-   2. Update your LDAP lookup filter to exclude deactivated accounts, for example using ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``.
+   #. Update your LDAP lookup filter to exclude deactivated accounts,
+      for example, using ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``.
 
-   Otherwise, deactivated accounts retain access through these services.
+   Otherwise,
+   users with deactivated accounts can retain access through such services.
 
 .. _relnotes-sequence:
 
