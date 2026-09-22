@@ -8,7 +8,7 @@
 
 # defaults for release
 release='5.2-7'  #
-export CURRENT_AMI="${CURRENT_AMI:=ami-0878344441a36a0c0}"  # AMI: Univention Corporate Server (UCS) 5.2 (official image) rev. 7
+export CURRENT_AMI="${CURRENT_AMI:=ami-0878344441a36a0c0}"  # AMI: Univention Corporate Server (UCS) 5.2 (official image) rev. 8
 old_release='5.0-10'  #
 export OLD_AMI="${OLD_AMI:=ami-00c198b3f9bb2c1ba}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 11
 export KVM_UCSVERSION="${KVM_UCSVERSION:=5.2-7+2026-09-21}"
@@ -271,7 +271,7 @@ KVM|*)
 	;;
 esac
 
-export DNS_FORWARDER="${DNS_FORWARDER:=192.168.0.3}"
+export DNS_FORWARDER="${DNS_FORWARDER:=10.208.1.6}"
 
 # start the test
 declare -a cmd=()
