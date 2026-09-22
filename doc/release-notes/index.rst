@@ -80,30 +80,32 @@ consult :cite:t:`ucs-performance-guide`.
 
 .. warning::
 
-   As of this release, disabling a user account no longer invalidates its password hash.
-   Instead, account deactivation is enforced during LDAP bind, where a server-side check rejects disabled accounts.
+   As of this release, deactivating a user account no longer invalidates its password hash.
+   Instead, UCS enforces account deactivation during LDAP bind,
+   where a server-side check rejects deactivated accounts.
 
-   All services and Apps available for UCS support, including
+   All services and apps available for UCS support, including
 
-   * services that authenticate via LDAP bind,
-   * services using token- or OIDC-based authentication,
+   * services that authenticate through LDAP bind
+   * services using token- or OIDC-based authentication
    * OX App Suite on UCS and
    * standard UCS mail services
 
-   are not affected and require no changes by the operator.
+   aren't affected and require no changes by the operator.
 
    However, services that use password-lookup mode,
    where the service reads the ``userPassword`` hash and verifies it locally
-   instead of performing a user bind (for example, Dovecot without ``auth_bind = yes``),
-   will bypass this check.
-   As a result, a disabled user providing the correct password would still be authenticated.
+   instead of performing a user bind, for example, Dovecot without ``auth_bind = yes``,
+   bypass this check.
+   As a result, UCS would still authenticate a deactivated user account
+   where the user provides the correct password.
 
    If you operate such a service, you must either:
 
-   1. Switch to LDAP bind authentication (e.g., set ``auth_bind = yes`` in Dovecot), or
-   2. Update your LDAP lookup filter to exclude disabled accounts (e.g., using ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``).
+   1. Switch to LDAP bind authentication, for example you need to set ``auth_bind = yes`` in Dovecot, or
+   2. Update your LDAP lookup filter to exclude deactivated accounts, for example using ``(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))``.
 
-   Otherwise, disabled accounts will retain access through these services.
+   Otherwise, deactivated accounts retain access through these services.
 
 .. _relnotes-sequence:
 
