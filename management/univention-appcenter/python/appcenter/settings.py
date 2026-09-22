@@ -64,8 +64,8 @@ class Setting(TypedIniSectionObject):
             return ucr_run_filter(self.initial_value)
         return self.initial_value
 
-    def get_value(self, app, phase='Settings'):
-        """Get the current value for this Setting. Easy implementation"""
+    def get_value(self, app, phase='Settings', *, preserve_unset=False):
+        """Read the value, optionally preserving absence before type conversion (notably for Bool settings)."""
         if self.is_outside(app):
             value = ucr_get(self.name)
         else:
@@ -77,11 +77,12 @@ class Setting(TypedIniSectionObject):
             else:
                 settings_logger.info('Cannot read %s while %s is not running', self.name, app)
                 value = None
-        try:
-            value = self.sanitize_value(app, value)
-        except SettingValueError:
-            settings_logger.info('Cannot use %r for %s', value, self.name)
-            value = None
+        if value is not None or not preserve_unset:
+            try:
+                value = self.sanitize_value(app, value)
+            except SettingValueError:
+                settings_logger.info('Cannot use %r for %s', value, self.name)
+                value = None
         if value is None and phase == 'Install':
             settings_logger.info('Falling back to initial value for %s', self.name)
             value = self.get_initial_value(app)
@@ -197,7 +198,7 @@ class FileSetting(Setting):
         except OSError as exc:
             settings_logger.error('Could not set content: %s', exc)
 
-    def get_value(self, app, phase='Settings'):
+    def get_value(self, app, phase='Settings', *, preserve_unset=False):
         if self.is_outside(app):
             value = self._read_file_content(self.filename)
         else:

@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-appcenter
+fix: 11.7.0
+desc: |
+ This update addresses the following issues:
+ * "univention-app configure --list" showed the initial value for settings
+   that had no value. It now shows them as unset, together with the
+   initial value.
+bug: [59781]

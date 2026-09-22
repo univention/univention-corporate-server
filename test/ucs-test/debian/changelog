@@ -12,7 +12,10 @@ ucs-test (12.7.0) unstable; urgency=medium
   [ Florian Best ]
   * Bug #59898: don't disable userPassword hash during disabling
 
- -- Florian Best <best@univention.de>  Thu, 17 Sep 2026 17:14:08 +0200
+  [ Marius Meschter ]
+  * Bug #59781: Test "configure --list" output for unset settings
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 22 Sep 2026 15:13:08 +0200
 
 ucs-test (12.6.54) unstable; urgency=medium
 

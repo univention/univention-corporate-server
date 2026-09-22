@@ -1,8 +1,12 @@
-univention-appcenter (11.7.0) UNRELEASED; urgency=medium
+univention-appcenter (11.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:42 +0300
+  [ Marius Meschter ]
+  * Bug #59781: Show unset app settings as unset in "configure --list"
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 22 Sep 2026 15:13:08 +0200
 
 univention-appcenter (11.6.10) unstable; urgency=medium
 
