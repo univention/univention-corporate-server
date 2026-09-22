@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console
+fix: 14.7.0
+desc: |
+ This update addresses the following issue:
+ * UMC login failures in environments with multiple configured OIDC servers
+   have been repaired. The generated PAM configuration could exceed a
+   Linux-PAM line length limit, preventing the complete UMC authentication
+   stack from being initialized. This could cause both OIDC and local UMC
+   logins to fail.
+bug: [59917]
