@@ -1,6 +1,6 @@
 product: ucs
 release: "5.2"
-version: [5, 6, 7]
+version: [6, 7]
 scope: ucs_5.2-0-errata5.2-7
 src: linux-signed-amd64
 fix: 6.1.187+1
@@ -160,7 +160,7 @@ desc: |
    CVE-2026-64542, CVE-2026-64508, CVE-2026-64507, CVE-2026-64192,
    CVE-2025-40102, CVE-2025-38237, CVE-2025-38203, CVE-2023-54263,
    CVE-2023-54141, CVE-2023-53706 (CVSS score unknown).
-bug: [59950]
+bug: [59955]
 cve:
 - CVE-2026-68480
 - CVE-2026-53361
@@ -550,3 +550,4 @@ cve:
 - CVE-2026-45963
 - CVE-2026-53089
 - CVE-2026-72323
+note: This is the 1st of two parts.
