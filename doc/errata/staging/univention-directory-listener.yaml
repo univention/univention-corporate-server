@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-directory-listener
+fix: 16.7.0
+desc: |
+ This update addresses the following issues:
+ * An uninitialized pointer in `univention-directory-listener-verify`
+   could cause a crash when verifying the listener cache.
+bug: [59963]
