@@ -1,8 +1,12 @@
-univention-directory-listener (16.7.0) UNRELEASED; urgency=medium
+univention-directory-listener (16.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:43 +0300
+  [ Felix Botner ]
+  * Bug #59963: Initialize dn pointer to NULL in verify to prevent free of garbage address
+
+ -- Felix Botner <botner@univention.de>  Wed, 23 Sep 2026 16:52:21 +0200
 
 univention-directory-listener (16.6.0) unstable; urgency=medium
 

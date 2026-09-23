@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
 	int rv;
 	MDB_cursor *id2entry_read_cursor_p = NULL;
 	MDB_cursor *id2dn_read_cursor_p = NULL;
-	char *dn;
+	char *dn = NULL;
 	CacheEntry entry;
 	LDAP *ld;
 	LDAPMessage *res;
