@@ -1,6 +1,6 @@
 product: ucs
 release: "5.2"
-version: [5, 6, 7]
+version: [6, 7]
 scope: ucs_5.2-0-errata5.2-7
 src: pyasn1
 fix: 0.4.8-3+deb12u3
