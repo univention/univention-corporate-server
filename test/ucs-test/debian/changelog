@@ -1,3 +1,10 @@
+ucs-test (12.7.1) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3760: add test for the malware scan of
+    uploaded files in the Self Service
+
+ -- Jaime Conde <conde-segovia@univention.de>  Thu, 24 Sep 2026 10:30:00 +0200
+
 ucs-test (12.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]

@@ -1,8 +1,12 @@
-univention-self-service (7.7.0) UNRELEASED; urgency=medium
+univention-self-service (7.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:47 +0300
+  [ Jaime Conde ]
+  * Issue univention/dev/ucs#3760: scan uploaded profile pictures for malware with an ICAP server
+
+ -- Jaime Conde <conde-segovia@univention.de>  Thu, 24 Sep 2026 10:30:00 +0200
 
 univention-self-service (7.6.0) unstable; urgency=medium
 

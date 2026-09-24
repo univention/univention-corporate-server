@@ -57,6 +57,7 @@ Depends:
  memcached,
  python3-psycopg2,
  python3-pylibmc,
+ python3-univention-lib (>= 11.7.0),
  shell-univention-lib,
  univention-config,
  univention-join,

@@ -205,6 +205,51 @@ use the following UCR variables:
       in :cite:t:`uv-nubus-manual`
       for information about modifying user contact information.
 
+.. _end-user-self-service-malware-scan:
+
+Malware scan of uploaded files
+==============================
+
+The *End User Self Service* can scan uploaded files, such as profile pictures, for malware.
+It sends each file to an *ICAP* service, for example :program:`c-icap` with :program:`ClamAV`.
+The scan applies to the *Contact information* page and to the user registration.
+
+If the *ICAP* service finds malware,
+the *End User Self Service* rejects the file and doesn't save the changes.
+If the *ICAP* service isn't available or can't scan the file,
+the *End User Self Service* also rejects the file.
+
+To configure the malware scan,
+use the following UCR variables:
+
+.. envvar:: umc/self-service/malware-scan/icap/url
+
+   Defines the URL of the *ICAP* service that scans uploaded files,
+   for example ``icap://antivir-icap:1344/avscan``.
+   Use the scheme ``icaps://`` for a connection with TLS.
+   If you don't set the variable,
+   the *End User Self Service* doesn't scan uploaded files.
+
+   You need to set this UCR variable on the :term:`UCS Primary Directory Node`
+   and on all Nubus for UCS systems where you have installed the :program:`Self Service` app.
+
+   :Default value: not defined
+   :Type: string
+
+.. envvar:: umc/self-service/malware-scan/icap/timeout
+
+   Defines the time in seconds that the *End User Self Service* waits for the *ICAP* service.
+
+   :Default value: ``30``
+   :Type: integer
+
+.. note::
+
+   Some *ICAP* services only scan specific file types.
+   For :program:`c-icap`, make sure that the setting ``virus_scan.ScanFileTypes``
+   includes the file types that users can upload,
+   for example ``JPEG`` and ``PNG`` for profile pictures.
+
 .. _end-user-self-service-registration:
 
 User registration

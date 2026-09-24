@@ -6,6 +6,8 @@
 # SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import base64
+import binascii
 import datetime
 import email.charset
 import os.path
@@ -23,10 +25,12 @@ import pylibmc
 from ldap.filter import filter_format
 
 import univention.admin.modules
+import univention.admin.types
 import univention.admin.uexceptions
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap
 from univention.admin.uldap import getMachineConnection
+from univention.lib import icap
 from univention.lib.i18n import Translation
 from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized  # noqa: A004
 from univention.management.console.config import ucr
@@ -88,6 +92,48 @@ def forward_to_master_if_authentication_disabled(func):
     if DISALLOW_AUTHENTICATION:
         return forward_to_master(func)
     return func
+
+
+def scan_uploads_for_malware(property_descriptions: dict[str, Any], attributes: dict[str, Any], username: str | None) -> None:
+    """
+    Scan uploaded files in the attributes with the configured ICAP server.
+
+    The function only scans attributes with a Base64 encoded syntax, for example `jpegPhoto`.
+    It does nothing if the UCR variable `umc/self-service/malware-scan/icap/url` is not set.
+
+    Args:
+        property_descriptions: The UDM property descriptions of the `users/user` module.
+        attributes: The attribute values that the user sent.
+        username: The name of the user, for the log messages.
+
+    Raises:
+        UMC_Error: If the ICAP server finds malware or cannot scan a file.
+    """
+    url = ucr.get('umc/self-service/malware-scan/icap/url')
+    if not url:
+        return
+    timeout = ucr.get_int('umc/self-service/malware-scan/icap/timeout', 30)
+    for propname, value in attributes.items():
+        prop = property_descriptions.get(propname)
+        if not prop or not issubclass(prop.syntax.type_class or object, univention.admin.types.Base64Type):
+            continue
+        for item in value if isinstance(value, list | tuple) else [value]:
+            if not item or not isinstance(item, str):
+                continue
+            try:
+                data = base64.b64decode(item)
+            except (binascii.Error, ValueError):
+                continue
+            if not data:
+                continue
+            try:
+                result = icap.scan(data, url, timeout=timeout, filename=propname)
+            except (icap.ICAPError, ValueError) as exc:
+                MODULE.error('Malware scan of attribute %s of user %s failed: %s', propname, username, exc)
+                raise UMC_Error(_('The uploaded file could not be checked for malware. Please try again later or contact your system administrator.'), status=503)
+            if result.infected:
+                MODULE.warning('Malware scan rejected attribute %s of user %s: %s', propname, username, result.threat)
+                raise UMC_Error(_('The uploaded file was rejected because it may contain malware.'))
 
 
 def prevent_denial_of_service(func):
@@ -566,6 +612,7 @@ class Instance(Base):
             if attr in read_only_attributes:
                 MODULE.error('set_user_attributes(): attribute %s is read-only', attr)
                 raise UMC_Error(_('The attribute %s is read-only.') % (attr,))
+        scan_uploads_for_malware(self.usersmod.property_descriptions, {k: v for k, v in attributes.items() if k in user_attributes}, username)
         user = self.usersmod.object(None, lo, po, dn)
         user.open()
         for propname, value in attributes.items():
@@ -596,6 +643,7 @@ class Instance(Base):
         # filter out attributes that are not valid to set
         allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()])
         attributes = {k: v for (k, v) in attributes.items() if k in allowed_to_set}
+        scan_uploads_for_malware(self.usersmod.property_descriptions, attributes, attributes.get('username'))
         # validate attributes
         res = self._validate_user_attributes(attributes, self._update_required_attr_of_props_for_registration)
         # check username taken
