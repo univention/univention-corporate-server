@@ -151,10 +151,10 @@ def scan_uploads_for_malware(property_descriptions: dict[str, Any], attributes: 
                 result = icap.scan(data, url, timeout=timeout, filename=propname)
             except (icap.ICAPError, ValueError) as exc:
                 MODULE.error('Malware scan of attribute %s of user %s failed: %s', propname, username, exc)
-                raise UMC_Error(_('The uploaded file could not be checked for malware. Please try again later or contact your system administrator.'), status=503)
+                raise UMC_Error(_('Upload failed: Malware scan not currently possible. Please try again later or contact an administrator.'), status=503)
             if result.infected:
                 MODULE.warning('Malware scan rejected attribute %s of user %s: %s', propname, username, result.threat)
-                raise UMC_Error(_('The uploaded file was rejected because it may contain malware.'))
+                raise UMC_Error(_('Upload rejected: malware was detected in the file.'))
 
 
 def prevent_denial_of_service(func):

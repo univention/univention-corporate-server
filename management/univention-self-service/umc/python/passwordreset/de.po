@@ -232,21 +232,6 @@ msgstr ""
 "Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist entweder "
 "abgelaufen oder ungültig. Bitte fordern Sie einen neuen an."
 
-#: umc/python/passwordreset/__init__.py:154
-msgid ""
-"The uploaded file could not be checked for malware. Please try again later "
-"or contact your system administrator."
-msgstr ""
-"Die hochgeladene Datei konnte nicht auf Schadsoftware geprüft werden. Bitte "
-"versuchen Sie es später erneut oder wenden Sie sich an Ihre "
-"Systemadministration."
-
-#: umc/python/passwordreset/__init__.py:157
-msgid "The uploaded file was rejected because it may contain malware."
-msgstr ""
-"Die hochgeladene Datei wurde abgelehnt, weil sie Schadsoftware enthalten "
-"könnte."
-
 #: umc/python/passwordreset/__init__.py:630
 #, python-brace-format
 msgid ""
@@ -266,6 +251,18 @@ msgstr "Dieser Wert ist erforderlich"
 #: umc/python/passwordreset/__init__.py:799
 msgid "Unknown recovery method '{}'."
 msgstr "Unbekannte Wiederherstellungsfunktion '{}'."
+
+#: umc/python/passwordreset/__init__.py:154
+msgid ""
+"Upload failed: Malware scan not currently possible. Please try again later or "
+"contact an administrator."
+msgstr ""
+"Upload fehlgeschlagen: derzeit keine Prüfung auf Schadsoftware möglich. Bitte "
+"später erneut versuchen oder einen Administrator kontaktieren."
+
+#: umc/python/passwordreset/__init__.py:157
+msgid "Upload rejected: malware was detected in the file."
+msgstr "Upload abgelehnt: in der Datei wurde Schadsoftware erkannt."
 
 #: umc/python/passwordreset/__init__.py:423
 msgid "Your picture"
