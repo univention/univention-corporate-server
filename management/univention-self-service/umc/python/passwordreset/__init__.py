@@ -94,12 +94,34 @@ def forward_to_master_if_authentication_disabled(func):
     return func
 
 
+def malware_scan_settings() -> tuple[str, int]:
+    """
+    Get the URL and the timeout of the ICAP server for the malware scan.
+
+    The environment variables `SELF_SERVICE_MALWARE_SCAN_ICAP_URL` and `SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT`
+    have priority over the UCR variables `umc/self-service/malware-scan/icap/url` and `.../timeout`.
+    Empty environment variables are ignored.
+
+    Returns:
+        The URL, which is empty if the scan is disabled, and the timeout in seconds.
+    """
+    url = os.environ.get('SELF_SERVICE_MALWARE_SCAN_ICAP_URL') or ucr.get('umc/self-service/malware-scan/icap/url', '')
+    timeout = ucr.get_int('umc/self-service/malware-scan/icap/timeout', 30)
+    env_timeout = os.environ.get('SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT')
+    if env_timeout:
+        try:
+            timeout = int(env_timeout)
+        except ValueError:
+            MODULE.warning('Ignoring invalid value %r of SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT', env_timeout)
+    return url, timeout
+
+
 def scan_uploads_for_malware(property_descriptions: dict[str, Any], attributes: dict[str, Any], username: str | None) -> None:
     """
     Scan uploaded files in the attributes with the configured ICAP server.
 
     The function only scans attributes with a Base64 encoded syntax, for example `jpegPhoto`.
-    It does nothing if the UCR variable `umc/self-service/malware-scan/icap/url` is not set.
+    It does nothing if no ICAP server is configured, see :func:`malware_scan_settings`.
 
     Args:
         property_descriptions: The UDM property descriptions of the `users/user` module.
@@ -109,10 +131,9 @@ def scan_uploads_for_malware(property_descriptions: dict[str, Any], attributes: 
     Raises:
         UMC_Error: If the ICAP server finds malware or cannot scan a file.
     """
-    url = ucr.get('umc/self-service/malware-scan/icap/url')
+    url, timeout = malware_scan_settings()
     if not url:
         return
-    timeout = ucr.get_int('umc/self-service/malware-scan/icap/timeout', 30)
     for propname, value in attributes.items():
         prop = property_descriptions.get(propname)
         if not prop or not issubclass(prop.syntax.type_class or object, univention.admin.types.Base64Type):

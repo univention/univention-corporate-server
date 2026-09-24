@@ -232,7 +232,7 @@ msgstr ""
 "Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist entweder "
 "abgelaufen oder ungültig. Bitte fordern Sie einen neuen an."
 
-#: umc/python/passwordreset/__init__.py:133
+#: umc/python/passwordreset/__init__.py:154
 msgid ""
 "The uploaded file could not be checked for malware. Please try again later "
 "or contact your system administrator."
@@ -241,7 +241,7 @@ msgstr ""
 "versuchen Sie es später erneut oder wenden Sie sich an Ihre "
 "Systemadministration."
 
-#: umc/python/passwordreset/__init__.py:136
+#: umc/python/passwordreset/__init__.py:157
 msgid "The uploaded file was rejected because it may contain malware."
 msgstr ""
 "Die hochgeladene Datei wurde abgelehnt, weil sie Schadsoftware enthalten "

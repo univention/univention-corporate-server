@@ -245,6 +245,12 @@ use the following UCR variables:
 
 .. note::
 
+   In containers, you can also use the environment variables
+   ``SELF_SERVICE_MALWARE_SCAN_ICAP_URL`` and ``SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT``.
+   If you set them, they have priority over the UCR variables.
+
+.. note::
+
    Some *ICAP* services only scan specific file types.
    For :program:`c-icap`, make sure that the setting ``virus_scan.ScanFileTypes``
    includes the file types that users can upload,
