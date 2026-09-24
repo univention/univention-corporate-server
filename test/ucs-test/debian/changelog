@@ -1,3 +1,10 @@
+ucs-test (12.7.2) unstable; urgency=medium
+
+  * Bug #59781: Test "configure --list" output for unset settings
+  * Bug #59781: Test initial values of new settings on app upgrade
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 24 Sep 2026 19:08:51 +0200
+
 ucs-test (12.7.1) unstable; urgency=medium
 
   * Bug #58175: do not use ucr testing fixture in combination with change_app_setting
@@ -12,11 +19,7 @@ ucs-test (12.7.0) unstable; urgency=medium
   [ Florian Best ]
   * Bug #59898: don't disable userPassword hash during disabling
 
-  [ Marius Meschter ]
-  * Bug #59781: Test "configure --list" output for unset settings
-  * Bug #59781: Test initial values of new settings on app upgrade
-
- -- Marius Meschter <marius.meschter@univention.de>  Tue, 22 Sep 2026 15:13:08 +0200
+ -- Florian Best <best@univention.de>  Thu, 17 Sep 2026 17:14:08 +0200
 
 ucs-test (12.6.54) unstable; urgency=medium
 
