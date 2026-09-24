@@ -10,9 +10,11 @@ import re
 import pytest
 import requests
 
+from univention.config_registry import ucr
+
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_metrics_settings(ucr, admin_account, portal_login_via_keycloak, change_app_setting, is_keycloak, keycloak_config):
+def test_metrics_settings(admin_account, portal_login_via_keycloak, change_app_setting, is_keycloak, keycloak_config):
     """Test keycloak metrics"""
     change_app_setting('keycloak', {
         'keycloak/management/port': '9000',

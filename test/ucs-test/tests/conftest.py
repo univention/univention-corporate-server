@@ -164,7 +164,15 @@ def account() -> utils.UCSTestDomainAdminCredentials:
 
 @pytest.fixture
 def change_app_setting():
-    """Change settings of an app and revert"""
+    """
+    Change settings of an app and revert
+
+    Do NOT use this in combination with the ucr (UCSTestConfigRegistry) fixture.
+
+    UCSTestConfigRegistry reverts all UCR changes, including appcenter/apps/APP_ID/container,
+    which is vital for App Center functionality.
+
+    """
     data = {'app': None, 'configure': None, 'changes': {}}
 
     def _func(app_id: str, changes: dict, revert: bool = True) -> None:
