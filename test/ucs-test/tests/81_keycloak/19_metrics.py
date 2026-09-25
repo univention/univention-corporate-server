@@ -22,10 +22,10 @@ def test_metrics_settings(admin_account, portal_login_via_keycloak, change_app_s
         'keycloak/http/metrics/histograms/enabled': 'True',
     })
     portal_login_via_keycloak(admin_account.username, admin_account.bindpw, protocol='oidc')
-    url = f'http://{ucr["hostname"]}:9000{keycloak_config.path}/metrics'
-    resp = requests.get(url)
+    url = f'http://{ucr["hostname"]}:9000{keycloak_config.path}'
+    resp = requests.get(f'{url}/metrics')
     assert resp.status_code == 200
     assert re.search(r'keycloak_user_events_total\{.*event="login"', resp.text) is not None
-    resp = requests.get(f'http://{ucr["hostname"]}:9000/health')
+    resp = requests.get(f'{url}/health')
     assert resp.status_code == 200
     assert "Keycloak Initialized" in resp.text
