@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-lib
+fix: 11.7.0
+desc: |
+ This update addresses the following issues:
+ * A new Python module `univention.lib.icap` sends files to an ICAP server
+   for a malware scan. The Self Service uses this module.
+bug: [59965]
