@@ -161,7 +161,8 @@ deactivate_old_package_sources () {
 		mv "$sources_list" "${sources_list}.upgrade522.bak"
 	done
 }
-deactivate_old_package_sources
+# Bug #53615: only needed when the minor version changes
+[ "$(ucr get version/version)" = "${UPDATE_NEXT_VERSION%-*}" ] || deactivate_old_package_sources
 
 # Pre-upgrade
 preups=""

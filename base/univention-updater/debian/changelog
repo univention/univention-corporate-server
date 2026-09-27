@@ -1,8 +1,9 @@
 univention-updater (17.7.1) unstable; urgency=medium
 
   * Bug #53615: Handle missing serial file gracefully in Watched_File.timestamp()
+    and keep package sources lists during patch level updates
 
- -- Iván Barbecho Delgado <ivan.delgado@univention.de>  Mon, 11 May 2026 12:44:21 +0200
+ -- Iván Barbecho Delgado <ivan.delgado@univention.de>  Fri, 25 Sep 2026 17:51:36 +0300
 
 univention-updater (17.7.0) unstable; urgency=medium
 
