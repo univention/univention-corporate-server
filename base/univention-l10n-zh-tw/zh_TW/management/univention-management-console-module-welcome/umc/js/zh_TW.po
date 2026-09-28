@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-welcome package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-welcome\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/welcome.js:75
+msgid "Documentation"
+msgstr "說明文件"
+
+#: umc/js/welcome.js:76
+msgid "Explore everything you need to know about the Keycloak app here"
+msgstr "在此探索您需要了解的所有 Keycloak app 相關資訊"
+
+#: umc/js/welcome.js:28
+msgid "Great to see you! Now that your system is ready, these simple steps will guide you through the next phase. Let’s ensure everything is set up perfectly for a smooth experience!"
+msgstr "很高興見到您！既然您的系統已就緒，這些簡單的步驟將引導您完成下一階段。讓我們確保一切都設定妥當，以獲得流暢的使用體驗！"
+
+#: umc/js/welcome.js:52
+msgid "Import a license"
+msgstr "匯入授權"
+
+#: umc/js/welcome.js:68
+msgid "Keycloak app"
+msgstr "Keycloak app"
+
+#: umc/js/welcome.js:47
+msgid "License info"
+msgstr "授權資訊"
+
+#: umc/js/welcome.js:36
+msgid "Manage your license for your Univention Corporate Server domain"
+msgstr "管理您的 Univention Corporate Server 網域授權"
+
+#: umc/js/welcome.js:69
+msgid "Open in Univention App Center"
+msgstr "在 Univention App Center 中開啟"
+
+#: umc/js/welcome.js:41
+msgid "Request a new license"
+msgstr "申請新授權"
+
+#: umc/js/welcome.js:48
+msgid "Show your current license"
+msgstr "顯示您目前的授權"
+
+#: umc/js/welcome.js:62
+msgid "Single Sign-on"
+msgstr "單一登入"
+
+#: umc/js/welcome.js:64
+msgid "The Keycloak app enables single sign-on (SSO) for your UCS system, providing a unified and secure login experience."
+msgstr "Keycloak app 為您的 UCS 系統啟用單一登入 (SSO)，提供統一且安全的登入體驗。"
+
+#: umc/js/welcome.js:34
+msgid "UCS License"
+msgstr "UCS 授權"
+
+#: umc/js/welcome.js:53
+msgid "Upload a new license we sent you earlier"
+msgstr "上傳我們先前寄給您的新授權"
+
+#: umc/js/welcome.js:42
+msgid "We send you a license with a Key ID to your email address"
+msgstr "我們會將含有 Key ID 的授權寄送到您的電子郵件地址"

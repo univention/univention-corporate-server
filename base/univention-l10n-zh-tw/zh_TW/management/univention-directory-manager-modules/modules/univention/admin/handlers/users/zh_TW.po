@@ -1,0 +1,609 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/users/user.py:1896
+#, python-format
+msgid "%(homeSharePath)s must be given if %(homeShare)s is given."
+msgstr "若指定了 %(homeShare)s,則必須提供 %(homeSharePath)s。"
+
+#: modules/univention/admin/handlers/users/user.py:1901
+#, python-format
+msgid "%s: Invalid path"
+msgstr "%s: 路徑無效"
+
+#: modules/univention/admin/handlers/users/user.py:595
+msgid "Account"
+msgstr "帳號"
+
+#: modules/univention/admin/handlers/users/ldap.py:88
+msgid "Account deactivation"
+msgstr "帳號停用"
+
+#: modules/univention/admin/handlers/users/user.py:173
+msgid "Account expiry date"
+msgstr "帳號到期日"
+
+#: modules/univention/admin/handlers/users/user.py:202
+msgid "Account is deactivated"
+msgstr "帳號已停用"
+
+#: modules/univention/admin/handlers/users/user.py:595
+msgid "Account settings"
+msgstr "帳號設定"
+
+#: modules/univention/admin/handlers/users/user.py:211
+msgid "Activate user account starting from"
+msgstr "使用者帳號的啟用起始日"
+
+#: modules/univention/admin/handlers/users/user.py:606
+msgid "Activation"
+msgstr "啟用"
+
+#: modules/univention/admin/handlers/users/user.py:466
+msgid "Additional e-mail addresses for which e-mails will be delivered to the \"Primary e-mail address\". The domain must be one of the UCS hosted e-mail domains."
+msgstr "額外的電子郵件地址，寄至這些地址的郵件會被投遞到「主要電子郵件地址」。網域必須是 UCS 代管的電子郵件網域之一。"
+
+#: modules/univention/admin/handlers/users/user.py:591
+msgid "Additional groups"
+msgstr "其他群組"
+
+#: modules/univention/admin/handlers/users/user.py:624
+msgid "Advanced settings"
+msgstr "進階設定"
+
+#: modules/univention/admin/handlers/users/user.py:519
+msgid "Allow the authentication only on this Microsoft Windows host"
+msgstr "僅允許在此 Microsoft Windows 主機上進行認證"
+
+#: modules/univention/admin/handlers/users/ldap.py:133 modules/univention/admin/handlers/users/contact.py:257 modules/univention/admin/handlers/users/federated_account.py:63 modules/univention/admin/handlers/users/user.py:568
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/users/contact.py:98 modules/univention/admin/handlers/users/user.py:380
+msgid "Birthdate"
+msgstr "生日"
+
+#: modules/univention/admin/handlers/users/contact.py:274 modules/univention/admin/handlers/users/user.py:634
+msgid "Business"
+msgstr "公務"
+
+#: modules/univention/admin/handlers/users/passwd.py:49
+msgid "Change password"
+msgstr "變更密碼"
+
+#: modules/univention/admin/handlers/users/contact.py:192 modules/univention/admin/handlers/users/user.py:286
+msgid "City"
+msgstr "縣市"
+
+#: modules/univention/admin/handlers/users/contact.py:27 modules/univention/admin/handlers/users/contact.py:28 modules/univention/admin/handlers/users/contact.py:273 modules/univention/admin/handlers/users/user.py:633
+msgid "Contact"
+msgstr "連絡"
+
+#: modules/univention/admin/handlers/users/contact.py:29 modules/univention/admin/handlers/users/contact.py:30 modules/univention/admin/handlers/users/contact.py:273 modules/univention/admin/handlers/users/user.py:633
+msgid "Contact information"
+msgstr "連絡資訊"
+
+#: modules/univention/admin/handlers/users/contact.py:199 modules/univention/admin/handlers/users/user.py:293
+msgid "Country"
+msgstr "國家"
+
+#: modules/univention/admin/handlers/users/user.py:1887
+msgid "DN given as share is not valid."
+msgstr "作為共用提供的 DN 無效。"
+
+#: modules/univention/admin/handlers/users/user.py:381
+msgid "Date of birth"
+msgstr "出生日期"
+
+#: modules/univention/admin/handlers/users/user.py:596
+msgid "Deactivation"
+msgstr "停用"
+
+#: modules/univention/admin/handlers/users/contact.py:249 modules/univention/admin/handlers/users/user.py:353
+msgid "Delivery office name"
+msgstr "投遞辦公室名稱"
+
+#: modules/univention/admin/handlers/users/contact.py:158 modules/univention/admin/handlers/users/user.py:334
+msgid "Department number"
+msgstr "部門編號"
+
+#: modules/univention/admin/handlers/users/ldap.py:80 modules/univention/admin/handlers/users/contact.py:82 modules/univention/admin/handlers/users/federated_account.py:45 modules/univention/admin/handlers/users/user.py:158
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/users/user.py:203
+msgid "Disable the user account for Windows, Kerberos and POSIX."
+msgstr "停用此使用者帳號在 Windows、Kerberos 與 POSIX 的使用。"
+
+#: modules/univention/admin/handlers/users/contact.py:90 modules/univention/admin/handlers/users/federated_account.py:37 modules/univention/admin/handlers/users/user.py:127
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/handlers/users/contact.py:137 modules/univention/admin/handlers/users/user.py:266
+msgid "E-mail address"
+msgstr "電子郵件地址"
+
+#: modules/univention/admin/handlers/users/user.py:459
+msgid "E-mail address that will be used to create the IMAP/POP3 mailbox and that can be used as login for SMTP/IMAP/POP3 connections. The domain must be one of the UCS hosted e-mail domains."
+msgstr "用於建立 IMAP/POP3 信箱的電子郵件地址，並可作為 SMTP/IMAP/POP3 連線的登入帳號。網域必須是 UCS 代管的電子郵件網域之一。"
+
+#: modules/univention/admin/handlers/users/user.py:465
+msgid "E-mail alias address"
+msgstr "電子郵件別名地址"
+
+#: modules/univention/admin/handlers/users/contact.py:118 modules/univention/admin/handlers/users/user.py:315
+msgid "Employee number"
+msgstr "員工編號"
+
+#: modules/univention/admin/handlers/users/contact.py:124 modules/univention/admin/handlers/users/user.py:341
+msgid "Employee type"
+msgstr "員工類型"
+
+#: modules/univention/admin/handlers/users/federated_account.py:23 modules/univention/admin/handlers/users/federated_account.py:24 modules/univention/admin/handlers/users/federated_account.py:64
+msgid "Federated account"
+msgstr "聯合帳號"
+
+#: modules/univention/admin/handlers/users/federated_account.py:25
+msgid "Federated accounts"
+msgstr "聯合帳號"
+
+#: modules/univention/admin/handlers/users/contact.py:60 modules/univention/admin/handlers/users/user.py:105
+msgid "First name"
+msgstr "名字"
+
+#: modules/univention/admin/handlers/users/user.py:472
+msgid "Forward e-mail address"
+msgstr "轉送電子郵件地址"
+
+#: modules/univention/admin/handlers/users/user.py:479
+msgid "Forwarding setting"
+msgstr "轉送設定"
+
+#: modules/univention/admin/handlers/users/user.py:120
+msgid "GECOS"
+msgstr "GECOS"
+
+#: modules/univention/admin/handlers/users/ldap.py:133 modules/univention/admin/handlers/users/contact.py:257 modules/univention/admin/handlers/users/federated_account.py:63 modules/univention/admin/handlers/users/user.py:568 modules/univention/admin/handlers/users/self.py:27
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/users/user.py:1907
+msgid "Given DN is no share."
+msgstr "提供的 DN 不是共用。"
+
+#: modules/univention/admin/handlers/users/user.py:96
+msgid "Group ID of the primary group"
+msgstr "主要群組的群組 ID"
+
+#: modules/univention/admin/handlers/users/user.py:434 modules/univention/admin/handlers/users/user.py:587
+msgid "Groups"
+msgstr "群組"
+
+#: modules/univention/admin/handlers/users/user.py:504 modules/univention/admin/handlers/users/user.py:1896
+msgid "Home share"
+msgstr "家目錄共用"
+
+#: modules/univention/admin/handlers/users/user.py:511 modules/univention/admin/handlers/users/user.py:1896 modules/univention/admin/handlers/users/user.py:1901
+msgid "Home share path"
+msgstr "家目錄共用路徑"
+
+#: modules/univention/admin/handlers/users/user.py:189
+msgid "If enabled, the user has to change his password the next time when he logs in."
+msgstr "若啟用，使用者下次登入時必須變更密碼。"
+
+#: modules/univention/admin/handlers/users/ldap.py:105 modules/univention/admin/handlers/users/user.py:235
+msgid "If the account is locked out due to too many login failures, this checkbox allows unlocking."
+msgstr "若帳號因登入失敗次數過多而遭鎖定，可勾選此選項以解除鎖定。"
+
+#: modules/univention/admin/handlers/users/user.py:557
+msgid "Immutable Identifier of the source IAM"
+msgstr "來源 IAM 的不可變識別碼"
+
+#: modules/univention/admin/handlers/users/federated_account.py:52
+msgid "Immutable Object Identifier"
+msgstr "不可變物件識別碼"
+
+#: modules/univention/admin/handlers/users/user.py:558
+msgid "Immutable attribute to identfy source IAM"
+msgstr "用於識別來源 IAM 的不可變屬性"
+
+#: modules/univention/admin/handlers/users/federated_account.py:53
+msgid "Immutable attribute to track the identity of an object in UDM"
+msgstr "用於在 UDM 中追蹤物件身分的不可變屬性"
+
+#: modules/univention/admin/handlers/users/user.py:473
+msgid "Incoming e-mails for this user are copied/redirected to the specified forward e-mail addresses. Depending on the forwarding setting, a local copy of each e-mail is kept. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."
+msgstr "寄給此使用者的郵件會被複製/重新導向至指定的轉送電子郵件地址。視轉送設定而定，會保留每封郵件的本機複本。若未指定轉送電子郵件地址，郵件一律保留在使用者的信箱中。"
+
+#: modules/univention/admin/handlers/users/contact.py:75 modules/univention/admin/handlers/users/user.py:140
+msgid "Initials"
+msgstr "姓名縮寫"
+
+#: modules/univention/admin/handlers/users/ldap.py:227 modules/univention/admin/handlers/users/user.py:1771
+msgid "Invalid password."
+msgstr "密碼無效。"
+
+#: modules/univention/admin/handlers/users/user.py:542
+msgid "Key value pairs storing user preferences for UMC"
+msgstr "儲存使用者 UMC 偏好設定的鍵值對"
+
+#: modules/univention/admin/handlers/users/ldap.py:60 modules/univention/admin/handlers/users/contact.py:51 modules/univention/admin/handlers/users/user.py:112
+msgid "Last name"
+msgstr "姓氏"
+
+#: modules/univention/admin/handlers/users/user.py:600
+msgid "Locked login"
+msgstr "已鎖定登入"
+
+#: modules/univention/admin/handlers/users/user.py:218
+msgid "Locked state of account"
+msgstr "帳號的鎖定狀態"
+
+#: modules/univention/admin/handlers/users/user.py:242
+msgid "Lockout till"
+msgstr "鎖定至"
+
+#: modules/univention/admin/handlers/users/user.py:225
+msgid "Lockout time"
+msgstr "鎖定時間"
+
+#: modules/univention/admin/handlers/users/user.py:392
+msgid "Login shell"
+msgstr "登入 shell"
+
+#: modules/univention/admin/handlers/users/user.py:623
+msgid "Mail"
+msgstr "郵件"
+
+#: modules/univention/admin/handlers/users/user.py:628
+msgid "Mail forwarding"
+msgstr "郵件轉送"
+
+#: modules/univention/admin/handlers/users/user.py:451
+msgid "Mail home server"
+msgstr "郵件主伺服器"
+
+#: modules/univention/admin/handlers/users/user.py:623
+msgid "Mail preferences"
+msgstr "郵件偏好設定"
+
+#: modules/univention/admin/handlers/users/user.py:151
+msgid "Manage Samba privileges"
+msgstr "管理 Samba 權限"
+
+#: modules/univention/admin/handlers/users/contact.py:221 modules/univention/admin/handlers/users/user.py:366
+msgid "Mobile phone number"
+msgstr "行動電話號碼"
+
+#: modules/univention/admin/handlers/users/ldap.py:70 modules/univention/admin/handlers/users/contact.py:42
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/users/ldap.py:120 modules/univention/admin/handlers/users/user.py:497
+msgid "No check for password quality and minimum length is performed."
+msgstr "不進行密碼品質與最短長度檢查。"
+
+#: modules/univention/admin/handlers/users/ldap.py:112 modules/univention/admin/handlers/users/user.py:489
+msgid "No check if the password was already used is performed."
+msgstr "不檢查密碼是否曾經使用過。"
+
+#: modules/univention/admin/handlers/users/contact.py:111 modules/univention/admin/handlers/users/contact.py:267 modules/univention/admin/handlers/users/user.py:166 modules/univention/admin/handlers/users/user.py:581
+msgid "Organisation"
+msgstr "組織"
+
+#: modules/univention/admin/handlers/users/ldap.py:119 modules/univention/admin/handlers/users/user.py:496
+msgid "Override password check"
+msgstr "略過密碼檢查"
+
+#: modules/univention/admin/handlers/users/ldap.py:111 modules/univention/admin/handlers/users/user.py:488
+msgid "Override password history"
+msgstr "略過密碼歷程"
+
+#: modules/univention/admin/handlers/users/user.py:617
+msgid "POSIX (Linux/UNIX)"
+msgstr "POSIX (Linux/UNIX)"
+
+#: modules/univention/admin/handlers/users/user.py:66 modules/univention/admin/handlers/users/user.py:72
+msgid "POSIX, Samba, Kerberos and mail account"
+msgstr "POSIX、Samba、Kerberos 與郵件帳號"
+
+#: modules/univention/admin/handlers/users/contact.py:229 modules/univention/admin/handlers/users/user.py:373
+msgid "Pager telephone number"
+msgstr "呼叫器號碼"
+
+#: modules/univention/admin/handlers/users/ldap.py:96 modules/univention/admin/handlers/users/user.py:251 modules/univention/admin/handlers/users/passwd.py:24 modules/univention/admin/handlers/users/passwd.py:40
+msgid "Password"
+msgstr "密碼"
+
+#: modules/univention/admin/handlers/users/user.py:180
+msgid "Password expiry date"
+msgstr "密碼到期日"
+
+#: modules/univention/admin/handlers/users/passwd.py:25
+msgid "Passwords"
+msgstr "密碼"
+
+#: modules/univention/admin/handlers/users/user.py:512
+msgid "Path to the home directory on the home share"
+msgstr "家目錄共用上家目錄的路徑"
+
+#: modules/univention/admin/handlers/users/user.py:527
+msgid "Permitted times for Windows logins"
+msgstr "Windows 登入的允許時段"
+
+#: modules/univention/admin/handlers/users/contact.py:262 modules/univention/admin/handlers/users/user.py:576
+msgid "Personal information"
+msgstr "個人資訊"
+
+#: modules/univention/admin/handlers/users/contact.py:105 modules/univention/admin/handlers/users/user.py:536
+msgid "Picture for user account in JPEG format"
+msgstr "JPEG 格式的使用者帳號圖片"
+
+#: modules/univention/admin/handlers/users/contact.py:104 modules/univention/admin/handlers/users/user.py:535
+msgid "Picture of the user (JPEG format)"
+msgstr "使用者的圖片 (JPEG 格式)"
+
+#: modules/univention/admin/handlers/users/contact.py:179 modules/univention/admin/handlers/users/user.py:279
+msgid "Post office box"
+msgstr "郵政信箱"
+
+#: modules/univention/admin/handlers/users/contact.py:172 modules/univention/admin/handlers/users/user.py:272
+msgid "Postal code"
+msgstr "郵遞區號"
+
+#: modules/univention/admin/handlers/users/contact.py:244 modules/univention/admin/handlers/users/user.py:145
+msgid "Preferred delivery method"
+msgstr "偏好的投遞方式"
+
+#: modules/univention/admin/handlers/users/contact.py:186 modules/univention/admin/handlers/users/user.py:196
+msgid "Preferred language"
+msgstr "偏好語言"
+
+#: modules/univention/admin/handlers/users/user.py:197
+msgid "Preferred written or spoken language for the person."
+msgstr "此人偏好的書寫或口說語言。"
+
+#: modules/univention/admin/handlers/users/user.py:458
+msgid "Primary e-mail address (mailbox)"
+msgstr "主要電子郵件地址 (信箱)"
+
+#: modules/univention/admin/handlers/users/user.py:1845
+msgid "Primary e-mail address must be set, if a copy of forwarded messages should be stored in its mailbox."
+msgstr "若要在信箱中保存轉送郵件的複本，必須設定主要電子郵件地址。"
+
+#: modules/univention/admin/handlers/users/user.py:1843
+msgid "Primary e-mail address must be set, if messages should be forwarded for it."
+msgstr "若要為其轉送郵件，必須設定主要電子郵件地址。"
+
+#: modules/univention/admin/handlers/users/user.py:442 modules/univention/admin/handlers/users/user.py:588
+msgid "Primary group"
+msgstr "主要群組"
+
+#: modules/univention/admin/handlers/users/contact.py:281 modules/univention/admin/handlers/users/user.py:641
+msgid "Private"
+msgstr "私人"
+
+#: modules/univention/admin/handlers/users/contact.py:237 modules/univention/admin/handlers/users/user.py:347
+msgid "Private postal address"
+msgstr "私人通訊地址"
+
+#: modules/univention/admin/handlers/users/contact.py:213 modules/univention/admin/handlers/users/user.py:359
+msgid "Private telephone number"
+msgstr "私人電話號碼"
+
+#: modules/univention/admin/handlers/users/user.py:427
+msgid "Relative ID"
+msgstr "相對 ID"
+
+#: modules/univention/admin/handlers/users/ldap.py:104
+msgid "Reset lockout"
+msgstr "重設鎖定"
+
+#: modules/univention/admin/handlers/users/contact.py:151 modules/univention/admin/handlers/users/user.py:320
+msgid "Room number"
+msgstr "房間號碼"
+
+#: modules/univention/admin/handlers/users/user.py:150
+msgid "Samba privilege"
+msgstr "Samba 權限"
+
+#: modules/univention/admin/handlers/users/self.py:31 modules/univention/admin/handlers/users/self.py:32
+msgid "Self"
+msgstr "本人"
+
+#: modules/univention/admin/handlers/users/user.py:549
+msgid "Service Specific Password"
+msgstr "服務專用密碼"
+
+#: modules/univention/admin/handlers/users/user.py:1962
+msgid "Service does not support service specific passwords"
+msgstr "此服務不支援服務專用密碼"
+
+#: modules/univention/admin/handlers/users/user.py:505
+msgid "Share, the user's home directory resides on"
+msgstr "使用者家目錄所在的共用"
+
+#: modules/univention/admin/handlers/users/user.py:243
+msgid "Shows the time when the account gets unlocked again according to policy."
+msgstr "顯示依原則此帳號將再次解除鎖定的時間。"
+
+#: modules/univention/admin/handlers/users/ldap.py:34 modules/univention/admin/handlers/users/ldap.py:35
+msgid "Simple authentication account"
+msgstr "簡易認證帳號"
+
+#: modules/univention/admin/handlers/users/ldap.py:36
+msgid "Simple authentication accounts"
+msgstr "簡易認證帳號"
+
+#: modules/univention/admin/handlers/users/user.py:181
+msgid "Specified the date from when the user must change his password. Enter date as \"day.month.year\"."
+msgstr "指定使用者必須開始變更密碼的日期。請以「日.月.年」格式輸入日期。"
+
+#: modules/univention/admin/handlers/users/user.py:480
+msgid "Specifies if a local copy of each incoming e-mail is kept for this user. If no forwarding e-mail addresses are specified, the e-mails are always kept in the user's mailbox."
+msgstr "指定是否為此使用者保留每封收到郵件的本機複本。若未指定轉送電子郵件地址，郵件一律保留在使用者的信箱中。"
+
+#: modules/univention/admin/handlers/users/user.py:174
+msgid "Specifies the date from when the user is not allowed to login anymore. Enter date as \"day.month.year\"."
+msgstr "指定使用者開始不再允許登入的日期。請以「日.月.年」格式輸入日期。"
+
+#: modules/univention/admin/handlers/users/contact.py:206 modules/univention/admin/handlers/users/user.py:300
+msgid "State"
+msgstr "州別"
+
+#: modules/univention/admin/handlers/users/contact.py:207 modules/univention/admin/handlers/users/user.py:301
+msgid "State / Province"
+msgstr "州 / 省"
+
+#: modules/univention/admin/handlers/users/contact.py:165 modules/univention/admin/handlers/users/user.py:259
+msgid "Street"
+msgstr "街道"
+
+#: modules/univention/admin/handlers/users/contact.py:130 modules/univention/admin/handlers/users/user.py:327
+msgid "Superior"
+msgstr "主管"
+
+#: modules/univention/admin/handlers/users/contact.py:143 modules/univention/admin/handlers/users/user.py:307
+msgid "Telephone number"
+msgstr "電話號碼"
+
+#: modules/univention/admin/handlers/users/user.py:414
+msgid "The directory path (resolvable by windows clients) e.g. %LOGONSERVER%\\%USERNAME%\\windows-profiles\\default which is used to configure a roaming profile."
+msgstr "可由 windows 用戶端解析的目錄路徑，例如 %LOGONSERVER%\\%USERNAME%\\windows-profiles\\default,用於設定漫遊設定檔。"
+
+#: modules/univention/admin/handlers/users/user.py:400
+msgid "The directory path which is used as the user's Windows home directory, e.g. \\\\ucs-file-server\\smith."
+msgstr "用作使用者 Windows 家目錄的目錄路徑，例如 \\\\ucs-file-server\\smith。"
+
+#: modules/univention/admin/handlers/users/user.py:421
+msgid "The drive letter (with trailing colon) where the Windows home directory of this user lies, e.g. M:. Needs only be specified if it is different to the Samba configuration."
+msgstr "此使用者 Windows 家目錄所在的磁碟機代號 (含結尾冒號),例如 M:。僅在與 Samba 設定不同時才需指定。"
+
+#: modules/univention/admin/handlers/users/ldap.py:288 modules/univention/admin/handlers/users/user.py:1631
+#, python-format
+msgid "The password is too short, at least %d characters needed!"
+msgstr "密碼太短，至少需要 %d 個字元！"
+
+#: modules/univention/admin/handlers/users/user.py:428
+msgid "The relative ID (RID) is the local part of the SID and will be assigned automatically to next available RID. It can not be subsequently changed. Valid values are numbers upwards 1000. RIDs below 1000 are reserved to standard groups and other special objects."
+msgstr "相對 ID (RID) 是 SID 的本機部分，會自動指派為下一個可用的 RID。指派後無法再變更。有效值為 1000 以上的數字。1000 以下的 RID 保留給標準群組與其他特殊物件。"
+
+#: modules/univention/admin/handlers/users/user.py:407
+msgid "The user-specific logon script relative to the NETLOGON share, e.g. user.bat."
+msgstr "相對於 NETLOGON 共用的使用者專屬登入指令稿，例如 user.bat。"
+
+#: modules/univention/admin/handlers/users/user.py:212
+msgid "This disables the account until the specified time."
+msgstr "這會停用此帳號直到指定的時間。"
+
+#: modules/univention/admin/handlers/users/user.py:267
+msgid "This e-mail address serves only as contact information. This address has no effect on the UCS mail stack and is not related to a local mailbox."
+msgstr "此電子郵件地址僅作為連絡資訊。此地址對 UCS 郵件堆疊沒有影響，也與本機信箱無關。"
+
+#: modules/univention/admin/handlers/users/user.py:219
+msgid "This indicates if the account is locked out due to too many authentication failures."
+msgstr "這代表帳號是否因認證失敗次數過多而遭鎖定。"
+
+#: modules/univention/admin/handlers/users/federated_account.py:26
+msgid "This object represents a federated account. It is intended for functional purposes and is not counted as user object in the license."
+msgstr "此物件代表一個聯合帳號。它供功能性用途使用，不計入授權的使用者物件數。"
+
+#: modules/univention/admin/handlers/users/ldap.py:37
+msgid "This user object can only simply do an LDAP bind. It is intended for functional purposes and is not counted as user object in the license."
+msgstr "此使用者物件僅能進行簡單的 LDAP 繫結。它供功能性用途使用，不計入授權的使用者物件數。"
+
+#: modules/univention/admin/handlers/users/user.py:226
+msgid "Timestamp when account lockout happened."
+msgstr "帳號發生鎖定的時間戳記。"
+
+#: modules/univention/admin/handlers/users/contact.py:68 modules/univention/admin/handlers/users/user.py:134
+msgid "Title"
+msgstr "稱謂"
+
+#: modules/univention/admin/handlers/users/user.py:649 modules/univention/admin/handlers/users/user.py:650
+msgid "UMC preferences"
+msgstr "UMC 偏好設定"
+
+#: modules/univention/admin/handlers/users/user.py:541
+msgid "UMC user preferences"
+msgstr "UMC 使用者偏好設定"
+
+#: modules/univention/admin/handlers/users/user.py:385
+msgid "Unix home directory"
+msgstr "Unix 家目錄"
+
+#: modules/univention/admin/handlers/users/user.py:234
+msgid "Unlock account"
+msgstr "解除帳號鎖定"
+
+#: modules/univention/admin/handlers/users/user.py:63 modules/univention/admin/handlers/users/user.py:64
+msgid "User"
+msgstr "使用者"
+
+#: modules/univention/admin/handlers/users/user.py:89
+msgid "User ID"
+msgstr "使用者 ID"
+
+#: modules/univention/admin/handlers/users/ldap.py:134 modules/univention/admin/handlers/users/contact.py:258 modules/univention/admin/handlers/users/user.py:569
+msgid "User account"
+msgstr "使用者帳號"
+
+#: modules/univention/admin/handlers/users/user.py:188
+msgid "User has to change password on next login"
+msgstr "使用者下次登入時必須變更密碼"
+
+#: modules/univention/admin/handlers/users/ldap.py:51 modules/univention/admin/handlers/users/user.py:80 modules/univention/admin/handlers/users/passwd.py:31
+msgid "User name"
+msgstr "使用者名稱"
+
+#: modules/univention/admin/handlers/users/passwd.py:23
+msgid "User: Password"
+msgstr "使用者: 密碼"
+
+#: modules/univention/admin/handlers/users/self.py:30
+msgid "User: Self"
+msgstr "使用者: 本人"
+
+#: modules/univention/admin/handlers/users/user.py:65
+msgid "Users"
+msgstr "使用者"
+
+#: modules/univention/admin/handlers/users/user.py:550
+msgid "Virtual attribute to set different Service Specific Passwords via UDM"
+msgstr "用於透過 UDM 設定不同服務專用密碼的虛擬屬性"
+
+#: modules/univention/admin/handlers/users/user.py:609
+msgid "Windows"
+msgstr "Windows"
+
+#: modules/univention/admin/handlers/users/user.py:420
+msgid "Windows home drive"
+msgstr "Windows 家目錄磁碟機"
+
+#: modules/univention/admin/handlers/users/user.py:399
+msgid "Windows home path"
+msgstr "Windows 家目錄路徑"
+
+#: modules/univention/admin/handlers/users/user.py:406
+msgid "Windows logon script"
+msgstr "Windows 登入指令稿"
+
+#: modules/univention/admin/handlers/users/user.py:413
+msgid "Windows profile directory"
+msgstr "Windows 設定檔目錄"
+
+#: modules/univention/admin/handlers/users/user.py:1240
+msgid "unlimited"
+msgstr "無限制"

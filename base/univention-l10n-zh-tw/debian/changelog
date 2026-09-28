@@ -1,0 +1,5 @@
+univention-l10n-zh-tw (1.0.0-1) unstable; urgency=low
+
+  * Bug #59524: Add Traditional Chinese (zh_TW) translation package
+
+ -- Jason Cheng <jason@jason.tools>  Sat, 21 Jun 2026 12:00:00 +0800

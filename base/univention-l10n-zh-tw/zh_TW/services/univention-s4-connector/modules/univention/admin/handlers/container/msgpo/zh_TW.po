@@ -1,0 +1,82 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/container/msgpo.py:96
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/container/msgpo.py:20
+msgid "Container: MS Group Policy"
+msgstr "容器: MS Group Policy"
+
+#: modules/univention/admin/handlers/container/msgpo.py:39
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/container/msgpo.py:44
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/handlers/container/msgpo.py:102 modules/univention/admin/handlers/container/msgpo.py:103
+msgid "GPO settings"
+msgstr "GPO 設定"
+
+#: modules/univention/admin/handlers/container/msgpo.py:96 modules/univention/admin/handlers/container/msgpo.py:97
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/container/msgpo.py:102
+msgid "MS GPO settings"
+msgstr "MS GPO 設定"
+
+#: modules/univention/admin/handlers/container/msgpo.py:69
+msgid "MS Group Policy File Sys Path"
+msgstr "MS Group Policy 檔案系統路徑"
+
+#: modules/univention/admin/handlers/container/msgpo.py:49
+msgid "MS Group Policy Flags"
+msgstr "MS Group Policy 旗標"
+
+#: modules/univention/admin/handlers/container/msgpo.py:64
+msgid "MS Group Policy Functionality Version"
+msgstr "MS Group Policy 功能版本"
+
+#: modules/univention/admin/handlers/container/msgpo.py:79
+msgid "MS Group Policy Machine Extension Names"
+msgstr "MS Group Policy 電腦擴充名稱"
+
+#: modules/univention/admin/handlers/container/msgpo.py:59
+msgid "MS Group Policy System Flags"
+msgstr "MS Group Policy 系統旗標"
+
+#: modules/univention/admin/handlers/container/msgpo.py:74
+msgid "MS Group Policy User Extension Names"
+msgstr "MS Group Policy 使用者擴充名稱"
+
+#: modules/univention/admin/handlers/container/msgpo.py:54
+msgid "MS Group Policy Version Number"
+msgstr "MS Group Policy 版本編號"
+
+#: modules/univention/admin/handlers/container/msgpo.py:84
+msgid "MS Group Policy WQL Filter"
+msgstr "MS Group Policy WQL 篩選器"
+
+#: modules/univention/admin/handlers/container/msgpo.py:89
+msgid "MS NT Security Descriptor"
+msgstr "MS NT 安全性描述元"
+
+#: modules/univention/admin/handlers/container/msgpo.py:32
+msgid "Name"
+msgstr "名稱"

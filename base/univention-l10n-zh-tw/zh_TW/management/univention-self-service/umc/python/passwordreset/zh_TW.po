@@ -1,0 +1,194 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-self-service-passwordreset-umc package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-self-service-passwordreset-umc\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/python/passwordreset/send_plugin.py:29
+msgid "????"
+msgstr "????"
+
+#: umc/python/passwordreset/__init__.py:220
+msgid "A message containing a token has been sent to the user (if the user exists and is allowed to use this service)."
+msgstr "已將包含權杖的訊息傳送給使用者 ( 如果該使用者存在且獲准使用此服務 )。"
+
+#: umc/python/passwordreset/__init__.py:894
+msgid "Account could not be deleted"
+msgstr "無法刪除帳戶"
+
+#: umc/python/passwordreset/__init__.py:791
+msgid "Changing contact data failed."
+msgstr "變更聯絡資料失敗。"
+
+#: umc/python/passwordreset/__init__.py:198
+msgid "Either username or password is incorrect or you are not allowed to use this service."
+msgstr "使用者名稱或密碼不正確，或者您未獲准使用此服務。"
+
+#: umc/python/passwordreset/__init__.py:463 umc/python/passwordreset/sending/send_email.py:50
+msgid "Email"
+msgstr "電子郵件"
+
+#: umc/python/passwordreset/__init__.py:1066
+msgid "Error sending token: {}"
+msgstr "傳送權杖時發生錯誤: {}"
+
+#: umc/python/passwordreset/sending/send_with_external.py:51
+msgid "External"
+msgstr "外部"
+
+#: umc/python/passwordreset/__init__.py:962
+msgid "Failed to change password."
+msgstr "變更密碼失敗。"
+
+#: umc/python/passwordreset/sending/send_sms.py:73
+msgid "Mobile number"
+msgstr "行動電話號碼"
+
+#: umc/python/passwordreset/__init__.py:213
+msgid "No contact information is stored for this user. Resetting the password is not possible."
+msgstr "此使用者未儲存任何聯絡資訊，因此無法重設密碼。"
+
+#: umc/python/passwordreset/__init__.py:330
+#, python-format
+msgid "Service specific passwords were disabled for \"%s\"."
+msgstr "已停用「%s」的服務專用密碼。"
+
+#: umc/python/passwordreset/__init__.py:291 umc/python/passwordreset/__init__.py:319
+msgid "Service specific passwords were disabled via the Univention Configuration Registry."
+msgstr "已透過 Univention Configuration Registry 停用服務專用密碼。"
+
+#: umc/python/passwordreset/__init__.py:961
+msgid "Successfully changed your password."
+msgstr "已成功變更您的密碼。"
+
+#: umc/python/passwordreset/__init__.py:579
+msgid "Successfully changed your profile data."
+msgstr "已成功變更您的個人資料。"
+
+#: umc/python/passwordreset/__init__.py:687
+#, python-format
+msgid ""
+"The account could not be created:\n"
+"%s\n"
+"%s"
+msgstr ""
+"無法建立帳戶:\n"
+"%s\n"
+"%s"
+
+#: umc/python/passwordreset/__init__.py:624
+#, python-format
+msgid ""
+"The account could not be created:\n"
+"Information provided is not sufficient. The following properties are missing:\n"
+"%s"
+msgstr ""
+"無法建立帳戶:\n"
+"提供的資訊不足。下列屬性遺漏:\n"
+"%s"
+
+#: umc/python/passwordreset/__init__.py:885
+msgid "The account deregistration was disabled via the Univention Configuration Registry."
+msgstr "已透過 Univention Configuration Registry 停用帳戶取消註冊功能。"
+
+#: umc/python/passwordreset/__init__.py:347 umc/python/passwordreset/__init__.py:781
+msgid "The account protection was disabled via the Univention Configuration Registry."
+msgstr "已透過 Univention Configuration Registry 停用帳戶保護功能。"
+
+#: umc/python/passwordreset/__init__.py:593
+msgid "The account registration was disabled via the Univention Configuration Registry."
+msgstr "已透過 Univention Configuration Registry 停用帳戶註冊功能。"
+
+#: umc/python/passwordreset/__init__.py:743 umc/python/passwordreset/__init__.py:837
+msgid "The account verification was disabled via the Univention Configuration Registry."
+msgstr "已透過 Univention Configuration Registry 停用帳戶驗證功能。"
+
+#: umc/python/passwordreset/__init__.py:190
+msgid "The allowed maximum number of connections to the server has been reached. Please retry in {}."
+msgstr "已達到允許連線至伺服器的最大數量。請於 {} 後重試。"
+
+#: umc/python/passwordreset/__init__.py:568
+#, python-format
+msgid "The attribute %s is read-only."
+msgstr "屬性 %s 為唯讀。"
+
+#: umc/python/passwordreset/__init__.py:578
+#, python-format
+msgid "The attributes could not be saved: %s"
+msgstr "無法儲存屬性: %s"
+
+#: umc/python/passwordreset/__init__.py:1154
+msgid "The configuration of the password reset service is not complete. The UCR variables \"ad/reset/username\" and \"ad/reset/password\" need to be set properly. Please inform an administrator."
+msgstr "密碼重設服務的設定尚未完成。UCR 變數「ad/reset/username」與「ad/reset/password」必須正確設定。請通知管理員。"
+
+#: umc/python/passwordreset/__init__.py:78
+#, python-format
+msgid "The connection to the server could not be established. Please try again later. Error message was: %s"
+msgstr "無法建立與伺服器的連線。請稍後再試。錯誤訊息為: %s"
+
+#: umc/python/passwordreset/__init__.py:656
+#, python-brace-format
+msgid "The container \"{container_dn}\" set by the \"umc/self-service/account-registration/usercontainer\" UCR variable does not exist. A user account can not be created. Please contact your system administrator."
+msgstr "由「umc/self-service/account-registration/usercontainer」UCR 變數所設定的容器「{container_dn}」不存在，因此無法建立使用者帳戶。請聯絡您的系統管理員。"
+
+#: umc/python/passwordreset/__init__.py:227
+msgid "The password reset service is disabled via configuration registry."
+msgstr "已透過 configuration registry 停用密碼重設服務。"
+
+#: umc/python/passwordreset/__init__.py:801 umc/python/passwordreset/__init__.py:996
+msgid "The password reset was disabled via the Univention Configuration Registry."
+msgstr "已透過 Univention Configuration Registry 停用密碼重設功能。"
+
+#: umc/python/passwordreset/__init__.py:206
+msgid "The token you supplied is either expired or invalid. Please request a new one."
+msgstr "您提供的權杖已過期或無效。請重新申請一個。"
+
+#: umc/python/passwordreset/__init__.py:640
+#, python-brace-format
+msgid "The user template \"{template_dn}\" set by the \"umc/self-service/account-registration/usertemplate\" UCR variable does not exist. A user account can not be created. Please contact your system administrator."
+msgstr "由「umc/self-service/account-registration/usertemplate」UCR 變數所設定的使用者範本「{template_dn}」不存在，因此無法建立使用者帳戶。請聯絡您的系統管理員。"
+
+#: umc/python/passwordreset/__init__.py:610
+msgid "The username is already taken"
+msgstr "此使用者名稱已被使用"
+
+#: umc/python/passwordreset/__init__.py:537
+msgid "This value is required"
+msgstr "此值為必填"
+
+#: umc/python/passwordreset/__init__.py:809
+msgid "Unknown recovery method '{}'."
+msgstr "未知的復原方法「{}」。"
+
+#: umc/python/passwordreset/__init__.py:421
+msgid "Your picture"
+msgstr "您的相片"
+
+#: umc/python/passwordreset/__init__.py:101
+msgid "one hour"
+msgstr "一小時"
+
+#: umc/python/passwordreset/__init__.py:96
+msgid "one minute"
+msgstr "一分鐘"
+
+#: umc/python/passwordreset/__init__.py:103
+msgid "{} hours"
+msgstr "{} 小時"
+
+#: umc/python/passwordreset/__init__.py:99
+msgid "{} minutes"
+msgstr "{} 分鐘"

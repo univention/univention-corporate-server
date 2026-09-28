@@ -1,0 +1,151 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-ucr package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-ucr\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/ucr.js:261
+msgid "Add"
+msgstr "新增"
+
+#: umc/js/ucr.js:198
+msgid "Add UCR variable"
+msgstr "新增 UCR 變數"
+
+#: umc/js/ucr.js:262
+msgid "Adding a new UCR variable"
+msgstr "正在新增 UCR 變數"
+
+#: umc/js/ucr.js:337 umc/js/ucr.js:349
+msgid "All"
+msgstr "全部"
+
+#: umc/js/ucr.js:289
+#, javascript-format
+msgid "Are you sure to delete the %d selected UCR variable(s)?"
+msgstr "您確定要刪除選取的 %d 個 UCR 變數嗎？"
+
+#: umc/js/ucr.js:119
+msgid "Are you sure you want to save an empty string in this UCR variable or do you want to unset it?<br><br>UCR variables that were created manually are fully removed from UCR when unsetting them. Any other UCR Variable will be set to its default value."
+msgstr "您確定要在此 UCR 變數中儲存空字串，還是要取消設定它？<br><br>手動建立的 UCR 變數在取消設定時會從 UCR 中完全移除。其他任何 UCR 變數則會設定為其預設值。"
+
+#: umc/js/ucr.js:96 umc/js/ucr.js:120 umc/js/ucr.js:290
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/ucr.js:335
+msgid "Category"
+msgstr "類別"
+
+#: umc/js/ucr.js:334
+msgid "Category the UCR variable should be associated with"
+msgstr "UCR 變數應關聯的類別"
+
+#: umc/js/ucr.js:90
+msgid "Default value (pattern)"
+msgstr "預設值 (樣式)"
+
+#: umc/js/ucr.js:283 umc/js/ucr.js:293
+msgid "Delete"
+msgstr "刪除"
+
+#: umc/js/ucr.js:284
+msgid "Deleting the selected UCR variables"
+msgstr "正在刪除選取的 UCR 變數"
+
+#: umc/js/ucr.js:352
+msgid "Description"
+msgstr "說明"
+
+#: umc/js/ucr.js:73
+msgid "Description of the UCR variable"
+msgstr "UCR 變數的說明"
+
+#: umc/js/ucr.js:74
+msgid "Description:"
+msgstr "說明:"
+
+#: umc/js/ucr.js:271
+msgid "Edit"
+msgstr "編輯"
+
+#: umc/js/ucr.js:47 umc/js/ucr.js:211
+msgid "Edit UCR variable"
+msgstr "編輯 UCR 變數"
+
+#: umc/js/ucr.js:63
+msgid "Name of UCR variable"
+msgstr "UCR 變數的名稱"
+
+#: umc/js/ucr.js:110
+msgid "Save"
+msgstr "儲存"
+
+#: umc/js/ucr.js:347
+msgid "Search attribute"
+msgstr "搜尋屬性"
+
+#: umc/js/ucr.js:360
+msgid "Search..."
+msgstr "搜尋..."
+
+#: umc/js/ucr.js:346
+msgid "Select the attribute of a UCR variable that should be searched for the given keyword"
+msgstr "選擇要針對指定關鍵字搜尋的 UCR 變數屬性"
+
+#: umc/js/ucr.js:272
+msgid "Setting the UCR variable, editing the categories and/or description"
+msgstr "設定 UCR 變數、編輯類別及/或說明"
+
+#: umc/js/ucr.js:132
+msgid "Store empty string"
+msgstr "儲存空字串"
+
+#: umc/js/ucr.js:254
+msgid "The Univention Configuration Registry (UCR) is the local database for the configuration of UCS systems to access and edit system-wide properties in a unified manner. Caution: Changing UCR variables directly results in the change of the system configuration. Misconfiguration may cause an unusable system!"
+msgstr "Univention Configuration Registry (UCR) 是 UCS 系統設定的本機資料庫，可用統一的方式存取及編輯系統層級的屬性。注意: 直接變更 UCR 變數會導致系統設定的變更。設定錯誤可能會使系統無法使用！"
+
+#: umc/js/ucr.js:88
+msgid "The default value of the UCR variable which is applied if the variable is not set. This might be a UCR pattern."
+msgstr "在變數未設定時套用的 UCR 變數預設值。這可能是一個 UCR 樣式。"
+
+#: umc/js/ucr.js:64 umc/js/ucr.js:308
+msgid "UCR variable"
+msgstr "UCR 變數"
+
+#: umc/js/ucr.js:309
+msgid "Unique name of the UCR variable"
+msgstr "UCR 變數的唯一名稱"
+
+#: umc/js/ucr.js:102 umc/js/ucr.js:124
+msgid "Unset"
+msgstr "取消設定"
+
+#: umc/js/ucr.js:103 umc/js/ucr.js:125
+msgid "Unsetting a manually created UCR variable is equal to deleting it. More information about this topic can be found <a href=\"https://docs.software-univention.de/manual/5.0/en/computers/ucr.html?highlight=ucr#deleting-ucr-variables\" target=\"_blank\">here</a>."
+msgstr "取消設定手動建立的 UCR 變數等同於刪除它。關於此主題的更多資訊可參閱<a href=\"https://docs.software-univention.de/manual/5.0/en/computers/ucr.html?highlight=ucr#deleting-ucr-variables\" target=\"_blank\">這裡</a>。"
+
+#: umc/js/ucr.js:69 umc/js/ucr.js:313 umc/js/ucr.js:351
+msgid "Value"
+msgstr "值"
+
+#: umc/js/ucr.js:68 umc/js/ucr.js:314
+msgid "Value of the UCR variable"
+msgstr "UCR 變數的值"
+
+#: umc/js/ucr.js:350
+msgid "Variable"
+msgstr "變數"

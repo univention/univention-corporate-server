@@ -1,0 +1,62 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ucs-test-selenium\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: tests/90_umc-screenshots/03_users.py:29
+msgid "Add"
+msgstr ""
+
+#: tests/90_umc-screenshots/02_portal.py:18
+msgid "Administration"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:43
+msgid "Cancel"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:172
+msgid "Developer"
+msgstr ""
+
+#: tests/90_umc-screenshots/00_favorites.py:17
+msgid "Favorites"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:31
+msgid "First name"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:176
+msgid "Guest"
+msgstr ""
+
+#: tests/90_umc-screenshots/04_ldap.py:17
+msgid "LDAP directory"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:58
+msgid "Next"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:47
+msgid "User template"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:23
+msgid "Users"
+msgstr ""
+
+#: tests/90_umc-screenshots/03_users.py:62
+msgid "password history"
+msgstr ""

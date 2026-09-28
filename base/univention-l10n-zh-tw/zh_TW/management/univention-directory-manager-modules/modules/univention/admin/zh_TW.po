@@ -1,0 +1,1831 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/syntax.py:5886
+#, python-format
+msgid "\"%s\" is not a Univention Admin Module."
+msgstr "\"%s\" 不是 Univention Admin 模組。"
+
+#: modules/univention/admin/syntax.py:5741
+#, python-format
+msgid "\"%s\" is not supported for recyclebin/removedobject."
+msgstr "recyclebin/removedobject 不支援 \"%s\"。"
+
+#: modules/univention/admin/syntax.py:4815
+#, python-format
+msgid "%(name)s (%(path)s on %(host)s)"
+msgstr "%(name)s (%(host)s 上的 %(path)s)"
+
+#: modules/univention/admin/syntax.py:2209
+msgid "A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes and dots are allowed."
+msgstr "群組名稱的開頭與結尾必須是字母、數字或底線。中間另可使用空格、連字號與點。"
+
+#: modules/univention/admin/syntax.py:3250 modules/univention/admin/syntax.py:3284
+msgid "A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed."
+msgstr "主機名稱或 FQDN 中以點分隔的任一部分，開頭與結尾必須是字母或數字。中間可使用字母、數字、連字號與底線。不允許只有數字。"
+
+#: modules/univention/admin/syntax.py:7052
+msgid "A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, dashes and dots are allowed."
+msgstr "郵寄清單名稱的開頭與結尾必須是字母、數字或底線。中間另可使用空格、連字號與點。"
+
+#: modules/univention/admin/syntax.py:3085
+msgid "A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: \"192.168.0\") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: \"2001:0db8:010\" for \"2001:db8:100::/24\")"
+msgstr "反向查詢的子網路由 IPv4 位址的前 1 至 3 個八位元組組成 (例如 \"192.168.0\"),或由展開後 (補上前導零且不使用 :: 簡寫) 的 IPv6 位址前 1 至 31 個半位元組組成 (例如 \"2001:0db8:010\" 對應 \"2001:db8:100::/24\")"
+
+#: modules/univention/admin/syntax.py:4100
+msgid "Above primary display"
+msgstr "主顯示器上方"
+
+#: modules/univention/admin/syntax.py:3825 modules/univention/admin/syntax.py:3833 modules/univention/admin/syntax.py:3841 modules/univention/admin/syntax.py:3849
+msgid "Access right"
+msgstr "存取權限"
+
+#: modules/univention/admin/syntax.py:5645
+msgid "Add machines to domain"
+msgstr "將機器加入網域"
+
+#: modules/univention/admin/syntax.py:5652
+msgid "Add users and groups to the domain"
+msgstr "將使用者與群組加入網域"
+
+#: modules/univention/admin/syntax.py:3627
+msgid "Address"
+msgstr "位址"
+
+#: modules/univention/admin/syntax.py:4749
+msgid "Alias"
+msgstr "別名"
+
+#: modules/univention/admin/syntax.py:3787
+msgid "All"
+msgstr "全部"
+
+#: modules/univention/admin/syntax.py:474 modules/univention/admin/syntax.py:748 modules/univention/admin/syntax.py:959
+msgid "An empty value is not allowed"
+msgstr "不允許空白值"
+
+#: modules/univention/admin/uexceptions.py:450
+msgid "An object with the name already exists in the subtree position"
+msgstr "在此子樹位置已存在同名的物件"
+
+#: modules/univention/admin/syntax.py:3797
+msgid "Anyone"
+msgstr "任何人"
+
+#: modules/univention/admin/syntax.py:3785
+msgid "Append"
+msgstr "附加"
+
+#: modules/univention/admin/syntax.py:5363
+msgid "April"
+msgstr "四月"
+
+#: modules/univention/admin/nagios.py:23
+msgid "Assigned Nagios services"
+msgstr "已指派的 Nagios 服務"
+
+#: modules/univention/admin/syntax.py:5367
+msgid "August"
+msgstr "八月"
+
+#: modules/univention/admin/uexceptions.py:129
+msgid "Authentication Failed."
+msgstr "認證失敗。"
+
+#: modules/univention/admin/uldap.py:344 modules/univention/admin/uldap.py:346 modules/univention/admin/uldap.py:373 modules/univention/admin/uldap.py:375 modules/univention/admin/uldap.py:387 modules/univention/admin/uldap.py:401
+msgid "Authentication failed"
+msgstr "認證失敗"
+
+#: modules/univention/admin/syntax.py:4929
+msgid "Auto"
+msgstr "自動"
+
+#: modules/univention/admin/syntax.py:5648
+msgid "Back up files and directories"
+msgstr "備份檔案與目錄"
+
+#: modules/univention/admin/syntax.py:5670
+msgid "Backup Directory Node"
+msgstr "備份目錄節點"
+
+#: modules/univention/admin/syntax.py:4101
+msgid "Below primary display"
+msgstr "主顯示器下方"
+
+#: modules/univention/admin/types.py:369
+#, python-format
+msgid "Binary data have invalid encoding (expected: %s)."
+msgstr "二進位資料的編碼無效 (預期: %s)。"
+
+#: modules/univention/admin/syntax.py:6647
+msgid "Black"
+msgstr "黑色"
+
+#: modules/univention/admin/locking.py:73 modules/univention/admin/locking.py:87 modules/univention/admin/locking.py:117
+#, python-format
+msgid "Can not modify lock time of %r."
+msgstr "無法修改 %r 的鎖定時間。"
+
+#: modules/univention/admin/uexceptions.py:267
+msgid "Cannot overwrite a fixed attribute."
+msgstr "無法覆寫固定屬性。"
+
+#: modules/univention/admin/certificate.py:196
+msgid "Certificate"
+msgstr "憑證"
+
+#: modules/univention/admin/certificate.py:86
+msgid "Certificate Issuer Common Name"
+msgstr "憑證簽發者一般名稱"
+
+#: modules/univention/admin/certificate.py:46
+msgid "Certificate Issuer Country"
+msgstr "憑證簽發者國家"
+
+#: modules/univention/admin/certificate.py:62
+msgid "Certificate Issuer Location"
+msgstr "憑證簽發者地點"
+
+#: modules/univention/admin/certificate.py:94
+msgid "Certificate Issuer Mail"
+msgstr "憑證簽發者郵件"
+
+#: modules/univention/admin/certificate.py:70
+msgid "Certificate Issuer Organisation"
+msgstr "憑證簽發者組織"
+
+#: modules/univention/admin/certificate.py:78
+msgid "Certificate Issuer Organisational Unit"
+msgstr "憑證簽發者組織單位"
+
+#: modules/univention/admin/certificate.py:54
+msgid "Certificate Issuer State"
+msgstr "憑證簽發者州別"
+
+#: modules/univention/admin/certificate.py:182
+msgid "Certificate Serial"
+msgstr "憑證序號"
+
+#: modules/univention/admin/certificate.py:142
+msgid "Certificate Subject Common Name"
+msgstr "憑證主體一般名稱"
+
+#: modules/univention/admin/certificate.py:102
+msgid "Certificate Subject Country"
+msgstr "憑證主體國家"
+
+#: modules/univention/admin/certificate.py:118
+msgid "Certificate Subject Location"
+msgstr "憑證主體地點"
+
+#: modules/univention/admin/certificate.py:150
+msgid "Certificate Subject Mail"
+msgstr "憑證主體郵件"
+
+#: modules/univention/admin/certificate.py:126
+msgid "Certificate Subject Organisation"
+msgstr "憑證主體組織"
+
+#: modules/univention/admin/certificate.py:134
+msgid "Certificate Subject Organisational Unit"
+msgstr "憑證主體組織單位"
+
+#: modules/univention/admin/certificate.py:110
+msgid "Certificate Subject State"
+msgstr "憑證主體州別"
+
+#: modules/univention/admin/certificate.py:174
+msgid "Certificate Version"
+msgstr "憑證版本"
+
+#: modules/univention/admin/certificate.py:158
+msgid "Certificate valid from"
+msgstr "憑證有效期始於"
+
+#: modules/univention/admin/certificate.py:166
+msgid "Certificate valid until"
+msgstr "憑證有效期至"
+
+#: modules/univention/admin/uexceptions.py:430
+msgid "Circular group dependency detected: "
+msgstr "偵測到群組循環相依: "
+
+#: modules/univention/admin/syntax.py:3393
+msgid "City"
+msgstr "縣市"
+
+#: modules/univention/admin/syntax.py:3748
+msgid "Command pattern"
+msgstr "指令模式"
+
+#: modules/univention/admin/uexceptions.py:125
+msgid "Could not acquire lock."
+msgstr "無法取得鎖定。"
+
+#: modules/univention/admin/modules.py:465
+msgid "Custom"
+msgstr "自訂"
+
+#: modules/univention/admin/syntax.py:4781
+msgid "DHCP Entry"
+msgstr "DHCP 項目"
+
+#: modules/univention/admin/syntax.py:4801
+msgid "DHCP option"
+msgstr "DHCP 選項"
+
+#: modules/univention/admin/uexceptions.py:227
+msgid "DHCP server name already used: "
+msgstr "DHCP 伺服器名稱已被使用: "
+
+#: modules/univention/admin/syntax.py:4758 modules/univention/admin/syntax.py:4776
+msgid "DHCP service"
+msgstr "DHCP 服務"
+
+#: modules/univention/admin/syntax.py:4706
+msgid "DNS Entry"
+msgstr "DNS 項目"
+
+#: modules/univention/admin/syntax.py:4748
+msgid "DNS Entry Alias"
+msgstr "DNS 項目別名"
+
+#: modules/univention/admin/syntax.py:4716
+msgid "DNS Entry Reverse"
+msgstr "DNS 項目反向"
+
+#: modules/univention/admin/uexceptions.py:422
+msgid "DNS Forward Zone entry required to assign Nagios services!"
+msgstr "指派 Nagios 服務需要 DNS 正向區域項目！"
+
+#: modules/univention/admin/uexceptions.py:195
+msgid "DNS alias is already in use."
+msgstr "DNS 別名已被使用。"
+
+#: modules/univention/admin/syntax.py:4657 modules/univention/admin/syntax.py:4707 modules/univention/admin/syntax.py:4749
+msgid "DNS forward zone"
+msgstr "DNS 正向區域"
+
+#: modules/univention/admin/syntax.py:4672 modules/univention/admin/syntax.py:4717
+msgid "DNS reverse zone"
+msgstr "DNS 反向區域"
+
+#: modules/univention/admin/syntax.py:7073
+msgid "Date"
+msgstr "日期"
+
+#: modules/univention/admin/types.py:401
+msgid "Date does not match format \"%Y-%m-%d\"."
+msgstr "日期不符合格式 \"%Y-%m-%d\"。"
+
+#: modules/univention/admin/types.py:468
+msgid "Datetime does not match format \"%Y-%m-%dT%H:%M:%S\"."
+msgstr "日期時間不符合格式 \"%Y-%m-%dT%H:%M:%S\"。"
+
+#: modules/univention/admin/syntax.py:5371
+msgid "December"
+msgstr "十二月"
+
+#: modules/univention/admin/uexceptions.py:231
+msgid "Default Kolab home server does not exist"
+msgstr "預設的 Kolab home 伺服器不存在"
+
+#: modules/univention/admin/uexceptions.py:235
+msgid "Default primary group does not exist"
+msgstr "預設的主要群組不存在"
+
+#: modules/univention/admin/syntax.py:6512 modules/univention/admin/syntax.py:6675
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/syntax.py:6566
+msgid "Destination"
+msgstr "目的地"
+
+#: modules/univention/admin/syntax.py:6669
+msgid "Display Name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/syntax.py:5564
+msgid "Domain Group"
+msgstr "網域群組"
+
+#: modules/univention/admin/syntax.py:5578
+msgid "Domain local (Type: Security)"
+msgstr "網域本機 (類型: 安全性)"
+
+#: modules/univention/admin/syntax.py:6512
+msgid "Driver"
+msgstr "驅動程式"
+
+#: modules/univention/admin/types.py:513
+msgid "Duplicated entries."
+msgstr "項目重複。"
+
+#: modules/univention/admin/uexceptions.py:343
+msgid "During this session add and modify are disabled"
+msgstr "在此工作階段中，新增與修改功能已停用"
+
+#: modules/univention/admin/uexceptions.py:271
+msgid "Dynamic BOOTP leases are not compatible with failover."
+msgstr "動態 BOOTP 租約與容錯移轉不相容。"
+
+#: modules/univention/admin/policy.py:70
+msgid "Empty attribute"
+msgstr "空白屬性"
+
+#: modules/univention/admin/syntax.py:2309
+msgid "Empty password not allowed!"
+msgstr "不允許空白密碼！"
+
+#: modules/univention/admin/uexceptions.py:391
+msgid "Empty printer groups are not possible."
+msgstr "印表機群組不可為空。"
+
+#: modules/univention/admin/syntax.py:6741
+#, python-format
+msgid "Error: %(text)s - %(exc)s"
+msgstr "錯誤: %(text)s - %(exc)s"
+
+#: modules/univention/admin/syntax.py:3577
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: modules/univention/admin/policy.py:49
+msgid "Excluded object class"
+msgstr "排除的物件類別"
+
+#: modules/univention/admin/syntax.py:3350
+msgid "Extension"
+msgstr "擴充"
+
+#: modules/univention/admin/syntax.py:3578
+msgid "FDDI"
+msgstr "FDDI"
+
+#: modules/univention/admin/syntax.py:1468
+msgid "Failed to convert file into JPEG format."
+msgstr "將檔案轉換為 JPEG 格式失敗。"
+
+#: modules/univention/admin/syntax.py:4949 modules/univention/admin/syntax.py:4973 modules/univention/admin/syntax.py:4992
+msgid "False"
+msgstr "否"
+
+#: modules/univention/admin/syntax.py:5361
+msgid "February"
+msgstr "二月"
+
+#: modules/univention/admin/syntax.py:2038
+msgid "Field must only contain ASCII characters!"
+msgstr "欄位只能包含 ASCII 字元！"
+
+#: modules/univention/admin/syntax.py:1259
+#, python-format
+msgid "Filename must not contain slashes: %s"
+msgstr "檔名不可包含斜線: %s"
+
+#: modules/univention/admin/syntax.py:2552 modules/univention/admin/syntax.py:2607
+msgid "First address"
+msgstr "第一個位址"
+
+#: modules/univention/admin/policy.py:60
+msgid "Fixed attribute"
+msgstr "固定屬性"
+
+#: modules/univention/admin/syntax.py:5650
+msgid "Force shutdown from a remote system"
+msgstr "從遠端系統強制關機"
+
+#: modules/univention/admin/syntax.py:5607
+msgid "Fri"
+msgstr "週五"
+
+#: modules/univention/admin/syntax.py:5385
+msgid "Friday"
+msgstr "星期五"
+
+#: modules/univention/admin/syntax.py:4631
+msgid "From known-hosts pool"
+msgstr "從 known-hosts 集區"
+
+#: modules/univention/admin/syntax.py:3169
+msgid "Full domain name must be between 1 and 253 characters long!"
+msgstr "完整網域名稱長度必須介於 1 至 253 個字元！"
+
+#: modules/univention/admin/syntax.py:3245
+msgid "Full name must not be all numeric!"
+msgstr "全名不可全部為數字！"
+
+#: modules/univention/admin/syntax.py:1633 modules/univention/admin/syntax.py:1646
+msgid "GNU message catalog"
+msgstr "GNU 訊息目錄"
+
+#: modules/univention/admin/certificate.py:197
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/syntax.py:5580
+msgid "Global (Type: Distribution)"
+msgstr "全域 (類型: 發佈)"
+
+#: modules/univention/admin/syntax.py:5576
+msgid "Global (Type: Security)"
+msgstr "全域 (類型: 安全性)"
+
+#: modules/univention/admin/syntax.py:3833 modules/univention/admin/syntax.py:3849 modules/univention/admin/syntax.py:6455 modules/univention/admin/syntax.py:6468
+msgid "Group"
+msgstr "群組"
+
+#: modules/univention/admin/syntax.py:2215
+msgid "Group names must not consist only of numbers!"
+msgstr "群組名稱不可全部為數字！"
+
+#: modules/univention/admin/syntax.py:5732
+msgid "Group: Group"
+msgstr "群組: 群組"
+
+#: modules/univention/admin/guardian_roles.py:71 modules/univention/admin/guardian_roles.py:82
+msgid "Guardian"
+msgstr "Guardian"
+
+#: modules/univention/admin/syntax.py:7198
+msgid "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'.The final part of context additionally allows equal and comma."
+msgstr "Guardian 角色字串必須是小寫 ASCII 英數字，可含連字號與底線，格式為 'app:namespace:role' 或 'app:namespace:role&app:namespace:context'。context 的最後一部分另可使用等號與逗號。"
+
+#: modules/univention/admin/syntax.py:6455 modules/univention/admin/syntax.py:6468 modules/univention/admin/syntax.py:6481
+msgid "Hard limit (pages)"
+msgstr "硬性上限 (頁數)"
+
+#: modules/univention/admin/syntax.py:3773
+msgid "IMAP"
+msgstr "IMAP"
+
+#: modules/univention/admin/syntax.py:4707 modules/univention/admin/syntax.py:4717 modules/univention/admin/syntax.py:4777
+msgid "IP address"
+msgstr "IP 位址"
+
+#: modules/univention/admin/uexceptions.py:418
+msgid "IP address entry required to assign Nagios services!"
+msgstr "指派 Nagios 服務需要 IP 位址項目！"
+
+#: modules/univention/admin/uexceptions.py:191
+msgid "IP address is already in use."
+msgstr "IP 位址已被使用。"
+
+#: modules/univention/admin/syntax.py:6753
+msgid "Ignore this object in standard UDM modules"
+msgstr "在標準 UDM 模組中忽略此物件"
+
+#: modules/univention/admin/syntax.py:2567 modules/univention/admin/syntax.py:2572
+msgid "Illegal range"
+msgstr "範圍不合法"
+
+#: modules/univention/admin/syntax.py:5933
+msgid "Immediately"
+msgstr "立即"
+
+#: modules/univention/admin/uexceptions.py:85
+msgid "Information provided is not sufficient."
+msgstr "提供的資訊不足。"
+
+#: modules/univention/admin/syntax.py:1205
+#, python-format
+msgid "Invalid UCS version: %s"
+msgstr "無效的 UCS 版本: %s"
+
+#: modules/univention/admin/syntax.py:1236
+#, python-format
+msgid "Invalid character in Debian package version: %s"
+msgstr "Debian 套件版本中含無效字元: %s"
+
+#: modules/univention/admin/syntax.py:4852
+msgid "Invalid choice."
+msgstr "無效的選擇。"
+
+#: modules/univention/admin/uexceptions.py:371
+msgid "Invalid combination of options."
+msgstr "選項組合無效。"
+
+#: modules/univention/admin/mapping.py:591 modules/univention/admin/mapping.py:638
+#, python-format
+msgid "Invalid encoding for %s"
+msgstr "%s 的編碼無效"
+
+#: modules/univention/admin/syntax.py:3182
+#, python-format
+msgid "Invalid escape sequence: %r"
+msgstr "無效的逸出序列: %r"
+
+#: modules/univention/admin/types.py:626
+msgid "Invalid format for SambaLogonHours."
+msgstr "SambaLogonHours 的格式無效。"
+
+#: modules/univention/admin/uexceptions.py:411
+#, python-format
+msgid "Invalid syntax in default value. Check these templates: %s."
+msgstr "預設值的語法無效。請檢查這些範本: %s。"
+
+#: modules/univention/admin/uexceptions.py:113
+msgid "Invalid syntax."
+msgstr "語法無效。"
+
+#: modules/univention/admin/syntax.py:6584
+#, python-format
+msgid "Invalid syntax: %s > %s"
+msgstr "語法無效: %s > %s"
+
+#: modules/univention/admin/syntax.py:325 modules/univention/admin/syntax.py:459 modules/univention/admin/syntax.py:950
+msgid "Invalid value"
+msgstr "無效的值"
+
+#: modules/univention/admin/certificate.py:206
+msgid "Issuer"
+msgstr "簽發者"
+
+#: modules/univention/admin/certificate.py:85
+msgid "Issuer Common Name"
+msgstr "簽發者一般名稱"
+
+#: modules/univention/admin/certificate.py:45
+msgid "Issuer Country"
+msgstr "簽發者國家"
+
+#: modules/univention/admin/certificate.py:61
+msgid "Issuer Location"
+msgstr "簽發者地點"
+
+#: modules/univention/admin/certificate.py:93
+msgid "Issuer Mail"
+msgstr "簽發者郵件"
+
+#: modules/univention/admin/certificate.py:69
+msgid "Issuer Organisation"
+msgstr "簽發者組織"
+
+#: modules/univention/admin/certificate.py:77
+msgid "Issuer Organisational Unit"
+msgstr "簽發者組織單位"
+
+#: modules/univention/admin/certificate.py:53
+msgid "Issuer State"
+msgstr "簽發者州別"
+
+#: modules/univention/admin/syntax.py:5360
+msgid "January"
+msgstr "一月"
+
+#: modules/univention/admin/syntax.py:5366
+msgid "July"
+msgstr "七月"
+
+#: modules/univention/admin/syntax.py:5365
+msgid "June"
+msgstr "六月"
+
+#: modules/univention/admin/syntax.py:2655
+msgid "Keep e-mails and forward a copy"
+msgstr "保留電子郵件並轉送一份複本"
+
+#: modules/univention/admin/syntax.py:3314
+msgid "Key"
+msgstr "金鑰"
+
+#: modules/univention/admin/uexceptions.py:69
+msgid "LDAP Error"
+msgstr "LDAP 錯誤"
+
+#: modules/univention/admin/policy.py:80
+msgid "LDAP filter"
+msgstr "LDAP 篩選器"
+
+#: modules/univention/admin/syntax.py:3171
+msgid "Labels must be between 1 and 63 characters long!"
+msgstr "標籤長度必須介於 1 至 63 個字元！"
+
+#: modules/univention/admin/syntax.py:6312 modules/univention/admin/syntax.py:6320 modules/univention/admin/syntax.py:6326 modules/univention/admin/syntax.py:6332 modules/univention/admin/syntax.py:6338 modules/univention/admin/syntax.py:6669 modules/univention/admin/syntax.py:6675 modules/univention/admin/syntax.py:6684
+msgid "Language code (e.g. en_US)"
+msgstr "語言代碼 (例如 en_US)"
+
+#: modules/univention/admin/syntax.py:6305
+msgid "Language code must be in format \"xx_XX\"!"
+msgstr "語言代碼必須採用 \"xx_XX\" 格式！"
+
+#: modules/univention/admin/syntax.py:2553 modules/univention/admin/syntax.py:2608
+msgid "Last address"
+msgstr "最後一個位址"
+
+#: modules/univention/admin/syntax.py:4098
+msgid "Left of primary display"
+msgstr "主顯示器左方"
+
+#: modules/univention/admin/syntax.py:5579
+msgid "Local (Type: Distribution)"
+msgstr "本機 (類型: 發佈)"
+
+#: modules/univention/admin/syntax.py:5575
+msgid "Local (Type: Security)"
+msgstr "本機 (類型: 安全性)"
+
+#: modules/univention/admin/syntax.py:5565
+msgid "Local Group"
+msgstr "本機群組"
+
+#: modules/univention/admin/syntax.py:1633
+msgid "Locale subdir name"
+msgstr "Locale 子目錄名稱"
+
+#: modules/univention/admin/syntax.py:5764
+msgid "Lookup attribute"
+msgstr "查詢屬性"
+
+#: modules/univention/admin/syntax.py:5765
+msgid "Lookup value"
+msgstr "查詢值"
+
+#: modules/univention/admin/guardian_roles.py:28 modules/univention/admin/guardian_roles.py:40
+msgid "Lowercase ASCII alphanumeric string with underscores or dashes, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"
+msgstr "小寫 ASCII 英數字串，可含底線或連字號，格式為 'app:namespace:role' 或 'app:namespace:role&app:namespace:context'"
+
+#: modules/univention/admin/syntax.py:4778
+msgid "MAC address"
+msgstr "MAC 位址"
+
+#: modules/univention/admin/syntax.py:3327
+msgid "Mail server"
+msgstr "郵件伺服器"
+
+#: modules/univention/admin/syntax.py:622
+#, python-format
+msgid "Malformed syntax %r: %s"
+msgstr "語法格式錯誤 %r: %s"
+
+#: modules/univention/admin/syntax.py:5646
+msgid "Manage auditing and security log"
+msgstr "管理稽核與安全性記錄"
+
+#: modules/univention/admin/syntax.py:5653
+msgid "Manage disk shares"
+msgstr "管理磁碟共用"
+
+#: modules/univention/admin/syntax.py:5651
+msgid "Manage printers"
+msgstr "管理印表機"
+
+#: modules/univention/admin/guardian_roles.py:72 modules/univention/admin/guardian_roles.py:83
+msgid "Manage roles that are used for authorization"
+msgstr "管理用於授權的角色"
+
+#: modules/univention/admin/syntax.py:5672
+msgid "Managed Node"
+msgstr "受管節點"
+
+#: modules/univention/admin/syntax.py:5362
+msgid "March"
+msgstr "三月"
+
+#: modules/univention/admin/syntax.py:6751
+msgid "Mark this object as hidden"
+msgstr "將此物件標示為隱藏"
+
+#: modules/univention/admin/syntax.py:6752
+msgid "Mark this object as temporary"
+msgstr "將此物件標示為暫時"
+
+#: modules/univention/admin/syntax.py:5364
+msgid "May"
+msgstr "五月"
+
+#: modules/univention/admin/syntax.py:6627
+msgid "May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space."
+msgstr "只能包含字母 (變母音除外)、數字、空格，以及字元 # ! $ % & | ^ . ~ _ -。必須以字母或數字開頭，且結尾不可為空格。"
+
+#: modules/univention/admin/syntax.py:6684
+msgid "Message that is shown to anonymous visitors when the portal is empty"
+msgstr "當入口網站為空時，顯示給匿名訪客的訊息"
+
+#: modules/univention/admin/certificate.py:215
+msgid "Misc"
+msgstr "其他"
+
+#: modules/univention/admin/syntax.py:525
+#, python-format
+msgid "Missing argument: %s > %s"
+msgstr "缺少引數: %s > %s"
+
+#: modules/univention/admin/syntax.py:3163
+msgid "Missing value!"
+msgstr "缺少值！"
+
+#: modules/univention/admin/syntax.py:5603
+msgid "Mon"
+msgstr "週一"
+
+#: modules/univention/admin/syntax.py:5381
+msgid "Monday"
+msgstr "星期一"
+
+#: modules/univention/admin/uldap.py:674
+msgid "Moving children is not supported."
+msgstr "不支援移動子物件。"
+
+#: modules/univention/admin/types.py:532
+#, python-format
+msgid "Must have at least %d values."
+msgstr "至少必須有 %d 個值。"
+
+#: modules/univention/admin/syntax.py:6274
+msgid "NFS share"
+msgstr "NFS 共用"
+
+#: modules/univention/admin/nagios.py:32
+msgid "Nagios Service Settings"
+msgstr "Nagios 服務設定"
+
+#: modules/univention/admin/nagios.py:32
+msgid "Nagios services"
+msgstr "Nagios 服務"
+
+#: modules/univention/admin/nagios.py:39
+msgid "Nagios support"
+msgstr "Nagios 支援"
+
+#: modules/univention/admin/syntax.py:4798
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/uexceptions.py:438
+msgid "Need a primary group with samba option to create a user with samba option"
+msgstr "要建立具 samba 選項的使用者，需要具 samba 選項的主要群組"
+
+#: modules/univention/admin/syntax.py:4609
+msgid "Network"
+msgstr "網路"
+
+#: modules/univention/admin/uexceptions.py:355
+msgid "Network and IP range are incompatible."
+msgstr "網路與 IP 範圍不相容。"
+
+#: modules/univention/admin/syntax.py:6654 modules/univention/admin/syntax.py:6662
+msgid "New tab"
+msgstr "新分頁"
+
+#: modules/univention/admin/uexceptions.py:211
+msgid "Next IP address not found."
+msgstr "找不到下一個 IP 位址。"
+
+#: modules/univention/admin/syntax.py:4920 modules/univention/admin/syntax.py:4931
+msgid "No"
+msgstr "否"
+
+#: modules/univention/admin/syntax.py:5933
+msgid "No Reboot"
+msgstr "不重新開機"
+
+#: modules/univention/admin/syntax.py:3782
+msgid "No access"
+msgstr "無存取權"
+
+#: modules/univention/admin/uexceptions.py:279
+msgid "No license found."
+msgstr "找不到授權。"
+
+#: modules/univention/admin/uexceptions.py:57
+msgid "No such object."
+msgstr "沒有這個物件。"
+
+#: modules/univention/admin/uexceptions.py:97
+msgid "No such property."
+msgstr "沒有這個屬性。"
+
+#: modules/univention/admin/syntax.py:1239
+#, python-format
+msgid "Non-integer epoch in Debian package version: %s"
+msgstr "Debian 套件版本中的 epoch 非整數: %s"
+
+#: modules/univention/admin/syntax.py:1571
+#, python-format
+msgid "Not Base64 encoded GNU message catalog (.mo) data: %s"
+msgstr "不是 Base64 編碼的 GNU 訊息目錄 (.mo) 資料: %s"
+
+#: modules/univention/admin/syntax.py:1516
+#, python-format
+msgid "Not Base64 encoded XML data: %s"
+msgstr "不是 Base64 編碼的 XML 資料: %s"
+
+#: modules/univention/admin/syntax.py:5009
+msgid "Not OK"
+msgstr "不正常"
+
+#: modules/univention/admin/syntax.py:1311 modules/univention/admin/syntax.py:1348 modules/univention/admin/syntax.py:1381 modules/univention/admin/syntax.py:1409 modules/univention/admin/syntax.py:1510 modules/univention/admin/syntax.py:1540 modules/univention/admin/syntax.py:1569
+#, python-format
+msgid "Not a valid Base64 string: %s"
+msgstr "不是有效的 Base64 字串: %s"
+
+#: modules/univention/admin/syntax.py:3007 modules/univention/admin/syntax.py:3058
+msgid "Not a valid Date"
+msgstr "不是有效的日期"
+
+#: modules/univention/admin/syntax.py:4524
+msgid "Not a valid FQDN"
+msgstr "不是有效的 FQDN"
+
+#: modules/univention/admin/syntax.py:2370 modules/univention/admin/syntax.py:2393 modules/univention/admin/syntax.py:2569
+msgid "Not a valid IP address!"
+msgstr "不是有效的 IP 位址！"
+
+#: modules/univention/admin/syntax.py:724 modules/univention/admin/syntax.py:3695 modules/univention/admin/syntax.py:3887
+msgid "Not a valid LDAP DN"
+msgstr "不是有效的 LDAP DN"
+
+#: modules/univention/admin/syntax.py:3992
+msgid "Not a valid LDAP search filter"
+msgstr "不是有效的 LDAP 搜尋篩選器"
+
+#: modules/univention/admin/syntax.py:3799
+msgid "Not a valid e-mail address"
+msgstr "不是有效的電子郵件地址"
+
+#: modules/univention/admin/syntax.py:2761 modules/univention/admin/syntax.py:2764 modules/univention/admin/syntax.py:2808
+msgid "Not a valid email address!"
+msgstr "不是有效的電子郵件地址！"
+
+#: modules/univention/admin/syntax.py:1608
+msgid "Not a valid filename for umcmessagecatalog. It must match \"$language-$moduleid.mo\" (e.g. \"de-udm-foo.mo\")"
+msgstr "不是 umcmessagecatalog 的有效檔名。必須符合 \"$language-$moduleid.mo\" (例如 \"de-udm-foo.mo\")"
+
+#: modules/univention/admin/syntax.py:2435
+msgid "Not a valid hostname or IP address!"
+msgstr "不是有效的主機名稱或 IP 位址！"
+
+#: modules/univention/admin/syntax.py:1592
+#, python-format
+msgid "Not a valid locale subdir name: %s"
+msgstr "不是有效的 locale 子目錄名稱: %s"
+
+#: modules/univention/admin/syntax.py:2469 modules/univention/admin/syntax.py:2501
+msgid "Not a valid netmask!"
+msgstr "不是有效的網路遮罩！"
+
+#: modules/univention/admin/syntax.py:2522
+msgid "Not a valid network!"
+msgstr "不是有效的網路！"
+
+#: modules/univention/admin/syntax.py:3416 modules/univention/admin/syntax.py:3453
+msgid "Not a valid time format"
+msgstr "不是有效的時間格式"
+
+#: modules/univention/admin/uexceptions.py:263
+msgid "Not all needed information was entered."
+msgstr "並未輸入所有必要的資訊。"
+
+#: modules/univention/admin/syntax.py:2647
+msgid "Not an absolute path!"
+msgstr "不是絕對路徑！"
+
+#: modules/univention/admin/syntax.py:5370
+msgid "November"
+msgstr "十一月"
+
+#: modules/univention/admin/syntax.py:5008
+msgid "OK"
+msgstr "確定"
+
+#: modules/univention/admin/policy.py:29
+msgid "Object"
+msgstr "物件"
+
+#: modules/univention/admin/uexceptions.py:49
+msgid "Object exists."
+msgstr "物件已存在。"
+
+#: modules/univention/admin/syntax.py:5369
+msgid "October"
+msgstr "十月"
+
+#: modules/univention/admin/uexceptions.py:403
+msgid "Only existing groups are allowed."
+msgstr "只允許既有的群組。"
+
+#: modules/univention/admin/uexceptions.py:407
+msgid "Only existing users are allowed."
+msgstr "只允許既有的使用者。"
+
+#: modules/univention/admin/uexceptions.py:399
+msgid "Only printer objects can be members of a printer group."
+msgstr "只有印表機物件才能成為印表機群組的成員。"
+
+#: modules/univention/admin/syntax.py:2182
+msgid "Only the first letter of the username may be uppercase!"
+msgstr "使用者名稱只有第一個字母可以大寫！"
+
+#: modules/univention/admin/syntax.py:3748
+msgid "Option Pattern"
+msgstr "選項模式"
+
+#: modules/univention/admin/uexceptions.py:367
+msgid "Overlapping IP ranges"
+msgstr "IP 範圍重疊"
+
+#: modules/univention/admin/certificate.py:38
+msgid "PKI certificate (DER format)"
+msgstr "PKI 憑證 (DER 格式)"
+
+#: modules/univention/admin/syntax.py:3774
+msgid "POP3"
+msgstr "POP3"
+
+#: modules/univention/admin/uexceptions.py:347
+msgid "Password has been used before. Please choose a different one."
+msgstr "此密碼先前已使用過。請選擇另一組密碼。"
+
+#: modules/univention/admin/uexceptions.py:375 modules/univention/admin/uexceptions.py:379
+msgid "Password policy error: "
+msgstr "密碼原則錯誤: "
+
+#: modules/univention/admin/syntax.py:2243
+msgid "Path may not contain double quotes (\")!"
+msgstr "路徑不可包含雙引號 (\")!"
+
+#: modules/univention/admin/syntax.py:2248
+msgid "Path must begin with \"/\"!"
+msgstr "路徑必須以 \"/\" 開頭！"
+
+#: modules/univention/admin/syntax.py:2251
+#, python-format
+msgid "Path must not start with \"/%s\" !"
+msgstr "路徑不可以 \"/%s\" 開頭！"
+
+#: modules/univention/admin/uexceptions.py:65
+msgid "Permission denied."
+msgstr "權限遭拒。"
+
+#: modules/univention/admin/syntax.py:3406
+msgid "Port"
+msgstr "通訊埠"
+
+#: modules/univention/admin/syntax.py:3784
+msgid "Post"
+msgstr "張貼"
+
+#: modules/univention/admin/syntax.py:3393
+msgid "Postal code"
+msgstr "郵遞區號"
+
+#: modules/univention/admin/syntax.py:5669
+msgid "Primary Directory Node"
+msgstr "主要目錄節點"
+
+#: modules/univention/admin/syntax.py:4590 modules/univention/admin/syntax.py:4602
+msgid "Primary Group"
+msgstr "主要群組"
+
+#: modules/univention/admin/uexceptions.py:395
+msgid "Printer groups with quota support can only have members with quota support."
+msgstr "具配額支援的印表機群組，只能擁有同樣具配額支援的成員。"
+
+#: modules/univention/admin/syntax.py:3327 modules/univention/admin/syntax.py:3406
+msgid "Priority"
+msgstr "優先順序"
+
+#: modules/univention/admin/uexceptions.py:187
+msgid "Prohibited username."
+msgstr "禁用的使用者名稱。"
+
+#: modules/univention/admin/syntax.py:3349 modules/univention/admin/syntax.py:6566
+msgid "Protocol"
+msgstr "協定"
+
+#: modules/univention/admin/certificate.py:39
+msgid "Public key infrastructure - certificate"
+msgstr "公開金鑰基礎結構 - 憑證"
+
+#: modules/univention/admin/syntax.py:5939 modules/univention/admin/certificate.py:28
+msgid "Public key infrastructure account"
+msgstr "公開金鑰基礎結構帳號"
+
+#: modules/univention/admin/syntax.py:3783
+msgid "Read"
+msgstr "讀取"
+
+#: modules/univention/admin/syntax.py:2654
+msgid "Redirect all e-mails to forward addresses"
+msgstr "將所有電子郵件重新導向至轉送位址"
+
+#: modules/univention/admin/syntax.py:5759
+msgid "Reference"
+msgstr "參照"
+
+#: modules/univention/admin/syntax.py:5671
+msgid "Replica Directory Node"
+msgstr "複本目錄節點"
+
+#: modules/univention/admin/policy.py:38
+msgid "Required object class"
+msgstr "必要的物件類別"
+
+#: modules/univention/admin/syntax.py:5649
+msgid "Restore files and directories"
+msgstr "還原檔案與目錄"
+
+#: modules/univention/admin/uexceptions.py:387
+msgid "Restore operation failed."
+msgstr "還原操作失敗。"
+
+#: modules/univention/admin/syntax.py:4099
+msgid "Right of primary display"
+msgstr "主顯示器右方"
+
+#: modules/univention/admin/guardian_roles.py:39
+msgid "Roles used by Guardian for access permissions"
+msgstr "Guardian 用於存取權限的角色"
+
+#: modules/univention/admin/guardian_roles.py:27
+msgid "Roles used by Guardian for access permissions, these roles are passed to the members of this group"
+msgstr "Guardian 用於存取權限的角色，這些角色會傳遞給此群組的成員"
+
+#: modules/univention/admin/guardian_roles.py:46 modules/univention/admin/guardian_roles.py:47
+msgid "Roles used by Guardian for access permissions. Inherited by group membership"
+msgstr "Guardian 用於存取權限的角色。透過群組成員資格繼承"
+
+#: modules/univention/admin/syntax.py:6653 modules/univention/admin/syntax.py:6661
+msgid "Same tab"
+msgstr "相同分頁"
+
+#: modules/univention/admin/syntax.py:5608
+msgid "Sat"
+msgstr "週六"
+
+#: modules/univention/admin/syntax.py:5386
+msgid "Saturday"
+msgstr "星期六"
+
+#: modules/univention/admin/syntax.py:5368
+msgid "September"
+msgstr "九月"
+
+#: modules/univention/admin/certificate.py:181
+msgid "Serial"
+msgstr "序號"
+
+#: modules/univention/admin/syntax.py:3406
+msgid "Server"
+msgstr "伺服器"
+
+#: modules/univention/admin/syntax.py:3348
+msgid "Service"
+msgstr "服務"
+
+#: modules/univention/admin/syntax.py:6455 modules/univention/admin/syntax.py:6468 modules/univention/admin/syntax.py:6481
+msgid "Soft limit (pages)"
+msgstr "彈性上限 (頁數)"
+
+#: modules/univention/admin/syntax.py:5761
+msgid "Source attribute"
+msgstr "來源屬性"
+
+#: modules/univention/admin/syntax.py:2140
+msgid "Spaces are not allowed in the username!"
+msgstr "使用者名稱不允許空格！"
+
+#: modules/univention/admin/syntax.py:3393
+msgid "Street"
+msgstr "街道"
+
+#: modules/univention/admin/certificate.py:200
+msgid "Subject"
+msgstr "主體"
+
+#: modules/univention/admin/certificate.py:141
+msgid "Subject Common Name"
+msgstr "主體一般名稱"
+
+#: modules/univention/admin/certificate.py:101
+msgid "Subject Country"
+msgstr "主體國家"
+
+#: modules/univention/admin/certificate.py:117
+msgid "Subject Location"
+msgstr "主體地點"
+
+#: modules/univention/admin/certificate.py:149
+msgid "Subject Mail"
+msgstr "主體郵件"
+
+#: modules/univention/admin/certificate.py:125
+msgid "Subject Organisation"
+msgstr "主體組織"
+
+#: modules/univention/admin/certificate.py:133
+msgid "Subject Organisational Unit"
+msgstr "主體組織單位"
+
+#: modules/univention/admin/certificate.py:109
+msgid "Subject State"
+msgstr "主體州別"
+
+#: modules/univention/admin/syntax.py:5602
+msgid "Sun"
+msgstr "週日"
+
+#: modules/univention/admin/syntax.py:5387
+msgid "Sunday"
+msgstr "星期日"
+
+#: modules/univention/admin/syntax.py:5647
+msgid "Take ownership of files or other objects"
+msgstr "取得檔案或其他物件的擁有權"
+
+#: modules/univention/admin/syntax.py:5762
+msgid "Target module"
+msgstr "目標模組"
+
+#: modules/univention/admin/syntax.py:5763
+msgid "Target property"
+msgstr "目標屬性"
+
+#: modules/univention/admin/syntax.py:6312
+msgid "Text"
+msgstr "文字"
+
+#: modules/univention/admin/uexceptions.py:183
+msgid "The AD group type can not be changed from domain local to global."
+msgstr "AD 群組類型無法從網域本機變更為全域。"
+
+#: modules/univention/admin/uexceptions.py:171
+msgid "The AD group type can not be changed from domain local to universal, because the group has another domain local group as member."
+msgstr "AD 群組類型無法從網域本機變更為萬用，因為此群組將另一個網域本機群組設為成員。"
+
+#: modules/univention/admin/uexceptions.py:179
+msgid "The AD group type can not be changed from global to domain local."
+msgstr "AD 群組類型無法從全域變更為網域本機。"
+
+#: modules/univention/admin/uexceptions.py:167
+msgid "The AD group type can not be changed from global to universal, because the group is member of another global group."
+msgstr "AD 群組類型無法從全域變更為萬用，因為此群組是另一個全域群組的成員。"
+
+#: modules/univention/admin/uexceptions.py:159
+msgid "The AD group type can not be changed from type local to any other type."
+msgstr "AD 群組類型無法從本機類型變更為任何其他類型。"
+
+#: modules/univention/admin/uexceptions.py:175
+msgid "The AD group type can not be changed from universal to global, because the group has another universal group as member."
+msgstr "AD 群組類型無法從萬用變更為全域，因為此群組將另一個萬用群組設為成員。"
+
+#: modules/univention/admin/uexceptions.py:163
+msgid "The AD group type can not be changed to type local."
+msgstr "AD 群組類型無法變更為本機類型。"
+
+#: modules/univention/admin/uexceptions.py:199
+msgid "The DHCP entry for this host should contain the zone DN, the IP address and the MAC address."
+msgstr "此主機的 DHCP 項目應包含區域 DN、IP 位址與 MAC 位址。"
+
+#: modules/univention/admin/uexceptions.py:251
+msgid "The DHCP entry was not found."
+msgstr "找不到 DHCP 項目。"
+
+#: modules/univention/admin/uexceptions.py:203
+msgid "The DNS alias entry for this host should contain the zone name, the alias zone container DN and the alias."
+msgstr "此主機的 DNS 別名項目應包含區域名稱、別名區域容器 DN 與別名。"
+
+#: modules/univention/admin/uexceptions.py:255
+msgid "The DNS entry was not found"
+msgstr "找不到 DNS 項目"
+
+#: modules/univention/admin/uexceptions.py:426
+msgid "The DNS forward entry could not be created. Please remove existing alias records or comparable DNS objects with the same name as this host from the forward zone."
+msgstr "無法建立 DNS 正向項目。請從正向區域移除與此主機同名的既有別名記錄或類似的 DNS 物件。"
+
+#: modules/univention/admin/uexceptions.py:259
+msgid "The FQDN of this object is too long, it must have less than 64 characters."
+msgstr "此物件的 FQDN 太長，必須少於 64 個字元。"
+
+#: modules/univention/admin/uexceptions.py:363
+msgid "The IP range contains its broadcast address. That is not permitted!"
+msgstr "此 IP 範圍包含其廣播位址。這是不被允許的！"
+
+#: modules/univention/admin/uexceptions.py:359
+msgid "The IP range contains its network address. That is not permitted!"
+msgstr "此 IP 範圍包含其網路位址。這是不被允許的！"
+
+#: modules/univention/admin/types.py:334
+msgid "The LDAP DN is invalid."
+msgstr "LDAP DN 無效。"
+
+#: modules/univention/admin/uexceptions.py:219
+msgid "The MAC address is already in use."
+msgstr "MAC 位址已被使用。"
+
+#: modules/univention/admin/allocators.py:185 modules/univention/admin/locking.py:120
+#, python-format
+msgid "The attribute %r could not get locked."
+msgstr "無法鎖定屬性 %r。"
+
+#: modules/univention/admin/locking.py:89
+#, python-format
+msgid "The attribute %r could not get locked. Another process is already trying to acquire the value."
+msgstr "無法鎖定屬性 %r。另一個處理程序已在嘗試取得該值。"
+
+#: modules/univention/admin/allocators.py:246
+#, python-format
+msgid "The attribute %r could not get locked. The value is already in use."
+msgstr "無法鎖定屬性 %r。該值已被使用。"
+
+#: modules/univention/admin/syntax.py:2798
+#, python-format
+msgid "The domain part of the following mail addresses is not in list of configured mail domains: %s"
+msgstr "下列郵件地址的網域部分不在已設定的郵件網域清單中: %s"
+
+#: modules/univention/admin/syntax.py:2854
+#, python-format
+msgid "The domain part of the primary mail address is not in list of configured mail domains: %s"
+msgstr "主要郵件地址的網域部分不在已設定的郵件網域清單中: %s"
+
+#: modules/univention/admin/uexceptions.py:155
+msgid "The gidNumber is already in use as a uidNumber"
+msgstr "此 gidNumber 已被當作 uidNumber 使用"
+
+#: modules/univention/admin/uexceptions.py:215
+msgid "The given IP address is not within the range of the selected network"
+msgstr "所給定的 IP 位址不在所選網路的範圍內"
+
+#: modules/univention/admin/syntax.py:2897
+msgid "The given date does not conform to iso8601, example: \"2009-01-01\"."
+msgstr "所給定的日期不符合 ISO 8601,例如: \"2009-01-01\"。"
+
+#: modules/univention/admin/uexceptions.py:147
+msgid "The groupname is already in use"
+msgstr "此群組名稱已被使用"
+
+#: modules/univention/admin/uexceptions.py:145
+msgid "The groupname is already in use as groupname or as username"
+msgstr "此群組名稱已被當作群組名稱或使用者名稱使用"
+
+#: modules/univention/admin/uexceptions.py:287
+msgid "The license is expired."
+msgstr "授權已過期。"
+
+#: modules/univention/admin/uexceptions.py:291
+msgid "The license is invalid for the current base DN."
+msgstr "授權對目前的 base DN 無效。"
+
+#: modules/univention/admin/uexceptions.py:283
+msgid "The license is invalid."
+msgstr "授權無效。"
+
+#: modules/univention/admin/uexceptions.py:223
+msgid "The mail address is already in use."
+msgstr "郵件地址已被使用。"
+
+#: modules/univention/admin/syntax.py:3103
+msgid "The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: \"0.168.192.in-addr.arpa\") or for IPv6 in nibble format followed by .ip6.arpa (example: \"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")"
+msgstr "IPv4 反向區域的名稱由反轉的子網路位址加上 .in-addr.arpa 組成 (例如 \"0.168.192.in-addr.arpa\"),IPv6 則以半位元組格式加上 .ip6.arpa (例如 \"0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa\")"
+
+#: modules/univention/admin/uexceptions.py:442
+msgid "The object type of this object differs from the specified object type."
+msgstr "此物件的物件類型與指定的物件類型不同。"
+
+#: modules/univention/admin/syntax.py:3659
+#, python-format
+msgid "The package \"%s\" can not be removed as it would uninstall necessary components."
+msgstr "無法移除套件 \"%s\",因為這會解除安裝必要的元件。"
+
+#: modules/univention/admin/syntax.py:2284
+#, python-format
+msgid "The password is too short, at least %d characters needed."
+msgstr "密碼太短，至少需要 %d 個字元。"
+
+#: modules/univention/admin/uexceptions.py:351
+msgid "The password is too short, at least 8 character!"
+msgstr "密碼太短，至少需要 8 個字元！"
+
+#: modules/univention/admin/uexceptions.py:207
+msgid "The provided DNS information are invalid."
+msgstr "提供的 DNS 資訊無效。"
+
+#: modules/univention/admin/uexceptions.py:140
+msgid "The relative ID (SAMBA) is already in use."
+msgstr "相對 ID (SAMBA) 已被使用。"
+
+#: modules/univention/admin/uexceptions.py:247
+msgid "The requested group not be found."
+msgstr "找不到所要求的群組。"
+
+#: modules/univention/admin/syntax.py:3380
+msgid "The reversed host name for IPv4 consists of the reversed host address (example: \"4.3\") or for IPv6 in nibble format (example: \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")."
+msgstr "IPv4 的反向主機名稱由反轉的主機位址組成 (例如 \"4.3\"),IPv6 則以半位元組格式 (例如 \"8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0\")。"
+
+#: modules/univention/admin/uexceptions.py:81
+msgid "The specified size limit for the LDAP search has been exceeded."
+msgstr "已超過 LDAP 搜尋指定的數量上限。"
+
+#: modules/univention/admin/uexceptions.py:77
+msgid "The specified timeout for the LDAP search has been exceeded."
+msgstr "已超過 LDAP 搜尋指定的逾時時間。"
+
+#: modules/univention/admin/uexceptions.py:151
+msgid "The uidNumber is already in use as a gidNumber"
+msgstr "此 uidNumber 已被當作 gidNumber 使用"
+
+#: modules/univention/admin/uexceptions.py:136
+msgid "The username is already in use"
+msgstr "此使用者名稱已被使用"
+
+#: modules/univention/admin/uexceptions.py:134
+msgid "The username is already in use as username or as groupname"
+msgstr "此使用者名稱已被當作使用者名稱或群組名稱使用"
+
+#: modules/univention/admin/blocklist.py:123
+#, python-format
+msgid "The value \"%(value)s\" is blocked for the property \"%(prop)s\"."
+msgstr "值 \"%(value)s\" 已針對屬性 \"%(prop)s\" 封鎖。"
+
+#: modules/univention/admin/syntax.py:1087 modules/univention/admin/syntax.py:1089
+msgid "The value must be a valid UUID1 or UUID4 string."
+msgstr "值必須是有效的 UUID1 或 UUID4 字串。"
+
+#: modules/univention/admin/syntax.py:1068 modules/univention/admin/syntax.py:1117
+#, python-format
+msgid "The value must not be longer than %d characters."
+msgstr "值的長度不可超過 %d 個字元。"
+
+#: modules/univention/admin/uldap.py:138
+msgid "There was no LDAP base specified."
+msgstr "未指定 LDAP base。"
+
+#: modules/univention/admin/uexceptions.py:446
+msgid "There was no valid kerberos realm found."
+msgstr "找不到有效的 kerberos 領域。"
+
+#: modules/univention/admin/uexceptions.py:239
+msgid "This is a primary group."
+msgstr "這是主要群組。"
+
+#: modules/univention/admin/syntax.py:3606
+msgid "This is not a valid MAC address (valid examples are 86:f5:d1:f5:6b:3e, 86-f5-d1-f5-6b-3e, 86f5d1f56b3e, 86f5.d1f5.6b3e)"
+msgstr "這不是有效的 MAC 位址 (有效範例為 86:f5:d1:f5:6b:3e、86-f5-d1-f5-6b-3e、86f5d1f56b3e、86f5.d1f5.6b3e)"
+
+#: modules/univention/admin/syntax.py:2345
+msgid "This is not a valid hostname."
+msgstr "這不是有效的主機名稱。"
+
+#: modules/univention/admin/syntax.py:6754
+msgid "This object is related to a Docker App container"
+msgstr "此物件與一個 Docker App 容器相關"
+
+#: modules/univention/admin/syntax.py:6755
+msgid "This object is synchronized from Active Directory"
+msgstr "此物件是從 Active Directory 同步而來"
+
+#: modules/univention/admin/uexceptions.py:383
+msgid "This operation is not allowed on this object."
+msgstr "此物件不允許執行此操作。"
+
+#: modules/univention/admin/policy.py:81
+msgid "This policy applies only to objects which matches this LDAP filter."
+msgstr "此原則僅套用於符合此 LDAP 篩選器的物件。"
+
+#: modules/univention/admin/syntax.py:7089
+msgid "This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ."
+msgstr "此時間戳記必須為 UTC,並遵循格式 YYYYMMDDHHmmssZ。"
+
+#: modules/univention/admin/syntax.py:5606
+msgid "Thu"
+msgstr "週四"
+
+#: modules/univention/admin/syntax.py:5384
+msgid "Thursday"
+msgstr "星期四"
+
+#: modules/univention/admin/syntax.py:7073
+msgid "Time"
+msgstr "時間"
+
+#: modules/univention/admin/types.py:433
+msgid "Time does not match format \"%H:%M:%S\"."
+msgstr "時間不符合格式 \"%H:%M:%S\"。"
+
+#: modules/univention/admin/syntax.py:7073
+msgid "Timezone"
+msgstr "時區"
+
+#: modules/univention/admin/syntax.py:3579
+msgid "Token-Ring"
+msgstr "Token-Ring"
+
+#: modules/univention/admin/uexceptions.py:339
+msgid "Too many DVS clients"
+msgstr "DVS 用戶端過多"
+
+#: modules/univention/admin/uexceptions.py:335
+msgid "Too many DVS users"
+msgstr "DVS 使用者過多"
+
+#: modules/univention/admin/uexceptions.py:307
+msgid "Too many client accounts"
+msgstr "用戶端帳號過多"
+
+#: modules/univention/admin/uexceptions.py:331
+msgid "Too many corporate clients"
+msgstr "企業用戶端過多"
+
+#: modules/univention/admin/uexceptions.py:311
+msgid "Too many desktop accounts"
+msgstr "桌面帳號過多"
+
+#: modules/univention/admin/uexceptions.py:315
+msgid "Too many groupware accounts"
+msgstr "群組軟體帳號過多"
+
+#: modules/univention/admin/uexceptions.py:327
+msgid "Too many managed clients"
+msgstr "受管用戶端過多"
+
+#: modules/univention/admin/uexceptions.py:323
+msgid "Too many servers"
+msgstr "伺服器過多"
+
+#: modules/univention/admin/uexceptions.py:303
+msgid "Too many user accounts"
+msgstr "使用者帳號過多"
+
+#: modules/univention/admin/uexceptions.py:319
+msgid "Too many users"
+msgstr "使用者過多"
+
+#: modules/univention/admin/syntax.py:6338
+msgid "Translated group name"
+msgstr "已翻譯的群組名稱"
+
+#: modules/univention/admin/syntax.py:6326
+msgid "Translated long description"
+msgstr "已翻譯的詳細說明"
+
+#: modules/univention/admin/syntax.py:6320
+msgid "Translated short description"
+msgstr "已翻譯的簡短說明"
+
+#: modules/univention/admin/syntax.py:6332
+msgid "Translated tab name"
+msgstr "已翻譯的分頁名稱"
+
+#: modules/univention/admin/syntax.py:4948 modules/univention/admin/syntax.py:4972 modules/univention/admin/syntax.py:4991
+msgid "True"
+msgstr "是"
+
+#: modules/univention/admin/syntax.py:5604
+msgid "Tue"
+msgstr "週二"
+
+#: modules/univention/admin/syntax.py:5382
+msgid "Tuesday"
+msgstr "星期二"
+
+#: modules/univention/admin/syntax.py:3627
+msgid "Type"
+msgstr "類型"
+
+#: modules/univention/admin/syntax.py:5904
+msgid "UDM module"
+msgstr "UDM 模組"
+
+#: modules/univention/admin/syntax.py:1646
+msgid "UMCMessageCatalogFilename"
+msgstr "UMCMessageCatalogFilename"
+
+#: modules/univention/admin/syntax.py:5581
+msgid "Universal (Type: Distribution)"
+msgstr "萬用 (類型: 發佈)"
+
+#: modules/univention/admin/syntax.py:5577
+msgid "Universal (Type: Security)"
+msgstr "萬用 (類型: 安全性)"
+
+#: modules/univention/admin/syntax.py:6660
+msgid "Use default of portal"
+msgstr "使用入口網站的預設值"
+
+#: modules/univention/admin/syntax.py:3825 modules/univention/admin/syntax.py:3841 modules/univention/admin/syntax.py:5733 modules/univention/admin/syntax.py:6481
+msgid "User"
+msgstr "使用者"
+
+#: modules/univention/admin/syntax.py:2148 modules/univention/admin/syntax.py:2189
+msgid "Username must only contain numbers, letters and dots!"
+msgstr "使用者名稱只能包含數字、字母與點！"
+
+#: modules/univention/admin/syntax.py:124
+msgid "Usernames must not consist only of numbers!"
+msgstr "使用者名稱不可全部為數字！"
+
+#: modules/univention/admin/certificate.py:157
+msgid "Valid from"
+msgstr "有效期始於"
+
+#: modules/univention/admin/certificate.py:165
+msgid "Valid until"
+msgstr "有效期至"
+
+#: modules/univention/admin/certificate.py:212
+msgid "Validity"
+msgstr "有效期"
+
+#: modules/univention/admin/syntax.py:3314 modules/univention/admin/syntax.py:4798 modules/univention/admin/syntax.py:5992
+msgid "Value"
+msgstr "值"
+
+#: modules/univention/admin/syntax.py:4011
+msgid "Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")"
+msgstr "值由兩個整數以 \"-\" 分隔組成 (例如 \"30-70\")"
+
+#: modules/univention/admin/syntax.py:4004
+msgid "Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768\")"
+msgstr "值由兩個整數以 \"x\" 分隔組成 (例如 \"1024x768\")"
+
+#: modules/univention/admin/uexceptions.py:117
+msgid "Value is required."
+msgstr "此值為必填。"
+
+#: modules/univention/admin/uexceptions.py:109
+msgid "Value may not change."
+msgstr "此值不可變更。"
+
+#: modules/univention/admin/syntax.py:6506
+msgid "Value may not contain other than numbers, letters, underscore (\"_\") and minus (\"-\")!"
+msgstr "此值只能包含數字、字母、底線 (\"_\") 與減號 (\"-\")!"
+
+#: modules/univention/admin/syntax.py:1854
+msgid "Value may not contain whitespace or exclamation mark !"
+msgstr "此值不可包含空白字元或驚嘆號！"
+
+#: modules/univention/admin/syntax.py:1759
+msgid "Value must be 0 or 1"
+msgstr "值必須是 0 或 1"
+
+#: modules/univention/admin/syntax.py:1471
+msgid "Value must be Base64 encoded jpeg."
+msgstr "值必須是 Base64 編碼的 jpeg。"
+
+#: modules/univention/admin/syntax.py:1696
+msgid "Value must be a number!"
+msgstr "值必須是數字！"
+
+#: modules/univention/admin/syntax.py:1828
+msgid "Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!"
+msgstr "值必須是一個整數，後接 GB、MB、KB、B 其中之一，或不接 (等同 B)!"
+
+#: modules/univention/admin/syntax.py:1352 modules/univention/admin/syntax.py:1514
+#, python-format
+msgid "Value must be bzip2 compressed and Base64 encoded: %s"
+msgstr "值必須經 bzip2 壓縮並以 Base64 編碼: %s"
+
+#: modules/univention/admin/syntax.py:1315
+#, python-format
+msgid "Value must be gzip compressed and Base64 encoded: %s"
+msgstr "值必須經 gzip 壓縮並以 Base64 編碼: %s"
+
+#: modules/univention/admin/types.py:167
+#, python-format
+msgid "Value must be of type %s not %s."
+msgstr "值的類型必須是 %s,而非 %s。"
+
+#: modules/univention/admin/syntax.py:1939
+msgid "Value must not contain anything other than digits, letters or dots, must be at least 2 characters long, and start and end with a digit or letter!"
+msgstr "值只能包含數字、字母或點，長度至少 2 個字元，且開頭與結尾必須是數字或字母！"
+
+#: modules/univention/admin/syntax.py:1992
+msgid "Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!"
+msgstr "值只能包含數字、字母、點或空格，長度至少 2 個字元，且開頭與結尾必須是數字或字母！"
+
+#: modules/univention/admin/syntax.py:2014
+msgid "Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!"
+msgstr "值只能包含數字、字母、點、括號、斜線、加號或減號！"
+
+#: modules/univention/admin/syntax.py:2095
+msgid "Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!"
+msgstr "值只能包含數字、字母、點、連字號或底線，長度至少 2 個字元，開頭與結尾必須是數字或字母，且不可為 admin!"
+
+#: modules/univention/admin/syntax.py:3512
+#, python-format
+msgid "Value out of bounds (%d - %d seconds)"
+msgstr "值超出範圍 (%d - %d 秒)"
+
+#: modules/univention/admin/uexceptions.py:121
+msgid "Values do not match."
+msgstr "值不相符。"
+
+#: modules/univention/admin/syntax.py:5992
+msgid "Variable"
+msgstr "變數"
+
+#: modules/univention/admin/certificate.py:173
+msgid "Version"
+msgstr "版本"
+
+#: modules/univention/admin/syntax.py:6636
+msgid "Visible for Admins only"
+msgstr "僅管理員可見"
+
+#: modules/univention/admin/syntax.py:6637
+msgid "Visible for authenticated users"
+msgstr "已驗證使用者可見"
+
+#: modules/univention/admin/syntax.py:6638
+msgid "Visible for everyone"
+msgstr "所有人可見"
+
+#: modules/univention/admin/syntax.py:5605
+msgid "Wed"
+msgstr "週三"
+
+#: modules/univention/admin/syntax.py:5383
+msgid "Wednesday"
+msgstr "星期三"
+
+#: modules/univention/admin/syntax.py:3406
+msgid "Weighting"
+msgstr "權重"
+
+#: modules/univention/admin/syntax.py:5566
+msgid "Well-Known Group"
+msgstr "已知群組"
+
+#: modules/univention/admin/syntax.py:6646
+msgid "White"
+msgstr "白色"
+
+#: modules/univention/admin/syntax.py:3786
+msgid "Write"
+msgstr "寫入"
+
+#: modules/univention/admin/syntax.py:519 modules/univention/admin/syntax.py:6578
+#, python-format
+msgid "Wrong argument count %(val)d; expected %(low)d..%(high)d"
+msgstr "引數數量錯誤 %(val)d;預期 %(low)d..%(high)d"
+
+#: modules/univention/admin/syntax.py:4919 modules/univention/admin/syntax.py:4930
+msgid "Yes"
+msgstr "是"
+
+#: modules/univention/admin/syntax.py:4749
+msgid "Zone of existing host record"
+msgstr "既有主機記錄的區域"
+
+#: modules/univention/admin/syntax.py:5026
+msgid "ad-hoc"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:5359 modules/univention/admin/syntax.py:5380 modules/univention/admin/syntax.py:5396 modules/univention/admin/syntax.py:5436 modules/univention/admin/syntax.py:5500
+msgid "all"
+msgstr "全部"
+
+#: modules/univention/admin/syntax.py:4831 modules/univention/admin/syntax.py:4897
+msgid "allow"
+msgstr "允許"
+
+#: modules/univention/admin/syntax.py:5715
+msgid "asynchronous"
+msgstr "非同步"
+
+#: modules/univention/admin/syntax.py:7035
+msgid "cisco"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:7036
+msgid "computone"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:1889
+msgid "contacts"
+msgstr "連絡人"
+
+#: modules/univention/admin/syntax.py:3439
+msgid "days"
+msgstr "天"
+
+#: modules/univention/admin/syntax.py:4832 modules/univention/admin/syntax.py:4898
+msgid "deny"
+msgstr "拒絕"
+
+#: modules/univention/admin/syntax.py:1888
+msgid "events"
+msgstr "事件"
+
+#: modules/univention/admin/syntax.py:3438
+msgid "hours"
+msgstr "小時"
+
+#: modules/univention/admin/syntax.py:4833
+msgid "ignore"
+msgstr "忽略"
+
+#: modules/univention/admin/syntax.py:5027
+msgid "interim"
+msgstr "期中"
+
+#: modules/univention/admin/syntax.py:1892
+msgid "journals"
+msgstr "日誌"
+
+#: modules/univention/admin/syntax.py:7038
+msgid "juniper"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:7037
+msgid "livingston"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:1887
+msgid "mails"
+msgstr "郵件"
+
+#: modules/univention/admin/syntax.py:7039
+msgid "max40xx"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:3437
+msgid "minutes"
+msgstr "分鐘"
+
+#: modules/univention/admin/syntax.py:539
+#, python-format
+msgid "missing argument %s"
+msgstr "缺少引數 %s"
+
+#: modules/univention/admin/syntax.py:7040
+msgid "multitech"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:7041
+msgid "netserver"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:5028
+msgid "none"
+msgstr "無"
+
+#: modules/univention/admin/syntax.py:1891
+msgid "notes"
+msgstr "備註"
+
+#: modules/univention/admin/syntax.py:5038
+msgid "off"
+msgstr "關閉"
+
+#: modules/univention/admin/syntax.py:5037
+msgid "on"
+msgstr "開啟"
+
+#: modules/univention/admin/syntax.py:7034
+msgid "other"
+msgstr "其他"
+
+#: modules/univention/admin/syntax.py:7042
+msgid "pathras"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:7043
+msgid "patton"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:7044
+msgid "portslave"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:5904
+msgid "property"
+msgstr "屬性"
+
+#: modules/univention/admin/syntax.py:3436
+msgid "seconds"
+msgstr "秒"
+
+#: modules/univention/admin/syntax.py:5714
+msgid "synchronous"
+msgstr "同步"
+
+#: modules/univention/admin/syntax.py:1890
+msgid "tasks"
+msgstr "工作"
+
+#: modules/univention/admin/syntax.py:7045
+msgid "tc"
+msgstr ""
+
+#: modules/univention/admin/syntax.py:1886
+msgid "undefined"
+msgstr "未定義"
+
+#: modules/univention/admin/syntax.py:7046
+msgid "usrhiper"
+msgstr ""

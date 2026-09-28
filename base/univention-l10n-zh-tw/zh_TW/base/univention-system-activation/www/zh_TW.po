@@ -1,0 +1,108 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-activation\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: www/ActivationWizard.js:103
+msgid "%(appliance_name)s Appliance is now activated. Click \"Finish\" to access the management interface (which may take a while)."
+msgstr "%(appliance_name)s Appliance 現已啟用。按一下「Finish」以存取管理介面 (可能需要一些時間)。"
+
+#: www/ActivationWizard.js:71
+#, javascript-format
+msgid "A license file has been sent to <strong class=\"email-address\">%s</strong>. This file is necessary to activate the system. For this, please carry out the following steps: <ol><li>Open the email.</li><li>Save the attachment (ucs.license) on your computer.</li><li>Click the button 'Upload license file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm the selection.</li></ol>Once the activation has been finished your email address will be sent to the app provider. The app provider may contact you."
+msgstr "授權檔案已寄送至 <strong class=\"email-address\">%s</strong>。啟用系統時需要這個檔案。為此，請執行下列步驟: <ol><li>開啟電子郵件。</li><li>將附件 (ucs.license) 儲存到您的電腦。</li><li>按一下「Upload license file」按鈕。</li><li>選擇您剛才儲存的檔案 (ucs.license)。</li><li>確認選擇。</li></ol>啟用完成後，您的電子郵件地址將會傳送給應用程式供應商。應用程式供應商可能會與您聯絡。"
+
+#: www/ActivationWizard.js:68
+msgid "Activation of %(appliance_name)s Appliance"
+msgstr "啟用 %(appliance_name)s Appliance"
+
+#: www/ActivationWizard.js:102
+msgid "Activation successful!"
+msgstr "啟用成功！"
+
+#: www/ActivationWizard.js:261
+msgid "An error has occurred. More information on how to avoid this error can be found <a href=\"https://help.univention.com/t/14544\" target=\"_blank\" rel=\"noreferrer noopener\">in our support database</a>."
+msgstr "發生錯誤。有關如何避免這個錯誤的詳細資訊，請參閱<a href=\"https://help.univention.com/t/14544\" target=\"_blank\" rel=\"noreferrer noopener\">我們的技術支援資料庫</a>。"
+
+#: www/ActivationWizard.js:148 www/ActivationWizard.js:152
+msgid "An unknown error has occurred."
+msgstr "發生不明錯誤。"
+
+#: www/ActivationWizard.js:252
+msgid "An unknown error occurred. It is possible that a browser addon blocks sending the request to \"license.univention.de\". More information how to avoid this error can be found <a href=\"https://help.univention.com/t/7698\" target=\"_blank\" rel=\"noreferrer noopener\">in our support database</a>."
+msgstr "發生不明錯誤。可能是瀏覽器外掛程式封鎖了傳送至「license.univention.de」的要求。有關如何避免這個錯誤的詳細資訊，請參閱<a href=\"https://help.univention.com/t/7698\" target=\"_blank\" rel=\"noreferrer noopener\">我們的技術支援資料庫</a>。"
+
+#: www/ActivationWizard.js:44
+msgid "E-mail address"
+msgstr "電子郵件地址"
+
+#: www/ActivationWizard.js:254
+msgid "Error "
+msgstr "錯誤 "
+
+#: www/ActivationWizard.js:56
+msgid "If you already have a license file you can <a href=\"#upload\">skip this step and upload the license</a>."
+msgstr "如果您已有授權檔案，可以<a href=\"#upload\">忽略這個步驟並上傳授權</a>。"
+
+#: www/ActivationWizard.js:75
+msgid "If you did not receive an email, please check your SPAM directory or <a href=\"#register\"> request the email again</a>."
+msgstr "如果您沒有收到電子郵件，請檢查您的垃圾郵件目錄，或<a href=\"#register\">再次要求寄送電子郵件</a>。"
+
+#: www/ActivationWizard.js:37
+msgid "License request for %(appliance_name)s Appliance"
+msgstr "%(appliance_name)s Appliance 的授權要求"
+
+#: www/ActivationWizard.js:52
+#, javascript-format
+msgid "More details about the activation can be found in the <a href=\"https://docs.software-univention.de/manual/%s/de/central-management-umc/umc.html#central-license\" target=\"_blank\">UCS manual</a>."
+msgstr "有關啟用的詳細資訊，請參閱 <a href=\"https://docs.software-univention.de/manual/%s/de/central-management-umc/umc.html#central-license\" target=\"_blank\">UCS 手冊</a>。"
+
+#: www/ActivationWizard.js:47
+msgid "No valid email address."
+msgstr "電子郵件地址無效。"
+
+#: www/ActivationWizard.js:40
+msgid "Please enter a valid email address in order to activate %(appliance_name)s Appliance. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address."
+msgstr "請輸入有效的電子郵件地址以啟用 %(appliance_name)s Appliance。部署系統時必須進行啟用。在下一個步驟中，您可以上傳已寄送至您電子郵件地址的授權檔案。"
+
+#: www/ActivationWizard.js:118
+msgid "Request activation"
+msgstr "要求啟用"
+
+#: www/main.js:47
+msgid "Switch language"
+msgstr "切換語言"
+
+#: www/ActivationWizard.js:260
+msgid "The following error occurred:"
+msgstr "發生下列錯誤:"
+
+#: www/ActivationWizard.js:287
+msgid "The server is not responding. Please restart the system."
+msgstr "伺服器沒有回應。請重新啟動系統。"
+
+#: www/ActivationWizard.js:81
+msgid "Upload license file"
+msgstr "上傳授權檔案"
+
+#: www/ActivationWizard.js:243
+msgid "[%(appliance_name)s Appliance] Activation Error"
+msgstr "[%(appliance_name)s Appliance] 啟用錯誤"
+
+#: www/ActivationWizard.js:45
+msgid "mail@example.org"
+msgstr ""
+
+#: www/ActivationWizard.js:71
+msgid "your email address"
+msgstr "您的電子郵件地址"

@@ -1,0 +1,32 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-server\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 21 Jun 2026 15:45:57 +0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Favorites"
+msgstr "我的最愛"
+
+msgid "Users"
+msgstr "使用者"
+
+msgid "Devices"
+msgstr "裝置"
+
+msgid "Domain"
+msgstr "網域"
+
+msgid "System"
+msgstr "系統"
+
+msgid "Software"
+msgstr "軟體"

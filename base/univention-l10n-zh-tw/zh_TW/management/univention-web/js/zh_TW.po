@@ -1,0 +1,580 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-web-js\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: js/widgets/MultiInput.js:679
+msgid " (required)"
+msgstr " (必填)"
+
+#: js/tools.js:1926
+msgid "\"${moduleName}\" module"
+msgstr "\"${moduleName}\" 模組"
+
+#: js/widgets/PasswordInputBox.js:47
+msgid "%(label)s (retype)"
+msgstr "%(label)s (再次輸入)"
+
+#: js/widgets/Form.js:648
+msgid "%(label)s: %(message)s"
+msgstr ""
+
+#: js/widgets/Grid.js:1166
+msgid "%(num)d entries of %(total)d selected"
+msgstr "已選取 %(num)d 筆，共 %(total)d 筆"
+
+#: js/widgets/Grid.js:1171
+#, javascript-format
+msgid "%d entries found"
+msgstr "找到 %d 筆"
+
+#: js/widgets/Form.js:640
+msgid "%s (%.1f%)"
+msgstr ""
+
+#: js/widgets/Form.js:628 js/widgets/Form.js:644
+#, javascript-format
+msgid "%s loaded"
+msgstr "%s 已載入"
+
+#: js/widgets/Grid.js:1168
+#, javascript-format
+msgid "1 entry of %d selected"
+msgstr "已選取 1 筆，共 %d 筆"
+
+#: js/hooks/default_menu_entries.js:133
+msgid "<b>Warning</b>: The current session with all opened modules and unsaved settings gets lost and a page reload is done when switching the language."
+msgstr "<b>警告</b>: 切換語言時，目前的工作階段 (含所有已開啟的模組與未儲存的設定) 將會遺失，並會重新載入頁面。"
+
+#: js/tools.js:289
+msgid "A reload of the Univention Management Console is required to use new modules.<br>Currently opened modules may not work properly.<br>Do you want to reload the page?"
+msgstr "需要重新載入 Univention Management Console 才能使用新模組。<br>目前開啟的模組可能無法正常運作。<br>您要重新載入頁面嗎？"
+
+#: js/widgets/CookieBanner.js:35
+msgid "Accept"
+msgstr "接受"
+
+#: js/widgets/UnixAccessRightsExtended.js:74 js/widgets/UnixAccessRights.js:74
+msgid "Access"
+msgstr "存取"
+
+#: js/widgets/Calendar.js:181
+msgid "Action"
+msgstr "動作"
+
+#: js/widgets/Grid.js:947
+msgid "Actions"
+msgstr "動作"
+
+#: js/widgets/MultiObjectSelect.js:74 js/widgets/MultiObjectSelect.js:302
+msgid "Add"
+msgstr "新增"
+
+#: js/widgets/MultiObjectSelect.js:234
+msgid "Add objects"
+msgstr "新增物件"
+
+#: js/hooks/default_menu_entries.js:350
+msgid "Advantages of the Enterprise Edition"
+msgstr "Enterprise Edition 的優勢"
+
+#: js/tools.js:1176
+msgid "An assert statement failed"
+msgstr "assert 陳述式失敗"
+
+#: js/tools.js:671 js/tools.js:974
+msgid "An error occurred"
+msgstr "發生錯誤"
+
+#: js/tools.js:677
+msgid "An error occurred while connecting to the server, please try again later."
+msgstr "連線至伺服器時發生錯誤，請稍後再試。"
+
+#: js/widgets/ProgressBar.js:158
+msgid "An error occurred: "
+msgstr "發生錯誤: "
+
+#: js/tools.js:674
+#, javascript-format
+msgid "An unknown error with status code %s occurred while connecting to the server, please try again later."
+msgstr "連線至伺服器時發生狀態碼為 %s 的不明錯誤，請稍後再試。"
+
+#: js/widgets/Wizard.js:139
+msgid "Back"
+msgstr "返回"
+
+#: js/hooks/default_menu_entries.js:243
+msgid "Back to start site"
+msgstr "回到首頁"
+
+#: js/hooks/default_menu_entries.js:329
+msgid "Buy support package"
+msgstr "購買技術支援方案"
+
+#: js/dialog.js:278 js/tools.js:291 js/widgets/Wizard.js:154 js/widgets/MultiObjectSelect.js:62 js/hooks/default_menu_entries.js:135
+msgid "Cancel"
+msgstr "取消"
+
+#: js/hooks/default_menu_entries.js:83
+msgid "Certificate revocation list"
+msgstr "憑證撤銷清單"
+
+#: js/hooks/default_menu_entries.js:57
+msgid "Certificates"
+msgstr "憑證"
+
+#: js/hooks/default_menu_entries.js:142
+msgid "Changing language"
+msgstr "正在切換語言"
+
+#: js/tools.js:943 js/widgets/Module.js:160 js/hooks/default_menu_entries.js:360
+msgid "Close"
+msgstr "關閉"
+
+#: js/dialog.js:231 js/dialog.js:287
+msgid "Confirmation"
+msgstr "確認"
+
+#: js/widgets/CookieBanner.js:31
+msgid "Cookie Settings"
+msgstr "Cookie 設定"
+
+#: js/tools.js:777
+msgid "Could not fulfill the request."
+msgstr "無法完成請求。"
+
+#: js/widgets/Grid.js:1273
+msgid "Could not load search results"
+msgstr "無法載入搜尋結果"
+
+#: js/tools.js:787
+msgid "Could not process the request."
+msgstr "無法處理請求。"
+
+#: js/hooks/default_menu_entries.js:372
+msgid "Do not show this notification again"
+msgstr "不再顯示此通知"
+
+#: js/widgets/Calendar.js:162
+msgid "End"
+msgstr ""
+
+#: js/widgets/Calendar.js:165
+msgid "Enter"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:206
+msgid "Feedback"
+msgstr "意見回饋"
+
+#: js/widgets/ProgressBar.js:130
+msgid "Fetching information from the server failed!"
+msgstr "從伺服器擷取資訊失敗！"
+
+#: js/widgets/Wizard.js:150
+msgid "Finish"
+msgstr "完成"
+
+#: js/widgets/UnixAccessRightsExtended.js:54 js/widgets/UnixAccessRights.js:54
+msgid "Group"
+msgstr "群組"
+
+#: js/tools.js:885
+#, javascript-format
+msgid "HTTP Error %s"
+msgstr "HTTP 錯誤 %s"
+
+#: js/hooks/default_menu_entries.js:345
+msgid "Hard- and software certifications"
+msgstr "硬體與軟體認證"
+
+#: js/hooks/default_menu_entries.js:161
+msgid "Help"
+msgstr "說明"
+
+#: js/tools.js:922
+msgid "Hide server error message"
+msgstr "隱藏伺服器錯誤訊息"
+
+#: js/widgets/Calendar.js:159
+msgid "Home"
+msgstr "首頁"
+
+#: js/tools.js:964
+msgid "Inform vendor"
+msgstr "通知廠商"
+
+#: js/tools.js:397
+msgid "Information"
+msgstr "資訊"
+
+#: js/tools.js:985
+msgid "Information about the error will be sent to the vendor along with some data about the operating system."
+msgstr "錯誤的相關資訊將連同部分作業系統資料一併傳送給廠商。"
+
+#: js/tools.js:788
+msgid "Internal module error: The initialization of the module caused a fatal error."
+msgstr "內部模組錯誤: 模組初始化時發生嚴重錯誤。"
+
+#: js/tools.js:784
+msgid "Internal server error."
+msgstr "內部伺服器錯誤。"
+
+#: js/tools.js:785
+msgid "Internal server error: The service is temporarily not available."
+msgstr "內部伺服器錯誤: 服務暫時無法使用。"
+
+#: js/widgets/Calendar.js:180
+msgid "Key"
+msgstr "金鑰"
+
+#: js/widgets/LoginButton.js:17 js/widgets/LoginButton.js:30 js/hooks/default_menu_entries.js:259 js/menu/Menu.js:93
+msgid "Login"
+msgstr "登入"
+
+#: js/tools.js:121
+msgid "Login call lasted too long. Please visit the <a href=\"https://help.univention.com/t/draft-login-call-lasted-too-long/19031\", target=\"_blank\">Help</a> to check for possible causes."
+msgstr "登入呼叫耗時過久。請前往 <a href=\"https://help.univention.com/t/draft-login-call-lasted-too-long/19031\", target=\"_blank\">說明</a> 查看可能的原因。"
+
+#: js/widgets/LoginButton.js:30 js/hooks/default_menu_entries.js:271 js/menu/Menu.js:94
+msgid "Logout"
+msgstr "登出"
+
+#: js/hooks/default_menu_entries.js:346
+msgid "Manufacturer warranty with product liability"
+msgstr "含產品責任的製造商保固"
+
+#: js/menu/Menu.js:178
+msgid "Menu"
+msgstr "選單"
+
+#: js/widgets/Calendar.js:145
+msgid "Move between date cells"
+msgstr "在日期格之間移動"
+
+#: js/widgets/Calendar.js:160
+msgid "Move to first day in month"
+msgstr "移至當月第一天"
+
+#: js/widgets/Calendar.js:163
+msgid "Move to last day in month"
+msgstr "移至當月最後一天"
+
+#: js/widgets/Calendar.js:148
+msgid "Move to same day in next month"
+msgstr "移至下個月的同一天"
+
+#: js/widgets/Calendar.js:154
+msgid "Move to same day in next year"
+msgstr "移至明年的同一天"
+
+#: js/widgets/Calendar.js:151
+msgid "Move to same day in previous month"
+msgstr "移至上個月的同一天"
+
+#: js/widgets/Calendar.js:157
+msgid "Move to same day in previous year"
+msgstr "移至去年的同一天"
+
+#: js/widgets/MultiInput.js:54
+msgid "New entry"
+msgstr "新項目"
+
+#: js/widgets/Wizard.js:145
+msgid "Next"
+msgstr "下一步"
+
+#: js/widgets/Grid.js:1175
+msgid "No entries could be found"
+msgstr "找不到任何項目"
+
+#: js/widgets/NotificationsButton.js:237
+msgid "No notifications"
+msgstr "沒有通知"
+
+#: js/dialog.js:74 js/dialog.js:121 js/dialog.js:147
+msgid "Notification"
+msgstr "通知"
+
+#: js/widgets/NotificationsButton.js:214 js/widgets/NotificationsButton.js:239
+msgid "Notifications"
+msgstr "通知"
+
+#: js/dialog.js:124
+msgid "Ok"
+msgstr "確定"
+
+#: js/widgets/UnixAccessRightsExtended.js:55 js/widgets/UnixAccessRights.js:55
+msgid "Others"
+msgstr "其他"
+
+#: js/widgets/UnixAccessRightsExtended.js:53 js/widgets/UnixAccessRights.js:53
+msgid "Owner"
+msgstr "擁有者"
+
+#: js/widgets/Calendar.js:147 js/widgets/Calendar.js:150 js/widgets/Calendar.js:153 js/widgets/Calendar.js:156
+msgid "Page"
+msgstr ""
+
+#: js/widgets/Grid.js:226
+msgid "Please perform a search"
+msgstr "請執行搜尋"
+
+#: js/tools.js:905
+msgid "Please take a second to provide the following information:"
+msgstr "請花一點時間提供以下資訊:"
+
+#: js/hooks/default_menu_entries.js:351
+msgid "Prices and support"
+msgstr "價格與技術支援"
+
+#: js/widgets/UnixAccessRightsExtended.js:66 js/widgets/UnixAccessRights.js:66
+msgid "Read"
+msgstr "讀取"
+
+#: js/tools.js:297
+msgid "Reload"
+msgstr "重新載入"
+
+#: js/tools.js:997
+msgid "Remarks (e.g. steps to reproduce) (optional)"
+msgstr "備註 (例如重現步驟) (選填)"
+
+#: js/widgets/Uploader.js:107 js/widgets/MultiUploader.js:42 js/widgets/MultiObjectSelect.js:330
+msgid "Remove"
+msgstr "移除"
+
+#: js/widgets/MultiInput.js:537
+msgid "Remove entry"
+msgstr "移除項目"
+
+#: js/hooks/default_menu_entries.js:69
+msgid "Root certificate"
+msgstr "根憑證"
+
+#: js/widgets/MultiObjectSelect.js:141
+msgid "Search results:"
+msgstr "搜尋結果:"
+
+#: js/widgets/LiveSearch.js:21
+msgid "Search term"
+msgstr "搜尋關鍵字"
+
+#: js/widgets/MultiSelect.js:45
+msgid "Select all"
+msgstr "全選"
+
+#: js/widgets/ImageUploader.js:42
+msgid "Select file"
+msgstr "選擇檔案"
+
+#: js/widgets/Calendar.js:166
+msgid "Select the date"
+msgstr "選擇日期"
+
+#: js/tools.js:918
+msgid "Send as email"
+msgstr "以電子郵件傳送"
+
+#: js/tools.js:981
+msgid "Send to vendor"
+msgstr "傳送給廠商"
+
+#: js/tools.js:1008
+msgid "Sending the information to the vendor failed"
+msgstr "將資訊傳送給廠商失敗"
+
+#: js/tools.js:671
+msgid "Server error message:"
+msgstr "伺服器錯誤訊息:"
+
+#: js/widgets/UnixAccessRightsExtended.js:80
+msgid "Setgid"
+msgstr ""
+
+#: js/tools.js:989
+msgid "Show error message"
+msgstr "顯示錯誤訊息"
+
+#: js/tools.js:923
+msgid "Show server error message"
+msgstr "顯示伺服器錯誤訊息"
+
+#: js/tools.js:382
+msgid "So far, the connection to the server could not be established after {time} seconds. This can be a normal behavior. In any case, the process will continue to establish the connection."
+msgstr "目前已經過 {time} 秒仍無法與伺服器建立連線。這可能是正常情況。無論如何，系統將繼續嘗試建立連線。"
+
+#: js/widgets/Calendar.js:165
+msgid "Space"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:348
+msgid "Starting at <b>290.- Euro/year</b> you can purchase a UCS Enterprise Edition. This license allows you to benefit from basic support services as well as individually bookable, additional support and professional services."
+msgstr "您可以用 <b>每年 290 歐元起</b> 的價格購買 UCS Enterprise Edition。此授權讓您享有基本支援服務，以及可單獨選購的額外支援與專業服務。"
+
+#: js/widgets/UnixAccessRightsExtended.js:81
+msgid "Sticky bit"
+msgstr ""
+
+#: js/dialog.js:282
+msgid "Submit"
+msgstr "送出"
+
+#: js/hooks/default_menu_entries.js:343
+msgid "Support and Professional Services"
+msgstr "技術支援與專業服務"
+
+#: js/hooks/default_menu_entries.js:115 js/hooks/default_menu_entries.js:138
+msgid "Switch language"
+msgstr "切換語言"
+
+#: js/tools.js:1006
+msgid "Thank you for your help"
+msgstr "感謝您的協助"
+
+#: js/widgets/Uploader.js:228
+msgid "The following files cannot be uploaded because they exceed the maximum file size:"
+msgstr "下列檔案因超過檔案大小上限而無法上傳:"
+
+#: js/widgets/Uploader.js:230
+#, javascript-format
+msgid "The maximum size of a file is %.1f MB."
+msgstr "檔案大小上限為 %.1f MB。"
+
+#: js/widgets/PasswordInputBox.js:98
+msgid "The passwords do not match, please retype again."
+msgstr "兩次輸入的密碼不一致，請重新輸入。"
+
+#: js/tools.js:288
+msgid "UMC reload required"
+msgstr "需要重新載入 UMC"
+
+#: js/hooks/default_menu_entries.js:228
+msgid "Univention Blog"
+msgstr "Univention 部落格"
+
+#: js/hooks/default_menu_entries.js:193
+msgid "Univention Forum \"Help\""
+msgstr "Univention 論壇「說明」"
+
+#: js/hooks/default_menu_entries.js:180
+msgid "Univention Website"
+msgstr "Univention 網站"
+
+#: js/hooks/default_menu_entries.js:344
+msgid "Up to 7 years of maintenance (LTS)"
+msgstr "長達 7 年的維護 (LTS)"
+
+#: js/widgets/InfoUploader.js:19 js/widgets/Uploader.js:91 js/widgets/MultiUploader.js:39
+msgid "Upload"
+msgstr "上傳"
+
+#: js/widgets/Uploader.js:366
+msgid "Uploading..."
+msgstr "正在上傳..."
+
+#: js/widgets/MultiUploader.js:217
+msgid "Uploading... %(current)d of %(total)d files remaining."
+msgstr "正在上傳... 還剩 %(current)d / %(total)d 個檔案。"
+
+#: js/hooks/default_menu_entries.js:40
+msgid "User settings"
+msgstr "使用者設定"
+
+#: js/tools.js:782
+msgid "Validation error"
+msgstr "驗證錯誤"
+
+#: js/dialog.js:89
+msgid "Warning"
+msgstr "警告"
+
+#: js/widgets/CookieBanner.js:32
+msgid "We use cookies in order to provide you with certain functions and to be able to guarantee an unrestricted service. By clicking on \"Accept\", you consent to the collection of information on this portal."
+msgstr "我們使用 cookie 以提供特定功能並確保服務不受限制。按一下「接受」即表示您同意在此入口網站收集資訊。"
+
+#: js/tools.js:781
+msgid "Webfrontend error: The specified request is unknown."
+msgstr "Web 前端錯誤: 指定的請求未知。"
+
+#: js/widgets/UnixAccessRightsExtended.js:70 js/widgets/UnixAccessRights.js:70
+msgid "Write"
+msgstr "寫入"
+
+#: js/tools.js:779
+msgid "You are not authorized to perform this action."
+msgstr "您無權執行此動作。"
+
+#: js/tools.js:1010
+msgid "You can also send the information via mail:"
+msgstr "您也可以透過郵件傳送此資訊:"
+
+#: js/hooks/default_menu_entries.js:349
+msgid "You can extend the maintenance for your UCS version to up to 7 years and thanks to certifications and manufacturer warranty you are legally secured when operating your IT infrastructure."
+msgstr "您可以將 UCS 版本的維護延長至最多 7 年，並透過認證與製造商保固，在營運 IT 基礎架構時獲得法律保障。"
+
+#: js/tools.js:2139
+msgid "Your browser is outdated! You may experience performance issues and other problems when using this site. The supported Browsers are Firefox (>=60), Chrome (>=71), Edge (>=18), Safari (>=12)."
+msgstr "您的瀏覽器版本過舊！使用本網站時，您可能會遇到效能問題與其他狀況。支援的瀏覽器為 Firefox (>=60)、Chrome (>=71)、Edge (>=18)、Safari (>=12)。"
+
+#: js/tools.js:1001
+msgid "Your email address (optional)"
+msgstr "您的電子郵件地址 (選填)"
+
+#: js/tools.js:778
+msgid "Your session has expired, please login again."
+msgstr "您的工作階段已過期，請重新登入。"
+
+#: js/tools.js:908
+msgid "actual result"
+msgstr "實際結果"
+
+#: js/tools.js:907
+msgid "expected result"
+msgstr "預期結果"
+
+#: js/hooks/default_menu_entries.js:194
+msgid "https://help.univention.com/"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:181
+msgid "https://www.univention.com/"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:215
+msgid "https://www.univention.com/feedback/"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:229
+msgid "https://www.univention.com/news/blog-en/"
+msgstr ""
+
+#: js/hooks/default_menu_entries.js:333 js/hooks/default_menu_entries.js:377
+msgid "https://www.univention.com/products/prices-and-subscriptions/"
+msgstr ""
+
+#: js/widgets/MailBox.js:24
+msgid "mail@example.org"
+msgstr ""
+
+#: js/widgets/Grid.js:900
+msgid "more"
+msgstr "更多"
+
+#: js/tools.js:906
+msgid "steps to reproduce the failure"
+msgstr "重現失敗的步驟"
+
+#: js/widgets/ProgressBar.js:160
+msgid "{number} errors occurred: "
+msgstr "發生 {number} 個錯誤: "

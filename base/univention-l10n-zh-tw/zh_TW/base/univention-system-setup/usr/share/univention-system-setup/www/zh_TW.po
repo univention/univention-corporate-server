@@ -1,0 +1,855 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-system-setup\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:303
+#, javascript-format
+msgid "%s Appliance"
+msgstr "%s Appliance"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2002
+#, javascript-format
+msgid "%s Appliance has been successfully set up."
+msgstr "%s Appliance 已成功設定完成。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1142
+#, javascript-format
+msgid "%s GiB"
+msgstr "%s GiB"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1140
+#, javascript-format
+msgid "%s MiB"
+msgstr "%s MiB"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:440
+msgid "(Request address again)"
+msgstr "( 重新要求位址 )"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:549
+msgid "(configure proxy settings)"
+msgstr "( 設定 Proxy )"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1551
+msgid "<b>Unknown</b>"
+msgstr "<b>未知</b>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:404
+msgid "<b>Warning:</b> Not enough available memory"
+msgstr "<b>警告:</b> 可用記憶體不足"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2018
+msgid "<p>Click on <i>Finish</i> for putting UCS into operation.</p>"
+msgstr "<p>按一下 <i>完成</i> 即可讓 UCS 開始運作。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2009
+msgid "<p>Click on <i>Finish</i> for putting this system into operation.</p>"
+msgstr "<p>按一下 <i>完成</i> 即可讓本系統開始運作。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2007
+msgid "<p>Click on <i>Finish</i> to conclude the installation. The system will be prepared for the first boot procedure and will be rebooted afterwards.</p>"
+msgstr "<p>按一下 <i>完成</i> 以結束安裝。系統將為首次開機程序進行準備，之後會重新啟動。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:952
+msgid "<p>Enter the name of your organization and an e-mail address to activate UCS.</p>"
+msgstr "<p>輸入您的組織名稱及一組電子郵件位址以啟用 UCS。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:309
+#, javascript-format
+msgid "<p>Enter the name of your organization, an e-mail address to activate %s Appliance and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>"
+msgstr "<p>輸入您的組織名稱、一組用於啟用 %s Appliance 的電子郵件位址，以及您 <i>Administrator</i> 帳號的密碼。</p><p>此密碼為必填，將同時用於網域 Administrator 以及本機超級使用者 <i>root</i>。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:299
+msgid "<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>"
+msgstr "<p>輸入您的組織名稱、一組用於啟用 UCS 的電子郵件位址，以及您 <i>Administrator</i> 帳號的密碼。</p><p>此密碼為必填，將同時用於網域 Administrator 以及本機超級使用者 <i>root</i>。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2639
+#, javascript-format
+msgid "<p>One or more network interfaces could not obtain an IP address via DHCP. These interfaces will use automatic generated private addresses instead (APIPA).</p> <ul> %s </ul> <p>Please adjust your DHCP settings or confirm use of private address(es).</p>"
+msgstr "<p>有一個或多個網路介面無法透過 DHCP 取得 IP 位址。這些介面將改用自動產生的私人位址 ( APIPA )。</p> <ul> %s </ul> <p>請調整您的 DHCP 設定，或確認使用私人位址。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:827
+msgid "<p>Select UCS software components for installation on this system. This step can be skipped; the components are also available in the Univention App Center in the category <i>UCS components</i>.</p><p>Third-party software (e.g., groupware) is also available through the Univention App Center.</p>"
+msgstr "<p>選擇要安裝至本系統的 UCS 軟體元件。此步驟可略過；這些元件在 Univention App Center 的 <i>UCS components</i> 分類中也可取得。</p><p>第三方軟體 ( 例如群組軟體 ) 同樣可透過 Univention App Center 取得。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2964
+#, javascript-format
+msgid "<p>The hostname <i>%s</i> is longer than 15 characters.</p><p>It will not be possible to install an Active Directory compatible Domaincontroller (Samba 4) or UCS@school. The hostname cannot be changed after the installation of %s. It is recommended to shorten the hostname to maximal 15 characters.</p>"
+msgstr "<p>主機名稱 <i>%s</i> 超過 15 個字元。</p><p>將無法安裝與 Active Directory 相容的 Domaincontroller ( Samba 4 ) 或 UCS@school。主機名稱在 %s 安裝完成後即無法變更。建議將主機名稱縮短至最多 15 個字元。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2014
+msgid "<p>When accessing the system for the first time, you will be asked to request and upload a new license.</p>"
+msgstr "<p>首次存取本系統時，將要求您索取並上傳新的授權。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2012
+msgid "<p>When accessing the system for the first time, you will be asked to upload a new license that has been sent to your email account.</p>"
+msgstr "<p>首次存取本系統時，將要求您上傳已寄送至您電子郵件帳號的新授權。</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2647
+msgid "<p>With the current settings <b> no </b> internet access is available.</p><p>Because of this some functions like the App Center or software-updates will not be accessible</p>"
+msgstr "<p>以目前的設定 <b> 無法 </b> 連上網際網路。</p><p>因此 App Center 或軟體更新等部分功能將無法使用</p>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1549
+#, javascript-format
+msgid "<tr><td>City:</td><td>%s</td></tr>"
+msgstr "<tr><td>城市:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1569
+#, javascript-format
+msgid "<tr><td>Default locale:</td><td>%s</td></tr>"
+msgstr "<tr><td>預設地區設定:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1598
+#, javascript-format
+msgid "<tr><td>Keyboard layout:</td><td>%s</td></tr>"
+msgstr "<tr><td>鍵盤配置:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1552
+#, javascript-format
+msgid "<tr><td>Timezone:</td><td>%s</td></tr>"
+msgstr "<tr><td>時區:</td><td>%s</td></tr>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:608
+msgid "A Backup Directory Node is the fallback system for the UCS Primary Directory Node and can take over the role of the Primary Directory Node permanently. It is recommended to use at least one Backup Directory Node in the domain."
+msgstr "備份目錄節點是 UCS 主要目錄節點的備援系統，並可永久接管主要目錄節點的角色。建議在網域中至少使用一個備份目錄節點。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:311
+msgid "A few questions are needed to complete the configuration process."
+msgstr "需要回答幾個問題以完成設定程序。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1752
+msgid "A new UCS domain will be created."
+msgstr "將建立一個新的 UCS 網域。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:307
+msgid "A new domain directory is created on this system. User and management data are stored locally."
+msgstr "本系統將建立一個新的網域目錄。使用者與管理資料儲存於本機。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1754
+msgid "A preconfigured test domain will be instantiated."
+msgstr "將執行個體化一個預先設定的測試網域。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2820
+msgid "A previous UCS system has already joined into the Active Directory domain. Please make sure the system \"%(ucs_master_fqdn)s\" is reachable via SSH. If you continue with \"Replace system\" the registration of the previous UCS system will be removed."
+msgstr "先前的 UCS 系統已加入 Active Directory 網域。請確認系統 \"%(ucs_master_fqdn)s\" 可透過 SSH 連線。若您以「取代系統」繼續，先前 UCS 系統的註冊將被移除。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1116
+msgid "A proxy address needs to be specified in the format: <i>http://proxy.mydomain.intranet:3128</i><br/>Proxy access with username and password may be specified via the format: <i>http://username:password@proxy.mydomain.intranet:3128</i>"
+msgstr "Proxy 位址需以下列格式指定: <i>http://proxy.mydomain.intranet:3128</i><br/>使用使用者名稱與密碼的 Proxy 存取可透過下列格式指定: <i>http://username:password@proxy.mydomain.intranet:3128</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1109
+msgid "A valid e-mail address allows to activate the UCS system for using the Univention App Center. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console."
+msgstr "有效的電子郵件位址可啟用 UCS 系統以使用 Univention App Center。此位址可現在指定，也可稍後再指定。屆時將寄送一封含有個人化授權金鑰的電子郵件至您的電子郵件位址。此授權可透過 Univention Management Console 中的授權對話方塊上傳。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1107
+#, javascript-format
+msgid "A valid e-mail address is required to activate %s Appliance. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded after the setup process."
+msgstr "啟用 %s Appliance 需要有效的電子郵件位址。此位址可現在指定，也可稍後再指定。屆時將寄送一封含有個人化授權金鑰的電子郵件至您的電子郵件位址。此授權可於設定程序完成後上傳。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:627 usr/share/univention-system-setup/www/ApplianceWizard.js:1786
+msgid "Account information"
+msgstr "帳號資訊"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:663
+msgid "Active Directory join information"
+msgstr "Active Directory 加入資訊"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1608
+msgid "Adapt settings"
+msgstr "調整設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1817
+msgid "Address configuration"
+msgstr "位址設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1826
+#, javascript-format
+msgid "Address for %s"
+msgstr "%s 的位址"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:668
+msgid "Address of Active Directory domain controller or name of Active Directory domain"
+msgstr "Active Directory 網域控制站的位址或 Active Directory 網域的名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2967
+msgid "Adjust hostname"
+msgstr "調整主機名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1666 usr/share/univention-system-setup/www/ApplianceWizard.js:2669 usr/share/univention-system-setup/www/ApplianceWizard.js:2695 usr/share/univention-system-setup/www/ApplianceWizard.js:2807
+msgid "Adjust settings"
+msgstr "調整設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:542
+msgid "Alternate DNS server"
+msgstr "替代 DNS 伺服器"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1930 usr/share/univention-system-setup/www/ApplianceWizard.js:1938
+msgid "Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console."
+msgstr "或者，您可以按一下 <i>完成</i> 按鈕以離開精靈，並透過 Univention Management Console 解決上述問題。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2314
+msgid "At least one network device needs to be properly configured."
+msgstr "至少需要正確設定一個網路裝置。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1145
+msgid "At least {memory_min} RAM is required for the installation of {product_name}."
+msgstr "安裝 {product_name} 至少需要 {memory_min} 的 RAM。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:607 usr/share/univention-system-setup/www/ApplianceWizard.js:1757
+msgid "Backup Directory Node"
+msgstr "備份目錄節點"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2653 usr/share/univention-system-setup/www/ApplianceWizard.js:2821 usr/share/univention-system-setup/www/ApplianceWizard.js:2991
+msgid "Cancel"
+msgstr "取消"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:821
+msgid "Central server"
+msgstr "中央伺服器"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:800
+msgid "Choose which role this server is supposed to take in your UCS@school domain."
+msgstr "選擇此伺服器在您的 UCS@school 網域中應擔任的角色。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:345
+msgid "Choose your language"
+msgstr "選擇您的語言"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:373
+msgid "Choose your system's localization settings."
+msgstr "選擇您系統的在地化設定。"
+
+#: usr/share/univention-system-setup/www/main.js:193
+msgid "Close"
+msgstr "關閉"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1316
+msgid "Configure system"
+msgstr "設定系統"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:297
+msgid "Configure this system as first system for the new domain. Additional systems can join the domain later."
+msgstr "將本系統設定為新網域的第一個系統。其他系統可於稍後加入該網域。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:839
+msgid "Confirm configuration settings"
+msgstr "確認組態設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1934
+msgid "Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet created a new UCS domain:"
+msgstr "以使用者 <b>Administrator</b> 或使用者 <b>root</b> ( 若系統尚未建立新的 UCS 網域 ) 連線至本系統上的 Univention Management Console:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1942
+msgid "Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet joined the domain:"
+msgstr "以使用者 <b>Administrator</b> 或使用者 <b>root</b> ( 若系統尚未加入網域 ) 連線至本系統上的 Univention Management Console:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2970 usr/share/univention-system-setup/www/ApplianceWizard.js:2994
+msgid "Continue"
+msgstr "繼續"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2644
+msgid "Continue with 169.254.*.* addresse(s)"
+msgstr "使用 169.254.*.* 位址繼續"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1669
+msgid "Continue with duplicate hostname"
+msgstr "使用重複的主機名稱繼續"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2810
+msgid "Continue with incomplete settings"
+msgstr "使用不完整的設定繼續"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2699
+msgid "Continue without access to the repository servers"
+msgstr "在無法存取軟體庫伺服器的情況下繼續"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2650 usr/share/univention-system-setup/www/ApplianceWizard.js:2672
+msgid "Continue without internet access"
+msgstr "在無網際網路連線的情況下繼續"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1146
+msgid "Continuing the installation might lead to a non-functional system."
+msgstr "繼續安裝可能會導致系統無法運作。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:296
+msgid "Create a new UCS domain"
+msgstr "建立新的 UCS 網域"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1079
+msgid "DHCP query failed."
+msgstr "DHCP 查詢失敗。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1836
+msgid "DNS server"
+msgstr "DNS 伺服器"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:377
+msgid "Default system locale"
+msgstr "預設系統地區設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1794
+msgid "Domain and host configuration"
+msgstr "網域與主機設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:424
+msgid "Domain and network configuration"
+msgstr "網域與網路設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:684
+msgid "Domain join information"
+msgstr "網域加入資訊"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:747
+msgid "Domain name"
+msgstr "網域名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:563
+msgid "Domain setup"
+msgstr "網域設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:308
+#, javascript-format
+msgid "E-mail address to activate %s Appliance"
+msgstr "用於啟用 %s Appliance 的電子郵件位址"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:298 usr/share/univention-system-setup/www/ApplianceWizard.js:1690 usr/share/univention-system-setup/www/ApplianceWizard.js:1789
+msgid "E-mail address to activate UCS"
+msgstr "用於啟用 UCS 的電子郵件位址"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:358
+msgid "Enter a city nearby to preconfigure settings such as timezone, system language, keyboard layout."
+msgstr "輸入鄰近的城市以預先設定時區、系統語言、鍵盤配置等設定。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:664 usr/share/univention-system-setup/www/ApplianceWizard.js:685
+msgid "Enter name and password of a user account which is authorised to join a system into this domain."
+msgstr "輸入有權將系統加入此網域的使用者帳號名稱與密碼。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1931
+msgid "Failed join scripts can be executed via the UMC module <i>Domain join</i>."
+msgstr "失敗的加入指令碼可透過 UMC 模組 <i>網域加入</i> 執行。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1939
+msgid "Failed join scripts or a new join of the system can be executed via the UMC module <i>Domain join</i>."
+msgstr "失敗的加入指令碼或系統的重新加入可透過 UMC 模組 <i>網域加入</i> 執行。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:570
+msgid "Fast demo configuration"
+msgstr "快速示範設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:654
+msgid "Fill in the password for the system administrator user <b>root</b> and the domain administrative user account <b>Administrator</b>."
+msgstr "為系統管理員使用者 <b>root</b> 與網域管理使用者帳號 <b>Administrator</b> 填入密碼。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1319 usr/share/univention-system-setup/www/ApplianceWizard.js:1322
+msgid "Finish"
+msgstr "完成"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1113
+msgid "For a specified host name, the domain name is automatically derived from the domain name server. A fully qualified domain may be necessary for mail server setups with differing domains.<br/>Note that the domain name <b>cannot</b> be changed after the UCS setup wizard has been completed."
+msgstr "對於指定的主機名稱，網域名稱會自動由網域名稱伺服器推導取得。對於採用不同網域的郵件伺服器設定，可能需要完整網域。<br/>請注意，網域名稱在 UCS 設定精靈完成後即 <b>無法</b> 變更。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1147
+msgid "For further information please look at https://help.univention.com/t/13595."
+msgstr "如需進一步資訊，請參閱 https://help.univention.com/t/13595。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2258
+msgid "For this system, a computer object already exists in the LDAP directory that has been configured for the role &quot;<i>school server in the administration network</i>&quot; and thus contradicts your selection. Please check and correct this before proceeding."
+msgstr "針對本系統，LDAP 目錄中已存在一個電腦物件，其角色已設定為 &quot;<i>管理網路中的學校伺服器</i>&quot;，因此與您的選擇衝突。請於繼續前檢查並修正此問題。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2261
+msgid "For this system, a computer object already exists in the LDAP directory that was configured for the role &quot;<i>school server in the educational network</i>&quot; and thus contradicts your selection. Please check and correct this before proceeding."
+msgstr "針對本系統，LDAP 目錄中已存在一個電腦物件，其角色已設定為 &quot;<i>教育網路中的學校伺服器</i>&quot;，因此與您的選擇衝突。請於繼續前檢查並修正此問題。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:760 usr/share/univention-system-setup/www/ApplianceWizard.js:1708 usr/share/univention-system-setup/www/ApplianceWizard.js:1801 usr/share/univention-system-setup/www/ApplianceWizard.js:1805 usr/share/univention-system-setup/www/ApplianceWizard.js:1809
+msgid "Fully qualified domain name"
+msgstr "完整網域名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:530 usr/share/univention-system-setup/www/ApplianceWizard.js:1828
+msgid "Gateway"
+msgstr "閘道"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:555 usr/share/univention-system-setup/www/ApplianceWizard.js:1840
+msgid "HTTP proxy"
+msgstr "HTTP Proxy"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1912
+msgid "Help us improve UCS by sending the occurred errors as feedback."
+msgstr "將發生的錯誤作為意見回饋寄出，以協助我們改善 UCS。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:730 usr/share/univention-system-setup/www/ApplianceWizard.js:775
+msgid "Host settings"
+msgstr "主機設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1710 usr/share/univention-system-setup/www/ApplianceWizard.js:1809
+msgid "Hostname"
+msgstr "主機名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:739 usr/share/univention-system-setup/www/ApplianceWizard.js:1508
+msgid "Hostname (unchangeable. Was set while creating the container)"
+msgstr "主機名稱 ( 無法變更。建立容器時即已設定 )"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:711
+msgid "Hostname of the Primary Directory Node"
+msgstr "主要目錄節點的主機名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:784
+msgid "Hostname or fully qualified domain name"
+msgstr "主機名稱或完整網域名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1817
+msgid "IP address is obtained dynamically via DHCP"
+msgstr "IP 位址透過 DHCP 動態取得"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:469 usr/share/univention-system-setup/www/ApplianceWizard.js:486 usr/share/univention-system-setup/www/ApplianceWizard.js:504 usr/share/univention-system-setup/www/ApplianceWizard.js:522
+msgid "IPv4 net mask/IPv6 prefix {interface}"
+msgstr "IPv4 網路遮罩/IPv6 前置碼 {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:460 usr/share/univention-system-setup/www/ApplianceWizard.js:476 usr/share/univention-system-setup/www/ApplianceWizard.js:494 usr/share/univention-system-setup/www/ApplianceWizard.js:512
+msgid "IPv4/IPv6 address {interface}"
+msgstr "IPv4/IPv6 位址 {interface}"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2267
+msgid "If this system is to become a school server in the administration network, please first check whether a corresponding school exists and whether the computer name of this system has been specified as the <i>school server for the administration network</i>."
+msgstr "若本系統要成為管理網路中的學校伺服器，請先檢查是否存在對應的學校，以及本系統的電腦名稱是否已指定為 <i>管理網路的學校伺服器</i>。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2264
+msgid "If this system is to become a school server in the educational network, please first check whether a corresponding school exists and whether the computer name of this system was specified as the <i>school server for the educational network</i>."
+msgstr "若本系統要成為教育網路中的學校伺服器，請先檢查是否存在對應的學校，以及本系統的電腦名稱是否已指定為 <i>教育網路的學校伺服器</i>。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1321
+msgid "Ignore"
+msgstr "忽略"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2324
+msgid "Initialize the configuration process ..."
+msgstr "正在初始化設定程序 ..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1119
+msgid "Install the latest errata and app updates after the setup."
+msgstr "於設定完成後安裝最新的勘誤與應用程式更新。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1121
+msgid "Install the latest patch level, errata and app updates after the setup."
+msgstr "於設定完成後安裝最新的修補等級、勘誤與應用程式更新。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1242
+#, javascript-format
+msgid "Installation of %d additional software components."
+msgstr "安裝 %d 個額外的軟體元件。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1240
+msgid "Installation of one additional software component."
+msgstr "安裝一個額外的軟體元件。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:117
+msgid "Invalid IP address!<br/>Expected format is IPv4 or IPv6."
+msgstr "IP 位址無效！<br/>預期格式為 IPv4 或 IPv6。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:128
+msgid "Invalid IPv4 net mask or IPv6 prefix!<br/>Expected for IPv4 is a number between 0 and 32 or a format similar to <i>255.255.255.0</i>.<br/>Expected format for IPv6 is a number between 0 and 128."
+msgstr "IPv4 網路遮罩或 IPv6 前置碼無效！<br/>IPv4 預期為 0 到 32 之間的數字，或類似 <i>255.255.255.0</i> 的格式。<br/>IPv6 預期格式為 0 到 128 之間的數字。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:194
+msgid "Invalid LDAP base!<br/>The LDAP base may neither contain blanks nor any special characters. Its structure needs to consist of at least two relative distinguished names (RDN) with attribute tags 'dc', 'cn', 'c', 'o', or 'l' (e.g., dc=test,dc=net)."
+msgstr "LDAP base 無效！<br/>LDAP base 不可包含空白或任何特殊字元。其結構需由至少兩個相對辨別名稱 ( RDN ) 組成，並使用屬性標籤 'dc'、'cn'、'c'、'o' 或 'l' ( 例如 dc=test,dc=net )。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:171
+msgid "Invalid domain name!<br/>Expected format: <i>mydomain.intranet</i>"
+msgstr "網域名稱無效！<br/>預期格式: <i>mydomain.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:109
+msgid "Invalid e-mail address!<br/>Expected format is:<i>mail@example.com</i>"
+msgstr "電子郵件位址無效！<br/>預期格式為:<i>mail@example.com</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:178
+msgid "Invalid fully qualified domain name!<br/>Expected format: <i>hostname.mydomain.intranet</i>"
+msgstr "完整網域名稱無效！<br/>預期格式: <i>hostname.mydomain.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:186
+msgid "Invalid hostname or fully qualified domain name!<br/>Expected format: <i>myhost</i> or <i>hostname.mydomain.intranet</i>"
+msgstr "主機名稱或完整網域名稱無效！<br/>預期格式: <i>myhost</i> 或 <i>hostname.mydomain.intranet</i>"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2211
+msgid "It is not possible to install Samba 3 and Samba 4 on one system. Please select only one of these components."
+msgstr "無法在同一個系統上同時安裝 Samba 3 與 Samba 4。請僅選擇其中一個元件。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2843
+msgid "It seems that a UCS Primary Directory Node system has already joined into the Windows AD domain. Please choose a different option as other system roles for joining an AD domain are not available."
+msgstr "似乎已有一個 UCS 主要目錄節點系統加入 Windows AD 網域。請選擇其他選項，因為加入 AD 網域時無法使用其他系統角色。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:595
+msgid "Join into an existing Microsoft Active Directory domain"
+msgstr "加入既有的 Microsoft Active Directory 網域"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:588
+msgid "Join into an existing UCS domain"
+msgstr "加入既有的 UCS 網域"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:392
+msgid "Keyboard layout"
+msgstr "鍵盤配置"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:768 usr/share/univention-system-setup/www/ApplianceWizard.js:1813
+msgid "LDAP base"
+msgstr "LDAP base"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:414
+msgid "License agreement"
+msgstr "授權合約"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:794
+msgid "Local root password"
+msgstr "本機 root 密碼"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:366 usr/share/univention-system-setup/www/ApplianceWizard.js:372 usr/share/univention-system-setup/www/ApplianceWizard.js:1774
+msgid "Localization settings"
+msgstr "在地化設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:306
+msgid "Manage users and permissions directly on this system"
+msgstr "直接在本系統上管理使用者與權限"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:622 usr/share/univention-system-setup/www/ApplianceWizard.js:1759
+msgid "Managed Node"
+msgstr "受管節點"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:623
+msgid "Managed Nodes should be used for services which do not need a local authentication database, for example for file or print servers."
+msgstr "受管節點應用於不需要本機認證資料庫的服務，例如檔案或列印伺服器。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1701
+msgid "Network interfaces"
+msgstr "網路介面"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1237
+msgid "No additional software component will be installed."
+msgstr "不會安裝任何額外的軟體元件。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2806
+msgid "No domain controller was found at the address of the name server. It is recommended to verify that the network settings are correct."
+msgstr "在名稱伺服器的位址上找不到網域控制站。建議確認網路設定是否正確。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2838
+msgid "No domain controller was found at the address of the name server. Please adjust your network settings."
+msgstr "在名稱伺服器的位址上找不到網域控制站。請調整您的網路設定。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2665
+msgid "No gateway has been specified and thus no access to the internet is possible. As UCS requires internet access for its functionality, certain services (e.g., software updates, installation of further software components) will not be able to operate as expected."
+msgstr "未指定閘道，因此無法連上網際網路。由於 UCS 的功能需要網際網路連線，部分服務 ( 例如軟體更新、安裝其他軟體元件 ) 將無法如預期運作。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:446
+msgid "Obtain IP address automatically (DHCP)"
+msgstr "自動取得 IP 位址 ( DHCP )"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:638 usr/share/univention-system-setup/www/ApplianceWizard.js:1788
+msgid "Organization name"
+msgstr "組織名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:659 usr/share/univention-system-setup/www/ApplianceWizard.js:679 usr/share/univention-system-setup/www/ApplianceWizard.js:725
+msgid "Password"
+msgstr "密碼"
+
+#: usr/share/univention-system-setup/www/VirtualKeyboardBox.js:43
+msgid "Please click on the required character."
+msgstr "請按一下所需的字元。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:840
+msgid "Please confirm the chosen configuration settings which are summarized in the following."
+msgstr "請確認以下彙整的所選組態設定。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:415
+#, javascript-format
+msgid "Please read carefully the license agreement for %s Appliance."
+msgstr "請仔細閱讀 %s Appliance 的授權合約。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:564
+msgid "Please select your domain settings."
+msgstr "請選擇您的網域設定。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:536
+msgid "Preferred DNS server"
+msgstr "慣用 DNS 伺服器"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1763
+msgid "Primary Directory Node"
+msgstr "主要目錄節點"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1704
+msgid "Primary network interface"
+msgstr "主要網路介面"
+
+#: usr/share/univention-system-setup/www/main.js:181
+msgid "Privacy Statement"
+msgstr "隱私權聲明"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:571
+msgid "Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point."
+msgstr "快速設定用於測試目的的系統。數項系統組態為預先定義，且日後無法變更。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:581
+msgid "Recommended"
+msgstr "建議"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1318
+msgid "Reconfigure"
+msgstr "重新設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2824
+msgid "Replace system"
+msgstr "取代系統"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:615 usr/share/univention-system-setup/www/ApplianceWizard.js:1758
+msgid "Replica Directory Node"
+msgstr "複本目錄節點"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:616
+msgid "Replica Directory Node systems are ideal for site servers, they provide authentication services for the domain. Local services running on a Replica Directory Node can access the local LDAP database."
+msgstr "複本目錄節點系統非常適合作為據點伺服器，它們為網域提供認證服務。在複本目錄節點上執行的本機服務可存取本機 LDAP 資料庫。"
+
+#: usr/share/univention-system-setup/www/main.js:254
+msgid "Restarting server components..."
+msgstr "正在重新啟動伺服器元件..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2990
+msgid "Root password empty. Continue?"
+msgstr "root 密碼為空。要繼續嗎？"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:814
+msgid "School server of the administrative network"
+msgstr "管理網路的學校伺服器"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:807
+msgid "School server of the educational network"
+msgstr "教育網路的學校伺服器"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:702
+msgid "Search Primary Directory Node in DNS"
+msgstr "在 DNS 中搜尋主要目錄節點"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1951
+msgid "Send feedback"
+msgstr "寄送意見回饋"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1958
+msgid "Send to vendor"
+msgstr "寄送給廠商"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:799
+msgid "Server role inside the UCS@school domain"
+msgstr "UCS@school 網域內的伺服器角色"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:305
+msgid "Setup - An error occurred"
+msgstr "設定 - 發生錯誤"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:304
+msgid "Setup successful"
+msgstr "設定成功"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1227
+msgid "Software component"
+msgstr "軟體元件"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:826
+msgid "Software configuration"
+msgstr "軟體設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:731 usr/share/univention-system-setup/www/ApplianceWizard.js:776
+msgid "Specify the name of this system."
+msgstr "指定本系統的名稱。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:425
+msgid "Specify the network settings for this system."
+msgstr "指定本系統的網路設定。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:601
+msgid "Specify the type of this system."
+msgstr "指定本系統的類型。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:689
+msgid "Start join at the end of the installation"
+msgstr "於安裝結束時開始加入"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:600
+msgid "System role"
+msgstr "系統角色"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:406
+msgid "The available memory is not sufficient."
+msgstr "可用記憶體不足。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:831
+msgid "The following entries could not be validated:"
+msgstr "下列項目無法驗證:"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1985
+msgid "The following errors occurred while applying the settings."
+msgstr "套用設定時發生下列錯誤。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1661
+#, javascript-format
+msgid "The hostname '%s' is already used for a computer with a different role, in the UCS domain. It is recommended to change the hostname for UCS to work properly."
+msgstr "主機名稱 '%s' 在 UCS 網域中已用於另一台角色不同的電腦。建議變更主機名稱，以使 UCS 正常運作。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2239
+msgid "The root password is too short. For security reasons, your password must contain at least 8 characters."
+msgstr "root 密碼太短。基於安全考量，您的密碼必須至少包含 8 個字元。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2686
+#, javascript-format
+msgid "The server <b>%s</b> cannot be reached. For UCS to work properly, please configure the network, any proxy and firewall to allow UCS to access this server."
+msgid_plural "These servers cannot be reached: <ul><li>%s</li></ul>For UCS to work properly, please configure the network, any proxy and firewall to allow UCS to access these servers."
+msgstr[0] "無法連線至下列伺服器: <ul><li>%s</li></ul>為使 UCS 正常運作，請設定網路、所有 Proxy 與防火牆，以允許 UCS 存取這些伺服器。"
+msgstr[1] "無法連線至下列伺服器: <ul><li>%s</li></ul>為使 UCS 正常運作，請設定網路、所有 Proxy 與防火牆，以允許 UCS 存取這些伺服器。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:822
+msgid "The server will not be assigned to a specific school and will not provide UCS@school services."
+msgstr "此伺服器將不會指派給特定學校，也不會提供 UCS@school 服務。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:815
+msgid "The server will only provide domain services to a school's administrative network, not educational UCS@school services."
+msgstr "此伺服器將僅向學校的管理網路提供網域服務，而不提供教育性的 UCS@school 服務。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:808
+msgid "The server will provide educational UCS@school services for a school, e.g. exam mode."
+msgstr "此伺服器將為學校提供教育性的 UCS@school 服務，例如考試模式。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1984
+msgid "The system configuration could not be completed. Please choose to retry the configuration process or finish the wizard."
+msgstr "無法完成系統設定。請選擇重試設定程序或結束精靈。"
+
+#: usr/share/univention-system-setup/www/main.js:254
+msgid "This may take a few seconds..."
+msgstr "這可能需要幾秒鐘..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1146
+msgid "This system only has {memory_total} RAM."
+msgstr "本系統僅有 {memory_total} 的 RAM。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:596
+msgid "This system will become part of an existing non-UCS Active Directory domain."
+msgstr "本系統將成為既有非 UCS Active Directory 網域的一部分。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1765
+#, javascript-format
+msgid "This system will join an existing AD domain with the role <i>%s</i>."
+msgstr "本系統將以 <i>%s</i> 角色加入既有的 AD 網域。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1767
+#, javascript-format
+msgid "This system will join an existing UCS domain with the role <i>%s</i>."
+msgstr "本系統將以 <i>%s</i> 角色加入既有的 UCS 網域。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:385
+msgid "Time zone"
+msgstr "時區"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1749
+msgid "UCS configuration"
+msgstr "UCS 設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2004
+msgid "UCS has been successfully set up."
+msgstr "UCS 已成功設定完成。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:293
+msgid "UCS setup"
+msgstr "UCS 設定"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:295
+msgid "UCS setup - An error occurred"
+msgstr "UCS 設定 - 發生錯誤"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:294
+msgid "UCS setup successful"
+msgstr "UCS 設定成功"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1150
+msgid "Univention Corporate Server"
+msgstr "Univention Corporate Server"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:850
+msgid "Update system after setup"
+msgstr "於設定完成後更新系統"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1123
+msgid "Update system to the UCS release version of the Primary Directory Node and install all available errata and app updates after the setup."
+msgstr "於設定完成後將系統更新至主要目錄節點的 UCS 發行版本，並安裝所有可用的勘誤與應用程式更新。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:589
+msgid "Use this option if you already have one or more UCS systems."
+msgstr "若您已擁有一個或多個 UCS 系統，請使用此選項。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:673 usr/share/univention-system-setup/www/ApplianceWizard.js:719
+msgid "Username"
+msgstr "使用者名稱"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:240
+msgid "Validation error"
+msgstr "驗證錯誤"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:830
+msgid "Validation failed"
+msgstr "驗證失敗"
+
+#: usr/share/univention-system-setup/www/VirtualKeyboardBox.js:30
+msgid "Virtual keyboard"
+msgstr "虛擬鍵盤"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1459 usr/share/univention-system-setup/www/ApplianceWizard.js:2445
+msgid "Waiting for restart of server components..."
+msgstr "正在等待伺服器元件重新啟動..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1672 usr/share/univention-system-setup/www/ApplianceWizard.js:1799 usr/share/univention-system-setup/www/ApplianceWizard.js:2659 usr/share/univention-system-setup/www/ApplianceWizard.js:2675 usr/share/univention-system-setup/www/ApplianceWizard.js:2703 usr/share/univention-system-setup/www/ApplianceWizard.js:2813 usr/share/univention-system-setup/www/ApplianceWizard.js:2826 usr/share/univention-system-setup/www/ApplianceWizard.js:2973 usr/share/univention-system-setup/www/ApplianceWizard.js:2997
+msgid "Warning"
+msgstr "警告"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:292
+msgid "Welcome to Univention Corporate Server (UCS)."
+msgstr "歡迎使用 Univention Corporate Server ( UCS )。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:302
+#, javascript-format
+msgid "Welcome to the setup of %s Appliance."
+msgstr "歡迎使用 %s Appliance 的設定。"
+
+#: usr/share/univention-system-setup/www/main.js:211
+#, javascript-format
+msgid "With the activation of UCS you agree to our %s."
+msgstr "啟用 UCS 即表示您同意我們的 %s。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:1925
+msgid "You may restart the configuration process again with modified settings."
+msgstr "您可以使用修改後的設定再次重新啟動設定程序。"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:359
+msgid "e.g., Boston..."
+msgstr "例如 Boston..."
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:557 usr/share/univention-system-setup/www/ApplianceWizard.js:646 usr/share/univention-system-setup/www/ApplianceWizard.js:786 usr/share/univention-system-setup/www/ApplianceWizard.js:852
+msgid "more information"
+msgstr "更多資訊"
+
+#: usr/share/univention-system-setup/www/main.js:210
+msgid "privacy statement"
+msgstr "隱私權聲明"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2962
+#, javascript-format
+msgid "the %s Appliance"
+msgstr "%s Appliance"
+
+#: usr/share/univention-system-setup/www/ApplianceWizard.js:2960
+msgid "the UCS system"
+msgstr "UCS 系統"

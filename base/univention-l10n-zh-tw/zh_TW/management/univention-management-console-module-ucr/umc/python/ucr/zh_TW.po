@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-ucr package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-ucr\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/python/ucr/__init__.py:51
+msgid "A valid UCR variable name must contain at least one character and can only contain letters, numerals, \"/\", \".\", \":\", \"_\" and \"-\"."
+msgstr "有效的 UCR 變數名稱必須包含至少一個字元，且只能包含字母、數字、\"/\"、\".\"、\":\"、\"_\" 與 \"-\"。"
+
+#: umc/python/ucr/__init__.py:141
+#, python-format
+msgid "Invalid UCR type definition for type %r of %r, value %r not set"
+msgstr "%r 的型別 %r 的 UCR 型別定義無效，未設定值 %r"
+
+#: umc/python/ucr/__init__.py:177
+#, python-format
+msgid "The UCR variable %(key)s could not be found"
+msgstr "找不到 UCR 變數 %(key)s"
+
+#: umc/python/ucr/__init__.py:115
+#, python-format
+msgid "The UCR variable %s is already set."
+msgstr "UCR 變數 %s 已設定。"
+
+#: umc/python/ucr/__init__.py:131
+#, python-format
+msgid "The UCR variable %s is read-only and can not be changed!"
+msgstr "UCR 變數 %s 為唯讀，無法變更！"
+
+#: umc/python/ucr/__init__.py:152
+#, python-format
+msgid "The UCR variable %s is read-only and can not be removed!"
+msgstr "UCR 變數 %s 為唯讀，無法移除！"
+
+#: umc/python/ucr/__init__.py:138
+#, python-format
+msgid "The value %s is not valid for the UCR variable %s!"
+msgstr "值 %s 對於 UCR 變數 %s 無效！"

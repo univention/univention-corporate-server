@@ -1,0 +1,102 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/blocklists/all.py:23
+msgid "All blocklist objects"
+msgstr "所有封鎖清單物件"
+
+#: modules/univention/admin/handlers/blocklists/all.py:41
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:46
+msgid "Blocked until"
+msgstr "封鎖至"
+
+#: modules/univention/admin/handlers/blocklists/all.py:24 modules/univention/admin/handlers/blocklists/list.py:21 modules/univention/admin/handlers/blocklists/list.py:22
+msgid "Blocklist"
+msgstr "封鎖清單"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:61
+msgid "Blocklist entry settings"
+msgstr "封鎖清單項目設定"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:37
+msgid "Blocklist entry value"
+msgstr "封鎖清單項目值"
+
+#: modules/univention/admin/handlers/blocklists/list.py:24
+msgid "Blocklist for certain UDM properties"
+msgstr "特定 UDM 屬性的封鎖清單"
+
+#: modules/univention/admin/handlers/blocklists/list.py:57
+msgid "Blocklist settings"
+msgstr "封鎖清單設定"
+
+#: modules/univention/admin/handlers/blocklists/all.py:25 modules/univention/admin/handlers/blocklists/list.py:23
+msgid "Blocklists"
+msgstr "封鎖清單"
+
+#: modules/univention/admin/handlers/blocklists/all.py:41 modules/univention/admin/handlers/blocklists/list.py:57 modules/univention/admin/handlers/blocklists/entry.py:61
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/blocklists/list.py:58 modules/univention/admin/handlers/blocklists/entry.py:62
+msgid "General settings"
+msgstr "一般設定"
+
+#: modules/univention/admin/handlers/blocklists/all.py:26
+msgid "Manage the blocklists"
+msgstr "管理封鎖清單"
+
+#: modules/univention/admin/handlers/blocklists/all.py:33 modules/univention/admin/handlers/blocklists/list.py:35
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:52
+msgid "Origin ID"
+msgstr "來源 ID"
+
+#: modules/univention/admin/handlers/blocklists/list.py:43
+msgid "Properties to block"
+msgstr "要封鎖的屬性"
+
+#: modules/univention/admin/handlers/blocklists/list.py:51
+msgid "Property values removed from a UDM object can be automatically blocked for future use. Each blocklist can be assigned a retention period. Once this retention period has elapsed, the blocking object is automatically deleted, and the property value can be reassigned. The retention period is set using the following schema \"1y6m3d\" (which equals one year, six months and three days)."
+msgstr "從 UDM 物件移除的屬性值可自動封鎖以供日後使用。每個封鎖清單都可指定保留期限。一旦此保留期限到期，封鎖物件會自動刪除，且該屬性值可重新指派。保留期限使用下列結構描述設定 \"1y6m3d\" ( 等於一年六個月又三天 )。"
+
+#: modules/univention/admin/handlers/blocklists/list.py:44
+msgid "Property values removed from a UDM object can be automatically blocked for future use. This is achieved by adding the properties to a blocklist. The properties must be specified according to the following schema: \"udm/module property\". An example configuration would be \"users/user mailPrimaryAddress\". If multiple properties are assigned to the same blocklist, the blocking value applies for multiple properties."
+msgstr "從 UDM 物件移除的屬性值可自動封鎖以供日後使用。這是透過將屬性加入封鎖清單來達成。屬性必須依照下列結構描述指定: \"udm/module property\"。範例組態為 \"users/user mailPrimaryAddress\"。如果有多個屬性指派到同一個封鎖清單，封鎖值即適用於多個屬性。"
+
+#: modules/univention/admin/handlers/blocklists/list.py:50
+msgid "Retention time for objects in this blocklist"
+msgstr "此封鎖清單中物件的保留時間"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:53
+msgid "The ID of the UDM object that lead to this blocklist entry. The value of this blocklist entry can still be used on that UDM object."
+msgstr "導致此封鎖清單項目的 UDM 物件 ID。此封鎖清單項目的值仍可用於該 UDM 物件。"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:47
+msgid "This blocklist entry is valid until timestamp (generalized time in LDAP-Syntax -> 21241212000000Z). Expired entries are deleted."
+msgstr "此封鎖清單項目在時間戳記之前有效 ( LDAP-Syntax 的一般化時間 -> 21241212000000Z )。過期的項目會被刪除。"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:23 modules/univention/admin/handlers/blocklists/entry.py:25
+msgid "Univention blocklist entries"
+msgstr "Univention 封鎖清單項目"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:24
+msgid "Univention blocklist entry"
+msgstr "Univention 封鎖清單項目"

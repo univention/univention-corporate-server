@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-pkgdb package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-pkgdb\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/pkgdb/KeyTranslator.js:44
+msgid "Hostname"
+msgstr "主機名稱"
+
+#: umc/js/pkgdb/KeyTranslator.js:23
+msgid "Installation state"
+msgstr "安裝狀態"
+
+#: umc/js/pkgdb/KeyTranslator.js:27
+msgid "Inventory date"
+msgstr "盤點日期"
+
+#: umc/js/pkgdb/KeyTranslator.js:30
+msgid "Package name"
+msgstr "套件名稱"
+
+#: umc/js/pkgdb/KeyTranslator.js:36
+msgid "Package state"
+msgstr "套件狀態"
+
+#: umc/js/pkgdb/KeyTranslator.js:33
+msgid "Package version"
+msgstr "套件版本"
+
+#: umc/js/pkgdb/SearchForm.js:50 umc/js/pkgdb/SearchForm.js:63
+msgid "Pattern"
+msgstr "樣式"
+
+#: umc/js/pkgdb.js:26
+msgid "Search UCS systems"
+msgstr "搜尋 UCS 系統"
+
+#: umc/js/pkgdb/SearchForm.js:36
+msgid "Search for:"
+msgstr "搜尋:"
+
+#: umc/js/pkgdb.js:33
+msgid "Search software packages"
+msgstr "搜尋軟體套件"
+
+#: umc/js/pkgdb/KeyTranslator.js:40
+msgid "Selection state"
+msgstr "選取狀態"
+
+#: umc/js/pkgdb/KeyTranslator.js:47
+msgid "System role"
+msgstr "系統角色"
+
+#: umc/js/pkgdb/KeyTranslator.js:50
+msgid "UCS version"
+msgstr "UCS 版本"
