@@ -811,7 +811,6 @@ class UCSInstallation(VNCInstallation):
         if self.args.school_dep:
             # school installation takes longer
             wait_for_finish += 900
-        sleep(wait_for_finish, "FINISH")
 
         """
         # UCS-Einrichtung erfolgreich
@@ -820,7 +819,7 @@ class UCSInstallation(VNCInstallation):
 
         [Fertigstellen]
         """
-        self.wait_for_text('setup_successful', timeout=-2100)
+        self.wait_for_text('setup_successful', timeout=-(wait_for_finish + 2100))
         self.type('\t\n')
         self.wait_for_text('univention')
 
