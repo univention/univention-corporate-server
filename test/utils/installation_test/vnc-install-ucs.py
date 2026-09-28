@@ -847,7 +847,7 @@ class UCSInstallation(VNCInstallation):
 
     @verbose("NEXT")
     def go_next(self) -> None:
-        self.click_at(910, 700)
+        self.click_on('next')
 
 
 def main() -> None:
