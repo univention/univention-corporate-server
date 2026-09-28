@@ -179,7 +179,6 @@ class ProxmoxVNCBridge:
             "ssl": self.ssl_ctx,
             "subprotocols": ["binary"],
             "max_size": None,
-            "ping_interval": None,
         }
         try:
             return await websockets.connect(ws_url, additional_headers=self.auth_header, **common)
