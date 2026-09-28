@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 28. Sep 2026
+     - :ref:`system-administration-rate-limiting`
+     - Add section for rate limiting approaches for HTTP services.
+
    * - 16. Sep 2026
      - :ref:`security-hardening-kerberos`
      - Add section about hardening password attributes and Kerberos keys.
