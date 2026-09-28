@@ -60,6 +60,7 @@ Infrastrukturumgebungen
 Integrationen
 Label
 Labels
+Limiting
 Listener-Dienste
 Listener-Log
 Listener-Protokoll
@@ -95,6 +96,8 @@ Plattformspezifische
 Pre-Update
 Principal
 RC
+Ratenbegrenzung
+Ratenbegrenzungen
 Registrierungsformular
 Release-Informationen
 Release-Typen

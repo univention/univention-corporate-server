@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 09:42+0000\n"
-"PO-Revision-Date: 2026-06-01 11:43+0200\n"
+"POT-Creation-Date: 2026-09-28 14:10+0000\n"
+"PO-Revision-Date: 2026-09-29 14:10+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -2718,6 +2718,93 @@ msgstr ":ref:`lifecycle-update-strategies`"
 msgid ":ref:`lifecycle-package-installation-management`"
 msgstr ":ref:`lifecycle-package-installation-management`"
 
+#: ../../system-administration/rate-limiting.rst:7
+msgid "Rate-limiting approaches for externally exposed services"
+msgstr "Ansätze für Rate Limiting für extern bereitgestellte Dienste"
+
+#: ../../system-administration/rate-limiting.rst:9
+msgid ""
+"Rate limiting controls how many requests external clients can send within"
+" a defined period. It helps protect externally exposed services from "
+"excessive traffic. The following section describes available rate-"
+"limiting approaches for HTTP services in Nubus for UCS."
+msgstr ""
+"Rate Limiting steuert, wie viele Anfragen externe Clients innerhalb"
+" eines festgelegten Zeitraums senden können. Sie hilft, extern "
+"bereitgestellte Dienste vor übermäßigem Datenverkehr zu schützen. Der "
+"folgende Abschnitt beschreibt verfügbare Ansätze für Rate Limiting für "
+"HTTP-Dienste in Nubus für UCS."
+
+#: ../../system-administration/rate-limiting.rst:13
+msgid ""
+"For general guidance on designing and monitoring rate limits, see "
+":external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide` "
+"in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Allgemeine Hinweise zur Auslegung und Überwachung von Rate Limiting finden "
+"Sie unter :external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide` "
+"im :cite:t:`uv-nubus-manual`."
+
+#: ../../system-administration/rate-limiting.rst:20
+msgid "Rate-limiting approaches for HTTP services"
+msgstr "Ansätze für Rate Limiting für HTTP-Dienste"
+
+#: ../../system-administration/rate-limiting.rst:22
+msgid ""
+"Nubus for UCS serves its HTTP APIs and the *Management UI* through the "
+"system's Apache HTTP Server, under the ``/univention/`` path. Apache "
+"doesn't enforce rate limiting by default."
+msgstr ""
+"Nubus für UCS stellt seine HTTP-APIs und die *Management UI* über den "
+"Apache HTTP Server des Systems unter dem Pfad ``/univention/`` bereit. "
+"Apache erzwingt standardmäßig keine Ratenbegrenzung."
+
+#: ../../system-administration/rate-limiting.rst:27
+msgid "Consider the following approaches for rate limiting:"
+msgstr "Ziehen Sie die folgenden Ansätze für Rate Limiting in Betracht:"
+
+#: ../../system-administration/rate-limiting.rst:29
+msgid "Place a reverse proxy or load balancer in front of the HTTP services"
+msgstr "Schalten Sie den HTTP-Diensten einen Reverse Proxy oder Lastverteilung vor"
+
+#: ../../system-administration/rate-limiting.rst:30
+msgid ""
+"Route external traffic through a reverse proxy, load balancer, or API "
+"gateway that enforces rate limiting, using the principles in :external"
+"+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide`, before "
+"it reaches the system's Apache HTTP Server. This approach keeps rate-"
+"limit enforcement independent of Nubus for UCS. Refer to the selected "
+"product's documentation for product-specific configuration."
+msgstr ""
+"Leiten Sie externen Datenverkehr über einen Reverse Proxy, Lastverteilung "
+"oder ein API-Gateway, das Rate Limiting unter Anwendung der "
+"Grundsätze aus :external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide` "
+"durchsetzt, bevor der Datenverkehr den Apache HTTP Server des Systems "
+"erreicht. Dieser Ansatz setzt Rate Limiting "
+"unabhängig von Nubus für UCS durch. Weitere produktspezifische "
+"Konfigurationshinweise finden Sie in der Dokumentation des ausgewählten "
+"Produkts."
+
+#: ../../system-administration/rate-limiting.rst:37
+msgid "Extend the system's Apache configuration"
+msgstr "Erweitern Sie die Apache-Konfiguration des Systems"
+
+#: ../../system-administration/rate-limiting.rst:38
+msgid ""
+"Alternatively, add a third-party Apache module that provides rate or "
+"connection limiting, such as ``mod_evasive`` or ``mod_qos``. These "
+"modules aren't part of the default Nubus for UCS installation. Verify "
+"that the module is available as a package and compatible with your UCS "
+"version, and test the configuration in a non-production environment "
+"first."
+msgstr ""
+"Alternativ können Sie ein Apache-Modul eines Drittanbieters hinzufügen, "
+"das eine Raten- oder Verbindungsbegrenzung bereitstellt, beispielsweise "
+"``mod_evasive`` oder ``mod_qos``. Diese Module sind nicht Teil der "
+"Standardinstallation von Nubus für UCS. Stellen Sie sicher, dass das "
+"Modul als Paket verfügbar und mit Ihrer UCS-Version kompatibel ist, und "
+"testen Sie die Konfiguration zuerst in einer Nicht-Produktivumgebung."
+
 #: ../../system-administration/regional-settings.rst:9
 msgid ""
 "This page describes system settings that affect language, keyboard "
@@ -4131,4 +4218,3 @@ msgid "in :cite:t:`uv-nubus-manual` for information about how to assign policies
 msgstr ""
 "in :cite:t:`uv-nubus-manual` für Informationen zum Zuweisen von "
 "Richtlinien."
-
