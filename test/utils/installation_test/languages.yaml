@@ -172,9 +172,6 @@ start_join:
 hostname_primary:
   eng: Hostname of the Primary
   deu: Rechnername des Primary
-system_name:
-  eng: Host settings
-  deu: Eingabe des Namens
 account_information:
   eng: Account information
   fra: Informations du compte

@@ -768,10 +768,7 @@ class UCSInstallation(VNCInstallation):
 
         [Zurück] [Weiter]
         """
-        if self.args.role == 'master':
-            self.wait_for_text('host_settings')
-        else:
-            self.wait_for_text('system_name')
+        self.wait_for_text('host_settings')
 
         self.type(self.args.fqdn, clear=True)
         if self.args.role == 'master':
