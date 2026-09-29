@@ -6,27 +6,32 @@
 # SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import base64
+import binascii
 import datetime
 import email.charset
 import os.path
 import random
 import smtplib
 import string
+import time
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 from functools import wraps
 from subprocess import PIPE, STDOUT, Popen
-from typing import Any
+from typing import Any, NamedTuple
 
 import atexit
 import pylibmc
 from ldap.filter import filter_format
 
 import univention.admin.modules
+import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions
 import univention.admin.uexceptions as udm_errors
 import univention.admin.uldap
 from univention.admin.uldap import getMachineConnection
+from univention.lib import icap
 from univention.lib.i18n import Translation
 from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized  # noqa: A004
 from univention.management.console.config import ucr
@@ -35,8 +40,8 @@ from univention.management.console.ldap import (
 )
 from univention.management.console.log import MODULE
 from univention.management.console.modules import Base, UMC_Error
-from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import StringSanitizer
+from univention.management.console.modules.decorators import SimpleThread, sanitize, simple_response
+from univention.management.console.modules.sanitizers import DictSanitizer, StringSanitizer
 
 from .sending import get_plugins as get_sending_plugins
 from .tokendb import MultipleTokensInDB, TokenDB
@@ -55,6 +60,8 @@ UDM_REST_SERVER = ucr.get('self-service/udm-rest-server', '%(hostname)s.%(domain
 DISALLOW_AUTHENTICATION = not ucr.is_true('umc/self-service/allow-authenticated-use')
 
 DEREGISTRATION_TIMESTAMP_FORMATTING = '%Y%m%d%H%M%SZ'
+UPLOAD_SYNTAXES = (udm_syntax.jpegPhoto, udm_syntax.Base64Upload, udm_syntax.Base64BaseUpload)
+MAX_UPLOAD_FILES = 10
 
 if IS_SELFSERVICE_MASTER:
     try:
@@ -88,6 +95,152 @@ def forward_to_master_if_authentication_disabled(func):
     if DISALLOW_AUTHENTICATION:
         return forward_to_master(func)
     return func
+
+
+class ScanSettings(NamedTuple):
+    """Settings of the malware scan, see :func:`malware_scan_settings`."""
+
+    url: str
+    timeout: int
+    cafile: str | None
+    max_files: int
+
+
+def scan_files_for_malware(files: list[tuple[str, bytes]], settings: ScanSettings, username: str | None) -> None:
+    """
+    Scan uploaded files with the ICAP server. This runs in a worker thread.
+
+    The function only gets prepared data, see :func:`uploaded_files` and :func:`malware_scan_settings`,
+    so that it doesn't touch shared state of the module.
+    All scans of one request together must finish within the configured timeout.
+
+    :param list files: Pairs of property name and decoded file content.
+    :param ScanSettings settings: The URL, the timeout and the CA file of the ICAP server.
+    :param str username: The name of the user, for the log messages.
+    :raises UMC_Error: If the ICAP server finds malware or cannot scan a file.
+    """
+    url, timeout, cafile, _max_files = settings
+    deadline = time.monotonic() + max(timeout, 0)
+    for propname, data in files:
+        try:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise icap.ICAPError('The malware scan took longer than %d seconds' % (timeout,))
+
+            result = icap.scan(data, url, timeout=remaining, filename=propname, cafile=cafile)
+        except (icap.ICAPError, ValueError) as exc:
+            MODULE.error('Malware scan of attribute %s of user %s failed: %s', propname, username, exc)
+            raise UMC_Error(_('Upload failed: Malware scan not currently possible. Please try again later or contact an administrator.'), status=503)
+
+        if result.infected:
+            MODULE.warning('Malware scan rejected attribute %s of user %s: %s', propname, username, result.threat)
+            raise UMC_Error(_('Upload rejected: malware was detected in the file.'))
+
+
+def malware_scan_settings() -> ScanSettings:
+    """
+    Get the settings of the malware scan: the URL, the timeout and the CA file of the ICAP server and the maximum
+    number of files in one request.
+
+    The environment variables `SELF_SERVICE_MALWARE_SCAN_ICAP_URL`, `SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT`,
+    `SELF_SERVICE_MALWARE_SCAN_ICAP_CA_FILE` and `SELF_SERVICE_MALWARE_SCAN_MAX_FILES` have priority over the UCR
+    variables `umc/self-service/malware-scan/icap/url`, `.../icap/timeout`, `.../icap/ca-file` and `.../max-files`.
+    Empty or invalid environment variables are ignored.
+
+    :returns: The settings. The URL is empty if the scan is disabled, the CA file is `None` if the CA certificates of
+        the system are used.
+    """
+    url = os.environ.get('SELF_SERVICE_MALWARE_SCAN_ICAP_URL') or ucr.get('umc/self-service/malware-scan/icap/url', '')
+    cafile = os.environ.get('SELF_SERVICE_MALWARE_SCAN_ICAP_CA_FILE') or ucr.get('umc/self-service/malware-scan/icap/ca-file') or None
+    timeout = _env_int('SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT', ucr.get_int('umc/self-service/malware-scan/icap/timeout', 30))
+    max_files = _env_int('SELF_SERVICE_MALWARE_SCAN_MAX_FILES', ucr.get_int('umc/self-service/malware-scan/max-files', MAX_UPLOAD_FILES))
+    return ScanSettings(url, timeout, cafile, max(max_files, 0))
+
+
+def _env_int(name: str, default: int) -> int:
+    """
+    Get a non-negative integer from an environment variable.
+
+    :param str name: The name of the environment variable.
+    :param int default: The value if the environment variable is unset, empty or invalid.
+    :returns: The value.
+    """
+    value = os.environ.get(name)
+    if not value:
+        return default
+    try:
+        number = int(value)
+        if number < 0:
+            raise ValueError(number)
+    except ValueError:
+        MODULE.warning('Ignoring invalid value %r of %s', value, name)
+        return default
+    return number
+
+
+def upload_values(property_descriptions: dict[str, Any], attributes: dict[str, Any]) -> list[tuple[str, Any]]:
+    """
+    Collect the non-empty values of the attributes with an upload syntax from :data:`UPLOAD_SYNTAXES`, for example
+    `jpegPhoto`, without decoding them. Multivalue attributes, also extended attributes, give one entry per value.
+
+    :param dict property_descriptions: The UDM property descriptions of the `users/user` module.
+    :param dict attributes: The attribute values that the user sent.
+    :returns: Pairs of property name and submitted value.
+    """
+    items = []
+    for propname, value in attributes.items():
+        prop = property_descriptions.get(propname)
+        if not prop or not isinstance(prop.syntax, UPLOAD_SYNTAXES):
+            continue
+
+        items.extend((propname, item) for item in (value if isinstance(value, list | tuple) else [value]) if item)
+    return items
+
+
+def check_upload_limit(property_descriptions: dict[str, Any], attributes: dict[str, Any], settings: ScanSettings) -> None:
+    """
+    Reject a request with more uploaded files than allowed, before any file is decoded, validated or scanned.
+
+    The limit only applies when the malware scan is enabled. All non-empty values of all upload properties count,
+    also values that are not valid Base64.
+
+    :param dict property_descriptions: The UDM property descriptions of the `users/user` module.
+    :param dict attributes: The attribute values that the user sent.
+    :param ScanSettings settings: The settings of the malware scan, `max_files` is the limit, `0` allows no file.
+    :raises UMC_Error: If the request contains more files than allowed.
+    """
+    if not settings.url:
+        return
+
+    count = len(upload_values(property_descriptions, attributes))
+    if count > settings.max_files:
+        MODULE.warning('Upload rejected: %d files, at most %d are allowed', count, settings.max_files)
+        raise UMC_Error(_('Upload rejected: too many files. You can upload at most %d files at once.') % (settings.max_files,))
+
+
+def uploaded_files(property_descriptions: dict[str, Any], attributes: dict[str, Any]) -> list[tuple[str, bytes]]:
+    """
+    Decode the uploaded files in the attributes, see :func:`upload_values`.
+
+    Values that are not Base64 are skipped, UDM rejects them later. Call :func:`check_upload_limit` first.
+
+    :param dict property_descriptions: The UDM property descriptions of the `users/user` module.
+    :param dict attributes: The attribute values that the user sent.
+    :returns: Pairs of property name and decoded file content.
+    """
+    files = []
+    for propname, item in upload_values(property_descriptions, attributes):
+        if not isinstance(item, str):
+            continue
+
+        try:
+            data = base64.b64decode(item)
+        except (binascii.Error, ValueError):
+            continue
+
+        if data:
+            files.append((propname, data))
+    return files
 
 
 def prevent_denial_of_service(func):
@@ -543,10 +696,13 @@ class Instance(Base):
 
     @forward_to_master_if_authentication_disabled
     @sanitize(
+        attributes=DictSanitizer({}, required=True),
         username=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1),
         password=StringSanitizer(required=DISALLOW_AUTHENTICATION, minimum=1))
-    @simple_response(with_request=True)
-    def set_user_attributes(self, request, attributes, username=None, password=None):
+    def set_user_attributes(self, request):
+        attributes = request.options['attributes']
+        username = request.options.get('username')
+        password = request.options.get('password')
         dn, username = self.authenticate_user(username, password)
         username = username or request.username
         if password:
@@ -566,6 +722,22 @@ class Instance(Base):
             if attr in read_only_attributes:
                 MODULE.error('set_user_attributes(): attribute %s is read-only', attr)
                 raise UMC_Error(_('The attribute %s is read-only.') % (attr,))
+
+        uploads = {k: v for k, v in attributes.items() if k in user_attributes}
+        self._scan_uploads_and_execute(request, uploads, username, '_save_user_attributes', dn, lo, po, attributes, user_attributes)
+
+    def _save_user_attributes(self, request, dn, lo, po, attributes, user_attributes):
+        """
+        Save the profile data after the malware scan. Runs on the IOLoop through :meth:`execute`.
+
+        :param request: The UMC request.
+        :param str dn: The DN of the user.
+        :param lo: The LDAP connection of the user.
+        :param po: The LDAP position.
+        :param dict attributes: The attribute values that the user sent.
+        :param list user_attributes: The attributes that the user may change.
+        :raises UMC_Error: If UDM can't save the data.
+        """
         user = self.usersmod.object(None, lo, po, dn)
         user.open()
         for propname, value in attributes.items():
@@ -576,7 +748,7 @@ class Instance(Base):
         except udm_errors.base as exc:
             MODULE.exception('set_user_attributes(): modifying the user failed:')
             raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
-        return _("Successfully changed your profile data.")
+        self.finished(request.id, _("Successfully changed your profile data."))
 
     def _get_password_complexity_message(self):
         return ucr.get(
@@ -585,8 +757,9 @@ class Instance(Base):
         )
 
     @forward_to_master
-    @simple_response
-    def create_self_registered_account(self, attributes):
+    @sanitize(attributes=DictSanitizer({}, required=True))
+    def create_self_registered_account(self, request):
+        attributes = request.options['attributes']
         MODULE.info("create_self_registered_account(): attributes: %s", attributes)
         ucr.load()
         if ucr.is_false('umc/self-service/account-registration/backend/enabled', True):
@@ -596,6 +769,7 @@ class Instance(Base):
         # filter out attributes that are not valid to set
         allowed_to_set = set(['PasswordRecoveryEmail', 'password'] + [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes', '').split(',') if attr.strip()])
         attributes = {k: v for (k, v) in attributes.items() if k in allowed_to_set}
+        check_upload_limit(self.usersmod.property_descriptions, attributes, malware_scan_settings())
         # validate attributes
         res = self._validate_user_attributes(attributes, self._update_required_attr_of_props_for_registration)
         # check username taken
@@ -611,11 +785,12 @@ class Instance(Base):
                 }
         invalid = {k: v for (k, v) in res.items() if not (all(v['isValid']) if isinstance(v['isValid'], list) else v['isValid'])}
         if invalid:
-            return {
+            self.finished(request.id, {
                 'success': False,
                 'failType': 'INVALID_ATTRIBUTES',
                 'data': invalid,
-            }
+            })
+            return
 
         # check for missing required attributes from umc/self-service/account-registration/udm_attributes/required
         required_attrs = [attr.strip() for attr in ucr.get('umc/self-service/account-registration/udm_attributes/required', '').split(',') if attr.strip()]
@@ -625,6 +800,48 @@ class Instance(Base):
             MODULE.error("create_self_registered_account(): %s", msg)
             raise UMC_Error(msg)
 
+        self._scan_uploads_and_execute(request, attributes, attributes.get('username'), '_create_self_registered_account', attributes)
+
+    def _scan_uploads_and_execute(self, request, attributes, username, method, *args):
+        """
+        Scan the uploads in a worker thread and then run the command method on the IOLoop.
+
+        The settings and the decoded files are prepared here on the IOLoop with the current property descriptions.
+        The thread only gets that data, so that it doesn't touch shared state of the module.
+        After a clean scan the method runs through :meth:`execute`, which does the regular error handling.
+        Without an ICAP server or without uploads the method runs directly. With an ICAP server, a request with more
+        files than allowed is rejected before any file is decoded or scanned, see :func:`check_upload_limit`.
+
+        :param request: The UMC request.
+        :param dict attributes: The attribute values that the user sent.
+        :param str username: The name of the user, for the log messages.
+        :param str method: Name of the request handler that saves the data and finishes the request.
+        :param args: Further arguments for the request handler.
+        """
+        settings = malware_scan_settings()
+        check_upload_limit(self.usersmod.property_descriptions, attributes, settings)
+        files = uploaded_files(self.usersmod.property_descriptions, attributes) if settings.url else []
+        if not files:
+            self.execute(method, request, *args)
+            return
+
+        def scanned(thread, result):
+            if isinstance(result, BaseException):
+                self.thread_finished_callback(thread, result, request)
+            elif not self._is_active(request):
+                MODULE.info('Request %s was cancelled while the malware scan was running', request.id)
+            else:
+                self.execute(method, request, *args)
+
+        SimpleThread('malware_scan', scan_files_for_malware, scanned).run(files, settings, username)
+
+    def _create_self_registered_account(self, request, attributes):
+        """
+        Create the account after the validation and the malware scan. Runs on the IOLoop through :meth:`execute`.
+
+        :param request: The UMC request.
+        :param dict attributes: The validated attributes of the new account.
+        """
         univention.admin.modules.update()
         lo, po = get_admin_connection()
 
@@ -681,11 +898,12 @@ class Instance(Base):
         except univention.admin.uexceptions.base as exc:
             password_complexity_message = self._get_password_complexity_message() if isinstance(exc, udm_errors.pwToShort | udm_errors.pwQuality) else ''
             MODULE.error('create_self_registered_account(): could not create user: %s', exc)
-            return {
+            self.finished(request.id, {
                 'success': False,
                 'failType': 'CREATION_FAILED',
                 'data': (_('The account could not be created:\n%s\n%s') % (UDM_Error(exc), password_complexity_message)).rstrip(),
-            }
+            })
+            return
         finally:
             # TODO: cleanup
             # reinit user module without template.
@@ -707,14 +925,14 @@ class Instance(Base):
             verify_token_successfully_send = False
         else:
             verify_token_successfully_send = True
-        return {
+        self.finished(request.id, {
             'success': True,
             'verifyTokenSuccessfullySend': verify_token_successfully_send,
             'data': {
                 'username': new_user['username'],
                 'email': new_user['PasswordRecoveryEmail'],
             },
-        }
+        })
 
     def _extract_user_properties(self, user_obj):
         message_fields = [
