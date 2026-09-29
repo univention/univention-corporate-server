@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-self-service
+fix: 7.7.0
+desc: |
+ This update addresses the following issues:
+ * The Self Service can now scan uploaded files, for example profile
+   pictures, for malware with an ICAP server. Set the UCR variable
+   `umc/self-service/malware-scan/icap/url` to activate the scan.
+bug: [59965]
