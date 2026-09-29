@@ -205,6 +205,90 @@ use the following UCR variables:
       in :cite:t:`uv-nubus-manual`
       for information about modifying user contact information.
 
+.. _end-user-self-service-malware-scan:
+
+Malware scan of uploaded files
+==============================
+
+The *End User Self Service* can scan uploaded files, such as profile pictures, for malware.
+It sends each file to an *ICAP* service, for example :program:`c-icap` with :program:`ClamAV`.
+The scan applies to the *Contact information* page and to the user registration.
+
+If the *ICAP* service finds malware,
+the *End User Self Service* rejects the file and doesn't save the changes.
+If the *ICAP* service isn't available or can't scan the file,
+the *End User Self Service* also rejects the file.
+
+To configure the malware scan,
+use the following UCR variables:
+
+.. envvar:: umc/self-service/malware-scan/icap/url
+
+   Defines the URL of the *ICAP* service that scans uploaded files,
+   for example ``icap://antivir-icap:1344/avscan``.
+   Use the scheme ``icaps://`` for a connection with TLS.
+   If you don't set the variable,
+   the *End User Self Service* doesn't scan uploaded files.
+
+   You need to set this UCR variable on the :term:`UCS Primary Directory Node`
+   and on all Nubus for UCS systems where you have installed the :program:`Self Service` app.
+
+   :Default value: not defined
+   :Type: string
+
+.. envvar:: umc/self-service/malware-scan/icap/timeout
+
+   Defines the time in seconds that the *End User Self Service* waits for the *ICAP* service
+   to scan all uploaded files of one request.
+
+   :Default value: ``30``
+   :Type: integer
+
+.. envvar:: umc/self-service/malware-scan/icap/ca-file
+
+   Defines the path to a PEM file with the CA certificates
+   that signed the certificate of the *ICAP* service.
+   The *End User Self Service* uses the file for connections with TLS,
+   with the scheme ``icaps://``.
+   If you don't set the variable,
+   the *End User Self Service* uses the CA certificates of the system.
+   The *End User Self Service* always verifies the certificate of the *ICAP* service.
+
+   :Default value: not defined
+   :Type: string
+
+.. envvar:: umc/self-service/malware-scan/max-files
+
+   Defines the maximum number of files that a user can upload in one request
+   when the malware scan is active.
+   All upload attributes of the request count together.
+   The *End User Self Service* rejects a request with more files
+   before it scans or saves any file.
+   The value ``0`` allows no files.
+
+   :Default value: ``10``
+   :Type: integer
+
+To apply the changes,
+you need to restart the *UMC Server*
+as described in :ref:`restart-umc-server`.
+
+.. note::
+
+   In containers, you can also use the environment variables
+   ``SELF_SERVICE_MALWARE_SCAN_ICAP_URL``, ``SELF_SERVICE_MALWARE_SCAN_ICAP_TIMEOUT``,
+   ``SELF_SERVICE_MALWARE_SCAN_ICAP_CA_FILE`` and ``SELF_SERVICE_MALWARE_SCAN_MAX_FILES``.
+   If you set them, they have priority over the UCR variables.
+
+.. note::
+
+   The URL must point to the malware scan service of the *ICAP* server.
+   The *End User Self Service* can't detect if the service doesn't scan the files.
+   Some *ICAP* services only scan specific file types.
+   For :program:`c-icap`, make sure that the setting ``virus_scan.ScanFileTypes``
+   includes the file types that users can upload,
+   for example ``JPEG`` and ``PNG`` for profile pictures.
+
 .. _end-user-self-service-registration:
 
 User registration
