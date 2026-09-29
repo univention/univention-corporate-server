@@ -1,3 +1,10 @@
+ucs-test (12.7.5) unstable; urgency=medium
+
+  * Bug #59965: add test for the malware scan of uploaded files in the
+    Self Service
+
+ -- Jaime Conde <conde-segovia@univention.de>  Tue, 29 Sep 2026 16:38:34 +0200
+
 ucs-test (12.7.4) unstable; urgency=medium
 
   * Bug #58175: fix test for keycloak-different-path scenario

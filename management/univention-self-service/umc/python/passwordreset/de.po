@@ -252,6 +252,22 @@ msgstr "Dieser Wert ist erforderlich"
 msgid "Unknown recovery method '{}'."
 msgstr "Unbekannte Wiederherstellungsfunktion '{}'."
 
+#: umc/python/passwordreset/__init__.py:154
+msgid ""
+"Upload failed: Malware scan not currently possible. Please try again later or "
+"contact an administrator."
+msgstr ""
+"Upload fehlgeschlagen: derzeit keine Prüfung auf Schadsoftware möglich. Bitte "
+"später erneut versuchen oder einen Administrator kontaktieren."
+
+#: umc/python/passwordreset/__init__.py:157
+msgid "Upload rejected: malware was detected in the file."
+msgstr "Upload abgelehnt: in der Datei wurde Schadsoftware erkannt."
+
+#: umc/python/passwordreset/__init__.py:218
+msgid "Upload rejected: too many files. You can upload at most %d files at once."
+msgstr "Upload abgelehnt: zu viele Dateien. Sie können höchstens %d Dateien auf einmal hochladen."
+
 #: umc/python/passwordreset/__init__.py:423
 msgid "Your picture"
 msgstr "Ihr Foto"
