@@ -7,6 +7,7 @@ Build-Depends:
  at,
  debhelper-compat (=13),
  dh-python,
+ openssl,
  pwgen,
  python3-all,
  python3-pil,
@@ -36,6 +37,21 @@ Provides:
 Description: UCS - common scripting functions for Python 3 scripts
  This package contains Python functions used by various
  components of UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-lib-icap
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Description: UCS - ICAP client to scan files for malware
+ This package contains the Python module univention.lib.icap. It sends
+ files to an ICAP server, for example c-icap with ClamAV, to scan them
+ for malware.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

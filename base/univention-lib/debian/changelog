@@ -1,8 +1,13 @@
-univention-lib (11.7.0) UNRELEASED; urgency=medium
+univention-lib (11.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:59 +0300
+  [ Jaime Conde ]
+  * Bug #59965: add package python3-univention-lib-icap with an ICAP client
+    to scan data for malware
+
+ -- Jaime Conde <conde-segovia@univention.de>  Thu, 24 Sep 2026 10:30:00 +0200
 
 univention-lib (11.6.1) unstable; urgency=medium
 

@@ -34,6 +34,11 @@ def i18n(request):
 
 
 @pytest.fixture(scope='session')
+def icap(request):
+    return import_lib_module(request, 'icap')
+
+
+@pytest.fixture(scope='session')
 def listenerSharePath(request):
     return import_lib_module(request, 'listenerSharePath')
 
