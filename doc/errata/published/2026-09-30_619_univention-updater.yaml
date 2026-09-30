@@ -12,3 +12,6 @@ desc: |
    server" message in the UI. The Watched_File class now handles the missing
    file gracefully and logs a warning instead of raising an exception.
 bug: [53615]
+erratum: 619
+announced: 2026-09-30
+support: core
