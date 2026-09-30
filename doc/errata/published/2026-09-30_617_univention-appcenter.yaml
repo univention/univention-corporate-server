@@ -14,3 +14,6 @@ desc: |
    stops with an error if the old container is not running, instead of
    losing its settings.
 bug: [59781]
+erratum: 617
+announced: 2026-09-30
+support: core
