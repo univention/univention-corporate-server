@@ -1151,20 +1151,20 @@ Type=str
 Categories=system-base
 
 [syslog/input/udp]
-Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen UDP Port. UDP ist das standardisierte Verfahren, aber Meldungen können verloren gehen. Standardisiert ist Port ist 514.
-Description[en]=This option enabled receiving syslog messages from remote computers through the given UDP port. UDP is the standardized method, but messages can get lost. Standardized is port 514.
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen UDP Port. UDP ist das standardisierte Verfahren, aber Meldungen können verloren gehen. Standardisiert ist Port ist 514. Die Firewall-Regel für den Port wird erst nach einem Neustart von 'univention-firewall' aktiv.
+Description[en]=This option enabled receiving syslog messages from remote computers through the given UDP port. UDP is the standardized method, but messages can get lost. Standardized is port 514. The firewall rule for the port takes effect only after restarting 'univention-firewall'.
 Type=portnumber
 Categories=system-base
 
 [syslog/input/tcp]
-Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen TCP Port. Meldungen können verloren gehen. Port 10514 wird oft verwendet.
-Description[en]=This option enabled receiving syslog messages from remote computers through the given TCP port. Messages can get lost. Port 10514 is commonly used.
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern auf dem angegebenen TCP Port. Meldungen können verloren gehen. Port 10514 wird oft verwendet. Die Firewall-Regel für den Port wird erst nach einem Neustart von 'univention-firewall' aktiv.
+Description[en]=This option enabled receiving syslog messages from remote computers through the given TCP port. Messages can get lost. Port 10514 is commonly used. The firewall rule for the port takes effect only after restarting 'univention-firewall'.
 Type=portnumber
 Categories=system-base
 
 [syslog/input/relp]
-Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern per 'Reliable Event Logging Protocol' (RELP) auf dem angegebenen TCP Port. Das Protokoll ist rsyslog spezifisch. Port 2514 oder 20514 werden oft verwendet.
-Description[en]=This option enabled receiving syslog messages from remote computers using the 'Reliable Event Logging Protocol' (RELP) through the given TCP port. The protocol is rsyslog specific. Port 2514 or 20514 are commonly used.
+Description[de]=Diese Option aktiviert den Empfang von Syslog-Meldungen von entfernten Rechnern per 'Reliable Event Logging Protocol' (RELP) auf dem angegebenen TCP Port. Das Protokoll ist rsyslog spezifisch. Port 2514 oder 20514 werden oft verwendet. Die Firewall-Regel für den Port wird erst nach einem Neustart von 'univention-firewall' aktiv.
+Description[en]=This option enabled receiving syslog messages from remote computers using the 'Reliable Event Logging Protocol' (RELP) through the given TCP port. The protocol is rsyslog specific. Port 2514 or 20514 are commonly used. The firewall rule for the port takes effect only after restarting 'univention-firewall'.
 Type=portnumber
 Categories=system-base
 
