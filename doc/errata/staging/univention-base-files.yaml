@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-base-files
+fix: 11.7.1
+desc: |
+ This update addresses the following issue:
+ * Enabling remote syslog reception with the UCR variables
+   `syslog/input/tcp` or `syslog/input/relp` generated an invalid rsyslog
+   configuration. The rsyslog service did not listen on the configured port
+   and log messages from remote systems were lost.
+bug: [58591]
