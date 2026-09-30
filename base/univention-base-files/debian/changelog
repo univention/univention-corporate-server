@@ -1,3 +1,10 @@
+univention-base-files (11.7.1) unstable; urgency=medium
+
+  * Bug #58591: Fix invalid rsyslog input types for syslog/input/tcp and
+    syslog/input/relp
+
+ -- Jan Gietzel <jan.gietzel@univention.de>  Wed, 30 Sep 2026 12:15:48 +0200
+
 univention-base-files (11.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

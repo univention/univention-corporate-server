@@ -1,0 +1,11 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+set -e -u
+
+out="$(ucr filter <conffiles/etc/rsyslog.conf)"
+for typ in udp tcp relp
+do
+	echo "$out" | grep -Eq "^#?input\(type=\"im${typ}\" " || { echo "missing input(type=\"im${typ}\")" >&2; exit 1; }
+done
