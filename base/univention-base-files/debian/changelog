@@ -2,6 +2,8 @@ univention-base-files (11.7.1) unstable; urgency=medium
 
   * Bug #58591: Fix invalid rsyslog input types for syslog/input/tcp and
     syslog/input/relp
+  * Bug #58591: Document that syslog/input/* requires restarting
+    univention-firewall
 
  -- Jan Gietzel <jan.gietzel@univention.de>  Wed, 30 Sep 2026 12:15:48 +0200
 
