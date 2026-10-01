@@ -42,20 +42,73 @@ The implementation of the *Recycle Bin* has the following technical limitations:
 
 .. _udm-recyclebin-activate:
 
-Activate Recycle Bin
---------------------
+Activate the Recycle Bin
+------------------------
 
-To activate the *Recycle Bin*,
-set the |UCSUCRV| :envvar:`listener/module/recyclebin/deactivate` to ``false`` on the |UCSPRIMARYDN| and all |UCSBACKUPDN|\ s.
+To activate the *Recycle Bin*, do the following:
 
-Then, restart the *Directory Listener* on the |UCSPRIMARYDN| with the command in
-:numref:`udm-recyclebin-policy-restart-listener-listing`.
+#. Set the |UCSUCRV| :envvar:`listener/module/recyclebin/deactivate`
+   to ``false`` on the |UCSPRIMARYDN| and all |UCSBACKUPDN|\ s.
+   For instructions about how to set UCR variables,
+   see :external+uv-ucs-operation:ref:`system-administration-ucr`
+   in :cite:t:`uv-ucs-operation`.
 
-.. code-block:: console
-   :caption: Restart the *Directory Listener*
-   :name: udm-recyclebin-policy-restart-listener-listing
+#. Restart the *Directory Listener* on the |UCSPRIMARYDN| with the command in
+   :numref:`udm-recyclebin-policy-restart-listener-listing`.
 
-   $ systemctl restart univention-directory-listener
+   .. code-block:: console
+      :caption: Restart the *Directory Listener*
+      :name: udm-recyclebin-policy-restart-listener-listing
+
+      $ systemctl restart univention-directory-listener
+
+   .. important::
+
+      If you activate the *Recycle Bin* after creating user or group objects,
+      the *Recycle Bin* doesn't include them
+      because the listener cache has no association with those objects.
+      Deleting those objects doesn't add them to the *Recycle Bin*.
+
+#. To include user and group objects
+   that existed before you activated the *Recycle Bin*,
+   run the command in :numref:`udm-recyclebin-activate-re-initialize-listener-listing`
+   on the |UCSPRIMARYDN|.
+   The command restarts the *Univention Directory Listener*
+   and :spelling:word:`reinitializes` only the *Recycle Bin*.
+
+   .. important::
+
+      Reinitialization doesn't change objects or create entries in the *Recycle Bin*.
+      While reinitialization runs,
+      the *Univention Directory Listener* doesn't process other directory changes
+      on the |UCSPRIMARYDN|.
+      The *Univention Directory Listener* processes pending directory changes
+      after reinitialization.
+
+      Reinitialization can't recover deleted objects
+      that existed before you activated the *Recycle Bin*.
+
+   .. important::
+
+      In large environments, reinitialization can take a long time.
+      Schedule it during a period of low load or a maintenance window.
+
+   .. code-block:: console
+      :caption: Restart *Univention Directory Listener* to reinitialize only the *Recycle Bin*
+      :name: udm-recyclebin-activate-re-initialize-listener-listing
+
+      $ univention-directory-listener-ctrl resync recyclebin
+
+#. To verify that reinitialization is complete,
+   run the command in :numref:`udm-recyclebin-activate-listener-status-listing`.
+   The ``recyclebin`` listener module has state ``3``,
+   indicating that it's fully initialized and ready.
+
+   .. code-block:: console
+      :caption: Check the listener status
+      :name: udm-recyclebin-activate-listener-status-listing
+
+      $ univention-directory-listener-ctrl status
 
 .. _udm-recyclebin-policy:
 
