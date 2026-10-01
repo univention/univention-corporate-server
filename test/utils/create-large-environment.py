@@ -43,9 +43,19 @@ class Scenario:
     profile_picture_percentage: float
     profile_picture_size: int
 
+    # Distribution controls. The averages alone are not sufficient to model
+    # realistic enterprise group membership distributions.
+    max_group_memberships: int | None = None
+    high_membership_user_ratio: float = 0.0
+    max_members_per_group: int | None = None
+    large_group_ratio: float = 0.0
+    large_group_min_size_ratio: float = 0.8
+
     ou_prefix: str = 'testou'
     username_prefix: str = 'testuser'
     groupname_prefix: str = 'testgroup'
+    large_groupname_prefix: str = 'large_testgroup'
+    high_membership_username_prefix: str = 'large_testuser'
     client_prefix: str = 'testclient'
 
 
@@ -167,6 +177,13 @@ SCENARIOS: dict[str, Scenario] = {
         ou_size_max=5000,
         avg_group_memberships=30,
         avg_members_per_group=80,
+        # Proposed generator-only stress distribution. These values are not
+        # specified by the sizing document and should be validated there.
+        max_group_memberships=100,
+        high_membership_user_ratio=0.01,
+        max_members_per_group=4999,
+        large_group_ratio=0.001,
+        large_group_min_size_ratio=0.8,
         nested_groups_count=2500,
         avg_nested_groups_per_group=50,
         profile_picture_percentage=0.25,
@@ -235,6 +252,8 @@ class Environment:
         self.scenario = scenario_config
         self.ou_dns: list[str] = []
         self.ou_name = None
+        self.large_group_indices: set[int] = set()
+        self.high_membership_user_indices: set[int] = set()
 
     def create_all(self):
         modules.init(self.lo, self.position, modules.get('container/ou'))
@@ -246,13 +265,13 @@ class Environment:
         if self.scenario.ous > 0:
             self._create_ou_structure()
         else:
-            user_to_groups = self._calculate_user_to_group_memberships()
+            group_to_users = self._calculate_group_to_user_memberships()
             all_users = self._create_users(self.base, 0, self.scenario.users)
-            self._create_groups(self.base, 0, self.scenario.groups, all_users, user_to_groups)
+            self._create_groups(self.base, 0, self.scenario.groups, all_users, group_to_users)
             self._create_clients(self.base, 0, self.scenario.clients)
 
     def _create_ou_structure(self):
-        """Create OUs one by one, with all their content (users, groups, clients) before moving to next OU."""
+        """Create all users first, then groups, so memberships may span OUs."""
         num_ous = self.scenario.ous
         ou_prefix = self.scenario.ou_prefix
 
@@ -264,10 +283,12 @@ class Environment:
         client_ou_sizes = calculate_ou_sizes(num_ous, self.scenario.clients, self.scenario.ou_size_min, self.scenario.ou_size_max)
 
         logger.debug('Pre-calculating user to group memberships')
-        user_to_groups = self._calculate_user_to_group_memberships()
+        group_to_users = self._calculate_group_to_user_memberships()
 
+        # First pass: create every OU and every user. This is required for groups
+        # in early OUs to reference users located in later OUs.
+        ou_layout = []
         all_users = []
-        all_groups = []
         user_offset = 0
         group_offset = 0
         client_offset = 0
@@ -278,17 +299,21 @@ class Environment:
 
             ou_dn = self._create_ou(ou_idx, ou_prefix)
             self.ou_dns.append(ou_dn)
-
             self.create_default_containers(ou_dn)
             self.create_primary_groups(ou_dn, f'{ou_prefix}{ou_idx}')
 
             all_users.extend(self._create_users(ou_dn, user_offset, num_users_in_ou))
-            all_groups.extend(self._create_groups(ou_dn, group_offset, num_groups_in_ou, all_users, user_to_groups))
             self._create_clients(ou_dn, client_offset, num_clients_in_ou)
+            ou_layout.append((ou_dn, group_offset, num_groups_in_ou))
 
             user_offset += num_users_in_ou
             group_offset += num_groups_in_ou
             client_offset += num_clients_in_ou
+
+        # Second pass: all user DNs are now available.
+        all_groups = []
+        for ou_dn, group_offset, num_groups_in_ou in ou_layout:
+            all_groups.extend(self._create_groups(ou_dn, group_offset, num_groups_in_ou, all_users, group_to_users))
 
         logger.info('Progress: 100.0%% - Completed creation of all %d OUs', num_ous)
         logger.info('Total created: %d users, %d groups', len(all_users), len(all_groups))
@@ -371,15 +396,145 @@ class Environment:
         ou_obj['defaultClientGroup'] = domain_computers_dn
         ou_obj.modify()
 
-    def _calculate_user_to_group_memberships(self) -> dict[int, list[int]]:
-        """Pre-calculate which groups each user should belong to."""
-        number_of_groups = self.scenario.groups
-        avg_group_memberships = self.scenario.avg_group_memberships
+    def _calculate_group_to_user_memberships(self) -> dict[int, list[int]]:
+        """Pre-calculate a deterministic, intentionally non-uniform membership distribution.
 
-        return {
-            user_idx: random.sample(range(1, number_of_groups + 1), min(avg_group_memberships, number_of_groups))
-            for user_idx in range(1, self.scenario.users + 1)
-        }
+        The total number of direct user-to-group memberships stays at
+        users * avg_group_memberships. A configurable ratio of users can be
+        pushed towards max_group_memberships, and a configurable ratio of
+        groups can be pushed towards max_members_per_group.
+
+        The returned mapping is group -> user indices. Building only this
+        direction avoids keeping a second copy of millions of memberships in
+        memory for 3XL.
+        """
+        users = self.scenario.users
+        groups = self.scenario.groups
+        average = min(self.scenario.avg_group_memberships, groups)
+        max_user_memberships = min(self.scenario.max_group_memberships or average, groups)
+
+        if not 0 <= self.scenario.high_membership_user_ratio <= 1:
+            raise ValueError('high_membership_user_ratio must be between 0 and 1')
+        if not 0 <= self.scenario.large_group_ratio <= 1:
+            raise ValueError('large_group_ratio must be between 0 and 1')
+        if not 0 < self.scenario.large_group_min_size_ratio <= 1:
+            raise ValueError('large_group_min_size_ratio must be > 0 and <= 1')
+        if max_user_memberships < average:
+            raise ValueError('max_group_memberships must be >= avg_group_memberships')
+
+        target_total = users * average
+        membership_counts = [average] * users
+
+        # Give a small, recognizable user population a high membership count,
+        # while reducing other users so the configured average remains exact.
+        high_user_count = min(users, round(users * self.scenario.high_membership_user_ratio))
+        self.high_membership_user_indices = set(range(1, high_user_count + 1))
+        extra = high_user_count * (max_user_memberships - average)
+        for idx in range(high_user_count):
+            membership_counts[idx] = max_user_memberships
+
+        if extra:
+            reducible_count = users - high_user_count
+            if not reducible_count:
+                raise ValueError('Cannot preserve avg_group_memberships when all users are high-membership users')
+            cursor = 0
+            while extra:
+                idx = high_user_count + (cursor % reducible_count)
+                if membership_counts[idx] > 0:
+                    membership_counts[idx] -= 1
+                    extra -= 1
+                cursor += 1
+                if cursor > reducible_count * max(average, 1) and extra:
+                    raise ValueError('Cannot preserve avg_group_memberships with the configured high-membership user ratio')
+
+        large_group_count = min(groups, round(groups * self.scenario.large_group_ratio))
+        self.large_group_indices = set(range(1, large_group_count + 1))
+        max_group_size = min(self.scenario.max_members_per_group or users, users)
+        min_large_group_size = min(max_group_size, max(1, round(max_group_size * self.scenario.large_group_min_size_ratio)))
+
+        large_targets: dict[int, int] = {}
+        requested_large_memberships = 0
+        if large_group_count:
+            span = max_group_size - min_large_group_size
+            for pos, group_idx in enumerate(range(1, large_group_count + 1)):
+                fraction = pos / max(large_group_count - 1, 1)
+                target = min_large_group_size + round(span * fraction)
+                large_targets[group_idx] = target
+                requested_large_memberships += target
+            if requested_large_memberships > target_total:
+                raise ValueError(
+                    'Configured large groups require more memberships than users * avg_group_memberships provides'
+                )
+
+        group_to_users: dict[int, list[int]] = {}
+        remaining_capacity = membership_counts[:]
+
+        # Fill large groups first. Rotate through a shuffled user population so
+        # the same users do not populate every large group.
+        user_order = list(range(1, users + 1))
+        random.shuffle(user_order)
+        cursor = 0
+        for group_idx, target_size in large_targets.items():
+            members: list[int] = []
+            member_set: set[int] = set()
+            checked_without_progress = 0
+            while len(members) < target_size:
+                user_idx = user_order[cursor % users]
+                cursor += 1
+                if remaining_capacity[user_idx - 1] > 0 and user_idx not in member_set:
+                    members.append(user_idx)
+                    member_set.add(user_idx)
+                    remaining_capacity[user_idx - 1] -= 1
+                    checked_without_progress = 0
+                else:
+                    checked_without_progress += 1
+                    if checked_without_progress >= users:
+                        raise ValueError('Not enough remaining user membership capacity to fill configured large groups')
+            group_to_users[group_idx] = members
+
+        # Large groups occupy the first group indices, so ordinary groups form
+        # one compact range. random.sample(range(...)) avoids materializing a
+        # ~500k-element candidate list for every user.
+        ordinary_groups = range(large_group_count + 1, groups + 1)
+        for user_idx in range(1, users + 1):
+            needed = remaining_capacity[user_idx - 1]
+            if not needed:
+                continue
+            if len(ordinary_groups) < needed:
+                raise ValueError('Not enough ordinary groups available for configured per-user memberships')
+            for group_idx in random.sample(ordinary_groups, needed):
+                group_to_users.setdefault(group_idx, []).append(user_idx)
+
+        actual_total = sum(len(member_indices) for member_indices in group_to_users.values())
+        assert actual_total == target_total
+        largest_group = max((len(member_indices) for member_indices in group_to_users.values()), default=0)
+        if self.scenario.max_members_per_group is not None and largest_group > self.scenario.max_members_per_group:
+            raise ValueError(
+                f'Generated group with {largest_group} members exceeds max_members_per_group={self.scenario.max_members_per_group}'
+            )
+
+        logger.info(
+            'Membership distribution: %d direct memberships, %d large groups, %d high-membership users; '
+            'user memberships min/avg/max=%d/%.2f/%d, largest group=%d',
+            actual_total,
+            len(self.large_group_indices),
+            len(self.high_membership_user_indices),
+            min(membership_counts, default=0),
+            actual_total / users if users else 0,
+            max(membership_counts, default=0),
+            largest_group,
+        )
+        if self.scenario.avg_members_per_group:
+            implied_average = actual_total / groups if groups else 0
+            if abs(implied_average - self.scenario.avg_members_per_group) > 0.01:
+                logger.warning(
+                    'Scenario avg_members_per_group=%s is inconsistent with users * avg_group_memberships / groups = %.2f; '
+                    'the generated direct memberships follow avg_group_memberships.',
+                    self.scenario.avg_members_per_group,
+                    implied_average,
+                )
+
+        return group_to_users
 
     def _create_users(self, base: str, start_idx: int, count: int) -> list[str]:
         """Create users in a specific container."""
@@ -392,14 +547,18 @@ class Environment:
         profile_picture_percentage = self.scenario.profile_picture_percentage
         profile_picture_size = self.scenario.profile_picture_size
         username_prefix = self.scenario.username_prefix
+        high_membership_username_prefix = self.scenario.high_membership_username_prefix
 
-        existing_users = {attr['uid'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('uid=%s*', [username_prefix]), base=user_base, scope='one', attr=['uid'])}
+        existing_users = {}
+        for prefix in {username_prefix, high_membership_username_prefix}:
+            existing_users.update({attr['uid'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('uid=%s*', [prefix]), base=user_base, scope='one', attr=['uid'])})
 
         if count:
             logger.info('  Creating %d users in %s', count, user_base)
         for i in range(count):
             user_number = start_idx + i + 1
-            name = f'{username_prefix}{user_number}'
+            prefix = high_membership_username_prefix if user_number in self.high_membership_user_indices else username_prefix
+            name = f'{prefix}{user_number}'
 
             dn = existing_users.get(name)
             if not dn:
@@ -424,7 +583,7 @@ class Environment:
 
         return created_users
 
-    def _create_groups(self, base: str, start_idx: int, count: int, all_users: list[str], user_to_groups: dict[int, list[int]]) -> list[str]:
+    def _create_groups(self, base: str, start_idx: int, count: int, all_users: list[str], group_to_users: dict[int, list[int]]) -> list[str]:
         """Create groups in a specific container."""
         groups_module = modules.get('groups/group')
 
@@ -433,19 +592,20 @@ class Environment:
 
         created_groups = []
         groupname_prefix = self.scenario.groupname_prefix
+        large_groupname_prefix = self.scenario.large_groupname_prefix
 
-        existing_groups = {attr['cn'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('cn=%s*', [groupname_prefix]), base=base, scope='one', attr=['cn'])}
+        existing_groups = {}
+        for prefix in {groupname_prefix, large_groupname_prefix}:
+            existing_groups.update({attr['cn'][0].decode('utf-8'): dn for dn, attr in self.lo.search(filter_format('cn=%s*', [prefix]), base=base, scope='one', attr=['cn'])})
 
         if count:
             logger.info('  Creating %d groups in %s', count, base)
         for i in range(count):
             group_number = start_idx + i + 1
-            name = f'{groupname_prefix}{group_number}'
+            prefix = large_groupname_prefix if group_number in self.large_group_indices else groupname_prefix
+            name = f'{prefix}{group_number}'
 
-            group_members_dns = []
-            for user_idx, group_indices in user_to_groups.items():
-                if group_number in group_indices and user_idx <= len(all_users):
-                    group_members_dns.append(all_users[user_idx - 1])
+            group_members_dns = [all_users[user_idx - 1] for user_idx in group_to_users.get(group_number, []) if user_idx <= len(all_users)]
 
             dn = existing_groups.get(name)
             if not dn:
@@ -542,6 +702,13 @@ if __name__ == '__main__':
     parser.add_argument('--groupname-prefix', help='Prefix for group names (default: %(default)s)', default=Scenario.groupname_prefix)
     parser.add_argument('--ou-prefix', help='Prefix for OU names (default: %(default)s)', default=Scenario.ou_prefix)
     parser.add_argument('--client-prefix', help='Prefix for client names (default: %(default)s)', default=Scenario.client_prefix)
+    parser.add_argument('--max-group-memberships', type=int, help='Maximum direct group memberships for high-membership users')
+    parser.add_argument('--high-membership-user-ratio', type=float, help='Ratio of users pushed towards --max-group-memberships')
+    parser.add_argument('--max-members-per-group', type=int, help='Maximum direct user members for large groups')
+    parser.add_argument('--large-group-ratio', type=float, help='Ratio of groups deliberately created near --max-members-per-group')
+    parser.add_argument('--large-group-min-size-ratio', type=float, help='Minimum fill ratio for deliberately large groups (0..1)')
+    parser.add_argument('--large-groupname-prefix', help='Prefix for deliberately large groups', default=Scenario.large_groupname_prefix)
+    parser.add_argument('--high-membership-username-prefix', help='Prefix for deliberately high-membership users', default=Scenario.high_membership_username_prefix)
     parser.add_argument('-v', '--verbose', action='count', default=0, help='Increase verbosity (can be repeated: -v, -vv, -vvv)')
     parser.add_argument('--log-level', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], help='Set explicit log level (overrides -v)')
     args = parser.parse_args()
