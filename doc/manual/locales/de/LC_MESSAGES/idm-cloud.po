@@ -7,7 +7,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-04 10:18+0000\n"
-"PO-Revision-Date: 2025-08-21 14:53+0200\n"
+"PO-Revision-Date: 2026-10-01 14:01+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: \n"
@@ -882,7 +882,7 @@ msgstr ""
 
 #: ../../idm-cloud/office-365.rst:288
 msgid "$ ucr set office365/education/enabled=yes"
-msgstr ""
+msgstr "$ ucr set office365/education/enabled=yes"
 
 #: ../../idm-cloud/office-365.rst:292
 msgid ""
@@ -914,7 +914,7 @@ msgstr ""
 
 #: ../../idm-cloud/office-365.rst:0
 msgid "``Class Code``"
-msgstr ""
+msgstr "``Class Code``"
 
 #: ../../idm-cloud/office-365.rst:301
 msgid "An identifier for the class (e.g. ``CS101``)."
@@ -922,7 +922,7 @@ msgstr "Ein Bezeichner für die Klasse (z.B. ``CS101``)."
 
 #: ../../idm-cloud/office-365.rst:0
 msgid "``Grade``"
-msgstr ""
+msgstr "``Grade``"
 
 #: ../../idm-cloud/office-365.rst:302
 msgid "The grade level of the class (e.g. ``Grade 10``)."
@@ -930,7 +930,7 @@ msgstr "Die Klassenstufe (z.B. ``Klasse 10``)."
 
 #: ../../idm-cloud/office-365.rst:0
 msgid "``Term Display Name``"
-msgstr ""
+msgstr "``Term Display Name``"
 
 #: ../../idm-cloud/office-365.rst:303
 msgid "A human-readable name for the academic term (e.g. ``Fall 2026``)."
@@ -938,7 +938,7 @@ msgstr "Ein lesbarer Name für das akademische Semester (z.B. ``Herbst 2026``)."
 
 #: ../../idm-cloud/office-365.rst:0
 msgid "``Term External ID``"
-msgstr ""
+msgstr "``Term External ID``"
 
 #: ../../idm-cloud/office-365.rst:305
 msgid "An external identifier for the term."
@@ -946,7 +946,7 @@ msgstr "Eine externe Kennung für das Semester."
 
 #: ../../idm-cloud/office-365.rst:0
 msgid "``Term Start Date``"
-msgstr ""
+msgstr "``Term Start Date``"
 
 #: ../../idm-cloud/office-365.rst:306
 msgid "The start date of the academic term (``YYYY-MM-DD``)."
@@ -954,7 +954,7 @@ msgstr "Das Startdatum des akademischen Semesters (``YYYY-MM-DD``)."
 
 #: ../../idm-cloud/office-365.rst:0
 msgid "``Term End Date``"
-msgstr ""
+msgstr "``Term End Date``"
 
 #: ../../idm-cloud/office-365.rst:307
 msgid "The end date of the academic term (``YYYY-MM-DD``)."
