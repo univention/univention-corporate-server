@@ -1,3 +1,10 @@
+ucs-test (12.7.5) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#334: test passing
+    keycloak/environment/* UCR variables to the Keycloak container
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Thu, 01 Oct 2026 16:15:35 +0300
+
 ucs-test (12.7.4) unstable; urgency=medium
 
   * Bug #58175: fix test for keycloak-different-path scenario
