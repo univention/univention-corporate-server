@@ -44,6 +44,9 @@ class TestUsers:
     what if pwdChangeNextLogin = 1 and password=foo at the same time?
     """
 
+    USEREXPIRY = '2032-11-12'
+    USEREXPIRY_OTHER = '2033-12-13'
+
     @pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
         ('0', '', '1', []),
         ('0', '0', '1', ['1970-01-02']),
@@ -464,34 +467,101 @@ class TestUsers:
     def test_modlist_sambaAcctFlags(self, udm, props, flags):
         self._test_modlist(udm, props, {'sambaAcctFlags': flags})
 
-    @pytest.mark.parametrize('userexpiry,kick_off,x', [
-        ('2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d"))))], {}),
-        ('', [], {'modify': False}),
+    @pytest.mark.parametrize('disabled,userexpiry,expected_disabled,shadow_expire', [
+        pytest.param('0', '', '0', '', id='enabled-without-expiry'),
+        pytest.param('0', USEREXPIRY, '0', None, id='enabled-with-expiry'),
+        pytest.param('1', '', '1', '1', id='disabled-without-expiry'),
+        # Current users/user.py behavior: when disabled and userexpiry are set
+        # during the same operation, userexpiry wins for shadowExpire. Therefore
+        # POSIX is not considered disabled when the object is read back.
+        pytest.param('1', USEREXPIRY, '0', None, id='disabled-with-expiry'),
     ])
-    def test_modlist_samba_kickoff_time(self, userexpiry, kick_off, x, udm):
-        self._test_modlist(udm, {'userexpiry': userexpiry}, {'sambaKickoffTime': kick_off}, **x)
+    def test_userexpiry_create(self, udm, disabled, userexpiry, expected_disabled, shadow_expire):
+        expected = self._userexpiry_ldap_values(userexpiry, shadow_expire)
+        user = udm.create_user(disabled=disabled, userexpiry=userexpiry)[0]
+        udm.verify_ldap_object(user, expected, strict=False)
+        udm.verify_udm_object('users/user', user, {'userexpiry': userexpiry or [], 'disabled': expected_disabled or []})
 
-    @pytest.mark.parametrize('userexpiry,valid_end,x', [
-        ('2018-01-01', ['20180101000000Z'], {}),
-        ('', [], {'modify': False}),
-    ])
-    def test_modlist_krb5_valid_end(self, udm, userexpiry, valid_end, x):
-        self._test_modlist(udm, {'userexpiry': userexpiry}, {'krb5ValidEnd': valid_end}, **x)
+    def _create_user_for_userexpiry_modify(self, udm, disabled, userexpiry):
+        """Create the requested *effective* initial state using current UDM semantics."""
+        if disabled == '1' and userexpiry:
+            # Setting both in one operation currently creates an inconsistent
+            # disabled state. Set the expiry first and disable separately so
+            # shadowExpire=1 while krb5ValidEnd/sambaKickoffTime keep userexpiry.
+            user = udm.create_user(userexpiry=userexpiry)[0]
+            return udm.modify_object('users/user', dn=user, disabled='1')
+        return udm.create_user(disabled=disabled, userexpiry=userexpiry)[0]
 
-    @pytest.mark.parametrize('disabled,userexpiry,shadow_expire', [
-        ('none', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
-        ('all', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
-        ('posix', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
-        ('posix_kerberos', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
-        ('windows_posix', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
-        ('kerberos', '', []),
-        ('all', '', ['1']),
-        ('posix', '', ['1']),
-        ('posix_kerberos', '', ['1']),
-        ('windows_posix', '', ['1']),
+    @pytest.mark.parametrize('initial_disabled,initial_userexpiry,changes,expected_disabled,expected_userexpiry,shadow_expire', [
+        # userexpiry alone: set, replace and remove
+        pytest.param('0', '', {'userexpiry': USEREXPIRY}, '0', USEREXPIRY, None, id='set-expiry'),
+        pytest.param('0', USEREXPIRY, {'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='change-expiry'),
+        pytest.param('0', USEREXPIRY, {'remove': {'userexpiry': [USEREXPIRY]}}, '0', '', '', id='remove-expiry'),
+
+        # disabled alone while userexpiry is absent or present
+        pytest.param('0', '', {'disabled': '1'}, '1', '', '1', id='disable-without-expiry'),
+        pytest.param('1', '', {'disabled': '0'}, '0', '', '', id='enable-without-expiry'),
+        pytest.param('0', USEREXPIRY, {'disabled': '1'}, '1', USEREXPIRY, '1', id='disable-with-expiry'),
+        pytest.param('1', USEREXPIRY, {'disabled': '0'}, '0', USEREXPIRY, None, id='enable-with-expiry'),
+
+        # disabled and userexpiry changed in the same operation. With the current
+        # implementation a non-empty userexpiry takes precedence for shadowExpire.
+        pytest.param('0', '', {'disabled': '1', 'userexpiry': USEREXPIRY}, '0', USEREXPIRY, None, id='disable-and-set-expiry'),
+        pytest.param('0', USEREXPIRY, {'disabled': '1', 'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='disable-and-change-expiry'),
+        pytest.param('0', USEREXPIRY, {'disabled': '1', 'remove': {'userexpiry': [USEREXPIRY]}}, '1', '', '1', id='disable-and-remove-expiry'),
+        pytest.param('1', USEREXPIRY, {'disabled': '0', 'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='enable-and-change-expiry'),
+        pytest.param('1', USEREXPIRY, {'disabled': '0', 'remove': {'userexpiry': [USEREXPIRY]}}, '0', '', '', id='enable-and-remove-expiry'),
+
+        # userexpiry changed on an already disabled account. A non-empty expiry
+        # overwrites shadowExpire=1 and makes the read-back disabled state "0".
+        pytest.param('1', '', {'userexpiry': USEREXPIRY}, '0', USEREXPIRY, None, id='disabled-set-expiry'),
+        pytest.param('1', USEREXPIRY, {'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='disabled-change-expiry'),
+        pytest.param('1', USEREXPIRY, {'remove': {'userexpiry': [USEREXPIRY]}}, '1', '', '1', id='disabled-remove-expiry'),
     ])
-    def test_modlist_shadow_expire(self, disabled, userexpiry, shadow_expire, udm):
-        self._test_modlist(udm, {'disabled': disabled, 'userexpiry': userexpiry}, {'shadowExpire': shadow_expire})
+    def test_userexpiry_modify(self, udm, initial_disabled, initial_userexpiry, changes, expected_disabled, expected_userexpiry, shadow_expire):
+        user = self._create_user_for_userexpiry_modify(udm, initial_disabled, initial_userexpiry)
+        try:
+            user = udm.modify_object('users/user', dn=user, **changes)
+        except UCSTestUDM_NoModification:
+            pass  # remove-expiry and disabled-remove-expiry
+
+        expected = self._userexpiry_ldap_values(expected_userexpiry, shadow_expire)
+        udm.verify_ldap_object(user, expected, strict=False)
+        udm.verify_udm_object('users/user', user, {'userexpiry': expected_userexpiry or [], 'disabled': expected_disabled or []})
+
+    @pytest.mark.parametrize('disabled,userexpiry,expected_disabled,shadow_expire', [
+        pytest.param('0', USEREXPIRY, '0', None, id='enabled'),
+        pytest.param('1', '', '1', '1', id='disabled-without-expiry'),
+        pytest.param('1', USEREXPIRY, '1', '1', id='disabled-with-expiry'),
+    ])
+    def test_userexpiry_unrelated_modify_preserves_state(self, udm, disabled, userexpiry, expected_disabled, shadow_expire):
+        user = self._create_user_for_userexpiry_modify(udm, disabled, userexpiry)
+        expected = self._userexpiry_ldap_values(userexpiry, shadow_expire)
+
+        user = udm.modify_object('users/user', dn=user, description='unrelated modification')
+
+        udm.verify_ldap_object(user, expected, strict=False)
+        udm.verify_udm_object('users/user', user, {'userexpiry': userexpiry, 'disabled': expected_disabled})
+
+    @staticmethod
+    def _userexpiry_ldap_values(userexpiry, shadow_expire=None):
+        if userexpiry:
+            samba_kickoff_time = str(int(time.mktime(time.strptime(userexpiry, '%Y-%m-%d'))))
+            krb5_valid_end = time.strftime('%Y%m%d000000Z', time.strptime(userexpiry, '%Y-%m-%d'))
+            expiry_shadow = str(int(calendar.timegm(time.strptime(userexpiry, '%Y-%m-%d')) / 3600 / 24))
+        else:
+            samba_kickoff_time = None
+            krb5_valid_end = None
+            expiry_shadow = None
+
+        if shadow_expire is None:
+            shadow_expire = expiry_shadow
+
+        return {
+            'sambaKickoffTime': [samba_kickoff_time] if samba_kickoff_time else [],
+            'krb5ValidEnd': [krb5_valid_end] if krb5_valid_end else [],
+            'shadowExpire': [shadow_expire] if shadow_expire else [],
+        }
 
     def test_modlist_mail_forward(self, udm):
         pass

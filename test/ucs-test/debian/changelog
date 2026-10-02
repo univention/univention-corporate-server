@@ -1,3 +1,9 @@
+ucs-test (12.7.6) unstable; urgency=medium
+
+  * Bug #59976: test shadow expire behavior
+
+ -- Florian Best <best@univention.de>  Fri, 02 Oct 2026 20:10:52 +0200
+
 ucs-test (12.7.5) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#334: test passing

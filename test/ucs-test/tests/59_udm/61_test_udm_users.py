@@ -477,6 +477,15 @@ def test_simpleauthaccount_authentication(udm, ucr):
     print('successfully did UMC authentication')
 
 
+@pytest.mark.roles('domaincontroller_master', 'domaincontroller_slave')
+def test_disabled_account_with_userexpiry_in_future_cannot_login(udm, ucr):
+    password = 'univention'
+    dn, _username = udm.create_ldap_user(password=password, disabled='1', userexpiry='2032-11-12')
+    utils.verify_ldap_object(dn)
+    with pytest.raises(univention.admin.uexceptions.authFail):
+        univention.admin.uldap.access(binddn=dn, bindpw=password, base=ucr['ldap/base'])
+
+
 def test_check_removal_of_additional_group_membership(udm):
     """Create users/user"""
     pytest.skip('FIXME??? #45842: git:fdfd446587c')
