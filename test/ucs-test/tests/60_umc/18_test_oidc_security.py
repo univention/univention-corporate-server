@@ -199,7 +199,10 @@ def verify_token(token):
     try:
         lo.bind_oauthbearer(None, token)
     except ldap.INVALID_CREDENTIALS as exc:  # type: ignore
-        raise InvalidToken(exc.args[0]['info'].split(': ', 1)[1].replace('authentication failure: ', ''))
+        msg = exc.args[0]['info']
+        if ': ' in msg:
+            msg = msg.split(': ', 1)[1].replace('authentication failure: ', '')
+        raise InvalidToken(msg)
 
 
 def test_rejects_token_without_exp(valid_claims, encode_token):
@@ -519,4 +522,14 @@ def test_rejects_disallowed_username_case_insensitively(valid_claims, encode_tok
     token = encode_token(claims)
 
     with pytest.raises(InvalidToken, match=f'username "{uid}" is disallowed'):
+        verify_token(token)
+
+
+@pytest.mark.skip(reason='TODO')
+def test_disabled_user_account_via_sasl_bind_triggers_shadowbind_security_checks(udm, valid_claims, encode_token):
+    _dn, uid = udm.create_user(disabled='1')
+    claims = valid_claims | {'uid': uid, 'preferred_username': uid}
+    token = encode_token(claims)
+
+    with pytest.raises(InvalidToken, match='account expired'):
         verify_token(token)
