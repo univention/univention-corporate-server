@@ -14,8 +14,11 @@ desc: |
    shadowLastChange` had expired and therefore allowed LDAP binds with the
    existing password. The shadowbind overlay has been adjusted to reject LDAP
    binds when `shadowLastChange` is `0`.
- * The `shadowbind` overlay has been adjusted to also evaluate the disabled
-   flag in `krb5KDCFlags`. This prevents disabled user accounts from
-   authenticating via LDAP if `shadowExpire` contains a future account
-   expiration date.
+ * A change introduced with UCS 5.2-7 caused disabled user accounts with a
+   configured future account expiration date to be able to authenticate via
+   LDAP. The `shadowbind` overlay has been adjusted to additionally evaluate
+   the disabled flag in `krb5KDCFlags` and reject LDAP binds for disabled
+   accounts. This restores the intended authentication behavior while
+   retaining the changes introduced in UCS 5.2-7 for reporting disabled
+   accounts correctly during authentication.
 bug: [47516, 59976]
