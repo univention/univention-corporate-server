@@ -1,0 +1,17 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: openldap
+fix: 2.5.13+dfsg-5A~5.2.0.202610021156
+desc: |
+ This update addresses the following issue:
+ * The `shadowbind` overlay did not correctly handle LDAP accounts with
+   `shadowLastChange` set to `0`. According to the semantics of the shadow
+   password attributes, a value of `shadowLastChange=0` indicates that the
+   password must be changed before it can be used for further authentication.
+   The shadowbind overlay only rejected authentication when `shadowMax +
+   shadowLastChange` had expired and therefore allowed LDAP binds with the
+   existing password. The shadowbind overlay has been adjusted to reject LDAP
+   binds when `shadowLastChange` is `0`.
+bug: [47516]
