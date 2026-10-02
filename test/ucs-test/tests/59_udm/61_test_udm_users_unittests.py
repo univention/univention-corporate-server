@@ -541,7 +541,7 @@ class TestUsers:
         user = udm.modify_object('users/user', dn=user, description='unrelated modification')
 
         udm.verify_ldap_object(user, expected, strict=False)
-        udm.verify_udm_object('users/user', user, {'userexpiry': userexpiry, 'disabled': expected_disabled})
+        udm.verify_udm_object('users/user', user, {'userexpiry': userexpiry or [], 'disabled': expected_disabled or []})
 
     @staticmethod
     def _userexpiry_ldap_values(userexpiry, shadow_expire=None):

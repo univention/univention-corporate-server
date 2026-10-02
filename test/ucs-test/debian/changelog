@@ -1,4 +1,4 @@
-ucs-test (12.7.6) unstable; urgency=medium
+ucs-test (12.7.7) unstable; urgency=medium
 
   * Bug #59976: test shadow expire behavior
 
