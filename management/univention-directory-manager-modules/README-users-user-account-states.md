@@ -355,6 +355,7 @@ To align both mechanisms so that "expiration date" consistently means "the first
 * Conclusion: To force both systems to recognize expiry at the same instant (00:00 of the expiry date), configure `shadowMax = krb5ExpiryInterval - 1`.
 
 # Related bugs
+* [Bug 35809 - Configuration of UCS domain password policies](https://forge.univention.org/bugzilla/show_bug.cgi?id=35809)
 * [Bug 54317 - Setting a user account to locked in UDM still allows OpenLDAP bind with that user](https://forge.univention.org/bugzilla/show_bug.cgi?id=54317)
 * [Bug 55633 - Disabled user does not show up in search result for disabled users if a user expiry date is set](https://forge.univention.org/bugzilla/show_bug.cgi?id=55633)
 * [Bug 46351 - Account lockout via LDAP ppolicy not shown in UMC and probably not applied to Kerberos](https://forge.univention.org/bugzilla/show_bug.cgi?id=46351)
@@ -389,8 +390,12 @@ To align both mechanisms so that "expiration date" consistently means "the first
 * [Bug 48190 - Active/Disabled state of user accounts should be synced to office365](https://forge.univention.org/bugzilla/show_bug.cgi?id=48190)
 * [Bug 58060 - Add option to keep disabled users disabled / activate and deactivate users](https://forge.univention.org/bugzilla/show_bug.cgi?id=58060)
 * [Bug 57239 - Import is activating deactivated (disabled) users](https://forge.univention.org/bugzilla/show_bug.cgi?id=57239)
+* [Bug 47516 - shadowLastChange=0 in shadowbind LDAP overlay is not respected](https://forge.univention.org/bugzilla/show_bug.cgi?id=47516)
+* [Bug 45957 - simplify "user has to change password on next logon behavior" (shadowLastChange)](https://forge.univention.org/bugzilla/show_bug.cgi?id=45957)
 
 # Related bugs with historic context / knowledge
+* [Bug 59898 - Keycloak reports "invalid_user_credentials" instead of "user_disabled" for deactivated accounts](https://forge.univention.org/bugzilla/show_bug.cgi?id=59898)
+* [Bug 59976 - UDM: users disabled together with userexpiry stay enabled since UCS 5.2-7](https://forge.univention.org/bugzilla/show_bug.cgi?id=59976)
 * [Bug 57681 - Day of password expiry, a passwordchange is prompted but not followed through with sso login](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681)
 * [Bug 46349 - Value of userexpiry derived from shadowExpire depends on timezone](https://forge.univention.org/bugzilla/show_bug.cgi?id=46349#c7)
 * [Bug 39817 - Locked login methods ignored by Samba 4](https://forge.univention.org/bugzilla/show_bug.cgi?id=39817)
