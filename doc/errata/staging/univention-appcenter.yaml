@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-appcenter
+fix: 11.7.3
+desc: |
+ This update addresses the following issue:
+ * LDAP access control rules for App Center objects have been optimized to
+   reduce the overhead of LDAP access checks. The changes take effect on new
+   installations. On existing installations, the updated LDAP access control
+   rules can be activated by manually re-running the `30univention-appcenter`
+   join script.
+bug: [60001]
