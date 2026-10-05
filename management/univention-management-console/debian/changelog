@@ -1,3 +1,9 @@
+univention-management-console (14.7.6) unstable; urgency=medium
+
+  * Bug #59997: fix hostname check of Referer security check
+
+ -- Florian Best <best@univention.de>  Wed, 18 Nov 2026 10:19:47 +0300
+
 univention-management-console (14.7.5) unstable; urgency=medium
 
   * Bug #60124: add kc_action to the OIDC extra
