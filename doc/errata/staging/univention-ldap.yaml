@@ -1,0 +1,10 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-ldap
+fix: 18.7.1
+desc: |
+ This update addresses the following issues:
+ * The LDAP ACLs have been optimized for a better performance.
+bug: [60001]
