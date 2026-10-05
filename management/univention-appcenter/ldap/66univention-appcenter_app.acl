@@ -8,7 +8,7 @@ access to dn.regex="^univentionAppID=[^,]+,cn=[^,]+,cn=apps,cn=univention,%(base
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" write
 	by * read break
 
-access to dn.regex="^cn=[^,]+,cn=apps,cn=univention,%(base)s$" attrs=children,entry,@organizationalRole,@univentionObject
+access to dn.one="cn=apps,cn=univention,%(base)s$" filter="(objectClass=organizationalRole)" attrs=children,entry,@organizationalRole,@univentionObject
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" write
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" write
 	by * read break
