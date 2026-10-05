@@ -1,8 +1,13 @@
-univention-management-console (14.7.0) UNRELEASED; urgency=medium
+univention-management-console (14.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:45 +0300
+  [ Florian Best ]
+  * Bug #59998: remove obsolete UCR variable umc/server/disable-
+    security-restrictions
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2026 11:32:21 +0200
 
 univention-management-console (14.6.0) unstable; urgency=medium
 

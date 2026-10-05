@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console
+fix: 14.7.0
+desc: |
+ This update addresses the following issue:
+ * The obsolete UCR variable `umc/server/disable-security-restrictions` has
+   been removed. The variable disabled UMC security checks intended to protect
+   against XSRF attacks and was originally introduced only for compatibility
+   between UCS 4.1 and UCS 4.2 systems. Disabling these protections is no
+   longer necessary.
+bug: [59998]

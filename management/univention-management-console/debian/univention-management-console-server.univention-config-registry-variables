@@ -65,12 +65,6 @@ Description[en]=This variable activates additional auth methods in the PAM confi
 Type=str
 Categories=management-umc
 
-[umc/server/disable-security-restrictions]
-Description[de]=Die Variable deaktiviert die Sicherheitsspezifischen Restriktionen gegen XSRF-Attacken im UMC-Server. Dies ist notwendig, damit UCS 4.1 Systeme der Domäne mit UCS 4.2 Systemen kommunizieren können.
-Description[en]=This variable deactivates the security related restrictions against XSRF attacks in the UMC-Server. This is necessary for UCS 4.1 systems in the domain to communicate with UCS 4.2 systems.
-Type=bool
-Categories=management-umc
-
 [umc/login/links/.*/enabled]
 Description[de]=Ist eine Variable der Form 'umc/login/links/.*/enabled' deaktiviert, wird der gegebene Link nicht mehr auf der Login-Seite angezeigt. Z.B. 'umc/login/links/how_do_i_login/enabled=false'.
 Description[en]=If a variable in the format 'umc/login/links/.*/enabled' is deactivated, then the given link is no longer shown on the login page. E.g. 'umc/login/links/how_do_i_login/enabled=false'.
