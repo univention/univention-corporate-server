@@ -89,7 +89,6 @@ import ldap
 
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import I18N_Error, Locale, Translation
-from univention.management.console.config import ucr
 from univention.management.console.error import (
     LDAP_ConnectionFailed, LDAP_ServerDown, NotAcceptable, UMC_Error, Unauthorized,
 )
@@ -225,8 +224,7 @@ class Base(Translation):
 
         try:
             self._parse_accept_language(request)
-            if ucr.is_false('umc/server/disable-security-restrictions', True):
-                self.security_checks(request, function)
+            self.security_checks(request, function)
             function.__func__(self, request, *args, **kwargs)
         except (KeyboardInterrupt, SystemExit):
             self.finished(request.id, None, self._('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)

@@ -1,3 +1,10 @@
+univention-management-console (14.7.2) unstable; urgency=medium
+
+  * Bug #59998: remove obsolete UCR variable umc/server/disable-
+    security-restrictions
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2026 17:35:27 +0100
+
 univention-management-console (14.7.1) unstable; urgency=medium
 
   * Bug #60006: use new --client-id-token-audience parameter
