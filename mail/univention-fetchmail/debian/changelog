@@ -1,8 +1,12 @@
-univention-fetchmail (15.7.0) UNRELEASED; urgency=medium
+univention-fetchmail (15.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:46:01 +0300
+  [ Florian Best ]
+  * Bug #60001: combine LDAP ACL for performance
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2026 12:21:21 +0200
 
 univention-fetchmail (15.6.0) UNRELEASED; urgency=medium
 
