@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: pyasn1
+fix: 0.4.2-3+deb10u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-59886, CVE-2026-59885, CVE-2026-59884 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59991]
+cve:
+- CVE-2026-59884
+- CVE-2026-59885
+- CVE-2026-59886
