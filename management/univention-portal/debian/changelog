@@ -1,8 +1,12 @@
-univention-portal (6.7.0) UNRELEASED; urgency=medium
+univention-portal (6.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:48 +0300
+  [ Florian Best ]
+  * Bug #60001: combine multiple set ACL into one
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2026 12:32:16 +0200
 
 univention-portal (6.6.0) UNRELEASED; urgency=medium
 
