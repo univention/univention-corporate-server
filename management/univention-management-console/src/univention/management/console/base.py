@@ -256,9 +256,12 @@ class Base(Translation):
         if getattr(function, 'xsrf_protection', True) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
             raise UMC_Error(self._('Cross Site Request Forgery attack detected. Please provide the "UMCSessionId" cookie value as HTTP request header "X-Xsrf-Protection".'), status=403)
 
-        if getattr(function, 'referer_protection', True) and request.headers.get('Referer') and not urlparse(request.headers['Referer']).path.startswith('/univention/'):
-            # FIXME: we must also check the netloc/hostname/IP
-            raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/".'), status=503)
+        if getattr(function, 'referer_protection', True) and request.headers.get('Referer'):
+            referer = urlparse(request.headers['Referer'])
+            host = request._request_handler.request.host.lower()
+            if host not in (referer.netloc.lower(), referer.hostname.lower()) or not referer.path.startswith('/univention/'):
+                MODULE.warning('HTTP Referer does not match', referer=repr(referer), host=host)
+                raise UMC_Error(self._('The "Referer" HTTP header must start with "/univention/"'), status=503)
 
         content_type = request.headers.get('Content-Type', '')
         allowed_content_types = ('application/json', 'application/x-www-form-urlencoded', 'multipart/form-data')
