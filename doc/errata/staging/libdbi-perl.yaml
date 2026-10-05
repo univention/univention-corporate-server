@@ -1,0 +1,26 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: libdbi-perl
+fix: 1.643-4+deb12u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-78030, CVE-2026-73193 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-73194 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+ * CVE-2026-15392 (CVSS score 7.7 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N).
+ * CVE-2026-88816 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-88815 (CVSS score 6.2 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+bug: [59987]
+cve:
+- CVE-2026-78030
+- CVE-2026-88815
+- CVE-2026-88816
+- CVE-2026-73193
+- CVE-2026-73194
+- CVE-2026-15392
