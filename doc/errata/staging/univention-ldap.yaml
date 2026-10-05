@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue:
  * The `noopsrch` overlay module has been enabled to improve performance for
    license counts.
-bug: [59964]
+ * The LDAP ACLs have been optimized for a better performance.
+bug: [59964, 60001]
