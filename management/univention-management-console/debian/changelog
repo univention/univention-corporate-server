@@ -1,3 +1,9 @@
+univention-management-console (14.7.4) unstable; urgency=medium
+
+  * Bug #59997: fix hostname check of Referer security check
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2026 13:22:26 +0100
+
 univention-management-console (14.7.3) unstable; urgency=medium
 
   * Bug #59852: prevent open redirects after login

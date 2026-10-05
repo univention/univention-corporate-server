@@ -18,6 +18,8 @@ desc: |
    potentially facilitating phishing attacks. Unsafe redirections are now
    prevented (GHSA-j546-78hh-36v6) (CVSS score 5.1 -
    CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:N/VI:N/VA:N/SC:N/SI:L/SA:N).
-bug: [59998, 59852]
+ * Security protections for the HTTP Referer header now correctly check the
+   hostname.
+bug: [59998, 59852, 59997]
 cve:
 - GHSA-j546-78hh-36v6
