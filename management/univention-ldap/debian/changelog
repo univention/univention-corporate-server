@@ -1,3 +1,9 @@
+univention-ldap (18.7.1) unstable; urgency=medium
+
+  * Bug #60001: improve performance of LDAP ACLs
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2026 12:05:22 +0200
+
 univention-ldap (18.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]
