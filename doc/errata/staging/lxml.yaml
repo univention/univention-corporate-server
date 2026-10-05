@@ -1,0 +1,20 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: lxml
+fix: 4.9.2-1+deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-49825 (CVSS score 8.2 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:N).
+ * CVE-2026-41066 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-28350, CVE-2026-28348 (CVSS score 6.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N).
+bug: [59986]
+cve:
+- CVE-2026-28348
+- CVE-2026-28350
+- CVE-2026-41066
+- CVE-2026-49825
