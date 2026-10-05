@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: lxml
+fix: 3.7.1-1+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-49825 (CVSS score 8.2 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:N).
+ * CVE-2022-2309 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-41066 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-28350, CVE-2026-28348 (CVSS score 6.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N).
+bug: [59995]
+cve:
+- CVE-2022-2309
+- CVE-2026-28348
+- CVE-2026-28350
+- CVE-2026-41066
+- CVE-2026-49825
