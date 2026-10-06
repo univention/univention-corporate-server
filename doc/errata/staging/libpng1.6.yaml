@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: libpng1.6
+fix: 1.6.39-2+deb12u6
+desc: |
+ This update addresses the following issue:
+ * CVE-2026-46675 (CVSS score unknown).
+bug: [60009]
+cve:
+- CVE-2026-46675
