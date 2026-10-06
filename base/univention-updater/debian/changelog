@@ -1,3 +1,11 @@
+univention-updater (17.7.2) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3824: Block the update if the role packages are
+    missing, abort postup if the role package cannot be installed and fail
+    the release update if the package lists cannot be updated
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Tue, 06 Oct 2026 15:47:00 +0300
+
 univention-updater (17.7.1) unstable; urgency=medium
 
   * Bug #53615: Handle missing serial file gracefully in Watched_File.timestamp()

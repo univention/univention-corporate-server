@@ -388,9 +388,12 @@ def run(opt: Namespace, ucr: ConfigRegistry, updater: UniventionUpdater, nextver
             elif (phase, order) == ('preup', 'pre'):
                 log('**** Starting actual update at %s' % datetime.now().ctime())
             elif (phase, order) == ('update', 'main'):
+                # by default "apt-get update" succeeds even if the repository is unreachable,
+                # after which the dist-upgrade finds nothing to upgrade and the release would be set anyway.
+                cmd = "%s -o APT::Update::Error-Mode=any" % (cmd_update,)
                 with apt_lock():
-                    if call(cmd_update, shell=True, stdout=fd_log, stderr=fd_log):
-                        raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
+                    if call(cmd, shell=True, stdout=fd_log, stderr=fd_log):
+                        raise UpdateError('Failed to execute "%s"' % cmd, errorsource='UPDATE')
 
                 context_id = write_event(UPDATE_STARTED, {'hostname': ucr.get('hostname')})
                 if context_id:
