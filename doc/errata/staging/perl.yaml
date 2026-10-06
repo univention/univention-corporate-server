@@ -1,0 +1,49 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: perl
+fix: 5.36.0-7+deb12u4
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-57433 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-13221 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H).
+ * CVE-2026-12087 (CVSS score 9.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+ * CVE-2026-57432 (CVSS score 8.4 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-42496 (CVSS score 8.2 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H).
+ * CVE-2026-48962 (CVSS score 7.8 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-48959 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-42497 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+ * CVE-2026-8376 (CVSS score 7.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+ * CVE-2026-7017 (CVSS score 7.1 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:L/A:N).
+ * CVE-2026-7010 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+ * CVE-2025-15649 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-19487 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+bug: [60008]
+cve:
+- CVE-2026-7017
+- CVE-2026-42496
+- CVE-2026-42497
+- CVE-2026-12087
+- CVE-2026-13221
+- CVE-2025-15649
+- CVE-2026-7010
+- CVE-2026-8376
+- CVE-2026-48959
+- CVE-2026-48962
+- CVE-2026-57432
+- CVE-2026-57433
+- CVE-2026-19487
