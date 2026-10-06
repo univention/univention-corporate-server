@@ -563,6 +563,40 @@ update_check_failed_ldif() {
 	return 1
 }
 
+# Bug #59502: avoid deleting legacy LDAP schema/ACL data while relevant
+# domain nodes are offline. Otherwise those nodes keep stale schema/ACL objects and
+# slapd can fail to start after the update has finished.
+update_check_legacy_schema_replication() {
+	local var="update$VERSION/ignore_legacy_schema_replication"
+	ignore_check "$var" && return 100
+	[ -f /var/univention-join/joined ] || return 0
+	[ "$server_role" = "domaincontroller_master" ] || return 0
+
+	local module fqdn missing
+	missing="$(
+		for module in computers/domaincontroller_backup computers/domaincontroller_slave; do
+			univention-directory-manager "$module" list
+		done |
+		sed -ne 's/^  fqdn: //p' | sort -u |
+		while IFS= read -r fqdn; do
+			nc -vz -w 2 "$fqdn" "${ldap_server_port:-7389}" >&2 || echo "	* $fqdn"
+		done
+	)"
+
+	[ -z "$missing" ] || {
+		echo "	Legacy LDAP schema cleanup is blocked because the following domain nodes are not"
+		echo "	reachable over LDAP, so they may not be able to receive the replication updates:"
+		echo "$missing"
+		echo
+		echo "	Power on and fully replicate all relevant nodes before continuing the update."
+		echo
+		echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+		return 1
+	}
+
+	return 0
+}
+
 # block update if system date is too old
 update_check_system_date_too_old() {
 	local system_year
