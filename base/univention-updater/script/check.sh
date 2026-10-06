@@ -231,15 +231,59 @@ migrate_openldap_bdb () {
 	echo "$(date) migration to MDB done"
 }
 
+role_package () {
+	case "$server_role" in
+	domaincontroller_master) echo "univention-server-master" ;;
+	domaincontroller_backup) echo "univention-server-backup" ;;
+	domaincontroller_slave) echo "univention-server-slave" ;;
+	memberserver) echo "univention-server-member" ;;
+	*) return 1 ;;
+	esac
+}
+
+is_installed () {
+	[ "$(dpkg-query -W -f='${db:Status-Status}' "$1" 2>/dev/null)" = "installed" ]
+}
+
+# The role package pulls in the UCS installation through
+# univention-role-server-common and univention-role-common, or their container
+# variants inside a UCS container. Removing a package they depend on, e.g. a
+# kernel, removes them or makes APT switch to univention-container-role-server-common,
+# which will remove most packages and destroy the system
+update_check_role_packages_installed () {
+	local var="update$VERSION/ignore_role_packages"
+	ignore_check "$var" && return 100
+	local role_package pkg prefix='' required missing=''
+	role_package="$(role_package)" || return 0
+	[ -n "${docker_container_uuid:-}" ] && prefix='container-'
+	required="$role_package univention-${prefix}role-server-common univention-${prefix}role-common"
+
+	for pkg in $required
+	do
+		is_installed "$pkg" || missing="${missing:+$missing }$pkg"
+	done
+	[ -z "$missing" ] && return 0
+
+	echo "	The following packages required for the system role $server_role"
+	echo "	are not installed:"
+	echo "		$missing"
+	echo
+	echo "	Removing them may also have removed other packages required by UCS."
+	echo "	The system may be in a state which is difficult to recover. Do not"
+	echo "	update the system and do not run 'apt-get autoremove', as this removes"
+	echo "	most of the UCS installation."
+	echo
+	echo "	Please contact Univention Support in case you have an Enterprise"
+	echo "	Subscription. Otherwise please try Univention Help"
+	echo "	<https://help.univention.com/>"
+	echo
+	echo "	This check can be skipped by setting the UCR variable $var=yes."
+	return 1
+}
+
 update_check_role_package_removed () {
 	local role_package
-	case "$server_role" in
-	domaincontroller_master) role_package="univention-server-master" ;;
-	domaincontroller_backup) role_package="univention-server-backup" ;;
-	domaincontroller_slave) role_package="univention-server-slave" ;;
-	memberserver) role_package="univention-server-member" ;;
-	*) return 0 ;;
-	esac
+	role_package="$(role_package)" || return 0
 
 	LC_ALL=C ${update_commands_distupgrade_simulate:-false} 2>&1 | grep -q "^Remv $role_package" ||
 		return 0
@@ -434,10 +478,12 @@ update_check_disk_space () {
 			if [ "$partition" = "/boot" ] && [ "$update52_pruneoldkernel" != "yes" ]
 			then
 				echo
-				echo "	Old kernel versions on /boot/ can be pruned by manully by running"
+				echo "	Old kernel versions on /boot/ can be pruned manually by running"
 				echo "	'univention-prune-kernels' or automatically during"
 				echo "	next update attempt by setting config registry variable"
 				echo "	update${VERSION}/pruneoldkernel to \"yes\"."
+				echo "	Do not remove kernel packages with 'apt' or 'dpkg', as this can"
+				echo "	also remove packages required by UCS."
 			fi
 			ret=1
 		fi
