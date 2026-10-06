@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issues:
  * Copying GPOs with Samba created multiple registry.pol
    files due to case-sensitivity issues. This lead to problems
-   up123dating these GPOs.
+   up1234dating these GPOs.
 bug: [59940]
