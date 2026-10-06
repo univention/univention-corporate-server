@@ -1,16 +1,16 @@
 product: ucs
 release: "5.2"
-version: [5, 6, 7]
+version: [6, 7]
 scope: ucs_5.2-0-errata5.2-7
 src: unzip
 fix: 6.0-28+deb12u1
 desc: |
- This update addresses the following issue:
- 6.0-28+deb12u1 (Sun, 16 Aug 2026 15:50:52 +0200)
- * Non-maintainer upload by the Debian LTS team.
-  * CAN-2026-2034440 (heap out-of-bounds read in EF_IZUNIX3 extra field handler) severity: Medium
-  * CAN-2026-2034442 (heap buffer overflow WRITE in memextract() STORED path) severity: High
-  * CAN-2026-2034443 (stack out-of-bounds NUL write in EF_SMARTZIP handler) severity: High
+ This update addresses the following issues:
+ * Heap out-of-bounds read in EF_IZUNIX3 extra field handler
+   (CAN-2026-2034440)
+ * Heap buffer overflow in memextract() STORED path (CAN-2026-2034442)
+ * Stack out-of-bounds NUL write in EF_SMARTZIP handler
+   (CAN-2026-2034443)
 bug: [60013]
 cve:
 - CAN-2026-2034440
