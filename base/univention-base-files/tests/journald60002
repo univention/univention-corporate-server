@@ -1,0 +1,20 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+set -e -u
+
+tmp="$(mktemp -d)"
+cleanup () {
+	rm -rf "$tmp"
+}
+trap cleanup EXIT
+
+render () {
+	printf "\n\n%s\n" "$1" >"$tmp/ucr"
+	UNIVENTION_BASECONF="$tmp/ucr" ucr filter <conffiles/etc/systemd/journald.conf
+}
+
+render "" | grep -Fxq "#ForwardToSyslog=yes"
+render "systemd/journald/ForwardToSyslog: false" | grep -Fxq "ForwardToSyslog=no"
+render "systemd/journald/ForwardToSyslog: yes" | grep -Fxq "ForwardToSyslog=yes"

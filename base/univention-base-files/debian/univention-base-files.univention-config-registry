@@ -94,6 +94,7 @@ Variables: systemd/journald/SystemKeepFree
 Variables: systemd/journald/SystemMaxFileSize
 Variables: systemd/journald/MaxRetentionSec
 Variables: systemd/journald/MaxFileSec
+Variables: systemd/journald/ForwardToSyslog
 
 Type: file
 File: etc/default/ssh

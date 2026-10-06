@@ -1,3 +1,9 @@
+univention-base-files (11.7.2) unstable; urgency=medium
+
+  * Bug #60002: Add UCR variable systemd/journald/ForwardToSyslog
+
+ -- Jan Gietzel <jan.gietzel@univention.de>  Tue, 06 Oct 2026 08:51:00 +0200
+
 univention-base-files (11.7.1) unstable; urgency=medium
 
   * Bug #58591: Fix invalid rsyslog input types for syslog/input/tcp and
