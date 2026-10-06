@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: xz-utils
+fix: 5.4.1-1+deb12u2
+desc: |
+ This update addresses the following issue:
+ * XZ Utils: Invalid write if a decoder is reinitialized after allocation
+   failure. (GHSA-5qpq-xqfv-j9pg) Severity: high
+bug: [60010]
+cve:
+  - GHSA-5qpq-xqfv-j9pg 
