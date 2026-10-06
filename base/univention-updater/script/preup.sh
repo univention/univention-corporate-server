@@ -120,6 +120,10 @@ prune_kernel  # do this before update_check_disk_space
 
 checks
 
+# Bug #59502: ensure all relevant replica/backup nodes are reachable before
+# deleting legacy LDAP objects that may otherwise not be replicated.
+update_check_legacy_schema_replication || exit 1
+
 # Several LDAP objects are no longer supported with UCS 5 and are removed automatically.
 delete_obsolete_objects
 

@@ -563,6 +563,55 @@ update_check_failed_ldif() {
 	return 1
 }
 
+# Bug #59502: avoid deleting legacy LDAP schema/ACL data while relevant
+# domain nodes are offline. Otherwise those nodes keep stale schema/ACL objects and
+# slapd can fail to start after the update has finished.
+update_check_legacy_schema_replication() {
+	local var="update$VERSION/ignore_legacy_schema_replication"
+	ignore_check "$var" && return 100
+	[ -f /var/univention-join/joined ] || return 0
+	[ "$server_role" = "domaincontroller_master" ] || return 0
+
+	local base domain fqdn host missing=""
+	base="$(ucr get ldap/base 2>/dev/null || true)"
+	domain="$(ucr get domainname 2>/dev/null || true)"
+	[ -n "$base" ] || return 0
+
+	local replicas
+	replicas="$(univention-ldapsearch -LLL -b "cn=computers,$base" \
+		'(&(objectClass=univentionHost)(!(objectClass=organizationalRole))(!(univentionServerRole=master)))' \
+		cn 2>/dev/null |
+		awk '
+			BEGIN { cn="" }
+			/^dn:/ { if (cn != "") { print cn; cn="" }; next }
+			/^cn:/ { cn=$2; next }
+			END { if (cn != "") print cn }
+		' | sort -u)"
+	[ -n "$replicas" ] || return 0
+
+	while IFS= read -r host; do
+		[ -n "$host" ] || continue
+		fqdn="${host}.${domain}"
+		getent hosts "$fqdn" >/dev/null 2>&1 || {
+			missing="${missing}${fqdn} "
+			continue
+		}
+		ping -c 1 -W 2 "$fqdn" >/dev/null 2>&1 || missing="${missing}${fqdn} "
+	done <<< "$replicas"
+
+	[ -z "$missing" ] || {
+		echo "	Legacy LDAP schema cleanup is blocked because the following domain nodes"
+		echo "	are not reachable and could not receive the replication updates yet:"
+		echo "	$missing"
+		echo "	Power on and fully replicate all relevant nodes before continuing the update."
+		echo
+		echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+		return 1
+	}
+
+	return 0
+}
+
 # block update if system date is too old
 update_check_system_date_too_old() {
 	local system_year
