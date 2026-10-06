@@ -49,14 +49,21 @@ eval "$(univention-config-registry shell)" >&3 2>&3
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh || exit $?
 
-case "${server_role:-}" in
-domaincontroller_master) apt_install univention-server-master ;;
-domaincontroller_backup) apt_install univention-server-backup ;;
-domaincontroller_slave) apt_install univention-server-slave ;;
-memberserver) apt_install univention-server-member ;;
-'') ;;  # unconfigured
-*) die "The server role '$server_role' is not supported!" ;;
-esac
+install_role_package () {
+	local role_package
+	case "${server_role:-}" in
+	domaincontroller_master) role_package=univention-server-master ;;
+	domaincontroller_backup) role_package=univention-server-backup ;;
+	domaincontroller_slave) role_package=univention-server-slave ;;
+	memberserver) role_package=univention-server-member ;;
+	'') return 0 ;;  # unconfigured
+	*) die "The server role '$server_role' is not supported!" ;;
+	esac
+	# without the role package the following autoremove removes most of the UCS installation
+	apt_install "$role_package" ||
+		die "Failed to install $role_package. Please install it manually by running 'univention-install $role_package' before running 'apt-get autoremove'."
+}
+install_role_package
 
 is_ucr_true update52/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
