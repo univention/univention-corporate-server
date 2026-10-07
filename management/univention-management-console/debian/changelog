@@ -1,3 +1,9 @@
+univention-management-console (12.0.36-3) unstable; urgency=medium
+
+  * Bug #60028: fix audience mapper config
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2026 13:05:44 +0200
+
 univention-management-console (12.0.36-2) unstable; urgency=medium
 
   * Bug #58825: Show notification for Summit 2026
