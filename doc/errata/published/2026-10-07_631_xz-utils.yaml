@@ -11,3 +11,6 @@ desc: |
 bug: [60010]
 cve:
   - GHSA-5qpq-xqfv-j9pg
+erratum: 631
+announced: 2026-10-07
+support: core
