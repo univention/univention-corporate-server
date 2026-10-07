@@ -10,4 +10,4 @@ desc: |
    failure. (GHSA-5qpq-xqfv-j9pg) Severity: high
 bug: [60010]
 cve:
-  - GHSA-5qpq-xqfv-j9pg 
+  - GHSA-5qpq-xqfv-j9pg
