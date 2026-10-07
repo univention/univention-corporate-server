@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console
+fix: 14.7.0
+desc: |
+ This update addresses the following issues:
+ * Keycloak 26.7.5 requires a different configuration for the
+   audience mapper. With this update the default configuration
+   for UMC's OIDC client is compatible with Keycloak >= 26.7.5.
+bug: [60006]
