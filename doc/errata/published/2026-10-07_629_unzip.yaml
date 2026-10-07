@@ -16,3 +16,6 @@ cve:
 - CAN-2026-2034440
 - CAN-2026-2034442
 - CAN-2026-2034443
+erratum: 629
+announced: 2026-10-07
+support: core
