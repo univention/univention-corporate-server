@@ -115,7 +115,7 @@ _setup_oidc () {
 		--description="Univention Management Console on $fqdn_oidc" \
 		--direct-access-grants \
 		--access-token-lifespan="${umc_oidc_access_token_lifespan:-300}" \
-		--access-token-audience="ldaps://$domainname/" \
+		--custom-access-token-audience="ldaps://$domainname/" \
 		--id-token-audience="https://${fqdn_oidc,,}/univention/oidc/" \
 		--redirect-uri="https://${fqdn_oidc,,}/univention/oidc/*" \
 		--redirect-uri="http://${fqdn_oidc,,}/univention/oidc/*" \

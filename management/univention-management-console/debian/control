@@ -20,6 +20,7 @@ Package: univention-management-console
 Architecture: all
 Depends:
  python3-univention-management-console (= ${source:Version}),
+ univention-keycloak-client (>= 3.7.0),
  univention-management-console-module-appcenter,
  univention-management-console-module-apps,
  univention-management-console-module-diagnostic,
