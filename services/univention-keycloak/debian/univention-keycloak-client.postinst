@@ -104,6 +104,16 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 			fi
 		fi
 	fi
+	# move audiences that are no client ID to included.custom.audience Bug #60006
+	if dpkg --compare-versions "$2" lt-nl "1.0.18"; then
+		if [ -e /var/univention-join/joined ] ; then
+			if univention-app info | grep 'Installed:' | grep -q -w keycloak; then
+				if [ -e "/etc/keycloak.secret" ]; then
+					/usr/share/univention-keycloak/fix-audience-mappers || echo "WARNING: fixing the audience mappers failed, please run /usr/share/univention-keycloak/fix-audience-mappers manually"
+				fi
+			fi
+		fi
+	fi
 fi
 
 exit 0

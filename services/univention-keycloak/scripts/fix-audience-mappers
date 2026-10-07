@@ -1,0 +1,107 @@
+#!/usr/bin/python3
+# Univention Keycloak
+#
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""
+Fix OIDC audience mappers that use included.client.audience for values that are not a client ID.
+
+An oidc-audience-mapper adds a value to the aud claim of the token. The value
+is taken from included.client.audience or included.custom.audience.
+
+Since Keycloak 26.7.5, the value of included.client.audience is only added if
+a client with this client ID exists in the realm. The value of
+included.custom.audience is added without this check.
+
+This script moves each value of included.client.audience that is not an
+existing client ID to included.custom.audience.
+"""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+from argparse import ArgumentParser
+
+
+CLIENT_AUDIENCE = 'included.client.audience'
+CUSTOM_AUDIENCE = 'included.custom.audience'
+
+
+def univention_keycloak(realm: str, *args: str) -> str:
+    return subprocess.run(['univention-keycloak', '--realm', realm, *args], check=True, stdout=subprocess.PIPE, text=True).stdout
+
+
+def fix_audience_mappers(protocol_mappers: list[dict], client_ids: set[str]) -> list[str]:
+    """Move invalid client audiences to the custom audience, return a description of each change"""
+    changes = []
+    for mapper in protocol_mappers:
+        if mapper.get('protocolMapper') != 'oidc-audience-mapper':
+            continue
+        config = mapper.get('config', {})
+        audience = config.get(CLIENT_AUDIENCE)
+        if not audience or audience in client_ids:
+            continue
+        config[CUSTOM_AUDIENCE] = config.pop(CLIENT_AUDIENCE)
+        changes.append(f'mapper {mapper.get("name")}: {audience!r} from {CLIENT_AUDIENCE} to {CUSTOM_AUDIENCE}')
+    return changes
+
+
+def main() -> int:
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument('--realm', default='ucs', help='the realm whose OIDC clients are fixed (default: %(default)s)')
+    parser.add_argument('--dry-run', action='store_true', help='only show the invalid audience mappers and what would be changed, without changing anything')
+    opt = parser.parse_args()
+
+    print(f'searching OIDC clients in realm {opt.realm} for audience mappers with an invalid client audience...')
+
+    try:
+        realms = json.loads(univention_keycloak(opt.realm, 'realms', 'get', '--json'))
+        if opt.realm not in realms:
+            print(f'realm {opt.realm} does not exist, existing realms: {", ".join(realms)}')
+            return 1
+        oidc_clients = json.loads(univention_keycloak(opt.realm, 'oidc/rp', 'get', '--json', '--all'))
+        saml_client_ids = json.loads(univention_keycloak(opt.realm, 'saml/sp', 'get', '--json'))
+    except subprocess.CalledProcessError as err:
+        print(f'univention-keycloak get failed: {err}')
+        return 1
+
+    client_ids = {client['clientId'] for client in oidc_clients} | set(saml_client_ids)
+
+    found_mappers = found_clients = 0
+    failed_clients = []
+    for client in oidc_clients:
+        protocol_mappers = client.get('protocolMappers', [])
+        changes = fix_audience_mappers(protocol_mappers, client_ids)
+        if not changes:
+            continue
+
+        found_mappers += len(changes)
+        found_clients += 1
+        for change in changes:
+            print(f'client {client["clientId"]}, {"would move" if opt.dry_run else "moving"} {change}')
+        if opt.dry_run:
+            continue
+
+        try:
+            univention_keycloak(opt.realm, 'oidc/rp', 'update', client['clientId'], json.dumps({'protocolMappers': protocol_mappers}))
+        except subprocess.CalledProcessError as err:
+            print(f'univention-keycloak oidc/rp update failed for client {client["clientId"]} (exit code {err.returncode})')
+            failed_clients.append(client['clientId'])
+
+    if not found_mappers:
+        print('no invalid audience mappers found')
+    elif opt.dry_run:
+        print(f'dry-run: found {found_mappers} invalid audience mapper(s) in {found_clients} client(s), nothing was changed')
+    elif failed_clients:
+        print(f'found {found_mappers} invalid audience mapper(s) in {found_clients} client(s), failed to update {len(failed_clients)} client(s): {", ".join(failed_clients)}')
+    else:
+        print(f'fixed {found_mappers} invalid audience mapper(s) in {found_clients} client(s)')
+
+    return 1 if failed_clients else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
