@@ -37,6 +37,7 @@ export REPLACE="${REPLACE:=$(_jenkins)}"
 export UCS_TEST_RUN="${UCS_TEST_RUN:=$(_jenkins)}"
 export TERMINATE="${TERMINATE:=$(_jenkins)}"
 export OS_CLOUD="${OS_CLOUD:=univention-development}"
+export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=183}" # template-generic-ucs-5.0-10-e1220 - 2026-10-08 11:46:27 (packer)
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
@@ -107,6 +108,9 @@ usage () {
 	echo ""
 	echo "  OpenStack"
 	echo "    <>${BOLD}OPENSTACK_IMAGE_NAME${NORM} - OS template name [${BOLD}$OPENSTACK_IMAGE_NAME${NORM}]"
+	echo ""
+	echo "  Proxmox"
+	echo "    <>${BOLD}PROXMOX_TEMPLATE_ID${NORM}  - Proxmox template VM ID [${BOLD}$PROXMOX_TEMPLATE_ID${NORM}]"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    <>${BOLD}KVM_BUILD_SERVER${NORM}     - KVM build server|'EC2'|'OpenStack'|'Openstack'|'OS'|'Proxmox'|'PVE' [${BOLD}$KVM_BUILD_SERVER${NORM}]"
