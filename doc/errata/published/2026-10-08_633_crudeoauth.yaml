@@ -13,3 +13,6 @@ desc: |
    by these vulnerabilities (GHSA-8rpx-56j9-49jr, GHSA-vh2f-mp9g-qccg,
    GHSA-v8q8-8r5x-5m5j, GHSA-gqjq-8jxh-m3pq).
 bug: [59931]
+erratum: 633
+announced: 2026-10-08
+support: core
