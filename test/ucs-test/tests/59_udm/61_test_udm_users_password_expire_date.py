@@ -158,7 +158,7 @@ def test_udm_users_password_expire_date(udm, lo):
         'sambaKickoffTime': [udm_formula_for_sambaKickoffTime(new_uexp)],
         'krb5KDCFlags': [KRB5KDCFLAGS_REQUIRE_AS_REQ],
         'krb5ValidEnd': [b'20150202000000Z'],
-        'shadowExpire': [b'1'],
+        'shadowExpire': [udm_formula_for_shadowExpire(new_uexp)],
         'userPassword': [expected_before['userPassword'][0]],
     })
     expected_diff = dictdiff(expected_before, expected_after)
@@ -197,7 +197,7 @@ def test_udm_users_password_expire_date(udm, lo):
         'sambaKickoffTime': [udm_formula_for_sambaKickoffTime(new_uexp)],
         'krb5ValidEnd': [b'20140101000000Z'],
         'krb5KDCFlags': [KRB5KDCFLAGS_REQUIRE_AS_REQ],
-        'shadowExpire': [b'1'],
+        'shadowExpire': [udm_formula_for_shadowExpire(new_uexp)],
         'userPassword': [expected_before['userPassword'][0]],
     })
     expected_diff = dictdiff(expected_before, expected_after)
