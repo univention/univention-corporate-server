@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.1) unstable; urgency=medium
+
+  * Bug #59976: ensure disabled user accounts remain disabled when userexpiry is set
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2026 12:48:35 +0200
+
 univention-directory-manager-modules (17.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]

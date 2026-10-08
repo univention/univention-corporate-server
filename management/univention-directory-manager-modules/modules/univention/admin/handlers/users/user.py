@@ -832,15 +832,13 @@ def unmapPasswordExpiry(oldattr: dict[str, list[bytes]]) -> str:
 
 
 def unmapDisabled(oldattr: dict[str, list[bytes]]) -> str:
-    if all(
-        [
-            unmapSambaDisabled(oldattr),
-            unmapKerberosDisabled(oldattr),
-            unmapPosixDisabled(oldattr),
-        ],
-    ):
-        return '1'
-    return '0'
+    # the presence of shadowExpire indicates a disabled account regardless of a future date!
+    # Account expiration is independent of the disabled state.
+    return '1' if (
+        unmapSambaDisabled(oldattr)
+        and unmapKerberosDisabled(oldattr)
+        and 'shadowExpire' in oldattr
+    ) else '0'
 
 
 def inconsistentDisabledState(oldattr: dict[str, list[bytes]]) -> bool:
@@ -849,12 +847,9 @@ def inconsistentDisabledState(oldattr: dict[str, list[bytes]]) -> bool:
         # therefore old accounts which still have it set should count as inconsistent
         # so that the next modification will re-write the password hash
         return True
-    disabled = [
-        unmapSambaDisabled(oldattr),
-        unmapKerberosDisabled(oldattr),
-        unmapPosixDisabled(oldattr),
-    ]
-    return len(set(map(bool, disabled))) > 1
+    samba = bool(unmapSambaDisabled(oldattr))
+    kerberos = bool(unmapKerberosDisabled(oldattr))
+    return samba != kerberos or (samba and 'shadowExpire' not in oldattr)
 
 
 def unmapSambaDisabled(oldattr: dict[str, list[bytes]]) -> bool:
@@ -1788,9 +1783,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     def _modlist_shadow_expire(self, ml: list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]:
         if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
-            if self['disabled'] == '1' and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
-                shadowExpire = '1'
-            elif self['userexpiry']:
+            if self['userexpiry']:
                 shadowExpire = _mapUserExpiryToShadowExpire(self['userexpiry'])
             elif self['disabled'] == '1':
                 shadowExpire = '1'
@@ -2038,27 +2031,29 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             # substring match for userPassword is not possible
             if filter.value == '1':
                 filter.transform_to_conjunction(
-                    univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
+                    univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
                 )
             elif filter.value == '0':
                 filter.transform_to_conjunction(
                     univention.admin.filter.parse(
-                        '(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))',
+                        '(&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))',
                     ),
                 )
             elif filter.value == 'none':
                 filter.transform_to_conjunction(
                     univention.admin.filter.parse(
-                        '(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))',
+                        '(&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))',
                     ),
                 )
             elif filter.value == 'all':
                 filter.transform_to_conjunction(
-                    univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
+                    univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
                 )
             elif filter.value == 'posix':
-                filter.variable = 'shadowExpire'
-                filter.value = '1'
+                from datetime import UTC  # move to the top
+                today = int(datetime.now(UTC).timestamp() // 86400)
+                posix_filter = filter_format('(&(shadowExpire>=1)(shadowExpire<=%s))', [today])
+                filter.transform_to_conjunction(univention.admin.filter.parse(posix_filter))
             elif filter.value == 'kerberos':
                 filter.transform_to_conjunction(univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128))'))
             elif filter.value == 'windows':
@@ -2068,9 +2063,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                     univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'),
                 )
             elif filter.value == 'windows_posix':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
+                filter.transform_to_conjunction(univention.admin.filter.parse('(&(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
             elif filter.value == 'posix_kerberos':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags=254))'))
+                filter.transform_to_conjunction(univention.admin.filter.parse('(&(krb5KDCFlags=254))'))
             elif filter.operator == '=*':
                 filter.variable = 'uid'
         elif filter.variable == 'userexpiry':

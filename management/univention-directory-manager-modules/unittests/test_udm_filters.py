@@ -113,16 +113,15 @@ def test_presence_filters(module, property, udm_filter, expected_filter):
 
 @pytest.mark.parametrize('module, property, udm_filter, expected_filter', [
     # all disabled combinations
-    ('users/user', 'disabled', 'disabled=1', '&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))'),
-    ('users/user', 'disabled', 'disabled=0', '&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
-    ('users/user', 'disabled', 'disabled=none', '&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
-    ('users/user', 'disabled', 'disabled=all', '&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))'),
-    ('users/user', 'disabled', 'disabled=posix', 'shadowExpire=1'),
+    ('users/user', 'disabled', 'disabled=1', '&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))'),
+    ('users/user', 'disabled', 'disabled=0', '&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
+    ('users/user', 'disabled', 'disabled=none', '&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
+    ('users/user', 'disabled', 'disabled=all', '&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))'),
     ('users/user', 'disabled', 'disabled=kerberos', '&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)'),
     ('users/user', 'disabled', 'disabled=windows', '|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])'),
     ('users/user', 'disabled', 'disabled=windows_kerberos', '&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ]))'),
-    ('users/user', 'disabled', 'disabled=windows_posix', '&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ]))'),
-    ('users/user', 'disabled', 'disabled=posix_kerberos', '&(shadowExpire=1)(krb5KDCFlags=254)'),
+    ('users/user', 'disabled', 'disabled=windows_posix', '&(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ]))'),
+    ('users/user', 'disabled', 'disabled=posix_kerberos', '&(krb5KDCFlags=254)'),
     ('users/user', 'disabled', 'disabled=foo', 'disabled=foo'),  # TODO: raise invalidFilter
 
     # all locked combinations
