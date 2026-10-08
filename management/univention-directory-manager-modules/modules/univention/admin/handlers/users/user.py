@@ -836,7 +836,7 @@ def unmapDisabled(oldattr: dict[str, list[bytes]]) -> str:
         [
             unmapSambaDisabled(oldattr),
             unmapKerberosDisabled(oldattr),
-            unmapPosixDisabled(oldattr),
+            'shadowExpire' in oldattr,  # doesn't matter if in future or now! but the absence signals "enabled"
         ],
     ):
         return '1'
