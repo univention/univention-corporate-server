@@ -21,13 +21,7 @@ see :ref:`uv-dev-ref:udm-rest-api` in :cite:t:`developer-reference`.
 You find the source code for |UCSREST| at
 :uv:src:`management/univention-directory-manager-rest/`.
 
-.. tip::
-
-   This section uses various concepts of the
-   :ref:`architecture-notation-archimate` notation. To avoid confusion, have a
-   close look at the figures and make yourself familiar with the different
-   concepts in the :ref:`notation-archimate-application-layer` and the
-   :ref:`notation-archimate-relationships` in the appendix.
+.. include:: /archimate.txt
 
 :numref:`services-udm-http-rest-api-context` shows the relation of |UCSREST|
 down the line from the |UCS| *Product components* with the
@@ -171,9 +165,6 @@ purpose.
    |UCSREST| capabilities
 
 .. hint::
-
-   A capability in :ref:`ArchiMate <notation-archimate-motivation-layer>`
-   represents an ability that an active structure element possesses.
 
    In the :numref:`services-umd-http-rest-api-capability`, you see different
    relations such as realization, aggregation, and assignment. Be aware of their

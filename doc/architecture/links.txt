@@ -10,10 +10,7 @@
 .. _archimate-business-layer: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Business-Layer.html
 .. _archimate-business-layer-summary: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Business-Layer.html#sec-Summary-of-Business-Layer-Elements
 .. _archimate-concept: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Definitions.html
-.. _archimate-core: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Language-Structure.html#sec-The-ArchiMate-Core-Framework
 .. _archimate-derivation-rules: https://pubs.opengroup.org/architecture/archimate32-doc/ch-relationships-Normative.html
-.. _archimate-full: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Language-Structure.html#sec-The-ArchiMate-Full-Framework
-.. _archimate-layers: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Language-Structure.html#sec-Layering-of-the-ArchiMate-Language
 .. _archimate-mastering: https://ea.rna.nl/mastering-archimate-edition-3-1/
 .. _archimate-mastering-overviews: https://ea.rna.nl/archimate/free-archimate-overview-pdf/
 .. _archimate-motivation-elements: https://pubs.opengroup.org/architecture/archimate32-doc/ch-Motivation-Elements.html
@@ -52,3 +49,7 @@
 .. _w-openldap: https://en.wikipedia.org/wiki/OpenLDAP
 .. _w-samba: https://en.wikipedia.org/wiki/Samba_(software)
 .. _w-spa: https://en.wikipedia.org/wiki/Single-page_application
+
+.. vim: ft=rst
+
+   .. vim: ft=rst
