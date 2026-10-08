@@ -44,6 +44,10 @@ class AdHocProvisioning:
         self.dummy_realm = dummy_realm
         self.path = path
 
+        # kc.connection.raw_get does not like //
+        if self.path == "/":
+            self.path = ""
+
         # Set up logging
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
