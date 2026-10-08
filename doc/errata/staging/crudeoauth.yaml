@@ -1,6 +1,6 @@
 product: ucs
 release: "5.2"
-version: [6]
+version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: crudeoauth
 fix: 2.0.1
