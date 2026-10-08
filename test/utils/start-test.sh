@@ -37,6 +37,7 @@ export REPLACE="${REPLACE:=$(_jenkins)}"
 export UCS_TEST_RUN="${UCS_TEST_RUN:=$(_jenkins)}"
 export TERMINATE="${TERMINATE:=$(_jenkins)}"
 export OS_CLOUD="${OS_CLOUD:=univention-development}"
+export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=183}"
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
