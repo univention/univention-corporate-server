@@ -10,3 +10,6 @@ desc: |
    `crudeoauth`.
 bug: [59931]
 maintained: false
+erratum: 634
+announced: 2026-10-08
+support: core
