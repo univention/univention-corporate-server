@@ -1,3 +1,9 @@
+ucs-test (10.0.24-42) unstable; urgency=medium
+
+  * Bug #60006: fix keycloak tests
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Oct 2026 15:42:55 +0200
+
 ucs-test (10.0.24-41) unstable; urgency=medium
 
   * Bug #59456: fix path to eapol_test in new vlan test

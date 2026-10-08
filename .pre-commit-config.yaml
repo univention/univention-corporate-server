@@ -30,6 +30,9 @@ repos:
     rev: v4.5.0
     hooks:
     - id: check-added-large-files
+      exclude: "^test/ucs-test/debian/changelog$\
+               |^services/univention-printserver/79univention-printserver.inst$\
+               "
     - id: check-json
       exclude: "/conffiles/.*[.]json$"
     - id: check-xml
