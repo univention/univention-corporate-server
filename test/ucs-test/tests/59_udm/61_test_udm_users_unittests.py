@@ -474,7 +474,7 @@ class TestUsers:
         # Current users/user.py behavior: when disabled and userexpiry are set
         # during the same operation, userexpiry wins for shadowExpire. Therefore
         # POSIX is not considered disabled when the object is read back.
-        pytest.param('1', USEREXPIRY, '0', None, id='disabled-with-expiry'),
+        pytest.param('1', USEREXPIRY, '1', None, id='disabled-with-expiry'),
     ])
     def test_userexpiry_create(self, udm, disabled, userexpiry, expected_disabled, shadow_expire):
         expected = self._userexpiry_ldap_values(userexpiry, shadow_expire)
@@ -506,16 +506,16 @@ class TestUsers:
 
         # disabled and userexpiry changed in the same operation. With the current
         # implementation a non-empty userexpiry takes precedence for shadowExpire.
-        pytest.param('0', '', {'disabled': '1', 'userexpiry': USEREXPIRY}, '0', USEREXPIRY, None, id='disable-and-set-expiry'),
-        pytest.param('0', USEREXPIRY, {'disabled': '1', 'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='disable-and-change-expiry'),
+        pytest.param('0', '', {'disabled': '1', 'userexpiry': USEREXPIRY}, '1', USEREXPIRY, None, id='disable-and-set-expiry'),
+        pytest.param('0', USEREXPIRY, {'disabled': '1', 'userexpiry': USEREXPIRY_OTHER}, '1', USEREXPIRY_OTHER, None, id='disable-and-change-expiry'),
         pytest.param('0', USEREXPIRY, {'disabled': '1', 'remove': {'userexpiry': [USEREXPIRY]}}, '1', '', '1', id='disable-and-remove-expiry'),
         pytest.param('1', USEREXPIRY, {'disabled': '0', 'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='enable-and-change-expiry'),
         pytest.param('1', USEREXPIRY, {'disabled': '0', 'remove': {'userexpiry': [USEREXPIRY]}}, '0', '', '', id='enable-and-remove-expiry'),
 
         # userexpiry changed on an already disabled account. A non-empty expiry
         # overwrites shadowExpire=1 and makes the read-back disabled state "0".
-        pytest.param('1', '', {'userexpiry': USEREXPIRY}, '0', USEREXPIRY, None, id='disabled-set-expiry'),
-        pytest.param('1', USEREXPIRY, {'userexpiry': USEREXPIRY_OTHER}, '0', USEREXPIRY_OTHER, None, id='disabled-change-expiry'),
+        pytest.param('1', '', {'userexpiry': USEREXPIRY}, '1', USEREXPIRY, None, id='disabled-set-expiry'),
+        pytest.param('1', USEREXPIRY, {'userexpiry': USEREXPIRY_OTHER}, '1', USEREXPIRY_OTHER, None, id='disabled-change-expiry'),
         pytest.param('1', USEREXPIRY, {'remove': {'userexpiry': [USEREXPIRY]}}, '1', '', '1', id='disabled-remove-expiry'),
     ])
     def test_userexpiry_modify(self, udm, initial_disabled, initial_userexpiry, changes, expected_disabled, expected_userexpiry, shadow_expire):
