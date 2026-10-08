@@ -10,3 +10,6 @@ desc: |
    files due to case-sensitivity issues. This lead to problems
    updating these GPOs.
 bug: [59695]
+erratum: 632
+announced: 2026-10-08
+support: core
