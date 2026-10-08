@@ -355,10 +355,10 @@ App Catalog
    from the *App repository*.
 
 App Center
-   In the context of :numref:`app-center-infrastructure-model`, the term *App
-   Center* of the ArchiMate application component refers to everything on a
-   local UCS system that makes up the App Center. The *App Center Service* loads
-   the app information from the *App repository*.
+   In the context of :numref:`app-center-infrastructure-model`,
+   the *App Center* application component refers to everything on a local UCS system
+   that makes up the App Center.
+   The *App Center Service* loads the app information from the *App repository*.
 
    For the architecture of the *App Center*, refer to
    :ref:`services-app-center`.
