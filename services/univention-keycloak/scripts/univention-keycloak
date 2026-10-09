@@ -1560,15 +1560,28 @@ def parse_args(args: list[str] | None = None) -> Namespace:
 
     co_group = create_oidc_parser.add_mutually_exclusive_group()
     co_group.add_argument('--client-access-token-audience', action='append', default=[], help='Add audiences to Access Tokens, for audience as existing client id.')
-    co_group.add_argument('--access-token-audience', action='append', default=[], help='DEPRECATED, use --access-token-audience* instead, add audiences to Access Tokens.')
+    co_group.add_argument(
+        '--access-token-audience',
+        action='append',
+        default=[],
+        help='DEPRECATED, use --client-access-token-audience for a client ID or --custom-access-token-audience for any other value. Same as --client-access-token-audience.',
+    )
     create_oidc_parser.add_argument('--custom-access-token-audience', action='append', default=[], help='Add audiences to Access Tokens, for any audience literal.')
     create_oidc_parser.add_argument(
-        '--add-audience-mapper', action='store_true', default=False, help='DEPRECATED, use --access-token-audience* instead, add a audience mapper to add audience to access token.'
+        '--add-audience-mapper',
+        action='store_true',
+        default=False,
+        help='DEPRECATED, use --client-access-token-audience and --client-id-token-audience instead. Adds the client ID, or the value of --audience-to-map, as a client audience to the access token and the ID token.',
     )
 
     co_group = create_oidc_parser.add_mutually_exclusive_group()
     co_group.add_argument('--client-id-token-audience', action='append', default=[], help='Add audiences to ID Tokens, for audience as existing client id.')
-    co_group.add_argument('--id-token-audience', action='append', default=[], help='DEPRECATED, use --access-token-audience* instead, add audiences to ID Tokens.')
+    co_group.add_argument(
+        '--id-token-audience',
+        action='append',
+        default=[],
+        help='DEPRECATED, use --client-id-token-audience for a client ID or --custom-id-token-audience for any other value. Same as --client-id-token-audience.',
+    )
     create_oidc_parser.add_argument('--custom-id-token-audience', action='append', default=[], help='Add audiences to ID Tokens, for any audience literal.')
 
     create_oidc_parser.add_argument(
