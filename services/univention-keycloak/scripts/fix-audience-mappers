@@ -30,8 +30,8 @@ CLIENT_AUDIENCE = 'included.client.audience'
 CUSTOM_AUDIENCE = 'included.custom.audience'
 
 
-def univention_keycloak(realm: str, *args: str) -> str:
-    return subprocess.run(['univention-keycloak', '--realm', realm, *args], check=True, stdout=subprocess.PIPE, text=True).stdout
+def univention_keycloak(global_options: list[str], *args: str) -> str:
+    return subprocess.run(['univention-keycloak', *global_options, *args], check=True, stdout=subprocess.PIPE, text=True).stdout
 
 
 def fix_audience_mappers(protocol_mappers: list[dict], client_ids: set[str]) -> list[str]:
@@ -53,17 +53,25 @@ def main() -> int:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('--realm', default='ucs', help='the realm whose OIDC clients are fixed (default: %(default)s)')
     parser.add_argument('--dry-run', action='store_true', help='only show the invalid audience mappers and what would be changed, without changing anything')
+    parser.add_argument('--keycloak-url', help='the Keycloak URL, passed on to univention-keycloak (default: from UCR)')
+    parser.add_argument('--binduser', help='the Keycloak admin user, passed on to univention-keycloak')
+    parser.add_argument('--bindpwdfile', help='the file with the password of --binduser, passed on to univention-keycloak')
     opt = parser.parse_args()
+
+    global_options = ['--realm', opt.realm]
+    for option, value in (('--keycloak-url', opt.keycloak_url), ('--binduser', opt.binduser), ('--bindpwdfile', opt.bindpwdfile)):
+        if value:
+            global_options += [option, value]
 
     print(f'searching OIDC clients in realm {opt.realm} for audience mappers with an invalid client audience...')
 
     try:
-        realms = json.loads(univention_keycloak(opt.realm, 'realms', 'get', '--json'))
+        realms = json.loads(univention_keycloak(global_options, 'realms', 'get', '--json'))
         if opt.realm not in realms:
             print(f'realm {opt.realm} does not exist, existing realms: {", ".join(realms)}')
             return 1
-        oidc_clients = json.loads(univention_keycloak(opt.realm, 'oidc/rp', 'get', '--json', '--all'))
-        saml_client_ids = json.loads(univention_keycloak(opt.realm, 'saml/sp', 'get', '--json'))
+        oidc_clients = json.loads(univention_keycloak(global_options, 'oidc/rp', 'get', '--json', '--all'))
+        saml_client_ids = json.loads(univention_keycloak(global_options, 'saml/sp', 'get', '--json'))
     except subprocess.CalledProcessError as err:
         print(f'univention-keycloak get failed: {err}')
         return 1
@@ -86,7 +94,7 @@ def main() -> int:
             continue
 
         try:
-            univention_keycloak(opt.realm, 'oidc/rp', 'update', client['clientId'], json.dumps({'protocolMappers': protocol_mappers}))
+            univention_keycloak(global_options, 'oidc/rp', 'update', client['clientId'], json.dumps({'protocolMappers': protocol_mappers}))
         except subprocess.CalledProcessError as err:
             print(f'univention-keycloak oidc/rp update failed for client {client["clientId"]} (exit code {err.returncode})')
             failed_clients.append(client['clientId'])
