@@ -1,0 +1,958 @@
+
+{
+  "header": {
+    "reportVersion": 5,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "OOMError",
+    "filename": "report.20260911.174302.29788.0.001.json",
+    "dumpEventTime": "2026-09-11T17:43:02Z",
+    "dumpEventTimeStamp": "1789141382242",
+    "processId": 29788,
+    "threadId": 0,
+    "cwd": "/home/mika/git/univention-corporate-server/management/univention-self-service",
+    "commandLine": [
+      "copilot",
+      "--no-warnings",
+      "--report-on-fatalerror",
+      "--optimize-for-size",
+      "--expose-gc",
+      "copilot"
+    ],
+    "nodejsVersion": "v24.20.0",
+    "glibcVersionRuntime": "2.44",
+    "glibcVersionCompiler": "2.28",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.8",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.3",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "137",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "node": "24.20.0",
+      "openssl": "3.5.7",
+      "simdjson": "4.6.6",
+      "simdutf": "6.4.0",
+      "sqlite": "3.53.4",
+      "tz": "2026c",
+      "undici": "7.29.0",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "13.6.233.17-node.53",
+      "zlib": "1.3.2.1-motley-42c2f19",
+      "zstd": "1.5.7"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Krypton",
+      "headersUrl": "https://nodejs.org/download/release/v24.20.0/node-v24.20.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v24.20.0/node-v24.20.0.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "7.2.4-zen2-1-zen",
+    "osVersion": "#1 ZEN SMP PREEMPT_DYNAMIC Tue, 08 Sep 2026 21:01:02 +0000",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4294,
+        "user": 980170,
+        "nice": 125750,
+        "sys": 482740,
+        "idle": 8582510,
+        "irq": 64380
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3848,
+        "user": 844170,
+        "nice": 121180,
+        "sys": 463570,
+        "idle": 8756350,
+        "irq": 59990
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3891,
+        "user": 1029370,
+        "nice": 134550,
+        "sys": 489970,
+        "idle": 8520740,
+        "irq": 61730
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4734,
+        "user": 1131960,
+        "nice": 136620,
+        "sys": 515160,
+        "idle": 8359670,
+        "irq": 67200
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3940,
+        "user": 1246750,
+        "nice": 149110,
+        "sys": 536950,
+        "idle": 8191300,
+        "irq": 69830
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4838,
+        "user": 1463680,
+        "nice": 172140,
+        "sys": 558390,
+        "idle": 7945220,
+        "irq": 60850
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3970,
+        "user": 1491480,
+        "nice": 171260,
+        "sys": 561230,
+        "idle": 7910160,
+        "irq": 62750
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3853,
+        "user": 823260,
+        "nice": 118550,
+        "sys": 471860,
+        "idle": 8787500,
+        "irq": 60930
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4802,
+        "user": 985270,
+        "nice": 136370,
+        "sys": 497750,
+        "idle": 8549050,
+        "irq": 62640
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3804,
+        "user": 838730,
+        "nice": 122660,
+        "sys": 479640,
+        "idle": 8735760,
+        "irq": 72610
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4650,
+        "user": 960750,
+        "nice": 141020,
+        "sys": 614010,
+        "idle": 8340290,
+        "irq": 118010
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3920,
+        "user": 1276170,
+        "nice": 180030,
+        "sys": 521010,
+        "idle": 8137080,
+        "irq": 61430
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4577,
+        "user": 1534170,
+        "nice": 215720,
+        "sys": 555540,
+        "idle": 7811470,
+        "irq": 62460
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 4815,
+        "user": 2129530,
+        "nice": 343350,
+        "sys": 637200,
+        "idle": 6989560,
+        "irq": 63650
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3870,
+        "user": 2305820,
+        "nice": 328380,
+        "sys": 660350,
+        "idle": 6807480,
+        "irq": 63890
+      },
+      {
+        "model": "AMD Ryzen 7 5800X 8-Core Processor",
+        "speed": 3852,
+        "user": 855820,
+        "nice": 119900,
+        "sys": 465690,
+        "idle": 8746580,
+        "irq": 60830
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "enp8s0",
+        "internal": false,
+        "mac": "18:c0:4d:8d:e9:5c",
+        "address": "192.168.8.187",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "virbr1",
+        "internal": false,
+        "mac": "52:54:00:62:c9:45",
+        "address": "192.168.100.1",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "enp8s0",
+        "internal": false,
+        "mac": "18:c0:4d:8d:e9:5c",
+        "address": "fd7c:c37:f351::151",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "enp8s0",
+        "internal": false,
+        "mac": "18:c0:4d:8d:e9:5c",
+        "address": "fd7c:c37:f351:0:9ee6:447e:373:59ec",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "enp8s0",
+        "internal": false,
+        "mac": "18:c0:4d:8d:e9:5c",
+        "address": "fe80::d38c:ae35:4d61:cbf1",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 3
+      },
+      {
+        "name": "vnet0",
+        "internal": false,
+        "mac": "fe:54:00:0e:a9:bb",
+        "address": "fe80::fc54:ff:fe0e:a9bb",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 11
+      }
+    ],
+    "host": "akane-kurokawa"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ],
+    "errorProperties": {
+    }
+  },
+  "javascriptHeap": {
+    "totalMemory": 4296486912,
+    "executableMemory": 11964416,
+    "totalCommittedMemory": 4296220672,
+    "availableMemory": 3901520,
+    "totalGlobalHandlesMemory": 147456,
+    "usedGlobalHandlesMemory": 90112,
+    "usedMemory": 4288869224,
+    "memoryLimit": 4298113024,
+    "mallocedMemory": 1147000,
+    "externalMemory": 70275062,
+    "peakMallocedMemory": 1159152320,
+    "nativeContextCount": 1,
+    "detachedContextCount": 0,
+    "doesZapGarbage": 0,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 0,
+        "used": 0,
+        "available": 0
+      },
+      "new_space": {
+        "memorySize": 2097152,
+        "committedMemory": 2097152,
+        "capacity": 1048512,
+        "used": 0,
+        "available": 1048512
+      },
+      "old_space": {
+        "memorySize": 4271800320,
+        "committedMemory": 4271800320,
+        "capacity": 4268907032,
+        "used": 4268728712,
+        "available": 178320
+      },
+      "code_space": {
+        "memorySize": 10485760,
+        "committedMemory": 10256384,
+        "capacity": 9341056,
+        "used": 9341056,
+        "available": 0
+      },
+      "shared_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 0,
+        "used": 0,
+        "available": 0
+      },
+      "trusted_space": {
+        "memorySize": 8777728,
+        "committedMemory": 8740864,
+        "capacity": 7498536,
+        "used": 7498536,
+        "available": 0
+      },
+      "shared_trusted_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 0,
+        "used": 0,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 1048576,
+        "used": 0,
+        "available": 1048576
+      },
+      "large_object_space": {
+        "memorySize": 1445888,
+        "committedMemory": 1445888,
+        "capacity": 1429032,
+        "used": 1429032,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 1478656,
+        "committedMemory": 1478656,
+        "capacity": 1473664,
+        "used": 1473664,
+        "available": 0
+      },
+      "shared_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 0,
+        "used": 0,
+        "available": 0
+      },
+      "shared_trusted_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 0,
+        "used": 0,
+        "available": 0
+      },
+      "trusted_large_object_space": {
+        "memorySize": 401408,
+        "committedMemory": 401408,
+        "capacity": 398224,
+        "used": 398224,
+        "available": 0
+      }
+    }
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00000000009fd934",
+      "symbol": "node::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, v8::Local<v8::Value>) [copilot]"
+    },
+    {
+      "pc": "0x00000000009fded7",
+      "symbol": "node::TriggerNodeReport(v8::Isolate*, char const*, char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, v8::Local<v8::Value>) [copilot]"
+    },
+    {
+      "pc": "0x000000000075760c",
+      "symbol": "node::OOMErrorHandler(char const*, v8::OOMDetails const&) [copilot]"
+    },
+    {
+      "pc": "0x0000000000c60e30",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x0000000000c60f1f",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x0000000000f047f5",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x0000000000f04822",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x0000000000f04b1a",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x0000000000f1581a",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x0000000000f19bc0",
+      "symbol": " [copilot]"
+    },
+    {
+      "pc": "0x00000000019b78a1",
+      "symbol": " [copilot]"
+    }
+  ],
+  "resourceUsage": {
+    "free_memory": 10357121024,
+    "total_memory": 33555075072,
+    "rss": 4751179776,
+    "constrained_memory": 18446744073709551615,
+    "available_memory": 10357121024,
+    "userCpuSeconds": 15114,
+    "kernelCpuSeconds": 6996.99,
+    "cpuConsumptionPercent": 252.755,
+    "userCpuConsumptionPercent": 172.771,
+    "kernelCpuConsumptionPercent": 79.9839,
+    "maxRss": 4751179776,
+    "pageFaults": {
+      "IORequired": 150,
+      "IONotRequired": 35432530
+    },
+    "fsActivity": {
+      "reads": 15688,
+      "writes": 12816
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 5820.08,
+    "kernelCpuSeconds": 1038.68,
+    "cpuConsumptionPercent": 78.4037,
+    "userCpuConsumptionPercent": 66.5304,
+    "kernelCpuConsumptionPercent": 11.8734,
+    "fsActivity": {
+      "reads": 3912,
+      "writes": 16
+    }
+  },
+  "libuv": [
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000200254e0"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x0000000006b64b60"
+    },
+    {
+      "type": "timer",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00000000200a9e28",
+      "repeat": 0,
+      "firesInMsFromNow": 196,
+      "expired": false
+    },
+    {
+      "type": "check",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000200a9ec0"
+    },
+    {
+      "type": "idle",
+      "is_active": false,
+      "is_referenced": true,
+      "address": "0x00000000200a9f38"
+    },
+    {
+      "type": "prepare",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000200a9fb0"
+    },
+    {
+      "type": "check",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000200aa028"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000200aa0a0"
+    },
+    {
+      "type": "tty",
+      "is_active": false,
+      "is_referenced": true,
+      "address": "0x0000000020105460",
+      "width": 236,
+      "height": 64,
+      "fd": 20,
+      "writeQueueSize": 0,
+      "readable": true,
+      "writable": true
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x000000002009df48",
+      "signum": 28,
+      "signal": "SIGWINCH"
+    },
+    {
+      "type": "tty",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00000000201fca80",
+      "width": 236,
+      "height": 64,
+      "fd": 22,
+      "writeQueueSize": 0,
+      "readable": true,
+      "writable": true
+    },
+    {
+      "type": "tty",
+      "is_active": false,
+      "is_referenced": true,
+      "address": "0x00000000204f9a70",
+      "width": 236,
+      "height": 64,
+      "fd": 23,
+      "writeQueueSize": 0,
+      "readable": true,
+      "writable": true
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000200d9978"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00000000203207f8"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x000000002068f448",
+      "signum": 15,
+      "signal": "SIGTERM"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x0000000020375a98",
+      "signum": 2,
+      "signal": "SIGINT"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000206b2f28",
+      "signum": 1,
+      "signal": "SIGHUP"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000206b4e98",
+      "signum": 3,
+      "signal": "SIGQUIT"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x000000002070c6f8"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000206c55f8",
+      "signum": 18,
+      "signal": "SIGCONT"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000206a88f8",
+      "signum": 14,
+      "signal": "SIGALRM"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000207b6c48",
+      "signum": 6,
+      "signal": "SIGABRT"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x0000000020200bc8",
+      "signum": 26,
+      "signal": "SIGVTALRM"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000203212f8",
+      "signum": 24,
+      "signal": "SIGXCPU"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x000000002076d308",
+      "signum": 25,
+      "signal": "SIGXFSZ"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x0000000020354d08",
+      "signum": 12,
+      "signal": "SIGUSR2"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x0000000020390a28",
+      "signum": 5,
+      "signal": "SIGTRAP"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000206b2478",
+      "signum": 31,
+      "signal": "SIGSYS"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x0000000020768788",
+      "signum": 6,
+      "signal": "SIGABRT"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000206ad798",
+      "signum": 29,
+      "signal": "SIGIO"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x000000002076b5e8",
+      "signum": 29,
+      "signal": "SIGIO"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x000000002076b6f8",
+      "signum": 30,
+      "signal": "SIGPWR"
+    },
+    {
+      "type": "signal",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x000000002076b848",
+      "signum": 16,
+      "signal": "SIGSTKFLT"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020858288"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x000000002087a648"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020882788"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x000000002089eb88"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x000000002081f698"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000208d7c38"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x000000002087a358"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020483628"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020919408"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00000000209196a8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00000000206ea348"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000209107c8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00007f91940c1ee8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x00000000206afc88"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020956cf8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020944368"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020bf59b8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020ed08b8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000021afde98"
+    },
+    {
+      "type": "timer",
+      "is_active": true,
+      "is_referenced": false,
+      "address": "0x00000000268bfad0",
+      "repeat": 0,
+      "firesInMsFromNow": 96,
+      "expired": false
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020a03218"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020a00ff8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020c692d8"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020c29088"
+    },
+    {
+      "type": "async",
+      "is_active": true,
+      "is_referenced": true,
+      "address": "0x0000000020ff40f8"
+    },
+    {
+      "type": "loop",
+      "is_active": true,
+      "address": "0x0000000006b77aa0",
+      "loopIdleTimeSeconds": 2351.95
+    }
+  ],
+  "workers": [
+  ],
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "data_seg_size_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 8388608,
+      "hard": 8388608
+    },
+    "max_memory_size_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 524288,
+      "hard": 524288
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 127770,
+      "hard": 127770
+    },
+    "virtual_memory_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "linux-vdso.so.1",
+    "/usr/lib/libdl.so.2",
+    "/usr/lib/libstdc++.so.6",
+    "/usr/lib/libm.so.6",
+    "/usr/lib/libgcc_s.so.1",
+    "/usr/lib/libpthread.so.0",
+    "/usr/lib/libc.so.6",
+    "/lib64/ld-linux-x86-64.so.2",
+    "/home/mika/.cache/copilot/pkg/linux-x64/1.0.83/prebuilds/linux-x64/runtime.node",
+    "/usr/lib/libnss_mymachines.so.2",
+    "/usr/lib/libnss_resolve.so.2",
+    "/home/mika/.cache/copilot/pkg/linux-x64/1.0.83/prebuilds/linux-x64/cli-native.node"
+  ]
+}

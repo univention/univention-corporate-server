@@ -3,3 +3,10 @@ Description[de]=Den Daemon für die Einladung neuer Benutzer einschalten (Standa
 Description[en]=Enable the daemon for the self service invitation (default "yes").
 Type=bool
 Categories=self-service
+
+[umc/self-service/invitation/token_validity_period]
+Description[en]=Time in seconds a token sent via the user invitation email should be valid.
+Description[de]=Zeit in Sekunden die ein per Einladungs-E-Mail versendeter Token gültig sein soll.
+Type=uint
+Default=604800
+Categories=self-service

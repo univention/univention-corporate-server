@@ -1,3 +1,9 @@
+univention-self-service (7.6.1) unstable; urgency=medium
+
+  * Bug #59905: Separate the email invitation token validity from the password reset validity
+
+ -- Mika Westphal <westphal@utaconnect.de>  Sun, 06 Sep 2026 18:41:02 +0200
+
 univention-self-service (7.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

@@ -56,7 +56,7 @@ class Invitation:
         # ldap/umc connection
         self.umc_client = univention.lib.umc.Client(automatic_reauthentication=True)
         self.umc_client.authenticate_with_machine_account()
-        self.umc_path = 'passwordreset/send_token'
+        self.umc_path = 'passwordreset/send_invitation_token'
         self.lo = univention.uldap.getMachineConnection()
 
     def is_valid_user(self, username):
