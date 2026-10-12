@@ -5,6 +5,10 @@
 # Please read /usr/share/doc/sasl2-bin/README.Debian for details.
 #
 
+# Should saslauthd run automatically on startup? (default: no)
+# Debian dropped this from its default file, but /etc/init.d/saslauthd
+# still refuses to start without it.
+START=yes
 
 # Description of this saslauthd instance. Recommended.
 # (suggestion: SASL Authentication Daemon)
