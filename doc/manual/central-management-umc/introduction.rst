@@ -55,7 +55,6 @@ menu, you can provide feedback on UCS via a web form.
 Collection of usage statistics
 ------------------------------
 
-Anonymous usage statistics on the use of the |UCSWEB| are collected when using
-the *core edition* version of UCS (which is generally used for evaluating UCS).
-Further information can be found in :uv:kb:`Data collection in Univention
-Corporate Server <6701>`.
+The content of this section moved to
+:external+uv-ucs-operation:ref:`management-interface-usage-statistics`
+in :cite:t:`uv-ucs-operation`.
