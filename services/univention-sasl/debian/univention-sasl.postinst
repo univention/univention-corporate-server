@@ -5,16 +5,18 @@
 # SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+#DEBHELPER#
+
 eval "$(ucr shell)"
 
+# saslauthd/autostart enables the service
 univention-config-registry set \
 	mail/saslauthd/cache/timeout?1800 \
-	mail/saslauthd/threads?5
+	mail/saslauthd/threads?5 \
+	saslauthd/autostart?yes
 
-if [ -x /etc/init.d/saslauthd ]; then
-	/etc/init.d/saslauthd restart
+if [ "$1" = "configure" ]; then
+	deb-systemd-invoke restart saslauthd.service
 fi
-
-#DEBHELPER#
 
 exit 0

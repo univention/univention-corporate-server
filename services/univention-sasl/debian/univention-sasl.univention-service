@@ -1,0 +1,6 @@
+[saslauthd]
+Description[de]=SASL-Authentifizierungsdienst
+Description[en]=SASL authentication daemon
+programs=/usr/sbin/saslauthd
+start_type=saslauthd/autostart
+systemd=saslauthd.service

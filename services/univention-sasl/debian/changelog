@@ -1,3 +1,9 @@
+univention-sasl (10.7.1) unstable; urgency=medium
+
+  * Bug #58791: re-add START=yes and add saslauthd/autostart to start saslauthd automatically
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Mon, 12 Oct 2026 14:30:36 +0300
+
 univention-sasl (10.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

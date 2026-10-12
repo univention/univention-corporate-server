@@ -1,0 +1,18 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-sasl
+fix: 10.7.1
+desc: |
+ This update addresses the following issue:
+ * A regression introduced in UCS 5.2-0 prevented the SASL authentication
+   service `saslauthd` from starting automatically, causing SMTP
+   authentication to fail for affected mail clients. Only systems configured
+   to use `saslauthd` instead of Dovecot SASL were affected (i.e., systems
+   where the UCR variable `mail/postfix/dovecot_sasl` is not set to `yes`).
+   The default mail server configuration was not affected. The `saslauthd`
+   service now starts automatically again. Its automatic startup can be
+   controlled using the new UCR variable `saslauthd/autostart`, which is
+   enabled by default.
+bug: [58791]
