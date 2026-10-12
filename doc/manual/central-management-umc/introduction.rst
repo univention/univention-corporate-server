@@ -47,8 +47,9 @@ in :cite:t:`uv-ucs-operation`.
 Feedback on UCS
 ---------------
 
-By choosing the :menuselection:`Help --> Feedback` option in the upper right
-menu, you can provide feedback on UCS via a web form.
+The content of this section moved to
+:external+uv-nubus-manual:ref:`nubus-ui-feedback`
+in the :cite:t:`uv-nubus-manual`.
 
 .. _central-management-umc-matomo:
 
