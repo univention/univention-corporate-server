@@ -1,0 +1,26 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-keycloak
+fix: 3.7.1
+desc: |
+ This update addresses the following issues:
+ * Starting in Keycloak 26.7.5, Keycloak introduced a stricter validation
+   rule for client audience mappers. When an OIDC audience mapper uses the
+   `Included Client Audience` setting, but the specified value does not
+   correspond to an existing and enabled Keycloak Client ID, Keycloak now
+   silently ignores the mapper.
+   To accommodate this change when creating OIDC clients,
+   `univention-keycloak` introduces the new flags
+   `--custom-access-token-audience`, `--custom-id-token-audience`,
+   `--client-id-token-audience`, and `--client-access-token-audience`.
+   Additionally, the script
+   `/usr/share/univention-keycloak/fix-audience-mappers` is included to
+   update the configuration of existing OIDC clients. This script runs
+   automatically during this update of `univention-keycloak` and fixes
+   the OIDC audience mappers for UMC OIDC clients affected by this problem
+   The permanent fix for the default UMC OIDC client configuration will be
+   shipped in a separate erratum for `univention-management-console`.
+   For more information, see https://help.univention.com/t/25737.
+bug: [60006]
