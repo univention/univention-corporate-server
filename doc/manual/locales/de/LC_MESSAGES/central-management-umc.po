@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-25 09:24+0000\n"
-"PO-Revision-Date: 2026-06-25 11:25+0200\n"
+"POT-Creation-Date: 2026-10-12 17:13+0000\n"
+"PO-Revision-Date: 2026-10-12 19:16+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -126,7 +126,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-extended-attributes-tab-general` in :cite:t:`uv-"
+"manual:ref:`nubus-domain-extended-attributes-tab-general` im :cite:t:`uv-"
 "nubus-manual`."
 
 #: ../../central-management-umc/extended-attributes.rst:25
@@ -140,7 +140,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-extended-attributes-tab-module` in :cite:t:`uv-"
+"manual:ref:`nubus-domain-extended-attributes-tab-module` im :cite:t:`uv-"
 "nubus-manual`."
 
 #: ../../central-management-umc/extended-attributes.rst:34
@@ -154,7 +154,7 @@ msgid ""
 "nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-extended-attributes-tab-ldap-mapping` in :cite:t"
+"manual:ref:`nubus-domain-extended-attributes-tab-ldap-mapping` im :cite:t"
 ":`uv-nubus-manual`."
 
 #: ../../central-management-umc/extended-attributes.rst:43
@@ -167,7 +167,7 @@ msgid ""
 ":`nubus-domain-extended-attributes-tab-umc` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-extended-attributes-tab-umc` in :cite:t:`uv-"
+"manual:ref:`nubus-domain-extended-attributes-tab-umc` im :cite:t:`uv-"
 "nubus-manual`."
 
 #: ../../central-management-umc/extended-attributes.rst:52
@@ -181,7 +181,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-extended-attributes-tab-data-type` in :cite:t"
+"manual:ref:`nubus-domain-extended-attributes-tab-data-type` im :cite:t"
 ":`uv-nubus-manual`."
 
 #: ../../central-management-umc/http-api-domain-management.rst:7
@@ -340,7 +340,7 @@ msgid ""
 ":`nubus-authentication-sign-in` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-authentication-sign-in` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-authentication-sign-in` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/introduction.rst:21
 msgid "Browser compatibility"
@@ -352,7 +352,7 @@ msgid ""
 ":`nubus-ui-browser-compatibility` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-browser-compatibility` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-ui-browser-compatibility` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/introduction.rst:30
 msgid "Switching between dark and light theme for |UCSWEB|\\ s"
@@ -386,28 +386,24 @@ msgstr "Feedback zu UCS"
 
 #: ../../central-management-umc/introduction.rst:50
 msgid ""
-"By choosing the :menuselection:`Help --> Feedback` option in the upper "
-"right menu, you can provide feedback on UCS via a web form."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-ui-feedback` in the :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Durch die Auswahl des Menüeintrages :menuselection:`Hilfe --> Feedback` "
-"in dem oberen, rechten Menü kann über ein Webformular Feedback zu UCS "
-"gegeben werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-ui-feedback` im :cite:t:`uv-nubus-manual`."
 
-#: ../../central-management-umc/introduction.rst:56
+#: ../../central-management-umc/introduction.rst:57
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../central-management-umc/introduction.rst:58
+#: ../../central-management-umc/introduction.rst:59
 msgid ""
-"Anonymous usage statistics on the use of the |UCSWEB| are collected when "
-"using the *core edition* version of UCS (which is generally used for "
-"evaluating UCS). Further information can be found in :uv:kb:`Data "
-"collection in Univention Corporate Server <6701>`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`management-interface-usage-statistics` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Bei Verwendung der *Core Edition* von UCS (wird generell zur Evaluierung "
-"von UCS verwendet) werden anonyme Nutzungsstatistiken zur Verwendung der "
-"|UCSWEB| erzeugt. Weitere Informationen finden sich in :uv:kb:`Data "
-"collection in Univention Corporate Server <6701>`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-ucs-"
+"operation:ref:`management-interface-usage-statistics` in :cite:t:`uv-ucs-"
+"operation`."
 
 #: ../../central-management-umc/ldap-browser.rst:7
 msgid "LDAP directory browser"
@@ -419,7 +415,7 @@ msgid ""
 ":`nubus-domain-ldap` in :cite:t:`uv-nubus-manual`"
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-ldap` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-domain-ldap` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/lets-encrypt.rst:7
 msgid "Let's Encrypt"
@@ -445,7 +441,7 @@ msgid ""
 "session-timeout` in :cite:t:`uv-ucs-operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-authentication-sign-in` in :cite:t:`uv-nubus-manual` "
+"manual:ref:`nubus-authentication-sign-in` im :cite:t:`uv-nubus-manual` "
 "und :external+uv-ucs-operation:ref:`management-interface-auth-sign-in-"
 "choose-account` in :cite:t:`uv-ucs-operation`."
 
@@ -624,7 +620,7 @@ msgid ""
 ":`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-policies` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-domain-policies` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/policies.rst:16
 msgid "Creating a policy"
@@ -636,7 +632,7 @@ msgid ""
 ":`nubus-domain-policies-create` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-policies-create` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-domain-policies-create` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/policies.rst:25
 msgid "Applying policies"
@@ -648,7 +644,7 @@ msgid ""
 ":`nubus-domain-policies-assign` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-policies-assign` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-domain-policies-assign` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/policies.rst:34
 msgid "Editing a policy"
@@ -660,7 +656,7 @@ msgid ""
 ":`nubus-domain-policies-edit` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-policies-edit` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-domain-policies-edit` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/portal.rst:9
 msgid ""
@@ -668,7 +664,7 @@ msgid ""
 ":`nubus-portal` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-portal` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-portal` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/portal.rst:16
 msgid "Assign rights for portal settings"
@@ -680,7 +676,7 @@ msgid ""
 ":`nubus-portal-settings-permissions` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-portal-settings-permissions` in :cite:t:`uv-nubus-"
+"manual:ref:`nubus-portal-settings-permissions` im :cite:t:`uv-nubus-"
 "manual`."
 
 #: ../../central-management-umc/udm-command.rst:7
@@ -990,7 +986,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-management-modules-operations-search` in :cite:t"
+"manual:ref:`nubus-ui-management-modules-operations-search` im :cite:t"
 ":`uv-nubus-manual`."
 
 #: ../../central-management-umc/umc.rst:92
@@ -1004,7 +1000,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-management-modules-operations-create` in :cite:t"
+"manual:ref:`nubus-ui-management-modules-operations-create` im :cite:t"
 ":`uv-nubus-manual`."
 
 #: ../../central-management-umc/umc.rst:101
@@ -1018,7 +1014,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-management-modules-operations-edit` in :cite:t:`uv-"
+"manual:ref:`nubus-ui-management-modules-operations-edit` im :cite:t:`uv-"
 "nubus-manual`."
 
 #: ../../central-management-umc/umc.rst:110
@@ -1032,7 +1028,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-management-modules-operations-delete` in :cite:t"
+"manual:ref:`nubus-ui-management-modules-operations-delete` im :cite:t"
 ":`uv-nubus-manual`."
 
 #: ../../central-management-umc/umc.rst:119
@@ -1046,7 +1042,7 @@ msgid ""
 "manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-management-modules-operations-move` in :cite:t:`uv-"
+"manual:ref:`nubus-ui-management-modules-operations-move` im :cite:t:`uv-"
 "nubus-manual`."
 
 #: ../../central-management-umc/umc.rst:128
@@ -1059,7 +1055,7 @@ msgid ""
 ":`nubus-ui-notifications` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-ui-notifications` in :cite:t:`uv-nubus-manual`."
+"manual:ref:`nubus-ui-notifications` im :cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/user-defined-ldap-structures.rst:7
 msgid "Structuring of the domain with user-defined LDAP structures"
@@ -1071,7 +1067,7 @@ msgid ""
 ":`nubus-domain-ldap-user-defined-structure` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-ldap-user-defined-structure` in :cite:t:`uv-"
+"manual:ref:`nubus-domain-ldap-user-defined-structure` im :cite:t:`uv-"
 "nubus-manual`."
 
 #: ../../central-management-umc/user-defined-ldap-structures.rst:16
@@ -1085,7 +1081,7 @@ msgid ""
 "nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-ldap-user-defined-structure-tab-general` in "
+"manual:ref:`nubus-domain-ldap-user-defined-structure-tab-general` im "
 ":cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/user-defined-ldap-structures.rst:25
@@ -1099,7 +1095,7 @@ msgid ""
 "nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-ldap-user-defined-structure-tab-advanced` in "
+"manual:ref:`nubus-domain-ldap-user-defined-structure-tab-advanced` im "
 ":cite:t:`uv-nubus-manual`."
 
 #: ../../central-management-umc/user-defined-ldap-structures.rst:34
@@ -1113,5 +1109,5 @@ msgid ""
 "nubus-manual`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-ldap-user-defined-structure-tab-policies` in "
+"manual:ref:`nubus-domain-ldap-user-defined-structure-tab-policies` im "
 ":cite:t:`uv-nubus-manual`."
