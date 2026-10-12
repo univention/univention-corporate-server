@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 12. Oct 2026
+     - :ref:`management-interface-usage-statistics`
+     - Add section about usage statistics in the *Management UI*.
+
    * - 28. Sep 2026
      - :ref:`system-administration-rate-limiting`
      - Add section for rate limiting approaches for HTTP services.
