@@ -9,3 +9,9 @@ Description[de]=Timeout für den Authentifizierungs-Cache in Sekunden
 Description[en]=Timeout of the authentication cache in seconds
 Type=int
 Categories=system-services
+
+[saslauthd/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des saslauthd-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird sie auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the saslauthd service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Type=str
+Categories=system-services
