@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 14:17+0000\n"
-"PO-Revision-Date: 2026-09-14 16:24+0200\n"
+"POT-Creation-Date: 2026-10-12 16:39+0000\n"
+"PO-Revision-Date: 2026-10-12 18:40+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -116,10 +116,9 @@ msgid ""
 msgstr ""
 "In einigen Fällen kann es erforderlich sein, sich mit dem lokalen "
 "``root`` Konto des Systems anzumelden. Weitere Informationen finden Sie "
-"unter :ref:`system-"
-"administration-root-account`. Das ``root`` "
-"Konto ermöglicht nur den Zugriff auf Verwaltungsmodule zur Administration"
-" und Konfiguration des lokalen Systems."
+"unter :ref:`system-administration-root-account`. Das ``root`` Konto "
+"ermöglicht nur den Zugriff auf Verwaltungsmodule zur Administration und "
+"Konfiguration des lokalen Systems."
 
 #: ../../management-interface/auth.rst:64
 msgid "Other user accounts"
@@ -407,8 +406,8 @@ msgid ""
 "For information about how to upgrade, refer to :ref:`lifecycle-update-"
 "strategies`."
 msgstr ""
-"Weitere Informationen zum Aktualisieren finden Sie unter :ref:`lifecycle-update-"
-"strategies`."
+"Weitere Informationen zum Aktualisieren finden Sie unter :ref:`lifecycle-"
+"update-strategies`."
 
 #: ../../management-interface/auth.rst:215
 msgid ""
@@ -1685,20 +1684,19 @@ msgstr ""
 "erforderlichen LDAP-Zugriffsrechte verfügt, zeigt das Modul den Fehler "
 "*Zugriff verweigert* an und blockiert die Änderungen."
 
-#: ../../management-interface/delegated-administration.rst:132
+#: ../../management-interface/delegated-administration.rst:130
 msgid ""
 "For information about configuring LDAP access rights, see :ref:`domain-"
 "infrastructure-ldap-directory-acls`."
 msgstr ""
 "Weitere Informationen zur Konfiguration von LDAP-Zugriffsrechten finden "
-"Sie unter :ref:`domain-"
-"infrastructure-ldap-directory-acls`."
+"Sie unter :ref:`domain-infrastructure-ldap-directory-acls`."
 
-#: ../../management-interface/delegated-administration.rst:138
+#: ../../management-interface/delegated-administration.rst:136
 msgid "Group access to management modules"
 msgstr "Gruppenzugriff auf Verwaltungsmodule"
 
-#: ../../management-interface/delegated-administration.rst:140
+#: ../../management-interface/delegated-administration.rst:138
 msgid ""
 "The following steps show how to create a *UMC policy*, assign it the "
 "operation sets you want, and link it to a group. The example uses the "
@@ -1709,19 +1707,19 @@ msgstr ""
 "verknüpfen. Das Beispiel verwendet das Modul *Druckfreigaben* und eine "
 "Gruppe für den Helpdesk."
 
-#: ../../management-interface/delegated-administration.rst:148
+#: ../../management-interface/delegated-administration.rst:146
 msgid "Prerequisites"
 msgstr "Voraussetzungen"
 
-#: ../../management-interface/delegated-administration.rst:150
+#: ../../management-interface/delegated-administration.rst:148
 msgid "Before you begin, verify the following conditions:"
 msgstr "Überprüfen Sie vor Beginn die folgenden Bedingungen:"
 
-#: ../../management-interface/delegated-administration.rst:152
+#: ../../management-interface/delegated-administration.rst:150
 msgid "Sign in as a member of ``Domain Admins``."
 msgstr "Melden Sie sich als Mitglied von ``Domain Admins`` an."
 
-#: ../../management-interface/delegated-administration.rst:154
+#: ../../management-interface/delegated-administration.rst:152
 msgid ""
 "The target group must already exist. If not, create it in "
 ":menuselection:`Users --> Groups` first."
@@ -1729,7 +1727,7 @@ msgstr ""
 "Die Gruppe muss bereits vorhanden sein. Falls nicht, erstellen Sie sie "
 "zuerst in :menuselection:`Benutzer --> Gruppen`."
 
-#: ../../management-interface/delegated-administration.rst:157
+#: ../../management-interface/delegated-administration.rst:155
 msgid ""
 "For modules that write to the LDAP directory, the group needs sufficient "
 "LDAP access rights. See :ref:`management-interface-delegated-"
@@ -1739,35 +1737,35 @@ msgstr ""
 "ausreichende LDAP-Zugriffsrechte. Siehe :ref:`management-interface-"
 "delegated-administration-ldap`."
 
-#: ../../management-interface/delegated-administration.rst:164
+#: ../../management-interface/delegated-administration.rst:162
 msgid "Create a UMC policy"
 msgstr "Erstellen Sie eine UMC-Richtlinie"
 
-#: ../../management-interface/delegated-administration.rst:166
+#: ../../management-interface/delegated-administration.rst:164
 msgid "Follow these steps to create a *UMC policy*:"
 msgstr "Folgen Sie diesen Schritten, um eine *UMC-Richtlinie* zu erstellen:"
 
-#: ../../management-interface/delegated-administration.rst:168
+#: ../../management-interface/delegated-administration.rst:166
 msgid "Navigate to :menuselection:`Domain --> Policies`."
 msgstr "Gehen Sie zu :menuselection:`Domäne --> Richtlinien`."
 
-#: ../../management-interface/delegated-administration.rst:170
+#: ../../management-interface/delegated-administration.rst:168
 msgid "Click :guilabel:`Add`."
 msgstr "Klicken Sie :guilabel:`Hinzufügen`."
 
-#: ../../management-interface/delegated-administration.rst:172
+#: ../../management-interface/delegated-administration.rst:170
 msgid "Select :guilabel:`UMC` as the policy type."
 msgstr "Wählen Sie :guilabel:`UMC` als Richtlinientyp."
 
-#: ../../management-interface/delegated-administration.rst:174
+#: ../../management-interface/delegated-administration.rst:172
 msgid "Choose a container to store the policy in."
 msgstr "Wählen Sie einen Container, um die Richtlinie darin zu speichern."
 
-#: ../../management-interface/delegated-administration.rst:176
+#: ../../management-interface/delegated-administration.rst:174
 msgid "Enter a name for the policy, for example ``helpdesk-printers``."
 msgstr "Geben Sie einen Namen für die Richtlinie ein, z. B. ``helpdesk-printers``."
 
-#: ../../management-interface/delegated-administration.rst:179
+#: ../../management-interface/delegated-administration.rst:177
 msgid ""
 "In the :guilabel:`List of allowed UMC operation sets` field, select the "
 "operation sets you want to grant. For printer administration, select "
@@ -1777,32 +1775,32 @@ msgstr ""
 "die Operationssätze aus, die Sie gewähren möchten. Wählen Sie für die "
 "Druckerverwaltung ``udm-printers``."
 
-#: ../../management-interface/delegated-administration.rst:184
-#: ../../management-interface/delegated-administration.rst:204
+#: ../../management-interface/delegated-administration.rst:182
+#: ../../management-interface/delegated-administration.rst:202
 msgid "Click :guilabel:`Save`."
 msgstr "Klicken Sie :guilabel:`Speichern`."
 
-#: ../../management-interface/delegated-administration.rst:189
+#: ../../management-interface/delegated-administration.rst:187
 msgid "Assign the policy to a group"
 msgstr "Weisen Sie die Richtlinie einer Gruppe zu"
 
-#: ../../management-interface/delegated-administration.rst:191
+#: ../../management-interface/delegated-administration.rst:189
 msgid "Follow these steps to assign the *UMC policy*:"
 msgstr "Folgen Sie diesen Schritten, um die *UMC-Richtlinie* zuzuweisen:"
 
-#: ../../management-interface/delegated-administration.rst:193
+#: ../../management-interface/delegated-administration.rst:191
 msgid "Navigate to :menuselection:`Users --> Groups`."
 msgstr "Gehen Sie zu :menuselection:`Benutzer --> Gruppen`."
 
-#: ../../management-interface/delegated-administration.rst:195
+#: ../../management-interface/delegated-administration.rst:193
 msgid "Select the group, for example ``Helpdesk``."
 msgstr "Wählen Sie die Gruppe aus, z. B. ``Helpdesk``."
 
-#: ../../management-interface/delegated-administration.rst:198
+#: ../../management-interface/delegated-administration.rst:196
 msgid "Go to the :guilabel:`Policies` tab."
 msgstr "Gehen Sie zur Registerkarte :guilabel:`Richtlinien`."
 
-#: ../../management-interface/delegated-administration.rst:200
+#: ../../management-interface/delegated-administration.rst:198
 msgid ""
 "In the :guilabel:`UMC` section, select the policy you created, for "
 "example ``helpdesk-printers``."
@@ -1810,7 +1808,7 @@ msgstr ""
 "Wählen Sie im Bereich :guilabel:`UMC` die Richtlinie aus, die Sie "
 "erstellt haben, z. B. ``helpdesk-printers``."
 
-#: ../../management-interface/delegated-administration.rst:206
+#: ../../management-interface/delegated-administration.rst:204
 msgid ""
 "Members of the group can now see the *Print shares* module when they sign"
 " in to the *Management UI*."
@@ -1818,12 +1816,12 @@ msgstr ""
 "Mitglieder der Gruppe können nun das Modul *Druckfreigaben* sehen, wenn "
 "sie sich bei der *Management UI* anmelden."
 
-#: ../../management-interface/delegated-administration.rst:211
+#: ../../management-interface/delegated-administration.rst:209
 #: ../../management-interface/udm-command.rst:641
 msgid ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-domain-policies`"
 
-#: ../../management-interface/delegated-administration.rst:212
+#: ../../management-interface/delegated-administration.rst:210
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about how policies work and "
 "how to manage them."
@@ -1831,15 +1829,13 @@ msgstr ""
 "im :cite:t:`uv-nubus-manual` für Informationen darüber, wie Richtlinien "
 "funktionieren und wie Sie diese verwalten."
 
-#: ../../management-interface/delegated-administration.rst:215
+#: ../../management-interface/delegated-administration.rst:213
 msgid ":ref:`domain-infrastructure-ldap-directory-acls`"
 msgstr ":ref:`domain-infrastructure-ldap-directory-acls`"
 
-#: ../../management-interface/delegated-administration.rst:216
+#: ../../management-interface/delegated-administration.rst:214
 msgid "for information about LDAP access control lists."
-msgstr ""
-"für Informationen über LDAP-"
-"Zugriffskontrolllisten."
+msgstr "für Informationen über LDAP-Zugriffskontrolllisten."
 
 #: ../../management-interface/directory-reports.rst:7
 #: ../../management-interface/index.rst:51
@@ -4341,3 +4337,21 @@ msgid ""
 msgstr ""
 "im :cite:t:`uv-nubus-manual` für Informationen darüber, wie Sie "
 "Verwaltungsmodule erweitern."
+
+#: ../../management-interface/usage-statistics.rst:7
+msgid "Usage statistics"
+msgstr "Nutzungsstatistiken"
+
+#: ../../management-interface/usage-statistics.rst:9
+msgid ""
+"Univention collects anonymous usage statistics about the *Management UI* "
+"when you use the *Core Edition* of Nubus for UCS. Univention uses these "
+"statistics to evaluate Nubus for UCS. For more information about the "
+"collected data, see :uv:kb:`Data collection in Univention Corporate "
+"Server <6701>`."
+msgstr ""
+"Univention erfasst anonyme Nutzungsstatistiken über die *Management UI*, "
+"wenn Sie die *Core Edition* von Nubus für UCS verwenden. Univention nutzt"
+" diese Statistiken zur Auswertung von Nubus für UCS. Weitere "
+"Informationen über die erfassten Daten finden Sie unter :uv:kb:`Data "
+"collection in Univention Corporate Server <6701>`."
