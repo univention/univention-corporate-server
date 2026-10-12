@@ -70,3 +70,4 @@ Hardware information
    udm-command
    directory-reports
    hardware-information
+   usage-statistics
