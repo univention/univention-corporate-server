@@ -1383,9 +1383,10 @@ class ad(univention.connector.ucs):
 
         # map members from UCS to AD and check if they exist
         ad_members_from_ucs = set()  # Code review comment: For some reason this is a list of lowercase DNs
+        ad_members_lower = {x.lower() for x in ad_members}
         for member_dn in ucs_members:
             ad_dn = self.group_member_mapping_cache_ucs.get(member_dn.lower())
-            if ad_dn and self.lo_ad.get(ad_dn, attr=['cn']):
+            if ad_dn and (ad_dn.lower() in ad_members_lower or self.lo_ad.get(ad_dn, attr=['cn'])):
                 log.debug("Found %s in UCS group member cache: %s", member_dn, ad_dn)
                 ad_members_from_ucs.add(ad_dn.lower())
                 self.__group_cache_ucs_append_member(object_ucs_dn, member_dn)

@@ -1,3 +1,9 @@
+univention-ad-connector (16.8.1) unstable; urgency=medium
+
+  * Bug #60016: Skip redundant AD existence checks for cached group members
+
+ -- Jan Gietzel <jan.gietzel@univention.de>  Mon, 12 Oct 2026 12:46:41 +0200
+
 univention-ad-connector (16.8.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-ad-connector
+fix: 16.8.1
+desc: |
+ This update addresses the following issue:
+ * When synchronizing group memberships from UCS to Active Directory, the AD
+   Connector no longer checks the existence of each member that is already a
+   member of the group in Active Directory. This speeds up the
+   synchronization of large groups.
+bug: [60016]
