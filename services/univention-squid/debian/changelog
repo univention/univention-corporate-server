@@ -1,3 +1,9 @@
+univention-squid (15.8.0) unstable; urgency=medium
+
+  * Bug #59976: prevent authentication of disabled user accounts with an expiration date
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Tue, 13 Oct 2026 17:55:10 +0300
+
 univention-squid (15.7.0) UNRELEASED; urgency=medium
 
   * Bug #59722: UCS 5.2-7 version bump

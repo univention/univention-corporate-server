@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-squid
+fix: 15.8.0
+desc: |
+ This update addresses the following issue:
+ * When basic authentication was enabled (`squid/basicauth`), certain
+   disabled user accounts, such as accounts with a configured expiration
+   date, could still authenticate to the Squid web proxy. This has been
+   fixed to ensure that authentication is always denied for disabled
+   accounts. No manual intervention is required, as the update
+   automatically regenerates the proxy configuration and restarts the
+   Squid service.
+bug: [59976]
