@@ -1,3 +1,9 @@
+ucs-test (10.0.24-45) unstable; urgency=medium
+
+  * Bug 60028: fix OIDC audience mapper tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 16 Oct 2026 17:44:40 +0200
+
 ucs-test (10.0.24-44) unstable; urgency=medium
 
   * Bug #60006: fix keycloak tests
