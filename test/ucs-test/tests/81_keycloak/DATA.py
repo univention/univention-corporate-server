@@ -566,12 +566,12 @@ UMC_OIDC_CLIENT = {
         },
         {
             'id': 'e6bc7149-2095-49a6-9b3a-3e1570ea5461',
-            'name': 'access-audience-0',
+            'name': 'custom-access-audience-0',
             'protocol': 'openid-connect',
             'protocolMapper': 'oidc-audience-mapper',
             'consentRequired': False,
             'config': {
-                'included.client.audience': 'ldaps://{domainname}/',
+                'included.custom.audience': 'ldaps://{domainname}/',
                 'id.token.claim': 'false',
                 'access.token.claim': 'true',
                 'userinfo.token.claim': 'false',
