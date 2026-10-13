@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 13. Oct 2026
+     - :ref:`lifecycle`
+     - Clarify update scope in the lifecycle chapter.
+
    * - 12. Oct 2026
      - :ref:`management-interface-usage-statistics`
      - Add section about usage statistics in the *Management UI*.
