@@ -15,6 +15,11 @@ by updating individual systems using the *Software update* management module
 or the command line.
 To update multiple systems at once, use a computer policy.
 
+.. note::
+
+   UCS update tools update Nubus for UCS systems only.
+   Use separate software distribution tooling to update Microsoft Windows systems.
+
 .. _lifecycle-update-strategies-multiple-systems-environments:
 
 Planning updates in multiserver environments

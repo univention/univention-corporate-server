@@ -7,16 +7,18 @@
 Lifecycle
 *********
 
-Software lifecycle management in Nubus for UCS involves
+Software lifecycle management in Nubus for UCS includes
 understanding versioning, planning and performing updates,
-managing repositories, installing additional software,
-and monitoring what's installed across your domain.
+managing repositories, installing and maintaining software packages and apps,
+and monitoring installed packages across your domain.
 This chapter covers the following workflows:
 
 System updates and maintenance
    Keep your systems current with security fixes, bug fixes, and features.
+   You can update individual systems through the *Management UI* or command line,
+   and automate updates across multiple systems with policies.
    Start with :ref:`lifecycle-versioning` to understand release types,
-   then review :ref:`lifecycle-update-strategies` for planning multi-server updates.
+   then review :ref:`lifecycle-update-strategies` for planning updates.
    For technical details about the update process,
    see :ref:`lifecycle-perform-updates`.
 
