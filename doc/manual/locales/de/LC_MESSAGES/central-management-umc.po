@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 17:13+0000\n"
-"PO-Revision-Date: 2026-10-12 19:16+0200\n"
+"POT-Creation-Date: 2026-10-13 16:13+0000\n"
+"PO-Revision-Date: 2026-10-13 18:16+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -840,49 +840,17 @@ msgstr "|UCSUMC|-Module"
 
 #: ../../central-management-umc/umc.rst:9
 msgid ""
-"|UCSUMC| (UMC) modules are the web-based tool for administration of the "
-"UCS domain. They are shown on the portal page (:ref:`central-portal`) for"
-" logged in administrators. Depending on the system role, different UMC "
-"modules are available. Additionally installed software components may "
-"bring their own new UMC modules."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-ui` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"|UCSUMC|-Module (UMC-Module) sind das zentrale Werkzeug zur webbasierten "
-"Administration der UCS-Domäne. Sie werden auf der Portalseite (:ref"
-":`central-portal`) für angemeldete Administratoren angezeigt. Je nach "
-"Systemrolle sind unterschiedliche UMC-Module verfügbar. Zusätzlich "
-"installierte Software-Komponenten können ihre eigenen neuen UMC-Module "
-"mitbringen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-ui` im :cite:t:`uv-nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:15
-msgid ""
-"UMC modules for the administration of all the data included in the LDAP "
-"directory (such as users, groups and computer accounts) are only provided"
-" on |UCSPRIMARYDN|\\ s and |UCSBACKUPDN| s. Changes made in these modules"
-" are applied to the whole domain."
-msgstr ""
-"UMC-Module zur Verwaltung aller im LDAP-Verzeichnis vorgehaltenen Daten "
-"(wie z.B. Benutzer, Gruppen oder Rechnerkonten) werden lediglich auf "
-"einem |UCSPRIMARYDN| und |UCSBACKUPDN| bereitgestellt. Änderungen, die in"
-" diesen Modulen vorgenommen werden, gelten für die gesamte Domäne."
-
-#: ../../central-management-umc/umc.rst:20
-msgid ""
-"UMC modules for the configuration and administration of the local system "
-"are provided on all system roles. These modules can for example be used "
-"to install additional applications and updates, adapt the local "
-"configuration via |UCSUCR| or start/stop services."
-msgstr ""
-"UMC-Module zur Konfiguration und Administration des lokalen Systems "
-"werden auf allen Systemrollen bereitgestellt. Über diese Module können "
-"z.B. zusätzliche Applikationen installiert, Aktualisierungen eingespielt,"
-" die lokale Konfiguration über |UCSUCR| angepasst oder Dienste "
-"gestartet/gestoppt werden."
-
-#: ../../central-management-umc/umc.rst:28
+#: ../../central-management-umc/umc.rst:16
 msgid "Activation of UCS license / license overview"
 msgstr "Aktivierung der UCS-Lizenz / Lizenz-Übersicht"
 
-#: ../../central-management-umc/umc.rst:30
+#: ../../central-management-umc/umc.rst:18
 msgid ""
 "The content of this section moved to :external+uv-ucs-operation:ref"
 ":`management-interface-license` in :cite:t:`uv-ucs-operation`."
@@ -891,95 +859,24 @@ msgstr ""
 "operation:ref:`management-interface-license` in :cite:t:`uv-ucs-"
 "operation`."
 
-#: ../../central-management-umc/umc.rst:37
+#: ../../central-management-umc/umc.rst:25
 msgid "Operating instructions for modules to administrate LDAP directory data"
 msgstr "Bedienung der Module zur Verwaltung von LDAP-Verzeichnisdaten"
 
-#: ../../central-management-umc/umc.rst:39
+#: ../../central-management-umc/umc.rst:27
 msgid ""
-"All UMC modules for managing LDAP directory objects such as user, group "
-"and computer accounts or configurations for printers, shares, mail and "
-"policies are controlled identically from a structural perspective. The "
-"following examples are presented using the user management but apply "
-"equally for all modules. The operation of the DNS and DHCP modules is "
-"slightly different. Further information can be found in :ref:`ip-config-"
-"dns-umc` and :ref:`networks-dhcp-general`."
+"The content of this section moved to :external+uv-nubus-manual:ref"
+":`nubus-ui-management-modules-operations` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Alle UMC-Module zur Verwaltung von LDAP-Objekten wie z.B. Benutzer-, "
-"Gruppen- und Rechnerkonten oder Einstellungen für Drucker, Freigaben, "
-"Mail und Richtlinien werden strukturell identisch bedient. Die folgenden "
-"Beispiele werden anhand der Benutzerverwaltung dargestellt, gelten aber "
-"analog für alle Module. Die Bedienung der DNS- und DHCP-Module weicht "
-"etwas ab, weitere Hinweise finden sich in :ref:`ip-config-dns-umc` und "
-":ref:`networks-dhcp-general`."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`nubus-ui-management-modules-operations` im :cite:t:`uv-"
+"nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:49
-#: ../../central-management-umc/umc.rst:52
-msgid "Module overview"
-msgstr "Modulübersicht"
-
-#: ../../central-management-umc/umc.rst:54
-msgid ""
-"The configuration properties/possibilities of the modules are described "
-"in the following chapters:"
-msgstr ""
-"Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der Module ist"
-" in folgenden Kapiteln beschrieben:"
-
-#: ../../central-management-umc/umc.rst:57
-msgid "Users - :ref:`users-general`"
-msgstr "Benutzer - :ref:`users-general`"
-
-#: ../../central-management-umc/umc.rst:59
-msgid "Groups - :ref:`groups`"
-msgstr "Gruppen - :ref:`groups`"
-
-#: ../../central-management-umc/umc.rst:61
-msgid "Computers - :ref:`computers-general`"
-msgstr "Rechner - :ref:`computers-general`"
-
-#: ../../central-management-umc/umc.rst:63
-msgid "Networks - :ref:`networks-general`"
-msgstr "Netzwerke - :ref:`networks-general`"
-
-#: ../../central-management-umc/umc.rst:65
-msgid "DNS - :ref:`networks-dns`"
-msgstr "DNS - :ref:`networks-dns`"
-
-#: ../../central-management-umc/umc.rst:67
-msgid "DHCP - :ref:`module-dhcp-dhcp`"
-msgstr "DHCP - :ref:`module-dhcp-dhcp`"
-
-#: ../../central-management-umc/umc.rst:69
-msgid "Shares - :ref:`shares-general`"
-msgstr "Freigaben - :ref:`shares-general`"
-
-#: ../../central-management-umc/umc.rst:71
-msgid "Printers - :ref:`print-general`"
-msgstr "Drucker - :ref:`print-general`"
-
-#: ../../central-management-umc/umc.rst:73
-msgid "Email - :ref:`mail-general`"
-msgstr "E-Mail - :ref:`mail-general`"
-
-#: ../../central-management-umc/umc.rst:75
-msgid "Nagios - :ref:`nagios-general`"
-msgstr "Nagios - :ref:`nagios-general`"
-
-#: ../../central-management-umc/umc.rst:77
-msgid ""
-"The use of policies (:ref:`central-policies`) and the LDAP navigation "
-"(:ref:`central-navigation`) are described separately."
-msgstr ""
-"Die Verwendung von Richtlinien (:ref:`central-policies`) und das direkte "
-"Durchsuchen des LDAP-Verzeichnisbaums (:ref:`central-navigation`) werden "
-"separat beschrieben."
-
-#: ../../central-management-umc/umc.rst:83
+#: ../../central-management-umc/umc.rst:34
 msgid "Searching for objects"
 msgstr "Suche nach Objekten"
 
-#: ../../central-management-umc/umc.rst:85
+#: ../../central-management-umc/umc.rst:36
 msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-ui-management-modules-operations-search` in :cite:t:`uv-nubus-"
@@ -989,11 +886,11 @@ msgstr ""
 "manual:ref:`nubus-ui-management-modules-operations-search` im :cite:t"
 ":`uv-nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:92
+#: ../../central-management-umc/umc.rst:43
 msgid "Creating objects"
 msgstr "Anlegen von Objekten"
 
-#: ../../central-management-umc/umc.rst:94
+#: ../../central-management-umc/umc.rst:45
 msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-ui-management-modules-operations-create` in :cite:t:`uv-nubus-"
@@ -1003,11 +900,11 @@ msgstr ""
 "manual:ref:`nubus-ui-management-modules-operations-create` im :cite:t"
 ":`uv-nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:101
+#: ../../central-management-umc/umc.rst:52
 msgid "Editing objects"
 msgstr "Bearbeiten von Objekten"
 
-#: ../../central-management-umc/umc.rst:103
+#: ../../central-management-umc/umc.rst:54
 msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-ui-management-modules-operations-edit` in :cite:t:`uv-nubus-"
@@ -1017,11 +914,11 @@ msgstr ""
 "manual:ref:`nubus-ui-management-modules-operations-edit` im :cite:t:`uv-"
 "nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:110
+#: ../../central-management-umc/umc.rst:61
 msgid "Deleting objects"
 msgstr "Löschen von Objekten"
 
-#: ../../central-management-umc/umc.rst:112
+#: ../../central-management-umc/umc.rst:63
 msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-ui-management-modules-operations-delete` in :cite:t:`uv-nubus-"
@@ -1031,11 +928,11 @@ msgstr ""
 "manual:ref:`nubus-ui-management-modules-operations-delete` im :cite:t"
 ":`uv-nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:119
+#: ../../central-management-umc/umc.rst:70
 msgid "Moving objects"
 msgstr "Verschieben von Objekten"
 
-#: ../../central-management-umc/umc.rst:121
+#: ../../central-management-umc/umc.rst:72
 msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-ui-management-modules-operations-move` in :cite:t:`uv-nubus-"
@@ -1045,11 +942,11 @@ msgstr ""
 "manual:ref:`nubus-ui-management-modules-operations-move` im :cite:t:`uv-"
 "nubus-manual`."
 
-#: ../../central-management-umc/umc.rst:128
+#: ../../central-management-umc/umc.rst:79
 msgid "Display of system notifications"
 msgstr "Anzeige von Systembenachrichtigungen"
 
-#: ../../central-management-umc/umc.rst:130
+#: ../../central-management-umc/umc.rst:81
 msgid ""
 "The content of this section moved to :external+uv-nubus-manual:ref"
 ":`nubus-ui-notifications` in :cite:t:`uv-nubus-manual`."
