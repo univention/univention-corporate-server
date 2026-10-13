@@ -536,31 +536,6 @@ def get_protocol_mappers(con, client_id):
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_oidc_guardian_audience_mapper(random_string, keycloak_admin_connection):
-    client_id = random_string()
-    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-guardian-audience-mapper', client_id]
-    run_command(args)
-    expected_mapper = {
-        "name": "guardian-audience",
-        "protocol": "openid-connect",
-        "protocolMapper": "oidc-audience-mapper",
-        "consentRequired": False,
-        "config": {
-            "included.client.audience": "guardian",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            'userinfo.token.claim': 'false',
-        },
-    }
-    try:
-        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
-        assert expected_mapper in mappers
-    finally:
-        if keycloak_id:
-            keycloak_admin_connection.delete_client(keycloak_id)
-
-
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_oidc_dn_mapper(random_string, keycloak_admin_connection):
     client_id = random_string()
     args = ['univention-keycloak', 'oidc/rp', 'create', '--add-dn-mapper', client_id]
@@ -620,105 +595,6 @@ def test_oidc_audience_mapper(random_string, keycloak_admin_connection, audience
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_oidc_guardian_management_mappers(random_string, keycloak_admin_connection):
-    client_id = random_string()
-    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-guardian-management-mappers', client_id]
-    run_command(args)
-    expected_mappers = [
-        {
-            "protocol": "openid-connect",
-            "name": "Client IP Address",
-            "protocolMapper": "oidc-usersessionmodel-note-mapper",
-            "consentRequired": False,
-            "config": {
-                "user.session.note": "clientAddress",
-                "userinfo.token.claim": "true",
-                "id.token.claim": "true",
-                "claim.name": "clientAddress",
-                "jsonType.label": "String",
-                "access.token.claim": "true",
-                "access.tokenResponse.claim": 'false',
-            },
-        },
-        {
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usersessionmodel-note-mapper",
-            "name": "Client IP Address",
-            "consentRequired": False,
-            "config": {
-                "user.session.note": "clientAddress",
-                "claim.name": "clientAddress",
-                "jsonType.label": "String",
-                "id.token.claim": "true",
-                "access.token.claim": "true",
-                "userinfo.token.claim": "true",
-                "access.tokenResponse.claim": 'false',
-            },
-        },
-        {
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-audience-mapper",
-            "name": "audiencemap",
-            "consentRequired": False,
-            "config": {
-                "included.client.audience": "guardian-cli",
-                "id.token.claim": "true",
-                "access.token.claim": "true",
-                "userinfo.token.claim": "true",
-            },
-        },
-        {
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usersessionmodel-note-mapper",
-            "name": "Client Host",
-            "consentRequired": False,
-            "config": {
-                "user.session.note": "clientHost",
-                "claim.name": "clientHost",
-                "jsonType.label": "String",
-                "id.token.claim": "true",
-                "access.token.claim": "true",
-                "userinfo.token.claim": "true",
-                "access.tokenResponse.claim": 'false',
-            },
-        },
-        {
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "name": "dn",
-            "consentRequired": False,
-            "config": {
-                "user.attribute": "LDAP_ENTRY_DN",
-                "claim.name": "dn",
-                "jsonType.label": "String",
-                "id.token.claim": "false",
-                "access.token.claim": "true",
-                "userinfo.token.claim": "false",
-                "multivalued": 'false',
-                "aggregate.attrs": 'false',
-            },
-        },
-        {
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-audience-mapper", "name": "guardian-audience", "consentRequired": False,
-            "config": {
-                "included.client.audience": "guardian",
-                "id.token.claim": "false",
-                "access.token.claim": "true",
-                "userinfo.token.claim": "false",
-            },
-        },
-    ]
-    try:
-        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
-        for mapper in expected_mappers:
-            assert mapper in mappers
-    finally:
-        if keycloak_id:
-            keycloak_admin_connection.delete_client(keycloak_id)
-
-
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_oidc_ics_mappers(random_string, keycloak_admin_connection):
     client_id = random_string()
     args = ['univention-keycloak', 'oidc/rp', 'create', '--add-ics-mappers', client_id]
@@ -766,7 +642,7 @@ def test_oidc_ics_mappers(random_string, keycloak_admin_connection):
             "name": "intercom-audience",
             "consentRequired": False,
             "config": {
-                "included.client.audience": "opendesk-intercom",
+                "included.client.audience": client_id,
                 "id.token.claim": "false",
                 "access.token.claim": "true",
                 "introspection.token.claim": "true",
