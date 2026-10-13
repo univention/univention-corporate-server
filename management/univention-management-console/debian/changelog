@@ -1,3 +1,9 @@
+univention-management-console (14.7.1) unstable; urgency=medium
+
+  * Bug #60006: use new --client-id-token-audience parameter
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 Oct 2026 17:26:46 +0200
+
 univention-management-console (14.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]
