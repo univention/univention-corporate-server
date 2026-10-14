@@ -10,3 +10,6 @@ desc: |
    audience mapper. With this update the default configuration
    for UMC's OIDC client is compatible with Keycloak >= 26.7.5.
 bug: [60006]
+erratum: 638
+announced: 2026-10-14
+support: core
