@@ -140,17 +140,9 @@ in :cite:t:`uv-ucs-operation`.
 Mounting NFS shares
 -------------------
 
-The *NFS mounts* policy of the UMC computer management can be used to
-configure NFS shares, which are mounted on the system. There is a *NFS
-share* for selection, which is mounted in the file path specified under
-*Mount point*.
-
-.. _nfs-mount:
-
-.. figure:: /images/computers_policy_nfsshare.*
-   :alt: Mounting a NFS share
-
-   Mounting a NFS share
+The content of this section moved to
+:external+uv-ucs-operation:ref:`system-administration-nfs-share`
+in :cite:t:`uv-ucs-operation`.
 
 .. _computers-hardware-sysinfo:
 
