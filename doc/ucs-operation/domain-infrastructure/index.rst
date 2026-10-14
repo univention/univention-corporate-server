@@ -78,3 +78,4 @@ Listener and Notifier replication
    ha
    activity-logging
    listener-notifier
+   udm-blocklists
