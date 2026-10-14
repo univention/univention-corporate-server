@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 14:10+0000\n"
-"PO-Revision-Date: 2026-09-29 14:10+0200\n"
+"POT-Creation-Date: 2026-10-14 17:41+0000\n"
+"PO-Revision-Date: 2026-10-14 19:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -2729,11 +2729,11 @@ msgid ""
 "excessive traffic. The following section describes available rate-"
 "limiting approaches for HTTP services in Nubus for UCS."
 msgstr ""
-"Rate Limiting steuert, wie viele Anfragen externe Clients innerhalb"
-" eines festgelegten Zeitraums senden können. Sie hilft, extern "
-"bereitgestellte Dienste vor übermäßigem Datenverkehr zu schützen. Der "
-"folgende Abschnitt beschreibt verfügbare Ansätze für Rate Limiting für "
-"HTTP-Dienste in Nubus für UCS."
+"Rate Limiting steuert, wie viele Anfragen externe Clients innerhalb eines"
+" festgelegten Zeitraums senden können. Sie hilft, extern bereitgestellte "
+"Dienste vor übermäßigem Datenverkehr zu schützen. Der folgende Abschnitt "
+"beschreibt verfügbare Ansätze für Rate Limiting für HTTP-Dienste in Nubus"
+" für UCS."
 
 #: ../../system-administration/rate-limiting.rst:13
 msgid ""
@@ -2741,9 +2741,9 @@ msgid ""
 ":external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide` "
 "in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Allgemeine Hinweise zur Auslegung und Überwachung von Rate Limiting finden "
-"Sie unter :external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide` "
-"im :cite:t:`uv-nubus-manual`."
+"Allgemeine Hinweise zur Auslegung und Überwachung von Rate Limiting "
+"finden Sie unter :external+uv-nubus-manual:ref:`nubus-rate-limiting-"
+"implementation-guide` im :cite:t:`uv-nubus-manual`."
 
 #: ../../system-administration/rate-limiting.rst:20
 msgid "Rate-limiting approaches for HTTP services"
@@ -2776,14 +2776,13 @@ msgid ""
 "limit enforcement independent of Nubus for UCS. Refer to the selected "
 "product's documentation for product-specific configuration."
 msgstr ""
-"Leiten Sie externen Datenverkehr über einen Reverse Proxy, Lastverteilung "
-"oder ein API-Gateway, das Rate Limiting unter Anwendung der "
-"Grundsätze aus :external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-guide` "
-"durchsetzt, bevor der Datenverkehr den Apache HTTP Server des Systems "
-"erreicht. Dieser Ansatz setzt Rate Limiting "
-"unabhängig von Nubus für UCS durch. Weitere produktspezifische "
-"Konfigurationshinweise finden Sie in der Dokumentation des ausgewählten "
-"Produkts."
+"Leiten Sie externen Datenverkehr über einen Reverse Proxy, Lastverteilung"
+" oder ein API-Gateway, das Rate Limiting unter Anwendung der Grundsätze "
+"aus :external+uv-nubus-manual:ref:`nubus-rate-limiting-implementation-"
+"guide` durchsetzt, bevor der Datenverkehr den Apache HTTP Server des "
+"Systems erreicht. Dieser Ansatz setzt Rate Limiting unabhängig von Nubus "
+"für UCS durch. Weitere produktspezifische Konfigurationshinweise finden "
+"Sie in der Dokumentation des ausgewählten Produkts."
 
 #: ../../system-administration/rate-limiting.rst:37
 msgid "Extend the system's Apache configuration"
@@ -3078,10 +3077,12 @@ msgstr ""
 "Verwaltungsmodul :guilabel:`Computers` an."
 
 #: ../../system-administration/system-services.rst:90
+#: ../../system-administration/system-services.rst:114
 msgid ":external+uv-nubus-manual:ref:`nubus-computer-management`"
 msgstr ":external+uv-nubus-manual:ref:`nubus-computer-management`"
 
 #: ../../system-administration/system-services.rst:91
+#: ../../system-administration/system-services.rst:115
 msgid ""
 "in :cite:t:`uv-nubus-manual` for information about the "
 ":guilabel:`Computers` management module"
@@ -3090,10 +3091,37 @@ msgstr ""
 ":guilabel:`Computers`"
 
 #: ../../system-administration/system-services.rst:97
+msgid "Mount NFS shares on a computer"
+msgstr "NFS-Freigaben auf einem Rechner einhängen"
+
+#: ../../system-administration/system-services.rst:99
+msgid ""
+"In the :guilabel:`Computers` management module in the *Management UI*, "
+"open the target computer and assign or create an *NFS mounts* policy. "
+"Under *NFS shares to mount*, select an *NFS share* and specify its *Mount"
+" point*, as shown in :numref:`system-administration-nfs-share-figure`."
+msgstr ""
+"Öffnen Sie im Verwaltungsmodul :guilabel:`Rechner` in der *Management UI* den "
+"Zielrechner und weisen Sie eine *NFS-Freigaben*-Richtlinie zu oder erstellen "
+"Sie eine. Wählen Sie unter *NFS-Freigaben einbinden* eine *NFS-Freigabe* aus "
+"und geben Sie deren *Mount point* an, wie in "
+":numref:`system-administration-nfs-share-figure` gezeigt."
+
+#: ../../system-administration/system-services.rst:107
+msgid "NFS mounts policy showing the NFS share selection and Mount point fields."
+msgstr ""
+"NFS-Freigabe Richtlinie mit den Feldern zur Auswahl der NFS-Freigabe und "
+"des Einhängepunkts."
+
+#: ../../system-administration/system-services.rst:110
+msgid "Mounting a NFS share"
+msgstr "Eine NFS-Freigabe einbinden"
+
+#: ../../system-administration/system-services.rst:121
 msgid "Name service cache daemon"
 msgstr "Name Service Cache Daemon"
 
-#: ../../system-administration/system-services.rst:99
+#: ../../system-administration/system-services.rst:123
 msgid ""
 "The *Name Service Cache Daemon* (NSCD) caches Name Service Switch (NSS) "
 "data to speed up repeated requests for unchanged data. If the same "
@@ -3106,7 +3134,7 @@ msgstr ""
 " die Daten aus dem Cache, statt eine vollständige LDAP-Anfrage zu "
 "verarbeiten."
 
-#: ../../system-administration/system-services.rst:106
+#: ../../system-administration/system-services.rst:130
 msgid ""
 "Groups are no longer cached through NSCD for performance and stability "
 "reasons. Instead, a local group cache stores them. For more information, "
@@ -3117,7 +3145,7 @@ msgstr ""
 " sie. Weitere Informationen finden Sie unter :ref:`ucs-operation-groups-"
 "management-cache`."
 
-#: ../../system-administration/system-services.rst:111
+#: ../../system-administration/system-services.rst:135
 msgid ""
 "Since UCS 5.2-0, the system no longer caches user information "
 "(``passwd``) through NSCD. Instead, the *System Security Services Daemon*"
@@ -3130,7 +3158,7 @@ msgstr ""
 "Cache. Weitere Informationen finden Sie in der `SSSD-Dokumentation "
 "<https://sssd.io/docs/introduction.html>`_."
 
-#: ../../system-administration/system-services.rst:117
+#: ../../system-administration/system-services.rst:141
 msgid ""
 "*Univention Configuration Registry* manages the :file:`/etc/nscd.conf` "
 "configuration file."
@@ -3138,7 +3166,7 @@ msgstr ""
 "Die *Univention Configuration Registry* verwaltet die Konfigurationsdatei"
 " :file:`/etc/nscd.conf`."
 
-#: ../../system-administration/system-services.rst:120
+#: ../../system-administration/system-services.rst:144
 msgid ""
 "A hash table handles access to the cache. Specify the hash table size "
 "with the UCR variable :envvar:`nscd/hosts/size`. Set the value higher "
@@ -3151,7 +3179,7 @@ msgstr ""
 "gleichzeitig auf den Cache zugreifen. Verwenden Sie aus technischen "
 "Gründen eine Primzahl."
 
-#: ../../system-administration/system-services.rst:128
+#: ../../system-administration/system-services.rst:152
 msgid ""
 "With large caches, increase the cache database size in system memory "
 "through the UCR variable :envvar:`nscd/hosts/maxdbsize`."
@@ -3159,7 +3187,7 @@ msgstr ""
 "Vergrößern Sie bei großen Caches die Größe der Cache-Datenbank im "
 "Systemspeicher über die UCR-Variable :envvar:`nscd/hosts/maxdbsize`."
 
-#: ../../system-administration/system-services.rst:132
+#: ../../system-administration/system-services.rst:156
 msgid ""
 "By default, NSCD starts five threads. If the system handles many "
 "accesses, increase the number through the :term:`UCR variable` "
@@ -3169,7 +3197,7 @@ msgstr ""
 "verarbeitet, erhöhen Sie die Anzahl über die :term:`UCR-Variable <UCR "
 "variable>` :envvar:`nscd/threads`."
 
-#: ../../system-administration/system-services.rst:137
+#: ../../system-administration/system-services.rst:161
 msgid ""
 "By default, the system caches a resolved hostname for one hour. Use the "
 ":envvar:`nscd/hosts/positive_time_to_live` UCR variable to increase or "
@@ -3180,7 +3208,7 @@ msgstr ""
 ":envvar:`nscd/hosts/positive_time_to_live`, um die Cache-Dauer in "
 "Sekunden zu erhöhen oder zu verringern."
 
-#: ../../system-administration/system-services.rst:142
+#: ../../system-administration/system-services.rst:166
 msgid ""
 "You may need to invalidate the NSCD cache manually. Run the commands in "
 ":numref:`system-administration-nscd-invalidate-cache-listing` for the "
@@ -3193,11 +3221,11 @@ msgstr ""
 ":term:`UCR-Variable <UCR variable>` :envvar:`nscd/debug/level`, um die "
 "Ausführlichkeit der Log-Meldungen festzulegen."
 
-#: ../../system-administration/system-services.rst:148
+#: ../../system-administration/system-services.rst:172
 msgid "Commands to manually invalidate the NSCD cache"
 msgstr "Befehle zum manuellen Invalidieren des NSCD-Cache"
 
-#: ../../system-administration/system-services.rst:148
+#: ../../system-administration/system-services.rst:172
 msgid ""
 "$ sss_cache -U\n"
 "$ nscd -i hosts"
