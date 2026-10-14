@@ -1,0 +1,74 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:50
+msgid "A bitmask of printer attributes."
+msgstr "印表機屬性的位元遮罩。"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:71
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:39
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:44
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:71
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:32
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:49
+msgid "Print attributes"
+msgstr "列印屬性"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:76
+msgid "Printer connection settings"
+msgstr "印表機連線設定"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:54
+msgid "Printer name"
+msgstr "印表機名稱"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:59
+msgid "Server name"
+msgstr "伺服器名稱"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:20
+msgid "Settings: MS Print Connection Policy"
+msgstr "設定: MS Print Connection Policy"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:55
+msgid "The display name of an attached printer."
+msgstr "連接的印表機顯示名稱。"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:60
+msgid "The name of a server."
+msgstr "伺服器的名稱。"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:65
+msgid "The universal naming convention name for shared volumes and printers."
+msgstr "共用磁碟區與印表機的通用命名慣例名稱。"
+
+#: modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:64
+msgid "UNC name"
+msgstr "UNC 名稱"

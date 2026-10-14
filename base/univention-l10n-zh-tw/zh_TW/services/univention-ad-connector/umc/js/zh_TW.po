@@ -1,0 +1,289 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-adconnector package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-adconnector\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/adconnector.js:22
+msgid "<p><b>Caution!</b> The DNS service record for the UCS Primary was not found in the DNS server.</p>"
+msgstr "<p><b>注意！</b>在 DNS 伺服器中找不到 UCS 主要目錄節點的 DNS 服務記錄。</p>"
+
+#: umc/js/adconnector/SetupWizard.js:324
+msgid "<p>An encrypted connection to the Active Directory domain could still not be established.</p><p>Confirm if you want to proceed with an unsecure connection.</p>"
+msgstr "<p>仍無法與 Active Directory 網域建立加密連線。</p><p>請確認是否要以不安全的連線繼續進行。</p>"
+
+#: umc/js/adconnector.js:22
+msgid "<p>Details are explained in the <a href=\"http://sdb.univention.de/1299\">Support Database</a>.</p>"
+msgstr "<p>詳細說明請參閱 <a href=\"http://sdb.univention.de/1299\">Support Database</a>。</p>"
+
+#: umc/js/adconnector/SetupWizard.js:62
+msgid "<p>This wizards guides the configuration of the connection with an existing Active Directory domain.</p><p>There are two exclusive options:</p>"
+msgstr "<p>本引導程序將協助您設定與既有 Active Directory 網域的連線。</p><p>有兩個互斥的選項：</p>"
+
+#: umc/js/adconnector/SetupWizard.js:183
+#, javascript-format
+msgid "<p>To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate. The necessary steps depend on the actual Microsoft Windows version and are described in the <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>. Alternatively, you may proceed without this configuration.</p>"
+msgstr "<p>為了達到更高的安全層級，應將 Active Directory 根憑證匯出並上傳至此。該憑證由 Active Directory 憑證服務建立。所需步驟視實際的 Microsoft Windows 版本而定，並記載於 <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a> 中。或者，您也可以略過此設定繼續進行。</p>"
+
+#: umc/js/adconnector/SetupWizard.js:110
+msgid "AD Connection - An error occurred"
+msgstr "AD 連線 - 發生錯誤"
+
+#: umc/js/adconnector/ConfigPage.js:103
+msgid "Activate encrypted connection"
+msgstr "啟用加密連線"
+
+#: umc/js/adconnector/SetupWizard.js:57
+msgid "Active Directory Connection"
+msgstr "Active Directory 連線"
+
+#: umc/js/adconnector/SetupWizard.js:100 umc/js/adconnector/SetupWizard.js:151
+msgid "Active Directory account"
+msgstr "Active Directory 帳戶"
+
+#: umc/js/adconnector/ConfigPage.js:122
+msgid "Active Directory connection SSL configuration"
+msgstr "Active Directory 連線 SSL 設定"
+
+#: umc/js/adconnector/ConfigPage.js:119
+msgid "Active Directory connection service"
+msgstr "Active Directory 連線服務"
+
+#: umc/js/adconnector/ConfigPage.js:155
+msgid "Active Directory connection service is currently running."
+msgstr "Active Directory 連線服務目前正在執行。"
+
+#: umc/js/adconnector/ConfigPage.js:159
+msgid "Active Directory connection service is not running."
+msgstr "Active Directory 連線服務未在執行。"
+
+#: umc/js/adconnector/SetupWizard.js:84 umc/js/adconnector/SetupWizard.js:135
+msgid "Active Directory domain credentials"
+msgstr "Active Directory 網域認證"
+
+#: umc/js/adconnector/SetupWizard.js:106 umc/js/adconnector/SetupWizard.js:157
+msgid "Active Directory password"
+msgstr "Active Directory 密碼"
+
+#: umc/js/adconnector/SetupWizard.js:146
+msgid "Address of Active Directory domain controller"
+msgstr "Active Directory 網域控制站的位址"
+
+#: umc/js/adconnector/SetupWizard.js:95
+msgid "Address of Active Directory domain controller or name of Active Directory domain"
+msgstr "Active Directory 網域控制站的位址或 Active Directory 網域的名稱"
+
+#: umc/js/adconnector/SetupWizard.js:171
+msgid "After the certification authority has been set up, press <i>Next</i> to proceed."
+msgstr "設定好憑證授權單位後，請按 <i>下一步</i> 繼續進行。"
+
+#: umc/js/adconnector/SetupWizard.js:169
+msgid "An encrypted connection to the Active Directory domain could not be established. As a consequence authentication data is submitted in plaintext."
+msgstr "無法與 Active Directory 網域建立加密連線。因此，認證資料將以明文傳送。"
+
+#: umc/js/adconnector/SetupWizard.js:111
+msgid "An error occurred during the join process of UCS into the Active Directory domain. The following information will give you some more details on which problems occurred during the join process."
+msgstr "UCS 加入 Active Directory 網域的過程中發生錯誤。下列資訊將提供加入過程中所發生問題的更多細節。"
+
+#: umc/js/adconnector/SetupWizard.js:307
+msgid "An unexpected error occurred. More information about the cause of the error can be found in the log file /var/log/univention/management-console-module-adconnector.log. Please retry the join process after resolving any conflicting issues."
+msgstr "發生未預期的錯誤。關於錯誤原因的更多資訊可在記錄檔 /var/log/univention/management-console-module-adconnector.log 中找到。請在解決所有衝突問題後重試加入程序。"
+
+#: umc/js/adconnector/SetupWizard.js:230
+msgid "Bidirectional synchronisation of UCS and Active Directory."
+msgstr "UCS 與 Active Directory 的雙向同步。"
+
+#: umc/js/adconnector/ConfigPage.js:88
+msgid "By default the Active Directory connection does not transfer encrypted password data into the UCS directory service. The system uses the Active Directory Kerberos infrastructure for authentication."
+msgstr "預設情況下，Active Directory 連線不會將加密的密碼資料傳輸至 UCS 目錄服務。系統會使用 Active Directory Kerberos 基礎架構進行認證。"
+
+#: umc/js/adconnector/SetupWizard.js:326
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/adconnector/SetupWizard.js:122 umc/js/adconnector/SetupWizard.js:251
+msgid "Completion of Active Directory Connection"
+msgstr "完成 Active Directory 連線"
+
+#: umc/js/adconnector/SetupWizard.js:208
+msgid "Configuration of Active Directory domain synchronisation"
+msgstr "Active Directory 網域同步設定"
+
+#: umc/js/adconnector/ConfigPage.js:32
+msgid "Configuration of the Active Directory connection"
+msgstr "Active Directory 連線的設定"
+
+#: umc/js/adconnector/SetupWizard.js:68
+msgid "Configure UCS as part of an Active Directory domain (recommended)."
+msgstr "將 UCS 設定為 Active Directory 網域的一部分 ( 建議 )。"
+
+#: umc/js/adconnector/SetupWizard.js:330
+msgid "Continue without encryption"
+msgstr "不使用加密繼續進行"
+
+#: umc/js/adconnector/ConfigPage.js:184
+msgid "Currently, a secured connection between UCS and the Active Directory domain is used."
+msgstr "目前 UCS 與 Active Directory 網域之間使用的是安全連線。"
+
+#: umc/js/adconnector/ConfigPage.js:177
+msgid "Currently, an encrypted connection between UCS and the Active Directory domain is used."
+msgstr "目前 UCS 與 Active Directory 網域之間使用的是加密連線。"
+
+#: umc/js/adconnector/ConfigPage.js:171
+msgid "Currently, an unencrypted connection to the Active Directory domain is used."
+msgstr "目前與 Active Directory 網域之間使用的是未加密連線。"
+
+#: umc/js/adconnector.js:22
+msgid "DNS Check"
+msgstr "DNS 檢查"
+
+#: umc/js/adconnector/SetupWizard.js:141
+msgid "Enter the Active Directory domain information to establish the connection."
+msgstr "請輸入 Active Directory 網域資訊以建立連線。"
+
+#: umc/js/adconnector/SetupWizard.js:90
+msgid "Enter the Active Directory domain information to join the domain."
+msgstr "請輸入 Active Directory 網域資訊以加入網域。"
+
+#: umc/js/adconnector/SetupWizard.js:201 umc/js/adconnector/ConfigPage.js:80
+msgid "Failed to import the certificate"
+msgstr "匯入憑證失敗"
+
+#: umc/js/adconnector/ConfigPage.js:89
+msgid "However, in some scenarios it may be reasonable to transfer encrypted password hashes. Please refer the UCS manual in order to activate the password synchronization."
+msgstr "然而，在某些情境下傳輸加密的密碼雜湊可能是合理的。請參閱 UCS manual 以啟用密碼同步。"
+
+#: umc/js/adconnector/ConfigPage.js:185
+msgid "If there is a need for adjustment, you may upload a new root certificate of the Active Directory domain."
+msgstr "如果有調整的需要，您可以上傳 Active Directory 網域的新根憑證。"
+
+#: umc/js/adconnector/ConfigPage.js:66
+msgid "It is also possible to just activate the encrypted connection without certificate verification."
+msgstr "也可以只啟用加密連線而不進行憑證驗證。"
+
+#: umc/js/adconnector/SetupWizard.js:129
+msgid "It is necessary for already joined UCS systems to re-join the domain. This should be done via the UMC module <i>Domain join</i> separately on each system."
+msgstr "已加入的 UCS 系統必須重新加入網域。這應透過 UMC 模組 <i>Domain join</i> 在每個系統上個別執行。"
+
+#: umc/js/adconnector/SetupWizard.js:267
+msgid "Join AD domain"
+msgstr "加入 AD 網域"
+
+#: umc/js/adconnector/SetupWizard.js:338
+msgid "Joining UCS into Active Directory domain"
+msgstr "正在將 UCS 加入 Active Directory 網域"
+
+#: umc/js/adconnector/ConfigPage.js:127
+msgid "Password sync"
+msgstr "密碼同步"
+
+#: umc/js/adconnector/SetupWizard.js:518
+msgid "Please confirm to carry out a restart of the UMC server components."
+msgstr "請確認以執行 UMC 伺服器元件的重新啟動。"
+
+#: umc/js/adconnector/SetupWizard.js:269
+msgid "Retry to join"
+msgstr "重試加入"
+
+#: umc/js/adconnector/SetupWizard.js:162
+msgid "Security settings"
+msgstr "安全設定"
+
+#: umc/js/adconnector/SetupWizard.js:331
+msgid "Security warning"
+msgstr "安全警告"
+
+#: umc/js/adconnector/SetupWizard.js:218
+msgid "Select the synchronisation direction between the UCS domain and the given Active Directory domain."
+msgstr "請選擇 UCS 網域與指定的 Active Directory 網域之間的同步方向。"
+
+#: umc/js/adconnector/ConfigPage.js:95
+msgid "Start Active Directory connection service"
+msgstr "啟動 Active Directory 連線服務"
+
+#: umc/js/adconnector/ConfigPage.js:99
+msgid "Stop Active Directory connection service"
+msgstr "停止 Active Directory 連線服務"
+
+#: umc/js/adconnector/SetupWizard.js:71
+msgid "Synchronisation of account data between an Active Directory and this UCS domain."
+msgstr "在 Active Directory 與此 UCS 網域之間同步帳戶資料。"
+
+#: umc/js/adconnector/ConfigPage.js:49
+msgid "The UCS domain exists in parallel to an Active Directory domain."
+msgstr "UCS 網域與 Active Directory 網域並存。"
+
+#: umc/js/adconnector/SetupWizard.js:258
+msgid "The UCS server is now ready for usage, and domain account data is now available."
+msgstr "UCS 伺服器現在已可供使用，網域帳戶資料現在也已可用。"
+
+#: umc/js/adconnector/SetupWizard.js:198 umc/js/adconnector/ConfigPage.js:78
+msgid "The certificate was imported successfully"
+msgstr "憑證已成功匯入"
+
+#: umc/js/adconnector/SetupWizard.js:128
+msgid "The connection to the Active Directory domain has been configured successfully."
+msgstr "與 Active Directory 網域的連線已成功設定。"
+
+#: umc/js/adconnector/ConfigPage.js:173 umc/js/adconnector/ConfigPage.js:179
+#, javascript-format
+msgid "The necessary steps depend on the actual Microsoft Windows version and are described in the <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>."
+msgstr "所需步驟視實際的 Microsoft Windows 版本而定，並記載於 <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a> 中。"
+
+#: umc/js/adconnector/SetupWizard.js:301
+msgid "The server <i>%(_hostname)s (%(DC_IP)s)</i> is used as Active Directory Domain Controller for the domain <i>%(Domain)s</i>."
+msgstr "伺服器 <i>%(_hostname)s (%(DC_IP)s)</i> 被用作網域 <i>%(Domain)s</i> 的 Active Directory 網域控制站。"
+
+#: umc/js/adconnector/SetupWizard.js:257
+msgid "The synchronisation of Univention Corporate Server and Active Directory has been successfully initiated."
+msgstr "Univention Corporate Server 與 Active Directory 的同步已成功啟動。"
+
+#: umc/js/adconnector/ConfigPage.js:47
+msgid "The system is part of an Active Directory domain."
+msgstr "系統是 Active Directory 網域的一部分。"
+
+#: umc/js/adconnector/ConfigPage.js:51
+msgid "This module configures the connection between the Univention Corporate Server and Active Directory."
+msgstr "此模組用於設定 Univention Corporate Server 與 Active Directory 之間的連線。"
+
+#: umc/js/adconnector/ConfigPage.js:172 umc/js/adconnector/ConfigPage.js:178
+msgid "To achieve a higher level of security, the Active Directory root certificate should be exported and uploaded here. The Active Directory certificate service creates that certificate."
+msgstr "為了達到更高的安全層級，應將 Active Directory 根憑證匯出並上傳至此。該憑證由 Active Directory 憑證服務建立。"
+
+#: umc/js/adconnector/SetupWizard.js:170
+#, javascript-format
+msgid "To enable an encrypted connection, a certification authority needs to be configured on the Active Directory server. All steps necessary are described in the <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a>."
+msgstr "若要啟用加密連線，必須在 Active Directory 伺服器上設定憑證授權單位。所有必要步驟皆記載於 <a href=\"https://docs.software-univention.de/manual-%s.html#ad-connector:ad-zertifikat\" target=\"_blank\">UCS manual</a> 中。"
+
+#: umc/js/adconnector/SetupWizard.js:224
+msgid "Unidirectional synchronisation of Active Directory to UCS."
+msgstr "Active Directory 至 UCS 的單向同步。"
+
+#: umc/js/adconnector/SetupWizard.js:227
+msgid "Unidirectional synchronisation of UCS to Active Directory."
+msgstr "UCS 至 Active Directory 的單向同步。"
+
+#: umc/js/adconnector/SetupWizard.js:177
+msgid "Upload AD root certificate"
+msgstr "上傳 AD 根憑證"
+
+#: umc/js/adconnector/SetupWizard.js:77
+msgid "Use the recommended first option if Active Directory will be the principal domain. Domain users can directly access applications that are installed on UCS."
+msgstr "如果 Active Directory 將作為主要網域，請使用建議的第一個選項。網域使用者可以直接存取安裝在 UCS 上的應用程式。"
+
+#: umc/js/adconnector/SetupWizard.js:78
+msgid "Use the second option for more complex scenarios which necessitate that Active Directory and UCS domains exist in parallel."
+msgstr "對於需要 Active Directory 與 UCS 網域並存的較複雜情境，請使用第二個選項。"

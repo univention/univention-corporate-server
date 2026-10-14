@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-join package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-join\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/python/join/__init__.py:420 umc/python/join/__init__.py:469
+msgid "A join process is already running."
+msgstr "已有一個加入程序正在執行。"
+
+#: umc/python/join/__init__.py:451 umc/python/join/__init__.py:502
+#, python-format
+msgid "An unexpected error occurred: %s"
+msgstr "發生未預期的錯誤: %s"
+
+#: umc/python/join/__init__.py:483
+msgid "Authentication"
+msgstr "認證"
+
+#: umc/python/join/__init__.py:428 umc/python/join/__init__.py:473
+msgid "Currently, software is being installed or uninstalled. Join scripts should not be run right now."
+msgstr "目前正在安裝或解除安裝軟體。現在不應執行加入指令碼。"
+
+#: umc/python/join/__init__.py:432
+msgid "Domain join"
+msgstr "網域加入"
+
+#: umc/python/join/__init__.py:340
+#, python-format
+msgid "Error: %s"
+msgstr "錯誤: %s"
+
+#: umc/python/join/__init__.py:217
+#, python-format
+msgid "Executing join script %s"
+msgstr "正在執行加入指令碼 %s"
+
+#: umc/python/join/__init__.py:216
+msgid "Executing join scripts"
+msgstr "正在執行加入指令碼"
+
+#: umc/python/join/__init__.py:86
+msgid "Initializing"
+msgstr "初始化中"
+
+#: umc/python/join/__init__.py:424
+msgid "Invalid server role! A Primary Directory Node cannot be joined."
+msgstr "無效的伺服器角色！主要目錄節點無法被加入。"
+
+#: umc/python/join/__init__.py:54
+msgid "No DNS record for the Primary Directory Node was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct."
+msgstr "找不到主要目錄節點的 DNS 記錄。這可能是所設定的 DNS 伺服器發生問題。請確認 DNS 設定正確無誤。"
+
+#: umc/python/join/__init__.py:276
+msgid "Some join scripts could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join scripts after resolving any conflicting issues."
+msgstr "部分加入指令碼無法執行。更多詳細資訊請參閱記錄檔 <i>/var/log/univention/join.log</i>。<br/>請在解決所有衝突問題後，重新嘗試執行加入指令碼。"
+
+#: umc/python/join/__init__.py:74
+msgid "The entered FQDN is not a valid value"
+msgstr "輸入的 FQDN 不是有效的值"
+
+#: umc/python/join/__init__.py:273
+msgid "The join process could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to join the system after resolving any conflicting issues."
+msgstr "加入程序無法執行。更多詳細資訊請參閱記錄檔 <i>/var/log/univention/join.log</i>。<br/>請在解決所有衝突問題後，重新嘗試加入此系統。"
+
+#: umc/python/join/__init__.py:57
+msgid "The lookup of the Primary Directory Node record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings."
+msgstr "查詢主要目錄節點記錄時逾時。所設定的 DNS 伺服器可能發生問題。請確認 DNS 伺服器已啟動並正常執行，或檢查 DNS 設定。"
+
+#: umc/python/join/__init__.py:203
+#, python-format
+msgid "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry after resolving any conflicting issues."
+msgstr "系統加入程序無法完成:<br/><br/><i>%s</i><br/><br/> 更多詳細資訊請參閱記錄檔 <i>/var/log/univention/join.log</i>。<br/>請在解決所有衝突問題後重新嘗試。"
+
+#: umc/python/join/__init__.py:446 umc/python/join/__init__.py:497
+msgid "finished..."
+msgstr "已完成..."

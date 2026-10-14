@@ -1,0 +1,98 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-connector-s4\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:118
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:40
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:45
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:118 modules/univention/admin/handlers/settings/mswmifilter.py:119
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:56
+msgid "MS WMI Author"
+msgstr "MS WMI Author"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:66
+msgid "MS WMI Change Date"
+msgstr "MS WMI Change Date"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:61
+msgid "MS WMI Creation Date"
+msgstr "MS WMI Creation Date"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:91
+msgid "MS WMI Flags1"
+msgstr "MS WMI Flags1"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:96
+msgid "MS WMI Flags2"
+msgstr "MS WMI Flags2"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:101
+msgid "MS WMI Flags3"
+msgstr "MS WMI Flags3"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:106
+msgid "MS WMI Flags4"
+msgstr "MS WMI Flags4"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:50
+msgid "MS WMI ID"
+msgstr "MS WMI ID"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:71
+msgid "MS WMI Parameter1"
+msgstr "MS WMI Parameter1"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:76
+msgid "MS WMI Parameter2"
+msgstr "MS WMI Parameter2"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:81
+msgid "MS WMI Parameter3"
+msgstr "MS WMI Parameter3"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:86
+msgid "MS WMI Parameter4"
+msgstr "MS WMI Parameter4"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:111
+msgid "MS WMI Source Organization"
+msgstr "MS WMI Source Organization"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:124
+msgid "MS WMI filter"
+msgstr "MS WMI 篩選器"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:34
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:22
+msgid "Settings: MS WMI Filter"
+msgstr "設定: MS WMI 篩選器"
+
+#: modules/univention/admin/handlers/settings/mswmifilter.py:124 modules/univention/admin/handlers/settings/mswmifilter.py:125
+msgid "WMI filter"
+msgstr "WMI 篩選器"

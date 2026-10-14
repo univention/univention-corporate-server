@@ -1,0 +1,123 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:304
+#, python-format
+msgid "%s objects need to be created in %s: %s"
+msgstr "需要在 %s 中建立 %s 個物件: %s"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:126
+msgid "Basic information"
+msgstr "基本資訊"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:99
+msgid "Delete At"
+msgstr "刪除時間"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:33 modules/univention/admin/handlers/recyclebin/removedobject.py:126
+msgid "Deleted Object"
+msgstr "已刪除物件"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:34
+msgid "Deleted Objects"
+msgstr "已刪除物件"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:106
+msgid "Deletion Date"
+msgstr "刪除日期"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:53
+msgid "Distinguished name of the original object before deletion."
+msgstr "刪除前原始物件的辨別名稱 (DN)。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:86
+msgid "EntryUUID of the deleted object."
+msgstr "已刪除物件的 EntryUUID。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:114
+msgid "List of objects that referenced this object at deletion time."
+msgstr "刪除時參照此物件的物件清單。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:77
+msgid "Object classes of the deleted object."
+msgstr "已刪除物件的物件類別。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:127
+msgid "Object information"
+msgstr "物件資訊"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:136
+msgid "Objects referencing this deleted object"
+msgstr "參照此已刪除物件的物件"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:35
+msgid "Objects that have been moved to the Recycle Bin"
+msgstr "已移至資源回收筒的物件"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:52
+msgid "Original DN"
+msgstr "原始 DN"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:85
+msgid "Original EntryUUID"
+msgstr "原始 EntryUUID"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:92
+msgid "Original Name"
+msgstr "原始名稱"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:61
+msgid "Original Object Identifier"
+msgstr "原始物件識別碼"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:69
+msgid "Original Object Type"
+msgstr "原始物件類型"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:93
+msgid "Original name of the deleted object (uid for users, cn for groups)."
+msgstr "已刪除物件的原始名稱 ( 使用者為 uid，群組為 cn )。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:76
+msgid "Original object classes"
+msgstr "原始物件類別"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:32
+msgid "Recycle Bin: Deleted Object"
+msgstr "資源回收筒: 已刪除物件"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:113
+msgid "Referenced By"
+msgstr "被參照於"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:136
+msgid "Referencing objects"
+msgstr "參照的物件"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:100
+msgid "Timestamp when the object should be permanently deleted based on retention policy. Note: Actual deletion is handled by OpenLDAP DDS and may occur slightly later."
+msgstr "依據保留原則物件應被永久刪除的時間戳記。注意: 實際刪除由 OpenLDAP DDS 處理，可能稍晚發生。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:107
+msgid "Timestamp when the object was deleted."
+msgstr "物件被刪除時的時間戳記。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:70
+msgid "UDM module type of the original object."
+msgstr "原始物件的 UDM 模組類型。"
+
+#: modules/univention/admin/handlers/recyclebin/removedobject.py:62
+msgid "UniventionObjectIdentifier of the deleted object."
+msgstr "已刪除物件的 UniventionObjectIdentifier。"

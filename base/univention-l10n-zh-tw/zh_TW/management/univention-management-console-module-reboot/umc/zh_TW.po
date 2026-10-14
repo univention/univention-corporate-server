@@ -1,0 +1,23 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-reboot\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: Sun, 21 Jun 2026 15:45:57 +0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Reboot"
+msgstr "重新開機"
+
+msgid "Shut down or reboot of the local system"
+msgstr "關閉或重新啟動本機系統"
+
+msgid "reboot,shutdown,halt"
+msgstr "重新開機，關機，reboot,shutdown,halt"

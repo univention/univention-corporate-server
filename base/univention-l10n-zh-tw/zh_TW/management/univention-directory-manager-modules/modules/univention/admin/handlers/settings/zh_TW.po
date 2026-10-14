@@ -1,0 +1,1658 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:153
+msgid "A bitfield to indicate complexity and storage restrictions."
+msgstr "用於指示複雜度與儲存限制的位元欄位。"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:57
+msgid "A longer descriptive text, which is shown as a bubble-help in the UMC"
+msgstr "較長的描述文字，會在 UMC 中以泡泡提示顯示"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:50
+msgid "A short descriptive text which is used as label in the UMC"
+msgstr "在 UMC 中作為標籤使用的簡短描述文字"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:174
+msgid "A value for this extended attribute is required and must be given"
+msgstr "此擴充屬性必須提供值"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:50
+msgid "ACL data"
+msgstr "ACL 資料"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:43
+msgid "ACL file name"
+msgstr "ACL 檔名"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:35
+msgid "ACL name"
+msgstr "ACL 名稱"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:272
+msgid "Account"
+msgstr "帳號"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:79
+msgid "Account deactivation"
+msgstr "帳號停用"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:272
+msgid "Account settings"
+msgstr "帳號設定"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:135 modules/univention/admin/handlers/settings/ldapacl.py:105 modules/univention/admin/handlers/settings/udm_syntax.py:114 modules/univention/admin/handlers/settings/udm_hook.py:114 modules/univention/admin/handlers/settings/ldapschema.py:91
+msgid "Activated"
+msgstr "已啟用"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:59 modules/univention/admin/handlers/settings/ldapacl.py:56 modules/univention/admin/handlers/settings/udm_syntax.py:58 modules/univention/admin/handlers/settings/udm_hook.py:58 modules/univention/admin/handlers/settings/ldapschema.py:56
+msgid "Active"
+msgstr "啟用中"
+
+#: modules/univention/admin/handlers/settings/syntax.py:77
+msgid "Add an empty value to choice list"
+msgstr "在選擇清單中加入一個空白值"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:215
+msgid "Additional e-mail addresses for which e-mails will be delivered to the \"Primary e-mail address\". The domain must be one of the UCS hosted e-mail domains."
+msgstr "額外的電子郵件地址，寄至這些地址的郵件會被投遞到「主要電子郵件地址」。網域必須是 UCS 代管的電子郵件網域之一。"
+
+#: modules/univention/admin/handlers/settings/syntax.py:128
+msgid "An LDAP attribute is required of which the information will be stored."
+msgstr "需要一個用於儲存資訊的 LDAP 屬性。"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:65 modules/univention/admin/handlers/settings/ldapacl.py:62 modules/univention/admin/handlers/settings/udm_syntax.py:64 modules/univention/admin/handlers/settings/udm_hook.py:64 modules/univention/admin/handlers/settings/ldapschema.py:62
+msgid "App identifier"
+msgstr "應用程式識別碼"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:99
+msgid "Application"
+msgstr "應用程式"
+
+#: modules/univention/admin/handlers/settings/data.py:22
+msgid "Arbitrary data files"
+msgstr "任意資料檔"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:263
+msgid "Attribute layout"
+msgstr "屬性版面配置"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:75
+msgid "Bad Lockout Attempts"
+msgstr "鎖定前的錯誤嘗試次數"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:107
+msgid "Bad lockout attempts"
+msgstr "鎖定前的錯誤嘗試次數"
+
+#: modules/univention/admin/handlers/settings/license.py:61
+msgid "Base DN"
+msgstr "Base DN"
+
+#: modules/univention/admin/handlers/settings/license.py:62
+msgid "Base DN the license is valid for"
+msgstr "此授權適用的 Base DN"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:116 modules/univention/admin/handlers/settings/syntax.py:96 modules/univention/admin/handlers/settings/usertemplate.py:247 modules/univention/admin/handlers/settings/ldapacl.py:90 modules/univention/admin/handlers/settings/extended_options.py:106 modules/univention/admin/handlers/settings/service.py:43 modules/univention/admin/handlers/settings/default.py:92 modules/univention/admin/handlers/settings/cn.py:46 modules/univention/admin/handlers/settings/sambadomain.py:159 modules/univention/admin/handlers/settings/udm_syntax.py:98 modules/univention/admin/handlers/settings/directory.py:119 modules/univention/admin/handlers/settings/sambaconfig.py:112 modules/univention/admin/handlers/settings/udm_hook.py:98 modules/univention/admin/handlers/settings/ldapschema.py:80
+msgid "Basic values"
+msgstr "基本值"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:286
+msgid "Business"
+msgstr "公務"
+
+#: modules/univention/admin/handlers/settings/data.py:91
+msgid "Category options"
+msgstr "分類選項"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:73 modules/univention/admin/handlers/settings/usertemplate.py:74
+msgid "Change password on next login"
+msgstr "下次登入時變更密碼"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:145
+msgid "City"
+msgstr "縣市"
+
+#: modules/univention/admin/handlers/settings/directory.py:75
+msgid "Computer Link"
+msgstr "電腦連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:129
+msgid "Computer Links"
+msgstr "電腦連結"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:52
+msgid "Configuration Name"
+msgstr "設定名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:254
+msgid "Configuration of LDAP object class and LDAP attribute"
+msgstr "LDAP 物件類別與 LDAP 屬性的設定"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:249
+msgid "Configuration of the modules to be extended"
+msgstr "要擴充的模組設定"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:171
+msgid "Connection"
+msgstr "連線"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:285
+msgid "Contact"
+msgstr "連絡"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:285
+msgid "Contact Information"
+msgstr "連絡資訊"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:222
+msgid "Copyable"
+msgstr "可複製"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:150
+msgid "Country"
+msgstr "國家"
+
+#: modules/univention/admin/handlers/settings/directory.py:57
+msgid "DHCP Link"
+msgstr "DHCP 連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:141
+msgid "DHCP Links"
+msgstr "DHCP 連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:51
+msgid "DNS Link"
+msgstr "DNS 連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:138
+msgid "DNS Links"
+msgstr "DNS 連結"
+
+#: modules/univention/admin/handlers/settings/data.py:19 modules/univention/admin/handlers/settings/data.py:20 modules/univention/admin/handlers/settings/data.py:21
+msgid "Data"
+msgstr "資料"
+
+#: modules/univention/admin/handlers/settings/data.py:57
+msgid "Data Type"
+msgstr "資料類型"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:278
+msgid "Data type"
+msgstr "資料類型"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:278
+msgid "Data type definition"
+msgstr "資料類型定義"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:76
+msgid "Default"
+msgstr "預設"
+
+#: modules/univention/admin/handlers/settings/default.py:77
+msgid "Default Group for Client Computers"
+msgstr "用戶端電腦的預設群組"
+
+#: modules/univention/admin/handlers/settings/default.py:49
+msgid "Default Group for Computers"
+msgstr "電腦的預設群組"
+
+#: modules/univention/admin/handlers/settings/default.py:70
+msgid "Default Group for Managed Nodes"
+msgstr "受管節點的預設群組"
+
+#: modules/univention/admin/handlers/settings/default.py:63
+msgid "Default Group for Primary and Backup Directory Nodes"
+msgstr "主要與備份目錄節點的預設群組"
+
+#: modules/univention/admin/handlers/settings/default.py:56
+msgid "Default Group for Replica Directory Nodes"
+msgstr "複本目錄節點的預設群組"
+
+#: modules/univention/admin/handlers/settings/default.py:84
+msgid "Default KDE Profiles"
+msgstr "預設 KDE 設定檔"
+
+#: modules/univention/admin/handlers/settings/default.py:42
+msgid "Default Primary Group"
+msgstr "預設主要群組"
+
+#: modules/univention/admin/handlers/settings/directory.py:22
+msgid "Default container"
+msgstr "預設容器"
+
+#: modules/univention/admin/handlers/settings/directory.py:120
+msgid "Default container description"
+msgstr "預設容器說明"
+
+#: modules/univention/admin/handlers/settings/directory.py:23
+msgid "Default containers"
+msgstr "預設容器"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:56
+msgid "Default long description"
+msgstr "預設詳細說明"
+
+#: modules/univention/admin/handlers/settings/default.py:19
+msgid "Default preference"
+msgstr "預設偏好設定"
+
+#: modules/univention/admin/handlers/settings/default.py:20
+msgid "Default preferences"
+msgstr "預設偏好設定"
+
+#: modules/univention/admin/handlers/settings/default.py:93
+msgid "Default settings description"
+msgstr "預設設定說明"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:49
+msgid "Default short description"
+msgstr "預設簡短說明"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:104
+msgid "Default value"
+msgstr "預設值"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:105
+msgid "Default value which is set for this extended attribute when a new object is created"
+msgstr "建立新物件時，為此擴充屬性設定的預設值"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:63
+msgid "Defines a specific flavor of the UMC module. If given the operations are permitted only if the flavor matches."
+msgstr "定義 UMC 模組的特定 flavor。若有指定，只有在 flavor 相符時才允許這些操作。"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:70
+msgid "Defines on which hosts this operations are permitted on. The value can be either a host name (as filename pattern e.g. server1*), a server role (e.g. serverrole:domaincontroller_slave) or a service, which must run on the host, (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed."
+msgstr "定義允許在哪些主機上執行這些操作。值可以是主機名稱 (檔名樣式，例如 server1*)、伺服器角色 (例如 serverrole:domaincontroller_slave),或主機上必須執行的服務 (例如 service:LDAP)。留空則允許所有主機。"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:220
+msgid "Delivery office name"
+msgstr "投遞辦公室名稱"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:184
+msgid "Department number"
+msgstr "部門編號"
+
+#: modules/univention/admin/handlers/settings/data.py:41 modules/univention/admin/handlers/settings/umc_operationset.py:47 modules/univention/admin/handlers/settings/usertemplate.py:56
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/settings/directory.py:81
+msgid "Directory Node Computer Link"
+msgstr "目錄節點電腦連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:132
+msgid "Directory Node Computer Links"
+msgstr "目錄節點電腦連結"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:100
+msgid "Disconnect Time"
+msgstr "中斷連線時間"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:132
+msgid "Disconnect time"
+msgstr "中斷連線時間"
+
+#: modules/univention/admin/handlers/settings/syntax.py:100
+msgid "Display"
+msgstr "顯示"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:62
+msgid "Display name"
+msgstr "顯示名稱"
+
+#: modules/univention/admin/handlers/settings/syntax.py:58
+msgid "Displayed Attributes"
+msgstr "顯示的屬性"
+
+#: modules/univention/admin/handlers/settings/syntax.py:66
+msgid "Displayed LDAP Attributes"
+msgstr "顯示的 LDAP 屬性"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:109
+msgid "Do not show this extended attribute in the UMC"
+msgstr "不要在 UMC 中顯示此擴充屬性"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:85
+msgid "E-mail address"
+msgstr "電子郵件地址"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:210
+msgid "E-mail address that will be used to create the IMAP/POP3 mailbox and that can be used as login for SMTP/IMAP/POP3 connections. The domain must be one of the UCS hosted e-mail domains."
+msgstr "用於建立 IMAP/POP3 信箱的電子郵件地址，並可作為 SMTP/IMAP/POP3 連線的登入帳號。網域必須是 UCS 代管的電子郵件網域之一。"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:214
+msgid "E-mail alias address"
+msgstr "電子郵件別名地址"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:81
+msgid "Editable"
+msgstr "可編輯"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:162
+msgid "Editable after creation"
+msgstr "建立後可編輯"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:168
+msgid "Employee number"
+msgstr "員工編號"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:190
+msgid "Employee type"
+msgstr "員工類型"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:77
+msgid "Enable option by default."
+msgstr "預設啟用此選項。"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:216
+msgid "Exclude from UMC search"
+msgstr "從 UMC 搜尋中排除"
+
+#: modules/univention/admin/handlers/settings/license.py:54
+msgid "Expiry date"
+msgstr "到期日"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:25
+msgid "Extended attribute"
+msgstr "擴充屬性"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:237
+msgid "Extended attribute description"
+msgstr "擴充屬性說明"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:26
+msgid "Extended attributes"
+msgstr "擴充屬性"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:25
+msgid "Extended option"
+msgstr "擴充選項"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:26
+msgid "Extended options"
+msgstr "擴充選項"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:328
+msgid "Extending the users module is only possible if a default value for a required value is given."
+msgstr "只有在為必填值提供預設值時，才能擴充 users 模組。"
+
+#: modules/univention/admin/handlers/settings/data.py:46
+msgid "File name of file to store data in."
+msgstr "用於儲存資料的檔案名稱。"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:62
+msgid "Flavor"
+msgstr "Flavor"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:97
+msgid "GNU message catalog for UMC translations"
+msgstr "用於 UMC 翻譯的 GNU 訊息目錄"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:91 modules/univention/admin/handlers/settings/udm_syntax.py:90 modules/univention/admin/handlers/settings/udm_hook.py:90
+msgid "GNU message catalog for translations"
+msgstr "用於翻譯的 GNU 訊息目錄"
+
+#: modules/univention/admin/handlers/settings/data.py:91 modules/univention/admin/handlers/settings/umc_operationset.py:78 modules/univention/admin/handlers/settings/udm_module.py:116 modules/univention/admin/handlers/settings/printeruri.py:53 modules/univention/admin/handlers/settings/syntax.py:96 modules/univention/admin/handlers/settings/packages.py:52 modules/univention/admin/handlers/settings/usertemplate.py:247 modules/univention/admin/handlers/settings/ldapacl.py:90 modules/univention/admin/handlers/settings/printermodel.py:56 modules/univention/admin/handlers/settings/extended_options.py:106 modules/univention/admin/handlers/settings/service.py:43 modules/univention/admin/handlers/settings/default.py:92 modules/univention/admin/handlers/settings/prohibited_username.py:52 modules/univention/admin/handlers/settings/lock.py:53 modules/univention/admin/handlers/settings/cn.py:46 modules/univention/admin/handlers/settings/sambadomain.py:159 modules/univention/admin/handlers/settings/udm_syntax.py:98 modules/univention/admin/handlers/settings/directory.py:119 modules/univention/admin/handlers/settings/sambaconfig.py:112 modules/univention/admin/handlers/settings/udm_hook.py:98 modules/univention/admin/handlers/settings/ldapschema.py:80 modules/univention/admin/handlers/settings/extended_attribute.py:236
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:91
+msgid "General LDAP ACL extension settings"
+msgstr "一般 LDAP ACL 擴充設定"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:81
+msgid "General LDAP schema extension settings"
+msgstr "一般 LDAP schema 擴充設定"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:113
+msgid "General Samba configuration settings"
+msgstr "一般 Samba 組態設定"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:160
+msgid "General Samba domain settings"
+msgstr "一般 Samba 網域設定"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:99
+msgid "General UDM hook settings"
+msgstr "一般 UDM hook 設定"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:117
+msgid "General UDM module settings"
+msgstr "一般 UDM 模組設定"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:99
+msgid "General UDM syntax settings"
+msgstr "一般 UDM 語法設定"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:79
+msgid "General UMC operation set settings"
+msgstr "一般 UMC 操作集設定"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:259
+msgid "General extended attribute settings"
+msgstr "一般擴充屬性設定"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:107
+msgid "General extended options settings"
+msgstr "一般擴充選項設定"
+
+#: modules/univention/admin/handlers/settings/license.py:143
+msgid "General license settings"
+msgstr "一般授權設定"
+
+#: modules/univention/admin/handlers/settings/lock.py:54
+msgid "General lock settings"
+msgstr "一般鎖定設定"
+
+#: modules/univention/admin/handlers/settings/packages.py:53
+msgid "General package list settings"
+msgstr "一般套件清單設定"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:54
+msgid "General printer URI list settings"
+msgstr "一般印表機 URI 清單設定"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:57
+msgid "General printer driver list settings"
+msgstr "一般印表機驅動程式清單設定"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:53
+msgid "General prohibited user names settings"
+msgstr "一般禁用使用者名稱設定"
+
+#: modules/univention/admin/handlers/settings/service.py:44
+msgid "General service settings"
+msgstr "一般服務設定"
+
+#: modules/univention/admin/handlers/settings/data.py:92 modules/univention/admin/handlers/settings/extended_attribute.py:236
+msgid "General settings"
+msgstr "一般設定"
+
+#: modules/univention/admin/handlers/settings/syntax.py:97
+msgid "General syntax definition settings"
+msgstr "一般語法定義設定"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:248
+msgid "General user template settings"
+msgstr "一般使用者範本設定"
+
+#: modules/univention/admin/handlers/settings/directory.py:69
+msgid "Group Link"
+msgstr "群組連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:126
+msgid "Group Links"
+msgstr "群組連結"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:266
+msgid "Group Memberships"
+msgstr "群組成員資格"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:272
+msgid "Group layout"
+msgstr "群組版面配置"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:125
+msgid "Group name"
+msgstr "群組名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:130
+msgid "Group ordering number"
+msgstr "群組排序編號"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:195 modules/univention/admin/handlers/settings/usertemplate.py:266 modules/univention/admin/handlers/settings/usertemplate.py:267
+msgid "Groups"
+msgstr "群組"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:97
+msgid "Home share"
+msgstr "家目錄共用"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:103
+msgid "Home share path"
+msgstr "家目錄共用路徑"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:93
+msgid "Hook class"
+msgstr "Hook 類別"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:141
+msgid "If a tab with the given name already exists, it is replaced by a new tab only containing extended attributes"
+msgstr "若已存在同名的分頁，它會被一個只包含擴充屬性的新分頁取代"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:185
+msgid "If possible, the LDAP object class is removed when this extended attribute gets unset"
+msgstr "若可能，當此擴充屬性被取消設定時，會移除該 LDAP 物件類別"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:146
+msgid "In some cases it is useful to overwrite predefined input fields with extended attributes. If the internal UDM name of an attribute is configured here, its  input field is overwritten by this extended attribute. The UDM attribute name can only be determined by searching within /usr/lib/python3/dist-packages/univention/admin/handlers directory. It is the name which comes before the colon in the declarations of univention.admin.property objects, e.g., roomNumber for a  user's room number"
+msgstr "在某些情況下，以擴充屬性覆寫預先定義的輸入欄位很有用。若在此設定某屬性的 UDM 內部名稱，其輸入欄位就會被此擴充屬性覆寫。UDM 屬性名稱只能透過搜尋 /usr/lib/python3/dist-packages/univention/admin/handlers 目錄取得。它是 univention.admin.property 物件宣告中冒號前的名稱，例如使用者房間號碼的 roomNumber"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:46
+msgid "Initials"
+msgstr "姓名縮寫"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:143
+msgid "Is not based on the user's account name. Contains at least six characters. Contains characters from three of the following four categories: Uppercase alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"
+msgstr "不以使用者的帳號名稱為基礎。至少包含六個字元。包含下列四類中三類的字元: 大寫字母 (A-Z)、小寫字母 (a-z)、阿拉伯數字 (0-9)、非英數字元 (例如 !$#,%)"
+
+#: modules/univention/admin/handlers/settings/default.py:107 modules/univention/admin/handlers/settings/default.py:108
+msgid "KDE Profiles"
+msgstr "KDE 設定檔"
+
+#: modules/univention/admin/handlers/settings/license.py:90
+msgid "Key ID"
+msgstr "金鑰 ID"
+
+#: modules/univention/admin/handlers/settings/license.py:91
+msgid "Key ID of this license."
+msgstr "此授權的金鑰 ID。"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:22
+msgid "LDAP ACL Extension"
+msgstr "LDAP ACL 擴充"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:23
+msgid "LDAP ACL Extensions"
+msgstr "LDAP ACL 擴充"
+
+#: modules/univention/admin/handlers/settings/syntax.py:53
+msgid "LDAP Base"
+msgstr "LDAP Base"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:22
+msgid "LDAP Schema Extension"
+msgstr "LDAP Schema 擴充"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:23
+msgid "LDAP Schema Extensions"
+msgstr "LDAP Schema 擴充"
+
+#: modules/univention/admin/handlers/settings/syntax.py:47
+msgid "LDAP Search Filter"
+msgstr "LDAP 搜尋篩選器"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:156
+msgid "LDAP attribute"
+msgstr "LDAP 屬性"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:254
+msgid "LDAP mapping"
+msgstr "LDAP 對應"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:93 modules/univention/admin/handlers/settings/extended_attribute.py:178
+msgid "LDAP object class"
+msgstr "LDAP 物件類別"
+
+#: modules/univention/admin/handlers/settings/license.py:22 modules/univention/admin/handlers/settings/license.py:142
+msgid "License"
+msgstr "授權"
+
+#: modules/univention/admin/handlers/settings/license.py:55
+msgid "License Expiration Date"
+msgstr "授權到期日"
+
+#: modules/univention/admin/handlers/settings/directory.py:111
+msgid "License Link"
+msgstr "授權連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:156
+msgid "License Links"
+msgstr "授權連結"
+
+#: modules/univention/admin/handlers/settings/license.py:23
+msgid "Licenses"
+msgstr "授權"
+
+#: modules/univention/admin/handlers/settings/license.py:142
+msgid "Licensing Information"
+msgstr "授權資訊"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:27
+msgid "List of Operations for UMC"
+msgstr "UMC 的操作清單"
+
+#: modules/univention/admin/handlers/settings/packages.py:24
+msgid "List of Packages for UCS Systems"
+msgstr "UCS 系統的套件清單"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:56
+msgid "List of UMC command names or patterns"
+msgstr "UMC 指令名稱或樣式的清單"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:24
+msgid "List of URIs for printers"
+msgstr "印表機的 URI 清單"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:28
+msgid "List of drivers for printers"
+msgstr "印表機的驅動程式清單"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:87
+msgid "List of modules this option applies to."
+msgstr "此選項所套用的模組清單。"
+
+#: modules/univention/admin/handlers/settings/lock.py:22
+msgid "Lock"
+msgstr "鎖定"
+
+#: modules/univention/admin/handlers/settings/lock.py:53
+msgid "Lock Information"
+msgstr "鎖定資訊"
+
+#: modules/univention/admin/handlers/settings/lock.py:44
+msgid "Lock Time"
+msgstr "鎖定時間"
+
+#: modules/univention/admin/handlers/settings/lock.py:24
+msgid "Lock objects"
+msgstr "鎖定物件"
+
+#: modules/univention/admin/handlers/settings/lock.py:45
+msgid "Locked until"
+msgstr "鎖定至"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:273
+msgid "Locking and deactivation"
+msgstr "鎖定與停用"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:90
+msgid "Lockout Duration Minutes"
+msgstr "鎖定持續分鐘數"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:122
+msgid "Lockout duration minutes"
+msgstr "鎖定持續分鐘數"
+
+#: modules/univention/admin/handlers/settings/lock.py:23
+msgid "Locks"
+msgstr "鎖定"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:109
+msgid "Login shell"
+msgstr "登入 shell"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:244
+msgid "Long Description"
+msgstr "詳細說明"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:56
+msgid "Long description"
+msgstr "詳細說明"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:57
+msgid "Long description for the option as shown on the Option tab."
+msgstr "在「選項」分頁上顯示的選項詳細說明。"
+
+#: modules/univention/admin/handlers/settings/directory.py:105
+msgid "Mail Link"
+msgstr "郵件連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:153
+msgid "Mail Links"
+msgstr "郵件連結"
+
+#: modules/univention/admin/handlers/settings/license.py:118
+msgid "Managed Clients"
+msgstr "受管用戶端"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:94
+msgid "Mapping to LDAP objectClasses"
+msgstr "對應到 LDAP objectClass"
+
+#: modules/univention/admin/handlers/settings/data.py:68 modules/univention/admin/handlers/settings/udm_module.py:86 modules/univention/admin/handlers/settings/ldapacl.py:83 modules/univention/admin/handlers/settings/udm_syntax.py:85 modules/univention/admin/handlers/settings/udm_hook.py:85
+msgid "Maximal UCS version"
+msgstr "最高 UCS 版本"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:85
+msgid "Maximum Password Age"
+msgstr "最長密碼使用期限"
+
+#: modules/univention/admin/handlers/settings/license.py:119
+msgid "Maximum number of managed clients this license allows."
+msgstr "此授權允許的受管用戶端數量上限。"
+
+#: modules/univention/admin/handlers/settings/license.py:98
+msgid "Maximum number of servers this license allows."
+msgstr "此授權允許的伺服器數量上限。"
+
+#: modules/univention/admin/handlers/settings/license.py:126
+msgid "Maximum number of users this license allows."
+msgstr "此授權允許的使用者數量上限。"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:117
+msgid "Maximum password age"
+msgstr "最長密碼使用期限"
+
+#: modules/univention/admin/handlers/settings/data.py:73
+msgid "Meta information"
+msgstr "中繼資訊"
+
+#: modules/univention/admin/handlers/settings/data.py:99 modules/univention/admin/handlers/settings/udm_module.py:126 modules/univention/admin/handlers/settings/ldapacl.py:96 modules/univention/admin/handlers/settings/udm_syntax.py:105 modules/univention/admin/handlers/settings/udm_hook.py:105 modules/univention/admin/handlers/settings/ldapschema.py:86
+msgid "Metadata"
+msgstr "中繼資料"
+
+#: modules/univention/admin/handlers/settings/data.py:63 modules/univention/admin/handlers/settings/udm_module.py:81 modules/univention/admin/handlers/settings/ldapacl.py:78 modules/univention/admin/handlers/settings/udm_syntax.py:80 modules/univention/admin/handlers/settings/udm_hook.py:80
+msgid "Minimal UCS version"
+msgstr "最低 UCS 版本"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:70
+msgid "Minimum Password Age"
+msgstr "最短密碼使用期限"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:102
+msgid "Minimum password age"
+msgstr "最短密碼使用期限"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:249
+msgid "Module"
+msgstr "模組"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:191
+msgid "Modules this extended attribute is added to, e.g. \"users/user\" or \"computers/windows\""
+msgstr "此擴充屬性所加入的模組，例如 \"users/user\" 或 \"computers/windows\""
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:190
+msgid "Modules to be extended"
+msgstr "要擴充的模組"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:98
+msgid "Multi value"
+msgstr "多重值"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:39 modules/univention/admin/handlers/settings/printeruri.py:35 modules/univention/admin/handlers/settings/printeruri.py:36 modules/univention/admin/handlers/settings/packages.py:35 modules/univention/admin/handlers/settings/packages.py:36 modules/univention/admin/handlers/settings/license.py:45 modules/univention/admin/handlers/settings/license.py:46 modules/univention/admin/handlers/settings/printermodel.py:39 modules/univention/admin/handlers/settings/printermodel.py:40 modules/univention/admin/handlers/settings/extended_options.py:40 modules/univention/admin/handlers/settings/extended_options.py:41 modules/univention/admin/handlers/settings/default.py:32 modules/univention/admin/handlers/settings/prohibited_username.py:35 modules/univention/admin/handlers/settings/prohibited_username.py:36 modules/univention/admin/handlers/settings/lock.py:35 modules/univention/admin/handlers/settings/lock.py:36 modules/univention/admin/handlers/settings/cn.py:35 modules/univention/admin/handlers/settings/directory.py:35
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:94
+msgid "Name of a Python class implementing the univention.admin.hook interface, which can be used to execute additional actions when an object is created, modified or deleted"
+msgstr "實作 univention.admin.hook 介面的 Python 類別名稱，可用於在物件建立、修改或刪除時執行額外動作"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:116
+msgid "Name of the tab in the UMC on which this extended attribute is be placed. A new tab is created automatically if no tab with the name exists"
+msgstr "此擴充屬性在 UMC 中所置於的分頁名稱。若不存在同名分頁，會自動建立新分頁"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:41
+msgid "Name which by default is used by UDM CLI and internally to identify the extended attribute"
+msgstr "UDM CLI 與內部預設用來識別此擴充屬性的名稱"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:86
+msgid "Needed module"
+msgstr "所需模組"
+
+#: modules/univention/admin/handlers/settings/directory.py:87
+msgid "Network Link"
+msgstr "網路連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:144
+msgid "Network Links"
+msgstr "網路連結"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:86
+msgid "Next RID"
+msgstr "下一個 RID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:80
+msgid "Next group RID"
+msgstr "下一個群組 RID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:74
+msgid "Next user RID"
+msgstr "下一個使用者 RID"
+
+#: modules/univention/admin/handlers/settings/license.py:77
+msgid "OEM Product types this license allows."
+msgstr "此授權允許的 OEM 產品類型。"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:82
+msgid "Option may be repeatedly turned on and off."
+msgstr "此選項可重複開啟與關閉。"
+
+#: modules/univention/admin/handlers/settings/syntax.py:106 modules/univention/admin/handlers/settings/usertemplate.py:238
+msgid "Options"
+msgstr "選項"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:27
+msgid "Options for extended attributes"
+msgstr "擴充屬性的選項"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:120
+msgid "Ordering number"
+msgstr "排序編號"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:68 modules/univention/admin/handlers/settings/usertemplate.py:260
+msgid "Organisation"
+msgstr "組織"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:140
+msgid "Overwrite existing tab"
+msgstr "覆寫既有分頁"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:145
+msgid "Overwrite existing widget"
+msgstr "覆寫既有控制項"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:280
+msgid "POSIX (Linux/UNIX)"
+msgstr "POSIX (Linux/UNIX)"
+
+#: modules/univention/admin/handlers/settings/packages.py:22 modules/univention/admin/handlers/settings/packages.py:43 modules/univention/admin/handlers/settings/packages.py:44 modules/univention/admin/handlers/settings/packages.py:52
+msgid "Package List"
+msgstr "套件清單"
+
+#: modules/univention/admin/handlers/settings/packages.py:23
+msgid "Package Lists"
+msgstr "套件清單"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:164
+msgid "Password"
+msgstr "密碼"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:65
+msgid "Password History"
+msgstr "密碼歷程"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:60
+msgid "Password Length"
+msgstr "密碼長度"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:97
+msgid "Password history"
+msgstr "密碼歷程"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:92
+msgid "Password length"
+msgstr "密碼長度"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:152
+msgid "Password properties"
+msgstr "密碼屬性"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:142
+msgid "Passwords must meet complexity requirements"
+msgstr "密碼必須符合複雜度要求"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:104
+msgid "Path to the home directory on the home share"
+msgstr "家目錄共用上家目錄的路徑"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:257
+msgid "Personal information"
+msgstr "個人資訊"
+
+#: modules/univention/admin/handlers/settings/directory.py:45
+msgid "Policy Link"
+msgstr "原則連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:135
+msgid "Policy Links"
+msgstr "原則連結"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:225
+msgid "Post office box"
+msgstr "郵政信箱"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:140
+msgid "Postal code"
+msgstr "郵遞區號"
+
+#: modules/univention/admin/handlers/settings/settings.py:25
+msgid "Preference"
+msgstr "偏好設定"
+
+#: modules/univention/admin/handlers/settings/settings.py:24 modules/univention/admin/handlers/settings/settings.py:26
+msgid "Preferences"
+msgstr "偏好設定"
+
+#: modules/univention/admin/handlers/settings/default.py:18
+msgid "Preferences: Default"
+msgstr "偏好設定: 預設"
+
+#: modules/univention/admin/handlers/settings/directory.py:21
+msgid "Preferences: Default Container"
+msgstr "偏好設定: 預設容器"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:51
+msgid "Preferred delivery method"
+msgstr "偏好的投遞方式"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:232
+msgid "Preferred language"
+msgstr "偏好語言"
+
+#: modules/univention/admin/handlers/settings/license.py:111
+msgid "Premium Support"
+msgstr "Premium 技術支援"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:228
+msgid "Prevent default popup"
+msgstr "防止預設彈出視窗"
+
+#: modules/univention/admin/handlers/settings/default.py:97 modules/univention/admin/handlers/settings/default.py:98
+msgid "Primary Groups"
+msgstr "主要群組"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:209
+msgid "Primary e-mail address (mailbox)"
+msgstr "主要電子郵件地址 (信箱)"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:201
+msgid "Primary group"
+msgstr "主要群組"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:26
+msgid "Printer Driver List"
+msgstr "印表機驅動程式清單"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:27
+msgid "Printer Driver Lists"
+msgstr "印表機驅動程式清單"
+
+#: modules/univention/admin/handlers/settings/directory.py:99
+msgid "Printer Link"
+msgstr "印表機連結"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:56
+msgid "Printer List"
+msgstr "印表機清單"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:47 modules/univention/admin/handlers/settings/printermodel.py:48
+msgid "Printer Model"
+msgstr "印表機型號"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:43 modules/univention/admin/handlers/settings/printeruri.py:44 modules/univention/admin/handlers/settings/printeruri.py:53
+msgid "Printer URI"
+msgstr "印表機 URI"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:22
+msgid "Printer URI List"
+msgstr "印表機 URI 清單"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:23
+msgid "Printer URI Lists"
+msgstr "印表機 URI 清單"
+
+#: modules/univention/admin/handlers/settings/directory.py:150
+msgid "Printers Links"
+msgstr "印表機連結"
+
+#: modules/univention/admin/handlers/settings/license.py:83
+msgid "Product type"
+msgstr "產品類型"
+
+#: modules/univention/admin/handlers/settings/license.py:84
+msgid "Product type this license allows."
+msgstr "此授權允許的產品類型。"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:22 modules/univention/admin/handlers/settings/prohibited_username.py:43 modules/univention/admin/handlers/settings/prohibited_username.py:44
+msgid "Prohibited user name"
+msgstr "禁用的使用者名稱"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:23 modules/univention/admin/handlers/settings/prohibited_username.py:52
+msgid "Prohibited user names"
+msgstr "禁用的使用者名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:136
+msgid "Put this extended attribute under \"Advanced settings\". No autonomous tab will be created"
+msgstr "將此擴充屬性置於「進階設定」下。不會建立獨立的分頁"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:105
+msgid "Refuse Machine Password Change"
+msgstr "拒絕變更機器密碼"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:137
+msgid "Refuse machine password change"
+msgstr "拒絕變更機器密碼"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:126
+msgid "Related properties can be grouped. This field specifies the name of the group in which this extended attribute is put in. If no name is given, no group is used"
+msgstr "相關屬性可以分組。此欄位指定此擴充屬性所置於群組的名稱。若未提供名稱，則不使用群組"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:184
+msgid "Remove object class if the attribute is removed"
+msgstr "若移除此屬性，則移除物件類別"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:210
+msgid "Required options"
+msgstr "必要選項"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:95
+msgid "Reset Count Minutes"
+msgstr "重設計數的分鐘數"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:127
+msgid "Reset count minutes"
+msgstr "重設計數的分鐘數"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:69
+msgid "Restrict to host"
+msgstr "限制於主機"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:173
+msgid "Room number"
+msgstr "房間號碼"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:39
+msgid "Samba Configuration"
+msgstr "Samba 組態"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:40
+msgid "Samba Configuration settings"
+msgstr "Samba 組態設定"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:45
+msgid "Samba Domain"
+msgstr "Samba 網域"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:46
+msgid "Samba Domains"
+msgstr "Samba 網域"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:66
+msgid "Samba SID"
+msgstr "Samba SID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:58
+msgid "Samba domain name"
+msgstr "Samba 網域名稱"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:50
+msgid "Schema data"
+msgstr "Schema 資料"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:43
+msgid "Schema file name"
+msgstr "Schema 檔名"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:35
+msgid "Schema name"
+msgstr "Schema 名稱"
+
+#: modules/univention/admin/handlers/settings/license.py:97
+msgid "Servers"
+msgstr "伺服器"
+
+#: modules/univention/admin/handlers/settings/license.py:112
+msgid "Servers with premium support."
+msgstr "具 Premium 技術支援的伺服器。"
+
+#: modules/univention/admin/handlers/settings/license.py:104
+msgid "Servers with standard support"
+msgstr "具標準技術支援的伺服器"
+
+#: modules/univention/admin/handlers/settings/license.py:105
+msgid "Servers with standard support."
+msgstr "具標準技術支援的伺服器。"
+
+#: modules/univention/admin/handlers/settings/service.py:20
+msgid "Service"
+msgstr "服務"
+
+#: modules/univention/admin/handlers/settings/service.py:33
+msgid "Service Name"
+msgstr "服務名稱"
+
+#: modules/univention/admin/handlers/settings/service.py:21
+msgid "Services"
+msgstr "服務"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:258
+msgid "Settings for UMC"
+msgstr "UMC 的設定"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:24
+msgid "Settings: Extended attribute"
+msgstr "設定: 擴充屬性"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:24
+msgid "Settings: Extended option"
+msgstr "設定: 擴充選項"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:21
+msgid "Settings: LDAP ACL Extension"
+msgstr "設定: LDAP ACL 擴充"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:21
+msgid "Settings: LDAP Schema Extension"
+msgstr "設定: LDAP Schema 擴充"
+
+#: modules/univention/admin/handlers/settings/license.py:21
+msgid "Settings: License"
+msgstr "設定: 授權"
+
+#: modules/univention/admin/handlers/settings/lock.py:21
+msgid "Settings: Lock"
+msgstr "設定: 鎖定"
+
+#: modules/univention/admin/handlers/settings/packages.py:21
+msgid "Settings: Package List"
+msgstr "設定: 套件清單"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:25
+msgid "Settings: Printer Driver List"
+msgstr "設定: 印表機驅動程式清單"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:21
+msgid "Settings: Printer URI List"
+msgstr "設定: 印表機 URI 清單"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:21
+msgid "Settings: Prohibited user names"
+msgstr "設定: 禁用使用者名稱"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:38
+msgid "Settings: Samba Configuration"
+msgstr "設定: Samba 組態"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:44
+msgid "Settings: Samba Domain"
+msgstr "設定: Samba 網域"
+
+#: modules/univention/admin/handlers/settings/service.py:19
+msgid "Settings: Service"
+msgstr "設定: 服務"
+
+#: modules/univention/admin/handlers/settings/syntax.py:19
+msgid "Settings: Syntax Definition"
+msgstr "設定: 語法定義"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:23
+msgid "Settings: UDM Hook"
+msgstr "設定: UDM Hook"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:24
+msgid "Settings: UDM Module"
+msgstr "設定: UDM 模組"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:23
+msgid "Settings: UDM Syntax"
+msgstr "設定: UDM 語法"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:24
+msgid "Settings: UMC operation set"
+msgstr "設定: UMC 操作集"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:19
+msgid "Settings: User Template"
+msgstr "設定: 使用者範本"
+
+#: modules/univention/admin/handlers/settings/directory.py:93
+msgid "Share Link"
+msgstr "共用連結"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:98
+msgid "Share, the user's home directory resides on"
+msgstr "使用者家目錄所在的共用"
+
+#: modules/univention/admin/handlers/settings/directory.py:147
+msgid "Shares Links"
+msgstr "共用連結"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:49 modules/univention/admin/handlers/settings/extended_attribute.py:240
+msgid "Short description"
+msgstr "簡短說明"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:50
+msgid "Short description for the option as shown on the Option tab."
+msgstr "在「選項」分頁上顯示的選項簡短說明。"
+
+#: modules/univention/admin/handlers/settings/syntax.py:72
+msgid "Show Only"
+msgstr "僅顯示"
+
+#: modules/univention/admin/handlers/settings/license.py:69
+msgid "Signature"
+msgstr "簽章"
+
+#: modules/univention/admin/handlers/settings/data.py:79 modules/univention/admin/handlers/settings/udm_module.py:71 modules/univention/admin/handlers/settings/ldapacl.py:68 modules/univention/admin/handlers/settings/udm_syntax.py:70 modules/univention/admin/handlers/settings/udm_hook.py:70 modules/univention/admin/handlers/settings/ldapschema.py:68
+msgid "Software package"
+msgstr "軟體套件"
+
+#: modules/univention/admin/handlers/settings/data.py:84 modules/univention/admin/handlers/settings/udm_module.py:76 modules/univention/admin/handlers/settings/ldapacl.py:73 modules/univention/admin/handlers/settings/udm_syntax.py:75 modules/univention/admin/handlers/settings/udm_hook.py:75 modules/univention/admin/handlers/settings/ldapschema.py:73
+msgid "Software package version"
+msgstr "軟體套件版本"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:150
+msgid "Span both columns"
+msgstr "橫跨兩欄"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:100
+msgid "Specifies that the option belongs to a UCS Application"
+msgstr "指定此選項屬於某個 UCS 應用程式"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:155
+msgid "State"
+msgstr "州別"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:156
+msgid "State (province)"
+msgstr "州 (省)"
+
+#: modules/univention/admin/handlers/settings/syntax.py:103
+msgid "Storage"
+msgstr "儲存"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:147
+msgid "Store plaintext passwords"
+msgstr "儲存明文密碼"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:148
+msgid "Store plaintext passwords where account have \"store passwords with reversible encryption\" set."
+msgstr "對設有「以可逆加密儲存密碼」的帳號儲存明文密碼。"
+
+#: modules/univention/admin/handlers/settings/syntax.py:82
+msgid "Stored Attribute"
+msgstr "儲存的屬性"
+
+#: modules/univention/admin/handlers/settings/syntax.py:89
+msgid "Stored LDAP Attribute"
+msgstr "儲存的 LDAP 屬性"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:135
+msgid "Street"
+msgstr "街道"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:178
+msgid "Superior"
+msgstr "上層"
+
+#: modules/univention/admin/handlers/settings/syntax.py:20
+msgid "Syntax Definition"
+msgstr "語法定義"
+
+#: modules/univention/admin/handlers/settings/syntax.py:21
+msgid "Syntax Definitions"
+msgstr "語法定義"
+
+#: modules/univention/admin/handlers/settings/syntax.py:41
+msgid "Syntax Description"
+msgstr "語法說明"
+
+#: modules/univention/admin/handlers/settings/syntax.py:33
+msgid "Syntax Name"
+msgstr "語法名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:88
+msgid "Syntax class"
+msgstr "語法類別"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:267
+msgid "Tab layout"
+msgstr "分頁版面配置"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:115
+msgid "Tab name"
+msgstr "分頁名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:135
+msgid "Tab with advanced settings"
+msgstr "含進階設定的分頁"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:162
+msgid "Telephone number"
+msgstr "電話號碼"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:33
+msgid "Template name"
+msgstr "範本名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:198
+msgid "The ABI number used by this extended attribute"
+msgstr "此擴充屬性使用的 ABI 編號"
+
+#: modules/univention/admin/handlers/settings/data.py:53
+msgid "The actual data, bzipped and base64 encoded"
+msgstr "實際資料，經 bzip 壓縮並以 base64 編碼"
+
+#: modules/univention/admin/handlers/settings/data.py:52
+msgid "The data"
+msgstr "資料"
+
+#: modules/univention/admin/handlers/settings/data.py:42
+msgid "The description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:110
+msgid "The extended attribute is not shown in the UMC. It can only be used from the UDM CLI or the Python interface"
+msgstr "此擴充屬性不會顯示在 UMC 中。只能透過 UDM CLI 或 Python 介面使用"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:151
+msgid "The layout element used to represent this extended attribute in the UMC spans both columns"
+msgstr "在 UMC 中代表此擴充屬性的版面元素會橫跨兩欄"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:205
+msgid "The name for the extended attribute as used by UDM CLI"
+msgstr "UDM CLI 所使用的擴充屬性名稱"
+
+#: modules/univention/admin/handlers/settings/data.py:34
+msgid "The name of the data object"
+msgstr "資料物件的名稱"
+
+#: modules/univention/admin/handlers/settings/data.py:58
+msgid "The type of the data"
+msgstr "資料的類型"
+
+#: modules/univention/admin/handlers/settings/license.py:70
+msgid "This Signature is used to verify the authenticity of the license."
+msgstr "此簽章用於驗證授權的真實性。"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:86
+msgid "This e-mail address serves only as contact information. This address has no effect on the UCS mail stack and is not related to a local mailbox."
+msgstr "此電子郵件地址僅作為連絡資訊。此地址對 UCS 郵件堆疊沒有影響，也與本機信箱無關。"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:168
+msgid "This extended attribute can not be changed through UMC or UDM CLI, but only through the Python API or by hooks"
+msgstr "此擴充屬性無法透過 UMC 或 UDM CLI 變更，只能透過 Python API 或 hook 變更"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:163
+msgid "This extended attribute can still be modified after the object has been created"
+msgstr "此擴充屬性在物件建立後仍可修改"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:99
+msgid "This extended attribute can store multiple values instead of only a single value"
+msgstr "此擴充屬性可儲存多個值，而非僅單一值"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:211
+msgid "This extended attribute is only used when at least one of these options is enabled, e.g. \"posix\" or \"samba\""
+msgstr "此擴充屬性只有在至少啟用其中一個選項時才會使用，例如 \"posix\" 或 \"samba\""
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:121
+msgid "This number specifies the position on which this extended attributes is placed on the tab or in the group. The numeration starts at 1"
+msgstr "此數字指定此擴充屬性在分頁或群組中所置於的位置。編號從 1 開始"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:131
+msgid "This number specifies the position on which this group is placed on the tab. The numbering starts at 1"
+msgstr "此數字指定此群組在分頁中所置於的位置。編號從 1 開始"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:229
+msgid "This setting will prevent a pop-up dialog in the UMC when the default value of a property is not set."
+msgstr "當屬性的預設值未設定時，此設定可防止 UMC 出現彈出對話方塊。"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:41
+msgid "Title"
+msgstr "稱謂"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:82
+msgid "Translations of group name"
+msgstr "群組名稱的翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:69 modules/univention/admin/handlers/settings/extended_attribute.py:69
+msgid "Translations of long description"
+msgstr "詳細說明的翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:62 modules/univention/admin/handlers/settings/extended_attribute.py:62
+msgid "Translations of short description"
+msgstr "簡短說明的翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:76
+msgid "Translations of tab name"
+msgstr "分頁名稱的翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:83
+msgid "Translations of the group name for other languages"
+msgstr "群組名稱的其他語言翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:70
+msgid "Translations of the long description for the option as shown on the Option tab"
+msgstr "在「選項」分頁上顯示的選項詳細說明翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:70
+msgid "Translations of the long descriptive text for other languages"
+msgstr "詳細描述文字的其他語言翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:77
+msgid "Translations of the name of the tab for other languages"
+msgstr "分頁名稱的其他語言翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:63
+msgid "Translations of the short description for other languages"
+msgstr "簡短說明的其他語言翻譯"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:63
+msgid "Translations of the short description for the option as shown on the Option tab"
+msgstr "在「選項」分頁上顯示的選項簡短說明翻譯"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:131 modules/univention/admin/handlers/settings/ldapacl.py:101 modules/univention/admin/handlers/settings/udm_syntax.py:110 modules/univention/admin/handlers/settings/udm_hook.py:110
+msgid "UCS Version Dependencies"
+msgstr "UCS 版本相依性"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:204
+msgid "UDM CLI name"
+msgstr "UDM CLI 名稱"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:24
+msgid "UDM Hook"
+msgstr "UDM Hook"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:25
+msgid "UDM Hooks"
+msgstr "UDM Hook"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:25
+msgid "UDM Module"
+msgstr "UDM 模組"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:26
+msgid "UDM Modules"
+msgstr "UDM 模組"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:24
+msgid "UDM Syntax"
+msgstr "UDM 語法"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:25
+msgid "UDM Syntaxes"
+msgstr "UDM 語法"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:52
+msgid "UDM hook data"
+msgstr "UDM hook 資料"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:45
+msgid "UDM hook file name"
+msgstr "UDM hook 檔名"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:37
+msgid "UDM hook name"
+msgstr "UDM hook 名稱"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:53
+msgid "UDM module data"
+msgstr "UDM 模組資料"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:46
+msgid "UDM module file name"
+msgstr "UDM 模組檔名"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:38
+msgid "UDM module name"
+msgstr "UDM 模組名稱"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:52
+msgid "UDM syntax data"
+msgstr "UDM 語法資料"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:45
+msgid "UDM syntax file name"
+msgstr "UDM 語法檔名"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:37
+msgid "UDM syntax name"
+msgstr "UDM 語法名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:258
+msgid "UMC"
+msgstr "UMC"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:78
+msgid "UMC Operation Set"
+msgstr "UMC 操作集"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:55
+msgid "UMC commands"
+msgstr "UMC 指令"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:108
+msgid "UMC icon"
+msgstr "UMC 圖示"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:25
+msgid "UMC operation set"
+msgstr "UMC 操作集"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:26
+msgid "UMC operation sets"
+msgstr "UMC 操作集"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:103
+msgid "UMC registration data"
+msgstr "UMC 註冊資料"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:40
+msgid "Unique name"
+msgstr "唯一名稱"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:157 modules/univention/admin/handlers/settings/extended_attribute.py:179
+msgid "Univention Corporate Server provides its own LDAP scheme for customer extensions. The LDAP object class univentionFreeAttributes can be used for extended attributes without restrictions. It offers 20 freely usable attributes (univentionFreeAttribute1 to univentionFreeAttribute20) and can be used in connection with any LDAP object (e.g., a user object)"
+msgstr "Univention Corporate Server 為客戶擴充提供了專屬的 LDAP scheme。LDAP 物件類別 univentionFreeAttributes 可不受限制地用於擴充屬性。它提供 20 個可自由使用的屬性 (univentionFreeAttribute1 到 univentionFreeAttribute20),並可與任何 LDAP 物件搭配使用 (例如使用者物件)"
+
+#: modules/univention/admin/handlers/settings/license.py:24
+msgid "Univention License"
+msgstr "Univention 授權"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:24
+msgid "Univention Prohibited user names"
+msgstr "Univention 禁用使用者名稱"
+
+#: modules/univention/admin/handlers/settings/cn.py:22
+msgid "Univention Setting"
+msgstr "Univention 設定"
+
+#: modules/univention/admin/handlers/settings/cn.py:21 modules/univention/admin/handlers/settings/cn.py:23
+msgid "Univention Settings"
+msgstr "Univention 設定"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:91
+msgid "Unix home directory"
+msgstr "Unix 家目錄"
+
+#: modules/univention/admin/handlers/settings/directory.py:63
+msgid "User Link"
+msgstr "使用者連結"
+
+#: modules/univention/admin/handlers/settings/directory.py:123
+msgid "User Links"
+msgstr "使用者連結"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:20
+msgid "User Template"
+msgstr "使用者範本"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:21
+msgid "User Templates"
+msgstr "使用者範本"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:251
+msgid "User account"
+msgstr "使用者帳號"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:80
+msgid "User must Logon to Change Password"
+msgstr "使用者必須登入才能變更密碼"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:112
+msgid "User must logon to change password"
+msgstr "使用者必須登入才能變更密碼"
+
+#: modules/univention/admin/handlers/settings/license.py:125
+msgid "Users"
+msgstr "使用者"
+
+#: modules/univention/admin/handlers/settings/license.py:76
+msgid "Valid OEM product types"
+msgstr "有效的 OEM 產品類型"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:167
+msgid "Value is only managed internally"
+msgstr "此值僅在內部管理"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:173
+msgid "Value required"
+msgstr "需要值"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:223
+msgid "Values of this extended attribute are automatically filled into the form when copying a object."
+msgstr "複製物件時，此擴充屬性的值會自動填入表單。"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:217
+msgid "Values of this extended attribute are not available for searching in the UMC"
+msgstr "此擴充屬性的值無法在 UMC 中搜尋"
+
+#: modules/univention/admin/handlers/settings/license.py:132
+msgid "Version"
+msgstr "版本"
+
+#: modules/univention/admin/handlers/settings/license.py:33
+msgid "Version 1 license"
+msgstr "第 1 版授權"
+
+#: modules/univention/admin/handlers/settings/license.py:38
+msgid "Version 2 license"
+msgstr "第 2 版授權"
+
+#: modules/univention/admin/handlers/settings/license.py:150
+msgid "Version 2 license informations"
+msgstr "第 2 版授權資訊"
+
+#: modules/univention/admin/handlers/settings/license.py:133
+msgid "Version format of this license."
+msgstr "此授權的版本格式。"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:197
+msgid "Version of extended attribute"
+msgstr "擴充屬性的版本"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:89
+msgid "When values are entered, the UMC performs a syntax check. Apart from standard syntax definitions (string) and (integer), there are three possibilities for expressing a binary condition. The syntax TrueFalse is represented at LDAP level using the strings true and false, the syntax TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE and the syntax boolean does not save any value or the string 1"
+msgstr "輸入值時，UMC 會執行語法檢查。除了標準語法定義 (string) 與 (integer) 外，還有三種表示二元條件的方式。語法 TrueFalse 在 LDAP 層級以字串 true 與 false 表示，語法 TrueFalseUpper 對應 OpenLDAP 的布林值 TRUE 與 FALSE,而語法 boolean 則不儲存任何值或儲存字串 1"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:276
+msgid "Windows"
+msgstr "Windows"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:130
+msgid "Windows home drive"
+msgstr "Windows 家目錄磁碟機"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:115
+msgid "Windows home path"
+msgstr "Windows 家目錄路徑"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:120
+msgid "Windows logon path"
+msgstr "Windows 登入路徑"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:125
+msgid "Windows profile directory"
+msgstr "Windows 設定檔目錄"
+
+#: modules/univention/admin/handlers/settings/data.py:33
+msgid "name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:173 modules/univention/admin/handlers/settings/ldapacl.py:135 modules/univention/admin/handlers/settings/udm_syntax.py:145 modules/univention/admin/handlers/settings/udm_hook.py:145 modules/univention/admin/handlers/settings/ldapschema.py:119
+msgid "packageversion: Version must not be lower than the current one."
+msgstr "packageversion: 版本不得低於目前的版本。"

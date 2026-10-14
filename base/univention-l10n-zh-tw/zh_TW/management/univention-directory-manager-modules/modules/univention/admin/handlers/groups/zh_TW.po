@@ -1,0 +1,159 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/groups/group.py:96
+msgid "AD group type"
+msgstr "AD 群組類型"
+
+#: modules/univention/admin/handlers/groups/group.py:97
+msgid "Active Directory group type"
+msgstr "Active Directory 群組類型"
+
+#: modules/univention/admin/handlers/groups/group.py:145
+msgid "Additional e-mail addresses for which e-mails will be delivered to the \"Mail address\". The domain must be one of the UCS hosted e-mail domains."
+msgstr "額外的電子郵件地址，寄至這些地址的郵件會被投遞到「郵件地址」。網域必須是 UCS 代管的電子郵件網域之一。"
+
+#: modules/univention/admin/handlers/groups/group.py:202
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/groups/group.py:106
+msgid "Description"
+msgstr "說明"
+
+#: modules/univention/admin/handlers/groups/group.py:144
+msgid "E-mail alias address"
+msgstr "電子郵件別名地址"
+
+#: modules/univention/admin/handlers/groups/group.py:202
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/groups/group.py:32 modules/univention/admin/handlers/groups/group.py:33
+msgid "Group"
+msgstr "群組"
+
+#: modules/univention/admin/handlers/groups/group.py:66 modules/univention/admin/handlers/groups/group.py:223
+msgid "Group ID"
+msgstr "群組 ID"
+
+#: modules/univention/admin/handlers/groups/group.py:203
+msgid "Group account"
+msgstr "群組帳號"
+
+#: modules/univention/admin/handlers/groups/group.py:34 modules/univention/admin/handlers/groups/group.py:163
+msgid "Groups"
+msgstr "群組"
+
+#: modules/univention/admin/handlers/groups/group.py:182
+msgid "Groups that are allowed to send e-mails to the group"
+msgstr "允許寄送郵件給此群組的群組"
+
+#: modules/univention/admin/handlers/groups/group.py:217
+msgid "Host members"
+msgstr "主機成員"
+
+#: modules/univention/admin/handlers/groups/group.py:217
+msgid "Host members of this group"
+msgstr "此群組的主機成員"
+
+#: modules/univention/admin/handlers/groups/group.py:125
+msgid "Hosts"
+msgstr "主機"
+
+#: modules/univention/admin/handlers/groups/group.py:223
+msgid "ID of this group"
+msgstr "此群組的 ID"
+
+#: modules/univention/admin/handlers/groups/group.py:191
+msgid "Immutable Identifier of the source IAM"
+msgstr "來源 IAM 的不可變識別碼"
+
+#: modules/univention/admin/handlers/groups/group.py:192
+msgid "Immutable attribute referencing the name of the source IAM"
+msgstr "參照來源 IAM 名稱的不可變屬性"
+
+#: modules/univention/admin/handlers/groups/group.py:605
+#, python-format
+msgid "It is used as %s."
+msgstr "它被用作 %s。"
+
+#: modules/univention/admin/handlers/groups/group.py:211
+msgid "Mail"
+msgstr "郵件"
+
+#: modules/univention/admin/handlers/groups/group.py:136
+msgid "Mail address"
+msgstr "郵件地址"
+
+#: modules/univention/admin/handlers/groups/group.py:211
+msgid "Mail settings of this group"
+msgstr "此群組的郵件設定"
+
+#: modules/univention/admin/handlers/groups/group.py:89
+msgid "Manage samba privileges"
+msgstr "管理 samba 權限"
+
+#: modules/univention/admin/handlers/groups/group.py:153 modules/univention/admin/handlers/groups/group.py:220
+msgid "Member of"
+msgstr "隸屬於"
+
+#: modules/univention/admin/handlers/groups/group.py:206
+msgid "Members of this group"
+msgstr "此群組的成員"
+
+#: modules/univention/admin/handlers/groups/group.py:220
+msgid "Membership in other groups"
+msgstr "在其他群組的成員資格"
+
+#: modules/univention/admin/handlers/groups/group.py:57
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/groups/group.py:44
+msgid "Posix group"
+msgstr "Posix 群組"
+
+#: modules/univention/admin/handlers/groups/group.py:73
+msgid "Relative ID"
+msgstr "相對 ID"
+
+#: modules/univention/admin/handlers/groups/group.py:49
+msgid "Samba group"
+msgstr "Samba 群組"
+
+#: modules/univention/admin/handlers/groups/group.py:88
+msgid "Samba privilege"
+msgstr "Samba 權限"
+
+#: modules/univention/admin/handlers/groups/group.py:115
+msgid "Users"
+msgstr "使用者"
+
+#: modules/univention/admin/handlers/groups/group.py:173
+msgid "Users that are allowed to send e-mails to the group"
+msgstr "允許寄送郵件給此群組的使用者"
+
+#: modules/univention/admin/handlers/groups/group.py:226
+msgid "Windows"
+msgstr "Windows"
+
+#: modules/univention/admin/handlers/groups/group.py:226
+msgid "Windows account settings"
+msgstr "Windows 帳號設定"
+
+#: modules/univention/admin/handlers/groups/group.py:80
+msgid "Windows group type"
+msgstr "Windows 群組類型"

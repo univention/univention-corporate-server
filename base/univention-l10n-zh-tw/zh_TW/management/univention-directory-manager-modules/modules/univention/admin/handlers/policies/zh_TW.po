@@ -1,0 +1,1075 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: python3-univention-directory-manager\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modules/univention/admin/handlers/policies/policy.py:28
+msgid "<p>Policies are objects that can be connected with other objects in the directory tree. Connected policies allow to define object properties in a unified manner. Policies that are connected with containers or organizational units are inherited by all objects located below.</p><p>More information can be found in the <a href=\"https://docs.software-univention.de/manual-5.2.html#central:policies\" target=\"_blank\">online documentation for UCS</a>.</p>"
+msgstr "<p>原則是可與目錄樹中其他物件連結的物件。連結的原則可讓您以統一的方式定義物件屬性。與容器或組織單位連結的原則，會由其下方的所有物件繼承。</p><p>更多資訊請參閱 <a href=\"https://docs.software-univention.de/manual-5.2.html#central:policies\" target=\"_blank\">UCS 線上說明文件</a>。</p>"
+
+#: modules/univention/admin/handlers/policies/release.py:60
+msgid "Activate release updates (Errata updates are activated by default)."
+msgstr "啟用版本更新 (勘誤更新預設為啟用)。"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:27 modules/univention/admin/handlers/policies/dhcp_statements.py:80
+msgid "Add hostnames to leases"
+msgstr "為租約加入主機名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:43 modules/univention/admin/handlers/policies/dhcp_scope.py:97
+msgid "Allow/Deny"
+msgstr "允許/拒絕"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:97
+msgid "Allow/Deny/Ignore statements"
+msgstr "允許/拒絕/忽略陳述式"
+
+#: modules/univention/admin/handlers/policies/umc.py:23
+msgid "Allowed UMC operation sets"
+msgstr "允許的 UMC 操作集"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:84
+msgid "Attempt to do a DNS update when a DHCP lease is confirmed"
+msgstr "當 DHCP 租約確認時嘗試進行 DNS 更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:94
+msgid "Attempt to update a DHCP client's A record when the client acquires or renews a lease"
+msgstr "當 DHCP 用戶端取得或續用租約時，嘗試更新其 A 記錄"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:24 modules/univention/admin/handlers/policies/dhcp_statements.py:65
+msgid "Authoritative"
+msgstr "具權威性 (Authoritative)"
+
+#: modules/univention/admin/handlers/policies/release.py:39 modules/univention/admin/handlers/policies/release.py:79
+msgid "Automatic updates"
+msgstr "自動更新"
+
+#: modules/univention/admin/handlers/policies/release.py:38
+msgid "Automatic updates policies"
+msgstr "自動更新原則"
+
+#: modules/univention/admin/handlers/policies/release.py:37
+msgid "Automatic updates policy"
+msgstr "自動更新原則"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:60
+msgid "Available Univention Directory Manager modules"
+msgstr "可用的 Univention Directory Manager 模組"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:25 modules/univention/admin/handlers/policies/dhcp_scope.py:69
+msgid "BOOTP"
+msgstr "BOOTP"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:81
+msgid "Basic DNS settings"
+msgstr "基本 DNS 設定"
+
+#: modules/univention/admin/handlers/policies/policy.py:46 modules/univention/admin/handlers/policies/recyclebin.py:107 modules/univention/admin/handlers/policies/printserver.py:74 modules/univention/admin/handlers/policies/nfsmounts.py:75 modules/univention/admin/handlers/policies/ldapserver.py:75 modules/univention/admin/handlers/policies/umc.py:82
+msgid "Basic settings"
+msgstr "基本設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:80
+msgid "Boot"
+msgstr "開機"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:25 modules/univention/admin/handlers/policies/dhcp_boot.py:67
+msgid "Boot filename"
+msgstr "開機檔名"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:40
+msgid "Boot parameters"
+msgstr "開機參數"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:24 modules/univention/admin/handlers/policies/dhcp_boot.py:61
+msgid "Boot server"
+msgstr "開機伺服器"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:80
+msgid "Boot settings"
+msgstr "開機設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:25 modules/univention/admin/handlers/policies/dhcp_statements.py:70
+msgid "Boot unknown clients"
+msgstr "允許未知用戶端開機"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:26 modules/univention/admin/handlers/policies/dhcp_scope.py:74
+msgid "Booting"
+msgstr "開機"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:31 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:103
+msgid "Client updates"
+msgstr "用戶端更新"
+
+#: modules/univention/admin/handlers/policies/registry.py:66
+msgid "Configuration Registry"
+msgstr "Configuration Registry"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:25 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:73
+msgid "DDNS domain name"
+msgstr "DDNS 網域名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:29 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:93
+msgid "DDNS forward update"
+msgstr "DDNS 正向更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:24 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:67
+msgid "DDNS hostname"
+msgstr "DDNS 主機名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:26 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:78
+msgid "DDNS reverse domain name"
+msgstr "DDNS 反向網域名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:28 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:88
+msgid "DDNS update style"
+msgstr "DDNS 更新方式"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:27 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:83
+msgid "DDNS updates"
+msgstr "DDNS 更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:42
+msgid "DHCP Allow/Deny policies"
+msgstr "DHCP 允許/拒絕原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:41
+msgid "DHCP Allow/Deny policy"
+msgstr "DHCP 允許/拒絕原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:39
+msgid "DHCP Boot policies"
+msgstr "DHCP 開機原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:38
+msgid "DHCP Boot policy"
+msgstr "DHCP 開機原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:39
+msgid "DHCP DNS policies"
+msgstr "DHCP DNS 原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:38
+msgid "DHCP DNS policy"
+msgstr "DHCP DNS 原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:45
+msgid "DHCP Dynamic DNS policies"
+msgstr "DHCP 動態 DNS 原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:44
+msgid "DHCP Dynamic DNS policy"
+msgstr "DHCP 動態 DNS 原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:40
+msgid "DHCP NetBIOS policies"
+msgstr "DHCP NetBIOS 原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:39
+msgid "DHCP NetBIOS policy"
+msgstr "DHCP NetBIOS 原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:85
+msgid "DHCP lease time"
+msgstr "DHCP 租約時間"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:40
+msgid "DHCP lease time policies"
+msgstr "DHCP 租約時間原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:39
+msgid "DHCP lease time policy"
+msgstr "DHCP 租約時間原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:74
+msgid "DHCP routing"
+msgstr "DHCP 路由"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:38
+msgid "DHCP routing policies"
+msgstr "DHCP 路由原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:37
+msgid "DHCP routing policy"
+msgstr "DHCP 路由原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:44
+msgid "DHCP statement"
+msgstr "DHCP 陳述式"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:103
+msgid "DHCP statements"
+msgstr "DHCP 陳述式"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:43
+msgid "DHCP statements policies"
+msgstr "DHCP 陳述式原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:42
+msgid "DHCP statements policy"
+msgstr "DHCP 陳述式原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:40
+msgid "DNS"
+msgstr "DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:116
+msgid "DNS Update"
+msgstr "DNS 更新"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:87 modules/univention/admin/handlers/policies/repositorysync.py:67
+msgid "Day"
+msgstr "日"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:93 modules/univention/admin/handlers/policies/repositorysync.py:73
+msgid "Day of week"
+msgstr "星期"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:28 modules/univention/admin/handlers/policies/dhcp_scope.py:84
+msgid "Declines"
+msgstr "拒絕 (Declines)"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:24 modules/univention/admin/handlers/policies/dhcp_leasetime.py:62
+msgid "Default lease time"
+msgstr "預設租約時間"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:44
+msgid "Default quota for each user on a share"
+msgstr "共用上每位使用者的預設配額"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:91
+msgid "Define the name of the DHCP server"
+msgstr "定義 DHCP 伺服器的名稱"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:52
+msgid "Defines Recycle Bin behavior for UDM objects"
+msgstr "定義 UDM 物件的資源回收筒行為"
+
+#: modules/univention/admin/handlers/policies/umc.py:46
+msgid "Defines a set of allowed UMC operations"
+msgstr "定義一組允許的 UMC 操作"
+
+#: modules/univention/admin/handlers/policies/desktop.py:24 modules/univention/admin/handlers/policies/desktop.py:60
+msgid "Desktop language"
+msgstr "桌面語言"
+
+#: modules/univention/admin/handlers/policies/desktop.py:38
+msgid "Desktop policies"
+msgstr "桌面原則"
+
+#: modules/univention/admin/handlers/policies/desktop.py:37
+msgid "Desktop policy"
+msgstr "桌面原則"
+
+#: modules/univention/admin/handlers/policies/desktop.py:25 modules/univention/admin/handlers/policies/desktop.py:65
+msgid "Desktop profile"
+msgstr "桌面設定檔"
+
+#: modules/univention/admin/handlers/policies/desktop.py:39 modules/univention/admin/handlers/policies/desktop.py:93
+msgid "Desktop settings"
+msgstr "桌面設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:99
+msgid "Do DNS updates for clients even if their IP addresses are assigned using fixed addresses"
+msgstr "即使用戶端的 IP 位址是以固定位址指派，仍為其進行 DNS 更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:24 modules/univention/admin/handlers/policies/dhcp_dns.py:61
+msgid "Domain name"
+msgstr "網域名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:25 modules/univention/admin/handlers/policies/dhcp_dns.py:67
+msgid "Domain name servers"
+msgstr "網域名稱伺服器"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:74
+msgid "Domain name that will be appended to the client's hostname to form a fully-qualified domain-name (FQDN)"
+msgstr "會附加到用戶端主機名稱以構成完整網域名稱 (FQDN) 的網域名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:79
+msgid "Domain name that will be appended to the client's hostname to produce a name for use in the client's PTR record"
+msgstr "會附加到用戶端主機名稱，以產生用於用戶端 PTR 記錄之名稱的網域名稱"
+
+#: modules/univention/admin/handlers/policies/registry.py:114
+#, python-format
+msgid "Duplicated variables not allowed: %s"
+msgstr "不允許重複的變數: %s"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:27 modules/univention/admin/handlers/policies/dhcp_scope.py:79
+msgid "Duplicates"
+msgstr "重複 (Duplicates)"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:46
+msgid "Dynamic DNS"
+msgstr "動態 DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:116
+msgid "Dynamic DNS update"
+msgstr "動態 DNS 更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:65
+msgid "Dynamically assign addresses to unknown clients. Allowed by default. This option should not be used anymore."
+msgstr "動態指派位址給未知用戶端。預設為允許。此選項已不建議再使用。"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:71
+msgid "Enable clients for which there is no host declaration to obtain IP addresses. Allow and deny statements within pool declarations will still be respected."
+msgstr "允許沒有主機宣告的用戶端取得 IP 位址。集區宣告中的允許與拒絕陳述式仍會生效。"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:76
+msgid "Enable or disable Recycle Bin for objects in this scope"
+msgstr "為此範圍中的物件啟用或停用資源回收筒"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:77
+msgid "Enables/disables password quality checks for example dictionary entries"
+msgstr "啟用/停用密碼品質檢查 (例如字典項目)"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:76
+msgid "First send an ICMP Echo request (a ping) when considering dynamically allocating an IP address. Should only be disabled if the delay of one second introduced by this is a problem for a client."
+msgstr "在考慮動態配置 IP 位址前，先傳送一個 ICMP Echo 要求 (ping)。只有當這造成的一秒延遲對用戶端有問題時才應停用。"
+
+#: modules/univention/admin/handlers/policies/policy.py:46 modules/univention/admin/handlers/policies/registry.py:81 modules/univention/admin/handlers/policies/maintenance.py:120 modules/univention/admin/handlers/policies/repositorysync.py:100 modules/univention/admin/handlers/policies/desktop.py:93 modules/univention/admin/handlers/policies/recyclebin.py:107 modules/univention/admin/handlers/policies/printserver.py:74 modules/univention/admin/handlers/policies/share_userquota.py:99 modules/univention/admin/handlers/policies/memberpackages.py:82 modules/univention/admin/handlers/policies/admin_container.py:74 modules/univention/admin/handlers/policies/dhcp_routing.py:74 modules/univention/admin/handlers/policies/nfsmounts.py:75 modules/univention/admin/handlers/policies/masterpackages.py:82 modules/univention/admin/handlers/policies/ldapserver.py:75 modules/univention/admin/handlers/policies/dhcp_dns.py:81 modules/univention/admin/handlers/policies/umc.py:82 modules/univention/admin/handlers/policies/slavepackages.py:82 modules/univention/admin/handlers/policies/release.py:79 modules/univention/admin/handlers/policies/pwhistory.py:90 modules/univention/admin/handlers/policies/repositoryserver.py:75
+msgid "General"
+msgstr "一般"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:82
+msgid "General DHCP DNS settings"
+msgstr "一般 DHCP DNS 設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:87
+msgid "General DHCP NetBIOS settings"
+msgstr "一般 DHCP NetBIOS 設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:98
+msgid "General DHCP allow/deny settings"
+msgstr "一般 DHCP 允許/拒絕設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:81
+msgid "General DHCP boot settings"
+msgstr "一般 DHCP 開機設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:117
+msgid "General DHCP dynamic DNS settings"
+msgstr "一般 DHCP 動態 DNS 設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:86
+msgid "General DHCP lease time settings"
+msgstr "一般 DHCP 租約時間設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:75
+msgid "General DHCP routing settings"
+msgstr "一般 DHCP 路由設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:104
+msgid "General DHCP statements settings"
+msgstr "一般 DHCP 陳述式設定"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:76
+msgid "General LDAP server settings"
+msgstr "一般 LDAP 伺服器設定"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:83
+msgid "General Managed Node packages settings"
+msgstr "一般受管節點套件設定"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:76
+msgid "General NFS mounts settings"
+msgstr "一般 NFS 掛載設定"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:83
+msgid "General Primary/Backup Node packages settings"
+msgstr "一般主要/備份節點套件設定"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:83
+msgid "General Replica Node packages settings"
+msgstr "一般複本節點套件設定"
+
+#: modules/univention/admin/handlers/policies/umc.py:83
+msgid "General UMC settings"
+msgstr "一般 UMC 設定"
+
+#: modules/univention/admin/handlers/policies/registry.py:82
+msgid "General Univention Configuration Registry settings"
+msgstr "一般 Univention Configuration Registry 設定"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:75
+msgid "General Univention Directory Manager container settings"
+msgstr "一般 Univention Directory Manager 容器設定"
+
+#: modules/univention/admin/handlers/policies/release.py:80
+msgid "General automatic updates settings"
+msgstr "一般自動更新設定"
+
+#: modules/univention/admin/handlers/policies/desktop.py:94
+msgid "General desktop settings"
+msgstr "一般桌面設定"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:121
+msgid "General maintenance settings"
+msgstr "一般維護設定"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:91
+msgid "General passwords settings"
+msgstr "一般密碼設定"
+
+#: modules/univention/admin/handlers/policies/printserver.py:75
+msgid "General print server settings"
+msgstr "一般列印伺服器設定"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:76
+msgid "General repository server settings"
+msgstr "一般軟體庫伺服器設定"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:101
+msgid "General repository synchronisation settings"
+msgstr "一般軟體庫同步設定"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:100
+msgid "General user quota settings"
+msgstr "一般使用者配額設定"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:25 modules/univention/admin/handlers/policies/share_userquota.py:69
+msgid "Hard limit"
+msgstr "硬性上限"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:27 modules/univention/admin/handlers/policies/share_userquota.py:79
+msgid "Hard limit (Files)"
+msgstr "硬性上限 (檔案數)"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:80
+msgid "Hard limit. Can not be exceeded."
+msgstr "硬性上限。不可超過。"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:70
+msgid "Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB"
+msgstr "硬性上限。不可超過。數值可加上下列其中一種單位作為字尾: B (預設)、kB、MB、GB"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:24 modules/univention/admin/handlers/policies/pwhistory.py:61
+msgid "History length"
+msgstr "歷程長度"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:85
+msgid "Honor DHCPDECLINE messages. deny/ignore will prevent malicious or buggy clients from completely exhausting the DHCP server's allocation pool."
+msgstr "處理 DHCPDECLINE 訊息。deny/ignore 可防止惡意或有缺陷的用戶端完全耗盡 DHCP 伺服器的配置集區。"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:104
+msgid "Honor the client's intention to do its own update of its A record"
+msgstr "尊重用戶端自行更新其 A 記錄的意圖"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:68
+msgid "Hostname that will be used for the client's A and PTR records"
+msgstr "用於用戶端 A 與 PTR 記錄的主機名稱"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:99 modules/univention/admin/handlers/policies/repositorysync.py:79
+msgid "Hour"
+msgstr "時"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:80
+msgid "If a request is received from a client that matches the MAC address of a host declaration, any other leases matching that MAC address will be discarded by the server, if this is set to deny. Allowed by default. Setting this to deny violates the DHCP protocol."
+msgstr "若收到的用戶端要求符合某主機宣告的 MAC 位址，且此項設為 deny,伺服器會捨棄所有符合該 MAC 位址的其他租約。預設為允許。將此設為 deny 會違反 DHCP 協定。"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:93
+msgid "Ignored object classes"
+msgstr "忽略的物件類別"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:68
+msgid "Initial boot file to be loaded by a client"
+msgstr "用戶端要載入的初始開機檔"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:24
+msgid "LDAP Server"
+msgstr "LDAP 伺服器"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:39 modules/univention/admin/handlers/policies/ldapserver.py:60
+msgid "LDAP server"
+msgstr "LDAP 伺服器"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:38
+msgid "LDAP server policies"
+msgstr "LDAP 伺服器原則"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:37
+msgid "LDAP server policy"
+msgstr "LDAP 伺服器原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:85
+msgid "Lease Time"
+msgstr "租約時間"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:41
+msgid "Lease time"
+msgstr "租約時間"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:63
+msgid "Lease time used if the client does not request a specific expiration time"
+msgstr "當用戶端未要求特定到期時間時使用的租約時間"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:82
+msgid "List of UDM module names whose objects should be recycled when deleted"
+msgstr "刪除時其物件應被回收的 UDM 模組名稱清單"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:24
+msgid "List of Univention Directory Manager modules"
+msgstr "Univention Directory Manager 模組清單"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:63
+msgid "List of WINS servers listed in order of preference"
+msgstr "依偏好順序列出的 WINS 伺服器清單"
+
+#: modules/univention/admin/handlers/policies/umc.py:68
+msgid "List of allowed UMC operation sets"
+msgstr "允許的 UMC 操作集清單"
+
+#: modules/univention/admin/handlers/policies/desktop.py:72
+msgid "Logon scripts"
+msgstr "登入指令稿"
+
+#: modules/univention/admin/handlers/policies/desktop.py:78
+msgid "Logout scripts"
+msgstr "登出指令稿"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:81
+msgid "Look up the domain name corresponding to the IP address of each address in the lease pool and use that address for the DHCP hostname option. Disabled by default."
+msgstr "查詢租約集區中每個位址對應的網域名稱，並將該位址用於 DHCP 主機名稱選項。預設為停用。"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:25 modules/univention/admin/handlers/policies/maintenance.py:40
+msgid "Maintenance"
+msgstr "維護"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:39
+msgid "Maintenance policies"
+msgstr "維護原則"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:38
+msgid "Maintenance policy"
+msgstr "維護原則"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:120
+msgid "Maintenance settings"
+msgstr "維護設定"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:39
+msgid "Managed Node packages policies"
+msgstr "受管節點套件原則"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:38
+msgid "Managed Node packages policy"
+msgstr "受管節點套件原則"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:25 modules/univention/admin/handlers/policies/dhcp_leasetime.py:67
+msgid "Maximum lease time"
+msgstr "最長租約時間"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:68
+msgid "Maximum lease time that the server will accept if asked for"
+msgstr "伺服器在被要求時可接受的最長租約時間"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:72
+msgid "Minimal amount of characters"
+msgstr "最少字元數"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:73
+msgid "Minimum granted lease time"
+msgstr "授予的最短租約時間"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:26 modules/univention/admin/handlers/policies/dhcp_leasetime.py:72
+msgid "Minimum lease time"
+msgstr "最短租約時間"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:105 modules/univention/admin/handlers/policies/repositorysync.py:85
+msgid "Minute"
+msgstr "分"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:103
+msgid "Miscellaneous DHCP statements"
+msgstr "其他 DHCP 陳述式"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:81 modules/univention/admin/handlers/policies/repositorysync.py:61
+msgid "Month"
+msgstr "月"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:24
+msgid "Mount NFS shares"
+msgstr "掛載 NFS 共用"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:39
+msgid "NFS mounts"
+msgstr "NFS 掛載"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:38
+msgid "NFS mounts policies"
+msgstr "NFS 掛載原則"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:37
+msgid "NFS mounts policy"
+msgstr "NFS 掛載原則"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:60
+msgid "NFS shares to mount"
+msgstr "要掛載的 NFS 共用"
+
+#: modules/univention/admin/handlers/policies/policy.py:38 modules/univention/admin/handlers/policies/registry.py:57 modules/univention/admin/handlers/policies/maintenance.py:52 modules/univention/admin/handlers/policies/dhcp_statements.py:56 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:58 modules/univention/admin/handlers/policies/repositorysync.py:52 modules/univention/admin/handlers/policies/desktop.py:51 modules/univention/admin/handlers/policies/recyclebin.py:66 modules/univention/admin/handlers/policies/printserver.py:50 modules/univention/admin/handlers/policies/dhcp_netbios.py:53 modules/univention/admin/handlers/policies/dhcp_scope.py:55 modules/univention/admin/handlers/policies/share_userquota.py:55 modules/univention/admin/handlers/policies/dhcp_boot.py:52 modules/univention/admin/handlers/policies/memberpackages.py:52 modules/univention/admin/handlers/policies/dhcp_leasetime.py:53 modules/univention/admin/handlers/policies/admin_container.py:51 modules/univention/admin/handlers/policies/dhcp_routing.py:51 modules/univention/admin/handlers/policies/nfsmounts.py:51 modules/univention/admin/handlers/policies/masterpackages.py:52 modules/univention/admin/handlers/policies/ldapserver.py:51 modules/univention/admin/handlers/policies/dhcp_dns.py:52 modules/univention/admin/handlers/policies/umc.py:59 modules/univention/admin/handlers/policies/slavepackages.py:52 modules/univention/admin/handlers/policies/release.py:51 modules/univention/admin/handlers/policies/pwhistory.py:52 modules/univention/admin/handlers/policies/repositoryserver.py:51
+msgid "Name"
+msgstr "名稱"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:67
+msgid "Name of the Recycle Bin policy"
+msgstr "資源回收筒原則的名稱"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:41
+msgid "NetBIOS"
+msgstr "NetBIOS"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:24 modules/univention/admin/handlers/policies/dhcp_netbios.py:62
+msgid "NetBIOS name servers"
+msgstr "NetBIOS 名稱伺服器"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:26 modules/univention/admin/handlers/policies/dhcp_netbios.py:73
+msgid "NetBIOS node type"
+msgstr "NetBIOS 節點類型"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:69
+msgid "NetBIOS over TCP/IP scope parameter"
+msgstr "NetBIOS over TCP/IP 範圍參數"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:25 modules/univention/admin/handlers/policies/dhcp_netbios.py:68
+msgid "NetBIOS scope"
+msgstr "NetBIOS 範圍"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:86
+msgid "Netbios"
+msgstr "Netbios"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:67
+msgid "Number of days after which the password has to be changed"
+msgstr "密碼必須變更前的天數"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:88
+msgid "Number of days to keep objects in Recycle Bin (0 = indefinite)"
+msgstr "物件保留在資源回收筒的天數 (0 = 無限期)"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:62
+msgid "Numeric IP address or name of the server from which the initial boot file is retrieved."
+msgstr "取得初始開機檔之伺服器的數字 IP 位址或名稱。"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:94
+msgid "Objects having one of these object classes will not be moved to Recycle Bin."
+msgstr "具有這些物件類別之一的物件將不會移至資源回收筒。"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:24 modules/univention/admin/handlers/policies/memberpackages.py:61 modules/univention/admin/handlers/policies/masterpackages.py:24 modules/univention/admin/handlers/policies/masterpackages.py:61 modules/univention/admin/handlers/policies/slavepackages.py:24 modules/univention/admin/handlers/policies/slavepackages.py:61
+msgid "Package installation list"
+msgstr "套件安裝清單"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:25 modules/univention/admin/handlers/policies/memberpackages.py:67 modules/univention/admin/handlers/policies/masterpackages.py:25 modules/univention/admin/handlers/policies/masterpackages.py:67 modules/univention/admin/handlers/policies/slavepackages.py:25 modules/univention/admin/handlers/policies/slavepackages.py:67
+msgid "Package removal list"
+msgstr "套件移除清單"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:40
+msgid "Packages for Managed Nodes"
+msgstr "受管節點的套件"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:40
+msgid "Packages for Primary/Backup Nodes"
+msgstr "主要/備份節點的套件"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:40
+msgid "Packages for Replica Nodes"
+msgstr "複本節點的套件"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:25 modules/univention/admin/handlers/policies/pwhistory.py:66
+msgid "Password expiry interval"
+msgstr "密碼到期間隔"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:26 modules/univention/admin/handlers/policies/pwhistory.py:71
+msgid "Password length"
+msgstr "密碼長度"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:76
+msgid "Password quality check"
+msgstr "密碼品質檢查"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:40 modules/univention/admin/handlers/policies/pwhistory.py:90
+msgid "Passwords"
+msgstr "密碼"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:39
+msgid "Passwords policies"
+msgstr "密碼原則"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:38
+msgid "Passwords policy"
+msgstr "密碼原則"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:61
+msgid "Perform maintenance after system startup"
+msgstr "系統啟動後執行維護"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:66
+msgid "Perform maintenance before system shutdown"
+msgstr "系統關機前執行維護"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:26 modules/univention/admin/handlers/policies/dhcp_statements.py:75
+msgid "Ping check"
+msgstr "Ping 檢查"
+
+#: modules/univention/admin/handlers/policies/policy.py:24
+msgid "Policies"
+msgstr "原則"
+
+#: modules/univention/admin/handlers/policies/policy.py:22 modules/univention/admin/handlers/policies/policy.py:23
+msgid "Policy"
+msgstr "原則"
+
+#: modules/univention/admin/handlers/policies/release.py:36
+msgid "Policy: Automatic updates"
+msgstr "原則: 自動更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:40
+msgid "Policy: DHCP Allow/Deny"
+msgstr "原則: DHCP 允許/拒絕"
+
+#: modules/univention/admin/handlers/policies/dhcp_boot.py:37
+msgid "Policy: DHCP Boot"
+msgstr "原則: DHCP 開機"
+
+#: modules/univention/admin/handlers/policies/dhcp_dns.py:37
+msgid "Policy: DHCP DNS"
+msgstr "原則: DHCP DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:43
+msgid "Policy: DHCP Dynamic DNS"
+msgstr "原則: DHCP 動態 DNS"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:38
+msgid "Policy: DHCP NetBIOS"
+msgstr "原則: DHCP NetBIOS"
+
+#: modules/univention/admin/handlers/policies/dhcp_leasetime.py:38
+msgid "Policy: DHCP lease time"
+msgstr "原則: DHCP 租約時間"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:36
+msgid "Policy: DHCP routing"
+msgstr "原則: DHCP 路由"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:41
+msgid "Policy: DHCP statements"
+msgstr "原則: DHCP 陳述式"
+
+#: modules/univention/admin/handlers/policies/desktop.py:36
+msgid "Policy: Desktop"
+msgstr "原則: 桌面"
+
+#: modules/univention/admin/handlers/policies/ldapserver.py:36
+msgid "Policy: LDAP server"
+msgstr "原則: LDAP 伺服器"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:37
+msgid "Policy: Maintenance"
+msgstr "原則: 維護"
+
+#: modules/univention/admin/handlers/policies/nfsmounts.py:36
+msgid "Policy: NFS mounts"
+msgstr "原則: NFS 掛載"
+
+#: modules/univention/admin/handlers/policies/memberpackages.py:37
+msgid "Policy: Packages for Managed Nodes"
+msgstr "原則: 受管節點的套件"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:37
+msgid "Policy: Packages for Primary/Backup Nodes"
+msgstr "原則: 主要/備份節點的套件"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:37
+msgid "Policy: Packages for Replica Nodes"
+msgstr "原則: 複本節點的套件"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:37
+msgid "Policy: Passwords"
+msgstr "原則: 密碼"
+
+#: modules/univention/admin/handlers/policies/printserver.py:35
+msgid "Policy: Print server"
+msgstr "原則: 列印伺服器"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:49
+msgid "Policy: Recycle Bin Configuration"
+msgstr "原則: 資源回收筒設定"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:36
+msgid "Policy: Repository server"
+msgstr "原則: 軟體庫伺服器"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:37
+msgid "Policy: Repository synchronisation"
+msgstr "原則: 軟體庫同步"
+
+#: modules/univention/admin/handlers/policies/umc.py:43
+msgid "Policy: UMC"
+msgstr "原則: UMC"
+
+#: modules/univention/admin/handlers/policies/registry.py:42
+msgid "Policy: Univention Configuration Registry"
+msgstr "原則: Univention Configuration Registry"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:36
+msgid "Policy: Univention Directory Manager container settings"
+msgstr "原則: Univention Directory Manager 容器設定"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:40
+msgid "Policy: User quota"
+msgstr "原則: 使用者配額"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:39
+msgid "Primary/Backup Node packages policies"
+msgstr "主要/備份節點套件原則"
+
+#: modules/univention/admin/handlers/policies/masterpackages.py:38
+msgid "Primary/Backup Node packages policy"
+msgstr "主要/備份節點套件原則"
+
+#: modules/univention/admin/handlers/policies/printserver.py:23 modules/univention/admin/handlers/policies/printserver.py:38 modules/univention/admin/handlers/policies/printserver.py:59
+msgid "Print server"
+msgstr "列印伺服器"
+
+#: modules/univention/admin/handlers/policies/printserver.py:37
+msgid "Print server policies"
+msgstr "列印伺服器原則"
+
+#: modules/univention/admin/handlers/policies/printserver.py:36
+msgid "Print server policy"
+msgstr "列印伺服器原則"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:99
+msgid "Quota"
+msgstr "配額"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:28 modules/univention/admin/handlers/policies/share_userquota.py:84
+msgid "Reapply settings on every login"
+msgstr "每次登入時重新套用設定"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:85
+msgid "Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten."
+msgstr "在每位使用者登入時重新套用掛接點專屬的使用者配額原則。若未設定，初始設定的配額設定將不會被覆寫。"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:71
+msgid "Reboot after maintenance"
+msgstr "維護後重新開機"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:24 modules/univention/admin/handlers/policies/recyclebin.py:75
+msgid "Recycle Bin enabled"
+msgstr "已啟用資源回收筒"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:51
+msgid "Recycle Bin policies"
+msgstr "資源回收筒原則"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:50
+msgid "Recycle Bin policy"
+msgstr "資源回收筒原則"
+
+#: modules/univention/admin/handlers/policies/release.py:24
+msgid "Release Version"
+msgstr "版本"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:39
+msgid "Replica Node packages policies"
+msgstr "複本節點套件原則"
+
+#: modules/univention/admin/handlers/policies/slavepackages.py:38
+msgid "Replica Node packages policy"
+msgstr "複本節點套件原則"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:24 modules/univention/admin/handlers/policies/repositoryserver.py:39 modules/univention/admin/handlers/policies/repositoryserver.py:60
+msgid "Repository server"
+msgstr "軟體庫伺服器"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:38
+msgid "Repository server policies"
+msgstr "軟體庫伺服器原則"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:37
+msgid "Repository server policy"
+msgstr "軟體庫伺服器原則"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:25 modules/univention/admin/handlers/policies/repositorysync.py:40
+msgid "Repository synchronisation"
+msgstr "軟體庫同步"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:39
+msgid "Repository synchronisation policies"
+msgstr "軟體庫同步原則"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:38
+msgid "Repository synchronisation policy"
+msgstr "軟體庫同步原則"
+
+#: modules/univention/admin/handlers/policies/repositorysync.py:100
+msgid "Repository synchronisation settings"
+msgstr "軟體庫同步設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:70
+msgid "Respond to BOOTP queries. Allowed by default."
+msgstr "回應 BOOTP 查詢。預設為允許。"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:75
+msgid "Respond to queries from a particular client. Has meaning only when it appears in a host declaration. Allowed by default."
+msgstr "回應來自特定用戶端的查詢。僅在出現於主機宣告中時才有意義。預設為允許。"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:26 modules/univention/admin/handlers/policies/recyclebin.py:87
+msgid "Retention days"
+msgstr "保留天數"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:24 modules/univention/admin/handlers/policies/dhcp_routing.py:60
+msgid "Routers"
+msgstr "路由器"
+
+#: modules/univention/admin/handlers/policies/dhcp_routing.py:39
+msgid "Routing"
+msgstr "路由"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:86
+msgid "SMB/CIFS name resolution"
+msgstr "SMB/CIFS 名稱解析"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:66
+msgid "Send DHCPNAK messages to misconfigured clients. Disabled by default."
+msgstr "對設定錯誤的用戶端傳送 DHCPNAK 訊息。預設為停用。"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:28 modules/univention/admin/handlers/policies/dhcp_statements.py:85
+msgid "Server identifier"
+msgstr "伺服器識別碼"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:29 modules/univention/admin/handlers/policies/dhcp_statements.py:90
+msgid "Server name"
+msgstr "伺服器名稱"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:24 modules/univention/admin/handlers/policies/share_userquota.py:64
+msgid "Soft limit"
+msgstr "彈性上限"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:26 modules/univention/admin/handlers/policies/share_userquota.py:74
+msgid "Soft limit (Files)"
+msgstr "彈性上限 (檔案數)"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:75
+msgid "Soft limit. If exceeded users can be warned."
+msgstr "彈性上限。超過時可警告使用者。"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:65
+msgid "Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB"
+msgstr "彈性上限。超過時可警告使用者。數值可加上下列其中一種單位作為字尾: B (預設)、kB、MB、GB"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:89
+msgid "Specify the DDNS Update Style to use for a DHCP Service"
+msgstr "指定 DHCP 服務要使用的 DDNS 更新方式"
+
+#: modules/univention/admin/handlers/policies/dhcp_statements.py:86
+msgid "The IP address identifying the DHCP server that should be used by the clients. Use this only if auto-detection fails for servers with multiple IP addresses."
+msgstr "用戶端應使用的 DHCP 伺服器 IP 位址。僅在具多個 IP 位址的伺服器自動偵測失敗時才使用此項。"
+
+#: modules/univention/admin/handlers/policies/dhcp_netbios.py:74
+msgid "The node type of clients for NetBIOS over TCP/IP"
+msgstr "NetBIOS over TCP/IP 用戶端的節點類型"
+
+#: modules/univention/admin/handlers/policies/registry.py:81
+msgid "These configuration settings will be set on the local UCS system."
+msgstr "這些設定將套用於本機 UCS 系統。"
+
+#: modules/univention/admin/handlers/policies/pwhistory.py:62
+msgid "This number indicates after how many changes the user may reuse the old password again"
+msgstr "此數字代表使用者在變更幾次後才能再次使用舊密碼"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:53
+msgid "This policy controls which UDM objects are moved to the Recycle Bin when deleted and how long they are retained."
+msgstr "此原則控制刪除時哪些 UDM 物件會移至資源回收筒，以及保留多久。"
+
+#: modules/univention/admin/handlers/policies/registry.py:30
+msgid "UCR Variables"
+msgstr "UCR 變數"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:25 modules/univention/admin/handlers/policies/recyclebin.py:81
+msgid "UDM modules to recycle"
+msgstr "要回收的 UDM 模組"
+
+#: modules/univention/admin/handlers/policies/umc.py:45
+msgid "UMC policies"
+msgstr "UMC 原則"
+
+#: modules/univention/admin/handlers/policies/umc.py:44
+msgid "UMC policy"
+msgstr "UMC 原則"
+
+#: modules/univention/admin/handlers/policies/registry.py:45
+msgid "Univention Configuration Registry"
+msgstr "Univention Configuration Registry"
+
+#: modules/univention/admin/handlers/policies/registry.py:44
+msgid "Univention Configuration Registry policies"
+msgstr "Univention Configuration Registry 原則"
+
+#: modules/univention/admin/handlers/policies/registry.py:43
+msgid "Univention Configuration Registry policy"
+msgstr "Univention Configuration Registry 原則"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:39
+msgid "Univention Directory Manager container settings"
+msgstr "Univention Directory Manager 容器設定"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:38
+msgid "Univention Directory Manager container settings policies"
+msgstr "Univention Directory Manager 容器設定原則"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:37
+msgid "Univention Directory Manager container settings policy"
+msgstr "Univention Directory Manager 容器設定原則"
+
+#: modules/univention/admin/handlers/policies/admin_container.py:74
+msgid "Univention Directory Manager settings"
+msgstr "Univention Directory Manager 設定"
+
+#: modules/univention/admin/handlers/policies/dhcp_scope.py:24 modules/univention/admin/handlers/policies/dhcp_scope.py:64
+msgid "Unknown clients"
+msgstr "未知用戶端"
+
+#: modules/univention/admin/handlers/policies/repositoryserver.py:75
+msgid "Update"
+msgstr "更新"
+
+#: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:30 modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:98
+msgid "Update static leases"
+msgstr "更新靜態租約"
+
+#: modules/univention/admin/handlers/policies/release.py:65
+msgid "Update to this UCS version"
+msgstr "更新至此 UCS 版本"
+
+#: modules/univention/admin/handlers/policies/maintenance.py:76
+msgid "Use Cron settings"
+msgstr "使用 Cron 設定"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:43
+msgid "User quota"
+msgstr "使用者配額"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:42
+msgid "User quota policies"
+msgstr "使用者配額原則"
+
+#: modules/univention/admin/handlers/policies/share_userquota.py:41
+msgid "User quota policy"
+msgstr "使用者配額原則"
+
+#: modules/univention/admin/handlers/policies/release.py:66
+msgid "Without specifying the most recent version will be used"
+msgstr "若未指定，將使用最新版本"
+
+#: modules/univention/admin/handlers/policies/policy.py:26
+msgid "https://docs.software-univention.de/manual-5.2.html#central:policies"
+msgstr ""

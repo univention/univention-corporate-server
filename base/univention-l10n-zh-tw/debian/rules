@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+#
+# Copyright 2026 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+%:
+	dh $@
+
+# The UCS dojo frontend i18n loader (umc/i18n.js) resolves the locale to its
+# PRIMARY language subtag only (regex ^([a-z]{2,3})(_([a-z]{2,3}))? -> m[1]),
+# i.e. it requests /i18n/zh/<module>.json for a zh_TW user (just like /i18n/de/
+# for de_DE). The build emits client JSON under zh_TW/, so we additionally
+# publish a primary-subtag "zh" copy of every client i18n JSON. Server-side .mo
+# files keep the full zh_TW locale and are untouched (no "i18n" in their path).
+override_dh_auto_install:
+	dh_auto_install
+	set -e; cd debian/univention-l10n-zh-tw; \
+	for f in $$(find . -path '*i18n*' -name '*.json' | grep -E '/zh_TW/|/zh_TW\.json$$'); do \
+		n=$$(printf '%s' "$$f" | sed -e 's#/zh_TW/#/zh/#' -e 's#/zh_TW\.json$$#/zh.json#'); \
+		mkdir -p "$$(dirname "$$n")"; cp -a "$$f" "$$n"; \
+	done

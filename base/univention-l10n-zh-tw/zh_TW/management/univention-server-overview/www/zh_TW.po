@@ -1,0 +1,48 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-server-overview\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:46+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: www/main.js:51
+#, javascript-format
+msgid "%s - Server overview"
+msgstr "%s - 伺服器總覽"
+
+#: www/GalleryPane.js:19
+msgid "Backup Directory Node"
+msgstr "備份目錄節點"
+
+#: www/GalleryPane.js:21
+msgid "Managed Node"
+msgstr "受管節點"
+
+#: www/GalleryPane.js:18
+msgid "Primary Directory Node"
+msgstr "主要目錄節點"
+
+#: www/GalleryPane.js:20
+msgid "Replica Directory Node"
+msgstr "複本目錄節點"
+
+#: www/main.js:58
+msgid "Search servers"
+msgstr "搜尋伺服器"
+
+#: www/main.js:54
+#, javascript-format
+msgid "Server overview for domain %s"
+msgstr "網域 %s 的伺服器總覽"
+
+#: www/GalleryPane.js:28
+msgid "Unknown"
+msgstr "未知"

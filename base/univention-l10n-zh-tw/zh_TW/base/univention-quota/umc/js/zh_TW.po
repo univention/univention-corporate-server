@@ -1,0 +1,207 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-quota package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-quota\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: umc/js/quota/DetailPage.js:153
+msgid "A username needs to be specified."
+msgstr "必須指定使用者名稱。"
+
+#: umc/js/quota.js:59
+msgid "Activate"
+msgstr "啟用"
+
+#: umc/js/quota.js:106
+msgid "Activated"
+msgstr "已啟用"
+
+#: umc/js/quota/PartitionPage.js:91
+msgid "Add"
+msgstr "新增"
+
+#: umc/js/quota/DetailPage.js:138
+msgid "Add quota"
+msgstr "新增配額"
+
+#: umc/js/quota/DetailPage.js:139
+#, javascript-format
+msgid "Add quota settings for a new user on partition <i>%s</i>."
+msgstr "為磁碟分割區 <i>%s</i> 上的新使用者新增配額設定。"
+
+#: umc/js/quota/PartitionPage.js:47
+msgid "Back to overview"
+msgstr "返回總覽"
+
+#: umc/js/quota/DetailPage.js:43
+msgid "Back to partition"
+msgstr "返回磁碟分割區"
+
+#: umc/js/quota.js:179 umc/js/quota/PartitionPage.js:191
+msgid "Cancel"
+msgstr "取消"
+
+#: umc/js/quota.js:71 umc/js/quota/PartitionPage.js:101
+msgid "Configure"
+msgstr "設定"
+
+#: umc/js/quota/DetailPage.js:88
+msgid "Data size hard limit (MB)"
+msgstr "資料大小硬限制 (MB)"
+
+#: umc/js/quota/DetailPage.js:78
+msgid "Data size soft limit (MB)"
+msgstr "資料大小軟限制 (MB)"
+
+#: umc/js/quota.js:65
+msgid "Deactivate"
+msgstr "停用"
+
+#: umc/js/quota.js:108
+msgid "Deactivated"
+msgstr "已停用"
+
+#: umc/js/quota/PartitionPage.js:136
+msgid "Files (used/soft/hard)"
+msgstr "檔案數 (已用/軟限制/硬限制)"
+
+#: umc/js/quota/DetailPage.js:108
+msgid "Files hard limit"
+msgstr "檔案數硬限制"
+
+#: umc/js/quota/DetailPage.js:98
+msgid "Files soft limit"
+msgstr "檔案數軟限制"
+
+#: umc/js/quota/PartitionPage.js:35
+msgid "Filesystem: "
+msgstr "檔案系統: "
+
+#: umc/js/quota.js:124
+msgid "Free (GB)"
+msgstr "可用 (GB)"
+
+#: umc/js/quota/PartitionPage.js:132 umc/js/quota/PartitionPage.js:143
+msgid "Grace"
+msgstr "寬限期"
+
+#: umc/js/quota/DetailPage.js:144
+msgid "Modify quota"
+msgstr "修改配額"
+
+#: umc/js/quota/DetailPage.js:145
+msgid "Modify the quota settings for user <i>%(user)s</i> on partition <i>%(partition)s</i>."
+msgstr "修改磁碟分割區 <i>%(partition)s</i> 上使用者 <i>%(user)s</i> 的配額設定。"
+
+#: umc/js/quota.js:96
+msgid "Mount point"
+msgstr "掛接點"
+
+#: umc/js/quota/PartitionPage.js:34
+msgid "Mount point: "
+msgstr "掛接點: "
+
+#: umc/js/quota/DetailPage.js:163
+msgid "Not all limits can be set to zero."
+msgstr "並非所有限制都可設定為零。"
+
+#: umc/js/quota.js:182 umc/js/quota/PartitionPage.js:194
+msgid "OK"
+msgstr "確定"
+
+#: umc/js/quota/PartitionPage.js:36
+msgid "Options: "
+msgstr "選項: "
+
+#: umc/js/quota.js:92 umc/js/quota/DetailPage.js:72
+msgid "Partition"
+msgstr "磁碟分割區"
+
+#: umc/js/quota.js:207
+#, javascript-format
+msgid "Partition: %s"
+msgstr "磁碟分割區: %s"
+
+#: umc/js/quota.js:49
+msgid "Partitions"
+msgstr "磁碟分割區"
+
+#: umc/js/quota.js:174
+#, javascript-format
+msgid "Please confirm quota support activation on device: %s"
+msgstr "請確認在裝置上啟用配額支援: %s"
+
+#: umc/js/quota.js:176
+#, javascript-format
+msgid "Please confirm quota support deactivation on device: %s"
+msgstr "請確認在裝置上停用配額支援: %s"
+
+#: umc/js/quota/PartitionPage.js:188
+msgid "Please confirm to remove the following %(length)s users: %(usernames)s"
+msgstr "請確認移除下列 %(length)s 個使用者: %(usernames)s"
+
+#: umc/js/quota/PartitionPage.js:186
+#, javascript-format
+msgid "Please confirm to remove the following user: %s"
+msgstr "請確認移除下列使用者: %s"
+
+#: umc/js/quota.js:100
+msgid "Quota"
+msgstr "配額"
+
+#: umc/js/quota.js:81
+msgid "Refresh"
+msgstr "重新整理"
+
+#: umc/js/quota/PartitionPage.js:110
+msgid "Remove"
+msgstr "移除"
+
+#: umc/js/quota/DetailPage.js:48
+msgid "Save changes"
+msgstr "儲存變更"
+
+#: umc/js/quota/PartitionPage.js:72
+msgid "Search..."
+msgstr "搜尋..."
+
+#: umc/js/quota.js:51
+msgid "Set, unset and modify filesystem quota"
+msgstr "設定、取消設定及修改檔案系統配額"
+
+#: umc/js/quota.js:113
+msgid "Size (GB)"
+msgstr "大小 (GB)"
+
+#: umc/js/quota/PartitionPage.js:125
+msgid "Size (MB) (used/soft/hard)"
+msgstr "大小 (MB) (已用/軟限制/硬限制)"
+
+#: umc/js/quota/DetailPage.js:172
+msgid "The soft limit needs to be less than or equal to the hard limit"
+msgstr "軟限制必須小於或等於硬限制"
+
+#: umc/js/quota.js:104
+msgid "Unknown"
+msgstr "未知"
+
+#: umc/js/quota/DetailPage.js:67 umc/js/quota/PartitionPage.js:121
+msgid "User"
+msgstr "使用者"
+
+#: umc/js/quota/PartitionPage.js:50
+msgid "loading..."
+msgstr "載入中..."

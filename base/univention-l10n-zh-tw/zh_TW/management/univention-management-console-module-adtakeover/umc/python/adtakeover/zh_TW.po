@@ -1,0 +1,319 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Univention GmbH
+# This file is distributed under the same license as the univention-management-console-module-adtakeover package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-adtakeover\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2026-06-21 15:45+0800\n"
+"PO-Revision-Date: 2026-06-21 00:00+0800\n"
+"Last-Translator: Jason Cheng <jason@jason.tools>\n"
+"Language-Team: Jason Tools <jason@jason.tools>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. i18n: The program "fping" failed.
+#: umc/python/adtakeover/takeover.py:1984
+msgid " failed"
+msgstr " 失敗"
+
+#: umc/python/adtakeover/takeover.py:784
+#, python-format
+msgid "AD Server did not return proper time string: %s."
+msgstr "AD 伺服器未傳回正確的時間字串: %s。"
+
+#: umc/python/adtakeover/takeover.py:588
+#, python-format
+msgid "Active Directory services not detected at %s."
+msgstr "在 %s 上未偵測到 Active Directory 服務。"
+
+#: umc/python/adtakeover/takeover.py:1477
+msgid "Active Directory takeover finished already."
+msgstr "Active Directory 接管已完成。"
+
+#: umc/python/adtakeover/takeover.py:330
+msgid "Adjusting settings in Samba directory service"
+msgstr "正在調整 Samba 目錄服務中的設定"
+
+#: umc/python/adtakeover/takeover.py:191
+msgid "At least one GPO in SYSVOL is newer than the Group Policy Container version."
+msgstr "SYSVOL 中至少有一個 GPO 比群組原則容器版本還新。"
+
+#: umc/python/adtakeover/takeover.py:187 umc/python/adtakeover/takeover.py:1905
+msgid "At least one GPO in SYSVOL is not up to date yet."
+msgstr "SYSVOL 中至少有一個 GPO 尚未更新至最新版本。"
+
+#: umc/python/adtakeover/takeover.py:183
+msgid "At least one GPO is still missing in SYSVOL."
+msgstr "SYSVOL 中仍缺少至少一個 GPO。"
+
+#: umc/python/adtakeover/takeover.py:242 umc/python/adtakeover/takeover.py:271
+msgid "Authenticating"
+msgstr "正在認證"
+
+#: umc/python/adtakeover/takeover.py:175
+msgid "Authentication failed."
+msgstr "認證失敗。"
+
+#: umc/python/adtakeover/takeover.py:387
+msgid "Checking GPOs in SYSVOL"
+msgstr "正在檢查 SYSVOL 中的 GPO"
+
+#: umc/python/adtakeover/takeover.py:292
+msgid "Checking group policies"
+msgstr "正在檢查群組原則"
+
+#: umc/python/adtakeover/takeover.py:334
+msgid "Claiming FSMO roles"
+msgstr "正在取得 FSMO 角色"
+
+#: umc/python/adtakeover/takeover.py:239 umc/python/adtakeover/takeover.py:267
+#, python-format
+msgid "Connecting to %s"
+msgstr "正在連線至 %s"
+
+#: umc/python/adtakeover/takeover.py:2019
+#, python-format
+msgid "Connection to Active Directory server %s failed."
+msgstr "連線至 Active Directory 伺服器 %s 失敗。"
+
+#: umc/python/adtakeover/takeover.py:922 umc/python/adtakeover/takeover.py:932
+#, python-format
+msgid "Copying %s"
+msgstr "正在複製 %s"
+
+#: umc/python/adtakeover/takeover.py:894
+#, python-format
+msgid "Could not read local machine password: %s"
+msgstr "無法讀取本機電腦密碼: %s"
+
+#: umc/python/adtakeover/takeover.py:179
+msgid "Domain join failed."
+msgstr "加入網域失敗。"
+
+#: umc/python/adtakeover/__init__.py:38
+#, python-format
+msgid ""
+"Execution of command '%(command)s' has failed:\n"
+"\n"
+"%(text)s"
+msgstr ""
+"執行命令「%(command)s」失敗:\n"
+"\n"
+"%(text)s"
+
+#: umc/python/adtakeover/takeover.py:2049
+msgid "Failed to detect the Active Directory site of the server."
+msgstr "無法偵測伺服器的 Active Directory 站台。"
+
+#: umc/python/adtakeover/takeover.py:641
+msgid "Failed to determine AD domain SID."
+msgstr "無法判斷 AD 網域 SID。"
+
+#: umc/python/adtakeover/takeover.py:1011
+msgid "Failed to determine new domain SID."
+msgstr "無法判斷新的網域 SID。"
+
+#: umc/python/adtakeover/takeover.py:356
+msgid "Finalizing"
+msgstr "正在完成"
+
+#: umc/python/adtakeover/takeover.py:294
+msgid "Initializing the S4 Connector listener"
+msgstr "正在初始化 S4 Connector 接聽程式"
+
+#: umc/python/adtakeover/takeover.py:211
+msgid "Insufficient License."
+msgstr "授權不足。"
+
+#: umc/python/adtakeover/takeover.py:537
+msgid "Internal Error: License check failed."
+msgstr "內部錯誤: 授權檢查失敗。"
+
+#: umc/python/adtakeover/takeover.py:804
+#, python-format
+msgid "Internal Error: rdate -s -p failed (%d)."
+msgstr "內部錯誤: rdate -s -p 失敗 (%d)。"
+
+#: umc/python/adtakeover/takeover.py:433
+#, python-format
+msgid "Internal module error: Cannot go from state '%(current)s' to state '%(new)s'."
+msgstr "內部模組錯誤: 無法從狀態「%(current)s」轉換至狀態「%(new)s」。"
+
+#: umc/python/adtakeover/takeover.py:438
+#, python-format
+msgid "Internal module error: Expected to be in state 'sysvol', but found '%s'."
+msgstr "內部模組錯誤: 預期應處於「sysvol」狀態，但發現「%s」。"
+
+#: umc/python/adtakeover/takeover.py:443
+#, python-format
+msgid "Internal module error: Expected to be in state 'takeover', but found '%s'."
+msgstr "內部模組錯誤: 預期應處於「takeover」狀態，但發現「%s」。"
+
+#: umc/python/adtakeover/takeover.py:416
+#, python-format
+msgid "Internal module error: Refusing to set invalid state '%s'."
+msgstr "內部模組錯誤: 拒絕設定無效的狀態「%s」。"
+
+#: umc/python/adtakeover/takeover.py:448
+msgid "Internal module error: Takeover running, aborting attempt to restart."
+msgstr "內部模組錯誤: 接管正在執行中，中止重新啟動的嘗試。"
+
+#: umc/python/adtakeover/takeover.py:2493
+#, python-format
+msgid "Invalid UNC string: %s"
+msgstr "無效的 UNC 字串: %s"
+
+#: umc/python/adtakeover/takeover.py:475
+#, python-format
+msgid "Invalid state in file %s"
+msgstr "檔案 %s 中的狀態無效"
+
+#: umc/python/adtakeover/takeover.py:280
+msgid "Joining the domain"
+msgstr "正在加入網域"
+
+#: umc/python/adtakeover/takeover.py:1987
+#, python-format
+msgid "Network connection to %s failed."
+msgstr "至 %s 的網路連線失敗。"
+
+#: umc/python/adtakeover/takeover.py:559
+#, python-format
+msgid "Number of %(object_name)s after takeover would be %(sum)s. This would exceed the number of licensed objects (%(max)s)."
+msgstr "接管後 %(object_name)s 的數量將為 %(sum)s。這將超過授權物件的數量 (%(max)s)。"
+
+#: umc/python/adtakeover/takeover.py:302
+msgid "Rebuilding IDMAP"
+msgstr "正在重建 IDMAP"
+
+#: umc/python/adtakeover/takeover.py:353
+msgid "Reconfiguring nameserver"
+msgstr "正在重新設定名稱伺服器"
+
+#: umc/python/adtakeover/takeover.py:350
+msgid "Registering IP in DNS"
+msgstr "正在於 DNS 中註冊 IP"
+
+#: umc/python/adtakeover/takeover.py:794
+#, python-format
+msgid "Remote clock is behind local clock by more than %s seconds, refusing to turn back time. Please advance the clock of the Active Directory DC."
+msgstr "遠端時鐘比本機時鐘落後超過 %s 秒，拒絕將時間往回調。請將 Active Directory DC 的時鐘往前調。"
+
+#: umc/python/adtakeover/takeover.py:337
+msgid "Removing the previous AD server account"
+msgstr "正在移除先前的 AD 伺服器帳戶"
+
+#: umc/python/adtakeover/takeover.py:305
+msgid "Reset SYSVOL ACLs"
+msgstr "重設 SYSVOL ACL"
+
+#: umc/python/adtakeover/takeover.py:245
+msgid "Retrieving information from AD DC"
+msgstr "正在從 AD DC 擷取資訊"
+
+#: umc/python/adtakeover/takeover.py:289
+msgid "Rewriting SIDs in the UCS directory service"
+msgstr "正在重寫 UCS 目錄服務中的 SID"
+
+#: umc/python/adtakeover/takeover.py:324
+#, python-format
+msgid "Search for %s in network"
+msgstr "在網路中搜尋 %s"
+
+#: umc/python/adtakeover/takeover.py:195
+msgid "Something is wrong with the SYSVOL."
+msgstr "SYSVOL 發生問題。"
+
+#: umc/python/adtakeover/takeover.py:286
+msgid "Starting Samba"
+msgstr "正在啟動 Samba"
+
+#: umc/python/adtakeover/takeover.py:298
+msgid "Starting the S4 Connector"
+msgstr "正在啟動 S4 Connector"
+
+#: umc/python/adtakeover/takeover.py:275
+msgid "Synchronizing system clock"
+msgstr "正在同步系統時鐘"
+
+#: umc/python/adtakeover/takeover.py:329
+msgid "Taking over Active Directory domain controller roles"
+msgstr "正在接管 Active Directory 網域控制站角色"
+
+#: umc/python/adtakeover/takeover.py:341
+msgid "Taking over DNS address"
+msgstr "正在接管 DNS 位址"
+
+#: umc/python/adtakeover/takeover.py:347
+msgid "Taking over IP address"
+msgstr "正在接管 IP 位址"
+
+#: umc/python/adtakeover/takeover.py:344
+msgid "Taking over NETBIOS address"
+msgstr "正在接管 NETBIOS 位址"
+
+#: umc/python/adtakeover/takeover.py:637
+#, python-format
+msgid "The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2: %s"
+msgstr "此 Active Directory 網域的功能等級為 Windows Server 2012 或更新版本，Samba 目前僅支援至 Windows 2008R2: %s"
+
+#: umc/python/adtakeover/takeover.py:1449 umc/python/adtakeover/takeover.py:1457
+msgid "The Active Directory domain join was not completed successfully yet."
+msgstr "加入 Active Directory 網域尚未成功完成。"
+
+#: umc/python/adtakeover/takeover.py:199
+msgid "The Active Directory server seems to be running. It must be shut off."
+msgstr "Active Directory 伺服器似乎正在執行中。必須將其關閉。"
+
+#: umc/python/adtakeover/takeover.py:620
+msgid "The LDAP base of this UCS domain differs from the LDAP base of the selected Active Directory domain."
+msgstr "此 UCS 網域的 LDAP base 與所選 Active Directory 網域的 LDAP base 不同。"
+
+#: umc/python/adtakeover/takeover.py:1503
+#, python-format
+msgid "The Server IP %s is still online, please shut down the machine."
+msgstr "伺服器 IP %s 仍在線上，請將該電腦關機。"
+
+#: umc/python/adtakeover/takeover.py:2027
+#, python-format
+msgid "The automatic search for an Active Directory server for realm %s did not yield any results."
+msgstr "針對領域 %s 自動搜尋 Active Directory 伺服器未產生任何結果。"
+
+#: umc/python/adtakeover/takeover.py:171
+msgid "The computer is not reachable."
+msgstr "無法連線至該電腦。"
+
+#: umc/python/adtakeover/takeover.py:827 umc/python/adtakeover/takeover.py:943 umc/python/adtakeover/takeover.py:990
+#, python-format
+msgid "The domain join failed. See %s for details."
+msgstr "加入網域失敗。詳情請參閱 %s。"
+
+#: umc/python/adtakeover/takeover.py:616
+msgid "The selected Active Directory server has the same NTDS GUID as this UCS server."
+msgstr "所選的 Active Directory 伺服器與此 UCS 伺服器具有相同的 NTDS GUID。"
+
+#: umc/python/adtakeover/takeover.py:207
+msgid "Time difference critical for Kerberos but synchronization aborted."
+msgstr "時間差距對 Kerberos 而言過大，但同步已中止。"
+
+#: umc/python/adtakeover/takeover.py:203
+msgid "Time synchronization failed."
+msgstr "時間同步失敗。"
+
+#: umc/python/adtakeover/takeover.py:2486
+msgid "UNC doesn't start with \\\\ or //"
+msgstr "UNC 並非以 \\\\ 或 // 開頭"
+
+#: umc/python/adtakeover/takeover.py:250
+msgid "You may proceed with the takeover, but the domain management may be limited afterwards until a new license is installed."
+msgstr "您可以繼續進行接管，但之後在安裝新授權之前，網域管理可能會受到限制。"
+
+#: umc/python/adtakeover/takeover.py:552
+msgid "users"
+msgstr "使用者"
