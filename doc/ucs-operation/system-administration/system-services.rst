@@ -93,20 +93,27 @@ in the :guilabel:`Computers` management module.
 
 .. _system-administration-nfs-share:
 
-Mounting NFS shares
--------------------
+Mount NFS shares on a computer
+------------------------------
 
-The *NFS mounts* policy of the UMC computer management can be used to
-configure NFS shares, which are mounted on the system. There is a *NFS
-share* for selection, which is mounted in the file path specified under
-*Mount point*.
+In the :guilabel:`Computers` management module in the *Management UI*,
+open the target computer and assign or create an *NFS mounts* policy.
+Under *NFS shares to mount*,
+select an *NFS share* and specify its *Mount point*,
+as shown in :numref:`system-administration-nfs-share-figure`.
 
 .. _system-administration-nfs-share-figure:
 
 .. figure:: /images/computers_policy_nfsshare.*
-   :alt: Mounting a NFS share
+   :alt: NFS mounts policy showing the NFS share selection and Mount point fields.
 
    Mounting a NFS share
+
+.. seealso::
+
+   :external+uv-nubus-manual:ref:`nubus-computer-management`
+      in :cite:t:`uv-nubus-manual`
+      for information about the :guilabel:`Computers` management module
 
 .. _system-administration-nscd:
 
