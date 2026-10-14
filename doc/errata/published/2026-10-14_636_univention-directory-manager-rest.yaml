@@ -9,3 +9,6 @@ desc: |
  * The UDM REST API no longer crashes on a corrupted or concurrently-evicted
    entry in its internal authentication cache.
 bug: [59702]
+erratum: 636
+announced: 2026-10-14
+support: core
