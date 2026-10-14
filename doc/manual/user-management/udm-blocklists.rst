@@ -51,15 +51,6 @@ in :cite:t:`uv-nubus-manual`.
 LDAP ACLs for block lists
 -------------------------
 
-By default, every UCS node in the domain and every member of the
-``Domain Admins`` group can write block list entries. And everybody can read.
-You can configure the permissions
-on the |UCSPRIMARYDN| and the |UCSBACKUPDN|\ s with the following |UCSUCRVs|:
-
-* :envvar:`ldap/database/internal/acl/blocklists/groups/read`
-* :envvar:`ldap/database/internal/acl/blocklists/groups/write`
-
-For example, if you want to give a user the permission to delete block list entries
-who isn't member of the ``Domain Admins`` group,
-you need to create a group with that user as member
-and add the LDAP DN of this group to :envvar:`ldap/database/internal/acl/blocklists/groups/write`.
+The content of this section moved to
+:external+uv-ucs-operation:ref:`domain-infrastructure-udm-blocklists`
+in :cite:t:`uv-ucs-operation`.
