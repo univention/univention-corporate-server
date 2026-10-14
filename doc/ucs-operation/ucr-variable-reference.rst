@@ -972,6 +972,52 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: list
 
+.. envvar:: ldap/database/internal/acl/blocklists/groups/read
+
+   Specifies the LDAP distinguished names (DNs) of groups
+   whose members may read entries below ``cn=blocklists,cn=internal``.
+   Separate multiple group DNs with a pipe character (``|``).
+
+   When this variable is unset,
+   everybody can read block list entries.
+   When you set this variable,
+   only members of the configured groups retain read access.
+
+   This variable applies on :term:`Primary Directory Node`
+   and :term:`Backup Directory Node` systems.
+
+   For information about how to apply the LDAP ACLs,
+   see :ref:`domain-infrastructure-udm-blocklists`.
+   For general information about the *Blocklists* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-blocklists`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: not set
+   :Type: list
+
+.. envvar:: ldap/database/internal/acl/blocklists/groups/write
+
+   Specifies the LDAP distinguished names (DNs) of groups
+   whose members may write entries below ``cn=blocklists,cn=internal``.
+   Separate multiple group DNs with a pipe character (``|``).
+
+   Members of configured groups can modify block list entries,
+   but don't receive write access to other entries below ``cn=internal``.
+   On :term:`Primary Directory Node` systems,
+   this access supplements the default write access
+   for UCS nodes and members of the ``Domain Admins`` group.
+
+   This variable applies only on :term:`Primary Directory Node` systems.
+
+   For information about how to apply the LDAP ACLs,
+   see :ref:`domain-infrastructure-udm-blocklists`.
+   For general information about the *Blocklists* management module,
+   see :external+uv-nubus-manual:ref:`nubus-domain-blocklists`
+   in :cite:t:`uv-nubus-manual`.
+
+   :Default value: not set
+   :Type: list
+
 .. envvar:: ldap/acl/user/passwordreset/accesslist/groups/dn
 
    Specifies the distinguished name (DN) of a group
