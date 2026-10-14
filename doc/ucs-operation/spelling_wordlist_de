@@ -6,6 +6,7 @@ Anfrageinhalts
 App-ID
 App-IDs
 Attributwerte
+Attributwerten
 Audit-Log
 Audit-Logs
 Audit-Protokolle
@@ -46,6 +47,7 @@ Engines
 Entscheidungs-Engine
 Exit
 Foundation
+Gruppen-DNs
 Hash-Algorithmen
 Hash-Algorithmus
 Hash-Einstellungen
@@ -81,6 +83,7 @@ Multiprocessing
 NT-Hash
 NT-Hashes
 NTP-Antworten
+Names
 Notifier-Dienste
 PAM-Dienst
 Partitionierungsschemata
@@ -92,6 +95,7 @@ Passwort-Hashes
 Patchlevel-Updates
 Patchlevel-Version
 Patchlevel-Versionen
+Pipe-Zeichen
 Plattformspezifische
 Pre-Update
 Principal
