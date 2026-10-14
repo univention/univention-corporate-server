@@ -22,6 +22,10 @@ Year 2026
      - Change
 
    * - 14. Oct 2026
+     - :ref:`system-administration-nfs-share`
+     - Add section about mounting a NFS share on a computer.
+
+   * - 14. Oct 2026
      - :ref:`domain-infrastructure-udm-blocklists`
      - Add section about *Blocklists* management module and how to use LDAP ACLs for it.
 
