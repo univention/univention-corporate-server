@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 14. Oct 2026
+     - :ref:`domain-infrastructure-udm-blocklists`
+     - Add section about *Blocklists* management module and how to use LDAP ACLs for it.
+
    * - 13. Oct 2026
      - :ref:`lifecycle`
      - Clarify update scope in the lifecycle chapter.
