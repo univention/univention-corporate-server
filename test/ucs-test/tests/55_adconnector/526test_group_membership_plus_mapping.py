@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner pytest-3 -s
-## desc: "Group membership sync through a custom '+'-renaming position mapping, at a scale that spans multiple _batch_get_dns() chunks"
+## desc: "Group membership sync (both directions) through a custom '+'-renaming position mapping, at a scale that spans multiple _batch_get_dns() chunks"
 ## exposure: dangerous
 ## packages:
 ##  - univention-ad-connector
@@ -7,19 +7,16 @@
 ##  - skip_admember
 
 """
-Integration regression test for the 2026-10 group-membership-sync
-performance work (group_members_sync_to_ucs() / object_memberships_sync_to_ucs()):
- - the persisted-DN-mapping fast path and its fallback on a stale mapping
- - _batch_get_dns()/_batch_check_dns_exist() batching (CHUNK_SIZE=200 in the
-   connector, so this test uses a group with MORE than 200 members to force
-   more than one batch)
- - univention.dn.DN()-based membership comparisons
+Group-membership-sync regression test, routed through a custom position
+mapping that rewrites a literal '+' in an AD OU to "plus" in UCS (ou=+1 ->
+ou=plus1, a real customer setup). DN-parsing-heavy code is more exposed to
+unusual DN syntax than the old plain-string comparisons were.
 
-This specifically routes members through a custom position-mapping hook that
-rewrites a literal '+' in an AD OU name to "plus" in UCS (ou=+1 -> ou=plus1),
-mirroring a real customer setup. The new DN-parsing-heavy code is more
-exposed to unusual DN syntax than the old plain-string comparisons were, so
-this is the scenario most likely to surface a regression.
+test_large_group_membership_through_mapped_ou(): AD->UCS, >200 members to
+force multiple _batch_get_dns() chunks.
+
+test_group_membership_ucs_to_ad_through_mapped_ou(): the UCS->AD direction,
+untested elsewhere since it's dormant in read mode.
 """
 
 import os
@@ -30,18 +27,22 @@ from univention.config_registry import handler_set as ucr_set
 from univention.testing import ucr as testing_ucr
 from univention.testing.strings import random_string
 
-from adconnector import ADConnection, restart_adconnector, wait_for_sync
+from adconnector import ADConnection, configRegistry, restart_adconnector, wait_for_sync
 
 
 AD = ADConnection()
 
-# more than the connector's _batch_get_dns() chunk_size=200, so the test
-# exercises at least two batches, not just one lucky single-chunk case
-MEMBER_COUNT = 220
+MEMBER_COUNT = 220  # > chunk_size=200, forces multiple batches
 
+# two separate mapped OUs - one per test/direction, so their OU creates don't
+# collide (same pattern as 169test_custom_position_mapping.py)
 name = random_string()
 ucs_ou_name = f"plus1{name}"
 ad_ou_name = f"\\+1{name}"
+
+name2 = random_string()
+ucs_ou_name2 = f"plus2{name2}"
+ad_ou_name2 = f"\\+2{name2}"
 
 mapping = f'''
 import univention.connector
@@ -55,6 +56,7 @@ def mapping_hook(ad_mapping):
         if ad_base and ldap_base:
             custom_position_mapping = [
                 ("ou={ucs_ou_name}," + ldap_base, "ou={ad_ou_name}," + ad_base),
+                ("ou={ucs_ou_name2}," + ldap_base, "ou={ad_ou_name2}," + ad_base),
             ]
             for obj_type in ("ou", "user"):
                 if ad_mapping.get(obj_type) is not None:
@@ -75,25 +77,22 @@ def create_localmapping():
 
 
 @pytest.fixture(scope="module")
-def mapped_ad_ou(ucr):
-    ad_base = ucr.get("connector/ad/ldap/base")
+def mapped_ad_ou():
+    # module-scoped, so can't depend on the function-scoped `ucr` fixture
+    configRegistry.load()
+    ad_base = configRegistry.get("connector/ad/ldap/base")
     ad_ou_dn = f"ou={ad_ou_name},{ad_base}"
     AD.create(ad_ou_dn, {"objectclass": [b"top", b"organizationalUnit"]})
     return ad_ou_dn
 
 
 def _create_ad_members(ad_ou_dn, count):
-    """Create `count` AD users under the '+1'-mapped OU, return their DNs."""
     return [AD.createuser(f"{random_string()}{i}", position=ad_ou_dn) for i in range(count)]
 
 
 @pytest.mark.parametrize("mode", ["read", "sync"])
 def test_large_group_membership_through_mapped_ou(udm, ucr, mode, mapped_ad_ou):
-    """
-    A group with > chunk_size members, all living under the custom-mapped
-    (literal '+') OU, must sync completely and correctly to UCS - this is
-    the exact shape of workload the batching/caching changes target.
-    """
+    """A group with > chunk_size members under the custom-mapped OU must sync fully to UCS."""
     with testing_ucr.UCSTestConfigRegistry() as ucr:
         ucr_set([f'connector/ad/mapping/syncmode={mode}'])
         restart_adconnector()
@@ -101,14 +100,14 @@ def test_large_group_membership_through_mapped_ou(udm, ucr, mode, mapped_ad_ou):
         ucs_base = ucr.get("ldap/base")
 
         member_dns = _create_ad_members(mapped_ad_ou, MEMBER_COUNT)
-        wait_for_sync()  # let the individual users sync in first (realistic ordering)
+        wait_for_sync()  # let the users sync in first
 
         groupname = random_string()
         group_dn = AD.group_create(groupname)
         for member_dn in member_dns:
-            AD.add_to_group(group_dn, member_dn)
+            AD.add_to_group(group_dn, member_dn.encode('UTF-8'))
 
-        wait_for_sync(min_wait_time=30)  # a 220-member group sync needs more than the default
+        wait_for_sync(min_wait_time=30)  # 220 members needs more than the default wait
 
         ucs_group_dn = f"cn={groupname},cn=groups,{ucs_base}"
         udm.verify_ldap_object(ucs_group_dn, retry_count=10, delay=3)
@@ -117,11 +116,10 @@ def test_large_group_membership_through_mapped_ou(udm, ucr, mode, mapped_ad_ou):
             f"expected all {MEMBER_COUNT} members under the +1-mapped OU to sync, got {len(group['users'])}"
         )
 
-        # remove roughly half - exercises the del_members path and the
-        # group_members_cache_ucs eviction added for the staleness fix
+        # remove half - exercises del_members + the group_members_cache_ucs eviction
         removed, kept = member_dns[: MEMBER_COUNT // 2], member_dns[MEMBER_COUNT // 2:]
         for member_dn in removed:
-            AD.remove_from_group(group_dn, member_dn)
+            AD.remove_from_group(group_dn, member_dn.encode('UTF-8'))
 
         wait_for_sync(min_wait_time=15)
 
@@ -130,17 +128,65 @@ def test_large_group_membership_through_mapped_ou(udm, ucr, mode, mapped_ad_ou):
             f"expected {len(kept)} members left after removal, got {len(group['users'])}"
         )
 
-        # re-add one previously-removed member - this specifically exercises
-        # the persisted-DN-mapping fast path being correctly invalidated by
-        # the earlier removal rather than permanently (and silently) treating
-        # the member as "already there"
+        # re-add a removed member - checks the persisted-DN fast path doesn't
+        # stay stuck thinking they're still a member
         re_added = removed[0]
-        AD.add_to_group(group_dn, re_added)
+        AD.add_to_group(group_dn, re_added.encode('UTF-8'))
 
         wait_for_sync(min_wait_time=10)
 
         group = udm.get_object('groups/group', ucs_group_dn)
-        assert len(group['users']) == len(kept) + 1, (
-            "removed-then-re-added member was not added back - "
-            "possible stale group_members_cache_ucs / persisted-DN-mapping entry"
+        assert len(group['users']) == len(kept) + 1, "re-added member did not come back - stale cache?"
+
+
+SMALL_MEMBER_COUNT = 5
+
+
+@pytest.mark.parametrize("mode", ["write", "sync"])
+def test_group_membership_ucs_to_ad_through_mapped_ou(udm, ucr, mode):
+    """Symmetric UCS->AD counterpart - same custom mapping, opposite direction."""
+    with testing_ucr.UCSTestConfigRegistry() as ucr:
+        ucr_set([f'connector/ad/mapping/syncmode={mode}'])
+        restart_adconnector()
+
+        ad_base = ucr.get("connector/ad/ldap/base")
+        ucs_base = ucr.get("ldap/base")
+
+        udm.create_object("container/ou", name=ucs_ou_name2)
+        wait_for_sync()
+        AD.verify_object(f"ou={ad_ou_name2},{ad_base}", {'name': f"+2{name2}"})
+
+        member_dns = [
+            udm.create_user(position=f"ou={ucs_ou_name2},{ucs_base}")[0]
+            for _ in range(SMALL_MEMBER_COUNT)
+        ]
+        wait_for_sync()  # let the users sync over first
+
+        groupname = random_string()
+        group_dn, _ = udm.create_group(name=groupname, users=member_dns)
+
+        wait_for_sync(min_wait_time=15)
+
+        ad_group_dn = f"cn={groupname},cn=groups,{ad_base}"
+        AD.verify_object(ad_group_dn, {})
+        ad_members = {m.decode('UTF-8').lower() for m in AD.get(ad_group_dn, ['member']).get('member', [])}
+        assert len(ad_members) == SMALL_MEMBER_COUNT, (
+            f"expected all {SMALL_MEMBER_COUNT} members under the +1-mapped OU to sync to AD, got {len(ad_members)}"
         )
+
+        # remove half - exercises group_members_sync_from_ucs()'s del path
+        removed, kept = member_dns[: SMALL_MEMBER_COUNT // 2], member_dns[SMALL_MEMBER_COUNT // 2:]
+        udm.modify_object('groups/group', dn=group_dn, remove={'users': removed})
+
+        wait_for_sync(min_wait_time=10)
+
+        ad_members = {m.decode('UTF-8').lower() for m in AD.get(ad_group_dn, ['member']).get('member', [])}
+        assert len(ad_members) == len(kept), f"expected {len(kept)} AD members left after removal, got {len(ad_members)}"
+
+        # re-add a removed member - checks group_members_cache_con isn't stale
+        udm.modify_object('groups/group', dn=group_dn, append={'users': [removed[0]]})
+
+        wait_for_sync(min_wait_time=10)
+
+        ad_members = {m.decode('UTF-8').lower() for m in AD.get(ad_group_dn, ['member']).get('member', [])}
+        assert len(ad_members) == len(kept) + 1, "re-added member did not come back - stale cache?"
