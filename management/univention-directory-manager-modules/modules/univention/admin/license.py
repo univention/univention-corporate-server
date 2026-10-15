@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from univention.admin.uldap import access
 
 import ldap
+from ldap.controls.openldap import SearchNoOpControl
 from ldap.filter import filter_format
 
 import univention.admin.localization
@@ -292,8 +293,8 @@ class License:
             self.real[version][obj] = value
             return value
 
-        self.real[version][obj] = len(lo.authz_connection.searchDn(filter=self.filters[version][obj]))
-        return self.real[version][obj]
+        self.real[version][obj] = count = self.count(lo.authz_connection, filter=self.filters[version][obj])
+        return count
 
     def recheck(self, lo) -> bool:
         res = lo.authz_connection.search(
@@ -319,29 +320,56 @@ class License:
 
         Returns dict with 'users', 'servers', 'clients' counts.
         """
-        dns = lo.authz_connection.searchDn(filter=filter_format(LDAP_FILTER_license_module, [self.module]))
-        if not dns:
-            log.warning('No license object found, cannot update cache')
-            return {'users': 0, 'servers': 0, 'clients': 0}
-        dn = dns[0]
-
+        conn = lo.authz_connection
         version = self.version
-        counts = {}
-        for obj, name in [(License.USERS, 'users'), (License.SERVERS, 'servers'), (License.MANAGEDCLIENTS, 'clients')]:
-            result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
-            count = len(result) if result else 0
+        counts = {'users': 0, 'servers': 0, 'clients': 0}
+        objects = [
+            (License.USERS, 'users'),
+            (License.SERVERS, 'servers'),
+            (License.MANAGEDCLIENTS, 'clients'),
+        ]
+        keys = {
+            obj: self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
+            for obj, _ in objects
+        }
+
+        result = conn.search(
+            filter=filter_format(LDAP_FILTER_license_module, [self.module]),
+            attr=list(keys.values()),
+        )
+        if not result:
+            log.warning('No license object found, cannot update cache')
+            return counts
+
+        dn, oldattr = result[0]
+        modlist = []
+
+        for obj, name in objects:
+            count = self.count(conn, filter=self.filters[version][obj])
 
             counts[name] = count
             self.real[version][obj] = count
 
-            usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
-            try:
-                lo.authz_connection.modify(dn, [(usedkey, [b'X'], [str(count).encode('ASCII')])], ignore_license=True)
-            except (univention.admin.uexceptions.base, ldap.LDAPError) as exc:
-                log.warning('Failed to update license cache for %s: %s', name, exc)
+            key = keys[obj]
+            old = oldattr.get(key, [])
+            new = [str(count).encode('ASCII')]
+            # if old != new:
+            modlist.append((key, old, new))
+
+        # if modlist:  # always modify because the lazy evaluation depends on it being changed hourly
+        try:
+            conn.modify(dn, modlist, ignore_license=True)
+        except (univention.admin.uexceptions.base, ldap.LDAPError) as exc:
+            log.warning('Failed to update license cache: %s', exc)
 
         log.info('License cache updated', **counts)
         return counts
+
+    def count(self, conn, *args, **kwargs):
+        res = {}
+        conn.searchDn(*args, **kwargs, serverctrls=[SearchNoOpControl(True)], response=res)
+        noop_srch_ctrl = [c for c in res['ctrls'] if isinstance(c, SearchNoOpControl)]
+        return noop_srch_ctrl[0].numSearchResults
 
     def _get_license_entry_uuid(self, lo):
         for dn, attr in lo.authz_connection.search(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))', attr=['entryUUID']):
