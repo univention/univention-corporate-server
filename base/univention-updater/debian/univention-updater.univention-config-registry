@@ -65,3 +65,7 @@ Variables: uuid/system
 Variables: uuid/license
 Variables: repository/app_center/installed
 Variables: updater/statistics
+
+Type: file
+File: etc/apt/apt.conf.d/10univention-apt-hook.conf
+Variables: updater/apt-hook/enabled

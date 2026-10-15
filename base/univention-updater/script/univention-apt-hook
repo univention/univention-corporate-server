@@ -1,0 +1,132 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+"""APT hook preventing the removal of the UCS role packages."""
+
+from __future__ import annotations
+
+import os
+import sys
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+
+HOOK_NAME = "univention-apt-hook"
+FILE_OVERRIDE = "/etc/apt/univention-apt-hook.override"
+FILE_DEBUG = "/etc/apt/univention-apt-hook.enable-debug"
+ROLE_PACKAGES = {
+    "univention-server-master",
+    "univention-server-backup",
+    "univention-server-slave",
+    "univention-server-member",
+}
+# Removing a package they depend on, e.g. a kernel, also removes them or makes
+# APT switch to the container variants, which removes most of the UCS installation.
+PROTECTED_PACKAGES = ROLE_PACKAGES | {
+    "univention-role-server-common",
+    "univention-role-common",
+}
+DEBUG = os.path.exists(FILE_DEBUG)
+
+
+def debug(msg: str) -> None:
+    if DEBUG:
+        print("D: %s: %s" % (HOOK_NAME, msg), file=sys.stderr)
+
+
+def log(msg: str) -> None:
+    print("W: %s: %s" % (HOOK_NAME, msg), file=sys.stderr)
+
+
+def parse(lines: Iterable[str]) -> tuple[set[str], set[str]]:
+    """Return the packages APT removes and installs from the hook protocol version 2."""
+    lines = iter(lines)
+    version = next(lines, "").strip()
+    debug("VERSION: %r" % (version,))
+    if version != "VERSION 2":
+        raise ValueError("expecting hook protocol in version 2, got %r" % (version,))
+
+    for line in lines:  # APT configuration
+        if not line.strip():
+            break
+
+    remove: set[str] = set()
+    install: set[str] = set()
+    for line in lines:
+        line = line.strip()
+        debug("INPUT: %r" % (line,))
+        if not line:
+            continue
+        try:
+            pkg, _oldver, _direction, _newver, action = line.split(" ", 4)
+        except ValueError:
+            log("received unexpected line from apt: %r" % (line,))
+            continue
+        if action == "**REMOVE**":
+            remove.add(pkg)
+        else:
+            install.add(pkg)
+
+    return remove, install
+
+
+def blocked(remove: set[str], install: set[str]) -> set[str]:
+    """Return the protected packages which must not be removed."""
+    packages = remove & PROTECTED_PACKAGES
+    # changing the system role, e.g. by univention-backup2master, replaces the role package
+    if install & (ROLE_PACKAGES - remove):
+        packages -= ROLE_PACKAGES
+    return packages
+
+
+def main() -> None:
+    info_fd = os.environ.get("APT_HOOK_INFO_FD", "")
+    if not info_fd.isdigit() or info_fd == "0":
+        sys.exit("E: %s: APT_HOOK_INFO_FD not set up correctly" % (HOOK_NAME,))
+
+    with os.fdopen(int(info_fd)) as fd:
+        try:
+            remove, install = parse(fd)
+        except ValueError as exc:
+            sys.exit("E: %s: %s" % (HOOK_NAME, exc))
+
+    packages = blocked(remove, install)
+    if not packages:
+        return
+    if os.path.exists(FILE_OVERRIDE):
+        log("removing %s, as %s exists" % (" ".join(sorted(packages)), FILE_OVERRIDE))
+        return
+
+    message = """
+!!! ERROR !!!
+   An attempt was made to remove the following packages essential for UCS:
+       %s
+
+   Removing these packages may render the UCS system unusable. This can
+   happen due to package dependency conflicts, for example when removing
+   kernel packages, or as a result of a manual removal attempt.
+
+   To free up space in /boot, use 'univention-prune-kernels' instead
+   of manually removing kernel packages.
+
+   If this error occurred during an app installation, update, or removal,
+   or during a UCS system update, please contact Univention Support if
+   you have an Enterprise Subscription. Otherwise, seek assistance from
+   the Univention Help community at <https://help.univention.com/>.
+
+   If you intentionally want to remove these packages despite the risks,
+   create the following file to bypass this protection:
+       %s
+
+   Remove the file immediately afterwards to restore the protection.
+""" % (" ".join(sorted(packages)), FILE_OVERRIDE)
+    for line in message.strip("\n").splitlines():
+        log(line)
+    sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
