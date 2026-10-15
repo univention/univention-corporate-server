@@ -14,3 +14,6 @@ desc: |
    journald forwards log messages to rsyslog. Disabling it avoids storing log
    messages twice, in the journal and in the files below `/var/log/`.
 bug: [58591, 60002]
+erratum: 639
+announced: 2026-10-15
+support: core
