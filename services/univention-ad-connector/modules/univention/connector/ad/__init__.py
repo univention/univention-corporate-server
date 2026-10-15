@@ -1651,6 +1651,7 @@ class ad(univention.connector.ucs):
     def group_members_sync_to_ucs(self, key, object):
         """sync groupmembers in UCS if changend in AD"""
         log.debug("group_members_sync_to_ucs: object: %s", object)
+        start_time = time.time()
 
         object_key = key
         ad_object = self._object_mapping(object_key, object, 'ucs')
@@ -1682,6 +1683,7 @@ class ad(univention.connector.ucs):
         ldap_object_ucs = self.get_ucs_ldap_object(object['dn'])
         ucs_members = {x.decode('UTF-8') for x in ldap_object_ucs.get('uniqueMember', [])}
         log.debug("group_members_sync_to_ucs: ucs_members: %s", ucs_members)
+        log.process("group_members_sync_to_ucs: %s: %d AD members, %d UCS members", object['dn'], len(ad_members), len(ucs_members))
 
         # map members from AD to UCS and check if they exist
         # sets, not lists: the membership checks below are then O(1), not O(group size)
@@ -1865,6 +1867,10 @@ class ad(univention.connector.ucs):
             if uniqueMember_add or memberUid_del:
                 ucs_admin_object.fast_member_add(uniqueMember_add, memberUid_add)
                 group_member_cache.update(x.lower() for x in uniqueMember_add)
+
+        total_add = len(add_members['user']) + len(add_members['group']) + len(add_members['unknown']) + len(add_members['windowscomputer'])
+        total_del = len(del_members['user']) + len(del_members['group']) + len(del_members['windowscomputer'])
+        log.process("group_members_sync_to_ucs: %s: done in %.2fs (%d add, %d del)", object['dn'], time.time() - start_time, total_add, total_del)
 
     def set_userPrincipalName_from_ucr(self, key, object):
         object_key = key
