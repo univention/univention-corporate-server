@@ -53,6 +53,8 @@ if configRegistry.is_true('ldap/overlay/sssvlv', False):
     if max_per_conn > 0:
         print('sssvlv-maxperconn %d' % (max_per_conn,))
 
+print('overlay noopsrch')
+
 print('\n')
 if configRegistry['ldap/database/type'] == "mdb":
     print("maxsize\t%(ldap/database/mdb/maxsize)s" % configRegistry)

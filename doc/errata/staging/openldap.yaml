@@ -21,6 +21,5 @@ desc: |
    accounts. This restores the intended authentication behavior while
    retaining the changes introduced in UCS 5.2-7 for reporting disabled
    accounts correctly during authentication.
- * The `noopsrch` overlay has been added to `slapd-contrib`. This is currently
-   not installed but will be used in the future.
+ * The `noopsrch` overlay has been added to `slapd-contrib`.
 bug: [47516, 59976, 60026]

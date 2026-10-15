@@ -11,6 +11,7 @@ Package: univention-ldap-server
 Architecture: all
 Pre-Depends:
  slapd (>= 2.4.47+dfsg-3+deb10u7A~5.0.7.202405171616),
+ slapd-contrib,
  univention-ldap-client,
 Depends:
  bind9-host,
