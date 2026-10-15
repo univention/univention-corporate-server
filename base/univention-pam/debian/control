@@ -10,7 +10,6 @@ Build-Depends:
 Package: univention-pam
 Architecture: all
 Depends:
- lastlog2,
  libnss-extrausers,
  libpam-heimdal,
  libpam-lastlog2,
@@ -27,6 +26,7 @@ Depends:
  wngerman,
  ${misc:Depends},
 Recommends:
+ lastlog2,
  univention-home-mounter,
  univention-sudo,
 Description: UCS - login configuration
