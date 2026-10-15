@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.2) unstable; urgency=medium
+
+  * Bug #59964: improve license count performance
+
+ -- Florian Best <best@univention.de>  Thu, 15 Oct 2026 21:42:35 +0200
+
 univention-directory-manager-modules (17.7.1) unstable; urgency=medium
 
   * Bug #59976: ensure disabled user accounts remain disabled when userexpiry is set
