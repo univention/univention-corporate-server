@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Prune no longer required Linux kernel packages."""
 
+import sys
 from argparse import ArgumentParser, Namespace
 from os import uname
 
@@ -44,7 +45,8 @@ def prune(opt: Namespace) -> None:
     if opt.verbose:
         print("Installed kernel meta packages:\n %s" % ("\n ".join(sorted(str(pkg) for pkg in meta)),))
 
-    keep = (
+    keep = required(
+        cache,
         {
             dep.name
             for pkg in meta
@@ -53,24 +55,55 @@ def prune(opt: Namespace) -> None:
             if dep.name.startswith(PREFIX)
         }
         | cur
-        | top
+        | top,
     )
     if opt.verbose:
         print("Exception list for kernel packages:\n %s" % ("\n ".join(sorted(keep)),))
 
     cache.clear()
+    purge = set()
     for pkg in cache:
         if pkg.name.startswith(PREFIX) and pkg.is_installed:
             if pkg.name not in keep:
                 if opt.verbose:
                     print("Purging kernel package: %s" % (pkg.name,))
+                purge.add(pkg.name)
                 if not opt.dry_run:
                     pkg.mark_delete(purge=True)
             else:
                 if opt.verbose:
                     print("Keeping kernel package: %s" % (pkg.name, ))
 
+    # removing a kernel package other packages depend on removes them too, e.g. the UCS role packages
+    unexpected = sorted(pkg.name for pkg in cache.get_changes() if pkg.name not in purge)
+    if unexpected:
+        sys.exit("Aborting, purging the kernel packages would also change these packages:\n %s" % ("\n ".join(unexpected),))
+
     cache.commit()
+
+
+def required(cache: Cache, keep: set[str]) -> set[str]:
+    """Add the kernel packages installed non-kernel packages depend on, and their dependencies."""
+    todo = keep | {
+        dep.name
+        for pkg in cache
+        if pkg.is_installed and not pkg.name.startswith(PREFIX)
+        for alt in pkg.installed.dependencies
+        for dep in alt
+        if dep.name.startswith(PREFIX)
+    }
+    keep = set()
+    while todo:
+        name = todo.pop()
+        keep.add(name)
+        if name in cache and cache[name].is_installed:
+            todo |= {
+                dep.name
+                for alt in cache[name].installed.dependencies
+                for dep in alt
+                if dep.name.startswith(PREFIX)
+            } - keep
+    return keep
 
 
 if __name__ == "__main__":
