@@ -1572,10 +1572,22 @@ class ad(univention.connector.ucs):
         """Checks if value is in value_list"""
         return any(value.lower() == v.lower() for v in value_list)
 
+    @staticmethod
+    def _safe_dn(dn_string):
+        """DN(), but tolerant of malformed DN syntax - returns None instead of raising."""
+        try:
+            return DN(dn_string)
+        except ValueError:
+            log.warning("group_members_sync_to_ucs: could not parse DN, treating as no match: %s", dn_string)
+            return None
+
     def __compare_lowercase_dn(self, dn: str, dn_list: list[str]):
         """Checks if dn is in dn_list"""
+        dn_obj = self._safe_dn(dn)
+        if dn_obj is None:
+            return False
         # DN hashes/compares structurally and caches its hash, so this is O(1)
-        return DN(dn) in DN.set(dn_list)
+        return dn_obj in {d for d in (self._safe_dn(d) for d in dn_list) if d is not None}
 
     def one_group_member_sync_to_ucs(self, ucs_group_object, object):
         """sync groupmembers in UCS if changend one member in AD"""
@@ -1648,6 +1660,35 @@ class ad(univention.connector.ucs):
             log.debug("__group_cache_con_append_member: Append user %s to AD group member cache of %s", member_lower, group_lower)
             member_cache.add(member_lower)
 
+    def _batch_get_dns(self, dns, attr=('1.1',), chunk_size=200):
+        """
+        Fetch the given UCS DNs in as few searches as possible (one combined
+        entryDN filter per chunk, instead of one self.lo.get() round trip per
+        DN).
+
+        :returns: dict mapping dn.lower() to (dn, attributes) for every DN found.
+        """
+        found = {}
+        dns = list(dns)
+        for i in range(0, len(dns), chunk_size):
+            chunk = dns[i:i + chunk_size]
+            if not chunk:
+                continue
+            filter_s = '(|' + ''.join(f'(entryDN={escape_filter_chars(dn)})' for dn in chunk) + ')'
+            try:
+                for result_dn, result_attr in self.lo.search(filter=filter_s, base=self.lo.base, scope='sub', attr=list(attr)):
+                    if result_dn and result_dn not in ('None', ''):
+                        found[result_dn.lower()] = (result_dn, result_attr)
+            except ldap.SERVER_DOWN:
+                raise
+            except Exception:  # FIXME: which exception is to be caught?
+                log.process("group_members_sync_to_ucs: batch entryDN lookup failed for a chunk, falling back to per-member resolution", exc_info=True)
+        return found
+
+    def _batch_check_dns_exist(self, dns, chunk_size=200):
+        """Like _batch_get_dns(), but only returns dn.lower() -> dn for DNs that exist."""
+        return {k: dn for k, (dn, _attr) in self._batch_get_dns(dns, attr=['1.1'], chunk_size=chunk_size).items()}
+
     def group_members_sync_to_ucs(self, key, object):
         """sync groupmembers in UCS if changend in AD"""
         log.debug("group_members_sync_to_ucs: object: %s", object)
@@ -1689,6 +1730,11 @@ class ad(univention.connector.ucs):
         # sets, not lists: the membership checks below are then O(1), not O(group size)
         ucs_members_from_ad = {'user': set(), 'group': set(), 'windowscomputer': set(), 'unknown': set()}
         dn_mapping_ucs_member_to_ad = {}
+
+        # first pass: identify each not-yet-cached member and collect its
+        # persisted DN mapping (if any), without doing a UCS lookup yet
+        pending_fast = []  # (member_dn, mo_key, persisted_dn) - mapping known, just needs verifying
+        pending_slow = []  # (member_dn, mo_key, member_object) - needs full _object_mapping resolution
         for member_dn in ad_members:
             ucs_dn = self.group_member_mapping_cache_con.get(member_dn.lower())
             if ucs_dn:
@@ -1696,51 +1742,61 @@ class ad(univention.connector.ucs):
                 ucs_members_from_ad['unknown'].add(DN(ucs_dn))
                 dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
                 self.__group_cache_con_append_member(ad_object_dn, member_dn)
+                continue
+
+            log.debug("Did not find %s in AD group member cache", member_dn)
+            member_object = self.get_object(member_dn)
+            if not member_object:
+                continue
+            mo_key = self.__identify_ad_type({'dn': member_dn, 'attributes': member_object})
+            if not mo_key:
+                log.warning("group_members_sync_to_ucs: failed to identify object type of AD group member, ignore membership: %s", member_dn)
+                continue  # member is an object which will not be synced
+            if self._ignore_object(mo_key, {'dn': member_dn, 'attributes': member_object}):
+                log.debug("group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership", member_dn)
+                continue
+
+            persisted_dn = self._get_dn_by_con(member_dn.lower())
+            if persisted_dn:
+                pending_fast.append((member_dn, mo_key, self.dn_mapped_to_base(persisted_dn, self.lo.base)))
             else:
-                log.debug("Did not find %s in AD group member cache", member_dn)
+                pending_slow.append((member_dn, mo_key, member_object))
+
+        # second pass: verify every persisted-DN candidate in as few UCS
+        # searches as possible (one combined entryDN filter per chunk) instead
+        # of one self.lo.get() round trip per member - this is the dominant
+        # cost once most members already have a known mapping.
+        found = self._batch_check_dns_exist(dn for _member_dn, _mo_key, dn in pending_fast)
+        for member_dn, mo_key, persisted_dn in pending_fast:
+            ucs_dn = found.get(persisted_dn.lower())
+            if ucs_dn:
+                ucs_members_from_ad['unknown'].add(DN(ucs_dn))
+                dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
+                self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
+                self.__group_cache_con_append_member(ad_object_dn, member_dn)
+            else:
+                # persisted mapping is stale (deleted/moved) - resolve properly below
                 member_object = self.get_object(member_dn)
                 if member_object:
-                    mo_key = self.__identify_ad_type({'dn': member_dn, 'attributes': member_object})
-                    if not mo_key:
-                        log.warning("group_members_sync_to_ucs: failed to identify object type of AD group member, ignore membership: %s", member_dn)
-                        continue  # member is an object which will not be synced
-                    if self._ignore_object(mo_key, {'dn': member_dn, 'attributes': member_object}):
-                        log.debug("group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership", member_dn)
-                        continue
+                    pending_slow.append((member_dn, mo_key, member_object))
 
-                    # reuse an already-persisted DN mapping if it still resolves,
-                    # to skip _object_mapping()'s own (duplicate) existence check
-                    ucs_dn = None
-                    ucs_object_attr = None
-                    persisted_dn = self._get_dn_by_con(member_dn.lower())
-                    if persisted_dn:
-                        persisted_dn = self.dn_mapped_to_base(persisted_dn, self.lo.base)
-                        try:
-                            ucs_object_attr = self.lo.get(persisted_dn)
-                        except ldap.SERVER_DOWN:
-                            raise
-                        except Exception:
-                            ucs_object_attr = None
-                        if ucs_object_attr:
-                            ucs_dn = persisted_dn
+        # remaining members: no persisted mapping (or a stale one) to reuse
+        for member_dn, mo_key, member_object in pending_slow:
+            ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': member_object})['dn']
+            log.debug("group_members_sync_to_ucs: mapped AD group member to ucs DN %s", ucs_dn)
+            dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
 
-                    if not ucs_dn:
-                        ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': member_object})['dn']
-                        log.debug("group_members_sync_to_ucs: mapped AD group member to ucs DN %s", ucs_dn)
-
-                    dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
-
-                    try:
-                        if ucs_object_attr or self.lo.get(ucs_dn):
-                            ucs_members_from_ad['unknown'].add(DN(ucs_dn))
-                            self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
-                            self.__group_cache_con_append_member(ad_object_dn, member_dn)
-                        else:
-                            log.debug("Failed to find %s via self.lo.get", ucs_dn)
-                    except ldap.SERVER_DOWN:
-                        raise
-                    except Exception:  # FIXME: which exception is to be caught?
-                        log.process("group_members_sync_to_ucs: failed to get UCS dn for AD group member %s, assume object doesn't exist", member_dn, exc_info=True)
+            try:
+                if self.lo.get(ucs_dn):
+                    ucs_members_from_ad['unknown'].add(DN(ucs_dn))
+                    self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
+                    self.__group_cache_con_append_member(ad_object_dn, member_dn)
+                else:
+                    log.debug("Failed to find %s via self.lo.get", ucs_dn)
+            except ldap.SERVER_DOWN:
+                raise
+            except Exception:  # FIXME: which exception is to be caught?
+                log.process("group_members_sync_to_ucs: failed to get UCS dn for AD group member %s, assume object doesn't exist", member_dn, exc_info=True)
 
         # build an internal cache
         cache = {}
@@ -1748,7 +1804,7 @@ class ad(univention.connector.ucs):
         # check if members in UCS don't exist in AD, if true they need to be added in UCS
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
-            member_dn_obj = DN(member_dn)
+            member_dn_obj = self._safe_dn(member_dn)
             if not (
                 member_dn_obj in ucs_members_from_ad['user']
                 or member_dn_obj in ucs_members_from_ad['group']
@@ -1789,7 +1845,7 @@ class ad(univention.connector.ucs):
 
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
-            member_dn_obj = DN(member_dn)
+            member_dn_obj = self._safe_dn(member_dn)
 
             # DN equality is hashed/cached, so this is O(1) per category, not O(group size)
             matched_category = None
@@ -1846,17 +1902,21 @@ class ad(univention.connector.ucs):
             for member in add_members['user']:
                 _rdn_attribute, uid = member.rdn
                 memberUid_add.append(uid)
-            for member in add_members['unknown'] | add_members['windowscomputer']:  # user or group?
-                ucs_object_attr = self.lo.get(str(member))
-                uid = ucs_object_attr.get('uid')
+            # one batch of searches instead of one self.lo.get() per member
+            unknown_or_windowscomputer = add_members['unknown'] | add_members['windowscomputer']
+            uid_by_dn = self._batch_get_dns((str(member) for member in unknown_or_windowscomputer), attr=['uid'])
+            for member in unknown_or_windowscomputer:
+                hit = uid_by_dn.get(str(member).lower())
+                uid = hit[1].get('uid') if hit else None
                 if uid:
                     memberUid_add.append(uid[0].decode('UTF-8'))
             for member in del_members['user']:
                 (_rdn_attribute, uid, _flags) = str2dn(member)[0][0]
                 memberUid_del.append(uid)
+            uid_by_dn = self._batch_get_dns(del_members['windowscomputer'], attr=['uid'])
             for member in del_members['windowscomputer']:
-                ucs_object_attr = self.lo.get(member)
-                uid = ucs_object_attr.get('uid')
+                hit = uid_by_dn.get(member.lower())
+                uid = hit[1].get('uid') if hit else None
                 if uid:
                     memberUid_del.append(uid[0])
             # keep group_members_cache_ucs in sync with what we actually wrote
