@@ -1706,13 +1706,30 @@ class ad(univention.connector.ucs):
                         log.debug("group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership", member_dn)
                         continue
 
-                    ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': member_object})['dn']
-                    log.debug("group_members_sync_to_ucs: mapped AD group member to ucs DN %s", ucs_dn)
+                    # reuse an already-persisted DN mapping if it still resolves,
+                    # to skip _object_mapping()'s own (duplicate) existence check
+                    ucs_dn = None
+                    ucs_object_attr = None
+                    persisted_dn = self._get_dn_by_con(member_dn.lower())
+                    if persisted_dn:
+                        persisted_dn = self.dn_mapped_to_base(persisted_dn, self.lo.base)
+                        try:
+                            ucs_object_attr = self.lo.get(persisted_dn)
+                        except ldap.SERVER_DOWN:
+                            raise
+                        except Exception:
+                            ucs_object_attr = None
+                        if ucs_object_attr:
+                            ucs_dn = persisted_dn
+
+                    if not ucs_dn:
+                        ucs_dn = self._object_mapping(mo_key, {'dn': member_dn, 'attributes': member_object})['dn']
+                        log.debug("group_members_sync_to_ucs: mapped AD group member to ucs DN %s", ucs_dn)
 
                     dn_mapping_ucs_member_to_ad[ucs_dn.lower()] = member_dn
 
                     try:
-                        if self.lo.get(ucs_dn):
+                        if ucs_object_attr or self.lo.get(ucs_dn):
                             ucs_members_from_ad['unknown'].add(DN(ucs_dn))
                             self.group_member_mapping_cache_con[member_dn.lower()] = ucs_dn
                             self.__group_cache_con_append_member(ad_object_dn, member_dn)
