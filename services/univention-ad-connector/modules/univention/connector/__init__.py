@@ -9,6 +9,7 @@
 
 import collections
 import copy
+import functools
 import logging
 import os
 import pickle  # noqa: S403
@@ -130,6 +131,40 @@ def compare_lowercase(val1, val2):
         return dictonary_lowercase(val1) == dictonary_lowercase(val2)
     except Exception:  # FIXME: which exception is to be caught?
         return False
+
+
+# subtree/filter strings come from static connector config,
+# cache them. they get re-evaluated for every single object otherwise.
+@functools.lru_cache(maxsize=256)
+def _cached_lower_str2dn(value):
+    return ldap.dn.str2dn(value.lower())
+
+
+@functools.lru_cache(maxsize=256)
+def _split_filter_brackets(filter):
+    opened = []
+    closed = []
+    level = 0
+    for pos, char in enumerate(filter):
+        if char == '(':
+            if level == 0:
+                opened.append(pos)
+            level += 1
+        elif char == ')':
+            if level == 1:
+                closed.append(pos)
+            level -= 1
+        if level < 0:
+            raise ValueError(f"too many ')' in filter: {filter}")
+
+    if len(opened) != len(closed):
+        raise ValueError(f"'(' and ')' don't match in filter: {filter}")
+    return [filter[opened[i] + 1:closed[i]] for i in range(len(opened))]
+
+
+@functools.lru_cache(maxsize=256)
+def _compile_wildcard_regex(value):
+    return re.compile('^' + re.escape(value).replace(r"\*", ".*") + '$')
 
 
 # helper classes
@@ -1766,7 +1801,7 @@ class ucs:
 
     @staticmethod
     def _subtree_match(dn, subtree):
-        x = ldap.dn.str2dn(subtree.lower())
+        x = _cached_lower_str2dn(subtree)
         return ldap.dn.str2dn(dn.lower())[-len(x):] == x
 
     @staticmethod
@@ -1846,8 +1881,7 @@ class ucs:
                     return False
                 if not isinstance(attribute_values, list):
                     attribute_values = [attribute_values]
-                regex = '^' + re.escape(value).replace(r"\*", ".*") + '$'
-                pattern = re.compile(regex)
+                pattern = _compile_wildcard_regex(value)
                 for attribute_value in attribute_values:
                     if isinstance(attribute_value, bytes):
                         attribute_value = attribute_value.decode('UTF-8')
@@ -1861,34 +1895,11 @@ class ucs:
 
         def connecting_filter(filter, attributes):
             def walk(filter, attributes):
-                def split(filter):
-                    opened = []
-                    closed = []
-                    level = 0
-                    for pos, char in enumerate(filter):
-                        if char == '(':
-                            if level == 0:
-                                opened.append(pos)
-                            level += 1
-                        elif char == ')':
-                            if level == 1:
-                                closed.append(pos)
-                            level -= 1
-                        if level < 0:
-                            raise ValueError(f"too many ')' in filter: {filter}")
-
-                    if len(opened) != len(closed):
-                        raise ValueError(f"'(' and ')' don't match in filter: {filter}")
-                    filters = []
-                    for i in range(len(opened)):
-                        filters.append(filter[opened[i] + 1:closed[i]])
-                    return filters
-
                 if filter[0] == '(':
                     if not filter[-1] == ')':
                         raise ValueError(f"matching ) missing in filter: {filter}")
                     else:
-                        filters = split(filter)
+                        filters = _split_filter_brackets(filter)
                         results = []
                         for filter in filters:
                             results.append(subfilter(filter, attributes))
