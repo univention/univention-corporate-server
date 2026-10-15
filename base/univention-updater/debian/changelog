@@ -1,3 +1,11 @@
+univention-updater (17.7.2) unstable; urgency=medium
+
+  * Bug #43613: Block the update if the role packages are missing and
+    prevent their removal by univention-prune-kernels
+  * Bug #58827: Prevent the removal of the role packages by an APT hook
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Thu, 15 Oct 2026 15:17:56 +0300
+
 univention-updater (17.7.1) unstable; urgency=medium
 
   * Bug #53615: Handle missing serial file gracefully in Watched_File.timestamp()

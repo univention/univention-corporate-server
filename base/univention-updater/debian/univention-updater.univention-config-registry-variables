@@ -455,3 +455,10 @@ Description[en]=Deactivates the display of warnings when no more security update
 Type=bool
 Categories=service-software-management
 Default=no
+
+[updater/apt-hook/enabled]
+Description[de]=Ist diese Option aktiviert, verhindert ein APT-Hook das Entfernen der UCS-Rollenpakete, z.B. univention-server-master, das die meisten Pakete der UCS-Installation entfernt. Die Option sollte nur deaktiviert werden, wenn der Hook selbst einen Fehler verursacht. Für ein einzelnes beabsichtigtes Entfernen kann stattdessen die Datei '/etc/apt/univention-apt-hook.override' angelegt werden. Ist die Variable nicht gesetzt, ist der Hook aktiviert.
+Description[en]=If this option is activated, an APT hook prevents the removal of the UCS role packages, e.g. univention-server-master, which removes most packages of the UCS installation. The option should only be deactivated if the hook itself causes an error. For a single intended removal, the file '/etc/apt/univention-apt-hook.override' can be created instead. If the variable is unset, the hook is activated.
+Type=bool
+Categories=service-software-management
+Default=yes
