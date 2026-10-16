@@ -1,8 +1,13 @@
-univention-s4-connector (16.7.0) UNRELEASED; urgency=medium
+univention-s4-connector (16.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:51 +0300
+  [ Hassan Al Ibrahim ]
+  * Bug #60000: sync group members that exist only in Samba/AD in
+    group_members_sync_from_ucs
+
+ -- Hassan Al Ibrahim <hassan02939@gmail.com>  Fri, 16 Oct 2026 12:00:00 +0000
 
 univention-s4-connector (16.6.0) unstable; urgency=medium
 
