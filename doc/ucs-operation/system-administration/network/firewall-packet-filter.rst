@@ -6,44 +6,69 @@
 Packet filter with Univention Firewall
 ======================================
 
-Univention Firewall integrates a packet filter
-based on :program:`iptables` in Univention Corporate Server.
+Univention Corporate Server (UCS) includes Univention Firewall,
+which integrates :program:`iptables` with :ref:`Univention Configuration Registry <system-administration-ucr>` (UCR).
 
-It permits targeted filtering of undesired services
-and the protection of computers during installations.
-Furthermore, it provides the basis for complex scenarios,
-such as firewall rules and application level gateways.
-All UCS installations include Univention Firewall as standard.
+You can use Univention Firewall to control incoming network traffic
+by protocol, port, and action.
+During installation,
+UCS rejects incoming network traffic by default.
 
-By default, UCS blocks all incoming ports.
-Every UCS package provides rules, which free up the ports required by the package again.
-You primarily configure firewall rules through |UCSUCR| variables.
-For information about the definition of packet file rules,
+By default, UCS blocks incoming ports.
+UCS packages can provide rules that open the ports that they require.
+You primarily configure firewall rules through
+:term:`UCR variables <UCR variable>`.
+
+For information about packet filter rules,
 see :external+uv-dev-ref:ref:`misc-nacl`
 in :cite:t:`developer-reference`.
 
 In addition, the :file:`/etc/security/packetfilter.d/` directory
 contains scripts with firewall rules.
-The names of all scripts begin with two digits, which allows a
-numbered order. The scripts require the executable bit so that UCS can run them.
+The :file:`50_local.sh` script runs after the UCR-defined standard rules.
+The :program:`run-parts` command runs executable scripts
+in lexicographic filename order.
+Use a two-digit prefix as a convention to express the needed order.
+The complete filename determines the order.
 
-After changing the packet filter settings,
-you need to restart the :program:`univention-firewall` service.
+For information about configuring UCR-based firewall rules for IPv4 and IPv6,
+see :external+uv-dev-ref:ref:`misc-nacl`
+in :cite:t:`developer-reference`.
 
-You can deactivate Univention Firewall
-by setting the |UCSUCRV|
-:envvar:`security/packetfilter/disabled` to ``true``
+.. warning::
+
+   Firewall changes can interrupt remote access to the system.
+   Make sure that you have a fallback access method
+   before you restart the :program:`univention-firewall` service.
+
+After you change the packet filter settings,
+restart the :program:`univention-firewall` service.
+Test the affected TCP and UDP ports from a suitable host.
+
+.. warning::
+
+   Deactivating Univention Firewall reduces the protection of the system.
+   Make sure that you understand the effect on the system's network access
+   before you change the setting.
+
+To deactivate Univention Firewall,
+set the UCR variable
+:envvar:`security/packetfilter/disabled` to ``true``.
+
+To remove existing firewall rules,
+run :command:`service univention-firewall flush`.
+Verify the resulting network access from a suitable host.
 
 .. seealso::
 
-   `netfilter/iptables project homepage - Documentation about netfilter/iptables project <https://www.iptables.org/documentation/>`_
-      for an overview about available documentation for :program:`iptables`.
+   `netfilter/iptables documentation <https://www.iptables.org/documentation/>`_
+      provides an overview of the available :program:`iptables` documentation.
 
    `Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html>`_
-      a tutorial about :program:`iptables` from :spelling:word:`Oscar Andreasson`.
+      provides a tutorial about :program:`iptables` by :spelling:word:`Oscar Andreasson`.
 
    `iptables(8) manpage <https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_
-      for information about configuration of firewall rules with :program:`iptables`.
+      provides information about configuring firewall rules with :program:`iptables`.
 
    `Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO/packet-filtering-HOWTO.html>`_
-      for a how-to about packet filtering with :program:`iptables`.
+      explains packet filtering with :program:`iptables`.
