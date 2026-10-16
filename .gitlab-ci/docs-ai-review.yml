@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+include:
+  - component: $CI_SERVER_FQDN/univention/dev/tooling/ci-components/ai-review@2.21.0
+    inputs:
+      stage: docs-review
+      validate: false
+      model: "litellm/anthropic/claude-sonnet-5"
+      inline_tag: "#docs-ai-review-inline"
+      summary_tag: "#docs-ai-review-summary"
+      validation_tag: "#docs-ai-review-validation"
+      lenses:
+        - docs
+        - docs-rst
+        - docs-english-style
+        - docs-procedures
+
+stages:
+  - docs-review

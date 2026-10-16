@@ -116,14 +116,14 @@ doc-pipeline:
     - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"
       when: never
     - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"
-    - changes:
-      - "doc/[^e]*/**/*"
-      - "doc/e[^r]*/**/*"
-      - "doc/er[^r]*/**/*"
-      - "doc/err[^a]*/**/*"
-      - "doc/erra[^t]*/**/*"
-      - "doc/errat[^a]*/**/*"
-      - "doc/errata?*/**/*"
+    - changes: &docs-changes
+        - "doc/[^e]*/**/*"
+        - "doc/e[^r]*/**/*"
+        - "doc/er[^r]*/**/*"
+        - "doc/err[^a]*/**/*"
+        - "doc/erra[^t]*/**/*"
+        - "doc/errat[^a]*/**/*"
+        - "doc/errata?*/**/*"
   needs:
     - job: generate-config
   trigger:
@@ -133,6 +133,21 @@ doc-pipeline:
     strategy: depend
     forward:
       pipeline_variables: true
+
+docs-ai-review-pipeline:
+  stage: build
+  allow_failure: true
+  needs: []
+  rules:
+    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"
+      when: never
+    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes: *docs-changes
+  trigger:
+    include:
+      - local: .gitlab-ci/docs-ai-review.yml
+    strategy: mirror
 
 deb-pipeline:
   stage: build
