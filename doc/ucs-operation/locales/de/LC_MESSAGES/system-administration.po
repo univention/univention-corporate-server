@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 17:41+0000\n"
-"PO-Revision-Date: 2026-10-14 19:52+0200\n"
+"POT-Creation-Date: 2026-10-17 19:41+0000\n"
+"PO-Revision-Date: 2026-10-17 21:44+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -2486,6 +2486,192 @@ msgstr ":envvar:`nameserver1` bis :envvar:`nameserver3`"
 msgid ":envvar:`dns/forwarder1` to :envvar:`dns/forwarder3`"
 msgstr ":envvar:`dns/forwarder1` bis :envvar:`dns/forwarder3`"
 
+#: ../../system-administration/network/firewall-packet-filter.rst:7
+msgid "Packet filter with Univention Firewall"
+msgstr "Paketfilter mit Univention Firewall"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:9
+msgid ""
+"Univention Corporate Server (UCS) includes Univention Firewall, which "
+"integrates :program:`iptables` with :ref:`Univention Configuration "
+"Registry <system-administration-ucr>` (UCR)."
+msgstr ""
+"Univention Corporate Server (UCS) enthält Univention Firewall, die "
+":program:`iptables` in die :ref:`Univention Configuration Registry "
+"<system-administration-ucr>` (UCR) integriert."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:12
+msgid ""
+"You can use Univention Firewall to control incoming network traffic by "
+"protocol, port, and action. During installation, UCS rejects incoming "
+"network traffic by default."
+msgstr ""
+"Mit Univention Firewall können Sie eingehenden Netzwerkverkehr nach "
+"Protokoll, Port und Aktion steuern. Während der Installation weist UCS "
+"eingehenden Netzwerkverkehr standardmäßig ab."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:17
+msgid ""
+"By default, UCS blocks incoming ports. UCS packages can provide rules "
+"that open the ports that they require. You primarily configure firewall "
+"rules through :term:`UCR variables <UCR variable>`."
+msgstr ""
+"Standardmäßig blockiert UCS eingehende Ports. UCS-Pakete können Regeln "
+"bereitstellen, die die benötigten Ports öffnen. Firewall-Regeln "
+"konfigurieren Sie hauptsächlich über :term:`UCR-Variablen <UCR "
+"variable>`."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:22
+msgid ""
+"For information about packet filter rules, see :external+uv-dev-ref:ref"
+":`misc-nacl` in :cite:t:`developer-reference`."
+msgstr ""
+"Informationen über Paketfilterregeln finden Sie unter :external+uv-dev-"
+"ref:ref:`misc-nacl` in :cite:t:`developer-reference`."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:26
+msgid ""
+"In addition, the :file:`/etc/security/packetfilter.d/` directory contains"
+" scripts with firewall rules. The :file:`50_local.sh` script runs after "
+"the UCR-defined standard rules. The :program:`run-parts` command runs "
+"executable scripts in lexicographic filename order. Use a two-digit "
+"prefix as a convention to express the needed order. The complete filename"
+" determines the order."
+msgstr ""
+"Außerdem enthält das Verzeichnis :file:`/etc/security/packetfilter.d/` "
+"Skripte mit Firewall-Regeln. Das Skript :file:`50_local.sh` wird nach den"
+" durch UCR definierten Standardregeln ausgeführt. Der Befehl :program"
+":`run-parts` führt ausführbare Skripte in lexikografischer Reihenfolge "
+"der Dateinamen aus. Verwenden Sie gemäß Konvention ein zweistelliges "
+"Präfix, um die erforderliche Reihenfolge auszudrücken. Der vollständige "
+"Dateiname bestimmt die Reihenfolge."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:34
+msgid ""
+"For information about configuring UCR-based firewall rules for IPv4 and "
+"IPv6, see :external+uv-dev-ref:ref:`misc-nacl` in :cite:t:`developer-"
+"reference`."
+msgstr ""
+"Informationen über die Konfiguration von UCR basierten Firewall-Regeln "
+"für IPv4 und IPv6 finden Sie unter :external+uv-dev-ref:ref:`misc-nacl` "
+"in :cite:t:`developer-reference`."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:40
+msgid ""
+"Firewall changes can interrupt remote access to the system. Make sure "
+"that you have a fallback access method before you restart the :program"
+":`univention-firewall` service."
+msgstr ""
+"Änderungen an der Firewall können den Fernzugriff auf das System "
+"unterbrechen. Stellen Sie sicher, dass Sie über eine alternative "
+"Zugriffsmethode verfügen, bevor Sie den Dienst :program:`univention-"
+"firewall` neu starten."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:44
+msgid ""
+"After you change the packet filter settings, restart the :program"
+":`univention-firewall` service. Test the affected TCP and UDP ports from "
+"a suitable host."
+msgstr ""
+"Nachdem Sie die Paketfiltereinstellungen geändert haben, starten Sie den "
+"Dienst :program:`univention-firewall` neu. Testen Sie die betroffenen "
+"TCP- und :spelling:word:`UDP-Ports` von einem geeigneten Host aus."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:50
+msgid ""
+"Deactivating Univention Firewall reduces the protection of the system. "
+"Make sure that you understand the effect on the system's network access "
+"before you change the setting."
+msgstr ""
+"Das Deaktivieren von Univention Firewall verringert den Schutz des "
+"Systems. Stellen Sie sicher, dass Sie die Auswirkung auf den "
+"Netzwerkzugriff des Systems verstehen, bevor Sie die Einstellung ändern."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:54
+msgid ""
+"To deactivate Univention Firewall, set the UCR variable "
+":envvar:`security/packetfilter/disabled` to ``true``."
+msgstr ""
+"Um Univention Firewall zu deaktivieren, setzen Sie die UCR-Variable "
+":envvar:`security/packetfilter/disabled` auf ``true``."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:58
+msgid ""
+"To remove existing firewall rules, run the command in :numref:`system-"
+"administration-network-firewall-remove-rules-listing`. Verify the "
+"resulting network access from a suitable host."
+msgstr ""
+"Um vorhandene Firewall-Regeln zu entfernen, führen Sie den Befehl in "
+":numref:`system-administration-network-firewall-remove-rules-listing`"
+" aus. Überprüfen Sie den resultierenden "
+"Netzwerkzugriff von einem geeigneten Host aus."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:62
+msgid "Remove existing firewall rules"
+msgstr "Existierende Firewall-Regeln entfernen"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:62
+msgid "$ service univention-firewall flush"
+msgstr "$ service univention-firewall flush"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:70
+msgid ""
+"`netfilter/iptables documentation "
+"<https://www.iptables.org/documentation/>`_"
+msgstr ""
+"`netfilter/iptables-Dokumentation "
+"<https://www.iptables.org/documentation/>`_"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:71
+msgid "provides an overview of the available :program:`iptables` documentation."
+msgstr ""
+"bietet einen Überblick über die verfügbare "
+":program:`iptables`-Dokumentation."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:73
+msgid ""
+"`Iptables Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-"
+"tutorial.html>`_"
+msgstr ""
+"`Iptables-Tutorial <https://www.frozentux.net/iptables-tutorial/iptables-"
+"tutorial.html>`_"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:74
+msgid ""
+"provides a tutorial about :program:`iptables` by :spelling:word:`Oscar "
+"Andreasson`."
+msgstr ""
+"bietet ein Tutorial zu :program:`iptables` von :spelling:word:`Oscar "
+"Andreasson`."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:76
+msgid ""
+"`iptables(8) manpage "
+"<https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_"
+msgstr ""
+"`iptables(8)-Manpage "
+"<https://manpages.debian.org/bookworm/iptables/iptables.8.en.html>`_"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:77
+msgid ""
+"provides information about configuring firewall rules with "
+":program:`iptables`."
+msgstr ""
+"enthält Informationen über die Konfiguration von Firewall-Regeln mit "
+":program:`iptables`."
+
+#: ../../system-administration/network/firewall-packet-filter.rst:79
+msgid ""
+"`Packet Filtering HOWTO <https://www.iptables.org/documentation/HOWTO"
+"/packet-filtering-HOWTO.html>`_"
+msgstr ""
+"`HOWTO zur Paketfilterung <https://www.iptables.org/documentation/HOWTO"
+"/packet-filtering-HOWTO.html>`_"
+
+#: ../../system-administration/network/firewall-packet-filter.rst:80
+msgid "explains packet filtering with :program:`iptables`."
+msgstr "erklärt die Paketfilterung mit :program:`iptables`."
+
 #: ../../system-administration/network/index.rst:9
 msgid ""
 "This chapter covers network configuration in Nubus for UCS. You can "
@@ -3101,11 +3287,11 @@ msgid ""
 "Under *NFS shares to mount*, select an *NFS share* and specify its *Mount"
 " point*, as shown in :numref:`system-administration-nfs-share-figure`."
 msgstr ""
-"Öffnen Sie im Verwaltungsmodul :guilabel:`Rechner` in der *Management UI* den "
-"Zielrechner und weisen Sie eine *NFS-Freigaben*-Richtlinie zu oder erstellen "
-"Sie eine. Wählen Sie unter *NFS-Freigaben einbinden* eine *NFS-Freigabe* aus "
-"und geben Sie deren *Mount point* an, wie in "
-":numref:`system-administration-nfs-share-figure` gezeigt."
+"Öffnen Sie im Verwaltungsmodul :guilabel:`Rechner` in der *Management UI*"
+" den Zielrechner und weisen Sie eine *NFS-Freigaben*-Richtlinie zu oder "
+"erstellen Sie eine. Wählen Sie unter *NFS-Freigaben einbinden* eine *NFS-"
+"Freigabe* aus und geben Sie deren *Mount point* an, wie in :numref"
+":`system-administration-nfs-share-figure` gezeigt."
 
 #: ../../system-administration/system-services.rst:107
 msgid "NFS mounts policy showing the NFS share selection and Mount point fields."
