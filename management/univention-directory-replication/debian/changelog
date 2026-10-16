@@ -1,8 +1,12 @@
-univention-directory-replication (15.7.0) UNRELEASED; urgency=medium
+univention-directory-replication (15.7.0) unstable; urgency=medium
 
+  [ Rehema Owino ]
   * Bug #59722: UCS 5.2-7 version bump
 
- -- Rehema Owino <rehema.owino@univention.de>  Thu, 10 Sep 2026 16:45:47 +0300
+  [ Florian Best ]
+  * Bug #59964: check idle LDAP connections before reuse
+
+ -- Florian Best <best@univention.de>  Fri, 16 Oct 2026 12:52:52 +0200
 
 univention-directory-replication (15.6.0) unstable; urgency=medium
 

@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-directory-replication
+fix: 15.7.0
+desc: |
+ This update addresses the following issue:
+ * Idle LDAP connections were not checked before being reused for replication,
+   causing unnecessary connection errors when the LDAP server had closed them
+   due to inactivity. Stale connections are now detected and re-established
+   before processing replication transactions. Additionally, the log level for
+   automatic reconnection has been lowered from `WARNING` to `PROCESS`.
+bug: [59964]
