@@ -55,6 +55,7 @@ SCHEMA_FILE = os.path.join(LDAP_DIR, 'schema.conf')
 ROOTPW_FILE = '/etc/ldap/rootpw.conf'
 CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
 MAX_LDAP_RETRIES = int(listener.configRegistry.get('replication/ldap/retries', '30'))
+IDLE_TIMEOUT = 300  # a value smaller than the UCRv ldap/idletimeout of the primary
 
 EXCLUDE_ATTRIBUTES = {attr.lower() for attr in (
     'subschemaSubentry',
@@ -162,18 +163,22 @@ class LDIFObject:
         self.__print_attribute('deleteoldrdn', b'1' if delold else b'0')
         self.__end_entry()
 
+    def whoami_s(self):
+        pass
+
 
 reconnect: bool = False
 connection: ldap.ldapobject | None = None
+last_ldap_activity = time.monotonic()
 
 
 def connect(ldif: bool = False) -> ldap.ldapobject:
-    global connection, reconnect
+    global connection, reconnect, last_ldap_activity
 
     if connection and not reconnect:
         return connection
 
-    if not os.path.exists(LDIF_FILE) and not ldif:
+    if not ldif and not os.path.exists(LDIF_FILE):
         # ldap connection
         if not os.path.exists('/etc/ldap/rootpw.conf'):
             pw = new_password()
@@ -187,6 +192,7 @@ def connect(ldif: bool = False) -> ldap.ldapobject:
         local_port = int(listener.configRegistry.get('slapd/port', '7389').split(',')[0])
         connection = ldap.initialize('ldap://127.0.0.1:%d' % (local_port,))
         connection.simple_bind_s('cn=update,' + listener.configRegistry['ldap/base'], pw)
+        last_ldap_activity = time.monotonic()
     else:
         connection = LDIFObject(LDIF_FILE)
 
@@ -411,7 +417,7 @@ def check_file_system_space() -> None:
 
 
 def handler(dn: str, new: dict[str, list[bytes]], listener_old: dict[str, list[bytes]], operation: str) -> Any:
-    global reconnect
+    global reconnect, last_ldap_activity
     if not slave:
         return 1
 
@@ -427,6 +433,17 @@ def handler(dn: str, new: dict[str, list[bytes]], listener_old: dict[str, list[b
     connect_count = 0
     connected = 0
 
+    if connection and time.monotonic() - last_ldap_activity > IDLE_TIMEOUT:
+        try:
+            connection.whoami_s()
+        except ldap.SERVER_DOWN:
+            reconnect = True
+        except ldap.LDAPError as ex:
+            log_ldap(ud.PROCESS, 'Error reusing connection - retrying', ex, dn=dn)
+            reconnect = True
+        else:
+            last_ldap_activity = time.monotonic()
+
     while connect_count <= MAX_LDAP_RETRIES and not connected:
         try:
             lo = connect()
@@ -437,7 +454,7 @@ def handler(dn: str, new: dict[str, list[bytes]], listener_old: dict[str, list[b
                 reconnect = True
                 lo = connect(ldif=True)
             else:
-                log_ldap(ud.WARN, 'Can not connect LDAP Server, retry in 10 seconds', ex)
+                log_ldap(ud.PROCESS, 'Can not connect LDAP Server, retry in 10 seconds', ex)
                 reconnect = True
                 time.sleep(10)
         else:
@@ -562,8 +579,10 @@ def handler(dn: str, new: dict[str, list[bytes]], listener_old: dict[str, list[b
 
             ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
             _delete_dn_recursive(lo, dn)
+
+        last_ldap_activity = time.monotonic()
     except ldap.SERVER_DOWN as ex:
-        log_ldap(ud.WARN, 'retrying', ex)
+        log_ldap(ud.PROCESS, 'retrying', ex)
         reconnect = True
         handler(dn, new, listener_old, operation)
     except ldap.ALREADY_EXISTS as ex:
@@ -636,7 +655,7 @@ def log_ldap(severity: int, msg: str, ex: ldap.LDAPError, dn: str | None = None)
         pass
 
     try:
-        ud.debug(ud.LISTENER, severity, '\tmachted dn: %(matched)s' % args)
+        ud.debug(ud.LISTENER, severity, '\tmatched dn: %(matched)s' % args)
     except LookupError:
         pass
 
