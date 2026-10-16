@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 16. Oct 2026
+     - :ref:`system-administration-network-firewall`
+     - Add section about packet filter firewall.
+
    * - 14. Oct 2026
      - :ref:`system-administration-nfs-share`
      - Add section about mounting a NFS share on a computer.
