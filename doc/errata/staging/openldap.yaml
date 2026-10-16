@@ -3,7 +3,7 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: openldap
-fix: 2.5.13+dfsg-5A~5.2.0.202610021156
+fix: 2.5.13+dfsg-5A~5.2.0.202610131417
 desc: |
  This update addresses the following issues:
  * The `shadowbind` overlay did not correctly handle LDAP accounts with
