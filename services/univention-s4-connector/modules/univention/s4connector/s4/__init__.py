@@ -1515,7 +1515,7 @@ class s4(univention.s4connector.ucs):
         log.debug("group_members_sync_to_ucs: ucs_members: %s", ucs_members)
 
         # map members from AD to UCS and check if they exist
-        ucs_members_from_s4 = {'user': [], 'group': [], 'unknown': []}
+        ucs_members_from_s4 = {'user': [], 'group': [], 'windowscomputer': [], 'unknown': []}
         dn_mapping_ucs_member_to_s4 = {}
         for member_dn in s4_members:
             ucs_dn = self.group_member_mapping_cache_con.get(member_dn.lower())
@@ -1559,7 +1559,12 @@ class s4(univention.s4connector.ucs):
         # check if members in UCS don't exist in AD, if true they need to be added in UCS
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
-            if not (member_dn_lower in ucs_members_from_s4['user'] or member_dn_lower in ucs_members_from_s4['group'] or member_dn_lower in ucs_members_from_s4['unknown']):
+            if not (
+                member_dn_lower in ucs_members_from_s4['user']
+                or member_dn_lower in ucs_members_from_s4['group']
+                or member_dn_lower in ucs_members_from_s4['unknown']
+                or member_dn_lower in ucs_members_from_s4['windowscomputer']
+            ):
                 try:
                     cache[member_dn] = self.lo.get(member_dn)
                     ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': cache[member_dn]}
@@ -1587,7 +1592,7 @@ class s4(univention.s4connector.ucs):
 
         log.debug("group_members_sync_to_ucs: dn_mapping_ucs_member_to_s4=%s", dn_mapping_ucs_member_to_s4)
         add_members = copy.deepcopy(ucs_members_from_s4)
-        del_members = {'user': [], 'group': []}
+        del_members = {'user': [], 'group': [], 'windowscomputer': []}
 
         log.debug("group_members_sync_to_ucs: members to add initialized: %s", add_members)
 
@@ -1599,6 +1604,8 @@ class s4(univention.s4connector.ucs):
                 add_members['group'].remove(member_dn_lower)
             elif member_dn_lower in ucs_members_from_s4['unknown']:
                 add_members['unknown'].remove(member_dn_lower)
+            elif member_dn_lower in ucs_members_from_s4['windowscomputer']:
+                add_members['windowscomputer'].remove(member_dn_lower)
             else:
                 # remove member only if he was in the cache
                 # otherwise it is possible that the user was just created on UCS
@@ -1625,18 +1632,26 @@ class s4(univention.s4connector.ucs):
         log.debug("group_members_sync_to_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_to_ucs: members to del: %s", del_members)
 
-        if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown']:
+        if any((
+            add_members['user'],
+            add_members['group'],
+            del_members['user'],
+            del_members['group'],
+            add_members['unknown'],
+            add_members['windowscomputer'],
+            del_members['windowscomputer'],
+        )):
             ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
             ucs_admin_object.open()
 
-            uniqueMember_add = add_members['user'] + add_members['group'] + add_members['unknown']
-            uniqueMember_del = del_members['user'] + del_members['group']
+            uniqueMember_add = add_members['user'] + add_members['group'] + add_members['unknown'] + add_members['windowscomputer']
+            uniqueMember_del = del_members['user'] + del_members['group'] + del_members['windowscomputer']
             memberUid_add = []
             memberUid_del = []
             for member in add_members['user']:
                 (_rdn_attribute, uid, _flags) = str2dn(member)[0][0]
                 memberUid_add.append(uid)
-            for member in add_members['unknown']:  # user or group?
+            for member in add_members['unknown'] + add_members['windowscomputer']:  # user or group?
                 ucs_object_attr = self.lo.get(member)
                 uid = ucs_object_attr.get('uid')
                 if uid:
@@ -1644,6 +1659,11 @@ class s4(univention.s4connector.ucs):
             for member in del_members['user']:
                 (_rdn_attribute, uid, _flags) = str2dn(member)[0][0]
                 memberUid_del.append(uid)
+            for member in del_members['windowscomputer']:
+                ucs_object_attr = self.lo.get(member)
+                uid = ucs_object_attr.get('uid')
+                if uid:
+                    memberUid_del.append(uid[0])
             if uniqueMember_del or memberUid_del:
                 ucs_admin_object.fast_member_remove(uniqueMember_del, memberUid_del, ignore_license=True)
             if uniqueMember_add or memberUid_del:
