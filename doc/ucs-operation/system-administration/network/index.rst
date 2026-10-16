@@ -64,3 +64,4 @@ Virtual networks (VLANs)
 
    basic
    advanced
+   firewall-packet-filter
