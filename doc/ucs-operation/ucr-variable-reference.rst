@@ -2311,6 +2311,21 @@ This section provides a reference for UCR variables.
    :Default value: ``false``
    :Type: boolean
 
+.. envvar:: security/packetfilter/disabled
+
+   Controls whether Nubus for UCS uses the Univention Firewall.
+   When set to ``true`` or ``on``,
+   UCS deactivates the firewall.
+   When unset or set to any other value,
+   UCS uses the firewall.
+
+   To remove existing firewall rules after deactivating the firewall,
+   run :command:`service univention-firewall flush`.
+
+   :Default value: not set
+   :Possible values: ``true``, ``on``, ``false``, ``off``, not set
+   :Type: boolean
+
 .. envvar:: server/role
 
    Contains the system role of the system.
