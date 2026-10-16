@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 09:57+0000\n"
+"POT-Creation-Date: 2026-10-16 13:50+0000\n"
 "PO-Revision-Date: 2026-10-14 12:13+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -88,11 +88,11 @@ msgstr "Standardwert"
 #: ../../ucr-variable-reference.rst:2051 ../../ucr-variable-reference.rst:2111
 #: ../../ucr-variable-reference.rst:2135 ../../ucr-variable-reference.rst:2151
 #: ../../ucr-variable-reference.rst:2192 ../../ucr-variable-reference.rst:2227
-#: ../../ucr-variable-reference.rst:2278 ../../ucr-variable-reference.rst:2340
-#: ../../ucr-variable-reference.rst:2359 ../../ucr-variable-reference.rst:2420
-#: ../../ucr-variable-reference.rst:2432 ../../ucr-variable-reference.rst:2444
-#: ../../ucr-variable-reference.rst:2485 ../../ucr-variable-reference.rst:2495
-#: ../../ucr-variable-reference.rst:2515
+#: ../../ucr-variable-reference.rst:2278 ../../ucr-variable-reference.rst:2325
+#: ../../ucr-variable-reference.rst:2355 ../../ucr-variable-reference.rst:2374
+#: ../../ucr-variable-reference.rst:2435 ../../ucr-variable-reference.rst:2447
+#: ../../ucr-variable-reference.rst:2459 ../../ucr-variable-reference.rst:2500
+#: ../../ucr-variable-reference.rst:2510 ../../ucr-variable-reference.rst:2530
 msgid "not set"
 msgstr "nicht gesetzt"
 
@@ -141,8 +141,8 @@ msgstr "Typ"
 #: ../../ucr-variable-reference.rst:2053 ../../ucr-variable-reference.rst:2090
 #: ../../ucr-variable-reference.rst:2194 ../../ucr-variable-reference.rst:2229
 #: ../../ucr-variable-reference.rst:2280 ../../ucr-variable-reference.rst:2312
-#: ../../ucr-variable-reference.rst:2392 ../../ucr-variable-reference.rst:2506
-#: ../../ucr-variable-reference.rst:2516
+#: ../../ucr-variable-reference.rst:2327 ../../ucr-variable-reference.rst:2407
+#: ../../ucr-variable-reference.rst:2521 ../../ucr-variable-reference.rst:2531
 msgid "boolean"
 msgstr "Boolesche Variable"
 
@@ -168,7 +168,7 @@ msgstr "``5``"
 #: ../../ucr-variable-reference.rst:1619 ../../ucr-variable-reference.rst:1631
 #: ../../ucr-variable-reference.rst:1656 ../../ucr-variable-reference.rst:1875
 #: ../../ucr-variable-reference.rst:1890 ../../ucr-variable-reference.rst:1906
-#: ../../ucr-variable-reference.rst:1921 ../../ucr-variable-reference.rst:2374
+#: ../../ucr-variable-reference.rst:1921 ../../ucr-variable-reference.rst:2389
 msgid "integer"
 msgstr "Ganzzahl"
 
@@ -336,10 +336,10 @@ msgstr "nicht gesetzt; ``localhost`` bei Druckserver-Installationen"
 #: ../../ucr-variable-reference.rst:2112 ../../ucr-variable-reference.rst:2136
 #: ../../ucr-variable-reference.rst:2166 ../../ucr-variable-reference.rst:2179
 #: ../../ucr-variable-reference.rst:2204 ../../ucr-variable-reference.rst:2217
-#: ../../ucr-variable-reference.rst:2292 ../../ucr-variable-reference.rst:2322
-#: ../../ucr-variable-reference.rst:2421 ../../ucr-variable-reference.rst:2433
-#: ../../ucr-variable-reference.rst:2445 ../../ucr-variable-reference.rst:2458
-#: ../../ucr-variable-reference.rst:2486 ../../ucr-variable-reference.rst:2496
+#: ../../ucr-variable-reference.rst:2292 ../../ucr-variable-reference.rst:2337
+#: ../../ucr-variable-reference.rst:2436 ../../ucr-variable-reference.rst:2448
+#: ../../ucr-variable-reference.rst:2460 ../../ucr-variable-reference.rst:2473
+#: ../../ucr-variable-reference.rst:2501 ../../ucr-variable-reference.rst:2511
 msgid "string"
 msgstr "Zeichenkette"
 
@@ -379,7 +379,7 @@ msgstr "``0 8 * * *``"
 
 #: ../../ucr-variable-reference.rst:167 ../../ucr-variable-reference.rst:433
 #: ../../ucr-variable-reference.rst:1204 ../../ucr-variable-reference.rst:1723
-#: ../../ucr-variable-reference.rst:2404
+#: ../../ucr-variable-reference.rst:2419
 msgid "cron"
 msgstr "Cron"
 
@@ -1498,8 +1498,8 @@ msgid ""
 " DNs with a pipe character (``|``)."
 msgstr ""
 "Gibt die LDAP Distinguished Names (DNs) von Gruppen an, deren Mitglieder "
-"Einträge unterhalb von ``cn=blocklists,cn=internal`` lesen dürfen. Trennen "
-"Sie mehrere Gruppen-DNs durch ein Pipe-Zeichen (``|``)."
+"Einträge unterhalb von ``cn=blocklists,cn=internal`` lesen dürfen. "
+"Trennen Sie mehrere Gruppen-DNs durch ein Pipe-Zeichen (``|``)."
 
 #: ../../ucr-variable-reference.rst:981
 msgid ""
@@ -1507,17 +1507,17 @@ msgid ""
 "you set this variable, only members of the configured groups retain read "
 "access."
 msgstr ""
-"Wenn diese Variable nicht gesetzt ist, kann jeder Blocklisteneinträge lesen. "
-"Wenn Sie diese Variable setzen, behalten nur Mitglieder der konfigurierten "
-"Gruppen den Lesezugriff."
+"Wenn diese Variable nicht gesetzt ist, kann jeder Blocklisteneinträge "
+"lesen. Wenn Sie diese Variable setzen, behalten nur Mitglieder der "
+"konfigurierten Gruppen den Lesezugriff."
 
 #: ../../ucr-variable-reference.rst:986
 msgid ""
 "This variable applies on :term:`Primary Directory Node` and :term:`Backup"
 " Directory Node` systems."
 msgstr ""
-"Diese Variable gilt auf Systemen mit der Rolle :term:`Primary Directory Node` "
-"und :term:`Backup Directory Node`."
+"Diese Variable gilt auf Systemen mit der Rolle :term:`Primary Directory "
+"Node` und :term:`Backup Directory Node`."
 
 #: ../../ucr-variable-reference.rst:989 ../../ucr-variable-reference.rst:1012
 msgid ""
@@ -1527,9 +1527,9 @@ msgid ""
 "domain-blocklists` in :cite:t:`uv-nubus-manual`."
 msgstr ""
 "Informationen zum Anwenden der LDAP-ACLs finden Sie unter :ref:`domain-"
-"infrastructure-udm-blocklists`. Allgemeine Informationen zum Verwaltungsmodul "
-"*Blocklists* finden Sie unter :external+uv-nubus-manual:ref:`nubus-domain-"
-"blocklists` in :cite:t:`uv-nubus-manual`."
+"infrastructure-udm-blocklists`. Allgemeine Informationen zum "
+"Verwaltungsmodul *Blocklists* finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-domain-blocklists` in :cite:t:`uv-nubus-manual`."
 
 #: ../../ucr-variable-reference.rst:1000
 msgid ""
@@ -1549,17 +1549,17 @@ msgid ""
 "default write access for UCS nodes and members of the ``Domain Admins`` "
 "group."
 msgstr ""
-"Mitglieder konfigurierter Gruppen können Blocklisteneinträge ändern, erhalten "
-"jedoch keinen Schreibzugriff auf andere Einträge unterhalb von "
-"``cn=internal``. Auf :term:`Primary Directory Node`-Systemen ergänzt dieser "
-"Zugriff den standardmäßigen Schreibzugriff für UCS Knoten und Mitglieder der "
-"Gruppe ``Domain Admins``."
+"Mitglieder konfigurierter Gruppen können Blocklisteneinträge ändern, "
+"erhalten jedoch keinen Schreibzugriff auf andere Einträge unterhalb von "
+"``cn=internal``. Auf :term:`Primary Directory Node`-Systemen ergänzt "
+"dieser Zugriff den standardmäßigen Schreibzugriff für UCS Knoten und "
+"Mitglieder der Gruppe ``Domain Admins``."
 
 #: ../../ucr-variable-reference.rst:1010
 msgid "This variable applies only on :term:`Primary Directory Node` systems."
 msgstr ""
-"Diese Variable gilt nur auf Systemen mit der Rolle :term:`Primary Directory "
-"Node`."
+"Diese Variable gilt nur auf Systemen mit der Rolle :term:`Primary "
+"Directory Node`."
 
 #: ../../ucr-variable-reference.rst:1023
 #, python-brace-format
@@ -1934,7 +1934,7 @@ msgstr "``0``"
 msgid "Error messages only."
 msgstr "Nur Fehlermeldungen."
 
-#: ../../ucr-variable-reference.rst ../../ucr-variable-reference.rst:2467
+#: ../../ucr-variable-reference.rst ../../ucr-variable-reference.rst:2482
 msgid "``1``"
 msgstr "``1``"
 
@@ -2037,7 +2037,7 @@ msgstr ""
 "administration-logging`."
 
 #: ../../ucr-variable-reference.rst:1335 ../../ucr-variable-reference.rst:1696
-#: ../../ucr-variable-reference.rst:1762 ../../ucr-variable-reference.rst:2390
+#: ../../ucr-variable-reference.rst:1762 ../../ucr-variable-reference.rst:2405
 msgid "``yes``"
 msgstr "``yes``"
 
@@ -2274,7 +2274,7 @@ msgstr ""
 "Variable für die NFS-Statusprüfung."
 
 #: ../../ucr-variable-reference.rst:1532 ../../ucr-variable-reference.rst:2031
-#: ../../ucr-variable-reference.rst:2505
+#: ../../ucr-variable-reference.rst:2520
 msgid "``true``"
 msgstr "``true``"
 
@@ -2528,7 +2528,7 @@ msgstr ""
 "Steuert, ob Samba NTP-Antworten signiert. Windows-Clients, die in eine "
 "Samba-Domäne aufgenommen wurden, benötigen signierte NTP-Antworten."
 
-#: ../../ucr-variable-reference.rst:1759 ../../ucr-variable-reference.rst:2417
+#: ../../ucr-variable-reference.rst:1759 ../../ucr-variable-reference.rst:2432
 msgid ""
 "For information about time synchronization, see :ref:`system-"
 "administration-time-zone-synchronization`."
@@ -3409,13 +3409,35 @@ msgstr ""
 
 #: ../../ucr-variable-reference.rst:2316
 msgid ""
+"Controls whether Nubus for UCS uses the Univention Firewall. When set to "
+"``true`` or ``on``, UCS deactivates the firewall. When unset or set to "
+"any other value, UCS uses the firewall."
+msgstr ""
+"Legt fest, ob Nubus für UCS die Univention Firewall verwendet. Wenn der Wert "
+"auf ``true`` oder ``on`` gesetzt ist, deaktiviert UCS die Firewall. Wenn der "
+"Wert nicht gesetzt ist oder einen anderen Wert hat, verwendet UCS die Firewall."
+
+#: ../../ucr-variable-reference.rst:2322
+msgid ""
+"To remove existing firewall rules after deactivating the firewall, run "
+":command:`service univention-firewall flush`."
+msgstr ""
+"Um vorhandene Firewall-Regeln nach dem Deaktivieren der Firewall zu entfernen, "
+"führen Sie :command:`service univention-firewall flush` aus."
+
+#: ../../ucr-variable-reference.rst:2326
+msgid "``true``, ``on``, ``false``, ``off``, not set"
+msgstr "``true``, ``on``, ``false``, ``off``, nicht gesetzt"
+
+#: ../../ucr-variable-reference.rst:2331
+msgid ""
 "Contains the system role of the system. You can't change this setting "
 "after a domain join."
 msgstr ""
 "Enthält die Systemrolle des Systems. Sie können diese Einstellung nach "
 "einem Domänenbeitritt nicht ändern."
 
-#: ../../ucr-variable-reference.rst:2319
+#: ../../ucr-variable-reference.rst:2334
 msgid ""
 "For information about system roles, see :ref:`domain-infrastructure-"
 "system-roles`."
@@ -3423,7 +3445,7 @@ msgstr ""
 "Informationen zu Systemrollen finden Sie unter :ref:`domain-"
 "infrastructure-system-roles`."
 
-#: ../../ucr-variable-reference.rst:2327
+#: ../../ucr-variable-reference.rst:2342
 msgid ""
 "Stores the expiry date of the local host certificate. A daily cron job on"
 " each Nubus for UCS system updates this value after checking the host "
@@ -3434,14 +3456,14 @@ msgstr ""
 " das Rechnerzertifikat überprüft wurde. Der Wert ist die Anzahl der Tage "
 "seit 1970-01-01."
 
-#: ../../ucr-variable-reference.rst:2334 ../../ucr-variable-reference.rst:2353
+#: ../../ucr-variable-reference.rst:2349 ../../ucr-variable-reference.rst:2368
 msgid "Nubus for UCS sets this variable automatically. Don't change it manually."
 msgstr ""
 "Nubus for UCS setzt diese Variable automatisch. Ändern Sie sie nicht "
 "manuell."
 
-#: ../../ucr-variable-reference.rst:2337 ../../ucr-variable-reference.rst:2356
-#: ../../ucr-variable-reference.rst:2370
+#: ../../ucr-variable-reference.rst:2352 ../../ucr-variable-reference.rst:2371
+#: ../../ucr-variable-reference.rst:2385
 msgid ""
 "For information about monitoring certificate expiry, see :ref:`domain-"
 "infrastructure-tls-monitoring`."
@@ -3449,11 +3471,11 @@ msgstr ""
 "Informationen zur Überwachung des Ablaufdatums des Zertifikats finden Sie"
 " unter :ref:`domain-infrastructure-tls-monitoring`."
 
-#: ../../ucr-variable-reference.rst:2341 ../../ucr-variable-reference.rst:2360
+#: ../../ucr-variable-reference.rst:2356 ../../ucr-variable-reference.rst:2375
 msgid "integer (days since 1970-01-01)"
 msgstr "Ganzzahl (Tage seit 1970-01-01)"
 
-#: ../../ucr-variable-reference.rst:2346
+#: ../../ucr-variable-reference.rst:2361
 msgid ""
 "Stores the expiry date of the root certificate. A daily cron job on each "
 "Nubus for UCS system updates this value after checking the root "
@@ -3464,7 +3486,7 @@ msgstr ""
 "Root-Zertifikat überprüft wurde. Der Wert ist die Anzahl der Tage seit "
 "1970-01-01."
 
-#: ../../ucr-variable-reference.rst:2365
+#: ../../ucr-variable-reference.rst:2380
 msgid ""
 "Sets the warning threshold in days for root certificate expiry. When the "
 "root certificate expires within the configured number of days, the "
@@ -3477,11 +3499,11 @@ msgstr ""
 "Plugin verwendet diesen Schwellenwert auch für seine "
 "Zertifikatsgültigkeitsprüfung."
 
-#: ../../ucr-variable-reference.rst:2373
+#: ../../ucr-variable-reference.rst:2388
 msgid "``30``"
 msgstr "``30``"
 
-#: ../../ucr-variable-reference.rst:2379
+#: ../../ucr-variable-reference.rst:2394
 msgid ""
 "Controls whether the system regularly logs system statistics to "
 ":file:`/var/log/univention/system-stats.log`. The logged data includes "
@@ -3494,11 +3516,11 @@ msgstr ""
 "Festplattenspeicher, freien Arbeitsspeicher, die Betriebszeit und aktive "
 "Samba-Verbindungen."
 
-#: ../../ucr-variable-reference.rst:2384
+#: ../../ucr-variable-reference.rst:2399
 msgid "Configure the interval with :envvar:`system/stats/cron`."
 msgstr "Konfigurieren Sie das Intervall mit :envvar:`system/stats/cron`."
 
-#: ../../ucr-variable-reference.rst:2387 ../../ucr-variable-reference.rst:2400
+#: ../../ucr-variable-reference.rst:2402 ../../ucr-variable-reference.rst:2415
 msgid ""
 "For information about system status logging, see :ref:`system-"
 "administration-diagnostics-cli`."
@@ -3506,21 +3528,21 @@ msgstr ""
 "Informationen zur Protokollierung des Systemstatus finden Sie unter :ref"
 ":`system-administration-diagnostics-cli`."
 
-#: ../../ucr-variable-reference.rst:2391
+#: ../../ucr-variable-reference.rst:2406
 msgid "``yes``, ``no``"
 msgstr "``yes``, ``no``"
 
-#: ../../ucr-variable-reference.rst:2397
+#: ../../ucr-variable-reference.rst:2412
 msgid "Specifies the interval for collecting system statistics in cron syntax."
 msgstr ""
 "Legt das Intervall für das Erfassen von Systemstatistiken in Cron-Syntax "
 "fest."
 
-#: ../../ucr-variable-reference.rst:2403
+#: ../../ucr-variable-reference.rst:2418
 msgid "``0,30 * * * *``"
 msgstr "``0,30 * * * *``"
 
-#: ../../ucr-variable-reference.rst:2409
+#: ../../ucr-variable-reference.rst:2424
 msgid ""
 "Specifies an external NTP server that the system uses as a time source. "
 "In a Nubus for UCS domain, the Primary Directory Node usually acts as the"
@@ -3530,7 +3552,7 @@ msgstr ""
 "verwendet. In einer Nubus für UCS-Domäne fungiert der Primary Directory "
 "Node in der Regel als Standard-Zeitserver."
 
-#: ../../ucr-variable-reference.rst:2414
+#: ../../ucr-variable-reference.rst:2429
 msgid ""
 "Additional external time sources can be configured with "
 ":envvar:`timeserver2` and :envvar:`timeserver3`."
@@ -3538,7 +3560,7 @@ msgstr ""
 "Zusätzliche externe Zeitquellen können mit :envvar:`timeserver2` und "
 ":envvar:`timeserver3` konfiguriert werden."
 
-#: ../../ucr-variable-reference.rst:2426
+#: ../../ucr-variable-reference.rst:2441
 msgid ""
 "Specifies a second external NTP server that the system uses as a time "
 "source."
@@ -3546,11 +3568,11 @@ msgstr ""
 "Legt einen zweiten externen NTP-Server fest, den das System als "
 "Zeitquelle verwendet."
 
-#: ../../ucr-variable-reference.rst:2429 ../../ucr-variable-reference.rst:2441
+#: ../../ucr-variable-reference.rst:2444 ../../ucr-variable-reference.rst:2456
 msgid "For details about external time sources, see :envvar:`timeserver`."
 msgstr "Details zu externen Zeitquellen finden Sie unter :envvar:`timeserver`."
 
-#: ../../ucr-variable-reference.rst:2438
+#: ../../ucr-variable-reference.rst:2453
 msgid ""
 "Specifies a third external NTP server that the system uses as a time "
 "source."
@@ -3558,7 +3580,7 @@ msgstr ""
 "Legt einen dritten externen NTP-Server fest, den das System als "
 "Zeitquelle verwendet."
 
-#: ../../ucr-variable-reference.rst:2449
+#: ../../ucr-variable-reference.rst:2464
 msgid ""
 "Specifies the name of the theme to apply to all web interfaces such as "
 "the login page, the portal, and the *Management UI*. The value "
@@ -3570,7 +3592,7 @@ msgstr ""
 "soll. Der Wert entspricht einer CSS-Datei mit demselben Namen im Ordner "
 ":file:`/usr/share/univention-web/themes/`."
 
-#: ../../ucr-variable-reference.rst:2454
+#: ../../ucr-variable-reference.rst:2469
 msgid ""
 "For information about switching between themes, creating custom themes, "
 "and applying changes, see :ref:`management-interface-theming`."
@@ -3579,15 +3601,15 @@ msgstr ""
 "Designs und zum Anwenden von Änderungen finden Sie unter :ref"
 ":`management-interface-theming`."
 
-#: ../../ucr-variable-reference.rst:2457
+#: ../../ucr-variable-reference.rst:2472
 msgid "``dark``"
 msgstr "``dark``"
 
-#: ../../ucr-variable-reference.rst:2459
+#: ../../ucr-variable-reference.rst:2474
 msgid "``light``, ``dark``, or custom theme names"
 msgstr "``light``, ``dark`` oder benutzerdefinierte Design-Namen"
 
-#: ../../ucr-variable-reference.rst:2464
+#: ../../ucr-variable-reference.rst:2479
 msgid ""
 "Defines the number of *UMC Server* processes that Nubus for UCS starts in"
 " parallel."
@@ -3595,11 +3617,11 @@ msgstr ""
 "Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus für UCS "
 "parallel startet."
 
-#: ../../ucr-variable-reference.rst:2468 ../../ucr-variable-reference.rst:2478
+#: ../../ucr-variable-reference.rst:2483 ../../ucr-variable-reference.rst:2493
 msgid "Unsigned integer"
 msgstr "Vorzeichenlose Ganzzahl"
 
-#: ../../ucr-variable-reference.rst:2473
+#: ../../ucr-variable-reference.rst:2488
 msgid ""
 "The web browser automatically closes the browser session after the "
 "defined time period in seconds. A new session requires a new sign-in"
@@ -3608,17 +3630,17 @@ msgstr ""
 "der festgelegten Zeit in Sekunden. Für eine neue Sitzung ist eine erneute"
 " Anmeldung erforderlich."
 
-#: ../../ucr-variable-reference.rst:2477
+#: ../../ucr-variable-reference.rst:2492
 msgid "``300``"
 msgstr "``300``"
 
-#: ../../ucr-variable-reference.rst:2483
+#: ../../ucr-variable-reference.rst:2498
 msgid "Defines the OpenID provider issuer of this relying party entry."
 msgstr ""
 "Definiert den OpenID-Anbieter-Aussteller dieses Eintrags für vertrauende "
 "Parteien."
 
-#: ../../ucr-variable-reference.rst:2491
+#: ../../ucr-variable-reference.rst:2506
 msgid ""
 "Defines the fully qualified domain name of the relying party for the *UMC"
 " Server*. If the variable is unset, Nubus for UCS uses the fully "
@@ -3629,7 +3651,7 @@ msgstr ""
 "Nubus für UCS den voll qualifizierten Domänennamen des UCS-Systems und "
 "alle IP-Adressen."
 
-#: ../../ucr-variable-reference.rst:2501
+#: ../../ucr-variable-reference.rst:2516
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through OpenID Connect "
 "single sign-on before using a regular sign-in."
@@ -3637,7 +3659,7 @@ msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über OpenID "
 "Connect Single Sign-On, bevor er eine reguläre Anmeldung verwendet."
 
-#: ../../ucr-variable-reference.rst:2511
+#: ../../ucr-variable-reference.rst:2526
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through SAML single "
 "sign-on before using a regular sign-in."
