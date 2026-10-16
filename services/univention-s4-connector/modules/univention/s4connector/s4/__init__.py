@@ -1295,7 +1295,7 @@ class s4(univention.s4connector.ucs):
         ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: UCS-members in s4_members_from_ucs %s" % s4_members_from_ucs)
 
         # check if members in S4 don't exist in UCS, if true they need to be added in S4
-        for member_dn in s4_members_from_ucs:
+        for member_dn in s4_members:
             if member_dn.lower() not in s4_members_from_ucs:
                 try:
                     ad_object = self.get_object(member_dn)
