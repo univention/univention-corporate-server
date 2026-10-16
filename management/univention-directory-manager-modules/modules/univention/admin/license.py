@@ -278,38 +278,39 @@ class License:
         return (x > y) - (x < y)
 
     def __countObject(self, obj, lo):
-        licenses = lo.authz_connection.search(filter=filter_format(LDAP_FILTER_license_module, [self.module]), attr=['modifyTimestamp', 'univentionUsedLicenseUsers', 'univentionUsedLicenseServers', 'univentionUsedLicenseManagedClients'])
-        try:
-            _, attrs = licenses[0]
-        except IndexError:
-            attrs = {}
-
         version = self.version
         usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
-        value = int(attrs.get(usedkey, [b'0'])[0].decode('ASCII'))
 
-        # Return cached value if cache is within TTL
-        if self.use_cache and value and self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII')):
-            self.real[version][obj] = value
-            return value
+        cache_filter = self._cache_filter() if self.use_cache else None
+        if cache_filter:
+            licenses = lo.authz_connection.search(filter=cache_filter, attr=[usedkey])
+            if licenses:
+                values = licenses[0][1].get(usedkey, [])
+                if values:
+                    count = int(values[0])
+                    self.real[version][obj] = count
+                    return count
 
         self.real[version][obj] = count = self.count(lo.authz_connection, filter=self.filters[version][obj])
         return count
 
     def recheck(self, lo) -> bool:
-        res = lo.authz_connection.search(
-            filter=filter_format(LDAP_FILTER_license_module, [self.module]),
-            attr=['modifyTimestamp'],
-        )
-        attrs = res[0][1] if res else {}
-        return not self._check_cache_ttl(attrs.get('modifyTimestamp', [b''])[0].decode('ASCII'))
+        ldap_filter = self._cache_filter()
+        if ldap_filter is None:
+            return True
 
-    def _check_cache_ttl(self, modify_timestamp) -> int:
+        return not bool(lo.authz_connection.searchDn(filter=ldap_filter))
+
+    def _cache_filter(self):
         cache_ttl = min(max(0, configRegistry.get_int('directory/manager/license-cache/ttl', 3600)), 86400)
-        if cache_ttl > 0 and modify_timestamp:
-            dt = datetime.strptime(modify_timestamp, "%Y%m%d%H%M%SZ").replace(tzinfo=UTC)
-            return datetime.now(UTC) - dt < timedelta(seconds=cache_ttl)
-        return False
+
+        if not cache_ttl:
+            return None
+
+        cutoff = datetime.now(UTC) - timedelta(seconds=cache_ttl)
+        timestamp = cutoff.strftime('%Y%m%d%H%M%SZ')
+
+        return f'(&(modifyTimestamp>={timestamp}){filter_format(LDAP_FILTER_license_module, [self.module])})'
 
     def update_cache(self, lo: 'access') -> dict:
         """
@@ -369,7 +370,9 @@ class License:
         res = {}
         conn.searchDn(*args, **kwargs, serverctrls=[SearchNoOpControl(True)], response=res)
         noop_srch_ctrl = [c for c in res['ctrls'] if isinstance(c, SearchNoOpControl)]
-        return noop_srch_ctrl[0].numSearchResults
+        if noop_srch_ctrl[0].resultCode in (ldap.SUCCESS.errnum, ldap.SIZELIMIT_EXCEEDED.errnum, ldap.ADMINLIMIT_EXCEEDED.errnum):
+            return noop_srch_ctrl[0].numSearchResults
+        return 0
 
     def _get_license_entry_uuid(self, lo):
         for dn, attr in lo.authz_connection.search(filter='(&(objectClass=univentionLicense)(univentionLicenseModule=admin))', attr=['entryUUID']):
