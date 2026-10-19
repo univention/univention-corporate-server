@@ -6,5 +6,10 @@ src: univention-directory-manager-modules
 fix: 17.7.2
 desc: |
  This update addresses the following issues:
+ * A regression introduced in UCS 5.2-7 caused disabled user accounts with a
+   future account expiration date to be unintentionally re-enabled when their
+   account properties were modified.
+   UDM now preserves the disabled state of affected accounts during subsequent
+   modifications.
  * The performance of counting license usage has been improved.
-bug: [59964]
+bug: [59976, 59964]
