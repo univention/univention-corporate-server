@@ -69,6 +69,7 @@ Track last sign-in time to detect inactive accounts
    group-management
    authorization-engine
    user-create-wizard
+   recycle-bin
    http-api
    user-activation-apps
    user-lockout
