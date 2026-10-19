@@ -1,0 +1,36 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: php7.3
+fix: 7.3.31-1~deb10u15
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-91765 (CVSS score 7.5 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-91768, CVE-2026-91767 (CVSS score 6.5 -
+   CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2025-14181 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H).
+ * CVE-2026-92842, CVE-2026-91766 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N).
+ * CVE-2026-93682 (CVSS score 5.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:N/A:N).
+ * CVE-2026-91769 (CVSS score 4.3 -
+   CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+ * CVE-2026-6103 (CVSS score 4.3 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:C/C:N/I:L/A:N).
+ * CVE-2025-1218 (CVSS score 3.4 -
+   CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N).
+bug: [60034]
+cve:
+- CVE-2025-1218
+- CVE-2025-14181
+- CVE-2026-6103
+- CVE-2026-91765
+- CVE-2026-91766
+- CVE-2026-91767
+- CVE-2026-91768
+- CVE-2026-91769
+- CVE-2026-92842
+- CVE-2026-93682
