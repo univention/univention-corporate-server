@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 19. Oct 2026
+     - :ref:`management-interface-recycle-bin`
+     - Add section about *Recycle Bin*.
+
    * - 16. Oct 2026
      - :ref:`system-administration-network-firewall`
      - Add section about packet filter firewall.
