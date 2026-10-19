@@ -1,10 +1,12 @@
 Administratorkonten
 Administratorkontos
+Administratorrechte
 Administratorrolle
 Anfrageinhalte
 Anfrageinhalts
 App-ID
 App-IDs
+App-Upgrades
 Attributwerte
 Attributwerten
 Audit-Log
@@ -30,6 +32,7 @@ Containerisierung
 Cron
 Cron-Format
 Crypt-Hash
+DDS
 DNS-Domänennamens
 Debug-Ebenen
 Debug-Logs
@@ -60,12 +63,15 @@ Härtungsmaßnahmen
 Infrastrukturdienste
 Infrastrukturumgebungen
 Integrationen
+Konnektoren
 Label
 Labels
 Limiting
+Listener-Cache
 Listener-Dienste
 Listener-Log
 Listener-Protokoll
+Listener-Status
 Logeintrag
 Logeinträge
 Logeinträgen
@@ -103,6 +109,7 @@ RC
 Ratenbegrenzung
 Ratenbegrenzungen
 Registrierungsformular
+Reinitialisierung
 Release-Informationen
 Release-Typen
 Remote-Servern

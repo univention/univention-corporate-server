@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-14 14:17+0000\n"
-"PO-Revision-Date: 2026-09-14 16:25+0200\n"
+"POT-Creation-Date: 2026-10-19 13:05+0000\n"
+"PO-Revision-Date: 2026-10-19 21:56+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1091,9 +1091,9 @@ msgstr ""
 " Sie können das Intervall für die :spelling:word:`Cron-basierten` Cache-"
 "Aktualisierungen in Cron-Syntax mit der UCR-Variable "
 ":envvar:`nss/group/cachefile/invalidate_interval` konfigurieren. Für die "
-"Cron-Syntax siehe :ref:`system-administration-cron-local`. "
-"Sie können die Aktualisierung der Gruppen-Cache-Datei über"
-" den *Univention Directory Listener* mit der UCR-Variable "
+"Cron-Syntax siehe :ref:`system-administration-cron-local`. Sie können die"
+" Aktualisierung der Gruppen-Cache-Datei über den *Univention Directory "
+"Listener* mit der UCR-Variable "
 ":envvar:`nss/group/cachefile/invalidate_on_changes` aktivieren oder "
 "deaktivieren."
 
@@ -1675,7 +1675,7 @@ msgstr ""
 msgid "Restart the OpenLDAP server"
 msgstr "OpenLDAP-Server neu starten"
 
-#: ../../iam/last-bind.rst:46
+#: ../../iam/last-bind.rst:46 ../../iam/recycle-bin.rst:258
 msgid "$ systemctl restart slapd.service"
 msgstr "$ systemctl restart slapd.service"
 
@@ -3470,6 +3470,524 @@ msgstr ""
 "Für weitere Informationen zum Einrichten von Cron-Jobs über UCR-Variablen"
 " siehe :ref:`system-administration-cron-ucr`."
 
+#: ../../iam/recycle-bin.rst:7
+msgid "Recycle Bin"
+msgstr "Papierkorb"
+
+#: ../../iam/recycle-bin.rst:11
+msgid ""
+"Since :uv:erratum:`5.2x298`, Univention Corporate Server (UCS) supports a"
+" *Recycle Bin* feature for user and group objects in Univention Directory"
+" Manager (UDM)."
+msgstr ""
+"Seit :uv:erratum:`5.2x298` unterstützt Univention Corporate Server (UCS) "
+"eine *Papierkorb*-Funktion für Benutzer- und Gruppenobjekte im Univention"
+" Directory Manager (UDM)."
+
+#: ../../iam/recycle-bin.rst:15
+msgid ""
+"The *Recycle Bin* temporarily stores deleted directory objects in UDM. "
+"Administrators who accidentally remove UDM objects can restore them with "
+"the data preserved in the *Recycle Bin*."
+msgstr ""
+"Der *Papierkorb* speichert gelöschte Verzeichnisobjekte vorübergehend in "
+"UDM. Administratoren, die UDM Objekte versehentlich entfernen, können sie"
+" mit den im *Papierkorb* gespeicherten Daten wiederherstellen."
+
+#: ../../iam/recycle-bin.rst:19
+msgid ""
+"When you activate a *Recycle Bin* policy, UDM moves deleted objects to "
+"the *Recycle Bin* container before removing them from the LDAP directory."
+" UDM preserves the original object data and metadata about the deletion. "
+"You can view existing *Recycle Bin* entries in Univention Management "
+"Console (UMC), UDM, and the *UDM HTTP REST API*. You can restore entries "
+"before UDM purges them after the configured retention time."
+msgstr ""
+"Wenn Sie eine *Papierkorb*-Richtlinie aktivieren, verschiebt UDM "
+"gelöschte Objekte in den *Papierkorb*-Container, bevor sie aus dem LDAP-"
+"Verzeichnis entfernt werden. UDM bewahrt die ursprünglichen Objektdaten "
+"und Metadaten über die Löschung auf. Sie können vorhandene "
+"*Papierkorb*-Einträge in der Univention Management Console (UMC), in UDM "
+"und in der *UDM HTTP REST API* anzeigen. Sie können Einträge "
+"wiederherstellen, bevor UDM sie nach der konfigurierten Aufbewahrungszeit"
+" endgültig entfernt."
+
+#: ../../iam/recycle-bin.rst:30
+msgid ""
+"This section describes how to activate, configure, and manage the "
+"*Recycle Bin*. It also provides information about automatically purging "
+"entries, configuration, and logging."
+msgstr ""
+"Dieser Abschnitt beschreibt, wie Sie den *Papierkorb* aktivieren, "
+"konfigurieren und verwalten. Er enthält außerdem Informationen zum "
+"automatischen endgültigen Entfernen von Einträgen, zur Konfiguration und "
+"zur Protokollierung."
+
+#: ../../iam/recycle-bin.rst:38
+msgid "Limitations"
+msgstr "Einschränkungen"
+
+#: ../../iam/recycle-bin.rst:40
+msgid "The *Recycle Bin* has the following limitations:"
+msgstr "Der *Papierkorb* hat die folgenden Einschränkungen:"
+
+#: ../../iam/recycle-bin.rst:42
+msgid ""
+"The *Recycle Bin* supports only the UDM types ``users/user`` and "
+"``groups/group``."
+msgstr ""
+"Der *Papierkorb* unterstützt nur die UDM Typen ``users/user`` und "
+"``groups/group``."
+
+#: ../../iam/recycle-bin.rst:45
+msgid "The *Recycle Bin* is available only in Nubus for UCS."
+msgstr "Der *Papierkorb* ist nur in Nubus für UCS verfügbar."
+
+#: ../../iam/recycle-bin.rst:50
+msgid "Activate the Recycle Bin"
+msgstr "Papierkorb aktivieren"
+
+#: ../../iam/recycle-bin.rst:52
+msgid ""
+"To activate the *Recycle Bin*, you need administrator privileges and "
+"access to the :term:`Primary Directory Node` and all :term:`Backup "
+"Directory Nodes <Backup Directory Node>`."
+msgstr ""
+"Um den *Papierkorb* zu aktivieren, benötigen Sie Administratorrechte und "
+"Zugriff auf den :term:`Primary Directory Node` und alle :term:`Backup "
+"Directory Nodes <Backup Directory Node>`."
+
+#: ../../iam/recycle-bin.rst:57
+msgid ""
+"On the Primary Directory Node and all Backup Directory Nodes, set the "
+":term:`UCR variable` :envvar:`listener/module/recyclebin/deactivate` to "
+"``false``. For instructions about setting UCR variables, see :ref"
+":`system-administration-ucr`."
+msgstr ""
+"Setzen Sie auf dem Primary Directory Node und allen Backup Directory "
+"Nodes die :term:`UCR-Variable <UCR variable>` "
+":envvar:`listener/module/recyclebin/deactivate` auf ``false``. "
+"Anweisungen zum Festlegen von UCR-Variablen finden Sie unter :ref"
+":`system-administration-ucr`."
+
+#: ../../iam/recycle-bin.rst:64
+msgid ""
+"Restart the *Univention Directory Listener* on the Primary Directory Node"
+" with the command in :numref:`udm-recyclebin-policy-restart-listener-"
+"listing`."
+msgstr ""
+"Starten Sie den *Univention Directory Listener* auf dem Primary Directory"
+" Node mit dem Befehl in :numref:`udm-recyclebin-policy-restart-listener-"
+"listing` neu."
+
+#: ../../iam/recycle-bin.rst:68
+msgid "Restart the *Univention Directory Listener*"
+msgstr "*Univention Directory Listener* neu starten"
+
+#: ../../iam/recycle-bin.rst:68
+msgid "$ systemctl restart univention-directory-listener"
+msgstr "$ systemctl restart univention-directory-listener"
+
+#: ../../iam/recycle-bin.rst:76
+msgid ""
+"If you activate the *Recycle Bin* after creating user or group objects, "
+"the *Recycle Bin* doesn't include them because the listener cache has no "
+"association with those objects. Deleting those objects **doesn't** add them "
+"to the *Recycle Bin*."
+msgstr ""
+"Wenn Sie den *Papierkorb* erst nach dem Erstellen von Benutzer- oder "
+"Gruppenobjekten aktivieren, enthält der *Papierkorb* diese nicht, weil "
+"der Listener-Cache keine Zuordnung zu diesen Objekten hat. Das Löschen "
+"dieser Objekte fügt sie **nicht** dem *Papierkorb* hinzu."
+
+#: ../../iam/recycle-bin.rst:81
+msgid ""
+"To include user and group objects that existed before you activated the "
+"*Recycle Bin*, run the command in :numref:`udm-recyclebin-activate-re-"
+"initialize-listener-listing` on the Primary Directory Node. The command "
+"restarts the *Univention Directory Listener* and "
+":spelling:word:`reinitializes` only the *Recycle Bin*."
+msgstr ""
+"Um Benutzer- und Gruppenobjekte einzubeziehen, die vor der Aktivierung "
+"des *Papierkorbs* vorhanden waren, führen Sie den Befehl in :numref:`udm-"
+"recyclebin-activate-re-initialize-listener-listing` auf dem Primary "
+"Directory Node aus. Der Befehl startet den *Univention Directory "
+"Listener* neu und :spelling:word:`reinitialisiert` nur den *Papierkorb*."
+
+#: ../../iam/recycle-bin.rst:91
+msgid ""
+"Reinitialization doesn't change objects or create entries in the *Recycle"
+" Bin*. While reinitialization runs, the *Univention Directory Listener* "
+"doesn't process other directory changes on the Primary Directory Node. "
+"The *Univention Directory Listener* processes pending directory changes "
+"after reinitialization."
+msgstr ""
+"Die Reinitialisierung ändert keine Objekte und erstellt keine Einträge im"
+" *Papierkorb*. Während die Reinitialisierung läuft, verarbeitet der "
+"*Univention Directory Listener* keine anderen Verzeichnisänderungen auf "
+"dem Primary Directory Node. Nach der Reinitialisierung verarbeitet der "
+"*Univention Directory Listener* ausstehende Verzeichnisänderungen."
+
+#: ../../iam/recycle-bin.rst:98
+msgid ""
+"Reinitialization can't recover deleted objects that existed before you "
+"activated the *Recycle Bin*."
+msgstr ""
+"Die Reinitialisierung kann gelöschte Objekte nicht wiederherstellen, die "
+"vor der Aktivierung des *Papierkorbs* vorhanden waren."
+
+#: ../../iam/recycle-bin.rst:103
+msgid ""
+"In large environments, reinitialization can take longer. Schedule it "
+"during a period of low load or a maintenance window."
+msgstr ""
+"In großen Umgebungen kann die Reinitialisierung länger dauern. Planen Sie"
+" sie für einen Zeitraum mit geringer Auslastung oder ein Wartungsfenster."
+
+#: ../../iam/recycle-bin.rst:106
+msgid ""
+"Restart *Univention Directory Listener* to reinitialize only the *Recycle"
+" Bin*"
+msgstr ""
+"*Univention Directory Listener* neu starten, um nur den *Papierkorb* zu "
+"reinitialisieren"
+
+#: ../../iam/recycle-bin.rst:106
+msgid "$ univention-directory-listener-ctrl resync recyclebin"
+msgstr "$ univention-directory-listener-ctrl resync recyclebin"
+
+#: ../../iam/recycle-bin.rst:112
+msgid ""
+"To verify that reinitialization is complete, run the command in :numref"
+":`udm-recyclebin-activate-listener-status-listing`. Confirm that the "
+"``recyclebin`` listener module has state ``3``. State ``3`` indicates "
+"that the module is fully initialized and ready. If the module has a "
+"different state, verify that "
+":envvar:`listener/module/recyclebin/deactivate` is set to ``false`` and "
+"read :file:`/var/log/univention/listener.log`. You can restart the "
+"*Univention Directory Listener* with the command in :numref:`udm-"
+"recyclebin-policy-restart-listener-listing`."
+msgstr ""
+"Um zu prüfen, ob die Reinitialisierung abgeschlossen ist, führen Sie den "
+"Befehl in :numref:`udm-recyclebin-activate-listener-status-listing` aus. "
+"Vergewissern Sie sich, dass das Listener-Modul ``recyclebin`` den Status "
+"``3`` hat. Der Status ``3`` zeigt an, dass das Modul vollständig "
+"initialisiert und bereit ist. Wenn das Modul einen anderen Status hat, "
+"prüfen Sie, ob :envvar:`listener/module/recyclebin/deactivate` auf "
+"``false`` gesetzt ist, und lesen Sie "
+":file:`/var/log/univention/listener.log`. Sie können den *Univention "
+"Directory Listener* mit dem Befehl in :numref:`udm-recyclebin-policy-"
+"restart-listener-listing` neu starten."
+
+#: ../../iam/recycle-bin.rst:122
+msgid "Check the listener status"
+msgstr "Listener-Status prüfen"
+
+#: ../../iam/recycle-bin.rst:122
+msgid "$ univention-directory-listener-ctrl status"
+msgstr "$ univention-directory-listener-ctrl status"
+
+#: ../../iam/recycle-bin.rst:131
+msgid "Recycle Bin policy"
+msgstr "Papierkorb-Richtlinie"
+
+#: ../../iam/recycle-bin.rst:133
+msgid ""
+"Administrators can configure the *Recycle Bin* with one or more ``Recycle"
+" Bin`` policies. For instructions about creating and linking policies, "
+"see :ref:`management-interface-udm-command-examples-policies`."
+msgstr ""
+"Administratoren können den *Papierkorb* mit einer oder mehreren ``Recycle"
+" Bin`` Richtlinien konfigurieren. Anweisungen zum Erstellen und "
+"Verknüpfen von Richtlinien finden Sie unter :ref:`management-interface-"
+"udm-command-examples-policies`."
+
+#: ../../iam/recycle-bin.rst:138
+msgid ""
+"After you create a *Recycle Bin* policy and link it to a container object"
+" in the LDAP directory, the *Recycle Bin* configuration applies to all "
+"objects within the container. Before removing an object, UDM checks "
+"whether a policy applies and moves the object to the *Recycle Bin*."
+msgstr ""
+"Nachdem Sie eine *Papierkorb*-Richtlinie erstellt und mit einem "
+"Containerobjekt im LDAP-Verzeichnis verknüpft haben, gilt die "
+"*Papierkorb*-Konfiguration für alle Objekte innerhalb des Containers. Vor"
+" dem Entfernen eines Objekts prüft UDM, ob eine Richtlinie gilt, und "
+"verschiebt das Objekt in den *Papierkorb*."
+
+#: ../../iam/recycle-bin.rst:144
+msgid "The *Recycle Bin* policy has the following configuration properties:"
+msgstr "Die *Papierkorb*-Richtlinie hat die folgenden Konfigurationseigenschaften:"
+
+#: ../../iam/recycle-bin.rst:148
+msgid "Recycle Bin enabled"
+msgstr "Papierkorb aktiviert"
+
+#: ../../iam/recycle-bin.rst:149
+msgid ""
+"Defines whether the *Recycle Bin* is active for objects. Even if a "
+"container has a linked *Recycle Bin* policy, you can deactivate it."
+msgstr ""
+"Legt fest, ob der *Papierkorb* für Objekte aktiv ist. Auch wenn ein "
+"Container eine verknüpfte *Papierkorb*-Richtlinie hat, können Sie ihn "
+"deaktivieren."
+
+#: ../../iam/recycle-bin.rst:155
+msgid "UDM modules to recycle"
+msgstr "UDM Module für Papierkorb"
+
+#: ../../iam/recycle-bin.rst:156
+msgid ""
+"Defines a list of UDM module types that the *Recycle Bin* policy applies "
+"to, such as ``users/user`` or ``groups/group``."
+msgstr ""
+"Legt eine Liste von UDM Modultypen fest, für die die "
+"*Papierkorb*-Richtlinie gilt, beispielsweise ``users/user`` oder "
+"``groups/group``."
+
+#: ../../iam/recycle-bin.rst:162
+msgid "Ignored object classes"
+msgstr "Ignorierte Objektklassen"
+
+#: ../../iam/recycle-bin.rst:163
+msgid ""
+"Defines a list of LDAP object classes that are exceptions for the "
+"*Recycle Bin*. If an administrator deletes an object and the object "
+"matches any of these object classes, UDM doesn't move the object to the "
+"*Recycle Bin* container."
+msgstr ""
+"Legt eine Liste von LDAP-Objektklassen fest, die Ausnahmen für den "
+"*Papierkorb* darstellen. Wenn ein Administrator ein Objekt löscht und das"
+" Objekt einer dieser Objektklassen entspricht, verschiebt UDM das Objekt "
+"nicht in den *Papierkorb*-Container."
+
+#: ../../iam/recycle-bin.rst:171
+msgid "Retention days"
+msgstr "Aufbewahrungszeit in Tagen"
+
+#: ../../iam/recycle-bin.rst:172
+msgid ""
+"Defines the retention time in days that UDM keeps objects in the *Recycle"
+" Bin* before permanently removing them. Set the retention time to a value"
+" between the values of the :term:`UCR variables <UCR variable>` "
+":envvar:`ldap/database/internal/overlay/dds/min-ttl` and "
+":envvar:`ldap/database/internal/overlay/dds/max-ttl`."
+msgstr ""
+"Legt die Aufbewahrungszeit in Tagen fest, für die UDM Objekte im "
+"*Papierkorb* behält, bevor sie endgültig entfernt werden. Setzen Sie die "
+"Aufbewahrungszeit auf einen Wert zwischen den Werten der :term:`UCR-"
+"Variablen <UCR variable>` :envvar:`ldap/database/internal/overlay/dds"
+"/min-ttl` und :envvar:`ldap/database/internal/overlay/dds/max-ttl`."
+
+#: ../../iam/recycle-bin.rst:183
+msgid "Manage objects in the Recycle Bin"
+msgstr "Objekte im Papierkorb verwalten"
+
+#: ../../iam/recycle-bin.rst:185
+msgid ""
+"Administrators can manage entries in the *Recycle Bin* with the "
+"*Recycle Bin* management module or with the command-line tool :program:`udm` and the"
+" UDM module ``recyclebin/removedobject``. For instructions about UDM "
+"operations, see :ref:`management-interface-udm-command`."
+msgstr ""
+"Administratoren können Einträge im *Papierkorb* mit dem "
+"*Papierkorb* Verwaltungsmodul oder mit dem Befehlszeilenwerkzeug :program:`udm` und dem "
+"UDM Modul ``recyclebin/removedobject`` verwalten. Anweisungen zu UDM "
+"Operationen finden Sie unter :ref:`management-interface-udm-command`."
+
+#: ../../iam/recycle-bin.rst:192
+msgid "The following actions are available:"
+msgstr "Die folgenden Aktionen sind verfügbar:"
+
+#: ../../iam/recycle-bin.rst:194
+msgid ":option:`List <udm list>` all existing entries in the *Recycle Bin*."
+msgstr "Alle vorhandenen Einträge im *Papierkorb* :option:`auflisten <udm list>`."
+
+#: ../../iam/recycle-bin.rst:195
+msgid ":option:`Delete <udm delete>` entries permanently."
+msgstr "Einträge dauerhaft :option:`löschen <udm delete>`."
+
+#: ../../iam/recycle-bin.rst:196
+msgid ":option:`Restore <udm restore>` entries."
+msgstr "Einträge :option:`wiederherstellen <udm restore>`."
+
+#: ../../iam/recycle-bin.rst:198
+msgid ""
+"Restoring an entry from the *Recycle Bin* adds it to the LDAP database "
+"with the data preserved in the *Recycle Bin*. For user objects, this data"
+" includes passwords and group memberships."
+msgstr ""
+"Das Wiederherstellen eines Eintrags aus dem *Papierkorb* fügt ihn mit den"
+" im *Papierkorb* gespeicherten Daten zur LDAP-Datenbank hinzu. Bei "
+"Benutzerobjekten umfassen diese Daten Passwörter und "
+"Gruppenmitgliedschaften."
+
+#: ../../iam/recycle-bin.rst:205
+msgid "Automatically purge entries in the Recycle Bin"
+msgstr "Einträge im Papierkorb automatisch endgültig entfernen"
+
+#: ../../iam/recycle-bin.rst:207
+msgid ""
+"UDM creates entries in the *Recycle Bin* if an administrator removes a "
+"UDM object and the *Recycle Bin* policy applies to it."
+msgstr ""
+"UDM erstellt Einträge im *Papierkorb*, wenn ein Administrator ein UDM "
+"Objekt entfernt und die *Papierkorb*-Richtlinie dafür gilt."
+
+#: ../../iam/recycle-bin.rst:211
+msgid ""
+"The policy defines the retention time. The *Recycle Bin* entry inherits "
+"this value as its ``time-to-live`` property. The value must be within the"
+" range that :envvar:`ldap/database/internal/overlay/dds/min-ttl` and "
+":envvar:`ldap/database/internal/overlay/dds/max-ttl` define. UDM purges "
+"*Recycle Bin* entries when their ``time-to-live`` value expires. You "
+"can't restore purged entries."
+msgstr ""
+"Die Richtlinie legt die Aufbewahrungszeit fest. Der *Papierkorb*-Eintrag "
+"übernimmt diesen Wert als Eigenschaft ``time-to-live``. Der Wert muss im "
+"Bereich liegen, den :envvar:`ldap/database/internal/overlay/dds/min-ttl` "
+"und :envvar:`ldap/database/internal/overlay/dds/max-ttl` festlegen. UDM "
+"entfernt *Papierkorb*-Einträge endgültig, wenn ihr ``time-to-live`` Wert "
+"abläuft. Sie können endgültig entfernte Einträge nicht wiederherstellen."
+
+#: ../../iam/recycle-bin.rst:219
+msgid ""
+"In Nubus for UCS, the Dynamic Directory Services (DDS) overlay of the "
+"OpenLDAP server purges expired entries."
+msgstr ""
+"In Nubus für UCS entfernt das :spelling:word:`Dynamic-Directory-Services`-(DDS)-Overlay"
+" des OpenLDAP-Servers abgelaufene Einträge endgültig."
+
+#: ../../iam/recycle-bin.rst:225
+msgid "Configuration through UCR"
+msgstr "Konfiguration über UCR"
+
+#: ../../iam/recycle-bin.rst:227
+msgid ""
+"Configure the *Recycle Bin* with the following :term:`UCR variables <UCR "
+"variable>` on the :term:`Primary Directory Node`:"
+msgstr ""
+"Konfigurieren Sie den *Papierkorb* mit den folgenden :term:`UCR-Variablen"
+" <UCR variable>` auf dem :term:`Primary Directory Node`:"
+
+#: ../../iam/recycle-bin.rst:230
+msgid ":envvar:`listener/module/recyclebin/deactivate`"
+msgstr ":envvar:`listener/module/recyclebin/deactivate`"
+
+#: ../../iam/recycle-bin.rst:231
+msgid ":envvar:`ldap/database/internal/overlay/dds/min-ttl`"
+msgstr ":envvar:`ldap/database/internal/overlay/dds/min-ttl`"
+
+#: ../../iam/recycle-bin.rst:232
+msgid ":envvar:`ldap/database/internal/overlay/dds/max-ttl`"
+msgstr ":envvar:`ldap/database/internal/overlay/dds/max-ttl`"
+
+#: ../../iam/recycle-bin.rst:234
+msgid ""
+"For the variable reference and default values, see :ref:`references-ucr-"
+"variables`."
+msgstr ""
+"Die Variablenreferenz und Standardwerte finden Sie unter :ref"
+":`references-ucr-variables`."
+
+#: ../../iam/recycle-bin.rst:239
+msgid "To restart the LDAP service, complete the following steps:"
+msgstr "Führen Sie die folgenden Schritte aus, um den LDAP-Dienst neu zu starten:"
+
+#: ../../iam/recycle-bin.rst:241
+msgid "Verify that the UCS domain meets the following conditions:"
+msgstr "Prüfen Sie, ob die UCS-Domäne die folgenden Bedingungen erfüllt:"
+
+#: ../../iam/recycle-bin.rst:243
+msgid ""
+"No mass import of user data is in progress, for example through "
+"UCS\\@school, or connector initialization with the *Active Directory "
+"Connection* or the *S4 Connector*."
+msgstr ""
+"Es wird kein Massenimport von Benutzerdaten durchgeführt, beispielsweise "
+"über UCS\\@school, und es findet keine Initialisierung der Konnektoren mit "
+"*Active Directory Verbindung* oder dem *S4 Connector* statt."
+
+#: ../../iam/recycle-bin.rst:248
+msgid "No UCS system is joining the domain."
+msgstr "Kein UCS-System tritt der Domäne bei."
+
+#: ../../iam/recycle-bin.rst:250
+msgid "No system or app upgrades are running."
+msgstr "Es werden keine System- oder App-Upgrades durchgeführt."
+
+#: ../../iam/recycle-bin.rst:252
+msgid "Listeners and connectors are idle."
+msgstr "Listener und Konnektoren sind inaktiv."
+
+#: ../../iam/recycle-bin.rst:254
+msgid ""
+"Restart the LDAP server on the :term:`Primary Directory Node` with the "
+"command in :numref:`udm-recyclebin-ucr-configuration-restart-ldap-"
+"server`."
+msgstr ""
+"Starten Sie den LDAP-Server auf dem :term:`Primary Directory Node` mit "
+"dem Befehl in :numref:`udm-recyclebin-ucr-configuration-restart-ldap-"
+"server` neu."
+
+#: ../../iam/recycle-bin.rst:258
+msgid "Restart the LDAP server"
+msgstr "LDAP-Server neu starten"
+
+#: ../../iam/recycle-bin.rst:264
+msgid ""
+"Verify that the LDAP server is active with the command in :numref:`udm-"
+"recyclebin-ucr-configuration-verify-ldap-server`."
+msgstr ""
+"Prüfen Sie mit dem Befehl in :numref:`udm-recyclebin-ucr-configuration-"
+"verify-ldap-server`, ob der LDAP-Server aktiv ist."
+
+#: ../../iam/recycle-bin.rst:268
+msgid "Verify that the LDAP server is active"
+msgstr "Prüfen, ob der LDAP-Server aktiv ist"
+
+#: ../../iam/recycle-bin.rst:268
+msgid "$ systemctl is-active slapd.service"
+msgstr "$ systemctl is-active slapd.service"
+
+#: ../../iam/recycle-bin.rst:277
+msgid "Logging information"
+msgstr "Informationen zur Protokollierung"
+
+#: ../../iam/recycle-bin.rst:279
+msgid ""
+"The following log files contain entries about creating *Recycle Bin* "
+"entries and restoring objects:"
+msgstr ""
+"Die folgenden Protokolldateien enthalten Einträge über das Erstellen von "
+"*Papierkorb*-Einträgen und das Wiederherstellen von Objekten:"
+
+#: ../../iam/recycle-bin.rst:282
+msgid ":file:`/var/log/univention/listener.log` on the Primary Directory Node"
+msgstr ":file:`/var/log/univention/listener.log` auf dem Primary Directory Node"
+
+#: ../../iam/recycle-bin.rst:283
+msgid "Contains entries about creating *Recycle Bin* entries."
+msgstr "Enthält Einträge über das Erstellen von *Papierkorb*-Einträgen."
+
+#: ../../iam/recycle-bin.rst:285
+msgid ":file:`/var/log/univention/management-console-module-udm.log`"
+msgstr ":file:`/var/log/univention/management-console-module-udm.log`"
+
+#: ../../iam/recycle-bin.rst:286
+msgid "Contains entries about restoring objects with UMC."
+msgstr "Enthält Einträge über das Wiederherstellen von Objekten mit UMC."
+
+#: ../../iam/recycle-bin.rst:288
+msgid ":file:`/var/log/univention/directory-manager-rest.log`"
+msgstr ":file:`/var/log/univention/directory-manager-rest.log`"
+
+#: ../../iam/recycle-bin.rst:289
+msgid "Contains entries about restoring objects with the *UDM HTTP REST API*."
+msgstr ""
+"Enthält Einträge über das Wiederherstellen von Objekten mit der *UDM HTTP"
+" REST API*."
+
 #: ../../iam/user-activation-apps.rst:9
 msgid ""
 "This section explains how to activate and deactivate users or groups for "
@@ -4330,3 +4848,4 @@ msgstr ""
 #: ../../iam/user-lockout.rst:195
 msgid "Clear the :guilabel:`Account is deactivated` checkbox."
 msgstr "Deaktivieren Sie das Kontrollkästchen :guilabel:`Konto ist deaktiviert`."
+
