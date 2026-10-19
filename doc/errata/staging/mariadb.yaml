@@ -1,0 +1,28 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: mariadb
+fix: 1:10.11.19-0+deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-60585 (CVSS score 6.6 -
+   CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-60331 (CVSS score 6.4 -
+   CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2026-60747 (CVSS score 6.2 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-47023 (CVSS score 4.9 -
+   CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-60184 (CVSS score 4.4 -
+   CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-61081 (CVSS score 2.7 -
+   CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:L/I:N/A:N).
+bug: [60032]
+cve:
+- CVE-2026-61081
+- CVE-2026-60585
+- CVE-2026-60331
+- CVE-2026-60747
+- CVE-2026-47023
+- CVE-2026-60184
