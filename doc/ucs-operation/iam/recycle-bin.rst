@@ -224,36 +224,15 @@ of the OpenLDAP server purges expired entries.
 Configuration through UCR
 -------------------------
 
-The following reference shows the available settings for the *Recycle Bin*.
-You need to change these settings on the :term:`Primary Directory Node`.
+Configure the *Recycle Bin* with the following :term:`UCR variables <UCR variable>`
+on the :term:`Primary Directory Node`:
 
-.. envvar:: listener/module/recyclebin/deactivate
+* :envvar:`listener/module/recyclebin/deactivate`
+* :envvar:`ldap/database/internal/overlay/dds/min-ttl`
+* :envvar:`ldap/database/internal/overlay/dds/max-ttl`
 
-   Controls whether the *Recycle Bin* is active.
-   The default value is ``true``.
-
-   To activate the *Recycle Bin*,
-   see :ref:`udm-recyclebin-activate`.
-
-.. envvar:: ldap/database/internal/overlay/dds/min-ttl
-
-   Defines the minimum time to live (TTL) in seconds
-   for entries in the *Recycle Bin*.
-   The default is ``86400`` seconds (1 day).
-
-   After you change the value,
-   restart the LDAP server with the command in
-   :numref:`udm-recyclebin-ucr-configuration-restart-ldap-server`.
-
-.. envvar:: ldap/database/internal/overlay/dds/max-ttl
-
-   Defines the maximum time to live (TTL) in seconds
-   for entries in the *Recycle Bin*.
-   The default is ``31536000`` seconds (365 days).
-
-   After you change the value,
-   restart the LDAP server with the command in
-   :numref:`udm-recyclebin-ucr-configuration-restart-ldap-server`.
+For the variable reference and default values,
+see :ref:`references-ucr-variables`.
 
 .. important::
 

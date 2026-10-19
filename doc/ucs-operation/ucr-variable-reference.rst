@@ -1018,6 +1018,34 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: list
 
+.. envvar:: ldap/database/internal/overlay/dds/max-ttl
+
+   Sets the maximum time-to-live (TTL) in seconds
+   for dynamic objects in the internal LDAP database.
+   Dynamic objects can't persist longer than this value.
+
+   The :program:`OpenLDAP` Dynamic Directory Services (DDS) overlay
+   uses this setting on the :term:`Primary Directory Node`.
+   The setting also limits the retention time
+   for *Recycle Bin* entries.
+
+   :Default value: ``31536000`` (365 days)
+   :Type: positive integer
+
+.. envvar:: ldap/database/internal/overlay/dds/min-ttl
+
+   Sets the minimum time-to-live (TTL) in seconds
+   for dynamic objects in the internal LDAP database.
+   Dynamic objects must persist for at least this duration.
+
+   The :program:`OpenLDAP` Dynamic Directory Services (DDS) overlay
+   uses this setting on the :term:`Primary Directory Node`.
+   The setting also limits the retention time
+   for *Recycle Bin* entries.
+
+   :Default value: ``86400`` (1 day)
+   :Type: positive integer
+
 .. envvar:: ldap/acl/user/passwordreset/accesslist/groups/dn
 
    Specifies the distinguished name (DN) of a group
@@ -1295,6 +1323,25 @@ This section provides a reference for UCR variables.
    :Possible values: ``0`` to ``5``
    :Type: integer
 
+.. envvar:: listener/module/recyclebin/deactivate
+
+   Controls whether the *Recycle Bin* listener module is active.
+   When set to ``true``,
+   the listener module doesn't move deleted objects
+   to the *Recycle Bin*.
+   Set the variable to ``false`` to activate the listener module.
+
+   The module processes supported UDM objects
+   on the :term:`Primary Directory Node`.
+   A *Recycle Bin* policy must apply to an object
+   before the listener moves it to the *Recycle Bin*.
+
+   For information about activating the *Recycle Bin*,
+   see :ref:`udm-recyclebin-activate`.
+
+   :Default value: ``true``
+   :Possible values: ``true``, ``false``
+   :Type: boolean
 
 .. envvar:: listener/shares/rename
 
