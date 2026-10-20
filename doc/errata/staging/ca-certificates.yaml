@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: ca-certificates
+fix: 20200601~deb10u2A~5.0.0.202610202002
+desc: |
+ This update addresses the following issue:
+ * TEMP-2026-1: The private keys of eight intermediate certificate
+   authorities (CAs) operated by eMudhra have been compromised. An attacker
+   with access to these keys can issue certificates for any domain, which UCS
+   systems accepted as valid. The root CAs `emSign ECC Root CA - G3` and
+   `Comodo AAA Services root`, which these intermediate CAs chain to, have
+   been removed from the system trust store.
+bug: [60049]
+cve:
+- TEMP-2026-1
