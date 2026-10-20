@@ -41,8 +41,8 @@ export REPLACE="${REPLACE:=$(_jenkins)}"
 export UCS_TEST_RUN="${UCS_TEST_RUN:=$(_jenkins)}"
 export TERMINATE="${TERMINATE:=$(_jenkins)}"
 export OS_CLOUD="${OS_CLOUD:=univention-development}"
-export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=182}" # template-generic-ucs-5.2-7-e606 - 2026-10-07 16:14:45 (packer)
-export PROXMOX_TEMPLATE_ID_OLD="${PROXMOX_TEMPLATE_ID_OLD:=183}" # template-generic-ucs-5.0-10-e1220 - 2026-10-08 11:46:27 (packer)
+export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=181}" # template-generic-ucs-5.2-7-e606 2026-10-16 11:34:26  dev, template (packer)
+export PROXMOX_TEMPLATE_ID_OLD="${PROXMOX_TEMPLATE_ID_OLD:=175}" # template-generic-ucs-5.0-10-e1220 2026-10-16 11:32:39  dev, template (packer)
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
