@@ -16,3 +16,6 @@ desc: |
    controlled using the new UCR variable `saslauthd/autostart`, which is
    enabled by default.
 bug: [58791]
+erratum: 643
+announced: 2026-10-21
+support: core
