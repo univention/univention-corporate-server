@@ -1023,3 +1023,6 @@ cve:
 - CVE-2026-98432
 - CVE-2026-98260
 note: This is the 2nd of two parts.
+erratum: 645
+announced: 2026-10-21
+support: core
