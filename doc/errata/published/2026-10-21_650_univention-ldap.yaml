@@ -9,3 +9,6 @@ desc: |
  * The `noopsrch` overlay module has been enabled to improve performance for
    license counts.
 bug: [59964]
+erratum: 650
+announced: 2026-10-21
+support: core
