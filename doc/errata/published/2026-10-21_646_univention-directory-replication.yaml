@@ -12,3 +12,6 @@ desc: |
    before processing replication transactions. Additionally, the log level for
    automatic reconnection has been lowered from `WARNING` to `PROCESS`.
 bug: [59964]
+erratum: 646
+announced: 2026-10-21
+support: core
