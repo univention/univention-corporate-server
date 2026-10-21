@@ -15,3 +15,6 @@ desc: |
 bug: [60048]
 cve:
 - TEMP-2026-1
+erratum: 1904
+announced: 2026-10-21
+support: lts
