@@ -14,3 +14,6 @@ desc: |
    automatically regenerates the proxy configuration and restarts the
    Squid service.
 bug: [59976]
+erratum: 649
+announced: 2026-10-21
+support: core
