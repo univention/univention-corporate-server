@@ -3,7 +3,7 @@ release: "5.2"
 version: [6, 7]
 scope: ucs_5.2-0-errata5.2-7
 src: ca-certificates
-fix: 20250419~deb12u1A~5.2.0.202610201956
+fix: 20250419~deb12u2
 desc: |
  This update addresses the following issue:
  * TEMP-2026-1: The private keys of eight intermediate certificate
