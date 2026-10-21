@@ -24,3 +24,6 @@ desc: |
    shipped in a separate erratum for `univention-management-console`.
    For more information, see https://help.univention.com/t/25737.
 bug: [60028]
+erratum: 1502
+announced: 2026-10-21
+support: lts
