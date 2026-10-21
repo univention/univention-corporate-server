@@ -13,3 +13,6 @@ desc: |
    modifications.
  * The performance of counting license usage has been improved.
 bug: [59976, 59964]
+erratum: 648
+announced: 2026-10-21
+support: core
