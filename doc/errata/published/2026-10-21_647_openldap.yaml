@@ -23,3 +23,6 @@ desc: |
    accounts correctly during authentication.
  * The `noopsrch` overlay has been added to `slapd-contrib`.
 bug: [47516, 59976, 60026]
+erratum: 647
+announced: 2026-10-21
+support: core
