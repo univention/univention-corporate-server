@@ -1345,3 +1345,6 @@ cve:
 - CVE-2026-100078
 - CVE-2019-20812
 note: This is the 1st of two parts.
+erratum: 644
+announced: 2026-10-21
+support: core
