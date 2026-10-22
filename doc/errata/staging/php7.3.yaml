@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: php7.3
+fix: 7.3.31-1~deb10u16
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-109619, CVE-2026-109618 (CVSS score 9.8 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+bug: [60053]
+cve:
+- CVE-2026-109618
+- CVE-2026-109619
