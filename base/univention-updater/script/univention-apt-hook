@@ -17,15 +17,16 @@ if TYPE_CHECKING:
 HOOK_NAME = "univention-apt-hook"
 FILE_OVERRIDE = "/etc/apt/univention-apt-hook.override"
 FILE_DEBUG = "/etc/apt/univention-apt-hook.enable-debug"
-ROLE_PACKAGES = {
-    "univention-server-master",
-    "univention-server-backup",
-    "univention-server-slave",
-    "univention-server-member",
+ROLE_PACKAGE = {
+    "domaincontroller_master": "univention-server-master",
+    "domaincontroller_backup": "univention-server-backup",
+    "domaincontroller_slave": "univention-server-slave",
+    "memberserver": "univention-server-member",
 }
+ROLE_PACKAGES = set(ROLE_PACKAGE.values())
 # Removing a package they depend on, e.g. a kernel, also removes them or makes
 # APT switch to the container variants, which removes most of the UCS installation.
-PROTECTED_PACKAGES = ROLE_PACKAGES | {
+COMMON_PACKAGES = {
     "univention-role-server-common",
     "univention-role-common",
 }
@@ -73,13 +74,22 @@ def parse(lines: Iterable[str]) -> tuple[set[str], set[str]]:
     return remove, install
 
 
-def blocked(remove: set[str], install: set[str]) -> set[str]:
+def server_role() -> str:
+    """Return the UCR variable `server/role` or an empty string."""
+    try:
+        from univention.config_registry import ucr
+    except ImportError:
+        return ""
+    return ucr["server/role"] or ""
+
+
+def blocked(remove: set[str], role: str) -> set[str]:
     """Return the protected packages which must not be removed."""
-    packages = remove & PROTECTED_PACKAGES
-    # changing the system role, e.g. by univention-backup2master, replaces the role package
-    if install & (ROLE_PACKAGES - remove):
-        packages -= ROLE_PACKAGES
-    return packages
+    # Changing the system role, e.g. by univention-backup2master or System Setup, sets
+    # `server/role` before replacing the role package. Only protect the package of the
+    # configured role, as APT may also replace it by another role package on its own.
+    roles = {ROLE_PACKAGE[role]} if role in ROLE_PACKAGE else ROLE_PACKAGES
+    return remove & (COMMON_PACKAGES | roles)
 
 
 def main() -> None:
@@ -89,11 +99,13 @@ def main() -> None:
 
     with os.fdopen(int(info_fd)) as fd:
         try:
-            remove, install = parse(fd)
+            remove, _install = parse(fd)
         except ValueError as exc:
             sys.exit("E: %s: %s" % (HOOK_NAME, exc))
 
-    packages = blocked(remove, install)
+    role = server_role()
+    debug("server/role: %r" % (role,))
+    packages = blocked(remove, role)
     if not packages:
         return
     if os.path.exists(FILE_OVERRIDE):

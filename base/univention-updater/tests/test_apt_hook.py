@@ -48,6 +48,19 @@ BACKUP2MASTER = [
     "univention-server-master - < 17.0.4 /var/cache/apt/archives/univention-server-master_17.0.4_all.deb",
     "univention-server-master - < 17.0.4 **CONFIGURE**",
 ]
+# System Setup changing the role to Replica Directory Node, uninstall step
+SYSTEM_SETUP = [
+    "univention-server-master 17.6.0 > - **REMOVE**",
+]
+# apt remove curl: APT replaces the role package by another one
+ROLE_SWITCH = [
+    "curl 7.88.1-10+deb12u15 > - **REMOVE**",
+    "univention-management-console 14.6.0 > - **REMOVE**",
+    "univention-server-master 17.6.0 > - **REMOVE**",
+    "univention-directory-replication - < 15.7.0 /var/cache/apt/archives/univention-directory-replication_15.7.0_all.deb",
+    "univention-server-slave - < 17.6.0 /var/cache/apt/archives/univention-server-slave_17.6.0_all.deb",
+    "univention-server-slave - < 17.6.0 **CONFIGURE**",
+]
 UPGRADE = [
     "univention-server-master 16.0.6 < 17.0.4 /var/cache/apt/archives/univention-server-master_17.0.4_all.deb",
     "univention-role-server-common 16.0.6 < 17.0.4 /var/cache/apt/archives/univention-role-server-common_17.0.4_all.deb",
@@ -66,24 +79,55 @@ def test_parse_wrong_version():
         hook.parse(["VERSION 3", ""])
 
 
-@pytest.mark.parametrize("actions,expected", [
-    (KERNEL_PURGE, {"univention-server-master", "univention-role-server-common"}),
-    (CONTAINER_SWITCH, {"univention-role-server-common"}),
-    (["univention-role-common 17.0.4 > - **REMOVE**"], {"univention-role-common"}),
-    (BACKUP2MASTER, set()),
-    ([*BACKUP2MASTER, "univention-role-server-common 17.0.4 > - **REMOVE**"], {"univention-role-server-common"}),
-    (["univention-server-backup 17.0.4 > - **REMOVE**", "univention-server-backup 17.0.4 > - **REMOVE**"], {"univention-server-backup"}),
-    (UPGRADE, set()),
-    (["univention-container-role-server-common 15.0.10-2 > - **REMOVE**"], set()),
+MASTER = "domaincontroller_master"
+BACKUP = "domaincontroller_backup"
+SLAVE = "domaincontroller_slave"
+
+
+# provide `server/role` without depending on the UCR of the host
+UCR_STUB = """from __future__ import annotations
+import sys
+sys.modules["univention.config_registry"] = type(sys)("univention.config_registry")
+sys.modules["univention.config_registry"].ucr = {"server/role": %r}
+""" % (MASTER,)
+
+
+@pytest.mark.parametrize("actions,role,expected", [
+    (KERNEL_PURGE, MASTER, {"univention-server-master", "univention-role-server-common"}),
+    (CONTAINER_SWITCH, MASTER, {"univention-role-server-common"}),
+    (["univention-role-common 17.0.4 > - **REMOVE**"], MASTER, {"univention-role-common"}),
+    (ROLE_SWITCH, MASTER, {"univention-server-master"}),
+    (BACKUP2MASTER, MASTER, set()),
+    (BACKUP2MASTER, BACKUP, {"univention-server-backup"}),
+    ([*BACKUP2MASTER, "univention-role-server-common 17.0.4 > - **REMOVE**"], MASTER, {"univention-role-server-common"}),
+    (SYSTEM_SETUP, SLAVE, set()),
+    (SYSTEM_SETUP, MASTER, {"univention-server-master"}),
+    (SYSTEM_SETUP, "", {"univention-server-master"}),
+    (SYSTEM_SETUP, "basesystem", {"univention-server-master"}),
+    (UPGRADE, MASTER, set()),
+    (["univention-container-role-server-common 15.0.10-2 > - **REMOVE**"], MASTER, set()),
 ])
-def test_blocked(actions, expected):
-    assert hook.blocked(*hook.parse(HEADER + actions)) == expected
+def test_blocked(actions, role, expected):
+    remove, _install = hook.parse(HEADER + actions)
+    assert hook.blocked(remove, role) == expected
+
+
+def test_server_role(monkeypatch):
+    module = type(sys)("univention.config_registry")
+    monkeypatch.setitem(sys.modules, "univention.config_registry", module)
+    module.ucr = {"server/role": MASTER}
+    assert hook.server_role() == MASTER
+    module.ucr = {"server/role": None}
+    assert hook.server_role() == ""
+    monkeypatch.setitem(sys.modules, "univention.config_registry", None)
+    assert hook.server_role() == ""
 
 
 @pytest.fixture
 def run(tmp_path):
     def run(actions, override=False):
         script = HOOK.read_text().replace(hook.FILE_OVERRIDE, str(tmp_path / "override"))
+        script = script.replace("from __future__ import annotations\n", UCR_STUB, 1)
         if override:
             (tmp_path / "override").touch()
         read, write = os.pipe()
@@ -123,3 +167,9 @@ def test_main_override(run):
     result = run(KERNEL_PURGE, override=True)
     assert result.returncode == 0
     assert "removing univention-role-server-common univention-server-master" in result.stderr
+
+
+def test_main_role_switch(run):
+    result = run(ROLE_SWITCH)
+    assert result.returncode == 1
+    assert "    univention-server-master\n" in result.stderr
