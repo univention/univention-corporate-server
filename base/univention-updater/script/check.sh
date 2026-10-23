@@ -57,6 +57,35 @@ die () {
 	exit 1
 }
 
+# Bug #59473: Check additional Dovecot configuration before upgrading to 2.4.
+update_check_dovecot_config () {
+	local var="update$VERSION/ignore_dovecot_config"
+	ignore_check "$var" && return 100
+	[ -d /etc/dovecot ] || return 0
+
+	local file
+	local -a additional_config=()
+	while IFS= read -r -d '' file; do
+		[ -e "/etc/univention/templates/files$file" ] && continue
+		dpkg-query --search "$file" >/dev/null 2>&1 && continue
+		# Package scripts register generated configuration files with UCF.
+		if [ -r /var/lib/ucf/registry ] &&
+			awk -v path="$file" '$2 == path { found=1; exit } END { exit !found }' /var/lib/ucf/registry; then
+			continue
+		fi
+		additional_config+=("$file")
+	done < <(find /etc/dovecot \( -type f -o -type l \) \( -name '*.conf' -o -name '*.conf.ext' \) -print0)
+
+	[ "${#additional_config[@]}" -gt 0 ] || return 0
+	printf '\tAdditional Dovecot configuration files were found:\n'
+	printf '\t- %s\n' "${additional_config[@]}"
+	printf '\n\tUCS does not automatically migrate these files to the Dovecot 2.4 configuration format.\n'
+	printf '\tReview them before upgrading to UCS 5.3. See:\n'
+	printf '\thttps://doc.dovecot.org/2.4.1/installation/upgrade/2.3-to-2.4.html\n'
+	printf '\n\tAfter reviewing these files, this check can be disabled by setting %s to yes.\n' "$var"
+	return 1
+}
+
 # check for hold packages
 update_check_hold_packages () {
 	local var="update$VERSION/ignore_hold"
