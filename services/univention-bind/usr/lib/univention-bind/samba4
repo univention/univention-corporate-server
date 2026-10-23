@@ -9,9 +9,9 @@ case "$1" in
 		test -z $debug_level && debug_level=0
 
 		if [ "$(uname -m)" = "x86_64" ]; then
-			export LDB_MODULES_PATH=/usr/lib/x86_64-linux-gnu/ldb/
+			export LDB_MODULES_PATH=/usr/lib/x86_64-linux-gnu/samba/ldb/
 		else
-			export LDB_MODULES_PATH=/usr/lib/i386-linux-gnu/ldb/
+			export LDB_MODULES_PATH=/usr/lib/i386-linux-gnu/samba/ldb/
 		fi
 
 		OPTS="-c /etc/bind/named.conf.samba4 -f -d $debug_level"
