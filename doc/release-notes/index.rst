@@ -172,6 +172,32 @@ and run it on the UCS system.
    ...
 
 
+.. _relnotes-dovecot:
+
+Custom Dovecot configuration
+============================
+
+UCS |release| updates Dovecot from version 2.3 to 2.4,
+which changes the configuration format.
+Before updating,
+review your additional configuration files,
+local UCR template changes,
+and custom ``mail/dovecot/`` UCR values.
+Use the `Dovecot 2.3 to 2.4 migration guide
+<https://doc.dovecot.org/2.4.1/installation/upgrade/2.3-to-2.4.html>`_
+to prepare any required changes.
+
+The pre-update check lists additional ``*.conf`` and ``*.conf.ext`` files
+under :file:`/etc/dovecot` that aren't supplied by UCR or packages
+and blocks the update.
+It doesn't validate their contents.
+After reviewing the listed files and preparing their migration,
+set the |UCSUCRV| :envvar:`update53/ignore_dovecot_config` to ``yes``
+to allow the update.
+
+After the update,
+verify that Dovecot starts and that your customizations work.
+
 .. _relnotes-post:
 
 *****************************
