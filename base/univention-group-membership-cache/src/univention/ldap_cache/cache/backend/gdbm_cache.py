@@ -39,8 +39,12 @@ class GdbmCache(LdapCache):
         log('%s - Recreating!', self.name)
 
     def _fix_permissions(self) -> None:
-        listener_uid = getpwnam('listener').pw_uid
-        os.chown(self.db_file, listener_uid, -1)
+        # Only root can hand the file over to "listener". A non-root process,
+        # e.g. a container running with an arbitrary UID on OpenShift, already
+        # owns the file it just created; chown() would fail with EPERM.
+        if os.geteuid() == 0:
+            listener_uid = getpwnam('listener').pw_uid
+            os.chown(self.db_file, listener_uid, -1)
         os.chmod(self.db_file, 0o640)
 
     @contextmanager
