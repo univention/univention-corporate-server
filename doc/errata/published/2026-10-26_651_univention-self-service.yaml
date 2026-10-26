@@ -10,3 +10,6 @@ desc: |
    pictures, for malware with an ICAP server. Set the UCR variable
    `umc/self-service/malware-scan/icap/url` to activate the scan.
 bug: [59965]
+erratum: 651
+announced: 2026-10-26
+support: core
