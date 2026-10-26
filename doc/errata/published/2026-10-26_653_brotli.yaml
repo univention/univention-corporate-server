@@ -9,4 +9,8 @@ desc: |
   * CVE-2026-111497 (CVSS score 9.2 CVSS_V4).
 bug: [60059]
 cve:
-  - CVE-2026-111497
+- CVE-2026-111497
+erratum: 653
+announced: 2026-10-26
+support: core
+
