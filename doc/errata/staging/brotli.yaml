@@ -5,8 +5,8 @@ scope: ucs_5.0-0-errata5.0-10
 src: brotli
 fix: 1.0.7-2+deb10u2
 desc: |
- This update addresses the following issue:
- * CVE-2026-111497 (CVSS score unknown).
+  This update addresses the following issue:
+  * CVE-2026-111497 (CVSS score 9.2 CVSS_V4).
 bug: [60066]
 cve:
 - CVE-2026-111497
