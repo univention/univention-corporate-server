@@ -3,7 +3,7 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-guardian
-fix: 1.1.1
+fix: 1.1.2
 desc: |
  This update addresses the following issues:
  * The Guardian server now runs Cerbos version 0.57.0.
