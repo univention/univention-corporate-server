@@ -10,3 +10,6 @@ desc: |
    `univention.lib.icap`. It sends files to an ICAP server for a malware
    scan. The Self Service uses this module.
 bug: [59965]
+erratum: 652
+announced: 2026-10-26
+support: core
