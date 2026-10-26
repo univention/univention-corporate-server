@@ -1,0 +1,46 @@
+product: ucs
+release: "5.2"
+version: [6, 7]
+scope: ucs_5.2-0-errata5.2-7
+src: libssh
+fix: 0.10.6-0+deb12u3
+desc: |
+ This update addresses the following issues:
+ * CVE-2026-0966 (CVSS score 8.2 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H).
+ * CVE-2026-59844, CVE-2026-59843 (CVSS score 6.5 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2026-0964 (CVSS score 6.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L).
+ * CVE-2026-59847 (CVSS score 5.9 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N).
+ * CVE-2026-0967 (CVSS score 5.5 -
+   CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2026-59848 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-59845 (CVSS score 5.3 -
+   CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:N/A:H).
+ * CVE-2026-3731 (CVSS score 5.3 -
+   CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L/E:X/RL:O/RC:C).
+ * CVE-2026-59850 (CVSS score 4.3 -
+   CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2026-59846 (CVSS score 3.9 -
+   CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:L/A:N).
+ * CVE-2026-0968 (CVSS score 3.1 -
+   CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L).
+ * CVE-2026-0965 (CVSS score unknown).
+bug: [60061]
+cve:
+- CVE-2026-0964
+- CVE-2026-0965
+- CVE-2026-0966
+- CVE-2026-0967
+- CVE-2026-0968
+- CVE-2026-3731
+- CVE-2026-59843
+- CVE-2026-59844
+- CVE-2026-59845
+- CVE-2026-59846
+- CVE-2026-59847
+- CVE-2026-59848
+- CVE-2026-59850
