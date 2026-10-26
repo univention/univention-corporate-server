@@ -14,6 +14,7 @@ Univention App Center for App Providers' documentation!
    get_started
    lifecycle
    presentation
+   catalog
    identity_management
    configurations
    appliances
