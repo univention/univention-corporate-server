@@ -264,17 +264,14 @@ update_check_role_packages_installed () {
 	done
 	[ -z "$missing" ] && return 0
 
-	echo "	The following packages required for the system role $server_role"
-	echo "	are not installed:"
-	echo "		$missing"
+	echo "	The following required system role packages are not installed: $missing"
 	echo
-	echo "	Removing these packages may also have removed other packages essential"
-	echo "	for UCS. As a result the system may be in an inconsistent state that"
-	echo "	requires manual recovery."
+	echo "	Proceeding with the update without these role packages"
+	echo "	may remove essential packages during the update,"
+	echo "	leaving the system in an inconsistent state that requires manual recovery."
 	echo
 	echo "	Do not proceed with the update and do not run 'apt-get autoremove',"
-	echo "	as this could remove critical UCS components and render the system"
-	echo "	unusable."
+	echo "	as this could remove critical UCS components and render the system unusable."
 	echo
 	echo "	If you have a Univention Enterprise Subscription, please contact"
 	echo "	Univention Support for assistance. Otherwise, seek help from the"

@@ -3,7 +3,7 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-updater
-fix: 17.7.3
+fix: 17.7.4
 desc: |
  This update addresses the following issues:
  * The removal of UCS role meta packages is now prevented by a new APT hook.
