@@ -25,7 +25,7 @@ from univention.admin.log import log
 from univention.config_registry import ucr
 
 
-TELEMETRY_ENDPOINT = os.environ.get('TELEMETRY_ENDPOINT', 'http://localhost:4318/v1/metrics')
+TELEMETRY_ENDPOINT = os.environ.get('TELEMETRY_ENDPOINT', 'https://telemetry.univention.de/v1/metrics')
 UDM_REST_BASE_URL = os.environ.get('UDM_API_URL', f'https://{ucr["ldap/master"]}/univention/udm/')
 UDM_REST_USERNAME = os.environ.get('UDM_API_USER', f'{ucr["hostname"]}$')
 SERVICE_NAME = 'univention-telemetry-sender'
