@@ -191,6 +191,13 @@ if [ "$1" = "configure" ]; then
 		divert_univention_heimdal_service_cfg
 
 	elif [ -n "$2" ]; then
+		# Bug #60052: samba's internal nbt server is always used now
+		univention-config-registry set samba4/service/nmb=s4 nmbd/autostart=no
+		univention-config-registry commit /etc/samba/smb.conf
+		if dpkg --compare-versions "$2" lt-nl "12.0.2"; then
+			[ -x /etc/init.d/nmbd ] && /etc/init.d/nmbd stop 2>/dev/null || true
+			start-stop-daemon --stop --quiet --oknodo --exec /usr/sbin/nmbd 2>/dev/null || true
+		fi
 		### The samba restart should always be done on updates
 		/etc/init.d/samba restart
 
