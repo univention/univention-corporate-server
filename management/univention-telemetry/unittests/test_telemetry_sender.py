@@ -4,6 +4,7 @@
 
 import importlib.machinery
 import importlib.util
+import json
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -84,7 +85,7 @@ OTLP_SCHEMA = {
                                                             "required": ["timeUnixNano", "asDouble", "attributes"],
                                                             "properties": {
                                                                 "timeUnixNano": {"type": "string"},
-                                                                "asDouble": {"type": "number"},
+                                                                "asDouble": {"oneOf": [{"type": "number"}, {"enum": ["Infinity", "-Infinity", "NaN"]}]},
                                                                 "attributes": {"$ref": "#/$defs/attributes"},
                                                             },
                                                         },
@@ -279,3 +280,21 @@ def test_fetch_metrics_raises_after_all_attempts_fail():
         sender.fetch_metrics(session, 'secret')
 
     assert session.get.call_count == 3
+
+
+@pytest.mark.parametrize('value,expected', [
+    (100.0, 100.0),
+    (float('inf'), 'Infinity'),
+    (float('-inf'), '-Infinity'),
+    (float('nan'), 'NaN'),
+])
+def test_double_encodes_non_finite_values_as_strings(value, expected):
+    assert sender._double(value) == expected
+
+
+def test_build_otlp_unlimited_license_is_valid_json():
+    text = PROMETHEUS_TEXT.replace('platform="ucs"} 100.0', 'platform="ucs"} +Inf')
+    payload = sender.build_otlp(sender.parse_prometheus_text(text), '0')
+    body = json.dumps(payload, allow_nan=False)
+    jsonschema.validate(json.loads(body), OTLP_SCHEMA)
+    assert '"asDouble": "Infinity"' in body
