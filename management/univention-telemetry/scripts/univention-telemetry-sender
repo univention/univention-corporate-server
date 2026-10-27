@@ -36,19 +36,20 @@ RETRY_DELAY = 10
 JITTER_MAX = 60
 
 
-def fetch_metrics(session):
-    with open('/etc/machine.secret') as f:
-        password = f.read().strip()
-
+def fetch_metrics(session, password):
     url = urljoin(UDM_REST_BASE_URL, '-/metrics')
-    resp = session.get(
-        url,
-        proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
-        auth=(UDM_REST_USERNAME, password),
-        timeout=30,
-    )
-    resp.raise_for_status()
-    return resp.text
+
+    def get():
+        resp = session.get(
+            url,
+            proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
+            auth=(UDM_REST_USERNAME, password),
+            timeout=30,
+        )
+        resp.raise_for_status()
+        return resp.text
+
+    return _retry(get, 'Fetch', url)
 
 
 def parse_prometheus_text(text):
@@ -97,22 +98,29 @@ def build_otlp(parsed_prometheus_metrics, ts):
 
 def send_with_retry(session, payload):
     body = json.dumps(payload).encode()
+
+    def post():
+        resp = session.post(
+            TELEMETRY_ENDPOINT,
+            proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
+            data=body,
+            headers={'Content-Type': 'application/json'},
+            timeout=30,
+        )
+        resp.raise_for_status()
+
+    _retry(post, 'Send', TELEMETRY_ENDPOINT)
+
+
+def _retry(func, action, url):
     for attempt in range(1, RETRY_COUNT + 1):
         try:
-            resp = session.post(
-                TELEMETRY_ENDPOINT,
-                proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
-                data=body,
-                headers={'Content-Type': 'application/json'},
-                timeout=30,
-            )
-            resp.raise_for_status()
-            return
+            return func()
         except requests.RequestException as exc:
             if attempt == RETRY_COUNT:
-                log.exception('Permanent failure after %d attempts: %s', RETRY_COUNT, exc)
+                log.error('%s to %s failed permanently after %d attempts: %s', action, url, RETRY_COUNT, exc)
                 raise
-            log.warning('Send attempt %d/%d to %s failed: %s', attempt, RETRY_COUNT, TELEMETRY_ENDPOINT, exc)
+            log.warning('%s attempt %d/%d to %s failed: %s', action, attempt, RETRY_COUNT, url, exc)
             time.sleep(RETRY_DELAY)
 
 
@@ -217,9 +225,12 @@ def main():
     log.info('Sleeping %.1fs before sending', jitter)
     time.sleep(jitter)
 
+    with open('/etc/machine.secret') as f:
+        password = f.read().strip()
+
     session = requests.Session()
 
-    raw_prometheus_metrics_text = fetch_metrics(session)
+    raw_prometheus_metrics_text = fetch_metrics(session, password)
     parsed_prometheus_metrics = parse_prometheus_text(raw_prometheus_metrics_text)
     payload = build_otlp(parsed_prometheus_metrics, str(time.time_ns()))
     send_with_retry(session, payload)

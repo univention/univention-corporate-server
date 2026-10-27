@@ -5,7 +5,7 @@
 import importlib.machinery
 import importlib.util
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 import jsonschema
 import pytest
@@ -205,18 +205,24 @@ def test_build_otlp_nubus_n4k_version():
     assert list(sender._build_otlp_nubus_n4k_version(samples['nubus_n4k_version_info'], '0')) == expected
 
 
-def test_send_with_retry_succeeds_on_first_attempt():
+@pytest.fixture(autouse=True)
+def sleeps(monkeypatch):
+    calls = []
+    monkeypatch.setattr(sender.time, 'sleep', calls.append)
+    return calls
+
+
+def test_send_with_retry_succeeds_on_first_attempt(sleeps):
     session = Mock()
     session.post.return_value = Mock()
 
-    with patch.object(sender.time, 'sleep') as mock_sleep:
-        sender.send_with_retry(session, {})
+    sender.send_with_retry(session, {})
 
     assert session.post.call_count == 1
-    mock_sleep.assert_not_called()
+    assert sleeps == []
 
 
-def test_send_with_retry_succeeds_on_third_attempt():
+def test_send_with_retry_succeeds_on_third_attempt(sleeps):
     session = Mock()
     session.post.side_effect = [
         requests.ConnectionError('timeout'),
@@ -224,19 +230,17 @@ def test_send_with_retry_succeeds_on_third_attempt():
         Mock(),
     ]
 
-    with patch.object(sender.time, 'sleep') as mock_sleep:
-        sender.send_with_retry(session, {})
+    sender.send_with_retry(session, {})
 
     assert session.post.call_count == 3
-    assert mock_sleep.call_count == 2
-    mock_sleep.assert_called_with(sender.RETRY_DELAY)
+    assert sleeps == [sender.RETRY_DELAY] * 2
 
 
 def test_send_with_retry_raises_after_all_attempts_fail():
     session = Mock()
     session.post.side_effect = requests.ConnectionError('timeout')
 
-    with patch.object(sender.time, 'sleep'), pytest.raises(requests.RequestException):
+    with pytest.raises(requests.RequestException):
         sender.send_with_retry(session, {})
 
     assert session.post.call_count == 3
@@ -248,7 +252,30 @@ def test_send_with_retry_retries_on_http_error():
     response.raise_for_status.side_effect = requests.HTTPError('500')
     session.post.return_value = response
 
-    with patch.object(sender.time, 'sleep'), pytest.raises(requests.HTTPError):
+    with pytest.raises(requests.HTTPError):
         sender.send_with_retry(session, {})
 
     assert session.post.call_count == 3
+
+
+def test_fetch_metrics_retries_until_success(sleeps):
+    session = Mock()
+    response = Mock(text='metrics')
+    session.get.side_effect = [requests.ConnectionError('refused'), response]
+
+    assert sender.fetch_metrics(session, 'secret') == 'metrics'
+
+    assert session.get.call_count == 2
+    assert sleeps == [sender.RETRY_DELAY]
+
+
+def test_fetch_metrics_raises_after_all_attempts_fail():
+    session = Mock()
+    response = Mock()
+    response.raise_for_status.side_effect = requests.HTTPError('503')
+    session.get.return_value = response
+
+    with pytest.raises(requests.HTTPError):
+        sender.fetch_metrics(session, 'secret')
+
+    assert session.get.call_count == 3
