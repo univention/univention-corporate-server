@@ -6,3 +6,11 @@ programs=/usr/sbin/samba
 start_type=samba4/autostart
 init_script=samba
 systemd=samba-ad-dc.service
+
+[nmbd]
+description[de]=Stellt NetBIOS Dienste für Windows Systeme zur Verfügung
+description[en]=Provides NetBIOS services for Windows
+icon=service/samba
+programs=/usr/sbin/nmbd
+start_type=nmbd/autostart
+systemd=nmbd.service
