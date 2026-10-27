@@ -11,6 +11,7 @@ Intended to run once daily on the Primary Directory Node via cron.
 """
 
 import json
+import math
 import os
 import random
 import sys
@@ -132,6 +133,16 @@ def _int_attr(key, value):
     return {'key': key, 'value': {'intValue': str(value)}}
 
 
+def _double(value):
+    # OTLP/JSON follows the protobuf JSON mapping: non-finite doubles are strings, bare Infinity is invalid JSON.
+    value = float(value)
+    if math.isnan(value):
+        return 'NaN'
+    if math.isinf(value):
+        return 'Infinity' if value > 0 else '-Infinity'
+    return value
+
+
 def _gauge(name, description, dp):
     return {'name': name, 'description': description, 'unit': '1', 'gauge': {'dataPoints': [dp]}}
 
@@ -182,7 +193,7 @@ def _build_otlp_users_user_total(prometheus_samples, ts):
             'Count of non-deactivated users/user LDAP objects',
             {
                 'timeUnixNano': ts,
-                'asDouble': float(sample['value']),
+                'asDouble': _double(sample['value']),
                 'attributes': [
                     _str_attr('license_uuid', labels['license_uuid']),
                     _str_attr('platform', labels['platform']),
@@ -199,7 +210,7 @@ def _build_otlp_license_users_limit(prometheus_samples, ts):
             'Maximum number of users allowed by the license',
             {
                 'timeUnixNano': ts,
-                'asDouble': float(sample['value']),
+                'asDouble': _double(sample['value']),
                 'attributes': [
                     _str_attr('license_uuid', labels['license_uuid']),
                     _str_attr('platform', labels['platform']),
