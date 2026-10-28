@@ -41,23 +41,99 @@ The final `preup.sh` script is created by this command in [debian/rules](debian/
 Publishing
 ----------
 The `preup.sh`, `postup.sh` and `check.sh` scripts are **automatically** extracted from the package `univention-updater` by `announce_ucs5_release` from `repo-ng` **only** for the **initial** release.
-They are stored in [dists/ucs500/](http://updates.software-univention.de/dists/ucs500/) respective [download/univention-update-checks/](http://updates.software-univention.de/download/univention-update-checks/).
+On the server they are published as:
+
+| File in the repository | Published as |
+| ---------------------- | ------------ |
+| `script/preup.sh` with `script/check.sh` inserted | `dists/ucs520/preup.sh` |
+| `script/postup.sh` | `dists/ucs520/postup.sh` |
+| `script/check.sh` | `download/univention-update-checks/pre-update-checks-5.2-0` |
+
+Each file has a detached PGP signature next to it (`*.gpg`), made with the key of the UCS release.
+The updater refuses to run a script whose signature does not match.
 
 Sometimes the scripts need to be modified **after** a release, for example to block the update because of some late issues.
-1. In that case the code for the modified script should be committed first, so the change is documented.
-2. It is then recommended to import and build the package using `repo-ng`, after which the scripts can be extract from the binary package by using `dpkg -x univention-updaeter_${version}_all.deb /some/temporary/directory/`.
-3. The scripts **must** be signed **manually** using `repo-ng-sign-release-file` from `repo-ng` with the PGP key **corresponding** to the UCS release.
-    ```sh
-    repo-ng-sign-release-file -i pre-update-checks-5.2-0 -o pre-update-checks-5.2-0.gpg -k 8321745BB32A82C75BBD4BC2D293E501A055F562 -p /etc/archive-keys/ucs5.2.txt
-    ```
-4. Afterwards the script and signature files must be copied **manually** to the above mentions locations.
-5. Test it thoroughly before updating our **external** mirror:
-    ```sh
-    curl -OOf https://updates.knut.univention.de/download/univention-update-checks/pre-update-checks-5.2-0{.gpg,}
-    apt-key verify pre-update-checks-5.2-0{.gpg,}
-    bash pre-update-checks-5.2-0
-    ```
-6. Update the external mirror:
-    ```sh
-    sudo update_mirror.sh ftp/download/univention-update-checks
-    ```
+For releases which are no longer maintained (status `end-of-life` in `/etc/repo-ng/releases.yaml`) this is done with `announce_update_checks` from `repo-ng` on `omar`.
+It generates the files from a UCS clone, signs them, shows a diff, and publishes only the files which changed.
+For maintained releases it refuses to run unless `--force` is given.
+
+### Mirrors
+
+The scripts go through three mirrors, always in this order:
+
+| Step | Mirror on `omar` | Internal URL | Public URL |
+| ---- | ---------------- | ------------ | ---------- |
+| 1. Test | `test_mirror/ftp/` | http://apt.knut.univention.de/ | – |
+| 2. Testing | `mirror/testing/` | http://updates-test.knut.univention.de/ | https://updates-test.software-univention.de/ |
+| 3. Production | `mirror/ftp/` | http://updates.knut.univention.de/ | https://updates.software-univention.de/ |
+
+Only the test mirror is signed from the UCS clone.
+Testing and production receive **exactly** the files tested before by copying them from the test mirror.
+
+### 1. Commit the change
+
+Commit and push the modified scripts to the release branch, e.g. `5.2-0`, so the change is documented and reviewed.
+
+### 2. Prepare a UCS clone on omar
+
+Log in to `omar` and start a `tmux` or `screen` session; the tool refuses to run without one.
+Only the updater scripts are needed, so a sparse checkout is enough:
+
+```sh
+git clone --no-checkout --depth 1 --branch 5.2-0 git@git.knut.univention.de:univention/dev/ucs.git ucs-updater-5.2-0
+cd ucs-updater-5.2-0
+git config core.sparseCheckout true
+echo base/univention-updater/script/ >.git/info/sparse-checkout
+git checkout 5.2-0
+cd ..
+```
+
+For a later change just run `git -C ucs-updater-5.2-0 pull`.
+The tool checks that the clone is on the release branch, clean and up to date.
+
+### 3. Publish to the test mirror
+
+```sh
+announce_update_checks -r 5.2-0 --ucs-dir ./ucs-updater-5.2-0 --test-mirror
+```
+
+The tool shows the diff of every changed script and asks before signing and installing it.
+The PGP key and its passphrase file are taken from `releases.yaml`.
+Unchanged scripts are skipped, unless their signature is missing or invalid; then they are signed again.
+
+Test the new scripts on a UCS system of that release:
+
+```sh
+curl -OOf http://apt.knut.univention.de/download/univention-update-checks/pre-update-checks-5.2-0{.gpg,}
+apt-key verify pre-update-checks-5.2-0{.gpg,}
+bash pre-update-checks-5.2-0
+```
+
+### 4. Publish to testing
+
+```sh
+announce_update_checks -r 5.2-0 --copy-from-test-mirror-to-testing
+```
+
+This verifies the signatures in the test mirror and copies the files to `mirror/testing/`.
+While doing so the mirror is locked with `ucr set update/mirror/disabled=…`, so no other job synchronizes it in between.
+Test again from http://updates-test.knut.univention.de/ when the tool asks for it.
+Afterwards the tool runs `update_mirror.sh` for the changed files, first as dry run with `--debug --verbose`, then for real after confirmation.
+Finally it checks that https://updates-test.software-univention.de/ serves the new files.
+
+### 5. Publish to production
+
+```sh
+announce_update_checks -r 5.2-0 --copy-from-test-mirror-to-ftp
+```
+
+The same as step 4, but for `mirror/ftp/` and https://updates.software-univention.de/.
+
+### Tips
+
+* `-n` (`--dry-run`) shows what would be done without changing anything.
+* If a step fails, fix the cause and continue from that step with `-s STEP`, e.g. `-s update_mirror`. `--help` lists the steps.
+* Some files in `test_mirror/ftp/` are protected against the nightly jobs with `chattr +i`.
+  The tool detects this and shows the `sudo chattr -i …` command to unlock them and the `sudo chattr +i …` command to protect them again afterwards.
+* A directory which does not yet exist on the download server, e.g. `download/univention-update-checks/` on testing, is synchronized as a whole, as `rsync` can not create it for a single file.
+* Before overwriting anything the tool saves the old files to `~/backup-update-checks/`.
