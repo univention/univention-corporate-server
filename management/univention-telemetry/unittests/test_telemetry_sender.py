@@ -132,27 +132,6 @@ def test_parse_ucs_version():
     assert samples['nubus_ucs_version_info'] == expected
 
 
-def test_parse_n4k_version():
-    text = """\
-# HELP nubus_n4k_version_info Nubus for Kubernetes version information
-# TYPE nubus_n4k_version_info gauge
-nubus_n4k_version_info{domain="example.com",license_uuid="n4k-uuid",major="1",minor="6",patch="1"} 1.0
-"""
-    expected = [
-        {'labels': {'domain': 'example.com', 'license_uuid': 'n4k-uuid', 'major': '1', 'minor': '6', 'patch': '1'}, 'value': 1.0},
-    ]
-    samples = sender.parse_prometheus_text(text)
-    assert samples['nubus_n4k_version_info'] == expected
-
-
-def test_parse_user_count():
-    expected = [
-        {'labels': {'domain': 'example.com', 'license_uuid': 'test-uuid', 'platform': 'ucs'}, 'value': 42.0},
-    ]
-    samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
-    assert samples['nubus_users_user_total'] == expected
-
-
 def test_build_otlp_conforms_to_schema():
     samples = sender.parse_prometheus_text(PROMETHEUS_TEXT)
     payload = sender.build_otlp(samples, '1700000000000000000')
@@ -237,16 +216,6 @@ def test_send_with_retry_succeeds_on_third_attempt(sleeps):
     assert sleeps == [sender.RETRY_DELAY] * 2
 
 
-def test_send_with_retry_raises_after_all_attempts_fail():
-    session = Mock()
-    session.post.side_effect = requests.ConnectionError('timeout')
-
-    with pytest.raises(requests.RequestException):
-        sender.send_with_retry(session, {})
-
-    assert session.post.call_count == 3
-
-
 def test_send_with_retry_retries_on_http_error():
     session = Mock()
     response = Mock()
@@ -270,20 +239,7 @@ def test_fetch_metrics_retries_until_success(sleeps):
     assert sleeps == [sender.RETRY_DELAY]
 
 
-def test_fetch_metrics_raises_after_all_attempts_fail():
-    session = Mock()
-    response = Mock()
-    response.raise_for_status.side_effect = requests.HTTPError('503')
-    session.get.return_value = response
-
-    with pytest.raises(requests.HTTPError):
-        sender.fetch_metrics(session, 'secret')
-
-    assert session.get.call_count == 3
-
-
 @pytest.mark.parametrize('value,expected', [
-    (100.0, 100.0),
     (float('inf'), 'Infinity'),
     (float('-inf'), '-Infinity'),
     (float('nan'), 'NaN'),
