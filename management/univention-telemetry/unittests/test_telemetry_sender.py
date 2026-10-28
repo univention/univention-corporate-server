@@ -325,3 +325,15 @@ def test_fetch_metrics_does_not_use_the_ucr_proxy():
     session.get.return_value = Mock(text='metrics')
     sender.fetch_metrics(session, 'secret')
     assert 'proxies' not in session.get.call_args.kwargs
+
+
+def test_build_otlp_sends_the_metrics_that_are_present():
+    text = 'nubus_users_user_total{domain="x",license_uuid="u",platform="ucs"} 7.0\n'
+    payload = sender.build_otlp(sender.parse_prometheus_text(text), '0')
+    metrics = payload['resourceMetrics'][0]['scopeMetrics'][0]['metrics']
+    assert [metric['name'] for metric in metrics] == ['nubus.identities.active']
+
+
+def test_build_otlp_raises_without_any_metrics():
+    with pytest.raises(ValueError):
+        sender.build_otlp({}, '0')

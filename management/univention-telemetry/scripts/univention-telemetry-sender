@@ -63,10 +63,10 @@ def parse_prometheus_text(text):
 
 
 def build_otlp(parsed_prometheus_metrics, ts):
-    nubus_ucs_version_info_samples = parsed_prometheus_metrics['nubus_ucs_version_info']
-    nubus_n4k_version_info_samples = parsed_prometheus_metrics['nubus_n4k_version_info']
-    nubus_users_user_total_samples = parsed_prometheus_metrics['nubus_users_user_total']
-    nubus_license_users_limit_samples = parsed_prometheus_metrics['nubus_settings_license_users_limit_total']
+    nubus_ucs_version_info_samples = parsed_prometheus_metrics.get('nubus_ucs_version_info', [])
+    nubus_n4k_version_info_samples = parsed_prometheus_metrics.get('nubus_n4k_version_info', [])
+    nubus_users_user_total_samples = parsed_prometheus_metrics.get('nubus_users_user_total', [])
+    nubus_license_users_limit_samples = parsed_prometheus_metrics.get('nubus_settings_license_users_limit_total', [])
 
     metrics = []
 
