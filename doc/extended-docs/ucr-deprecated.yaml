@@ -598,3 +598,9 @@
   desc: univention-ldap
   vars:
     - ldap/shadowbind
+
+- git: c765a5dd8aa06404aa735795eb147a28abf8a016
+  obsolete: "5.2-7"
+  desc: univention-management-console
+  vars:
+    - umc/server/disable-security-restrictions
