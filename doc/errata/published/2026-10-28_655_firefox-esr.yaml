@@ -11,3 +11,6 @@ desc: |
 bug: [60062]
 cve:
 - CVE-2026-113470
+erratum: 655
+announced: 2026-10-28
+support: core
