@@ -48,3 +48,6 @@ cve:
 - CVE-2026-97031
 - CVE-2026-97032
 - CVE-2026-111943
+erratum: 658
+announced: 2026-10-28
+support: core
