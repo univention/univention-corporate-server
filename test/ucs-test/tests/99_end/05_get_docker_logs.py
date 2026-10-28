@@ -3,8 +3,9 @@
 ## exposure: safe
 ## tags: [apptest, keycloak]
 
-import docker
 import pytest
+
+import docker
 
 
 @pytest.mark.exposure('safe')

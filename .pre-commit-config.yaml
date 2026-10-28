@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 exclude: "^packaging/ucslint/testframework/\
@@ -5,29 +7,32 @@ exclude: "^packaging/ucslint/testframework/\
           |^services/univention-ldb-modules/third_party/
          "
 repos:
-  - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
-    rev: '0.1.0'
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucr
+    rev: 0.1.7
     hooks:
       - id: ucr-flake8
         additional_dependencies: ["flake8==5.0.4"]
       - id: ucr-ruff
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.15.21"]
       - id: ucr-autopep8
-        additional_dependencies: ["autopep8<=2.0.2"]
+        additional_dependencies: ["autopep8==2.3.2"]
         stages: [ manual ]
       - id: ucr-ruff-fix
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.15.21"]
         stages: [ manual ]
       - id: ucr-ruff-format-check
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.15.21"]
         stages: [ manual ]
       - id: ucr-ruff-format
-        additional_dependencies: ["ruff==0.3.2"]
+        additional_dependencies: ["ruff==0.15.21"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
     - id: check-added-large-files
+      exclude: "^test/ucs-test/debian/changelog$\
+               |^services/univention-printserver/79univention-printserver.inst$\
+               "
     - id: check-json
       exclude: "/conffiles/.*[.]json$"
     - id: check-xml
@@ -35,7 +40,7 @@ repos:
                 |^base/univention-app-appliance/\
                "
     - id: check-yaml
-      exclude: "/conffiles/.*[.]yaml$"
+      exclude: "/conffiles/.*[.]yaml$|[.]gitlab-ci/base-doc[.]yml$"
     - id: check-merge-conflict
     - id: pretty-format-json
       exclude: "/conffiles/.*[.]json$\
@@ -45,6 +50,8 @@ repos:
         - --no-ensure-ascii
     - id: trailing-whitespace
       exclude: "^base/univention-config-registry/tests/unwrap/\
+                |^base/univention-debug-python/tests/legacy.log\
+                |^base/univention-debug-python/tests/structured.log\
                 |^base/univention-lib/unittests/fstab$\
                 |^base/univention-system-setup/city-data/.*[.](txt|json)$\
                 |^doc/errata/staging/0.*template[.]yaml$\
@@ -70,7 +77,7 @@ repos:
     - id: rst-directive-colons
     - id: rst-inline-touching-normal
   - repo: https://github.com/pycqa/flake8
-    rev: '7.0.0'
+    rev: 7.3.0
     hooks:
     - id: flake8
       exclude: "^oidc/python-keycloak/\
@@ -78,18 +85,18 @@ repos:
                 |^services/univention-ldb-modules/third_party/\
                 |^packaging/ucslint/testframework/\
                "
-  - repo: https://git.knut.univention.de/univention/dist/pre-commit-debian.git
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-debian.git
     rev: v1.1.0
     hooks:
       - id: debian-control
       - id: debian-changelog
-  - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucs.git
     rev: v1.4.0
     hooks:
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.0
+    rev: 0.37.4
     hooks:
       - id: check-gitlab-ci
       - id: check-jsonschema
@@ -98,15 +105,16 @@ repos:
         files: ^doc/errata/staging/[^0].*[.]yaml$
         args: ["--schemafile", "doc/errata/erratum.schema.json"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.11.2'
+    rev: v0.15.21
     hooks:
-      - id: ruff
+      - id: ruff-check
+        alias: "ruff"
         exclude: "^oidc/python-keycloak/\
                   |^services/univention-ldb-modules/buildtools/\
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
-      - id: ruff
+      - id: ruff-check
         alias: "ruff-fix"
         stages: [ manual ]
         args: ["--fix", "--unsafe-fixes"]
@@ -115,7 +123,7 @@ repos:
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
-      - id: ruff
+      - id: ruff-check
         alias: "ruff-statistics"
         stages: [ manual ]
         args: ["--statistics"]
@@ -123,7 +131,7 @@ repos:
                   |^services/univention-ldb-modules/buildtools/\
                   |^packaging/ucslint/testframework/\
                  "
-      - id: ruff
+      - id: ruff-check
         alias: "ruff-select"
         stages: [ manual ]
         args: ["--select", "CPY001"]
@@ -165,8 +173,8 @@ repos:
                   |^services/univention-ldb-modules/third_party/\
                   |^packaging/ucslint/testframework/\
                  "
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.4
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.3.2
     hooks:
     -   id: autopep8
         args: ["-d"]
