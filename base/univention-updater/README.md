@@ -141,6 +141,12 @@ The same as step 4, but for `mirror/ftp/` and https://updates.software-univentio
   Use them only if the test mirror can not be used, as the files then skip the tests of step 3.
 * If a step fails, fix the cause and continue from that step with `-s STEP`, e.g. `-s update_mirror`. `--help` lists the steps.
 * Some files in `test_mirror/ftp/` are protected against the nightly jobs with `chattr +i`.
-  The tool detects this and shows the `sudo chattr -i …` command to unlock them and the `sudo chattr +i …` command to protect them again afterwards.
+  The tool detects this and shows which files must be unlocked.
+  On `omar` `chattr` can not be run as `sudo chattr …`, so become root first with `sudo -i` (or `sudo bash`):
+  ```sh
+  sudo -i
+  chattr -i /var/univention/buildsystem2/test_mirror/ftp/dists/ucs520/postup.sh{,.gpg}  # unlock before publishing
+  chattr +i /var/univention/buildsystem2/test_mirror/ftp/dists/ucs520/postup.sh{,.gpg}  # protect again afterwards
+  ```
 * A directory which does not yet exist on the download server, e.g. `download/univention-update-checks/` on testing, is synchronized as a whole, as `rsync` can not create it for a single file.
 * Before overwriting anything the tool saves the old files to `~/backup-update-checks/`.
