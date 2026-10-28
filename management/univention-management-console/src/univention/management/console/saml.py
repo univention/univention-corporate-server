@@ -8,7 +8,7 @@ import os
 import sys
 import time
 import zlib
-from urllib.parse import urlparse, urlunsplit
+from urllib.parse import urlparse
 
 from saml2 import BINDING_HTTP_ARTIFACT, BINDING_HTTP_POST, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
@@ -205,13 +205,7 @@ class SamlACS(SAMLResource):
 
         await self.pam_saml_authentication(saml)
 
-        # protect against javascript:alert('XSS'), mailto:foo and other non relative links!
-        location = urlparse(relay_state)
-        if location.path.startswith('//'):
-            location = urlparse('')
-        location = urlunsplit(('', '', location.path, location.query, location.fragment))
-
-        self.redirect(location, status=303)
+        self.redirect(self.safe_redirect_location(relay_state, '/univention/management/'), status=303)
 
     async def attribute_consuming_service_iframe(self, binding, message, relay_state):
         self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors

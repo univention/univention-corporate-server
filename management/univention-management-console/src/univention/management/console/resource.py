@@ -14,6 +14,7 @@ import weakref
 from html import escape, unescape
 from http.client import LENGTH_REQUIRED, UNAUTHORIZED
 from http.server import BaseHTTPRequestHandler
+from urllib.parse import urlsplit, urlunsplit
 
 import tornado
 from tornado.gen import convert_yielded
@@ -444,3 +445,21 @@ class Resource(RequestHandler):
             return '%s://%s%s' % (self.request.protocol, self.request.host, url_path)
         else:
             return '%s://%s/univention%s' % (self.request.protocol, self.request.host, url_path)
+
+    @staticmethod
+    def safe_redirect_location(location, default):
+        """Return a safe root-relative post-login URL or the default destination."""
+        # protect against javascript:alert('XSS'), mailto:foo, //example.com, /\example.com, https://example.com and other unsafe non relative links!
+        if not isinstance(location, str) or not location.startswith('/'):
+            return default
+        if location.startswith('//') or '\\' in location or any(ord(char) < 32 or ord(char) == 127 for char in location):
+            return default
+        if '//' in location:  # better safe than sorry: /a/../..//evil.com
+            return default
+        try:
+            uri = urlsplit(location)
+        except ValueError:
+            return default
+        if uri.scheme or uri.netloc or not uri.path.startswith('/') or uri.path.startswith('//'):
+            return default
+        return urlunsplit(('', '', uri.path, uri.query, uri.fragment))

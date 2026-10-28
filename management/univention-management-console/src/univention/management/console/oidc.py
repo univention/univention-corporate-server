@@ -15,7 +15,7 @@ import os
 import time
 import uuid
 from time import monotonic
-from urllib.parse import urlencode, urlparse, urlunsplit
+from urllib.parse import urlencode
 
 import jwt
 from jwt.algorithms import RSAAlgorithm
@@ -431,12 +431,7 @@ class OIDCLogin(OIDCResource):
         state = shared_memory.pkce.pop(self.get_query_argument('state', ''), {})
         await self.authenticate(code, state.get('code_verifier'), state.get('nonce'))
 
-        # protect against javascript:alert('XSS'), mailto:foo and other non relative links!
-        location = urlparse(state.get('location', ''))
-        if location.path.startswith('//'):
-            location = urlparse('')
-        location = urlunsplit(('', '', location.path, location.query, location.fragment))
-        self.redirect(location or self.reverse_abs_url('index'), status=303)
+        self.redirect(self.safe_redirect_location(state.get('location'), '/univention/management/'), status=303)
 
     async def post(self):
         return await self.get()

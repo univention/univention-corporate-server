@@ -1,3 +1,9 @@
+univention-management-console (14.7.3) unstable; urgency=medium
+
+  * Bug #59852: prevent open redirects after login
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2026 20:17:06 +0100
+
 univention-management-console (14.7.2) unstable; urgency=medium
 
   * Bug #59998: remove obsolete UCR variable umc/server/disable-
