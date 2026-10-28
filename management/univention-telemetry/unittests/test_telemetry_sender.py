@@ -298,3 +298,30 @@ def test_build_otlp_unlimited_license_is_valid_json():
     body = json.dumps(payload, allow_nan=False)
     jsonschema.validate(json.loads(body), OTLP_SCHEMA)
     assert '"asDouble": "Infinity"' in body
+
+
+@pytest.mark.parametrize('ucr_values,expected', [
+    ({}, {}),
+    ({'proxy/http': 'http://proxy:3128'}, {'http': 'http://proxy:3128', 'https': 'http://proxy:3128'}),
+    ({'proxy/https': 'http://tls-proxy:3128'}, {'https': 'http://tls-proxy:3128'}),
+    (
+        {'proxy/http': 'http://proxy:3128', 'proxy/https': 'http://tls-proxy:3128'},
+        {'http': 'http://proxy:3128', 'https': 'http://tls-proxy:3128'},
+    ),
+])
+def test_proxies_follow_ucr(ucr_values, expected):
+    assert sender._proxies(ucr_values) == expected
+
+
+def test_send_keeps_environment_proxy_when_ucr_has_none(monkeypatch):
+    monkeypatch.setenv('HTTPS_PROXY', 'http://env-proxy:3128')
+    session = requests.Session()
+    settings = session.merge_environment_settings(sender.TELEMETRY_ENDPOINT, sender._proxies({}), None, None, None)
+    assert settings['proxies']['https'] == 'http://env-proxy:3128'
+
+
+def test_fetch_metrics_does_not_use_the_ucr_proxy():
+    session = Mock()
+    session.get.return_value = Mock(text='metrics')
+    sender.fetch_metrics(session, 'secret')
+    assert 'proxies' not in session.get.call_args.kwargs

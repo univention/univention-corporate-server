@@ -43,7 +43,6 @@ def fetch_metrics(session, password):
     def get():
         resp = session.get(
             url,
-            proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
             auth=(UDM_REST_USERNAME, password),
             timeout=30,
         )
@@ -103,7 +102,7 @@ def send_with_retry(session, payload):
     def post():
         resp = session.post(
             TELEMETRY_ENDPOINT,
-            proxies={'http': ucr.get('proxy/http'), 'https': ucr.get('proxy/https')},
+            proxies=_proxies(ucr),
             data=body,
             headers={'Content-Type': 'application/json'},
             timeout=30,
@@ -111,6 +110,13 @@ def send_with_retry(session, payload):
         resp.raise_for_status()
 
     _retry(post, 'Send', TELEMETRY_ENDPOINT)
+
+
+def _proxies(_ucr):
+    # Like /etc/profile, fall back to proxy/http for HTTPS; leave unset schemes out so HTTPS_PROXY still applies.
+    http = _ucr.get('proxy/http')
+    https = _ucr.get('proxy/https') or http
+    return {scheme: url for scheme, url in (('http', http), ('https', https)) if url}
 
 
 def _retry(func, action, url):
