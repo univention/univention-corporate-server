@@ -248,15 +248,34 @@ define([
 			// make sure that we got data
 			this.onLogin(username);
 
-			// redirect the user back to the location where he came from.
+			// redirect the user back to the location where he came from
+			var location = getQuery('location') || '/univention/management/';
+			var fallback = '/univention/management/';
+
 			// CAUTION !!!: we must properly make sure that this is a valid url on the same origin. otherwise we would allow
 			// XSS attacks by submitting e.g. ?location=javascript:alert('XSS') or mailto: links, etc.
-			var uri = new dojo._Url(getQuery('location'));
-			var path = uri.path;
-			if (/\/\//.test(path)) {
-				path = null;
+			// only allow root-relative URLs on the same origin:
+			// reject absolute URLs, protocol-relative URLs, backslashes, relative paths, and control characters
+			if (!location.startsWith('/') || /\/\/|\\|[\x00-\x1f\x7f]/.test(location)) {
+				location = fallback;
 			}
-			window.location = (path || '/univention/management/') + (uri.query ? '?' + uri.query : '') + (uri.fragment ? '#' + uri.fragment : window.location.hash);
+
+			var url;
+			try {
+				url = new URL(location, window.location.origin);
+
+				if (url.origin !== window.location.origin || !/^\/(?!\/)/.test(url.pathname)) {
+					url = new URL(fallback, window.location.origin);
+				}
+			} catch (e) {
+				url = new URL(fallback, window.location.origin);
+			}
+
+			// preserve the current hash if no target fragment was supplied.
+			window.location.assign(
+				url.pathname + url.search +
+				(url.hash || window.location.hash)
+			);
 		},
 
 		_authentication_failed: function() {
