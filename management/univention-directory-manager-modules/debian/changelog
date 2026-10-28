@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.7.3) unstable; urgency=medium
+
+  * Bug #60078: don't mark accounts with a disabled password hash (!) as
+    inconsitent
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2026 13:44:11 +0100
+
 univention-directory-manager-modules (17.7.2) unstable; urgency=medium
 
   * Bug #59964: improve license count performance

@@ -842,11 +842,6 @@ def unmapDisabled(oldattr: dict[str, list[bytes]]) -> str:
 
 
 def inconsistentDisabledState(oldattr: dict[str, list[bytes]]) -> bool:
-    if isPosixLocked(oldattr):
-        # the password hash is not locked anymore since UCS 5.2-7
-        # therefore old accounts which still have it set should count as inconsistent
-        # so that the next modification will re-write the password hash
-        return True
     samba = bool(unmapSambaDisabled(oldattr))
     kerberos = bool(unmapKerberosDisabled(oldattr))
     return samba != kerberos or (samba and 'shadowExpire' not in oldattr)
