@@ -67,8 +67,13 @@ The scripts go through three mirrors, always in this order:
 | 2. Testing | `mirror/testing/` | http://updates-test.knut.univention.de/ | https://updates-test.software-univention.de/ |
 | 3. Production | `mirror/ftp/` | http://updates.knut.univention.de/ | https://updates.software-univention.de/ |
 
-Only the test mirror is signed from the UCS clone.
-Testing and production receive **exactly** the files tested before by copying them from the test mirror.
+There are two ways to fill each mirror:
+
+* `--test-mirror`, `--testing` and `--ftp` generate the files from the UCS clone and sign them.
+* `--copy-from-test-mirror-to-testing` and `--copy-from-test-mirror-to-ftp` copy the files already signed in the test mirror.
+
+The recommended way is to generate only the test mirror and copy from there, so testing and production receive **exactly** the files tested before.
+This is what the following steps do.
 
 ### 1. Commit the change
 
@@ -132,6 +137,8 @@ The same as step 4, but for `mirror/ftp/` and https://updates.software-univentio
 ### Tips
 
 * `-n` (`--dry-run`) shows what would be done without changing anything.
+* `--testing` and `--ftp` work like `--test-mirror`, but generate and sign the files directly for that mirror.
+  Use them only if the test mirror can not be used, as the files then skip the tests of step 3.
 * If a step fails, fix the cause and continue from that step with `-s STEP`, e.g. `-s update_mirror`. `--help` lists the steps.
 * Some files in `test_mirror/ftp/` are protected against the nightly jobs with `chattr +i`.
   The tool detects this and shows the `sudo chattr -i …` command to unlock them and the `sudo chattr +i …` command to protect them again afterwards.
