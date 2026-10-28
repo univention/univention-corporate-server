@@ -77,7 +77,7 @@ This is what the following steps do.
 
 ### 1. Commit the change
 
-Commit and push the modified scripts to the release branch, e.g. `preview/5.3-0`, so the change is documented and reviewed.
+Commit and push the modified scripts to the release branch, e.g. `5.3-0`, so the change is documented and reviewed.
 
 ### 2. Prepare a UCS clone on omar
 
@@ -85,15 +85,13 @@ Log in to `omar` and start a `tmux` or `screen` session; the tool refuses to run
 Only the updater scripts are needed, so a sparse checkout is enough:
 
 ```sh
-git clone --no-checkout --depth 1 --branch preview/5.3-0 git@git.knut.univention.de:univention/dev/ucs.git ucs-updater-5.3-0
+git clone --no-checkout --depth 1 --branch 5.3-0 git@git.knut.univention.de:univention/dev/ucs.git ucs-updater-5.3-0
 cd ucs-updater-5.3-0
 git config core.sparseCheckout true
 echo base/univention-updater/script/ >.git/info/sparse-checkout
-git checkout -b 5.3-0 origin/preview/5.3-0
+git checkout 5.3-0
 cd ..
 ```
-
-The release branch is `preview/5.3-0`, but the tool expects a local branch named like the release, so the clone uses a local branch `5.3-0` tracking it.
 
 For a later change just run `git -C ucs-updater-5.3-0 pull`.
 The tool checks that the clone is on the release branch, clean and up to date.
