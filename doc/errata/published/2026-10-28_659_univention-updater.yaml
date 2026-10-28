@@ -17,3 +17,6 @@ desc: |
  * The release updates now prevents an upgrade if the UCS role packages
    are not installed, which prevents an auto-removal of required packages.
 bug: [43613, 58827]
+erratum: 659
+announced: 2026-10-28
+support: core
