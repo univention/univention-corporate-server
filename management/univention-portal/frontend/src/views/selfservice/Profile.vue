@@ -326,15 +326,13 @@ export default defineComponent({
       this.$store.dispatch('activateLoadingState');
 
       const sanitizedValues = sanitizeFrontendValues(alteredValues, this.attributeWidgets);
-      this.validateIfNecessary(sanitizedValues).then(() => {
-        this.save(sanitizedValues);
-      })
+      this.validateIfNecessary(sanitizedValues).then(() => this.save(sanitizedValues))
         .finally(() => {
           this.$store.dispatch('deactivateLoadingState');
         });
     },
-    save(values) {
-      umcCommand('passwordreset/set_user_attributes', {
+    save(values): Promise<void> {
+      return umcCommand('passwordreset/set_user_attributes', {
         attributes: values,
         ...this.credentials,
       }).then(() => {
@@ -343,7 +341,12 @@ export default defineComponent({
           description: _('Successfully saved changes'),
         });
         this.$router.push({ name: 'portal' });
-      });
+      })
+        .catch((error) => {
+          this.errorDialog.showError(error.message).then(() => {
+            (this.$refs.saveButton as HTMLButtonElement).focus();
+          });
+        });
     },
     validateIfNecessary(values) {
       return new Promise((resolve, reject) => {

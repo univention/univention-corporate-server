@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-portal
+fix: 6.7.0
+desc: |
+ This update addresses the following issue:
+ * The Self Service now shows an error message if it can't save the
+   changes of the user profile, for example if the malware scan rejects
+   an uploaded profile picture.
+bug: [60081]
