@@ -117,13 +117,22 @@ doc-pipeline:
       when: never
     - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"
     - changes: &docs-changes
-      - "doc/[^e]*/**/*"
-      - "doc/e[^r]*/**/*"
-      - "doc/er[^r]*/**/*"
-      - "doc/err[^a]*/**/*"
-      - "doc/erra[^t]*/**/*"
-      - "doc/errat[^a]*/**/*"
-      - "doc/errata?*/**/*"
+      - "doc/app-center/**/*"
+      - "doc/architecture/**/*"
+      - "doc/changelog/**/*"
+      - "doc/debian-admins/**/*"
+      - "doc/developer-reference/**/*"
+      - "doc/ext-delegative-administration/**/*"
+      - "doc/ext-domain/**/*"
+      - "doc/ext-installation/**/*"
+      - "doc/ext-networks/**/*"
+      - "doc/ext-performance/**/*"
+      - "doc/ext-windows/**/*"
+      - "doc/manual/**/*"
+      - "doc/quickstart/**/*"
+      - "doc/release-notes/**/*"
+      - "doc/scenarios/**/*"
+      - "doc/ucs-operation/**/*"
   needs:
     - job: generate-config
   trigger:
