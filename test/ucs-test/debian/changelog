@@ -1,3 +1,9 @@
+ucs-test (12.7.13) unstable; urgency=medium
+
+  * Bug #60078: adjust test to new behavior
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2026 13:38:34 +0100
+
 ucs-test (12.7.12) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#337: adapt the German

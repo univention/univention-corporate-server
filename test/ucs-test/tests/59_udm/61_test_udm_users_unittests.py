@@ -604,4 +604,4 @@ class TestUsers:
         udm.verify_udm_object("users/user", userdn, {"disabled": "0"})
 
         udm.modify_object('users/user', dn=userdn, description='test')
-        assert not lo.getAttr(userdn, 'userPassword')[0].startswith(b'{crypt}!')
+        assert lo.getAttr(userdn, 'userPassword')[0].startswith(b'{crypt}!')
