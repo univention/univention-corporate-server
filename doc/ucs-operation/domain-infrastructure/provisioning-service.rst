@@ -8,10 +8,10 @@ Provisioning Service
 
 The *Provisioning Service* is an event and messaging service
 that can notify interested services about events in the LDAP directory service.
-When data changes in the LDAP directory on the |UCSPRIMARYDN|,
+When data changes in the LDAP directory on the :term:`Primary Directory Node`,
 the *Provisioning Service* receives a notification about the change
 and notifies any subscribed services about the change.
-In contrast to the |UCSUDL|,
+In contrast to the Univention Directory Listener,
 it provides the UDM representation of the change objects
 instead of the LDAP representation.
 
@@ -33,14 +33,14 @@ in :cite:t:`uv-nubus-kubernetes-architecture`.
    The *Provisioning Service* is part of Univention Nubus in the *Identity Store and Directory Service* component.
    For more information about Nubus, refer to :ref:`introduction-nubus`
 
-.. _nubus-provisioning-service-install:
+.. _domain-infrastructure-provisioning-service-installation:
 
 Installation
 ------------
 
 Univention App Center provides the *Provisioning Service* as an application.
 UCS doesn't install it by default.
-You can install it on the |UCSPRIMARYDN| and on every |UCSBACKUPDN|.
+You can install it on the :term:`Primary Directory Node` and on every :term:`Backup Directory Node`.
 It isn't possible to install the *Provisioning Service* on other server system roles.
 The *Provisioning Service* consists of the following apps:
 
@@ -79,7 +79,7 @@ For a reference, see :ref:`nubus-provisioning-service-app-settings`.
 
          $ univention-app install provisioning-service
 
-.. _nubus-provisioning-service-workflow:
+.. _domain-infrastructure-provisioning-service-workflow:
 
 Provisioning workflow
 ---------------------
@@ -87,48 +87,48 @@ Provisioning workflow
 The *Provisioning Service* delivers a stream of events about data changes in the LDAP directory service.
 It uses the following components:
 
-.. _nubus-provisioning-service-workflow-listener:
+.. _domain-infrastructure-provisioning-service-workflow-listener:
 
 Provisioning Listener
-   A |UCSUDL| listener module, which reacts to all LDAP operations and pushes
+   A Univention Directory Listener module, which reacts to all LDAP operations and pushes
    these changes to the *Provisioning Service*.
-   The |UCSUDL| module :file:`nubus-provisioning.py` notifies the *Provisioning Service*.
-   It runs on |UCSPRIMARYDN| only.
+   The Univention Directory Listener module :file:`nubus-provisioning.py` notifies the *Provisioning Service*.
+   It runs on :term:`Primary Directory Node` only.
 
-.. _nubus-provisioning-service-workflow-transformer:
+.. _domain-infrastructure-provisioning-service-workflow-transformer:
 
 Provisioning UDM Transformer
    The *Provisioning UDM Transformer* transforms incoming LDAP level change events
    to UDM level provisioning events by calling the *UDM HTTP REST API*.
-   It runs on |UCSPRIMARYDN| only.
+   It runs on :term:`Primary Directory Node` only.
 
-.. _nubus-provisioning-service-workflow-prefill:
+.. _domain-infrastructure-provisioning-service-workflow-prefill:
 
 Provisioning Prefill Service
    The *Provisioning Prefill Service* streams all UDM objects of the subscribed type
    to the subscribed consumer app.
-   It runs on the |UCSPRIMARYDN| only.
+   It runs on the :term:`Primary Directory Node` only.
 
-.. _nubus-provisioning-service-workflow-dispatcher:
+.. _domain-infrastructure-provisioning-service-workflow-dispatcher:
 
 Provisioning Dispatcher
    The *Provisioning Dispatcher* routes events about all UDM objects
    to the provisioning queues of subscribed apps.
-   It runs on |UCSPRIMARYDN| and |UCSBACKUPDN|.
+   It runs on :term:`Primary Directory Node` and :term:`Backup Directory Node`.
 
-.. _nubus-provisioning-service-workflow-api:
+.. _domain-infrastructure-provisioning-service-workflow-api:
 
 Provisioning API
-   The *Provisioning API* runs on the |UCSPRIMARYDN| and the |UCSBACKUPDN|
+   The *Provisioning API* runs on the :term:`Primary Directory Node` and the :term:`Backup Directory Node`
    and is the API that applications use to subscribe to events.
 
-.. _nubus-provisioning-service-workflow-nats:
+.. _domain-infrastructure-provisioning-service-workflow-nats:
 
 NATS
    :program:`NATS` handles the actual event streaming service.
 
-On the |UCSBACKUPDN| the *Provisioning Dispatcher* connects
-to the :program:`NATS` Service running on the |UCSPRIMARYDN|.
+On the :term:`Backup Directory Node` the *Provisioning Dispatcher* connects
+to the :program:`NATS` Service running on the :term:`Primary Directory Node`.
 It streams data through a TLS encrypted connection.
 
 .. seealso::
@@ -142,19 +142,18 @@ It streams data through a TLS encrypted connection.
       for information about how to use the *Provisioning Service*
       and create a subscription for a *Provisioning Consumer*.
 
-.. _nubus-provisioning-service-endpoints-and-ports:
+.. _domain-infrastructure-provisioning-service-endpoints-and-ports:
 
 Endpoints and ports
 -------------------
 
 The *Provisioning Service* provides endpoints and ports as outlined in
-:numref:`nubus-provisioning-service-endpoints-and-ports-table`.
+:numref:`domain-infrastructure-provisioning-service-endpoints-and-ports-table`.
 
 You can access the *Provisioning API* locally through ``http://localhost:7777``,
 or remotely through :samp:`https://{<Primary FQDN>}/univention/provisioning/`.
 
-
-.. _nubus-provisioning-service-endpoints-and-ports-table:
+.. _domain-infrastructure-provisioning-service-endpoints-and-ports-table:
 
 .. list-table:: Endpoints and ports
    :header-rows: 1
@@ -179,9 +178,9 @@ or remotely through :samp:`https://{<Primary FQDN>}/univention/provisioning/`.
 .. important::
 
    The *Provisioning Dispatcher* needs access to the *UDM HTTP REST API* on port ``443``
-   on |UCSPRIMARYDN| and |UCSBACKUPDN|.
+   on :term:`Primary Directory Node` and :term:`Backup Directory Node`.
 
-.. _nubus-provisioning-service-app-log-files:
+.. _domain-infrastructure-provisioning-service-app-log-files:
 
 Provisioning Service log files
 ------------------------------
@@ -196,10 +195,11 @@ you can consult the following log files:
   writes logs to :file:`/var/log/univention/listener_modules/nubus-provisioning.log`.
 
 * The :program:`stunnel` service
-  that ensures TLS encryption between |UCSPRIMARYDN| and |UCSBACKUPDN|,
+  that ensures TLS encryption between :term:`Primary Directory Node` and :term:`Backup Directory
+  Node`,
   writes logs to :file:`/var/log/stunnel4/stunnel.log`.
 
-.. _nubus-provisioning-service-app-settings:
+.. _domain-infrastructure-provisioning-service-app-settings:
 
 Provisioning Service settings
 -----------------------------
@@ -228,7 +228,7 @@ Run the command in :numref:`nubus-provisioning-service-app-settings-reference-re
 
    $ systemctl restart univention-directory-listener
 
-.. _nubus-provisioning-service-app-settings-reference:
+.. _domain-infrastructure-provisioning-service-app-settings-reference:
 
 App settings
 ~~~~~~~~~~~~
@@ -253,7 +253,7 @@ The *Provisioning Service* app has the following app settings.
 
 .. envvar:: provisioning-service/primary
 
-   Fully qualified domain name (FQDN) of the |UCSPRIMARYDN|.
+   Fully qualified domain name (FQDN) of the :term:`Primary Directory Node`.
 
    .. list-table::
       :header-rows: 1
@@ -326,7 +326,7 @@ The *Provisioning Service* app has the following app settings.
         - 3
         - Installation and app configuration
 
-.. _nubus-provisioning-service-ucr-variables:
+.. _domain-infrastructure-provisioning-service-ucr-variables:
 
 UCR Variables
 ~~~~~~~~~~~~~
@@ -339,7 +339,7 @@ Univention recommends keeping the default values.
 
    Listening port number of the :program:`stunnel`
    securing the :program:`NATS` connection
-   between |UCSPRIMARYDN| and |UCSBACKUPDN|.
+   between :term:`Primary Directory Node` and :term:`Backup Directory Node`.
 
    .. list-table::
       :header-rows: 1
@@ -357,9 +357,9 @@ Univention recommends keeping the default values.
 
    Connection port of the :program:`stunnel`
    securing the connection
-   between *Provisioning Dispatcher* on |UCSBACKUPDN|
-   and :program:`NATS` on |UCSPRIMARYDN|. Must match
-   the :envvar:`nats/stunnel/accept/port` of the |UCSPRIMARYDN|.
+   between *Provisioning Dispatcher* on :term:`Backup Directory Node`
+   and :program:`NATS` on :term:`Primary Directory Node`. Must match
+   the :envvar:`nats/stunnel/accept/port` of the :term:`Primary Directory Node`.
 
    .. list-table::
       :header-rows: 1
@@ -376,8 +376,8 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/cert
 
    Certificate for the :program:`stunnel` :program:`NATS` connection
-   between *Provisioning Dispatcher* on a |UCSBACKUPDN|
-   and :program:`NATS` on |UCSPRIMARYDN|.
+   between *Provisioning Dispatcher* on a :term:`Backup Directory Node`
+   and :program:`NATS` on :term:`Primary Directory Node`.
 
    .. list-table::
       :header-rows: 1
@@ -394,8 +394,8 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/key
 
    Certificate key used for the :program:`stunnel` :program:`NATS` connection
-   between *Provisioning Dispatcher* on a |UCSBACKUPDN|
-   and :program:`NATS` on |UCSPRIMARYDN|.
+   between *Provisioning Dispatcher* on a :term:`Backup Directory Node`
+   and :program:`NATS` on :term:`Primary Directory Node`.
 
    .. list-table::
       :header-rows: 1
@@ -412,8 +412,8 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/cacert
 
    The CA certificate used for the :program:`stunnel` :program:`NATS` connection
-   between *Provisioning Dispatcher* on a |UCSBACKUPDN|
-   and :program:`NATS` on |UCSPRIMARYDN|.
+   between *Provisioning Dispatcher* on a :term:`Backup Directory Node`
+   and :program:`NATS` on :term:`Primary Directory Node`.
 
    .. list-table::
       :header-rows: 1
@@ -426,4 +426,3 @@ Univention recommends keeping the default values.
       * - Yes
         - :file:`/etc/univention/ssl/ucsCA/CAcert.pem`
         - Installation and app configuration.
-
