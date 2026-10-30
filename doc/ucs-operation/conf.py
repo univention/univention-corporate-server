@@ -66,6 +66,10 @@ intersphinx_mapping = {
         'https://docs.software-univention.de/nubus-manual/latest/en',
         None,
     ),
+    'uv-nubus-kubernetes-architecture': (
+        'https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/',
+        None,
+    ),
     'uv-ucs-manual': reference_inventory('manual', version=version),
     'uv-architecture': reference_inventory('architecture', version=version),
     'uv-debian-admins': reference_inventory('debian-admins', version=version),
@@ -213,6 +217,10 @@ def adapt_settings_to_translation(app, config):
                 'manual',
                 version=version,
                 language=config.language,
+            ),
+            'uv-nubus-kubernetes-architecture': (
+                'https://docs.software-univention.de/nubus-kubernetes-architecture/latest/en/',
+                None,
             ),
             'uv-architecture': reference_inventory('architecture', version=version),
             'uv-keycloak-app': (
