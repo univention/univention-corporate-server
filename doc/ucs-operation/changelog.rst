@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 30. Oct 2026
+     - :ref:`domain-infrastructure-provisioning-service`
+     - Add section about *Provisioning Service*.
+
    * - 19. Oct 2026
      - :ref:`management-interface-recycle-bin`
      - Add section about *Recycle Bin*.
