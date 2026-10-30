@@ -40,9 +40,19 @@ name = random_string()
 ucs_ou_name = f"plus1{name}"
 ad_ou_name = f"\\+1{name}"
 
-name2 = random_string()
-ucs_ou_name2 = f"plus2{name2}"
-ad_ou_name2 = f"\\+2{name2}"
+# test_group_membership_ucs_to_ad_through_mapped_ou() is parametrized over
+# "mode" and reuses this same OU for each parametrize case; if both cases
+# shared one name, the second create would race the first case's teardown
+# (cleanup deleting the UCS object / that delete syncing to AD). One mapped
+# OU pair per mode value sidesteps that entirely.
+modes2 = ("write", "sync")
+name2 = {m: random_string() for m in modes2}
+ucs_ou_name2 = {m: f"plus2{name2[m]}" for m in modes2}
+ad_ou_name2 = {m: f"\\+2{name2[m]}" for m in modes2}
+
+_extra_position_mappings = ",\n                ".join(
+    f'("ou={ucs_ou_name2[m]}," + ldap_base, "ou={ad_ou_name2[m]}," + ad_base)' for m in modes2
+)
 
 mapping = f'''
 import univention.connector
@@ -56,7 +66,7 @@ def mapping_hook(ad_mapping):
         if ad_base and ldap_base:
             custom_position_mapping = [
                 ("ou={ucs_ou_name}," + ldap_base, "ou={ad_ou_name}," + ad_base),
-                ("ou={ucs_ou_name2}," + ldap_base, "ou={ad_ou_name2}," + ad_base),
+                {_extra_position_mappings},
             ]
             for obj_type in ("ou", "user"):
                 if ad_mapping.get(obj_type) is not None:
@@ -151,13 +161,15 @@ def test_group_membership_ucs_to_ad_through_mapped_ou(udm, ucr, mode):
 
         ad_base = ucr.get("connector/ad/ldap/base")
         ucs_base = ucr.get("ldap/base")
+        ucs_ou = ucs_ou_name2[mode]
+        ad_ou = ad_ou_name2[mode]
 
-        udm.create_object("container/ou", name=ucs_ou_name2)
-        wait_for_sync()
-        AD.verify_object(f"ou={ad_ou_name2},{ad_base}", {'name': f"+2{name2}"})
+        udm.create_object("container/ou", name=ucs_ou)
+        wait_for_sync(min_wait_time=10)
+        AD.verify_object(f"ou={ad_ou},{ad_base}", {'name': f"+2{name2[mode]}"})
 
         member_dns = [
-            udm.create_user(position=f"ou={ucs_ou_name2},{ucs_base}")[0]
+            udm.create_user(position=f"ou={ucs_ou},{ucs_base}")[0]
             for _ in range(SMALL_MEMBER_COUNT)
         ]
         wait_for_sync()  # let the users sync over first
@@ -171,7 +183,7 @@ def test_group_membership_ucs_to_ad_through_mapped_ou(udm, ucr, mode):
         AD.verify_object(ad_group_dn, {})
         ad_members = {m.decode('UTF-8').lower() for m in AD.get(ad_group_dn, ['member']).get('member', [])}
         assert len(ad_members) == SMALL_MEMBER_COUNT, (
-            f"expected all {SMALL_MEMBER_COUNT} members under the +1-mapped OU to sync to AD, got {len(ad_members)}"
+            f"expected all {SMALL_MEMBER_COUNT} members under the +2-mapped OU to sync to AD, got {len(ad_members)}"
         )
 
         # remove half - exercises group_members_sync_from_ucs()'s del path
