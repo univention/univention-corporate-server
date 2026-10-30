@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 09:57+0000\n"
-"PO-Revision-Date: 2026-10-14 12:10+0200\n"
+"POT-Creation-Date: 2026-10-30 13:52+0000\n"
+"PO-Revision-Date: 2026-10-30 15:06+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -1219,7 +1219,7 @@ msgid ""
 "Install the DHCP server app on additional systems to ensure network "
 "configuration remains available."
 msgstr ""
-"Installieren Sie die DHCP-Server-App auf zusätzlichen Systemen, um "
+"Installieren Sie die DHCP-Server App auf zusätzlichen Systemen, um "
 "sicherzustellen, dass die Netzwerkkonfiguration verfügbar bleibt."
 
 #: ../../domain-infrastructure/ha.rst:96
@@ -3404,6 +3404,602 @@ msgstr ""
 "und kann nicht rückgängig gemacht werden. Sichern Sie den Zustand des "
 "Listeners vor der Neuinitialisierung, wenn Sie ihn erhalten möchten."
 
+#: ../../domain-infrastructure/provisioning-service.rst:7
+msgid "Provisioning Service"
+msgstr "Provisioning Service"
+
+#: ../../domain-infrastructure/provisioning-service.rst:9
+msgid ""
+"The *Provisioning Service* is an event and messaging service that can "
+"notify interested services about events in the LDAP directory service. "
+"When data changes in the LDAP directory on the :term:`Primary Directory "
+"Node`, the *Provisioning Service* receives a notification about the "
+"change and notifies any subscribed services about the change. In contrast"
+" to the Univention Directory Listener, it provides the UDM representation"
+" of the change objects instead of the LDAP representation."
+msgstr ""
+"Der *Provisioning Service* ist ein Ereignis- und Nachrichtendienst, der interessierte Dienste über Ereignisse im LDAP-Verzeichnisdienst informieren kann. Wenn sich Daten im LDAP-Verzeichnis auf dem :term:`Primary Directory Node` ändern, erhält der *Provisioning Service* eine Benachrichtigung und informiert alle Dienste, die die Änderungen abonniert haben. Im Gegensatz zum Univention Directory Listener stellt er die UDM Repräsentation der geänderten Objekte statt der LDAP-Repräsentation bereit."
+
+#: ../../domain-infrastructure/provisioning-service.rst:18
+msgid ""
+"This page describes the installation and configuration of the "
+"*Provisioning Service* in UCS. For more information on the inner workings"
+" of the *Provisioning Service*, see :external+uv-nubus-kubernetes-"
+"architecture:ref:`component-provisioning-service` in :cite:t:`uv-nubus-"
+"kubernetes-architecture`."
+msgstr ""
+"Diese Seite beschreibt die Installation und Konfiguration des *Provisioning Service* in UCS. Weitere Informationen zur internen Funktionsweise des *Provisioning Service* finden Sie unter :external+uv-nubus-kubernetes-architecture:ref:`component-provisioning-service` in :cite:t:`uv-nubus-kubernetes-architecture`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:25
+msgid ""
+"There are no services integrated into UCS that make use of the "
+"*Provisioning Service*. You can create services that use the "
+"*Provisioning Service* according to :external+uv-nubus-customization:ref"
+":`customization-api-provisioning` in :cite:t:`uv-nubus-kubernetes-"
+"customization`."
+msgstr ""
+"In UCS sind keine Dienste integriert, die den *Provisioning Service* verwenden. Sie können Dienste erstellen, die den *Provisioning Service* nutzen. Informationen dazu finden Sie unter :external+uv-nubus-customization:ref:`customization-api-provisioning` in :cite:t:`uv-nubus-kubernetes-customization`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:33
+msgid ""
+"The *Provisioning Service* is part of Univention Nubus in the *Identity "
+"Store and Directory Service* component. For more information about Nubus,"
+" refer to :ref:`introduction-nubus`"
+msgstr ""
+"Der *Provisioning Service* ist Teil von Univention Nubus und gehört zur Komponente *Identity Store and Directory Service*. Weitere Informationen zu Nubus finden Sie unter :ref:`introduction-nubus`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:39
+msgid "Installation"
+msgstr "Installation"
+
+#: ../../domain-infrastructure/provisioning-service.rst:41
+msgid ""
+"Univention App Center provides the *Provisioning Service* as an "
+"application. UCS doesn't install it by default. You can install it on the"
+" :term:`Primary Directory Node` and on every :term:`Backup Directory "
+"Node`. It isn't possible to install the *Provisioning Service* on other "
+"server system roles. The *Provisioning Service* consists of the following"
+" apps:"
+msgstr ""
+"Das Univention App Center stellt den *Provisioning Service* als App bereit. UCS installiert ihn nicht standardmäßig. Sie können ihn auf dem :term:`Primary Directory Node` und auf jedem :term:`Backup Directory Node` installieren. Auf Servern mit anderen Systemrollen lässt sich der *Provisioning Service* nicht installieren. Der *Provisioning Service* besteht aus den folgenden Apps:"
+
+#: ../../domain-infrastructure/provisioning-service.rst:47
+msgid ":program:`provisioning-service`"
+msgstr ":program:`provisioning-service`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:48
+msgid ""
+"The :program:`provisioning-service` app is a container app that provides "
+"the main features of the *Provisioning Service*."
+msgstr ""
+"Die App :program:`provisioning-service` ist eine Container App, die die Hauptfunktionen des *Provisioning Service* bereitstellt."
+
+#: ../../domain-infrastructure/provisioning-service.rst:51
+msgid ":program:`provisioning-service-backend`"
+msgstr ":program:`provisioning-service-backend`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:52
+msgid ""
+"The :program:`provisioning-service-backend` app is a package based app "
+"that installs integration packages in UCS. The App Center automatically "
+"installs it as a dependency of :program:`provisioning-service`. The "
+"packages include a listener module and host configuration for TLS "
+"encryption between multiple installations."
+msgstr ""
+"Die App :program:`provisioning-service-backend` ist eine paketbasierte App, die Integrationspakete in UCS installiert. Das App Center installiert sie automatisch als Abhängigkeit von :program:`provisioning-service`. Zu den Paketen gehören ein Listener-Modul und eine Rechnerkonfiguration für die TLS-Verschlüsselung zwischen mehreren Installationen."
+
+#: ../../domain-infrastructure/provisioning-service.rst:57
+msgid ""
+"To install *Provisioning Service*, choose one of the following "
+"installation methods. The App Center applies multiple settings to the "
+"*Provisioning Service*. For a reference, see :ref:`nubus-provisioning-"
+"service-app-settings`."
+msgstr ""
+"Um den *Provisioning Service* zu installieren, wählen Sie eine der folgenden Installationsmethoden. Das App Center übernimmt mehrere Einstellungen für den *Provisioning Service*. Eine Referenz finden Sie unter :ref:`nubus-provisioning-service-app-settings`."
+
+#: ../../domain-infrastructure/provisioning-service.rst
+msgid "App Center"
+msgstr "App Center"
+
+#: ../../domain-infrastructure/provisioning-service.rst:66
+msgid ""
+"You can install the :program:`provisioning-service` app like any other "
+"app through Univention App Center. For general information about "
+"Univention App Center and how to use it for software installation, see "
+":ref:`software-appcenter`."
+msgstr ""
+"Sie können die App :program:`provisioning-service` wie jede andere App über das Univention App Center installieren. Allgemeine Informationen zum Univention App Center und zur Softwareinstallation damit finden Sie unter :ref:`software-appcenter`."
+
+#: ../../domain-infrastructure/provisioning-service.rst
+msgid "Command line"
+msgstr "Befehlszeile"
+
+#: ../../domain-infrastructure/provisioning-service.rst:72
+msgid ""
+"To install the app through the command line, use the command in :numref"
+":`nubus-provisioning-service-install-listing`."
+msgstr ""
+"Um die App über die Befehlszeile zu installieren, verwenden Sie den Befehl in :numref:`nubus-provisioning-service-install-listing`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:76
+msgid "Install *Provisioning Service* through command line"
+msgstr "Den *Provisioning Service* über die Befehlszeile installieren"
+
+#: ../../domain-infrastructure/provisioning-service.rst:76
+msgid "$ univention-app install provisioning-service"
+msgstr "$ univention-app install provisioning-service"
+
+#: ../../domain-infrastructure/provisioning-service.rst:85
+msgid "Provisioning workflow"
+msgstr "Provisioning Ablauf"
+
+#: ../../domain-infrastructure/provisioning-service.rst:87
+msgid ""
+"The *Provisioning Service* delivers a stream of events about data changes"
+" in the LDAP directory service. It uses the following components:"
+msgstr ""
+"Der *Provisioning Service* liefert einen Strom von Ereignissen zu Datenänderungen im LDAP-Verzeichnisdienst. Er verwendet die folgenden Komponenten:"
+
+#: ../../domain-infrastructure/provisioning-service.rst:92
+msgid "Provisioning Listener"
+msgstr "Provisioning Listener"
+
+#: ../../domain-infrastructure/provisioning-service.rst:93
+msgid ""
+"A Univention Directory Listener module, which reacts to all LDAP "
+"operations and pushes these changes to the *Provisioning Service*. The "
+"Univention Directory Listener module :file:`nubus-provisioning.py` "
+"notifies the *Provisioning Service*. It runs on :term:`Primary Directory "
+"Node` only."
+msgstr ""
+"Ein Modul des Univention Directory Listener, das auf alle LDAP-Operationen reagiert und diese Änderungen an den *Provisioning Service* übermittelt. Das Univention Directory Listener-Modul :file:`nubus-provisioning.py` benachrichtigt den *Provisioning Service*. Es läuft nur auf dem :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:100
+msgid "Provisioning UDM Transformer"
+msgstr "Provisioning UDM :spelling:word:`Transformer`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:101
+msgid ""
+"The *Provisioning UDM Transformer* transforms incoming LDAP level change "
+"events to UDM level provisioning events by calling the *UDM HTTP REST "
+"API*. It runs on :term:`Primary Directory Node` only."
+msgstr ""
+"Der *Provisioning UDM Transformer* wandelt eingehende Änderungsereignisse auf LDAP-Ebene in Provisioning Ereignisse auf UDM Ebene um. Dazu ruft er die *UDM HTTP REST API* auf. Er läuft nur auf dem :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:107
+msgid "Provisioning Prefill Service"
+msgstr "Provisioning Prefill Service"
+
+#: ../../domain-infrastructure/provisioning-service.rst:108
+msgid ""
+"The *Provisioning Prefill Service* streams all UDM objects of the "
+"subscribed type to the subscribed consumer app. It runs on the "
+":term:`Primary Directory Node` only."
+msgstr ""
+"Der *Provisioning Prefill Service* überträgt alle UDM Objekte des abonnierten Typs an die abonnierte :spelling:word:`Consumer` App. Er läuft nur auf dem :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:114
+msgid "Provisioning Dispatcher"
+msgstr "Provisioning :spelling:word:`Dispatcher`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:115
+msgid ""
+"The *Provisioning Dispatcher* routes events about all UDM objects to the "
+"provisioning queues of subscribed apps. It runs on :term:`Primary "
+"Directory Node` and :term:`Backup Directory Node`."
+msgstr ""
+"Der *Provisioning Dispatcher* leitet Ereignisse zu allen UDM Objekten an die Provisioning Warteschlangen der abonnierten Apps weiter. Er läuft auf dem :term:`Primary Directory Node` und dem :term:`Backup Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:121
+msgid "Provisioning API"
+msgstr "Provisioning API"
+
+#: ../../domain-infrastructure/provisioning-service.rst:122
+msgid ""
+"The *Provisioning API* runs on the :term:`Primary Directory Node` and the"
+" :term:`Backup Directory Node` and is the API that applications use to "
+"subscribe to events."
+msgstr ""
+"Die *Provisioning API* läuft auf dem :term:`Primary Directory Node` und dem :term:`Backup Directory Node`. Anwendungen verwenden diese API, um Ereignisse zu abonnieren."
+
+#: ../../domain-infrastructure/provisioning-service.rst:127
+msgid "NATS"
+msgstr "NATS"
+
+#: ../../domain-infrastructure/provisioning-service.rst:128
+msgid ":program:`NATS` handles the actual event streaming service."
+msgstr ":program:`NATS` übernimmt den eigentlichen Ereignis-Streaming-Dienst."
+
+#: ../../domain-infrastructure/provisioning-service.rst:130
+msgid ""
+"On the :term:`Backup Directory Node` the *Provisioning Dispatcher* "
+"connects to the :program:`NATS` Service running on the :term:`Primary "
+"Directory Node`. It streams data through a TLS encrypted connection."
+msgstr ""
+"Auf dem :term:`Backup Directory Node` verbindet sich der *Provisioning Dispatcher* mit dem :program:`NATS`-Dienst auf dem :term:`Primary Directory Node`. Er überträgt Daten über eine TLS-verschlüsselte Verbindung."
+
+#: ../../domain-infrastructure/provisioning-service.rst:136
+msgid ""
+":external+uv-nubus-kubernetes-architecture:ref:`component-provisioning-"
+"service`"
+msgstr ""
+":external+uv-nubus-kubernetes-architecture:ref:`component-provisioning-service`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:137
+msgid ""
+"in :cite:t:`uv-nubus-kubernetes-architecture` for information about the "
+"architecture of the *Provisioning Service*"
+msgstr ""
+"in :cite:t:`uv-nubus-kubernetes-architecture` für Informationen zur Architektur des *Provisioning Service*"
+
+#: ../../domain-infrastructure/provisioning-service.rst:140
+msgid ":external+uv-nubus-customization:ref:`customization-api-provisioning`"
+msgstr ":external+uv-nubus-customization:ref:`customization-api-provisioning`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:141
+msgid ""
+"in :cite:t:`uv-nubus-kubernetes-customization` for information about how "
+"to use the *Provisioning Service* and create a subscription for a "
+"*Provisioning Consumer*."
+msgstr ""
+"in :cite:t:`uv-nubus-kubernetes-customization` für Informationen zur Verwendung des *Provisioning Service* und zum Erstellen eines Abonnements für einen *Provisioning Consumer*."
+
+#: ../../domain-infrastructure/provisioning-service.rst:148
+#: ../../domain-infrastructure/provisioning-service.rst:158
+msgid "Endpoints and ports"
+msgstr "Endpunkte und Ports"
+
+#: ../../domain-infrastructure/provisioning-service.rst:150
+msgid ""
+"The *Provisioning Service* provides endpoints and ports as outlined in "
+":numref:`domain-infrastructure-provisioning-service-endpoints-and-ports-"
+"table`."
+msgstr ""
+"Der *Provisioning Service* stellt Endpunkte und Ports bereit, wie in :numref:`domain-infrastructure-provisioning-service-endpoints-and-ports-table` beschrieben."
+
+#: ../../domain-infrastructure/provisioning-service.rst:153
+#, python-brace-format
+msgid ""
+"You can access the *Provisioning API* locally through "
+"``http://localhost:7777``, or remotely through :samp:`https://{<Primary "
+"FQDN>}/univention/provisioning/`."
+msgstr ""
+"Sie können lokal über ``http://localhost:7777`` oder aus der Ferne über :samp:`https://{<Primary FQDN>}/univention/provisioning/` auf die *Provisioning API* zugreifen."
+
+#: ../../domain-infrastructure/provisioning-service.rst:162
+msgid "Port"
+msgstr "Port"
+
+#: ../../domain-infrastructure/provisioning-service.rst:163
+msgid "Purpose"
+msgstr "Zweck"
+
+#: ../../domain-infrastructure/provisioning-service.rst:165
+msgid "4230"
+msgstr "4230"
+
+#: ../../domain-infrastructure/provisioning-service.rst:166
+msgid ""
+"The :program:`stunnel` port. You can adjust it through the "
+":envvar:`nats/stunnel/accept/port` UCR variable."
+msgstr ""
+"Der Port von :program:`stunnel`. Sie können ihn über die UCR-Variable :envvar:`nats/stunnel/accept/port` anpassen."
+
+#: ../../domain-infrastructure/provisioning-service.rst:169
+msgid "4222"
+msgstr "4222"
+
+#: ../../domain-infrastructure/provisioning-service.rst:170
+msgid "NATS client connections."
+msgstr "NATS-Client-Verbindungen."
+
+#: ../../domain-infrastructure/provisioning-service.rst:172
+msgid "7777"
+msgstr "7777"
+
+#: ../../domain-infrastructure/provisioning-service.rst:173
+msgid "Provisioning API."
+msgstr "Provisioning API."
+
+#: ../../domain-infrastructure/provisioning-service.rst:175
+msgid "8222"
+msgstr "8222"
+
+#: ../../domain-infrastructure/provisioning-service.rst:176
+msgid "NATS Monitoring endpoint."
+msgstr "NATS-Monitoring-Endpunkt."
+
+#: ../../domain-infrastructure/provisioning-service.rst:180
+msgid ""
+"The *Provisioning Dispatcher* needs access to the *UDM HTTP REST API* on "
+"port ``443`` on :term:`Primary Directory Node` and :term:`Backup "
+"Directory Node`."
+msgstr ""
+"Der *Provisioning Dispatcher* benötigt Zugriff auf die *UDM HTTP REST API* über Port ``443`` auf dem :term:`Primary Directory Node` und dem :term:`Backup Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:186
+msgid "Provisioning Service log files"
+msgstr "Logdateien des Provisioning Service"
+
+#: ../../domain-infrastructure/provisioning-service.rst:188
+msgid ""
+"If you encounter problems with the *Provisioning Service*, you can "
+"consult the following log files:"
+msgstr ""
+"Wenn Probleme mit dem *Provisioning Service* auftreten, können Sie die folgenden Logdateien zurate ziehen:"
+
+#: ../../domain-infrastructure/provisioning-service.rst:191
+msgid ""
+"The *Provisioning Service* containers write their logs to "
+":file:`/var/log/syslog`."
+msgstr ""
+"Die Container des *Provisioning Service* schreiben ihre Protokolle in :file:`/var/log/syslog`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:193
+msgid ""
+"The :file:`nubus-provisioning.py` listener module that provides the "
+"*Provisioning Service* with information, writes logs to "
+":file:`/var/log/univention/listener_modules/nubus-provisioning.log`."
+msgstr ""
+"Das Listener-Modul :file:`nubus-provisioning.py`, das den *Provisioning Service* mit Informationen versorgt, schreibt Protokolle in :file:`/var/log/univention/listener_modules/nubus-provisioning.log`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:197
+msgid ""
+"The :program:`stunnel` service that ensures TLS encryption between "
+":term:`Primary Directory Node` and :term:`Backup Directory Node`, writes "
+"logs to :file:`/var/log/stunnel4/stunnel.log`."
+msgstr ""
+"Der Dienst :program:`stunnel`, der die TLS-Verschlüsselung zwischen :term:`Primary Directory Node` und :term:`Backup Directory Node` sicherstellt, schreibt Protokolle in :file:`/var/log/stunnel4/stunnel.log`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:205
+msgid "Provisioning Service settings"
+msgstr "Einstellungen des Provisioning Service"
+
+#: ../../domain-infrastructure/provisioning-service.rst:207
+msgid ""
+"The following references show the available settings within the "
+"*Provisioning Service* app. Univention recommends keeping the default "
+"values."
+msgstr ""
+"Die folgenden Referenzen zeigen die verfügbaren Einstellungen der App *Provisioning Service*. Univention empfiehlt, die Standardwerte beizubehalten."
+
+#: ../../domain-infrastructure/provisioning-service.rst:211
+msgid ""
+"To change settings after the app installation, sign in to the UCS "
+"management system with a user account in the ``Domain Admins`` group and "
+"go to :menuselection:`App Center --> Provisioning Service --> Manage "
+"Installations --> Select instance via checkbox --> ⋯ More --> App "
+"Settings`. On the *Configure Provisioning Service* page, you can change "
+"the settings and apply them to the app by clicking :guilabel:`Apply "
+"Changes`."
+msgstr ""
+"Um Einstellungen nach der Installation der App zu ändern, melden Sie sich mit einem Benutzerkonto der Gruppe ``Domain Admins`` an der *Management UI* an und navigieren Sie zu :menuselection:`App Center --> Provisioning Service --> Installationen verwalten --> Instanz über Kontrollkästchen auswählen --> ⋯ Mehr --> App-Einstellungen`. Auf der Seite *Provisioning Service konfigurieren* können Sie die Einstellungen ändern und durch einen Klick auf :guilabel:`Änderungen übernehmen` auf die App anwenden."
+
+#: ../../domain-infrastructure/provisioning-service.rst:218
+msgid ""
+"The App Center then *reinitializes* the Docker containers for the "
+"*Provisioning Service* app. *Reinitialize* means that the App Center "
+"throws away the running containers comprising the app and creates a fresh"
+" set of containers with the just changed settings."
+msgstr ""
+"Das App Center *initialisiert* anschließend die Docker-Container für die App *Provisioning Service* *neu*. Das bedeutet, dass das App Center die laufenden Container der App verwirft und neue Container mit den soeben geänderten Einstellungen erstellt."
+
+#: ../../domain-infrastructure/provisioning-service.rst:222
+msgid ""
+"For some setting changes you need to restart the :program:`univention-"
+"directory-listener`. Run the command in :numref:`nubus-provisioning-"
+"service-app-settings-reference-restart-listener-listing`."
+msgstr ""
+"Nach einigen Änderungen an den Einstellungen müssen Sie den :program:`univention-directory-listener` neu starten. Führen Sie den Befehl in :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing` aus."
+
+#: ../../domain-infrastructure/provisioning-service.rst:225
+msgid "Restart the *Directory Listener*"
+msgstr "Den *Directory Listener* neu starten"
+
+#: ../../domain-infrastructure/provisioning-service.rst:225
+msgid "$ systemctl restart univention-directory-listener"
+msgstr "$ systemctl restart univention-directory-listener"
+
+#: ../../domain-infrastructure/provisioning-service.rst:234
+msgid "App settings"
+msgstr "App-Einstellungen"
+
+#: ../../domain-infrastructure/provisioning-service.rst:236
+msgid "The *Provisioning Service* app has the following app settings."
+msgstr "Die App *Provisioning Service* verfügt über die folgenden App-Einstellungen."
+
+#: ../../domain-infrastructure/provisioning-service.rst:240
+msgid "Fully qualified domain name (FQDN) of the UDM REST API host."
+msgstr "Vollständig qualifizierter Domänenname (FQDN) des Hosts der UDM REST API."
+
+#: ../../domain-infrastructure/provisioning-service.rst:246
+#: ../../domain-infrastructure/provisioning-service.rst:262
+#: ../../domain-infrastructure/provisioning-service.rst:283
+#: ../../domain-infrastructure/provisioning-service.rst:302
+#: ../../domain-infrastructure/provisioning-service.rst:321
+#: ../../domain-infrastructure/provisioning-service.rst:348
+#: ../../domain-infrastructure/provisioning-service.rst:368
+#: ../../domain-infrastructure/provisioning-service.rst:386
+#: ../../domain-infrastructure/provisioning-service.rst:404
+#: ../../domain-infrastructure/provisioning-service.rst:422
+msgid "Required"
+msgstr "Erforderlich"
+
+#: ../../domain-infrastructure/provisioning-service.rst:247
+#: ../../domain-infrastructure/provisioning-service.rst:263
+#: ../../domain-infrastructure/provisioning-service.rst:284
+#: ../../domain-infrastructure/provisioning-service.rst:303
+#: ../../domain-infrastructure/provisioning-service.rst:322
+#: ../../domain-infrastructure/provisioning-service.rst:349
+#: ../../domain-infrastructure/provisioning-service.rst:369
+#: ../../domain-infrastructure/provisioning-service.rst:387
+#: ../../domain-infrastructure/provisioning-service.rst:405
+#: ../../domain-infrastructure/provisioning-service.rst:423
+msgid "Default value"
+msgstr "Standardwert"
+
+#: ../../domain-infrastructure/provisioning-service.rst:248
+#: ../../domain-infrastructure/provisioning-service.rst:264
+#: ../../domain-infrastructure/provisioning-service.rst:285
+#: ../../domain-infrastructure/provisioning-service.rst:304
+#: ../../domain-infrastructure/provisioning-service.rst:323
+#: ../../domain-infrastructure/provisioning-service.rst:350
+#: ../../domain-infrastructure/provisioning-service.rst:370
+#: ../../domain-infrastructure/provisioning-service.rst:388
+#: ../../domain-infrastructure/provisioning-service.rst:406
+#: ../../domain-infrastructure/provisioning-service.rst:424
+msgid "Set"
+msgstr "Gesetzt"
+
+#: ../../domain-infrastructure/provisioning-service.rst:250
+#: ../../domain-infrastructure/provisioning-service.rst:266
+#: ../../domain-infrastructure/provisioning-service.rst:287
+#: ../../domain-infrastructure/provisioning-service.rst:306
+#: ../../domain-infrastructure/provisioning-service.rst:325
+#: ../../domain-infrastructure/provisioning-service.rst:352
+#: ../../domain-infrastructure/provisioning-service.rst:372
+#: ../../domain-infrastructure/provisioning-service.rst:390
+#: ../../domain-infrastructure/provisioning-service.rst:408
+#: ../../domain-infrastructure/provisioning-service.rst:426
+msgid "Yes"
+msgstr "Ja"
+
+#: ../../domain-infrastructure/provisioning-service.rst:251
+#: ../../domain-infrastructure/provisioning-service.rst:267
+msgid "Value from :envvar:`ldap/master`"
+msgstr "Wert aus :envvar:`ldap/master`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:252
+#: ../../domain-infrastructure/provisioning-service.rst:268
+#: ../../domain-infrastructure/provisioning-service.rst:289
+#: ../../domain-infrastructure/provisioning-service.rst:308
+#: ../../domain-infrastructure/provisioning-service.rst:327
+msgid "Installation and app configuration"
+msgstr "Installation und App-Konfiguration"
+
+#: ../../domain-infrastructure/provisioning-service.rst:256
+msgid "Fully qualified domain name (FQDN) of the :term:`Primary Directory Node`."
+msgstr "Vollständig qualifizierter Domänenname (FQDN) des :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:272
+msgid ""
+"Number of times the :ref:`nubus-provisioning-service-workflow-listener` "
+"re-tries to synchronize each transaction to the provisioning NATS "
+"service. After you change this setting you need to restart the :program"
+":`univention-directory-listener`, see :numref:`nubus-provisioning-"
+"service-app-settings-reference-restart-listener-listing`."
+msgstr ""
+"Anzahl der erneuten Versuche des :ref:`nubus-provisioning-service-workflow-listener`, jede Transaktion mit dem NATS-Dienst im Provisioning zu synchronisieren. Nach einer Änderung dieser Einstellung müssen Sie den :program:`univention-directory-listener` neu starten, siehe :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:288
+msgid "``3``"
+msgstr "``3``"
+
+#: ../../domain-infrastructure/provisioning-service.rst:293
+msgid ""
+"The number of seconds to wait between each attempt to synchronize a "
+"transaction to the provisioning NATS service. After you change this "
+"setting you need to restart the :program:`univention-directory-listener`,"
+" see :numref:`nubus-provisioning-service-app-settings-reference-restart-"
+"listener-listing`."
+msgstr ""
+"Anzahl der Sekunden, die zwischen den Versuchen zur Synchronisierung einer Transaktion mit dem Provisioning NATS-Dienst gewartet wird. Nach einer Änderung dieser Einstellung müssen Sie den :program:`univention-directory-listener` neu starten, siehe :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:307
+msgid "``1``"
+msgstr "``1``"
+
+#: ../../domain-infrastructure/provisioning-service.rst:312
+msgid ""
+"The maximum number of times to attempt to reconnect to the NATS service. "
+"After you change this setting you need to restart the :program"
+":`univention-directory-listener`, see :numref:`nubus-provisioning-"
+"service-app-settings-reference-restart-listener-listing`."
+msgstr ""
+"Maximale Anzahl der Versuche, die Verbindung zum NATS-Dienst wiederherzustellen. Nach einer Änderung dieser Einstellung müssen Sie den :program:`univention-directory-listener` neu starten, siehe :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:326
+msgid "3"
+msgstr "3"
+
+#: ../../domain-infrastructure/provisioning-service.rst:332
+msgid "UCR Variables"
+msgstr "UCR-Variablen"
+
+#: ../../domain-infrastructure/provisioning-service.rst:334
+msgid ""
+"Additionally, the *Provisioning Service* considers the following UCR "
+"variables that don't appear in the app settings. Univention recommends "
+"keeping the default values."
+msgstr ""
+"Zusätzlich berücksichtigt der *Provisioning Service* die folgenden UCR-Variablen, die nicht in den App-Einstellungen erscheinen. Univention empfiehlt, die Standardwerte beizubehalten."
+
+#: ../../domain-infrastructure/provisioning-service.rst:340
+msgid ""
+"Listening port number of the :program:`stunnel` securing the "
+":program:`NATS` connection between :term:`Primary Directory Node` and "
+":term:`Backup Directory Node`."
+msgstr ""
+"Portnummer, auf der :program:`stunnel` Verbindungen entgegennimmt. :program:`stunnel` sichert die :program:`NATS`-Verbindung zwischen :term:`Primary Directory Node` und :term:`Backup Directory Node` ab."
+
+#: ../../domain-infrastructure/provisioning-service.rst:353
+#: ../../domain-infrastructure/provisioning-service.rst:373
+msgid "``4230``"
+msgstr "``4230``"
+
+#: ../../domain-infrastructure/provisioning-service.rst:354
+#: ../../domain-infrastructure/provisioning-service.rst:374
+#: ../../domain-infrastructure/provisioning-service.rst:392
+#: ../../domain-infrastructure/provisioning-service.rst:410
+#: ../../domain-infrastructure/provisioning-service.rst:428
+msgid "Installation and app configuration."
+msgstr "Installation und App-Konfiguration."
+
+#: ../../domain-infrastructure/provisioning-service.rst:358
+msgid ""
+"Connection port of the :program:`stunnel` securing the connection between"
+" *Provisioning Dispatcher* on :term:`Backup Directory Node` and "
+":program:`NATS` on :term:`Primary Directory Node`. Must match the "
+":envvar:`nats/stunnel/accept/port` of the :term:`Primary Directory Node`."
+msgstr ""
+"Verbindungsport von :program:`stunnel`, der die Verbindung zwischen dem *Provisioning Dispatcher* auf dem :term:`Backup Directory Node` und :program:`NATS` auf dem :term:`Primary Directory Node` absichert. Der Port muss mit :envvar:`nats/stunnel/accept/port` des :term:`Primary Directory Node` übereinstimmen."
+
+#: ../../domain-infrastructure/provisioning-service.rst:378
+msgid ""
+"Certificate for the :program:`stunnel` :program:`NATS` connection between"
+" *Provisioning Dispatcher* on a :term:`Backup Directory Node` and "
+":program:`NATS` on :term:`Primary Directory Node`."
+msgstr ""
+"Zertifikat für die :program:`stunnel`-:program:`NATS`-Verbindung zwischen dem *Provisioning Dispatcher* auf einem :term:`Backup Directory Node` und :program:`NATS` auf dem :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:391
+msgid ":file:`/etc/univention/ssl/@%@ldap/master@%@/cert.pem`"
+msgstr ":file:`/etc/univention/ssl/@%@ldap/master@%@/cert.pem`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:396
+msgid ""
+"Certificate key used for the :program:`stunnel` :program:`NATS` "
+"connection between *Provisioning Dispatcher* on a :term:`Backup Directory"
+" Node` and :program:`NATS` on :term:`Primary Directory Node`."
+msgstr ""
+"Zertifikatsschlüssel für die :program:`stunnel`-:program:`NATS`-Verbindung zwischen dem *Provisioning Dispatcher* auf einem :term:`Backup Directory Node` und :program:`NATS` auf dem :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:409
+msgid ":file:`/etc/univention/ssl/@%@ldap/master@%@/private.key`"
+msgstr ":file:`/etc/univention/ssl/@%@ldap/master@%@/private.key`"
+
+#: ../../domain-infrastructure/provisioning-service.rst:414
+msgid ""
+"The CA certificate used for the :program:`stunnel` :program:`NATS` "
+"connection between *Provisioning Dispatcher* on a :term:`Backup Directory"
+" Node` and :program:`NATS` on :term:`Primary Directory Node`."
+msgstr ""
+"CA Zertifikat für die :program:`stunnel`-:program:`NATS`-Verbindung zwischen dem *Provisioning Dispatcher* auf einem :term:`Backup Directory Node` und :program:`NATS` auf dem :term:`Primary Directory Node`."
+
+#: ../../domain-infrastructure/provisioning-service.rst:427
+msgid ":file:`/etc/univention/ssl/ucsCA/CAcert.pem`"
+msgstr ":file:`/etc/univention/ssl/ucsCA/CAcert.pem`"
+
 #: ../../domain-infrastructure/system-roles.rst:7
 msgid "Understanding system roles"
 msgstr "Systemrollen verstehen"
@@ -3883,12 +4479,12 @@ msgid ""
 "block list entries, see :external+uv-nubus-manual:ref:`nubus-domain-"
 "blocklists` in :cite:t:`uv-nubus-manual`."
 msgstr ""
-"Um die Wiederverwendung von Attributwerten an Benutzern zu verhindern, stellt "
-"Nubus for Kubernetes das Verwaltungsmodul *Sperrlisten* bereit. Allgemeine "
-"Informationen über das Modul, die Aktivierung und Konfiguration von "
-"Sperrlisten sowie die Verwaltung von Sperrlisteneinträgen finden Sie unter "
-":external+uv-nubus-manual:ref:`nubus-domain-blocklists` in "
-":cite:t:`uv-nubus-manual`."
+"Um die Wiederverwendung von Attributwerten an Benutzern zu verhindern, "
+"stellt Nubus for Kubernetes das Verwaltungsmodul *Sperrlisten* bereit. "
+"Allgemeine Informationen über das Modul, die Aktivierung und "
+"Konfiguration von Sperrlisten sowie die Verwaltung von "
+"Sperrlisteneinträgen finden Sie unter :external+uv-nubus-manual:ref"
+":`nubus-domain-blocklists` in :cite:t:`uv-nubus-manual`."
 
 #: ../../domain-infrastructure/udm-blocklists.rst:17
 msgid ""
@@ -3899,11 +4495,11 @@ msgid ""
 " the following :term:`UCR variables <UCR variable>`:"
 msgstr ""
 "Standardmäßig kann jeder UCS Knoten in der Domäne und jedes Mitglied der "
-"Gruppe ``Domain Admins`` Sperrlisteneinträge schreiben, und alle "
-"Benutzer können sie lesen. Sie können die Berechtigungen auf dem "
-":term:`Primary Directory Node` und den :term:`Backup Directory Nodes "
-"<Backup Directory Node>` mit den folgenden :term:`UCR variables <UCR "
-"variable>` konfigurieren:"
+"Gruppe ``Domain Admins`` Sperrlisteneinträge schreiben, und alle Benutzer"
+" können sie lesen. Sie können die Berechtigungen auf dem :term:`Primary "
+"Directory Node` und den :term:`Backup Directory Nodes <Backup Directory "
+"Node>` mit den folgenden :term:`UCR variables <UCR variable>` "
+"konfigurieren:"
 
 #: ../../domain-infrastructure/udm-blocklists.rst:25
 msgid ":envvar:`ldap/database/internal/acl/blocklists/groups/read`"

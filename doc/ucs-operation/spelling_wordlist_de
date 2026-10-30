@@ -6,6 +6,7 @@ Anfrageinhalte
 Anfrageinhalts
 App-ID
 App-IDs
+App-Konfiguration
 App-Upgrades
 Attributwerte
 Attributwerten
@@ -104,8 +105,10 @@ Patchlevel-Version
 Patchlevel-Versionen
 Pipe-Zeichen
 Plattformspezifische
+Portnummer
 Pre-Update
 Principal
+Provisioning
 RC
 Ratenbegrenzung
 Ratenbegrenzungen
@@ -154,6 +157,7 @@ gRPC-Schnittstelle
 gruppenbasierte
 größenbasierten
 hasht
+paketbasierte
 plattformspezifischen
 rekonfigurieren
 richtlinienbasierte
