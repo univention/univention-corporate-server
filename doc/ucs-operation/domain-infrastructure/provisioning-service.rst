@@ -15,23 +15,20 @@ In contrast to the Univention Directory Listener,
 it provides the UDM representation of the change objects
 instead of the LDAP representation.
 
-This page describes the installation and configuration of the *Provisioning Service* in UCS.
+This page describes the installation and configuration of the *Provisioning Service* in Nubus for UCS.
 For more information on the inner workings of the *Provisioning Service*,
 see :external+uv-nubus-kubernetes-architecture:ref:`component-provisioning-service`
 in :cite:t:`uv-nubus-kubernetes-architecture`.
 
 .. note::
 
-   There are no services integrated into UCS that make use of the *Provisioning Service*.
+   There are no services integrated into Nubus for UCS that use the *Provisioning Service*.
    You can create services that use the *Provisioning Service*
    according to
    :external+uv-nubus-customization:ref:`customization-api-provisioning`
    in :cite:t:`uv-nubus-kubernetes-customization`.
 
-.. note::
-
-   The *Provisioning Service* is part of Univention Nubus in the *Identity Store and Directory Service* component.
-   For more information about Nubus, refer to :ref:`introduction-nubus`
+   .. FIXME: Clarify. Is the statement still true?
 
 .. _domain-infrastructure-provisioning-service-installation:
 
@@ -39,7 +36,7 @@ Installation
 ------------
 
 Univention App Center provides the *Provisioning Service* as an application.
-UCS doesn't install it by default.
+Nubus for UCS doesn't install it by default.
 You can install it on the :term:`Primary Directory Node` and on every :term:`Backup Directory Node`.
 It isn't possible to install the *Provisioning Service* on other server system roles.
 The *Provisioning Service* consists of the following apps:
@@ -50,13 +47,13 @@ The *Provisioning Service* consists of the following apps:
 
 :program:`provisioning-service-backend`
    The :program:`provisioning-service-backend` app is a package based app
-   that installs integration packages in UCS.
+   that installs integration packages in Nubus for UCS.
    The App Center automatically installs it as a dependency of :program:`provisioning-service`.
    The packages include a listener module and host configuration for TLS encryption between multiple installations.
 
 To install *Provisioning Service*, choose one of the following installation methods.
 The App Center applies multiple settings to the *Provisioning Service*.
-For a reference, see :ref:`nubus-provisioning-service-app-settings`.
+For a reference, see :ref:`domain-infrastructure-provisioning-service-app-settings`.
 
 .. tab-set::
 
@@ -65,7 +62,7 @@ For a reference, see :ref:`nubus-provisioning-service-app-settings`.
 
       You can install the :program:`provisioning-service` app like any other app through Univention App Center.
       For general information about Univention App Center and how to use it for software installation,
-      see :ref:`software-appcenter`.
+      see :ref:`lifecycle-app-center`.
 
    .. tab-item:: Command line
 
@@ -118,17 +115,18 @@ Provisioning Dispatcher
 
 .. _domain-infrastructure-provisioning-service-workflow-api:
 
-Provisioning API
-   The *Provisioning API* runs on the :term:`Primary Directory Node` and the :term:`Backup Directory Node`
-   and is the API that applications use to subscribe to events.
+Provisioning APIs
+   The *Provisioning APIs* runs on the :term:`Primary Directory Node` and the :term:`Backup Directory Node`.
+   It's a collection of various APIs for service registration to subscribe to events
+   and messaging.
 
 .. _domain-infrastructure-provisioning-service-workflow-nats:
 
-NATS
+Event streaming service
    :program:`NATS` handles the actual event streaming service.
 
 On the :term:`Backup Directory Node` the *Provisioning Dispatcher* connects
-to the :program:`NATS` Service running on the :term:`Primary Directory Node`.
+to the event streaming service running on the :term:`Primary Directory Node`.
 It streams data through a TLS encrypted connection.
 
 .. seealso::
@@ -170,7 +168,7 @@ or remotely through :samp:`https://{<Primary FQDN>}/univention/provisioning/`.
      - NATS client connections.
 
    * - 7777
-     - Provisioning API.
+     - Provisioning APIs.
 
    * - 8222
      - NATS Monitoring endpoint.
@@ -209,22 +207,27 @@ The following references show the available settings within the
 Univention recommends keeping the default values.
 
 To change settings after the app installation,
-sign in to the UCS management system with a user account in the ``Domain Admins`` group
-and go to :menuselection:`App Center --> Provisioning Service --> Manage Installations --> Select instance via checkbox --> ⋯ More --> App Settings`.
-On the *Configure Provisioning Service* page,
-you can change the settings
-and apply them to the app by clicking :guilabel:`Apply Changes`.
+use these steps:
 
-The App Center then *reinitializes* the Docker containers for the *Provisioning Service* app.
+#. Sign in to the *Management UI* with a user account in the ``Domain Admins`` group
+   and go to :menuselection:`App Center --> Provisioning Service --> Manage Installations --> Select instance via checkbox --> ⋯ More --> App Settings`.
+
+#. On the *Configure Provisioning Service* page,
+   change the settings.
+
+#. To apply the settings, click :guilabel:`Apply Changes`.
+
+The App Center then *reinitializes* the containers for the *Provisioning Service* app.
 *Reinitialize* means that the App Center throws away the running containers comprising the app
 and creates a fresh set of containers with the just changed settings.
 
 For some setting changes you need to restart the :program:`univention-directory-listener`.
-Run the command in :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
+Run the command in
+:numref:`domain-infrastructure-provisioning-service-app-settings-reference-restart-listener-listing`.
 
 .. code-block:: console
    :caption: Restart the *Directory Listener*
-   :name: nubus-provisioning-service-app-settings-reference-restart-listener-listing
+   :name: domain-infrastructure-provisioning-service-app-settings-reference-restart-listener-listing
 
    $ systemctl restart univention-directory-listener
 
@@ -270,11 +273,11 @@ The *Provisioning Service* app has the following app settings.
 .. envvar:: nats/max_retry_count
 
    Number of times the
-   :ref:`nubus-provisioning-service-workflow-listener`
-   re-tries to synchronize each transaction to the provisioning NATS service.
+   :ref:`domain-infrastructure-provisioning-service-workflow-listener`
+   re-tries to synchronize each transaction to the :ref:`domain-infrastructure-provisioning-service-workflow-nats`.
    After you change this setting
    you need to restart the :program:`univention-directory-listener`,
-   see :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
+   see :numref:`domain-infrastructure-provisioning-service-app-settings-reference-restart-listener-listing`.
 
    .. list-table::
       :header-rows: 1
@@ -290,10 +293,11 @@ The *Provisioning Service* app has the following app settings.
 
 .. envvar:: nats/retry_delay
 
-   The number of seconds to wait between each attempt to synchronize a transaction to the provisioning NATS service.
+   The number of seconds to wait between each attempt to synchronize a transaction to the
+   :ref:`domain-infrastructure-provisioning-service-workflow-nats`.
    After you change this setting
    you need to restart the :program:`univention-directory-listener`,
-   see :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
+   see :numref:`domain-infrastructure-provisioning-service-app-settings-reference-restart-listener-listing`.
 
    .. list-table::
       :header-rows: 1
@@ -309,10 +313,10 @@ The *Provisioning Service* app has the following app settings.
 
 .. envvar:: nats/max_reconnect_attempts
 
-   The maximum number of times to attempt to reconnect to the NATS service.
+   The maximum number of times to attempt to reconnect to the :ref:`domain-infrastructure-provisioning-service-workflow-nats`.
    After you change this setting
    you need to restart the :program:`univention-directory-listener`,
-   see :numref:`nubus-provisioning-service-app-settings-reference-restart-listener-listing`.
+   see :numref:`domain-infrastructure-provisioning-service-app-settings-reference-restart-listener-listing`.
 
    .. list-table::
       :header-rows: 1
@@ -331,7 +335,7 @@ The *Provisioning Service* app has the following app settings.
 UCR Variables
 ~~~~~~~~~~~~~
 
-Additionally, the *Provisioning Service* considers the following UCR variables
+Additionally, the *Provisioning Service* considers the following :term:`UCR variables <UCR variable>`
 that don't appear in the app settings.
 Univention recommends keeping the default values.
 
@@ -357,7 +361,7 @@ Univention recommends keeping the default values.
 
    Connection port of the :program:`stunnel`
    securing the connection
-   between *Provisioning Dispatcher* on :term:`Backup Directory Node`
+   between :ref:`domain-infrastructure-provisioning-service-workflow-dispatcher` on :term:`Backup Directory Node`
    and :program:`NATS` on :term:`Primary Directory Node`. Must match
    the :envvar:`nats/stunnel/accept/port` of the :term:`Primary Directory Node`.
 
@@ -376,7 +380,7 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/cert
 
    Certificate for the :program:`stunnel` :program:`NATS` connection
-   between *Provisioning Dispatcher* on a :term:`Backup Directory Node`
+   between :ref:`domain-infrastructure-provisioning-service-workflow-dispatcher` on a :term:`Backup Directory Node`
    and :program:`NATS` on :term:`Primary Directory Node`.
 
    .. list-table::
@@ -394,7 +398,7 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/key
 
    Certificate key used for the :program:`stunnel` :program:`NATS` connection
-   between *Provisioning Dispatcher* on a :term:`Backup Directory Node`
+   between :ref:`domain-infrastructure-provisioning-service-workflow-dispatcher` on a :term:`Backup Directory Node`
    and :program:`NATS` on :term:`Primary Directory Node`.
 
    .. list-table::
@@ -412,7 +416,7 @@ Univention recommends keeping the default values.
 .. envvar:: nats/stunnel/cacert
 
    The CA certificate used for the :program:`stunnel` :program:`NATS` connection
-   between *Provisioning Dispatcher* on a :term:`Backup Directory Node`
+   between :ref:`domain-infrastructure-provisioning-service-workflow-dispatcher` on a :term:`Backup Directory Node`
    and :program:`NATS` on :term:`Primary Directory Node`.
 
    .. list-table::
