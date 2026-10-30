@@ -6,6 +6,7 @@ Anfrageinhalte
 Anfrageinhalts
 App-ID
 App-IDs
+App-Konfiguration
 App-Upgrades
 Attributwerte
 Attributwerten
@@ -21,6 +22,7 @@ Berichtsvorlagen
 Bootloader-Menü
 Brute-Force-Angriffe
 Build-Tools
+CA-Zertifikat
 CSS-Dateien
 CSS-Dateinamen
 CSS-Variablen
@@ -48,6 +50,7 @@ End-of-Life
 Engine
 Engines
 Entscheidungs-Engine
+Events
 Exit
 Foundation
 Gruppen-DNs
@@ -104,8 +107,10 @@ Patchlevel-Version
 Patchlevel-Versionen
 Pipe-Zeichen
 Plattformspezifische
+Portnummer
 Pre-Update
 Principal
+Provisioning
 RC
 Ratenbegrenzung
 Ratenbegrenzungen
@@ -154,6 +159,7 @@ gRPC-Schnittstelle
 gruppenbasierte
 größenbasierten
 hasht
+paketbasierte
 plattformspezifischen
 rekonfigurieren
 richtlinienbasierte
