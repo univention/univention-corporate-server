@@ -1,10 +1,10 @@
 .. SPDX-FileCopyrightText: 2021-2026 Univention GmbH
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-.. _ip-config-web-proxy-for-caching-and-policy-management-virus-scan:
+.. _system-administration-web-proxy:
 
-Web proxy for caching and policy management / virus scan
-========================================================
+Provide a web proxy service with Squid
+======================================
 
 The UCS proxy integration allows the use of a web cache for improving the
 performance and controlling data traffic. It is based on the tried-and-tested
@@ -21,7 +21,7 @@ Further documentation on proxy services - such as the cascading of proxy
 servers, transparent proxies and the integration of a virus scan engine - are
 documented in :cite:t:`ext-doc-net`.
 
-.. _ip-config-installation:
+.. _system-administration-web-proxy-installation:
 
 Installation
 ------------
@@ -33,8 +33,14 @@ found in :ref:`computers-softwaremanagement-install-software`.
 
 The service is configured with standard settings sufficient for operation so
 that it can be used immediately. It is possible to configure the port on which
-the service is accessible to suit your preferences (see :ref:`proxy-port`); port
-``3128`` is set as default.
+the service is accessible to suit your preferences
+(see :ref:`system-administration-web-proxy-ports-proxy`);
+port ``3128`` is set as default.
+
+.. _system-administration-web-proxy-additional-configuration:
+
+Additional configuration and restart
+------------------------------------
 
 If changes are made to the configuration, Squid must be restarted. This can be
 performed either via the UMC module :guilabel:`System services` or the command
@@ -44,11 +50,11 @@ line:
 
    $ systemctl restart squid
 
-In addition to the configuration possibilities via |UCSUCR| described in this
+In addition to the configuration possibilities via Univention Configuration Registry described in this
 document, it is also possible to set additional Squid configuration options in
 the :file:`/etc/squid/local.conf`.
 
-.. _ip-config-caching-of-web-content:
+.. _system-administration-web-proxy-caching-web:
 
 Caching of web content
 ----------------------
@@ -61,10 +67,10 @@ of HTTP requests.
 However, this caching function is not necessary for some environments or, in the
 case of cascaded proxies, it should not be activated for all of them. For these
 scenarios, the caching function of the Squid can be deactivated with the
-|UCSUCRV| :envvar:`squid/cache` by setting this to ``no``. Squid must then be
+:term:`UCR variable` :envvar:`squid/cache` by setting this to ``no``. Squid must then be
 restarted.
 
-.. _ip-config-logging-proxy-accesses:
+.. _system-administration-web-proxy-logging:
 
 Logging proxy accesses
 ----------------------
@@ -73,7 +79,41 @@ All accesses performed via the proxy server are stored in the log file
 :file:`/var/log/squid/access.log`. It can be used to follow which websites have
 been accessed by the users.
 
-.. _ip-config-restriction-of-access-to-permitted-networks:
+.. _system-administration-web-proxy-ports:
+
+Configuration of the ports used
+-------------------------------
+
+.. _system-administration-web-proxy-ports-proxy:
+
+Access port
+~~~~~~~~~~~
+
+As standard, the web proxy can be accessed via port ``3128``. If another port is
+required, this can be configured via the :term:`UCR variable` :envvar:`squid/httpport`. If
+Univention Firewall is used, the packet filter configuration must also be
+adjusted.
+
+.. _system-administration-web-proxy-ports-permitted:
+
+Permitted ports
+~~~~~~~~~~~~~~~
+
+In the standard configuration, Squid only forwards client requests intended for
+the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The list of permitted
+ports can be changed via the :term:`UCR variable` :envvar:`squid/webports`; several entries
+should be separated by blank spaces.
+
+Example:
+
+.. code-block:: console
+
+   $ univention-config-registry set squid/webports="80 443"
+
+
+With this setting, access is only allowed to ports 80 and 443 (HTTP and HTTPS).
+
+.. _system-administration-web-proxy-restrict-to-permitted-networks:
 
 Restriction of access to permitted networks
 -------------------------------------------
@@ -82,7 +122,7 @@ As standard, the proxy server can only be accessed from local networks. If, for
 example, a network interface with the address ``192.0.2.10`` and the network
 mask ``255.255.255.0`` is available on the computer on which Squid is installed,
 only computers from the network ``192.0.2.0/24`` can access the proxy server.
-Additional networks can be specified via the |UCSUCRV|
+Additional networks can be specified via the :term:`UCR variable`
 :envvar:`squid/allowfrom`. When doing so, the CIDR notation must be used;
 several networks should be separated by blank spaces.
 
@@ -96,41 +136,7 @@ Once Squid has been restarted, access is now permitted from the networks
 ``192.0.2.0/24`` and ``192.0.3.0/24``. If configured to ``all``, proxy access in
 granted from all networks.
 
-.. _ip-config-configuration-of-the-ports-used:
-
-Configuration of the ports used
--------------------------------
-
-.. _proxy-port:
-
-Access port
-~~~~~~~~~~~
-
-As standard, the web proxy can be accessed via port ``3128``. If another port is
-required, this can be configured via the |UCSUCRV| :envvar:`squid/httpport`. If
-Univention Firewall is used, the packet filter configuration must also be
-adjusted.
-
-.. _ip-config-permitted-ports:
-
-Permitted ports
-~~~~~~~~~~~~~~~
-
-In the standard configuration, Squid only forwards client requests intended for
-the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The list of permitted
-ports can be changed via the |UCSUCRV| :envvar:`squid/webports`; several entries
-should be separated by blank spaces.
-
-Example:
-
-.. code-block:: console
-
-   $ univention-config-registry set squid/webports="80 443"
-
-
-With this setting, access is only allowed to ports 80 and 443 (HTTP and HTTPS).
-
-.. _proxy-userauth:
+.. _system-administration-web-proxy-authentication:
 
 User authentication on the proxy
 --------------------------------
@@ -153,12 +159,12 @@ this:
 
 LDAP server authentication
    Direct authentication against the LDAP server. This is done by setting the
-   |UCSUCRV| :envvar:`squid/basicauth` to ``yes`` and restarting Squid.
+   :term:`UCR variable` :envvar:`squid/basicauth` to ``yes`` and restarting Squid.
 
 NTLM authentication
    Authentication is performed via the NTLM interface. Users logged in on a
    Windows client then do not need to authenticate themselves again when
-   accessing the proxy. NTLM authentication is enabled by setting the |UCSUCRV|
+   accessing the proxy. NTLM authentication is enabled by setting the UCR variable
    :envvar:`squid/ntlmauth` to ``yes`` and restarting Squid.
 
 Kerberos authentication
@@ -167,20 +173,19 @@ Kerberos authentication
    with the ticket that they received when they logged in to the domain. The
    :program:`univention-squid-kerberos` package must be installed on every proxy
    server for it to be possible to enable Kerberos authentication. Then the
-   |UCSUCRV| :envvar:`squid/krb5auth` must be set to ``yes`` and Squid
+   UCR variable :envvar:`squid/krb5auth` must be set to ``yes`` and Squid
    restarted.
 
 If NTLM is used an NTLM authentication is performed for every HTTP query as
 standard. If for example the website <https://www.univention.com/> is opened,
 the subsequent pages and images are loaded in addition to the actual HTML page. The NTLM
-authentication can be cached per domain: If the |UCSUCRV|
+authentication can be cached per domain: If the UCR variable
 :envvar:`squid/ntlmauth/keepalive` is set to ``yes``, no further NTLM
 authentication is performed for subsequent HTML queries in the same domain. In
 case of problems with local user accounts it may help to set this variable to
 ``no``.
 
-In the standard setting all users can access the proxy. The |UCSUCRV|
+In the standard setting all users can access the proxy. The UCR variable
 :envvar:`squid/auth/allowed_groups` can be used to limit the proxy access to one
 or several groups. If several groups are specified, they must be separated by a
 semicolon.
-
