@@ -82,6 +82,19 @@ Proxy settings
    through a proxy server using UCR variables.
    See :ref:`system-administration-proxy`.
 
+Web proxy service
+   Provide a web proxy service with Squid
+   to cache web content and control access.
+   Configure permitted networks and ports, user authentication,
+   and proxy access logging.
+   See :ref:`system-administration-web-proxy`.
+
+Rate limiting
+   Protect externally exposed HTTP services from excessive traffic.
+   Consider rate limiting with a reverse proxy or load balancer,
+   or extend the Apache configuration with a third-party module.
+   See :ref:`system-administration-rate-limiting`.
+
 .. toctree::
    :caption: Contents
 
