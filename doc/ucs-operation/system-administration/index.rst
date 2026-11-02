@@ -96,4 +96,5 @@ Proxy settings
    boot-manager
    network/index
    proxy
+   web-proxy
    rate-limiting
