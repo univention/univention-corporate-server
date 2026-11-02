@@ -21,6 +21,13 @@ univention-config-registry set directory/manager/web/modules/autosearch?1 \
 	umc/module/udm/users/self/disabled?true
 
 # shellcheck disable=SC2154
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "12.7.1" && [ "$server_role" = "domaincontroller_master" ]; then
+	# shellcheck disable=SC2154
+	univention-directory-manager settings/umc_operationset modify "$@" \
+		--dn "cn=udm-syntax,cn=operations,cn=UMC,cn=univention,$ldap_base" \
+		--append operation="udm/syntax/choices/key"
+fi
+
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "10.0.1.24" && [ "$server_role" = "domaincontroller_master" ]; then
 	umc_operation_create "udm-reports" "UDM - Reports" "" "udm/reports/query" "udm/reports/create" "udm/reports/get"
 fi

@@ -59,7 +59,7 @@ umc_operation_create "udm-navigation" "UDM - LDAP directory" "navigation" "udm/n
 
 umc_operation_create "udm-license" "UDM - License Import" "license-import" "udm/license/*"
 
-umc_operation_create "udm-syntax" "UDM - Syntax" "" "udm/syntax/choices/info" "udm/syntax/choices"
+umc_operation_create "udm-syntax" "UDM - Syntax" "" "udm/syntax/choices/info" "udm/syntax/choices" "udm/syntax/choices/key"
 
 umc_operation_create "udm-validate" "UDM - Validate" "" "udm/validate"
 
@@ -71,6 +71,11 @@ umc_operation_create "udm-blocklists" "UDM - Blocklists" "blocklists/all" "udm/*
 
 umc_policy_append "default-umc-all" "udm-all"
 
+if [ "$JS_LAST_EXECUTED_VERSION" = 6 ]; then
+	univention-directory-manager settings/umc_operationset modify "$@" \
+		--dn "cn=udm-syntax,cn=operations,cn=UMC,cn=univention,$ldap_base" \
+		--append operation="udm/syntax/choices/key"
+fi
 if [ "$JS_LAST_EXECUTED_VERSION" = 3 ]; then
 	univention-directory-manager settings/umc_operationset modify "$@" \
 		--dn "cn=udm-mail,cn=operations,cn=UMC,cn=univention,$ldap_base" \

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.7.1) unstable; urgency=medium
+
+  * Bug #60084: allow syntax choice key lookups in UMC permissions
+
+ -- Florian Best <best@univention.de>  Mon, 02 Nov 2026 11:19:43 +0100
+
 univention-management-console-module-udm (12.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]
