@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-16 13:11+0000\n"
-"PO-Revision-Date: 2026-10-16 15:12+0200\n"
+"POT-Creation-Date: 2026-11-02 17:38+0000\n"
+"PO-Revision-Date: 2026-11-02 18:40+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -929,7 +929,7 @@ msgstr ""
 "alternativ mit einem eigens erzeugten RADIUS-Passwort authentisiert, so "
 "dass unter anderem *Bring-Your-Own-Device-Konzepte* ermöglicht werden."
 
-#: ../../ip-config/radius.rst:21 ../../ip-config/web-proxy.rst:27
+#: ../../ip-config/radius.rst:21 ../../ip-config/web-proxy.rst:16
 msgid "Installation"
 msgstr "Installation"
 
@@ -1772,359 +1772,115 @@ msgstr "Web-Proxy für Caching und Policy Management/Virenscan"
 
 #: ../../ip-config/web-proxy.rst:9
 msgid ""
-"The UCS proxy integration allows the use of a web cache for improving the"
-" performance and controlling data traffic. It is based on the tried-and-"
-"tested proxy server Squid and supports the protocols HTTP, FTP and HTTPS."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Die Proxy-Integration ermöglicht die Verwendung eines Web-Caches zur "
-"Verbesserung der Performance und Kontrolle des Datenverkehrs. Sie basiert"
-" auf dem bewährten Proxy-Server Squid und unterstützt die Protokolle "
-"HTTP, FTP und HTTPS."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:13
+#: ../../ip-config/web-proxy.rst:18
 msgid ""
-"A proxy server receives requests about internet contents and verifies "
-"whether these contents are already available in a local cache. If this is"
-" the case, the requested data are provided from the local cache. If the "
-"data are not available, these contents are called up from the respective "
-"web server and inserted in the local cache. This can be used to reduce "
-"the answering times for the users and the transfer volume via the "
-"internet access."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-installation` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Ein Proxy-Server nimmt Anfragen nach Internetinhalten entgegen und prüft,"
-" ob diese Inhalte bereits in einem lokalen Cache vorhanden sind.  Ist "
-"dies der Fall, werden die angefragten Daten aus dem lokalen Cache "
-"bereitgestellt. Sind die Daten noch nicht vorhanden, werden die Inhalte "
-"vom jeweiligen Webserver abgerufen und in den lokalen Cache eingefügt.  "
-"Hierdurch können die Antwortzeiten für die Anwender sowie das "
-"Transfervolumen über den Internetzugang verringert werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-installation` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:20
-msgid ""
-"Further documentation on proxy services - such as the cascading of proxy "
-"servers, transparent proxies and the integration of a virus scan engine -"
-" are documented in :cite:t:`ext-doc-net`."
-msgstr ""
-"Einige weiterführende Funktionen der Proxy-Dienste - wie etwa die "
-"Kaskadierung von Proxy-Servern - werden in :cite:t:`ext-doc-net` "
-"beschrieben."
-
-#: ../../ip-config/web-proxy.rst:29
-msgid ""
-"Squid can be installed from the Univention App Center with the "
-"application :program:`Web proxy / web cache (Squid)`. Alternatively, the "
-"software package :program:`univention-squid` can be installed. Additional"
-" information can be found in :ref:`computers-softwaremanagement-install-"
-"software`."
-msgstr ""
-"Squid kann mit der Applikation :program:`Proxyserver / Webcache (Squid)` "
-"aus dem Univention App Center installiert werden.  Alternativ kann das "
-"Softwarepaket :program:`univention-squid` installiert werden. Weitere "
-"Informationen finden sich in :ref:`computers-softwaremanagement-install-"
-"software`."
-
-#: ../../ip-config/web-proxy.rst:34
-msgid ""
-"The service is configured with standard settings sufficient for operation"
-" so that it can be used immediately. It is possible to configure the port"
-" on which the service is accessible to suit your preferences (see :ref"
-":`proxy-port`); port ``3128`` is set as default."
-msgstr ""
-"Der Dienst wird mit für den Betrieb ausreichenden Standardeinstellungen "
-"konfiguriert, sodass eine sofortige Verwendung möglich ist. Der Port, auf"
-" dem der Dienst erreichbar ist, kann nach eigenen Wünschen konfiguriert "
-"werden (siehe :ref:`proxy-port`), voreingestellt ist Port ``3128``."
-
-#: ../../ip-config/web-proxy.rst:39
-msgid ""
-"If changes are made to the configuration, Squid must be restarted. This "
-"can be performed either via the UMC module :guilabel:`System services` or"
-" the command line:"
-msgstr ""
-"Werden Änderungen an der Konfiguration vorgenommen, muss Squid neu "
-"gestartet werden. Dies kann entweder über das UMC-Modul "
-":guilabel:`Systemdienste` oder auf der Kommandozeile erfolgen:"
-
-#: ../../ip-config/web-proxy.rst:43
-msgid "$ systemctl restart squid"
-msgstr "$ systemctl restart squid"
-
-#: ../../ip-config/web-proxy.rst:47
-msgid ""
-"In addition to the configuration possibilities via |UCSUCR| described in "
-"this document, it is also possible to set additional Squid configuration "
-"options in the :file:`/etc/squid/local.conf`."
-msgstr ""
-"Neben den in diesem Dokument beschriebenen Konfigurationsmöglichkeiten "
-"über |UCSUCR| können in der Datei :file:`/etc/squid/local.conf` auch "
-"beliebige weitere Squid-Optionen gesetzt werden."
-
-#: ../../ip-config/web-proxy.rst:54
+#: ../../ip-config/web-proxy.rst:25
 msgid "Caching of web content"
 msgstr "Caching von Webseiten"
 
-#: ../../ip-config/web-proxy.rst:56
+#: ../../ip-config/web-proxy.rst:27
 msgid ""
-"Squid is a caching proxy, i.e., previously viewed contents can be "
-"provided from a cache without being reloaded from the respective web "
-"server. This reduces the incoming traffic via the internet connection and"
-" can result in quicker responses of HTTP requests."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-caching-web` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Squid ist ein *Caching proxy*, d.h. zuvor schon einmal angefragte "
-"Inhalten können aus einem Cache zur Verfügung gestellt werden ohne erneut"
-" vom jeweiligen Webserver geladen zu werden. Dies reduziert das "
-"Datenaufkommen über die Internetanbindung und kann zu einer schnelleren "
-"Beantwortung von HTTP-Anfragen führen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-caching-web` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:61
-msgid ""
-"However, this caching function is not necessary for some environments or,"
-" in the case of cascaded proxies, it should not be activated for all of "
-"them. For these scenarios, the caching function of the Squid can be "
-"deactivated with the |UCSUCRV| :envvar:`squid/cache` by setting this to "
-"``no``. Squid must then be restarted."
-msgstr ""
-"In manchen Umgebungen ist diese Caching-Funktionalität allerdings nicht "
-"notwendig oder muss bei kaskadierten Proxys nicht bei allen aktiviert "
-"sein. Für diese Szenarien kann die Caching-Funktion des Squid mit der "
-"|UCSUCRV| :envvar:`squid/cache` deaktiviert werden, indem diese auf den "
-"Wert ``no`` gesetzt wird. Anschließend muss Squid neu gestartet werden."
-
-#: ../../ip-config/web-proxy.rst:70
+#: ../../ip-config/web-proxy.rst:34
 msgid "Logging proxy accesses"
 msgstr "Protokollierung von Zugriffen"
 
-#: ../../ip-config/web-proxy.rst:72
+#: ../../ip-config/web-proxy.rst:36
 msgid ""
-"All accesses performed via the proxy server are stored in the log file "
-":file:`/var/log/squid/access.log`. It can be used to follow which "
-"websites have been accessed by the users."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-logging` in :cite:t:`uv-ucs-operation`."
 msgstr ""
-"Sämtliche Zugriffe, die über den Proxy-Server vorgenommen werden, werden "
-"in der Logdatei :file:`/var/log/squid/access.log` erfasst. Anhand dieser "
-"Logdatei ist es möglich, nachzuvollziehen auf welche Webseiten "
-"zugegriffen wurde."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-logging` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:79
+#: ../../ip-config/web-proxy.rst:43
 msgid "Restriction of access to permitted networks"
 msgstr "Einschränkung des Zugriffs auf erlaubte Netzwerke"
 
-#: ../../ip-config/web-proxy.rst:81
+#: ../../ip-config/web-proxy.rst:45
 msgid ""
-"As standard, the proxy server can only be accessed from local networks. "
-"If, for example, a network interface with the address ``192.0.2.10`` and "
-"the network mask ``255.255.255.0`` is available on the computer on which "
-"Squid is installed, only computers from the network ``192.0.2.0/24`` can "
-"access the proxy server. Additional networks can be specified via the "
-"|UCSUCRV| :envvar:`squid/allowfrom`. When doing so, the CIDR notation "
-"must be used; several networks should be separated by blank spaces."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-restrict-to-permitted-networks` in "
+":cite:t:`uv-ucs-operation`."
 msgstr ""
-"Standardmäßig darf nur aus lokalen Netzwerken auf den Proxy-Server "
-"zugegriffen werden. Ist z.B. an dem Rechner, auf dem Squid installiert "
-"wurde, ein Netzwerkinterface mit der Adresse ``192.0.2.10`` und der "
-"Netzmaske ``255.255.255.0`` vorhanden, dürfen nur Rechner aus dem "
-"Netzwerk ``192.0.2.0/24`` auf den Proxy-Server zugreifen. Weitere "
-"Netzwerke können über die |UCSUCRV| :envvar:`squid/allowfrom` angegeben "
-"werden. Dabei muss die CIDR-Notation verwendet werden, mehrere Netzwerke "
-"sind durch Leerzeichen zu trennen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-restrict-to-permitted-networks` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:89 ../../ip-config/web-proxy.rst:124
-msgid "Example:"
-msgstr "Beispiel:"
-
-#: ../../ip-config/web-proxy.rst:91
-msgid ""
-"$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
-"192.0.3.0/24\""
-msgstr ""
-"$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
-"192.0.3.0/24\""
-
-#: ../../ip-config/web-proxy.rst:95
-msgid ""
-"Once Squid has been restarted, access is now permitted from the networks "
-"``192.0.2.0/24`` and ``192.0.3.0/24``. If configured to ``all``, proxy "
-"access in granted from all networks."
-msgstr ""
-"Nach einem Neustart von Squid ist jetzt der Zugriff aus den Netzwerken "
-"``192.0.2.0/24`` und ``192.0.2.0/24`` erlaubt.  Durch Angabe von ``all`` "
-"kann der Zugriff auch aus allen Netzen erlaubt werden."
-
-#: ../../ip-config/web-proxy.rst:102
+#: ../../ip-config/web-proxy.rst:52
 msgid "Configuration of the ports used"
 msgstr "Konfiguration der verwendeten Ports"
 
-#: ../../ip-config/web-proxy.rst:107
+#: ../../ip-config/web-proxy.rst:54
+msgid ""
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-ports` in :cite:t:`uv-ucs-operation`."
+msgstr ""
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-ports` in :cite:t:`uv-nubus-"
+"manual`."
+
+#: ../../ip-config/web-proxy.rst:61
 msgid "Access port"
 msgstr "Zugriffsport"
 
-#: ../../ip-config/web-proxy.rst:109
+#: ../../ip-config/web-proxy.rst:63
 msgid ""
-"As standard, the web proxy can be accessed via port ``3128``. If another "
-"port is required, this can be configured via the |UCSUCRV| "
-":envvar:`squid/httpport`. If Univention Firewall is used, the packet "
-"filter configuration must also be adjusted."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-ports-proxy` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Standardmäßig ist der Web-Proxy über den Port ``3128`` erreichbar. Ist "
-"ein anderer Port gewünscht, kann dieser über die |UCSUCRV| "
-":envvar:`squid/httpport` konfiguriert werden. Bei Verwendung von "
-"Univention Firewall muss zusätzlich die Paketfilterkonfiguration "
-"angepasst werden."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-ports-proxy` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:117
+#: ../../ip-config/web-proxy.rst:70
 msgid "Permitted ports"
 msgstr "Erlaubte Ports"
 
-#: ../../ip-config/web-proxy.rst:119
+#: ../../ip-config/web-proxy.rst:72
 msgid ""
-"In the standard configuration, Squid only forwards client requests "
-"intended for the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The "
-"list of permitted ports can be changed via the |UCSUCRV| "
-":envvar:`squid/webports`; several entries should be separated by blank "
-"spaces."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-ports-permitted` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"In der Standardkonfiguration leitet Squid nur Anfragen von Clients "
-"weiter, die an die Netzwerkports 80 (HTTP), 443 (HTTPS) oder 21 (FTP) "
-"gerichtet werden. Die Liste der erlaubten Ports kann über die |UCSUCRV| "
-":envvar:`squid/webports` geändert werden, mehrere Angaben sind dabei "
-"durch Leerzeichen zu trennen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-ports-permitted` in :cite:t:`uv-nubus-"
+"manual`."
 
-#: ../../ip-config/web-proxy.rst:126
-msgid "$ univention-config-registry set squid/webports=\"80 443\""
-msgstr "$ univention-config-registry set squid/webports=\"80 443\""
-
-#: ../../ip-config/web-proxy.rst:131
-msgid ""
-"With this setting, access is only allowed to ports 80 and 443 (HTTP and "
-"HTTPS)."
-msgstr ""
-"Durch diese Einstellung wird nur noch der Zugriff auf die Ports 80 und "
-"443 (HTTP und HTTPS) erlaubt."
-
-#: ../../ip-config/web-proxy.rst:136
+#: ../../ip-config/web-proxy.rst:79
 msgid "User authentication on the proxy"
 msgstr "Benutzer-Authentifizierung am Proxy"
 
-#: ../../ip-config/web-proxy.rst:138
+#: ../../ip-config/web-proxy.rst:81
 msgid ""
-"It is sometimes necessary to restrict web access to certain users. Squid "
-"allows user-specific access regulation via group memberships. To allow "
-"verification of group membership, it is necessary for the user to "
-"authenticate on the proxy server."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`system-administration-web-proxy-authentication` in :cite:t:`uv-ucs-"
+"operation`."
 msgstr ""
-"Oftmals ist es notwendig, dass nur bestimmte Benutzer Zugriff auf "
-"Webseiten erhalten sollen. Squid ermöglicht die benutzerbezogene "
-"Zugriffsregelung über Gruppenmitgliedschaften. Um eine Überprüfung der "
-"Gruppenmitgliedschaft zu ermöglichen, ist es hierbei erforderlich, dass "
-"eine Anmeldung des Benutzers am Proxy-Server durchgeführt wird."
-
-#: ../../ip-config/web-proxy.rst:145
-msgid ""
-"To prevent unauthorized users from opening websites nonetheless, "
-"additional measures are required to prevent these users from bypassing "
-"the proxy server and accessing the internet. This can be done, for "
-"example, by limiting all HTTP traffic through a firewall."
-msgstr ""
-"Um zur verhindern, dass nicht autorisierte Benutzer trotzdem Webseiten "
-"abrufen können, sind weitere Maßnahmen erforderlich, damit diese Benutzer"
-" nicht am Proxy-Server vorbei auf das Internet zugreifen können. Dies "
-"kann z.B. erreicht werden, in dem in der Firewall alle HTTP-Anfragen mit "
-"Ausnahme des Proxys unterbunden werden."
-
-#: ../../ip-config/web-proxy.rst:150
-msgid ""
-"The proxy authentication (and as a result the possible verification of "
-"the group memberships) must firstly be enabled. There are three possible "
-"mechanisms for this:"
-msgstr ""
-"Proxy-Authentifizierung und die damit erst mögliche Überprüfung der "
-"Gruppenzugehörigkeiten muss zuerst aktiviert werden. Dafür werden drei "
-"verschiedene Mechanismen angeboten:"
-
-#: ../../ip-config/web-proxy.rst:154
-msgid "LDAP server authentication"
-msgstr "LDAP Server Authentifizierung"
-
-#: ../../ip-config/web-proxy.rst:155
-msgid ""
-"Direct authentication against the LDAP server. This is done by setting "
-"the |UCSUCRV| :envvar:`squid/basicauth` to ``yes`` and restarting Squid."
-msgstr ""
-"Die Authentifizierung erfolgt direkt gegen den LDAP-Server. Dazu müssen "
-"die |UCSUCRV| :envvar:`squid/basicauth` auf ``yes`` gesetzt und Squid neu"
-" gestartet werden."
-
-#: ../../ip-config/web-proxy.rst:158
-msgid "NTLM authentication"
-msgstr "NTLM Authentifizierung"
-
-#: ../../ip-config/web-proxy.rst:159
-msgid ""
-"Authentication is performed via the NTLM interface. Users logged in on a "
-"Windows client then do not need to authenticate themselves again when "
-"accessing the proxy. NTLM authentication is enabled by setting the "
-"|UCSUCRV| :envvar:`squid/ntlmauth` to ``yes`` and restarting Squid."
-msgstr ""
-"Die Authentifizierung wird über die NTLM-Schnittstelle durchgeführt. "
-"Benutzer, die an einem Windows-Client angemeldet sind, müssen dann beim "
-"Zugriff auf den Proxy keine weitere Authentifizierung durchführen. Um "
-"NTLM-Authentifizierung zu aktivieren, müssen die |UCSUCRV| "
-":envvar:`squid/ntlmauth` auf ``yes`` gesetzt und Squid neu gestartet "
-"werden."
-
-#: ../../ip-config/web-proxy.rst:164
-msgid "Kerberos authentication"
-msgstr "Kerberos Authentifizierung"
-
-#: ../../ip-config/web-proxy.rst:165
-msgid ""
-"Authentication is performed via Kerberos. Users logged in on a Windows "
-"client which is a member of a Samba/AD domain authenticate themselves on "
-"the proxy with the ticket that they received when they logged in to the "
-"domain. The :program:`univention-squid-kerberos` package must be "
-"installed on every proxy server for it to be possible to enable Kerberos "
-"authentication. Then the |UCSUCRV| :envvar:`squid/krb5auth` must be set "
-"to ``yes`` and Squid restarted."
-msgstr ""
-"Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem "
-"Windows-Client angemeldet sind, der Mitglied einer Samba/AD-Domäne ist, "
-"authentifizieren sich am Proxy mit dem Ticket, das sie im Rahmen der "
-"Domänenanmeldung erhalten haben. Um Kerberos-Authentifizierung zu "
-"aktivieren muss das Paket :program:`univention-squid-kerberos` auf jedem "
-"Proxyserver installiert werden. Anschließend müssen die |UCSUCRV| "
-":envvar:`squid/krb5auth` auf ``yes`` gesetzt und Squid neu gestartet "
-"werden."
-
-#: ../../ip-config/web-proxy.rst:173
-msgid ""
-"If NTLM is used an NTLM authentication is performed for every HTTP query "
-"as standard. If for example the website <https://www.univention.com/> is "
-"opened, the subsequent pages and images are loaded in addition to the "
-"actual HTML page. The NTLM authentication can be cached per domain: If "
-"the |UCSUCRV| :envvar:`squid/ntlmauth/keepalive` is set to ``yes``, no "
-"further NTLM authentication is performed for subsequent HTML queries in "
-"the same domain. In case of problems with local user accounts it may help"
-" to set this variable to ``no``."
-msgstr ""
-"Bei Verwendung von NTLM-Authentifizierung wird standardmäßig für jede "
-"HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird "
-"beispielsweise die Webseite <https://www.univention.de/> aufgerufen, "
-"werden neben der eigentlichen HTML-Seite auch weitere Unterseiten und "
-"Bilder nachgeladen. Die NTLM-Authentifizierung kann domänenbezogenen "
-"zwischengespeichert werden: Wird die |UCSUCRV| "
-":envvar:`squid/ntlmauth/keepalive` auf ``yes`` gesetzt, wird für "
-"nachgelagerte HTTP-Anfragen derselben Domäne keine weitere NTLM-"
-"Authentifizierung durchgeführt. Bei Problemen mit lokalen Benutzerkonten "
-"kann es helfen, diese Variable auf ``no`` zu setzen."
-
-#: ../../ip-config/web-proxy.rst:182
-msgid ""
-"In the standard setting all users can access the proxy. The |UCSUCRV| "
-":envvar:`squid/auth/allowed_groups` can be used to limit the proxy access"
-" to one or several groups. If several groups are specified, they must be "
-"separated by a semicolon."
-msgstr ""
-"In der Grundeinstellung können alle Benutzer auf den Proxy zugreifen.  "
-"Mit der |UCSUCRV| :envvar:`squid/auth/allowed_groups` kann der Zugriff "
-"auf eine oder mehrere Gruppen beschränkt werden. Bei Angabe mehrerer "
-"Gruppen sind diese durch ein Semikolon zu trennen."
+"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
+"manual:ref:`system-administration-web-proxy-authentication` in :cite:t:`uv-nubus-"
+"manual`."
