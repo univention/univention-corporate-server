@@ -6,186 +6,232 @@
 Provide a web proxy service with Squid
 ======================================
 
-The UCS proxy integration allows the use of a web cache for improving the
-performance and controlling data traffic. It is based on the tried-and-tested
-proxy server Squid and supports the protocols HTTP, FTP and HTTPS.
+The Nubus for UCS proxy integration uses Squid as a web cache
+to improve performance and control data traffic.
+It supports HTTP, FTP, and HTTPS.
 
-A proxy server receives requests about internet contents and verifies whether
-these contents are already available in a local cache. If this is the case, the
-requested data are provided from the local cache. If the data are not available,
-these contents are called up from the respective web server and inserted in the
-local cache. This can be used to reduce the answering times for the users and
-the transfer volume via the internet access.
+A proxy server receives requests for internet content
+and checks whether the requested content is available in its local cache.
+It can serve cached content or retrieve content from the web server.
+Caching can reduce response times and internet traffic.
 
-Further documentation on proxy services - such as the cascading of proxy
-servers, transparent proxies and the integration of a virus scan engine - are
-documented in :cite:t:`ext-doc-net`.
+For more information about proxy services,
+including proxy server cascading, transparent proxies, and virus scan integration,
+see :cite:t:`ext-doc-net`.
 
 .. _system-administration-web-proxy-installation:
 
 Installation
 ------------
 
-Squid can be installed from the Univention App Center with the application
-:program:`Web proxy / web cache (Squid)`. Alternatively, the software package
-:program:`univention-squid` can be installed. Additional information can be
-found in :ref:`computers-softwaremanagement-install-software`.
+You can install Squid from the Univention App Center
+using the application :program:`Web proxy / web cache (Squid)`.
+For more information about how to install an app, see :ref:`lifecycle-app-center-installation`.
 
-The service is configured with standard settings sufficient for operation so
-that it can be used immediately. It is possible to configure the port on which
-the service is accessible to suit your preferences
-(see :ref:`system-administration-web-proxy-ports-proxy`);
-port ``3128`` is set as default.
+Alternatively, you can install the :program:`univention-squid` software package.
+For more information, see :ref:`lifecycle-package-installation-management`.
+
+The default settings allow you to use the service immediately.
+The default access port is ``3128``.
+To configure a different port,
+see :ref:`system-administration-web-proxy-ports-proxy`.
+
+.. seealso::
+
+   :ref:`lifecycle-app-center`
+      for information about Univention App Center.
 
 .. _system-administration-web-proxy-additional-configuration:
 
 Additional configuration and restart
 ------------------------------------
 
-If changes are made to the configuration, Squid must be restarted. This can be
-performed either via the UMC module :guilabel:`System services` or the command
-line:
+If you change the configuration, restart Squid.
+You can restart Squid through the :guilabel:`System services` management module
+in the *Management UI*.
+You need authorization to use the module.
+For instructions, see :ref:`system-administration-service-management`.
+
+Alternatively, restart Squid from the command line with ``root`` privileges,
+as shown in :numref:`system-administration-web-proxy-additional-configuration-listing`.
 
 .. code-block:: console
+   :caption: Restart Squid
+   :name: system-administration-web-proxy-additional-configuration-listing
 
    $ systemctl restart squid
 
-In addition to the configuration possibilities via Univention Configuration Registry described in this
-document, it is also possible to set additional Squid configuration options in
-the :file:`/etc/squid/local.conf`.
+In addition to the Univention Configuration Registry settings,
+you can set Squid configuration options in the :file:`/etc/squid/local.conf` file.
 
 .. _system-administration-web-proxy-caching-web:
 
 Caching of web content
 ----------------------
 
-Squid is a caching proxy, i.e., previously viewed contents can be provided from
-a cache without being reloaded from the respective web server. This reduces the
-incoming traffic via the internet connection and can result in quicker responses
-of HTTP requests.
+Squid can serve cached content without retrieving it again from the web server.
+This reduces incoming internet traffic
+and can result in faster responses to HTTP requests.
 
-However, this caching function is not necessary for some environments or, in the
-case of cascaded proxies, it should not be activated for all of them. For these
-scenarios, the caching function of the Squid can be deactivated with the
-:term:`UCR variable` :envvar:`squid/cache` by setting this to ``no``. Squid must then be
-restarted.
+Caching isn't necessary in some environments.
+In a proxy cascade, you can deactivate caching on individual proxies.
+To deactivate Squid caching, set the
+:term:`UCR variable` :envvar:`squid/cache` to ``no``.
+Then restart Squid, as shown in :numref:`system-administration-web-proxy-additional-configuration-listing`.
 
 .. _system-administration-web-proxy-logging:
 
 Logging proxy accesses
 ----------------------
 
-All accesses performed via the proxy server are stored in the log file
-:file:`/var/log/squid/access.log`. It can be used to follow which websites have
-been accessed by the users.
+The proxy server records access through it in the :file:`/var/log/squid/access.log` file.
+You can use the log file to see which websites users have accessed.
 
 .. _system-administration-web-proxy-ports:
 
 Configuration of the ports used
 -------------------------------
 
+You can configure the port that clients use to connect to Squid
+and the destination ports that Squid permits for client requests.
+
 .. _system-administration-web-proxy-ports-proxy:
 
 Access port
 ~~~~~~~~~~~
 
-As standard, the web proxy can be accessed via port ``3128``. If another port is
-required, this can be configured via the :term:`UCR variable` :envvar:`squid/httpport`. If
-Univention Firewall is used, the packet filter configuration must also be
-adjusted.
+By default, you can access the web proxy through port ``3128``.
+To use a different port, configure the
+:term:`UCR variable` :envvar:`squid/httpport`.
+Then restart Squid, as shown in
+:numref:`system-administration-web-proxy-additional-configuration-listing`.
+
+If you use Univention Firewall,
+ensure that its incoming TCP rules permit the selected port
+for the intended clients.
+For more information, see :ref:`system-administration-network-firewall`.
 
 .. _system-administration-web-proxy-ports-permitted:
 
 Permitted ports
 ~~~~~~~~~~~~~~~
 
-In the standard configuration, Squid only forwards client requests intended for
-the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The list of permitted
-ports can be changed via the :term:`UCR variable` :envvar:`squid/webports`; several entries
-should be separated by blank spaces.
+By default, Squid forwards client requests only to ports
+80 (HTTP), 443 (HTTPS), or 21 (FTP).
+You can change the permitted ports using the
+:term:`UCR variable` :envvar:`squid/webports`.
+Separate multiple entries with a single space.
+Don't add spaces before the first entry or after the last entry.
 
-Example:
+:numref:`system-administration-web-proxy-permitted-ports-listing`
+shows how to set the permitted ports.
+Run the command with ``root`` privileges.
+With this setting, the proxy allows access only to ports 80 and 443 (HTTP and HTTPS).
+To apply the settings, you need to restart Squid as described in
+:ref:`system-administration-web-proxy-additional-configuration`.
 
 .. code-block:: console
+   :caption: Set the permitted ports
+   :name: system-administration-web-proxy-permitted-ports-listing
 
    $ univention-config-registry set squid/webports="80 443"
 
+.. seealso::
 
-With this setting, access is only allowed to ports 80 and 443 (HTTP and HTTPS).
+   `CIDR notation - Wikipedia <https://en.wikipedia.org/w/index.php?title=Classless_Inter-Domain_Routing&oldid=1380978284>`_
+      for more information about the CIDR notation.
 
 .. _system-administration-web-proxy-restrict-to-permitted-networks:
 
 Restriction of access to permitted networks
 -------------------------------------------
 
-As standard, the proxy server can only be accessed from local networks. If, for
-example, a network interface with the address ``192.0.2.10`` and the network
-mask ``255.255.255.0`` is available on the computer on which Squid is installed,
-only computers from the network ``192.0.2.0/24`` can access the proxy server.
-Additional networks can be specified via the :term:`UCR variable`
-:envvar:`squid/allowfrom`. When doing so, the CIDR notation must be used;
-several networks should be separated by blank spaces.
+By default, the proxy server can be accessed only from local networks.
+For example, a computer running Squid has a network interface
+with the address ``192.0.2.10`` and the network mask ``255.255.255.0``.
+In this case, only computers on the network ``192.0.2.0/24``
+can access the proxy server.
 
-Example:
+You can specify additional networks using the
+:term:`UCR variable` :envvar:`squid/allowfrom`.
+Use CIDR notation and separate multiple networks with spaces.
+
+:numref:`system-administration-web-proxy-permitted-networks-listing`
+shows how to permit access from additional networks.
+Run the command with ``root`` privileges.
+After you restart Squid,
+the networks ``192.0.2.0/24`` and ``192.0.3.0/24`` can access the proxy.
+If you set :envvar:`squid/allowfrom` to ``all``,
+all networks can access the proxy.
 
 .. code-block:: console
+   :caption: Permit access from additional networks
+   :name: system-administration-web-proxy-permitted-networks-listing
 
    $ univention-config-registry set squid/allowfrom="192.0.2.0/24 192.0.3.0/24"
-
-Once Squid has been restarted, access is now permitted from the networks
-``192.0.2.0/24`` and ``192.0.3.0/24``. If configured to ``all``, proxy access in
-granted from all networks.
 
 .. _system-administration-web-proxy-authentication:
 
 User authentication on the proxy
 --------------------------------
 
-It is sometimes necessary to restrict web access to certain users. Squid allows
-user-specific access regulation via group memberships. To allow verification of
-group membership, it is necessary for the user to authenticate on the proxy
-server.
+You may need to restrict web access to certain users.
+Squid lets you control user access based on group membership.
+To verify group membership, users must authenticate with the proxy server.
 
 .. caution::
 
-   To prevent unauthorized users from opening websites nonetheless, additional
-   measures are required to prevent these users from bypassing the proxy server
-   and accessing the internet. This can be done, for example, by limiting all
-   HTTP traffic through a firewall.
+   Proxy authentication alone doesn't prevent users
+   from bypassing the proxy server and accessing the internet.
+   To prevent unauthorized users from opening websites,
+   you need additional measures.
+   Restrict direct internet access for the traffic
+   that your deployment requires users to send through the proxy,
+   including HTTPS where applicable.
 
-The proxy authentication (and as a result the possible verification of the group
-memberships) must firstly be enabled. There are three possible mechanisms for
-this:
+First, enable proxy authentication to allow verification of group membership.
+There are three possible mechanisms for proxy authentication:
 
 LDAP server authentication
-   Direct authentication against the LDAP server. This is done by setting the
-   :term:`UCR variable` :envvar:`squid/basicauth` to ``yes`` and restarting Squid.
+   To authenticate directly with the LDAP server,
+   set the :term:`UCR variable` :envvar:`squid/basicauth` to ``yes``
+   and :ref:`restart Squid <system-administration-web-proxy-additional-configuration>`.
 
 NTLM authentication
-   Authentication is performed via the NTLM interface. Users logged in on a
-   Windows client then do not need to authenticate themselves again when
-   accessing the proxy. NTLM authentication is enabled by setting the UCR variable
-   :envvar:`squid/ntlmauth` to ``yes`` and restarting Squid.
+   Authentication uses the NTLM interface.
+   Users signed in to a Windows client don't need to authenticate again
+   when accessing the proxy.
+   To enable NTLM authentication, set the UCR variable
+   :envvar:`squid/ntlmauth` to ``yes``
+   and :ref:`restart Squid <system-administration-web-proxy-additional-configuration>`.
 
 Kerberos authentication
-   Authentication is performed via Kerberos. Users logged in on a Windows client
-   which is a member of a Samba/AD domain authenticate themselves on the proxy
-   with the ticket that they received when they logged in to the domain. The
-   :program:`univention-squid-kerberos` package must be installed on every proxy
-   server for it to be possible to enable Kerberos authentication. Then the
-   UCR variable :envvar:`squid/krb5auth` must be set to ``yes`` and Squid
-   restarted.
+   Authentication uses Kerberos.
+   Users signed in to a Windows client that is a member of a Samba/AD domain
+   authenticate with the proxy using the ticket they received
+   when they signed in to the domain.
 
-If NTLM is used an NTLM authentication is performed for every HTTP query as
-standard. If for example the website <https://www.univention.com/> is opened,
-the subsequent pages and images are loaded in addition to the actual HTML page. The NTLM
-authentication can be cached per domain: If the UCR variable
-:envvar:`squid/ntlmauth/keepalive` is set to ``yes``, no further NTLM
-authentication is performed for subsequent HTML queries in the same domain. In
-case of problems with local user accounts it may help to set this variable to
-``no``.
+   To enable Kerberos authentication,
+   install the :program:`univention-squid-kerberos` package on every proxy server.
+   For information about how to install a package, see :ref:`lifecycle-package-installation-management`.
 
-In the standard setting all users can access the proxy. The UCR variable
-:envvar:`squid/auth/allowed_groups` can be used to limit the proxy access to one
-or several groups. If several groups are specified, they must be separated by a
-semicolon.
+   Then set the UCR variable :envvar:`squid/krb5auth` to ``yes``
+   and :ref:`restart Squid <system-administration-web-proxy-additional-configuration>`.
+
+Squid associates successful NTLM authentication with the client TCP connection.
+A new TCP connection requires a new authentication.
+
+The UCR variable :envvar:`squid/ntlmauth/keepalive`
+controls Squid's NTLM ``keep_alive`` setting.
+
+By default, all users can access the proxy.
+To limit proxy access to one or more groups,
+enable a proxy authentication mechanism
+and set the UCR variable :envvar:`squid/auth/allowed_groups`
+to the LDAP group names.
+The setting matches the groups' ``cn`` values.
+
+If you specify multiple groups, separate them with semicolons.
+Don't add spaces around the semicolons.
+After you change the setting,
+:ref:`restart Squid <system-administration-web-proxy-additional-configuration>`.
