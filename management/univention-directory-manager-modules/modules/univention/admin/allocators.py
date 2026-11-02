@@ -80,6 +80,28 @@ _type2scope: dict[_Types, _Scopes] = {
     'univentionObjectIdentifier': 'domain',
 }
 
+_default_uid_gid_ranges = [{'first': 1000, 'last': 55000}, {'first': 65536, 'last': 1000000}]
+
+
+def _get_uid_gid_ranges(atype: _TypesUidGid) -> list[dict[str, int]]:
+    configured_ranges = configRegistry.get(f'directory/manager/{atype}/ranges')
+    if not configured_ranges:
+        return _default_uid_gid_ranges
+    try:
+        ranges = []
+        for configured_range in configured_ranges.split(','):
+            first, last = configured_range.split('-', 1)
+            first, last = int(first), int(last)
+            if first < 0 or first > last:
+                raise ValueError()
+            ranges.append({'first': first, 'last': last})
+        if not ranges:
+            raise ValueError()
+    except ValueError:
+        log.warning('Invalid range configured for %s: %r. Using default range.', atype, configured_ranges)
+        return _default_uid_gid_ranges
+    return ranges
+
 
 def requestUserSid(
     lo: univention.admin.uldap.access,
@@ -273,7 +295,7 @@ def request(
     value: str | None = None,
 ) -> str:
     if type in ('uidNumber', 'gidNumber'):
-        return acquireRange(lo, position, type, _type2attr[type], [{'first': 1000, 'last': 55000}, {'first': 65536, 'last': 1000000}], scope=_type2scope[type])
+        return acquireRange(lo, position, type, _type2attr[type], _get_uid_gid_ranges(type), scope=_type2scope[type])
     assert value is not None
     return acquireUnique(lo, position, type, value, _type2attr[type], scope=_type2scope[type])
 
