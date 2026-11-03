@@ -9,6 +9,7 @@
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import APP_UPGRADE_FAILURE, APP_UPGRADE_START, APP_UPGRADE_SUCCESS
+from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.install import Install
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.packages import dist_upgrade, install_packages
@@ -16,10 +17,23 @@ from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_is_true
 
 
+class StoreUpgradeAppAction(StoreAppAction):
+    """Stores the apps like StoreAppAction and remembers which ones were given with a version."""
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        super().__call__(parser, namespace, value, option_string)
+        namespace.apps_with_explicit_version = {
+            app.id
+            for app, app_string in zip(getattr(namespace, self.dest), value)
+            if Apps.split_app_string(app_string)[1]
+        }
+
+
 class Upgrade(Install):
     """Upgrades an installed application from the Univention App Center."""
 
     help = 'Upgrade an app'
+    app_argument_action = StoreUpgradeAppAction
 
     pre_readme = 'readme_update'
     post_readme = 'readme_post_update'
@@ -46,19 +60,32 @@ class Upgrade(Install):
 
     def main(self, args):
         apps = args.app
+        # Programmatic callers pass App objects and expect the newest candidate
+        # unless they name the apps in apps_with_explicit_version
+        explicit_ids = getattr(args, 'apps_with_explicit_version', ())
         real_apps = []
+        already_installed = False
+        rejected_explicit = False
         for app in apps:
             old_app = Apps().find(app.id)
+            explicit = app.id in explicit_ids
             if app == old_app:
+                if explicit and old_app.is_installed() and not args.only_master_packages:
+                    self.log('Version %s of %s is already installed. Nothing to do.' % (app.version, app.id))
+                    already_installed = True
+                    continue
                 app = Apps().find_candidate(app) or app
             if not args.only_master_packages:  # always allow only_master_packages
                 if self._app_too_old(old_app, app):
+                    rejected_explicit = rejected_explicit or explicit
                     continue
             real_apps.append(app)
-        if not real_apps:
-            return
-        args.app = real_apps
-        return self.do_it(args)
+        if real_apps:
+            args.app = real_apps
+            result = self.do_it(args)
+        else:
+            result = True if already_installed else None
+        return False if rejected_explicit else result
 
     def do_it_once(self, app, args):
         self.old_app = self.original_app = Apps().find(app.id)
