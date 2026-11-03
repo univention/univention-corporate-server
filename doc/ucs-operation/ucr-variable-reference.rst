@@ -2383,6 +2383,137 @@ This section provides a reference for UCR variables.
 
    :Type: string
 
+.. envvar:: squid/allowfrom
+
+   Specifies additional networks from which clients can access the proxy
+   when Squid controls access by network address.
+   Use CIDR notation and separate multiple networks with spaces.
+   Set the variable to ``all`` to allow access from all networks.
+
+   For information about restricting access by network,
+   see :ref:`system-administration-web-proxy-restrict-to-permitted-networks`.
+
+   :Default value: not set
+   :Possible values: space-separated networks in CIDR notation, or ``all``
+   :Type: list
+
+
+.. envvar:: squid/auth/allowed_groups
+
+   Restricts authenticated proxy access to members of the specified LDAP groups.
+   Enter the groups' ``cn`` values
+   and separate multiple names with semicolons.
+   Don't add spaces around the semicolons.
+   If you leave the variable unset or empty,
+   Squid doesn't apply a group restriction.
+
+   To use the group restriction,
+   enable a proxy authentication mechanism.
+
+   For information about proxy authentication,
+   see :ref:`system-administration-web-proxy-authentication`.
+
+   :Default value: not set
+   :Type: list
+
+
+.. envvar:: squid/basicauth
+
+   Controls whether Squid offers LDAP-based Basic authentication.
+   Set the variable to ``yes`` to enable this authentication mechanism.
+
+   For information about proxy authentication,
+   see :ref:`system-administration-web-proxy-authentication`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: squid/cache
+
+   Controls whether Squid caches web content.
+   Set the variable to ``no`` to deactivate caching.
+
+   For information about configuring the cache,
+   see :ref:`system-administration-web-proxy-caching-web`.
+
+   :Default value: ``yes``
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: squid/httpport
+
+   Specifies the TCP port on which Squid accepts proxy connections.
+   If you leave the variable unset,
+   Squid uses port ``3128``.
+
+   For information about changing the port and configuring the firewall,
+   see :ref:`system-administration-web-proxy-ports-proxy`.
+
+   :Default value: not set, equivalent to ``3128``
+   :Type: port number
+
+
+.. envvar:: squid/krb5auth
+
+   Controls whether Squid offers Kerberos authentication.
+   Set the variable to ``yes`` to enable this authentication mechanism.
+   You must also install the :program:`univention-squid-kerberos` package
+   on the proxy server.
+
+   For information about proxy authentication,
+   see :ref:`system-administration-web-proxy-authentication`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: squid/ntlmauth
+
+   Controls whether Squid offers NTLM authentication.
+   Set the variable to ``yes`` to enable this authentication mechanism.
+
+   For information about proxy authentication,
+   see :ref:`system-administration-web-proxy-authentication`.
+
+   :Default value: not set
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: squid/ntlmauth/keepalive
+
+   Controls Squid's NTLM ``keep_alive`` setting.
+   If you set the variable to ``yes``,
+   Squid configures the setting as ``on``.
+   If you leave the variable unset or set it to ``no``,
+   Squid configures the setting as ``off``.
+
+   For information about proxy authentication,
+   see :ref:`system-administration-web-proxy-authentication`.
+
+   :Default value: not set, equivalent to ``no``
+   :Possible values: ``yes``, ``no``, not set
+   :Type: boolean
+
+
+.. envvar:: squid/webports
+
+   Specifies the destination ports to which Squid may forward client requests.
+   Separate multiple port numbers with a single space.
+   Don't add spaces before the first entry or after the last entry.
+
+   If you leave the variable unset,
+   Squid permits destination ports ``80``, ``443``, and ``21``.
+
+   For information about configuring permitted ports,
+   see :ref:`system-administration-web-proxy-ports-permitted`.
+
+   :Default value: not set, equivalent to ``80 443 21``
+   :Type: list
 
 .. envvar:: ssl/validity/host
 
