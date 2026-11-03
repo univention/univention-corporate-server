@@ -6,7 +6,7 @@
 # SPDX-FileCopyrightText: 2015-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import datetime
+import datetime as dt
 import os
 from contextlib import contextmanager
 
@@ -54,13 +54,13 @@ class TokenDB:
 
     def insert_token(self, username, method, token):
         sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
-        data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
+        data = {"username": username, "method": method, "ts": dt.datetime.utcnow(), "token": token}
         with self.cursor() as cur:
             cur.execute(sql, data)
 
     def update_token(self, username, method, token):
         sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
-        data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
+        data = {"username": username, "method": method, "ts": dt.datetime.utcnow(), "token": token}
         with self.cursor() as cur:
             cur.execute(sql, data)
 

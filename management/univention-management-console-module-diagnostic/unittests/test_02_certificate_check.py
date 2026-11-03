@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import datetime
+import datetime as dt
 import os
 import tempfile
 
@@ -18,7 +18,7 @@ def _create_test_cert(cn, san_names=None, days_valid=365):
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
     subject = issuer = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, cn)])
-    now = datetime.datetime.now(datetime.UTC)
+    now = dt.datetime.now(dt.UTC)
     builder = (
         x509.CertificateBuilder()
         .subject_name(subject)
@@ -26,7 +26,7 @@ def _create_test_cert(cn, san_names=None, days_valid=365):
         .public_key(key.public_key())
         .serial_number(1000)
         .not_valid_before(now)
-        .not_valid_after(now + datetime.timedelta(days=days_valid))
+        .not_valid_after(now + dt.timedelta(days=days_valid))
     )
 
     if san_names:

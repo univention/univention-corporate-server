@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import ast
-import datetime
+import datetime as dt
 import json
 import os
 from inspect import getfullargspec
@@ -518,9 +518,9 @@ def update(name: str, reason: str):
             warn(f"{name} does not exist in config file")
         else:
             portal_obj = make_portal(portal_def)
-            start = datetime.datetime.now()
+            start = dt.datetime.now()
             if portal_obj.refresh(reason=reason):
-                delta = datetime.datetime.now() - start
+                delta = dt.datetime.now() - start
                 success(f"Portal data updated in {delta.total_seconds():.2f}s")
             else:
                 info("Portal data untouched")

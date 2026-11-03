@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
@@ -41,11 +41,11 @@ def is_CSP_license(lo: univention.uldap.access | None = None) -> bool:
         raise LicenseNotFound()
     attrs = result[0][1]
 
-    now = datetime.date.today()
+    now = dt.date.today()
     enddate = attrs.get('univentionLicenseEndDate', [b'01.01.1970'])[0].decode('ASCII', 'replace')
     if enddate != "unlimited":
         (day, month, year) = enddate.split('.', 2)
-        then = datetime.date(int(year), int(month), int(day))
+        then = dt.date(int(year), int(month), int(day))
         if now > then:
             raise LicenseExpired('endDate = %s' % (enddate,))
 

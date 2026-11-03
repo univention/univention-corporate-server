@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import contextlib
-import datetime
+import datetime as dt
 import os.path
 import shutil
 import subprocess
@@ -32,7 +32,7 @@ links = [
 ]
 
 
-WARNING_PERIOD = datetime.timedelta(days=50)
+WARNING_PERIOD = dt.timedelta(days=50)
 _CRYPT_HAS_UTC = hasattr(x509.Certificate, 'not_valid_after_utc')  # > Debian bookworm
 
 
@@ -113,7 +113,7 @@ class CertificateVerifier:
         self.crl_path = crl_path
 
     def _verify_timestamps(self, cert_path: str) -> Iterator[CertificateWarning]:
-        now = datetime.datetime.now(datetime.UTC)
+        now = dt.datetime.now(dt.UTC)
 
         with open(cert_path, 'rb') as fob:
             try:
@@ -121,15 +121,15 @@ class CertificateVerifier:
             except ValueError:
                 yield CertificateMalformed(cert_path)
             else:
-                valid_from = cert.not_valid_before_utc if _CRYPT_HAS_UTC else cert.not_valid_before.replace(tzinfo=datetime.UTC)
+                valid_from = cert.not_valid_before_utc if _CRYPT_HAS_UTC else cert.not_valid_before.replace(tzinfo=dt.UTC)
 
                 if now < valid_from:
                     yield CertificateNotYetValid(cert_path)
 
-                valid_until = cert.not_valid_after_utc if _CRYPT_HAS_UTC else cert.not_valid_after.replace(tzinfo=datetime.UTC)
+                valid_until = cert.not_valid_after_utc if _CRYPT_HAS_UTC else cert.not_valid_after.replace(tzinfo=dt.UTC)
                 expires_in = valid_until - now
 
-                if expires_in < datetime.timedelta(0):
+                if expires_in < dt.timedelta(0):
                     yield CertificateExpired(cert_path)
                 elif expires_in < WARNING_PERIOD:
                     yield CertificateWillExpire(cert_path, expires_in)

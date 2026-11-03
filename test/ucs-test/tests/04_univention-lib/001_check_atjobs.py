@@ -6,7 +6,7 @@
 ##   - python3-univention-lib
 ## exposure: dangerous
 
-import datetime
+import datetime as dt
 from subprocess import PIPE, Popen
 
 from univention.lib import atjobs
@@ -33,7 +33,7 @@ def main():
         job_comments[strings.random_name()] = strings.random_string(length=30)
 
     try:
-        job = atjobs.add(job_command, execTime=(datetime.datetime.now() + datetime.timedelta(days=3)), comments=job_comments)
+        job = atjobs.add(job_command, execTime=(dt.datetime.now() + dt.timedelta(days=3)), comments=job_comments)
         job_number = job.nr
         print_job(job, '\nCreated atjob ')
 

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import logging
 import sys
 import time
@@ -83,14 +83,14 @@ class DatePropertyEncoder(BaseEncoder):
     static = True
 
     @staticmethod
-    def decode(value: str | None = None) -> datetime.date | None:
+    def decode(value: str | None = None) -> dt.date | None:
         if value:
-            return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+            return dt.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         else:
             return value
 
     @staticmethod
-    def encode(value: datetime.date | None = None) -> str | None:
+    def encode(value: dt.date | None = None) -> str | None:
         if value:
             return value.strftime('%Y-%m-%d')
         else:

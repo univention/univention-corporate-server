@@ -6,7 +6,7 @@
 ## packages:
 ##   - univention-admin-diary-backend
 
-import datetime
+import datetime as dt
 
 import univention.admindiary.backend
 import univention.testing.ucr as ucr_test
@@ -15,11 +15,11 @@ import univention.testing.udm as udm_test
 
 def test_write_event():
     with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr, univention.admindiary.backend.get_client(version=1) as client:
-        d = (datetime.datetime.now() - datetime.timedelta(seconds=5)).isoformat()
+        d = (dt.datetime.now() - dt.timedelta(seconds=5)).isoformat()
         _dn, username = udm.create_user()
         expected = {
             'id': 33,
-            'date': datetime.datetime.now().strftime('%y-%m-%d %H:%M:%S'),
+            'date': dt.datetime.now().strftime('%y-%m-%d %H:%M:%S'),
             'event_name': 'UDM_USERS_USER_CREATED',
             'hostname': ucr['hostname'],
             'username': 'cn=admin',

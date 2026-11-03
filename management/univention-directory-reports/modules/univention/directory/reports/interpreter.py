@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import copy
-import datetime
+import datetime as dt
 import fnmatch
 import re
 
@@ -78,7 +78,7 @@ class Interpreter:
             elif isinstance(token, PolicyToken):
                 self.policy(token, base_objects[0])
             elif isinstance(token, DateToken):
-                token.value = datetime.datetime.today().strftime(token.attrs.get('format', "%A %B %d, %Y"))
+                token.value = dt.datetime.today().strftime(token.attrs.get('format', "%A %B %d, %Y"))
 
     def resolve(self, token, base):
         if 'module' in token.attrs:

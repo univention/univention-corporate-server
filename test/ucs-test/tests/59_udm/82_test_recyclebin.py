@@ -7,7 +7,7 @@
 ##  - univention-directory-manager-tools
 
 import copy
-import datetime
+import datetime as dt
 import io
 import logging
 import subprocess
@@ -101,11 +101,11 @@ def verify_entryttl_deleteat(retention_time, dn):
     delete_at = attrs['univentionRecycleBinDeleteAt'][0].decode('UTF-8')
     deleted_at = attrs['univentionRecycleBinDeletionDate'][0].decode('UTF-8')
 
-    deleted_at_date = datetime.datetime.strptime(deleted_at, LDAP_TIMESTAMP_FORMAT)
-    delete_at_date = datetime.datetime.strptime(delete_at, LDAP_TIMESTAMP_FORMAT)
+    deleted_at_date = dt.datetime.strptime(deleted_at, LDAP_TIMESTAMP_FORMAT)
+    delete_at_date = dt.datetime.strptime(delete_at, LDAP_TIMESTAMP_FORMAT)
 
     # Verify deleteAt is correctly calculated
-    expected_delete_at = deleted_at_date + datetime.timedelta(days=retention_time)
+    expected_delete_at = deleted_at_date + dt.timedelta(days=retention_time)
     assert delete_at_date == expected_delete_at, f'deleteAt date {delete_at_date} does not match expected {expected_delete_at}'
 
     # Verify entryTTL is approximately correct (it's a countdown timer)

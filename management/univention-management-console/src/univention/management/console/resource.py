@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import base64
-import datetime
+import datetime as dt
 import hashlib
 import ipaddress
 import json
@@ -127,7 +127,7 @@ class Resource(RequestHandler):
 
     def expire_session(self):
         self.current_user.logout()
-        self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
+        self.set_cookies(('UMCSessionId', ''), expires=dt.datetime.fromtimestamp(0))
 
     def set_cookies(self, *cookies, **kwargs):
         # TODO: use expiration from session timeout?
@@ -139,7 +139,7 @@ class Resource(RequestHandler):
             expires = None
         else:
             # force expiration of cookie in 5 years from now on...
-            expires = (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
+            expires = (dt.datetime.now() + dt.timedelta(days=5 * 365))
         for name, value in cookies:
             name = self.suffixed_cookie_name(name)
             if value is None:  # session.user.username might be None for unauthorized users

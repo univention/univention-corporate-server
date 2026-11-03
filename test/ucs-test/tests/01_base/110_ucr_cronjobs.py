@@ -7,7 +7,7 @@
 ## exposure: dangerous
 ## roles: [domaincontroller_master]
 
-import datetime
+import datetime as dt
 import subprocess
 import time
 
@@ -52,9 +52,9 @@ def main():
     subprocess.call(('systemctl', 'restart', 'postfix'))
 
     # find next minute at least 30s from now
-    now = datetime.datetime.now()
+    now = dt.datetime.now()
     for somemore in range(30, 80, 10):
-        then = now + datetime.timedelta(seconds=somemore)
+        then = now + dt.timedelta(seconds=somemore)
         if then.minute > now.minute:
             break
 
@@ -66,7 +66,7 @@ def main():
         handler_set(ucrs)
 
         # wait for cron
-        cron_plus_ten = datetime.datetime(
+        cron_plus_ten = dt.datetime(
             year=then.year,
             month=then.month,
             day=then.day,
@@ -94,7 +94,7 @@ def main():
             if token in line.decode('UTF-8', 'replace'):
                 break
         else:
-            utils.fail(f"Token '{token}' not found in /var/mail/root at {datetime.datetime.now()}, UCRs: {ucrs}.")
+            utils.fail(f"Token '{token}' not found in /var/mail/root at {dt.datetime.now()}, UCRs: {ucrs}.")
 
 
 if __name__ == '__main__':

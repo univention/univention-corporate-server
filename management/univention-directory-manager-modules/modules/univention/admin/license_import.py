@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import argparse
 import binascii
-import datetime
+import datetime as dt
 import os
 import sys
 import tempfile
@@ -215,7 +215,7 @@ def _backup_license(dn, entry):
     backup_dir = Path('/var/univention-backup')
     backup_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
 
-    prefix = 'univention_license_replaced_at_{}_'.format(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
+    prefix = 'univention_license_replaced_at_{}_'.format(dt.datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
 
     fd, filename = tempfile.mkstemp(prefix=prefix, dir=str(backup_dir))
 

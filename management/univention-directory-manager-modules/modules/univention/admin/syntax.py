@@ -8,7 +8,7 @@ from __future__ import annotations
 import base64
 import bz2
 import copy
-import datetime
+import datetime  # noqa: ICN001
 import functools
 import inspect
 import ipaddress

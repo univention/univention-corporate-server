@@ -7,7 +7,7 @@
 ## packages:
 ## - univention-samba4
 
-import datetime
+import datetime as dt
 import os
 import subprocess
 import time
@@ -24,8 +24,8 @@ new_password = 'Univention.2'
 
 with UCSTestConfigRegistry() as ucr_test:
     changed_password = False
-    today = datetime.datetime.today()
-    yesterday = today - datetime.timedelta(1)
+    today = dt.datetime.today()
+    yesterday = today - dt.timedelta(1)
     today = today.strftime("%y%m%d")
     yesterday = yesterday.strftime("%y%m%d")
     if os.path.isfile('/etc/machine.secret.old'):

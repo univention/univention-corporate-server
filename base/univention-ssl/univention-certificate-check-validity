@@ -6,7 +6,7 @@
 # SPDX-FileCopyrightText: 2006-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import datetime
+import datetime as dt
 
 from cryptography import x509
 
@@ -25,7 +25,7 @@ def get_validity_date(certFile):
             cert = x509.load_pem_x509_certificate(fd.read())
         if _CRYPT_HAS_UTC:
             return cert.not_valid_after_utc
-        return cert.not_valid_after.replace(tzinfo=datetime.UTC)
+        return cert.not_valid_after.replace(tzinfo=dt.UTC)
     except Exception:
         return None
 

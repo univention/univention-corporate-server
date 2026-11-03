@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 
-import datetime
+import datetime as dt
 import json
 import logging
 import os
@@ -142,7 +142,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
 
         timestamp = ''
         if append_timestamp:
-            timestamp = '_%s' % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"),)
+            timestamp = '_%s' % (dt.datetime.now().strftime("%Y%m%d%H%M%S"),)
 
         filename = f'{self.screenshot_path}/{name}_{self.language}{timestamp}.png'
         logger.warning('Saving screenshot %r', filename)
@@ -179,7 +179,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
     def save_browser_log(self, name: str = 'error', append_timestamp: bool = True) -> None:
         timestamp = ''
         if append_timestamp:
-            timestamp = '_{}'.format(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+            timestamp = '_{}'.format(dt.datetime.now().strftime("%Y%m%d%H%M%S"))
 
         filename = f'{self.screenshot_path}/{name}_{self.language}_browserlog{timestamp}.txt'
         logger.info('Saving browser log %r', filename)

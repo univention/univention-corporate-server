@@ -13,7 +13,7 @@ A python-logging interface compatible wrapper for logging with :py:mod:`univenti
 
 import contextlib
 import copy
-import datetime
+import datetime  # noqa: ICN001
 import logging
 import time
 import traceback

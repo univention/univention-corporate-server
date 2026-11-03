@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2024-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import datetime
+import datetime as dt
 import json
 import logging
 import os
@@ -40,7 +40,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 @events.init.add_listener
 def on_locust_init(environment, **_kwargs):
     environment.stats.use_response_times_cache = True
-    JmeterListener(environment, results_filename=f"/root/results_{datetime.datetime.now():%Y_%m_%d_%H_%M_%S}.csv")
+    JmeterListener(environment, results_filename=f"/root/results_{dt.datetime.now():%Y_%m_%d_%H_%M_%S}.csv")
 
 
 @events.test_start.add_listener

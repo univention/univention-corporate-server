@@ -8,7 +8,7 @@
 ## join: true
 ## exposure: dangerous
 
-import datetime
+import datetime as dt
 import email
 import subprocess
 from urllib.parse import parse_qs, urlparse
@@ -335,7 +335,7 @@ def test_deregistration(umc_client, mails, udm, readudm):
         'univentionDeregisteredThroughSelfService': [],
         'univentionDeregistrationTimestamp': [],
     })
-    timestamp = datetime.datetime.strftime(datetime.datetime.utcnow(), '%Y%m%d%H%M%SZ')
+    timestamp = dt.datetime.strftime(dt.datetime.utcnow(), '%Y%m%d%H%M%SZ')
     umc_client.umc_command('passwordreset/deregister_account', {
         'username': username,
         'password': password,

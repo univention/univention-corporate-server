@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 import base64
-import datetime
+import datetime  # noqa: ICN001
 import functools
 import inspect
 from typing import TYPE_CHECKING, TypeVar

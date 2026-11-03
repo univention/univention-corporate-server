@@ -4,7 +4,7 @@
 
 """Listener module for creating Recycle Bin objects and keep references updated."""
 
-import datetime
+import datetime as dt
 from dataclasses import dataclass
 
 import ldap.dn
@@ -132,9 +132,9 @@ class RecycleBinListener(ListenerModuleHandler):
             self.logger.debug('Object not moved to Recycle Bin (forbidden object class): %s', original_dn)
             return False
 
-        now = datetime.datetime.now(datetime.UTC)
+        now = dt.datetime.now(dt.UTC)
         deletion_time = now.strftime('%Y%m%d%H%M%SZ')
-        delete_at = now + datetime.timedelta(days=policy.retention_days)
+        delete_at = now + dt.timedelta(days=policy.retention_days)
         delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
 
         mod = univention.admin.modules.get('recyclebin/removedobject')

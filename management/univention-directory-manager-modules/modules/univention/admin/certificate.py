@@ -4,7 +4,7 @@
 """|UDM| pki X.509 DER certificate handling"""
 
 import base64
-import datetime
+import datetime as dt
 
 from cryptography import x509
 from cryptography.x509.oid import NameOID
@@ -243,8 +243,8 @@ def load_certificate(user_certificate):
     try:
         cert = x509.load_der_x509_certificate(certificate)
 
-        not_before = cert.not_valid_before_utc if _CRYPT_HAS_UTC else cert.not_valid_before.replace(tzinfo=datetime.UTC)
-        not_after = cert.not_valid_after_utc if _CRYPT_HAS_UTC else cert.not_valid_after.replace(tzinfo=datetime.UTC)
+        not_before = cert.not_valid_before_utc if _CRYPT_HAS_UTC else cert.not_valid_before.replace(tzinfo=dt.UTC)
+        not_after = cert.not_valid_after_utc if _CRYPT_HAS_UTC else cert.not_valid_after.replace(tzinfo=dt.UTC)
         values = {
             'certificateDateNotBefore': not_before.date().isoformat(),
             'certificateDateNotAfter': not_after.date().isoformat(),

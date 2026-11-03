@@ -3,7 +3,7 @@
 
 """|UDM| type definitions."""
 
-import datetime
+import datetime as dt
 import inspect
 import time
 from collections.abc import Sequence
@@ -378,7 +378,7 @@ class DateType(StringType):
     '2020-01-01'
     """
 
-    _python_types = datetime.date
+    _python_types = dt.date
     _json_type = str
     _openapi_format = 'date'
 
@@ -390,12 +390,12 @@ class DateType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value: datetime.date) -> str:
+    def _to_json_type(self, value: dt.date) -> str:
         return str(value.isoformat())
 
-    def _from_json_type(self, value: str) -> datetime.date:
+    def _from_json_type(self, value: str) -> dt.date:
         try:
-            return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
+            return dt.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
             log.debug('Wrong date format', date=repr(value))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Date does not match format "%Y-%m-%d".'))
@@ -410,7 +410,7 @@ class TimeType(StringType):
     '10:30:00'
     """
 
-    _python_types = datetime.time
+    _python_types = dt.time
     _json_type = str
     _openapi_format = 'time'
 
@@ -422,12 +422,12 @@ class TimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value: datetime.time) -> str:
+    def _to_json_type(self, value: dt.time) -> str:
         return str(value.replace(microsecond=0).isoformat())
 
-    def _from_json_type(self, value: str) -> datetime.time:
+    def _from_json_type(self, value: str) -> dt.time:
         try:
-            return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
+            return dt.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
             log.debug('invalid time format', time=repr(value))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Time does not match format "%H:%M:%S".'))
@@ -445,7 +445,7 @@ class DateTimeType(StringType):
     '2020-01-01T00:00:00'
     """
 
-    _python_types = datetime.datetime
+    _python_types = dt.datetime
     _json_type = str
     _openapi_format = 'date-time'
 
@@ -457,12 +457,12 @@ class DateTimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value: datetime.datetime) -> str:
+    def _to_json_type(self, value: dt.datetime) -> str:
         return value.replace(microsecond=0).isoformat()
 
-    def _from_json_type(self, value: str) -> datetime.datetime:
+    def _from_json_type(self, value: str) -> dt.datetime:
         try:
-            return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
+            return dt.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:
             log.debug('invalid datetime format', datetime=repr(value))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Datetime does not match format "%Y-%m-%dT%H:%M:%S".'))

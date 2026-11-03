@@ -6,7 +6,7 @@
 # SPDX-FileCopyrightText: 2017-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import datetime
+import datetime as dt
 import hashlib
 import re
 import time
@@ -68,14 +68,14 @@ class ConditionalResource:
 
         last_modified = parsedate(self._headers.get('Last-Modified', ''))
         if last_modified is not None:
-            last_modified = datetime.datetime(*last_modified[:6])
+            last_modified = dt.datetime(*last_modified[:6])
             self.check_conditional_request_modified_since(last_modified)
             self.check_conditional_request_unmodified_since(last_modified)
 
     def check_conditional_request_modified_since(self, last_modified):
         date = parsedate(self.request.headers.get('If-Modified-Since', ''))
         if date is not None:
-            if_since = datetime.datetime(*date[:6])
+            if_since = dt.datetime(*date[:6])
             if if_since >= last_modified:
                 self.set_status(304)
                 raise Finish()
@@ -83,7 +83,7 @@ class ConditionalResource:
     def check_conditional_request_unmodified_since(self, last_modified):
         date = parsedate(self.request.headers.get('If-Unmodified-Since', ''))
         if date is not None:
-            if_not_since = datetime.datetime(*date[:6])
+            if_not_since = dt.datetime(*date[:6])
             if last_modified > if_not_since:
                 raise HTTPError(412, _('If-Unmodified-Since does not match Last-Modified.'))
 

@@ -12,7 +12,7 @@ uses time stamps in seconds for scheduling jobs.
 """
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import locale
 import re
 import subprocess
@@ -38,7 +38,7 @@ SCRIPT_PREFIX = '# --- Univention-Lib at job  ---'
 COMMENT_PREFIX = '# Comment: '
 
 
-def add(cmd: str, execTime: float | datetime.datetime | None = None, comments: Mapping[str, str] | None = {}) -> AtJob | None:
+def add(cmd: str, execTime: float | dt.datetime | None = None, comments: Mapping[str, str] | None = {}) -> AtJob | None:
     """
     Add a new command to the job queue given a time
     at which the job will be executed.
@@ -50,7 +50,7 @@ def add(cmd: str, execTime: float | datetime.datetime | None = None, comments: M
     :rtype: AtJob or None
     """
     if isinstance(execTime, int | float):
-        start: datetime.datetime | None = datetime.datetime.fromtimestamp(execTime)
+        start: dt.datetime | None = dt.datetime.fromtimestamp(execTime)
     else:
         start = execTime
 
@@ -210,7 +210,7 @@ def _parseJob(string: str) -> AtJob | None:
 
         # parse string
         tmp = _regWhiteSpace.split(string)
-        execTime = datetime.datetime.strptime(' '.join(tmp[1:6]), _dateTimeFormatRead)
+        execTime = dt.datetime.strptime(' '.join(tmp[1:6]), _dateTimeFormatRead)
         isRunning = tmp[6] == '='
         owner = tmp[7]
         nr = int(tmp[0])
@@ -235,7 +235,7 @@ class AtJob:
     :param bool isRunning: `True` is the jub is currently running, `False` otherwise.
     """
 
-    def __init__(self, nr: int, owner: str, execTime: datetime.datetime, isRunning: bool) -> None:
+    def __init__(self, nr: int, owner: str, execTime: dt.datetime, isRunning: bool) -> None:
         self.nr = nr
         self.owner = owner
         self.command: str | None = None

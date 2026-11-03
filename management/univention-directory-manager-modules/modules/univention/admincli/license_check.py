@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import getopt
 from typing import TYPE_CHECKING
 
@@ -108,11 +108,11 @@ def check_license(lo: univention.admin.uldap.access, dn: str | None, list_dns: b
                         out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
 
     def check_time() -> None:
-        now = datetime.date.today()
+        now = dt.date.today()
         then = _license.endDate
         if then != 'unlimited':
             (day, month, year) = then.split('.')
-            then_ = datetime.date(int(year), int(month), int(day))
+            then_ = dt.date(int(year), int(month), int(day))
             if now > then_:
                 out.append('Has expired on: %s                  -- EXPIRED' % then_)
             else:

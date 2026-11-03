@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import base64
 import bz2
-import datetime
+import datetime as dt
 import inspect
 import json
 import os
@@ -693,7 +693,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                             with open(backup_filename, 'rb') as original:
                                 file_data = original.read()
                             with open(old_filename, 'wb') as target_file:
-                                target_file.write(b"### %s: Leftover of removed settings/ldapschema\n" % (str(datetime.datetime.now()).encode('ASCII'), ) + file_data)
+                                target_file.write(b"### %s: Leftover of removed settings/ldapschema\n" % (str(dt.datetime.now()).encode('ASCII'), ) + file_data)
                             os.unlink(backup_filename)
                             os.close(backup_fd)
                         except OSError:

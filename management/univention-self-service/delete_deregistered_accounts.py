@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import argparse
-import datetime
+import datetime  # noqa: ICN001
 import logging
 from typing import TYPE_CHECKING, NoReturn
 

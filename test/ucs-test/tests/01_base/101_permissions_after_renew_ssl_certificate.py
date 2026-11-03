@@ -5,7 +5,7 @@
 ## exposure: dangerous
 ## bugs: [36557, 31941, 34082, 34080, 32988]
 
-import datetime
+import datetime as dt
 import glob
 import grp
 import os
@@ -23,7 +23,7 @@ SKIP = '/etc/univention/ssl/unassigned-hostname.unassigned-domain'
 
 
 def backup_existing_certificate():
-    current_date = datetime.datetime.now().strftime("%d%m%Y-%H%M")
+    current_date = dt.datetime.now().strftime("%d%m%Y-%H%M")
     cmd = ['cp', '-a', SSLDIR, os.path.join(UNIVENTION_DIR, 'ssl_%s' % current_date)]
     print(' > %r' % ' '.join(cmd))
     subprocess.call(cmd)

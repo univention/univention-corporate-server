@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 
-import datetime
+import datetime as dt
 import importlib
 import logging
 import os
@@ -303,7 +303,7 @@ class Session:
         action.send_keys(keys).perform()
 
     def _new_filename(self, name: str, ext: str) -> str:
-        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        timestamp = dt.datetime.now().strftime("%Y%m%d%H%M%S")
         os.makedirs(self.screenshot_path, exist_ok=True)
         return os.path.join(self.screenshot_path, f'{name}_{timestamp}.{ext}')
 

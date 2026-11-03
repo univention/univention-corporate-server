@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2014-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import datetime
+import datetime as dt
 import sys
 from logging import getLogger
 from math import ceil
@@ -69,7 +69,7 @@ class EC2_EBS(Target):
             image_name,
             ExtraArgs={
                 "ACL": "aws-exec-read",
-                "Expires": datetime.datetime.now() + datetime.timedelta(days=1),
+                "Expires": dt.datetime.now() + dt.timedelta(days=1),
                 "StorageClass": "REDUCED_REDUNDANCY",
             },
             Callback=Progress(vmdk.path().as_posix(), vmdk.file_size()),
