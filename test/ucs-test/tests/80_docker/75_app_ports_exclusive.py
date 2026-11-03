@@ -29,7 +29,7 @@ def test_app_ports_exclusive(appcenter):
         app.set_ini_parameter(
             # DockerScriptInit='/usr/sbin/proftpd -n',
             # DockerScriptInit='/bin/sh',
-            DockerImage='instantlinux/proftpd',
+            DockerImage='instantlinux/proftpd:1.3.9b-r1',
             PortsExclusive=','.join(ports),
             DefaultPackages=','.join(packages),
             DockerInjectEnvFile='main',

@@ -32,7 +32,7 @@ def test_app_ports_redirect(appcenter):
             # DockerScriptInit='/usr/sbin/proftpd -n',
             # DockerScriptInit='/bin/sh',
             # DockerImage='debian:buster-slim',
-            DockerImage='instantlinux/proftpd',
+            DockerImage='instantlinux/proftpd:1.3.9b-r1',
             DockerInjectEnvFile='main',
             PortsRedirection=','.join(ports),
             PortsRedirectionUDP=','.join(udp_ports),

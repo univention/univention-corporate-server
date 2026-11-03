@@ -1,3 +1,9 @@
+ucs-test (12.7.14) unstable; urgency=medium
+
+  * Bug #53538: pin app image for docker tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 03 Nov 2026 14:19:11 +0100
+
 ucs-test (12.7.13) unstable; urgency=medium
 
   * Bug #60078: adjust test to new behavior
