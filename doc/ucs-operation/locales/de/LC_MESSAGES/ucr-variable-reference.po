@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-19 12:51+0000\n"
+"POT-Creation-Date: 2026-11-03 10:46+0000\n"
 "PO-Revision-Date: 2026-10-19 15:12+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -89,10 +89,13 @@ msgstr "Standardwert"
 #: ../../ucr-variable-reference.rst:2182 ../../ucr-variable-reference.rst:2198
 #: ../../ucr-variable-reference.rst:2239 ../../ucr-variable-reference.rst:2274
 #: ../../ucr-variable-reference.rst:2325 ../../ucr-variable-reference.rst:2372
-#: ../../ucr-variable-reference.rst:2402 ../../ucr-variable-reference.rst:2421
-#: ../../ucr-variable-reference.rst:2482 ../../ucr-variable-reference.rst:2494
-#: ../../ucr-variable-reference.rst:2506 ../../ucr-variable-reference.rst:2547
-#: ../../ucr-variable-reference.rst:2557 ../../ucr-variable-reference.rst:2577
+#: ../../ucr-variable-reference.rst:2396 ../../ucr-variable-reference.rst:2416
+#: ../../ucr-variable-reference.rst:2428 ../../ucr-variable-reference.rst:2469
+#: ../../ucr-variable-reference.rst:2482 ../../ucr-variable-reference.rst:2533
+#: ../../ucr-variable-reference.rst:2552 ../../ucr-variable-reference.rst:2613
+#: ../../ucr-variable-reference.rst:2625 ../../ucr-variable-reference.rst:2637
+#: ../../ucr-variable-reference.rst:2678 ../../ucr-variable-reference.rst:2688
+#: ../../ucr-variable-reference.rst:2708
 msgid "not set"
 msgstr "nicht gesetzt"
 
@@ -111,7 +114,9 @@ msgstr "Mögliche Werte"
 #: ../../ucr-variable-reference.rst:1744 ../../ucr-variable-reference.rst:1784
 #: ../../ucr-variable-reference.rst:1810 ../../ucr-variable-reference.rst:2099
 #: ../../ucr-variable-reference.rst:2240 ../../ucr-variable-reference.rst:2275
-#: ../../ucr-variable-reference.rst:2326
+#: ../../ucr-variable-reference.rst:2326 ../../ucr-variable-reference.rst:2429
+#: ../../ucr-variable-reference.rst:2442 ../../ucr-variable-reference.rst:2470
+#: ../../ucr-variable-reference.rst:2483 ../../ucr-variable-reference.rst:2499
 msgid "``yes``, ``no``, not set"
 msgstr "``yes``, ``no``, nicht gesetzt"
 
@@ -142,8 +147,10 @@ msgstr "Typ"
 #: ../../ucr-variable-reference.rst:2137 ../../ucr-variable-reference.rst:2241
 #: ../../ucr-variable-reference.rst:2276 ../../ucr-variable-reference.rst:2327
 #: ../../ucr-variable-reference.rst:2359 ../../ucr-variable-reference.rst:2374
-#: ../../ucr-variable-reference.rst:2454 ../../ucr-variable-reference.rst:2568
-#: ../../ucr-variable-reference.rst:2578
+#: ../../ucr-variable-reference.rst:2430 ../../ucr-variable-reference.rst:2443
+#: ../../ucr-variable-reference.rst:2471 ../../ucr-variable-reference.rst:2484
+#: ../../ucr-variable-reference.rst:2500 ../../ucr-variable-reference.rst:2585
+#: ../../ucr-variable-reference.rst:2699 ../../ucr-variable-reference.rst:2709
 msgid "boolean"
 msgstr "Boolesche Variable"
 
@@ -169,7 +176,7 @@ msgstr "``5``"
 #: ../../ucr-variable-reference.rst:1666 ../../ucr-variable-reference.rst:1678
 #: ../../ucr-variable-reference.rst:1703 ../../ucr-variable-reference.rst:1922
 #: ../../ucr-variable-reference.rst:1937 ../../ucr-variable-reference.rst:1953
-#: ../../ucr-variable-reference.rst:1968 ../../ucr-variable-reference.rst:2436
+#: ../../ucr-variable-reference.rst:1968 ../../ucr-variable-reference.rst:2567
 msgid "integer"
 msgstr "Ganzzahl"
 
@@ -338,9 +345,9 @@ msgstr "nicht gesetzt; ``localhost`` bei Druckserver-Installationen"
 #: ../../ucr-variable-reference.rst:2213 ../../ucr-variable-reference.rst:2226
 #: ../../ucr-variable-reference.rst:2251 ../../ucr-variable-reference.rst:2264
 #: ../../ucr-variable-reference.rst:2339 ../../ucr-variable-reference.rst:2384
-#: ../../ucr-variable-reference.rst:2483 ../../ucr-variable-reference.rst:2495
-#: ../../ucr-variable-reference.rst:2507 ../../ucr-variable-reference.rst:2520
-#: ../../ucr-variable-reference.rst:2548 ../../ucr-variable-reference.rst:2558
+#: ../../ucr-variable-reference.rst:2614 ../../ucr-variable-reference.rst:2626
+#: ../../ucr-variable-reference.rst:2638 ../../ucr-variable-reference.rst:2651
+#: ../../ucr-variable-reference.rst:2679 ../../ucr-variable-reference.rst:2689
 msgid "string"
 msgstr "Zeichenkette"
 
@@ -380,7 +387,7 @@ msgstr "``0 8 * * *``"
 
 #: ../../ucr-variable-reference.rst:167 ../../ucr-variable-reference.rst:433
 #: ../../ucr-variable-reference.rst:1232 ../../ucr-variable-reference.rst:1770
-#: ../../ucr-variable-reference.rst:2466
+#: ../../ucr-variable-reference.rst:2597
 msgid "cron"
 msgstr "Cron"
 
@@ -1425,7 +1432,8 @@ msgstr "Semikolon-getrennte Liste von Modulnamen"
 #: ../../ucr-variable-reference.rst:973 ../../ucr-variable-reference.rst:996
 #: ../../ucr-variable-reference.rst:1019 ../../ucr-variable-reference.rst:1070
 #: ../../ucr-variable-reference.rst:1082 ../../ucr-variable-reference.rst:1091
-#: ../../ucr-variable-reference.rst:1607
+#: ../../ucr-variable-reference.rst:1607 ../../ucr-variable-reference.rst:2398
+#: ../../ucr-variable-reference.rst:2417 ../../ucr-variable-reference.rst:2516
 msgid "list"
 msgstr "Liste"
 
@@ -1569,9 +1577,9 @@ msgid ""
 " internal LDAP database. Dynamic objects can't persist longer than this "
 "value."
 msgstr ""
-"Legt die maximale Gültigkeitsdauer (TTL) in Sekunden für dynamische Objekte "
-"in der internen LDAP-Datenbank fest. Dynamische Objekte können nicht länger "
-"als diesen Wert bestehen bleiben."
+"Legt die maximale Gültigkeitsdauer (TTL) in Sekunden für dynamische "
+"Objekte in der internen LDAP-Datenbank fest. Dynamische Objekte können "
+"nicht länger als diesen Wert bestehen bleiben."
 
 #: ../../ucr-variable-reference.rst:1027 ../../ucr-variable-reference.rst:1041
 msgid ""
@@ -1581,7 +1589,8 @@ msgid ""
 msgstr ""
 "Das Dynamic Directory Services (DDS)-Overlay von :program:`OpenLDAP` "
 "verwendet diese Einstellung auf dem :term:`Primary Directory Node`. Die "
-"Einstellung begrenzt auch die Aufbewahrungszeit für *Recycle Bin*-Einträge."
+"Einstellung begrenzt auch die Aufbewahrungszeit für *Recycle "
+"Bin*-Einträge."
 
 #: ../../ucr-variable-reference.rst:1032
 msgid "``31536000`` (365 days)"
@@ -1600,9 +1609,9 @@ msgid ""
 " internal LDAP database. Dynamic objects must persist for at least this "
 "duration."
 msgstr ""
-"Legt die minimale Gültigkeitsdauer (TTL) in Sekunden für dynamische Objekte "
-"in der internen LDAP-Datenbank fest. Dynamische Objekte müssen mindestens "
-"für diese Dauer bestehen bleiben."
+"Legt die minimale Gültigkeitsdauer (TTL) in Sekunden für dynamische "
+"Objekte in der internen LDAP-Datenbank fest. Dynamische Objekte müssen "
+"mindestens für diese Dauer bestehen bleiben."
 
 #: ../../ucr-variable-reference.rst:1046
 msgid "``86400`` (1 day)"
@@ -1981,7 +1990,7 @@ msgstr "``0``"
 msgid "Error messages only."
 msgstr "Nur Fehlermeldungen."
 
-#: ../../ucr-variable-reference.rst ../../ucr-variable-reference.rst:2529
+#: ../../ucr-variable-reference.rst ../../ucr-variable-reference.rst:2660
 msgid "``1``"
 msgstr "``1``"
 
@@ -2041,10 +2050,10 @@ msgid ""
 "*Recycle Bin*. Set the variable to ``false`` to activate the listener "
 "module."
 msgstr ""
-"Steuert, ob das *Recycle Bin*-Listener-Modul aktiv ist. Wenn der Wert auf "
-"``true`` gesetzt ist, verschiebt das Listener-Modul gelöschte Objekte nicht "
-"in den *Recycle Bin*. Setzen Sie die Variable auf ``false``, um das "
-"Listener-Modul zu aktivieren."
+"Steuert, ob das *Recycle Bin*-Listener-Modul aktiv ist. Wenn der Wert auf"
+" ``true`` gesetzt ist, verschiebt das Listener-Modul gelöschte Objekte "
+"nicht in den *Recycle Bin*. Setzen Sie die Variable auf ``false``, um das"
+" Listener-Modul zu aktivieren."
 
 #: ../../ucr-variable-reference.rst:1334
 msgid ""
@@ -2053,19 +2062,19 @@ msgid ""
 "the listener moves it to the *Recycle Bin*."
 msgstr ""
 "Das Modul verarbeitet unterstützte UDM Objekte auf dem :term:`Primary "
-"Directory Node`. Eine *Recycle Bin*-Richtlinie muss auf ein Objekt angewendet "
-"werden, bevor der Listener es in den *Recycle Bin* verschiebt."
+"Directory Node`. Eine *Recycle Bin*-Richtlinie muss auf ein Objekt "
+"angewendet werden, bevor der Listener es in den *Recycle Bin* verschiebt."
 
 #: ../../ucr-variable-reference.rst:1339
 msgid ""
 "For information about activating the *Recycle Bin*, see :ref:`udm-"
 "recyclebin-activate`."
 msgstr ""
-"Informationen zum Aktivieren des *Recycle Bin* finden Sie unter :ref:`udm-"
-"recyclebin-activate`."
+"Informationen zum Aktivieren des *Recycle Bin* finden Sie unter :ref"
+":`udm-recyclebin-activate`."
 
 #: ../../ucr-variable-reference.rst:1342 ../../ucr-variable-reference.rst:1579
-#: ../../ucr-variable-reference.rst:2078 ../../ucr-variable-reference.rst:2567
+#: ../../ucr-variable-reference.rst:2078 ../../ucr-variable-reference.rst:2698
 msgid "``true``"
 msgstr "``true``"
 
@@ -2119,7 +2128,8 @@ msgstr ""
 "administration-logging`."
 
 #: ../../ucr-variable-reference.rst:1382 ../../ucr-variable-reference.rst:1743
-#: ../../ucr-variable-reference.rst:1809 ../../ucr-variable-reference.rst:2452
+#: ../../ucr-variable-reference.rst:1809 ../../ucr-variable-reference.rst:2441
+#: ../../ucr-variable-reference.rst:2583
 msgid "``yes``"
 msgstr "``yes``"
 
@@ -2599,7 +2609,7 @@ msgstr ""
 "Steuert, ob Samba NTP-Antworten signiert. Windows-Clients, die in eine "
 "Samba-Domäne aufgenommen wurden, benötigen signierte NTP-Antworten."
 
-#: ../../ucr-variable-reference.rst:1806 ../../ucr-variable-reference.rst:2479
+#: ../../ucr-variable-reference.rst:1806 ../../ucr-variable-reference.rst:2610
 msgid ""
 "For information about time synchronization, see :ref:`system-"
 "administration-time-zone-synchronization`."
@@ -3517,7 +3527,173 @@ msgstr ""
 "Informationen zu Systemrollen finden Sie unter :ref:`domain-"
 "infrastructure-system-roles`."
 
-#: ../../ucr-variable-reference.rst:2389
+#: ../../ucr-variable-reference.rst:2388
+msgid ""
+"Specifies additional networks from which clients can access the proxy "
+"when Squid controls access by network address. Use CIDR notation and "
+"separate multiple networks with spaces. Set the variable to ``all`` to "
+"allow access from all networks."
+msgstr ""
+"Legt zusätzliche Netzwerke fest, aus denen Clients auf den Proxy "
+"zugreifen können, wenn Squid den Zugriff anhand der Netzwerkadresse "
+"steuert. Verwenden Sie die CIDR-Notation und trennen Sie mehrere "
+"Netzwerke durch Leerzeichen. Setzen Sie die Variable auf ``all``, um "
+"den Zugriff aus allen Netzwerken zu erlauben."
+
+#: ../../ucr-variable-reference.rst:2393
+msgid ""
+"For information about restricting access by network, see :ref:`system-"
+"administration-web-proxy-restrict-to-permitted-networks`."
+msgstr ""
+"Informationen zur Einschränkung des Zugriffs nach Netzwerk finden Sie "
+"unter :ref:`system-administration-web-proxy-restrict-to-permitted-networks`."
+
+#: ../../ucr-variable-reference.rst:2397
+msgid "space-separated networks in CIDR notation, or ``all``"
+msgstr "Durch Leerzeichen getrennte Netzwerke in CIDR-Notation oder ``all``"
+
+#: ../../ucr-variable-reference.rst:2403
+msgid ""
+"Restricts authenticated proxy access to members of the specified LDAP "
+"groups. Enter the groups' ``cn`` values and separate multiple names with "
+"semicolons. Don't add spaces around the semicolons. If you leave the "
+"variable unset or empty, Squid doesn't apply a group restriction."
+msgstr ""
+"Beschränkt den authentifizierten Proxy-Zugriff auf Mitglieder der "
+"angegebenen LDAP-Gruppen. Geben Sie die ``cn``-Werte der Gruppen an und "
+"trennen Sie mehrere Namen durch Semikolons. Fügen Sie vor oder nach den "
+"Semikolons keine Leerzeichen ein. Wenn die Variable nicht gesetzt oder "
+"leer ist, schränkt Squid den Zugriff nicht auf Gruppen ein."
+
+#: ../../ucr-variable-reference.rst:2410
+msgid "To use the group restriction, enable a proxy authentication mechanism."
+msgstr "Aktivieren Sie einen Proxy-Authentifizierungsmechanismus, um die Gruppenbeschränkung zu verwenden."
+
+#: ../../ucr-variable-reference.rst:2413 ../../ucr-variable-reference.rst:2425
+#: ../../ucr-variable-reference.rst:2466 ../../ucr-variable-reference.rst:2479
+#: ../../ucr-variable-reference.rst:2495
+msgid ""
+"For information about proxy authentication, see :ref:`system-"
+"administration-web-proxy-authentication`."
+msgstr ""
+"Informationen zur Proxy-Authentifizierung finden Sie unter :ref:`system-"
+"administration-web-proxy-authentication`."
+
+#: ../../ucr-variable-reference.rst:2422
+msgid ""
+"Controls whether Squid offers LDAP-based Basic authentication. Set the "
+"variable to ``yes`` to enable this authentication mechanism."
+msgstr ""
+"Steuert, ob Squid LDAP-basierte Basic-Authentifizierung anbietet. Setzen "
+"Sie die Variable auf ``yes``, um diesen Authentifizierungsmechanismus "
+"zu aktivieren."
+
+#: ../../ucr-variable-reference.rst:2435
+msgid ""
+"Controls whether Squid caches web content. Set the variable to ``no`` to "
+"deactivate caching."
+msgstr ""
+"Steuert, ob Squid Webinhalte zwischenspeichert. Setzen Sie die Variable "
+"auf ``no``, um die Zwischenspeicherung zu deaktivieren."
+
+#: ../../ucr-variable-reference.rst:2438
+msgid ""
+"For information about configuring the cache, see :ref:`system-"
+"administration-web-proxy-caching-web`."
+msgstr ""
+"Informationen zur Konfiguration des Caches finden Sie unter :ref:`system-"
+"administration-web-proxy-caching-web`."
+
+#: ../../ucr-variable-reference.rst:2448
+msgid ""
+"Specifies the TCP port on which Squid accepts proxy connections. If you "
+"leave the variable unset, Squid uses port ``3128``."
+msgstr ""
+"Legt den TCP-Port fest, an dem Squid Proxy-Verbindungen entgegennimmt. "
+"Wenn die Variable nicht gesetzt ist, verwendet Squid Port ``3128``."
+
+#: ../../ucr-variable-reference.rst:2452
+msgid ""
+"For information about changing the port and configuring the firewall, see"
+" :ref:`system-administration-web-proxy-ports-proxy`."
+msgstr ""
+"Informationen zum Ändern des Ports und zur Konfiguration der Firewall "
+"finden Sie unter :ref:`system-administration-web-proxy-ports-proxy`."
+
+#: ../../ucr-variable-reference.rst:2455
+msgid "not set, equivalent to ``3128``"
+msgstr "nicht gesetzt, entspricht ``3128``"
+
+#: ../../ucr-variable-reference.rst:2456
+msgid "port number"
+msgstr "Portnummer"
+
+#: ../../ucr-variable-reference.rst:2461
+msgid ""
+"Controls whether Squid offers Kerberos authentication. Set the variable "
+"to ``yes`` to enable this authentication mechanism. You must also install"
+" the :program:`univention-squid-kerberos` package on the proxy server."
+msgstr ""
+"Steuert, ob Squid Kerberos-Authentifizierung anbietet. Setzen Sie die "
+"Variable auf ``yes``, um diesen Authentifizierungsmechanismus zu "
+"aktivieren. Sie müssen außerdem das Paket :program:`univention-squid-kerberos` "
+"auf dem Proxy-Server installieren."
+
+#: ../../ucr-variable-reference.rst:2476
+msgid ""
+"Controls whether Squid offers NTLM authentication. Set the variable to "
+"``yes`` to enable this authentication mechanism."
+msgstr ""
+"Steuert, ob Squid NTLM-Authentifizierung anbietet. Setzen Sie die "
+"Variable auf ``yes``, um diesen Authentifizierungsmechanismus zu aktivieren."
+
+#: ../../ucr-variable-reference.rst:2489
+msgid ""
+"Controls Squid's NTLM ``keep_alive`` setting. If you set the variable to "
+"``yes``, Squid configures the setting as ``on``. If you leave the "
+"variable unset or set it to ``no``, Squid configures the setting as "
+"``off``."
+msgstr ""
+"Steuert die NTLM-Einstellung ``keep_alive`` von Squid. Wenn Sie die "
+"Variable auf ``yes`` setzen, konfiguriert Squid die Einstellung als "
+"``on``. Wenn die Variable nicht gesetzt ist oder Sie sie auf ``no`` "
+"setzen, konfiguriert Squid die Einstellung als ``off``."
+
+#: ../../ucr-variable-reference.rst:2498
+msgid "not set, equivalent to ``no``"
+msgstr "nicht gesetzt, entspricht ``no``"
+
+#: ../../ucr-variable-reference.rst:2505
+msgid ""
+"Specifies the destination ports to which Squid may forward client "
+"requests. Separate multiple port numbers with a single space. Don't add "
+"spaces before the first entry or after the last entry."
+msgstr ""
+"Legt die Zielports fest, an die Squid Client-Anfragen weiterleiten darf. "
+"Trennen Sie mehrere Portnummern durch jeweils ein Leerzeichen. Fügen Sie "
+"vor dem ersten oder nach dem letzten Eintrag keine Leerzeichen ein."
+
+#: ../../ucr-variable-reference.rst:2509
+msgid ""
+"If you leave the variable unset, Squid permits destination ports ``80``, "
+"``443``, and ``21``."
+msgstr ""
+"Wenn die Variable nicht gesetzt ist, erlaubt Squid die Zielports "
+"``80``, ``443`` und ``21``."
+
+#: ../../ucr-variable-reference.rst:2512
+msgid ""
+"For information about configuring permitted ports, see :ref:`system-"
+"administration-web-proxy-ports-permitted`."
+msgstr ""
+"Informationen zur Konfiguration der erlaubten Ports finden Sie unter "
+":ref:`system-administration-web-proxy-ports-permitted`."
+
+#: ../../ucr-variable-reference.rst:2515
+msgid "not set, equivalent to ``80 443 21``"
+msgstr "nicht gesetzt, entspricht ``80 443 21``"
+
+#: ../../ucr-variable-reference.rst:2520
 msgid ""
 "Stores the expiry date of the local host certificate. A daily cron job on"
 " each Nubus for UCS system updates this value after checking the host "
@@ -3528,14 +3704,14 @@ msgstr ""
 " das Rechnerzertifikat überprüft wurde. Der Wert ist die Anzahl der Tage "
 "seit 1970-01-01."
 
-#: ../../ucr-variable-reference.rst:2396 ../../ucr-variable-reference.rst:2415
+#: ../../ucr-variable-reference.rst:2527 ../../ucr-variable-reference.rst:2546
 msgid "Nubus for UCS sets this variable automatically. Don't change it manually."
 msgstr ""
 "Nubus for UCS setzt diese Variable automatisch. Ändern Sie sie nicht "
 "manuell."
 
-#: ../../ucr-variable-reference.rst:2399 ../../ucr-variable-reference.rst:2418
-#: ../../ucr-variable-reference.rst:2432
+#: ../../ucr-variable-reference.rst:2530 ../../ucr-variable-reference.rst:2549
+#: ../../ucr-variable-reference.rst:2563
 msgid ""
 "For information about monitoring certificate expiry, see :ref:`domain-"
 "infrastructure-tls-monitoring`."
@@ -3543,11 +3719,11 @@ msgstr ""
 "Informationen zur Überwachung des Ablaufdatums des Zertifikats finden Sie"
 " unter :ref:`domain-infrastructure-tls-monitoring`."
 
-#: ../../ucr-variable-reference.rst:2403 ../../ucr-variable-reference.rst:2422
+#: ../../ucr-variable-reference.rst:2534 ../../ucr-variable-reference.rst:2553
 msgid "integer (days since 1970-01-01)"
 msgstr "Ganzzahl (Tage seit 1970-01-01)"
 
-#: ../../ucr-variable-reference.rst:2408
+#: ../../ucr-variable-reference.rst:2539
 msgid ""
 "Stores the expiry date of the root certificate. A daily cron job on each "
 "Nubus for UCS system updates this value after checking the root "
@@ -3558,7 +3734,7 @@ msgstr ""
 "Root-Zertifikat überprüft wurde. Der Wert ist die Anzahl der Tage seit "
 "1970-01-01."
 
-#: ../../ucr-variable-reference.rst:2427
+#: ../../ucr-variable-reference.rst:2558
 msgid ""
 "Sets the warning threshold in days for root certificate expiry. When the "
 "root certificate expires within the configured number of days, the "
@@ -3571,11 +3747,11 @@ msgstr ""
 "Plugin verwendet diesen Schwellenwert auch für seine "
 "Zertifikatsgültigkeitsprüfung."
 
-#: ../../ucr-variable-reference.rst:2435
+#: ../../ucr-variable-reference.rst:2566
 msgid "``30``"
 msgstr "``30``"
 
-#: ../../ucr-variable-reference.rst:2441
+#: ../../ucr-variable-reference.rst:2572
 msgid ""
 "Controls whether the system regularly logs system statistics to "
 ":file:`/var/log/univention/system-stats.log`. The logged data includes "
@@ -3588,11 +3764,11 @@ msgstr ""
 "Festplattenspeicher, freien Arbeitsspeicher, die Betriebszeit und aktive "
 "Samba-Verbindungen."
 
-#: ../../ucr-variable-reference.rst:2446
+#: ../../ucr-variable-reference.rst:2577
 msgid "Configure the interval with :envvar:`system/stats/cron`."
 msgstr "Konfigurieren Sie das Intervall mit :envvar:`system/stats/cron`."
 
-#: ../../ucr-variable-reference.rst:2449 ../../ucr-variable-reference.rst:2462
+#: ../../ucr-variable-reference.rst:2580 ../../ucr-variable-reference.rst:2593
 msgid ""
 "For information about system status logging, see :ref:`system-"
 "administration-diagnostics-cli`."
@@ -3600,21 +3776,21 @@ msgstr ""
 "Informationen zur Protokollierung des Systemstatus finden Sie unter :ref"
 ":`system-administration-diagnostics-cli`."
 
-#: ../../ucr-variable-reference.rst:2453
+#: ../../ucr-variable-reference.rst:2584
 msgid "``yes``, ``no``"
 msgstr "``yes``, ``no``"
 
-#: ../../ucr-variable-reference.rst:2459
+#: ../../ucr-variable-reference.rst:2590
 msgid "Specifies the interval for collecting system statistics in cron syntax."
 msgstr ""
 "Legt das Intervall für das Erfassen von Systemstatistiken in Cron-Syntax "
 "fest."
 
-#: ../../ucr-variable-reference.rst:2465
+#: ../../ucr-variable-reference.rst:2596
 msgid "``0,30 * * * *``"
 msgstr "``0,30 * * * *``"
 
-#: ../../ucr-variable-reference.rst:2471
+#: ../../ucr-variable-reference.rst:2602
 msgid ""
 "Specifies an external NTP server that the system uses as a time source. "
 "In a Nubus for UCS domain, the Primary Directory Node usually acts as the"
@@ -3624,7 +3800,7 @@ msgstr ""
 "verwendet. In einer Nubus für UCS-Domäne fungiert der Primary Directory "
 "Node in der Regel als Standard-Zeitserver."
 
-#: ../../ucr-variable-reference.rst:2476
+#: ../../ucr-variable-reference.rst:2607
 msgid ""
 "Additional external time sources can be configured with "
 ":envvar:`timeserver2` and :envvar:`timeserver3`."
@@ -3632,7 +3808,7 @@ msgstr ""
 "Zusätzliche externe Zeitquellen können mit :envvar:`timeserver2` und "
 ":envvar:`timeserver3` konfiguriert werden."
 
-#: ../../ucr-variable-reference.rst:2488
+#: ../../ucr-variable-reference.rst:2619
 msgid ""
 "Specifies a second external NTP server that the system uses as a time "
 "source."
@@ -3640,11 +3816,11 @@ msgstr ""
 "Legt einen zweiten externen NTP-Server fest, den das System als "
 "Zeitquelle verwendet."
 
-#: ../../ucr-variable-reference.rst:2491 ../../ucr-variable-reference.rst:2503
+#: ../../ucr-variable-reference.rst:2622 ../../ucr-variable-reference.rst:2634
 msgid "For details about external time sources, see :envvar:`timeserver`."
 msgstr "Details zu externen Zeitquellen finden Sie unter :envvar:`timeserver`."
 
-#: ../../ucr-variable-reference.rst:2500
+#: ../../ucr-variable-reference.rst:2631
 msgid ""
 "Specifies a third external NTP server that the system uses as a time "
 "source."
@@ -3652,7 +3828,7 @@ msgstr ""
 "Legt einen dritten externen NTP-Server fest, den das System als "
 "Zeitquelle verwendet."
 
-#: ../../ucr-variable-reference.rst:2511
+#: ../../ucr-variable-reference.rst:2642
 msgid ""
 "Specifies the name of the theme to apply to all web interfaces such as "
 "the login page, the portal, and the *Management UI*. The value "
@@ -3664,7 +3840,7 @@ msgstr ""
 "soll. Der Wert entspricht einer CSS-Datei mit demselben Namen im Ordner "
 ":file:`/usr/share/univention-web/themes/`."
 
-#: ../../ucr-variable-reference.rst:2516
+#: ../../ucr-variable-reference.rst:2647
 msgid ""
 "For information about switching between themes, creating custom themes, "
 "and applying changes, see :ref:`management-interface-theming`."
@@ -3673,15 +3849,15 @@ msgstr ""
 "Designs und zum Anwenden von Änderungen finden Sie unter :ref"
 ":`management-interface-theming`."
 
-#: ../../ucr-variable-reference.rst:2519
+#: ../../ucr-variable-reference.rst:2650
 msgid "``dark``"
 msgstr "``dark``"
 
-#: ../../ucr-variable-reference.rst:2521
+#: ../../ucr-variable-reference.rst:2652
 msgid "``light``, ``dark``, or custom theme names"
 msgstr "``light``, ``dark`` oder benutzerdefinierte Design-Namen"
 
-#: ../../ucr-variable-reference.rst:2526
+#: ../../ucr-variable-reference.rst:2657
 msgid ""
 "Defines the number of *UMC Server* processes that Nubus for UCS starts in"
 " parallel."
@@ -3689,11 +3865,11 @@ msgstr ""
 "Legt die Anzahl der *UMC Server* Prozesse fest, die Nubus für UCS "
 "parallel startet."
 
-#: ../../ucr-variable-reference.rst:2530 ../../ucr-variable-reference.rst:2540
+#: ../../ucr-variable-reference.rst:2661 ../../ucr-variable-reference.rst:2671
 msgid "Unsigned integer"
 msgstr "Vorzeichenlose Ganzzahl"
 
-#: ../../ucr-variable-reference.rst:2535
+#: ../../ucr-variable-reference.rst:2666
 msgid ""
 "The web browser automatically closes the browser session after the "
 "defined time period in seconds. A new session requires a new sign-in"
@@ -3702,17 +3878,17 @@ msgstr ""
 "der festgelegten Zeit in Sekunden. Für eine neue Sitzung ist eine erneute"
 " Anmeldung erforderlich."
 
-#: ../../ucr-variable-reference.rst:2539
+#: ../../ucr-variable-reference.rst:2670
 msgid "``300``"
 msgstr "``300``"
 
-#: ../../ucr-variable-reference.rst:2545
+#: ../../ucr-variable-reference.rst:2676
 msgid "Defines the OpenID provider issuer of this relying party entry."
 msgstr ""
 "Definiert den OpenID-Anbieter-Aussteller dieses Eintrags für vertrauende "
 "Parteien."
 
-#: ../../ucr-variable-reference.rst:2553
+#: ../../ucr-variable-reference.rst:2684
 msgid ""
 "Defines the fully qualified domain name of the relying party for the *UMC"
 " Server*. If the variable is unset, Nubus for UCS uses the fully "
@@ -3723,7 +3899,7 @@ msgstr ""
 "Nubus für UCS den voll qualifizierten Domänennamen des UCS-Systems und "
 "alle IP-Adressen."
 
-#: ../../ucr-variable-reference.rst:2563
+#: ../../ucr-variable-reference.rst:2694
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through OpenID Connect "
 "single sign-on before using a regular sign-in."
@@ -3731,7 +3907,7 @@ msgstr ""
 "Wenn aktiviert, versucht der *UMC-Server* die Anmeldung über OpenID "
 "Connect Single Sign-On, bevor er eine reguläre Anmeldung verwendet."
 
-#: ../../ucr-variable-reference.rst:2573
+#: ../../ucr-variable-reference.rst:2704
 msgid ""
 "If activated, the *UMC Server* tries the sign-in through SAML single "
 "sign-on before using a regular sign-in."

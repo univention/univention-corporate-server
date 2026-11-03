@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Nubus for UCS - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 19:41+0000\n"
-"PO-Revision-Date: 2026-10-17 21:44+0200\n"
+"POT-Creation-Date: 2026-11-03 11:23+0000\n"
+"PO-Revision-Date: 2026-11-03 13:10+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -980,7 +980,7 @@ msgstr ""
 "Schaltfläche an. Es verlinkt außerdem auf zugehörige Artikel und passende"
 " Verwaltungsmodule."
 
-#: ../../system-administration/index.rst:85
+#: ../../system-administration/index.rst:98
 #: ../../system-administration/network/index.rst:62
 msgid "Contents"
 msgstr "Inhalt"
@@ -1170,6 +1170,39 @@ msgstr ""
 "Leiten Sie ausgehenden Datenverkehr von Befehlszeilenwerkzeugen und Nubus"
 " für UCS Update-Dienstprogrammen über einen Proxy-Server mithilfe von "
 "UCR-Variablen weiter. Siehe :ref:`system-administration-proxy`."
+
+#: ../../system-administration/index.rst:85
+msgid "Web proxy service"
+msgstr "Web-Proxy-Dienst"
+
+#: ../../system-administration/index.rst:86
+msgid ""
+"Provide a web proxy service with Squid to cache web content and control "
+"access. Configure permitted networks and ports, user authentication, and "
+"proxy access logging. See :ref:`system-administration-web-proxy`."
+msgstr ""
+"Stellen Sie mit Squid einen Web-Proxy-Dienst bereit, um Webinhalte "
+"zwischenzuspeichern und den Zugriff zu steuern. Konfigurieren Sie "
+"zugelassene Netzwerke und Ports, die Benutzerauthentifizierung und die "
+"Protokollierung der Proxy-Zugriffe. Siehe :ref:`system-administration-"
+"web-proxy`."
+
+#: ../../system-administration/index.rst:92
+msgid "Rate limiting"
+msgstr "Rate Limiting"
+
+#: ../../system-administration/index.rst:93
+msgid ""
+"Protect externally exposed HTTP services from excessive traffic. Consider"
+" rate limiting with a reverse proxy or load balancer, or extend the "
+"Apache configuration with a third-party module. See :ref:`system-"
+"administration-rate-limiting`."
+msgstr ""
+"Schützen Sie extern bereitgestellte HTTP-Dienste vor übermäßigem "
+"Datenverkehr. Ziehen Sie Rate Limiting mit einem Reverse Proxy oder Load "
+"Balancer in Betracht oder erweitern Sie die Apache-Konfiguration um ein "
+"Modul eines Drittanbieters. Siehe :ref:`system-administration-rate-"
+"limiting`."
 
 #: ../../system-administration/kernel.rst:9
 msgid ""
@@ -2602,9 +2635,9 @@ msgid ""
 "resulting network access from a suitable host."
 msgstr ""
 "Um vorhandene Firewall-Regeln zu entfernen, führen Sie den Befehl in "
-":numref:`system-administration-network-firewall-remove-rules-listing`"
-" aus. Überprüfen Sie den resultierenden "
-"Netzwerkzugriff von einem geeigneten Host aus."
+":numref:`system-administration-network-firewall-remove-rules-listing` "
+"aus. Überprüfen Sie den resultierenden Netzwerkzugriff von einem "
+"geeigneten Host aus."
 
 #: ../../system-administration/network/firewall-packet-filter.rst:62
 msgid "Remove existing firewall rules"
@@ -4432,3 +4465,489 @@ msgid "in :cite:t:`uv-nubus-manual` for information about how to assign policies
 msgstr ""
 "in :cite:t:`uv-nubus-manual` für Informationen zum Zuweisen von "
 "Richtlinien."
+
+#: ../../system-administration/web-proxy.rst:7
+msgid "Provide a web proxy service with Squid"
+msgstr "Einen Web-Proxy-Dienst mit Squid bereitstellen"
+
+#: ../../system-administration/web-proxy.rst:9
+msgid ""
+"The Nubus for UCS proxy integration uses Squid as a web cache to improve "
+"performance and control data traffic. It supports HTTP, FTP, and HTTPS."
+msgstr ""
+"Die Proxy-Integration von Nubus für UCS verwendet Squid als Web-Cache, um"
+" die Leistung zu verbessern und den Datenverkehr zu steuern. Sie "
+"unterstützt HTTP, FTP und HTTPS."
+
+#: ../../system-administration/web-proxy.rst:13
+msgid ""
+"A proxy server receives requests for internet content and checks whether "
+"the requested content is available in its local cache. It can serve "
+"cached content or retrieve content from the web server. Caching can "
+"reduce response times and internet traffic."
+msgstr ""
+"Ein Proxy-Server empfängt Anfragen nach Inhalten aus dem Internet und "
+"prüft, ob die angeforderten Inhalte in seinem lokalen Cache verfügbar "
+"sind. Er kann zwischengespeicherte Inhalte ausliefern oder Inhalte vom "
+"Webserver abrufen. Das Zwischenspeichern kann Antwortzeiten und "
+"Internetverkehr reduzieren."
+
+#: ../../system-administration/web-proxy.rst:18
+msgid ""
+"For more information about proxy services, including proxy server "
+"cascading, transparent proxies, and virus scan integration, see :cite:t"
+":`ext-doc-net`."
+msgstr ""
+"Weitere Informationen zu Proxy-Diensten, einschließlich der Kaskadierung "
+"von Proxy-Servern, transparenter Proxys und der Integration von "
+"Virenscannern, finden Sie in :cite:t:`ext-doc-net`."
+
+#: ../../system-administration/web-proxy.rst:25
+msgid "Installation"
+msgstr "Installation"
+
+#: ../../system-administration/web-proxy.rst:27
+msgid ""
+"You can install Squid from the Univention App Center using the "
+"application :program:`Web proxy / web cache (Squid)`. For more "
+"information about how to install an app, see :ref:`lifecycle-app-center-"
+"installation`."
+msgstr ""
+"Sie können Squid aus dem Univention App Center über die Anwendung "
+":program:`Web proxy / web cache (Squid)` installieren. Weitere "
+"Informationen zur Installation einer App finden Sie unter "
+":ref:`lifecycle-app-center-installation`."
+
+#: ../../system-administration/web-proxy.rst:31
+msgid ""
+"Alternatively, you can install the :program:`univention-squid` software "
+"package. For more information, see :ref:`lifecycle-package-installation-"
+"management`."
+msgstr ""
+"Alternativ können Sie das Softwarepaket :program:`univention-squid` "
+"installieren. Weitere Informationen finden Sie unter "
+":ref:`lifecycle-package-installation-management`."
+
+#: ../../system-administration/web-proxy.rst:34
+msgid ""
+"The default settings allow you to use the service immediately. The "
+"default access port is ``3128``. To configure a different port, see :ref"
+":`system-administration-web-proxy-ports-proxy`."
+msgstr ""
+"Mit den Standardeinstellungen können Sie den Dienst sofort verwenden. Der"
+" Standardport für den Zugriff ist ``3128``. Sie können einen anderen Port"
+" konfigurieren; siehe :ref:`system-administration-web-proxy-ports-proxy`."
+
+#: ../../system-administration/web-proxy.rst:41
+msgid ":ref:`lifecycle-app-center`"
+msgstr ":ref:`lifecycle-app-center`"
+
+#: ../../system-administration/web-proxy.rst:42
+msgid "for information about Univention App Center."
+msgstr "für Informationen zum Univention App Center."
+
+#: ../../system-administration/web-proxy.rst:47
+msgid "Additional configuration and restart"
+msgstr "Zusätzliche Konfiguration und Neustart"
+
+#: ../../system-administration/web-proxy.rst:49
+msgid ""
+"If you change the configuration, restart Squid. You can restart Squid "
+"through the :guilabel:`System services` management module in the "
+"*Management UI*. You need authorization to use the module. For "
+"instructions, see :ref:`system-administration-service-management`."
+msgstr ""
+"Starten Sie Squid neu, wenn Sie die Konfiguration ändern. Sie können "
+"Squid über das Verwaltungsmodul :guilabel:`System services` in der "
+"*Management UI* neu starten. Sie benötigen eine Berechtigung, um das "
+"Modul zu verwenden. Eine Anleitung finden Sie unter :ref:`system-"
+"administration-service-management`."
+
+#: ../../system-administration/web-proxy.rst:55
+msgid ""
+"Alternatively, restart Squid from the command line with ``root`` "
+"privileges, as shown in :numref:`system-administration-web-proxy-"
+"additional-configuration-listing`."
+msgstr ""
+"Alternativ können Sie Squid wie in :numref:`system-administration-web-"
+"proxy-additional-configuration-listing` gezeigt mit "
+"``root``-Berechtigungen über die Befehlszeile neu starten."
+
+#: ../../system-administration/web-proxy.rst:58
+msgid "Restart Squid"
+msgstr "Squid neu starten"
+
+#: ../../system-administration/web-proxy.rst:58
+msgid "$ systemctl restart squid"
+msgstr "$ systemctl restart squid"
+
+#: ../../system-administration/web-proxy.rst:64
+msgid ""
+"In addition to the Univention Configuration Registry settings, you can "
+"set Squid configuration options in the :file:`/etc/squid/local.conf` "
+"file."
+msgstr ""
+"Zusätzlich zu den Einstellungen der Univention Configuration Registry "
+"können Sie Konfigurationsoptionen für Squid in der Datei "
+":file:`/etc/squid/local.conf` setzen."
+
+#: ../../system-administration/web-proxy.rst:70
+msgid "Caching of web content"
+msgstr "Zwischenspeichern von Webinhalten"
+
+#: ../../system-administration/web-proxy.rst:72
+msgid ""
+"Squid can serve cached content without retrieving it again from the web "
+"server. This reduces incoming internet traffic and can result in faster "
+"responses to HTTP requests."
+msgstr ""
+"Squid kann zwischengespeicherte Inhalte ausliefern, ohne sie erneut vom "
+"Webserver abzurufen. Dies reduziert den eingehenden Internetverkehr und "
+"kann zu schnelleren Antworten auf HTTP-Anfragen führen."
+
+#: ../../system-administration/web-proxy.rst:76
+msgid ""
+"Caching isn't necessary in some environments. In a proxy cascade, you can"
+" deactivate caching on individual proxies. To deactivate Squid caching, "
+"set the :term:`UCR variable` :envvar:`squid/cache` to ``no``. Then "
+"restart Squid, as shown in :numref:`system-administration-web-proxy-"
+"additional-configuration-listing`."
+msgstr ""
+"In manchen Umgebungen ist das Zwischenspeichern nicht notwendig. In einer"
+" Proxy-Kaskade können Sie das Zwischenspeichern auf einzelnen Proxys "
+"deaktivieren. Setzen Sie dazu die :term:`UCR-Variable <UCR variable>` "
+":envvar:`squid/cache` auf ``no``. Starten Sie anschließend Squid neu, wie"
+" in :numref:`system-administration-web-proxy-additional-configuration-"
+"listing` gezeigt."
+
+#: ../../system-administration/web-proxy.rst:85
+msgid "Logging proxy accesses"
+msgstr "Proxy-Zugriffe protokollieren"
+
+#: ../../system-administration/web-proxy.rst:87
+msgid ""
+"The proxy server records access through it in the "
+":file:`/var/log/squid/access.log` file. You can use the log file to see "
+"which websites users have accessed."
+msgstr ""
+"Der Proxy-Server protokolliert Zugriffe über den Proxy in der Datei "
+":file:`/var/log/squid/access.log`. Anhand der Log-Datei können Sie "
+"nachvollziehen, auf welche Websites Benutzer zugegriffen haben."
+
+#: ../../system-administration/web-proxy.rst:93
+msgid "Configuration of the ports used"
+msgstr "Konfiguration der verwendeten Ports"
+
+#: ../../system-administration/web-proxy.rst:95
+msgid ""
+"You can configure the port that clients use to connect to Squid and the "
+"destination ports that Squid permits for client requests."
+msgstr ""
+"Sie können den Port konfigurieren, über den Clients eine Verbindung zu "
+"Squid herstellen, sowie die Zielports, die Squid für Client-Anfragen zulässt."
+
+#: ../../system-administration/web-proxy.rst:101
+msgid "Access port"
+msgstr "Zugriffsport"
+
+#: ../../system-administration/web-proxy.rst:103
+msgid ""
+"By default, you can access the web proxy through port ``3128``. To use a "
+"different port, configure the :term:`UCR variable` "
+":envvar:`squid/httpport`. Then restart Squid, as shown in :numref"
+":`system-administration-web-proxy-additional-configuration-listing`."
+msgstr ""
+"Standardmäßig können Sie über Port ``3128`` auf den Web-Proxy zugreifen. "
+"Um einen anderen Port zu verwenden, konfigurieren Sie die :term:`UCR-"
+"Variable <UCR variable>` :envvar:`squid/httpport`. Starten Sie "
+"anschließend Squid neu, wie in :numref:`system-administration-web-proxy-"
+"additional-configuration-listing` gezeigt."
+
+#: ../../system-administration/web-proxy.rst:109
+msgid ""
+"If you use Univention Firewall, ensure that its incoming TCP rules permit"
+" the selected port for the intended clients. For more information, see "
+":ref:`system-administration-network-firewall`."
+msgstr ""
+"Wenn Sie die Univention Firewall verwenden, stellen Sie sicher, dass "
+"deren Regeln für eingehende TCP-Verbindungen den ausgewählten Port für "
+"die vorgesehenen Clients zulassen. Weitere Informationen finden Sie unter"
+" :ref:`system-administration-network-firewall`."
+
+#: ../../system-administration/web-proxy.rst:117
+msgid "Permitted ports"
+msgstr "Zugelassene Ports"
+
+#: ../../system-administration/web-proxy.rst:119
+msgid ""
+"By default, Squid forwards client requests only to ports 80 (HTTP), 443 "
+"(HTTPS), or 21 (FTP). You can change the permitted ports using the "
+":term:`UCR variable` :envvar:`squid/webports`. Separate multiple entries "
+"with a single space. Don't add spaces before the first entry or after the"
+" last entry."
+msgstr ""
+"Standardmäßig leitet Squid Client-Anfragen nur an die Ports 80 (HTTP), "
+"443 (HTTPS) oder 21 (FTP) weiter. Sie können die zugelassenen Ports mit "
+"der :term:`UCR-Variable <UCR variable>` :envvar:`squid/webports` ändern. "
+"Trennen Sie mehrere Einträge durch jeweils ein Leerzeichen. Fügen Sie vor"
+" dem ersten oder nach dem letzten Eintrag keine Leerzeichen hinzu."
+
+#: ../../system-administration/web-proxy.rst:126
+msgid ""
+":numref:`system-administration-web-proxy-permitted-ports-listing` shows "
+"how to set the permitted ports. Run the command with ``root`` privileges."
+" With this setting, the proxy allows access only to ports 80 and 443 "
+"(HTTP and HTTPS). To apply the settings, you need to restart Squid as "
+"described in :ref:`system-administration-web-proxy-additional-"
+"configuration`."
+msgstr ""
+":numref:`system-administration-web-proxy-permitted-ports-listing` zeigt, "
+"wie Sie die zugelassenen Ports festlegen. Führen Sie den Befehl mit "
+"``root``-Berechtigungen aus. Mit dieser Einstellung erlaubt der Proxy "
+"den Zugriff nur auf die Ports 80 und 443 (HTTP und HTTPS). Um die "
+"Einstellungen anzuwenden, müssen Sie Squid wie unter "
+":ref:`system-administration-web-proxy-additional-configuration` beschrieben neu starten."
+
+#: ../../system-administration/web-proxy.rst:133
+msgid "Set the permitted ports"
+msgstr "Zugelassene Ports festlegen"
+
+#: ../../system-administration/web-proxy.rst:133
+msgid "$ univention-config-registry set squid/webports=\"80 443\""
+msgstr "$ univention-config-registry set squid/webports=\"80 443\""
+
+#: ../../system-administration/web-proxy.rst:141
+msgid ""
+"`CIDR notation - Wikipedia <https://en.wikipedia.org/w/index.php?title"
+"=Classless_Inter-Domain_Routing&oldid=1380978284>`_"
+msgstr ""
+"`CIDR notation - Wikipedia <https://en.wikipedia.org/w/index.php?title"
+"=Classless_Inter-Domain_Routing&oldid=1380978284>`_"
+
+#: ../../system-administration/web-proxy.rst:142
+msgid "for more information about the CIDR notation."
+msgstr "für weitere Informationen zur CIDR-Notation."
+
+#: ../../system-administration/web-proxy.rst:147
+msgid "Restriction of access to permitted networks"
+msgstr "Zugriff auf zugelassene Netzwerke beschränken"
+
+#: ../../system-administration/web-proxy.rst:149
+msgid ""
+"By default, the proxy server can be accessed only from local networks. "
+"For example, a computer running Squid has a network interface with the "
+"address ``192.0.2.10`` and the network mask ``255.255.255.0``. In this "
+"case, only computers on the network ``192.0.2.0/24`` can access the proxy"
+" server."
+msgstr ""
+"Standardmäßig ist der Proxy-Server nur aus lokalen Netzwerken erreichbar."
+" Ein Computer, auf dem Squid läuft, hat beispielsweise eine "
+"Netzwerkschnittstelle mit der Adresse ``192.0.2.10`` und der Netzmaske "
+"``255.255.255.0``. In diesem Fall können nur Computer im Netzwerk "
+"``192.0.2.0/24`` auf den Proxy-Server zugreifen."
+
+#: ../../system-administration/web-proxy.rst:155
+msgid ""
+"You can specify additional networks using the :term:`UCR variable` "
+":envvar:`squid/allowfrom`. Use CIDR notation and separate multiple "
+"networks with spaces."
+msgstr ""
+"Sie können mit der :term:`UCR-Variable <UCR variable>` "
+":envvar:`squid/allowfrom` zusätzliche Netzwerke angeben. Verwenden Sie "
+"die CIDR-Notation und trennen Sie mehrere Netzwerke durch Leerzeichen."
+
+#: ../../system-administration/web-proxy.rst:159
+msgid ""
+":numref:`system-administration-web-proxy-permitted-networks-listing` "
+"shows how to permit access from additional networks. Run the command with"
+" ``root`` privileges. After you restart Squid, the networks "
+"``192.0.2.0/24`` and ``192.0.3.0/24`` can access the proxy. If you set "
+":envvar:`squid/allowfrom` to ``all``, all networks can access the proxy."
+msgstr ""
+":numref:`system-administration-web-proxy-permitted-networks-listing` "
+"zeigt, wie Sie den Zugriff aus zusätzlichen Netzwerken zulassen. Führen "
+"Sie den Befehl mit ``root``-Berechtigungen aus. Nach dem Neustart von "
+"Squid können die Netzwerke ``192.0.2.0/24`` und ``192.0.3.0/24`` auf den "
+"Proxy zugreifen. Wenn Sie :envvar:`squid/allowfrom` auf ``all`` setzen, "
+"können alle Netzwerke auf den Proxy zugreifen."
+
+#: ../../system-administration/web-proxy.rst:167
+msgid "Permit access from additional networks"
+msgstr "Zugriff aus zusätzlichen Netzwerken zulassen"
+
+#: ../../system-administration/web-proxy.rst:167
+msgid ""
+"$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
+"192.0.3.0/24\""
+msgstr ""
+"$ univention-config-registry set squid/allowfrom=\"192.0.2.0/24 "
+"192.0.3.0/24\""
+
+#: ../../system-administration/web-proxy.rst:176
+msgid "User authentication on the proxy"
+msgstr "Benutzerauthentifizierung am Proxy"
+
+#: ../../system-administration/web-proxy.rst:178
+msgid ""
+"You may need to restrict web access to certain users. Squid lets you "
+"control user access based on group membership. To verify group "
+"membership, users must authenticate with the proxy server."
+msgstr ""
+"Möglicherweise müssen Sie den Webzugriff auf bestimmte Benutzer "
+"beschränken. Squid ermöglicht es, den Benutzerzugriff anhand der "
+"Gruppenmitgliedschaft zu steuern. Um die Gruppenmitgliedschaft zu "
+"überprüfen, müssen sich Benutzer am Proxy-Server authentifizieren."
+
+#: ../../system-administration/web-proxy.rst:184
+msgid ""
+"Proxy authentication alone doesn't prevent users from bypassing the proxy"
+" server and accessing the internet. To prevent unauthorized users from "
+"opening websites, you need additional measures. Restrict direct internet "
+"access for the traffic that your deployment requires users to send "
+"through the proxy, including HTTPS where applicable."
+msgstr ""
+"Die Proxy-Authentifizierung allein hindert Benutzer nicht daran, den "
+"Proxy-Server zu umgehen und auf das Internet zuzugreifen. Um zu "
+"verhindern, dass unberechtigte Benutzer Websites öffnen, benötigen Sie "
+"zusätzliche Maßnahmen. Beschränken Sie den direkten Internetzugriff für "
+"den Datenverkehr, den Benutzer in Ihrer Umgebung über den Proxy leiten "
+"müssen, gegebenenfalls einschließlich HTTPS."
+
+#: ../../system-administration/web-proxy.rst:192
+msgid ""
+"First, enable proxy authentication to allow verification of group "
+"membership. There are three possible mechanisms for proxy authentication:"
+msgstr ""
+"Aktivieren Sie zunächst die Proxy-Authentifizierung, um die "
+"Gruppenmitgliedschaft überprüfen zu können. Für die Proxy-"
+"Authentifizierung gibt es drei mögliche Verfahren:"
+
+#: ../../system-administration/web-proxy.rst:195
+msgid "LDAP server authentication"
+msgstr "Authentifizierung am LDAP-Server"
+
+#: ../../system-administration/web-proxy.rst:196
+msgid ""
+"To authenticate directly with the LDAP server, set the :term:`UCR "
+"variable` :envvar:`squid/basicauth` to ``yes`` and :ref:`restart Squid "
+"<system-administration-web-proxy-additional-configuration>`."
+msgstr ""
+"Um sich direkt am LDAP-Server zu authentifizieren, setzen Sie die :term"
+":`UCR-Variable <UCR variable>` :envvar:`squid/basicauth` auf ``yes`` und "
+":ref:`starten Sie Squid neu <system-administration-web-proxy-additional-configuration>`."
+
+#: ../../system-administration/web-proxy.rst:200
+msgid "NTLM authentication"
+msgstr "NTLM-Authentifizierung"
+
+#: ../../system-administration/web-proxy.rst:201
+msgid ""
+"Authentication uses the NTLM interface. Users signed in to a Windows "
+"client don't need to authenticate again when accessing the proxy. To "
+"enable NTLM authentication, set the UCR variable :envvar:`squid/ntlmauth`"
+" to ``yes`` and :ref:`restart Squid <system-administration-web-proxy-"
+"additional-configuration>`."
+msgstr ""
+"Die Authentifizierung verwendet die NTLM-Schnittstelle. Benutzer, die an "
+"einem Windows-Client angemeldet sind, müssen sich beim Zugriff auf den "
+"Proxy nicht erneut authentifizieren. Um die NTLM-Authentifizierung zu "
+"aktivieren, setzen Sie die UCR-Variable :envvar:`squid/ntlmauth` auf "
+"``yes`` und :ref:`starten Sie Squid neu <system-administration-web-proxy-additional-configuration>`."
+
+#: ../../system-administration/web-proxy.rst:208
+msgid "Kerberos authentication"
+msgstr "Kerberos-Authentifizierung"
+
+#: ../../system-administration/web-proxy.rst:209
+msgid ""
+"Authentication uses Kerberos. Users signed in to a Windows client that is"
+" a member of a Samba/AD domain authenticate with the proxy using the "
+"ticket they received when they signed in to the domain."
+msgstr ""
+"Die Authentifizierung verwendet Kerberos. Benutzer, die an einem Windows-"
+"Client angemeldet sind, der Mitglied einer Samba/AD-Domäne ist, "
+"authentifizieren sich am Proxy mit dem Ticket, das sie bei der Anmeldung "
+"an der Domäne erhalten haben."
+
+#: ../../system-administration/web-proxy.rst:214
+msgid ""
+"To enable Kerberos authentication, install the :program:`univention-"
+"squid-kerberos` package on every proxy server. For information about how "
+"to install a package, see :ref:`lifecycle-package-installation-"
+"management`."
+msgstr ""
+"Um die Kerberos-Authentifizierung zu aktivieren, installieren Sie das "
+"Paket :program:`univention-squid-kerberos` auf jedem Proxy-Server. "
+"Informationen zur Installation eines Pakets finden Sie unter "
+":ref:`lifecycle-package-installation-management`."
+
+#: ../../system-administration/web-proxy.rst:218
+msgid ""
+"Then set the UCR variable :envvar:`squid/krb5auth` to ``yes`` and "
+":ref:`restart Squid <system-administration-web-proxy-additional-"
+"configuration>`."
+msgstr ""
+"Setzen Sie anschließend die UCR-Variable :envvar:`squid/krb5auth` auf "
+"``yes`` und :ref:`starten Sie Squid neu <system-administration-web-proxy-additional-configuration>`."
+
+#: ../../system-administration/web-proxy.rst:221
+msgid ""
+"Squid associates successful NTLM authentication with the client TCP "
+"connection. A new TCP connection requires a new authentication."
+msgstr ""
+"Squid ordnet eine erfolgreiche NTLM-Authentifizierung der TCP-Verbindung "
+"des Clients zu. Eine neue TCP-Verbindung erfordert eine erneute "
+"Authentifizierung."
+
+#: ../../system-administration/web-proxy.rst:224
+msgid ""
+"The UCR variable :envvar:`squid/ntlmauth/keepalive` controls Squid's NTLM"
+" ``keep_alive`` setting."
+msgstr ""
+"Die UCR-Variable :envvar:`squid/ntlmauth/keepalive` steuert die "
+"``keep_alive``-Einstellung von Squid für NTLM."
+
+#: ../../system-administration/web-proxy.rst:227
+msgid ""
+"By default, all users can access the proxy. To limit proxy access to one "
+"or more groups, enable a proxy authentication mechanism and set the UCR "
+"variable :envvar:`squid/auth/allowed_groups` to the LDAP group names. The"
+" setting matches the groups' ``cn`` values."
+msgstr ""
+"Standardmäßig können alle Benutzer auf den Proxy zugreifen. Um den Proxy-"
+"Zugriff auf eine oder mehrere Gruppen zu beschränken, aktivieren Sie ein "
+"Verfahren zur Proxy-Authentifizierung und setzen Sie die UCR-Variable "
+":envvar:`squid/auth/allowed_groups` auf die LDAP-Gruppennamen. Die "
+"Einstellung wird mit den ``cn``-Werten der Gruppen abgeglichen."
+
+#: ../../system-administration/web-proxy.rst:234
+msgid ""
+"If you specify multiple groups, separate them with semicolons. Don't add "
+"spaces around the semicolons. After you change the setting, :ref:`restart"
+" Squid <system-administration-web-proxy-additional-configuration>`."
+msgstr ""
+"Wenn Sie mehrere Gruppen angeben, trennen Sie sie durch Semikolons. Fügen"
+" Sie vor oder nach den Semikolons keine Leerzeichen hinzu. "
+":ref:`Starten Sie Squid neu <system-administration-web-proxy-additional-configuration>`, "
+"nachdem Sie die Einstellung geändert haben."
+
+#~ msgid ""
+#~ ":numref:`system-administration-web-proxy-"
+#~ "permitted-ports-listing` shows how to "
+#~ "set the permitted ports. Run the "
+#~ "command with ``root`` privileges."
+#~ msgstr ""
+#~ ":numref:`system-administration-web-proxy-"
+#~ "permitted-ports-listing` zeigt, wie Sie "
+#~ "die zugelassenen Ports festlegen. Führen "
+#~ "Sie den Befehl mit ``root``-Berechtigungen "
+#~ "aus."
+
+#~ msgid ""
+#~ "With this setting, the proxy allows "
+#~ "access only to ports 80 and 443"
+#~ " (HTTP and HTTPS)."
+#~ msgstr ""
+#~ "Mit dieser Einstellung erlaubt der Proxy"
+#~ " den Zugriff nur auf die Ports "
+#~ "80 und 443 (HTTP und HTTPS)."
