@@ -22,7 +22,7 @@ from univention.lib.package_manager import LockError, PackageManager  # LockErro
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator
+    from collections.abc import Generator, Iterable
 
 
 package_logger = get_base_logger().getChild('packages')
@@ -84,7 +84,7 @@ def packages_are_installed(pkgs: Iterable[str], strict: bool = True) -> bool:
 
 
 @contextmanager
-def package_lock() -> Iterator[None]:
+def package_lock() -> Generator[None, None, None]:
     try:
         fd = open(LOCK_FILE, 'w')
         fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)

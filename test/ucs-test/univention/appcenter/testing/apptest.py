@@ -14,7 +14,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Generator, Iterator, Sequence
 from contextlib import contextmanager
 from http.client import HTTPConnection
 from shlex import quote
@@ -47,7 +47,7 @@ def run_test_file(fname: str) -> None:
 
 
 @contextmanager
-def pip_modules(modules: list[str]) -> Iterator[None]:
+def pip_modules(modules: list[str]) -> Generator[None, None, None]:
     if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
         yield
     if not shutil.which('pip3'):
@@ -74,7 +74,7 @@ def pip_modules(modules: list[str]) -> Iterator[None]:
 
 
 @contextmanager
-def xserver() -> Iterator[str]:
+def xserver() -> Generator[str, None, None]:
     _host, _, display = os.environ.get('DISPLAY', "").partition(":")
     if display:
         yield display
@@ -126,7 +126,7 @@ class Session:
         self.driver.quit()
 
     @contextmanager
-    def capture(self, name: str) -> Iterator[None]:
+    def capture(self, name: str) -> Generator[None, None, None]:
         filename = self._new_filename(name, 'mkv')
         pid = ffmpeg_start(filename, self.display_num)
         try:
@@ -209,7 +209,7 @@ class Session:
             raise RuntimeError(f'Could not find {name}')
 
     @contextmanager
-    def switched_frame(self, css: str) -> Iterator[None]:
+    def switched_frame(self, css: str) -> Generator[None, None, None]:
         iframe = self.assert_one(css)
         self.driver.switch_to.frame(iframe)
         yield
@@ -328,7 +328,7 @@ class Session:
 
     @classmethod
     @contextmanager
-    def running_chrome(cls, base_url: str, screenshot_path: str) -> Iterator[Self]:
+    def running_chrome(cls, base_url: str, screenshot_path: str) -> Generator[Self, None, None]:
         with xserver() as display:
             obj = cls.chrome(display, base_url, screenshot_path)
             obj.driver.maximize_window()

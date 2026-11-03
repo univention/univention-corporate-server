@@ -8,7 +8,7 @@ import os.path
 import shutil
 import subprocess
 import tempfile
-from collections.abc import Iterable, Iterator
+from collections.abc import Generator, Iterable, Iterator
 
 import requests
 from cryptography import x509
@@ -226,7 +226,7 @@ def certificates() -> Iterator[str]:
 
 
 @contextlib.contextmanager
-def download_tempfile(url: str) -> Iterator[str]:
+def download_tempfile(url: str) -> Generator[str, None, None]:
     with tempfile.NamedTemporaryFile() as fob:
         response = requests.get(url, stream=True)
         shutil.copyfileobj(response.raw, fob)
@@ -235,7 +235,7 @@ def download_tempfile(url: str) -> Iterator[str]:
 
 
 @contextlib.contextmanager
-def convert_crl_to_pem(path: str) -> Iterator[str]:
+def convert_crl_to_pem(path: str) -> Generator[str, None, None]:
     with tempfile.NamedTemporaryFile() as fob:
         convert = ('openssl', 'crl', '-inform', 'DER', '-in', path, '-outform', 'PEM', '-out', fob.name)
         subprocess.check_call(convert)

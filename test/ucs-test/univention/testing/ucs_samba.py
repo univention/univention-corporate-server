@@ -8,7 +8,7 @@ import socket
 import sqlite3
 import subprocess
 import time
-from collections.abc import Iterator
+from collections.abc import Generator
 from typing import Any
 
 import ldap
@@ -30,7 +30,7 @@ class WaitForS4ConnectorTimeout(Exception):
 
 
 @contextlib.contextmanager
-def password_policy(complexity: bool = False, minimum_password_age: int = 0, maximum_password_age: int = 3) -> Iterator[None]:
+def password_policy(complexity: bool = False, minimum_password_age: int = 0, maximum_password_age: int = 3) -> Generator[None, None, None]:
     if not package_installed('univention-samba4'):
         print('skipping samba password policy adjustment')
         yield

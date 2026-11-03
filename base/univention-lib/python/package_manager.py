@@ -13,7 +13,7 @@ import re
 import subprocess
 import sys
 import threading
-from collections.abc import Callable, Iterable, Iterator, Sequence
+from collections.abc import Callable, Generator, Iterable, Iterator, Sequence
 from contextlib import contextmanager
 from errno import ENOENT, ENOSPC
 from logging import DEBUG, Handler, getLogger
@@ -463,7 +463,7 @@ class PackageManager:
         return self.lock_fd is not None and self.apt_lock_fd >= 0
 
     @contextmanager
-    def locked(self, reset_status: bool = False, set_finished: bool = False) -> Iterator[None]:
+    def locked(self, reset_status: bool = False, set_finished: bool = False) -> Generator[None, None, None]:
         """
         Perform locking and cleanup actions before and after working with package state.
 
@@ -502,7 +502,7 @@ class PackageManager:
         return out, err
 
     @contextmanager
-    def no_umc_restart(self, exclude_apache: bool = False) -> Iterator[None]:
+    def no_umc_restart(self, exclude_apache: bool = False) -> Generator[None, None, None]:
         """
         Run package manager with restart of |UMC| (and Apache) disabled.
 
@@ -566,7 +566,7 @@ class PackageManager:
         self.progress_state.hard_reset()
 
     @contextmanager
-    def brutal_noninteractive(self) -> Iterator[None]:
+    def brutal_noninteractive(self) -> Generator[None, None, None]:
         """Configure package manager to never ask for user input and to overwrite changed files"""
         with self.noninteractive():
             options = [
@@ -583,7 +583,7 @@ class PackageManager:
                 self._set_apt_pkg_config(revert_options)
 
     @contextmanager
-    def noninteractive(self) -> Iterator[None]:
+    def noninteractive(self) -> Generator[None, None, None]:
         """Configure package manager to never ask for user input."""
         old_debian_frontend = os.environ.get('DEBIAN_FRONTEND')
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'

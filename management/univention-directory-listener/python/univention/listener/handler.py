@@ -5,7 +5,7 @@
 import inspect
 import os
 import types
-from collections.abc import Iterable, Iterator, Mapping, Sequence
+from collections.abc import Generator, Iterable, Mapping, Sequence
 from contextlib import contextmanager
 from typing import Any, cast
 
@@ -155,7 +155,7 @@ class ListenerModuleHandler(metaclass=HandlerMetaClass):
 
     @staticmethod
     @contextmanager
-    def as_root() -> Iterator[None]:
+    def as_root() -> Generator[None, None, None]:
         """
         Contextmanager to temporarily change the effective UID of the current
         process to 0:

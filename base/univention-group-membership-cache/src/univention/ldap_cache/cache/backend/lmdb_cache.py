@@ -15,7 +15,7 @@ from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator, Iterator
 
 
 class LmdbCaches(Caches):
@@ -42,7 +42,7 @@ class LmdbCaches(Caches):
 
 class LmdbCache(LdapCache):
     @contextmanager
-    def writing(self, writer: Any | None = None) -> Iterator[Any]:
+    def writing(self, writer: Any | None = None) -> Generator[Any, None, None]:
         if writer is not None:
             yield writer
         else:
@@ -67,7 +67,7 @@ class LmdbCache(LdapCache):
             writer.delete(key)
 
     @contextmanager
-    def reading(self) -> Iterator[Any]:
+    def reading(self) -> Generator[Any, None, None]:
         with self.env.begin(self.sub_db) as txn, txn.cursor() as cursor:
             yield cursor
 
@@ -94,7 +94,7 @@ class LmdbCache(LdapCache):
         return ret
 
     @contextmanager
-    def _load_key_translations(self) -> Iterator[Any]:
+    def _load_key_translations(self) -> Generator[Any, None, None]:
         entry_uuid_db = self.env.open_db('EntryUUID', dupsort=False)
         with self.env.begin(entry_uuid_db) as txn:
             yield txn

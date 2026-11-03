@@ -19,7 +19,8 @@ from univention.config_registry import ConfigRegistry
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+
+    from collections.abc import Generator
 
     from univention.admindiary import DiaryEntry
 
@@ -96,7 +97,7 @@ def windowed_query(q, column, windowsize, single_entity=True):
 
 
 @contextmanager
-def get_session(auto_commit: bool = True) -> Iterator[sqlalchemy.Session]:
+def get_session(auto_commit: bool = True) -> Generator[sqlalchemy.Session, None, None]:
     session = None
     try:
         session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=get_engine()))
@@ -365,7 +366,7 @@ class Client:
 
 
 @contextmanager
-def get_client(version: int) -> Iterator[Client]:
+def get_client(version: int) -> Generator[Client, None, None]:
     if version != 1:
         raise UnsupportedVersion(version)
     with get_session() as session:

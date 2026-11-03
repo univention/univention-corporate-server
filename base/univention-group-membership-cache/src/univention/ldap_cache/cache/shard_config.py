@@ -13,7 +13,7 @@ from univention.ldap_cache.log import log
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
 
 CONFIG_FILE = '/usr/share/univention-group-membership-cache/shards.json'
@@ -43,7 +43,7 @@ def shards_from_config() -> list[type[Shard]]:
 
 
 @contextmanager
-def _writing_config() -> Iterator[Any]:
+def _writing_config() -> Generator[Any, None, None]:
     try:
         with open(CONFIG_FILE) as fd:
             shards = json.load(fd)

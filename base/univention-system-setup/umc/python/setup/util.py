@@ -44,7 +44,7 @@ from univention.management.console.modules import UMC_Error
 
 
 if TYPE_CHECKING:
-    from collections.abc import Container, Iterator, Mapping
+    from collections.abc import Container, Generator, Iterator, Mapping
 
 
 # FIXME: this triggers imports from univention-lib during build time test execution.
@@ -303,7 +303,7 @@ def run_networkscrips(demo_mode: bool = False) -> None:
 
 
 @contextmanager
-def written_profile(values: dict[str, str]) -> Iterator[None]:
+def written_profile(values: dict[str, str]) -> Generator[None, None, None]:
     write_profile(values)
     try:
         yield
@@ -548,7 +548,7 @@ deb-systemd-invoke restart univention-management-console-server;''')
 
 
 @contextmanager
-def _temporary_password_file(password: str) -> Iterator[str]:
+def _temporary_password_file(password: str) -> Generator[str, None, None]:
     # write password file
     with open(PATH_PASSWORD_FILE, 'w') as fp:
         fp.write('%s' % password)

@@ -16,7 +16,7 @@ from univention.ldap_cache.log import debug, log
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator, Iterator
 
 
 MAX_FAIL_COUNT = 5
@@ -44,7 +44,7 @@ class GdbmCache(LdapCache):
         os.chmod(self.db_file, 0o640)
 
     @contextmanager
-    def writing(self, writer: Any | None = None) -> Iterator[Any]:
+    def writing(self, writer: Any | None = None) -> Generator[Any, None, None]:
         if writer is not None:
             yield writer
         else:

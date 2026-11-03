@@ -13,7 +13,7 @@ import logging
 import os
 import sys
 import traceback
-from collections.abc import Iterable, Iterator
+from collections.abc import Generator, Iterable
 from contextlib import contextmanager
 from datetime import datetime
 from types import TracebackType
@@ -377,7 +377,7 @@ class AptScript(SetupScript):
         self.package_manager.always_install(packages)
 
     @contextmanager
-    def noninteractive(self) -> Iterator[None]:
+    def noninteractive(self) -> Generator[None, None, None]:
         if self.brutal_apt_options:
             with self.package_manager.brutal_noninteractive():
                 yield

@@ -13,7 +13,7 @@
 ## bugs: [57279]
 
 import subprocess
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager, suppress
 from pathlib import Path
 from shlex import quote
@@ -42,7 +42,7 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFre
 
 
 @contextmanager
-def schema_file() -> Iterator[Path]:
+def schema_file() -> Generator[Path, None, None]:
     tmp = Path(mkdtemp())
     schema = tmp / SCHEMA_NAME
     schema.write_text(SCHEMA)
@@ -54,7 +54,7 @@ def schema_file() -> Iterator[Path]:
 
 
 @contextmanager
-def register_schema(schema: Path) -> Iterator[None]:
+def register_schema(schema: Path) -> Generator[None, None, None]:
     installed = Path("/var/lib/univention-ldap/local-schema") / SCHEMA_NAME
     assert not installed.exists(), f"Schema '{installed}' already exists"
     subprocess.check_call(['sh', '-x', '-c', f'. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPSchema {quote(schema.as_posix())}'])

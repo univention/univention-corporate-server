@@ -4,7 +4,7 @@
 
 import contextlib
 import subprocess
-from collections.abc import Iterator
+from collections.abc import Generator
 
 import univention.lib.admember
 from univention.config_registry import ucr_live as config_registry
@@ -50,7 +50,7 @@ class NSUpdateError(UpdateError):
 
 
 @contextlib.contextmanager
-def kinit(principal: str, keytab: str | None = None, password_file: str | None = None) -> Iterator[None]:
+def kinit(principal: str, keytab: str | None = None, password_file: str | None = None) -> Generator[None, None, None]:
     auth = '--keytab={tab}' if keytab else '--password-file={file}'
     cmd = ('kinit', auth.format(tab=keytab, file=password_file), principal)
     MODULE.process('Running: %s', ' '.join(cmd))
