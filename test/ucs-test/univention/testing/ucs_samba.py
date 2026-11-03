@@ -21,6 +21,9 @@ from univention import config_registry
 from univention.testing.utils import package_installed
 
 
+RE_UID = re.compile(r'^uid: (.*)\$$', re.M)
+
+
 class DRSReplicationFailed(Exception):
     pass
 
@@ -111,7 +114,7 @@ def get_available_s4connector_dc() -> str:
     if not stdout:
         print("WARNING: Automatic S4 Connector host detection failed")
         return ""
-    matches = re.compile(r'^uid: (.*)\$$', re.M).findall(stdout.decode('utf-8', 'replace'))
+    matches = RE_UID.findall(stdout.decode('utf-8', 'replace'))
     if len(matches) == 1:
         return matches[0]
     elif len(matches) == 0:

@@ -83,21 +83,27 @@ class TestProperty(unittest.TestCase):
     def test_callable_set(self):
         x = object()
         o = FakeObject(prop='value1')
-        f = lambda obj, extra: 'value2' if extra is x and obj is o else 'error'  # noqa: E731
+
+        def f(obj, extra):
+            return 'value2' if extra is x and obj is o else 'error'
         p = property(multivalue=False, default=(f, ['prop'], x))
         assert p.default(o) == 'value2'
 
     def test_callable_empty_sv(self):
         x = object()
         o = FakeObject(prop='')
-        f = lambda obj, extra: 1 / 0  # noqa: E731
+
+        def f(obj, extra):
+            return 1 / 0
         p = property(multivalue=False, default=(f, ['prop'], x))
         assert p.default(o) is None
 
     def test_callable_empty_mv(self):
         x = object()
         o = FakeObject(prop='')
-        f = lambda obj, extra: 1 / 0  # noqa: E731
+
+        def f(obj, extra):
+            return 1 / 0
         p = property(multivalue=True, default=(f, ['prop'], x))
         assert p.default(o) == []
 

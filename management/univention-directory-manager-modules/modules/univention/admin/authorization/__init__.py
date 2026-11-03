@@ -65,6 +65,7 @@ class Authorization:
 
     global_enabled = False
     engine = None
+
     get_privileged_connection = lambda: None  # noqa: E731
     _user_roles_cache = {}
 

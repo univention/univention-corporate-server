@@ -125,8 +125,8 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
             'mailPrimaryAddress': user_addr,
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
+                                f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -149,7 +149,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                            f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                            f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
     })
 
     time.sleep(3)
@@ -223,8 +223,8 @@ def test_remove_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
             'mailPrimaryAddress': user_addr,
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
+                                f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -251,8 +251,8 @@ def test_create_user_without_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
             'mailHomeServer': fqdn,
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
+                                f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -271,8 +271,8 @@ def test_modify_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
             'mailPrimaryAddress': user_addr,
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
+                                f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -300,8 +300,8 @@ def test_modify_uid(udm, ucr, fqdn, user_addr):
             'mailPrimaryAddress': user_addr,
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
+                                f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -328,8 +328,8 @@ def test_remove_user(udm, ucr, fqdn, user_addr):
             'mailPrimaryAddress': user_addr,
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
+                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
+                                f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         })
 
     time.sleep(3)
