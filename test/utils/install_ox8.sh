@@ -36,7 +36,7 @@ apt install --yes python3-venv
 # Use operations-guide mirrored by Nautilus team instead of upstream
 # Parametrize this clone can be a future improvement
 #git clone --depth 1 --branch "ci-0.0.2" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
-git clone --depth 1 https://gitlab.open-xchange.com/appsuite/operation-guides.git
+git clone --depth 1 https://gitlab.com/openxchange/oss/deployments/unified-mailstack.git
 
 cd operation-guides
 python3 -mvenv v
