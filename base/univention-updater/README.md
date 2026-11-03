@@ -45,8 +45,8 @@ On the server they are published as:
 
 | File in the repository | Published as |
 | ---------------------- | ------------ |
-| `script/preup.sh` with `script/check.sh` inserted | `dists/ucs527/preup.sh` |
-| `script/postup.sh` | `dists/ucs527/postup.sh` |
+| `script/preup.sh` with `script/check.sh` inserted | `dists/ucs530/preup.sh` |
+| `script/postup.sh` | `dists/ucs530/postup.sh` |
 | `script/check.sh` | `download/univention-update-checks/pre-update-checks-5.3-0` |
 
 Each file has a detached PGP signature next to it (`*.gpg`), made with the key of the UCS release.
@@ -147,8 +147,8 @@ The same as step 4, but for `mirror/ftp/` and https://updates.software-univentio
   On `omar` `chattr` can not be run as `sudo chattr …`, so become root first with `sudo bash`:
   ```sh
   sudo bash
-  chattr -i /var/univention/buildsystem2/test_mirror/ftp/dists/ucs527/postup.sh  # unlock before publishing
-  chattr +i /var/univention/buildsystem2/test_mirror/ftp/dists/ucs527/postup.sh  # protect again afterwards
+  chattr -i /var/univention/buildsystem2/test_mirror/ftp/dists/ucs530/postup.sh  # unlock before publishing
+  chattr +i /var/univention/buildsystem2/test_mirror/ftp/dists/ucs530/postup.sh  # protect again afterwards
   ```
 * A directory which does not yet exist on the download server, e.g. `download/univention-update-checks/` on testing, is synchronized as a whole, as `rsync` can not create it for a single file.
 * Before overwriting anything the tool saves the old files to `~/backup-update-checks/`.
