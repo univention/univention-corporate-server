@@ -1,3 +1,9 @@
+ucs-test (12.7.15) unstable; urgency=medium
+
+  * Bug #58543: Test explicit versions in "univention-app upgrade"
+
+ -- Iván Barbecho Delgado <ivan.delgado@univention.de>  Tue, 03 Nov 2026 17:37:11 +0100
+
 ucs-test (12.7.14) unstable; urgency=medium
 
   * Bug #53538: pin app image for docker tests
