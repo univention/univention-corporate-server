@@ -3,7 +3,6 @@ SPDX-PackageName = "Univention Corporate Server"
 SPDX-PackageSupplier = "Univention GmbH <info@univention.de>"
 SPDX-PackageDownloadLocation = "https://www.univention.com/"
 
-# MAKE SURE THIS IS IN SYNC WITH: .pre-commit-config.yaml: reuse-annotate
 [[annotations]]
 path = [
   "**.gitignore",
@@ -20,6 +19,7 @@ path = [
   "doc/developer-reference/umc/*.umc-modules",
   "doc/developer-reference/umc/*.xml",
   "doc/errata/**.yaml",
+  "doc/changelog/staged/README.dev.md",
   "doc/errata/erratum.schema.json",
   "doc/extended-docs/ucr-deprecated.schema.json",
   "pyproject.toml",

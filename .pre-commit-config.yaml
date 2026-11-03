@@ -191,7 +191,7 @@ repos:
       - id: reuse-toml
         stages: [ manual ]
   - repo: https://github.com/fsfe/reuse-tool
-    rev: v6.2.0
+    rev: v6.3.0
     hooks:
       - id: reuse
         alias: reuse-annotate
@@ -203,84 +203,14 @@ repos:
             "--template", "univention",
             "--skip-unrecognised",
             "--skip-existing", # or "--merge-copyrights" but it breaks
+            "--skip-global",
         ]
         pass_filenames: true
         description: "Annotate all unlicensed files as AGPL-3.0-only with Univention GmbH copyright"
         stages: [ manual ]
-        # we have to specify everything covered by REUSE.toml again due to https://github.com/fsfe/reuse-tool/issues/1190
         # ignoring __init__.py due to https://github.com/fsfe/reuse-tool/issues/1179
-        # MAKE SURE THIS IS IN SYNC WITH REUSE.toml / update-reuse-toml.py !
         <<: &common
-          exclude: "^.*[.]1$\
-                    |^.*[.]5$\
-                    |^.*[.]8$\
-                    |^.*[.]acl$\
-                    |^.*[.]ai$\
-                    |^base/univention-dvd/data/\
-                    |^base/univention-dvd/tasks/\
-                    |^base/univention-dvd/tools/boot/.*/parse_isolinux$\
-                    |^base/univention-dvd/ucs.*[.]conf$\
-                    |^.*[.]cfg$\
-                    |^.*[.]conf$\
-                    |^.*/conffiles/.*/.*$\
-                    |^.*[.]css$\
-                    |^.*[.]csv$\
-                    |^.*[.]cvd$\
-                    |^.*/debian/.*$\
-                    |^doc/errata/.*[.]yaml$\
-                    |^doc/changelog/staged/.*[.]rst$\
-                    |^doc/developer-reference/.*/.*/debian/.*$\
-                    |^doc/.*/spelling_wordlist$\
-                    |^doc/developer-reference/umc/.*[.]xml$\
-                    |^doc/developer-reference/umc/.*[.]umc-modules$\
-                    |^.*[.]gitignore$\
-                    |^[.]gitlab-ci/ht$\
-                    |^.*[.]gpg$\
-                    |^.*[.]gz$\
-                    |^.*[.]html$\
-                    |^.*[.]ico$\
-                    |^.*[.]ini$\
-                    |^.*__init__.py$\
-                    |^.*[.]jpg$\
-                    |^.*[.]json$\
-                    |^.*[.]ldif$\
-                    |^management/univention-directory-manager-rest/var/www/univention/udm/js/.*.js$\
-                    |^.*[.]md$\
-                    |^.*[.]mo$\
-                    |^packaging/ucslint/testframework/\
-                    |^packaging/ucslint/univention/ucslint/0010-Copyright.py\
-                    |^.*[.]patch$\
-                    |^.*[.]png$\
-                    |^.*[.]po$\
-                    |^.*[.]pot$\
-                    |[.]reuse/templates/univention.jinja2$
-                    |^.*[.]jinja2$\
-                    |^.*[.]rml$\
-                    |^.*[.]schema$\
-                    |^services/univention-ldb-modules/buildtools/\
-                    |^services/univention-ldb-modules/third_party/\
-                    |^.*[.]short$\
-                    |^.*[.]styl$\
-                    |^.*[.]svg$\
-                    |^.*[.]svgz$\
-                    |^test/scenarios/.*[.]cfg$\
-                    |^test/ucs-test/[0-9].*/.*$\
-                    |^.*/test/.*$\
-                    |^.*/tests/.*$\
-                    |^.*[.]tmpl$\
-                    |^.*[.]toml$\
-                    |^.*[.]txt$\
-                    |^.*/unittests/.*$\
-                    |^.*[.]zip$\
-                    |^mail/univention-mail-postfix/dh.*$\
-                    |^management/univention-portal/frontend/public/fonts/OpenSans.*$\
-                    |^management/univention-portal/frontend/yarn[.]lock$\
-                    |^management/univention-ldap/dh_2048[.]pem$\
-                    |^management/univention-web/css/images/.*[.]gif$\
-                    |^management/univention-web/css/form/images/loading[.]gif$\
-                    |^management/univention-directory-manager-modules/doc/UDM_Python-API_UML-class-diagram_horizontal.pdf$\
-                    |^management/univention-web/docs/style_images/bgc-loading-circle.mp4$\
-                    "
+          exclude: "^.*__init__.py$"
       - id: reuse
         alias: reuse-lint
         stages: [ manual ]
