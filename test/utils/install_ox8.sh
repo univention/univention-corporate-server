@@ -38,7 +38,7 @@ apt install --yes python3-venv
 #git clone --depth 1 --branch "ci-0.0.2" https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
 git clone --depth 1 https://gitlab.com/openxchange/oss/deployments/unified-mailstack.git
 
-cd operation-guides
+cd unified-mailstack
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
 v/bin/pip install -r requirements.txt
