@@ -52,6 +52,7 @@ ignore = [
  "T20",  # allow use of print()
  "I",  # isort, the original isort is still more acurate
  "N",  # ignore non PEP-8 conform names
+ "RUF105",  # noqa-comments
  "ANN",  # missing type annotation
  "ERA",  # don't remove commented out code
  "ARG",  # ignore unused arguments
@@ -153,6 +154,8 @@ ignore = [
  "TC006",  # runtime-cast-value
  "RUF031",  # incorrectly-parenthesized-tuple-in-subscript
  "SIM112",  # uncapitalized-environment-variables
+ "pytest-fixture-autouse",
+ "shared-clock-mock",
 
  # should be done/autofixes soon
  "PLR6104",  # non-augmented-assignment
