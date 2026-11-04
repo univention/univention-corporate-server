@@ -27,3 +27,6 @@ desc: |
 bug: [60078, 59114]
 cve:
 - GHSA-v99c-3wcr-2r5x
+erratum: 673
+announced: 2026-11-04
+support: core
