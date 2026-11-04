@@ -192,3 +192,6 @@ cve:
 - CVE-2026-118002
 - CVE-2026-118003
 - CVE-2026-118004
+erratum: 664
+announced: 2026-11-04
+support: core
