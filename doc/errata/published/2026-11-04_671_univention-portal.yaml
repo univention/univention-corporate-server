@@ -10,3 +10,6 @@ desc: |
    changes of the user profile, for example if the malware scan rejects
    an uploaded profile picture.
 bug: [60081]
+erratum: 671
+announced: 2026-11-04
+support: core
