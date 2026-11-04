@@ -26,3 +26,6 @@ desc: |
 bug: [59998, 59852, 59917]
 cve:
 - GHSA-j546-78hh-36v6
+erratum: 670
+announced: 2026-11-04
+support: core
