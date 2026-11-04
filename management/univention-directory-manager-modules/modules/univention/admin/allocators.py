@@ -81,6 +81,8 @@ _type2scope: dict[_Types, _Scopes] = {
 }
 
 _default_uid_gid_ranges = [{'first': 1000, 'last': 55000}, {'first': 65536, 'last': 1000000}]
+_range_search_threshold = 2
+_range_search_size = 10000
 
 
 def _get_uid_gid_ranges(atype: _TypesUidGid) -> list[dict[str, int]]:
@@ -163,10 +165,15 @@ def acquireRange(
             startID = _range['first']
         last = _range['last'] + 1
         other = None
+        used_values: set[int] = set()
+        used_searches = 0
 
         while startID < last:
             startID += 1
             log.trace('Set Start ID', start=startID)
+            if startID in used_values:
+                log.trace('Skip known used ID', value=startID)
+                continue
             try:
                 if other:
                     # exception occurred while locking other, so atype was successfully locked and must be released
@@ -197,6 +204,27 @@ def acquireRange(
                 if other:
                     univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
                     other = None
+                if atype in ('uidNumber', 'gidNumber'):
+                    used_searches += 1
+                    if used_searches >= _range_search_threshold:
+                        search_start = startID + 1
+                        search_end = min(last - 1, search_start + _range_search_size - 1)
+                        if search_start <= search_end:
+                            log.trace('Search used ID range', start=search_start, end=search_end)
+                            for _dn, attributes in lo.authz_connection.search(
+                                base=position.getBase(),
+                                filter=filter_format('(|(&(uidNumber>=%s)(uidNumber<=%s))(&(gidNumber>=%s)(gidNumber<=%s)))', (str(search_start), str(search_end), str(search_start), str(search_end))),
+                                attr=['uidNumber', 'gidNumber'],
+                            ):
+                                for values in attributes.values():
+                                    for value in values:
+                                        try:
+                                            used_value = int(value)
+                                        except ValueError:
+                                            continue
+                                        if search_start <= used_value <= search_end:
+                                            used_values.add(used_value)
+                        used_searches = 0
                 continue
 
             log.trace('Got lock', value=startID)
