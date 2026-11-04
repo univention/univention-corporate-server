@@ -97,15 +97,15 @@ Type=bool
 Categories=management-udm
 
 [directory/manager/uidNumber/ranges]
-Description[de]=Kommaseparierte Bereiche für die automatische Vergabe von uidNumber durch UDM. Jeder Bereich wird als erste-letzte Zahl angegeben, zum Beispiel 1000-55000,65536-1000000. Bei Bereichen außerhalb der Samba-Standardbereiche müssen außerdem "samba/idmap/$(ucr get windows/domain)/range" und "samba/idmap/range" angepasst werden.
-Description[en]=Comma-separated ranges for automatic uidNumber allocation by UDM. Each range is specified as first-last number, for example 1000-55000,65536-1000000. If the ranges exceed the Samba default ranges, also adjust "samba/idmap/$(ucr get windows/domain)/range" and "samba/idmap/range".
+Description[de]=Kommaseparierte Bereiche für die automatische Vergabe von uidNumber durch UDM. Jeder Bereich wird als erste-letzte Zahl angegeben, zum Beispiel 1000-55000,65536-1000000. Bei Bereichen außerhalb der Samba-Standardbereiche müssen außerdem die zusammenhängenden Bereiche von "samba/idmap/$(ucr get windows/domain)/range" und "samba/idmap/range" angepasst werden.
+Description[en]=Comma-separated ranges for automatic uidNumber allocation by UDM. Each range is specified as first-last number, for example 1000-55000,65536-1000000. If the ranges exceed the Samba default ranges, also adjust the single contiguous ranges of "samba/idmap/$(ucr get windows/domain)/range" and "samba/idmap/range".
 Type=str
 Default=1000-55000,65536-1000000
 Categories=management-udm
 
 [directory/manager/gidNumber/ranges]
-Description[de]=Kommaseparierte Bereiche für die automatische Vergabe von gidNumber durch UDM. Jeder Bereich wird als erste-letzte Zahl angegeben, zum Beispiel 1000-55000,65536-1000000. Bei Bereichen außerhalb der Samba-Standardbereiche müssen außerdem samba/idmap/$(ucr get windows/domain)/range und samba/idmap/range angepasst werden.
-Description[en]=Comma-separated ranges for automatic gidNumber allocation by UDM. Each range is specified as first-last number, for example 1000-55000,65536-1000000. If the ranges exceed the Samba default ranges, also adjust samba/idmap/$(ucr get windows/domain)/range and samba/idmap/range.
+Description[de]=Kommaseparierte Bereiche für die automatische Vergabe von gidNumber durch UDM. Jeder Bereich wird als erste-letzte Zahl angegeben, zum Beispiel 1000-55000,65536-1000000. Bei Bereichen außerhalb der Samba-Standardbereiche müssen außerdem die zusammenhängenden Bereiche von samba/idmap/$(ucr get windows/domain)/range und samba/idmap/range angepasst werden.
+Description[en]=Comma-separated ranges for automatic gidNumber allocation by UDM. Each range is specified as first-last number, for example 1000-55000,65536-1000000. If the ranges exceed the Samba default ranges, also adjust the single contiguous ranges of samba/idmap/$(ucr get windows/domain)/range and samba/idmap/range.
 Type=str
 Default=1000-55000,65536-1000000
 Categories=management-udm
