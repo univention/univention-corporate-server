@@ -1837,3 +1837,43 @@ msgstr ""
 msgid ""
 "univention-s4search did not show any memberOf values for sAMAccountName=%s."
 msgstr "univention-s4search zeigt keine memberOf-Werte für sAMAccountName=%s."
+
+#, python-format
+msgid "%(domain_variable)s and %(wildcard_variable)s contain overlapping ranges."
+msgstr "%(domain_variable)s und %(wildcard_variable)s enthalten sich überlappende Bereiche."
+
+msgid "Check UDM UID/GID ranges against Samba idmap ranges"
+msgstr "UDM-UID/GID-Bereiche gegen Samba-idmap-Bereiche prüfen"
+
+msgid "Checking UDM UID/GID ranges against Samba idmap ranges."
+msgstr "UDM-UID/GID-Bereiche gegen Samba-idmap-Bereiche prüfen."
+
+msgid "No inconsistencies found between the UDM UID/GID ranges and the Samba idmap ranges."
+msgstr "Keine Inkonsistenzen zwischen den UDM-UID/GID-Bereichen und den Samba-idmap-Bereichen gefunden."
+
+#, python-format
+msgid "The UCR variable %(variable)s contains the invalid range %(range)r."
+msgstr "Die UCR-Variable %(variable)s enthält den ungültigen Bereich %(range)r."
+
+#, python-format
+msgid "The UCR variable %(variable)s contains the invalid range %(range)r.%(fallback)s"
+msgstr "Die UCR-Variable %(variable)s enthält den ungültigen Bereich %(range)r.%(fallback)s"
+
+msgid " UDM falls back to the default UID/GID ranges."
+msgstr " UDM verwendet stattdessen die Standardbereiche für UID/GID."
+
+#, python-format
+msgid "The UCR variable %(variable)s does not contain a range."
+msgstr "Die UCR-Variable %(variable)s enthält keinen Bereich."
+
+#, python-format
+msgid "The UCR variable %(variable)s must contain exactly one contiguous range."
+msgstr "Die UCR-Variable %(variable)s muss genau einen zusammenhängenden Bereich enthalten."
+
+#, python-format
+msgid "The UDM UID/GID ranges overlap with Samba's automatically allocated idmap range %(first)d-%(last)d."
+msgstr "Die UDM-UID/GID-Bereiche überschneiden sich mit dem von Samba automatisch vergebenen idmap-Bereich %(first)d-%(last)d."
+
+#, python-format
+msgid "The UDM UID/GID ranges are not covered by %(variable)s. Adjust %(variable)s or the UDM range variables."
+msgstr "Die UDM-UID/GID-Bereiche werden nicht durch %(variable)s abgedeckt. Passen Sie %(variable)s oder die UDM-Bereichsvariablen an."
