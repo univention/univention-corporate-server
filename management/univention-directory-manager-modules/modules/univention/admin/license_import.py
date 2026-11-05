@@ -163,9 +163,15 @@ class LicenseImport(ldif.LDIFParser):
         exists = bool(result)
 
         if ldap_connection.authz.enabled:
-            obj = univention.admin.modules.get('settings/license').object(None, ldap_connection, None, None, None, self.entry)
+            license_module = univention.admin.modules.get('settings/license')
+            if exists:
+                org = license_module.object(None, ldap_connection, None, None, None, self.entry)
+                obj = license_module.object(None, ldap_connection, None, str(self.dn))
+                # be careful! usually the license module dosen't allow any modifications
+                obj.info.update(org.info)
+            else:
+                obj = license_module.object(None, ldap_connection, None, str(self.dn) if exists else None, None, self.entry)
             obj.position.setDn(str(self.dn.parent))
-            obj._exists = exists
 
             if exists:
                 ldap_connection.authz.is_modify_allowed(obj)

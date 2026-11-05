@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.5) unstable; urgency=medium
+
+  * Bug #60103: fix replacing of license in delegative administration
+
+ -- Florian Best <best@univention.de>  Thu, 05 Nov 2026 10:52:46 +0100
+
 univention-directory-manager-modules (17.7.4) unstable; urgency=medium
 
   * Bug #59114: restrict object classes for license upload
