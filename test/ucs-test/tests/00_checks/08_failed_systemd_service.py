@@ -10,6 +10,7 @@ import pytest
 
 IGNORE_UNITS = {
     # 'some-known-broken.service',
+    'console-setup.service',  # Bug #59596
 }
 
 
