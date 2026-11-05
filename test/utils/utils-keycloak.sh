@@ -237,7 +237,7 @@ external_portal_config_oidc () {
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	# WHY?
-	service slapd restart || true
+	systemctl restart slapd || true
 }
 
 
@@ -294,7 +294,7 @@ external_portal_config_oidc_manually () {
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	service univention-management-console-server restart
-	service slapd restart || true
+	systemctl restart slapd || true
 }
 
 # FIXME

@@ -20,10 +20,10 @@ info "Create group and a member for it"
 
 old="$(ucr get ldap/refint)"
 ucr set ldap/refint=false
-service slapd restart
+systemctl restart slapd
 trap '
 ucr set ldap/refint="$old"
-service slapd restart
+systemctl restart slapd
 ' INT TERM EXIT
 
 

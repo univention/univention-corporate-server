@@ -604,7 +604,7 @@ setup_keycloak_as_idp_on_school () {
      univention-app install keycloak
      ucr set umc/saml/idp-server="https://ucs-sso-ng.$(hostname -d)/realms/ucs/protocol/saml/descriptor"
      udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
-     service slapd restart
+     systemctl restart slapd
 }
 
 install_test_app () {

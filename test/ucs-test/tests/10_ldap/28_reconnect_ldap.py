@@ -18,7 +18,7 @@ lo = univention.uldap.getMachineConnection()
 dn = lo.lo.whoami_s()[3:]
 attrs = lo.get(dn)
 print(('Attrs=', attrs))
-subprocess.call(['service', 'slapd', 'stop'])
+subprocess.call(['systemctl', 'stop', 'slapd'])
 try:
     try:
         lo.get(dn)
@@ -27,9 +27,9 @@ try:
     else:
         raise ValueError('did not raise SERVER_DOWN')
 
-    subprocess.call(['service', 'slapd', 'start'])
+    subprocess.call(['systemctl', 'start', 'slapd'])
     new_attrs = lo.get(dn)
     print(('New Attrs=', new_attrs))
     assert attrs == new_attrs
 finally:
-    subprocess.call(['service', 'slapd', 'restart'])
+    subprocess.call(['systemctl', 'restart', 'slapd'])
