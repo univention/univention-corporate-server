@@ -37,8 +37,13 @@ Cron-Format
 Crypt-Hash
 DDS
 DNS-Domänennamens
+Debug-Ausgabe
 Debug-Ebenen
 Debug-Logs
+Debug-Protokollierung
+Debug-Stufe
+Debug-Stufen
+Debug-Variablen
 Docker-Anwendung
 Docker-Anwendungen
 Docker-Netzwerk
@@ -53,6 +58,7 @@ Engines
 Entscheidungs-Engine
 Events
 Exit
+Forward-Lookup
 Foundation
 Gruppen-DNs
 Hash-Algorithmen
@@ -68,6 +74,7 @@ Infrastrukturdienste
 Infrastrukturumgebungen
 Integrationen
 Konnektoren
+LDB-Datenbank
 Label
 Labels
 Limiting
@@ -123,6 +130,7 @@ Release-Informationen
 Release-Typen
 Remote-Servern
 Repository-Mirror
+Reverse-Lookup
 Richtlinienvariablen
 Root-Berechtigungen
 SSH-Dienst

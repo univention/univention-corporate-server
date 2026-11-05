@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-06 21:10+0000\n"
-"PO-Revision-Date: 2026-11-06 22:14+0100\n"
+"PO-Revision-Date: 2026-11-06 22:50+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -378,6 +378,489 @@ msgid ""
 msgstr ""
 "im :cite:t:`uv-nubus-manual` für Informationen zur Verwendung des "
 "Verwaltungsmoduls *DHCP* in der *Management UI*."
+
+#: ../../domain-infrastructure/dns.rst:7
+#: ../../domain-infrastructure/index.rst:52
+msgid "DNS"
+msgstr "DNS"
+
+#: ../../domain-infrastructure/dns.rst:9
+msgid ""
+"Nubus for UCS integrates BIND for name resolution through the domain name"
+" system (DNS). The DNS server provides name resolution for the local "
+"network. BIND is available on all Nubus for UCS Directory Node roles. "
+"Nubus for UCS doesn't support the installation of BIND on other system "
+"roles."
+msgstr ""
+"Nubus für UCS integriert BIND für die Namensauflösung über das Domain "
+"Name System (DNS). Der DNS-Server stellt die Namensauflösung für das "
+"lokale Netzwerk bereit. BIND ist auf allen Directory Node Rollen von "
+"Nubus für UCS verfügbar. Nubus für UCS unterstützt keine Installation von"
+" BIND auf anderen Systemrollen."
+
+#: ../../domain-infrastructure/dns.rst:14
+msgid ""
+"For information about configuring the name servers that a Nubus for UCS "
+"system uses, see :ref:`system-administration-network`."
+msgstr ""
+"Informationen zur Konfiguration der Nameserver, die ein Nubus für UCS "
+"System verwendet, finden Sie unter :ref:`system-administration-network`."
+
+#: ../../domain-infrastructure/dns.rst:21
+msgid "DNS zones"
+msgstr "DNS-Zonen"
+
+#: ../../domain-infrastructure/dns.rst:23
+msgid ""
+"DNS zones organize authoritative DNS data. Each DNS zone has a primary "
+"name server that provides the original zone data. Secondary name servers "
+"can obtain zone data through zone transfers. An *SOA record* marks the "
+"start of a zone of authority and contains parameters for managing the "
+"zone."
+msgstr ""
+"DNS-Zonen organisieren autoritative DNS-Daten. Jede DNS-Zone hat einen "
+"primären Nameserver, der die ursprünglichen Zonendaten bereitstellt. "
+"Sekundäre Nameserver können Zonendaten durch Zonentransfers beziehen. Ein"
+" *SOA-Eintrag* markiert den Beginn einer autoritativen Zone und enthält "
+"Parameter zur Verwaltung der Zone."
+
+#: ../../domain-infrastructure/dns.rst:31
+msgid "Forward lookup zone"
+msgstr "Forward-Lookup Zone"
+
+#: ../../domain-infrastructure/dns.rst:32
+msgid ""
+"A *forward lookup zone* contains information for resolving DNS names into"
+" IP addresses."
+msgstr ""
+"Eine *Forward-Lookup Zone* enthält Informationen zur Auflösung von DNS-"
+"Namen in IP-Adressen."
+
+#: ../../domain-infrastructure/dns.rst:37
+msgid "Reverse lookup zone"
+msgstr "Reverse-Lookup Zone"
+
+#: ../../domain-infrastructure/dns.rst:38
+msgid ""
+"A *reverse lookup zone* contains information for resolving IP addresses "
+"into DNS names."
+msgstr ""
+"Eine *Reverse-Lookup Zone* enthält Informationen zur Auflösung von IP-"
+"Adressen in DNS-Namen."
+
+#: ../../domain-infrastructure/dns.rst:43
+msgid ""
+"For the management modules for DNS zones, see the following in :cite:t"
+":`uv-nubus-manual`:"
+msgstr ""
+"Informationen zu den Verwaltungsmodulen für DNS-Zonen finden Sie an den "
+"folgenden Stellen im :cite:t:`uv-nubus-manual`:"
+
+#: ../../domain-infrastructure/dns.rst:46
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns-forwardzone`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns-forwardzone`"
+
+#: ../../domain-infrastructure/dns.rst:47
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns-reversezone`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns-reversezone`"
+
+#: ../../domain-infrastructure/dns.rst:52
+msgid "DNS records"
+msgstr "DNS Einträge"
+
+#: ../../domain-infrastructure/dns.rst:54
+msgid ""
+"DNS records contain information about DNS names. For information about "
+"how to manage DNS records, see :external+uv-nubus-manual:ref:`nubus-"
+"domain-dns` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"DNS-Einträge enthalten Informationen über DNS-Namen. Informationen zur "
+"Verwaltung von DNS-Einträgen finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-domain-dns` in :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dns.rst:61
+msgid "MX record"
+msgstr "MX Eintrag"
+
+#: ../../domain-infrastructure/dns.rst:62
+msgid ""
+"The *MX record* of a forward lookup zone provides DNS information for "
+"email routing. It points to the computer that accepts email for a domain."
+msgstr ""
+"Der *MX-Eintrag* einer Forward-Lookup Zone enthält DNS-Informationen für "
+"die Weiterleitung von E-Mails. Er verweist auf den Rechner, der E-Mails "
+"für eine Domäne annimmt."
+
+#: ../../domain-infrastructure/dns.rst:68
+msgid "CNAME record"
+msgstr "CNAME Eintrag"
+
+#: ../../domain-infrastructure/dns.rst:69
+msgid ""
+"A *CNAME record*, also called an alias record, refers to an existing, "
+"canonical DNS name. For example, you can create an alias entry "
+"``mailserver`` for the actual hostname of a mail server and enter the "
+"alias in mail clients. Any number of CNAME records can map to one "
+"canonical name."
+msgstr ""
+"Ein *CNAME-Eintrag*, auch Alias-Eintrag genannt, verweist auf einen "
+"vorhandenen kanonischen DNS-Namen. Sie können beispielsweise einen Alias-"
+"Eintrag ``mailserver`` für den tatsächlichen Rechnernamen eines "
+"Mailservers erstellen und den Alias in Mailclients eintragen. Beliebig "
+"viele CNAME-Einträge können auf denselben kanonischen Namen verweisen."
+
+#: ../../domain-infrastructure/dns.rst:78
+msgid "A and AAAA records"
+msgstr "A und AAAA Einträge"
+
+#: ../../domain-infrastructure/dns.rst:79
+msgid ""
+"An *A record* assigns an IPv4 address to a DNS name. An *AAAA record* "
+"assigns an IPv6 address to a DNS name. In Nubus for UCS, a *host record* "
+"can contain IPv4 and IPv6 addresses."
+msgstr ""
+"Ein *A-Eintrag* weist einem DNS-Namen eine IPv4-Adresse zu. Ein *AAAA-"
+"Eintrag* weist einem DNS-Namen eine IPv6-Adresse zu. In Nubus für UCS "
+"kann ein *Rechnereintrag* IPv4- und IPv6-Adressen enthalten."
+
+#: ../../domain-infrastructure/dns.rst:85
+msgid "PTR record"
+msgstr "PTR Eintrag"
+
+#: ../../domain-infrastructure/dns.rst:86
+msgid ""
+"A *PTR record* (pointer record) resolves an IP address into a hostname. "
+"In a reverse lookup zone, it's the equivalent of a host record in a "
+"forward lookup zone."
+msgstr ""
+"Ein *PTR Eintrag* (:spelling:word:`Pointer Eintrag`) löst eine IP-Adresse"
+" in einen Rechnernamen auf. In einer Reverse-Lookup Zone ist er das "
+"Gegenstück zu einem Rechnereintrag in einer Forward-Lookup Zone."
+
+#: ../../domain-infrastructure/dns.rst:92
+msgid "SRV record"
+msgstr "SRV Eintrag"
+
+#: ../../domain-infrastructure/dns.rst:93
+msgid ""
+"An *SRV record*, called a service record in Nubus for UCS, stores "
+"information about available system services in DNS. In Nubus for UCS, "
+"service records make LDAP servers or the :term:`Primary Directory Node` "
+"known domain-wide, among other uses."
+msgstr ""
+"Ein *SRV-Eintrag*, in Nubus für UCS Service-Eintrag genannt, speichert "
+"Informationen über verfügbare Systemdienste im DNS. In Nubus für UCS "
+"machen Service-Einträge unter anderem LDAP-Server oder den :term:`Primary"
+" Directory Node` domänenweit bekannt."
+
+#: ../../domain-infrastructure/dns.rst:100
+msgid "TXT records"
+msgstr "TXT Einträge"
+
+#: ../../domain-infrastructure/dns.rst:101
+msgid ""
+"*TXT records* include human-readable text and can include descriptive "
+"information about a forward lookup zone."
+msgstr ""
+"*TXT-Einträge* enthalten menschenlesbaren Text und können beschreibende "
+"Informationen über eine Forward-Lookup Zone enthalten."
+
+#: ../../domain-infrastructure/dns.rst:106
+msgid ""
+"For the management modules for DNS records, see the following in :cite:t"
+":`uv-nubus-manual`:"
+msgstr ""
+"Informationen zu den Verwaltungsmodulen für DNS-Einträge finden Sie an "
+"den folgenden Stellen im :cite:t:`uv-nubus-manual`:"
+
+#: ../../domain-infrastructure/dns.rst:109
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-alias`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-alias`"
+
+#: ../../domain-infrastructure/dns.rst:110
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-host`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-host`"
+
+#: ../../domain-infrastructure/dns.rst:111
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-service`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-service`"
+
+#: ../../domain-infrastructure/dns.rst:112
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-pointer`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dns-records-pointer`"
+
+#: ../../domain-infrastructure/dns.rst:113
+msgid ""
+":external+uv-nubus-manual:ref:`nubus-domain-dns-forwardzone-mx-records-"
+"tab`"
+msgstr ""
+":external+uv-nubus-manual:ref:`nubus-domain-dns-forwardzone-mx-records-"
+"tab`"
+
+#: ../../domain-infrastructure/dns.rst:114
+msgid ""
+":external+uv-nubus-manual:ref:`nubus-domain-dns-forwardzone-txt-records-"
+"tab`"
+msgstr ""
+":external+uv-nubus-manual:ref:`nubus-domain-dns-forwardzone-txt-records-"
+"tab`"
+
+#: ../../domain-infrastructure/dns.rst:119
+msgid "Configuration of the BIND name server"
+msgstr "Konfiguration des BIND-Nameservers"
+
+#: ../../domain-infrastructure/dns.rst:121
+msgid ""
+"The following sections describe how to configure BIND debug output, the "
+"data backend, and zone transfers."
+msgstr ""
+"Die folgenden Abschnitte beschreiben die Konfiguration der Debug-Ausgabe "
+"von BIND, des Daten-Backends und der Zonentransfers."
+
+#: ../../domain-infrastructure/dns.rst:127
+msgid "Configuration of BIND debug output"
+msgstr "Konfiguration der Debug-Ausgabe von BIND"
+
+#: ../../domain-infrastructure/dns.rst:129
+msgid ""
+"Use the :term:`UCR variables <UCR variable>` :envvar:`dns/debug/level` "
+"and :envvar:`dns/dlz/debug/level` to configure the level of detail in "
+"BIND debug output. The latter applies to the :ref:`domain-infrastructure-"
+"dns-data-backend-configuration-samba`. Possible values range from ``0`` "
+"to ``11``. Level ``0`` deactivates debug output. Higher BIND debug levels"
+" provide more detailed output. For information about BIND debug logging, "
+"see `The channel phrase "
+"<https://bind9.readthedocs.io/en/v9.18.33/reference.html#the-channel-"
+"phrase>`_ in :cite:t:`bind9-admin-reference`."
+msgstr ""
+"Verwenden Sie die :term:`UCR-Variablen <UCR variable>` "
+":envvar:`dns/debug/level` und :envvar:`dns/dlz/debug/level`, um den "
+"Detailgrad der Debug-Ausgabe von BIND zu konfigurieren. Letztere gilt für"
+" das :ref:`domain-infrastructure-dns-data-backend-configuration-samba`. "
+"Mögliche Werte reichen von ``0`` bis ``11``. Stufe ``0`` deaktiviert die "
+"Debug-Ausgabe. Höhere Debug-Stufen von BIND liefern detailliertere "
+"Ausgaben. Informationen zur Debug-Protokollierung von BIND finden Sie "
+"unter `The channel phrase "
+"<https://bind9.readthedocs.io/en/v9.18.33/reference.html#the-channel-"
+"phrase>`_ in :cite:t:`bind9-admin-reference`."
+
+#: ../../domain-infrastructure/dns.rst:140
+msgid ""
+"For information about setting and checking a UCR variable, see :ref"
+":`system-administration-ucr-command-line-set`. After changing either "
+"debug variable, restart the BIND service as ``root`` user, as shown in "
+":numref:`domain-infrastructure-dns-bind-debug-listing`."
+msgstr ""
+"Informationen zum Setzen und Überprüfen einer UCR-Variable finden Sie "
+"unter :ref:`system-administration-ucr-command-line-set`. Nachdem Sie eine"
+" der beiden Debug-Variablen geändert haben, starten Sie den BIND-Dienst "
+"als Benutzer ``root`` neu, wie in :numref:`domain-infrastructure-dns-"
+"bind-debug-listing` gezeigt."
+
+#: ../../domain-infrastructure/dns.rst:146
+msgid "Restart BIND after changing the debug level"
+msgstr "BIND nach Änderung der Debug-Stufe neu starten"
+
+#: ../../domain-infrastructure/dns.rst:146
+msgid "$ systemctl restart named"
+msgstr "$ systemctl restart named"
+
+#: ../../domain-infrastructure/dns.rst:155
+msgid "Configuration of the data backend"
+msgstr "Konfiguration des Daten-Backends"
+
+#: ../../domain-infrastructure/dns.rst:157
+msgid ""
+"In a typical BIND installation on a non-Nubus for UCS system, you "
+"configure BIND by editing zone files. In Nubus for UCS, you manage DNS "
+"zones and records through management modules. These modules store the DNS"
+" data in the LDAP directory."
+msgstr ""
+"In einer typischen BIND-Installation auf einem System ohne Nubus für UCS "
+"konfigurieren Sie BIND durch Bearbeiten von Zonendateien. In Nubus für "
+"UCS verwalten Sie DNS-Zonen und -Einträge über Verwaltungsmodule. Diese "
+"Module speichern die DNS-Daten im LDAP-Verzeichnis."
+
+#: ../../domain-infrastructure/dns.rst:162
+msgid "BIND can use two different backends for its configuration:"
+msgstr "BIND kann zwei verschiedene Backends für seine Konfiguration verwenden:"
+
+#: ../../domain-infrastructure/dns.rst ../../domain-infrastructure/dns.rst:166
+msgid "LDAP backend"
+msgstr "LDAP-Backend"
+
+#: ../../domain-infrastructure/dns.rst:167
+msgid ""
+"The *LDAP backend* is the standard backend and accesses data in the LDAP "
+"directory. With this backend, the DNS service uses two servers. The *BIND"
+" proxy* uses the standard DNS port ``53``. A second server runs in the "
+"background on port ``7777`` and obtains zone data from LDAP. The BIND "
+"proxy acts as a secondary server and obtains zone data from the second "
+"server through zone transfers."
+msgstr ""
+"Das *LDAP-Backend* ist das Standard-Backend und greift auf Daten im LDAP-"
+"Verzeichnis zu. Mit diesem Backend verwendet der DNS-Dienst zwei Server. "
+"Der *BIND-Proxy* verwendet den Standard-DNS-Port ``53``. Ein zweiter "
+"Server läuft im Hintergrund auf Port ``7777`` und bezieht Zonendaten aus "
+"LDAP. Der BIND-Proxy dient als sekundärer Server und bezieht Zonendaten "
+"durch Zonentransfers vom zweiten Server."
+
+#: ../../domain-infrastructure/dns.rst ../../domain-infrastructure/dns.rst:178
+msgid "Samba backend"
+msgstr "Samba-Backend"
+
+#: ../../domain-infrastructure/dns.rst:179
+msgid ""
+"Samba/AD provides an Active Directory domain. Active Directory relies on "
+"DNS for purposes such as DNS updates from Windows clients and the "
+"discovery of NETLOGON shares. With the *Samba backend*, Samba directly "
+"updates the DNS data in its internal LDB database. BIND then accesses the"
+" Samba DNS data through its *Dynamically Loadable Zones* (DLZ) interface."
+msgstr ""
+"Samba/AD stellt eine Active Directory-Domäne bereit. Active Directory ist"
+" unter anderem für DNS-Aktualisierungen von Windows-Clients und das "
+"Auffinden von NETLOGON-Freigaben auf DNS angewiesen. Mit dem *Samba-"
+"Backend* aktualisiert Samba die DNS-Daten direkt in seiner internen LDB-"
+"Datenbank. BIND greift anschließend über seine *Dynamically Loadable "
+"Zones* (DLZ) Schnittstelle auf die Samba DNS-Daten zu."
+
+#: ../../domain-infrastructure/dns.rst:187
+msgid ""
+"With the Samba backend, each DNS request triggers an LDAP search. With "
+"the LDAP backend, a directory service search occurs only if the DNS data "
+"has changed. The LDAP backend can therefore reduce the system load on "
+"Samba/AD systems."
+msgstr ""
+"Mit dem Samba-Backend löst jede DNS-Anfrage eine LDAP-Suche aus. Mit dem "
+"LDAP-Backend erfolgt eine Suche im Verzeichnisdienst nur, wenn sich die "
+"DNS-Daten geändert haben. Das LDAP-Backend kann daher die Systemlast auf "
+"Samba/AD-Systemen reduzieren."
+
+#: ../../domain-infrastructure/dns.rst:192
+msgid ""
+"The :term:`UCR variable` :envvar:`dns/backend` selects the DNS backend. "
+"The value ``ldap`` selects the LDAP backend, and ``samba4`` selects the "
+"Samba backend. On Directory Nodes running Samba 4, don't set the backend "
+"to ``ldap``."
+msgstr ""
+"Die :term:`UCR-Variable <UCR variable>` :envvar:`dns/backend` wählt das "
+"DNS-Backend aus. Der Wert ``ldap`` wählt das LDAP-Backend und ``samba4`` "
+"das Samba-Backend. Stellen Sie das Backend auf Directory Nodes mit Samba "
+"4 nicht auf ``ldap`` ein."
+
+#: ../../domain-infrastructure/dns.rst:197
+msgid "You use management modules to administer DNS with either backend."
+msgstr "Sie verwalten DNS bei beiden Backends über Verwaltungsmodule."
+
+#: ../../domain-infrastructure/dns.rst:202
+msgid "Configuration of zone transfers"
+msgstr "Konfiguration von Zonentransfers"
+
+#: ../../domain-infrastructure/dns.rst:204
+msgid ""
+"By default, the Nubus for UCS name server allows zone transfers of DNS "
+"data. If the Nubus for UCS system is reachable from the internet, anyone "
+"can request a list of all computer names and IP addresses."
+msgstr ""
+"Standardmäßig erlaubt der Nameserver von Nubus für UCS Zonentransfers von"
+" DNS-Daten. Wenn das Nubus für UCS System aus dem Internet erreichbar "
+"ist, kann jede Person eine Liste aller Rechnernamen und IP-Adressen "
+"anfordern."
+
+#: ../../domain-infrastructure/dns.rst:208
+msgid ""
+"Depending on the configured data backend, the method to restrict zone "
+"transfers differs:"
+msgstr ""
+"Die Methode zur Einschränkung von Zonentransfers hängt vom konfigurierten"
+" Daten-Backend ab:"
+
+#: ../../domain-infrastructure/dns.rst:215
+msgid ""
+"If you use the LDAP backend, you can deactivate zone transfers or "
+"restrict them by setting the :term:`UCR variable` "
+":envvar:`dns/allow/transfer` to ``none`` or a list of allowed IP "
+"addresses."
+msgstr ""
+"Wenn Sie das LDAP-Backend verwenden, können Sie Zonentransfers "
+"deaktivieren oder einschränken, indem Sie die :term:`UCR-Variable <UCR "
+"variable>` :envvar:`dns/allow/transfer` auf ``none`` oder eine Liste "
+"zulässiger IP-Adressen setzen."
+
+#: ../../domain-infrastructure/dns.rst:219
+msgid ""
+"After changing the variable, restart the BIND service as ``root``, as "
+"shown in :numref:`domain-infrastructure-dns-bind-debug-listing`."
+msgstr ""
+"Nachdem Sie die Variable geändert haben, starten Sie den BIND-Dienst als "
+"Benutzer ``root`` neu, wie in :numref:`domain-infrastructure-dns-bind-"
+"debug-listing` gezeigt."
+
+#: ../../domain-infrastructure/dns.rst:227
+msgid ""
+"For the Samba backend (Samba DLZ), the :envvar:`dns/allow/transfer` "
+"variable and standard BIND ``allow-transfer`` options are not enough to "
+"control zone transfers."
+msgstr ""
+"Für das Samba-Backend (Samba DLZ) reichen die Variable "
+":envvar:`dns/allow/transfer` und die standardmäßigen BIND-Optionen "
+"``allow-transfer`` nicht aus, um Zonentransfers zu steuern."
+
+#: ../../domain-infrastructure/dns.rst:231
+msgid ""
+"For more information about this limitation and its current status, see "
+":uv:bug:`55047`."
+msgstr ""
+"Weitere Informationen zu dieser Einschränkung und ihrem aktuellen Status "
+"finden Sie unter :uv:bug:`55047`."
+
+#: ../../domain-infrastructure/dns.rst:234
+msgid ""
+"To verify whether the server allows or denies zone transfers, use the "
+":command:`dig` command from a client machine, as shown in :numref"
+":`domain-infrastructure-dns-transfer-verification-listing`. Replace the "
+"following:"
+msgstr ""
+"Um zu überprüfen, ob der Server Zonentransfers erlaubt oder verweigert, "
+"verwenden Sie den Befehl :command:`dig` von einem Client-Rechner aus, wie"
+" in :numref:`domain-infrastructure-dns-transfer-verification-listing` "
+"gezeigt. Ersetzen Sie Folgendes:"
+
+#: ../../domain-infrastructure/dns.rst:238
+#, python-brace-format
+msgid ""
+":samp:`{SERVER_IP}` with the IP address of the name server, for example "
+"``192.168.1.1``."
+msgstr ""
+":samp:`{SERVER_IP}` durch die IP-Adresse des Nameservers, zum Beispiel "
+"``192.168.1.1``."
+
+#: ../../domain-infrastructure/dns.rst:239
+#, python-brace-format
+msgid ""
+":samp:`{DOMAIN_NAME}` with the name of the zone, for example "
+"``domain.lan``."
+msgstr ""
+":samp:`{DOMAIN_NAME}` durch den Namen der Zone, zum Beispiel "
+"``domain.lan``."
+
+#: ../../domain-infrastructure/dns.rst:241
+msgid ""
+"If the server allows the transfer, it returns the full list of zone "
+"records. If the server denies the transfer, the output shows a ``Transfer"
+" failed`` or ``REFUSED`` message."
+msgstr ""
+"Wenn der Server den Transfer erlaubt, gibt er die vollständige Liste der "
+"Zoneneinträge zurück. Wenn der Server den Transfer verweigert, zeigt die "
+"Ausgabe die Meldung ``Transfer failed`` oder ``REFUSED``."
+
+#: ../../domain-infrastructure/dns.rst:245
+msgid "Verify DNS zone transfer"
+msgstr "DNS-Zonentransfer überprüfen"
+
+#: ../../domain-infrastructure/dns.rst:245
+msgid "$ dig @SERVER_IP DOMAIN_NAME axfr"
+msgstr "$ dig @SERVER_IP DOMAIN_NAME axfr"
 
 #: ../../domain-infrastructure/domain-join.rst:7
 #: ../../domain-infrastructure/index.rst:26
@@ -2070,6 +2553,16 @@ msgstr ""
 ":ref:`domain-infrastructure-dhcp`."
 
 #: ../../domain-infrastructure/index.rst:59
+msgid ""
+"Understand how Nubus for UCS uses BIND for name resolution and how to "
+"configure debug output, data backends, and zone transfers. See :ref"
+":`domain-infrastructure-dns`."
+msgstr ""
+"Erfahren Sie, wie Nubus für UCS BIND zur Namensauflösung verwendet und "
+"wie Sie Debug-Ausgaben, Daten-Backends und Zonentransfers konfigurieren. "
+"Siehe :ref:`domain-infrastructure-dns`."
+
+#: ../../domain-infrastructure/index.rst:58
 msgid ""
 "Protect your domain against disruption to the Primary Directory Node by "
 "distributing directory data across Backup and Replica Directory Nodes and"
