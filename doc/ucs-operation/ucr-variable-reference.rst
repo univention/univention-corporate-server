@@ -531,6 +531,67 @@ This section provides a reference for UCR variables.
    :Default value: not set
    :Type: string
 
+.. envvar:: dns/allow/transfer
+
+   Controls which systems can request DNS zone transfers
+   when you use the LDAP backend.
+   Set the variable to ``any`` to allow transfers from all systems
+   or to ``none`` to deny all transfers,
+   including transfers to legitimate secondary servers.
+   Alternatively, specify allowed IP addresses or networks,
+   or reference an access control list defined in :file:`/etc/bind/local.conf`.
+   Separate multiple entries with semicolons.
+
+   For information about zone transfers,
+   see :ref:`domain-infrastructure-dns-zone-transfer-configuration`.
+
+   :Default value: ``any``
+   :Type: list of strings
+
+.. envvar:: dns/backend
+
+   Selects the DNS data backend.
+   The value ``ldap`` selects the UCS OpenLDAP directory,
+   and ``samba4`` selects the Samba LDB database.
+   On Directory Nodes running Samba 4,
+   don't change the backend to ``ldap``.
+
+   For information about the backends,
+   see :ref:`domain-infrastructure-dns-data-backend-configuration`.
+
+   :Default value: ``ldap``
+   :Possible values: ``ldap``, ``samba4``
+   :Type: string
+
+.. envvar:: dns/debug/level
+
+   Controls the level of detail in BIND debug output.
+   A value of ``0`` deactivates debug output.
+   Higher values provide more detail.
+   Restart BIND after changing this variable.
+
+   For information about BIND debug output,
+   see :ref:`domain-infrastructure-dns-bind-debug`.
+
+   :Default value: ``0``
+   :Possible values: integers from ``0`` through ``11``
+   :Type: integer
+
+.. envvar:: dns/dlz/debug/level
+
+   Controls the level of detail in debug output
+   from the Samba DLZ interface used by BIND.
+   A value of ``0`` deactivates debug output.
+   Higher values provide more detail.
+   Restart BIND after changing this variable.
+
+   For information about BIND debug output,
+   see :ref:`domain-infrastructure-dns-bind-debug`.
+
+   :Default value: ``0``
+   :Possible values: integers from ``0`` through ``11``
+   :Type: integer
+
 .. envvar:: dns/forwarder1
 
    You can configure external DNS servers to resolve hostnames and addresses
