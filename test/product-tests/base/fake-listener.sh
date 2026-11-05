@@ -6,7 +6,7 @@ set -e -x
 
 prepare_on_master () {
 	echo -e "UserKnownHostsFile=/dev/null\nStrictHostKeyChecking=no" > ~/.ssh/config
-	service slapd stop
+	systemctl stop slapd
 
 	# type 1 - provide database backend
 	# shellcheck disable=SC2154
@@ -21,7 +21,7 @@ prepare_on_master () {
 	# type 3 - let the join handle the provisioning (ldapsearch)
 	# nothing todo here
 
-	service slapd start
+	systemctl start slapd
 }
 
 type1_listener_fake () {
