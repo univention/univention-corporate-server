@@ -49,6 +49,11 @@ Kerberos authentication
    and how to configure the Kerberos administration server.
    See :ref:`domain-infrastructure-kerberos`.
 
+DNS
+   Understand how Nubus for UCS uses BIND for name resolution
+   and how to configure debug output, data backends, and zone transfers.
+   See :ref:`domain-infrastructure-dns`.
+
 DHCP
    Understand how DHCP assigns IP addresses and network settings,
    how DHCP services and configuration objects organize the settings,
