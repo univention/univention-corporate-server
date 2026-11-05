@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 17:38+0000\n"
-"PO-Revision-Date: 2026-11-02 18:40+0100\n"
+"POT-Creation-Date: 2026-11-05 16:06+0000\n"
+"PO-Revision-Date: 2026-11-05 17:08+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -23,347 +23,12 @@ msgstr "IP-Vergabe über DHCP"
 
 #: ../../ip-config/dhcp.rst:9
 msgid ""
-"The Dynamic Host Configuration Protocol (DHCP) assigns computers an IP "
-"address, the subnet mask and further settings for the gateway or NetBIOS "
-"server as necessary. The IP address can be set fixed or dynamic."
-msgstr ""
-"Das Dynamic Host Configuration Protocol (DHCP) weist Rechnern eine IP-"
-"Adresse, die Subnetz-Maske und gegebenenfalls weitere Einstellungen wie "
-"Gateway oder NetBIOS-Server zu. Die IP-Adresse kann fest oder dynamisch "
-"vergeben werden."
-
-#: ../../ip-config/dhcp.rst:13
-msgid ""
-"The use of DHCP allows central assignment and control of IP addresses via"
-" the LDAP directory without performing manual configuration on the "
-"individual computer systems."
-msgstr ""
-"Die Verwendung von DHCP ermöglicht eine zentrale Vergabe und Kontrolle "
-"von IP-Adressen über das LDAP-Verzeichnis ohne manuelle Einträge an den "
-"einzelnen Rechnersystemen vorzunehmen."
-
-#: ../../ip-config/dhcp.rst:17
-msgid "The DHCP integration in UCS only supports IPv4."
-msgstr "Die DHCP-Integration in UCS unterstützt nur IPv4."
-
-#: ../../ip-config/dhcp.rst:19
-msgid ""
-"In a *DHCP service*, DHCP servers are grouped in a shared LDAP "
-"configuration. Global configuration parameters are entered in the DHCP "
-"service; specific parameters in the subordinate objects."
-msgstr ""
-"In einem *DHCP-Service* werden DHCP-Server mit einer gemeinsamen LDAP-"
-"Konfiguration zusammengefasst. Globale Konfigurationsparameter werden am "
-"DHCP-Service angegeben, spezifische Parameter in den Objekten darunter."
-
-#: ../../ip-config/dhcp.rst:23
-msgid ""
-"A DHCP server can be installed from the Univention App Center with the "
-"application :program:`DHCP server`. Alternatively, the software package "
-":program:`univention-dhcp` can be installed. Additional information can "
-"be found in :ref:`computers-softwaremanagement-install-software`."
-msgstr ""
-"Ein DHCP-Server kann mit der Applikation *DHCP-Server* aus dem Univention"
-" App Center installiert werden. Alternativ kann das Softwarepaket "
-":program:`univention-dhcp` installiert werden. Weitere Informationen "
-"finden sich in :ref:`computers-softwaremanagement-install-software`."
-
-#: ../../ip-config/dhcp.rst:28
-msgid ""
-"Every DHCP assigns IP addresses via DHCP. In the default setting, only "
-"static IP addresses are assigned to computer objects registered in the "
-"UCS LDAP."
-msgstr ""
-"Jeder DHCP-Server verteilt IP-Adressen über DHCP. In der "
-"Grundeinstellungen werden nur statische IP-Adressen an im UCS-LDAP "
-"registrierte Rechnerobjekte vergeben."
-
-#: ../../ip-config/dhcp.rst:31
-msgid ""
-"If only fixed IP addresses are assigned, as many DHCP servers as required"
-" may be used in a DHCP service. All the DHCP servers procure identical "
-"data from the LDAP and offer the DHCP clients the data multiple times. "
-"DHCP clients then accept the first answer and ignore the rest."
-msgstr ""
-"Werden ausschließlich feste IP-Adressen vergeben, können beliebig viele "
-"DHCP-Server in einem DHCP-Service verwendet werden. Alle DHCP-Server "
-"greifen auf identische Daten aus dem LDAP zurück und bieten den DHCP-"
-"Clients die Daten mehrfach an. DHCP-Clients akzeptieren dann die erste "
-"Antwort und verwerfen die übrigen."
-
-#: ../../ip-config/dhcp.rst:36
-msgid ""
-"If dynamic IP addresses are also assigned, the DHCP failover mechanism "
-"must be employed and a maximum of two DHCP servers can be used per "
-"subnet."
-msgstr ""
-"Werden auch dynamisch IP-Adressen verteilt, muss der DHCP-Failover-"
-"Mechanismus eingesetzt werden. Dabei können maximal zwei DHCP-Server pro "
-"Subnetz verwendet werden."
-
-#: ../../ip-config/dhcp.rst:39
-msgid ""
-"A *DHCP host* entry is used to make the DHCP service aware of a computer."
-" A DHCP host object is required for computers attempting to retrieve a "
-"fixed IP address over DHCP. DHCP computer objects do not normally need to"
-" be created manually, because they are created automatically when a DHCP "
-"service is assigned to a computer object with a fixed IP address."
-msgstr ""
-"Mit einem *DHCP-Rechner*-Eintrag wird ein Rechner dem DHCP-Service "
-"bekannt gemacht. Für Rechner, die per DHCP eine feste IP-Adresse beziehen"
-" sollen, ist ein DHCP-Rechner-Objekt zwingend erforderlich. DHCP-Rechner-"
-"Objekte müssen in der Regel nicht manuell erstellt werden, weil diese "
-"automatisch angelegt werden, wenn einem Rechnerobjekt mit fester IP-"
-"Adresse ein DHCP-Service zugewiesen wird."
-
-#: ../../ip-config/dhcp.rst:45
-msgid ""
-"A *DHCP subnet* entry is required for every subnet, irrespective of "
-"whether dynamic IP addresses are to be assigned from this subnet."
-msgstr ""
-"Für jedes Subnetz wird ein *DHCP-Subnetz*-Eintrag benötigt, unabhängig "
-"davon, ob dynamische IP-Adressen aus diesen Subnetzen vergeben werden "
-"sollen."
-
-#: ../../ip-config/dhcp.rst:48
-msgid ""
-"Configuration parameters can be assigned to the different IP ranges by "
-"creating *DHCP pools* within subnets. In this way unknown computers can "
-"be allowed in one IP range and excluded from another IP range. DHCP pools"
-" can only be created below DHCP subnet objects."
-msgstr ""
-"Über die Einrichtung von *DHCP-Pools* innerhalb von Subnetzen können den "
-"verschiedenen IP-Adressbereichen unterschiedliche Konfigurationsparameter"
-" zugeordnet werden. Auf diese Weise können unbekannte Rechner in einem "
-"IP-Adressbereich zugelassen und von einem anderen IP-Adressbereich "
-"ausgeschlossen werden. DHCP-Pools können nur unterhalb von DHCP-Subnetz-"
-"Objekten angelegt werden."
-
-#: ../../ip-config/dhcp.rst:53
-msgid ""
-"If several IP subnets are used in a physical Ethernet network, this "
-"should be entered as a *DHCP shared subnet* below a *DHCP shared "
-"network*. *DHCP shared subnet* objects can only be created below *DHCP "
-"shared network* objects."
-msgstr ""
-"Falls mehrere IP-Subnetze gemeinsam dasselbe physikalische Ethernet-"
-"Netzwerk verwenden, sollten diese als *DHCP Shared Subnet* unterhalb "
-"eines *DHCP Shared Network* eingetragen werden. *DHCP Shared "
-"Subnet*-Objekte können nur unterhalb von *DHCP Shared Network*-Objekten "
-"angelegt werden."
-
-#: ../../ip-config/dhcp.rst:57
-msgid ""
-"Values which are set on a DHCP configuration level always apply for this "
-"level and all subordinate levels, unless other values are specified "
-"there. Similar to policies, the value which is closest to the object "
-"always applies."
-msgstr ""
-"Werte, die auf einer Ebene der DHCP-Konfiguration angegeben werden, "
-"gelten immer für diese und alle darunterliegenden Ebenen, sofern dort "
-"keine anderen Angaben gemacht werden. Ähnlich wie bei Richtlinien gilt "
-"immer der Wert, der dem Objekt am nächsten ist."
-
-#: ../../ip-config/dhcp.rst:64
-msgid "Composition of the DHCP configuration via DHCP LDAP objects"
-msgstr "Aufbau der DHCP-Konfiguration durch DHCP-LDAP-Objekte"
-
-#: ../../ip-config/dhcp.rst:66
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp` in :cite:t:`uv-nubus-manual`."
+"The content of this section moved to :external+uv-ucs-operation:ref"
+":`domain-infrastructure-dhcp` in :cite:t:`uv-ucs-operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:73
-msgid "Administration of DHCP services"
-msgstr "Verwaltung von DHCP-Services"
-
-#: ../../ip-config/dhcp.rst:75
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-services` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-services` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:82
-msgid "Administration of DHCP server entries"
-msgstr "Verwaltung von DHCP-Server-Einträgen"
-
-#: ../../ip-config/dhcp.rst:84
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-servers` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-servers` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:91
-msgid "Administration of DHCP subnets"
-msgstr "Verwaltung von DHCP-Subnetzen"
-
-#: ../../ip-config/dhcp.rst:93
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-subnets` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-subnets` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:100
-msgid "Administration of DHCP pools"
-msgstr "Verwaltung von DHCP-Pools"
-
-#: ../../ip-config/dhcp.rst:102
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-pools` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-pools` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:109
-msgid "General tab"
-msgstr "Reiter Allgemein"
-
-#: ../../ip-config/dhcp.rst:111
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-pools-tab-general` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-pools-tab-general` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:118
-msgid "Advanced settings tab"
-msgstr "Reiter Erweiterte Einstellungen"
-
-#: ../../ip-config/dhcp.rst:120
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-pools-tab-advanced` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-pools-tab-advanced` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:127
-msgid "Registration of computers with DHCP computer objects"
-msgstr "Registrierung von Rechnern mit DHCP-Rechner-Objekten"
-
-#: ../../ip-config/dhcp.rst:129
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-hosts` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-hosts` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:136
-msgid "Management of DHCP shared networks / DHCP shared subnets"
-msgstr "Verwaltung von DHCP Shared Networks / DHCP Shared Subnets"
-
-#: ../../ip-config/dhcp.rst:138
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-shared-network` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-shared-network` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:145
-msgid "Configuration of clients via DHCP policies"
-msgstr "Konfiguration von Clients durch DHCP-Richtlinien"
-
-#: ../../ip-config/dhcp.rst:147
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies` in :cite:t:`uv-nubus-manual`."
-
-#: ../../ip-config/dhcp.rst:154
-msgid "Setting the gateway"
-msgstr "Vorgabe des Gateways"
-
-#: ../../ip-config/dhcp.rst:156
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies-gateway` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies-gateway` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:163
-msgid "Setting the DNS servers"
-msgstr "Vorgabe der DNS-Server"
-
-#: ../../ip-config/dhcp.rst:165
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies-dns-servers` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies-dns-servers` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:172
-msgid "Setting the WINS server"
-msgstr "Vorgabe des WINS-Server"
-
-#: ../../ip-config/dhcp.rst:174
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies-netbios` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies-netbios` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:181
-msgid "Configuration of the DHCP lease"
-msgstr "Konfiguration der DHCP-Vergabedauer (Lease)"
-
-#: ../../ip-config/dhcp.rst:183
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies-dhcp-leases` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies-dhcp-leases` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:190
-msgid "Configuration of boot server/PXE settings"
-msgstr "Konfiguration von Bootserver/PXE-Einstellungen"
-
-#: ../../ip-config/dhcp.rst:192
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies-dhcp-boot` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies-dhcp-boot` in :cite:t:`uv-nubus-"
-"manual`."
-
-#: ../../ip-config/dhcp.rst:199
-msgid "Further DHCP policies"
-msgstr "Weitere DHCP-Richtlinien"
-
-#: ../../ip-config/dhcp.rst:201
-msgid ""
-"The content of this section moved to :external+uv-nubus-manual:ref"
-":`nubus-domain-dhcp-policies-further` in :cite:t:`uv-nubus-manual`."
-msgstr ""
-"Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`nubus-domain-dhcp-policies-further` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`domain-infrastructure-dhcp` in :cite:t:`uv-ucs-"
+"operation`."
 
 #: ../../ip-config/dns.rst:7
 msgid "Administration of DNS data with BIND"
@@ -1786,8 +1451,8 @@ msgid ""
 "operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-installation` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-installation` in :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../ip-config/web-proxy.rst:25
 msgid "Caching of web content"
@@ -1800,8 +1465,8 @@ msgid ""
 "operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-caching-web` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-caching-web` in :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../ip-config/web-proxy.rst:34
 msgid "Logging proxy accesses"
@@ -1813,8 +1478,8 @@ msgid ""
 ":`system-administration-web-proxy-logging` in :cite:t:`uv-ucs-operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-logging` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-logging` in :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../ip-config/web-proxy.rst:43
 msgid "Restriction of access to permitted networks"
@@ -1827,8 +1492,8 @@ msgid ""
 ":cite:t:`uv-ucs-operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-restrict-to-permitted-networks` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-restrict-to-permitted-"
+"networks` in :cite:t:`uv-nubus-manual`."
 
 #: ../../ip-config/web-proxy.rst:52
 msgid "Configuration of the ports used"
@@ -1854,8 +1519,8 @@ msgid ""
 "operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-ports-proxy` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-ports-proxy` in :cite:t:`uv-"
+"nubus-manual`."
 
 #: ../../ip-config/web-proxy.rst:70
 msgid "Permitted ports"
@@ -1868,8 +1533,8 @@ msgid ""
 "operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-ports-permitted` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-ports-permitted` in :cite:t"
+":`uv-nubus-manual`."
 
 #: ../../ip-config/web-proxy.rst:79
 msgid "User authentication on the proxy"
@@ -1882,5 +1547,5 @@ msgid ""
 "operation`."
 msgstr ""
 "Der Inhalt dieses Abschnitts ist umgezogen nach :external+uv-nubus-"
-"manual:ref:`system-administration-web-proxy-authentication` in :cite:t:`uv-nubus-"
-"manual`."
+"manual:ref:`system-administration-web-proxy-authentication` in :cite:t"
+":`uv-nubus-manual`."
