@@ -91,9 +91,9 @@ if [ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 then
 	if pidof slapd >/dev/null 2>/dev/null
 	then
-		service slapd stop
+		systemctl stop slapd
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
-		service slapd start
+		systemctl start slapd
 	else
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionUDMPropertyCopyable
 	fi
@@ -356,9 +356,9 @@ ucs_addServiceToLocalhost 'LDAP' "$@" || die
 
 # syncrepl for cn=internal
 if [ "$server_role" = "domaincontroller_master" ]; then
-	ucr set ldap/database/internal/syncprov=true && service slapd start
+	ucr set ldap/database/internal/syncprov=true && systemctl start slapd
 elif [ "$server_role" = "domaincontroller_backup" ]; then
-	ucr set ldap/database/internal/syncrepl=true && service slapd start
+	ucr set ldap/database/internal/syncrepl=true && systemctl start slapd
 fi
 
 joinscript_save_current_version

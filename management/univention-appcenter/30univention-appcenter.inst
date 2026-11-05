@@ -35,9 +35,9 @@ if [ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 then
 	if pidof slapd >/dev/null 2>/dev/null
 	then
-		service slapd stop
+		systemctl stop slapd
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionAppID
-		service slapd start
+		systemctl start slapd
 	else
 		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionAppID
 	fi
