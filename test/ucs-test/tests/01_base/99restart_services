@@ -63,7 +63,6 @@ do
 		dovecot) ;; # Bug #39148 TODO
 		nagios-nrpe-server) ;; # nrped
 		nfs-common) ;; # rpc.idmap rpc.gssd
-		nmbd) ;;
 		ntp) ;; # ntpd
 		openbsd-inetd) ;; # inetd
 		postgresql) ;;
