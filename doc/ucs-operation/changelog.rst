@@ -21,6 +21,10 @@ Year 2026
      - Chapter or topic
      - Change
 
+   * - 04. Nov 2026
+     - :ref:`domain-infrastructure-dhcp`
+     - Add section about DHPC.
+
    * - 03. Nov 2026
      - :ref:`system-administration-web-proxy`
      - Add section about web proxy service.
