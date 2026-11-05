@@ -153,8 +153,8 @@ def setup():
     restore_retry_count()
     # try to restore slapd systemd status
     Popen(('systemctl', 'daemon-reload')).wait()
-    Popen(('service', 'slapd', 'stop')).wait()
-    Popen(('service', 'slapd', 'start')).wait()
+    Popen(('systemctl', 'stop', 'slapd')).wait()
+    Popen(('systemctl', 'start', 'slapd')).wait()
     sleep(5)
 
 
