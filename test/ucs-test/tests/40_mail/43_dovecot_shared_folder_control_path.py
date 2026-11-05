@@ -27,7 +27,7 @@ def main():
         with ucr_test.UCSTestConfigRegistry() as ucr, udm_test.UCSTestUDM() as udm:
             handler_set(['mail/dovecot/mailbox/share_keywords=no'])
             fqdn = '%(hostname)s.%(domainname)s' % ucr
-            user_address = random_email()
+            user_address = random_email().lower()
             udm.create_user(set={
                 'mailHomeServer': fqdn,
                 'mailPrimaryAddress': user_address,
