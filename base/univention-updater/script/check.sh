@@ -216,10 +216,10 @@ _migrate_openldap_bdb_failed () {
 	if $revert; then
 		if [ -e /var/lib/univention-ldap/ldap.BACKUP/uid.bdb ]; then
 			echo "$(date) Reverting to BDB database"
-			service slapd stop
+			systemctl stop slapd
 			mv /var/lib/univention-ldap/ldap.BACKUP/* /var/lib/univention-ldap/ldap/
 			ucr set ldap/database/type=bdb
-			service slapd start
+			systemctl start slapd
 		fi
 	fi
 	echo "$(date) Consult the Univention Support or <https://help.univention.com/t/22322> for help!"
@@ -241,7 +241,7 @@ migrate_openldap_bdb () {
 		_migrate_openldap_bdb_failed "max size for mdb database does not fit, raise max size by setting UCRV ldap/database/mdb/maxsize"
 	univention-ldapsearch -LLL "uid=$(hostname)\$" >/dev/null || \
 		_migrate_openldap_bdb_failed "slapd is not running"
-	service slapd stop || \
+	systemctl stop slapd || \
 		_migrate_openldap_bdb_failed "error stopping slapd"
 	slapcat -l /var/lib/univention-ldap/database.ldif || \
 		_migrate_openldap_bdb_failed "error during slapcat"
@@ -252,7 +252,7 @@ migrate_openldap_bdb () {
 	ucr set ldap/database/type=mdb
 	slapadd -l /var/lib/univention-ldap/database.ldif || \
 		_migrate_openldap_bdb_failed "error importing database" true
-	service slapd start || \
+	systemctl start slapd || \
 		_migrate_openldap_bdb_failed "error starting slapd" true
 	univention-ldapsearch -LLL "uid=$(hostname)\$" >/dev/null || \
 		_migrate_openldap_bdb_failed "error during LDAP lookup" true

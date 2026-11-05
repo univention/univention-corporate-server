@@ -117,7 +117,7 @@ class LDAP_ServerDown(UMC_Error):
         else:
             yield ' * ' + _('Make sure the Primary Directory Node is running and reachable from %s') % (self._fqdn,)
             yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the Primary Directory Node or free some resources')
-        yield ' * ' + _('Restart the LDAP service on the Primary Directory Node either via "service slapd restart" on command line or with the UMC module "System services"')
+        yield ' * ' + _('Restart the LDAP service on the Primary Directory Node either via "systemctl restart slapd" on command line or with the UMC module "System services"')
         if self._updates_available:
             yield ' * ' + _('Install the latest software updates')
         # TODO: reuse but not in LDAP_ServerDown
@@ -141,7 +141,7 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
             yield ' * ' + _('Make sure the Primary Directory Node is running and reachable from %s') % (self._fqdn,)
         yield ' * ' + _('Check the SSL certificates, proxy and firewall settings')
         yield ' * ' + _('In case the SSL certificates are expired or a recent renewal of the root SSL CA has been done, please consider http://sdb.univention.de/1183')
-        yield ' * ' + _('Restart the LDAP service on the Primary Directory Node either via "service slapd restart" on command line or with the UMC module "System services"')
+        yield ' * ' + _('Restart the LDAP service on the Primary Directory Node either via "systemctl restart slapd" on command line or with the UMC module "System services"')
         if self._updates_available:
             yield ' * ' + _('Install the latest software updates')
 

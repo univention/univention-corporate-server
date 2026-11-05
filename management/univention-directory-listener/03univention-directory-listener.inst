@@ -72,7 +72,7 @@ fake_replication () {
 	# listener module
 	local time_start time_end minutes
 
-	service slapd stop
+	systemctl stop slapd
 
 	# update schema
 	/usr/share/univention-directory-listener/univention-get-ldif-from-master.py -s
@@ -110,7 +110,7 @@ fake_replication () {
 		. /usr/share/univention-lib/base.sh
 		echo "rootpw \"$(create_machine_password)\"" > /etc/ldap/rootpw.conf
 	fi
-	service slapd restart
+	systemctl restart slapd
 
 	# resync computer object
 	/usr/share/univention-directory-listener/resync-objects.py -f "uid=${hostname:?}\$" -r
@@ -184,7 +184,7 @@ fi
 
 if command -v slapd -f /etc/ldap/slapd.conf >/dev/null
 then
-	service slapd restart
+	systemctl restart slapd
 fi
 
 [ "$exit_status" = 0 ] ||

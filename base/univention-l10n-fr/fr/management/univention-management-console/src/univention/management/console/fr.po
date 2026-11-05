@@ -298,7 +298,7 @@ msgid ""
 "slapd restart\" on command line or with the UMC module \"System services\""
 msgstr ""
 "Redémarrer le serveur LDAP sur le Primary Directory Node par le biais de la "
-"ligne de commande « service slapd restart » ou avec le module UMC « Services "
+"ligne de commande « systemctl restart slapd » ou avec le module UMC « Services "
 "du système »"
 
 #: src/univention/management/console/modules/sanitizers.py:419

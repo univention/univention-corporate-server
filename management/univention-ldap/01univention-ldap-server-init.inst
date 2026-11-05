@@ -81,7 +81,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	/usr/share/univention-ldap/setup-internal init
 fi
 
-service slapd start
+systemctl start slapd
 
 joinscript_save_current_version
 exit 0
