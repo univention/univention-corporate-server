@@ -75,6 +75,7 @@ Listener and Notifier replication
    ldap-directory
    tls
    kerberos
+   dhcp
    ha
    activity-logging
    listener-notifier
