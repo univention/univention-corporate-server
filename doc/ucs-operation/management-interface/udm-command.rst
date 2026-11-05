@@ -782,9 +782,7 @@ and :numref:`udm-create-dns-ptr-record-listing`
 to configure forward resolution with a host record
 and reverse resolution with a PTR record.
 For more information about DNS,
-see :external+uv-ucs-manual:ref:`networks-dns`.
-
-.. TODO: Update link to UCS Manual after referenced section is migrated.
+see :ref:`domain-infrastructure-dns`.
 
 .. code-block::
    :caption: Create a DNS host record
