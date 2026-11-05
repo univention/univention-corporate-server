@@ -3,7 +3,7 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-management-console-module-udm
-fix: 12.7.1
+fix: 12.7.2
 desc: |
  This update addresses the following issue:
  * The permissions of the UMC operation set `udm-syntax` have been corrected
