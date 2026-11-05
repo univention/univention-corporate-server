@@ -3,5 +3,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 GPG=/usr/share/keyrings/archive.gpg
-[ -e "$GPG" ] || ln -s univention-archive-key-ucs-5x.gpg "$GPG" || exit $?
+[ -e "$GPG" ] || ln -s univention-archive-key-ucs-53x.gpg "$GPG" || exit $?
 exit 0
