@@ -80,6 +80,7 @@ def main():
                 ])
                 subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
                 udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, wait_for=True)
+                subprocess.call(['sss_cache', '-u', userbase[i][1]])
 
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))

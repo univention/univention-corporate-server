@@ -1,3 +1,9 @@
+ucs-test (12.7.16) unstable; urgency=medium
+
+  * Bug #57976: flush sssd cache after user rename
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 05 Nov 2026 13:25:02 +0100
+
 ucs-test (12.7.15) unstable; urgency=medium
 
   * Bug #59596: ignore failing console-setup service
