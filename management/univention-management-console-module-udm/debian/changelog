@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.7.2) unstable; urgency=medium
+
+  * Bug #60084: fix postinst granting syntax choice key permission on upgrade
+
+ -- Johannes Lohmer <lohmer@univention.de>  Thu, 05 Nov 2026 10:24:37 +0100
+
 univention-management-console-module-udm (12.7.1) unstable; urgency=medium
 
   * Bug #60084: allow syntax choice key lookups in UMC permissions
