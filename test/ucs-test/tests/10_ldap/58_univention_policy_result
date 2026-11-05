@@ -20,9 +20,9 @@ old_starttls="$(ucr get directory/manager/starttls)"
 univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" || fail_fast 140 "univention-policy-result broken before test started"
 
 # configure ldap server port
-undo service slapd restart  # correct order of undo
+undo systemctl restart slapd  # correct order of undo
 ucr set slapd/port=7399,389 && undo ucr set slapd/port="$old_server_port"
-service slapd restart
+systemctl restart slapd
 
 # now univention-policy-result should not work
 univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" && fail_fast 141 "univention-policy-result should not work before client is setup correctly"
