@@ -81,8 +81,9 @@ class Test:
     @staticmethod
     def checkResult(expectedResult, max_wait=30):
         for i in range(max_wait):
-            proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            count = len([line for line in proc.stdout if line.lower().startswith(b'netlogon')])
+            proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = proc.communicate()
+            count = sum(line.lower().startswith(b'netlogon') for line in out.splitlines() + err.splitlines())
             if count == expectedResult:
                 return count
             print("%d: %d < %d" % (i, count, expectedResult))
