@@ -88,6 +88,17 @@ ucr commit /etc/nsswitch.conf
 ucr commit /etc/sssd/sssd.conf
 chmod -R 0600 /etc/sssd
 
+if [ "$1" = "configure" ]; then
+	# disable sssd-nss.socket and sssd-pam.socket, we start the nss and pam responders from the sssd config
+	deb-systemd-helper disable sssd-nss.socket sssd-pam.socket sssd-pam-priv.socket 2>/dev/null || true
+	systemctl stop sssd-nss.socket sssd-pam.socket sssd-pam-priv.socket 2>/dev/null || true
+fi
+
+# Bug #58121: reset failed state for nss pam responder
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 15.7.0; then
+	systemctl reset-failed 'sssd-*.socket' 2>/dev/null || true
+fi
+
 # Restart sssd
 deb-systemd-invoke restart sssd
 
@@ -97,10 +108,12 @@ univention-config-registry set \
 	'security/limits/default/user/hard/nofile?32768' \
 	'security/limits/group/Domain Users/hard/nproc?1000'
 
-# Bug #37995: Enable sudo only on new UCS-4.1 installs
 if [ "$1" = configure ] && [ -z "$2" ]
 then
+	# Bug #37995: Enable sudo only on new UCS-4.1 installs
 	univention-config-registry set auth/sudo?yes
+	# Bug #58121: reset failed state for nss pam responder
+	systemctl reset-failed 'sssd-*.socket' 2>/dev/null || true
 fi
 
 call_joinscript 11univention-pam.inst
