@@ -301,7 +301,7 @@ msgid ""
 "Restart the LDAP service on the Primary Directory Node either via \"service "
 "slapd restart\" on command line or with the UMC module \"System services\""
 msgstr ""
-"Starten Sie den LDAP-Dienst entweder über \"service slapd restart\" per "
+"Starten Sie den LDAP-Dienst entweder über \"systemctl restart slapd\" per "
 "Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem Primary "
 "Directory Node neu"
 
