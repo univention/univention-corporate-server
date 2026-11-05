@@ -50,4 +50,4 @@ SLAPD_SENTINEL_FILE=/etc/ldap/noslapd
 #KRB5_KTNAME=/etc/krb5.keytab
 
 # Additional options to pass to slapd
-SLAPD_OPTIONS="-f /etc/ldap/slapd.conf"
+SLAPD_OPTIONS=""
