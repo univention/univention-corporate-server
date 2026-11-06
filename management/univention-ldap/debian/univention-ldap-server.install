@@ -11,7 +11,6 @@ scripts/setup-translog	usr/share/univention-ldap/
 server_password_change.d/univention-ldap-server	usr/lib/univention-server/server_password_change.d/
 slapd-failure	usr/lib/univention-ldap/
 slapd-post-start	usr/lib/univention-ldap/
-slapd-pre-start	usr/lib/univention-ldap/
 systemd/10-univention.conf	usr/lib/systemd/system/slapd.service.d/
 systemd/slapd-failure.service	usr/lib/systemd/system/
 univention-backup2master	usr/lib/univention-ldap/

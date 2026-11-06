@@ -102,8 +102,6 @@ start_slapd() {
 
 	[ -z "$KRB5_KTNAME" ] || export KRB5_KTNAME
 
-	/usr/lib/univention-ldap/slapd-pre-start || return 1
-
 @!@
 if configRegistry.get('ldap/maxopenfiles'):
     print('\tulimit -n %s' % configRegistry['ldap/maxopenfiles'])
