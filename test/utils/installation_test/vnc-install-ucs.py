@@ -223,7 +223,7 @@ class UCSInstallation(VNCInstallation):
         sleep(30, "reboot")
 
     @verbose("GRUB-INSTALL")
-    def grub(self, timeout: float = 1300) -> None:
+    def grub(self, timeout: float = 1420) -> None:
         """Answer the GRUB question if the installer asks it, until the last step starts."""
         deadline = monotonic() + timeout
         while not self.text_is_visible('finish_installation', timeout=-10, wait=False):
