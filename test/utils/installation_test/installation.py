@@ -286,6 +286,16 @@ class VNCInstallation:
         except (VNCDoException, TimeoutError):
             return False
 
+    def wait_for_any(self, *texts: str, timeout: float = 600) -> str:
+        """Poll the screen until one of the texts is visible and return it."""
+        deadline = time.monotonic() + timeout
+        while True:
+            for text in texts:
+                if self.text_is_visible(text, timeout=-10, wait=False):
+                    return text
+            if time.monotonic() > deadline:
+                raise VNCDoException()
+
     def wait_for_text(self, text: str, timeout: int = 0, wait: bool = True) -> None:
         translated = self.translate(text)
         timeout = self.timeout * (timeout >= 0) + abs(timeout)

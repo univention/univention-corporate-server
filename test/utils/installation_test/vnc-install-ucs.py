@@ -6,10 +6,8 @@
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, RawDescriptionHelpFormatter
 from os.path import dirname, join
-from time import monotonic
 
 from installation import VNCInstallation, build_parser, sleep, verbose
-from vncdotool.client import VNCDoException
 from yaml import safe_load
 
 
@@ -158,7 +156,8 @@ class UCSInstallation(VNCInstallation):
 
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
-        self.wait_for_text('user_and_password')
+        # loading the installer components from the ISO before this step can take minutes
+        self.wait_for_text('user_and_password', timeout=-600)
         self.type("%s\t\t%s\n" % (self.args.password, self.args.password))
 
         if self.args.language == 'eng':
@@ -197,7 +196,6 @@ class UCSInstallation(VNCInstallation):
         """
         # Zusätzliche Software installieren
         """
-        sleep(50, "disk.partition install")
 
         """
         # GRUB-Bootloader auf einer Festplatte installieren
@@ -220,19 +218,13 @@ class UCSInstallation(VNCInstallation):
         """
         self.wait_for_text('finish_installation', timeout=-1300)
         self.click_on('continue')
-        sleep(30, "reboot")
 
     @verbose("GRUB-INSTALL")
-    def grub(self, timeout: float = 1420) -> None:
+    def grub(self, timeout: float = 1470) -> None:
         """Answer the GRUB question if the installer asks it, until the last step starts."""
-        deadline = monotonic() + timeout
-        while not self.text_is_visible('finish_installation', timeout=-10, wait=False):
-            if self.text_is_visible('GRUB', timeout=-10, wait=False):
-                self.click_on('GRUB')
-                self.client.keyPress('enter')
-                return
-            if monotonic() > deadline:
-                raise VNCDoException()
+        if self.wait_for_any('finish_installation', 'GRUB', timeout=timeout) == 'GRUB':
+            self.click_on('GRUB')
+            self.client.keyPress('enter')
 
     @verbose("DISK")
     def disk_setup(self) -> None:
@@ -601,15 +593,17 @@ class UCSInstallation(VNCInstallation):
         [Bildschirmfoto]  [Zurück] [Weiter]
         """
         self.wait_for_text('configure_network')
-        if not self.text_is_visible('ip_address'):
+        # loading the network modules from the ISO before this step can take minutes
+        screen = self.wait_for_any('ip_address', 'primary_interface', 'not_using_dhcp')
+        if screen == 'primary_interface':
             # always use first interface
             self.click_on('continue')
-            sleep(60, "net.detect")
+            screen = self.wait_for_any('ip_address', 'not_using_dhcp')
 
         if not self.args.ip:
             raise ValueError("No IP address")
 
-        if self.text_is_visible('not_using_dhcp'):
+        if screen == 'not_using_dhcp':
             """
             # Netzwerk einrichten
             /Die automatische Netzwerkkonfiguration ist fehlgeschlagen/
@@ -675,7 +669,7 @@ class UCSInstallation(VNCInstallation):
 
         [Weiter]
         """
-        self.wait_for_text('domain_setup', timeout=-300)
+        self.wait_for_text('domain_setup', timeout=-330)
         sub = getattr(self, "_setup_%s" % (self.args.role,))
         sub()
 
