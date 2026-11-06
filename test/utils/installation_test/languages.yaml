@@ -50,6 +50,10 @@ manual_network_config:
   eng: Configure the network
   fra: Configurer vous-même le réseau
   deu: Netzwerk manuell einrichten
+primary_interface:
+  eng: Primary network interface
+  fra: Interface réseau principale
+  deu: Primäre Netzwerk-Schnittstelle
 ip_address:
   eng: The IP address is unique
   fra: L'adresse IP est propre
