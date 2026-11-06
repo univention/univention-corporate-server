@@ -6,8 +6,10 @@
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, RawDescriptionHelpFormatter
 from os.path import dirname, join
+from time import monotonic
 
 from installation import VNCInstallation, build_parser, sleep, verbose
+from vncdotool.client import VNCDoException
 from yaml import safe_load
 
 
@@ -199,10 +201,9 @@ class UCSInstallation(VNCInstallation):
 
         """
         # GRUB-Bootloader auf einer Festplatte installieren
+        Only asked when there is more than one disk: with one disk, GRUB is installed on it
         """
-        self.wait_for_text('GRUB', timeout=1300)
-        self.click_on('GRUB')
-        self.client.keyPress('enter')
+        self.grub()
 
         """
         # Configure Univention System Setup
@@ -220,6 +221,18 @@ class UCSInstallation(VNCInstallation):
         self.wait_for_text('finish_installation', timeout=-1300)
         self.click_on('continue')
         sleep(30, "reboot")
+
+    @verbose("GRUB-INSTALL")
+    def grub(self, timeout: float = 1300) -> None:
+        """Answer the GRUB question if the installer asks it, until the last step starts."""
+        deadline = monotonic() + timeout
+        while not self.text_is_visible('finish_installation', timeout=-10, wait=False):
+            if self.text_is_visible('GRUB', timeout=-10, wait=False):
+                self.click_on('GRUB')
+                self.client.keyPress('enter')
+                return
+            if monotonic() > deadline:
+                raise VNCDoException()
 
     @verbose("DISK")
     def disk_setup(self) -> None:
