@@ -15,7 +15,7 @@ univention-config-registry set	connector/ad/mapping/user/primarymail?true \
 
 systemctl try-restart univention-ad-connector@connector.service || true
 
-deb-systemd-invoke restart slapd.service || true
+systemctl --quiet is-enabled slapd.service && deb-systemd-invoke restart slapd.service || true
 
 #DEBHELPER#
 

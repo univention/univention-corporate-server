@@ -462,5 +462,5 @@ ucs_registerLDAPSchema () {
 
 	/usr/sbin/univention-config-registry commit /etc/ldap/slapd.conf
 
-	systemctl try-restart --no-pager slapd
+	systemctl --quiet is-enabled slapd.service && systemctl try-restart --no-pager slapd
 }
