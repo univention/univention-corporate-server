@@ -1,3 +1,11 @@
+univention-management-console (14.7.5) unstable; urgency=medium
+
+  * Bug #60124: add kc_action to the OIDC extra
+    parameters (umc/oidc/*/extra-parameter) to allow Keycloak Application
+    Initiated Actions, e.g. the passkey registration
+
+ -- Christian Castens <castens@univention.de>  Fri, 06 Nov 2026 18:10:17 +0100
+
 univention-management-console (14.7.4) unstable; urgency=medium
 
   * Bug #59917: load OIDC PAM settings from SASL config

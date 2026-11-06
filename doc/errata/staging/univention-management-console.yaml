@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console
+fix: 14.7.5
+desc: |
+ This update addresses the following issue:
+ * The OpenID Connect login of UMC can now start actions in Keycloak, for
+   example the registration of a passkey. The new portal entry
+   `Register Passkey` uses this to let users register a passkey from the
+   Univention Portal.
+bug: [60124]

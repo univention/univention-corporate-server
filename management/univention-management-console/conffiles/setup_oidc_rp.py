@@ -66,5 +66,5 @@ def handler(config_registry, changes):
         'umc/oidc/%s/client-secret-file=/etc/umc-oidc.secret' % (fqdn,),
         'umc/oidc/%s/openid-configuration=/usr/share/univention-management-console/oidc/%s.json' % (fqdn, safe_filename),
         'umc/oidc/%s/openid-certs=/usr/share/univention-management-console/oidc/%s.jwks' % (fqdn, safe_filename),
-        'umc/oidc/%s/extra-parameter=kc_idp_hint' % (fqdn,),
+        'umc/oidc/%s/extra-parameter=kc_idp_hint,kc_action' % (fqdn,),
     ])
