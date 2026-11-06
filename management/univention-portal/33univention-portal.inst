@@ -112,6 +112,18 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append allowedGroups="cn=Domain Users,cn=groups,$ldap_base" \
 		--set icon="$(base64 /usr/share/univention-portal/key.svg)" \
 		--set linkTarget=samewindow || die
+	univention-directory-manager portals/entry create "$@" --ignore_exists \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--set name=register_passkey \
+		--append displayName='"en_US" "Register Passkey"' \
+		--append displayName='"de_DE" "Passkey registrieren"' \
+		--append description='"en_US" "Register passkey"' \
+		--append description='"de_DE" "Passkey registrieren"' \
+		--append link='"en_US" "/univention/oidc/?kc_action=webauthn-register-passwordless&location=/univention/portal/"' \
+		--set activated=FALSE \
+		--set anonymous=FALSE \
+		--set icon="$(base64 /usr/share/univention-portal/key.svg)" \
+		--set linkTarget=samewindow || die
 	## HELP SUBMENU
 	univention-directory-manager portals/entry create "$@" --ignore_exists \
 		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
@@ -274,6 +286,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain \
 		--append userLinks="cn=self-service-password-change,cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--append userLinks="cn=register_passkey,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
 		--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
 		--append categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \

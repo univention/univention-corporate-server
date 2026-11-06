@@ -3,10 +3,16 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-portal
-fix: 6.7.1
+fix: 6.7.2
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Pages embedded in the portal can now download files that they create in
    the browser. Previously, the Content Security Policy of the portal blocked
    these `blob:` URLs in Firefox.
-bug: [60132]
+ * The Portal now provides the entry `Register Passkey` in the user menu of
+   the sidebar. With this entry, users can register a passkey and use it to
+   sign in to Nubus instead of their password. The entry is deactivated by
+   default. To activate passkey authentication and the entry, see the section
+   `Passkey authentication` in the Keycloak app manual at
+   https://docs.software-univention.de/keycloak-app/latest/configuration.html
+bug: [60132, 60124]

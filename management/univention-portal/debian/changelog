@@ -1,3 +1,10 @@
+univention-portal (6.7.2) unstable; urgency=medium
+
+  * Bug #60124: add deactivated "Register Passkey" entry
+    to the user settings menu
+
+ -- Christian Castens <castens@univention.de>  Fri, 13 Nov 2026 13:30:00 +0100
+
 univention-portal (6.7.1) unstable; urgency=medium
 
   * Bug #60132: allow blob: URLs in the frame-src of the portal
