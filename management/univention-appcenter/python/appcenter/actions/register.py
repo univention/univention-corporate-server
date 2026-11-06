@@ -97,16 +97,20 @@ class Register(CredentialsAction):
         if app.docker and not container_mode():
             self.log('Component needs to be registered in the container')
             return {}
+        updates = {}
         if app.without_repository:
             self.log('No repository to register')
-            return {}
-        updates = {}
-        self.log('Registering component for %s' % app)
-        for _app in Apps().get_all_apps_with_id(app.id):
-            if _app == app:
-                updates.update(self._register_component_dict(_app))
-            else:
-                updates.update(self._unregister_component_dict(_app))
+            # the packages now belong to this version, not to the component of another version
+            for _app in Apps().get_all_apps_with_id(app.id):
+                if not _app.without_repository:
+                    updates.update(self._unregister_component_dict(_app))
+        else:
+            self.log('Registering component for %s' % app)
+            for _app in Apps().get_all_apps_with_id(app.id):
+                if _app == app:
+                    updates.update(self._register_component_dict(_app))
+                else:
+                    updates.update(self._unregister_component_dict(_app))
         if not delay:
             with catch_stdout(self.logger):
                 if not ucr_save(updates):
