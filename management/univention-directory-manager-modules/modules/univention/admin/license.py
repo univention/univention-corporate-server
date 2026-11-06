@@ -178,6 +178,7 @@ class License:
         self.licenses[version][License.USERS] = self.__getValue(self.keys[version][License.USERS], None, 'Users', 'Users not found')
         self.licenses[version][License.SERVERS] = self.__getValue(self.keys[version][License.SERVERS], None, 'Servers', 'Servers not found')
         self.licenses[version][License.MANAGEDCLIENTS] = self.__getValue(self.keys[version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found')
+        self._cached_counts = self.__get_cached_counts(lo)
         self.types = [self.__getValue('univentionLicenseProduct', 'Univention Corporate Server', 'License Product', 'Product attribute not found')]
 
         oem_types = self.__getValue('univentionLicenseOEMProduct', None, 'License Type', 'univentionLicenseOEMProduct attribute not found')
@@ -281,18 +282,35 @@ class License:
         version = self.version
         usedkey = self.keys[version][obj].replace('univentionLicense', 'univentionUsedLicense')
 
-        cache_filter = self._cache_filter() if self.use_cache else None
-        if cache_filter:
-            licenses = lo.authz_connection.search(filter=cache_filter, attr=[usedkey])
-            if licenses:
-                values = licenses[0][1].get(usedkey, [])
-                if values:
-                    count = int(values[0])
-                    self.real[version][obj] = count
-                    return count
+        if usedkey in self._cached_counts:
+            count = self._cached_counts[usedkey]
+            self.real[version][obj] = count
+            return count
 
         self.real[version][obj] = count = self.count(lo.authz_connection, filter=self.filters[version][obj])
         return count
+
+    def __get_cached_counts(self, lo):
+        if not self.use_cache:
+            return {}
+
+        cache_filter = self._cache_filter()
+        if not cache_filter:
+            return {}
+
+        usedkeys = [
+            self.keys[self.version][obj].replace('univentionLicense', 'univentionUsedLicense')
+            for obj in (License.USERS, License.SERVERS, License.MANAGEDCLIENTS)
+        ]
+        licenses = lo.authz_connection.search(filter=cache_filter, attr=usedkeys)
+        if not licenses:
+            return {}
+
+        return {
+            key: int(values[0])
+            for key, values in licenses[0][1].items()
+            if key in usedkeys and values
+        }
 
     def recheck(self, lo) -> bool:
         ldap_filter = self._cache_filter()
