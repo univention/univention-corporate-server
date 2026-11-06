@@ -440,7 +440,7 @@ class OIDCLogin(OIDCResource):
         CORE.debug('OIDC single sign on')
         # TODO: The Client MUST understand the login_hint and iss parameters and SHOULD support the target_link_uri parameter.
         extra_parameters = {'approval_prompt': 'auto'}
-        for extra_parameter in self.extra_parameters:
+        for extra_parameter in self.extra_parameters + ['kc_action']:
             value = self.get_query_argument(extra_parameter, None)
             if value:
                 extra_parameters[extra_parameter] = value

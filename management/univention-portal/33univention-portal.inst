@@ -7,7 +7,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 ## joinscript api: bindpwdfile
 
-VERSION=39
+VERSION=40
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/umc.sh
@@ -110,6 +110,18 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append description='"de_DE" "Ihr Passwort ändern"' \
 		--append link='"en_US" "#/selfservice/passwordchange"' \
 		--append allowedGroups="cn=Domain Users,cn=groups,$ldap_base" \
+		--set icon="$(base64 /usr/share/univention-portal/key.svg)" \
+		--set linkTarget=samewindow || die
+	univention-directory-manager portals/entry create "$@" --ignore_exists \
+		--position "cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--set name=register_passkey \
+		--append displayName='"en_US" "Register Passkey"' \
+		--append displayName='"de_DE" "Passkey registrieren"' \
+		--append description='"en_US" "Register passkey"' \
+		--append description='"de_DE" "Passkey registrieren"' \
+		--append link='"en_US" "/univention/oidc/?kc_action=webauthn-register-passwordless&location=/univention/portal/"' \
+		--set activated=TRUE \
+		--set anonymous=FALSE \
 		--set icon="$(base64 /usr/share/univention-portal/key.svg)" \
 		--set linkTarget=samewindow || die
 	## HELP SUBMENU
@@ -274,6 +286,7 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--position "cn=portal,cn=portals,cn=univention,$ldap_base" \
 		--set name=domain \
 		--append userLinks="cn=self-service-password-change,cn=entry,cn=portals,cn=univention,$ldap_base" \
+		--append userLinks="cn=register_passkey,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append menuLinks="cn=certificates,cn=folder,cn=portals,cn=univention,$ldap_base" \
 		--append menuLinks="cn=help,cn=folder,cn=portals,cn=univention,$ldap_base" \
 		--append categories="cn=domain-service,cn=category,cn=portals,cn=univention,$ldap_base" \
@@ -282,6 +295,12 @@ if [ "$role" = "domaincontroller_master" ]; then
 		--append displayName='"de_DE" "Univention Portal"' \
 		--append displayName='"fr_FR" "Portail Univention"' \
 		--set showUmc=TRUE || die
+
+	if [ $JS_LAST_EXECUTED_VERSION -gt 0 ] && [ $JS_LAST_EXECUTED_VERSION -lt 40 ]; then
+		univention-directory-manager portals/portal modify "$@" --ignore_not_exists \
+			--dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" \
+			--append userLinks="cn=register_passkey,cn=entry,cn=portals,cn=univention,$ldap_base" || die
+	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 8 ]; then
 		# again, coming from ucs 4.4. migration happened earlier

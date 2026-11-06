@@ -1,3 +1,11 @@
+univention-management-console (14.7.5) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3794: pass the Keycloak parameter kc_action
+    to the OpenID Provider to start Application Initiated Actions, e.g.
+    the passkey registration
+
+ -- Christian Castens <castens@univention.de>  Fri, 06 Nov 2026 18:10:17 +0100
+
 univention-management-console (14.7.4) unstable; urgency=medium
 
   * Bug #59917: load OIDC PAM settings from SASL config
