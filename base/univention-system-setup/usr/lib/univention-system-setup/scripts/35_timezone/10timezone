@@ -27,8 +27,8 @@ current_timezone="${current_timezone#/usr/share/zoneinfo/}"
 [ "$current_timezone" = "$timezone" ] &&
     exit 0
 
-# timedatectl set-timezone "$timezone"
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
+timedatectl set-timezone "$timezone" || true
 
 service stop ntpsec
 # shellcheck disable=SC2015
