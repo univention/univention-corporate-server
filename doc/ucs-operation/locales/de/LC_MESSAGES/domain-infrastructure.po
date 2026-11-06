@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Operation Manual 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 09:53+0000\n"
-"PO-Revision-Date: 2026-11-03 11:04+0100\n"
+"POT-Creation-Date: 2026-11-06 21:10+0000\n"
+"PO-Revision-Date: 2026-11-06 22:14+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 
 #: ../../domain-infrastructure/activity-logging.rst:7
-#: ../../domain-infrastructure/index.rst:58
+#: ../../domain-infrastructure/index.rst:64
 msgid "Domain activity logging"
 msgstr "Protokollierung von Aktivitäten in der Domäne"
 
@@ -200,6 +200,184 @@ msgid ""
 msgstr ""
 "Konfigurationsschritte finden Sie unter :uv:kb:`Admin Diary - How to "
 "separate frontend and backend <11331>`."
+
+#: ../../domain-infrastructure/dhcp.rst:7
+#: ../../domain-infrastructure/index.rst:52
+msgid "DHCP"
+msgstr "DHCP"
+
+#: ../../domain-infrastructure/dhcp.rst:9
+msgid ""
+"The Dynamic Host Configuration Protocol (DHCP) assigns computers an IP "
+"address, a subnet mask, and, as necessary, settings for the gateway or "
+"NetBIOS server. The IP address can be static or dynamic."
+msgstr ""
+"Das Dynamic Host Configuration Protocol (DHCP) weist Computern eine IP-"
+"Adresse, eine Subnetzmaske und bei Bedarf Einstellungen für das Gateway "
+"oder den NetBIOS-Server zu. Die IP-Adresse kann statisch oder dynamisch "
+"sein."
+
+#: ../../domain-infrastructure/dhcp.rst:13
+msgid ""
+"You can use DHCP to assign and control IP addresses centrally through the"
+" LDAP directory. You don't need to configure each computer manually."
+msgstr ""
+"Mit DHCP können Sie IP-Adressen zentral über das LDAP-Verzeichnis "
+"zuweisen und verwalten. Sie müssen nicht jeden Computer manuell "
+"konfigurieren."
+
+#: ../../domain-infrastructure/dhcp.rst:16
+msgid "The DHCP integration in Nubus for UCS only supports IPv4."
+msgstr "Die DHCP-Integration in Nubus für UCS UCS unterstützt nur IPv4."
+
+#: ../../domain-infrastructure/dhcp.rst:18
+msgid ""
+"A *DHCP service* groups DHCP servers in a shared LDAP configuration. You "
+"enter global configuration parameters in the DHCP service and specific "
+"parameters in the subordinate objects. For more information, see "
+":external+uv-nubus-manual:ref:`nubus-domain-dhcp-services`."
+msgstr ""
+"Ein *DHCP-Dienst* fasst DHCP-Server in einer gemeinsamen LDAP-"
+"Konfiguration zusammen. Globale Konfigurationsparameter tragen Sie im "
+"DHCP-Dienst ein, spezifische Parameter in den untergeordneten Objekten. "
+"Für weitere Informationen, siehe :external+uv-nubus-manual:ref:`nubus-"
+"domain-dhcp-services`."
+
+#: ../../domain-infrastructure/dhcp.rst:24
+msgid ""
+"You can install a DHCP server from the Univention App Center with the "
+":program:`DHCP server` application. Alternatively, you can install the "
+":program:`univention-dhcp` software package. For more information, see "
+":ref:`lifecycle-package-installation-management` in :cite:t:`uv-nubus-"
+"manual`."
+msgstr ""
+"Sie können einen DHCP-Server mit der App :program:`DHCP server` aus dem "
+"Univention App Center installieren. Alternativ können Sie das "
+"Softwarepaket :program:`univention-dhcp` installieren. Weitere "
+"Informationen finden Sie unter :ref:`lifecycle-package-installation-"
+"management` im :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dhcp.rst:30
+msgid ""
+"Every DHCP server assigns IP addresses through DHCP. By default, DHCP "
+"servers assign only static IP addresses to computer objects registered in"
+" the Nubus for UCS LDAP. For more information about DHCP server entries, "
+"see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-servers` in :cite:t"
+":`uv-nubus-manual`."
+msgstr ""
+"Jeder DHCP-Server weist IP-Adressen über DHCP zu. Standardmäßig weisen "
+"DHCP-Server nur statische IP-Adressen an Computerobjekte zu, die im LDAP "
+"von Nubus für UCS registriert sind. Für weitere Informationen über DHCP "
+"Server Einträge, siehe :external+uv-nubus-manual:ref:`nubus-domain-dhcp-"
+"servers` im :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dhcp.rst:37
+msgid ""
+"If you assign only static IP addresses, you can use as many DHCP servers "
+"as required in a DHCP service. All DHCP servers obtain identical data "
+"from LDAP, and each server offers the data to DHCP clients. The clients "
+"then accept the first response and ignore the rest."
+msgstr ""
+"Wenn Sie nur statische IP-Adressen zuweisen, können Sie beliebig viele "
+"DHCP-Server in einem DHCP-Dienst verwenden. Alle DHCP-Server beziehen "
+"identische Daten aus LDAP und jeder Server bietet sie den DHCP-Clients "
+"an. Die Clients akzeptieren dann die erste Antwort und ignorieren die "
+"übrigen."
+
+#: ../../domain-infrastructure/dhcp.rst:43
+msgid ""
+"If you also assign dynamic IP addresses, you must use the DHCP failover "
+"mechanism and can use a maximum of two DHCP servers per subnet."
+msgstr ""
+"Wenn Sie auch dynamische IP-Adressen zuweisen, müssen Sie den DHCP-"
+"Failover-Mechanismus verwenden und können höchstens zwei DHCP-Server pro "
+"Subnetz einsetzen."
+
+#: ../../domain-infrastructure/dhcp.rst:47
+msgid ""
+"A *DHCP host* entry makes a computer known to the DHCP service. Computers"
+" need a DHCP host object to retrieve a fixed IP address through DHCP. You"
+" don't normally need to create DHCP host objects manually, because Nubus "
+"creates them automatically when you assign a DHCP service to a computer "
+"object with a fixed IP address. For more information about DHCP host "
+"entries, see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-hosts` in "
+":cite:t:`uv-nubus-manual`."
+msgstr ""
+"Ein *DHCP Host* Eintrag macht einen Computer beim DHCP-Dienst bekannt. "
+"Computer benötigen ein DHCP Rechnerobjekt, um eine feste IP-Adresse über "
+"DHCP zu beziehen. Normalerweise müssen Sie DHCP Rechnerobjekte nicht "
+"manuell erstellen, da Nubus sie automatisch erstellt, wenn Sie einem "
+"Computerobjekt mit fester IP-Adresse einen DHCP-Dienst zuweisen. Für "
+"weitere Informationen über DHCP Host Einträge, siehe :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-hosts` im :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dhcp.rst:57
+msgid ""
+"Every subnet requires a *DHCP subnet* entry, regardless of whether you "
+"assign dynamic IP addresses from that subnet. For more information about "
+"DHCP subnet entries, see :external+uv-nubus-manual:ref:`nubus-domain-"
+"dhcp-subnets` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Jedes Subnetz benötigt einen *DHCP Subnetz* Eintrag, unabhängig davon, ob"
+" Sie dynamische IP-Adressen aus diesem Subnetz zuweisen.Für weitere "
+"Informationen über DHCP Subnetz Einträge, siehe :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-subnets` im :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dhcp.rst:63
+msgid ""
+"You can assign configuration parameters to different IP ranges by "
+"creating *DHCP pools* within subnets. This lets you allow unknown "
+"computers in one IP range and exclude them from another. You can create "
+"DHCP pools only under DHCP subnet objects. For more information about "
+"DHCP pools, see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-pools` "
+"in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Sie können verschiedenen IP-Bereichen Konfigurationsparameter zuweisen, "
+"indem Sie *DHCP Pools* innerhalb von Subnetzen erstellen. So können Sie "
+"unbekannte Computer in einem IP-Bereich zulassen und aus einem anderen "
+"ausschließen. DHCP Pools können Sie nur unter DHCP Subnetz Objekten "
+"erstellen.Für weitere Informationen über DHCP Pools, siehe :external+uv-"
+"nubus-manual:ref:`nubus-domain-dhcp-pools` im :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dhcp.rst:71
+msgid ""
+"If several IP subnets use the same physical Ethernet network, create a "
+"*DHCP shared network* object under the DHCP service. Then create a "
+"separate *DHCP shared subnet* object for each subnet under that shared "
+"network object. For more information about DHCP shared networks and "
+"subnets, see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-shared-"
+"network` in :cite:t:`uv-nubus-manual`."
+msgstr ""
+"Wenn mehrere IP-Subnetze dasselbe physische Ethernet-Netzwerk verwenden, "
+"erstellen Sie ein *DHCP shared network*-Objekt unter dem DHCP-Dienst. "
+"Erstellen Sie anschließend für jedes Subnetz ein eigenes *DHCP shared "
+"subnet*-Objekt unter diesem Netzwerkobjekt. Weitere Informationen über "
+"DHCP Shared Networks und Subnetze finden Sie unter :external+uv-nubus-"
+"manual:ref:`nubus-domain-dhcp-shared-network` im :cite:t:`uv-nubus-manual`."
+
+#: ../../domain-infrastructure/dhcp.rst:79
+msgid ""
+"Values that you set at a DHCP configuration level apply to that level and"
+" all subordinate levels unless you specify other values at those levels. "
+"As with policies, the value closest to the object in the configuration "
+"hierarchy applies."
+msgstr ""
+"Werte, die Sie auf einer DHCP-Konfigurationsebene festlegen, gelten für "
+"diese und alle untergeordneten Ebenen, sofern Sie dort keine anderen "
+"Werte angeben. Wie bei Richtlinien gilt der Wert, der dem Objekt in der "
+"Konfigurationshierarchie am nächsten liegt."
+
+#: ../../domain-infrastructure/dhcp.rst:85
+msgid ":external+uv-nubus-manual:ref:`nubus-domain-dhcp`"
+msgstr ":external+uv-nubus-manual:ref:`nubus-domain-dhcp`"
+
+#: ../../domain-infrastructure/dhcp.rst:86
+msgid ""
+"in :cite:t:`uv-nubus-manual` for information about how to use the *DHCP* "
+"management module in the *Management UI*."
+msgstr ""
+"im :cite:t:`uv-nubus-manual` für Informationen zur Verwendung des "
+"Verwaltungsmoduls *DHCP* in der *Management UI*."
 
 #: ../../domain-infrastructure/domain-join.rst:7
 #: ../../domain-infrastructure/index.rst:26
@@ -968,7 +1146,7 @@ msgstr ""
 "nicht in der Seitenliste an."
 
 #: ../../domain-infrastructure/ha.rst:7
-#: ../../domain-infrastructure/index.rst:52
+#: ../../domain-infrastructure/index.rst:58
 msgid "Redundancy and failover for the Primary Directory Node"
 msgstr "Redundanz und Failover für den Primary Directory Node"
 
@@ -1765,7 +1943,7 @@ msgstr ""
 "Testen Sie reguläre Vorgänge in der Domäne nach der Validierung, um die "
 "korrekte Funktionalität sicherzustellen."
 
-#: ../../domain-infrastructure/index.rst:70
+#: ../../domain-infrastructure/index.rst:76
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1881,6 +2059,18 @@ msgstr ""
 
 #: ../../domain-infrastructure/index.rst:53
 msgid ""
+"Understand how DHCP assigns IP addresses and network settings, how DHCP "
+"services and configuration objects organize the settings, and how "
+"configuration values apply across the object hierarchy. See :ref:`domain-"
+"infrastructure-dhcp`."
+msgstr ""
+"Erfahren Sie, wie DHCP IP-Adressen und Netzwerkeinstellungen zuweist, wie"
+" DHCP-Dienste und Konfigurationsobjekte die Einstellungen organisieren "
+"und wie Konfigurationswerte innerhalb der Objekthierarchie gelten. Siehe "
+":ref:`domain-infrastructure-dhcp`."
+
+#: ../../domain-infrastructure/index.rst:59
+msgid ""
 "Protect your domain against disruption to the Primary Directory Node by "
 "distributing directory data across Backup and Replica Directory Nodes and"
 " by promoting a Backup Directory Node to Primary when needed. See :ref"
@@ -1891,7 +2081,7 @@ msgstr ""
 " bei Bedarf einen Backup Directory Node zum Primary befördern. Siehe :ref"
 ":`deployment-primary-dn-resilience`."
 
-#: ../../domain-infrastructure/index.rst:59
+#: ../../domain-infrastructure/index.rst:65
 msgid ""
 "Record and monitor important domain events including user and object "
 "management, app installations and updates, server password changes, "
@@ -1904,11 +2094,11 @@ msgstr ""
 "Systemaktualisierungen mit der App :program:`Admin Diary`. Siehe :ref"
 ":`domain-activity-logging`."
 
-#: ../../domain-infrastructure/index.rst:64
+#: ../../domain-infrastructure/index.rst:70
 msgid "Listener and Notifier replication"
 msgstr "Listener- und Notifier-Replikation"
 
-#: ../../domain-infrastructure/index.rst:65
+#: ../../domain-infrastructure/index.rst:71
 msgid ""
 "Understand how the Listener and Notifier mechanism replicates directory "
 "data across your domain, how transaction-based replication ensures "
@@ -3444,8 +3634,8 @@ msgstr ""
 #: ../../domain-infrastructure/provisioning-service.rst:25
 msgid "Optional Nubus components use the *Provisioning Service* in Nubus for UCS."
 msgstr ""
-"Optionale Komponenten in Nubus verwenden den *Provisioning Service* in Nubus "
-"für UCS."
+"Optionale Komponenten in Nubus verwenden den *Provisioning Service* in "
+"Nubus für UCS."
 
 #: ../../domain-infrastructure/provisioning-service.rst:27
 msgid ""
@@ -3455,9 +3645,9 @@ msgid ""
 "kubernetes-customization`."
 msgstr ""
 "Informationen dazu, wie Sie den *Provisioning Service* in Ihren Diensten "
-"verwenden und die Ereignisse abonnieren, finden Sie unter "
-":external+uv-nubus-customization:ref:`customization-api-provisioning` "
-"in :cite:t:`uv-nubus-kubernetes-customization`."
+"verwenden und die Ereignisse abonnieren, finden Sie unter :external+uv-"
+"nubus-customization:ref:`customization-api-provisioning` in :cite:t:`uv-"
+"nubus-kubernetes-customization`."
 
 #: ../../domain-infrastructure/provisioning-service.rst:35
 msgid "Installation"
