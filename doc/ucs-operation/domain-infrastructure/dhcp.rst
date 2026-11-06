@@ -7,53 +7,82 @@ DHCP
 ====
 
 The Dynamic Host Configuration Protocol (DHCP) assigns computers an IP address,
-the subnet mask and further settings for the gateway or NetBIOS server as
-necessary. The IP address can be set fixed or dynamic.
+a subnet mask, and, as necessary, settings for the gateway or NetBIOS server.
+The IP address can be static or dynamic.
 
-The use of DHCP allows central assignment and control of IP addresses via the
-LDAP directory without performing manual configuration on the individual
-computer systems.
+You can use DHCP to assign and control IP addresses centrally through the LDAP directory.
+You don't need to configure each computer manually.
 
-The DHCP integration in UCS only supports IPv4.
+The DHCP integration in Nubus for UCS only supports IPv4.
 
-In a *DHCP service*, DHCP servers are grouped in a shared LDAP configuration.
-Global configuration parameters are entered in the DHCP service; specific
-parameters in the subordinate objects.
+A *DHCP service* groups DHCP servers in a shared LDAP configuration.
+You enter global configuration parameters in the DHCP service
+and specific parameters in the subordinate objects.
+For more information,
+see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-services`.
 
-A DHCP server can be installed from the Univention App Center with the
-application :program:`DHCP server`. Alternatively, the software package
-:program:`univention-dhcp` can be installed. Additional information can be
-found in :ref:`computers-softwaremanagement-install-software`.
+You can install a DHCP server from the Univention App Center
+with the :program:`DHCP server` application.
+Alternatively, you can install the :program:`univention-dhcp` software package.
+For more information, see :ref:`lifecycle-package-installation-management`
+in :cite:t:`uv-nubus-manual`.
 
-Every DHCP assigns IP addresses via DHCP. In the default setting, only static IP
-addresses are assigned to computer objects registered in the UCS LDAP.
+Every DHCP server assigns IP addresses through DHCP.
+By default, DHCP servers assign only static IP addresses
+to computer objects registered in the Nubus for UCS LDAP.
+For more information about DHCP server entries,
+see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-servers`
+in :cite:t:`uv-nubus-manual`.
 
-If only fixed IP addresses are assigned, as many DHCP servers as required may be
-used in a DHCP service. All the DHCP servers procure identical data from the
-LDAP and offer the DHCP clients the data multiple times. DHCP clients then
-accept the first answer and ignore the rest.
+If you assign only static IP addresses,
+you can use as many DHCP servers as required in a DHCP service.
+All DHCP servers obtain identical data from LDAP,
+and each server offers the data to DHCP clients.
+The clients then accept the first response and ignore the rest.
 
-If dynamic IP addresses are also assigned, the DHCP failover mechanism must be
-employed and a maximum of two DHCP servers can be used per subnet.
+If you also assign dynamic IP addresses,
+you must use the DHCP failover mechanism
+and can use a maximum of two DHCP servers per subnet.
 
-A *DHCP host* entry is used to make the DHCP service aware of a computer. A DHCP
-host object is required for computers attempting to retrieve a fixed IP address
-over DHCP. DHCP computer objects do not normally need to be created manually,
-because they are created automatically when a DHCP service is assigned to a
-computer object with a fixed IP address.
+A *DHCP host* entry makes a computer known to the DHCP service.
+Computers need a DHCP host object
+to retrieve a fixed IP address through DHCP.
+You don't normally need to create DHCP host objects manually,
+because Nubus creates them automatically when you assign a DHCP service
+to a computer object with a fixed IP address.
+For more information about DHCP host entries,
+see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-hosts`
+in :cite:t:`uv-nubus-manual`.
 
-A *DHCP subnet* entry is required for every subnet, irrespective of whether
-dynamic IP addresses are to be assigned from this subnet.
+Every subnet requires a *DHCP subnet* entry,
+regardless of whether you assign dynamic IP addresses from that subnet.
+For more information about DHCP subnet entries,
+see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-subnets`
+in :cite:t:`uv-nubus-manual`.
 
-Configuration parameters can be assigned to the different IP ranges by creating
-*DHCP pools* within subnets. In this way unknown computers can be allowed in one
-IP range and excluded from another IP range. DHCP pools can only be created
-below DHCP subnet objects.
+You can assign configuration parameters to different IP ranges
+by creating *DHCP pools* within subnets.
+This lets you allow unknown computers in one IP range and exclude them from another.
+You can create DHCP pools only under DHCP subnet objects.
+For more information about DHCP pools,
+see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-pools`
+in :cite:t:`uv-nubus-manual`.
 
-If several IP subnets are used in a physical Ethernet network, this should be
-entered as a *DHCP shared subnet* below a *DHCP shared network*. *DHCP shared
-subnet* objects can only be created below *DHCP shared network* objects.
+If several IP subnets use the same physical Ethernet network,
+create a *DHCP shared network* object under the DHCP service.
+Then create a separate *DHCP shared subnet* object for each subnet
+under that shared network object.
+For more information about DHCP shared networks and subnets,
+see :external+uv-nubus-manual:ref:`nubus-domain-dhcp-shared-network`
+in :cite:t:`uv-nubus-manual`.
 
-Values which are set on a DHCP configuration level always apply for this level
-and all subordinate levels, unless other values are specified there. Similar to
-policies, the value which is closest to the object always applies.
+Values that you set at a DHCP configuration level apply to that level
+and all subordinate levels unless you specify other values at those levels.
+As with policies, the value closest to the object in the configuration hierarchy applies.
+
+.. seealso::
+
+   :external+uv-nubus-manual:ref:`nubus-domain-dhcp`
+      in :cite:t:`uv-nubus-manual`
+      for information about how to use the *DHCP* management module
+      in the *Management UI*.

@@ -49,6 +49,12 @@ Kerberos authentication
    and how to configure the Kerberos administration server.
    See :ref:`domain-infrastructure-kerberos`.
 
+DHCP
+   Understand how DHCP assigns IP addresses and network settings,
+   how DHCP services and configuration objects organize the settings,
+   and how configuration values apply across the object hierarchy.
+   See :ref:`domain-infrastructure-dhcp`.
+
 Redundancy and failover for the Primary Directory Node
    Protect your domain against disruption to the Primary Directory Node
    by distributing directory data across Backup and Replica Directory Nodes
