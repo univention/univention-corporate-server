@@ -20,6 +20,7 @@ path = [
   "doc/developer-reference/umc/*.xml",
   "doc/errata/**.yaml",
   "doc/changelog/staged/README.dev.md",
+  "doc/changelog/staged/*.rst",
   "doc/errata/erratum.schema.json",
   "doc/extended-docs/ucr-deprecated.schema.json",
   "pyproject.toml",
