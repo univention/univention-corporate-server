@@ -172,10 +172,7 @@ class _License:
 
                 log.error('Invalid license skipped', path=path, validity=validity)
 
-            if self.current:
-                break
-
-        if self.current is None:
+        if self.current[0] is None:
             log.info('No valid license found', module=module, paths=search_paths)
 
         return validity
@@ -318,7 +315,7 @@ class _License:
             for value in values
             if key.startswith(_ATTR_PREFIX) and key != 'univentionLicenseSignature'
         ], key=operator.itemgetter(0, 1))
-        payload = b''.join(b'%s\n' % (value,) for key, value in parts)
+        payload = b''.join(value + b'\n' for key, value in parts)
 
         ok = _key_store.verify(payload, signature)
         if not ok:
