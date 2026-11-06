@@ -31,10 +31,10 @@ If omitted, the Debian changelog is generated from Git history using `gbp dch`. 
 ## Available sections
 
 Select the section according to the affected component.
-The package names below are examples from the mapping, not an exhaustive list.
+The table lists all packages that the mapping in univention_sphinx_changelog assigns to each section.
 Parent sections are valid where no more specific subsection fits.
 
-| Section | Changelog heading | Example packages |
+| Section | Changelog heading | Packages |
 | --- | --- | --- |
 | `changelog-general` | General | - |
 | `security` | ↳ Security updates | - |
@@ -42,13 +42,13 @@ Parent sections are valid where no more specific subsection fits.
 | `maintained` | ↳ Maintained packages | - |
 | `changelog-installer` | Univention Installer | `univention-dvd` |
 | `changelog-basic` | Basic system services | - |
-| `changelog-basic-kernel` | ↳ Linux kernel and firmware packages | `amd64-microcode`, `intel-microcode`, `linux` |
+| `changelog-basic-kernel` | ↳ Linux kernel and firmware packages | `amd64-microcode`, `intel-microcode`, `linux`, `linux-base`, `linux-latest`, `univention-kernel-image`, `univention-kernel-image-signed` |
 | `changelog-basis-ucr` | ↳ Univention Configuration Registry | `univention-config-registry` |
 | `changelog-basis-ucr-template` | ↳ ↳ Changes to templates and modules | `univention-base-files` |
-| `changelog-basis-boot` | ↳ Boot Loader | `insserv`, `shim`, `univention-bootsplash` |
-| `changelog-basis-other` | ↳ Other system services | `univention-doc`, `univention-errata-level`, `univention-licence` |
+| `changelog-basis-boot` | ↳ Boot Loader | `insserv`, `shim`, `univention-bootsplash`, `univention-grub`, `univention-initrd` |
+| `changelog-basis-other` | ↳ Other system services | `univention-doc`, `univention-errata-level`, `univention-licence`, `univention-licence-python`, `univention-ssh` |
 | `changelog-domain` | Domain services | `univention-admin-diary`, `univention-server` |
-| `changelog-domain-openldap` | ↳ OpenLDAP | `lmdb`, `openldap`, `univention-directory-logger` |
+| `changelog-domain-openldap` | ↳ OpenLDAP | `lmdb`, `openldap`, `univention-directory-logger`, `univention-directory-policy`, `univention-ldap-overlay-memberof` |
 | `changelog-domain-openldap-acl` | ↳ ↳ LDAP ACL changes | - |
 | `changelog-domain-openldap-schema` | ↳ ↳ LDAP schema changes | - |
 | `changelog-domain-openldap-replication` | ↳ ↳ Listener/Notifier domain replication | `univention-directory-listener`, `univention-directory-notifier`, `univention-directory-replication` |
@@ -58,7 +58,7 @@ Parent sections are valid where no more specific subsection fits.
 | `changelog-umc-web` | ↳ Univention Management Console web interface | `univention-dojo`, `univention-web` |
 | `changelog-umc-portal` | ↳ Univention Portal | `univention-portal`, `univention-server-overview` |
 | `changelog-umc-server` | ↳ Univention Management Console server | `univention-management-console`, `univention-management-console-module-lib` |
-| `changelog-umc-appcenter` | ↳ Univention App Center | `univention-appcenter`, `univention-app-appliance` |
+| `changelog-umc-appcenter` | ↳ Univention App Center | `univention-app-appliance`, `univention-appcenter` |
 | `changelog-umc-setup` | ↳ Modules for system settings / setup wizard | `univention-management-console-module-ipchange`, `univention-system-setup` |
 | `changelog-umc-update` | ↳ Software update module | `univention-maintenance-mode` |
 | `changelog-umc-join` | ↳ Domain join module | `univention-join`, `univention-ldb-modules`, `univention-management-console-module-join` |
@@ -71,43 +71,43 @@ Parent sections are valid where no more specific subsection fits.
 | `changelog-umc-quota` | ↳ File system quota module | `univention-quota` |
 | `changelog-umc-ucr` | ↳ Univention Configuration Registry module | `univention-management-console-module-ucr` |
 | `changelog-umc-ldap` | ↳ LDAP directory browser | `univention-management-console-module-udm` |
-| `changelog-umc-other` | ↳ Other modules | `python-notifier`, `univention-management-console-module-reboot`, `univention-management-console-module-services` |
-| `changelog-lib` | Univention base libraries | `univention-debug`, `univention-debug-python`, `univention-ldap` |
-| `changelog-deployment` | Software deployment | `apt-mirror`, `univention-archive-key`, `univention-debmirror` |
+| `changelog-umc-other` | ↳ Other modules | `python-notifier`, `univention-management-console-module-reboot`, `univention-management-console-module-services`, `univention-management-console-module-welcome`, `univention-system-info` |
+| `changelog-lib` | Univention base libraries | `univention-debug`, `univention-debug-python`, `univention-ldap`, `univention-lib`, `univention-python` |
+| `changelog-deployment` | Software deployment | `apt-mirror`, `univention-archive-key`, `univention-debmirror`, `univention-maintenance`, `univention-updater` |
 | `changelog-deployment-pkgdb` | ↳ Software monitor | `univention-pkgdb` |
 | `changelog-service` | System services | - |
 | `changelog-service-postgresql` | ↳ PostgreSQL | `postgresql-common`, `univention-postgresql` |
 | `changelog-service-mysql` | ↳ MySQL and MariaDB | `univention-mariadb`, `univention-mysql` |
-| `changelog-service-docker` | ↳ Docker | `docker.io`, `univention-appliance-docker-container`, `univention-docker` |
-| `changelog-service-saml` | ↳ SAML | `crudesaml`, `php-krb5`, `python-keycloak` |
+| `changelog-service-docker` | ↳ Docker | `docker.io`, `univention-appliance-docker-container`, `univention-docker`, `univention-docker-container-mode` |
+| `changelog-service-saml` | ↳ SAML | `crudesaml`, `php-krb5`, `python-keycloak`, `stunnel4`, `univention-keycloak`, `univention-saml` |
 | `changelog-service-mail` | ↳ Mail services | `univention-fetchmail` |
 | `changelog-service-imap` | ↳ ↳ IMAP services | `univention-mail-cyrus`, `univention-mail-cyrus-murder`, `univention-mail-dovecot` |
 | `changelog-service-postfix` | ↳ ↳ Postfix | `univention-mail-canonical-maps`, `univention-mail-postfix`, `univention-postgrey` |
 | `changelog-service-virus` | ↳ ↳ Spam/virus detection and countermeasures | `univention-antivir-mail`, `univention-dansguardian`, `univention-spamassassin` |
-| `changelog-service-print` | ↳ Printing services | `univention-check-printers`, `univention-foomatic-ppds`, `univention-printquota` |
-| `changelog-service-nagios` | ↳ Nagios | `univention-monitoring-client`, `univention-nagios`, `univention-nagios-raid` |
+| `changelog-service-print` | ↳ Printing services | `univention-check-printers`, `univention-foomatic-ppds`, `univention-printclient`, `univention-printquota`, `univention-printserver` |
+| `changelog-service-nagios` | ↳ Nagios | `univention-monitoring-client`, `univention-nagios`, `univention-nagios-raid`, `univention-nagios-samba`, `univention-nagios-servicechecks`, `univention-nagios-smart`, `univention-snmp`, `univention-snmpd` |
 | `changelog-service-apache` | ↳ Web services | `univention-apache` |
 | `changelog-service-radius` | ↳ RADIUS | `univention-radius` |
 | `changelog-service-proxy` | ↳ Proxy services | `squid3`, `univention-squid`, `univention-squid-kerberos` |
-| `changelog-service-kerberos` | ↳ Kerberos | `univention-heimdal`, `univention-python-heimdal`, `libpam-krb5` |
+| `changelog-service-kerberos` | ↳ Kerberos | `libpam-krb5`, `univention-heimdal`, `univention-python-heimdal` |
 | `changelog-service-ssl` | ↳ SSL/TLS | `ca-certificates`, `univention-ssl` |
 | `changelog-service-celery` | ↳ Celery services | `univention-celery` |
 | `changelog-service-dhcp` | ↳ DHCP services | `univention-dhcp`, `univention-net-installer`, `univention-tftp` |
-| `changelog-service-pam` | ↳ PAM / Local group cache | `pam`, `pam-runasroot`, `pam-univentionmailcyrus` |
-| `changelog-service-nfs` | ↳ NFS | `univention-nfs`, `univention-home-mounter` |
+| `changelog-service-pam` | ↳ PAM / Local group cache | `pam`, `pam-runasroot`, `pam-univentionmailcyrus`, `univention-group-membership-cache`, `univention-pam`, `univention-sasl`, `univention-skel`, `univention-sudo` |
+| `changelog-service-nfs` | ↳ NFS | `univention-home-mounter`, `univention-nfs` |
 | `changelog-service-backup` | ↳ Bacula and Backup | `univention-bacula`, `univention-remote-backup` |
-| `changelog-service-network` | ↳ Networking services | `univention-firewall`, `univention-ftp`, `univention-network-manager` |
+| `changelog-service-network` | ↳ Networking services | `univention-firewall`, `univention-ftp`, `univention-ipcalc`, `univention-network-manager` |
 | `changelog-service-other` | ↳ Other services | - |
 | `changelog-desktop` | Desktop | `univention-kdm` |
 | `changelog-virt` | Virtualization | - |
-| `changelog-virt-uvmm` | ↳ UCS Virtual Machine Manager (UVMM) | `openbios`, `seabios`, `univention-kvm-virtio` |
+| `changelog-virt-uvmm` | ↳ UCS Virtual Machine Manager (UVMM) | `openbios`, `seabios`, `univention-kvm-virtio`, `univention-novnc`, `univention-virtual-machine-manager-daemon`, `univention-virtual-machine-manager-node`, `univention-virtual-machine-manager-schema` |
 | `changelog-virt-operation` | ↳ Operate UCS as virtual machine | `univention-cloud-init` |
 | `changelog-win` | Services for Windows | - |
-| `changelog-win-samba` | ↳ Samba | `ldb`, `samba`, `tdb` |
+| `changelog-win-samba` | ↳ Samba | `ldb`, `samba`, `tdb`, `tevent`, `univention-newsid`, `univention-samba`, `univention-samba4`, `univention-samba4wins` |
 | `changelog-win-takeover` | ↳ Univention AD Takeover | `univention-management-console-module-adtakeover` |
 | `changelog-win-s4c` | ↳ Univention S4 Connector | `univention-nagios-s4-connector`, `univention-s4-connector` |
 | `changelog-win-adc` | ↳ Univention Active Directory Connection | `univention-ad-connector`, `univention-nagios-ad-connector` |
-| `changelog-development` | Development packages | `ucslint`, `univention-debhelper`, `univention-directory-manager-module-example` |
+| `changelog-development` | Development packages | `ucslint`, `univention-debhelper`, `univention-directory-manager-module-example`, `univention-package-template`, `univention-package-template-python`, `univention-ucs-translation-template`, `univention-unittests` |
 | `changelog-other` | Other changes | `configparser`, `univention-l10n-fr` |
 
 The complete package-to-section mapping and hierarchy are maintained in
