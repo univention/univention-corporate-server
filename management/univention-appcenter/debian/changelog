@@ -1,3 +1,12 @@
+univention-appcenter (11.7.1) unstable; urgency=medium
+
+  * Bug #60019: Detect the installed version of Apps that moved from the
+    UCS repository to their own repository, and unregister the
+    repository of other versions when reverting to the version without
+    repository
+
+ -- Enock kipsang <enock.kipsang@univention.de>  Fri, 06 Nov 2026 15:41:39 +0300
+
 univention-appcenter (11.7.0) unstable; urgency=medium
 
   [ Rehema Owino ]

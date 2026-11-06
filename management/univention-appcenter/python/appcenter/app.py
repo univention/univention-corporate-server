@@ -1298,7 +1298,19 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
         else:
             if not self.without_repository and not ucr_includes(self.ucr_component_key):
                 return False
+            if self.without_repository and self._component_of_other_version_registered():
+                return False
             return packages_are_installed(self.default_packages, strict=False)
+
+    def _component_of_other_version_registered(self):
+        # An App without repository is only identified by its DefaultPackages. If another
+        # version of the App ships the same packages in its own component, the packages
+        # belong to that version as soon as its component is registered.
+        from univention.appcenter.app_cache import Apps
+        return any(
+            app.version != self.version and not app.without_repository and ucr_includes(app.ucr_component_key)
+            for app in Apps().get_all_apps_with_id(self.id)
+        )
 
     def is_ucs_component(self):
         english_cache = self.get_app_cache_obj().copy(locale='en')
