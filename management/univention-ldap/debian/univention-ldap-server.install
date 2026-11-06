@@ -9,7 +9,6 @@ scripts/ldap_setup_index	usr/share/univention-ldap/
 scripts/setup-internal	usr/share/univention-ldap/
 scripts/setup-translog	usr/share/univention-ldap/
 server_password_change.d/univention-ldap-server	usr/lib/univention-server/server_password_change.d/
-slapd-condition	usr/lib/univention-ldap/
 slapd-failure	usr/lib/univention-ldap/
 slapd-post-start	usr/lib/univention-ldap/
 slapd-pre-start	usr/lib/univention-ldap/
