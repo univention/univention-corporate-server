@@ -98,6 +98,7 @@ for key, smbstring in [
             print('\t%s\t= %s' % (smbstring, configRegistry[key]))
 
 print('\tntlm auth\t= %s' % (configRegistry.get('samba/ntlm/auth', 'ntlmv2-only')))
+print('\trestrict anonymous = 2')
 
 # legacy settings for smbd
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
