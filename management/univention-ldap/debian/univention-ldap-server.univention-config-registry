@@ -176,4 +176,5 @@ Variables: slapd/port/ldaps
 
 Type: file
 File: etc/systemd/system/slapd.service.d/limits.conf
+Postinst: systemctl_daemon_reload.py
 Variables: ldap/maxopenfiles
