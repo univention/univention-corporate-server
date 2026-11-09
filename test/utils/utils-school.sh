@@ -237,6 +237,24 @@ EOF
         --data_type="join/pre-join"
 }
 
+add_pre_join_hook_to_defer_listener_start () {
+    cat <<-'EOF' >"/tmp/defer-listener.sh"
+#!/bin/sh
+mkdir -p /run/systemd/system/univention-directory-listener.service.d
+printf '[Unit]\nConditionPathExists=/var/lib/univention-directory-listener/notifier_id\n' >/run/systemd/system/univention-directory-listener.service.d/50-defer-until-init.conf
+systemctl daemon-reload
+exit 0
+EOF
+    # shellcheck source=/dev/null
+    . /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension \
+        --binddn "cn=admin,$(ucr get ldap/base)" \
+        --bindpwdfile=/etc/ldap.secret \
+        --packagename defer-listener \
+        --packageversion "1.0" \
+        --data /tmp/defer-listener.sh \
+        --data_type="join/pre-join"
+}
+
 create_virtual_schools () {
     local number_of_schools=${1:?missing number of schools to create}
     local formated_school_number
