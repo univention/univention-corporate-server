@@ -15,7 +15,7 @@ fi
 
 VERSION="53"
 VERSION_NAME="5.3"
-MIN_VERSION="5.2-5"
+MIN_VERSION="5.2-7"
 
 # shellcheck disable=SC2034
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION_NAME}"
