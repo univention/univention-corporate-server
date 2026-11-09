@@ -2637,10 +2637,10 @@ msgstr ""
 
 msgid ""
 "To remove existing firewall rules after deactivating the firewall, "
-"run :command:`service univention-firewall flush`."
+"run :command:`systemctl start univention-firewall-flush.service`."
 msgstr ""
 "Um vorhandene Firewall-Regeln nach dem Deaktivieren der Firewall zu "
-"entfernen, führen Sie :command:`service univention-firewall flush` aus."
+"entfernen, führen Sie :command:`systemctl start univention-firewall-flush.service` aus."
 
 msgid ""
 "To use bcrypt as the hashing method instead, see :envvar:`password/hashing/"

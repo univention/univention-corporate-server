@@ -2367,7 +2367,7 @@ This section provides a reference for UCR variables.
    UCS uses the firewall.
 
    To remove existing firewall rules after deactivating the firewall,
-   run :command:`service univention-firewall flush`.
+   run :command:`systemctl start univention-firewall-flush.service`.
 
    :Default value: not set
    :Possible values: ``true``, ``on``, ``false``, ``off``, not set

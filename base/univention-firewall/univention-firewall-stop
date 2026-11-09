@@ -21,6 +21,12 @@ if ! iptables --wait -t filter -L 2>/dev/null >/dev/null; then
 	exit 0
 fi
 
+if [ "${1:-}" != flush ] && is_ucr_true security/packetfilter/disabled; then
+	echo "univention-firewall: packet filter has been disabled via UCR; keeping existing rules." >&2
+	apply_docker_rules
+	exit 0
+fi
+
 iptables --wait -P INPUT ACCEPT
 iptables --wait -P OUTPUT ACCEPT
 iptables --wait -F

@@ -8,6 +8,7 @@
 
 override_dh_installsystemd:
 	dh_installsystemd --restart-after-upgrade
+	dh_installsystemd --name=univention-firewall-flush --no-enable --no-start
 
 %:
 	dh $@ --with ucr
