@@ -66,7 +66,11 @@ class Upgrade(Install):
         real_apps = []
         already_installed = False
         rejected_explicit = False
+        handled_ids = set()
         for app in apps:
+            if app.id in handled_ids:
+                continue  # given more than once, e.g. "app app=1.0": handle it once
+            handled_ids.add(app.id)
             old_app = Apps().find(app.id)
             explicit = app.id in explicit_ids
             if app == old_app:

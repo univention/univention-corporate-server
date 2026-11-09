@@ -1,3 +1,9 @@
+ucs-test (12.7.17) unstable; urgency=medium
+
+  * Bug #58543: Test explicit versions in "univention-app upgrade"
+
+ -- Iván Barbecho Delgado <ivan.delgado@univention.de>  Mon, 09 Nov 2026 11:08:11 +0100
+
 ucs-test (12.7.16) unstable; urgency=medium
 
   * Bug #57976: flush sssd cache after user rename

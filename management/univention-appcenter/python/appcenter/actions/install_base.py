@@ -56,7 +56,7 @@ class InstallRemoveUpgrade(Register):
         parser.add_argument('--do-not-send-info', action='store_false', dest='send_info', help=SUPPRESS)
         parser.add_argument('--autoinstalled', nargs='+', dest='autoinstalled', help=SUPPRESS)
         parser.add_argument('--dry-run', action='store_true', dest='dry_run', help='Perform only a dry-run. App state is not touched')
-        parser.add_argument('app', nargs='+', action=self.app_argument_action, help='The ID of the App')
+        parser.add_argument('app', nargs='+', action=self.app_argument_action, help='The ID of the App, optionally with a version: <app>=<version>')
 
     main = None  # no action by itself
 
