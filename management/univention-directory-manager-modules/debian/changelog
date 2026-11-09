@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.6) unstable; urgency=medium
+
+  * Bug #58779: make uid and gid allocation ranges configurable
+
+ -- Florian Best <best@univention.de>  Mon, 09 Nov 2026 10:19:51 +0100
+
 univention-directory-manager-modules (17.7.5) unstable; urgency=medium
 
   * Bug #60103: fix replacing of license in delegative administration

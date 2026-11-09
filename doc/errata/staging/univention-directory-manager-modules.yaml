@@ -3,9 +3,15 @@ release: "5.2"
 version: [7]
 scope: ucs_5.2-0-errata5.2-7
 src: univention-directory-manager-modules
-fix: 17.7.5
+fix: 17.7.6
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * In the experimental delegated administration mode, importing a UDM license
    failed if a license was already installed on the system.
-bug: [60103]
+ * The ranges for automatically allocated `uidNumber` and `gidNumber` are now
+   configurable via the UCR variables `directory/manager/uidNumber/ranges` and
+   `directory/manager/gidNumber/ranges`. If administrators configure ranges
+   outside the default Samba ranges, they must also adjust the corresponding
+   contiguous Samba `idmap` ranges via the UCR variables `samba/idmap/range`
+   and `samba/idmap/.*/range`.
+bug: [60103, 58779]

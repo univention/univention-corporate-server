@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-management-console-module-diagnostic
+fix: 8.7.1
+desc: |
+ This update addresses the following issue:
+ * A new System Diagnostic module checks the configured UDM UID/GID ranges
+   against the Samba `idmap` ranges. It reports invalid or uncovered ranges,
+   overlapping Samba ranges, and UDM ranges that overlap Samba's automatically
+   allocated `3000000 - 4000000` `idmap.ldb` range.
+bug: [58779]
