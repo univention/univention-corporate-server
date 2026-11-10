@@ -86,7 +86,7 @@ access
   by role="udm:default-roles:organizational-unit-admin"
   description="Every context role is allowed to read containers underneath of context position"
 
-  to objecttype="container/ou" position.subtree="context=udm:contexts:position"
+  to objecttype="container/ou" position.hierarchy="context=udm:contexts:position"
     name="allow-read-context-ou" description="Allow to read own OU"
 
     grant actions="search,read"
