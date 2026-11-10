@@ -350,3 +350,14 @@ haproxy_config_external_fqdn_add_second_keycloak () {
 EOF
 	service haproxy restart
 }
+
+keycloak_mariadb_setup () {
+	DEBIAN_FRONTEND=noninteractive apt-get -y install univention-mariadb
+	# keycloak db
+	mysql -p"$(cat /etc/mysql.secret)" -e 'CREATE database keycloak;'
+	mysql -p"$(cat /etc/mysql.secret)" -D keycloak -e "GRANT ALL PRIVILEGES ON * TO root@172.16.1.2 IDENTIFIED BY \"$(cat /etc/mysql.secret)\";"
+	# umc session db
+	mysql -p"$(cat /etc/mysql.secret)" -e 'CREATE database umc;'
+	mysql -p"$(cat /etc/mysql.secret)" -D umc -e "GRANT ALL PRIVILEGES ON * TO root@$(hostname -f) IDENTIFIED BY \"$(cat /etc/mysql.secret)\";"
+	univention-management-console-settings set -u 'mysql://root:'"$(cat /etc/mysql.secret)"'@'"$(hostname -f)"'/umc'
+}
