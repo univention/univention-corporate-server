@@ -10,6 +10,7 @@ and compiled to Cerbos role policies.
 
 import ast
 import copy
+import hashlib
 import io
 import logging
 import re
@@ -89,6 +90,8 @@ _SCOPES = {
     'onelevel': 'one',
     'sub': 'subtree',
     'subtree': 'subtree',
+    'ancestors': 'ancestors',
+    'hierarchy': 'hierarchy',
     'base': 'base',
     'children': 'children',
 }
@@ -443,7 +446,9 @@ class UDMAuthorizationConfig:
         """
         named_conditions = {cond['name']: cond['expr'] for cond in self.parsed['conditions']}
         resources = {}
-        derived_by_key = {}
+        # derived_by_key = {}
+        self._position_variables = {}
+        self._position_variable_names = {}
 
         policies = {}
         for access_block in self.parsed['rules']:
@@ -459,14 +464,14 @@ class UDMAuthorizationConfig:
                         rule_conditions = []
                         position = to_clause.get('position')
                         if position:
-                            expr = self._position_to_cel(role, *position)
+                            expr = self._position_variable(role, *position)
                             rule_conditions.append(expr)
-                            if self._is_context_position(position[1]):
-                                key = (role, expr)
-                                name = derived_by_key.get(key)
-                                if name is None:
-                                    name = self._derived_role_name(role, position, set(derived_by_key.values()))
-                                    derived_by_key[key] = name
+                            # if self._is_context_position(position[1]):
+                            #    key = (role, expr)
+                            #    name = derived_by_key.get(key)
+                            #    if name is None:
+                            #        name = self._derived_role_name(role, position, set(derived_by_key.values()))
+                            #        derived_by_key[key] = name
 
                         if_cond = to_clause.get('if')
                         if if_cond:
@@ -500,18 +505,19 @@ class UDMAuthorizationConfig:
                         # _add_rule_comment(rule, 0, rule_name, description)
                         _add_rule_comment(rules, len(rules) - 1, rule_name, description)
 
-        definitions = []
-        for (role, expr), name in sorted(derived_by_key.items(), key=lambda item: item[1]):
-            definitions.append(_policy_map({
-                'name': name,
-                'parentRoles': [role],
-                'condition': self._condition([expr]),
-            }, commented))
+        # definitions = []
+        # for (role, expr), name in sorted(derived_by_key.items(), key=lambda item: item[1]):
+        #    definitions.append(_policy_map({
+        #        'name': name,
+        #        'parentRoles': [role],
+        #        'condition': self._condition([expr]),
+        #    }, commented))
 
         return {
             'roles': policies,
             'derivedRoleSet': f'udm_{sanitize_filename(self.filename.stem).replace("-", "_")}_contexts',
-            'derivedRoles': _policy_seq(definitions, commented),
+            'derivedRoles': [],  # _policy_seq(definitions, commented),
+            'variables': self._position_variable_names,
             'resources': resources,
         }
 
@@ -523,6 +529,9 @@ class UDMAuthorizationConfig:
             'rolePolicy': _policy_map({
                 'role': role,
                 'version': 'default',
+                'variables': {
+                    'import': ['udm_variables'],
+                },
                 # 'scope': '',
                 'parentRoles': ['role-allow-role-policy-actions'],
                 'rules': _policy_seq(rules, commented),
@@ -578,12 +587,38 @@ class UDMAuthorizationConfig:
         if isinstance(position, str) and position.startswith('context='):
             _, _, context = position.partition('context=')
             context_key = self._context_key(context)
-            pos = f'cr.{context_key}'
-            role_match = f'cr.role == {self._cel_string(role)}'
-            dn_match = self._dn_position_scope_expr(scope, pos)
-            return f'{CONTEXT_ROLES}.exists(cr, {role_match} && {dn_match})'
 
-        return self._dn_position_scope_expr(scope, self._cel_string(position))
+            assignments = 'V.udm_assignments'
+            role_match = f'a.role == {self._cel_string(role)}'
+            position_expr = f'a.{context_key}'
+
+            dn_match = self._dn_position_scope_expr(scope, position_expr)
+
+            return (
+                f'{assignments}.exists(a, '
+                f'{role_match} && {dn_match})'
+            )
+
+        return self._dn_position_scope_expr(
+            scope,
+            self._cel_string(position),
+        )
+
+    def _position_variable(self, role, raw_scope, raw_position):
+        expr = self._position_to_cel(role, raw_scope, raw_position)
+
+        # same role, scope and position use the same variable
+        key = (role, expr)
+
+        if key not in self._position_variables:
+            digest = hashlib.sha256(repr(key).encode()).hexdigest()[:12]
+            role_name = re.sub(r'[^a-zA-Z0-9_]', '_', role)
+            name = f'position_{role_name}_{digest}'
+
+            self._position_variables[key] = name
+            self._position_variable_names[name] = expr
+
+        return f'V.{self._position_variables[key]}'
 
     @staticmethod
     def _context_key(context):
@@ -593,15 +628,24 @@ class UDMAuthorizationConfig:
 
     @staticmethod
     def _dn_position_scope_expr(scope, position_expr):
-        # UDM exposes request.resource.attr.position as the parent DN / current
-        # container of the target. This avoids slicing the object RDN from the DN
-        # for the common base/onelevel comparison.
+        base = f'ldapDN({position_expr})'
+        target = f'ldapDN({RESOURCE_DN})'
+
         if scope in {'base', 'one'}:
-            return f'{RESOURCE_POSITION} == {position_expr}'
+            return f'{base} == {target}'
+
         if scope == 'subtree':
-            return f'({RESOURCE_POSITION} == {position_expr} || {RESOURCE_POSITION}.endsWith("," + {position_expr}))'
+            return f'{base}.scopeSubtree({target})'
+
         if scope == 'children':
-            return f'({RESOURCE_POSITION} != {position_expr} && {RESOURCE_POSITION}.endsWith("," + {position_expr}))'
+            return f'{base}.scopeSubtree({target}) && {base} != {target}'
+
+        if scope == 'ancestors':
+            return f'{target}.scopeSubtree({base}) && {base} != {target}'
+
+        if scope == 'hierarchy':
+            return f'({base}.scopeSubtree({target}) || {target}.scopeSubtree({base}))'
+
         raise DSLSyntaxError(f'Unsupported position scope: {scope}')
 
     @staticmethod
