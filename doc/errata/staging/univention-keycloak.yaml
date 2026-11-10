@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [7]
+scope: ucs_5.2-0-errata5.2-7
+src: univention-keycloak
+fix: 3.8.1
+desc: |
+ This update addresses the following issue:
+ * `univention-keycloak` now supports configuring passkeys (WebAuthn
+   passwordless) as an alternative to password authentication. The new
+   `passkeys` subcommand enables, disables, configures, and shows the
+   passkey settings of a Keycloak realm.
+bug: [60123]
