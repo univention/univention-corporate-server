@@ -65,7 +65,9 @@ def create_permissions_and_privileges():
     check_call(
         ['bash', '-c', '''
 time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization generate
+sed -i 's|image:.*|image: gitregistry.knut.univention.de/univention/dev/projects/authorization-engine/cerbos/cerbos:branch-fbotner-1-ldap-dn|' /etc/univention/templates/files/usr/share/univention-guardian-server/docker-compose.yaml
 ucr set guardian/cerbos/audit-logging/enabled='true'
+ucr commit /usr/share/univention-guardian-server/docker-compose.yaml
 systemctl restart univention-guardian-server.service
 '''])
 
