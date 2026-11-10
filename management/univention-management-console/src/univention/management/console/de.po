@@ -116,6 +116,11 @@ msgstr ""
 msgid "Could not receive user information from OP."
 msgstr ""
 
+#: src/univention/management/console/oidc.py:237
+#: src/univention/management/console/oidc.py:240
+msgid "The authentication failed. Please login again."
+msgstr "Die Anmeldung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
+
 #: src/univention/management/console/base.py:312
 msgid ""
 "Cross Site Request Forgery attack detected. Please provide the "

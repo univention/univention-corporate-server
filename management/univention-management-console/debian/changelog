@@ -1,3 +1,9 @@
+univention-management-console (14.7.5) unstable; urgency=medium
+
+  * Bug TODO: verify the OIDC token by an LDAP OAUTHBEARER bind instead of PAM
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Nov 2026 14:04:22 +0100
+
 univention-management-console (14.7.4) unstable; urgency=medium
 
   * Bug #59917: load OIDC PAM settings from SASL config

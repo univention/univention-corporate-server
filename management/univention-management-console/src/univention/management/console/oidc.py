@@ -18,6 +18,7 @@ from time import monotonic
 from urllib.parse import urlencode
 
 import jwt
+import ldap
 from jwt.algorithms import RSAAlgorithm
 from sqlalchemy import exc
 from tornado import escape
@@ -26,14 +27,16 @@ from tornado.httpclient import HTTPClientError, HTTPRequest
 
 from univention.management.console.config import ucr
 from univention.management.console.error import (
-    BadRequest, Forbidden, NotFound, OpenIDProvideUnavailable, UMC_Error, Unauthorized,
+    BadRequest, Forbidden, LDAP_ConnectionFailed, LDAP_ServerDown, NotFound, OpenIDProvideUnavailable, UMC_Error,
+    Unauthorized,
 )
 from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import CORE
 from univention.management.console.resource import Resource
-from univention.management.console.session import Session
+from univention.management.console.session import Session, User
 from univention.management.console.session_db import DBDisabledException, get_session
 from univention.management.console.shared_memory import shared_memory
+from univention.uldap import access
 
 
 def create_federated_account(uuid):
@@ -60,6 +63,19 @@ def create_federated_account(uuid):
         account['univentionObjectIdentifier'] = uuid
         account.create()
     CORE.process('Created federated account', dn=account.dn)
+
+
+def ldap_oauthbearer_uid(access_token):
+    """Bind to LDAP with the access token and return the uid of the account it authenticates."""
+    # a dedicated connection: rebinding a cached one would change its identity for every other user of it
+    # no reconnect: its retries (ldap/client/retry/count) would block a pool thread for ~10s per login while LDAP is down
+    lo = access(host=ucr['ldap/server/name'], port=ucr.get_int('ldap/server/port', 7389), base=ucr['ldap/base'], reconnect=False)
+    try:
+        lo.bind_oauthbearer(None, access_token)
+        # whoami() lowercases the DN, PAM returned the uid as stored in LDAP
+        return lo.getAttr(lo.binddn, 'uid', required=True)[0].decode('UTF-8')
+    finally:
+        lo.unbind()
 
 
 class OIDCUser:
@@ -146,7 +162,7 @@ class OIDCResource(OAuth2Mixin, Resource):
         # await self.get_user_information(bearer_token)
 
         oidc = OIDCUser(None, bearer_token, None, claims)
-        await self.pam_oidc_authentication(oidc)
+        await self.oidc_authentication(oidc)
 
     async def authenticate(self, code, code_verifier, nonce):
         CORE.debug('OIDC authenticate')
@@ -174,7 +190,7 @@ class OIDCResource(OAuth2Mixin, Resource):
         oidc = OIDCUser(id_token, access_token, refresh_token, claims)
         if oidc.federated_account:
             await self.handle_federated_account(oidc)
-        await self.pam_oidc_authentication(oidc)
+        await self.oidc_authentication(oidc)
 
     async def handle_federated_account(self, oidc):
         from .server import pool
@@ -190,30 +206,43 @@ class OIDCResource(OAuth2Mixin, Resource):
         await asyncio.wrap_future(future)
         CORE.process('OIDC login federated user %r with roles %r', oidc.uuid, oidc.roles)
 
-    async def pam_oidc_authentication(self, oidc):
+    async def oidc_authentication(self, oidc):
         # important: must be called before the auth, to preserve session id in case of re-auth and that a user cannot choose his own session ID by providing a cookie
         sessionid = self.create_sessionid()
 
         if not oidc.federated_account:
-            # TODO: drop in the future to gain performance
-            result = await self.current_user.authenticate({
-                'locale': self.locale.code,
-                'username': oidc.username,
-                'password': oidc.access_token,
-                'auth_type': 'OIDC',
-            })
-            if not self.current_user.user.authenticated:
-                CORE.error('SECURITY WARNING: PAM OIDC Authentication failed while JWT verification succeeded!')
-                raise UMC_Error(result.message, result.status, result.result)
+            username = await self.ldap_oauthbearer_authentication(oidc)
+            user = self.current_user.user
+            if user.authenticated and user.username and user.username.casefold() != username.casefold():
+                self.current_user.renew()
+            self.current_user.set_credentials(username, oidc.access_token, 'OIDC')
         else:
             self.current_user.set_credentials(oidc.username, oidc.access_token, 'OIDC', object_id=oidc.uuid, roles=oidc.roles, federated_account=oidc.federated_account)
 
-        # as an alternative to PAM we could just set the user as authenticated because jwt.decode() already ensured this.
-        # but we keep the behavior for now because this is what happened prior to the UMC-Web-Server and UMC-Sever unification
-        # PAM also makes acct_mgmt. This is of course also done by the OP but nevertheless we don't know if this is still required.
-        # self.current_user.set_credentials(oidc.username, oidc.access_token, 'OIDC')
         self.current_user.oidc = oidc
         self.set_session(sessionid)
+
+    async def ldap_oauthbearer_authentication(self, oidc):
+        """Let the LDAP server verify the access token. Account state (locked, expired, disabled) is enforced by the OP."""
+        from .server import pool
+        try:
+            try:
+                username = await asyncio.wrap_future(pool.submit(ldap_oauthbearer_uid, oidc.access_token))
+            except ldap.SERVER_DOWN:
+                raise LDAP_ServerDown()
+            except ldap.CONNECT_ERROR as exc:
+                raise LDAP_ConnectionFailed(exc)
+            except ldap.LDAPError as exc:
+                CORE.error('SECURITY WARNING: LDAP OAUTHBEARER authentication failed while JWT verification succeeded: %s', exc)
+                raise Unauthorized(self._('The authentication failed. Please login again.'))
+            if username.casefold() != oidc.username.casefold():
+                CORE.error('SECURITY WARNING: LDAP OAUTHBEARER authenticated %r but the token is for %r', username, oidc.username)
+                raise Unauthorized(self._('The authentication failed. Please login again.'))
+        except UMC_Error:
+            self.current_user.user = User()
+            self.current_user.renew()
+            raise
+        return username
 
     def verify_id_token(self, token, nonce):
         claims = self._verify_jwt(id_token=token)
@@ -407,7 +436,7 @@ class OIDCResource(OAuth2Mixin, Resource):
         oidc = OIDCUser(id_token, access_token, refresh_token, claims)
         if oidc.federated_account:
             await self.handle_federated_account(oidc)
-        await self.pam_oidc_authentication(oidc)
+        await self.oidc_authentication(oidc)
 
     def _logout_success(self):
         user = self.current_user
