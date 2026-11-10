@@ -65,6 +65,7 @@ def create_permissions_and_privileges():
     check_call(
         ['bash', '-c', '''
 time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization generate
+ucr set guardian/cerbos/audit-logging/enabled='true'
 systemctl restart univention-guardian-server.service
 '''])
 
