@@ -1871,8 +1871,22 @@ msgid "The UCR variable %(variable)s must contain exactly one contiguous range."
 msgstr "Die UCR-Variable %(variable)s muss genau einen zusammenhängenden Bereich enthalten."
 
 #, python-format
+msgid "Could not read Samba's idmap.ldb allocation range: %(error)s"
+msgstr "Der Vergabebereich von Sambas idmap.ldb konnte nicht gelesen werden: %(error)s"
+
+msgid "Samba's idmap.ldb contains an invalid allocation range."
+msgstr "Sambas idmap.ldb enthält einen ungültigen Vergabebereich."
+
+msgid "Samba's idmap.ldb does not contain lowerBound and upperBound values."
+msgstr "Sambas idmap.ldb enthält keine Werte für lowerBound und upperBound."
+
+#, python-format
 msgid "The UDM UID/GID ranges overlap with Samba's automatically allocated idmap range %(first)d-%(last)d."
 msgstr "Die UDM-UID/GID-Bereiche überschneiden sich mit dem von Samba automatisch vergebenen idmap-Bereich %(first)d-%(last)d."
+
+#, python-format
+msgid "The UDM UID/GID ranges overlap with Samba's idmap.ldb allocation range %(first)d-%(last)d."
+msgstr "Die UDM-UID/GID-Bereiche überschneiden sich mit dem von Samba in idmap.ldb verwendeten Vergabebereich %(first)d-%(last)d."
 
 #, python-format
 msgid "The UDM UID/GID ranges are not covered by %(variable)s. Adjust %(variable)s or the UDM range variables."

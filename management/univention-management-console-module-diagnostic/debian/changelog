@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.7.2) unstable; urgency=medium
+
+  * Bug #58779: align UDM ID range checks with Samba roles
+
+ -- Florian Best <best@univention.de>  Tue, 10 Nov 2026 16:57:02 +0100
+
 univention-management-console-module-diagnostic (8.7.1) unstable; urgency=medium
 
   [ Rehema Owino ]
