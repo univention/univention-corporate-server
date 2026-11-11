@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.7) unstable; urgency=medium
+
+  * Bug #59581: migrate object identifiers with object types
+
+ -- Florian Best <best@univention.de>  Fri, 20 Nov 2026 17:38:29 +0100
+
 univention-directory-manager-modules (17.7.6) unstable; urgency=medium
 
   * Bug #58779: make uid and gid allocation ranges configurable

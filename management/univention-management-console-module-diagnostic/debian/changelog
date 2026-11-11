@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.7.3) unstable; urgency=medium
+
+  * Bug #59581: migrate object identifiers with object types
+
+ -- Florian Best <best@univention.de>  Fri, 20 Nov 2026 17:38:35 +0100
+
 univention-management-console-module-diagnostic (8.7.2) unstable; urgency=medium
 
   * Bug #58779: align UDM ID range checks with Samba roles
