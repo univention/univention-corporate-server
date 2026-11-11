@@ -44,6 +44,7 @@ export OS_CLOUD="${OS_CLOUD:=univention-development}"
 export PROXMOX_BRIDGE="${PROXMOX_BRIDGE:=Deploy - 10.150.12.0/22}" # e150012
 export PROXMOX_TEMPLATE_ID="${PROXMOX_TEMPLATE_ID:=181}" # template-generic-ucs-5.2-7-e606 2026-10-16 11:34:26  dev, template (packer)
 export PROXMOX_TEMPLATE_ID_OLD="${PROXMOX_TEMPLATE_ID_OLD:=175}" # template-generic-ucs-5.0-10-e1220 2026-10-16 11:32:39  dev, template (packer)
+export PROXMOX_UCS_ISO="${PROXMOX_UCS_ISO:=cephfs:iso/ucs_${release}-latest-amd64.iso}"
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
@@ -119,6 +120,7 @@ usage () {
 	echo "    <>${BOLD}PROXMOX_TEMPLATE_ID${NORM}  - Proxmox template VM ID [${BOLD}$PROXMOX_TEMPLATE_ID${NORM}]"
 	echo "    <>${BOLD}PROXMOX_TEMPLATE_ID_OLD${NORM}  - Proxmox template OLD VM ID [${BOLD}$PROXMOX_TEMPLATE_ID_OLD${NORM}]"
 	echo "    <>${BOLD}PROXMOX_BRIDGE${NORM}  - Proxmox bridge, substring of its comment [${BOLD}$PROXMOX_BRIDGE${NORM}]"
+	echo "    <>${BOLD}PROXMOX_UCS_ISO${NORM}  - Proxmox ISO volume to mount, <storage>:iso/<file> [${BOLD}$PROXMOX_UCS_ISO${NORM}]"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    <>${BOLD}KVM_BUILD_SERVER${NORM}     - KVM build server|'EC2'|'OpenStack'|'Openstack'|'OS'|'Proxmox'|'PVE' [${BOLD}$KVM_BUILD_SERVER${NORM}]"

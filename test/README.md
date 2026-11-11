@@ -83,11 +83,10 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 1. Various UCS installation tests (fail immediately if one setup step fails, only basic tests)
 
 * [scenarios/install-testing/ad-member.cfg](scenarios/install-testing/ad-member.cfg)
-* [scenarios/install-testing/base.cfg](scenarios/install-testing/base.cfg)
+* [scenarios/install-testing/all-roles.cfg](scenarios/install-testing/all-roles.cfg)
 * [scenarios/install-testing/master-english-static-ip.cfg](scenarios/install-testing/master-english-static-ip.cfg)
-* [scenarios/install-testing/master-french-static-ip.cfg](scenarios/install-testing/master-french-static-ip.cfg)
+* [scenarios/install-testing/master-french.cfg](scenarios/install-testing/master-french.cfg)
 * [scenarios/install-testing/master-german.cfg](scenarios/install-testing/master-german.cfg)
-* [scenarios/install-testing/net-installer.cfg](scenarios/install-testing/net-installer.cfg)
 * [scenarios/install-testing/samba-env.cfg](scenarios/install-testing/samba-env.cfg)
 * [scenarios/install-testing/school.cfg](scenarios/install-testing/school.cfg)
 * [scenarios/install-testing/school-dev.cfg](scenarios/install-testing/school-dev.cfg)
