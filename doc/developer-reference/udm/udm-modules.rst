@@ -235,7 +235,14 @@ Mandatory variables
    .. py:data:: property_descriptions.dontsearch
       :type: bool
 
-      If set to ``False``, the property is not searchable.
+      If set to ``True``, the property is not searchable.
+      Use :py:data:`property_descriptions.searchable` for new modules.
+
+   .. py:data:: property_descriptions.searchable
+      :type: bool
+
+      If set to ``True``, the property is searchable.
+      This is the inverse of :py:data:`property_descriptions.dontsearch`.
 
    .. py:data:: property_descriptions.default
       :type: Any
