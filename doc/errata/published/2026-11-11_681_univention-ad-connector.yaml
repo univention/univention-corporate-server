@@ -11,3 +11,6 @@ desc: |
    member of the group in Active Directory. This speeds up the
    synchronization of large groups.
 bug: [60016]
+erratum: 681
+announced: 2026-11-11
+support: core
