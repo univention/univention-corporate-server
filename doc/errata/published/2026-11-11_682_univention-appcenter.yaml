@@ -16,3 +16,6 @@ desc: |
    App Center still showed the old version as installed and offered the
    upgrade again. The App Center now shows the installed version correctly.
 bug: [58543, 60019]
+erratum: 682
+announced: 2026-11-11
+support: core
