@@ -5,7 +5,7 @@
 # Realized with a (DSL domain specific language) using extended BNF grammar and a LALR (Look-Ahead Left <- Right) parser.
 # Comments (#) are everywhere allowed.
 # This rule file must be converted into Guardian rules
-# via the script "/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization".
+# via the script "/usr/share/univention-directory-manager-tools/univention-configure-local-udm-authorization".
 #
 # access by <who> [to <what> [grant <access>]+ ]+
 #     Access by one or more roles (specified by <who>)
