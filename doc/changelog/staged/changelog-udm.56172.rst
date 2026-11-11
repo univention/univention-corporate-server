@@ -1,0 +1,1 @@
+Extended attributes are no longer copied when their ``copyable`` property is unset or disabled. This prevents LDAP operational attributes such as ``createTimestamp`` from being written when copying users or groups.

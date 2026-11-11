@@ -508,7 +508,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         # value is editable (only via hooks or direkt module.info[] access)
         editable = not ldap_true(attrs, 'univentionUDMPropertyValueNotEditable')
 
-        copyable = not ldap_true(attrs, 'univentionUDMPropertyCopyable')  # yes, broken inverted logic, Bug #56172
+        copyable = ldap_true(attrs, 'univentionUDMPropertyCopyable')
 
         # value is required
         valueRequired = ldap_true(attrs, 'univentionUDMPropertyValueRequired')
