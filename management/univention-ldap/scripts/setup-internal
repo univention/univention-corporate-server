@@ -55,7 +55,7 @@ setup_db () {
         [ -n "$(slapcat -f /etc/ldap/slapd.conf -b cn=internal -H 'ldap:///cn=internal??base')" ] &&
         return 0
     install -o openldap -g openldap -d "$ARCHIVE"
-    slapadd -f /etc/ldap/slapd.conf -b cn=internal -l /usr/share/univention-ldap/internal.ldif
+    univention-config-registry filter < /usr/share/univention-ldap/internal.ldif | slapadd -f /etc/ldap/slapd.conf -b cn=internal
     chown -R -h openldap: "$ARCHIVE"
 }
 
