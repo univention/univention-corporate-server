@@ -1,3 +1,9 @@
+ucs-test (12.7.24) unstable; urgency=medium
+
+  * Bug #60153: assign univentionObjectIdentifier to blocklist objects
+
+ -- Florian Best <best@univention.de>  Tue, 24 Nov 2026 18:07:13 +0100
+
 ucs-test (12.7.23) unstable; urgency=medium
 
   * Issue univention/dev/ucs#3845: Speed up the AD->UCS group membership sync

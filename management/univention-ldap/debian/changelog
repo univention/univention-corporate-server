@@ -2,6 +2,7 @@ univention-ldap (18.7.4) unstable; urgency=medium
 
   * Bug #60153: assign `univentionObjectIdentifier` to initial core
     license
+  * Bug #59581: assign univentionObjectIdentifier to blocklist objects
 
  -- Florian Best <best@univention.de>  Tue, 24 Nov 2026 17:09:40 +0100
 
