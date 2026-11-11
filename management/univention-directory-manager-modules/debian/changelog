@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.7.7) unstable; urgency=medium
+
+  * Map the UDM manager property to LDAP manager
+
+ -- Florian Best <best@univention.de>  Wed, 11 Nov 2026 13:38:07 +0100
+
 univention-directory-manager-modules (17.7.6) unstable; urgency=medium
 
   * Bug #58779: make uid and gid allocation ranges configurable

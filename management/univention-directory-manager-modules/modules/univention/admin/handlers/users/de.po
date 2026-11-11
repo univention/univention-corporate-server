@@ -573,7 +573,12 @@ msgstr "Straße"
 
 #: modules/univention/admin/handlers/users/user.py:359
 #: modules/univention/admin/handlers/users/contact.py:161
-msgid "Superior"
+msgid "Secretary"
+msgstr "Sekretär"
+
+#: modules/univention/admin/handlers/users/user.py:367
+#: modules/univention/admin/handlers/users/contact.py:169
+msgid "Manager"
 msgstr "Vorgesetzter"
 
 #: modules/univention/admin/handlers/users/user.py:338

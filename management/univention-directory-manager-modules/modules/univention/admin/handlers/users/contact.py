@@ -127,7 +127,14 @@ property_descriptions = {
         copyable=True,
     ),
     'secretary': univention.admin.property(
-        short_description=_('Superior'),
+        short_description=_('Secretary'),
+        long_description='',
+        syntax=univention.admin.syntax.UserDN,
+        multivalue=True,
+        copyable=True,
+    ),
+    'manager': univention.admin.property(
+        short_description=_('Manager'),
         long_description='',
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
@@ -268,6 +275,7 @@ layout = [
             'organisation',
             ['employeeNumber', 'employeeType'],
             'secretary',
+            'manager',
         ]),
     ]),
     Tab(_('Contact'), _('Contact information'), layout=[
@@ -300,6 +308,7 @@ mapping.register('organisation', 'o', None, univention.admin.mapping.ListToStrin
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
 mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
 mapping.register('secretary', 'secretary')
+mapping.register('manager', 'manager')
 mapping.register('e-mail', 'mail', encoding='ASCII')
 mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString)

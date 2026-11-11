@@ -324,7 +324,14 @@ property_descriptions = dict({
         copyable=True,
     ),
     'secretary': univention.admin.property(
-        short_description=_('Superior'),
+        short_description=_('Secretary'),
+        long_description='',
+        syntax=univention.admin.syntax.UserDN,
+        multivalue=True,
+        copyable=True,
+    ),
+    'manager': univention.admin.property(
+        short_description=_('Manager'),
         long_description='',
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
@@ -582,6 +589,7 @@ layout = [
             'organisation',
             ['employeeNumber', 'employeeType'],
             'secretary',
+            'manager',
         ]),
     ]),
     Tab(_('Groups'), _('Groups'), layout=[
@@ -1023,6 +1031,7 @@ mapping.register('roomNumber', 'roomNumber')
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
 mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
 mapping.register('secretary', 'secretary')
+mapping.register('manager', 'manager')
 mapping.register('departmentNumber', 'departmentNumber')
 mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')

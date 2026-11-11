@@ -26,6 +26,7 @@ class UsersUserObjectProperties(GenericObjectProperties):
         'primaryGroup': dn_property_encoder_for('groups/group'),
         'sambaLogonHours': SambaLogonHoursPropertyEncoder,
         'sambaRID': StringIntPropertyEncoder,
+        'manager': dn_list_property_encoder_for('users/user'),
         'secretary': dn_list_property_encoder_for('users/user'),
         'uidNumber': StringIntPropertyEncoder,
         'userexpiry': DatePropertyEncoder,
