@@ -64,9 +64,9 @@ def main():
 def create_permissions_and_privileges():
     check_call(
         ['bash', '-c', '''
-time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local prune
-time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-permissions
-time /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-default-roles
+time /usr/share/univention-directory-manager-tools/univention-configure-local-udm-authorization --store-local prune
+time /usr/share/univention-directory-manager-tools/univention-configure-local-udm-authorization --store-local create-permissions
+time /usr/share/univention-directory-manager-tools/univention-configure-local-udm-authorization --store-local create-default-roles
 '''])
 
 

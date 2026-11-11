@@ -15,7 +15,7 @@ import requests
 
 import univention.admin.modules
 import univention.logging
-from univention.admin.authorization.config import UDMAuthorizationConfig
+from univention.admin.authorization.local_config import UDMAuthorizationConfig
 from univention.authorization.config import AuthorizationConfig
 from univention.authorization.management import GuardianManagementClient, GuardianManagementClientLocal
 from univention.config_registry import ucr

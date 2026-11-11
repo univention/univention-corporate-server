@@ -1,6 +1,7 @@
 18python-univention-directory-manager.inst	usr/lib/univention-install/
 etc/bash_completion.d/univention-directory-manager	etc/bash_completion.d/
 listener/*.py	usr/lib/univention-directory-listener/system/
+local-udm-default-authorization-roles.policy usr/share/univention-directory-manager-modules/
 scripts/change_srv_priority.py	usr/share/univention-directory-manager-tools/
 scripts/check_group_recursion	usr/share/univention-directory-manager-tools/
 scripts/convert-user-base64-photos	usr/share/univention-directory-manager-tools/
@@ -21,6 +22,7 @@ scripts/remove_sambalmpassword	usr/share/univention-directory-manager-tools/
 scripts/remove_sambantpassword	usr/share/univention-directory-manager-tools/
 scripts/remove_sambapwdmustchange	usr/share/univention-directory-manager-tools/
 scripts/univention-blocklist-clean-expired-entries	usr/share/univention-directory-manager-tools/
+scripts/univention-configure-local-udm-authorization	usr/share/univention-directory-manager-tools/
 scripts/univention-configure-udm-authorization	usr/share/univention-directory-manager-tools/
 scripts/univention-delayed-account-activation	usr/share/univention-directory-manager-tools/
 scripts/univention-update-license-cache	usr/share/univention-directory-manager-tools/

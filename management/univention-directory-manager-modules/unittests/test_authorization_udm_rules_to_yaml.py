@@ -29,7 +29,7 @@ _original_modules = {name: sys.modules.get(name) for name in _MOCKED_MODULES}
 for _name in _MOCKED_MODULES:
     sys.modules[_name] = MagicMock()
 
-from univention.admin.authorization.config import UDMAuthorizationConfig  # noqa: E402  # isort: skip
+from univention.admin.authorization.local_config import UDMAuthorizationConfig  # noqa: E402  # isort: skip
 
 # Restore sys.modules so mocks don't leak into other tests (e.g. doctests)
 for _name in _MOCKED_MODULES:
