@@ -94,7 +94,7 @@ def main(options: argparse.Namespace) -> bool:
         uldap.modify = lambda dn, changes: sys.stdout.write('Would modify %r\n' % (dn, ))
     warningHidden.verbose = options.verbose
 
-    for (dn, attributes) in uldap.search(filter=searchFilter, base=options.base):
+    for (dn, attributes) in uldap.search(filter=searchFilter, base=options.base, attr=['*', 'entryUUID']):
         matches = [
             module
             for (module, identify) in moduleIdentify.items()
@@ -111,6 +111,8 @@ def main(options: argparse.Namespace) -> bool:
                         ('objectClass', attributes['objectClass'], attributes['objectClass'] + [b'univentionObject']),
                         ('univentionObjectType', [], [matches[0].encode('UTF-8')]),
                     ]
+                    if 'univentionObjectIdentifier' not in attributes:
+                        changes.append(('univentionObjectIdentifier', [], attributes['entryUUID']))
                     uldap.modify(dn, changes)
                 except univention.uldap.ldap.INVALID_SYNTAX as e:
                     # this error should not happen, in case it does, it is an indicator that
