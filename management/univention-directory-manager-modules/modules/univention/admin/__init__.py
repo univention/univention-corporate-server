@@ -186,6 +186,7 @@ class property:
         default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = None,
         copyable: bool = False,
         dontsearch: bool = False,
+        searchable: bool | None = None,
         sortable: bool | None = None,
         size: str | None = None,
         type_class: type[TypeHint] | None = None,
@@ -221,6 +222,7 @@ class property:
         :param default: The default value for the property when a new object is created.
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param dontsearch: `True` to prevent searches using the property.
+        :param searchable: `True` to allow searches using the property. This is the inverse of `dontsearch`.
         :param sortable: `True` allows that paginated searches are allowed to sort by this property. Defaults to wheather the value is searchable.
         :param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
@@ -257,7 +259,7 @@ class property:
         self.unique = unique
         self.base_default = default
         self.prevent_umc_default_popup = prevent_umc_default_popup
-        self.dontsearch = dontsearch
+        self.dontsearch = dontsearch if searchable is None else not searchable
         self.sortable = sortable if sortable is not None else self.searchable
         self.show_in_lists = show_in_lists
         self.cli_enabled = cli_enabled
@@ -279,8 +281,20 @@ class property:
         # octetStringOrderingMatch
 
     @property
-    def searchable(self):
+    def dontsearch(self) -> bool:
+        return self._dontsearch
+
+    @dontsearch.setter
+    def dontsearch(self, value: bool) -> None:
+        self._dontsearch = value
+
+    @property
+    def searchable(self) -> bool:
         return not self.dontsearch
+
+    @searchable.setter
+    def searchable(self, value: bool) -> None:
+        self.dontsearch = not value
 
     def new(self) -> list[str] | None:
         return [] if self.multivalue else None
