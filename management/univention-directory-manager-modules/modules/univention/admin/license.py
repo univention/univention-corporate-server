@@ -31,6 +31,7 @@ log = log.getChild('LICENSE')
 _license = None
 
 LDAP_FILTER_license_module = '(&(objectClass=univentionLicense)(univentionLicenseModule=%s))'
+FREE_LICENSE_BASE_DNS = ('UCS Core Edition', 'Free for personal use edition')
 LDAP_FILTER_normal_user_account = '(univentionObjectType=users/user)'
 LDAP_FILTER_account_not_disabled = '(!(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'
 LDAP_FILTER_managedclients = '(|(objectClass=univentionWindows)(objectclass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionCorporateClient)(objectClass=univentionMacOSClient))'
@@ -216,7 +217,7 @@ class License:
 
             if disable_add:
                 self._expired = True
-            elif not disable_add and self.licenseBase in ('Free for personal use edition', 'UCS Core Edition'):
+            elif not disable_add and self.licenseBase in FREE_LICENSE_BASE_DNS:
                 disable_add = 5
 
             log.debug('Univention License', users=real_users, clients=real_managedclients)
@@ -464,6 +465,37 @@ class LicenseWrapper:
     def get_key_id(self, lo):
         return _license.licenseKeyID or _license._get_license_entry_uuid(lo)
 
+    def is_enterprise(self, lo: 'access') -> bool:
+        """
+        Check if a valid enterprise (subscription) license is installed.
+
+        A license counts as enterprise license if its signature is valid, its
+        end date is not in the past, it is bound to the LDAP base of this
+        domain and it is neither a *UCS Core Edition* nor a *Free for personal
+        use edition* license. User and client limits are not taken into account.
+
+        The validation is delegated to :py:func:`univention.license.check`,
+        which validates the license object without changing the globally
+        selected license, so this method does not affect the license state
+        used by UDM itself. Raw LDAP values are only evaluated after the
+        signature over all license attributes has been verified.
+
+        :param lo: LDAP connection which is allowed to read the license objects.
+        :returns: `True` if at least one valid enterprise license exists, `False` otherwise.
+        """
+        licenses = lo.search(filter=filter_format(LDAP_FILTER_license_module, ['admin']), attr=['univentionLicenseBaseDN'])
+        for dn, attrs in licenses:
+            validity = univention.license.check(dn)
+            if validity != 0:
+                log.debug('license is not valid', dn=dn, validity=validity)
+                continue
+            base_dn = attrs.get('univentionLicenseBaseDN', [b''])[0].decode('UTF-8')
+            if base_dn in FREE_LICENSE_BASE_DNS:
+                log.debug('license is a free license', dn=dn, base_dn=base_dn)
+                continue
+            return True
+        return False
+
     def get_license_data(self):
         def tryint(val, default=-1):
             try:
@@ -491,7 +523,7 @@ class LicenseWrapper:
         license_data['end_date'] = _license.endDate
         license_data['base_dn'] = _license.licenseBase
         free_license = ''
-        if license_data['base_dn'] in ('Free for personal use edition', 'UCS Core Edition'):
+        if license_data['base_dn'] in FREE_LICENSE_BASE_DNS:
             free_license = 'core'
             license_data['base_dn'] = configRegistry.get('ldap/base', '')
         license_data['free_license'] = free_license
