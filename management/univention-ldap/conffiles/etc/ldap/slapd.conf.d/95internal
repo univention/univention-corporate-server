@@ -25,6 +25,7 @@ index      cn pres,eq,sub,approx
 index      entryCSN eq
 index      entryUUID eq
 index      objectClass pres,eq
+index      univentionObjectIdentifier eq
 """
 
 # primary
@@ -37,6 +38,9 @@ overlay syncprov
 syncprov-checkpoint %(ldap/database/internal/syncprov/checkpoint)s
 syncprov-sessionlog %(ldap/database/internal/syncprov/sessionlog)s
 """ % configRegistry)
+
+    print('overlay unique')
+    print('unique_uri "ldap:///cn=internal?univentionObjectIdentifier?sub?(objectClass=univentionObject)"')
 
     # DDS overlay for automatic purging of Recycle Bin objects
     if configRegistry.is_true('ldap/database/internal/overlay/dds', True):
