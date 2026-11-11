@@ -1,6 +1,7 @@
 univention-directory-manager-modules (17.7.7) unstable; urgency=medium
 
   * Bug #59581: migrate object identifiers with object types
+  * Bug #59581: assign univentionObjectIdentifier to blocklist objects
 
  -- Florian Best <best@univention.de>  Fri, 20 Nov 2026 17:38:29 +0100
 
