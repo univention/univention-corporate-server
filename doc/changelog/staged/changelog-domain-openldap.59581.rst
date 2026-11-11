@@ -1,0 +1,1 @@
+UCS 5.3 requires LDAP objects to have a ``univentionObjectIdentifier`` attribute. The update check verifies this requirement before upgrading to UCS 5.3. Objects missing this attribute must be migrated using the LDAP object identifier diagnostic check before the upgrade can proceed.

@@ -189,6 +189,33 @@ update_check_ldap_connection () {
 	return 1
 }
 
+update_check_univention_object_identifier () {
+	local var="update${VERSION}/ignore_univention_object_identifier"
+	ignore_check "$var" && return 100
+	[ "$server_role" = domaincontroller_master ] || return 0
+	have univention-ldapsearch || return 0
+
+	local objects
+	if ! objects="$(univention-ldapsearch -LLL '(&(objectClass=univentionObject)(!(univentionObjectIdentifier=*)))' dn 2>&1)"; then
+		echo "	The LDAP search for missing univentionObjectIdentifier attributes failed."
+		echo "$objects"
+		return 1
+	fi
+
+	local object_count
+	object_count="$(printf '%s\n' "$objects" | sed -ne '/^dn: /p' | wc -l)"
+	if [ "$object_count" -eq 0 ]; then
+		return 0
+	fi
+
+	echo "	$object_count LDAP objects without a valid univentionObjectIdentifier were found."
+	echo "	This must be fixed before updating to UCS $VERSION_NAME."
+	echo "	Run the diagnostic check '58_univentionObjectIdentifier' to migrate the reported objects."
+	echo "	You can start it with: univention-run-diagnostic-checks -t 58_univentionObjectIdentifier"
+	echo
+	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	return 1
+}
 
 # Bug #58045 Loading the database from the LDIF dump failed - could not parse entry (line=xxx)
 # Note: This check should be enabled only for major and minor updates
