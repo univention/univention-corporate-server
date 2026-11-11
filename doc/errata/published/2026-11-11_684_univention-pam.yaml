@@ -12,3 +12,6 @@ desc: |
    degraded. The conflicting socket units are now disabled,
    and their failed states are cleared.
 bug: [58121]
+erratum: 684
+announced: 2026-11-11
+support: core
