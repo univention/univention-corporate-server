@@ -12,3 +12,6 @@ desc: |
    forms containing selection fields with more entries than the limit
    configured by the UCR variable `directory/manager/web/sizelimit`.
 bug: [60084]
+erratum: 683
+announced: 2026-11-11
+support: core
