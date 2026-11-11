@@ -220,6 +220,30 @@ update_check_univention_object_identifier () {
 	return 1
 }
 
+update_check_univention_types () {
+	local var="update${VERSION}/ignore_univention_types"
+	ignore_check "$var" && return 100
+	[ "$server_role" = domaincontroller_master ] || return 0
+	have univention-run-diagnostic-checks || return 0
+
+	local output
+	output="$(univention-run-diagnostic-checks -t 56_univention_types 2>&1)"
+	if [ $? -eq 0 ]; then
+		return 0
+	fi
+
+	echo "  LDAP objects without a valid univentionObjectType were found."
+	echo "  This must be fixed before updating to UCS $VERSION_NAME."
+	echo "  Run the following command to preview the migration without modifying any LDAP objects:"
+	echo "    /usr/share/univention-directory-manager-tools/univention-object-type-migrate --verify --no-action"
+	echo "  To perform the migration, run:"
+	echo "    /usr/share/univention-directory-manager-tools/univention-object-type-migrate --verify --action"
+	echo "  Once the migration has completed successfully, retry the update."
+	echo "$output"
+	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	return 1
+}
+
 # Bug #58045 Loading the database from the LDIF dump failed - could not parse entry (line=xxx)
 # Note: This check should be enabled only for major and minor updates
 _disabled_verify_translog_schema () {
