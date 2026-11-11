@@ -23,13 +23,13 @@ _UPDATED = False
 UdmModule = Any  # FIXME:
 
 
-def udm_objects_without_type(lo: access) -> list[tuple[str, list[UdmModule], list[bytes]]]:
+def udm_objects_without_type(lo: access) -> list[tuple[str, list[UdmModule], list[bytes], list[bytes], list[bytes]]]:
     global _UPDATED
     if not _UPDATED:
         update()
         _UPDATED = True
     objs = []
-    query = lo.search('(!(univentionObjectType=*))')
+    query = lo.search('(!(univentionObjectType=*))', attr=['*', 'entryUUID'])
     for dn, attrs in query:
         if dn.endswith(',cn=temporary,cn=univention,%s' % ucr.get('ldap/base')):
             continue
@@ -39,7 +39,7 @@ def udm_objects_without_type(lo: access) -> list[tuple[str, list[UdmModule], lis
                 if module.module == 'kerberos/kdcentry':
                     break
             else:
-                objs.append((dn, modules, attrs['objectClass']))
+                objs.append((dn, modules, attrs['objectClass'], attrs['entryUUID'], attrs.get('univentionObjectIdentifier', [])))
     return objs
 
 
@@ -52,7 +52,7 @@ def run(_umc_instance: Instance) -> None:
     if len(objects):
         counted_objects: dict[str, int] = {}
         details = '\n\n' + _('These objects were found:')
-        for _dn, modules, _object_classes in objects:
+        for _dn, modules, _object_classes, _entry_uuid, _object_identifier in objects:
             for module in modules:
                 counted_objects.setdefault(module.short_description, 0)
                 counted_objects[module.short_description] += 1
@@ -68,7 +68,7 @@ def run(_umc_instance: Instance) -> None:
 def migrate_objects(_umc_instance: Instance) -> None:
     lo, _pos = getAdminConnection()
     objects = udm_objects_without_type(lo)
-    for dn, modules, object_classes in objects:
+    for dn, modules, object_classes, entry_uuid, object_identifier in objects:
         new_object_classes = object_classes[:]
         if b'univentionObject' not in object_classes:
             new_object_classes.append(b'univentionObject')
@@ -76,6 +76,8 @@ def migrate_objects(_umc_instance: Instance) -> None:
             ('objectClass', object_classes, new_object_classes),
             ('univentionObjectType', [], [module.module.encode('UTF-8') for module in modules]),
         ]
+        if not object_identifier:
+            changes.append(('univentionObjectIdentifier', [], entry_uuid))
         lo.modify(dn, changes)
     raise ProblemFixed(buttons=[])
 
