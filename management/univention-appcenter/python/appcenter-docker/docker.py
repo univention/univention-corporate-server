@@ -670,9 +670,8 @@ class MultiDocker(Docker):
                 except DockerInspectCallFailed as e:
                     _logger.warning("Fail: %s", e)
                     break
-                container_name = container_inspect['Name']
-                # docker compose v2 names containers <project>-<service>-<n>, v1 used underscores
-                if f'_{service_name}_' in container_name or f'-{service_name}-' in container_name:
+                labels = (container_inspect.get('Config') or {}).get('Labels') or {}
+                if labels.get('com.docker.compose.service') == service_name:
                     return container_inspect['Id']
         # default
         if name:
