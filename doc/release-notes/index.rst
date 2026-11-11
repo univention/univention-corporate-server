@@ -212,6 +212,15 @@ or run :command:`univention-run-join-scripts` as ``root``.
 Verify that the join scripts completed successfully.
 Then restart the UCS system.
 
+UCS |release| ships PostgreSQL 17.
+The update doesn't migrate existing PostgreSQL 15 installations,
+and they continue to run PostgreSQL 15.
+After the update,
+verify the PostgreSQL version on all UCS systems that use PostgreSQL,
+for example with :command:`pg_lsclusters`.
+For the recommended migration steps,
+see :uv:kb:`25287`.
+
 .. _relnotes-packages:
 
 **************************
