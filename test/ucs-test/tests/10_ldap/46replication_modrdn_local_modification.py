@@ -16,6 +16,7 @@
 import os
 import re
 import sys
+import uuid
 
 import ldap
 
@@ -39,6 +40,7 @@ addlist = [
     ('cn', [name.encode('UTF-8')]),
     ('objectClass', [b'top', b'organizationalRole', b'univentionObject']),
     ('univentionObjectType', [b'container/cn']),
+    ('univentionObjectIdentifier', [str(uuid.uuid4()).encode('ASCII')]),
 ]
 
 name_subobject = random_name()
@@ -47,6 +49,7 @@ addlist_subobject = [
     ('cn', [name_subobject.encode('UTF-8')]),
     ('objectClass', [b'top', b'organizationalRole', b'univentionObject']),
     ('univentionObjectType', [b'container/cn']),
+    ('univentionObjectIdentifier', [str(uuid.uuid4()).encode('ASCII')]),
 ]
 
 

@@ -269,7 +269,7 @@ class simpleLdap:
                 long_description=_('Immutable attribute univentionObjectIdentifier to track the identity of an object in UDM'),
                 syntax=univention.admin.syntax.UUID,
                 may_change=False,
-                default=(lambda o, p: str(uuid.uuid4()) if configRegistry.is_true('directory/manager/object-identifier/autogeneration') else None, [], []),
+                default=(lambda o, p: str(uuid.uuid4()), [], []),
             ),
         }
         if hasattr(module, 'property_descriptions') and 'univentionObjectIdentifier' not in module.property_descriptions:
@@ -1995,8 +1995,7 @@ class simpleLdap:
             # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
             self.alloc.append((name, self[name], False))
         else:
-            if name != 'univentionObjectIdentifier' or configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
-                self[name] = self.request_lock(name)
+            self[name] = self.request_lock(name)
 
     def _call_checkLdap_on_all_property_syntaxes(self) -> None:
         """
@@ -2329,16 +2328,15 @@ class simpleComputer(simpleLdap):
             self.info['ip'] += ips
 
     def add_univention_object_identifier(self, ml):
-        if configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
-            uoid = str(uuid.uuid4())
-            # TODO: maybe without lock, we have the slapo-unique
-            try:
-                univention.admin.allocators.acquireUnique(self.lo, univention.admin.uldap.position(configRegistry['ldap/base']), 'univentionObjectIdentifier', uoid, 'univentionObjectIdentifier', scope='base')
-                # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
-                self.alloc.append(('univentionObjectIdentifier', uoid, False))
-                ml.append(('univentionObjectIdentifier', [uoid.encode()]))
-            except univention.admin.uexceptions.permissionDenied:
-                self.log.info('acquireUnique univentionObjectIdentifier got permissionDenied, continuing without lock, relying on slapo-unique')
+        uoid = str(uuid.uuid4())
+        # TODO: maybe without lock, we have the slapo-unique
+        try:
+            univention.admin.allocators.acquireUnique(self.lo, univention.admin.uldap.position(configRegistry['ldap/base']), 'univentionObjectIdentifier', uoid, 'univentionObjectIdentifier', scope='base')
+            # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
+            self.alloc.append(('univentionObjectIdentifier', uoid, False))
+            ml.append(('univentionObjectIdentifier', [uoid.encode()]))
+        except univention.admin.uexceptions.permissionDenied:
+            self.log.info('acquireUnique univentionObjectIdentifier got permissionDenied, continuing without lock, relying on slapo-unique')
         return ml
 
     def getMachineSid(self, lo: univention.admin.uldap.access, position: univention.admin.uldap.position, uidNum: str, rid: str | None = None) -> str:

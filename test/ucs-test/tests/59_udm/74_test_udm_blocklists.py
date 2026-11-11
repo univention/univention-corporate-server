@@ -70,6 +70,7 @@ def add_ldap_blocklistentries(blocklist_position, random_string):
                 ('originUniventionObjectIdentifier', get_uuid().encode('UTF-8')),
                 ('blockedUntil', b'21241212000000Z'),
                 ('univentionObjectType', b'blocklists/entry'),
+                ('univentionObjectIdentifier', get_uuid().encode('UTF-8')),
             ])
             dns.append(dn)
         return dns
