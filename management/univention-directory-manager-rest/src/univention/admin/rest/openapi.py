@@ -149,6 +149,7 @@ class RelationsBase:
             'license-request': 'Request a new UCS Core Edition license',
             'license-check': 'Check if the license limits are reached',
             'license-import': 'Import a new license in LDIF format',
+            'license-status': 'Check if a valid enterprise (subscription) license is installed',
             'service-specific-password': 'Generate a new service specific password',
             'error': 'Error',
             'warning': 'Warning',

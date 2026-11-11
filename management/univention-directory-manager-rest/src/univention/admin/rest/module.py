@@ -3164,12 +3164,38 @@ class LicenseCheck(Resource):
         self.content_negotiation({'message': message})
 
 
+class LicenseStatus(Resource):
+    """
+    Get the subscription status of the installed license.
+
+    ``is_enterprise`` is ``true`` if a valid enterprise (subscription) license
+    is installed: valid signature, end date not in the past, bound to the LDAP
+    base of this domain and neither a *UCS Core Edition* nor a *Free for
+    personal use edition* license. It is ``false`` otherwise, including when no
+    license is installed at all. The license is validated on every request
+    (subject to HTTP caching), so expiring licenses are detected without a
+    restart. The response intentionally contains no license details, so that
+    services like the portal can query it without having access to the full
+    license information.
+    """
+
+    def get(self):
+        result = {}
+        self.add_link(result, 'self', self.urljoin(''), title=_('License status'))
+        self.add_link(result, 'up', self.urljoin('./'), title=_('UCS license'))
+        lo, _po = get_machine_ldap_read_connection()
+        result['is_enterprise'] = udm_license.license.is_enterprise(lo)
+        self.add_caching(public=False, max_age=60, must_revalidate=True)
+        self.content_negotiation(result)
+
+
 class License(Resource):
     """Get information about the license"""
 
     def get(self):
         license_data = {}
         self.add_link(license_data, 'udm:license-check', self.urljoin('check'), title=_('Check license status'))
+        self.add_link(license_data, 'udm:license-status', self.urljoin('status'), title=_('License subscription status'))
         self.add_link(license_data, 'udm:license-request', self.urljoin('request'))
         self.add_link(license_data, 'udm:license-import', self.urljoin(''))
 
@@ -3353,6 +3379,7 @@ class Application(tornado.web.Application):
             (f"{root_path}/udm/license/", License),
             (f"{root_path}/udm/license/import", LicenseImport),
             (f"{root_path}/udm/license/check", LicenseCheck),
+            (f"{root_path}/udm/license/status", LicenseStatus),
             (f"{root_path}/udm/license/request", LicenseRequest),
             (f"{root_path}/udm/ldap/base/", LdapBase),
             (f"{root_path}/udm/directory/unmap-ldap-attributes", LdapAttributeUnmap),

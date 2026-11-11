@@ -108,6 +108,14 @@ msgstr "Konnte die Lizenz nicht vom LDAP einlesen"
 msgid "Check license status"
 msgstr "Lizenz-Status prüfen"
 
+#: src/univention/admin/rest/module.py
+msgid "License status"
+msgstr "Lizenz-Status"
+
+#: src/univention/admin/rest/module.py
+msgid "License subscription status"
+msgstr "Subskriptionsstatus der Lizenz"
+
 #: src/univention/admin/rest/module.py:3031
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Klick, um die vererbten Eigenschaften der Richtlinie zu bearbeiten"
