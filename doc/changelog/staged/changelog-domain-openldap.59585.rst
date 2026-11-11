@@ -1,0 +1,1 @@
+The update check now detects LDAP objects without ``univentionObjectType`` before upgrading to UCS 5.3. Migrate the reported objects through the LDAP objects diagnostic check before continuing the update.
