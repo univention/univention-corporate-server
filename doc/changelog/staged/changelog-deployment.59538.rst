@@ -1,0 +1,1 @@
+Before the update to UCS 5.3, the Primary Directory Node checks that all systems in the domain have at least UCS 5.2-7 installed. Otherwise the update is aborted and the systems that need to be updated first are listed.
