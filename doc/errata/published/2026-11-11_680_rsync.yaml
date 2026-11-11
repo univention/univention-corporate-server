@@ -120,3 +120,6 @@ cve:
 - CVE-2024-12087
 - CVE-2024-12088
 - CVE-2024-12747
+erratum: 680
+announced: 2026-11-11
+support: core
